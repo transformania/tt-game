@@ -1,0 +1,1008 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Xml;
+using System.Xml.Serialization;
+using tfgame.dbModels.Abstract;
+using tfgame.dbModels.Concrete;
+using tfgame.dbModels.Models;
+using tfgame.Statics;
+using tfgame.ViewModels;
+
+namespace tfgame.Procedures
+{
+    public static class TFEnergyProcedures
+    {
+        public static LogBox AddTFEnergyToPlayer(Player victim, Player attacker, SkillViewModel2 skill, decimal modifier)
+        {
+
+            // assert modifier is never negative (reduced TF damage instead of adding it)
+            if (modifier < 0)
+            {
+                modifier = 0;
+            }
+
+            LogBox output = new LogBox();
+            ITFEnergyRepository repo = new EFTFEnergyRepository();
+
+            output.AttackerLog = "  ";
+            output.VictimLog = "  ";
+
+            
+            // crunch down any old TF Energies into one public energy
+
+           // List<TFEnergy> energiesOnPlayer = repo.TFEnergies.Where(e => e.PlayerId == victim.Id && e.FormName == skill.Skill.FormdbName && e.CasterId != attacker.Id).ToList();
+            List<TFEnergy> energiesOnPlayer = repo.TFEnergies.Where(e => e.PlayerId == victim.Id && e.FormName == skill.Skill.FormdbName).ToList();
+
+            List<TFEnergy> energiesEligibleForDelete = new List<TFEnergy>();
+            decimal mergeUpEnergyAmt = 0;
+
+            foreach (TFEnergy e in energiesOnPlayer) {
+
+                //
+                double minutesAgo = Math.Abs(Math.Floor(e.Timestamp.Subtract(DateTime.UtcNow).TotalMinutes));
+                double hoursAgo = Math.Floor(minutesAgo / 60);
+
+
+
+                if (minutesAgo > 180)
+                {
+                    mergeUpEnergyAmt += e.Amount;
+                    energiesEligibleForDelete.Add(e);
+                }
+            }
+
+            // if the amount of old energies is greater than 0, write up a new one and save it as 'public domain' TF Energy
+            if (mergeUpEnergyAmt > 0)
+            {
+                TFEnergy collapsed = new TFEnergy
+                {
+                    PlayerId = victim.Id,
+                    Amount = mergeUpEnergyAmt,
+                    CasterId = -1,
+                    Timestamp = Convert.ToDateTime("01/01/1900"),
+                    FormName = skill.Skill.FormdbName,
+                };
+               
+
+                foreach (TFEnergy e in energiesEligibleForDelete)
+                {
+                    repo.DeleteTFEnergy(e.Id);
+                }
+
+                repo.SaveTFEnergy(collapsed);
+
+            }
+
+            // get the amount of TF Energy the attacker has on the player
+            TFEnergy energyFromMe = repo.TFEnergies.FirstOrDefault(e => e.PlayerId == victim.Id && e.FormName == skill.Skill.FormdbName && e.CasterId == attacker.Id);
+
+            if (energyFromMe == null)
+            {
+                energyFromMe = new TFEnergy
+                {
+                    PlayerId = victim.Id,
+                    FormName = skill.Skill.FormdbName,
+                    Amount = skill.Skill.TFPointsAmount * modifier,
+                    CasterId = attacker.Id,
+                    Timestamp = DateTime.UtcNow,
+                };
+
+            }
+            else
+            {
+                energyFromMe.Amount += skill.Skill.TFPointsAmount * modifier;
+                energyFromMe.Timestamp = DateTime.UtcNow;
+            }
+
+            repo.SaveTFEnergy(energyFromMe);
+
+            TFEnergy energy = new TFEnergy
+            {
+                Amount = energyFromMe.Amount + mergeUpEnergyAmt,
+            };
+
+            DbStaticForm eventualForm = FormStatics.GetForm(skill.Skill.FormdbName);
+
+            if (victim.Form == eventualForm.dbName)
+            {
+                output.AttackerLog += "Since " + victim.FirstName + " is already in this form, the spell has no transforming effect.";
+                output.VictimLog += "Since " + victim.FirstName + " is already in this form, the spell has no transforming effect.";
+                return output;
+            }
+
+
+            decimal percentTransformedByHealth = 100 - (victim.Health / victim.MaxHealth * 100);
+
+            // animate forms only need half of health requirement, so double the amount completed
+            if (eventualForm.MobilityType == "full")
+            {
+                percentTransformedByHealth *= 2;
+            }
+
+            decimal percentTransformed = energy.Amount / eventualForm.TFEnergyRequired * 100;
+
+            if (percentTransformed > 100)
+            {
+                percentTransformed = 100;
+            }
+
+            // load the TF Messages from the appropriate XML file if need be
+            //if (eventualForm.TFMessage_20_Percent_1st == null && eventualForm.TFMessage_20_Percent_1st_M == null && eventualForm.TFMessage_20_Percent_1st_F == null)
+            //{
+            //    eventualForm = LoadTFMessagesFromXML(eventualForm);
+            //}
+
+
+            // only print the lower of the two tf % values
+            decimal percentPrintedOutput;
+            if (percentTransformed < percentTransformedByHealth)
+            {
+                percentPrintedOutput = percentTransformed;
+            }
+            else
+            {
+                percentPrintedOutput = percentTransformedByHealth;
+            }
+
+            percentPrintedOutput = Math.Round(percentPrintedOutput, 3);
+
+            if (eventualForm.MobilityType == "inanimate" || eventualForm.MobilityType=="animal")
+            {
+
+                if (percentTransformed < 20 || percentTransformedByHealth < 20)
+                {
+
+                    output.AttackerLog += GetTFMessage(eventualForm, victim, "20", "third") + " (" + percentPrintedOutput + "%)";
+                    output.VictimLog += GetTFMessage(eventualForm, victim, "20", "first") + " (" + percentPrintedOutput + "%)";
+                }
+                else if (percentTransformed < 40 || percentTransformedByHealth < 40)
+                {
+                    output.AttackerLog += GetTFMessage(eventualForm, victim, "40", "third") + " (" + percentPrintedOutput + "%)";
+                    output.VictimLog += GetTFMessage(eventualForm, victim, "40", "first") + " (" + percentPrintedOutput + "%)";
+                }
+                else if (percentTransformed < 60 || percentTransformedByHealth < 60)
+                {
+                    output.AttackerLog += GetTFMessage(eventualForm, victim, "60", "third") + " (" + percentPrintedOutput + "%)";
+                    output.VictimLog += GetTFMessage(eventualForm, victim, "60", "first") + " (" + percentPrintedOutput + "%)";
+                }
+                else if (percentTransformed < 80 || percentTransformedByHealth < 80)
+                {
+                    output.AttackerLog += GetTFMessage(eventualForm, victim, "80", "third") + " (" + percentPrintedOutput + "%)";
+                    output.VictimLog += GetTFMessage(eventualForm, victim, "80", "first") + " (" + percentPrintedOutput + "%)";
+                }
+
+                else if (percentTransformed < 100 || percentTransformedByHealth < 100)
+                {
+                    output.AttackerLog += GetTFMessage(eventualForm, victim, "100", "third") + " (" + percentPrintedOutput + "%)";
+                    output.VictimLog += GetTFMessage(eventualForm, victim, "100", "first") + " (" + percentPrintedOutput + "%)";
+                }
+                else if (percentTransformed >= 100)
+                {
+                    output.AttackerLog += GetTFMessage(eventualForm, victim, "complete", "third") + " (" + percentPrintedOutput + "%)";
+                    output.VictimLog += GetTFMessage(eventualForm, victim, "complete", "first") + " (" + percentPrintedOutput + "%)";
+                }
+
+            }
+            else if (eventualForm.MobilityType == "full")
+            {
+                if (percentTransformed < 20 || percentTransformedByHealth < 20)
+                {
+
+                    output.AttackerLog += GetTFMessage(eventualForm, victim, "20", "third") + " (" + percentPrintedOutput + "%)";
+                    output.VictimLog += GetTFMessage(eventualForm, victim, "20", "first") + " (" + percentPrintedOutput + "%)";
+
+                }
+                else if (percentTransformed < 40 || percentTransformedByHealth < 40)
+                {
+
+                    output.AttackerLog += GetTFMessage(eventualForm, victim, "40", "third") + " (" + percentPrintedOutput + "%)";
+                    output.VictimLog += GetTFMessage(eventualForm, victim, "40", "first") + " (" + percentPrintedOutput + "%)";
+                }
+                else if (percentTransformed < 60 || percentTransformedByHealth < 60)
+                {
+
+                    output.AttackerLog += GetTFMessage(eventualForm, victim, "60", "third") + " (" + percentPrintedOutput + "%)";
+                    output.VictimLog += GetTFMessage(eventualForm, victim, "60", "first") + " (" + percentPrintedOutput + "%)";
+                }
+                else if (percentTransformed < 80 || percentTransformedByHealth < 80)
+                {
+
+                    output.AttackerLog += GetTFMessage(eventualForm, victim, "80", "third") + " (" + percentPrintedOutput + "%)";
+                    output.VictimLog += GetTFMessage(eventualForm, victim, "80", "first") + " (" + percentPrintedOutput + "%)";
+                }
+
+                else if (percentTransformed < 100 || percentTransformedByHealth < 100)
+                {
+
+                    output.AttackerLog += GetTFMessage(eventualForm, victim, "100", "third") + " (" + percentPrintedOutput + "%)";
+                    output.VictimLog += GetTFMessage(eventualForm, victim, "100", "first") + " (" + percentPrintedOutput + "%)";
+                }
+                else if (percentTransformed >= 100)
+                {
+
+                    output.AttackerLog += GetTFMessage(eventualForm, victim, "complete", "third") + " (" + percentPrintedOutput + "%)";
+                    output.VictimLog += GetTFMessage(eventualForm, victim, "complete", "first") + " (" + percentPrintedOutput + "%)";
+                }
+            }
+
+            // calculate the xp earned for this transformation
+            decimal xpEarned = PvPStatics.XP__GainPerAttackBase - (attacker.Level - victim.Level) * PvPStatics.XP__LevelDifferenceXPGainModifier;
+
+            //if (attacker.InPvP == false)
+            //{
+            //    xpEarned *= PvPStatics.NonPvPXPGainModifier;
+            //}
+
+            if (xpEarned < 0)
+            {
+                xpEarned = 0;
+            }
+            if (xpEarned > 15)
+            {
+                xpEarned = 15;
+            }
+            // animate TFs recieve an XP bonus
+            if (eventualForm.MobilityType == "full")
+            {
+                xpEarned *= PvPStatics.XP__AnimateTFXPBonusModifier;
+            }
+
+            // modify the XP earned if the target is offline
+            if (PlayerProcedures.PlayerIsOffline(victim))
+            {
+                xpEarned *= 1.0M-PvPStatics.OfflineDamageReduction;
+            }
+
+            // decrease the XP earned if the player is high leveled and TFing an animate spell AND the xp isn't already negative
+            if (eventualForm.MobilityType == "full" && xpEarned > 0)
+            {
+                if (attacker.Level == 3)
+                {
+                    xpEarned *= .85M;
+                }
+                else if (attacker.Level == 4)
+                {
+                    xpEarned *= .7M;
+                }
+                else if (attacker.Level == 5)
+                {
+                    xpEarned *= .55M;
+                }
+                else if (attacker.Level == 6)
+                {
+                    xpEarned *= .4M;
+                }
+                else if (attacker.Level == 7)
+                {
+                    xpEarned *= .25M;
+                }
+                else if (attacker.Level >= 8)
+                {
+                    xpEarned *= .1M;
+                }
+            }
+
+            // decrease the XP earned if the player is high leveled and TFing an inanimate / animal spell AND the xp isn't already negative
+            if (eventualForm.MobilityType == "inanimate" || eventualForm.MobilityType == "animal")
+            {
+                if (attacker.Level == 5)
+                {
+                    xpEarned *= .85M;
+                }
+                else if (attacker.Level == 6)
+                {
+                    xpEarned *= .7M;
+                }
+                else if (attacker.Level == 7)
+                {
+                    xpEarned *= .55M;
+                }
+                else if (attacker.Level == 8)
+                {
+                    xpEarned *= .4M;
+                }
+                else if (attacker.Level == 9)
+                {
+                    xpEarned *= .25M;
+                }
+                else if (attacker.Level >= 10)
+                {
+                    xpEarned *= .1M;
+                }
+            }
+
+            // give XP to the attacker IF they are not in the same covenant or if the attacker is not in a covenant at all
+           // if (attacker.Covenant <= 0 || (attacker.Covenant != victim.Covenant))
+            //{
+
+                output.AttackerLog += " (+" + xpEarned + " XP)";
+                output.ResultMessage += " (+" + xpEarned + " XP)";
+
+                string lvlMessage = PlayerProcedures.GiveXP(attacker.Id, xpEarned);
+                output.AttackerLog += lvlMessage;
+                output.ResultMessage += lvlMessage;
+           // }
+
+            return output;
+
+        }
+
+        public static decimal GetTotalTFEnergiesOfType(int targetId, int casterId, string dbname)
+        {
+            ITFEnergyRepository energyRepo = new EFTFEnergyRepository();
+            return energyRepo.TFEnergies.Where(e => e.PlayerId == targetId && e.CasterId == casterId && e.FormName == dbname).Sum(e => e.Amount);
+        }
+
+
+
+        public static LogBox RunFormChangeLogic(Player victim, string skilldbName, int attackerId)
+        {
+
+            LogBox output = new LogBox();
+
+            // redundant check to make sure the victim is still in a transformable state
+            if (victim.Mobility != "full")
+            {
+                return output;
+            }
+
+            ITFEnergyRepository repo = new EFTFEnergyRepository();
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            ISkillRepository skillRepo = new EFSkillRepository();
+
+            DbStaticSkill skill = SkillStatics.GetStaticSkill(skilldbName);
+
+            TFEnergy pooledEnergy = repo.TFEnergies.FirstOrDefault(e => e.PlayerId == victim.Id && e.FormName == skill.FormdbName && e.CasterId == -1);
+            TFEnergy myEnergy = repo.TFEnergies.FirstOrDefault(e => e.PlayerId == victim.Id && e.FormName == skill.FormdbName && e.CasterId == attackerId);
+
+            DbStaticForm targetForm = FormStatics.GetForm(skill.FormdbName);
+
+            decimal energyAccumulated = 0;
+            if (pooledEnergy != null)
+            {
+                energyAccumulated = pooledEnergy.Amount + myEnergy.Amount;
+            }
+            else
+            {
+                energyAccumulated = myEnergy.Amount;
+            }
+
+            // check and see if the target has enough points accumulated to try the form's energy requirement
+            if (energyAccumulated < targetForm.TFEnergyRequired)
+            {
+                return output;
+            }
+
+            // check and see if the target's health is low enough to be eligible for the TF
+            Player target = playerRepo.Players.FirstOrDefault(p => p.Id == victim.Id);
+
+            if ((target.Health / target.MaxHealth * 100) < PvPStatics.PercentHealthToAllowFullMobilityFormTF)
+            {
+
+                DbStaticForm oldForm = FormStatics.GetForm(target.Form);
+
+
+                // target is turning into an animate form
+                if (targetForm.MobilityType == "full")
+                {
+
+                    SkillProcedures.RemoveFormSpecificSkillsToPlayer(target, target.Form);
+                    SkillProcedures.GiveFormSpecificSkillsToPlayer(target, targetForm.dbName);
+
+                    target.Form = targetForm.dbName;
+                    target.Gender = targetForm.Gender;
+                    target.Mobility = "full";
+
+                    // wipe out half of the target's mana
+                    try
+                    {
+                        target.Mana -= target.MaxMana / 2;
+                        if (target.Mana < 0)
+                        {
+                            target.Mana = 0;
+                        }
+                    }
+                    catch
+                    {
+                        // for any possible divide by zero errors
+                        target.Mana = 0;
+                    }
+
+                    BuffBox targetbuffs = ItemProcedures.GetPlayerBuffs(target);
+                    target = PlayerProcedures.ReadjustMaxes(target, targetbuffs);
+
+
+                    // take away some of the victim's XP based on the their level
+                    target.XP += -2.5M * target.Level;
+
+                    playerRepo.SavePlayer(target);
+
+                    output.LocationLog = "<br><b>" + target.FirstName + " " + target.LastName + " was completely transformed into a " + targetForm.FriendlyName + " here.</b>";
+                    output.AttackerLog = "<br><b>You fully transformed " + target.FirstName + " " + target.LastName + " into a " + targetForm.FriendlyName + "</b>!";
+                    output.VictimLog = "<br><b>You have been fully transformed into a " + targetForm.FriendlyName + "!</b>";
+
+                    TFEnergyProcedures.DeleteAllPlayerTFEnergiesOfType(target.Id, targetForm.dbName);
+
+                }
+
+                // target is turning into an inanimate or animal form, both are endgame
+                else if ((targetForm.MobilityType == "inanimate" || targetForm.MobilityType == "animal") && target.Health <= 0)
+                {
+
+                    SkillProcedures.RemoveFormSpecificSkillsToPlayer(target, target.Form);
+                    SkillProcedures.GiveFormSpecificSkillsToPlayer(target, targetForm.dbName);
+
+                    target.Form = targetForm.dbName;
+                    target.Gender = targetForm.Gender;
+
+                    if (targetForm.MobilityType == "inanimate")
+                    {
+                        target.Mobility = "inanimate";
+                    }
+                    else if (targetForm.MobilityType == "animal")
+                    {
+                        target.Mobility = "animal";
+                    }
+                   
+                    target.Health = 0;
+                    target.Mana = 0;
+                    target.ActionPoints = 120;
+
+                    playerRepo.SavePlayer(target);
+
+                    // extra log stuff for turning into item
+                    Player attacker = playerRepo.Players.FirstOrDefault(p => p.Id == attackerId);
+                    LogBox extra = ItemProcedures.PlayerBecomesItem(target, targetForm, attacker);
+                    output.AttackerLog += extra.AttackerLog;
+                    output.VictimLog += extra.VictimLog;
+                    output.LocationLog += extra.LocationLog;
+
+                    // give some of the victim's money to the attacker, the amount depending on what mode the victim is in
+                    decimal moneygain = victim.Money * .35M;
+                    PlayerProcedures.GiveMoneyToPlayer(attacker, moneygain);
+                    PlayerProcedures.GiveMoneyToPlayer(victim, -moneygain/2);
+
+                    // ONLY GIVE XP LUMP SUM IF BOTH PLAYERS ARE IN PLAYER VERSUS PLAYER MODE NOW
+                    if (attacker.InPvP == false && victim.InPvP == false)
+                    {
+                        // only give the lump sum XP if the target is within 3 levels of the attacker AND the attack is in PvP mode AND the victim is not in the same covenant
+                        if ((attacker.Level - target.Level <= 3) && ((attacker.Covenant != victim.Covenant) || attacker.Covenant == 0))
+                        {
+                            // give the attacker a nice lump sum for having completed the transformation
+                            output.AttackerLog += "  For having sealed your opponent into their new form for at least a while, you gain an extra " + target.Level * PvPStatics.XP__EndgameTFCompletionLevelBase + " bonus experience.";
+                            output.AttackerLog += PlayerProcedures.GiveXP(attacker.Id, PvPStatics.XP__EndgameTFCompletionLevelBase * target.Level);
+                        }
+
+                        // exclude PvP score for bots
+                        if (victim.MembershipId > 0)
+                        {
+                            decimal score = PlayerProcedures.GetPvPScoreFromWin(attacker, victim);
+                            output.AttackerLog += PlayerProcedures.GivePlayerPvPScore(attacker, victim, score);
+                            output.VictimLog += PlayerProcedures.RemovePlayerPvPScore(victim, attacker);
+                        }
+                        //output.AttackerLog
+
+                    }
+
+                    output.AttackerLog += "  You collect " + moneygain + " Arpeyjis your victim dropped during the transformation.";
+
+
+
+                    // release the player's pet if there is one
+                    Player pet = playerRepo.Players.FirstOrDefault(p => p.IsPetToId == victim.Id);
+                    if (pet != null)
+                    {
+                        pet.IsPetToId = -1;
+                        playerRepo.SavePlayer(pet);
+                    }
+
+                    // create inanimate XP for the victim
+                    InanimateXPProcedures.GetStruggleChance(victim);
+
+                    // if this victim is a bot, clear out some old stuff that is not needed anymore
+                    if (victim.MembershipId < 0)
+                    {
+                        AIDirectiveProcedures.DeleteAIDirectiveByPlayerId(victim.Id);
+                        PlayerLogProcedures.ClearPlayerLog(victim.Id);
+                    }
+
+                    TFEnergyProcedures.DeleteAllPlayerTFEnergiesOfType(target.Id, targetForm.dbName);
+
+
+                }
+            }
+
+            return output;
+
+        }
+
+        public static void DecreaseAllEnergiesOnPlayer(int playerId)
+        {
+            ITFEnergyRepository repo = new EFTFEnergyRepository();
+            IEnumerable<TFEnergy> mydbEnergies = repo.TFEnergies.Where(e => e.PlayerId == playerId).ToList();
+            List<TFEnergy> modifiedEnergies = new List<TFEnergy>();
+
+            foreach (TFEnergy energy in mydbEnergies)
+            {
+                energy.Amount = energy.Amount/2;
+                repo.SaveTFEnergy(energy);
+            }
+
+            //foreach
+
+        }
+
+        public static void CleanseTFEnergies(Player player, decimal bonusPercentageFromBuffs)
+        {
+            ITFEnergyRepository repo = new EFTFEnergyRepository();
+            IEnumerable<TFEnergy> mydbEnergies = repo.TFEnergies.Where(e => e.PlayerId == player.Id).ToList();
+            List<TFEnergy> modifiedEnergies = new List<TFEnergy>();
+
+            foreach (TFEnergy energy in mydbEnergies)
+            {
+                energy.Amount *= 1 - ((PvPStatics.CleanseTFEnergyPercentDecrease + bonusPercentageFromBuffs) / 100.0M);
+                repo.SaveTFEnergy(energy);
+            }
+
+        }
+
+        public static void DeleteAllPlayerTFEnergies(int playerId)
+        {
+            ITFEnergyRepository tfEnergyRepo = new EFTFEnergyRepository();
+            IEnumerable<TFEnergy> energiesToDelete = tfEnergyRepo.TFEnergies.Where(s => s.PlayerId == playerId).ToList();
+
+            foreach (TFEnergy s in energiesToDelete)
+            {
+                tfEnergyRepo.DeleteTFEnergy(s.Id);
+            }
+        }
+
+        public static void DeleteAllPlayerTFEnergiesOfType(int playerId, string spellType)
+        {
+            ITFEnergyRepository tfEnergyRepo = new EFTFEnergyRepository();
+            IEnumerable<TFEnergy> energiesToDelete = tfEnergyRepo.TFEnergies.Where(s => s.PlayerId == playerId && s.FormName == spellType).ToList();
+
+            foreach (TFEnergy s in energiesToDelete)
+            {
+                tfEnergyRepo.DeleteTFEnergy(s.Id);
+            }
+        }
+
+        private static string GetTFMessage(DbStaticForm form, Player player, string percent, string PoV)
+        {
+
+            ITFMessageRepository tfMessageRepo = new EFTFMessageRepository();
+            TFMessage tfMessage = tfMessageRepo.TFMessages.FirstOrDefault(t => t.FormDbName == form.dbName);
+
+            if (tfMessage == null)
+            {
+                return "ERROR RETRIEVING TRANSFORMATION TEXT.  This is a bug.  Please post this error at the forums in the Bug Reports section:  http://luxianne.com/forum/index.php";
+            }
+
+            #region 20 percent TF
+            if (percent == "20")
+            {
+                if (player.Gender == "male")
+                {
+                    if (PoV == "first")
+                    {
+                        if (tfMessage.TFMessage_20_Percent_1st_M != null && tfMessage.TFMessage_20_Percent_1st_M != "")
+                        {
+                            return tfMessage.TFMessage_20_Percent_1st_M;
+                        }
+                        else
+                        {
+                            return tfMessage.TFMessage_20_Percent_1st;
+                        }
+
+                    }
+                    else if (PoV == "third")
+                    {
+                        if (tfMessage.TFMessage_20_Percent_3rd_M != null && tfMessage.TFMessage_20_Percent_3rd_M != "")
+                        {
+                            return tfMessage.TFMessage_20_Percent_3rd_M;
+                        }
+                        else
+                        {
+                            return tfMessage.TFMessage_20_Percent_3rd;
+                        }
+                    }
+                } 
+                else if (player.Gender == "female")
+                {
+                    if (PoV == "first")
+                    {
+                        if (tfMessage.TFMessage_20_Percent_1st_F != null && tfMessage.TFMessage_20_Percent_1st_F != "")
+                        {
+                            return tfMessage.TFMessage_20_Percent_1st_F;
+                        }
+                        else
+                        {
+                            return tfMessage.TFMessage_20_Percent_1st;
+                        }
+
+                    }
+                    else if (PoV == "third")
+                    {
+                        if (tfMessage.TFMessage_20_Percent_3rd_F != null && tfMessage.TFMessage_20_Percent_3rd_F != "")
+                        {
+                            return tfMessage.TFMessage_20_Percent_3rd_F;
+                        }
+                        else
+                        {
+                            return tfMessage.TFMessage_20_Percent_3rd;
+                        }
+                    }
+                }
+            }
+            #endregion
+
+            #region 40 percent TF
+            if (percent == "40")
+            {
+                if (player.Gender == "male")
+                {
+                    if (PoV == "first")
+                    {
+                        if (tfMessage.TFMessage_40_Percent_1st_M != null && tfMessage.TFMessage_40_Percent_1st_M != "")
+                        {
+                            return tfMessage.TFMessage_40_Percent_1st_M;
+                        }
+                        else
+                        {
+                            return tfMessage.TFMessage_40_Percent_1st;
+                        }
+
+                    }
+                    else if (PoV == "third")
+                    {
+                        if (tfMessage.TFMessage_40_Percent_3rd_M != null && tfMessage.TFMessage_40_Percent_3rd_M != "")
+                        {
+                            return tfMessage.TFMessage_40_Percent_3rd_M;
+                        }
+                        else
+                        {
+                            return tfMessage.TFMessage_40_Percent_3rd;
+                        }
+                    }
+                }
+                else if (player.Gender == "female")
+                {
+                    if (PoV == "first")
+                    {
+                        if (tfMessage.TFMessage_40_Percent_1st_F != null && tfMessage.TFMessage_40_Percent_1st_F != "")
+                        {
+                            return tfMessage.TFMessage_40_Percent_1st_F;
+                        }
+                        else
+                        {
+                            return tfMessage.TFMessage_40_Percent_1st;
+                        }
+
+                    }
+                    else if (PoV == "third")
+                    {
+                        if (tfMessage.TFMessage_40_Percent_3rd_F != null && tfMessage.TFMessage_40_Percent_3rd_F != "")
+                        {
+                            return tfMessage.TFMessage_40_Percent_3rd_F;
+                        }
+                        else
+                        {
+                            return tfMessage.TFMessage_40_Percent_3rd;
+                        }
+                    }
+                }
+            }
+            #endregion
+
+            #region 60 percent TF
+            if (percent == "60")
+            {
+                if (player.Gender == "male")
+                {
+                    if (PoV == "first")
+                    {
+                        if (tfMessage.TFMessage_60_Percent_1st_M != null && tfMessage.TFMessage_60_Percent_1st_M != "")
+                        {
+                            return tfMessage.TFMessage_60_Percent_1st_M;
+                        }
+                        else
+                        {
+                            return tfMessage.TFMessage_60_Percent_1st;
+                        }
+
+                    }
+                    else if (PoV == "third")
+                    {
+                        if (tfMessage.TFMessage_60_Percent_3rd_M != null && tfMessage.TFMessage_60_Percent_3rd_M != "")
+                        {
+                            return tfMessage.TFMessage_60_Percent_3rd_M;
+                        }
+                        else
+                        {
+                            return tfMessage.TFMessage_60_Percent_3rd;
+                        }
+                    }
+                }
+                else if (player.Gender == "female")
+                {
+                    if (PoV == "first")
+                    {
+                        if (tfMessage.TFMessage_60_Percent_1st_F != null && tfMessage.TFMessage_60_Percent_1st_F != "")
+                        {
+                            return tfMessage.TFMessage_60_Percent_1st_F;
+                        }
+                        else
+                        {
+                            return tfMessage.TFMessage_60_Percent_1st;
+                        }
+
+                    }
+                    else if (PoV == "third")
+                    {
+                        if (tfMessage.TFMessage_60_Percent_3rd_F != null && tfMessage.TFMessage_60_Percent_3rd_F != "")
+                        {
+                            return tfMessage.TFMessage_60_Percent_3rd_F;
+                        }
+                        else
+                        {
+                            return tfMessage.TFMessage_60_Percent_3rd;
+                        }
+                    }
+                }
+            }
+            #endregion
+
+            #region 80 percent TF
+            if (percent == "80")
+            {
+                if (player.Gender == "male")
+                {
+                    if (PoV == "first")
+                    {
+                        if (tfMessage.TFMessage_80_Percent_1st_M != null && tfMessage.TFMessage_80_Percent_1st_M != "")
+                        {
+                            return tfMessage.TFMessage_80_Percent_1st_M;
+                        }
+                        else
+                        {
+                            return tfMessage.TFMessage_80_Percent_1st;
+                        }
+
+                    }
+                    else if (PoV == "third")
+                    {
+                        if (tfMessage.TFMessage_80_Percent_3rd_M != null && tfMessage.TFMessage_80_Percent_3rd_M != "")
+                        {
+                            return tfMessage.TFMessage_80_Percent_3rd_M;
+                        }
+                        else
+                        {
+                            return tfMessage.TFMessage_80_Percent_3rd;
+                        }
+                    }
+                }
+                else if (player.Gender == "female")
+                {
+                    if (PoV == "first")
+                    {
+                        if (tfMessage.TFMessage_80_Percent_1st_F != null && tfMessage.TFMessage_80_Percent_1st_F != "")
+                        {
+                            return tfMessage.TFMessage_80_Percent_1st_F;
+                        }
+                        else
+                        {
+                            return tfMessage.TFMessage_80_Percent_1st;
+                        }
+
+                    }
+                    else if (PoV == "third")
+                    {
+                        if (tfMessage.TFMessage_80_Percent_3rd_F != null && tfMessage.TFMessage_80_Percent_3rd_F != "")
+                        {
+                            return tfMessage.TFMessage_80_Percent_3rd_F;
+                        }
+                        else
+                        {
+                            return tfMessage.TFMessage_80_Percent_3rd;
+                        }
+                    }
+                }
+            }
+            #endregion
+
+            #region 100 percent TF
+            if (percent == "100")
+            {
+                if (player.Gender == "male")
+                {
+                    if (PoV == "first")
+                    {
+                        if (tfMessage.TFMessage_100_Percent_1st_M != null && tfMessage.TFMessage_100_Percent_1st_M != "")
+                        {
+                            return tfMessage.TFMessage_100_Percent_1st_M;
+                        }
+                        else
+                        {
+                            return tfMessage.TFMessage_100_Percent_1st;
+                        }
+
+                    }
+                    else if (PoV == "third")
+                    {
+                        if (tfMessage.TFMessage_100_Percent_3rd_M != null && tfMessage.TFMessage_100_Percent_3rd_M != "")
+                        {
+                            return tfMessage.TFMessage_100_Percent_3rd_M;
+                        }
+                        else
+                        {
+                            return tfMessage.TFMessage_100_Percent_3rd;
+                        }
+                    }
+                }
+                else if (player.Gender == "female")
+                {
+                    if (PoV == "first")
+                    {
+                        if (tfMessage.TFMessage_100_Percent_1st_F != null && tfMessage.TFMessage_100_Percent_1st_F != "")
+                        {
+                            return tfMessage.TFMessage_100_Percent_1st_F;
+                        }
+                        else
+                        {
+                            return tfMessage.TFMessage_100_Percent_1st;
+                        }
+
+                    }
+                    else if (PoV == "third")
+                    {
+                        if (tfMessage.TFMessage_100_Percent_3rd_F != null && tfMessage.TFMessage_100_Percent_3rd_F != "")
+                        {
+                            return tfMessage.TFMessage_100_Percent_3rd_F;
+                        }
+                        else
+                        {
+                            return tfMessage.TFMessage_100_Percent_3rd;
+                        }
+                    }
+                }
+            }
+            #endregion
+
+            #region 100 percent TF
+            if (percent == "complete")
+            {
+                if (player.Gender == "male")
+                {
+                    if (PoV == "first")
+                    {
+                        if (tfMessage.TFMessage_Completed_1st_M != null && tfMessage.TFMessage_Completed_1st_M != "")
+                        {
+                            return tfMessage.TFMessage_Completed_1st_M;
+                        }
+                        else
+                        {
+                            return tfMessage.TFMessage_Completed_1st;
+                        }
+
+                    }
+                    else if (PoV == "third")
+                    {
+                        if (tfMessage.TFMessage_Completed_3rd_M != null && tfMessage.TFMessage_Completed_3rd_M != "")
+                        {
+                            return tfMessage.TFMessage_Completed_3rd_M;
+                        }
+                        else
+                        {
+                            return tfMessage.TFMessage_Completed_3rd;
+                        }
+                    }
+                }
+                else if (player.Gender == "female")
+                {
+                    if (PoV == "first")
+                    {
+                        if (tfMessage.TFMessage_Completed_1st_F != null && tfMessage.TFMessage_Completed_1st_F != "")
+                        {
+                            return tfMessage.TFMessage_Completed_1st_F;
+                        }
+                        else
+                        {
+                            return tfMessage.TFMessage_Completed_1st;
+                        }
+
+                    }
+                    else if (PoV == "third")
+                    {
+                        if (tfMessage.TFMessage_Completed_3rd_F != null && tfMessage.TFMessage_Completed_3rd_F != "")
+                        {
+                            return tfMessage.TFMessage_Completed_3rd_F;
+                        }
+                        else
+                        {
+                            return tfMessage.TFMessage_Completed_3rd;
+                        }
+                    }
+                }
+            }
+            #endregion
+
+
+            return "";
+        }
+
+        public static Form LoadTFMessagesFromXML(Form oldform)
+        {
+
+
+            string path = HttpContext.Current.Server.MapPath("~/XMLs/TFMessages/" + oldform.dbName + ".xml");
+
+            Form xmlForm = null;
+
+            try
+            {
+
+                var serializer = new XmlSerializer(typeof(Form));
+                using (var reader = XmlReader.Create(path))
+                {
+                    xmlForm = (Form)serializer.Deserialize(reader);
+                }
+
+            }
+            catch (Exception e)
+            {
+                // throw a more user-friendly exception if the XML file can't be loaded for some reason or other.
+                throw new Exception("Failed to load XML for this spell's transformation form.  This is a server error.");
+            }
+
+            oldform.TFMessage_20_Percent_1st = xmlForm.TFMessage_20_Percent_1st;
+            oldform.TFMessage_40_Percent_1st = xmlForm.TFMessage_40_Percent_1st;
+            oldform.TFMessage_60_Percent_1st = xmlForm.TFMessage_60_Percent_1st;
+            oldform.TFMessage_80_Percent_1st = xmlForm.TFMessage_80_Percent_1st;
+            oldform.TFMessage_100_Percent_1st = xmlForm.TFMessage_100_Percent_1st;
+            oldform.TFMessage_Completed_1st = xmlForm.TFMessage_Completed_1st;
+
+            oldform.TFMessage_20_Percent_1st_M = xmlForm.TFMessage_20_Percent_1st_M;
+            oldform.TFMessage_40_Percent_1st_M = xmlForm.TFMessage_40_Percent_1st_M;
+            oldform.TFMessage_60_Percent_1st_M = xmlForm.TFMessage_60_Percent_1st_M;
+            oldform.TFMessage_80_Percent_1st_M = xmlForm.TFMessage_80_Percent_1st_M;
+            oldform.TFMessage_100_Percent_1st_M = xmlForm.TFMessage_100_Percent_1st_M;
+            oldform.TFMessage_Completed_1st_M = xmlForm.TFMessage_Completed_1st_M;
+
+            oldform.TFMessage_20_Percent_1st_F = xmlForm.TFMessage_20_Percent_1st_F;
+            oldform.TFMessage_40_Percent_1st_F = xmlForm.TFMessage_40_Percent_1st_F;
+            oldform.TFMessage_60_Percent_1st_F = xmlForm.TFMessage_60_Percent_1st_F;
+            oldform.TFMessage_80_Percent_1st_F = xmlForm.TFMessage_80_Percent_1st_F;
+            oldform.TFMessage_100_Percent_1st_F = xmlForm.TFMessage_100_Percent_1st_F;
+            oldform.TFMessage_Completed_1st_F = xmlForm.TFMessage_Completed_1st_F;
+
+            oldform.TFMessage_20_Percent_3rd = xmlForm.TFMessage_20_Percent_3rd;
+            oldform.TFMessage_40_Percent_3rd = xmlForm.TFMessage_40_Percent_3rd;
+            oldform.TFMessage_60_Percent_3rd = xmlForm.TFMessage_60_Percent_3rd;
+            oldform.TFMessage_80_Percent_3rd = xmlForm.TFMessage_80_Percent_3rd;
+            oldform.TFMessage_100_Percent_3rd = xmlForm.TFMessage_100_Percent_3rd;
+            oldform.TFMessage_Completed_3rd = xmlForm.TFMessage_Completed_3rd;
+
+            oldform.TFMessage_20_Percent_3rd_M = xmlForm.TFMessage_20_Percent_3rd_M;
+            oldform.TFMessage_40_Percent_3rd_M = xmlForm.TFMessage_40_Percent_3rd_M;
+            oldform.TFMessage_60_Percent_3rd_M = xmlForm.TFMessage_60_Percent_3rd_M;
+            oldform.TFMessage_80_Percent_3rd_M = xmlForm.TFMessage_80_Percent_3rd_M;
+            oldform.TFMessage_100_Percent_3rd_M = xmlForm.TFMessage_100_Percent_3rd_M;
+            oldform.TFMessage_Completed_3rd_M = xmlForm.TFMessage_Completed_3rd_M;
+
+            oldform.TFMessage_20_Percent_3rd_F = xmlForm.TFMessage_20_Percent_3rd_F;
+            oldform.TFMessage_40_Percent_3rd_F = xmlForm.TFMessage_40_Percent_3rd_F;
+            oldform.TFMessage_60_Percent_3rd_F = xmlForm.TFMessage_60_Percent_3rd_F;
+            oldform.TFMessage_80_Percent_3rd_F = xmlForm.TFMessage_80_Percent_3rd_F;
+            oldform.TFMessage_100_Percent_3rd_F = xmlForm.TFMessage_100_Percent_3rd_F;
+            oldform.TFMessage_Completed_3rd_F = xmlForm.TFMessage_Completed_3rd_F;
+
+            return oldform;
+        } 
+
+
+
+    }
+}

@@ -1,0 +1,285 @@
+﻿@model tfgame.ViewModels.ItemViewModel
+           @using tfgame.CustomHtmlHelpers
+@using tfgame.Statics
+
+
+<div class="itemBox">
+
+    <div class="portrait" style="background-image: url(@CharactersHere.GetImageURL(Model));">
+
+        @{
+            if (Model.dbItem.Level > 0 && Model.Item.ItemType != PvPStatics.ItemType_Consumeable)
+            {
+                <span class="icon-level"><b>@Model.dbItem.Level</b></span>
+            }
+        }
+
+    
+
+        @CharactersHere.PrintItemTypeIcon(Model.Item)
+
+    </div>
+
+    <div class="itemInformationWrapper">
+
+
+
+        <div class="itemName">
+            @Model.Item.FriendlyName
+
+            @{
+                if (Model.dbItem.IsEquipped == true && Model.Item.ItemType!=PvPStatics.ItemType_Pet)
+                {
+                    <span><b>(Worn/Equipped)</b></span>
+                }
+                else if (Model.dbItem.IsEquipped == true && Model.Item.ItemType == PvPStatics.ItemType_Pet)
+                {
+                    <span><b>(Pet)</b></span>
+                }
+            }
+
+            @{
+                if (@Model.dbItem.VictimName != "")
+                {
+                    @*<span class="formerly">Formerly @Model.dbItem.VictimName</span>*@
+                
+                  <span class="formerly">Formerly @Html.ActionLink(Model.dbItem.VictimName, "LookAtPlayerItem", "PvP", new { vicname = Model.dbItem.VictimName }, null)</span>
+                @CharactersHere.PrintPermanencyIcon(Model)
+                }
+            }
+
+        </div>
+
+        @{
+            if (Model.dbItem.EquippedThisTurn)
+            {
+                <span class="good">(Just Equipped)</span>
+            }
+        }
+
+        <div class="">@Model.Item.Description</div>
+
+        @{
+            if (Model.Item.ItemType != "consumable" && Model.Item.ItemType != "consumable_reuseable" && Model.Item.ItemType!=PvPStatics.ItemType_Pet)
+            {
+                <text>Bonuses from wearing this:</text>
+            }
+            else if (Model.Item.ItemType == "consumable" || Model.Item.ItemType == "consumable_reuseable")
+            {
+                <text>Effects from using this:</text>
+            }
+            else if (Model.Item.ItemType == PvPStatics.ItemType_Pet)
+            {
+                <text>Effects from keeping this creature as your familiar:</text>
+            }
+        }
+
+
+        <div class="bonuses">
+
+            <ul>
+                @{
+                    
+                    if (@Model.Item.GivesEffect != null && @Model.Item.GivesEffect != "")
+                    {
+                        <li>Gives the @CharactersHere.GetEffectFriendlyName(@Model.Item.GivesEffect) effect</li>
+                    }
+                    
+                    if (@Model.Item.HealthBonusPercent != 0)
+                    {
+                        <li>Extra willpower % maximum:  @CharactersHere.GetBuffedStat(Model, @Model.Item.HealthBonusPercent)</li>
+                    }
+                    if (@Model.Item.ManaBonusPercent != 0)
+                    {
+                        <li>Extra mana % maximum:  @CharactersHere.GetBuffedStat(Model, @Model.Item.ManaBonusPercent)</li>
+                    }
+                    if (@Model.Item.HealthRecoveryPerUpdate != 0)
+                    {
+                        <li>Willpower recovery per update:  @CharactersHere.GetBuffedStat(Model, @Model.Item.HealthRecoveryPerUpdate)</li>
+                    }
+                    if (@Model.Item.ManaRecoveryPerUpdate != 0)
+                    {
+                        <li>Mana recovery per update:  @CharactersHere.GetBuffedStat(Model, @Model.Item.ManaRecoveryPerUpdate)</li>
+                    }
+                    if (@Model.Item.SneakPercent != 0)
+                    {
+                        <li>Sneak chance percent:  @CharactersHere.GetBuffedStat(Model, @Model.Item.SneakPercent)</li>
+                    }
+                    if (@Model.Item.SpellResistancePercent != 0)
+                    {
+                        <li>Spell resistance bonus percent:  @CharactersHere.GetBuffedStat(Model, @Model.Item.SpellResistancePercent)</li>
+                    }
+                    if (@Model.Item.MeditationExtraMana != 0)
+                    {
+                        <li>Extra mana recovering from meditating:  @CharactersHere.GetBuffedStat(Model, @Model.Item.MeditationExtraMana)</li>
+                    }
+                    if (@Model.Item.CleanseExtraHealth != 0)
+                    {
+                        <li>Extra willpower recovered from cleansing:  @CharactersHere.GetBuffedStat(Model, @Model.Item.CleanseExtraHealth)</li>
+                    }
+                    if (@Model.Item.InstantHealthRestore != 0)
+                    {
+                        <li>Willpower restored from eating or drinking:  @CharactersHere.GetBuffedStat(Model, @Model.Item.InstantHealthRestore)</li>
+                    }
+                    if (@Model.Item.InstantManaRestore != 0)
+                    {
+                        <li>Mana restored from eating or drinking:  @CharactersHere.GetBuffedStat(Model, @Model.Item.InstantManaRestore)</li>
+                    }
+                    if (@Model.Item.MoveActionPointDiscount != 0.0M)
+                    {
+                        <li>Action point discount when moving:  @CharactersHere.GetBuffedStat(Model, @Model.Item.MoveActionPointDiscount)</li>
+                    }
+                    if (@Model.Item.ExtraSkillCriticalPercent != 0)
+                    {
+                        <li>Extra chance of spell critical hits:  @CharactersHere.GetBuffedStat(Model, @Model.Item.ExtraSkillCriticalPercent)</li>
+                    }
+                    if (@Model.Item.ReuseableHealthRestore != 0)
+                    {
+                        <li>Willpower restored from eating or drinking from this:  @CharactersHere.GetBuffedStat(Model, @Model.Item.ReuseableHealthRestore)</li>
+                    }
+                    if (@Model.Item.ReuseableManaRestore != 0)
+                    {
+                        <li>Mana restored from eating or drinking from this:  @CharactersHere.GetBuffedStat(Model, @Model.Item.ReuseableManaRestore)</li>
+                    }
+                    if (@Model.Item.EvasionPercent != 0)
+                    {
+                        <li>Percent chance to evade an attack:  @CharactersHere.GetBuffedStat(Model, @Model.Item.EvasionPercent)</li>
+                    }
+                    if (@Model.Item.EvasionNegationPercent != 0)
+                    {
+                        <li>Percent negation of opponent's ability to evade a spell:  @CharactersHere.GetBuffedStat(Model, @Model.Item.EvasionNegationPercent)</li>
+                    }
+                    if (@Model.Item.SpellExtraTFEnergyPercent != 0.0M)
+                    {
+                        <li>Extra transformation energy damage percent:  @CharactersHere.GetBuffedStat(Model, @Model.Item.SpellExtraTFEnergyPercent)</li>
+                    }
+                    if (@Model.Item.SpellExtraHealthDamagePercent != 0.0M)
+                    {
+                        <li>Extra willpower damage dealt from spells:  @CharactersHere.GetBuffedStat(Model, @Model.Item.SpellExtraHealthDamagePercent)</li>
+                    }
+                    if (@Model.Item.CleanseExtraTFEnergyRemovalPercent != 0.0M)
+                    {
+                        <li>Extra transformation energy percent removed when cleansing:  @CharactersHere.GetBuffedStat(Model, @Model.Item.CleanseExtraTFEnergyRemovalPercent)</li>
+                    }
+                    if (@Model.Item.SpellMisfireChanceReduction != 0.0M)
+                    {
+                        <li>Misfire percent chance reduction:  @CharactersHere.GetBuffedStat(Model, @Model.Item.SpellMisfireChanceReduction)</li>
+                    }
+
+
+                    if (@Model.Item.SpellHealthDamageResistance != 0.0M)
+                    {
+                        <li>Willpower damage reduction when hit by spells: @CharactersHere.GetBuffedStat(Model, @Model.Item.SpellHealthDamageResistance)</li>
+                    }
+                    if (@Model.Item.SpellTFEnergyDamageResistance != 0.0M)
+                    {
+                        <li>Transformation energy reduction when hit by spells: @CharactersHere.GetBuffedStat(Model, @Model.Item.SpellTFEnergyDamageResistance)</li>
+                    }
+                    if (@Model.Item.ExtraInventorySpace != 0.0M)
+                    {
+                        <li>Extra inventory space:  @CharactersHere.GetBuffedStat(Model, @Model.Item.ExtraInventorySpace)</li>
+                    }
+
+
+
+
+}
+
+            </ul>
+
+        </div>
+
+        @{
+            
+            if (ViewBag.DisableLinks == null || ViewBag.DisableLinks == "false")
+
+            { 
+
+
+        <div class="Links">
+
+
+            @{
+                if (Model.Item.ItemType != "consumable" && Model.Item.ItemType != "consumable_reuseable" && Model.Item.ItemType != PvPStatics.ItemType_Pet)
+                {
+
+                    if (@Model.dbItem.IsEquipped == false)
+                    {
+                        @Html.ActionLink("Wear", "Equip", "PvP", new { itemId = Model.dbItem.Id, putOn = "true" }, null)
+                        @Html.ActionLink("Drop", "Drop", "PvP", new { itemId = Model.dbItem.Id }, null)
+                    }
+
+                    if (@Model.dbItem.IsEquipped == true && @Model.dbItem.EquippedThisTurn==false)
+                    {
+                        @Html.ActionLink("Take off", "Equip", "PvP", new { itemId = Model.dbItem.Id, putOn = "false" }, null)
+                    }
+
+                }
+                if (Model.Item.ItemType == PvPStatics.ItemType_Pet)
+                {
+                        @Html.ActionLink("Release", "Drop", "PvP", new { itemId = Model.dbItem.Id }, null)
+                }
+                else if (Model.Item.ItemType == "consumable")
+                {
+                    @Html.ActionLink("Use", "Use", "PvP", new { itemId = Model.dbItem.Id }, null)
+                    @Html.ActionLink("Drop", "Drop", "PvP", new { itemId = Model.dbItem.Id }, null)
+                }
+                else if (Model.Item.ItemType == "consumable_reuseable")
+                {
+
+                    if (Model.dbItem.TurnsUntilUse > 0)
+                    {
+                        @Html.ActionLink("Drop", "Drop", "PvP", new { itemId = Model.dbItem.Id }, null)
+                        <span style="color: red;">This item is still replenishing its content and cannot be eaten or drank from until <b>@Model.dbItem.TurnsUntilUse</b> more world updates.</span>
+                    }
+                    else
+                    {
+                         @Html.ActionLink("Use", "Use", "PvP", new { itemId = Model.dbItem.Id }, null)
+                         @Html.ActionLink("Drop", "Drop", "PvP", new { itemId = Model.dbItem.Id }, null)
+                    }
+                    
+                    
+                }
+            }
+
+        </div>
+            
+            }
+            
+            }
+
+
+    </div>
+
+
+</div>
+
+
+
+
+
+<style>
+    .itemName {
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .WasPerson {
+        font-size: 15px;
+        color: chocolate;
+        font-style: italic;
+    }
+
+    .itemBox {
+        border: 1px solid black;
+        padding: 3px;
+        position: relative;
+        float:left;
+        width: 100%;
+    }
+
+    
+
+   
+    
+</style>

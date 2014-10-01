@@ -1,0 +1,66 @@
+﻿@using tfgame.ViewModels
+@using tfgame.Statics
+
+<div style="position: relative; float: left; margin-bottom: 15px;">
+    @Html.ActionLink("Back to game", "Play", "PvP")
+</div>
+
+<div class="mapWrapper">
+            @{
+        string posX;
+        string posY;
+
+        decimal minX = LocationsStatics.GetLocation.Select(l => l.X).Min();
+        decimal maxY = LocationsStatics.GetLocation.Select(l => l.Y).Max();
+
+        foreach (Location loc in LocationsStatics.GetLocation)
+        {
+
+            posX = ((loc.X - minX) * 100 + 10).ToString() + "px";
+            posY = (-(loc.Y - maxY) * 100 + 10).ToString() + "px";
+
+            <div class="mapcell" style="left: @posX; top: @posY;
+                 @{ if (loc.Name_East == null) { <text> border-right: 1px solid black; </text>       } }
+                 @{ if (loc.Name_North == null) { <text> border-top: 1px solid black; </text>       } }
+                 @{ if (loc.Name_West == null) { <text> border-left: 1px solid black; </text>      } }
+                 @{ if (loc.Name_South == null) { <text> border-bottom: 1px solid black; </text>     } }
+                 @{ if (loc.Region == "streets") { <text> background-color: lightgray; </text>     } }
+                 @{ if (loc.X == ViewBag.MapX && loc.Y == ViewBag.MapY) { <text> background-color: lightpink; </text>     } }
+                 ">
+            <div class="mapcelltext">@loc.Name</div>
+  
+        </div>
+
+    }
+}
+
+
+<div style="position: relative; float: left; margin-top: 15px;">
+    @Html.ActionLink("Back to game", "Play", "PvP")
+</div>
+
+<style>
+    .mapcell {
+        height: 93px;
+        width: 93px;
+        position: absolute;
+        padding: 3px;
+    }
+
+    .mapWrapper {
+        width: 1000px;
+        height: 800px;
+        position: relative;
+        border: 2px solid darkblue;
+        position: relative;
+        overflow: scroll;
+    }
+
+    .mapcelltext {
+        vertical-align: middle;
+        display: inline-block;
+        position: relative;
+        font-size: 12px;
+        text-align: center;
+    }
+</style>

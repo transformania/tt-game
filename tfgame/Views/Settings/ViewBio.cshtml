@@ -1,0 +1,42 @@
+﻿@model tfgame.dbModels.Models.PlayerBio
+@using tfgame.CustomHtmlHelpers
+@using tfgame.ViewModels
+
+<head>
+    <link href="~/Content/PvP.css" rel="stylesheet" />
+</head>
+
+<p>@Html.ActionLink("Back to game", "Play", "PvP")</p>
+
+<h1>Player Bio for @ViewBag.Name</h1>
+
+@{
+    if (Model.WebsiteURL != "")
+    {
+        <h3>Website</h3>
+
+        @*<p>@CharactersHere.StringToWebsite(Model.WebsiteURL)</p>*@
+
+        <p>@Model.WebsiteURL</p>
+    }
+}
+
+
+<h3>Bio</h3>
+
+<p>@Model.Text</p>
+
+<p class="timeago">Last updated @Model.Timestamp</p>
+
+@{
+    if (ViewBag.MyContributions.Count > 0)
+    {
+        foreach (BioPageContributionViewModel s in ViewBag.MyContributions)
+        {
+            <p>Author of the <b>@s.SpellName</b> spell which transforms its victim into the <b>@s.FormName</b> form.</p>
+        }
+    }
+}
+
+
+<p>@Html.ActionLink("Back to game", "Play", "PvP")</p>

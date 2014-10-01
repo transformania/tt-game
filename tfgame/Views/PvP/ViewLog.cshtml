@@ -1,0 +1,30 @@
+﻿@model IEnumerable<tfgame.dbModels.Models.PlayerLog>
+           @using tfgame.CustomHtmlHelpers
+
+<link href="~/Content/PvP.css" rel="stylesheet" />
+
+@Html.ActionLink("Back to game", "Play", "PvP")
+
+
+<ul>
+    @{
+        foreach (tfgame.dbModels.Models.PlayerLog log in Model)
+        {
+            <li>@Html.Raw(log.Message) <span class="timeago">@CharactersHere.DatetimeToTimeago(log.Timestamp)</span></li>
+        }
+    }
+</ul>
+
+<br />
+
+@Html.ActionLink("Clear Log", "ClearLog", "PvP")
+
+@Html.ActionLink("Back to game", "Play", "PvP")
+
+<style>
+    li {
+        margin-bottom: 8px;
+    }
+</style>
+
+

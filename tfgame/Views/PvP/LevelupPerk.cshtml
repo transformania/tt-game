@@ -1,0 +1,34 @@
+﻿@model IEnumerable<tfgame.ViewModels.StaticEffect>
+@using tfgame.ViewModels
+
+<p>@Html.ActionLink("Back to game", "Play", "PvP")</p>
+
+<h1>Choose a Perk</h1>
+
+<p>Your experiences have allowed you to choose a perk that will permanently boost your abilities.  Which perk do you want?</p>
+
+<p>You have <b>@ViewBag.PerksRemaining</b> unused perks remaining.</p>
+
+@{
+
+    foreach (StaticEffect e in Model)
+    {
+        <div class="perkBox">
+            <h3>@e.FriendlyName</h3>
+            <p>@e.Description</p>
+            @Html.Partial("partial/partial_perkBonus", e)
+            @Html.ActionLink("Choose this perk!", "ChoosePerk", "PvP", new { perk = e.dbName }, null)
+        </div>
+    }
+
+}
+
+<p>@Html.ActionLink("Back to game", "Play", "PvP")</p>
+
+
+<style>
+    .perkBox {
+        border: 1px solid gray;
+        padding: 5px;
+    }
+</style>

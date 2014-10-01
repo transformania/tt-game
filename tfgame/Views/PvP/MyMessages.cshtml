@@ -1,0 +1,167 @@
+﻿@model tfgame.ViewModels.MessageBag
+@using tfgame.CustomHtmlHelpers
+
+@Html.ActionLink("Back to game", "Play", "PvP")
+
+<head>
+    <link href="~/Content/PvP.css" rel="stylesheet" />
+</head>
+
+<p>
+    @Html.ActionLink("Search for player by name", "PlayerLookup", "PvP")
+</p>
+
+<h1>Received Messages (@Model.Messages.Count()/150)</h1>
+
+
+
+<table>
+
+    <thead>
+    <th>
+        Sender
+    </th>
+
+    <th>
+        Message
+    </th>
+    <th>
+        Time Sent
+    </th>
+    <th></th>
+
+
+
+    <tbody>
+        @{
+
+            string messageTeaser;
+            int msgLength;
+
+            foreach (tfgame.ViewModels.MessageViewModel msg in Model.Messages)
+            {
+
+
+                msgLength = msg.dbMessage.MessageText.Length;
+                if (msgLength > 50)
+                {
+                    messageTeaser = msg.dbMessage.MessageText.Substring(0, 50) + "...";
+
+                }
+                else
+                {
+                    messageTeaser = msg.dbMessage.MessageText.Substring(0, msgLength);
+                }
+
+                <tr>
+                    @{if (msg.SenderName != "(inanimate)")
+                    {
+                        <td>@Html.ActionLink(msg.SenderName, "LookAtPlayer", "PvP", new { id = msg.dbMessage.SenderId }, null)</td>
+
+                    }
+                    else
+                    {
+                        <td>(inanimate)</td>
+
+                    }
+                    }
+
+
+                    @{
+                if (msg.dbMessage.IsRead == false)
+                {
+                    <td class="newlink">@Html.ActionLink(messageTeaser, "ReadMessage", "PvP", new { messageId = msg.dbMessage.Id }, null)</td>
+                }
+                else
+                {
+                    <td>@Html.ActionLink(messageTeaser, "ReadMessage", "PvP", new { messageId = msg.dbMessage.Id }, null)</td>
+                }
+                    }
+
+                    <td>@CharactersHere.DatetimeToTimeago(msg.dbMessage.Timestamp)</td>
+                    <td>@Html.ActionLink("Delete", "DeleteMessage", "PvP", new { messageId = msg.dbMessage.Id }, null)</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<p style="color: red;">
+    Only the 150 most recent messages you've recieved will be saved.  Older messages will be deleted automatically.
+</p>
+
+<h1>Sent Messages</h1>
+
+<table>
+
+    <thead>
+    <th>Sent To</th>
+    <th>Read</th>
+    <th>Message</th>
+    <th>Time Sent</th>
+    </thead>
+    <tbody>
+
+        @{foreach (tfgame.ViewModels.MessageViewModel msg in Model.SentMessages)
+        {
+            <tr>
+                @{if (msg.SentToName != "(inanimate)")
+                {
+                    <td>@Html.ActionLink(msg.SentToName, "LookAtPlayer", "PvP", new { id = msg.dbMessage.ReceiverId }, null)</td>
+
+                }
+                else
+                {
+                    <td>(inanimate)</td>
+
+                }
+                }
+                <td>@msg.dbMessage.IsRead</td>
+                <td>@msg.dbMessage.MessageText</td>
+                <td>@CharactersHere.DatetimeToTimeago(msg.dbMessage.Timestamp)</td>
+            </tr>
+        }
+        }
+
+
+    </tbody>
+
+</table>
+
+@{
+    if (Model.WearerId != null && Model.WearerName != null)
+    {
+
+        <p> @Html.ActionLink("Telepathically talk to the person wearing you, " + Model.WearerName, "Write", "PvP", new { playerId = Model.WearerId, responseTo = -1 }, null) </p>
+    }
+}
+
+<div class="result">
+    @Html.Raw(ViewBag.Result)
+</div>
+
+<p>
+    @Html.ActionLink("Delete All Messages", "DeleteAllMessages", "PvP")
+</p>
+
+@Html.ActionLink("Back to game", "Play", "PvP")
+
+
+
+<style>
+    td {
+        border: 1px solid black;
+        text-align: center;
+    }
+
+    th {
+        background-color: black;
+        color: white;
+        text-align: center;
+    }
+
+    tr:nth-child(odd) {
+        background-color: lightgray;
+    }
+
+</style>

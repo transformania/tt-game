@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?><Form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<Description>You're a pair of Cat Eye Glasses. Your existence is pretty boring, considering the fact that your purpose is to sit on your owner's face and enhance their vision. You absorb a lot of dirt up here. Dirt which you can feel in every fiber of your being. So you'd better pray that your owner has some mercy and cleans you once in awhile . .  .</Description>
+
+<TFMessage_20_Percent_1st>You quickly begin shrinking. You effortlessly reverse the spell.</TFMessage_20_Percent_1st>
+
+<TFMessage_40_Percent_1st>You shrink to about 2 inches tall. Your skin turns black, and you get curvy in odd places. You reverse the spell.</TFMessage_40_Percent_1st>
+
+<TFMessage_60_Percent_1st>You shrink again, and your skin turns black. Your body begins to retract inside of your head, and your eyes start getting larger. You manage to reverse the spell.</TFMessage_60_Percent_1st>
+
+<TFMessage_80_Percent_1st>Once again, you shrink and your skin turns black. Your torso and groin are completely absorbed into your head. Your eyes enlarge to cover nearly all of your face as your nose and mouth begin transforming into something strange. With some effort you're able to reverse the spell.</TFMessage_80_Percent_1st>
+
+<TFMessage_100_Percent_1st>The changes sweep over you yet again, and your eyes suddenly transform into lenses! Though you can still see, you have no eyelids or control over your new lens eyes' movement. Your completely black legs attach themselves to opposite sides of your head, and your feet curve downwards, creating perfect temple tips. As what remains of your head begins to disappear, you reverse the changes with an enormous amount of difficulty. At this rate you won't be human for much longer!</TFMessage_100_Percent_1st>
+
+<TFMessage_Completed_1st>The spell connects for what you know will be the final time as you shrink, turn black, and lose most of your body. Your eyes enlarge and turn into lenses, and your legs become temples, your feet curving to become the temple tips. Your head disappears leaving only your face behind behind. Your face splits in two, as your nose transforms into two nose pads, and your mouth transforms into a bridge, connecting your lens eyes. After a few finishing touches the spell leaves you like this; you're unable to move or reverse the changes. You're nothing more than a pair of cat eye glasses now.
+</TFMessage_Completed_1st>
+
+<TFMessage_20_Percent_3rd>Your victim quickly begins shrinking. They effortlessly reverse the spell.</TFMessage_20_Percent_3rd>
+
+<TFMessage_40_Percent_3rd>Your victim shrinks to about 2 inches tall. Their skin turns black, and they get curvy in odd places. They reverse the spell.</TFMessage_40_Percent_3rd>
+
+<TFMessage_60_Percent_3rd>Your victim shrinks again, and their skin turns black once more. Their body begins to retract inside of their head, and their eyes begin to grow larger. They manage to reverse the spell.</TFMessage_60_Percent_3rd>
+
+<TFMessage_80_Percent_3rd>Your victim shrinks and their skin turns black. Their torso and groin are completely absorbed into their head. Their eyes enlarge to cover nearly all of their face as their nose and mouth begin transforming into objects . With some effort they're able to reverse the spell.</TFMessage_80_Percent_3rd>
+
+<TFMessage_100_Percent_3rd>The changes sweep over your victim yet again, and their eyes suddenly transform into lenses! Their completely black legs attach themselves to opposite sides of their head, and their feet curve downwards, creating perfect temple tips. As what remains of their head begins to disappear, they reverse the changes with an enormous amount of difficulty. At this rate they won't be human for much longer!</TFMessage_100_Percent_3rd>
+
+<TFMessage_Completed_3rd>The spell connects for the final time as your victim shrinks, turns black, and loses most of your body. Their eyes enlarge and turn into lenses, and their legs become temples, their feet curving to become the temple tips. Their head disappears leaving only their face remaining. Their face then splits in two, as their nose transforms into two nose pads, and their mouth transforms into a bridge, connecting their lens eyes. After a few finishing touches the spell leaves them like this; they're unable to move or reverse the changes. They're nothing more than a pair of cat eye glasses now.
+</TFMessage_Completed_3rd>
+
+</Form>

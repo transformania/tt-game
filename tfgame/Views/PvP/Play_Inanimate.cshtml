@@ -1,0 +1,211 @@
+﻿@model tfgame.ViewModels.GameOverViewModel
+@using tfgame.CustomHtmlHelpers
+@using tfgame.Statics
+
+
+
+
+<head>
+    <link href="~/Content/PvP.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-2.1.0.js"></script>
+</head>
+
+@{
+    if (@ViewBag.WorldTurnNumber >= @PvPStatics.RoundDuration)
+    {
+        <div class="inbetweenRoundNotice">The round has ended.  Check back soon to start again on a fresh round.</div>
+    }
+}
+
+@Html.ActionLink("News / Updates (" + PvPStatics.LastGameUpdate + ")", "GameNews", "PvP")
+@Html.ActionLink("Friends", "MyFriends", "PvP")
+@Html.ActionLink("Chat", "Chat", "PvP", new { room = "global" }, new { target = "_blank" })
+<a href="http://luxianne.com/forum/index.php" target="_blank">Forums</a>
+@Html.ActionLink("Leaderboard", "PvPLeaderboard", "PvP")
+@Html.ActionLink("Settings", "Settings", "PvP")
+<span class="newlinkgreen">@Html.ActionLink("Donate?", "Donate", "Settings")</span>
+
+@{if (Model.NewMessageCount > 0)
+{
+    <span class="newlink">
+        @Html.ActionLink("View Messages (" + Model.NewMessageCount + " unread)", "MyMessages", "PvP")
+    </span>
+}
+else
+{
+    @Html.ActionLink("View Messages", "MyMessages", "PvP")
+}
+}
+
+@Html.ActionLink("Submit New Content", "Contribute", "PvP", new { Id = -1 }, null)
+@{
+    if (Model.Player.MembershipId == 69)
+    {
+        @Html.ActionLink("Admin", "Index", "PvPAdmin")
+    }
+}
+
+<br /><br />
+
+<span class="icon-turnNumber">Turn #<b>@ViewBag.WorldTurnNumber/2000</b></span>
+
+<div class="result">
+    @Html.Raw(ViewBag.Result)
+</div>
+<div class="error">
+    @ViewBag.ErrorMessage
+</div>
+<div class="suberror">
+    @ViewBag.SubErrorMessage
+</div>
+
+<p>Your name is <b>@Model.Player.FirstName @Model.Player.LastName</b>, or at least it used to be.  Should you regain a human form you will find yourself at level <b>@Model.Player.Level</b> with @Model.Player.XP experience points toward the next.  But now it's time to embrace your new existence as a <b>@Model.Form.FriendlyName</b>.</p>
+
+<p>@Model.Form.Description</p>
+
+<div class="portrait" style="background-image: url(../Images/PvP/itemsPortraits/@Model.Item.PortraitUrl); width: 600px; height: 600px; margin: 25px;">
+    @CharactersHere.PrintOwnerSubPortrait(Model.WornBy)
+    @CharactersHere.PrintItemTypeIcon(Model.Item)
+
+</div>
+
+<div>
+
+    @{
+        if (Model.AtLocation != null)
+        {
+            <p>You are currently resting on the ground at <b>@Model.AtLocation.</b>  Maybe someone will come by soon and pick you up--since you're stuck this way, you might as well be appreciated...</p>
+        }
+        else if (Model.WornBy != null)
+        {
+            <p>You are currently being worn by <b>@Html.ActionLink(Model.WornBy.Player.FirstName + " " + Model.WornBy.Player.LastName, "LookAtPlayer", "PvP", new { id = Model.WornBy.Player.Id }, null)</b>, a @Model.WornBy.Player.Gender @Model.WornBy.Form.FriendlyName.  You hope they will take good care of you, or should they too find themselves as an object, whoever picks you up next.</p>
+
+            <p>
+                @Html.ActionLink("Telepathically communicate with " + Model.WornBy.Player.FirstName + " " + Model.WornBy.Player.LastName, "Write", "PvP", new { playerId = Model.WornBy.Player.Id, responseTo = -1, }, null)
+            </p>
+
+            <p>
+                Although inanimate, you can still move just the tiniest bit.  You can still...
+                <ul>
+                    <li>
+                        @Html.ActionLink("Affectionately rub against your owner", "InanimateAction", "PvP", new { actionName = "rub" }, new { @class = "check" })
+                    </li>
+                    <li>
+                        @Html.ActionLink("Peskily pinch your owner", "InanimateAction", "PvP", new { actionName = "pinch" }, new { @class = "check" })
+                    </li>
+                    <li>
+                        @Html.ActionLink("Kindly soothe your owner", "InanimateAction", "PvP", new { actionName = "soothe" }, new { @class = "check" })
+                    </li>
+                    <li>
+                        @Html.ActionLink("Agitatedly zap your owner", "InanimateAction", "PvP", new { actionName = "zap" }, new { @class = "check" })
+                    </li>
+                </ul>
+            </p>
+
+        }
+    }
+
+    <br />
+
+    @Html.ActionLink("View Final Actions", "ViewLog", "PvP")<br /><br />
+    @Html.ActionLink("Start again as someone else", "Restart", "PvP")
+
+    @{
+        if (Model.IsPermanent == false)
+        {
+            <p>
+                Chance to return human:  @Model.StruggleChance %.
+                @Html.ActionLink("Fight your transformation and attempt to return to an animate form!", "FightTheTransformation", "PvP")
+            </p>
+        }
+    }
+
+</div>
+
+
+
+<div style="display: inline-block; width: 100%;">
+
+    <h2>Players here:</h2>
+
+    @{
+        foreach (tfgame.ViewModels.PlayerFormViewModel p in Model.PlayersHere)
+        {
+            <p>
+                @Html.Partial("Player_Partial", p)
+            </p>
+        }
+    }
+</div>
+
+<div style="display: inline-block; width: 100%;">
+    <h2>Recent activity here (location unknown):</h2>
+
+    <ul id="RecentActivityLog">
+        @{
+            foreach (tfgame.dbModels.Models.LocationLog log in Model.LocationLog.Reverse())
+            {
+                <li>@Html.Raw(log.Message)  <span class="timeago">@CharactersHere.DatetimeToTimeago(log.Timestamp)</span></li>
+            }
+        }
+    </ul>
+</div>
+
+
+
+<script>
+
+    var attacksMade = @Model.Player.TimesAttackingThisUpdate;
+    var turnNo = @ViewBag.WorldTurnNumber;
+    var togglestate = 0;
+    var blinkEnabled = 0;
+
+    $(document).ready(function() {
+
+        $(".check").each(function() {
+            if (attacksMade>=1) {
+                $( this ).attr("href", "#");
+                $( this ).addClass("disabled");
+            }
+        });
+
+        var myVar=setInterval(function(){pingForUpdate()},30000);
+        var myVa2r=setInterval(function(){titleToggle()},1000);
+
+    });
+
+    function pingForUpdate() {
+        $.ajax({
+            url: 'PvP/ClientUpdateCheck/',
+            type: 'POST',
+            fail: fail,
+            success: pingDone,
+            dataType: 'text'
+        });
+    }
+
+    function pingDone(data) {
+        if (data > turnNo) {
+            turnNo = data;
+            blinkEnabled = 1;
+        }
+    }
+
+    function titleToggle() {
+
+        if (blinkEnabled==1) {
+            if (togglestate == 0) {
+                $('title').text('Transformania Time!');
+                togglestate = 1;
+            } else if (togglestate == 1){
+                $('title').text('[UPDATED--reload page!]');
+                togglestate = 0;
+            }
+        }
+    }
+
+    function fail() {
+        // alert("fail");
+    }
+
+</script>

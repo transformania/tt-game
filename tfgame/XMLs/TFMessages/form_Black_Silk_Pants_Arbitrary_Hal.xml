@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?><Form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<TFMessage_20_Percent_1st>As your opponent's spell strikes, you feel a flash of annoyance.  Who is this person to order you around all the time, anyway?</TFMessage_20_Percent_1st>
+
+<TFMessage_40_Percent_1st>The annoyance caused by your enemy's spell is now accompanied by a growing migraine.  It seems to be caused by some sort of whisper in your enemy's voice at the back of your mind.</TFMessage_40_Percent_1st>
+
+<TFMessage_60_Percent_1st>As the migraine continues to worsen, your opponent's whisper seems to get louder.  It's ordering you to do something, but you can't quite make out what.</TFMessage_60_Percent_1st>
+
+<TFMessage_80_Percent_1st>You are hounded by a constant pounding in your skull, now clearly telling you to transform yourself into a pair of pants.  Obviously, you don't comply.</TFMessage_80_Percent_1st>
+
+<TFMessage_100_Percent_1st>The pounding in your head has reached a fever pitch, and you begin transforming yourself into a pair of pants, if only to get the voice to shut up.  After a few blessed moments of relief, you realize what you have done and shift back to your previous form, only for the pounding to return along with a critique on everything wrong with your previous transformation attempt.</TFMessage_100_Percent_1st>
+
+<TFMessage_Completed_1st>Enough is enough, you can't stand this headache anymore.  You transform yourself as the voice has told you, and stay that way. It's obvious that you aren't the one who wears the pants in this relationship anyway.</TFMessage_Completed_1st>
+
+<TFMessage_20_Percent_3rd>Your target's face flashes with annoyance as your magic enables you to transmit your voice directly into their mind.  At this low concentration, however, the message is obviously cut off, and incomprehensible.</TFMessage_20_Percent_3rd>
+
+<TFMessage_40_Percent_3rd>Your victim's distress is now obvious--the psychic connection is clearly strengthening, though you doubt that the message is getting through yet.</TFMessage_40_Percent_3rd>
+
+<TFMessage_60_Percent_3rd>You estimate that they are now receiving your command.  Of course, they still aren't following it, so you apparently need to press harder.</TFMessage_60_Percent_3rd>
+
+<TFMessage_80_Percent_3rd>The command should be clearly repeating in your target's mind at this point.  You press harder in order to force them to submit.</TFMessage_80_Percent_3rd>
+
+<TFMessage_100_Percent_3rd>Your target finally capitulates and transforms into a pair of black pants.  As you cut off the psychic pressure and begin to examine the pants for flaws, however, they suddenly decide to transform back.  The nerve of them!</TFMessage_100_Percent_3rd>
+
+<TFMessage_Completed_3rd>You finally manage to browbeat your victim into transforming into a proper pair of black silk pants with absolute finality.  Now everyone can see who wears the pants and who is the pants between the two of you.</TFMessage_Completed_3rd>
+
+<TFMessage_20_Percent_3rd_M>Your target's face flashes with annoyance as your magic enables you to transmit your voice directly into his mind.  At this low concentration, however, the message is obviously cut off, and incomprehensible.</TFMessage_20_Percent_3rd_M>
+
+<TFMessage_60_Percent_3rd_M>You estimate that he is now receiving your command.  Of course, he still isn't following it, so you apparently need to press harder.</TFMessage_60_Percent_3rd_M>
+
+<TFMessage_80_Percent_3rd_M>The command should be clearly repeating in your target's mind at this point.  You press harder in order to force him to submit.</TFMessage_80_Percent_3rd_M>
+
+<TFMessage_100_Percent_3rd_M>Your target finally capitulates and transforms into a pair of black pants.  As you cut off the psychic pressure and begin to examine the pants for flaws, however, he suddenly decides to transform back.  The nerve of that man!</TFMessage_100_Percent_3rd_M>
+
+<TFMessage_20_Percent_3rd_F>Your target's face flashes with annoyance as your magic enables you to transmit your voice directly into her mind.  At this low concentration, however, the message is obviously cut off, and incomprehensible.</TFMessage_20_Percent_3rd_F>
+
+<TFMessage_60_Percent_3rd_F>You estimate that she is now receiving your command.  Of course, she still isn't following it, so you apparently need to press harder.</TFMessage_60_Percent_3rd_F>
+
+<TFMessage_80_Percent_3rd_F>The command should be clearly repeating in your target's mind at this point.  You press harder in order to force her to submit.</TFMessage_80_Percent_3rd_F>
+
+<TFMessage_100_Percent_3rd_F>Your target finally capitulates and transforms into a pair of black pants.  As you cut off the psychic pressure and begin to examine the pants for flaws, however, she suddenly decides to transform back.  The nerve of that woman!</TFMessage_100_Percent_3rd_F>
+
+</Form>

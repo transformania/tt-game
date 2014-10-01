@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?><Form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<TFMessage_20_Percent_1st>You feel your natural inclination to do the right thing and follow the rules (which you may have previously ignored) getting stronger as your opponent works their magic over you.  not really knowing where this is going, but not wanting to go along with your foe's desires, you suppress this urge.</TFMessage_20_Percent_1st>
+
+<TFMessage_40_Percent_1st>Following rules and doing the right thing seem perfectly natural now--after all, isn't that what makes it the right thing to do?  So what if your opponent agrees, you wouldn't disagree with them if they said the sky is blue, would you?</TFMessage_40_Percent_1st>
+
+<TFMessage_60_Percent_1st>Your opponent is telling you that you've broken one of the most important town ordinances, the punishment for which is immediate inanimate transformation.  When you ask which ordinance, however, they just seem to sputter and cast more magic.</TFMessage_60_Percent_1st>
+
+<TFMessage_80_Percent_1st>Oh no, really?  Your opponent just explained that they are part of the local law enforcement.  Maybe there really is a local law you've broken...</TFMessage_80_Percent_1st>
+
+<TFMessage_100_Percent_1st>Ugh, who knew that it is only legal for mages to stand on your exact location on alternating Tuesdays.  Still, you try to appeal the local law enforcement's decision regarding your case.</TFMessage_100_Percent_1st>
+
+<TFMessage_Completed_1st>What?!?  Your sentence is not suspended while your appeal is under consideration?  But, but, ... fine.  Let no one say that you aren't a perfectly law abiding citizen; you're sure that the sentence will get overturned in short order anyway.</TFMessage_Completed_1st>
+
+<TFMessage_20_Percent_3rd>You begin by strengthening your target's adherence to order, enhancing their desire to follow the rules.  Unfortunately, they seem to be resisting the urge for now.</TFMessage_20_Percent_3rd>
+
+<TFMessage_40_Percent_3rd>After continued effort, your victim is now totally devoted to following the rules.  Now you just need to change what those rules are and you should be able to transform them at will.</TFMessage_40_Percent_3rd>
+
+<TFMessage_60_Percent_3rd>After using your magic to make your target believe any suggestion you give them, you tell them that they have broken a major town law, and are subject to immediate inanimate transformation as punishment.  To your disbelief, they immediately ask which law.  Obviously, this will require more effort on your part.</TFMessage_60_Percent_3rd>
+
+<TFMessage_80_Percent_3rd>After a flash of insight you claim membership with the local law enforcement--this is true in a sense, you suppose, since there doesn't seem to be any law beyond survival of the fittest and whatever people collectively agree to around here, so really everyone is part of the enforcement.</TFMessage_80_Percent_3rd>
+
+<TFMessage_100_Percent_3rd>You think you're finally convincing them to come along quietly, when suddenly they start talking about trying to appeal your "law enforcement" decision.  Well that won't do at all, now will it?</TFMessage_100_Percent_3rd>
+
+<TFMessage_Completed_3rd>After telling your new shoes that the transformation will go forward while the proper authorities consider the appeal, they come along quietly.</TFMessage_Completed_3rd>
+
+<TFMessage_60_Percent_3rd_M>After using your magic to make your target believe any suggestion you give him, you tell him that he has broken a major town law, and is subject to immediate inanimate transformation as punishment.  To your disbelief, he immediately asks which law.  Obviously, this will require more effort on your part.</TFMessage_60_Percent_3rd_M>
+
+<TFMessage_100_Percent_3rd_M>You think you're finally convincing him to come along quietly, when suddenly he starts talking about trying to appeal your "law enforcement" decision.  Well that won't do at all, now will it?</TFMessage_100_Percent_3rd_M>
+
+<TFMessage_Completed_3rd_M>After telling your new shoes that the transformation will go forward while the proper authorities consider his appeal, he comes along quietly.</TFMessage_Completed_3rd_M>
+
+<TFMessage_60_Percent_3rd_F>After using your magic to make your target believe any suggestion you give her, you tell her that she has broken a major town law, and is subject to immediate inanimate transformation as punishment.  To your disbelief, she immediately asks which law.  Obviously, this will require more effort on your part.</TFMessage_60_Percent_3rd_F>
+
+<TFMessage_100_Percent_3rd_F>You think you're finally convincing her to come along quietly, when suddenly she starts talking about trying to appeal your "law enforcement" decision.  Well that won't do at all, now will it?</TFMessage_100_Percent_3rd_F>
+
+<TFMessage_Completed_3rd_F>After telling your new shoes that the transformation will go forward while the proper authorities consider her appeal, she comes along quietly.</TFMessage_Completed_3rd_F>
+
+</Form>

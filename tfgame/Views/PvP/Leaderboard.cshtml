@@ -1,0 +1,129 @@
+﻿@model IEnumerable<tfgame.dbModels.Models.Player>
+@using tfgame.dbModels.Models
+@using tfgame.Statics
+@using tfgame.CustomHtmlHelpers
+
+<head>
+    <link href="~/Content/PvP.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-2.1.0.min.js"></script>
+</head>
+
+@Html.ActionLink("Back to game", "Play", "PvP")<br />
+@Html.ActionLink("View PvP Leaderboard", "PvPLeaderboard", "PvP")<br />
+@*@Html.ActionLink("View Item Leaderboard", "ItemLeaderboard", "PvP")<br />*@
+
+<h1>XP Leaderboard -- Alpha Round 10</h1>
+
+<p>These are the most experienced magic casters in the town.</p>
+
+
+<table>
+
+    <thead>
+    <th>Rank</th>
+    <th>Name</th>
+    <th>Covenant</th>
+    <th>Form</th>
+    <th>Mobility</th>
+    <th>Level</th>
+    <th>XP</th>
+    </thead>
+
+    <tbody>
+
+        @{
+            int rank = 1;
+        }
+
+        @foreach (Player p in Model)
+        {
+            <tr>
+                <td>
+                    @rank
+                </td>
+                <td>
+                    @Html.ActionLink(p.FirstName + " " + p.LastName, "LookAtPlayer", "PvP", new { id = p.Id }, null)
+                    <span class="icon-@p.Gender"></span>
+                    @*@CharactersHere.PrintRPIcon(p)*@
+                </td>
+                <td>
+                    @CharactersHere.GetCovenantInfoShort(p)
+                </td>
+                <td>
+                    @FormStatics.GetForm(p.Form).FriendlyName
+                </td>
+                <td>
+                    @{
+            if (p.Mobility == "full")
+            {
+                <span style="color: green">Animate</span>
+            }
+            else if (p.Mobility == "animal")
+            {
+                <span style="color: red">Animal</span>
+            }
+            else
+            {
+                <span style="color: red">Inanimate</span>
+            }
+                    }
+                </td>
+               
+                <td>
+                    @p.Level
+                </td>
+                <td>
+                    @p.XP
+                </td>
+            </tr>
+            rank++;
+
+        }
+
+    </tbody>
+
+
+
+</table>
+
+
+
+
+<p>
+    @Html.ActionLink("View PvP Leaderboard", "PvPLeaderboard", "PvP")<br />
+    @*@Html.ActionLink("View Item Leaderboard", "ItemLeaderboard", "PvP")<br />*@
+    @Html.ActionLink("Back to game", "Play", "PvP")
+</p>
+
+<style>
+    table {
+        padding: 3px;
+        border: 1px solid black;
+    }
+
+    th {
+        background-color: black;
+        color: white;
+        text-align: center;
+    }
+
+    tr {
+        padding: 3px;
+        border: 1px solid black;
+    }
+
+        tr:nth-child(odd) {
+            background-color: lightgray;
+        }
+
+    td {
+        text-align: center;
+    }
+</style>
+
+<script>
+    $("tr td:contains('@ViewBag.MyName')").each(function () {
+        $(this).parent('tr').css("background-color", "pink");
+    });
+
+</script>

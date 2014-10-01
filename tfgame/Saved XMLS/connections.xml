@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfConnection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <Connection>
+        <ParentSceneDbName>EastRoom</ParentSceneDbName>
+        <ChildSceneDbName>WestRoom</ChildSceneDbName>
+        <DestinationName>West Room</DestinationName>
+        <Position>W</Position>
+      </Connection>
+      <Connection>
+        <ParentSceneDbName>EastRoom</ParentSceneDbName>
+        <ChildSceneDbName>Bathroom</ChildSceneDbName>
+        <DestinationName>Bathroom</DestinationName>
+        <Position>N</Position>
+      </Connection>
+	  <Connection>
+        <ParentSceneDbName>WestRoom</ParentSceneDbName>
+        <ChildSceneDbName>EastRoom</ChildSceneDbName>
+        <DestinationName>East Room</DestinationName>
+        <Position>E</Position>
+      </Connection>
+      <Connection>
+        <ParentSceneDbName>Bathroom</ParentSceneDbName>
+        <ChildSceneDbName>EastRoom</ChildSceneDbName>
+        <DestinationName>East Room</DestinationName>
+        <Position>S</Position>
+      </Connection>
+	  <Connection>
+        <ParentSceneDbName>EastRoom</ParentSceneDbName>
+        <ChildSceneDbName>OutsideHotel</ChildSceneDbName>
+        <DestinationName>Outside Hotel</DestinationName>
+        <Position>S</Position>
+      </Connection>
+	  
+	  <Connection>
+        <ParentSceneDbName>OutsideHotel</ParentSceneDbName>
+        <ChildSceneDbName>EastRoom</ChildSceneDbName>
+        <DestinationName>East Room</DestinationName>
+        <Position>N</Position>
+      </Connection>
+	  
+	  <Connection>
+        <ParentSceneDbName>OutsideHotel</ParentSceneDbName>
+        <ChildSceneDbName>street_coffeeshop_inside</ChildSceneDbName>
+        <DestinationName>Coffee Shop</DestinationName>
+        <Position>S</Position>
+      </Connection>
+	  
+	  <Connection>
+        <ParentSceneDbName>street_coffeeshop_inside</ParentSceneDbName>
+        <ChildSceneDbName>OutsideHotel</ChildSceneDbName>
+        <DestinationName>Outside Hotel</DestinationName>
+        <Position>N</Position>
+      </Connection>
+	  
+</ArrayOfConnection>

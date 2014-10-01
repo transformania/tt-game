@@ -1,0 +1,42 @@
+}, new StaticSkill {
+		 dbName = "skill_Donna's_Bitch_LexamTheGemFox",
+		 FriendlyName = "Donna's Bitch",
+		 FormdbName = "form_Brainwashed_Bitch_LexamTheGemFox",
+		 Description = "Transforms a victim into Donna's canine pet.",
+		 ManaCost = 3.00M,
+		 HealthDamageAmount = 4.00M,
+		 TFPointsAmount = 8.00M,
+// YOU MUST DO THIS YOURSELF
+		 LearnedAtRegion = "(only Donna has this, and it is prelearned)",
+}
+
+
+}, new Form {
+		 dbName = "form_Brainwashed_Bitch_LexamTheGemFox",
+		 FriendlyName = "Brainwashed Bitch",
+		 Gender = "female",
+		 TFEnergyRequired = 70.00M,
+		 MobilityType = "animal",
+		 PortraitUrl = "",
+		 BecomesItemDbName = "animal_Brainwashed_Bitch_LexamTheGemFox",
+		 FormBuffs = new BuffBox{}
+}
+
+
+}, new StaticItem {
+		 dbName = "animal_Brainwashed_Bitch_LexamTheGemFox",
+		 FriendlyName = "Brainwashed Bitch",
+		 PortraitUrl = "",
+		 Description = "This player has been defeated by Donna Milton and thus has been turned into a mindless doggy.  Her body still contains traces of her transformer's magic inside it.  Her pussy is puffed with need and her paws are useless in pleasuring herself. Her heat and lust have caused her mind to snap and now she is nothing but a doggy in need of a bone and an owner to care for her. She helplessly crawls behind her master or mistress, her tail flagged to show everyone that she challenged the great Donna Milton and lost, becoming nothing more than a slutty beast that lives only to pleasure others.",
+		 ItemType = PvPStatics.ItemType_pet,
+		 Findable = false,
+}
+
+
+HealthBonusPercent = 2,
+ManaBonusPercent = 2,
+SpellExtraTFEnergyPercent= 2.5,
+SpellExtraHealthDamagePercent= 2.5,
+
+
+New spell, Donna's Bitch, submitted by <a href="http://lexam-the-gem-fox.deviantart.com/">LexamTheGemFox</a>!  Additional credits go to MellieMel.  .  Graphic is by http://fc00.deviantart.net/fs71/f/2014/035/5/4/suzie_s_a_good_bitch_by_lexam_the_gem_fox-d75589t.png.

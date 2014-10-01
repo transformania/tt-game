@@ -1,0 +1,107 @@
+﻿@model tfgame.ViewModels.StaticEffect
+@using tfgame.ViewModels
+@using tfgame.Statics
+@using tfgame.CustomHtmlHelpers
+
+<div class="bonuses">
+
+    <ul>
+        @{
+            if (@Model.HealthBonusPercent != 0)
+            {
+                <li>Extra willpower maximum:  @Model.HealthBonusPercent</li>
+            }
+            if (@Model.ManaBonusPercent != 0)
+            {
+                <li>Extra mana maximum:  @Model.ManaBonusPercent</li>
+            }
+            if (@Model.HealthRecoveryPerUpdate != 0)
+            {
+                <li>Willpower recovery per update:  @Model.HealthRecoveryPerUpdate</li>
+            }
+            if (@Model.ManaRecoveryPerUpdate != 0)
+            {
+                <li>Mana recovery per update:  @Model.ManaRecoveryPerUpdate</li>
+            }
+            if (@Model.SneakPercent != 0)
+            {
+                <li>Sneak chance percent: @Model.SneakPercent</li>
+            }
+            if (@Model.SpellResistancePercent != 0)
+            {
+                <li>Spell resistance bonus percent:  @Model.SpellResistancePercent</li>
+            }
+            if (@Model.MeditationExtraMana != 0)
+            {
+                <li>Extra mana recovering from meditating:  @Model.MeditationExtraMana</li>
+            }
+            if (@Model.CleanseExtraHealth != 0)
+            {
+                <li>Extra willpower recovered from cleansing:  @Model.CleanseExtraHealth</li>
+            }
+            if (@Model.InstantHealthRestore != 0)
+            {
+                <li>Willpower restored from eating or drinking:  @Model.InstantHealthRestore</li>
+            }
+            if (@Model.InstantManaRestore != 0)
+            {
+                <li>Mana restored from eating or drinking:  @Model.InstantManaRestore</li>
+            }
+            if (@Model.MoveActionPointDiscount != 0.0M)
+            {
+                <li>Action point discount when moving:  @Model.MoveActionPointDiscount</li>
+            }
+            if (@Model.ExtraSkillCriticalPercent != 0)
+            {
+                <li>Extra chance of spell critical hits:  @Model.ExtraSkillCriticalPercent</li>
+            }
+            if (@Model.ReuseableHealthRestore != 0)
+            {
+                <li>Willpower restored from eating or drinking from this:  @Model.ReuseableHealthRestore</li>
+            }
+            if (@Model.ReuseableManaRestore != 0)
+            {
+                <li>Mana restored from eating or drinking from this:  @Model.ReuseableManaRestore</li>
+            }
+            if (@Model.EvasionPercent != 0)
+            {
+                <li>Percent chance to evade an attack:  @Model.EvasionPercent</li>
+            }
+            if (@Model.EvasionNegationPercent != 0)
+            {
+                <li>Percent negation of opponent's ability to evade a spell:  @Model.EvasionNegationPercent</li>
+            }
+            if (@Model.SpellExtraTFEnergyPercent != 0.0M)
+            {
+                <li>Extra transformation energy damage percent:  @Model.SpellExtraTFEnergyPercent</li>
+            }
+            if (@Model.SpellExtraHealthDamagePercent != 0.0M)
+            {
+                <li>Extra willpower damage dealt from spells:  @Model.SpellExtraHealthDamagePercent</li>
+            }
+            if (@Model.CleanseExtraTFEnergyRemovalPercent != 0.0M)
+            {
+                <li>Extra transformation energy percent removed when cleansing:  @Model.CleanseExtraTFEnergyRemovalPercent</li>
+            }
+            if (@Model.SpellMisfireChanceReduction != 0.0M)
+            {
+                <li>Misfire percent chance reduction:  @Model.SpellMisfireChanceReduction</li>
+            }
+
+            if (@Model.SpellHealthDamageResistance != 0.0M)
+            {
+                <li>Willpower damage reduction when hit by spells: @Model.SpellHealthDamageResistance</li>
+            }
+            if (@Model.SpellTFEnergyDamageResistance != 0.0M)
+            {
+                <li>Transformation energy reduction when hit by spells: @Model.SpellTFEnergyDamageResistance</li>
+            }
+            if (@Model.ExtraInventorySpace != 0.0M)
+            {
+                <li>Extra inventory space:  @Model.ExtraInventorySpace</li>
+            }
+
+
+        }
+    </ul>
+</div>

@@ -1,0 +1,135 @@
+﻿@model IEnumerable<tfgame.ViewModels.SkillViewModel2>
+@using tfgame.ViewModels
+@using tfgame.CustomHtmlHelpers
+
+@Html.ActionLink("Back to game", "Play", "PvP")
+
+<h2>Known Spells (@Model.Count())</h2>
+
+
+
+@{
+    string chargeVisible = "none";
+    string timeVisible = "none";
+
+
+    foreach (SkillViewModel2 skill in Model.OrderBy(s => s.Skill.FriendlyName))
+    {
+        if (skill.dbSkill.Charge != -1.0M)
+        {
+            chargeVisible = "block";
+        }
+
+        if (skill.dbSkill.Duration != -1.0M)
+        {
+            timeVisible = "block";
+        }
+
+        <div class="skillBox">
+            <div class="skillname">
+                @skill.Skill.FriendlyName
+
+                @{
+        if (skill.MobilityType != null && skill.MobilityType == "inanimate")
+        {
+            <span class="mobilityClass">(inanimate)</span>
+        }
+        else if (skill.MobilityType != null && skill.MobilityType == "animal")
+        {
+            <span class="mobilityClass">(animal/familiar)</span>
+        }
+        else if (skill.MobilityType != null && skill.MobilityType == "curse")
+        {
+            <span class="mobilityClass">(temporary curse)</span>
+        }
+                }
+
+            </div>
+
+
+
+            <div class="description">@skill.Skill.Description</div>
+            <div class="manacost">Requires @skill.Skill.ManaCost mana</div>
+
+            @{
+        if (@skill.Skill.HealthDamageAmount > 0)
+        {
+            <div class="damage">Decreases target's willpower by @skill.Skill.HealthDamageAmount</div>
+        }
+        if (@skill.Skill.TFPointsAmount > 0)
+        {
+            <div class="tfpoints">Increases target's transformation energy by @skill.Skill.TFPointsAmount</div>
+        }
+            }
+
+
+
+
+
+
+
+            <div class="charges" style="display:  @chargeVisible">Casts remaining:  @skill.dbSkill.Charge</div>
+            <div class="time" style="display:  @timeVisible">Time remaining:  @skill.dbSkill.Duration</div>
+
+            @{
+        if (@skill.Skill.GivesEffect != null)
+        {
+            <div class="effect"><b>Gives the @CharactersHere.GetEffectFriendlyName(skill.Skill.GivesEffect) effect</b></div>
+        }
+            }
+
+        </div>
+    }
+}
+
+<br />
+@Html.ActionLink("Back to game", "Play", "PvP")
+
+<style>
+    .skillBox {
+        border-bottom: 1px solid black;
+        height: auto;
+    }
+
+    .skillname {
+        font-size: 30px;
+    }
+
+    .description {
+        color: purple;
+        font-size: 20px;
+        font-style: italic;
+    }
+
+    .manacost {
+        color: blue;
+        font-style: oblique;
+    }
+
+    .damage {
+        color: red;
+        font-style: oblique;
+    }
+
+    .tfpoints {
+        color: darkgreen;
+        font-style: oblique;
+    }
+
+    .duration {
+    }
+
+    .time {
+    }
+
+    .mobilityClass {
+        color: darkblue;
+        font-style: oblique;
+        font-size: 14px;
+    }
+
+    .effect {
+        color: darkolivegreen;
+        font-weight: 900;
+    }
+</style>

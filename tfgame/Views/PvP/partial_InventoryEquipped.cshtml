@@ -1,0 +1,246 @@
+﻿@model IEnumerable<tfgame.ViewModels.ItemViewModel>
+@using tfgame.ViewModels
+@using tfgame.Statics
+@using tfgame.CustomHtmlHelpers
+
+@{
+    ItemViewModel hat = Model.FirstOrDefault(i => i.Item.ItemType == PvPStatics.ItemType_Hat && i.dbItem.IsEquipped == true);
+    ItemViewModel shirt = Model.FirstOrDefault(i => i.Item.ItemType == PvPStatics.ItemType_Shirt && i.dbItem.IsEquipped == true);
+
+    ItemViewModel undershirt = Model.FirstOrDefault(i => i.Item.ItemType == PvPStatics.ItemType_Undershirt && i.dbItem.IsEquipped == true);
+    ItemViewModel pants = Model.FirstOrDefault(i => i.Item.ItemType == PvPStatics.ItemType_Pants && i.dbItem.IsEquipped == true);
+    ItemViewModel underpants = Model.FirstOrDefault(i => i.Item.ItemType == PvPStatics.ItemType_Underpants && i.dbItem.IsEquipped == true);
+    ItemViewModel shoes = Model.FirstOrDefault(i => i.Item.ItemType == PvPStatics.ItemType_Shoes && i.dbItem.IsEquipped == true);
+
+    ItemViewModel pet = Model.FirstOrDefault(i => i.Item.ItemType == PvPStatics.ItemType_Pet && i.dbItem.IsEquipped == true);
+
+
+    ItemViewModel lhand = Model.FirstOrDefault(i => i.Item.ItemType == PvPStatics.ItemType_Accessory && i.dbItem.IsEquipped == true);
+
+    ItemViewModel rhand;
+    try
+    {
+        rhand = Model.Where(i => i.Item.ItemType == PvPStatics.ItemType_Accessory && i.dbItem.IsEquipped == true).Skip(1).Single();
+    }
+    catch
+    {
+        rhand = null;
+    }
+    
+    
+    
+}
+
+
+<div id="bodyOutline">
+
+
+    @{
+
+    if (hat != null)
+    {
+        <div id="body_hat" style="background-image: url(@CharactersHere.GetImageURL(hat));" title="@hat.Item.FriendlyName--@hat.Item.Description">
+            <span class="icon-level"><b>@hat.dbItem.Level</b></span>
+
+        </div>
+    }
+    else
+    {
+            <div id="body_hat" style="background-image: url('/Images/PvP/itemsPortraits/none.jpg');"></div>
+    }
+
+    if (shirt != null)
+    {
+        <div id="body_shirt" style="background-image: url(@CharactersHere.GetImageURL(shirt));" title="@shirt.Item.FriendlyName--@shirt.Item.Description">
+            <span class="icon-level"><b>@shirt.dbItem.Level</b></span>
+        </div>
+    }
+    else
+    {
+            <div id="body_shirt" style="background-image: url('/Images/PvP/itemsPortraits/none.jpg');"></div>
+        }
+
+        if (undershirt != null)
+        {
+            <div id="body_undershirt" style="background-image: url(@CharactersHere.GetImageURL(undershirt)); " title="@undershirt.Item.FriendlyName--@undershirt.Item.Description">
+                <span class="icon-level"><b>@undershirt.dbItem.Level</b></span>
+            </div>
+        }
+        else
+        {
+            <div id="body_undershirt" style="background-image: url('/Images/PvP/itemsPortraits/none.jpg');"></div>
+        }
+
+        if (pants != null)
+        {
+            <div id="body_pants" style="background-image: url(@CharactersHere.GetImageURL(pants)); " title="@pants.Item.FriendlyName--@pants.Item.Description">
+                <span class="icon-level"><b>@pants.dbItem.Level</b></span>
+            </div>
+        }
+        else
+        {
+            <div id="body_pants" style="background-image: url('/Images/PvP/itemsPortraits/none.jpg');"></div>
+        }
+
+        if (underpants != null)
+        {
+            <div id="body_underpants" style="background-image: url(@CharactersHere.GetImageURL(underpants)); " title="@underpants.Item.FriendlyName--@underpants.Item.Description">
+                <span class="icon-level"><b>@underpants.dbItem.Level</b></span>
+            </div>
+        }
+        else
+        {
+            <div id="body_underpants" style="background-image: url('/Images/PvP/itemsPortraits/none.jpg');"></div>
+        }
+
+        if (shoes != null)
+        {
+            <div id="body_shoes" style="background-image: url(@CharactersHere.GetImageURL(shoes)); " title="@shoes.Item.FriendlyName--@shoes.Item.Description">
+                <span class="icon-level"><b>@shoes.dbItem.Level</b></span>
+            </div>
+        }
+        else
+        {
+            <div id="body_shoes" style="background-image: url('/Images/PvP/itemsPortraits/none.jpg');"></div>
+        }
+
+        if (lhand != null)
+        {
+            <div id="body_lhand" style="background-image: url(@CharactersHere.GetImageURL(lhand)); " title="@lhand.Item.FriendlyName--@lhand.Item.Description">
+                <span class="icon-level"><b>@lhand.dbItem.Level</b></span>
+            </div>
+        }
+        else
+        {
+            <div id="body_lhand" style="background-image: url('/Images/PvP/itemsPortraits/none.jpg');"></div>
+        }
+
+        if (rhand != null)
+        {
+            <div id="body_rhand" style="background-image: url(@CharactersHere.GetImageURL(rhand)); " title="@rhand.Item.FriendlyName--@rhand.Item.Description">
+                <span class="icon-level"><b>@rhand.dbItem.Level</b></span>
+            </div>
+        }
+        else
+        {
+            <div id="body_rhand" style="background-image: url('/Images/PvP/itemsPortraits/none.jpg');"></div>
+        }
+        if (pet != null)
+        {
+            <div id="body_pet" style="background-image: url(@CharactersHere.GetImageURL(pet)); " title="@pet.Item.FriendlyName--@pet.Item.Description">
+                <span class="icon-level"><b>@pet.dbItem.Level</b></span>
+            </div>
+        }
+        else
+        {
+            <div id="body_pet" style="background-image: url('/Images/PvP/itemsPortraits/none.jpg');"></div>
+        }
+
+}
+
+
+
+</div>
+
+<style>
+    #bodyOutline {
+        width: 700px;
+        height: 700px;
+        background-image: url("/Images/PvP/body.jpg");
+        background-size: 100% 100%;
+        position: relative;
+        border: 2px solid black;
+        margin-bottom: 10px;
+        float: left;
+    }
+
+    #body_hat {
+        position: relative;
+        left: 8px;
+        top: 8px;
+        width: 100px;
+        height: 100px;
+        background-size: 100% 100%;
+        position: absolute;
+    }
+
+    #body_shirt {
+        position: relative;
+        left: 8px;
+        top: 116px;
+        width: 100px;
+        height: 100px;
+        position: absolute;
+        background-size: 100% 100%;
+    }
+
+    #body_undershirt {
+        position: relative;
+        left: 7px;
+        top: 225px;
+        width: 100px;
+        height: 100px;
+        position: absolute;
+        background-size: 100% 100%;
+    }
+
+    #body_pants {
+        position: relative;
+        left: 8px;
+        top: 441px;
+        width: 100px;
+        height: 100px;
+        position: absolute;
+        background-size: 100% 100%;
+    }
+
+    #body_underpants {
+        position: relative;
+        left: 8px;
+        top: 332px;
+        width: 100px;
+        height: 100px;
+        position: absolute;
+        background-size: 100% 100%;
+    }
+
+    #body_shoes {
+        position: relative;
+        left: 7px;
+        top: 551px;
+        width: 100px;
+        height: 100px;
+        position: absolute;
+        background-size: 100% 100%;
+    }
+
+    #body_lhand {
+        position: relative;
+        left: 394px;
+        top: 272px;
+        width: 100px;
+        height: 100px;
+        position: absolute;
+        background-size: 100% 100%;
+    }
+
+    #body_rhand {
+        position: relative;
+        left: 528px;
+        top: 272px;
+        width: 100px;
+        height: 100px;
+        position: absolute;
+        background-size: 100% 100%;
+    }
+
+    #body_pet {
+        position: relative;
+        left: 473px;
+        top: 549px;
+        width: 100px;
+        height: 100px;
+        position: absolute;
+        background-size: 100% 100%;
+    }
+</style>

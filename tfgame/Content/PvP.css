@@ -1,0 +1,795 @@
+﻿.tableLines {
+}
+
+    .tableLines td {
+        border: 1px solid black;
+        text-align: center;
+        padding: 3px;
+    }
+
+#location {
+    width: 300px;
+    height: 300px;
+}
+
+.place {
+    font-size: 20px;
+    color: red;
+}
+
+.result {
+    font-size: 20px;
+    color: green;
+    font-style: oblique;
+    /*border: 1px solid green;
+    background-color: lightgreen;*/
+    padding: 4px;
+}
+
+.error {
+    font-size: 20px;
+    color: red;
+    font-style: oblique;
+    /*border: 1px solid red;
+    border-bottom: none;
+    background-color: lightpink;*/
+    padding: 4px;
+}
+
+.suberror {
+    font-size: 12px;
+    color: purple;
+    /*border: 1px solid red;
+    border-top: none;
+    background-color: lightpink;*/
+    padding: 4px;
+}
+
+.name {
+    font-size: 20px;
+    font-weight: 200;
+}
+
+.health {
+    color: darkred;
+    font-weight: 300;
+    font-size: 20px;
+}
+
+.mana {
+    color: darkblue;
+    font-weight: 300;
+    font-size: 20px;
+}
+
+
+
+.tiny {
+    font-size: 10px;
+    font-weight: bold;
+    margin-left: 8px;
+}
+
+a {
+    font-weight: bold;
+    background-color: lightgray;
+}
+
+.disabled {
+    background-color: white;
+    text-decoration: line-through;
+}
+
+    .disabled:hover {
+        background-color: white;
+        cursor: default;
+    }
+
+
+
+.newlink a {
+    background-color: lightpink;
+    /*font-size: 18px;*/
+}
+
+.newlinkgreen a {
+    background-color: lightgreen;
+}
+
+.formerly a {
+    font-weight: bold;
+    background-color: #FFCCFF;
+    color: darkred;
+}
+
+.formerly {
+    font-size: 12px;
+    color: darkred;
+    font-style: oblique;
+    background-color: #FFCCFF;
+}
+
+
+locationDescription {
+    font-style: italic;
+}
+
+.navcell {
+    max-width: 150px;
+    max-height: 150px;
+}
+
+.formerPlayer {
+    font-size: 9px;
+    font-style: italic bold;
+    color: darkolivegreen;
+}
+
+.detailIcon {
+    width: 15px;
+    height: 15px;
+    background-image: url("../Images/PvP/Icons/details.png");
+    background-size: 100% 100%;
+    /*border: 1px solid black;*/
+    display: inline-block;
+}
+
+.icon-female {
+    width: 15px;
+    height: 15px;
+    background-size: 100% 100%;
+    background-image: url("../Images/PvP/Icons/female.png");
+    display: inline-block;
+}
+
+.icon-male {
+    width: 15px;
+    height: 15px;
+    background-size: 100% 100%;
+    background-image: url("../Images/PvP/Icons/male.png");
+    display: inline-block;
+}
+
+.icon-sleep {
+    width: 15px;
+    height: 15px;
+    background-size: 100% 100%;
+    background-image: url("../Images/PvP/Icons/icon-sleep.png");
+    display: inline-block;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.icon-online {
+    width: 15px;
+    height: 15px;
+    background-size: 100% 100%;
+    background-image: url("../Images/PvP/Icons/online.png");
+    display: inline-block;
+}
+
+.icon-offline {
+    width: 15px;
+    height: 15px;
+    background-size: 100% 100%;
+    background-image: url("../Images/PvP/Icons/offline.png");
+    display: inline-block;
+}
+
+.icon-permanent {
+    width: 15px;
+    height: 15px;
+    background-size: 100% 100%;
+    background-image: url("../Images/PvP/Icons/icon-permanent.png");
+    display: inline-block;
+}
+
+.icon-turnNumber {
+    width: auto;
+    height: 17px;
+    background-color: yellow;
+    display: inline-block;
+    float: left;
+    border: 1px solid red;
+}
+
+
+
+.icon-consumable {
+    width: 15px;
+    height: 15px;
+    background-size: 100% 100%;
+    background-image: url("../Images/PvP/Icons/consumeable.png");
+    display: inline-block;
+    float: right;
+}
+
+.icon-shirt {
+    width: 15px;
+    height: 15px;
+    background-size: 100% 100%;
+    background-image: url("../Images/PvP/Icons/shirt.png");
+    display: inline-block;
+    float: right;
+}
+
+.icon-undershirt {
+    width: 15px;
+    height: 15px;
+    background-size: 100% 100%;
+    background-image: url("../Images/PvP/Icons/undershirt.png");
+    display: inline-block;
+    float: right;
+}
+
+.icon-pants {
+    width: 15px;
+    height: 15px;
+    background-size: 100% 100%;
+    background-image: url("../Images/PvP/Icons/pants.png");
+    display: inline-block;
+    float: right;
+}
+
+.icon-underpants {
+    width: 15px;
+    height: 15px;
+    background-size: 100% 100%;
+    background-image: url("../Images/PvP/Icons/underpants.png");
+    display: inline-block;
+    float: right;
+}
+
+.icon-shoes {
+    width: 15px;
+    height: 15px;
+    background-size: 100% 100%;
+    background-image: url("../Images/PvP/Icons/shoes.png");
+    display: inline-block;
+    float: right;
+}
+
+.icon-accessory {
+    width: 15px;
+    height: 15px;
+    background-size: 100% 100%;
+    background-image: url("../Images/PvP/Icons/accessory.png");
+    display: inline-block;
+    float: right;
+}
+
+.icon-hat {
+    width: 15px;
+    height: 15px;
+    background-size: 100% 100%;
+    background-image: url("../Images/PvP/Icons/hat.png");
+    display: inline-block;
+    float: right;
+}
+
+.icon-level {
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    text-align: center;
+    text-shadow: 1px 1px #ffffff;
+}
+
+.icon-pvp {
+    width: 25px;
+    height: 20px;
+    background-size: 100% 100%;
+    display: inline-block;
+    background-image: url("../Images/PvP/Icons/PVP.png");
+}
+
+.icon-protection {
+    width: 25px;
+    height: 20px;
+    background-size: 100% 100%;
+    display: inline-block;
+    background-image: url("../Images/PvP/Icons/icon-protection.png");
+}
+
+.icon-rp {
+    width: 25px;
+    height: 20px;
+    background-size: 100% 100%;
+    display: inline-block;
+    background-image: url("../Images/PvP/Icons/RP.png");
+}
+
+.icon-donator1 {
+    width: 25px;
+    height: 20px;
+    background-size: 100% 100%;
+    display: inline-block;
+    background-image: url("../Images/PvP/Icons/donator_1.gif");
+}
+
+.icon-timesattacking {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    text-align: center;
+    text-shadow: 1px 1px #ffffff;
+    background-image: url("../Images/PvP/Icons/target.png");
+    background-size: 100% 100%;
+}
+
+.icon-cleansemeditate {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    text-align: center;
+    text-shadow: 1px 1px #ffffff;
+    background-image: url("../Images/PvP/Icons/cleansemeditate.png");
+    background-size: 100% 100%;
+}
+
+.icon-health_recovery {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    text-align: center;
+    text-shadow: 1px 1px #ffffff;
+    background-image: url("../Images/PvP/Icons/icon-health_recovery.png");
+    background-size: 100% 100%;
+}
+
+.icon-mana_recovery {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    text-align: center;
+    text-shadow: 1px 1px #ffffff;
+    background-image: url("../Images/PvP/Icons/icon-mana_recovery.png");
+    background-size: 100% 100%;
+}
+
+.icon-defense {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    text-align: center;
+    text-shadow: 1px 1px #ffffff;
+    background-image: url("../Images/PvP/Icons/icon-defense.png");
+    background-size: 100% 100%;
+}
+
+.icon-money {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    text-align: center;
+    text-shadow: 1px 1px #ffffff;
+    background-image: url("../Images/PvP/Icons/money.png");
+    background-size: 100% 100%;
+}
+
+
+.mainPageWorldStats {
+    border: 1px solid black;
+    padding: 4px;
+    background-color: lightcyan;
+    width: auto;
+    text-align: center;
+}
+
+
+
+
+.name a {
+    background-color: lightyellow;
+}
+
+a.attackLink {
+    background-color: white;
+}
+
+.portrait {
+    height: 80px;
+    width: 80px;
+    background-size: 100% 100%;
+    position: relative;
+    float: left;
+}
+
+.subportrait {
+    width: 100px;
+    height: 100px;
+    margin: 3px;
+    background-size: 100% 100%;
+    border: 2px solid violet;
+    float: left;
+}
+
+
+
+.portrait-large {
+    height: 160px;
+    width: 160px;
+    background-size: 100% 100%;
+    position: relative;
+    float: left;
+}
+
+
+
+.portrait_item_mainpage {
+    height: 60px;
+    width: 60px;
+    background-size: 100% 100%;
+    position: relative;
+    float: left;
+}
+
+.large {
+    height: 400px;
+    width: 400px;
+    margin: 15px;
+}
+
+.charInfoWrapper {
+    position: relative;
+    float: left;
+}
+
+.charwrapper {
+    border: 1px solid lightgray;
+    height: 82px;
+    width: auto;
+    /*background-color: #FFFFEC;*/
+}
+
+    .charwrapper.bot {
+        border: 1px solid pink;
+        background-color: mistyrose;
+        height: 82px;
+        width: auto;
+        /*background-color: #FFFFEC;*/
+    }
+
+.timeago {
+    font-size: 9px;
+    color: gray;
+    font-style: italic;
+}
+
+.form__panel {
+    width: 99%;
+    height: auto;
+    border: 1px solid gray;
+    border-radius: 3px;
+    padding: 4px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+    .form__panel textarea {
+        width: 98%;
+        height: 150px;
+    }
+
+    .form__panel input {
+        width: 98%;
+    }
+
+        .form__panel input[type="checkbox"] {
+            width: 20px;
+        }
+
+    .form__panel.group {
+        width: 100%;
+        height: auto;
+        border: 1px solid darkblue;
+        border-radius: 3px;
+        padding: 4px;
+        margin-top: 4px;
+        margin-bottom: 4px;
+        background-color: lightblue;
+    }
+
+    .form__panel.externalMessage {
+        font-size: 15px;
+        font-style: italic;
+        font-weight: 600;
+        border: 1px solid darkblue;
+    }
+
+    .form__panel select {
+        width: 300px;
+    }
+
+#showOfflinePlayersButton {
+    font-size: 15px;
+    color: darkblue;
+    font-weight: 600;
+    border: 1px solid darkblue;
+    width: 210px;
+    text-align: center;
+    background-color: lightblue;
+}
+
+    #showOfflinePlayersButton:hover {
+        border: 1px solid darkred;
+        color: darkred;
+        background-color: lightpink;
+        cursor: pointer;
+    }
+
+.healthWrapper {
+    height: 10px;
+    width: 100px;
+    background-color: pink;
+}
+
+.healthBar {
+    height: 10px;
+    background-color: red;
+}
+
+.manaWrapper {
+    height: 10px;
+    width: 100px;
+    background-color: lightblue;
+}
+
+.manaBar {
+    height: 10px;
+    background-color: blue;
+}
+
+.playerDescription {
+    margin-left: 10px;
+    font-style: italic;
+}
+
+
+
+.icon-clock {
+    width: 20px;
+    height: 20px;
+    background-size: 100% 100%;
+    background-image: url("../Images/PvP/Icons/icon-clock.png");
+    display: inline-block;
+}
+
+    .icon-clock:hover {
+        background-color: lightblue;
+    }
+
+.good {
+    color: green;
+    font-weight: 900;
+}
+
+.bad {
+    color: red;
+    font-weight: 900;
+}
+
+.zero {
+    color: darkgray;
+    font-weight: 900;
+}
+
+.playPageInventoryItem {
+    width: 50px;
+    height: 50px;
+    background-size: 100%;
+    position: relative;
+    float: left;
+    border: 1px solid black;
+    color: black;
+    font-size: 18px;
+    font-weight: 900;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 50px;
+}
+
+.openInventory {
+    margin-right: 5px;
+}
+
+    .openInventory:hover {
+        margin-right: 5px;
+        border: 2px solid red;
+        width: 48px;
+        height: 48px;
+        cursor: pointer;
+    }
+
+#attackModal {
+    background-color: pink;
+    display: none;
+    position: fixed;
+    left: 25%;
+    width: 50%;
+    height: auto;
+    top: 30%;
+    z-index: 1000;
+    border: 3px solid red;
+    padding: 10px;
+}
+
+#modalBackdrop {
+    width: 100%;
+    height: 100%;
+    z-index: 800;
+    background-color: rgba(1,0,0,0.75);
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    display: none;
+}
+
+.attackLink {
+    color: red;
+    font-size: 18px;
+    font-weight: 900;
+    border: 2px solid red;
+    border-radius: 5px;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+    .attackLink:hover {
+        color: darkviolet;
+        cursor: pointer;
+        border: 2px solid darkviolet;
+    }
+
+a.full {
+    background-color: lightgreen;
+}
+
+    a.full:hover {
+        background-color: white;
+    }
+
+a.inanimate {
+    background-color: #B8DBFF;
+}
+
+    a.inanimate:hover {
+        background-color: white;
+    }
+
+a.animal {
+    background-color: #FFFF66;
+}
+
+    a.animal:hover {
+        background-color: white;
+    }
+
+a.weaken {
+    background-color: #FFAD5C;
+}
+
+    a.weaken:hover {
+        background-color: white;
+    }
+
+a.curse {
+    background-color: #DEBDFF;
+}
+
+    a.curse:hover {
+        background-color: white;
+    }
+
+.perkBox {
+    border: 1px solid gray;
+    padding: 5px;
+}
+
+.effectturnsRemaining {
+    color: darkblue;
+    font-weight: 900;
+}
+
+.effectcooldownRemaining {
+    color: darkviolet;
+    font-weight: 900;
+}
+
+.oldrounds {
+    border: 2px solid darkviolet;
+    background-color: lightpink;
+    border-radius: 10px;
+    height: auto;
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.covRptName {
+    color: darkviolet;
+    font-size: 12px;
+}
+
+.frontPageNotification {
+    color: red;
+    padding-bottom: 7px;
+}
+
+    .frontPageNotification:last-child {
+        color: red;
+        padding-bottom: 7px;
+    }
+
+.inbetweenRoundNotice {
+    width: 100%;
+    height: auto;
+    border: 2px solid red;
+    font-size: 18px;
+    text-align: center;
+    background-color: #facdff;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    font-weight: 600;
+    border-radius: 5px;
+}
+
+.activeBossNotice {
+    width: 100%;
+    height: auto;
+    border: 2px solid red;
+    font-size: 14px;
+    text-align: center;
+    background-color: #faff7e;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    font-weight: 600;
+    border-radius: 5px;
+    color: black;
+
+}
+
+
+.charCounter {
+    font-size: 10px;
+    color: red;
+    font-style: italic;
+}
+
+/*attack modal stuff*/
+
+#expand {
+    cursor: pointer;
+    font-weight: 600;
+    border: 1px solid black;
+    background-color: ivory;
+    border-radius: 5px;
+}
+
+    #expand:hover {
+        background-color: white;
+    }
+
+#youAreAttacking {
+    color: black;
+    font-size: 15px;
+}
+
+#attackClose {
+    color: darkblue;
+    font-size: 15px;
+    background-color: lightblue;
+    cursor: pointer;
+    font-weight: 900;
+    border: 2px solid red;
+    border-radius: 5px;
+}
+
+    #attackClose:hover {
+        color: black;
+        background-color: lightcyan;
+        border: 2px solid black;
+    }

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfScene xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Scene>
+    <dbName>EastRoom</dbName>
+    <CasualName>East Room</CasualName>
+    <SceneLog>
+      <TimeMessage>
+        <Timestamp>2013-10-01T23:30:28.8780794-04:00</Timestamp>
+        <Message> &lt;tiny&gt;23:30:28&lt;/tiny&gt; Testman&lt;tiny&gt; has entered from West Room.&lt;/tiny&gt;&lt;br&gt;</Message>
+      </TimeMessage>
+      <TimeMessage>
+        <Timestamp>2013-10-02T20:28:49.4422198-04:00</Timestamp>
+        <Message> &lt;tiny&gt;20:28:49&lt;/tiny&gt; Testman&lt;tiny&gt; has entered from West Room.&lt;/tiny&gt;&lt;br&gt;</Message>
+      </TimeMessage>
+      <TimeMessage>
+        <Timestamp>2013-10-02T20:29:11.3084117-04:00</Timestamp>
+        <Message> &lt;tiny&gt;20:29:11&lt;/tiny&gt; Testman&lt;tiny&gt; has left for Bathroom.&lt;/tiny&gt;&lt;br&gt;</Message>
+      </TimeMessage>
+      <TimeMessage>
+        <Timestamp>2013-10-02T21:39:11.9496693-04:00</Timestamp>
+        <Message> &lt;tiny&gt;21:39:11&lt;/tiny&gt; Testman&lt;tiny&gt; has entered from West Room.&lt;/tiny&gt;&lt;br&gt;</Message>
+      </TimeMessage>
+      <TimeMessage>
+        <Timestamp>2013-10-02T21:39:12.6940549-04:00</Timestamp>
+        <Message> &lt;tiny&gt;21:39:12&lt;/tiny&gt; Testman&lt;tiny&gt; has left for Bathroom.&lt;/tiny&gt;&lt;br&gt;</Message>
+      </TimeMessage>
+      <TimeMessage>
+        <Timestamp>2013-10-02T21:39:15.112996-04:00</Timestamp>
+        <Message> &lt;tiny&gt;21:39:15&lt;/tiny&gt; Testman&lt;tiny&gt; has entered from Bathroom.&lt;/tiny&gt;&lt;br&gt;</Message>
+      </TimeMessage>
+    </SceneLog>
+    <Connections>
+      <Connection>
+        <ParentSceneDbName>EastRoom</ParentSceneDbName>
+        <ChildSceneDbName>WestRoom</ChildSceneDbName>
+        <DestinationName>Walk to the west room.</DestinationName>
+        <Position>W</Position>
+      </Connection>
+      <Connection>
+        <ParentSceneDbName>EastRoom</ParentSceneDbName>
+        <ChildSceneDbName>Bathroom</ChildSceneDbName>
+        <DestinationName>Enter bathroom.</DestinationName>
+        <Position>N</Position>
+      </Connection>
+      <Connection>
+        <ParentSceneDbName>EastRoom</ParentSceneDbName>
+        <ChildSceneDbName>OutsideHotel</ChildSceneDbName>
+        <DestinationName>Leave the hotel.</DestinationName>
+        <Position>S</Position>
+      </Connection>
+    </Connections>
+    <EntryRequirements />
+    <EntrySuccessActions />
+    <EntryFailActions />
+    <Img>EastRoom.jpg</Img>
+    <Description>This is the east room of the hotel.</Description>
+  </Scene>
+  <Scene>
+    <dbName>WestRoom</dbName>
+    <CasualName>West Room</CasualName>
+    <SceneLog>
+      <TimeMessage>
+        <Timestamp>2013-10-01T23:30:28.8780794-04:00</Timestamp>
+        <Message> &lt;tiny&gt;23:30:28&lt;/tiny&gt; Testman&lt;tiny&gt; has left for East Room.&lt;/tiny&gt;&lt;br&gt;</Message>
+      </TimeMessage>
+      <TimeMessage>
+        <Timestamp>2013-10-02T20:28:49.4422198-04:00</Timestamp>
+        <Message> &lt;tiny&gt;20:28:49&lt;/tiny&gt; Testman&lt;tiny&gt; has left for East Room.&lt;/tiny&gt;&lt;br&gt;</Message>
+      </TimeMessage>
+      <TimeMessage>
+        <Timestamp>2013-10-02T21:39:11.9496693-04:00</Timestamp>
+        <Message> &lt;tiny&gt;21:39:11&lt;/tiny&gt; Testman&lt;tiny&gt; has left for East Room.&lt;/tiny&gt;&lt;br&gt;</Message>
+      </TimeMessage>
+    </SceneLog>
+    <Connections>
+      <Connection>
+        <ParentSceneDbName>WestRoom</ParentSceneDbName>
+        <ChildSceneDbName>EastRoom</ChildSceneDbName>
+        <DestinationName>Return to the east room.</DestinationName>
+        <Position>E</Position>
+      </Connection>
+    </Connections>
+    <EntryRequirements />
+    <EntrySuccessActions />
+    <EntryFailActions />
+    <Img>WestRoom.jpg</Img>
+    <Description>This is the west room of the hotel.</Description>
+  </Scene>
+  <Scene>
+    <dbName>Bathroom</dbName>
+    <CasualName>Bathroom</CasualName>
+    <SceneLog>
+      <TimeMessage>
+        <Timestamp>2013-10-02T20:29:11.3084117-04:00</Timestamp>
+        <Message> &lt;tiny&gt;20:29:11&lt;/tiny&gt; Testman&lt;tiny&gt; has entered from East Room.&lt;/tiny&gt;&lt;br&gt;</Message>
+      </TimeMessage>
+      <TimeMessage>
+        <Timestamp>2013-10-02T21:39:12.6940549-04:00</Timestamp>
+        <Message> &lt;tiny&gt;21:39:12&lt;/tiny&gt; Testman&lt;tiny&gt; has entered from East Room.&lt;/tiny&gt;&lt;br&gt;</Message>
+      </TimeMessage>
+      <TimeMessage>
+        <Timestamp>2013-10-02T21:39:15.112996-04:00</Timestamp>
+        <Message> &lt;tiny&gt;21:39:15&lt;/tiny&gt; Testman&lt;tiny&gt; has left for East Room.&lt;/tiny&gt;&lt;br&gt;</Message>
+      </TimeMessage>
+    </SceneLog>
+    <Connections>
+      <Connection>
+        <ParentSceneDbName>Bathroom</ParentSceneDbName>
+        <ChildSceneDbName>EastRoom</ChildSceneDbName>
+        <DestinationName>Walk to east room.</DestinationName>
+        <Position>S</Position>
+      </Connection>
+    </Connections>
+    <EntryRequirements>
+      <Requirement>
+        <Type>Form</Type>
+        <Value>plainguy_01</Value>
+        <Inverse>false</Inverse>
+        <FailMessage>
+          <Message>You don't want to go there.</Message>
+        </FailMessage>
+        <PassMessage>
+          <Message>You enter the bathroom.</Message>
+        </PassMessage>
+      </Requirement>
+    </EntryRequirements>
+    <EntrySuccessActions />
+    <EntryFailActions />
+    <Img>Bathroom.jpg</Img>
+    <Description>This is a very nice-looking bathroom.</Description>
+  </Scene>
+  
+  <Scene>
+    <dbName>OutsideHotel</dbName>
+    <CasualName>Outside Hotel</CasualName>
+    <SceneLog />
+    <Connections />
+    <EntryRequirements />
+    <EntrySuccessActions />
+    <EntryFailActions />
+    <Img>Hotel.jpg</Img>
+    <Description>You are standing outside your hotel.  The building is a bit run down, but rent is at least cheap.</Description>
+  </Scene>
+  
+  <Scene>
+    <dbName>street_coffeeshop_inside</dbName>
+    <CasualName>Coffee Cafe</CasualName>
+    <SceneLog />
+    <Connections />
+    <EntryRequirements />
+    <EntrySuccessActions />
+    <EntryFailActions />
+    <Img>street_coffeeshop.jpg</Img>
+    <Description>You are inside a nice, warm coffee shop.  The scent of coffee lingers in your nostrils tantalizingly.</Description>
+  </Scene>
+</ArrayOfScene>

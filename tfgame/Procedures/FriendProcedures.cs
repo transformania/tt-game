@@ -1,0 +1,180 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using tfgame.dbModels.Abstract;
+using tfgame.dbModels.Concrete;
+using tfgame.dbModels.Models;
+using tfgame.ViewModels;
+using WebMatrix.WebData;
+
+namespace tfgame.Procedures
+{
+    public static class FriendProcedures
+    {
+        public static void AddFriend(Player player)
+        {
+            IFriendRepository friendRepo = new EFFriendRepository();
+
+            Friend friend = friendRepo.Friends.FirstOrDefault(f => (f.OwnerMembershipId == WebSecurity.CurrentUserId && f.FriendMembershipId == player.MembershipId) || (f.FriendMembershipId == WebSecurity.CurrentUserId && f.OwnerMembershipId == player.MembershipId));
+
+            // if friend is null, add a new unnaccepted friend binding
+            if (friend == null)
+            {
+                friend = new Friend();
+                friend.OwnerMembershipId = WebSecurity.CurrentUserId;
+                friend.FriendMembershipId = player.MembershipId;
+                friend.IsAccepted = false;
+                friend.FriendsSince = DateTime.UtcNow;
+
+                friendRepo.SaveFriend(friend);
+            }
+
+        }
+
+        public static string DeleteFriend(int friendId)
+        {
+            IFriendRepository friendRepo = new EFFriendRepository();
+
+
+            Friend deleteMe = friendRepo.Friends.FirstOrDefault(f => f.Id == friendId);
+
+            if (deleteMe == null)
+            {
+                return "Friendship not found.";
+            }
+
+            //assert friend is yours
+            if (deleteMe.OwnerMembershipId != WebSecurity.CurrentUserId)
+            {
+                return "This is not your friend listing.";
+            }
+
+            friendRepo.DeleteFriend(friendId);
+            return "Deleted";
+
+        }
+
+        public static bool PlayerIsMyFriend(Player me, Player them)
+        {
+            IFriendRepository friendRepo = new EFFriendRepository();
+            Friend dbFriend = friendRepo.Friends.FirstOrDefault(f => f.OwnerMembershipId == me.MembershipId && f.FriendMembershipId == them.MembershipId && f.IsAccepted == true);
+            Friend dbFriend2 = friendRepo.Friends.FirstOrDefault(f => f.OwnerMembershipId == them.MembershipId && f.FriendMembershipId == me.MembershipId && f.IsAccepted == true);
+
+            if (dbFriend != null || dbFriend2 != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public static IEnumerable<FriendPlayerViewModel> GetMyFriends()
+        {
+            IFriendRepository friendRepo = new EFFriendRepository();
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+
+            IEnumerable<Friend> mydbfriends = friendRepo.Friends.Where(f => f.OwnerMembershipId == WebSecurity.CurrentUserId || f.FriendMembershipId == WebSecurity.CurrentUserId);
+
+            List<FriendPlayerViewModel> output = new List<FriendPlayerViewModel>();
+
+            foreach (Friend friend in mydbfriends)
+            {
+                FriendPlayerViewModel friendPlayer = new FriendPlayerViewModel();
+
+                // this was a request sent BY me.  Grab the player who it was sent to
+                if (friend.OwnerMembershipId == WebSecurity.CurrentUserId)
+                {
+                    try
+                    {
+
+                        Player plyr = playerRepo.Players.FirstOrDefault(p => p.MembershipId == friend.FriendMembershipId);
+
+                        if (plyr != null)
+                        {
+                            friendPlayer.dbPlayer = plyr;
+                            friendPlayer.dbFriend = friend;
+                            output.Add(friendPlayer);
+                        }
+                    }
+                    catch
+                    {
+
+                    }
+                }
+
+                    // this was a request sent TO me.  Grab the player who sent it
+                else if (friend.FriendMembershipId == WebSecurity.CurrentUserId)
+                {
+                    try
+                    {
+                        friendPlayer.dbPlayer = playerRepo.Players.FirstOrDefault(p => p.MembershipId == friend.OwnerMembershipId);
+                        friendPlayer.dbFriend = friend;
+
+                        output.Add(friendPlayer);
+                    }
+                    catch
+                    {
+
+                    }
+                }
+            }
+
+            return output;
+        }
+
+        public static string CancelFriendRequest(int id)
+        {
+            IFriendRepository friendRepo = new EFFriendRepository();
+            Friend friend = friendRepo.Friends.FirstOrDefault(f => f.Id == id);
+
+
+            // assert exists
+            if (friend == null)
+            {
+                return "Error";
+            }
+
+            // assert you've sent this, or else it was sent to you
+            else if (friend.OwnerMembershipId == WebSecurity.CurrentUserId || friend.FriendMembershipId == WebSecurity.CurrentUserId)
+            {
+                friendRepo.DeleteFriend(friend.Id);
+                return "";
+            }
+            else
+            {
+                return "";
+            }
+
+
+        }
+
+        public static string AcceptFriendRequest(int id)
+        {
+            IFriendRepository friendRepo = new EFFriendRepository();
+            Friend friend = friendRepo.Friends.FirstOrDefault(f => f.Id == id);
+
+
+            // assert exists
+            if (friend == null)
+            {
+                return "Error";
+            }
+
+            // assert this was sent to you
+            else if (friend.FriendMembershipId == WebSecurity.CurrentUserId)
+            {
+                friend.IsAccepted = true;
+                friendRepo.SaveFriend(friend);
+                return "Success";
+            }
+            else
+            {
+                return "";
+            }
+        }
+
+    }
+}

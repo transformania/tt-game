@@ -1,0 +1,106 @@
+﻿@model tfgame.dbModels.Models.DMRoll
+
+<head>
+    <link href="~/Content/PvP.css" rel="stylesheet" />
+
+</head>
+
+<p>@Html.ActionLink("Back to game", "Play", "PvP")</p>
+<p>@Html.ActionLink("Back to my encounter list", "MyDMRolls", "Contribution")</p>
+
+<h1>DM Encounter Contribution</h1>
+
+<hr />
+
+<p>Here you can write a message that can be randomly returned by the server when someone in a chat room writes a command in the format of <b>/dm X:Y</b> where X is either an item, creature/human, event, environmental trap, or random transformation (full or partial).  Y is a tag that specifies what theme to draw from to limit results to something that makes sense to the environment and roleplaying session.</p>
+
+<hr />
+
+
+
+<p>Messages are limited to 500 characters.  If you use multiple tags you must separate them with a single whitespace character.  An administrator must approve of these before it enters the database.  Please note that editing a live encounter will put it back into a 'needing approval' state.</p>
+
+<hr />
+
+<div class="error">
+    @ViewBag.Error
+</div>
+
+@using (Html.BeginForm("SendDMRoll", "Contribution", FormMethod.Post))
+{
+    @Html.HiddenFor(i => i.Id)
+
+    <label>Encounter Type</label>
+    @Html.DropDownListFor(m => m.ActionType, new SelectList(
+                  new List<Object>{
+                       new { value = "item"  , text = "Item"  },
+                       new { value = "creature"  , text = "Character or Creature"  },
+                       new { value = "event"  , text = "Event"  },
+                       new { value = "trap"  , text = "Environmental Hazard / Trap"  },
+                       new { value = "tf.animate"  , text = "Transformation (Animate)"  },
+                       new { value = "tf.inanimate"  , text = "Transformation (Inanimate)"  },
+                       new { value = "tf.animal"  , text = "Transformation (Animal)"  },
+                       new { value = "tf.partial"  , text = "Transformation (Partial)"  },
+                    },
+                  "value",
+                  "text",
+                   2))
+
+    <br /><br />
+    <label>Text</label>
+    @Html.TextAreaFor(t => t.Message, new { @class = "wide" })
+
+    <br /><br />
+    <label>Tags</label>
+    @Html.TextAreaFor(t => t.Tags, new { @class = "wide2" })
+
+    <br /><br />
+
+    <input type="submit" value="Save" />
+
+
+}
+
+<hr />
+
+<p>
+    Encounter types:<br />
+    <b>Item</b>:  An item that can be found, won, or looted.<br />
+    <b>Creature</b>:  A human, animal, or some kind of sentient entity that can be encountered.<br />
+    <b>Event</b>:  An event that happens to members of the party that is not necessarily dangerous or involves any characters.<br />
+    <b>Trap</b>:  A deliberately set trap or environmental hazard that party members can roll to avoid.<br />
+    <b>Transformation (Animate)</b>:  A random transformation that can happen to one or more members of a party that leaves them in an animate body.<br />
+    <b>Transformation (Inanimate)</b>:  A random transformation that can happen to one or more members of a party that leaves them in an inanimate form.<br />
+    <b>Transformation (Animal)</b>:  A random transformation that can happen to one or more members of a party that leaves them as an animal.<br />
+    <b>Transformation (Partial)</b>:  A random transformation that can happen to one or more members of a party that modifies only part of their body, ie growing an extra set of breasts, horns, etc.<br />
+</p>
+
+<hr />
+
+<p>Currently available tags:<br />
+    <b>forest</b>:  A dark and magical deciduous forest.<br />
+    <b>highschool</b>:  The hallways of a high school with its students, teachers, and mid-late adolescent drama.<br />
+    <b>bimbocalypse</b>:  City streets filled with victims of the bimbo plague, aka the "Bimbocalypse" where anyone infected turns into a sex driven but highly intelligent and predatorial bimbo seeking to spread the infection.<br />
+    </p>
+
+<hr />
+
+<p>@Html.ActionLink("Back to game", "Play", "PvP")</p>
+<p>@Html.ActionLink("Back to my encounter list", "MyDMRolls", "Contribution")</p>
+
+<script>
+
+</script>
+
+<style>
+    .wide {
+        width: 100%;
+        height: 200px;
+        border: 1px solid lightblue;
+    }
+    .wide2 {
+        width: 100%;
+        height: 50px;
+        border: 1px solid lightblue;
+    }
+</style>

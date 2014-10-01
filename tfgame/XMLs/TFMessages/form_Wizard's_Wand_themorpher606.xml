@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?><Form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<TFMessage_20_Percent_1st>You feel your body become stiff, unable to move, as your attacker casts their spell. Using your mind, you force the spell to revert.</TFMessage_20_Percent_1st>
+
+<TFMessage_40_Percent_1st>Once again, as your opponent casts their curse, your body becomes stiff. You can't help but notice that your skin has began to taken on a slightly darker tint. Again, you force the changes to leave.</TFMessage_40_Percent_1st>
+
+<TFMessage_60_Percent_1st>Now becoming somewhat familiar with the spell, you feel the same effects, although the world around you seems to be getting larger... or you're getting smaller... You quickly reverse the spell.</TFMessage_60_Percent_1st>
+
+<TFMessage_80_Percent_1st>The world grows massive around you, and your skin becomes dark, textured like some kind of rare wood. You struggle to reverse the spell.</TFMessage_80_Percent_1st>
+
+<TFMessage_100_Percent_1st>Your skin becomes hard, and wood textured. This time you're sure you know what's happening to you: You're becoming a stick. You shrink, to almost the size of a ruler. You are barely able to reverse the change, with very little of your human mind remaining.</TFMessage_100_Percent_1st>
+
+<TFMessage_Completed_1st>Your body glows magically, shrinking, darkening and hardening. You fall to the ground like a twig from a tree, a magic twig...</TFMessage_Completed_1st>
+
+<TFMessage_20_Percent_3rd>Your victim freezes in their position, standing straight up. They undo your spell, using their mind.</TFMessage_20_Percent_3rd>
+
+<TFMessage_40_Percent_3rd>Once again, you cast your spell and your opponent's body becomes stiff. You can't help but notice that your victim's skin has began to taken on a slightly darker tint. Somehow they manage to undo your spell.</TFMessage_40_Percent_3rd>
+
+<TFMessage_60_Percent_3rd>You cast your spell at your victim... but... they appear to be getting... smaller? Again, they are able to undo your spell</TFMessage_60_Percent_3rd>
+
+<TFMessage_80_Percent_3rd>Your victim's skin appears to be taking on a darker tint, and patterns... Their skin is beginning to look like some kind of rare wood you saw in a book as a child, it is said to be extinct. They reverse your spell, with more difficulty than they have had thus far.</TFMessage_80_Percent_3rd>
+
+<TFMessage_100_Percent_3rd>Your victim's skin becomes hard and wood again... This time they're aware of what's happening: They're becoming a stick. They shrink, to almost the size of a ruler. They struggle to reverse the changes, and you are sure that very little of their human mind remains...</TFMessage_100_Percent_3rd>
+
+<TFMessage_Completed_3rd>Your victim's body begins to glow, shrinking and turning into a stick. They fall to the ground like a twig from a tree, albeit a magic twig.</TFMessage_Completed_3rd>
+
+</Form>

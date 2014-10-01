@@ -1,0 +1,10 @@
+﻿@model tfgame.ViewModels.PublicBroadcastViewModel
+
+<h1>Public broadcast</h1>
+
+@using (Html.BeginForm("SendPublicBroadcast", "PvPAdmin", FormMethod.Post))
+{
+    @Html.TextAreaFor(m => m.Message)
+    <br />
+     <input type="submit" value="Send" />
+}

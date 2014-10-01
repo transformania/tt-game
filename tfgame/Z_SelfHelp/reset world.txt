@@ -1,0 +1,22 @@
+
+DELETE FROM [Stats].[dbo].[Effects]
+DELETE FROM [Stats].[dbo].[InanimateXPs]
+DELETE FROM [Stats].[dbo].[Items]
+DELETE FROM [Stats].[dbo].[LocationLogs]
+DELETE FROM [Stats].[dbo].[Messages]
+DELETE FROM [Stats].[dbo].[Players]
+DELETE FROM [Stats].[dbo].[PlayerLogs]
+DELETE FROM [Stats].[dbo].[Skills]
+DELETE FROM [Stats].[dbo].[TFEnergies]
+DELETE FROM [Stats].[dbo].[Covenants]
+DELETE FROM [Stats].[dbo].[CovenantApplications]
+DELETE FROM [Stats].[dbo].[ServerLogs]
+DELETE FROM [Stats].[dbo].[PlayerExtras]
+DELETE FROM [Stats].[dbo].[AIDirectives]
+DELETE FROM [Stats].[dbo].[InanimateXPs]
+
+reset PvPWorldStatistics
+
+set chaos mode to false
+
+spawn Lindella

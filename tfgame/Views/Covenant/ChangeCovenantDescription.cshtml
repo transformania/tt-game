@@ -1,0 +1,36 @@
+﻿@model tfgame.dbModels.Models.Covenant
+
+<head>
+    <script src="~/Scripts/jquery-2.1.0.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <link href="~/Content/PvP.css" rel="stylesheet" />
+</head>
+
+<p>
+    @Html.ActionLink("Back to My Covenant", "MyCovenant", "Covenant")
+    @Html.ActionLink("Back to game", "Play", "PvP")
+</p>
+
+<h1>Change Covenant Description</h1>
+
+<p>You can change the self-description of your covenant, @Model.Name, here.</p>
+
+@using (Html.BeginForm("ChangeCovenantDescriptionSubmit", "Covenant", FormMethod.Post))
+{
+    @Html.TextAreaFor(m => m.SelfDescription)
+     <input type="submit" value="Save" />
+    
+    @Html.HiddenFor(m => m.Name)
+    @Html.HiddenFor(m => m.Id)
+    @Html.HiddenFor(m => m.FlagUrl)
+    @Html.HiddenFor(m => m.FounderMembershipId)
+    @Html.HiddenFor(m => m.LastMemberAcceptance)
+    @Html.HiddenFor(m => m.IsPvP)
+    @Html.HiddenFor(m => m.LeaderId)
+}
+
+<p>
+    @Html.ActionLink("Back to My Covenant", "MyCovenant", "Covenant")
+    @Html.ActionLink("Back to game", "Play", "PvP")
+</p>

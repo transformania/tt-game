@@ -1,0 +1,395 @@
+﻿@model tfgame.dbModels.Models.EffectContribution
+@using tfgame.dbModels.Models
+@using tfgame.CustomHtmlHelpers
+
+<head>
+    <link href="~/Content/PvP.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-2.1.0.min.js"></script>
+</head>
+
+@Html.ActionLink("Back to game (Don't forget to save!)", "Play", "PvP")<br />
+@Html.ActionLink("Go to Spell / Form / Item Contribution Form", "Contribute", "PvP", new { Id = Session["ContributionId"] }, null)
+
+<div class="result">
+    @Html.Raw(ViewBag.Result)
+</div>
+<div class="error">
+    @ViewBag.ErrorMessage
+</div>
+<div class="suberror">
+    @ViewBag.SubErrorMessage
+</div>
+
+<h1>Contribute Curses and Blessings</h1>
+
+
+
+
+<p>
+    Click below to load one of your existing curse contributions (save first before navigating away if you need to!):<br />
+    @{
+        foreach (EffectContribution contribution in ViewBag.OtherEffectContributions)
+        {
+            @Html.ActionLink("Curse name:  " + contribution.Effect_FriendlyName + ",", "ContributeEffect", "Contribution", new { Id = contribution.Id }, null)<br />
+        }
+    }
+    @Html.ActionLink("[Start a new contribution]", "ContributeEffect", "Contribution", new { Id = "-1" }, FormMethod.Post)
+</p>
+
+@*--------------------------------------*@
+
+
+@{
+
+
+    if (ViewBag.Proofreading != null)
+    {
+
+        <p>CONTRIBUTIONS AVAILABLE TO PROOFREAD</p>
+
+        foreach (EffectContribution contribution in ViewBag.Proofreading)
+        {
+
+            if (contribution.IsLive == true)
+            {
+                <span class='newlink'>
+                    @Html.ActionLink("Effect name:  " + contribution.Effect_FriendlyName, "ContributeEffect", "Contribution", new { Id = contribution.Id }, null)
+
+                    @{
+                if (contribution.ProofreadingCopy == true)
+                {
+                    <span class="good">PROOFREADING COPY</span>
+                }
+                if (contribution.ProofreadingLockIsOn == true)
+                {
+                    <span class="bad">Being Proofread by @contribution.CheckedOutBy</span> <span>@CharactersHere.DatetimeToTimeago(contribution.Timestamp)</span>
+                }
+                    }
+
+                    <br />
+                </span>
+
+            }
+            else
+            {
+                @Html.ActionLink("Effect name:  " + contribution.Effect_FriendlyName, "ContributeEffect", "Contribution", new { Id = contribution.Id }, null)
+                if (contribution.ProofreadingCopy == true)
+                {
+                    <span class="good">PROOFREADING COPY</span>
+                }
+
+                if (contribution.ProofreadingLockIsOn == true)
+                {
+                    <span class="bad">Being Proofread by @contribution.CheckedOutBy</span> <span>@CharactersHere.DatetimeToTimeago(contribution.Timestamp)</span>
+                }
+
+                <br />
+            }
+        }
+
+    }
+}
+
+@*--------------------------------------*@
+
+<p><b>NOTE:  I would STRONGLY recommend saving this information somewhere on your computer.  I do not know how reliable my hosting service is or if there are bugs that might erase some data.  I also recommend saving after every few text boxes you fill out.</b></p>
+
+<p><span class="bad">What is a curse?</span>  A curse is a <b>temporary</b> effect that a player can receive that changes his or her abilities.  It only lasts a limited length of time and once the effect is expired there will be a cooldown in which this player is immune to receiving the same curse again.  Curses can either be magic that hinders its target as a magical enchantment, a mental effect that might change how the victim is said to act or feel (such as acting especially ditzy or lusty), or physical changes that only change the target partially (such as shrinking, being covered in a liquid, entangled in roots, etc.)</p>
+
+<p><span class="bad">Curses can be either good, bad, or neutral.</span>  However, note that "good" curses that are cast as spells can only be given to players with the same covenant (team) as the caster and covenants have not yet been implemented into the game.</p>
+
+
+
+<p>
+    <label>Where does this curse come from?</label>
+
+    <select id="curseorigin">
+        <option value="location">Searching in a location</option>
+        <option value="form">A spell gained by being an specific animate form</option>
+        <option value="item">A spell gained by having an specific item equipped</option>
+    </select>
+</p>
+
+
+@using (Html.BeginForm("SendEffectContribution", "Contribution", FormMethod.Post))
+{
+    
+       if (Model.ProofreadingCopy == true)
+        {
+            <h1 class="good">THIS IS A PROOFREADING COPY.</h1>
+        }
+
+    @Html.HiddenFor(e => e.Id)
+
+    <h2>Spell</h2>
+    <div class="form__panel group" style="background-color: lightpink;">
+
+        <div id="SpellWrapper">
+
+            <p><b>The player who turns into this form or equips a specific item will learn this spell.  Casting this spell on other players will give the target the curse.  The spell is forgotten if the player's form changes or they unequip the item that gives the spell.</b></p>
+
+            <div class="form__panel">
+                <label for="Skill_FriendlyName">Name of Spell</label>
+                @Html.TextBoxFor(e => e.Skill_FriendlyName)
+            </div>
+
+            <div class="form__panel" id="Skill_UniqueToForm_Panel" style="display: none;">
+                <label for="Skill_FriendlyName">What is the name of the form that grants this spell?</label>
+                @Html.TextBoxFor(e => e.Skill_UniqueToForm)
+            </div>
+
+            <div class="form__panel" id="Skill_UniqueToItem_Panel" style="display: none;">
+                <label for="Skill_UniqueToItem">What is the name of the item this spell grants when equipped?</label>
+                @Html.TextBoxFor(e => e.Skill_UniqueToItem)
+            </div>
+
+        
+
+            <div class="form__panel">
+                <label for="Skill_Description">Description of this spell</label>
+                @Html.TextAreaFor(e => e.Skill_Description)
+            </div>
+
+            <div class="form__panel">
+                <label for="Skill_ManaCost">Mana Cost</label>
+                @Html.TextBoxFor(e => e.Skill_ManaCost)
+            </div>
+
+        </div>
+        <div id="SpellWrapperNotUsed" style="display: none;">
+            <p><b>This curse is gained from a location and not from a spell.</b></p>
+        </div>
+    </div>
+    
+     if (Model.ProofreadingCopy == true)
+        {
+            <h1 class="good">THIS IS A PROOFREADING COPY.</h1>
+        }
+
+    <p>
+        <input type="submit" value="Save" />
+    </p>
+
+    <h2>Curse</h2>
+    <div class="form__panel group" style="background-color: lightsteelblue;">
+
+
+        <div class="form__panel">
+            <label for="Effect_FriendlyName">Name of this curse</label>
+            @Html.TextBoxFor(e => e.Effect_FriendlyName)
+        </div>
+
+        <div class="form__panel" id="Skill_UniqueToLocation_Panel" style="display: none;">
+            <label for="Skill_UniqueToLocation">What is the name of the location where this curse can be obtained when searching?</label>
+            @Html.TextBoxFor(e => e.Skill_UniqueToLocation)
+        </div>
+
+        <div class="form__panel">
+            <label for="Effect_Description">A short description of how this curse was obtained as well as a description of what it's like to currently be under the influence of the curse</label>
+            @Html.TextAreaFor(e => e.Effect_Description)
+        </div>
+
+        <div class="form__panel">
+            <label for="Effect_Duration">Turn duration of curse</label>
+            @Html.TextBoxFor(e => e.Effect_Duration)
+        </div>
+
+        <div class="form__panel">
+            <label for="Effect_Cooldown">Turns of cooldown of effect.  This must be <b>greater</b> than the duration of the curse and is burned down at the same time as the duration.  For example, a curse with 6 duration and 9 cooldown will have 6 turns of giving the player immunity followed by 3 turns of immunity.</label>
+            @Html.TextBoxFor(e => e.Effect_Cooldown)
+        </div>
+
+        <div class="form__panel">
+            <label for="Effect_Bonuses">Abilities affected by this curse.  Please use the bonus calculator @Html.ActionLink("which can be opened in a new tab by clicking here", "ContributeBalanceCalculator", new { controller = "PvP" }, new { target = "_blank" }) as a reference to see which bonuses / penalties are available and to see whether your curse falls within acceptable limits.  Mote:  Curses gained from searching a location ARE EXEMPT from these balancing rules.</label>
+            @Html.TextAreaFor(e => e.Effect_Bonuses)
+        </div>
+
+        <div class="form__panel externalMessage">
+           The next group of inputs are for the message the VICTIM of the curse sees when they are first hit by it.  You can use a generic gender-neutral version of the curse has nothing to do with gender, but there are also male and female versions if you want to get more specific.  You must fill out either the gender netural version or both the male and female specific inputs (or all of them, if you want)
+        </div>
+
+        <div class="form__panel">
+            <label for="Effect_VictimHitText">Message the victim receives when they first receive this curse.  Gender neutral.</label>
+            @Html.TextAreaFor(e => e.Effect_VictimHitText)
+        </div>
+
+        <div class="form__panel">
+            <label for="Effect_VictimHitText_M">Message the victim receives when they first receieve this curse when the player is MALE.  <span class="icon-male"></span></label>
+            @Html.TextAreaFor(e => e.Effect_VictimHitText_M)
+        </div>
+
+        <div class="form__panel">
+            <label for="Effect_VictimHitText_F">Message the victim receives when they first receieve this curse when the player is FEMALE.  <span class="icon-female"></span></label>
+            @Html.TextAreaFor(e => e.Effect_VictimHitText_F)
+        </div>
+
+        <div class="form__panel externalMessage" id="attackerMessageNote">
+            The next group of inputs are for the message the CASTER of the spell that gives the curse sees when they cast it against their target.  You can use a generic gender-neutral version of the curse has nothing to do with gender, but there are also male and female versions if you want to get more specific.  You must fill out either the gender netural version or both the male and female specific inputs (or all of them, if you want)
+        </div>
+
+        <div class="form__panel" id="Effect_AttackHitText_Panel">
+            <label for="Effect_AttackHitText">Message the attacker of the effect receives when they give this curse to their target.</label>
+            @Html.TextAreaFor(e => e.Effect_AttackHitText)
+        </div>
+
+        <div class="form__panel" id="Effect_AttackHitText_M_Panel">
+            <label for="Effect_AttackHitText_M">Message the attacker of the effect receives when they give this curse to their target when the attacker is MALE.  <span class="icon-male"></span></label>
+            @Html.TextAreaFor(e => e.Effect_AttackHitText_M)
+        </div>
+
+        <div class="form__panel" id="Effect_AttackHitText_F_Panel">
+            <label for="Effect_AttackHitText_F">Message the attacker of the effect receives when they give this curse to their target when the attacker is FEMALE.  <span class="icon-female"></span></label>
+            @Html.TextAreaFor(e => e.Effect_AttackHitText_F)
+        </div>
+
+
+
+    </div>
+    
+     if (Model.ProofreadingCopy == true)
+        {
+            <h1 class="good">THIS IS A PROOFREADING COPY.</h1>
+        }
+        <input type="submit" value="Save" />
+
+    <h2>Finishing up</h2>
+    <div class="form__panel group" style="background-color: #D1FFBB;">
+        <div class="form__panel">
+            <label for="ReadyForReview">What is your name?</label>
+            @Html.TextBoxFor(e => e.SubmitterName)
+        </div>
+        <div class="form__panel">
+            <label for="ReadyForReview">Who else would you like to thank for helping this effect get made?</label>
+            @Html.TextAreaFor(e => e.AdditionalSubmitterNames)
+        </div>
+        <div class="form__panel">
+            <label for="SubmitterURL">Do you have a website whose URL you'd like to have listed along with your name when being credited?  If so, enter the URL, otherwise leave empty.</label>
+            @Html.TextBoxFor(e => e.SubmitterURL)
+        </div>
+        <div class="form__panel">
+            <label for="ReadyForReview">Is this contribution ready for review?  Check if yes, otherwise leave unchecked.</label>
+            @Html.CheckBoxFor(e => e.ReadyForReview)
+        </div>
+        <div class="form__panel">
+            <label for="ReadyForReview">Write any additional notes about this contribution here.</label>
+            @Html.TextAreaFor(e => e.Notes)
+        </div>
+    </div>
+
+
+
+
+
+    <br /><br />
+    <input type="submit" value="Save" />
+
+}
+
+@Html.ActionLink("Back to game (Don't forget to save!)", "Play", "PvP")
+
+<script>
+
+    $(document).ready(function () {
+
+       
+
+        $("#curseorigin").change(function () {
+            if ($(this).val() == "location") {
+                showForLocationCurse();
+            } else if ($(this).val() == "form") {
+                showForFormCurse();
+            } else if ($(this).val() == "item") {
+                showForItemCurse();
+            }
+        });
+
+        var startLocation = "@Model.Skill_UniqueToLocation";
+        var startForm = "@Model.Skill_UniqueToForm";
+        var startItem = "@Model.Skill_UniqueToItem";
+
+        if (startLocation!="") {
+            showForLocationCurse();
+            $("#curseorigin").val("location");
+        }
+
+        else if (startForm!="") {
+            showForFormCurse();
+            $("#curseorigin").val("form");
+        }
+
+       else if (startItem!="") {
+            showForItemCurse();
+            $("#curseorigin").val("item");
+       }
+       else {
+           showForFormCurse();
+           $("#curseorigin").val("form");
+       }
+
+        
+        if ($("#Id").val() == -1) {
+
+        } else {
+            alert("Load successful");
+        }
+
+    });
+
+    function showForLocationCurse() {
+        $("#Skill_UniqueToLocation_Panel").show();
+        $("#Skill_UniqueToForm_Panel").hide();
+        $("#Skill_UniqueToItem_Panel").hide();
+
+        $("#SpellWrapper").hide();
+        $("#SpellWrapperNotUsed").show();
+
+        $("#Effect_AttackHitText_Panel").hide();
+        $("#Effect_AttackHitText_M_Panel").hide();
+        $("#Effect_AttackHitText_F_Panel").hide();
+
+        $("#Skill_UniqueToForm").val("");
+        $("#Skill_UniqueToItem").val("");
+
+        $("#attackerMessageNote").hide();
+
+    }
+
+    function showForFormCurse() {
+        $("#Skill_UniqueToLocation_Panel").hide();
+        $("#Skill_UniqueToForm_Panel").show();
+        $("#Skill_UniqueToItem_Panel").hide();
+
+        $("#SpellWrapper").show();
+        $("#SpellWrapperNotUsed").hide();
+
+        $("#Effect_AttackHitText_Panel").show();
+        $("#Effect_AttackHitText_M_Panel").show();
+        $("#Effect_AttackHitText_F_Panel").show();
+
+        $("#Skill_UniqueToLocation").val("");
+        $("#Skill_UniqueToItem").val("");
+
+        $("#attackerMessageNote").show();
+
+    }
+
+    function showForItemCurse() {
+        $("#Skill_UniqueToLocation_Panel").hide();
+        $("#Skill_UniqueToForm_Panel").hide();
+        $("#Skill_UniqueToItem_Panel").show();
+
+        $("#SpellWrapper").show();
+        $("#SpellWrapperNotUsed").hide();
+
+        $("#Effect_AttackHitText_Panel").show();
+        $("#Effect_AttackHitText_M_Panel").show();
+        $("#Effect_AttackHitText_F_Panel").show();
+
+        $("#Skill_UniqueToLocation").val("");
+        $("#Skill_UniqueToForm").val("");
+
+        $("#attackerMessageNote").show();
+
+    }
+
+</script>

@@ -1,0 +1,26 @@
+﻿<head>
+    <link href="~/Content/PvP.css" rel="stylesheet" />
+</head>
+
+<p>
+    @Html.ActionLink("Back to My Covenant", "MyCovenant", "Covenant")
+    @Html.ActionLink("Back to game", "Play", "PvP")
+</p>
+
+@model tfgame.ViewModels.PublicBroadcastViewModel
+
+<h1>Covenant-Wide Message</h1>
+
+<p>You can send a message to all members of your covenant here.</p>
+
+@using (Html.BeginForm("SendCovenantWideMessage", "Covenant", FormMethod.Post))
+{
+    @Html.TextAreaFor(m => m.Message)
+    <br />
+    <input type="submit" value="Send" />
+}
+
+<p>
+    @Html.ActionLink("Back to My Covenant", "MyCovenant", "Covenant")
+    @Html.ActionLink("Back to game", "Play", "PvP")
+</p>

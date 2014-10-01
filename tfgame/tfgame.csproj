@@ -1,0 +1,1381 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{99C61F7F-C8C3-48D6-A03A-ADEFFC36DE39}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>tfgame</RootNamespace>
+    <AssemblyName>tfgame</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime, Version=3.4.1.9004, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.AspNet, Version=4.1.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\DotNetOpenAuth.AspNet.4.1.4.12333\lib\net45-full\DotNetOpenAuth.AspNet.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.Core, Version=4.1.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\DotNetOpenAuth.Core.4.1.4.12333\lib\net45-full\DotNetOpenAuth.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OAuth, Version=4.1.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\DotNetOpenAuth.OAuth.Core.4.1.4.12333\lib\net45-full\DotNetOpenAuth.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OAuth.Consumer, Version=4.1.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\DotNetOpenAuth.OAuth.Consumer.4.1.4.12333\lib\net45-full\DotNetOpenAuth.OAuth.Consumer.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OpenId, Version=4.1.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\DotNetOpenAuth.OpenId.Core.4.1.4.12333\lib\net45-full\DotNetOpenAuth.OpenId.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OpenId.RelyingParty, Version=4.1.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\DotNetOpenAuth.OpenId.RelyingParty.4.1.4.12333\lib\net45-full\DotNetOpenAuth.OpenId.RelyingParty.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.0.2\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.0.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Core">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.2.0.3\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.SystemWeb">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.SystemWeb.2.0.3\lib\net45\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Data.Edm, Version=5.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Data.Edm.5.6.0\lib\net40\Microsoft.Data.Edm.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Data.OData, Version=5.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Data.OData.5.6.0\lib\net40\Microsoft.Data.OData.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin">
+      <HintPath>..\packages\Microsoft.Owin.2.0.2\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.2.0.2\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security">
+      <HintPath>..\packages\Microsoft.Owin.Security.2.0.2\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.WebPages.OAuth, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.OAuth.3.1.1\lib\net45\Microsoft.Web.WebPages.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http.Extensions">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.18\lib\net45\System.Net.Http.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.1.1\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.18\lib\net45\System.Net.Http.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Spatial, Version=5.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\System.Spatial.5.6.0\lib\net40\System.Spatial.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.1.1\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.OData, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.OData.5.1.1\lib\net45\System.Web.Http.OData.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.1.1\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.1.1\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.1.1\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="WebGrease, Version=1.6.5135.21930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="WebMatrix.Data, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.Data.3.1.1\lib\net45\WebMatrix.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="WebMatrix.WebData, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.WebData.3.1.1\lib\net45\WebMatrix.WebData.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\AuthConfig.cs" />
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Chat\ChatHub.cs" />
+    <Compile Include="Chat\DuelHub.cs" />
+    <Compile Include="Chat\Startup.cs" />
+    <Compile Include="Controllers\ContributionController.cs" />
+    <Compile Include="Controllers\CovenantController.cs" />
+    <Compile Include="Controllers\DuelController.cs" />
+    <Compile Include="Controllers\PvPAdminController.cs" />
+    <Compile Include="Controllers\PvPController.cs" />
+    <Compile Include="Controllers\SettingsController.cs" />
+    <Compile Include="CustomHtmlHelpers\CharactersHere.cs" />
+    <Compile Include="dbModels\Abstract\IAIDirective.cs" />
+    <Compile Include="dbModels\Abstract\IBuffRepository.cs" />
+    <Compile Include="dbModels\Abstract\IChatLogRepository.cs" />
+    <Compile Include="dbModels\Abstract\IContributionRepository.cs" />
+    <Compile Include="dbModels\Abstract\ICovenantApplicationRepository.cs" />
+    <Compile Include="dbModels\Abstract\ICovenantRepository.cs" />
+    <Compile Include="dbModels\Abstract\IDbStaticFormRepository.cs" />
+    <Compile Include="dbModels\Abstract\IDbStaticItemRepository.cs" />
+    <Compile Include="dbModels\Abstract\IDMRollRepository.cs" />
+    <Compile Include="dbModels\Abstract\IEffectContributionRepository.cs" />
+    <Compile Include="dbModels\Abstract\IEffectRepository.cs" />
+    <Compile Include="dbModels\Abstract\IFriendRepository.cs" />
+    <Compile Include="dbModels\Abstract\IInanimateXPRepository.cs" />
+    <Compile Include="dbModels\Abstract\IItemRepository.cs" />
+    <Compile Include="dbModels\Abstract\ILocationLogRepository.cs" />
+    <Compile Include="dbModels\Abstract\IMessageRepository.cs" />
+    <Compile Include="dbModels\Abstract\IPlayerBioRepository.cs" />
+    <Compile Include="dbModels\Abstract\IPlayerExtraRepository.cs" />
+    <Compile Include="dbModels\Abstract\IPlayerLogRepository.cs" />
+    <Compile Include="dbModels\Abstract\IPlayerRepository.cs" />
+    <Compile Include="dbModels\Abstract\IPvPWorldStatRepository.cs" />
+    <Compile Include="dbModels\Abstract\IReservedNameRepository.cs" />
+    <Compile Include="dbModels\Abstract\IRPPointRepository.cs" />
+    <Compile Include="dbModels\Abstract\IServerLogRepository.cs" />
+    <Compile Include="dbModels\Abstract\ISkillRepository.cs" />
+    <Compile Include="dbModels\Abstract\IDbStaticSkillRepository.cs" />
+    <Compile Include="dbModels\Abstract\ITFEnergyRepository.cs" />
+    <Compile Include="dbModels\Abstract\ITFMessageRepository.cs" />
+    <Compile Include="dbModels\Concrete\EFChatLogRepository.cs" />
+    <Compile Include="dbModels\Concrete\EFDbStaticFormRepository.cs" />
+    <Compile Include="dbModels\Concrete\EFDbStaticItemRepository.cs" />
+    <Compile Include="dbModels\Concrete\EFDMRollRepository.cs" />
+    <Compile Include="dbModels\Concrete\EFPlayerExtraRepository.cs" />
+    <Compile Include="dbModels\Concrete\EFRPPointRespository.cs" />
+    <Compile Include="dbModels\Concrete\EFTFMessageRepository.cs" />
+    <Compile Include="dbModels\Models\Buff.cs" />
+    <Compile Include="dbModels\Concrete\EFAIDirectiveRepository.cs" />
+    <Compile Include="dbModels\Concrete\EFBuffRepository.cs" />
+    <Compile Include="dbModels\Concrete\EFContributionContext.cs" />
+    <Compile Include="dbModels\Concrete\EFCovenantApplicationRepository.cs" />
+    <Compile Include="dbModels\Concrete\EFCovenantRepository.cs" />
+    <Compile Include="dbModels\Concrete\EFEffectContributionRepository.cs" />
+    <Compile Include="dbModels\Concrete\EFEffectRepository.cs" />
+    <Compile Include="dbModels\Concrete\EFFriendRepository.cs" />
+    <Compile Include="dbModels\Concrete\EFInanimateXPRepository.cs" />
+    <Compile Include="dbModels\Concrete\EFItemRepository.cs" />
+    <Compile Include="dbModels\Concrete\EFLocationLogRepository.cs" />
+    <Compile Include="dbModels\Concrete\EFMessageContext.cs" />
+    <Compile Include="dbModels\Concrete\EFPlayerBioRepository.cs" />
+    <Compile Include="dbModels\Concrete\EFPlayerLogRepository.cs" />
+    <Compile Include="dbModels\Concrete\EFPlayerRepository.cs" />
+    <Compile Include="dbModels\Concrete\EFPvPWorldStatRepository.cs" />
+    <Compile Include="dbModels\Concrete\EFReservedNameRepository.cs" />
+    <Compile Include="dbModels\Concrete\EFServerLogRepoisotry.cs" />
+    <Compile Include="dbModels\Concrete\EFSkillRepository.cs" />
+    <Compile Include="dbModels\Concrete\EFDbStaticSkillRepository.cs" />
+    <Compile Include="dbModels\Concrete\EFTFEnergyRepository.cs" />
+    <Compile Include="dbModels\Models\AIDirective.cs" />
+    <Compile Include="dbModels\Models\ChatLog.cs" />
+    <Compile Include="dbModels\Models\Contribution.cs" />
+    <Compile Include="dbModels\Models\Covenant.cs" />
+    <Compile Include="dbModels\Models\CovenantApplication.cs" />
+    <Compile Include="dbModels\Models\DbStaticForm.cs" />
+    <Compile Include="dbModels\Models\DbStaticItem.cs" />
+    <Compile Include="dbModels\Models\DMItem.cs" />
+    <Compile Include="dbModels\Models\Effect.cs" />
+    <Compile Include="dbModels\Models\EffectContribution.cs" />
+    <Compile Include="dbModels\Models\Friend.cs" />
+    <Compile Include="dbModels\Models\InanimateXP.cs" />
+    <Compile Include="dbModels\Models\Item.cs" />
+    <Compile Include="dbModels\Models\LocationLog.cs" />
+    <Compile Include="dbModels\Models\Message.cs" />
+    <Compile Include="dbModels\Models\Player.cs" />
+    <Compile Include="dbModels\Models\PlayerBio.cs" />
+    <Compile Include="dbModels\Models\PlayerExtra.cs" />
+    <Compile Include="dbModels\Models\PlayerLog.cs" />
+    <Compile Include="dbModels\Models\PvPWorldStat.cs" />
+    <Compile Include="dbModels\Models\ReservedName.cs" />
+    <Compile Include="dbModels\Models\RPPoint.cs" />
+    <Compile Include="dbModels\Models\ServerLog.cs" />
+    <Compile Include="dbModels\Models\Skill.cs" />
+    <Compile Include="dbModels\Models\DbStaticSkill.cs" />
+    <Compile Include="dbModels\Models\TFEnergy.cs" />
+    <Compile Include="dbModels\Models\TFMessage.cs" />
+    <Compile Include="Procedures\AIDirectiveProcedures.cs" />
+    <Compile Include="Procedures\AIProcedures.cs" />
+    <Compile Include="Procedures\AnimalProcedures.cs" />
+    <Compile Include="Procedures\AttackProcedures.cs" />
+    <Compile Include="Procedures\BossProcedures\BossProcedures_Valentine.cs" />
+    <Compile Include="Procedures\ChatLogProcedures.cs" />
+    <Compile Include="Procedures\DMRollProcedures.cs" />
+    <Compile Include="Procedures\Pathfinding.cs" />
+    <Compile Include="Procedures\CovenantProcedures.cs" />
+    <Compile Include="Procedures\EffectProcedures.cs" />
+    <Compile Include="Procedures\FriendProcedures.cs" />
+    <Compile Include="Procedures\InanimateXPProcedures.cs" />
+    <Compile Include="Procedures\ItemProcedures.cs" />
+    <Compile Include="Procedures\LocationLogProcedures.cs" />
+    <Compile Include="Procedures\MessageProcedures.cs" />
+    <Compile Include="Procedures\PlayerExtraProcedures.cs" />
+    <Compile Include="Procedures\PlayerLogProcedures.cs" />
+    <Compile Include="Procedures\PlayerProcedures.cs" />
+    <Compile Include="Procedures\PvPWorldStatProcedures.cs" />
+    <Compile Include="Procedures\SettingsProcedures.cs" />
+    <Compile Include="Procedures\SkillProcedures.cs" />
+    <Compile Include="Procedures\TFEnergyProcedures.cs" />
+    <Compile Include="Statics\CovenantDictionary.cs" />
+    <Compile Include="Statics\EffectStatics.cs" />
+    <Compile Include="Statics\Forms.cs" />
+    <Compile Include="Statics\FormStatics.cs" />
+    <Compile Include="Statics\ItemStatics.cs" />
+    <Compile Include="Statics\PvPStatics.cs" />
+    <Compile Include="Statics\SkillStatics.cs" />
+    <Compile Include="Statics\TrustStatics.cs" />
+    <Compile Include="ViewModels\BalancePageViewModel.cs" />
+    <Compile Include="ViewModels\BioPageContributionViewModel.cs" />
+    <Compile Include="ViewModels\BossSummon.cs" />
+    <Compile Include="ViewModels\BuffBox.cs" />
+    <Compile Include="ViewModels\ContributionStatusViewModel.cs" />
+    <Compile Include="ViewModels\CovenantViewModel.cs" />
+    <Compile Include="ViewModels\Die.cs" />
+    <Compile Include="ViewModels\EffectViewModel.cs" />
+    <Compile Include="ViewModels\GameOverViewModelAnimal.cs" />
+    <Compile Include="ViewModels\Form.cs" />
+    <Compile Include="ViewModels\FriendPageViewModel.cs" />
+    <Compile Include="ViewModels\FriendPlayerViewModel.cs" />
+    <Compile Include="ViewModels\GameOverViewModel.cs" />
+    <Compile Include="ViewModels\InventoryBonusesViewModel.cs" />
+    <Compile Include="ViewModels\ItemLeaderboardViewModel.cs" />
+    <Compile Include="ViewModels\ItemViewModel.cs" />
+    <Compile Include="ViewModels\Location.cs" />
+    <Compile Include="ViewModels\LocationDropdown.cs" />
+    <Compile Include="ViewModels\LogBox.cs" />
+    <Compile Include="ViewModels\MessageBag.cs" />
+    <Compile Include="ViewModels\MessageCountDataViewModel.cs" />
+    <Compile Include="ViewModels\NewCharacterViewModel.cs" />
+    <Compile Include="ViewModels\PlayerFormItemsSkillsViewModel.cs" />
+    <Compile Include="ViewModels\PlayerFormViewModel.cs" />
+    <Compile Include="ViewModels\PlayerSearchViewModel.cs" />
+    <Compile Include="ViewModels\PlayPageViewModel.cs" />
+    <Compile Include="ViewModels\PublicBroadcastViewModel.cs" />
+    <Compile Include="ViewModels\ServerBalance.cs" />
+    <Compile Include="ViewModels\SkillViewModel.cs" />
+    <Compile Include="ViewModels\StaticEffect.cs" />
+    <Compile Include="ViewModels\StaticItem.cs" />
+    <Compile Include="ViewModels\StaticSkill.cs" />
+    <Compile Include="ViewModels\WorldStats.cs" />
+    <Content Include="Characters\All Characters %2815%29.txt" />
+    <Content Include="Characters\All Characters %2816%29.txt" />
+    <Content Include="Characters\All Characters %2817%29.txt" />
+    <Content Include="Characters\All Characters %2819%29.txt" />
+    <Content Include="Characters\Maxwell Slim.txt" />
+    <Content Include="Characters\Portia Mason.txt" />
+    <Content Include="Content\AdminStyle.css" />
+    <Content Include="Content\Bios.css" />
+    <Content Include="Content\MMO.css" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\TFWorldController.cs" />
+    <Compile Include="Controllers\TransformaniaTimeController.cs" />
+    <Compile Include="dbModels\Abstract\ICharacterRepository.cs" />
+    <Compile Include="dbModels\Abstract\IGameshowStatsRepository.cs" />
+    <Compile Include="dbModels\Concrete\EFCharacterRepository.cs" />
+    <Compile Include="dbModels\Concrete\EFDBContext.cs" />
+    <Compile Include="dbModels\Concrete\EFGameShowStatsRepository.cs" />
+    <Compile Include="dbModels\Models\Character.cs" />
+    <Compile Include="dbModels\Models\GameshowStats.cs" />
+    <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Migrations\InitSecurityDb.cs" />
+    <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\Game.cs" />
+    <Compile Include="Procedures\Procedures.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Content Include="Images\PvP\animalPortraits\adorable_donkey_dominque.png" />
+    <Content Include="Images\PvP\animalPortraits\bdsm_pony_girl_Meddle.png" />
+    <Content Include="Images\PvP\animalPortraits\bimboSphere_Meddle.png" />
+    <Content Include="Images\PvP\animalPortraits\cat_familiar_lux.png" />
+    <Content Include="Images\PvP\animalPortraits\cow_sampleguy.jpg" />
+    <Content Include="Images\PvP\animalPortraits\djinn_slave_Dauname.png" />
+    <Content Include="Images\PvP\animalPortraits\djinn_slave_Luxianne.png" />
+    <Content Include="Images\PvP\animalPortraits\brainwashed_bitch_LexamTheGemFox.png" />
+    <Content Include="Images\PvP\animalPortraits\docile_cowgirl_Meddle.png" />
+    <Content Include="Images\PvP\animalPortraits\fairy_familiar_Meddle.png" />
+    <Content Include="Images\PvP\animalPortraits\fennec_fox_luxianne.png" />
+    <Content Include="Images\PvP\animalPortraits\husky_Luxianne.png" />
+    <Content Include="Images\PvP\animalPortraits\mischevious_crow_Luxianne.png" />
+    <Content Include="Images\PvP\animalPortraits\pocket_dragon_Meddle.png" />
+    <Content Include="Images\PvP\animalPortraits\pocket_googirl_Luxianne.png" />
+    <Content Include="Images\PvP\animalPortraits\skunk_lux.png" />
+    <Content Include="Images\PvP\animalPortraits\stallion_Danaume.jpg" />
+    <Content Include="Images\PvP\animalPortraits\strawdoll_Meddle.png" />
+    <Content Include="Images\PvP\animalPortraits\tentacle_monster_Meddle.png" />
+    <Content Include="Images\PvP\animalPortraits\tiny_mouse_girl_curry_senpai.png" />
+    <Content Include="Images\PvP\animalPortraits\white_tiger_Luxianne.png" />
+    <Content Include="Images\PvP\animalPortraits\wolf_cub_lux.png" />
+    <Content Include="Images\PvP\CovenantFlags\generic.jpg" />
+    <Content Include="Images\PvP\Icons\Backpack_Meddle.png" />
+    <Content Include="Images\PvP\Icons\cleansemeditate.png" />
+    <Content Include="Images\PvP\Icons\donator_1.gif" />
+    <Content Include="Images\PvP\Icons\icon-defense.png" />
+    <Content Include="Images\PvP\Icons\icon-health_recovery.png" />
+    <Content Include="Images\PvP\Icons\icon-mana_recovery.png" />
+    <Content Include="Images\PvP\Icons\icon-permanent.png" />
+    <Content Include="Images\PvP\Icons\icon-protection.png" />
+    <Content Include="Images\PvP\Icons\inventory.jpg" />
+    <Content Include="Images\PvP\Icons\money.png" />
+    <Content Include="Images\PvP\Icons\pvp.png" />
+    <Content Include="Images\PvP\Icons\rp.png" />
+    <Content Include="Images\PvP\Icons\target.png" />
+    <Content Include="Images\PvP\Icons\tt_logo.ico" />
+    <Content Include="Images\PvP\itemsPortraits\3tiered_skirt_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\5_inch_heels_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\ballgag_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\binding_tattoo_spacedande.png" />
+    <Content Include="Images\PvP\itemsPortraits\black_leather_handbag_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\bondage_harnass_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\bondage_magazine_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\Cheerleader_Shell_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\cocktail_dress_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\concealment_cookie_SillyLuxianne.png" />
+    <Content Include="Images\PvP\itemsPortraits\Count_Cuddles_Luxianne.png" />
+    <Content Include="Images\PvP\itemsPortraits\crown_of_order_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\daisy_dukes_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\disembodied_chest_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\dog_collar_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\evening_gown_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\Feather_Duster_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\fetish_staff_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\fishnet_tights_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\french_maid_petticoat_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\gemstone_Lux.gif" />
+    <Content Include="Images\PvP\itemsPortraits\gothic_lolita_boots_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\heart_glasses_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\Honeypot_Luxianne.png" />
+    <Content Include="Images\PvP\itemsPortraits\kneehigh_socks_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\latex_collar_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\latex_corset_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\Leather_Shoes_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\lipstick.png" />
+    <Content Include="Images\PvP\itemsPortraits\Lipstick_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\magic_chocker_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\magic_wand_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\MagnifyingGlass_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\maid_dress_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\masquerade_mask_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\MaternityBra_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\maternity_panties_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\Nightdust_Luxianne.png" />
+    <Content Include="Images\PvP\itemsPortraits\onahole_Luxianne.png" />
+    <Content Include="Images\PvP\itemsPortraits\onepiece_latex_swimsuit_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\page_turner_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\pink_combat_boots_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\platform_heels_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\posessed_doll_foxpower93.png" />
+    <Content Include="Images\PvP\itemsPortraits\Queens_Panties_Luxianne.png" />
+    <Content Include="Images\PvP\itemsPortraits\red_wavy_wig_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\runic_dildo_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\scroll_of_teleportation.jpg" />
+    <Content Include="Images\PvP\itemsPortraits\silk_pants_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\spankmes_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\spellweaver_jawbreaker_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\spellweaver_jawbreaker_small.jpg" />
+    <Content Include="Images\PvP\itemsPortraits\spellweaver_root_meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\stallion_Danaume.jpg" />
+    <Content Include="Images\PvP\itemsPortraits\star_studded_cloak_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\sucker_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\suitjacket_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\tennis_racket_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\tied_croptop_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\Whip_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\willbomb_weak.jpg" />
+    <Content Include="Images\PvP\itemsPortraits\willflower_jawbreaker_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\willflower_jawbreaker_small.jpg" />
+    <Content Include="Images\PvP\itemsPortraits\willflower_root_meddle.png" />
+    <Content Include="Images\PvP\portraits\adorable_kitty_boy_Luxianne.png" />
+    <Content Include="Images\PvP\portraits\alraune_Luxianne.png" />
+    <Content Include="Images\PvP\portraits\Amazonian_Futa_Meddle.png" />
+    <Content Include="Images\PvP\portraits\angel_Meddle.png" />
+    <Content Include="Images\PvP\portraits\beach_babe_enthusiast_TheGreatDaeo.jpg" />
+    <Content Include="Images\PvP\portraits\bimbo_plague_bearer_Meddle.png" />
+    <Content Include="Images\PvP\portraits\birdie_luxianne.png" />
+    <Content Include="Images\PvP\portraits\blue_chaffinch_Lux.png" />
+    <Content Include="Images\PvP\portraits\bunnygirl_nymictf_fixed.png" />
+    <Content Include="Images\PvP\portraits\dapper_Luxianne.png" />
+    <Content Include="Images\PvP\portraits\deranged_cultist_spacedande.png" />
+    <Content Include="Images\PvP\portraits\donkey_dominatrix_danaume.png" />
+    <Content Include="Images\PvP\portraits\Donna_Wrenzephyr.png" />
+    <Content Include="Images\PvP\portraits\dryder_jbovinne.png" />
+    <Content Include="Images\PvP\portraits\d_loving_girl_Meddle.png" />
+    <Content Include="Images\PvP\portraits\egyptian_priestess_Lux.png" />
+    <Content Include="Images\PvP\portraits\elf_princess_jbovinne.png" />
+    <Content Include="Images\PvP\portraits\elven_femboi_Luxianne.png" />
+    <Content Include="Images\PvP\portraits\elvish_bard_BabblingFaces.png" />
+    <Content Include="Images\PvP\portraits\Feisty_Firebrand_Luxianne.png" />
+    <Content Include="Images\PvP\portraits\female_armor_Meddle.png" />
+    <Content Include="Images\PvP\portraits\femboi_skunk_Luxianne.png" />
+    <Content Include="Images\PvP\portraits\Fembot_Meddle.png" />
+    <Content Include="Images\PvP\portraits\femboy_Meddle.png" />
+    <Content Include="Images\PvP\portraits\foxtheif_Luxianne.png" />
+    <Content Include="Images\PvP\portraits\gimbo_stripper_thegreatdaeo.jpg" />
+    <Content Include="Images\PvP\portraits\girltaur_Meddle.png" />
+    <Content Include="Images\PvP\portraits\goblin_girl_Meddle.png" />
+    <Content Include="Images\PvP\portraits\Ice_Queen_Meddle.png" />
+    <Content Include="Images\PvP\portraits\jungle_girl_Meddle.png" />
+    <Content Include="Images\PvP\portraits\kitsune_shrine_maiden_lux.png" />
+    <Content Include="Images\PvP\portraits\latex_dominatrix_Babblingfaces.png" />
+    <Content Include="Images\PvP\portraits\lilath_Meddle.png" />
+    <Content Include="Images\PvP\portraits\Lindella_Luxianne.png" />
+    <Content Include="Images\PvP\portraits\Man_01_Meddle.png" />
+    <Content Include="Images\PvP\portraits\Man_02_Meddle.png" />
+    <Content Include="Images\PvP\portraits\Man_03_Meddle.png" />
+    <Content Include="Images\PvP\portraits\Man_04_Meddle.png" />
+    <Content Include="Images\PvP\portraits\Man_05_Meddle.png" />
+    <Content Include="Images\PvP\portraits\massively_obese_woman_Meddle.png" />
+    <Content Include="Images\PvP\portraits\mechanical_man_Meddle.png" />
+    <Content Include="Images\PvP\portraits\milkmaid_Luxianne.png" />
+    <Content Include="Images\PvP\portraits\Minotaur_Meddle.png" />
+    <Content Include="Images\PvP\portraits\mouse_boy_Danaume.jpg" />
+    <Content Include="Images\PvP\portraits\new_age_retro_hippy_Meddle.png" />
+    <Content Include="Images\PvP\portraits\Omnibus_Meddle.png" />
+    <Content Include="Images\PvP\portraits\otter_boy_Kyethusky.png" />
+    <Content Include="Images\PvP\portraits\pig_girl_Meddle.png" />
+    <Content Include="Images\PvP\portraits\possessed_doll_Foxpower93.png" />
+    <Content Include="Images\PvP\portraits\psycho_female.png" />
+    <Content Include="Images\PvP\portraits\psycho_male.png" />
+    <Content Include="Images\PvP\portraits\rat_thief_m_Thrax.png" />
+    <Content Include="Images\PvP\portraits\robotgirl_thurosis.png" />
+    <Content Include="Images\PvP\portraits\robot_Meddle.png" />
+    <Content Include="Images\PvP\portraits\satyr_martiandawn.jpg" />
+    <Content Include="Images\PvP\portraits\sexy_princess_Meddle.png" />
+    <Content Include="Images\PvP\portraits\shy_sheep_girl_Luxianne.png" />
+    <Content Include="Images\PvP\portraits\skunk_boi_Luxianne.png" />
+    <Content Include="Images\PvP\portraits\skyclad_witch_Meddle.png" />
+    <Content Include="Images\PvP\portraits\slutty_nurse_Meddle.png" />
+    <Content Include="Images\PvP\portraits\squirrel_maid_Luxianne.png" />
+    <Content Include="Images\PvP\portraits\stripper_Meddle.png" />
+    <Content Include="Images\PvP\portraits\teacher_Meddle.png" />
+    <Content Include="Images\PvP\portraits\unicorn_mare_Luxianne.png" />
+    <Content Include="Images\PvP\portraits\unicorn_stallion_Luxianne.png" />
+    <Content Include="Images\PvP\portraits\unimagineably_bbl_Meddle.png" />
+    <Content Include="Images\PvP\portraits\Valiant_Valkyrie_Meddle.png" />
+    <Content Include="Images\PvP\portraits\vampireboss.png" />
+    <Content Include="Images\PvP\portraits\vampire_female_Lux.png" />
+    <Content Include="Images\PvP\portraits\vampire_Lux.png" />
+    <Content Include="Images\PvP\portraits\werewolf_Luxianne.png" />
+    <Content Include="Images\PvP\portraits\Willing_wish_granter_Meddle.png" />
+    <Content Include="Images\PvP\portraits\Woman_01_Meddle.png" />
+    <Content Include="Images\PvP\portraits\Woman_02_Meddle.png" />
+    <Content Include="Images\PvP\portraits\Woman_03_Meddle.png" />
+    <Content Include="Images\PvP\portraits\Woman_04_Meddle.png" />
+    <Content Include="Images\PvP\portraits\Woman_05_Meddle.png" />
+    <Content Include="Images\PvP\portraits\wood_mannequin_Lux.png" />
+    <Content Include="Images\PvP\Smilies\smile.png" />
+    <Content Include="Reports\Updates\1963.txt" />
+    <Content Include="Scripts\jquery.rotate.js" />
+    <Content Include="Scripts\jQueryRotateCompressed.js" />
+    <Content Include="XMLs\Effects\effect_Circine%27s_Hypnosis_LexamTheGemFox.xml" />
+    <Content Include="XMLs\Effects\effect_Hemorrhage_Izz_Valentine.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="XMLs\LastNames.xml" />
+    <Content Include="XMLs\LocationDescriptions\270_west_9th_ave.xml" />
+    <Content Include="XMLs\LocationDescriptions\280_west_9th_ave.xml" />
+    <Content Include="XMLs\LocationDescriptions\290_west_9th_ave.xml" />
+    <Content Include="XMLs\LocationDescriptions\300_west_9th_ave.xml" />
+    <Content Include="XMLs\LocationDescriptions\310_west_9th_ave.xml" />
+    <Content Include="XMLs\LocationDescriptions\320_west_9th_ave.xml" />
+    <Content Include="XMLs\LocationDescriptions\330_west_9th_ave.xml" />
+    <Content Include="XMLs\LocationDescriptions\340_west_9th_ave.xml" />
+    <Content Include="XMLs\LocationDescriptions\350_west_9th_ave.xml" />
+    <Content Include="XMLs\LocationDescriptions\apartment_complex_a.xml" />
+    <Content Include="XMLs\LocationDescriptions\apartment_dog_park.xml" />
+    <Content Include="XMLs\LocationDescriptions\apartment_parking_lot.xml" />
+    <Content Include="XMLs\LocationDescriptions\apartment_rental_office.xml" />
+    <Content Include="XMLs\LocationDescriptions\bookstore_back.xml" />
+    <Content Include="XMLs\LocationDescriptions\bookstore_front.xml" />
+    <Content Include="XMLs\LocationDescriptions\campground_lake.xml" />
+    <Content Include="XMLs\LocationDescriptions\campground_makeout.xml" />
+    <Content Include="XMLs\LocationDescriptions\candystore_counter.xml" />
+    <Content Include="XMLs\LocationDescriptions\candystore_kitchen.xml" />
+    <Content Include="XMLs\LocationDescriptions\candystore_shelves.xml" />
+    <Content Include="XMLs\LocationDescriptions\castle_armory.xml" />
+    <Content Include="XMLs\LocationDescriptions\castle_baths.xml" />
+    <Content Include="XMLs\LocationDescriptions\castle_cellar.xml" />
+    <Content Include="XMLs\LocationDescriptions\castle_dungeon.xml" />
+    <Content Include="XMLs\LocationDescriptions\castle_garden.xml" />
+    <Content Include="XMLs\LocationDescriptions\castle_greathall.xml" />
+    <Content Include="XMLs\LocationDescriptions\castle_kitchen.xml" />
+    <Content Include="XMLs\LocationDescriptions\castle_lordroom.xml" />
+    <Content Include="XMLs\LocationDescriptions\castle_servants.xml" />
+    <Content Include="XMLs\LocationDescriptions\castle_solar.xml" />
+    <Content Include="XMLs\LocationDescriptions\castle_throneroom.xml" />
+    <Content Include="XMLs\LocationDescriptions\castle_tower.xml" />
+    <Content Include="XMLs\LocationDescriptions\castle_treasury.xml" />
+    <Content Include="XMLs\LocationDescriptions\clothing_front.xml" />
+    <Content Include="XMLs\LocationDescriptions\clothing_intimate.xml" />
+    <Content Include="XMLs\LocationDescriptions\clothing_mens.xml" />
+    <Content Include="XMLs\LocationDescriptions\clothing_womens.xml" />
+    <Content Include="XMLs\LocationDescriptions\coffee_shop.xml" />
+    <Content Include="XMLs\LocationDescriptions\coffee_shop_kitchen.xml" />
+    <Content Include="XMLs\LocationDescriptions\coffee_shop_patio.xml" />
+    <Content Include="XMLs\LocationDescriptions\college_arts.xml" />
+    <Content Include="XMLs\LocationDescriptions\college_business.xml" />
+    <Content Include="XMLs\LocationDescriptions\college_foyer.xml" />
+    <Content Include="XMLs\LocationDescriptions\college_humanities.xml" />
+    <Content Include="XMLs\LocationDescriptions\college_sciences.xml" />
+    <Content Include="XMLs\LocationDescriptions\college_track.xml" />
+    <Content Include="XMLs\LocationDescriptions\college_vet.xml" />
+    <Content Include="XMLs\LocationDescriptions\comicstore_comics.xml" />
+    <Content Include="XMLs\LocationDescriptions\comicstore_counter.xml" />
+    <Content Include="XMLs\LocationDescriptions\comicstore_gaming_room.xml" />
+    <Content Include="XMLs\LocationDescriptions\comicstore_videogames.xml" />
+    <Content Include="XMLs\LocationDescriptions\concert_hall_backstage.xml" />
+    <Content Include="XMLs\LocationDescriptions\concert_hall_bar.xml" />
+    <Content Include="XMLs\LocationDescriptions\concert_hall_dressingroom.xml" />
+    <Content Include="XMLs\LocationDescriptions\concert_hall_front_door.xml" />
+    <Content Include="XMLs\LocationDescriptions\concert_hall_seats.xml" />
+    <Content Include="XMLs\LocationDescriptions\concert_hall_stage.xml" />
+    <Content Include="XMLs\LocationDescriptions\gas_station_carwash.xml" />
+    <Content Include="XMLs\LocationDescriptions\gas_station_counter.xml" />
+    <Content Include="XMLs\LocationDescriptions\gas_station_parking.xml" />
+    <Content Include="XMLs\LocationDescriptions\gas_station_pumps.xml" />
+    <Content Include="XMLs\LocationDescriptions\gym_aerobics.xml" />
+    <Content Include="XMLs\LocationDescriptions\gym_cardio.xml" />
+    <Content Include="XMLs\LocationDescriptions\gym_entrance.xml" />
+    <Content Include="XMLs\LocationDescriptions\gym_laundry.xml" />
+    <Content Include="XMLs\LocationDescriptions\gym_weights.xml" />
+    <Content Include="XMLs\LocationDescriptions\lab_freezers.xml" />
+    <Content Include="XMLs\LocationDescriptions\lab_laboratory.xml" />
+    <Content Include="XMLs\LocationDescriptions\lab_lobby.xml" />
+    <Content Include="XMLs\LocationDescriptions\lab_offices.xml" />
+    <Content Include="XMLs\LocationDescriptions\lab_secret_laboratory.xml" />
+    <Content Include="XMLs\LocationDescriptions\mansion_ballroom.xml" />
+    <Content Include="XMLs\LocationDescriptions\mansion_baths.xml" />
+    <Content Include="XMLs\LocationDescriptions\mansion_bedroom.xml" />
+    <Content Include="XMLs\LocationDescriptions\mansion_chapel.xml" />
+    <Content Include="XMLs\LocationDescriptions\mansion_courtyard.xml" />
+    <Content Include="XMLs\LocationDescriptions\mansion_dining.xml" />
+    <Content Include="XMLs\LocationDescriptions\mansion_eastgarden.xml" />
+    <Content Include="XMLs\LocationDescriptions\mansion_foyer.xml" />
+    <Content Include="XMLs\LocationDescriptions\mansion_gate.xml" />
+    <Content Include="XMLs\LocationDescriptions\mansion_mausoleum.xml" />
+    <Content Include="XMLs\LocationDescriptions\mansion_servant_quarters.xml" />
+    <Content Include="XMLs\LocationDescriptions\mansion_study.xml" />
+    <Content Include="XMLs\LocationDescriptions\mansion_westgarden.xml" />
+    <Content Include="XMLs\LocationDescriptions\medclinic_physician_b.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="XMLs\LocationDescriptions\park_boardwalk.xml" />
+    <Content Include="XMLs\LocationDescriptions\park_duck_pond.xml" />
+    <Content Include="XMLs\LocationDescriptions\park_entrance.xml" />
+    <Content Include="XMLs\LocationDescriptions\park_fountain.xml" />
+    <Content Include="XMLs\LocationDescriptions\park_merrygoround.xml" />
+    <Content Include="XMLs\LocationDescriptions\park_rose_garden.xml" />
+    <Content Include="XMLs\LocationDescriptions\park_shrine.xml" />
+    <Content Include="XMLs\LocationDescriptions\park_tennis.xml" />
+    <Content Include="XMLs\LocationDescriptions\park_toolshed.xml" />
+    <Content Include="XMLs\LocationDescriptions\pathway_campground.xml" />
+    <Content Include="XMLs\LocationDescriptions\pathway_pool.xml" />
+    <Content Include="XMLs\LocationDescriptions\pathway_sccc.xml" />
+    <Content Include="XMLs\LocationDescriptions\pathway_sorority.xml" />
+    <Content Include="XMLs\LocationDescriptions\pool_concessions.xml" />
+    <Content Include="XMLs\LocationDescriptions\pool_deep.xml" />
+    <Content Include="XMLs\LocationDescriptions\pool_entrance.xml" />
+    <Content Include="XMLs\LocationDescriptions\pool_playground.xml" />
+    <Content Include="XMLs\LocationDescriptions\pool_shallow.xml" />
+    <Content Include="XMLs\LocationDescriptions\pool_slide.xml" />
+    <Content Include="XMLs\LocationDescriptions\ranch_barn.xml" />
+    <Content Include="XMLs\LocationDescriptions\ranch_bedroom.xml" />
+    <Content Include="XMLs\LocationDescriptions\ranch_bedroom_teenager.xml" />
+    <Content Include="XMLs\LocationDescriptions\ranch_entrance.xml" />
+    <Content Include="XMLs\LocationDescriptions\ranch_hallway.xml" />
+    <Content Include="XMLs\LocationDescriptions\ranch_livingroom.xml" />
+    <Content Include="XMLs\LocationDescriptions\ranch_pasture.xml" />
+    <Content Include="XMLs\LocationDescriptions\ranch_pens.xml" />
+    <Content Include="XMLs\LocationDescriptions\ranch_porch.xml" />
+    <Content Include="XMLs\LocationDescriptions\record_store_front.xml" />
+    <Content Include="XMLs\LocationDescriptions\record_store_usedInstruments.xml" />
+    <Content Include="XMLs\LocationDescriptions\salon_front_desk.xml" />
+    <Content Include="XMLs\LocationDescriptions\salon_hairdressing.xml" />
+    <Content Include="XMLs\LocationDescriptions\salon_massage.xml" />
+    <Content Include="XMLs\LocationDescriptions\salon_storage.xml" />
+    <Content Include="XMLs\LocationDescriptions\sorority_backyard.xml" />
+    <Content Include="XMLs\LocationDescriptions\sorority_basement.xml" />
+    <Content Include="XMLs\LocationDescriptions\sorority_bedrooms.xml" />
+    <Content Include="XMLs\LocationDescriptions\sorority_common.xml" />
+    <Content Include="XMLs\LocationDescriptions\sorority_dining.xml" />
+    <Content Include="XMLs\LocationDescriptions\sorority_kitchen.xml" />
+    <Content Include="XMLs\LocationDescriptions\sorority_motherbed.xml" />
+    <Content Include="XMLs\LocationDescriptions\sorority_patio.xml" />
+    <Content Include="XMLs\LocationDescriptions\sorority_rooftop.xml" />
+    <Content Include="XMLs\LocationDescriptions\sorority_yard.xml" />
+    <Content Include="XMLs\LocationDescriptions\street_01.xml" />
+    <Content Include="XMLs\LocationDescriptions\street_02.xml" />
+    <Content Include="XMLs\LocationDescriptions\street_03.xml" />
+    <Content Include="XMLs\LocationDescriptions\street_120_sunnyglade_drive.xml" />
+    <Content Include="XMLs\LocationDescriptions\street_130_main.xml" />
+    <Content Include="XMLs\LocationDescriptions\street_130_sunnyglade_drive.xml" />
+    <Content Include="XMLs\LocationDescriptions\street_13th.xml" />
+    <Content Include="XMLs\LocationDescriptions\street_140_main.xml" />
+    <Content Include="XMLs\LocationDescriptions\street_140_sunnyglade_drive.xml" />
+    <Content Include="XMLs\LocationDescriptions\street_14th.xml" />
+    <Content Include="XMLs\LocationDescriptions\street_14th_east.xml" />
+    <Content Include="XMLs\LocationDescriptions\street_14th_north.xml" />
+    <Content Include="XMLs\LocationDescriptions\street_15th_south.xml" />
+    <Content Include="XMLs\LocationDescriptions\street_170_sunnyglade_drive.xml" />
+    <Content Include="XMLs\LocationDescriptions\street_180_sunnyglade_drive.xml" />
+    <Content Include="XMLs\LocationDescriptions\street_190_sunnyglade_drive.xml" />
+    <Content Include="XMLs\LocationDescriptions\street_200_sunnyglade_drive.xml" />
+    <Content Include="XMLs\LocationDescriptions\street_210_sunnyglade_drive.xml" />
+    <Content Include="XMLs\LocationDescriptions\street_220_sunnyglade_drive.xml" />
+    <Content Include="XMLs\LocationDescriptions\street_50e9th.xml" />
+    <Content Include="XMLs\LocationDescriptions\street_60e9th.xml" />
+    <Content Include="XMLs\LocationDescriptions\street_6th_main.xml" />
+    <Content Include="XMLs\LocationDescriptions\street_70e9th.xml" />
+    <Content Include="XMLs\LocationDescriptions\street_7th_main.xml" />
+    <Content Include="XMLs\LocationDescriptions\street_8th.xml" />
+    <Content Include="XMLs\LocationDescriptions\street_9th.xml" />
+    <Content Include="XMLs\LocationDescriptions\street_e9th_eastof_main.xml" />
+    <Content Include="XMLs\LocationDescriptions\street_e9th_eastof_valley.xml" />
+    <Content Include="XMLs\LocationDescriptions\street_e9th_valley_crossing.xml" />
+    <Content Include="XMLs\LocationDescriptions\street_e9th_westof_valley.xml" />
+    <Content Include="XMLs\LocationDescriptions\stripclub_bar_seats.xml" />
+    <Content Include="XMLs\LocationDescriptions\stripclub_booths.xml" />
+    <Content Include="XMLs\LocationDescriptions\stripclub_office.xml" />
+    <Content Include="XMLs\LocationDescriptions\stripclub_store.xml" />
+    <Content Include="XMLs\LocationDescriptions\tavern_counter.xml" />
+    <Content Include="XMLs\LocationDescriptions\tavern_dumpsters.xml" />
+    <Content Include="XMLs\LocationDescriptions\tavern_pool.xml" />
+    <Content Include="XMLs\LocationDescriptions\medclinic_physician_a.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="XMLs\LocationDescriptions\medclinic_records.xml" />
+    <Content Include="XMLs\LocationDescriptions\street_230_sunnyglade_drive.xml" />
+    <Content Include="XMLs\LocationDescriptions\forest_parking.xml" />
+    <Content Include="XMLs\LocationDescriptions\forest_ancestor_tree.xml" />
+    <Content Include="XMLs\LocationDescriptions\forest_hotspring.xml" />
+    <Content Include="XMLs\LocationDescriptions\forest_pinecove.xml" />
+    <Content Include="XMLs\LocationDescriptions\cave_mouth.xml" />
+    <Content Include="XMLs\LocationDescriptions\cave_antechamber.xml" />
+    <Content Include="XMLs\LocationDescriptions\cave_burialchamber.xml" />
+    <Content Include="XMLs\LocationDescriptions\cave_lake.xml" />
+    <Content Include="XMLs\LocationDescriptions\forest_cabin.xml" />
+    <Content Include="XMLs\LocationDescriptions\z_template - Copy.xml" />
+    <Content Include="XMLs\LocationDescriptions\medclinic_lobby.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="XMLs\LocationDescriptions\tavern_private_room.xml" />
+    <Content Include="XMLs\SkillMessages\skill_Circine%27s_Compassion_LexamTheGemFox.xml" />
+    <Content Include="XMLs\SkillMessages\skill_Doggy_Owner_Arnisd.xml" />
+    <Content Include="XMLs\SkillMessages\skill_Donna%27s_Bitch_LexamTheGemFox.xml" />
+    <Content Include="XMLs\SkillMessages\skill_Exeunt_Omnes_Varn.xml" />
+    <Content Include="XMLs\SkillMessages\skill_Feather_Flight_Medli.xml" />
+    <Content Include="XMLs\SkillMessages\skill_Fit_to_Be_Tied!_Martiandawn.xml" />
+    <Content Include="XMLs\SkillMessages\skill_Flower_Power_Foxpower93.xml" />
+    <Content Include="XMLs\SkillMessages\skill_glass_cannon_psychoticpie.xml" />
+    <Content Include="XMLs\SkillMessages\skill_Happily_Ever_After_BlackTGKitty.xml" />
+    <Content Include="XMLs\SkillMessages\skill_Help_in_High_Places_Christopher.xml" />
+    <Content Include="XMLs\SkillMessages\skill_Honey_Pot_Rayner.xml" />
+    <Content Include="XMLs\SkillMessages\skill_Identify_Medli.xml" />
+    <Content Include="XMLs\SkillMessages\skill_Let%27s_Make_a_Deal_Rayner.xml" />
+    <Content Include="XMLs\SkillMessages\skill_Liquefy_V2.0_GooGirl.xml" />
+    <Content Include="XMLs\SkillMessages\skill_liquify_Arrhae.xml" />
+    <Content Include="XMLs\SkillMessages\skill_Love_Struck_Christopher.xml" />
+    <Content Include="XMLs\SkillMessages\skill_Lucky_Lips_Greg_Mackenzie_.xml" />
+    <Content Include="XMLs\SkillMessages\skill_Maiden%27s_Armor_Keyne_Vangsten.xml" />
+    <Content Include="XMLs\SkillMessages\skill_Make_a_Wish_Danaume_Rook.xml" />
+    <Content Include="XMLs\SkillMessages\skill_Make_Love_Not_War_Varn.xml" />
+    <Content Include="XMLs\SkillMessages\skill_meow_remix_lexamthegemfox.xml" />
+    <Content Include="XMLs\SkillMessages\skill_Mommy_Needs_Panties!_Lily.xml" />
+    <Content Include="XMLs\SkillMessages\skill_mutt_girl.xml" />
+    <Content Include="XMLs\SkillMessages\skill_Panty_Maker_Judoo.xml" />
+    <Content Include="XMLs\SkillMessages\skill_Put_a_Sock_In_It_Christopher.xml" />
+    <Content Include="XMLs\SkillMessages\skill_Quiver_and_Shaft_Aingelproject667.xml" />
+    <Content Include="XMLs\SkillMessages\skill_Ratticus_Buckthievious_Draggony.xml" />
+    <Content Include="XMLs\SkillMessages\skill_Return_of_the_King_Varn.xml" />
+    <Content Include="XMLs\SkillMessages\skill_Shadow%27s_Embrace_Techhead.xml" />
+    <Content Include="XMLs\SkillMessages\skill_Shadow_Ditz_Great_Daeo.xml" />
+    <Content Include="XMLs\SkillMessages\skill_Show_Me_Where_it_Hurts_Ashley_Maid.xml" />
+    <Content Include="XMLs\SkillMessages\skill_Slippery_Swimsuit_Illia_Malvusin.xml" />
+    <Content Include="XMLs\SkillMessages\skill_Sly_Fox_Rayner.xml" />
+    <Content Include="XMLs\SkillMessages\skill_Staff_Fetish_Lily.xml" />
+    <Content Include="XMLs\SkillMessages\skill_studious_sucker_christyd.xml" />
+    <Content Include="XMLs\SkillMessages\skill_Sunny_Happiness_Great_Daeo.xml" />
+    <Content Include="XMLs\SkillMessages\skill_That%27s_No_Cat_Nyx.xml" />
+    <Content Include="XMLs\SkillMessages\skill_Vg%27f_Lbhe_Freir!__themorpher606.xml" />
+    <Content Include="XMLs\SkillMessages\skill_Vibrating_Vex_PsychoticPie.xml" />
+    <Content Include="XMLs\SkillMessages\skill_Writ_of_Sealing_Taenil_Auxifur.xml" />
+    <Content Include="XMLs\TFMessages\form_Adorable_Donkey_Foal_LexamTheGemFox_&amp;_Hachik0048.xml" />
+    <Content Include="XMLs\TFMessages\form_Donna_LexamTheGemFox.xml" />
+    <Content Include="XMLs\TFMessages\form_Alraune_Foxpower93.xml" />
+    <Content Include="XMLs\TFMessages\form_Austere_Angel_Adeviant.xml" />
+    <Content Include="XMLs\TFMessages\form_ball_mask_Haretia.xml" />
+    <Content Include="XMLs\TFMessages\form_BDSM_Pony_Girl_LexamTheGemFox.xml" />
+    <Content Include="XMLs\TFMessages\form_Beach_Babe_Enthusiast_Great_Daeo.xml" />
+    <Content Include="XMLs\TFMessages\form_big_burly_brute_Varn.xml" />
+    <Content Include="XMLs\TFMessages\form_Bimbonic_Plague-Bearer_Varn.xml" />
+    <Content Include="XMLs\TFMessages\form_Brainwashed_Bitch_LexamTheGemFox.xml" />
+    <Content Include="XMLs\TFMessages\form_catgirl_raver_lexamthegemfox.xml" />
+    <Content Include="XMLs\TFMessages\form_Cuddly_Pocket_Goo_Girl_GooGirl.xml" />
+    <Content Include="XMLs\TFMessages\form_Dapper_Charmer_Rayner.xml" />
+    <Content Include="XMLs\TFMessages\form_Dog_Collar_Arnisd.xml" />
+    <Content Include="XMLs\TFMessages\form_Elven_Femboy_Aingelproject667.xml" />
+    <Content Include="XMLs\TFMessages\form_Elvish_Bard_Varn.xml" />
+    <Content Include="XMLs\TFMessages\form_Enchanted_Tennis_Racket_themorpher606.xml" />
+    <Content Include="XMLs\TFMessages\form_Female_Possesed_Armor_Keyne_Vangsten.xml" />
+    <Content Include="XMLs\TFMessages\form_Femboi_Skunk_Nyx.xml" />
+    <Content Include="XMLs\TFMessages\form_Fetish_Wizard%27s_Staff_Lily.xml" />
+    <Content Include="XMLs\TFMessages\form_Flirty_Tied_Crop_Top_Martiandawn.xml" />
+    <Content Include="XMLs\TFMessages\form_Fox_Thief_Rayner.xml" />
+    <Content Include="XMLs\TFMessages\form_Gimbo_Stripper_Great_Daeo.xml" />
+    <Content Include="XMLs\TFMessages\form_Hand_Lens_Medli.xml" />
+    <Content Include="XMLs\TFMessages\form_Heart_Shaped_Sunglasses_Christopher.xml" />
+    <Content Include="XMLs\TFMessages\form_Iniquitous_Omnibus_Varn.xml" />
+    <Content Include="XMLs\TFMessages\form_Knee-High_Socks_Christopher.xml" />
+    <Content Include="XMLs\TFMessages\form_Magical_Binding_Tattoo_Taenil_Auxifur.xml" />
+    <Content Include="XMLs\TFMessages\form_Maternity_Panties_Lily.xml" />
+    <Content Include="XMLs\TFMessages\form_mutt_girl.xml" />
+    <Content Include="XMLs\TFMessages\form_Black_Leather_Shoes_Arbitrary_Hal.xml" />
+    <Content Include="XMLs\TFMessages\form_Black_Silk_Pants_Arbitrary_Hal.xml" />
+    <Content Include="XMLs\TFMessages\form_black_stillettos.xml" />
+    <Content Include="XMLs\TFMessages\form_Black_Suit_Jacket_Arbitrary_Hal.xml" />
+    <Content Include="XMLs\TFMessages\form_Blue_Chaffinch_Draggony.xml" />
+    <Content Include="XMLs\TFMessages\form_bondage_kitten_magazine_Haretia.xml" />
+    <Content Include="XMLs\TFMessages\form_busty_blonde_bimbo.xml" />
+    <Content Include="XMLs\TFMessages\form_Captured_Souls_Alessandro_Stamegna.xml" />
+    <Content Include="XMLs\TFMessages\form_cateye_glasses_psychoticpie.xml" />
+    <Content Include="XMLs\TFMessages\form_Cheerleader_Haretia.xml" />
+    <Content Include="XMLs\TFMessages\form_Cheerleader_Shell_Zatur.xml" />
+    <Content Include="XMLs\TFMessages\form_Cheerleader_Spankies_Zatur.xml" />
+    <Content Include="XMLs\TFMessages\form_Cherry_Sucker_Christopher.xml" />
+    <Content Include="XMLs\TFMessages\form_Count_Cuddles_Berrie_Valentine.xml" />
+    <Content Include="XMLs\TFMessages\form_Cursed_Doll_Rust.xml" />
+    <Content Include="XMLs\TFMessages\form_Dainty_Birdgirl_Medli.xml" />
+    <Content Include="XMLs\TFMessages\form_Disembodied_Boobs_Swogrider.xml" />
+    <Content Include="XMLs\TFMessages\form_Djinn_Slave_Danaume_Rook.xml" />
+    <Content Include="XMLs\TFMessages\form_Donkey_Dominatrix_LexamTheGemFox_&amp;_Hachik0048.xml" />
+    <Content Include="XMLs\TFMessages\form_Drow_Priestess_XanKitsu.xml" />
+    <Content Include="XMLs\TFMessages\form_Egyptian_Priestess_Pharlynx.xml" />
+    <Content Include="XMLs\TFMessages\form_Elf_Princess_JBovinne.xml" />
+    <Content Include="XMLs\TFMessages\form_fairy_familiar_Varn.xml" />
+    <Content Include="XMLs\TFMessages\form_Familiar_Feline_Blood_Knight.xml" />
+    <Content Include="XMLs\TFMessages\form_Feather_duster_Budugu2004.xml" />
+    <Content Include="XMLs\TFMessages\form_Female_Dryder_JBovinne.xml" />
+    <Content Include="XMLs\TFMessages\form_feminine_slut_boy_Lexam.xml" />
+    <Content Include="XMLs\TFMessages\form_Fennec_Fox_Elynsynos.xml" />
+    <Content Include="XMLs\TFMessages\form_Fishnet_Tights_Zatur.xml" />
+    <Content Include="XMLs\TFMessages\form_Flirty_Three-Tiered_Skirt_Martiandawn.xml" />
+    <Content Include="XMLs\TFMessages\form_Frilly_Petticoat_Budugu2004.xml" />
+    <Content Include="XMLs\TFMessages\form_bunny_slippers.xml" />
+    <Content Include="XMLs\TFMessages\form_liquify_Arrhae.xml" />
+    <Content Include="XMLs\TFMessages\form_Gyrating_Temptress_redneckdemon.xml" />
+    <Content Include="XMLs\TFMessages\form_Hedonistic_Fembot_Christine_Winters_%28Arrhae,_ToniV_and_Meddle_for_proofing%29.xml" />
+    <Content Include="XMLs\TFMessages\form_High-Quality_Onahole_LexamTheGemFox.xml" />
+    <Content Include="XMLs\TFMessages\form_hung_stallion_lexam_hachik.xml" />
+    <Content Include="XMLs\TFMessages\form_Ice_Queen_Alessandro_Stamegna.xml" />
+    <Content Include="XMLs\TFMessages\form_Ioun_Stone_Aidyn_Bright.xml" />
+    <Content Include="XMLs\TFMessages\form_kitsune_Elynsynos.xml" />
+    <Content Include="XMLs\TFMessages\form_Kitten_Boi_Aingelproject667.xml" />
+    <Content Include="XMLs\TFMessages\form_Leather_Whip_Christy_D.xml" />
+    <Content Include="XMLs\TFMessages\form_living_lingerie_PsychoticPie.xml" />
+    <Content Include="XMLs\TFMessages\form_Magical_Mannequin_plzTryMySpell.xml" />
+    <Content Include="XMLs\TFMessages\form_Magic_choker_Budugu2004.xml" />
+    <Content Include="XMLs\TFMessages\form_Magic_Nursing_Bra_Purple_Autumn.xml" />
+    <Content Include="XMLs\TFMessages\form_Magic_Slut_Ball_Varn.xml" />
+    <Content Include="XMLs\TFMessages\form_maid_dress_Budugu2004.xml" />
+    <Content Include="XMLs\TFMessages\form_maid_Ellipsis.xml" />
+    <Content Include="XMLs\TFMessages\form_Maid_Headband_Budugu2004.xml" />
+    <Content Include="XMLs\TFMessages\form_Mary_Janes_Christopher.xml" />
+    <Content Include="XMLs\TFMessages\form_Mechanical_Man_themorpher606_%28Kevin_Gates%29.xml" />
+    <Content Include="XMLs\TFMessages\form_Milk_Cow_Sampleguy.xml" />
+    <Content Include="XMLs\TFMessages\form_miniature_horse_whiteflameK.xml" />
+    <Content Include="XMLs\TFMessages\form_mouse_boy_Danaume.xml" />
+    <Content Include="XMLs\TFMessages\form_Muscular_Minotaur_Christopher.xml" />
+    <Content Include="XMLs\TFMessages\form_naughty_schoolgirl_christyd.xml" />
+    <Content Include="XMLs\TFMessages\form_New_Age_Retro_Hippy_Varn.xml" />
+    <Content Include="XMLs\TFMessages\form_One-Piece_Latex_Swimsuit_Illia_Malvusin.xml" />
+    <Content Include="XMLs\TFMessages\form_Pig_Girl_themorpher606.xml" />
+    <Content Include="XMLs\TFMessages\form_Plain_Pink_Panties_Judoo.xml" />
+    <Content Include="XMLs\TFMessages\form_Platform_heels_Christopher.xml" />
+    <Content Include="XMLs\TFMessages\form_Playful_Pussy_Rayner.xml" />
+    <Content Include="XMLs\TFMessages\form_Pocket_Dragon_Julian_Chance.xml" />
+    <Content Include="XMLs\TFMessages\form_Practical_Transformations_and_the_Metaphysical_Realm_Varn.xml" />
+    <Content Include="XMLs\TFMessages\form_Randy_Satyr_Martiandawn.xml" />
+    <Content Include="XMLs\TFMessages\form_Rat_Thief_Draggony.xml" />
+    <Content Include="XMLs\TFMessages\form_Red_Wavy_Wig_Kirshwasser.xml" />
+    <Content Include="XMLs\TFMessages\form_Ruby_Red_Lipstick_Greg_Mackenzie_and_Fiona_Mason.xml" />
+    <Content Include="XMLs\TFMessages\form_Runic_Dildo_Blood_Knight.xml" />
+    <Content Include="XMLs\TFMessages\form_Seductive_vampire_Foxpower93.xml" />
+    <Content Include="XMLs\TFMessages\form_Sexy_Princess_BlackTGKitty.xml" />
+    <Content Include="XMLs\TFMessages\form_Shiny_Robot_Girl_Faremann.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="XMLs\TFMessages\form_Slutty_Nurse_Ashley_Maid.xml" />
+    <Content Include="XMLs\TFMessages\form_sparkly_cocktail_dress_Haretia.xml" />
+    <Content Include="XMLs\TFMessages\form_Star-Studded_Cloak_Techhead.xml" />
+    <Content Include="XMLs\TFMessages\form_succubus_varn1234.xml" />
+    <Content Include="XMLs\TFMessages\form_Tempting_Teacher_Varn.xml" />
+    <Content Include="XMLs\TFMessages\form_Tentacled_Terror_Varn.xml" />
+    <Content Include="XMLs\TFMessages\form_the_pink_pulsar_PsychoticPie.xml" />
+    <Content Include="XMLs\TFMessages\form_Tiny_Mouse_Girl_Estyz.xml" />
+    <Content Include="XMLs\TFMessages\form_Tribal_Girl_Lexam.xml" />
+    <Content Include="XMLs\TFMessages\form_Unicorn_Mare_LexamTheGemFox.xml" />
+    <Content Include="XMLs\TFMessages\form_Unimaginably_huge-breasted_woman_Swog.xml" />
+    <Content Include="XMLs\TFMessages\form_Valiant_Valkyrie_Blood_Knight.xml" />
+    <Content Include="XMLs\TFMessages\form_Vampire_Lord_Blood_Knight.xml" />
+    <Content Include="XMLs\TFMessages\form_were_leopard_alessandro.xml" />
+    <Content Include="XMLs\TFMessages\form_White_Tiger_Zatur.xml" />
+    <Content Include="XMLs\TFMessages\form_Willing_Wish-giver_Zatur.xml" />
+    <Content Include="XMLs\TFMessages\form_Wizard%27s_Wand_themorpher606.xml" />
+    <Content Include="XMLs\TFMessages\form_wolf_cub_Alessandro.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Characters\All Characters %2814%29.txt" />
+    <Content Include="Characters\Caroline Plessica.txt" />
+    <Content Include="Characters\Charles Killjoy.txt" />
+    <Content Include="Characters\Dave Muster.txt" />
+    <Content Include="Characters\James Lensfester.txt" />
+    <Content Include="Characters\Jimmy Stoddert.txt" />
+    <Content Include="Characters\Johnny Toogood.txt" />
+    <Content Include="Characters\Kara Hoovester.txt" />
+    <Content Include="Characters\Lillian Desmond.txt" />
+    <Content Include="Characters\Mike Thebes.txt" />
+    <Content Include="Characters\Nikk Sethis.txt" />
+    <Content Include="Characters\Niko Katsaros.txt" />
+    <Content Include="Characters\Richard Carlisle.txt" />
+    <Content Include="Characters\Robert Scope.txt" />
+    <Content Include="Characters\Will Strong.txt" />
+    <Content Include="Content\PvP.css" />
+    <Content Include="Content\themes\base\images\animated-overlay.gif" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\themes\base\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\themes\base\jquery-ui.css" />
+    <Content Include="Content\themes\base\jquery.ui.accordion.css" />
+    <Content Include="Content\themes\base\jquery.ui.all.css" />
+    <Content Include="Content\themes\base\jquery.ui.autocomplete.css" />
+    <Content Include="Content\themes\base\jquery.ui.base.css" />
+    <Content Include="Content\themes\base\jquery.ui.button.css" />
+    <Content Include="Content\themes\base\jquery.ui.core.css" />
+    <Content Include="Content\themes\base\jquery.ui.datepicker.css" />
+    <Content Include="Content\themes\base\jquery.ui.dialog.css" />
+    <Content Include="Content\themes\base\jquery.ui.menu.css" />
+    <Content Include="Content\themes\base\jquery.ui.progressbar.css" />
+    <Content Include="Content\themes\base\jquery.ui.resizable.css" />
+    <Content Include="Content\themes\base\jquery.ui.selectable.css" />
+    <Content Include="Content\themes\base\jquery.ui.slider.css" />
+    <Content Include="Content\themes\base\jquery.ui.spinner.css" />
+    <Content Include="Content\themes\base\jquery.ui.tabs.css" />
+    <Content Include="Content\themes\base\jquery.ui.theme.css" />
+    <Content Include="Content\themes\base\jquery.ui.tooltip.css" />
+    <Content Include="Content\themes\base\minified\images\animated-overlay.gif" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\themes\base\minified\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\themes\base\minified\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\themes\base\minified\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\themes\base\minified\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\themes\base\minified\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\themes\base\minified\jquery-ui.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.accordion.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.autocomplete.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.button.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.core.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.datepicker.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.dialog.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.menu.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.progressbar.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.resizable.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.selectable.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.slider.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.spinner.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.tooltip.min.css" />
+    <Content Include="favicon.ico" />
+    <Content Include="Global.asax" />
+    <Content Include="Images\PvP\Smilies\base.xcf" />
+    <None Include="Properties\PublishProfiles\transformania-time.com - Web Deploy.pubxml" />
+    <Content Include="Images\back.png" />
+    <Content Include="Images\background1.jpg" />
+    <Content Include="Images\background2.jpg" />
+    <Content Include="Images\beginNewGameButton.png" />
+    <Content Include="Images\cBarBackground.jpg" />
+    <Content Include="Images\clearButton.png" />
+    <Content Include="Images\darkBackground.jpg" />
+    <Content Include="Images\discus_bullet.png" />
+    <Content Include="Images\discus_target.png" />
+    <Content Include="Images\discus_target2.png" />
+    <Content Include="Images\discus_target3.png" />
+    <Content Include="Images\dpong_APaddle.jpg" />
+    <Content Include="Images\dpong_LPaddle.jpg" />
+    <Content Include="Images\dpong_RPaddle.jpg" />
+    <Content Include="Images\LookAtOpponentButton.png" />
+    <Content Include="Images\LookAtSelfButton.png" />
+    <Content Include="Images\mainNewGameButton.png" />
+    <Content Include="Images\nextRoundButton.png" />
+    <Content Include="Images\opponent1Tab.png" />
+    <Content Include="Images\oTotalTF.jpg" />
+    <Content Include="Images\pBarBackground.jpg" />
+    <Content Include="Images\playerTab.png" />
+    <Content Include="Images\pTotalTF.jpg" />
+    <Content Include="Images\PvP\body.jpg" />
+    <Content Include="Images\PvP\Icons\accessory.png" />
+    <Content Include="Images\PvP\Icons\consumeable_reuseable.png" />
+    <Content Include="Images\PvP\Icons\consumeable.png" />
+    <Content Include="Images\PvP\Icons\details.png" />
+    <Content Include="Images\PvP\Icons\female.png" />
+    <Content Include="Images\PvP\Icons\hat.png" />
+    <Content Include="Images\PvP\Icons\icon-clock.png" />
+    <Content Include="Images\PvP\Icons\icon-sleep.png" />
+    <Content Include="Images\PvP\Icons\male.png" />
+    <Content Include="Images\PvP\Icons\pants.png" />
+    <Content Include="Images\PvP\Icons\shirt.png" />
+    <Content Include="Images\PvP\Icons\shoes.png" />
+    <Content Include="Images\PvP\Icons\underpants.png" />
+    <Content Include="Images\PvP\Icons\undershirt.png" />
+    <Content Include="Images\PvP\itemsPortraits\AthleticShoes_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\BlackSilkTopHat.png" />
+    <Content Include="Images\PvP\itemsPortraits\black_latex_pants_jbovinne.png" />
+    <Content Include="Images\PvP\itemsPortraits\black_stilettos_by_nymic-tf.jpg" />
+    <Content Include="Images\PvP\itemsPortraits\BoxerShorts_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\ButtonUpSchoolgirlBlouse_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\carousel_horse.png" />
+    <Content Include="Images\PvP\itemsPortraits\CatEars_HB_Eq.jpg" />
+    <Content Include="Images\PvP\itemsPortraits\CatEyeGlasses_meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\CatnipMouseToy_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\doll_by_night_glare-d7ephf5.jpg" />
+    <Content Include="Images\PvP\itemsPortraits\dress_jbovinne.png" />
+    <Content Include="Images\PvP\itemsPortraits\fairy_familiar_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\FertilityIdol1_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\gartered_panties_with_stockings_meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\item_99_red_balloons_nymic-tf.jpg" />
+    <Content Include="Images\PvP\itemsPortraits\item_leopard_bra_nymic-tf.jpg" />
+    <Content Include="Images\PvP\itemsPortraits\item_mana_flask_tfnymic.jpg" />
+    <Content Include="Images\PvP\itemsPortraits\item_skateboard_nymic-tf.jpg" />
+    <Content Include="Images\PvP\itemsPortraits\item_tight_blue_jeans_tfnymic.jpg" />
+    <Content Include="Images\PvP\itemsPortraits\LatexBra_Equipped.jpg" />
+    <Content Include="Images\PvP\itemsPortraits\none.jpg" />
+    <Content Include="Images\PvP\itemsPortraits\panty_plain_1_tfnymic.jpg" />
+    <Content Include="Images\PvP\itemsPortraits\pink_bunny_slippers_tfnymic.jpg" />
+    <Content Include="Images\PvP\itemsPortraits\PleatedPlaidSkirt.png" />
+    <Content Include="Images\PvP\itemsPortraits\ProstheticHorseCock_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\ProstheticUdders_Nymic_TF.jpg" />
+    <Content Include="Images\PvP\itemsPortraits\purple_vibrating_panties_by_nymic-tf.jpg" />
+    <Content Include="Images\PvP\itemsPortraits\silk_tube_top_by_nymic-tf.jpg" />
+    <Content Include="Images\PvP\itemsPortraits\SmartLookingTie.png" />
+    <Content Include="Images\PvP\itemsPortraits\spellweaver_petal.png" />
+    <Content Include="Images\PvP\itemsPortraits\spellweaver_petal_meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\statuette_tfnymic.jpg" />
+    <Content Include="Images\PvP\itemsPortraits\Vibrator_meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\willflower_petal.png" />
+    <Content Include="Images\PvP\itemsPortraits\willflower_petal_meddle.png" />
+    <Content Include="Images\PvP\map.jpg" />
+    <Content Include="Images\PvP\portraits\boozebaroness_by_nymic_tf-d7ekv5d.jpg" />
+    <Content Include="Images\PvP\portraits\bunnygirl_tfnymic.jpg" />
+    <Content Include="Images\PvP\portraits\cheerleader_meddle.png" />
+    <Content Include="Images\PvP\portraits\enchanted_tree.png" />
+    <Content Include="Images\PvP\portraits\form_busty_blonde_bimbo.png" />
+    <Content Include="Images\PvP\portraits\form_busty_blonde_bimbo_nymic-tf.jpg" />
+    <Content Include="Images\PvP\portraits\french_maid_Meddle.png" />
+    <Content Include="Images\PvP\portraits\goo_girl_b_meddle.png" />
+    <Content Include="Images\PvP\portraits\ibbl.jpg" />
+    <Content Include="Images\PvP\portraits\ibbl.png" />
+    <Content Include="Images\PvP\portraits\kitsune_meddle.png" />
+    <Content Include="Images\PvP\portraits\manly_man_Meddle.png" />
+    <Content Include="Images\PvP\portraits\mutt_girl_lexam_the_gem_fox.jpg" />
+    <Content Include="Images\PvP\portraits\mutt_girl_lexam_the_gem_fox.png" />
+    <Content Include="Images\PvP\portraits\naughty_schoolgirl_Meddle.png" />
+    <Content Include="Images\PvP\portraits\noGraphic.png" />
+    <Content Include="Images\PvP\portraits\scipio_pirate.png" />
+    <Content Include="Images\PvP\portraits\succubus.png" />
+    <Content Include="Images\PvP\portraits\succubus_by_nymic_tf-d7euc8y.jpg" />
+    <Content Include="Images\PvP\portraits\tt_cowgirl_by_wrenzephyr2-d7evem4.png" />
+    <Content Include="Images\PvP\portraits\tt_technokitty_by_wrenzephyr2-d7eozjf.png" />
+    <Content Include="Images\PvP\portraits\wereleopard_luxianne.png" />
+    <Content Include="Images\quickHelp.jpg" />
+    <Content Include="Images\reflexTarget.png" />
+    <Content Include="Images\reflex_lose.jpg" />
+    <Content Include="Images\reflex_win.jpg" />
+    <Content Include="Images\returnButton.png" />
+    <Content Include="Images\spinner.png" />
+    <Content Include="Images\spinnerFrame.png" />
+    <Content Include="Images\symb_3circs.png" />
+    <Content Include="Images\symb_4pointstar.png" />
+    <Content Include="Images\symb_blank.png" />
+    <Content Include="Images\symb_blueTarget.png" />
+    <Content Include="Images\symb_blueThing.png" />
+    <Content Include="Images\symb_cell.png" />
+    <Content Include="Images\symb_city.png" />
+    <Content Include="Images\symb_cross.png" />
+    <Content Include="Images\symb_energy.png" />
+    <Content Include="Images\symb_greenStar.png" />
+    <Content Include="Images\symb_pinkDrops.png" />
+    <Content Include="Images\symb_sparks.png" />
+    <Content Include="Images\symb_star.png" />
+    <Content Include="Images\symb_tree.png" />
+    <Content Include="Images\symb_vines.png" />
+    <Content Include="Images\symb_waterfall.png" />
+    <Content Include="Images\wallpaper.jpg" />
+    <Content Include="Images\wallpaperDefault.jpg" />
+    <Content Include="Images\wallPaperDefault_2.jpg" />
+    <Content Include="Content\mystyle.css" />
+    <Content Include="MMO_Images\People\jogger.png" />
+    <Content Include="MMO_Images\People\man01.jpg" />
+    <Content Include="MMO_Images\People\noPortrait.jpg" />
+    <Content Include="MMO_Images\People\woman01.jpg" />
+    <Content Include="MMO_Images\Portraits\jogger.png" />
+    <Content Include="MMO_Images\Portraits\man01.jpg" />
+    <Content Include="MMO_Images\Portraits\noPortrait.jpg" />
+    <Content Include="MMO_Images\Portraits\woman01.jpg" />
+    <Content Include="MMO_Images\Scenes\Bathroom.jpg" />
+    <Content Include="MMO_Images\Scenes\EastRoom.jpg" />
+    <Content Include="MMO_Images\Scenes\WestRoom.jpg" />
+    <Content Include="MMO_Scripts\helpers.js" />
+    <Content Include="MMO_Scripts\script.js" />
+    <Content Include="Saved XMLS\scenes.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Scripts\Character.js" />
+    <Content Include="Scripts\CharacterLoader.js" />
+    <Content Include="Scripts\game_discus.js" />
+    <Content Include="Scripts\game_dpong.js" />
+    <Content Include="Scripts\game_memory.js" />
+    <Content Include="Scripts\game_popup.js" />
+    <Content Include="Scripts\game_reflex.js" />
+    <Content Include="Scripts\game_roulette.js" />
+    <Content Include="Scripts\game_sequence.js" />
+    <Content Include="Scripts\GenericCharData.js" />
+    <Content Include="Scripts\GenericPlayerData.js" />
+    <None Include="Properties\PublishProfiles\transformaniatime.com - Web Deploy %282%29.pubxml" />
+    <None Include="Properties\PublishProfiles\transformaniatime.com - Web Deploy %283%29.pubxml" />
+    <None Include="Properties\PublishProfiles\transformaniatime.com - Web Deploy %284%29.pubxml" />
+    <None Include="Properties\PublishProfiles\transformaniatime.com - Web Deploy.pubxml" />
+    <None Include="Scripts\jquery-2.1.0.intellisense.js" />
+    <Content Include="Scripts\jquery-2.1.0.js" />
+    <Content Include="Scripts\jquery-2.1.0.min.js" />
+    <Content Include="Scripts\jquery-2.1.0.min.map" />
+    <Content Include="Scripts\jquery-ui-1.10.4.js" />
+    <Content Include="Scripts\jquery-ui-1.10.4.min.js" />
+    <Content Include="Scripts\jquery.animate-color.min.js" />
+    <Content Include="Scripts\jquery.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.signalR-2.0.3.js" />
+    <Content Include="Scripts\jquery.signalR-2.0.3.min.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\jQueryRotate.js" />
+    <Content Include="Scripts\knockout-3.0.0.debug.js" />
+    <Content Include="Scripts\knockout-3.0.0.js" />
+    <Content Include="MMO_Scripts\onclick.js" />
+    <Content Include="Scripts\MicrosoftAjax.debug.js" />
+    <Content Include="Scripts\MicrosoftAjax.js" />
+    <Content Include="Scripts\MicrosoftMvcAjax.debug.js" />
+    <Content Include="Scripts\MicrosoftMvcAjax.js" />
+    <Content Include="Scripts\MicrosoftMvcValidation.debug.js" />
+    <Content Include="Scripts\MicrosoftMvcValidation.js" />
+    <Content Include="Scripts\modernizr-2.7.1.js" />
+    <Content Include="Scripts\script.js" />
+    <Content Include="Views\HtmlPage1.html" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Content\Site.css" />
+    <Content Include="Scripts\_references.js" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Account\_ChangePasswordPartial.cshtml" />
+    <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
+    <Content Include="Views\Account\_RemoveExternalLoginsPartial.cshtml" />
+    <Content Include="Views\Account\_SetPasswordPartial.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\Manage.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
+    <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Home\Contact.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\TransformaniaTime\Play.cshtml" />
+    <Content Include="Views\TFWorld\Play.cshtml" />
+    <Content Include="Views\TFWorld\SceneLog.cshtml" />
+    <Content Include="Views\PvP\Game.cshtml" />
+    <Content Include="Views\PvP\Play.cshtml" />
+    <Content Include="Views\PvP\LoginRequired.cshtml" />
+    <Content Include="Views\PvP\MakeNewCharacter.cshtml" />
+    <Content Include="Views\PvP\Player_Partial.cshtml" />
+    <Content Include="Views\PvP\MySkills.cshtml" />
+    <Content Include="Views\PvP\ViewLog.cshtml" />
+    <Content Include="Views\PvP\Inventory.cshtml" />
+    <Content Include="Views\PvP\PvPAdmin.cshtml" />
+    <Content Include="Views\PvP\partial_ItemBuffs.cshtml" />
+    <Content Include="Views\PvP\partial_InventoryItem.cshtml" />
+    <Content Include="Views\PvP\Play_Inanimate.cshtml" />
+    <Content Include="Views\PvP\HowToPlay.cshtml" />
+    <Content Include="Views\PvP\LookAtPlayer.cshtml" />
+    <Content Include="Views\PvPAdmin\UpdateWorld.cshtml" />
+    <Content Include="Views\PvP\GameNews.cshtml" />
+    <Content Include="Views\PvP\partial_XpBar.cshtml" />
+    <Content Include="Views\PvP\partial_FormBuffs.cshtml" />
+    <Content Include="Views\PvP\MyMessages.cshtml" />
+    <Content Include="Views\PvP\ReadMessage.cshtml" />
+    <Content Include="Views\PvP\Write.cshtml" />
+    <Content Include="Views\PvP\partial_FrontPageAvatar.cshtml" />
+    <Content Include="Views\PvP\Contribute.cshtml" />
+    <Content Include="Views\PvP\partial_InventoryEquipped.cshtml" />
+    <Content Include="Views\PvP\WorldMap.cshtml" />
+    <Content Include="Views\PvP\PlayerLookup.cshtml" />
+    <Content Include="Views\PvP\MyFriends.cshtml" />
+    <Content Include="Views\PvP\Leaderboard.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\Alpha_1.cshtml" />
+    <Content Include="Views\PvP\Chats\Chat_Global.cshtml" />
+    <Content Include="Views\PvP\LookAtPlayerInanimate.cshtml" />
+    <Content Include="Views\PvP\partial\movementTable.cshtml" />
+    <Content Include="Views\PvP\partial\spellsList.cshtml" />
+    <Content Include="Views\PvP\Play_Animal.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\Alpha_2.cshtml" />
+    <Content Include="Views\PvP\ContributeGraphicsNeeded.cshtml" />
+    <Content Include="Views\PvP\ContributeSetGraphicStatus.cshtml" />
+    <Content Include="Views\PvP\GameNews_PlannedFeatures.cshtml" />
+    <Content Include="Views\PvPAdmin\Play.cshtml" />
+    <Content Include="Views\PvP\BalanceCalculator.cshtml" />
+    <Content Include="Views\PvP\LevelupPerk.cshtml" />
+    <Content Include="Views\PvP\MyPerks.cshtml" />
+    <Content Include="Views\PvP\partial\partial_perkBonus.cshtml" />
+    <Content Include="Views\PvP\partial\partial_AllBuffsTable.cshtml" />
+    <Content Include="Views\PvP\partial\attackModal.cshtml" />
+    <Content Include="Views\PvP\Settings.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\Alpha_3.cshtml" />
+    <Content Include="Views\PvP\TeleportMap.cshtml" />
+    <Content Include="Views\Contribution\ContributeEffect.cshtml" />
+    <Content Include="Views\Contribution\EffectModalContent.cshtml" />
+    <Content Include="Views\Covenant\MyCovenant.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\Alpha_4.cshtml" />
+    <Content Include="Views\PvP\partial\OldLeaderboardLinks.cshtml" />
+    <Content Include="Views\PvPAdmin\PublicBroadcast.cshtml" />
+    <Content Include="Views\Covenant\StartNewCovenant.cshtml" />
+    <Content Include="Views\Covenant\CovenantList.cshtml" />
+    <Content Include="Views\Covenant\LookAtCovenant.cshtml" />
+    <Content Include="Views\Covenant\ReviewMyCovenantApplications.cshtml" />
+    <Content Include="Views\Covenant\CovenantLeaderAdmin.cshtml" />
+    <Content Include="Views\Covenant\ChangeCovenantDescription.cshtml" />
+    <Content Include="Views\Covenant\KickList.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\Alpha_5.cshtml" />
+    <Content Include="Views\PvPAdmin\ApproveContributionList.cshtml" />
+    <Content Include="Views\PvP\TradeWithMerchant.cshtml" />
+    <Content Include="Views\PvP\SellList.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\Alpha_6.cshtml" />
+    <Content Include="Views\Contribution\Bios\Meddle.cshtml" />
+    <Content Include="Views\Contribution\ContributorBioList.cshtml" />
+    <Content Include="Views\Contribution\ContributorBio.cshtml" />
+    <Content Include="Views\Contribution\Bios\Luxianne.cshtml" />
+    <Content Include="Views\Contribution\Bios\Nymic-TF.cshtml" />
+    <Content Include="Views\PvPAdmin\Index.cshtml" />
+    <Content Include="Views\PvPAdmin\ApproveEffectContributionList.cshtml" />
+    <Content Include="Views\Covenant\CovenantWideMessage.cshtml" />
+    <Content Include="Views\PvP\Chats\Chat_RP1.cshtml" />
+    <Content Include="Views\PvP\Chats\Chat_RP2.cshtml" />
+    <Content Include="Views\PvP\Chats\Chat_RP3.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\Alpha_7.cshtml" />
+    <Content Include="Views\Settings\SetBio.cshtml" />
+    <Content Include="Views\Settings\ViewBio.cshtml" />
+    <Content Include="Views\PvP\partial\AjaxAttackModal.cshtml" />
+    <Content Include="Views\PvPAdmin\ServerBalance.cshtml" />
+    <Content Include="Views\PvPAdmin\ViewServerLog.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\Alpha_8.cshtml" />
+    <Content Include="Views\PvP\partial\RoundStatus.cshtml" />
+    <Content Include="Views\PvPAdmin\ViewUpdateLogs.cshtml" />
+    <Content Include="Views\Contribution\Publish.cshtml" />
+    <Content Include="Views\Contribution\DMRoll.cshtml" />
+    <Content Include="Views\Contribution\MyDMRolls.cshtml" />
+    <Content Include="Views\Contribution\ReviewDMRolls.cshtml" />
+    <Content Include="Views\PvP\Chats\ChatLog.cshtml" />
+    <Content Include="Views\PvP\Chats\ChatCommands.cshtml" />
+    <Content Include="Views\Duel\Duel.cshtml" />
+    <Content Include="Views\PvP\BalanceCalculator2.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\Alpha_9.cshtml" />
+    <Content Include="Views\PvP\PvPLeaderboard.cshtml" />
+    <Content Include="Views\PvP\ItemLeaderboard.cshtml" />
+    <Content Include="Views\Settings\Donate.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\Alpha_10.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Z_SelfHelp\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:53130/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.13\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.13\tools\Microsoft.Bcl.Build.targets')" />
+  <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
+    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.13\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
+    <Error Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.13\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

@@ -1,0 +1,111 @@
+﻿@model tfgame.ViewModels.CovenantViewModel
+@using tfgame.dbModels.Models
+@using tfgame.ViewModels
+
+<head>
+    <link href="~/Content/PvP.css" rel="stylesheet" />
+</head>
+
+<p>@Html.ActionLink("Back to game", "Play", "PvP")</p>
+
+<div class="result">
+    @Html.Raw(ViewBag.Result)
+</div>
+<div class="error">
+    @ViewBag.ErrorMessage
+</div>
+<div class="suberror">
+    @ViewBag.SubErrorMessage
+</div>
+
+<h1>Your Covenant</h1>
+
+@{
+    if (Model.dbCovenant != null)
+    {
+        <p class="covHeader">You are are a member of <span class="covName">@Model.dbCovenant.Name.</span></p>
+
+        <p>Arpeyjis in treasury:  <b>@Math.Floor(Model.dbCovenant.Money)</b><span title="Arpeyjis" class="icon-money"></span></p>
+
+        if (ViewBag.Player.Id == Model.dbCovenant.LeaderId)
+        {
+            <b>You are this covenant's leader.</b>
+            @Html.ActionLink("View Administration Page", "CovenantLeaderAdmin", "Covenant")
+        }
+        else
+        {
+            @Html.ActionLink("Led by " + Model.Leader.FirstName + " " + Model.Leader.LastName, "LookAtPlayer", "PvP", new { id = Model.Leader.Id }, null)
+        }
+
+        <hr />
+        <p><b>@Model.dbCovenant.SelfDescription</b></p>
+        <hr />
+
+        <p>Members of your covenant:</p>
+        foreach (PlayerFormViewModel p in Model.Members.OrderByDescending(c => c.Player.Level).ThenByDescending(c => c.Player.XP))
+        {
+            <p>
+                @Html.Partial("~/Views/PvP/Player_Partial.cshtml", p)
+            </p>
+
+            
+            if (ViewBag.Player.Id == Model.dbCovenant.LeaderId)
+            {
+                <span>Send Arpeyjis to @p.Player.FirstName?</span>
+                @Html.ActionLink("20", "GiveMoneyFromCovenantChest", "Covenant", new { id = p.Player.Id, amount = 20 }, null)
+                @Html.ActionLink("100", "GiveMoneyFromCovenantChest", "Covenant", new { id = p.Player.Id, amount = 100 }, null)
+                @Html.ActionLink("500", "GiveMoneyFromCovenantChest", "Covenant", new { id = p.Player.Id, amount = 500 }, null)
+            
+            }
+
+        }
+        
+        <hr />
+
+        <p>You can send some of your Arpeyjis to your covenant where your covenant leader can choose to distribute the covenant's Arpeyjis to its members in need.  You must not have spent any action points in 30 minutes in order to do this.  How many would you like to send?  You have <b>@ViewBag.MyMoney</b> Arpeyjis.</p>
+
+        @Html.ActionLink("20", "AddToCovenantChest", "Covenant", new { amount = 20 }, null)<span title="Arpeyjis" class="icon-money"></span>
+        @Html.ActionLink("100", "AddToCovenantChest", "Covenant", new { amount = 100 }, null)<span title="Arpeyjis" class="icon-money"></span>
+        @Html.ActionLink("500", "AddToCovenantChest", "Covenant", new { amount = 500 }, null)<span title="Arpeyjis" class="icon-money"></span>
+
+    <hr />
+
+
+    }
+
+}
+
+@Html.ActionLink("Found Your Own Covenant", "StartNewCovenant", "Covenant")
+@Html.ActionLink("View All Covenants", "CovenantList", "Covenant")
+@Html.ActionLink("Leave this Covenant", "LeaveCovenant", "Covenant")
+
+@{
+    if (ViewBag.HasApplication == true)
+    {
+        @Html.ActionLink("Withdraw Pending Covenant Application", "WithdrawApplication", "Covenant")
+    }
+}
+
+
+
+<p>@Html.ActionLink("Back to game", "Play", "PvP")</p>
+
+<style>
+    .covName {
+        color: darkblue;
+        font-size: 25px;
+    }
+
+    .covHeader {
+        color: darkviolet;
+        font-size: 20px;
+    }
+
+    .covItem {
+        border: 1px solid lightgray;
+        padding: 5px;
+        float: left;
+        position: relative;
+        width: 100%;
+    }
+</style>

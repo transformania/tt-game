@@ -1,0 +1,42 @@
+﻿@model IEnumerable<tfgame.ViewModels.SkillViewModel2>
+@using tfgame.CustomHtmlHelpers
+
+    <span id="youAreAttacking">You are attacking @ViewBag.TargetName.</span>
+    <span id="attackClose" onclick="closeAttackModal()">Cancel</span>
+    <span id="expand" onclick="expandModal()">Expand</span>
+    <br /><br />
+
+    @foreach (tfgame.ViewModels.SkillViewModel2 s in Model.OrderBy(s => s.Skill.FriendlyName))
+    {
+
+
+        <span>
+            @Html.ActionLink(s.Skill.FriendlyName + " (" + s.Skill.ManaCost + ")", "Attack", "PvP", new { targetId = ViewBag.TargetId, attackName = s.dbSkill.Name }, new { @class = CharactersHere.GetSpellTypeClass(s), @manacost = s.Skill.ManaCost })
+        </span>
+
+    }
+
+<script>
+
+    function expandModal() {
+        var modal = $("#attackModal");
+        modal.css("height", "100%");
+        modal.css("width", "100%");
+        modal.css("left", 0);
+        modal.css("top", 0);
+
+        $("#expand").hide();
+
+        $(".action_attack").each(function () {
+            $(this).css("font-size", "20px");
+        });
+    }
+
+
+
+
+
+   
+
+</script>
+

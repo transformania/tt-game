@@ -1,0 +1,345 @@
+﻿@model tfgame.ViewModels.BuffBox
+
+
+
+<table id="bufftable">
+    <thead>
+    <th>Effect</th>
+    <th>Total</th>
+    <th>From Form</th>
+    <th>From Items</th>
+    <th>From Effects</th>
+    </thead>
+    <tbody>
+
+        @{
+            if (Model.HealthBonusPercent() != 0.0M)
+            {
+                <tr>
+                    <td>Extra willpower % maximum:</td>
+                    <td>
+                        @Model.HealthBonusPercent()
+                    </td>
+                    <td>@Model.FromForm_HealthBonusPercent</td>
+                    <td>@Model.FromItems_HealthBonusPercent</td>
+                    <td>@Model.FromEffects_HealthBonusPercent</td>
+                </tr>
+            }
+        }
+
+        @{
+            if (Model.ManaBonusPercent() != 0.0M)
+            {
+                <tr>
+                    <td>Extra mana % maximum:</td>
+                    <td>
+                        @Model.ManaBonusPercent()
+                    </td>
+                    <td>@Model.FromForm_ManaBonusPercent</td>
+                    <td>@Model.FromItems_ManaBonusPercent</td>
+                    <td>@Model.FromEffects_ManaBonusPercent</td>
+                </tr>
+            }
+        }
+
+        @{
+            if (Model.HealthRecoveryPerUpdate() != 0.0M)
+            {
+                <tr>
+                    <td>Willpower recovery per update:</td>
+                    <td>
+                        @Model.HealthRecoveryPerUpdate()
+                    </td>
+                    <td>@Model.FromForm_HealthRecoveryPerUpdate</td>
+                    <td>@Model.FromItems_HealthRecoveryPerUpdate</td>
+                    <td>@Model.FromEffects_HealthRecoveryPerUpdate</td>
+                </tr>
+            }
+        }
+
+        @{
+            if (Model.ManaRecoveryPerUpdate() != 0.0M)
+            {
+                <tr>
+                    <td>Mana recovery per update:</td>
+                    <td>
+                        @Model.ManaRecoveryPerUpdate()
+                    </td>
+                    <td>@Model.FromForm_ManaRecoveryPerUpdate</td>
+                    <td>@Model.FromItems_ManaRecoveryPerUpdate</td>
+                    <td>@Model.FromEffects_ManaRecoveryPerUpdate</td>
+                </tr>
+            }
+        }
+
+        @{
+            if (Model.SneakPercent() != 0.0M)
+            {
+                <tr>
+                    <td>Sneak chance percent:</td>
+                    <td>
+                        @Model.SneakPercent()
+                    </td>
+                    <td>@Model.FromForm_SneakPercent</td>
+                    <td>@Model.FromItems_SneakPercent</td>
+                    <td>@Model.FromEffects_SneakPercent</td>
+                </tr>
+            }
+        }
+
+        @{
+            if (Model.MeditationExtraMana() != 0.0M)
+            {
+                <tr>
+                    <td>Extra mana recovered from meditating</td>
+                    <td>
+                        @Model.MeditationExtraMana()
+                    </td>
+                    <td>@Model.FromForm_MeditationExtraMana</td>
+                    <td>@Model.FromItems_MeditationExtraMana</td>
+                    <td>@Model.FromEffects_MeditationExtraMana</td>
+                </tr>
+            }
+        }
+
+        @{
+            if (Model.CleanseExtraHealth() != 0.0M)
+            {
+                <tr>
+                    <td>Extra willpower recovered from cleansing:</td>
+                    <td>
+                        @Model.CleanseExtraHealth()
+                    </td>
+                    <td>@Model.FromForm_CleanseExtraHealth</td>
+                    <td>@Model.FromItems_CleanseExtraHealth</td>
+                    <td>@Model.FromEffects_CleanseExtraHealth</td>
+                </tr>
+            }
+        }
+
+        @{
+            if (Model.MoveActionPointDiscount() != 0.0M)
+            {
+                <tr>
+                    <td>Action point discount when moving:</td>
+                    <td>
+                        @Model.MoveActionPointDiscount()
+                    </td>
+                    <td>@Model.FromForm_MoveActionPointDiscount</td>
+                    <td>@Model.FromItems_MoveActionPointDiscount</td>
+                    <td>@Model.FromEffects_MoveActionPointDiscount</td>
+                </tr>
+            }
+        }
+
+        @{
+            if (Model.ExtraSkillCriticalPercent() != 0.0M)
+            {
+
+                <tr>
+                    <td>Extra chance of spell critical hits:</td>
+                    <td>
+                        @Model.ExtraSkillCriticalPercent()
+                    </td>
+                    <td>@Model.FromForm_ExtraSkillCriticalPercent</td>
+                    <td>@Model.FromItems_ExtraSkillCriticalPercent</td>
+                    <td>@Model.FromEffects_ExtraSkillCriticalPercent</td>
+                </tr>
+            }
+        }
+
+        @{
+            if (Model.EvasionPercent() != 0.0M)
+            {
+
+                <tr>
+                    <td>Percent chance to evade an attack:</td>
+                    <td>
+                        @Model.EvasionPercent()
+                    </td>
+                    <td>@Model.FromForm_EvasionPercent</td>
+                    <td>@Model.FromItems_EvasionPercent</td>
+                    <td>@Model.FromEffects_EvasionPercent</td>
+                </tr>
+            }
+        }
+
+        @{
+            if (Model.EvasionNegationPercent() != 0.0M)
+            {
+                <tr>
+                    <td>Percent negation of opponent's ability to evade a spell:</td>
+                    <td>
+                        @Model.EvasionNegationPercent()
+                    </td>
+                    <td>@Model.FromForm_EvasionNegationPercent</td>
+                    <td>@Model.FromItems_EvasionNegationPercent</td>
+                    <td>@Model.FromEffects_EvasionNegationPercent</td>
+                </tr>
+            }
+        }
+
+        @{
+            if (Model.SpellExtraHealthDamagePercent() != 0.0M)
+            {
+                <tr>
+                    <td>Extra spell willpower damage percent:</td>
+                    <td>
+                        @Model.SpellExtraHealthDamagePercent()
+                    </td>
+                    <td>@Model.FromForm_SpellExtraHealthDamagePercent</td>
+                    <td>@Model.FromItems_SpellExtraHealthDamagePercent</td>
+                    <td>@Model.FromEffects_SpellExtraHealthDamagePercent</td>
+                </tr>
+            }
+        }
+
+        @{
+            if (Model.SpellExtraTFEnergyPercent() != 0.0M)
+            {
+                <tr>
+                    <td>Extra transformation damage percent dealt from spells: </td>
+                    <td>
+                        @Model.SpellExtraTFEnergyPercent()
+                    </td>
+                    <td>@Model.FromForm_SpellExtraTFEnergyPercent</td>
+                    <td>@Model.FromItems_SpellExtraTFEnergyPercent</td>
+                    <td>@Model.FromEffects_SpellExtraTFEnergyPercent</td>
+                </tr>
+            }
+        }
+
+        @{
+            if (Model.CleanseExtraTFEnergyRemovalPercent() != 0.0M)
+            {
+                <tr>
+                    <td>Extra transformation energy percent removed when cleansing:</td>
+                    <td>
+                        @Model.CleanseExtraTFEnergyRemovalPercent()
+                    </td>
+                    <td>@Model.FromForm_CleanseExtraTFEnergyRemovalPercent</td>
+                    <td>@Model.FromItems_CleanseExtraTFEnergyRemovalPercent</td>
+                    <td>@Model.FromEffects_CleanseExtraTFEnergyRemovalPercent</td>
+                </tr>
+            }
+        }
+
+        @{
+            if (Model.SpellMisfireChanceReduction() != 0.0M)
+            {
+                <tr>
+                    <td>Misfire percent chance reduction: </td>
+                    <td>
+                        @Model.SpellMisfireChanceReduction()
+                    </td>
+                    <td>@Model.FromForm_SpellMisfireChanceReduction</td>
+                    <td>@Model.FromItems_SpellMisfireChanceReduction</td>
+                    <td>@Model.FromEffects_SpellMisfireChanceReduction</td>
+                </tr>
+            }
+        }
+
+        @{
+            if (Model.SpellHealthDamageResistance() != 0.0M)
+            {
+                <tr>
+                    <td>Willpower damage reduction when hit by spells:</td>
+                    <td>
+                        @Model.SpellHealthDamageResistance()
+                    </td>
+                    <td>@Model.FromForm_SpellHealthDamageResistance</td>
+                    <td>@Model.FromItems_SpellHealthDamageResistance</td>
+                    <td>@Model.FromEffects_SpellHealthDamageResistance</td>
+                </tr>
+            }
+        }
+
+        @{
+            if (Model.SpellTFEnergyDamageResistance() != 0.0M)
+            {
+                <tr>
+                    <td>Transformation energy reduction when hit by spells:</td>
+                    <td>
+                        @Model.SpellTFEnergyDamageResistance()
+                    </td>
+                    <td>@Model.FromForm_SpellTFEnergyDamageResistance</td>
+                    <td>@Model.FromItems_SpellTFEnergyDamageResistance</td>
+                    <td>@Model.FromEffects_SpellTFEnergyDamageResistance</td>
+                </tr>
+            }
+        }
+
+        @{
+            if (Model.ExtraInventorySpace() != 0.0M)
+            {
+                <tr>
+                    <td>Extra inventory space:</td>
+                    <td>
+                        @Model.ExtraInventorySpace()
+                    </td>
+                    <td>@Model.FromForm_ExtraInventorySpace</td>
+                    <td>@Model.FromItems_ExtraInventorySpace</td>
+                    <td>@Model.FromEffects_ExtraInventorySpace</td>
+                </tr>
+            }
+        }
+
+
+
+    </tbody>
+</table>
+
+<style>
+    table {
+        padding: 3px;
+        border: 1px solid black;
+    }
+
+    th {
+        background-color: black;
+        color: white;
+        text-align: center;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    tr {
+        padding: 3px;
+        border: 1px solid black;
+    }
+
+        tr:nth-child(odd) {
+            background-color: lightgray;
+        }
+
+    td {
+        text-align: center;
+    }
+
+    #bufftable {
+        margin-bottom: 20px;
+        float: left;
+        position: relative;
+    }
+</style>
+
+<script>
+    $(document).ready(function () {
+        $('#bufftable tr').each(function () {
+            $(this).find('td').each(function () {
+                
+                if ($(this).index() > 0.0) {
+                    var num = parseFloat($(this).html());
+                    if (num > 0) {
+                        $(this).addClass("good");
+                    } else if (num < 0.0) {
+                        $(this).addClass("bad");
+                    } else {
+                        $(this).addClass("zero");
+                    }
+                }
+
+            })
+        })
+    });
+</script>

@@ -1,0 +1,169 @@
+﻿@model tfgame.ViewModels.PlayerFormViewModel
+@using tfgame.CustomHtmlHelpers
+@using tfgame.Statics
+@using tfgame.Procedures
+
+@{
+
+    int HealthWidth = Convert.ToInt32(Model.Player.Health / Model.Player.MaxHealth * 100);
+    if (HealthWidth > 100) { HealthWidth = 100; }
+    int ManaWidth = Convert.ToInt32(Model.Player.Mana / Model.Player.MaxMana * 100);
+    if (ManaWidth > 100) { ManaWidth = 100; }
+    int ActionWidth = Convert.ToInt32(Model.Player.ActionPoints / PvPStatics.MaximumStoreableActionPoints * 100);
+
+}
+
+<div class="avatarWrapper">
+
+    <div class="portrait-large" style="background-image: url(../Images/PvP/portraits/@Model.Form.PortraitUrl);" title="@Model.Form.Description">
+        <span class="icon-@Model.Player.Gender" style="float:right;"></span>
+        <span class="icon-level"><b>@Model.Player.Level</b></span>
+
+        @{if (PlayerProcedures.PlayerIsOffline(Model.Player) == true)
+        {
+        <span class="icon-sleep" title="This player is offline and will be harder to attack."></span>
+        }
+        }
+        
+    </div>
+
+    <div class="avatarInfo">
+        <span class="avatarName">@Model.Player.FirstName @Model.Player.LastName</span>
+        @CharactersHere.PrintDonatorIcon(Model.Player.ToDbPlayer())
+        @CharactersHere.PrintRPIcon(Model.Player.ToDbPlayer())
+        @CharactersHere.PrintPvPIcon(Model.Player.ToDbPlayer())
+        <br />
+        <span class="avatarFormName">@Model.Form.FriendlyName</span>
+        @CharactersHere.GetCovenantInfo(Model.Player.ToDbPlayer())
+        
+        <br />
+        <div class="avatarHealthWrapper">
+            <div class="txt">@Model.Player.Health / @Model.Player.MaxHealth willpower</div>
+            <div class="avatarHealthAmt" style="width: @HealthWidth%"></div>
+        </div>
+
+
+        <div class="avatarManaWrapper">
+            <div class="txt">@Model.Player.Mana / @Model.Player.MaxMana mana</div>
+            <div class="avatarManaAmt" style="width: @ManaWidth%"></div>
+        </div>
+
+       
+
+        <div class="avatarActionWrapper">
+            <div class="txt small">@Model.Player.ActionPoints / @PvPStatics.MaximumStoreableActionPoints AP (@Model.Player.ActionPoints_Refill in Reserve) </div>
+            <div class="avatarActionAmt" style="width: @ActionWidth%"></div>
+        </div>
+
+        @Html.Partial("partial_XpBar", Model)
+
+        <div class="">
+            <span title="Times attacking this update" class="icon-timesattacking" ></span><span class="avatarCount">@Model.Player.TimesAttackingThisUpdate / 3</span>
+            <span title="Times cleansing and meditating this update" class="icon-cleansemeditate" ></span><span class="avatarCount">@Model.Player.CleansesMeditatesThisRound / 3</span>
+            <span title="Arpeyjis" class="icon-money"></span><span class="avatarCount">@Convert.ToInt32(Model.Player.Money)</span>
+        </div>
+
+    </div>
+
+
+
+</div>
+
+<style>
+    .avatarWrapper {
+        width: 98%;
+        height: 163px;
+        border: 1px solid lightgray;
+        margin: 5px;
+        padding: 3px;
+    }
+
+    .avatarCount {
+        font-weight: 900;
+        font-size: 18px;
+        margin-right: 15px;
+        margin-left: 5px;
+    }
+
+
+
+    .avatarInfo {
+        width: auto;
+        min-width: 300px;
+        float: left;
+        position: relative;
+    }
+
+    .avatarName {
+        font-size: 30px;
+        font-weight: 800;
+    }
+
+    .avatarFormName {
+        font-size: 20px;
+        font-weight: 800;
+    }
+
+    .avatarHealthWrapper {
+        width: 100%;
+        height: 20px;
+        background-color: pink;
+    }
+
+    .avatarHealthAmt {
+        height: 100%;
+        background-color: darkred;
+        color: white;
+        font-size: 15px;
+        overflow: hidden;
+        text-shadow: 1px 2px #000000;
+    }
+
+    .avatarManaWrapper {
+        width: 100%;
+        height: 20px;
+        background-color: lightblue;
+    }
+
+    .avatarManaAmt {
+        margin-top: 2px;
+        height: 100%;
+        background-color: darkblue;
+        color: white;
+        font-size: 15px;
+        overflow: hidden;
+        text-shadow: 1px 2px #000000;
+        z-index: 50;
+    }
+
+    .avatarActionWrapper {
+        width: 100%;
+        height: 16px;
+        background-color: #FFCC66;
+    }
+
+    .avatarActionAmt {
+        margin-top: 2px;
+        height: 100%;
+        background-color: darkorange;
+        color: white;
+        font-size: 15px;
+        overflow: hidden;
+        text-shadow: 1px 2px #000000;
+        z-index: 50;
+    }
+    
+     .txt {
+        float: none;
+        position: absolute;
+        color: white;
+        font-size: 15px;
+        font-weight: 600;
+        text-shadow: 1px 1px #000000;
+    }
+
+        .txt.small {
+            font-size: 13px;
+            padding-bottom: 1px;
+        }
+</style>

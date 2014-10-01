@@ -1,0 +1,45 @@
+﻿<h1>Chat Command Help</h1>
+
+<p>Do not include the '[' and ']' characters when entering a command; these denote that what follows is a variable.</p>
+
+<table>
+    <thead>
+        <th>Action</th>
+        <th style="width: 300px;">Command Syntax</th>
+        <th>Additional Info</th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Rolling a die</td>
+            <td>/roll d[#]</td>
+            <td>Replace [#] with the number of sides the die has.</td>
+        </tr>
+        <tr>
+            <td>Roll a DM Encounter</td>
+            <td>/dm [encounter_type]:[theme]</td>
+            <td>This command is meant for a player known as a dungeon master to spawn some random encounters for the sake of roleplaying purposes.  [encounter_type] must be one of the following options:  [item], [creature], [event], [trap], [tf.animate], [tf.inanimate], [tf.animal], [tf.partial].  <br /><br />[theme] is referred to as a tag and specifies a theme to draw from.  Current themes include [forest], [highschool], [bimbocalypse].</td>
+        </tr>
+    </tbody>
+</table>
+
+<style>
+    table {
+        text-align: center;
+    }
+    td {
+        border: 1px solid black;
+        padding: 10px;
+    }
+    tr:nth-child(even) {
+        background-color: #dcdcdc;
+    }
+    td:nth-child(2) {
+        font-family: "Trebuchet MS", Helvetica, sans-serif;
+    }
+    th {
+        border: 1px solid black;
+        font-weight: 600;
+        background-color: #b5b5b5;
+        text-align: center;
+    }
+</style>

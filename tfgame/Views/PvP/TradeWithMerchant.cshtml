@@ -1,0 +1,66 @@
+﻿@model IEnumerable<tfgame.ViewModels.ItemViewModel>
+           @using tfgame.ViewModels
+    @using tfgame.CustomHtmlHelpers
+
+<head>
+    <link href="~/Content/PvP.css" rel="stylesheet" />
+</head>
+
+<p>@Html.ActionLink("Back to game", "Play", "PvP")</p>
+
+<div class="result">
+    @Html.Raw(ViewBag.Result)
+</div>
+<div class="error">
+    @ViewBag.ErrorMessage
+</div>
+<div class="suberror">
+    @ViewBag.SubErrorMessage
+</div>
+
+<p>You can purchase clothing and items that were once fellow mages like you from Lindella, as well as a variety of non-human magical consumable items that will help you from ending up in a similar fate from your enemies.  Please keep in mind that some of Lindella's formerly-human merchandise may not be fond of their new inanimate lifestyle or their owners and change back after struggling against the magic trapping them long enough.  No refunds!</p>
+
+<h3>You currently have @ViewBag.MyMoney <span title="Arpeyjis" class="icon-money"></span> Arpeyjis to spend.</h3>
+
+<p>@Html.ActionLink("Sell Something", "SellList", "PvP")</p>
+
+@{
+    if (ViewBag.NoRoom == true) {
+        <p class="bad">You will not be able to purchase anything from Lindella since you do not have room to carry anything else in your inventory.</p>
+    }
+}
+
+<p>Show by type:</p>
+
+@Html.ActionLink("Hats / Headwear", "TradeWithMerchant", "PvP", new { filter = "hat" }, null) <br />
+@Html.ActionLink("Shirts and Dresses", "TradeWithMerchant", "PvP", new { filter = "shirt" }, null) <br />
+@Html.ActionLink("Bras and Undershirts", "TradeWithMerchant", "PvP", new { filter = "undershirt" }, null) <br />
+@Html.ActionLink("Skirts and Pants", "TradeWithMerchant", "PvP", new { filter = "pants" }, null) <br />
+@Html.ActionLink("Underwear", "TradeWithMerchant", "PvP", new { filter = "underpants" }, null) <br />
+@Html.ActionLink("Shoes", "TradeWithMerchant", "PvP", new { filter = "shoes" }, null) <br />
+@Html.ActionLink("Accessories", "TradeWithMerchant", "PvP", new { filter = "accessory" }, null) <br />
+@Html.ActionLink("Reusable Consumables", "TradeWithMerchant", "PvP", new { filter = "consumable_reusable" }, null) <br />
+@Html.ActionLink("Consumables", "TradeWithMerchant", "PvP", new { filter = "consumables" }, null) <br />
+
+
+
+@{
+    foreach (ItemViewModel i in Model.OrderBy(i => i.dbItem.dbName).ThenByDescending(i => i.dbItem.Level))
+    {
+        @Html.Partial("partial_Inventoryitem", i)
+        @CharactersHere.PrintPvPIcon(i.dbItem)
+        <span class="price">Price:  @tfgame.Procedures.ItemProcedures.GetCostOfItem(i, "buy") Arpeyjis</span>
+        @Html.ActionLink("Purchase", "Purchase", "PvP", new { id = i.dbItem.Id }, null)<br /><br /><br />
+    
+    }
+}
+
+<p>@Html.ActionLink("Back to game", "Play", "PvP")</p>
+
+<style>
+    .price {
+        margin-bottom: 15px;
+        color: darkblue;
+        font-weight: 700;
+    }
+</style>

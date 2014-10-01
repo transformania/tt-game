@@ -1,0 +1,39 @@
+﻿@model tfgame.dbModels.Models.Covenant
+
+<head>
+    <script src="~/Scripts/jquery-2.1.0.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <link href="~/Content/PvP.css" rel="stylesheet" />
+</head>
+
+<p>@Html.ActionLink("Back to My Covenant", "MyCovenant", "Covenant")</p>
+
+<div class="error">
+    @Html.Raw(ViewBag.ValidationMessage)
+</div>
+
+<h1>Start A New Covenant</h1>
+
+<p>You are not in a covenant--so why not start your own?</p>
+
+@using (Html.BeginForm("StartNewCovenantSubmit", "Covenant", FormMethod.Post))
+{
+    <p>Name</p>
+    
+    @Html.TextBoxFor(m => m.Name)<br />
+    @Html.ValidationMessageFor(m => m.Name)
+    
+    <p>A short description of this covenant:</p>
+              
+
+    @Html.TextBoxFor(m => m.SelfDescription)<br />
+    @Html.ValidationMessageFor(m => m.SelfDescription)
+    
+    
+    <br />
+      <input type="submit" value="Save" />
+}
+
+<p>@Html.ActionLink("Back to My Covenant", "MyCovenant", "Covenant")</p>
+

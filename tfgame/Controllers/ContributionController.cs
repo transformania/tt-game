@@ -1,0 +1,703 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using tfgame.dbModels.Abstract;
+using tfgame.dbModels.Concrete;
+using tfgame.dbModels.Models;
+using tfgame.Filters;
+using tfgame.Statics;
+using WebMatrix.WebData;
+
+namespace tfgame.Controllers
+{
+
+     [InitializeSimpleMembership]
+    public class ContributionController : Controller
+    {
+        //
+        // GET: /Contribution/
+        public ActionResult Index()
+        {
+            return View();
+        }
+
+        public ActionResult ContributeEffect(int id)
+        {
+            // get all of this players effect contributions
+            IEffectContributionRepository effectContRepo = new EFEffectContributionRepository();
+
+            IEnumerable<EffectContribution> myEffectContributions = effectContRepo.EffectContributions.Where(c => c.OwnerMemberhipId == WebSecurity.CurrentUserId);
+            ViewBag.OtherEffectContributions = myEffectContributions;
+
+            EffectContribution output = effectContRepo.EffectContributions.FirstOrDefault(e => e.Id == id);
+
+            List<EffectContribution> proofreading = new List<EffectContribution>();
+            // add the rest of the submitted contributions if the player is a proofread
+            if (TrustStatics.PlayerIsProofreader(WebSecurity.CurrentUserId) == true)
+            {
+                proofreading = effectContRepo.EffectContributions.Where(c => c.ApprovedByAdmin == true && c.ProofreadingCopy == true).ToList();
+                ViewBag.Proofreading = proofreading;
+            }
+
+            // assert that this is the owner's work or else that the reader is a proofreader and is a proofreading copy
+
+            if (output == null)
+            {
+                output = new EffectContribution
+                {
+                    OwnerMemberhipId = WebSecurity.CurrentUserId,
+
+                };
+            }
+
+            // not new... check for proofreading permissions
+            else
+            {
+                if (output.OwnerMemberhipId != WebSecurity.CurrentUserId && (TrustStatics.PlayerIsProofreader(WebSecurity.CurrentUserId) == false || output.ProofreadingCopy == false))
+                {
+                    TempData["Error"] = TempData["You do not have permission to view this."];
+                    return RedirectToAction("Play", "PvPController");
+                }
+            }
+
+
+           // if this is a proofreading copy, set the lock
+            if (output.ProofreadingCopy)
+            {
+                output.ProofreadingLockIsOn = true;
+                output.CheckedOutBy = WebSecurity.CurrentUserName;
+                output.Timestamp = DateTime.UtcNow;
+                effectContRepo.SaveEffectContribution(output);
+            }
+
+
+            
+
+
+            ViewBag.ErrorMessage = TempData["Error"];
+            ViewBag.SubErrorMessage = TempData["SubError"];
+            ViewBag.Result = TempData["Result"];
+
+
+            return View(output);
+        }
+
+        public ActionResult SendEffectContribution(EffectContribution input)
+        {
+
+            IEffectContributionRepository effectContRepo = new EFEffectContributionRepository();
+            EffectContribution saveme = effectContRepo.EffectContributions.FirstOrDefault(e => e.Id == input.Id);
+
+            // TODO:  assert player owns this
+
+            if (saveme == null)
+            {
+                saveme = new EffectContribution
+                {
+                    OwnerMemberhipId = WebSecurity.CurrentUserId,
+                    ReadyForReview = false,
+                    ApprovedByAdmin = false,
+                    IsLive = false,
+                };
+
+                // make sure this actually is the player's own contribution
+            } else if (saveme.OwnerMemberhipId != WebSecurity.CurrentUserId && TrustStatics.PlayerIsProofreader(WebSecurity.CurrentUserId) == false) {
+                TempData["Error"] = "This contribution does not belong to you and you are not a proofreader.";
+                TempData["SubError"] = "You may have been logged out; check that you are logged in the the game still in another tab.";
+                return RedirectToAction("ContributeEffect", "Contribution", new { @id = -1 });
+            }
+
+            if (input.Id != -1)
+            {
+                saveme.Id = input.Id;
+            }
+
+            saveme.SubmitterName = input.SubmitterName;
+            saveme.SubmitterURL = input.SubmitterURL;
+            saveme.ReadyForReview = input.ReadyForReview;
+
+            saveme.Skill_FriendlyName = input.Skill_FriendlyName;
+            saveme.Skill_UniqueToForm = input.Skill_UniqueToForm;
+            saveme.Skill_UniqueToItem = input.Skill_UniqueToItem;
+            saveme.Skill_UniqueToLocation = input.Skill_UniqueToLocation;
+            saveme.Skill_Description = input.Skill_Description;
+            saveme.Skill_ManaCost = input.Skill_ManaCost;
+
+            saveme.Effect_FriendlyName = input.Effect_FriendlyName;
+            saveme.Effect_Description = input.Effect_Description ;
+            saveme.Effect_Duration = input.Effect_Duration ;
+            saveme.Effect_Cooldown = input.Effect_Cooldown ;
+            saveme.Effect_Bonuses = input.Effect_Bonuses ;
+            saveme.Effect_VictimHitText = input.Effect_VictimHitText ;
+            saveme.Effect_VictimHitText_M = input.Effect_VictimHitText_M ;
+            saveme.Effect_VictimHitText_F = input.Effect_VictimHitText_F ;
+            saveme.Effect_AttackHitText = input.Effect_AttackHitText ;
+            saveme.Effect_AttackHitText_M = input.Effect_AttackHitText_M ;
+            saveme.Effect_AttackHitText_F = input.Effect_AttackHitText_F ;
+
+            saveme.Timestamp = DateTime.UtcNow;
+            saveme.AdditionalSubmitterNames = input.AdditionalSubmitterNames;
+            saveme.Notes = input.Notes;
+
+            if (saveme.ProofreadingCopy)
+            {
+                saveme.ProofreadingLockIsOn = false;
+                saveme.CheckedOutBy = "";
+            }
+ 
+
+            effectContRepo.SaveEffectContribution(saveme);
+
+
+            //return RedirectToAction("ContributeEffect", "Contribution", new { @id = input.Id });
+
+            TempData["Result"] = "Effect Contribution saved!";
+            return RedirectToAction("Play", "PvP");
+        }
+
+        public ActionResult ContributorBioList()
+        {
+            return View("ContributorBioList");
+        }
+
+        public ActionResult ContributorBio(string name)
+        {
+            return View("~/Views/Contribution/Bios/" + name + ".cshtml");
+        }
+
+        public ActionResult PublishSpell(int id)
+        {
+
+            if (WebSecurity.CurrentUserId != 69)
+            {
+                return View("ContributorBioList");
+            }
+
+            string message = "started.<br>";
+
+            IContributionRepository contributionRepo = new EFContributionRepository();
+            IDbStaticSkillRepository skillRepo = new EFDbStaticSkillRepository();
+            Contribution contribution = contributionRepo.Contributions.FirstOrDefault(c => c.Id == id);
+
+            string skilldbname = "skill_" + contribution.Skill_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
+            string formdbname = "form_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
+
+            DbStaticSkill spell = skillRepo.DbStaticSkills.FirstOrDefault(s => s.dbName == skilldbname);
+
+            if (spell == null)
+            {
+                spell = new DbStaticSkill();
+                spell.dbName = skilldbname;
+                spell.FormdbName = formdbname;
+                message += "<p class='bad'>Made new spell.</p>";
+            }
+            else
+            {
+                message += "<p class='good'>Loaded existing spell.</p>";
+            }
+
+            spell.Description = contribution.Skill_Description;
+            spell.DiscoveryMessage = contribution.Skill_DiscoveryMessage;
+            spell.FriendlyName = contribution.Skill_FriendlyName;
+            spell.HealthDamageAmount = contribution.Skill_HealthDamageAmount;
+            spell.TFPointsAmount = contribution.Skill_TFPointsAmount;
+
+            //  TODO: THIS ASSUMES LEARNED AT SPECIFIC LOCATION; THIS NEEDS TO BE CHANGED
+            if (contribution.Skill_LearnedAtLocationOrRegion == "region")
+            {
+                spell.LearnedAtRegion = contribution.Skill_LearnedAtRegion;
+            }
+            else
+            {
+                spell.LearnedAtLocation = contribution.Skill_LearnedAtRegion;
+            }
+
+            spell.ManaCost = contribution.Skill_ManaCost;
+            spell.MobilityType = contribution.Form_MobilityType;
+
+            #region write credits
+            string output = "New spell, " + contribution.Skill_FriendlyName + ", submitted by ";
+
+            if (contribution.SubmitterUrl != null && contribution.SubmitterUrl != "")
+            {
+                output += "<a href=\"" + contribution.SubmitterUrl + "\">" + contribution.SubmitterName + "</a>!";
+            }
+            else
+            {
+                output += contribution.SubmitterName + "!";
+            }
+
+            if (contribution.AdditionalSubmitterNames != null && contribution.AdditionalSubmitterNames != "")
+            {
+                output += "  Additional credits go to " + contribution.AdditionalSubmitterNames + ".";
+            }
+
+            if (contribution.AssignedToArtist != null && contribution.AssignedToArtist != "")
+            {
+                output += "  .  Graphic is by " + contribution.AssignedToArtist + ".";
+            }
+
+            message += output;
+
+            #endregion
+
+            skillRepo.SaveDbStaticSkill(spell);
+            
+
+            ViewBag.Message = message;
+            return View("Publish");
+        }
+
+        public ActionResult PublishForm(int id)
+        {
+            if (WebSecurity.CurrentUserId != 69)
+            {
+                return View("ContributorBioList");
+            }
+
+            string message = "started.<br>";
+
+            IContributionRepository contributionRepo = new EFContributionRepository();
+            IDbStaticFormRepository formRepo = new EFDbStaticFormRepository();
+            ITFMessageRepository tfRepo = new EFTFMessageRepository();
+            Contribution contribution = contributionRepo.Contributions.FirstOrDefault(c => c.Id == id);
+
+            string formdbname = "form_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
+
+            string itemdbname = "";
+
+            if (contribution.Form_MobilityType == "inanimate")
+            {
+                itemdbname = "item_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
+            }
+            else if (contribution.Form_MobilityType == "animal")
+            {
+                itemdbname = "animal_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
+            }
+
+            DbStaticForm form = formRepo.DbStaticForms.FirstOrDefault(s => s.dbName == formdbname);
+            if (form == null)
+            {
+                form = new DbStaticForm();
+                form.dbName = formdbname;
+                message += "<p class='bad'>Wrote NEW form to database.</p>";
+            }
+            else
+            {
+                message += "<p class='good'>Loaded existing form from database.</p>";
+            }
+
+            TFMessage tf = tfRepo.TFMessages.FirstOrDefault(t => t.FormDbName == formdbname);
+
+            if (tf == null)
+            {
+                tf = new TFMessage();
+                tf.FormDbName = formdbname;
+                message += "<p class='bad'>Wrote NEW tf message object to database.</p>";
+            }
+            else
+            {
+                message += "<p class='good'>Loaded existing tf message object from database.</p>";
+            }
+
+            form.BecomesItemDbName = itemdbname;
+            form.Description = contribution.Form_Description;
+            form.FriendlyName = contribution.Form_FriendlyName;
+            form.Gender = contribution.Form_Gender;
+            form.MobilityType = contribution.Form_MobilityType;
+            message += "Remember to add the portrait URL manually.<br>";
+            form.TFEnergyRequired = contribution.Form_TFEnergyRequired;
+
+
+            form.HealthBonusPercent = contribution.HealthBonusPercent;
+            form.ManaBonusPercent = contribution.ManaBonusPercent;
+            form.ExtraSkillCriticalPercent = contribution.ExtraSkillCriticalPercent;
+            form.HealthRecoveryPerUpdate = contribution.HealthRecoveryPerUpdate;
+            form.ManaRecoveryPerUpdate = contribution.ManaRecoveryPerUpdate;
+            form.SneakPercent = contribution.SneakPercent;
+            form.EvasionPercent = contribution.EvasionPercent;
+            form.EvasionNegationPercent = contribution.EvasionNegationPercent;
+            form.MeditationExtraMana = contribution.MeditationExtraMana;
+            form.CleanseExtraHealth = contribution.CleanseExtraHealth;
+            form.MoveActionPointDiscount = contribution.MoveActionPointDiscount;
+            form.SpellExtraTFEnergyPercent = contribution.SpellExtraTFEnergyPercent;
+            form.SpellExtraHealthDamagePercent = contribution.SpellExtraHealthDamagePercent;
+            form.CleanseExtraTFEnergyRemovalPercent = contribution.CleanseExtraTFEnergyRemovalPercent;
+            form.SpellMisfireChanceReduction = contribution.SpellMisfireChanceReduction;
+            form.SpellHealthDamageResistance = contribution.SpellHealthDamageResistance;
+            form.SpellTFEnergyDamageResistance = contribution.SpellTFEnergyDamageResistance;
+            form.ExtraInventorySpace = contribution.ExtraInventorySpace;
+
+            if (contribution.Form_MobilityType == "full")
+            {
+                form.PortraitUrl = contribution.ImageURL;
+            }
+
+            tf.TFMessage_20_Percent_1st = contribution.Form_TFMessage_20_Percent_1st;
+            tf.TFMessage_40_Percent_1st = contribution.Form_TFMessage_40_Percent_1st;
+            tf.TFMessage_60_Percent_1st = contribution.Form_TFMessage_60_Percent_1st;
+            tf.TFMessage_80_Percent_1st = contribution.Form_TFMessage_80_Percent_1st;
+            tf.TFMessage_100_Percent_1st = contribution.Form_TFMessage_100_Percent_1st;
+            tf.TFMessage_Completed_1st = contribution.Form_TFMessage_Completed_1st;
+
+            tf.TFMessage_20_Percent_1st_M = contribution.Form_TFMessage_20_Percent_1st_M;
+            tf.TFMessage_40_Percent_1st_M = contribution.Form_TFMessage_40_Percent_1st_M;
+            tf.TFMessage_60_Percent_1st_M = contribution.Form_TFMessage_60_Percent_1st_M;
+            tf.TFMessage_80_Percent_1st_M = contribution.Form_TFMessage_80_Percent_1st_M;
+            tf.TFMessage_100_Percent_1st_M = contribution.Form_TFMessage_100_Percent_1st_M;
+            tf.TFMessage_Completed_1st_M = contribution.Form_TFMessage_Completed_1st_M;
+
+            tf.TFMessage_20_Percent_1st_F = contribution.Form_TFMessage_20_Percent_1st_F;
+            tf.TFMessage_40_Percent_1st_F = contribution.Form_TFMessage_40_Percent_1st_F;
+            tf.TFMessage_60_Percent_1st_F = contribution.Form_TFMessage_60_Percent_1st_F;
+            tf.TFMessage_80_Percent_1st_F = contribution.Form_TFMessage_80_Percent_1st_F;
+            tf.TFMessage_100_Percent_1st_F = contribution.Form_TFMessage_100_Percent_1st_F;
+            tf.TFMessage_Completed_1st_F = contribution.Form_TFMessage_Completed_1st_F;
+
+            tf.TFMessage_20_Percent_3rd = contribution.Form_TFMessage_20_Percent_3rd;
+            tf.TFMessage_40_Percent_3rd = contribution.Form_TFMessage_40_Percent_3rd;
+            tf.TFMessage_60_Percent_3rd = contribution.Form_TFMessage_60_Percent_3rd;
+            tf.TFMessage_80_Percent_3rd = contribution.Form_TFMessage_80_Percent_3rd;
+            tf.TFMessage_100_Percent_3rd = contribution.Form_TFMessage_100_Percent_3rd;
+            tf.TFMessage_Completed_3rd = contribution.Form_TFMessage_Completed_3rd;
+
+            tf.TFMessage_20_Percent_3rd_M = contribution.Form_TFMessage_20_Percent_3rd_M;
+            tf.TFMessage_40_Percent_3rd_M = contribution.Form_TFMessage_40_Percent_3rd_M;
+            tf.TFMessage_60_Percent_3rd_M = contribution.Form_TFMessage_60_Percent_3rd_M;
+            tf.TFMessage_80_Percent_3rd_M = contribution.Form_TFMessage_80_Percent_3rd_M;
+            tf.TFMessage_100_Percent_3rd_M = contribution.Form_TFMessage_100_Percent_3rd_M;
+            tf.TFMessage_Completed_3rd_M = contribution.Form_TFMessage_Completed_3rd_M;
+
+            tf.TFMessage_20_Percent_3rd_F = contribution.Form_TFMessage_20_Percent_3rd_F;
+            tf.TFMessage_40_Percent_3rd_F = contribution.Form_TFMessage_40_Percent_3rd_F;
+            tf.TFMessage_60_Percent_3rd_F = contribution.Form_TFMessage_60_Percent_3rd_F;
+            tf.TFMessage_80_Percent_3rd_F = contribution.Form_TFMessage_80_Percent_3rd_F;
+            tf.TFMessage_100_Percent_3rd_F = contribution.Form_TFMessage_100_Percent_3rd_F;
+            tf.TFMessage_Completed_3rd_F = contribution.Form_TFMessage_Completed_3rd_F;
+
+            tfRepo.SaveTFMessage(tf);
+            formRepo.SaveDbStaticForm(form);
+            ViewBag.Message = message;
+
+            return View("Publish");
+        }
+
+        public ActionResult PublishItem(int id)
+        {
+
+            if (WebSecurity.CurrentUserId != 69)
+            {
+                return View("ContributorBioList");
+            }
+
+            string message = "started.<br>";
+
+            IContributionRepository contributionRepo = new EFContributionRepository();
+            IDbStaticItemRepository itemRepo = new EFDbStaticItemRepository();
+            Contribution contribution = contributionRepo.Contributions.FirstOrDefault(c => c.Id == id);
+
+            string itemdbname = "";
+
+            if (contribution.Form_MobilityType == "inanimate")
+            {
+                itemdbname = "item_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
+            }
+            else if (contribution.Form_MobilityType == "animal")
+            {
+                itemdbname = "animal_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
+            }
+
+            DbStaticItem item = itemRepo.DbStaticItems.FirstOrDefault(s => s.dbName == itemdbname);
+
+            if (item == null)
+            {
+                item = new DbStaticItem();
+                item.dbName = itemdbname;
+                message += "<p class='bad'>CREATED NEW ENTRY.</p>";
+            }
+            else
+            {
+                message += "<p class='good'>Loaded existing item.</p>";
+            }
+
+        //     public int Id { get; set; }
+        //public string dbName { get; set; }
+        //public string FriendlyName { get; set; }
+        //public string Description { get; set; }
+        //public string PortraitUrl { get; set; }
+        //public decimal MoneyValue { get; set; }
+        //public string ItemType { get; set; }
+        //public int UseCooldown { get; set; }
+        //public bool Findable { get; set; }
+        //public double FindWeight { get; set; }
+        //public string GivesEffect { get; set; }
+        //public bool IsUnique { get; set; }
+
+            item.Description = contribution.Item_Description;
+            item.FriendlyName = contribution.Item_FriendlyName;
+            message += "<p>You must set the filename for the image yourself.</p>";
+            item.ItemType = contribution.Item_ItemType;
+            item.UseCooldown = contribution.Item_UseCooldown;
+            item.Findable = false;
+
+            if (contribution.Form_MobilityType == "inanimate" || contribution.Form_MobilityType == "animal")
+            {
+                item.PortraitUrl = contribution.ImageURL;
+            }
+
+            item.HealthBonusPercent = contribution.HealthBonusPercent;
+            item.ManaBonusPercent = contribution.ManaBonusPercent;
+            item.ExtraSkillCriticalPercent = contribution.ExtraSkillCriticalPercent;
+            item.HealthRecoveryPerUpdate = contribution.HealthRecoveryPerUpdate;
+            item.ManaRecoveryPerUpdate = contribution.ManaRecoveryPerUpdate;
+            item.SneakPercent = contribution.SneakPercent;
+            item.EvasionPercent = contribution.EvasionPercent;
+            item.EvasionNegationPercent = contribution.EvasionNegationPercent;
+            item.MeditationExtraMana = contribution.MeditationExtraMana;
+            item.CleanseExtraHealth = contribution.CleanseExtraHealth;
+            item.MoveActionPointDiscount = contribution.MoveActionPointDiscount;
+            item.SpellExtraTFEnergyPercent = contribution.SpellExtraTFEnergyPercent;
+            item.SpellExtraHealthDamagePercent = contribution.SpellExtraHealthDamagePercent;
+            item.CleanseExtraTFEnergyRemovalPercent = contribution.CleanseExtraTFEnergyRemovalPercent;
+            item.SpellMisfireChanceReduction = contribution.SpellMisfireChanceReduction;
+            item.SpellHealthDamageResistance = contribution.SpellHealthDamageResistance;
+            item.SpellTFEnergyDamageResistance = contribution.SpellTFEnergyDamageResistance;
+            item.ExtraInventorySpace = contribution.ExtraInventorySpace;
+            
+        //           public decimal InstantHealthRestore { get; set; }
+        //public decimal InstantManaRestore { get; set; }
+        //public decimal ReuseableHealthRestore { get; set; }
+        //public decimal ReuseableManaRestore { get; set; }
+
+            //item.InstantHealthRestore = contribution.Item_
+
+            itemRepo.SaveDbStaticItem(item);
+
+            ViewBag.Message = message;
+
+            return View("Publish");
+        }
+
+        public ActionResult MarkAsLive(int id)
+        {
+            if (WebSecurity.CurrentUserId != 69)
+            {
+                return View("ContributorBioList");
+            }
+
+            string message = "";
+            IContributionRepository contributionRepo = new EFContributionRepository();
+            Contribution contribution = contributionRepo.Contributions.FirstOrDefault(c => c.Id == id);
+            Contribution contribution_original = contributionRepo.Contributions.FirstOrDefault(c => c.Id == contribution.ProofreadingCopyForOriginalId);
+
+            contribution.IsLive = true;
+            contributionRepo.SaveContribution(contribution);
+            message += "<p>Contribution marked as live.</p>";
+            
+            if (contribution_original != null)
+            {
+                contribution_original.IsLive = true;
+                contributionRepo.SaveContribution(contribution_original);
+                message += "<p>Original contribution marked as live.</p>";
+                
+            }
+            else
+            {
+                message += "<p>Original contribution not found.</p>";
+            }
+
+            ViewBag.Message = message;
+            return View("Publish");
+        }
+
+        public ActionResult SetSpellAsLive(int id)
+        {
+            if (WebSecurity.CurrentUserId != 69)
+            {
+                return View("ContributorBioList");
+            }
+
+            IContributionRepository contributionRepo = new EFContributionRepository();
+            IDbStaticSkillRepository skillRepo = new EFDbStaticSkillRepository();
+            Contribution contribution = contributionRepo.Contributions.FirstOrDefault(c => c.Id == id);
+
+            string skilldbname = "skill_" + contribution.Skill_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
+
+
+            DbStaticSkill sskill = skillRepo.DbStaticSkills.FirstOrDefault(s => s.dbName == skilldbname);
+            sskill.IsLive = "live";
+            skillRepo.SaveDbStaticSkill(sskill);
+            ViewBag.Message = "Set to live.";
+
+            return View("Publish");
+
+        }
+
+        public ActionResult StaticsExist(int id)
+        {
+            if (WebSecurity.CurrentUserId != 69)
+            {
+                return View("ContributorBioList");
+            }
+
+            IContributionRepository contributionRepo = new EFContributionRepository();
+            IDbStaticSkillRepository skillRepo = new EFDbStaticSkillRepository();
+            IDbStaticFormRepository formRepo = new EFDbStaticFormRepository();
+            IDbStaticItemRepository itemRepo = new EFDbStaticItemRepository();
+            Contribution contribution = contributionRepo.Contributions.FirstOrDefault(c => c.Id == id);
+
+            string skilldbname = "skill_" + contribution.Skill_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
+            string formdbname = "form_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
+
+            string itemdbname = "";
+
+            if (contribution.Form_MobilityType == "inanimate")
+            {
+                itemdbname = "item_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
+            }
+            else if (contribution.Form_MobilityType == "animal")
+            {
+                itemdbname = "animal_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
+            }
+
+            DbStaticSkill sskill = skillRepo.DbStaticSkills.FirstOrDefault(s => s.dbName == skilldbname);
+            DbStaticForm sform = formRepo.DbStaticForms.FirstOrDefault(f => f.dbName == formdbname);
+            DbStaticItem sitem = itemRepo.DbStaticItems.FirstOrDefault(f => f.dbName == itemdbname);
+
+            string message = "";
+
+            if (sskill == null)
+            {
+                message += "<p class='bad'>No static skill found:  " + skilldbname + "</p>";
+            } else {
+                message += "<p class='good'>Static skill found.</p>";
+            }
+
+            if (sform == null)
+            {
+                message += "<p class='bad'>No static form found:  " + formdbname + "</p>";
+            }
+            else
+            {
+                message += "<p class='good'>Static form found.</p>";
+            }
+
+            if (sitem == null && (contribution.Form_MobilityType == "inanimate" || contribution.Form_MobilityType == "animal"))
+            {
+                message += "<p class='bad'>No static item/pet found:  " + itemdbname + "</p>";
+            }
+            else if (contribution.Form_MobilityType == "inanimate" || contribution.Form_MobilityType == "animal")
+            {
+                message += "<p class='good'>Static item/pet found.</p>";
+            }
+
+            ViewBag.Message = message;
+
+            return View("Publish");
+
+        }
+
+        public ActionResult MyDMRolls()
+        {
+            IDMRollRepository repo = new EFDMRollRepository();
+            return View(repo.DMRolls.Where(r => r.MembershipOwnerId == WebSecurity.CurrentUserId));
+        }
+
+          [Authorize]
+        public ActionResult DMRoll(int id)
+        {
+            IDMRollRepository repo = new EFDMRollRepository();
+            DMRoll output = repo.DMRolls.FirstOrDefault(r => r.Id == id);
+            if (output == null)
+            {
+                output = new DMRoll();
+            }
+            else
+            {
+                if (output.MembershipOwnerId != WebSecurity.CurrentUserId && WebSecurity.CurrentUserId != 69)
+                {
+                    TempData["Error"] = "This does not belong to you.";
+                    return RedirectToAction("Play", "PvP");
+                }
+            }
+
+            return View(output);
+        }
+
+          [Authorize]
+        public ActionResult SendDMRoll(DMRoll input)
+        {
+            IDMRollRepository repo = new EFDMRollRepository();
+            DMRoll roll = repo.DMRolls.FirstOrDefault(i => i.Id == input.Id);
+
+            if (roll == null)
+            {
+                roll = new DMRoll();
+            }
+            else
+            {
+                if (roll.MembershipOwnerId != WebSecurity.CurrentUserId && WebSecurity.CurrentUserId != 69)
+                {
+                    TempData["Error"] = "This does not belong to you.";
+                    return RedirectToAction("Play", "PvP");
+                }
+                if (roll.Message.Length > 500)
+                {
+                    ViewBag["Error"] = "The message canno be longer than 500 characters.";
+                    return View("DMRoll", input);
+                } 
+            }
+
+            if (roll.MembershipOwnerId > 0 && roll.MembershipOwnerId != 69 )
+            {
+                roll.MembershipOwnerId = WebSecurity.CurrentUserId;
+            }
+
+            roll.Tags = input.Tags.ToLower();
+            roll.Message = input.Message;
+            roll.ActionType = input.ActionType;
+
+            if (roll.IsLive == true)
+            {
+                roll.IsLive = false;
+            }
+
+            repo.SaveDMRoll(roll);
+
+            ViewBag.Result = "DM Encounter saved.";
+            return RedirectToAction("MyDMRolls");
+
+        }
+
+          [Authorize]
+          public ActionResult ReviewDMRolls()
+          {
+              if (WebSecurity.CurrentUserId != 69)
+              {
+                  return RedirectToAction("Play", "PvP");
+              }
+              IDMRollRepository repo = new EFDMRollRepository();
+              return View(repo.DMRolls.Where(r => r.IsLive == false));
+          }
+
+         [Authorize]
+          public ActionResult ApproveDMRoll(int id)
+          {
+
+              if (WebSecurity.CurrentUserId != 69)
+              {
+                  return RedirectToAction("Play", "PvP");
+              }
+
+              IDMRollRepository repo = new EFDMRollRepository();
+              DMRoll roll = repo.DMRolls.FirstOrDefault(i => i.Id == id);
+              roll.IsLive = true;
+              repo.SaveDMRoll(roll);
+
+              return RedirectToAction("ReviewDMRolls");
+          }
+
+	}
+}

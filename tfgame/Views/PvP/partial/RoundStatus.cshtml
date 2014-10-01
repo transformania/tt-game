@@ -1,0 +1,40 @@
+﻿@model tfgame.dbModels.Models.PvPWorldStat
+           @using tfgame.Statics
+
+@{
+    if (Model.TurnNumber >= PvPStatics.RoundDuration)
+    {
+        <div class="inbetweenRoundNotice">The round has ended.  Check back soon to start again on a fresh round.</div>
+    }
+}
+
+@{
+    if (Model.TurnNumber < PvPStatics.RoundDuration && PvPStatics.ChaosMode == true)
+    {
+        <div class="inbetweenRoundNotice">The game is currently in "chaos mode" in which attacks are unlimited.  This is an inbetween round rapid test mode and is not representative of regular in-round gameplay.</div>
+    }
+}
+
+@{
+    if (ViewBag.UpdateInProgress == true)
+    {
+        <p class="bad">TURN UPDATE IN PROGRESS</p>
+    }
+}
+
+@{
+    if (Model.Boss_Donna == "active")
+    {
+        <div class="activeBossNotice">Rumor has it a powerful sorceress known as Donna Milton is wandering the streets turning those she meets into animals...</div>
+    }
+}
+
+@{
+    if (Model.Boss_Valentine == "active")
+    {
+        <div class="activeBossNotice">Rumor has it a powerful vampire lord known as Lord Valentine is lurking in his castle waiting for mortals to dare and fight him...</div>
+    }
+}
+
+
+

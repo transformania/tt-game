@@ -1,0 +1,132 @@
+﻿@model tfgame.ViewModels.PlayerFormItemsSkillsViewModel
+@using tfgame.ViewModels
+@using tfgame.Procedures
+@using tfgame.CustomHtmlHelpers
+@using tfgame.Statics
+
+<head>
+    <link href="~/Content/PvP.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-2.1.0.js"></script>
+</head>
+
+@Html.ActionLink("Back to game", "Play", "PvP")
+
+<h1>
+    @Model.PlayerForm.Player.FirstName @Model.PlayerForm.Player.LastName @CharactersHere.GetCovenantInfo(Model.PlayerForm.Player.ToDbPlayer())
+    @CharactersHere.PrintDonatorIcon(Model.PlayerForm.Player.ToDbPlayer())
+    @CharactersHere.PrintRPIcon(Model.PlayerForm.Player.ToDbPlayer())
+    @CharactersHere.PrintPvPIcon(Model.PlayerForm.Player.ToDbPlayer())
+
+</h1>
+<h3>@Model.PlayerForm.Form.FriendlyName</h3>
+
+<p>@Model.PlayerForm.Form.Description</p>
+
+@{
+    if (Model.PlayerForm.Player.MembershipId != -1)
+    {
+        <p>
+            @{
+        if (ViewBag.HasBio)
+        {
+            @Html.ActionLink("View Bio", "ViewBio", "Settings", new { id = Model.PlayerForm.Player.MembershipId }, null)
+        }
+            }
+
+            @Html.ActionLink("Send a Message", "Write", "PvP", new { playerId = Model.PlayerForm.Player.Id, responseTo = -1 }, null)
+            @Html.ActionLink("Request Friendship", "AddFriend", "PvP", new { playerId = Model.PlayerForm.Player.Id }, null)
+        </p>
+    }
+    else
+    {
+        <p style="color: red;">This player has chosen to create a new character and cannot be messaged or have a friend request sent to them.</p>
+    }
+}
+
+
+
+<div class="portrait large" style="background-image: url(../../Images/PvP/portraits/@Model.PlayerForm.Form.PortraitUrl);">
+    <span class="icon-@Model.PlayerForm.Player.Gender" style="float:right;"></span>
+
+
+    <span class="icon-level"><b>@Model.PlayerForm.Player.Level</b></span>
+</div>
+
+<span class="health">Willpower:  @Model.PlayerForm.Player.Health / @Model.PlayerForm.Player.MaxHealth</span><br />
+
+<span class="mana">Mana:  @Model.PlayerForm.Player.Mana / @Model.PlayerForm.Player.MaxMana</span>
+
+
+
+@Html.Partial("partial/partial_AllBuffsTable", Model.Bonuses)
+
+@Html.Partial("partial_InventoryEquipped", Model.Items)
+
+
+<h3>Items worn:</h3>
+
+@{
+    foreach (ItemViewModel item in Model.Items)
+    {
+        @Html.Partial("partial_InventoryItem", item)
+    }
+}
+
+<p>@Model.PlayerForm.Player.FirstName may be carrying more items that are not being worn or held.</p>
+
+@{
+    if (Model.Bonuses.SneakPercent() <= PvPStatics.SneakAmountBeforeLocationIsPublic * 3)
+    {
+        <p class="bad">Due to this player's very poor ability to sneak, you sense that @Model.PlayerForm.Player.FirstName is currently at @ViewBag.AtLocation and has attacked @Model.PlayerForm.Player.TimesAttackingThisUpdate times this update and has @Model.PlayerForm.Player.ActionPoints action points remaining.</p>
+    }
+    else if (Model.Bonuses.SneakPercent() <= PvPStatics.SneakAmountBeforeLocationIsPublic * 2)
+    {
+        <p class="bad">Due to this player's very poor ability to sneak, you sense that @Model.PlayerForm.Player.FirstName is currently at @ViewBag.AtLocation and has attacked @Model.PlayerForm.Player.TimesAttackingThisUpdate times this update.</p>
+    }
+    else if (Model.Bonuses.SneakPercent() <= PvPStatics.SneakAmountBeforeLocationIsPublic)
+    {
+        <p class="bad">Due to this player's poor ability to sneak, you sense that @Model.PlayerForm.Player.FirstName is currently at @ViewBag.AtLocation.</p>
+    }
+}
+
+
+
+
+
+@Html.ActionLink("Back to game", "Play", "PvP")
+
+<br /><br />
+
+@{
+    if (PlayerProcedures.AccountIsTrusted(WebSecurity.CurrentUserId) == true)
+    {
+        if (@Model.PlayerForm.Player.FlaggedForAbuse == false)
+        {
+            @Html.ActionLink("Lock this player for suspicious activity", "FlagForSuspiciousActivity", "PvP", new { playerId = Model.PlayerForm.Player.Id }, null)
+        }
+        else
+        {
+            @Html.ActionLink("Unlock this player for suspicious activity", "FlagForSuspiciousActivity", "PvP", new { playerId = Model.PlayerForm.Player.Id }, null)
+        }
+    }
+}
+
+@{
+    if (ViewBag.TimeUntilLogout > 0)
+    {
+        <p class="good">Online for @ViewBag.TimeUntilLogout more minutes</p>
+    }
+    else
+    {
+        <p class="bad">Offline</p>
+    }
+}
+
+
+
+
+<style>
+    .Links {
+        display: none;
+    }
+</style>

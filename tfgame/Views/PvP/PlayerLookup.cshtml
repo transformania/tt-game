@@ -1,0 +1,33 @@
+﻿@model tfgame.ViewModels.PlayerSearchViewModel
+
+@using (Html.BeginForm("PlayerLookupSend", "PvP", Model))
+{
+    <p>Full name</p>
+    @Html.EditorFor(m => m.FirstName)
+    
+    <br />
+    
+     <input type="submit" value="Search" />
+}
+
+@{
+    if (Model != null && Model.FoundThem == true)
+    {
+        <p>  <b>Player found!  </b>
+            @Html.ActionLink("Look At " + Model.ExactPlayer.FirstName + " " + Model.ExactPlayer.LastName, "LookAtPlayer", "PvP", new { id = Model.ExactPlayer.Id }, null)
+            @Html.ActionLink("Message " + Model.ExactPlayer.FirstName + " " + Model.ExactPlayer.LastName, "Write", "PvP", new { playerId = Model.ExactPlayer.Id, responseTo = -1 }, null)
+        </p>
+    }
+    else
+    {
+        <p>No players of this name were found.</p>
+    }
+}
+
+
+<p>
+    @Html.ActionLink("Back to Messages", "MyMessages", "PvP")
+</p>
+<p>
+    @Html.ActionLink("Back to game", "Play", "PvP")
+</p>

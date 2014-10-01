@@ -1,0 +1,84 @@
+﻿
+@model tfgame.ViewModels.BuffBox
+
+
+
+<h3>Bonuses and Penalties from current form:</h3>
+<ul>
+    @{
+        if (@Model.FromForm_HealthBonusPercent != 0)
+        {
+            <li>Extra willpower %:  @Model.FromForm_HealthBonusPercent</li>
+        }
+        if (@Model.FromForm_ManaBonusPercent != 0)
+        {
+            <li>Extra mana %:  @Model.FromForm_ManaBonusPercent</li>
+        }
+        if (@Model.FromForm_HealthRecoveryPerUpdate != 0)
+        {
+            <li>Willpower recovery per update:  @Model.FromForm_HealthRecoveryPerUpdate</li>
+        }
+        if (@Model.FromForm_ManaRecoveryPerUpdate != 0)
+        {
+            <li>Mana recovery per update:  @Model.FromForm_ManaRecoveryPerUpdate</li>
+        }
+        if (@Model.FromForm_SneakPercent != 0)
+        {
+            <li>Sneak chance percent:  @Model.FromForm_SneakPercent</li>
+        }
+        if (@Model.FromForm_EvasionPercent != 0)
+        {
+            <li>Percent chance to evade an attack:  @Model.FromForm_EvasionPercent</li>
+        }
+        if (@Model.FromForm_EvasionNegationPercent != 0.0M)
+        {
+            <li>Percent negation of opponent's ability to evade a spell:  @Model.FromForm_EvasionNegationPercent</li>
+        }
+        if (@Model.FromForm_MeditationExtraMana != 0)
+        {
+            <li>Extra mana recovering from meditating:  @Model.FromForm_MeditationExtraMana</li>
+        }
+        if (@Model.FromForm_CleanseExtraHealth != 0)
+        {
+            <li>Extra willpower recovered from cleansing:  @Model.FromForm_CleanseExtraHealth</li>
+        }
+        if (@Model.FromForm_ExtraSkillCriticalPercent != 0)
+        {
+            <li>Extra critical hit percent chance:  @Model.FromForm_ExtraSkillCriticalPercent</li>
+        }
+        if (@Model.FromForm_MoveActionPointDiscount != 0.0M)
+        {
+            <li>Action point discount when moving:  @Model.FromForm_MoveActionPointDiscount</li>
+        }
+        if (@Model.FromForm_SpellExtraTFEnergyPercent != 0.0M)
+        {
+            <li>Extra transformation energy damage percent:  @Model.FromForm_SpellExtraTFEnergyPercent</li>
+        }
+         if (@Model.FromForm_SpellExtraHealthDamagePercent != 0.0M)
+        {
+            <li>Extra willpower damage dealt from spells:  @Model.FromForm_SpellExtraHealthDamagePercent</li>
+        }
+        if (@Model.FromForm_CleanseExtraTFEnergyRemovalPercent != 0.0M)
+        {
+            <li>Extra transformation energy percent removed when cleansing:  @Model.FromForm_CleanseExtraTFEnergyRemovalPercent</li>
+        }
+         if (@Model.FromForm_SpellMisfireChanceReduction != 0.0M)
+        {
+            <li>Misfire percent chance reduction:  @Model.FromForm_SpellMisfireChanceReduction</li>
+        }
+         if (@Model.FromForm_SpellHealthDamageResistance != 0.0M)
+        {
+            <li>Willpower damage percent reduction when hit by spells:  @Model.FromForm_SpellHealthDamageResistance</li>
+        }
+         if (@Model.FromForm_SpellTFEnergyDamageResistance != 0.0M)
+        {
+            <li>Transformation energy percent reduction when hit by spells:  @Model.FromForm_SpellTFEnergyDamageResistance</li>
+        }
+         if (@Model.FromForm_ExtraInventorySpace != 0.0M)
+        {
+            <li>Extra inventory space:  @Model.FromForm_ExtraInventorySpace</li>
+        }
+      
+    }
+
+</ul>

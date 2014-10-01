@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?><Form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<TFMessage_20_Percent_1st>You feel a cold shiver, and a strange hatred of living things. You stare blankly at your attacker, and shake your head. Nearly instantly the feeling goes away, although you feel weaker. You're not sure what's gone through your mind, but you're sure it can't be good.</TFMessage_20_Percent_1st>
+
+<TFMessage_40_Percent_1st>As your aggressor casts their strange spell once again, you feel a cold shiver as your skin turns stiff, tinted silver. You quickly survey your surroundings, as the spell reverses itself to complete its mission later.</TFMessage_40_Percent_1st>
+
+<TFMessage_60_Percent_1st>Again, your opponent casts their terrible spell on you, only to find that this time, not only is your skin affected, but your vision as  well. Your vision changes, now showing heat signs as if you were looking through a thermal camera. Slowly, the spell reverses, each casting increasing your upgrade progress.</TFMessage_60_Percent_1st>
+
+<TFMessage_80_Percent_1st>You feel oddly cold, as your skin turns hard and silver. Your lack of emotions blocking most of your human thoughts, you approach a bystander that you spot in your thermal vision, and prepare to attack them with your mighty fist. Just as you are about to strike the bystander, you freeze in place and the bystander flees. Your emotions return along with your skin. You feel strange as your thermal vision leaves, wondering what is becoming of you.</TFMessage_80_Percent_1st>
+
+<TFMessage_100_Percent_1st>As you struggle to hold back your opponent's spell, the strange changes return. Your skin becomes hard and silver, growing rivets attaching what appear to be panels, your blood being replaced by hydraulic fluid, your joints reforming into steel joints with ball bearings, your body tissue becoming solid steel, leaving you with only a human brain. The horrid spell having run out of energy this casting, it reverts you back, only needing one more casting to finish...</TFMessage_100_Percent_1st>
+
+<TFMessage_Completed_1st>You feel strange, realising that trying to resist this casting is a lost cause, and give in. Your human mind, replaced by computer chips controlled by the central mainframe, sharing all of the memories of your old life with the rest of the cyber army. Your skin and flesh, replaced by solid steel. Your blood and veins, replaced by hydraulic fluid and pipes. Your emotions, gone. You have become a servant of The Mainframe, focused on upgrading all lifeforms.</TFMessage_Completed_1st>
+
+<TFMessage_20_Percent_3rd>You cast your horrid spell upon your victim, [player's name], and slowly their skin begins to take on a silver tint. They stare blankly towards you, and shake their head reversing the changes.</TFMessage_20_Percent_3rd>
+
+<TFMessage_40_Percent_3rd>Once more, you cast your cruel spell strikes your helpless victim. Their skin becomes stiff, and they begin to shiver as the silver colouring returns. The energy from your spell casting runs out, and the spell reverses its physical changes, waiting to be finished later.</TFMessage_40_Percent_3rd>
+
+<TFMessage_60_Percent_3rd>As your victim is smitten by the energy from your spell, their eyes begin to change in appearance. Their eyes turn black, like a lens of a camera. The silver spreads over their skin, engulfing their body in what looks a bit like paint. Suddenly, the silver stops in its tracks, and  begins reversing.</TFMessage_60_Percent_3rd>
+
+<TFMessage_80_Percent_3rd>Your victim is zapped by your powerful stream of energy, and the process continues. As the silver, spreads like a plague over their skin and their eyes grow dark and glassy, they turn and approach a bystander in a uniform fashion as if to attack; but before the bystander is struck by your victim, they freeze in mid-swing and the bystander runs away in fear. The silver plague retreats and their human eyes return, unaware of the horrible monster they are becoming.</TFMessage_80_Percent_3rd>
+
+<TFMessage_100_Percent_3rd>Trying to fight your wicked spell, your victim's changes return. Their skin becoming hard and silver, growing rivets that attach... metal panels? Their blood and veins changing into hydraulic fluid and tubes, their joints reforming into pivots with ball bearings and their flesh becoming solid steel, leaving them with only their human mind. Your spell runs out of energy, and their changes are reversed, and you're certain you only need to cast one more spell to finish them off...</TFMessage_100_Percent_3rd>
+
+<TFMessage_Completed_3rd>Your victim ultimately gives in to the changes, deciding that fighting them is a lost cause. Their human mind is replaced by a computer core, controlled by The Mainframe, and sharing all of your memories with the rest of the cyber army. Their skin is replaced by steel plates, held down to their steel flesh by rivets. Their blood is replaced by hydraulic fluid, and their emotions eliminated. They have become a servant of The Mainframe, focused on upgrading all lifeforms.
+</TFMessage_Completed_3rd>
+
+</Form>

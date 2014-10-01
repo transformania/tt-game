@@ -1,0 +1,66 @@
+﻿@model tfgame.ViewModels.InventoryBonusesViewModel
+           @using tfgame.ViewModels
+            @using tfgame.Statics
+
+<head>
+
+
+
+    <link href="~/Content/PvP.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-2.1.0.js"></script>
+</head>
+
+
+
+
+@Html.ActionLink("Back to game", "Play", "PvP")
+
+<div class="result">
+    @Html.Raw(ViewBag.Result)
+</div>
+<div class="error">
+    @ViewBag.ErrorMessage
+</div>
+<div class="suberror">
+    @ViewBag.SubErrorMessage
+</div>
+
+<h1>Inventory</h1>
+
+<div style="position: relative; float: left;">
+  
+    @Html.Partial("partial/partial_AllBuffsTable", Model.Bonuses)
+
+</div>
+
+@Html.Partial("partial_InventoryEquipped", Model.Items)
+
+<br /><br />
+
+
+@{
+
+    foreach (tfgame.ViewModels.ItemViewModel item in Model.Items)
+    {
+        @Html.Partial("partial_InventoryItem", item)
+    
+
+    }
+
+}
+
+<div style="position: relative; float: left; margin-top: 10px;">
+    @Html.ActionLink("Back to game", "Play", "PvP")
+    </div>
+
+    <style>
+        .itemName {
+            font-size: 20px;
+        }
+
+        .WasPerson {
+            font-size: 15px;
+            color: chocolate;
+            font-style: italic;
+        }
+    </style>

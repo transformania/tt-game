@@ -1,0 +1,98 @@
+﻿@model IEnumerable<tfgame.dbModels.Models.ChatLog>
+@using tfgame.dbModels.Models
+
+<head>
+    <link href="~/Content/PvP.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-2.1.0.js"></script>
+</head>
+
+<p>@Html.ActionLink("Back to game", "Play", "PvP")</p>
+
+<h1>Chat Log for Room '@ViewBag.Room'</h1>
+
+<p>Note that <b>oldest posts are on top</b>, not newest.  You can use the links before to change the filter time; longer durations will take longer to load.  Please be patient and use the longer filters sparingly.  Any chat messages older than 3 days are eligible for permanent deletion.</p>
+
+@Html.ActionLink("Last Hour", "ChatLog", "PvP", new { room = ViewBag.Room, filter = "lasth" }, null)
+@Html.ActionLink("Last 4 Hours", "ChatLog", "PvP", new { room = ViewBag.Room, filter = "last4h" }, null)
+@Html.ActionLink("Last 12 Hours", "ChatLog", "PvP", new { room = ViewBag.Room, filter = "last12h" }, null)
+@Html.ActionLink("Last Day", "ChatLog", "PvP", new { room = ViewBag.Room, filter = "last24h" }, null)
+@Html.ActionLink("Last 2 Days", "ChatLog", "PvP", new { room = ViewBag.Room, filter = "last48h" }, null)
+@Html.ActionLink("Last 3 Days", "ChatLog", "PvP", new { room = ViewBag.Room, filter = "last72h" }, null)
+
+
+<ul id="discussion">
+  
+        @{
+            foreach (ChatLog l in Model)
+            {
+                @*<li>@l.Message <span class="timeago">@l.Timestamp</span></li>*@
+                <li>@l.Message</li>
+            }
+        }
+
+</ul>
+
+<script>
+
+    $(document).ready(function () {
+
+        $("li").each(function () {
+            var encodedValue = $(this).html();
+            encodedValue = encodedValue.replace("[.[", "<span class='timeago'>");
+            encodedValue = encodedValue.replace("].]", "</span>");
+            encodedValue = encodedValue.replace("[-[", "<span class='enterMsg'>");
+            encodedValue = encodedValue.replace("]-]", "</span>");
+            encodedValue = encodedValue.replace("[=[", "<span class='dm'>");
+            encodedValue = encodedValue.replace("]=]", "</span>");
+            encodedValue = encodedValue.replace("Judoo (admin)", "<span class='adminFont'>Judoo (admin)</span>");
+            console.log(encodedValue);
+            $(this).html(encodedValue);
+        });
+
+    });
+
+</script>
+
+<style>
+    #discussion {
+        width: 100%;
+        overflow-y: scroll;
+        text-wrap: normal;
+        border: 2px solid black;
+        border-radius: 8px;
+        padding: 5px;
+        background-color: #fedfdf;
+    }
+
+        #discussion li {
+            padding-top: 4px;
+            padding-bottom: 4px;
+        }
+
+            #discussion li:nth-child(odd) {
+                background-color: #ffd2ee;
+            }
+
+            #discussion li:nth-child(even) {
+                background-color: #ffb9e4;
+            }
+
+    .adminFont {
+        color: darkred;
+    }
+
+    .youFont {
+        color: darkblue;
+    }
+
+    .dm {
+        color: darkgreen;
+        font-weight: 800;
+    }
+
+    strong {
+        cursor: pointer;
+    }
+</style>
+
+<p>@Html.ActionLink("Back to game", "Play", "PvP")</p>

@@ -1,0 +1,97 @@
+﻿@model tfgame.Models.RegisterModel
+@{
+    ViewBag.Title = "Register";
+}
+
+<head>
+    <script src="~/Scripts/jquery-2.1.0.min.js"></script>
+    <link href="~/Content/PvP.css" rel="stylesheet" />
+</head>
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+    <h2>Create a new account.</h2>
+</hgroup>
+
+<div class="fullpageWarning">
+    <p> <h3>THIS SITE CONTAINS ADULT SEXUAL CONTENT and is not suitable for minors.</u></b></h3>
+
+    <p>By logging in to this site you agree that you are <b>at least 18 years of age</b> or <b>the legal in age of your country to view or read sexually explicit material</b>.  If you do not meet these criteria, please leave now.</p>
+
+    <h3>What is Transformania Time?</h3>
+
+    <p>Transformania Time game is a a massively multiplayer player-versus-player browser-based game that revolves primarily around transformation themes, including transgender, trans-species, absorption, and inanimation (being turned into an item).  You will also encounter themes revolving around BDSM, mind control, and bimbofication.  <b>By registering or logging into this game you are agreeing that you are comfortable with these themes and and are both informed of and obeying the local laws governing you.</b></p>
+
+    <p>In order to log in you must agree to these terms by clicking clicking on the checkbox <span class="bad"><u>here</u>:</span>  <input type="checkbox" id="consent" /></p>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary()
+
+        <fieldset>
+            <legend>Registration Form</legend>
+            <ol>
+                <li>
+                    @Html.LabelFor(m => m.UserName)
+                    @Html.TextBoxFor(m => m.UserName, new { disabled = "disabled" })
+                </li>
+                <li>
+                    @Html.LabelFor(m => m.Password)
+                    @Html.PasswordFor(m => m.Password, new { disabled = "disabled" })
+                </li>
+                <li>
+                    @Html.LabelFor(m => m.ConfirmPassword)
+                    @Html.PasswordFor(m => m.ConfirmPassword, new { disabled = "disabled" })
+                </li>
+            </ol>
+            <input type="submit" value="Register" id="registerBtn" disabled="disabled"/>
+        </fieldset>
+    }
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }
+
+    </div>
+
+   
+
+<script>
+    $(document).ready(function () {
+        //toggleForms(true);
+        $("#consent").click(function () {
+            if ((this).checked) {
+                toggleForms(false);
+            } else {
+                toggleForms(true);
+            }
+        });
+    });
+
+    function toggleForms(value) {
+        $("#UserName").prop("disabled", value);
+        $("#Password").prop("disabled", value);
+        $("#ConfirmPassword").prop("disabled", value);
+        $("#registerBtn").prop("disabled", value);
+    }
+
+</script>
+
+<style>
+    .fullpageWarning {
+        width: 100%;
+        height: 100%;
+        font-size: 15px;
+        background-color: #ffc1fe;
+        color: black;
+        border: 5px solid darkviolet;
+        border-radius: 15px;
+        padding: 15px;
+        text-align: center;
+    }
+
+    input:disabled {
+        background: #b6b6b6;
+    }
+</style>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?><StaticEffect xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+<Description>You have been clearly bitten by a vampire, or some lunatic who thought it was Halloween, either way you are currently bleeding (which is rather distracting when one is trying to preserve their willpower) and should seek immediate medical assistance.</Description>
+
+  <AttackerWhenHit>With unnatural speed and precision you maneuver behind your prey and gash their carotid. Iron-rich wine spills from their veins tempting you end the game here. But you halt, only because the ambrosia is so much sweeter when tinged with despair.</AttackerWhenHit>
+
+  <AttackerWhenHit_M>With unnatural speed and precision you maneuver behind your prey and gash their carotid. Iron-rich wine spills from their veins tempting you end the game here. But you halt, only because the ambrosia is so much sweeter when tinged with despair.</AttackerWhenHit_M>
+
+  <AttackerWhenHit_F>With unnatural speed and precision you maneuver behind your prey and gash their carotid. Iron-rich wine spills from their veins tempting you end the game here. But you halt, only because the ambrosia is so much sweeter when tinged with despair.</AttackerWhenHit_F>
+
+  <MessageWhenHit>Something tickles the back of your neck. Maybe your eyes didn't catch it but the chill down your spine is proof something isn't right. Just as you dare to look over your shoulder, perfectly exposing yourself, agony burns through your flesh. The malevolent sanguisuge holds you at their mercy bleeding you of life.  What takes only a second or two seems to last minutes, and when time finally returns you stumble to the ground light-headed and bleeding.</MessageWhenHit>
+
+</StaticEffect>
+

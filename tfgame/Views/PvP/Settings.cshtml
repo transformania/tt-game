@@ -1,0 +1,89 @@
+﻿@model tfgame.dbModels.Models.Player
+
+<head>
+    <link href="~/Content/PvP.css" rel="stylesheet" />
+</head>
+
+@Html.ActionLink("Back to game", "Play", "PvP")
+
+<h1>Player Settings</h1>
+
+<h2>Offline Timer</h2>
+
+@{
+    if (@ViewBag.TimeUntilLogout >= 60)
+    {
+        <p>Your character is offline.</p>
+    }
+    else if (@ViewBag.TimeUntilLogout > 0)
+    {
+        <p>You will go into offline mode in <b>@ViewBag.TimeUntilLogout</b> minutes.</p>
+    }
+    else
+    {
+        <span class="good">You are offline.</span>
+    }
+}
+
+<h2>Reserve this Name</h2>
+
+<p>You can reserve your name so that no other players take it at the start of a new round and steal your identity.  You must be level 3 or higher in order to do this.  @Html.ActionLink("Reserve Name", "ReserveName", "PvP")
+</p>
+
+<h2>Update Your Biography</h2>
+
+<p>You can write a short bio of yourself or this player here.  @Html.ActionLink("Update My Bio", "SetBio", "Settings")</p>
+
+
+<h2>RP Mode</h2>
+
+<p>If you choose to enter RP mode, you are publicly indicated to other players that you enjoy roleplaying.  You can enable and disable this at any time you want.  Click on the link below to enter RP mode.</p>
+
+@{
+    if (Model.InRP == true)
+    {
+        <p class="good">You have your RP flag enabled.  Click @Html.ActionLink("HERE", "DisableRP", "PvP") to turn it off.</p>
+    }
+    else
+    {
+        <p class="bad">You have your RP flag disabled.  Click @Html.ActionLink("HERE", "EnableRP", "PvP") to turn it on.</p>
+    }
+
+}
+
+
+
+<h2>Protection Mode</h2>
+
+<p>Protection Mode is meant for players who want a more casual or role-playing game experience.  It prevents other human players from being able to be attacked by, or attacking with, inanimate or animal spells unless they are your friend.  There is a delay between when you can enter and leave protection equal to 12 turns times your level, and a player must be online while the game updates in order for the turn count to decrement.</p>
+
+@{
+    if (Model.InPvP == true)
+    {
+        @Html.ActionLink("Leave Protection Mode", "LeaveProtection", "PvP")
+    }
+    else
+    {
+        @Html.ActionLink("Enter Protection Mode", "EnterProtection", "PvP")
+    }
+}
+
+@{
+
+    if (ViewBag.InProtection == true)
+    {
+        <h2>Voluntarily Decrease your Willpower (Protection Mode players only)</h2>
+
+        <p>You can voluntarily submit to the magic of a friend (or enemy?) more quickly by voluntarily lowering your willpower to make yourself more vulnerable to attacks.</p>
+
+        <p>@Html.ActionLink("Decrease Willpower to Half", "DumpWillpower", "Settings", new { amount = "half" }, null)</p>
+        <p>@Html.ActionLink("Decrease Willpower to Zero", "DumpWillpower", "Settings", new { amount = "full" }, null)</p>
+
+    }
+
+}
+
+
+<p>
+    @Html.ActionLink("Back to game", "Play", "PvP")
+</p>

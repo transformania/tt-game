@@ -1,0 +1,91 @@
+﻿@model tfgame.ViewModels.PlayerFormItemsSkillsViewModel
+@using tfgame.ViewModels
+@using tfgame.Procedures
+
+<head>
+    <link href="~/Content/PvP.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-2.1.0.js"></script>
+</head>
+
+@Html.ActionLink("Back to game", "Play", "PvP")
+
+<h1>@Model.PlayerForm.Player.FirstName @Model.PlayerForm.Player.LastName</h1>
+
+
+@{if (Model.PlayerForm.Player.Mobility == "inanimate") {
+      <h3><i>Once human, this player has become inanimate and no longer poses no threat to its enemies.  Far from being dead, however, @Model.PlayerForm.Player.FirstName's new form still retains consciousness and some of its old magic, which can enhance or hamper its owner's abilities.</i></h3>
+      
+}}
+
+@{if (Model.PlayerForm.Player.Mobility == "animal")
+{
+    <h3><i>Once human, this player has become an animal or familiar and poses no threat to its enemies.  @Model.PlayerForm.Player.FirstName's new form still retains some of its old consciousness and magic, which can enhance or hamper their master's abilities when tamed and kept as a pet.</i></h3>
+
+}}
+
+
+
+<div style="width: 50%; float: right;">
+
+    <h4>@ViewBag.FormDescriptionItem </h4>
+
+    @{
+        if (Model.PlayerForm.Player.MembershipId != -1)
+        {
+            <p>
+                @{
+            if (ViewBag.HasBio)
+            {
+                @Html.ActionLink("View Bio", "ViewBio", "Settings", new { id = Model.PlayerForm.Player.MembershipId }, null)
+            }
+                }
+                @Html.ActionLink("Send a Message", "Write", "PvP", new { playerId = Model.PlayerForm.Player.Id, responseTo = -1 }, null)
+                @Html.ActionLink("Request Friendship", "AddFriend", "PvP", new { playerId = Model.PlayerForm.Player.Id }, null)
+            </p>
+        }
+        else
+        {
+            <p style="color: red;">This player has chosen to create a new character and cannot be messaged or have a friend request sent to them.</p>
+        }
+    }
+
+</div>
+
+<div style="width: 50%; float: left;">
+
+    <div class="portrait large" style="background-image: url(../../Images/PvP/@ViewBag.ImgUrl);">
+        <span class="icon-level"><b>@ViewBag.ItemLevel</b></span>
+    </div>
+
+</div>
+
+
+    @Html.ActionLink("Back to game", "Play", "PvP")
+
+    <br /><br />
+
+    @{
+        if (PlayerProcedures.AccountIsTrusted(WebSecurity.CurrentUserId) == true)
+        {
+            if (@Model.PlayerForm.Player.FlaggedForAbuse == false)
+            {
+                @Html.ActionLink("Lock this player for suspicious activity", "FlagForSuspiciousActivity", "PvP", new { playerId = Model.PlayerForm.Player.Id }, null)
+            }
+            else
+            {
+                @Html.ActionLink("Unlock this player for suspicious activity", "FlagForSuspiciousActivity", "PvP", new { playerId = Model.PlayerForm.Player.Id }, null)
+            }
+        }
+    }
+
+<p>
+    @ViewBag.IsWorn
+</p>
+
+
+
+    <style>
+        .Links {
+            display: none;
+        }
+    </style>

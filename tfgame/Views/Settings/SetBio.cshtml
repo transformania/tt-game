@@ -1,0 +1,47 @@
+﻿@model tfgame.dbModels.Models.PlayerBio
+
+
+<head>
+    <script src="~/Scripts/jquery-2.1.0.min.js"></script>
+    <link href="~/Content/PvP.css" rel="stylesheet" />
+</head>
+
+@Html.ActionLink("Back to game", "Play", "PvP")
+
+<h1>Update Your Bio</h1>
+
+<p>You can write and update a short biography about yourself or your player character here.  Feel free to mention your RP preferences, if any.  You can also list a website for others to contact you externally by or view your stories, artwork, or anything else you care to share publicly.</p>
+
+@using (Html.BeginForm("SetBioSend", "Settings", FormMethod.Post))
+{
+
+
+
+    @Html.HiddenFor(m => m.OwnerMembershipId)
+
+    <p>Website URL.  Limit 250 characters.</p>
+    @Html.TextBoxFor(m => m.WebsiteURL)
+    
+
+    <p>Main text of your bio.  Limit 1500 characters.</p>
+    @Html.TextAreaFor(m => m.Text)<br />
+    <span class="charCounter" id="textRemaining"></span>
+
+    <p>
+        <input type="submit" value="Send" />
+    </p>
+
+    <p>Last updated @Model.Timestamp</p>
+
+}
+
+@Html.ActionLink("Back to game", "Play", "PvP")
+
+<script>
+    $("#Text").keydown(function () {
+        var remaining = 1500 - $("#Text").val().length;
+       // console.log($("#Text").val().length);
+        $("#textRemaining").html(remaining + " characters remaining");
+    });
+</script>
+

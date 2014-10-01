@@ -1,0 +1,103 @@
+﻿@model IEnumerable<tfgame.ViewModels.ItemLeaderboardViewModel>
+@using tfgame.dbModels.Models
+@using tfgame.Statics
+@using tfgame.CustomHtmlHelpers
+@using tfgame.ViewModels
+
+<head>
+    <link href="~/Content/PvP.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-2.1.0.min.js"></script>
+</head>
+
+@Html.ActionLink("Back to game", "Play", "PvP")<br />
+@Html.ActionLink("View PvP Leaderboard", "PvPLeaderboard", "PvP")
+
+<h1>Item Leaderboard -- Alpha Round 9</h1>
+
+<p>These are the most powerful once-human items and pets in the town.</p>
+
+
+<table>
+
+    <thead>
+        <th>Rank</th>
+    <th>Human Name</th>
+    <th>Item Type</th>
+    <th>Level</th>
+    <th>XP</th>
+    </thead>
+
+    <tbody>
+
+        @{
+            int rank = 1;
+        }
+
+        @foreach (ItemLeaderboardViewModel p in Model)
+        {
+            <tr>
+                <td>
+                    @rank
+                </td>
+                <td>
+                   @p.VictimName
+                </td>
+                <td>
+                    @p.StaticItem.FriendlyName
+                </td>
+                <td>
+                    @p.Level
+                </td>
+                <td>
+                   @p.XP
+                </td>
+            </tr>
+            rank++;
+        }
+
+    </tbody>
+
+
+
+</table>
+
+
+
+
+<p>
+    @Html.ActionLink("View PvP Leaderboard", "PvPLeaderboard", "PvP")<br />
+    @Html.ActionLink("Back to game", "Play", "PvP")
+</p>
+
+<style>
+    table {
+        padding: 3px;
+        border: 1px solid black;
+    }
+
+    th {
+        background-color: black;
+        color: white;
+        text-align: center;
+    }
+
+    tr {
+        padding: 3px;
+        border: 1px solid black;
+    }
+
+        tr:nth-child(odd) {
+            background-color: lightgray;
+        }
+
+    td {
+        text-align: center;
+    }
+</style>
+
+<script>
+    $("tr td:contains('@ViewBag.MyName')").each(function () {
+        $(this).parent('tr').css("background-color", "pink");
+    });
+
+</script>

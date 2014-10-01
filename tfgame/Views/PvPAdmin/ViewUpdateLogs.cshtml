@@ -1,0 +1,10 @@
+﻿@model IEnumerable<tfgame.dbModels.Models.ServerLog>
+
+@{
+    foreach (tfgame.dbModels.Models.ServerLog sl in Model)
+    {
+        <div style="border: 1px solid black; padding: 2px; height: 18px; position: relative; float: left;">
+            @Html.ActionLink("Turn " + sl.TurnNumber, "ViewServerLog", "PvPAdmin", new { turn = sl.TurnNumber }, null)
+        </div>
+    }
+}

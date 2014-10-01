@@ -1,0 +1,594 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using tfgame.dbModels.Models;
+using tfgame.Filters;
+using tfgame.Procedures;
+using tfgame.ViewModels;
+using WebMatrix.WebData;
+
+namespace tfgame.Controllers
+{
+    [InitializeSimpleMembership]
+    public class CovenantController : Controller
+    {
+        //
+        // GET: /Covenant/
+
+        [Authorize]
+        public ActionResult MyCovenant()
+        {
+            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            ViewBag.Player = me;
+
+            CovenantViewModel output;
+
+            try { 
+                 output = CovenantProcedures.GetCovenantViewModel(me);
+            }
+            catch
+            {
+                output = new CovenantViewModel();
+            }
+
+            ViewBag.MyMoney = Math.Floor(me.Money);
+
+            ViewBag.ErrorMessage = TempData["Error"];
+            ViewBag.SubErrorMessage = TempData["SubError"];
+            ViewBag.Result = TempData["Result"];
+
+           
+            ViewBag.HasApplication = CovenantProcedures.PlayerHasPendingApplication(me);
+
+            return View(output);
+        }
+
+        [Authorize]
+        public ActionResult CovenantList()
+        {
+            IEnumerable<CovenantListItemViewModel> output = CovenantProcedures.GetCovenantsList();
+            return View(output);
+        }
+
+        [Authorize]
+        public ActionResult ApplyToCovenant(int id)
+        {
+            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+
+            // assert that the covenant actually exists...
+            Covenant cov = CovenantProcedures.GetDbCovenant(id);
+
+            if (cov == null)
+            {
+                TempData["Error"] = "That covenant does not exist.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            // assert that the player is not currently in a covenant
+            if (me.Covenant > 0)
+            {
+                TempData["Error"] = "You must leave your covenant before you can apply to any new ones.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            // assert that the covenant matches the player's PvP mode
+            //if ((me.InPvP==true && cov.IsPvP == false) || (me.InPvP==false && cov.IsPvP == true)) {
+            //    TempData["Error"] = "Only PvP players may join PvP covenants and only non-PvP players can join non-PvP covenants.";
+            //    return RedirectToAction("MyCovenant");
+            //}
+
+            // assert that the player doesn't already have a pending application
+            if (CovenantProcedures.PlayerHasPendingApplication(me) == true)
+            {
+                TempData["Error"] = "You already have an application to a covenant.";
+                TempData["SubError"] = "In order to apply to a different covenant you must withdraw your old one first.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            CovenantProcedures.AddCovenantApplication(me, cov);
+
+            TempData["Result"] = "Your application has been sent.";
+            return RedirectToAction("MyCovenant");
+        }
+
+        [Authorize]
+        public ActionResult ReviewMyCovenantApplications()
+        {
+            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            // assert that player is in a covenant
+            if (me.Covenant <= 0)
+            {
+                TempData["Error"] = "You are not in a covenant and cannot accept or deny applications.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            // assert that the player is a covenant leader
+            Covenant myCov = CovenantProcedures.GetDbCovenant(me.Covenant);
+            if (myCov.LeaderId != me.Id)
+            {
+                TempData["Error"] = "You are not the leader of this covenant.";
+                TempData["SubError"] = "Only covenant leaders can accept or reject applications.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            // validations are okay:  return the application list
+            IEnumerable<CovenantApplicationViewModel> output = CovenantProcedures.GetCovenantApplications(myCov);
+
+            return View(output);
+        }
+
+        [Authorize]
+        public ActionResult ApplicationResponse(int id, string response)
+        {
+            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            // assert that player is in a covenant
+            if (me.Covenant <= 0)
+            {
+                TempData["Error"] = "You are not in a covenant and cannot accept or deny applications.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            // assert that the player is a covenant leader
+            Covenant myCov = CovenantProcedures.GetDbCovenant(me.Covenant);
+            if (myCov.LeaderId != me.Id)
+            {
+                TempData["Error"] = "You are not the leader of this covenant.";
+                TempData["SubError"] = "Only covenant leaders can accept or reject applications.";
+                return RedirectToAction("MyCovenant");
+            }
+
+           // assert that the last acceptance wasn't too soon if it's past the first full day of the turn
+            double minutesAgo = Math.Abs(Math.Floor(myCov.LastMemberAcceptance.Subtract(DateTime.UtcNow).TotalMinutes));
+            if ((PvPWorldStatProcedures.GetWorldTurnNumber() > 144) && minutesAgo < 120)
+            {
+
+            }
+
+            // get the application from the database
+            CovenantApplication app = CovenantProcedures.GetCovenantApplication(id);
+
+            // assert that the application is for the same covenant
+            if (app.CovenantId!= myCov.Id) {
+                TempData["Error"] = "This application is not for your covenant.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            if (response == "yes")
+            {
+
+                CovenantProcedures.AddPlayerToCovenant(app.OwnerId, myCov.Id);
+                PlayerLogProcedures.AddPlayerLog(app.OwnerId, "<b style='color: blue;'>Congratulations, you have been accepted into the " + myCov.Name + " covenant.</b>", true);
+                TempData["Result"] = "You have accepted the application.";
+
+                CovenantProcedures.SetLastMemberJoinTimestamp(myCov);
+
+            }
+            else
+            {
+                PlayerLogProcedures.AddPlayerLog(app.OwnerId, "<b style='color: red;'>Unfortunately, you have not been accepted into the " + myCov.Name + " covenant.</b>", true);
+                TempData["Result"] = "You have rejected the application.";
+            }
+
+
+            Player submitter = PlayerProcedures.GetPlayer(app.OwnerId);
+            CovenantProcedures.RevokeApplication(submitter);
+
+            return RedirectToAction("MyCovenant");
+        }
+
+        [Authorize]
+        public ActionResult LeaveCovenant()
+        {
+            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+
+            // assert player is indeed in a covenant
+            if (me.Covenant <= 0)
+            {
+                TempData["Error"] = "You can't leave a covenant because you are not currently in one.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            CovenantProcedures.RemovePlayerFromCovenant(me);
+            TempData["Result"] = "You have left your covenant.";
+
+            return RedirectToAction("MyCovenant");
+        }
+
+        [Authorize]
+        public ActionResult DisbandCovenant()
+        {
+            return View();
+        }
+
+        [Authorize]
+        public ActionResult ChangeCovenantDescription()
+        {
+            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            // assert that player is in a covenant
+            if (me.Covenant <= 0)
+            {
+                TempData["Error"] = "You are not in a covenant and change the covenant's self description.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            // assert that the player is a covenant leader
+            Covenant myCov = CovenantProcedures.GetDbCovenant(me.Covenant);
+            if (myCov.LeaderId != me.Id)
+            {
+                TempData["Error"] = "You are not the leader of this covenant.";
+                TempData["SubError"] = "Only covenant leaders can change a covenant's self description.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            return View(myCov);
+        }
+
+        [Authorize]
+        public ActionResult ChangeCovenantDescriptionSubmit(Covenant input)
+        {
+
+            // assert model is okay
+            if (!ModelState.IsValid)
+            {
+                ViewBag.ValidationMessage = "Your description was not saved.  Covenant description must be between 25 and 200 characters long.";
+                return View("ChangeCovenantDescription");
+            }
+
+            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            // assert that player is in a covenant
+            if (me.Covenant <= 0)
+            {
+                TempData["Error"] = "You are not in a covenant and change the covenant's self description.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            // assert that the player is a covenant leader
+            Covenant myCov = CovenantProcedures.GetDbCovenant(me.Covenant);
+            if (myCov.LeaderId != me.Id)
+            {
+                TempData["Error"] = "You are not the leader of this covenant.";
+                TempData["SubError"] = "Only covenant leaders can change a covenant's self description.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            // finally update the covenant
+            CovenantProcedures.UpdateCovenantDescription(myCov.Id, input.SelfDescription);
+            TempData["Result"] = "Description updated.";
+
+
+            return RedirectToAction("MyCovenant");
+        }
+
+        [Authorize]
+        public ActionResult StartNewCovenant()
+        {
+            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+
+            // assert that this player is not currently in a covenant
+            if (me.Covenant > 0)
+            {
+                TempData["Error"] = "You must leave your current covenant before you can found a new one.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            Covenant output = new Covenant();
+            return View(output);
+        }
+
+        [Authorize]
+        public ActionResult StartNewCovenantSubmit(Covenant input)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.ValidationMessage = "Your covenant was not created.  Covenant name must be between 8 and 50 characters long and description must be between 25 and 200 characters long.";
+                return View("StartNewCovenant");
+            }
+
+            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+
+            // assert that a covenant of this name does not already exists
+            if (CovenantProcedures.CovenantOfNameExists(input.Name) == true)
+            {
+                TempData["Error"] = "A covenant of that name already exists.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            // assert that this player is not currently in a covenant
+            if (me.Covenant > 0)
+            {
+                TempData["Error"] = "You must leave your current covenant before you can found a new one.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            //input.FlagUrl = input.FlagUrl;
+            input.FlagUrl = "generic.jpg";
+            input.FounderMembershipId = WebSecurity.CurrentUserId;
+            input.LeaderId = me.Id;
+            input.IsPvP = me.InPvP;
+            CovenantProcedures.StartNewCovenant(input);
+
+            // retrieve the recently made covenant's id so the player can be added to it
+            Covenant newcov = CovenantProcedures.GetDbCovenant(input.Name);
+            CovenantProcedures.AddPlayerToCovenant(me, newcov.Id);
+            CovenantProcedures.LoadCovenantDictionary();
+
+            return RedirectToAction("MyCovenant");
+        }
+
+        [Authorize]
+        public ActionResult LookAtCovenant(int id)
+        {
+            CovenantViewModel output = CovenantProcedures.GetCovenantViewModel(id);
+            return View(output);
+        }
+
+        [Authorize]
+        public ActionResult WithdrawApplication()
+        {
+            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            TempData["Result"] = CovenantProcedures.RevokeApplication(me);
+            return RedirectToAction("MyCovenant");
+        }
+
+        [Authorize]
+        public ActionResult CovenantLeaderAdmin()
+        {
+            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            // assert that player is in a covenant
+            if (me.Covenant <= 0)
+            {
+                TempData["Error"] = "You are not in a covenant and cannot accept or deny applications.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            // assert that the player is a covenant leader
+            Covenant myCov = CovenantProcedures.GetDbCovenant(me.Covenant);
+            if (myCov.LeaderId != me.Id)
+            {
+                TempData["Error"] = "You are not the leader of this covenant.";
+                TempData["SubError"] = "Only covenant leaders can accept or reject applications.";
+                return RedirectToAction("MyCovenant");
+            }
+            return View();
+        }
+
+        [Authorize]
+        public ActionResult KickList()
+        {
+            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            // assert that player is in a covenant
+            if (me.Covenant <= 0)
+            {
+                TempData["Error"] = "You are not in a covenant and cannot kick members.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            // assert that the player is a covenant leader
+            CovenantViewModel output = CovenantProcedures.GetCovenantViewModel(me);
+            if (output.dbCovenant.LeaderId != me.Id)
+            {
+                TempData["Error"] = "You are not the leader of this covenant and cannot kick members.";
+                TempData["SubError"] = "Only covenant leaders can kick out players.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            // remove the player's own name from the list
+            output.Members = output.Members.Where(p => p.Player.Id != me.Id);
+
+            return View(output);
+
+        }
+
+        [Authorize]
+        public ActionResult KickMember(int id)
+        {
+
+            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            // assert that player is in a covenant
+            if (me.Covenant <= 0)
+            {
+                TempData["Error"] = "You are not in a covenant and cannot accept or deny applications.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            // assert that the player is a covenant leader
+            Covenant myCov = CovenantProcedures.GetDbCovenant(me.Covenant);
+            if (myCov.LeaderId != me.Id)
+            {
+                TempData["Error"] = "You are not the leader of this covenant.";
+                TempData["SubError"] = "Only covenant leaders can accept or reject applications.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            // assert that the player being kicked does belong to the covenant
+            Player beingKicked = PlayerProcedures.GetPlayer(id);
+
+            if (beingKicked.Covenant != myCov.Id)
+            {
+                TempData["Error"] = "This player is not in your covenant.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            // assert that the player is not kicking themself out
+            if (beingKicked.Id == me.Id)
+            {
+                TempData["Error"] = "You cannot kick yourself out of a covenant since you are its leader.";
+                TempData["SubError"] = "You must leave the covenant by your own will.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            CovenantProcedures.RemovePlayerFromCovenant(beingKicked);
+            string message = "<b>" + me.FirstName + " " + me.LastName + " has kicked you out of " + myCov.Name + ".</b>";
+            PlayerLogProcedures.AddPlayerLog(beingKicked.Id, message, true);
+
+            TempData["Result"] = "You have kicked " + beingKicked.FirstName + " " + beingKicked.LastName + " out of your covenant.";
+            return RedirectToAction("MyCovenant");
+        }
+
+         [Authorize]
+        public ActionResult CovenantWideMessage()
+        {
+            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            // assert that player is in a covenant
+            if (me.Covenant <= 0)
+            {
+                TempData["Error"] = "You are not in a covenant and cannot send out mass messages to your members.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            // assert that the player is a covenant leader
+            Covenant myCov = CovenantProcedures.GetDbCovenant(me.Covenant);
+            if (myCov.LeaderId != me.Id)
+            {
+                TempData["Error"] = "You are not the leader of your covenant.";
+                TempData["SubError"] = "Only covenant leaders can send out mass messages.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            PublicBroadcastViewModel output = new PublicBroadcastViewModel
+            {
+                Message = "",
+            };
+            return View(output);
+
+        }
+
+         [Authorize]
+        public ActionResult SendCovenantWideMessage(PublicBroadcastViewModel input)
+        {
+
+            if (input.Message.Length > 1000)
+            {
+                TempData["Error"] = "Your message is too long.  There is a 1000 character limit.";
+                return RedirectToAction("MyCovenant");
+            }
+             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            // assert that player is in a covenant
+            if (me.Covenant <= 0)
+            {
+                TempData["Error"] = "You are not in a covenant and cannot send out mass messages to your members.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            // assert that the player is a covenant leader
+            Covenant myCov = CovenantProcedures.GetDbCovenant(me.Covenant);
+            if (myCov.LeaderId != me.Id)
+            {
+                TempData["Error"] = "You are not the leader of your covenant.";
+                TempData["SubError"] = "Only covenant leaders can send out mass messages.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            MessageProcedures.SendCovenantWideMessage(me, input);
+
+            TempData["Result"] = "Message sent out!";
+            return RedirectToAction("MyCovenant");
+            
+        }
+
+         [Authorize]
+        public ActionResult AddToCovenantChest(int amount)
+        {
+            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            // assert that player is in a covenant
+            if (me.Covenant <= 0)
+            {
+                TempData["Error"] = "You are not in a covenant and cannot add money to the covenant's chest.";
+                return RedirectToAction("MyCovenant");
+            }
+
+             // assert that the player has enough money for this
+            if (me.Money < amount)
+            {
+                TempData["Error"] = "You do not have this many Arpeyjis to send to your covenant.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            // assert that the player is offline "enough"
+            double minutesAgo = Math.Abs(Math.Floor(me.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
+            if (minutesAgo < 30)
+            {
+                TempData["Error"] = "You must wait another " + (30 - minutesAgo) + " minutes without spending any action points in order to do this.";
+                return RedirectToAction("MyCovenant");
+            }
+
+             // assert that the amount is valid
+             if (amount != 20 && amount != 100 && amount!= 500) {
+                 TempData["Error"] = "That is not a valid amount of Arpeyjis to send.";
+                 return RedirectToAction("MyCovenant");
+             }
+
+            CovenantProcedures.SendPlayerMoneyToCovenant(me, amount);
+
+            TempData["Result"] = "You have successfully sent " + amount + " Arpeyjis to your covenant.";
+            return RedirectToAction("MyCovenant");
+
+        }
+
+         public ActionResult GiveMoneyFromCovenantChest(int id, decimal amount)
+         {
+             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+             
+             // assert that player is in a covenant
+             if (me.Covenant <= 0)
+             {
+                 TempData["Error"] = "You are not in a covenant.";
+                 return RedirectToAction("MyCovenant");
+             }
+
+             // assert that the player is a covenant leader
+             Covenant myCov = CovenantProcedures.GetDbCovenant(me.Covenant);
+             if (myCov.LeaderId != me.Id)
+             {
+                 TempData["Error"] = "You are not the leader of your covenant.";
+                 TempData["SubError"] = "Only covenant leaders can gift out money from the covenant's Arpeyjis chest.";
+                 return RedirectToAction("MyCovenant");
+             }
+
+             // assert that the covenant does have this much to send
+             if (myCov.Money < amount)
+             {
+                 TempData["Error"] = "Your covenant does not have that many Arpeyjis to send.";
+                 return RedirectToAction("MyCovenant");
+             }
+
+             // assert that the amount is valid
+             if (amount != 20 && amount != 100 && amount != 500)
+             {
+                 TempData["Error"] = "That is not a valid amount of Arpeyjis to send.";
+                 return RedirectToAction("MyCovenant");
+             }
+
+             // assert that the giftee is in the same covenant
+             Player giftee = PlayerProcedures.GetPlayer(id);
+             if (giftee.Covenant != me.Covenant)
+             {
+                 TempData["Error"] = "This player is not in your covenant.";
+                 return RedirectToAction("MyCovenant");
+             }
+
+             // assert that the covenant is sufficiently large
+             if (PlayerProcedures.GetAnimatePlayerCountInCovenant(me.Covenant) < 3)
+             {
+                 TempData["Error"] = "In order to gift out Arpeyjis to members of your covenant, you must have at least 3 animate members not in protection mode.";
+                 return RedirectToAction("MyCovenant");
+             }
+
+
+             CovenantProcedures.SendCovenantMoneyToPlayer(me.Covenant, giftee, amount);
+
+             TempData["Result"] = "You have successfully sent " + amount + " Arpeyjis to " + giftee.FirstName + " " + giftee.LastName + ".";
+             return RedirectToAction("MyCovenant");
+
+         }
+
+
+
+
+
+
+    }
+}

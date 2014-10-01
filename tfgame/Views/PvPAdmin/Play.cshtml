@@ -1,0 +1,17 @@
+﻿<head>
+    <link href="~/Content/AdminStyle.css" rel="stylesheet" />
+</head>
+
+<h1>Done</h1>
+
+@{
+    if (ViewBag.Text != null)
+    {
+        @Html.Raw(ViewBag.Text)
+    }
+    <br />
+     if (ViewBag.Text2 != null)
+    {
+        @Html.Raw(ViewBag.Text2)
+    }
+}

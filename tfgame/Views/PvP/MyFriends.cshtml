@@ -1,0 +1,147 @@
+﻿@model tfgame.ViewModels.FriendPageViewModel
+@using tfgame.CustomHtmlHelpers
+@using tfgame.Procedures
+
+<div class="divblock">
+    <div class="divblock">
+        <h2>Active Friends (@Model.ConfirmedFriends.Count())</h2>
+
+        @{
+            foreach (tfgame.ViewModels.FriendPlayerViewModel fp in Model.ConfirmedFriends.Where(m => m.dbPlayer!=null))
+            {
+                <div class="friendListing">
+
+                    @{
+                if (fp.dbPlayer.Mobility == "full")
+                {
+                    <span>
+                        @Html.ActionLink(fp.dbPlayer.FirstName + " " + fp.dbPlayer.LastName + "  (#" + fp.dbPlayer.MembershipId + ")", "LookAtPlayer", "PvP", new { id = fp.dbPlayer.Id }, null)
+                    </span>
+
+                    if (PlayerProcedures.PlayerIsOffline(fp.dbPlayer) == false)
+                    {
+                        <span class="friendonline">Online!</span>
+                    }
+                    else
+                    {
+                        <span class="friendoffline">Offline</span>
+                    }
+
+                }
+                else if (fp.dbPlayer.Mobility == "inanimate")
+                {
+                    <span>
+                        @Html.ActionLink(fp.dbPlayer.FirstName + " " + fp.dbPlayer.LastName + " (inanimate)" + "  (#" + fp.dbPlayer.MembershipId + ")", "LookAtPlayer", "PvP", new { id = fp.dbPlayer.Id }, null)
+                    </span>
+                        
+                        if (PlayerProcedures.PlayerIsOffline(fp.dbPlayer) == false)
+                    {
+                        <span class="friendonline">Online!</span>
+                    }
+                    else
+                    {
+                        <span class="friendoffline">Offline</span>
+                    }
+
+
+                }
+                
+                 else if (fp.dbPlayer.Mobility == "animal")
+                {
+                    <span>
+                        @Html.ActionLink(fp.dbPlayer.FirstName + " " + fp.dbPlayer.LastName + " (animal)" + "  (#" + fp.dbPlayer.MembershipId + ")", "LookAtPlayer", "PvP", new { id = fp.dbPlayer.Id }, null)
+                    </span>
+                        
+                        if (PlayerProcedures.PlayerIsOffline(fp.dbPlayer) == false)
+                    {
+                        <span class="friendonline">Online!</span>
+                    }
+                    else
+                    {
+                        <span class="friendoffline">Offline</span>
+                    }
+
+
+                }
+
+                <span style="float: right">
+                    @Html.ActionLink("Defriend", "RespondToFriendRequest", "PvP", new { id = fp.dbFriend.Id, response = "defriend" }, null)
+                </span>
+
+}
+
+                </div>
+            }
+
+        }
+
+
+
+        <h2>Requests sent to You (@Model.RequestsForMe.Count())</h2>
+
+        @{foreach (tfgame.ViewModels.FriendPlayerViewModel fp2 in Model.RequestsForMe.Where(m => m.dbPlayer != null))
+        {
+            <div class="friendListing">
+
+                @fp2.dbPlayer.FirstName @fp2.dbPlayer.LastName
+                @Html.ActionLink("Accept", "RespondToFriendRequest", "PvP", new { id = fp2.dbFriend.Id, response = "accept" }, null)
+                @Html.ActionLink("Deny", "RespondToFriendRequest", "PvP", new { id = fp2.dbFriend.Id, response = "deny" }, null)
+
+            </div>
+        }
+        }
+
+
+        <h2>Requests you've sent (@Model.MyOutgoingRequests.Count())</h2>
+
+        @{
+            foreach (tfgame.ViewModels.FriendPlayerViewModel fp3 in Model.MyOutgoingRequests.Where(m => m.dbPlayer != null))
+            {
+                <div class="friendListing">
+                    @fp3.dbPlayer.FirstName @fp3.dbPlayer.LastName
+                    @Html.ActionLink("Cancel", "RespondToFriendRequest", "PvP", new { id = fp3.dbFriend.Id, response = "cancel" }, null)
+                </div>
+            }
+        }
+
+
+
+    </div>
+
+    <div class="divblock">
+        <p>You may have more friends who have not yet made a character this round.  They will appear on this page when they have.</p>
+    </div>
+
+
+
+    <div style="position: relative; float: left;">
+        <p>
+            @Html.ActionLink("Back to game", "Play", "PvP")
+        </p>
+    </div>
+
+</div>
+
+<style>
+    .friendListing {
+        height: 20px;
+        width: 100%;
+        border: 1px solid lightgray;
+        position: relative;
+        float: left;
+    }
+
+    .friendonline {
+        color: green;
+    }
+
+    .friendoffline {
+        color: red;
+    }
+
+    .divblock {
+        position: relative;
+        float: left;
+        width: 100%;
+    }
+</style>

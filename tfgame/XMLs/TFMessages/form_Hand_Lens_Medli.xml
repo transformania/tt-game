@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?><Form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<Description>A sturdy glass lens, waiting for every chance to allow easier identification of items. A bit of magical aura still remaining around the former animate seems to allow finding targets much easier.</Description>
+
+<TFMessage_20_Percent_1st>You feel a tingling around you, and notice your vision gets much clearer...obviously a spell, you banish the effects without any effort.</TFMessage_20_Percent_1st>
+
+<TFMessage_40_Percent_1st>You vision clears up again, you notice things that you hadn't before, feeling a bit stiff in your limbs you realize the spell has been cast on you again, which you cancel with a wave of your hand.</TFMessage_40_Percent_1st>
+
+<TFMessage_60_Percent_1st>You hold your arms over your head in a circular shape, you look around spotting many things you never noticed before. You curiously gaze around at all of the things that just stuck out so obviously...and then realize you've had a spell cast on you. You struggle to pull your arms away, but once you do you cast a counterspell once more. </TFMessage_60_Percent_1st>
+
+<TFMessage_80_Percent_1st>You stiffen in place once more. Your arms , and body stiff and your vision becoming beyond perfect once again. You feel your head start to...flatten out? And your legs joining together...you need to break free...you manage to somehow  cancel the spell again.</TFMessage_80_Percent_1st>
+
+<TFMessage_100_Percent_1st>You feel a blast from behind...almost open to viewing the clear world once more you look at your surroundings. Your arms stiffen around your head once more, which is slowly becoming a lens. Your legs are binding together into a handle for someone to hold. You want to help others to see the world how you're currently seeing it, if only someone would...no...this isn't right...you concentrate as hard as you can, the world around you becoming fuzzy and a jumbled mess, but you managed to release the effects of the spell once again. </TFMessage_100_Percent_1st>
+
+<TFMessage_Completed_1st>You're almost open to the spell...seeing the clear view of the open world, being able to spot any and everything...you wonder why it wasn't so obvious before. Your arms are mounted around your head, slowly becoming golden, supporting the glass lens, which was previously your head, now magnifying the world around you. Your body and legs stiffen in place and become a straight wooden handle, for your owner to hold so you can assist them in finding things. You can still see everything around you, and the bit of magical aura around your body also help point out objects and incoming spells so your owner can react to such.</TFMessage_Completed_1st>
+
+<TFMessage_20_Percent_3rd>You cast your spell at your target. They around bewildered, but quickly cancel the spell.</TFMessage_20_Percent_3rd>
+
+<TFMessage_40_Percent_3rd>Again, you cast the spell, your targets limbs seem to sit in place, while they look around, but once again they cancel the effects of your spell.</TFMessage_40_Percent_3rd>
+
+<TFMessage_60_Percent_3rd>You manage to hit your victim once more, their arms slowly moving above their head and becoming a slight golden tint. Their legs seem to merge together slightly...but as soon as that happens they force their arms apart and cast a counterspell.</TFMessage_60_Percent_3rd>
+
+<TFMessage_80_Percent_3rd>You blast your target with your spell again. Once again they seem to enjoy looking around at the world around them, hardly noticing their arms move above their head becoming golden. They're legs and body fusing and becoming wooden. Their head starts to flatten out, and that's when they know something is wrong. They struggle, but manage to wave off the effects of the spell.</TFMessage_80_Percent_3rd>
+
+<TFMessage_100_Percent_3rd>You fling your spell at your target, their arms move above their head becoming a golden piece of metal. Their legs bind together and their body slowly shifts to fit in place, all of which is becoming a wooden handle. They begin looking around at everything, until their head shifts into a lens...and right when it seems to be over, they somehow manage to cancel your spell, shifting back into their old form. They're looking around, and seem confused and dizzy by the world. You know it won't be long until they give in to the spell.</TFMessage_100_Percent_3rd>
+
+<TFMessage_Completed_3rd>Your victim finally gives in to the spell. Their arms move above their head and shift into a golden frame. They seem to enjoy looking around at everything, of course that soon ceases as their head becomes a glass lens, held in place by their former arms. Their legs fuse into one, and body thins out to fit in place, all of which is now a wooden handle for you to hold, and peer through.</TFMessage_Completed_3rd>
+
+</Form>

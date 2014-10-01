@@ -40,6 +40,7 @@ namespace tfgame.Statics
              7196, // Teranika	Darkfire
              481, // Elyn
              4411, // Kaitlyn Halliwell
+             77, // Cara Doom
                                               };
        
         public static int[] Artists = {

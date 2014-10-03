@@ -20,17 +20,18 @@
     }
 }
 
-<span id="timerBox" class="icon-clock" title="Click to see how long ago the last update ran."></span>
+<div class="mainPageWorldStats">
+    <span class="icon-turnNumber">Turn #<b>@ViewBag.WorldTurnNumber/@PvPStatics.RoundDuration</b></span>
+    <b>@Model.WorldStats.TotalPlayers</b> magic casters are in this town, <b>@Model.WorldStats.TotalInanimatePlayers</b> are inanimate, <b>@Model.WorldStats.TotalAnimalPlayers</b> are animals, and <b>@Model.WorldStats.TotalLivingPlayers</b> still able to compete against you.
+</div>
 
-@Html.ActionLink("News / Updates (" + PvPStatics.LastGameUpdate + ")", "GameNews", "PvP")
+<span id="timerBox" class="icon-clock" title="Click to see how long ago the last update ran."></span>
 @Html.ActionLink("Map", "WorldMap", "PvP")
+@Html.ActionLink("Last Actions", "ViewLog", "PvP")
 @Html.ActionLink("Friends", "MyFriends", "PvP")
 @Html.ActionLink("Chat", "Chat", "PvP", new { room = "global" }, new { target = "_blank" })
-<a href="http://luxianne.com/forum/index.php" target="_blank">Forums</a>
-@Html.ActionLink("Leaderboard", "PvPLeaderboard", "PvP")
+@Html.ActionLink("Covenant", "MyCovenant", "Covenant")
 @Html.ActionLink("Settings", "Settings", "PvP")
-<span class="newlinkgreen">@Html.ActionLink("Donate?", "Donate", "Settings")</span>
-
 @{if (Model.NewMessageCount > 0)
 {
     <span class="newlink">
@@ -42,22 +43,14 @@ else
     @Html.ActionLink("View Messages", "MyMessages", "PvP")
 }
 }
-
 @Html.ActionLink("Submit New Content", "Contribute", "PvP", new { Id = -1 }, null)
+@Html.ActionLink("Start again as someone else", "Restart", "PvP")
 @{
     if (Model.You.MembershipId == 69)
     {
         @Html.ActionLink("Admin", "Index", "PvPAdmin")
     }
 }
-
-<br /><br />
-
-<div class="mainPageWorldStats">
-    <span class="icon-turnNumber">Turn #<b>@ViewBag.WorldTurnNumber/@PvPStatics.RoundDuration</b></span>
-    <b>@Model.WorldStats.TotalPlayers</b> magic casters are in this town, <b>@Model.WorldStats.TotalInanimatePlayers</b> are inanimate, <b>@Model.WorldStats.TotalAnimalPlayers</b> are animals, and <b>@Model.WorldStats.TotalLivingPlayers</b> still able to compete against you.
-</div>
-
 
 <div class="result">
     @Html.Raw(ViewBag.Result)
@@ -72,16 +65,13 @@ else
 <div style="position: relative; float: left;">
 
     <div style="width: 100%;">
-        <p>Your name is <b>@Model.You.FirstName @Model.You.LastName</b>, or at least it used to be.  At the height of your humanity you achieved level <b>@Model.You.Level</b> with @Model.You.XP experience points toward the next.  But now it's time to embrace your new existence as a <b>@Model.Form.FriendlyName</b>.  @Html.ActionLink("Start again as someone else", "Restart", "PvP")</p>
+        <p>Your name is <b>@Model.You.FirstName @Model.You.LastName</b>, or at least it used to be.  At the height of your humanity you achieved level <b>@Model.You.Level</b> with @Model.You.XP experience points toward the next.  But now it's time to embrace your new existence as a <b>@Model.Form.FriendlyName</b>.</p>
 
     </div>
 
     <div class="portrait" style="background-image: url(../Images/PvP/animalPortraits/@ViewBag.AnimalImgUrl); width: 500px; height: 500px; float: left; position: relative; display: block;">
         @CharactersHere.PrintOwnerSubPortrait(Model.OwnedBy)
     </div>
-
-
-
 
     <p>
        @Model.Form.Description
@@ -94,8 +84,8 @@ else
                 }
                 else
                 {
-                    <span>You have been tamed by @Html.ActionLink(Model.OwnedBy.Player.FirstName + " " + Model.OwnedBy.Player.LastName, "LookAtPlayer", "PvP", new { id = Model.OwnedBy.Player.Id }, null) and will follow your master wherever they go.</span>
-                }
+                    <span><br><br>You have been tamed by @Html.ActionLink(Model.OwnedBy.Player.FirstName + " " + Model.OwnedBy.Player.LastName, "LookAtPlayer", "PvP", new { id = Model.OwnedBy.Player.Id }, null) and will follow your master wherever they go.</span>
+}
             }
         </b>
     </p>

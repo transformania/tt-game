@@ -15,15 +15,14 @@
     <body>
         <header>
             <div class="content-wrapper">
-
-                <div class="float-right">
+                    <div style="float: left">
+                        @Html.Partial("_MenuPartial")
+                    </div>
+                    <div style="float: right">
                     <section id="login">
-                        @Html.Partial("_LoginPartial")
+                            @Html.Partial("_LoginPartial")
                     </section>
-                    <nav>
-                        
-                    </nav>
-                </div>
+                    </div>
             </div>
         </header>
         <div id="body">

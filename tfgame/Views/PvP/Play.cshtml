@@ -22,23 +22,17 @@
 
 @Html.Partial("partial/RoundStatus", Model.PvPWorldStat)
 
+<div class="mainPageWorldStats">
+    <span class="icon-turnNumber">Turn #<b>@ViewBag.WorldTurnNumber/@PvPStatics.RoundDuration</b></span>
+    <b>@Model.WorldStats.TotalPlayers</b> magic casters are in this town, <b>@Model.WorldStats.TotalInanimatePlayers</b> are inanimate, <b>@Model.WorldStats.TotalAnimalPlayers</b> are animals, and <b>@Model.WorldStats.TotalLivingPlayers</b> still able to compete against you.
+</div>
+
 <span id="timerBox" class="icon-clock" title="Click to see how long ago the last update ran."></span>
-
-
-
-
-
-
-@Html.ActionLink("How to Play", "HowToPlay", "PvP")
-@Html.ActionLink("News / Updates (" + PvPStatics.LastGameUpdate + ")", "GameNews", "PvP")
 @Html.ActionLink("Map", "WorldMap", "PvP")
 @Html.ActionLink("Friends", "MyFriends", "PvP")
-@Html.ActionLink("Chat", "Chat", "PvP", new{room="global"}, new { target = "_blank" })
-<a href="http://luxianne.com/forum/index.php" target="_blank">Forums</a>
-@Html.ActionLink("Leaderboard", "PvPLeaderboard", "PvP")
+@Html.ActionLink("Chat", "Chat", "PvP", new { room = "global" }, new { target = "_blank" })
+@Html.ActionLink("Covenant", "MyCovenant", "Covenant")
 @Html.ActionLink("Settings", "Settings", "PvP")
-@Html.ActionLink("Submit New Content", "Contribute", "PvP", new { Id = -1 }, null)
-<span class="newlinkgreen">@Html.ActionLink("Donate?", "Donate", "Settings")</span>
 
     @{
         if (Model.You.Player.MembershipId == 69)
@@ -47,14 +41,6 @@
         }
     }
     <br /><br />
-
-
-    <div class="mainPageWorldStats">
-        <span class="icon-turnNumber">Turn #<b>@ViewBag.WorldTurnNumber/@PvPStatics.RoundDuration</b></span>
-        <b>@Model.WorldStats.TotalPlayers</b> magic casters are in this town, <b>@Model.WorldStats.TotalInanimatePlayers</b> are inanimate, <b>@Model.WorldStats.TotalAnimalPlayers</b> are animals, and <b>@Model.WorldStats.TotalLivingPlayers</b> still able to compete against you.
-    </div>
-
-
 
     <ul>
         @{
@@ -75,7 +61,6 @@
     @Html.ActionLink("View Recent Actions (" + Model.PlayerLog.Count() + ")", "ViewLog", "PvP")
     @Html.ActionLink("View My Spells", "MySkills", "PvP")
     @Html.ActionLink("View Effects", "MyPerks", "PvP")
-    @Html.ActionLink("Covenant", "MyCovenant", "Covenant")
     @*@Html.ActionLink("View My Inventory (" + Model.PlayerItems.Where(i => i.dbItem.IsEquipped == false).Count() + "/" + Model.InventoryMaxSize + ")", "MyInventory", "PvP")*@
 
     @{

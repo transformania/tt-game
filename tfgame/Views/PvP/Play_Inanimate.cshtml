@@ -17,13 +17,12 @@
     }
 }
 
-@Html.ActionLink("News / Updates (" + PvPStatics.LastGameUpdate + ")", "GameNews", "PvP")
+<span id="timerBox" class="icon-clock" title="Click to see how long ago the last update ran."></span>
 @Html.ActionLink("Friends", "MyFriends", "PvP")
+@Html.ActionLink("Last Actions", "ViewLog", "PvP")
 @Html.ActionLink("Chat", "Chat", "PvP", new { room = "global" }, new { target = "_blank" })
-<a href="http://luxianne.com/forum/index.php" target="_blank">Forums</a>
-@Html.ActionLink("Leaderboard", "PvPLeaderboard", "PvP")
+@Html.ActionLink("Covenant", "MyCovenant", "Covenant")
 @Html.ActionLink("Settings", "Settings", "PvP")
-<span class="newlinkgreen">@Html.ActionLink("Donate?", "Donate", "Settings")</span>
 
 @{if (Model.NewMessageCount > 0)
 {
@@ -38,6 +37,7 @@ else
 }
 
 @Html.ActionLink("Submit New Content", "Contribute", "PvP", new { Id = -1 }, null)
+@Html.ActionLink("Start again as someone else", "Restart", "PvP")
 @{
     if (Model.Player.MembershipId == 69)
     {
@@ -105,10 +105,7 @@ else
         }
     }
 
-    <br />
-
-    @Html.ActionLink("View Final Actions", "ViewLog", "PvP")<br /><br />
-    @Html.ActionLink("Start again as someone else", "Restart", "PvP")
+    <br />   
 
     @{
         if (Model.IsPermanent == false)

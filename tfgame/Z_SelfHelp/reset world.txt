@@ -20,3 +20,4 @@ reset PvPWorldStatistics
 set chaos mode to false
 
 spawn Lindella
+spawn jewdewfae

@@ -1008,21 +1008,10 @@ namespace tfgame.Controllers
                 return View("Play");
             }
 
-            BossProcedures_Valentine.SpawnValentine();
+           // BossProcedures_Valentine.SpawnValentine();
 
-           // SkillViewModel2 maleVampSpell = SkillProcedures.GetSkillViewModel("form_Vampire_Lord_Blood_Knight", valentine.Id);
-          //  BossProcedures_Valentine.RunValentineActions();
+            BossProcedures_Fae.SpawnFae();
 
-            //using (var context = new StatsContext())
-            //{
-            //    context.Database.ExecuteSqlCommand("DELETE FROM [Stats].[dbo].[ServerLogs] WHERE TurnNumber < 20");
-            //}
-            //IPlayerRepository playerRepo = new EFPlayerRepository();
-            //Player donna = playerRepo.Players.FirstOrDefault(f => f.FirstName == "'Aunt' Donna" && f.LastName == "Milton");
-
-            //ItemProcedures.DropAllItems(donna);
-
-            //playerRepo.DeletePlayer(donna.Id);
 
             BossProcedures_Valentine.SpawnValentine();
 

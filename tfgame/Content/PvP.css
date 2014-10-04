@@ -375,7 +375,8 @@ locationDescription {
     background-color: lightcyan;
     width: auto;
     text-align: center;
-    margin-top: -20px;
+    margin-top: 5px;
+    margin-bottom: 3px;
 }
 
 
@@ -564,22 +565,16 @@ a.attackLink {
 .good {
     color: green;
     font-weight: 900;
-    margin-top: -25px;
-    margin-bottom: 25px;
 }
 
 .bad {
     color: red;
     font-weight: 900;
-    margin-top: -25px;
-    margin-bottom: 25px;
 }
 
 .zero {
     color: darkgray;
     font-weight: 900;
-    margin-top: -25px;
-    margin-bottom: 25px;
 }
 
 .playPageInventoryItem {
@@ -751,8 +746,8 @@ a.curse {
     font-size: 14px;
     text-align: center;
     background-color: #faff7e;
-    margin-bottom: 25px;
-    margin-top: -20px;
+    margin-bottom: 5px;
+    margin-top: -10px;
     font-weight: 600;
     border-radius: 5px;
     color: black;

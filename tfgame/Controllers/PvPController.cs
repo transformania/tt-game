@@ -1633,6 +1633,11 @@ namespace tfgame.Controllers
             return View("~/Views/PvP/GameNews.cshtml");
         }
 
+        public ActionResult GameNews_Archive()
+        {
+            return View("~/Views/PvP/GameNews_Archive.cshtml");
+        }
+
         public ActionResult GameNews_PlannedFeatures()
         {
             return View("~/Views/PvP/GameNews_PlannedFeatures.cshtml");

@@ -13,62 +13,60 @@
 
 }
 
-<div class="avatarWrapper">
+    <div class="avatarWrapper" style="clear: both;">
+        <div class="portrait-large" style="background-image: url(../Images/PvP/portraits/@Model.Form.PortraitUrl);" title="@Model.Form.Description">
+            <span class="icon-@Model.Player.Gender" style="float:right;"></span>
+            <span class="icon-level"><b>@Model.Player.Level</b></span>
 
-    <div class="portrait-large" style="background-image: url(../Images/PvP/portraits/@Model.Form.PortraitUrl);" title="@Model.Form.Description">
-        <span class="icon-@Model.Player.Gender" style="float:right;"></span>
-        <span class="icon-level"><b>@Model.Player.Level</b></span>
+            @{if (PlayerProcedures.PlayerIsOffline(Model.Player) == true)
+            {
+                <span class="icon-sleep" title="This player is offline and will be harder to attack."></span>
+            }
+            }
 
-        @{if (PlayerProcedures.PlayerIsOffline(Model.Player) == true)
-        {
-        <span class="icon-sleep" title="This player is offline and will be harder to attack."></span>
-        }
-        }
-        
+        </div>
+
+        <div class="avatarInfo">
+            <span class="avatarName">@Model.Player.FirstName @Model.Player.LastName</span>
+            @CharactersHere.PrintDonatorIcon(Model.Player.ToDbPlayer())
+            @CharactersHere.PrintRPIcon(Model.Player.ToDbPlayer())
+            @CharactersHere.PrintPvPIcon(Model.Player.ToDbPlayer())
+            <br />
+            <span class="avatarFormName">@Model.Form.FriendlyName</span>
+            @CharactersHere.GetCovenantInfo(Model.Player.ToDbPlayer())
+
+            <br />
+            <div class="avatarHealthWrapper">
+                <div class="txt">@Model.Player.Health / @Model.Player.MaxHealth willpower</div>
+                <div class="avatarHealthAmt" style="width: @HealthWidth%"></div>
+            </div>
+
+
+            <div class="avatarManaWrapper">
+                <div class="txt">@Model.Player.Mana / @Model.Player.MaxMana mana</div>
+                <div class="avatarManaAmt" style="width: @ManaWidth%"></div>
+            </div>
+
+
+
+            <div class="avatarActionWrapper">
+                <div class="txt small">@Model.Player.ActionPoints / @PvPStatics.MaximumStoreableActionPoints AP (@Model.Player.ActionPoints_Refill in Reserve) </div>
+                <div class="avatarActionAmt" style="width: @ActionWidth%"></div>
+            </div>
+
+            @Html.Partial("partial_XpBar", Model)
+
+            <div class="">
+                <span title="Times attacking this update" class="icon-timesattacking"></span><span class="avatarCount">@Model.Player.TimesAttackingThisUpdate / 3</span>
+                <span title="Times cleansing and meditating this update" class="icon-cleansemeditate"></span><span class="avatarCount">@Model.Player.CleansesMeditatesThisRound / 3</span>
+                <span title="Arpeyjis" class="icon-money"></span><span class="avatarCount">@Convert.ToInt32(Model.Player.Money)</span>
+            </div>
+
+        </div>
+
+
+
     </div>
-
-    <div class="avatarInfo">
-        <span class="avatarName">@Model.Player.FirstName @Model.Player.LastName</span>
-        @CharactersHere.PrintDonatorIcon(Model.Player.ToDbPlayer())
-        @CharactersHere.PrintRPIcon(Model.Player.ToDbPlayer())
-        @CharactersHere.PrintPvPIcon(Model.Player.ToDbPlayer())
-        <br />
-        <span class="avatarFormName">@Model.Form.FriendlyName</span>
-        @CharactersHere.GetCovenantInfo(Model.Player.ToDbPlayer())
-        
-        <br />
-        <div class="avatarHealthWrapper">
-            <div class="txt">@Model.Player.Health / @Model.Player.MaxHealth willpower</div>
-            <div class="avatarHealthAmt" style="width: @HealthWidth%"></div>
-        </div>
-
-
-        <div class="avatarManaWrapper">
-            <div class="txt">@Model.Player.Mana / @Model.Player.MaxMana mana</div>
-            <div class="avatarManaAmt" style="width: @ManaWidth%"></div>
-        </div>
-
-       
-
-        <div class="avatarActionWrapper">
-            <div class="txt small">@Model.Player.ActionPoints / @PvPStatics.MaximumStoreableActionPoints AP (@Model.Player.ActionPoints_Refill in Reserve) </div>
-            <div class="avatarActionAmt" style="width: @ActionWidth%"></div>
-        </div>
-
-        @Html.Partial("partial_XpBar", Model)
-
-        <div class="">
-            <span title="Times attacking this update" class="icon-timesattacking" ></span><span class="avatarCount">@Model.Player.TimesAttackingThisUpdate / 3</span>
-            <span title="Times cleansing and meditating this update" class="icon-cleansemeditate" ></span><span class="avatarCount">@Model.Player.CleansesMeditatesThisRound / 3</span>
-            <span title="Arpeyjis" class="icon-money"></span><span class="avatarCount">@Convert.ToInt32(Model.Player.Money)</span>
-        </div>
-
-    </div>
-
-
-
-</div>
-
 <style>
     .avatarWrapper {
         width: 98%;

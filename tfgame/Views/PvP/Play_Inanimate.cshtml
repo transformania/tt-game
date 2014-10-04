@@ -17,6 +17,11 @@
     }
 }
 
+<div class="mainPageWorldStats">
+    <span class="icon-turnNumber">Turn #<b>@ViewBag.WorldTurnNumber/@PvPStatics.RoundDuration</b></span>
+    You wonder if people still fight ...
+</div>
+
 <span id="timerBox" class="icon-clock" title="Click to see how long ago the last update ran."></span>
 @Html.ActionLink("Friends", "MyFriends", "PvP")
 @Html.ActionLink("Last Actions", "ViewLog", "PvP")
@@ -45,10 +50,6 @@ else
     }
 }
 
-<br /><br />
-
-<span class="icon-turnNumber">Turn #<b>@ViewBag.WorldTurnNumber/2000</b></span>
-
 <div class="result">
     @Html.Raw(ViewBag.Result)
 </div>
@@ -61,8 +62,6 @@ else
 
 <p>Your name is <b>@Model.Player.FirstName @Model.Player.LastName</b>, or at least it used to be.  Should you regain a human form you will find yourself at level <b>@Model.Player.Level</b> with @Model.Player.XP experience points toward the next.  But now it's time to embrace your new existence as a <b>@Model.Form.FriendlyName</b>.</p>
 
-<p>@Model.Form.Description</p>
-
 <div class="portrait" style="background-image: url(../Images/PvP/itemsPortraits/@Model.Item.PortraitUrl); width: 600px; height: 600px; margin: 25px;">
     @CharactersHere.PrintOwnerSubPortrait(Model.WornBy)
     @CharactersHere.PrintItemTypeIcon(Model.Item)
@@ -70,7 +69,7 @@ else
 </div>
 
 <div>
-
+    <p>@Model.Form.Description</p>
     @{
         if (Model.AtLocation != null)
         {

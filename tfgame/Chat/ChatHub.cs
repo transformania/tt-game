@@ -32,6 +32,10 @@ namespace tfgame.Chat
             {
                 name = "Judoo (admin)";
             }
+            else if (me.MembershipId == 3490)
+            {
+                name = "Mizuho (dev)";
+            }
             else if (me.MembershipId == -1)
             {
 

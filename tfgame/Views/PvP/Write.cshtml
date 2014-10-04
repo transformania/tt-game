@@ -20,7 +20,8 @@
 {
 
     <p><b>What is your message to @ViewBag.SendingToName?</b></p>
-    @Html.TextAreaFor(m => m.MessageText)
+    @Html.TextAreaFor(m => m.MessageText)<br />
+    <span class="charCounter" id="textRemaining"></span>
 
 
     @Html.HiddenFor(m => m.ReceiverId)
@@ -53,3 +54,10 @@
         font-weight: 500;
     }
 </style>
+
+<script>
+    $("#MessageText").keydown(function () {
+        var remaining = 1000 - $("#MessageText").val().length;
+        $("#textRemaining").html(remaining + " characters remaining");
+    });
+</script>

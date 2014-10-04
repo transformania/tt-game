@@ -165,3 +165,11 @@
     }
 
 </style>
+
+<script>
+    $("#Text").keydown(function () {
+        var remaining = 1500 - $("#Text").val().length;
+        // console.log($("#Text").val().length);
+        $("#textRemaining").html(remaining + " characters remaining");
+    });
+</script>

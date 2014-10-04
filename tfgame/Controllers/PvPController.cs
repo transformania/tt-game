@@ -2318,6 +2318,11 @@ namespace tfgame.Controllers
                 TempData["MyName"] = "Judoo (admin)";
             }
 
+            else if (me.MembershipId == 3490)
+            {
+                TempData["MyName"] = "Mizuho (dev)";
+            }
+
             if (room == "global")
             {
                 return View("Chats/CHat_Global");

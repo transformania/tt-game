@@ -63,12 +63,12 @@ namespace tfgame.Statics
         public const decimal MeditationExtraMana__NegativeModifier = 0;
         public const decimal MeditationExtraMana__NegativeCap = -99999;
 
-        public const decimal CleanseExtraHealth__Value = 12;
-        public const decimal CleanseExtraHealth__NegativeModifier = 0;
+        public const decimal CleanseExtraHealth__Value = 25;
+        public const decimal CleanseExtraHealth__NegativeModifier = .5M;
         public const decimal CleanseExtraHealth__NegativeCap = -99999;
 
-        public const decimal MoveActionPointDiscount__Value = 175;
-        public const decimal MoveActionPointDiscount__NegativeModifier = 0;
+        public const decimal MoveActionPointDiscount__Value = 250;
+        public const decimal MoveActionPointDiscount__NegativeModifier = .7M;
         public const decimal MoveActionPointDiscount__NegativeCap = -50;
 
         public const decimal SpellExtraTFEnergyPercent__Value = 7;

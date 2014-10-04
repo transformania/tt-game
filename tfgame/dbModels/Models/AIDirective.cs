@@ -18,5 +18,8 @@ namespace tfgame.dbModels.Models
         public decimal Var3 { get; set; }
         public decimal Var4 { get; set; }
         public decimal Var5 { get; set; }
+        public string sVar1 { get; set; }
+        public string sVar2 { get; set; }
+        public string sVar3 { get; set; }
     }
 }

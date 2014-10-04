@@ -9,7 +9,7 @@
 
 #location {
     width: 300px;
-    height: 300px;
+    height: 20px;
 }
 
 .place {
@@ -564,16 +564,22 @@ a.attackLink {
 .good {
     color: green;
     font-weight: 900;
+    margin-top: -25px;
+    margin-bottom: 25px;
 }
 
 .bad {
     color: red;
     font-weight: 900;
+    margin-top: -25px;
+    margin-bottom: 25px;
 }
 
 .zero {
     color: darkgray;
     font-weight: 900;
+    margin-top: -25px;
+    margin-bottom: 25px;
 }
 
 .playPageInventoryItem {

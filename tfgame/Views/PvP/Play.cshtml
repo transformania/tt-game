@@ -65,7 +65,7 @@
 @{
     if (Model.PlayerLogImportant.Count() > 0)
     {
-        <ul style="height: 200px; overflow: scroll;">
+        <ul style="height: 180px; overflow: scroll;">
             @{
         foreach (tfgame.dbModels.Models.PlayerLog log in Model.PlayerLogImportant)
         {
@@ -110,11 +110,9 @@
         <span class="place">@Model.Location.Name [@Model.Location.X,@Model.Location.Y]<br /> </span>
         <span class="locationDescription">@Model.Location.GetDescription()</span>
     </p>
-
-
-
+<center>
     @Html.Partial("partial/movementTable", Model)
-
+</center>
 
 
     <div class="result">

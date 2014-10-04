@@ -41,6 +41,8 @@ namespace tfgame.Statics
              481, // Elyn
              4411, // Kaitlyn Halliwell
              77, // Cara Doom
+             6515, // Seras Tearfall
+             9618, // Trixie1231
                                               };
        
         public static int[] Artists = {

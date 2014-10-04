@@ -33,8 +33,13 @@
         }
             }
 
+            @{
+        if (Model.PlayerForm.Player.MembershipId > 0) { 
+            
             @Html.ActionLink("Send a Message", "Write", "PvP", new { playerId = Model.PlayerForm.Player.Id, responseTo = -1 }, null)
             @Html.ActionLink("Request Friendship", "AddFriend", "PvP", new { playerId = Model.PlayerForm.Player.Id }, null)
+            }
+    }
         </p>
     }
     else
@@ -112,11 +117,11 @@
 }
 
 @{
-    if (ViewBag.TimeUntilLogout > 0)
+    if (ViewBag.TimeUntilLogout > 0 && Model.PlayerForm.Player.MembershipId > 0)
     {
         <p class="good">Online for @ViewBag.TimeUntilLogout more minutes</p>
     }
-    else
+    else if (Model.PlayerForm.Player.MembershipId > 0)
     {
         <p class="bad">Offline</p>
     }

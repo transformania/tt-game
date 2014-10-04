@@ -1008,12 +1008,43 @@ namespace tfgame.Controllers
                 return View("Play");
             }
 
-           // BossProcedures_Valentine.SpawnValentine();
+            //FairyChallengeBag a = new FairyChallengeBag
+            //{
+            //    IntroText = "this is the intro text",
+            //    CorrectFormText = "correct form",
+            //    dbLocationName = "castle_greathall",
+            //    FailureText = "failure",
+            //};
 
-            BossProcedures_Fae.SpawnFae();
+            //FairyChallengeBag b = new FairyChallengeBag
+            //{
+            //    IntroText = "this is the intro text b",
+            //    CorrectFormText = "correct form  b",
+            //    dbLocationName = "castle_greathall b",
+            //    FailureText = "failure b",
+            //};
+
+            //FairyChallengeViewModel test2 = new FairyChallengeViewModel();
+            //test2.FairyChallengeBags = new List<FairyChallengeBag>();
+
+            //test2.FairyChallengeBags.Add(a);
+            //test2.FairyChallengeBags.Add(b);
+
+            //string filename = Server.MapPath("~/XMLs/FairyChallengeText/template.xml");
+
+            //System.Xml.Serialization.XmlSerializer writer =
+            //    new System.Xml.Serialization.XmlSerializer(typeof(FairyChallengeViewModel));
+
+            //System.IO.StreamWriter file = new System.IO.StreamWriter(filename);
+            //writer.Serialize(file, test2);
+            //file.Close();
 
 
-            BossProcedures_Valentine.SpawnValentine();
+            //System.Xml.Serialization.XmlSerializer reader = new System.Xml.Serialization.XmlSerializer(typeof(FairyChallengeViewModel));
+            //System.IO.StreamReader file = new System.IO.StreamReader(filename);
+            //test2 = (FairyChallengeViewModel)reader.Deserialize(file);
+
+            BossProcedures_Fae.MoveToNewLocation();
 
             return RedirectToAction("Index");
 

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FairyChallengeViewModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <FairyChallengeBags>
+    <FairyChallengeBag>
+      <dbLocationName>castle_greathall</dbLocationName>
+      <IntroText>this is the intro text</IntroText>
+      <CorrectFormText>correct form</CorrectFormText>
+      <FailureText>failure</FailureText>
+    </FairyChallengeBag>
+    <FairyChallengeBag>
+      <dbLocationName>street_210_sunnyglade_drive</dbLocationName>
+      <IntroText>this is the intro text b</IntroText>
+      <CorrectFormText>correct form  b</CorrectFormText>
+      <FailureText>failure b</FailureText>
+    </FairyChallengeBag>
+    <FairyChallengeBag>
+      <dbLocationName>ranch_porch</dbLocationName>
+      <IntroText>asdfads</IntroText>
+      <CorrectFormText>asdfadsfdasf</CorrectFormText>
+      <FailureText>xcvbfadfg</FailureText>
+    </FairyChallengeBag>
+  </FairyChallengeBags>
+</FairyChallengeViewModel>

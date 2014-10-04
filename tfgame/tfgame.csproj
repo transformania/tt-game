@@ -341,6 +341,7 @@
     <Compile Include="ViewModels\CovenantViewModel.cs" />
     <Compile Include="ViewModels\Die.cs" />
     <Compile Include="ViewModels\EffectViewModel.cs" />
+    <Compile Include="ViewModels\FairyChallengeViewModel.cs" />
     <Compile Include="ViewModels\GameOverViewModelAnimal.cs" />
     <Compile Include="ViewModels\Form.cs" />
     <Compile Include="ViewModels\FriendPageViewModel.cs" />
@@ -584,6 +585,7 @@
     <Content Include="XMLs\Effects\effect_Hemorrhage_Izz_Valentine.xml">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="XMLs\FairyChallengeText\template.xml" />
     <Content Include="XMLs\LastNames.xml" />
     <Content Include="XMLs\LocationDescriptions\270_west_9th_ave.xml" />
     <Content Include="XMLs\LocationDescriptions\280_west_9th_ave.xml" />

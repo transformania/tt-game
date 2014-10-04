@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using tfgame.dbModels.Abstract;
 using tfgame.dbModels.Concrete;
 using tfgame.dbModels.Models;
 using tfgame.Statics;
+using tfgame.ViewModels;
 
 namespace tfgame.Procedures.BossProcedures
 {
@@ -58,5 +60,65 @@ namespace tfgame.Procedures.BossProcedures
 
             }
         }
+
+        public static void MoveToNewLocation()
+        {
+
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            Player fae = playerRepo.Players.FirstOrDefault(f => f.FirstName == "Jewdewfae" && f.LastName == "the Pervfae");
+
+            FairyChallengeViewModel fairyChallenges = new FairyChallengeViewModel();
+            fairyChallenges.FairyChallengeBags = new List<FairyChallengeBag>();
+
+            // load data from the xml
+            string filename = System.Web.HttpContext.Current.Server.MapPath("~/XMLs/FairyChallengeText/template.xml");
+            System.Xml.Serialization.XmlSerializer reader = new System.Xml.Serialization.XmlSerializer(typeof(FairyChallengeViewModel));
+            System.IO.StreamReader file = new System.IO.StreamReader(filename);
+            fairyChallenges = (FairyChallengeViewModel)reader.Deserialize(file);
+
+            List<string> fairyLocations = fairyChallenges.FairyChallengeBags.Where(f => f.dbLocationName != fae.dbLocationName).Select(f => f.dbLocationName).ToList();
+            double max = fairyLocations.Count();
+            Random rand = new Random();
+            double num = rand.NextDouble();
+
+            int index = Convert.ToInt32(Math.Floor(num * max));
+            string newLocation = fairyLocations.ElementAt(index);
+
+            fae.dbLocationName = newLocation;
+            playerRepo.SavePlayer(fae);
+
+        }
+
+        public static void AddInteraction(Player player) {
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            Player fae = playerRepo.Players.FirstOrDefault(f => f.FirstName == "Jewdewfae" && f.LastName == "the Pervfae");
+
+            IAIDirectiveRepository aiRepo = new EFAIDirectiveRepository();
+            AIDirective directive = aiRepo.AIDirectives.FirstOrDefault(i => i.OwnerId == fae.Id);
+
+            // Var1 will keep track how how many interactions Jewdewfae has had.  Award a bit less XP based on how many people she has played with.
+            directive.Var1 += 1;
+
+            // TODO:  add some string-based variables so she can keep track of who she has interacted with at this current location
+
+        }
+
+        public static FairyChallengeBag GetFairyChallengeInfoAtLocation(string location)
+        {
+
+            FairyChallengeViewModel fairyChallenges = new FairyChallengeViewModel();
+            fairyChallenges.FairyChallengeBags = new List<FairyChallengeBag>();
+
+            // load data from the xml
+            string filename = System.Web.HttpContext.Current.Server.MapPath("~/XMLs/FairyChallengeText/template.xml");
+            System.Xml.Serialization.XmlSerializer reader = new System.Xml.Serialization.XmlSerializer(typeof(FairyChallengeViewModel));
+            System.IO.StreamReader file = new System.IO.StreamReader(filename);
+            fairyChallenges = (FairyChallengeViewModel)reader.Deserialize(file);
+
+            return fairyChallenges.FairyChallengeBags.FirstOrDefault(f => f.dbLocationName == location);
+        }
+
+      
+
     }
 }

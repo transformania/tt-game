@@ -43,6 +43,7 @@ namespace tfgame.Statics
              77, // Cara Doom
              6515, // Seras Tearfall
              9618, // Trixie1231
+             2699, // Hanna Patterson
                                               };
        
         public static int[] Artists = {

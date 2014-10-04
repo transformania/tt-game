@@ -17,7 +17,7 @@
     <script src="~/Scripts/jquery-ui-1.10.4.js"></script>
     <script src="~/Scripts/jquery.rotate.js"></script>
 
- 
+
 </head>
 
 @Html.Partial("partial/RoundStatus", Model.PvPWorldStat)
@@ -55,17 +55,18 @@
         @Html.ActionLink("View Messages", "MyMessages", "PvP")
     }
 }
+@Html.ActionLink("Submit New Content", "Contribute", "PvP", new { Id = -1 }, null)
 
-    @{
-        if (Model.You.Player.MembershipId == 69)
-        {
-            @Html.ActionLink("Admin", "Index", "PvPAdmin")
-        }
+@{
+    if (Model.You.Player.MembershipId == 69)
+    {
+        @Html.ActionLink("Admin", "Index", "PvPAdmin")
     }
+}
 @{
     if (Model.PlayerLogImportant.Count() > 0)
     {
-        <ul style="height: 180px; overflow: scroll;">
+        <ul style="max-height: 180px; overflow: scroll;">
             @{
         foreach (tfgame.dbModels.Models.PlayerLog log in Model.PlayerLogImportant)
         {
@@ -75,376 +76,369 @@
         }
             }
         </ul>
-        @Html.ActionLink("Dismiss Notifications", "DismissNotifications", "PvP")
+        <p style="text-align:right;">@Html.ActionLink("Dismiss Notifications", "DismissNotifications", "PvP")</p>
     }
 }
     @Html.Partial("partial_FrontPageAvatar", Model.You)
 
-
-
-    @*<p>You are currently wearing:</p>*@
-
-    <div style="position: relative; float: left;">
-
+<div style="clear: both;">
         <div class="playPageInventoryItem openInventory" style="background-image: url(../Images/PvP/Icons/Backpack_Meddle.png);" title='View Inventory' onclick="location.href='/PvP/MyInventory';">
             @Model.PlayerItems.Where(i => i.dbItem.IsEquipped == false).Count() / @Model.InventoryMaxSize
-
-
         </div>
-
         @{
             foreach (ItemViewModel item in Model.PlayerItems.Where(i => i.dbItem.IsEquipped == true))
             {
                 <div class="playPageInventoryItem" style="background-image: url(..@CharactersHere.GetImageURL(item));" title='@item.Item.FriendlyName'></div>
             }
         }
-    </div>
+</div>
 
-    <br /><br /><br />
-
+    
+<div style="text-align: center; clear: both;">
     @Html.ActionLink("Meditate (4 AP)", "Meditate", "PvP", new { id = "action_meditate" })
     @Html.ActionLink("Cleanse (4 AP, 3 Mana)", "Cleanse", "PvP", new { id = "action_cleanse" })
     @Html.ActionLink("Search this Area (" + (int)Model.APSearchCost + " AP)", "Search", "PvP", new { id = "action_search" })
-
+</div>
     <p>
         <span class="place">@Model.Location.Name [@Model.Location.X,@Model.Location.Y]<br /> </span>
-        <span class="locationDescription">@Model.Location.GetDescription()</span>
+
+<span class="locationDescription">@Model.Location.GetDescription()</span>
     </p>
 <center>
     @Html.Partial("partial/movementTable", Model)
 </center>
 
 
-    <div class="result">
-        @Html.Raw(ViewBag.Result)
-    </div>
-    <div class="error">
-        @ViewBag.ErrorMessage
-    </div>
-    <div class="suberror">
-        @ViewBag.SubErrorMessage
-    </div>
+<div class="result">
+    @Html.Raw(ViewBag.Result)
+</div>
+<div class="error">
+    @ViewBag.ErrorMessage
+</div>
+<div class="suberror">
+    @ViewBag.SubErrorMessage
+</div>
 
 
 
 
-    <h2>Players here:</h2>
+<h2>Players here:</h2>
 
-    @*all players who are online*@
-    @{
-        foreach (tfgame.ViewModels.PlayerFormViewModel p in Model.PlayersHere.Where(p => PlayerProcedures.PlayerIsOffline(p.Player) == false).OrderByDescending(p => p.Player.Level))
+@*all players who are online*@
+@{
+    foreach (tfgame.ViewModels.PlayerFormViewModel p in Model.PlayersHere.Where(p => PlayerProcedures.PlayerIsOffline(p.Player) == false).OrderByDescending(p => p.Player.Level))
+    {
+        <p>
+            @Html.Partial("Player_Partial", p)
+
+
+
+            @Ajax.ActionLink("Attack", "AttackModal", "PvP", new { targetId = p.Player.Id }, new AjaxOptions { UpdateTargetId = "attackModal", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "attack_Success", OnFailure = "attack_Failure", OnBegin = "attack_Wait" }, new { @class = "attackLink" })
+
+
+            @{
+        if (p.Player.MembershipId == -3)
         {
+            @Html.ActionLink("Trade", "TradeWithMerchant", "PvP", new { filter = "shirt" }, null)
+        }
+            }
+
+        </p>
+    }
+}
+
+@*all players who are offline*@
+
+<div id="showOfflinePlayersButton">Show Offline Players Here (@Model.PlayersHere.Where(p => PlayerProcedures.PlayerIsOffline(p.Player) == true).Count())</div>
+
+<div id="offlinePlayersWrapper">
+
+    @{
+        foreach (tfgame.ViewModels.PlayerFormViewModel p in Model.PlayersHere.Where(p => PlayerProcedures.PlayerIsOffline(p.Player) == true).OrderByDescending(p => p.Player.Level))
+        {
+
             <p>
                 @Html.Partial("Player_Partial", p)
-
-
-
-                @Ajax.ActionLink("Attack", "AttackModal", "PvP", new { targetId = p.Player.Id }, new AjaxOptions { UpdateTargetId = "attackModal", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "attack_Success", OnFailure = "attack_Failure", OnBegin = "attack_Wait" }, new { @class = "attackLink" })
-
-
-                @{
-            if (p.Player.MembershipId == -3)
-            {
-                @Html.ActionLink("Trade", "TradeWithMerchant", "PvP", new { filter = "shirt" }, null)
-            }
-                }
 
             </p>
         }
     }
 
-    @*all players who are offline*@
-
-    <div id="showOfflinePlayersButton">Show Offline Players Here (@Model.PlayersHere.Where(p => PlayerProcedures.PlayerIsOffline(p.Player) == true).Count())</div>
-
-    <div id="offlinePlayersWrapper">
-
-        @{
-            foreach (tfgame.ViewModels.PlayerFormViewModel p in Model.PlayersHere.Where(p => PlayerProcedures.PlayerIsOffline(p.Player) == true).OrderByDescending(p => p.Player.Level))
-            {
-
-                <p>
-                    @Html.Partial("Player_Partial", p)
-
-                </p>
-            }
-        }
-
-    </div>
+</div>
 
 
-    @{
-        foreach (tfgame.ViewModels.ItemViewModel item in Model.LocationItems)
-        {
-            <div style="height: 60px;">
+@{
+    foreach (tfgame.ViewModels.ItemViewModel item in Model.LocationItems)
+    {
+        <div style="height: 60px;">
 
 
-                <div class="portrait_item_mainpage" style="background-image: url(..@CharactersHere.GetImageURL(item));">
+            <div class="portrait_item_mainpage" style="background-image: url(..@CharactersHere.GetImageURL(item));">
 
-                    @{ if (item.Item.ItemType != PvPStatics.ItemType_Consumeable && item.dbItem.Level > 0)
-                     {
-                        <span class="icon-level"><b>@item.dbItem.Level</b></span>
-                     }
-                    }
+                @{ if (item.Item.ItemType != PvPStatics.ItemType_Consumeable && item.dbItem.Level > 0)
+                 {
+                    <span class="icon-level"><b>@item.dbItem.Level</b></span>
+                 }
+                }
 
 
-                    @CharactersHere.PrintItemTypeIcon(item.Item)
+                @CharactersHere.PrintItemTypeIcon(item.Item)
 
 
 
-                </div>
-
-                <div style="float: left; position: relative; padding-top:22px; padding-left: 10px; font-size: 16px; font-weight: 400;">
-
-                    @item.Item.FriendlyName
-
-                    @{
-            if (item.dbItem.VictimName != "")
-            {
-                <span class="formerPlayer">(Formerly @item.dbItem.VictimName)</span>
-            }
-                    }
-
-                    @{if (item.Item.ItemType == PvPStatics.ItemType_Pet)
-                    {
-                        @Html.ActionLink("Tame", "Take", "PvP", new { id = item.dbItem.Id }, null)
-                    }
-                    else
-                    {
-                        @Html.ActionLink("Take", "Take", "PvP", new { id = item.dbItem.Id }, null)
-                    }
-
-                    }
-
-
-
-                </div>
             </div>
+
+            <div style="float: left; position: relative; padding-top:22px; padding-left: 10px; font-size: 16px; font-weight: 400;">
+
+                @item.Item.FriendlyName
+
+                @{
+        if (item.dbItem.VictimName != "")
+        {
+            <span class="formerPlayer">(Formerly @item.dbItem.VictimName)</span>
         }
+                }
+
+                @{if (item.Item.ItemType == PvPStatics.ItemType_Pet)
+                {
+                    @Html.ActionLink("Tame", "Take", "PvP", new { id = item.dbItem.Id }, null)
+                }
+                else
+                {
+                    @Html.ActionLink("Take", "Take", "PvP", new { id = item.dbItem.Id }, null)
+                }
+
+                }
+
+
+
+            </div>
+        </div>
+    }
+}
+
+
+
+
+
+<h2>Recent activity here:</h2>
+
+<ul id="RecentActivityLog">
+    @{
+        foreach (tfgame.dbModels.Models.LocationLog log in Model.LocationLog)
+        {
+            <li>@Html.Raw(log.Message)  <span class="timeago">@CharactersHere.DatetimeToTimeago(log.Timestamp)</span></li>
+        }
+    }
+</ul>
+
+<p id="timeReportClickMe" style="cursor: pointer;"><b>Click to show server load time breakdown</b></p>
+<div id="timeReport" style="display: none;">
+    <p>@Html.Raw(ViewBag.LoadTime)</p>
+</div>
+
+
+@*@Html.Partial("partial/attackModal", Model)*@
+
+<div id="modalBackdrop"></div>
+<div id="attackModal" class="ui-widget-content ui-draggable" style="display:none;">
+    <span id="youAreAttacking"></span>
+    <span id="attackClose" onclick="closeAttackModal()">Cancel</span>
+    <span id="expand" onclick="expandModal()">Expand</span>
+</div>
+
+<script>
+
+    var turnNo = @ViewBag.WorldTurnNumber;
+    var togglestate = 0;
+    var blinkEnabled = 0;
+
+    var ap = @Model.You.Player.ActionPoints;
+    var attacksMade = @Model.You.Player.TimesAttackingThisUpdate;
+
+    var cleanseCost = @PvPStatics.CleanseCost;
+    var meditateCost = @PvPStatics.MeditateCost;
+    var searchCost = @Model.APSearchCost;
+    var attackCostAP = @PvPStatics.AttackCost;
+    var attackCap = @PvPStatics.MaxAttacksPerUpdate;
+
+    $(document).ready(function () {
+
+
+
+
+
+        var name = "@Model.You.Player.FirstName" + " @Model.You.Player.LastName";
+        // var msgToReplace = name + " has"
+        var text = $("#RecentActivityLog").html();
+
+
+
+        for (var i = 0; i <= @ViewBag.MaxLogSize; i++) {
+
+            text = text.replace(name, "You");
+            text = text.replace("You was", "You were");
+
+        }
+
+
+        $( "#timerBox" ).click(function() {
+            alert("The last update was  @CharactersHere.DatetimeToTimeago_WithSeconds(Model.LastUpdateTimestamp) (based on when this page was loaded.)  Updates should happen every 10 minutes.");
+        });
+
+
+        $("#RecentActivityLog").html(text);
+
+
+
+
+        if (ap < cleanseCost) {
+            $("#action_cleanse").attr("href", "#");
+            $("#action_cleanse").addClass("disabled");
+        }
+
+        if (ap < meditateCost) {
+            $("#action_meditate").attr("href", "#");
+            $("#action_meditate").addClass("disabled");
+        }
+
+        if (ap < searchCost) {
+            $("#action_search").attr("href", "#");
+            $("#action_search").addClass("disabled");
+        }
+
+        if (ap < attackCostAP) {
+            $(".action_attack").each(function() {
+                $( this ).attr("href", "#");
+                $( this ).addClass("disabled");
+            });
+        }
+
+
+
+        // on page load, hide offline players
+        $("#offlinePlayersWrapper").hide();
+
+        // show offline player section when player clicks on the proper div
+        $("#showOfflinePlayersButton").click(function() {
+            $("#showOfflinePlayersButton").hide();
+            $("#offlinePlayersWrapper").show();
+        });
+
+        $("#timeReportClickMe").click(function() {
+            $("#timeReport").show();
+
+        });
+
+
+        var myVar=setInterval(function(){pingForUpdate()},30000);
+        var myVa2r=setInterval(function(){titleToggle()},1000);
+
+
+
+    }); // end document.ready
+
+    function parseAttackLinks() {
+        if (attacksMade >= attackCap) {
+            $(".action_attack").each(function() {
+                $( this ).attr("href", "#");
+                $( this ).addClass("disabled");
+
+            });
+        } else {
+            $(".action_attack").each(function() {
+
+                var cost = $(this).attr("manacost");
+
+                if (cost > @Model.You.Player.Mana) {
+                    $( this ).attr("href", "#");
+                $( this ).addClass("disabled");
+            }
+
+
+
+
+            });
+
+    }
+
     }
 
 
+    function pingForUpdate() {
+        $.ajax({
+            url: 'PvP/ClientUpdateCheck/',
+            type: 'POST',
+            fail: fail,
+            success: pingDone,
+            dataType: 'text'
+        });
+    }
 
+    function pingDone(data) {
+        if (data > turnNo) {
+            turnNo = data;
+            blinkEnabled = 1;
+        }
+    }
 
+    function titleToggle() {
 
-    <h2>Recent activity here:</h2>
-
-    <ul id="RecentActivityLog">
-        @{
-            foreach (tfgame.dbModels.Models.LocationLog log in Model.LocationLog)
-            {
-                <li>@Html.Raw(log.Message)  <span class="timeago">@CharactersHere.DatetimeToTimeago(log.Timestamp)</span></li>
+        if (blinkEnabled==1) {
+            if (togglestate == 0) {
+                $('title').text('Transformania Time!');
+                togglestate = 1;
+            } else if (togglestate == 1){
+                $('title').text('[UPDATED--reload page!]');
+                togglestate = 0;
             }
         }
-    </ul>
+    }
 
-    <p id="timeReportClickMe" style="cursor: pointer;"><b>Click to show server load time breakdown</b></p>
-    <div id="timeReport" style="display: none;">
-        <p>@Html.Raw(ViewBag.LoadTime)</p>
-    </div>
+    // on page click return to old page title
+    //$(document).click(function () {
+    //    $(document).attr('title', 'Transformania Time');
+    //    var blinkEnabled = 0;
+    //});
 
+    function fail() {
+        // alert("fail");
+    }
 
-    @*@Html.Partial("partial/attackModal", Model)*@
+    function showAttackModal() {
+        $("#attackModal").show();
+        $("#modalBackdrop").show();
+        parseAttackLinks();
+    }
 
-    <div id="modalBackdrop"></div>
-    <div id="attackModal" class="ui-widget-content ui-draggable" style="display:none;">
-        <span id="youAreAttacking"></span>
-        <span id="attackClose" onclick="closeAttackModal()">Cancel</span>
-        <span id="expand" onclick="expandModal()">Expand</span>
-    </div>
+    function closeAttackModal() {
+        $("#attackModal").hide();
+        $("#modalBackdrop").hide();
+    }
 
-    <script>
+    function attack_Success() {
+        showAttackModal();
+    }
 
-        var turnNo = @ViewBag.WorldTurnNumber;
-        var togglestate = 0;
-        var blinkEnabled = 0;
+    function attack_Wait() {
+        $("#attackModal").show();
+        $("#attackModal").html("Loading...");
+        $("#modalBackdrop").show();
+    }
 
-        var ap = @Model.You.Player.ActionPoints;
-        var attacksMade = @Model.You.Player.TimesAttackingThisUpdate;
+    function attack_Failure() {
+        alert("ERROR:  Failed to launch attack modal window.  Try again shortly.  If this persists, you have either been logged out or the server is momentarily having problems.");
+    }
 
-        var cleanseCost = @PvPStatics.CleanseCost;
-        var meditateCost = @PvPStatics.MeditateCost;
-        var searchCost = @Model.APSearchCost;
-        var attackCostAP = @PvPStatics.AttackCost;
-        var attackCap = @PvPStatics.MaxAttacksPerUpdate;
+    function closeAttackModal() {
+        $("#attackModal").hide();
+        $("#modalBackdrop").hide();
+    }
 
-        $(document).ready(function () {
+    $( "#attackModal" ).draggable();
+    $( "#attackModal" ).resizable();
 
 
 
-
-
-            var name = "@Model.You.Player.FirstName" + " @Model.You.Player.LastName";
-            // var msgToReplace = name + " has"
-            var text = $("#RecentActivityLog").html();
-
-
-
-            for (var i = 0; i <= @ViewBag.MaxLogSize; i++) {
-
-                text = text.replace(name, "You");
-                text = text.replace("You was", "You were");
-
-            }
-
-
-            $( "#timerBox" ).click(function() {
-                alert("The last update was  @CharactersHere.DatetimeToTimeago_WithSeconds(Model.LastUpdateTimestamp) (based on when this page was loaded.)  Updates should happen every 10 minutes.");
-            });
-
-
-            $("#RecentActivityLog").html(text);
-
-
-
-
-            if (ap < cleanseCost) {
-                $("#action_cleanse").attr("href", "#");
-                $("#action_cleanse").addClass("disabled");
-            }
-
-            if (ap < meditateCost) {
-                $("#action_meditate").attr("href", "#");
-                $("#action_meditate").addClass("disabled");
-            }
-
-            if (ap < searchCost) {
-                $("#action_search").attr("href", "#");
-                $("#action_search").addClass("disabled");
-            }
-
-            if (ap < attackCostAP) {
-                $(".action_attack").each(function() {
-                    $( this ).attr("href", "#");
-                    $( this ).addClass("disabled");
-                });
-            }
-
-
-
-            // on page load, hide offline players
-            $("#offlinePlayersWrapper").hide();
-
-            // show offline player section when player clicks on the proper div
-            $("#showOfflinePlayersButton").click(function() {
-                $("#showOfflinePlayersButton").hide();
-                $("#offlinePlayersWrapper").show();
-            });
-
-            $("#timeReportClickMe").click(function() {
-                $("#timeReport").show();
-
-            });
-
-
-            var myVar=setInterval(function(){pingForUpdate()},30000);
-            var myVa2r=setInterval(function(){titleToggle()},1000);
-
-
-
-        }); // end document.ready
-
-        function parseAttackLinks() {
-            if (attacksMade >= attackCap) {
-                $(".action_attack").each(function() {
-                    $( this ).attr("href", "#");
-                    $( this ).addClass("disabled");
-
-                });
-            } else {
-                $(".action_attack").each(function() {
-
-                    var cost = $(this).attr("manacost");
-
-                    if (cost > @Model.You.Player.Mana) {
-                        $( this ).attr("href", "#");
-                    $( this ).addClass("disabled");
-                }
-
-
-
-
-                });
-
-        }
-
-        }
-
-
-        function pingForUpdate() {
-            $.ajax({
-                url: 'PvP/ClientUpdateCheck/',
-                type: 'POST',
-                fail: fail,
-                success: pingDone,
-                dataType: 'text'
-            });
-        }
-
-        function pingDone(data) {
-            if (data > turnNo) {
-                turnNo = data;
-                blinkEnabled = 1;
-            }
-        }
-
-        function titleToggle() {
-
-            if (blinkEnabled==1) {
-                if (togglestate == 0) {
-                    $('title').text('Transformania Time!');
-                    togglestate = 1;
-                } else if (togglestate == 1){
-                    $('title').text('[UPDATED--reload page!]');
-                    togglestate = 0;
-                }
-            }
-        }
-
-        // on page click return to old page title
-        //$(document).click(function () {
-        //    $(document).attr('title', 'Transformania Time');
-        //    var blinkEnabled = 0;
-        //});
-
-        function fail() {
-            // alert("fail");
-        }
-
-        function showAttackModal() {
-            $("#attackModal").show();
-            $("#modalBackdrop").show();
-            parseAttackLinks();
-        }
-
-        function closeAttackModal() {
-            $("#attackModal").hide();
-            $("#modalBackdrop").hide();
-        }
-
-        function attack_Success() {
-            showAttackModal();
-        }
-
-        function attack_Wait() {
-            $("#attackModal").show();
-            $("#attackModal").html("Loading...");
-            $("#modalBackdrop").show();
-        }
-
-        function attack_Failure() {
-            alert("ERROR:  Failed to launch attack modal window.  Try again shortly.  If this persists, you have either been logged out or the server is momentarily having problems.");
-        }
-
-        function closeAttackModal() {
-            $("#attackModal").hide();
-            $("#modalBackdrop").hide();
-        }
-
-        $( "#attackModal" ).draggable();
-        $( "#attackModal" ).resizable();
-
-
-
-    </script>
+</script>
 

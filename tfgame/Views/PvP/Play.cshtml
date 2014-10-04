@@ -62,19 +62,19 @@
             @Html.ActionLink("Admin", "Index", "PvPAdmin")
         }
     }
-    <ul>
-        @{
-            foreach (tfgame.dbModels.Models.PlayerLog log in Model.PlayerLogImportant)
-            {
-                <li class="frontPageNotification">
-                    @Html.Raw(log.Message) <span class="timeago">@CharactersHere.DatetimeToTimeago(log.Timestamp)</span>
-                </li>
-            }
-        }
-    </ul>
 @{
     if (Model.PlayerLogImportant.Count() > 0)
     {
+        <ul style="height: 200px; overflow: scroll;">
+            @{
+        foreach (tfgame.dbModels.Models.PlayerLog log in Model.PlayerLogImportant)
+        {
+            <li class="frontPageNotification">
+                @Html.Raw(log.Message) <span class="timeago">@CharactersHere.DatetimeToTimeago(log.Timestamp)</span>
+            </li>
+        }
+            }
+        </ul>
         @Html.ActionLink("Dismiss Notifications", "DismissNotifications", "PvP")
     }
 }

@@ -391,6 +391,10 @@ a.attackLink {
     background-color: white;
 }
 
+a.talkLink {
+    background-color: white;
+}
+
 .portrait {
     height: 80px;
     width: 80px;
@@ -639,11 +643,30 @@ a.attackLink {
     padding-right: 3px;
 }
 
+
+
     .attackLink:hover {
         color: darkviolet;
         cursor: pointer;
         border: 2px solid darkviolet;
     }
+
+.talkLink {
+    color: green;
+    font-size: 18px;
+    font-weight: 900;
+    border: 2px solid green;
+    border-radius: 5px;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+    .talkLink:hover {
+        color: darkviolet;
+        cursor: pointer;
+        border: 2px solid darkviolet;
+    }
+
 
 a.full {
     background-color: lightgreen;
@@ -751,7 +774,6 @@ a.curse {
     font-weight: 600;
     border-radius: 5px;
     color: black;
-
 }
 
 

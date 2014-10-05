@@ -2612,6 +2612,12 @@ namespace tfgame.Controllers
 
              ViewBag.ShowSuccess = false;
 
+             ViewBag.HadRecentInteraction = false;
+             if (tfgame.Procedures.BossProcedures.BossProcedures_Fae.PlayerHasHadRecentInteraction(me, fae))
+             {
+                 ViewBag.HadRecentInteraction = true;
+             }
+
              return View(output);
          }
 
@@ -2643,6 +2649,14 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play");
             }
 
+            // assert player has not already interacted this location
+            if (tfgame.Procedures.BossProcedures.BossProcedures_Fae.PlayerHasHadRecentInteraction(me, fae))
+            {
+                TempData["Error"] = "You have already interacted with Jewdewfae here.";
+                TempData["SubError"] = "Wait for her to move somewhere else.";
+                return RedirectToAction("Play");
+            }
+
             FairyChallengeBag output = tfgame.Procedures.BossProcedures.BossProcedures_Fae.GetFairyChallengeInfoAtLocation(fae.dbLocationName);
 
             if (me.Form == output.RequiredForm)
@@ -2652,6 +2666,7 @@ namespace tfgame.Controllers
                 PlayerProcedures.ChangePlayerActionMana(5, 0, 0, me.Id);
                 ViewBag.XPGain = xpGained;
                 ViewBag.ShowSuccess = true;
+                ViewBag.HadRecentInteraction = false;
                 return View("TalkWithJewdewfae", output);
             }
             else

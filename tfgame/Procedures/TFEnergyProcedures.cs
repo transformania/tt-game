@@ -415,7 +415,7 @@ namespace tfgame.Procedures
 
 
                     // take away some of the victim's XP based on the their level
-                    target.XP += -2.5M * target.Level;
+                   // target.XP += -2.5M * target.Level;
 
                     playerRepo.SavePlayer(target);
 

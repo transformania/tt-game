@@ -22,6 +22,7 @@ namespace tfgame.Procedures
         // -3 item merchant
         // -4 Donna Milton
         // -5 Lord Valentine
+        // -6 Jewdewfae
 
         public static void SpawnAIPsychopaths(int count, int offset)
         {

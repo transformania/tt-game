@@ -2576,6 +2576,92 @@ namespace tfgame.Controllers
             return RedirectToAction("Play");
         }
 
+        [Authorize]
+         public ActionResult TalkWithJewdewfae()
+         {
+             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player fae = PlayerProcedures.GetPlayerFromMembership(-6);
+
+            // assert player is mobile
+             if (me.Mobility != "full")
+             {
+                 TempData["Error"] = "You must be fully animate in order to talk with Jewdewfae.";
+                 return RedirectToAction("Play");
+             }
+
+            // assert player is in same location as jewdewfae
+             if (me.dbLocationName != fae.dbLocationName)
+             {
+                 TempData["Error"] = "You must be in the same location as Jewfewfae in order to talk with her.";
+                 return RedirectToAction("Play");
+             }
+
+             FairyChallengeBag output = tfgame.Procedures.BossProcedures.BossProcedures_Fae.GetFairyChallengeInfoAtLocation(fae.dbLocationName);
+
+             ViewBag.IsInWrongForm = false;
+
+             if (me.Form != output.RequiredForm)
+             {
+                 ViewBag.IsInWrongForm = true;
+             }
+
+             if (me.ActionPoints < 5)
+             {
+                 ViewBag.IsTired = true;
+             }
+
+             ViewBag.ShowSuccess = false;
+
+             return View(output);
+         }
+
+        [Authorize]
+        public ActionResult PlayWithJewdewfae()
+        {
+
+            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player fae = PlayerProcedures.GetPlayerFromMembership(-6);
+
+            // assert player is mobile
+            if (me.Mobility != "full")
+            {
+                TempData["Error"] = "You must be fully animate in order to talk with Jewdewfae.";
+                return RedirectToAction("Play");
+            }
+
+            // assert player is in same location as jewdewfae
+            if (me.dbLocationName != fae.dbLocationName)
+            {
+                TempData["Error"] = "You must be in the same location as Jewfewfae in order to talk with her.";
+                return RedirectToAction("Play");
+            }
+
+            // assert player has enough AP
+            if (me.ActionPoints < 5)
+            {
+                TempData["Error"] = "You need 5 action points to play with Jewdewfae.";
+                return RedirectToAction("Play");
+            }
+
+            FairyChallengeBag output = tfgame.Procedures.BossProcedures.BossProcedures_Fae.GetFairyChallengeInfoAtLocation(fae.dbLocationName);
+
+            if (me.Form == output.RequiredForm)
+            {
+                decimal xpGained = tfgame.Procedures.BossProcedures.BossProcedures_Fae.AddInteraction(me);
+                PlayerProcedures.GiveXP(me.Id, xpGained);
+                PlayerProcedures.ChangePlayerActionMana(5, 0, 0, me.Id);
+                ViewBag.XPGain = xpGained;
+                ViewBag.ShowSuccess = true;
+                return View("TalkWithJewdewfae", output);
+            }
+            else
+            {
+                TempData["Error"] = "You are not in the correct form to play with Jewdewfae right now.";
+                return RedirectToAction("Play");
+            }
+
+        }
+
          [Authorize]
         public ActionResult TradeWithMerchant(string filter)
         {

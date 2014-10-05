@@ -1340,6 +1340,7 @@
     <Content Include="Views\PvP\RoundLeaderboards\Alpha_10.cshtml" />
     <Content Include="Views\Shared\_MenuPartial.cshtml" />
     <Content Include="Views\PvP\GameNews_Archive.cshtml" />
+    <Content Include="Views\PvP\TalkWithJewdewfae.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

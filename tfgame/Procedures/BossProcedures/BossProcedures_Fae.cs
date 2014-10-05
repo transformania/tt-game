@@ -61,7 +61,7 @@ namespace tfgame.Procedures.BossProcedures
             }
         }
 
-        public static void MoveToNewLocation()
+        private static void MoveToNewLocation()
         {
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
@@ -87,19 +87,42 @@ namespace tfgame.Procedures.BossProcedures
             fae.dbLocationName = newLocation;
             playerRepo.SavePlayer(fae);
 
+            IAIDirectiveRepository aiRepo = new EFAIDirectiveRepository();
+            AIDirective directive = aiRepo.AIDirectives.FirstOrDefault(i => i.OwnerId == fae.Id);
+            directive.Var1 = 0;
+            directive.sVar1 = "";
+            aiRepo.SaveAIDirective(directive);
+
+
         }
 
-        public static void AddInteraction(Player player) {
+        public static decimal AddInteraction(Player player) {
             IPlayerRepository playerRepo = new EFPlayerRepository();
             Player fae = playerRepo.Players.FirstOrDefault(f => f.FirstName == "Jewdewfae" && f.LastName == "the Pervfae");
 
             IAIDirectiveRepository aiRepo = new EFAIDirectiveRepository();
             AIDirective directive = aiRepo.AIDirectives.FirstOrDefault(i => i.OwnerId == fae.Id);
 
+
+            if (directive == null)
+            {
+                directive = new AIDirective
+                {
+                    OwnerId = fae.Id,
+                    Timestamp = DateTime.UtcNow,
+                };
+            }
+
             // Var1 will keep track how how many interactions Jewdewfae has had.  Award a bit less XP based on how many people she has played with.
+            decimal xpGain = 50 - directive.Var1 * 3;
             directive.Var1 += 1;
 
-            // TODO:  add some string-based variables so she can keep track of who she has interacted with at this current location
+            // add this player's ID to the list of people interacted with; one playtime per location!
+            directive.sVar1 += player.Id.ToString() + ";";
+
+            aiRepo.SaveAIDirective(directive);
+
+            return xpGain;
 
         }
 

@@ -141,6 +141,10 @@
         {
             @Html.ActionLink("Trade", "TradeWithMerchant", "PvP", new { filter = "shirt" }, null)
         }
+        if (p.Player.MembershipId == -6)
+        {
+            @Html.ActionLink("Talk", "TalkWithJewdewfae", "PvP")
+        }
             }
 
         </p>

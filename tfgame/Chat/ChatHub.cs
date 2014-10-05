@@ -98,7 +98,7 @@ namespace tfgame.Chat
                 {
                     string message = "[-[" + me.FirstName + " " + me.LastName + " has joined the room.]-]";
 
-                    if (me.MembershipId != 69)
+                    if (me.MembershipId != 69 && me.MembershipId != 3490)
                     {
                         Clients.Group(roomName).addNewMessageToPage("", message);
                     }

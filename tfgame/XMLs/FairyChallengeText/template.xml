@@ -29,5 +29,19 @@ You oblige, rubbing some lotion along her legs and thighs as she directs you alo
       <FailureText>“You don’t look like you’re qualified to treat my ouchie fingers,” Jewdewfae giggles.  “I need a nurse.  Not just any nurse though, one who really wants to help me through the recovery process… a Slutty Nurse…”</FailureText>
     </FairyChallengeBag>
 	
+	<FairyChallengeBag>
+      <dbLocationName>mansion_bedroom</dbLocationName>
+      <IntroText>As you carefully step into the room you see Jewdewfae the fairy perched at the top of the headboard in the bedroom’s canopy bed.  She hangs off of it with one hand, poised to leap down onto the mattress below.  You watch as she pushes off into the air, giggling and twirling around as she plummets down onto the sheets below.  But when she lands she is greeted by a cloud of dust rising off of every nearby surface, causing her to quickly fly up into the air covering her eyes and wheezing.
+
+Blindly, Jewdewfae collides with you and clutches onto your neck as she hacks the last bit of dust out of her tiny lungs.  “That was so much fun, if only this place were a little bit cleaner…” she looks up at you, recoiling in mock surprise that she just-so-happened to have flown right into someone.  “Oh heya!  Are you the new Mincing Maid I ordered?  Would you help me clean out this bed so I can play on it without getting dirty?  Well, at least not dirty from dirt...”</IntroText>
+      <CorrectFormText>“Oh!  Perfect!  Hola, madamoiselle!  Did I get that right?  Oh, it doesn’t matter.  Come here!” Jewdewfae sends a bolt of energy at you, striking your body and making you gasp and strike a sexy pose against your will.  You find yourself blushing as Jewdewfae eyes your body, whistling in approval as she grows into a full-sized woman wearing fine velvet robes, clearly someone rich and powerful.
+
+“Okay, now, go change those bedsheets, dust the mirror, vacuum the floor, mop up the kitchen, mend up this little tear in my dress, paint the walls a slightly lighter shade of blue, and have my dinner all ready for me in half an hour!  Heehee!  Oh, isn’t this fun, me bossing you around like that?  But maybe you need a sister to help you?” in the blink of an eye Jewdewfae’s clothes vanish, replaced instantly by a dress just like yours.  “Oui, oui, let’s get to cleaning!”
+
+Cleaning begins and ends with you and Jewdewfae changing the bedsheets but somehow tripping and becoming entangled in them with your clothing mysteriously slipping away.  Ultimately the bed remains as dirty as ever, perhaps with a few more fluids drying on them.  “Bestest maids ever,” Jewdewfae sighs.  “Time for your paycheck!”  She zaps you, filling you with some fairy magic in reward as she flies off.</CorrectFormText>
+      <FailureText>“Where’s your outfit?” Jewdewfae giggles.  “Where’s your sexy sweet French accent?  Where’s your feather duster?  This whole bedroom is messy, messy, messy, and I need a real veteran cleaning lady here, not… whatever you are!”</FailureText>
+	  <RequiredForm>form_Mincing_Maid_Ellipsis</RequiredForm>
+</FairyChallengeBag>
+	
   </FairyChallengeBags>
 </FairyChallengeViewModel>

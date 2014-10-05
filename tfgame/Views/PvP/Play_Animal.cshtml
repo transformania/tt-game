@@ -63,14 +63,11 @@ else
 </div>
 
 <div style="position: relative; float: left;">
-
-        
-
-    <div class="portrait" style="background-image: url(../Images/PvP/animalPortraits/@ViewBag.AnimalImgUrl); width: 500px; height: 500px; float: left; position: relative; display: block;">
+    <div class="petItemPortrait" style="background-image: url(../Images/PvP/animalPortraits/@ViewBag.AnimalImgUrl);">
         @CharactersHere.PrintOwnerSubPortrait(Model.OwnedBy)
     </div>
 
-    <div style="float: right; max-width: 400px; margin-left: 10px; text-align: justify;">
+    <div class="petItemInfo">
         <p>Your name is <b>@Model.You.FirstName @Model.You.LastName</b>, or at least it used to be.  At the height of your humanity you achieved level <b>@Model.You.Level</b> with @Model.You.XP experience points toward the next.  But now it's time to embrace your new existence as a <b>@Model.Form.FriendlyName</b>.</p>
         <p>
             @Model.Form.Description

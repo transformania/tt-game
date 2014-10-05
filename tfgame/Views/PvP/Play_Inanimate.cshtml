@@ -61,12 +61,12 @@ else
 </div>
 
 <div style="position: relative; float: left;">
-    <div class="portrait" style="background-image: url(../Images/PvP/itemsPortraits/@Model.Item.PortraitUrl); width: 500px; height: 500px; float: left; position: relative; display: block;">
+    <div class="petItemPortrait" style="background-image: url(../Images/PvP/itemsPortraits/@Model.Item.PortraitUrl);">
         @CharactersHere.PrintOwnerSubPortrait(Model.WornBy)
         @CharactersHere.PrintItemTypeIcon(Model.Item)
     </div>
 
-    <div style="float: right; max-width: 400px; margin-left: 10px; text-align: justify;">
+    <div class="petItemInfo">
         <p>Your name is <b>@Model.Player.FirstName @Model.Player.LastName</b>, or at least it used to be.  Should you regain a human form you will find yourself at level <b>@Model.Player.Level</b> with @Model.Player.XP experience points toward the next.  But now it's time to embrace your new existence as a <b>@Model.Form.FriendlyName</b>.</p>
 
         <p>@Model.Form.Description</p>

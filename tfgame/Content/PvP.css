@@ -88,6 +88,25 @@ a {
         cursor: default;
     }
 
+.petItemPortrait{
+    width: 450px;
+    height: 450px;
+    float: left;
+    position: relative;
+    display: block;
+    margin-right: 20px;
+    background-size: 450px 450px;
+    background-position: center center;
+}
+
+.petItemInfo{
+    float: left;
+    position: relative;
+    display: block;
+    width: 450px;
+    text-align: justify;
+}
+
 
 
 .newlink a {
@@ -382,9 +401,6 @@ locationDescription {
     margin-bottom: 3px;
 }
 
-
-
-
 .name a {
     background-color: lightyellow;
 }
@@ -413,7 +429,6 @@ a.talkLink {
     border: 2px solid violet;
     float: left;
 }
-
 
 
 .portrait-large {

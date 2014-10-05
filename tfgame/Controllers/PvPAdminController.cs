@@ -1044,7 +1044,7 @@ namespace tfgame.Controllers
             //System.IO.StreamReader file = new System.IO.StreamReader(filename);
             //test2 = (FairyChallengeViewModel)reader.Deserialize(file);
 
-            BossProcedures_Fae.MoveToNewLocation();
+          //  BossProcedures_Fae.MoveToNewLocation();
 
             return RedirectToAction("Index");
 

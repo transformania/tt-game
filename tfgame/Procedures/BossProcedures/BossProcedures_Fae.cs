@@ -90,7 +90,7 @@ namespace tfgame.Procedures.BossProcedures
             IAIDirectiveRepository aiRepo = new EFAIDirectiveRepository();
             AIDirective directive = aiRepo.AIDirectives.FirstOrDefault(i => i.OwnerId == fae.Id);
             directive.Var1 = 0;
-            directive.sVar1 = "";
+            directive.sVar1 = ";";
             aiRepo.SaveAIDirective(directive);
 
 
@@ -110,17 +110,27 @@ namespace tfgame.Procedures.BossProcedures
                 {
                     OwnerId = fae.Id,
                     Timestamp = DateTime.UtcNow,
+                    sVar1 = ";",
                 };
             }
 
-            // Var1 will keep track how how many interactions Jewdewfae has had.  Award a bit less XP based on how many people she has played with.
+            // Var1 will keep track how how many interactions Jewdewfae has had.  Award a bit less XP based on how many people she has played with down to 15 at lowest
             decimal xpGain = 50 - directive.Var1 * 3;
+
+            if (xpGain < 15) {
+                xpGain = 15;
+            }
+
             directive.Var1 += 1;
 
             // add this player's ID to the list of people interacted with; one playtime per location!
             directive.sVar1 += player.Id.ToString() + ";";
 
             aiRepo.SaveAIDirective(directive);
+
+            if (directive.Var1 >= 25) {
+                MoveToNewLocation();
+            }
 
             return xpGain;
 
@@ -139,6 +149,22 @@ namespace tfgame.Procedures.BossProcedures
             fairyChallenges = (FairyChallengeViewModel)reader.Deserialize(file);
 
             return fairyChallenges.FairyChallengeBags.FirstOrDefault(f => f.dbLocationName == location);
+        }
+
+        public static bool PlayerHasHadRecentInteraction(Player player, Player fae)
+        {
+            IAIDirectiveRepository aiRepo = new EFAIDirectiveRepository();
+            AIDirective directive = aiRepo.AIDirectives.FirstOrDefault(i => i.OwnerId == fae.Id);
+
+            if (directive.sVar1.Contains(";" + player.Id + ";"))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
         }
 
       

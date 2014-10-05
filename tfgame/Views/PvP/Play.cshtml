@@ -66,7 +66,7 @@
 @{
     if (Model.PlayerLogImportant.Count() > 0)
     {
-        <ul style="max-height: 180px; overflow: scroll;">
+        <ul style="max-height: 180px; overflow-y: scroll;">
             @{
         foreach (tfgame.dbModels.Models.PlayerLog log in Model.PlayerLogImportant)
         {
@@ -81,7 +81,7 @@
 }
     @Html.Partial("partial_FrontPageAvatar", Model.You)
 
-<div style="clear: both;">
+<div style="clear: both;  margin-left: auto;  margin-right: auto;">
         <div class="playPageInventoryItem openInventory" style="background-image: url(../Images/PvP/Icons/Backpack_Meddle.png);" title='View Inventory' onclick="location.href='/PvP/MyInventory';">
             @Model.PlayerItems.Where(i => i.dbItem.IsEquipped == false).Count() / @Model.InventoryMaxSize
         </div>

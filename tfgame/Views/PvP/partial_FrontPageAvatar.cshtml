@@ -13,7 +13,7 @@
 
 }
 
-    <div class="avatarWrapper" style="clear: both;">
+    <div class="avatarWrapper">
         <div class="portrait-large" style="background-image: url(../Images/PvP/portraits/@Model.Form.PortraitUrl);" title="@Model.Form.Description">
             <span class="icon-@Model.Player.Gender" style="float:right;"></span>
             <span class="icon-level"><b>@Model.Player.Level</b></span>
@@ -37,7 +37,7 @@
 
             <br />
             <div class="avatarHealthWrapper">
-                <div class="txt">@Model.Player.Health / @Model.Player.MaxHealth willpower</div>
+                <div class="txt a">@Model.Player.Health / @Model.Player.MaxHealth willpower</div>
                 <div class="avatarHealthAmt" style="width: @HealthWidth%"></div>
             </div>
 
@@ -68,12 +68,17 @@
 
     </div>
 <style>
+
     .avatarWrapper {
-        width: 98%;
-        height: 163px;
+        height: 162px;
         border: 1px solid lightgray;
-        margin: 5px;
         padding: 3px;
+        display: block;
+        overflow: auto;
+        clear: both;
+        width: 50%;
+        margin: 10px auto 5px auto;
+        min-width: 480px;
     }
 
     .avatarCount {
@@ -88,8 +93,10 @@
     .avatarInfo {
         width: auto;
         min-width: 300px;
-        float: left;
+        float: right;
+        margin-right: 7px;
         position: relative;
+        text-align: center;
     }
 
     .avatarName {
@@ -157,7 +164,10 @@
         color: white;
         font-size: 15px;
         font-weight: 600;
-        text-shadow: 1px 1px #000000;
+        text-shadow: 1px 1px #000000;  
+        width: 100%;
+        margin-left: auto;
+        margin-right: auto;
     }
 
         .txt.small {

@@ -39,7 +39,7 @@ namespace tfgame.CustomHtmlHelpers
         public static MvcHtmlString PrintPvPIcon(Player player)
         {
 
-            if (player.InPvP == true)
+            if (player.InPvP == true && player.MembershipId > 0)
             {
                 return new MvcHtmlString("<span class='icon-protection' title='This player is in protection mode.'></span>");
             }

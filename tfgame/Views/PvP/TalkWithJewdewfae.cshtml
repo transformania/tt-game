@@ -6,11 +6,14 @@
 
 <div class="boxwrapper">
 
-    <div class="portrait large" style="display: block;background-image: url(../../Images/PvP/portraits/jewdewfae_Luxianne.png);">
+    <div class="portrait large" style="background-image: url(../../Images/PvP/portraits/jewdewfae_Luxianne.png);">
+
     </div>
+
     <div style="display: block;">
+
         @{
-            if (ViewBag.ShowSuccess == false)
+            if (ViewBag.ShowSuccess == false && ViewBag.HadRecentInteraction == false)
             {
                 <p>@Model.IntroText</p>
 
@@ -27,12 +30,17 @@
                     <p>@Html.ActionLink("Play with Jewfewfae (5 AP)", "PlayWithJewdewfae", "PvP")</p>
                 }
             }
+            else if (ViewBag.HadRecentInteraction == true)
+            {
+                <p>"Thanks for playing with me!  Maybe we can have some more fun somewhere else later..."</p>
+            }
             else
             {
                 <p>@Model.CorrectFormText</p>
                 <p><b><i>You earned @Math.Floor(ViewBag.XPGain) XP from Jewdewfae's magic.</i></b></p>
             }
         }
+
     </div>
 
 </div>
@@ -41,11 +49,13 @@
     .boxwrapper {
         border: 1px solid blue;
         border-radius: 10px;
+        min-height: 450px;
+        height: auto;
         width: 100%;
         padding: 5px;
         background-color: #c4fdff;
         font-size: 16px;
-        overflow:auto;
+        overflow: auto;
     }
 </style>
 

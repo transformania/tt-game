@@ -1,4 +1,8 @@
-﻿.tableLines {
+﻿html {
+    overflow-y:scroll;
+}
+
+.tableLines {
 }
 
     .tableLines td {
@@ -401,6 +405,29 @@ locationDescription {
     margin-bottom: 3px;
 }
 
+.covenContainer{
+    text-align: center;
+}
+
+.covName {
+    color: darkblue;
+    font-size: 25px;
+}
+
+.covHeader {
+    color: darkviolet;
+    font-size: 20px;
+    margin-bottom: -20px;
+}
+
+.covItem {
+    border: 1px solid lightgray;
+    padding: 5px;
+    float: left;
+    position: relative;
+    width: 100%;
+}
+
 .name a {
     background-color: lightyellow;
 }
@@ -419,6 +446,7 @@ a.talkLink {
     background-size: 100% 100%;
     position: relative;
     float: left;
+    text-align: left;
 }
 
 .subportrait {

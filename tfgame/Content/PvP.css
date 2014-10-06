@@ -600,8 +600,8 @@ a.talkLink {
 }
 
 .playPageInventoryItem {
-    width: 50px;
-    height: 50px;
+    width: 45px;
+    height: 45px;
     background-size: 100%;
     position: relative;
     float: left;
@@ -611,7 +611,7 @@ a.talkLink {
     font-weight: 900;
     text-align: center;
     vertical-align: middle;
-    line-height: 50px;
+    line-height: 45px;
 }
 
 .openInventory {
@@ -619,10 +619,9 @@ a.talkLink {
 }
 
     .openInventory:hover {
-        margin-right: 5px;
-        border: 2px solid red;
-        width: 48px;
-        height: 48px;
+        border: 1px solid red;
+        width: 45px;
+        height: 45px;
         cursor: pointer;
     }
 

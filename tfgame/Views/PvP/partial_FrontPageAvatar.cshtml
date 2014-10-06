@@ -32,8 +32,9 @@
             @CharactersHere.PrintRPIcon(Model.Player.ToDbPlayer())
             @CharactersHere.PrintPvPIcon(Model.Player.ToDbPlayer())
             <br />
-            <span class="avatarFormName">@Model.Form.FriendlyName</span>
             @CharactersHere.GetCovenantInfo(Model.Player.ToDbPlayer())
+            <br />
+            <span class="avatarFormName">@Model.Form.FriendlyName</span>
 
             <br />
             <div class="avatarHealthWrapper">
@@ -70,7 +71,7 @@
 <style>
 
     .avatarWrapper {
-        height: 162px;
+        height: 180px;
         border: 1px solid lightgray;
         padding: 3px;
         display: block;

@@ -43,9 +43,13 @@ namespace tfgame.CustomHtmlHelpers
             {
                 return new MvcHtmlString("<span class='icon-protection' title='This player is in protection mode.'></span>");
             }
-            else
+            else if (player.MembershipId > 0)
             {
                 return new MvcHtmlString("<span class='icon-pvp' title='This player is in PvP mode.'></span>");
+            }
+            else
+            {
+                return new MvcHtmlString("");
             }
         }
 

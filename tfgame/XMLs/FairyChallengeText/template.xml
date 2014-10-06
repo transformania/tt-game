@@ -42,6 +42,19 @@ Cleaning begins and ends with you and Jewdewfae changing the bedsheets but someh
       <FailureText>“Where’s your outfit?” Jewdewfae giggles.  “Where’s your sexy sweet French accent?  Where’s your feather duster?  This whole bedroom is messy, messy, messy, and I need a real veteran cleaning lady here, not… whatever you are!”</FailureText>
 	  <RequiredForm>form_Mincing_Maid_Ellipsis</RequiredForm>
 </FairyChallengeBag>
+<FairyChallengeBag>
+      <dbLocationName>park_rose_garden</dbLocationName>
+	  <RequiredForm>form_Alraune_Foxpower93</RequiredForm>
+      <IntroText>As you enter the rose garden you see Jewdewfae the fairy sitting on the edge of a wooden bench, her blue dress lying beside her leaving her body naked.  She has a pile of rose petals sitting on her lap and around her and she appears to be weaving them into some kind of new dress using a needle three inches long, a third the height of her entire body.  Needless to say she is not doing a very good job.
+
+As your shadow falls over her she looks up, shrieking in fake innocents as she holds two rose petals up to cover her naked breasts.  “Oops, oh my, the wind,” she giggles as she releases them into the breeze.  “You know those springtime fairies that make their own dresses out of flowers?  Well, they’re having this dance tonight out in the Scarlet Forest and I need a pretty little dress, but rose petals tear too easily.  And I think Jaylee Dewtoes already has one.  What am I going to do…”
+
+She sighs glumly, then looks up, her face glowing.  “Oh, I know!  I want to make a dress made out of those pretty pink flowers that those pretty Alraune girls all grow!”</IntroText>
+      <CorrectFormText>“Oh, perfect!” Jewdewfae zips over and lands on your scalp and begins to tug at one of the large pink petals growing out of your hair, but it won’t come out and the more she pulls the more it starts to hurt.  Before you need to ask her to stop hurting you, she gives up on her own.  “You know what, I just had the best idea--I’m going to just collect some of that sweet aroma of yours.”
+
+She finds the cap of an acorn and begins to scrape it along your flowers instead, collecting some of the sweet pollen and syrupy juices that your body emits to produce its powerful aroma.  You enjoy the sensation of her actions, the feeling of being groomed and appreciated.  “Perfect!  Thankies!  I’m going to smell so wonderful tonight.  Here, have this, you deserve it.”  She zaps you, filling you with some fairy magic in reward as she flies off.</CorrectFormText>
+      <FailureText>“You’re not a flower, silly!” Jewdewfae giggles.  “I could just turn you straight into an Alraune petal dress, but that’s not half as fun.”</FailureText>
+</FairyChallengeBag>
 	
   </FairyChallengeBags>
 </FairyChallengeViewModel>

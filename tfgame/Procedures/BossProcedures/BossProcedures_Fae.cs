@@ -84,8 +84,12 @@ namespace tfgame.Procedures.BossProcedures
             int index = Convert.ToInt32(Math.Floor(num * max));
             string newLocation = fairyLocations.ElementAt(index);
 
+            LocationLogProcedures.AddLocationLog(fae.dbLocationName, "Jewdewfae got bored and flew away from here.");
+
             fae.dbLocationName = newLocation;
             playerRepo.SavePlayer(fae);
+
+            LocationLogProcedures.AddLocationLog(fae.dbLocationName, "Jewdewfae flew here.  She looks bored and wants to play with someone.");
 
             IAIDirectiveRepository aiRepo = new EFAIDirectiveRepository();
             AIDirective directive = aiRepo.AIDirectives.FirstOrDefault(i => i.OwnerId == fae.Id);
@@ -131,6 +135,8 @@ namespace tfgame.Procedures.BossProcedures
             if (directive.Var1 >= 25) {
                 MoveToNewLocation();
             }
+
+            LocationLogProcedures.AddLocationLog(fae.dbLocationName, "Jewdewfae played with " + player.FirstName + " " + player.LastName + "here.");
 
             return xpGain;
 

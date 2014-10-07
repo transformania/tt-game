@@ -1,21 +1,16 @@
 ﻿@model tfgame.ViewModels.MessageViewModel
            @using tfgame.CustomHtmlHelpers
-
-<head>
-    <link href="~/Content/PvP.css" rel="stylesheet" />
-</head>
-
-
+@Html.ActionLink("Back to game", "Play", "PvP")
+<center>
+    @Html.ActionLink("Back to Messages", "MyMessages", "PvP")
+</center>
 <b>@Model.SenderName said to you </b> <span class="timeago">@CharactersHere.DatetimeToTimeago(Model.dbMessage.Timestamp):</span>
-
-<div style="border:1px solid gray; height:auto; padding: 7px;"
-<p>@Model.dbMessage.MessageText</p>
-    </div>
-
-@Html.ActionLink("Reply", "Write", "PvP", new { playerId = Model.dbMessage.SenderId, responseTo = Model.dbMessage.Id }, null)<br />
-@Html.ActionLink("Delete", "DeleteMessage", "PvP", new { messageId = Model.dbMessage.Id }, null)
-
-<br /><br />
-@Html.ActionLink("Back to Messages", "MyMessages", "PvP")
-
+<div class="messageTextContainer">
+    <p>@Model.dbMessage.MessageText</p>
+</div>
+<center style="margin-top: 5px;">
+    @Html.ActionLink("Reply", "Write", "PvP", new { playerId = Model.dbMessage.SenderId, responseTo = Model.dbMessage.Id }, null)
+    @Html.ActionLink("Delete", "DeleteMessage", "PvP", new { messageId = Model.dbMessage.Id }, null)
+</center>
+<br />
 @Html.ActionLink("Back to game", "Play", "PvP")

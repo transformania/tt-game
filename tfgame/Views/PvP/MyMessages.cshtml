@@ -7,31 +7,21 @@
     <link href="~/Content/PvP.css" rel="stylesheet" />
 </head>
 
-<p>
-    @Html.ActionLink("Search for player by name", "PlayerLookup", "PvP")
+<p style="text-align: center;">
+    @Html.ActionLink("Search for player by name", "PlayerLookup", "PvP") @Html.ActionLink("Delete All Messages", "DeleteAllMessages", "PvP")
 </p>
 
-<h1>Received Messages (@Model.Messages.Count()/150)</h1>
+<h1 style="text-align: center;">Received Messages (@Model.Messages.Count()/150)</h1>
 
 
 
 <table>
-
     <thead>
-    <th>
-        Sender
-    </th>
-
-    <th>
-        Message
-    </th>
-    <th>
-        Time Sent
-    </th>
-    <th></th>
-
-
-
+    <th style="width: 25%;">Sender</th>
+    <th>Message</th>
+    <th style ="width: 15%;">Time Sent</thstyle>
+    <th style="width: 10%;">Delete</th>
+    </thead>
     <tbody>
         @{
 
@@ -76,29 +66,28 @@
                 {
                     <td>@Html.ActionLink(messageTeaser, "ReadMessage", "PvP", new { messageId = msg.dbMessage.Id }, null)</td>
                 }
-                    }
+}
 
                     <td>@CharactersHere.DatetimeToTimeago(msg.dbMessage.Timestamp)</td>
-                    <td>@Html.ActionLink("Delete", "DeleteMessage", "PvP", new { messageId = msg.dbMessage.Id }, null)</td>
+                    <td>@Html.ActionLink("[ x ]", "DeleteMessage", "PvP", new { messageId = msg.dbMessage.Id }, null)</td>
                 </tr>
             }
         }
     </tbody>
 </table>
 
-<p style="color: red;">
+<p style="color: red; text-align: center;">
     Only the 150 most recent messages you've recieved will be saved.  Older messages will be deleted automatically.
 </p>
 
-<h1>Sent Messages</h1>
+<h1 style="text-align: center;">Sent Messages</h1>
 
 <table>
-
     <thead>
-    <th>Sent To</th>
-    <th>Read</th>
+    <th style="width: 25%;">Recipient</th>
     <th>Message</th>
-    <th>Time Sent</th>
+    <th style ="width: 15%;">Time Sent</thstyle>
+    <th style="width: 10%;">Read</th>
     </thead>
     <tbody>
 
@@ -116,9 +105,10 @@
 
                 }
                 }
-                <td>@msg.dbMessage.IsRead</td>
+                
                 <td>@msg.dbMessage.MessageText</td>
                 <td>@CharactersHere.DatetimeToTimeago(msg.dbMessage.Timestamp)</td>
+                <td>@msg.dbMessage.IsRead</td>
             </tr>
         }
         }
@@ -140,24 +130,27 @@
     @Html.Raw(ViewBag.Result)
 </div>
 
-<p>
-    @Html.ActionLink("Delete All Messages", "DeleteAllMessages", "PvP")
-</p>
-
 @Html.ActionLink("Back to game", "Play", "PvP")
 
 
 
 <style>
+    table{
+        width: 100%;
+        text-align: center;
+    }
     td {
         border: 1px solid black;
         text-align: center;
+        padding: 0;
     }
 
+
     th {
+        text-align: center;
+        border: 1px solid black;
         background-color: black;
         color: white;
-        text-align: center;
     }
 
     tr:nth-child(odd) {

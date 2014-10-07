@@ -16,6 +16,17 @@
     height: 20px;
 }
 
+.messageTextContainer{
+    border:1px solid gray;
+    height:auto;
+    margin-top: auto;
+    margin-bottom: auto;
+    padding-left: 10px;
+    padding-right: 10px;
+    text-align: justify;
+    word-wrap: break-word;
+}
+
 .place {
     font-size: 20px;
     color: red;

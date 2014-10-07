@@ -28,6 +28,7 @@ namespace tfgame.Procedures.BossProcedures
                     dbLocationName = "forest_hotspring",
                     LastActionTimestamp = DateTime.UtcNow,
                     LastCombatTimestamp = DateTime.UtcNow,
+                    OnlineActivityTimestamp = DateTime.UtcNow,
                     NonPvP_GameOverSpellsAllowedLastChange = DateTime.UtcNow,
                     Gender = "female",
                     Health = 9999,
@@ -55,8 +56,17 @@ namespace tfgame.Procedures.BossProcedures
 
                 SkillProcedures.GiveSkillToPlayer(fae.Id, skillToAdd);
 
+                // set up her AI directive so it is not deleted
+                IAIDirectiveRepository aiRepo = new EFAIDirectiveRepository();
+                AIDirective directive = new AIDirective
+                {
+                    OwnerId = fae.Id,
+                    Timestamp = DateTime.UtcNow,
+                    DoNotRecycleMe = true,
+                    sVar1 = ";",
+                };
 
-
+                aiRepo.SaveAIDirective(directive);
 
             }
         }

@@ -3478,7 +3478,7 @@ namespace tfgame.Controllers
                     //context.Database.ExecuteSqlCommand("resetAnimalInanimateTimesAttacking");
                     context.Database.ExecuteSqlCommand("DELETE FROM [Stats].[dbo].[PlayerLogs] WHERE Timestamp < DATEADD(hour, -72, GETUTCDATE())");
                     context.Database.ExecuteSqlCommand("DELETE FROM [Stats].[dbo].[ChatLogs] WHERE Timestamp < DATEADD(hour, -72, GETUTCDATE())");
-                    context.Database.ExecuteSqlCommand("DELETE FROM [Stats].[dbo].[AIDirectives] WHERE Timestamp < DATEADD(hour, -72, GETUTCDATE())");
+                    context.Database.ExecuteSqlCommand("DELETE FROM [Stats].[dbo].[AIDirectives] WHERE Timestamp < DATEADD(hour, -72, GETUTCDATE()) AND DoNotRecycleMe = 0");
                 }
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished stored procedure maintenance");
                 log.FinishTimestamp = DateTime.UtcNow;

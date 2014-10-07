@@ -64,6 +64,8 @@ namespace tfgame.Procedures
                                                               OriginalForm = p.OriginalForm,
                                                               PvPScore = p.PvPScore,
                                                               DonatorLevel = p.DonatorLevel,
+                                                              OnlineActivityTimestamp = p.OnlineActivityTimestamp,
+                                                              Nickname = p.Nickname,
                                                           },
 
                                                           Form = new tfgame.ViewModels.Form
@@ -149,6 +151,8 @@ namespace tfgame.Procedures
                                                               OriginalForm = p.OriginalForm,
                                                               PvPScore = p.PvPScore,
                                                               DonatorLevel = p.DonatorLevel,
+                                                              OnlineActivityTimestamp = p.OnlineActivityTimestamp,
+                                                              Nickname = p.Nickname,
                                                           },
 
                                                           Form = new tfgame.ViewModels.Form
@@ -234,6 +238,8 @@ namespace tfgame.Procedures
                                                               OriginalForm = p.OriginalForm,
                                                               PvPScore = p.PvPScore,
                                                               DonatorLevel = p.DonatorLevel,
+                                                              OnlineActivityTimestamp = p.OnlineActivityTimestamp,
+                                                              Nickname = p.Nickname,
                                                           },
 
                                                           Form = new tfgame.ViewModels.Form
@@ -385,6 +391,7 @@ namespace tfgame.Procedures
             newplayer.XP = 0;
             newplayer.LastActionTimestamp = DateTime.UtcNow;
             newplayer.LastCombatTimestamp = DateTime.UtcNow;
+            newplayer.LastActionTimestamp = DateTime.UtcNow;
             newplayer.Money = 0;
             newplayer.ActionPoints_Refill = 0;
             newplayer.CleansesMeditatesThisRound = 0;

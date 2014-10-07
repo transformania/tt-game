@@ -42,6 +42,8 @@ namespace tfgame.dbModels.Models
         public string OriginalForm { get; set; }
         public decimal PvPScore { get; set; }
         public int DonatorLevel { get; set; }
+        public string Nickname { get; set; }
+        public DateTime OnlineActivityTimestamp { get; set; }
     }
 
     public class Player_VM
@@ -81,6 +83,8 @@ namespace tfgame.dbModels.Models
         public string OriginalForm { get; set; }
         public decimal PvPScore { get; set; }
         public int DonatorLevel { get; set; }
+        public string Nickname { get; set; }
+        public DateTime OnlineActivityTimestamp { get; set; }
 
         public Player ToDbPlayer()
         {
@@ -120,6 +124,8 @@ namespace tfgame.dbModels.Models
                 OriginalForm = this.OriginalForm,
                 PvPScore = this.PvPScore,
                 DonatorLevel = this.DonatorLevel,
+                Nickname = this.Nickname,
+                OnlineActivityTimestamp = this.OnlineActivityTimestamp,
 
             };
             return output;

@@ -73,6 +73,7 @@ namespace tfgame.Procedures
                 bot.UnusedLevelUpPerks = 0;
                 bot.XP = 0;
                 bot.LastActionTimestamp = DateTime.UtcNow;
+                bot.OnlineActivityTimestamp = DateTime.UtcNow;
                 bot.Money = 100;
                 bot.LastCombatTimestamp = DateTime.UtcNow;
                 bot.CleansesMeditatesThisRound = 0;
@@ -303,6 +304,7 @@ namespace tfgame.Procedures
                 merchant.UnusedLevelUpPerks = 0;
                 merchant.LastActionTimestamp = DateTime.UtcNow;
                 merchant.LastCombatTimestamp = DateTime.UtcNow;
+                merchant.OnlineActivityTimestamp = DateTime.UtcNow;
                 merchant.Form = "botform_clothes_merchant";
                 merchant.NonPvP_GameOverSpellsAllowedLastChange = DateTime.UtcNow;
                 merchant.dbLocationName = "270_west_9th_ave"; // Lindella starts her rounds here
@@ -441,6 +443,7 @@ namespace tfgame.Procedures
                     dbLocationName = "ranch_bedroom",
                     LastActionTimestamp = DateTime.UtcNow,
                     LastCombatTimestamp = DateTime.UtcNow,
+                    OnlineActivityTimestamp = DateTime.UtcNow,
                     NonPvP_GameOverSpellsAllowedLastChange = DateTime.UtcNow,
                     Gender = "female",
                     Health = 9999,

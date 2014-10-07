@@ -19,7 +19,7 @@
     <thead>
     <th style="width: 25%;">Sender</th>
     <th>Message</th>
-    <th style ="width: 15%;">Time Sent</thstyle>
+    <th style ="width: 16%;">Time Sent</thstyle>
     <th style="width: 10%;">Delete</th>
     </thead>
     <tbody>
@@ -68,7 +68,7 @@
                 }
 }
 
-                    <td>@CharactersHere.DatetimeToTimeago(msg.dbMessage.Timestamp)</td>
+                    <td><span style="font-size: 10px">@CharactersHere.DatetimeToTimeago(msg.dbMessage.Timestamp)</span></td>
                     <td>@Html.ActionLink("[ x ]", "DeleteMessage", "PvP", new { messageId = msg.dbMessage.Id }, null)</td>
                 </tr>
             }
@@ -86,7 +86,7 @@
     <thead>
     <th style="width: 25%;">Recipient</th>
     <th>Message</th>
-    <th style ="width: 15%;">Time Sent</thstyle>
+    <th style ="width: 16%;">Time Sent</thstyle>
     <th style="width: 10%;">Read</th>
     </thead>
     <tbody>
@@ -107,7 +107,7 @@
                 }
                 
                 <td>@msg.dbMessage.MessageText</td>
-                <td>@CharactersHere.DatetimeToTimeago(msg.dbMessage.Timestamp)</td>
+                <td><span style="font-size: 10px">@CharactersHere.DatetimeToTimeago(msg.dbMessage.Timestamp)</span></td>
                 <td>@msg.dbMessage.IsRead</td>
             </tr>
         }
@@ -142,7 +142,7 @@
     td {
         border: 1px solid black;
         text-align: center;
-        padding: 0;
+        padding: 5px 0px 5px 0px;
     }
 
 

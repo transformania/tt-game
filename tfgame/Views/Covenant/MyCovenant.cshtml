@@ -2,11 +2,7 @@
 @using tfgame.dbModels.Models
 @using tfgame.ViewModels
 
-<head>
-    <link href="~/Content/PvP.css" rel="stylesheet" />
-</head>
-
-<p>@Html.ActionLink("Back to game", "Play", "PvP")</p>
+@Html.ActionLink("Back to game", "Play", "PvP")
 
 <div class="result">
     @Html.Raw(ViewBag.Result)
@@ -83,4 +79,4 @@
 </div>
 
 
-<p>@Html.ActionLink("Back to game", "Play", "PvP")</p>
+@Html.ActionLink("Back to game", "Play", "PvP")

@@ -219,6 +219,15 @@ else
         </p>
     }
 }
+@{
+    if (Model.IsPermanent == false)
+    {
+        <p>
+            Chance to return human:  @Model.StruggleChance %.
+            @Html.ActionLink("Fight your transformation and attempt to return to an animate form!", "FightTheTransformation", "PvP")
+        </p>
+    }
+}
 
 @*all players who are offline*@
 
@@ -254,19 +263,6 @@ else
         }
     }
 </ul>
-
-<p>
-    @Html.ActionLink("View Final Actions", "ViewLog", "PvP")<br /><br />
-</p>
-@{
-    if (Model.IsPermanent == false)
-    {
-        <p>
-            Chance to return human:  @Model.StruggleChance %.
-            @Html.ActionLink("Fight your transformation and attempt to return to an animate form!", "FightTheTransformation", "PvP")
-        </p>
-    }
-}
 
 <script>
 

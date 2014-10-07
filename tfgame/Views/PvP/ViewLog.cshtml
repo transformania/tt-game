@@ -1,10 +1,8 @@
 ﻿@model IEnumerable<tfgame.dbModels.Models.PlayerLog>
            @using tfgame.CustomHtmlHelpers
 
-<link href="~/Content/PvP.css" rel="stylesheet" />
-
 @Html.ActionLink("Back to game", "Play", "PvP")
-
+<center>@Html.ActionLink("Clear Log", "ClearLog", "PvP")</center>
 
 <ul>
     @{
@@ -16,8 +14,6 @@
 </ul>
 
 <br />
-
-@Html.ActionLink("Clear Log", "ClearLog", "PvP")
 
 @Html.ActionLink("Back to game", "Play", "PvP")
 

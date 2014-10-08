@@ -74,8 +74,7 @@
 }
 
 .name {
-    font-size: 20px;
-    font-weight: 200;
+    font-size: 12px;
 }
 
 .health {
@@ -324,32 +323,40 @@ locationDescription {
 }
 
 .icon-pvp {
-    width: 25px;
-    height: 20px;
+    width: 16px;
+    height: 16px;
     background-size: 100% 100%;
     display: inline-block;
     background-image: url("../Images/PvP/Icons/PVP.png");
 }
 
 .icon-protection {
-    width: 25px;
-    height: 20px;
+    width: 16px;
+    height: 16px;
     background-size: 100% 100%;
     display: inline-block;
     background-image: url("../Images/PvP/Icons/icon-protection.png");
 }
 
 .icon-rp {
-    width: 25px;
-    height: 20px;
+    width: 16px;
+    height: 16px;
     background-size: 100% 100%;
     display: inline-block;
     background-image: url("../Images/PvP/Icons/RP.png");
 }
 
+.portraitIconRP {
+position: relative;
+left: 10px;
+top: 80px;
+text-align: right;
+float: right;
+}
+
 .icon-donator1 {
-    width: 25px;
-    height: 20px;
+    width: 16px;
+    height: 16px;
     background-size: 100% 100%;
     display: inline-block;
     background-image: url("../Images/PvP/Icons/donator_1.gif");
@@ -462,8 +469,8 @@ a.talkLink {
 }
 
 .portrait {
-    height: 80px;
-    width: 80px;
+    height: 100px;
+    width: 100px;
     background-size: 100% 100%;
     position: relative;
     float: left;
@@ -507,22 +514,50 @@ a.talkLink {
 .charInfoWrapper {
     position: relative;
     float: left;
+    text-align: center;
+    width: 200px;
+}
+
+.onlineCharWrapper{
+    width:302px;
+    height:160px;
+    display: block;
+    float: left;
+    margin-right: 10px;
+    margin-bottom: 10px;
 }
 
 .charwrapper {
     border: 1px solid lightgray;
-    height: 82px;
-    width: auto;
+    height: 100px;
+    width: 300px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    display: block;
+    float: left; 
     /*background-color: #FFFFEC;*/
 }
 
     .charwrapper.bot {
         border: 1px solid pink;
         background-color: mistyrose;
-        height: 82px;
-        width: auto;
+    height: 100px;
+    width: 300px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    display: block;
+    float: left; 
         /*background-color: #FFFFEC;*/
     }
+
+.commandWrapper {
+    width: 300px;
+    text-align: center;
+    clear: both;
+    border: 1px solid #D3D3D3;
+    height: 32px;
+    padding-top: 6px;
+}
 
 .timeago {
     font-size: 9px;
@@ -596,6 +631,8 @@ a.talkLink {
     height: 10px;
     width: 100px;
     background-color: pink;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .healthBar {
@@ -607,6 +644,8 @@ a.talkLink {
     height: 10px;
     width: 100px;
     background-color: lightblue;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .manaBar {
@@ -615,7 +654,7 @@ a.talkLink {
 }
 
 .playerDescription {
-    margin-left: 10px;
+    font-size: 11px;
     font-style: italic;
 }
 
@@ -802,7 +841,7 @@ a.curse {
 
 .covRptName {
     color: darkviolet;
-    font-size: 12px;
+    font-size: 10px;
 }
 
 .frontPageNotification {

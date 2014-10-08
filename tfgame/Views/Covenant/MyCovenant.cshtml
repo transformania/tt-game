@@ -50,7 +50,7 @@
                 <p>
                     @Html.Partial("~/Views/PvP/Player_Partial.cshtml", p)
                 </p>
-
+    
 
                 if (ViewBag.Player.Id == Model.dbCovenant.LeaderId)
                 {
@@ -63,7 +63,7 @@
 
             }
             <hr />
-
+    <div style="clear:both"></div>
             <p>You can send some of your Arpeyjis to your covenant where your covenant leader can choose to distribute the covenant's Arpeyjis to its members in need.  You must not have spent any action points in 30 minutes in order to do this.  How many would you like to send?  You have <b>@ViewBag.MyMoney</b> Arpeyjis.</p>
 
             @Html.ActionLink("20", "AddToCovenantChest", "Covenant", new { amount = 20 }, null)<span title="Arpeyjis" class="icon-money"></span>

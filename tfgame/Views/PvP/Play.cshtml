@@ -129,14 +129,11 @@
     foreach (tfgame.ViewModels.PlayerFormViewModel p in Model.PlayersHere.Where(p => PlayerProcedures.PlayerIsOffline(p.Player) == false).OrderByDescending(p => p.Player.Level))
     {
         <p>
-            @Html.Partial("Player_Partial", p)
-
-
-
-            @Ajax.ActionLink("Attack", "AttackModal", "PvP", new { targetId = p.Player.Id }, new AjaxOptions { UpdateTargetId = "attackModal", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "attack_Success", OnFailure = "attack_Failure", OnBegin = "attack_Wait" }, new { @class = "attackLink" })
-
-
-            @{
+            <div class="onlineCharWrapper">
+                <div>@Html.Partial("Player_Partial", p)</div>
+                <div class="commandWrapper">
+                    @Ajax.ActionLink("Attack", "AttackModal", "PvP", new { targetId = p.Player.Id }, new AjaxOptions { UpdateTargetId = "attackModal", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "attack_Success", OnFailure = "attack_Failure", OnBegin = "attack_Wait" }, new { @class = "attackLink" })
+                    @{
         if (p.Player.MembershipId == -3)
         {
             @Html.ActionLink("Trade", "TradeWithMerchant", "PvP", new { filter = "shirt" }, null)
@@ -145,15 +142,16 @@
         {
             @Html.ActionLink("Talk", "TalkWithJewdewfae", "PvP", null, new { @class = "talkLink" })
         }
-            }
-
+                    }
+                </div>
+            </div>
         </p>
     }
 }
 
 @*all players who are offline*@
 
-<div id="showOfflinePlayersButton">Show Offline Players Here (@Model.PlayersHere.Where(p => PlayerProcedures.PlayerIsOffline(p.Player) == true).Count())</div>
+<div id="showOfflinePlayersButton" style="clear:both;">Show Offline Players Here (@Model.PlayersHere.Where(p => PlayerProcedures.PlayerIsOffline(p.Player) == true).Count())</div>
 
 <div id="offlinePlayersWrapper">
 
@@ -163,18 +161,16 @@
 
             <p>
                 @Html.Partial("Player_Partial", p)
-
             </p>
         }
     }
 
 </div>
 
-
 @{
     foreach (tfgame.ViewModels.ItemViewModel item in Model.LocationItems)
     {
-        <div style="height: 60px;">
+        <div style="height: 60px; clear:both;">
 
 
             <div class="portrait_item_mainpage" style="background-image: url(..@CharactersHere.GetImageURL(item));">

@@ -5,24 +5,20 @@
     <link href="~/Content/PvP.css" rel="stylesheet" />
 </head>
 
-<p>@Html.ActionLink("Back to game", "Play", "PvP")</p>
+@Html.ActionLink("Back to game", "Play", "PvP")
+<div class="covenContainer">
+    @Html.ActionLink("View All Covenants", "CovenantList", "Covenant") @Html.ActionLink("Back to My Covenant", "MyCovenant", "Covenant")
+    <p class="covHeader"><span class="covName">@Model.dbCovenant.Name.</span></p>
+    <p style="margin-bottom:1px;"><b>@Model.dbCovenant.SelfDescription</b></p>
+    @Html.ActionLink("Led by " + Model.Leader.FirstName + " " + Model.Leader.LastName, "LookAtPlayer", "PvP", new { id = Model.Leader.Id }, null)
+</div>
+    <p>Members of this covenant:</p>
 
-
-<h1>@Model.dbCovenant.Name</h1>
-
-<hr />
-<p><b>@Model.dbCovenant.SelfDescription</b></p>
-<hr />
-
-<p>Members of this covenant:</p>
-
-@foreach (PlayerFormViewModel p in Model.Members.OrderByDescending(c => c.Player.Level).ThenByDescending(c => c.Player.XP))
-{
-    <p>
-        @Html.Partial("~/Views/PvP/Player_Partial.cshtml", p)
-    </p>
-}
-<div style="clear:both"></div>
-<p>@Html.ActionLink("View All Covenants", "CovenantList", "Covenant")</p>
-<p>@Html.ActionLink("Back to My Covenant", "MyCovenant", "Covenant")</p>
-<p>@Html.ActionLink("Back to game", "Play", "PvP")</p>
+    @foreach (PlayerFormViewModel p in Model.Members.OrderByDescending(c => c.Player.Level).ThenByDescending(c => c.Player.XP))
+    {
+        <p>
+            @Html.Partial("~/Views/PvP/Player_Partial.cshtml", p)
+        </p>
+    }
+    <div style="clear:both"></div>
+@Html.ActionLink("Back to game", "Play", "PvP")

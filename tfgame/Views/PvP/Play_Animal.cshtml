@@ -208,15 +208,15 @@ else
 @{
     foreach (tfgame.ViewModels.PlayerFormViewModel p in Model.PlayersHere.Where(p => PlayerProcedures.PlayerIsOffline(p.Player) == false).OrderByDescending(p => p.Player.Level))
     {
-        <p>
-            @Html.Partial("Player_Partial", p)
-
-            @Html.ActionLink("Snarl", "AnimalAction", "PvP", new { actionName = "snarl", targetId = p.Player.Id }, null)
-            @Html.ActionLink("Lick", "AnimalAction", "PvP", new { actionName = "lick", targetId = p.Player.Id }, null)
-            @Html.ActionLink("Headbutt", "AnimalAction", "PvP", new { actionName = "headbutt", targetId = p.Player.Id }, null)
-            @Html.ActionLink("Nuzzle", "AnimalAction", "PvP", new { actionName = "nuzzle", targetId = p.Player.Id }, null)
-
-        </p>
+        <div class="onlineCharWrapper">
+            <div>@Html.Partial("Player_Partial", p)</div>
+            <div class="commandWrapper" style="height: 24px;">
+                @Html.ActionLink("Snarl", "AnimalAction", "PvP", new { actionName = "snarl", targetId = p.Player.Id }, new { @class = "check" })
+                @Html.ActionLink("Lick", "AnimalAction", "PvP", new { actionName = "lick", targetId = p.Player.Id }, new { @class = "check" })
+                @Html.ActionLink("Headbutt", "AnimalAction", "PvP", new { actionName = "headbutt", targetId = p.Player.Id }, new { @class = "check" })
+                @Html.ActionLink("Nuzzle", "AnimalAction", "PvP", new { actionName = "nuzzle", targetId = p.Player.Id }, new { @class = "check" })
+            </div>
+        </div>
     }
 }
 @{
@@ -230,8 +230,8 @@ else
 }
 
 @*all players who are offline*@
-
-<div id="showOfflinePlayersButton">Show Offline Players Here (@Model.PlayersHere.Where(p => PlayerProcedures.PlayerIsOffline(p.Player) == true).Count())</div>
+<div style="clear:both;"></div>
+<div id="showOfflinePlayersButton" style="margin-left: auto; margin-right: auto;">Show Offline Players Here (@Model.PlayersHere.Where(p => PlayerProcedures.PlayerIsOffline(p.Player) == true).Count())</div>
 
 <div id="offlinePlayersWrapper">
 
@@ -240,19 +240,21 @@ else
         {
 
             <p>
-                @Html.Partial("Player_Partial", p)
-
-                @Html.ActionLink("Snarl", "AnimalAction", "PvP", new { actionName = "snarl", targetId = p.Player.Id }, new { @class = "check" })
-                @Html.ActionLink("Lick", "AnimalAction", "PvP", new { actionName = "lick", targetId = p.Player.Id }, new { @class = "check" })
-                @Html.ActionLink("Headbutt", "AnimalAction", "PvP", new { actionName = "headbutt", targetId = p.Player.Id }, new { @class = "check" })
-                @Html.ActionLink("Nuzzle", "AnimalAction", "PvP", new { actionName = "nuzzle", targetId = p.Player.Id }, new { @class = "check" })
-
-            </p>
+                <div class="onlineCharWrapper">
+                    <div>@Html.Partial("Player_Partial", p)</div>
+                    <div class="commandWrapper" style="height: 24px;">
+                        @Html.ActionLink("Snarl", "AnimalAction", "PvP", new { actionName = "snarl", targetId = p.Player.Id }, new { @class = "check" })
+                        @Html.ActionLink("Lick", "AnimalAction", "PvP", new { actionName = "lick", targetId = p.Player.Id }, new { @class = "check" })
+                        @Html.ActionLink("Headbutt", "AnimalAction", "PvP", new { actionName = "headbutt", targetId = p.Player.Id }, new { @class = "check" })
+                        @Html.ActionLink("Nuzzle", "AnimalAction", "PvP", new { actionName = "nuzzle", targetId = p.Player.Id }, new { @class = "check" })
+                        </div>
+                    </div>
+</p>
         }
     }
 
 </div>
-
+<div style="clear:both;"></div>
 <h2>Recent activity here:</h2>
 
 <ul id="RecentActivityLog">

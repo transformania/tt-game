@@ -1,25 +1,19 @@
 ﻿@model tfgame.Models.LoginModel
-
-<head>
-    <script src="~/Scripts/jquery-2.1.0.min.js"></script>
-    <link href="~/Content/PvP.css" rel="stylesheet" />
-</head>
-
-<hgroup class="title">
-    <h1>Log In</h1>
-</hgroup>
+<script src="~/Scripts/jquery-2.1.0.min.js"></script>
 
 <div class="fullpageWarning">
     <p> <h3>THIS SITE CONTAINS ADULT SEXUAL CONTENT and is not suitable for minors.</u></b></h3>
     
     <p>By registering for this site you agree that you are <b>at least 18 years of age</b> or <b>the legal in age of your country to view or read sexually explicit material</b>.  If you do not meet these criteria, please leave now.</p>
-
+    </div>
+    <div class="fullpageWarning">
     <h3>What is Transformania Time?</h3>
 
     <p>Transformania Time game is a a massively multiplayer player-versus-player browser-based game that revolves primarily around transformation themes, including transgender, trans-species, absorption, and inanimation (being turned into an item).  You will also encounter themes revolving around BDSM, mind control, and bimbofication.  <b>By registering or logging into this game you are agreeing that you are comfortable with these themes and are both informed of and obeying the local laws governing you.</b></p>
 
     <p>In order to register you must agree to these terms by clicking clicking on the checkbox <span class="bad"><u>here</u>:</span>  <input type="checkbox" id="consent" /></p>
-
+</div>
+<div class="fullpageWarning">
     @using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl }))
     {
         @Html.AntiForgeryToken()
@@ -45,13 +39,16 @@
             </ol>
             <input type="submit" value="Log in" id="submitBtn" disabled="disabled" />
         </fieldset>
-        
+
         <p>
             @Html.ActionLink("Register", "Register") if you don't have an account.
         </p>
     }
 
 </div>
+
+
+
 
 
 <section id="loginForm">
@@ -99,6 +96,7 @@
         border-radius: 15px;
         padding: 15px;
         text-align: center;
+        margin-bottom:20px;
     }
 
     input:disabled {

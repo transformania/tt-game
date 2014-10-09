@@ -391,7 +391,7 @@ namespace tfgame.Procedures
             newplayer.XP = 0;
             newplayer.LastActionTimestamp = DateTime.UtcNow;
             newplayer.LastCombatTimestamp = DateTime.UtcNow;
-            newplayer.LastActionTimestamp = DateTime.UtcNow;
+            newplayer.OnlineActivityTimestamp = DateTime.UtcNow;
             newplayer.Money = 0;
             newplayer.ActionPoints_Refill = 0;
             newplayer.CleansesMeditatesThisRound = 0;

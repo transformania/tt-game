@@ -344,14 +344,6 @@ locationDescription {
     background-image: url("../Images/PvP/Icons/RP.png");
 }
 
-.iconPortraitLarge{
-position: relative;
-left: 10px;
-top: 180px;
-text-align: right;
-float: right;
-}
-
 .portraitIconRP {
 position: relative;
 left: 10px;

@@ -150,8 +150,8 @@
 }
 
 @*all players who are offline*@
-
-<div id="showOfflinePlayersButton" style="clear:both;">Show Offline Players Here (@Model.PlayersHere.Where(p => PlayerProcedures.PlayerIsOffline(p.Player) == true).Count())</div>
+<div style="clear:both;"></div>
+<div id="showOfflinePlayersButton" style="margin-left: auto; margin-right: auto;">Show Offline Players Here (@Model.PlayersHere.Where(p => PlayerProcedures.PlayerIsOffline(p.Player) == true).Count())</div>
 
 <div id="offlinePlayersWrapper">
 

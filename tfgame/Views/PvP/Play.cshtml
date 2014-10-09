@@ -66,7 +66,7 @@
 @{
     if (Model.PlayerLogImportant.Count() > 0)
     {
-        <ul style="max-height: 180px; overflow-y: scroll;">
+        <ul id="notificationBox">
             @{
         foreach (tfgame.dbModels.Models.PlayerLog log in Model.PlayerLogImportant)
         {
@@ -76,7 +76,7 @@
         }
             }
         </ul>
-        <p style="text-align:right;">@Html.ActionLink("Dismiss Notifications", "DismissNotifications", "PvP")</p>
+    <p style="text-align: left; display:block; float: left;">log size: <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.maxHeight = '80px'">small</a> <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.maxHeight = '180px'">medium</a> <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.maxHeight = '480px'">big</a> </p><p style="text-align:right; display: block; float: right;">@Html.ActionLink("Dismiss Notifications", "DismissNotifications", "PvP")</p>
     }
 }
     @Html.Partial("partial_FrontPageAvatar", Model.You)

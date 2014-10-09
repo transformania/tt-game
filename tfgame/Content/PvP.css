@@ -523,7 +523,7 @@ a.talkLink {
     height:160px;
     display: block;
     float: left;
-    margin-right: 10px;
+    margin-right: 8px;
     margin-bottom: 10px;
 }
 
@@ -531,7 +531,7 @@ a.talkLink {
     border: 1px solid lightgray;
     height: 100px;
     width: 300px;
-    margin-right: 10px;
+    margin-right: 8px;
     margin-bottom: 10px;
     display: block;
     float: left; 
@@ -543,7 +543,7 @@ a.talkLink {
         background-color: mistyrose;
     height: 100px;
     width: 300px;
-    margin-right: 10px;
+    margin-right: 8px;
     margin-bottom: 10px;
     display: block;
     float: left; 

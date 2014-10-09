@@ -240,8 +240,6 @@ locationDescription {
     border: 1px solid red;
 }
 
-
-
 .icon-consumable {
     width: 15px;
     height: 15px;
@@ -344,6 +342,14 @@ locationDescription {
     background-size: 100% 100%;
     display: inline-block;
     background-image: url("../Images/PvP/Icons/RP.png");
+}
+
+.iconPortraitLarge{
+position: relative;
+left: 10px;
+top: 180px;
+text-align: right;
+float: right;
 }
 
 .portraitIconRP {
@@ -488,8 +494,8 @@ a.talkLink {
 
 
 .portrait-large {
-    height: 160px;
-    width: 160px;
+    height: 200px;
+    width: 200px;
     background-size: 100% 100%;
     position: relative;
     float: left;

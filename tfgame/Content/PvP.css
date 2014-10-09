@@ -658,7 +658,10 @@ a.talkLink {
     font-style: italic;
 }
 
-
+#notificationBox{
+    max-height: 180px;
+    overflow-y: scroll;
+}
 
 .icon-clock {
     width: 20px;

@@ -25,7 +25,12 @@
         {
             @Html.ActionLink("Withdraw Pending Covenant Application", "WithdrawApplication", "Covenant")
         }
-    }
+        if (ViewBag.Player.Id == Model.dbCovenant.LeaderId)
+        {
+            @Html.ActionLink("View Administration Page", "CovenantLeaderAdmin", "Covenant")
+        }
+}
+
 
     @{
         if (Model.dbCovenant != null)
@@ -36,7 +41,6 @@
             if (ViewBag.Player.Id == Model.dbCovenant.LeaderId)
             {
                 <b>You are this covenant's leader.</b>
-                @Html.ActionLink("View Administration Page", "CovenantLeaderAdmin", "Covenant")
             }
             else
             {
@@ -44,39 +48,41 @@
             }
             <p style="margin-bottom:-15px;">Arpeyjis in treasury:  <b>@Math.Floor(Model.dbCovenant.Money)</b><span title="Arpeyjis" class="icon-money"></span></p>
 
+    <br /><p>You can send some of your Arpeyjis to your covenant where your covenant leader can choose to distribute the covenant's Arpeyjis to its members in need.  You must not have spent any action points in 30 minutes in order to do this.  How many would you like to send? 
+    <br />You have <b>@ViewBag.MyMoney</b> Arpeyjis.</p>
+
+    @Html.ActionLink("20", "AddToCovenantChest", "Covenant", new { amount = 20 }, null)<span title="Arpeyjis" class="icon-money"></span>
+    @Html.ActionLink("100", "AddToCovenantChest", "Covenant", new { amount = 100 }, null)<span title="Arpeyjis" class="icon-money"></span>
+    @Html.ActionLink("500", "AddToCovenantChest", "Covenant", new { amount = 500 }, null)<span title="Arpeyjis" class="icon-money"></span>
+
             <p>Members of your covenant:</p>
             foreach (PlayerFormViewModel p in Model.Members.OrderByDescending(c => c.Player.Level).ThenByDescending(c => c.Player.XP))
             {
                 <p>
-                    @Html.Partial("~/Views/PvP/Player_Partial.cshtml", p)
-                </p>
-    
+                    <div class="onlineCharWrapper" style="height: 100px">
+                        @Html.Partial("~/Views/PvP/Player_Partial.cshtml", p)
+                        </div>
+</p>
+
 
                 if (ViewBag.Player.Id == Model.dbCovenant.LeaderId)
                 {
-                    <span>Send Arpeyjis to @p.Player.FirstName?</span>
-                    @Html.ActionLink("20", "GiveMoneyFromCovenantChest", "Covenant", new { id = p.Player.Id, amount = 20 }, null)
-                    @Html.ActionLink("100", "GiveMoneyFromCovenantChest", "Covenant", new { id = p.Player.Id, amount = 100 }, null)
-                    @Html.ActionLink("500", "GiveMoneyFromCovenantChest", "Covenant", new { id = p.Player.Id, amount = 500 }, null)
+                    <div class="commandWrapper" style="height: 24px;">
+                        <span>Send Arpeyjis to @p.Player.FirstName?</span>
+                        @Html.ActionLink("20", "GiveMoneyFromCovenantChest", "Covenant", new { id = p.Player.Id, amount = 20 }, null)
+                        @Html.ActionLink("100", "GiveMoneyFromCovenantChest", "Covenant", new { id = p.Player.Id, amount = 100 }, null)
+                        @Html.ActionLink("500", "GiveMoneyFromCovenantChest", "Covenant", new { id = p.Player.Id, amount = 500 }, null)
+                        </div>
+                        }
 
-                }
-
-            }
-            <hr />
-    <div style="clear:both"></div>
-            <p>You can send some of your Arpeyjis to your covenant where your covenant leader can choose to distribute the covenant's Arpeyjis to its members in need.  You must not have spent any action points in 30 minutes in order to do this.  How many would you like to send?  You have <b>@ViewBag.MyMoney</b> Arpeyjis.</p>
-
-            @Html.ActionLink("20", "AddToCovenantChest", "Covenant", new { amount = 20 }, null)<span title="Arpeyjis" class="icon-money"></span>
-            @Html.ActionLink("100", "AddToCovenantChest", "Covenant", new { amount = 100 }, null)<span title="Arpeyjis" class="icon-money"></span>
-            @Html.ActionLink("500", "AddToCovenantChest", "Covenant", new { amount = 500 }, null)<span title="Arpeyjis" class="icon-money"></span>
-
-            <hr />
+                        }
 
 
-        }
 
-    }
-</div>
+                        }
 
-
+                        }
+                    </div>
+<div style="clear:both"></div>
+<br />
 @Html.ActionLink("Back to game", "Play", "PvP")

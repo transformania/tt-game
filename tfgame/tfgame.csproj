@@ -430,6 +430,7 @@
     <Content Include="Images\PvP\Icons\icon-protection.png" />
     <Content Include="Images\PvP\Icons\inventory.jpg" />
     <Content Include="Images\PvP\Icons\money.png" />
+    <Content Include="Images\PvP\Icons\pet.png" />
     <Content Include="Images\PvP\Icons\pvp.png" />
     <Content Include="Images\PvP\Icons\rp.png" />
     <Content Include="Images\PvP\Icons\target.png" />

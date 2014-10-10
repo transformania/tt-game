@@ -19,11 +19,12 @@ namespace tfgame.Statics
 
 #region level up perks
 
+                    // keep these at around 35 points
             new StaticEffect {
                 dbName = "perk_swift_1_lvl",
                 FriendlyName = "Swift",
                 Description = "Some people may call this cowardly, but a good mage needs to know when to run--either fleeing or pursuing.  You're a bit better than most at this, no matter what body you might have at the moment or the items burdening you.",
-                MoveActionPointDiscount = .1M,
+                MoveActionPointDiscount = .14M,
                 AvailableAtLevel = 1,
 
             },
@@ -32,7 +33,7 @@ namespace tfgame.Statics
                 dbName = "perk_swift_2_lvl",
                 FriendlyName = "Seriously Swift",
                 Description = "Some people may call this cowardly, but a good mage needs to know when to run--either fleeing or pursuing.  You're quite agile on your feet and can jog for miles or break into a full on sprint that even your faster peers will have some trouble keeping up with.",
-                MoveActionPointDiscount = .1M,
+                MoveActionPointDiscount = .14M,
                 AvailableAtLevel = 4,
                 PreRequesite = "perk_swift_1_lvl",
 
@@ -42,7 +43,7 @@ namespace tfgame.Statics
                 dbName = "perk_mentally_resilient_1_lvl",
                 FriendlyName = "Mentally Resilient",
                 Description = "There is a lot to see and feel in this town and casting so much magic, as well as constantly finding yourself in new and strange bodies, is enough to strain anyone's mental willpower.  You are a little more mentally resilient than most, however, and will restore a bit of extra willpower every turn.",
-                HealthRecoveryPerUpdate = .25M,
+                HealthRecoveryPerUpdate = 3,
                 AvailableAtLevel = 1,
 
             },
@@ -50,7 +51,7 @@ namespace tfgame.Statics
                 dbName = "perk_mana_brewer_1_lvl",
                 FriendlyName = "Mana Brewer",
                 Description = "Some people constantly find themselves drained of mana, the essence that allows magic to flow through their body and out of their fingertips.  Your body is a natural mana brewery, however, and you regain a little bit of mana every turn without even needing to meditate.",
-                ManaRecoveryPerUpdate = .25M,
+                ManaRecoveryPerUpdate = 3,
                 AvailableAtLevel = 1,
 
             }, new StaticEffect {
@@ -72,14 +73,14 @@ namespace tfgame.Statics
                 dbName = "perk_sneaky_1_lvl",
                 FriendlyName = "Sneaky",
                 Description = "In a world of bravado and a show of prowess, you know that sometimes appearing small and invisible has its own benefits.  You know how to move more silently than most and know a thing or two about covering your tracks.",
-                SneakPercent = 15,
+                SneakPercent = 8.5M,
                 AvailableAtLevel = 1,
 
              }, new StaticEffect {
                 dbName = "perk_sneaky_2_lvl",
                 FriendlyName = "Silent Stalker",
                 Description = "In a world of bravado and a show of prowess, you know that sometimes appearing small and invisible has its own benefits.  You know how to move more silently than most and know a thing or two about covering your tracks.  But you've also gained the ability to not only feel but see sound waves and can dampen those near you with your magic, making you even sneakier than before.",
-                SneakPercent = 15,
+                SneakPercent = 8.5M,
                 AvailableAtLevel = 4,
                 PreRequesite = "perk_sneaky_1_lvl",
 
@@ -87,21 +88,21 @@ namespace tfgame.Statics
                 dbName = "perk_careful_1_lvl",
                 FriendlyName = "Careful",
                 Description = "Too many mages have found themselves as a humble animal or immobile item when a spell misfired and blew up in their own faces.  You know how to be steady and take your time, reducing the chances of having a spell that you cast misfire.",
-                SpellMisfireChanceReduction = 3,
+                SpellMisfireChanceReduction = 3.5M,
                 AvailableAtLevel = 1,
 
             }, new StaticEffect {
                 dbName = "perk_intimidating_1_lvl",
                 FriendlyName = "Intimidating Glare",
                 Description = "Sometimes you don't need magic to make an opponent cower in fear and leave themselves extra vulnerable to attack.  A good glare can often wet the most brave mage's trousers, and you're not bad at giving the Evil Eye.  Your spells damage your target's willpower more than usual.",
-                SpellExtraHealthDamagePercent = 10,
+                SpellExtraHealthDamagePercent = 5,
                 AvailableAtLevel = 1,
 
            }, new StaticEffect {
                 dbName = "perk_intimidating_2_lvl",
                 FriendlyName = "Intimidating Posture",
                 Description = "You've mastered the intimidating glare.  But you've also learned that there are other ways to intimidate your opponents--the way you walk, the way you talk, the way you brush off lesser spells like flies (or at least pretend to.)  Your spells damage your targets' willpower even more than before.  Replaces the 'Intimidating Glare' perk.",
-                SpellExtraHealthDamagePercent = 10,
+                SpellExtraHealthDamagePercent = 5,
                 AvailableAtLevel = 4,
                 PreRequesite = "perk_intimidating_1_lvl",
 
@@ -109,15 +110,15 @@ namespace tfgame.Statics
                 dbName = "perk_self_sufficient_1_lvl",
                 FriendlyName = "Self Sufficient",
                 Description = "It's good to have friends to watch your back, but you know how to look after yourself when friends fall, fail, or betray you.  When you cleanse yourself and meditate, you recover extra willpower and mana.",
-                CleanseExtraHealth = 3,
-                MeditationExtraMana = 3,
+                CleanseExtraHealth = .75M,
+                MeditationExtraMana = .75M,
                 AvailableAtLevel = 1,
 
             }, new StaticEffect {
                 dbName = "perk_focused_1_lvl",
                 FriendlyName = "Focused",
                 Description = "Even in the thick of battle with friends falling inanimate and spells grazing by your head, you are pretty good at keeping your cool.  As a result, you can cast more critical spell hits than those around you.",
-                ExtraSkillCriticalPercent = 3,
+                ExtraSkillCriticalPercent = 2.25M,
                 AvailableAtLevel = 1,
             },
 
@@ -125,7 +126,7 @@ namespace tfgame.Statics
                 dbName = "perk_focused_2_lvl",
                 FriendlyName = "Deadly Precision",
                 Description = "Even in the thick of battle with friends falling inanimate and spells grazing by your head, you are pretty good at keeping your cool.  You can completely tone out your fears and worries for the time it takes for you to deliver a spell, increasing the chance of a critical hit even greater than before.",
-                ExtraSkillCriticalPercent = 3,
+                ExtraSkillCriticalPercent = 2.25M,
                 AvailableAtLevel = 4,
                 PreRequesite="perk_focused_1_lvl",
             },
@@ -134,8 +135,8 @@ namespace tfgame.Statics
                 dbName = "perk_thickskinned_1_lvl",
                 FriendlyName = "Thick Skinned",
                 Description = "Some mages have a hard time putting up a good defense, trying to dodge spells left and right.  You do this too, but you know that sometimes you will get hit no matter how agile you believe yourself to be.  Your thick, magic-resistant skin helps to less the effect of willpower loss when you do get struck, as well as keep some transformation energy from entering your bloodstream.",
-                SpellHealthDamageResistance = 4,
-                SpellTFEnergyDamageResistance = 4,
+                SpellHealthDamageResistance = 2,
+                SpellTFEnergyDamageResistance = 2,
                 AvailableAtLevel = 1,
             },
 
@@ -143,8 +144,8 @@ namespace tfgame.Statics
                 dbName = "perk_thickskinned_2_lvl",
                 FriendlyName = "Armor-Like Skin",
                 Description = "Some mages have a hard time putting up a good defense, trying to dodge spells left and right.  You do this too, but you know that sometimes you will get hit no matter how agile you believe yourself to be.  You have conditioned your skin to be tough, almost a form of permant armor that prevents even more transformation energy from entering your body and mind than before.",
-                SpellHealthDamageResistance = 4,
-                SpellTFEnergyDamageResistance = 4,
+                SpellHealthDamageResistance = 2,
+                SpellTFEnergyDamageResistance = 2,
                 AvailableAtLevel = 4,
                 PreRequesite="perk_thickskinned_1_lvl",
             },
@@ -153,7 +154,7 @@ namespace tfgame.Statics
                 dbName = "perk_naturalpurifier_1_lvl",
                 FriendlyName = "Natural Purifier",
                 Description = "You've heard of mages walking around with absolutely no idea how much transformation energy is teeming in their body, just waiting for the teensiest bit extra to tip the tide and seal its victim into a new form in even the smallest moment of weakness.  You understand the importance of stopping this energy from building too high up and can remove twice as much extra transformation energy from your body every time you cleanse yourself than most of your peers.",
-                CleanseExtraTFEnergyRemovalPercent = 1,
+                CleanseExtraTFEnergyRemovalPercent = 1.75M,
                 AvailableAtLevel = 1,
 
             },

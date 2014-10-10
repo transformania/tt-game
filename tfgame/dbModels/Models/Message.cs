@@ -18,5 +18,7 @@ namespace tfgame.dbModels.Models
         public string MessageText { get; set; }
 
         public DateTime Timestamp { get; set; }
+
+        public bool DoNotRecycleMe { get; set; }
     }
 }

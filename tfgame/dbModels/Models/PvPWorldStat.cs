@@ -17,6 +17,7 @@ namespace tfgame.dbModels.Models
         public string Boss_Donna { get; set; }
         public string Boss_Valentine { get; set; }
         public string GameNewsDate { get; set; }
+        public bool TestServer { get; set; }
 
         public bool IsDonnaAvailable()
         {

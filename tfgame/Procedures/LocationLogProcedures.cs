@@ -32,9 +32,11 @@ namespace tfgame.Procedures
 
             IEnumerable<LocationLog> ExistingLogs = LocationLogRepo.LocationLogs.Where(l => l.dbLocationName == dbLocationName);
 
+            bool DO_NOT_RECYCLE = true;
+
 
             // delete oldest entry to keep log size from growing too large
-            if (ExistingLogs.Count() >= PvPStatics.MaxLogMessagesPerLocation)
+            if (ExistingLogs.Count() >= PvPStatics.MaxLogMessagesPerLocation && DO_NOT_RECYCLE==false)
             {
                 IEnumerable<LocationLog> reordered = ExistingLogs.OrderByDescending(l => l.Timestamp).Skip(PvPStatics.MaxLogMessagesPerLocation).ToList();
 

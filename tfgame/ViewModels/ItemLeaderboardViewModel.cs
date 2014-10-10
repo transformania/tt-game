@@ -14,5 +14,13 @@ namespace tfgame.ViewModels
         public int Level { get; set; }
         public decimal XP { get; set; }
         public DbStaticItem StaticItem { get; set; }
+        public DbStaticForm StaticForm { get; set; }
     }
+
+    public class SimpleItemLeaderboardViewModel
+    {
+        public Item Item { get; set; }
+        public DbStaticItem StaticItem { get; set; }
+    }
+
 }

@@ -2302,7 +2302,8 @@ namespace tfgame.Controllers
          {
              Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
              ViewBag.MyName = me.FirstName + " " + me.LastName;
-             return View(ItemProcedures.GetLeadingItems(100));
+             IEnumerable<SimpleItemLeaderboardViewModel> output = ItemProcedures.GetLeadingItemsSimple(100);
+             return View(output);
          }
 
          [Authorize]

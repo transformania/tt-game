@@ -1,4 +1,4 @@
-﻿@model IEnumerable<tfgame.ViewModels.ItemLeaderboardViewModel>
+﻿@model IEnumerable<tfgame.ViewModels.SimpleItemLeaderboardViewModel>
 @using tfgame.dbModels.Models
 @using tfgame.Statics
 @using tfgame.CustomHtmlHelpers
@@ -10,11 +10,12 @@
 </head>
 
 @Html.ActionLink("Back to game", "Play", "PvP")<br />
-@Html.ActionLink("View PvP Leaderboard", "PvPLeaderboard", "PvP")
+@Html.ActionLink("View PvP Leaderboard", "PvPLeaderboard", "PvP")<br />
+@Html.ActionLink("View XP Leaderboard", "Leaderboard", "PvP")
 
-<h1>Item Leaderboard -- Alpha Round 9</h1>
+<h1>Item Leaderboard -- Alpha Round 10</h1>
 
-<p>These are the most powerful once-human items and pets in the town.</p>
+<p>These are the most powerful once-human items and pets in the town.  Some may be able to revert their old human forms but many have embraced their new existence as personal pets and belongings.  Treat them kindly should you come to posses them!</p>
 
 
 <table>
@@ -24,7 +25,6 @@
     <th>Human Name</th>
     <th>Item Type</th>
     <th>Level</th>
-    <th>XP</th>
     </thead>
 
     <tbody>
@@ -33,23 +33,22 @@
             int rank = 1;
         }
 
-        @foreach (ItemLeaderboardViewModel p in Model)
+        @foreach (SimpleItemLeaderboardViewModel p in Model)
         {
             <tr>
                 <td>
                     @rank
                 </td>
                 <td>
-                   @p.VictimName
+                   @Html.ActionLink(p.Item.VictimName, "LookAtPlayerItem", "PvP", new { vicname = p.Item.VictimName}, null)
+                   @CharactersHere.PrintItemTypeIcon(p.StaticItem)
+                    @CharactersHere.PrintPermanencyIcon(p.Item)
                 </td>
                 <td>
                     @p.StaticItem.FriendlyName
                 </td>
                 <td>
-                    @p.Level
-                </td>
-                <td>
-                   @p.XP
+                    @p.Item.Level
                 </td>
             </tr>
             rank++;
@@ -66,7 +65,8 @@
 
 <p>
     @Html.ActionLink("View PvP Leaderboard", "PvPLeaderboard", "PvP")<br />
-    @Html.ActionLink("Back to game", "Play", "PvP")
+    @Html.ActionLink("Back to game", "Play", "PvP")<br />
+    @Html.ActionLink("View XP Leaderboard", "Leaderboard", "PvP")
 </p>
 
 <style>

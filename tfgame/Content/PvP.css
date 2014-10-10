@@ -294,6 +294,15 @@ locationDescription {
     float: right;
 }
 
+.icon-pet {
+    width: 15px;
+    height: 15px;
+    background-size: 100% 100%;
+    background-image: url("../Images/PvP/Icons/pet.png");
+    display: inline-block;
+    float: right;
+}
+
 .icon-accessory {
     width: 15px;
     height: 15px;

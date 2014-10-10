@@ -415,6 +415,18 @@ namespace tfgame.CustomHtmlHelpers
             }
         }
 
+        public static MvcHtmlString PrintPermanencyIcon(Item item)
+        {
+            if (item.IsPermanent == true)
+            {
+                return new MvcHtmlString("<span class='icon-permanent' title=\"This player\'s soul is permanently sealed into this item.\"></span>");
+            }
+            else
+            {
+                return new MvcHtmlString("");
+            }
+        }
+
         public static MvcHtmlString StringToWebsite(string url)
         {
             if (url == null || url == "")

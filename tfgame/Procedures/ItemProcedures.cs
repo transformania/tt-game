@@ -1073,6 +1073,26 @@ namespace tfgame.Procedures
 
         }
 
+        public static IEnumerable<SimpleItemLeaderboardViewModel> GetLeadingItemsSimple(int number)
+        {
+            IItemRepository itemRepo = new EFItemRepository();
+            IEnumerable<Item> items = itemRepo.Items.Where(i => i.VictimName != "" && !i.VictimName.Contains("Psychopath")).OrderByDescending(i => i.Level).Take(number);
+
+            List<SimpleItemLeaderboardViewModel> output = new List<SimpleItemLeaderboardViewModel>();
+            foreach (Item i in items)
+            {
+                SimpleItemLeaderboardViewModel addme = new SimpleItemLeaderboardViewModel
+                {
+                    Item = i,
+                    StaticItem = ItemStatics.GetStaticItem(i.dbName),
+                };
+                output.Add(addme);
+            }
+
+            return output;
+
+        }
+
     }
 
 }

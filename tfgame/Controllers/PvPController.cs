@@ -66,8 +66,8 @@ namespace tfgame.Controllers
             ViewBag.Result = TempData["Result"];
 
             // refresh player online number
-            DateTime markOnlineCutoff = DateTime.UtcNow.AddMinutes(-3);
-            if (me.OnlineActivityTimestamp >= markOnlineCutoff && PvPStatics.AnimateUpdateInProgress == false)
+            DateTime markOnlineCutoff = DateTime.UtcNow.AddMinutes(-2);
+            if (me.OnlineActivityTimestamp < markOnlineCutoff && PvPStatics.AnimateUpdateInProgress == false)
             {
                 PlayerProcedures.MarkOnlineActivityTimestamp(me);
             }

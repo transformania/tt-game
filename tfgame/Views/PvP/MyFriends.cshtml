@@ -18,14 +18,7 @@
                         @Html.ActionLink(fp.dbPlayer.FirstName + " " + fp.dbPlayer.LastName + "  (#" + fp.dbPlayer.MembershipId + ")", "LookAtPlayer", "PvP", new { id = fp.dbPlayer.Id }, null)
                     </span>
 
-                    if (PlayerProcedures.PlayerIsOffline(fp.dbPlayer) == false)
-                    {
-                        <span class="friendonline">Online!</span>
-                    }
-                    else
-                    {
-                        <span class="friendoffline">Offline</span>
-                    }
+                   <span class="timeago">@CharactersHere.DatetimeToTimeago(fp.dbPlayer.OnlineActivityTimestamp)</span>
 
                 }
                 else if (fp.dbPlayer.Mobility == "inanimate")
@@ -34,14 +27,7 @@
                         @Html.ActionLink(fp.dbPlayer.FirstName + " " + fp.dbPlayer.LastName + " (inanimate)" + "  (#" + fp.dbPlayer.MembershipId + ")", "LookAtPlayer", "PvP", new { id = fp.dbPlayer.Id }, null)
                     </span>
                         
-                        if (PlayerProcedures.PlayerIsOffline(fp.dbPlayer) == false)
-                    {
-                        <span class="friendonline">Online!</span>
-                    }
-                    else
-                    {
-                        <span class="friendoffline">Offline</span>
-                    }
+                       <span class="timeago">@CharactersHere.DatetimeToTimeago(fp.dbPlayer.OnlineActivityTimestamp)</span>
 
 
                 }
@@ -52,14 +38,7 @@
                         @Html.ActionLink(fp.dbPlayer.FirstName + " " + fp.dbPlayer.LastName + " (animal)" + "  (#" + fp.dbPlayer.MembershipId + ")", "LookAtPlayer", "PvP", new { id = fp.dbPlayer.Id }, null)
                     </span>
                         
-                        if (PlayerProcedures.PlayerIsOffline(fp.dbPlayer) == false)
-                    {
-                        <span class="friendonline">Online!</span>
-                    }
-                    else
-                    {
-                        <span class="friendoffline">Offline</span>
-                    }
+                       <span class="timeago">@CharactersHere.DatetimeToTimeago(fp.dbPlayer.OnlineActivityTimestamp)</span>
 
 
                 }

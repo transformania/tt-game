@@ -393,7 +393,7 @@ namespace tfgame.Procedures
             newplayer.LastCombatTimestamp = DateTime.UtcNow;
             newplayer.OnlineActivityTimestamp = DateTime.UtcNow;
             newplayer.Money = 0;
-            newplayer.ActionPoints_Refill = 0;
+            newplayer.ActionPoints_Refill = 360;
             newplayer.CleansesMeditatesThisRound = 0;
             newplayer.NonPvP_GameOverSpellsAllowedLastChange = DateTime.UtcNow;
             newplayer.IsPetToId = -1;

@@ -65,6 +65,13 @@ namespace tfgame.Controllers
             ViewBag.SubErrorMessage = TempData["SubError"];
             ViewBag.Result = TempData["Result"];
 
+            // refresh player online number
+            DateTime markOnlineCutoff = DateTime.UtcNow.AddMinutes(-3);
+            if (me.OnlineActivityTimestamp >= markOnlineCutoff && PvPStatics.AnimateUpdateInProgress == false)
+            {
+                PlayerProcedures.MarkOnlineActivityTimestamp(me);
+            }
+
             PvPWorldStat WorldStat = PvPWorldStatProcedures.GetWorldStats();
 
             ViewBag.UpdateInProgress = false;
@@ -88,17 +95,19 @@ namespace tfgame.Controllers
                 ViewBag.UpdateInProgress = true;
             }
 
-            PvPWorldStat PvPWorldStat = PvPWorldStatProcedures.GetWorldStats();
+           // PvPWorldStat PvPWorldStat = PvPWorldStatProcedures.GetWorldStats();
 
             // load the update date into memory
-            PvPStatics.LastGameUpdate = PvPWorldStat.GameNewsDate;
+            PvPStatics.LastGameUpdate = WorldStat.GameNewsDate;
 
-            ViewBag.WorldTurnNumber = PvPWorldStat.TurnNumber;
+            ViewBag.WorldTurnNumber = WorldStat.TurnNumber;
 
             // player is inanimate, load up the inanimate endgame page
             if (me.Mobility == "inanimate")
             {
                 GameOverViewModel inanimateOutput = new GameOverViewModel();
+
+                inanimateOutput.WorldStats = PlayerProcedures.GetWorldPlayerStats();
 
                 inanimateOutput.Player = me;
                 inanimateOutput.Form = FormStatics.GetForm(me.Form);
@@ -196,7 +205,7 @@ namespace tfgame.Controllers
 
             PlayPageViewModel output = new PlayPageViewModel();
 
-            output.PvPWorldStat = PvPWorldStat;
+            output.PvPWorldStat = WorldStat;
 
             loadtime += "Before loading buffs:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
             BuffBox myBuffs = ItemProcedures.GetPlayerBuffs(me);

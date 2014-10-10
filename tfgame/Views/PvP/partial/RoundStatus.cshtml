@@ -2,6 +2,13 @@
            @using tfgame.Statics
 
 @{
+    if (Model.TestServer == true)
+    {
+        <div class="testServerNotice">EFFECTIVE OCTOBER 10:  THIS SERVER IS NOW FOR TESTING ONLY.  The game's live server with regular inround gameplay can be found at <a href="http://transformaniatime.com/">transformaniatime.com</a>.  Please do NOT make a character here unless you are part of testing.</div>
+    }
+}
+
+@{
     if (Model.TurnNumber >= PvPStatics.RoundDuration)
     {
         <div class="inbetweenRoundNotice">The round has ended.  Check back soon to start again on a fresh round.</div>

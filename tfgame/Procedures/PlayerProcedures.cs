@@ -491,6 +491,16 @@ namespace tfgame.Procedures
             playerRepo.SavePlayer(player);
         }
 
+        public static void MarkOnlineActivityTimestamp(Player player)
+        {
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+
+            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            dbPlayer.OnlineActivityTimestamp = DateTime.UtcNow;
+
+            playerRepo.SavePlayer(player);
+        }
+
         public static string MovePlayer(int playerId, string destinationDbName, decimal actionPointDiscount)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
@@ -871,14 +881,20 @@ namespace tfgame.Procedures
             IPlayerRepository playerRepo = new EFPlayerRepository();
             IEnumerable<Player> players = playerRepo.Players.AsEnumerable();
 
+            DateTime cutoff = DateTime.UtcNow.AddHours(-1);
+
             WorldStats output = new WorldStats
             {
-                TotalPlayers = players.Count(),
-                TotalAnimalPlayers = players.Where(p => p.Mobility == "animal").Count(),
-                TotalInanimatePlayers = players.Where(p => p.Mobility == "inanimate").Count(),
-                TotalLivingPlayers = players.Where(p => p.Mobility == "full").Count(),
+                TotalPlayers = players.Where(p => p.MembershipId > 0).Count(),
+                CurrentOnlinePlayers = players.Where(p => p.MembershipId > 0 && p.OnlineActivityTimestamp >= cutoff).Count(),
+                //TotalAnimalPlayers = players.Where(p => p.Mobility == "animal").Count(),
+                //TotalInanimatePlayers = players.Where(p => p.Mobility == "inanimate").Count(),
+                //TotalLivingPlayers = players.Where(p => p.Mobility == "full").Count(),
 
             };
+
+
+
             return output;
 
         }

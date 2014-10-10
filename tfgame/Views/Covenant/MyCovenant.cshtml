@@ -14,22 +14,28 @@
     @ViewBag.SubErrorMessage
 </div>
 <div class="covenContainer">
+
     @Html.ActionLink("Create your own Covenant", "StartNewCovenant", "Covenant")
     @Html.ActionLink("View all Covenants", "CovenantList", "Covenant")
-    @{    if (Model.dbCovenant != null)
+
+    @{  
+        if (Model.dbCovenant != null)
         {
             @Html.ActionLink("Leave this Covenant", "LeaveCovenant", "Covenant")
-        }}
-    @{
+        }
+    
         if (ViewBag.HasApplication == true)
         {
             @Html.ActionLink("Withdraw Pending Covenant Application", "WithdrawApplication", "Covenant")
         }
-        if (ViewBag.Player.Id == Model.dbCovenant.LeaderId)
+
+        if (Model.dbCovenant != null && ViewBag.Player.Id == Model.dbCovenant.LeaderId)
         {
             @Html.ActionLink("View Administration Page", "CovenantLeaderAdmin", "Covenant")
         }
-}
+        
+   }
+
 
 
     @{

@@ -346,7 +346,7 @@ namespace tfgame.Procedures
                 Player Lindella = playerRepo.Players.FirstOrDefault(f => f.MembershipId == -2);
 
                 AIDirectiveProcedures.GetAIDirective(Lindella.Id);
-                AIDirectiveProcedures.SetAIDirective_MoveTo(Lindella.Id, "270_west_9th_ave");
+                AIDirectiveProcedures.SetAIDirective_MoveTo(Lindella.Id, "street_15th_south");
 
 
 

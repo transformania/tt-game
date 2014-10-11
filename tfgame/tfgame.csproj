@@ -1352,6 +1352,7 @@
     <Content Include="Views\PvP\TalkWithJewdewfae.cshtml" />
     <Content Include="Views\PvPAdmin\WriteFaeEncounter.cshtml" />
     <Content Include="Views\PvP\FAQ.cshtml" />
+    <Content Include="Views\Settings\SetNickname.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

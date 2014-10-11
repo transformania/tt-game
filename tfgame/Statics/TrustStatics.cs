@@ -104,7 +104,7 @@ namespace tfgame.Statics
             }
         }
 
-        public static bool PlayerIsContributor(int MembershipId)
+        public static bool PlayerIsDonator_Tier1(int MembershipId)
         {
             if (DonatingAccount.Contains(MembershipId))
             {

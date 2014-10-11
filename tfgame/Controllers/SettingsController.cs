@@ -170,6 +170,46 @@ namespace tfgame.Controllers
             return View();
         }
 
+        public ActionResult SetNickname()
+        {
+            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+
+            if (TrustStatics.PlayerIsDonator_Tier1(WebSecurity.CurrentUserId) == false)
+            {
+                TempData["Error"] = "You are not marked as being a donator.";
+                TempData["SubError"] = "This feature is reserved for players who pledge $7 monthly to support Transformania Time on Patreon.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            Message output = new Message();
+            ViewBag.OldNickname = me.Nickname;
+            return View(output);
+        }
+
+        public ActionResult SetNicknameSend(Message input)
+        {
+            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+
+            if (input.MessageText.Length > 20) {
+                TempData["Error"] = "That nickname is too long. ";
+                TempData["SubError"] = "Nicknames must be no longer than 20 characters.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            if (TrustStatics.PlayerIsDonator_Tier1(WebSecurity.CurrentUserId) == false)
+            {
+                TempData["Error"] = "You are not marked as being a donator.";
+                TempData["SubError"] = "This feature is reserved for players who pledge $7 monthly to support Transformania Time on Patreon.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            PlayerProcedures.SetNickname(input.MessageText);
+
+            TempData["Result"] = "Your new nickname has been set.";
+            return RedirectToAction("Play", "PvP");
+        }
+
+
 
 	}
 }

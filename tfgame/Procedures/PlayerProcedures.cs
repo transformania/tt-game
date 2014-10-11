@@ -438,7 +438,7 @@ namespace tfgame.Procedures
             string locationToSpawnIn = spawnableLocations.ElementAt(index);
             newplayer.dbLocationName = locationToSpawnIn;
 
-            if (TrustStatics.PlayerIsContributor(WebSecurity.CurrentUserId) == true)
+            if (TrustStatics.PlayerIsDonator_Tier1(WebSecurity.CurrentUserId) == true)
             {
                 newplayer.DonatorLevel = 1;
             }
@@ -1623,6 +1623,14 @@ namespace tfgame.Procedures
             decimal scoreFromSteal = Math.Floor(victim.PvPScore / 4);
 
             return scoreFromLevel + scoreFromSteal;
+        }
+
+        public static void SetNickname(string nickname)
+        {
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            Player player = playerRepo.Players.FirstOrDefault(p => p.MembershipId == WebSecurity.CurrentUserId);
+            player.Nickname = nickname;
+            playerRepo.SavePlayer(player);
         }
 
     }

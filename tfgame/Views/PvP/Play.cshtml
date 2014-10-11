@@ -99,16 +99,15 @@
     @Html.ActionLink("Cleanse (4 AP, 3 Mana)", "Cleanse", "PvP", new { id = "action_cleanse" })
     @Html.ActionLink("Search this Area (" + (int)Model.APSearchCost + " AP)", "Search", "PvP", new { id = "action_search" })
 </div>
-    <p>
-        <span class="place">@Model.Location.Name [@Model.Location.X,@Model.Location.Y]<br /> </span>
-
-<span class="locationDescription">@Model.Location.GetDescription()</span>
-    </p>
 <center>
+<div style="width:247px; display: inline-table;">
     @Html.Partial("partial/movementTable", Model)
+</div>
+    <div style="width: 480px; display: inline-table;">
+        <span class="place">@Model.Location.Name [@Model.Location.X,@Model.Location.Y]<br /> </span>
+        <span class="locationDescription">@Model.Location.GetDescription()</span>
+    </div>
 </center>
-
-
 <div class="result">
     @Html.Raw(ViewBag.Result)
 </div>

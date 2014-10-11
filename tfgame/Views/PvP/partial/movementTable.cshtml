@@ -6,8 +6,8 @@
 
 <table class="tableLines">
     <tr>
-        <td></td>
-        <td class="navcell">
+        <td class="mapEmpty"></td>
+        <td class="mapField">
             @*NORTH*@
 
             @{
@@ -29,10 +29,10 @@
             }
 
         </td>
-        <td></td>
+        <td class ="mapEmpty"></tdclass>
     </tr>
     <tr>
-        <td class="navcell">
+        <td class="mapField">
             @*WEST*@
 
 
@@ -55,8 +55,8 @@
             }
 
         </td>
-        <td id="location"></td>
-        <td class="navcell">
+        <td class="mapEmpty"></td>
+        <td class="mapField">
             @*EAST*@
 
 
@@ -82,9 +82,9 @@
         </td>
     </tr>
     <tr>
-        <td></td>
+        <td class ="mapEmpty"></tdclass>
 
-        <td class="navcell">
+        <td class="mapField">
             @*SOUTH*@
 
 
@@ -108,6 +108,19 @@
 
             }
         </td>
-        <td></td>
+        <td class="mapEmpty"></td>
     </tr>
 </table>
+
+<style>
+    .mapEmpty{
+        width:75px;
+        height:75px;
+        background-color:gainsboro;
+    }
+    .mapField{
+        width:75px;
+        height:75px;
+        font-size:10px;
+    }
+</style>

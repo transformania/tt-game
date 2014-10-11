@@ -45,6 +45,7 @@ namespace tfgame.Statics
              9618, // Trixie1231
              2699, // Hanna Patterson
              9611, // Jobot ($3)
+             10713, // Joel Saward ($3)
                                               };
        
         public static int[] Artists = {

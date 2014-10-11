@@ -46,6 +46,8 @@ namespace tfgame.Statics
              2699, // Hanna Patterson
              9611, // Jobot ($3)
              10713, // Joel Saward ($3)
+             7178, // Jessica Dahl
+             10664, // James Fedora ($10)
                                               };
        
         public static int[] Artists = {

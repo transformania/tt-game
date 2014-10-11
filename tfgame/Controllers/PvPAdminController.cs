@@ -1711,6 +1711,48 @@ namespace tfgame.Controllers
             return View(serverLogRepo.ServerLogs);
         }
 
+        public ActionResult WriteFaeEncounter()
+        {
+
+            // assert only admin can view this
+            if (WebSecurity.CurrentUserId != 69)
+            {
+                @ViewBag.Message = "You aren't allowed to do this.";
+                return View("~/Views/PvP/PvPAdmin.cshtml");
+            }
+
+            FairyChallengeBag output = new FairyChallengeBag();
+
+            return View(output);
+        }
+
+        [ValidateInput(false)] 
+        public ActionResult WriteFaeEncounterSend(FairyChallengeBag input)
+        {
+
+
+            string path = Server.MapPath("~/Z_selfHelp/");
+
+           // input.title = "Serialization Overview";
+            System.Xml.Serialization.XmlSerializer writer =
+                new System.Xml.Serialization.XmlSerializer(typeof(FairyChallengeBag));
+
+            System.IO.StreamWriter file = new System.IO.StreamWriter(
+                path + "fae_temp.xml");
+            writer.Serialize(file, input);
+            file.Close();
+
+            ViewBag.Result = "done";
+
+            ViewBag.IntroText = input.IntroText.Replace("[", "<").Replace("]", ">");
+            ViewBag.FailureText = input.FailureText.Replace("[", "<").Replace("]", ">");
+            ViewBag.CorrectFormText = input.CorrectFormText.Replace("[", "<").Replace("]", ">");
+
+       
+
+            return View("WriteFaeEncounter", input);
+        }
+
 
 
 

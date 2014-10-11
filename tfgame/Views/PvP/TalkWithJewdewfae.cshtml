@@ -15,7 +15,7 @@
         @{
             if (ViewBag.ShowSuccess == false && ViewBag.HadRecentInteraction == false)
             {
-                <p>@Model.IntroText</p>
+                <p>@Html.Raw(Model.IntroText)</p>
 
                 if (ViewBag.IsInWrongForm == true)
                 {
@@ -23,7 +23,7 @@
                 }
                 else if (ViewBag.IsTired == true)
                 {
-                    <p>"You look too tired to be any fun right now.  Come back later when you're a little more awake, mkay?"</p>
+                    <p class="faevoice">"You look too tired to be any fun right now.  Come back later when you're a little more awake, mkay?"</p>
                 }
                 else
                 {
@@ -32,7 +32,7 @@
             }
             else if (ViewBag.HadRecentInteraction == true)
             {
-                <p>"Thanks for playing with me!  Maybe we can have some more fun somewhere else later..."</p>
+                <p class="faevoice">"Thanks for playing with me!  Maybe we can have some more fun somewhere else later..."</p>
             }
             else
             {
@@ -57,6 +57,11 @@
         font-size: 16px;
         overflow: auto;
     }
+
+    .faevoice,fae {
+        color: darkviolet;
+    }
+
 </style>
 
 <p>@Html.ActionLink("Back to game", "Play", "PvP")</p>

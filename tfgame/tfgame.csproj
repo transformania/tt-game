@@ -1346,6 +1346,7 @@
     <Content Include="Views\Shared\_MenuPartial.cshtml" />
     <Content Include="Views\PvP\GameNews_Archive.cshtml" />
     <Content Include="Views\PvP\TalkWithJewdewfae.cshtml" />
+    <Content Include="Views\PvPAdmin\WriteFaeEncounter.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

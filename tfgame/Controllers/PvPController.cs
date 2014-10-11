@@ -2608,6 +2608,10 @@ namespace tfgame.Controllers
 
              FairyChallengeBag output = tfgame.Procedures.BossProcedures.BossProcedures_Fae.GetFairyChallengeInfoAtLocation(fae.dbLocationName);
 
+             output.IntroText = output.IntroText.Replace("[", "<").Replace("]", ">");
+             output.CorrectFormText = output.CorrectFormText.Replace("&lt;", "<").Replace("&gt;", ">");
+             output.FailureText = output.FailureText.Replace("&lt;", "<").Replace("&gt;", ">");
+
              ViewBag.IsInWrongForm = false;
 
              if (me.Form != output.RequiredForm)

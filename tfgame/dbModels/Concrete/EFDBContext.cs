@@ -46,6 +46,7 @@ namespace tfgame.dbModels.Concrete
         public DbSet<TFMessage> TFMessages { get; set; }
         public DbSet<PlayerExtra> PlayerExtras { get; set; }
         public DbSet<RPPoint> RPPoints { get; set; }
+        public DbSet<Donator> Donators { get; set; }
 
 
         public DbSet<ChatLog> ChatLogs { get; set; }

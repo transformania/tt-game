@@ -227,6 +227,7 @@
     <Compile Include="dbModels\Abstract\IDbStaticFormRepository.cs" />
     <Compile Include="dbModels\Abstract\IDbStaticItemRepository.cs" />
     <Compile Include="dbModels\Abstract\IDMRollRepository.cs" />
+    <Compile Include="dbModels\Abstract\IDonatorRepository.cs" />
     <Compile Include="dbModels\Abstract\IEffectContributionRepository.cs" />
     <Compile Include="dbModels\Abstract\IEffectRepository.cs" />
     <Compile Include="dbModels\Abstract\IFriendRepository.cs" />
@@ -250,6 +251,7 @@
     <Compile Include="dbModels\Concrete\EFDbStaticFormRepository.cs" />
     <Compile Include="dbModels\Concrete\EFDbStaticItemRepository.cs" />
     <Compile Include="dbModels\Concrete\EFDMRollRepository.cs" />
+    <Compile Include="dbModels\Concrete\EFDonatorRepository.cs" />
     <Compile Include="dbModels\Concrete\EFPlayerExtraRepository.cs" />
     <Compile Include="dbModels\Concrete\EFRPPointRespository.cs" />
     <Compile Include="dbModels\Concrete\EFTFMessageRepository.cs" />
@@ -283,6 +285,7 @@
     <Compile Include="dbModels\Models\DbStaticForm.cs" />
     <Compile Include="dbModels\Models\DbStaticItem.cs" />
     <Compile Include="dbModels\Models\DMItem.cs" />
+    <Compile Include="dbModels\Models\Donator.cs" />
     <Compile Include="dbModels\Models\Effect.cs" />
     <Compile Include="dbModels\Models\EffectContribution.cs" />
     <Compile Include="dbModels\Models\Friend.cs" />
@@ -310,6 +313,7 @@
     <Compile Include="Procedures\BossProcedures\BossProcedures_Valentine.cs" />
     <Compile Include="Procedures\ChatLogProcedures.cs" />
     <Compile Include="Procedures\DMRollProcedures.cs" />
+    <Compile Include="Procedures\DonatorProcedures.cs" />
     <Compile Include="Procedures\Pathfinding.cs" />
     <Compile Include="Procedures\CovenantProcedures.cs" />
     <Compile Include="Procedures\EffectProcedures.cs" />

@@ -1647,6 +1647,11 @@ namespace tfgame.Controllers
             return View("~/Views/PvP/GameNews_Archive.cshtml");
         }
 
+        public ActionResult FAQ()
+        {
+            return View();
+        }
+
         public ActionResult GameNews_PlannedFeatures()
         {
             return View("~/Views/PvP/GameNews_PlannedFeatures.cshtml");
@@ -2609,8 +2614,8 @@ namespace tfgame.Controllers
              FairyChallengeBag output = tfgame.Procedures.BossProcedures.BossProcedures_Fae.GetFairyChallengeInfoAtLocation(fae.dbLocationName);
 
              output.IntroText = output.IntroText.Replace("[", "<").Replace("]", ">");
-             output.CorrectFormText = output.CorrectFormText.Replace("&lt;", "<").Replace("&gt;", ">");
-             output.FailureText = output.FailureText.Replace("&lt;", "<").Replace("&gt;", ">");
+             output.CorrectFormText = output.CorrectFormText.Replace("[", "<").Replace("]", ">");
+             output.FailureText = output.FailureText.Replace("[", "<").Replace("]", ">");
 
              ViewBag.IsInWrongForm = false;
 

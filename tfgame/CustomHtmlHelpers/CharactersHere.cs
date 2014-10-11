@@ -57,7 +57,7 @@ namespace tfgame.CustomHtmlHelpers
         {
             if (player.DonatorLevel >= 1)
             {
-                return new MvcHtmlString("<span class='icon-donator1' title='This player has helped fund the game.'></span>");
+                return new MvcHtmlString("<span class='icon-donator1' title='This player supports this game on Patreon monthly.'></span>");
             }
             else
             {

@@ -449,6 +449,7 @@
     <Content Include="Images\PvP\itemsPortraits\crown_of_order_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\daisy_dukes_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\disembodied_chest_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\doggy_dick_Luxianne.png" />
     <Content Include="Images\PvP\itemsPortraits\dog_collar_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\evening_gown_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\Feather_Duster_Meddle.png" />
@@ -463,6 +464,7 @@
     <Content Include="Images\PvP\itemsPortraits\latex_collar_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\latex_corset_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\Leather_Shoes_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\licking_tongue_babblingfaces.png" />
     <Content Include="Images\PvP\itemsPortraits\lipstick.png" />
     <Content Include="Images\PvP\itemsPortraits\Lipstick_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\magic_chocker_Meddle.png" />
@@ -477,6 +479,7 @@
     <Content Include="Images\PvP\itemsPortraits\onepiece_latex_swimsuit_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\page_turner_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\pink_combat_boots_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\pink_latex_dress_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\platform_heels_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\posessed_doll_foxpower93.png" />
     <Content Include="Images\PvP\itemsPortraits\Queens_Panties_Luxianne.png" />
@@ -545,6 +548,7 @@
     <Content Include="Images\PvP\portraits\milkmaid_Luxianne.png" />
     <Content Include="Images\PvP\portraits\Minotaur_Meddle.png" />
     <Content Include="Images\PvP\portraits\mouse_boy_Danaume.jpg" />
+    <Content Include="Images\PvP\portraits\naga_JBovinne.png" />
     <Content Include="Images\PvP\portraits\new_age_retro_hippy_Meddle.png" />
     <Content Include="Images\PvP\portraits\Omnibus_Meddle.png" />
     <Content Include="Images\PvP\portraits\otter_boy_Kyethusky.png" />
@@ -1347,6 +1351,7 @@
     <Content Include="Views\PvP\GameNews_Archive.cshtml" />
     <Content Include="Views\PvP\TalkWithJewdewfae.cshtml" />
     <Content Include="Views\PvPAdmin\WriteFaeEncounter.cshtml" />
+    <Content Include="Views\PvP\FAQ.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

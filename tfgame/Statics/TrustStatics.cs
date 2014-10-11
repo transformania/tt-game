@@ -48,6 +48,7 @@ namespace tfgame.Statics
              10713, // Joel Saward ($3)
              7178, // Jessica Dahl
              10664, // James Fedora ($10)
+             3240, // Izzy Valentine ($3)
                                               };
        
         public static int[] Artists = {

@@ -146,7 +146,7 @@ namespace tfgame.Procedures.BossProcedures
                 MoveToNewLocation();
             }
 
-            LocationLogProcedures.AddLocationLog(fae.dbLocationName, "Jewdewfae played with " + player.FirstName + " " + player.LastName + " here.");
+            LocationLogProcedures.AddLocationLog(fae.dbLocationName, "<b>Jewdewfae played with " + player.FirstName + " " + player.LastName + " here.</b>");
 
             return xpGain;
 

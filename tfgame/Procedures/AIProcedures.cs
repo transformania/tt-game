@@ -206,7 +206,7 @@ namespace tfgame.Procedures
                             {
                                 if (botbuffs.MoveActionPointDiscount() > -100)
                                 {
-                                    string newplace = MoveTo(bot, myTarget.dbLocationName, 7);
+                                    string newplace = MoveTo(bot, myTarget.dbLocationName, 4);
                                     bot.dbLocationName = newplace;
                                     log.AddLog(bot.FirstName + " " + bot.LastName + ":  moved to " + newplace + " to chase target.");
                                 }

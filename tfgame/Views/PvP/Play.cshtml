@@ -100,10 +100,10 @@
     @Html.ActionLink("Search this Area (" + (int)Model.APSearchCost + " AP)", "Search", "PvP", new { id = "action_search" })
 </div>
 <center>
-<div style="width:247px; display: inline-table;">
+<div style="width:247px; display: inline-table; vertical-align:top;">
     @Html.Partial("partial/movementTable", Model)
 </div>
-    <div style="width: 480px; display: inline-table;">
+    <div style="width: 480px; display: inline-table; vertical-align:top; margin-top:5px;">
         <span class="place">@Model.Location.Name [@Model.Location.X,@Model.Location.Y]<br /> </span>
         <span class="locationDescription">@Model.Location.GetDescription()</span>
     </div>

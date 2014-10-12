@@ -3,17 +3,11 @@
 
 @Html.ActionLink("Back to game", "Play", "PvP")
 
-<head>
-    <link href="~/Content/PvP.css" rel="stylesheet" />
-</head>
-
-<p style="text-align: center;">
+<p style="text-align: center; margin-top:0px;">
     @Html.ActionLink("Search for player by name", "PlayerLookup", "PvP") @Html.ActionLink("Delete All Messages", "DeleteAllMessages", "PvP")
 </p>
 
-<h1 style="text-align: center;">Received Messages (@Model.Messages.Count()/150)</h1>
-
-
+<h1 style="text-align: center; margin-top:0px;">Received Messages (@Model.Messages.Count()/150)</h1>
 
 <table>
     <thead>

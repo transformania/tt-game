@@ -2,9 +2,15 @@
 @using tfgame.CustomHtmlHelpers
 @using tfgame.Procedures
 
+@Html.ActionLink("Back to game", "Play", "PvP")
+
+<p style="text-align: center; margin-top:0px;">
+    @Html.ActionLink("Search for player by name", "PlayerLookup", "PvP")
+</p>
+
 <div class="divblock">
     <div class="divblock">
-        <h2>Active Friends (@Model.ConfirmedFriends.Count())</h2>
+        <h1 style="margin-top:0px;">Active Friends (@Model.ConfirmedFriends.Count())</h1>
 
         @{
             foreach (tfgame.ViewModels.FriendPlayerViewModel fp in Model.ConfirmedFriends.Where(m => m.dbPlayer!=null))
@@ -56,7 +62,7 @@
 
 
 
-        <h2>Requests sent to You (@Model.RequestsForMe.Count())</h2>
+        <h1>Requests sent to You (@Model.RequestsForMe.Count())</h1>
 
         @{foreach (tfgame.ViewModels.FriendPlayerViewModel fp2 in Model.RequestsForMe.Where(m => m.dbPlayer != null))
         {
@@ -71,7 +77,7 @@
         }
 
 
-        <h2>Requests you've sent (@Model.MyOutgoingRequests.Count())</h2>
+        <h1>Requests you've sent (@Model.MyOutgoingRequests.Count())</h1>
 
         @{
             foreach (tfgame.ViewModels.FriendPlayerViewModel fp3 in Model.MyOutgoingRequests.Where(m => m.dbPlayer != null))
@@ -102,12 +108,16 @@
 </div>
 
 <style>
+    h1{
+        text-align: center;
+    }
     .friendListing {
-        height: 20px;
         width: 100%;
         border: 1px solid lightgray;
         position: relative;
         float: left;
+        margin:0;
+        padding:0;
     }
 
     .friendonline {

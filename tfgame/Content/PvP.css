@@ -568,9 +568,8 @@ a.talkLink {
 }
 
 .timeago {
-    font-size: 9px;
+    font-size: 10px;
     color: gray;
-    font-style: italic;
 }
 
 .form__panel {

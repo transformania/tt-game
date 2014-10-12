@@ -29,7 +29,7 @@
         <span class="icon-level"><b>@ViewBag.ItemLevel</b></span>
     </div>
     <div class="rightDisplay">
-        <h1 style="margin-top: 0px; text-align: center;">@Model.PlayerForm.Player.FirstName @Model.PlayerForm.Player.LastName</h1>
+        <h1 style="margin-top: 0px; text-align: center;">@Model.PlayerForm.Player.GetFullName()</h1>
         @{if (Model.PlayerForm.Player.Mobility == "inanimate")
         {
             <span class="textMobility">

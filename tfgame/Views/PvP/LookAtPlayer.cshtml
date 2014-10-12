@@ -12,7 +12,7 @@
 @Html.ActionLink("Back to game", "Play", "PvP")
 
 <h1>
-    @Model.PlayerForm.Player.FirstName @Model.PlayerForm.Player.LastName @CharactersHere.GetCovenantInfo(Model.PlayerForm.Player.ToDbPlayer())
+    @Model.PlayerForm.Player.GetFullName() @CharactersHere.GetCovenantInfo(Model.PlayerForm.Player.ToDbPlayer())
     @CharactersHere.PrintDonatorIcon(Model.PlayerForm.Player.ToDbPlayer())
     @CharactersHere.PrintRPIcon(Model.PlayerForm.Player.ToDbPlayer())
     @CharactersHere.PrintPvPIcon(Model.PlayerForm.Player.ToDbPlayer())

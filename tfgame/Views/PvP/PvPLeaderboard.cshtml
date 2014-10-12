@@ -45,7 +45,7 @@
                     @rank
                 </td>
                 <td>
-                    @Html.ActionLink(p.FirstName + " " + p.LastName, "LookAtPlayer", "PvP", new { id = p.Id }, null)
+                    @Html.ActionLink(p.GetFullName(), "LookAtPlayer", "PvP", new { id = p.Id }, null)
                     <span class="icon-@p.Gender"></span>
 
                     @{

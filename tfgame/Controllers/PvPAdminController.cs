@@ -1721,7 +1721,22 @@ namespace tfgame.Controllers
                 return View("~/Views/PvP/PvPAdmin.cshtml");
             }
 
+
             FairyChallengeBag output = new FairyChallengeBag();
+
+            try
+            {
+                // load data from the xml
+                string filename = System.Web.HttpContext.Current.Server.MapPath("~/Z_SelfHelp/fae_temp.xml");
+                System.Xml.Serialization.XmlSerializer reader = new System.Xml.Serialization.XmlSerializer(typeof(FairyChallengeBag));
+                System.IO.StreamReader file = new System.IO.StreamReader(filename);
+                output = (FairyChallengeBag)reader.Deserialize(file);
+            }
+            catch
+            {
+
+            }
+
 
             return View(output);
         }

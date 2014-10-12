@@ -44,6 +44,19 @@ namespace tfgame.dbModels.Models
         public int DonatorLevel { get; set; }
         public string Nickname { get; set; }
         public DateTime OnlineActivityTimestamp { get; set; }
+
+        public string GetFullName()
+        {
+            if (this.DonatorLevel >= 2 && this.Nickname != null && this.Nickname != "")
+            {
+                return this.FirstName + " '" + this.Nickname + "' " + this.LastName;
+            }
+            else
+            {
+                return this.FirstName + " " + this.LastName;
+            }
+        }
+
     }
 
     public class Player_VM
@@ -85,6 +98,19 @@ namespace tfgame.dbModels.Models
         public int DonatorLevel { get; set; }
         public string Nickname { get; set; }
         public DateTime OnlineActivityTimestamp { get; set; }
+
+        public string GetFullName()
+        {
+            if (this.DonatorLevel >= 2 && this.Nickname != null && this.Nickname != "")
+            {
+                return this.FirstName + " '" + this.Nickname + "' " + this.LastName;
+            }
+            else
+            {
+                return this.FirstName + " " + this.LastName;
+            }
+
+        }
 
         public Player ToDbPlayer()
         {

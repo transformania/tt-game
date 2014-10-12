@@ -40,7 +40,7 @@
     <div class="charInfoWrapper">
         <span class="name">
             <span style="color: @gendercolor">
-                @Html.ActionLink(Model.Player.FirstName + " " + Model.Player.LastName, "LookAtPlayer", "PvP", new { id = Model.Player.Id }, null)
+                @Html.ActionLink(Model.Player.GetFullName(), "LookAtPlayer", "PvP", new { id = Model.Player.Id }, null)
                 <br />
                 <span class="playerDescription">@Model.Form.FriendlyName</span>
             </span>

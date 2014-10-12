@@ -32,7 +32,7 @@
 
         <div class="avatarInfo">
             <div class="avatarText">
-                <span class="avatarName">@Model.Player.FirstName @Model.Player.LastName</span>
+                <span class="avatarName">@Model.Player.GetFullName()</span>
                 <br />
                 <span class="avatarFormName">@Model.Form.FriendlyName</span>
                 <p class="avatarCoven">@CharactersHere.GetCovenantInfo(Model.Player.ToDbPlayer())</p>

@@ -2,32 +2,36 @@
 <FairyChallengeViewModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <FairyChallengeBags>
     <FairyChallengeBag>
-      <dbLocationName>candystore_shelves</dbLocationName>
-	  <RequiredForm>form_Massively_Obese_Woman_Aethar</RequiredForm>
-      <IntroText>
-        You turn the corner to find Jewdewfae the fairy trying to unscrew the lid from a jar of gummy bear candies.  She is too small and light to twist it off, but she seems to be having too much fun just trying to do it by herself.  She giggles and turns to you.
+  <dbLocationName>candystore_shelves</dbLocationName>
+  <IntroText>[p]You turn the corner to find Jewdewfae the fairy trying to unscrew the lid from a jar of gummy bear candies.  She is too small and light to twist it off, but she seems to be having too much fun just trying to do it by herself.  She giggles and turns to you.[/p]
 
-        “Heya there, big buddy,” she giggles.  She begins zipping around various candy jars and boxes, pulling out chocolates and other types of sweets and throwing them generally in your direction.  Most fall at your feet.  “Want some candy?  This kind here is my favorite!  No, wait!  This kind!  Or this one!  I love them all!  Wanna eat some candy with me?  But I mean a LOT of candy, I don’t want to leave here without trying a little bit of everything...”
-      </IntroText>
-      <CorrectFormText>Before you can respond, Jewfewfae zips over to your mouth and tosses what is to her an entire armful of different kinds of candy--chocolates, gummies, jawbreakers, bubble gum, licorice, and plenty others you cannot distinguish by taste mixed in with all the others.  Surprised, you gulp and swallow it all down in a single swallow, but all it does is get your stomach growling for more.  You look up to see Jewdewfae growing into an equally plump sister, pulling jars off the shelves and pouring half of its contents into her mouth at once, throwing handfuls more at you, pelting your open mouth and body with sugary goodness.
+[p][fae]“Heya there, big buddy,”[/fae] she giggles.  She begins zipping around various candy jars and boxes, pulling out chocolates and other types of sweets and throwing them generally in your direction.  Most fall at your feet.  [fae]“Want some candy?  This kind here is my favorite!  No, wait!  This kind!  Or this one!  I love them all!  Wanna eat some candy with me?  But I mean a LOT of candy, I don’t want to leave here without trying a little bit of everything...”[/fae][/p]</IntroText>
+  <CorrectFormText>[p]Before you can respond, Jewdewfae zips over to your mouth and tosses what is to her an entire armful of different kinds of candy--chocolates, gummies, jawbreakers, bubble gum, licorice, and plenty others you cannot distinguish by taste mixed in with all the others.  Surprised, you gulp and swallow it all down in a single swallow, but all it does is get your stomach growling for more.  You look up to see Jewdewfae growing into an equally plump sister, pulling jars off the shelves and pouring half of its contents into her mouth at once, throwing handfuls more at you, pelting your open mouth and body with sugary goodness.[/p]
 
-The two of you pig out for some time.  When you are both finally satisfied--and most of the candy appears to be gone, though somehow jars that you thought were empty seem to be back on the shelves and full as ever--you slumber over side by side in a food-coma nap.
+[p]The two of you pig out for some time.  When you are both finally satisfied--and most of the candy appears to be gone, though somehow jars that you thought were empty seem to be back on the shelves and full as ever--you slumber over side by side in a food-coma nap.[/p]
 
-“Mmm, that was fun,” Jewfewfae sighs contently as she shrinks back down to her regular fairy body and perches on your belly.  “Thanks for playing with me.  here, have this…” she zaps you, fueling your arcane knowledge with fairy magic before zipping off to find another partner to play with.</CorrectFormText>
-      <FailureText>Jewfewfae giggles.  “No, I don’t think you have the right body right now for this.  I want to play with someone who won’t mind packing on a dozen pounds in an hour or two, say, maybe a Massively Obese Woman…”</FailureText>
-    </FairyChallengeBag>
+[p][fae]“Mmm, that was fun,” Jewdewfae sighs contently as she shrinks back down to her regular fairy body and perches on your belly.  “Thanks for playing with me.  here, have this…”[/fae] she zaps you, fueling your arcane knowledge with fairy magic before zipping off to find another partner to play with.[/p]</CorrectFormText>
+  <FailureText>[p]Jewdewfae giggles.  [fae]“No, I don’t think you have the right body right now for this.  I want to play with someone who won’t mind packing on a dozen pounds in an hour or two, say, maybe a Massively Obese Woman…”[/fae][/p]</FailureText>
+  <RequiredForm>form_Massively_Obese_Woman_Aethar</RequiredForm>
+</FairyChallengeBag>
+
+
+
     <FairyChallengeBag>
-      <dbLocationName>medclinic_lobby</dbLocationName>
-	  <RequiredForm>form_Slutty_Nurse_Ashley_Maid</RequiredForm>
-      <IntroText>You walk inside to find Jewdewfae perched on the counter of the payee window, trying to reach into the jar of lollipops and pulling one out.  When she notices you standing there she giggles and abandons her task, letting the glass lid fall back down with a clink.  However, she doesn’t move her tiny fingers away fast enough and some of them get struck with the lid on the way down.
+  <dbLocationName>medclinic_lobby</dbLocationName>
+  <IntroText>[p]You walk inside to find Jewdewfae perched on the counter of the payee window, trying to reach into the jar of lollipops and pulling one out.  When she notices you standing there she giggles and abandons her task, letting the glass lid fall back down with a clink.  However, she doesn’t move her tiny fingers away fast enough and some of them get struck with the lid on the way down.[/p]
 
-“Owwwww,” she moans, zipping over to you, leaving behind a trail of fairy dust lingering in the air, her flight instead.  She lands on your shoulder and holds her fingers over to your lips as you turn your head to look.  “Are you a nurse?  I want someone to kiss my fingers and make them feel better.  And then kiss me on the lips, and then kiss me between my thighs…”
-</IntroText>
-      <CorrectFormText>“Oh good, you’re just what the doctor ordered!” Jewdewfae sticks her fingers between your lipstick-red lips.  Just as she promised, she then plants her tiny lips against your plump bottom lip, kissing you passionately as her body grows from nine inches tall to a voluptuous five foot woman without her fairy wings.  “Come here, you!  I need you to come and check out this strange little pain I’ve been having down here...”  She pulls you toward the emergency room and leaps onto a rolling gurney, rubbing her inner thigh.
+[p][fae]“Owwwww,”[/fae] she moans, zipping over to you, leaving behind a trail of fairy dust lingering in the air, her flight instead.  She lands on your shoulder and holds her fingers over to your lips as you turn your head to look.  [fae]“Are you a nurse?  I want someone to kiss my fingers and make them feel better.  And then kiss me on the lips, and then kiss me between my thighs…”[/fae][/p]</IntroText>
+  <CorrectFormText>[p]Before you can respond, Jewdewfae zips over to your mouth and tosses what is to her an entire armful of different kinds of candy--chocolates, gummies, jawbreakers, bubble gum, licorice, and plenty others you cannot distinguish by taste mixed in with all the others.  Surprised, you gulp and swallow it all down in a single swallow, but all it does is get your stomach growling for more.  You look up to see Jewdewfae growing into an equally plump sister, pulling jars off the shelves and pouring half of its contents into her mouth at once, throwing handfuls more at you, pelting your open mouth and body with sugary goodness.[/p]
 
-You oblige, rubbing some lotion along her legs and thighs as she directs you along her “boo-boos” closer and closer to her clitoris.  She stares with you with a wide grin and you focus your attention on her steaming womanhood, pleasuring her with your fingers as she writhes on the gurney in lust.  She gasps loudly and collapses down, sweaty and satisfied.  “You’re the bestest nurse ever!  Let me pay you back… Here, have this…” she zaps you, fueling your arcane knowledge with a bit of fairy magic before returning to her regular body and zipping off to find another partner to play with.</CorrectFormText>
-      <FailureText>“You don’t look like you’re qualified to treat my ouchie fingers,” Jewdewfae giggles.  “I need a nurse.  Not just any nurse though, one who really wants to help me through the recovery process… a Slutty Nurse…”</FailureText>
-    </FairyChallengeBag>
+[p]The two of you pig out for some time.  When you are both finally satisfied--and most of the candy appears to be gone, though somehow jars that you thought were empty seem to be back on the shelves and full as ever--you slumber over side by side in a food-coma nap.[/p]
+
+[p][fae]“Mmm, that was fun,” Jewdewfae sighs contently as she shrinks back down to her regular fairy body and perches on your belly.  “Thanks for playing with me.  here, have this…”[/fae] she zaps you, fueling your arcane knowledge with fairy magic before zipping off to find another partner to play with.[/p]</CorrectFormText>
+  <FailureText>[p][fae]“Oh good, you’re just what the doctor ordered!”[/fae] Jewdewfae sticks her fingers between your lipstick-red lips.  Just as she promised, she then plants her tiny lips against your plump bottom lip, kissing you passionately as her body grows from nine inches tall to a voluptuous five foot woman without her fairy wings.  [fae]“Come here, you!  I need you to come and check out this strange little pain I’ve been having down here...”[/fae]  She pulls you toward the emergency room and leaps onto a rolling gurney, rubbing her inner thigh.[/p]
+
+[p]You oblige, rubbing some lotion along her legs and thighs as she directs you along her “boo-boos” closer and closer to her clitoris.  She stares with you with a wide grin and you focus your attention on her steaming womanhood, pleasuring her with your fingers as she writhes on the gurney in lust.  She gasps loudly and collapses down, sweaty and satisfied.  [fae]“You’re the bestest nurse ever!  Let me pay you back… Here, have this…”[/fae] she zaps you, fueling your arcane knowledge with a bit of fairy magic before returning to her regular body and zipping off to find another partner to play with.[/p]</FailureText>
+  <RequiredForm>form_Slutty_Nurse_Ashley_Maid</RequiredForm>
+</FairyChallengeBag>
 	
 	<FairyChallengeBag>
       <dbLocationName>mansion_bedroom</dbLocationName>

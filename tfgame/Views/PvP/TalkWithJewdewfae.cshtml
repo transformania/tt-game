@@ -19,7 +19,7 @@
 
                 if (ViewBag.IsInWrongForm == true)
                 {
-                    <p>@Model.FailureText</p>
+                    <p>@Html.Raw(Model.FailureText)</p>
                 }
                 else if (ViewBag.IsTired == true)
                 {
@@ -36,7 +36,7 @@
             }
             else
             {
-                <p>@Model.CorrectFormText</p>
+                <p>@Html.Raw(Model.CorrectFormText)</p>
                 <p><b><i>You earned @Math.Floor(ViewBag.XPGain) XP from Jewdewfae's magic.</i></b></p>
             }
         }

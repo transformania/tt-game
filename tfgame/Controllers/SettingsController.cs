@@ -60,7 +60,7 @@ namespace tfgame.Controllers
                  return RedirectToAction("Play", "PvP");
              }
 
-             if (input.Text.Length > 1500)
+             if (input.Text.Length > 2500)
              {
                  TempData["Error"] = "The text of your bio is too long (more than 1500 characters).";
                  return RedirectToAction("Play", "PvP");

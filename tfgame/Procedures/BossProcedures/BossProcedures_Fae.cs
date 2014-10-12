@@ -129,7 +129,7 @@ namespace tfgame.Procedures.BossProcedures
             }
 
             // Var1 will keep track how how many interactions Jewdewfae has had.  Award a bit less XP based on how many people she has played with down to 15 at lowest
-            decimal xpGain = 50 - directive.Var1 * 3;
+            decimal xpGain = 50 - directive.Var1 * 2;
 
             if (xpGain < 15) {
                 xpGain = 15;
@@ -142,7 +142,7 @@ namespace tfgame.Procedures.BossProcedures
 
             aiRepo.SaveAIDirective(directive);
 
-            if (directive.Var1 >= 25) {
+            if (directive.Var1 >= 18) {
                 MoveToNewLocation();
             }
 

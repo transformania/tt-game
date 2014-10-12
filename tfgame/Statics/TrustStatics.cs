@@ -54,7 +54,7 @@ namespace tfgame.Statics
         public static int[] Artists = {
            69, // Judoo
            72, // Nymic-TF
-           76, // jBovinne
+           77, // jBovinne
            272, // Wrenzephyr2
            1117, // Meddle
            3800, // Luxianne

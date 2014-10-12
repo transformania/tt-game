@@ -826,6 +826,10 @@ a.curse {
 .perkBox {
     border: 1px solid gray;
     padding: 5px;
+    width: 300px;
+    display: inline-table;
+    height: 350px;
+    margin-bottom: 5px;
 }
 
 .effectturnsRemaining {

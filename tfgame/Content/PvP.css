@@ -452,7 +452,8 @@ float: right;
 .covHeader {
     color: darkviolet;
     font-size: 20px;
-    margin-bottom: -20px;
+    margin-top: -10px;
+    margin-bottom: -10px;
 }
 
 .covItem {

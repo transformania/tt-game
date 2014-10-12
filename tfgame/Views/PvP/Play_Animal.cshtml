@@ -35,15 +35,15 @@
 @{if (Model.NewMessageCount > 0)
 {
     <span class="newlink">
-        @Html.ActionLink("View Messages (" + Model.NewMessageCount + " unread)", "MyMessages", "PvP")
+        @Html.ActionLink("(" + Model.NewMessageCount + " unread)", "MyMessages", "PvP")
     </span>
 }
 else
 {
-    @Html.ActionLink("View Messages", "MyMessages", "PvP")
+    @Html.ActionLink("Inbox", "MyMessages", "PvP")
 }
 }
-@Html.ActionLink("Submit New Content", "Contribute", "PvP", new { Id = -1 }, null)
+@Html.ActionLink("Submit Content", "Contribute", "PvP", new { Id = -1 }, null)
 @Html.ActionLink("Start again as someone else", "Restart", "PvP")
 @{
     if (Model.You.MembershipId == 69)
@@ -52,14 +52,10 @@ else
     }
 }
 
-<div class="result">
-    @Html.Raw(ViewBag.Result)
-</div>
-<div class="error">
-    @ViewBag.ErrorMessage
-</div>
-<div class="suberror">
-    @ViewBag.SubErrorMessage
+<div>
+    <span class="result">@Html.Raw(ViewBag.Result)</span>
+    <span class="error">@ViewBag.ErrorMessage</span>
+    <span class="suberror">@ViewBag.SubErrorMessage</span>
 </div>
 
 <div style="position: relative; float: left;">

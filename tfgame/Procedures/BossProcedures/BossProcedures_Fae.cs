@@ -63,7 +63,9 @@ namespace tfgame.Procedures.BossProcedures
                     OwnerId = fae.Id,
                     Timestamp = DateTime.UtcNow,
                     DoNotRecycleMe = true,
-                    sVar1 = ";",
+                    sVar1 = ";", // this is used to keep track of which players have interacted with her by appending their id to this string
+                    Var1 = 0, // this keeps track of how many people she has played with in the current location
+                    Var2 = PvPWorldStatProcedures.GetWorldTurnNumber() // this stores the turn number of Jewdewfae's last move
                 };
 
                 aiRepo.SaveAIDirective(directive);
@@ -71,7 +73,7 @@ namespace tfgame.Procedures.BossProcedures
             }
         }
 
-        private static void MoveToNewLocation()
+        public static void MoveToNewLocation()
         {
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
@@ -94,16 +96,17 @@ namespace tfgame.Procedures.BossProcedures
             int index = Convert.ToInt32(Math.Floor(num * max));
             string newLocation = fairyLocations.ElementAt(index);
 
-            LocationLogProcedures.AddLocationLog(fae.dbLocationName, "Jewdewfae got bored and flew away from here.");
+            LocationLogProcedures.AddLocationLog(fae.dbLocationName, "<b>Jewdewfae got bored and flew away from here.</b>");
 
             fae.dbLocationName = newLocation;
             playerRepo.SavePlayer(fae);
 
-            LocationLogProcedures.AddLocationLog(fae.dbLocationName, "Jewdewfae flew here.  She looks bored and wants to play with someone.");
+            LocationLogProcedures.AddLocationLog(fae.dbLocationName, "<b>Jewdewfae flew here.  She looks bored and wants to play with someone.</b>");
 
             IAIDirectiveRepository aiRepo = new EFAIDirectiveRepository();
             AIDirective directive = aiRepo.AIDirectives.FirstOrDefault(i => i.OwnerId == fae.Id);
             directive.Var1 = 0;
+            directive.Var2 = PvPWorldStatProcedures.GetWorldTurnNumber();
             directive.sVar1 = ";";
             aiRepo.SaveAIDirective(directive);
 

@@ -11,6 +11,7 @@ using tfgame.dbModels.Concrete;
 using tfgame.dbModels.Models;
 using tfgame.Filters;
 using tfgame.Procedures;
+using tfgame.Procedures.BossProcedures;
 using tfgame.Statics;
 using tfgame.ViewModels;
 using WebMatrix.WebData;
@@ -3443,6 +3444,29 @@ namespace tfgame.Controllers
                 log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == turnNo);
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished Lindella actions");
 
+                // move Jewdewfae to a new location if she has been in one place for more than 48 turns, 8 hours
+                if (turnNo % 6 == 0)
+                {
+                    try
+                    {
+                        Player fae = PlayerProcedures.GetPlayerFromMembership(-6);
+                        AIDirective faeAI = AIDirectiveProcedures.GetAIDirective(fae.Id);
+
+                        // if the turn 
+                        if (turnNo - (int)faeAI.Var2 > 48)
+                        {
+                            log.AddLog(updateTimer.ElapsedMilliseconds + ":  FORCED JEWDEWFAE TO MOVE.");
+                            BossProcedures_Fae.MoveToNewLocation();
+                        }
+
+                        
+                    }
+                    catch (Exception e)
+                    {
+                        log.AddLog(updateTimer.ElapsedMilliseconds + "ERROR TRYING TO MOVE JEWDEWFAE:  " + e.ToString());
+                    }
+                }
+
                 #region bosses
                 try {
                     // run boss logic if one is active
@@ -3485,6 +3509,8 @@ namespace tfgame.Controllers
                 AIProcedures.RunPsychopathActions();
                 log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == turnNo);
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished psychopath actions");
+
+            
 
                 PvPWorldStatProcedures.UpdateWorldTurnCounter_UpdateDone();
 

@@ -90,6 +90,7 @@ namespace tfgame.Statics
            "Administrator",
            "Lindella",
            "Hitler",
+           "Jewdewfae",
            };
 
         public static bool PlayerIsProofreader(int MembershipId)

@@ -6,37 +6,39 @@
 
 @Html.ActionLink("Back to game", "Play", "PvP")
 <div style="text-align: center;">
-    <h2>Offline Timer</h2>   
-        @{
-            if (@ViewBag.TimeUntilLogout >= 60)
-            {
-                <p>Your character is offline.</p>
-            }
-            else if (@ViewBag.TimeUntilLogout > 0)
-            {
-                <p>You will go into offline mode in <b>@ViewBag.TimeUntilLogout</b> minutes.</p>
-            }
-            else
-            {
-                <p><span class="good">You are offline.</span></p>
-            }
+    <h2>Offline Timer</h2>
+    @{
+        if (@ViewBag.TimeUntilLogout >= 60)
+        {
+            <p>Your character is offline.</p>
         }
-    
+        else if (@ViewBag.TimeUntilLogout > 0)
+        {
+            <p>You will go into offline mode in <b>@ViewBag.TimeUntilLogout</b> minutes.</p>
+        }
+        else
+        {
+            <p><span class="good">You are offline.</span></p>
+        }
+    }
+
     <h2>Reserve this Name</h2>
-        <p>
-            You can reserve your name so that no other players take it at the start of a new round and steal your identity.
-            You must be level 3 or higher in order to do this.<br /><br />
-            @Html.ActionLink("Reserve Name", "ReserveName", "PvP")
-        </p>
-        
-
-        <h2>Update Your Biography</h2>
-
-        <p>You can write a short bio of yourself or this player here. <br /><br />
-        @Html.ActionLink("Update My Bio", "SetBio", "Settings")</p>
+    <p>
+        You can reserve your name so that no other players take it at the start of a new round and steal your identity.
+        You must be level 3 or higher in order to do this.<br /><br />
+        @Html.ActionLink("Reserve Name", "ReserveName", "PvP")
+    </p>
 
 
-        <h2>RP Mode</h2>
+    <h2>Update Your Biography</h2>
+
+    <p>
+        You can write a short bio of yourself or this player here. <br /><br />
+        @Html.ActionLink("Update My Bio", "SetBio", "Settings")
+    </p>
+
+
+    <h2>RP Mode</h2>
 
     <p>
         If you choose to enter RP mode, you are publicly indicated to other players that you enjoy roleplaying.
@@ -55,7 +57,7 @@
     </p>
 
 
-        <h2>Protection Mode</h2>
+    <h2>Protection Mode</h2>
 
     <p>
         Protection Mode is meant for players who want a more casual or role-playing game experience.  It prevents other human players from being able to be attacked by, or attacking with, inanimate or animal spells unless they are your friend.  There is a delay between when you can enter and leave protection equal to 12 turns times your level, and a player must be online while the game updates in order for the turn count to decrement.<br /><br />
@@ -71,31 +73,33 @@
             }
         }
     </p>
-        @{
+    @{
 
-            if (ViewBag.InProtection == true)
-            {
-                <h2>Lower your WP (Protection Mode only)</h2>
+        if (ViewBag.InProtection == true)
+        {
+            <h2>Lower your WP (Protection Mode only)</h2>
 
-                <p>You can voluntarily submit to the magic of a friend (or enemy?) more quickly by voluntarily lowering your willpower to make yourself more vulnerable to attacks.<br /><br />
+            <p>
+                You can voluntarily submit to the magic of a friend (or enemy?) more quickly by voluntarily lowering your willpower to make yourself more vulnerable to attacks.<br /><br />
 
                 @Html.ActionLink("Decrease Willpower to Half", "DumpWillpower", "Settings", new { amount = "half" }, null)<br /><br />
-                @Html.ActionLink("Decrease Willpower to Zero", "DumpWillpower", "Settings", new { amount = "full" }, null)</p>
-
-            }
+                @Html.ActionLink("Decrease Willpower to Zero", "DumpWillpower", "Settings", new { amount = "full" }, null)
+            </p>
 
         }
 
+    }
+
     <h2>Set your Nickname (Donation Feature)</h2>
+    <p>
+        Players who pledge $7 monthly on Patreon (Tier 2) may create a nickname and change it at any time.  Nicknames must be 20 characters or fewer and will appear inbetween your player's first and last names.<br /><br />
 
-    <p>Players who pledge $7 monthly on Patreon (Tier 2) may create a nickname and change it at any time.  Nicknames must be 20 characters or fewer and will appear inbetween your player's first and last names.
-        @Html.ActionLink("Set your nickname", "SetNickname", "Settings") @Html.ActionLink("Verify my donation status", "VerifyDonatorStatus", "Settings")
-    
+        @Html.ActionLink("Set your nickname", "SetNickname", "Settings")<br /><br />
+        @Html.ActionLink("Verify my donation status", "VerifyDonatorStatus", "Settings")
     </p>
+</div>
 
-   
 
-    </div>
 
 @Html.ActionLink("Back to game", "Play", "PvP")
 

@@ -2,67 +2,58 @@
 @using tfgame.ViewModels
 @using tfgame.Procedures
 
-<head>
-    <link href="~/Content/PvP.css" rel="stylesheet" />
-    <script src="~/Scripts/jquery-2.1.0.js"></script>
-</head>
-
 @Html.ActionLink("Back to game", "Play", "PvP")
-
-<h1>@Model.PlayerForm.Player.FirstName @Model.PlayerForm.Player.LastName</h1>
-
-
-@{if (Model.PlayerForm.Player.Mobility == "inanimate") {
-      <h3><i>Once human, this player has become inanimate and no longer poses no threat to its enemies.  Far from being dead, however, @Model.PlayerForm.Player.FirstName's new form still retains consciousness and some of its old magic, which can enhance or hamper its owner's abilities.</i></h3>
-      
-}}
-
-@{if (Model.PlayerForm.Player.Mobility == "animal")
-{
-    <h3><i>Once human, this player has become an animal or familiar and poses no threat to its enemies.  @Model.PlayerForm.Player.FirstName's new form still retains some of its old consciousness and magic, which can enhance or hamper their master's abilities when tamed and kept as a pet.</i></h3>
-
-}}
-
-
-
-<div style="width: 50%; float: right;">
-
-    <h4>@ViewBag.FormDescriptionItem </h4>
-
-    @{
-        if (Model.PlayerForm.Player.MembershipId != -1)
+<span style="text-align: center;">@{
+    if (Model.PlayerForm.Player.MembershipId != -1)
+    {
+        <p>
+            @{
+        if (ViewBag.HasBio)
         {
-            <p>
-                @{
-            if (ViewBag.HasBio)
-            {
-                @Html.ActionLink("View Bio", "ViewBio", "Settings", new { id = Model.PlayerForm.Player.MembershipId }, null)
+            @Html.ActionLink("View Bio", "ViewBio", "Settings", new { id = Model.PlayerForm.Player.MembershipId }, null)
+        }
             }
-                }
-                @Html.ActionLink("Send a Message", "Write", "PvP", new { playerId = Model.PlayerForm.Player.Id, responseTo = -1 }, null)
-                @Html.ActionLink("Request Friendship", "AddFriend", "PvP", new { playerId = Model.PlayerForm.Player.Id }, null)
-            </p>
-        }
-        else
-        {
-            <p style="color: red;">This player has chosen to create a new character and cannot be messaged or have a friend request sent to them.</p>
-        }
+            @Html.ActionLink("Send a Message", "Write", "PvP", new { playerId = Model.PlayerForm.Player.Id, responseTo = -1 }, null)
+            @Html.ActionLink("Request Friendship", "AddFriend", "PvP", new { playerId = Model.PlayerForm.Player.Id }, null)
+        </p>
     }
+    else
+    {
+        <p style="color: red;">This player has chosen to create a new character and cannot be messaged or have a friend request sent to them.</p>
+    }
+    <p>@ViewBag.IsWorn </p>
+}</span>
 
-</div>
-
-<div style="width: 50%; float: left;">
-
-    <div class="portrait large" style="background-image: url(../../Images/PvP/@ViewBag.ImgUrl);">
+<center>
+    <div class="leftDisplay" style="background-image: url(../../Images/PvP/@ViewBag.ImgUrl);">
         <span class="icon-level"><b>@ViewBag.ItemLevel</b></span>
     </div>
+    <div class="rightDisplay">
+        <h1 style="margin-top: 0px; text-align: center;">@Model.PlayerForm.Player.FirstName @Model.PlayerForm.Player.LastName</h1>
+        @{if (Model.PlayerForm.Player.Mobility == "inanimate")
+        {
+            <span class="textMobility">
+                Once human, this player has become inanimate and no longer poses no threat to its enemies.  Far from being dead, however, @Model.PlayerForm.Player.FirstName's new form still retains consciousness and some of its old magic, which can enhance or hamper its owner's abilities.
+            </span>
 
-</div>
+        }}
+
+        @{if (Model.PlayerForm.Player.Mobility == "animal")
+        {
+            <span class="textMobility">
+                Once human, this player has become an animal or familiar and poses no threat to its enemies.  @Model.PlayerForm.Player.FirstName's new form still retains some of its old consciousness and magic, which can enhance or hamper their master's abilities when tamed and kept as a pet.
+            </span>
+
+        }}
+        <h4 style="font-size:14px;">@ViewBag.FormDescriptionItem </h4>
+    </div>
+</center>
 
 
-    @Html.ActionLink("Back to game", "Play", "PvP")
 
-    <br /><br />
+<div style="clear:both"><br /></div>
+
+@Html.ActionLink("Back to game", "Play", "PvP")
 
     @{
         if (PlayerProcedures.AccountIsTrusted(WebSecurity.CurrentUserId) == true)
@@ -78,14 +69,49 @@
         }
     }
 
-<p>
-    @ViewBag.IsWorn
-</p>
-
 
 
     <style>
+        .leftDisplay {
+            background-size: 100% 100%;
+            position: relative;
+            text-align: left;
+            height: 400px;
+            width: 400px;
+            display: inline-table;
+            vertical-align: top;
+            margin: 0px;
+        }
+        .rightDisplay{
+            padding-left:10px;
+            padding-right:10px;
+            width: 480px;
+            display:inline-table;
+            vertical-align: top;
+            text-align:left;
+        }
+        .textName{
+            font-size: 25px;
+            text-align: center;
+        }
+        .textDescription{
+            font-size: 14px;           
+        }
+        .textMobility{
+            font-size: 16px;
+            font-style: italic;
+        }
         .Links {
             display: none;
+        }
+
+        @@media screen and (max-width: 520px) {
+            .leftDisplay{
+                height: 300px;
+                width: 300px;
+            }
+            .rightDisplay {
+                width: 380px;
+            }
         }
     </style>

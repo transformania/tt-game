@@ -10,9 +10,64 @@ namespace tfgame.Procedures
 {
     public static class DonatorProcedures
     {
-        public static bool PlayerIsDonator_Tier1(Player player)
+        public static bool DonatorGetsIcon(Player player)
         {
-            return false;
+            if (player.DonatorLevel >= 1)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public static bool DonatorGetsNickname(Player player)
+        {
+            if (player.DonatorLevel >= 2)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public static bool DonatorGetsMessagesRewards(Player player)
+        {
+            if (player.DonatorLevel >= 3)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public static bool BothPlayersAreDonatorsOfTier(Player one, Player two, int tier)
+        {
+            if (one.DonatorLevel >= tier && two.DonatorLevel >= tier)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public static bool EitherPlayersAreDonatorsOfTier(Player one, Player two, int tier)
+        {
+            if (one.DonatorLevel >= tier || two.DonatorLevel >= tier)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public static void SetNewPlayerDonationRank(string playerFullName)

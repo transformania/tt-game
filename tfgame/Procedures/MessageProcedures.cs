@@ -94,7 +94,14 @@ namespace tfgame.Procedures
 
             List<Message> mydbMessages = mydbMessagesALL.Take(150).ToList();
 
-            List<Message> mydbMessagesTODELETE = mydbMessagesALL.Skip(150).ToList();
+            int inboxLimit = 150;
+
+            if (DonatorProcedures.DonatorGetsMessagesRewards(player) == true)
+            {
+                inboxLimit = 500;
+            }
+
+            List<Message> mydbMessagesTODELETE = mydbMessagesALL.Skip(inboxLimit).ToList();
 
             List<Message> mydbSentMessages = messageRepo.Messages.Where(m => m.SenderId == player.Id).OrderByDescending(m => m.Timestamp).Take(20).ToList();
 
@@ -164,12 +171,22 @@ namespace tfgame.Procedures
 
         public static void AddMessage(Message message)
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership();
+            Player sender = PlayerProcedures.GetPlayerFromMembership();
+            Player receiver = PlayerProcedures.GetPlayer(message.ReceiverId);
             IMessageRepository messageRepo = new EFMessageRepository();
 
             message.Timestamp = DateTime.UtcNow;
-            message.SenderId = me.Id;
+            message.SenderId = sender.Id;
             message.IsRead = false;
+
+            if (DonatorProcedures.EitherPlayersAreDonatorsOfTier(sender, receiver, 3) == true)
+            {
+                message.DoNotRecycleMe = true;
+            }
+            else
+            {
+                message.DoNotRecycleMe = false;
+            }
 
             messageRepo.SaveMessage(message);
 

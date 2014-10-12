@@ -1339,6 +1339,8 @@ namespace tfgame.Controllers
            
            }
 
+           ViewBag.IsDonator = DonatorProcedures.DonatorGetsMessagesRewards(me);
+
            ViewBag.Result = TempData["Result"];
             return View("MyMessages", output);
         }
@@ -1448,24 +1450,24 @@ namespace tfgame.Controllers
         }
 
          [Authorize]
-        public ActionResult SendMessage(Message input)
-        {
-            if (input.MessageText == null || input.MessageText == "")
-            {
-                ViewBag.ErrorMessage = "You need to write something to send to this person.";
-                return View("Write", input);
-               
-            }
+         public ActionResult SendMessage(Message input)
+         {
+             if (input.MessageText == null || input.MessageText == "")
+             {
+                 ViewBag.ErrorMessage = "You need to write something to send to this person.";
+                 return View("Write", input);
 
-            if (input.MessageText.Length> 1000)
-            {
-                ViewBag.ErrorMessage = "Your message is too long.";
-                return RedirectToAction("Write", input);
-            }
-            MessageProcedures.AddMessage(input);
-            TempData["Result"] = "Your message has been sent.";
-            return RedirectToAction("MyMessages");
-        }
+             }
+             if (input.MessageText.Length > 1000)
+             {
+                 ViewBag.ErrorMessage = "Your message is too long.";
+                 return RedirectToAction("Write", input);
+             }
+
+             MessageProcedures.AddMessage(input);
+             TempData["Result"] = "Your message has been sent.";
+             return RedirectToAction("MyMessages");
+         }
 
          [Authorize]
         public ActionResult InanimateAction(string actionName)
@@ -3518,7 +3520,8 @@ namespace tfgame.Controllers
                 using (var context = new StatsContext())
                 {
                     context.Database.ExecuteSqlCommand("ClearOldLocationLogs");
-                    context.Database.ExecuteSqlCommand("ClearOldMessages");
+                    //context.Database.ExecuteSqlCommand("ClearOldMessages");
+                    context.Database.ExecuteSqlCommand("DELETE FROM [Stats].[dbo].[Messages] WHERE Timestamp < DATEADD(hour, -72, GETUTCDATE()) AND DoNotRecycleMe = 0");
                     context.Database.ExecuteSqlCommand("ClearValuelessTFEnergies");
                     //context.Database.ExecuteSqlCommand("resetAnimalInanimateTimesAttacking");
                     context.Database.ExecuteSqlCommand("DELETE FROM [Stats].[dbo].[PlayerLogs] WHERE Timestamp < DATEADD(hour, -72, GETUTCDATE())");

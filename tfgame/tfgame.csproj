@@ -1357,6 +1357,7 @@
     <Content Include="Views\PvPAdmin\WriteFaeEncounter.cshtml" />
     <Content Include="Views\PvP\FAQ.cshtml" />
     <Content Include="Views\Settings\SetNickname.cshtml" />
+    <Content Include="Views\PvP\partial\partial_recentActivity.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

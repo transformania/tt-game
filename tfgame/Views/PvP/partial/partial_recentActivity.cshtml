@@ -1,4 +1,4 @@
-﻿@model tfgame.ViewModels.PlayPageViewModel
+﻿@model IEnumerable<tfgame.dbModels.Models.LocationLog>
 @using tfgame.CustomHtmlHelpers
 @using tfgame.ViewModels
 @using tfgame.Statics
@@ -10,7 +10,7 @@
 <p style="text-align: left; display:block; float: left;">log size: <a href="javascript:void(0)" onclick="document.getElementById('RecentActivityLog').style.maxHeight = '190px'">default</a> <a href="javascript:void(0)" onclick="document.getElementById('RecentActivityLog').style.maxHeight = '9999px'">full</a> </p>
 <ul id="RecentActivityLog" style="clear:both;">
     @{
-        foreach (tfgame.dbModels.Models.LocationLog log in Model.LocationLog)
+        foreach (tfgame.dbModels.Models.LocationLog log in Model)
         {
             <li>@Html.Raw(log.Message)  <span class="timeago">@CharactersHere.DatetimeToTimeago(log.Timestamp)</span></li>
         }

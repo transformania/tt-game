@@ -4,15 +4,6 @@
 
 @Html.ActionLink("Back to game", "Play", "PvP")
 
-<div class="result">
-    @Html.Raw(ViewBag.Result)
-</div>
-<div class="error">
-    @ViewBag.ErrorMessage
-</div>
-<div class="suberror">
-    @ViewBag.SubErrorMessage
-</div>
 <div class="covenContainer">
 
     @Html.ActionLink("Create your own Covenant", "StartNewCovenant", "Covenant")
@@ -28,7 +19,7 @@
         {
             @Html.ActionLink("Withdraw Pending Covenant Application", "WithdrawApplication", "Covenant")
         }
-
+        @:&nbsp;
         if (Model.dbCovenant != null && ViewBag.Player.Id == Model.dbCovenant.LeaderId)
         {
             @Html.ActionLink("View Administration Page", "CovenantLeaderAdmin", "Covenant")
@@ -36,7 +27,11 @@
         
    }
 
-
+    <div>
+        <span class="result">@Html.Raw(ViewBag.Result)</span>
+        <span class="error">@ViewBag.ErrorMessage</span>
+        <span class="suberror">@ViewBag.SubErrorMessage</span>
+    </div>
 
     @{
         if (Model.dbCovenant != null)
@@ -74,7 +69,7 @@
                 if (ViewBag.Player.Id == Model.dbCovenant.LeaderId)
                 {
                     <div class="commandWrapper" style="height: 24px;">
-                        <span>Send Arpeyjis to @p.Player.FirstName?</span>
+                        <span>Send Arp to @p.Player.FirstName?</span>
                         @Html.ActionLink("20", "GiveMoneyFromCovenantChest", "Covenant", new { id = p.Player.Id, amount = 20 }, null)
                         @Html.ActionLink("100", "GiveMoneyFromCovenantChest", "Covenant", new { id = p.Player.Id, amount = 100 }, null)
                         @Html.ActionLink("500", "GiveMoneyFromCovenantChest", "Covenant", new { id = p.Player.Id, amount = 500 }, null)

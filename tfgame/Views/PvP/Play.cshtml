@@ -33,29 +33,29 @@
 @Html.ActionLink("Chat", "Chat", "PvP", new { room = "global" }, new { target = "_blank" })
 @Html.ActionLink("Covenant", "MyCovenant", "Covenant")
 @Html.ActionLink("Settings", "Settings", "PvP")
-@Html.ActionLink("View Recent Actions (" + Model.PlayerLog.Count() + ")", "ViewLog", "PvP")
-@Html.ActionLink("View My Spells", "MySkills", "PvP")
-@Html.ActionLink("View Effects", "MyPerks", "PvP")
+@Html.ActionLink("Last Actions (" + Model.PlayerLog.Count() + ")", "ViewLog", "PvP")
+@Html.ActionLink("My Spells", "MySkills", "PvP")
+@Html.ActionLink("My Effects", "MyPerks", "PvP")
 @*@Html.ActionLink("View My Inventory (" + Model.PlayerItems.Where(i => i.dbItem.IsEquipped == false).Count() + "/" + Model.InventoryMaxSize + ")", "MyInventory", "PvP")*@
 
 @{
     if (Model.You.Player.UnusedLevelUpPerks > 0)
-    { <span class="newlink">@Html.ActionLink("Choose Level Up Perk!", "LevelupPerk", "PvP")</span> }
+    { <span class="newlink">@Html.ActionLink("Level Up!", "LevelupPerk", "PvP")</span> }
 }
 
 @{
     if (Model.MessageCounts.NewMessagesCount > 0)
     {
         <span class="newlink">
-            @Html.ActionLink("View Messages (" + Model.MessageCounts.NewMessagesCount + " unread)", "MyMessages", "PvP")
+            @Html.ActionLink("(" + Model.MessageCounts.NewMessagesCount + " unread)", "MyMessages", "PvP")
         </span>
     }
     else
     {
-        @Html.ActionLink("View Messages", "MyMessages", "PvP")
+        @Html.ActionLink("Inbox", "MyMessages", "PvP")
     }
 }
-@Html.ActionLink("Submit New Content", "Contribute", "PvP", new { Id = -1 }, null)
+@Html.ActionLink("Submit Content", "Contribute", "PvP", new { Id = -1 }, null)
 
 @{
     if (Model.You.Player.MembershipId == 69)
@@ -108,18 +108,11 @@
         <span class="locationDescription">@Model.Location.GetDescription()</span>
     </div>
 </center>
-<div class="result">
-    @Html.Raw(ViewBag.Result)
+<div>
+    <span class="result">@Html.Raw(ViewBag.Result)</span>
+    <span class="error">@ViewBag.ErrorMessage</span>
+    <span class="suberror">@ViewBag.SubErrorMessage</span>
 </div>
-<div class="error">
-    @ViewBag.ErrorMessage
-</div>
-<div class="suberror">
-    @ViewBag.SubErrorMessage
-</div>
-
-
-
 
 <h2>Players here:</h2>
 
@@ -215,7 +208,7 @@
         </div>
     }
 }
-
+<div style="clear:both;"></div>
 
 
 

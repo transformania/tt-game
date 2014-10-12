@@ -170,6 +170,7 @@ namespace tfgame.Controllers
             return View();
         }
 
+        [Authorize]
         public ActionResult SetNickname()
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
@@ -186,20 +187,36 @@ namespace tfgame.Controllers
             return View(output);
         }
 
+        [Authorize]
+        public ActionResult VerifyDonatorStatus()
+        {
+            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+
+            DonatorProcedures.SetNewPlayerDonationRank(me.FirstName + " " + me.LastName);
+
+            me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+
+            TempData["Result"] = "Your donation tier has been verified and set to tier " + me.DonatorLevel + ".";
+            return RedirectToAction("Play", "PvP");
+
+        }
+
+        [Authorize]
         public ActionResult SetNicknameSend(Message input)
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
 
-            if (input.MessageText.Length > 20) {
-                TempData["Error"] = "That nickname is too long. ";
-                TempData["SubError"] = "Nicknames must be no longer than 20 characters.";
+            if (me.DonatorLevel < 2)
+            {
+                TempData["Error"] = "You are not marked as a tier 2 or above donator.";
+                TempData["SubError"] = "This feature is reserved for players who pledge $7 monthly to support Transformania Time on Patreon.";
                 return RedirectToAction("Play", "PvP");
             }
 
-            if (TrustStatics.PlayerIsDonator_Tier1(WebSecurity.CurrentUserId) == false)
-            {
-                TempData["Error"] = "You are not marked as being a donator.";
-                TempData["SubError"] = "This feature is reserved for players who pledge $7 monthly to support Transformania Time on Patreon.";
+
+            if (input.MessageText.Length > 20) {
+                TempData["Error"] = "That nickname is too long. ";
+                TempData["SubError"] = "Nicknames must be no longer than 20 characters.";
                 return RedirectToAction("Play", "PvP");
             }
 

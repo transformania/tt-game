@@ -438,17 +438,12 @@ namespace tfgame.Procedures
             string locationToSpawnIn = spawnableLocations.ElementAt(index);
             newplayer.dbLocationName = locationToSpawnIn;
 
-            if (TrustStatics.PlayerIsDonator_Tier1(WebSecurity.CurrentUserId) == true)
-            {
-                newplayer.DonatorLevel = 1;
-            }
-            else
-            {
-                newplayer.DonatorLevel = 0;
-            }
+            
+              // assign the player their appropriate donation level
+            
 
             playerRepo.SavePlayer(newplayer);
-
+            DonatorProcedures.SetNewPlayerDonationRank(newplayer.FirstName + " " + newplayer.LastName);
 
             // if the player was in a covenant, they might have been the leader.  Check this and make a new player the leader
             if (oldCovId > 0)
@@ -466,6 +461,8 @@ namespace tfgame.Procedures
                 }
 
             }
+
+          
 
             ISkillRepository skillRepo = new EFSkillRepository();
             Skill baseskill = new Skill

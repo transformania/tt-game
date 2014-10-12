@@ -208,29 +208,8 @@
         </div>
     }
 }
-<div style="clear:both;"></div>
 
-
-
-
-<h2>Recent activity here:</h2>
-
-<ul id="RecentActivityLog">
-    @{
-        foreach (tfgame.dbModels.Models.LocationLog log in Model.LocationLog)
-        {
-            <li>@Html.Raw(log.Message)  <span class="timeago">@CharactersHere.DatetimeToTimeago(log.Timestamp)</span></li>
-        }
-    }
-</ul>
-
-<p id="timeReportClickMe" style="cursor: pointer;"><b>Click to show server load time breakdown</b></p>
-<div id="timeReport" style="display: none;">
-    <p>@Html.Raw(ViewBag.LoadTime)</p>
-</div>
-
-
-@*@Html.Partial("partial/attackModal", Model)*@
+@Html.Partial("partial/partial_recentActivity", Model)
 
 <div id="modalBackdrop"></div>
 <div id="attackModal" class="ui-widget-content ui-draggable" style="display:none;">

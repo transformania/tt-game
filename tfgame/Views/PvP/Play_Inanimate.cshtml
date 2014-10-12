@@ -128,20 +128,7 @@ else
         }
     </div>
 
-    <div style="display: inline-block; width: 100%;">
-        <h2>Recent activity here (location unknown):</h2>
-
-        <ul id="RecentActivityLog">
-            @{
-                foreach (tfgame.dbModels.Models.LocationLog log in Model.LocationLog.Reverse())
-                {
-                    <li>@Html.Raw(log.Message)  <span class="timeago">@CharactersHere.DatetimeToTimeago(log.Timestamp)</span></li>
-                }
-            }
-        </ul>
-    </div>
-
-
+@Html.Partial("partial/partial_recentActivity", Model)
 
     <script>
 

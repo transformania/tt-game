@@ -250,17 +250,8 @@ else
     }
 
 </div>
-<div style="clear:both;"></div>
-<h2>Recent activity here:</h2>
 
-<ul id="RecentActivityLog">
-    @{
-        foreach (tfgame.dbModels.Models.LocationLog log in Model.LocationLog)
-        {
-            <li>@Html.Raw(log.Message)  <span class="timeago">@CharactersHere.DatetimeToTimeago(log.Timestamp)</span></li>
-        }
-    }
-</ul>
+@Html.Partial("partial/partial_recentActivity", Model)
 
 <script>
 

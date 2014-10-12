@@ -670,6 +670,11 @@ a.talkLink {
     overflow-y: scroll;
 }
 
+#RecentActivityLog{
+    max-height: 190px;
+    overflow-y: scroll;
+}
+
 .icon-clock {
     width: 20px;
     height: 20px;

@@ -47,11 +47,14 @@
     </div>
     <div class="rightDisplay">
         <h1 style="margin-top: 0px; text-align: center;">@Model.PlayerForm.Player.GetFullName()</h1>
-        @{
-            if (ViewBag.TimeUntilLogout > 0 && Model.PlayerForm.Player.MembershipId > 0) {<p class="good">Online for @ViewBag.TimeUntilLogout more minutes</p>}
-            else if (Model.PlayerForm.Player.MembershipId > 0){<p class="bad">Offline</p>}
-        }
         <center>
+            @CharactersHere.GetCovenantInfo(Model.PlayerForm.Player.ToDbPlayer())
+            @{
+                if (ViewBag.TimeUntilLogout > 0 && Model.PlayerForm.Player.MembershipId > 0)
+                {<p class="good">Online for @ViewBag.TimeUntilLogout more minutes</p>}
+                else if (Model.PlayerForm.Player.MembershipId > 0)
+                {<p class="bad">Offline</p>}
+            }
             <span class="health">Willpower:  @Model.PlayerForm.Player.Health / @Model.PlayerForm.Player.MaxHealth</span><br />
             <span class="mana">Mana:  @Model.PlayerForm.Player.Mana / @Model.PlayerForm.Player.MaxMana</span>
             <h3>@Model.PlayerForm.Form.FriendlyName</h3>

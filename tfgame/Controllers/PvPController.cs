@@ -2681,6 +2681,10 @@ namespace tfgame.Controllers
 
             FairyChallengeBag output = tfgame.Procedures.BossProcedures.BossProcedures_Fae.GetFairyChallengeInfoAtLocation(fae.dbLocationName);
 
+            output.IntroText = output.IntroText.Replace("[", "<").Replace("]", ">");
+            output.CorrectFormText = output.CorrectFormText.Replace("[", "<").Replace("]", ">");
+            output.FailureText = output.FailureText.Replace("[", "<").Replace("]", ">");
+
             if (me.Form == output.RequiredForm)
             {
                 decimal xpGained = tfgame.Procedures.BossProcedures.BossProcedures_Fae.AddInteraction(me);

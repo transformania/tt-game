@@ -4,11 +4,13 @@
 
 <table id="bufftable">
     <thead>
-    <th>Effect</th>
-    <th>Total</th>
-    <th>From Form</th>
-    <th>From Items</th>
-    <th>From Effects</th>
+        <tr>
+            <th>Effect</th>
+            <th style="width:100px;">Total</th>
+            <th class="mobile">From Form</th>
+            <th class="mobile">From Items</th>
+            <th class="mobile">From Effects</th>
+        </tr>
     </thead>
     <tbody>
 
@@ -20,9 +22,9 @@
                     <td>
                         @Model.HealthBonusPercent()
                     </td>
-                    <td>@Model.FromForm_HealthBonusPercent</td>
-                    <td>@Model.FromItems_HealthBonusPercent</td>
-                    <td>@Model.FromEffects_HealthBonusPercent</td>
+                    <td class="mobile">@Model.FromForm_HealthBonusPercent</td>
+                    <td class="mobile">@Model.FromItems_HealthBonusPercent</td>
+                    <td class="mobile">@Model.FromEffects_HealthBonusPercent</td>
                 </tr>
             }
         }
@@ -35,9 +37,9 @@
                     <td>
                         @Model.ManaBonusPercent()
                     </td>
-                    <td>@Model.FromForm_ManaBonusPercent</td>
-                    <td>@Model.FromItems_ManaBonusPercent</td>
-                    <td>@Model.FromEffects_ManaBonusPercent</td>
+                    <td class="mobile">@Model.FromForm_ManaBonusPercent</td>
+                    <td class="mobile">@Model.FromItems_ManaBonusPercent</td>
+                    <td class="mobile">@Model.FromEffects_ManaBonusPercent</td>
                 </tr>
             }
         }
@@ -50,9 +52,9 @@
                     <td>
                         @Model.HealthRecoveryPerUpdate()
                     </td>
-                    <td>@Model.FromForm_HealthRecoveryPerUpdate</td>
-                    <td>@Model.FromItems_HealthRecoveryPerUpdate</td>
-                    <td>@Model.FromEffects_HealthRecoveryPerUpdate</td>
+                    <td class="mobile">@Model.FromForm_HealthRecoveryPerUpdate</td>
+                    <td class="mobile">@Model.FromItems_HealthRecoveryPerUpdate</td>
+                    <td class="mobile">@Model.FromEffects_HealthRecoveryPerUpdate</td>
                 </tr>
             }
         }
@@ -65,9 +67,9 @@
                     <td>
                         @Model.ManaRecoveryPerUpdate()
                     </td>
-                    <td>@Model.FromForm_ManaRecoveryPerUpdate</td>
-                    <td>@Model.FromItems_ManaRecoveryPerUpdate</td>
-                    <td>@Model.FromEffects_ManaRecoveryPerUpdate</td>
+                    <td class="mobile">@Model.FromForm_ManaRecoveryPerUpdate</td>
+                    <td class="mobile">@Model.FromItems_ManaRecoveryPerUpdate</td>
+                    <td class="mobile">@Model.FromEffects_ManaRecoveryPerUpdate</td>
                 </tr>
             }
         }
@@ -80,9 +82,9 @@
                     <td>
                         @Model.SneakPercent()
                     </td>
-                    <td>@Model.FromForm_SneakPercent</td>
-                    <td>@Model.FromItems_SneakPercent</td>
-                    <td>@Model.FromEffects_SneakPercent</td>
+                    <td class="mobile">@Model.FromForm_SneakPercent</td>
+                    <td class="mobile">@Model.FromItems_SneakPercent</td>
+                    <td class="mobile">@Model.FromEffects_SneakPercent</td>
                 </tr>
             }
         }
@@ -95,9 +97,9 @@
                     <td>
                         @Model.MeditationExtraMana()
                     </td>
-                    <td>@Model.FromForm_MeditationExtraMana</td>
-                    <td>@Model.FromItems_MeditationExtraMana</td>
-                    <td>@Model.FromEffects_MeditationExtraMana</td>
+                    <td class="mobile">@Model.FromForm_MeditationExtraMana</td>
+                    <td class="mobile">@Model.FromItems_MeditationExtraMana</td>
+                    <td class="mobile">@Model.FromEffects_MeditationExtraMana</td>
                 </tr>
             }
         }
@@ -110,9 +112,9 @@
                     <td>
                         @Model.CleanseExtraHealth()
                     </td>
-                    <td>@Model.FromForm_CleanseExtraHealth</td>
-                    <td>@Model.FromItems_CleanseExtraHealth</td>
-                    <td>@Model.FromEffects_CleanseExtraHealth</td>
+                    <td class="mobile">@Model.FromForm_CleanseExtraHealth</td>
+                    <td class="mobile">@Model.FromItems_CleanseExtraHealth</td>
+                    <td class="mobile">@Model.FromEffects_CleanseExtraHealth</td>
                 </tr>
             }
         }
@@ -125,9 +127,9 @@
                     <td>
                         @Model.MoveActionPointDiscount()
                     </td>
-                    <td>@Model.FromForm_MoveActionPointDiscount</td>
-                    <td>@Model.FromItems_MoveActionPointDiscount</td>
-                    <td>@Model.FromEffects_MoveActionPointDiscount</td>
+                    <td class="mobile">@Model.FromForm_MoveActionPointDiscount</td>
+                    <td class="mobile">@Model.FromItems_MoveActionPointDiscount</td>
+                    <td class="mobile">@Model.FromEffects_MoveActionPointDiscount</td>
                 </tr>
             }
         }
@@ -141,9 +143,9 @@
                     <td>
                         @Model.ExtraSkillCriticalPercent()
                     </td>
-                    <td>@Model.FromForm_ExtraSkillCriticalPercent</td>
-                    <td>@Model.FromItems_ExtraSkillCriticalPercent</td>
-                    <td>@Model.FromEffects_ExtraSkillCriticalPercent</td>
+                    <td class="mobile">@Model.FromForm_ExtraSkillCriticalPercent</td>
+                    <td class="mobile">@Model.FromItems_ExtraSkillCriticalPercent</td>
+                    <td class="mobile">@Model.FromEffects_ExtraSkillCriticalPercent</td>
                 </tr>
             }
         }
@@ -157,9 +159,9 @@
                     <td>
                         @Model.EvasionPercent()
                     </td>
-                    <td>@Model.FromForm_EvasionPercent</td>
-                    <td>@Model.FromItems_EvasionPercent</td>
-                    <td>@Model.FromEffects_EvasionPercent</td>
+                    <td class="mobile">@Model.FromForm_EvasionPercent</td>
+                    <td class="mobile">@Model.FromItems_EvasionPercent</td>
+                    <td class="mobile">@Model.FromEffects_EvasionPercent</td>
                 </tr>
             }
         }
@@ -172,9 +174,9 @@
                     <td>
                         @Model.EvasionNegationPercent()
                     </td>
-                    <td>@Model.FromForm_EvasionNegationPercent</td>
-                    <td>@Model.FromItems_EvasionNegationPercent</td>
-                    <td>@Model.FromEffects_EvasionNegationPercent</td>
+                    <td class="mobile">@Model.FromForm_EvasionNegationPercent</td>
+                    <td class="mobile">@Model.FromItems_EvasionNegationPercent</td>
+                    <td class="mobile">@Model.FromEffects_EvasionNegationPercent</td>
                 </tr>
             }
         }
@@ -187,9 +189,9 @@
                     <td>
                         @Model.SpellExtraHealthDamagePercent()
                     </td>
-                    <td>@Model.FromForm_SpellExtraHealthDamagePercent</td>
-                    <td>@Model.FromItems_SpellExtraHealthDamagePercent</td>
-                    <td>@Model.FromEffects_SpellExtraHealthDamagePercent</td>
+                    <td class="mobile">@Model.FromForm_SpellExtraHealthDamagePercent</td>
+                    <td class="mobile">@Model.FromItems_SpellExtraHealthDamagePercent</td>
+                    <td class="mobile">@Model.FromEffects_SpellExtraHealthDamagePercent</td>
                 </tr>
             }
         }
@@ -202,9 +204,9 @@
                     <td>
                         @Model.SpellExtraTFEnergyPercent()
                     </td>
-                    <td>@Model.FromForm_SpellExtraTFEnergyPercent</td>
-                    <td>@Model.FromItems_SpellExtraTFEnergyPercent</td>
-                    <td>@Model.FromEffects_SpellExtraTFEnergyPercent</td>
+                    <td class="mobile">@Model.FromForm_SpellExtraTFEnergyPercent</td>
+                    <td class="mobile">@Model.FromItems_SpellExtraTFEnergyPercent</td>
+                    <td class="mobile">@Model.FromEffects_SpellExtraTFEnergyPercent</td>
                 </tr>
             }
         }
@@ -217,9 +219,9 @@
                     <td>
                         @Model.CleanseExtraTFEnergyRemovalPercent()
                     </td>
-                    <td>@Model.FromForm_CleanseExtraTFEnergyRemovalPercent</td>
-                    <td>@Model.FromItems_CleanseExtraTFEnergyRemovalPercent</td>
-                    <td>@Model.FromEffects_CleanseExtraTFEnergyRemovalPercent</td>
+                    <td class="mobile">@Model.FromForm_CleanseExtraTFEnergyRemovalPercent</td>
+                    <td class="mobile">@Model.FromItems_CleanseExtraTFEnergyRemovalPercent</td>
+                    <td class="mobile">@Model.FromEffects_CleanseExtraTFEnergyRemovalPercent</td>
                 </tr>
             }
         }
@@ -232,9 +234,9 @@
                     <td>
                         @Model.SpellMisfireChanceReduction()
                     </td>
-                    <td>@Model.FromForm_SpellMisfireChanceReduction</td>
-                    <td>@Model.FromItems_SpellMisfireChanceReduction</td>
-                    <td>@Model.FromEffects_SpellMisfireChanceReduction</td>
+                    <td class="mobile">@Model.FromForm_SpellMisfireChanceReduction</td>
+                    <td class="mobile">@Model.FromItems_SpellMisfireChanceReduction</td>
+                    <td class="mobile">@Model.FromEffects_SpellMisfireChanceReduction</td>
                 </tr>
             }
         }
@@ -247,9 +249,9 @@
                     <td>
                         @Model.SpellHealthDamageResistance()
                     </td>
-                    <td>@Model.FromForm_SpellHealthDamageResistance</td>
-                    <td>@Model.FromItems_SpellHealthDamageResistance</td>
-                    <td>@Model.FromEffects_SpellHealthDamageResistance</td>
+                    <td class="mobile">@Model.FromForm_SpellHealthDamageResistance</td>
+                    <td class="mobile">@Model.FromItems_SpellHealthDamageResistance</td>
+                    <td class="mobile">@Model.FromEffects_SpellHealthDamageResistance</td>
                 </tr>
             }
         }
@@ -262,9 +264,9 @@
                     <td>
                         @Model.SpellTFEnergyDamageResistance()
                     </td>
-                    <td>@Model.FromForm_SpellTFEnergyDamageResistance</td>
-                    <td>@Model.FromItems_SpellTFEnergyDamageResistance</td>
-                    <td>@Model.FromEffects_SpellTFEnergyDamageResistance</td>
+                    <td class="mobile">@Model.FromForm_SpellTFEnergyDamageResistance</td>
+                    <td class="mobile">@Model.FromItems_SpellTFEnergyDamageResistance</td>
+                    <td class="mobile">@Model.FromEffects_SpellTFEnergyDamageResistance</td>
                 </tr>
             }
         }
@@ -277,9 +279,9 @@
                     <td>
                         @Model.ExtraInventorySpace()
                     </td>
-                    <td>@Model.FromForm_ExtraInventorySpace</td>
-                    <td>@Model.FromItems_ExtraInventorySpace</td>
-                    <td>@Model.FromEffects_ExtraInventorySpace</td>
+                    <td class="mobile">@Model.FromForm_ExtraInventorySpace</td>
+                    <td class="mobile">@Model.FromItems_ExtraInventorySpace</td>
+                    <td class="mobile">@Model.FromEffects_ExtraInventorySpace</td>
                 </tr>
             }
         }
@@ -293,14 +295,15 @@
     table {
         padding: 3px;
         border: 1px solid black;
+        width:100%;
     }
 
     th {
         background-color: black;
         color: white;
         text-align: center;
-        padding-left: 10px;
-        padding-right: 10px;
+        padding:2px 0px 2px 0px;
+        margin:0;
     }
 
     tr {
@@ -314,12 +317,24 @@
 
     td {
         text-align: center;
+        margin:0;
+        padding:2px 0px 2px 0px;
     }
 
     #bufftable {
         margin-bottom: 20px;
         float: left;
         position: relative;
+    }
+
+    .mobile{
+        width: 100px;
+    }
+
+    @@media screen and (max-width: 767px) {
+        .mobile{
+            display: none;
+        }
     }
 </style>
 

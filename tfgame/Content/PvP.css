@@ -875,10 +875,9 @@ a.curse {
     background-color: lightpink;
     border-radius: 10px;
     height: auto;
-    width: 100%;
+    max-width: 100%;
     padding: 10px;
     text-align: center;
-    margin-top: 10px;
     margin-bottom: 10px;
 }
 

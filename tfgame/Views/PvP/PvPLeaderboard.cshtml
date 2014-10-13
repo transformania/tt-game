@@ -4,34 +4,29 @@
 @using tfgame.CustomHtmlHelpers
 @using tfgame.Procedures
 
-<head>
-    <link href="~/Content/PvP.css" rel="stylesheet" />
-    <script src="~/Scripts/jquery-2.1.0.min.js"></script>
-</head>
-
 @Html.ActionLink("Back to game", "Play", "PvP")<br />
-@Html.ActionLink("View XP Leaderboard", "Leaderboard", "PvP")<br />
-@Html.ActionLink("View Item Leaderboard", "ItemLeaderboard", "PvP")<br />
 
-@Html.Partial("partial/OldLeaderboardLinks")
+<p style="text-align: center; margin-top:0px;">
+    @Html.ActionLink("View XP Leaderboard", "Leaderboard", "PvP") @Html.ActionLink("View Item Leaderboard", "ItemLeaderboard", "PvP")
+</p>
 
-<h1>PvP Leaderboard -- Alpha Round 11</h1>
+    @Html.Partial("partial/OldLeaderboardLinks")
 
-<p>These are the most powerful and dangerous magic casters in the town.</p>
-
+    <h1 style="text-align: center; margin-top:-10px;">PvP Leaderboard</h1>
+    <h2 style="text-align: center; margin-top:0;">Alpha Round 11</h2>
 
 <table>
-
     <thead>
-    <th>Rank</th>
-    <th>Name</th>
-    <th>Covenant</th>
-    <th>Form</th>
-    <th>Mobility</th>
-    <th>Level</th>
-    <th>PvP Score</th>
+        <tr>
+            <th style="width:15px">#</th>
+            <th class="leaderBoardName">Name</th>
+            <th class="leaderBoardCovenant mobile">Covenant</th>
+            <th class="leaderBoardForm mobile">Form</th>
+            <th>Mobility</th>
+            <th>Lv</th>
+            <th>Score</th>
+        </tr>
     </thead>
-
     <tbody>
 
         @{
@@ -41,7 +36,7 @@
         @foreach (Player p in Model)
         {
             <tr>
-                <td>
+                <td style="width:15px">
                     @rank
                 </td>
                 <td>
@@ -60,11 +55,11 @@
                     }
 
                 </td>
-                <td>
+                <td class="mobile">
                     @CharactersHere.GetCovenantInfoShort(p)
                 </td>
-                <td>
-                    @FormStatics.GetForm(p.Form).FriendlyName
+                <td class="mobile">
+                    <span style="font-size:11px;">@FormStatics.GetForm(p.Form).FriendlyName</span>
                 </td>
                 <td>
                     @{
@@ -99,26 +94,32 @@
 
 
 </table>
+<br />
+@Html.ActionLink("Back to game", "Play", "PvP")
 
-
-
-
-<p>
-    @Html.ActionLink("View XP Leaderboard", "Leaderboard", "PvP")<br />
-    @Html.ActionLink("View Item Leaderboard", "ItemLeaderboard", "PvP")<br />
-    @Html.ActionLink("Back to game", "Play", "PvP")
-</p>
 
 <style>
+    .leaderBoardName{
+        width:auto;
+    }
+    .leaderBoardCovenant{
+        width:20%;
+    }
+    .leaderBoardForm{
+        width:30%;
+    }
+
     table {
         padding: 3px;
         border: 1px solid black;
+        width:100%;
     }
 
     th {
         background-color: black;
         color: white;
         text-align: center;
+        padding:0px;
     }
 
     tr {
@@ -132,6 +133,7 @@
 
     td {
         text-align: center;
+        padding: 2px 0px 2px 0px;
     }
 
     .dark {
@@ -142,6 +144,15 @@
         background-color: #B8B8B8;
     }
 
+    .mobile{
+
+    }
+
+    @@media screen and (max-width: 767px) {
+        .mobile{
+            display: none;
+        }
+    }
 
 </style>
 

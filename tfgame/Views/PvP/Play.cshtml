@@ -4,21 +4,14 @@
 @using tfgame.Statics
 @using tfgame.Procedures
 
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<script src="~/Scripts/jquery-ui-1.10.4.js"></script>
+<script src="~/Scripts/jquery.rotate.js"></script>
+
 
 @{
     ViewBag.Title = "Play";
 }
-
-<head>
-
-    <link href="~/Content/PvP.css" rel="stylesheet" />
-    <script src="~/Scripts/jquery-2.1.0.js"></script>
-    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
-    <script src="~/Scripts/jquery-ui-1.10.4.js"></script>
-    <script src="~/Scripts/jquery.rotate.js"></script>
-
-
-</head>
 
 @Html.Partial("partial/RoundStatus", Model.PvPWorldStat)
 
@@ -109,12 +102,12 @@
     </div>
 </center>
 <div>
-    <span class="result">@Html.Raw(ViewBag.Result)</span>
-    <span class="error">@ViewBag.ErrorMessage</span>
-    <span class="suberror">@ViewBag.SubErrorMessage</span>
+    <p class="result">@Html.Raw(ViewBag.Result)</p>
+    <p class="error">@ViewBag.ErrorMessage</p>
+    <p class="suberror">@ViewBag.SubErrorMessage</p>
 </div>
 
-<h2>Players here:</h2>
+<h2>Players here</h2>
 
 @*all players who are online*@
 @{
@@ -159,55 +152,44 @@
 
 </div>
 
-@{
-    foreach (tfgame.ViewModels.ItemViewModel item in Model.LocationItems)
-    {
-        <div style="height: 60px; clear:both;">
-
-
-            <div class="portrait_item_mainpage" style="background-image: url(..@CharactersHere.GetImageURL(item));">
-
-                @{ if (item.Item.ItemType != PvPStatics.ItemType_Consumeable && item.dbItem.Level > 0)
-                 {
-                    <span class="icon-level"><b>@item.dbItem.Level</b></span>
-                 }
-                }
-
-
-                @CharactersHere.PrintItemTypeIcon(item.Item)
-
-
-
-            </div>
-
-            <div style="float: left; position: relative; padding-top:22px; padding-left: 10px; font-size: 16px; font-weight: 400;">
-
-                @item.Item.FriendlyName
-
-                @{
-        if (item.dbItem.VictimName != "")
+<div style="clear:both;">
+    @{
+        foreach (tfgame.ViewModels.ItemViewModel item in Model.LocationItems)
         {
-            <span class="formerPlayer">(Formerly @item.dbItem.VictimName)</span>
-        }
-                }
+            <div class="floorItemWrapper">
+                <div class="portrait_item_mainpage" style="background-image: url(..@CharactersHere.GetImageURL(item));">
+                    @{ if (item.Item.ItemType != PvPStatics.ItemType_Consumeable && item.dbItem.Level > 0)
+                     {
+                        <span class="floorItemLevel"><b>@item.dbItem.Level</b></span>
+                     }
+                    }
+                    @CharactersHere.PrintItemTypeIcon(item.Item)
+                </div>
 
-                @{if (item.Item.ItemType == PvPStatics.ItemType_Pet)
-                {
-                    @Html.ActionLink("Tame", "Take", "PvP", new { id = item.dbItem.Id }, null)
-                }
-                else
-                {
-                    @Html.ActionLink("Take", "Take", "PvP", new { id = item.dbItem.Id }, null)
-                }
+                <div>
+                    @{if (item.Item.ItemType == PvPStatics.ItemType_Pet)
+                    {
+                        @Html.ActionLink("Tame", "Take", "PvP", new { id = item.dbItem.Id }, null)<br />
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Take", "Take", "PvP", new { id = item.dbItem.Id }, null)<br />
+                    }
 
-                }
+                    }
 
-
-
+                    <span class="floorItemName">@item.Item.FriendlyName <br /></span>
+                    @{
+            if (item.dbItem.VictimName != "")
+            {
+                <span class="formerPlayer">(Formerly @item.dbItem.VictimName)</span>
+            }
+                    }
+                </div>
             </div>
-        </div>
+        }
     }
-}
+</div>
 
 @Html.Partial("partial/partial_recentActivity", Model.LocationLog)
 
@@ -217,6 +199,11 @@
     <span id="attackClose" onclick="closeAttackModal()">Cancel</span>
     <span id="expand" onclick="expandModal()">Expand</span>
 </div>
+
+<style>
+    
+</style>
+
 
 <script>
 

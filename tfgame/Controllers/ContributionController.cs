@@ -34,8 +34,11 @@ namespace tfgame.Controllers
             EffectContribution output = effectContRepo.EffectContributions.FirstOrDefault(e => e.Id == id);
 
             List<EffectContribution> proofreading = new List<EffectContribution>();
+
+            bool iAmProofreader = User.IsInRole(PvPStatics.Permissions_Proofreader);
+
             // add the rest of the submitted contributions if the player is a proofread
-            if (TrustStatics.PlayerIsProofreader(WebSecurity.CurrentUserId) == true)
+            if (iAmProofreader == true)
             {
                 proofreading = effectContRepo.EffectContributions.Where(c => c.ApprovedByAdmin == true && c.ProofreadingCopy == true).ToList();
                 ViewBag.Proofreading = proofreading;
@@ -55,7 +58,7 @@ namespace tfgame.Controllers
             // not new... check for proofreading permissions
             else
             {
-                if (output.OwnerMemberhipId != WebSecurity.CurrentUserId && (TrustStatics.PlayerIsProofreader(WebSecurity.CurrentUserId) == false || output.ProofreadingCopy == false))
+                if (output.OwnerMemberhipId != WebSecurity.CurrentUserId && (iAmProofreader == false || output.ProofreadingCopy == false))
                 {
                     TempData["Error"] = TempData["You do not have permission to view this."];
                     return RedirectToAction("Play", "PvPController");
@@ -92,6 +95,8 @@ namespace tfgame.Controllers
 
             // TODO:  assert player owns this
 
+            bool iAmProofreader = User.IsInRole(PvPStatics.Permissions_Proofreader);
+
             if (saveme == null)
             {
                 saveme = new EffectContribution
@@ -103,7 +108,9 @@ namespace tfgame.Controllers
                 };
 
                 // make sure this actually is the player's own contribution
-            } else if (saveme.OwnerMemberhipId != WebSecurity.CurrentUserId && TrustStatics.PlayerIsProofreader(WebSecurity.CurrentUserId) == false) {
+            }
+            else if (saveme.OwnerMemberhipId != WebSecurity.CurrentUserId && iAmProofreader == false)
+            {
                 TempData["Error"] = "This contribution does not belong to you and you are not a proofreader.";
                 TempData["SubError"] = "You may have been logged out; check that you are logged in the the game still in another tab.";
                 return RedirectToAction("ContributeEffect", "Contribution", new { @id = -1 });

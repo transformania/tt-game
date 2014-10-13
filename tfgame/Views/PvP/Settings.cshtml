@@ -1,4 +1,5 @@
 ﻿@model tfgame.dbModels.Models.Player
+           @using tfgame.Statics
 
 <head>
     <link href="~/Content/PvP.css" rel="stylesheet" />
@@ -20,6 +21,22 @@
         {
             <p><span class="good">You are offline.</span></p>
         }
+
+        if (User.IsInRole(PvPStatics.Permissions_MultiAccountWhitelist) == true)
+        {
+            <p class="good">You are on the multiple account whitelist.</p>
+        }
+        
+        if (User.IsInRole(PvPStatics.Permissions_Proofreader) == true)
+        {
+            <p class="good">You are on the proofreaders list.</p>
+        }
+        
+        if (User.IsInRole(PvPStatics.Permissions_Artist) == true)
+        {
+            <p class="good">You are on the artists list.</p>
+        }
+        
     }
 
     <h2>Reserve this Name</h2>

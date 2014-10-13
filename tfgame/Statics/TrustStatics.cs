@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using WebMatrix.WebData;
 
 namespace tfgame.Statics
 {
@@ -30,26 +31,6 @@ namespace tfgame.Statics
              8348, // Sethra Solus (from forums request)
 
           };
-
-        public static int[] DonatingAccount = {
-             69, // me
-             232, // Varn (Lucy Gautreau)
-             1922, // Jess Ganes
-             8151, // Cloudette
-             6214, // Crissa Kentavr,
-             7196, // Teranika	Darkfire
-             481, // Elyn
-             4411, // Kaitlyn Halliwell
-             77, // Cara Doom
-             6515, // Seras Tearfall
-             9618, // Trixie1231
-             2699, // Hanna Patterson
-             9611, // Jobot ($3)
-             10713, // Joel Saward ($3)
-             7178, // Jessica Dahl
-             10664, // James Fedora ($10)
-             3240, // Izzy Valentine ($3)
-                                              };
        
         public static int[] Artists = {
            69, // Judoo
@@ -103,18 +84,9 @@ namespace tfgame.Statics
             {
                 return false;
             }
-        }
 
-        public static bool PlayerIsDonator_Tier1(int MembershipId)
-        {
-            if (DonatingAccount.Contains(MembershipId))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+
+
         }
 
         public static string NameIsReserved(string name)
@@ -128,9 +100,15 @@ namespace tfgame.Statics
         }
 
         public static bool AccountCanHaveMultis(int membershipId) {
-            if (MultisAllowed.Contains(membershipId)) {
+
+           // bool result = User.IsInRole("whitelisted");
+
+            if (MultisAllowed.Contains(membershipId))
+            {
                 return true;
-            } else {
+            }
+            else
+            {
                 return false;
             }
         }

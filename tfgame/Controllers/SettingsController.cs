@@ -175,7 +175,7 @@ namespace tfgame.Controllers
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
 
-            if (TrustStatics.PlayerIsDonator_Tier1(WebSecurity.CurrentUserId) == false)
+            if (DonatorProcedures.DonatorGetsNickname(me) == false)
             {
                 TempData["Error"] = "You are not marked as being a donator.";
                 TempData["SubError"] = "This feature is reserved for players who pledge $7 monthly to support Transformania Time on Patreon.";

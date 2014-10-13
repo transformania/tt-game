@@ -321,7 +321,10 @@ namespace tfgame.Controllers
             }
 
             // assert player does not have more than 1 account already
-            if (TrustStatics.AccountCanHaveMultis(WebSecurity.CurrentUserId) == false && PlayerProcedures.IsMyIPInUseAndAnimate(Request.UserHostAddress) == true)
+
+            bool iAmWhitelisted = User.IsInRole(PvPStatics.Permissions_MultiAccountWhitelist);
+
+            if (iAmWhitelisted == false && PlayerProcedures.IsMyIPInUseAndAnimate(Request.UserHostAddress) == true)
             {
 
                 ViewBag.ValidationMessage = "Your character was not created.  It looks like your IP address, <b>" + Request.UserHostAddress + "</b> already has 1 animate character in this world, and the current limit is 1. ";
@@ -548,8 +551,10 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play");
             }
 
+            bool iAmWhitelisted = User.IsInRole(PvPStatics.Permissions_MultiAccountWhitelist);
+
             // assert player does not have more than 1 accounts already
-            if (TrustStatics.AccountCanHaveMultis(WebSecurity.CurrentUserId) == false && PlayerProcedures.IsMyIPInUseAndAnimate(Request.UserHostAddress, me) == true)
+            if (iAmWhitelisted == false && PlayerProcedures.IsMyIPInUseAndAnimate(Request.UserHostAddress, me) == true)
             {
                 TempData["Error"] = "This character looks like a multiple account, which is illegal.  This character will not be allowed to attack.";
                 TempData["SubError"] = "You can only have 1 animate character in PvP mode and 1 animate character in non-PvP mode at a time.";
@@ -1671,8 +1676,10 @@ namespace tfgame.Controllers
             IEnumerable<Contribution> myContributions = contributionRepo.Contributions.Where(c => c.OwnerMembershipId == currentUserId);
             IEnumerable<Contribution> proofreading = null;
 
+            bool iAmProofreader = User.IsInRole(PvPStatics.Permissions_Proofreader);
+
             // add the rest of the submitted contributions if the player is a proofread
-            if (TrustStatics.PlayerIsProofreader(WebSecurity.CurrentUserId) == true)
+            if (iAmProofreader == true)
             {
                 proofreading = contributionRepo.Contributions.Where(c => c.AdminApproved == true && c.ProofreadingCopy == true);
             }
@@ -1688,14 +1695,14 @@ namespace tfgame.Controllers
                     ViewBag.Result = "Load successful.";
 
                     // assert player owns this
-                    if (contribution.OwnerMembershipId != currentUserId && !TrustStatics.PlayerIsProofreader(WebSecurity.CurrentUserId))
+                    if (contribution.OwnerMembershipId != currentUserId && iAmProofreader == false)
                     {
                         TempData["Error"] = "This contribution does not belong to your account.";
                         return RedirectToAction("Play");
                     }
 
                     // if this player is a proofreader and this contribution is not marked as ready for proofreading, tell the editor to go to the proofreading version instead.
-                    if (TrustStatics.PlayerIsProofreader(WebSecurity.CurrentUserId) == true && contribution.ProofreadingCopy == false)
+                    if (iAmProofreader == true && contribution.ProofreadingCopy == false)
                     {
                         Contribution contributionProofed = contributionRepo.Contributions.FirstOrDefault(c => c.OwnerMembershipId == contribution.OwnerMembershipId && c.ProofreadingCopy == true && c.Skill_FriendlyName == contribution.Skill_FriendlyName);
                         if (contributionProofed != null)
@@ -1752,8 +1759,9 @@ namespace tfgame.Controllers
             Contribution contribution = contributionRepo.Contributions.FirstOrDefault(c => c.Id == id);
 
             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            bool iAmProofreader = User.IsInRole(PvPStatics.Permissions_Proofreader);
 
-            if (TrustStatics.PlayerIsProofreader(me.MembershipId) == false && contribution.OwnerMembershipId != me.MembershipId)
+            if (iAmProofreader == false && contribution.OwnerMembershipId != me.MembershipId)
             {
                 TempData["Error"] = "That does not belong to you and you are not a proofreader.";
                 return RedirectToAction("Play");
@@ -1772,8 +1780,9 @@ namespace tfgame.Controllers
              Contribution SaveMe = contributionRepo.Contributions.FirstOrDefault(c => c.Id == input.Id);
 
              Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+             bool iAmProofreader = User.IsInRole(PvPStatics.Permissions_Proofreader);
 
-             if (TrustStatics.PlayerIsProofreader(me.MembershipId) == false && SaveMe.OwnerMembershipId != me.MembershipId)
+             if (iAmProofreader == false && SaveMe.OwnerMembershipId != me.MembershipId)
              {
                  TempData["Error"] = "That does not belong to you and you are not a proofreader.";
                  return RedirectToAction("Play");
@@ -1827,7 +1836,9 @@ namespace tfgame.Controllers
         public ActionResult ContributeSetGraphicStatus(int id)
         {
 
-            if (!TrustStatics.Artists.Contains(WebSecurity.CurrentUserId))
+            bool iAmArtist = User.IsInRole(PvPStatics.Permissions_Artist);
+
+            if (iAmArtist == false)
             {
                 TempData["Result"] = "You don't have permissions to do that.  If you are an artist and are interested in contributing artwork, please contact the administrator, Judoo.";
                 return RedirectToAction("ContributeGraphicsNeeded");
@@ -1848,7 +1859,10 @@ namespace tfgame.Controllers
          [Authorize]
         public ActionResult ContributeSetGraphicStatusSubmit(ContributionStatusViewModel input)
         {
-            if (!TrustStatics.Artists.Contains(WebSecurity.CurrentUserId))
+
+            bool iAmArtist = User.IsInRole(PvPStatics.Permissions_Artist);
+
+            if (iAmArtist == false)
             {
                 TempData["Result"] = "You don't have permissions to do that.  If you are an artist and are interested in contributing artwork, please contact the administrator, Judoo.";
                 return RedirectToAction("ContributeGraphicsNeeded");
@@ -1875,6 +1889,8 @@ namespace tfgame.Controllers
 
             Session["ContributionId"] = input.Id;
 
+            bool iAmProofreader = User.IsInRole(PvPStatics.Permissions_Proofreader);
+
             SaveMe = contributionRepo.Contributions.FirstOrDefault(c => c.Id == input.Id);
             if (SaveMe == null)
             {
@@ -1897,7 +1913,7 @@ namespace tfgame.Controllers
                 else if (SaveMe != null && SaveMe.OwnerMembershipId != WebSecurity.CurrentUserId)
                 {
                     // this is a poorfreading copy.  Keep Id the same and keep it marked as a proofreading copy IF the editor is a proofreader
-                    if (SaveMe.ProofreadingCopy == true && TrustStatics.PlayerIsProofreader(WebSecurity.CurrentUserId))
+                    if (SaveMe.ProofreadingCopy == true && iAmProofreader == true)
                     {
                         SaveMe.Id = input.Id;
                         //SaveMe.ProofreadingCopy = true;
@@ -2050,8 +2066,9 @@ namespace tfgame.Controllers
         public ActionResult SendContributionUndoLock(int id)
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            bool iAmProofreader = User.IsInRole(PvPStatics.Permissions_Proofreader);
 
-            if (TrustStatics.PlayerIsProofreader(me.MembershipId) == false)
+            if (iAmProofreader == false)
             {
                 TempData["Error"] = "You must be a proofreader in order to do this.";
                 return RedirectToAction("Play");

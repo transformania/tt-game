@@ -63,6 +63,10 @@ namespace tfgame.Statics
         public static decimal XP__Level_20 = 3970; //+390
         public static decimal XP__Level_21 = 4360; //+410
 
+        public const string Permissions_MultiAccountWhitelist = "whitelisted";
+        public const string Permissions_Proofreader = "proofreader";
+        public const string Permissions_Artist = "artist";
+
         public static int[] XP__LevelupRequirementByLevel = {
            5, // 0 (nobody should ever be at 0!)
            100, // 1 (nobody should be able to level up to 1 since that means they were at 0!)

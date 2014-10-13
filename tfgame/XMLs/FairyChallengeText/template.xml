@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FairyChallengeViewModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <FairyChallengeBags>
+  
+  
     <FairyChallengeBag>
   <dbLocationName>candystore_shelves</dbLocationName>
   <IntroText>[p]You turn the corner to find Jewdewfae the fairy trying to unscrew the lid from a jar of gummy bear candies.  She is too small and light to twist it off, but she seems to be having too much fun just trying to do it by herself.  She giggles and turns to you.[/p]
@@ -34,30 +36,66 @@
 </FairyChallengeBag>
 	
 	<FairyChallengeBag>
-      <dbLocationName>mansion_bedroom</dbLocationName>
-      <IntroText>As you carefully step into the room you see Jewdewfae the fairy perched at the top of the headboard in the bedroom’s canopy bed.  She hangs off of it with one hand, poised to leap down onto the mattress below.  You watch as she pushes off into the air, giggling and twirling around as she plummets down onto the sheets below.  But when she lands she is greeted by a cloud of dust rising off of every nearby surface, causing her to quickly fly up into the air covering her eyes and wheezing.
+  <dbLocationName>mansion_bedroom</dbLocationName>
+  <IntroText>[p]As you carefully step into the room you see Jewdewfae the fairy perched at the top of the headboard in the bedroom’s canopy bed.  She hangs off of it with one hand, poised to leap down onto the mattress below.  You watch as she pushes off into the air, giggling and twirling around as she plummets down onto the sheets below.  But when she lands she is greeted by a cloud of dust rising off of every nearby surface, causing her to quickly fly up into the air covering her eyes and wheezing.[/p]
 
-Blindly, Jewdewfae collides with you and clutches onto your neck as she hacks the last bit of dust out of her tiny lungs.  “That was so much fun, if only this place were a little bit cleaner…” she looks up at you, recoiling in mock surprise that she just-so-happened to have flown right into someone.  “Oh heya!  Are you the new Mincing Maid I ordered?  Would you help me clean out this bed so I can play on it without getting dirty?  Well, at least not dirty from dirt...”</IntroText>
-      <CorrectFormText>“Oh!  Perfect!  Hola, madamoiselle!  Did I get that right?  Oh, it doesn’t matter.  Come here!” Jewdewfae sends a bolt of energy at you, striking your body and making you gasp and strike a sexy pose against your will.  You find yourself blushing as Jewdewfae eyes your body, whistling in approval as she grows into a full-sized woman wearing fine velvet robes, clearly someone rich and powerful.
+[p]Blinded, Jewdewfae collides with you and clutches onto your neck as she hacks the last bit of dust out of her tiny lungs.  [fae]“That was so much fun, if only this place were a little bit cleaner…”[/fae] she looks up at you, recoiling in mock surprise that she just-so-happened to have flown right into someone.  [fae]“Oh heya!  Are you the new Mincing Maid I ordered?  Would you help me clean out this bed so I can play on it without getting dirty?  Well, at least not dirty from dirt...”[/fae][/p]</IntroText>
+  <CorrectFormText>[p][fae]“Oh!  Perfect!  Hola, madamoiselle!  Did I get that right?  Oh, it doesn’t matter.  Come here!”[/fae] Jewdewfae sends a bolt of energy at you, striking your body and making you gasp and strike a sexy pose against your will.  You find yourself blushing as Jewdewfae eyes your body, whistling in approval as she grows into a full-sized woman wearing fine velvet robes, clearly someone rich and powerful.[/p]
 
-“Okay, now, go change those bedsheets, dust the mirror, vacuum the floor, mop up the kitchen, mend up this little tear in my dress, paint the walls a slightly lighter shade of blue, and have my dinner all ready for me in half an hour!  Heehee!  Oh, isn’t this fun, me bossing you around like that?  But maybe you need a sister to help you?” in the blink of an eye Jewdewfae’s clothes vanish, replaced instantly by a dress just like yours.  “Oui, oui, let’s get to cleaning!”
+[p][fae]“Okay, now, go change those bedsheets, dust the mirror, vacuum the floor, mop up the kitchen, mend up this little tear in my dress, paint the walls a slightly lighter shade of blue, and have my dinner all ready for me in half an hour!  Heehee!  Oh, isn’t this fun, me bossing you around like that?  But maybe you need a sister to help you?”[/fae] in the blink of an eye Jewdewfae’s clothes vanish, replaced instantly by a dress just like yours. [fae] “Oui, oui, let’s get to cleaning!”[/fae][/p]
 
-Cleaning begins and ends with you and Jewdewfae changing the bedsheets but somehow tripping and becoming entangled in them with your clothing mysteriously slipping away.  Ultimately the bed remains as dirty as ever, perhaps with a few more fluids drying on them.  “Bestest maids ever,” Jewdewfae sighs.  “Time for your paycheck!”  She zaps you, filling you with some fairy magic in reward as she flies off.</CorrectFormText>
-      <FailureText>“Where’s your outfit?” Jewdewfae giggles.  “Where’s your sexy sweet French accent?  Where’s your feather duster?  This whole bedroom is messy, messy, messy, and I need a real veteran cleaning lady here, not… whatever you are!”</FailureText>
-	  <RequiredForm>form_Mincing_Maid_Ellipsis</RequiredForm>
+[p]Cleaning begins and ends with you and Jewdewfae changing the bedsheets but somehow tripping and becoming entangled in them with your clothing mysteriously slipping away.  Ultimately the bed remains as dirty as ever, perhaps with a few more fluids drying on them.  [fae]“Bestest maids ever,”[/fae] Jewdewfae sighs.  [fae]“Time for your paycheck!”[/fae]  She zaps you, filling you with some fairy magic in reward as she flies off.[/p]</CorrectFormText>
+  <FailureText>[p][fae]“Where’s your outfit?” Jewdewfae giggles.  “Where’s your sexy sweet French accent?  Where’s your feather duster?  This whole bedroom is messy, messy, messy, and I need a real veteran cleaning lady here, not… whatever you are!”[/fae][/p]</FailureText>
+  <RequiredForm>form_Mincing_Maid_Ellipsis</RequiredForm>
 </FairyChallengeBag>
+
+
+
 <FairyChallengeBag>
-      <dbLocationName>park_rose_garden</dbLocationName>
-	  <RequiredForm>form_Alraune_Foxpower93</RequiredForm>
-      <IntroText>As you enter the rose garden you see Jewdewfae the fairy sitting on the edge of a wooden bench, her blue dress lying beside her leaving her body naked.  She has a pile of rose petals sitting on her lap and around her and she appears to be weaving them into some kind of new dress using a needle three inches long, a third the height of her entire body.  Needless to say she is not doing a very good job.
+  <dbLocationName>park_rose_garden</dbLocationName>
+  <IntroText>[p]As you enter the rose garden you see Jewdewfae the fairy sitting on the edge of a wooden bench, her blue dress lying beside her leaving her completely naked in the wind.  She has a pile of rose petals sitting on her lap and around her and she appears to be weaving them into some kind of tiny dress using a needle three inches long which is a third the height of her entire body.  Needless to say she is not doing a very good job.[/p]
 
-As your shadow falls over her she looks up, shrieking in fake innocents as she holds two rose petals up to cover her naked breasts.  “Oops, oh my, the wind,” she giggles as she releases them into the breeze.  “You know those springtime fairies that make their own dresses out of flowers?  Well, they’re having this dance tonight out in the Scarlet Forest and I need a pretty little dress, but rose petals tear too easily.  And I think Jaylee Dewtoes already has one.  What am I going to do…”
+[p]As your shadow falls over her she looks up, shrieking in fake innocence as she holds two rose petals up to cover her naked breasts.  [fae]“Oops, oh my, the wind,”[/fae] she giggles as she releases them into the breeze. [fae] “You know those springtime fairies that make their own dresses out of flowers?  Well, they’re having this dance tonight out in the Scarlet Forest and I need a pretty little dress, but these rose petals tear way too easily.  And I think that new girl Jaylee Dewtoes already has one.  Oh, what am I going to do…”[/fae][/p]
 
-She sighs glumly, then looks up, her face glowing.  “Oh, I know!  I want to make a dress made out of those pretty pink flowers that those pretty Alraune girls all grow!”</IntroText>
-      <CorrectFormText>“Oh, perfect!” Jewdewfae zips over and lands on your scalp and begins to tug at one of the large pink petals growing out of your hair, but it won’t come out and the more she pulls the more it starts to hurt.  Before you need to ask her to stop hurting you, she gives up on her own.  “You know what, I just had the best idea--I’m going to just collect some of that sweet aroma of yours.”
+[p]She sighs glumly, then looks up, her face glowing.  [fae]“Oh, I know!  I want to make a dress from those big pretty pink flowers that those pretty Alraune girls all grow!  I don’t suppose you could let me, um, ‘borrow’ one from you?”[/fae][/p]</IntroText>
+  <CorrectFormText>[p][fae]“Oh, perfect!”[/fae] Jewdewfae zips over to you and begins to tug at one of the large pink petals growing out of your hair, but it won’t come out and the more she pulls the more it starts to hurt.  Before you need to ask her to stop hurting you, she gives up on her own.  [fae]“Screw this.  But you know what, I do love the way you smell.  Oh!  I just had the best idea--I’m going to just collect some of that sweet aroma of yours, mkay?”[/fae][/p]
 
-She finds the cap of an acorn and begins to scrape it along your flowers instead, collecting some of the sweet pollen and syrupy juices that your body emits to produce its powerful aroma.  You enjoy the sensation of her actions, the feeling of being groomed and appreciated.  “Perfect!  Thankies!  I’m going to smell so wonderful tonight.  Here, have this, you deserve it.”  She zaps you, filling you with some fairy magic in reward as she flies off.</CorrectFormText>
-      <FailureText>“You’re not a flower, silly!” Jewdewfae giggles.  “I could just turn you straight into an Alraune petal dress, but that’s not half as fun.”</FailureText>
+[p]She finds the cap of an acorn and begins to scrape it along your flowers instead, collecting some of the sweet pollen and syrupy juices that your body emits to produce its powerful aroma.  You enjoy the tickling sensation of her actions, tingling with the sensation of being groomed. [fae]“Perfect!  Thankies!  I’m going to smell so wonderful tonight.  Here, have this, you deserve it.”[/fae]  She zaps you, filling you with some fairy magic in reward as she flies off.[/p]</CorrectFormText>
+  <FailureText>[p][fae]“You’re not a flower, silly!”[/fae] Jewdewfae giggles.  [fae]“You know, I could just turn you straight into an Alraune petal dress, but that’s not half as fun.  Did I ever tell you about the time I spent a day s a pair of boots?  Blech.  Your big people feet are stinky.”[/fae][/p]</FailureText>
+  <RequiredForm>form_Alraune_Foxpower93</RequiredForm>
+</FairyChallengeBag>
+
+
+<FairyChallengeBag>
+  <dbLocationName>clothing_womens</dbLocationName>
+  <IntroText>[p]As you walk inside the clothing store you see four mannequins posed out in the middle of the aisle, each wearing a different dress, though none of them seem to fit the mannequin quite right and some appear to have been torn by the effort of forcing them on them.  You don’t sense any human consciousness coming from them--just plain old non-former-human store props.  Just as you breath a sigh of relief and try to walk past, a small voice calls out [fae]“Hey!  You!  You’re blocking my view, you clumsy biggie!”[/fae][/p]
+
+[p]Startled, you look around and see Jewdewfae the fairy sitting on a stack of folded jeans, staring at the mannequins intently.  She sighs, appearing to be lost in deep contemplation. [fae] “You know, these dresses just aren’t doing it for me.  Would you mind helping me pick one out?  Nah, I don’t want you to tell me what you like, I have my own style.  I just need you to wear them and stand super still, just like these mannequins over here.  Why don’t you get yourself turned into one of those Magical Mannequin women I’ve seen here and there?”[/fae][/p]</IntroText>
+  <CorrectFormText>[p][fae]“Perfect!”[/fae]  Jewdewfae flies over a line of dresses neatly hanging on a metal rack and begins to hum, picking out a select few but letting most drop to the floor and get wrinkled.  Finally she finishes her selection and flies back over, weighed down by the heap of cloth in her arms.  [fae]“Okay, arms up, let me put this red one on you.  And don’t move.  Unless you’re putting your arms up.  Now put them back down.  And don’t move.  Unless you’re… well, you get what I mean, silly.”[/fae][/p]
+
+[p]You stand perfectly still--something you’re certainly quite adept at in your faceless, enchanted wooden body--and watch through the magic of the rune on your head as Jewdewfae slips on a slinky pink dress over your body and flies back to her heap of jeans, resuming her contemplation.  [fae]“Hm… no… not quite... let me go grab another…”[/fae][/p]
+
+[p]After repeating this process for what feels like hours, you suddenly hear Jewdewfae shriek in delight as she flies out of a heap of clothing clutching an ugly skintight yellow dress that makes your inner fashion sense want to leap off of a cliff..   [fae]“This one is awesome!  You don’t even have to try it on for me, I just have a good feeling about it.  Thanks for your help, biggie.”[/fae]  She sends a zap your way, gifting you with a portion of her fairy magic and vanishes into a dressing room.[/p]</CorrectFormText>
+  <FailureText>[p][fae]“Hm, I don’t think you can stand still enough for me in that body of yours.  You’ll move too much and then I won’t be able to concentrate.  Come back later when you’ve got yourself turned into wood.”[/fae][/p]</FailureText>
+  <RequiredForm>form_Magical_Mannequin_plzTryMySpell</RequiredForm>
+</FairyChallengeBag>
+
+
+
+<FairyChallengeBag>
+  <dbLocationName>apartment_dog_park</dbLocationName>
+  <IntroText>[p]As you walk around the corner and into the apartment complex’s dog park you hear Jewdewfae the fairy screaming, but you can’t quite discern if it’s in delight or fear.  At first you can’t see her, but then you notice that she’s carrying a chewed-up plastic frisbee and trying to fly away with it, pursued by a Husky intent on recovering its chew toy.  [fae]“Go away, dumb dog!  Mine!”[/fae] Jewdewfae scolds. [fae] “We’re playing fetch, not tug-o-war!  Let!  GO!”[/fae][/p]
+
+[p]With a surprising display of physical prowess from a tiny winged girl, she manages to wrench it out of the dog’s jaws and flies high up in the air, hiding up in a cloud until the dog loses interest and wanders away.  You’re about to do the same when you see the frisbee zooming straight at you.  Instinct kicks in and you just manage to clutch it out of the air before it smacks you in the face. [/p]
+
+[p] [fae]“Oh hey!  You’re not bad!”[/fae] she zips over to you and lands on your shoulder, her skin sweaty and showing through a tear in her dress about the size of a canine tooth.  [fae]“Real dogs are dumb and smelly.  I like playing with people-dogs instead, much smarter and they don’t pee on the floor.  As much.  Hey, I don’t suppose you wanna play dog with me?  I’ll be the biggie and you the doggy girl… how about a Bitch in Heat?”[/fae][/p]</IntroText>
+  <CorrectFormText>[p]Jewdewfae squeals, clapping her hands as she sees you approach, crawling on your hands and needs as your six breasts jiggle below you.  [fae]“Good girl!  I like you!  Now go fetch!”[/fae]  She winds her arm and throws the frisbee as hard as she can, spinning in circles a few times to build up speed before she releases it.  Instinct takes over and you bark, chasing it in your clumsy half-human half-dog body.  When you find the frisbee and start to trot back with it in your teeth, Jewdewfae is gone, but instead you find a large black labrador in his place with Jewdewfae’s familiar scent..  Your sharp nose detects his lust, the pheromones causing your own body to begin to crave a good humping and release your own, a self-reinforcing feedback loop that can only end one way.[/p]
+
+[p]The two of you begin to circle around, sniffing one another’s sexes until the two of you can take it no longer.  You bend down, wet womanhood raised invitingly up, as Jewdewfae in her male dog body mounts you and begins to hump excitedly.  You yelp and bark as you are lost to pleasure.  When he finally rolls off of you, you collapse and take a nap as Jewdewfae licks the sweat off of your face.[/p]
+
+[p]When you wake up you see Jewdewfae back in her normal fairy body, petting your soft fur.  When she sees that you are awake she giggles and scratches your head by your ears.  “So I might have lied a little about what game I wanted to play,” she teases.  [fae]“You’re quite a naughty bitch, you know that?  I just couldn’t pass that up.  Anyway, thanks for the fun!  Catch you later!”[/fae]  She zaps you, gifting with some of her fairy magic, and flies off.[/p]</CorrectFormText>
+  <FailureText>[p][fae]“I can play frisbee with any one of you biggies or any old dumb canine mutt.  Right now I want to play catch with a nice, cute and loyal bitch.  Can you do that for me?”[/fae][/p]</FailureText>
+  <RequiredForm>form_Brainwashed_Bitch_LexamTheGemFox</RequiredForm>
 </FairyChallengeBag>
 	
   </FairyChallengeBags>

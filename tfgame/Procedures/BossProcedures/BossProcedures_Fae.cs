@@ -175,6 +175,8 @@ namespace tfgame.Procedures.BossProcedures
             IAIDirectiveRepository aiRepo = new EFAIDirectiveRepository();
             AIDirective directive = aiRepo.AIDirectives.FirstOrDefault(i => i.OwnerId == fae.Id);
 
+            PlayerProcedures.SetTimestampToNow(fae, false);
+
             if (directive.sVar1.Contains(";" + player.Id + ";"))
             {
                 return true;

@@ -142,7 +142,7 @@ namespace tfgame.Controllers
                 }
                 else
                 {
-                    inanimateOutput.LocationLog = LocationLogProcedures.GetLocationLogsAtLocation(me.dbLocationName);
+                    inanimateOutput.LocationLog = LocationLogProcedures.GetLocationLogsAtLocation(me.dbLocationName).Reverse();
                     inanimateOutput.PlayersHere = PlayerProcedures.GetPlayerFormViewModelsAtLocation(me.dbLocationName);
                 }
 

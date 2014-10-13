@@ -503,14 +503,35 @@ a.talkLink {
     float: left;
 }
 
-
+.floorItemName{
+    font-size:11px;
+}
 
 .portrait_item_mainpage {
-    height: 60px;
-    width: 60px;
+    height: 50px;
+    width: 50px;
     background-size: 100% 100%;
-    position: relative;
+    margin-bottom: 2px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.floorItemWrapper{
+    width: 150px;
+    display: inline-table;
+    vertical-align: top;
+    margin-right: 10px;
+    margin-bottom: 10px;
     float: left;
+    text-align: center;
+}
+
+.floorItemLevel {
+    text-align: left;
+    text-shadow: 1px 1px #FFF;
+    position: relative;
+    left: -8px;
+    top: -2px;
 }
 
 .large {

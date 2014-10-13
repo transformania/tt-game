@@ -6,11 +6,8 @@
 
 <table class="tableLines">
     <tr>
-        <td class="mapEmpty"></td>
-        <td class="mapField">
-            @*NORTH*@
-
-            @{
+        <td></td>
+        <td>@{
                 if (Model.Location.Name_North != null)
                 {
                     if (Model.You.Player.Mobility == "full")
@@ -26,17 +23,11 @@
                         <span>@Model.Location.FriendlyName_North</span>
                     }
                 }
-            }
-
-        </td>
-        <td class ="mapEmpty"></tdclass>
+            }</td>
+        <td></td>
     </tr>
     <tr>
-        <td class="mapField">
-            @*WEST*@
-
-
-            @{
+        <td>@{
                 if (Model.Location.Name_West != null)
                 {
                     if (Model.You.Player.Mobility == "full")
@@ -52,19 +43,11 @@
                         <span>@Model.Location.FriendlyName_West</span>
                     }
                 }
-            }
-
-        </td>
-        <td class="mapEmpty"></td>
-        <td class="mapField">
-            @*EAST*@
-
-
-
-            @{
+            }</td>
+        <td>@Model.Location.Name</td>
+        <td>@{
                 if (Model.Location.Name_East != null)
                 {
-
                     if (Model.You.Player.Mobility == "full")
                     {
                         @Html.ActionLink(Model.Location.FriendlyName_East, "MoveTo", "PvP", new { locname = Model.Location.Name_East }, null)
@@ -78,17 +61,11 @@
                         <span>@Model.Location.FriendlyName_East</span>
                     }
                 }
-            }
-        </td>
+            }</td>
     </tr>
     <tr>
-        <td class ="mapEmpty"></tdclass>
-
-        <td class="mapField">
-            @*SOUTH*@
-
-
-            @{
+        <td></td>
+        <td>@{
                 if (Model.Location.Name_South != null)
                 {
 
@@ -106,21 +83,18 @@
                     }
                 }
 
-            }
-        </td>
-        <td class="mapEmpty"></td>
+            }</td>
+        <td></td>
     </tr>
 </table>
 
 <style>
-    .mapEmpty{
-        width:75px;
-        height:75px;
-        background-color:gainsboro;
-    }
-    .mapField{
+    td{
         width:75px;
         height:75px;
         font-size:10px;
+    }
+    td:empty{
+        background-color:gainsboro;
     }
 </style>

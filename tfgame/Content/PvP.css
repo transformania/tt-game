@@ -646,6 +646,9 @@ a.talkLink {
     width: 210px;
     text-align: center;
     background-color: lightblue;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 5px;
 }
 
     #showOfflinePlayersButton:hover {

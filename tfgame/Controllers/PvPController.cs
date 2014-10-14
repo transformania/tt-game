@@ -2351,7 +2351,7 @@ namespace tfgame.Controllers
 
             //if (me.FirstName)
 
-            TempData["MyName"] = me.FirstName + " " + me.LastName;
+            TempData["MyName"] = me.GetFullName();
 
             if (me.MembershipId == 69)
             {

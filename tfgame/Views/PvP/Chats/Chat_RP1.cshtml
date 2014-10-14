@@ -39,21 +39,21 @@
         var clear = true;
         var unreadCount = 0;
 
-        var myname = '@TempData["MyName"]';
+        var myname = "@Html.Raw(TempData["MyName"])";
 
         var myVar = setInterval(function () { myTimer() }, 3000);
 
         function myTimer() {
-   
+
             clear = true;
         }
 
         $(function () {
             var chat = $.connection.chatHub;
-            
+
 
             chat.client.addNewMessageToPage = function (name, message) {
-                
+
                 $('#discussion ').prepend('<li><strong>' + htmlEncode(name) + '</strong>: ' + htmlEncode(message) + '</li>');
 
                 // add onclick to last element
@@ -130,8 +130,8 @@
                         clear = false;
 
                     }
-                    
-               
+
+
                 }
 
             });
@@ -155,7 +155,7 @@
             encodedValue = encodedValue.replace("Mizuho (dev)", "<span class='adminFont'>Mizuho (dev)</span>");
 
             encodedValue = encodedValue.replace(myname, "<span class='youFont'><strong> " + myname + "</strong></span>");
- 
+
 
 
             return encodedValue;

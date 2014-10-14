@@ -42,7 +42,7 @@ namespace tfgame.Chat
             }
             else
             {
-                name = me.FirstName + " " + me.LastName;
+                name = me.GetFullName();
             }
 
             if (name != " " && name != "" && message != "")

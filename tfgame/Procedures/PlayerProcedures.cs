@@ -478,6 +478,16 @@ namespace tfgame.Procedures
 
         }
 
+        public static void InstantRestoreToBase(Player player)
+        {
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            dbPlayer.Form = dbPlayer.OriginalForm;
+            dbPlayer.NormalizeHealthMana();
+            playerRepo.SavePlayer(dbPlayer);
+
+        }
+
         public static void SavePlayer(Player player)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();

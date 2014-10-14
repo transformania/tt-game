@@ -447,6 +447,7 @@
     <Content Include="Images\PvP\itemsPortraits\bondage_harnass_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\bondage_magazine_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\Cheerleader_Shell_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\classic_you_lotion.png" />
     <Content Include="Images\PvP\itemsPortraits\cocktail_dress_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\concealment_cookie_SillyLuxianne.png" />
     <Content Include="Images\PvP\itemsPortraits\Count_Cuddles_Luxianne.png" />
@@ -464,6 +465,7 @@
     <Content Include="Images\PvP\itemsPortraits\gothic_lolita_boots_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\heart_glasses_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\Honeypot_Luxianne.png" />
+    <Content Include="Images\PvP\itemsPortraits\intimidating_leather_boots_JBovinne.png" />
     <Content Include="Images\PvP\itemsPortraits\kneehigh_socks_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\latex_collar_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\latex_corset_Meddle.png" />
@@ -535,6 +537,7 @@
     <Content Include="Images\PvP\portraits\gimbo_stripper_thegreatdaeo.jpg" />
     <Content Include="Images\PvP\portraits\girltaur_Meddle.png" />
     <Content Include="Images\PvP\portraits\goblin_girl_Meddle.png" />
+    <Content Include="Images\PvP\portraits\gummy_girl_Luxianne.png" />
     <Content Include="Images\PvP\portraits\Ice_Queen_Meddle.png" />
     <Content Include="Images\PvP\portraits\jewdewfae_Luxianne.png" />
     <Content Include="Images\PvP\portraits\jungle_girl_Meddle.png" />

@@ -820,6 +820,24 @@ namespace tfgame.Procedures
                     return name + " consumed a " + itemPlus.Item.FriendlyName + ", immediately restoring " + itemPlus.Item.InstantManaRestore + " mana.";
                 }
 
+                // special items time
+                if (itemPlus.Item.dbName == "item_consumeable_ClassicMeLotion")
+                {
+
+                    if (owner.Form == owner.OriginalForm)
+                    {
+                        return "You could use this lotion, but as you are already in your base form it wouldn't do you any good.";
+                    }
+
+                    PlayerProcedures.InstantRestoreToBase(owner);
+                    TFEnergyProcedures.CleanseTFEnergies(owner, 25);
+                    itemRepo.DeleteItem(itemPlus.dbItem.Id);
+                    LocationLogProcedures.AddLocationLog(owner.dbLocationName, owner.FirstName + " " + owner.LastName + " used a " + itemPlus.Item.FriendlyName + " here.");
+                    return name + " spread the mana-absorbing " + itemPlus.Item.FriendlyName + " over your skin, quickly restoring you to your original body and cleansing away some additional transformation energies.";
+                }
+
+               // if (itemPlus.Item.dbName == "item_consumeable_")
+
 
 
             }

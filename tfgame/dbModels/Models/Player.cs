@@ -57,6 +57,26 @@ namespace tfgame.dbModels.Models
             }
         }
 
+        public void NormalizeHealthMana()
+        {
+            if (this.Health < 0)
+            {
+                this.Health = 0;
+            }
+            else if (this.Health > this.MaxHealth)
+            {
+                this.Health = this.MaxHealth;
+            }
+            if (this.Mana < 0)
+            {
+                this.Mana = 0;
+            }
+            else if (this.Mana > this.MaxMana)
+            {
+                this.Mana = this.Mana;
+            }
+        }
+
     }
 
     public class Player_VM

@@ -1361,6 +1361,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="XMLs\FairyChallengeText\SingleBags\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

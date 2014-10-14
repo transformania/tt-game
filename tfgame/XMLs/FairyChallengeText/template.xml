@@ -95,8 +95,28 @@
 
 [p]When you wake up you see Jewdewfae back in her normal fairy body, petting your soft fur.  When she sees that you are awake she giggles and scratches your head by your ears.  “So I might have lied a little about what game I wanted to play,” she teases.  [fae]“You’re quite a naughty bitch, you know that?  I just couldn’t pass that up.  Anyway, thanks for the fun!  Catch you later!”[/fae]  She zaps you, gifting with some of her fairy magic, and flies off.[/p]</CorrectFormText>
   <FailureText>[p][fae]“I can play frisbee with any one of you biggies or any old dumb canine mutt.  Right now I want to play catch with a nice, cute and loyal bitch.  Can you do that for me?”[/fae][/p]</FailureText>
-  <RequiredForm>form_Brainwashed_Bitch_LexamTheGemFox</RequiredForm>
+  <RequiredForm>form_Bitch_in_Heat_LexmTheGemFox</RequiredForm>
 </FairyChallengeBag>
+
+
+
+
+<FairyChallengeBag>
+  <dbLocationName>college_track</dbLocationName>
+  <IntroText>[p]As you step lightly on the rubberized athletics track, you hear a strange whistling sound.  You turn and see a strange, light-blue blur zooming around the track, sailing a few feet off the ground, circling the track over and over well over a hundred miles an hour.  Curious, you sit down on a bleacher and watch, trying to figure out just what in the world you are looking at.  It seems the thing is slowing down over time, its path becoming a little more erratic and uneven until it shoots out of its way entirely, tumbling straight at you! [/p]
+
+ [p]Something clangs underneath you as it strikes metal.  [fae]“Owwwww...”[/fae] you hear Jewdewfae moan.  You peek down to see her lying dizzy and exhausted on a lost cheerleader pom-pom.  [fae]“Oh no, I dropped the pocketwatch again, dangit dangit dangit!  You dummy,”[/fae] she sighs to herself.[/p]
+
+[p]The bleachers creak as you begin to stand up.  Jewdewfae hears it and flies up, landing on your shoulder and mopping some sweat off of her face with the hem of her dress.  [fae]“Oh, hey there.  Can you help me with something?  I’m trying to learn how to fly faster, so I’ve been going around this track as fast as I can.  I think I can do a lap in under four seconds, but it’s just so frustrating taking a quarter second too long, you know?  I think I need something to cheer me on so I can get my time down to three seconds.  Oh!  You should be a cheerleader and dance while you yell stuff at me!  But you gotta do it right, like one of those Chatty Cheerleaders around here...”[/fae][/p]</IntroText>
+  <CorrectFormText>[p][fae]“Perfect!  I feel inspired already!  Can you sing something like ‘Go go fairy girl, you can do it!’  Nah, that just sounds dumb.  ‘Maybe ‘Go Go Jewdewfae, this is your day!’  Nah, that doesn’t work either.  Um.  Just jump up and down a lot and cheer, okay?”[/fae]  Jewdewfae hands you a stopwatch and takes her position at the start line.  [fae]“Okay, three, two, one... go!  Oops, false start.  On the count of three.  Go!”[/fae][/p]
+
+[p]A gust of wind blows against your clothes as the fairy launches off, beginning her lap.  Once you recover from your disbelief at how fast she can fly when she puts her mind to it, you do what your own current body does best--cheer!  You scream out to Jewdewfae with all the chants, songs and cheers of encouragement that have been seared into your mind from your semesters in Saint Circe’s (or rather the magic that has gives you the memories of such).  It’s a shame hardly anyone is around to see you, and you wonder if Jewdewfae can even see or hear you when she zooms by.[/p]
+
+[p]Finally the dizzy fairy flutters to a halt and collapses against you, nestled between your breasts.  [fae]“Thanks!  You’re the bestest cheerleader I’ve ever seen!”[/fae] she gasps.  [fae]“But I’m so tired now, lemme take a quick nap…”[/fae] she falls silent and for a moment you wonder if she has collapsed in exhaustion right there in your shirt, but she lazily climbs out and flutters back to the bleachers.  [fae]“I’m gonna rest a while and try again later.  Thanks for the help though!  Here, have this.”[/fae]  She zaps you, filling you with some fairy magic in reward as she flies off.[/p]</CorrectFormText>
+  <FailureText>[p][fae]“Hm.  No, you don’t look very inspiring right now.  Cheerleading is a sport, you know. Not just anyone can do it.  I need you to be the real thing.”[/fae][/p]</FailureText>
+  <RequiredForm>form_Chatty_Cheerleader_Haretia</RequiredForm>
+</FairyChallengeBag>
+
 	
   </FairyChallengeBags>
 </FairyChallengeViewModel>

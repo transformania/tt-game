@@ -1686,7 +1686,7 @@ namespace tfgame.Controllers
             try
             {
                 // load data from the xml
-                string filename = System.Web.HttpContext.Current.Server.MapPath("~/Z_SelfHelp/fae_temp.xml");
+                string filename = System.Web.HttpContext.Current.Server.MapPath("~/XMLs/FairyChallengeText/fae_temp.xml");
                 System.Xml.Serialization.XmlSerializer reader = new System.Xml.Serialization.XmlSerializer(typeof(FairyChallengeBag));
                 System.IO.StreamReader file = new System.IO.StreamReader(filename);
                 output = (FairyChallengeBag)reader.Deserialize(file);
@@ -1700,12 +1700,34 @@ namespace tfgame.Controllers
             return View(output);
         }
 
+        public ActionResult LoadSpecificEncounter(string filename)
+        {
+
+            FairyChallengeBag output = new FairyChallengeBag();
+
+            // assert only admin can view this
+            if (WebSecurity.CurrentUserId != 69)
+            {
+                @ViewBag.Message = "You aren't allowed to do this.";
+                return View("~/Views/PvP/PvPAdmin.cshtml");
+            }
+
+            // TODO:  finish this!
+            return View("WriteFaeEncounter", output);
+        }
+
         [ValidateInput(false)] 
         public ActionResult WriteFaeEncounterSend(FairyChallengeBag input)
         {
 
+            // assert only admin can view this
+            if (WebSecurity.CurrentUserId != 69)
+            {
+                @ViewBag.Message = "You aren't allowed to do this.";
+                return View("~/Views/PvP/PvPAdmin.cshtml");
+            }
 
-            string path = Server.MapPath("~/Z_selfHelp/");
+            string path = Server.MapPath("~/XMLs/FairyChallengeText/");
 
            // input.title = "Serialization Overview";
             System.Xml.Serialization.XmlSerializer writer =

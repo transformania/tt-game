@@ -484,7 +484,19 @@ namespace tfgame.Procedures
             Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
             dbPlayer.Form = dbPlayer.OriginalForm;
             dbPlayer.NormalizeHealthMana();
+
+            if (dbPlayer.Form == "man_01" || dbPlayer.Form == "man_02" || dbPlayer.Form == "man_03" || dbPlayer.Form == "man_04" || dbPlayer.Form ==  "man_05")
+            {
+                dbPlayer.Gender = "male";
+            }
+            else
+            {
+                dbPlayer.Gender = "female";
+            }
+
             playerRepo.SavePlayer(dbPlayer);
+
+
 
         }
 

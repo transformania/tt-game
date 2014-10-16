@@ -12,7 +12,7 @@
         {
             <div class="perkBox">
                 <h3>@e.Effect.FriendlyName</h3>
-                @*<p>@e.Effect.Description</p>*@
+                <p>@e.Effect.Description</p>
                 @Html.Partial("partial/partial_perkBonus", e.Effect)
             </div>
         }
@@ -27,7 +27,7 @@
         {
             <div class="perkBox">
                 <h3>@e.Effect.FriendlyName</h3>
-                @*<p>@e.Effect.Description</p>*@
+                <p>@e.Effect.Description</p>
                 <p>
                     @{
             if (e.dbEffect.Duration > 0)

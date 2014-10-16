@@ -1361,6 +1361,7 @@
     <Content Include="Views\PvP\FAQ.cshtml" />
     <Content Include="Views\Settings\SetNickname.cshtml" />
     <Content Include="Views\PvP\partial\partial_recentActivity.cshtml" />
+    <Content Include="Views\PvP\ViewEffects.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

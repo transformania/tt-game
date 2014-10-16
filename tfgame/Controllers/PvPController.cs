@@ -2445,6 +2445,15 @@ namespace tfgame.Controllers
             return View(output);
         }
 
+         public ActionResult ViewEffects(int id)
+         {
+             Player player = PlayerProcedures.GetPlayer(id);
+             IEnumerable<EffectViewModel> output = EffectProcedures.GetPlayerEffectViewModels(player);
+             ViewBag.PlayerName = player.GetFullName();
+
+             return View(output);
+         }
+
          [Authorize]
         public ActionResult Settings()
         {

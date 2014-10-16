@@ -1,0 +1,48 @@
+﻿@model IEnumerable<tfgame.ViewModels.EffectViewModel>
+@using tfgame.ViewModels
+
+@Html.ActionLink("Back to game", "Play", "PvP")
+
+<center>
+    <h1>@ViewBag.PlayerName's Level-Up Perks</h1>
+    <p>Through experience this player gained some unique traits that help them in their adventures.</p>
+
+    @{
+        foreach (EffectViewModel e in Model.Where(e => e.dbEffect.IsPermanent == true))
+        {
+            <div class="perkBox">
+                <h3>@e.Effect.FriendlyName</h3>
+                @*<p>@e.Effect.Description</p>*@
+                @Html.Partial("partial/partial_perkBonus", e.Effect)
+            </div>
+        }
+    }
+
+    <h1>@ViewBag.PlayerName's Curses and Blessings</h1>
+    <p>These curses and blessings currently have active effects on this player's abilities.  They will go away over time.</p>
+
+    @{
+
+        foreach (EffectViewModel e in Model.Where(e => e.dbEffect.IsPermanent == false))
+        {
+            <div class="perkBox">
+                <h3>@e.Effect.FriendlyName</h3>
+                @*<p>@e.Effect.Description</p>*@
+                <p>
+                    @{
+            if (e.dbEffect.Duration > 0)
+            {
+                <span class="effectturnsRemaining">@e.dbEffect.Duration turns of effect remaining with </span>
+            }
+                    }
+                    <span class="effectcooldownRemaining">@e.dbEffect.Cooldown turns of cooldown</span>
+                </p>
+                @Html.Partial("partial/partial_perkBonus", e.Effect)
+            </div>
+        }
+
+    }
+
+</center>
+
+@Html.ActionLink("Back to game", "Play", "PvP")

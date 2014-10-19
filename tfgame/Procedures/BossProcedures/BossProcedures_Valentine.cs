@@ -135,7 +135,7 @@ namespace tfgame.Procedures.BossProcedures
                     SkillViewModel2 danceOfBlades = SkillProcedures.GetSkillViewModel("skill_The_Dance_of_Blades_Ashley_Valentine", valentine.Id);
                     List<Player> playersHere = PlayerProcedures.GetPlayersAtLocation(valentine.dbLocationName).ToList();
 
-                    playersHere = playersHere.Where(p => p.Mobility == "full" && PlayerProcedures.PlayerIsOffline(p) == false && p.Level >= 3 && p.Id != valentine.Id).ToList();
+                    playersHere = playersHere.Where(p => p.Mobility == "full" && PlayerProcedures.PlayerIsOffline(p) == false && p.Level >= 3 && p.MembershipId > 0 && p.Id != valentine.Id).ToList();
 
                     foreach (Player p in playersHere.Where(p => p.Mobility == "full" && PlayerProcedures.PlayerIsOffline(p) == false && p.Level >= 3))
                     {
@@ -155,7 +155,7 @@ namespace tfgame.Procedures.BossProcedures
             // get all of the players in the room
             List<Player> playersHere = PlayerProcedures.GetPlayersAtLocation(valentine.dbLocationName).ToList();
 
-            playersHere = playersHere.Where(p => p.Mobility == "full" && PlayerProcedures.PlayerIsOffline(p) == false && p.Level >= 3 && p.Id != valentine.Id).ToList();
+            playersHere = playersHere.Where(p => p.Mobility == "full" && PlayerProcedures.PlayerIsOffline(p) == false && p.Level >= 3 && p.MembershipId > 0 && p.Id != valentine.Id).ToList();
 
             int turnNo = PvPWorldStatProcedures.GetWorldTurnNumber();
 

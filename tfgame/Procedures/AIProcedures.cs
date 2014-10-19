@@ -632,11 +632,19 @@ namespace tfgame.Procedures
 
             SkillViewModel2 selectedSkill = myskills.ElementAt((int)roll);
 
-            AttackProcedures.Attack(merchant, personAttackin, selectedSkill);
+            if (personAttackin.MembershipId > 0) { 
+                AttackProcedures.Attack(merchant, personAttackin, selectedSkill);
+            }
         }
 
         public static void CheckAICounterattackRoutine(Player personAttacking, Player bot)
         {
+            // person attacking is a boss and not a psychopath, so do nothing
+            if (personAttacking.MembershipId < -2)
+            {
+                return;
+            }
+
             // attacking the psychopath.  Random chance the psychopath will set the attacker as their target.
             if (bot.MembershipId == -2)
             {

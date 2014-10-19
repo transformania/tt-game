@@ -457,7 +457,7 @@ new StaticEffect {
 
               new StaticEffect {
                 dbName = "blessing_health_jawbreaker_small",
-                FriendlyName = "Sucking on a Willflower Jawbreaker",
+                FriendlyName = "Sucking on a Small Willflower Jawbreaker",
                 Description = "You are sucking on a small willflower jawbreaker.  Its magical juices are released slowly as your mouth dissolves away the sugar, recovering your willpower over time.",
                 AvailableAtLevel = 0,
                 Duration = 6,
@@ -466,9 +466,20 @@ new StaticEffect {
                 HealthRecoveryPerUpdate = 5,
             },
 
+            new StaticEffect {
+                dbName = "blessing_health_jawbreaker_large",
+                FriendlyName = "Sucking on a Large Willflower Jawbreaker",
+                Description = "You are sucking on a large willflower jawbreaker.  Its magical juices are released slowly as your mouth dissolves away the sugar, recovering your willpower over time.",
+                AvailableAtLevel = 0,
+                Duration = 6,
+                Cooldown = 9,
+                MessageWhenHit = "You pop the jawbreaker into your mouth and begin to suck away at its layers.  Its magical juices will slowly recover your willpower over time even when the candy itself has dissolved away in your mouth.",
+                HealthRecoveryPerUpdate = 9,
+            },
+
              new StaticEffect {
                 dbName = "blessing_mana_jawbreaker_small",
-                FriendlyName = "Sucking on a Spellweaver Jawbreaker",
+                FriendlyName = "Sucking on a Small Spellweaver Jawbreaker",
                 Description = "You are sucking on a small spellweaver jawbreaker.  Its magical juices are released slowly as your mouth dissolves away the sugar, recovering your mana over time.",
                 AvailableAtLevel = 0,
                 Duration = 6,
@@ -476,6 +487,18 @@ new StaticEffect {
                 MessageWhenHit = "You pop the jawbreaker into your mouth and begin to suck away at its layers.  Its magical juices will slowly recover your mana over time even when the candy itself has dissolved away in your mouth.",
                 ManaRecoveryPerUpdate = 5,
 
+
+          },
+
+             new StaticEffect {
+                dbName = "blessing_mana_jawbreaker_large",
+                FriendlyName = "Sucking on a Large Spellweaver Jawbreaker",
+                Description = "You are sucking on a large spellweaver jawbreaker.  Its magical juices are released slowly as your mouth dissolves away the sugar, recovering your mana over time.",
+                AvailableAtLevel = 0,
+                Duration = 6,
+                Cooldown = 9,
+                MessageWhenHit = "You pop the jawbreaker into your mouth and begin to suck away at its layers.  Its magical juices will slowly recover your mana over time even when the candy itself has dissolved away in your mouth.",
+                ManaRecoveryPerUpdate = 5,
 
             },  new StaticEffect {
                 dbName = "blessing_concealment_cookie",
@@ -488,10 +511,46 @@ new StaticEffect {
                 SneakPercent = 15,
             },
 
+            new StaticEffect {
+                dbName = "blessing_fire_fritter",
+                FriendlyName = "Fire Fritter",
+                Description = "You've recently eaten a Fire Fritter, a spicy apple-flavored donut that will make your spells a bit more powerful for a while if you can stand the burning sensation on your tongue.",
+                AvailableAtLevel = 0,
+                Duration = 6,
+                Cooldown = 10,
+                MessageWhenHit = "You take a bite out of your Fire Fritter, wincing as the spice reaches your taste buds and begins to make you sweat.  Channeling this energy will allow you deal more damage with your spells until the burn dissipates.",
+                SpellExtraHealthDamagePercent = 12,
+                SpellExtraTFEnergyPercent = 12,
+            },
+
+            //new StaticEffect {
+            //    dbName = "",
+            //    FriendlyName = "WillyNilly Will Worms",
+            //    Description = "A small bag of candy with a handful of red gummy worms inside.  ",
+            //    AvailableAtLevel = 0,
+            //    Duration = 6,
+            //    Cooldown = 12,
+            //    MessageWhenHit = "",
+            //    SpellExtraHealthDamagePercent = 12,
+            //    SpellExtraTFEnergyPercent = 12,
+            //},
+
+             new StaticEffect {
+                dbName = "blessing_barricade_brownie",
+                FriendlyName = "Barricade Brownie Bites",
+                Description = "You have eaten a few brownie bites froma Barricade Brownie Bites box.  Its magical sprinkes, now in your stomach, will make you a little more resistant to incoming magic.",
+                AvailableAtLevel = 0,
+                Duration = 6,
+                Cooldown = 10,
+                MessageWhenHit = "You quickly chomp down the brownie bites, your stomach gurgling a little bit in protest but nothing you can't handle.  The sprinkles dissolving into your veins will prevent some magic cast against you from being able to enter your body for a while.",
+                SpellHealthDamageResistance = 10,
+                SpellTFEnergyDamageResistance = 10,
+            },
+
             // new StaticEffect {
             //    dbName = "blessing_",
-            //    FriendlyName = "",
-            //    Description = "",
+            //    FriendlyName = "Barricade Brownie Bites",
+            //    Description = "A small ",
             //    AvailableAtLevel = 0,
             //    Duration = 6,
             //    Cooldown = 9,

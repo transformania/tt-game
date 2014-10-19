@@ -21,7 +21,7 @@ namespace tfgame.dbModels.Models
 
         public bool IsDonnaAvailable()
         {
-            if (Boss_Donna == "unstarted" && TurnNumber >= BossSummonDictionary.GlobalBossSummonDictionary.Values.FirstOrDefault(p => p.BossName == "Donna").MinimumTurn)
+            if (Boss_Donna == "unstarted" && Boss_Valentine != "active" && TurnNumber >= BossSummonDictionary.GlobalBossSummonDictionary.Values.FirstOrDefault(p => p.BossName == "Donna").MinimumTurn)
             {
                 return true;
             }
@@ -32,7 +32,7 @@ namespace tfgame.dbModels.Models
         }
         public bool IsValentineAvailable()
         {
-            if (Boss_Valentine == "unstarted" && TurnNumber >= BossSummonDictionary.GlobalBossSummonDictionary.Values.FirstOrDefault(p => p.BossName == "Valentine").MinimumTurn)
+            if (Boss_Valentine == "unstarted" && Boss_Donna != "active" && TurnNumber >= BossSummonDictionary.GlobalBossSummonDictionary.Values.FirstOrDefault(p => p.BossName == "Valentine").MinimumTurn)
             {
                 return true;
             }

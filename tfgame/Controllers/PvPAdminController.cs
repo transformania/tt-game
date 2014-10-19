@@ -1008,6 +1008,13 @@ namespace tfgame.Controllers
                 return View("Play");
             }
 
+            ItemProcedures.LoadItemRAMBuffBox();
+            PlayerProcedures.LoadFormRAMBuffBox();
+
+            Player me = PlayerProcedures.GetPlayerFromMembership(69);
+            BuffBox oldbox = ItemProcedures.GetPlayerBuffs(me);
+            BuffBox newbox = ItemProcedures.GetPlayerBuffsRAM(me);
+
             return RedirectToAction("Index");
 
 

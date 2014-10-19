@@ -476,6 +476,17 @@ namespace tfgame.Controllers
              Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
              Player target = PlayerProcedures.GetPlayer(targetId);
             IEnumerable<SkillViewModel2> output = SkillProcedures.GetSkillViewModelsOwnedByPlayer(me.Id);
+
+            // filter out spells that you can't use on your target
+            if (FriendProcedures.PlayerIsMyFriend(me, target) || target.MembershipId < 0)
+            {
+                // do nothing, all spells are okay
+            }
+            else if (me.InPvP == true && target.InPvP == true)
+            {
+                output = output.Where(s => s.MobilityType == "full");
+            }
+
             ViewBag.TargetId = targetId;
             ViewBag.TargetName = target.FirstName + " " + target.LastName;
              return PartialView("partial/AjaxAttackModal", output);
@@ -683,10 +694,17 @@ namespace tfgame.Controllers
                     // no inter protection/non spell casting
                     else if (me.InPvP != targeted.InPvP)
                     {
-
+                        
                         TempData["Error"] = "You must be in the same Protection/non-Protection mode as your target in order to cast spells at them.";
                         return RedirectToAction("Play");
 
+                    }
+
+                    // no weaken between Protection mode players
+                    else if (skill.dbName == "lowerHealth")
+                    {
+                        TempData["Error"] = "You cannot cast Weaken against protection mode players unless they are your friend.";
+                        return RedirectToAction("Play");
                     }
 
                     //  if the form is null (curse) or not fully animate, block it entirely
@@ -3312,7 +3330,7 @@ namespace tfgame.Controllers
                     //player.TimesAttackingThisUpdate = 0;
                     //player.CleansesMeditatesThisRound = 0;
 
-                    BuffBox buffs = ItemProcedures.GetPlayerBuffs(player);
+                    BuffBox buffs = ItemProcedures.GetPlayerBuffsRAM(player);
                     player.Health += buffs.HealthRecoveryPerUpdate();
                     player.Mana += buffs.ManaRecoveryPerUpdate();
 

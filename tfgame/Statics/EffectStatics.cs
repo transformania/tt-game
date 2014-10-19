@@ -283,7 +283,7 @@ new StaticEffect {
                 Description = "You are so mesmerized by Lord Valentine’s presence that you find yourself immobilized, unable to look away from his alluring visage. His charming smile and passionate gaze send overwhelming sensations all over your body. You feel burning lust run through your veins like an intoxicating drug. As a small moan escapes through your lips, you know that you have already fallen for his trap...",
                 AvailableAtLevel = 0,
                 Duration = 1,
-                Cooldown = 3,
+                Cooldown = 5,
                 MessageWhenHit = "You are so mesmerized by Lord Valentine’s presence that you find yourself immobilized, unable to look away from his alluring visage. His charming smile and passionate gaze send overwhelming sensations all over your body. You feel burning lust run through your veins like an intoxicating drug. As a small moan escapes through your lips, you know that you have already fallen for his trap...",
                 AttackerWhenHit = "",
                 MoveActionPointDiscount = -999,

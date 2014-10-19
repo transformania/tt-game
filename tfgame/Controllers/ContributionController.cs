@@ -7,6 +7,7 @@ using tfgame.dbModels.Abstract;
 using tfgame.dbModels.Concrete;
 using tfgame.dbModels.Models;
 using tfgame.Filters;
+using tfgame.Procedures;
 using tfgame.Statics;
 using WebMatrix.WebData;
 
@@ -264,6 +265,8 @@ namespace tfgame.Controllers
                 return View("ContributorBioList");
             }
 
+
+
             string message = "started.<br>";
 
             IContributionRepository contributionRepo = new EFContributionRepository();
@@ -388,6 +391,8 @@ namespace tfgame.Controllers
             formRepo.SaveDbStaticForm(form);
             ViewBag.Message = message;
 
+            PlayerProcedures.LoadFormRAMBuffBox();
+
             return View("Publish");
         }
 
@@ -483,6 +488,8 @@ namespace tfgame.Controllers
             itemRepo.SaveDbStaticItem(item);
 
             ViewBag.Message = message;
+
+            ItemProcedures.LoadItemRAMBuffBox();
 
             return View("Publish");
         }

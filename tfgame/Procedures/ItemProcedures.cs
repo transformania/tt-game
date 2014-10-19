@@ -87,6 +87,12 @@ namespace tfgame.Procedures
             return output;
         }
 
+        public static IEnumerable<Item> GetAllPlayerItems_ItemOnly(int playerId)
+        {
+            IItemRepository itemRepo = new EFItemRepository();
+            return itemRepo.Items.Where(i => i.OwnerId == playerId && i.IsEquipped == true);
+        }
+
         public static IEnumerable<ItemViewModel> GetAllItemsAtLocation(string dbLocationName, Player player)
         {
             IItemRepository itemRepo = new EFItemRepository();
@@ -520,6 +526,51 @@ namespace tfgame.Procedures
                     break;
                 }
             }
+
+            return output;
+        }
+
+        public static BuffBox GetPlayerBuffsRAM(Player player)
+        {
+            BuffBox output = new BuffBox();
+
+            // form portion
+            try
+            {
+                output.FromForm_HealthRecoveryPerUpdate = (decimal)FormStatics.FormRAMBuffBoxes.FirstOrDefault(f => f.dbName == player.Form).HealthRecoveryPerUpdate;
+            }
+            catch
+            {
+                PlayerProcedures.LoadFormRAMBuffBox();
+                output.FromForm_HealthRecoveryPerUpdate = (decimal)FormStatics.FormRAMBuffBoxes.FirstOrDefault(f => f.dbName == player.Form).HealthRecoveryPerUpdate;
+            }
+
+            // items portion
+            IEnumerable<Item> wornItems = GetAllPlayerItems_ItemOnly(player.Id);
+            foreach (Item i in wornItems)
+            {
+                RAMBuffBox temp = null;
+                try
+                {
+                    temp = ItemStatics.ItemRAMBuffBoxes.FirstOrDefault(x => x.dbName == i.dbName);
+                }
+                catch
+                {
+                    LoadItemRAMBuffBox();
+                    temp = ItemStatics.ItemRAMBuffBoxes.FirstOrDefault(x => x.dbName == i.dbName);
+                }
+                output.FromItems_HealthRecoveryPerUpdate += (decimal)temp.HealthRecoveryPerUpdate + (decimal)temp.HealthRecoveryPerUpdate * (((i.Level - 1) * (decimal)PvPStatics.Item_LevelBonusModifier));
+                output.FromItems_ManaRecoveryPerUpdate += (decimal)temp.ManaRecoveryPerUpdate + (decimal)temp.ManaRecoveryPerUpdate * (((i.Level - 1) * (decimal)PvPStatics.Item_LevelBonusModifier));
+            }
+            
+            // effects portion
+            IEnumerable<EffectViewModel> myEffects = EffectProcedures.GetPlayerEffects(player.Id).Where(e => e.dbEffect.Duration > 0);
+            output.FromEffects_HealthRecoveryPerUpdate = myEffects.Sum(e => e.Effect.HealthRecoveryPerUpdate);
+            output.FromEffects_ManaRecoveryPerUpdate = myEffects.Sum(e => e.Effect.ManaRecoveryPerUpdate);
+
+            //output.FromEffects_HealthRecoveryPerUpdate = 
+
+            // formula:  bonus = amount * (itemlevel - 1) * PvPStatics.Item_LevelBonusModifier
 
             return output;
         }
@@ -1109,6 +1160,25 @@ namespace tfgame.Procedures
 
             return output;
 
+        }
+
+        public static void LoadItemRAMBuffBox()
+        {
+            IDbStaticItemRepository dbStaticItemRepo = new EFDbStaticItemRepository();
+
+            ItemStatics.ItemRAMBuffBoxes = new List<RAMBuffBox>();
+
+
+            foreach (DbStaticItem i in dbStaticItemRepo.DbStaticItems.Where(c => c.dbName != null && c.dbName != ""))
+            {
+                RAMBuffBox temp = new RAMBuffBox
+                {
+                    dbName = i.dbName,
+                    HealthRecoveryPerUpdate = (float)i.HealthRecoveryPerUpdate,
+                    ManaRecoveryPerUpdate = (float)i.ManaRecoveryPerUpdate,
+                };
+                ItemStatics.ItemRAMBuffBoxes.Add(temp);
+            }
         }
 
     }

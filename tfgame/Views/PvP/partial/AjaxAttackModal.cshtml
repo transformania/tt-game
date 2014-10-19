@@ -4,6 +4,11 @@
     <span id="youAreAttacking">You are attacking @ViewBag.TargetName.</span>
     <span id="attackClose" onclick="closeAttackModal()">Cancel</span>
     <span id="expand" onclick="expandModal()">Expand</span>
+    <span id="toggle_all" onclick="toggleAll()">All</span>
+    <span id="toggle_animates" onclick="toggleAnimates()">Animate</span>
+    <span id="toggle_inanimates" onclick="toggleInanimates()">Inanimate</span>
+    <span id="toggle_animal" onclick="toggleAnimal()">Pet/Animal</span>
+    <span id="toggle_other" onclick="toggleOthers()">Other</span>
     <br /><br />
 
     @foreach (tfgame.ViewModels.SkillViewModel2 s in Model.OrderBy(s => s.Skill.FriendlyName))
@@ -29,6 +34,60 @@
 
         $(".action_attack").each(function () {
             $(this).css("font-size", "20px");
+        });
+    }
+
+    function toggleAll() {
+
+        var spellLinks = $("#attackModal a");
+        spellLinks.each(function () {
+            $(this).show();
+           // alert($(this).attr('class'));
+        });
+
+    }
+
+    function toggleAnimates() {
+        var spellLinks = $("#attackModal a");
+        spellLinks.each(function () {
+            if ($(this).attr('class') == "action_attack full") {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    }
+
+    function toggleInanimates() {
+        var spellLinks = $("#attackModal a");
+        spellLinks.each(function () {
+            if ($(this).attr('class') == "action_attack inanimate") {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    }
+
+    function toggleAnimal() {
+        var spellLinks = $("#attackModal a");
+        spellLinks.each(function () {
+            if ($(this).attr('class') == "action_attack animal") {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    }
+
+    function toggleOthers() {
+        var spellLinks = $("#attackModal a");
+        spellLinks.each(function () {
+            if ($(this).attr('class') == "action_attack weaken" || $(this).attr('class') == "action_attack curse") {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
         });
     }
 

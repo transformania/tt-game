@@ -1652,5 +1652,23 @@ namespace tfgame.Procedures
             playerRepo.SavePlayer(player);
         }
 
+        public static void LoadFormRAMBuffBox()
+        {
+            IDbStaticFormRepository dbStaticFormRepo = new EFDbStaticFormRepository();
+
+            FormStatics.FormRAMBuffBoxes = new List<RAMBuffBox>();
+
+            foreach (DbStaticForm f in dbStaticFormRepo.DbStaticForms.Where(c => c.dbName != null && c.dbName != ""))
+            {
+                RAMBuffBox temp = new RAMBuffBox
+                {
+                    dbName = f.dbName,
+                    HealthRecoveryPerUpdate = (float)f.HealthRecoveryPerUpdate,
+                    ManaRecoveryPerUpdate = (float)f.ManaRecoveryPerUpdate,
+                };
+                FormStatics.FormRAMBuffBoxes.Add(temp);
+            }
+        }
+
     }
 }

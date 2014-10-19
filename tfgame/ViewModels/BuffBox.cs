@@ -85,7 +85,8 @@ namespace tfgame.ViewModels
         public decimal SpellHealthDamageResistance() { return FromItems_SpellHealthDamageResistance + FromForm_SpellHealthDamageResistance + FromEffects_SpellHealthDamageResistance; }
         public decimal SpellTFEnergyDamageResistance() { return FromItems_SpellTFEnergyDamageResistance + FromForm_SpellTFEnergyDamageResistance + FromEffects_SpellTFEnergyDamageResistance; }
 
-        
+        public bool HasSearchDiscount;
+
         // there is a special consideration for extra inventory space so -1.2 from an item doesn't get rounded down to -2 later on
         public decimal ExtraInventorySpace() {
             decimal output = FromItems_ExtraInventorySpace + FromForm_ExtraInventorySpace + FromEffects_ExtraInventorySpace;
@@ -101,8 +102,31 @@ namespace tfgame.ViewModels
 
         #region non-stat perks
 
-        public bool HasSearchDiscount;
+        
 
         #endregion
+    }
+
+    public class RAMBuffBox
+    {
+        public string dbName { get; set; }
+        //public float HealthBonusPercent { get; set; }
+        //public float ManaBonusPercent { get; set; }
+        //public float ExtraSkillCriticalPercent { get; set; }
+        public float HealthRecoveryPerUpdate { get; set; }
+        public float ManaRecoveryPerUpdate { get; set; }
+        //public float SneakPercent { get; set; }
+        //public float EvasionPercent { get; set; }
+        //public float EvasionNegationPercent { get; set; }
+        //public float MeditationExtraMana { get; set; }
+        //public float CleanseExtraHealth { get; set; }
+        //public float MoveActionPointDiscount { get; set; }
+        //public float SpellExtraTFEnergyPercent { get; set; }
+        //public float SpellExtraHealthDamagePercent { get; set; }
+        //public float CleanseExtraTFEnergyRemovalPercent { get; set; }
+        //public float SpellMisfireChanceReduction { get; set; }
+        //public float SpellHealthDamageResistance { get; set; }
+        //public float SpellTFEnergyDamageResistance { get; set; }
+        //public float ExtraInventorySpace { get; set; }
     }
 }

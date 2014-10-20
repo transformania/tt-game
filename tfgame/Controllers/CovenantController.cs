@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using tfgame.dbModels.Models;
 using tfgame.Filters;
 using tfgame.Procedures;
+using tfgame.Statics;
 using tfgame.ViewModels;
 using WebMatrix.WebData;
 
@@ -528,6 +529,7 @@ namespace tfgame.Controllers
 
         }
 
+         [Authorize]
          public ActionResult GiveMoneyFromCovenantChest(int id, decimal amount)
          {
              Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
@@ -585,7 +587,116 @@ namespace tfgame.Controllers
 
          }
 
+        [Authorize]
+         public ActionResult ClaimLocation()
+         {
+             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            
 
+             // assert that player is in a covenant
+             if (me.Covenant <= 0)
+             {
+                 TempData["Error"] = "You are not in a covenant.";
+                 return RedirectToAction("MyCovenant");
+             }
+
+             // assert that the player is a covenant leader
+             Covenant myCov = CovenantProcedures.GetDbCovenant(me.Covenant);
+             if (myCov.LeaderId != me.Id)
+             {
+                 TempData["Error"] = "You are not the leader of your covenant.";
+                 TempData["SubError"] = "Only covenant leaders can gift out money from the covenant's Arpeyjis chest.";
+                 return RedirectToAction("MyCovenant");
+             }
+
+            // assert that the player is animate
+             if (me.Mobility != "full")
+             {
+                 TempData["Error"] = "You must be animate in order to do this.";
+                 return RedirectToAction("MyCovenant");
+             }
+
+             ViewBag.MyLocation = LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName).Name;
+             ViewBag.CovenantMoney = myCov.Money;
+
+             return View();
+
+         }
+
+        [Authorize]
+        public ActionResult ClaimLocationSend()
+        {
+            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+
+            // assert that the player is animate
+            if (me.Mobility != "full")
+            {
+                TempData["Error"] = "You must be animate in order to do this.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            // assert that player is in a covenant
+            if (me.Covenant <= 0)
+            {
+                TempData["Error"] = "You are not in a covenant.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            // assert that the player is a covenant leader
+            Covenant myCov = CovenantProcedures.GetDbCovenant(me.Covenant);
+            if (myCov.LeaderId != me.Id)
+            {
+                TempData["Error"] = "You are not the leader of your covenant.";
+                TempData["SubError"] = "Only covenant leaders can gift out money from the covenant's Arpeyjis chest.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            // assert that the covenant does not already have a safeground set
+            if (CovenantProcedures.CovenantHasSafeground(myCov) == true)
+            {
+                TempData["Error"] = "Your covenant already has a safeground at " + LocationsStatics.GetLocation.FirstOrDefault(f => f.dbName == myCov.HomeLocation).Name + ".";
+                TempData["SubError"] = "Covenants can only establish a safeground once per round.";
+                return RedirectToAction("MyCovenant");
+            }
+
+
+            // assert that the covenant has enough money
+            if (myCov.Money < 2500)
+            {
+                TempData["Error"] = "Your covenant cannot afford that right now.";
+                TempData["SubError"] = "Try asking your members to donate more to the Covenant Chest.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            // assert that this location is not in the streets
+            if (me.dbLocationName.Contains("street_") == true)
+            {
+                TempData["Error"] = "You cannot establish a covenant safeground on a path or street.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            // asset that this location is not already in use by another covenant
+            if (CovenantProcedures.ACovenantHasASafegroundHere(me.dbLocationName) == true)
+            {
+                TempData["Error"] = "Your covenant cannot establish a safeground here.";
+                TempData["SubError"] = "Another covenant has already established a safeground at your current location.  You must find somewhere else.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            // assert that the player is animate
+            if (me.Mobility != "full")
+            {
+                TempData["Result"] = "You have succesfully claimed this location for your covenant safeground!";
+                return RedirectToAction("MyCovenant");
+            }
+
+            // all checks are okay, so allow this covenant to establish a safeground here
+
+            TempData["Result"] = "You have succesfully claimed this location for your covenant safeground!";
+            CovenantProcedures.SetCovenantSafeground(myCov, me.dbLocationName);
+            return RedirectToAction("MyCovenant");
+
+        }
 
 
 

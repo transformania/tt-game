@@ -1,0 +1,19 @@
+﻿<p>
+    @Html.ActionLink("Back to My Covenant", "MyCovenant", "Covenant")
+    @Html.ActionLink("Back to game", "Play", "PvP")
+</p>
+
+<h1>Claim This Location as Covenant Safeground</h1>
+
+<p>As the leader of your covenant, you can choose to claim your current location as a covenant safeground as long as it is not in the streets and you have enough Arpeyjis in your covenant's coffers.  Once you do this, you will not be able to move for the remainder of the round.  Covenant safegrounds can be decorated and upgraded with special furniture that offers special benefits to you and your members.</p>
+
+<p>Would you like to claim this location, <b>@ViewBag.MyLocation</b>, and set it as your covenant's homebase?</p>
+
+<p>You have <b>@ViewBag.CovenantMoney</b> Arpeyjis in your Covenant's chest.  You will need 2,500.</p>
+
+<p>@Html.ActionLink("Claim this location (2,500 Arpeyis)", "ClaimLocationSend", "Covenant")</p>
+
+<p>
+    @Html.ActionLink("Back to My Covenant", "MyCovenant", "Covenant")
+    @Html.ActionLink("Back to game", "Play", "PvP")
+</p>

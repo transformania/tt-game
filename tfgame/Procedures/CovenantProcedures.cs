@@ -327,6 +327,43 @@ namespace tfgame.Procedures
             covRepo.SaveCovenant(dbCov);
         }
 
+        public static bool ACovenantHasASafegroundHere(string location)
+        {
+            ICovenantRepository covRepo = new EFCovenantRepository();
+            int covenantsBasedHere = covRepo.Covenants.Where(c => c.HomeLocation == location).Count();
+
+            if (covenantsBasedHere > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public static void SetCovenantSafeground(Covenant covenant, string location)
+        {
+            ICovenantRepository covRepo = new EFCovenantRepository();
+            Covenant dbCovenant = covRepo.Covenants.FirstOrDefault(i => i.Id == covenant.Id);
+            dbCovenant.HomeLocation = location;
+            dbCovenant.Money -= 2500;
+            covRepo.SaveCovenant(dbCovenant);
+
+        }
+
+        public static bool CovenantHasSafeground(Covenant covenant)
+        {
+            if (covenant.HomeLocation != null && covenant.HomeLocation != "")
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
     
 
     

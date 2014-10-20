@@ -1,5 +1,6 @@
 ﻿@model tfgame.ViewModels.CovenantViewModel
 @using tfgame.ViewModels
+@using tfgame.Statics
 
 <head>
     <link href="~/Content/PvP.css" rel="stylesheet" />
@@ -9,7 +10,16 @@
 <div class="covenContainer">
     @Html.ActionLink("View All Covenants", "CovenantList", "Covenant") @Html.ActionLink("Back to My Covenant", "MyCovenant", "Covenant")
     <p class="covHeader"><span class="covName">@Model.dbCovenant.Name.</span></p>
-    <p style="margin-bottom:1px;"><b>@Model.dbCovenant.SelfDescription</b></p>
+    <p style="margin-bottom:1px;"><b>@Model.dbCovenant.SelfDescription</b>
+    
+    @{
+        if (Model.dbCovenant.HomeLocation != null && Model.dbCovenant.HomeLocation != "")
+        {
+            <i>This covenant has a safeground at @LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == Model.dbCovenant.HomeLocation).Name</i>
+        }
+    }
+    
+    </p>
     @Html.ActionLink("Led by " + Model.Leader.FirstName + " " + Model.Leader.LastName, "LookAtPlayer", "PvP", new { id = Model.Leader.Id }, null)
 </div>
     <p>Members of this covenant:</p>

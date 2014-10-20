@@ -45,6 +45,14 @@
     display: block;
 }
 
+.covSafeground{
+    font-size: 14px;
+    color: darkviolet;
+    text-align: center;
+    clear: both;
+    display: block;
+}
+
 .result {
     font-size: 20px;
     color: green;

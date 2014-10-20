@@ -92,6 +92,7 @@ namespace tfgame.Procedures
                 {
                     FlagUrl = c.FlagUrl,
                     Name = c.Name,
+                    HomeLocation = c.HomeLocation,
                 };
                 CovenantDictionary.IdNameFlagLookup.Add(c.Id, temp);
             }
@@ -349,6 +350,7 @@ namespace tfgame.Procedures
             dbCovenant.HomeLocation = location;
             dbCovenant.Money -= 2500;
             covRepo.SaveCovenant(dbCovenant);
+            LoadCovenantDictionary();
 
         }
 

@@ -91,7 +91,8 @@ namespace tfgame.Procedures.BossProcedures
         public static void CounterAttack(Player human, Player valentine)
         {
 
-            PlayerProcedures.GiveXP(human.Id, 10);
+            PlayerProcedures.GiveXP(human.Id, 20);
+            PlayerLogProcedures.AddPlayerLog(human.Id, "You gain 20 XP from your duel with Valentine.", true);
 
             // if Valentine's willpower is down to zero, have him hand over the panties and vanish.
             if (valentine.Health <= 0)

@@ -3330,7 +3330,7 @@ namespace tfgame.Controllers
                     //player.TimesAttackingThisUpdate = 0;
                     //player.CleansesMeditatesThisRound = 0;
 
-                    BuffBox buffs = ItemProcedures.GetPlayerBuffsRAM(player);
+                    BuffBox buffs = ItemProcedures.GetPlayerBuffs(player);
                     player.Health += buffs.HealthRecoveryPerUpdate();
                     player.Mana += buffs.ManaRecoveryPerUpdate();
 

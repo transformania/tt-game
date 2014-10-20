@@ -223,6 +223,7 @@
     <Compile Include="dbModels\Abstract\IChatLogRepository.cs" />
     <Compile Include="dbModels\Abstract\IContributionRepository.cs" />
     <Compile Include="dbModels\Abstract\ICovenantApplicationRepository.cs" />
+    <Compile Include="dbModels\Abstract\ICovenantLogRepository.cs" />
     <Compile Include="dbModels\Abstract\ICovenantRepository.cs" />
     <Compile Include="dbModels\Abstract\IDbStaticFormRepository.cs" />
     <Compile Include="dbModels\Abstract\IDbStaticItemRepository.cs" />
@@ -231,6 +232,7 @@
     <Compile Include="dbModels\Abstract\IEffectContributionRepository.cs" />
     <Compile Include="dbModels\Abstract\IEffectRepository.cs" />
     <Compile Include="dbModels\Abstract\IFriendRepository.cs" />
+    <Compile Include="dbModels\Abstract\IFurnitureRepository.cs" />
     <Compile Include="dbModels\Abstract\IInanimateXPRepository.cs" />
     <Compile Include="dbModels\Abstract\IItemRepository.cs" />
     <Compile Include="dbModels\Abstract\ILocationLogRepository.cs" />
@@ -248,10 +250,12 @@
     <Compile Include="dbModels\Abstract\ITFEnergyRepository.cs" />
     <Compile Include="dbModels\Abstract\ITFMessageRepository.cs" />
     <Compile Include="dbModels\Concrete\EFChatLogRepository.cs" />
+    <Compile Include="dbModels\Concrete\EFCovenantLogRepository.cs" />
     <Compile Include="dbModels\Concrete\EFDbStaticFormRepository.cs" />
     <Compile Include="dbModels\Concrete\EFDbStaticItemRepository.cs" />
     <Compile Include="dbModels\Concrete\EFDMRollRepository.cs" />
     <Compile Include="dbModels\Concrete\EFDonatorRepository.cs" />
+    <Compile Include="dbModels\Concrete\EFFurnitureRepository.cs" />
     <Compile Include="dbModels\Concrete\EFPlayerExtraRepository.cs" />
     <Compile Include="dbModels\Concrete\EFRPPointRespository.cs" />
     <Compile Include="dbModels\Concrete\EFTFMessageRepository.cs" />
@@ -282,6 +286,7 @@
     <Compile Include="dbModels\Models\Contribution.cs" />
     <Compile Include="dbModels\Models\Covenant.cs" />
     <Compile Include="dbModels\Models\CovenantApplication.cs" />
+    <Compile Include="dbModels\Models\CovenantLog.cs" />
     <Compile Include="dbModels\Models\DbStaticForm.cs" />
     <Compile Include="dbModels\Models\DbStaticItem.cs" />
     <Compile Include="dbModels\Models\DMItem.cs" />
@@ -289,6 +294,7 @@
     <Compile Include="dbModels\Models\Effect.cs" />
     <Compile Include="dbModels\Models\EffectContribution.cs" />
     <Compile Include="dbModels\Models\Friend.cs" />
+    <Compile Include="dbModels\Models\Furniture.cs" />
     <Compile Include="dbModels\Models\InanimateXP.cs" />
     <Compile Include="dbModels\Models\Item.cs" />
     <Compile Include="dbModels\Models\LocationLog.cs" />

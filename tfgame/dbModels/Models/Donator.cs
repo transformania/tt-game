@@ -14,5 +14,6 @@ namespace tfgame.dbModels.Models
         public decimal ActualDonationAmount { get; set; }
         public DateTime Timestamp { get; set; }
         public bool HasBoughtCustomFormPortrait { get; set; }
+        public bool EarnedFromContributions { get; set; }
     }
 }

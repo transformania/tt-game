@@ -853,7 +853,7 @@ namespace tfgame.Procedures
                     itemRepo.DeleteItem(itemPlus.dbItem.Id);
 
                     LocationLogProcedures.AddLocationLog(owner.dbLocationName, owner.FirstName + " " + owner.LastName + " consumed a " + itemPlus.Item.FriendlyName + " here.");
-                    return name + " consumed a " + itemPlus.Item.FriendlyName + ", immediately restoring " + itemPlus.Item.InstantHealthRestore + " willpower.";
+                    return name + " consumed a " + itemPlus.Item.FriendlyName + ", immediately restoring " + itemPlus.Item.InstantHealthRestore + " willpower.  " + owner.Health + "/" + owner.MaxHealth + " WP";
 
                 }
 
@@ -868,7 +868,7 @@ namespace tfgame.Procedures
                     itemRepo.DeleteItem(itemPlus.dbItem.Id);
 
                     LocationLogProcedures.AddLocationLog(owner.dbLocationName, owner.FirstName + " " + owner.LastName + " consumed a " + itemPlus.Item.FriendlyName + " here.");
-                    return name + " consumed a " + itemPlus.Item.FriendlyName + ", immediately restoring " + itemPlus.Item.InstantManaRestore + " mana.";
+                    return name + " consumed a " + itemPlus.Item.FriendlyName + ", immediately restoring " + (itemPlus.Item.InstantManaRestore) + " mana.  " + owner.Mana + "/" + owner.MaxMana + " Mana";
                 }
 
                 // special items time
@@ -947,7 +947,7 @@ namespace tfgame.Procedures
 
                         playerRepo.SavePlayer(owner);
 
-                        return name + " used a " + itemPlus.Item.FriendlyName + ", immediately restoring " + (itemPlus.Item.ReuseableHealthRestore + bonusFromLevelHealth) + " willpower and " + (itemPlus.Item.ReuseableManaRestore + bonusFromLevelMana) + " mana.";
+                        return name + " used a " + itemPlus.Item.FriendlyName + ", immediately restoring " + (itemPlus.Item.ReuseableHealthRestore + bonusFromLevelHealth) + " willpower and " + (itemPlus.Item.ReuseableManaRestore + bonusFromLevelMana) + " mana.  " + owner.Health + "/" + owner.MaxHealth + " WP, " + owner.Mana + "/" + owner.MaxMana + " Mana";
 
                     }
 
@@ -965,7 +965,7 @@ namespace tfgame.Procedures
                         }
                         playerRepo.SavePlayer(owner);
 
-                        return name + " consumed from a " + itemPlus.Item.FriendlyName + ", immediately restoring " + (itemPlus.Item.ReuseableHealthRestore + bonusFromLevel) + " willpower.";
+                        return name + " consumed from a " + itemPlus.Item.FriendlyName + ", immediately restoring " + (itemPlus.Item.ReuseableHealthRestore + bonusFromLevel) + " willpower.  " + owner.Health + "/" + owner.MaxHealth + " WP";
                     }
 
                    // just a mana gain
@@ -982,7 +982,7 @@ namespace tfgame.Procedures
                         }
                         playerRepo.SavePlayer(owner);
 
-                        return name + " consumed from a " + itemPlus.Item.FriendlyName + ", immediately restoring " + (itemPlus.Item.ReuseableManaRestore + bonusFromLevel) + " mana.";
+                        return name + " consumed from a " + itemPlus.Item.FriendlyName + ", immediately restoring " + (itemPlus.Item.ReuseableManaRestore + bonusFromLevel) + " mana.  " + owner.Mana + "/" + owner.MaxMana + " Mana";
                     }
 
                     LocationLogProcedures.AddLocationLog(owner.dbLocationName, owner.FirstName + " " + owner.LastName + " used a " + itemPlus.Item.FriendlyName + " here.");

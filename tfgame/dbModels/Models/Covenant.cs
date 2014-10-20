@@ -29,5 +29,6 @@ namespace tfgame.dbModels.Models
         public bool IsPvP { get; set; }
         public string formerMembers { get; set; }
         public decimal Money { get; set; }
+        public string HomeLocation { get; set; }
     }
 }

@@ -24,6 +24,7 @@ namespace tfgame.ViewModels
     {
         public string Name { get; set; }
         public string FlagUrl { get; set; }
+        public string HomeLocation { get; set; }
     }
 
     public class CovenantApplicationViewModel

@@ -47,7 +47,8 @@ namespace tfgame.dbModels.Concrete
         public DbSet<PlayerExtra> PlayerExtras { get; set; }
         public DbSet<RPPoint> RPPoints { get; set; }
         public DbSet<Donator> Donators { get; set; }
-
+        public DbSet<Furniture> Furnitures { get; set; }
+        public DbSet<CovenantLog> CovenantLogs { get; set; }
 
         public DbSet<ChatLog> ChatLogs { get; set; }
         public DbSet<DMRoll> DMRolls { get; set; }

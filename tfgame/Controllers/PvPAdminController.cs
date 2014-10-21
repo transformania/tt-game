@@ -1008,12 +1008,16 @@ namespace tfgame.Controllers
                 return View("Play");
             }
 
-            ItemProcedures.LoadItemRAMBuffBox();
-            PlayerProcedures.LoadFormRAMBuffBox();
+            //ItemProcedures.LoadItemRAMBuffBox();
+            //PlayerProcedures.LoadFormRAMBuffBox();
 
-            Player me = PlayerProcedures.GetPlayerFromMembership(69);
-            BuffBox oldbox = ItemProcedures.GetPlayerBuffs(me);
-            BuffBox newbox = ItemProcedures.GetPlayerBuffsRAM(me);
+            //Player me = PlayerProcedures.GetPlayerFromMembership(69);
+            //BuffBox oldbox = ItemProcedures.GetPlayerBuffs(me);
+            //BuffBox newbox = ItemProcedures.GetPlayerBuffsRAM(me);
+
+           // IEnumerable<FurnitureViewModel> test = FurnitureProcedures.GetCovenantFurnitureViewModels(35).ToList();
+
+            FurnitureProcedures.AddNewFurnitureToMarket();
 
             return RedirectToAction("Index");
 

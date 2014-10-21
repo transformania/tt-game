@@ -380,6 +380,7 @@
     <Compile Include="ViewModels\ServerBalance.cs" />
     <Compile Include="ViewModels\SkillViewModel.cs" />
     <Compile Include="ViewModels\StaticEffect.cs" />
+    <Compile Include="ViewModels\StaticFurniture.cs" />
     <Compile Include="ViewModels\StaticItem.cs" />
     <Compile Include="ViewModels\StaticSkill.cs" />
     <Compile Include="ViewModels\WorldStats.cs" />
@@ -614,6 +615,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="XMLs\FairyChallengeText\template.xml" />
+    <Content Include="XMLs\FirstNames.xml" />
     <Content Include="XMLs\LastNames.xml" />
     <Content Include="XMLs\LocationDescriptions\270_west_9th_ave.xml" />
     <Content Include="XMLs\LocationDescriptions\280_west_9th_ave.xml" />

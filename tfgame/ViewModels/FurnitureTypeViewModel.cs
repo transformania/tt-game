@@ -8,7 +8,7 @@ namespace tfgame.ViewModels
 {
     public class FurnitureViewModel
     {
-        public Furniture dbFurniture { get; set; }
-        public DbStaticFurniture FurnitureType { get; set; }
+        public Furniture_VM dbFurniture { get; set; }
+        public StaticFurniture FurnitureType { get; set; }
     }
 }

@@ -17,5 +17,9 @@ namespace tfgame.dbModels.Abstract
 
         void DeleteFurniture(int FurnitureId);
 
+        void SaveDbStaticFurniture(DbStaticFurniture StaticFurniture);
+
+        void DeleteDbStaticFurniture(int StaticFurnitureId);
+
     }
 }

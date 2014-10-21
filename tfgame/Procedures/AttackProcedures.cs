@@ -95,7 +95,7 @@ namespace tfgame.Procedures
                 BuffBox meBuffs = ItemProcedures.GetPlayerBuffs(me);
                 BuffBox targetedBuffs = ItemProcedures.GetPlayerBuffs(targeted);
 
-                Random rand = new Random();
+                Random rand = new Random(Guid.NewGuid().GetHashCode());
                 double basehitChance = rand.NextDouble() * 100;
 
                 decimal meDmgExtra = meBuffs.SpellExtraHealthDamagePercent();

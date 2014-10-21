@@ -16,6 +16,11 @@ namespace tfgame.dbModels.Concrete
             get { return context.Furnitures; }
         }
 
+        public IQueryable<DbStaticFurniture> DbStaticFurniture
+        {
+            get { return context.DbStaticFurniture; }
+        }
+
         public void SaveFurniture(Furniture Furniture)
         {
             if (Furniture.Id == 0)

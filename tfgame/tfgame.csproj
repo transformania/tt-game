@@ -226,6 +226,7 @@
     <Compile Include="dbModels\Abstract\ICovenantLogRepository.cs" />
     <Compile Include="dbModels\Abstract\ICovenantRepository.cs" />
     <Compile Include="dbModels\Abstract\IDbStaticFormRepository.cs" />
+    <Compile Include="dbModels\Abstract\IDbStaticFurnitureRepository.cs" />
     <Compile Include="dbModels\Abstract\IDbStaticItemRepository.cs" />
     <Compile Include="dbModels\Abstract\IDMRollRepository.cs" />
     <Compile Include="dbModels\Abstract\IDonatorRepository.cs" />
@@ -252,6 +253,7 @@
     <Compile Include="dbModels\Concrete\EFChatLogRepository.cs" />
     <Compile Include="dbModels\Concrete\EFCovenantLogRepository.cs" />
     <Compile Include="dbModels\Concrete\EFDbStaticFormRepository.cs" />
+    <Compile Include="dbModels\Concrete\EFDbStaticFurnitureRepository.cs" />
     <Compile Include="dbModels\Concrete\EFDbStaticItemRepository.cs" />
     <Compile Include="dbModels\Concrete\EFDMRollRepository.cs" />
     <Compile Include="dbModels\Concrete\EFDonatorRepository.cs" />
@@ -288,6 +290,7 @@
     <Compile Include="dbModels\Models\CovenantApplication.cs" />
     <Compile Include="dbModels\Models\CovenantLog.cs" />
     <Compile Include="dbModels\Models\DbStaticForm.cs" />
+    <Compile Include="dbModels\Models\DbStaticFurniture.cs" />
     <Compile Include="dbModels\Models\DbStaticItem.cs" />
     <Compile Include="dbModels\Models\DMItem.cs" />
     <Compile Include="dbModels\Models\Donator.cs" />
@@ -320,6 +323,7 @@
     <Compile Include="Procedures\ChatLogProcedures.cs" />
     <Compile Include="Procedures\DMRollProcedures.cs" />
     <Compile Include="Procedures\DonatorProcedures.cs" />
+    <Compile Include="Procedures\FurnitureProcedures.cs" />
     <Compile Include="Procedures\Pathfinding.cs" />
     <Compile Include="Procedures\CovenantProcedures.cs" />
     <Compile Include="Procedures\EffectProcedures.cs" />
@@ -339,6 +343,7 @@
     <Compile Include="Statics\EffectStatics.cs" />
     <Compile Include="Statics\Forms.cs" />
     <Compile Include="Statics\FormStatics.cs" />
+    <Compile Include="Statics\FurnitureTypeStatics.cs" />
     <Compile Include="Statics\ItemStatics.cs" />
     <Compile Include="Statics\PvPStatics.cs" />
     <Compile Include="Statics\SkillStatics.cs" />
@@ -352,6 +357,7 @@
     <Compile Include="ViewModels\Die.cs" />
     <Compile Include="ViewModels\EffectViewModel.cs" />
     <Compile Include="ViewModels\FairyChallengeViewModel.cs" />
+    <Compile Include="ViewModels\FurnitureTypeViewModel.cs" />
     <Compile Include="ViewModels\GameOverViewModelAnimal.cs" />
     <Compile Include="ViewModels\Form.cs" />
     <Compile Include="ViewModels\FriendPageViewModel.cs" />

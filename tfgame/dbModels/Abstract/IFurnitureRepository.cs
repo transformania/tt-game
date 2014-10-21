@@ -11,6 +11,8 @@ namespace tfgame.dbModels.Abstract
 
         IQueryable<Furniture> Furnitures { get; }
 
+        IQueryable<DbStaticFurniture> DbStaticFurniture { get; }
+
         void SaveFurniture(Furniture Furniture);
 
         void DeleteFurniture(int FurnitureId);

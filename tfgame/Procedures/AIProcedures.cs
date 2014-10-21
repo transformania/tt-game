@@ -719,6 +719,7 @@ namespace tfgame.Procedures
             }
             #endregion
 
+            // Valentine counterattack
             if (bot.MembershipId == -5)
             {
                 BossProcedures_Valentine.CounterAttack(personAttacking, bot);

@@ -48,6 +48,8 @@ namespace tfgame.dbModels.Concrete
         public DbSet<RPPoint> RPPoints { get; set; }
         public DbSet<Donator> Donators { get; set; }
         public DbSet<Furniture> Furnitures { get; set; }
+
+        public DbSet<DbStaticFurniture> DbStaticFurniture { get; set; }
         public DbSet<CovenantLog> CovenantLogs { get; set; }
 
         public DbSet<ChatLog> ChatLogs { get; set; }

@@ -698,6 +698,13 @@ namespace tfgame.Controllers
 
         }
 
+         [Authorize]
+        public ActionResult ViewAvailableFurniture()
+        {
+            IEnumerable<FurnitureViewModel> output = FurnitureProcedures.GetAvailableFurnitureViewModels();
+            return View(output);
+        }
+
 
 
 

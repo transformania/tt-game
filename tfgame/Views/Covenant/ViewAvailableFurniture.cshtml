@@ -1,0 +1,26 @@
+﻿@model IEnumerable<tfgame.ViewModels.FurnitureViewModel>
+
+<p>
+    @Html.ActionLink("Back to My Covenant", "MyCovenant", "Covenant")
+    @Html.ActionLink("Back to game", "Play", "PvP")
+</p>
+
+<h1>Available Covenant Furniture Contracts</h1>
+
+<p>Human Resource Furniture(TM) proudly pairs people desiring a temporary placement as a piece of furniture with eager owners for a price.  These enchanted household belongings are highly in demand as the rare and powerful spells that transform them also allow them to return various gifts and magics to their new owners. </p>
+
+<hr />
+@{
+    foreach (tfgame.ViewModels.FurnitureViewModel f in Model)
+    {
+        @Html.Partial("partial/FurnitureViewModel", f);
+        @Html.ActionLink("Purchase Contract", "PurchaseFurniture", "Covenant", new { id = f.dbFurniture.Id}, null)
+     <hr />
+    }
+   
+}
+
+<p>
+    @Html.ActionLink("Back to My Covenant", "MyCovenant", "Covenant")
+    @Html.ActionLink("Back to game", "Play", "PvP")
+</p>

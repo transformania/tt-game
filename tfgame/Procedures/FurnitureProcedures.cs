@@ -11,8 +11,14 @@ using tfgame.ViewModels;
 
 namespace tfgame.Procedures
 {
+
+    
+
     public static class FurnitureProcedures
     {
+
+        public const double FurnitureContractVariation = .5D;
+
         public static IEnumerable<FurnitureViewModel> GetCovenantFurnitureViewModels(int covenantId)
         {
             IFurnitureRepository furnRepo = new EFFurnitureRepository();
@@ -30,6 +36,7 @@ namespace tfgame.Procedures
                                                              ContractStartTurn = f.ContractStartTurn,
                                                              ContractEndTurn = f.ContractEndTurn,
                                                              CovenantId = f.CovenantId,
+                                                             ContractTurnDuration = f.ContractTurnDuration,
                                                              LastUsersIds = f.LastUsersIds,
                                                              LastUseTimestamp = f.LastUseTimestamp,
                                                              Price = f.Price,
@@ -54,6 +61,11 @@ namespace tfgame.Procedures
             return output;
         }
 
+        public static IEnumerable<FurnitureViewModel> GetAvailableFurnitureViewModels()
+        {
+            return GetCovenantFurnitureViewModels(-1);
+        }
+
         public static void AddNewFurnitureToMarket()
         {
             IFurnitureRepository furnRepo = new EFFurnitureRepository();
@@ -68,8 +80,8 @@ namespace tfgame.Procedures
             DbStaticFurniture furnitureType = furnitureTypes.ElementAt(index);
 
             int turn = PvPWorldStatProcedures.GetWorldTurnNumber();
-            int contractTurnRandomOffset = furnitureType.BaseContractTurnLength * (int)((rand.NextDouble() - .5) * 2);
-            decimal basePriceRandomOffset = furnitureType.BaseCost * (decimal)((rand.NextDouble() - .5) * 2);
+            int contractTurnRandomOffset = (int)(furnitureType.BaseContractTurnLength * ((rand.NextDouble() - .5) * 2) * FurnitureProcedures.FurnitureContractVariation);
+            decimal basePriceRandomOffset = furnitureType.BaseCost * (decimal)((rand.NextDouble() - .5) * 2) * (decimal)FurnitureProcedures.FurnitureContractVariation;
             //string firstName = PlayerProcedures.R
 
             // get a random name
@@ -83,20 +95,32 @@ namespace tfgame.Procedures
 
             num = rand.NextDouble();
 
-            string name = names.ElementAt((int)Math.Floor(num*names.Count()));
+            string firstname = names.ElementAt((int)Math.Floor(num*names.Count()));
+
+            string path2 = HttpContext.Current.Server.MapPath("~/XMLs/LastNames.xml");
+            using (var reader = XmlReader.Create(path))
+            {
+                names = (List<string>)serializer.Deserialize(reader);
+            }
+
+            num = rand.NextDouble();
+
+            string lastname = names.ElementAt((int)Math.Floor(num * names.Count()));
 
             Furniture newfurn = new Furniture
             {
                 dbType = furnitureType.dbType,
                 ContractTurnDuration = furnitureType.BaseContractTurnLength + contractTurnRandomOffset,
                 CovenantId = -1,
-                HumanName = name + " the " + furnitureType.FriendlyName,
+                HumanName = firstname + " " + lastname + " the " + furnitureType.FriendlyName,
                 Price = Math.Floor(furnitureType.BaseCost + basePriceRandomOffset),
                 LastUseTimestamp = DateTime.UtcNow,
                 ContractStartTurn = 0,
                 ContractEndTurn = 0,
                 LastUsersIds = ";",
             };
+
+            furnRepo.SaveFurniture(newfurn);
 
 
         }

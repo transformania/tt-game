@@ -1,0 +1,25 @@
+﻿@model tfgame.ViewModels.FurnitureViewModel
+
+<h3>@Model.dbFurniture.HumanName</h3>
+<p>Price:  <span title="Arpeyjis" class="icon-money"></span><span class="avatarCount"><b>@Convert.ToInt32(Model.dbFurniture.Price)</b></span> </p>
+<p>Contract Duration:  <b>@Model.dbFurniture.ContractTurnDuration</b></p>
+<p>Recharge duration:  <b>@Model.FurnitureType.MinutesUntilReuse</b> minutes</p>
+<p>Advantages:</p>
+
+
+<ul>
+    @{
+        if (Model.FurnitureType.APReserveRefillAmount != null && Model.FurnitureType.APReserveRefillAmount != 0)
+        {
+            <li>Refills action point reserve by:  @Model.FurnitureType.APReserveRefillAmount</li>
+        }
+        if (Model.FurnitureType.GivesEffect != null && Model.FurnitureType.GivesEffect != "")
+        {
+            <li>Gives effect:  @Model.FurnitureType.GivesEffect</li>
+        }
+        if (Model.FurnitureType.GivesItem!= null && Model.FurnitureType.GivesItem != "") {
+            <li>Gives item:  @tfgame.Statics.ItemStatics.GetStaticItem(Model.FurnitureType.GivesItem).FriendlyName</li>
+        } 
+    }
+</ul>
+

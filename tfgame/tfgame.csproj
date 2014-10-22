@@ -1377,6 +1377,8 @@
     <Content Include="Views\PvP\partial\partial_recentActivity.cshtml" />
     <Content Include="Views\PvP\ViewEffects.cshtml" />
     <Content Include="Views\Covenant\ClaimLocation.cshtml" />
+    <Content Include="Views\Covenant\ViewAvailableFurniture.cshtml" />
+    <Content Include="Views\Covenant\partial\FurnitureViewModel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -701,10 +701,167 @@ namespace tfgame.Controllers
          [Authorize]
         public ActionResult ViewAvailableFurniture()
         {
-            IEnumerable<FurnitureViewModel> output = FurnitureProcedures.GetAvailableFurnitureViewModels();
+           
+             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+
+             // assert that player is in a covenant
+             if (me.Covenant <= 0)
+             {
+                 TempData["Error"] = "You are not in a covenant.";
+                 return RedirectToAction("MyCovenant");
+             }
+
+             IEnumerable<FurnitureViewModel> output = FurnitureProcedures.GetAvailableFurnitureViewModels();
+
+             Covenant myCov = CovenantProcedures.GetDbCovenant(me.Covenant);
+             bool playerIsCovenantLeader = (myCov != null && myCov.LeaderId == me.Id && me.Covenant > 0);
+             ViewBag.playerIsCovenantLeader = playerIsCovenantLeader;
+             ViewBag.CovenantMoney = (int)myCov.Money;
+             
             return View(output);
         }
 
+        [Authorize]
+         public ActionResult PurchaseFurniture(int id)
+         {
+             Player me = PlayerProcedures.GetPlayerFromMembership();
+
+             // assert that player is in a covenant
+             if (me.Covenant <= 0)
+             {
+                 TempData["Error"] = "You are not in a covenant.";
+                 return RedirectToAction("MyCovenant");
+             }
+
+             // assert that the player is a covenant leader
+             Covenant myCov = CovenantProcedures.GetDbCovenant(me.Covenant);
+             if (myCov.LeaderId != me.Id)
+             {
+                 TempData["Error"] = "You are not the leader of your covenant.";
+                 TempData["SubError"] = "Only covenant leaders can gift out money from the covenant's Arpeyjis chest.";
+                 return RedirectToAction("MyCovenant");
+             }
+
+             Furniture furniture = FurnitureProcedures.GetdbFurniture(id);
+
+            // assert that the covenant has enough money
+             if (myCov.Money < furniture.Price)
+             {
+                 TempData["Error"] = "Your covenant does not have enough Arpeyjis to purchase this contract.";
+                 return RedirectToAction("MyCovenant");
+             }
+
+            // assert that the covenant has a safeground
+             if (myCov.HomeLocation != null & myCov.HomeLocation != "")
+             {
+                 TempData["Error"] = "Your covenant needs a safeground before it can purchase any furniture.";
+                 return RedirectToAction("MyCovenant");
+             }
+
+            // assert that the furniture is on the market
+             if (furniture.CovenantId != -1)
+             {
+                 TempData["Error"] = "This piece of furniture is not currently on the market.";
+                 return RedirectToAction("MyCovenant");
+             }
+
+            // all checks have passed; give the furniture to the covenant
+             FurnitureProcedures.GiveFurnitureToCovenant(furniture, myCov);
+
+            string result = "Congratulations, your covenant, " + myCov.Name + ", has successfully purchased the contract for " + furniture.HumanName + ".";
+            TempData["Result"] = result;
+
+             return RedirectToAction("MyCovenant");
+
+         }
+
+        [Authorize]
+        public ActionResult MyCovenantFurniture()
+        {
+            
+            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Covenant myCov = CovenantProcedures.GetDbCovenant(me.Covenant);
+
+            // assert that player is in a covenant
+            if (me.Covenant <= 0)
+            {
+                TempData["Error"] = "You are not in a covenant.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            IEnumerable<FurnitureViewModel> output = FurnitureProcedures.GetCovenantFurnitureViewModels(me.Covenant);
+            ViewBag.MyLocation = LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName).Name;
+
+            string covSafegroundLocation = "";
+            if (myCov.HomeLocation != null && myCov.HomeLocation != "") {
+                covSafegroundLocation = "Your covenant's safeground is at " + LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == myCov.HomeLocation).Name;
+            }
+            else
+            {
+                covSafegroundLocation = "Your covenant has not yet established a safeground and cannot yet lease any furniture.";
+            }
+            ViewBag.CovLocation = covSafegroundLocation;
+
+            bool playerIsAtSafeground = false;
+
+            if (myCov.HomeLocation != null && myCov.HomeLocation != "" && me.dbLocationName == myCov.HomeLocation) {
+                playerIsAtSafeground = true;
+            }
+
+            ViewBag.AtCovenantSafeground = playerIsAtSafeground;
+
+            return View(output);
+
+        }
+
+        public ActionResult UseFurniture(int id)
+        {
+            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Covenant myCov = CovenantProcedures.GetDbCovenant(me.Covenant);
+            Furniture furniture = FurnitureProcedures.GetdbFurniture(id);
+
+            // assert that the player is animate
+            if (me.Mobility != "full")
+            {
+                TempData["Error"] = "You must be animate in order to do this.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            // assert that player is in a covenant
+            if (me.Covenant <= 0)
+            {
+                TempData["Error"] = "You are not in a covenant.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            // assert that the player is in the covenant that actually owns this
+            if (furniture.CovenantId != me.Covenant)
+            {
+                TempData["Error"] = "Your covenant does not own this furniture.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            // assert that the contract has not expired nor has not begun yet
+            int turnNumber = PvPWorldStatProcedures.GetWorldTurnNumber();
+            if (furniture.ContractStartTurn > turnNumber || furniture.ContractEndTurn < turnNumber)
+            {
+                TempData["Error"] = "This contract for this piece of furniture has either expired or not begun yet.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            // assert that the item is not on recharge
+            if (FurnitureProcedures.GetMinutesUntilReuse(furniture) > 0)
+            {
+                TempData["Error"] = "This item of furniture needs more time to regather its energy before it can be used for any bonuses.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            FurnitureProcedures.UseFurniture(id, me);
+
+            TempData["Error"] = "You use it.";
+            return RedirectToAction("MyCovenant");
+
+        }
 
 
 

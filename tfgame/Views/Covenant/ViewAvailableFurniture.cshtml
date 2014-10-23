@@ -9,15 +9,22 @@
 
 <p>Human Resource Furniture(TM) proudly pairs people desiring a temporary placement as a piece of furniture with eager owners for a price.  These enchanted household belongings are highly in demand as the rare and powerful spells that transform them also allow them to return various gifts and magics to their new owners. </p>
 
+<p>Your covenant has <span title="Arpeyjis" class="icon-money"></span><b>@ViewBag.CovenantMoney</b> Arpeyjis available to spend.</p>
+
 <hr />
 @{
     foreach (tfgame.ViewModels.FurnitureViewModel f in Model)
     {
         @Html.Partial("partial/FurnitureViewModel", f);
-        @Html.ActionLink("Purchase Contract", "PurchaseFurniture", "Covenant", new { id = f.dbFurniture.Id}, null)
-     <hr />
+    
+        if (ViewBag.playerIsCovenantLeader == true)
+        {
+             @Html.ActionLink("Purchase Contract", "PurchaseFurniture", "Covenant", new { id = f.dbFurniture.Id }, null)
+        }
+
+        <hr /> 
     }
-   
+
 }
 
 <p>

@@ -7,6 +7,7 @@ using System.Xml.Serialization;
 using tfgame.dbModels.Abstract;
 using tfgame.dbModels.Concrete;
 using tfgame.dbModels.Models;
+using tfgame.Statics;
 using tfgame.ViewModels;
 
 namespace tfgame.Procedures
@@ -54,6 +55,9 @@ namespace tfgame.Procedures
                                                              GivesEffect = sf.GivesEffect,
                                                              GivesItem = sf.GivesItem,
                                                              MinutesUntilReuse = sf.MinutesUntilReuse,
+                                                             Description = sf.Description,
+                                                             PortraitUrl = sf.PortraitUrl,
+                                                             
                                                          }
 
                                                      };
@@ -65,6 +69,14 @@ namespace tfgame.Procedures
         {
             return GetCovenantFurnitureViewModels(-1);
         }
+
+        public static Furniture GetdbFurniture(int id)
+        {
+            IFurnitureRepository furnRepo = new EFFurnitureRepository();
+            return furnRepo.Furnitures.FirstOrDefault(f => f.Id == id);
+        }
+
+
 
         public static void AddNewFurnitureToMarket()
         {
@@ -123,6 +135,103 @@ namespace tfgame.Procedures
             furnRepo.SaveFurniture(newfurn);
 
 
+        }
+
+        public static void GiveFurnitureToCovenant(Furniture furniture, Covenant covenant)
+        {
+            IFurnitureRepository furnRepo = new EFFurnitureRepository();
+            ICovenantRepository covRepo = new EFCovenantRepository();
+
+            Covenant dbCovenant = covRepo.Covenants.FirstOrDefault(c => c.Id == covenant.Id);
+            Furniture dbFurniture = furnRepo.Furnitures.First(f => f.Id == furniture.Id);
+
+            dbCovenant.Money -= furniture.Price;
+            dbFurniture.CovenantId = covenant.Id;
+
+            // update the contract begin/end dates for this furniture
+            dbFurniture.ContractStartTurn = PvPWorldStatProcedures.GetWorldTurnNumber();
+            dbFurniture.ContractEndTurn = dbFurniture.ContractStartTurn + dbFurniture.ContractTurnDuration;
+
+            covRepo.SaveCovenant(dbCovenant);
+            furnRepo.SaveFurniture(dbFurniture);
+
+        }
+
+        public static bool FurnitureIsAvailable(Furniture_VM furniture)
+        {
+            double minutesSinceLastUse = Math.Abs(Math.Floor(furniture.LastUseTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
+
+            if (minutesSinceLastUse > 0)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+
+        }
+
+        public static double GetMinutesUntilReuse(FurnitureViewModel furniture) {
+
+            double rechargeTime = (double)furniture.FurnitureType.MinutesUntilReuse;
+            double minutesSinceLastUse = furniture.dbFurniture.LastUseTimestamp.Subtract(DateTime.UtcNow).TotalMinutes;
+            return rechargeTime + minutesSinceLastUse;
+        }
+
+        public static double GetMinutesUntilReuse(Furniture furniture)
+        {
+             IFurnitureRepository furnRepo = new EFFurnitureRepository();
+             DbStaticFurniture staticFurniture = furnRepo.DbStaticFurniture.FirstOrDefault(f => f.dbType == furniture.dbType);
+             double rechargeTime = (double)staticFurniture.MinutesUntilReuse;
+             double minutesSinceLastUse = furniture.LastUseTimestamp.Subtract(DateTime.UtcNow).TotalMinutes;
+             return rechargeTime + minutesSinceLastUse;
+        }
+
+        public static string UseFurniture(int furnitureId, Player user)
+        {
+            IFurnitureRepository furnRepo = new EFFurnitureRepository();
+            Furniture dbFurniture = furnRepo.Furnitures.FirstOrDefault(f => f.Id == furnitureId);
+            dbFurniture.LastUseTimestamp = DateTime.UtcNow;
+            furnRepo.SaveFurniture(dbFurniture);
+
+            DbStaticFurniture furnitureStatic = furnRepo.DbStaticFurniture.FirstOrDefault(f => f.dbType == dbFurniture.dbType);
+
+            string useResult = "";
+
+            // furniture gives AP reserve bonus
+            if (furnitureStatic.APReserveRefillAmount > 0)
+            {
+                IPlayerRepository playerRepo = new EFPlayerRepository();
+                Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == user.Id);
+                dbPlayer.ActionPoints_Refill += furnitureStatic.APReserveRefillAmount;
+                if (dbPlayer.ActionPoints_Refill > PvPStatics.MaximumStoreableActionPoints_Refill)
+                {
+                    dbPlayer.ActionPoints_Refill = PvPStatics.MaximumStoreableActionPoints_Refill;
+                }
+                dbPlayer.LastActionTimestamp = DateTime.UtcNow;
+                playerRepo.SavePlayer(dbPlayer);
+
+                return "You used " + dbFurniture.HumanName + ", a human voluntarily transformed into furniture and leased by your covenant, and gained " + furnitureStatic.APReserveRefillAmount + " reserve action points.";
+            }
+
+            // furniture gives effect
+            else if (furnitureStatic.GivesEffect != null && furnitureStatic.GivesEffect != "")
+            {
+                EffectProcedures.GivePerkToPlayer(furnitureStatic.GivesEffect, user);
+                PlayerProcedures.SetTimestampToNow(user, false);
+                return "You used " + dbFurniture.HumanName + ", a human voluntarily transformed into furniture and leased by your covenant, and gained the " + EffectStatics.GetStaticEffect.FirstOrDefault(e => e.dbName == furnitureStatic.GivesEffect).FriendlyName + " effect.";
+            }
+
+            //furniture gives item
+            else if (furnitureStatic.GivesItem != null && furnitureStatic.GivesItem != "")
+            {
+                ItemProcedures.GiveNewItemToPlayer(user, furnitureStatic.GivesItem);
+                PlayerProcedures.SetTimestampToNow(user, false);
+                return "You used " + dbFurniture.HumanName + ", a human voluntarily transformed into furniture and leased by your covenant, and gained the a " + EffectStatics.GetStaticEffect.FirstOrDefault(e => e.dbName == furnitureStatic.GivesEffect).FriendlyName + " to use at the time of your own choosing.";
+            }
+
+            return "ERROR";
         }
 
     }

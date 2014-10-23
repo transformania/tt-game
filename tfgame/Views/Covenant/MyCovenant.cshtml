@@ -9,7 +9,8 @@
 
     @Html.ActionLink("Create your own Covenant", "StartNewCovenant", "Covenant")
     @Html.ActionLink("View all Covenants", "CovenantList", "Covenant")
-    @Html.ActionLink("View available Covenant Furniture", "ViewAvailableFurniture", "Covenant")
+    @Html.ActionLink("Covenant Furniture on Market", "ViewAvailableFurniture", "Covenant")
+    @Html.ActionLink("Your Covenant's Furniture", "MyCovenantFurniture", "Covenant")
 
     @{  
         if (Model.dbCovenant != null)

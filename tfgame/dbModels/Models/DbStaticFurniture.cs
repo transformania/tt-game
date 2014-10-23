@@ -16,5 +16,7 @@ namespace tfgame.dbModels.Models
         public int BaseContractTurnLength { get; set; }
         public string GivesItem { get; set; }
         public decimal MinutesUntilReuse { get; set; }
+        public string Description { get; set; }
+        public string PortraitUrl { get; set; }
     }
 }

@@ -139,7 +139,7 @@ namespace tfgame.Statics
         public static int MaxCleansesMeditatesPerUpdate = 3;
 
         public static decimal MaximumStoreableActionPoints = 120;
-        public static decimal MaximumStoreableActionPoints_Refill = 360;
+        public const decimal MaximumStoreableActionPoints_Refill = 360;
         public static decimal APRestoredPerUpdate = 10;
         public static decimal APRestoredPerUpdateRefillBonus = 20;
 

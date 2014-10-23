@@ -486,7 +486,22 @@ namespace tfgame.CustomHtmlHelpers
             }
         }
 
+        public static MvcHtmlString PrintFurnitureAvailability(FurnitureViewModel furniture)
+        {
+            string output = "";
+            double minutesUntilReuse = tfgame.Procedures.FurnitureProcedures.GetMinutesUntilReuse(furniture);
 
+            if (minutesUntilReuse <= 0)
+            {
+                output = "<span class='good'>Available for use!</span>";
+            }
+            else
+            {
+                output = "<span class = 'bad'>Available in " + (int)Math.Ceiling(minutesUntilReuse) + " minutes.</span>";
+            }
+
+            return new MvcHtmlString(output);
+        }
 
     }
 }

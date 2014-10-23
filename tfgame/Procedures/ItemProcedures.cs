@@ -330,6 +330,12 @@ namespace tfgame.Procedures
             return "You found a " + item.FriendlyName + "!";
         }
 
+        public static string GiveNewItemToPlayer(Player player, string itemName)
+        {
+            DbStaticItem i = ItemStatics.GetStaticItem(itemName);
+            return GiveNewItemToPlayer(player, i);
+        }
+
         public static string DropItem(int itemId, string locationDbName)
         {
 

@@ -752,7 +752,7 @@ namespace tfgame.Controllers
              }
 
             // assert that the covenant has a safeground
-             if (myCov.HomeLocation != null & myCov.HomeLocation != "")
+             if (myCov.HomeLocation == null || myCov.HomeLocation == "")
              {
                  TempData["Error"] = "Your covenant needs a safeground before it can purchase any furniture.";
                  return RedirectToAction("MyCovenant");

@@ -770,6 +770,7 @@ namespace tfgame.Controllers
 
             string result = "Congratulations, your covenant, " + myCov.Name + ", has successfully purchased the contract for " + furniture.HumanName + ".";
             TempData["Result"] = result;
+            
 
              return RedirectToAction("MyCovenant");
 
@@ -814,6 +815,7 @@ namespace tfgame.Controllers
 
         }
 
+        [Authorize]
         public ActionResult UseFurniture(int id)
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
@@ -858,11 +860,34 @@ namespace tfgame.Controllers
 
             FurnitureProcedures.UseFurniture(id, me);
 
-            TempData["Error"] = "You use it.";
+            TempData["Result"] = "You use " + furniture.HumanName + ".";
             return RedirectToAction("MyCovenant");
 
         }
 
+        [Authorize]
+        public ActionResult MyCovenantLog()
+        {
+            Player me = PlayerProcedures.GetPlayerFromMembership();
+
+            // assert that the player is animate
+            if (me.Mobility != "full")
+            {
+                TempData["Error"] = "You must be animate in order to do this.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            // assert that player is in a covenant
+            if (me.Covenant <= 0)
+            {
+                TempData["Error"] = "You are not in a covenant.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            IEnumerable<CovenantLog> output = CovenantProcedures.GetCovenantLogs(me.Covenant);
+
+            return View(output);
+        }
 
 
     }

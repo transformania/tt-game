@@ -1,0 +1,27 @@
+﻿@model IEnumerable<tfgame.dbModels.Models.CovenantLog>
+
+<p>
+    @Html.ActionLink("Back to My Covenant", "MyCovenant", "Covenant")
+    @Html.ActionLink("Back to game", "Play", "PvP")
+</p>
+
+<h1>Covenant Activity</h1>
+
+<ul>
+
+    @{
+    foreach (tfgame.dbModels.Models.CovenantLog l in Model)
+    {
+        <li>
+            <span>@l.Message</span>
+            <span class="timeago">@tfgame.CustomHtmlHelpers.CharactersHere.DatetimeToTimeago(l.Timestamp)</span>
+        </li>
+    }
+}
+
+</ul>
+
+<p>
+    @Html.ActionLink("Back to My Covenant", "MyCovenant", "Covenant")
+    @Html.ActionLink("Back to game", "Play", "PvP")
+</p>

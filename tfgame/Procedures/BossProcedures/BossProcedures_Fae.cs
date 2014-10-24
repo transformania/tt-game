@@ -62,6 +62,7 @@ namespace tfgame.Procedures.BossProcedures
                 {
                     OwnerId = fae.Id,
                     Timestamp = DateTime.UtcNow,
+                    SpawnTurn = PvPWorldStatProcedures.GetWorldTurnNumber(),
                     DoNotRecycleMe = true,
                     sVar1 = ";", // this is used to keep track of which players have interacted with her by appending their id to this string
                     Var1 = 0, // this keeps track of how many people she has played with in the current location

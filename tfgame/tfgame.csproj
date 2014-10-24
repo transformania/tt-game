@@ -1381,6 +1381,7 @@
     <Content Include="Views\Covenant\partial\FurnitureViewModel.cshtml" />
     <Content Include="Views\Covenant\MyCovenantFurniture.cshtml" />
     <Content Include="Views\Covenant\partial\CovenantFurnitureViewModel.cshtml" />
+    <Content Include="Views\Covenant\MyCovenantLog.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

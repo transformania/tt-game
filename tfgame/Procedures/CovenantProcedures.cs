@@ -118,6 +118,9 @@ namespace tfgame.Procedures
             dbPlayer.Covenant = covId;
             playerRepo.SavePlayer(dbPlayer);
 
+            string covMessage = dbPlayer.GetFullName() + " is now a member of the covenant.";
+            WriteCovenantLog(covMessage, covId, true);
+
             return "";
         }
 
@@ -180,6 +183,9 @@ namespace tfgame.Procedures
                 covRepo.SaveCovenant(possible);
             }
             LoadCovenantDictionary();
+
+            string covMessage = player.GetFullName() + " is no longer a member of the covenant.";
+            WriteCovenantLog(covMessage, possible.Id, true);
         }
 
         public static int GetPlayerCountInCovenant(Covenant covenant)
@@ -307,6 +313,10 @@ namespace tfgame.Procedures
             dbCov.Money += amount;
             playerRepo.SavePlayer(dbPlayer);
             covRepo.SaveCovenant(dbCov);
+
+            string covMessage = player.GetFullName() + " donated " + (int)amount + " Arpeyjis to the covenant treasury.";
+            WriteCovenantLog(covMessage, dbCov.Id, false);
+
         }
 
         public static void SendCovenantMoneyToPlayer(int covId, Player giftee, decimal amount)
@@ -326,6 +336,9 @@ namespace tfgame.Procedures
             
             playerRepo.SavePlayer(dbPlayer);
             covRepo.SaveCovenant(dbCov);
+
+            string covMessage = (int)amount + " was gifted out to " + giftee.GetFullName() + ".";
+            WriteCovenantLog(covMessage, covId, false);
         }
 
         public static bool ACovenantHasASafegroundHere(string location)
@@ -352,6 +365,9 @@ namespace tfgame.Procedures
             covRepo.SaveCovenant(dbCovenant);
             LoadCovenantDictionary();
 
+            string covMessage = "Covenant safeground was establish at " + LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == location).Name + ".";
+            WriteCovenantLog(covMessage, covenant.Id, true);
+
         }
 
         public static bool CovenantHasSafeground(Covenant covenant)
@@ -366,7 +382,29 @@ namespace tfgame.Procedures
             }
         }
 
-    
+        public static void WriteCovenantLog(string message, int covenantId, bool isImportant)
+        {
+            ICovenantLogRepository covLogRepo = new EFCovenantLogRepository();
+            CovenantLog log = new CovenantLog
+            {
+                CovenantId = covenantId,
+                Message = message,
+                Timestamp = DateTime.UtcNow,
+                IsImportant = isImportant,
+            };
+            covLogRepo.SaveCovenantLog(log);
+        }
+
+        public static IEnumerable<CovenantLog> GetCovenantLogs(int covenantId)
+        {
+            ICovenantLogRepository covLogRepo = new EFCovenantLogRepository();
+            return covLogRepo.CovenantLogs.Where(l => l.CovenantId == covenantId).OrderByDescending(l => l.Timestamp).Take(100);
+        }
+
+        public static void CleanOldCovenantLogs(int covenantId)
+        {
+
+        }
 
     
 

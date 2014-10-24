@@ -84,6 +84,18 @@ namespace tfgame.Procedures.BossProcedures
 
                 itemRepo.SaveItem(panties);
 
+                // save his aiDirective, just for the sake of knowing his spawn turn
+                IAIDirectiveRepository aiRepo = new EFAIDirectiveRepository();
+                AIDirective directive = new AIDirective
+                {
+                    OwnerId = valentine.Id,
+                    Timestamp = DateTime.UtcNow,
+                    SpawnTurn = PvPWorldStatProcedures.GetWorldTurnNumber(),
+                    DoNotRecycleMe = true,
+                };
+
+                aiRepo.SaveAIDirective(directive);
+
 
             }
         }

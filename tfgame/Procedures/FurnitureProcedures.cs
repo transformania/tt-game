@@ -155,6 +155,9 @@ namespace tfgame.Procedures
             covRepo.SaveCovenant(dbCovenant);
             furnRepo.SaveFurniture(dbFurniture);
 
+            string message = "The leader of the covenant has purchased the furniture contract for " + dbFurniture.HumanName + ".";
+            CovenantProcedures.WriteCovenantLog(message, covenant.Id, true);
+
         }
 
         public static bool FurnitureIsAvailable(Furniture_VM furniture)
@@ -197,7 +200,8 @@ namespace tfgame.Procedures
 
             DbStaticFurniture furnitureStatic = furnRepo.DbStaticFurniture.FirstOrDefault(f => f.dbType == dbFurniture.dbType);
 
-            string useResult = "";
+            string logMessage = user.GetFullName() + " used " + dbFurniture.HumanName + ".";
+            CovenantProcedures.WriteCovenantLog(logMessage, user.Covenant, false);
 
             // furniture gives AP reserve bonus
             if (furnitureStatic.APReserveRefillAmount > 0)

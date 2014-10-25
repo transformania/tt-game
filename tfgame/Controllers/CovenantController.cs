@@ -870,13 +870,6 @@ namespace tfgame.Controllers
         {
             Player me = PlayerProcedures.GetPlayerFromMembership();
 
-            // assert that the player is animate
-            if (me.Mobility != "full")
-            {
-                TempData["Error"] = "You must be animate in order to do this.";
-                return RedirectToAction("MyCovenant");
-            }
-
             // assert that player is in a covenant
             if (me.Covenant <= 0)
             {

@@ -200,7 +200,7 @@ namespace tfgame.Procedures
 
             DbStaticFurniture furnitureStatic = furnRepo.DbStaticFurniture.FirstOrDefault(f => f.dbType == dbFurniture.dbType);
 
-            string logMessage = user.GetFullName() + " used " + dbFurniture.HumanName + ".";
+            string logMessage = "<b>" + user.GetFullName() + "</b> used <b>" + dbFurniture.HumanName + "</b>.";
             CovenantProcedures.WriteCovenantLog(logMessage, user.Covenant, false);
 
             // furniture gives AP reserve bonus

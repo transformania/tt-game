@@ -10,14 +10,24 @@
 <ul>
 
     @{
-    foreach (tfgame.dbModels.Models.CovenantLog l in Model)
-    {
-        <li>
-            <span>@l.Message</span>
-            <span class="timeago">@tfgame.CustomHtmlHelpers.CharactersHere.DatetimeToTimeago(l.Timestamp)</span>
-        </li>
+        foreach (tfgame.dbModels.Models.CovenantLog l in Model)
+        {
+            <li>
+                @{
+            if (l.IsImportant == true)
+            {
+                <span><b>@l.Message</b></span>
+            }
+            else
+            {
+                <span>@l.Message</span>
+            }
+                }
+
+                <span class="timeago">@tfgame.CustomHtmlHelpers.CharactersHere.DatetimeToTimeago(l.Timestamp)</span>
+            </li>
+        }
     }
-}
 
 </ul>
 

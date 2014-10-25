@@ -22,7 +22,7 @@
 
 <hr />
 @{
-    foreach (tfgame.ViewModels.FurnitureViewModel f in Model)
+    foreach (tfgame.ViewModels.FurnitureViewModel f in Model.OrderBy(l => l.dbFurniture.HumanName))
     {
         @Html.Partial("partial/CovenantFurnitureViewModel", f);
 

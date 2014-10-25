@@ -233,6 +233,34 @@ namespace tfgame.Controllers
             return RedirectToAction("Play", "PvP");
         }
 
+        [Authorize]
+        public ActionResult ToggleBlacklistOnPlayer(int id)
+        {
+            Player me = PlayerProcedures.GetPlayerFromMembership();
+            Player target = PlayerProcedures.GetPlayer(id);
+
+            // assert that this player is not a bot
+            if (target.MembershipId < 0)
+            {
+                TempData["Error"] = "You cannot blacklist an AI character.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            // assert that this player has not been friended
+            if (FriendProcedures.PlayerIsMyFriend(me, target) == true)
+            {
+                TempData["Error"] = "You cannot blacklist one of your friends.";
+                TempData["SubError"] = "Cancel your friendship with this player first.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+
+            TempData["Result"] =  BlacklistProcedures.TogglePlayerBlacklist(me, target);
+
+
+            return RedirectToAction("Play", "PvP");
+        }
+
 
 
 	}

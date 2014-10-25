@@ -572,6 +572,8 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play");
             }
 
+          
+
             // assert player has enough mana to cast
             if (me.Mana < skillBeingUsed.Skill.ManaCost)
             {
@@ -587,6 +589,14 @@ namespace tfgame.Controllers
             {
                 TempData["Error"] = "Your target no longer seems to be here.";
                 TempData["SubError"] = "Your target has probably left.  Maybe you can follow them and attack when you've caught up.";
+                return RedirectToAction("Play");
+            }
+
+            // assert no blacklist exists if player is in protection mode
+            if (me.InPvP == true && BlacklistProcedures.PlayersHaveBlacklistedEachOther(me, targeted) == true)
+            {
+                TempData["Error"] = "This player has blacklisted you or is on your own blacklist.";
+                TempData["SubError"] = "You cannot attack Protection mode players who have blacklisted you.  Remove them from your blacklist or ask them to remove you from theirs.";
                 return RedirectToAction("Play");
             }
 
@@ -1475,6 +1485,17 @@ namespace tfgame.Controllers
          [Authorize]
          public ActionResult SendMessage(Message input)
          {
+             Player me = PlayerProcedures.GetPlayerFromMembership();
+             Player receiver = PlayerProcedures.GetPlayer(input.ReceiverId);
+
+             // assert no blacklist exists if player is in protection mode
+             if (BlacklistProcedures.PlayersHaveBlacklistedEachOther(me, receiver) == true)
+             {
+                 TempData["Error"] = "This player has blacklisted you or is on your own blacklist.";
+                 TempData["SubError"] = "You cannot send messages to players who have blacklisted you.  Remove them from your blacklist or ask them to remove you from theirs.";
+                 return RedirectToAction("Play");
+             }
+
              if (input.MessageText == null || input.MessageText == "")
              {
                  ViewBag.ErrorMessage = "You need to write something to send to this person.";
@@ -2130,7 +2151,17 @@ namespace tfgame.Controllers
 
         public ActionResult AddFriend(int playerId)
         {
+            Player me = PlayerProcedures.GetPlayerFromMembership();
             Player friend = PlayerProcedures.GetPlayer(playerId);
+
+            // assert no blacklist exists if player is in protection mode
+            if (BlacklistProcedures.PlayersHaveBlacklistedEachOther(me, friend) == true)
+            {
+                TempData["Error"] = "This player has blacklisted you or is on your own blacklist.";
+                TempData["SubError"] = "You cannot request friendship with players who have blacklisted you.  Remove them from your blacklist or ask them to remove you from theirs.";
+                return RedirectToAction("Play");
+            }
+
             FriendProcedures.AddFriend(friend);
 
             return RedirectToAction("Play");

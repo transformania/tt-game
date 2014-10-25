@@ -24,6 +24,7 @@
 
             @Html.ActionLink("Send a Message", "Write", "PvP", new { playerId = Model.PlayerForm.Player.Id, responseTo = -1 }, null)@:&nbsp;               
             @Html.ActionLink("Request Friendship", "AddFriend", "PvP", new { playerId = Model.PlayerForm.Player.Id }, null)
+                @Html.ActionLink("Toggle blacklist on this player", "ToggleBlacklistOnPlayer", "Settings", new { id = Model.PlayerForm.Player.Id }, null)
         }
         <p>@Html.ActionLink("View Effects", "ViewEffects", "PvP", new { id = Model.PlayerForm.Player.Id }, null)</p>
             }

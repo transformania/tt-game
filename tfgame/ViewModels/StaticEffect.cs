@@ -54,9 +54,6 @@ namespace tfgame.ViewModels
         public decimal InstantHealthRestore { get; set; }
         public decimal InstantManaRestore { get; set; }
 
-        public decimal ReuseableHealthRestore { get; set; }
-        public decimal ReuseableManaRestore { get; set; }
-
         public string GetMessageWhenHit(string gender)
         {
 

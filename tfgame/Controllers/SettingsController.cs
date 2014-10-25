@@ -60,9 +60,16 @@ namespace tfgame.Controllers
                  return RedirectToAction("Play", "PvP");
              }
 
-             if (input.Text.Length > 2500)
+             Player me = PlayerProcedures.GetPlayerFromMembership();
+             if (input.Text.Length > 2500 && DonatorProcedures.DonatorGetsMessagesRewards(me) == false)
              {
-                 TempData["Error"] = "The text of your bio is too long (more than 1500 characters).";
+                 TempData["Error"] = "The text of your bio is too long (more than 2500 characters).";
+                 return RedirectToAction("Play", "PvP");
+             }
+
+             if (input.Text.Length > 10000 && DonatorProcedures.DonatorGetsMessagesRewards(me) == true)
+             {
+                 TempData["Error"] = "The text of your bio is too long (more than 10,000 characters).";
                  return RedirectToAction("Play", "PvP");
              }
 

@@ -78,61 +78,68 @@ namespace tfgame.Procedures
 
 
 
-        public static void AddNewFurnitureToMarket()
+        public static void AddNewFurnitureToMarket(int count)
         {
             IFurnitureRepository furnRepo = new EFFurnitureRepository();
 
-            // get a random furniture type
-            IEnumerable<DbStaticFurniture> furnitureTypes = furnRepo.DbStaticFurniture;
-            double max = furnitureTypes.Count();
             Random rand = new Random();
-            double num = rand.NextDouble();
 
-            int index = Convert.ToInt32(Math.Floor(num * max));
-            DbStaticFurniture furnitureType = furnitureTypes.ElementAt(index);
-
-            int turn = PvPWorldStatProcedures.GetWorldTurnNumber();
-            int contractTurnRandomOffset = (int)(furnitureType.BaseContractTurnLength * ((rand.NextDouble() - .5) * 2) * FurnitureProcedures.FurnitureContractVariation);
-            decimal basePriceRandomOffset = furnitureType.BaseCost * (decimal)((rand.NextDouble() - .5) * 2) * (decimal)FurnitureProcedures.FurnitureContractVariation;
-            //string firstName = PlayerProcedures.R
-
-            // get a random name
-            List<string> names = new List<string>();
-            var serializer = new XmlSerializer(typeof(List<string>));
-            string path = HttpContext.Current.Server.MapPath("~/XMLs/FirstNames.xml");
-            using (var reader = XmlReader.Create(path))
+            for (int i = 0; i < count; i++)
             {
-                names = (List<string>)serializer.Deserialize(reader);
+
+                // get a random furniture type
+                IEnumerable<DbStaticFurniture> furnitureTypes = furnRepo.DbStaticFurniture;
+                double max = furnitureTypes.Count();
+                
+                double num = rand.NextDouble();
+
+                int index = Convert.ToInt32(Math.Floor(num * max));
+                DbStaticFurniture furnitureType = furnitureTypes.ElementAt(index);
+
+                int turn = PvPWorldStatProcedures.GetWorldTurnNumber();
+                int contractTurnRandomOffset = (int)(furnitureType.BaseContractTurnLength * ((rand.NextDouble() - .5) * 2) * FurnitureProcedures.FurnitureContractVariation);
+                decimal basePriceRandomOffset = furnitureType.BaseCost * (decimal)((rand.NextDouble() - .5) * 2) * (decimal)FurnitureProcedures.FurnitureContractVariation;
+                //string firstName = PlayerProcedures.R
+
+                // get a random name
+                List<string> names = new List<string>();
+                var serializer = new XmlSerializer(typeof(List<string>));
+                string path = HttpContext.Current.Server.MapPath("~/XMLs/FirstNames.xml");
+                using (var reader = XmlReader.Create(path))
+                {
+                    names = (List<string>)serializer.Deserialize(reader);
+                }
+
+                num = rand.NextDouble();
+
+                string firstname = names.ElementAt((int)Math.Floor(num * names.Count()));
+
+                string path2 = HttpContext.Current.Server.MapPath("~/XMLs/LastNames.xml");
+                using (var reader = XmlReader.Create(path))
+                {
+                    names = (List<string>)serializer.Deserialize(reader);
+                }
+
+                num = rand.NextDouble();
+
+                string lastname = names.ElementAt((int)Math.Floor(num * names.Count()));
+
+                Furniture newfurn = new Furniture
+                {
+                    dbType = furnitureType.dbType,
+                    ContractTurnDuration = furnitureType.BaseContractTurnLength + contractTurnRandomOffset,
+                    CovenantId = -1,
+                    HumanName = firstname + " " + lastname + " the " + furnitureType.FriendlyName,
+                    Price = Math.Floor(furnitureType.BaseCost + basePriceRandomOffset),
+                    LastUseTimestamp = DateTime.UtcNow,
+                    ContractStartTurn = 0,
+                    ContractEndTurn = 0,
+                    LastUsersIds = ";",
+                };
+
+                furnRepo.SaveFurniture(newfurn);
+
             }
-
-            num = rand.NextDouble();
-
-            string firstname = names.ElementAt((int)Math.Floor(num*names.Count()));
-
-            string path2 = HttpContext.Current.Server.MapPath("~/XMLs/LastNames.xml");
-            using (var reader = XmlReader.Create(path))
-            {
-                names = (List<string>)serializer.Deserialize(reader);
-            }
-
-            num = rand.NextDouble();
-
-            string lastname = names.ElementAt((int)Math.Floor(num * names.Count()));
-
-            Furniture newfurn = new Furniture
-            {
-                dbType = furnitureType.dbType,
-                ContractTurnDuration = furnitureType.BaseContractTurnLength + contractTurnRandomOffset,
-                CovenantId = -1,
-                HumanName = firstname + " " + lastname + " the " + furnitureType.FriendlyName,
-                Price = Math.Floor(furnitureType.BaseCost + basePriceRandomOffset),
-                LastUseTimestamp = DateTime.UtcNow,
-                ContractStartTurn = 0,
-                ContractEndTurn = 0,
-                LastUsersIds = ";",
-            };
-
-            furnRepo.SaveFurniture(newfurn);
 
 
         }
@@ -236,6 +243,54 @@ namespace tfgame.Procedures
             }
 
             return "ERROR";
+        }
+
+        public static int MoveFurnitureOnMarket()
+        {
+            IFurnitureRepository furnRepo = new EFFurnitureRepository();
+
+            IEnumerable<Furniture> furnitureOnMarket = furnRepo.Furnitures.Where(f => f.CovenantId == -1).ToList();
+
+            Random rand = new Random();
+            int amountToDelete = (int)Math.Floor(rand.NextDouble() * 2 + 1);
+            int amountToAdd = (int)Math.Floor(rand.NextDouble() * 3 + 1);
+
+            // delete some of the furniture currently available on the market if 
+            IEnumerable<Furniture> furnitureToDelete;
+            if (furnitureOnMarket.Count() > 5)
+            {
+                furnitureToDelete = furnitureOnMarket.Take(amountToDelete);
+                foreach (Furniture f in furnitureToDelete)
+                {
+                    furnRepo.DeleteFurniture(f.Id);
+                }
+            }
+
+            // get the new count of furniture on market now
+            furnitureOnMarket = furnRepo.Furnitures.Where(f => f.CovenantId == -1).ToList();
+
+            if (furnitureOnMarket.Count() < 15)
+            {
+                AddNewFurnitureToMarket(amountToAdd);
+            }
+
+
+            return 1;
+        }
+
+        public static void MoveExpiredFurnitureBackToMarket()
+        {
+            int turn = PvPWorldStatProcedures.GetWorldTurnNumber();
+            IFurnitureRepository furnRepo = new EFFurnitureRepository();
+            IEnumerable<Furniture> furnitureToMove = furnRepo.Furnitures.Where(f => f.CovenantId > 0 && f.ContractEndTurn < turn).ToList();
+
+            foreach (Furniture furniture in furnitureToMove) {
+                string covlog = furniture.HumanName + " has been returned to the market as their contract has expired.";
+                CovenantProcedures.WriteCovenantLog(covlog, furniture.CovenantId, false);
+                furniture.CovenantId = -1;
+                furnRepo.SaveFurniture(furniture);
+            }
+
         }
 
     }

@@ -3261,6 +3261,11 @@ namespace tfgame.Controllers
                         
                         "UPDATE [Stats].[dbo].[Players] SET ActionPoints = ActionPoints + 20, ActionPoints_Refill = ActionPoints_Refill - 20 WHERE ActionPoints <= 100 AND ActionPoints_Refill >= 20 AND Mobility='full'");
 
+                        if (PvPStatics.ChaosMode == true)
+                        {
+                            context.Database.ExecuteSqlCommand("Update [Stats].[dbo].[Players] SET ActionPoints = 120, ActionPoints_Refill = 360, TimesAttackingThisUpdate = -999, Mana = MaxMana");
+                        }
+
                         log.AddLog(updateTimer.ElapsedMilliseconds + ":  ANIMATE SQL UPDATE SUCCEEDED!");
                     }
                     catch (Exception e)
@@ -3494,22 +3499,32 @@ namespace tfgame.Controllers
                 log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == turnNo);
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished Lindella actions");
 
-                // move Jewdewfae to a new location if she has been in one place for more than 48 turns, 8 hours
+               
                 if (turnNo % 6 == 0)
                 {
+
+                    // move some furniture around on the market
+                    try
+                    {
+                        FurnitureProcedures.MoveFurnitureOnMarket();
+                    }
+                    catch (Exception e)
+                    {
+                        log.AddLog(updateTimer.ElapsedMilliseconds + "ERROR MOVING FURNITURE ON MARKET:  " + e.ToString());
+                    }
+
+                    // move Jewdewfae to a new location if she has been in one place for more than 48 turns, 8 hours
                     try
                     {
                         Player fae = PlayerProcedures.GetPlayerFromMembership(-6);
                         AIDirective faeAI = AIDirectiveProcedures.GetAIDirective(fae.Id);
 
-                        // if the turn 
+                        // if the turn since her last move has been long enough, relocate her
                         if (turnNo - (int)faeAI.Var2 > 48)
                         {
                             log.AddLog(updateTimer.ElapsedMilliseconds + ":  FORCED JEWDEWFAE TO MOVE.");
                             BossProcedures_Fae.MoveToNewLocation();
                         }
-
-                        
                     }
                     catch (Exception e)
                     {

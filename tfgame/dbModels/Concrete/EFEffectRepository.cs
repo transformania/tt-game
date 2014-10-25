@@ -16,6 +16,11 @@ namespace tfgame.dbModels.Concrete
             get { return context.Effects; }
         }
 
+        public IQueryable<DbStaticEffect> DbStaticEffects
+        {
+            get { return context.DbStaticEffects; }
+        }
+
         public void SaveEffect(Effect Effect)
         {
             if (Effect.Id == 0)
@@ -43,6 +48,37 @@ namespace tfgame.dbModels.Concrete
             if (dbEntry != null)
             {
                 context.Effects.Remove(dbEntry);
+                context.SaveChanges();
+            }
+        }
+
+        public void SaveDbStaticEffect(DbStaticEffect Effect)
+        {
+            if (Effect.Id == 0)
+            {
+                context.DbStaticEffects.Add(Effect);
+            }
+            else
+            {
+                DbStaticEffect editMe = context.DbStaticEffects.Find(Effect.Id);
+                if (editMe != null)
+                {
+                    // dbEntry.Name = Effect.Name;
+                    // dbEntry.Message = Effect.Message;
+                    // dbEntry.TimeStamp = Effect.TimeStamp;
+
+                }
+            }
+            context.SaveChanges();
+        }
+
+        public void DeleteDbStaticEffect(int id)
+        {
+
+            DbStaticEffect dbEntry = context.DbStaticEffects.Find(id);
+            if (dbEntry != null)
+            {
+                context.DbStaticEffects.Remove(dbEntry);
                 context.SaveChanges();
             }
         }

@@ -1017,7 +1017,7 @@ namespace tfgame.Controllers
 
            // IEnumerable<FurnitureViewModel> test = FurnitureProcedures.GetCovenantFurnitureViewModels(35).ToList();
 
-            FurnitureProcedures.AddNewFurnitureToMarket();
+            FurnitureProcedures.MoveFurnitureOnMarket();
 
             return RedirectToAction("Index");
 

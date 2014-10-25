@@ -711,6 +711,7 @@ namespace tfgame.Controllers
                  return RedirectToAction("MyCovenant");
              }
 
+             FurnitureProcedures.MoveExpiredFurnitureBackToMarket();
              IEnumerable<FurnitureViewModel> output = FurnitureProcedures.GetAvailableFurnitureViewModels();
 
              Covenant myCov = CovenantProcedures.GetDbCovenant(me.Covenant);
@@ -766,6 +767,7 @@ namespace tfgame.Controllers
              }
 
             // all checks have passed; give the furniture to the covenant
+             
              FurnitureProcedures.GiveFurnitureToCovenant(furniture, myCov);
 
             string result = "Congratulations, your covenant, " + myCov.Name + ", has successfully purchased the contract for " + furniture.HumanName + ".";
@@ -790,6 +792,7 @@ namespace tfgame.Controllers
                 return RedirectToAction("MyCovenant");
             }
 
+            FurnitureProcedures.MoveExpiredFurnitureBackToMarket();
             IEnumerable<FurnitureViewModel> output = FurnitureProcedures.GetCovenantFurnitureViewModels(me.Covenant);
             ViewBag.MyLocation = LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName).Name;
 

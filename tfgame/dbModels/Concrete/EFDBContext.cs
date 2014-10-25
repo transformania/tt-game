@@ -30,6 +30,7 @@ namespace tfgame.dbModels.Concrete
         public DbSet<Contribution> Contributions { get; set; }
         public DbSet<PvPWorldStat> PvPWorldStats { get; set; }
         public DbSet<Friend> Friends { get; set; }
+        public DbSet<BlacklistEntry> BlacklistEntries { get; set; }
         public DbSet<InanimateXP> InanimateXPs { get; set; }
         public DbSet<Effect> Effects { get; set; }
         public DbSet<EffectContribution> EffectContributions { get; set; }
@@ -41,6 +42,7 @@ namespace tfgame.dbModels.Concrete
         public DbSet<DbStaticSkill> DbStaticSkills { get; set; }
         public DbSet<DbStaticForm> DbStaticForms { get; set; }
         public DbSet<DbStaticItem> DbStaticItems { get; set; }
+        public DbSet<DbStaticEffect> DbStaticEffects { get; set; }
         public DbSet<ServerLog> ServerLogs { get; set; }
         public DbSet<Buff> Buffs { get; set; }
         public DbSet<TFMessage> TFMessages { get; set; }

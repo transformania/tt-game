@@ -974,7 +974,6 @@
     <Content Include="XMLs\TFMessages\form_Willing_Wish-giver_Zatur.xml" />
     <Content Include="XMLs\TFMessages\form_Wizard%27s_Wand_themorpher606.xml" />
     <Content Include="XMLs\TFMessages\form_wolf_cub_Alessandro.xml" />
-    <Content Include="Z_SelfHelp\reset world.txt" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Characters\All Characters %2814%29.txt" />
@@ -1394,6 +1393,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="XMLs\FairyChallengeText\SingleBags\" />
+    <Folder Include="Z_SelfHelp\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

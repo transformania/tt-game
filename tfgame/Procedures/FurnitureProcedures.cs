@@ -18,7 +18,7 @@ namespace tfgame.Procedures
     public static class FurnitureProcedures
     {
 
-        public const double FurnitureContractVariation = .5D;
+        public const double FurnitureContractVariation = .15D;
 
         public static IEnumerable<FurnitureViewModel> GetCovenantFurnitureViewModels(int covenantId)
         {

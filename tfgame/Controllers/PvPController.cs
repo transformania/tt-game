@@ -3366,7 +3366,8 @@ namespace tfgame.Controllers
                     //player.TimesAttackingThisUpdate = 0;
                     //player.CleansesMeditatesThisRound = 0;
 
-                    BuffBox buffs = ItemProcedures.GetPlayerBuffs(player);
+                  //  BuffBox buffs = ItemProcedures.GetPlayerBuffs(player);
+                    BuffBox buffs = ItemProcedures.GetPlayerBuffsRAM(player);
                     player.Health += buffs.HealthRecoveryPerUpdate();
                     player.Mana += buffs.ManaRecoveryPerUpdate();
 
@@ -3428,26 +3429,40 @@ namespace tfgame.Controllers
 
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started updating inanimate/animal players");
 
-                List<Player> players_Inanimate_Animal = playerRepo.Players.Where(p => (p.Mobility == "inanimate" || p.Mobility == "animal") && p.MembershipId > 0).ToList();
+               // List<Player> players_Inanimate_Animal = playerRepo.Players.Where(p => (p.Mobility == "inanimate" || p.Mobility == "animal") && p.MembershipId > 0).ToList();
 
                 //////////////////////////
 
-                foreach (Player player in players_Inanimate_Animal)
+                using (var context = new StatsContext())
                 {
-                    if (player.TimesAttackingThisUpdate != 0)
+                    try
                     {
-                        player.TimesAttackingThisUpdate = 0;
-
-                        if (PvPStatics.ChaosMode == true)
-                        {
-                            player.TimesAttackingThisUpdate = -999;
-                        }
-
-                        playerRepo.SavePlayer(player);
+                        context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Players] SET TimesAttackingThisUpdate = 0 WHERE (Mobility = 'inanimate' OR Mobility = 'animal') AND MembershipId > 0");
+                        log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished updating inanimate/animal players");
+                    }
+                    catch (Exception e)
+                    {
+                        log.AddLog(updateTimer.ElapsedMilliseconds + "ERROR UPDATING INANIMATE/ANIMAL PLAYERS:  " + e.ToString());
                     }
                 }
 
-                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished updating inanimate/animal players (" + players_Inanimate_Animal.Count + ")");
+
+                //foreach (Player player in players_Inanimate_Animal)
+                //{
+                //    if (player.TimesAttackingThisUpdate != 0)
+                //    {
+                //        player.TimesAttackingThisUpdate = 0;
+
+                //        if (PvPStatics.ChaosMode == true)
+                //        {
+                //            player.TimesAttackingThisUpdate = -999;
+                //        }
+
+                //        playerRepo.SavePlayer(player);
+                //    }
+                //}
+
+                
 
                 PvPStatics.AnimateUpdateInProgress = false;
 

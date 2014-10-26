@@ -258,59 +258,65 @@ namespace tfgame.Procedures
             // decrease the XP earned if the player is high leveled and TFing an animate spell AND the xp isn't already negative
             if (eventualForm.MobilityType == "full" && xpEarned > 0)
             {
-                if (attacker.Level == 3)
-                {
-                    xpEarned *= .85M;
-                }
-                else if (attacker.Level == 4)
-                {
-                    xpEarned *= .7M;
-                }
-                else if (attacker.Level == 5)
-                {
-                    xpEarned *= .55M;
-                }
-                else if (attacker.Level == 6)
-                {
-                    xpEarned *= .4M;
-                }
-                else if (attacker.Level == 7)
-                {
-                    xpEarned *= .25M;
-                }
-                else if (attacker.Level >= 8)
-                {
-                    xpEarned *= .1M;
-                }
+                //if (attacker.Level == 3)
+                //{
+                //    xpEarned *= .92M;
+                //}
+                //else if (attacker.Level == 4)
+                //{
+                //    xpEarned *= .7M;
+                //}
+                //else if (attacker.Level == 5)
+                //{
+                //    xpEarned *= .55M;
+                //}
+                //else if (attacker.Level == 6)
+                //{
+                //    xpEarned *= .4M;
+                //}
+                //else if (attacker.Level == 7)
+                //{
+                //    xpEarned *= .25M;
+                //}
+                //else if (attacker.Level >= 8)
+                //{
+                //    xpEarned *= .1M;
+                //}
+
+                xpEarned *= GetHigherLevelXPModifier(attacker.Level, 4);
+
             }
 
             // decrease the XP earned if the player is high leveled and TFing an inanimate / animal spell AND the xp isn't already negative
             if (eventualForm.MobilityType == "inanimate" || eventualForm.MobilityType == "animal")
             {
-                if (attacker.Level == 5)
-                {
-                    xpEarned *= .85M;
-                }
-                else if (attacker.Level == 6)
-                {
-                    xpEarned *= .7M;
-                }
-                else if (attacker.Level == 7)
-                {
-                    xpEarned *= .55M;
-                }
-                else if (attacker.Level == 8)
-                {
-                    xpEarned *= .4M;
-                }
-                else if (attacker.Level == 9)
-                {
-                    xpEarned *= .25M;
-                }
-                else if (attacker.Level >= 10)
-                {
-                    xpEarned *= .1M;
-                }
+
+                xpEarned *= GetHigherLevelXPModifier(attacker.Level, 6);
+
+                //if (attacker.Level == 5)
+                //{
+                //    xpEarned *= .85M;
+                //}
+                //else if (attacker.Level == 6)
+                //{
+                //    xpEarned *= .7M;
+                //}
+                //else if (attacker.Level == 7)
+                //{
+                //    xpEarned *= .55M;
+                //}
+                //else if (attacker.Level == 8)
+                //{
+                //    xpEarned *= .4M;
+                //}
+                //else if (attacker.Level == 9)
+                //{
+                //    xpEarned *= .25M;
+                //}
+                //else if (attacker.Level >= 10)
+                //{
+                //    xpEarned *= .1M;
+                //}
             }
 
             // give XP to the attacker IF they are not in the same covenant or if the attacker is not in a covenant at all
@@ -1000,7 +1006,25 @@ namespace tfgame.Procedures
             oldform.TFMessage_Completed_3rd_F = xmlForm.TFMessage_Completed_3rd_F;
 
             return oldform;
-        } 
+        }
+
+        public static decimal GetHigherLevelXPModifier(int lvl, int maxLvlBeforeLoss)
+        {
+            decimal modifier = 1.0M;
+
+            modifier = 1 - ((lvl - maxLvlBeforeLoss) * .1M);
+
+            if (modifier > 1)
+            {
+                modifier = 1;
+            }
+            else if (modifier < .1M)
+            {
+                modifier = .1M;
+            }
+
+            return modifier;
+        }
 
 
 

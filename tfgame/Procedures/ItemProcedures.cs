@@ -558,12 +558,13 @@ namespace tfgame.Procedures
                 RAMBuffBox temp = null;
                 try
                 {
-                    temp = ItemStatics.ItemRAMBuffBoxes.FirstOrDefault(x => x.dbName == i.dbName);
+                    temp = ItemStatics.ItemRAMBuffBoxes.First(x => x.dbName == i.dbName.ToLower());
+                   // if (temp == null)
                 }
                 catch
                 {
                     LoadItemRAMBuffBox();
-                    temp = ItemStatics.ItemRAMBuffBoxes.FirstOrDefault(x => x.dbName == i.dbName);
+                    temp = ItemStatics.ItemRAMBuffBoxes.FirstOrDefault(x => x.dbName == i.dbName.ToLower());
                 }
                 output.FromItems_HealthRecoveryPerUpdate += (decimal)temp.HealthRecoveryPerUpdate + (decimal)temp.HealthRecoveryPerUpdate * (((i.Level - 1) * (decimal)PvPStatics.Item_LevelBonusModifier));
                 output.FromItems_ManaRecoveryPerUpdate += (decimal)temp.ManaRecoveryPerUpdate + (decimal)temp.ManaRecoveryPerUpdate * (((i.Level - 1) * (decimal)PvPStatics.Item_LevelBonusModifier));
@@ -1174,12 +1175,13 @@ namespace tfgame.Procedures
 
             ItemStatics.ItemRAMBuffBoxes = new List<RAMBuffBox>();
 
+            IEnumerable<DbStaticItem> statics = dbStaticItemRepo.DbStaticItems.Where(c => c.dbName != null && c.dbName != "").ToList();
 
-            foreach (DbStaticItem i in dbStaticItemRepo.DbStaticItems.Where(c => c.dbName != null && c.dbName != ""))
+            foreach (DbStaticItem i in statics)
             {
                 RAMBuffBox temp = new RAMBuffBox
                 {
-                    dbName = i.dbName,
+                    dbName = i.dbName.ToLower(),
                     HealthRecoveryPerUpdate = (float)i.HealthRecoveryPerUpdate,
                     ManaRecoveryPerUpdate = (float)i.ManaRecoveryPerUpdate,
                 };

@@ -167,6 +167,8 @@ namespace tfgame.Statics
 
         public const int PsychopathDefaultAmount = 15;
 
+        public const int Covenant_MinimumUpgradeAnimateLvl3PlayerCount = 1;
+
     }
 
     public static class BonusStatics

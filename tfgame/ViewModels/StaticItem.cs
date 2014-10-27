@@ -12,6 +12,7 @@ namespace tfgame.ViewModels
         public string Description { get; set; }
         public string PortraitUrl { get; set; }
         public decimal MoneyValue { get; set; }
+        public decimal MoneyValueSell { get; set; }
         public string ItemType { get; set; }
         public int UseCooldown { get; set; }
         public bool Findable { get; set; }

@@ -30,5 +30,7 @@ namespace tfgame.dbModels.Models
         public string formerMembers { get; set; }
         public decimal Money { get; set; }
         public string HomeLocation { get; set; }
+
+        public int Level { get; set; }
     }
 }

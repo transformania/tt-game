@@ -194,6 +194,12 @@ namespace tfgame.Procedures
             return playerRepo.Players.Where(p => p.Covenant == covenant.Id).Count();
         }
 
+        public static int GetPlayerCountInCovenant_Animate_Lvl3(Covenant covenant)
+        {
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            return playerRepo.Players.Where(p => p.Covenant == covenant.Id).Where(p => p.Mobility == "full" && p.Level >= 3).Count();
+        }
+
         public static IEnumerable<CovenantListItemViewModel> GetCovenantsList()
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
@@ -362,6 +368,7 @@ namespace tfgame.Procedures
             Covenant dbCovenant = covRepo.Covenants.FirstOrDefault(i => i.Id == covenant.Id);
             dbCovenant.HomeLocation = location;
             dbCovenant.Money -= 2500;
+            dbCovenant.Level = 1;
             covRepo.SaveCovenant(dbCovenant);
             LoadCovenantDictionary();
 
@@ -406,6 +413,40 @@ namespace tfgame.Procedures
 
         }
 
+        public static decimal GetUpgradeCost(Covenant covenant)
+        {
+            return (covenant.Level) * 3000;
+        }
+
+        public static void UpgradeCovenant(Covenant covenant)
+        {
+            ICovenantRepository covRepo = new EFCovenantRepository();
+            Covenant dbCovenant = covRepo.Covenants.FirstOrDefault(i => i.Id == covenant.Id);
+            dbCovenant.Money -= GetUpgradeCost(covenant);
+            dbCovenant.Level++;
+            
+            covRepo.SaveCovenant(dbCovenant);
+            ICovenantLogRepository covLogRepo = new EFCovenantLogRepository();
+            CovenantLog newlog = new CovenantLog
+            {
+                CovenantId = covenant.Id,
+                IsImportant = true,
+                Message="The covenant leader has upgraded the covenant safeground to level " + (covenant.Level + 1) + ", allowing it to hold more furniture.",
+                Timestamp = DateTime.UtcNow,
+            };
+            covLogRepo.SaveCovenantLog(newlog);
+        }
+
+        public static int GetCovenantFurnitureLimit(Covenant covenant)
+        {
+            return covenant.Level + 4;
+        }
+
+        public static int GetCurrentFurnitureOwnedByCovenant(Covenant covenant)
+        {
+            IFurnitureRepository furnRepo = new EFFurnitureRepository();
+            return furnRepo.Furnitures.Where(f => f.CovenantId == covenant.Id).Count();
+        }
     
 
     }

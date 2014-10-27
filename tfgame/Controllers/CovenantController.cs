@@ -39,6 +39,7 @@ namespace tfgame.Controllers
             ViewBag.ErrorMessage = TempData["Error"];
             ViewBag.SubErrorMessage = TempData["SubError"];
             ViewBag.Result = TempData["Result"];
+            
 
            
             ViewBag.HasApplication = CovenantProcedures.PlayerHasPendingApplication(me);
@@ -353,6 +354,9 @@ namespace tfgame.Controllers
                 TempData["SubError"] = "Only covenant leaders can accept or reject applications.";
                 return RedirectToAction("MyCovenant");
             }
+
+            ViewBag.UpgradeCost = CovenantProcedures.GetUpgradeCost(myCov).ToString();
+
             return View();
         }
 
@@ -690,12 +694,83 @@ namespace tfgame.Controllers
                 return RedirectToAction("MyCovenant");
             }
 
+            // assert that the covenant has sufficient player count
+            if (CovenantProcedures.GetPlayerCountInCovenant_Animate_Lvl3(myCov) < PvPStatics.Covenant_MinimumUpgradeAnimateLvl3PlayerCount)
+            {
+                TempData["Error"] = "Your covenant needs at least five animate players at level three or greater in order to do this.";
+                return RedirectToAction("MyCovenant");
+            }
+
             // all checks are okay, so allow this covenant to establish a safeground here
 
             TempData["Result"] = "You have succesfully claimed this location for your covenant safeground!";
             CovenantProcedures.SetCovenantSafeground(myCov, me.dbLocationName);
             return RedirectToAction("MyCovenant");
 
+        }
+
+        [Authorize]
+        public ActionResult UpgradeSafeground()
+        {
+            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+
+            // assert that the player is animate
+            if (me.Mobility != "full")
+            {
+                TempData["Error"] = "You must be animate in order to do this.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            // assert that player is in a covenant
+            if (me.Covenant <= 0)
+            {
+                TempData["Error"] = "You are not in a covenant.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            // assert that the player is a covenant leader
+            Covenant myCov = CovenantProcedures.GetDbCovenant(me.Covenant);
+            if (myCov.LeaderId != me.Id)
+            {
+                TempData["Error"] = "You are not the leader of your covenant.";
+                TempData["SubError"] = "Only covenant leaders can gift out money from the covenant's Arpeyjis chest.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            // assert that the covenant has a safeground set
+            if (CovenantProcedures.CovenantHasSafeground(myCov) == false)
+            {
+                TempData["Error"] = "Your covenant must establish a safeground before it can upgrade it.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            // assert that the player is at the safeground
+            if (me.dbLocationName != myCov.HomeLocation)
+            {
+                TempData["Error"] = "You must be at your covenant safeground in order to upgrade it.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            // assert that the covenant has enough money
+            if (myCov.Money < CovenantProcedures.GetUpgradeCost(myCov))
+            {
+                TempData["Error"] = "Your covenant cannot afford that right now.";
+                TempData["SubError"] = "Try asking your members to donate more to the Covenant Treasury.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            // assert that the covenant has sufficient player count
+            if (CovenantProcedures.GetPlayerCountInCovenant_Animate_Lvl3(myCov) < PvPStatics.Covenant_MinimumUpgradeAnimateLvl3PlayerCount)
+            {
+                TempData["Error"] = "Your covenant needs at least five animate players at level three or greater in order to do this.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            // all checks pass; upgrade the covenant
+            CovenantProcedures.UpgradeCovenant(myCov);
+
+            TempData["Result"] = "You have successfully upgraded your covenant safeground to lvl " + myCov.Level + 1 + ", allowing you to keep more furniture in it.";
+            return View();
         }
 
          [Authorize]
@@ -718,6 +793,8 @@ namespace tfgame.Controllers
              bool playerIsCovenantLeader = (myCov != null && myCov.LeaderId == me.Id && me.Covenant > 0);
              ViewBag.playerIsCovenantLeader = playerIsCovenantLeader;
              ViewBag.CovenantMoney = (int)myCov.Money;
+
+             ViewBag.FurnitureLimit = CovenantProcedures.GetCovenantFurnitureLimit(myCov);
              
             return View(output);
         }
@@ -766,12 +843,22 @@ namespace tfgame.Controllers
                  return RedirectToAction("MyCovenant");
              }
 
+            // assert that the covenant has room for this new furniture
+             if (CovenantProcedures.GetCovenantFurnitureLimit(myCov) <= CovenantProcedures.GetCurrentFurnitureOwnedByCovenant(myCov))
+             {
+                 TempData["Error"] = "Your safeground already has too much furniture and cannot fit any more.";
+                 TempData["SubError"] = "Your covenant leader must upgrade the safeground in order to fit more furniture or else wait for some furnitures' contracts to expire.";
+                 return RedirectToAction("MyCovenant");
+             }
+
             // all checks have passed; give the furniture to the covenant
              
              FurnitureProcedures.GiveFurnitureToCovenant(furniture, myCov);
 
             string result = "Congratulations, your covenant, " + myCov.Name + ", has successfully purchased the contract for " + furniture.HumanName + ".";
             TempData["Result"] = result;
+
+            ViewBag.FurnitureLimit = CovenantProcedures.GetCovenantFurnitureLimit(myCov);
             
 
              return RedirectToAction("MyCovenant");
@@ -813,6 +900,8 @@ namespace tfgame.Controllers
             }
 
             ViewBag.AtCovenantSafeground = playerIsAtSafeground;
+
+            ViewBag.FurnitureLimit = CovenantProcedures.GetCovenantFurnitureLimit(myCov);
 
             return View(output);
 

@@ -12,7 +12,7 @@ namespace tfgame.Statics
     public static class PvPStatics
     {
 
-        public const int RoundDuration = 2000;
+        public const int RoundDuration = 3000;
         public const bool ChaosMode = true;
 
         public static String GenderMale = "male";
@@ -167,7 +167,7 @@ namespace tfgame.Statics
 
         public const int PsychopathDefaultAmount = 15;
 
-        public const int Covenant_MinimumUpgradeAnimateLvl3PlayerCount = 1;
+        public const int Covenant_MinimumUpgradeAnimateLvl3PlayerCount = 5;
 
     }
 

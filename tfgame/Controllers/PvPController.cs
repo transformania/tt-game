@@ -2955,15 +2955,6 @@ namespace tfgame.Controllers
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
 
-            
-
-            // assert player is logged in
-            if (me.MembershipId < 0)
-            {
-                TempData["Error"] = "You need to log in.";
-                return RedirectToAction("Play");
-            }
-
             // assert player is animate
             if (me.Mobility != "full")
             {
@@ -2988,7 +2979,8 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play");
             }
 
-            IEnumerable<ItemViewModel> output = ItemProcedures.GetAllPlayerItems(me.Id).Where(i => i.Item.ItemType != PvPStatics.ItemType_Pet && i.dbItem.IsEquipped == false);
+            // show the permanent and consumable items the player is carrying
+            IEnumerable<ItemViewModel> output = ItemProcedures.GetAllPlayerItems(me.Id).Where(i => i.Item.ItemType != PvPStatics.ItemType_Pet && i.dbItem.IsEquipped == false && (i.dbItem.IsPermanent==true || i.Item.ItemType == PvPStatics.ItemType_Consumeable));
             return View(output);
         }
 
@@ -3041,6 +3033,13 @@ namespace tfgame.Controllers
             if (itemBeingSold.Item.ItemType == PvPStatics.ItemType_Pet)
             {
                 TempData["Error"] = "Unfortunately Lindella does not purchase or sell pets or animals.";
+                return RedirectToAction("Play");
+            }
+
+             // assert that the item is either permanent or consumable
+            if (itemBeingSold.dbItem.IsPermanent == false && itemBeingSold.Item.ItemType != PvPStatics.ItemType_Consumeable)
+            {
+                TempData["Error"] = "Unfortunately Lindella will not purchase items that may later struggle free anymore.";
                 return RedirectToAction("Play");
             }
 
@@ -3467,7 +3466,7 @@ namespace tfgame.Controllers
                 PvPStatics.AnimateUpdateInProgress = false;
 
 
-                // bump down the timer on all items that are reuseable consuemables
+                // bump down the timer on all items that are reuseable consumables
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started updating items on cooldown");
                 IItemRepository itemsRepo = new EFItemRepository();
                 List<Item> itemsToUpdate = itemsRepo.Items.Where(i => i.TurnsUntilUse > 0).ToList();
@@ -3496,7 +3495,7 @@ namespace tfgame.Controllers
                    // 
                 }
 
-                // delete all consumeable type items that have been sitting around on the ground for too long
+                // delete all consumable type items that have been sitting around on the ground for too long
                 List<Item> possibleToDelete = itemsRepo.Items.Where(i => (i.dbLocationName != "" && i.OwnerId == -1) || (i.OwnerId == merchantId)).ToList();
                 List<Item> deleteItems = new List<Item>();
 
@@ -3509,7 +3508,12 @@ namespace tfgame.Controllers
                         continue;
                     }
                     double droppedMinutesAgo = Math.Abs(Math.Floor(item.TimeDropped.Subtract(DateTime.UtcNow).TotalMinutes));
-                    if (droppedMinutesAgo > PvPStatics.MinutesToDroppedItemDelete)
+
+                    if (droppedMinutesAgo > PvPStatics.MinutesToDroppedItemDelete && item.OwnerId == -1)
+                    {
+                        deleteItems.Add(item);
+                    }
+                    else if (droppedMinutesAgo > PvPStatics.MinutesToDroppedItemDelete * 12)
                     {
                         deleteItems.Add(item);
                     }

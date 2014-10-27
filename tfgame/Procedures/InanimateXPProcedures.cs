@@ -69,7 +69,7 @@ namespace tfgame.Procedures
                 {
                     OwnerId = playerId,
                     Amount = xpGain,
-                    TimesStruggled = -12*me.Level,
+                    TimesStruggled = -6*me.Level,
                     LastActionTimestamp = DateTime.UtcNow,
                     LastActionTurnstamp = currentGameTurn-1,
                 };
@@ -212,7 +212,7 @@ namespace tfgame.Procedures
                     Amount = 0,
 
                     // set the initial times struggled proportional to how high of a level the player is
-                    TimesStruggled = -12*player.Level,
+                    TimesStruggled = -6*player.Level,
                     LastActionTimestamp = DateTime.UtcNow,
                     LastActionTurnstamp = currentGameTurn-1,
 

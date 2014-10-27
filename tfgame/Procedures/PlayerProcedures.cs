@@ -746,17 +746,6 @@ namespace tfgame.Procedures
                                      select s;
                 }
 
-                // if there are no unique skills in this region, set eligible skills to all skills that are NOT location-specific
-                //if (eligibleSkills.Count() == 0)
-                //{
-                //    IEnumerable<DbStaticSkill> skillsAtNoSpecificRegion = SkillStatics.GetStaticSkill.Where(s => (s.LearnedAtRegion == null || s.LearnedAtRegion == "") && (s.LearnedAtLocation == null || s.LearnedAtLocation == "") && s.GivesEffect == null);
-
-                //    eligibleSkills = from s in skillsAtNoSpecificRegion
-                //                     let sx = myKnownSkills.Select(r => r.dbName)
-                //                     where !sx.Contains(s.dbName)
-                //                     select s;
-                //}
-
                 // there are no new spells to be learned that are not-region specific, so player is just out of luck.
                 if (eligibleSkills.Count() == 0)
                 {
@@ -778,7 +767,7 @@ namespace tfgame.Procedures
             // give the player some money (30-48)
             else if (roll < 48)
             {
-                decimal moneyamount = Convert.ToDecimal(1 + Math.Floor(rand.NextDouble() * 4));
+                decimal moneyamount = Convert.ToDecimal(1 + Math.Floor(rand.NextDouble() * 3));
                 GiveMoneyToPlayer(player, moneyamount);
                 return "You collected " + (int)moneyamount + " Arpeyjis that were scattered on the ground.";
 

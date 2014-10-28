@@ -3,10 +3,19 @@
 
 @Html.ActionLink("Back to game", "Play", "PvP")
 
-<p style="text-align: center; margin-top:0px;">
-    @Html.ActionLink("Search for player by name", "PlayerLookup", "PvP") @Html.ActionLink("Delete All Messages", "DeleteAllMessages", "PvP")
-</p>
+<script>
+    function confirmDeletion() {
+        document.getElementById('realLink').style.display = "block";
+    }
+</script>
 
+<p style="text-align: center; margin-top:0px;">
+    @Html.ActionLink("Search for player by name", "PlayerLookup", "PvP") <a href="javascript:confirmDeletion()" />Delete All Messeges</a>
+</p>
+<div id="realLink" class="deleteMessegeConfirm">
+    <span style="color:red; font-weight: bold;">Do you really want to delete all the messages? If yes then please click link bellow:</span></br>
+    @Html.ActionLink("Yes, I want to delete", "DeleteAllMessages", "PvP")
+</div>
 <h1 style="text-align: center; margin-top:0px;">Received Messages (@Model.Messages.Count()/150)</h1>
 
 <table>

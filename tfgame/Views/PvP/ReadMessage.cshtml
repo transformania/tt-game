@@ -1,5 +1,13 @@
 ﻿@model tfgame.ViewModels.MessageViewModel
            @using tfgame.CustomHtmlHelpers
+
+<script>
+    function confirmDeletion() {
+        document.getElementById('realLink').style.display = "block";
+    }
+</script>
+
+
 @Html.ActionLink("Back to game", "Play", "PvP")
 <center>
     @Html.ActionLink("Back to Messages", "MyMessages", "PvP")
@@ -10,7 +18,11 @@
 </div>
 <center style="margin-top: 5px;">
     @Html.ActionLink("Reply", "Write", "PvP", new { playerId = Model.dbMessage.SenderId, responseTo = Model.dbMessage.Id }, null)
-    @Html.ActionLink("Delete", "DeleteMessage", "PvP", new { messageId = Model.dbMessage.Id }, null)
+    <a href="javascript:confirmDeletion()" />Delete</a>
 </center>
+<div id="realLink" class="deleteMessegeConfirm">
+    <span style="color:red; font-weight: bold;">Do you really want to delete this message? If yes then please click link bellow:</span></br>
+    @Html.ActionLink("Yes, I want to delete", "DeleteMessage", "PvP", new { messageId = Model.dbMessage.Id }, null)
+</div>
 <br />
 @Html.ActionLink("Back to game", "Play", "PvP")

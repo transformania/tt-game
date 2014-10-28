@@ -16,6 +16,16 @@
     height: 20px;
 }
 
+.deleteMessegeConfirm{
+    display:none;
+    text-align: center;
+    border:2px solid black;
+    padding: 5px;
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .messageTextContainer{
     border:1px solid gray;
     height:auto;

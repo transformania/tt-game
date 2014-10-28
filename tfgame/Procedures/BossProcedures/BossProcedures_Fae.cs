@@ -25,7 +25,7 @@ namespace tfgame.Procedures.BossProcedures
                     FirstName = "Jewdewfae",
                     LastName = "the Pervfae",
                     ActionPoints = 120,
-                    dbLocationName = "forest_hotspring",
+                    dbLocationName = "apartment_dog_park",
                     LastActionTimestamp = DateTime.UtcNow,
                     LastCombatTimestamp = DateTime.UtcNow,
                     OnlineActivityTimestamp = DateTime.UtcNow,

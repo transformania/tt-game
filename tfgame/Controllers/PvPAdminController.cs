@@ -1017,7 +1017,12 @@ namespace tfgame.Controllers
 
            // IEnumerable<FurnitureViewModel> test = FurnitureProcedures.GetCovenantFurnitureViewModels(35).ToList();
 
-            FurnitureProcedures.MoveFurnitureOnMarket();
+          //  FurnitureProcedures.MoveFurnitureOnMarket();
+
+          //  WriteEffectsFromMemoryToDatabase();
+
+            AIProcedures.SpawnLindella();
+            BossProcedures_Fae.SpawnFae();
 
             return RedirectToAction("Index");
 
@@ -1667,6 +1672,59 @@ namespace tfgame.Controllers
 
         //    return View("Play");
         //}
+
+        public ActionResult WriteEffectsFromMemoryToDatabase()
+        {
+            IDbStaticEffectRepository effectRepo = new EFDbStaticEffectRepository();
+
+            foreach (StaticEffect ramEffect in EffectStatics.GetStaticEffect)
+            {
+                DbStaticEffect effect = new DbStaticEffect
+                {
+                    dbName = ramEffect.dbName,
+                    FriendlyName = ramEffect.FriendlyName,
+                    AvailableAtLevel = ramEffect.AvailableAtLevel,
+                    Description = ramEffect.Description,
+                    PreRequesite = ramEffect.PreRequesite,
+                    isLevelUpPerk = ramEffect.isLevelUpPerk,
+                    Cooldown = ramEffect.Cooldown,
+                    Duration = ramEffect.Duration,
+                    ObtainedAtLocation = ramEffect.ObtainedAtLocation,
+
+                    AttackerWhenHit = ramEffect.AttackerWhenHit,
+                    AttackerWhenHit_M = ramEffect.AttackerWhenHit_M,
+                    AttackerWhenHit_F = ramEffect.AttackerWhenHit_F,
+
+                    MessageWhenHit = ramEffect.MessageWhenHit,
+                    MessageWhenHit_M = ramEffect.MessageWhenHit_M,
+                    MessageWhenHit_F = ramEffect.MessageWhenHit_F,
+
+                    HealthBonusPercent = ramEffect.HealthBonusPercent,
+                    ManaBonusPercent = ramEffect.ManaBonusPercent,
+                    ExtraSkillCriticalPercent = ramEffect.ExtraSkillCriticalPercent,
+                    HealthRecoveryPerUpdate = ramEffect.HealthRecoveryPerUpdate,
+                    ManaRecoveryPerUpdate = ramEffect.ManaRecoveryPerUpdate,
+                    SneakPercent = ramEffect.SneakPercent,
+                    EvasionPercent = ramEffect.EvasionPercent,
+                    EvasionNegationPercent = ramEffect.EvasionNegationPercent,
+                    MeditationExtraMana = ramEffect.MeditationExtraMana,
+                    CleanseExtraHealth = ramEffect.CleanseExtraHealth,
+                    MoveActionPointDiscount = ramEffect.MoveActionPointDiscount,
+                    SpellExtraTFEnergyPercent = ramEffect.SpellExtraTFEnergyPercent,
+                    SpellExtraHealthDamagePercent = ramEffect.SpellExtraHealthDamagePercent,
+                    CleanseExtraTFEnergyRemovalPercent = ramEffect.CleanseExtraTFEnergyRemovalPercent,
+                    SpellMisfireChanceReduction = ramEffect.SpellMisfireChanceReduction,
+                    SpellHealthDamageResistance = ramEffect.SpellHealthDamageResistance,
+                    SpellTFEnergyDamageResistance = ramEffect.SpellTFEnergyDamageResistance,
+                    ExtraInventorySpace = ramEffect.ExtraInventorySpace,
+
+                };
+
+              //  effectRepo.SaveDbStaticEffect(effect);
+            }
+
+            return View("Play");
+        }
 
         public ActionResult ViewServerLog(int turn)
         {

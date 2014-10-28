@@ -487,12 +487,15 @@
     <Content Include="Images\PvP\itemsPortraits\Honeypot_Luxianne.png" />
     <Content Include="Images\PvP\itemsPortraits\intimidating_leather_boots_JBovinne.png" />
     <Content Include="Images\PvP\itemsPortraits\kneehigh_socks_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\knitted_bra_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\knitted_panties_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\latex_collar_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\latex_corset_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\Leather_Shoes_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\licking_tongue_babblingfaces.png" />
     <Content Include="Images\PvP\itemsPortraits\lipstick.png" />
     <Content Include="Images\PvP\itemsPortraits\Lipstick_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\lovers_gift_heart_thong_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\magic_chocker_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\magic_wand_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\MagnifyingGlass_Meddle.png" />
@@ -516,6 +519,7 @@
     <Content Include="Images\PvP\itemsPortraits\spankmes_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\spellweaver_jawbreaker_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\spellweaver_jawbreaker_small.jpg" />
+    <Content Include="Images\PvP\itemsPortraits\spellweaver_jawbreaker__Large_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\spellweaver_root_meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\stallion_Danaume.jpg" />
     <Content Include="Images\PvP\itemsPortraits\star_studded_cloak_Meddle.png" />
@@ -525,6 +529,7 @@
     <Content Include="Images\PvP\itemsPortraits\tied_croptop_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\Whip_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\willbomb_weak.jpg" />
+    <Content Include="Images\PvP\itemsPortraits\willflower_jawbreaker_Large_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\willflower_jawbreaker_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\willflower_jawbreaker_small.jpg" />
     <Content Include="Images\PvP\itemsPortraits\willflower_root_meddle.png" />
@@ -554,11 +559,13 @@
     <Content Include="Images\PvP\portraits\femboy_Meddle.png" />
     <Content Include="Images\PvP\portraits\foxtheif_Luxianne.png" />
     <Content Include="Images\PvP\portraits\fuzzy_moth_girl_Luxianne.png" />
+    <Content Include="Images\PvP\portraits\gargoyle_jbovinne.png" />
     <Content Include="Images\PvP\portraits\gimbo_stripper_thegreatdaeo.jpg" />
     <Content Include="Images\PvP\portraits\girltaur_Meddle.png" />
     <Content Include="Images\PvP\portraits\goblin_girl_Meddle.png" />
     <Content Include="Images\PvP\portraits\gummy_girl_Luxianne.png" />
     <Content Include="Images\PvP\portraits\Ice_Queen_Meddle.png" />
+    <Content Include="Images\PvP\portraits\jester_Meddle.png" />
     <Content Include="Images\PvP\portraits\jewdewfae_Luxianne.png" />
     <Content Include="Images\PvP\portraits\jungle_girl_Meddle.png" />
     <Content Include="Images\PvP\portraits\kitsune_shrine_maiden_lux.png" />

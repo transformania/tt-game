@@ -343,7 +343,7 @@ namespace tfgame.Procedures
                     SkillProcedures.GiveSkillToPlayer(merchant.Id, s);
                 }
 
-                Player Lindella = playerRepo.Players.FirstOrDefault(f => f.MembershipId == -2);
+                Player Lindella = playerRepo.Players.FirstOrDefault(f => f.MembershipId == -3);
 
                 AIDirectiveProcedures.GetAIDirective(Lindella.Id);
                 AIDirectiveProcedures.SetAIDirective_MoveTo(Lindella.Id, "street_15th_south");

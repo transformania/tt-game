@@ -218,7 +218,7 @@ namespace tfgame.CustomHtmlHelpers
         {
             string output = "";
 
-            if (item.dbItem.Level > 1 && item.Item.ItemType != PvPStatics.ItemType_Consumeable)
+            if (item.dbItem.Level > 1 && item.Item.ItemType != "consumable")
             {
                 output = "<b>" + amount + "</b><span style='color:  blue;'>  <b>(" + (((item.dbItem.Level-1) * PvPStatics.Item_LevelBonusModifier*amount) + amount) + ")</b></span>";
             } else {

@@ -2980,7 +2980,7 @@ namespace tfgame.Controllers
             }
 
             // show the permanent and consumable items the player is carrying
-            IEnumerable<ItemViewModel> output = ItemProcedures.GetAllPlayerItems(me.Id).Where(i => i.Item.ItemType != PvPStatics.ItemType_Pet && i.dbItem.IsEquipped == false && (i.dbItem.IsPermanent==true || i.Item.ItemType == PvPStatics.ItemType_Consumeable));
+            IEnumerable<ItemViewModel> output = ItemProcedures.GetAllPlayerItems(me.Id).Where(i => i.Item.ItemType != PvPStatics.ItemType_Pet && i.dbItem.IsEquipped == false && (i.dbItem.IsPermanent == true || i.Item.ItemType == "consumable"));
             return View(output);
         }
 
@@ -3037,7 +3037,7 @@ namespace tfgame.Controllers
             }
 
              // assert that the item is either permanent or consumable
-            if (itemBeingSold.dbItem.IsPermanent == false && itemBeingSold.Item.ItemType != PvPStatics.ItemType_Consumeable)
+            if (itemBeingSold.dbItem.IsPermanent == false && itemBeingSold.Item.ItemType != "consumable")
             {
                 TempData["Error"] = "Unfortunately Lindella will not purchase items that may later struggle free anymore.";
                 return RedirectToAction("Play");
@@ -3365,8 +3365,8 @@ namespace tfgame.Controllers
                     //player.TimesAttackingThisUpdate = 0;
                     //player.CleansesMeditatesThisRound = 0;
 
-                  //  BuffBox buffs = ItemProcedures.GetPlayerBuffs(player);
-                    BuffBox buffs = ItemProcedures.GetPlayerBuffsRAM(player);
+                    BuffBox buffs = ItemProcedures.GetPlayerBuffs(player);
+                  //  BuffBox buffs = ItemProcedures.GetPlayerBuffsRAM(player);
                     player.Health += buffs.HealthRecoveryPerUpdate();
                     player.Mana += buffs.ManaRecoveryPerUpdate();
 

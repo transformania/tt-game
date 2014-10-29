@@ -1021,8 +1021,13 @@ namespace tfgame.Controllers
 
           //  WriteEffectsFromMemoryToDatabase();
 
-            AIProcedures.SpawnLindella();
-            BossProcedures_Fae.SpawnFae();
+            //AIProcedures.SpawnLindella();
+           // BossProcedures_Fae.SpawnFae();
+
+            Player me = PlayerProcedures.GetPlayerFromMembership();
+            BuffBox buffs = ItemProcedures.GetPlayerBuffs(me);
+            decimal wp_recover = buffs.HealthRecoveryPerUpdate();
+            decimal mana_recover = buffs.ManaRecoveryPerUpdate();
 
             return RedirectToAction("Index");
 

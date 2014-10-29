@@ -3365,8 +3365,8 @@ namespace tfgame.Controllers
                     //player.TimesAttackingThisUpdate = 0;
                     //player.CleansesMeditatesThisRound = 0;
 
-                    BuffBox buffs = ItemProcedures.GetPlayerBuffs(player);
-                  //  BuffBox buffs = ItemProcedures.GetPlayerBuffsRAM(player);
+                   // BuffBox buffs = ItemProcedures.GetPlayerBuffs(player);
+                    BuffBox buffs = ItemProcedures.GetPlayerBuffsRAM(player);
                     player.Health += buffs.HealthRecoveryPerUpdate();
                     player.Mana += buffs.ManaRecoveryPerUpdate();
 
@@ -3403,6 +3403,8 @@ namespace tfgame.Controllers
                     {
                         player.Mana = 0;
                     }
+
+                    playerRepo.SavePlayer(player);
 
                     // for inbetween round testing
                     //if (PvPStatics.ChaosMode == true)

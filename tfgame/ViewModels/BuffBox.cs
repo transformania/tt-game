@@ -110,8 +110,8 @@ namespace tfgame.ViewModels
     public class RAMBuffBox
     {
         public string dbName { get; set; }
-        //public float HealthBonusPercent { get; set; }
-        //public float ManaBonusPercent { get; set; }
+        public float HealthBonusPercent { get; set; }
+        public float ManaBonusPercent { get; set; }
         //public float ExtraSkillCriticalPercent { get; set; }
         public float HealthRecoveryPerUpdate { get; set; }
         public float ManaRecoveryPerUpdate { get; set; }

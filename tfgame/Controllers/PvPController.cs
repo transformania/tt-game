@@ -89,6 +89,12 @@ namespace tfgame.Controllers
             if (secondsSinceUpdate > 90 && PvPStatics.AnimateUpdateInProgress == true)
             {
                 PvPStatics.AnimateUpdateInProgress = false;
+
+                if (secondsSinceUpdate > 150 && WorldStat.WorldIsUpdating == true)
+                {
+                    PvPWorldStatProcedures.StopUpdatingWorld();
+                }
+
             }
 
             if (WorldStat.WorldIsUpdating == true && secondsSinceUpdate < 90)
@@ -3365,8 +3371,8 @@ namespace tfgame.Controllers
                     //player.TimesAttackingThisUpdate = 0;
                     //player.CleansesMeditatesThisRound = 0;
 
-                   // BuffBox buffs = ItemProcedures.GetPlayerBuffs(player);
                     BuffBox buffs = ItemProcedures.GetPlayerBuffsRAM(player);
+                    //BuffBox buffs = ItemProcedures.GetPlayerBuffsRAM(player);
                     player.Health += buffs.HealthRecoveryPerUpdate();
                     player.Mana += buffs.ManaRecoveryPerUpdate();
 

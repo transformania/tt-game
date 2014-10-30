@@ -543,15 +543,22 @@ namespace tfgame.Procedures
             BuffBox output = new BuffBox();
 
             // form portion
+            RAMBuffBox temp_form = null;
             try
             {
-                output.FromForm_HealthRecoveryPerUpdate = (decimal)FormStatics.FormRAMBuffBoxes.FirstOrDefault(f => f.dbName == player.Form).HealthRecoveryPerUpdate;
+                temp_form = FormStatics.FormRAMBuffBoxes.First(x => x.dbName == player.Form.ToLower());
             }
             catch
             {
                 PlayerProcedures.LoadFormRAMBuffBox();
-                output.FromForm_HealthRecoveryPerUpdate = (decimal)FormStatics.FormRAMBuffBoxes.FirstOrDefault(f => f.dbName == player.Form).HealthRecoveryPerUpdate;
+                temp_form = FormStatics.FormRAMBuffBoxes.First(x => x.dbName == player.Form.ToLower());
             }
+
+            output.FromForm_HealthBonusPercent = (decimal)temp_form.HealthBonusPercent;
+            output.FromForm_ManaBonusPercent = (decimal)temp_form.ManaBonusPercent;
+            output.FromForm_HealthRecoveryPerUpdate = (decimal)temp_form.HealthRecoveryPerUpdate;
+            output.FromForm_ManaRecoveryPerUpdate = (decimal)temp_form.ManaRecoveryPerUpdate;
+
 
             // items portion
             IEnumerable<Item> wornItems = GetAllPlayerItems_ItemOnly(player.Id);
@@ -568,6 +575,10 @@ namespace tfgame.Procedures
                     LoadItemRAMBuffBox();
                     temp = ItemStatics.ItemRAMBuffBoxes.FirstOrDefault(x => x.dbName == i.dbName.ToLower());
                 }
+
+                output.FromItems_HealthBonusPercent += (decimal)temp.HealthBonusPercent + (decimal)temp.HealthBonusPercent * (((i.Level - 1) * (decimal)PvPStatics.Item_LevelBonusModifier));
+                output.FromItems_ManaBonusPercent += (decimal)temp.ManaBonusPercent + (decimal)temp.ManaBonusPercent * (((i.Level - 1) * (decimal)PvPStatics.Item_LevelBonusModifier));
+
                 output.FromItems_HealthRecoveryPerUpdate += (decimal)temp.HealthRecoveryPerUpdate + (decimal)temp.HealthRecoveryPerUpdate * (((i.Level - 1) * (decimal)PvPStatics.Item_LevelBonusModifier));
                 output.FromItems_ManaRecoveryPerUpdate += (decimal)temp.ManaRecoveryPerUpdate + (decimal)temp.ManaRecoveryPerUpdate * (((i.Level - 1) * (decimal)PvPStatics.Item_LevelBonusModifier));
             }
@@ -1184,8 +1195,12 @@ namespace tfgame.Procedures
                 RAMBuffBox temp = new RAMBuffBox
                 {
                     dbName = i.dbName.ToLower(),
+
+                    HealthBonusPercent = (float)i.HealthBonusPercent,
+                    ManaBonusPercent = (float)i.ManaBonusPercent,
                     HealthRecoveryPerUpdate = (float)i.HealthRecoveryPerUpdate,
                     ManaRecoveryPerUpdate = (float)i.ManaRecoveryPerUpdate,
+
                 };
                 ItemStatics.ItemRAMBuffBoxes.Add(temp);
             }

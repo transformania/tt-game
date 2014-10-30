@@ -1025,9 +1025,14 @@ namespace tfgame.Controllers
            // BossProcedures_Fae.SpawnFae();
 
             Player me = PlayerProcedures.GetPlayerFromMembership();
-            BuffBox buffs = ItemProcedures.GetPlayerBuffs(me);
-            decimal wp_recover = buffs.HealthRecoveryPerUpdate();
-            decimal mana_recover = buffs.ManaRecoveryPerUpdate();
+            BuffBox buffsOld = ItemProcedures.GetPlayerBuffs(me);
+            BuffBox buffs = ItemProcedures.GetPlayerBuffsRAM(me);
+
+            decimal oldHealthBonus = buffsOld.HealthBonusPercent();
+            decimal oldManaBonus = buffsOld.ManaBonusPercent();
+
+            decimal oldHealthNew = buffs.HealthBonusPercent();
+            decimal oldManaNew = buffs.ManaBonusPercent();
 
             return RedirectToAction("Index");
 

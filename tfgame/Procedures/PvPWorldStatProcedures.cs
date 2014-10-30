@@ -17,6 +17,14 @@ namespace tfgame.Procedures
             return worldStatRepo.PvPWorldStats.First();
         }
 
+        public static void StopUpdatingWorld()
+        {
+            IPvPWorldStatRepository worldStatRepo = new EFPvPWorldStatRepository();
+            PvPWorldStat stat = worldStatRepo.PvPWorldStats.First();
+            stat.WorldIsUpdating = false;
+            worldStatRepo.SavePvPWorldStat(stat);
+        }
+
         public static void UpdateWorldTurnCounter()
         {
             IPvPWorldStatRepository worldStatRepo = new EFPvPWorldStatRepository();

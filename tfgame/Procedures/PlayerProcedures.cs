@@ -1651,7 +1651,10 @@ namespace tfgame.Procedures
             {
                 RAMBuffBox temp = new RAMBuffBox
                 {
-                    dbName = f.dbName,
+                    dbName = f.dbName.ToLower(),
+
+                    HealthBonusPercent = (float)f.HealthBonusPercent,
+                    ManaBonusPercent = (float)f.ManaBonusPercent,
                     HealthRecoveryPerUpdate = (float)f.HealthRecoveryPerUpdate,
                     ManaRecoveryPerUpdate = (float)f.ManaRecoveryPerUpdate,
                 };

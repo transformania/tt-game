@@ -75,9 +75,11 @@ namespace tfgame.Controllers
 
             PvPWorldStat WorldStat = PvPWorldStatProcedures.GetWorldStats();
 
+
             ViewBag.UpdateInProgress = false;
 
             double secondsSinceUpdate = Math.Abs(Math.Floor(WorldStat.LastUpdateTimestamp.Subtract(DateTime.UtcNow).TotalSeconds));
+            ViewBag.SecondsUntilUpdate = 600-(int)secondsSinceUpdate;
 
             // if it has been long enough since last update, force an update to occur
             if (secondsSinceUpdate > 605 && WorldStat.WorldIsUpdating == false)

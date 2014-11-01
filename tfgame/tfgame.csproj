@@ -325,6 +325,7 @@
     <Compile Include="Procedures\AnimalProcedures.cs" />
     <Compile Include="Procedures\AttackProcedures.cs" />
     <Compile Include="Procedures\BlacklistProcedures.cs" />
+    <Compile Include="Procedures\BossProcedures\BossProcedures_BimboBoss.cs" />
     <Compile Include="Procedures\BossProcedures\BossProcedures_Fae.cs" />
     <Compile Include="Procedures\BossProcedures\BossProcedures_Valentine.cs" />
     <Compile Include="Procedures\ChatLogProcedures.cs" />

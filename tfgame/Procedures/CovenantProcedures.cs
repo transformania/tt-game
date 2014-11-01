@@ -343,7 +343,7 @@ namespace tfgame.Procedures
             playerRepo.SavePlayer(dbPlayer);
             covRepo.SaveCovenant(dbCov);
 
-            string covMessage = (int)amount + " was gifted out to " + giftee.GetFullName() + ".";
+            string covMessage = (int)amount + " Arpeyjis were gifted out to " + giftee.GetFullName() + " from the covenant treasury.";
             WriteCovenantLog(covMessage, covId, false);
         }
 

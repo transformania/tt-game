@@ -22,18 +22,6 @@ namespace tfgame.Procedures
 
         public static IEnumerable<StaticSkill> GetStaticSkillsOwnedByPlayer(int playerId)
         {
-            //ISkillRepository skillRepo = new EFSkillRepository();
-            //IEnumerable<Skill> mySkills = skillRepo.Skills.Where(s => s.OwnerId == playerId);
-
-            //List<DbStaticSkill> myStaticSkills = new List<DbStaticSkill>();
-
-            //foreach (Skill skill in mySkills)
-            //{
-            //    myStaticSkills.Add(SkillStatics.GetStaticSkill(skill.Name));
-            //}
-
-
-
             return GetSkillViewModelsOwnedByPlayer(playerId).Select(s => s.Skill).ToList();
         }
 
@@ -80,52 +68,9 @@ namespace tfgame.Procedures
                                                  };
 
 
-            //IEnumerable<SkillViewModel> output = null;
-
-            //    using (var context = new StatsContext())
-            //    {
-            //       // ObjectParameter name = new ObjectParameter("OwnerId", typeof(int));
-            //      //  var query = context.Database.SqlQuery("exec GetPlayerSkillViewModels", playerId);
-
-
-
-            //    }
-
-
             return output;
         }
 
-
-        //public static SkillViewModel GetSkillViewModel(string skilldbName, int playerId)
-        //{
-        //    ISkillRepository skillRepo = new EFSkillRepository();
-        //    SkillViewModel output = new SkillViewModel
-        //    {
-        //        dbSkill = skillRepo.Skills.FirstOrDefault(s => s.Name == skilldbName && s.OwnerId == playerId),
-        //        Skill = SkillStatics.GetStaticSkill.FirstOrDefault(s => s.dbName == skilldbName)
-        //    };
-
-        //    try
-        //    {
-        //        output.MobilityType = FormStatics.GetForm.FirstOrDefault(f => f.dbName == output.Skill.FormdbName).MobilityType;
-        //    }
-        //    catch
-        //    {
-        //        // if there is an effect for this skill, it's a curse or blessing type
-        //        StaticEffect possibleEffect = EffectStatics.GetStaticEffect.FirstOrDefault(e => e.dbName == output.Skill.GivesEffect);
-
-        //        if (possibleEffect != null)
-        //        {
-        //            output.MobilityType = "curse";
-        //        }
-        //        else
-        //        {
-        //            output.MobilityType = "weaken";
-        //        }
-        //    }
-
-        //    return output;
-        //}
 
         public static SkillViewModel2 GetSkillViewModel(string skilldbName, int playerId)
         {
@@ -168,6 +113,43 @@ namespace tfgame.Procedures
                                                   };
 
             return output.FirstOrDefault();
+        }
+
+        public static SkillViewModel2 GetSkillViewModel_NotOwned(string skilldbName)
+        {
+
+            ISkillRepository skillRepo = new EFSkillRepository();
+
+            Skill_VM tempskill = new Skill_VM
+            {
+                Name = skilldbName,
+            };
+
+            DbStaticSkill dbstatic = skillRepo.DbStaticSkills.FirstOrDefault(s => s.dbName == skilldbName);
+            StaticSkill tempstatic = new StaticSkill
+            {
+                dbName = dbstatic.dbName,
+                FriendlyName = dbstatic.FriendlyName,
+                GivesEffect = dbstatic.GivesEffect,
+                Description = dbstatic.Description,
+                FormdbName = dbstatic.FormdbName,
+                ManaCost = dbstatic.ManaCost,
+                HealthDamageAmount = dbstatic.HealthDamageAmount,
+                TFPointsAmount = dbstatic.TFPointsAmount,
+                DiscoveryMessage = dbstatic.DiscoveryMessage,
+                ExclusiveToForm = dbstatic.ExclusiveToForm,
+                ExclusiveToItem = dbstatic.ExclusiveToItem,
+                LearnedAtLocation = dbstatic.LearnedAtLocation,
+                LearnedAtRegion = dbstatic.LearnedAtRegion,
+            };
+
+            SkillViewModel2 output = new SkillViewModel2
+            {
+                dbSkill = tempskill,
+                Skill = tempstatic,
+            };
+
+            return output;
         }
 
         public static string GiveSkillToPlayer(int playerId, DbStaticSkill skill)

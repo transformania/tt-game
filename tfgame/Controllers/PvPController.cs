@@ -695,6 +695,21 @@ namespace tfgame.Controllers
                     }
                 }
 
+                // Bimbo Boss
+                if (targeted.MembershipId == -7)
+                {
+
+                    // disallow animate spells
+                    if (futureForm.MobilityType == "full")
+                    {
+                        TempData["Error"] = "Your target seems immune from this kind of spell.";
+                        TempData["SubError"] = "Maybe a different one would do...";
+                        return RedirectToAction("Play");
+                    }
+                    // disallow transformed victims from attacking boss
+
+                }
+
             }
 
 

@@ -254,6 +254,12 @@ namespace tfgame.Procedures
             return result;
         }
 
+        public static string Attack(Player attacker, Player victim, string skillBeingUsed)
+        {
+            SkillViewModel2 vm = SkillProcedures.GetSkillViewModel_NotOwned(skillBeingUsed);
+            return Attack(attacker, victim, vm);
+        }
+
         public static string ThrowGrenade(Player attacker, decimal damage, string orbStrengthName)
         {
 

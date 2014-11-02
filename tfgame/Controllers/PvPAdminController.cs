@@ -1002,41 +1002,15 @@ namespace tfgame.Controllers
 
         public ActionResult test()
         {
-
             if (WebSecurity.CurrentUserId != 69)
             {
                 return View("Play");
             }
+            BossProcedures_BimboBoss.SpawnBimboBoss();
 
-            //ItemProcedures.LoadItemRAMBuffBox();
-            //PlayerProcedures.LoadFormRAMBuffBox();
-
-            //Player me = PlayerProcedures.GetPlayerFromMembership(69);
-            //BuffBox oldbox = ItemProcedures.GetPlayerBuffs(me);
-            //BuffBox newbox = ItemProcedures.GetPlayerBuffsRAM(me);
-
-           // IEnumerable<FurnitureViewModel> test = FurnitureProcedures.GetCovenantFurnitureViewModels(35).ToList();
-
-          //  FurnitureProcedures.MoveFurnitureOnMarket();
-
-          //  WriteEffectsFromMemoryToDatabase();
-
-            //AIProcedures.SpawnLindella();
-           // BossProcedures_Fae.SpawnFae();
-
-            Player me = PlayerProcedures.GetPlayerFromMembership();
-            BuffBox buffsOld = ItemProcedures.GetPlayerBuffs(me);
-            BuffBox buffs = ItemProcedures.GetPlayerBuffsRAM(me);
-
-            decimal oldHealthBonus = buffsOld.HealthBonusPercent();
-            decimal oldManaBonus = buffsOld.ManaBonusPercent();
-
-            decimal oldHealthNew = buffs.HealthBonusPercent();
-            decimal oldManaNew = buffs.ManaBonusPercent();
+          //  string x = BossProcedures_BimboBoss.GetLocationWithMostEligibleTargets();
 
             return RedirectToAction("Index");
-
-
         }
 
         public ActionResult ApproveContributionList()

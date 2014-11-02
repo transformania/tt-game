@@ -289,6 +289,34 @@ new StaticEffect {
                 MoveActionPointDiscount = -999,
 },
 
+new StaticEffect {
+                dbName = "curse_bimboboss_kiss",
+                FriendlyName = "Bimbonic Virus Infectee",
+                Description = "You have been infected with the bimbonic virus raging through the town.  You find it hard to concentrate on what you are doing, and every man and woman you eye leaves you so deeply aroused that you have to fight your hardest to run up and kiss them, strip off their clothes then and there and indulge yourself in whatever manner of genitalia they possess, transferring your virus on to them in the process.  Not only that, but while your body and magic is trying to stave off the infection, there's always a chance that it will fail and you'll find yourself in the body of a bimbo if you haven't already...",
+                AvailableAtLevel = 0,
+                Duration = 99999,
+                Cooldown = 99999,
+                MessageWhenHit = "",
+                AttackerWhenHit = "A mage approaches you, smelling of sweet perfume and staring at you in lust, giggling all the while.  You back up and get ready to cast your magic against them when they suddenly leap forward, knocking you to the ground and slobbering you with kisses.  You roll them off just as they begin to dry hump you, wiping their saliva off your face though some has already slipped into your mouth along with the bimbo virus inside it.  You begin to sweat and it seems that at any moment your body might spontaneously transform into the bimbo your mind wants you to be...",
+                HealthRecoveryPerUpdate = -3,
+                HealthBonusPercent = -35,
+                ManaRecoveryPerUpdate = 15,
+                CleanseExtraHealth = -5,
+                SpellExtraTFEnergyPercent = 25,
+                SpellExtraHealthDamagePercent = 25,
+},
+
+new StaticEffect {
+                dbName = "blessing_bimboboss_cure",
+                FriendlyName = "Bimbonic Virus Free",
+                Description = "You have injected yourself with the antivirus, protecting you against the bimbo virus.  However, it won't last forever as the virus is constantly evolving, but for now you won't have to worry about getting reinfected for a few hours.",
+                AvailableAtLevel = 0,
+                Duration = 99999,
+                Cooldown = 99999,
+                MessageWhenHit = "",
+                AttackerWhenHit = "",
+},
+
                    //new StaticEffect {
             //    dbName = "",
             //    FriendlyName = "",

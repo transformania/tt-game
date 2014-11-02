@@ -681,6 +681,9 @@ namespace tfgame.Procedures
             if (bot.MembershipId == -4)
             {
 
+                PlayerProcedures.GiveXP(personAttacking.Id, 20);
+                PlayerLogProcedures.AddPlayerLog(personAttacking.Id, "You gain 20 extra XP from daring to fight Donna.", true);
+
                 Random rand = new Random();
                 double roll = rand.NextDouble() * 4;
 
@@ -724,6 +727,12 @@ namespace tfgame.Procedures
             if (bot.MembershipId == -5)
             {
                 BossProcedures_Valentine.CounterAttack(personAttacking, bot);
+            }
+
+            // Bimbo boss counterattack
+            if (bot.MembershipId == -7)
+            {
+                BossProcedures_BimboBoss.CounterAttack(personAttacking, bot);
             }
 
         }

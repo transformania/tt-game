@@ -633,6 +633,9 @@
     <Content Include="Reports\Updates\1963.txt" />
     <Content Include="Scripts\jquery.rotate.js" />
     <Content Include="Scripts\jQueryRotateCompressed.js" />
+    <Content Include="XMLs\BossSummonText\BimboBoss.txt" />
+    <Content Include="XMLs\BossSummonText\Donna.txt" />
+    <Content Include="XMLs\BossSummonText\Valentine.txt" />
     <Content Include="XMLs\Effects\effect_Circine%27s_Hypnosis_LexamTheGemFox.xml" />
     <Content Include="XMLs\Effects\effect_Hemorrhage_Izz_Valentine.xml">
       <SubType>Designer</SubType>

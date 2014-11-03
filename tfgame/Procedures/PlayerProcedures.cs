@@ -694,19 +694,31 @@ namespace tfgame.Procedures
                         {
                             AIProcedures.SpawnDonna();
                             PvPWorldStatProcedures.Boss_StartDonna();
-                            string summontext = bossSummon.ActivationText;
+                            string summontext = BossSummonDictionary.GetActivationText("Donna");
                             PlayerLogProcedures.AddPlayerLog(player.Id, summontext, true);
                             return summontext;
                         }
                         
                     }
-                    if (roll < 1 && dbLocationName == "castle_armory")
+                    else if (roll < 1 && dbLocationName == "castle_armory")
                     {
                         if (worldStats.IsValentineAvailable())
                         {
                             BossProcedures_Valentine.SpawnValentine();
                             PvPWorldStatProcedures.Boss_StartValentine();
-                            string summontext = bossSummon.ActivationText;
+                            string summontext = BossSummonDictionary.GetActivationText("Valentine");
+                            PlayerLogProcedures.AddPlayerLog(player.Id, summontext, true);
+                            return summontext;
+                        }
+
+                    }
+                    else if (roll < 1 && dbLocationName == "stripclub_bar_seats")
+                    {
+                        if (worldStats.IsBimboAvailable())
+                        {
+                            BossProcedures_BimboBoss.SpawnBimboBoss();
+                            PvPWorldStatProcedures.Boss_StartBimbo();
+                            string summontext = BossSummonDictionary.GetActivationText("BimboBoss");
                             PlayerLogProcedures.AddPlayerLog(player.Id, summontext, true);
                             return summontext;
                         }

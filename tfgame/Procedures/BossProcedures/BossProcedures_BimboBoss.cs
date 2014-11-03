@@ -6,6 +6,7 @@ using tfgame.dbModels.Abstract;
 using tfgame.dbModels.Concrete;
 using tfgame.dbModels.Models;
 using tfgame.Statics;
+using tfgame.ViewModels;
 
 namespace tfgame.Procedures.BossProcedures
 {
@@ -14,11 +15,12 @@ namespace tfgame.Procedures.BossProcedures
 
         private const string BossFirstName = "Lady";
         private const string BossLastName = "Lovebringer, PHD";
-        private const string KissEffectdbName = "curse_bimboboss_kiss";
+        public const string KissEffectdbName = "curse_bimboboss_kiss";
         public const string KissSkilldbName = "skill_bimboboss_kiss";
-        private const string CureEffectdbName = "blessing_bimboboss_cure";
+        public const string CureEffectdbName = "blessing_bimboboss_cure";
         private const string RegularTFSpellDbName = "skill_Dawn_of_the_Ditz_Varn";
         private const string RegularBimboFormDbName = "form_Bimbonic_Plague-Bearer_Varn";
+        public const string CureItemDbName = "item_consumeable_bimbo_cure";
 
         public static void SpawnBimboBoss()
         {
@@ -46,7 +48,7 @@ namespace tfgame.Procedures.BossProcedures
                     IsPetToId = -1,
                     Money = 0,
                     Mobility = "full",
-                    Level = 8,
+                    Level = 15,
                     MembershipId = -7,
                     ActionPoints_Refill = 360,
                 };
@@ -256,19 +258,25 @@ namespace tfgame.Procedures.BossProcedures
             }
 
 
-            // every 3 turns heal the boss based on how many infected bots there are
+            // every 5 turns heal the boss based on how many infected bots there are
             if (turnNumber % 5 == 0)
             {
                 
                 int activeCurses = effectRepo.Effects.Where(eff => eff.dbName == KissEffectdbName).Count()*3;
                 if (activeCurses > 75)
                 {
-                    activeCurses = 75;
+                    activeCurses = 100;
                 }
                 bimboBoss.Health += activeCurses;
                 playerRepo.SavePlayer(bimboBoss);
                 string message = "<b>" + bimboBoss.GetFullName() + " draws energy from her bimbo horde, regenerating her own willpower by " + activeCurses + ".</b>";
                 LocationLogProcedures.AddLocationLog(newlocation, message);
+            }
+
+            // drop a vial cure every 3 turns
+            if (turnNumber % 3 == 0)
+            {
+                DropCure();
             }
             
         }
@@ -306,6 +314,30 @@ namespace tfgame.Procedures.BossProcedures
             List<Player> playersHere = PlayerProcedures.GetPlayersAtLocation(location).Where(m => m.Mobility == "full" && m.Id != attacker.Id && m.Form != RegularBimboFormDbName && m.MembershipId >= -2 && m.LastActionTimestamp > cutoff && m.MembershipId != -7).ToList();
 
             return playersHere;
+        }
+
+        public static void DropCure()
+        {
+
+            IItemRepository itemRepo = new EFItemRepository();
+
+            Item newVial = new Item
+            {
+                dbLocationName = LocationsStatics.GetRandomLocation(),
+                dbName = CureItemDbName,
+                IsEquipped = false,
+                IsPermanent = false,
+                Level = 0,
+                PvPEnabled = false,
+                OwnerId = -1,
+                VictimName = "",
+                TimeDropped = DateTime.UtcNow,
+                TurnsUntilUse = 0,
+                EquippedThisTurn = false,
+            };
+
+            itemRepo.SaveItem(newVial);
+
         }
 
     }

@@ -263,6 +263,14 @@ namespace tfgame.Procedures
             
         }
 
+        public static void RemovePerkFromPlayer(string perkName, Player player)
+        {
+            IEffectRepository effectRepo = new EFEffectRepository();
+
+            Effect effect = effectRepo.Effects.FirstOrDefault(e => e.dbName == perkName && e.OwnerId == player.Id);
+            effectRepo.DeleteEffect(effect.Id);
+        }
+
         public static void DeleteAllPlayerEffects(int playerId)
         {
             IEffectRepository effectRepo = new EFEffectRepository();

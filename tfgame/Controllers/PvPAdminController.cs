@@ -1008,7 +1008,12 @@ namespace tfgame.Controllers
             }
            // BossProcedures_BimboBoss.RunActions(PvPWorldStatProcedures.GetWorldTurnNumber());
 
-            string test = BossProcedures_BimboBoss.GetLocationWithMostEligibleTargets();
+           // string test = BossProcedures_BimboBoss.GetLocationWithMostEligibleTargets();
+
+           // BossProcedures_BimboBoss.DropCure();
+
+            string text = BossSummonDictionary.GetActivationText("BimboBoss");
+            TempData["Message"] = text;
 
           //  string x = BossProcedures_BimboBoss.GetLocationWithMostEligibleTargets();
 

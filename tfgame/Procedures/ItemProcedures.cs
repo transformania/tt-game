@@ -793,7 +793,6 @@ namespace tfgame.Procedures
 
             string name;
 
-
             // get pronoun
             if (WebSecurity.CurrentUserId == owner.MembershipId)
             {
@@ -838,11 +837,10 @@ namespace tfgame.Procedures
 
                 }
 
-                // if this item has an effect is grants, give that effect to the player
+                // if this item has an effect it grants, give that effect to the player
                 if (itemPlus.Item.GivesEffect != null && itemPlus.Item.GivesEffect != "")
                 {
                     // check if the player already has this effect or has it in cooldown.  If so, reject usage
-
                     if (EffectProcedures.PlayerHasEffect(owner, itemPlus.Item.GivesEffect) == true)
                     {
                         return "You can't use this yet as you already have its effects active on you, or else the effect's cooldown has not expired.";
@@ -853,9 +851,6 @@ namespace tfgame.Procedures
                         LocationLogProcedures.AddLocationLog(owner.dbLocationName, owner.FirstName + " " + owner.LastName + " used a " + itemPlus.Item.FriendlyName + " here.");
                         return EffectProcedures.GivePerkToPlayer(itemPlus.Item.GivesEffect, owner);
                     }
-
-
-
                 }
                 
 
@@ -905,6 +900,19 @@ namespace tfgame.Procedures
                     itemRepo.DeleteItem(itemPlus.dbItem.Id);
                     LocationLogProcedures.AddLocationLog(owner.dbLocationName, owner.FirstName + " " + owner.LastName + " used a " + itemPlus.Item.FriendlyName + " here.");
                     return name + " spread the mana-absorbing " + itemPlus.Item.FriendlyName + " over your skin, quickly restoring you to your original body and cleansing away some additional transformation energies.";
+                }
+
+                if (itemPlus.Item.dbName == BossProcedures.BossProcedures_BimboBoss.CureItemDbName)
+                {
+
+                    if (EffectProcedures.PlayerHasEffect(owner, BossProcedures.BossProcedures_BimboBoss.KissEffectdbName) == false) {
+                        return "Since you are not infected with the bimbonic virus there's no need for you to use this right now.";
+                    }
+
+                    PlayerProcedures.InstantRestoreToBase(owner);
+                    EffectProcedures.RemovePerkFromPlayer(BossProcedures.BossProcedures_BimboBoss.KissEffectdbName, owner);
+                    EffectProcedures.GivePerkToPlayer(BossProcedures.BossProcedures_BimboBoss.CureEffectdbName, owner);
+                    return "You inject yourself with the vaccine, returning to your original form and purging the virus out of your body.  Careful though, it may later mutate and be able to infect you once again...";
                 }
 
                // if (itemPlus.Item.dbName == "item_consumeable_")

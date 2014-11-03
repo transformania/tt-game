@@ -1006,7 +1006,9 @@ namespace tfgame.Controllers
             {
                 return View("Play");
             }
-            BossProcedures_BimboBoss.RunActions(PvPWorldStatProcedures.GetWorldTurnNumber());
+           // BossProcedures_BimboBoss.RunActions(PvPWorldStatProcedures.GetWorldTurnNumber());
+
+            string test = BossProcedures_BimboBoss.GetLocationWithMostEligibleTargets();
 
           //  string x = BossProcedures_BimboBoss.GetLocationWithMostEligibleTargets();
 

@@ -184,7 +184,7 @@ namespace tfgame.Procedures.BossProcedures
 
             // have a random chance that infected players spontaneously transform
             IEffectRepository effectRepo = new EFEffectRepository();
-            IEnumerable<int> ownerIds = effectRepo.Effects.Where(e => e.dbName == KissEffectdbName).Select(e => e.OwnerId);
+            List<int> ownerIds = effectRepo.Effects.Where(e => e.dbName == KissEffectdbName).Select(e => e.OwnerId).ToList();
 
 
             foreach (int effectId in ownerIds)
@@ -235,7 +235,7 @@ namespace tfgame.Procedures.BossProcedures
                     }
 
                     // if there were any attacked players, restore the old last action timestamp and make sure AP and mana has not gone into negative
-                    if (eligibleTargets.Count() > 0)
+                    if (attacksMadeCount > 0)
                     {
                         infectee = playerRepo.Players.FirstOrDefault(p => p.Id == effectId);
                         infectee.LastActionTimestamp = lastActionBackup;
@@ -252,10 +252,7 @@ namespace tfgame.Procedures.BossProcedures
 
                         playerRepo.SavePlayer(infectee);
                     }
-
                 }
-
-
             }
 
 
@@ -276,11 +273,12 @@ namespace tfgame.Procedures.BossProcedures
             
         }
 
-        private static string GetLocationWithMostEligibleTargets()
+        public static string GetLocationWithMostEligibleTargets()
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
             DateTime cutoff = DateTime.UtcNow.AddHours(-1);
-            return playerRepo.Players.Where(p => p.Mobility == "full" && p.LastActionTimestamp > cutoff && p.Form != RegularBimboFormDbName).OrderByDescending(p => p.dbLocationName).First().dbLocationName;
+            IEnumerable<string> locs = playerRepo.Players.Where(p => p.Mobility == "full" && p.LastActionTimestamp > cutoff && p.Form != RegularBimboFormDbName).GroupBy(p => p.dbLocationName).OrderByDescending(p => p.Count()).Select(p => p.Key);
+            return locs.First();
         }
 
         private static void EndThisBossEvent()
@@ -305,7 +303,7 @@ namespace tfgame.Procedures.BossProcedures
         private static List<Player> GetEligibleTargetsInLocation(string location, Player attacker)
         {
             DateTime cutoff = DateTime.UtcNow.AddHours(-1);
-            List<Player> playersHere = PlayerProcedures.GetPlayersAtLocation(location).Where(m => m.Mobility == "full" && m.Id != attacker.Id && m.Form != RegularBimboFormDbName && m.MembershipId >= -2 && m.LastActionTimestamp > cutoff).ToList();
+            List<Player> playersHere = PlayerProcedures.GetPlayersAtLocation(location).Where(m => m.Mobility == "full" && m.Id != attacker.Id && m.Form != RegularBimboFormDbName && m.MembershipId >= -2 && m.LastActionTimestamp > cutoff && m.MembershipId != -7).ToList();
 
             return playersHere;
         }

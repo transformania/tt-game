@@ -3470,26 +3470,7 @@ namespace tfgame.Controllers
                     }
                 }
 
-
-                //foreach (Player player in players_Inanimate_Animal)
-                //{
-                //    if (player.TimesAttackingThisUpdate != 0)
-                //    {
-                //        player.TimesAttackingThisUpdate = 0;
-
-                //        if (PvPStatics.ChaosMode == true)
-                //        {
-                //            player.TimesAttackingThisUpdate = -999;
-                //        }
-
-                //        playerRepo.SavePlayer(player);
-                //    }
-                //}
-
-                
-
                 PvPStatics.AnimateUpdateInProgress = false;
-
 
                 // bump down the timer on all items that are reuseable consumables
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started updating items on cooldown");
@@ -3608,6 +3589,8 @@ namespace tfgame.Controllers
                 }
 
                 #region bosses
+
+                // DONNA
                 try {
                     // run boss logic if one is active
                     if (worldStats.Boss_Donna == "active")
@@ -3624,6 +3607,8 @@ namespace tfgame.Controllers
                     log.AddLog(updateTimer.ElapsedMilliseconds + ":  DONNA ERROR:  " + e.InnerException.ToString());
                 }
 
+
+                // VALENTINE
                 try
                 {
                     // run boss logic if one is active
@@ -3639,6 +3624,24 @@ namespace tfgame.Controllers
                 catch (Exception e)
                 {
                     log.AddLog(updateTimer.ElapsedMilliseconds + ":  Valentine ERROR:  " + e.InnerException.ToString());
+                }
+
+                // BIMBO
+                try
+                {
+                    // run boss logic if one is active
+                    if (worldStats.Boss_Bimbo == "active")
+                    {
+                        log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started Bimbo actions");
+                        serverLogRepo.SaveServerLog(log);
+                        tfgame.Procedures.BossProcedures.BossProcedures_BimboBoss.RunActions(turnNo);
+                        log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == turnNo);
+                        log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished Bimbo actions");
+                    }
+                }
+                catch (Exception e)
+                {
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Bimbo ERROR:  " + e.InnerException.ToString());
                 }
 
                 #endregion bosses

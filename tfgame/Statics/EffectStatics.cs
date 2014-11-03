@@ -308,7 +308,7 @@ new StaticEffect {
 
 new StaticEffect {
                 dbName = "blessing_bimboboss_cure",
-                FriendlyName = "Bimbonic Virus Free",
+                FriendlyName = "Bimbonic Virus Free!",
                 Description = "You have injected yourself with the antivirus, protecting you against the bimbo virus.  However, it won't last forever as the virus is constantly evolving, but for now you won't have to worry about getting reinfected for a few hours.",
                 AvailableAtLevel = 0,
                 Duration = 99999,

@@ -59,6 +59,7 @@ namespace tfgame.dbModels.Models
 
         public void NormalizeHealthMana()
         {
+
             if (this.Health < 0)
             {
                 this.Health = 0;

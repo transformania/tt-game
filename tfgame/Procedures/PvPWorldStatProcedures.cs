@@ -113,6 +113,26 @@ namespace tfgame.Procedures
 
         #endregion
 
+        #region Bimbo
+
+        public static void Boss_StartBimbo()
+        {
+            IPvPWorldStatRepository worldStatRepo = new EFPvPWorldStatRepository();
+            PvPWorldStat stat = worldStatRepo.PvPWorldStats.First();
+            stat.Boss_Bimbo = "active";
+            worldStatRepo.SavePvPWorldStat(stat);
+        }
+
+        public static void Boss_EndBimbo()
+        {
+            IPvPWorldStatRepository worldStatRepo = new EFPvPWorldStatRepository();
+            PvPWorldStat stat = worldStatRepo.PvPWorldStats.First();
+            stat.Boss_Bimbo = "completed";
+            worldStatRepo.SavePvPWorldStat(stat);
+        }
+
+        #endregion
+
         public static bool IsAnyBossActive()
         {
             IPvPWorldStatRepository worldStatRepo = new EFPvPWorldStatRepository();

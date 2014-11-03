@@ -32,9 +32,4 @@ namespace tfgame.ViewModels
         public int MinimumTurn { get; set; }
         public string ActivationText { get; set; }
     }
-
-    public class BossSummonBag
-    {
-        List<BossSummon> BossSummons { get; set; }
-    }
 }

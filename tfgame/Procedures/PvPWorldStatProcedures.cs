@@ -137,7 +137,7 @@ namespace tfgame.Procedures
         {
             IPvPWorldStatRepository worldStatRepo = new EFPvPWorldStatRepository();
             PvPWorldStat stat = worldStatRepo.PvPWorldStats.First();
-            if (stat.Boss_Donna == "active")
+            if (stat.Boss_Donna == "active" || stat.Boss_Valentine == "active" || stat.Boss_Bimbo == "active")
             {
                 return true;
             }

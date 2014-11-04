@@ -302,10 +302,30 @@ namespace tfgame.Procedures.BossProcedures
                 effectRepo.DeleteEffect(e.Id);
             }
 
-            // TODO:  delete all cure vials
-            //IItemRepository itemRepo = new EFItemRepository();
-  
+            // delete all the cure vials
+            IItemRepository itemRepo = new EFItemRepository();
+            List<Item> cureVials = itemRepo.Items.Where(i => i.dbName == CureItemDbName).ToList();
 
+            foreach (Item vial in cureVials)
+            {
+                itemRepo.DeleteItem(vial.Id);
+            }
+
+            // restore any bimbos back to their base form and notify them
+
+            string message = "Your body suddenly returns to normal as the bimbonic virus in your body suddenly goes into submission, the psychic link between you and your plague mother separated for good.  Due to the bravery of your fellow mages the Bimbocalypse has been thwarted... for now.";
+
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            List<Player> infected = playerRepo.Players.Where(p => p.Form == RegularBimboFormDbName).ToList();
+            
+            foreach (Player p in infected)
+            {
+                PlayerProcedures.InstantRestoreToBase(p);
+                if (p.MembershipId > 0)
+                {
+                    PlayerLogProcedures.AddPlayerLog(p.Id, message, true);
+                }
+            }
         }
 
         private static List<Player> GetEligibleTargetsInLocation(string location, Player attacker)

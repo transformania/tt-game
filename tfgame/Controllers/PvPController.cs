@@ -1283,6 +1283,19 @@ namespace tfgame.Controllers
 
         }
 
+         public ActionResult LookAtPlayer_FromMembershipId(int id)
+         {
+             Player player = PlayerProcedures.GetPlayerFromMembership(id);
+
+             if (player == null)
+             {
+                 TempData["Error"] = "Unfortunately it seems this player does have have a character this round.";
+                 return RedirectToAction("Play");
+             }
+
+             return RedirectToAction("LookAtPlayer", new { id = player.Id });
+         }
+
         public ActionResult LookAtPlayer(int id)
         {
 
@@ -1912,6 +1925,7 @@ namespace tfgame.Controllers
             ContributionStatusViewModel output = new ContributionStatusViewModel
             {
                 ContributionId = id,
+                OwnerMembershipId = cont.OwnerMembershipId,
                 Status = cont.AssignedToArtist,
             };
 

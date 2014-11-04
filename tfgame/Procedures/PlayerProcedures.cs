@@ -710,7 +710,6 @@ namespace tfgame.Procedures
                             PlayerLogProcedures.AddPlayerLog(player.Id, summontext, true);
                             return summontext;
                         }
-
                     }
                     else if (roll < 1 && dbLocationName == "stripclub_bar_seats")
                     {
@@ -722,9 +721,7 @@ namespace tfgame.Procedures
                             PlayerLogProcedures.AddPlayerLog(player.Id, summontext, true);
                             return summontext;
                         }
-
                     }
-
                 }
             }
 

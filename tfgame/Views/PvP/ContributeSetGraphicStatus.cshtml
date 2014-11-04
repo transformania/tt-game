@@ -2,6 +2,9 @@
 
 @using (Html.BeginForm("ContributeSetGraphicStatusSubmit", "PvP", FormMethod.Post))
 {
+    
+     <p>@Html.ActionLink("Look at this author's player profile","LookAtPlayer_FromMembershipId","PvP", new {id = Model.OwnerMembershipId}, null)</p>
+    
     <p>Write down your name here, how far along the graphic is, or anything else you think important.</p>
     @Html.HiddenFor(m => m.ContributionId)
     @Html.TextAreaFor(m => m.Status)

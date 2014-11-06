@@ -18,8 +18,8 @@ namespace tfgame.Procedures.BossProcedures
         public const string KissEffectdbName = "curse_bimboboss_kiss";
         public const string KissSkilldbName = "skill_bimboboss_kiss";
         public const string CureEffectdbName = "blessing_bimboboss_cure";
-        private const string RegularTFSpellDbName = "skill_Dawn_of_the_Ditz_Varn";
-        private const string RegularBimboFormDbName = "form_Bimbonic_Plague-Bearer_Varn";
+        private const string RegularTFSpellDbName = "skill_Bringer_of_the_Bimbocalypse_Judoo";
+        private const string RegularBimboFormDbName = "form_Bimbocalypse_Plague_Victim_Judoo";
         public const string CureItemDbName = "item_consumeable_bimbo_cure";
 
         public static void SpawnBimboBoss()
@@ -34,7 +34,7 @@ namespace tfgame.Procedures.BossProcedures
                     FirstName = BossFirstName,
                     LastName = BossLastName,
                     ActionPoints = 120,
-                    dbLocationName = "street_140_sunnyglade_drive",
+                    dbLocationName = "stripclub_bar_seats",
                     LastActionTimestamp = DateTime.UtcNow,
                     LastCombatTimestamp = DateTime.UtcNow,
                     OnlineActivityTimestamp = DateTime.UtcNow,
@@ -46,7 +46,7 @@ namespace tfgame.Procedures.BossProcedures
                     MaxMana = 9999,
                     Form = "form_Bimbonic_Plague_Mother_Judoo",
                     IsPetToId = -1,
-                    Money = 0,
+                    Money = 2500,
                     Mobility = "full",
                     Level = 15,
                     MembershipId = -7,
@@ -58,16 +58,6 @@ namespace tfgame.Procedures.BossProcedures
                 bimboBoss = PlayerProcedures.ReadjustMaxes(bimboBoss, ItemProcedures.GetPlayerBuffs(bimboBoss));
 
                 playerRepo.SavePlayer(bimboBoss);
-
-                // give bimbo the plague spell to attack with
-                //bimboBoss = playerRepo.Players.FirstOrDefault(f => f.FirstName == BossFirstName && f.LastName == BossLastName);
-                //DbStaticSkill skillToAdd = SkillStatics.GetStaticSkill("skill_Dawn_of_the_Ditz_Varn");
-
-                //// give bimbo the kiss spell
-                //DbStaticSkill skilltoAdd2 = SkillStatics.GetStaticSkill("skill_bimboboss_kiss");
-
-                //SkillProcedures.GiveSkillToPlayer(bimboBoss.Id, skillToAdd);
-                //SkillProcedures.GiveSkillToPlayer(bimboBoss.Id, skilltoAdd2);
 
                 // set up her AI directive so it is not deleted
                 IAIDirectiveRepository aiRepo = new EFAIDirectiveRepository();
@@ -188,7 +178,6 @@ namespace tfgame.Procedures.BossProcedures
             IEffectRepository effectRepo = new EFEffectRepository();
             List<int> ownerIds = effectRepo.Effects.Where(e => e.dbName == KissEffectdbName).Select(e => e.OwnerId).ToList();
 
-
             foreach (int effectId in ownerIds)
             {
 
@@ -213,8 +202,10 @@ namespace tfgame.Procedures.BossProcedures
                         playerRepo.SavePlayer(infectee);
 
                         string message = "You gasp, your body shiftig as the virus infecting you overwhelms your biological and arcane defenses.  Before long you find that your body has been transformed into that of one of the many bimbonic plague victims and you can't help but succumb to the urges to spread your infection--no, your gift!--on to the rest of mankind.";
+                        string loclogMessage = "<b style='color: red'>" + infectee.GetFullName() + " succumbed to the bimbonic virus, spontaneously transforming into one of Lady Lovebringer's bimbos.</b>";
 
                         PlayerLogProcedures.AddPlayerLog(infectee.Id, message, true);
+                        LocationLogProcedures.AddLocationLog(infectee.dbLocationName, loclogMessage);
                     }
                 }
 
@@ -229,10 +220,15 @@ namespace tfgame.Procedures.BossProcedures
 
                     foreach (Player p in eligibleTargets)
                     {
-                        if (EffectProcedures.PlayerHasEffect(p, KissEffectdbName) == false)
+                        if (EffectProcedures.PlayerHasEffect(p, KissEffectdbName) == false && EffectProcedures.PlayerHasEffect(p, CureEffectdbName) == false && attacksMadeCount < 3)
                         {
                             attacksMadeCount++;
                             AttackProcedures.Attack(infectee, p, KissSkilldbName);
+                        }
+                        else if (attacksMadeCount < 3)
+                        {
+                            AttackProcedures.Attack(infectee, p, RegularTFSpellDbName);
+                            attacksMadeCount++;
                         }
                     }
 

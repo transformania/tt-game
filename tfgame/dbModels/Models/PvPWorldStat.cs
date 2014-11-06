@@ -45,7 +45,7 @@ namespace tfgame.dbModels.Models
 
         public bool IsBimboAvailable()
         {
-            if (Boss_Bimbo == "unstarted" && Boss_Valentine == "unstarted" && Boss_Donna != "active" && TurnNumber >= BossSummonDictionary.GlobalBossSummonDictionary.Values.FirstOrDefault(p => p.BossName == "Valentine").MinimumTurn)
+            if (Boss_Bimbo == "unstarted" && Boss_Valentine != "active" && Boss_Donna != "active" && TurnNumber >= BossSummonDictionary.GlobalBossSummonDictionary.Values.FirstOrDefault(p => p.BossName == "BimboBoss").MinimumTurn)
             {
                 return true;
             }

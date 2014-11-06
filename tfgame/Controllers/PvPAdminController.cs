@@ -1012,8 +1012,10 @@ namespace tfgame.Controllers
 
            // BossProcedures_BimboBoss.DropCure();
 
-            string text = BossSummonDictionary.GetActivationText("BimboBoss");
-            TempData["Message"] = text;
+           // string text = BossSummonDictionary.GetActivationText("BimboBoss");
+
+            AIProcedures.SpawnAIPsychopaths(100, 0);
+          //  TempData["Message"] = text;
 
           //  string x = BossProcedures_BimboBoss.GetLocationWithMostEligibleTargets();
 

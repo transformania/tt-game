@@ -79,6 +79,7 @@ namespace tfgame.Procedures
                 bot.LastCombatTimestamp = DateTime.UtcNow;
                 bot.CleansesMeditatesThisRound = 0;
                 bot.NonPvP_GameOverSpellsAllowedLastChange = DateTime.UtcNow;
+                
 
 
                 if (i % 2 == 1)
@@ -91,6 +92,8 @@ namespace tfgame.Procedures
                     bot.Form = "botform_psychopathic_spellslinger_female";
                     bot.Gender = "female";
                 }
+
+                bot.OriginalForm = bot.Form;
 
 
                 // spawn in some stronger psychopaths based on update number

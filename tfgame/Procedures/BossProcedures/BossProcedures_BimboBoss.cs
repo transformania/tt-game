@@ -93,7 +93,7 @@ namespace tfgame.Procedures.BossProcedures
             else if (human.Form != RegularBimboFormDbName)
             {
                 Random rand = new Random(Guid.NewGuid().GetHashCode());
-                int attackCount = (int)Math.Floor(rand.NextDouble() * 3 + 1);
+                int attackCount = (int)Math.Floor(rand.NextDouble() * 2 + 1);
                 for (int i = 0; i < attackCount; i++) {
                     AttackProcedures.Attack(bimboss, human, RegularTFSpellDbName);
                 }
@@ -166,11 +166,11 @@ namespace tfgame.Procedures.BossProcedures
                 // otherwise run the regular trasformation
                 else if (p.Form != RegularBimboFormDbName)
                 {
-                    int attackCount = (int)Math.Floor(rand.NextDouble() * 3 + 1);
-                    for (int i = 0; i < attackCount; i++)
-                    {
+                   // int attackCount = (int)Math.Floor(rand.NextDouble() * 3 + 1);
+                   // for (int i = 0; i < attackCount; i++)
+                   // {
                         AttackProcedures.Attack(bimboBoss, p, RegularTFSpellDbName);
-                    }
+                   // }
                 }
             }
 
@@ -269,15 +269,13 @@ namespace tfgame.Procedures.BossProcedures
                 LocationLogProcedures.AddLocationLog(newlocation, message);
             }
 
-            // drop a vial cure every 3 turns
-            if (turnNumber % 3 == 0)
-            {
-                DropCure();
-            }
-            
+            // drop a cure
+            DropCure(turnNumber);
+
+
         }
 
-        public static string GetLocationWithMostEligibleTargets()
+        private static string GetLocationWithMostEligibleTargets()
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
             DateTime cutoff = DateTime.UtcNow.AddHours(-1);
@@ -285,7 +283,7 @@ namespace tfgame.Procedures.BossProcedures
             return locs.First();
         }
 
-        private static void EndThisBossEvent()
+        public static void EndThisBossEvent()
         {
             PvPWorldStatProcedures.Boss_EndBimbo();
 
@@ -332,7 +330,7 @@ namespace tfgame.Procedures.BossProcedures
             return playersHere;
         }
 
-        public static void DropCure()
+        private static void DropCure(int turnNumber)
         {
 
             IItemRepository itemRepo = new EFItemRepository();
@@ -344,13 +342,18 @@ namespace tfgame.Procedures.BossProcedures
                 IsEquipped = false,
                 IsPermanent = false,
                 Level = 0,
-                PvPEnabled = false,
+                PvPEnabled = true,
                 OwnerId = -1,
                 VictimName = "",
                 TimeDropped = DateTime.UtcNow,
                 TurnsUntilUse = 0,
                 EquippedThisTurn = false,
             };
+
+            if (turnNumber % 3 == 0)
+            {
+                newVial.PvPEnabled = false;
+            }
 
             itemRepo.SaveItem(newVial);
 

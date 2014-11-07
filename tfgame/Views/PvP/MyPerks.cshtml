@@ -30,12 +30,22 @@
                 <p>@e.Effect.Description</p>
                 <p>
                     @{
-            if (e.dbEffect.Duration > 0)
+                        if (e.dbEffect.Duration > 0 && e.dbEffect.Duration < 10000)
+                        {
+                            <span class="effectturnsRemaining">@e.dbEffect.Duration turns of effect remaining with </span>
+                        }
+                        else if (e.dbEffect.Duration >= 10000)
+                        {
+                        <span class="effectturnsRemaining">Unknown duration</span>
+                        }
+
+            if (e.dbEffect.Duration < 10000)
             {
-                <span class="effectturnsRemaining">@e.dbEffect.Duration turns of effect remaining with </span>
+                <span class="effectcooldownRemaining">@e.dbEffect.Cooldown turns of cooldown</span>
             }
+                        
                     }
-                    <span class="effectcooldownRemaining">@e.dbEffect.Cooldown turns of cooldown</span>
+                    
                 </p>
                 @Html.Partial("partial/partial_perkBonus", e.Effect)
             </div>

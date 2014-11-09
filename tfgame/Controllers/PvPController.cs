@@ -1820,6 +1820,65 @@ namespace tfgame.Controllers
             decimal balance = bbox.GetBalance();
             ViewBag.BalanceScore = balance;
 
+    //             <p>@ViewBag.StaticSkillExists</p>
+    //<p>@ViewBag.StaticFormExists</p>
+            //<p>@ViewBag.StaticItemExists</p>
+
+            #region for admin use only, see if statics exist
+            if (currentUserId == 69 && contribution.ProofreadingCopy == true)
+            {
+                IDbStaticSkillRepository skillRepo = new EFDbStaticSkillRepository();
+                IDbStaticFormRepository formRepo = new EFDbStaticFormRepository();
+                IDbStaticItemRepository itemRepo = new EFDbStaticItemRepository();
+
+                string skilldbname = "skill_" + contribution.Skill_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
+                string formdbname = "form_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
+
+                string itemdbname = "";
+
+                if (contribution.Form_MobilityType == "inanimate")
+                {
+                    itemdbname = "item_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
+                }
+                else if (contribution.Form_MobilityType == "animal")
+                {
+                    itemdbname = "animal_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
+                }
+
+                DbStaticSkill sskill = skillRepo.DbStaticSkills.FirstOrDefault(s => s.dbName == skilldbname);
+                DbStaticForm sform = formRepo.DbStaticForms.FirstOrDefault(f => f.dbName == formdbname);
+                DbStaticItem sitem = itemRepo.DbStaticItems.FirstOrDefault(f => f.dbName == itemdbname);
+
+                if (sskill == null)
+                {
+                    ViewBag.StaticSkillExists = "<p class='bad'>No static skill found:  " + skilldbname + "</p>";
+                }
+                else
+                {
+                    ViewBag.StaticSkillExists += "<p class='good'>Static skill found.</p>";
+                }
+
+                if (sform == null)
+                {
+                    ViewBag.StaticFormExists = "<p class='bad'>No static form found:  " + formdbname + "</p>";
+                }
+                else
+                {
+                    ViewBag.StaticFormExists = "<p class='good'>Static form found.</p>";
+                }
+
+                if (sitem == null && (contribution.Form_MobilityType == "inanimate" || contribution.Form_MobilityType == "animal"))
+                {
+                    ViewBag.StaticItemExists += "<p class='bad'>No static item/pet found:  " + itemdbname + "</p>";
+                }
+                else if (contribution.Form_MobilityType == "inanimate" || contribution.Form_MobilityType == "animal")
+                {
+                    ViewBag.StaticItemExists += "<p class='good'>Static item/pet found.</p>";
+                }
+
+            }
+            #endregion
+
             return View(contribution);
         }
 

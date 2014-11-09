@@ -660,6 +660,9 @@
     if (WebSecurity.CurrentUserId == 69)
     {
         <br /><br />
+    <p>@Html.Raw(ViewBag.StaticSkillExists)</p>
+    <p>@Html.Raw(ViewBag.StaticFormExists)</p>
+    <p>@Html.Raw(ViewBag.StaticItemExists)</p>
         @Html.ActionLink("Publish Spell", "PublishSpell", "Contribution", new { id = Model.Id }, null)<br />
     @Html.ActionLink("Publish Form", "PublishForm", "Contribution", new { id = Model.Id }, null)<br />
     @Html.ActionLink("Publish Item", "PublishItem", "Contribution", new { id = Model.Id }, null)<br />

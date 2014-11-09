@@ -9,6 +9,7 @@ using tfgame.dbModels.Models;
 using tfgame.Filters;
 using tfgame.Procedures;
 using tfgame.Statics;
+using tfgame.ViewModels;
 using WebMatrix.WebData;
 
 namespace tfgame.Controllers
@@ -252,6 +253,25 @@ namespace tfgame.Controllers
             #endregion
 
             skillRepo.SaveDbStaticSkill(spell);
+
+            if (contribution.Skill_LearnedAtLocationOrRegion == "location")
+            {
+                Location temp = LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == spell.LearnedAtLocation);
+                if (temp == null)
+                {
+                    message += "<span class='bad'> !!!!! WARNING:  NO LOCATION FOUND FOR THIS SPELL.</span>  ";
+                }
+            }
+
+            if (contribution.Skill_LearnedAtLocationOrRegion == "region")
+            {
+                Location temp = LocationsStatics.GetLocation.FirstOrDefault(l => l.Region == spell.LearnedAtRegion);
+                if (temp == null)
+                {
+                    message += "<span class='bad'> !!!!! WARNING:  NO REGION FOUND FOR THIS SPELL.</span>  ";
+                }
+            }
+            
             
 
             ViewBag.Message = message;

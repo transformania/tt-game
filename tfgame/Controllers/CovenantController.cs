@@ -769,8 +769,8 @@ namespace tfgame.Controllers
             // all checks pass; upgrade the covenant
             CovenantProcedures.UpgradeCovenant(myCov);
 
-            TempData["Result"] = "You have successfully upgraded your covenant safeground to lvl " + myCov.Level + 1 + ", allowing you to keep more furniture in it.";
-            return View();
+            TempData["Result"] = "You have successfully upgraded your covenant safeground to lvl " + (myCov.Level + 1) + ".";
+            return RedirectToAction("MyCovenant");
         }
 
          [Authorize]

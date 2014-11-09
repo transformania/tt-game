@@ -139,6 +139,7 @@ namespace tfgame.Procedures.BossProcedures
             // move her toward the location with the most eligible targets
             if (bimboBoss.Mobility != "full") {
                 EndThisBossEvent();
+                return;
             }
 
             string targetLocation = GetLocationWithMostEligibleTargets();

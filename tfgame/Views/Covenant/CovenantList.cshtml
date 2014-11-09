@@ -16,10 +16,12 @@
             @CharactersHere.PrintPvPIcon(c.dbCovenant)
             <div class="covFlag" style="background-image: url(/Images/PvP/CovenantFlags/@c.dbCovenant.FlagUrl)"></div>
             <span class="covBigName">@Html.ActionLink(c.dbCovenant.Name, "LookAtCovenant", "Covenant", new { id = c.dbCovenant.Id }, null)</span> 
+            <span>(lvl @c.dbCovenant.Level)</span>
             <span class="covMemberCount">(@c.MemberCount members)</span>
             <span class="covLeader">@Html.ActionLink("Led by " + c.Leader.FirstName + " " + c.Leader.LastName, "LookAtPlayer", "PvP", new { id = c.Leader.Id }, null)</span>
            
-            <p>@c.dbCovenant.SelfDescription</p>
+            <p>@c.dbCovenant.SelfDescription.  @CharactersHere.PrintCovenantSafeground(c.dbCovenant)</p>
+
             @Html.ActionLink("Apply", "ApplyToCovenant", "Covenant", new { id = c.dbCovenant.Id }, null)
         </div>
     }

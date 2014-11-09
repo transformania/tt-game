@@ -503,5 +503,18 @@ namespace tfgame.CustomHtmlHelpers
             return new MvcHtmlString(output);
         }
 
+        public static MvcHtmlString PrintCovenantSafeground(Covenant cov)
+        {
+            string output = "";
+
+            if (cov.HomeLocation != null && cov.HomeLocation != "")
+            {
+                string locName = LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == cov.HomeLocation).Name;
+                output = "<span class = 'covMemberCount'>Safeground at <b>" + locName + "</b>.</span>";
+            }
+
+            return new MvcHtmlString(output);
+        }
+
     }
 }

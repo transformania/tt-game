@@ -1006,19 +1006,22 @@ namespace tfgame.Controllers
             {
                 return View("Play");
             }
-           // BossProcedures_BimboBoss.RunActions(PvPWorldStatProcedures.GetWorldTurnNumber());
 
-           // string test = BossProcedures_BimboBoss.GetLocationWithMostEligibleTargets();
+            Player player = PlayerProcedures.GetPlayerFromMembership();
+            if (player.Covenant > 0)
+            {
+                CovenantNameFlag playerCov = CovenantDictionary.IdNameFlagLookup.FirstOrDefault(c => c.Key == player.Covenant).Value;
 
-           // BossProcedures_BimboBoss.DropCure();
+                if (playerCov != null && playerCov.HomeLocation != null && playerCov.HomeLocation != "" && player.dbLocationName == playerCov.HomeLocation)
+                {
+                    player.ActionPoints_Refill += .25M * playerCov.CovLevel;
+                    if (player.ActionPoints_Refill > PvPStatics.MaximumStoreableActionPoints_Refill)
+                    {
+                        player.ActionPoints_Refill = PvPStatics.MaximumStoreableActionPoints_Refill;
+                    }
+                }
 
-           // string text = BossSummonDictionary.GetActivationText("BimboBoss");
-
-           // AIProcedures.SpawnAIPsychopaths(100, 0);
-            BossProcedures_BimboBoss.EndThisBossEvent();
-          //  TempData["Message"] = text;
-
-          //  string x = BossProcedures_BimboBoss.GetLocationWithMostEligibleTargets();
+            }
 
             return RedirectToAction("Index");
         }

@@ -912,6 +912,7 @@ namespace tfgame.Procedures
                     PlayerProcedures.InstantRestoreToBase(owner);
                     EffectProcedures.RemovePerkFromPlayer(BossProcedures.BossProcedures_BimboBoss.KissEffectdbName, owner);
                     EffectProcedures.GivePerkToPlayer(BossProcedures.BossProcedures_BimboBoss.CureEffectdbName, owner);
+                    itemRepo.DeleteItem(itemPlus.dbItem.Id);
                     return "You inject yourself with the vaccine, returning to your original form and purging the virus out of your body.  Careful though, it may later mutate and be able to infect you once again...";
                 }
 

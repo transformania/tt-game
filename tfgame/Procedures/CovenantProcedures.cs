@@ -93,6 +93,7 @@ namespace tfgame.Procedures
                     FlagUrl = c.FlagUrl,
                     Name = c.Name,
                     HomeLocation = c.HomeLocation,
+                    CovLevel = c.Level,
                 };
                 CovenantDictionary.IdNameFlagLookup.Add(c.Id, temp);
             }

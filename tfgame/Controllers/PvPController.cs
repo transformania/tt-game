@@ -3413,6 +3413,22 @@ namespace tfgame.Controllers
                     player.MaxHealth = PvPStatics.XP__HealthManaBaseByLevel[player.Level] * (1.0M + (buffs.HealthBonusPercent() / 100.0M));
                     player.MaxMana = PvPStatics.XP__HealthManaBaseByLevel[player.Level] * (1.0M + (buffs.ManaBonusPercent() / 100.0M));
 
+                    // give the player some extra AP refill if they are at their safeground
+                    if (player.Covenant > 0) {
+                        CovenantNameFlag playerCov = CovenantDictionary.IdNameFlagLookup.FirstOrDefault(c => c.Key == player.Covenant).Value;
+
+                        if (playerCov != null && playerCov.HomeLocation != null && playerCov.HomeLocation != "" && player.dbLocationName == playerCov.HomeLocation)
+                        {
+                            player.ActionPoints_Refill += .25M * playerCov.CovLevel;
+                            if (player.ActionPoints_Refill > PvPStatics.MaximumStoreableActionPoints_Refill)
+                            {
+                                player.ActionPoints_Refill = PvPStatics.MaximumStoreableActionPoints_Refill;
+                            }
+                        }
+
+                    }
+                    
+
                     if (player.MaxHealth < 1)
                     {
                         player.MaxHealth = 1;

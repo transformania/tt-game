@@ -1007,21 +1007,7 @@ namespace tfgame.Controllers
                 return View("Play");
             }
 
-            Player player = PlayerProcedures.GetPlayerFromMembership();
-            if (player.Covenant > 0)
-            {
-                CovenantNameFlag playerCov = CovenantDictionary.IdNameFlagLookup.FirstOrDefault(c => c.Key == player.Covenant).Value;
-
-                if (playerCov != null && playerCov.HomeLocation != null && playerCov.HomeLocation != "" && player.dbLocationName == playerCov.HomeLocation)
-                {
-                    player.ActionPoints_Refill += .25M * playerCov.CovLevel;
-                    if (player.ActionPoints_Refill > PvPStatics.MaximumStoreableActionPoints_Refill)
-                    {
-                        player.ActionPoints_Refill = PvPStatics.MaximumStoreableActionPoints_Refill;
-                    }
-                }
-
-            }
+            AIProcedures.SpawnAIPsychopaths(15, 0);
 
             return RedirectToAction("Index");
         }

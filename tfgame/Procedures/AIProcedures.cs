@@ -79,8 +79,6 @@ namespace tfgame.Procedures
                 bot.LastCombatTimestamp = DateTime.UtcNow;
                 bot.CleansesMeditatesThisRound = 0;
                 bot.NonPvP_GameOverSpellsAllowedLastChange = DateTime.UtcNow;
-                
-
 
                 if (i % 2 == 1)
                 {
@@ -95,16 +93,31 @@ namespace tfgame.Procedures
 
                 bot.OriginalForm = bot.Form;
 
+                int strength = GetPsychopathLevel(turnNumber);
 
-                // spawn in some stronger psychopaths based on update number
-                if (turnNumber % 13 == 0){
+                if (strength == 1)
+                {
+                    bot.Level = 1;
+                }
+                else if (strength == 3)
+                {
                     bot.FirstName = "Fierce " + bot.FirstName;
                     bot.Level = 3;
                 }
-                else if (turnNumber % 27 == 0)
+                else if (strength == 5)
                 {
                     bot.FirstName = "Wrathful " + bot.FirstName;
-                    bot.Level = 6;
+                    bot.Level = 5;
+                }
+                else if (strength == 7)
+                {
+                    bot.FirstName = "Loathful " + bot.FirstName;
+                    bot.Level = 7;
+                }
+                else if (strength == 9)
+                {
+                    bot.FirstName = "Soulless " + bot.FirstName;
+                    bot.Level = 9;
                 }
                 
                 // assert this name isn't already taken
@@ -128,7 +141,26 @@ namespace tfgame.Procedures
                 string output = SkillProcedures.GiveSkillToPlayer(bot.Id, skillToLearn);
 
                 // give this bot the Psychpathic perk
-                EffectProcedures.GivePerkToPlayer("bot_psychopathic", bot);
+                if (strength == 1)
+                {
+                    EffectProcedures.GivePerkToPlayer("bot_psychopathic", bot);
+                }
+                else if (strength == 3)
+                {
+                    EffectProcedures.GivePerkToPlayer("bot_psychopathic_lvl3", bot);
+                }
+                else if (strength == 5)
+                {
+                    EffectProcedures.GivePerkToPlayer("bot_psychopathic_lvl5", bot);
+                }
+                else if (strength == 7)
+                {
+                    EffectProcedures.GivePerkToPlayer("bot_psychopathic_lvl7", bot);
+                }
+                else if (strength == 9)
+                {
+                    EffectProcedures.GivePerkToPlayer("bot_psychopathic_lvl9", bot);
+                }
 
             }
         }
@@ -149,13 +181,21 @@ namespace tfgame.Procedures
                 log.AddLog("Spawned a new psychopath.");
             }
 
-            List<Player> bots = playerRepo.Players.Where(p => p.MembershipId == -2).Where(b => b.Mobility == "full").ToList();
+            List<int> botIds = playerRepo.Players.Where(p => p.MembershipId == -2).Where(b => b.Mobility == "full").Select(b => b.Id).ToList();
 
-            foreach (Player bot in bots)
+            foreach (int botId in botIds)
             {
 
                 try
                 {
+
+                    Player bot = playerRepo.Players.FirstOrDefault(p => p.Id == botId);
+
+                    // if bot is no longer fully animate or is null, skip them
+                    if (bot == null || bot.Mobility != "full")
+                    {
+                        continue;
+                    }
 
                     BuffBox botbuffs = ItemProcedures.GetPlayerBuffs(bot);
 
@@ -249,11 +289,13 @@ namespace tfgame.Procedures
 
                         foreach (Player p in playersHere)
                         {
-                            if (!PlayerProcedures.PlayerIsOffline(p) && p.Id != bot.Id && p.Mobility == "full" && p.InPvP == false && p.MembershipId >= -2 && p.Level >= bot.Level -2)
+                            if (!PlayerProcedures.PlayerIsOffline(p) && p.Id != bot.Id && p.Mobility == "full" && p.InPvP == false && p.MembershipId >= -2 && p.Level >= bot.Level)
                             {
                                 onlinePlayersHere.Add(p);
                             }
                         }
+
+                        playersHere = playersHere.Where(p => p.Health >= .75M * p.MaxHealth).ToList();
 
                         if (onlinePlayersHere.Count() > 0)
                         {
@@ -625,10 +667,10 @@ namespace tfgame.Procedures
 
         }
 
-        public static void CounterAttack(Player personAttackin, Player merchant)
+        public static void CounterAttack(Player personAttackin, Player bot)
         {
 
-            IEnumerable<SkillViewModel2> myskills = SkillProcedures.GetSkillViewModelsOwnedByPlayer(merchant.Id);
+            IEnumerable<SkillViewModel2> myskills = SkillProcedures.GetSkillViewModelsOwnedByPlayer(bot.Id);
 
             Random rand = new Random(personAttackin.LastName.GetHashCode());
             double roll = Math.Floor(rand.NextDouble() * (double)myskills.Count());
@@ -636,8 +678,8 @@ namespace tfgame.Procedures
 
             SkillViewModel2 selectedSkill = myskills.ElementAt((int)roll);
 
-            if (personAttackin.MembershipId > 0) { 
-                AttackProcedures.Attack(merchant, personAttackin, selectedSkill);
+            if (personAttackin.MembershipId > 0) {
+                AttackProcedures.Attack(bot, personAttackin, selectedSkill);
             }
         }
 
@@ -652,6 +694,17 @@ namespace tfgame.Procedures
             // attacking the psychopath.  Random chance the psychopath will set the attacker as their target.
             if (bot.MembershipId == -2)
             {
+
+                if (bot.FirstName.Contains("Loathful "))
+                {
+                    AIProcedures.CounterAttack(personAttacking, bot);
+                }
+                else if (bot.FirstName.Contains("Soulless "))
+                {
+                    AIProcedures.CounterAttack(personAttacking, bot);
+                    AIProcedures.CounterAttack(personAttacking, bot);
+                }
+
                 AIDirective directive = AIDirectiveProcedures.GetAIDirective(bot.Id);
 
                 // no previous target, so set this player as the new one 
@@ -846,6 +899,96 @@ namespace tfgame.Procedures
 
         }
 
+        public static int GetPsychopathLevel(int turnNumber)
+        {
+
+            // 1 = regular
+            // 3 = fierce
+            // 5 = wrathful
+            // 7 = loathful
+            // 9 = soulless
+            
+            // regular psychopath
+            if (turnNumber < 300) {
+                return 1;
+            }
+
+            Random rand = new Random(Guid.NewGuid().GetHashCode());
+            double roll = rand.NextDouble();
+
+            if (turnNumber >= 300 && turnNumber < 600)
+            {
+                // 15% chance to roll a fierce (lvl 3)
+                if (roll < .15D)
+                {
+                    return 3;
+                }
+                else
+                {
+                    return 1;
+                }
+            }
+            else if (turnNumber >= 600 && turnNumber < 900)
+            {
+                if (roll < .04D)
+                {
+                    return 5;
+                }
+                else if (roll < .15D)
+                {
+                    return 3;
+                }
+                else
+                {
+                    return 1;
+                }
+            }
+            else if (turnNumber >= 900 && turnNumber < 1500)
+            {
+                if (roll < .03D)
+                {
+                    return 7;
+                }
+                else if (roll < .1D)
+                {
+                    return 5;
+                }
+                else if (roll < .25D)
+                {
+                    return 3;
+                }
+                else
+                {
+                    return 1;
+                }
+            }
+            else if (turnNumber >= 1500)
+            {
+                if (roll < .015D)
+                {
+                    return 9;
+                }
+                else if (roll < .03D)
+                {
+                    return 7;
+                }
+                else if (roll < .13D)
+                {
+                    return 5;
+                }
+                else if (roll < .35D)
+                {
+                    return 3;
+                }
+                else
+                {
+                    return 1;
+                }
+            }
+
+            return 1;
+
+        }
 
     }
 

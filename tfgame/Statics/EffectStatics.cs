@@ -181,6 +181,65 @@ namespace tfgame.Statics
 
             },
 
+            new StaticEffect {
+                dbName = "bot_psychopathic_lvl3",
+                FriendlyName = "Fiercly Psychopathic",
+                Description = "Friendless but fierce, this spellslinger is powerful and can hit for a lot of willpower damage.  However, their fury keeps them from acting intelligently or persistently, and he or she is always on the hunt for new targets whether or not they've inanimated their victims or just made them angry.  This spellslinger is a magnitude of anger higher than regular psychopathic spellslingers and fights extra fiercly.",
+                ExtraSkillCriticalPercent = 9,
+                EvasionNegationPercent = 7,
+                SpellExtraHealthDamagePercent = 125,
+                SpellExtraTFEnergyPercent = 50,
+                HealthBonusPercent = 50,
+                ManaBonusPercent = 500,
+                AvailableAtLevel = 9999,
+                MeditationExtraMana = 15,
+            },
+
+            new StaticEffect {
+                dbName = "bot_psychopathic_lvl5",
+                FriendlyName = "Wrathfully Psychopathic",
+                Description = "Friendless but fierce, this spellslinger is powerful and can hit for a lot of willpower damage.  However, their fury keeps them from acting intelligently or persistently, and he or she is always on the hunt for new targets whether or not they've inanimated their victims or just made them angry.  Having been wronged many times in life, this psychopathic spellslinger has shed their mercy for their peers.",
+                ExtraSkillCriticalPercent = 11,
+                EvasionNegationPercent = 10,
+                SpellExtraHealthDamagePercent = 200,
+                SpellExtraTFEnergyPercent = 75,
+                HealthBonusPercent = 75,
+                ManaBonusPercent = 500,
+                AvailableAtLevel = 9999,
+                MeditationExtraMana = 15,
+                CleanseExtraHealth = 5,
+            },
+
+            new StaticEffect {
+                dbName = "bot_psychopathic_lvl7",
+                FriendlyName = "Loathfully Psychopathic",
+                Description = "Friendless but fierce, this spellslinger is powerful and can hit for a lot of willpower damage.  However, their fury keeps them from acting intelligently or persistently, and he or she is always on the hunt for new targets whether or not they've inanimated their victims or just made them angry.  This psychopathic spellslinger loathes all forms of life and will seek to dominate any human it encounters, no matter the cost.",
+                ExtraSkillCriticalPercent = 13,
+                EvasionNegationPercent = 20,
+                SpellExtraHealthDamagePercent = 150,
+                SpellExtraTFEnergyPercent = 100,
+                HealthBonusPercent = 350,
+                ManaBonusPercent = 500,
+                AvailableAtLevel = 9999,
+                MeditationExtraMana = 15,
+                CleanseExtraHealth = 10,
+            },
+
+            new StaticEffect {
+                dbName = "bot_psychopathic_lvl9",
+                FriendlyName = "Soulessly Psychopathic",
+                Description = "Friendless but fierce, this spellslinger is powerful and can hit for a lot of willpower damage.  However, their fury keeps them from acting intelligently or persistently, and he or she is always on the hunt for new targets whether or not they've inanimated their victims or just made them angry.  This psychopathic spellslinger is unordinarily strong and and is said to be wholly devoid of any humanity, little more than an embodiment of hate.",
+                ExtraSkillCriticalPercent = 15,
+                EvasionNegationPercent = 30,
+                SpellExtraHealthDamagePercent = 50,
+                SpellExtraTFEnergyPercent = 50,
+                HealthBonusPercent = 500,
+                ManaBonusPercent = 500,
+                AvailableAtLevel = 9999,
+                MeditationExtraMana = 30,
+                CleanseExtraHealth = 15,
+            },
+
 #endregion
 
 #region temporary from spells

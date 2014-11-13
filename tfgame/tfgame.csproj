@@ -392,9 +392,6 @@
     <Compile Include="ViewModels\StaticItem.cs" />
     <Compile Include="ViewModels\StaticSkill.cs" />
     <Compile Include="ViewModels\WorldStats.cs" />
-    <Content Include="Characters\All Characters %2815%29.txt" />
-    <Content Include="Characters\All Characters %2816%29.txt" />
-    <Content Include="Characters\All Characters %2817%29.txt" />
     <Content Include="Characters\All Characters %2819%29.txt" />
     <Content Include="Characters\Maxwell Slim.txt" />
     <Content Include="Characters\Portia Mason.txt" />
@@ -1003,7 +1000,6 @@
     <Content Include="XMLs\TFMessages\form_wolf_cub_Alessandro.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Characters\All Characters %2814%29.txt" />
     <Content Include="Characters\Caroline Plessica.txt" />
     <Content Include="Characters\Charles Killjoy.txt" />
     <Content Include="Characters\Dave Muster.txt" />

@@ -3469,8 +3469,10 @@ namespace tfgame.Controllers
 
                     // THIS IS A DUPLICATION OF THE READJUST MAXES PROCEDURES.
 
-                    player.MaxHealth = PvPStatics.XP__HealthManaBaseByLevel[player.Level] * (1.0M + (buffs.HealthBonusPercent() / 100.0M));
-                    player.MaxMana = PvPStatics.XP__HealthManaBaseByLevel[player.Level] * (1.0M + (buffs.ManaBonusPercent() / 100.0M));
+                 //   player.MaxHealth = PvPStatics.XP__HealthManaBaseByLevel[player.Level] * (1.0M + (buffs.HealthBonusPercent() / 100.0M));
+                   // player.MaxMana = PvPStatics.XP__HealthManaBaseByLevel[player.Level] * (1.0M + (buffs.ManaBonusPercent() / 100.0M));
+
+                    player.ReadjustMaxes(buffs);
 
                     // give the player some extra AP refill if they are at their safeground
                     if (player.Covenant > 0) {

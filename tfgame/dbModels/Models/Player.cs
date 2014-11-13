@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using tfgame.Statics;
+using tfgame.ViewModels;
 
 namespace tfgame.dbModels.Models
 {
@@ -76,6 +78,44 @@ namespace tfgame.dbModels.Models
             {
                 this.Mana = this.Mana;
             }
+        }
+
+        public void ReadjustMaxes(BuffBox buffs)
+        {
+            // readjust this health/mana by grabbing base amount plus effects from buffs
+            this.MaxHealth = PvPStatics.XP__HealthManaBaseByLevel[this.Level] * (1.0M + (buffs.HealthBonusPercent() / 100.0M));
+            this.MaxMana = PvPStatics.XP__HealthManaBaseByLevel[this.Level] * (1.0M + (buffs.ManaBonusPercent() / 100.0M));
+
+
+            // keep this's health within proper bounds
+            if (this.MaxHealth < 1)
+            {
+                this.MaxHealth = 1;
+            }
+
+            if (this.MaxMana < 1)
+            {
+                this.MaxMana = 1;
+            }
+
+
+            if (this.Health > this.MaxHealth)
+            {
+                this.Health = this.MaxHealth;
+            }
+            if (this.Mana > this.MaxMana)
+            {
+                this.Mana = this.MaxMana;
+            }
+            if (this.Health < 0)
+            {
+                this.Health = 0;
+            }
+            if (this.Mana < 0)
+            {
+                this.Mana = 0;
+            }
+
         }
 
     }

@@ -585,6 +585,8 @@ namespace tfgame.Procedures
             
             // effects portion
             IEnumerable<EffectViewModel> myEffects = EffectProcedures.GetPlayerEffects(player.Id).Where(e => e.dbEffect.Duration > 0);
+            output.FromEffects_HealthBonusPercent = myEffects.Sum(e => e.Effect.HealthBonusPercent);
+            output.FromEffects_ManaBonusPercent = myEffects.Sum(e => e.Effect.ManaBonusPercent);
             output.FromEffects_HealthRecoveryPerUpdate = myEffects.Sum(e => e.Effect.HealthRecoveryPerUpdate);
             output.FromEffects_ManaRecoveryPerUpdate = myEffects.Sum(e => e.Effect.ManaRecoveryPerUpdate);
 

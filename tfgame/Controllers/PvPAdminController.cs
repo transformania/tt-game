@@ -1007,7 +1007,9 @@ namespace tfgame.Controllers
                 return View("Play");
             }
 
-            AIProcedures.SpawnAIPsychopaths(15, 0);
+           // AIProcedures.SpawnAIPsychopaths(15, 0);
+
+            IEnumerable<EffectViewModel2> temp = EffectProcedures.GetPlayerEffects2(PlayerProcedures.GetPlayerFromMembership().Id).ToList();
 
             return RedirectToAction("Index");
         }
@@ -1703,7 +1705,7 @@ namespace tfgame.Controllers
 
                 };
 
-              //  effectRepo.SaveDbStaticEffect(effect);
+                effectRepo.SaveDbStaticEffect(effect);
             }
 
             return View("Play");

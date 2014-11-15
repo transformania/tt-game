@@ -393,7 +393,15 @@
     <Compile Include="ViewModels\StaticSkill.cs" />
     <Compile Include="ViewModels\WorldStats.cs" />
     <Content Include="Characters\All Characters %2819%29.txt" />
+    <Content Include="Characters\All Characters %2823%29.txt" />
+    <Content Include="Characters\Brianne Smith.txt" />
+    <Content Include="Characters\Carrie McCarthy.txt" />
+    <Content Include="Characters\Chandler Jacobson.txt" />
+    <Content Include="Characters\Jenny and Janny Talbot.txt" />
+    <Content Include="Characters\Luke Silver.txt" />
     <Content Include="Characters\Maxwell Slim.txt" />
+    <Content Include="Characters\Morgan Faye.txt" />
+    <Content Include="Characters\Nigel Whitfeld.txt" />
     <Content Include="Characters\Portia Mason.txt" />
     <Content Include="Content\AdminStyle.css" />
     <Content Include="Content\Bios.css" />

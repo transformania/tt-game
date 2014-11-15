@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using tfgame.dbModels.Abstract;
+using tfgame.dbModels.Concrete;
+using tfgame.dbModels.Models;
 using tfgame.ViewModels;
 
 namespace tfgame.Statics
@@ -9,8 +12,18 @@ namespace tfgame.Statics
     public static class EffectStatics
     {
 
+        public static List<RAMBuffBox> EffectRAMBuffBoxes;
+
+        public static DbStaticEffect GetStaticEffect2(string dbEffectName)
+        {
+            IDbStaticEffectRepository effectRepo = new EFDbStaticEffectRepository();
+            return effectRepo.DbStaticEffects.FirstOrDefault(s => s.dbName == dbEffectName);
+        }
+
         public static IEnumerable<StaticEffect> GetStaticEffect
         {
+
+
 
             get
             {
@@ -189,7 +202,7 @@ namespace tfgame.Statics
                 EvasionNegationPercent = 7,
                 SpellExtraHealthDamagePercent = 125,
                 SpellExtraTFEnergyPercent = 50,
-                HealthBonusPercent = 50,
+                HealthBonusPercent = 35,
                 ManaBonusPercent = 500,
                 AvailableAtLevel = 9999,
                 MeditationExtraMana = 15,
@@ -203,7 +216,7 @@ namespace tfgame.Statics
                 EvasionNegationPercent = 10,
                 SpellExtraHealthDamagePercent = 200,
                 SpellExtraTFEnergyPercent = 75,
-                HealthBonusPercent = 75,
+                HealthBonusPercent = 50,
                 ManaBonusPercent = 500,
                 AvailableAtLevel = 9999,
                 MeditationExtraMana = 15,
@@ -218,7 +231,7 @@ namespace tfgame.Statics
                 EvasionNegationPercent = 20,
                 SpellExtraHealthDamagePercent = 150,
                 SpellExtraTFEnergyPercent = 100,
-                HealthBonusPercent = 350,
+                HealthBonusPercent = 75,
                 ManaBonusPercent = 500,
                 AvailableAtLevel = 9999,
                 MeditationExtraMana = 15,
@@ -232,8 +245,8 @@ namespace tfgame.Statics
                 ExtraSkillCriticalPercent = 15,
                 EvasionNegationPercent = 30,
                 SpellExtraHealthDamagePercent = 50,
-                SpellExtraTFEnergyPercent = 50,
-                HealthBonusPercent = 500,
+                SpellExtraTFEnergyPercent = 125,
+                HealthBonusPercent = 150,
                 ManaBonusPercent = 500,
                 AvailableAtLevel = 9999,
                 MeditationExtraMana = 30,
@@ -313,12 +326,12 @@ namespace tfgame.Statics
 
 
       }, new StaticEffect {
-		 dbName = "effect_Hemorrhage_Izz_Valentine",
-		 FriendlyName = "Hemorrhage",
-		 Description = "You have been clearly bitten by a vampire, or some lunatic who thought it was Halloween, either way you are currently bleeding (which is rather distracting when one is trying to preserve their willpower) and should seek immediate medical assistance.",
-		 Duration = 6,
-		 Cooldown = 12,
-		 AvailableAtLevel = 0,
+         dbName = "effect_Hemorrhage_Izz_Valentine",
+         FriendlyName = "Hemorrhage",
+         Description = "You have been clearly bitten by a vampire, or some lunatic who thought it was Halloween, either way you are currently bleeding (which is rather distracting when one is trying to preserve their willpower) and should seek immediate medical assistance.",
+         Duration = 6,
+         Cooldown = 12,
+         AvailableAtLevel = 0,
          HealthRecoveryPerUpdate = -2,
          CleanseExtraTFEnergyRemovalPercent= -1.42M,
 
@@ -521,13 +534,13 @@ new StaticEffect {
                 SneakPercent = -10,
 
             }, new StaticEffect {
-		 dbName = "effect_Circine's_Hypnosis_LexamTheGemFox",
-		 FriendlyName = "Circine's Hypnosis",
-		 Description = "You were poking around in the bedroom of a young witch when you came across a silver doggy pendant.  You couldn't stop staring at it no matter how hard you tried.  Now you are crawling around on all fours and whimpering like a doggy.  You can no longer seem to focus on attacking others; you really want to roll onto your back and let people rub your belly instead!  But you have to fight this mind control, or else you just might wind up mentally stuck as a doggy forever.",
-		 Duration = 5,
-		 Cooldown = 10,
+         dbName = "effect_Circine's_Hypnosis_LexamTheGemFox",
+         FriendlyName = "Circine's Hypnosis",
+         Description = "You were poking around in the bedroom of a young witch when you came across a silver doggy pendant.  You couldn't stop staring at it no matter how hard you tried.  Now you are crawling around on all fours and whimpering like a doggy.  You can no longer seem to focus on attacking others; you really want to roll onto your back and let people rub your belly instead!  But you have to fight this mind control, or else you just might wind up mentally stuck as a doggy forever.",
+         Duration = 5,
+         Cooldown = 10,
          ObtainedAtLocation = "ranch_bedroom_teenager",
-		 AvailableAtLevel = 0,
+         AvailableAtLevel = 0,
          HealthBonusPercent = -25,
          SpellMisfireChanceReduction= -25,
 },

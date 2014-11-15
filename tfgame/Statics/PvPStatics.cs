@@ -195,7 +195,7 @@ namespace tfgame.Statics
 
     public static class InanimateXPStatics
     {
-        public static decimal XPGainPerInanimateAction = 3.5M;
+        public static decimal XPGainPerInanimateAction = 5M;
 
         public static decimal[] XP__LevelupRequirements = new decimal[15] { 0, 100, 150, 220, 310, 420, 550, 700, 870, 1060, 1270, 1500, 1750, 2020, 2310 };
 

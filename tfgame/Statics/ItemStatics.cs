@@ -14,10 +14,8 @@ namespace tfgame.Statics
 
         public static DbStaticItem GetStaticItem(string dbName)
         {
-
             IItemRepository itemRepo = new EFItemRepository();
             return itemRepo.DbStaticItems.FirstOrDefault(i => i.dbName == dbName);
-
         }
 
         public static IEnumerable<DbStaticItem> GetAllFindableItems()

@@ -11,4 +11,10 @@ namespace tfgame.ViewModels
         public Effect dbEffect {  get; set;}
         public StaticEffect Effect { get; set; }
     }
+
+    public class EffectViewModel2
+    {
+        public Effect_VM dbEffect { get; set; }
+        public StaticEffect Effect { get; set; }
+    }
 }

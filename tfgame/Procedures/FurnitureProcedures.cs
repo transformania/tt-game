@@ -231,7 +231,7 @@ namespace tfgame.Procedures
             {
                 EffectProcedures.GivePerkToPlayer(furnitureStatic.GivesEffect, user);
                 PlayerProcedures.SetTimestampToNow(user, false);
-                return "You used " + dbFurniture.HumanName + ", a human voluntarily transformed into furniture and leased by your covenant, and gained the " + EffectStatics.GetStaticEffect.FirstOrDefault(e => e.dbName == furnitureStatic.GivesEffect).FriendlyName + " effect.";
+                return "You used " + dbFurniture.HumanName + ", a human voluntarily transformed into furniture and leased by your covenant, and gained the " + EffectStatics.GetStaticEffect2(furnitureStatic.GivesEffect).FriendlyName + " effect.";
             }
 
             //furniture gives item
@@ -239,7 +239,7 @@ namespace tfgame.Procedures
             {
                 ItemProcedures.GiveNewItemToPlayer(user, furnitureStatic.GivesItem);
                 PlayerProcedures.SetTimestampToNow(user, false);
-                return "You used " + dbFurniture.HumanName + ", a human voluntarily transformed into furniture and leased by your covenant, and gained the a " + EffectStatics.GetStaticEffect.FirstOrDefault(e => e.dbName == furnitureStatic.GivesEffect).FriendlyName + " to use at the time of your own choosing.";
+                return "You used " + dbFurniture.HumanName + ", a human voluntarily transformed into furniture and leased by your covenant, and gained the a " + EffectStatics.GetStaticEffect2(furnitureStatic.GivesEffect).FriendlyName + " to use at the time of your own choosing.";
             }
 
             return "ERROR";

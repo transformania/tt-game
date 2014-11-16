@@ -1,4 +1,4 @@
-﻿@model IEnumerable<tfgame.ViewModels.EffectViewModel>
+﻿@model IEnumerable<tfgame.ViewModels.EffectViewModel2>
            @using tfgame.ViewModels
 
 @Html.ActionLink("Back to game", "Play", "PvP")
@@ -8,7 +8,7 @@
     <p>Through experience you have gained some unique traits that help you in your adventures.</p>
 
     @{
-        foreach (EffectViewModel e in Model.Where(e => e.dbEffect.IsPermanent == true))
+        foreach (EffectViewModel2 e in Model.Where(e => e.dbEffect.IsPermanent == true))
         {
             <div class="perkBox">
                 <h3>@e.Effect.FriendlyName</h3>
@@ -23,7 +23,7 @@
 
     @{
 
-        foreach (EffectViewModel e in Model.Where(e => e.dbEffect.IsPermanent == false))
+        foreach (EffectViewModel2 e in Model.Where(e => e.dbEffect.IsPermanent == false))
         {
             <div class="perkBox">
                 <h3>@e.Effect.FriendlyName</h3>

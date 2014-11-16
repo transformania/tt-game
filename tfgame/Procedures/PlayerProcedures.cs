@@ -820,7 +820,7 @@ namespace tfgame.Procedures
             else if (roll <= 100)
             {
                 // see if there is an effect that can be found in this area
-                List<StaticEffect> effectsHere = EffectStatics.GetStaticEffect.Where(e => e.ObtainedAtLocation == dbLocationName).ToList();
+                List<DbStaticEffect> effectsHere = EffectStatics.GetEffectGainedAtLocation(dbLocationName).ToList();
 
                 if (effectsHere.Count() <= 0)
                 {
@@ -835,7 +835,7 @@ namespace tfgame.Procedures
                     double max = effectsHere.Count();
                     int randIndex = Convert.ToInt32(Math.Floor(rand.NextDouble() * max));
 
-                    StaticEffect effectToGet = effectsHere.ElementAt(randIndex);
+                    DbStaticEffect effectToGet = effectsHere.ElementAt(randIndex);
 
                     // assert that the player doesn't already have this effect.  IF they do, break out
                     if (EffectProcedures.PlayerHasEffect(player, effectToGet.dbName) == true)

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<tfgame.ViewModels.StaticEffect>
+﻿@model IEnumerable<tfgame.dbModels.Models.DbStaticEffect>
 @using tfgame.ViewModels
 
 @Html.ActionLink("Back to game", "Play", "PvP")
@@ -9,7 +9,7 @@
 </center>
 <center>
     @{
-        foreach (StaticEffect e in Model)
+        foreach (tfgame.dbModels.Models.DbStaticEffect e in Model)
         {
             <div class="perkBox">
                 <h3>@e.FriendlyName</h3>
@@ -22,8 +22,3 @@
 </center>
 
 @Html.ActionLink("Back to game", "Play", "PvP")
-
-
-<style>
-
-</style>

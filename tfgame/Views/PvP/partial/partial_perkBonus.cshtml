@@ -1,4 +1,4 @@
-﻿@model tfgame.ViewModels.StaticEffect
+﻿@model tfgame.dbModels.Models.DbStaticEffect
 @using tfgame.ViewModels
 @using tfgame.Statics
 @using tfgame.CustomHtmlHelpers
@@ -25,10 +25,6 @@
             {
                 <b>Sneak chance percent: @Model.SneakPercent</b>
             }
-            if (@Model.SpellResistancePercent != 0)
-            {
-                <b>Spell resistance bonus percent:  @Model.SpellResistancePercent</b>
-            }
             if (@Model.MeditationExtraMana != 0)
             {
                 <b>Extra mana recovering from meditating:  @Model.MeditationExtraMana</b><br />
@@ -36,14 +32,6 @@
             if (@Model.CleanseExtraHealth != 0)
             {
                 <b>Extra willpower recovered from cleansing:  @Model.CleanseExtraHealth</b>
-            }
-            if (@Model.InstantHealthRestore != 0)
-            {
-                <b>Willpower restored from eating or drinking:  @Model.InstantHealthRestore</b>
-            }
-            if (@Model.InstantManaRestore != 0)
-            {
-                <b>Mana restored from eating or drinking:  @Model.InstantManaRestore</b>
             }
             if (@Model.MoveActionPointDiscount != 0.0M)
             {

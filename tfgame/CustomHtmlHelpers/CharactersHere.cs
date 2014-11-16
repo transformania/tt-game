@@ -311,7 +311,7 @@ namespace tfgame.CustomHtmlHelpers
 
         public static MvcHtmlString GetEffectFriendlyName(string effect)
         {
-            string friendlyName = EffectStatics.GetStaticEffect.FirstOrDefault(e => e.dbName == effect).FriendlyName;
+            string friendlyName = EffectStatics.GetStaticEffect2(effect).FriendlyName;
             return new MvcHtmlString(friendlyName);
         }
 

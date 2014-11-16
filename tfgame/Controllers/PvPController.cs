@@ -2554,7 +2554,7 @@ namespace tfgame.Controllers
             }
             else
             {
-                IEnumerable<StaticEffect> output = EffectProcedures.GetAvailableLevelupPerks(me);
+                IEnumerable<DbStaticEffect> output = EffectProcedures.GetAvailableLevelupPerks(me);
                 return View(output);
             }
 
@@ -2585,7 +2585,7 @@ namespace tfgame.Controllers
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
 
-            IEnumerable<EffectViewModel> output = EffectProcedures.GetPlayerEffectViewModels(me);
+            IEnumerable<EffectViewModel2> output = EffectProcedures.GetPlayerEffects2(me.Id);
 
             return View(output);
         }
@@ -2593,7 +2593,7 @@ namespace tfgame.Controllers
          public ActionResult ViewEffects(int id)
          {
              Player player = PlayerProcedures.GetPlayer(id);
-             IEnumerable<EffectViewModel> output = EffectProcedures.GetPlayerEffectViewModels(player);
+             IEnumerable<EffectViewModel2> output = EffectProcedures.GetPlayerEffects2(player.Id);
              ViewBag.PlayerName = player.GetFullName();
 
              return View(output);
@@ -3740,12 +3740,19 @@ namespace tfgame.Controllers
                 // psychopaths
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started psychopath actions");
                 serverLogRepo.SaveServerLog(log);
-                AIProcedures.RunPsychopathActions();
-                log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == turnNo);
-                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished psychopath actions");
+
+                try
+                {
+                    AIProcedures.RunPsychopathActions();
+                    log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == turnNo);
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished psychopath actions");
+                }
+                catch (Exception e)
+                {
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  PSYCHOPATH RUNTIME ERROR:  " + e);
+                }
 
             
-
                 PvPWorldStatProcedures.UpdateWorldTurnCounter_UpdateDone();
 
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started stored procedure maintenance");

@@ -83,47 +83,47 @@ namespace tfgame.Procedures
         
         }
 
-        public static List<EffectViewModel> GetPlayerEffects(int playerId)
-        {
-            IEffectRepository effectRepo = new EFEffectRepository();
+        //public static List<EffectViewModel> GetPlayerEffects(int playerId)
+        //{
+        //    IEffectRepository effectRepo = new EFEffectRepository();
 
-            //IEnumerable<EffectViewModel> output =
-            //from e in effectRepo.Effects
-            //where e.OwnerId == playerId
-            //from s in EffectStatics.GetStaticEffect
-            //where s.dbName == e.dbName
-            //select new EffectViewModel { dbEffect = e, Effect = s };
+        //    //IEnumerable<EffectViewModel> output =
+        //    //from e in effectRepo.Effects
+        //    //where e.OwnerId == playerId
+        //    //from s in EffectStatics.GetStaticEffect
+        //    //where s.dbName == e.dbName
+        //    //select new EffectViewModel { dbEffect = e, Effect = s };
 
-            List<Effect> mydbEffects = effectRepo.Effects.Where(e => e.OwnerId == playerId).ToList();
+        //    List<Effect> mydbEffects = effectRepo.Effects.Where(e => e.OwnerId == playerId).ToList();
 
-            List<EffectViewModel> output = new List<EffectViewModel>();
+        //    List<EffectViewModel> output = new List<EffectViewModel>();
 
-            foreach (Effect e in mydbEffects)
-            {
-                EffectViewModel addme = new EffectViewModel
-                {
-                    dbEffect = e,
-                    Effect = EffectStatics.GetStaticEffect.FirstOrDefault(f => f.dbName == f.dbName),
-                };
-                output.Add(addme);
-            }
+        //    foreach (Effect e in mydbEffects)
+        //    {
+        //        EffectViewModel addme = new EffectViewModel
+        //        {
+        //            dbEffect = e,
+        //            Effect = EffectStatics.GetStaticEffect.FirstOrDefault(f => f.dbName == f.dbName),
+        //        };
+        //        output.Add(addme);
+        //    }
 
-            return output;
+        //    return output;
 
-        }
+        //}
 
-        public static List<StaticEffect> GetAvailableLevelupPerks(Player player)
+        public static List<DbStaticEffect> GetAvailableLevelupPerks(Player player)
         {
             IEffectRepository effectRepo = new EFEffectRepository();
             IEnumerable<Effect> playerEffects = effectRepo.Effects.Where(e => e.OwnerId == player.Id && e.IsPermanent == true);
 
             // see what perks the player already has
 
-            List<StaticEffect> perkEffects = EffectStatics.GetStaticEffect.Where(e => e.AvailableAtLevel > 0 && e.AvailableAtLevel <= player.Level).ToList();
+            List<DbStaticEffect> perkEffects = EffectStatics.GetAvailableLevelupPerks(player);
 
-            List<StaticEffect> availablePerks = new List<StaticEffect>();
+            List<DbStaticEffect> availablePerks = new List<DbStaticEffect>();
 
-            foreach (StaticEffect effect in perkEffects)
+            foreach (DbStaticEffect effect in perkEffects)
             {
                 Effect existingEffect = playerEffects.FirstOrDefault(d => d.dbName == effect.dbName);
 
@@ -147,21 +147,21 @@ namespace tfgame.Procedures
 
         }
 
-        public static List<StaticEffect> GetPlayerEffects(Player player)
-        {
-            IEffectRepository effectRepo = new EFEffectRepository();
-            IEnumerable<Effect> playerEffects = effectRepo.Effects.Where(e => e.OwnerId == player.Id);
+        //public static List<StaticEffect> GetPlayerEffects(Player player)
+        //{
+        //    IEffectRepository effectRepo = new EFEffectRepository();
+        //    IEnumerable<Effect> playerEffects = effectRepo.Effects.Where(e => e.OwnerId == player.Id);
 
-            List<StaticEffect> playerPerks = new List<StaticEffect>();
+        //    List<DbStaticEffect> playerPerks = new List<DbStaticEffect>();
 
-            foreach (Effect effect in playerEffects)
-            {
-                StaticEffect effectPlus = EffectStatics.GetStaticEffect.FirstOrDefault(e => e.dbName == effect.dbName);
-                playerPerks.Add(effectPlus);
-            }
+        //    foreach (Effect effect in playerEffects)
+        //    {
+        //        DbStaticEffect effectPlus = EffectStatics.GetStaticEffect2(effect.dbName);
+        //        playerPerks.Add(effectPlus);
+        //    }
 
-            return playerPerks;
-        }
+        //    return playerPerks;
+        //}
 
         public static string GivePerkToPlayer(string perkName, Player player)
         {
@@ -178,7 +178,7 @@ namespace tfgame.Procedures
             }
 
             // grab the static effect for stat
-            StaticEffect effectPlus = EffectStatics.GetStaticEffect.FirstOrDefault(e => e.dbName == perkName);
+            DbStaticEffect effectPlus = EffectStatics.GetStaticEffect2(perkName);
 
             
             if (effectPlus.AvailableAtLevel > 0 && effectPlus.AvailableAtLevel!=9999)
@@ -239,30 +239,29 @@ namespace tfgame.Procedures
                 person.UnusedLevelUpPerks--;
                 playerRepo.SavePlayer(person);
 
-                // if the perk has a prerequisite, delete the old one
-                //if (effectPlus.PreRequesite!=null && effectPlus.PreRequesite!="") {
-                //    StaticEffect prereq = EffectStatics.GetStaticEffect.FirstOrDefault(e => e.dbName == effectPlus.PreRequesite);
-                //    Effect dbPrereq = effectRepo.Effects.FirstOrDefault(e => e.OwnerId == person.Id && e.dbName == prereq.dbName);
-
-                //    // assert that the player even has the preprequisite before they can get the new perk
-                //    if (dbPrereq == null) {
-                //        return "You don't have the necessary prerequisite to earn this perk.";
-                //    }
-
-                //    effectRepo.DeleteEffect(dbPrereq.Id);
-                //}
-                
                 effectRepo.SaveEffect(addme);
                 return logmessage;
             }
 
-
-                
-
            // this is a temporary perk so return the flavor text
             else
             {
-                string logmessage = effectPlus.GetMessageWhenHit(player.Gender);
+
+                string logmessage = "";
+
+                if (player.Gender == "male" && effectPlus.MessageWhenHit_M != null && effectPlus.MessageWhenHit_M != "")
+                {
+                    logmessage = effectPlus.MessageWhenHit_M;
+                }
+                else if (player.Gender == "female" && effectPlus.MessageWhenHit_F != null && effectPlus.MessageWhenHit_F != "")
+                {
+                    logmessage = effectPlus.MessageWhenHit_F;
+                }
+                else
+                {
+                    logmessage = effectPlus.MessageWhenHit;
+                }
+
                 PlayerLogProcedures.AddPlayerLog(player.Id, effectPlus.MessageWhenHit, false);
                 effectRepo.SaveEffect(addme);
                 return logmessage;
@@ -291,29 +290,29 @@ namespace tfgame.Procedures
             }
         }
 
-        public static IEnumerable<EffectViewModel> GetPlayerEffectViewModels(Player player)
-        {
+        //public static IEnumerable<EffectViewModel> GetPlayerEffectViewModels(Player player)
+        //{
 
-            IEffectRepository effectRepo = new EFEffectRepository();
-            IEnumerable<Effect> playerdbEffects = effectRepo.Effects.Where(e => e.OwnerId == player.Id);
+        //    IEffectRepository effectRepo = new EFEffectRepository();
+        //    IEnumerable<Effect> playerdbEffects = effectRepo.Effects.Where(e => e.OwnerId == player.Id);
 
-            List<EffectViewModel> playerEffects = new List<EffectViewModel>();
+        //    List<EffectViewModel> playerEffects = new List<EffectViewModel>();
 
 
-            foreach (Effect effect in playerdbEffects)
-            {
-                EffectViewModel addme = new EffectViewModel
-                {
-                    Effect = EffectStatics.GetStaticEffect.FirstOrDefault(e => e.dbName == effect.dbName),
-                    dbEffect = effect
+        //    foreach (Effect effect in playerdbEffects)
+        //    {
+        //        EffectViewModel addme = new EffectViewModel
+        //        {
+        //            Effect = EffectStatics.GetStaticEffect.FirstOrDefault(e => e.dbName == effect.dbName),
+        //            dbEffect = effect
                 
-                };
-                playerEffects.Add(addme);
-            }
+        //        };
+        //        playerEffects.Add(addme);
+        //    }
 
-            return playerEffects;
+        //    return playerEffects;
 
-        }
+        //}
 
         public static bool PlayerHasEffect(Player player, string effectName)
         {

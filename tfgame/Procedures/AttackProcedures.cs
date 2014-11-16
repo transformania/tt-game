@@ -40,11 +40,24 @@ namespace tfgame.Procedures
             // if the spell is a curse, give the effect and that's all
             if (skillBeingUsed.Skill.GivesEffect != null)
             {
-                StaticEffect effectBeingGiven = EffectStatics.GetStaticEffect.FirstOrDefault(e => e.dbName == skillBeingUsed.Skill.GivesEffect);
+                DbStaticEffect effectBeingGiven = EffectStatics.GetStaticEffect2(skillBeingUsed.Skill.GivesEffect);
 
                 EffectProcedures.GivePerkToPlayer(skillBeingUsed.Skill.GivesEffect, victim);
 
-                logs.AttackerLog += effectBeingGiven.GetAttackerWhenHit(me.Gender) + "<br><br>";
+                if (attacker.Gender == "male" && effectBeingGiven.AttackerWhenHit_M != null && effectBeingGiven.AttackerWhenHit_M != "")
+                {
+                    logs.AttackerLog += effectBeingGiven.AttackerWhenHit_M;
+                }
+                else if (attacker.Gender == "female" && effectBeingGiven.AttackerWhenHit_F != null && effectBeingGiven.AttackerWhenHit_F != "")
+                {
+                    logs.AttackerLog += effectBeingGiven.AttackerWhenHit_F;
+                }
+                else
+                {
+                    logs.AttackerLog += effectBeingGiven.AttackerWhenHit;
+                }
+
+                logs.AttackerLog += "<br><br>";
 
                 logs.LocationLog = "<span style='color:  red'>" + attackerFullName + " cursed " + victimFullName + " with " + skillBeingUsed.Skill.FriendlyName + ".</span>";
                 logs.AttackerLog += "You cursed " + victimFullName + " with " + skillBeingUsed.Skill.FriendlyName +".";

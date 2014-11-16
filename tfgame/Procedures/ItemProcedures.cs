@@ -438,7 +438,7 @@ namespace tfgame.Procedures
             IEnumerable<ItemViewModel> wornItems = GetAllPlayerItems(player.Id).Where(i => i.dbItem.IsEquipped == true);
 
             // grab all of the bonuses coming from effects
-            IEnumerable<EffectViewModel> myEffects = EffectProcedures.GetPlayerEffects(player.Id).Where(e => e.dbEffect.Duration > 0);
+            IEnumerable<EffectViewModel2> myEffects = EffectProcedures.GetPlayerEffects2(player.Id).Where(e => e.dbEffect.Duration > 0);
 
             // formula:  bonus = amount * (itemlevel - 1) * PvPStatics.Item_LevelBonusModifier
 
@@ -526,7 +526,7 @@ namespace tfgame.Procedures
             // non-stat buffs
 
             output.HasSearchDiscount = false;
-            foreach (EffectViewModel eff in myEffects)
+            foreach (EffectViewModel2 eff in myEffects)
             {
                 if (eff.dbEffect.dbName == "perk_sharp_eye")
                 {
@@ -584,7 +584,7 @@ namespace tfgame.Procedures
             }
             
             // effects portion
-            IEnumerable<EffectViewModel> myEffects = EffectProcedures.GetPlayerEffects(player.Id).Where(e => e.dbEffect.Duration > 0);
+            IEnumerable<EffectViewModel2> myEffects = EffectProcedures.GetPlayerEffects2(player.Id).Where(e => e.dbEffect.Duration > 0);
             output.FromEffects_HealthBonusPercent = myEffects.Sum(e => e.Effect.HealthBonusPercent);
             output.FromEffects_ManaBonusPercent = myEffects.Sum(e => e.Effect.ManaBonusPercent);
             output.FromEffects_HealthRecoveryPerUpdate = myEffects.Sum(e => e.Effect.HealthRecoveryPerUpdate);

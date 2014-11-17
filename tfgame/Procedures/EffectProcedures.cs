@@ -18,69 +18,71 @@ namespace tfgame.Procedures
 
             IEffectRepository effectRepo = new EFEffectRepository();
             IEnumerable<EffectViewModel2> output = from i in effectRepo.Effects
-                                                      where i.OwnerId == playerId
-                                                      join si in effectRepo.DbStaticEffects on i.dbName equals si.dbName
-                                                      select new EffectViewModel2
-                                                      {
-                                                          dbEffect = new Effect_VM
-                                                          {
-                                                              Id = i.Id,
-                                                              OwnerId = i.OwnerId,
-                                                              Duration = i.Duration,
-                                                              IsPermanent = i.IsPermanent,
-                                                              Level = i.Level,
-                                                              Cooldown = i.Cooldown,
+                                                   where i.OwnerId == playerId
+                                                   join si in effectRepo.DbStaticEffects on i.dbName equals si.dbName
+                                                   select new EffectViewModel2
+                                                   {
+                                                       dbEffect = new Effect_VM
+                                                       {
+                                                           Id = i.Id,
+                                                           OwnerId = i.OwnerId,
+                                                           Duration = i.Duration,
+                                                           IsPermanent = i.IsPermanent,
+                                                           Level = i.Level,
+                                                           Cooldown = i.Cooldown,
                                                            dbName = i.dbName,
 
-                                                          },
+                                                       },
 
-                                                          Effect = new tfgame.ViewModels.StaticEffect
-                                                          {
+                                                       Effect = new tfgame.ViewModels.StaticEffect
+                                                       {
+                                                           dbName = si.dbName,
+                                                           FriendlyName = si.FriendlyName,
+                                                           Description = si.Description,
+                                                           AvailableAtLevel = si.AvailableAtLevel,
+                                                           PreRequesite = si.PreRequesite,
+                                                           isLevelUpPerk = si.isLevelUpPerk,
+                                                           Duration = si.Duration,
+                                                           Cooldown = si.Cooldown,
+                                                           ObtainedAtLocation = si.ObtainedAtLocation,
+                                                           MessageWhenHit = si.MessageWhenHit,
+                                                           MessageWhenHit_M = si.MessageWhenHit_M,
+                                                           MessageWhenHit_F = si.MessageWhenHit_F,
+                                                           AttackerWhenHit = si.AttackerWhenHit,
+                                                           AttackerWhenHit_M = si.AttackerWhenHit_M,
+                                                           AttackerWhenHit_F = si.AttackerWhenHit_F,
 
-                                                              dbName = si.dbName,
-                                                              FriendlyName = si.FriendlyName,
-                                                              Description = si.Description,
-                                                              AvailableAtLevel = si.AvailableAtLevel,
-                                                              PreRequesite = si.PreRequesite,
-                                                              isLevelUpPerk = si.isLevelUpPerk,
-                                                              Duration = si.Duration,
-                                                              Cooldown = si.Cooldown,
-                                                              ObtainedAtLocation = si.ObtainedAtLocation,
-                                                              MessageWhenHit = si.MessageWhenHit,
-                                                              MessageWhenHit_M = si.MessageWhenHit_M,
-                                                              MessageWhenHit_F = si.MessageWhenHit_F,
-                                                              AttackerWhenHit = si.AttackerWhenHit,
-                                                              AttackerWhenHit_M = si.AttackerWhenHit_M,
-                                                              AttackerWhenHit_F = si.AttackerWhenHit_F,
+                                                           HealthBonusPercent = si.HealthBonusPercent,
+                                                           ManaBonusPercent = si.ManaBonusPercent,
+                                                           ExtraSkillCriticalPercent = si.ExtraSkillCriticalPercent,
+                                                           HealthRecoveryPerUpdate = si.HealthRecoveryPerUpdate,
+                                                           ManaRecoveryPerUpdate = si.ManaRecoveryPerUpdate,
+                                                           SneakPercent = si.SneakPercent,
+                                                           EvasionPercent = si.EvasionPercent,
+                                                           EvasionNegationPercent = si.EvasionNegationPercent,
+                                                           MeditationExtraMana = si.MeditationExtraMana,
+                                                           CleanseExtraHealth = si.CleanseExtraHealth,
+                                                           MoveActionPointDiscount = si.MoveActionPointDiscount,
+                                                           SpellExtraHealthDamagePercent = si.SpellExtraHealthDamagePercent,
+                                                           SpellExtraTFEnergyPercent = si.SpellExtraTFEnergyPercent,
+                                                           CleanseExtraTFEnergyRemovalPercent = si.CleanseExtraTFEnergyRemovalPercent,
+                                                           SpellMisfireChanceReduction = si.SpellMisfireChanceReduction,
+                                                           SpellHealthDamageResistance = si.SpellHealthDamageResistance,
+                                                           SpellTFEnergyDamageResistance = si.SpellTFEnergyDamageResistance,
+                                                           ExtraInventorySpace = si.ExtraInventorySpace,
 
-                                                           
-                                                           
+                                                       }
 
-                                                            HealthBonusPercent = si.HealthBonusPercent,
-                                                            ManaBonusPercent = si.ManaBonusPercent,
-                                                            ExtraSkillCriticalPercent = si.ExtraSkillCriticalPercent,
-                                                            HealthRecoveryPerUpdate = si.HealthRecoveryPerUpdate,
-                                                            ManaRecoveryPerUpdate = si.ManaRecoveryPerUpdate,
-                                                            SneakPercent = si.SneakPercent,
-                                                            EvasionPercent = si.EvasionPercent,
-                                                            EvasionNegationPercent = si.EvasionNegationPercent,
-                                                            MeditationExtraMana = si.MeditationExtraMana,
-                                                            CleanseExtraHealth = si.CleanseExtraHealth,
-                                                            MoveActionPointDiscount = si.MoveActionPointDiscount,
-                                                            SpellExtraHealthDamagePercent = si.SpellExtraHealthDamagePercent,
-                                                            SpellExtraTFEnergyPercent = si.SpellExtraTFEnergyPercent,
-                                                            CleanseExtraTFEnergyRemovalPercent = si.CleanseExtraTFEnergyRemovalPercent,
-                                                            SpellMisfireChanceReduction = si.SpellMisfireChanceReduction,
-                                                            SpellHealthDamageResistance = si.SpellHealthDamageResistance,
-                                                            SpellTFEnergyDamageResistance = si.SpellTFEnergyDamageResistance,
-                                                            ExtraInventorySpace = si.ExtraInventorySpace,
-
-                                                          }
-
-                                                      };
+                                                   };
 
             return output;
-        
+
+        }
+
+        public static IEnumerable<Effect> GetPlayerEffects_EffectOnly(int playerId)
+        {
+            IEffectRepository effectRepo = new EFEffectRepository();
+            return effectRepo.Effects.Where(e => e.OwnerId == playerId);
         }
 
         //public static List<EffectViewModel> GetPlayerEffects(int playerId)
@@ -139,7 +141,7 @@ namespace tfgame.Procedures
                 {
                     availablePerks.Add(effect);
                 }
-                
+
 
             }
 
@@ -180,8 +182,8 @@ namespace tfgame.Procedures
             // grab the static effect for stat
             DbStaticEffect effectPlus = EffectStatics.GetStaticEffect2(perkName);
 
-            
-            if (effectPlus.AvailableAtLevel > 0 && effectPlus.AvailableAtLevel!=9999)
+
+            if (effectPlus.AvailableAtLevel > 0 && effectPlus.AvailableAtLevel != 9999)
             {
                 // assert that the perk doesn't require a level higher than the player
                 if (effectPlus.AvailableAtLevel > player.Level)
@@ -192,7 +194,7 @@ namespace tfgame.Procedures
 
 
             }
-            
+
 
             Effect addme = new Effect();
 
@@ -223,9 +225,9 @@ namespace tfgame.Procedures
 
 
 
-            
 
-           
+
+
 
             // this is a level up perk so just return a simple message
             if (addme.IsPermanent == true)
@@ -267,7 +269,7 @@ namespace tfgame.Procedures
                 return logmessage;
             }
 
-            
+
         }
 
         public static void RemovePerkFromPlayer(string perkName, Player player)
@@ -305,7 +307,7 @@ namespace tfgame.Procedures
         //        {
         //            Effect = EffectStatics.GetStaticEffect.FirstOrDefault(e => e.dbName == effect.dbName),
         //            dbEffect = effect
-                
+
         //        };
         //        playerEffects.Add(addme);
         //    }
@@ -330,7 +332,7 @@ namespace tfgame.Procedures
                 return true;
             }
 
-            
+
         }
 
         public static void LoadEffectRAMBuffBox()
@@ -354,7 +356,7 @@ namespace tfgame.Procedures
             }
         }
 
-       
+
 
     }
 }

@@ -52,5 +52,7 @@ namespace tfgame.ViewModels
         public decimal InstantHealthRestore { get; set; }
         public decimal InstantManaRestore { get; set; }
 
+     
+
     }
 }

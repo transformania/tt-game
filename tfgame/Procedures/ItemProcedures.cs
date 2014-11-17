@@ -585,10 +585,33 @@ namespace tfgame.Procedures
             
             // effects portion
             IEnumerable<EffectViewModel2> myEffects = EffectProcedures.GetPlayerEffects2(player.Id).Where(e => e.dbEffect.Duration > 0);
-            output.FromEffects_HealthBonusPercent = myEffects.Sum(e => e.Effect.HealthBonusPercent);
-            output.FromEffects_ManaBonusPercent = myEffects.Sum(e => e.Effect.ManaBonusPercent);
-            output.FromEffects_HealthRecoveryPerUpdate = myEffects.Sum(e => e.Effect.HealthRecoveryPerUpdate);
-            output.FromEffects_ManaRecoveryPerUpdate = myEffects.Sum(e => e.Effect.ManaRecoveryPerUpdate);
+
+            IEnumerable<Effect> myEffects2 = EffectProcedures.GetPlayerEffects_EffectOnly(player.Id).Where(e => e.Duration > 0);
+
+            foreach (Effect e in myEffects2)
+            {
+                RAMBuffBox temp = null;
+                try
+                {
+                    temp = EffectStatics.EffectRAMBuffBoxes.First(x => x.dbName == e.dbName.ToLower());
+                    // if (temp == null)
+                }
+                catch
+                {
+                    EffectProcedures.LoadEffectRAMBuffBox();
+                    temp = EffectStatics.EffectRAMBuffBoxes.First(x => x.dbName == e.dbName.ToLower());
+                }
+
+                output.FromEffects_HealthBonusPercent += (decimal)temp.HealthBonusPercent;
+                output.FromEffects_ManaBonusPercent += (decimal)temp.ManaBonusPercent;
+                output.FromEffects_HealthRecoveryPerUpdate += (decimal)temp.HealthRecoveryPerUpdate;
+                output.FromEffects_ManaRecoveryPerUpdate += (decimal)temp.ManaRecoveryPerUpdate;
+            }
+
+            //output.FromEffects_HealthBonusPercent = myEffects.Sum(e => e.Effect.HealthBonusPercent);
+            //output.FromEffects_ManaBonusPercent = myEffects.Sum(e => e.Effect.ManaBonusPercent);
+            //output.FromEffects_HealthRecoveryPerUpdate = myEffects.Sum(e => e.Effect.HealthRecoveryPerUpdate);
+            //output.FromEffects_ManaRecoveryPerUpdate = myEffects.Sum(e => e.Effect.ManaRecoveryPerUpdate);
 
             //output.FromEffects_HealthRecoveryPerUpdate = 
 

@@ -1009,7 +1009,7 @@ namespace tfgame.Controllers
 
            // AIProcedures.SpawnAIPsychopaths(15, 0);
 
-            IEnumerable<EffectViewModel2> temp = EffectProcedures.GetPlayerEffects2(PlayerProcedures.GetPlayerFromMembership().Id).ToList();
+            BuffBox temp = ItemProcedures.GetPlayerBuffsRAM(PlayerProcedures.GetPlayerFromMembership());
 
             return RedirectToAction("Index");
         }

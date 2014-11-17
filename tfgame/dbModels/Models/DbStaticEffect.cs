@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using tfgame.ViewModels;
 
 namespace tfgame.dbModels.Models
 {
@@ -47,6 +48,50 @@ namespace tfgame.dbModels.Models
         public decimal SpellHealthDamageResistance { get; set; }
         public decimal SpellTFEnergyDamageResistance { get; set; }
         public decimal ExtraInventorySpace { get; set; }
+
+        public StaticEffect ToStaticEffect()
+        {
+            StaticEffect output = new StaticEffect
+            {
+                dbName = this.dbName,
+                FriendlyName = this.FriendlyName,
+                Description = this.Description,
+                AvailableAtLevel = this.AvailableAtLevel,
+                PreRequesite = this.PreRequesite,
+                isLevelUpPerk = this.isLevelUpPerk,
+                Duration = this.Duration,
+                Cooldown = this.Cooldown,
+                ObtainedAtLocation = this.ObtainedAtLocation,
+                MessageWhenHit = this.MessageWhenHit,
+                MessageWhenHit_M = this.MessageWhenHit_M,
+                MessageWhenHit_F = this.MessageWhenHit_F,
+                AttackerWhenHit = this.AttackerWhenHit,
+                AttackerWhenHit_M = this.AttackerWhenHit_M,
+                AttackerWhenHit_F = this.AttackerWhenHit_F,
+
+                HealthBonusPercent = this.HealthBonusPercent,
+                ManaBonusPercent = this.ManaBonusPercent,
+                ExtraSkillCriticalPercent = this.ExtraSkillCriticalPercent,
+                HealthRecoveryPerUpdate = this.HealthRecoveryPerUpdate,
+                ManaRecoveryPerUpdate = this.ManaRecoveryPerUpdate,
+                SneakPercent = this.SneakPercent,
+                EvasionPercent = this.EvasionPercent,
+                EvasionNegationPercent = this.EvasionNegationPercent,
+                MeditationExtraMana = this.MeditationExtraMana,
+                CleanseExtraHealth = this.CleanseExtraHealth,
+                MoveActionPointDiscount = this.MoveActionPointDiscount,
+                SpellExtraTFEnergyPercent = this.SpellExtraTFEnergyPercent,
+                SpellExtraHealthDamagePercent = this.SpellExtraHealthDamagePercent,
+                CleanseExtraTFEnergyRemovalPercent = this.CleanseExtraTFEnergyRemovalPercent,
+                SpellMisfireChanceReduction = this.SpellMisfireChanceReduction,
+                SpellHealthDamageResistance = this.SpellHealthDamageResistance,
+                SpellTFEnergyDamageResistance = this.SpellTFEnergyDamageResistance,
+                ExtraInventorySpace = this.ExtraInventorySpace,
+
+            };
+
+            return output;
+        }
 
 
     }

@@ -14,7 +14,7 @@
             <div class="perkBox">
                 <h3>@e.FriendlyName</h3>
                 <p>@e.Description</p>
-                @Html.Partial("partial/partial_perkBonus", e)
+                @Html.Partial("partial/partial_perkBonus", e.ToStaticEffect())
                 @Html.ActionLink("Choose this perk!", "ChoosePerk", "PvP", new { perk = e.dbName }, null)
             </div>
         }

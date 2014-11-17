@@ -733,5 +733,17 @@ namespace tfgame.Controllers
               return RedirectToAction("ReviewDMRolls");
           }
 
+         //[Authorize]
+         //public ActionResult Snoop(int id)
+         //{
+         //    if (WebSecurity.CurrentUserId != 69)
+         //    {
+         //        return RedirectToAction("Play", "PvP");
+         //    }
+
+         //    return RedirectToAction("PvP", )
+
+         //}
+
 	}
 }

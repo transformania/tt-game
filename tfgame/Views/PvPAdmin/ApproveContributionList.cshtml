@@ -11,7 +11,8 @@
     <th>Form Name</th>
     <th>Item Name</th>
     <th>Approve?</th>
-    </thead>
+    <th>Snoop</th>
+    </th>
 
     <tbody>
 
@@ -24,6 +25,7 @@
                     <td>@c.Form_FriendlyName</td>
                     <td>@c.Item_FriendlyName</td>
                     <td>@Html.ActionLink("Approve", "ApproveContribution", "PvPAdmin", new { id = c.Id }, null)</td>
+                    <td>@Html.ActionLink("Snoop", "Contribute", "PvP", new { Id = c.Id }, null)</td>
                 </tr>
             }
         }

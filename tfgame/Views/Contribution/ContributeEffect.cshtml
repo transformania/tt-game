@@ -251,6 +251,13 @@
             <h1 class="good">THIS IS A PROOFREADING COPY.</h1>
         }
         <input type="submit" value="Save" />
+    
+    <div class="form__panel group" style="background-color: #82ffe0; ">
+
+        <div class="form__panel externalMessage">The current balance score is:  @*<b>@ViewBag.BalanceScore</b>.*@  Animate forms should have a balance score close to 0.  Items should have a balance score close to 25, and pets should have a balance score close to 50.</div>
+
+        <p>@Html.ActionLink("Use calculator (save contribution before doing this!)", "ContributeBalanceCalculator", "PvP", new { id = Model.Id }, null)<br /></p>
+    </div>
 
     <h2>Finishing up</h2>
     <div class="form__panel group" style="background-color: #D1FFBB;">

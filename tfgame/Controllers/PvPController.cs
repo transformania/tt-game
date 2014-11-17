@@ -1882,12 +1882,28 @@ namespace tfgame.Controllers
             return View(contribution);
         }
 
-        public ActionResult ContributeBalanceCalculator()
+        public ActionResult ContributeBalanceCalculator(int id)
         {
-            return View("~/Views/PvP/BalanceCalculator.cshtml");
+            IEffectContributionRepository contributionRepo = new EFEffectContributionRepository();
+            EffectContribution contribution = contributionRepo.EffectContributions.FirstOrDefault(c => c.Id == id);
+
+            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            bool iAmProofreader = User.IsInRole(PvPStatics.Permissions_Proofreader);
+
+            if (iAmProofreader == false && contribution.OwnerMemberhipId != me.MembershipId)
+            {
+                TempData["Error"] = "That does not belong to you and you are not a proofreader.";
+                return RedirectToAction("Play");
+            }
+            else
+            {
+
+            }
+
+            return View("~/Views/PvP/BalanceCalculator.cshtml", contribution);
         }
 
-         public ActionResult ContributeBalanceCalculator2(int id)
+        public ActionResult ContributeBalanceCalculator2(int id)
         {
             IContributionRepository contributionRepo = new EFContributionRepository();
             Contribution contribution = contributionRepo.Contributions.FirstOrDefault(c => c.Id == id);
@@ -1950,7 +1966,50 @@ namespace tfgame.Controllers
                  return RedirectToAction("Play");
 
              }
-             return RedirectToAction("Play");
+         }
+
+         public ActionResult ContributeBalanceCalculatorSend_Effect(EffectContribution input)
+         {
+             IEffectContributionRepository contributionRepo = new EFEffectContributionRepository();
+             EffectContribution SaveMe = contributionRepo.EffectContributions.FirstOrDefault(c => c.Id == input.Id);
+
+             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+             bool iAmProofreader = User.IsInRole(PvPStatics.Permissions_Proofreader);
+
+             if (iAmProofreader == false && SaveMe.OwnerMemberhipId != me.MembershipId)
+             {
+                 TempData["Error"] = "That does not belong to you and you are not a proofreader.";
+                 return RedirectToAction("Play");
+             }
+             else
+             {
+                 SaveMe.HealthBonusPercent = input.HealthBonusPercent;
+                 SaveMe.ManaBonusPercent = input.ManaBonusPercent;
+                 SaveMe.ExtraSkillCriticalPercent = input.ExtraSkillCriticalPercent;
+                 SaveMe.HealthRecoveryPerUpdate = input.HealthRecoveryPerUpdate;
+                 SaveMe.ManaRecoveryPerUpdate = input.ManaRecoveryPerUpdate;
+                 SaveMe.SneakPercent = input.SneakPercent;
+                 SaveMe.EvasionPercent = input.EvasionPercent;
+                 SaveMe.EvasionNegationPercent = input.EvasionNegationPercent;
+                 SaveMe.MeditationExtraMana = input.MeditationExtraMana;
+                 SaveMe.CleanseExtraHealth = input.CleanseExtraHealth;
+                 SaveMe.MoveActionPointDiscount = input.MoveActionPointDiscount;
+                 SaveMe.SpellExtraTFEnergyPercent = input.SpellExtraTFEnergyPercent;
+                 SaveMe.SpellExtraHealthDamagePercent = input.SpellExtraHealthDamagePercent;
+                 SaveMe.CleanseExtraTFEnergyRemovalPercent = input.CleanseExtraTFEnergyRemovalPercent;
+                 SaveMe.SpellMisfireChanceReduction = input.SpellMisfireChanceReduction;
+                 SaveMe.SpellHealthDamageResistance = input.SpellHealthDamageResistance;
+                 SaveMe.SpellTFEnergyDamageResistance = input.SpellTFEnergyDamageResistance;
+                 SaveMe.ExtraInventorySpace = input.ExtraInventorySpace;
+
+               //  SaveMe.History += "Bonus values edited by " + WebSecurity.CurrentUserName + " on " + DateTime.UtcNow + ".<br>";
+
+                 contributionRepo.SaveEffectContribution(SaveMe);
+
+                 TempData["Result"] = "Contribution stats saved.";
+                 return RedirectToAction("Play");
+
+             }
          }
 
          [Authorize]

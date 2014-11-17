@@ -1,4 +1,5 @@
-﻿@using tfgame.Statics
+﻿@model tfgame.dbModels.Models.EffectContribution
+@using tfgame.Statics
 
 <head>
     <link href="~/Content/PvP.css" rel="stylesheet" />
@@ -15,7 +16,9 @@
 
 <p>(%):  Means a percentage modifier.  Ex:  a 10% bonus on extra willpower damage per spell attack means 7 damage becomes 7*1.1 = 7.7 damage.</p>
 
-<p>Fields marked with <red>*</red> mean that negative values for these will are only worth half value of their value.  This is because there are generally few to no penalties when these values fall below zero.</p>
+<p>Fields that have a Negative Modifier receive fewer points when the stat is put into the negative.</p>
+
+<p>Fields that have a Minimum Cap will not give any additional points beyond a certain value.</p>
 
 <p>What type of spell is this?</p>
 <select id="mobilityType">
@@ -31,159 +34,228 @@
 </p>
 
 
-<h2>Net balance:  <span id="total"></span>     Target:  <span id="desired"></span></h2>
+<h2>Net balance:  <span id="total"></span>     Target:  <span id="desired"></span>  Total points used (400 max allowed):  <span id="absolute_total"></span></h2>
 
 <p>
     <button type="button" onclick="Clear()">Clear</button>
 </p>
 
-<table id="balanceTable">
-    <thead>
+@using (Html.BeginForm("ContributeBalanceCalculatorSend_Effect", "PvP", FormMethod.Post))
+{
 
-    <th>Bonus/Penalty</th>
-    <th>Amount</th>
-    <th width="80px">Cost / Unit</th>
-    <th>Bonus total</th>
+    @Html.HiddenFor(m => m.Id)
 
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-                <span class='icon-health_recovery'></span>
-                Maximum willpower increase (%)
-            </td>
-            <td>
-                <input type="text" id="HealthBonusPercent"
-                       negative_mod="@tfgame.Statics.BalanceStatics.HealthBonusPercent__NegativeModifier"
-                       negative_cap="@tfgame.Statics.BalanceStatics.HealthBonusPercent__NegativeCap">
-                
-            </td>
-            <td>@tfgame.Statics.BalanceStatics.HealthBonusPercent__Value</td>
-            <td></td>
-        </tr>
-        <tr>
-            <td><span class='icon-mana_recovery'></span>Maximum mana increase (%)</td>
-            <td><input type="text" id="ManaBonusPercent"
-                    negative_mod="@tfgame.Statics.BalanceStatics.ManaBonusPercent__NegativeModifier"
-                    negative_cap="@tfgame.Statics.BalanceStatics.ManaBonusPercent__NegativeCap">
-                       </td>
-            <td>@tfgame.Statics.BalanceStatics.ManaBonusPercent__Value</td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>
-                <span class='icon-health_recovery'></span>Willpower recovery per game update (Amt)</td>
-            <td><input type="text" id="HealthRecoveryPerUpdate"></td>
-            <td>@tfgame.Statics.BalanceStatics.HealthRecoveryPerUpdate__Value</td>
-            <td></td>
-        </tr>
-        <tr>
-            <td><span class='icon-mana_recovery'></span>Mana recovery per game update (Amt)</td>
-            <td><input type="text" id="ManaRecoveryPerUpdate"></td>
-            <td>@tfgame.Statics.BalanceStatics.ManaRecoveryPerUpdate__Value</td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>Sneak chance (%) <red>*</red></td>
-            <td>
-                <input type="text" id="SneakPercent"
-                       negative_mod="@tfgame.Statics.BalanceStatics.SneakPercent__NegativeModifier"
-                       negative_cap="@tfgame.Statics.BalanceStatics.SneakPercent__NegativeCap">
-            </td>
-            <td>@tfgame.Statics.BalanceStatics.SneakPercent__Value</td>
-            <td></td>
-        </tr>
-        <tr>
-            <td><span class='icon-defense'></span>Spell evasion (%) <red>*</red></td>
-            <td><input type="text" id="EvasionPercent" negative_mod="@tfgame.Statics.BalanceStatics.EvasionPercent__NegativeModifier"></td>
-            <td>@tfgame.Statics.BalanceStatics.EvasionPercent__Value</td>
-            <td></td>
-        </tr>
-        <tr>
-            <td><span class='icon-timesattacking'></span> evasion NEGATION (%) <red>*</red></td>
-            <td><input type="text" id="EvasionNegationPercent" negative_mod="@tfgame.Statics.BalanceStatics.EvasionNegationPercent__NegativeModifier"></td>
-            <td>@tfgame.Statics.BalanceStatics.EvasionNegationPercent__Value</td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>
-                <span class='icon-cleansemeditate'></span>Extra mana recovered from meditating (Amt)</td>
-            <td><input type="text" id="MeditationExtraMana"></td>
-            <td>@tfgame.Statics.BalanceStatics.MeditationExtraMana__Value</td>
-            <td></td>
-        </tr>
-        <tr>
-            <td><span class='icon-cleansemeditate'></span>Extra willpower recovered from cleansing (Amt)</td>
-            <td><input type="text" id="CleanseExtraHealth"></td>
-            <td>@tfgame.Statics.BalanceStatics.CleanseExtraHealth__Value</td>
-            <td></td>
-        </tr>
-        <tr>
-            <td><span class='icon-timesattacking'></span>Extra spell critical hit chance (%)</td>
-            <td><input type="text" id="ExtraSkillCriticalPercent"></td>
-            <td>@tfgame.Statics.BalanceStatics.ExtraSkillCriticalPercent__Value</td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>Action point discount when moving (Amt)</td>
-            <td><input type="text" id="MoveActionPointDiscount"></td>
-            <td>@tfgame.Statics.BalanceStatics.MoveActionPointDiscount__Value</td>
-            <td></td>
-        </tr>
-        <tr>
-            <td><span class='icon-timesattacking'></span>Extra transformation energy from spells (%)</td>
-            <td><input type="text" id="SpellExtraTFEnergyPercent"></td>
-            <td>@tfgame.Statics.BalanceStatics.SpellExtraTFEnergyPercent__Value</td>
-            <td></td>
-        </tr>
-        <tr>
-            <td><span class='icon-timesattacking'></span>Extra willpower damage from spells (%)</td>
-            <td><input type="text" id="SpellExtraHealthDamagePercent"></td>
-            <td>@tfgame.Statics.BalanceStatics.SpellExtraHealthDamagePercent__Value</td>
-            <td></td>
-        </tr>
-        <tr>
-            <td><span class='icon-cleansemeditate'></span>Extra transformation energy removal when cleansing (%)</td>
-            <td><input type="text" id="CleanseExtraTFEnergyRemovalPercent"></td>
-            <td>@tfgame.Statics.BalanceStatics.CleanseExtraTFEnergyRemovalPercent__Value</td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>Misfire chance reduction (%)</td>
-            <td><input type="text" id="SpellMisfireChanceReduction"></td>
-            <td>@tfgame.Statics.BalanceStatics.SpellMisfireChanceReduction__Value</td>
-            <td></td>
-        </tr>
-        <tr>
-            <td><span class='icon-defense'></span>Willpower damage reduction when hit by a spell (%)</td>
-            <td><input type="text" id="SpellHealthDamageResistance"></td>
-            <td>@tfgame.Statics.BalanceStatics.SpellHealthDamageResistance__Value</td>
-            <td></td>
-        </tr>
-        <tr>
-            <td><span class='icon-defense'></span>Transformation energy damage reduction when hit by a spell (%)</td>
-            <td><input type="text" id="SpellTFEnergyDamageResistance"></td>
-            <td>@tfgame.Statics.BalanceStatics.SpellTFEnergyDamageResistance__Value</td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>Extra inventory spaces (Amt)</td>
-            <td><input type="text" id="ExtraInventorySpace"></td>
-            <td>@tfgame.Statics.BalanceStatics.ExtraInventorySpace__Value</td>
-            <td></td>
-        </tr>
-    </tbody>
-</table>
+    <table id="balanceTable">
+        <thead>
+
+        <th>Bonus/Penalty</th>
+        <th>Amount</th>
+        <th width="80px">Cost / Unit</th>
+        <th>Negative Modifier</th>
+        <th>Minimum Cap</th>
+        <th>Bonus total</th>
+
+        </thead>
+
+
+
+
+        <tbody>
+            <tr>
+                <td>
+                    <span class='icon-health_recovery'></span>
+                    Maximum willpower increase (%)
+                </td>
+                <td>@Html.TextBoxFor(m => m.HealthBonusPercent, new { @id = "HealthBonusPercent", @negative_mod = tfgame.Statics.BalanceStatics.HealthBonusPercent__NegativeModifier, @negative_cap = tfgame.Statics.BalanceStatics.HealthBonusPercent__NegativeCap })</td>
+                <td>@tfgame.Statics.BalanceStatics.HealthBonusPercent__Value</td>
+                <td>@tfgame.Statics.BalanceStatics.HealthBonusPercent__NegativeModifier</td>
+                <td>@tfgame.Statics.BalanceStatics.HealthBonusPercent__NegativeCap</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><span class='icon-mana_recovery'></span>Maximum mana increase (%)</td>
+                <td>@Html.TextBoxFor(m => m.ManaBonusPercent, new { @id = "ManaBonusPercent", @negative_mod = tfgame.Statics.BalanceStatics.ManaBonusPercent__NegativeModifier, @negative_cap = tfgame.Statics.BalanceStatics.ManaBonusPercent__NegativeCap })</td>
+                <td>@tfgame.Statics.BalanceStatics.ManaBonusPercent__Value</td>
+                <td>@tfgame.Statics.BalanceStatics.ManaBonusPercent__NegativeModifier</td>
+                <td>@tfgame.Statics.BalanceStatics.ManaBonusPercent__NegativeCap</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    <span class='icon-health_recovery'></span>Willpower recovery per game update (Amt)
+                </td>
+                <td>@Html.TextBoxFor(m => m.HealthRecoveryPerUpdate, new { @id = "HealthRecoveryPerUpdate", @negative_mod = tfgame.Statics.BalanceStatics.HealthRecoveryPerUpdate__NegativeModifier, @negative_cap = tfgame.Statics.BalanceStatics.HealthRecoveryPerUpdate__NegativeCap })</td>
+                <td>@tfgame.Statics.BalanceStatics.HealthRecoveryPerUpdate__Value</td>
+                <td>@tfgame.Statics.BalanceStatics.HealthRecoveryPerUpdate__NegativeModifier</td>
+                <td>@tfgame.Statics.BalanceStatics.HealthRecoveryPerUpdate__NegativeCap</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><span class='icon-mana_recovery'></span>Mana recovery per game update (Amt)</td>
+                <td>@Html.TextBoxFor(m => m.ManaRecoveryPerUpdate, new { @id = "ManaRecoveryPerUpdate", @negative_mod = tfgame.Statics.BalanceStatics.HealthRecoveryPerUpdate__NegativeModifier, @negative_cap = tfgame.Statics.BalanceStatics.ManaRecoveryPerUpdate__NegativeCap })</td>
+                <td>@tfgame.Statics.BalanceStatics.ManaRecoveryPerUpdate__Value</td>
+                <td>@tfgame.Statics.BalanceStatics.HealthRecoveryPerUpdate__NegativeModifier</td>
+                <td>@tfgame.Statics.BalanceStatics.ManaRecoveryPerUpdate__NegativeCap</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Sneak chance (%) <red>*</red></td>
+                <td>@Html.TextBoxFor(m => m.SneakPercent, new { @id = "SneakPercent", @negative_mod = tfgame.Statics.BalanceStatics.SneakPercent__NegativeModifier, @negative_cap = tfgame.Statics.BalanceStatics.SneakPercent__NegativeCap })</td>
+                <td>@tfgame.Statics.BalanceStatics.SneakPercent__Value</td>
+                <td>@tfgame.Statics.BalanceStatics.SneakPercent__NegativeModifier</td>
+                <td>@tfgame.Statics.BalanceStatics.SneakPercent__NegativeCap</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><span class='icon-defense'></span>Spell evasion (%) <red>*</red></td>
+                <td>@Html.TextBoxFor(m => m.EvasionPercent, new { @id = "EvasionPercent", @negative_mod = tfgame.Statics.BalanceStatics.EvasionPercent__NegativeModifier, @negative_cap = tfgame.Statics.BalanceStatics.EvasionPercent__NegativeCap })</td>
+                <td>@tfgame.Statics.BalanceStatics.EvasionPercent__Value</td>
+                <td>@tfgame.Statics.BalanceStatics.EvasionPercent__NegativeModifier</td>
+                <td>@tfgame.Statics.BalanceStatics.EvasionPercent__NegativeCap</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><span class='icon-timesattacking'></span> evasion NEGATION (%) <red>*</red></td>
+                <td>@Html.TextBoxFor(m => m.EvasionNegationPercent, new { @id = "EvasionNegationPercent", @negative_mod = tfgame.Statics.BalanceStatics.EvasionNegationPercent__NegativeModifier, @negative_cap = tfgame.Statics.BalanceStatics.EvasionNegationPercent__NegativeCap })</td>
+                <td>@tfgame.Statics.BalanceStatics.EvasionNegationPercent__Value</td>
+                <td>@tfgame.Statics.BalanceStatics.EvasionNegationPercent__NegativeModifier</td>
+                <td>@tfgame.Statics.BalanceStatics.EvasionNegationPercent__NegativeCap</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    <span class='icon-cleansemeditate'></span>Extra mana recovered from meditating (Amt)
+                </td>
+                <td>@Html.TextBoxFor(m => m.MeditationExtraMana, new { @id = "MeditationExtraMana", @negative_mod = tfgame.Statics.BalanceStatics.MeditationExtraMana__NegativeModifier, @negative_cap = tfgame.Statics.BalanceStatics.MeditationExtraMana__NegativeCap })</td>
+                <td>@tfgame.Statics.BalanceStatics.MeditationExtraMana__Value</td>
+                <td>@tfgame.Statics.BalanceStatics.MeditationExtraMana__NegativeModifier</td>
+                <td>@tfgame.Statics.BalanceStatics.MeditationExtraMana__NegativeCap</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><span class='icon-cleansemeditate'></span>Extra willpower recovered from cleansing (Amt)</td>
+                <td>@Html.TextBoxFor(m => m.CleanseExtraHealth, new { @id = "CleanseExtraHealth", @negative_mod = tfgame.Statics.BalanceStatics.CleanseExtraHealth__NegativeModifier, @negative_cap = tfgame.Statics.BalanceStatics.CleanseExtraHealth__NegativeCap })</td>
+                <td>@tfgame.Statics.BalanceStatics.CleanseExtraHealth__Value</td>
+                <td>@tfgame.Statics.BalanceStatics.CleanseExtraHealth__NegativeModifier</td>
+                <td>@tfgame.Statics.BalanceStatics.CleanseExtraHealth__NegativeCap</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><span class='icon-timesattacking'></span>Extra spell critical hit chance (%)</td>
+                <td>@Html.TextBoxFor(m => m.ExtraSkillCriticalPercent, new { @id = "ExtraSkillCriticalPercent", @negative_mod = tfgame.Statics.BalanceStatics.ExtraSkillCriticalPercent__NegativeModifier, @negative_cap = tfgame.Statics.BalanceStatics.ExtraSkillCriticalPercent__NegativeCap })</td>
+                <td>@tfgame.Statics.BalanceStatics.ExtraSkillCriticalPercent__Value</td>
+                <td>@tfgame.Statics.BalanceStatics.ExtraSkillCriticalPercent__NegativeModifier</td>
+                <td>@tfgame.Statics.BalanceStatics.ExtraSkillCriticalPercent__NegativeCap</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Action point discount when moving (Amt)</td>
+                <td>@Html.TextBoxFor(m => m.MoveActionPointDiscount, new { @id = "MoveActionPointDiscount", @negative_mod = tfgame.Statics.BalanceStatics.MoveActionPointDiscount__NegativeModifier, @negative_cap = tfgame.Statics.BalanceStatics.MoveActionPointDiscount__NegativeCap })</td>
+                <td>@tfgame.Statics.BalanceStatics.MoveActionPointDiscount__Value</td>
+                <td>@tfgame.Statics.BalanceStatics.MoveActionPointDiscount__NegativeModifier</td>
+                <td>@tfgame.Statics.BalanceStatics.MoveActionPointDiscount__NegativeCap</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><span class='icon-timesattacking'></span>Extra transformation energy from spells (%)</td>
+                <td>@Html.TextBoxFor(m => m.SpellExtraTFEnergyPercent, new { @id = "SpellExtraTFEnergyPercent", @negative_mod = tfgame.Statics.BalanceStatics.SpellExtraTFEnergyPercent__NegativeModifier, @negative_cap = tfgame.Statics.BalanceStatics.SpellExtraTFEnergyPercent__NegativeCap })</td>
+                <td>@tfgame.Statics.BalanceStatics.SpellExtraTFEnergyPercent__Value</td>
+                <td>@tfgame.Statics.BalanceStatics.SpellExtraTFEnergyPercent__NegativeModifier</td>
+                <td>@tfgame.Statics.BalanceStatics.SpellExtraTFEnergyPercent__NegativeCap</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><span class='icon-timesattacking'></span>Extra willpower damage from spells (%)</td>
+                <td>@Html.TextBoxFor(m => m.SpellExtraHealthDamagePercent, new { @id = "SpellExtraHealthDamagePercent", @negative_mod = tfgame.Statics.BalanceStatics.SpellExtraHealthDamagePercent__NegativeModifier, @negative_cap = tfgame.Statics.BalanceStatics.SpellExtraHealthDamagePercent__NegativeCap })</td>
+                <td>@tfgame.Statics.BalanceStatics.SpellExtraHealthDamagePercent__Value</td>
+                <td>@tfgame.Statics.BalanceStatics.SpellExtraHealthDamagePercent__NegativeModifier</td>
+                <td>@tfgame.Statics.BalanceStatics.SpellExtraHealthDamagePercent__NegativeCap</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><span class='icon-cleansemeditate'></span>Extra transformation energy removal when cleansing (%)</td>
+                <td>@Html.TextBoxFor(m => m.CleanseExtraTFEnergyRemovalPercent, new { @id = "CleanseExtraTFEnergyRemovalPercent", @negative_mod = tfgame.Statics.BalanceStatics.CleanseExtraTFEnergyRemovalPercent__NegativeModifier, @negative_cap = tfgame.Statics.BalanceStatics.CleanseExtraTFEnergyRemovalPercent__NegativeCap })</td>
+                <td>@tfgame.Statics.BalanceStatics.CleanseExtraTFEnergyRemovalPercent__Value</td>
+                <td>@tfgame.Statics.BalanceStatics.CleanseExtraTFEnergyRemovalPercent__NegativeModifier</td>
+                <td>@tfgame.Statics.BalanceStatics.CleanseExtraTFEnergyRemovalPercent__NegativeCap</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Misfire chance reduction (%)</td>
+                <td>
+                    @Html.TextBoxFor(m => m.SpellMisfireChanceReduction, new
+           {
+               @id = "SpellMisfireChanceReduction",
+               @negative_mod = tfgame.Statics.BalanceStatics.SpellMisfireChanceReduction__NegativeModifier,
+               @negative_cap = tfgame.Statics.BalanceStatics.SpellMisfireChanceReduction__NegativeCap
+           })
+                </td>
+                <td>@tfgame.Statics.BalanceStatics.SpellMisfireChanceReduction__Value</td>
+                <td>@tfgame.Statics.BalanceStatics.SpellMisfireChanceReduction__NegativeModifier</td>
+                <td>@tfgame.Statics.BalanceStatics.SpellMisfireChanceReduction__NegativeCap</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><span class='icon-defense'></span>Willpower damage reduction when hit by a spell (%)</td>
+                <td>
+                    @Html.TextBoxFor(m => m.SpellHealthDamageResistance, new
+           {
+               @id = "SpellHealthDamageResistance",
+               @negative_mod = tfgame.Statics.BalanceStatics.SpellHealthDamageResistance__NegativeModifier,
+               @negative_cap = tfgame.Statics.BalanceStatics.SpellHealthDamageResistance__NegativeCap
+           })
+                </td>
+                <td>@tfgame.Statics.BalanceStatics.SpellHealthDamageResistance__Value</td>
+                <td>@tfgame.Statics.BalanceStatics.SpellHealthDamageResistance__NegativeModifier</td>
+                <td>@tfgame.Statics.BalanceStatics.SpellHealthDamageResistance__NegativeCap</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><span class='icon-defense'></span>Transformation energy damage reduction when hit by a spell (%)</td>
+                <td>
+                    @Html.TextBoxFor(m => m.SpellTFEnergyDamageResistance, new
+       {
+           @id = "SpellTFEnergyDamageResistance",
+           @negative_mod = tfgame.Statics.BalanceStatics.SpellTFEnergyDamageResistance__NegativeModifier,
+           @negative_cap = tfgame.Statics.BalanceStatics.SpellTFEnergyDamageResistance__NegativeCap
+       })
+                </td>
+                <td>@tfgame.Statics.BalanceStatics.SpellTFEnergyDamageResistance__Value</td>
+                <td>@tfgame.Statics.BalanceStatics.SpellTFEnergyDamageResistance__NegativeModifier</td>
+                <td>@tfgame.Statics.BalanceStatics.SpellTFEnergyDamageResistance__NegativeCap</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Extra inventory spaces (Amt)</td>
+                <td>
+                    @Html.TextBoxFor(m => m.ExtraInventorySpace, new
+       {
+           @id = "ExtraInventorySpace",
+           @negative_mod = tfgame.Statics.BalanceStatics.ExtraInventorySpace__NegativeModifier,
+           @negative_cap = tfgame.Statics.BalanceStatics.ExtraInventorySpace__NegativeCap
+       })
+                </td>
+                <td>@tfgame.Statics.BalanceStatics.ExtraInventorySpace__Value</td>
+                <td>@tfgame.Statics.BalanceStatics.ExtraInventorySpace__NegativeModifier</td>
+                <td>@tfgame.Statics.BalanceStatics.ExtraInventorySpace__NegativeCap</td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <input type="submit" value="Send" />
+
+}
 
 <br />
 
-@*<button type="button" onclick="SetCodeText()">Generate Code</button>*@ 
+@*<button type="button" onclick="SetCodeText()">Generate Code</button>*@
 
 <br />
-@*<p class="bad">Before submitting a contribution, please paste this text into the relevant 'effects' field.  This will help save some time during implementation and testing. </p>*@
-@*<textarea rows="4" cols="50" id="textCode">*@
-    
-</textarea> 
+@*<p class="bad">Before submitting a contribution, please paste this text into the relevant 'effects' field.  This will help save some time during implementation and testing. </p>
+    <textarea rows="4" cols="50" id="textCode">*@
+
+</textarea>
 
 
 
@@ -193,56 +265,45 @@
 
     $(document).ready(function () {
 
+        recalculateCells();
         recalculateValues();
 
+        // remove -99999 minimum cap
+        var minCapCells = $('table tbody td:nth-child(5)');
+        minCapCells.each(function () {
+            if ($(this).html() == "-99999") {
+                $(this).html("");
+            }
+        });
+
+        // remove negative modifier if 0
+        var minCapCells = $('table tbody td:nth-child(4)');
+        minCapCells.each(function () {
+            if ($(this).html() == "0") {
+                $(this).html("");
+            }
+        });
+
         $('table input[type=text]').each(function () {
+
+            // remove text if value is unused
+            if ($(this).val() == "0.00") {
+                $(this).val("");
+            }
+
+
             $(this).blur(function () {
 
-                var cells = $('table tbody td:nth-child(4)');
+                //-----------------------------------
 
-                //cells.each(function () {
-
-
-
-                    // multiply the input by the cost
-                    var localcost = $(this).parent().parent().find("td").eq(2).html();
-                    var myvalue = $(this).val();
-                    var calculated = localcost * myvalue;
-                    var calculateCell = $(this).parent().parent().find("td").eq(3);
-
-                    
-
-
-                    if (calculated != "" && calculated != 0) {
-
-                        // decrease if there's a negative modifier
-                        if ($(this).attr("negative_mod") != undefined && calculated < 0) {
-                            calculated *= .5;
-                        }
-
-                        calculateCell.html(calculated);
-                        if (calculated > 0) {
-                            calculateCell.removeClass("bad");
-                            calculateCell.addClass("good");
-                        } else {
-                            calculateCell.removeClass("good");
-                            calculateCell.addClass("bad");
-                        }
-                    } else {
-                        calculateCell.html("");
-                        $(this).removeClass("good");
-                        $(this).removeClass("bad");
-                    }
-
-               // });
-
+                recalculateCells();
                 recalculateValues();
             });
         });
 
         $("#mobilityType").change(function () {
             choice = $("#mobilityType").val();
-       
+
             if (choice == "full") {
                 $("#desired").html("0");
                 $("#curseDurationWrapper").hide();
@@ -265,20 +326,25 @@
         // default page load
         $("#desired").html("0");
 
+
+
+
     });
 
 
 
     function recalculateValues() {
-       
-        var cells = $('table tbody td:nth-child(4)');
-       
+
+        var cells = $('table tbody td:nth-child(6)');
+
         var total = 0;
-        var absolute = 0;
+        var absolute_total = 0;
 
         cells.each(function () {
+            //alert($(this).html());
             if ($(this).html() != "") {
-                total += parseInt($(this).html());
+                total += parseFloat($(this).html());
+                absolute_total += Math.abs(parseFloat($(this).html()));
             }
         });
 
@@ -287,122 +353,75 @@
         }
 
         $("#total").html(total);
-        var totalDesired = parseInt($("#desired").html());
+        $("#absolute_total").html(absolute_total);
+        var totalDesired = parseFloat($("#desired").html());
 
-       
-        
-        if (Math.abs(total-totalDesired) >= 10) {
+
+
+        if (Math.abs(total - totalDesired) >= 10) {
             $("#total").addClass("bad");
             $("#total").removeClass("good");
         } else {
             $("#total").addClass("good");
             $("#total").removeClass("bad");
         }
- 
+
     }
 
-    //function SetCodeText() {
-    //    $("#textCode").val("");
-    //    var code = "";
+    function recalculateCells() {
 
-    //    var pre, post;
-    //    if ($("#mobilityType").val() == "full") {
-    //        pre = "FromForm_";
-    //        post = ",\n"
-    //    } else {
-    //        pre = "";
-    //        post = ",\n"
-    //    }
+        var cells = $('table tbody td:nth-child(5)');
 
-    //   if ($("#HealthBonusPercent").val() != "") {
-    //       code += pre + "HealthBonusPercent = " + $("#HealthBonusPercent").val() + post;
-    //   }
-    //   if ($("#ManaBonusPercent").val() != "") {
-    //       code += pre + "ManaBonusPercent = " + $("#ManaBonusPercent").val() + post;
-    //   }
+        cells.each(function () {
+            var localcost = $(this).parent().find("td").eq(2).html();
 
-    //   if ($("#HealthRecoveryPerUpdate").val() != "") {
-    //       code += pre + "HealthRecoveryPerUpdate = " + $("#HealthRecoveryPerUpdate").val() + post;
-    //   }
+            var myvalue = $(this).parent().find("input").val();
 
-    //   if ($("#ManaRecoveryPerUpdate").val() != "") {
-    //       code += pre + "ManaRecoveryPerUpdate = " + $("#ManaRecoveryPerUpdate").val() + post;
-    //   }
 
-    //   if ($("#SneakPercent").val() != "") {
-    //       code += pre + "SneakPercent= " + $("#SneakPercent").val() + post;
-    //   }
+            var calculated = localcost * myvalue;
 
-    //   if ($("#EvasionPercent").val() != "") {
-    //       code += pre + "EvasionPercent= " + $("#EvasionPercent").val() + post;
-    //   }
 
-    //   if ($("#EvasionNegationPercent").val() != "") {
-    //       code += pre + "EvasionNegationPercent= " + $("#EvasionNegationPercent").val() + post;
-    //   }
+            var calculateCell = $(this).parent().find("td").eq(5);
 
-    //   if ($("#MeditationExtraMana").val() != "") {
-    //       code += pre + "MeditationExtraMana= " + $("#MeditationExtraMana").val() + post;
-    //   }
+            if (calculated != "" && calculated != 0) {
 
-    //   if ($("#CleanseExtraHealth").val() != "") {
-    //       code += pre + "CleanseExtraHealth= " + $("#CleanseExtraHealth").val() + post;
-    //   }
+                var inputCell = $(this).parent().find("input");
 
-    //   if ($("#ExtraSkillCriticalPercent").val() != "") {
-    //       code += pre + "ExtraSkillCriticalPercent= " + $("#ExtraSkillCriticalPercent").val() + post;
-    //   }
+                // decrease if there's a negative modifier
+                if ((inputCell.attr("negative-mod") != undefined) && (calculated < 0) && (parseFloat(inputCell.attr("negative-mod")) != 0)) {
+                    calculated *= parseFloat(inputCell.attr("negative-mod"));
+                }
 
-    //   if ($("#MoveActionPointDiscount").val() != "") {
-    //       code += pre + "MoveActionPointDiscount= " + $("#MoveActionPointDiscount").val() + post;
-    //   }
+                // add negative clamp if it has one
+                if ((inputCell.attr("negative-cap") != undefined) && (calculated < parseFloat(inputCell.attr("negative-cap")))) {
+                    calculated = parseFloat(inputCell.attr("negative-cap"));
+                }
 
-    //   if ($("#SpellExtraTFEnergyPercent").val() != "") {
-    //       code += pre + "SpellExtraTFEnergyPercent= " + $("#SpellExtraTFEnergyPercent").val() + post;
-    //   }
 
-    //   if ($("#SpellExtraHealthDamagePercent").val() != "") {
-    //       code += pre + "SpellExtraHealthDamagePercent= " + $("#SpellExtraHealthDamagePercent").val() + post;
-    //   }
+                calculateCell.html(calculated);
+                if (calculated > 0) {
+                    calculateCell.removeClass("bad");
+                    calculateCell.addClass("good");
+                } else {
+                    calculateCell.removeClass("good");
+                    calculateCell.addClass("bad");
+                }
+            } else {
+                calculateCell.html("");
+                $(this).removeClass("good");
+                $(this).removeClass("bad");
+            }
+        });
+    }
 
-    //   if ($("#CleanseExtraTFEnergyRemovalPercent").val() != "") {
-    //       code += pre + "CleanseExtraTFEnergyRemovalPercent= " + $("#CleanseExtraTFEnergyRemovalPercent").val() + post;
-    //   }
-
-    //   if ($("#SpellMisfireChanceReduction").val() != "") {
-    //       code += pre + "SpellMisfireChanceReduction= " + $("#SpellMisfireChanceReduction").val() + post;
-    //   }
-
-    //   if ($("#SpellHealthDamageResistance").val() != "") {
-    //       code += pre + "SpellHealthDamageResistance= " + $("#SpellHealthDamageResistance").val() + post;
-    //   }
-
-    //   if ($("#SpellTFEnergyDamageResistance").val() != "") {
-    //       code += pre + "SpellTFEnergyDamageResistance= " + $("#SpellTFEnergyDamageResistance").val() + post;
-    //   }
-
-    //   if ($("#ExtraInventorySpace").val() != "") {
-    //       code += pre + "ExtraInventorySpace= " + $("#ExtraInventorySpace").val() + post;
-    //   }
-
-       
-
-    //   $("#textCode").val(code);
-
-    //}
 
     function Clear() {
 
         var tablerow = $('table tr');
-
-       
-
         $("#balanceTable > tbody > tr").each(function () {
             var cell = $(this).find('input[type=text]');
-            
+
             var rowtotal = $(this).find('td:nth-child(4)');
-            console.log(rowtotal.html());
-          //  jQuery(this).children("img");
             cell.val("");
             rowtotal.html("");
         });

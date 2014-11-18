@@ -461,6 +461,8 @@
     <Content Include="Images\PvP\Icons\icon-protection.png" />
     <Content Include="Images\PvP\Icons\inventory.jpg" />
     <Content Include="Images\PvP\Icons\money.png" />
+    <Content Include="Images\PvP\Icons\offline.png" />
+    <Content Include="Images\PvP\Icons\online.png" />
     <Content Include="Images\PvP\Icons\pet.png" />
     <Content Include="Images\PvP\Icons\pvp.png" />
     <Content Include="Images\PvP\Icons\rp.png" />
@@ -1420,6 +1422,7 @@
     <Content Include="Views\Covenant\partial\CovenantFurnitureViewModel.cshtml" />
     <Content Include="Views\Covenant\MyCovenantLog.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Alpha_11.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\Alpha_12.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

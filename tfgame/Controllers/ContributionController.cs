@@ -190,7 +190,7 @@ namespace tfgame.Controllers
             IDbStaticSkillRepository skillRepo = new EFDbStaticSkillRepository();
             Contribution contribution = contributionRepo.Contributions.FirstOrDefault(c => c.Id == id);
 
-            string skilldbname = "skill_" + contribution.Skill_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
+            string skilldbname = contribution.GetSkillDbName();
             string formdbname = "form_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
 
             DbStaticSkill spell = skillRepo.DbStaticSkills.FirstOrDefault(s => s.dbName == skilldbname);
@@ -511,6 +511,132 @@ namespace tfgame.Controllers
 
             ItemProcedures.LoadItemRAMBuffBox();
 
+            return View("Publish");
+        }
+
+        public ActionResult PublishEffect(int id)
+        {
+            if (WebSecurity.CurrentUserId != 69)
+            {
+                return View("ContributorBioList");
+            }
+
+            string message = "";
+
+            IEffectContributionRepository contRepo = new EFEffectContributionRepository();
+            IDbStaticEffectRepository effectRepo = new EFDbStaticEffectRepository();
+
+            EffectContribution contribution = contRepo.EffectContributions.FirstOrDefault(e => e.Id == id);
+            string effectDbName = contribution.GetEffectDbName();
+            DbStaticEffect effect = effectRepo.DbStaticEffects.FirstOrDefault(e => e.dbName == effectDbName);
+
+  
+            if (effect == null)
+            {
+                effect = new DbStaticEffect
+                {
+                    dbName = contribution.GetEffectDbName(),
+                };
+                message += "<p class='bad'>Made new effect.</p>";
+            }
+            else
+            {
+                message += "<p class='good'>Loaded existing effect.</p>";
+            }
+
+            effect.FriendlyName = contribution.Effect_FriendlyName;
+            effect.Description = contribution.Effect_Description;
+           // effect.AvailableAtLevel = 0;
+           // effect.PreRequesite = contribution.Effect_Pre
+
+          //  effect.isLevelUpPerk = contribution.;
+            effect.Duration = contribution.Effect_Duration;
+            effect.Cooldown = contribution.Effect_Cooldown;
+
+            effect.ObtainedAtLocation = contribution.Skill_UniqueToLocation;
+
+            effect.MessageWhenHit = contribution.Effect_VictimHitText;
+            effect.MessageWhenHit_M = contribution.Effect_VictimHitText_M;
+            effect.MessageWhenHit_F = contribution.Effect_VictimHitText_F;
+
+            effect.AttackerWhenHit = contribution.Effect_AttackHitText;
+            effect.AttackerWhenHit_M = contribution.Effect_AttackHitText_M;
+            effect.AttackerWhenHit_F = contribution.Effect_AttackHitText_F;
+
+            effect.HealthBonusPercent = contribution.HealthBonusPercent;
+            effect.ManaBonusPercent = contribution.ManaBonusPercent;
+            effect.ExtraSkillCriticalPercent = contribution.ExtraSkillCriticalPercent;
+            effect.HealthRecoveryPerUpdate = contribution.HealthRecoveryPerUpdate;
+            effect.ManaRecoveryPerUpdate = contribution.ManaRecoveryPerUpdate;
+            effect.SneakPercent = contribution.SneakPercent;
+            effect.EvasionPercent = contribution.EvasionPercent;
+            effect.EvasionNegationPercent = contribution.EvasionNegationPercent;
+            effect.MeditationExtraMana = contribution.MeditationExtraMana;
+            effect.CleanseExtraHealth = contribution.CleanseExtraHealth;
+            effect.MoveActionPointDiscount = contribution.MoveActionPointDiscount;
+            effect.SpellExtraTFEnergyPercent = contribution.SpellExtraTFEnergyPercent;
+            effect.SpellExtraHealthDamagePercent = contribution.SpellExtraHealthDamagePercent;
+            effect.CleanseExtraTFEnergyRemovalPercent = contribution.CleanseExtraTFEnergyRemovalPercent;
+            effect.SpellMisfireChanceReduction = contribution.SpellMisfireChanceReduction;
+            effect.SpellHealthDamageResistance = contribution.SpellHealthDamageResistance;
+            effect.SpellTFEnergyDamageResistance = contribution.SpellTFEnergyDamageResistance;
+            effect.ExtraInventorySpace = contribution.ExtraInventorySpace;
+
+            // if this is a castable skill, we need to create or update the skill as well.
+            if ((contribution.Skill_UniqueToForm != null && contribution.Skill_UniqueToForm != "") || (contribution.Skill_UniqueToItem != null && contribution.Skill_UniqueToLocation != ""))
+            {
+                IDbStaticSkillRepository skillRepo = new EFDbStaticSkillRepository();
+
+            }
+
+            effectRepo.SaveDbStaticEffect(effect);
+
+
+            ViewBag.Message = message;
+            EffectProcedures.LoadEffectRAMBuffBox();
+            return View("Publish");
+        }
+
+        public ActionResult PublishSpell_Effect(int id)
+        {
+            if (WebSecurity.CurrentUserId != 69)
+            {
+                return View("ContributorBioList");
+            }
+
+            IEffectContributionRepository contRepo = new EFEffectContributionRepository();
+            IDbStaticSkillRepository skillRepo = new EFDbStaticSkillRepository();
+
+            EffectContribution contribution = contRepo.EffectContributions.First(e => e.Id == id);
+            string effectDbName = contribution.GetSkillDbName();
+            DbStaticSkill skill = skillRepo.DbStaticSkills.FirstOrDefault(s => s.GivesEffect == effectDbName);
+
+            string message = "";
+
+            if (skill == null)
+            {
+                skill = new DbStaticSkill();
+                skill.dbName = contribution.GetEffectDbName();
+                message += "<p class='bad'>Made new spell.</p>";
+            }
+            else
+            {
+                message += "<p class='good'>Loaded existing spell.</p>";
+            }
+
+            skill.GivesEffect = contribution.GetEffectDbName();
+            skill.Description = contribution.Skill_Description;
+            skill.FriendlyName = contribution.Skill_FriendlyName;
+
+            skill.ManaCost = contribution.Skill_ManaCost;
+            skill.MobilityType = "curse";
+
+            skill.ExclusiveToForm = contribution.Skill_UniqueToForm;
+            skill.ExclusiveToItem = contribution.Skill_UniqueToItem;
+
+            skillRepo.SaveDbStaticSkill(skill);
+
+            ViewBag.Message = message;
             return View("Publish");
         }
 

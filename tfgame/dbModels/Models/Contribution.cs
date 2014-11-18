@@ -277,5 +277,10 @@ namespace tfgame.dbModels.Models
         public decimal SpellTFEnergyDamageResistance { get; set; }
         public decimal ExtraInventorySpace { get; set; }
 
+        public string GetSkillDbName()
+        {
+            return "skill_" + this.Skill_FriendlyName.Replace(" ", "_") + "_" + this.SubmitterName.Replace(" ", "_");
+        }
+
     }
 }

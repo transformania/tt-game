@@ -39,8 +39,8 @@ namespace tfgame.Controllers
             ViewBag.ErrorMessage = TempData["Error"];
             ViewBag.SubErrorMessage = TempData["SubError"];
             ViewBag.Result = TempData["Result"];
-            
 
+            ViewBag.IAmCaptain = CovenantProcedures.PlayerIsCaptain(output.dbCovenant, me);
            
             ViewBag.HasApplication = CovenantProcedures.PlayerHasPendingApplication(me);
 
@@ -348,7 +348,7 @@ namespace tfgame.Controllers
 
             // assert that the player is a covenant leader
             Covenant myCov = CovenantProcedures.GetDbCovenant(me.Covenant);
-            if (myCov.LeaderId != me.Id)
+            if (myCov.LeaderId != me.Id && !CovenantProcedures.PlayerIsCaptain(myCov, me))
             {
                 TempData["Error"] = "You are not the leader of this covenant.";
                 TempData["SubError"] = "Only covenant leaders can accept or reject applications.";
@@ -356,6 +356,14 @@ namespace tfgame.Controllers
             }
 
             ViewBag.UpgradeCost = CovenantProcedures.GetUpgradeCost(myCov).ToString();
+
+
+            if (myCov.LeaderId == me.Id) {
+                ViewBag.LeaderOrCaptain = "leader";
+            } else if (CovenantProcedures.PlayerIsCaptain(myCov, me) == true) {
+                ViewBag.LeaderOrCaptain = "captain";
+            }
+
 
             return View();
         }
@@ -545,12 +553,12 @@ namespace tfgame.Controllers
                  return RedirectToAction("MyCovenant");
              }
 
-             // assert that the player is a covenant leader
+             // assert that the player is a covenant leader or captain
              Covenant myCov = CovenantProcedures.GetDbCovenant(me.Covenant);
-             if (myCov.LeaderId != me.Id)
+             if (myCov.LeaderId != me.Id && !CovenantProcedures.PlayerIsCaptain(myCov, me))
              {
-                 TempData["Error"] = "You are not the leader of your covenant.";
-                 TempData["SubError"] = "Only covenant leaders can gift out money from the covenant's Arpeyjis chest.";
+                 TempData["Error"] = "You are not the leader or a captain of your covenant.";
+                 TempData["SubError"] = "Only covenant leaders and captains can gift out money from the covenant's Arpeyjis chest.";
                  return RedirectToAction("MyCovenant");
              }
 
@@ -795,6 +803,8 @@ namespace tfgame.Controllers
              ViewBag.CovenantMoney = (int)myCov.Money;
 
              ViewBag.FurnitureLimit = CovenantProcedures.GetCovenantFurnitureLimit(myCov);
+
+             ViewBag.IAmCaptain = CovenantProcedures.PlayerIsCaptain(myCov, me);
              
             return View(output);
         }
@@ -811,9 +821,9 @@ namespace tfgame.Controllers
                  return RedirectToAction("MyCovenant");
              }
 
-             // assert that the player is a covenant leader
+             // assert that the player is a covenant leader or captain
              Covenant myCov = CovenantProcedures.GetDbCovenant(me.Covenant);
-             if (myCov.LeaderId != me.Id)
+             if (myCov.LeaderId != me.Id && !CovenantProcedures.PlayerIsCaptain(myCov, me))
              {
                  TempData["Error"] = "You are not the leader of your covenant.";
                  TempData["SubError"] = "Only covenant leaders can gift out money from the covenant's Arpeyjis chest.";
@@ -972,6 +982,76 @@ namespace tfgame.Controllers
             IEnumerable<CovenantLog> output = CovenantProcedures.GetCovenantLogs(me.Covenant);
 
             return View(output);
+        }
+
+        [Authorize]
+        public ActionResult InviteCaptainList()
+        {
+            Player me = PlayerProcedures.GetPlayerFromMembership();
+
+            // assert that player is in a covenant
+            if (me.Covenant <= 0)
+            {
+                TempData["Error"] = "You are not in a covenant.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            // assert that the player is a covenant leader
+            Covenant myCov = CovenantProcedures.GetDbCovenant(me.Covenant);
+            if (myCov.LeaderId != me.Id)
+            {
+                TempData["Error"] = "You are not the leader of your covenant.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            CovenantViewModel output = CovenantProcedures.GetCovenantViewModel(me.Covenant);
+
+            ViewBag.CurrentCaptains = myCov.Captains;
+
+            return View(output);
+        }
+
+        [Authorize]
+        public ActionResult InviteCaptainSend(int id)
+        {
+            Player me = PlayerProcedures.GetPlayerFromMembership();
+
+            // assert that player is in a covenant
+            if (me.Covenant <= 0)
+            {
+                TempData["Error"] = "You are not in a covenant.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            // assert that the player is a covenant leader
+            Covenant myCov = CovenantProcedures.GetDbCovenant(me.Covenant);
+            if (myCov.LeaderId != me.Id)
+            {
+                TempData["Error"] = "You are not the leader of your covenant.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            Player newCaptain = PlayerProcedures.GetPlayer(id);
+
+            // assert that the target player is in the same covenant
+            if (newCaptain.Covenant != myCov.Id)
+            {
+                TempData["Error"] = "This player is not a member of your covenant and cannot be made a captain.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            // assert that the target is not the covenant leader
+            if (newCaptain.Id == myCov.LeaderId)
+            {
+                TempData["Error"] = "This player is the leader of the covenant.";
+                TempData["SubError"] = "There is nothing a covenant captain can do that a leader cannot.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            string result = CovenantProcedures.ChangeCovenantCaptain(myCov, newCaptain);
+
+            TempData["Result"] = result;
+            return RedirectToAction("MyCovenant");
         }
 
 

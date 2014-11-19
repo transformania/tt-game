@@ -77,7 +77,7 @@
 </p>
 
 
-                if (ViewBag.Player.Id == Model.dbCovenant.LeaderId)
+                if (ViewBag.Player.Id == Model.dbCovenant.LeaderId || ViewBag.IAmCaptain == true)
                 {
                     <div class="commandWrapper" style="height: 24px;">
                         <span>Send Arp to @p.Player.FirstName?</span>

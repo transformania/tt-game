@@ -244,6 +244,7 @@
     <Compile Include="dbModels\Abstract\IPlayerExtraRepository.cs" />
     <Compile Include="dbModels\Abstract\IPlayerLogRepository.cs" />
     <Compile Include="dbModels\Abstract\IPlayerRepository.cs" />
+    <Compile Include="dbModels\Abstract\IPollEntryRepository.cs" />
     <Compile Include="dbModels\Abstract\IPvPWorldStatRepository.cs" />
     <Compile Include="dbModels\Abstract\IReservedNameRepository.cs" />
     <Compile Include="dbModels\Abstract\IRPPointRepository.cs" />
@@ -263,6 +264,7 @@
     <Compile Include="dbModels\Concrete\EFDonatorRepository.cs" />
     <Compile Include="dbModels\Concrete\EFFurnitureRepository.cs" />
     <Compile Include="dbModels\Concrete\EFPlayerExtraRepository.cs" />
+    <Compile Include="dbModels\Concrete\EFPollEntryRepository.cs" />
     <Compile Include="dbModels\Concrete\EFRPPointRespository.cs" />
     <Compile Include="dbModels\Concrete\EFTFMessageRepository.cs" />
     <Compile Include="dbModels\Models\BlacklistEntry.cs" />
@@ -312,6 +314,7 @@
     <Compile Include="dbModels\Models\PlayerBio.cs" />
     <Compile Include="dbModels\Models\PlayerExtra.cs" />
     <Compile Include="dbModels\Models\PlayerLog.cs" />
+    <Compile Include="dbModels\Models\PollEntry.cs" />
     <Compile Include="dbModels\Models\PvPWorldStat.cs" />
     <Compile Include="dbModels\Models\ReservedName.cs" />
     <Compile Include="dbModels\Models\RPPoint.cs" />
@@ -1423,6 +1426,9 @@
     <Content Include="Views\Covenant\MyCovenantLog.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Alpha_11.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Alpha_12.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\XP\Alpha_12.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_12.cshtml" />
+    <Content Include="Views\Covenant\InviteCaptainList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

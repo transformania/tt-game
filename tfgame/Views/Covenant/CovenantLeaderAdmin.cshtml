@@ -11,14 +11,22 @@
 
 <p>You can administer your covenant here.  When you expand your covenant safeground you increase your covenant's level by 1 which allows it to hold more furniture and increase the action point refill bonus from resting in the covenant's safeground.</p>
 
-<p>
-    @Html.ActionLink("View Applications", "ReviewMyCovenantApplications", "Covenant")<br />
-    @Html.ActionLink("Change Covenant Description", "ChangeCovenantDescription", "Covenant")<br />
-    @Html.ActionLink("Kick Out a Member", "KickList", "Covenant")<br />
-    @Html.ActionLink("Message all members of your covenant", "CovenantWideMessage", "Covenant")<br />
-    @Html.ActionLink("Claim your location as a Covenant safeground", "ClaimLocation", "Covenant")<br />
-    @Html.ActionLink("Expand Covenant Safeground (" + (string)ViewBag.UpgradeCost + " Arpeyjis)", "UpgradeSafeground", "Covenant")<br />
-</p>
+@{
+    if (ViewBag.LeaderOrCaptain == "leader")
+    {
+        <p>
+            @Html.ActionLink("View Applications", "ReviewMyCovenantApplications", "Covenant")<br />
+            @Html.ActionLink("Change Covenant Description", "ChangeCovenantDescription", "Covenant")<br />
+            @Html.ActionLink("Promote a member to a captain", "InviteCaptainList", "Covenant")<br />
+            @Html.ActionLink("Kick Out a Member", "KickList", "Covenant")<br />
+            @Html.ActionLink("Message all members of your covenant", "CovenantWideMessage", "Covenant")<br />
+            @Html.ActionLink("Claim your location as a Covenant safeground", "ClaimLocation", "Covenant")<br />
+            @Html.ActionLink("Expand Covenant Safeground (" + (string)ViewBag.UpgradeCost + " Arpeyjis)", "UpgradeSafeground", "Covenant")<br />
+        </p>
+    }
+}
+
+
 
 
 <p>

@@ -19,6 +19,7 @@ namespace tfgame.dbModels.Models
         public string Boss_Bimbo { get; set; }
         public string GameNewsDate { get; set; }
         public bool TestServer { get; set; }
+        public bool InbetweenRoundsNonChaos { get; set; }
 
         public bool IsDonnaAvailable()
         {

@@ -28,6 +28,7 @@ namespace tfgame.dbModels.Models
         public int FounderMembershipId { get; set; }
         public bool IsPvP { get; set; }
         public string formerMembers { get; set; }
+        public string Captains { get; set; }
         public decimal Money { get; set; }
         public string HomeLocation { get; set; }
 

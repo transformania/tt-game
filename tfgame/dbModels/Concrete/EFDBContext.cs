@@ -56,5 +56,6 @@ namespace tfgame.dbModels.Concrete
 
         public DbSet<ChatLog> ChatLogs { get; set; }
         public DbSet<DMRoll> DMRolls { get; set; }
+        public DbSet<PollEntry> PollEntries { get; set; }
     }
 }

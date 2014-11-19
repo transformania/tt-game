@@ -1009,7 +1009,7 @@ namespace tfgame.Controllers
 
            // AIProcedures.SpawnAIPsychopaths(15, 0);
 
-            BuffBox temp = ItemProcedures.GetPlayerBuffsRAM(PlayerProcedures.GetPlayerFromMembership());
+            BossProcedures_BimboBoss.SpawnBimboBoss();
 
             return RedirectToAction("Index");
         }

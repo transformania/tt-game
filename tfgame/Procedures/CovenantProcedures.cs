@@ -137,6 +137,7 @@ namespace tfgame.Procedures
             dbCov.Name = newcov.Name;
             dbCov.SelfDescription = newcov.SelfDescription;
             dbCov.LeaderId = newcov.LeaderId;
+            dbCov.Captains = "";
 
             covRepo.SaveCovenant(dbCov);
 
@@ -170,7 +171,9 @@ namespace tfgame.Procedures
             ICovenantRepository covRepo = new EFCovenantRepository();
             Covenant possible = covRepo.Covenants.FirstOrDefault(c => c.Id == player.Covenant);
 
-            if (GetPlayerCountInCovenant(possible) == 0)
+            int covMemberCount = GetPlayerCountInCovenant(possible);
+
+            if (covMemberCount == 0)
             {
                 covRepo.DeleteCovenant(possible.Id);
 
@@ -183,6 +186,17 @@ namespace tfgame.Procedures
                 possible.LeaderId = nextleader.Id;
                 covRepo.SaveCovenant(possible);
             }
+
+            // remove the player from the covenant captain list if they are on it.  Catch null because covenant may have been deleted.
+            try
+            {
+                ChangeCovenantCaptain(possible, dbPlayer, true);
+            }
+            catch
+            {
+
+            }
+
             LoadCovenantDictionary();
 
             string covMessage = player.GetFullName() + " is no longer a member of the covenant.";
@@ -448,7 +462,50 @@ namespace tfgame.Procedures
             IFurnitureRepository furnRepo = new EFFurnitureRepository();
             return furnRepo.Furnitures.Where(f => f.CovenantId == covenant.Id).Count();
         }
-    
+
+        public static string ChangeCovenantCaptain(Covenant covenant, Player player)
+        {
+            return ChangeCovenantCaptain(covenant, player, false);
+        }
+
+        public static string ChangeCovenantCaptain(Covenant covenant, Player player, bool removeOnly)
+        {
+            ICovenantRepository covRepo = new EFCovenantRepository();
+            Covenant dbCovenant = covRepo.Covenants.FirstOrDefault(i => i.Id == covenant.Id);
+
+            string playerIdString = player.Id + ";";
+
+            string msg = "";
+
+            // if the captains is null, change it to have an empty string to prevent null exceptions
+            if (dbCovenant.Captains == null)
+            {
+                dbCovenant.Captains = "";
+                covRepo.SaveCovenant(dbCovenant);
+            }
+
+            if (dbCovenant.Captains.Contains(playerIdString) == true || removeOnly == true)
+            {
+                dbCovenant.Captains = dbCovenant.Captains.Replace(playerIdString, "");
+                covRepo.SaveCovenant(dbCovenant);
+                WriteCovenantLog(player.GetFullName() + " is no longer a captain of the covenant.", covenant.Id, true);
+                return player.GetFullName() + " is no longer a captain of the covenant.";
+            } else if (removeOnly == false) {
+                dbCovenant.Captains += playerIdString;
+                covRepo.SaveCovenant(dbCovenant);
+                WriteCovenantLog(player.GetFullName() + " is now a captain of the covenant.", covenant.Id, true);
+                return player.GetFullName() + " is now a captain of the covenant.";
+            }
+            return "";
+            
+        }
+
+        public static bool PlayerIsCaptain(Covenant covenant, Player player)
+        {
+            string idString = player.Id + ";";
+            return covenant.Captains.Contains(idString);
+
+        }
 
     }
 }

@@ -502,6 +502,10 @@ namespace tfgame.Procedures
 
         public static bool PlayerIsCaptain(Covenant covenant, Player player)
         {
+            if (covenant == null)
+            {
+                return false;
+            }
             string idString = player.Id + ";";
             return covenant.Captains.Contains(idString);
 

@@ -344,8 +344,7 @@ namespace tfgame.Procedures
                  // remove all of the old player's player logs
                  PlayerLogProcedures.ClearPlayerLog(oldplayer.Id);
 
-                 // remove all of the old player's skills
-                 SkillProcedures.DeleteAllPlayerSkills(oldplayer.Id);
+
 
                  // remove all of the old player's TF energies
                  TFEnergyProcedures.DeleteAllPlayerTFEnergies(oldplayer.Id);
@@ -410,11 +409,13 @@ namespace tfgame.Procedures
                     newplayer.Level = 1;
                 }
                 newplayer.UnusedLevelUpPerks = newplayer.Level - 1;
+
+
+
             }
 
             // start player in PvP if they choose.  Remember, PvP = protection now...
             newplayer.InPvP = !player.StartInPVP;
-            newplayer.UnusedLevelUpPerks = 0;
 
             if (player.StartInRP == true)
             {
@@ -424,9 +425,6 @@ namespace tfgame.Procedures
             {
                 newplayer.InRP = false;
             }
-          
-           
-            
 
             // set a random location for this character to spawn in
             List<string> spawnableLocations = LocationsStatics.GetLocation.Select(l => l.dbName).ToList();
@@ -438,11 +436,15 @@ namespace tfgame.Procedures
             string locationToSpawnIn = spawnableLocations.ElementAt(index);
             newplayer.dbLocationName = locationToSpawnIn;
 
-            
-              // assign the player their appropriate donation level
-            
-
             playerRepo.SavePlayer(newplayer);
+
+            if (oldplayer != null)
+            {
+                // transfer all of the old player's skills that are NOT form specific or weaken
+                SkillProcedures.TransferAllPlayerSkills(oldplayer.Id, newplayer.Id);
+            }
+
+            // assign the player their appropriate donation level
             DonatorProcedures.SetNewPlayerDonationRank(newplayer.FirstName + " " + newplayer.LastName);
 
             // if the player was in a covenant, they might have been the leader.  Check this and make a new player the leader

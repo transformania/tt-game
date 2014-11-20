@@ -16,11 +16,11 @@
                 @{
             if (l.IsImportant == true)
             {
-                <span><b>@l.Message</b></span>
+                <span><b>@Html.Raw(l.Message)</b></span>
             }
             else
             {
-                <span>@l.Message</span>
+                <span>@Html.Raw(l.Message)</span>
             }
                 }
 

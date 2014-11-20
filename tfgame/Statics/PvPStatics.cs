@@ -166,6 +166,7 @@ namespace tfgame.Statics
         public static string ItemType_Pet = "pet";
 
         public const int PsychopathDefaultAmount = 15;
+        public const int Covenant_MaximumAnimatePlayerCount = 25;
 
         public const int Covenant_MinimumUpgradeAnimateLvl3PlayerCount = 5;
 

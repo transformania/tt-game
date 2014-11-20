@@ -249,11 +249,8 @@ namespace tfgame.Procedures
             {
                 dbPlayer.Level--;
                 dbPlayer.UnusedLevelUpPerks--;
-                //output = "  Unfortunately, as your last animate form becomes a more distant memory, you lose an experience level, which will set you back when or if you do regain an animate body.";
                 dbPlayer.XP = PvPStatics.XP__LevelupRequirementByLevel[player.Level-1] - 1;
             }
-
-          //  playerRepo.SavePlayer(dbPlayer);
 
             double strugglesMade = Convert.ToDouble(inanimXP.TimesStruggled);
 
@@ -265,6 +262,17 @@ namespace tfgame.Procedures
 
             if (roll < strugglesMade)
             {
+
+                // assert that the covenant the victim is in is not too full to accept them back in
+                if (dbPlayer.Covenant > 0)
+                {
+                    Covenant victimCov = CovenantProcedures.GetCovenantViewModel(dbPlayer.Covenant).dbCovenant;
+                    if (victimCov != null && CovenantProcedures.GetPlayerCountInCovenant(victimCov, true) >= PvPStatics.Covenant_MaximumAnimatePlayerCount)
+                    {
+                        return "Although you had enough energy to break free from your body as a " + itemPlus.FriendlyName + " and restore your regular body, you were unfortunately not able to break free because there is no more room in your covenant for any more animate mages.";
+                    }
+                }
+        
                
                 // if the item has an owner, notify them via a message.
                 if (dbPlayerItem.OwnerId != -1)
@@ -318,9 +326,6 @@ namespace tfgame.Procedures
             else
             {
                 // raise the probability of success for next time somewhat proportion to how many turns they missed
-
-                
-
                 inanimXP.TimesStruggled += Convert.ToInt32(strugglebonus);
                 inanimXP.LastActionTimestamp = DateTime.UtcNow;
                 inanimXP.LastActionTurnstamp = currentGameTurn;

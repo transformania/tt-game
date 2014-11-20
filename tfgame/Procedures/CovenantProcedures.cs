@@ -171,7 +171,7 @@ namespace tfgame.Procedures
             ICovenantRepository covRepo = new EFCovenantRepository();
             Covenant possible = covRepo.Covenants.FirstOrDefault(c => c.Id == player.Covenant);
 
-            int covMemberCount = GetPlayerCountInCovenant(possible);
+            int covMemberCount = GetPlayerCountInCovenant(possible, false);
 
             if (covMemberCount == 0)
             {
@@ -203,10 +203,20 @@ namespace tfgame.Procedures
             WriteCovenantLog(covMessage, possible.Id, true);
         }
 
-        public static int GetPlayerCountInCovenant(Covenant covenant)
+        public static int GetPlayerCountInCovenant(Covenant covenant, bool animateOnly)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            return playerRepo.Players.Where(p => p.Covenant == covenant.Id).Count();
+
+            if (animateOnly == true)
+            {
+                return playerRepo.Players.Where(p => p.Covenant == covenant.Id && p.Mobility == "full").Count();
+            }
+            else
+            {
+                return playerRepo.Players.Where(p => p.Covenant == covenant.Id).Count();
+            }
+
+            
         }
 
         public static int GetPlayerCountInCovenant_Animate_Lvl3(Covenant covenant)

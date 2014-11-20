@@ -199,6 +199,24 @@ namespace tfgame.Procedures
             }
         }
 
+        public static void TransferAllPlayerSkills(int oldPlayerId, int newPlayerId)
+        {
+            ISkillRepository skillRepo = new EFSkillRepository();
+            IEnumerable<Skill> skillsToDelete = skillRepo.Skills.Where(s => s.OwnerId == oldPlayerId && s.Name != "lowerHealth").ToList();
+
+            foreach (Skill s in skillsToDelete)
+            {
+                s.OwnerId = newPlayerId;
+                skillRepo.SaveSkill(s);
+            }
+
+            Skill weakenSkill = skillRepo.Skills.FirstOrDefault(s => s.OwnerId == oldPlayerId && s.Name == "lowerHealth");
+            if (weakenSkill != null)
+            {
+                skillRepo.DeleteSkill(weakenSkill.Id);
+            }
+        }
+
         public static void GiveFormSpecificSkillsToPlayer(Player player, string formdbName)
         {
             ISkillRepository skillRepo = new EFSkillRepository();

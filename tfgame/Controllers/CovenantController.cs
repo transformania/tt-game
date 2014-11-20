@@ -141,6 +141,14 @@ namespace tfgame.Controllers
                 return RedirectToAction("MyCovenant");
             }
 
+            // assert that the covenant doesn't already have too many animate players
+            if (response == "yes" && CovenantProcedures.GetPlayerCountInCovenant(myCov, true) >= PvPStatics.Covenant_MaximumAnimatePlayerCount)
+            {
+                TempData["Error"] = "The maximum number of animate players in your covenant has already been reached.";
+                TempData["SubError"] = "You will not be able to accept this player's covenant request until there is room in the covent or they are no longer animate.";
+                return RedirectToAction("MyCovenant");
+            }
+
            // assert that the last acceptance wasn't too soon if it's past the first full day of the turn
             double minutesAgo = Math.Abs(Math.Floor(myCov.LastMemberAcceptance.Subtract(DateTime.UtcNow).TotalMinutes));
             if ((PvPWorldStatProcedures.GetWorldTurnNumber() > 144) && minutesAgo < 120)

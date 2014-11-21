@@ -717,6 +717,36 @@ a.talkLink {
     overflow-y: scroll;
 }
 
+#logSize{
+    text-align: left;
+    display:block;
+    float: left;
+}
+
+@media all and (min-width: 1880px) {
+    #RecentActivityLog {
+        overflow-y: scroll;
+        top: 60px;
+        width: 400px;
+        position: absolute;
+        max-height: 1000px;
+        right: 15px;
+    }
+
+    #logTitle{
+        position: absolute;
+        top: 20px;
+        right: 90px;
+    }
+
+    #logSize {
+        visibility: hidden;
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+}
+
 .icon-clock {
     width: 20px;
     height: 20px;

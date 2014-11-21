@@ -6,8 +6,8 @@
 
 <div style="clear:both;"></div>
 
-<h2>Recent activity here:</h2>
-<p style="text-align: left; display:block; float: left;">log size: <a href="javascript:void(0)" onclick="document.getElementById('RecentActivityLog').style.maxHeight = '190px'">default</a> <a href="javascript:void(0)" onclick="document.getElementById('RecentActivityLog').style.maxHeight = '9999px'">full</a> </p>
+<h2 id="logTitle">Recent activity here:</h2>
+<p id="logSize">log size: <a href="javascript:void(0)" onclick="document.getElementById('RecentActivityLog').style.maxHeight = '190px'">default</a> <a href="javascript:void(0)" onclick="document.getElementById('RecentActivityLog').style.maxHeight = '9999px'">full</a> </p>
 <ul id="RecentActivityLog" style="clear:both;">
     @{
         foreach (tfgame.dbModels.Models.LocationLog log in Model)

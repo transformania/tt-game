@@ -5,12 +5,11 @@
 }
 
 body {
-    background-color: #fff;
-    border-top: solid 10px #000;
+    background-color: #000;
     color: #333;
-    font-size: .85em;
+    font-size: 14px;
     font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
-    margin: 0;
+    margin: -10px 0px 0px 0px;
     padding: 0;
 }
 
@@ -146,9 +145,9 @@ footer {
 ----------------------------------------------------------*/
 #login {
     display: block;
-    font-size: .85em;
     margin: 0 0 10px;
     text-align: right;
+    color: white;
 }
 
     #login a {
@@ -161,6 +160,7 @@ footer {
 
     #login a.username {
         background: none;
+        color: red;
         margin: 0;
         padding: 0;
         text-decoration: underline;

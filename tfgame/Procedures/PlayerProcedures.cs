@@ -484,9 +484,9 @@ namespace tfgame.Procedures
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
             Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            string oldForm = dbPlayer.Form;
             dbPlayer.Form = dbPlayer.OriginalForm;
-            dbPlayer.NormalizeHealthMana();
-
+            
             if (dbPlayer.Form == "man_01" || dbPlayer.Form == "man_02" || dbPlayer.Form == "man_03" || dbPlayer.Form == "man_04" || dbPlayer.Form ==  "man_05")
             {
                 dbPlayer.Gender = "male";
@@ -496,7 +496,11 @@ namespace tfgame.Procedures
                 dbPlayer.Gender = "female";
             }
 
+            dbPlayer.NormalizeHealthMana();
+
             playerRepo.SavePlayer(dbPlayer);
+
+            SkillProcedures.UpdateFormSpecificSkillsToPlayer(dbPlayer, oldForm, dbPlayer.Form);
 
 
 
@@ -605,14 +609,6 @@ namespace tfgame.Procedures
 
             return output;
         }
-
-        //public static IEnumerable<Player> GetPlayersAtLocation(string destinationDbName)
-        //{
-        //    IPlayerRepository playerRepo = new EFPlayerRepository();
-        //    IEnumerable<Player> output = playerRepo.Players.Where(p => p.dbLocationName == destinationDbName && p.MembershipId != WebSecurity.CurrentUserId).ToList();
-
-        //    return output;
-        //}
 
         public static void ChangePlayerActionMana(decimal actionPoints, decimal health, decimal mana,  int playerId)
         {

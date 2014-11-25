@@ -394,8 +394,7 @@ namespace tfgame.Procedures
                 if (targetForm.MobilityType == "full")
                 {
 
-                    SkillProcedures.RemoveFormSpecificSkillsToPlayer(target, target.Form);
-                    SkillProcedures.GiveFormSpecificSkillsToPlayer(target, targetForm.dbName);
+                    SkillProcedures.UpdateFormSpecificSkillsToPlayer(target, oldForm.dbName, targetForm.dbName);
 
                     target.Form = targetForm.dbName;
                     target.Gender = targetForm.Gender;
@@ -437,8 +436,7 @@ namespace tfgame.Procedures
                 else if ((targetForm.MobilityType == "inanimate" || targetForm.MobilityType == "animal") && target.Health <= 0)
                 {
 
-                    SkillProcedures.RemoveFormSpecificSkillsToPlayer(target, target.Form);
-                    SkillProcedures.GiveFormSpecificSkillsToPlayer(target, targetForm.dbName);
+                    SkillProcedures.UpdateFormSpecificSkillsToPlayer(target, oldForm.dbName, targetForm.dbName);
 
                     target.Form = targetForm.dbName;
                     target.Gender = targetForm.Gender;
@@ -492,9 +490,7 @@ namespace tfgame.Procedures
 
                     }
 
-                    output.AttackerLog += "  You collect " + moneygain + " Arpeyjis your victim dropped during the transformation.";
-
-
+                    output.AttackerLog += "  You collect " + Math.Round(moneygain,0) + " Arpeyjis your victim dropped during the transformation.";
 
                     // release the player's pet if there is one
                     Player pet = playerRepo.Players.FirstOrDefault(p => p.IsPetToId == victim.Id);

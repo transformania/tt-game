@@ -217,13 +217,22 @@ namespace tfgame.Procedures
             }
         }
 
-        public static void GiveFormSpecificSkillsToPlayer(Player player, string formdbName)
+        public static void UpdateFormSpecificSkillsToPlayer(Player player, string oldFormDbName, string newFormDbName)
         {
             ISkillRepository skillRepo = new EFSkillRepository();
 
-            List<DbStaticSkill> formSpecificSkills = SkillStatics.GetFormSpecificSkills(formdbName).ToList();
+            // delete all of the old form specific skills
+            IEnumerable<SkillViewModel2> formSpecificSkills = GetSkillViewModelsOwnedByPlayer(player.Id).ToList();
+            IEnumerable<int> formSpecificSkillIds = formSpecificSkills.Where(s => s.MobilityType == "curse" && s.Skill.ExclusiveToForm != newFormDbName).Select(s => s.dbSkill.Id).ToList();
 
-            foreach (DbStaticSkill skill in formSpecificSkills)
+            foreach (int id in formSpecificSkillIds)
+            {
+                skillRepo.DeleteSkill(id);
+            }
+
+            // now give the player the new form specific skills
+            List<DbStaticSkill> formSpecificSkillsToGive = SkillStatics.GetFormSpecificSkills(newFormDbName).ToList();
+            foreach (DbStaticSkill skill in formSpecificSkillsToGive)
             {
 
                 // make sure player does not already have this skill due to some bug or othher
@@ -241,29 +250,6 @@ namespace tfgame.Procedures
                     skillRepo.SaveSkill(dbSkill);
                 }
             }
-
-        }
-
-        public static void RemoveFormSpecificSkillsToPlayer(Player player, string formdbName)
-        {
-            ISkillRepository skillRepo = new EFSkillRepository();
-
-            List<DbStaticSkill> formSpecificSkills = SkillStatics.GetFormSpecificSkills(formdbName).ToList();
-
-
-            foreach (DbStaticSkill skill in formSpecificSkills)
-            {
-                Skill dbSkill = skillRepo.Skills.FirstOrDefault(s => s.OwnerId == player.Id && s.Name == skill.dbName);
-
-                if (dbSkill != null)
-                {
-                    skillRepo.DeleteSkill(dbSkill.Id);
-                }
-
-            }
-
-            // what happens if a player is double-transformed?  Do they get double skills?
-
         }
 
         public static void DeleteOldXML(string xmlpath)

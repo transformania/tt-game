@@ -1764,6 +1764,12 @@ namespace tfgame.Statics
             return statSkillRepo.DbStaticSkills.Where(s => s.ExclusiveToForm == formdbName);
         }
 
+        public static IEnumerable<DbStaticSkill> GetItemSpecificSkills(string itemdbaName)
+        {
+            ISkillRepository statSkillRepo = new EFSkillRepository();
+            return statSkillRepo.DbStaticSkills.Where(s => s.ExclusiveToItem == itemdbaName);
+        }
+
         public static IEnumerable<DbStaticSkill> GetSkillsLearnedAtLocation(string locationName)
         {
             ISkillRepository statSkillRepo = new EFSkillRepository();

@@ -486,7 +486,6 @@ namespace tfgame.Procedures
                             output.AttackerLog += PlayerProcedures.GivePlayerPvPScore(attacker, victim, score);
                             output.VictimLog += PlayerProcedures.RemovePlayerPvPScore(victim, attacker);
                         }
-                        //output.AttackerLog
 
                     }
 

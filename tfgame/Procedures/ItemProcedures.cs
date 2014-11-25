@@ -346,6 +346,9 @@ namespace tfgame.Procedures
 
             IItemRepository itemRepo = new EFItemRepository();
             Item item = itemRepo.Items.FirstOrDefault(i => i.Id == itemId);
+
+            int oldOwnerId = item.OwnerId;
+
             DbStaticItem itemPlus = ItemStatics.GetStaticItem(item.dbName);
 
             if (itemPlus.ItemType == PvPStatics.ItemType_Pet)
@@ -358,6 +361,8 @@ namespace tfgame.Procedures
             item.IsEquipped = false;
             item.TimeDropped = DateTime.UtcNow;
             itemRepo.SaveItem(item);
+
+            SkillProcedures.UpdateItemSpecificSkillsToPlayer(oldOwnerId);
 
             // item is an animal
             if (itemPlus.ItemType == PvPStatics.ItemType_Pet)
@@ -396,6 +401,8 @@ namespace tfgame.Procedures
                 dbOwner = PlayerProcedures.ReadjustMaxes(dbOwner, targetbuffs);
                 playerRepo.SavePlayer(dbOwner);
 
+                SkillProcedures.UpdateItemSpecificSkillsToPlayer(dbOwner.Id, item.dbName);
+
                 return "You put on your " + itemPlus.FriendlyName + ".";
          
             }
@@ -408,6 +415,8 @@ namespace tfgame.Procedures
 
                 dbOwner = PlayerProcedures.ReadjustMaxes(dbOwner, targetbuffs);
                 playerRepo.SavePlayer(dbOwner);
+
+                SkillProcedures.UpdateItemSpecificSkillsToPlayer(dbOwner.Id);
 
                 return "You took off your " + itemPlus.FriendlyName + ".";
               
@@ -687,14 +696,14 @@ namespace tfgame.Procedures
                 IEnumerable<ItemViewModel> AttackerExistingItems = ItemProcedures.GetAllPlayerItems(attacker.Id);
 
 
-                // this player currently has no tamed pets, so give it to them
-               // if (itemRepo.Items.Where(i => i.OwnerId == attacker.Id && i.IsEquipped == false).Count() == 0)
+                // this player currently has no tamed pets, so give it to them auto equipped
                 if (AttackerExistingItems.Where(e => e.Item.ItemType == PvPStatics.ItemType_Pet).Count() == 0 && attacker.MembershipId >= -2)
                 {
                     newItem.OwnerId = attacker.Id;
                     newItem.IsEquipped = true;
                     newItem.dbLocationName = "";
                     dbVictim.IsPetToId = attacker.Id;
+                    SkillProcedures.UpdateItemSpecificSkillsToPlayer(attacker.Id, newItem.dbName);
                 }
 
                 // otherwise the animal runs free
@@ -742,9 +751,6 @@ namespace tfgame.Procedures
 
             DropAllItems(victim);
 
-            
-            
-
 
             return output;
 
@@ -771,7 +777,7 @@ namespace tfgame.Procedures
 
             }
 
-
+            SkillProcedures.UpdateItemSpecificSkillsToPlayer(player.Id);
 
         }
 
@@ -1239,6 +1245,8 @@ namespace tfgame.Procedures
                 ItemStatics.ItemRAMBuffBoxes.Add(temp);
             }
         }
+
+        
 
     }
 

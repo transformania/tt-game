@@ -3100,6 +3100,7 @@ namespace tfgame.Controllers
             // checks have passed.  Transfer the item
             PlayerProcedures.GiveMoneyToPlayer(me, -cost);
             ItemProcedures.GiveItemToPlayer_Nocheck(purchased.dbItem.Id, me.Id);
+            SkillProcedures.UpdateItemSpecificSkillsToPlayer(me.Id);
 
             TempData["Result"] = "You have purchased a " + purchased.Item.FriendlyName + " from Lindella.";
             return RedirectToAction("TradeWithMerchant", new { filter = PvPStatics.ItemType_Shirt });

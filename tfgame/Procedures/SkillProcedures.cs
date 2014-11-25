@@ -71,6 +71,52 @@ namespace tfgame.Procedures
             return output;
         }
 
+        public static IEnumerable<SkillViewModel2> GetSkillViewModelsOwnedByPlayer__CursesOnly(int playerId)
+        {
+            ISkillRepository skillRepo = new EFSkillRepository();
+
+            IEnumerable<SkillViewModel2> output = from ds in skillRepo.Skills
+                                                  
+                                                  join ss in skillRepo.DbStaticSkills on ds.Name equals ss.dbName
+                                                  where ds.OwnerId == playerId && ss.MobilityType == "curse"
+
+
+                                                  select new SkillViewModel2
+                                                  {
+
+                                                      MobilityType = ss.MobilityType,
+                                                      dbSkill = new Skill_VM
+                                                      {
+                                                          Id = ds.Id,
+                                                          OwnerId = ds.OwnerId,
+                                                          Name = ds.Name,
+                                                          Charge = ds.Charge,
+                                                          Duration = ds.Duration,
+                                                          TurnStamp = ds.TurnStamp,
+
+                                                      },
+                                                      Skill = new StaticSkill
+                                                      {
+                                                          dbName = ss.dbName,
+                                                          FriendlyName = ss.FriendlyName,
+                                                          FormdbName = ss.FormdbName,
+                                                          Description = ss.Description,
+                                                          DiscoveryMessage = ss.DiscoveryMessage,
+                                                          ManaCost = ss.ManaCost,
+                                                          HealthDamageAmount = ss.HealthDamageAmount,
+                                                          LearnedAtLocation = ss.LearnedAtLocation,
+                                                          LearnedAtRegion = ss.LearnedAtLocation,
+                                                          TFPointsAmount = ss.TFPointsAmount,
+                                                          ExclusiveToForm = ss.ExclusiveToForm,
+                                                          ExclusiveToItem = ss.ExclusiveToItem,
+                                                          GivesEffect = ss.GivesEffect,
+                                                      }
+
+                                                  };
+
+
+            return output;
+        }
 
         public static SkillViewModel2 GetSkillViewModel(string skilldbName, int playerId)
         {
@@ -219,10 +265,16 @@ namespace tfgame.Procedures
 
         public static void UpdateFormSpecificSkillsToPlayer(Player player, string oldFormDbName, string newFormDbName)
         {
+            // don't care about bots
+            if (player.MembershipId < 0)
+            {
+                return;
+            }
+
             ISkillRepository skillRepo = new EFSkillRepository();
 
             // delete all of the old form specific skills
-            IEnumerable<SkillViewModel2> formSpecificSkills = GetSkillViewModelsOwnedByPlayer(player.Id).ToList();
+            IEnumerable<SkillViewModel2> formSpecificSkills = GetSkillViewModelsOwnedByPlayer__CursesOnly(player.Id).ToList();
             IEnumerable<int> formSpecificSkillIds = formSpecificSkills.Where(s => s.MobilityType == "curse" && s.Skill.ExclusiveToForm != newFormDbName).Select(s => s.dbSkill.Id).ToList();
 
             foreach (int id in formSpecificSkillIds)
@@ -243,6 +295,58 @@ namespace tfgame.Procedures
                     Skill dbSkill = new Skill
                     {
                         OwnerId = player.Id,
+                        Charge = -1,
+                        Duration = -1,
+                        Name = skill.dbName,
+                    };
+                    skillRepo.SaveSkill(dbSkill);
+                }
+            }
+        }
+
+        public static void UpdateItemSpecificSkillsToPlayer(int ownerId)
+        {
+            UpdateItemSpecificSkillsToPlayer(ownerId, "X");
+        }
+
+        public static void UpdateItemSpecificSkillsToPlayer(int ownerId, string newItemName)
+        {
+
+            ISkillRepository skillRepo = new EFSkillRepository();
+
+            // delete all of the old item specific skills for the player
+            IEnumerable<SkillViewModel2> itemSpecificSkills = GetSkillViewModelsOwnedByPlayer__CursesOnly(ownerId).ToList();
+            IEnumerable<string> equippedItemsDbNames = ItemProcedures.GetAllPlayerItems_ItemOnly(ownerId).Where(i => i.IsEquipped == true && i.dbName != newItemName).Select(s => s.dbName).ToList();
+            List<int> itemSpecificSkillsIds = new List<int>();
+
+            foreach (SkillViewModel2 s in itemSpecificSkills)
+            {
+                if (s.Skill.ExclusiveToItem != null && s.Skill.ExclusiveToItem != "" && equippedItemsDbNames.Contains(s.Skill.ExclusiveToItem) == false)
+                {
+                    itemSpecificSkillsIds.Add(s.dbSkill.Id);
+                }
+            }
+
+            foreach (int id in itemSpecificSkillsIds)
+            {
+                skillRepo.DeleteSkill(id);
+            }
+
+
+
+            // now give the player any skills they are missing
+            List<DbStaticSkill> itemSpecificSkillsToGive = SkillStatics.GetItemSpecificSkills(newItemName).ToList();
+            foreach (DbStaticSkill skill in itemSpecificSkillsToGive)
+            {
+
+                // make sure player does not already have this skill due to some bug or othher
+                Skill possibledbSkill = skillRepo.Skills.FirstOrDefault(s => s.OwnerId == ownerId && s.Name == skill.dbName);
+
+                if (possibledbSkill == null)
+                {
+                    Skill dbSkill = new Skill
+                    {
+                        OwnerId = ownerId,
                         Charge = -1,
                         Duration = -1,
                         Name = skill.dbName,

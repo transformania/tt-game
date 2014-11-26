@@ -12,7 +12,7 @@ namespace tfgame.Statics
     public static class PvPStatics
     {
 
-        public const int RoundDuration = 3000;
+        public const int RoundDuration = 2500;
         public const bool ChaosMode = true;
 
         public static String GenderMale = "male";

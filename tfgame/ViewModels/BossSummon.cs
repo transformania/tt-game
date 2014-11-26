@@ -8,11 +8,11 @@ namespace tfgame.ViewModels
     public static class BossSummonDictionary
     {
         public static Dictionary<string, BossSummon> GlobalBossSummonDictionary = new Dictionary<string, BossSummon> {
-    { "ranch_bedroom", new BossSummon { BossName="Donna", MinimumTurn = 1000, ActivationText = "" }},
+    { "ranch_bedroom", new BossSummon { BossName="Donna", MinimumTurn = 1500, ActivationText = "" }},
 
-     { "castle_armory", new BossSummon { BossName="Valentine", MinimumTurn = 750, ActivationText = "" }},
+     { "castle_armory", new BossSummon { BossName="Valentine", MinimumTurn = 1000, ActivationText = "" }},
 
-     { "stripclub_bar_seats", new BossSummon { BossName="BimboBoss", MinimumTurn = 450, ActivationText = "" }},
+     { "stripclub_bar_seats", new BossSummon { BossName="BimboBoss", MinimumTurn = 500, ActivationText = "" }},
 
 
     };

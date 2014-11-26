@@ -160,7 +160,7 @@ footer {
 
     #login a.username {
         background: none;
-        color: red;
+        color: #d3dce0;
         margin: 0;
         padding: 0;
         text-decoration: underline;

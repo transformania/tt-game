@@ -105,6 +105,13 @@ h5, h6 {
     text-decoration:none;
 }
 
+@media screen and (max-width: 540px) {
+.headerMenu a{
+    display: inline-block;
+    margin-bottom:4px;
+}
+}
+
 .headerMenu a:hover{
     padding-bottom:8px;
     border-bottom: 2px solid black;

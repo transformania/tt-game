@@ -5,7 +5,7 @@
 }
 
 body {
-    background-color: #000;
+    background-color: #999;
     color: #333;
     font-size: 14px;
     font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
@@ -23,7 +23,7 @@ a {
 
     a:link, a:visited,
     a:active, a:hover {
-        color: #333;
+        color: #111;
     }
 
     a:hover {
@@ -147,7 +147,7 @@ footer {
     display: block;
     margin: 0 0 10px;
     text-align: right;
-    color: white;
+    color: #333;
 }
 
     #login a {

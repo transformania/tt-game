@@ -53,7 +53,7 @@ namespace tfgame.Controllers
                 output = new EffectContribution
                 {
                     OwnerMemberhipId = WebSecurity.CurrentUserId,
-
+                    History = "",
                 };
             }
 
@@ -78,8 +78,32 @@ namespace tfgame.Controllers
             }
 
 
-            
+           
 
+            if (WebSecurity.CurrentUserId == 69 && output.ProofreadingCopy == true)
+            {
+
+                string effectDbName = output.GetEffectDbName();
+                string spellDbName = output.GetSkillDbName();
+
+                ViewBag.StaticEffectExists = "<span class = 'bad'>Static effect for " + effectDbName + " not found!</span>";
+                ViewBag.StaticSpellExists = "<span class = 'bad'>Static spell for " + spellDbName + " not found!<span>";
+
+                IDbStaticEffectRepository effectRepo = new EFDbStaticEffectRepository();
+                DbStaticEffect possibleEffect = effectRepo.DbStaticEffects.FirstOrDefault(e => e.dbName == effectDbName);
+                if (possibleEffect == null)
+                {
+                    ViewBag.StaticEffectExists = "<span class = 'good'>Static effect " + effectDbName + " exists!</span>";
+                }
+
+                IDbStaticSkillRepository skillRepo = new EFDbStaticSkillRepository();
+                DbStaticSkill possibleSkill = skillRepo.DbStaticSkills.FirstOrDefault(e => e.dbName == spellDbName);
+                if (possibleSkill == null)
+                {
+                    ViewBag.StaticSpellExists = "<span class = 'good'>Static spell " + spellDbName + " exists!</span>";
+                }
+
+            }
 
             ViewBag.ErrorMessage = TempData["Error"];
             ViewBag.SubErrorMessage = TempData["SubError"];
@@ -107,6 +131,7 @@ namespace tfgame.Controllers
                     ReadyForReview = false,
                     ApprovedByAdmin = false,
                     IsLive = false,
+                    History = "",
                 };
 
                 // make sure this actually is the player's own contribution
@@ -154,6 +179,7 @@ namespace tfgame.Controllers
             {
                 saveme.ProofreadingLockIsOn = false;
                 saveme.CheckedOutBy = "";
+                saveme.History += "Edited by " + WebSecurity.CurrentUserName + " on " + DateTime.UtcNow + ".<br>";
             }
  
 
@@ -271,8 +297,9 @@ namespace tfgame.Controllers
                     message += "<span class='bad'> !!!!! WARNING:  NO REGION FOUND FOR THIS SPELL.</span>  ";
                 }
             }
-            
-            
+
+            contribution.History += "Spell published on " + DateTime.UtcNow + "<br>";
+            contributionRepo.SaveContribution(contribution);
 
             ViewBag.Message = message;
             return View("Publish");
@@ -411,6 +438,9 @@ namespace tfgame.Controllers
             formRepo.SaveDbStaticForm(form);
             ViewBag.Message = message;
 
+            contribution.History += "Form published on " + DateTime.UtcNow + "<br>";
+            contributionRepo.SaveContribution(contribution);
+
             PlayerProcedures.LoadFormRAMBuffBox();
 
             return View("Publish");
@@ -454,19 +484,6 @@ namespace tfgame.Controllers
                 message += "<p class='good'>Loaded existing item.</p>";
             }
 
-        //     public int Id { get; set; }
-        //public string dbName { get; set; }
-        //public string FriendlyName { get; set; }
-        //public string Description { get; set; }
-        //public string PortraitUrl { get; set; }
-        //public decimal MoneyValue { get; set; }
-        //public string ItemType { get; set; }
-        //public int UseCooldown { get; set; }
-        //public bool Findable { get; set; }
-        //public double FindWeight { get; set; }
-        //public string GivesEffect { get; set; }
-        //public bool IsUnique { get; set; }
-
             item.Description = contribution.Item_Description;
             item.FriendlyName = contribution.Item_FriendlyName;
             message += "<p>You must set the filename for the image yourself.</p>";
@@ -508,6 +525,9 @@ namespace tfgame.Controllers
             itemRepo.SaveDbStaticItem(item);
 
             ViewBag.Message = message;
+
+            contribution.History += "Item published on " + DateTime.UtcNow + "<br>";
+            contributionRepo.SaveContribution(contribution);
 
             ItemProcedures.LoadItemRAMBuffBox();
 
@@ -591,9 +611,13 @@ namespace tfgame.Controllers
 
             effectRepo.SaveDbStaticEffect(effect);
 
+            contribution.History += "Published on " + DateTime.UtcNow + ".<br>";
+            contRepo.SaveEffectContribution(contribution);
 
             ViewBag.Message = message;
             EffectProcedures.LoadEffectRAMBuffBox();
+
+
             return View("Publish");
         }
 
@@ -635,6 +659,9 @@ namespace tfgame.Controllers
             skill.ExclusiveToItem = contribution.Skill_UniqueToItem;
 
             skillRepo.SaveDbStaticSkill(skill);
+
+            contribution.History += "Published on " + DateTime.UtcNow + ".<br>";
+            contRepo.SaveEffectContribution(contribution);
 
             ViewBag.Message = message;
             return View("Publish");

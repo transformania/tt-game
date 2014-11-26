@@ -1302,6 +1302,31 @@ namespace tfgame.Controllers
 
         }
 
+        public ActionResult ServerBalance_Effects()
+        {
+            List<BalancePageViewModel> output = new List<BalancePageViewModel>();
+
+            foreach (DbStaticEffect effect in EffectStatics.GetAllStaticEffects())
+            {
+                BalanceBox bbox = new BalanceBox();
+                bbox.LoadBalanceBox(effect);
+                decimal balance = bbox.GetBalance();
+                decimal absolute = bbox.GetPointTotal();
+                BalancePageViewModel addme = new BalancePageViewModel
+                {
+                    dbName = effect.dbName,
+                    FriendlyName = effect.FriendlyName,
+                    Balance = balance,
+                    AbsolutePoints = absolute
+                };
+                output.Add(addme);
+            }
+
+            ViewBag.Text = "Pets";
+            return View("ServerBalance", output.OrderByDescending(s => s.Balance));
+
+        }
+
         //public ActionResult WriteSkillsFromMemoryToDatabase()
         //{
         //    IDbStaticSkillRepository repo = new EFDbStaticSkillRepository();

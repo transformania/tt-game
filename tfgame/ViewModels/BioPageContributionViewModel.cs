@@ -10,4 +10,10 @@ namespace tfgame.ViewModels
         public string SpellName { get; set; }
         public string FormName { get; set; }
     }
+
+    public class BioPageEffectContributionViewModel
+    {
+        public string EffectName { get; set; }
+        public string SpellName { get; set; }
+    }
 }

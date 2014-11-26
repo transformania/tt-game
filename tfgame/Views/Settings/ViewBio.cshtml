@@ -36,6 +36,23 @@
             <p>Author of the <b>@s.SpellName</b> spell which transforms its victim into the <b>@s.FormName</b> form.</p>
         }
     }
+
+    if (ViewBag.MyEffectContributions.Count > 0)
+    {
+        foreach (BioPageEffectContributionViewModel s in ViewBag.MyEffectContributions)
+        {
+            if (s.SpellName != null && s.EffectName != "")
+            {
+                <p>Author of the <b>@s.EffectName</b> effect cast from the <b>@s.SpellName</b> spell.</p>
+            }
+            else
+            {
+                <p>Author of the <b>@s.EffectName</b> effect.</p>
+            }
+        
+        }
+    }
+    
 }
 
 

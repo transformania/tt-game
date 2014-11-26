@@ -693,6 +693,12 @@ new StaticEffect {
             }
         }
 
+        public static IEnumerable<DbStaticEffect> GetAllStaticEffects()
+        {
+            IDbStaticEffectRepository effectRepo = new EFDbStaticEffectRepository();
+            return effectRepo.DbStaticEffects.Where(e => e.dbName != null && e.dbName != "");
+        }
+
     }
 
 }

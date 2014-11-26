@@ -46,6 +46,7 @@ namespace tfgame.dbModels.Models
         public bool ProofreadingLockIsOn { get; set; }
         public string CheckedOutBy { get; set; }
         public string Notes { get; set; }
+        public string History { get; set; }
         public int ProofreadingCopyForOriginalId { get; set; }
         public DateTime Timestamp { get; set; }
 

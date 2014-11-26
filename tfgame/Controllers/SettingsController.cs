@@ -113,8 +113,19 @@ namespace tfgame.Controllers
                                                                      FormName = c.Form_FriendlyName,
                                                                  };
 
+            IEffectContributionRepository effectContribtionRepo = new EFEffectContributionRepository();
+
+            IEnumerable<BioPageEffectContributionViewModel> myEffects = from c in effectContribtionRepo.EffectContributions
+                                                                 where c.OwnerMemberhipId == player.MembershipId && c.ProofreadingCopy == true && c.IsLive == true
+                                                                 select new BioPageEffectContributionViewModel
+                                                                 {
+                                                                     EffectName = c.Effect_FriendlyName,
+                                                                     SpellName = c.Skill_FriendlyName
+                                                                 };
+            myEffects = myEffects.ToList();
 
             ViewBag.MyContributions = mySpells.ToList();
+            ViewBag.MyEffectContributions = myEffects.ToList();
 
              return View(output);
          }

@@ -32,6 +32,7 @@ namespace tfgame.dbModels.Models
         public string IpAddress { get; set; }
         public DateTime LastActionTimestamp { get; set; }
         public DateTime LastCombatTimestamp { get; set; }
+        public DateTime LastCombatAttackedTimestamp { get; set; }
         public bool FlaggedForAbuse { get; set; }
         public int UnusedLevelUpPerks { get; set; }
         public bool InPvP { get; set; }
@@ -118,6 +119,18 @@ namespace tfgame.dbModels.Models
 
         }
 
+        public DateTime GetLastCombatTimestamp()
+        {
+            if (this.LastCombatTimestamp > this.LastCombatAttackedTimestamp)
+            {
+                return this.LastCombatTimestamp;
+            }
+            else
+            {
+                return this.LastCombatAttackedTimestamp;
+            }
+        }
+
     }
 
     public class Player_VM
@@ -145,6 +158,7 @@ namespace tfgame.dbModels.Models
         public string IpAddress { get; set; }
         public DateTime LastActionTimestamp { get; set; }
         public DateTime LastCombatTimestamp { get; set; }
+        public DateTime LastCombatAttackedTimestamp { get; set; }
         public bool FlaggedForAbuse { get; set; }
         public int UnusedLevelUpPerks { get; set; }
         public bool InPvP { get; set; }
@@ -173,6 +187,18 @@ namespace tfgame.dbModels.Models
 
         }
 
+        public DateTime GetLastCombatTimestamp()
+        {
+            if (this.LastCombatTimestamp > this.LastCombatAttackedTimestamp)
+            {
+                return this.LastCombatTimestamp;
+            }
+            else
+            {
+                return this.LastCombatAttackedTimestamp;
+            }
+        }
+
         public Player ToDbPlayer()
         {
             Player output = new Player{
@@ -199,6 +225,7 @@ namespace tfgame.dbModels.Models
                 IpAddress = this.IpAddress,
                 LastActionTimestamp = this.LastActionTimestamp,
                 LastCombatTimestamp = this.LastCombatTimestamp,
+                LastCombatAttackedTimestamp = this.LastCombatAttackedTimestamp,
                 FlaggedForAbuse = this.FlaggedForAbuse,
                 UnusedLevelUpPerks = this.UnusedLevelUpPerks,
                 InPvP = this.InPvP,

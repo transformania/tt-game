@@ -21,6 +21,8 @@
         {
             <p><span class="good">You are offline.</span></p>
         }
+        
+        <p>You were last in combat <b>@Math.Abs(Math.Floor(Model.GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalMinutes))</b> minutes ago.</p>
 
         if (User.IsInRole(PvPStatics.Permissions_MultiAccountWhitelist) == true)
         {

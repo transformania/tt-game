@@ -52,6 +52,7 @@ namespace tfgame.Procedures
                                                               IpAddress = p.IpAddress,
                                                               LastActionTimestamp = p.LastActionTimestamp,
                                                               LastCombatTimestamp = p.LastCombatTimestamp,
+                                                              LastCombatAttackedTimestamp = p.LastCombatAttackedTimestamp,
                                                               FlaggedForAbuse = p.FlaggedForAbuse,
                                                               UnusedLevelUpPerks = p.UnusedLevelUpPerks,
                                                               InPvP = p.InPvP,
@@ -139,6 +140,7 @@ namespace tfgame.Procedures
                                                               IpAddress = p.IpAddress,
                                                               LastActionTimestamp = p.LastActionTimestamp,
                                                               LastCombatTimestamp = p.LastCombatTimestamp,
+                                                              LastCombatAttackedTimestamp = p.LastCombatAttackedTimestamp,
                                                               FlaggedForAbuse = p.FlaggedForAbuse,
                                                               UnusedLevelUpPerks = p.UnusedLevelUpPerks,
                                                               InPvP = p.InPvP,
@@ -226,6 +228,7 @@ namespace tfgame.Procedures
                                                               IpAddress = p.IpAddress,
                                                               LastActionTimestamp = p.LastActionTimestamp,
                                                               LastCombatTimestamp = p.LastCombatTimestamp,
+                                                              LastCombatAttackedTimestamp = p.LastCombatAttackedTimestamp,
                                                               FlaggedForAbuse = p.FlaggedForAbuse,
                                                               UnusedLevelUpPerks = p.UnusedLevelUpPerks,
                                                               InPvP = p.InPvP,
@@ -390,6 +393,7 @@ namespace tfgame.Procedures
             newplayer.XP = 0;
             newplayer.LastActionTimestamp = DateTime.UtcNow;
             newplayer.LastCombatTimestamp = DateTime.UtcNow;
+            newplayer.LastCombatAttackedTimestamp = DateTime.UtcNow;
             newplayer.OnlineActivityTimestamp = DateTime.UtcNow;
             newplayer.Money = 0;
             newplayer.ActionPoints_Refill = 360;
@@ -1160,14 +1164,16 @@ namespace tfgame.Procedures
         public static void LogCombatTimestampsAndAddAttackCount(Player victim, Player attacker)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-          //  Player dbvictim = playerRepo.Players.FirstOrDefault(p => p.Id == victim.Id);
+            Player dbvictim = playerRepo.Players.FirstOrDefault(p => p.Id == victim.Id);
            // dbvictim.LastCombatTimestamp = DateTime.UtcNow;
            // playerRepo.SavePlayer(dbvictim);
 
             Player dbAttacker = playerRepo.Players.FirstOrDefault(p => p.Id == attacker.Id);
             dbAttacker.LastCombatTimestamp = DateTime.UtcNow;
             dbAttacker.TimesAttackingThisUpdate++;
+            dbvictim.LastCombatAttackedTimestamp = DateTime.UtcNow;
             playerRepo.SavePlayer(dbAttacker);
+            playerRepo.SavePlayer(dbvictim);
 
         }
 

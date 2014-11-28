@@ -2716,9 +2716,10 @@ namespace tfgame.Controllers
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
 
-            if (PlayerProcedures.PlayerIsOffline(me) == false && me.Mobility == "full")
+            double minutesAgo = Math.Abs(Math.Floor(me.GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalMinutes));
+            if (minutesAgo < 60 && me.Mobility == "full")
             {
-                TempData["Error"] = "You must be offline in order to enter or leave protection mode while animate.";
+                TempData["Error"] = "You must have not been in any combat in the past 60 minutes to do this if you are animate.";
                 return RedirectToAction("Play");
             }
 
@@ -2745,9 +2746,10 @@ namespace tfgame.Controllers
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
 
-            if (PlayerProcedures.PlayerIsOffline(me) == false && me.Mobility == "full")
+            double minutesAgo = Math.Abs(Math.Floor(me.GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalMinutes));
+            if (minutesAgo < 60 && me.Mobility == "full")
             {
-                TempData["Error"] = "You must be offline in order to enter or leave protection mode while animate.";
+                TempData["Error"] = "You must have not been in any combat in the past 60 minutes to do this if you are animate.";
                 return RedirectToAction("Play");
             }
 

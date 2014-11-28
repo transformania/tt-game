@@ -528,11 +528,11 @@ namespace tfgame.Controllers
                 return RedirectToAction("MyCovenant");
             }
 
-            // assert that the player is offline "enough"
-            double minutesAgo = Math.Abs(Math.Floor(me.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
+            // assert that the player has not been in recent combat
+            double minutesAgo = Math.Abs(Math.Floor(me.GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalMinutes));
             if (minutesAgo < 30)
             {
-                TempData["Error"] = "You must wait another " + (30 - minutesAgo) + " minutes without spending any action points in order to do this.";
+                TempData["Error"] = "You must wait another " + (30 - minutesAgo) + " minutes without being in combat in order to do this.";
                 return RedirectToAction("MyCovenant");
             }
 

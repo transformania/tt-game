@@ -77,6 +77,7 @@ namespace tfgame.Procedures
                 bot.OnlineActivityTimestamp = DateTime.UtcNow;
                 bot.Money = 100;
                 bot.LastCombatTimestamp = DateTime.UtcNow;
+                bot.LastCombatAttackedTimestamp = DateTime.UtcNow;
                 bot.CleansesMeditatesThisRound = 0;
                 bot.NonPvP_GameOverSpellsAllowedLastChange = DateTime.UtcNow;
 
@@ -350,6 +351,7 @@ namespace tfgame.Procedures
                 merchant.UnusedLevelUpPerks = 0;
                 merchant.LastActionTimestamp = DateTime.UtcNow;
                 merchant.LastCombatTimestamp = DateTime.UtcNow;
+                merchant.LastCombatAttackedTimestamp = DateTime.UtcNow;
                 merchant.OnlineActivityTimestamp = DateTime.UtcNow;
                 merchant.Form = "botform_clothes_merchant";
                 merchant.NonPvP_GameOverSpellsAllowedLastChange = DateTime.UtcNow;
@@ -488,6 +490,7 @@ namespace tfgame.Procedures
                     dbLocationName = "ranch_bedroom",
                     LastActionTimestamp = DateTime.UtcNow,
                     LastCombatTimestamp = DateTime.UtcNow,
+                    LastCombatAttackedTimestamp = DateTime.UtcNow,
                     OnlineActivityTimestamp = DateTime.UtcNow,
                     NonPvP_GameOverSpellsAllowedLastChange = DateTime.UtcNow,
                     Gender = "female",

@@ -30,6 +30,7 @@ namespace tfgame.Procedures.BossProcedures
                     dbLocationName = "castle_armory",
                     LastActionTimestamp = DateTime.UtcNow,
                     LastCombatTimestamp = DateTime.UtcNow,
+                    LastCombatAttackedTimestamp = DateTime.UtcNow,
                     OnlineActivityTimestamp = DateTime.UtcNow,
                     NonPvP_GameOverSpellsAllowedLastChange = DateTime.UtcNow,
                     Gender = "male",

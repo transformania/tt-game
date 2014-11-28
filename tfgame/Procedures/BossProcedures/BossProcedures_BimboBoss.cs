@@ -37,6 +37,7 @@ namespace tfgame.Procedures.BossProcedures
                     dbLocationName = "stripclub_bar_seats",
                     LastActionTimestamp = DateTime.UtcNow,
                     LastCombatTimestamp = DateTime.UtcNow,
+                    LastCombatAttackedTimestamp = DateTime.UtcNow,
                     OnlineActivityTimestamp = DateTime.UtcNow,
                     NonPvP_GameOverSpellsAllowedLastChange = DateTime.UtcNow,
                     Gender = "female",

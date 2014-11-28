@@ -28,6 +28,7 @@ namespace tfgame.Procedures.BossProcedures
                     dbLocationName = "apartment_dog_park",
                     LastActionTimestamp = DateTime.UtcNow,
                     LastCombatTimestamp = DateTime.UtcNow,
+                    LastCombatAttackedTimestamp = DateTime.UtcNow,
                     OnlineActivityTimestamp = DateTime.UtcNow,
                     NonPvP_GameOverSpellsAllowedLastChange = DateTime.UtcNow,
                     Gender = "female",

@@ -35,7 +35,6 @@ namespace tfgame.Procedures
             // playerBioRe
         }
 
-
         public static PlayerBio GetPlayerBioFromMembershipId(int id)
         {
             IPlayerBioRepository playerBioRepo = new EFPlayerBioRepository();
@@ -56,5 +55,7 @@ namespace tfgame.Procedures
                 return false;
             }
         }
+
+
     }
 }

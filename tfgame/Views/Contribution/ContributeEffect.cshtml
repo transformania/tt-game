@@ -289,15 +289,18 @@
 
     <br /><br />
     <input type="submit" value="Save" />
-    
- 
+
+
     if (WebSecurity.CurrentUserId == 69 && Model.ProofreadingCopy == true)
     {
-        <p>@Html.ActionLink("Publish Skill", "PublishSpell_Effect", "Contribution", new { id = Model.Id }, null)<br />
-            @Html.ActionLink("Publish Effect", "PublishEffect", "Contribution", new { id = Model.Id }, null)<br /></p>
-    
-        <p>@Html.Raw(ViewBag.StaticEffectExists)</p>
-        <p>@Html.Raw(ViewBag.StaticSpellExists)</p>
+        <p>
+            @Html.ActionLink("Publish Skill", "PublishSpell_Effect", "Contribution", new { id = Model.Id }, null)<br />
+        @Html.ActionLink("Publish Effect", "PublishEffect", "Contribution", new { id = Model.Id }, null)<br />
+        @Html.ActionLink("Mark as Live", "MarkEffectAsLive", "Contribution", new { id = Model.Id }, null)<br />
+    </p>
+
+    <p>@Html.Raw(ViewBag.StaticEffectExists)</p>
+    <p>@Html.Raw(ViewBag.StaticSpellExists)</p>
     }
 
 }

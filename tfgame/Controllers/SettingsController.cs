@@ -272,7 +272,35 @@ namespace tfgame.Controllers
             return RedirectToAction("Play", "PvP");
         }
 
+        public ActionResult ViewPolls()
+        {
+            return View();
+        }
 
+        public ActionResult ViewPoll(int id)
+        {
+            PollEntry output = new PollEntry
+            {
+                PollId = 1,
+            };
+            return View(output);
+        }
+
+        public ActionResult ReplyToPoll(int id)
+        {
+            TempData["Result"] = "Your response has been recorded.  Thanks for your participation!";
+            return RedirectToAction("Play", "PvP");
+        }
+
+        public ActionResult PollResultsList()
+        {
+            return View();
+        }
+
+        public ActionResult PollResults(int id)
+        {
+            return View();
+        }
 
 	}
 }

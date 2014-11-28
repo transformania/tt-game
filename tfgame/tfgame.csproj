@@ -1429,6 +1429,7 @@
     <Content Include="Views\PvP\RoundLeaderboards\XP\Alpha_12.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_12.cshtml" />
     <Content Include="Views\Covenant\InviteCaptainList.cshtml" />
+    <Content Include="Views\Settings\ViewPolls.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

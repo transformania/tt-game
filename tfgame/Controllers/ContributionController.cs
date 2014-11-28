@@ -91,14 +91,14 @@ namespace tfgame.Controllers
 
                 IDbStaticEffectRepository effectRepo = new EFDbStaticEffectRepository();
                 DbStaticEffect possibleEffect = effectRepo.DbStaticEffects.FirstOrDefault(e => e.dbName == effectDbName);
-                if (possibleEffect == null)
+                if (possibleEffect != null)
                 {
                     ViewBag.StaticEffectExists = "<span class = 'good'>Static effect " + effectDbName + " exists!</span>";
                 }
 
                 IDbStaticSkillRepository skillRepo = new EFDbStaticSkillRepository();
                 DbStaticSkill possibleSkill = skillRepo.DbStaticSkills.FirstOrDefault(e => e.dbName == spellDbName);
-                if (possibleSkill == null)
+                if (possibleSkill != null)
                 {
                     ViewBag.StaticSpellExists = "<span class = 'good'>Static spell " + spellDbName + " exists!</span>";
                 }
@@ -632,7 +632,7 @@ namespace tfgame.Controllers
             IDbStaticSkillRepository skillRepo = new EFDbStaticSkillRepository();
 
             EffectContribution contribution = contRepo.EffectContributions.First(e => e.Id == id);
-            string effectDbName = contribution.GetSkillDbName();
+            string effectDbName = contribution.GetEffectDbName();
             DbStaticSkill skill = skillRepo.DbStaticSkills.FirstOrDefault(s => s.GivesEffect == effectDbName);
 
             string message = "";
@@ -640,7 +640,7 @@ namespace tfgame.Controllers
             if (skill == null)
             {
                 skill = new DbStaticSkill();
-                skill.dbName = contribution.GetEffectDbName();
+                skill.dbName = contribution.GetSkillDbName();
                 message += "<p class='bad'>Made new spell.</p>";
             }
             else
@@ -693,6 +693,38 @@ namespace tfgame.Controllers
             else
             {
                 message += "<p>Original contribution not found.</p>";
+            }
+
+            ViewBag.Message = message;
+            return View("Publish");
+        }
+
+        public ActionResult MarkEffectAsLive(int id)
+        {
+            if (WebSecurity.CurrentUserId != 69)
+            {
+                return View("ContributorBioList");
+            }
+
+            string message = "";
+            IEffectContributionRepository contributionRepo = new EFEffectContributionRepository();
+            EffectContribution contribution = contributionRepo.EffectContributions.FirstOrDefault(c => c.Id == id);
+            EffectContribution contribution_original = contributionRepo.EffectContributions.FirstOrDefault(c => c.Id == contribution.ProofreadingCopyForOriginalId);
+
+            contribution.IsLive = true;
+            contributionRepo.SaveEffectContribution(contribution);
+            message += "<p>Contribution effect marked as live.</p>";
+
+            if (contribution_original != null)
+            {
+                contribution_original.IsLive = true;
+                contributionRepo.SaveEffectContribution(contribution_original);
+                message += "<p>Original effect contribution marked as live.</p>";
+
+            }
+            else
+            {
+                message += "<p>Original effect contribution not found.</p>";
             }
 
             ViewBag.Message = message;

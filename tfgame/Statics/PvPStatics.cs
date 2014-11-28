@@ -33,6 +33,8 @@ namespace tfgame.Statics
         public static int MaxLogMessagesPerLocation = 20;
         public static int MaxLogMessagesPerPlayer = 50;
 
+        public const decimal PvPScoreTricklePerUpdate = .2M;
+
         public static decimal XP__GainPerAttackBase = 5;
         public static decimal XP__AnimateTFXPBonusModifier = 1.5M;
         public static decimal XP__LevelDifferenceXPGainModifier = 1.5M;

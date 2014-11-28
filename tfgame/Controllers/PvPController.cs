@@ -3469,7 +3469,7 @@ namespace tfgame.Controllers
 
                     Player player = playerRepo.Players.FirstOrDefault(p => p.Id == i);
 
-                    // skip players who have no done anything in the past 24 hours
+                    // skip players who have not done anything in the past 24 hours
                     double hoursSinceLastAction = Math.Abs(Math.Floor(player.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalHours));
                     if (hoursSinceLastAction > 24)
                     {
@@ -3527,11 +3527,6 @@ namespace tfgame.Controllers
                     player.Mana += buffs.ManaRecoveryPerUpdate();
 
 
-                    // THIS IS A DUPLICATION OF THE READJUST MAXES PROCEDURES.
-
-                 //   player.MaxHealth = PvPStatics.XP__HealthManaBaseByLevel[player.Level] * (1.0M + (buffs.HealthBonusPercent() / 100.0M));
-                   // player.MaxMana = PvPStatics.XP__HealthManaBaseByLevel[player.Level] * (1.0M + (buffs.ManaBonusPercent() / 100.0M));
-
                     player.ReadjustMaxes(buffs);
 
                     // give the player some extra AP refill if they are at their safeground
@@ -3547,6 +3542,12 @@ namespace tfgame.Controllers
                             }
                         }
 
+                    }
+
+                    // give the player their PvP score trickle if they are in it
+                    if (player.InPvP == false)
+                    {
+                        player.PvPScore += PvPStatics.PvPScoreTricklePerUpdate;
                     }
                     
 
@@ -3819,13 +3820,12 @@ namespace tfgame.Controllers
                 using (var context = new StatsContext())
                 {
                     context.Database.ExecuteSqlCommand("ClearOldLocationLogs");
-                    //context.Database.ExecuteSqlCommand("ClearOldMessages");
                     context.Database.ExecuteSqlCommand("DELETE FROM [Stats].[dbo].[Messages] WHERE Timestamp < DATEADD(hour, -72, GETUTCDATE()) AND DoNotRecycleMe = 0");
                     context.Database.ExecuteSqlCommand("ClearValuelessTFEnergies");
-                    //context.Database.ExecuteSqlCommand("resetAnimalInanimateTimesAttacking");
                     context.Database.ExecuteSqlCommand("DELETE FROM [Stats].[dbo].[PlayerLogs] WHERE Timestamp < DATEADD(hour, -72, GETUTCDATE())");
                     context.Database.ExecuteSqlCommand("DELETE FROM [Stats].[dbo].[ChatLogs] WHERE Timestamp < DATEADD(hour, -72, GETUTCDATE())");
                     context.Database.ExecuteSqlCommand("DELETE FROM [Stats].[dbo].[AIDirectives] WHERE Timestamp < DATEADD(hour, -72, GETUTCDATE()) AND DoNotRecycleMe = 0");
+                    context.Database.ExecuteSqlCommand("DELETE FROM [Stats].[dbo].[CovenantLogs] WHERE Timestamp < DATEADD(hour, -72, GETUTCDATE())");
                 }
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished stored procedure maintenance");
                 log.FinishTimestamp = DateTime.UtcNow;

@@ -14,6 +14,8 @@ namespace tfgame.ViewModels
         public Location Location { get; set; }
         public WorldStats WorldStats { get; set; }
         public IEnumerable<LocationLog> LocationLog { get; set; }
+        public IEnumerable<PlayerLog> PlayerLog { get; set; }
+        public IEnumerable<PlayerLog> PlayerLogImportant { get; set; }
 
         public DateTime LastUpdateTimestamp { get; set; }
 

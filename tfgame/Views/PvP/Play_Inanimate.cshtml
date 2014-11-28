@@ -57,6 +57,24 @@ else
 </div>
 
 <div style="position: relative; float: left;">
+
+    @{
+        if (Model.PlayerLogImportant.Count() > 0)
+        {
+            <ul id="notificationBox">
+                @{
+            foreach (tfgame.dbModels.Models.PlayerLog log in Model.PlayerLogImportant)
+            {
+                <li class="frontPageNotification">
+                    @Html.Raw(log.Message) <span class="timeago">@CharactersHere.DatetimeToTimeago(log.Timestamp)</span>
+                </li>
+            }
+                }
+            </ul>
+            <p style="text-align: left; display:block; float: left;">log size: <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.maxHeight = '80px'">small</a> <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.maxHeight = '180px'">medium</a> <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.maxHeight = '480px'">big</a> </p><p style="text-align:right; display: block; float: right;">@Html.ActionLink("Dismiss Notifications", "DismissNotifications", "PvP")</p>
+        }
+    }
+
     <div class="petItemPortrait" style="background-image: url(../Images/PvP/itemsPortraits/@Model.Item.PortraitUrl);">
         @CharactersHere.PrintOwnerSubPortrait(Model.WornBy)
         @CharactersHere.PrintItemTypeIcon(Model.Item)

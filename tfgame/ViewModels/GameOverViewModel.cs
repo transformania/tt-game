@@ -17,6 +17,8 @@ namespace tfgame.ViewModels
         public bool IsPermanent { get; set; }
         public IEnumerable<LocationLog> LocationLog { get; set; }
         public IEnumerable<PlayerFormViewModel> PlayersHere { get; set; }
+        public IEnumerable<PlayerLog> PlayerLog { get; set; }
+        public IEnumerable<PlayerLog> PlayerLogImportant { get; set; }
 
         public decimal StruggleChance { get; set; }
 

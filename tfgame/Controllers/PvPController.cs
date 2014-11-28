@@ -127,6 +127,9 @@ namespace tfgame.Controllers
                 inanimateOutput.AtLocation = ItemProcedures.PlayerIsItemAtLocation(me);
                 inanimateOutput.NewMessageCount = MessageProcedures.GetMessageCountData(me).NewMessagesCount;
 
+                inanimateOutput.PlayerLog = PlayerLogProcedures.GetAllPlayerLogs(me.Id).Reverse();
+                inanimateOutput.PlayerLogImportant = inanimateOutput.PlayerLog.Where(l => l.IsImportant == true);
+
                 if (inanimateOutput.AtLocation == null)
                 {
                     inanimateOutput.WornBy = ItemProcedures.BeingWornBy(me);
@@ -191,6 +194,9 @@ namespace tfgame.Controllers
                 animalOutput.Location.FriendlyName_East = LocationsStatics.GetConnectionName(animalOutput.Location.Name_East);
                 animalOutput.Location.FriendlyName_South = LocationsStatics.GetConnectionName(animalOutput.Location.Name_South);
                 animalOutput.Location.FriendlyName_West = LocationsStatics.GetConnectionName(animalOutput.Location.Name_West);
+
+                animalOutput.PlayerLog = PlayerLogProcedures.GetAllPlayerLogs(me.Id).Reverse();
+                animalOutput.PlayerLogImportant = animalOutput.PlayerLog.Where(l => l.IsImportant == true);
 
                 animalOutput.LocationLog = LocationLogProcedures.GetLocationLogsAtLocation(animalOutput.Location.dbName).Reverse();
 

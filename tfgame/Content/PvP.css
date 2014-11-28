@@ -139,6 +139,7 @@ a {
     margin-right: 20px;
     background-size: 450px 450px;
     background-position: center center;
+    clear: left;
 }
 
 .petItemInfo{

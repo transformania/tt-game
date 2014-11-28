@@ -243,6 +243,14 @@ else
                         @Html.ActionLink("Lick", "AnimalAction", "PvP", new { actionName = "lick", targetId = p.Player.Id }, new { @class = "check" })
                         @Html.ActionLink("Headbutt", "AnimalAction", "PvP", new { actionName = "headbutt", targetId = p.Player.Id }, new { @class = "check" })
                         @Html.ActionLink("Nuzzle", "AnimalAction", "PvP", new { actionName = "nuzzle", targetId = p.Player.Id }, new { @class = "check" })
+
+                        @{
+            if (Model.OwnedBy != null)
+            {
+                    <li>@Html.ActionLink("Attempt to slip free from your owner", "EscapeFromOwner", "PvP")</li>
+            }
+                        }
+
                         </div>
                     </div>
 </p>

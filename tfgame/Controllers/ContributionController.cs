@@ -105,6 +105,18 @@ namespace tfgame.Controllers
 
             }
 
+            BalanceBox bbox = new BalanceBox();
+            bbox.LoadBalanceBox(output);
+            decimal balance = bbox.GetBalance();
+
+            try { 
+                ViewBag.BalanceScore = balance/output.Effect_Duration;
+            }
+            catch (DivideByZeroException e)
+            {
+                ViewBag.BalanceScore = "NEEDS DURATION";
+            }
+
             ViewBag.ErrorMessage = TempData["Error"];
             ViewBag.SubErrorMessage = TempData["SubError"];
             ViewBag.Result = TempData["Result"];
@@ -189,6 +201,17 @@ namespace tfgame.Controllers
             //return RedirectToAction("ContributeEffect", "Contribution", new { @id = input.Id });
 
             TempData["Result"] = "Effect Contribution saved!";
+            return RedirectToAction("Play", "PvP");
+        }
+
+
+        public ActionResult UnlockEffectContribution(int id)
+        {
+            IEffectContributionRepository effectContRepo = new EFEffectContributionRepository();
+            EffectContribution saveme = effectContRepo.EffectContributions.FirstOrDefault(e => e.Id == id);
+            saveme.ProofreadingLockIsOn = false;
+            saveme.CheckedOutBy = "";
+            effectContRepo.SaveEffectContribution(saveme);
             return RedirectToAction("Play", "PvP");
         }
 
@@ -615,6 +638,8 @@ namespace tfgame.Controllers
             contRepo.SaveEffectContribution(contribution);
 
             ViewBag.Message = message;
+
+            ViewBag.Message += "<br>New effect, " + contribution.Effect_FriendlyName + ", by " + contribution.SubmitterName + ".";
             EffectProcedures.LoadEffectRAMBuffBox();
 
 
@@ -918,17 +943,7 @@ namespace tfgame.Controllers
               return RedirectToAction("ReviewDMRolls");
           }
 
-         //[Authorize]
-         //public ActionResult Snoop(int id)
-         //{
-         //    if (WebSecurity.CurrentUserId != 69)
-         //    {
-         //        return RedirectToAction("Play", "PvP");
-         //    }
-
-         //    return RedirectToAction("PvP", )
-
-         //}
+   
 
 	}
 }

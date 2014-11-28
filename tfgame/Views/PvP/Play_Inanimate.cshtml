@@ -94,6 +94,12 @@ else
                         <li>
                             @Html.ActionLink("Agitatedly zap your owner", "InanimateAction", "PvP", new { actionName = "zap" }, new { @class = "check" })
                         </li>
+                       @{
+                            if (Model.WornBy != null) {
+                                <li>@Html.ActionLink("Attempt to slip free from your owner", "EscapeFromOwner", "PvP")</li>
+                              }
+                              }
+
                     </ul>
                 </p>
 

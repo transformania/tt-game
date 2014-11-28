@@ -2319,6 +2319,14 @@ namespace tfgame.Controllers
 
             FriendProcedures.AddFriend(friend);
 
+            string message = me.GetFullName() + " has sent you a friend request.";
+
+            if (PlayerLogProcedures.PlayerAlreadyHasMessage(friend.Id, message) == false)
+            {
+                PlayerLogProcedures.AddPlayerLog(friend.Id, message, true);
+            }
+            
+
             return RedirectToAction("Play");
         }
 
@@ -2823,6 +2831,51 @@ namespace tfgame.Controllers
             TempData["Result"] = InanimateXPProcedures.ReturnToAnimate(me);
             return RedirectToAction("Play");
         }
+
+         [Authorize]
+         public ActionResult EscapeFromOwner()
+         {
+             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+
+             // assert player is inanimate or an animal
+             if (me.Mobility == "full")
+             {
+                 TempData["Error"] = "You can't do this.";
+                 TempData["SubError"] = "You are still in an animate form.  You must be inanimate or an animal.";
+                 return RedirectToAction("Play");
+             }
+
+             Item inanimateMe = ItemProcedures.GetItemByVictimName(me.FirstName, me.LastName);
+             
+
+
+             // assert that the player is owned
+             if (inanimateMe.OwnerId <= 0)
+             {
+                 TempData["Error"] = "You are not owned by anyone.";
+                 return RedirectToAction("Play");
+             }
+
+             // assert that the owner has been sufficiently inactive
+             Player owner = PlayerProcedures.GetPlayer(inanimateMe.OwnerId);
+
+             int hoursSinceLastActivity = -1*(int)Math.Floor(owner.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalHours);
+             if (hoursSinceLastActivity < PvPStatics.HoursBeforeInanimatesCanSlipFree)
+             {
+                 TempData["Error"] = "You cannot escape from your owner right now.";
+                 TempData["SubError"] = "Your owner must remain inactive for " + (48 - PvPStatics.HoursBeforeInanimatesCanSlipFree) + "hours before you can slip free.";
+                 return RedirectToAction("Play");
+             }
+
+             // all checks pass; drop item and notify owner
+             ItemProcedures.DropItem(inanimateMe.Id, owner.dbLocationName);
+             ItemViewModel inaniamteMePlus = ItemProcedures.GetItemViewModel(inanimateMe.Id);
+             string message = me.GetFullName() + ", your " + inaniamteMePlus.Item.FriendlyName + ", slipped free due to your inactivity and can be claimed by a new owner.";
+             PlayerLogProcedures.AddPlayerLog(owner.Id, message, true);
+
+             TempData["Result"] = "You have slipped free from your owner.";
+             return RedirectToAction("Play");
+         }
 
         [Authorize]
          public ActionResult TalkWithJewdewfae()

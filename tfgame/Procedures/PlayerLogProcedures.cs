@@ -70,5 +70,18 @@ namespace tfgame.Procedures
             }
         }
 
+        public static bool PlayerAlreadyHasMessage(int playerId, string message)
+        {
+            IPlayerLogRepository playerLogRepo = new EFPlayerLogRepository();
+            if (playerLogRepo.PlayerLogs.FirstOrDefault(p => p.PlayerId == playerId && p.Message == message) != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
     }
 }

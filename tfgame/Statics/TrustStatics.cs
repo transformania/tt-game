@@ -99,19 +99,7 @@ namespace tfgame.Statics
             }
         }
 
-        public static bool AccountCanHaveMultis(int membershipId) {
-
-           // bool result = User.IsInRole("whitelisted");
-
-            if (MultisAllowed.Contains(membershipId))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
+       
 
     }
 

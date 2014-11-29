@@ -1,0 +1,108 @@
+﻿@model tfgame.dbModels.Models.PollEntry
+
+<head>
+    <script src="~/Scripts/jquery-2.1.0.min.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <link href="~/Content/PvP.css" rel="stylesheet" />
+</head>
+
+<p>@Html.ActionLink("Back to game", "Play", "PvP")</p>
+
+<p class="error">@ViewBag.Error</p>
+
+<h1>What features would you like to see added the most?</h1>
+
+<p>You can return to edit your answers later.  Text inputs have a maximum of 500 characters.</p>
+
+@using (Html.BeginForm("ReplyToPoll", "Settings", Model))
+{
+    
+    <p>What game mechanic would you like to see added first?  (First preference)</p>
+      @Html.DropDownListFor(i => i.Num1, new SelectList(
+                  new List<Object>{
+                      new { value = "0"  , text = "---please select a choice---"  },
+                       new { value = "1"  , text = "Questing system"  },
+                       new { value = "2"  , text = "More RP game mechanics"  },
+                       new { value = "3"  , text = "More PvP game mechanics--covenant wars, etc"  },
+                        new { value = "4"  , text = "1v1 Duels"  },
+                       new { value = "5"  , text = "More bosses and world events"  },
+                       new { value = "6"  , text = "Mind-control type transformation"  },
+                       new { value = "7"  , text = "Absorption type transformation"  },
+
+                    },
+                  "value",
+                  "text",
+                   2))
+    
+    <hr />
+    
+    <p>What game mechanic would you like to see added first?  (Second preference).  Please do not duplicate the answer selected above.</p>
+      @Html.DropDownListFor(i => i.Num2, new SelectList(
+                  new List<Object>{
+                      new { value = "0"  , text = "---please select a choice---"  },
+                       new { value = "1"  , text = "Questing system"  },
+                       new { value = "2"  , text = "More RP game mechanics"  },
+                       new { value = "3"  , text = "More PvP game mechanics--covenant wars, etc"  },
+                        new { value = "4"  , text = "1v1 Duels"  },
+                       new { value = "5"  , text = "More bosses and world events"  },
+                       new { value = "6"  , text = "Mind-control type transformation"  },
+                       new { value = "7"  , text = "Absorption type transformation"  },
+
+                    },
+                  "value",
+                  "text",
+                   2))
+    
+    <hr />
+    
+    <p>What game mechanic would you like to see added first?  (Third preference).  Please do not duplicate either answer selected above.</p>
+      @Html.DropDownListFor(i => i.Num3, new SelectList(
+                  new List<Object>{
+                      new { value = "0"  , text = "---please select a choice---"  },
+                       new { value = "1"  , text = "Questing system"  },
+                       new { value = "2"  , text = "More RP game mechanics"  },
+                       new { value = "3"  , text = "More PvP game mechanics--covenant wars, etc"  },
+                        new { value = "4"  , text = "1v1 Duels"  },
+                       new { value = "5"  , text = "More bosses and world events"  },
+                       new { value = "6"  , text = "Mind-control type transformation"  },
+                       new { value = "7"  , text = "Absorption type transformation"  },
+
+                    },
+                  "value",
+                  "text",
+                   2))
+    
+
+    
+
+    <hr />
+    
+    <p>What other new features would you like to see in the game not listed above?</p>
+     @Html.ValidationMessageFor(m => m.String1)
+    @Html.TextAreaFor(m => m.String1)
+    
+    <hr />
+    
+        <p>How did you feel about the 3000 turn round?</p>
+      @Html.DropDownListFor(i => i.Num4, new SelectList(
+                  new List<Object>{
+                      new { value = "0"  , text = "---please select a choice---"  },
+                       new { value = "1"  , text = "Way too long"  },
+                       new { value = "2"  , text = "A little too long"  },
+                       new { value = "3"  , text = "Just the right length"  },
+                       new { value = "4"  , text = "A little too short"  },
+                       new { value = "5"  , text = "Way too short"  },
+
+
+                    },
+                  "value",
+                  "text",
+                   2))
+    
+    <hr />
+
+    <input type="submit" value="Submit" />
+}
+
+<p>@Html.ActionLink("Back to game", "Play", "PvP")</p>

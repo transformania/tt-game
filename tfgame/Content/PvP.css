@@ -161,6 +161,10 @@ a {
     background-color: lightgreen !important;
 }
 
+.newlinkyellow a {
+    background-color: yellow !important;
+}
+
 .formerly a {
     font-weight: bold;
     background-color: #FFCCFF;

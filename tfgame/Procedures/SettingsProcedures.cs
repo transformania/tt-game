@@ -56,6 +56,46 @@ namespace tfgame.Procedures
             }
         }
 
+        public static void SavePoll(PollEntry input, int round, int pollId)
+        {
+            IPollEntryRepository pollRepo = new EFPollEntriesRepository();
+            PollEntry dbPoll = pollRepo.PollEntries.FirstOrDefault(p => p.OwnerMembershipId == WebSecurity.CurrentUserId && p.PollId == pollId);
+            if (dbPoll == null)
+            {
+                dbPoll = new PollEntry();
+                dbPoll.OwnerMembershipId = WebSecurity.CurrentUserId;
+                dbPoll.PollId = pollId;
+            }
+
+            dbPoll.Num1 = input.Num1;
+            dbPoll.Num2 = input.Num2;
+            dbPoll.Num3 = input.Num3;
+            dbPoll.Num4 = input.Num4;
+            dbPoll.Num5 = input.Num5;
+
+            dbPoll.String1 = input.String1;
+            dbPoll.String2 = input.String2;
+            dbPoll.String3 = input.String3;
+            dbPoll.String4 = input.String4;
+            dbPoll.String5 = input.String5;
+
+            dbPoll.Timestamp = DateTime.UtcNow;
+
+            pollRepo.SavePollEntry(dbPoll);
+
+        }
+
+        public static PollEntry LoadPoll(int pollId)
+        {
+            IPollEntryRepository pollRepo = new EFPollEntriesRepository();
+            PollEntry dbPoll = pollRepo.PollEntries.FirstOrDefault(p => p.OwnerMembershipId == WebSecurity.CurrentUserId && p.PollId == pollId);
+            if (dbPoll == null)
+            {
+                dbPoll = new PollEntry();
+            }
+            return dbPoll;
+        }
+
 
     }
 }

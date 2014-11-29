@@ -653,6 +653,7 @@
     <Content Include="Scripts\jQueryRotateCompressed.js" />
     <Content Include="XMLs\BossSummonText\BimboBoss.txt" />
     <Content Include="XMLs\BossSummonText\Donna.txt" />
+    <Content Include="XMLs\BossSummonText\Thieves.txt" />
     <Content Include="XMLs\BossSummonText\Valentine.txt" />
     <Content Include="XMLs\Effects\effect_Circine%27s_Hypnosis_LexamTheGemFox.xml" />
     <Content Include="XMLs\Effects\effect_Hemorrhage_Izz_Valentine.xml">
@@ -1430,9 +1431,13 @@
     <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_12.cshtml" />
     <Content Include="Views\Covenant\InviteCaptainList.cshtml" />
     <Content Include="Views\Settings\ViewPolls.cshtml" />
+    <Content Include="Views\Settings\ViewPoll.cshtml" />
+    <Content Include="Views\Settings\Polls\Open\poll1.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Settings\Polls\Closed\" />
     <Folder Include="XMLs\FairyChallengeText\SingleBags\" />
     <Folder Include="Z_SelfHelp\" />
   </ItemGroup>

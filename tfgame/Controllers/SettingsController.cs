@@ -279,15 +279,21 @@ namespace tfgame.Controllers
 
         public ActionResult ViewPoll(int id)
         {
-            PollEntry output = new PollEntry
-            {
-                PollId = 1,
-            };
-            return View(output);
+            PollEntry output = SettingsProcedures.LoadPoll(1);
+            return View("Polls/Open/poll" + id, output);
         }
 
-        public ActionResult ReplyToPoll(int id)
+        [Authorize]
+        public ActionResult ReplyToPoll(PollEntry input)
         {
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Error = "Invalid input.";
+                return View("Polls/Open/poll" + input.PollId, input);
+            }
+
+            SettingsProcedures.SavePoll(input, 13, 1);
             TempData["Result"] = "Your response has been recorded.  Thanks for your participation!";
             return RedirectToAction("Play", "PvP");
         }

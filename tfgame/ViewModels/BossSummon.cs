@@ -14,6 +14,8 @@ namespace tfgame.ViewModels
 
      { "stripclub_bar_seats", new BossSummon { BossName="BimboBoss", MinimumTurn = 500, ActivationText = "" }},
 
+     { "tavern_pool", new BossSummon { BossName="Thieves", MinimumTurn = 0, ActivationText = "" }},
+
 
     };
 

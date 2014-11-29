@@ -277,6 +277,7 @@ namespace tfgame.Controllers
             return View();
         }
 
+        [Authorize]
         public ActionResult ViewPoll(int id)
         {
             PollEntry output = SettingsProcedures.LoadPoll(1);
@@ -298,10 +299,12 @@ namespace tfgame.Controllers
             return RedirectToAction("Play", "PvP");
         }
 
+        [Authorize]
         public ActionResult PollResultsList()
         {
             return View();
         }
+
 
         public ActionResult PollResults(int id)
         {

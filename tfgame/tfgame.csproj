@@ -447,6 +447,7 @@
     <Content Include="Images\PvP\animalPortraits\pocket_dragon_Meddle.png" />
     <Content Include="Images\PvP\animalPortraits\pocket_googirl_Luxianne.png" />
     <Content Include="Images\PvP\animalPortraits\skunk_lux.png" />
+    <Content Include="Images\PvP\animalPortraits\spellbound_cat_boy_Luxianne.png" />
     <Content Include="Images\PvP\animalPortraits\stallion_Danaume.jpg" />
     <Content Include="Images\PvP\animalPortraits\strawdoll_Meddle.png" />
     <Content Include="Images\PvP\animalPortraits\tentacle_monster_Meddle.png" />
@@ -485,6 +486,8 @@
     <Content Include="Images\PvP\itemsPortraits\cocktail_dress_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\concealment_cookie_SillyLuxianne.png" />
     <Content Include="Images\PvP\itemsPortraits\Count_Cuddles_Luxianne.png" />
+    <Content Include="Images\PvP\itemsPortraits\crossbow_Luxianne.png" />
+    <Content Include="Images\PvP\itemsPortraits\crossbow_Zephyr.png" />
     <Content Include="Images\PvP\itemsPortraits\crown_of_order_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\crystal_skull_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\cupid_heels_Meddle.png" />
@@ -502,6 +505,7 @@
     <Content Include="Images\PvP\itemsPortraits\gothic_lolita_boots_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\heart_glasses_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\Honeypot_Luxianne.png" />
+    <Content Include="Images\PvP\itemsPortraits\hot_coffee_mug_Martiandawn.png" />
     <Content Include="Images\PvP\itemsPortraits\intimidating_leather_boots_JBovinne.png" />
     <Content Include="Images\PvP\itemsPortraits\kneehigh_socks_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\knitted_bra_Meddle.png" />
@@ -534,6 +538,7 @@
     <Content Include="Images\PvP\itemsPortraits\red_leather_boots_Jbovinne.png" />
     <Content Include="Images\PvP\itemsPortraits\red_wavy_wig_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\runic_dildo_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\sandals_Luxianne.png" />
     <Content Include="Images\PvP\itemsPortraits\scroll_of_teleportation.jpg" />
     <Content Include="Images\PvP\itemsPortraits\silk_dragon_dress_jbovinne.png" />
     <Content Include="Images\PvP\itemsPortraits\silk_pants_Meddle.png" />
@@ -630,6 +635,7 @@
     <Content Include="Images\PvP\portraits\slutty_nurse_Meddle.png" />
     <Content Include="Images\PvP\portraits\squirrel_maid_Luxianne.png" />
     <Content Include="Images\PvP\portraits\stripper_Meddle.png" />
+    <Content Include="Images\PvP\portraits\sunnyglade_brigade_magic_fighter_Meddle.png" />
     <Content Include="Images\PvP\portraits\teacher_Meddle.png" />
     <Content Include="Images\PvP\portraits\unicorn_mare_Luxianne.png" />
     <Content Include="Images\PvP\portraits\unicorn_stallion_Luxianne.png" />

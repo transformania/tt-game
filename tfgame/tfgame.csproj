@@ -1443,10 +1443,10 @@
     <Content Include="Views\Settings\ViewPoll.cshtml" />
     <Content Include="Views\Settings\Polls\Open\poll1.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Settings\Polls\Closed\poll1.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Settings\Polls\Closed\" />
     <Folder Include="XMLs\FairyChallengeText\SingleBags\" />
     <Folder Include="Z_SelfHelp\" />
   </ItemGroup>

@@ -2550,7 +2550,6 @@ namespace tfgame.Controllers
              return View(PlayerProcedures.GetLeadingPlayers__PvP(100));
          }
 
-        [OutputCache(Duration = 600, VaryByParam = "none")]
          public ActionResult ItemLeaderboard()
          {
              Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);

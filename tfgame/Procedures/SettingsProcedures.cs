@@ -96,6 +96,12 @@ namespace tfgame.Procedures
             return dbPoll;
         }
 
+        public static IEnumerable<PollEntry> GetAllPollResults(int pollId)
+        {
+            IPollEntryRepository pollRepo = new EFPollEntriesRepository();
+            return pollRepo.PollEntries.Where(p => p.PollId == pollId);
+        }
+
 
     }
 }

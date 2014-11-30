@@ -965,6 +965,10 @@ namespace tfgame.Procedures
                 {
                     return "You have to wait longer before you can use this item agin.";
                 }
+                else if (itemPlus.Item.ItemType == PvPStatics.ItemType_Consumable_Reuseable && EffectProcedures.PlayerHasEffect(owner, itemPlus.Item.GivesEffect) == true)
+                {
+                    return "You can't use this yet as you already have the effect active or on cooldown.";
+                }
                 else
                 {
                     // add waiting time back on to the item
@@ -1235,10 +1239,12 @@ namespace tfgame.Procedures
                 {
                     Item = i,
                     StaticItem = ItemStatics.GetStaticItem(i.dbName),
-                    PlayerId = playerRepo.Players.FirstOrDefault(p => p.FirstName + " " + p.LastName == i.VictimName).Id,
+                   
                 };
 
-
+                Player player = playerRepo.Players.FirstOrDefault(p => p.FirstName + " " + p.LastName == i.VictimName);
+                addme.PlayerId = player.Id;
+                addme.Gender = player.Gender;
 
                 try
                 {

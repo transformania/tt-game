@@ -36,6 +36,24 @@ namespace tfgame.CustomHtmlHelpers
             return new MvcHtmlString(output);
         }
 
+        public static MvcHtmlString PrintGenderIcon(string gender)
+        {
+            string output = "<span class=";
+
+            if (gender == "male")
+            {
+                output += "'icon-male'>";
+            }
+            else
+            {
+                output += "'icon-female'>";
+            }
+
+            output += "</span>";
+
+            return new MvcHtmlString(output);
+        }
+
         public static MvcHtmlString PrintPvPIcon(Player player)
         {
 

@@ -42,6 +42,7 @@
                 </td>
                 <td>
                    @Html.ActionLink(p.Item.VictimName, "LookAtPlayerItem", "PvP", new { vicname = p.Item.VictimName}, null)
+                    @CharactersHere.PrintGenderIcon(p.Gender)
                    @CharactersHere.PrintItemTypeIcon(p.StaticItem)
                     @CharactersHere.PrintPermanencyIcon(p.Item)
                 </td>
@@ -97,9 +98,9 @@
     }
 </style>
 
-<script>
+@*<script>
     $("tr td:contains('@ViewBag.MyName')").each(function () {
         $(this).parent('tr').css("background-color", "pink");
     });
 
-</script>
+</script>*@

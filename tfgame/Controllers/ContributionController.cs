@@ -84,7 +84,15 @@ namespace tfgame.Controllers
             {
 
                 string effectDbName = output.GetEffectDbName();
-                string spellDbName = output.GetSkillDbName();
+                string spellDbName = "NO SKILL NAME SET";
+
+                try {
+                    spellDbName = output.GetSkillDbName();
+                }
+                catch
+                {
+
+                }
 
                 ViewBag.StaticEffectExists = "<span class = 'bad'>Static effect for " + effectDbName + " not found!</span>";
                 ViewBag.StaticSpellExists = "<span class = 'bad'>Static spell for " + spellDbName + " not found!<span>";

@@ -22,6 +22,7 @@ namespace tfgame.ViewModels
         public Item Item { get; set; }
         public DbStaticItem StaticItem { get; set; }
         public int PlayerId { get; set; }
+        public string Gender { get; set; }
         public decimal ItemXP { get; set; }
     }
 

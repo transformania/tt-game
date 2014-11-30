@@ -2550,11 +2550,12 @@ namespace tfgame.Controllers
              return View(PlayerProcedures.GetLeadingPlayers__PvP(100));
          }
 
+        [OutputCache(Duration = 600, VaryByParam = "none")]
          public ActionResult ItemLeaderboard()
          {
              Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
              ViewBag.MyName = me.FirstName + " " + me.LastName;
-             IEnumerable<SimpleItemLeaderboardViewModel> output = ItemProcedures.GetLeadingItemsSimple(100);
+             IEnumerable<SimpleItemLeaderboardViewModel> output = ItemProcedures.GetLeadingItemsSimple(100).OrderByDescending(p => p.Item.Level).ThenByDescending(p => p.ItemXP);
              return View(output);
          }
 

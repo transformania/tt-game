@@ -1009,7 +1009,8 @@ namespace tfgame.Controllers
 
            // AIProcedures.SpawnAIPsychopaths(15, 0);
 
-            BossProcedures_BimboBoss.SpawnBimboBoss();
+          
+            BossProcedures_Fae.SpawnFae();
 
             return RedirectToAction("Index");
         }

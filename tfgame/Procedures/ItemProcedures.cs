@@ -1045,6 +1045,25 @@ namespace tfgame.Procedures
                         return name + " consumed from a " + itemPlus.Item.FriendlyName + ", immediately restoring " + (itemPlus.Item.ReuseableManaRestore + bonusFromLevel) + " mana.  " + owner.Mana + "/" + owner.MaxMana + " Mana";
                     }
 
+                    else if (itemPlus.Item.GivesEffect != null && itemPlus.Item.GivesEffect != "")
+                    {
+                        EffectProcedures.GivePerkToPlayer(itemPlus.Item.GivesEffect, owner);
+                        DbStaticEffect effectPlus = EffectStatics.GetStaticEffect2(itemPlus.Item.GivesEffect);
+                        if (owner.Gender == "male" && effectPlus.MessageWhenHit_M != null && effectPlus.MessageWhenHit_M != "")
+                        {
+                            return name + " used a " + itemPlus.Item.FriendlyName + ".  " + effectPlus.MessageWhenHit_M;
+                        }
+                        else if (owner.Gender == "female" && effectPlus.MessageWhenHit_F != null && effectPlus.MessageWhenHit_F != "")
+                        {
+                            return name + " used a " + itemPlus.Item.FriendlyName + ".  " + effectPlus.MessageWhenHit_F;
+                        }
+                        else
+                        {
+                            return  name + " used a " + itemPlus.Item.FriendlyName + ".  " + effectPlus.MessageWhenHit;
+                        }
+                        
+                    }
+
                     LocationLogProcedures.AddLocationLog(owner.dbLocationName, owner.FirstName + " " + owner.LastName + " used a " + itemPlus.Item.FriendlyName + " here.");
 
                 }
@@ -1205,6 +1224,8 @@ namespace tfgame.Procedures
         public static IEnumerable<SimpleItemLeaderboardViewModel> GetLeadingItemsSimple(int number)
         {
             IItemRepository itemRepo = new EFItemRepository();
+            IInanimateXPRepository xpRepo = new EFInanimateXPRepository();
+            IPlayerRepository playerRepo = new EFPlayerRepository();
             IEnumerable<Item> items = itemRepo.Items.Where(i => i.VictimName != "" && !i.VictimName.Contains("Psychopath") && !i.VictimName.Contains("Donna Milton") && !i.VictimName.Contains("Lady Lovebringer")).OrderByDescending(i => i.Level).Take(number);
 
             List<SimpleItemLeaderboardViewModel> output = new List<SimpleItemLeaderboardViewModel>();
@@ -1214,7 +1235,20 @@ namespace tfgame.Procedures
                 {
                     Item = i,
                     StaticItem = ItemStatics.GetStaticItem(i.dbName),
+                    PlayerId = playerRepo.Players.FirstOrDefault(p => p.FirstName + " " + p.LastName == i.VictimName).Id,
                 };
+
+
+
+                try
+                {
+                    addme.ItemXP = xpRepo.InanimateXPs.FirstOrDefault(p => p.OwnerId == addme.PlayerId).Amount;
+                }
+                catch
+                {
+                    addme.ItemXP = 0;
+                }
+
                 output.Add(addme);
             }
 

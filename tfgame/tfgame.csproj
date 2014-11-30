@@ -551,6 +551,7 @@
     <Content Include="Images\PvP\itemsPortraits\star_studded_cloak_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\sucker_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\suitjacket_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\teardrop_talisman_Luxianne.gif" />
     <Content Include="Images\PvP\itemsPortraits\tennis_racket_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\tied_croptop_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\Whip_Meddle.png" />
@@ -564,6 +565,7 @@
     <Content Include="Images\PvP\portraits\alraune_Luxianne.png" />
     <Content Include="Images\PvP\portraits\Amazonian_Futa_Meddle.png" />
     <Content Include="Images\PvP\portraits\angel_Meddle.png" />
+    <Content Include="Images\PvP\portraits\batgirl_Luxianne.png" />
     <Content Include="Images\PvP\portraits\beach_babe_enthusiast_TheGreatDaeo.jpg" />
     <Content Include="Images\PvP\portraits\belle_of_the_ball_Meddle.png" />
     <Content Include="Images\PvP\portraits\bimbo_mother_babblingfaces.png" />
@@ -588,6 +590,7 @@
     <Content Include="Images\PvP\portraits\femboi_skunk_Luxianne.png" />
     <Content Include="Images\PvP\portraits\Fembot_Meddle.png" />
     <Content Include="Images\PvP\portraits\femboy_Meddle.png" />
+    <Content Include="Images\PvP\portraits\fembunni_Luxianne.png" />
     <Content Include="Images\PvP\portraits\foxtheif_Luxianne.png" />
     <Content Include="Images\PvP\portraits\fuzzy_moth_girl_Luxianne.png" />
     <Content Include="Images\PvP\portraits\gargoyle_jbovinne.png" />

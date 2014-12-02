@@ -226,7 +226,7 @@ namespace tfgame.Procedures
 
                     AIDirective directive = AIDirectiveProcedures.GetAIDirective(bot.Id);
                     log.AddLog(bot.FirstName + " " + bot.LastName + ":  Directive is to:  " + directive.State + " target ID: " + directive.TargetPlayerId);
-                    SkillViewModel2 skill = SkillProcedures.GetSkillViewModelsOwnedByPlayer(bot.Id).FirstOrDefault(s => s.dbSkill.Name != "lowerHealth" && s.Skill.ExclusiveToForm == null);
+                    SkillViewModel2 skill = SkillProcedures.GetSkillViewModelsOwnedByPlayer(bot.Id).FirstOrDefault(s => s.dbSkill.Name != "lowerHealth" && s.Skill.ExclusiveToForm == null && s.Skill.ExclusiveToItem == null);
 
                     Random rand = new Random(DateTime.Now.Millisecond);
                     double roll = 0;

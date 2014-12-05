@@ -88,9 +88,9 @@
 </div>
 
     
-<div style="text-align: center; clear: both; margin-top: 65px;">
-    @Html.ActionLink("Meditate (4 AP)", "Meditate", "PvP", new { id = "action_meditate" })
+<div id="playerActionBox">
     @Html.ActionLink("Cleanse (4 AP, 3 Mana)", "Cleanse", "PvP", new { id = "action_cleanse" })
+    @Html.ActionLink("Meditate (4 AP)", "Meditate", "PvP", new { id = "action_meditate" })
     @Html.ActionLink("Search this Area (" + (int)Model.APSearchCost + " AP)", "Search", "PvP", new { id = "action_search" })
 </div>
 <center>

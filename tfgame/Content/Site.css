@@ -35,6 +35,10 @@ nav, section {
     display: block;
 }
 
+header{
+    height:30px;
+}
+
 mark {
     background-color: #a6dbed;
     padding-left: 5px;
@@ -92,17 +96,13 @@ h5, h6 {
 
 /* main layout
 ----------------------------------------------------------*/
-.headerMenu{
-    height:30px;
-}
-
 .headerMenu a{
     background-color:lightgray;
-    height:30px;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
     border-right: 2px solid gray;
     text-decoration:none;
+    transition: background 0.5s ease;
 }
 
 @media screen and (max-width: 540px) {
@@ -115,6 +115,7 @@ h5, h6 {
 .headerMenu a:hover{
     padding-bottom:8px;
     border-bottom: 2px solid black;
+    background: honeydew !important;
 }
 .content-wrapper {
     margin: 0 auto;

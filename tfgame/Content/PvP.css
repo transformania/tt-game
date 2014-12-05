@@ -345,11 +345,16 @@ locationDescription {
 }
 
 .icon-level {
-    width: 15px;
-    height: 15px;
-    display: inline-block;
-    text-align: center;
-    text-shadow: 1px 1px #ffffff;
+width: 25px;
+height: 16px;
+display: inline-block;
+text-align: center;
+/* text-shadow: 1px 1px #FFF;*/
+padding-bottom: 5px;
+background: rgba(255, 255, 255, 0.7);
+border-right: 1px solid #D3D3D3;
+border-bottom: 1px solid #D3D3D3;
+border-bottom-right-radius: 10px;
 }
 
 .icon-pvp {
@@ -1039,6 +1044,7 @@ a.curse {
     transition: all 0.5s ease;
     display:inline-block;
     margin-bottom:2px;
+    text-decoration:none;
 }
 
 #action_cleanse{
@@ -1049,6 +1055,7 @@ a.curse {
     transition: all 0.5s ease;
         display:inline-block;
     margin-bottom:2px;
+    text-decoration:none;
 }
 
 #action_search{
@@ -1059,6 +1066,7 @@ a.curse {
     transition: all 0.5s ease;
     display:inline-block;
     margin-bottom:2px;
+    text-decoration:none;
 }
 
 #action_search:hover, #action_cleanse:hover, #action_meditate:hover{

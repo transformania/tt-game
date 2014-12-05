@@ -16,6 +16,7 @@
     @Html.ActionLink("RP Room 1", "Chat", "PvP", new { room = "rp1" }, null)
     @Html.ActionLink("RP Room 2", "Chat", "PvP", new { room = "rp2" }, null)
     @Html.ActionLink("RP Room 3", "Chat", "PvP", new { room = "rp3" }, null)
+    <span class="newlinkyellow">@Html.ActionLink("Create/Join Private Room", "PrivateChat", "PvP")</span>
 </center>
 <center>
     @Html.ActionLink("Chat Log", "ChatLog", "PvP", new { room = "global", filter = "lasth" }, new { target = "_blank" })

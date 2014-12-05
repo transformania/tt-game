@@ -2558,6 +2558,7 @@ namespace tfgame.Controllers
              return View(output);
          }
 
+
          [Authorize]
         public ActionResult Chat(string room)
         {
@@ -2565,6 +2566,12 @@ namespace tfgame.Controllers
             if (me == null || me.MembershipId == -1 || me.FirstName=="" || me.LastName=="")
             {
                 return View("~/Views/PvP/LoginRequired.cshtml");
+            }
+
+            if (room == "")
+            {
+                TempData["Result"] = "A chat room must have a name.";
+                return RedirectToAction("Play");
             }
 
             //if (me.FirstName)
@@ -2597,11 +2604,24 @@ namespace tfgame.Controllers
             {
                 return View("Chats/Chat_RP3");
             }
+            else
+            {
+                ViewBag.ChatName = room;
+                return View("Chats/Chat_Generic");
+            }
 
             return View();
         }
 
- 
+         public ActionResult PrivateChat()
+         {
+             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+             if (me == null || me.MembershipId == -1 || me.FirstName == "" || me.LastName == "")
+             {
+                 return View("~/Views/PvP/LoginRequired.cshtml");
+             }
+             return View("Chats/PrivateBegin");
+         }
 
          public ActionResult ChatLog(string room, string filter)
          {

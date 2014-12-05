@@ -1,5 +1,6 @@
-﻿@{
-    ViewBag.Title = "rp1";
+﻿
+@{
+    ViewBag.Title = "Chat";
 }
 @Html.ActionLink("Back to game", "Play", "PvP")
 <p class="bad" id="disconnected" style="display: none;">Your chat is currently disconnected from the server.  It will attempt to automatically reconnect.</p>
@@ -12,20 +13,19 @@
 </div>
 
 <center style="margin-bottom: 5px;">
-    Welcome to the chat. Please remain civil. This page does not save anything, so reloading this page will clear the chat.<br /><br />
+    You are in private chat room <b>@ViewBag.ChatName</b>.  This page does not save anything, so reloading this page will clear the chat.<br /><br />
     Change room:
-    @Html.ActionLink("Global", "Chat", "PvP", new { room = "global" }, null)
+    @Html.ActionLink("RP Room 1", "Chat", "PvP", new { room = "rp1" }, null)
     @Html.ActionLink("RP Room 2", "Chat", "PvP", new { room = "rp2" }, null)
     @Html.ActionLink("RP Room 3", "Chat", "PvP", new { room = "rp3" }, null)
     <span class="newlinkyellow">@Html.ActionLink("Create/Join Private Room", "PrivateChat", "PvP")</span>
 </center>
 <center>
-    @Html.ActionLink("Chat Log", "ChatLog", "PvP", new { room = "rp1", filter = "lasth" }, new { target = "_blank" })
+    @Html.ActionLink("Chat Log", "ChatLog", "PvP", new { room = Model, filter = "lasth" }, new { target = "_blank" })
     @Html.ActionLink("Commands", "ChatCommands", "PvP", null, new { target = "_blank" })
 </center>
 
 @Html.ActionLink("Back to game", "Play", "PvP")
-
 
 @section scripts {
     <!--Script references. -->
@@ -72,28 +72,11 @@
 
             };
 
-            /////////////////////////////
-
-            //chat.client.addEnterMessageToPage = function (message) {
-            //    alert("x");
-            //    $('#discussion ').prepend('<li><strong>' + message + '</li>');
-
-            //    // add onclick to last element
-            //    $('ul#discussion li:first strong:first').dblclick(function () {
-            //        $('#message').val("@@" + name + "  " + $('#message').val());
-            //        $('#message').focus();
-            //    });
-
-            //}
-            //addEnterMessageToPage
-
-            /////////////////////////////
-
             $('#displayname').val("");
             $('#message').focus();
             $.connection.hub.start().done(function () {
-                chat.server.joinRoom("rp1");
-                chat.state.toRoom = "rp1";
+                chat.server.joinRoom("@ViewBag.ChatName");
+                chat.state.toRoom = "@ViewBag.ChatName";
                 $("#disconnected").hide();
                 $(window).focus(function () {
                     $(document).attr('title', 'Chat');
@@ -172,59 +155,72 @@
 
 
     <style>
+        .chatInput {
+            border: 1px solid black;
+            margin: 5px 0px 0px 0px;
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+            padding: 6px;
+        }
+
         #discussion {
             width: 100%;
-            height: 500px;
+            height: 600px;
             overflow-y: scroll;
             text-wrap: normal;
             border: 2px solid black;
             border-radius: 8px;
             padding: 5px;
             background-color: #d6f8ff;
+            margin-top: -2px;
         }
 
-        #discussion li{
-            padding-top: 4px;
-            padding-bottom: 4px;
+            #discussion li {
+                padding-top: 4px;
+                padding-bottom: 4px;
+            }
+
+                #discussion li:nth-child(odd) {
+                    background-color: #b8dbff;
+                }
+
+                #discussion li:nth-child(even) {
+                    background-color: #d4e9ff;
+                }
+
+        .adminFont {
+            color: darkred;
         }
 
-            #discussion li:nth-child(odd) {
-                background-color: #b8dbff;
-            }
-
-            #discussion li:nth-child(even) {
-                background-color: #d4e9ff;
-            }
-
-            .adminFont {
-                color: darkred;
-            }
-
-            .youFont {
-                color: darkblue;
-            }
+        .youFont {
+            color: darkblue;
+        }
 
         .dm {
             color: darkgreen;
             font-weight: 800;
         }
 
-            strong {
-                cursor: pointer;
-            }
+        strong {
+            cursor: pointer;
+        }
 
             strong:hover {
                 color: darkolivegreen;
             }
 
-            body, #body, html {
-                background-color: #fceeff;
-            }
+        body, #body, html {
+            background: -webkit-linear-gradient(left, lightpink, lightblue); /* For Safari 5.1 to 6.0 */
+            background: -o-linear-gradient(right, lightpink, lightblue); /* For Opera 11.1 to 12.0 */
+            background: -moz-linear-gradient(right, lightpink, lightblue); /* For Firefox 3.6 to 15 */
+            background: linear-gradient(to right, lightpink, lightblue); /* Standard syntax */
+        }
 
-            .enterMsg {
-                color: black;
-                font-weight: 800;
-            }
-
+        .enterMsg {
+            color: black;
+            font-weight: 800;
+        }
     </style>
 }

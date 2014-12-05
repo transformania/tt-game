@@ -19,10 +19,19 @@
 @Html.ActionLink("Last 2 Days", "ChatLog", "PvP", new { room = ViewBag.Room, filter = "last48h" }, null)
 @Html.ActionLink("Last 3 Days", "ChatLog", "PvP", new { room = ViewBag.Room, filter = "last72h" }, null)
 
+<p>Chat log for private room:</p>
 
-<ul id="discussion">
-  
-        @{
+<form>
+    Room name:<br>
+    <input type="text" id="roomName">
+    <button name="subject" type="button" id="beginButton">View Logs</button>
+</form>
+
+<p>@Html.ActionLink("Back to game", "Play", "PvP")</p>
+
+    <ul id="discussion">
+
+            @{
             foreach (ChatLog l in Model)
             {
                 @*<li>@l.Message <span class="timeago">@l.Timestamp</span></li>*@
@@ -30,26 +39,37 @@
             }
         }
 
-</ul>
+    </ul>
 
-<script>
+    <script>
 
-    $(document).ready(function () {
+        function getParameterByName(name) {
+            name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+            var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+                results = regex.exec(location.search);
+            return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+        }
 
-        $("li").each(function () {
-            var encodedValue = $(this).html();
-            encodedValue = encodedValue.replace("[.[", "<span class='timeago'>");
-            encodedValue = encodedValue.replace("].]", "</span>");
-            encodedValue = encodedValue.replace("[-[", "<span class='enterMsg'>");
-            encodedValue = encodedValue.replace("]-]", "</span>");
-            encodedValue = encodedValue.replace("[=[", "<span class='dm'>");
-            encodedValue = encodedValue.replace("]=]", "</span>");
-            encodedValue = encodedValue.replace("Judoo (admin)", "<span class='adminFont'>Judoo (admin)</span>");
-            console.log(encodedValue);
-            $(this).html(encodedValue);
+        $(document).ready(function () {
+
+            $("#beginButton").click(function () {
+                window.location = "/PvP/ChatLog?room=" + $("#roomName").val() + "&filter=" + getParameterByName('filter');
+            });
+
+            $("li").each(function () {
+                var encodedValue = $(this).html();
+                encodedValue = encodedValue.replace("[.[", "<span class='timeago'>");
+                encodedValue = encodedValue.replace("].]", "</span>");
+                encodedValue = encodedValue.replace("[-[", "<span class='enterMsg'>");
+                encodedValue = encodedValue.replace("]-]", "</span>");
+                encodedValue = encodedValue.replace("[=[", "<span class='dm'>");
+                encodedValue = encodedValue.replace("]=]", "</span>");
+                encodedValue = encodedValue.replace("Judoo (admin)", "<span class='adminFont'>Judoo (admin)</span>");
+                console.log(encodedValue);
+                $(this).html(encodedValue);
+            });
+
         });
-
-    });
 
 </script>
 

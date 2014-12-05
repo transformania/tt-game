@@ -337,27 +337,32 @@ namespace tfgame.Procedures.BossProcedures
 
             IItemRepository itemRepo = new EFItemRepository();
 
-            Item newVial = new Item
+            for (int i = 0; i < 2; i++)
             {
-                dbLocationName = LocationsStatics.GetRandomLocation(),
-                dbName = CureItemDbName,
-                IsEquipped = false,
-                IsPermanent = false,
-                Level = 0,
-                PvPEnabled = true,
-                OwnerId = -1,
-                VictimName = "",
-                TimeDropped = DateTime.UtcNow,
-                TurnsUntilUse = 0,
-                EquippedThisTurn = false,
-            };
 
-            if (turnNumber % 3 == 0)
-            {
-                newVial.PvPEnabled = false;
+                Item newVial = new Item
+                {
+                    dbLocationName = LocationsStatics.GetRandomLocation(),
+                    dbName = CureItemDbName,
+                    IsEquipped = false,
+                    IsPermanent = false,
+                    Level = 0,
+                    PvPEnabled = true,
+                    OwnerId = -1,
+                    VictimName = "",
+                    TimeDropped = DateTime.UtcNow,
+                    TurnsUntilUse = 0,
+                    EquippedThisTurn = false,
+                };
+
+                if (turnNumber % 3 == 0)
+                {
+                    newVial.PvPEnabled = false;
+                }
+
+                itemRepo.SaveItem(newVial);
+
             }
-
-            itemRepo.SaveItem(newVial);
 
         }
 

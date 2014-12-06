@@ -75,6 +75,24 @@ namespace tfgame.Procedures
              directiveRepo.DeleteAIDirective(directive.Id);
         }
 
+        public static void DeaggroPsychopathsOnPlayer(Player player)
+        {
+            IAIDirectiveRepository directiveRepo = new EFAIDirectiveRepository();
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            List<AIDirective> directives = directiveRepo.AIDirectives.Where(d => d.TargetPlayerId == player.Id).ToList();
+
+            foreach (AIDirective d in directives)
+            {
+                Player p = playerRepo.Players.FirstOrDefault(x => x.Id == d.OwnerId);
+                if (p.FirstName.Contains("Psychopath")) {
+                    d.TargetPlayerId = -1;
+                    d.State = "idle";
+                    directiveRepo.SaveAIDirective(d);
+                }
+            }
+
+        }
+
 
 
     }

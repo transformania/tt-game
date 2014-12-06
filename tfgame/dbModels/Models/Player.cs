@@ -24,8 +24,11 @@ namespace tfgame.dbModels.Models
         public decimal ResistanceModifier { get; set; }
         public string Gender { get; set; }
         public string Mobility { get; set; }
+
         public int IsItemId { get; set; }
         public int IsPetToId { get; set; }
+        public bool MindControlIsActive { get; set; }
+
         public decimal XP { get; set; }
         public int Level { get; set; }
         public int TimesAttackingThisUpdate { get; set; }
@@ -152,6 +155,9 @@ namespace tfgame.dbModels.Models
         public string Mobility { get; set; }
         public int IsItemId { get; set; }
         public int IsPetToId { get; set; }
+
+        public bool MindControlIsActive { get; set; }
+
         public decimal XP { get; set; }
         public int Level { get; set; }
         public int TimesAttackingThisUpdate { get; set; }
@@ -219,6 +225,9 @@ namespace tfgame.dbModels.Models
                 Mobility = this.Mobility,
                 IsItemId = this.IsItemId,
                 IsPetToId = this.IsPetToId,
+
+                MindControlIsActive = this.MindControlIsActive,
+
                 XP = this.XP,
                 Level = this.Level,
                 TimesAttackingThisUpdate = this.TimesAttackingThisUpdate,

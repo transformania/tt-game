@@ -46,6 +46,7 @@ namespace tfgame.Procedures
                                                               Mobility = p.Mobility,
                                                               IsItemId = p.IsItemId,
                                                               IsPetToId = p.IsPetToId,
+                                                              MindControlIsActive = p.MindControlIsActive,
                                                               XP = p.XP,
                                                               Level = p.Level,
                                                               TimesAttackingThisUpdate = p.TimesAttackingThisUpdate,
@@ -134,6 +135,9 @@ namespace tfgame.Procedures
                                                               Mobility = p.Mobility,
                                                               IsItemId = p.IsItemId,
                                                               IsPetToId = p.IsPetToId,
+
+                                                              MindControlIsActive = p.MindControlIsActive,
+
                                                               XP = p.XP,
                                                               Level = p.Level,
                                                               TimesAttackingThisUpdate = p.TimesAttackingThisUpdate,
@@ -222,6 +226,9 @@ namespace tfgame.Procedures
                                                               Mobility = p.Mobility,
                                                               IsItemId = p.IsItemId,
                                                               IsPetToId = p.IsPetToId,
+
+                                                              MindControlIsActive = p.MindControlIsActive,
+
                                                               XP = p.XP,
                                                               Level = p.Level,
                                                               TimesAttackingThisUpdate = p.TimesAttackingThisUpdate,

@@ -933,6 +933,14 @@ namespace tfgame.Procedures
                     return name + " spread the mana-absorbing " + itemPlus.Item.FriendlyName + " over your skin, quickly restoring you to your original body and cleansing away some additional transformation energies.";
                 }
 
+                if (itemPlus.Item.dbName == "item_consumeable_Lullaby_Whistle")
+                {
+                    AIDirectiveProcedures.DeaggroPsychopathsOnPlayer(owner);
+                    itemRepo.DeleteItem(itemPlus.dbItem.Id);
+                    LocationLogProcedures.AddLocationLog(owner.dbLocationName, owner.FirstName + " " + owner.LastName + " used a " + itemPlus.Item.FriendlyName + " here.");
+                    return name + "You take a quick blow with the whistle, sending a magical melody out into the air that should force any psychopathic spellslingers intend on taking you down forget all about you, so long as you don't provoke them again...";
+                }
+
                 if (itemPlus.Item.dbName == BossProcedures.BossProcedures_BimboBoss.CureItemDbName)
                 {
 

@@ -82,21 +82,16 @@ namespace tfgame.Controllers
             ViewBag.SecondsUntilUpdate = 600-(int)secondsSinceUpdate;
 
             // if it has been long enough since last update, force an update to occur
-            if (secondsSinceUpdate > 605 && WorldStat.WorldIsUpdating == false)
+            if (secondsSinceUpdate > 605 && WorldStat.WorldIsUpdating == false && PvPStatics.AnimateUpdateInProgress == false)
             {
                 UpdateWorld("oogabooga99");
             }
 
             // turn off world update toggle if it's simply been too long
-            if (secondsSinceUpdate > 90 && PvPStatics.AnimateUpdateInProgress == true)
+            if (secondsSinceUpdate > 90 && (PvPStatics.AnimateUpdateInProgress == true || WorldStat.WorldIsUpdating == true))
             {
                 PvPStatics.AnimateUpdateInProgress = false;
-
-                if (secondsSinceUpdate > 150 && WorldStat.WorldIsUpdating == true)
-                {
-                    PvPWorldStatProcedures.StopUpdatingWorld();
-                }
-
+                PvPWorldStatProcedures.StopUpdatingWorld();
             }
 
             if (WorldStat.WorldIsUpdating == true && secondsSinceUpdate < 90)
@@ -284,11 +279,26 @@ namespace tfgame.Controllers
             ViewBag.AttacksMade = me.TimesAttackingThisUpdate;
 
 
-            ViewBag.LoadTime = loadtime; 
-            
+            ViewBag.LoadTime = loadtime;
+
+            try
+            {
+                ViewBag.ShowOffline = TempData["ShowOffline"];
+            }
+            catch
+            {
+                ViewBag.ShowOffline = false;
+            }
 
 
             return View(output);
+        }
+
+        [Authorize]
+        public ActionResult ShowOffline()
+        {
+            TempData["ShowOffline"] = true;
+            return RedirectToAction("Play");
         }
 
          [Authorize]
@@ -947,6 +957,7 @@ namespace tfgame.Controllers
             return RedirectToAction("Play");
         }
 
+        [Authorize]
         public ActionResult DismissNotifications()
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
@@ -954,6 +965,7 @@ namespace tfgame.Controllers
             return RedirectToAction("Play");
         }
 
+        [Authorize]
         public ActionResult ViewLog()
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
@@ -1888,6 +1900,7 @@ namespace tfgame.Controllers
             return View(contribution);
         }
 
+        [Authorize]
         public ActionResult ContributeBalanceCalculator(int id)
         {
             IEffectContributionRepository contributionRepo = new EFEffectContributionRepository();
@@ -1909,6 +1922,7 @@ namespace tfgame.Controllers
             return View("~/Views/PvP/BalanceCalculator.cshtml", contribution);
         }
 
+        [Authorize]
         public ActionResult ContributeBalanceCalculator2(int id)
         {
             IContributionRepository contributionRepo = new EFContributionRepository();
@@ -1930,6 +1944,7 @@ namespace tfgame.Controllers
             return View("~/Views/PvP/BalanceCalculator2.cshtml", contribution);
         }
 
+        [Authorize]
          public ActionResult ContributeBalanceCalculatorSend(Contribution input)
          {
              IContributionRepository contributionRepo = new EFContributionRepository();
@@ -1974,6 +1989,7 @@ namespace tfgame.Controllers
              }
          }
 
+        [Authorize]
          public ActionResult ContributeBalanceCalculatorSend_Effect(EffectContribution input)
          {
              IEffectContributionRepository contributionRepo = new EFEffectContributionRepository();
@@ -2263,6 +2279,7 @@ namespace tfgame.Controllers
             return RedirectToAction("Play");
         }
 
+        [Authorize]
         public ActionResult SendContributionUndoLock(int id)
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
@@ -2290,6 +2307,7 @@ namespace tfgame.Controllers
             return RedirectToAction("Play");
         }
 
+        [Authorize]
         public ActionResult MyFriends()
         {
             if (WebSecurity.CurrentUserId == -1)
@@ -2310,6 +2328,7 @@ namespace tfgame.Controllers
             return View("MyFriends", output);
         }
 
+        [Authorize]
         public ActionResult AddFriend(int playerId)
         {
             Player me = PlayerProcedures.GetPlayerFromMembership();
@@ -2336,6 +2355,7 @@ namespace tfgame.Controllers
             return RedirectToAction("Play");
         }
 
+        [Authorize]
         public ActionResult RespondToFriendRequest(int id, string response)
         {
 
@@ -2613,6 +2633,7 @@ namespace tfgame.Controllers
             return View();
         }
 
+        [Authorize]
          public ActionResult PrivateChat()
          {
              Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
@@ -2623,6 +2644,7 @@ namespace tfgame.Controllers
              return View("Chats/PrivateBegin");
          }
 
+        [Authorize]
          public ActionResult ChatLog(string room, string filter)
          {
              ViewBag.Room = room;
@@ -2704,6 +2726,7 @@ namespace tfgame.Controllers
             return View(me);
         }
 
+        [Authorize]
         public ActionResult EnableRP()
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
@@ -2711,6 +2734,7 @@ namespace tfgame.Controllers
             return RedirectToAction("Play");
         }
 
+        [Authorize]
         public ActionResult DisableRP()
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
@@ -2718,6 +2742,7 @@ namespace tfgame.Controllers
             return RedirectToAction("Play");
         }
 
+        [Authorize]
         public ActionResult EnablePvP()
         {
             //Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
@@ -3415,6 +3440,8 @@ namespace tfgame.Controllers
             if (turnNo < PvPStatics.RoundDuration)
             {
 
+                PvPStatics.AnimateUpdateInProgress = true;
+
                 IServerLogRepository serverLogRepo = new EFServerLogRepository();
                 ServerLog log = new ServerLog
                 {
@@ -3428,7 +3455,7 @@ namespace tfgame.Controllers
                 Stopwatch updateTimer = new Stopwatch();
                 updateTimer.Start();
 
-                PvPStatics.AnimateUpdateInProgress = true;
+                
 
                 PvPWorldStatProcedures.UpdateWorldTurnCounter();
 

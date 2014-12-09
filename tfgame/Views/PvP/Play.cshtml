@@ -147,7 +147,15 @@
 
 @*all players who are offline*@
 <div style="clear:both;"></div>
-<div id="showOfflinePlayersButton">Show Offline Players Here (@Model.PlayersHere.Where(p => PlayerProcedures.PlayerIsOffline(p.Player) == true).Count())</div>
+@*<div id="showOfflinePlayersButton">Show Offline Players Here (@Model.PlayersHere.Where(p => PlayerProcedures.PlayerIsOffline(p.Player) == true).Count())</div>*@
+
+@{if (ViewBag.ShowOffline == null || ViewBag.ShowOffline == false) {
+
+<div id="showOfflinePlayersButton">@Html.ActionLink("Show Offline Players Here (" + @Model.PlayersHere.Where(p => PlayerProcedures.PlayerIsOffline(p.Player) == true).Count() + ")", "ShowOffline", "PvP")</div>
+}
+}
+
+@{if (ViewBag.ShowOffline != null && ViewBag.ShowOffline == true) { 
 
 <div id="offlinePlayersWrapper">
 
@@ -162,7 +170,11 @@
     }
 
 </div>
+    
+    }
 
+    
+    }
 <div style="clear:both;">
     @{
         foreach (tfgame.ViewModels.ItemViewModel item in Model.LocationItems)
@@ -201,6 +213,12 @@
         }
     }
 </div>
+    
+
+    
+  
+    
+    
 
 @Html.Partial("partial/partial_recentActivity", Model.LocationLog)
 
@@ -309,11 +327,11 @@
 
 
         // on page load, hide offline players
-        $("#offlinePlayersWrapper").hide();
+       // $("#offlinePlayersWrapper").hide();
 
         // show offline player section when player clicks on the proper div
         $("#showOfflinePlayersButton").click(function() {
-            $("#showOfflinePlayersButton").hide();
+            //$("#showOfflinePlayersButton").hide();
             $("#offlinePlayersWrapper").show();
         });
 

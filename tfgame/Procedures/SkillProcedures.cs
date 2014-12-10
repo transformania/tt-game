@@ -365,5 +365,14 @@ namespace tfgame.Procedures
         }
 
 
+        public static int GetCountOfLearnableSpells()
+        {
+            IDbStaticSkillRepository skillRepo = new EFDbStaticSkillRepository();
+            int spellCount = skillRepo.DbStaticSkills.Where(s => ((s.LearnedAtLocation != "" && s.LearnedAtLocation != null) || (s.LearnedAtRegion != "" && s.LearnedAtRegion != null)) && (s.MobilityType == "full" || s.MobilityType == "inanimate" || s.MobilityType == "animal")).Count();
+            return spellCount;
+
+        }
+
+
     }
 }

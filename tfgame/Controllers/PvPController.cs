@@ -890,6 +890,8 @@ namespace tfgame.Controllers
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
 
+            ViewBag.TotalLearnableSkills = SkillProcedures.GetCountOfLearnableSpells();
+
             return View("MySkills", SkillProcedures.GetSkillViewModelsOwnedByPlayer(me.Id));
         }
 
@@ -2814,6 +2816,15 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play");
             }
 
+            // assert that it is not too late in the round for the player to enter PvP mode
+            int turnNumber = PvPWorldStatProcedures.GetWorldTurnNumber();
+            if (turnNumber > PvPStatics.RoundDuration_LastPvPEntryTurn)
+            {
+                TempData["Error"] = "You cannot enter PvP mode.";
+                TempData["SubError"] = "You cannot enter PvP mode later than turn " + PvPStatics.RoundDuration_LastPvPEntryTurn + ".";
+                return RedirectToAction("Play");
+            }
+
             PlayerProcedures.SetPvPFlag(me, false);
             PlayerExtraProcedures.SetNextProtectionToggleTurn(me);
 
@@ -2835,7 +2846,7 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play");
             }
 
-            TempData["Result"] = PlayerProcedures.TeleportPlayer(me, to);
+            TempData["Result"] = PlayerProcedures.TeleportPlayer(me, to, false);
 
             ItemProcedures.DeleteItemOfName(me, "item_consumeable_teleportation_scroll");
 

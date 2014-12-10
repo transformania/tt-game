@@ -578,7 +578,7 @@ namespace tfgame.Procedures
             return MovePlayer(GetPlayerFromMembership().Id, destinationDbName, actionPointDiscount);
         }
 
-        public static string TeleportPlayer(Player player, string destination)
+        public static string TeleportPlayer(Player player, string destination, bool showDestinationInLocationLog)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
             IItemRepository itemRepo = new EFItemRepository();
@@ -591,9 +591,22 @@ namespace tfgame.Procedures
             user.dbLocationName = destination;
             playerRepo.SavePlayer(user);
 
-            string locationMessageOld = player.FirstName + " " + player.LastName + " used a scroll of teleportation.";
-            string locationMessageNew = player.FirstName + " " + player.LastName + " teleported to here.";
-            string playerLogMessage = "You teleported from " + oldLocation.Name + " to " + newLocation.Name + ".";
+            string playerLogMessage = "";
+            string locationMessageOld = "";
+            string locationMessageNew = "";
+
+            if (showDestinationInLocationLog == true)
+            {
+                locationMessageOld = player.FirstName + " " + player.LastName + " used a Covenant Call Crystal, teleporting to their safeground at " + newLocation.Name + ".";
+                locationMessageNew = player.FirstName + " " + player.LastName + " teleported home using a Covenant Call Crystal.";
+                playerLogMessage = "You used a Covenant Call Crystal, teleporting you from " + oldLocation.Name + " to your safeground at " + newLocation.Name + ".";
+            }
+            else { 
+                locationMessageOld = player.FirstName + " " + player.LastName + " used a scroll of teleportation.";
+                locationMessageNew = player.FirstName + " " + player.LastName + " teleported to here.";
+                playerLogMessage = "You teleported from " + oldLocation.Name + " to " + newLocation.Name + ".";
+            }
+            
 
             LocationLogProcedures.AddLocationLog(oldLocation.dbName, locationMessageOld);
             LocationLogProcedures.AddLocationLog(destination, locationMessageNew);

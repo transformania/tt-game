@@ -4,7 +4,7 @@
 
 @Html.ActionLink("Back to game", "Play", "PvP")
 
-<h2>Known Spells (@Model.Count())</h2>
+<h2>Known Spells (@Model.Where(c => c.MobilityType == "full" || c.MobilityType == "inanimate" || c.MobilityType == "animal").Count() / @ViewBag.TotalLearnableSkills)</h2>
 
 
 

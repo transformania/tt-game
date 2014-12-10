@@ -955,6 +955,34 @@ namespace tfgame.Procedures
                     return "You inject yourself with the vaccine, returning to your original form and purging the virus out of your body.  Careful though, it may later mutate and be able to infect you once again...";
                 }
 
+                if (itemPlus.Item.dbName == "item_consumeable_covenant_crystal")
+                {
+
+                    // assert owner has not been in combat recently
+                    double minutesSinceCombat = Math.Abs(Math.Floor(owner.GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalMinutes));
+                    if (minutesSinceCombat < 30)
+                    {
+                        return "Unfortunately you have been in combat too recently for the crystal to work.";
+                    }
+
+                    // assert owner is in a covenant
+                    if (owner.Covenant < 1)
+                    {
+                        return "Unfortunately as you are not in a covenant, you aren't able to use this item.";
+                    }
+
+                    // assert covenant has a safeground
+                    Covenant myCov = CovenantProcedures.GetDbCovenant(owner.Covenant);
+                    if (myCov.HomeLocation == null || myCov.HomeLocation == "")
+                    {
+                        return "You are a member of your covenant, but unfortunately your covenant has not yet established a safeground to call home so you are unable to use this item.";
+                    }
+
+                    string output = PlayerProcedures.TeleportPlayer(owner, myCov.HomeLocation, true);
+                    itemRepo.DeleteItem(itemPlus.dbItem.Id);
+                    return output;
+                }
+
                // if (itemPlus.Item.dbName == "item_consumeable_")
 
 

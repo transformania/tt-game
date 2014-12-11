@@ -62,6 +62,11 @@ namespace tfgame.Chat
                         ChatLogProcedures.WriteLogToDatabase(room, name, message);
                     }
 
+                } else if (message.StartsWith("/me")) {
+                    message = message.Replace("/me", "");
+                    string output = "[+[" + me.GetFullName() + message + "]+]";
+                    Clients.Group(room).addNewMessageToPage("", output);
+                    ChatLogProcedures.WriteLogToDatabase(room, name, output);
                 }
                 else if (message.StartsWith("/roll"))
                 {

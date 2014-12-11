@@ -53,7 +53,12 @@
 
             chat.client.addNewMessageToPage = function (name, message) {
                 
-                $('#discussion ').prepend('<li><strong>' + htmlEncode(name) + '</strong>: ' + htmlEncode(message) + '</li>');
+                // if this is not a / command, write out the name and colon.  Otherwise only write the message.
+                if (name.length > 0) {
+                    $('#discussion ').prepend('<li><strong>' + htmlEncode(name) + '</strong>: ' + htmlEncode(message) + '</li>');
+                } else {
+                    $('#discussion ').prepend('<li><strong>' + htmlEncode(message) + '</li>');
+                }
 
                 // add onclick to last element
                 $('ul#discussion li:first strong:first').dblclick(function () {
@@ -133,6 +138,8 @@
             encodedValue = encodedValue.replace("]-]", "</span>");
             encodedValue = encodedValue.replace("[=[", "<span class='dm'>");
             encodedValue = encodedValue.replace("]=]", "</span>");
+            encodedValue = encodedValue.replace("[+[", "<span class='me'>");
+            encodedValue = encodedValue.replace("]+]", "</span>");
             encodedValue = encodedValue.replace("Judoo (admin)", "<span class='adminFont'>Judoo (admin)</span>");
             encodedValue = encodedValue.replace("Mizuho (dev)", "<span class='adminFont'>Mizuho (dev)</span>");
 
@@ -196,14 +203,19 @@
                 color: darkblue;
             }
 
-            .dm {
-                color: darkgreen;
-                font-weight: 800;
-            }
+        .dm {
+            color: darkgreen;
+            font-weight: 800;
+        }
 
-            strong {
-                cursor: pointer;
-            }
+        .me {
+            font-style: italic;
+            font-weight: 900;
+        }
+
+        strong {
+            cursor: pointer;
+        }
 
             strong:hover {
                 color: darkolivegreen;

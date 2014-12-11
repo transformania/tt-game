@@ -581,7 +581,8 @@ a.talkLink {
     display: block;
     float: left;
     margin-right: 8px;
-    margin-bottom: 10px;
+    margin-bottom: 30px;
+    margin-top: 30px;
 }
 
 .charwrapper {
@@ -614,6 +615,7 @@ a.talkLink {
     border: 1px solid #D3D3D3;
     height: 32px;
     padding-top: 6px;
+    margin-bottom:20px;
 }
 
 .timeago {

@@ -112,10 +112,16 @@
     <h2>Change your Chat Color</h2>
 
     <p>You can change the color that your name appears in the game's chats below.
+        @Html.ActionLink("Black", "SetChatColor", "Settings", new { color = "black" }, null)
         @Html.ActionLink("Red", "SetChatColor", "Settings", new { color = "red" }, null)
+        @Html.ActionLink("Dark Red", "SetChatColor", "Settings", new { color = "darkred" }, null)
         @Html.ActionLink("Blue", "SetChatColor", "Settings", new { color = "blue" }, null)
-        @Html.ActionLink("Orange", "SetChatColor", "Settings", new { color = "darkorange" }, null)
+        @Html.ActionLink("Dark Blue", "SetChatColor", "Settings", new { color = "darkblue" }, null)
+        @Html.ActionLink("Dark Orange", "SetChatColor", "Settings", new { color = "darkorange" }, null)
         @Html.ActionLink("Purple", "SetChatColor", "Settings", new { color = "purple" }, null)
+        @Html.ActionLink("Dark Purple", "SetChatColor", "Settings", new { color = "darkpurple" }, null)
+        @Html.ActionLink("Green", "SetChatColor", "Settings", new { color = "green" }, null)
+        @Html.ActionLink("Dark Green", "SetChatColor", "Settings", new { color = "darkgreen" }, null)
     </p>
 
    

@@ -1,4 +1,7 @@
-red;
+red; darkred;
 blue;
 darkorange;
-purple;
+purple; darkpurple;
+black;
+green; darkgreen;
+

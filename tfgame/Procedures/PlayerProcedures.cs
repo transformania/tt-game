@@ -408,6 +408,8 @@ namespace tfgame.Procedures
             newplayer.NonPvP_GameOverSpellsAllowedLastChange = DateTime.UtcNow;
             newplayer.IsPetToId = -1;
             newplayer.Mobility = Statics.PvPStatics.MobilityFull;
+            newplayer.ChatColor = "black";
+          
             
 
             if (oldplayer != null)
@@ -420,7 +422,7 @@ namespace tfgame.Procedures
                     newplayer.Level = 1;
                 }
                 newplayer.UnusedLevelUpPerks = newplayer.Level - 1;
-
+                newplayer.ChatColor = oldplayer.ChatColor;
 
 
             }

@@ -79,8 +79,8 @@
             $('#displayname').val("");
             $('#message').focus();
             $.connection.hub.start().done(function () {
-                chat.server.joinRoom("global");
-                chat.state.toRoom = "global";
+                chat.server.joinRoom("@ViewBag.ChatName");
+                chat.state.toRoom = "@ViewBag.ChatName";
                 $("#disconnected").hide();
                 $(window).focus(function () {
                     $(document).attr('title', 'Chat');

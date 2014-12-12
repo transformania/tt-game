@@ -41,6 +41,7 @@
         var unreadCount = 0;
 
         var myname = "@Html.Raw(TempData["MyName"])";
+        var mynameColor = "@Html.Raw(TempData["YourNameColor"])";
 
         var myVar = setInterval(function () { myTimer() }, 3000);
 
@@ -53,11 +54,11 @@
             var chat = $.connection.chatHub;
 
 
-            chat.client.addNewMessageToPage = function (name, message) {
+            chat.client.addNewMessageToPage = function (name, message, chatColor) {
 
                 // if this is not a / command, write out the name and colon.  Otherwise only write the message.
                 if (name.length > 0) {
-                    $('#discussion ').prepend('<li><strong>' + htmlEncode(name) + '</strong>: ' + htmlEncode(message) + '</li>');
+                    $('#discussion ').prepend('<li><strong>' + htmlEncodeName(name, chatColor) + '</strong>: ' + htmlEncode(message) + '</li>');
                 } else {
                     $('#discussion ').prepend('<li><strong>' + htmlEncode(message) + '</li>');
                 }
@@ -77,28 +78,11 @@
 
             };
 
-            /////////////////////////////
-
-            //chat.client.addEnterMessageToPage = function (message) {
-            //    alert("x");
-            //    $('#discussion ').prepend('<li><strong>' + message + '</li>');
-
-            //    // add onclick to last element
-            //    $('ul#discussion li:first strong:first').dblclick(function () {
-            //        $('#message').val("@@" + name + "  " + $('#message').val());
-            //        $('#message').focus();
-            //    });
-
-            //}
-            //addEnterMessageToPage
-
-            /////////////////////////////
-
             $('#displayname').val("");
             $('#message').focus();
             $.connection.hub.start().done(function () {
-                chat.server.joinRoom("rp1");
-                chat.state.toRoom = "rp1";
+                chat.server.joinRoom("@ViewBag.ChatName");
+                chat.state.toRoom = "@ViewBag.ChatName";
                 $("#disconnected").hide();
                 $(window).focus(function () {
                     $(document).attr('title', 'Chat');
@@ -161,20 +145,29 @@
             encodedValue = encodedValue.replace("]+]", "</span>");
             encodedValue = encodedValue.replace("Judoo (admin)", "<span class='adminFont'>Judoo (admin)</span>");
             encodedValue = encodedValue.replace("Mizuho (dev)", "<span class='adminFont'>Mizuho (dev)</span>");
-
-            encodedValue = encodedValue.replace(myname, "<span class='youFont'><strong> " + myname + "</strong></span>");
+            encodedValue = encodedValue.replace(myname, "<span style='color: " + mynameColor + ";'><strong> " + myname + "</strong></span>");
 
 
 
             return encodedValue;
         }
 
-        $(window).bind('beforeunload', function() {
-            return 'Are you sure you want to leave?';
-        });
+        function htmlEncodeName(value, nameColor) {
 
 
-    </script>
+            var encodedValue = $('<div />').text(value).html();
+
+            encodedValue = "<span style='color:" + nameColor + ";'>" + encodedValue + "</span>";
+
+
+            encodedValue = encodedValue.replace("Judoo (admin)", "<span class='adminFont'>Judoo (admin)</span>");
+            encodedValue = encodedValue.replace("Mizuho (dev)", "<span class='adminFont'>Mizuho (dev)</span>");
+            encodedValue = encodedValue.replace(myname, "<span style='color: " + mynameColor + ";'><strong> " + myname + "</strong></span>");
+
+            return encodedValue;
+        }
+
+</script>
 
 
 

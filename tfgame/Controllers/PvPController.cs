@@ -2611,6 +2611,8 @@ namespace tfgame.Controllers
                 TempData["MyName"] = "Mizuho (dev)";
             }
 
+            ViewBag.ChatName = room;
+
             if (room == "global")
             {
                 return View("Chats/CHat_Global");
@@ -2629,7 +2631,7 @@ namespace tfgame.Controllers
             }
             else
             {
-                ViewBag.ChatName = room;
+                
                 ViewBag.YourNameColor = me.ChatColor;
                 return View("Chats/Chat_Generic");
             }

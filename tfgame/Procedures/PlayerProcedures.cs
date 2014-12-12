@@ -1695,5 +1695,13 @@ namespace tfgame.Procedures
             }
         }
 
+        public static void SetChatColor(Player player, string color)
+        {
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            Player me = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            me.ChatColor = color;
+            playerRepo.SavePlayer(me);
+        }
+
     }
 }

@@ -2599,6 +2599,7 @@ namespace tfgame.Controllers
             //if (me.FirstName)
 
             TempData["MyName"] = me.GetFullName();
+            TempData["YourNameColor"] = me.ChatColor;
 
             if (me.MembershipId == 69)
             {
@@ -2629,6 +2630,7 @@ namespace tfgame.Controllers
             else
             {
                 ViewBag.ChatName = room;
+                ViewBag.YourNameColor = me.ChatColor;
                 return View("Chats/Chat_Generic");
             }
 

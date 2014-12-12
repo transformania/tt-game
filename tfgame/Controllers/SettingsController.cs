@@ -312,5 +312,24 @@ namespace tfgame.Controllers
             return View("Polls/Closed/poll" + id, output);
         }
 
+        [Authorize]
+        public ActionResult SetChatColor(string color)
+        {
+            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+
+            string filename = System.Web.HttpContext.Current.Server.MapPath("~/XMLs/validChatColors.txt");
+            string text = System.IO.File.ReadAllText(filename);
+
+            if (text.Contains(color + ";") == false)
+            {
+                TempData["Error"] = "That is not a valid chat color.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            PlayerProcedures.SetChatColor(me, color);
+            TempData["Result"] = "Your chat color has been set to " + color + ".";
+            return RedirectToAction("Play", "PvP");
+        }
+
 	}
 }

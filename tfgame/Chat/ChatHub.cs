@@ -25,8 +25,7 @@ namespace tfgame.Chat
 
             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
 
-           // message = message.Replace("<", "[");
-           // message = message.Replace(">", "]");
+            
 
             if (me.MembershipId == 69)
             {
@@ -45,10 +44,20 @@ namespace tfgame.Chat
                 name = me.GetFullName();
             }
 
+
+
             if (name != " " && name != "" && message != "")
             {
 
-                if (message.StartsWith("/dm"))
+                if (message.StartsWith("/dm message"))
+                {
+                    message = message.Replace("/dm message", "");
+                    string output = "[=[" + name + " [DM]:  " + message + "]=]";
+                    Clients.Group(room).addNewMessageToPage("", output);
+                    ChatLogProcedures.WriteLogToDatabase(room, name, output);
+                }
+
+                else if (message.StartsWith("/dm"))
                 {
                     message = RPCommand(message);
                     if (message == "")
@@ -58,16 +67,21 @@ namespace tfgame.Chat
                     else
                     {
                         message = "[=[" + message + "]=]";
-                        Clients.Group(room).addNewMessageToPage(name, message);
+                        Clients.Group(room).addNewMessageToPage(name, message, me.ChatColor);
                         ChatLogProcedures.WriteLogToDatabase(room, name, message);
                     }
 
-                } else if (message.StartsWith("/me")) {
+                }
+                else if (message.StartsWith("/me"))
+                {
                     message = message.Replace("/me", "");
-                    string output = "[+[" + me.GetFullName() + message + "]+]";
+                    string output = "[+[" + name + message + "]+]";
                     Clients.Group(room).addNewMessageToPage("", output);
                     ChatLogProcedures.WriteLogToDatabase(room, name, output);
                 }
+
+               
+
                 else if (message.StartsWith("/roll"))
                 {
                     Match m = Regex.Match(message, @"/roll d([0-9]*)");
@@ -83,7 +97,7 @@ namespace tfgame.Chat
                 else
                 {
                     message += "   [.[" + DateTime.UtcNow.ToShortTimeString() + "].]";
-                    Clients.Group(room).addNewMessageToPage(name, message);
+                    Clients.Group(room).addNewMessageToPage(name, message, me.ChatColor);
                     ChatLogProcedures.WriteLogToDatabase(room, name, message);
                 }
             }

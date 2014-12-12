@@ -51,6 +51,8 @@ namespace tfgame.dbModels.Models
         public string Nickname { get; set; }
         public DateTime OnlineActivityTimestamp { get; set; }
 
+        public string ChatColor { get; set; }
+
         public string GetFullName()
         {
             if (this.DonatorLevel >= 2 && this.Nickname != null && this.Nickname != "")
@@ -179,6 +181,8 @@ namespace tfgame.dbModels.Models
         public int DonatorLevel { get; set; }
         public string Nickname { get; set; }
         public DateTime OnlineActivityTimestamp { get; set; }
+
+        public string ChatColor { get; set; }
 
         public string GetFullName()
         {

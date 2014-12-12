@@ -64,8 +64,10 @@
                 encodedValue = encodedValue.replace("]-]", "</span>");
                 encodedValue = encodedValue.replace("[=[", "<span class='dm'>");
                 encodedValue = encodedValue.replace("]=]", "</span>");
+                encodedValue = encodedValue.replace("[+[", "<span class='me'>");
+                encodedValue = encodedValue.replace("]+]", "</span>");
                 encodedValue = encodedValue.replace("Judoo (admin)", "<span class='adminFont'>Judoo (admin)</span>");
-                console.log(encodedValue);
+                encodedValue = encodedValue.replace("Mizuho (dev)", "<span class='adminFont'>Mizuho (dev)</span>");
                 $(this).html(encodedValue);
             });
 

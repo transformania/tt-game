@@ -1,7 +1,10 @@
-red; darkred;
-blue;
-darkorange;
-purple; darkpurple;
 black;
-green; darkgreen;
-
+green;
+goldenrod;
+lightcoral;
+blueviolet;
+cadetblue;
+darkcyan;
+darkolivegreen;
+indigo;
+mediumpurple;

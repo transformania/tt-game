@@ -915,12 +915,38 @@ a.curse {
     }
 
 .perkBox {
-    border: 1px solid gray;
+    border: 2px solid gray;
     padding: 5px;
     width: 300px;
     display: inline-table;
     height: 350px;
     margin-bottom: 5px;
+    margin-right: 3px;
+    position:relative;
+}
+
+.perkBoxTitle{
+    color: white;
+    background:black;
+    margin-top:-6px;
+    margin-left:-6px;
+    font-size:20px;
+    width:312px; 
+    position:absolute;
+}
+
+.perkBoxStats{
+    color: white;
+    background:gray;
+    margin-top:-6px;
+    margin-left:-6px;
+    font-size:14px;
+    width:312px;
+    height:auto;
+    padding-top:15px;
+    padding-bottom:15px;
+    position:absolute;
+    bottom:0px;
 }
 
 .effectturnsRemaining {

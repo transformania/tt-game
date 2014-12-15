@@ -55,19 +55,24 @@
 
 @Html.ActionLink("Back to game", "Play", "PvP")
 
-    @{
-        if (PlayerProcedures.AccountIsTrusted(WebSecurity.CurrentUserId) == true)
+@{
+    if (User.IsInRole(tfgame.Statics.PvPStatics.Permissions_Moderator) == true)
+    {
+        if (@Model.PlayerForm.Player.FlaggedForAbuse == false)
         {
-            if (@Model.PlayerForm.Player.FlaggedForAbuse == false)
-            {
-                @Html.ActionLink("Lock this player for suspicious activity", "FlagForSuspiciousActivity", "PvP", new { playerId = Model.PlayerForm.Player.Id }, null)
-            }
-            else
-            {
-                @Html.ActionLink("Unlock this player for suspicious activity", "FlagForSuspiciousActivity", "PvP", new { playerId = Model.PlayerForm.Player.Id }, null)
-            }
+            @Html.ActionLink("Lock this player for suspicious activity", "FlagForSuspiciousActivity", "PvP", new { playerId = Model.PlayerForm.Player.Id }, null)
         }
+        else
+        {
+            @Html.ActionLink("Unlock this player for suspicious activity", "FlagForSuspiciousActivity", "PvP", new { playerId = Model.PlayerForm.Player.Id }, null)
+        }
+        @Html.ActionLink("Reset IP Address", "ResetAllPlayersWithIPAddress", "PvPAdmin", new { address = Model.PlayerForm.Player.IpAddress }, null)<br />
+        @Html.ActionLink("Toggle ban on global chat", "ToggleBanOnGlobalChat", "PvPAdmin", new { id = Model.PlayerForm.Player.Id }, null)
     }
+}
+
+
+
 
 
 

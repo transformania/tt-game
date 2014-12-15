@@ -3825,7 +3825,7 @@ namespace tfgame.Controllers
 
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started Lindella actions");
                 serverLogRepo.SaveServerLog(log);
-                AIProcedures.RunAIMerchantActions();
+                AIProcedures.RunAIMerchantActions(turnNo);
 
                 log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == turnNo);
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished Lindella actions");

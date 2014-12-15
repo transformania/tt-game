@@ -1007,10 +1007,7 @@ namespace tfgame.Controllers
                 return View("Play");
             }
 
-           // AIProcedures.SpawnAIPsychopaths(15, 0);
-
-          
-            BossProcedures_Fae.SpawnFae();
+            AIProcedures.RunAIMerchantActions(12);
 
             return RedirectToAction("Index");
         }
@@ -1808,6 +1805,31 @@ namespace tfgame.Controllers
        
 
             return View("WriteFaeEncounter", input);
+        }
+
+        [Authorize]
+        public ActionResult ResetAllPlayersWithIPAddress(string address)
+        {
+
+            // assert only admin can view this
+            bool iAmModerator = User.IsInRole(PvPStatics.Permissions_Moderator);
+            if (iAmModerator == false)
+            {
+                ViewBag.Message = "You aren't allowed to do this.";
+                return View("~/Views/PvP/PvPAdmin.cshtml");
+            }
+
+           
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            List<Player> players = playerRepo.Players.Where(p => p.IpAddress == address).ToList();
+            foreach (Player p in players)
+            {
+                p.IpAddress = "reset";
+                playerRepo.SavePlayer(p);
+           }
+
+            return View("Play");
+        
         }
 
 

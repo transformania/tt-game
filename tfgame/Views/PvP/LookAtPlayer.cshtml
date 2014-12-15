@@ -97,7 +97,7 @@
 @Html.ActionLink("Back to game", "Play", "PvP")
 
 @{
-    if (PlayerProcedures.AccountIsTrusted(WebSecurity.CurrentUserId) == true)
+    if (User.IsInRole(PvPStatics.Permissions_Moderator) == true)
     {
         if (@Model.PlayerForm.Player.FlaggedForAbuse == false)
         {
@@ -107,6 +107,7 @@
         {
             @Html.ActionLink("Unlock this player for suspicious activity", "FlagForSuspiciousActivity", "PvP", new { playerId = Model.PlayerForm.Player.Id }, null)
         }
+        @Html.ActionLink("Reset IP Address", "ResetAllPlayersWithIPAddress", "PvPAdmin", new { address = Model.PlayerForm.Player.IpAddress}, null)
     }
 }
 

@@ -1705,5 +1705,16 @@ namespace tfgame.Procedures
             playerRepo.SavePlayer(me);
         }
 
+        public static void ResetAllPlayersWithIPAddress(string ipAddress)
+        {
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            List<Player> players = playerRepo.Players.Where(p => p.IpAddress == ipAddress).ToList();
+            foreach (Player p in players)
+            {
+                p.IpAddress = "reset";
+                playerRepo.SavePlayer(p);
+            }
+        }
+
     }
 }

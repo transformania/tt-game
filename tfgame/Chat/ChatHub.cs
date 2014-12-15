@@ -25,7 +25,11 @@ namespace tfgame.Chat
 
             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
 
-            
+            // assert player is not banned
+            if (me.IsBannedFromGlobalChat == true && room == "global")
+            {
+                return;
+            }
 
             if (me.MembershipId == 69)
             {

@@ -50,6 +50,7 @@ namespace tfgame.dbModels.Models
         public int DonatorLevel { get; set; }
         public string Nickname { get; set; }
         public DateTime OnlineActivityTimestamp { get; set; }
+        public bool IsBannedFromGlobalChat { get; set; }
 
         public string ChatColor { get; set; }
 
@@ -181,6 +182,7 @@ namespace tfgame.dbModels.Models
         public int DonatorLevel { get; set; }
         public string Nickname { get; set; }
         public DateTime OnlineActivityTimestamp { get; set; }
+        public bool IsBannedFromGlobalChat { get; set; }
 
         public string ChatColor { get; set; }
 
@@ -253,6 +255,8 @@ namespace tfgame.dbModels.Models
                 DonatorLevel = this.DonatorLevel,
                 Nickname = this.Nickname,
                 OnlineActivityTimestamp = this.OnlineActivityTimestamp,
+
+                IsBannedFromGlobalChat = this.IsBannedFromGlobalChat,
 
             };
             return output;

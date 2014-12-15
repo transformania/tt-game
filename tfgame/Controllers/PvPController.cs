@@ -2590,6 +2590,14 @@ namespace tfgame.Controllers
                 return View("~/Views/PvP/LoginRequired.cshtml");
             }
 
+             // assert player is not banned from global chat
+            if (me.IsBannedFromGlobalChat == true && room == "global")
+            {
+                TempData["Error"] = "A moderator has temporarily banned you from global chat.";
+                TempData["SubError"] = "To restore your chat priveliges please make an appeal on the forums.";
+                return RedirectToAction("Play");
+            }
+
             if (room == "")
             {
                 TempData["Result"] = "A chat room must have a name.";

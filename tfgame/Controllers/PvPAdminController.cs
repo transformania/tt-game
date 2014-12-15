@@ -1832,6 +1832,39 @@ namespace tfgame.Controllers
         
         }
 
+        [Authorize]
+        public ActionResult ToggleBanOnGlobalChat(int id)
+        {
+
+            // assert only admin can view this
+            bool iAmModerator = User.IsInRole(PvPStatics.Permissions_Moderator);
+            if (iAmModerator == false)
+            {
+                ViewBag.Message = "You aren't allowed to do this.";
+                return View("~/Views/PvP/PvPAdmin.cshtml");
+            }
+
+
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            Player bannedPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == id);
+
+            if (bannedPlayer.IsBannedFromGlobalChat == true)
+            {
+                
+                bannedPlayer.IsBannedFromGlobalChat = false;
+                TempData["Result"] = "Ban has been LIFTED.";
+            }
+            else
+            {
+                bannedPlayer.IsBannedFromGlobalChat = true;
+                TempData["Result"] = "Player has been banned from global chat.";
+            }
+            playerRepo.SavePlayer(bannedPlayer);
+
+            return RedirectToAction("Play", "PvP");
+
+        }
+
 
 
 

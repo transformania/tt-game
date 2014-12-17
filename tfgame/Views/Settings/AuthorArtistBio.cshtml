@@ -7,7 +7,7 @@
 <p>@ViewBag.IngameCharacter</p>
 
 @{
-    if (@Model.OtherNames !=  null && @Model.OtherNames != "")
+    if (@Model.OtherNames != null && @Model.OtherNames != "")
     {
         <h1>Common Names</h1>
         <h2>@Model.OtherNames</h2>
@@ -48,7 +48,7 @@
     if (@Model.Url1 != null && @Model.Url1 != "")
     {
         <h1>Primary website</h1>
-        <h3>@Model.Url1</h3>
+        <h3><a href="@Model.Url1">@Model.Url1</a></h3>
     }
 }
 
@@ -56,7 +56,7 @@
     if (@Model.Url2 != null && @Model.Url2 != "")
     {
         <h1>Secondary website</h1>
-        <h3>@Model.Url2</h3>
+        <h3><a href="@Model.Url2">@Model.Url2</a></h3>
     }
 }
 
@@ -64,18 +64,10 @@
     if (@Model.Url3 != null && @Model.Url3 != "")
     {
         <h1>Other website</h1>
-        <h3>@Model.Url3</h3>
+        <h3><a href="@Model.Url3">@Model.Url3</a></h3>
     }
 }
 
-
-@{
-    if (@Model.Text != null && @Model.Text != "")
-    {
-        <h1>More About this Artist!</h1>
-        <span>@Html.Raw(Model.Text)</span>
-    }
-}
 
 @{
     if (@Model.Text != null && @Model.Text != "")
@@ -87,28 +79,37 @@
 
 <h1>Animate Graphics</h1>
 @{
-    IEnumerable<string> animateGraphics = Model.AnimateImages.Split(';');
-    foreach (string s in animateGraphics)
+    if (Model.AnimateImages != null)
     {
-        <img src="/Images/PvP/portraits/@s" style="width: 300px; height: 300px;" />
+        IEnumerable<string> animateGraphics = Model.AnimateImages.Split(';');
+        foreach (string s in animateGraphics.Where(s => s.Length > 0))
+        {
+            <img src="/Images/PvP/portraits/@s" style="width: 300px; height: 300px;" />
+        }
     }
 }
 
 <h1>Inanimate Graphics</h1>
 @{
-    IEnumerable<string> inanimateGraphics = Model.InanimateImages.Split(';');
-    foreach (string s in inanimateGraphics)
+    if (Model.InanimateImages != null)
     {
-        <img src="/Images/PvP/itemsPortraits/@s" style="width: 300px; height: 300px;" />
+        IEnumerable<string> inanimateGraphics = Model.InanimateImages.Split(';');
+        foreach (string s in inanimateGraphics.Where(s => s.Length > 0))
+        {
+            <img src="/Images/PvP/itemsPortraits/@s" style="width: 300px; height: 300px;" />
+        }
     }
 }
 
 <h1>Animal Graphics</h1>
 @{
-    IEnumerable<string> animalGraphics = Model.AnimalImages.Split(';');
-    foreach (string s in animalGraphics)
+    if (Model.AnimalImages != null)
     {
-        <img src="/Images/PvP/animalPortraits/@s" style="width: 300px; height: 300px;" />
+        IEnumerable<string> animalGraphics = Model.AnimalImages.Split(';');
+        foreach (string s in animalGraphics.Where(s => s.Length > 0))
+        {
+            <img src="/Images/PvP/animalPortraits/@s" style="width: 300px; height: 300px;" />
+        }
     }
 }
 

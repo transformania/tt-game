@@ -1331,6 +1331,7 @@ namespace tfgame.Controllers
 
 
             ViewBag.HasBio = SettingsProcedures.PlayerHasBio(output.PlayerForm.Player.MembershipId);
+            ViewBag.HasArtistAuthorBio = SettingsProcedures.PlayerHasArtistAuthorBio(output.PlayerForm.Player.MembershipId);
 
             ViewBag.TimeUntilLogout = 60 - Math.Abs(Math.Floor(playerLookedAt.Player.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
 
@@ -1544,7 +1545,7 @@ namespace tfgame.Controllers
              Player me = PlayerProcedures.GetPlayerFromMembership();
              Player receiver = PlayerProcedures.GetPlayer(input.ReceiverId);
 
-             // assert no blacklist exists if player is in protection mode
+             // assert no blacklist exists
              if (BlacklistProcedures.PlayersHaveBlacklistedEachOther(me, receiver) == true)
              {
                  TempData["Error"] = "This player has blacklisted you or is on your own blacklist.";

@@ -102,6 +102,78 @@ namespace tfgame.Procedures
             return pollRepo.PollEntries.Where(p => p.PollId == pollId);
         }
 
+        public static AuthorArtistBio GetAuthorArtistBio(int ownerMembershipId)
+        {
+            IAuthorArtistBioRepository repo = new EFAuthorArtistBioRepository();
+            AuthorArtistBio output = repo.AuthorArtistBios.FirstOrDefault(a => a.OwnerMembershipId == ownerMembershipId);
+            if (output != null)
+            {
+                return output;
+            }
+            else
+            {
+                output = new AuthorArtistBio
+                {
+                    OwnerMembershipId = ownerMembershipId,
+                    LastUpdated = DateTime.UtcNow,
+                    AcceptingComissions = 0,
+                    OtherNames = "",
+                    Email = "",
+                    PlayerNamePrivacyLevel = 0,
+                    Text = "",
+                    Url1 = "",
+                    Url2 = "",
+                    Url3 = "",
+                    AnimateImages = "",
+                    InanimateImages = "",
+                    AnimalImages = "",
+
+                };
+                return output;
+            }
+        }
+
+        public static void SaveAuthorArtistBio(AuthorArtistBio input)
+        {
+            IAuthorArtistBioRepository repo = new EFAuthorArtistBioRepository();
+            AuthorArtistBio saveMe = repo.AuthorArtistBios.FirstOrDefault(a => a.OwnerMembershipId == WebSecurity.CurrentUserId);
+            if (saveMe == null)
+            {
+                saveMe = new AuthorArtistBio
+                {
+                    OwnerMembershipId = WebSecurity.CurrentUserId,
+                };
+            }
+
+            saveMe.AcceptingComissions = input.AcceptingComissions;
+            saveMe.Email = input.Email;
+            saveMe.OtherNames = input.OtherNames;
+            saveMe.PlayerNamePrivacyLevel = input.PlayerNamePrivacyLevel;
+            saveMe.Text = input.Text;
+            saveMe.Url1 = input.Url1;
+            saveMe.Url2 = input.Url2;
+            saveMe.Url3 = input.Url3;
+            saveMe.AnimateImages = input.AnimateImages;
+            saveMe.AnimalImages = input.AnimalImages;
+            saveMe.InanimateImages = input.InanimateImages;
+            saveMe.LastUpdated = DateTime.UtcNow;
+            repo.SaveAuthorArtistBio(saveMe);
+        }
+
+        public static bool PlayerHasArtistAuthorBio(int id)
+        {
+            IAuthorArtistBioRepository repo = new EFAuthorArtistBioRepository();
+            AuthorArtistBio bio = repo.AuthorArtistBios.FirstOrDefault(p => p.OwnerMembershipId == id);
+            if (bio != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
 
     }
 }

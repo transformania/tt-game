@@ -12,6 +12,10 @@
         {
             @Html.ActionLink("View Bio", "ViewBio", "Settings", new { id = Model.PlayerForm.Player.MembershipId }, null)
         }
+        if (ViewBag.HasArtistAuthorBio)
+        {
+            @Html.ActionLink("View Artist/Author Bio", "AuthorArtistBio", "Settings", new { id = Model.PlayerForm.Player.MembershipId }, null)
+        }
             }
             @Html.ActionLink("Send a Message", "Write", "PvP", new { playerId = Model.PlayerForm.Player.Id, responseTo = -1 }, null)
             @Html.ActionLink("Request Friendship", "AddFriend", "PvP", new { playerId = Model.PlayerForm.Player.Id }, null)

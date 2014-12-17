@@ -219,6 +219,7 @@
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="CustomHtmlHelpers\CharactersHere.cs" />
     <Compile Include="dbModels\Abstract\IAIDirective.cs" />
+    <Compile Include="dbModels\Abstract\IAuthorArtistBioRepository.cs" />
     <Compile Include="dbModels\Abstract\IBlacklistEntryRepository.cs" />
     <Compile Include="dbModels\Abstract\IBuffRepository.cs" />
     <Compile Include="dbModels\Abstract\IChatLogRepository.cs" />
@@ -253,6 +254,7 @@
     <Compile Include="dbModels\Abstract\IDbStaticSkillRepository.cs" />
     <Compile Include="dbModels\Abstract\ITFEnergyRepository.cs" />
     <Compile Include="dbModels\Abstract\ITFMessageRepository.cs" />
+    <Compile Include="dbModels\Concrete\EFAuthorArtistBioRepository.cs" />
     <Compile Include="dbModels\Concrete\EFBlacklistEntryRepository.cs" />
     <Compile Include="dbModels\Concrete\EFChatLogRepository.cs" />
     <Compile Include="dbModels\Concrete\EFCovenantLogRepository.cs" />
@@ -267,6 +269,7 @@
     <Compile Include="dbModels\Concrete\EFPollEntryRepository.cs" />
     <Compile Include="dbModels\Concrete\EFRPPointRespository.cs" />
     <Compile Include="dbModels\Concrete\EFTFMessageRepository.cs" />
+    <Compile Include="dbModels\Models\AuthorArtistBio.cs" />
     <Compile Include="dbModels\Models\BlacklistEntry.cs" />
     <Compile Include="dbModels\Models\Buff.cs" />
     <Compile Include="dbModels\Concrete\EFAIDirectiveRepository.cs" />
@@ -1463,6 +1466,8 @@
     <Content Include="Views\Settings\Polls\Closed\poll1.cshtml" />
     <Content Include="Views\PvP\Chats\Chat_Generic.cshtml" />
     <Content Include="Views\PvP\Chats\PrivateBegin.cshtml" />
+    <Content Include="Views\Settings\WriteAuthorArtistBio.cshtml" />
+    <Content Include="Views\Settings\AuthorArtistBio.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

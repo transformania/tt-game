@@ -331,5 +331,73 @@ namespace tfgame.Controllers
             return RedirectToAction("Play", "PvP");
         }
 
+
+        [Authorize]
+        public ActionResult WriteAuthorArtistBio()
+        {
+            // assert player has on the artist whitelist
+            if (User.IsInRole(PvPStatics.Permissions_Artist) == false)
+            {
+                TempData["Error"] = "You are not eligible to do this at this time.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            AuthorArtistBio output = SettingsProcedures.GetAuthorArtistBio(WebSecurity.CurrentUserId);
+            return View(output);
+        }
+
+
+        [HttpPost]
+        [Authorize]
+        public ActionResult WriteAuthorArtistSend(AuthorArtistBio input)
+        {
+            // assert player has on the artist whitelist
+            if (User.IsInRole(PvPStatics.Permissions_Artist) == false)
+            {
+                TempData["Error"] = "You are not eligible to do this at this time.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            SettingsProcedures.SaveAuthorArtistBio(input);
+
+            TempData["Result"] = "Your artist bio has been saved!";
+            return RedirectToAction("Play", "PvP");
+        }
+
+        [Authorize]
+        public ActionResult AuthorArtistBio(int id)
+        {
+            AuthorArtistBio output = SettingsProcedures.GetAuthorArtistBio(id);
+            Player artistIngamePlayer = PlayerProcedures.GetPlayerFromMembership(id);
+            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            ViewBag.IngameCharacter = "This artist does not currently have a character ingame.";
+
+            bool friends = FriendProcedures.PlayerIsMyFriend(artistIngamePlayer, me);
+            ViewBag.IAmFriendsWithArtist = friends;
+
+            if (artistIngamePlayer != null)
+            {
+                ViewBag.IngameCharacter = "This artist current has a character under the name of " + artistIngamePlayer.GetFullName() +".";
+            }
+            // assert visibility setting is okay
+            if (output.PlayerNamePrivacyLevel == 1 && friends == false)
+            {
+                TempData["Error"] = "This artist bio is only visible to his or her friends.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            if (output.PlayerNamePrivacyLevel == 2)
+            {
+                TempData["Error"] = "This artist's biography is currently entirely disabled.  Check again later.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            if (output.Text != null) {
+                output.Text = output.Text.Replace("[br]", "<br>").Replace("[p]", "<p>").Replace("[/p]", "</p>").Replace("[h1]", "<h1>").Replace("[/h1]", "</h1>").Replace("[h2]", "<h2>").Replace("[/h2]", "</h2>").Replace("[h3]", "<h3>").Replace("[/h3]", "</h3>");
+            }
+
+            return View(output);
+        }
+
 	}
 }

@@ -1,0 +1,98 @@
+﻿@model tfgame.dbModels.Models.AuthorArtistBio
+
+<head>
+    <script src="~/Scripts/jquery-2.1.0.min.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <link href="~/Content/PvP.css" rel="stylesheet" />
+</head>
+
+@Html.ActionLink("Back to Settings", "Settings", "PvP")
+
+
+
+@using (Html.BeginForm("WriteAuthorArtistSend", "Settings", Model))
+{
+
+    <p>Email Address.  Know that bots routintely scrape websites so you may want to spell it out using (at), though bots have probably wised up to that eons ago too...</p>
+    @Html.TextBoxFor(m => m.Email)<br /><br />
+
+    <p>Other name(s) you go by on other sites (eg Luxianne, Meddle, Nymic-TF, Babblinfaces, etc)</p>
+    @Html.TextBoxFor(m => m.OtherNames)<br /><br />
+    
+        <p>Are you accepting comissions?</p>
+    @Html.DropDownListFor(i => i.AcceptingComissions, new SelectList(
+                  new List<Object>{
+                      new { value = "1"  , text = "Yes, I am always open for comissions."  },
+                      new { value = "0"  , text = "I never take comissions."  },
+                      new { value = "2"  , text = "Normally yes but comissions are currently closed."  },
+                      new { value = "3"  , text = "I have not taken any comissions yet but will do so in the future."  },
+                    },
+                  "value",
+                  "text",
+                   2))
+    <br /><br />
+
+    <p>Website URL (primary)</p>
+    @Html.TextBoxFor(m => m.Url1)<br /><br />
+
+    <p>Website URL (secondary)</p>
+    @Html.TextBoxFor(m => m.Url2)<br /><br />
+
+    <p>Website URL (third...ary)</p>
+    @Html.TextBoxFor(m => m.Url3)<br /><br />
+    
+    <p>Anything about you--your history, your favorite types of drawings, comission pricing, whatever you feel relevant.  If you want to include some basic styling here, you can use the follow html-like tags that will be converted to the html equivalent:  [br] (breakline), [p] and [/p] (paragraph), [h1] and [/h1] (header 1),  [h2] and [/h2] (header 2),  [h3] and [/h3] (header 3).</p>
+    @Html.TextAreaFor(m => m.Text)<br /><br />
+    
+    <p>Would you like your ingame character name to be visible?  Choose your setting below.</p>
+    @Html.DropDownListFor(i => i.PlayerNamePrivacyLevel, new SelectList(
+                  new List<Object>{
+                      new { value = "0"  , text = "Show my character name to everyone."  },
+                      new { value = "1"  , text = "Only show my character name to players on my friends list."  },
+                      new { value = "2"  , text = "Hide this artist profile from everyone.  (You can change this later.)"  },
+
+                    },
+                  "value",
+                  "text",
+                   2))
+    <br /><br />
+    
+    <p>For the following three inputs you will be entering in the filenames of the graphis you have in the game.  Write out each file name (including file type extension) separated by a semicolon and no whitespaces.  A example input is <b>AwesomeGraphic_Yourname.png;NearGraphic_Yourname.jpg;</b>.  You can see what the name of the file is by right clicking on it.  Depending on your browser you'll see an option like "View background image" (Chrome) which will tell you what the name is by taking the text after the last '/' character in the URL.</p>
+    
+    <p>List the filenames of all of the ANIMATE form graphics you have created.></p>
+    @Html.TextAreaFor(m => m.AnimateImages)<br /><br />
+    
+    <p>List the filenames of all of the INANIMATE form graphics you have created.</p>
+    @Html.TextAreaFor(m => m.InanimateImages)<br /><br />
+    
+    <p>List the filenames of all of the ANIMAL/PET form graphics you have created.</p>
+    @Html.TextAreaFor(m => m.AnimalImages)<br /><br />
+
+    <p></p>
+    
+    <br />
+    <input type="submit" value="Save" />
+
+}
+
+
+
+@Html.ActionLink("Back to Settings", "Settings", "PvP")
+
+@Html.ActionLink("Back to game", "Play", "PvP")
+
+<style>
+    input,textarea {
+        width: 100%;
+        border:1px solid gray;
+    }
+</style>
+
+
+<script>
+    $("#MessageText").keydown(function () {
+        var remaining = 1000 - $("#MessageText").val().length;
+        $("#textRemaining").html(remaining + " characters remaining");
+    });
+</script>

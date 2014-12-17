@@ -39,6 +39,7 @@ namespace tfgame.dbModels.Concrete
         public DbSet<ReservedName> ReservedNames { get; set; }
         public DbSet<AIDirective> AIDirectives { get; set; }
         public DbSet<PlayerBio> PlayerBios { get; set; }
+        public DbSet<AuthorArtistBio> AuthorArtistBios { get; set; }
         public DbSet<DbStaticSkill> DbStaticSkills { get; set; }
         public DbSet<DbStaticForm> DbStaticForms { get; set; }
         public DbSet<DbStaticItem> DbStaticItems { get; set; }

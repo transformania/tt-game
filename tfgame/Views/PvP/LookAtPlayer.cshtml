@@ -16,6 +16,10 @@
         {
             @Html.ActionLink("View Bio", "ViewBio", "Settings", new { id = Model.PlayerForm.Player.MembershipId }, null)
         }
+        if (ViewBag.HasArtistAuthorBio)
+        {
+            @Html.ActionLink("View Artist/Author Bio", "AuthorArtistBio", "Settings", new { id = Model.PlayerForm.Player.MembershipId }, null)
+        }
             }
 
             @{

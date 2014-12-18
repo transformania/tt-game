@@ -622,6 +622,7 @@
     <Content Include="Images\PvP\portraits\jewdewfae_Luxianne.png" />
     <Content Include="Images\PvP\portraits\jungle_girl_Meddle.png" />
     <Content Include="Images\PvP\portraits\kitsune_shrine_maiden_lux.png" />
+    <Content Include="Images\PvP\portraits\lady_jianshi_spacedande.png" />
     <Content Include="Images\PvP\portraits\latex_dominatrix_Babblingfaces.png" />
     <Content Include="Images\PvP\portraits\lilath_Meddle.png" />
     <Content Include="Images\PvP\portraits\Lindella_Luxianne.png" />
@@ -1469,6 +1470,9 @@
     <Content Include="Views\PvP\Chats\PrivateBegin.cshtml" />
     <Content Include="Views\Settings\WriteAuthorArtistBio.cshtml" />
     <Content Include="Views\Settings\AuthorArtistBio.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\Alpha_13.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\XP\Alpha_13.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_13.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

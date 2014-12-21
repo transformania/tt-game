@@ -951,6 +951,31 @@ namespace tfgame.Controllers
               return RedirectToAction("ReviewDMRolls");
           }
 
+         public ActionResult GetContributionTable()
+         {
+             IContributionRepository contributionRepo = new EFContributionRepository();
+
+             List<ContributionCredit> output = new List<ContributionCredit>();
+             List<int> uniqueOwnerIds = contributionRepo.Contributions.Where(c => c.ProofreadingCopy == true && c.IsLive == true && c.OwnerMembershipId > 0 && c.SubmitterName != null && c.SubmitterName != "").Select(c => c.OwnerMembershipId).Distinct().ToList();
+
+             foreach (int ownerId in uniqueOwnerIds)
+             {
+                 ContributionCredit addme = new ContributionCredit
+                 {
+                     OwnerMembershipId = ownerId,
+                     AuthorName = contributionRepo.Contributions.Where(c => c.OwnerMembershipId == ownerId && c.IsNonstandard == false && c.IsLive == true && c.ProofreadingCopy == true).OrderByDescending(c => c.OwnerMembershipId).First().SubmitterName,
+                     AnimateFormCount = contributionRepo.Contributions.Where(c => c.OwnerMembershipId == ownerId && c.IsNonstandard == false && c.Form_MobilityType == "full" && c.IsLive == true && c.ProofreadingCopy == true).Count(),
+                     InanimateFormCount = contributionRepo.Contributions.Where(c => c.OwnerMembershipId == ownerId && c.IsNonstandard == false && c.Form_MobilityType == "inanimate" && c.IsLive == true && c.ProofreadingCopy == true).Count(),
+                     AnimalFormCount = contributionRepo.Contributions.Where(c => c.OwnerMembershipId == ownerId && c.IsNonstandard == false && c.Form_MobilityType == "animal" && c.IsLive == true && c.ProofreadingCopy == true).Count(),
+                     Website = contributionRepo.Contributions.Where(c => c.OwnerMembershipId == ownerId && c.IsNonstandard == false && c.IsLive == true && c.ProofreadingCopy == true).OrderByDescending(c => c.OwnerMembershipId).First().SubmitterUrl,
+                 };
+                 addme.SpellCount = addme.AnimateFormCount + addme.InanimateFormCount + addme.AnimalFormCount;
+                 output.Add(addme);
+             }
+
+             return View(output);
+         }
+
    
 
 	}

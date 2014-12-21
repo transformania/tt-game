@@ -485,8 +485,6 @@ namespace tfgame.Procedures
 
             string playerIdString = player.Id + ";";
 
-            string msg = "";
-
             // if the captains is null, change it to have an empty string to prevent null exceptions
             if (dbCovenant.Captains == null)
             {

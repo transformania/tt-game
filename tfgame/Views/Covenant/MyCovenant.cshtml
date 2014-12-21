@@ -54,7 +54,7 @@
 
             if (Model.dbCovenant.HomeLocation != null && Model.dbCovenant.HomeLocation != "")
             {
-                <i>This covenant has a safeground at @LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == Model.dbCovenant.HomeLocation).Name</i>
+                <i>This covenant has a level <b>@Model.dbCovenant.Level</b> safeground at @LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == Model.dbCovenant.HomeLocation).Name</i>
             }
 
             <p style="margin-bottom:-15px;">Arpeyjis in treasury:  <b>@Math.Floor(Model.dbCovenant.Money)</b><span title="Arpeyjis" class="icon-money"></span></p>

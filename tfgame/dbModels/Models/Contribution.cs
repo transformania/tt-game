@@ -258,6 +258,8 @@ namespace tfgame.dbModels.Models
 
         public string ImageURL { get; set; }
 
+        public bool IsNonstandard { get; set; }
+
         public decimal HealthBonusPercent { get; set; }
         public decimal ManaBonusPercent { get; set; }
         public decimal ExtraSkillCriticalPercent { get; set; }

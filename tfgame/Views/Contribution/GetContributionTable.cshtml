@@ -1,0 +1,66 @@
+﻿@model IEnumerable<tfgame.ViewModels.ContributionCredit>
+
+<h1>Contributors</h1>
+
+<table>
+    <thead>
+    <th>Author</th>
+    <th>DEBUG Id</th>
+    <th>Total Spell Count</th>
+    <th>Animate Forms</th>
+    <th>Inanimate Forms</th>
+    <th>Animal Forms</th>
+    </thead>
+    <tbody>
+
+        @{
+            foreach (tfgame.ViewModels.ContributionCredit c in Model.OrderByDescending(c => c.SpellCount))
+            {
+                <tr>
+                    @{if (c.Website != null && c.Website != "")
+                    {
+                        <td><a href='@c.Website'>@c.AuthorName</a></td>
+                    }
+                    else
+                    {
+                        <td>@c.AuthorName</td>
+                    }
+                      <td>@c.OwnerMembershipId</td>
+                    <td>@c.SpellCount</td>
+                        <td>@c.AnimateFormCount</td>
+                        <td>@c.InanimateFormCount</td>
+                        <td>@c.AnimalFormCount</td>
+                    }
+                </tr>
+            }
+        }
+
+    </tbody>
+
+</table>
+
+<style>
+    td {
+        border: 1px solid gray;
+        text-align: center;
+        min-width: 150px;
+    }
+
+    tr {
+        border: 1px solid gray;
+        text-align: center;
+    }
+
+    th {
+        border: 1px solid gray;
+        text-align: center;
+    }
+
+    table {
+        text-align: center;
+    }
+
+    li {
+        margin-bottom: 8px;
+    }
+</style>

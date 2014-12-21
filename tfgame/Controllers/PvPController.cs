@@ -2940,7 +2940,7 @@ namespace tfgame.Controllers
              if (hoursSinceLastActivity < PvPStatics.HoursBeforeInanimatesCanSlipFree)
              {
                  TempData["Error"] = "You cannot escape from your owner right now.";
-                 TempData["SubError"] = "Your owner must remain inactive for " + (PvPStatics.HoursBeforeInanimatesCanSlipFree - hoursSinceLastActivity) + "hours before you can slip free.";
+                 TempData["SubError"] = "Your owner must remain inactive for " + (PvPStatics.HoursBeforeInanimatesCanSlipFree - hoursSinceLastActivity) + " more hours before you can slip free.";
                  return RedirectToAction("Play");
              }
 

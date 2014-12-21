@@ -366,6 +366,7 @@
     <Compile Include="ViewModels\BioPageContributionViewModel.cs" />
     <Compile Include="ViewModels\BossSummon.cs" />
     <Compile Include="ViewModels\BuffBox.cs" />
+    <Compile Include="ViewModels\ContributionCredit.cs" />
     <Compile Include="ViewModels\ContributionStatusViewModel.cs" />
     <Compile Include="ViewModels\CovenantViewModel.cs" />
     <Compile Include="ViewModels\Die.cs" />
@@ -1473,6 +1474,7 @@
     <Content Include="Views\PvP\RoundLeaderboards\Alpha_13.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\XP\Alpha_13.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_13.cshtml" />
+    <Content Include="Views\Contribution\GetContributionTable.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

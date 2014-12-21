@@ -25,21 +25,21 @@
     On this page are all of the contributions that have been marked as ready but have not yet been added into the game.  This is so artists can see what spells will need graphics in the future.  An administrator will specify which spells have passed review and are ready for graphics, so consider anything that appears here more or less confirmed for the future.  This page will be upgraded in the future so each contribution will list whether an artist has claimed the graphic and has started working on it or has plans in the immediate future to do so.
 </h4>
 
-<table style="min-width: 1000px">
+<table>
 
     <thead>
-    <th>
+    <th width="10%">
         Spell Author, Name, and Mobility Type
     </th>
 
-    <th style="width: 300px;">
+    <th width ="30%">
         Form Description
-    </th>
-    <th style="width: 300px;">
+    </thwidth>
+    <th width="30%">
         Animal/Item Description
     </th>
-    <th>Notes</th>
-    <th>
+    <th width="20%">Notes</th>
+    <th width="10%">
         Graphic by Artist
     </th>
     </thead>
@@ -73,7 +73,7 @@
                             <span style="color: blue;">@c.Form_MobilityType</span>
                         </p>
                         <p>
-                            Form/Item name:
+                            Form/Item name:<br>
                            <b>@c.Form_FriendlyName</b>
                         </p>
                     </td>
@@ -114,15 +114,15 @@
 
 <style>
     table {
-        padding: 3px;
         border: 1px solid black;
-        min-width: 1500px;
+        width:100%;
     }
 
     th {
         background-color: black;
         color: white;
         text-align: center;
+        font-size:12px;
     }
 
     tr {
@@ -130,20 +130,18 @@
         border: 1px solid black;
     }
 
-    td:nth-child(4) {
-        width: 300px;
-    }
-
-    td:nth-child(5) {
-        width: 300px;
-    }
-
     tr:nth-child(odd) {
         background-color: lightgray;
     }
 
+    td:nth-child(4), td:nth-child(5) {
+        word-break: break-all;
+    }
+
     td {
+        padding: 3px;
         text-align: center;
         border: 1px solid darkblue;
+        font-size:11px;
     }
 </style>

@@ -1438,7 +1438,9 @@ namespace tfgame.Procedures
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
             //  return playerRepo.Players.Where(p => p.InPvP==true).OrderByDescending(p => p.Level).ThenByDescending(p => p.XP).Take(number);
-            return playerRepo.Players.Where(p => p.MembershipId > 0 && p.InPvP == false).OrderByDescending(p => p.PvPScore).ThenByDescending(p => p.Level).ThenByDescending(p => p.XP).Take(number);
+          //  return playerRepo.Players.Where(p => p.MembershipId > 0 && p.InPvP == false).OrderByDescending(p => p.PvPScore).ThenByDescending(p => p.Level).ThenByDescending(p => p.XP).Take(number);
+            return playerRepo.Players.Where(p => p.MembershipId > 0 && p.InPvP == false).OrderByDescending(p => p.Level).ThenByDescending(p => p.Level).ThenByDescending(p => p.XP).Take(number);
+
         }
 
         public static string Cleanse(Player player, BuffBox buffs)
@@ -1634,7 +1636,8 @@ namespace tfgame.Procedures
             dbPlayer.PvPScore += amount;
 
             playerRepo.SavePlayer(dbPlayer);
-            return "  You have gained " + amount + " PvP score from your victory over " + loser.FirstName + " " + loser.LastName + ".";
+            //return "  You have gained " + amount + " PvP score from your victory over " + loser.FirstName + " " + loser.LastName + ".";
+            return "";
         }
 
         public static string RemovePlayerPvPScore(Player loser, Player attacker)
@@ -1652,7 +1655,8 @@ namespace tfgame.Procedures
             }
 
             playerRepo.SavePlayer(dbPlayer);
-            return "  You have lost " + loss + " PvP score from your defeat to " + attacker.FirstName + " " + attacker.LastName + ".";
+           // return "  You have lost " + loss + " PvP score from your defeat to " + attacker.FirstName + " " + attacker.LastName + ".";
+            return "";
         }
 
         public static decimal GetPvPScoreFromWin(Player attacker, Player victim)

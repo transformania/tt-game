@@ -15,6 +15,8 @@
     <h1 style="text-align: center; margin-top:-10px;">PvP Leaderboard</h1>
     <h2 style="text-align: center; margin-top:0;">Alpha Round 13</h2>
 
+<p>New for round 14:  </p>
+
 <table>
     <thead>
         <tr>
@@ -23,8 +25,8 @@
             <th class="leaderBoardCovenant mobile">Covenant</th>
             <th class="leaderBoardForm mobile">Form</th>
             <th>Mobility</th>
-            <th>Lv</th>
-            <th>Score</th>
+            <th>Lvl</th>
+            @*<th>Score</th>*@
         </tr>
     </thead>
     <tbody>
@@ -81,9 +83,9 @@
                 <td>
                     @p.Level
                 </td>
-                <td>
+                @*<td>
                     @Math.Floor(@p.PvPScore)
-                </td>
+                </td>*@
             </tr>
             rank++;
 

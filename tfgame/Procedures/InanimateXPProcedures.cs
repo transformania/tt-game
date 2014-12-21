@@ -35,7 +35,7 @@ namespace tfgame.Procedures
         public static decimal GetStruggleChance(Player player)
         {
             IInanimateXPRepository inanimXpRepo = new EFInanimateXPRepository();
-            decimal output = -12 * player.Level;
+            decimal output = -6 * player.Level;
             InanimateXP myItemXP = inanimXpRepo.InanimateXPs.FirstOrDefault(i => i.OwnerId == player.Id);
 
             if (myItemXP != null)

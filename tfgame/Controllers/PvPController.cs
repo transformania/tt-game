@@ -2790,18 +2790,18 @@ namespace tfgame.Controllers
             }
 
             // assert it is not too early for the player to change into/out of protection mode
-            PlayerExtra playerExtra = PlayerExtraProcedures.GetPlayerExtra(me);
-            int turnNo = PvPWorldStatProcedures.GetWorldTurnNumber();
-            if (playerExtra.ProtectionToggleTurnsRemaining > 0)
-            {
-                TempData["Error"] = "You cannot enter protection mode right now.";
-                TempData["SubError"] = "You must wait for " + playerExtra.ProtectionToggleTurnsRemaining + " more updates to complete while your character is online in order to leave protection mode.";
-                return RedirectToAction("Play");
-            }
+            //PlayerExtra playerExtra = PlayerExtraProcedures.GetPlayerExtra(me);
+          //  int turnNo = PvPWorldStatProcedures.GetWorldTurnNumber();
+           // if (playerExtra.ProtectionToggleTurnsRemaining > 0)
+           // {
+            //    TempData["Error"] = "You cannot enter protection mode right now.";
+            //    TempData["SubError"] = "You must wait for " + playerExtra.ProtectionToggleTurnsRemaining + " more updates to complete while your character is online in order to leave protection mode.";
+           //     return RedirectToAction("Play");
+           // }
 
             PlayerProcedures.SetPvPFlag(me, true);
-            PlayerExtraProcedures.SetNextProtectionToggleTurn(me);
-            EffectProcedures.GivePerkToPlayer("help_entered_PvP", me);
+          //  PlayerExtraProcedures.SetNextProtectionToggleTurn(me);
+           // EffectProcedures.GivePerkToPlayer("help_entered_PvP", me);
 
             TempData["Result"] = "You are now in protection mode.  You cannot be hit by inanimate or animal spells nor cast them, except against those on your friends list.";
             return RedirectToAction("Play");
@@ -2820,26 +2820,26 @@ namespace tfgame.Controllers
             }
 
            // assert it is not too early for the player to change into/out of protection mode
-            PlayerExtra playerExtra = PlayerExtraProcedures.GetPlayerExtra(me);
-            int turnNo = PvPWorldStatProcedures.GetWorldTurnNumber();
-            if (playerExtra.ProtectionToggleTurnsRemaining > 0)
-            {
-                TempData["Error"] = "You cannot leave protection mode right now.";
-                TempData["SubError"] = "You must wait until turn " + playerExtra.ProtectionToggleTurnsRemaining + " while your character is online in order to leave protection mode.";
-                return RedirectToAction("Play");
-            }
+            //PlayerExtra playerExtra = PlayerExtraProcedures.GetPlayerExtra(me);
+            //int turnNo = PvPWorldStatProcedures.GetWorldTurnNumber();
+            //if (playerExtra.ProtectionToggleTurnsRemaining > 0)
+            //{
+            //    TempData["Error"] = "You cannot leave protection mode right now.";
+            //    TempData["SubError"] = "You must wait until turn " + playerExtra.ProtectionToggleTurnsRemaining + " while your character is online in order to leave protection mode.";
+            //    return RedirectToAction("Play");
+            //}
 
-            // assert that it is not too late in the round for the player to enter PvP mode
-            int turnNumber = PvPWorldStatProcedures.GetWorldTurnNumber();
-            if (turnNumber > PvPStatics.RoundDuration_LastPvPEntryTurn)
-            {
-                TempData["Error"] = "You cannot enter PvP mode.";
-                TempData["SubError"] = "You cannot enter PvP mode later than turn " + PvPStatics.RoundDuration_LastPvPEntryTurn + ".";
-                return RedirectToAction("Play");
-            }
+            //// assert that it is not too late in the round for the player to enter PvP mode
+            //int turnNumber = PvPWorldStatProcedures.GetWorldTurnNumber();
+            //if (turnNumber > PvPStatics.RoundDuration_LastPvPEntryTurn)
+            //{
+            //    TempData["Error"] = "You cannot enter PvP mode.";
+            //    TempData["SubError"] = "You cannot enter PvP mode later than turn " + PvPStatics.RoundDuration_LastPvPEntryTurn + ".";
+            //    return RedirectToAction("Play");
+            //}
 
             PlayerProcedures.SetPvPFlag(me, false);
-            PlayerExtraProcedures.SetNextProtectionToggleTurn(me);
+           // PlayerExtraProcedures.SetNextProtectionToggleTurn(me);
 
             TempData["Result"] = "You are no longer in protection mode.";
             return RedirectToAction("Play");
@@ -2940,7 +2940,7 @@ namespace tfgame.Controllers
              if (hoursSinceLastActivity < PvPStatics.HoursBeforeInanimatesCanSlipFree)
              {
                  TempData["Error"] = "You cannot escape from your owner right now.";
-                 TempData["SubError"] = "Your owner must remain inactive for " + (48 - PvPStatics.HoursBeforeInanimatesCanSlipFree) + "hours before you can slip free.";
+                 TempData["SubError"] = "Your owner must remain inactive for " + (PvPStatics.HoursBeforeInanimatesCanSlipFree - hoursSinceLastActivity) + "hours before you can slip free.";
                  return RedirectToAction("Play");
              }
 
@@ -3677,10 +3677,10 @@ namespace tfgame.Controllers
                     }
 
                     // give the player their PvP score trickle if they are in it
-                    if (player.InPvP == false)
-                    {
-                        player.PvPScore += PvPStatics.PvPScoreTricklePerUpdate;
-                    }
+                   // if (player.InPvP == false)
+                   // {
+                      //  player.PvPScore += PvPStatics.PvPScoreTricklePerUpdate;
+                   // }
                     
 
                     if (player.MaxHealth < 1)

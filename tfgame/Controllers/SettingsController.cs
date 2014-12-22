@@ -399,6 +399,43 @@ namespace tfgame.Controllers
             return View(output);
         }
 
+        [Authorize]
+        public ActionResult UseMyCustomForm()
+        {
+            Player me = PlayerProcedures.GetPlayerFromMembership();
+
+            string filename = System.Web.HttpContext.Current.Server.MapPath("~/XMLs/custom_bases.xml");
+            System.Xml.Serialization.XmlSerializer reader = new System.Xml.Serialization.XmlSerializer(typeof(List<CustomFormViewModel>));
+            System.IO.StreamReader file = new System.IO.StreamReader(filename);
+            List<CustomFormViewModel> output = (List<CustomFormViewModel>)reader.Deserialize(file);
+
+            CustomFormViewModel newForm = output.FirstOrDefault(p => p.MembershipId == WebSecurity.CurrentUserId);
+
+            if (newForm == null)
+            {
+                TempData["Error"] = "You do not have a custom base form.";
+                TempData["SubError"] = "Read more about how to get one here:  http://luxianne.com/forum/viewtopic.php?f=9&t=400";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            
+
+            // player is already in their original form so change them instantly.  Otherwise they'll have to find a way to be restored themselves
+            if (me.Form == me.OriginalForm)
+            {
+                PlayerProcedures.SetCustomBase(me, newForm.Form);
+                PlayerProcedures.InstantRestoreToBase(me);
+            }
+            else
+            {
+                PlayerProcedures.SetCustomBase(me, newForm.Form);
+            }
+
+            
+            TempData["Result"] = "Your custom form has been set.";
+            return RedirectToAction("Play", "PvP");
+        }
+
        
 
 	}

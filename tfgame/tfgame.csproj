@@ -369,6 +369,7 @@
     <Compile Include="ViewModels\ContributionCredit.cs" />
     <Compile Include="ViewModels\ContributionStatusViewModel.cs" />
     <Compile Include="ViewModels\CovenantViewModel.cs" />
+    <Compile Include="ViewModels\CustomFormViewModel.cs" />
     <Compile Include="ViewModels\Die.cs" />
     <Compile Include="ViewModels\EffectViewModel.cs" />
     <Compile Include="ViewModels\FairyChallengeViewModel.cs" />
@@ -590,6 +591,8 @@
     <Content Include="Images\PvP\portraits\blue_chaffinch_Lux.png" />
     <Content Include="Images\PvP\portraits\bunnygirl_nymictf_fixed.png" />
     <Content Include="Images\PvP\portraits\captivating_siren_babblingfaces.png" />
+    <Content Include="Images\PvP\portraits\catchcum_spacedande.png" />
+    <Content Include="Images\PvP\portraits\CircineMilton_Wrenzephyr.png" />
     <Content Include="Images\PvP\portraits\dapper_Luxianne.png" />
     <Content Include="Images\PvP\portraits\deranged_cultist_spacedande.png" />
     <Content Include="Images\PvP\portraits\dollmistress_babblingfaces.png" />
@@ -627,6 +630,7 @@
     <Content Include="Images\PvP\portraits\latex_dominatrix_Babblingfaces.png" />
     <Content Include="Images\PvP\portraits\lilath_Meddle.png" />
     <Content Include="Images\PvP\portraits\Lindella_Luxianne.png" />
+    <Content Include="Images\PvP\portraits\lovely_dragon_boy_spacedande.png" />
     <Content Include="Images\PvP\portraits\Man_01_Meddle.png" />
     <Content Include="Images\PvP\portraits\Man_02_Meddle.png" />
     <Content Include="Images\PvP\portraits\Man_03_Meddle.png" />
@@ -668,6 +672,7 @@
     <Content Include="Images\PvP\portraits\vampireboss.png" />
     <Content Include="Images\PvP\portraits\vampire_female_Lux.png" />
     <Content Include="Images\PvP\portraits\vampire_Lux.png" />
+    <Content Include="Images\PvP\portraits\warrior_queen_Martiandawn.png" />
     <Content Include="Images\PvP\portraits\werewolf_Luxianne.png" />
     <Content Include="Images\PvP\portraits\Willing_wish_granter_Meddle.png" />
     <Content Include="Images\PvP\portraits\Wind_spirit_Sylph_dj-neko.jpg" />
@@ -686,6 +691,7 @@
     <Content Include="XMLs\BossSummonText\Donna.txt" />
     <Content Include="XMLs\BossSummonText\Thieves.txt" />
     <Content Include="XMLs\BossSummonText\Valentine.txt" />
+    <Content Include="XMLs\custom_bases.xml" />
     <Content Include="XMLs\Effects\effect_Circine%27s_Hypnosis_LexamTheGemFox.xml" />
     <Content Include="XMLs\Effects\effect_Hemorrhage_Izz_Valentine.xml">
       <SubType>Designer</SubType>

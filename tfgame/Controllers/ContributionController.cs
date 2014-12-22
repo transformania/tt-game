@@ -271,6 +271,8 @@ namespace tfgame.Controllers
             spell.TFPointsAmount = contribution.Skill_TFPointsAmount;
 
             //  TODO: THIS ASSUMES LEARNED AT SPECIFIC LOCATION; THIS NEEDS TO BE CHANGED
+            spell.LearnedAtLocation = "";
+            spell.LearnedAtRegion = "";
             if (contribution.Skill_LearnedAtLocationOrRegion == "region")
             {
                 spell.LearnedAtRegion = contribution.Skill_LearnedAtRegion;

@@ -493,22 +493,24 @@ namespace tfgame.Procedures
 
         }
 
+        public static void SetCustomBase(Player player, string newFormName)
+        {
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            dbPlayer.OriginalForm = newFormName;
+            playerRepo.SavePlayer(dbPlayer);
+        }
+
         public static void InstantRestoreToBase(Player player)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
             Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
             string oldForm = dbPlayer.Form;
             dbPlayer.Form = dbPlayer.OriginalForm;
-            
-            if (dbPlayer.Form == "man_01" || dbPlayer.Form == "man_02" || dbPlayer.Form == "man_03" || dbPlayer.Form == "man_04" || dbPlayer.Form ==  "man_05")
-            {
-                dbPlayer.Gender = "male";
-            }
-            else
-            {
-                dbPlayer.Gender = "female";
-            }
+            DbStaticForm baseForm = FormStatics.GetForm(dbPlayer.OriginalForm);
 
+            dbPlayer.Gender = baseForm.Gender;
+            
             dbPlayer.NormalizeHealthMana();
 
             playerRepo.SavePlayer(dbPlayer);

@@ -1007,7 +1007,38 @@ namespace tfgame.Controllers
                 return View("Play");
             }
 
-            AIProcedures.RunAIMerchantActions(12);
+            //AIProcedures.RunAIMerchantActions(12);
+
+            CustomFormViewModel test = new CustomFormViewModel
+            {
+                MembershipId = 4481,
+                Form = "form_Queen_of_the_Vampires_Luxianne",
+
+            };
+
+            CustomFormViewModel test2 = new CustomFormViewModel
+            {
+                MembershipId = 4481,
+                Form = "form_Queen_of_the_Vampires_Luxianne",
+
+            };
+
+            List<CustomFormViewModel> forms = new List<CustomFormViewModel>();
+
+            forms.Add(test);
+            forms.Add(test2);
+
+            string path = Server.MapPath("~/XMLs/");
+
+            // input.title = "Serialization Overview";
+            System.Xml.Serialization.XmlSerializer writer =
+                new System.Xml.Serialization.XmlSerializer(typeof(List<CustomFormViewModel>));
+
+            System.IO.StreamWriter file = new System.IO.StreamWriter(
+                path + "custom_bases.xml");
+            writer.Serialize(file, forms);
+            file.Close();
+
 
             return RedirectToAction("Index");
         }

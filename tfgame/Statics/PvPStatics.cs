@@ -14,7 +14,7 @@ namespace tfgame.Statics
 
         public const int RoundDuration = 2500;
         public const int RoundDuration_LastPvPEntryTurn = 1800;
-        public const bool ChaosMode = true;
+        public const bool ChaosMode = false;
 
         public static String GenderMale = "male";
         public static String GenderFemale = "female";
@@ -1799,7 +1799,7 @@ namespace tfgame.Statics
                 Y = 4,
                 IsSafe = false,
                 ImageUrl = "",
-                Name_North = "castle_treasury",
+                Name_North = "castle_beach",
                 Name_East="castle_solar",
                 Name_South="castle_tower",
                 Name_West="castle_lordroom",
@@ -1814,6 +1814,7 @@ namespace tfgame.Statics
                 ImageUrl = "",
                 Name_East="castle_throneroom",
                 Name_South="castle_baths",
+                Name_West = "castle_treasury",
 
          }, new Location {
                 dbName = "castle_solar",
@@ -1823,17 +1824,18 @@ namespace tfgame.Statics
                 Y = 4,
                 IsSafe = false,
                 ImageUrl = "",
+                Name_East="castle_training",
                 Name_West="castle_throneroom",
 
          }, new Location {
                 dbName = "castle_treasury",
                 Name = "Valentine Castle (Treasury)",
                 Region = "castle",
-                X = -10,
-                Y = 5,
+                X = -12,
+                Y = 4,
                 IsSafe = false,
                 ImageUrl = "",
-                Name_South="castle_throneroom",
+                Name_East="castle_lordroom",
 
        }, new Location {
                 dbName = "castle_cellar",
@@ -1844,6 +1846,26 @@ namespace tfgame.Statics
                 IsSafe = false,
                 ImageUrl = "",
                 Name_West="castle_kitchen",
+
+         }, new Location {
+                dbName = "castle_beach",
+                Name = "Valentine Castle (Beach)",
+                Region = "castle",
+                X = -10,
+                Y = 5,
+                IsSafe = false,
+                ImageUrl = "",
+                Name_South="castle_throneroom",
+
+         }, new Location {
+                dbName = "castle_training",
+                Name = "Valentine Castle (Training Halls)",
+                Region = "castle",
+                X = -8,
+                Y = 4,
+                IsSafe = false,
+                ImageUrl = "",
+                Name_West="castle_solar",
 
           }, new Location {
                 dbName = "street_130_sunnyglade_drive",

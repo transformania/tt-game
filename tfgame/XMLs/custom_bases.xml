@@ -5,11 +5,15 @@
     <Form>form_Queen_of_the_Vampires_Luxianne</Form>
   </CustomFormViewModel>
   <CustomFormViewModel>
-    <MembershipId>69</MembershipId>
+    <MembershipId>224</MembershipId>
     <Form>form_The_Warrior_Queen_Martiandawn</Form>
   </CustomFormViewModel>
   <CustomFormViewModel>
     <MembershipId>224</MembershipId>
-    <Form>form_The_Warrior_Queen_Martiandawn</Form>
+    <Form>form_Witchling_Judoo</Form>
+  </CustomFormViewModel>
+  <CustomFormViewModel>
+    <MembershipId>77</MembershipId>
+    <Form>form_Purple_Mannequin_JBovinne</Form>
   </CustomFormViewModel>
 </ArrayOfCustomFormViewModel>

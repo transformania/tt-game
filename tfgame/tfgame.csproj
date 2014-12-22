@@ -619,6 +619,7 @@
     <Content Include="Images\PvP\portraits\great_fairy_Luxianne.png" />
     <Content Include="Images\PvP\portraits\gummy_girl_Luxianne.png" />
     <Content Include="Images\PvP\portraits\harpy_maiden_babblingfaces.png" />
+    <Content Include="Images\PvP\portraits\headless_mannequin_JBovinne.png" />
     <Content Include="Images\PvP\portraits\hero_babblingfaces.png" />
     <Content Include="Images\PvP\portraits\Ice_Queen_Meddle.png" />
     <Content Include="Images\PvP\portraits\incubus_servant_boy_spacedande.png" />
@@ -629,6 +630,7 @@
     <Content Include="Images\PvP\portraits\lady_jianshi_spacedande.png" />
     <Content Include="Images\PvP\portraits\latex_dominatrix_Babblingfaces.png" />
     <Content Include="Images\PvP\portraits\lilath_Meddle.png" />
+    <Content Include="Images\PvP\portraits\LilithValentine_Luxianne.png" />
     <Content Include="Images\PvP\portraits\Lindella_Luxianne.png" />
     <Content Include="Images\PvP\portraits\lovely_dragon_boy_spacedande.png" />
     <Content Include="Images\PvP\portraits\Man_01_Meddle.png" />
@@ -644,6 +646,7 @@
     <Content Include="Images\PvP\portraits\mouse_boy_Danaume.jpg" />
     <Content Include="Images\PvP\portraits\naga_JBovinne.png" />
     <Content Include="Images\PvP\portraits\new_age_retro_hippy_Meddle.png" />
+    <Content Include="Images\PvP\portraits\nighthuntress_Martiandawn.png" />
     <Content Include="Images\PvP\portraits\Omnibus_Meddle.png" />
     <Content Include="Images\PvP\portraits\otter_boy_Kyethusky.png" />
     <Content Include="Images\PvP\portraits\pig_girl_Meddle.png" />
@@ -721,6 +724,7 @@
     <Content Include="XMLs\LocationDescriptions\candystore_shelves.xml" />
     <Content Include="XMLs\LocationDescriptions\castle_armory.xml" />
     <Content Include="XMLs\LocationDescriptions\castle_baths.xml" />
+    <Content Include="XMLs\LocationDescriptions\castle_training.xml" />
     <Content Include="XMLs\LocationDescriptions\castle_cellar.xml" />
     <Content Include="XMLs\LocationDescriptions\castle_dungeon.xml" />
     <Content Include="XMLs\LocationDescriptions\castle_garden.xml" />
@@ -731,6 +735,7 @@
     <Content Include="XMLs\LocationDescriptions\castle_solar.xml" />
     <Content Include="XMLs\LocationDescriptions\castle_throneroom.xml" />
     <Content Include="XMLs\LocationDescriptions\castle_tower.xml" />
+    <Content Include="XMLs\LocationDescriptions\castle_beach.xml" />
     <Content Include="XMLs\LocationDescriptions\castle_treasury.xml" />
     <Content Include="XMLs\LocationDescriptions\clothing_front.xml" />
     <Content Include="XMLs\LocationDescriptions\clothing_intimate.xml" />

@@ -1,117 +1,138 @@
 ﻿@model tfgame.dbModels.Models.AuthorArtistBio
-
-<h1>Author / Artist Biography</h1>
-
-@Html.ActionLink("Back to game", "PvP", "Play")
-
-<p>@ViewBag.IngameCharacter</p>
-
-@{
-    if (@Model.OtherNames != null && @Model.OtherNames != "")
-    {
-        <h1>Common Names</h1>
-        <h2>@Model.OtherNames</h2>
-    }
-}
-
-@{
-    if (@Model.Email != null && @Model.Email != "")
-    {
-        <h1>Email</h1>
-        <h3>@Model.Email</h3>
-    }
-}
-
-<h2>Comission Information</h2>
-
-@{
-    if (@Model.AcceptingComissions != null && @Model.AcceptingComissions == 0)
-    {
-        <h3 class="bad">This artist does not take comissions.</h3>
-    }
-    else if (@Model.AcceptingComissions != null && @Model.AcceptingComissions == 1)
-    {
-        <h3 class="good">This artist is always open for comissions!</h3>
-    }
-    else if (@Model.AcceptingComissions != null && @Model.AcceptingComissions == 2)
-    {
-        <h3 class="bad">This artist normally takes comissions but they are currently closed.</h3>
-    }
-    else if (@Model.AcceptingComissions != null && @Model.AcceptingComissions == 3)
-    {
-        <h3 class="bad">This artist does not take comissions but plans to in the future.</h3>
-    }
-
-}
-
-@{
-    if (@Model.Url1 != null && @Model.Url1 != "")
-    {
-        <h1>Primary website</h1>
-        <h3><a href="@Model.Url1">@Model.Url1</a></h3>
-    }
-}
-
-@{
-    if (@Model.Url2 != null && @Model.Url2 != "")
-    {
-        <h1>Secondary website</h1>
-        <h3><a href="@Model.Url2">@Model.Url2</a></h3>
-    }
-}
-
-@{
-    if (@Model.Url3 != null && @Model.Url3 != "")
-    {
-        <h1>Other website</h1>
-        <h3><a href="@Model.Url3">@Model.Url3</a></h3>
-    }
-}
-
-
-@{
-    if (@Model.Text != null && @Model.Text != "")
-    {
-        <h1>More About this Artist!</h1>
-        <span>@Html.Raw(Model.Text)</span>
-    }
-}
-
-<h1>Animate Graphics</h1>
-@{
-    if (Model.AnimateImages != null)
-    {
-        IEnumerable<string> animateGraphics = Model.AnimateImages.Split(';');
-        foreach (string s in animateGraphics.Where(s => s.Length > 0))
+@Html.ActionLink("Back to game", "Play", "PvP", new { @class = "returnButton" })
+<div class="textBio">
+    <p class="bioTitle">Author / Artist Biography</p>
+    <p class="bioDesc">@ViewBag.IngameCharacter <br>
+    <span class="timeago">Last updated @Model.LastUpdated</span>
+    </p>
+    
+    @{
+        if (@Model.OtherNames != null && @Model.OtherNames != "")
         {
-            <img src="/Images/PvP/portraits/@s" style="width: 300px; height: 300px;" />
+            <p class="bioTitle">Common Names</p>
+            <p class="bioDesc">@Model.OtherNames</p>
         }
-    }
 }
 
-<h1>Inanimate Graphics</h1>
-@{
-    if (Model.InanimateImages != null)
-    {
-        IEnumerable<string> inanimateGraphics = Model.InanimateImages.Split(';');
-        foreach (string s in inanimateGraphics.Where(s => s.Length > 0))
+    @{
+        if (@Model.Email != null && @Model.Email != "")
         {
-            <img src="/Images/PvP/itemsPortraits/@s" style="width: 300px; height: 300px;" />
+            <p class="bioTitle">Email</p>
+    <p class="bioDesc">@Model.Email</p>
         }
-    }
 }
 
-<h1>Animal Graphics</h1>
-@{
-    if (Model.AnimalImages != null)
-    {
-        IEnumerable<string> animalGraphics = Model.AnimalImages.Split(';');
-        foreach (string s in animalGraphics.Where(s => s.Length > 0))
+    <p class="bioTitle">Comission Information</p>
+    <p class="bioDesc">
+    @{
+        if (@Model.AcceptingComissions != null && @Model.AcceptingComissions == 0)
         {
-            <img src="/Images/PvP/animalPortraits/@s" style="width: 300px; height: 300px;" />
+            <span class="bad">This artist does not take comissions.</span>
         }
+        else if (@Model.AcceptingComissions != null && @Model.AcceptingComissions == 1)
+        {
+            <span class="good">This artist is always open for comissions!</span>
+        }
+        else if (@Model.AcceptingComissions != null && @Model.AcceptingComissions == 2)
+        {
+            <span class="bad">This artist normally takes comissions but they are currently closed.</span>
+        }
+        else if (@Model.AcceptingComissions != null && @Model.AcceptingComissions == 3)
+        {
+            <span class="bad">This artist does not take comissions but plans to in the future.</span>
+        }
+
     }
+    </p>
+    @{
+        if (@Model.Url1 != null && @Model.Url1 != "")
+        {
+            <p class="bioTitle">Primary website</p>
+    <p class="bioDesc"><a href="@Model.Url1">@Model.Url1</a></p>
+        }
+}
+
+    @{
+        if (@Model.Url2 != null && @Model.Url2 != "")
+        {
+            <p class="bioTitle">Secondary website</p>
+    <p class="bioDesc"><a href="@Model.Url2">@Model.Url2</a></p>
+        }
+}
+
+    @{
+        if (@Model.Url3 != null && @Model.Url3 != "")
+        {
+            <p class="bioTitle">Other website</p>
+    <p class="bioDesc"><a href="@Model.Url3">@Model.Url3</a></p>
+        }
 }
 
 
-<p class="timeago">Last updated @Model.LastUpdated</p>
+    @{
+        if (@Model.Text != null && @Model.Text != "")
+        {
+            <p class="bioTitle">More About this Artist!</p>
+    <p class="bioDesc">@Html.Raw(Model.Text)</p>
+        }
+}
+
+    <p class="bioTitle">Animate Graphics</p>
+    <p class="bioDesc">
+                @{
+                    if (Model.AnimateImages != null)
+                    {
+                        IEnumerable<string> animateGraphics = Model.AnimateImages.Split(';');
+                        foreach (string s in animateGraphics.Where(s => s.Length > 0))
+                        {
+                            <a href="/Images/PvP/portraits/@s" onclick="return popitup('/Images/PvP/portraits/@s')">
+                                <img src="/Images/PvP/portraits/@s" class="bioDescImg" />
+                            </a>
+                        }
+                    }
+                }
+    </p>
+
+    <p class="bioTitle">Inanimate Graphics</p>
+    <p class="bioDesc">
+                @{
+                    if (Model.InanimateImages != null)
+                    {
+                        IEnumerable<string> inanimateGraphics = Model.InanimateImages.Split(';');
+                        foreach (string s in inanimateGraphics.Where(s => s.Length > 0))
+                        {
+                            <a href="/Images/PvP/itemsPortraits/@s" onclick="return popitup('/Images/PvP/itemsPortraits/@s')">
+                                <img src="/Images/PvP/itemsPortraits/@s" class="bioDescImg" />
+                            </a>
+                        }
+                    }
+                }
+</p>
+<p class="bioTitle">Animal Graphics</p>
+    <p class="bioDesc">
+                @{
+                    if (Model.AnimalImages != null)
+                    {
+                        IEnumerable<string> animalGraphics = Model.AnimalImages.Split(';');
+                        foreach (string s in animalGraphics.Where(s => s.Length > 0))
+                        {
+                            <a href="/Images/PvP/animalPortraits/@s" onclick="return popitup('/Images/PvP/animalPortraits/@s')">
+                                <img src="/Images/PvP/animalPortraits/@s" class="bioDescImg" />
+                            </a>
+                        }
+                    }
+                }
+</p>
+</div>
+
+<script language="javascript" type="text/javascript">
+<!--
+function popitup(url) {
+	newwindow=window.open(url,'name','height=600,width=600');
+	if (window.focus) {newwindow.focus()}
+	return false;
+}
+
+// -->
+</script>
+

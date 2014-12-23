@@ -1121,3 +1121,74 @@ margin-bottom:8px;
     line-height:38px;
     padding-top:2px;
 }
+
+.bioTitle {
+    font-size: 24px;
+    line-height: 48px;
+    font-weight: bold;
+    margin: 10px auto 0px auto !important;
+    border: 2px solid black;
+    background: lightgray;
+    width: 600px;
+}
+
+.bioDesc {
+    font-size: 18px;
+    margin: 0px auto 10px auto !important;
+    border: 2px solid black;
+    border-top: none !important;
+    background: #e2e2e2;
+    width: 600px;
+}
+
+.bioDescImg{
+    max-width: 150px;
+    padding: 10px;
+}
+
+.bioDescImg:first-child{
+    padding-top:20px;
+}
+
+    .bioDescImg:last-child {
+        padding-bottom: 15px;
+    }
+
+@media (max-width: 768px) {
+    .bioTitle{
+        width: 400px;
+    }
+
+    .bioDesc {
+        width: 400px;
+    }
+}
+
+@media (max-width: 480px) {
+    .bioTitle{
+        font-size: 12px;
+        line-height: 24px;
+        width: 200px;
+    }
+
+    .bioDesc {
+        font-size: 10px;
+        width: 200px;
+    }
+}
+
+.textBio a{
+    background: none;
+    text-decoration: none;
+    padding: 0;
+    margin: 0;
+}
+
+.textBio{
+    text-align: center;
+}
+
+.textBio p{
+    margin: 0;
+    padding: 0px 20px 0px 20px;
+}

@@ -1,7 +1,7 @@
 ﻿@{
     ViewBag.Title = "Chat";
 }
-@Html.ActionLink("Back to game", "Play", "PvP", new { @class = "returnButton" })
+@Html.ActionLink("Back to game", "Play", "PvP", null, new { @class = "returnButton" })
 <p class="bad" id="disconnected" style="display: none;">Your chat is currently disconnected from the server.  It will attempt to automatically reconnect.</p>
 
 <div class="container">

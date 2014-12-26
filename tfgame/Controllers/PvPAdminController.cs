@@ -1007,8 +1007,11 @@ namespace tfgame.Controllers
                 return View("Play");
             }
 
+            IDbStaticItemRepository itemRepo = new EFDbStaticItemRepository();
+            return Json(itemRepo.DbStaticItems, JsonRequestBehavior.AllowGet);
+
          
-            return RedirectToAction("Index");
+          ///  return RedirectToAction("Index");
         }
 
         public ActionResult ApproveContributionList()

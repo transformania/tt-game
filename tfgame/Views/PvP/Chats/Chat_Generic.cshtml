@@ -58,6 +58,14 @@
             }
         }
 
+        function chatLink2() {
+            var r = confirm("You will be leaving now Transformania Time. Are you sure about that?");
+            if (r == true) {
+                window.open('http://goo.gl/forms/Zu0JeZBLn9');
+            } else {
+            }
+        }
+
         $(function () {
             var chat = $.connection.chatHub;
 
@@ -155,6 +163,7 @@
             encodedValue = encodedValue.replace("Mizuho (dev)", "<span class='adminFont'>Mizuho (dev)</span>");
             encodedValue = encodedValue.replace(myname, "<span style='color: " + mynameColor + ";'><strong> " + myname + "</strong></span>");
             encodedValue = encodedValue.replace("[luxa]", "<a onclick='chatLink()'>Luxianne is streaming now</a>");
+            encodedValue = encodedValue.replace("[poll]", "Please take part in our Transformation Preferences Poll. <a onclick='chatLink2()'>Transformation Poll - http://goo.gl/forms/Zu0JeZBLn9 </a>");
 
 
             return encodedValue;

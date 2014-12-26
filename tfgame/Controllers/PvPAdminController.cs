@@ -1007,10 +1007,7 @@ namespace tfgame.Controllers
                 return View("Play");
             }
 
-            AIProcedures.SpawnLindella();
-            BossProcedures_Fae.SpawnFae();
-
-
+         
             return RedirectToAction("Index");
         }
 

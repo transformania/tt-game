@@ -1800,7 +1800,7 @@ namespace tfgame.Controllers
                     // if this player is a proofreader and this contribution is not marked as ready for proofreading, tell the editor to go to the proofreading version instead.
                     if (iAmProofreader == true && contribution.ProofreadingCopy == false)
                     {
-                        Contribution contributionProofed = contributionRepo.Contributions.FirstOrDefault(c => c.OwnerMembershipId == contribution.OwnerMembershipId && c.ProofreadingCopy == true && c.Skill_FriendlyName == contribution.Skill_FriendlyName);
+                        Contribution contributionProofed = contributionRepo.Contributions.FirstOrDefault(c => c.OwnerMembershipId == contribution.OwnerMembershipId && c.ProofreadingCopy == true && c.Skill_FriendlyName == contribution.Skill_FriendlyName && c.Form_FriendlyName == contribution.Form_FriendlyName);
                         if (contributionProofed != null)
                         {
                             TempData["Error"] = "There is already a proofreading version of this available.  Please load that instead.";

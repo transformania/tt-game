@@ -372,12 +372,20 @@ namespace tfgame.Controllers
             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
             ViewBag.IngameCharacter = "This artist does not currently have a character ingame.";
 
-            bool friends = FriendProcedures.PlayerIsMyFriend(artistIngamePlayer, me);
-            ViewBag.IAmFriendsWithArtist = friends;
+            bool friends = false;
+            try
+            {
+                friends = FriendProcedures.PlayerIsMyFriend(artistIngamePlayer, me);
+                ViewBag.IAmFriendsWithArtist = friends;
+            }
+            catch
+            {
+                ViewBag.IAmFriendsWithArtist = false;
+            }
 
             if (artistIngamePlayer != null)
             {
-                ViewBag.IngameCharacter = "This artist current has a character under the name of " + artistIngamePlayer.GetFullName() +".";
+                ViewBag.IngameCharacter = "This artist current has a character under the name of " + artistIngamePlayer.GetFullName() + ".";
             }
             // assert visibility setting is okay
             if (output.PlayerNamePrivacyLevel == 1 && friends == false)

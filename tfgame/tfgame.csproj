@@ -438,10 +438,14 @@
     <Compile Include="Models\Game.cs" />
     <Compile Include="Procedures\Procedures.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Content Include="Images\PvP\animalPortraits\Adorable Penguin_Luxianne.png" />
     <Content Include="Images\PvP\animalPortraits\adorable_donkey_dominque.png" />
     <Content Include="Images\PvP\animalPortraits\bdsm_pony_girl_Meddle.png" />
     <Content Include="Images\PvP\animalPortraits\bimboSphere_Meddle.png" />
     <Content Include="Images\PvP\animalPortraits\cat_familiar_lux.png" />
+    <Content Include="Images\PvP\animalPortraits\cerberus_spacedande.png" />
+    <Content Include="Images\PvP\animalPortraits\cheetah_Martiandawn.png" />
+    <Content Include="Images\PvP\animalPortraits\circine_sow_Martiandawn.png" />
     <Content Include="Images\PvP\animalPortraits\collared_lap_girl_Martiandawn.png" />
     <Content Include="Images\PvP\animalPortraits\cow_sampleguy.jpg" />
     <Content Include="Images\PvP\animalPortraits\decorative_gargoyle_spacedande.png" />
@@ -607,6 +611,7 @@
     <Content Include="Images\PvP\portraits\elvish_bard_BabblingFaces.png" />
     <Content Include="Images\PvP\portraits\Feisty_Firebrand_Luxianne.png" />
     <Content Include="Images\PvP\portraits\female_armor_Meddle.png" />
+    <Content Include="Images\PvP\portraits\female_rat_thief_Luxianne.png" />
     <Content Include="Images\PvP\portraits\femboi_skunk_Luxianne.png" />
     <Content Include="Images\PvP\portraits\Fembot_Meddle.png" />
     <Content Include="Images\PvP\portraits\femboy_Meddle.png" />
@@ -654,6 +659,7 @@
     <Content Include="Images\PvP\portraits\possessed_doll_Foxpower93.png" />
     <Content Include="Images\PvP\portraits\psycho_female.png" />
     <Content Include="Images\PvP\portraits\psycho_male.png" />
+    <Content Include="Images\PvP\portraits\quoxotic_ranger_Babblingfaces.gif" />
     <Content Include="Images\PvP\portraits\rat_thief_m_Thrax.png" />
     <Content Include="Images\PvP\portraits\robotgirl_thurosis.png" />
     <Content Include="Images\PvP\portraits\robot_Meddle.png" />
@@ -685,6 +691,7 @@
     <Content Include="Images\PvP\portraits\Woman_03_Meddle.png" />
     <Content Include="Images\PvP\portraits\Woman_04_Meddle.png" />
     <Content Include="Images\PvP\portraits\Woman_05_Meddle.png" />
+    <Content Include="Images\PvP\portraits\wonder_girl_babblingfaces.png" />
     <Content Include="Images\PvP\portraits\wood_mannequin_Lux.png" />
     <Content Include="Images\PvP\portraits\zombie_aid_babblingfaces.png" />
     <Content Include="Images\PvP\Smilies\smile.png" />

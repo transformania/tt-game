@@ -13,6 +13,7 @@ namespace tfgame.dbModels.Models
         public string WebsiteURL { get; set; }
         public int PublicVisibility { get; set; }
         public string OtherNames { get; set; }
+        public string Tags { get; set; }
         public DateTime Timestamp { get; set; }
 
     }

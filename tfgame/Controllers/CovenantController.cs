@@ -975,9 +975,8 @@ namespace tfgame.Controllers
                 return RedirectToAction("MyCovenant");
             }
 
-            FurnitureProcedures.UseFurniture(id, me);
+            TempData["Result"] = FurnitureProcedures.UseFurniture(id, me);
 
-            TempData["Result"] = "You use " + furniture.HumanName + ".";
             return RedirectToAction("MyCovenant");
 
         }

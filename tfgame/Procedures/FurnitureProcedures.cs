@@ -239,7 +239,8 @@ namespace tfgame.Procedures
             {
                 ItemProcedures.GiveNewItemToPlayer(user, furnitureStatic.GivesItem);
                 PlayerProcedures.SetTimestampToNow(user, false);
-                return "You used " + dbFurniture.HumanName + ", a human voluntarily transformed into furniture and leased by your covenant, and gained the a " + EffectStatics.GetStaticEffect2(furnitureStatic.GivesEffect).FriendlyName + " to use at the time of your own choosing.";
+                DbStaticItem itemGained = ItemStatics.GetStaticItem(furnitureStatic.GivesItem);
+                return "You used " + dbFurniture.HumanName + ", a human voluntarily transformed into furniture and leased by your covenant, gaining a " + itemGained.FriendlyName + ".";
             }
 
             return "ERROR";

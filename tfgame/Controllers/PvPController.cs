@@ -592,7 +592,7 @@ namespace tfgame.Controllers
             if (iAmWhitelisted == false && PlayerProcedures.IsMyIPInUseAndAnimate(Request.UserHostAddress, me) == true)
             {
                 TempData["Error"] = "This character looks like a multiple account, which is illegal.  This character will not be allowed to attack.";
-                TempData["SubError"] = "You can only have 1 animate character in PvP mode and 1 animate character in non-PvP mode at a time.";
+                TempData["SubError"] = "You can only have 1 animate character in PvP mode and 1 animate character in Protection mode at a time.  Read more about the rules regarding multiple accounts here:  http://luxianne.com/forum/viewtopic.php?f=5&t=449 .";
                 return RedirectToAction("Play");
             }
 

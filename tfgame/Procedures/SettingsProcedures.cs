@@ -40,8 +40,10 @@ namespace tfgame.Procedures
         public static void DeletePlayerBio(int ownerMembershipId)
         {
             IPlayerBioRepository playerBioRepo = new EFPlayerBioRepository();
-            playerBioRepo.DeletePlayerBio(ownerMembershipId);
-
+            PlayerBio myBio = playerBioRepo.PlayerBios.FirstOrDefault(p => p.OwnerMembershipId == ownerMembershipId);
+            if (myBio != null) {
+                playerBioRepo.DeletePlayerBio(myBio.Id);
+            }
         }
 
         public static PlayerBio GetPlayerBioFromMembershipId(int id)

@@ -54,11 +54,15 @@ namespace tfgame.Controllers
          public ActionResult SetBioSend(PlayerBio input)
          {
 
-             //if (input.Text == null)
-             //{
-             //    TempData["Error"] = "You must have some text in order to save your bio.";
-             //    return RedirectToAction("Play", "PvP");
-             //}
+             if (input.Text == null)
+             {
+                 input.Text = "";
+             }
+
+             if (input.Tags == null)
+             {
+                 input.Tags = "";
+             }
 
              Player me = PlayerProcedures.GetPlayerFromMembership();
              if (input.Text.Length > 2500 && DonatorProcedures.DonatorGetsMessagesRewards(me) == false)

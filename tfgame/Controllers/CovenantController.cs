@@ -953,6 +953,13 @@ namespace tfgame.Controllers
                 return RedirectToAction("MyCovenant");
             }
 
+            // assert that the player is at the covenant safegrounds
+            if (myCov.HomeLocation != me.dbLocationName)
+            {
+                TempData["Error"] = "You must be at your covenant safeground to use your covenant's furniture.";
+                return RedirectToAction("MyCovenant");
+            }
+
             // assert that the contract has not expired nor has not begun yet
             int turnNumber = PvPWorldStatProcedures.GetWorldTurnNumber();
             if (furniture.ContractStartTurn > turnNumber || furniture.ContractEndTurn < turnNumber)

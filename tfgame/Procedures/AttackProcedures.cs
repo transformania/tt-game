@@ -16,15 +16,18 @@ namespace tfgame.Procedures
         public static string Attack(Player attacker, Player victim, SkillViewModel2 skillBeingUsed)
         {
 
-            if (victim.Mobility != "full")
-            {
-                return "";
-            }
+            
 
             string result = "";
 
             Player me = PlayerProcedures.GetPlayer(attacker.Id);
             Player targeted = PlayerProcedures.GetPlayer(victim.Id);
+
+            if (targeted.Mobility != "full")
+            {
+                return "";
+            }
+
             LogBox logs = new LogBox();
 
 

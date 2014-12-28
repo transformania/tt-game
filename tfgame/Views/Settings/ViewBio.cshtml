@@ -27,7 +27,7 @@
 @{
     if (Model.Text != null && Model.Text != "")
     {
-        <p>@Model.Text</p>
+        <p>@Html.Raw(Model.Text.Replace("[br]","<br/>"))</p>
     }
 }
 

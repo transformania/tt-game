@@ -24,7 +24,13 @@
 
 <h3>Bio</h3>
 
-<p>@Model.Text</p>
+@{
+    if (Model.Text != null && Model.Text != "")
+    {
+        <p>@Model.Text</p>
+    }
+}
+
 
 <h3>RP Tags</h3>
 

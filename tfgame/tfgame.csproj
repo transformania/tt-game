@@ -438,8 +438,8 @@
     <Compile Include="Models\Game.cs" />
     <Compile Include="Procedures\Procedures.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Content Include="Images\PvP\animalPortraits\Adorable Penguin_Luxianne.png" />
     <Content Include="Images\PvP\animalPortraits\adorable_donkey_dominque.png" />
+    <Content Include="Images\PvP\animalPortraits\Adorable_Penguin_Luxianne.png" />
     <Content Include="Images\PvP\animalPortraits\bdsm_pony_girl_Meddle.png" />
     <Content Include="Images\PvP\animalPortraits\bimboSphere_Meddle.png" />
     <Content Include="Images\PvP\animalPortraits\cat_familiar_lux.png" />
@@ -1494,6 +1494,7 @@
     <Content Include="Views\PvP\RoundLeaderboards\XP\Alpha_13.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_13.cshtml" />
     <Content Include="Views\Contribution\GetContributionTable.cshtml" />
+    <Content Include="Views\Settings\partial\rptags.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

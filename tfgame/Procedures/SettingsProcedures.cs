@@ -30,9 +30,18 @@ namespace tfgame.Procedures
             playerBio.Text = bio.Text;
             playerBio.WebsiteURL = bio.WebsiteURL;
 
+            playerBio.Tags = bio.Tags;
+
             playerBioRepo.SavePlayerBio(playerBio);
 
             // playerBioRe
+        }
+
+        public static void DeletePlayerBio(int ownerMembershipId)
+        {
+            IPlayerBioRepository playerBioRepo = new EFPlayerBioRepository();
+            playerBioRepo.DeletePlayerBio(ownerMembershipId);
+
         }
 
         public static PlayerBio GetPlayerBioFromMembershipId(int id)

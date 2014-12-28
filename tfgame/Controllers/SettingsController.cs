@@ -54,11 +54,11 @@ namespace tfgame.Controllers
          public ActionResult SetBioSend(PlayerBio input)
          {
 
-             if (input.Text == null)
-             {
-                 TempData["Error"] = "You must have some text in order to save your bio.";
-                 return RedirectToAction("Play", "PvP");
-             }
+             //if (input.Text == null)
+             //{
+             //    TempData["Error"] = "You must have some text in order to save your bio.";
+             //    return RedirectToAction("Play", "PvP");
+             //}
 
              Player me = PlayerProcedures.GetPlayerFromMembership();
              if (input.Text.Length > 2500 && DonatorProcedures.DonatorGetsMessagesRewards(me) == false)
@@ -78,6 +78,12 @@ namespace tfgame.Controllers
                  input.WebsiteURL = "";
              }
 
+             if (input.Tags.Length > 1000)
+             {
+                 TempData["Error"] = "Too many RP tags input text.";
+                 return RedirectToAction("Play", "PvP");
+             }
+
              if (input.WebsiteURL.Length > 1500)
              {
                  TempData["Error"] = "The text of your website URL is too long (more than 250 characters).";
@@ -87,6 +93,16 @@ namespace tfgame.Controllers
              SettingsProcedures.SavePlayerBio(input);
 
              TempData["Result"] = "Your bio has been saved.";
+             return RedirectToAction("Play", "PvP");
+         }
+
+        [Authorize]
+         public ActionResult SetBioDelete(PlayerBio input)
+         {
+
+             SettingsProcedures.DeletePlayerBio(WebSecurity.CurrentUserId);
+
+             TempData["Result"] = "Your bio has been deleted.";
              return RedirectToAction("Play", "PvP");
          }
 

@@ -11,14 +11,20 @@
     @Html.ActionLink("Covenant Furniture on Market", "ViewAvailableFurniture", "Covenant")
     @Html.ActionLink("Your Covenant's Furniture", "MyCovenantFurniture", "Covenant")
 
-    @{  
-        if (Model.dbCovenant != null)
-        {
-            @Html.ActionLink("Leave this Covenant", "LeaveCovenant", "Covenant")
-        }
-    
-        if (ViewBag.HasApplication == true)
-        {
+    @{
+    if (Model.dbCovenant != null)
+    {
+        <a href="javascript:confirmDeletion()">Leave Covenant</a>
+        
+        <div id="realLink" class="deleteMessegeConfirm">
+            <span style="color:red; font-weight: bold;">Do you really want to leave your covenant? If yes then please click link below:</span>
+            @Html.ActionLink("Leave this Covenant", "LeaveCovenant", "Covenant")<br />
+        </div>
+
+    }
+
+    if (ViewBag.HasApplication == true)
+    {
             @Html.ActionLink("Withdraw Pending Covenant Application", "WithdrawApplication", "Covenant")
         }
         @:&nbsp;
@@ -97,3 +103,9 @@
 <div style="clear:both"></div>
 <br />
 @Html.ActionLink("Back to game", "Play", "PvP")
+
+<script>
+    function confirmDeletion() {
+        document.getElementById('realLink').style.display = "block";
+    }
+</script>

@@ -6,7 +6,9 @@
     <link href="~/Content/PvP.css" rel="stylesheet" />
 </head>
 
-@Html.ActionLink("Back to game", "Play", "PvP")
+@Html.ActionLink("Back to game", "Play", "PvP")<br />
+
+
 
 <h1>Update Your Bio</h1>
 
@@ -26,6 +28,12 @@
     <p>Main text of your bio.  Limit 1500 characters.</p>
     @Html.TextAreaFor(m => m.Text)<br />
     <span class="charCounter" id="textRemaining"></span>
+    
+    <p>RP interest tags:  Click on the buttons below to turn on or off the themes that interest you while roleplaying.</p>
+    
+    @Html.Partial("partial/rptags");
+    
+    @Html.HiddenFor(m => m.Tags)<br />
 
     <p>
         <input type="submit" value="Send" />
@@ -35,13 +43,88 @@
 
 }
 
+
+<a href="javascript:confirmDeletion()" />Delete My Bio</a>
+
+<div id="realLink" class="deleteMessegeConfirm">
+    <span style="color:red; font-weight: bold;">Do you really want to delete your bio? If yes then please click link below:</span>
+    @Html.ActionLink("Yes, DELETE my bio", "SetBioDelete", "Settings")<br />
+</div>
+
+
 @Html.ActionLink("Back to game", "Play", "PvP")
 
 <script>
     $("#Text").keydown(function () {
         var remaining = 2500 - $("#Text").val().length;
-       // console.log($("#Text").val().length);
+        // console.log($("#Text").val().length);
         $("#textRemaining").html(remaining + " characters remaining");
     });
+
+    $(document).ready(function () {
+
+        // assign the proper styling onload
+        $(".rpTag").each(function () {
+            var code = $(this).attr("tagcode");
+            if ($("#Tags").val().indexOf(code + ";") > -1) {
+                $(this).addClass("on");
+                $(this).removeClass("off");
+            } else {
+                $(this).addClass("off");
+                $(this).removeClass("on");
+            }
+        });
+
+        // assign onclick logic to buttons
+        $(".rpTag").each(function () {
+            $(this).click(function () { 
+            var code = $(this).attr("tagcode");
+            
+            if ($("#Tags").val().indexOf(code + ";") == -1) {
+                $("#Tags").val($("#Tags").val() + code + ";");
+                $(this).removeClass("off");
+                $(this).addClass("on");
+            } else {
+                $("#Tags").val($("#Tags").val().replace(code + ";", ""));
+                $(this).removeClass("on");
+                $(this).addClass("off");
+            }
+            });
+
+        });
+    });
+
+    function confirmDeletion() {
+        document.getElementById('realLink').style.display = "block";
+    }
+
 </script>
+
+<style>
+    .rpTag{
+        border: 1px solid black;
+        cursor: pointer;
+        /*padding: 2px;*/
+        border-radius: 2px;
+        margin: 2px;
+        position: relative;
+    }
+
+    .on{
+        background-color: lightgreen;
+    }
+
+    .on:hover {
+        background-color: green;
+    }
+
+    .off{
+        background-color:pink;
+    }
+
+    .off:hover {
+        background-color: red;
+    }
+
+</style>
 

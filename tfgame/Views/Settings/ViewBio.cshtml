@@ -26,6 +26,12 @@
 
 <p>@Model.Text</p>
 
+<h3>RP Tags</h3>
+
+@Html.HiddenFor(m => m.Tags)
+
+@Html.Partial("partial/rptags");
+
 <p class="timeago">Last updated @Model.Timestamp</p>
 
 @{
@@ -57,3 +63,24 @@
 
 
 <p>@Html.ActionLink("Back to game", "Play", "PvP")</p>
+
+<script>
+
+
+    $(document).ready(function () {
+
+        // assign the proper styling onload
+        $(".rpTag").each(function () {
+            var code = $(this).attr("tagcode");
+            if ($("#Tags").val().indexOf(code + ";") > -1) {
+                $(this).addClass("on");
+                $(this).removeClass("off");
+            } else {
+                $(this).addClass("off");
+                $(this).removeClass("on");
+            }
+        });
+
+    });
+
+</script>

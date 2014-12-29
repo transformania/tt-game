@@ -139,10 +139,9 @@ namespace tfgame.Procedures.BossProcedures
             {
 
                 // periodically refresh list of targets
-                if (turnNumber % 3 == 0)
+                if (turnNumber % 6 == 0)
                 {
                     maleAI.sVar1 = GetRichestPlayerIds();
-                    femaleAI.sVar1 = GetRichestPlayerIds();
                     maleAI.Var1 = 0;
                 }
 
@@ -195,7 +194,7 @@ namespace tfgame.Procedures.BossProcedures
                     playerRepo.SavePlayer(malethief);
                     playerRepo.SavePlayer(femalethief);
 
-                    string message = "A male and female rat thief suddenly appear in front of you and circle about.  In the blink of an eye they've swept you off your feet and expertly swipe " + Math.Floor(target.Money * .90M) + " of your Arpeyjis!";
+                    string message = malethief.GetFullName() + " and " + femalethief.GetFullName() + " the Seekshadow rat thieves suddenly appear in front of you!  In the blink of an eye they've swept you off your feet and have expertly swiped " + Math.Floor(target.Money * .10M) + " of your Arpeyjis.";
                     string locationMessage = "<b>" + malethief.GetFullName() + " and " + femalethief.GetFullName() + " robbed " + target.GetFullName() + " here.</b>";
                     PlayerLogProcedures.AddPlayerLog(target.Id, message, true);
                     LocationLogProcedures.AddLocationLog(malethief.dbLocationName, locationMessage);
@@ -234,21 +233,39 @@ namespace tfgame.Procedures.BossProcedures
                     itemThief = malethief;
                 }
 
-                Item victimThiefItem = ItemProcedures.GetItemByVictimName(attackingThief.FirstName, attackingThief.LastName);
+                Item victimThiefItem = ItemProcedures.GetItemByVictimName(itemThief.FirstName, itemThief.LastName);
                 ItemViewModel victimThiefItemPlus = ItemProcedures.GetItemViewModel(victimThiefItem.Id);
 
                 // the transformed thief is owned by someone, try and get it back!
                 if (victimThiefItem.OwnerId > 0) {
-                    Player target = playerRepo.Players.FirstOrDefault(p => p.Id == victimThiefItem.OwnerId && p.MembershipId != -8 && p.MembershipId != -9);
+                    Player target = playerRepo.Players.FirstOrDefault(p => p.Id == victimThiefItem.OwnerId);
+
+                    if (target.MembershipId == -8 || target.MembershipId == -8)
+                    {
+                        // do nothing, the thief already has the item... equip it if not
+                        if (victimThiefItem.IsEquipped == false)
+                        {
+                            ItemProcedures.EquipItem(victimThiefItem.Id, true);
+                        }
+                        string locationMessage = "<b>" + attackingThief.GetFullName() + " ran off in an unknown direction.";
+                        string newlocation = LocationsStatics.GetRandomLocation_NoStreets();
+                        attackingThief.dbLocationName = newlocation;
+                        playerRepo.SavePlayer(attackingThief);
+                        BuffBox buffs = ItemProcedures.GetPlayerBuffs(attackingThief);
+                        PlayerProcedures.Cleanse(attackingThief, buffs);
+                        PlayerProcedures.Meditate(attackingThief, buffs);
+
+                    }
 
                     // Lindella, steal from her right away
-                    if (target.MembershipId == -3)
+                    else if (target.MembershipId == -3)
                     {
                         ItemProcedures.GiveItemToPlayer(victimThiefItem.Id, attackingThief.Id);
                         LocationLogProcedures.AddLocationLog(target.dbLocationName, "<b>" + attackingThief.GetFullName() + " stole " + victimThiefItem.VictimName + " the " + victimThiefItemPlus.Item.FriendlyName + " from Lindella.</b>");
                     }
 
-                    if (target != null && PlayerProcedures.PlayerIsOffline(target) == false)
+                    // target is a human and they are not offline
+                    else if (target != null && PlayerProcedures.PlayerIsOffline(target) == false)
                     {
                         attackingThief.dbLocationName = target.dbLocationName;
                         playerRepo.SavePlayer(attackingThief);
@@ -264,6 +281,13 @@ namespace tfgame.Procedures.BossProcedures
                             ItemProcedures.GiveItemToPlayer(victimThiefItem.Id, attackingThief.Id);
                             LocationLogProcedures.AddLocationLog(target.dbLocationName, "<b>" + attackingThief.GetFullName() + " recovered " + victimThiefItem.VictimName + " the " + victimThiefItemPlus.Item.FriendlyName + ".</b>");
                         }
+                    }
+
+                    // target is a human and they are offline... just go and camp out there.
+                    else if (target != null && PlayerProcedures.PlayerIsOffline(target) == true)
+                    {
+                        attackingThief.dbLocationName = target.dbLocationName;
+                        playerRepo.SavePlayer(attackingThief);
                     }
                 }
 
@@ -328,13 +352,12 @@ namespace tfgame.Procedures.BossProcedures
                 // random chance of moving to a new random location
                 if (roll < .3)
                 {
+                    string locationMessage = "<b>" + malethief.GetFullName() + " and " + femalethief.GetFullName() + " ran off in an unknown direction.";
                     string newlocation = LocationsStatics.GetRandomLocation_NoStreets();
                     malethief.dbLocationName = newlocation;
                     femalethief.dbLocationName = newlocation;
                     playerRepo.SavePlayer(malethief);
                     playerRepo.SavePlayer(femalethief);
-                    string locationMessage = "<b>" + malethief.GetFullName() + " and " + femalethief.GetFullName() + " ran off in an unknown direction.";
-                    LocationLogProcedures.AddLocationLog(newlocation, locationMessage);
                 }
             }
 

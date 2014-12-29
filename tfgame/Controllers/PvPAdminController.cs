@@ -1007,7 +1007,9 @@ namespace tfgame.Controllers
                 return View("Play");
             }
 
-            BossProcedures_Thieves.RunThievesAction(100);
+            Random rand = new Random();
+            double roll = Math.Floor(rand.NextDouble() * 2500);
+            BossProcedures_Thieves.RunThievesAction((int)roll);
 
          
             return RedirectToAction("Index");

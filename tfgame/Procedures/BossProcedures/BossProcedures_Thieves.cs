@@ -194,6 +194,8 @@ namespace tfgame.Procedures.BossProcedures
                     playerRepo.SavePlayer(malethief);
                     playerRepo.SavePlayer(femalethief);
 
+                    AttackProcedures.Attack(femalethief, target, "skill_Seekshadow's_Silence_Judoo");
+
                     string message = malethief.GetFullName() + " and " + femalethief.GetFullName() + " the Seekshadow rat thieves suddenly appear in front of you!  In the blink of an eye they've swept you off your feet and have expertly swiped " + Math.Floor(target.Money * .10M) + " of your Arpeyjis.";
                     string locationMessage = "<b>" + malethief.GetFullName() + " and " + femalethief.GetFullName() + " robbed " + target.GetFullName() + " here.</b>";
                     PlayerLogProcedures.AddPlayerLog(target.Id, message, true);
@@ -352,6 +354,7 @@ namespace tfgame.Procedures.BossProcedures
                 // random chance of moving to a new random location
                 if (roll < .3)
                 {
+                    AttackProcedures.Attack(femalethief, attacker, "skill_Seekshadow's_Silence_Judoo");
                     string locationMessage = "<b>" + malethief.GetFullName() + " and " + femalethief.GetFullName() + " ran off in an unknown direction.";
                     string newlocation = LocationsStatics.GetRandomLocation_NoStreets();
                     malethief.dbLocationName = newlocation;

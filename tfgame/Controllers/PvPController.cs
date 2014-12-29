@@ -511,6 +511,12 @@ namespace tfgame.Controllers
                 output = output.Where(s => s.MobilityType == "full");
             }
 
+            // only show inaniames for rat thieves
+            if (target.MembershipId == -8 || target.MembershipId == -9)
+            {
+                output = output.Where(s => s.MobilityType == "inanimate");
+            }
+
             ViewBag.TargetId = targetId;
             ViewBag.TargetName = target.FirstName + " " + target.LastName;
              return PartialView("partial/AjaxAttackModal", output);
@@ -725,8 +731,8 @@ namespace tfgame.Controllers
                 if (targeted.MembershipId == -8 || targeted.MembershipId == -9)
                 {
 
-                    // disallow animate spells
-                    if (futureForm.MobilityType == "full" || skillBeingUsed.MobilityType == "curse")
+                    // only allow inanimate spells
+                    if (futureForm.MobilityType != "inanimate")
                     {
                         TempData["Error"] = "Your target seems immune from this kind of spell.";
                         TempData["SubError"] = "Maybe a different one would do...";

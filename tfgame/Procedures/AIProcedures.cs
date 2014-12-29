@@ -54,6 +54,8 @@ namespace tfgame.Procedures
         // -5 Lord Valentine
         // -6 Jewdewfae
         // -7 Bimbo Boss
+        // -8 Male rat thief
+        // -9 Female rat thief
 
         public static void SpawnAIPsychopaths(int count, int offset)
         {
@@ -1042,6 +1044,13 @@ namespace tfgame.Procedures
             {
                 BossProcedures_BimboBoss.CounterAttack(personAttacking, bot);
             }
+
+            // male rat thief counterattack
+            if (bot.MembershipId == -8 || bot.MembershipId == -9)
+            {
+                BossProcedures_Thieves.CounterAttack(personAttacking);
+            }
+
 
         }
 

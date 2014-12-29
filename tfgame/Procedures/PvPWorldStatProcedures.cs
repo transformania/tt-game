@@ -131,13 +131,29 @@ namespace tfgame.Procedures
             worldStatRepo.SavePvPWorldStat(stat);
         }
 
+        public static void Boss_StartThieves()
+        {
+            IPvPWorldStatRepository worldStatRepo = new EFPvPWorldStatRepository();
+            PvPWorldStat stat = worldStatRepo.PvPWorldStats.First();
+            stat.Boss_Thief = "active";
+            worldStatRepo.SavePvPWorldStat(stat);
+        }
+
+        public static void Boss_EndThieves()
+        {
+            IPvPWorldStatRepository worldStatRepo = new EFPvPWorldStatRepository();
+            PvPWorldStat stat = worldStatRepo.PvPWorldStats.First();
+            stat.Boss_Thief = "completed";
+            worldStatRepo.SavePvPWorldStat(stat);
+        }
+
         #endregion
 
         public static bool IsAnyBossActive()
         {
             IPvPWorldStatRepository worldStatRepo = new EFPvPWorldStatRepository();
             PvPWorldStat stat = worldStatRepo.PvPWorldStats.First();
-            if (stat.Boss_Donna == "active" || stat.Boss_Valentine == "active" || stat.Boss_Bimbo == "active")
+            if (stat.Boss_Donna == "active" || stat.Boss_Valentine == "active" || stat.Boss_Bimbo == "active" || stat.Boss_Thief == "active")
             {
                 return true;
             }

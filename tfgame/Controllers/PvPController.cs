@@ -596,8 +596,6 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play");
             }
 
-          
-
             // assert player has enough mana to cast
             if (me.Mana < skillBeingUsed.Skill.ManaCost)
             {
@@ -673,8 +671,6 @@ namespace tfgame.Controllers
                 }
             }
 
-          
-
             DbStaticSkill skill = SkillStatics.GetStaticSkill(attackName);
             DbStaticForm futureForm = FormStatics.GetForm(skill.FormdbName);
 
@@ -722,7 +718,20 @@ namespace tfgame.Controllers
                         TempData["SubError"] = "Maybe a different one would do...";
                         return RedirectToAction("Play");
                     }
-                    // disallow transformed victims from attacking boss
+
+                }
+
+                // Thieves Boss
+                if (targeted.MembershipId == -8 || targeted.MembershipId == -9)
+                {
+
+                    // disallow animate spells
+                    if (futureForm.MobilityType == "full" || skillBeingUsed.MobilityType == "curse")
+                    {
+                        TempData["Error"] = "Your target seems immune from this kind of spell.";
+                        TempData["SubError"] = "Maybe a different one would do...";
+                        return RedirectToAction("Play");
+                    }
 
                 }
 
@@ -3929,6 +3938,24 @@ namespace tfgame.Controllers
                         tfgame.Procedures.BossProcedures.BossProcedures_BimboBoss.RunActions(turnNo);
                         log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == turnNo);
                         log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished Bimbo actions");
+                    }
+                }
+                catch (Exception e)
+                {
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Bimbo ERROR:  " + e.InnerException.ToString());
+                }
+
+                // BIMBO
+                try
+                {
+                    // run boss logic if one is active
+                    if (worldStats.Boss_Thief == "active")
+                    {
+                        log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started Thieves actions");
+                        serverLogRepo.SaveServerLog(log);
+                        tfgame.Procedures.BossProcedures.BossProcedures_Thieves.RunThievesAction(turnNo);
+                        log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == turnNo);
+                        log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished Thieves actions");
                     }
                 }
                 catch (Exception e)

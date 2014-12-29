@@ -763,6 +763,17 @@ namespace tfgame.Procedures
                             return summontext;
                         }
                     }
+                    else if (roll < 1 && dbLocationName == "tavern_pool")
+                    {
+                        if (worldStats.IsTheifAvailable())
+                        {
+                            BossProcedures_Thieves.SpawnThieves();
+                            PvPWorldStatProcedures.Boss_StartThieves();
+                            string summontext = BossSummonDictionary.GetActivationText("Thieves");
+                            PlayerLogProcedures.AddPlayerLog(player.Id, summontext, true);
+                            return summontext;
+                        }
+                    }
                 }
             }
 

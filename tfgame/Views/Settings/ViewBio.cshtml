@@ -78,7 +78,7 @@
         // assign the proper styling onload
         $(".rpTag").each(function () {
             var code = $(this).attr("tagcode");
-            if ($("#Tags").val().indexOf(code + ";") > -1) {
+            if ($("#Tags").val().indexOf(";" + code + ";") > -1) {
                 $(this).addClass("on");
                 $(this).removeClass("off");
             } else {

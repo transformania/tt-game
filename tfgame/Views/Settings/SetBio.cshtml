@@ -35,7 +35,7 @@
     
     <p id="resetTags" style="cursor: pointer;"><b>Click here to reset tags</b></p>
     
-    @Html.HiddenFor(m => m.Tags)<br />
+    @Html.HiddenFor(m => m.Tags)
 
     <p>
         <input type="submit" value="Send" />
@@ -68,7 +68,7 @@
         // assign the proper styling onload
         $(".rpTag").each(function () {
             var code = $(this).attr("tagcode");
-            if ($("#Tags").val().indexOf(code + ";") > -1) {
+            if ($("#Tags").val().indexOf(";" + code + ";") > -1) {
                 $(this).addClass("on");
                 $(this).removeClass("off");
             } else {
@@ -82,12 +82,12 @@
             $(this).click(function () { 
             var code = $(this).attr("tagcode");
             
-            if ($("#Tags").val().indexOf(code + ";") == -1) {
-                $("#Tags").val($("#Tags").val() + code + ";");
+            if ($("#Tags").val().indexOf(";" + code + ";") == -1) {
+                $("#Tags").val($("#Tags").val() + ";" + code + ";");
                 $(this).removeClass("off");
                 $(this).addClass("on");
             } else {
-                $("#Tags").val($("#Tags").val().replace(code + ";", ""));
+                $("#Tags").val($("#Tags").val().replace(";" + code + ";", ""));
                 $(this).removeClass("on");
                 $(this).addClass("off");
             }

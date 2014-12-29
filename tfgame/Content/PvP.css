@@ -1197,7 +1197,8 @@ margin-bottom:8px;
 .rpTag{
         border: 1px solid black;
         cursor: pointer;
-        /*padding: 2px;*/
+        padding-left: 2px;
+        padding-right: 2px;
         border-radius: 2px;
         margin: 2px;
         position: relative;
@@ -1209,7 +1210,7 @@ margin-bottom:8px;
     }
 
     .on:hover {
-        background-color: green;
+        background-color: red;
     }
 
     .off{
@@ -1217,5 +1218,5 @@ margin-bottom:8px;
     }
 
     .off:hover {
-        background-color: red;
+        background-color: green;
     }

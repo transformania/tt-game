@@ -160,14 +160,24 @@ namespace tfgame.Procedures.BossProcedures
                     femalethief = playerRepo.Players.FirstOrDefault(f => f.FirstName == FemaleBossFirstName && f.LastName == FemaleBossLastName);
                 }
 
-                IEnumerable<string> idArray = maleAI.sVar1.Split(';');
 
-                Player target = playerRepo.Players.FirstOrDefault(p => p.Id == maleAI.Var1);
+                string[] idArray = maleAI.sVar1.Split(';');
+                idArray = idArray.Take(idArray.Length - 1).ToArray();
 
-                while ((target == null || PlayerProcedures.PlayerIsOffline(target) || target.Mobility != "full" || target.Money < 20) && maleAI.Var1 < 20)
+                if (maleAI.Var1 >= idArray.Length)
+                {
+                    maleAI.Var1 = 0;
+                }
+
+                int targetId = Convert.ToInt32(idArray[Convert.ToInt32(maleAI.Var1)]);
+
+                Player target = playerRepo.Players.FirstOrDefault(p => p.Id == targetId);
+
+                while ((target == null || PlayerProcedures.PlayerIsOffline(target) || target.Mobility != "full" || target.Money < 20) && maleAI.Var1 < idArray.Length-1)
                 {
                     maleAI.Var1++;
-                    target = playerRepo.Players.FirstOrDefault(p => p.Id == maleAI.Var1);
+                    targetId = Convert.ToInt32(idArray[Convert.ToInt32(maleAI.Var1)]);
+                    target = playerRepo.Players.FirstOrDefault(p => p.Id == targetId);
                 }
 
                 // we should hopefully by now have a valid target.  Hopefully.  Now move to them and loot away.
@@ -186,7 +196,7 @@ namespace tfgame.Procedures.BossProcedures
                     playerRepo.SavePlayer(femalethief);
 
                     string message = "A male and female rat thief suddenly appear in front of you and circle about.  In the blink of an eye they've swept you off your feet and expertly swipe " + Math.Floor(target.Money * .90M) + " of your Arpeyjis!";
-                    string locationMessage = "<b>" + malethief.GetFullName() + " and " + femalethief.GetFullName() + " stole some Arpeyjs from " + target.GetFullName() + " here.</b>";
+                    string locationMessage = "<b>" + malethief.GetFullName() + " and " + femalethief.GetFullName() + " robbed " + target.GetFullName() + " here.</b>";
                     PlayerLogProcedures.AddPlayerLog(target.Id, message, true);
                     LocationLogProcedures.AddLocationLog(malethief.dbLocationName, locationMessage);
 

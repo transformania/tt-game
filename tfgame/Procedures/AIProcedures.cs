@@ -41,7 +41,7 @@ namespace tfgame.Procedures
         private const string LindellaItem_TrueshotTruffles_DbName = "item_consumeable_trueshot_truffles";
         private const int LindellaItem_TrueshotTruffles_Count = 6;
 
-        private const string LindellaItem_SelfCastItem_DbName = "item_consumeable_trueshot_truffles";
+        private const string LindellaItem_SelfCastItem_DbName = "item_consumable_selfcaster";
         private const int LindellaItem_SelfCastItem_Count = 5;
 
 

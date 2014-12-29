@@ -1014,6 +1014,67 @@ namespace tfgame.Controllers
           ///  return RedirectToAction("Index");
         }
 
+        public ActionResult ItemPetJSON()
+        {
+            if (WebSecurity.CurrentUserId != 69)
+            {
+                return View("Play");
+            }
+
+            IDbStaticItemRepository itemRepo = new EFDbStaticItemRepository();
+            return Json(itemRepo.DbStaticItems, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult FormJSON()
+        {
+            if (WebSecurity.CurrentUserId != 69)
+            {
+                return View("Play");
+            }
+
+            IDbStaticFormRepository formRepo = new EFDbStaticFormRepository();
+            return Json(formRepo.DbStaticForms, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult SpellJSON()
+        {
+            if (WebSecurity.CurrentUserId != 69)
+            {
+                return View("Play");
+            }
+
+            IDbStaticSkillRepository skillRepo = new EFDbStaticSkillRepository();
+            IEnumerable<DbStaticSkill> output = skillRepo.DbStaticSkills.ToList();
+            foreach (DbStaticSkill s in output)
+            {
+                s.LearnedAtLocation = "";
+                s.LearnedAtRegion = "";
+            }
+            return Json(output, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult EffectJSON()
+        {
+            if (WebSecurity.CurrentUserId != 69)
+            {
+                return View("Play");
+            }
+
+            IDbStaticEffectRepository effectRepo = new EFDbStaticEffectRepository();
+            return Json(effectRepo.DbStaticEffects, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult FurnitureJSON()
+        {
+            if (WebSecurity.CurrentUserId != 69)
+            {
+                return View("Play");
+            }
+
+            IDbStaticFurnitureRepository effectRepo = new EFDbStaticFurnitureRepository();
+            return Json(effectRepo.DbStaticFurnitures, JsonRequestBehavior.AllowGet);
+        }
+
         public ActionResult ApproveContributionList()
         {
             // assert only admin can view this

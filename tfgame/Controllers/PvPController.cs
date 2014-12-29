@@ -1286,6 +1286,14 @@ namespace tfgame.Controllers
                 IEnumerable<Location> output = LocationsStatics.GetLocation.Where(l => l.dbName != "");
                 return View("TeleportMap", output);
             }
+
+
+             // if this item is the self recaster, redirect to the animate spell listing page
+            if (item.dbItem.dbName == "item_consumable_selfcaster")
+            {
+               
+                return RedirectToAction("SelfCast","Item");
+            }
          
             string result = ItemProcedures.UseItem(itemId);
 

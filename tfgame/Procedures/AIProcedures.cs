@@ -41,6 +41,11 @@ namespace tfgame.Procedures
         private const string LindellaItem_TrueshotTruffles_DbName = "item_consumeable_trueshot_truffles";
         private const int LindellaItem_TrueshotTruffles_Count = 6;
 
+        private const string LindellaItem_SelfCastItem_DbName = "item_consumeable_trueshot_truffles";
+        private const int LindellaItem_SelfCastItem_Count = 5;
+
+
+
         // Membership ID code:  
         // -1 (player has rerolled, player is abandoned)
         // -2 (psychopath spellslinger)
@@ -672,6 +677,30 @@ namespace tfgame.Procedures
                             Item wproot = new Item
                             {
                                 dbName = LindellaItem_TrueshotTruffles_DbName,
+                                dbLocationName = "",
+                                OwnerId = merchant.Id,
+                                IsEquipped = false,
+                                IsPermanent = true,
+                                Level = 0,
+                                PvPEnabled = false,
+                                TimeDropped = DateTime.UtcNow,
+                                TurnsUntilUse = 0,
+                                VictimName = "",
+                                EquippedThisTurn = false,
+                            };
+                            itemRepo.SaveItem(wproot);
+                        }
+                    }
+
+                    
+                         // Self cast machines
+                    if (lindellasItems.Where(i => i.dbName == LindellaItem_SelfCastItem_DbName).Count() < LindellaItem_SelfCastItem_Count)
+                    {
+                        for (int x = 0; x < LindellaItem_SelfCastItem_Count; x++)
+                        {
+                            Item wproot = new Item
+                            {
+                                dbName = LindellaItem_SelfCastItem_DbName,
                                 dbLocationName = "",
                                 OwnerId = merchant.Id,
                                 IsEquipped = false,

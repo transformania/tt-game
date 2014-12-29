@@ -517,8 +517,23 @@ namespace tfgame.Procedures
 
             SkillProcedures.UpdateFormSpecificSkillsToPlayer(dbPlayer, oldForm, dbPlayer.Form);
 
+        }
 
+        public static void InstantChangeToForm(Player player, string formName)
+        {
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            DbStaticForm form = FormStatics.GetForm(formName);
+            string oldForm = dbPlayer.Form;
+            dbPlayer.Form = formName;
 
+            
+            dbPlayer.Gender = form.Gender;
+
+            dbPlayer.NormalizeHealthMana();
+            playerRepo.SavePlayer(dbPlayer);
+
+            SkillProcedures.UpdateFormSpecificSkillsToPlayer(dbPlayer, oldForm, dbPlayer.Form);
         }
 
         public static void SavePlayer(Player player)

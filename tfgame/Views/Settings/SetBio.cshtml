@@ -33,6 +33,8 @@
     
     @Html.Partial("partial/rptags");
     
+    <p id="resetTags" style="cursor: pointer;"><b>Click here to reset tags</b></p>
+    
     @Html.HiddenFor(m => m.Tags)<br />
 
     <p>
@@ -92,6 +94,15 @@
             });
 
         });
+
+        $("#resetTags").click(function(){
+            $("#Tags").val("");
+            $(".rpTag").each(function () {
+                $(this).removeClass("on");
+                $(this).addClass("off");
+            });
+        });
+
     });
 
     function confirmDeletion() {

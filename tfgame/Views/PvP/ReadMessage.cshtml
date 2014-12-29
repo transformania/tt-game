@@ -14,7 +14,7 @@
 </center>
 <b>@Model.SenderName said to you </b> <span class="timeago">@CharactersHere.DatetimeToTimeago(Model.dbMessage.Timestamp):</span>
 <div class="messageTextContainer">
-    <p>@Model.dbMessage.MessageText</p>
+    <p>@Html.Raw(Model.dbMessage.MessageText.Replace("[br]","<br/>"))</p>
 </div>
 <center style="margin-top: 5px;">
     @Html.ActionLink("Reply", "Write", "PvP", new { playerId = Model.dbMessage.SenderId, responseTo = Model.dbMessage.Id }, null)

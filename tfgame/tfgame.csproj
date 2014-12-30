@@ -417,6 +417,8 @@
     <Content Include="Characters\Portia Mason.txt" />
     <Content Include="Content\AdminStyle.css" />
     <Content Include="Content\Bios.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\custom.css" />
     <Content Include="Content\MMO.css" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -439,6 +441,7 @@
     <Compile Include="Models\Game.cs" />
     <Compile Include="Procedures\Procedures.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Images\PvP\animalPortraits\adorable_donkey_dominque.png" />
     <Content Include="Images\PvP\animalPortraits\Adorable_Penguin_Luxianne.png" />
     <Content Include="Images\PvP\animalPortraits\bdsm_pony_girl_Meddle.png" />
@@ -456,11 +459,14 @@
     <Content Include="Images\PvP\animalPortraits\docile_cowgirl_Meddle.png" />
     <Content Include="Images\PvP\animalPortraits\fairy_familiar_Meddle.png" />
     <Content Include="Images\PvP\animalPortraits\fennec_fox_luxianne.png" />
+    <Content Include="Images\PvP\animalPortraits\horny_hog_Martiandawn.jpg" />
     <Content Include="Images\PvP\animalPortraits\husky_Luxianne.png" />
+    <Content Include="Images\PvP\animalPortraits\living_inflateable_pooltoy_Luxianne.jpg" />
     <Content Include="Images\PvP\animalPortraits\mischevious_crow_Luxianne.png" />
     <Content Include="Images\PvP\animalPortraits\pocket_dragon_Meddle.png" />
     <Content Include="Images\PvP\animalPortraits\pocket_googirl_Luxianne.png" />
     <Content Include="Images\PvP\animalPortraits\prancing_pony_boy_Martiandawn.png" />
+    <Content Include="Images\PvP\animalPortraits\rubber_love_doll_babblingfaces.jpg" />
     <Content Include="Images\PvP\animalPortraits\skunk_lux.png" />
     <Content Include="Images\PvP\animalPortraits\spellbound_cat_boy_Luxianne.png" />
     <Content Include="Images\PvP\animalPortraits\stallion_Danaume.jpg" />
@@ -629,6 +635,8 @@
     <Content Include="Images\PvP\portraits\harpy_maiden_babblingfaces.png" />
     <Content Include="Images\PvP\portraits\headless_mannequin_JBovinne.png" />
     <Content Include="Images\PvP\portraits\hero_babblingfaces.png" />
+    <Content Include="Images\PvP\portraits\hulking_hellspawn_Meddle.jpg" />
+    <Content Include="Images\PvP\portraits\hyperactive_ferret_girl_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\Ice_Queen_Meddle.png" />
     <Content Include="Images\PvP\portraits\incubus_servant_boy_spacedande.png" />
     <Content Include="Images\PvP\portraits\jester_Meddle.png" />
@@ -663,6 +671,7 @@
     <Content Include="Images\PvP\portraits\psycho_male.png" />
     <Content Include="Images\PvP\portraits\quoxotic_ranger_Babblingfaces.gif" />
     <Content Include="Images\PvP\portraits\rat_thief_m_Thrax.png" />
+    <Content Include="Images\PvP\portraits\razing_ruin_Mai_Omega.jpg" />
     <Content Include="Images\PvP\portraits\robotgirl_thurosis.png" />
     <Content Include="Images\PvP\portraits\robot_Meddle.png" />
     <Content Include="Images\PvP\portraits\satyr_martiandawn.jpg" />
@@ -677,6 +686,7 @@
     <Content Include="Images\PvP\portraits\stripper_Meddle.png" />
     <Content Include="Images\PvP\portraits\sunnyglade_brigade_magic_fighter_Meddle.png" />
     <Content Include="Images\PvP\portraits\teacher_Meddle.png" />
+    <Content Include="Images\PvP\portraits\traveling_merchant_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\unicorn_mare_Luxianne.png" />
     <Content Include="Images\PvP\portraits\unicorn_stallion_Luxianne.png" />
     <Content Include="Images\PvP\portraits\unimagineably_bbl_Meddle.png" />
@@ -1147,6 +1157,9 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Images\PvP\Smilies\base.xcf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <None Include="Properties\PublishProfiles\transformania-time.com - Web Deploy.pubxml" />
     <Content Include="Images\back.png" />
     <Content Include="Images\background1.jpg" />

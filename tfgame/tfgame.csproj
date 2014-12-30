@@ -680,7 +680,6 @@
     <Content Include="Images\PvP\portraits\shy_sheep_girl_Luxianne.png" />
     <Content Include="Images\PvP\portraits\skunk_boi_Luxianne.png" />
     <Content Include="Images\PvP\portraits\skyclad_witch_Meddle.png" />
-    <Content Include="Images\PvP\portraits\slug_girl_CyberKaku.jpg" />
     <Content Include="Images\PvP\portraits\slumber_party_pillow_fighter_Meddle.png" />
     <Content Include="Images\PvP\portraits\slutty_nurse_Meddle.png" />
     <Content Include="Images\PvP\portraits\squirrel_maid_Luxianne.png" />
@@ -1161,6 +1160,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Content\custom.scss" />
     <None Include="Properties\PublishProfiles\transformania-time.com - Web Deploy.pubxml" />
     <Content Include="Images\back.png" />
     <Content Include="Images\background1.jpg" />

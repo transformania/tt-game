@@ -2,11 +2,19 @@
 @using tfgame.ViewModels
 @using tfgame.CustomHtmlHelpers
 
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+
 @Html.ActionLink("Back to game", "Play", "PvP")
+
+@Html.ActionLink("Archive All My Spells", "ArchiveAllMySpells", "Settings", new { archive = true}, null)
+@Html.ActionLink("Restore All My Spells", "ArchiveAllMySpells", "Settings", new { archive = false }, null)
+
+
+
 
 <h2>Known Spells (@Model.Where(c => c.MobilityType == "full" || c.MobilityType == "inanimate" || c.MobilityType == "animal").Count() / @ViewBag.TotalLearnableSkills)</h2>
 
-
+<div id="resultPrompt"></div>
 
 @{
     string chargeVisible = "none";
@@ -41,6 +49,14 @@
         else if (skill.MobilityType != null && skill.MobilityType == "curse")
         {
             <span class="mobilityClass">(temporary curse)</span>
+        }
+        if (skill.dbSkill.IsArchived == true)
+        {
+            <b id="@skill.dbSkill.Id">(ARCHIVED)</b>   
+        }
+        else
+        {
+            <b id="@skill.dbSkill.Id"></b>   
         }
                 }
 
@@ -77,6 +93,10 @@
             <div class="effect"><b>Gives the @CharactersHere.GetEffectFriendlyName(skill.Skill.GivesEffect) effect</b></div>
         }
             }
+
+            @*@Html.ActionLink("Toggle Archive", "ArchiveSpell", "Settings", new { name = @skill.dbSkill.Name }, null)*@
+
+            @Ajax.ActionLink("Toggle Archive", "ArchiveSpell", "Settings", new { name = @skill.dbSkill.Name }, new AjaxOptions { UpdateTargetId = "resultPrompt", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "prompt_success", OnFailure = "prompt_failure", OnBegin = "prompt_wait" }, null)
 
         </div>
     }
@@ -133,3 +153,23 @@
         font-weight: 900;
     }
 </style>
+
+<script>
+    function prompt_success() {
+      //  alert($("#changeMessage").text());
+        var changeNumber = $("#changeNumber").text();
+
+        if ($("#changeMessage").text().indexOf("archived") > 0) {
+            $("#" + changeNumber).text("(ARCHIVED)");
+        } else {
+            $("#" + changeNumber).text("");
+        }
+        
+    }
+
+    function prompt_wait() {
+        $("#resultPrompt").text("Contacting archive...");
+    }
+
+
+</script>

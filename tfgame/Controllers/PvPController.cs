@@ -499,7 +499,7 @@ namespace tfgame.Controllers
          {
              Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
              Player target = PlayerProcedures.GetPlayer(targetId);
-            IEnumerable<SkillViewModel2> output = SkillProcedures.GetSkillViewModelsOwnedByPlayer(me.Id);
+            IEnumerable<SkillViewModel2> output = SkillProcedures.GetSkillViewModelsOwnedByPlayer(me.Id).Where(s => s.dbSkill.IsArchived == false);
 
             // filter out spells that you can't use on your target
             if (FriendProcedures.PlayerIsMyFriend(me, target) || target.MembershipId < 0)

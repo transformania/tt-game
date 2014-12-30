@@ -1007,7 +1007,7 @@ namespace tfgame.Controllers
                 return View("Play");
             }
 
-            BossProcedures_Thieves.SpawnThieves();
+           // BossProcedures_Thieves.SpawnThieves();
 
             Random rand = new Random();
             double roll = Math.Floor(rand.NextDouble() * 2500);

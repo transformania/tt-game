@@ -132,6 +132,7 @@ right: 0px;
 #notificationBox{
 	background: $notificationBoxColor;
 	overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
 	height: 100px;
 	resize: vertical;
 	padding: 10px;
@@ -183,6 +184,7 @@ text-align: justify;
 	clear:both;
 	background: $notificationBoxColor;
 	overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
 	height: 200px;
 	resize: vertical;
 	padding: 10px;
@@ -316,8 +318,10 @@ text-shadow: -1px -1px 0px #FFF, 1px -1px 0px #FFF, -1px 1px 0px #FFF, 1px 1px 0
 
 .action_attack {
     font-size: $fontMedium;
-    line-height: 50px;
+    line-height: 30px;
     margin-right: 10px;
+    margin-bottom: 10px;
     padding: 5px;
+    display: inline-block;
     border: $border;
 }

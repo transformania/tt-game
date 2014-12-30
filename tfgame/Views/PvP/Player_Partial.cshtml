@@ -23,7 +23,7 @@
 
 }
 
-<div class="charwrapper @CharactersHere.StyleIfBot(Model.Player.ToDbPlayer())" playnum="@Model.Player.Id">
+<div class="@CharactersHere.StyleIfBot(Model.Player.ToDbPlayer())" playnum="@Model.Player.Id">
 
     <div class="portrait" style="background-image: url(/Images/PvP/portraits/@Model.Form.PortraitUrl);">
         <span class="icon-@Model.Player.Gender" style="float:right;"></span>
@@ -45,7 +45,7 @@
                 <span class="playerDescription">@Model.Form.FriendlyName</span>
             </span>
         </span><br />
-        <span style="height: 16px">&nbsp;@CharactersHere.GetCovenantInfo(Model.Player.ToDbPlayer())</span>
+        <span class="covBox">@CharactersHere.GetCovenantInfo(Model.Player.ToDbPlayer())</span>
         <div class="healthWrapper" title="@Model.Player.Health / @Model.Player.MaxHealth willpower">
             <div class="healthBar" style="width: @HealthWidth%"></div>
         </div>

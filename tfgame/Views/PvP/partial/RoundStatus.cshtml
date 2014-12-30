@@ -4,14 +4,14 @@
 @{
     if (Model.TestServer == true)
     {
-        <div class="testServerNotice">EFFECTIVE OCTOBER 10:  THIS SERVER IS NOW FOR TESTING ONLY.  The game's live server with regular inround gameplay can be found at <a href="http://transformaniatime.com/">transformaniatime.com</a>.  Please do NOT make a character here unless you are part of testing.</div>
+        <div class="specialBox specialBox2">EFFECTIVE OCTOBER 10:  THIS SERVER IS NOW FOR TESTING ONLY.  The game's live server with regular inround gameplay can be found at <a href="http://transformaniatime.com/">transformaniatime.com</a>.  Please do NOT make a character here unless you are part of testing.</div>
     }
 }
 
 @{
     if (Model.TurnNumber >= PvPStatics.RoundDuration)
     {
-        <div class="inbetweenRoundNotice">The round has ended.  Check back soon to start again on a fresh round.</div>
+        <div class="specialBox specialBox2">The round has ended.  Check back soon to start again on a fresh round.</div>
     }
 }
 
@@ -21,7 +21,7 @@
 @{
     if (Model.TurnNumber < PvPStatics.RoundDuration && PvPStatics.ChaosMode == true)
     {
-        <div class="inbetweenRoundNotice">The game is currently in "chaos mode" in which attacks are unlimited.  This is an inbetween round rapid test mode and is not representative of regular in-round gameplay.</div>
+        <div class="specialBox specialBox2">The game is currently in "chaos mode" in which attacks are unlimited.  This is an inbetween round rapid test mode and is not representative of regular in-round gameplay.</div>
     }
 }
 
@@ -35,28 +35,28 @@
 @{
     if (Model.Boss_Donna == "active")
     {
-        <div class="activeBossNotice">Rumor has it a powerful sorceress known as Donna Milton is wandering the streets turning those she meets into animals...</div>
+        <div class="specialBox"> <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Rumor has it a powerful sorceress known as Donna Milton is wandering the streets turning those she meets into animals... <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> </div>
     }
 }
 
 @{
     if (Model.Boss_Valentine == "active")
     {
-        <div class="activeBossNotice">Rumor has it a powerful vampire lord known as Lord Valentine is lurking in his castle waiting for mortals to dare and fight him...</div>
+        <div class="specialBox"> <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Rumor has it a powerful vampire lord known as Lord Valentine is lurking in his castle waiting for mortals to dare and fight him... <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> </div>
     }
 }
 
 @{
     if (Model.Boss_Bimbo == "active")
     {
-        <div class="activeBossNotice">Rumor has it a mad scientist is spreading a virus that is transforming many inhabitants of the city into her loyal bimbo army...</div>
+        <div class="specialBox"> <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Rumor has it a mad scientist is spreading a virus that is transforming many inhabitants of the city into her loyal bimbo army... <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> </div>
     }
 }
 
 @{
     if (Model.Boss_Thief == "active")
     {
-        <div class="activeBossNotice">Rumor has it a pair of rat thieves of the infamous Seekshadow Guild are out and about pickpocketing any mage with a fat enough wallet...</div>
+        <div class="specialBox"> <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Rumor has it a pair of rat thieves of the infamous Seekshadow Guild are out and about pickpocketing any mage with a fat enough wallet... <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> </div>
     }
 }
 

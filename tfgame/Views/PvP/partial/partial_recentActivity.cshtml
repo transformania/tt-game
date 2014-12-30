@@ -6,9 +6,7 @@
 
 <div style="clear:both;"></div>
 
-<h2 id="logTitle">Recent activity here:</h2>
-<p id="logSize">log size: <a href="javascript:void(0)" onclick="document.getElementById('RecentActivityLog').style.maxHeight = '190px'">default</a> <a href="javascript:void(0)" onclick="document.getElementById('RecentActivityLog').style.maxHeight = '9999px'">full</a> </p>
-<ul id="RecentActivityLog" style="clear:both;">
+<ul id="RecentActivityLog">
     @{
         foreach (tfgame.dbModels.Models.LocationLog log in Model)
         {
@@ -16,8 +14,3 @@
         }
     }
 </ul>
-
-<p id="timeReportClickMe" style="cursor: pointer;"><b>Click to show server load time breakdown</b></p>
-<div id="timeReport" style="display: none;">
-    <p>@Html.Raw(ViewBag.LoadTime)</p>
-</div>

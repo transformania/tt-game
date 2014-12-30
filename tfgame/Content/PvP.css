@@ -3,12 +3,15 @@
 }
 
 .tableLines {
+margin-left:auto;
+margin-right:auto;
 }
 
     .tableLines td {
         border: 1px solid black;
         text-align: center;
         padding: 3px;
+		background:white;
     }
 
 #location {
@@ -63,34 +66,6 @@
     display: block;
 }
 
-.result {
-    font-size: 20px;
-    color: green;
-    font-style: oblique;
-    /*border: 1px solid green;
-    background-color: lightgreen;*/
-    padding: 4px;
-}
-
-.error {
-    font-size: 20px;
-    color: red;
-    font-style: oblique;
-    /*border: 1px solid red;
-    border-bottom: none;
-    background-color: lightpink;*/
-    padding: 4px;
-}
-
-.suberror {
-    font-size: 12px;
-    color: purple;
-    /*border: 1px solid red;
-    border-top: none;
-    background-color: lightpink;*/
-    padding: 4px;
-}
-
 .name {
     font-size: 12px;
 }
@@ -117,7 +92,6 @@
 
 a {
     font-weight: bold;
-    background-color: lightgray;
 }
 
 .disabled {
@@ -219,16 +193,7 @@ locationDescription {
     display: inline-block;
 }
 
-.icon-sleep {
-    width: 15px;
-    height: 15px;
-    background-size: 100% 100%;
-    background-image: url("../Images/PvP/Icons/icon-sleep.png");
-    display: inline-block;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-}
+
 
 .icon-online {
     width: 15px;
@@ -492,10 +457,6 @@ float: right;
     width: 100%;
 }
 
-.name a {
-    background-color: lightyellow;
-}
-
 a.attackLink {
     background-color: white;
 }
@@ -504,14 +465,6 @@ a.talkLink {
     background-color: white;
 }
 
-.portrait {
-    height: 100px;
-    width: 100px;
-    background-size: 100% 100%;
-    position: relative;
-    float: left;
-    text-align: left;
-}
 
 .subportrait {
     width: 100px;
@@ -544,15 +497,7 @@ a.talkLink {
     margin-right: auto;
 }
 
-.floorItemWrapper{
-    width: 150px;
-    display: inline-table;
-    vertical-align: top;
-    margin-right: 10px;
-    margin-bottom: 10px;
-    float: left;
-    text-align: center;
-}
+
 
 .floorItemLevel {
     text-align: left;
@@ -568,12 +513,7 @@ a.talkLink {
     margin: 15px;
 }
 
-.charInfoWrapper {
-    position: relative;
-    float: left;
-    text-align: center;
-    width: 200px;
-}
+
 
 .onlineCharWrapper{
     width:302px;
@@ -588,7 +528,7 @@ a.talkLink {
 .charwrapper {
     border: 1px solid lightgray;
     height: 100px;
-    width: 300px;
+    width: 302px;
     margin-right: 8px;
     margin-bottom: 10px;
     display: block;
@@ -600,7 +540,7 @@ a.talkLink {
         border: 1px solid pink;
         background-color: mistyrose;
     height: 100px;
-    width: 300px;
+    width: 302px;
     margin-right: 8px;
     margin-bottom: 10px;
     display: block;
@@ -719,44 +659,10 @@ a.talkLink {
     font-style: italic;
 }
 
-#notificationBox{
-    max-height: 180px;
-    overflow-y: scroll;
-}
-
-#RecentActivityLog{
-    max-height: 190px;
-    overflow-y: scroll;
-}
-
 #logSize{
     text-align: left;
     display:block;
     float: left;
-}
-
-@media all and (min-width: 1880px) {
-    #RecentActivityLog {
-        overflow-y: scroll;
-        top: 65px;
-        width: 400px;
-        position: absolute;
-        max-height: 80%;
-        right: 15px;
-    }
-
-    #logTitle{
-        position: absolute;
-        top: 20px;
-        right: 90px;
-    }
-
-    #logSize {
-        visibility: hidden;
-        position: absolute;
-        left: 0;
-        top: 0;
-    }
 }
 
 .icon-clock {
@@ -1058,43 +964,7 @@ height: 350px;
         border: 2px solid black;
     }
 
-#action_meditate{
-    padding-top: 10px;
-    padding-bottom: 10px;
-    background: none repeat scroll 0% 0% #ADD8E6;
-    border: 2px solid #00008B;
-    transition: all 0.5s ease;
-    display:inline-block;
-    margin-bottom:2px;
-    text-decoration:none;
-}
 
-#action_cleanse{
-    padding-top: 10px;
-    padding-bottom: 10px;
-    background: none repeat scroll 0% 0% salmon;
-    border: 2px solid crimson;
-    transition: all 0.5s ease;
-        display:inline-block;
-    margin-bottom:2px;
-    text-decoration:none;
-}
-
-#action_search{
-    padding-top: 10px;
-    padding-bottom: 10px;
-    background: none repeat scroll 0% 0% gold;
-    border: 2px solid rosybrown;
-    transition: all 0.5s ease;
-    display:inline-block;
-    margin-bottom:2px;
-    text-decoration:none;
-}
-
-#action_search:hover, #action_cleanse:hover, #action_meditate:hover{
-    background: purple;
-    color:white;
-}
 
 #playerActionBox{
 text-align: center;
@@ -1220,3 +1090,9 @@ margin-bottom:8px;
     .off:hover {
         background-color: green;
     }
+	
+	#timerBox{
+	color: white;
+	line-height: 46px;
+	cursor: pointer;
+	}

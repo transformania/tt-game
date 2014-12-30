@@ -13,43 +13,63 @@
     ViewBag.Title = "Play";
 }
 
-@Html.Partial("partial/RoundStatus", Model.PvPWorldStat)
+<nav class="navbar navbar-default outsideContainer navbarTT2">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
 
-<div class="mainPageWorldStats">
-    <span class="icon-turnNumber">Turn #<b>@ViewBag.WorldTurnNumber/@PvPStatics.RoundDuration</b></span>
-   Transformania Time has <b>@Model.WorldStats.TotalPlayers</b> players, <b>@Model.WorldStats.CurrentOnlinePlayers</b> of which are currently online.
-</div>
-
-<span id="timerBox" class="icon-clock" title="Click to see how long ago the last update ran."></span>
-<span id="turn_countdown">-:--</span>
-@Html.ActionLink("Map", "WorldMap", "PvP")
-@Html.ActionLink("Friends", "MyFriends", "PvP")
-@Html.ActionLink("Chat", "Chat", "PvP", new { room = "global" }, new { target = "_blank" })
-@Html.ActionLink("Covenant", "MyCovenant", "Covenant")
-@Html.ActionLink("Settings", "Settings", "PvP")
-@Html.ActionLink("Last Actions (" + Model.PlayerLog.Count() + ")", "ViewLog", "PvP")
-@Html.ActionLink("My Spells", "MySkills", "PvP")
-@Html.ActionLink("My Effects", "MyPerks", "PvP")
-@*@Html.ActionLink("View My Inventory (" + Model.PlayerItems.Where(i => i.dbItem.IsEquipped == false).Count() + "/" + Model.InventoryMaxSize + ")", "MyInventory", "PvP")*@
-
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+      <ul class="nav navbar-nav">
+	  <li><span id="timerBox" class="glyphicon glyphicon-time" aria-hidden="true" title="Click to see how long ago the last update ran."></span>
+<span id="turn_countdown">-:--</span></li>
+<li>@Html.ActionLink("Map", "WorldMap", "PvP")</li>
+<li>@Html.ActionLink("Friends", "MyFriends", "PvP")</li>
+<li>@Html.ActionLink("Chat", "Chat", "PvP", new { room = "global" }, new { target = "_blank" })</li>
+<li>@Html.ActionLink("Covenant", "MyCovenant", "Covenant")</li>
+<li>@Html.ActionLink("Settings", "Settings", "PvP")</li>
+<li>@Html.ActionLink("Last Actions (" + Model.PlayerLog.Count() + ")", "ViewLog", "PvP")</li>
+<li>@Html.ActionLink("My Spells", "MySkills", "PvP")</li>
+<li>@Html.ActionLink("My Effects", "MyPerks", "PvP")</li>
 @{
     if (Model.You.Player.UnusedLevelUpPerks > 0)
-    { <span class="newlink">@Html.ActionLink("Level Up!", "LevelupPerk", "PvP")</span> }
+    { <li>@Html.ActionLink("Level Up!", "LevelupPerk", "PvP")</li> }
 }
 
 @{
     if (Model.MessageCounts.NewMessagesCount > 0)
     {
-        <span class="newlink">
-            @Html.ActionLink("(" + Model.MessageCounts.NewMessagesCount + " unread)", "MyMessages", "PvP")
-        </span>
-    }
+        <li>@Html.ActionLink("(" + Model.MessageCounts.NewMessagesCount + " unread)", "MyMessages", "PvP")</li>
+	}
     else
     {
-        @Html.ActionLink("Inbox", "MyMessages", "PvP")
+        <li>@Html.ActionLink("Inbox", "MyMessages", "PvP")</li>
     }
 }
-@Html.ActionLink("Submit Content", "Contribute", "PvP", new { Id = -1 }, null)
+<li>@Html.ActionLink("Submit Content", "Contribute", "PvP", new { Id = -1 }, null)</li>
+      </ul>      
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+<div>
+    <p class="infoMessage result">@Html.Raw(ViewBag.Result)</p>
+    <p class="infoMessage error">@ViewBag.ErrorMessage</p>
+    <p class="infoMessage suberror">@ViewBag.SubErrorMessage</p>
+</div>
+
+@Html.Partial("partial/RoundStatus", Model.PvPWorldStat)
+
+<div class="specialBox specialBox2"><span class="turnNumber">Turn #<b>@ViewBag.WorldTurnNumber/@PvPStatics.RoundDuration</b></span>
+   Transformania Time has <b>@Model.WorldStats.TotalPlayers</b> players, <b>@Model.WorldStats.CurrentOnlinePlayers</b> of which are currently online.
+</div>
 
 @{
     if (Model.You.Player.MembershipId == 69)
@@ -70,12 +90,14 @@
         }
             }
         </ul>
-    <p style="text-align: left; display:block; float: left;">log size: <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.maxHeight = '80px'">small</a> <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.maxHeight = '180px'">medium</a> <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.maxHeight = '480px'">big</a> </p><p style="text-align:right; display: block; float: right;">@Html.ActionLink("Dismiss Notifications", "DismissNotifications", "PvP")</p>
+<p id="dismissNotficationBox">@Html.ActionLink("Dismiss Notifications", "DismissNotifications", "PvP")</p>
     }
 }
-    @Html.Partial("partial_FrontPageAvatar", Model.You)
+<div class="containerInner">
 
-<div style="display:block; width:50%; clear: both;  margin-left: auto;  margin-right: auto; text-align: center;">
+    @Html.Partial("partial_FrontPageAvatar", Model.You)
+	
+	<div style="display:block; width:50%; clear: both;  margin-left: auto;  margin-right: auto; text-align: center;">
         <div class="playPageInventoryItem openInventory" style="background-image: url(../Images/PvP/Icons/Backpack_Meddle.png);" title='View Inventory' onclick="location.href='/PvP/MyInventory';">
             @Model.PlayerItems.Where(i => i.dbItem.IsEquipped == false).Count()/@Model.InventoryMaxSize
         </div>
@@ -87,18 +109,16 @@
         }
 </div>
 
-    
 <div id="playerActionBox">
-    @Html.ActionLink("Cleanse (4 AP, 3 Mana)", "Cleanse", "PvP", new { id = "action_cleanse" })
-    @Html.ActionLink("Meditate (4 AP)", "Meditate", "PvP", new { id = "action_meditate" })
-    @Html.ActionLink("Search this Area (" + (int)Model.APSearchCost + " AP)", "Search", "PvP", new { id = "action_search" })
+    @Html.ActionLink("Cleanse (4 AP, 3 Mana)", "Cleanse", "PvP", new { id = "actionCleanse" , @class = "actionButton" })
+    @Html.ActionLink("Meditate (4 AP)", "Meditate", "PvP", new { id = "actionMeditate" , @class = "actionButton" })
+    @Html.ActionLink("Search this Area (" + (int)Model.APSearchCost + " AP)", "Search", "PvP", new { id = "actionSearch" , @class = "actionButton" })
 </div>
-<center>
-    <div style="width:247px; display: inline-table; vertical-align:top;">
-        @Html.Partial("partial/movementTable", Model)
-    </div>
-    <div style="width: 480px; display: inline-table; vertical-align:top; margin-top:5px;">
-        <span class="place">@Model.Location.Name [@Model.Location.X,@Model.Location.Y]<br /> </span>
+
+<div class="row">
+  <div class="col-md-1"></div>
+  <div class="col-md-4">@Html.Partial("partial/movementTable", Model)</div>
+  <div class="col-md-6 covenDescription"><span class="place">@Model.Location.Name [@Model.Location.X,@Model.Location.Y]<br /> </span>
 
         @{
             KeyValuePair<int, CovenantNameFlag> temp = CovenantDictionary.IdNameFlagLookup.FirstOrDefault(c => c.Value.HomeLocation == Model.Location.dbName);
@@ -108,26 +128,33 @@
                 <span class="covSafeground">Safeground for the <b>@temp.Value.Name</b> Covenant</span>
             }
         }
-
-        <span class="locationDescription">@Model.Location.GetDescription()</span>
-    </div>
-</center>
-<div>
-    <p class="result">@Html.Raw(ViewBag.Result)</p>
-    <p class="error">@ViewBag.ErrorMessage</p>
-    <p class="suberror">@ViewBag.SubErrorMessage</p>
+		@Model.Location.GetDescription()</div>
+		<div class="col-md-1"></div>
+</div>
+	
 </div>
 
-<h2>Players here</h2>
 
+    
+
+
+
+
+
+	<div class="onlinePlayersWrapperBG">
+<div class="row">
 @*all players who are online*@
 @{
     foreach (tfgame.ViewModels.PlayerFormViewModel p in Model.PlayersHere.Where(p => PlayerProcedures.PlayerIsOffline(p.Player) == false).OrderByDescending(p => p.Player.Level))
     {
+
+	      <div class="col-md-2 col-sm-4 col-xs-12 charaBox">
+        <div class="charaBoxInner">
+          <div>
         <p>
-            <div class="onlineCharWrapper">
+
                 <div>@Html.Partial("Player_Partial", p)</div>
-                <div class="commandWrapper">
+                <div style="text-align:center; margin-top:2px;">
                     @Ajax.ActionLink("Attack", "AttackModal", "PvP", new { targetId = p.Player.Id }, new AjaxOptions { UpdateTargetId = "attackModal", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "attack_Success", OnFailure = "attack_Failure", OnBegin = "attack_Wait" }, new { @class = "attackLink" })
                     @{
         if (p.Player.MembershipId == -3)
@@ -140,10 +167,15 @@
         }
                     }
                 </div>
-            </div>
         </p>
+					          </div>
+        </div>
+      </div>
     }
+	
 }
+</div></div>
+
 
 @*all players who are offline*@
 <div style="clear:both;"></div>
@@ -151,35 +183,44 @@
 
 @{if (ViewBag.ShowOffline == null || ViewBag.ShowOffline == false) {
 
-<div id="showOfflinePlayersButton">@Html.ActionLink("Show Offline Players Here (" + @Model.PlayersHere.Where(p => PlayerProcedures.PlayerIsOffline(p.Player) == true).Count() + ")", "ShowOffline", "PvP")</div>
+<div id="offlinePlayersButton">@Html.ActionLink("Show Offline Players Here (" + @Model.PlayersHere.Where(p => PlayerProcedures.PlayerIsOffline(p.Player) == true).Count() + ")", "ShowOffline", "PvP")</div>
 }
 }
 
 @{if (ViewBag.ShowOffline != null && ViewBag.ShowOffline == true) { 
+<div class="offlinePlayersWrapperBG">
+<div class="row">
 
-<div id="offlinePlayersWrapper">
-
-    @{
+@{
         foreach (tfgame.ViewModels.PlayerFormViewModel p in Model.PlayersHere.Where(p => PlayerProcedures.PlayerIsOffline(p.Player) == true).OrderByDescending(p => p.Player.Level))
         {
-
+      <div class="col-md-2 col-sm-4 col-xs-12 charaBox">
+        <div class="charaBoxInner">
+          <div>
             <p>
                 @Html.Partial("Player_Partial", p)
             </p>
+			          </div>
+        </div>
+      </div>
         }
     }
 
 </div>
-    
+ </div>    
     }
 
-    
+
     }
-<div style="clear:both;">
+ <div class="floorItemsWrapperBG">  
+ <div class="row">
     @{
+	
         foreach (tfgame.ViewModels.ItemViewModel item in Model.LocationItems)
         {
-            <div class="floorItemWrapper">
+		      <div class="col-md-2 col-sm-4 col-xs-12 itemBox">
+        <div class="charaBoxInner">
+            <div>
                 <div class="portrait_item_mainpage" style="background-image: url(..@CharactersHere.GetImageURL(item));">
                     @{ if (item.Item.ItemType != PvPStatics.ItemType_Consumeable && item.dbItem.Level > 0)
                      {
@@ -210,16 +251,13 @@
                     }
                 </div>
             </div>
+			        </div>
+      </div>
         }
+		
     }
-</div>
-    
-
-    
+</div></div>
   
-    
-    
-
 @Html.Partial("partial/partial_recentActivity", Model.LocationLog)
 
 <div id="modalBackdrop"></div>
@@ -228,11 +266,6 @@
     <span id="attackClose" onclick="closeAttackModal()">Cancel</span>
     <span id="expand" onclick="expandModal()">Expand</span>
 </div>
-
-<style>
-    
-</style>
-
 
 <script>
 

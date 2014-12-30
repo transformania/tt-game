@@ -376,6 +376,38 @@ namespace tfgame.Procedures
 
         }
 
+        public static void ArchiveSpell(int id)
+        {
+            ISkillRepository skillRepo = new EFSkillRepository();
+            Skill skill = skillRepo.Skills.FirstOrDefault(s => s.Id == id);
+            skill.IsArchived = !skill.IsArchived;
+            skillRepo.SaveSkill(skill);
+        }
+
+        public static void ArchiveAllSpells(int playerId, bool archiveOrNot)
+        {
+            string archiveBool;
+            if (archiveOrNot == true)
+            {
+                archiveBool = "1";
+            }
+            else
+            {
+                archiveBool = "0";
+            }
+            using (var context = new StatsContext())
+            {
+                try
+                {
+                    context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Skills] SET IsArchived = " + archiveBool + " WHERE OwnerId = " + playerId);
+                }
+                catch (Exception e)
+                {
+
+                }
+            }
+        }
+
 
     }
 }

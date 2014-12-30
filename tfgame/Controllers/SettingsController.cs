@@ -464,6 +464,51 @@ namespace tfgame.Controllers
             return RedirectToAction("Play", "PvP");
         }
 
+        [Authorize]
+        public ActionResult ArchiveSpell(string name)
+        {
+            Player me = PlayerProcedures.GetPlayerFromMembership();
+            // assert that player does own this skill
+            SkillViewModel2 skill = SkillProcedures.GetSkillViewModel(name, me.Id);
+
+            if (skill == null)
+            {
+                TempData["Error"] = "You don't know this spell yet.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            SkillProcedures.ArchiveSpell(skill.dbSkill.Id);
+
+            if (skill.dbSkill.IsArchived == false) { 
+                ViewBag.Message = "You have successfully archived " + skill.Skill.FriendlyName + ".";
+            }
+            else
+            {
+                ViewBag.Message = "You have successfully restored " + skill.Skill.FriendlyName + " from your spell archive.";
+            }
+            ViewBag.Number = skill.dbSkill.Id;
+            return PartialView("partial/ArchiveNotice");
+        }
+
+        public ActionResult ArchiveAllMySpells(string archive)
+        {
+            Player me = PlayerProcedures.GetPlayerFromMembership();
+            if (archive == "True")
+            {
+                TempData["Result"] = "You have archived all of your known spells.  They will not appear on the attack modal until you unarchive them.";
+                SkillProcedures.ArchiveAllSpells(me.Id, true);
+            }
+            else
+            {
+                TempData["Result"] = "You have archived all of your known spells.  They will all now appear on the attack modal again.";
+                SkillProcedures.ArchiveAllSpells(me.Id, false);
+            }
+            
+           
+            return RedirectToAction("Play", "PvP");
+        }
+
+
        
 
 	}

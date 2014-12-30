@@ -139,19 +139,6 @@ a {
     background-color: yellow !important;
 }
 
-.formerly a {
-    font-weight: bold;
-    background-color: #FFCCFF;
-    color: darkred;
-}
-
-.formerly {
-    font-size: 12px;
-    color: darkred;
-    font-style: oblique;
-    background-color: #FFCCFF;
-}
-
 
 locationDescription {
     font-style: italic;

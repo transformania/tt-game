@@ -4,34 +4,68 @@
 @using tfgame.CustomHtmlHelpers
 @using tfgame.Statics
 
-@Html.ActionLink("Back to game", "Play", "PvP")
+<nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
 
-<span style="text-align: center;">
-@{
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav" style="width:100%;">
+                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+                @{
     if (Model.PlayerForm.Player.MembershipId != -1)
     {
         <p>
             @{
         if (ViewBag.HasBio)
         {
-            @Html.ActionLink("View Bio", "ViewBio", "Settings", new { id = Model.PlayerForm.Player.MembershipId }, null)
+            <li>@Html.ActionLink("View Bio", "ViewBio", "Settings", new { id = Model.PlayerForm.Player.MembershipId }, null)</li>
         }
         if (ViewBag.HasArtistAuthorBio)
         {
-            @Html.ActionLink("View Artist/Author Bio", "AuthorArtistBio", "Settings", new { id = Model.PlayerForm.Player.MembershipId }, null)
-        }
+            <li>
+                @Html.ActionLink("View Artist/Author Bio", "AuthorArtistBio", "Settings", new { id = Model.PlayerForm.Player.MembershipId }, null)</li>
+            }
             }
 
             @{
         if (Model.PlayerForm.Player.MembershipId > 0)
         {
 
-            @Html.ActionLink("Send a Message", "Write", "PvP", new { playerId = Model.PlayerForm.Player.Id, responseTo = -1 }, null)@:&nbsp;               
-            @Html.ActionLink("Request Friendship", "AddFriend", "PvP", new { playerId = Model.PlayerForm.Player.Id }, null)
-                @Html.ActionLink("Toggle blacklist on this player", "ToggleBlacklistOnPlayer", "Settings", new { id = Model.PlayerForm.Player.Id }, null)
+            <li>@Html.ActionLink("Send a Message", "Write", "PvP", new { playerId = Model.PlayerForm.Player.Id, responseTo = -1 }, null)</li>
+    <li>@Html.ActionLink("Add Friend", "AddFriend", "PvP", new { playerId = Model.PlayerForm.Player.Id }, null)</li>
+                <li>@Html.ActionLink("Blacklist player", "ToggleBlacklistOnPlayer", "Settings", new { id = Model.PlayerForm.Player.Id }, null)</li>
         }
-        <p>@Html.ActionLink("View Effects", "ViewEffects", "PvP", new { id = Model.PlayerForm.Player.Id }, null)</p>
+            <li>@Html.ActionLink("View Effects", "ViewEffects", "PvP", new { id = Model.PlayerForm.Player.Id }, null)</li>
             }
+            </p>
+    }
+    else
+    {
+            <p style="color: red;">&nbsp; </p>
+    }
+            }
+</ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+
+
+
+@{
+    if (Model.PlayerForm.Player.MembershipId != -1)
+    {
+        <p>
+            &nbsp; 
         </p>
     }
     else
@@ -39,7 +73,7 @@
         <p style="color: red;">This player has chosen to create a new character and cannot be messaged or have a friend request sent to them.</p>
     }
 }
-</span>
+
 
 <center>
     <div class="leftDisplay" style="background-image: url(../../Images/PvP/portraits/@Model.PlayerForm.Form.PortraitUrl);">
@@ -190,4 +224,12 @@
             width: 380px;
         }
     }
+
+    		.itemBox {
+		height: 100% !important;
+		}
+		
+		.Links a { 
+			margin-right: 30px;
+		}
 </style>

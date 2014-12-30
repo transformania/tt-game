@@ -1,0 +1,323 @@
+$navbarDark: #4781D2;
+$navbarLight: #84CBFF;
+$border: 4px solid #65A6E8;
+$bodyColor:  #65A6E8;
+$containerColor: #C8E3FF;
+$darkFillColor: #475374;
+$lightFillColor: #81CFBF;
+$darkPink: #FFBEBE;
+$cleanse: #D2D246;
+
+$notificationBoxColor: #FFE6E4;
+
+$fontBig: 20px;
+$fontMedium: 16px;
+$fontSmall: 12px;
+
+$defaultMargin: 0px;
+
+body {
+background: $bodyColor;
+font-size: $fontSmall;
+font-family: Tahoma, Geneva, sans-serif;
+}
+
+p{
+margin: 0px;
+padding: 0px;
+}
+
+a {
+transition: all 0.5s ease;
+color: white;
+text-shadow: -1px -1px 0px $darkFillColor, 1px -1px 0px $darkFillColor, -1px 1px 0px $darkFillColor, 1px 1px 0px $darkFillColor;
+font-weight: bold;
+}
+
+a:hover{
+color: black;
+text-shadow: -1px -1px 0px #FFF, 1px -1px 0px #FFF, -1px 1px 0px #FFF, 1px 1px 0px #FFF;
+text-decoration:none;
+}
+
+.outsideContainer {
+border-radius: 0px;
+border: none;
+margin-bottom: 0px;
+text-align: center;
+background: $navbarDark;
+
+}
+
+ .navbarTT1{
+ background: $navbarDark;
+ border-bottom: $border !important;
+ font-size: $fontMedium;
+  margin-bottom: $defaultMargin;
+ }
+ .navbarTT2{
+ background: $navbarLight !important;
+ border-bottom: $border !important;
+ font-size: $fontMedium;
+ margin-bottom: $defaultMargin;
+ }
+
+.footerTT {
+font-size: $fontSmall;
+line-height:36px;
+border-top: $border !important;
+color: white;
+}
+
+.container{
+padding:$defaultMargin;
+border-left: $border;
+border-right: $border;
+background: $containerColor;
+}
+
+.containerInner {
+padding: 20px;
+}
+
+.outsideContainer a {
+color: white !important;
+background: none;
+transition: 0.5s all ease;
+}
+
+.nav > li > a:hover, .nav > li > a:focus, .nav > li > a:active, .navbar-default .navbar-nav > .active > a{
+background: none;
+color: black !important;
+text-shadow:-1px -1px 0 #FFF,1px -1px 0 #FFF,-1px 1px 0 #FFF,1px 1px 0 #FFF;
+}
+
+.center-block{
+text-align: center;
+}
+
+.specialBox {
+background: $darkFillColor;
+border-bottom: $border;
+font-size: $fontMedium;
+text-align: center;
+margin-bottom: $defaultMargin;
+padding:10px;
+color: white;
+}
+
+.specialBox2 {
+background: $lightFillColor;
+}
+.turnNumber{
+float: left;
+margin-right: $defaultMargin;
+font-weight: bold;
+}
+
+.logout {
+position: absolute;
+top:5px;
+right: 5px;
+}
+
+@media (max-width: 752px) {
+.logout {
+position: relative;
+top: 0px;
+right: 0px;
+}
+}
+
+#notificationBox{
+	background: $notificationBoxColor;
+	overflow-y: scroll;
+	height: 100px;
+	resize: vertical;
+	padding: 10px;
+	list-style: none;
+	text-align: justify;
+	margin-bottom: 0px;
+}
+
+#dismissNotficationBox {
+	background: $darkPink;
+	font-size: $fontSmall;
+	text-align: center;
+	border-bottom: $border;
+}
+
+.infoMessage{
+    font-size: $fontMedium;
+	border-bottom: $border;
+	padding: 4px;
+	text-align: center;
+	background: $darkFillColor;
+}
+
+.infoMessage:empty {
+display: none;
+}
+
+.result {
+    color: $lightFillColor;
+}
+
+
+.error {
+	color: $darkPink;
+}
+
+.suberror {
+color: white;
+font-size: $fontSmall
+}
+
+.covenDescription {
+padding-left: 40px;
+padding-right: 40px;
+text-align: justify;
+}
+
+#RecentActivityLog{
+	clear:both;
+	background: $notificationBoxColor;
+	overflow-y: scroll;
+	height: 200px;
+	resize: vertical;
+	padding: 10px;
+	list-style: none;
+	text-align: justify;
+	margin-bottom: 0px;
+}
+
+.charaBox{ 
+margin-bottom: 10px;
+height: 280px;
+}
+
+.itemBox {
+margin-bottom: 10px;
+height: 150px;
+text-align: center;
+}
+
+.charaBoxInner {
+padding:10px;
+}
+
+.portrait {
+    height: 100px;
+    width: 100px;
+    background-size: 100% 100%;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+.charInfoWrapper {
+    text-align: center;
+    width: 100%;
+	margin-left:auto;
+	margin-right:auto;
+}
+.offlinePlayersWrapperBG{
+	background: gainsboro;
+	border-bottom: $border;
+	}
+	
+	.floorItemsWrapperBG{
+	background: #FFF1C8;
+	border-bottom: $border;
+	clear:both;
+	}
+	
+	.onlinePlayersWrapperBG{
+	background: $lightFillColor;
+	border-top: $border;
+	}
+	
+	#offlinePlayersButton {
+	background: #42AE99;
+	font-size: $fontSmall;
+	text-align: center;
+	border-bottom: $border;
+	}
+
+.icon-sleep {
+    width: 15px;
+    height: 15px;
+    background-size: 100% 100%;
+    background-image: url("../Images/PvP/Icons/icon-sleep.png");
+    display: inline-block;
+    bottom: 0;
+    left: 0;
+}
+
+.covBox:empty{
+display: none;
+}
+
+.floorItemWrapper{
+    width: 150px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.actionButton {
+transition: all 0.5s ease;
+border: $border;
+padding: 10px;
+margin: 10px;
+font-size: $fontMedium;
+display:inline-block;
+color: black;
+text-shadow: -1px -1px 0px #FFF, 1px -1px 0px #FFF, -1px 1px 0px #FFF, 1px 1px 0px #FFF;
+}
+
+.actionButton:hover{ 
+color: white;
+text-shadow: -1px -1px 0px #000, 1px -1px 0px #000, -1px 1px 0px #000, 1px 1px 0px #000;
+text-decoration:none;
+}
+
+#actionMeditate{
+background: $navbarDark;
+}
+
+#actionCleanse{
+ background: $darkPink;   
+}
+
+#actionSearch{
+background: $cleanse;
+}
+
+.glyphicon-off, .glyphicon-time{
+transition: all 0.5s ease;
+color: white;
+text-shadow: -1px -1px 0px #000, 1px -1px 0px #000, -1px 1px 0px #000, 1px 1px 0px #000;
+}
+
+.glyphicon-off:hover, .glyphicon-time:hover{
+color: black !important;
+text-shadow: -1px -1px 0px #FFF, 1px -1px 0px #FFF, -1px 1px 0px #FFF, 1px 1px 0px #FFF;
+}
+
+.formerly a {
+    font-weight: bold;
+}
+
+.formerly {
+    font-size: $fontSmall;
+    color: darkred;
+    background-color: #FFCCFF;
+}
+
+.action_attack {
+    font-size: $fontMedium;
+    line-height: 50px;
+    margin-right: 10px;
+    padding: 5px;
+    border: $border;
+}

@@ -13,6 +13,7 @@ namespace tfgame.dbModels.Models
         public decimal Duration { get; set; }
         public decimal Charge { get; set; }
         public int TurnStamp { get; set; }
+        public bool IsArchived { get; set; }
        
     }
 
@@ -24,6 +25,7 @@ namespace tfgame.dbModels.Models
         public decimal Duration { get; set; }
         public decimal Charge { get; set; }
         public int TurnStamp { get; set; }
+        public bool IsArchived { get; set; }
 
     }
 }

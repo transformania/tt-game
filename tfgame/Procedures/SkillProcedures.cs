@@ -46,6 +46,7 @@ namespace tfgame.Procedures
                                                          Charge = ds.Charge,
                                                          Duration = ds.Duration,
                                                          TurnStamp = ds.TurnStamp,
+                                                         IsArchived = ds.IsArchived,
 
                                                      },
                                                      Skill = new StaticSkill
@@ -93,6 +94,7 @@ namespace tfgame.Procedures
                                                           Charge = ds.Charge,
                                                           Duration = ds.Duration,
                                                           TurnStamp = ds.TurnStamp,
+                                                          IsArchived = ds.IsArchived,
 
                                                       },
                                                       Skill = new StaticSkill
@@ -138,6 +140,7 @@ namespace tfgame.Procedures
                                                           Charge = ds.Charge,
                                                           Duration = ds.Duration,
                                                           TurnStamp = ds.TurnStamp,
+                                                          IsArchived = ds.IsArchived,
                                                       },
                                                       Skill = new StaticSkill
                                                       {

@@ -50,11 +50,11 @@ namespace tfgame.Procedures
 
                 if (attackerOwner != null)
                 {
-                    victimMessage = attacker.FirstName + " " + attacker.LastName + ", a " + attackerPlus.Form.FriendlyName + " kept as a pet by " + attackerOwner.FirstName + " " + attackerOwner.LastName + ", snarls at you, slightly lowering your mana.";
+                    victimMessage = "<span class='petActionBad'>" + attacker.FirstName + " " + attacker.LastName + ", a " + attackerPlus.Form.FriendlyName + " kept as a pet by " + attackerOwner.FirstName + " " + attackerOwner.LastName + ", snarls at you, slightly lowering your mana.</span>";
                 }
                 else
                 {
-                    victimMessage = attacker.FirstName + " " + attacker.LastName + ", a feral " + attackerPlus.Form.FriendlyName + " snarls at you, slightly lowering your mana.";
+                    victimMessage = "<span class='petActionBad'>" + attacker.FirstName + " " + attacker.LastName + ", a feral " + attackerPlus.Form.FriendlyName + " snarls at you, slightly lowering your mana.</span>";
                 }
 
                 attackerMessage = "You snarl at " + victim.FirstName + " " + victim.LastName + ", lowering " + victimPronoun + " mana slightly.";
@@ -73,11 +73,11 @@ namespace tfgame.Procedures
 
                 if (attackerOwner != null)
                 {
-                    victimMessage = "<span style='color: blue'>" + attacker.FirstName + " " + attacker.LastName + ", a " + attackerPlus.Form.FriendlyName + " kept as a pet by " + attackerOwner.FirstName + " " + attackerOwner.LastName + ", gently licks you, slightly raising your willpower.</span>";
+                    victimMessage = "<span class='petActionGood'>" + attacker.FirstName + " " + attacker.LastName + ", a " + attackerPlus.Form.FriendlyName + " kept as a pet by " + attackerOwner.FirstName + " " + attackerOwner.LastName + ", gently licks you, slightly raising your willpower.</span>";
                 }
                 else
                 {
-                    victimMessage = "<span style='color: blue'>" + attacker.FirstName + " " + attacker.LastName + ", a feral " + attackerPlus.Form.FriendlyName + " gently licks you, slightly raising your willpower.";
+                    victimMessage = "<span class='petActionGood'>" + attacker.FirstName + " " + attacker.LastName + ", a feral " + attackerPlus.Form.FriendlyName + " gently licks you, slightly raising your willpower.</span>";
                 }
 
                 attackerMessage = "You gently lick " + victim.FirstName + " " + victim.LastName + ", raising " + victimPronoun + " willpower slightly.";
@@ -98,11 +98,11 @@ namespace tfgame.Procedures
 
                 if (attackerOwner != null)
                 {
-                    victimMessage = "<span style='color: blue'>" + attacker.FirstName + " " + attacker.LastName + ", a " + attackerPlus.Form.FriendlyName + " kept as a pet by " + attackerOwner.FirstName + " " + attackerOwner.LastName + ", gently nuzzles you, slightly raising your mana.";
+                    victimMessage = "<span class='petActionGood'>" + attacker.FirstName + " " + attacker.LastName + ", a " + attackerPlus.Form.FriendlyName + " kept as a pet by " + attackerOwner.FirstName + " " + attackerOwner.LastName + ", gently nuzzles you, slightly raising your mana.</span>";
                 }
                 else
                 {
-                    victimMessage = "<span style='color: blue'>" + attacker.FirstName + " " + attacker.LastName + ", a feral " + attackerPlus.Form.FriendlyName + " gently nuzzles you, slightly raising your mana.";
+                    victimMessage = "<span class='petActionGood'>" + attacker.FirstName + " " + attacker.LastName + ", a feral " + attackerPlus.Form.FriendlyName + " gently nuzzles you, slightly raising your mana.</span>";
                 }
 
                 attackerMessage = "You gently nuzzle " + victim.FirstName + " " + victim.LastName + ", raising " + victimPronoun + " mana slightly.";
@@ -122,11 +122,11 @@ namespace tfgame.Procedures
 
                 if (attackerOwner != null)
                 {
-                    victimMessage = attacker.FirstName + " " + attacker.LastName + ", a " + attackerPlus.Form.FriendlyName + " kept as a pet by " + attackerOwner.FirstName + " " + attackerOwner.LastName + ", lightly headbutts you, slightly lowering your willpower.";
+                    victimMessage = "<span class='petActionBad'>" + attacker.FirstName + " " + attacker.LastName + ", a " + attackerPlus.Form.FriendlyName + " kept as a pet by " + attackerOwner.FirstName + " " + attackerOwner.LastName + ", lightly headbutts you, slightly lowering your willpower.</span>";
                 }
                 else
                 {
-                    victimMessage = attacker.FirstName + " " + attacker.LastName + ", a feral " + attackerPlus.Form.FriendlyName + " lightly headbutts you, slightly lowering your willpower.";
+                    victimMessage = "<span class='petActionBad'>" + attacker.FirstName + " " + attacker.LastName + ", a feral " + attackerPlus.Form.FriendlyName + " lightly headbutts you, slightly lowering your willpower.</span>";
                 }
 
                 attackerMessage = "You headbutt " + victim.FirstName + " " + victim.LastName + ", lowering " + victimPronoun + " willpower slightly.";

@@ -97,17 +97,20 @@
 
     @Html.Partial("partial_FrontPageAvatar", Model.You)
 	
-	<div style="display:block; width:50%; clear: both;  margin-left: auto;  margin-right: auto; text-align: center;">
-        <div class="playPageInventoryItem openInventory" style="background-image: url(../Images/PvP/Icons/Backpack_Meddle.png);" title='View Inventory' onclick="location.href='/PvP/MyInventory';">
-            @Model.PlayerItems.Where(i => i.dbItem.IsEquipped == false).Count()/@Model.InventoryMaxSize
-        </div>
-        @{
-            foreach (ItemViewModel item in Model.PlayerItems.Where(i => i.dbItem.IsEquipped == true))
-            {
-                <div class="playPageInventoryItem" style="background-image: url(..@CharactersHere.GetImageURL(item));" title='@item.Item.FriendlyName'></div>
+    <div class="row">
+        <div class="col-md-1">
+            <div class="playPageInventoryItem openInventory" style="background-image: url(../Images/PvP/Icons/Backpack_Meddle.png);" title='View Inventory' onclick="location.href='/PvP/MyInventory';">
+                @Model.PlayerItems.Where(i => i.dbItem.IsEquipped == false).Count()/@Model.InventoryMaxSize
+            </div></div>
+            @{
+                foreach (ItemViewModel item in Model.PlayerItems.Where(i => i.dbItem.IsEquipped == true))
+                {
+                    <div class="col-md-1">
+                        <div class="playPageInventoryItem" style="background-image: url(..@CharactersHere.GetImageURL(item));" title='@item.Item.FriendlyName'></div>
+                    </div>
+                }
             }
-        }
-</div>
+                    </div>
 
 <div id="playerActionBox">
     @Html.ActionLink("Cleanse (4 AP, 3 Mana)", "Cleanse", "PvP", new { id = "actionCleanse" , @class = "actionButton" })

@@ -242,12 +242,6 @@ a:hover {
 #actionSearch {
   background: #C36C0A; }
 
-.glyphicon-off, .glyphicon-time {
-  color: white; }
-
-.glyphicon-off:hover, .glyphicon-time:hover, glyphicon-trash:hover {
-  color: black !important; }
-
 .formerly a {
   font-weight: bold; }
 

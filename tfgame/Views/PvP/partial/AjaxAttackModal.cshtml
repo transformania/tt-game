@@ -9,6 +9,7 @@
     <span id="toggle_inanimates" onclick="toggleInanimates()">Inanimate</span>
     <span id="toggle_animal" onclick="toggleAnimal()">Pet/Animal</span>
     <span id="toggle_other" onclick="toggleOthers()">Other</span>
+<span>@Html.ActionLink("View/Archive My Spells", "MySkills", "PvP")</span>
     <br /><br />
 
     @foreach (tfgame.ViewModels.SkillViewModel2 s in Model.OrderBy(s => s.Skill.FriendlyName))

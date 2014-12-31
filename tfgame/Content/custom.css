@@ -180,6 +180,9 @@ a:hover {
   border-bottom: 4px solid #65A6E8;
   clear: both; }
 
+.floorItemsWrapperBG:empty {
+  display: none; }
+
 .onlinePlayersWrapperBG {
   background: #81CFBF;
   border-top: 4px solid #65A6E8; }

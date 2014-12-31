@@ -232,6 +232,10 @@ padding:10px;
 	border-bottom: $border;
 	clear:both;
 	}
+
+    .floorItemsWrapperBG:empty{
+        display:none;
+    }
 	
 	.onlinePlayersWrapperBG{
 	background: $lightFillColor;

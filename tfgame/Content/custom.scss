@@ -1,12 +1,18 @@
-$navbarDark: #4781D2;
-$navbarLight: #84CBFF;
-$border: 4px solid #65A6E8;
-$bodyColor:  #65A6E8;
-$containerColor: #C8E3FF;
+$navbarDark: #734752;
+$navbarLight: #CF8C81;
+$border: 4px solid #A16969;
+$bodyColor:  #A16969;
+$containerColor: #E4E0D4;
 $darkFillColor: #475374;
-$lightFillColor: #81CFBF;
+$lightFillColor: #4A747B;
 $darkPink: #FFBEBE;
 $cleanse: #D2D246;
+$floorItemBG: #FFF1C8;
+$offlinePlayerBG: gainsboro;
+
+$good: #51D269;
+$error: white;
+$suberror: white;
 
 $notificationBoxColor: #FFE6E4;
 
@@ -28,15 +34,21 @@ padding: 0px;
 }
 
 a {
-color: white;
-text-shadow: -1px -1px 0px $darkFillColor, 1px -1px 0px $darkFillColor, -1px 1px 0px $darkFillColor, 1px 1px 0px $darkFillColor;
+color: black !important;
 font-weight: bold;
 }
 
 a:hover{
-color: black;
-text-shadow: -1px -1px 0px #FFF, 1px -1px 0px #FFF, -1px 1px 0px #FFF, 1px 1px 0px #FFF;
+color: $bodyColor !important;
 text-decoration:none;
+}
+
+.outsideContainer a {
+    color: white !important;
+}
+
+.outsideContainer a:hover {
+    color: $bodyColor !important;
 }
 
 .outsideContainer {
@@ -45,7 +57,6 @@ border: none;
 margin-bottom: 0px;
 text-align: center;
 background: $navbarDark;
-
 }
 
  .navbarTT1{
@@ -80,14 +91,11 @@ padding: 20px;
 }
 
 .outsideContainer a {
-color: white !important;
 background: none;
 }
 
 .nav > li > a:hover, .nav > li > a:focus, .nav > li > a:active, .navbar-default .navbar-nav > .active > a{
 background: none;
-color: black !important;
-text-shadow:-1px -1px 0 #FFF,1px -1px 0 #FFF,-1px 1px 0 #FFF,1px 1px 0 #FFF;
 }
 
 .center-block{
@@ -159,7 +167,7 @@ display: none;
 }
 
 .result {
-    color: $lightFillColor;
+    color: $good;
 }
 
 
@@ -221,12 +229,12 @@ padding:10px;
 	margin-right:auto;
 }
 .offlinePlayersWrapperBG{
-	background: gainsboro;
+	background: $offlinePlayerBG;
 	border-bottom: $border;
 	}
 	
 	.floorItemsWrapperBG{
-	background: #FFF1C8;
+	background: $floorItemBG;
 	border-bottom: $border;
 	clear:both;
 	}
@@ -241,7 +249,7 @@ padding:10px;
 	}
 	
 	#offlinePlayersButton {
-	background: #42AE99;
+	background: #324D51;
 	font-size: $fontSmall;
 	text-align: center;
 	border-bottom: $border;
@@ -274,15 +282,9 @@ padding: 10px;
 margin: 10px;
 font-size: $fontMedium;
 display:inline-block;
-color: white;
-text-shadow: -1px -1px 0px #000, 1px -1px 0px #000, -1px 1px 0px #000, 1px 1px 0px #000;
 }
 
 .actionButton:hover{ 
-
-color: black;
-text-shadow: -1px -1px 0px #FFF, 1px -1px 0px #FFF, -1px 1px 0px #FFF, 1px 1px 0px #FFF;
-text-decoration:none;
 }
 
 #actionMeditate{
@@ -299,12 +301,10 @@ background: $cleanse;
 
 .glyphicon-off, .glyphicon-time{
 color: white;
-text-shadow: -1px -1px 0px #000, 1px -1px 0px #000, -1px 1px 0px #000, 1px 1px 0px #000;
 }
 
-.glyphicon-off:hover, .glyphicon-time:hover{
+.glyphicon-off:hover, .glyphicon-time:hover, glyphicon-trash:hover{
 color: black !important;
-text-shadow: -1px -1px 0px #FFF, 1px -1px 0px #FFF, -1px 1px 0px #FFF, 1px 1px 0px #FFF;
 }
 
 .formerly a {

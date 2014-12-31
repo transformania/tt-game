@@ -139,7 +139,7 @@ namespace tfgame.Procedures.BossProcedures
             {
 
                 // periodically refresh list of targets
-                if (turnNumber % 6 == 0)
+                if (turnNumber % 12 == 0)
                 {
                     maleAI.sVar1 = GetRichestPlayerIds();
                     maleAI.Var1 = 0;

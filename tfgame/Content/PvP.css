@@ -70,16 +70,6 @@ a {
     font-weight: bold;
 }
 
-.disabled {
-    background-color: white;
-    text-decoration: line-through;
-}
-
-    .disabled:hover {
-        background-color: white;
-        cursor: default;
-    }
-
 .petItemPortrait{
     width: 450px;
     height: 450px;
@@ -420,10 +410,6 @@ float: right;
     width: 100%;
 }
 
-a.attackLink {
-    background-color: white;
-}
-
 a.talkLink {
     background-color: white;
 }
@@ -710,23 +696,6 @@ a.talkLink {
     display: none;
 }
 
-.attackLink {
-    color: red;
-    font-size: 18px;
-    font-weight: 900;
-    border: 2px solid red;
-    border-radius: 5px;
-    padding-left: 3px;
-    padding-right: 3px;
-}
-
-
-
-    .attackLink:hover {
-        color: darkviolet;
-        cursor: pointer;
-        border: 2px solid darkviolet;
-    }
 
 .talkLink {
     color: green;

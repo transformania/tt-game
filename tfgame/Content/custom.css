@@ -18,6 +18,9 @@ a:hover {
 .inboxNew {
   background: #865863 !important; }
 
+.levelUp {
+  background: #C2A9AF !important; }
+
 .outsideContainer a {
   color: white !important;
   font-weight: normal; }
@@ -107,6 +110,10 @@ a:hover {
   text-align: justify;
   margin-bottom: 0px; }
 
+#dismissNotficationBox a {
+  margin-left: 10px;
+  margin-right: 10px; }
+
 #dismissNotficationBox {
   background: #865863;
   font-size: 13px;
@@ -172,6 +179,9 @@ a:hover {
 
 .charaBoxInner {
   padding: 10px; }
+
+.charaBoxCommand {
+  text-align: center; }
 
 .portrait {
   height: 100px;
@@ -327,5 +337,29 @@ a:hover {
 
 .tableLines td:empty {
   background: #A16969; }
+
+.attackLink {
+  border: 1px solid #7B6461;
+  margin-top: 4px;
+  display: block;
+  width: 100px;
+  margin-left: auto;
+  margin-right: auto;
+  background: #E4E0D4; }
+
+.inanimateAction {
+  border: 1px solid #7B6461;
+  margin: 4px auto 8px auto;
+  display: block;
+  width: 300px;
+  background: #E4E0D4;
+  text-align: center; }
+
+.inanimateActionList {
+  list-style: none; }
+
+.disabled {
+  background-color: #D7BEBA;
+  text-decoration: line-through; }
 
 /*# sourceMappingURL=custom.css.map */

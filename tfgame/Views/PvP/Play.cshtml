@@ -40,7 +40,7 @@
 <li>@Html.ActionLink("My Effects", "MyPerks", "PvP")</li>
 @{
     if (Model.You.Player.UnusedLevelUpPerks > 0)
-    { <li>@Html.ActionLink("Level Up!", "LevelupPerk", "PvP")</li> }
+    { <li>@Html.ActionLink("Level Up!", "LevelupPerk", "PvP", null, new { @class = "levelUp" })</li> }
 }
 
 @{
@@ -77,6 +77,7 @@
         @Html.ActionLink("Admin", "Index", "PvPAdmin")
     }
 }
+
 @{
     if (Model.PlayerLogImportant.Count() > 0)
     {
@@ -90,7 +91,7 @@
         }
             }
         </ul>
-<p id="dismissNotficationBox">@Html.ActionLink("Dismiss Notifications", "DismissNotifications", "PvP")</p>
+    <p id="dismissNotficationBox"><a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '0px'">[ -- ]</a> <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '100px'">[ - ]</a> @Html.ActionLink("Dismiss Notifications", "DismissNotifications", "PvP") <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '250px'">[ + ]</a> <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '500px'">[ ++ ]</a></p>
     }
 }
 <div class="containerInner">

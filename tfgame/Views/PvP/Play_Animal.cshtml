@@ -3,16 +3,6 @@
 @using tfgame.Procedures
 @using tfgame.Statics
 
-
-
-
-<head>
-
-
-    <link href="~/Content/PvP.css" rel="stylesheet" />
-    <script src="~/Scripts/jquery-2.1.0.js"></script>
-</head>
-
 @{
     if (@ViewBag.WorldTurnNumber >= @PvPStatics.RoundDuration)
     {
@@ -20,98 +10,131 @@
     }
 }
 
-<div class="mainPageWorldStats">
-    <span class="icon-turnNumber">Turn #<b>@ViewBag.WorldTurnNumber/@PvPStatics.RoundDuration</b></span>
+<nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav">
+                <li>
+                    <span id="timerBox" class="glyphicon glyphicon-time" aria-hidden="true" title="Click to see how long ago the last update ran."></span>
+                    <span id="turn_countdown">-:--</span>
+                </li>
+                <li>@Html.ActionLink("Map", "WorldMap", "PvP")</li>
+                <li>@Html.ActionLink("Last Actions", "ViewLog", "PvP")</li>
+                <li>@Html.ActionLink("Friends", "MyFriends", "PvP")</li>
+                <li>@Html.ActionLink("Chat", "Chat", "PvP", new { room = "global" }, new { target = "_blank" })</li>
+                <li>@Html.ActionLink("Covenant", "MyCovenant", "Covenant")</li>
+                <li>@Html.ActionLink("Settings", "Settings", "PvP")</li>
+@{if (Model.NewMessageCount > 0)
+{
+    <li>@Html.ActionLink("(" + Model.NewMessageCount + " unread)", "MyMessages", "PvP", null, new { @class = "inboxNew" })</li>
+}
+  else
+  {
+    <li>@Html.ActionLink("Inbox", "MyMessages", "PvP")</li>
+  }
+}
+                <li>@Html.ActionLink("Submit Content", "Contribute", "PvP", new { Id = -1 }, null)</li>
+                <li>@Html.ActionLink("Start again as someone else", "Restart", "PvP")</li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+<div>
+    <p class="infoMessage result">@Html.Raw(ViewBag.Result)</p>
+    <p class="infoMessage error">@ViewBag.ErrorMessage</p>
+    <p class="infoMessage suberror">@ViewBag.SubErrorMessage</p>
+</div>
+
+@*                  This needs to be added !!!                 *@
+@*    @Html.Partial("partial/RoundStatus", Model.PvPWorldStat) *@
+
+<div class="specialBox specialBox2">
+    <span class="turnNumber">Turn #<b>@ViewBag.WorldTurnNumber/@PvPStatics.RoundDuration</b></span>
     Transformania Time has <b>@Model.WorldStats.TotalPlayers</b> players, <b>@Model.WorldStats.CurrentOnlinePlayers</b> of which are currently online.
 </div>
 
-<span id="timerBox" class="icon-clock" title="Click to see how long ago the last update ran."></span>
-@Html.ActionLink("Map", "WorldMap", "PvP")
-@Html.ActionLink("Last Actions", "ViewLog", "PvP")
-@Html.ActionLink("Friends", "MyFriends", "PvP")
-@Html.ActionLink("Chat", "Chat", "PvP", new { room = "global" }, new { target = "_blank" })
-@Html.ActionLink("Covenant", "MyCovenant", "Covenant")
-@Html.ActionLink("Settings", "Settings", "PvP")
-@{if (Model.NewMessageCount > 0)
-{
-    <span class="newlink">
-        @Html.ActionLink("(" + Model.NewMessageCount + " unread)", "MyMessages", "PvP")
-    </span>
-}
-else
-{
-    @Html.ActionLink("Inbox", "MyMessages", "PvP")
-}
-}
-@Html.ActionLink("Submit Content", "Contribute", "PvP", new { Id = -1 }, null)
-@Html.ActionLink("Start again as someone else", "Restart", "PvP")
-@{
-    if (Model.You.MembershipId == 69)
-    {
-        @Html.ActionLink("Admin", "Index", "PvPAdmin")
-    }
-}
-
-<div>
-    <span class="result">@Html.Raw(ViewBag.Result)</span>
-    <span class="error">@ViewBag.ErrorMessage</span>
-    <span class="suberror">@ViewBag.SubErrorMessage</span>
-</div>
-
-<div style="position: relative; float: left;">
-
     @{
-        if (Model.PlayerLogImportant.Count() > 0)
+        if (Model.You.MembershipId == 69)
         {
-            <ul id="notificationBox">
-                @{
-            foreach (tfgame.dbModels.Models.PlayerLog log in Model.PlayerLogImportant)
-            {
-                <li class="frontPageNotification">
-                    @Html.Raw(log.Message) <span class="timeago">@CharactersHere.DatetimeToTimeago(log.Timestamp)</span>
-                </li>
-            }
-                }
-            </ul>
-            <p style="text-align: left; display:block; float: left;">log size: <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.maxHeight = '80px'">small</a> <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.maxHeight = '180px'">medium</a> <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.maxHeight = '480px'">big</a> </p><p style="text-align:right; display: block; float: right;">@Html.ActionLink("Dismiss Notifications", "DismissNotifications", "PvP")</p>
+            @Html.ActionLink("Admin", "Index", "PvPAdmin")
         }
     }
 
+@{
+    if (Model.PlayerLogImportant.Count() > 0)
+    {
+        <ul id="notificationBox">
+            @{
+        foreach (tfgame.dbModels.Models.PlayerLog log in Model.PlayerLogImportant)
+        {
+            <li class="frontPageNotification">
+                @Html.Raw(log.Message) <span class="timeago">@CharactersHere.DatetimeToTimeago(log.Timestamp)</span>
+            </li>
+        }
+            }
+        </ul>
+    <p id="dismissNotficationBox"><a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '0px'">[ -- ]</a> <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '100px'">[ - ]</a> @Html.ActionLink("Dismiss Notifications", "DismissNotifications", "PvP") <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '250px'">[ + ]</a> <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '500px'">[ ++ ]</a></p>
+    }
+}
 
-    <div class="petItemPortrait" style="background-image: url(../Images/PvP/animalPortraits/@ViewBag.AnimalImgUrl);">
-        @CharactersHere.PrintOwnerSubPortrait(Model.OwnedBy)
-    </div>
+<div class="containerInner">
+        <div class="petItemPortrait" style="background-image: url(../Images/PvP/animalPortraits/@ViewBag.AnimalImgUrl);">
+            @CharactersHere.PrintOwnerSubPortrait(Model.OwnedBy)
+        </div>
 
-    <div class="petItemInfo">
-        <p>Your name is <b>@Model.You.FirstName @Model.You.LastName</b>, or at least it used to be.  At the height of your humanity you achieved level <b>@Model.You.Level</b> with @Model.You.XP experience points toward the next.  But now it's time to embrace your new existence as a <b>@Model.Form.FriendlyName</b>.</p>
-        <p>
-            @Model.Form.Description
-            <b>
-                @{
-                    if (Model.You.IsPetToId == -1)
-                    {
-                        <span>You are feral and can move freely about the world until a new master tames you.</span>
+        <div class="petItemInfo">
+            <p>Your name is <b>@Model.You.FirstName @Model.You.LastName</b>, or at least it used to be.  At the height of your humanity you achieved level <b>@Model.You.Level</b> with @Model.You.XP experience points toward the next.  But now it's time to embrace your new existence as a <b>@Model.Form.FriendlyName</b>.</p>
+            <p>
+                @Model.Form.Description
+                <b>
+                    @{
+                        if (Model.You.IsPetToId == -1)
+                        {
+                            <span>You are feral and can move freely about the world until a new master tames you.</span>
+                        }
+                        else
+                        {
+                            <span><br><br>You have been tamed by @Html.ActionLink(Model.OwnedBy.Player.FirstName + " " + Model.OwnedBy.Player.LastName, "LookAtPlayer", "PvP", new { id = Model.OwnedBy.Player.Id }, null) and will follow your master wherever they go.</span>
+                        }
                     }
-                    else
-                    {
-                        <span><br><br>You have been tamed by @Html.ActionLink(Model.OwnedBy.Player.FirstName + " " + Model.OwnedBy.Player.LastName, "LookAtPlayer", "PvP", new { id = Model.OwnedBy.Player.Id }, null) and will follow your master wherever they go.</span>
+                    @{
+                        if (Model.IsPermanent == false)
+                        {
+                    <p>
+                        Chance to return human:  @Model.StruggleChance %.
+                        @Html.ActionLink("Fight your transformation and attempt to return to an animate form!", "FightTheTransformation", "PvP")
+                    </p>
+                        }
                     }
-                }
-            </b>
-        </p>
-    </div>
-</div>
+                    </b>
+                    </p>
+                </div>
 
-<p>
-    <center><span class="place">@Model.Location.Name [@Model.Location.X,@Model.Location.Y]<br /> </span></center>
-    <span class="locationDescription">@Model.Location.Description</span>
-</p>
-<center>
-    <table class="tableLines">
-        <tr>
-            <td></td>
-            <td class="navcell">
-                @*NORTH*@
+
+@*                  This needs to be rewritten !!!                 *@
+@*                  This needs to be rewritten !!!                 *@
+
+    <p>
+        <center><span class="place">@Model.Location.Name [@Model.Location.X,@Model.Location.Y]<br /> </span></center>
+        <span class="locationDescription">@Model.Location.Description</span>
+    </p>
+        <table class="tableLines">
+            <tr>
+                <td></td>
+                <td class="navcell">
+                    @*NORTH*@
 
                 @{
                     if (Model.Location.Name_North != null)
@@ -214,39 +237,47 @@ else
             <td></td>
         </tr>
     </table>
-</center>
 
-<h2>Players here:</h2>
+@*                  This needs to be rewritten !!!                 *@
+@*                  This needs to be rewritten !!!                 *@
+
+</div>
 
 @*all players who are online*@
 
-@{
-    foreach (tfgame.ViewModels.PlayerFormViewModel p in Model.PlayersHere.Where(p => PlayerProcedures.PlayerIsOffline(p.Player) == false).OrderByDescending(p => p.Player.Level))
-    {
-        <div class="onlineCharWrapper">
-            <div>@Html.Partial("Player_Partial", p)</div>
-            <div class="commandWrapper" style="height: 24px;">
-                @Html.ActionLink("Snarl", "AnimalAction", "PvP", new { actionName = "snarl", targetId = p.Player.Id }, new { @class = "check" })
-                @Html.ActionLink("Lick", "AnimalAction", "PvP", new { actionName = "lick", targetId = p.Player.Id }, new { @class = "check" })
-                @Html.ActionLink("Headbutt", "AnimalAction", "PvP", new { actionName = "headbutt", targetId = p.Player.Id }, new { @class = "check" })
-                @Html.ActionLink("Nuzzle", "AnimalAction", "PvP", new { actionName = "nuzzle", targetId = p.Player.Id }, new { @class = "check" })
-            </div>
-        </div>
-    }
-}
-@{
-    if (Model.IsPermanent == false)
-    {
-        <p>
-            Chance to return human:  @Model.StruggleChance %.
-            @Html.ActionLink("Fight your transformation and attempt to return to an animate form!", "FightTheTransformation", "PvP")
-        </p>
-    }
-}
+<div class="onlinePlayersWrapperBG">
+    <div class="row">
+        @*all players who are online*@
+        @{
+            foreach (tfgame.ViewModels.PlayerFormViewModel p in Model.PlayersHere.Where(p => PlayerProcedures.PlayerIsOffline(p.Player) == false).OrderByDescending(p => p.Player.Level))
+            {
+
+                <div class="col-md-2 col-sm-4 col-xs-12 charaBox">
+                    <div class="charaBoxInner">
+                        <div>
+                            <p>
+                                <div>@Html.Partial("Player_Partial", p)
+                                    <div class="charaBoxCommand">
+                                        @Html.ActionLink("Lick", "AnimalAction", "PvP", new { actionName = "lick", targetId = p.Player.Id }, new { @class = "check" })
+                                    @Html.ActionLink("Nuzzle", "AnimalAction", "PvP", new { actionName = "nuzzle", targetId = p.Player.Id }, new { @class = "check" })<br />
+                                    @Html.ActionLink("Snarl", "AnimalAction", "PvP", new { actionName = "snarl", targetId = p.Player.Id }, new { @class = "check" })
+                                    @Html.ActionLink("Headbutt", "AnimalAction", "PvP", new { actionName = "headbutt", targetId = p.Player.Id }, new { @class = "check" })
+                                </div>
+                                    
+                                </div>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        }
+    </div>
+</div>
 
 @*all players who are offline*@
 <div style="clear:both;"></div>
-<div id="showOfflinePlayersButton" style="margin-left: auto; margin-right: auto;">Show Offline Players Here (@Model.PlayersHere.Where(p => PlayerProcedures.PlayerIsOffline(p.Player) == true).Count())</div>
+<div id="offlinePlayersButton" style="margin-left: auto; margin-right: auto;">Show Offline Players Here (@Model.PlayersHere.Where(p => PlayerProcedures.PlayerIsOffline(p.Player) == true).Count())</div>
 
 <div id="offlinePlayersWrapper">
 
@@ -258,9 +289,9 @@ else
                 <div class="onlineCharWrapper">
                     <div>@Html.Partial("Player_Partial", p)</div>
                     <div class="commandWrapper" style="height: 24px;">
-                        @Html.ActionLink("Snarl", "AnimalAction", "PvP", new { actionName = "snarl", targetId = p.Player.Id }, new { @class = "check" })
+                        @Html.ActionLink("Snarl", "AnimalAction", "PvP", new { actionName = "snarl", targetId = p.Player.Id }, new { @class = "check" })                     
+                        @Html.ActionLink("Headbutt", "AnimalAction", "PvP", new { actionName = "headbutt", targetId = p.Player.Id }, new { @class = "check" })<br />
                         @Html.ActionLink("Lick", "AnimalAction", "PvP", new { actionName = "lick", targetId = p.Player.Id }, new { @class = "check" })
-                        @Html.ActionLink("Headbutt", "AnimalAction", "PvP", new { actionName = "headbutt", targetId = p.Player.Id }, new { @class = "check" })
                         @Html.ActionLink("Nuzzle", "AnimalAction", "PvP", new { actionName = "nuzzle", targetId = p.Player.Id }, new { @class = "check" })
 
                         @{
@@ -291,8 +322,8 @@ else
         $("#offlinePlayersWrapper").hide();
 
         // show offline player section when player clicks on the proper div
-        $("#showOfflinePlayersButton").click(function () {
-            $("#showOfflinePlayersButton").hide();
+        $("#offlinePlayersButton").click(function () {
+            $("#offlinePlayersButton").hide();
             $("#offlinePlayersWrapper").show();
         });
 

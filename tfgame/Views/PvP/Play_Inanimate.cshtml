@@ -2,14 +2,6 @@
 @using tfgame.CustomHtmlHelpers
 @using tfgame.Statics
 
-
-
-
-<head>
-    <link href="~/Content/PvP.css" rel="stylesheet" />
-    <script src="~/Scripts/jquery-2.1.0.js"></script>
-</head>
-
 @{
     if (@ViewBag.WorldTurnNumber >= @PvPStatics.RoundDuration)
     {
@@ -17,32 +9,57 @@
     }
 }
 
-<div class="mainPageWorldStats">
-    <span class="icon-turnNumber">Turn #<b>@ViewBag.WorldTurnNumber/@PvPStatics.RoundDuration</b></span>
+<nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav">
+                <li>
+                    <span id="timerBox" class="glyphicon glyphicon-time" aria-hidden="true" title="Click to see how long ago the last update ran."></span>
+                    <span id="turn_countdown">-:--</span>
+                </li>
+                <li>@Html.ActionLink("Last Actions", "ViewLog", "PvP")</li>
+                <li>@Html.ActionLink("Friends", "MyFriends", "PvP")</li>
+                <li>@Html.ActionLink("Chat", "Chat", "PvP", new { room = "global" }, new { target = "_blank" })</li>
+                <li>@Html.ActionLink("Covenant", "MyCovenant", "Covenant")</li>
+                <li>@Html.ActionLink("Settings", "Settings", "PvP")</li>
+                @{if (Model.NewMessageCount > 0)
+                {
+                    <li>@Html.ActionLink("(" + Model.NewMessageCount + " unread)", "MyMessages", "PvP", null, new { @class = "inboxNew" })</li>
+                }
+                else
+                {
+                    <li>@Html.ActionLink("Inbox", "MyMessages", "PvP")</li>
+                }
+                }
+                <li>@Html.ActionLink("Submit Content", "Contribute", "PvP", new { Id = -1 }, null)</li>
+                <li>@Html.ActionLink("Start again as someone else", "Restart", "PvP")</li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+<div>
+    <p class="infoMessage result">@Html.Raw(ViewBag.Result)</p>
+    <p class="infoMessage error">@ViewBag.ErrorMessage</p>
+    <p class="infoMessage suberror">@ViewBag.SubErrorMessage</p>
+</div>
+
+<div class="specialBox specialBox2">
+    <span class="turnNumber">Turn #<b>@ViewBag.WorldTurnNumber/@PvPStatics.RoundDuration</b></span>
     Transformania Time has <b>@Model.WorldStats.TotalPlayers</b> players, <b>@Model.WorldStats.CurrentOnlinePlayers</b> of which are currently online.
 </div>
 
-<span id="timerBox" class="icon-clock" title="Click to see how long ago the last update ran."></span>
-@Html.ActionLink("Friends", "MyFriends", "PvP")
-@Html.ActionLink("Last Actions", "ViewLog", "PvP")
-@Html.ActionLink("Chat", "Chat", "PvP", new { room = "global" }, new { target = "_blank" })
-@Html.ActionLink("Covenant", "MyCovenant", "Covenant")
-@Html.ActionLink("Settings", "Settings", "PvP")
-
-@{if (Model.NewMessageCount > 0)
-{
-    <span class="newlink">
-        @Html.ActionLink("(" + Model.NewMessageCount + " unread)", "MyMessages", "PvP")
-    </span>
-}
-else
-{
-    @Html.ActionLink("Inbox", "MyMessages", "PvP")
-}
-}
-
-@Html.ActionLink("Submit Content", "Contribute", "PvP", new { Id = -1 }, null)
-@Html.ActionLink("Start again as someone else", "Restart", "PvP")
 @{
     if (Model.Player.MembershipId == 69)
     {
@@ -50,31 +67,23 @@ else
     }
 }
 
-<div>
-    <span class="result">@Html.Raw(ViewBag.Result)</span>
-    <span class="error">@ViewBag.ErrorMessage</span>
-    <span class="suberror">@ViewBag.SubErrorMessage</span>
-</div>
-
-<div style="position: relative; float: left;">
-
-    @{
-        if (Model.PlayerLogImportant.Count() > 0)
+@{
+    if (Model.PlayerLogImportant.Count() > 0)
+    {
+        <ul id="notificationBox">
+            @{
+        foreach (tfgame.dbModels.Models.PlayerLog log in Model.PlayerLogImportant)
         {
-            <ul id="notificationBox">
-                @{
-            foreach (tfgame.dbModels.Models.PlayerLog log in Model.PlayerLogImportant)
-            {
-                <li class="frontPageNotification">
-                    @Html.Raw(log.Message) <span class="timeago">@CharactersHere.DatetimeToTimeago(log.Timestamp)</span>
-                </li>
-            }
-                }
-            </ul>
-            <p style="text-align: left; display:block; float: left;">log size: <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.maxHeight = '80px'">small</a> <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.maxHeight = '180px'">medium</a> <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.maxHeight = '480px'">big</a> </p><p style="text-align:right; display: block; float: right;">@Html.ActionLink("Dismiss Notifications", "DismissNotifications", "PvP")</p>
+            <li class="frontPageNotification">
+                @Html.Raw(log.Message) <span class="timeago">@CharactersHere.DatetimeToTimeago(log.Timestamp)</span>
+            </li>
         }
+            }
+        </ul>    
+    <p id="dismissNotficationBox"><a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '0px'">[ -- ]</a> <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '100px'">[ - ]</a> @Html.ActionLink("Dismiss Notifications", "DismissNotifications", "PvP") <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '250px'">[ + ]</a> <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '500px'">[ ++ ]</a></p>
     }
-
+}
+<div class="containerInner">
     <div class="petItemPortrait" style="background-image: url(../Images/PvP/itemsPortraits/@Model.Item.PortraitUrl);">
         @CharactersHere.PrintOwnerSubPortrait(Model.WornBy)
         @CharactersHere.PrintItemTypeIcon(Model.Item)
@@ -99,24 +108,25 @@ else
 
                 <p>
                     Although inanimate, you can still move just the tiniest bit.  You can still...
-                    <ul>
+                    <ul class="inanimateActionList">
                         <li>
-                            @Html.ActionLink("Affectionately rub against your owner", "InanimateAction", "PvP", new { actionName = "rub" }, new { @class = "check" })
+                            @Html.ActionLink("Affectionately rub against your owner", "InanimateAction", "PvP", new { actionName = "rub" }, new { @class = "check inanimateAction" })
                         </li>
                         <li>
-                            @Html.ActionLink("Peskily pinch your owner", "InanimateAction", "PvP", new { actionName = "pinch" }, new { @class = "check" })
+                            @Html.ActionLink("Peskily pinch your owner", "InanimateAction", "PvP", new { actionName = "pinch" }, new { @class = "check inanimateAction" })
                         </li>
                         <li>
-                            @Html.ActionLink("Kindly soothe your owner", "InanimateAction", "PvP", new { actionName = "soothe" }, new { @class = "check" })
+                            @Html.ActionLink("Kindly soothe your owner", "InanimateAction", "PvP", new { actionName = "soothe" }, new { @class = "check inanimateAction" })
                         </li>
                         <li>
-                            @Html.ActionLink("Agitatedly zap your owner", "InanimateAction", "PvP", new { actionName = "zap" }, new { @class = "check" })
+                            @Html.ActionLink("Agitatedly zap your owner", "InanimateAction", "PvP", new { actionName = "zap" }, new { @class = "check inanimateAction" })
                         </li>
-                       @{
-                            if (Model.WornBy != null) {
-                                <li>@Html.ActionLink("Attempt to slip free from your owner", "EscapeFromOwner", "PvP")</li>
-                              }
-                              }
+                        @{
+                if (Model.WornBy != null)
+                {
+                    <li>@Html.ActionLink("Attempt to slip free from your owner", "EscapeFromOwner", "PvP", null, new { @class = "inanimateAction" })</li>
+                }
+                        }
 
                     </ul>
                 </p>
@@ -137,76 +147,82 @@ else
     </div>
 </div>
 
-
-    <div style="display: inline-block; width: 100%;">
-
-        <h2>Players here:</h2>
-
+<div class="onlinePlayersWrapperBG" style="clear:both; border-bottom:4px solid #A16969;">
+    <div class="row">
         @{
             foreach (tfgame.ViewModels.PlayerFormViewModel p in Model.PlayersHere)
             {
-                <p>
-                    @Html.Partial("Player_Partial", p)
-                </p>
+                <div class="col-md-2 col-sm-4 col-xs-12 charaBox">
+                    <div class="charaBoxInner">
+                        <div>
+                            <p>
+                                <div>
+                                    @Html.Partial("Player_Partial", p)
+                                </div>
+                            </p>
+                        </div>
+                    </div>
+                </div>
             }
         }
     </div>
+</div>
 
 @Html.Partial("partial/partial_recentActivity", Model.LocationLog)
 
-    <script>
+<script>
 
-        var attacksMade = @Model.Player.TimesAttackingThisUpdate;
-        var turnNo = @ViewBag.WorldTurnNumber;
-        var togglestate = 0;
-        var blinkEnabled = 0;
+    var attacksMade = @Model.Player.TimesAttackingThisUpdate;
+    var turnNo = @ViewBag.WorldTurnNumber;
+    var togglestate = 0;
+    var blinkEnabled = 0;
 
-        $(document).ready(function() {
+    $(document).ready(function() {
 
-            $(".check").each(function() {
-                if (attacksMade>=1) {
-                    $( this ).attr("href", "#");
-                    $( this ).addClass("disabled");
-                }
-            });
-
-            var myVar=setInterval(function(){pingForUpdate()},30000);
-            var myVa2r=setInterval(function(){titleToggle()},1000);
-
+        $(".check").each(function() {
+            if (attacksMade>=1) {
+                $( this ).attr("href", "#");
+                $( this ).addClass("disabled");
+            }
         });
 
-        function pingForUpdate() {
-            $.ajax({
-                url: 'PvP/ClientUpdateCheck/',
-                type: 'POST',
-                fail: fail,
-                success: pingDone,
-                dataType: 'text'
-            });
-        }
+        var myVar=setInterval(function(){pingForUpdate()},30000);
+        var myVa2r=setInterval(function(){titleToggle()},1000);
 
-        function pingDone(data) {
-            if (data > turnNo) {
-                turnNo = data;
-                blinkEnabled = 1;
+    });
+
+    function pingForUpdate() {
+        $.ajax({
+            url: 'PvP/ClientUpdateCheck/',
+            type: 'POST',
+            fail: fail,
+            success: pingDone,
+            dataType: 'text'
+        });
+    }
+
+    function pingDone(data) {
+        if (data > turnNo) {
+            turnNo = data;
+            blinkEnabled = 1;
+        }
+    }
+
+    function titleToggle() {
+
+        if (blinkEnabled==1) {
+            if (togglestate == 0) {
+                $('title').text('Transformania Time!');
+                togglestate = 1;
+            } else if (togglestate == 1){
+                $('title').text('[UPDATED--reload page!]');
+                togglestate = 0;
             }
         }
+    }
 
-        function titleToggle() {
+    function fail() {
+        // alert("fail");
+    }
 
-            if (blinkEnabled==1) {
-                if (togglestate == 0) {
-                    $('title').text('Transformania Time!');
-                    togglestate = 1;
-                } else if (togglestate == 1){
-                    $('title').text('[UPDATED--reload page!]');
-                    togglestate = 0;
-                }
-            }
-        }
-
-        function fail() {
-            // alert("fail");
-        }
-
-    </script>
+</script>

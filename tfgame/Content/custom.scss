@@ -51,6 +51,10 @@ text-decoration:none;
         background: $darkPink !important
     }
 
+    .levelUp{
+        background: $notificationBoxColor !important;
+    }
+
 .outsideContainer a {
     color: white !important;
     font-weight: normal;
@@ -157,6 +161,11 @@ right: 0px;
 	margin-bottom: 0px;
 }
 
+#dismissNotficationBox a{
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
 #dismissNotficationBox {
 	background: $darkPink;
 	font-size: $fontSmall;
@@ -236,6 +245,10 @@ height: 100%;
 
 .charaBoxInner {
 padding:10px;
+}
+
+.charaBoxCommand {
+    text-align: center;
 }
 
 .portrait {
@@ -428,4 +441,32 @@ margin-right:auto;
 
 .tableLines td:empty{
     background: $bodyColor;
+}
+
+.attackLink {
+border: 1px solid #7B6461;
+margin-top: 4px;
+display: block;
+width: 100px;
+margin-left: auto;
+margin-right: auto;
+background: $containerColor;
+}
+
+.inanimateAction{
+border: 1px solid #7B6461;
+margin:4px auto 8px auto;
+display: block;
+width: 300px;
+background: $containerColor;
+text-align:center;
+}
+
+.inanimateActionList{
+    list-style:none;
+}
+
+.disabled {
+    background-color: $onlinePlayerBG;
+    text-decoration: line-through;
 }

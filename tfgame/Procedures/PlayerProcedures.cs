@@ -1498,10 +1498,10 @@ namespace tfgame.Procedures
                 TFEnergyProcedures.CleanseTFEnergies(player, cleanseBonusTFEnergyRemovalPercent);
             }
 
-            
-            
 
-            string logmessage = "<span style='color:  darkred'>" + player.FirstName + " " + player.LastName + " cleansed here.</span>";
+
+
+            string logmessage = "<span class='playerCleansingNotification'>" + player.FirstName + " " + player.LastName + " cleansed here.</span>";
             LocationLogProcedures.AddLocationLog(player.dbLocationName, logmessage);
 
 
@@ -1537,7 +1537,7 @@ namespace tfgame.Procedures
                 result = "You quickly meditate, restoring " + meditateManaRestore + " mana.";
             }
 
-            string logmessage = "<span style='color:  blue'>" + player.FirstName + " " + player.LastName + " meditated here.</span>";
+            string logmessage = "<span class='playerMediatingNotification'>" + player.FirstName + " " + player.LastName + " meditated here.</span>";
             LocationLogProcedures.AddLocationLog(player.dbLocationName, logmessage);
 
 

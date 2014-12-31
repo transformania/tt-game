@@ -957,7 +957,7 @@ namespace tfgame.Controllers
             TempData["Result"] = PlayerProcedures.SearchLocation(me, me.dbLocationName);
 
             // write to logs
-            string locationLogMessage = "<span style='color:  purple'>" + me.FirstName + " " + me.LastName + " searched here.</span>";
+            string locationLogMessage = "<span class='playerSearchingNotification'>" + me.FirstName + " " + me.LastName + " searched here.</span>";
             LocationLogProcedures.AddLocationLog(me.dbLocationName, locationLogMessage);
             Location here = LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName);
             string playerLogMessage = "You searched at " + here.Name + ".";

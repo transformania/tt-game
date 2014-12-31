@@ -8,7 +8,6 @@ p {
   padding: 0px; }
 
 a {
-  transition: all 0.5s ease;
   color: white;
   text-shadow: -1px -1px 0px #475374, 1px -1px 0px #475374, -1px 1px 0px #475374, 1px 1px 0px #475374;
   font-weight: bold; }
@@ -54,8 +53,7 @@ a:hover {
 
 .outsideContainer a {
   color: white !important;
-  background: none;
-  transition: 0.5s all ease; }
+  background: none; }
 
 .nav > li > a:hover, .nav > li > a:focus, .nav > li > a:active, .navbar-default .navbar-nav > .active > a {
   background: none;
@@ -212,18 +210,17 @@ a:hover {
   text-align: center; }
 
 .actionButton {
-  transition: all 0.5s ease;
   border: 4px solid #65A6E8;
   padding: 10px;
   margin: 10px;
   font-size: 16px;
   display: inline-block;
-  color: black;
-  text-shadow: -1px -1px 0px #FFF, 1px -1px 0px #FFF, -1px 1px 0px #FFF, 1px 1px 0px #FFF; }
+  color: white;
+  text-shadow: -1px -1px 0px #000, 1px -1px 0px #000, -1px 1px 0px #000, 1px 1px 0px #000; }
 
 .actionButton:hover {
-  color: white;
-  text-shadow: -1px -1px 0px #000, 1px -1px 0px #000, -1px 1px 0px #000, 1px 1px 0px #000;
+  color: black;
+  text-shadow: -1px -1px 0px #FFF, 1px -1px 0px #FFF, -1px 1px 0px #FFF, 1px 1px 0px #FFF;
   text-decoration: none; }
 
 #actionMeditate {
@@ -236,7 +233,6 @@ a:hover {
   background: #D2D246; }
 
 .glyphicon-off, .glyphicon-time {
-  transition: all 0.5s ease;
   color: white;
   text-shadow: -1px -1px 0px #000, 1px -1px 0px #000, -1px 1px 0px #000, 1px 1px 0px #000; }
 

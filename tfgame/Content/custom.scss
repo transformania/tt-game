@@ -28,7 +28,6 @@ padding: 0px;
 }
 
 a {
-transition: all 0.5s ease;
 color: white;
 text-shadow: -1px -1px 0px $darkFillColor, 1px -1px 0px $darkFillColor, -1px 1px 0px $darkFillColor, 1px 1px 0px $darkFillColor;
 font-weight: bold;
@@ -83,7 +82,6 @@ padding: 20px;
 .outsideContainer a {
 color: white !important;
 background: none;
-transition: 0.5s all ease;
 }
 
 .nav > li > a:hover, .nav > li > a:focus, .nav > li > a:active, .navbar-default .navbar-nav > .active > a{
@@ -271,19 +269,19 @@ display: none;
 }
 
 .actionButton {
-transition: all 0.5s ease;
 border: $border;
 padding: 10px;
 margin: 10px;
 font-size: $fontMedium;
 display:inline-block;
-color: black;
-text-shadow: -1px -1px 0px #FFF, 1px -1px 0px #FFF, -1px 1px 0px #FFF, 1px 1px 0px #FFF;
+color: white;
+text-shadow: -1px -1px 0px #000, 1px -1px 0px #000, -1px 1px 0px #000, 1px 1px 0px #000;
 }
 
 .actionButton:hover{ 
-color: white;
-text-shadow: -1px -1px 0px #000, 1px -1px 0px #000, -1px 1px 0px #000, 1px 1px 0px #000;
+
+color: black;
+text-shadow: -1px -1px 0px #FFF, 1px -1px 0px #FFF, -1px 1px 0px #FFF, 1px 1px 0px #FFF;
 text-decoration:none;
 }
 
@@ -300,7 +298,6 @@ background: $cleanse;
 }
 
 .glyphicon-off, .glyphicon-time{
-transition: all 0.5s ease;
 color: white;
 text-shadow: -1px -1px 0px #000, 1px -1px 0px #000, -1px 1px 0px #000, 1px 1px 0px #000;
 }

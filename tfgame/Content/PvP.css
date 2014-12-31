@@ -8,10 +8,11 @@ margin-right:auto;
 }
 
     .tableLines td {
-        border: 1px solid black;
+        border: 1px solid #475374;
         text-align: center;
         padding: 3px;
-		background:white;
+		background:#475374;
+        color: white;
     }
 
 #location {

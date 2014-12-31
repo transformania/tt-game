@@ -861,15 +861,7 @@ height: 350px;
     font-size: 10px;
 }
 
-.frontPageNotification {
-    color: red;
-    padding-bottom: 7px;
-}
 
-    .frontPageNotification:last-child {
-        color: red;
-        padding-bottom: 7px;
-    }
 
 .inbetweenRoundNotice {
     width: 100%;

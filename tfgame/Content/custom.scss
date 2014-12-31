@@ -3,18 +3,19 @@ $navbarLight: #CF8C81;
 $border: 4px solid #A16969;
 $bodyColor:  #A16969;
 $containerColor: #E4E0D4;
-$darkFillColor: #475374;
-$lightFillColor: #4A747B;
-$darkPink: #FFBEBE;
+$darkFillColor: #78BAB5;
+$lightFillColor: #C6E6E4;
+$darkPink: #865863;
 $cleanse: #D2D246;
 $floorItemBG: #FFF1C8;
 $offlinePlayerBG: gainsboro;
+$onlinePlayerBG: #D7BEBA;
 
 $good: #51D269;
-$error: white;
+$error: #EA4987;
 $suberror: white;
 
-$notificationBoxColor: #FFE6E4;
+$notificationBoxColor: #C2A9AF;
 
 $fontBig: 20px;
 $fontMedium: 16px;
@@ -25,7 +26,7 @@ $defaultMargin: 0px;
 body {
 background: $bodyColor;
 font-size: $fontSmall;
-font-family: Tahoma, Geneva, sans-serif;
+font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
 }
 
 p{
@@ -39,16 +40,18 @@ font-weight: bold;
 }
 
 a:hover{
-color: $bodyColor !important;
+color: #4E0404 !important;
 text-decoration:none;
 }
 
 .outsideContainer a {
     color: white !important;
+    font-weight: normal;
 }
 
 .outsideContainer a:hover {
-    color: $bodyColor !important;
+    color: $containerColor !important;
+    font-weight: normal;
 }
 
 .outsideContainer {
@@ -109,7 +112,7 @@ font-size: $fontMedium;
 text-align: center;
 margin-bottom: $defaultMargin;
 padding:10px;
-color: white;
+color: black;
 }
 
 .specialBox2 {
@@ -159,7 +162,7 @@ right: 0px;
 	border-bottom: $border;
 	padding: 4px;
 	text-align: center;
-	background: $darkFillColor;
+	background: #475374;
 }
 
 .infoMessage:empty {
@@ -172,7 +175,7 @@ display: none;
 
 
 .error {
-	color: $darkPink;
+	color: $error;
 }
 
 .suberror {
@@ -244,12 +247,12 @@ padding:10px;
     }
 	
 	.onlinePlayersWrapperBG{
-	background: $lightFillColor;
+	background: $onlinePlayerBG;
 	border-top: $border;
 	}
 	
 	#offlinePlayersButton {
-	background: #324D51;
+	background: #7B6461;
 	font-size: $fontSmall;
 	text-align: center;
 	border-bottom: $border;
@@ -288,15 +291,15 @@ display:inline-block;
 }
 
 #actionMeditate{
-background: $navbarDark;
+background: #6673D4;
 }
 
 #actionCleanse{
- background: $darkPink;   
+ background: #C95DA2;   
 }
 
 #actionSearch{
-background: $cleanse;
+background: #C36C0A;
 }
 
 .glyphicon-off, .glyphicon-time{
@@ -335,3 +338,38 @@ color: black !important;
     width:100%;
     resize: vertical;
 }
+
+.petActionBad {
+    color: #9E0E0E;
+}
+
+.petActionGood {
+    color: #19199F;
+}
+
+.playerAttackNotification {
+    color: #9E0E0E;
+}
+
+.playerSearchingNotification{
+    color: #A7641A;
+}
+
+.playerCleansingNotification{
+    color: #9822BC;
+}
+.playerMediatingNotification{
+    color: #2234BC;
+}
+
+.frontPageNotification {
+    padding-bottom: 7px;
+}
+
+    .frontPageNotification:last-child {
+        padding-bottom: 7px;
+    }
+
+    .timeago{
+        color: #6F5151 !important;
+    }

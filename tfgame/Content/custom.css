@@ -1,7 +1,7 @@
 body {
   background: #A16969;
   font-size: 12px;
-  font-family: Tahoma, Geneva, sans-serif; }
+  font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif; }
 
 p {
   margin: 0px;
@@ -12,14 +12,16 @@ a {
   font-weight: bold; }
 
 a:hover {
-  color: #A16969 !important;
+  color: #4E0404 !important;
   text-decoration: none; }
 
 .outsideContainer a {
-  color: white !important; }
+  color: white !important;
+  font-weight: normal; }
 
 .outsideContainer a:hover {
-  color: #A16969 !important; }
+  color: #E4E0D4 !important;
+  font-weight: normal; }
 
 .outsideContainer {
   border-radius: 0px;
@@ -65,16 +67,16 @@ a:hover {
   text-align: center; }
 
 .specialBox {
-  background: #475374;
+  background: #78BAB5;
   border-bottom: 4px solid #A16969;
   font-size: 16px;
   text-align: center;
   margin-bottom: 0px;
   padding: 10px;
-  color: white; }
+  color: black; }
 
 .specialBox2 {
-  background: #4A747B; }
+  background: #C6E6E4; }
 
 .turnNumber {
   float: left;
@@ -92,7 +94,7 @@ a:hover {
     top: 0px;
     right: 0px; } }
 #notificationBox {
-  background: #FFE6E4;
+  background: #C2A9AF;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
   height: 100px;
@@ -103,7 +105,7 @@ a:hover {
   margin-bottom: 0px; }
 
 #dismissNotficationBox {
-  background: #FFBEBE;
+  background: #865863;
   font-size: 12px;
   text-align: center;
   border-bottom: 4px solid #A16969; }
@@ -122,7 +124,7 @@ a:hover {
   color: #51D269; }
 
 .error {
-  color: #FFBEBE; }
+  color: #EA4987; }
 
 .suberror {
   color: white;
@@ -135,7 +137,7 @@ a:hover {
 
 #RecentActivityLog {
   clear: both;
-  background: #FFE6E4;
+  background: #C2A9AF;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
   height: 200px;
@@ -183,11 +185,11 @@ a:hover {
   display: none; }
 
 .onlinePlayersWrapperBG {
-  background: #4A747B;
+  background: #D7BEBA;
   border-top: 4px solid #A16969; }
 
 #offlinePlayersButton {
-  background: #324D51;
+  background: #7B6461;
   font-size: 12px;
   text-align: center;
   border-bottom: 4px solid #A16969; }
@@ -218,13 +220,13 @@ a:hover {
   display: inline-block; }
 
 #actionMeditate {
-  background: #734752; }
+  background: #6673D4; }
 
 #actionCleanse {
-  background: #FFBEBE; }
+  background: #C95DA2; }
 
 #actionSearch {
-  background: #D2D246; }
+  background: #C36C0A; }
 
 .glyphicon-off, .glyphicon-time {
   color: white; }
@@ -255,5 +257,32 @@ a:hover {
 #MessageText {
   width: 100%;
   resize: vertical; }
+
+.petActionBad {
+  color: #9E0E0E; }
+
+.petActionGood {
+  color: #19199F; }
+
+.playerAttackNotification {
+  color: #9E0E0E; }
+
+.playerSearchingNotification {
+  color: #A7641A; }
+
+.playerCleansingNotification {
+  color: #9822BC; }
+
+.playerMediatingNotification {
+  color: #2234BC; }
+
+.frontPageNotification {
+  padding-bottom: 7px; }
+
+.frontPageNotification:last-child {
+  padding-bottom: 7px; }
+
+.timeago {
+  color: #6F5151 !important; }
 
 /*# sourceMappingURL=custom.css.map */

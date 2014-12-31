@@ -257,4 +257,11 @@ a:hover {
   display: inline-block;
   border: 4px solid #65A6E8; }
 
+.col-md-1 {
+  min-height: 0px !important; }
+
+#MessageText {
+  width: 100%;
+  resize: vertical; }
+
 /*# sourceMappingURL=custom.css.map */

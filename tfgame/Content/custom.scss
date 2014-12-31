@@ -326,3 +326,12 @@ text-shadow: -1px -1px 0px #FFF, 1px -1px 0px #FFF, -1px 1px 0px #FFF, 1px 1px 0
     display: inline-block;
     border: $border;
 }
+
+.col-md-1{
+    min-height: 0px !important;
+}
+
+#MessageText {
+    width:100%;
+    resize: vertical;
+}

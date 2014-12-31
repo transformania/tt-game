@@ -145,14 +145,14 @@ namespace tfgame.Procedures.BossProcedures
                     maleAI.Var1 = 0;
                 }
 
-                if (malethief.Health < malethief.MaxHealth / 2)
+                if (malethief.Health < malethief.MaxHealth / 6)
                 {
                     BuffBox malebuffs = ItemProcedures.GetPlayerBuffs(malethief);
                     PlayerProcedures.Cleanse(malethief, malebuffs);
                     malethief = playerRepo.Players.FirstOrDefault(f => f.FirstName == MaleBossFirstName && f.LastName == MaleBossLastName);
                 }
 
-                if (femalethief.Health < femalethief.MaxHealth / 2)
+                if (femalethief.Health < femalethief.MaxHealth / 4)
                 {
                     BuffBox femalebuffs = ItemProcedures.GetPlayerBuffs(femalethief);
                     PlayerProcedures.Cleanse(femalethief, femalebuffs);

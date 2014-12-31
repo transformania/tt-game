@@ -62,12 +62,12 @@ namespace tfgame.Procedures
 
                 logs.AttackerLog += "<br><br>";
 
-                logs.LocationLog = "<span style='color:  red'>" + attackerFullName + " cursed " + victimFullName + " with " + skillBeingUsed.Skill.FriendlyName + ".</span>";
+                logs.LocationLog = "<span class='playerAttackNotification'>" + attackerFullName + " cursed " + victimFullName + " with " + skillBeingUsed.Skill.FriendlyName + ".</span>";
                 logs.AttackerLog += "You cursed " + victimFullName + " with " + skillBeingUsed.Skill.FriendlyName +".";
                 logs.AttackerLog += "  (+1 XP)  ";
                 logs.AttackerLog += PlayerProcedures.GiveXP(attacker.Id, 1);
                 logs.VictimLog = effectBeingGiven.MessageWhenHit;
-                logs.VictimLog += "  <span style='color:  red'><b>" + attackerFullName + " cursed you with " + skillBeingUsed.Skill.FriendlyName + ".</b></span>  ";
+                logs.VictimLog += "  <span class='playerAttackNotification'><b>" + attackerFullName + " cursed you with " + skillBeingUsed.Skill.FriendlyName + ".</b></span>  ";
                 result = logs.AttackerLog;
                 
             }
@@ -76,9 +76,9 @@ namespace tfgame.Procedures
             else
             {
 
-                logs.LocationLog = "<span style='color:  red'>" + attackerFullName + " cast " + skillBeingUsed.Skill.FriendlyName + " against " + victimFullName + ".</span>";
+                logs.LocationLog = "<span class='playerAttackNotification'>" + attackerFullName + " cast " + skillBeingUsed.Skill.FriendlyName + " against " + victimFullName + ".</span>";
                 logs.AttackerLog = "You cast " + skillBeingUsed.Skill.FriendlyName + " against " + victimFullName + ".  ";
-                logs.VictimLog = "<span style='color:  red'>" + attackerFullName + " cast " + skillBeingUsed.Skill.FriendlyName + " against you.</span>  ";
+                logs.VictimLog = "<span class='playerAttackNotification'>" + attackerFullName + " cast " + skillBeingUsed.Skill.FriendlyName + " against you.</span>  ";
 
                 string attackerPronoun = "";
                 string victimPronoun = "";
@@ -311,7 +311,7 @@ namespace tfgame.Procedures
                     p.Health = 0;
                 }
                 playerREpo.SavePlayer(p);
-                string message = "<span style='color:  red'>" + attacker.FirstName + " " + attacker.LastName + " threw a " + orbStrengthName + " Submissiveness Splash Orb at " + here.Name + ", lowering your willpower by " + damage + " along with " + (playersHereOnline.Count() - 1) + " others.</span>";
+                string message = "<span class='playerAttackNotification'>" + attacker.FirstName + " " + attacker.LastName + " threw a " + orbStrengthName + " Submissiveness Splash Orb at " + here.Name + ", lowering your willpower by " + damage + " along with " + (playersHereOnline.Count() - 1) + " others.</span>";
                 PlayerLogProcedures.AddPlayerLog(p.Id, message, true);
 
             }
@@ -319,7 +319,7 @@ namespace tfgame.Procedures
             string logMessage = attacker.FirstName + " " + attacker.LastName + " threw a Submissiveness Splash Orb here.";
             LocationLogProcedures.AddLocationLog(attacker.dbLocationName, logMessage);
 
-            string attackerMessage = "<span style='color:  red'>You threw a " + orbStrengthName + " Submissiveness Splash Orb at " + here.Name + ", lowering " + playersHereOnline.Count() + " people's willpower by " + damage + " each.</span>";
+            string attackerMessage = "<span class='playerAttackNotification'>You threw a " + orbStrengthName + " Submissiveness Splash Orb at " + here.Name + ", lowering " + playersHereOnline.Count() + " people's willpower by " + damage + " each.</span>";
             PlayerLogProcedures.AddPlayerLog(attacker.Id, attackerMessage, false);
 
             // set the player's last action flag

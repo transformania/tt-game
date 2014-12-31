@@ -356,6 +356,7 @@ namespace tfgame.Procedures.BossProcedures
                 {
                     AttackProcedures.Attack(femalethief, attacker, "skill_Seekshadow's_Silence_Judoo");
                     string locationMessage = "<b>" + malethief.GetFullName() + " and " + femalethief.GetFullName() + " ran off in an unknown direction.";
+                    LocationLogProcedures.AddLocationLog(femalethief.dbLocationName, locationMessage);
                     string newlocation = LocationsStatics.GetRandomLocation_NoStreets();
                     malethief.dbLocationName = newlocation;
                     femalethief.dbLocationName = newlocation;

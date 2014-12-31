@@ -7,22 +7,38 @@
     }
 </script>
 
+<nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
 
-@Html.ActionLink("Back to game", "Play", "PvP")
-<center>
-    @Html.ActionLink("Back to Messages", "MyMessages", "PvP")
-</center>
-<b>@Model.SenderName said to you </b> <span class="timeago">@CharactersHere.DatetimeToTimeago(Model.dbMessage.Timestamp):</span>
-<div class="messageTextContainer">
-    <p>@Html.Raw(Model.dbMessage.MessageText.Replace("[br]","<br/>"))</p>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav" style="width:100%;">
+                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+                <li>@Html.ActionLink("Back to Messages", "MyMessages", "PvP")</li>
+                <li>@Html.ActionLink("Reply", "Write", "PvP", new { playerId = Model.dbMessage.SenderId, responseTo = Model.dbMessage.Id }, null)</li>
+                <li><a href="javascript:confirmDeletion()" />Delete</a></li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+<div class="containerInner">
+    <b>@Model.SenderName said to you </b> <span class="timeago">@CharactersHere.DatetimeToTimeago(Model.dbMessage.Timestamp):</span>
+    <div class="messageTextContainer">
+        <p>@Html.Raw(Model.dbMessage.MessageText.Replace("[br]", "<br/>"))</p>
+    </div>
+    <div id="realLink" class="deleteMessegeConfirm">
+        <span style="color:red; font-weight: bold;">Do you really want to delete this message? If yes then please click link bellow:</span></br>
+        @Html.ActionLink("Yes, I want to delete", "DeleteMessage", "PvP", new { messageId = Model.dbMessage.Id }, null)
+    </div>
+    <br />
 </div>
-<center style="margin-top: 5px;">
-    @Html.ActionLink("Reply", "Write", "PvP", new { playerId = Model.dbMessage.SenderId, responseTo = Model.dbMessage.Id }, null)
-    <a href="javascript:confirmDeletion()" />Delete</a>
-</center>
-<div id="realLink" class="deleteMessegeConfirm">
-    <span style="color:red; font-weight: bold;">Do you really want to delete this message? If yes then please click link bellow:</span></br>
-    @Html.ActionLink("Yes, I want to delete", "DeleteMessage", "PvP", new { messageId = Model.dbMessage.Id }, null)
-</div>
-<br />
-@Html.ActionLink("Back to game", "Play", "PvP")

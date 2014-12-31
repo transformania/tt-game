@@ -1,55 +1,139 @@
 ﻿@model tfgame.ViewModels.MessageBag
 @using tfgame.CustomHtmlHelpers
 
-@Html.ActionLink("Back to game", "Play", "PvP")
+<nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
 
-<script>
-    function confirmDeletion() {
-        document.getElementById('realLink').style.display = "block";
-    }
-</script>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav" style="width:100%;">
+                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+                <li>@Html.ActionLink("Search for player by name", "PlayerLookup", "PvP")</li>
+                <li><a href="javascript:confirmDeletion()" />Delete All Messeges</a></li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
 
-<p style="text-align: center; margin-top:0px;">
-    @Html.ActionLink("Search for player by name", "PlayerLookup", "PvP") <a href="javascript:confirmDeletion()" />Delete All Messeges</a>
-</p>
-<div id="realLink" class="deleteMessegeConfirm">
-    <span style="color:red; font-weight: bold;">Do you really want to delete all the messages? If yes then please click link bellow:</span></br>
-    @Html.ActionLink("Yes, I want to delete", "DeleteAllMessages", "PvP")
-</div>
-<h1 style="text-align: center; margin-top:0px;">Received Messages (@Model.Messages.Count()/150)</h1>
+<p class="infoMessage result">@Html.Raw(ViewBag.Result)</p>
 
-<table>
-    <thead>
-    <th style="width: 25%;">Sender</th>
-    <th>Message</th>
-    <th style ="width: 16%;">Time Sent</thstyle>
-    <th style="width: 10%;">Delete</th>
-    </thead>
-    <tbody>
+    <script>
+        function confirmDeletion() {
+            document.getElementById('realLink').style.display = "block";
+        }
+    </script>
+
+    <div class="containerInner">
+        <div id="realLink" class="deleteMessegeConfirm">
+            <span style="color:red; font-weight: bold;">Do you really want to delete all the messages? If yes then please click link bellow:</span></br>
+            @Html.ActionLink("Yes, I want to delete", "DeleteAllMessages", "PvP")
+        </div>
+        <h1 style="text-align: center; margin-top:0px;">Received Messages (@Model.Messages.Count()/150)</h1>
+
+        <table>
+            <thead>
+            <th style="width: 25%;">Sender</th>
+            <th>Message</th>
+            <th style="width: 16%;">Time Sent</thstyle>
+            <th style="width: 10%;">Delete</th>
+            </thead>
+            <tbody>
+                @{
+
+                    string messageTeaser;
+                    int msgLength;
+
+                    foreach (tfgame.ViewModels.MessageViewModel msg in Model.Messages)
+                    {
+
+
+                        msgLength = msg.dbMessage.MessageText.Length;
+                        if (msgLength > 50)
+                        {
+                            messageTeaser = msg.dbMessage.MessageText.Substring(0, 50) + "...";
+
+                        }
+                        else
+                        {
+                            messageTeaser = msg.dbMessage.MessageText.Substring(0, msgLength);
+                        }
+
+                        <tr>
+                            @{if (msg.SenderName != "(inanimate)")
+                            {
+                                <td>@Html.ActionLink(msg.SenderName, "LookAtPlayer", "PvP", new { id = msg.dbMessage.SenderId }, null)</td>
+
+                            }
+                            else
+                            {
+                                <td>(inanimate)</td>
+
+                            }
+                            }
+
+
+                            @{
+                        if (msg.dbMessage.IsRead == false)
+                        {
+                            <td class="newlink">@Html.ActionLink(messageTeaser, "ReadMessage", "PvP", new { messageId = msg.dbMessage.Id }, null)</td>
+                        }
+                        else
+                        {
+                            <td>@Html.ActionLink(messageTeaser, "ReadMessage", "PvP", new { messageId = msg.dbMessage.Id }, null)</td>
+                        }
+                            }
+
+                            <td class="timeSent"><span style="font-size: 10px">@CharactersHere.DatetimeToTimeago(msg.dbMessage.Timestamp)</span></td>
+                            <td>@Html.ActionLink("[ x ]", "DeleteMessage", "PvP", new { messageId = msg.dbMessage.Id }, null)</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+
         @{
 
-            string messageTeaser;
-            int msgLength;
-
-            foreach (tfgame.ViewModels.MessageViewModel msg in Model.Messages)
+            if (ViewBag.IsDonator == null || ViewBag.IsDonator == false)
             {
+<p style="color: red; text-align: center;">
+                Only the 150 most recent messages you've recieved will be saved.  Older messages will be deleted automatically.
+            </p>
+        }
 
+        else if (ViewBag.IsDonator == true)
+        {
+            <p style="color: red; text-align: center;">
+                <b>You are marked as having a Tier 3 donator level, which means you can keep up to 500 messages in your inbox and your older messages will NOT be deleted automatically by the turn update.</b>
+            </p>
+        }
+    }
 
-                msgLength = msg.dbMessage.MessageText.Length;
-                if (msgLength > 50)
-                {
-                    messageTeaser = msg.dbMessage.MessageText.Substring(0, 50) + "...";
+    <h1 style="text-align: center;">Sent Messages</h1>
 
-                }
-                else
-                {
-                    messageTeaser = msg.dbMessage.MessageText.Substring(0, msgLength);
-                }
+    <table>
+        <thead>
+        <th style="width: 25%;">Recipient</th>
+        <th>Message</th>
+        <th style="width: 16%;">Time Sent</thstyle>
+        <th style="width: 10%;">Read</th>
+        </thead>
+        <tbody>
 
+            @{foreach (tfgame.ViewModels.MessageViewModel msg in Model.SentMessages)
+            {
                 <tr>
-                    @{if (msg.SenderName != "(inanimate)")
+                    @{if (msg.SentToName != "(inanimate)")
                     {
-                        <td>@Html.ActionLink(msg.SenderName, "LookAtPlayer", "PvP", new { id = msg.dbMessage.SenderId }, null)</td>
+                        <td>@Html.ActionLink(msg.SentToName, "LookAtPlayer", "PvP", new { id = msg.dbMessage.ReceiverId }, null)</td>
 
                     }
                     else
@@ -59,96 +143,26 @@
                     }
                     }
 
-
-                    @{
-                if (msg.dbMessage.IsRead == false)
-                {
-                    <td class="newlink">@Html.ActionLink(messageTeaser, "ReadMessage", "PvP", new { messageId = msg.dbMessage.Id }, null)</td>
-                }
-                else
-                {
-                    <td>@Html.ActionLink(messageTeaser, "ReadMessage", "PvP", new { messageId = msg.dbMessage.Id }, null)</td>
-                }
-}
-
-                    <td><span style="font-size: 10px">@CharactersHere.DatetimeToTimeago(msg.dbMessage.Timestamp)</span></td>
-                    <td>@Html.ActionLink("[ x ]", "DeleteMessage", "PvP", new { messageId = msg.dbMessage.Id }, null)</td>
+                    <td>@msg.dbMessage.MessageText</td>
+                    <td class="timeSent"><span style="font-size: 10px">@CharactersHere.DatetimeToTimeago(msg.dbMessage.Timestamp)</span></td>
+                    <td>@msg.dbMessage.IsRead</td>
                 </tr>
             }
-        }
-    </tbody>
-</table>
+            }
 
-@{
 
-    if (ViewBag.IsDonator == null || ViewBag.IsDonator == false)
-    {
-        <p style="color: red; text-align: center;">
-            Only the 150 most recent messages you've recieved will be saved.  Older messages will be deleted automatically.
-        </p>
-    }
+        </tbody>
 
-    else if (ViewBag.IsDonator == true)
-    {
-        <p style="color: red; text-align: center;">
-            <b>You are marked as having a Tier 3 donator level, which means you can keep up to 500 messages in your inbox and your older messages will NOT be deleted automatically by the turn update.</b>
-        </p>
-    }
-}
+    </table>
 
-<h1 style="text-align: center;">Sent Messages</h1>
-
-<table>
-    <thead>
-    <th style="width: 25%;">Recipient</th>
-    <th>Message</th>
-    <th style ="width: 16%;">Time Sent</thstyle>
-    <th style="width: 10%;">Read</th>
-    </thead>
-    <tbody>
-
-        @{foreach (tfgame.ViewModels.MessageViewModel msg in Model.SentMessages)
+    @{
+        if (Model.WearerId != null && Model.WearerName != null)
         {
-            <tr>
-                @{if (msg.SentToName != "(inanimate)")
-                {
-                    <td>@Html.ActionLink(msg.SentToName, "LookAtPlayer", "PvP", new { id = msg.dbMessage.ReceiverId }, null)</td>
 
-                }
-                else
-                {
-                    <td>(inanimate)</td>
-
-                }
-                }
-                
-                <td>@msg.dbMessage.MessageText</td>
-                <td><span style="font-size: 10px">@CharactersHere.DatetimeToTimeago(msg.dbMessage.Timestamp)</span></td>
-                <td>@msg.dbMessage.IsRead</td>
-            </tr>
+            <p> @Html.ActionLink("Telepathically talk to the person wearing you, " + Model.WearerName, "Write", "PvP", new { playerId = Model.WearerId, responseTo = -1 }, null) </p>
         }
-        }
-
-
-    </tbody>
-
-</table>
-
-@{
-    if (Model.WearerId != null && Model.WearerName != null)
-    {
-
-        <p> @Html.ActionLink("Telepathically talk to the person wearing you, " + Model.WearerName, "Write", "PvP", new { playerId = Model.WearerId, responseTo = -1 }, null) </p>
     }
-}
-
-<div class="result">
-    @Html.Raw(ViewBag.Result)
 </div>
-
-@Html.ActionLink("Back to game", "Play", "PvP")
-
-
 
 <style>
     table{
@@ -171,6 +185,15 @@
 
     tr:nth-child(odd) {
         background-color: lightgray;
+    }
+
+    tr:nth-child(even) {
+        background-color: gray;
+    }
+
+    .timeSent {
+        color: white;
+        background: #475374;
     }
 
 </style>

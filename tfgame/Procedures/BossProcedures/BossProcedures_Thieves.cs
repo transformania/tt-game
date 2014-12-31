@@ -352,7 +352,7 @@ namespace tfgame.Procedures.BossProcedures
                 double roll = rand.NextDouble();
 
                 // random chance of moving to a new random location
-                if (roll < .3)
+                if (roll < .166)
                 {
                     AttackProcedures.Attack(femalethief, attacker, "skill_Seekshadow's_Silence_Judoo");
                     string locationMessage = "<b>" + malethief.GetFullName() + " and " + femalethief.GetFullName() + " ran off in an unknown direction.";

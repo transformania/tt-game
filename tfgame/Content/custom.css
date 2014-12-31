@@ -1,6 +1,6 @@
 body {
   background: #A16969;
-  font-size: 12px;
+  font-size: 13px;
   font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif; }
 
 p {
@@ -14,6 +14,9 @@ a {
 a:hover {
   color: #4E0404 !important;
   text-decoration: none; }
+
+.inboxNew {
+  background: #865863 !important; }
 
 .outsideContainer a {
   color: white !important;
@@ -33,17 +36,17 @@ a:hover {
 .navbarTT1 {
   background: #734752;
   border-bottom: 4px solid #A16969 !important;
-  font-size: 16px;
+  font-size: 15px;
   margin-bottom: 0px; }
 
 .navbarTT2 {
   background: #CF8C81 !important;
   border-bottom: 4px solid #A16969 !important;
-  font-size: 16px;
+  font-size: 13px;
   margin-bottom: 0px; }
 
 .footerTT {
-  font-size: 12px;
+  font-size: 13px;
   line-height: 36px;
   border-top: 4px solid #A16969 !important;
   color: white; }
@@ -69,7 +72,7 @@ a:hover {
 .specialBox {
   background: #78BAB5;
   border-bottom: 4px solid #A16969;
-  font-size: 16px;
+  font-size: 15px;
   text-align: center;
   margin-bottom: 0px;
   padding: 10px;
@@ -106,12 +109,20 @@ a:hover {
 
 #dismissNotficationBox {
   background: #865863;
-  font-size: 12px;
+  font-size: 13px;
   text-align: center;
   border-bottom: 4px solid #A16969; }
 
+#dismissNotficationBox a, #offlinePlayersButton a {
+  color: #E4E0D4 !important;
+  font-weight: normal !important; }
+
+#dismissNotficationBox a:hover, #offlinePlayersButton a:hover {
+  color: white !important;
+  font-weight: normal !important; }
+
 .infoMessage {
-  font-size: 16px;
+  font-size: 15px;
   border-bottom: 4px solid #A16969;
   padding: 4px;
   text-align: center;
@@ -128,7 +139,7 @@ a:hover {
 
 .suberror {
   color: white;
-  font-size: 12px; }
+  font-size: 13px; }
 
 .covenDescription {
   padding-left: 40px;
@@ -151,10 +162,13 @@ a:hover {
   margin-bottom: 10px;
   height: 280px; }
 
+.itemBoxPP {
+  height: 150px !important; }
+
 .itemBox {
   margin-bottom: 10px;
-  height: 150px;
-  text-align: center; }
+  text-align: center;
+  height: 100%; }
 
 .charaBoxInner {
   padding: 10px; }
@@ -177,7 +191,7 @@ a:hover {
   border-bottom: 4px solid #A16969; }
 
 .floorItemsWrapperBG {
-  background: #FFF1C8;
+  background: #E4E0D4;
   border-bottom: 4px solid #A16969;
   clear: both; }
 
@@ -190,7 +204,7 @@ a:hover {
 
 #offlinePlayersButton {
   background: #7B6461;
-  font-size: 12px;
+  font-size: 13px;
   text-align: center;
   border-bottom: 4px solid #A16969; }
 
@@ -216,7 +230,7 @@ a:hover {
   border: 4px solid #A16969;
   padding: 10px;
   margin: 10px;
-  font-size: 16px;
+  font-size: 15px;
   display: inline-block; }
 
 #actionMeditate {
@@ -238,12 +252,12 @@ a:hover {
   font-weight: bold; }
 
 .formerly {
-  font-size: 12px;
+  font-size: 13px;
   color: darkred;
   background-color: #FFCCFF; }
 
 .action_attack {
-  font-size: 16px;
+  font-size: 15px;
   line-height: 30px;
   margin-right: 10px;
   margin-bottom: 10px;
@@ -284,5 +298,40 @@ a:hover {
 
 .timeago {
   color: #6F5151 !important; }
+
+.place {
+  font-size: 20px;
+  color: #475374;
+  text-align: center;
+  clear: both;
+  display: block; }
+
+.covSafeground {
+  font-size: 15px;
+  color: #865863;
+  text-align: center;
+  clear: both;
+  display: block; }
+
+.tableLines {
+  margin-left: auto;
+  margin-right: auto; }
+
+.tableLines td {
+  border: 1px solid #865863;
+  text-align: center;
+  padding: 3px;
+  background: #865863;
+  color: white; }
+
+.tableLines td a {
+  color: #D7BEBA !important;
+  font-weight: normal; }
+
+.tableLines td a:hover {
+  color: white !important; }
+
+.tableLines td:empty {
+  background: #A16969; }
 
 /*# sourceMappingURL=custom.css.map */

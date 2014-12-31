@@ -46,7 +46,7 @@
 @{
     if (Model.MessageCounts.NewMessagesCount > 0)
     {
-        <li>@Html.ActionLink("(" + Model.MessageCounts.NewMessagesCount + " unread)", "MyMessages", "PvP")</li>
+        <li>@Html.ActionLink("(" + Model.MessageCounts.NewMessagesCount + " unread)", "MyMessages", "PvP", null, new { @class = "inboxNew" })</li>
 	}
     else
     {
@@ -221,7 +221,7 @@
 	
         foreach (tfgame.ViewModels.ItemViewModel item in Model.LocationItems)
         {
-		      <div class="col-md-2 col-sm-4 col-xs-12 itemBox">
+		      <div class="col-md-2 col-sm-4 col-xs-12 itemBox itemBoxPP">
         <div class="charaBoxInner">
             <div>
                 <div class="portrait_item_mainpage" style="background-image: url(..@CharactersHere.GetImageURL(item));">

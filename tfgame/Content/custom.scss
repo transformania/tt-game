@@ -10,6 +10,7 @@ $cleanse: #D2D246;
 $floorItemBG: #FFF1C8;
 $offlinePlayerBG: gainsboro;
 $onlinePlayerBG: #D7BEBA;
+$darkBackground: #475374;
 
 $good: #51D269;
 $error: #EA4987;
@@ -18,8 +19,8 @@ $suberror: white;
 $notificationBoxColor: #C2A9AF;
 
 $fontBig: 20px;
-$fontMedium: 16px;
-$fontSmall: 12px;
+$fontMedium: 15px;
+$fontSmall: 13px;
 
 $defaultMargin: 0px;
 
@@ -43,6 +44,10 @@ a:hover{
 color: #4E0404 !important;
 text-decoration:none;
 }
+
+    .inboxNew {
+        background: $darkPink !important
+    }
 
 .outsideContainer a {
     color: white !important;
@@ -71,7 +76,7 @@ background: $navbarDark;
  .navbarTT2{
  background: $navbarLight !important;
  border-bottom: $border !important;
- font-size: $fontMedium;
+ font-size: $fontSmall;
  margin-bottom: $defaultMargin;
  }
 
@@ -157,12 +162,22 @@ right: 0px;
 	border-bottom: $border;
 }
 
+#dismissNotficationBox a, #offlinePlayersButton a{
+    color: $containerColor !important;
+    font-weight:normal !important;
+}
+
+#dismissNotficationBox a:hover, #offlinePlayersButton a:hover{
+    color: white !important;
+    font-weight:normal !important;
+}
+
 .infoMessage{
     font-size: $fontMedium;
 	border-bottom: $border;
 	padding: 4px;
 	text-align: center;
-	background: #475374;
+	background: $darkBackground;
 }
 
 .infoMessage:empty {
@@ -207,10 +222,14 @@ margin-bottom: 10px;
 height: 280px;
 }
 
+.itemBoxPP{
+    height: 150px !important;
+}
+
 .itemBox {
 margin-bottom: 10px;
-height: 150px;
 text-align: center;
+height: 100%;
 }
 
 .charaBoxInner {
@@ -237,7 +256,7 @@ padding:10px;
 	}
 	
 	.floorItemsWrapperBG{
-	background: $floorItemBG;
+	background: $containerColor;
 	border-bottom: $border;
 	clear:both;
 	}
@@ -373,3 +392,45 @@ color: black !important;
     .timeago{
         color: #6F5151 !important;
     }
+
+.place {
+    font-size: $fontBig;
+    color: $darkBackground;
+    text-align: center;
+    clear: both;
+    display: block;
+}
+
+.covSafeground{
+    font-size: $fontMedium;
+    color: $darkPink;
+    text-align: center;
+    clear: both;
+    display: block;
+}
+
+.tableLines {
+margin-left:auto;
+margin-right:auto;
+}
+
+.tableLines td {
+        border: 1px solid $darkPink;
+        text-align: center;
+        padding: 3px;
+		background:$darkPink;
+        color: white;
+}
+
+.tableLines td a{
+    color: $onlinePlayerBG !important; 
+    font-weight: normal;
+}
+
+.tableLines td a:hover{
+    color: white !important;
+}
+
+.tableLines td:empty{
+    background: $bodyColor;
+}

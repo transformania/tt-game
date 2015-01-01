@@ -20,6 +20,7 @@ $willpowerRed: #9E0E0E;
 
 $notificationBoxColor: #C2A9AF;
 
+$fontHuge: 26px;
 $fontBig: 20px;
 $fontMedium: 15px;
 $fontSmall: 13px;
@@ -40,6 +41,10 @@ padding: 0px;
 a {
 color: black !important;
 font-weight: bold;
+}
+
+a, a:hover, a:active, a:focus {
+ outline: 0;
 }
 
 a:hover{
@@ -473,4 +478,93 @@ text-align:center;
 
 .onlinePlayersButton {
     border:none !important;
+}
+
+.avatarText, .avatarBars {
+    text-align: center;
+        display: table-cell;
+    vertical-align: middle;
+}
+
+.avatarName {
+    font-size: $fontHuge;
+}
+
+.avatarFormName {
+    font-size: $fontMedium;
+}
+
+.avatarCoven {
+    font-size: $fontSmall;
+    color: purple;
+}
+
+.portraitFront {
+    width: 200px;
+    height: 200px;
+    margin-left: auto;
+    margin-right: auto;
+    background-size: 100% 100%;
+}
+
+.barWrapper {
+    height: 30px;
+    width: 280px;
+    background-color: $notificationBoxColor;
+    margin-bottom: 10px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.avatarXPWrapper {
+    height: 15px !important;
+    width: 280px !important;
+    margin-bottom: 10px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+.barData {
+    height: 30px;
+    overflow: hidden;
+}
+
+.barWP {
+    background-color: darkred;
+}
+
+.barMP {
+    background-color: darkblue;
+}
+
+.barAP {
+    background-color: darkorange;
+}
+
+.barEXP, .avatarXPAmt {
+    background-color: purple;
+}
+
+.barText {
+    text-align: center;
+    color: white;
+    font-size: $fontMedium;
+    line-height: 30px;
+    width: 280px;
+    position: absolute;
+}
+
+.frontOuter{
+    height: 200px;
+    width: 100%;
+    max-width: 350px;
+    border: $border;
+    display: table;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+}
+
+#frontOuterAvatar{
+    border: none !important;
 }

@@ -1,774 +1,769 @@
-﻿@Html.ActionLink("Back to game", "Play", "PvP")
+﻿<nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
 
-<h1>Updates, News, and Announcements</h1>
-
-@Html.ActionLink("Planned Game Features", "GameNews_PlannedFeatures", "PvP")
-@Html.ActionLink("News Archive", "GameNews_Archive", "PvP")
-@Html.ActionLink("Contributor Bios", "ContributorBioList", "Contribution")
-
-<h4>I will be posting game updates, news, and a list of <a href="#contributorsTable">community contributors</a> here.</h4>
-
-<p>December 30</p>
-
-<ul>
-    <li>As a notice to artists, please submit graphics at a 600x600 resolution and in a .jpg format.  This is to help reduce filesize somes.  Some of the recent graphics have already been converted to this new format.</li>
-    <li>New spell, Sink or Swim, submitted by Illia Malvusin!  Graphic is by <a href="http://luxianne.deviantart.com/">Luxianne</a>.  This spell turns its victim into a living inflatable pool toy, a pet type.</li>
-    <li>New spell, Stretchcat, submitted by Nyx!  Graphic is by <a href="http://luxianne.deviantart.com/">Luxianne</a>.  This spell turns its victim into a hyperactive ferret girl.</li>
-    <li>New spell, Gift of Strength, submitted by OVERFLOW!  Additional credits go to Animate Mefreely and Hanna for proofreading.  Graphic is by <a href="http://www.renderotica.com/artists/Meddlesom/Gallery">Meddle</a>.  This spell turns its victim into a hulking hellspawn.</li>
-    <li>New spell, Lightning Deal, submitted by <a href="http://luxianne.deviantart.com/">Mizuho</a>! Additional credits go to Elynsynos for proofreading. Graphic is by <a href="http://luxianne.deviantart.com/">Luxianne</a>.  This spell transforms its victim into a wandering merchant with a quite strong back.</li>
-    <li>New spell, What follows War? submitted by <a href="http://gemai.deviantart.com/">Vivien Gemai</a>!  Graphic is by <a href="http://mageomega.deviantart.com/">Mai Omega</a>.  This spell turns its victim into a fiery horse, an animate form.</li>
-    <li>New spell, Sudden Slugginess, submitted by <a href="http://www.pixiv.net/member.php?id=13068321">Cyberkaku Shadowrunner (Puyo Hakurei)</a>!  Graphic is self made.  This spell transforms its victim into a slug girl.</li>
-    <li><b>No doubt you've noticed a major overhaul of the UI.</b>  Please leave all feedback about it on the <a href="http://luxianne.com/forum/viewtopic.php?f=9&t=453">forums here</a>.  Please do not leave feedback on the chat as it is far easier for us to organize it in the forums and is overall far less stressful.</li>
-    <li>You can now archive your spells.  Archived spells will NOT appear on your attack modal; this way you can keep that screen from being overwhelemed with spells you won't use or just have your favorite ones.  You can archive all your spells at once, restore all your spells at once, or archive/restore each one individually.</li>
-</ul>
-
-<hr />
-
-<p>December 28</p>
-
-<ul>
-    <li>New RP functionality:  You can choose among some pre-selected tags that can be used to indicate to others what types of RP you enjoy and which you do not.  You can set these on your Player Bio page.  Click each tag to toggle them on or off and then save.</li>
-    <li>Added confirmation message before leaving your covenant.</li>
-    <li>Added ability to delete your player bio.</li>
-    <li>New spell, Butt Kicking For Goodness!, submitted by Varn!  Graphic is by <a href="http://babblingfaces.deviantart.com/">Babblingfaces</a>.  This spell turns its victim into a Quixotic Ranger.</li>
-    <li>New spell, Noot!, submitted by Nyx! Additional credits go to Lilith for the idea.  Graphic is by <a href="http://luxianne.deviantart.com/">Luxianne</a>.  This spells turns its victim into a small adorable penguin.</li>
-    <li>New spell, Three For One, submitted by Kayliegh Winters!  Graphic is by Graphic is by <a href="http://spacedande.deviantart.com/">Dandelion</a>.  This spells turns its victim into a three headed dog, the mythical Cerberus, to keep as a pet.</li>
-    <li>Added a new type of covenant furniture, the Ultrasoft Feather Mattress.  This mattress helps players recover willpower and mana quickly overnight (great if your build saps either of these) but will also effectively prevent you from moving and fighting for eight hours, so careful when you decide to use it.</li>
-    <li>New consumable item, the Autoselftransmogrification Deflector Device.  This item can be found from random searches or bought from Lindella and is used to transform oneself into any animate form that is a result of the spells they know.</li>
-
-</ul>
-
-<hr />
-
-<p>December 27</p>
-
-<ul>
-    <li><a href="http://lindella.net16.net/calc.php">Kevin Portalz has been busy working on an offsite tool</a>  that may help people plan out their item builds.  I have and will supply him with some raw JSON data that has complete information on item statistics as of the time of sending.  To be clear, neither me (Judoo) nor Mizuho have actively worked on this tool and are not the people to contact to request features, nor can we verify its accuracy.</li>
-    <li>Something else that will help me for a feature I plan to work on tomorrow is a list of tags that players can toggle on or off on their player bios.  Please suggest tags for us to include on <a href="http://luxianne.com/forum/viewtopic.php?f=9&t=446">this forum thread</a>.</li>
-    <li>Mizuho started a Transformania Time group over on DA to gather all of TT's art from Deviant art into one place.  You can check it out <a href="http://transformaniatime.deviantart.com/">here</a>.</li>
-</ul>
-
-<hr />
-
-<p>December 26</p>
-
-<ul>
-    <li>Nothing today pertains directly to the game but here are a couple things you all may find interesting.  First is some fan art from last round by Katie Frills found <a href="http://i.imgur.com/ENRUyne.png">here</a>.  Secondly, Mizuho is running a general <a href="http://goo.gl/forms/Zu0JeZBLn9">transformation themed poll</a> ; any feedback you care to leave on that would be appreciated!</li>
-    <li>New spell, Ratticus Doethievious, submitted by <a href="https://www.furaffinity.net/user/draggony/">Draggony</a>!  Graphic is by <a href="http://luxianne.deviantart.com/">Luxianne</a>.  This spell turns its victim into a female rat thief to accompany the male one in all their banditry.</li>
-    <li>New spell, Sexy Savior, submitted by <a href="http://christytgcaps.blogspot.com/">Christy D</a>!  Graphic is by <a href="http://babblingfaces.deviantart.com/">Babblingfaces</a>.  This spell turns its victim into a uniquely powered superheroine.</li>
-    <li>New spell, Hocus Porcus, submitted by Lana Harter!  Graphic is by <a href="http://martiandawn.deviantart.com/">Martiandawn</a>!  This spell turns its victim into a full pig companion.</li>
-    <li>New spell, Seeing Spots, submitted by Soren Reus!  Graphic is by <a href="http://martiandawn.deviantart.com/">Martiandawn</a>.  This spell turns its victim into a nimble cheetah.</li>
-</ul>
-
-<hr />
-
-<p>December 24</p>
-
-<ul>
-    <li>Hi there, Mizuho here. I would like to wish you guys Merry Christmas (or any other different named holidays that you celebrate) on behalf of our team. We at Transformania Times hope that you will have warm and safe break from everyday life. Enjoy your time with families and friends (also with those from TT). We hope that you will get bestests presents in the word (like real rubbing clothes!... or for items great owners).</li>
-    <img src="http://i.imgur.com/PFkqdQM.png" style="width:600px; margin-left:auto; margin-right: auto; display:block;">
-</ul>
-
-<hr />
-
-<p>December 22</p>
-
-<ul>
-    <li><b>Alpha Round 14 has started!</b>  As a note for all players who have custom starting forms, you will be given the chance to convert from the regular man/woman base form to your custom one on the Settings page by clicking the link that reads "Use my custom starting form (if available)".  If you are your old base form you'll be changed to it instantly.  Otherwise you'll need to use a Classic Me! Lotion first, or else struggle out of an inanimate/animal form, so it's best to do this as soon as you spawn in the world.</li>
-    <li>Added a couple new locations to the Valentine Castle and rearranged its layout slightly.</li>
-    <li>New spell, Undercurrent, written by myself.  Graphic is by <a href="http://luxianne.deviantart.com/">Luxianne</a>.  This spell turns its victim into a mystical mermaid.</li>
-    <li>New spell, Try to Catch Some Cum!, submitted by Soul!  Graphic is by <a href="http://spacedande.deviantart.com/">Dandelion</a>.  This spell turns its victim into a considerably more grown-up take on a childhood series.</li>
-    <li>New spell, How To Train Your Boi-Toy, submitted by Reid Woodell!  Additional credits go to Grace Kitsu for the idea.  Graphic is by <a href="http://spacedande.deviantart.com/">Dandelion</a>.  This spell turns its victim into a dragon boi, an animate form.</li>
-    <li>New spell, One Dark and Stormy Knight, submitted by <a href="http://martiandawn.deviantart.com/">Martiandawn</a>!  Graphic is self made.  This spell transforms its victim into a huntress of the night.</li>
-</ul>
-
-<hr />
-
-
-<p>December 21</p>
-
-<ul>
-    <li>Alpha Round 14 is scheduled to begin tomorrow at 7pm UTC.</li>
-</ul>
-
-<hr />
-
-<p>December 20</p>
-
-<ul>
-    <li>Due to recent events in the community, real life concerns, and the holidays I'm not sure how many new features will be part of Alpha Round 14.  Currently my plan is to have it kicked off by early Monday afternoon in Eastern US time.</li>
-    <li><b>For the upcoming round PvP mode will be partially disabled.</b>  Players will still be allowed to choose PvP or Protection mode, and while the PvP leaderboard will remain it will work similar to the XP one and only show players by level.  <b>Ranking first place on the PvP leaderboard will not grant the winner the honor of having Alpha Round 14 named in their honor.</b>  PvP mode will be reworked sometime in the future:  how to do so is being discussed on the forums and is an ongoing discussion.</li>
-    <li>In light of the PvP changes, the only requirement now to change into and out of PvP is having not been in combat for 60 minutes.  You should not receive any debuff curses upon doing this anymore.</li>
-    <li>If you are an author or artist who has contributed eight or more spells or graphics for spells (curses do not currently count) you are eligible for a custom base form.  Read more about it <a href="http://luxianne.com/forum/viewtopic.php?f=9&t=400">here</a>.</li>
-</ul>
-
-<hr />
-
-<p>December 17</p>
-
-<ul>
-    <li>Congrats to Alexander Dantes for ending the round with the most PvP points.  The game is now in chaos mode while I prepare for next round.</li>
-</ul>
-
-<hr />
-
-<p>December 16</p>
-
-<ul>
-    <li>Arists can now write up an extended biography allowing them to link to their ingame artwork themselves without having to wait for me to update them.  These extended biographies will be given to spell authors in a future date.  It is possible to see these extended artist biographies when looking at a player, however I will also gather these links up on other pages such as the News/Updates page where Contribution credits are listed.</li>
-
-</ul>
-
-<hr />
-
-
-<p>December 15</p>
-
-<ul>
-    <li>Thanks for your patience during this relative lack of updates.  As the round nears a close, I anticipate getting the next round started on the 21st or 22nd.</li>
-    <li>Lindella will now restock certain types of consumable items including spare willflower and spellweaver roots, teleportation scrolls, Classic Me! Lotions, and some of the effect-giving foods.  She will restock every two and a half hours.</li>
-</ul>
-
-<hr />
-
-<p>December 11</p>
-
-<ul>
-    <li>Some updates to chat:
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+                <li>@Html.ActionLink("Planned Game Features", "GameNews_PlannedFeatures", "PvP")</li>
+                <li>@Html.ActionLink("News Archive", "GameNews_Archive", "PvP")</li>
+                <li>@Html.ActionLink("Contributor Bios", "ContributorBioList", "Contribution")</li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+<div class="containerInner">
+    <h1>Updates, News, and Announcements</h1>
+    <h4>I will be posting game updates, news, and a list of <a href="#contributorsTable">community contributors</a> here.</h4>
+    <p>December 31 and 32</p>
     <ul>
-        <li>Added /me command.</li>
-        <li>Added /dm [message] command, which uses the same style as the DM events but uses your own message for text.</li>
-        <li>You can now set a custom chat color on the Settings page.</li>
+        <li><img src="http://i.imgur.com/qiPQJyD.jpg" style=" -ms-transform: rotate(7deg); /* IE 9 */ -webkit-transform: rotate(7deg); /* Chrome, Safari, Opera */ transform: rotate(7deg);"></li> Everything is working as... derped.
     </ul>
-    
-    </li>
-    <li>Donna's willpower will be much lower before she begins to cleanse now.</li>
-    <li>New spell, Breathless, submitted by Lian! . Graphic is by <a href="http://spacedande.deviantart.com/">Dandelion</a>.  This spell transforms its victim into a Lady Jiangshi.</li>
-    <li>New spell, Enticing Melody, submitted by Whispthera!  Graphic is by <a href="http://babblingfaces.deviantart.com/">Babblingfaces</a>.  This spell turns its victim into a beautiful but dangerous siren.</li>
-    <li>New spell, Praise the Sun!, submitted by <a href="http://gemai.deviantart.com/">Vivien Gemai</a>!  Additional credits go to Babblingfaces (Camren Doss) for the picture and Animate Mefreely for proofreading the spell.  Graphic is by<a href="http://babblingfaces.deviantart.com/">Babblingfaces</a>.  This spell turns its victim into an incandescent Hero.</li>
-</ul>
 
-<hr />
+    <p>December 30</p>
 
-<p>December 10</p>
-
-<ul>
-    <li>You can now see how many spells you know compared to how many currently exist in the game (at the time of writing the number is 223).  Weaken and curses should not be included in this count.</li>
-    <li><b>Players who wish to move into PvP mode with their character must do so by turn 1800.</b>  This is to help keep players from entering for the sole sake of being inanimated to boost friends' scores.</li>
-    <li>New consumable type item, the Covenant Callback Crystal.  This crystal can be used to teleport a player back to their covenant safeground if they have not been in combat in the past half hour.</li>
-    <li>New piece of covenant furniture, the Welcome Back Doormat which produced Covenant Callback Crystals mentioned above.</li>
-    <li>New spell, Fabric of our Lives, submitted by Liahnna!  Additional credits go to Martiandawn for Proofreading!  Graphic is by <a href="http://www.renderotica.com/artists/Meddlesom/Gallery">Meddle</a>.  This spell turns its victim into a checkered cotton apron.</li>
-    <li>New spell, Dark Seduction, submitted by Roxanne13579!  Graphic is by <a href="http://luxianne.deviantart.com/">Luxianne</a>.  This spell turns its victim into a silky gothic nightgown.</li>
-
-</ul>
-
-<hr />
-
-<p>December 9</p>
-
-<ul>
-   
-    <li>New spell, Midsummer's Eve, submitted by <a href="http://gemai.deviantart.com/">Vivien Gemai</a>!  Additional credits go to sakimichan and mictones for the inspiration regarding  appearance, Elyn Kitsu for her first assessment, nice!bottledwater (Animate Mefreely) for proofreading the first part and dantes (Devoted Toy) for proofreading the last part.  Graphic is by <a href="http://luxianne.deviantart.com/">Luxianne</a>.  This spell turns its victim into a Great Fairy, an animate form.</li>
-    <li>New spell, Light on Your Feet, submitted by Christopher!  Additional credits go to Liara for assistance in regards to proof reading.  Graphic is by <a href="http://babblingfaces.deviantart.com/">Babblingfaces</a>.  This spell turns its victim into an inanimate balloon girl.</li>
-    <li>New location-specific effect, Valentine's Favor, submitted by Izz Valentine.</li>
-    <li>New curse, Full of Milk, by Estyz.  This is a castable spell by the Curvaceous Cowgirl.</li>
-    <li>New curse, Give Peace a Chance, by Varn.  This is a castable spell by the New Age Retro Hippy.</li>
-    <li>New curse, My Cup Runneth Over, by Swogrider.  This is a castable spell by the Unimaginably Huge-Breasted Woman.</li>
-    <li>New curse, Let it Go, by Varn.  This is a castable spell bythe  Ice Queen.</li>
-    <li>New curse, Heavenly Chime, by Vivien Gemai.  This is a castable spell by the Mischievous Gal'.</li>
-    <li>New curse, New effect, Chooser of the Slain, by Varn.  This is a castable spell by the Valiant Valkyrie.</li>
-</ul>
-
-<hr />
-
-<p>December 6</p>
-
-<ul>
-    <li>Two new findable consumable items, Trueshot Truffles and Nirvana Nougats (thanks to Helen Castle for naming help.)  The items buff the user's evasion negation and increases mana recovery when meditating, respectively.  Also, the sell price of all of these new pastries/candies has been lowered as the probability of finding them more frequently rises.</li>
-    <li>New findable consumable item, the Lullaby Whistle which will deaggro any psychopathic spellslingers targetting the user.</li>
-    <li>New spell, Writ In Stone, submitted by Alexander Dantes! Additional credits go to Animate Mefreely for proofreading.  Graphic is by <a href="http://spacedande.deviantart.com/">Dandelion</a>.  This spell turns its victim into a decorative gargoyle, a pet.</li>
-    <li>New spell, Daemon Famulus, submitted by Blackarts!  Additional credits go to King Leoric and Princess Naomi.  Graphic is by<a href="http://spacedande.deviantart.com/">Dandelion</a>.  This spell transforms its victim into an incubus servant boy, an animate form.</li>
-    <li>New spell, Hot to Trot, submitted by <a href="http://martiandawn.deviantart.com/">Martiandawn</a>!  Graphic is self made.  This spell transforms its victim into a Prancing Pony Boy, a pet.</li>
-    <li>Offline players are hidden on page load by default now.  There is a button you can click that will reload the page with them added in.  This should help cut down on some page load times in crowded areas such as the tavern or covenant safegrounds where players go to rest.</li>
-</ul>
-
-<hr />
-
-<p>December 4</p>
-
-<ul>
-    <li>"Private" chats are now here.  You can now create a new custom chat room.  If you want it to remain private, make the name long, random, and hard to guess as for now at least it doubles as the room's password.  You can also search for a private room in the chat logs.</li>
-    <li>In case you hadn't seen yet, there is a new graphic for the Fire Fritter by <a href="http://luxianne.deviantart.com/">Luxianne</a>.</li>
-</ul>
-
-<hr />
-
-<p>December 3</p>
-
-<ul>
-    <li>Doubled the number of cure vaccines that drop and increased the duration of the immunity from 48 turns to 100.  Halved Lady Lovebringer's maximum willpower.</li>
-</ul>
-
-<hr />
-
-<p>December 1</p>
-
-<ul>
-    <li>New spell, Pantiedemic, submitted by Christopher! Additional credits go to Hanna for the name suggestion.  Graphic is by <a href="http://www.renderotica.com/artists/Meddlesom/Gallery">Meddle</a>.  This spell turns its victim into a pink latex thong.</li>
-    <li>New spell, Aretak Antorbok Xel'lotath, submitted by Vivien Gemai!  Additional credits go to Babblingfaces (Camren Doss) for the picture, Animate Mefreely for proofreading the spell. Graphic is by <a href="http://babblingfaces.deviantart.com/">Babblingfaces</a>.  This spell turns its victim into a zombie-like assistant who feeds off of mana.</li>
-    <li>New spell, Checkered Concerto, submitted by Liahnna!  Additional credits go to <a href="http://martiandawn.deviantart.com/">Martiandawn</a> for preliminary proofreading.  Graphic is by <a href="http://www.renderotica.com/artists/Meddlesom/Gallery">Meddle</a>.  This spell transforms its victim into a pair of checkered botten panties.</li>
-</ul>
-
-<hr />
-
-<p>November 30</p>
-
-<ul>
-    <li>Item leaderboard is now "fixed" in that it will now show items ordered by level AND XP.  The item leaderboard is cached so it will only reflect new information each 10 minutes, which means an inanimate or animal player's last action that granted them XP may not be reflected immediately.</li>
-    <li>Added support for reusable consumable type items that give effects instead of willpower or mana instant restoration.  When creating these types of items, please leave the item bonuses blank for the item since reusable consumables are only carried, not equipped.  Instead, use the Curse contributions to write up the effect's bonuses and mention what the name of the curse is supposed to be on the item contribution page.</li>
-    <li>New spell, Fresh Cup of Josephine, submitted by <a href="http://slivermaster25.deviantart.com/">Alex Wise</a>! Additional credits go to Elyn Kitsu for inspiring the original idea, Cara Doom for part of the spell description, Animate Mefreely for proofreading, Martiandawn for artwork, and Judoo for the game in the first place.  Graphic is by <a href="http://martiandawn.deviantart.com/">Martiandawn</a>.  This spell transforms its victim into a hot mug of coffee, the first reusable consumable that gives and effect rather than willpower or mana restoration.</li>
-    <li>New effect, Running Hot, by Alex Wise.  This effect is gained by using the coffee mug described above.</li>
-</ul>
-
-<hr />
-
-
-<p>November 29</p>
-
-<ul>
-    <li>Alpha round 13 has begun!  Some new curses will be going out--however, <b>expect these to be drastically rebalanced</b> as more details are worked out regarding what is fair in terms of castable curse spells (for example, it does not make sense to have negitive modifiers or caps which is how the calculator is currently set up.)</li>
-    <li><b>The first ingame poll is up.</b>  Here you can provide direct feedback so I can better get an idea of how people are enjoying, not enjoying, or generally playing the game.  Please only post on your main player account.</li>
-    <li>New spell, William Tell's Revenge, submitted by Aingelproject667!  Additional credits go to Animate Mefreely who helped with the name.  Graphic is by <a href="http://luxianne.deviantart.com/">Luxianne</a>.  This spell transforms its victim into a powerful crossbow.</li>
-    <li>New spell, Knotty, submitted by <a href="http://lexam-the-gem-fox.deviantart.com/">LexamtheGemFox</a>!  Graphic is by <a href="http://luxianne.deviantart.com/">Luxianne</a>.  This spell transforms its victim into a doggy dick. </li>
-    <li>New spell, Foot Fetish, submitted by <a href="http://spacedande.deviantart.com/">Dandelion</a>!  Graphic is self made.  This spell transforms its victim into a rather unique pair of parastic boots--the first piece in an upcoming set.</li>
-    <li>New spell, Alas Poor Mage, submitted by <a href="https://www.youtube.com/user/Duhad8">Duhad</a>!  Graphic is by <a href="http://www.renderotica.com/artists/Meddlesom/Gallery">Meddle</a>.  This spell transforms its victim into a pink crystal skull.</li>
-    <li>New spell, Let them Know You're Coming!, submitted by Jo Jarvis!  Additional credits go to Mahoney for the help reworking some of the clumsy parts. Graphic is by <a href="http://luxianne.deviantart.com/">Luxianne</a>.  This spell transforms its victim into a pair of cute flip flops.</li>
-    <li>New spell, Hair Today, Soul'd Tomorrow, submitted by Liahnna!  Additional credits go to <a href="http://martiandawn.deviantart.com/">Martiandawn</a>, Kaitlyn Halliwell and Annie for bouncing around ideas.  Graphic is by <a href="http://www.renderotica.com/artists/Meddlesom/Gallery">Meddle</a>.  This spell turns its victim into a flirty two-tiered bow.</li>
-    <li>New spell, Invasion of the Booty Snatchers, submitted by <a href="https://www.youtube.com/user/Duhad8">Duhad</a>! Additional credits go to <a href="http://babblingfaces.deviantart.com/">Babblingfaces</a> for the idea and proofreading.  Graphic is by <a href="http://babblingfaces.deviantart.com/">Babblingfaces</a>.  This spell transforms its victim into a lovely companion--from outer space!</li>
-    <li>New spell, Consign to Feline!, submitted by Asteron!  Additional credits go to Melodi Pond. Graphic is by <a href="http://luxianne.deviantart.com/">Luxianne</a>.  This spell transforms its victim into a spellbound cat boy, a pet.</li>
-    <li>New spell, Pretty Soldier, submitted by Liahnna!  Graphic is by <a href="http://www.renderotica.com/artists/Meddlesom/Gallery">Meddle</a>.  This spell transforms its victim into an anime-style monster-fighting magical girl!</li>
-    <li>New curse, Tempted, submitted by Varn.  This is a castable spell by the Sexy Succubus.</li>
-    <li>New curse, Repent, Sinner!, by Varn.  This is a castable spell by the Austere Angel.</li>
-    <li>New curse, Sucky Sucky, by Giacamo.  This is a castable spell by the Naughty Schoolgirl.</li>
-    <li>New curse, Tentacle Temptation, by Varn.  This is a castable spell gained when keeping the Tentacled Terror as a pet.</li>
-    <li>New location-specific curse submitted by themorpher606.  Find out where and what yourself...</li>
-    <li>New curse, Parasitic Noise, by Vivien Gemai.  This is a castable spell by the Mischevious Gal.</li>
-    <li>New mixed curse/blessing, Mother's Milk, by Purple Autumn.  This is a castable spell gained when wearing the Magic Nursing Bra.</li>
-    <li>New curse, Kiss Marked, by HappyItem with extra thanks to Greg (lipstick writer, for helpful discussion and creative input), Ani, Arrhae, and Annie (proofreading).  This is a castable spell gained when having the Ruby Red Lipstick equipped.</li>
-    <li>New curse, Reading Rainbow, by Varn.  This is a castable spell gained when having Practical Transformations and the Metaphysical Realm equipped.</li>
-    <li>New effect, My Eyes!, by GooGirl.  This is a castable spell gained when keeping the Cuddly Pocket Goo Girl as a pet.</li>
-    <li>New spell, Driving Me Batty, submitted by Nyx!  Additional credits go to Stat help by Elyn.  Graphic is by <a href="http://luxianne.deviantart.com/">Luxianne</a>.  This spell transforms its victim into a gothic bat girl.</li>
-    <li>New spell, Lil' Bunbutt, submitted by Melodi Pond! Additional credits go to Nyx Clark for criticism.  Graphic is by <a href="http://luxianne.deviantart.com/">Luxianne</a>.  This spell transforms its victim into a shy but horny feminine bunny boy.</li>
-    <li>New spell, Crystallize, submitted by Asteron!  Graphic is by <a href="http://luxianne.deviantart.com/">Luxianne</a>.  This spell transforms its victim into a teardrop talisman.</li>
-
-</ul>
-
-<hr />
-
-<p>November 28</p>
-
-<ul>
-    <li>The new round, Alpha Round 13, is scheduled to begin tomorrow at 19:00 UTC.  Look at the update a couple posts down for information on what updates to expect.  Notably, I have added a proposed idea that gives PvP players a small trickle of PvP score each update they spend online.  Please read about the discussion revolving around PvP <a href="http://luxianne.com/forum/viewtopic.php?f=9&t=342">here</a> and provide feedback.</li>
-</ul>
-
-<hr />
-
-<p>November 24</p>
-
-<ul>
-    <li>Chaos mode will continue a few days more.  My current aim is to begin the bext round on Friday or early on Saturday as many will be gone for the holidays.  Now that I am back in town I will resume working on updates for next round; as always you can track the progress in the post below this one.</li>
-    <li>I'd also like to point out that Luxianne and Mizuho are currently running a Christmas event.  Purchase one of fourteen Christmas presents; each contains a 5-step transformation feature an OC or an image of yourself.  You can read more about it here:  <a href="http://luxianne.deviantart.com/art/Luxa-s-X-mas-Special-2014-496066858">Luxa's X-mas Special 2014.</a>.  <i>Please note that if you are a contributor and would like for me to send out an update like this for your own promotional events, pleases send me a message in the forums.</i></li>
-</ul>
-
-<hr />
-
-<p>November 18 - November 28</p>
-
-<ul>
-    <li>Alpha round 12 has ended with Soul Blossom at the top of the leaderboard.  Congratulations!  In a few hours I will allow the latest boss to be resummoned for those who did not get a chance to see the event in the round; later on I'll put the game into chaos mode.  Due to the holidays and a good deal of coding I need to do before next round, the next round will likely not start until the 25th or later.  In the meantime I will post planned round changes here so you can track the progress of the game here.</li>
-    <li>Here are the plans for Alpha round 13:</li>
     <ul>
-        <li><span class="good">FINISHED:  </span>Refactor the perks/effects code.  This also means that I will *finally* be able to start adding in more of the player contributed effects.</li>
-        <li><span class="good">FINISHED:  </span>Complete publish and proofreading tools for effect contributions.</li>
-        <li><span class="good">FINISHED:  </span>Limit covenants to 25 animate members at a time.  When this limit is reached, no new players can join and inanimate/animal players will not be able to return to animate until there is room (but they will still be able to struggle to get the % chance of success higher.)</li>
-        <li><span class="good">FINISHED:  </span>Covenant Captains:  Allow the leader of a covenant to give 'captain' status to a covenant member, allowing them to handle covenant treasury affairs and purchase furniture.  I am not decided whether or not they will also be allowed to accept new members.</li>
-        <li><span class="good">FINISHED:  </span>Allow players who reroll a new character after being inanimated / animalified to retain their spells to their new character.  Also fixed the bug where rerolling players are allowed to choose perks equal to one less than their new level.</li>
-        <li><span class="good">FINISHED:  </span>Implement curses available to players who have a certain item or pet equipped.  (None of these effects are currently released yet though--I'll release a few before next round starts for the sake of testing them, then plan on doing more when the round has kicked off).</li>
-        <li><span class="good">FINISHED:  </span>Readjust the minimum turn counts in which the various bosses can spawn to be more spaced out throughout the round.</li>
-        <li><span class="good">FINISHED:  </span>Lower round turn count to 2,500 turns instead of 3000.</li>
-        <li><span class="good">FINISHED:  </span>Ingame polling feature to collect quick and easy data on things like how many players liked the new 3000 turn length, prefer the old 2000 one, or would like try out something inbetween.  Low priority.</li>
-        <li><span class="good">FINISHED:  </span>Provide all animate PvP players a small amount of PvP score each turn they are online.</li>
-        <li><span class="good">FINISHED:  </span>Sending a friend request will now notify players in their activity logs.  As an anti-spam measure, if the targeted friend already has a message about it in their activity log, even dismissed, they will not receive another one.</li>
-        <li><span class="good">FINISHED:  </span>Items and pets can now slip away from their owner if their owner has been inactive for more than 48 hours.</li>
-        <li><span class="good">FINISHED:  </span>Instead of strictly requiring being offline, players can now enter or leave Protection mode after an hour of having not been in combat and not totally offline.  Similarly, players can donate to their covenant treasury if they have not been in combat for 30 minutes instead of having performed no actions in the past 30 minutes.</li>
-        <li><span class="good">FINISHED:  </span>Items and pets should now see notifications on the main Play page the same as animate players do.</li>
-        <li><span class="bad">POSTPONED:  </span>Low level fox (or another animal) theif boss.  Steals from the rich and... keeps it.</li>
-     </ul>
-</ul>
-
-
-<hr />
-
-<p>November 13</p>
-
-<ul>
-    <li>Fixed a bug where effects were not affecting maximum willpower and mana bonus.  I believe this should have a fairly minimal effect on human players but it will give the psychopathic spellslingers significantly more willpower.</li>
-    <li>Items and pets now receieve 5xp per action instead of 3.5xp.</li>
-</ul>
-
-<hr />
-
-<p>November 11</p>
-
-<ul>
-    <li>Some change to the psychopathic spellslingers:</li>
-    <ul>
-        <li>Higher level psychopaths can now spawn at level 7 (Loathful) and level 9 (Soulless).  Certain turn requirements must pass before the higher tiers can be spawned.</li>
-        <li>Psychopaths have stronger and more dangerous perks at the higher levels.  Additionally, the level 7 and 9 psychopaths can now counterattack one or twice respectively in addition to their regular 3 attacks as the beginning of a turn.</li>
-        <li>Psychopaths will not pick out targets that is of a lower level than them anymore (unless first provoked).  Psychopaths will not choose out a new target if the victim has less than 75% of their willpower (meant to stop bots from swooping in and stealing other players' takedowns.)  Psychopaths will still not choose Protection mode players when initiating a new attack.</li>
+        <li>As a notice to artists, please submit graphics at a 600x600 resolution and in a .jpg format.  This is to help reduce filesize somes.  Some of the recent graphics have already been converted to this new format.</li>
+        <li>New spell, Sink or Swim, submitted by Illia Malvusin!  Graphic is by <a href="http://luxianne.deviantart.com/">Luxianne</a>.  This spell turns its victim into a living inflatable pool toy, a pet type.</li>
+        <li>New spell, Stretchcat, submitted by Nyx!  Graphic is by <a href="http://luxianne.deviantart.com/">Luxianne</a>.  This spell turns its victim into a hyperactive ferret girl.</li>
+        <li>New spell, Gift of Strength, submitted by OVERFLOW!  Additional credits go to Animate Mefreely and Hanna for proofreading.  Graphic is by <a href="http://www.renderotica.com/artists/Meddlesom/Gallery">Meddle</a>.  This spell turns its victim into a hulking hellspawn.</li>
+        <li>New spell, Lightning Deal, submitted by <a href="http://luxianne.deviantart.com/">Mizuho</a>! Additional credits go to Elynsynos for proofreading. Graphic is by <a href="http://luxianne.deviantart.com/">Luxianne</a>.  This spell transforms its victim into a wandering merchant with a quite strong back.</li>
+        <li>New spell, What follows War? submitted by <a href="http://gemai.deviantart.com/">Vivien Gemai</a>!  Graphic is by <a href="http://mageomega.deviantart.com/">Mai Omega</a>.  This spell turns its victim into a fiery horse, an animate form.</li>
+        <li>New spell, Sudden Slugginess, submitted by <a href="http://www.pixiv.net/member.php?id=13068321">Cyberkaku Shadowrunner (Puyo Hakurei)</a>!  Graphic is self made.  This spell transforms its victim into a slug girl.</li>
+        <li><b>No doubt you've noticed a major overhaul of the UI.</b>  Please leave all feedback about it on the <a href="http://luxianne.com/forum/viewtopic.php?f=9&t=453">forums here</a>.  Please do not leave feedback on the chat as it is far easier for us to organize it in the forums and is overall far less stressful.</li>
+        <li>You can now archive your spells.  Archived spells will NOT appear on your attack modal; this way you can keep that screen from being overwhelemed with spells you won't use or just have your favorite ones.  You can archive all your spells at once, restore all your spells at once, or archive/restore each one individually.</li>
     </ul>
-</ul>
 
-<hr />
+    <hr />
 
-<p>November 9</p>
+    <p>December 28</p>
 
-<ul>
-    <li>Players can gain some extra action point refill when ending the turn at their covenant safeground equal to .25 points * covenant level, which should offer some more encouragement to upgrade to higher levels.  Be warned that covenant size restrictions will almost certainly be added in for next round which will limit the number of (animate) players in a covenant at a time.  <i>There is currently a bug that throws a runtime error after successfully upgrading a covenant; this has been noted.  The upgrade itself should go through fine.  This will be fixed in the next update.</i></li>
-    <li>The View all Covenants page now shows covenant level as well as its safeground if it has established one.</li>
-    <li>Made some changes to the Contribution page.  This shouldn't effect anything but please let me know if it has introduced any new bugs.</li>
-    <li>New spell, Tale as Old as Time, submitted by Liahnna! Additional credits go to <a href="http://martiandawn.deviantart.com/">Martiandawn</a>, Kaitlyn Halliwell and Annie for bouncing ideas off them, and <a href="http://martiandawn.deviantart.com/">Martiandawn</a> for proofreading.  Graphic is by <a href="http://www.renderotica.com/artists/Meddlesom/Gallery">Meddle</a>.  This spell transforms its victim into the Belle of the Ball, quite the beauty queen.</li>
-    <li>New spell, Sweet Surrender, submitted by <a href="http://martiandawn.deviantart.com/">Martiandawn</a> with their own graphic.  This spell transforms its victim into a Collared Lap Girl, a pet type spell.</li>
-    <li>New spell, Welcome to the Dollhouse, submitted by <a href="http://martiandawn.deviantart.com/">Martiandawn</a>!  Graphic is by Babblingfaces.  This spell transforms its victim into a woman either human or doll--or perhaps both.</li>
-</ul>
+    <ul>
+        <li>New RP functionality:  You can choose among some pre-selected tags that can be used to indicate to others what types of RP you enjoy and which you do not.  You can set these on your Player Bio page.  Click each tag to toggle them on or off and then save.</li>
+        <li>Added confirmation message before leaving your covenant.</li>
+        <li>Added ability to delete your player bio.</li>
+        <li>New spell, Butt Kicking For Goodness!, submitted by Varn!  Graphic is by <a href="http://babblingfaces.deviantart.com/">Babblingfaces</a>.  This spell turns its victim into a Quixotic Ranger.</li>
+        <li>New spell, Noot!, submitted by Nyx! Additional credits go to Lilith for the idea.  Graphic is by <a href="http://luxianne.deviantart.com/">Luxianne</a>.  This spells turns its victim into a small adorable penguin.</li>
+        <li>New spell, Three For One, submitted by Kayliegh Winters!  Graphic is by Graphic is by <a href="http://spacedande.deviantart.com/">Dandelion</a>.  This spells turns its victim into a three headed dog, the mythical Cerberus, to keep as a pet.</li>
+        <li>Added a new type of covenant furniture, the Ultrasoft Feather Mattress.  This mattress helps players recover willpower and mana quickly overnight (great if your build saps either of these) but will also effectively prevent you from moving and fighting for eight hours, so careful when you decide to use it.</li>
+        <li>New consumable item, the Autoselftransmogrification Deflector Device.  This item can be found from random searches or bought from Lindella and is used to transform oneself into any animate form that is a result of the spells they know.</li>
 
-<hr />
+    </ul>
 
-<p>November 6</p>
+    <hr />
 
-<ul>
-    <li>The new boss is now summonable over in the Treasure Chest stage.  Her name is Lady Lovebringer, PHD and her intent is bring on the Bimbocalypse, a highly contagious virus that transforms its victims into her own personal bimbo army.  Keep an eye out for vials of the antivirus that will be airdropped around the town every other turn as they will be important in defeating her and her plague.  A very big thanks to Babblingfaces for doing all of the graphics for this boss event!</li>
-    <li>There is now a link on the Contribute page and that allows you to message the author of a contribution (this is for the sake of proofreaders and artists being able to get in touch with the authors more easily.)  This link also exists when editing the artist assignment on the "Spells Approved but Awaiting Implementation" page.</li>
-</ul>
+    <p>December 27</p>
 
-<hr />
+    <ul>
+        <li><a href="http://lindella.net16.net/calc.php">Kevin Portalz has been busy working on an offsite tool</a>  that may help people plan out their item builds.  I have and will supply him with some raw JSON data that has complete information on item statistics as of the time of sending.  To be clear, neither me (Judoo) nor Mizuho have actively worked on this tool and are not the people to contact to request features, nor can we verify its accuracy.</li>
+        <li>Something else that will help me for a feature I plan to work on tomorrow is a list of tags that players can toggle on or off on their player bios.  Please suggest tags for us to include on <a href="http://luxianne.com/forum/viewtopic.php?f=9&t=446">this forum thread</a>.</li>
+        <li>Mizuho started a Transformania Time group over on DA to gather all of TT's art from Deviant art into one place.  You can check it out <a href="http://transformaniatime.deviantart.com/">here</a>.</li>
+    </ul>
 
-<p>November 2</p>
+    <hr />
 
-<ul>
-    <li>My apologies for a slow update cycle; work on the bimbo boss is underway and should be ready to be go before the end of the round.</li>
-    <li>New spell, Ground Under Foot, submitted by Duhad! Additional credits go to JBovinne.  Graphic is by <a href="http://jbovinne.deviantart.com/">jbovinne</a>.  The spell turns a defeated mage into a pair of heeled boots that, in turn, stomp on more mages.</li>
-    <li>New spell, Princess Topper, submitted by Duhad! Additional credits go to JBovinne.  Graphic is by <a href="http://jbovinne.deviantart.com/">jbovinne</a>.  This spell transforms its victim into a pretty amathyst tiara.</li>
-    <li>New spell, Icarus' Dream, submitted by Mahoney!  Additional credits go to Taenil Auxifur for the spell name.  Graphic is by Babblingfaces.  This spell transforms its victim into a winged harpy straight from Greek mythology.</li>
-</ul>
+    <p>December 26</p>
 
-<hr />
+    <ul>
+        <li>Nothing today pertains directly to the game but here are a couple things you all may find interesting.  First is some fan art from last round by Katie Frills found <a href="http://i.imgur.com/ENRUyne.png">here</a>.  Secondly, Mizuho is running a general <a href="http://goo.gl/forms/Zu0JeZBLn9">transformation themed poll</a> ; any feedback you care to leave on that would be appreciated!</li>
+        <li>New spell, Ratticus Doethievious, submitted by <a href="https://www.furaffinity.net/user/draggony/">Draggony</a>!  Graphic is by <a href="http://luxianne.deviantart.com/">Luxianne</a>.  This spell turns its victim into a female rat thief to accompany the male one in all their banditry.</li>
+        <li>New spell, Sexy Savior, submitted by <a href="http://christytgcaps.blogspot.com/">Christy D</a>!  Graphic is by <a href="http://babblingfaces.deviantart.com/">Babblingfaces</a>.  This spell turns its victim into a uniquely powered superheroine.</li>
+        <li>New spell, Hocus Porcus, submitted by Lana Harter!  Graphic is by <a href="http://martiandawn.deviantart.com/">Martiandawn</a>!  This spell turns its victim into a full pig companion.</li>
+        <li>New spell, Seeing Spots, submitted by Soren Reus!  Graphic is by <a href="http://martiandawn.deviantart.com/">Martiandawn</a>.  This spell turns its victim into a nimble cheetah.</li>
+    </ul>
 
+    <hr />
 
-<h2>Contributions</h2>
+    <p>December 24</p>
 
-<p>I'd like to thank the following people, public players, for their contributions toward this game:</p>
+    <ul>
+        <li>Hi there, Mizuho here. I would like to wish you guys Merry Christmas (or any other different named holidays that you celebrate) on behalf of our team. We at Transformania Times hope that you will have warm and safe break from everyday life. Enjoy your time with families and friends (also with those from TT). We hope that you will get bestests presents in the word (like real rubbing clothes!... or for items great owners).</li>
+        <img src="http://i.imgur.com/PFkqdQM.png" style="width:600px; margin-left:auto; margin-right: auto; display:block;">
+    </ul>
 
-<h3>Arist Biographies</h3>
+    <hr />
 
-@Html.ActionLink("Babblingfaces", "AuthorArtistBio", "Settings", new { id = 6024 }, null)<br />
-@*@Html.ActionLink("Spacedande", "AuthorArtistBio", "Settings", new { id = 6196 }, null)<br />*@
-@Html.ActionLink("Luxianne", "AuthorArtistBio", "Settings", new { id = 4481 }, null)<br />
-@Html.ActionLink("Martiandawn", "AuthorArtistBio", "Settings", new { id = 873 }, null)<br />
-@Html.ActionLink("Spacedande", "AuthorArtistBio", "Settings", new { id = 6196 }, null)<br />
-@Html.ActionLink("Wrenzephyr", "AuthorArtistBio", "Settings", new { id = 272 }, null)<br />
+    <p>December 22</p>
 
-<p class="bad">The counts below are out of date.  An alternate credits table is in process and can be viewed @Html.ActionLink("here.", "GetContributionTable", "Contribution")</p>
+    <ul>
+        <li><b>Alpha Round 14 has started!</b>  As a note for all players who have custom starting forms, you will be given the chance to convert from the regular man/woman base form to your custom one on the Settings page by clicking the link that reads "Use my custom starting form (if available)".  If you are your old base form you'll be changed to it instantly.  Otherwise you'll need to use a Classic Me! Lotion first, or else struggle out of an inanimate/animal form, so it's best to do this as soon as you spawn in the world.</li>
+        <li>Added a couple new locations to the Valentine Castle and rearranged its layout slightly.</li>
+        <li>New spell, Undercurrent, written by myself.  Graphic is by <a href="http://luxianne.deviantart.com/">Luxianne</a>.  This spell turns its victim into a mystical mermaid.</li>
+        <li>New spell, Try to Catch Some Cum!, submitted by Soul!  Graphic is by <a href="http://spacedande.deviantart.com/">Dandelion</a>.  This spell turns its victim into a considerably more grown-up take on a childhood series.</li>
+        <li>New spell, How To Train Your Boi-Toy, submitted by Reid Woodell!  Additional credits go to Grace Kitsu for the idea.  Graphic is by <a href="http://spacedande.deviantart.com/">Dandelion</a>.  This spell turns its victim into a dragon boi, an animate form.</li>
+        <li>New spell, One Dark and Stormy Knight, submitted by <a href="http://martiandawn.deviantart.com/">Martiandawn</a>!  Graphic is self made.  This spell transforms its victim into a huntress of the night.</li>
+    </ul>
 
-<table id="contributorsTable">
-
-    <th>
-        Contributor
-    </th>
-    <th>
-        Contributions
-    </th>
-
-    <tr>
-        <td><a href="http://www.renderotica.com/artists/Meddlesom/Gallery">Meddle</a></td>
-        <td> Many, many graphics</td>
-    </tr>
-    <tr>
-        <td><a href="http://luxianne.deviantart.com/">Luxianne</a></td>
-        <td>Many Graphics!</td>
-    </tr>
-    <tr>
-        <td><a href="http://nymic-tf.deviantart.com/">nymic-tf</a></td>
-        <td>1 Spell, 1 Form, and many Graphics</td>
-    </tr>
-    <tr>
-        <td><a href="http://jbovinne.deviantart.com/">jbovinne</a></td>
-        <td>5 Spells, 3 Forms, 2 Items, and many graphics!</td>
-    </tr>
-    <tr>
-        <td><a href="http://babblingfaces.deviantart.com/">Babblingfaces</a></td>
-        <td>Many graphics!</td>
-    </tr>
-    <tr>
-        <td><a href="http://wrenzephyr2.deviantart.com/">Wrenzephyr2</a>!</td>
-        <td>2 Graphics</td>
-    </tr>
-    <tr>
-        <td><a href="http://mbirdcz.deviantart.com/">MadBirdCZ</a></td>
-        <td> 2 Graphics</td>
-    </tr>
-    <tr>
-        <td><a href="http://martiandawn.deviantart.com/">Martiandawn</a></td>
-        <td>9 spells, 2 forms, 5 items, 2 pets, and several graphics</td>
-    </tr>
-    <tr>
-        <td><a href="http://spacedande.deviantart.com/">Dandelion</a></td>
-        <td>1 spell, 1 form, and many graphics</td>
-    </tr>
-    <tr>
-        <td>Curry Senpai</td>
-        <td>1 graphic</td>
-    </tr>
-    <tr>
-        <td>Varn1234</td>
-        <td>15 Spells, 8 Forms, 3 Items, 3 Animals</td>
-    </tr>
-    <tr>
-        <td> <a href="http://lexam-the-gem-fox.deviantart.com/">LexamTheGemFox</a></td>
-        <td>13 Spells, 7 Forms, 3 Items, 3 Animals, 1 Curse</td>
-    </tr>
-    <tr>
-        <td>Elynsynos</td>
-        <td>4 Spells, 2 Forms, 1 Item, 1 Animal</td>
-    </tr>
-    <tr>
-        <td>Sun Bro</td>
-        <td>1 Spell, 1 Form</td>
-    </tr>
-    <tr>
-        <td>PsychoticPie</td>
-        <td>6 Spells, 6 Items</td>
-    </tr>
-    <tr>
-        <td>Arrhae</td>
-        <td>1 Spell, 1 Item</td>
-    </tr>
-    <tr>
-        <td>CCWS</td>
-        <td>1 Spell, 1 Item</td>
-    </tr>
-    <tr>
-        <td>Zatur</td>
-        <td>6 Spells, 4 Items, 1 Animal</td>
-    </tr>
-    <tr>
-        <td><a href="http://danaume.deviantart.com/">Danaume Rook</a></td>
-        <td>2 spells, 2 Forms, 1 Animal, 3 graphics</td>
-    </tr>
-    <tr>
-        <td>Sherry Gray</td>
-        <td>1 spell, 1 form</td>
-    </tr>
-    <tr>
-        <td><a href="http://christytgcaps.blogspot.com/">Christy D</a></td>
-        <td>2 spell, 1 form, 1 item</td>
-    </tr>
-    <tr>
-        <td><a href="http://whiteflamek.deviantart.com/">WhiteflameK</a></td>
-        <td> 1 spell, 1 item, 1 graphic</td>
-    </tr>
-    <tr>
-        <td>Haretia</td>
-        <td>4 spells, 1 form, 3 items</td>
-    </tr>
-    <tr>
-        <td>hachik0048</td>
-        <td>1 spell, co-contributor with LexamTheGemFox</td>
-    </tr>
-    <tr>
-        <td>Alessandro Stamegna</td>
-        <td>4 spell, 2 forms, 1 animal, 1 item</td>
-    </tr>
-
-    <tr>
-        <td><a href="http://tracitwist.tumblr.com">Ellipsis</a></td>
-        <td>1 spell, 1 Form</td>
-    </tr>
-
-    <tr>
-        <td>XanKitsu</td>
-        <td>1 spell, 1 form</td>
-    </tr>
-    <tr>
-        <td>Hanna</td>
-        <td>8 spells, 1 form, 7 items</td>
-    </tr>
-    <tr>
-        <td>Medli</td>
-        <td>2 spells, 1 form, 1 item</td>
-    </tr>
-    <tr>
-        <td>Blood Knight</td>
-        <td>5 spells, 4 forms, 1 item</td>
-    </tr>
-    <tr>
-        <td>Rust</td>
-        <td>2 spell, 1 animal, 1 item</td>
-    </tr>
-    <tr>
-        <td>Archita</td>
-        <td>1 spell, 1 animal (revised by Varn)</td>
-    </tr>
-
-    <tr>
-        <td><a href="http://redneckdemon.deviantart.com/">redneckdemon</a></td>
-        <td>1 spell, 1 form</td>
-    </tr>
-    <tr>
-        <td>themorpher606 (Kevin Gates)</td>
-        <td>4 spells, 2 forms, 2 items</td>
-    </tr>
-    <tr>
-        <td><a href="http://foxpower93.deviantart.com/">Foxpower93</a></td>
-        <td>3 spells, 3 forms</td>
-    </tr>
-    <tr>
-        <td>A /d/eviant</td>
-        <td>1 spell, 1 form</td>
-    </tr>
-    <tr>
-        <td>Arbitrary Hal</td>
-        <td>3 spells, 3 items</td>
-    </tr>
-    <tr>
-        <td>Aingelproject667</td>
-        <td>3 spells, 2 forms, 1 item</td>
-    </tr>
-    <tr>
-        <td>Swog</td>
-        <td>2 spells, 1 form, 1 item</td>
-    </tr>
-    <tr>
-        <td>Faremann</td>
-        <td>1 spell, 1 form</td>
-    </tr>
-    <tr>
-        <td>Christopher</td>
-        <td>8 spells, 7 items, 1 pet</td>
-    </tr>
-    <tr>
-        <td>Aidyn Bright</td>
-        <td>1 spell, 1 item</td>
-    </tr>
-    <tr>
-        <td>Kirshwasser</td>
-        <td>1 spell, 1 item</td>
-    </tr>
-    <tr>
-        <td>Draggony</td>
-        <td>2 spells, 2 forms</td>
-    </tr>
-    <tr>
-        <td>Sampleguy</td>
-        <td>1 spell, 1 animal, 1 graphic</td>
-    </tr>
-    <tr>
-        <td>Berrie Valentine</td>
-        <td>1 spell, 1 item</td>
-    </tr>
-    <tr>
-        <td>Pharlynx</td>
-        <td>1 spell, 1 form</td>
-    </tr>
-    <tr>
-        <td>Julian Chance</td>
-        <td>1 spell, 1 animal</td>
-    </tr>
-    <tr>
-        <td>Christine Winters</td>
-        <td>1 spell, 1 form</td>
-    </tr>
-    <tr>
-        <td>Greg Mackenzie</td>
-        <td>1 spell, 1 item</td>
-    </tr>
-    <tr>
-        <td>Estyz</td>
-        <td>1 spell, 1 animal</td>
-    </tr>
-    <tr>
-        <td>Swogrider</td>
-        <td>2 spells, 1 item, 1 pet</td>
-    </tr>
-    <tr>
-        <td>Ashely Maid</td>
-        <td>1 spell, 1 form</td>
-    </tr>
-    <tr>
-        <td>BlackTGKitty</td>
-        <td>1 spell, 1 form</td>
-    </tr>
-    <tr>
-        <td>Izz Valentine</td>
-        <td>1 spell, 1 curse</td>
-    </tr>
-    <tr>
-        <td>Rayner</td>
-        <td>4 spells, 3 forms, 1 item</td>
-    </tr>
-    <tr>
-        <td><a href="http://techhead0.deviantart.com">Techhead</a></td>
-        <td>1 spell, 1 item</td>
-    </tr>
-    <tr>
-        <td><a href="http://www.lilysgames.com">Lily</a></td>
-        <td>2 spells, 2 items</td>
-    </tr>
-    <tr>
-        <td>Keyne Vangsten</td>
-        <td>1 spell, 1 form</td>
-    </tr>
-    <tr>
-        <td>GooGirl</td>
-        <td>1 spell, 1 pet</td>
-    </tr>
-    <tr>
-        <td><a href="http://thegreatdaeo.deviantart.com/">The Great Daeo</a></td>
-        <td>2 spells, 2 forms, 2 graphics</td>
-    </tr>
-    <tr>
-        <td>Nyx</td>
-        <td>2 spells, 2 forms</td>
-    </tr>
-    <tr>
-        <td>Taenil Auxifur</td>
-        <td>1 spell, 1 item</td>
-    </tr>
-    <tr>
-        <td>Illia Malvusin</td>
-        <td>2 spells, 1 form, 1 item</td>
-    </tr>
-    <tr>
-        <td>Arnisd</td>
-        <td>1 spell, 1 item</td>
-    </tr>
-    <tr>
-        <td>Mizuho</td>
-        <td>1 spell, 1 form</td>
-    </tr>
-    <tr>
-        <td>Sage Trapp</td>
-        <td>1 spell, 1 form</td>
-    </tr>
-    <tr>
-        <td>Kaitlyn Halliwell</td>
-        <td>1 spell, 1 form</td>
-    </tr>
-    <tr>
-        <td>Rita</td>
-        <td>1 spell, 1 item</td>
-    </tr>
-    <tr>
-        <td>Aethar</td>
-        <td>1 spell, 1 form</td>
-    </tr>
-    <tr>
-        <td>Jackie/Helen Castle</td>
-        <td>1 spell, 1 form</td>
-    </tr>
-    <tr>
-        <td>Pet Forhire</td>
-        <td>1 spell, 1 animal</td>
-    </tr>
-    <tr>
-        <td><a href="http://lemrith.net">Yassay</a></td>
-        <td>1 spell, 1 form</td>
-    </tr>
-    <tr>
-        <td>Lazy Loki</td>
-        <td>1 spell, 1 form</td>
-    </tr>
-    <tr>
-        <td>Soren Reus</td>
-        <td>2 spells, 1 form, 1 animal</td>
-    </tr>
-    <tr>
-        <td>Madokami</td>
-        <td>1 spell, 1 form</td>
-    </tr>
-    <tr>
-        <td><a href="http://gemai.deviantart.com/">Vivien Gemai</a></td>
-        <td>1 spell, 1 form</td>
-    </tr>
-    <tr>
-        <td>G0T0F66</td>
-        <td>1 spell, 1 item</td>
-    </tr>
-    <tr>
-        <td>Jess Ganes</td>
-        <td>1 spell, 1 form</td>
-    </tr>
-    <tr>
-        <td>Mahoney</td>
-        <td>2 spells, 2 forms</td>
-    </tr>
-    <tr>
-        <td>Duhad</td>
-        <td>10 spells, 1 form, 9 items</td>
-    </tr>
-    <tr>
-        <td>Liahnna</td>
-        <td>3 spells, 2 forms, 1 item</td>
-    </tr>
-
-    <tr>
-        <td>Jo Jarvis</td>
-        <td>1 spell, item</td>
-    </tr>
-    <tr>
-        <td>Asteron</td>
-        <td>1 spell, 1 pet</td>
-    </tr>
-    <tr>
-        <td>Alexander Dantes</td>
-        <td>1 spell, 1 pet</td>
-    </tr>
-    <tr>
-        <td>Blackarts</td>
-        <td>1 spell, 1 form</td>
-    </tr>
-
-</table>
-
-<p>
-    If you are interested in contributing new content to the game, click @Html.ActionLink("here", "Contribute", "PvP", new { Id = -1 }, null).
-</p>
-
-@Html.ActionLink("Back to game", "Play", "PvP")
+    <hr />
 
 
-<style>
-    td {
-        border: 1px solid gray;
-        text-align: center;
-        min-width: 150px;
-    }
+    <p>December 21</p>
 
-    tr {
-        border: 1px solid gray;
-        text-align: center;
-    }
+    <ul>
+        <li>Alpha Round 14 is scheduled to begin tomorrow at 7pm UTC.</li>
+    </ul>
 
-    th {
-        border: 1px solid gray;
-        text-align: center;
-    }
+    <hr />
 
-    table {
-        text-align: center;
-    }
+    <p>December 20</p>
 
-    li {
-        margin-bottom: 8px;
-    }
-</style>
+    <ul>
+        <li>Due to recent events in the community, real life concerns, and the holidays I'm not sure how many new features will be part of Alpha Round 14.  Currently my plan is to have it kicked off by early Monday afternoon in Eastern US time.</li>
+        <li><b>For the upcoming round PvP mode will be partially disabled.</b>  Players will still be allowed to choose PvP or Protection mode, and while the PvP leaderboard will remain it will work similar to the XP one and only show players by level.  <b>Ranking first place on the PvP leaderboard will not grant the winner the honor of having Alpha Round 14 named in their honor.</b>  PvP mode will be reworked sometime in the future:  how to do so is being discussed on the forums and is an ongoing discussion.</li>
+        <li>In light of the PvP changes, the only requirement now to change into and out of PvP is having not been in combat for 60 minutes.  You should not receive any debuff curses upon doing this anymore.</li>
+        <li>If you are an author or artist who has contributed eight or more spells or graphics for spells (curses do not currently count) you are eligible for a custom base form.  Read more about it <a href="http://luxianne.com/forum/viewtopic.php?f=9&t=400">here</a>.</li>
+    </ul>
+
+    <hr />
+
+    <p>December 17</p>
+
+    <ul>
+        <li>Congrats to Alexander Dantes for ending the round with the most PvP points.  The game is now in chaos mode while I prepare for next round.</li>
+    </ul>
+
+    <hr />
+
+    <p>December 16</p>
+
+    <ul>
+        <li>Arists can now write up an extended biography allowing them to link to their ingame artwork themselves without having to wait for me to update them.  These extended biographies will be given to spell authors in a future date.  It is possible to see these extended artist biographies when looking at a player, however I will also gather these links up on other pages such as the News/Updates page where Contribution credits are listed.</li>
+
+    </ul>
+
+    <hr />
+
+
+    <p>December 15</p>
+
+    <ul>
+        <li>Thanks for your patience during this relative lack of updates.  As the round nears a close, I anticipate getting the next round started on the 21st or 22nd.</li>
+        <li>Lindella will now restock certain types of consumable items including spare willflower and spellweaver roots, teleportation scrolls, Classic Me! Lotions, and some of the effect-giving foods.  She will restock every two and a half hours.</li>
+    </ul>
+
+    <hr />
+
+    <p>December 11</p>
+
+    <ul>
+        <li>
+            Some updates to chat:
+            <ul>
+                <li>Added /me command.</li>
+                <li>Added /dm [message] command, which uses the same style as the DM events but uses your own message for text.</li>
+                <li>You can now set a custom chat color on the Settings page.</li>
+            </ul>
+
+        </li>
+        <li>Donna's willpower will be much lower before she begins to cleanse now.</li>
+        <li>New spell, Breathless, submitted by Lian! . Graphic is by <a href="http://spacedande.deviantart.com/">Dandelion</a>.  This spell transforms its victim into a Lady Jiangshi.</li>
+        <li>New spell, Enticing Melody, submitted by Whispthera!  Graphic is by <a href="http://babblingfaces.deviantart.com/">Babblingfaces</a>.  This spell turns its victim into a beautiful but dangerous siren.</li>
+        <li>New spell, Praise the Sun!, submitted by <a href="http://gemai.deviantart.com/">Vivien Gemai</a>!  Additional credits go to Babblingfaces (Camren Doss) for the picture and Animate Mefreely for proofreading the spell.  Graphic is by<a href="http://babblingfaces.deviantart.com/">Babblingfaces</a>.  This spell turns its victim into an incandescent Hero.</li>
+    </ul>
+
+    <hr />
+
+    <p>December 10</p>
+
+    <ul>
+        <li>You can now see how many spells you know compared to how many currently exist in the game (at the time of writing the number is 223).  Weaken and curses should not be included in this count.</li>
+        <li><b>Players who wish to move into PvP mode with their character must do so by turn 1800.</b>  This is to help keep players from entering for the sole sake of being inanimated to boost friends' scores.</li>
+        <li>New consumable type item, the Covenant Callback Crystal.  This crystal can be used to teleport a player back to their covenant safeground if they have not been in combat in the past half hour.</li>
+        <li>New piece of covenant furniture, the Welcome Back Doormat which produced Covenant Callback Crystals mentioned above.</li>
+        <li>New spell, Fabric of our Lives, submitted by Liahnna!  Additional credits go to Martiandawn for Proofreading!  Graphic is by <a href="http://www.renderotica.com/artists/Meddlesom/Gallery">Meddle</a>.  This spell turns its victim into a checkered cotton apron.</li>
+        <li>New spell, Dark Seduction, submitted by Roxanne13579!  Graphic is by <a href="http://luxianne.deviantart.com/">Luxianne</a>.  This spell turns its victim into a silky gothic nightgown.</li>
+
+    </ul>
+
+    <hr />
+
+    <p>December 9</p>
+
+    <ul>
+
+        <li>New spell, Midsummer's Eve, submitted by <a href="http://gemai.deviantart.com/">Vivien Gemai</a>!  Additional credits go to sakimichan and mictones for the inspiration regarding  appearance, Elyn Kitsu for her first assessment, nice!bottledwater (Animate Mefreely) for proofreading the first part and dantes (Devoted Toy) for proofreading the last part.  Graphic is by <a href="http://luxianne.deviantart.com/">Luxianne</a>.  This spell turns its victim into a Great Fairy, an animate form.</li>
+        <li>New spell, Light on Your Feet, submitted by Christopher!  Additional credits go to Liara for assistance in regards to proof reading.  Graphic is by <a href="http://babblingfaces.deviantart.com/">Babblingfaces</a>.  This spell turns its victim into an inanimate balloon girl.</li>
+        <li>New location-specific effect, Valentine's Favor, submitted by Izz Valentine.</li>
+        <li>New curse, Full of Milk, by Estyz.  This is a castable spell by the Curvaceous Cowgirl.</li>
+        <li>New curse, Give Peace a Chance, by Varn.  This is a castable spell by the New Age Retro Hippy.</li>
+        <li>New curse, My Cup Runneth Over, by Swogrider.  This is a castable spell by the Unimaginably Huge-Breasted Woman.</li>
+        <li>New curse, Let it Go, by Varn.  This is a castable spell bythe  Ice Queen.</li>
+        <li>New curse, Heavenly Chime, by Vivien Gemai.  This is a castable spell by the Mischievous Gal'.</li>
+        <li>New curse, New effect, Chooser of the Slain, by Varn.  This is a castable spell by the Valiant Valkyrie.</li>
+    </ul>
+
+    <hr />
+
+    <p>December 6</p>
+
+    <ul>
+        <li>Two new findable consumable items, Trueshot Truffles and Nirvana Nougats (thanks to Helen Castle for naming help.)  The items buff the user's evasion negation and increases mana recovery when meditating, respectively.  Also, the sell price of all of these new pastries/candies has been lowered as the probability of finding them more frequently rises.</li>
+        <li>New findable consumable item, the Lullaby Whistle which will deaggro any psychopathic spellslingers targetting the user.</li>
+        <li>New spell, Writ In Stone, submitted by Alexander Dantes! Additional credits go to Animate Mefreely for proofreading.  Graphic is by <a href="http://spacedande.deviantart.com/">Dandelion</a>.  This spell turns its victim into a decorative gargoyle, a pet.</li>
+        <li>New spell, Daemon Famulus, submitted by Blackarts!  Additional credits go to King Leoric and Princess Naomi.  Graphic is by<a href="http://spacedande.deviantart.com/">Dandelion</a>.  This spell transforms its victim into an incubus servant boy, an animate form.</li>
+        <li>New spell, Hot to Trot, submitted by <a href="http://martiandawn.deviantart.com/">Martiandawn</a>!  Graphic is self made.  This spell transforms its victim into a Prancing Pony Boy, a pet.</li>
+        <li>Offline players are hidden on page load by default now.  There is a button you can click that will reload the page with them added in.  This should help cut down on some page load times in crowded areas such as the tavern or covenant safegrounds where players go to rest.</li>
+    </ul>
+
+    <hr />
+
+    <p>December 4</p>
+
+    <ul>
+        <li>"Private" chats are now here.  You can now create a new custom chat room.  If you want it to remain private, make the name long, random, and hard to guess as for now at least it doubles as the room's password.  You can also search for a private room in the chat logs.</li>
+        <li>In case you hadn't seen yet, there is a new graphic for the Fire Fritter by <a href="http://luxianne.deviantart.com/">Luxianne</a>.</li>
+    </ul>
+
+    <hr />
+
+    <p>December 3</p>
+
+    <ul>
+        <li>Doubled the number of cure vaccines that drop and increased the duration of the immunity from 48 turns to 100.  Halved Lady Lovebringer's maximum willpower.</li>
+    </ul>
+
+    <hr />
+
+    <p>December 1</p>
+
+    <ul>
+        <li>New spell, Pantiedemic, submitted by Christopher! Additional credits go to Hanna for the name suggestion.  Graphic is by <a href="http://www.renderotica.com/artists/Meddlesom/Gallery">Meddle</a>.  This spell turns its victim into a pink latex thong.</li>
+        <li>New spell, Aretak Antorbok Xel'lotath, submitted by Vivien Gemai!  Additional credits go to Babblingfaces (Camren Doss) for the picture, Animate Mefreely for proofreading the spell. Graphic is by <a href="http://babblingfaces.deviantart.com/">Babblingfaces</a>.  This spell turns its victim into a zombie-like assistant who feeds off of mana.</li>
+        <li>New spell, Checkered Concerto, submitted by Liahnna!  Additional credits go to <a href="http://martiandawn.deviantart.com/">Martiandawn</a> for preliminary proofreading.  Graphic is by <a href="http://www.renderotica.com/artists/Meddlesom/Gallery">Meddle</a>.  This spell transforms its victim into a pair of checkered botten panties.</li>
+    </ul>
+
+    <hr />
+
+    <p>November 30</p>
+
+    <ul>
+        <li>Item leaderboard is now "fixed" in that it will now show items ordered by level AND XP.  The item leaderboard is cached so it will only reflect new information each 10 minutes, which means an inanimate or animal player's last action that granted them XP may not be reflected immediately.</li>
+        <li>Added support for reusable consumable type items that give effects instead of willpower or mana instant restoration.  When creating these types of items, please leave the item bonuses blank for the item since reusable consumables are only carried, not equipped.  Instead, use the Curse contributions to write up the effect's bonuses and mention what the name of the curse is supposed to be on the item contribution page.</li>
+        <li>New spell, Fresh Cup of Josephine, submitted by <a href="http://slivermaster25.deviantart.com/">Alex Wise</a>! Additional credits go to Elyn Kitsu for inspiring the original idea, Cara Doom for part of the spell description, Animate Mefreely for proofreading, Martiandawn for artwork, and Judoo for the game in the first place.  Graphic is by <a href="http://martiandawn.deviantart.com/">Martiandawn</a>.  This spell transforms its victim into a hot mug of coffee, the first reusable consumable that gives and effect rather than willpower or mana restoration.</li>
+        <li>New effect, Running Hot, by Alex Wise.  This effect is gained by using the coffee mug described above.</li>
+    </ul>
+
+    <hr />
+
+
+    <p>November 29</p>
+
+    <ul>
+        <li>Alpha round 13 has begun!  Some new curses will be going out--however, <b>expect these to be drastically rebalanced</b> as more details are worked out regarding what is fair in terms of castable curse spells (for example, it does not make sense to have negitive modifiers or caps which is how the calculator is currently set up.)</li>
+        <li><b>The first ingame poll is up.</b>  Here you can provide direct feedback so I can better get an idea of how people are enjoying, not enjoying, or generally playing the game.  Please only post on your main player account.</li>
+        <li>New spell, William Tell's Revenge, submitted by Aingelproject667!  Additional credits go to Animate Mefreely who helped with the name.  Graphic is by <a href="http://luxianne.deviantart.com/">Luxianne</a>.  This spell transforms its victim into a powerful crossbow.</li>
+        <li>New spell, Knotty, submitted by <a href="http://lexam-the-gem-fox.deviantart.com/">LexamtheGemFox</a>!  Graphic is by <a href="http://luxianne.deviantart.com/">Luxianne</a>.  This spell transforms its victim into a doggy dick. </li>
+        <li>New spell, Foot Fetish, submitted by <a href="http://spacedande.deviantart.com/">Dandelion</a>!  Graphic is self made.  This spell transforms its victim into a rather unique pair of parastic boots--the first piece in an upcoming set.</li>
+        <li>New spell, Alas Poor Mage, submitted by <a href="https://www.youtube.com/user/Duhad8">Duhad</a>!  Graphic is by <a href="http://www.renderotica.com/artists/Meddlesom/Gallery">Meddle</a>.  This spell transforms its victim into a pink crystal skull.</li>
+        <li>New spell, Let them Know You're Coming!, submitted by Jo Jarvis!  Additional credits go to Mahoney for the help reworking some of the clumsy parts. Graphic is by <a href="http://luxianne.deviantart.com/">Luxianne</a>.  This spell transforms its victim into a pair of cute flip flops.</li>
+        <li>New spell, Hair Today, Soul'd Tomorrow, submitted by Liahnna!  Additional credits go to <a href="http://martiandawn.deviantart.com/">Martiandawn</a>, Kaitlyn Halliwell and Annie for bouncing around ideas.  Graphic is by <a href="http://www.renderotica.com/artists/Meddlesom/Gallery">Meddle</a>.  This spell turns its victim into a flirty two-tiered bow.</li>
+        <li>New spell, Invasion of the Booty Snatchers, submitted by <a href="https://www.youtube.com/user/Duhad8">Duhad</a>! Additional credits go to <a href="http://babblingfaces.deviantart.com/">Babblingfaces</a> for the idea and proofreading.  Graphic is by <a href="http://babblingfaces.deviantart.com/">Babblingfaces</a>.  This spell transforms its victim into a lovely companion--from outer space!</li>
+        <li>New spell, Consign to Feline!, submitted by Asteron!  Additional credits go to Melodi Pond. Graphic is by <a href="http://luxianne.deviantart.com/">Luxianne</a>.  This spell transforms its victim into a spellbound cat boy, a pet.</li>
+        <li>New spell, Pretty Soldier, submitted by Liahnna!  Graphic is by <a href="http://www.renderotica.com/artists/Meddlesom/Gallery">Meddle</a>.  This spell transforms its victim into an anime-style monster-fighting magical girl!</li>
+        <li>New curse, Tempted, submitted by Varn.  This is a castable spell by the Sexy Succubus.</li>
+        <li>New curse, Repent, Sinner!, by Varn.  This is a castable spell by the Austere Angel.</li>
+        <li>New curse, Sucky Sucky, by Giacamo.  This is a castable spell by the Naughty Schoolgirl.</li>
+        <li>New curse, Tentacle Temptation, by Varn.  This is a castable spell gained when keeping the Tentacled Terror as a pet.</li>
+        <li>New location-specific curse submitted by themorpher606.  Find out where and what yourself...</li>
+        <li>New curse, Parasitic Noise, by Vivien Gemai.  This is a castable spell by the Mischevious Gal.</li>
+        <li>New mixed curse/blessing, Mother's Milk, by Purple Autumn.  This is a castable spell gained when wearing the Magic Nursing Bra.</li>
+        <li>New curse, Kiss Marked, by HappyItem with extra thanks to Greg (lipstick writer, for helpful discussion and creative input), Ani, Arrhae, and Annie (proofreading).  This is a castable spell gained when having the Ruby Red Lipstick equipped.</li>
+        <li>New curse, Reading Rainbow, by Varn.  This is a castable spell gained when having Practical Transformations and the Metaphysical Realm equipped.</li>
+        <li>New effect, My Eyes!, by GooGirl.  This is a castable spell gained when keeping the Cuddly Pocket Goo Girl as a pet.</li>
+        <li>New spell, Driving Me Batty, submitted by Nyx!  Additional credits go to Stat help by Elyn.  Graphic is by <a href="http://luxianne.deviantart.com/">Luxianne</a>.  This spell transforms its victim into a gothic bat girl.</li>
+        <li>New spell, Lil' Bunbutt, submitted by Melodi Pond! Additional credits go to Nyx Clark for criticism.  Graphic is by <a href="http://luxianne.deviantart.com/">Luxianne</a>.  This spell transforms its victim into a shy but horny feminine bunny boy.</li>
+        <li>New spell, Crystallize, submitted by Asteron!  Graphic is by <a href="http://luxianne.deviantart.com/">Luxianne</a>.  This spell transforms its victim into a teardrop talisman.</li>
+
+    </ul>
+
+    <hr />
+
+    <p>November 28</p>
+
+    <ul>
+        <li>The new round, Alpha Round 13, is scheduled to begin tomorrow at 19:00 UTC.  Look at the update a couple posts down for information on what updates to expect.  Notably, I have added a proposed idea that gives PvP players a small trickle of PvP score each update they spend online.  Please read about the discussion revolving around PvP <a href="http://luxianne.com/forum/viewtopic.php?f=9&t=342">here</a> and provide feedback.</li>
+    </ul>
+
+    <hr />
+
+    <p>November 24</p>
+
+    <ul>
+        <li>Chaos mode will continue a few days more.  My current aim is to begin the bext round on Friday or early on Saturday as many will be gone for the holidays.  Now that I am back in town I will resume working on updates for next round; as always you can track the progress in the post below this one.</li>
+        <li>I'd also like to point out that Luxianne and Mizuho are currently running a Christmas event.  Purchase one of fourteen Christmas presents; each contains a 5-step transformation feature an OC or an image of yourself.  You can read more about it here:  <a href="http://luxianne.deviantart.com/art/Luxa-s-X-mas-Special-2014-496066858">Luxa's X-mas Special 2014.</a>.  <i>Please note that if you are a contributor and would like for me to send out an update like this for your own promotional events, pleases send me a message in the forums.</i></li>
+    </ul>
+
+    <hr />
+
+    <p>November 18 - November 28</p>
+
+    <ul>
+        <li>Alpha round 12 has ended with Soul Blossom at the top of the leaderboard.  Congratulations!  In a few hours I will allow the latest boss to be resummoned for those who did not get a chance to see the event in the round; later on I'll put the game into chaos mode.  Due to the holidays and a good deal of coding I need to do before next round, the next round will likely not start until the 25th or later.  In the meantime I will post planned round changes here so you can track the progress of the game here.</li>
+        <li>Here are the plans for Alpha round 13:</li>
+        <ul>
+            <li><span class="good">FINISHED:  </span>Refactor the perks/effects code.  This also means that I will *finally* be able to start adding in more of the player contributed effects.</li>
+            <li><span class="good">FINISHED:  </span>Complete publish and proofreading tools for effect contributions.</li>
+            <li><span class="good">FINISHED:  </span>Limit covenants to 25 animate members at a time.  When this limit is reached, no new players can join and inanimate/animal players will not be able to return to animate until there is room (but they will still be able to struggle to get the % chance of success higher.)</li>
+            <li><span class="good">FINISHED:  </span>Covenant Captains:  Allow the leader of a covenant to give 'captain' status to a covenant member, allowing them to handle covenant treasury affairs and purchase furniture.  I am not decided whether or not they will also be allowed to accept new members.</li>
+            <li><span class="good">FINISHED:  </span>Allow players who reroll a new character after being inanimated / animalified to retain their spells to their new character.  Also fixed the bug where rerolling players are allowed to choose perks equal to one less than their new level.</li>
+            <li><span class="good">FINISHED:  </span>Implement curses available to players who have a certain item or pet equipped.  (None of these effects are currently released yet though--I'll release a few before next round starts for the sake of testing them, then plan on doing more when the round has kicked off).</li>
+            <li><span class="good">FINISHED:  </span>Readjust the minimum turn counts in which the various bosses can spawn to be more spaced out throughout the round.</li>
+            <li><span class="good">FINISHED:  </span>Lower round turn count to 2,500 turns instead of 3000.</li>
+            <li><span class="good">FINISHED:  </span>Ingame polling feature to collect quick and easy data on things like how many players liked the new 3000 turn length, prefer the old 2000 one, or would like try out something inbetween.  Low priority.</li>
+            <li><span class="good">FINISHED:  </span>Provide all animate PvP players a small amount of PvP score each turn they are online.</li>
+            <li><span class="good">FINISHED:  </span>Sending a friend request will now notify players in their activity logs.  As an anti-spam measure, if the targeted friend already has a message about it in their activity log, even dismissed, they will not receive another one.</li>
+            <li><span class="good">FINISHED:  </span>Items and pets can now slip away from their owner if their owner has been inactive for more than 48 hours.</li>
+            <li><span class="good">FINISHED:  </span>Instead of strictly requiring being offline, players can now enter or leave Protection mode after an hour of having not been in combat and not totally offline.  Similarly, players can donate to their covenant treasury if they have not been in combat for 30 minutes instead of having performed no actions in the past 30 minutes.</li>
+            <li><span class="good">FINISHED:  </span>Items and pets should now see notifications on the main Play page the same as animate players do.</li>
+            <li><span class="bad">POSTPONED:  </span>Low level fox (or another animal) theif boss.  Steals from the rich and... keeps it.</li>
+        </ul>
+    </ul>
+
+
+    <hr />
+
+    <p>November 13</p>
+
+    <ul>
+        <li>Fixed a bug where effects were not affecting maximum willpower and mana bonus.  I believe this should have a fairly minimal effect on human players but it will give the psychopathic spellslingers significantly more willpower.</li>
+        <li>Items and pets now receieve 5xp per action instead of 3.5xp.</li>
+    </ul>
+
+    <hr />
+
+    <p>November 11</p>
+
+    <ul>
+        <li>Some change to the psychopathic spellslingers:</li>
+        <ul>
+            <li>Higher level psychopaths can now spawn at level 7 (Loathful) and level 9 (Soulless).  Certain turn requirements must pass before the higher tiers can be spawned.</li>
+            <li>Psychopaths have stronger and more dangerous perks at the higher levels.  Additionally, the level 7 and 9 psychopaths can now counterattack one or twice respectively in addition to their regular 3 attacks as the beginning of a turn.</li>
+            <li>Psychopaths will not pick out targets that is of a lower level than them anymore (unless first provoked).  Psychopaths will not choose out a new target if the victim has less than 75% of their willpower (meant to stop bots from swooping in and stealing other players' takedowns.)  Psychopaths will still not choose Protection mode players when initiating a new attack.</li>
+        </ul>
+    </ul>
+
+    <hr />
+
+    <p>November 9</p>
+
+    <ul>
+        <li>Players can gain some extra action point refill when ending the turn at their covenant safeground equal to .25 points * covenant level, which should offer some more encouragement to upgrade to higher levels.  Be warned that covenant size restrictions will almost certainly be added in for next round which will limit the number of (animate) players in a covenant at a time.  <i>There is currently a bug that throws a runtime error after successfully upgrading a covenant; this has been noted.  The upgrade itself should go through fine.  This will be fixed in the next update.</i></li>
+        <li>The View all Covenants page now shows covenant level as well as its safeground if it has established one.</li>
+        <li>Made some changes to the Contribution page.  This shouldn't effect anything but please let me know if it has introduced any new bugs.</li>
+        <li>New spell, Tale as Old as Time, submitted by Liahnna! Additional credits go to <a href="http://martiandawn.deviantart.com/">Martiandawn</a>, Kaitlyn Halliwell and Annie for bouncing ideas off them, and <a href="http://martiandawn.deviantart.com/">Martiandawn</a> for proofreading.  Graphic is by <a href="http://www.renderotica.com/artists/Meddlesom/Gallery">Meddle</a>.  This spell transforms its victim into the Belle of the Ball, quite the beauty queen.</li>
+        <li>New spell, Sweet Surrender, submitted by <a href="http://martiandawn.deviantart.com/">Martiandawn</a> with their own graphic.  This spell transforms its victim into a Collared Lap Girl, a pet type spell.</li>
+        <li>New spell, Welcome to the Dollhouse, submitted by <a href="http://martiandawn.deviantart.com/">Martiandawn</a>!  Graphic is by Babblingfaces.  This spell transforms its victim into a woman either human or doll--or perhaps both.</li>
+    </ul>
+
+    <hr />
+
+    <p>November 6</p>
+
+    <ul>
+        <li>The new boss is now summonable over in the Treasure Chest stage.  Her name is Lady Lovebringer, PHD and her intent is bring on the Bimbocalypse, a highly contagious virus that transforms its victims into her own personal bimbo army.  Keep an eye out for vials of the antivirus that will be airdropped around the town every other turn as they will be important in defeating her and her plague.  A very big thanks to Babblingfaces for doing all of the graphics for this boss event!</li>
+        <li>There is now a link on the Contribute page and that allows you to message the author of a contribution (this is for the sake of proofreaders and artists being able to get in touch with the authors more easily.)  This link also exists when editing the artist assignment on the "Spells Approved but Awaiting Implementation" page.</li>
+    </ul>
+
+    <hr />
+
+    <p>November 2</p>
+
+    <ul>
+        <li>My apologies for a slow update cycle; work on the bimbo boss is underway and should be ready to be go before the end of the round.</li>
+        <li>New spell, Ground Under Foot, submitted by Duhad! Additional credits go to JBovinne.  Graphic is by <a href="http://jbovinne.deviantart.com/">jbovinne</a>.  The spell turns a defeated mage into a pair of heeled boots that, in turn, stomp on more mages.</li>
+        <li>New spell, Princess Topper, submitted by Duhad! Additional credits go to JBovinne.  Graphic is by <a href="http://jbovinne.deviantart.com/">jbovinne</a>.  This spell transforms its victim into a pretty amathyst tiara.</li>
+        <li>New spell, Icarus' Dream, submitted by Mahoney!  Additional credits go to Taenil Auxifur for the spell name.  Graphic is by Babblingfaces.  This spell transforms its victim into a winged harpy straight from Greek mythology.</li>
+    </ul>
+
+    <hr />
+
+
+    <h2>Contributions</h2>
+
+    <p>I'd like to thank the following people, public players, for their contributions toward this game:</p>
+
+    <h3>Arist Biographies</h3>
+
+    @Html.ActionLink("Babblingfaces", "AuthorArtistBio", "Settings", new { id = 6024 }, null)<br />
+    @*@Html.ActionLink("Spacedande", "AuthorArtistBio", "Settings", new { id = 6196 }, null)<br />*@
+    @Html.ActionLink("Luxianne", "AuthorArtistBio", "Settings", new { id = 4481 }, null)<br />
+    @Html.ActionLink("Martiandawn", "AuthorArtistBio", "Settings", new { id = 873 }, null)<br />
+    @Html.ActionLink("Spacedande", "AuthorArtistBio", "Settings", new { id = 6196 }, null)<br />
+    @Html.ActionLink("Wrenzephyr", "AuthorArtistBio", "Settings", new { id = 272 }, null)<br />
+
+    <p class="bad">The counts below are out of date.  An alternate credits table is in process and can be viewed @Html.ActionLink("here.", "GetContributionTable", "Contribution")</p>
+
+    <table id="contributorsTable">
+
+        <th>
+            Contributor
+        </th>
+        <th>
+            Contributions
+        </th>
+
+        <tr>
+            <td><a href="http://www.renderotica.com/artists/Meddlesom/Gallery">Meddle</a></td>
+            <td> Many, many graphics</td>
+        </tr>
+        <tr>
+            <td><a href="http://luxianne.deviantart.com/">Luxianne</a></td>
+            <td>Many Graphics!</td>
+        </tr>
+        <tr>
+            <td><a href="http://nymic-tf.deviantart.com/">nymic-tf</a></td>
+            <td>1 Spell, 1 Form, and many Graphics</td>
+        </tr>
+        <tr>
+            <td><a href="http://jbovinne.deviantart.com/">jbovinne</a></td>
+            <td>5 Spells, 3 Forms, 2 Items, and many graphics!</td>
+        </tr>
+        <tr>
+            <td><a href="http://babblingfaces.deviantart.com/">Babblingfaces</a></td>
+            <td>Many graphics!</td>
+        </tr>
+        <tr>
+            <td><a href="http://wrenzephyr2.deviantart.com/">Wrenzephyr2</a>!</td>
+            <td>2 Graphics</td>
+        </tr>
+        <tr>
+            <td><a href="http://mbirdcz.deviantart.com/">MadBirdCZ</a></td>
+            <td> 2 Graphics</td>
+        </tr>
+        <tr>
+            <td><a href="http://martiandawn.deviantart.com/">Martiandawn</a></td>
+            <td>9 spells, 2 forms, 5 items, 2 pets, and several graphics</td>
+        </tr>
+        <tr>
+            <td><a href="http://spacedande.deviantart.com/">Dandelion</a></td>
+            <td>1 spell, 1 form, and many graphics</td>
+        </tr>
+        <tr>
+            <td>Curry Senpai</td>
+            <td>1 graphic</td>
+        </tr>
+        <tr>
+            <td>Varn1234</td>
+            <td>15 Spells, 8 Forms, 3 Items, 3 Animals</td>
+        </tr>
+        <tr>
+            <td> <a href="http://lexam-the-gem-fox.deviantart.com/">LexamTheGemFox</a></td>
+            <td>13 Spells, 7 Forms, 3 Items, 3 Animals, 1 Curse</td>
+        </tr>
+        <tr>
+            <td>Elynsynos</td>
+            <td>4 Spells, 2 Forms, 1 Item, 1 Animal</td>
+        </tr>
+        <tr>
+            <td>Sun Bro</td>
+            <td>1 Spell, 1 Form</td>
+        </tr>
+        <tr>
+            <td>PsychoticPie</td>
+            <td>6 Spells, 6 Items</td>
+        </tr>
+        <tr>
+            <td>Arrhae</td>
+            <td>1 Spell, 1 Item</td>
+        </tr>
+        <tr>
+            <td>CCWS</td>
+            <td>1 Spell, 1 Item</td>
+        </tr>
+        <tr>
+            <td>Zatur</td>
+            <td>6 Spells, 4 Items, 1 Animal</td>
+        </tr>
+        <tr>
+            <td><a href="http://danaume.deviantart.com/">Danaume Rook</a></td>
+            <td>2 spells, 2 Forms, 1 Animal, 3 graphics</td>
+        </tr>
+        <tr>
+            <td>Sherry Gray</td>
+            <td>1 spell, 1 form</td>
+        </tr>
+        <tr>
+            <td><a href="http://christytgcaps.blogspot.com/">Christy D</a></td>
+            <td>2 spell, 1 form, 1 item</td>
+        </tr>
+        <tr>
+            <td><a href="http://whiteflamek.deviantart.com/">WhiteflameK</a></td>
+            <td> 1 spell, 1 item, 1 graphic</td>
+        </tr>
+        <tr>
+            <td>Haretia</td>
+            <td>4 spells, 1 form, 3 items</td>
+        </tr>
+        <tr>
+            <td>hachik0048</td>
+            <td>1 spell, co-contributor with LexamTheGemFox</td>
+        </tr>
+        <tr>
+            <td>Alessandro Stamegna</td>
+            <td>4 spell, 2 forms, 1 animal, 1 item</td>
+        </tr>
+
+        <tr>
+            <td><a href="http://tracitwist.tumblr.com">Ellipsis</a></td>
+            <td>1 spell, 1 Form</td>
+        </tr>
+
+        <tr>
+            <td>XanKitsu</td>
+            <td>1 spell, 1 form</td>
+        </tr>
+        <tr>
+            <td>Hanna</td>
+            <td>8 spells, 1 form, 7 items</td>
+        </tr>
+        <tr>
+            <td>Medli</td>
+            <td>2 spells, 1 form, 1 item</td>
+        </tr>
+        <tr>
+            <td>Blood Knight</td>
+            <td>5 spells, 4 forms, 1 item</td>
+        </tr>
+        <tr>
+            <td>Rust</td>
+            <td>2 spell, 1 animal, 1 item</td>
+        </tr>
+        <tr>
+            <td>Archita</td>
+            <td>1 spell, 1 animal (revised by Varn)</td>
+        </tr>
+
+        <tr>
+            <td><a href="http://redneckdemon.deviantart.com/">redneckdemon</a></td>
+            <td>1 spell, 1 form</td>
+        </tr>
+        <tr>
+            <td>themorpher606 (Kevin Gates)</td>
+            <td>4 spells, 2 forms, 2 items</td>
+        </tr>
+        <tr>
+            <td><a href="http://foxpower93.deviantart.com/">Foxpower93</a></td>
+            <td>3 spells, 3 forms</td>
+        </tr>
+        <tr>
+            <td>A /d/eviant</td>
+            <td>1 spell, 1 form</td>
+        </tr>
+        <tr>
+            <td>Arbitrary Hal</td>
+            <td>3 spells, 3 items</td>
+        </tr>
+        <tr>
+            <td>Aingelproject667</td>
+            <td>3 spells, 2 forms, 1 item</td>
+        </tr>
+        <tr>
+            <td>Swog</td>
+            <td>2 spells, 1 form, 1 item</td>
+        </tr>
+        <tr>
+            <td>Faremann</td>
+            <td>1 spell, 1 form</td>
+        </tr>
+        <tr>
+            <td>Christopher</td>
+            <td>8 spells, 7 items, 1 pet</td>
+        </tr>
+        <tr>
+            <td>Aidyn Bright</td>
+            <td>1 spell, 1 item</td>
+        </tr>
+        <tr>
+            <td>Kirshwasser</td>
+            <td>1 spell, 1 item</td>
+        </tr>
+        <tr>
+            <td>Draggony</td>
+            <td>2 spells, 2 forms</td>
+        </tr>
+        <tr>
+            <td>Sampleguy</td>
+            <td>1 spell, 1 animal, 1 graphic</td>
+        </tr>
+        <tr>
+            <td>Berrie Valentine</td>
+            <td>1 spell, 1 item</td>
+        </tr>
+        <tr>
+            <td>Pharlynx</td>
+            <td>1 spell, 1 form</td>
+        </tr>
+        <tr>
+            <td>Julian Chance</td>
+            <td>1 spell, 1 animal</td>
+        </tr>
+        <tr>
+            <td>Christine Winters</td>
+            <td>1 spell, 1 form</td>
+        </tr>
+        <tr>
+            <td>Greg Mackenzie</td>
+            <td>1 spell, 1 item</td>
+        </tr>
+        <tr>
+            <td>Estyz</td>
+            <td>1 spell, 1 animal</td>
+        </tr>
+        <tr>
+            <td>Swogrider</td>
+            <td>2 spells, 1 item, 1 pet</td>
+        </tr>
+        <tr>
+            <td>Ashely Maid</td>
+            <td>1 spell, 1 form</td>
+        </tr>
+        <tr>
+            <td>BlackTGKitty</td>
+            <td>1 spell, 1 form</td>
+        </tr>
+        <tr>
+            <td>Izz Valentine</td>
+            <td>1 spell, 1 curse</td>
+        </tr>
+        <tr>
+            <td>Rayner</td>
+            <td>4 spells, 3 forms, 1 item</td>
+        </tr>
+        <tr>
+            <td><a href="http://techhead0.deviantart.com">Techhead</a></td>
+            <td>1 spell, 1 item</td>
+        </tr>
+        <tr>
+            <td><a href="http://www.lilysgames.com">Lily</a></td>
+            <td>2 spells, 2 items</td>
+        </tr>
+        <tr>
+            <td>Keyne Vangsten</td>
+            <td>1 spell, 1 form</td>
+        </tr>
+        <tr>
+            <td>GooGirl</td>
+            <td>1 spell, 1 pet</td>
+        </tr>
+        <tr>
+            <td><a href="http://thegreatdaeo.deviantart.com/">The Great Daeo</a></td>
+            <td>2 spells, 2 forms, 2 graphics</td>
+        </tr>
+        <tr>
+            <td>Nyx</td>
+            <td>2 spells, 2 forms</td>
+        </tr>
+        <tr>
+            <td>Taenil Auxifur</td>
+            <td>1 spell, 1 item</td>
+        </tr>
+        <tr>
+            <td>Illia Malvusin</td>
+            <td>2 spells, 1 form, 1 item</td>
+        </tr>
+        <tr>
+            <td>Arnisd</td>
+            <td>1 spell, 1 item</td>
+        </tr>
+        <tr>
+            <td>Mizuho</td>
+            <td>1 spell, 1 form</td>
+        </tr>
+        <tr>
+            <td>Sage Trapp</td>
+            <td>1 spell, 1 form</td>
+        </tr>
+        <tr>
+            <td>Kaitlyn Halliwell</td>
+            <td>1 spell, 1 form</td>
+        </tr>
+        <tr>
+            <td>Rita</td>
+            <td>1 spell, 1 item</td>
+        </tr>
+        <tr>
+            <td>Aethar</td>
+            <td>1 spell, 1 form</td>
+        </tr>
+        <tr>
+            <td>Jackie/Helen Castle</td>
+            <td>1 spell, 1 form</td>
+        </tr>
+        <tr>
+            <td>Pet Forhire</td>
+            <td>1 spell, 1 animal</td>
+        </tr>
+        <tr>
+            <td><a href="http://lemrith.net">Yassay</a></td>
+            <td>1 spell, 1 form</td>
+        </tr>
+        <tr>
+            <td>Lazy Loki</td>
+            <td>1 spell, 1 form</td>
+        </tr>
+        <tr>
+            <td>Soren Reus</td>
+            <td>2 spells, 1 form, 1 animal</td>
+        </tr>
+        <tr>
+            <td>Madokami</td>
+            <td>1 spell, 1 form</td>
+        </tr>
+        <tr>
+            <td><a href="http://gemai.deviantart.com/">Vivien Gemai</a></td>
+            <td>1 spell, 1 form</td>
+        </tr>
+        <tr>
+            <td>G0T0F66</td>
+            <td>1 spell, 1 item</td>
+        </tr>
+        <tr>
+            <td>Jess Ganes</td>
+            <td>1 spell, 1 form</td>
+        </tr>
+        <tr>
+            <td>Mahoney</td>
+            <td>2 spells, 2 forms</td>
+        </tr>
+        <tr>
+            <td>Duhad</td>
+            <td>10 spells, 1 form, 9 items</td>
+        </tr>
+        <tr>
+            <td>Liahnna</td>
+            <td>3 spells, 2 forms, 1 item</td>
+        </tr>
+
+        <tr>
+            <td>Jo Jarvis</td>
+            <td>1 spell, item</td>
+        </tr>
+        <tr>
+            <td>Asteron</td>
+            <td>1 spell, 1 pet</td>
+        </tr>
+        <tr>
+            <td>Alexander Dantes</td>
+            <td>1 spell, 1 pet</td>
+        </tr>
+        <tr>
+            <td>Blackarts</td>
+            <td>1 spell, 1 form</td>
+        </tr>
+
+    </table>
+
+    <p>
+        If you are interested in contributing new content to the game, click @Html.ActionLink("here", "Contribute", "PvP", new { Id = -1 }, null).
+    </p>
+
+</div>

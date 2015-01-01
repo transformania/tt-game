@@ -442,4 +442,8 @@ a:hover {
 #frontOuterAvatar {
   border: none !important; }
 
+.tldr {
+  text-transform: uppercase;
+  color: #9822BC; }
+
 /*# sourceMappingURL=custom.css.map */

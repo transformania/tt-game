@@ -142,7 +142,7 @@
 
 
 
-
+<div id="offlinePlayersButton" class="onlinePlayersButton"><a onclick="hidePlayers()">Hide online players</a></div>
 	<div class="onlinePlayersWrapperBG">
 <div class="row">
 @*all players who are online*@
@@ -487,3 +487,9 @@
 
 </script>
 
+<script>
+    function hidePlayers() {
+        document.getElementsByClassName('onlinePlayersWrapperBG')[0].style.display='none';
+        document.getElementsByClassName('onlinePlayersButton')[0].style.display='none';
+    }
+</script>

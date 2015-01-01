@@ -362,4 +362,7 @@ a:hover {
   background-color: #D7BEBA;
   text-decoration: line-through; }
 
+.onlinePlayersButton {
+  border: none !important; }
+
 /*# sourceMappingURL=custom.css.map */

@@ -3,44 +3,57 @@
 @using tfgame.ViewModels
 @using tfgame.Statics
 
-@Html.ActionLink("Back to game", "Play", "PvP")
-
-<div class="covenContainer">
-    @Html.ActionLink("Create your own Covenant", "StartNewCovenant", "Covenant")
-    @Html.ActionLink("View all Covenants", "CovenantList", "Covenant")
-    @Html.ActionLink("Covenant Furniture on Market", "ViewAvailableFurniture", "Covenant")
-    @Html.ActionLink("Your Covenant's Furniture", "MyCovenantFurniture", "Covenant")
-
-    @{
-    if (Model.dbCovenant != null)
-    {
-        <a href="javascript:confirmDeletion()">Leave Covenant</a>
-        
-        <div id="realLink" class="deleteMessegeConfirm">
-            <span style="color:red; font-weight: bold;">Do you really want to leave your covenant? If yes then please click link below:</span>
-            @Html.ActionLink("Leave this Covenant", "LeaveCovenant", "Covenant")<br />
+<nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
         </div>
 
-    }
-
-    if (ViewBag.HasApplication == true)
-    {
-            @Html.ActionLink("Withdraw Pending Covenant Application", "WithdrawApplication", "Covenant")
-        }
-        @:&nbsp;
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+                <li>@Html.ActionLink("Create your own Covenant", "StartNewCovenant", "Covenant")</li>
+                <li>@Html.ActionLink("View all Covenants", "CovenantList", "Covenant")</li>
+                <li>@Html.ActionLink("Buy Furniture", "ViewAvailableFurniture", "Covenant")</li>
+                <li>@Html.ActionLink("Use Furniture", "MyCovenantFurniture", "Covenant")</li>
+                @{
+                    if (Model.dbCovenant != null)
+                    {
+                        <li><a href="javascript:confirmDeletion()">Leave Covenant</a></li>
+                    }
+                    if (ViewBag.HasApplication == true)
+                    {
+                        <li>@Html.ActionLink("Withdraw Coven Application", "WithdrawApplication", "Covenant")</li>
+                    }
         if (Model.dbCovenant != null && ViewBag.Player.Id == Model.dbCovenant.LeaderId)
         {
-            @Html.ActionLink("View Administration Page", "CovenantLeaderAdmin", "Covenant")
+            <li>@Html.ActionLink("Leader", "CovenantLeaderAdmin", "Covenant")</li>
         }
-        @Html.ActionLink("View Recent Covenant Activities", "MyCovenantLog", "Covenant")
-       
-        
-   }
+        <li>@Html.ActionLink("Coven Log", "MyCovenantLog", "Covenant")</li>
+                }
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
 
-    <div>
-        <span class="result">@Html.Raw(ViewBag.Result)</span>
-        <span class="error">@ViewBag.ErrorMessage</span>
-        <span class="suberror">@ViewBag.SubErrorMessage</span>
+<div>
+    <p class="infoMessage result">@Html.Raw(ViewBag.Result)</p>
+    <p class="infoMessage error">@ViewBag.ErrorMessage</p>
+    <p class="infoMessage suberror">@ViewBag.SubErrorMessage</p>
+</div>
+
+<div class="containerInner text-center">
+
+    <div id="realLink" class="deleteMessegeConfirm">
+        <span style="color:red; font-weight: bold;">Do you really want to leave your covenant? If yes then please click link below:</span>
+        @Html.ActionLink("Leave this Covenant", "LeaveCovenant", "Covenant")<br />
     </div>
 
     @{
@@ -65,44 +78,53 @@
 
             <p style="margin-bottom:-15px;">Arpeyjis in treasury:  <b>@Math.Floor(Model.dbCovenant.Money)</b><span title="Arpeyjis" class="icon-money"></span></p>
 
-    <br /><p>You can send some of your Arpeyjis to your covenant where your covenant leader can choose to distribute the covenant's Arpeyjis to its members in need.  You must not have spent any action points in 30 minutes in order to do this.  How many would you like to send? 
-    <br />You have <b>@ViewBag.MyMoney</b> Arpeyjis.</p>
+            <br /><p>
+                You can send some of your Arpeyjis to your covenant where your covenant leader can choose to distribute the covenant's Arpeyjis to its members in need.  You must not have spent any action points in 30 minutes in order to do this.  How many would you like to send?
+                <br />You have <b>@ViewBag.MyMoney</b> Arpeyjis.
+            </p>
 
-    @Html.ActionLink("20", "AddToCovenantChest", "Covenant", new { amount = 20 }, null)<span title="Arpeyjis" class="icon-money"></span>
-    @Html.ActionLink("100", "AddToCovenantChest", "Covenant", new { amount = 100 }, null)<span title="Arpeyjis" class="icon-money"></span>
-    @Html.ActionLink("500", "AddToCovenantChest", "Covenant", new { amount = 500 }, null)<span title="Arpeyjis" class="icon-money"></span>
+            @Html.ActionLink("20", "AddToCovenantChest", "Covenant", new { amount = 20 }, null)<span title="Arpeyjis" class="icon-money"></span>
+            @Html.ActionLink("100", "AddToCovenantChest", "Covenant", new { amount = 100 }, null)<span title="Arpeyjis" class="icon-money"></span>
+            @Html.ActionLink("500", "AddToCovenantChest", "Covenant", new { amount = 500 }, null)<span title="Arpeyjis" class="icon-money"></span>
 
-            <p>Members of your covenant:</p>
+            <div style="clear:both"></div>
+        
             foreach (PlayerFormViewModel p in Model.Members.OrderByDescending(c => c.Player.Level).ThenByDescending(c => c.Player.XP))
             {
-                    <div class="onlineCharWrapper" style="height: 100px;">
-                        @Html.Partial("~/Views/PvP/Player_Partial.cshtml", p)
-
-                        @if (ViewBag.Player.Id == Model.dbCovenant.LeaderId || ViewBag.IAmCaptain == true)
-                        {
-                        <div class="commandWrapper" style="height: 24px;">
-                            <span>Send Arp to @p.Player.FirstName?</span>
+                <div class="covonlineCharWrapper">
+                    @Html.Partial("~/Views/PvP/Player_Partial.cshtml", p)
+                    @if (ViewBag.Player.Id == Model.dbCovenant.LeaderId || ViewBag.IAmCaptain == true)
+                    {
+                        <div class="commandWrapper">
+                            Send Arp to @p.Player.FirstName?
                             @Html.ActionLink("20", "GiveMoneyFromCovenantChest", "Covenant", new { id = p.Player.Id, amount = 20 }, null)
                             @Html.ActionLink("100", "GiveMoneyFromCovenantChest", "Covenant", new { id = p.Player.Id, amount = 100 }, null)
                             @Html.ActionLink("500", "GiveMoneyFromCovenantChest", "Covenant", new { id = p.Player.Id, amount = 500 }, null)
                         </div>
-                        }
-                        </div>
+                    }
+                </div>
+            }
 
 
+        }
+}
+</div>
 
+<div class="onlinePlayersWrapperBG">
+    <div class="row">
 
-                        }
+        <div class="col-md-2 col-sm-4 col-xs-12 charaBox">
+            <div class="charaBoxInner">
+                <div>
+                    <p>
+                        Yes, this page is still broken :P
+                    </p>
+                </div>
+            </div>
+        </div>
 
-
-
-                        }
-
-                        }
-                    </div>
-<div style="clear:both"></div>
-<br />
-@Html.ActionLink("Back to game", "Play", "PvP")
+    </div>
+</div>
 
 <script>
     function confirmDeletion() {

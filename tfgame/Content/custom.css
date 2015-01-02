@@ -388,7 +388,7 @@ a:hover {
   height: 200px;
   margin-left: auto;
   margin-right: auto;
-  background-size: 100% 100%; }
+  background-size: contain; }
 
 .barWrapper {
   height: 30px;
@@ -445,5 +445,32 @@ a:hover {
 .tldr {
   text-transform: uppercase;
   color: #9822BC; }
+
+.covListing {
+  width: 100%;
+  height: auto;
+  float: left;
+  position: relative;
+  border: 1px solid lightgray;
+  padding: 10px; }
+
+.covBigName {
+  font-size: 20px;
+  font-weight: 700;
+  color: darkviolet; }
+
+.covMemberCount {
+  font-size: 12px;
+  color: darkblue;
+  margin-left: 10px;
+  font-style: italic; }
+
+.covFlag {
+  width: 100px;
+  height: 100px;
+  float: left;
+  position: relative;
+  margin-right: 10px;
+  background-size: 100% 100%; }
 
 /*# sourceMappingURL=custom.css.map */

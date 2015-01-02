@@ -474,6 +474,13 @@ a.talkLink {
     margin-top: 30px;
 }
 
+.covonlineCharWrapper{
+margin-right: 8px;
+margin-bottom: 30px;
+margin-top: 30px;
+}
+
+
 .charwrapper {
     border: 1px solid lightgray;
     height: 100px;

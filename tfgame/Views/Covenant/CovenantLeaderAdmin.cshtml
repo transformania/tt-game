@@ -1,35 +1,42 @@
-﻿<head>
-    <link href="~/Content/PvP.css" rel="stylesheet" />
-</head>
+﻿<nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
 
-<p>
-    @Html.ActionLink("Back to My Covenant", "MyCovenant", "Covenant")
-    @Html.ActionLink("Back to game", "Play", "PvP")
-</p>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+                <li>@Html.ActionLink("Back to My Covenant", "MyCovenant", "Covenant")</li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+<div class="containerInner">
 
-<h1>Covenant Administration</h1>
+    <h3>Covenant Administration</h3>
 
-<p>You can administer your covenant here.  When you expand your covenant safeground you increase your covenant's level by 1 which allows it to hold more furniture and increase the action point refill bonus from resting in the covenant's safeground.</p>
+    <p>You can administer your covenant here.  When you expand your covenant safeground you increase your covenant's level by 1 which allows it to hold more furniture and increase the action point refill bonus from resting in the covenant's safeground.</p>
 
-@{
-    if (ViewBag.LeaderOrCaptain == "leader")
-    {
-        <p>
-            @Html.ActionLink("View Applications", "ReviewMyCovenantApplications", "Covenant")<br />
-            @Html.ActionLink("Change Covenant Description", "ChangeCovenantDescription", "Covenant")<br />
-            @Html.ActionLink("Promote a member to a captain", "InviteCaptainList", "Covenant")<br />
-            @Html.ActionLink("Kick Out a Member", "KickList", "Covenant")<br />
-            @Html.ActionLink("Message all members of your covenant", "CovenantWideMessage", "Covenant")<br />
-            @Html.ActionLink("Claim your location as a Covenant safeground", "ClaimLocation", "Covenant")<br />
-            @Html.ActionLink("Expand Covenant Safeground (" + (string)ViewBag.UpgradeCost + " Arpeyjis)", "UpgradeSafeground", "Covenant")<br />
-        </p>
+    @{
+        if (ViewBag.LeaderOrCaptain == "leader")
+        {
+            <p>
+                @Html.ActionLink("View Applications", "ReviewMyCovenantApplications", "Covenant")<br />
+                @Html.ActionLink("Change Covenant Description", "ChangeCovenantDescription", "Covenant")<br />
+                @Html.ActionLink("Promote a member to a captain", "InviteCaptainList", "Covenant")<br />
+                @Html.ActionLink("Kick Out a Member", "KickList", "Covenant")<br />
+                @Html.ActionLink("Message all members of your covenant", "CovenantWideMessage", "Covenant")<br />
+                @Html.ActionLink("Claim your location as a Covenant safeground", "ClaimLocation", "Covenant")<br />
+                @Html.ActionLink("Expand Covenant Safeground (" + (string)ViewBag.UpgradeCost + " Arpeyjis)", "UpgradeSafeground", "Covenant")<br />
+            </p>
+        }
     }
-}
-
-
-
-
-<p>
-    @Html.ActionLink("Back to My Covenant", "MyCovenant", "Covenant")
-    @Html.ActionLink("Back to game", "Play", "PvP")
-</p>
+</div>

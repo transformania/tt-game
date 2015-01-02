@@ -1,19 +1,33 @@
-﻿<p>
-    @Html.ActionLink("Back to My Covenant", "MyCovenant", "Covenant")
-    @Html.ActionLink("Back to game", "Play", "PvP")
-</p>
+﻿<nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
 
-<h1>Claim This Location as Covenant Safeground</h1>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+                <li>@Html.ActionLink("Back to My Covenant", "MyCovenant", "Covenant")</li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+<div class="containerInner">
 
-<p>As the leader of your covenant, you can choose to claim your current location as a covenant safeground as long as it is not in the streets and you have enough Arpeyjis in your covenant's coffers.  Once you do this, you will not be able to move for the remainder of the round.  Covenant safegrounds can be decorated and upgraded with special furniture that offers special benefits to you and your members. Your covenant must have at least five players who are animate and at level three or higher to do this.</p>
+    <h3>Claim This Location as Covenant Safeground</h3>
 
-<p>Would you like to claim this location, <b>@ViewBag.MyLocation</b>, and set it as your covenant's homebase?</p>
+    <p>As the leader of your covenant, you can choose to claim your current location as a covenant safeground as long as it is not in the streets and you have enough Arpeyjis in your covenant's coffers.  Once you do this, you will not be able to move for the remainder of the round.  Covenant safegrounds can be decorated and upgraded with special furniture that offers special benefits to you and your members. Your covenant must have at least five players who are animate and at level three or higher to do this.</p>
 
-<p>You have <b>@ViewBag.CovenantMoney</b> Arpeyjis in your Covenant's chest.  You will need 2,500.</p>
+    <p>Would you like to claim this location, <b>@ViewBag.MyLocation</b>, and set it as your covenant's homebase?</p>
 
-<p>@Html.ActionLink("Claim this location (2,500 Arpeyis)", "ClaimLocationSend", "Covenant")</p>
+    <p>You have <b>@ViewBag.CovenantMoney</b> Arpeyjis in your Covenant's chest.  You will need 2,500.</p>
 
-<p>
-    @Html.ActionLink("Back to My Covenant", "MyCovenant", "Covenant")
-    @Html.ActionLink("Back to game", "Play", "PvP")
-</p>
+    <p>@Html.ActionLink("Claim this location (2,500 Arpeyis)", "ClaimLocationSend", "Covenant")</p>
+</div>

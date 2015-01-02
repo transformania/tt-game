@@ -2,31 +2,44 @@
            @using tfgame.ViewModels
             @using tfgame.CustomHtmlHelpers
 
-<head>
-    <link href="~/Content/PvP.css" rel="stylesheet" />
-</head>
+<nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
 
-<p>@Html.ActionLink("Back to My Covenant", "MyCovenant", "Covenant")</p>
-<p>@Html.ActionLink("Back to game", "Play", "PvP")</p>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+                <li>@Html.ActionLink("Back to My Covenant", "MyCovenant", "Covenant")</li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+<div class="containerInner">
+    <h3>Review Applications</h3>
 
-<h1>Review Applications</h1>
+    @{
+        foreach (CovenantApplicationViewModel app in Model)
+        {
+            <p>
+                @app.dbPlayer.FirstName @app.dbPlayer.LastName applied @CharactersHere.DatetimeToTimeago(app.dbCovenantApplication.Timestamp)
+                @Html.ActionLink("Accept", "ApplicationResponse", "Covenant", new { id = app.dbCovenantApplication.Id, response = "yes" }, null)
+                @Html.ActionLink("Deny", "ApplicationResponse", "Covenant", new { id = app.dbCovenantApplication.Id, response = "no" }, null)
+            </p>
+        }
 
-@{
-    foreach (CovenantApplicationViewModel app in Model)
-    {
-        <p>
-            @app.dbPlayer.FirstName @app.dbPlayer.LastName applied @CharactersHere.DatetimeToTimeago(app.dbCovenantApplication.Timestamp)
-            @Html.ActionLink("Accept", "ApplicationResponse", "Covenant", new { id = app.dbCovenantApplication.Id, response = "yes" }, null)
-            @Html.ActionLink("Deny", "ApplicationResponse", "Covenant", new { id = app.dbCovenantApplication.Id, response = "no" }, null)
-        </p>
+        if (Model.Count() == 0)
+        {
+            <p><b>You do not have any applications at this time.</b></p>
+        }
+
     }
-
-    if (Model.Count() == 0)
-    {
-        <p><b>You do not have any applications at this time.</b></p>
-    }
-    
-}
-
-<p>@Html.ActionLink("Back to My Covenant", "MyCovenant", "Covenant")</p>
-<p>@Html.ActionLink("Back to game", "Play", "PvP")</p>
+</div>

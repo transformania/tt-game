@@ -1,39 +1,41 @@
 ﻿@model tfgame.dbModels.Models.Covenant
 
-<head>
-    <script src="~/Scripts/jquery-2.1.0.js"></script>
-    <script src="~/Scripts/jquery.validate.min.js"></script>
-    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
-    <link href="~/Content/PvP.css" rel="stylesheet" />
-</head>
+<nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
 
-<p>@Html.ActionLink("Back to My Covenant", "MyCovenant", "Covenant")</p>
-
-<div class="error">
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+                <li>@Html.ActionLink("Back to My Covenant", "MyCovenant", "Covenant")</li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+<div class="infoMessage error">
     @Html.Raw(ViewBag.ValidationMessage)
 </div>
-
-<h1>Start A New Covenant</h1>
-
-<p>You are not in a covenant--so why not start your own?</p>
-
-@using (Html.BeginForm("StartNewCovenantSubmit", "Covenant", FormMethod.Post))
-{
-    <p>Name</p>
-    
-    @Html.TextBoxFor(m => m.Name)<br />
-    @Html.ValidationMessageFor(m => m.Name)
-    
-    <p>A short description of this covenant:</p>
-              
-
-    @Html.TextBoxFor(m => m.SelfDescription)<br />
-    @Html.ValidationMessageFor(m => m.SelfDescription)
-    
-    
-    <br />
-      <input type="submit" value="Save" />
-}
-
-<p>@Html.ActionLink("Back to My Covenant", "MyCovenant", "Covenant")</p>
-
+<div class="containerInner">
+    <h3>Start A New Covenant</h3>
+    <p>You are not in a covenant--so why not start your own?</p>
+    @using (Html.BeginForm("StartNewCovenantSubmit", "Covenant", FormMethod.Post))
+    {
+        <p>Name</p>
+        @Html.TextBoxFor(m => m.Name)<br />
+        @Html.ValidationMessageFor(m => m.Name)
+        <p>A short description of this covenant:</p>
+        @Html.TextBoxFor(m => m.SelfDescription)<br />
+        @Html.ValidationMessageFor(m => m.SelfDescription)
+        <br />
+        <input type="submit" value="Save" />
+    }
+</div>

@@ -3,87 +3,58 @@
 @using tfgame.dbModels.Models
 @using tfgame.CustomHtmlHelpers
 
-<head>
-    <script src="~/Scripts/jquery-2.1.0.js"></script>
-    <link href="~/Content/PvP.css" rel="stylesheet" />
-</head>
+<nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
 
-@Html.ActionLink("Back to game (Don't forget to save!)", "Play", "PvP")<br />
-@Html.ActionLink("View contributions awaiting review and implementation (Don't forget to save!)", "ContributeGraphicsNeeded", "PvP")<br />
-@Html.ActionLink("Go to Curse contributions", "ContributeEffect", "Contribution", new { Id = "-1" }, FormMethod.Post)<br />
-@Html.ActionLink("Go to DM Encounter contributions", "MyDMRolls", "Contribution")
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+                <li>@Html.ActionLink("Contributions in review", "ContributeGraphicsNeeded", "PvP")</li>
+                <li>@Html.ActionLink("Submit Curse", "ContributeEffect", "Contribution", new { Id = "-1" }, FormMethod.Post)</li>
+                <li>@Html.ActionLink("Submit DM Encounter", "MyDMRolls", "Contribution")</li>
+                <li>@Html.ActionLink("New Contribution", "Contribute", "PvP", new { Id = "-1" }, FormMethod.Post)</li>
+                @{if (TrustStatics.PlayerIsProofreader(WebSecurity.CurrentUserId) == true)
+                {
+                    <li>@Html.ActionLink("Unlock but DO NOT Save", "SendContributionUndoLock", "PvP", new { id = Model.Id }, null)</li>
+                }}     
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
 
-<div class="result">
-    @ViewBag.Result
+<div>
+    <p class="infoMessage result">@ViewBag.Result</p>
 </div>
 
-<p>
-    Click below to load one of your existing contributions (save first before navigating away if you need to!):<br />
-    @{
-        foreach (Contribution contribution in ViewBag.OtherContributions)
-        {
-
-            if (contribution.IsLive == true)
-            {
-                <span class='newlink'>
-                    @Html.ActionLink("Spell name:  " + contribution.Skill_FriendlyName + ". Form name:  " + contribution.Form_FriendlyName + ".", "Contribute", "PvP", new { Id = contribution.Id }, null)
-                </span>
-
-            }
-            else
-            {
-                @Html.ActionLink("Spell name:  " + contribution.Skill_FriendlyName + ". Form name:  " + contribution.Form_FriendlyName + ".", "Contribute", "PvP", new { Id = contribution.Id }, null)
-            }
-            if (contribution.ProofreadingCopy == true)
-            {
-                <span class="good">PROOFREADING COPY</span>
-            }
-
-            if (contribution.ProofreadingLockIsOn == true)
-            {
-                <span class="bad">Being Proofread by @contribution.CheckedOutBy</span> <span>@CharactersHere.DatetimeToTimeago(contribution.CreationTimestamp)</span>
-            }
-
-
-
-            <br />
-        }
-    }
-
-    @{
-
-
-        if (ViewBag.Proofreading != null)
-        {
-
-        <p>CONTRIBUTIONS AVAILABLE TO PROOFREAD</p>
-
-            foreach (Contribution contribution in ViewBag.Proofreading)
-            {
-
-                if (contribution.IsLive == true)
+<div class="containerInner">
+    <div class="contributionsBox">
+        <p>
+            Click below to load one of your existing contributions (save first before navigating away if you need to!):<br />
+            @{
+                foreach (Contribution contribution in ViewBag.OtherContributions)
                 {
-                    <span class='newlink'>
+
+                    if (contribution.IsLive == true)
+                    {
+                        <span class='newlink'>
+                            @Html.ActionLink("Spell name:  " + contribution.Skill_FriendlyName + ". Form name:  " + contribution.Form_FriendlyName + ".", "Contribute", "PvP", new { Id = contribution.Id }, null)
+                        </span>
+
+                    }
+                    else
+                    {
                         @Html.ActionLink("Spell name:  " + contribution.Skill_FriendlyName + ". Form name:  " + contribution.Form_FriendlyName + ".", "Contribute", "PvP", new { Id = contribution.Id }, null)
-
-                        @{
-                    if (contribution.ProofreadingCopy == true)
-                    {
-                        <span class="good">PROOFREADING COPY</span>
                     }
-                    if (contribution.ProofreadingLockIsOn == true)
-                    {
-                        <span class="bad">Being Proofread by @contribution.CheckedOutBy</span> <span>@CharactersHere.DatetimeToTimeago(contribution.CreationTimestamp)</span>
-                    }
-                        }
-
-                        <br />
-                    </span>
-
-                }
-                else
-                {
-                    @Html.ActionLink("Spell name:  " + contribution.Skill_FriendlyName + ". Form name:  " + contribution.Form_FriendlyName + ".", "Contribute", "PvP", new { Id = contribution.Id }, null)
                     if (contribution.ProofreadingCopy == true)
                     {
                         <span class="good">PROOFREADING COPY</span>
@@ -93,104 +64,154 @@
                     {
                         <span class="bad">Being Proofread by @contribution.CheckedOutBy</span> <span>@CharactersHere.DatetimeToTimeago(contribution.CreationTimestamp)</span>
                     }
+
+
 
                     <br />
                 }
             }
-
-        }
-    }
-
-    @Html.ActionLink("[Start a new contribution]", "Contribute", "PvP", new { Id = "-1" }, FormMethod.Post)
-    </p>
+            <br />
+            @{
 
 
-    <h1>Would you like to contribute to the Game?</h1>
+                if (ViewBag.Proofreading != null)
+                {
 
-    <p>If you would like to see a greater diversity in the game and would like to contribute new spells / forms / items / graphics, you can use this page to write up and submit new content.  You will receive credits for your work in the Contributions section of the Game News page.  And it will be greatly appreciated!</p>
+                <p>CONTRIBUTIONS AVAILABLE TO PROOFREAD</p>
 
-    <p>
-        Some basic rules and things to be aware of:
-        <ul>
-            <li>
-                No plagiarism.
-            </li>
+                    foreach (Contribution contribution in ViewBag.Proofreading)
+                    {
 
-            <li>
-                Graphics are strongly preferred for animate forms.  The sooner they have one the quicker they will get into the game.  However, graphics must be either a) Original work by yourself, b) commisioned work you own the rights to, or c) have explicit permission from the author to use here.
-            </li>
-            <li>
-                Due to sexual content in this game, please don't include underage characters (less than 18 years old.)
-            </li>
-            <li>
-                Do not write transformations for copyrighted characters.  Parodies or generic look and act-alikes of them, however, are acceptable.
-            </li>
-            <li>The administrator or proofreaders may alter portions of the spell to adapt to new locations in the game, correct for grammer, or other needed tweaks to work within the game's theme or mechanics.   These are usually minimal and the original author will still retain credit for the contribution.</li>
-            <li>
-                (Effective June 1, 2014)  When you post contributions and graphics, you retain your creator's rights.  This means the content cannot be resold or released for use on other websites or other electronic or printed mediums <b>by this site</b>--the contributor still has the rights to do so so long as it does not retroactively conflict with the game's use of the content.  However, you <b>are</b> agreeing to allow the game to use this content <b>indefinitely</b> so long as the game does not become a commercial project (no subscription fees, no pay-to-win item store, etc).
-            </li>
-        </ul>
-    </p>
+                        if (contribution.IsLive == true)
+                        {
+                            <span class='newlink'>
+                                @Html.ActionLink("Spell name:  " + contribution.Skill_FriendlyName + ". Form name:  " + contribution.Form_FriendlyName + ".", "Contribute", "PvP", new { Id = contribution.Id }, null)
 
-    <p><b>NOTE:  I would STRONGLY recommend saving your longer inputs somewhere on your computer, particularly item / form descriptions and transformation messages.  I do not know how reliable my hosting service is or if there are bugs that might erase some data.  I also recommend saving after every few text boxes you fill out.</b></p>
+                                @{
+                            if (contribution.ProofreadingCopy == true)
+                            {
+                                <span class="good">PROOFREADING COPY</span>
+                            }
+                            if (contribution.ProofreadingLockIsOn == true)
+                            {
+                                <span class="bad">Being Proofread by @contribution.CheckedOutBy</span> <span>@CharactersHere.DatetimeToTimeago(contribution.CreationTimestamp)</span>
+                            }
+                                }
 
-@{ if (TrustStatics.PlayerIsProofreader(WebSecurity.CurrentUserId) == true)
- {
-    @Html.ActionLink("Unlock but DO NOT Save", "SendContributionUndoLock", "PvP", new { id = Model.Id }, null)
- }
-}
+                                <br />
+                            </span>
 
-    @using (Html.BeginForm("SendContribution", "PvP", FormMethod.Post))
-    {
-        @Html.HiddenFor(m => m.Id);
-        @Html.HiddenFor(m => m.IsLive);
-        @Html.HiddenFor(m => m.OwnerMembershipId)
+                        }
+                        else
+                        {
+                            @Html.ActionLink("Spell name:  " + contribution.Skill_FriendlyName + ". Form name:  " + contribution.Form_FriendlyName + ".", "Contribute", "PvP", new { Id = contribution.Id }, null)
+                            if (contribution.ProofreadingCopy == true)
+                            {
+                                <span class="good">PROOFREADING COPY</span>
+                            }
 
-        <h2>Spell</h2>
+                            if (contribution.ProofreadingLockIsOn == true)
+                            {
+                                <span class="bad">Being Proofread by @contribution.CheckedOutBy</span> <span>@CharactersHere.DatetimeToTimeago(contribution.CreationTimestamp)</span>
+                            }
 
+                            <br />
+                        }
+                    }
 
-        if (Model.ProofreadingCopy == true)
-        {
-            <h1 class="good">THIS IS A PROOFREADING COPY.</h1>
-        }
+                }
+            }
+        </div>
         
-        <p>@Html.ActionLink("Look at this author's player profile","LookAtPlayer_FromMembershipId","PvP", new {id = Model.OwnerMembershipId}, null)</p>
+        </p>
 
 
-        <div class="form__panel group" style="background-color: lightpink;">
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Skill_FriendlyName)
-                @Html.TextBoxFor(m => m.Skill_FriendlyName)
-            </div>
+        <h1>Would you like to contribute to the Game?</h1>
 
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Skill_Description)
-                @Html.TextAreaFor(m => m.Skill_Description)
-            </div>
+        <p>If you would like to see a greater diversity in the game and would like to contribute new spells / forms / items / graphics, you can use this page to write up and submit new content.  You will receive credits for your work in the Contributions section of the Game News page.  And it will be greatly appreciated!</p>
 
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Skill_FormFriendlyName)
-                @Html.TextBoxFor(m => m.Skill_FormFriendlyName)
-            </div>
+        <p>
+            Some basic rules and things to be aware of:
+            <ul>
+                <li>
+                    No plagiarism.
+                </li>
 
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Skill_ManaCost)
-                @Html.TextBoxFor(m => m.Skill_ManaCost)
-            </div>
+                <li>
+                    Graphics are strongly preferred for animate forms.  The sooner they have one the quicker they will get into the game.  However, graphics must be either a) Original work by yourself, b) commisioned work you own the rights to, or c) have explicit permission from the author to use here.
+                </li>
+                <li>
+                    Due to sexual content in this game, please don't include underage characters (less than 18 years old.)
+                </li>
+                <li>
+                    Do not write transformations for copyrighted characters.  Parodies or generic look and act-alikes of them, however, are acceptable.
+                </li>
+                <li>The administrator or proofreaders may alter portions of the spell to adapt to new locations in the game, correct for grammer, or other needed tweaks to work within the game's theme or mechanics.   These are usually minimal and the original author will still retain credit for the contribution.</li>
+                <li>
+                    (Effective June 1, 2014)  When you post contributions and graphics, you retain your creator's rights.  This means the content cannot be resold or released for use on other websites or other electronic or printed mediums <b>by this site</b>--the contributor still has the rights to do so so long as it does not retroactively conflict with the game's use of the content.  However, you <b>are</b> agreeing to allow the game to use this content <b>indefinitely</b> so long as the game does not become a commercial project (no subscription fees, no pay-to-win item store, etc).
+                </li>
+            </ul>
+        </p>
 
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Skill_TFPointsAmount)
-                @Html.TextBoxFor(m => m.Skill_TFPointsAmount)
-            </div>
+        <p><b>NOTE:  I would STRONGLY recommend saving your longer inputs somewhere on your computer, particularly item / form descriptions and transformation messages.  I do not know how reliable my hosting service is or if there are bugs that might erase some data.  I also recommend saving after every few text boxes you fill out.</b></p>
 
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Skill_HealthDamageAmount)
-                @Html.TextBoxFor(m => m.Skill_HealthDamageAmount)
-            </div>
+        @{ if (TrustStatics.PlayerIsProofreader(WebSecurity.CurrentUserId) == true)
+         {
+            @Html.ActionLink("Unlock but DO NOT Save", "SendContributionUndoLock", "PvP", new { id = Model.Id }, null)
+         }
+        }
 
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Skill_LearnedAtLocationOrRegion)
-                @Html.DropDownListFor(m => m.Skill_LearnedAtLocationOrRegion, new SelectList(
+        @using (Html.BeginForm("SendContribution", "PvP", FormMethod.Post))
+        {
+            @Html.HiddenFor(m => m.Id);
+            @Html.HiddenFor(m => m.IsLive);
+            @Html.HiddenFor(m => m.OwnerMembershipId)
+
+            <h2>Spell</h2>
+
+
+            if (Model.ProofreadingCopy == true)
+            {
+                <h1 class="good">THIS IS A PROOFREADING COPY.</h1>
+            }
+
+            <p>@Html.ActionLink("Look at this author's player profile", "LookAtPlayer_FromMembershipId", "PvP", new { id = Model.OwnerMembershipId }, null)</p>
+
+
+            <div class="form__panel group" style="background-color: lightpink;">
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Skill_FriendlyName)
+                    @Html.TextBoxFor(m => m.Skill_FriendlyName)
+                </div>
+
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Skill_Description)
+                    @Html.TextAreaFor(m => m.Skill_Description)
+                </div>
+
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Skill_FormFriendlyName)
+                    @Html.TextBoxFor(m => m.Skill_FormFriendlyName)
+                </div>
+
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Skill_ManaCost)
+                    @Html.TextBoxFor(m => m.Skill_ManaCost)
+                </div>
+
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Skill_TFPointsAmount)
+                    @Html.TextBoxFor(m => m.Skill_TFPointsAmount)
+                </div>
+
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Skill_HealthDamageAmount)
+                    @Html.TextBoxFor(m => m.Skill_HealthDamageAmount)
+                </div>
+
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Skill_LearnedAtLocationOrRegion)
+                    @Html.DropDownListFor(m => m.Skill_LearnedAtLocationOrRegion, new SelectList(
                   new List<Object>{
                        new { value = "region"  , text = "Region"  },
                        new { value = "location"  , text = "Location"  },
@@ -198,43 +219,43 @@
                   "value",
                   "text",
                    2))
+                </div>
+
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Skill_LearnedAtRegion)
+                    @Html.TextBoxFor(m => m.Skill_LearnedAtRegion)
+                </div>
+
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Skill_DiscoveryMessage)
+                    @Html.TextAreaFor(m => m.Skill_DiscoveryMessage)
+                </div>
+
             </div>
 
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Skill_LearnedAtRegion)
-                @Html.TextBoxFor(m => m.Skill_LearnedAtRegion)
-            </div>
+            if (Model.ProofreadingCopy == true)
+            {
+                <h1 class="good">THIS IS A PROOFREADING COPY.</h1>
+            }
 
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Skill_DiscoveryMessage)
-                @Html.TextAreaFor(m => m.Skill_DiscoveryMessage)
-            </div>
-
-        </div>
-
-        if (Model.ProofreadingCopy == true)
-        {
-            <h1 class="good">THIS IS A PROOFREADING COPY.</h1>
-        }
-
-        <input type="submit" value="Save" />
-        <h2>Form</h2>
-        <div class="form__panel group" style="background-color: lightblue;">
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Form_FriendlyName)
-                @Html.TextBoxFor(m => m.Form_FriendlyName)
-            </div>
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Form_Description)
-                @Html.TextAreaFor(m => m.Form_Description, new { @placeholder = "Ex) This player is a _______.  He/she is very pretty and likes to sing and dance in the sun.  He/she can sometimes get distracted by pretty butterflies, but can still be very dangerous in a fight when riled up.  PLEASE NOTE:  This changes for inanimate items and pets." })
-            </div>
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Form_TFEnergyRequired)
-                @Html.TextBoxFor(m => m.Form_TFEnergyRequired)
-            </div>
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Form_Gender)
-                @Html.DropDownListFor(m => m.Form_Gender, new SelectList(
+            <input type="submit" value="Save" />
+            <h2>Form</h2>
+            <div class="form__panel group" style="background-color: lightblue;">
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_FriendlyName)
+                    @Html.TextBoxFor(m => m.Form_FriendlyName)
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_Description)
+                    @Html.TextAreaFor(m => m.Form_Description, new { @placeholder = "Ex) This player is a _______.  He/she is very pretty and likes to sing and dance in the sun.  He/she can sometimes get distracted by pretty butterflies, but can still be very dangerous in a fight when riled up.  PLEASE NOTE:  This changes for inanimate items and pets." })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFEnergyRequired)
+                    @Html.TextBoxFor(m => m.Form_TFEnergyRequired)
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_Gender)
+                    @Html.DropDownListFor(m => m.Form_Gender, new SelectList(
                   new List<Object>{
                        new { value = "male"  , text = "Male"  },
                        new { value = "female"  , text = "Female"  },
@@ -242,10 +263,10 @@
                   "value",
                   "text",
                    2))
-            </div>
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Form_MobilityType)
-                @Html.DropDownListFor(m => m.Form_MobilityType, new SelectList(
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_MobilityType)
+                    @Html.DropDownListFor(m => m.Form_MobilityType, new SelectList(
                   new List<Object>{
                        new { value = "full"  , text = "Full (Animate)"  },
                        new { value = "inanimate"  , text = "Inanimate"  },
@@ -254,211 +275,211 @@
                   "value",
                   "text",
                    2))
-            </div>
-            <div class="form__panel" id="Form_BecomesItemPanel">
-                @Html.LabelFor(m => m.Form_BecomesItemDbName)
-                @Html.TextBoxFor(m => m.Form_BecomesItemDbName)
-            </div>
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Form_Bonuses)
-                @Html.TextAreaFor(m => m.Form_Bonuses)
-            </div>
+                </div>
+                <div class="form__panel" id="Form_BecomesItemPanel">
+                    @Html.LabelFor(m => m.Form_BecomesItemDbName)
+                    @Html.TextBoxFor(m => m.Form_BecomesItemDbName)
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_Bonuses)
+                    @Html.TextAreaFor(m => m.Form_Bonuses)
+                </div>
 
-            <div class="form__panel externalMessage">
-                The next group of inputs are for the transformation messages shown for the VICTIM of the spell and describes the transformation process in the first person perspective.  These make no assumptions as to the victim's gender.
-            </div>
+                <div class="form__panel externalMessage">
+                    The next group of inputs are for the transformation messages shown for the VICTIM of the spell and describes the transformation process in the first person perspective.  These make no assumptions as to the victim's gender.
+                </div>
 
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Form_TFMessage_20_Percent_1st)
-                @Html.TextAreaFor(m => m.Form_TFMessage_20_Percent_1st, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change... (you are either male or female)" })
-            </div>
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Form_TFMessage_40_Percent_1st)
-                @Html.TextAreaFor(m => m.Form_TFMessage_40_Percent_1st, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change...  (you are either male or female)" })
-            </div>
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Form_TFMessage_60_Percent_1st)
-                @Html.TextAreaFor(m => m.Form_TFMessage_60_Percent_1st, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change...  (you are either male or female)" })
-            </div>
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Form_TFMessage_80_Percent_1st)
-                @Html.TextAreaFor(m => m.Form_TFMessage_80_Percent_1st, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change...  (you are either male or female)" })
-            </div>
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Form_TFMessage_100_Percent_1st)
-                @Html.TextAreaFor(m => m.Form_TFMessage_100_Percent_1st, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change...  (you are either male or female)" })
-            </div>
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Form_TFMessage_Completed_1st)
-                @Html.TextAreaFor(m => m.Form_TFMessage_Completed_1st, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change...  (you are either male or female)" })
-            </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_20_Percent_1st)
+                    @Html.TextAreaFor(m => m.Form_TFMessage_20_Percent_1st, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change... (you are either male or female)" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_40_Percent_1st)
+                    @Html.TextAreaFor(m => m.Form_TFMessage_40_Percent_1st, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change...  (you are either male or female)" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_60_Percent_1st)
+                    @Html.TextAreaFor(m => m.Form_TFMessage_60_Percent_1st, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change...  (you are either male or female)" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_80_Percent_1st)
+                    @Html.TextAreaFor(m => m.Form_TFMessage_80_Percent_1st, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change...  (you are either male or female)" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_100_Percent_1st)
+                    @Html.TextAreaFor(m => m.Form_TFMessage_100_Percent_1st, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change...  (you are either male or female)" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_Completed_1st)
+                    @Html.TextAreaFor(m => m.Form_TFMessage_Completed_1st, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change...  (you are either male or female)" })
+                </div>
 
-            <div class="form__panel externalMessage">
-                The next group of inputs are for the transformation messages shown for the VICTIM of the spell and describes the transformation process in the first person perspective.  These will only show if the gender of the victim is MALE.  These will be printed INSTEAD of the 1st person gender-neutral version.  These fields are optional.
-                <span class="icon-male"></span>
-            </div>
+                <div class="form__panel externalMessage">
+                    The next group of inputs are for the transformation messages shown for the VICTIM of the spell and describes the transformation process in the first person perspective.  These will only show if the gender of the victim is MALE.  These will be printed INSTEAD of the 1st person gender-neutral version.  These fields are optional.
+                    <span class="icon-male"></span>
+                </div>
 
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Form_TFMessage_20_Percent_1st_M) <span class="icon-male"></span>
-                @Html.TextAreaFor(m => m.Form_TFMessage_20_Percent_1st_M, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change... (you are male)" })
-            </div>
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Form_TFMessage_40_Percent_1st_M) <span class="icon-male"></span>
-                @Html.TextAreaFor(m => m.Form_TFMessage_40_Percent_1st_M, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change... (you are male)" })
-            </div>
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Form_TFMessage_60_Percent_1st_M) <span class="icon-male"></span>
-                @Html.TextAreaFor(m => m.Form_TFMessage_60_Percent_1st_M, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change... (you are male)" })
-            </div>
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Form_TFMessage_80_Percent_1st_M) <span class="icon-male"></span>
-                @Html.TextAreaFor(m => m.Form_TFMessage_80_Percent_1st_M, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change... (you are male)" })
-            </div>
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Form_TFMessage_100_Percent_1st_M) <span class="icon-male"></span>
-                @Html.TextAreaFor(m => m.Form_TFMessage_100_Percent_1st_M, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change... (you are male)" })
-            </div>
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Form_TFMessage_Completed_1st_M) <span class="icon-male"></span>
-                @Html.TextAreaFor(m => m.Form_TFMessage_Completed_1st_M, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change.. (you are male)." })
-            </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_20_Percent_1st_M) <span class="icon-male"></span>
+                    @Html.TextAreaFor(m => m.Form_TFMessage_20_Percent_1st_M, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change... (you are male)" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_40_Percent_1st_M) <span class="icon-male"></span>
+                    @Html.TextAreaFor(m => m.Form_TFMessage_40_Percent_1st_M, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change... (you are male)" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_60_Percent_1st_M) <span class="icon-male"></span>
+                    @Html.TextAreaFor(m => m.Form_TFMessage_60_Percent_1st_M, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change... (you are male)" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_80_Percent_1st_M) <span class="icon-male"></span>
+                    @Html.TextAreaFor(m => m.Form_TFMessage_80_Percent_1st_M, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change... (you are male)" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_100_Percent_1st_M) <span class="icon-male"></span>
+                    @Html.TextAreaFor(m => m.Form_TFMessage_100_Percent_1st_M, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change... (you are male)" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_Completed_1st_M) <span class="icon-male"></span>
+                    @Html.TextAreaFor(m => m.Form_TFMessage_Completed_1st_M, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change.. (you are male)." })
+                </div>
 
-            <div class="form__panel externalMessage">
-                The next group of inputs are for the transformation messages shown for the VICTIM of the spell and describes the transformation process in the first person perspective.  These will only show if the gender of the victim is FEMALE.  These will be printed INSTEAD of the 1st person gender-neutral version.  These fields are optional.
-                <span class="icon-female"></span>
-            </div>
+                <div class="form__panel externalMessage">
+                    The next group of inputs are for the transformation messages shown for the VICTIM of the spell and describes the transformation process in the first person perspective.  These will only show if the gender of the victim is FEMALE.  These will be printed INSTEAD of the 1st person gender-neutral version.  These fields are optional.
+                    <span class="icon-female"></span>
+                </div>
 
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Form_TFMessage_20_Percent_1st_F) <span class="icon-female"></span>
-                @Html.TextAreaFor(m => m.Form_TFMessage_20_Percent_1st_F, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change... (you are female)" })
-            </div>
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Form_TFMessage_40_Percent_1st_F) <span class="icon-female"></span>
-                @Html.TextAreaFor(m => m.Form_TFMessage_40_Percent_1st_F, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change...  (you are female)" })
-            </div>
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Form_TFMessage_60_Percent_1st_F) <span class="icon-female"></span>
-                @Html.TextAreaFor(m => m.Form_TFMessage_60_Percent_1st_F, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change...  (you are female)" })
-            </div>
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Form_TFMessage_80_Percent_1st_F) <span class="icon-female"></span>
-                @Html.TextAreaFor(m => m.Form_TFMessage_80_Percent_1st_F, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change...  (you are female)" })
-            </div>
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Form_TFMessage_100_Percent_1st_F) <span class="icon-female"></span>
-                @Html.TextAreaFor(m => m.Form_TFMessage_100_Percent_1st_F, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change...  (you are female)" })
-            </div>
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Form_TFMessage_Completed_1st_F) <span class="icon-female"></span>
-                @Html.TextAreaFor(m => m.Form_TFMessage_Completed_1st_F, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change...  (you are female)" })
-            </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_20_Percent_1st_F) <span class="icon-female"></span>
+                    @Html.TextAreaFor(m => m.Form_TFMessage_20_Percent_1st_F, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change... (you are female)" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_40_Percent_1st_F) <span class="icon-female"></span>
+                    @Html.TextAreaFor(m => m.Form_TFMessage_40_Percent_1st_F, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change...  (you are female)" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_60_Percent_1st_F) <span class="icon-female"></span>
+                    @Html.TextAreaFor(m => m.Form_TFMessage_60_Percent_1st_F, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change...  (you are female)" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_80_Percent_1st_F) <span class="icon-female"></span>
+                    @Html.TextAreaFor(m => m.Form_TFMessage_80_Percent_1st_F, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change...  (you are female)" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_100_Percent_1st_F) <span class="icon-female"></span>
+                    @Html.TextAreaFor(m => m.Form_TFMessage_100_Percent_1st_F, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change...  (you are female)" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_Completed_1st_F) <span class="icon-female"></span>
+                    @Html.TextAreaFor(m => m.Form_TFMessage_Completed_1st_F, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change...  (you are female)" })
+                </div>
 
-            <div class="form__panel externalMessage">
-                The next group of inputs are for the transformation messages as seen by the CASTER of the spell and describes the transformation process in the third person perspective.  These make no assumptions as to the victim's gender and should not use gendered pronouns like "he", "she", "his", "her", etc.  Instead use phrasings like "your target" or "your victim" or "their".
-            </div>
+                <div class="form__panel externalMessage">
+                    The next group of inputs are for the transformation messages as seen by the CASTER of the spell and describes the transformation process in the third person perspective.  These make no assumptions as to the victim's gender and should not use gendered pronouns like "he", "she", "his", "her", etc.  Instead use phrasings like "your target" or "your victim" or "their".
+                </div>
 
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Form_TFMessage_20_Percent_3rd)
-                @Html.TextAreaFor(m => m.Form_TFMessage_20_Percent_3rd, new { @placeholder = "Your spell hits your target.  They gasp as their body begins to change... (your target is either male or female)" })
-            </div>
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Form_TFMessage_40_Percent_3rd)
-                @Html.TextAreaFor(m => m.Form_TFMessage_40_Percent_3rd, new { @placeholder = "Your spell hits your target.  They gasp as their body begins to change... (your target is either male or female)" })
-            </div>
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Form_TFMessage_60_Percent_3rd)
-                @Html.TextAreaFor(m => m.Form_TFMessage_60_Percent_3rd, new { @placeholder = "Your spell hits your target.  They gasp as their body begins to change... (your target is either male or female)" })
-            </div>
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Form_TFMessage_80_Percent_3rd)
-                @Html.TextAreaFor(m => m.Form_TFMessage_80_Percent_3rd, new { @placeholder = "Your spell hits your target.  They gasp as their body begins to change... (your target is either male or female)" })
-            </div>
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Form_TFMessage_100_Percent_3rd)
-                @Html.TextAreaFor(m => m.Form_TFMessage_100_Percent_3rd, new { @placeholder = "Your spell hits your target.  They gasp as their body begins to change... (your target is either male or female)" })
-            </div>
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Form_TFMessage_Completed_3rd)
-                @Html.TextAreaFor(m => m.Form_TFMessage_Completed_3rd, new { @placeholder = "Your spell hits your target.  They gasp as their body begins to change... (your target is either male or female)" })
-            </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_20_Percent_3rd)
+                    @Html.TextAreaFor(m => m.Form_TFMessage_20_Percent_3rd, new { @placeholder = "Your spell hits your target.  They gasp as their body begins to change... (your target is either male or female)" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_40_Percent_3rd)
+                    @Html.TextAreaFor(m => m.Form_TFMessage_40_Percent_3rd, new { @placeholder = "Your spell hits your target.  They gasp as their body begins to change... (your target is either male or female)" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_60_Percent_3rd)
+                    @Html.TextAreaFor(m => m.Form_TFMessage_60_Percent_3rd, new { @placeholder = "Your spell hits your target.  They gasp as their body begins to change... (your target is either male or female)" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_80_Percent_3rd)
+                    @Html.TextAreaFor(m => m.Form_TFMessage_80_Percent_3rd, new { @placeholder = "Your spell hits your target.  They gasp as their body begins to change... (your target is either male or female)" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_100_Percent_3rd)
+                    @Html.TextAreaFor(m => m.Form_TFMessage_100_Percent_3rd, new { @placeholder = "Your spell hits your target.  They gasp as their body begins to change... (your target is either male or female)" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_Completed_3rd)
+                    @Html.TextAreaFor(m => m.Form_TFMessage_Completed_3rd, new { @placeholder = "Your spell hits your target.  They gasp as their body begins to change... (your target is either male or female)" })
+                </div>
 
 
 
-            <div class="form__panel externalMessage">
-                The next group of inputs are for the transformation messages as seen by CASTER of the spell and describes the transformation process in the third person perspective.  These will only show if the gender of the victim is MALE.  These will be printed INSTEAD of the 3rd person gender-neutral version.  These fields are optional but can provide some more flavor to the description.
-                <span class="icon-male"></span>
-            </div>
+                <div class="form__panel externalMessage">
+                    The next group of inputs are for the transformation messages as seen by CASTER of the spell and describes the transformation process in the third person perspective.  These will only show if the gender of the victim is MALE.  These will be printed INSTEAD of the 3rd person gender-neutral version.  These fields are optional but can provide some more flavor to the description.
+                    <span class="icon-male"></span>
+                </div>
 
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Form_TFMessage_20_Percent_3rd_M) <span class="icon-male"></span>
-                @Html.TextAreaFor(m => m.Form_TFMessage_20_Percent_3rd_M, new { @placeholder = "Your spell hits your target.  He gasps as his body begins to change... (your target is male)" })
-            </div>
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Form_TFMessage_40_Percent_3rd_M) <span class="icon-male"></span>
-                @Html.TextAreaFor(m => m.Form_TFMessage_40_Percent_3rd_M, new { @placeholder = "Your spell hits your target.  He gasps as his body begins to change... (your target is male)" })
-            </div>
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Form_TFMessage_60_Percent_3rd_M) <span class="icon-male"></span>
-                @Html.TextAreaFor(m => m.Form_TFMessage_60_Percent_3rd_M, new { @placeholder = "Your spell hits your target.  He gasps as his body begins to change... (your target is male)" })
-            </div>
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Form_TFMessage_80_Percent_3rd_M) <span class="icon-male"></span>
-                @Html.TextAreaFor(m => m.Form_TFMessage_80_Percent_3rd_M, new { @placeholder = "Your spell hits your target.  He gasps as his body begins to change... (your target is male)" })
-            </div>
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Form_TFMessage_100_Percent_3rd_M) <span class="icon-male"></span>
-                @Html.TextAreaFor(m => m.Form_TFMessage_100_Percent_3rd_M, new { @placeholder = "Your spell hits your target.  He gasps as his body begins to change... (your target is male)" })
-            </div>
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Form_TFMessage_Completed_3rd_M) <span class="icon-male"></span>
-                @Html.TextAreaFor(m => m.Form_TFMessage_Completed_3rd_M, new { @placeholder = "Your spell hits your target.  He gasps as his body begins to change... (your target is male)" })
-            </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_20_Percent_3rd_M) <span class="icon-male"></span>
+                    @Html.TextAreaFor(m => m.Form_TFMessage_20_Percent_3rd_M, new { @placeholder = "Your spell hits your target.  He gasps as his body begins to change... (your target is male)" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_40_Percent_3rd_M) <span class="icon-male"></span>
+                    @Html.TextAreaFor(m => m.Form_TFMessage_40_Percent_3rd_M, new { @placeholder = "Your spell hits your target.  He gasps as his body begins to change... (your target is male)" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_60_Percent_3rd_M) <span class="icon-male"></span>
+                    @Html.TextAreaFor(m => m.Form_TFMessage_60_Percent_3rd_M, new { @placeholder = "Your spell hits your target.  He gasps as his body begins to change... (your target is male)" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_80_Percent_3rd_M) <span class="icon-male"></span>
+                    @Html.TextAreaFor(m => m.Form_TFMessage_80_Percent_3rd_M, new { @placeholder = "Your spell hits your target.  He gasps as his body begins to change... (your target is male)" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_100_Percent_3rd_M) <span class="icon-male"></span>
+                    @Html.TextAreaFor(m => m.Form_TFMessage_100_Percent_3rd_M, new { @placeholder = "Your spell hits your target.  He gasps as his body begins to change... (your target is male)" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_Completed_3rd_M) <span class="icon-male"></span>
+                    @Html.TextAreaFor(m => m.Form_TFMessage_Completed_3rd_M, new { @placeholder = "Your spell hits your target.  He gasps as his body begins to change... (your target is male)" })
+                </div>
 
-            <div class="form__panel externalMessage">
-                The next group of inputs are for the transformation messages as seen by CASTER of the spell and describes the transformation process in the third person perspective.  These will only show if the gender of the victim is FEMALE.  These will be printed INSTEAD of the 3rd person gender-neutral version.  These fields are optional but can provide some more flavor to the description.
-                <span class="icon-female"></span>
-            </div>
+                <div class="form__panel externalMessage">
+                    The next group of inputs are for the transformation messages as seen by CASTER of the spell and describes the transformation process in the third person perspective.  These will only show if the gender of the victim is FEMALE.  These will be printed INSTEAD of the 3rd person gender-neutral version.  These fields are optional but can provide some more flavor to the description.
+                    <span class="icon-female"></span>
+                </div>
 
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Form_TFMessage_20_Percent_3rd_F) <span class="icon-female"></span>
-                @Html.TextAreaFor(m => m.Form_TFMessage_20_Percent_3rd_F, new { @placeholder = "Your spell hits your target.  She gasps as her body begins to change... (your target is female)" })
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_20_Percent_3rd_F) <span class="icon-female"></span>
+                    @Html.TextAreaFor(m => m.Form_TFMessage_20_Percent_3rd_F, new { @placeholder = "Your spell hits your target.  She gasps as her body begins to change... (your target is female)" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_40_Percent_3rd_F) <span class="icon-female"></span>
+                    @Html.TextAreaFor(m => m.Form_TFMessage_40_Percent_3rd_F, new { @placeholder = "Your spell hits your target.  She gasps as her body begins to change... (your target is female)" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_60_Percent_3rd_F) <span class="icon-female"></span>
+                    @Html.TextAreaFor(m => m.Form_TFMessage_60_Percent_3rd_F, new { @placeholder = "Your spell hits your target.  She gasps as her body begins to change... (your target is female)" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_80_Percent_3rd_F) <span class="icon-female"></span>
+                    @Html.TextAreaFor(m => m.Form_TFMessage_80_Percent_3rd_F, new { @placeholder = "Your spell hits your target.  She gasps as her body begins to change... (your target is female)" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_100_Percent_3rd_F) <span class="icon-female"></span>
+                    @Html.TextAreaFor(m => m.Form_TFMessage_100_Percent_3rd_F, new { @placeholder = "Your spell hits your target.  She gasps as her body begins to change... (your target is female)" })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Form_TFMessage_Completed_3rd_F) <span class="icon-female"></span>
+                    @Html.TextAreaFor(m => m.Form_TFMessage_Completed_3rd_F, new { @placeholder = "Your spell hits your target.  She gasps as her body begins to change... (your target is female)" })
+                </div>
             </div>
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Form_TFMessage_40_Percent_3rd_F) <span class="icon-female"></span>
-                @Html.TextAreaFor(m => m.Form_TFMessage_40_Percent_3rd_F, new { @placeholder = "Your spell hits your target.  She gasps as her body begins to change... (your target is female)" })
-            </div>
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Form_TFMessage_60_Percent_3rd_F) <span class="icon-female"></span>
-                @Html.TextAreaFor(m => m.Form_TFMessage_60_Percent_3rd_F, new { @placeholder = "Your spell hits your target.  She gasps as her body begins to change... (your target is female)" })
-            </div>
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Form_TFMessage_80_Percent_3rd_F) <span class="icon-female"></span>
-                @Html.TextAreaFor(m => m.Form_TFMessage_80_Percent_3rd_F, new { @placeholder = "Your spell hits your target.  She gasps as her body begins to change... (your target is female)" })
-            </div>
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Form_TFMessage_100_Percent_3rd_F) <span class="icon-female"></span>
-                @Html.TextAreaFor(m => m.Form_TFMessage_100_Percent_3rd_F, new { @placeholder = "Your spell hits your target.  She gasps as her body begins to change... (your target is female)" })
-            </div>
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Form_TFMessage_Completed_3rd_F) <span class="icon-female"></span>
-                @Html.TextAreaFor(m => m.Form_TFMessage_Completed_3rd_F, new { @placeholder = "Your spell hits your target.  She gasps as her body begins to change... (your target is female)" })
-            </div>
-        </div>
-        <input type="submit" value="Save" />
+            <input type="submit" value="Save" />
 
-        <h2>Item Created by a Completed Transformation</h2>
-        <div class="form__panel group" id="itemCreatedPanel" style="background-color: #FFE0A3;">
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Item_FriendlyName)
-                @Html.TextBoxFor(m => m.Item_FriendlyName)
-            </div>
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Item_Description)
-                @Html.TextAreaFor(m => m.Item_Description, new { @placeholder = "Ex) This item is a _____.  When its owner holds it, they gain extra power.  Once human, this item likes to shake and rub against its owner affectionately and likes it when people compliment on how pretty it is.  (Refer to this item in third person in a generality--don't use words like 'You' or 'Your' here since this item may not be something that 'You' own." })
-            </div>
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Item_ItemType)
-                @Html.DropDownListFor(m => m.Item_ItemType, new SelectList(
+            <h2>Item Created by a Completed Transformation</h2>
+            <div class="form__panel group" id="itemCreatedPanel" style="background-color: #FFE0A3;">
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Item_FriendlyName)
+                    @Html.TextBoxFor(m => m.Item_FriendlyName)
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Item_Description)
+                    @Html.TextAreaFor(m => m.Item_Description, new { @placeholder = "Ex) This item is a _____.  When its owner holds it, they gain extra power.  Once human, this item likes to shake and rub against its owner affectionately and likes it when people compliment on how pretty it is.  (Refer to this item in third person in a generality--don't use words like 'You' or 'Your' here since this item may not be something that 'You' own." })
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Item_ItemType)
+                    @Html.DropDownListFor(m => m.Item_ItemType, new SelectList(
                   new List<Object>{
                        new { value = @PvPStatics.ItemType_Hat  , text = "Hat"  },
                        new { value = @PvPStatics.ItemType_Shirt  , text = "Shirt"  },
@@ -473,132 +494,132 @@
                   "value",
                   "text",
                   2))
-            </div>
-            <div class="form__panel" id="Item_UseCooldownPanel">
-                @Html.LabelFor(m => m.Item_UseCooldown)
-                @Html.TextBoxFor(m => m.Item_UseCooldown)
-            </div>
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Item_Bonuses)
-                @Html.TextAreaFor(m => m.Item_Bonuses)
+                </div>
+                <div class="form__panel" id="Item_UseCooldownPanel">
+                    @Html.LabelFor(m => m.Item_UseCooldown)
+                    @Html.TextBoxFor(m => m.Item_UseCooldown)
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Item_Bonuses)
+                    @Html.TextAreaFor(m => m.Item_Bonuses)
+                </div>
+
             </div>
 
-        </div>
-
-        <div class="form__panel group" id="itemCreatedPanelNotPresent" style="background-color: #FFE0A3; display: none;">
-            <div class="form__panel externalMessage">
-                Because the form type is not set to inanimate, no item will be created.
+            <div class="form__panel group" id="itemCreatedPanelNotPresent" style="background-color: #FFE0A3; display: none;">
+                <div class="form__panel externalMessage">
+                    Because the form type is not set to inanimate, no item will be created.
+                </div>
             </div>
-        </div>
 
-        if (Model.ProofreadingCopy == true)
-        {
-            <h1 class="good">THIS IS A PROOFREADING COPY.</h1>
+            if (Model.ProofreadingCopy == true)
+            {
+                <h1 class="good">THIS IS A PROOFREADING COPY.</h1>
+            }
+
+            <h2>Give this Form/Item bonuses</h2>
+
+            <div class="form__panel group" style="background-color: #82ffe0; ">
+
+                <div class="form__panel externalMessage">The current balance score is:  <b>@ViewBag.BalanceScore</b>.  Animate forms should have a balance score close to 0.  Items should have a balance score close to 25, and pets should have a balance score close to 50.</div>
+
+                <p>@Html.ActionLink("Use calculator (save contribution before doing this!)", "ContributeBalanceCalculator2", "PvP", new { id = Model.Id }, null)<br /></p>
+            </div>
+
+            <div class="form__panel group" id="itemCreatedPanelNotPresent" style="background-color: #FFE0A3; display: none;">
+                <div class="form__panel externalMessage">
+                    Because the form type is not set to inanimate, no item will be created.
+                </div>
+            </div>
+
+            <h2>Finishing up</h2>
+            <div class="form__panel group" style="background-color: #D1FFBB; ">
+
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.SubmitterName)
+                    @Html.TextBoxFor(m => m.SubmitterName)
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.AdditionalSubmitterNames)
+                    @Html.TextBoxFor(m => m.AdditionalSubmitterNames)
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.SubmitterUrl)
+                    @Html.TextBoxFor(m => m.SubmitterUrl)
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.AssignedToArtist)
+                    @Html.TextAreaFor(m => m.AssignedToArtist)
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.IsReadyForReview)
+                    @Html.CheckBoxFor(m => m.IsReadyForReview)
+                </div>
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.Notes)
+                    @Html.TextAreaFor(m => m.Notes)
+                </div>
+            </div>
+
+            if (Model.ProofreadingCopy == true)
+            {
+                <h1 class="good">THIS IS A PROOFREADING COPY.</h1>
+                <div class="form__panel group" style="background-color: #ffc278; ">
+                    <div class="form__panel">
+                        @Html.LabelFor(m => m.NeedsToBeUpdated)
+                        @Html.CheckBoxFor(m => m.NeedsToBeUpdated)
+                    </div>
+                    <div class="form__panel">
+                        <label>Proofreading edit history:</label>
+                        @Html.Raw(Model.History)
+                    </div>
+                </div>
+
+            }
+
+            if (WebSecurity.CurrentUserId == 69)
+            {
+
+                <div class="form__panel group" style="background-color: #ffc278; ">
+                    <div class="form__panel">
+                        <label>Image URL:</label>
+                        @Html.TextBoxFor(m => m.ImageURL)
+                    </div>
+
+                </div>
+
+            }
+
+            <br /><br />
+            <input type="submit" value="Save" />
+
+            if (TrustStatics.PlayerIsProofreader(WebSecurity.CurrentUserId) == true)
+            {
+                @Html.ActionLink("Unlock but DO NOT Save", "SendContributionUndoLock", "PvP", new { id = Model.Id }, null)
+            }
+
+
+
         }
-        
-        <h2>Give this Form/Item bonuses</h2>
 
-    <div class="form__panel group" style="background-color: #82ffe0; ">
+        @Html.ActionLink("Back to game (Don't forget to save!)", "Play", "PvP")
 
-        <div class="form__panel externalMessage">The current balance score is:  <b>@ViewBag.BalanceScore</b>.  Animate forms should have a balance score close to 0.  Items should have a balance score close to 25, and pets should have a balance score close to 50.</div>
-
-        <p>@Html.ActionLink("Use calculator (save contribution before doing this!)", "ContributeBalanceCalculator2", "PvP", new { id = Model.Id }, null)<br /></p>
+        @{
+            if (WebSecurity.CurrentUserId == 69)
+            {
+                <br /><br />
+                <p>@Html.Raw(ViewBag.StaticSkillExists)</p>
+                <p>@Html.Raw(ViewBag.StaticFormExists)</p>
+                <p>@Html.Raw(ViewBag.StaticItemExists)</p>
+                @Html.ActionLink("Publish Spell", "PublishSpell", "Contribution", new { id = Model.Id }, null)<br />
+                @Html.ActionLink("Publish Form", "PublishForm", "Contribution", new { id = Model.Id }, null)<br />
+                @Html.ActionLink("Publish Item", "PublishItem", "Contribution", new { id = Model.Id }, null)<br />
+                @Html.ActionLink("Mark as Live", "MarkAsLive", "Contribution", new { id = Model.Id }, null)<br />
+                @Html.ActionLink("Release Spell", "SetSpellAsLive", "Contribution", new { id = Model.Id }, null)<br />
+                @Html.ActionLink("Check if statics exist", "StaticsExist", "Contribution", new { id = Model.Id }, null)<br />
+            }
+        }
     </div>
-
-        <div class="form__panel group" id="itemCreatedPanelNotPresent" style="background-color: #FFE0A3; display: none;">
-            <div class="form__panel externalMessage">
-                Because the form type is not set to inanimate, no item will be created.
-            </div>
-        </div>
-
-        <h2>Finishing up</h2>
-        <div class="form__panel group" style="background-color: #D1FFBB; ">
-
-            <div class="form__panel">
-                @Html.LabelFor(m => m.SubmitterName)
-                @Html.TextBoxFor(m => m.SubmitterName)
-            </div>
-            <div class="form__panel">
-                @Html.LabelFor(m => m.AdditionalSubmitterNames)
-                @Html.TextBoxFor(m => m.AdditionalSubmitterNames)
-            </div>
-            <div class="form__panel">
-                @Html.LabelFor(m => m.SubmitterUrl)
-                @Html.TextBoxFor(m => m.SubmitterUrl)
-            </div>
-            <div class="form__panel">
-                @Html.LabelFor(m => m.AssignedToArtist)
-                @Html.TextAreaFor(m => m.AssignedToArtist)
-            </div>
-            <div class="form__panel">
-                @Html.LabelFor(m => m.IsReadyForReview)
-                @Html.CheckBoxFor(m => m.IsReadyForReview)
-            </div>
-            <div class="form__panel">
-                @Html.LabelFor(m => m.Notes)
-                @Html.TextAreaFor(m => m.Notes)
-            </div>
-        </div>
-
-        if (Model.ProofreadingCopy == true)
-        {
-            <h1 class="good">THIS IS A PROOFREADING COPY.</h1>
-            <div class="form__panel group" style="background-color: #ffc278; ">
-                <div class="form__panel">
-                    @Html.LabelFor(m => m.NeedsToBeUpdated)
-                    @Html.CheckBoxFor(m => m.NeedsToBeUpdated)
-                </div>
-                <div class="form__panel">
-                    <label>Proofreading edit history:</label>
-                    @Html.Raw(Model.History)
-                </div>
-            </div>
-           
-        }
-        
-         if (WebSecurity.CurrentUserId==69)
-        {
-
-            <div class="form__panel group" style="background-color: #ffc278; ">
-                <div class="form__panel">
-                    <label>Image URL:</label>
-                    @Html.TextBoxFor(m => m.ImageURL)
-                </div>
-
-            </div>
-           
-        }
-
-        <br /><br />
-        <input type="submit" value="Save" />
-
-        if (TrustStatics.PlayerIsProofreader(WebSecurity.CurrentUserId) == true)
-        {
-            @Html.ActionLink("Unlock but DO NOT Save", "SendContributionUndoLock", "PvP", new { id = Model.Id }, null)
-        }
-        
-        
-
-    }
-
-    @Html.ActionLink("Back to game (Don't forget to save!)", "Play", "PvP")
-
-@{
-    if (WebSecurity.CurrentUserId == 69)
-    {
-        <br /><br />
-    <p>@Html.Raw(ViewBag.StaticSkillExists)</p>
-    <p>@Html.Raw(ViewBag.StaticFormExists)</p>
-    <p>@Html.Raw(ViewBag.StaticItemExists)</p>
-        @Html.ActionLink("Publish Spell", "PublishSpell", "Contribution", new { id = Model.Id }, null)<br />
-    @Html.ActionLink("Publish Form", "PublishForm", "Contribution", new { id = Model.Id }, null)<br />
-    @Html.ActionLink("Publish Item", "PublishItem", "Contribution", new { id = Model.Id }, null)<br />
-     @Html.ActionLink("Mark as Live", "MarkAsLive", "Contribution", new { id = Model.Id }, null)<br />
-    @Html.ActionLink("Release Spell", "SetSpellAsLive", "Contribution", new { id = Model.Id }, null)<br />
-    @Html.ActionLink("Check if statics exist", "StaticsExist", "Contribution", new { id = Model.Id }, null)<br />
-    }
-}
-
     <script>
 
         var proofreadingCopy = @Model.ProofreadingCopy.ToString().ToLower();

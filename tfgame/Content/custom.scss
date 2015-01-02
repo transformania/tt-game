@@ -604,3 +604,11 @@ text-align:center;
         margin-right: 10px;
         background-size: 100% 100%;
 }
+
+.contributionsBox{
+    height: 250px;
+    resize: vertical;
+    overflow-y: scroll;
+    border: $border;
+    padding:5px;
+}

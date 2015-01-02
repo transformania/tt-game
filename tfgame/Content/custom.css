@@ -473,4 +473,11 @@ a:hover {
   margin-right: 10px;
   background-size: 100% 100%; }
 
+.contributionsBox {
+  height: 250px;
+  resize: vertical;
+  overflow-y: scroll;
+  border: 4px solid #A16969;
+  padding: 5px; }
+
 /*# sourceMappingURL=custom.css.map */

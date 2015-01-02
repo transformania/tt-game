@@ -40,10 +40,10 @@
 <p class="bad" id="disconnected" style="display: none;">Your chat is currently disconnected from the server.  It will attempt to automatically reconnect.</p>
 
 <div class="containerInner">
+    <ul id="discussion"></ul>
     <input type="text" id="message" maxlength="500" class="chatInput" />
     <input type="button" id="sendmessage" value="Send" style="width: 50%; padding: 6px; margin-left: auto; margin-right: auto; display: block;" />
     <input type="hidden" id="displayname" />
-    <ul id="discussion"></ul>
 </div>
 
 @section scripts {
@@ -93,9 +93,9 @@
 
                 // if this is not a / command, write out the name and colon.  Otherwise only write the message.
                 if (name.length > 0) {
-                    $('#discussion ').prepend('<li><strong>' + htmlEncodeName(name, chatColor) + '</strong>: ' + htmlEncode(message) + '</li>');
+                    $('#discussion ').append('<li><strong>' + htmlEncodeName(name, chatColor) + '</strong>: ' + htmlEncode(message) + '</li>').animate({ scrollTop: $('#discussion').prop("scrollHeight") }, 500);
                 } else {
-                    $('#discussion ').prepend('<li><strong>' + htmlEncode(message) + '</li>');
+                    $('#discussion ').append('<li><strong>' + htmlEncode(message) + '</li>').animate({ scrollTop: $('#discussion').prop("scrollHeight") }, 500);
                 }
 
                 // add onclick to last element

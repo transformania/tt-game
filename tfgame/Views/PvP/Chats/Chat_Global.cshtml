@@ -99,7 +99,7 @@
                 }
 
                 // add onclick to last element
-                $('ul#discussion li:first strong:first').dblclick(function () {
+                $('ul#discussion li:last strong:last').dblclick(function () {
                     $('#message').val("@@" + name + "  " + $('#message').val());
                     $('#message').focus();
                 });

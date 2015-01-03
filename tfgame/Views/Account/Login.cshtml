@@ -1,64 +1,50 @@
 ﻿@model tfgame.Models.LoginModel
-<script src="~/Scripts/jquery-2.1.0.min.js"></script>
 
-<div class="fullpageWarning">
-    <p> <h3>THIS SITE CONTAINS ADULT SEXUAL CONTENT and is not suitable for minors.</u></b></h3>
-    
+<div class="offlinePlayersWrapperBG containerInner text-center">
+    <p class="frontHeader">THIS SITE CONTAINS ADULT SEXUAL CONTENT and is not suitable for minors.</p>
     <p>By registering for this site you agree that you are <b>at least 18 years of age</b> or <b>the legal in age of your country to view or read sexually explicit material</b>.  If you do not meet these criteria, please leave now.</p>
-    </div>
-    <div class="fullpageWarning">
-    <h3>What is Transformania Time?</h3>
-
+</div>
+<div class="containerInner text-center">
+    <p class="frontHeader">What is Transformania Time?</p>
     <p>Transformania Time game is a a massively multiplayer player-versus-player browser-based game that revolves primarily around transformation themes, including transgender, trans-species, absorption, and inanimation (being turned into an item).  You will also encounter themes revolving around BDSM, mind control, and bimbofication.  <b>By registering or logging into this game you are agreeing that you are comfortable with these themes and are both informed of and obeying the local laws governing you.</b></p>
-
     <p>In order to register you must agree to these terms by clicking clicking on the checkbox <span class="bad"><u>here</u>:</span>  <input type="checkbox" id="consent" /></p>
 </div>
-<div class="fullpageWarning">
+<div class="onlinePlayersWrapperBG containerInner text-center">
     @using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl }))
     {
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(true)
 
         <fieldset>
-            <legend>Log in Form</legend>
-            <ol>
-                <li>
-                    @Html.LabelFor(m => m.UserName)
-                    @Html.TextBoxFor(m => m.UserName, new { disabled = "disabled" })
-                    @Html.ValidationMessageFor(m => m.UserName)
-                </li>
-                <li>
-                    @Html.LabelFor(m => m.Password)
-                    @Html.PasswordFor(m => m.Password, new { disabled = "disabled" })
-                    @Html.ValidationMessageFor(m => m.Password)
-                </li>
-                <li>
-                    @Html.CheckBoxFor(m => m.RememberMe, new { disabled = "disabled" })
-                    @Html.LabelFor(m => m.RememberMe, new { @class = "checkbox" })
-                </li>
-            </ol>
-            <input type="submit" value="Log in" id="submitBtn" disabled="disabled" />
-        </fieldset>
-
-        <p>
-            @Html.ActionLink("Register", "Register") if you don't have an account.
-        </p>
-    }
-
-</div>
 
 
+                   @* @Html.LabelFor(m => m.UserName)*@
+        @Html.TextBoxFor(m => m.UserName, new { disabled = "disabled", @class = "form-control frontForm", placeholder = "Username" })
+        @Html.ValidationMessageFor(m => m.UserName)
 
+        @*@Html.LabelFor(m => m.Password)*@
+                        @Html.PasswordFor(m => m.Password, new { disabled = "disabled", @class = "form-control frontForm", placeholder = "Password" })
+                        @Html.ValidationMessageFor(m => m.Password)
+                     
+                        @Html.LabelFor(m => m.RememberMe, new { @class = "checkbox" }) @Html.CheckBoxFor(m => m.RememberMe, new { disabled = "disabled" }) <br />
 
+            <input type="submit" class="btn btn-default" value="Login" id="submitBtn" disabled="disabled" />
+            </fieldset>
 
-<section id="loginForm">
+            <p style="margin-top: 50px;">
+                @Html.ActionLink("Register", "Register") <br />if you don't have an account.
+            </p>
+        }
+    </div>
 
-</section>
+    <section id="loginForm">
 
-@*<section class="social" id="socialLoginForm">
-    <h2>Use another service to log in.</h2>
-    @Html.Action("ExternalLoginsList", new { ReturnUrl = ViewBag.ReturnUrl })
-</section>*@
+    </section>
+
+    @*<section class="social" id="socialLoginForm">
+        <h2>Use another service to log in.</h2>
+        @Html.Action("ExternalLoginsList", new { ReturnUrl = ViewBag.ReturnUrl })
+    </section>*@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
@@ -86,21 +72,7 @@
 </script>
 
 <style>
-    .fullpageWarning {
-        width: 100%;
-        height: 100%;
-        font-size: 15px;
-        background-color: #ffc1fe;
-        color: black;
-        border: 5px solid darkviolet;
-        border-radius: 15px;
-        padding: 15px;
-        text-align: center;
-        margin-bottom:20px;
-    }
-
     input:disabled {
         background: #b6b6b6;
-    } 
-
+    }
 </style>

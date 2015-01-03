@@ -163,11 +163,11 @@
                                         @{
                     if (p.Player.MembershipId == -3)
                     {
-                        @Html.ActionLink("Trade", "TradeWithMerchant", "PvP", new { filter = "shirt" }, null)
+                        @Html.ActionLink("Trade", "TradeWithMerchant", "PvP", new { filter = "shirt" }, new { @class = "attackLink" })
                     }
                     if (p.Player.MembershipId == -6)
                     {
-                        @Html.ActionLink("Talk", "TalkWithJewdewfae", "PvP", null, new { @class = "talkLink" })
+                        @Html.ActionLink("Talk", "TalkWithJewdewfae", "PvP", null, new { @class = "attackLink" })
                     }
                                         }
                                     </div>

@@ -503,4 +503,15 @@ a:hover {
   border: 1px solid red;
   cursor: pointer; }
 
+.frontHeader {
+  font-size: 26px;
+  font-weight: bold; }
+
+.frontForm {
+  width: 200px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10px; }
+
 /*# sourceMappingURL=custom.css.map */

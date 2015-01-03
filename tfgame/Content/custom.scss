@@ -613,3 +613,28 @@ text-align:center;
     border: $border;
     padding:5px;
 }
+
+.playPageInventoryItem {
+    width: 50px;
+    height: 50px;
+    background-size: contain;
+    position: relative;
+    float: left;
+    border: 1px solid black;
+    color: black;
+    font-weight: 900;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 50px;
+    margin: 5px;
+}
+
+.openInventory {
+    letter-spacing: 1px;
+    transition: all 0.5s ease;
+}
+
+    .openInventory:hover {
+        border: 1px solid red;
+        cursor: pointer;
+    }

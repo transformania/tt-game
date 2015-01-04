@@ -111,6 +111,8 @@ namespace tfgame.Controllers
             {
                 GameOverViewModel inanimateOutput = new GameOverViewModel();
 
+                inanimateOutput.LastUpdateTimestamp = WorldStat.LastUpdateTimestamp;
+
                 inanimateOutput.WorldStats = PlayerProcedures.GetWorldPlayerStats();
 
                 inanimateOutput.Player = me;
@@ -184,7 +186,15 @@ namespace tfgame.Controllers
                 }
                 animalOutput.WorldStats = PlayerProcedures.GetWorldPlayerStats();
 
-                animalOutput.Location = LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName);
+                if (animalOutput.OwnedBy != null)
+                {
+                    animalOutput.Location = LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == animalOutput.OwnedBy.Player.dbLocationName);
+                }
+                else
+                {
+                    animalOutput.Location = LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName);
+                }
+                
                 animalOutput.Location.FriendlyName_North = LocationsStatics.GetConnectionName(animalOutput.Location.Name_North);
                 animalOutput.Location.FriendlyName_East = LocationsStatics.GetConnectionName(animalOutput.Location.Name_East);
                 animalOutput.Location.FriendlyName_South = LocationsStatics.GetConnectionName(animalOutput.Location.Name_South);
@@ -199,7 +209,7 @@ namespace tfgame.Controllers
 
                 animalOutput.PlayersHere = PlayerProcedures.GetPlayerFormViewModelsAtLocation(animalOutput.Location.dbName).Where(p => p.Form.MobilityType == "full");
 
-                animalOutput.LastUpdateTimestamp = PvPWorldStatProcedures.GetLastWorldUpdate();
+                animalOutput.LastUpdateTimestamp = WorldStat.LastUpdateTimestamp;
 
                 animalOutput.NewMessageCount = MessageProcedures.GetMessageCountData(me).NewMessagesCount;
 

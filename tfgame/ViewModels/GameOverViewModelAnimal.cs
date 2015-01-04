@@ -28,5 +28,7 @@ namespace tfgame.ViewModels
 
         public decimal StruggleChance { get; set; }
 
+
+
     }
 }

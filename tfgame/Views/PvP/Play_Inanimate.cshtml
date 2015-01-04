@@ -177,6 +177,8 @@
     var togglestate = 0;
     var blinkEnabled = 0;
 
+    var secondsToUpdate = @ViewBag.SecondsUntilUpdate;
+
     $(document).ready(function() {
 
         $(".check").each(function() {
@@ -186,9 +188,34 @@
             }
         });
 
-        var myVar=setInterval(function(){pingForUpdate()},30000);
+       // var myVar=setInterval(function(){pingForUpdate()},30000);
         var myVa2r=setInterval(function(){titleToggle()},1000);
 
+        setInterval(function(){
+            secondsToUpdate--;
+            timer_minutes = Math.floor(secondsToUpdate/60);
+            timer_seconds = String(secondsToUpdate % 60);
+
+            if (timer_seconds.length == 1) {
+                timer_seconds = "0" + timer_seconds;
+            }
+
+            if (timer_minutes < 0) {
+                timer_minutes = "0";
+                timer_seconds = "00";
+                $("#turn_countdown").addClass("good");
+                blinkEnabled = 1;
+            }
+
+            $("#turn_countdown").html(timer_minutes + ":" + timer_seconds);
+        }, 1000);
+
+    });
+
+
+
+    $( "#timerBox" ).click(function() {
+        alert("The last update was  @CharactersHere.DatetimeToTimeago_WithSeconds(Model.LastUpdateTimestamp) (based on when this page was loaded.)  Updates should happen every 10 minutes.");
     });
 
     function pingForUpdate() {

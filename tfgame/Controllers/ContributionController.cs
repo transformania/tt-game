@@ -78,9 +78,9 @@ namespace tfgame.Controllers
             }
 
 
-           
 
-            if (WebSecurity.CurrentUserId == 69 && output.ProofreadingCopy == true)
+
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == true && output.ProofreadingCopy == true)
             {
 
                 string effectDbName = output.GetEffectDbName();
@@ -236,7 +236,7 @@ namespace tfgame.Controllers
         public ActionResult PublishSpell(int id)
         {
 
-            if (WebSecurity.CurrentUserId != 69)
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
             {
                 return View("ContributorBioList");
             }
@@ -340,7 +340,7 @@ namespace tfgame.Controllers
 
         public ActionResult PublishForm(int id)
         {
-            if (WebSecurity.CurrentUserId != 69)
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
             {
                 return View("ContributorBioList");
             }
@@ -482,7 +482,7 @@ namespace tfgame.Controllers
         public ActionResult PublishItem(int id)
         {
 
-            if (WebSecurity.CurrentUserId != 69)
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
             {
                 return View("ContributorBioList");
             }
@@ -569,7 +569,7 @@ namespace tfgame.Controllers
 
         public ActionResult PublishEffect(int id)
         {
-            if (WebSecurity.CurrentUserId != 69)
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
             {
                 return View("ContributorBioList");
             }
@@ -658,7 +658,7 @@ namespace tfgame.Controllers
 
         public ActionResult PublishSpell_Effect(int id)
         {
-            if (WebSecurity.CurrentUserId != 69)
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
             {
                 return View("ContributorBioList");
             }
@@ -704,7 +704,7 @@ namespace tfgame.Controllers
 
         public ActionResult MarkAsLive(int id)
         {
-            if (WebSecurity.CurrentUserId != 69)
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
             {
                 return View("ContributorBioList");
             }
@@ -736,7 +736,7 @@ namespace tfgame.Controllers
 
         public ActionResult MarkEffectAsLive(int id)
         {
-            if (WebSecurity.CurrentUserId != 69)
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
             {
                 return View("ContributorBioList");
             }
@@ -768,7 +768,7 @@ namespace tfgame.Controllers
 
         public ActionResult SetSpellAsLive(int id)
         {
-            if (WebSecurity.CurrentUserId != 69)
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
             {
                 return View("ContributorBioList");
             }
@@ -791,7 +791,7 @@ namespace tfgame.Controllers
 
         public ActionResult StaticsExist(int id)
         {
-            if (WebSecurity.CurrentUserId != 69)
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
             {
                 return View("ContributorBioList");
             }
@@ -870,7 +870,7 @@ namespace tfgame.Controllers
             }
             else
             {
-                if (output.MembershipOwnerId != WebSecurity.CurrentUserId && WebSecurity.CurrentUserId != 69)
+                if (output.MembershipOwnerId != WebSecurity.CurrentUserId && User.IsInRole(PvPStatics.Permissions_Admin) == false)
                 {
                     TempData["Error"] = "This does not belong to you.";
                     return RedirectToAction("Play", "PvP");
@@ -892,7 +892,7 @@ namespace tfgame.Controllers
             }
             else
             {
-                if (roll.MembershipOwnerId != WebSecurity.CurrentUserId && WebSecurity.CurrentUserId != 69)
+                if (roll.MembershipOwnerId != WebSecurity.CurrentUserId && User.IsInRole(PvPStatics.Permissions_Admin) == false)
                 {
                     TempData["Error"] = "This does not belong to you.";
                     return RedirectToAction("Play", "PvP");
@@ -904,7 +904,7 @@ namespace tfgame.Controllers
                 } 
             }
 
-            if (roll.MembershipOwnerId > 0 && roll.MembershipOwnerId != 69 )
+            if (roll.MembershipOwnerId > 0 && User.IsInRole(PvPStatics.Permissions_Admin) == false)
             {
                 roll.MembershipOwnerId = WebSecurity.CurrentUserId;
             }
@@ -928,7 +928,7 @@ namespace tfgame.Controllers
           [Authorize]
           public ActionResult ReviewDMRolls()
           {
-              if (WebSecurity.CurrentUserId != 69)
+              if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
               {
                   return RedirectToAction("Play", "PvP");
               }
@@ -940,7 +940,7 @@ namespace tfgame.Controllers
           public ActionResult ApproveDMRoll(int id)
           {
 
-              if (WebSecurity.CurrentUserId != 69)
+              if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
               {
                   return RedirectToAction("Play", "PvP");
               }

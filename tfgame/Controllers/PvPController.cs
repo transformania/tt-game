@@ -1874,12 +1874,9 @@ namespace tfgame.Controllers
             decimal balance = bbox.GetBalance();
             ViewBag.BalanceScore = balance;
 
-    //             <p>@ViewBag.StaticSkillExists</p>
-    //<p>@ViewBag.StaticFormExists</p>
-            //<p>@ViewBag.StaticItemExists</p>
 
             #region for admin use only, see if statics exist
-            if (currentUserId == 69 && contribution.ProofreadingCopy == true)
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == true && contribution.ProofreadingCopy == true)
             {
                 IDbStaticSkillRepository skillRepo = new EFDbStaticSkillRepository();
                 IDbStaticFormRepository formRepo = new EFDbStaticFormRepository();
@@ -2295,7 +2292,9 @@ namespace tfgame.Controllers
 
             SaveMe.AssignedToArtist = input.AssignedToArtist;
 
-            if (input.ImageURL != null && input.ImageURL != "" && WebSecurity.CurrentUserId == 69)
+
+
+            if (input.ImageURL != null && input.ImageURL != "" && User.IsInRole(PvPStatics.Permissions_Admin) == true)
             {
                 SaveMe.ImageURL = input.ImageURL;
             }

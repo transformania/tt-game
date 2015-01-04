@@ -68,6 +68,7 @@ namespace tfgame.Statics
         public static decimal XP__Level_20 = 3970; //+390
         public static decimal XP__Level_21 = 4360; //+410
 
+        public const string Permissions_Admin = "admin";
         public const string Permissions_Moderator = "moderator";
         public const string Permissions_MultiAccountWhitelist = "whitelisted";
         public const string Permissions_Proofreader = "proofreader";

@@ -66,7 +66,7 @@
 </div>
 
     @{
-        if (Model.You.MembershipId == 69)
+        if (User.IsInRole(PvPStatics.Permissions_Admin) == true)
         {
             @Html.ActionLink("Admin", "Index", "PvPAdmin")
         }

@@ -577,7 +577,7 @@
 
             }
 
-            if (WebSecurity.CurrentUserId == 69)
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == true)
             {
 
                 <div class="form__panel group" style="background-color: #ffc278; ">
@@ -605,7 +605,7 @@
         @Html.ActionLink("Back to game (Don't forget to save!)", "Play", "PvP")
 
         @{
-            if (WebSecurity.CurrentUserId == 69)
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == true)
             {
                 <br /><br />
                 <p>@Html.Raw(ViewBag.StaticSkillExists)</p>

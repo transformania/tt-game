@@ -832,11 +832,10 @@ namespace tfgame.Controllers
         public ActionResult ApproveEffectContributionList()
         {
 
-            // assert only admin can view this
-            if (WebSecurity.CurrentUserId != 69)
+            // assert only admins can view this
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
             {
-                @ViewBag.Message = "You aren't allowed to do this.";
-                return View("~/Views/PvP/PvPAdmin.cshtml");
+                return View("Play","PvP");
             }
 
             IEffectContributionRepository effectConRepo = new EFEffectContributionRepository();
@@ -847,10 +846,10 @@ namespace tfgame.Controllers
 
         public ActionResult ApproveEffectContribution(int id)
         {
-            if (WebSecurity.CurrentUserId != 69)
+            // assert only admins can view this
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
             {
-                ViewBag.Message = "You aren't allowed to do this.";
-                return View("~/Views/PvP/PvPAdmin.cshtml");
+                return View("Play", "PvP");
             }
 
             IEffectContributionRepository effectConRepo = new EFEffectContributionRepository();
@@ -954,9 +953,10 @@ namespace tfgame.Controllers
 
         public ActionResult PublicBroadcast()
         {
-            if (WebSecurity.CurrentUserId != 69)
+            // assert only admins can view this
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
             {
-                return View("~/Views/PvP/PvPAdmin.cshtml");
+                return View("Play", "PvP");
             }
             else
             {
@@ -967,9 +967,10 @@ namespace tfgame.Controllers
 
         public ActionResult SendPublicBroadcast(PublicBroadcastViewModel input)
         {
-            if (WebSecurity.CurrentUserId != 69)
+            // assert only admins can view this
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
             {
-                return View("~/Views/PvP/PvPAdmin.cshtml");
+                return View("Play", "PvP");
             }
             else
             {
@@ -1002,9 +1003,10 @@ namespace tfgame.Controllers
 
         public ActionResult test()
         {
-            if (WebSecurity.CurrentUserId != 69)
+            // assert only admins can view this
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
             {
-                return View("Play");
+                return View("Play", "PvP");
             }
 
            // BossProcedures_Thieves.SpawnThieves();
@@ -1019,9 +1021,10 @@ namespace tfgame.Controllers
 
         public ActionResult ItemPetJSON()
         {
-            if (WebSecurity.CurrentUserId != 69)
+            // assert only admins can view this
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
             {
-                return View("Play");
+                return View("Play", "PvP");
             }
 
             IDbStaticItemRepository itemRepo = new EFDbStaticItemRepository();
@@ -1030,9 +1033,10 @@ namespace tfgame.Controllers
 
         public ActionResult FormJSON()
         {
-            if (WebSecurity.CurrentUserId != 69)
+            // assert only admins can view this
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
             {
-                return View("Play");
+                return View("Play", "PvP");
             }
 
             IDbStaticFormRepository formRepo = new EFDbStaticFormRepository();
@@ -1041,9 +1045,10 @@ namespace tfgame.Controllers
 
         public ActionResult SpellJSON()
         {
-            if (WebSecurity.CurrentUserId != 69)
+            // assert only admins can view this
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
             {
-                return View("Play");
+                return View("Play", "PvP");
             }
 
             IDbStaticSkillRepository skillRepo = new EFDbStaticSkillRepository();
@@ -1058,9 +1063,10 @@ namespace tfgame.Controllers
 
         public ActionResult EffectJSON()
         {
-            if (WebSecurity.CurrentUserId != 69)
+            // assert only admins can view this
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
             {
-                return View("Play");
+                return View("Play", "PvP");
             }
 
             IDbStaticEffectRepository effectRepo = new EFDbStaticEffectRepository();
@@ -1069,9 +1075,10 @@ namespace tfgame.Controllers
 
         public ActionResult FurnitureJSON()
         {
-            if (WebSecurity.CurrentUserId != 69)
+            // assert only admins can view this
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
             {
-                return View("Play");
+                return View("Play", "PvP");
             }
 
             IDbStaticFurnitureRepository effectRepo = new EFDbStaticFurnitureRepository();
@@ -1081,10 +1088,10 @@ namespace tfgame.Controllers
         public ActionResult ApproveContributionList()
         {
             // assert only admin can view this
-            if (WebSecurity.CurrentUserId != 69)
+            // assert only admins can view this
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
             {
-                @ViewBag.Message = "You aren't allowed to do this.";
-                return View("~/Views/PvP/PvPAdmin.cshtml");
+                return View("Play", "PvP");
             }
 
             IContributionRepository contRepo = new EFContributionRepository();
@@ -1097,14 +1104,11 @@ namespace tfgame.Controllers
         public ActionResult ApproveContribution(int id)
         {
             // assert only admin can view this
-            if (WebSecurity.CurrentUserId != 69)
+            // assert only admins can view this
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
             {
-                ViewBag.Message = "You aren't allowed to do this.";
-                return View("~/Views/PvP/PvPAdmin.cshtml");
+                return View("Play", "PvP");
             }
-
-
-
 
             IContributionRepository contributionRepo = new EFContributionRepository();
 
@@ -1797,11 +1801,10 @@ namespace tfgame.Controllers
         public ActionResult WriteFaeEncounter()
         {
 
-            // assert only admin can view this
-            if (WebSecurity.CurrentUserId != 69)
+            // assert only admins can view this
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
             {
-                @ViewBag.Message = "You aren't allowed to do this.";
-                return View("~/Views/PvP/PvPAdmin.cshtml");
+                return View("Play", "PvP");
             }
 
 
@@ -1829,11 +1832,10 @@ namespace tfgame.Controllers
 
             FairyChallengeBag output = new FairyChallengeBag();
 
-            // assert only admin can view this
-            if (WebSecurity.CurrentUserId != 69)
+            // assert only admins can view this
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
             {
-                @ViewBag.Message = "You aren't allowed to do this.";
-                return View("~/Views/PvP/PvPAdmin.cshtml");
+                return View("Play", "PvP");
             }
 
             // TODO:  finish this!
@@ -1844,11 +1846,10 @@ namespace tfgame.Controllers
         public ActionResult WriteFaeEncounterSend(FairyChallengeBag input)
         {
 
-            // assert only admin can view this
-            if (WebSecurity.CurrentUserId != 69)
+            // assert only admins can view this
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
             {
-                @ViewBag.Message = "You aren't allowed to do this.";
-                return View("~/Views/PvP/PvPAdmin.cshtml");
+                return View("Play", "PvP");
             }
 
             string path = Server.MapPath("~/XMLs/FairyChallengeText/");

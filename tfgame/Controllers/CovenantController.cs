@@ -595,7 +595,7 @@ namespace tfgame.Controllers
              // assert that the covenant is sufficiently large
              if (PlayerProcedures.GetAnimatePlayerCountInCovenant(me.Covenant) < 3)
              {
-                 TempData["Error"] = "In order to gift out Arpeyjis to members of your covenant, you must have at least 3 animate members not in protection mode.";
+                 TempData["Error"] = "In order to gift out Arpeyjis to members of your covenant, you must have at least 3 animate members.";
                  return RedirectToAction("MyCovenant");
              }
 

@@ -1647,7 +1647,7 @@ namespace tfgame.Procedures
         public static int GetAnimatePlayerCountInCovenant(int covenantId)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            return playerRepo.Players.Where(p => p.Covenant == covenantId && p.Mobility == "full" && p.InPvP == false).Count();
+            return playerRepo.Players.Where(p => p.Covenant == covenantId && p.Mobility == "full").Count();
         }
 
         public static int RollDie(int size)

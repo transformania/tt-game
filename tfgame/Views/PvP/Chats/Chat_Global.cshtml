@@ -19,6 +19,9 @@
             <ul class="nav navbar-nav">
                 <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
                 <li>
+                    @Html.ActionLink("Global", "Chat", "PvP", new { room = "global" }, null)
+                </li>
+                <li>
                     @Html.ActionLink("RP Room 1", "Chat", "PvP", new { room = "rp1" }, null)
                 </li>
                 <li>
@@ -38,6 +41,7 @@
 </nav>
 
 <p class="infoMessage error" id="disconnected" style="display: none;">Your chat is currently disconnected from the server.  It will attempt to automatically reconnect.</p>
+<p class="infoMessage">Room:  @ViewBag.ChatName</p>
 
 <div class="containerInner">
     <ul id="discussion"></ul>
@@ -99,7 +103,7 @@
                 }
 
                 // add onclick to last element
-                $('ul#discussion li:last strong:last').dblclick(function () {
+                $('ul#discussion li:last strong:first').dblclick(function () {
                     $('#message').val("@@" + name + "  " + $('#message').val());
                     $('#message').focus();
                 });

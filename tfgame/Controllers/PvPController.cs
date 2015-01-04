@@ -2645,30 +2645,30 @@ namespace tfgame.Controllers
 
             ViewBag.ChatName = room;
 
-            if (room == "global")
-            {
+            //if (room == "global")
+            //{
                 return View("Chats/CHat_Global");
-            }
-            else if (room == "rp1")
-            {
-                return View("Chats/Chat_RP1");
-            }
-            else if (room == "rp2")
-            {
-                return View("Chats/Chat_RP2");
-            }
-            else if (room == "rp3")
-            {
-                return View("Chats/Chat_RP3");
-            }
-            else
-            {
+            //}
+            //else if (room == "rp1")
+            //{
+            //    return View("Chats/Chat_RP1");
+            //}
+            //else if (room == "rp2")
+            //{
+            //    return View("Chats/Chat_RP2");
+            //}
+            //else if (room == "rp3")
+            //{
+            //    return View("Chats/Chat_RP3");
+            //}
+            //else
+            //{
                 
-                ViewBag.YourNameColor = me.ChatColor;
-                return View("Chats/Chat_Generic");
-            }
+            //    ViewBag.YourNameColor = me.ChatColor;
+            //    return View("Chats/Chat_Generic");
+            //}
 
-            return View();
+         //   return View();
         }
 
         [Authorize]

@@ -573,4 +573,9 @@ strong:hover {
   border-top: none !important;
   color: white; }
 
+#autoScrollToggle {
+  width: 100px;
+  float: right;
+  cursor: pointer; }
+
 /*# sourceMappingURL=custom.css.map */

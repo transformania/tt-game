@@ -490,6 +490,7 @@ namespace tfgame.Controllers
             return PartialView("partial/ArchiveNotice");
         }
 
+        [Authorize]
         public ActionResult ArchiveAllMySpells(string archive)
         {
             Player me = PlayerProcedures.GetPlayerFromMembership();

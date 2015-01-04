@@ -1,0 +1,128 @@
+﻿@model tfgame.dbModels.Models.PollEntry
+
+<head>
+    <script src="~/Scripts/jquery-2.1.0.min.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <link href="~/Content/PvP.css" rel="stylesheet" />
+</head>
+
+<p>@Html.ActionLink("Back to game", "Play", "PvP")</p>
+
+<p class="error">@ViewBag.Error</p>
+
+<h1>Tell us a little about yourself.</h1>
+
+<p>All questions are optional and all responses are anonymous.  There are many more possibilities for some of the dropdown questions here; if you feel one is missing please post in the forums and we will add it in.You can return to edit your answers later.  Text inputs have a maximum of 500 characters.</p>
+
+@using (Html.BeginForm("ReplyToPoll", "Settings", Model))
+{
+    
+    <p>What is your biological sex?  (Defined as the biological makeup of an individual's reproductive anatomy or secondary sex characteristics.)</p>
+      @Html.DropDownListFor(i => i.Num1, new SelectList(
+                  new List<Object>{
+                      new { value = "0"  , text = "---please select a choice---"  },
+                       new { value = "1"  , text = "Male"  },
+                       new { value = "2"  , text = "Female"  },
+                       new { value = "3"  , text = "Transgendered (male to female)"  },
+                       new { value = "4"  , text = "Transgendered (female to male)"  },
+
+                    },
+                  "value",
+                  "text",
+                   2))
+    
+    <hr />
+    
+ <p>What is your self-identified gender?  (Defined as culturally learned or personal identification of one's own gender based on an internal awareness.)</p>
+      @Html.DropDownListFor(i => i.Num2, new SelectList(
+                  new List<Object>{
+                      new { value = "0"  , text = "---please select a choice---"  },
+                       new { value = "1"  , text = "Male"  },
+                       new { value = "2"  , text = "Female"  },
+                       new { value = "3"  , text = "Bigender"  },
+                       new { value = "4"  , text = "Genderless"  },
+
+                    },
+                  "value",
+                  "text",
+                   2))
+    
+    <hr />
+    
+     <p>What is your sexual orientation?</p>
+      @Html.DropDownListFor(i => i.Num3, new SelectList(
+                  new List<Object>{
+                      new { value = "0"  , text = "---please select a choice---"  },
+                       new { value = "1"  , text = "Heterosexual"  },
+                       new { value = "2"  , text = "Gay"  },
+                       new { value = "2"  , text = "Lesbian"  },
+                       new { value = "3"  , text = "Bisexual"  },
+                       new { value = "4"  , text = "Asexual"  },
+                       new { value = "5"  , text = "Questioning"  },
+
+                    },
+                  "value",
+                  "text",
+                   2))
+    
+    <hr />
+    
+     <p>What range does your age fall under?</p>
+      @Html.DropDownListFor(i => i.Num4, new SelectList(
+                  new List<Object>{
+                      new { value = "0"  , text = "---please select a choice---"  },
+                       new { value = "1"  , text = "18 to 22"  },
+                       new { value = "2"  , text = "23 to 27"  },
+                       new { value = "3"  , text = "28 to 33"  },
+                       new { value = "4"  , text = "34 to 40"  },
+                        new { value = "5"  , text = "41 to 48"  },
+                        new { value = "6"  , text = "49 to 64"  },
+                        new { value = "7"  , text = "65+"},
+
+
+                    },
+                  "value",
+                  "text",
+                   2))
+    
+    <hr />
+    
+      <p>What is your relationship status?</p>
+      @Html.DropDownListFor(i => i.Num5, new SelectList(
+                  new List<Object>{
+                      new { value = "0"  , text = "---please select a choice---"  },
+                      new { value = "1"  , text = "Single"  },
+                      new { value = "2"  , text = "In a relationship but not married or in a legal union"  },
+                      new { value = "3"  , text = "Married or in a legal union"  },
+
+
+
+                    },
+                  "value",
+                  "text",
+                   2))
+    
+    <hr />
+    
+    <p>How did you first discover that you had an interest in transformation?</p>
+     @Html.ValidationMessageFor(m => m.String1)
+    @Html.TextAreaFor(m => m.String1)
+    
+     <hr />
+    
+        <p>What's a fun or random fact about yourself?</p>
+     @Html.ValidationMessageFor(m => m.String2)
+    @Html.TextAreaFor(m => m.String2)
+    
+        <hr />
+    
+        <p>How did you learn about Transformania Time?</p>
+     @Html.ValidationMessageFor(m => m.String3)
+    @Html.TextAreaFor(m => m.String3)
+    
+
+    <input type="submit" value="Submit" />
+}
+
+<p>@Html.ActionLink("Back to game", "Play", "PvP")</p>

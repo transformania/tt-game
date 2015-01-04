@@ -103,6 +103,7 @@ namespace tfgame.Procedures
             if (dbPoll == null)
             {
                 dbPoll = new PollEntry();
+                dbPoll.PollId = pollId;
             }
             return dbPoll;
         }

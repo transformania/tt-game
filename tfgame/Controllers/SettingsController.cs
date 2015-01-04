@@ -300,7 +300,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult ViewPoll(int id)
         {
-            PollEntry output = SettingsProcedures.LoadPoll(1);
+            PollEntry output = SettingsProcedures.LoadPoll(id);
             return View("Polls/Open/poll" + id, output);
         }
 
@@ -314,7 +314,7 @@ namespace tfgame.Controllers
                 return View("Polls/Open/poll" + input.PollId, input);
             }
 
-            SettingsProcedures.SavePoll(input, 13, 1);
+            SettingsProcedures.SavePoll(input, 14, input.PollId);
             TempData["Result"] = "Your response has been recorded.  Thanks for your participation!";
             return RedirectToAction("Play", "PvP");
         }

@@ -98,7 +98,7 @@
                 if (name.length > 0) {
                     $('#discussion ').append('<li><strong>' + htmlEncodeName(name, chatColor) + '</strong>: ' + htmlEncode(message) + '</li>').animate({ scrollTop: $('#discussion').prop("scrollHeight") }, 500);
                 } else {
-                    $('#discussion ').append('<li><strong>' + htmlEncode(message) + '</li>').animate({ scrollTop: $('#discussion').prop("scrollHeight") }, 500);
+                    $('#discussion ').append('<li><strong>' + injectColor(chatColor, "start") + htmlEncode(message) + '</span></li>').animate({ scrollTop: $('#discussion').prop("scrollHeight") }, 500);
                 }
 
                 // add onclick to last element
@@ -205,6 +205,15 @@
             encodedValue = encodedValue.replace(myname, "<span style='text-decoration: underline; color: " + mynameColor + ";'><strong> " + myname + "</strong></span>");
 
             return encodedValue;
+        }
+
+        function injectColor(nameColor, startOrEnd) {
+            if (startOrEnd == "start") {
+                return "<span style='color:" + nameColor + ";'>";
+            } else {
+                return "</span>";
+            }
+            
         }
 
     </script>

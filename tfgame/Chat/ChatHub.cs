@@ -57,7 +57,7 @@ namespace tfgame.Chat
                 {
                     message = message.Replace("/dm message", "");
                     string output = "[=[" + name + " [DM]:  " + message + "]=]";
-                    Clients.Group(room).addNewMessageToPage("", output);
+                    Clients.Group(room).addNewMessageToPage("", output, me.ChatColor);
                     ChatLogProcedures.WriteLogToDatabase(room, name, output);
                 }
 
@@ -80,7 +80,7 @@ namespace tfgame.Chat
                 {
                     message = message.Replace("/me", "");
                     string output = "[+[" + name + message + "]+]";
-                    Clients.Group(room).addNewMessageToPage("", output);
+                    Clients.Group(room).addNewMessageToPage("", output, me.ChatColor);
                     ChatLogProcedures.WriteLogToDatabase(room, name, output);
                 }
 
@@ -123,7 +123,7 @@ namespace tfgame.Chat
 
                     if (me.MembershipId != 69 && me.MembershipId != 3490)
                     {
-                        Clients.Group(roomName).addNewMessageToPage("", message);
+                        Clients.Group(roomName).addNewMessageToPage("", message, me.ChatColor);
                     }
                 }
             }

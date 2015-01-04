@@ -566,9 +566,9 @@ strong {
 strong:hover {
   color: darkolivegreen; }
 
-.enterMsg {
+/*.enterMsg {
   color: black;
-  font-weight: 800; }
+  font-weight: 800; }*/
 
 .roomName {
   background: none repeat scroll 0% 0% #A16969;

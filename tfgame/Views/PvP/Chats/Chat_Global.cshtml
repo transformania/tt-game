@@ -44,7 +44,7 @@
 
 <div class="containerInner">
     <ul id="discussion"></ul>
-    <div class="roomName">Room:  @ViewBag.ChatName</div>
+    <div class="roomName">Room:  @ViewBag.ChatName <span id="autoScrollToggle" style="float: right;">Autoscroll ON</span></div>
     <input type="text" id="message" maxlength="500" class="chatInput" />
     <input type="button" id="sendmessage" value="Send" style="width: 50%; padding: 6px; margin-left: auto; margin-right: auto; display: block;" />
     <input type="hidden" id="displayname" />
@@ -66,9 +66,19 @@
         var mynameColor = "@Html.Raw(TempData["YourNameColor"])";
 
         var myVar = setInterval(function () { myTimer() }, 3000);
+        var autoScrollEnabled = true;
+
+        $("#autoScrollToggle").click(function () {
+            if (autoScrollEnabled == true) {
+                autoScrollEnabled = false;
+                $(this).text("Autoscroll OFF");
+            } else {
+                autoScrollEnabled = true;
+                $(this).text("Autoscroll ON");
+            }
+        });
 
         function myTimer() {
-
             clear = true;
         }
 
@@ -96,9 +106,13 @@
 
                 // if this is not a / command, write out the name and colon.  Otherwise only write the message.
                 if (name.length > 0) {
-                    $('#discussion ').append('<li><strong>' + htmlEncodeName(name, chatColor) + '</strong>: ' + htmlEncode(message) + '</li>').animate({ scrollTop: $('#discussion').prop("scrollHeight") }, 500);
+                    $('#discussion ').append('<li><strong>' + htmlEncodeName(name, chatColor) + '</strong>: ' + htmlEncode(message) + '</li>');
                 } else {
-                    $('#discussion ').append('<li><strong>' + injectColor(chatColor, "start") + htmlEncode(message) + '</span></li>').animate({ scrollTop: $('#discussion').prop("scrollHeight") }, 500);
+                    $('#discussion ').append('<li><strong>' + injectColor(chatColor, "start") + htmlEncode(message) + '</span></li>');
+                }
+
+                if (autoScrollEnabled == true) {
+                    $('#discussion ').animate({ scrollTop: $('#discussion').prop("scrollHeight") }, 500);
                 }
 
                 // add onclick to last element

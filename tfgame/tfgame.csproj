@@ -1455,9 +1455,6 @@
     <Content Include="Views\PvPAdmin\Index.cshtml" />
     <Content Include="Views\PvPAdmin\ApproveEffectContributionList.cshtml" />
     <Content Include="Views\Covenant\CovenantWideMessage.cshtml" />
-    <Content Include="Views\PvP\Chats\Chat_RP1.cshtml" />
-    <Content Include="Views\PvP\Chats\Chat_RP2.cshtml" />
-    <Content Include="Views\PvP\Chats\Chat_RP3.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Alpha_7.cshtml" />
     <Content Include="Views\Settings\SetBio.cshtml" />
     <Content Include="Views\Settings\ViewBio.cshtml" />
@@ -1504,7 +1501,6 @@
     <Content Include="Views\Settings\Polls\Open\poll1.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Settings\Polls\Closed\poll1.cshtml" />
-    <Content Include="Views\PvP\Chats\Chat_Generic.cshtml" />
     <Content Include="Views\PvP\Chats\PrivateBegin.cshtml" />
     <Content Include="Views\Settings\WriteAuthorArtistBio.cshtml" />
     <Content Include="Views\Settings\AuthorArtistBio.cshtml" />
@@ -1516,6 +1512,7 @@
     <Content Include="Views\Item\SelfCast.cshtml" />
     <Content Include="Views\Settings\partial\ArchiveNotice.cshtml" />
     <Content Include="Views\Settings\Polls\Open\poll2.cshtml" />
+    <Content Include="Views\Settings\Polls\Closed\poll2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

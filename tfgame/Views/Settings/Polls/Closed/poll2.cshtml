@@ -37,6 +37,12 @@
     decimal Num4_Choice3 = Model.Where(m => m.Num4 == 3).Count() / totalCount * 100;
     decimal Num4_Choice4 = Model.Where(m => m.Num4 == 4).Count() / totalCount * 100;
     decimal Num4_Choice5 = Model.Where(m => m.Num4 == 5).Count() / totalCount * 100;
+    decimal Num4_Choice6 = Model.Where(m => m.Num4 == 6).Count() / totalCount * 100;
+    decimal Num4_Choice7 = Model.Where(m => m.Num4 == 7).Count() / totalCount * 100;
+
+    decimal Num5_Choice1 = Model.Where(m => m.Num5 == 1).Count() / totalCount * 100;
+    decimal Num5_Choice2 = Model.Where(m => m.Num5 == 2).Count() / totalCount * 100;
+    decimal Num5_Choice3 = Model.Where(m => m.Num5 == 3).Count() / totalCount * 100;
     
 }
 
@@ -44,7 +50,7 @@
 
 
 
-<h1>What features would you like to see added the most?</h1>
+<h1>Tell us a little about yourself.</h1>
 
 <hr />
 <h3>This poll received @Model.Count() responses.</h3>
@@ -53,80 +59,114 @@
 
 <hr />
 
-<p><b>What game mechanic would you like to see added first?  (First preference)</b></p>
+<p><b>What is your biological sex?  (Defined as the biological makeup of an individual's reproductive anatomy or secondary sex characteristics.)</b></p>
 
-<p>Questing system:  <b>@Math.Round(Num1_Choice1, 1) %</b></p>
+<p>Male:  <b>@Math.Round(Num1_Choice1, 1) %</b></p>
 
-<p>More RP game mechanics:  <b>@Math.Round(Num1_Choice2, 1) %</b></p>
+<p>Female:  <b>@Math.Round(Num1_Choice2, 1) %</b></p>
 
-<p>More PvP game mechanics--covenant wars, etc:  <b>@Math.Round(Num1_Choice3, 1) %</b></p>
+<p>Transgendered (male to female):  <b>@Math.Round(Num1_Choice3, 1) %</b></p>
 
-<p>1v1 Duels:  <b>@Math.Round(Num1_Choice4, 1) %</b></p>
+<p>Transgendered (female to male):  <b>@Math.Round(Num1_Choice4, 1) %</b></p>
 
-<p>More bosses and world events:  <b>@Math.Round(Num1_Choice5, 1) %</b></p>
 
-<p>Mind-control type transformation:  <b>@Math.Round(Num1_Choice6, 1) %</b></p>
-
-<p>Absorption type transformation:  <b>@Math.Round(Num1_Choice7, 1) %</b></p>
 
 <hr />
 
-<p><b>What game mechanic would you like to see added first?  (Second preference)</b></p>
+<p><b>What is your self-identified gender?  (Defined as culturally learned or personal identification of one's own gender based on an internal awareness.)</b></p>
 
-<p>Questing system:  <b>@Math.Round(Num2_Choice1, 1) %</b></p>
+<p>Male:  <b>@Math.Round(Num2_Choice1, 1) %</b></p>
 
-<p>More RP game mechanics:  <b>@Math.Round(Num2_Choice2, 1) %</b></p>
+<p>Female:  <b>@Math.Round(Num2_Choice2, 1) %</b></p>
 
-<p>More PvP game mechanics--covenant wars, etc:  <b>@Math.Round(Num2_Choice3, 1) %</b></p>
+<p>Bigender:  <b>@Math.Round(Num2_Choice3, 1) %</b></p>
 
-<p>1v1 Duels:  <b>@Math.Round(Num2_Choice4, 1) %</b></p>
+<p>Genderless:  <b>@Math.Round(Num2_Choice4, 1) %</b></p>
 
-<p>More bosses and world events:  <b>@Math.Round(Num2_Choice5, 1) %</b></p>
+<p>Questioning:  <b>@Math.Round(Num2_Choice5, 1) %</b></p>
 
-<p>Mind-control type transformation:  <b>@Math.Round(Num2_Choice6, 1) %</b></p>
-
-<p>Absorption type transformation:  <b>@Math.Round(Num2_Choice7, 1) %</b></p>
 
 <hr />
 
-<p><b>What game mechanic would you like to see added first?  (Third preference)</b></p>
 
-<p>Questing system:  <b>@Math.Round(Num3_Choice1, 1) %</b></p>
 
-<p>More RP game mechanics:  <b>@Math.Round(Num3_Choice2, 1) %</b></p>
+<p><b>What is your sexual orientation?</b></p>
 
-<p>More PvP game mechanics--covenant wars, etc:  <b>@Math.Round(Num3_Choice3, 1) %</b></p>
+<p>Heterosexual:  <b>@Math.Round(Num3_Choice1, 1) %</b></p>
 
-<p>1v1 Duels:  <b>@Math.Round(Num3_Choice4, 1) %</b></p>
+<p>Gay:  <b>@Math.Round(Num3_Choice2, 1) %</b></p>
 
-<p>More bosses and world events:  <b>@Math.Round(Num3_Choice5, 1) %</b></p>
+<p>Lesbian:  <b>@Math.Round(Num3_Choice3, 1) %</b></p>
 
-<p>Mind-control type transformation:  <b>@Math.Round(Num3_Choice6, 1) %</b></p>
+<p>Bisexual:  <b>@Math.Round(Num3_Choice4, 1) %</b></p>
 
-<p>Absorption type transformation:  <b>@Math.Round(Num3_Choice7, 1) %</b></p>
+<p>Asexual:  <b>@Math.Round(Num3_Choice5, 1) %</b></p>
 
-<hr />
+<p>Questioning:  <b>@Math.Round(Num3_Choice6, 1) %</b></p>
 
-<p><b>How did you feel about the 3000 turn round?</b></p>
-
-<p>Way too long:  <b>@Math.Round(Num4_Choice1, 1) %</b></p>
-
-<p>A little too long:  <b>@Math.Round(Num4_Choice2, 1) %</b></p>
-
-<p>Just the right length:  <b>@Math.Round(Num4_Choice3, 1) %</b></p>
-
-<p>A little too short:  <b>@Math.Round(Num4_Choice4, 1) %</b></p>
-
-<p>Way too short:  <b>@Math.Round(Num4_Choice5, 1) %</b></p>
 
 <hr />
 
-<p><b>What other new features would you like to see in the game not listed above?</b></p>
+
+
+<p><b>What range does your age fall under?</b></p>
+
+<p>18 to 22:  <b>@Math.Round(Num4_Choice1, 1) %</b></p>
+
+<p>23 to 27:  <b>@Math.Round(Num4_Choice2, 1) %</b></p>
+
+<p>28 to 33:  <b>@Math.Round(Num4_Choice3, 1) %</b></p>
+
+<p>34 to 40:  <b>@Math.Round(Num4_Choice4, 1) %</b></p>
+
+<p>41 to 48:  <b>@Math.Round(Num4_Choice5, 1) %</b></p>
+
+<p>49 to 64:  <b>@Math.Round(Num4_Choice6, 1) %</b></p>
+
+<p>65+:  <b>@Math.Round(Num4_Choice7, 1) %</b></p>
+
+<hr />
+
+<p><b>What is your relationship status?</b></p>
+
+<p>Single:  <b>@Math.Round(Num5_Choice1, 1) %</b></p>
+
+<p>In a relationship but not married or in a legal union:  <b>@Math.Round(Num5_Choice2, 1) %</b></p>
+
+<p>Married or in a legal union:  <b>@Math.Round(Num5_Choice3, 1) %</b></p>
+
+
+
+<hr />
+
+<p><b>How and when did you first discover that you had an interest in transformation?</b></p>
 
 @{
     foreach (tfgame.dbModels.Models.PollEntry e in Model.Where(p => p.String1 != null && p.String1 != ""))
     {
         <p>"@e.String1"</p><br />
+    }
+}
+
+<hr />
+
+<p><b>What's a fun or random fact about yourself?</b></p>
+
+@{
+    foreach (tfgame.dbModels.Models.PollEntry e in Model.Where(p => p.String2 != null && p.String2 != ""))
+    {
+        <p>"@e.String2"</p><br />
+    }
+}
+
+<hr />
+
+<p><b>How did you learn about Transformania Time?</b></p>
+
+@{
+    foreach (tfgame.dbModels.Models.PollEntry e in Model.Where(p => p.String3 != null && p.String3 != ""))
+    {
+        <p>"@e.String3"</p><br />
     }
 }
 

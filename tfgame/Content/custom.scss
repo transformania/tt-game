@@ -1,7 +1,7 @@
 $navbarDark: #734752;
 $navbarLight: #CF8C81;
 $border: 4px solid #A16969;
-$bodyColor:  #A16969;
+$bodyColor: #A16969;
 $containerColor: #E4E0D4;
 $darkFillColor: #78BAB5;
 $lightFillColor: #C6E6E4;
@@ -28,37 +28,41 @@ $fontSmall: 13px;
 $defaultMargin: 0px;
 
 body {
-background: $bodyColor;
-font-size: $fontSmall;
-font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+    background: $bodyColor;
+    font-size: $fontSmall;
+    font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
 }
 
-p{
-margin: 0px;
-padding: 0px;
+p {
+    margin: 0px;
+    padding: 0px;
 }
 
 a {
-color: black !important;
-font-weight: bold;
+    color: black !important;
+    font-weight: bold;
 }
 
 a, a:hover, a:active, a:focus {
- outline: 0;
+    outline: 0;
 }
 
-a:hover{
-color: #4E0404 !important;
-text-decoration:none;
+a:hover {
+    color: #4E0404 !important;
+    text-decoration: none;
 }
 
-    .inboxNew {
-        background: $darkPink !important
-    }
+li {
+    list-style: none;
+}
 
-    .levelUp{
-        background: $notificationBoxColor !important;
-    }
+.inboxNew {
+    background: $darkPink !important;
+}
+
+.levelUp {
+    background: $notificationBoxColor !important;
+}
 
 .outsideContainer a {
     color: white !important;
@@ -71,133 +75,135 @@ text-decoration:none;
 }
 
 .outsideContainer {
-border-radius: 0px;
-border: none;
-margin-bottom: 0px;
-text-align: center;
-background: $navbarDark;
+    border-radius: 0px;
+    border: none;
+    margin-bottom: 0px;
+    text-align: center;
+    background: $navbarDark;
 }
 
- .navbarTT1{
- background: $navbarDark;
- border-bottom: $border !important;
- font-size: $fontMedium;
-  margin-bottom: $defaultMargin;
- }
- .navbarTT2{
- background: $navbarLight !important;
- border-bottom: $border !important;
- font-size: $fontSmall;
- margin-bottom: $defaultMargin;
- }
+.navbarTT1 {
+    background: $navbarDark;
+    border-bottom: $border !important;
+    font-size: $fontMedium;
+    margin-bottom: $defaultMargin;
+}
+
+.navbarTT2 {
+    background: $navbarLight !important;
+    border-bottom: $border !important;
+    font-size: $fontSmall;
+    margin-bottom: $defaultMargin;
+}
 
 .footerTT {
-font-size: $fontSmall;
-line-height:36px;
-border-top: $border !important;
-color: white;
+    font-size: $fontSmall;
+    line-height: 36px;
+    border-top: $border !important;
+    color: white;
 }
 
-.container{
-padding:$defaultMargin;
-border-left: $border;
-border-right: $border;
-background: $containerColor;
+.container {
+    padding: $defaultMargin;
+    border-left: $border;
+    border-right: $border;
+    background: $containerColor;
 }
 
 .containerInner {
-padding: 20px;
+    padding: 20px;
 }
 
 .outsideContainer a {
-background: none;
+    background: none;
 }
 
-.nav > li > a:hover, .nav > li > a:focus, .nav > li > a:active, .navbar-default .navbar-nav > .active > a{
-background: none;
+.nav > li > a:hover, .nav > li > a:focus, .nav > li > a:active, .navbar-default .navbar-nav > .active > a {
+    background: none;
 }
 
-.center-block{
-text-align: center;
+.center-block {
+    text-align: center;
 }
 
 .specialBox {
-background: $darkFillColor;
-border-bottom: $border;
-font-size: $fontMedium;
-text-align: center;
-margin-bottom: $defaultMargin;
-padding:10px;
-color: black;
+    background: $darkFillColor;
+    border-bottom: $border;
+    font-size: $fontMedium;
+    text-align: center;
+    margin-bottom: $defaultMargin;
+    padding: 10px;
+    color: black;
 }
 
 .specialBox2 {
-background: $lightFillColor;
+    background: $lightFillColor;
 }
-.turnNumber{
-float: left;
-margin-right: $defaultMargin;
-font-weight: bold;
+
+.turnNumber {
+    float: left;
+    margin-right: $defaultMargin;
+    font-weight: bold;
 }
 
 .logout {
-position: absolute;
-top:5px;
-right: 5px;
+    position: absolute;
+    top: 5px;
+    right: 5px;
 }
 
 @media (max-width: 752px) {
-.logout {
-position: relative;
-top: 0px;
-right: 0px;
-}
+    .logout {
+        position: relative;
+        top: 0px;
+        right: 0px;
+    }
 }
 
-#notificationBox{
-	background: $notificationBoxColor;
-	overflow-y: scroll;
+#notificationBox {
+    background: $notificationBoxColor;
+    overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
-	height: 100px;
-	resize: vertical;
-	padding: 10px;
-	list-style: none;
-	text-align: justify;
-	margin-bottom: 0px;
+    height: 100px;
+    resize: vertical;
+    padding: 10px;
+    list-style: none;
+    text-align: justify;
+    margin-bottom: 0px;
 }
 
-#dismissNotficationBox a{
+#dismissNotficationBox a {
     margin-left: 10px;
     margin-right: 10px;
 }
 
 #dismissNotficationBox {
-	background: $darkPink;
-	font-size: $fontSmall;
-	text-align: center;
-	border-bottom: $border;
+    background: $darkPink;
+    font-size: $fontSmall;
+    text-align: center;
+    border-bottom: $border;
 }
 
-#dismissNotficationBox a, #offlinePlayersButton a{
+#dismissNotficationBox a, #offlinePlayersButton a {
     color: $containerColor !important;
-    font-weight:normal !important;
+    font-weight: normal !important;
 }
 
-#dismissNotficationBox a:hover, #offlinePlayersButton a:hover{
+#dismissNotficationBox a:hover, #offlinePlayersButton a:hover {
     color: white !important;
-    font-weight:normal !important;
+    font-weight: normal !important;
 }
 
-.infoMessage{
+.infoMessage {
     font-size: $fontMedium;
-	border-bottom: $border;
-	padding: 4px;
-	text-align: center;
-	background: $darkBackground;
+    border-bottom: $border;
+    padding: 4px;
+    text-align: center;
+    background: $darkBackground;
 }
 
 .infoMessage:empty {
-display: none;
+    display: none;
 }
 
 .result {
@@ -206,44 +212,44 @@ display: none;
 
 
 .error {
-	color: $error;
+    color: $error;
 }
 
 .suberror {
-color: white;
-font-size: $fontSmall
+    color: white;
+    font-size: $fontSmall;
 }
 
 .covenDescription {
-padding-left: 40px;
-padding-right: 40px;
-text-align: justify;
+    padding-left: 40px;
+    padding-right: 40px;
+    text-align: justify;
 }
 
-#RecentActivityLog{
-	clear:both;
-	background: $notificationBoxColor;
-	overflow-y: scroll;
+#RecentActivityLog {
+    clear: both;
+    background: $notificationBoxColor;
+    overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
-	height: 200px;
-	resize: vertical;
-	padding: 10px;
-	list-style: none;
-	text-align: justify;
-	margin-bottom: 0px;
+    height: 200px;
+    resize: vertical;
+    padding: 10px;
+    list-style: none;
+    text-align: justify;
+    margin-bottom: 0px;
 }
 
-.charaBox{ 
-margin-bottom: 10px;
+.charaBox {
+    margin-bottom: 10px;
 }
 
 .itemBox {
-margin-bottom: 10px;
-text-align: center;
+    margin-bottom: 10px;
+    text-align: center;
 }
 
 .charaBoxInner {
-padding:10px; 
+    padding: 10px;
 }
 
 .charaBoxCommand {
@@ -254,42 +260,43 @@ padding:10px;
     height: 100px;
     width: 100px;
     background-size: 100% 100%;
-	margin-left:auto;
-	margin-right:auto;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .charInfoWrapper {
     text-align: center;
     width: 100%;
-	margin-left:auto;
-	margin-right:auto;
+    margin-left: auto;
+    margin-right: auto;
 }
-.offlinePlayersWrapperBG{
-	background: $offlinePlayerBG;
-	border-bottom: $border;
-	}
-	
-	.floorItemsWrapperBG{
-	background: $containerColor;
-	border-bottom: $border;
-	clear:both;
-	}
 
-    .floorItemsWrapperBG:empty{
-        display:none;
-    }
-	
-	.onlinePlayersWrapperBG{
-	background: $onlinePlayerBG;
-	border-top: $border;
-	}
-	
-	#offlinePlayersButton {
-	background: #7B6461;
-	font-size: $fontSmall;
-	text-align: center;
-	border-bottom: $border;
-	}
+.offlinePlayersWrapperBG {
+    background: $offlinePlayerBG;
+    border-bottom: $border;
+}
+
+.floorItemsWrapperBG {
+    background: $containerColor;
+    border-bottom: $border;
+    clear: both;
+}
+
+.floorItemsWrapperBG:empty {
+    display: none;
+}
+
+.onlinePlayersWrapperBG {
+    background: $onlinePlayerBG;
+    border-top: $border;
+}
+
+#offlinePlayersButton {
+    background: #7B6461;
+    font-size: $fontSmall;
+    text-align: center;
+    border-bottom: $border;
+}
 
 .icon-sleep {
     width: 15px;
@@ -301,11 +308,11 @@ padding:10px;
     left: 0;
 }
 
-.covBox:empty{
-display: none;
+.covBox:empty {
+    display: none;
 }
 
-.floorItemWrapper{
+.floorItemWrapper {
     width: 150px;
     margin-right: 10px;
     margin-bottom: 10px;
@@ -313,26 +320,26 @@ display: none;
 }
 
 .actionButton {
-border: $border;
-padding: 10px;
-margin: 10px;
-font-size: $fontMedium;
-display:inline-block;
+    border: $border;
+    padding: 10px;
+    margin: 10px;
+    font-size: $fontMedium;
+    display: inline-block;
 }
 
-.actionButton:hover{ 
+.actionButton:hover {
 }
 
-#actionMeditate{
-background: #6673D4;
+#actionMeditate {
+    background: #6673D4;
 }
 
-#actionCleanse{
- background: #C95DA2;   
+#actionCleanse {
+    background: #C95DA2;
 }
 
-#actionSearch{
-background: #C36C0A;
+#actionSearch {
+    background: #C36C0A;
 }
 
 
@@ -356,12 +363,12 @@ background: #C36C0A;
     border: $border;
 }
 
-.col-md-1{
+.col-md-1 {
     min-height: 0px !important;
 }
 
 #MessageText {
-    width:100%;
+    width: 100%;
     resize: vertical;
 }
 
@@ -377,14 +384,15 @@ background: #C36C0A;
     color: $willpowerRed;
 }
 
-.playerSearchingNotification{
+.playerSearchingNotification {
     color: #A7641A;
 }
 
-.playerCleansingNotification{
+.playerCleansingNotification {
     color: #9822BC;
 }
-.playerMediatingNotification{
+
+.playerMediatingNotification {
     color: #2234BC;
 }
 
@@ -392,13 +400,13 @@ background: #C36C0A;
     padding-bottom: 7px;
 }
 
-    .frontPageNotification:last-child {
-        padding-bottom: 7px;
-    }
+.frontPageNotification:last-child {
+    padding-bottom: 7px;
+}
 
-    .timeago{
-        color: #6F5151 !important;
-    }
+.timeago {
+    color: #6F5151 !important;
+}
 
 .place {
     font-size: $fontBig;
@@ -408,7 +416,7 @@ background: #C36C0A;
     display: block;
 }
 
-.covSafeground{
+.covSafeground {
     font-size: $fontMedium;
     color: $darkPink;
     text-align: center;
@@ -417,52 +425,52 @@ background: #C36C0A;
 }
 
 .tableLines {
-margin-left:auto;
-margin-right:auto;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .tableLines td {
-        border: 1px solid $darkPink;
-        text-align: center;
-        padding: 3px;
-		background:$darkPink;
-        color: white;
+    border: 1px solid $darkPink;
+    text-align: center;
+    padding: 3px;
+    background: $darkPink;
+    color: white;
 }
 
-.tableLines td a{
-    color: $onlinePlayerBG !important; 
+.tableLines td a {
+    color: $onlinePlayerBG !important;
     font-weight: normal;
 }
 
-.tableLines td a:hover{
+.tableLines td a:hover {
     color: white !important;
 }
 
-.tableLines td:empty{
+.tableLines td:empty {
     background: $bodyColor;
 }
 
 .attackLink {
-border: 1px solid #7B6461;
-margin-top: 4px;
-display: block;
-width: 100px;
-margin-left: auto;
-margin-right: auto;
-background: $containerColor;
+    border: 1px solid #7B6461;
+    margin-top: 4px;
+    display: block;
+    width: 100px;
+    margin-left: auto;
+    margin-right: auto;
+    background: $containerColor;
 }
 
-.inanimateAction{
-border: 1px solid #7B6461;
-margin:4px auto 8px auto;
-display: block;
-width: 300px;
-background: $containerColor;
-text-align:center;
+.inanimateAction {
+    border: 1px solid #7B6461;
+    margin: 4px auto 8px auto;
+    display: block;
+    width: 300px;
+    background: $containerColor;
+    text-align: center;
 }
 
-.inanimateActionList{
-    list-style:none;
+.inanimateActionList {
+    list-style: none;
 }
 
 .disabled {
@@ -471,12 +479,12 @@ text-align:center;
 }
 
 .onlinePlayersButton {
-    border:none !important;
+    border: none !important;
 }
 
 .avatarText, .avatarBars {
     text-align: center;
-        display: table-cell;
+    display: table-cell;
     vertical-align: middle;
 }
 
@@ -549,7 +557,7 @@ text-align:center;
     position: absolute;
 }
 
-.frontOuter{
+.frontOuter {
     height: 200px;
     width: 100%;
     max-width: 350px;
@@ -560,52 +568,52 @@ text-align:center;
     margin-bottom: 10px;
 }
 
-#frontOuterAvatar{
+#frontOuterAvatar {
     border: none !important;
 }
 
 .tldr {
     text-transform: uppercase;
-    color:#9822BC ;
+    color: #9822BC;
 }
 
 .covListing {
-        width: 100%;
-        height: auto;
-        float: left;
-        position: relative;
-        border: 1px solid lightgray;
-        padding: 10px;
+    width: 100%;
+    height: auto;
+    float: left;
+    position: relative;
+    border: 1px solid lightgray;
+    padding: 10px;
 }
 
 .covBigName {
-        font-size: 20px;
-        font-weight: 700;
-        color: darkviolet;
+    font-size: 20px;
+    font-weight: 700;
+    color: darkviolet;
 }
 
 .covMemberCount {
-        font-size: 12px;
-        color: darkblue;
-        margin-left: 10px;
-        font-style: italic;
+    font-size: 12px;
+    color: darkblue;
+    margin-left: 10px;
+    font-style: italic;
 }
 
 .covFlag {
-        width: 100px;
-        height: 100px;
-        float: left;
-        position: relative;
-        margin-right: 10px;
-        background-size: 100% 100%;
+    width: 100px;
+    height: 100px;
+    float: left;
+    position: relative;
+    margin-right: 10px;
+    background-size: 100% 100%;
 }
 
-.contributionsBox{
+.contributionsBox {
     height: 250px;
     resize: vertical;
     overflow-y: scroll;
     border: $border;
-    padding:5px;
+    padding: 5px;
 }
 
 .playPageInventoryItem {
@@ -628,103 +636,110 @@ text-align:center;
     transition: all 0.5s ease;
 }
 
-    .openInventory:hover {
-        border: 1px solid red;
-        cursor: pointer;
-    }
+.openInventory:hover {
+    border: 1px solid red;
+    cursor: pointer;
+}
 
- .frontHeader {
-     font-size: $fontHuge;
-     font-weight: bold;
- }
+.frontHeader {
+    font-size: $fontHuge;
+    font-weight: bold;
+}
 
- .frontForm {
-     width: 200px;
-     text-align: center;
-     margin-left: auto;
-     margin-right: auto;
-     margin-bottom: 10px;
- }
+.frontForm {
+    width: 200px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+}
 
- .chatInput {
-            border: 1px solid black;
-            margin: 5px 0px 0px 0px;
-            width: 80%;
-            margin-left: auto;
-            margin-right: auto;
-            display: block;
-            padding: 6px;
-            resize:both;
-        }
+.chatInput {
+    border: 1px solid black;
+    margin: 5px 0px 0px 0px;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    padding: 6px;
+    resize: both;
+}
 
-        #discussion {
-            max-width: 100%;
-            height: 300px;
-            overflow-y: scroll;
-            text-wrap: normal;
-            padding: 0px;
-            background-color: #E1E1E1;
-            margin-top: 5px;
-            resize: vertical;
-            border: $border;
-            word-break: break-all;
-            margin-bottom: 0px;
-        }
-         
-        #discussion li{
-            padding: 4px;
-        }
+#discussion {
+    max-width: 100%;
+    height: 300px;
+    overflow-y: scroll;
+    text-wrap: normal;
+    padding: 0px;
+    background-color: #E1E1E1;
+    margin-top: 5px;
+    resize: vertical;
+    border: $border;
+    word-break: break-all;
+    margin-bottom: 0px;
+}
 
-            #discussion li:nth-child(odd) {
-                background-color: #D2CFCE;
-            }
+#discussion li {
+    padding: 4px;
+}
 
-            #discussion li:nth-child(even) {
-                background-color: #E1E1E1;
-            }
+#discussion li:nth-child(odd) {
+    background-color: #D2CFCE;
+}
 
-            .adminFont {
-                color: darkred;
-            }
+#discussion li:nth-child(even) {
+    background-color: #E1E1E1;
+}
 
-            .youFont {
-                color: darkblue;
-            }
+.adminFont {
+    color: darkred;
+}
 
-        .dm {
-            color: darkgreen;
-            font-weight: 800;
-        }
+.youFont {
+    color: darkblue;
+}
 
-        .me {
-            font-style: italic;
-            font-weight: 900;
-        }
+.dm {
+    color: darkgreen;
+    font-weight: 800;
+}
 
-        strong {
-            cursor: pointer;
-        }
+.me {
+    font-style: italic;
+    font-weight: 900;
+}
 
-            strong:hover {
-                color: darkolivegreen;
-            }
+strong {
+    cursor: pointer;
+}
 
-        .enterMsg {
-            color: black;
-            font-weight: 800;
-        }
+strong:hover {
+    color: darkolivegreen;
+}
 
-        .roomName{
-        background: none repeat scroll 0% 0% #A16969;
-        font-size: $fontSmall;
-        text-align: center;
-        border: $border;
-        border-top: none !important;
-        color: white;
-        }
+.enterMsg {
+    color: black;
+    font-weight: 800;
+}
 
-        #autoScrollToggle{
-            width: 100px;
-            float: right;
-            cursor: pointer;
-        }
+.roomName {
+    background: none repeat scroll 0% 0% #A16969;
+    font-size: $fontSmall;
+    text-align: center;
+    border: $border;
+    border-top: none !important;
+    color: white;
+}
+
+#autoScrollToggle {
+    width: 100px;
+    float: right;
+    cursor: pointer;
+}
+
+.pollTextArea {
+    width: 100%;
+    height: 100px;
+    resize: vertical;
+    overflow-y: scroll;
+}

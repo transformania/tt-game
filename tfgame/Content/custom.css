@@ -169,16 +169,11 @@ a:hover {
   margin-bottom: 0px; }
 
 .charaBox {
-  margin-bottom: 10px;
-  height: 280px; }
-
-.itemBoxPP {
-  height: 150px !important; }
+  margin-bottom: 10px; }
 
 .itemBox {
   margin-bottom: 10px;
-  text-align: center;
-  height: 100%; }
+  text-align: center; }
 
 .charaBoxInner {
   padding: 10px; }
@@ -566,9 +561,9 @@ strong {
 strong:hover {
   color: darkolivegreen; }
 
-/*.enterMsg {
+.enterMsg {
   color: black;
-  font-weight: 800; }*/
+  font-weight: 800; }
 
 .roomName {
   background: none repeat scroll 0% 0% #A16969;

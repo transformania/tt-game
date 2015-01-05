@@ -18,6 +18,9 @@ a:hover {
   color: #4E0404 !important;
   text-decoration: none; }
 
+li {
+  list-style: none; }
+
 .inboxNew {
   background: #865863 !important; }
 
@@ -577,5 +580,11 @@ strong:hover {
   width: 100px;
   float: right;
   cursor: pointer; }
+
+.pollTextArea {
+  width: 100%;
+  height: 100px;
+  resize: vertical;
+  overflow-y: scroll; }
 
 /*# sourceMappingURL=custom.css.map */

@@ -1,25 +1,37 @@
 ﻿@model tfgame.dbModels.Models.PollEntry
 
-<head>
-    <script src="~/Scripts/jquery-2.1.0.min.js"></script>
-    <script src="~/Scripts/jquery.validate.js"></script>
-    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
-    <link href="~/Content/PvP.css" rel="stylesheet" />
-</head>
+<nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
 
-<p>@Html.ActionLink("Back to game", "Play", "PvP")</p>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+                <li>@Html.ActionLink("View All Polls", "ViewPolls", "Settings")</li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+<p class="infoMessage error">@ViewBag.Error</p>
+<div class="containerInner text-center">
+    <h1>What features would you like to see added the most?</h1>
 
-<p class="error">@ViewBag.Error</p>
+    <p>You can return to edit your answers later.  Text inputs have a maximum of 500 characters.</p>
 
-<h1>What features would you like to see added the most?</h1>
+    @using (Html.BeginForm("ReplyToPoll", "Settings", Model))
+    {
 
-<p>You can return to edit your answers later.  Text inputs have a maximum of 500 characters.</p>
-
-@using (Html.BeginForm("ReplyToPoll", "Settings", Model))
-{
-    
-    <p>What game mechanic would you like to see added first?  (First preference)</p>
-      @Html.DropDownListFor(i => i.Num1, new SelectList(
+        <p>What game mechanic would you like to see added first?  (First preference)</p>
+        @Html.DropDownListFor(i => i.Num1, new SelectList(
                   new List<Object>{
                       new { value = "0"  , text = "---please select a choice---"  },
                        new { value = "1"  , text = "Questing system"  },
@@ -34,11 +46,11 @@
                   "value",
                   "text",
                    2))
-    
-    <hr />
-    
-    <p>What game mechanic would you like to see added first?  (Second preference).  Please do not duplicate the answer selected above.</p>
-      @Html.DropDownListFor(i => i.Num2, new SelectList(
+
+        <hr />
+
+        <p>What game mechanic would you like to see added first?  (Second preference).  Please do not duplicate the answer selected above.</p>
+        @Html.DropDownListFor(i => i.Num2, new SelectList(
                   new List<Object>{
                       new { value = "0"  , text = "---please select a choice---"  },
                        new { value = "1"  , text = "Questing system"  },
@@ -53,11 +65,11 @@
                   "value",
                   "text",
                    2))
-    
-    <hr />
-    
-    <p>What game mechanic would you like to see added first?  (Third preference).  Please do not duplicate either answer selected above.</p>
-      @Html.DropDownListFor(i => i.Num3, new SelectList(
+
+        <hr />
+
+        <p>What game mechanic would you like to see added first?  (Third preference).  Please do not duplicate either answer selected above.</p>
+        @Html.DropDownListFor(i => i.Num3, new SelectList(
                   new List<Object>{
                       new { value = "0"  , text = "---please select a choice---"  },
                        new { value = "1"  , text = "Questing system"  },
@@ -72,20 +84,20 @@
                   "value",
                   "text",
                    2))
-    
 
-    
 
-    <hr />
-    
-    <p>What other new features would you like to see in the game not listed above?</p>
-     @Html.ValidationMessageFor(m => m.String1)
-    @Html.TextAreaFor(m => m.String1)
-    
-    <hr />
-    
+
+
+        <hr />
+
+        <p>What other new features would you like to see in the game not listed above?</p>
+        @Html.ValidationMessageFor(m => m.String1)
+        @Html.TextAreaFor(m => m.String1, new { @class = "pollTextArea" })
+
+        <hr />
+
         <p>How did you feel about the 3000 turn round?</p>
-      @Html.DropDownListFor(i => i.Num4, new SelectList(
+        @Html.DropDownListFor(i => i.Num4, new SelectList(
                   new List<Object>{
                       new { value = "0"  , text = "---please select a choice---"  },
                        new { value = "1"  , text = "Way too long"  },
@@ -99,10 +111,9 @@
                   "value",
                   "text",
                    2))
-    
-    <hr />
 
-    <input type="submit" value="Submit" />
-}
+        <hr />
 
-<p>@Html.ActionLink("Back to game", "Play", "PvP")</p>
+        <input type="submit" value="Submit" />
+    }
+</div>

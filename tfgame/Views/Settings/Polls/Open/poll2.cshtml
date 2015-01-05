@@ -1,27 +1,39 @@
 ﻿@model tfgame.dbModels.Models.PollEntry
 
-<head>
-    <script src="~/Scripts/jquery-2.1.0.min.js"></script>
-    <script src="~/Scripts/jquery.validate.js"></script>
-    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
-    <link href="~/Content/PvP.css" rel="stylesheet" />
-</head>
+<nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
 
-<p>@Html.ActionLink("Back to game", "Play", "PvP")</p>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+                <li>@Html.ActionLink("View All Polls", "ViewPolls", "Settings")</li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+<p class="infoMessage error">@ViewBag.Error</p>
+<div class="containerInner text-center">
+    <h1>Tell us a little about yourself.</h1>
 
-<p class="error">@ViewBag.Error</p>
+    <p>All questions are optional and all responses are anonymous.  There are many more possibilities for some of the dropdown questions here; if you feel one is missing please post in the forums and we will add it in.You can return to edit your answers later.  Text inputs have a maximum of 500 characters.</p>
 
-<h1>Tell us a little about yourself.</h1>
+    <hr />
 
-<p>All questions are optional and all responses are anonymous.  There are many more possibilities for some of the dropdown questions here; if you feel one is missing please post in the forums and we will add it in.You can return to edit your answers later.  Text inputs have a maximum of 500 characters.</p>
+    @using (Html.BeginForm("ReplyToPoll", "Settings", Model))
+    {
 
-<hr />
-
-@using (Html.BeginForm("ReplyToPoll", "Settings", Model))
-{
-    
-    <p>What is your biological sex?  (Defined as the biological makeup of an individual's reproductive anatomy or secondary sex characteristics.)</p>
-      @Html.DropDownListFor(i => i.Num1, new SelectList(
+        <p>What is your biological sex?  (Defined as the biological makeup of an individual's reproductive anatomy or secondary sex characteristics.)</p>
+        @Html.DropDownListFor(i => i.Num1, new SelectList(
                   new List<Object>{
                       new { value = "0"  , text = "---please select a choice---"  },
                        new { value = "1"  , text = "Male"  },
@@ -34,11 +46,11 @@
                   "value",
                   "text",
                    2))
-    
-    <hr />
-    
- <p>What is your self-identified gender?  (Defined as culturally learned or personal identification of one's own gender based on an internal awareness.)</p>
-      @Html.DropDownListFor(i => i.Num2, new SelectList(
+
+        <hr />
+
+        <p>What is your self-identified gender?  (Defined as culturally learned or personal identification of one's own gender based on an internal awareness.)</p>
+        @Html.DropDownListFor(i => i.Num2, new SelectList(
                   new List<Object>{
                       new { value = "0"  , text = "---please select a choice---"  },
                        new { value = "1"  , text = "Male"  },
@@ -51,11 +63,11 @@
                   "value",
                   "text",
                    2))
-    
-    <hr />
-    
-     <p>What is your sexual orientation?</p>
-      @Html.DropDownListFor(i => i.Num3, new SelectList(
+
+        <hr />
+
+        <p>What is your sexual orientation?</p>
+        @Html.DropDownListFor(i => i.Num3, new SelectList(
                   new List<Object>{
                       new { value = "0"  , text = "---please select a choice---"  },
                        new { value = "1"  , text = "Heterosexual"  },
@@ -69,11 +81,11 @@
                   "value",
                   "text",
                    2))
-    
-    <hr />
-    
-     <p>What range does your age fall under?</p>
-      @Html.DropDownListFor(i => i.Num4, new SelectList(
+
+        <hr />
+
+        <p>What range does your age fall under?</p>
+        @Html.DropDownListFor(i => i.Num4, new SelectList(
                   new List<Object>{
                       new { value = "0"  , text = "---please select a choice---"  },
                        new { value = "1"  , text = "18 to 22"  },
@@ -89,11 +101,11 @@
                   "value",
                   "text",
                    2))
-    
-    <hr />
-    
-      <p>What is your relationship status?</p>
-      @Html.DropDownListFor(i => i.Num5, new SelectList(
+
+        <hr />
+
+        <p>What is your relationship status?</p>
+        @Html.DropDownListFor(i => i.Num5, new SelectList(
                   new List<Object>{
                       new { value = "0"  , text = "---please select a choice---"  },
                       new { value = "1"  , text = "Single"  },
@@ -106,27 +118,27 @@
                   "value",
                   "text",
                    2))
-    
-    <hr />
-    
-    <p>How and when did you first discover that you had an interest in transformation?</p>
-     @Html.ValidationMessageFor(m => m.String1)
-    @Html.TextAreaFor(m => m.String1)
-    
-     <hr />
-    
-        <p>What's a fun or random fact about yourself?</p>
-     @Html.ValidationMessageFor(m => m.String2)
-    @Html.TextAreaFor(m => m.String2)
-    
+
         <hr />
-    
+
+        <p>How and when did you first discover that you had an interest in transformation?</p>
+        @Html.ValidationMessageFor(m => m.String1)
+        @Html.TextAreaFor(m => m.String1, new { @class = "pollTextArea" })
+
+        <hr />
+
+        <p>What's a fun or random fact about yourself?</p>
+        @Html.ValidationMessageFor(m => m.String2)
+        @Html.TextAreaFor(m => m.String2, new { @class = "pollTextArea" })
+
+        <hr />
+
         <p>How did you learn about Transformania Time?</p>
-     @Html.ValidationMessageFor(m => m.String3)
-    @Html.TextAreaFor(m => m.String3)
-    
+        @Html.ValidationMessageFor(m => m.String3)
+        @Html.TextAreaFor(m => m.String3, new { @class = "pollTextArea" })
 
-    <input type="submit" value="Submit" />
-}
 
-<p>@Html.ActionLink("Back to game", "Play", "PvP")</p>
+        <input type="submit" value="Submit" />
+    }
+
+</div>

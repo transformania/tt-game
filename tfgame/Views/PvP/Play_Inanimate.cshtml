@@ -61,7 +61,7 @@
 </div>
 
 @{
-    if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+    if (User.IsInRole(PvPStatics.Permissions_Admin) == true)
     {
         @Html.ActionLink("Admin", "Index", "PvPAdmin")
     }

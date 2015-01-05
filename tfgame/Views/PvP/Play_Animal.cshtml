@@ -57,8 +57,7 @@
     <p class="infoMessage suberror">@ViewBag.SubErrorMessage</p>
 </div>
 
-@*                  This needs to be added !!!                 *@
-@*    @Html.Partial("partial/RoundStatus", Model.PvPWorldStat) *@
+@Html.Partial("partial/RoundStatus", Model.PvPWorldStat)
 
 <div class="specialBox specialBox2">
     <span class="turnNumber">Turn #<b>@ViewBag.WorldTurnNumber/@PvPStatics.RoundDuration</b></span>

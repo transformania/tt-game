@@ -55,6 +55,8 @@
     <p class="infoMessage suberror">@ViewBag.SubErrorMessage</p>
 </div>
 
+@Html.Partial("partial/RoundStatus", Model.PvPWorldStat)
+
 <div class="specialBox specialBox2">
     <span class="turnNumber">Turn #<b>@ViewBag.WorldTurnNumber/@PvPStatics.RoundDuration</b></span>
     Transformania Time has <b>@Model.WorldStats.TotalPlayers</b> players, <b>@Model.WorldStats.CurrentOnlinePlayers</b> of which are currently online.

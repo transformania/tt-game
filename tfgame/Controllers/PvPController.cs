@@ -124,6 +124,7 @@ namespace tfgame.Controllers
                 inanimateOutput.LastUpdateTimestamp = WorldStat.LastUpdateTimestamp;
 
                 inanimateOutput.WorldStats = PlayerProcedures.GetWorldPlayerStats();
+                inanimateOutput.PvPWorldStat = WorldStat;
 
                 inanimateOutput.Player = me;
                 inanimateOutput.Form = FormStatics.GetForm(me.Form);
@@ -184,6 +185,7 @@ namespace tfgame.Controllers
             {
                 GameOverViewModelAnimal animalOutput = new GameOverViewModelAnimal();
                 animalOutput.You = me;
+                animalOutput.PvPWorldStat = WorldStat;
 
                 animalOutput.Form = FormStatics.GetForm(me.Form);
 

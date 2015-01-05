@@ -12,6 +12,9 @@ namespace tfgame.ViewModels
         public DbStaticForm Form { get; set; }
         public PlayerFormViewModel OwnedBy { get; set; }
         public Location Location { get; set; }
+
+
+        public PvPWorldStat PvPWorldStat { get; set; }
         public WorldStats WorldStats { get; set; }
         public IEnumerable<LocationLog> LocationLog { get; set; }
         public IEnumerable<PlayerLog> PlayerLog { get; set; }

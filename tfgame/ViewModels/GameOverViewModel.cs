@@ -24,6 +24,8 @@ namespace tfgame.ViewModels
 
         public WorldStats WorldStats { get; set; }
 
+        public PvPWorldStat PvPWorldStat { get; set; }
+
         public DateTime LastUpdateTimestamp { get; set; }
 
     }

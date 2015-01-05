@@ -18,7 +18,7 @@
         }
         if (Model.FurnitureType.GivesEffect != null && Model.FurnitureType.GivesEffect != "")
         {
-            <li>Gives effect:  @Model.FurnitureType.GivesEffect</li>
+            <li>Gives effect:  @tfgame.Statics.EffectStatics.GetEffect(Model.FurnitureType.GivesEffect).FriendlyName</li>
         }
         if (Model.FurnitureType.GivesItem != null && Model.FurnitureType.GivesItem != "")
         {

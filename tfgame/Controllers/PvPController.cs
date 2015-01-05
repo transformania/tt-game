@@ -99,12 +99,22 @@ namespace tfgame.Controllers
                 ViewBag.UpdateInProgress = true;
             }
 
-           // PvPWorldStat PvPWorldStat = PvPWorldStatProcedures.GetWorldStats();
+
 
             // load the update date into memory
             PvPStatics.LastGameUpdate = WorldStat.GameNewsDate;
 
             ViewBag.WorldTurnNumber = WorldStat.TurnNumber;
+
+            // set viewbag to show offline players is the link has been clicked
+            try
+            {
+                ViewBag.ShowOffline = TempData["ShowOffline"];
+            }
+            catch
+            {
+                ViewBag.ShowOffline = false;
+            }
 
             // player is inanimate, load up the inanimate endgame page
             if (me.Mobility == "inanimate")
@@ -156,7 +166,7 @@ namespace tfgame.Controllers
 
                 List<PlayerFormViewModel> playersHere = new List<PlayerFormViewModel>();
                 foreach (PlayerFormViewModel p in inanimateOutput.PlayersHere) {
-                    if (!PlayerProcedures.PlayerIsOffline(p.Player) && p.Player.Mobility == "full") {
+                    if (p.Player.Mobility == "full") {
                         playersHere.Add(p);
                     }
                 }
@@ -291,14 +301,7 @@ namespace tfgame.Controllers
 
             ViewBag.LoadTime = loadtime;
 
-            try
-            {
-                ViewBag.ShowOffline = TempData["ShowOffline"];
-            }
-            catch
-            {
-                ViewBag.ShowOffline = false;
-            }
+           
 
 
             return View(output);

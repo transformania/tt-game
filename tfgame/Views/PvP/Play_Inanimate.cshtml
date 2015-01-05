@@ -150,23 +150,55 @@
 <div class="onlinePlayersWrapperBG" style="clear:both; border-bottom:4px solid #A16969;">
     <div class="row">
         @{
-            foreach (tfgame.ViewModels.PlayerFormViewModel p in Model.PlayersHere)
-            {
-                <div class="col-md-2 col-sm-4 col-xs-12 charaBox">
-                    <div class="charaBoxInner">
-                        <div>
-                            <p>
-                                <div>
-                                    @Html.Partial("Player_Partial", p)
-                                </div>
-                            </p>
-                        </div>
-                    </div>
+            foreach (tfgame.ViewModels.PlayerFormViewModel p in Model.PlayersHere.Where(p => tfgame.Procedures.PlayerProcedures.PlayerIsOffline(p.Player) == false))
+    {
+        <div class="col-md-2 col-sm-4 col-xs-12 charaBox">
+            <div class="charaBoxInner">
+                <div>
+                    <p>
+
+                        @Html.Partial("Player_Partial", p)
+
+                    </p>
                 </div>
-            }
-        }
+            </div>
+        </div>
+    }
+}
     </div>
 </div>
+
+@{if (ViewBag.ShowOffline == null || ViewBag.ShowOffline == false)
+{
+
+    <div id="offlinePlayersButton">@Html.ActionLink("Show Offline Players Here (" + @Model.PlayersHere.Where(p => tfgame.Procedures.PlayerProcedures.PlayerIsOffline(p.Player) == true).Count() + ")", "ShowOffline", "PvP")</div>
+}
+}
+
+@{if (ViewBag.ShowOffline != null && ViewBag.ShowOffline == true)
+{
+    <div class="offlinePlayersWrapperBG">
+        <div class="row">
+
+            @{
+    foreach (tfgame.ViewModels.PlayerFormViewModel p in Model.PlayersHere.Where(p => tfgame.Procedures.PlayerProcedures.PlayerIsOffline(p.Player) == true).OrderByDescending(p => p.Player.Level))
+    {
+        <div class="col-md-2 col-sm-4 col-xs-12 charaBox">
+            <div class="charaBoxInner">
+                <div>
+                    <p>
+                        @Html.Partial("Player_Partial", p)
+                    </p>
+                </div>
+            </div>
+        </div>
+    }
+            }
+
+        </div>
+    </div>
+}
+}
 
 @Html.Partial("partial/partial_recentActivity", Model.LocationLog)
 

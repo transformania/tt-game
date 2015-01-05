@@ -561,9 +561,6 @@ li {
 strong {
   cursor: pointer; }
 
-strong:hover {
-  color: darkolivegreen; }
-
 .enterMsg {
   color: black;
   font-weight: 800; }
@@ -586,5 +583,8 @@ strong:hover {
   height: 100px;
   resize: vertical;
   overflow-y: scroll; }
+
+.bad {
+  color: #9E0E0E !important; }
 
 /*# sourceMappingURL=custom.css.map */

@@ -161,7 +161,7 @@ namespace tfgame.Controllers
                 }
                 else
                 {
-                    inanimateOutput.LocationLog = LocationLogProcedures.GetLocationLogsAtLocation(me.dbLocationName).Reverse();
+                    inanimateOutput.LocationLog = LocationLogProcedures.GetLocationLogsAtLocation(me.dbLocationName);
                     inanimateOutput.PlayersHere = PlayerProcedures.GetPlayerFormViewModelsAtLocation(me.dbLocationName);
                 }
 
@@ -215,7 +215,7 @@ namespace tfgame.Controllers
                 animalOutput.PlayerLog = PlayerLogProcedures.GetAllPlayerLogs(me.Id).Reverse();
                 animalOutput.PlayerLogImportant = animalOutput.PlayerLog.Where(l => l.IsImportant == true);
 
-                animalOutput.LocationLog = LocationLogProcedures.GetLocationLogsAtLocation(animalOutput.Location.dbName).Reverse();
+                animalOutput.LocationLog = LocationLogProcedures.GetLocationLogsAtLocation(animalOutput.Location.dbName);
 
                 animalOutput.LocationItems = ItemProcedures.GetAllItemsAtLocation(animalOutput.Location.dbName, me);
 
@@ -273,7 +273,7 @@ namespace tfgame.Controllers
             output.Location.FriendlyName_West = LocationsStatics.GetConnectionName(output.Location.Name_West);
 
             loadtime += "Start get location logs:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
-            output.LocationLog = LocationLogProcedures.GetLocationLogsAtLocation(me.dbLocationName).Reverse();
+            output.LocationLog = LocationLogProcedures.GetLocationLogsAtLocation(me.dbLocationName);
             loadtime += "End get players here:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
 
             loadtime += "Start get player logs:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";

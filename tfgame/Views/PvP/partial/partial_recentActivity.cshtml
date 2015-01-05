@@ -8,7 +8,7 @@
 
 <ul id="RecentActivityLog">
     @{
-        foreach (tfgame.dbModels.Models.LocationLog log in Model)
+        foreach (tfgame.dbModels.Models.LocationLog log in Model.Reverse())
         {
             <li>@Html.Raw(log.Message)  <span class="timeago">@CharactersHere.DatetimeToTimeago(log.Timestamp)</span></li>
         }

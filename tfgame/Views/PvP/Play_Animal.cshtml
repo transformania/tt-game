@@ -263,12 +263,6 @@
                                     <p>
                                         @Html.Partial("Player_Partial", p)
                                         <button type="button" class="attackLink" data-toggle="modal" data-target="#petInteractModal" playernum="@p.Player.Id">Interact</button>
-                                        @*@Html.ActionLink("Lick", "AnimalAction", "PvP", new { actionName = "lick", targetId = p.Player.Id }, new { @class = "check" })
-                                            @Html.ActionLink("Nuzzle", "AnimalAction", "PvP", new { actionName = "nuzzle", targetId = p.Player.Id }, new { @class = "check" })
-                                            @Html.ActionLink("Snarl", "AnimalAction", "PvP", new { actionName = "snarl", targetId = p.Player.Id }, new { @class = "check" })
-                                            @Html.ActionLink("Headbutt", "AnimalAction", "PvP", new { actionName = "headbutt", targetId = p.Player.Id }, new { @class = "check" })*@
-
-
                                     </p>
                                 </div>
                             </div>
@@ -300,10 +294,6 @@
                             <p>
                                 @Html.Partial("Player_Partial", p)
                                 <button type="button" class="attackLink" data-toggle="modal" data-target="#petInteractModal" playernum="@p.Player.Id">Interact</button>
-                                @*@Html.ActionLink("Lick", "AnimalAction", "PvP", new { actionName = "lick", targetId = p.Player.Id }, new { @class = "check" })
-                                    @Html.ActionLink("Nuzzle", "AnimalAction", "PvP", new { actionName = "nuzzle", targetId = p.Player.Id }, new { @class = "check" })
-                                    @Html.ActionLink("Snarl", "AnimalAction", "PvP", new { actionName = "snarl", targetId = p.Player.Id }, new { @class = "check" })
-                                    @Html.ActionLink("Headbutt", "AnimalAction", "PvP", new { actionName = "headbutt", targetId = p.Player.Id }, new { @class = "check" })*@
                             </p>
                         </div>
                     </div>
@@ -332,10 +322,10 @@
                     </div>
                     <div class="modal-body">
 
-                        @Html.ActionLink("Lick", "AnimalAction", "PvP", new { actionName = "lick", targetId = 0 }, new { @class = "check" })
-        @Html.ActionLink("Nuzzle", "AnimalAction", "PvP", new { actionName = "nuzzle", targetId = 0 }, new { @class = "check" })
-        @Html.ActionLink("Snarl", "AnimalAction", "PvP", new { actionName = "snarl", targetId = 0 }, new { @class = "check" })
-        @Html.ActionLink("Headbutt", "AnimalAction", "PvP", new { actionName = "headbutt", targetId = 0 }, new { @class = "check" })
+                        @Html.ActionLink("Lick", "AnimalAction", "PvP", new { actionName = "lick", targetId = 0 }, new { @class = "btn petActionGood" })
+        @Html.ActionLink("Nuzzle", "AnimalAction", "PvP", new { actionName = "nuzzle", targetId = 0 }, new { @class = "btn petActionGood" })
+        @Html.ActionLink("Snarl", "AnimalAction", "PvP", new { actionName = "snarl", targetId = 0 }, new { @class = "btn petActionBad" })
+        @Html.ActionLink("Headbutt", "AnimalAction", "PvP", new { actionName = "headbutt", targetId = 0 }, new { @class = "btn petActionBad" })
 
                       
                     </div>

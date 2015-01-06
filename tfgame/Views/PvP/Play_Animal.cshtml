@@ -321,13 +321,10 @@
                         <h4 class="modal-title text-center" id="myModalLabel">Pet Actions</h4>
                     </div>
                     <div class="modal-body">
-
-                        @Html.ActionLink("Lick", "AnimalAction", "PvP", new { actionName = "lick", targetId = 0 }, new { @class = "btn petActionGood" })
-        @Html.ActionLink("Nuzzle", "AnimalAction", "PvP", new { actionName = "nuzzle", targetId = 0 }, new { @class = "btn petActionGood" })
-        @Html.ActionLink("Snarl", "AnimalAction", "PvP", new { actionName = "snarl", targetId = 0 }, new { @class = "btn petActionBad" })
-        @Html.ActionLink("Headbutt", "AnimalAction", "PvP", new { actionName = "headbutt", targetId = 0 }, new { @class = "btn petActionBad" })
-
-                      
+                        @Html.ActionLink("Lick (+WP)", "AnimalAction", "PvP", new { actionName = "lick", targetId = 0 }, new { @class = "btn petActionLink petActionGood" })
+                        @Html.ActionLink("Nuzzle (+MP)", "AnimalAction", "PvP", new { actionName = "nuzzle", targetId = 0 }, new { @class = "btn petActionLink petActionGood" })
+                        @Html.ActionLink("Snarl (-WP)", "AnimalAction", "PvP", new { actionName = "snarl", targetId = 0 }, new { @class = "btn petActionLink petActionBad" })
+                        @Html.ActionLink("Headbutt (-MP)", "AnimalAction", "PvP", new { actionName = "headbutt", targetId = 0 }, new { @class = "btn petActionLink petActionBad" })
                     </div>
                 </div>
             </div>

@@ -262,10 +262,11 @@
                                 <div>
                                     <p>
                                         @Html.Partial("Player_Partial", p)
-                                        @Html.ActionLink("Lick", "AnimalAction", "PvP", new { actionName = "lick", targetId = p.Player.Id }, new { @class = "check" })
-                                        @Html.ActionLink("Nuzzle", "AnimalAction", "PvP", new { actionName = "nuzzle", targetId = p.Player.Id }, new { @class = "check" })
-                                        @Html.ActionLink("Snarl", "AnimalAction", "PvP", new { actionName = "snarl", targetId = p.Player.Id }, new { @class = "check" })
-                                        @Html.ActionLink("Headbutt", "AnimalAction", "PvP", new { actionName = "headbutt", targetId = p.Player.Id }, new { @class = "check" })
+                                        <button type="button" class="attackLink" data-toggle="modal" data-target="#petInteractModal" playernum="@p.Player.Id">Interact</button>
+                                        @*@Html.ActionLink("Lick", "AnimalAction", "PvP", new { actionName = "lick", targetId = p.Player.Id }, new { @class = "check" })
+                                            @Html.ActionLink("Nuzzle", "AnimalAction", "PvP", new { actionName = "nuzzle", targetId = p.Player.Id }, new { @class = "check" })
+                                            @Html.ActionLink("Snarl", "AnimalAction", "PvP", new { actionName = "snarl", targetId = p.Player.Id }, new { @class = "check" })
+                                            @Html.ActionLink("Headbutt", "AnimalAction", "PvP", new { actionName = "headbutt", targetId = p.Player.Id }, new { @class = "check" })*@
 
 
                                     </p>
@@ -298,10 +299,11 @@
                         <div>
                             <p>
                                 @Html.Partial("Player_Partial", p)
-                                @Html.ActionLink("Lick", "AnimalAction", "PvP", new { actionName = "lick", targetId = p.Player.Id }, new { @class = "check" })
-                                @Html.ActionLink("Nuzzle", "AnimalAction", "PvP", new { actionName = "nuzzle", targetId = p.Player.Id }, new { @class = "check" })
-                                @Html.ActionLink("Snarl", "AnimalAction", "PvP", new { actionName = "snarl", targetId = p.Player.Id }, new { @class = "check" })
-                                @Html.ActionLink("Headbutt", "AnimalAction", "PvP", new { actionName = "headbutt", targetId = p.Player.Id }, new { @class = "check" })
+                                <button type="button" class="attackLink" data-toggle="modal" data-target="#petInteractModal" playernum="@p.Player.Id">Interact</button>
+                                @*@Html.ActionLink("Lick", "AnimalAction", "PvP", new { actionName = "lick", targetId = p.Player.Id }, new { @class = "check" })
+                                    @Html.ActionLink("Nuzzle", "AnimalAction", "PvP", new { actionName = "nuzzle", targetId = p.Player.Id }, new { @class = "check" })
+                                    @Html.ActionLink("Snarl", "AnimalAction", "PvP", new { actionName = "snarl", targetId = p.Player.Id }, new { @class = "check" })
+                                    @Html.ActionLink("Headbutt", "AnimalAction", "PvP", new { actionName = "headbutt", targetId = p.Player.Id }, new { @class = "check" })*@
                             </p>
                         </div>
                     </div>
@@ -320,99 +322,136 @@
 
         @Html.Partial("partial/partial_recentActivity", Model.LocationLog)
 
+        <!-- Modal -->
+        <div class="modal fade" id="petInteractModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title text-center" id="myModalLabel">Pet Actions</h4>
+                    </div>
+                    <div class="modal-body">
+
+                        @Html.ActionLink("Lick", "AnimalAction", "PvP", new { actionName = "lick", targetId = 0 }, new { @class = "check" })
+        @Html.ActionLink("Nuzzle", "AnimalAction", "PvP", new { actionName = "nuzzle", targetId = 0 }, new { @class = "check" })
+        @Html.ActionLink("Snarl", "AnimalAction", "PvP", new { actionName = "snarl", targetId = 0 }, new { @class = "check" })
+        @Html.ActionLink("Headbutt", "AnimalAction", "PvP", new { actionName = "headbutt", targetId = 0 }, new { @class = "check" })
+
+                      
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <script>
 
-            var attacksMade = @Model.You.TimesAttackingThisUpdate;
-            var turnNo = @ViewBag.WorldTurnNumber;
-            var togglestate = 0;
-            var blinkEnabled = 0;
-            var secondsToUpdate = @ViewBag.SecondsUntilUpdate;
+    var attacksMade = @Model.You.TimesAttackingThisUpdate;
+    var turnNo = @ViewBag.WorldTurnNumber;
+    var togglestate = 0;
+    var blinkEnabled = 0;
+    var secondsToUpdate = @ViewBag.SecondsUntilUpdate;
 
             $(document).ready(function () {
 
-                setInterval(function(){
-                    secondsToUpdate--;
-                    timer_minutes = Math.floor(secondsToUpdate/60);
-                    timer_seconds = String(secondsToUpdate % 60);
+        setInterval(function(){
+            secondsToUpdate--;
+            timer_minutes = Math.floor(secondsToUpdate/60);
+            timer_seconds = String(secondsToUpdate % 60);
 
-                    if (timer_seconds.length == 1) {
-                        timer_seconds = "0" + timer_seconds;
-                    }
-
-                    if (timer_minutes < 0) {
-                        timer_minutes = "0";
-                        timer_seconds = "00";
-                        $("#turn_countdown").addClass("good");
-                        blinkEnabled = 1;
-                    }
-
-                    $("#turn_countdown").html(timer_minutes + ":" + timer_seconds);
-                }, 1000);
-
-                $("#offlinePlayersWrapper").hide();
-
-                // show offline player section when player clicks on the proper div
-                $("#offlinePlayersButton").click(function () {
-                    $("#offlinePlayersButton").hide();
-                    $("#offlinePlayersWrapper").show();
-                });
-
-                $("#timerBox").click(function () {
-
-                    alert("The last update was  @CharactersHere.DatetimeToTimeago(Model.LastUpdateTimestamp) (based on when this page was loaded.)  Updates should happen every 10 minutes.");
-
-
-                });
-
-
-
-                $(".check").each(function() {
-                    if (attacksMade>=1) {
-                        $( this ).attr("href", "#");
-                        $( this ).addClass("disabled");
-                    }
-                });
-
-
-                var myVar=setInterval(function(){pingForUpdate()},30000);
-                var myVa2r=setInterval(function(){titleToggle()},1000);
-
-            });
-
-            function pingForUpdate() {
-                $.ajax({
-                    url: 'PvP/ClientUpdateCheck/',
-                    type: 'POST',
-                    fail: fail,
-                    success: pingDone,
-                    dataType: 'text'
-                });
+            if (timer_seconds.length == 1) {
+                timer_seconds = "0" + timer_seconds;
             }
 
-            function pingDone(data) {
-                if (data > turnNo) {
-                    turnNo = data;
-                    blinkEnabled = 1;
-                }
+            if (timer_minutes < 0) {
+                timer_minutes = "0";
+                timer_seconds = "00";
+                $("#turn_countdown").addClass("good");
+                blinkEnabled = 1;
             }
 
-            function titleToggle() {
+            $("#turn_countdown").html(timer_minutes + ":" + timer_seconds);
+        }, 1000);
 
-                if (blinkEnabled==1) {
-                    if (togglestate == 0) {
-                        $('title').text('Transformania Time!');
-                        togglestate = 1;
-                    } else if (togglestate == 1){
-                        $('title').text('[UPDATED--reload page!]');
-                        togglestate = 0;
-                    }
-                }
+        $("#offlinePlayersWrapper").hide();
+
+        // show offline player section when player clicks on the proper div
+        $("#offlinePlayersButton").click(function () {
+            $("#offlinePlayersButton").hide();
+            $("#offlinePlayersWrapper").show();
+        });
+
+        $("#timerBox").click(function () {
+
+            alert("The last update was  @CharactersHere.DatetimeToTimeago(Model.LastUpdateTimestamp) (based on when this page was loaded.)  Updates should happen every 10 minutes.");
+
+
+        });
+
+
+
+        $(".check").each(function() {
+            if (attacksMade>=1) {
+                $( this ).attr("href", "#");
+                $( this ).addClass("disabled");
             }
+        });
 
-            function fail() {
-                // alert("fail");
+
+        var myVar=setInterval(function(){pingForUpdate()},30000);
+        var myVa2r=setInterval(function(){titleToggle()},1000);
+
+    });
+
+    function pingForUpdate() {
+        $.ajax({
+            url: 'PvP/ClientUpdateCheck/',
+            type: 'POST',
+            fail: fail,
+            success: pingDone,
+            dataType: 'text'
+        });
+    }
+
+    function pingDone(data) {
+        if (data > turnNo) {
+            turnNo = data;
+            blinkEnabled = 1;
+        }
+    }
+
+    function titleToggle() {
+
+        if (blinkEnabled==1) {
+            if (togglestate == 0) {
+                $('title').text('Transformania Time!');
+                togglestate = 1;
+            } else if (togglestate == 1){
+                $('title').text('[UPDATED--reload page!]');
+                togglestate = 0;
             }
+        }
+    }
+
+    function fail() {
+        // alert("fail");
+    }
+
+    
+
+    $(".attackLink").click(function() {
+
+        var id = $(this).attr("playernum");
+        
+
+        $(".modal-body a").each(function(){
+            var href = $(this).attr('href');
+            href = href.replace(/(targetId=)[0-9]*/i,"targetId=" + id);
+            $(this).attr('href',href);
+        });
+
+    });
 
 
 
-        </script>
+
+</script>

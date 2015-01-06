@@ -173,6 +173,13 @@ namespace tfgame.Controllers
 
         public ActionResult Index()
         {
+
+            // assert only admins can view this
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            {
+                return View("Play", "PvP");
+            }
+
             ViewBag.Message = TempData["Message"];
             return View();
         }

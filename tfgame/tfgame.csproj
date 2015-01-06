@@ -1514,6 +1514,7 @@
     <Content Include="Views\Settings\partial\ArchiveNotice.cshtml" />
     <Content Include="Views\Settings\Polls\Open\poll2.cshtml" />
     <Content Include="Views\Settings\Polls\Closed\poll2.cshtml" />
+    <Content Include="Views\PvPAdmin\Scratchpad.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

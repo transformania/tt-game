@@ -1932,6 +1932,11 @@ namespace tfgame.Controllers
 
         }
 
+        public ActionResult Scratchpad()
+        {
+            return View();
+        }
+
 
 
 

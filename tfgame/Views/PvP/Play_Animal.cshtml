@@ -35,15 +35,15 @@
                 <li>@Html.ActionLink("Chat", "Chat", "PvP", new { room = "global" }, new { target = "_blank" })</li>
                 <li>@Html.ActionLink("Covenant", "MyCovenant", "Covenant")</li>
                 <li>@Html.ActionLink("Settings", "Settings", "PvP")</li>
-@{if (Model.NewMessageCount > 0)
-{
-    <li>@Html.ActionLink("(" + Model.NewMessageCount + " unread)", "MyMessages", "PvP", null, new { @class = "inboxNew" })</li>
-}
-  else
-  {
-    <li>@Html.ActionLink("Inbox", "MyMessages", "PvP")</li>
-  }
-}
+                @{if (Model.NewMessageCount > 0)
+                {
+                    <li>@Html.ActionLink("(" + Model.NewMessageCount + " unread)", "MyMessages", "PvP", null, new { @class = "inboxNew" })</li>
+                }
+                else
+                {
+                    <li>@Html.ActionLink("Inbox", "MyMessages", "PvP")</li>
+                }
+                }
                 <li>@Html.ActionLink("Submit Content", "Contribute", "PvP", new { Id = -1 }, null)</li>
                 <li>@Html.ActionLink("Start again as someone else", "Restart", "PvP")</li>
             </ul>
@@ -64,12 +64,12 @@
     Transformania Time has <b>@Model.WorldStats.TotalPlayers</b> players, <b>@Model.WorldStats.CurrentOnlinePlayers</b> of which are currently online.
 </div>
 
-    @{
-        if (User.IsInRole(PvPStatics.Permissions_Admin) == true)
-        {
-            @Html.ActionLink("Admin", "Index", "PvPAdmin")
-        }
+@{
+    if (User.IsInRole(PvPStatics.Permissions_Admin) == true)
+    {
+        @Html.ActionLink("Admin", "Index", "PvPAdmin")
     }
+}
 
 @{
     if (Model.PlayerLogImportant.Count() > 0)
@@ -84,325 +84,335 @@
         }
             }
         </ul>
-    <p id="dismissNotficationBox"><a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '0px'">[ -- ]</a> <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '100px'">[ - ]</a> @Html.ActionLink("Dismiss Notifications", "DismissNotifications", "PvP") <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '250px'">[ + ]</a> <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '500px'">[ ++ ]</a></p>
+        <p id="dismissNotficationBox"><a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '0px'">[ -- ]</a> <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '100px'">[ - ]</a> @Html.ActionLink("Dismiss Notifications", "DismissNotifications", "PvP") <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '250px'">[ + ]</a> <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '500px'">[ ++ ]</a></p>
     }
 }
 
 <div class="containerInner">
-        <div class="petItemPortrait" style="background-image: url(../Images/PvP/animalPortraits/@ViewBag.AnimalImgUrl);">
-            @CharactersHere.PrintOwnerSubPortrait(Model.OwnedBy)
+    <div class="petItemPortrait" style="background-image: url(../Images/PvP/animalPortraits/@ViewBag.AnimalImgUrl);">
+        @CharactersHere.PrintOwnerSubPortrait(Model.OwnedBy)
+    </div>
+
+    <div class="petItemInfo">
+        <p>Your name is <b>@Model.You.FirstName @Model.You.LastName</b>, or at least it used to be.  At the height of your humanity you achieved level <b>@Model.You.Level</b> with @Model.You.XP experience points toward the next.  But now it's time to embrace your new existence as a <b>@Model.Form.FriendlyName</b>.</p>
+        <p>
+            @Model.Form.Description
+            <b>
+                @{
+                    if (Model.You.IsPetToId == -1)
+                    {
+                        <span>You are feral and can move freely about the world until a new master tames you.</span>
+                    }
+                    else
+                    {
+                        <span><br><br>You have been tamed by @Html.ActionLink(Model.OwnedBy.Player.FirstName + " " + Model.OwnedBy.Player.LastName, "LookAtPlayer", "PvP", new { id = Model.OwnedBy.Player.Id }, null) and will follow your master wherever they go.</span>
+                    }
+                }
+                @{
+                    if (Model.IsPermanent == false)
+                    {
+                <p>
+                    Chance to return human:  @Model.StruggleChance %.
+                    @Html.ActionLink("Fight your transformation and attempt to return to an animate form!", "FightTheTransformation", "PvP")
+                </p>
+                    }
+
+                    if (Model.OwnedBy != null)
+                    {
+                        @Html.ActionLink("Attempt to slip free from your owner", "EscapeFromOwner", "PvP")
+                    }
+
+                }
+                </b>
+                </p>
+            </div>
+
+
+            @*                  This needs to be rewritten !!!                 *@
+            @*                  This needs to be rewritten !!!                 *@
+
+            <p>
+                <center><span class="place">@Model.Location.Name [@Model.Location.X,@Model.Location.Y]<br /> </span></center>
+                <span class="locationDescription">@Model.Location.Description</span>
+            </p>
+            <table class="tableLines">
+                <tr>
+                    <td></td>
+                    <td class="navcell">
+                        @*NORTH*@
+
+                        @{
+                            if (Model.Location.Name_North != null)
+                            {
+                                if (Model.You.Mobility == "full")
+                                {
+                                    @Html.ActionLink(Model.Location.FriendlyName_North, "MoveTo", "PvP", new { locname = Model.Location.Name_North }, null)
+                                }
+                                else if (Model.You.Mobility == "animal" && Model.You.IsPetToId == -1)
+                                {
+                                    @Html.ActionLink(Model.Location.FriendlyName_North, "MoveTo", "PvP", new { locname = Model.Location.Name_North }, null)
+                                }
+                                else if (Model.You.Mobility == "animal" && Model.You.IsPetToId != -1)
+                                {
+                                    <span>@Model.Location.FriendlyName_North</span>
+                                }
+                            }
+                        }
+
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="navcell">
+                        @*WEST*@
+
+
+                        @{
+                            if (Model.Location.Name_West != null)
+                            {
+                                if (Model.You.Mobility == "full")
+                                {
+                                    @Html.ActionLink(Model.Location.FriendlyName_West, "MoveTo", "PvP", new { locname = Model.Location.Name_West }, null)
+                                }
+                                else if (Model.You.Mobility == "animal" && Model.You.IsPetToId == -1)
+                                {
+                                    @Html.ActionLink(Model.Location.FriendlyName_West, "MoveTo", "PvP", new { locname = Model.Location.Name_West }, null)
+                                }
+                                else if (Model.You.Mobility == "animal" && Model.You.IsPetToId != -1)
+                                {
+                                    <span>@Model.Location.FriendlyName_West</span>
+                                }
+                            }
+                        }
+
+                    </td>
+                    <td id="location"></td>
+                    <td class="navcell">
+                        @*EAST*@
+
+
+
+                        @{
+                            if (Model.Location.Name_East != null)
+                            {
+
+                                if (Model.You.Mobility == "full")
+                                {
+                                    @Html.ActionLink(Model.Location.FriendlyName_East, "MoveTo", "PvP", new { locname = Model.Location.Name_East }, null)
+                                }
+                                else if (Model.You.Mobility == "animal" && Model.You.IsPetToId == -1)
+                                {
+                                    @Html.ActionLink(Model.Location.FriendlyName_East, "MoveTo", "PvP", new { locname = Model.Location.Name_East }, null)
+                                }
+                                else if (Model.You.Mobility == "animal" && Model.You.IsPetToId != -1)
+                                {
+                                    <span>@Model.Location.FriendlyName_East</span>
+                                }
+                            }
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+
+                    <td class="navcell">
+                        @*SOUTH*@
+
+
+                        @{
+                            if (Model.Location.Name_South != null)
+                            {
+
+                                if (Model.You.Mobility == "full")
+                                {
+                                    @Html.ActionLink(Model.Location.FriendlyName_South, "MoveTo", "PvP", new { locname = Model.Location.Name_South }, null)
+                                }
+                                else if (Model.You.Mobility == "animal" && Model.You.IsPetToId == -1)
+                                {
+                                    @Html.ActionLink(Model.Location.FriendlyName_South, "MoveTo", "PvP", new { locname = Model.Location.Name_South }, null)
+                                }
+                                else if (Model.You.Mobility == "animal" && Model.You.IsPetToId != -1)
+                                {
+                                    <span>@Model.Location.FriendlyName_South</span>
+                                }
+                            }
+
+                        }
+                    </td>
+                    <td></td>
+                </tr>
+            </table>
+
+            @*                  This needs to be rewritten !!!                 *@
+            @*                  This needs to be rewritten !!!                 *@
+
         </div>
 
-        <div class="petItemInfo">
-            <p>Your name is <b>@Model.You.FirstName @Model.You.LastName</b>, or at least it used to be.  At the height of your humanity you achieved level <b>@Model.You.Level</b> with @Model.You.XP experience points toward the next.  But now it's time to embrace your new existence as a <b>@Model.Form.FriendlyName</b>.</p>
-            <p>
-                @Model.Form.Description
-                <b>
-                    @{
-                        if (Model.You.IsPetToId == -1)
-                        {
-                            <span>You are feral and can move freely about the world until a new master tames you.</span>
-                        }
-                        else
-                        {
-                            <span><br><br>You have been tamed by @Html.ActionLink(Model.OwnedBy.Player.FirstName + " " + Model.OwnedBy.Player.LastName, "LookAtPlayer", "PvP", new { id = Model.OwnedBy.Player.Id }, null) and will follow your master wherever they go.</span>
-                        }
-                    }
-                    @{
-                        if (Model.IsPermanent == false)
-                        {
-                    <p>
-                        Chance to return human:  @Model.StruggleChance %.
-                        @Html.ActionLink("Fight your transformation and attempt to return to an animate form!", "FightTheTransformation", "PvP")
-                    </p>
-                        }
-                    }
-                    </b>
-                    </p>
-                </div>
-
-
-@*                  This needs to be rewritten !!!                 *@
-@*                  This needs to be rewritten !!!                 *@
-
-    <p>
-        <center><span class="place">@Model.Location.Name [@Model.Location.X,@Model.Location.Y]<br /> </span></center>
-        <span class="locationDescription">@Model.Location.Description</span>
-    </p>
-        <table class="tableLines">
-            <tr>
-                <td></td>
-                <td class="navcell">
-                    @*NORTH*@
-
-                @{
-                    if (Model.Location.Name_North != null)
-                    {
-                        if (Model.You.Mobility == "full")
-                        {
-                            @Html.ActionLink(Model.Location.FriendlyName_North, "MoveTo", "PvP", new { locname = Model.Location.Name_North }, null)
-                        }
-                        else if (Model.You.Mobility == "animal" && Model.You.IsPetToId == -1)
-                        {
-                            @Html.ActionLink(Model.Location.FriendlyName_North, "MoveTo", "PvP", new { locname = Model.Location.Name_North }, null)
-                        }
-                        else if (Model.You.Mobility == "animal" && Model.You.IsPetToId != -1)
-                        {
-                            <span>@Model.Location.FriendlyName_North</span>
-                        }
-                    }
-                }
-
-            </td>
-            <td></td>
-        </tr>
-        <tr>
-            <td class="navcell">
-                @*WEST*@
-
-
-                @{
-                    if (Model.Location.Name_West != null)
-                    {
-                        if (Model.You.Mobility == "full")
-                        {
-                            @Html.ActionLink(Model.Location.FriendlyName_West, "MoveTo", "PvP", new { locname = Model.Location.Name_West }, null)
-                        }
-                        else if (Model.You.Mobility == "animal" && Model.You.IsPetToId == -1)
-                        {
-                            @Html.ActionLink(Model.Location.FriendlyName_West, "MoveTo", "PvP", new { locname = Model.Location.Name_West }, null)
-                        }
-                        else if (Model.You.Mobility == "animal" && Model.You.IsPetToId != -1)
-                        {
-                            <span>@Model.Location.FriendlyName_West</span>
-                        }
-                    }
-                }
-
-            </td>
-            <td id="location"></td>
-            <td class="navcell">
-                @*EAST*@
-
-
-
-                @{
-                    if (Model.Location.Name_East != null)
-                    {
-
-                        if (Model.You.Mobility == "full")
-                        {
-                            @Html.ActionLink(Model.Location.FriendlyName_East, "MoveTo", "PvP", new { locname = Model.Location.Name_East }, null)
-                        }
-                        else if (Model.You.Mobility == "animal" && Model.You.IsPetToId == -1)
-                        {
-                            @Html.ActionLink(Model.Location.FriendlyName_East, "MoveTo", "PvP", new { locname = Model.Location.Name_East }, null)
-                        }
-                        else if (Model.You.Mobility == "animal" && Model.You.IsPetToId != -1)
-                        {
-                            <span>@Model.Location.FriendlyName_East</span>
-                        }
-                    }
-                }
-            </td>
-        </tr>
-        <tr>
-            <td></td>
-
-            <td class="navcell">
-                @*SOUTH*@
-
-
-                @{
-                    if (Model.Location.Name_South != null)
-                    {
-
-                        if (Model.You.Mobility == "full")
-                        {
-                            @Html.ActionLink(Model.Location.FriendlyName_South, "MoveTo", "PvP", new { locname = Model.Location.Name_South }, null)
-                        }
-                        else if (Model.You.Mobility == "animal" && Model.You.IsPetToId == -1)
-                        {
-                            @Html.ActionLink(Model.Location.FriendlyName_South, "MoveTo", "PvP", new { locname = Model.Location.Name_South }, null)
-                        }
-                        else if (Model.You.Mobility == "animal" && Model.You.IsPetToId != -1)
-                        {
-                            <span>@Model.Location.FriendlyName_South</span>
-                        }
-                    }
-
-                }
-            </td>
-            <td></td>
-        </tr>
-    </table>
-
-@*                  This needs to be rewritten !!!                 *@
-@*                  This needs to be rewritten !!!                 *@
-
-</div>
-
-@*all players who are online*@
-
-<div class="onlinePlayersWrapperBG">
-    <div class="row">
         @*all players who are online*@
-        @{
-            foreach (tfgame.ViewModels.PlayerFormViewModel p in Model.PlayersHere.Where(p => PlayerProcedures.PlayerIsOffline(p.Player) == false).OrderByDescending(p => p.Player.Level))
-            {
 
+        <div class="onlinePlayersWrapperBG">
+            <div class="row">
+                @*all players who are online*@
+                @{
+                    foreach (tfgame.ViewModels.PlayerFormViewModel p in Model.PlayersHere.Where(p => PlayerProcedures.PlayerIsOffline(p.Player) == false).OrderByDescending(p => p.Player.Level))
+                    {
+
+                        <div class="col-md-2 col-sm-4 col-xs-12 charaBox">
+                            <div class="charaBoxInner">
+                                <div>
+                                    <p>
+                                        @Html.Partial("Player_Partial", p)
+                                        @Html.ActionLink("Lick", "AnimalAction", "PvP", new { actionName = "lick", targetId = p.Player.Id }, new { @class = "check" })
+                                        @Html.ActionLink("Nuzzle", "AnimalAction", "PvP", new { actionName = "nuzzle", targetId = p.Player.Id }, new { @class = "check" })
+                                        @Html.ActionLink("Snarl", "AnimalAction", "PvP", new { actionName = "snarl", targetId = p.Player.Id }, new { @class = "check" })
+                                        @Html.ActionLink("Headbutt", "AnimalAction", "PvP", new { actionName = "headbutt", targetId = p.Player.Id }, new { @class = "check" })
+
+
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                }
+            </div>
+        </div>
+
+        @{if (ViewBag.ShowOffline == null || ViewBag.ShowOffline == false)
+        {
+
+            <div id="offlinePlayersButton">@Html.ActionLink("Show Offline Players Here (" + @Model.PlayersHere.Where(p => tfgame.Procedures.PlayerProcedures.PlayerIsOffline(p.Player) == true).Count() + ")", "ShowOffline", "PvP")</div>
+        }
+        }
+
+        @{if (ViewBag.ShowOffline != null && ViewBag.ShowOffline == true)
+        {
+            <div class="offlinePlayersWrapperBG">
+                <div class="row">
+
+                    @{
+            foreach (tfgame.ViewModels.PlayerFormViewModel p in Model.PlayersHere.Where(p => tfgame.Procedures.PlayerProcedures.PlayerIsOffline(p.Player) == true).OrderByDescending(p => p.Player.Level))
+            {
                 <div class="col-md-2 col-sm-4 col-xs-12 charaBox">
                     <div class="charaBoxInner">
                         <div>
                             <p>
-                                <div>@Html.Partial("Player_Partial", p)
-                                    <div class="charaBoxCommand">
-                                        @Html.ActionLink("Lick", "AnimalAction", "PvP", new { actionName = "lick", targetId = p.Player.Id }, new { @class = "check" })
-                                    @Html.ActionLink("Nuzzle", "AnimalAction", "PvP", new { actionName = "nuzzle", targetId = p.Player.Id }, new { @class = "check" })<br />
-                                    @Html.ActionLink("Snarl", "AnimalAction", "PvP", new { actionName = "snarl", targetId = p.Player.Id }, new { @class = "check" })
-                                    @Html.ActionLink("Headbutt", "AnimalAction", "PvP", new { actionName = "headbutt", targetId = p.Player.Id }, new { @class = "check" })
-                                </div>
-                                    
-                                </div>
+                                @Html.Partial("Player_Partial", p)
+                                @Html.ActionLink("Lick", "AnimalAction", "PvP", new { actionName = "lick", targetId = p.Player.Id }, new { @class = "check" })
+                                @Html.ActionLink("Nuzzle", "AnimalAction", "PvP", new { actionName = "nuzzle", targetId = p.Player.Id }, new { @class = "check" })
+                                @Html.ActionLink("Snarl", "AnimalAction", "PvP", new { actionName = "snarl", targetId = p.Player.Id }, new { @class = "check" })
+                                @Html.ActionLink("Headbutt", "AnimalAction", "PvP", new { actionName = "headbutt", targetId = p.Player.Id }, new { @class = "check" })
                             </p>
                         </div>
                     </div>
                 </div>
             }
+                    }
 
+                </div>
+            </div>
         }
-    </div>
-</div>
-
-@*all players who are offline*@
-<div style="clear:both;"></div>
-<div id="offlinePlayersButton" style="margin-left: auto; margin-right: auto;">Show Offline Players Here (@Model.PlayersHere.Where(p => PlayerProcedures.PlayerIsOffline(p.Player) == true).Count())</div>
-
-<div id="offlinePlayersWrapper">
-
-    @{
-        foreach (tfgame.ViewModels.PlayerFormViewModel p in Model.PlayersHere.Where(p => PlayerProcedures.PlayerIsOffline(p.Player) == true).OrderByDescending(p => p.Player.Level))
-        {
-
-            <p>
-                <div class="onlineCharWrapper">
-                    <div>@Html.Partial("Player_Partial", p)</div>
-                    <div class="commandWrapper" style="height: 24px;">
-                        @Html.ActionLink("Snarl", "AnimalAction", "PvP", new { actionName = "snarl", targetId = p.Player.Id }, new { @class = "check" })                     
-                        @Html.ActionLink("Headbutt", "AnimalAction", "PvP", new { actionName = "headbutt", targetId = p.Player.Id }, new { @class = "check" })<br />
-                        @Html.ActionLink("Lick", "AnimalAction", "PvP", new { actionName = "lick", targetId = p.Player.Id }, new { @class = "check" })
-                        @Html.ActionLink("Nuzzle", "AnimalAction", "PvP", new { actionName = "nuzzle", targetId = p.Player.Id }, new { @class = "check" })
-
-                        @{
-            if (Model.OwnedBy != null)
-            {
-                    <li>@Html.ActionLink("Attempt to slip free from your owner", "EscapeFromOwner", "PvP")</li>
-            }
-                        }
-
-                        </div>
-                    </div>
-</p>
         }
-    }
 
-</div>
+        @*all players who are offline*@
+        <div style="clear:both;"></div>
 
-@Html.Partial("partial/partial_recentActivity", Model.LocationLog)
 
-<script>
+        @Html.Partial("partial/partial_recentActivity", Model.LocationLog)
 
-    var attacksMade = @Model.You.TimesAttackingThisUpdate;
-    var turnNo = @ViewBag.WorldTurnNumber;
-    var togglestate = 0;
-    var blinkEnabled = 0;
-    var secondsToUpdate = @ViewBag.SecondsUntilUpdate;
+        <script>
 
-    $(document).ready(function () {
+            var attacksMade = @Model.You.TimesAttackingThisUpdate;
+            var turnNo = @ViewBag.WorldTurnNumber;
+            var togglestate = 0;
+            var blinkEnabled = 0;
+            var secondsToUpdate = @ViewBag.SecondsUntilUpdate;
 
-        setInterval(function(){
-            secondsToUpdate--;
-            timer_minutes = Math.floor(secondsToUpdate/60);
-            timer_seconds = String(secondsToUpdate % 60);
+            $(document).ready(function () {
 
-            if (timer_seconds.length == 1) {
-                timer_seconds = "0" + timer_seconds;
+                setInterval(function(){
+                    secondsToUpdate--;
+                    timer_minutes = Math.floor(secondsToUpdate/60);
+                    timer_seconds = String(secondsToUpdate % 60);
+
+                    if (timer_seconds.length == 1) {
+                        timer_seconds = "0" + timer_seconds;
+                    }
+
+                    if (timer_minutes < 0) {
+                        timer_minutes = "0";
+                        timer_seconds = "00";
+                        $("#turn_countdown").addClass("good");
+                        blinkEnabled = 1;
+                    }
+
+                    $("#turn_countdown").html(timer_minutes + ":" + timer_seconds);
+                }, 1000);
+
+                $("#offlinePlayersWrapper").hide();
+
+                // show offline player section when player clicks on the proper div
+                $("#offlinePlayersButton").click(function () {
+                    $("#offlinePlayersButton").hide();
+                    $("#offlinePlayersWrapper").show();
+                });
+
+                $("#timerBox").click(function () {
+
+                    alert("The last update was  @CharactersHere.DatetimeToTimeago(Model.LastUpdateTimestamp) (based on when this page was loaded.)  Updates should happen every 10 minutes.");
+
+
+                });
+
+
+
+                $(".check").each(function() {
+                    if (attacksMade>=1) {
+                        $( this ).attr("href", "#");
+                        $( this ).addClass("disabled");
+                    }
+                });
+
+
+                var myVar=setInterval(function(){pingForUpdate()},30000);
+                var myVa2r=setInterval(function(){titleToggle()},1000);
+
+            });
+
+            function pingForUpdate() {
+                $.ajax({
+                    url: 'PvP/ClientUpdateCheck/',
+                    type: 'POST',
+                    fail: fail,
+                    success: pingDone,
+                    dataType: 'text'
+                });
             }
 
-            if (timer_minutes < 0) {
-                timer_minutes = "0";
-                timer_seconds = "00";
-                $("#turn_countdown").addClass("good");
-                blinkEnabled = 1;
+            function pingDone(data) {
+                if (data > turnNo) {
+                    turnNo = data;
+                    blinkEnabled = 1;
+                }
             }
 
-            $("#turn_countdown").html(timer_minutes + ":" + timer_seconds);
-        }, 1000);
+            function titleToggle() {
 
-        $("#offlinePlayersWrapper").hide();
-
-        // show offline player section when player clicks on the proper div
-        $("#offlinePlayersButton").click(function () {
-            $("#offlinePlayersButton").hide();
-            $("#offlinePlayersWrapper").show();
-        });
-
-        $("#timerBox").click(function () {
-
-            alert("The last update was  @CharactersHere.DatetimeToTimeago(Model.LastUpdateTimestamp) (based on when this page was loaded.)  Updates should happen every 10 minutes.");
-
-
-        });
-
-   
-
-        $(".check").each(function() {
-            if (attacksMade>=1) {
-                $( this ).attr("href", "#");
-                $( this ).addClass("disabled");
+                if (blinkEnabled==1) {
+                    if (togglestate == 0) {
+                        $('title').text('Transformania Time!');
+                        togglestate = 1;
+                    } else if (togglestate == 1){
+                        $('title').text('[UPDATED--reload page!]');
+                        togglestate = 0;
+                    }
+                }
             }
-        });
 
-
-        var myVar=setInterval(function(){pingForUpdate()},30000);
-        var myVa2r=setInterval(function(){titleToggle()},1000);
-
-    });
-
-    function pingForUpdate() {
-        $.ajax({
-            url: 'PvP/ClientUpdateCheck/',
-            type: 'POST',
-            fail: fail,
-            success: pingDone,
-            dataType: 'text'
-        });
-    }
-
-    function pingDone(data) {
-        if (data > turnNo) {
-            turnNo = data;
-            blinkEnabled = 1;
-        }
-    }
-
-    function titleToggle() {
-
-        if (blinkEnabled==1) {
-            if (togglestate == 0) {
-                $('title').text('Transformania Time!');
-                togglestate = 1;
-            } else if (togglestate == 1){
-                $('title').text('[UPDATED--reload page!]');
-                togglestate = 0;
+            function fail() {
+                // alert("fail");
             }
-        }
-    }
-
-    function fail() {
-        // alert("fail");
-    }
 
 
 
-</script>
+        </script>

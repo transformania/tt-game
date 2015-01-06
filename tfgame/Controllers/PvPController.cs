@@ -3810,17 +3810,37 @@ namespace tfgame.Controllers
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished updating items on cooldown");
 
                 // we need to find the merchant to get her ID
-    
-               int merchantId = -999;
 
-                try {
-                    Player merchant = PlayerProcedures.GetPlayerFromMembership(-3);
-                    merchantId = merchant.Id;
-                }
-                catch
+                int merchantId = -999;
+                Player merchant = PlayerProcedures.GetPlayerFromMembership(-3);
+                merchantId = merchant.Id;
+
+                // have abandoned items go to Lindella
+                if (turnNo % 3 == 0 && merchant.Mobility == "full")
                 {
-                   // 
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started collecting all abandoned items for Lindella");
+
+                    using (var context = new StatsContext())
+                    {
+                        try
+                        {
+                            context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Items] SET OwnerId = " + merchant.Id + ", dbLocationName = ''  WHERE  dbLocationName <> '' AND dbLocationName IS NOT NULL AND TimeDropped < DATEADD(hour, -1, GETUTCDATE()) AND OwnerId = -1 AND dbName LIKE 'item_%'");
+
+                            context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Players] SET dbLocationName = '" + merchant.dbLocationName + "' WHERE (FirstName + ' ' + LastName) IN ( SELECT VictimName FROM [Stats].[dbo].[Items] WHERE  dbLocationName <> '' AND dbLocationName IS NOT NULL AND TimeDropped < DATEADD(hour, -1, GETUTCDATE()) AND OwnerId = -1 AND dbName LIKE 'item_%' )");
+
+                        }
+                        catch (Exception e)
+                        {
+                            log.AddLog(updateTimer.ElapsedMilliseconds + ":  ERROR collecting all abandoned items for Lindella:  " + e.ToString());
+                        }
+                    }
+
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished collecting all abandoned items for Lindella");
+
+
+
                 }
+
 
                 // delete all consumable type items that have been sitting around on the ground for too long
                 List<Item> possibleToDelete = itemsRepo.Items.Where(i => (i.dbLocationName != "" && i.OwnerId == -1) || (i.OwnerId == merchantId)).ToList();

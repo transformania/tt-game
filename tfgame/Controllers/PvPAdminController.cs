@@ -1016,11 +1016,22 @@ namespace tfgame.Controllers
                 return View("Play", "PvP");
             }
 
-           // BossProcedures_Thieves.SpawnThieves();
+            Player Lindella = PlayerProcedures.GetPlayerFromMembership(-3);
 
-            Random rand = new Random();
-            double roll = Math.Floor(rand.NextDouble() * 2500);
-            BossProcedures_Thieves.RunThievesAction((int)roll);
+            using (var context = new StatsContext())
+            {
+                try
+                {
+                    context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Items] SET OwnerId = " + Lindella.Id + ", dbLocationName = '" + Lindella.dbLocationName + "'  WHERE  dbLocationName <> '' AND dbLocationName IS NOT NULL AND TimeDropped < DATEADD(hour, -12, GETUTCDATE()) AND OwnerId = -1 AND dbName LIKE 'item_%'");
+
+                    context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Players] SET dbLocationName = '" + Lindella.dbLocationName + "' WHERE (FirstName + ' ' + LastName) IN ( SELECT VictimName FROM [Stats].[dbo].[Items] WHERE  dbLocationName <> '' AND dbLocationName IS NOT NULL AND TimeDropped < DATEADD(hour, -12, GETUTCDATE()) AND OwnerId = -1 AND dbName LIKE 'item_%' )");
+
+                }
+                catch (Exception e)
+                {
+
+                }
+            }
 
          
             return RedirectToAction("Index");

@@ -173,6 +173,24 @@
   <RequiredForm>form_Fuzzy_Moth_Girl_Judoo</RequiredForm>
 </FairyChallengeBag>
 
+
+
+<FairyChallengeBag>
+  <dbLocationName>pool_shallow</dbLocationName>
+  <IntroText>[p]As you approach the shallow area of the swimming pool, you see a fin slowly gliding through the water.  It’s quite obvious that the fin is just a toy, but you can’t tell what it’s strapped to… a small remote-controlled submarine?  Some kind of fish?  As you lean in to get a closer look, a tiny winged figure zips out of the water, shaking water off of her two glittering wings and into your eyes and all over your body.[/p]
+
+[p][fae]“Oh, sorry, I didn’t see you there!”[/fae]  Jewdewfae giggles, adjusting the bottom of a tiny pink bikini she is wearing instead of her normal blue dress.  [fae]“Did I scare you?  I totally scared you!  You were shivering in your boots and screaming for help, weren’t you?  No?  Well… you wanted to… right?  You were just… you didn’t want to look like a little… oh fine, it’s not like you can do any better!  Not like you’re one of those Sharkgirl Swimmers I’ve been seeing so much around here…”[/fae][/p]</IntroText>
+  <CorrectFormText>[p]Jewdewfae stares at you, her mouth agape.  [fae]“Well I’ll be!  You ARE one of those sharkgals that’s always terrifying the oceans, aren’t you?  Well you don’t look so scary to me!”[/fae]  Jewdewfae taunts, wiggling her butt at you before diving back into the shallow water, jetting through the water with a breaststroke sped up by a slow pulse from her wings.  Instinct takes over and you slip in after her, minimizing the splash so as not to alert your prey.[/p]
+
+[p]At first Jewdewfae swims slowly, glancing back at you every now and then, tiny bubbles popping out of her mouth as she giggles underwater.  You follow steadily at a distance, using your powerful tail to keep up the speed effortlessly.  The fairy begins to quicken her pace and zig-zag left and right, but still her motions are nothing you can’t keep up with.  Grinning, you speed up yourself now, slowly closing the gap as the tiny swimmer tries to get away all the harder.[/p]
+
+[p][fae]“Nbloub fbhabhr!”[/fae] Jewdewfae burbles, exerting all the strength she has to get away from you.  Despite her magic it’s not enough and before long she’s right there at your nose, in between your teeth, just a snap of the jaw away from being a tasty little morsel!  Chortling, you snap down--skilfully severing apart the fairy’s tiny bikini, leaving her naked as she climbs out of the side of the pool, sputtering and wheezing, spitting profanities at you in an unrecognizable language.[/p]
+
+[p][fae]“Fine fine, you got me, you scared me.  Happy?”[/fae] Jewdewfae pouts, shivering and glancing down at the beads of water rolling down her naked body.  She zaps you and spirals into the air, imparting with you a bit of her fairy magic.[/p]</CorrectFormText>
+  <FailureText>[p][fae]“No, you’re not likely to scare anyone in the water looking like that, silly biggie!  I want something that I can sink my teeth into!  Or sink their teeth into me!”[/fae][/p]</FailureText>
+  <RequiredForm>form_Sharkgirl_Swimmer_Illia_Malvusin</RequiredForm>
+</FairyChallengeBag>
+
 	
   </FairyChallengeBags>
 </FairyChallengeViewModel>

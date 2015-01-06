@@ -12,11 +12,11 @@ a {
   font-weight: bold; }
 
 a, a:hover, a:active, a:focus {
-  outline: 0; }
+  outline: 0;
+  text-decoration: none; }
 
 a:hover {
-  color: #4E0404 !important;
-  text-decoration: none; }
+  color: #4E0404 !important; }
 
 li {
   list-style: none; }
@@ -348,6 +348,20 @@ li {
   margin-right: auto;
   background: #E4E0D4; }
 
+.petActionLink {
+  border: 1px solid #7B6461;
+  margin-top: 4px;
+  display: block;
+  width: 150px;
+  margin-left: auto;
+  margin-right: auto;
+  background: #E4E0D4; }
+
+.petActionLink:hover, .attackLink:hover {
+  color: #734752 !important;
+  border: 1px solid #475374 !important;
+  background: gainsboro !important; }
+
 .inanimateAction {
   border: 1px solid #7B6461;
   margin: 4px auto 8px auto;
@@ -586,5 +600,11 @@ strong {
 
 .bad {
   color: #9E0E0E !important; }
+
+.modal-content {
+  border: 4px solid #A16969 !important;
+  box-shadow: none !important;
+  border-radius: 0px !important;
+  background: #E4E0D4; }
 
 /*# sourceMappingURL=custom.css.map */

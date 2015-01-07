@@ -1447,8 +1447,6 @@
     <Content Include="Views\Covenant\KickList.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Alpha_5.cshtml" />
     <Content Include="Views\PvPAdmin\ApproveContributionList.cshtml" />
-    <Content Include="Views\PvP\TradeWithMerchant.cshtml" />
-    <Content Include="Views\PvP\SellList.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Alpha_6.cshtml" />
     <Content Include="Views\Contribution\Bios\Meddle.cshtml" />
     <Content Include="Views\Contribution\ContributorBioList.cshtml" />
@@ -1518,10 +1516,11 @@
     <Content Include="Views\Settings\Polls\Closed\poll2.cshtml" />
     <Content Include="Views\PvPAdmin\Scratchpad.cshtml" />
     <Content Include="Views\PvPAdmin\test.cshtml" />
+    <Content Include="Views\NPC\TradeWithMerchant.cshtml" />
+    <Content Include="Views\NPC\SellList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\NPC\" />
     <Folder Include="XMLs\FairyChallengeText\SingleBags\" />
     <Folder Include="Z_SelfHelp\" />
   </ItemGroup>

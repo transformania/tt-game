@@ -21,9 +21,9 @@ namespace tfgame.Procedures.BossProcedures
             if (petMerchant == null)
             {
                 petMerchant = new Player();
-                petMerchant.MembershipId = -3;
+                petMerchant.MembershipId = -10;
                 petMerchant.Level = 5;
-                petMerchant.FirstName = "Wüf";
+                petMerchant.FirstName = "Wüffie";
                 petMerchant.LastName = "the Soul Pet Vendor";
                 petMerchant.Health = 5000;
                 petMerchant.Mana = 5000;

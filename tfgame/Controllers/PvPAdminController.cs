@@ -1018,20 +1018,20 @@ namespace tfgame.Controllers
 
             Player Lindella = PlayerProcedures.GetPlayerFromMembership(-3);
 
-            using (var context = new StatsContext())
-            {
-                try
-                {
-                    context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Items] SET OwnerId = " + Lindella.Id + ", dbLocationName = '" + Lindella.dbLocationName + "'  WHERE  dbLocationName <> '' AND dbLocationName IS NOT NULL AND TimeDropped < DATEADD(hour, -12, GETUTCDATE()) AND OwnerId = -1 AND dbName LIKE 'item_%'");
+            //using (var context = new StatsContext())
+            //{
+            //    try
+            //    {
+            //        context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Items] SET OwnerId = " + Lindella.Id + ", dbLocationName = '', TimeDropped = '" + DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss") + "'  WHERE  dbLocationName <> '' AND dbLocationName IS NOT NULL AND TimeDropped < DATEADD(hour, -1, GETUTCDATE()) AND OwnerId = -1 AND dbName LIKE 'item_%'");
 
-                    context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Players] SET dbLocationName = '" + Lindella.dbLocationName + "' WHERE (FirstName + ' ' + LastName) IN ( SELECT VictimName FROM [Stats].[dbo].[Items] WHERE  dbLocationName <> '' AND dbLocationName IS NOT NULL AND TimeDropped < DATEADD(hour, -12, GETUTCDATE()) AND OwnerId = -1 AND dbName LIKE 'item_%' )");
+            //    }
+            //    catch (Exception e)
+            //    {
 
-                }
-                catch (Exception e)
-                {
+            //    }
+            //}
 
-                }
-            }
+            tfgame.Procedures.BossProcedures.BossProcedures_PetMerchant.SpawnPetMerchant();
 
          
             return RedirectToAction("Index");

@@ -9,7 +9,7 @@
 <p>You can sell your items to Lindella here.</p>
 
 <p>@Html.ActionLink("Back to game", "Play", "PvP")</p>
-<p>@Html.ActionLink("Back to Purchase List", "TradeWithMerchant", "PvP", new { filter = "shirt" }, null)</p>
+<p>@Html.ActionLink("Back to Purchase List", "TradeWithMerchant", "NPC", new { filter = "shirt" }, null)</p>
 
 <hr />
 
@@ -28,12 +28,12 @@
         </h3>
         <p>
             You will receive:  @tfgame.Procedures.ItemProcedures.GetCostOfItem(item, "sell") Arpeyjis
-            @Html.ActionLink("Sell", "Sell", "PvP", new { id = item.dbItem.Id }, null)
+            @Html.ActionLink("Sell", "Sell", "NPC", new { id = item.dbItem.Id }, null)
         </p>
-    
-    <hr />
+
+        <hr />
     }
 }
 
-<p>@Html.ActionLink("Back to Purchase List", "TradeWithMerchant", "PvP", new { filter = "shirt" }, null)</p>
+<p>@Html.ActionLink("Back to Purchase List", "TradeWithMerchant", "NPC", new { filter = "shirt" }, null)</p>
 <p>@Html.ActionLink("Back to game", "Play", "PvP")</p>

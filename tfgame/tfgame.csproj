@@ -1518,6 +1518,8 @@
     <Content Include="Views\PvPAdmin\test.cshtml" />
     <Content Include="Views\NPC\TradeWithMerchant.cshtml" />
     <Content Include="Views\NPC\SellList.cshtml" />
+    <Content Include="Views\NPC\TradeWithPetMerchant.cshtml" />
+    <Content Include="Views\NPC\SellPetList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

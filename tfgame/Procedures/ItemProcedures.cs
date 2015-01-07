@@ -308,9 +308,17 @@ namespace tfgame.Procedures
         public static void GiveItemToPlayer_Nocheck(int itemId, int newOwnerId) {
             IItemRepository itemRepo = new EFItemRepository();
             Item item = itemRepo.Items.FirstOrDefault(i => i.Id == itemId);
+            DbStaticItem itemPlus = ItemStatics.GetStaticItem(item.dbName);
             item.OwnerId = newOwnerId;
-            item.IsEquipped = false;
-            item.dbLocationName = "";
+
+            if (itemPlus.ItemType == PvPStatics.ItemType_Pet)
+            {
+                item.IsEquipped = true;
+            } else {
+                item.IsEquipped = false;
+                item.dbLocationName = "";
+            }
+           
             item.TimeDropped = DateTime.UtcNow;
             itemRepo.SaveItem(item);
         }

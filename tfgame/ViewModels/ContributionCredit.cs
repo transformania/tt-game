@@ -13,6 +13,7 @@ namespace tfgame.ViewModels
         public int AnimateFormCount { get; set; }
         public int InanimateFormCount { get; set; }
         public int AnimalFormCount { get; set; }
+        public int EffectCount { get; set; }
         public string Website { get; set; }
     }
 }

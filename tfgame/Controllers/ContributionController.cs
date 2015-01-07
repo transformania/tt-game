@@ -956,9 +956,11 @@ namespace tfgame.Controllers
          public ActionResult GetContributionTable()
          {
              IContributionRepository contributionRepo = new EFContributionRepository();
+             IEffectContributionRepository effectContributionRepo = new EFEffectContributionRepository();
 
              List<ContributionCredit> output = new List<ContributionCredit>();
              List<int> uniqueOwnerIds = contributionRepo.Contributions.Where(c => c.ProofreadingCopy == true && c.IsLive == true && c.OwnerMembershipId > 0 && c.SubmitterName != null && c.SubmitterName != "").Select(c => c.OwnerMembershipId).Distinct().ToList();
+             
 
              foreach (int ownerId in uniqueOwnerIds)
              {
@@ -970,6 +972,8 @@ namespace tfgame.Controllers
                      InanimateFormCount = contributionRepo.Contributions.Where(c => c.OwnerMembershipId == ownerId && c.IsNonstandard == false && c.Form_MobilityType == "inanimate" && c.IsLive == true && c.ProofreadingCopy == true).Count(),
                      AnimalFormCount = contributionRepo.Contributions.Where(c => c.OwnerMembershipId == ownerId && c.IsNonstandard == false && c.Form_MobilityType == "animal" && c.IsLive == true && c.ProofreadingCopy == true).Count(),
                      Website = contributionRepo.Contributions.Where(c => c.OwnerMembershipId == ownerId && c.IsNonstandard == false && c.IsLive == true && c.ProofreadingCopy == true).OrderByDescending(c => c.OwnerMembershipId).First().SubmitterUrl,
+                     EffectCount = effectContributionRepo.EffectContributions.Where(c => c.OwnerMemberhipId == ownerId && c.IsLive == true && c.ProofreadingCopy == true).Count(),
+                    
                  };
                  addme.SpellCount = addme.AnimateFormCount + addme.InanimateFormCount + addme.AnimalFormCount;
                  output.Add(addme);

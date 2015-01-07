@@ -215,6 +215,7 @@
     <Compile Include="Controllers\CovenantController.cs" />
     <Compile Include="Controllers\DuelController.cs" />
     <Compile Include="Controllers\ItemController.cs" />
+    <Compile Include="Controllers\NPCController.cs" />
     <Compile Include="Controllers\PvPAdminController.cs" />
     <Compile Include="Controllers\PvPController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
@@ -334,6 +335,7 @@
     <Compile Include="Procedures\BlacklistProcedures.cs" />
     <Compile Include="Procedures\BossProcedures\BossProcedures_BimboBoss.cs" />
     <Compile Include="Procedures\BossProcedures\BossProcedures_Fae.cs" />
+    <Compile Include="Procedures\BossProcedures\BossProcedures_PetMerchant.cs" />
     <Compile Include="Procedures\BossProcedures\BossProcedures_Thieves.cs" />
     <Compile Include="Procedures\BossProcedures\BossProcedures_Valentine.cs" />
     <Compile Include="Procedures\ChatLogProcedures.cs" />
@@ -1519,6 +1521,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\NPC\" />
     <Folder Include="XMLs\FairyChallengeText\SingleBags\" />
     <Folder Include="Z_SelfHelp\" />
   </ItemGroup>

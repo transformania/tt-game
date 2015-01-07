@@ -19,7 +19,7 @@
             <ul class="nav navbar-nav" style="width:100%;">
                 <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
                 @{
-                    if (Model.PlayerForm.Player.MembershipId != -1)
+                    if (Model.PlayerForm.Player.MembershipId > 0)
                     {
                         <p>
                             @{
@@ -46,15 +46,21 @@
                             }
                             </p>
                     }
-                    else
-                    {
-                        <p style="color: red;">&nbsp; </p>
-                    }
+
                 }
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
+
+@{
+    if (Model.PlayerForm.Player.MembershipId == -1)
+    {
+        <div>
+            <p class="infoMessage error">This player has chosen to create a new character and cannot be messaged or have a friend request sent to them.</p>
+        </div>
+    }
+}
 
 <div class="containerInner">
     <center>
@@ -107,47 +113,53 @@
 
 
 
-    <style>
+<style>
+    .leftDisplay {
+        background-size: 100% 100%;
+        position: relative;
+        text-align: left;
+        height: 400px;
+        width: 400px;
+        display: inline-table;
+        vertical-align: top;
+        margin: 0px;
+    }
+
+    .rightDisplay {
+        padding-left: 10px;
+        padding-right: 10px;
+        width: 480px;
+        display: inline-table;
+        vertical-align: top;
+        text-align: left;
+    }
+
+    .textName {
+        font-size: 25px;
+        text-align: center;
+    }
+
+    .textDescription {
+        font-size: 14px;
+    }
+
+    .textMobility {
+        font-size: 16px;
+        font-style: italic;
+    }
+
+    .Links {
+        display: none;
+    }
+
+    @@media screen and (max-width: 520px) {
         .leftDisplay {
-            background-size: 100% 100%;
-            position: relative;
-            text-align: left;
-            height: 400px;
-            width: 400px;
-            display: inline-table;
-            vertical-align: top;
-            margin: 0px;
-        }
-        .rightDisplay{
-            padding-left:10px;
-            padding-right:10px;
-            width: 480px;
-            display:inline-table;
-            vertical-align: top;
-            text-align:left;
-        }
-        .textName{
-            font-size: 25px;
-            text-align: center;
-        }
-        .textDescription{
-            font-size: 14px;           
-        }
-        .textMobility{
-            font-size: 16px;
-            font-style: italic;
-        }
-        .Links {
-            display: none;
+            height: 300px;
+            width: 300px;
         }
 
-        @@media screen and (max-width: 520px) {
-            .leftDisplay{
-                height: 300px;
-                width: 300px;
-            }
-            .rightDisplay {
-                width: 380px;
-            }
+        .rightDisplay {
+            width: 380px;
         }
-    </style>
+    }
+</style>

@@ -50,10 +50,7 @@
 
 
     @{
-        if (ViewBag.PlayerHasPet == true)
-        {
-            <p class="bad">You will not be able to purchase anything from Wuffie since you are already caring for a pet.</p>
-        }
+        
 
         foreach (ItemViewModel i in Model.OrderBy(i => i.dbItem.dbName).ThenByDescending(i => i.dbItem.Level))
         {

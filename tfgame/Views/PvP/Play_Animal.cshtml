@@ -97,7 +97,6 @@
         <p>Your name is <b>@Model.You.FirstName @Model.You.LastName</b>, or at least it used to be.  At the height of your humanity you achieved level <b>@Model.You.Level</b> with @Model.You.XP experience points toward the next.  But now it's time to embrace your new existence as a <b>@Model.Form.FriendlyName</b>.</p>
         <p>
             @Model.Form.Description
-            <b>
                 @{
                     if (Model.You.IsPetToId == -1)
                     {
@@ -119,11 +118,12 @@
 
                     if (Model.OwnedBy != null)
                     {
+                        <p><br />
                         @Html.ActionLink("Attempt to slip free from your owner", "EscapeFromOwner", "PvP")
+                        </p>
                     }
 
                 }
-                </b>
                 </p>
             </div>
 
@@ -324,8 +324,8 @@
                         @Html.ActionLink("Lick (+WP)", "AnimalAction", "PvP", new { actionName = "lick", targetId = 0 }, new { @class = "btn petActionLink" })
                         @Html.ActionLink("Nuzzle (+MP)", "AnimalAction", "PvP", new { actionName = "nuzzle", targetId = 0 }, new { @class = "btn petActionLink" })
                         <hr />
-                        @Html.ActionLink("Snarl (-WP)", "AnimalAction", "PvP", new { actionName = "snarl", targetId = 0 }, new { @class = "btn petActionLink" })
-                        @Html.ActionLink("Headbutt (-MP)", "AnimalAction", "PvP", new { actionName = "headbutt", targetId = 0 }, new { @class = "btn petActionLink" })
+                        @Html.ActionLink("Headbutt (-WP)", "AnimalAction", "PvP", new { actionName = "headbutt", targetId = 0 }, new { @class = "btn petActionLink" })
+                        @Html.ActionLink("Snarl (-MP)", "AnimalAction", "PvP", new { actionName = "snarl", targetId = 0 }, new { @class = "btn petActionLink" })
                     </div>
                 </div>
             </div>

@@ -3565,6 +3565,8 @@ namespace tfgame.Controllers
                             log.AddLog(updateTimer.ElapsedMilliseconds + ":  ERROR collecting all abandoned items for Lindella:  " + e.ToString());
                         }
                     }
+
+                    
                 }
 
 
@@ -3622,7 +3624,14 @@ namespace tfgame.Controllers
                 log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == turnNo);
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished Lindella actions");
 
-               
+                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started Wuffie actions");
+                serverLogRepo.SaveServerLog(log);
+                tfgame.Procedures.BossProcedures.BossProcedures_PetMerchant.RunPetMerchantActions(turnNo);
+
+                log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == turnNo);
+                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished Wuffie actions");
+
+                #region furniture
                 if (turnNo % 6 == 0)
                 {
 
@@ -3654,6 +3663,7 @@ namespace tfgame.Controllers
                         log.AddLog(updateTimer.ElapsedMilliseconds + "ERROR TRYING TO MOVE JEWDEWFAE:  " + e.ToString());
                     }
                 }
+#endregion furniture
 
                 #region bosses
 

@@ -1016,7 +1016,7 @@ namespace tfgame.Controllers
                 return View("Play", "PvP");
             }
 
-            Player Lindella = PlayerProcedures.GetPlayerFromMembership(-3);
+            //Player Lindella = PlayerProcedures.GetPlayerFromMembership(-3);
 
             //using (var context = new StatsContext())
             //{
@@ -1031,7 +1031,29 @@ namespace tfgame.Controllers
             //    }
             //}
 
-            tfgame.Procedures.BossProcedures.BossProcedures_PetMerchant.SpawnPetMerchant();
+          //  tfgame.Procedures.BossProcedures.BossProcedures_PetMerchant.SpawnPetMerchant();
+
+
+           // BossProcedures_PetMerchant.RunPetMerchantActions(PvPWorldStatProcedures.GetWorldTurnNumber());
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            Player petMerchant = playerRepo.Players.FirstOrDefault(f => f.MembershipId == -10);
+
+            using (var context = new StatsContext())
+            {
+                try
+                {
+                    context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Items] SET OwnerId = " + petMerchant.Id + ", dbLocationName = '', TimeDropped = '" + DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss") + "'  WHERE  dbLocationName <> '' AND dbLocationName IS NOT NULL AND TimeDropped < DATEADD(hour, -8, GETUTCDATE()) AND OwnerId = -1 AND dbName LIKE 'animal_%'");
+
+                    context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Players] SET dbLocationName = '" + petMerchant.dbLocationName + "', IsPetToId = " + petMerchant.Id + " WHERE (FirstName + ' ' + LastName) IN ( SELECT VictimName FROM [Stats].[dbo].[Items] WHERE  dbLocationName <> '' AND dbLocationName IS NOT NULL AND TimeDropped < DATEADD(hour, -8, GETUTCDATE()) AND OwnerId = -1 AND dbName LIKE 'animal_%' )");
+
+
+
+                }
+                catch (Exception e)
+                {
+
+                }
+            }
 
          
             return RedirectToAction("Index");

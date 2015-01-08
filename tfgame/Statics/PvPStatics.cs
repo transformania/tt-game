@@ -239,6 +239,19 @@ namespace tfgame.Statics
             return locationToSpawnIn;
         }
 
+        public static string GetRandomLocation_InRegion(string region)
+        {
+            // set a random location for this character to spawn in
+            List<string> spawnableLocations = LocationsStatics.GetLocation.Where(l => l.Region == region).Select(l => l.dbName).ToList();
+            double max = spawnableLocations.Count();
+            Random rand = new Random();
+            double num = rand.NextDouble();
+
+            int index = Convert.ToInt32(Math.Floor(num * max));
+            string locationToSpawnIn = spawnableLocations.ElementAt(index);
+            return locationToSpawnIn;
+        }
+
         public static IEnumerable<Location> GetLocation
         {
 

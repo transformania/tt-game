@@ -85,92 +85,51 @@ namespace tfgame.Procedures
             return effectRepo.Effects.Where(e => e.OwnerId == playerId);
         }
 
-        //public static List<EffectViewModel> GetPlayerEffects(int playerId)
-        //{
-        //    IEffectRepository effectRepo = new EFEffectRepository();
-
-        //    //IEnumerable<EffectViewModel> output =
-        //    //from e in effectRepo.Effects
-        //    //where e.OwnerId == playerId
-        //    //from s in EffectStatics.GetStaticEffect
-        //    //where s.dbName == e.dbName
-        //    //select new EffectViewModel { dbEffect = e, Effect = s };
-
-        //    List<Effect> mydbEffects = effectRepo.Effects.Where(e => e.OwnerId == playerId).ToList();
-
-        //    List<EffectViewModel> output = new List<EffectViewModel>();
-
-        //    foreach (Effect e in mydbEffects)
-        //    {
-        //        EffectViewModel addme = new EffectViewModel
-        //        {
-        //            dbEffect = e,
-        //            Effect = EffectStatics.GetStaticEffect.FirstOrDefault(f => f.dbName == f.dbName),
-        //        };
-        //        output.Add(addme);
-        //    }
-
-        //    return output;
-
-        //}
-
         public static List<DbStaticEffect> GetAvailableLevelupPerks(Player player)
         {
             IEffectRepository effectRepo = new EFEffectRepository();
-            IEnumerable<Effect> playerEffects = effectRepo.Effects.Where(e => e.OwnerId == player.Id && e.IsPermanent == true);
 
             // see what perks the player already has
+            IEnumerable<Effect> playerEffects = effectRepo.Effects.Where(e => e.OwnerId == player.Id && e.IsPermanent == true);
+            List<string> playerEffectsString = playerEffects.Select(e => e.dbName).ToList();
 
-            List<DbStaticEffect> perkEffects = EffectStatics.GetAvailableLevelupPerks(player);
 
-            List<DbStaticEffect> availablePerks = new List<DbStaticEffect>();
+             List<DbStaticEffect> availablePerks = effectRepo.DbStaticEffects.Where(e => e.AvailableAtLevel > 0 && e.AvailableAtLevel <= player.Level && e.isLevelUpPerk == true).ToList();
 
-            foreach (DbStaticEffect effect in perkEffects)
+            List<DbStaticEffect> availablePerksFinal = new List<DbStaticEffect>();
+
+            foreach (DbStaticEffect effect in availablePerks)
             {
-                Effect existingEffect = playerEffects.FirstOrDefault(d => d.dbName == effect.dbName);
 
                 bool available = true;
 
                 // if the player already has this effect, it is not available
-                if (existingEffect != null)
+                if (playerEffectsString.Contains(effect.dbName))
                 {
-                    available = false;
+                    continue;
+                }
+
+                // filter out any effects that have a prerequisite that the player does not yet have
+                if (effect.PreRequesite != null && effect.PreRequesite != "" && playerEffectsString.Contains(effect.PreRequesite) == false)
+                {
+                    continue;
                 }
 
                 if (available == true)
                 {
-                    availablePerks.Add(effect);
+                    availablePerksFinal.Add(effect);
                 }
-
-
             }
 
-            return availablePerks;
+            return availablePerksFinal;
 
         }
-
-        //public static List<StaticEffect> GetPlayerEffects(Player player)
-        //{
-        //    IEffectRepository effectRepo = new EFEffectRepository();
-        //    IEnumerable<Effect> playerEffects = effectRepo.Effects.Where(e => e.OwnerId == player.Id);
-
-        //    List<DbStaticEffect> playerPerks = new List<DbStaticEffect>();
-
-        //    foreach (Effect effect in playerEffects)
-        //    {
-        //        DbStaticEffect effectPlus = EffectStatics.GetStaticEffect2(effect.dbName);
-        //        playerPerks.Add(effectPlus);
-        //    }
-
-        //    return playerPerks;
-        //}
 
         public static string GivePerkToPlayer(string perkName, Player player)
         {
 
             IEffectRepository effectRepo = new EFEffectRepository();
-
-
+            
             // see if this player already has this perk.  If so, reject it
             Effect possibleSamePerk = effectRepo.Effects.FirstOrDefault(e => e.dbName == perkName && e.OwnerId == player.Id);
 
@@ -179,11 +138,13 @@ namespace tfgame.Procedures
                 return "You already have this perk.  Choose another.";
             }
 
-            // grab the static effect for stat
+            // if this perct
+
+            // grab the static part of this effect
             DbStaticEffect effectPlus = EffectStatics.GetStaticEffect2(perkName);
 
 
-            if (effectPlus.AvailableAtLevel > 0 && effectPlus.AvailableAtLevel != 9999)
+            if (effectPlus.isLevelUpPerk == true)
             {
                 // assert that the perk doesn't require a level higher than the player
                 if (effectPlus.AvailableAtLevel > player.Level)
@@ -191,7 +152,15 @@ namespace tfgame.Procedures
                     return "You are not at a high enough level to earn this perk.";
                 }
 
-
+                // assert that the perk doesn't require a prerequisite that the player does not yet have
+                if (effectPlus.PreRequesite != null && effectPlus.PreRequesite != "")
+                {
+                    Effect requiredPrerequisite = effectRepo.Effects.FirstOrDefault(e => e.OwnerId == player.Id && e.dbName == effectPlus.PreRequesite);
+                    if (requiredPrerequisite == null)
+                    {
+                        return "This perk requires the <b>" + EffectStatics.GetStaticEffect2(effectPlus.PreRequesite).FriendlyName + "</b> prerequisite perk which you do not have.";
+                    }
+                }
 
             }
 

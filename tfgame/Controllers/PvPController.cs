@@ -698,6 +698,12 @@ namespace tfgame.Controllers
             // prevent low level players from taking on high level bots
             if (targeted.MembershipId <= -4)
             {
+                if ((targeted.MembershipId == -3 || targeted.MembershipId == -10 || targeted.MembershipId == -6) && PvPStatics.ChaosMode==true)
+                {
+                    TempData["Error"] = "Attacking merchants and Jewdewfae is disabled in chaos mode.";
+                    return RedirectToAction("Play");
+                }
+
                 if (me.Level <= 3)
                 {
                     TempData["Error"] = "You feel too intimdated by your target and find yourself unable to launch your spell.";

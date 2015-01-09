@@ -23,11 +23,7 @@ namespace tfgame.Statics
 
      //   List<StaticEffect> perkEffects = EffectStatics.GetStaticEffect.Where(e => e.AvailableAtLevel > 0 && e.AvailableAtLevel <= player.Level).ToList();
 
-        public static List<DbStaticEffect> GetAvailableLevelupPerks(Player player)
-        {
-            IDbStaticEffectRepository effectRepo = new EFDbStaticEffectRepository();
-            return effectRepo.DbStaticEffects.Where(e => e.AvailableAtLevel > 0 && e.AvailableAtLevel <= player.Level).ToList();
-        }
+
 
         public static IEnumerable<DbStaticEffect> GetEffectGainedAtLocation(string location)
         {

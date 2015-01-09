@@ -23,7 +23,7 @@ namespace tfgame.Procedures
             Player me = PlayerProcedures.GetPlayer(attacker.Id);
             Player targeted = PlayerProcedures.GetPlayer(victim.Id);
 
-            if (targeted.Mobility != "full")
+            if (targeted.Mobility != "full" || me.Mobility != "full")
             {
                 return "";
             }

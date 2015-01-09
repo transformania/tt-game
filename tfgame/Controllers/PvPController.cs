@@ -3626,9 +3626,16 @@ namespace tfgame.Controllers
 
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started Wuffie actions");
                 serverLogRepo.SaveServerLog(log);
-                tfgame.Procedures.BossProcedures.BossProcedures_PetMerchant.RunPetMerchantActions(turnNo);
+                try { 
+                    tfgame.Procedures.BossProcedures.BossProcedures_PetMerchant.RunPetMerchantActions(turnNo);
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished Wuffie actions");
+                }
+                catch (Exception e)
+                {
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  ERROR running Wuffie actions:  " + e.ToString());
+                }
 
-                log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == turnNo);
+               // log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == turnNo);
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished Wuffie actions");
 
                 #region furniture

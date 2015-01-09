@@ -38,6 +38,7 @@ namespace tfgame.Controllers
             List<EffectContribution> proofreading = new List<EffectContribution>();
 
             bool iAmProofreader = User.IsInRole(PvPStatics.Permissions_Proofreader);
+            bool iAmAdmin = User.IsInRole(PvPStatics.Permissions_Admin);
 
             // add the rest of the submitted contributions if the player is a proofread
             if (iAmProofreader == true)
@@ -60,7 +61,7 @@ namespace tfgame.Controllers
             // not new... check for proofreading permissions
             else
             {
-                if (output.OwnerMemberhipId != WebSecurity.CurrentUserId && (iAmProofreader == false || output.ProofreadingCopy == false))
+                if (output.OwnerMemberhipId != WebSecurity.CurrentUserId && (iAmProofreader == false || (output.ProofreadingCopy == false && iAmAdmin == false)))
                 {
                     TempData["Error"] = TempData["You do not have permission to view this."];
                     return RedirectToAction("Play", "PvPController");

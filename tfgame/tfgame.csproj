@@ -1520,6 +1520,9 @@
     <Content Include="Views\NPC\SellList.cshtml" />
     <Content Include="Views\NPC\TradeWithPetMerchant.cshtml" />
     <Content Include="Views\NPC\SellPetList.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\Alpha_14.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_14.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\XP\Alpha_14.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

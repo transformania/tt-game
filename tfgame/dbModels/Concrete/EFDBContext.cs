@@ -51,6 +51,7 @@ namespace tfgame.dbModels.Concrete
         public DbSet<RPPoint> RPPoints { get; set; }
         public DbSet<Donator> Donators { get; set; }
         public DbSet<Furniture> Furnitures { get; set; }
+        public DbSet<MindControl> MindControls { get; set; }
 
         public DbSet<DbStaticFurniture> DbStaticFurniture { get; set; }
         public DbSet<CovenantLog> CovenantLogs { get; set; }
@@ -58,5 +59,6 @@ namespace tfgame.dbModels.Concrete
         public DbSet<ChatLog> ChatLogs { get; set; }
         public DbSet<DMRoll> DMRolls { get; set; }
         public DbSet<PollEntry> PollEntries { get; set; }
+        public DbSet<Achievement> Achievements { get; set; }
     }
 }

@@ -220,6 +220,7 @@
     <Compile Include="Controllers\PvPController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="CustomHtmlHelpers\CharactersHere.cs" />
+    <Compile Include="dbModels\Abstract\IAchievementRepository.cs" />
     <Compile Include="dbModels\Abstract\IAIDirective.cs" />
     <Compile Include="dbModels\Abstract\IAuthorArtistBioRepository.cs" />
     <Compile Include="dbModels\Abstract\IBlacklistEntryRepository.cs" />
@@ -243,6 +244,7 @@
     <Compile Include="dbModels\Abstract\IItemRepository.cs" />
     <Compile Include="dbModels\Abstract\ILocationLogRepository.cs" />
     <Compile Include="dbModels\Abstract\IMessageRepository.cs" />
+    <Compile Include="dbModels\Abstract\IMindControlRepository.cs" />
     <Compile Include="dbModels\Abstract\IPlayerBioRepository.cs" />
     <Compile Include="dbModels\Abstract\IPlayerExtraRepository.cs" />
     <Compile Include="dbModels\Abstract\IPlayerLogRepository.cs" />
@@ -256,6 +258,7 @@
     <Compile Include="dbModels\Abstract\IDbStaticSkillRepository.cs" />
     <Compile Include="dbModels\Abstract\ITFEnergyRepository.cs" />
     <Compile Include="dbModels\Abstract\ITFMessageRepository.cs" />
+    <Compile Include="dbModels\Concrete\EFAchievementRepository.cs" />
     <Compile Include="dbModels\Concrete\EFAuthorArtistBioRepository.cs" />
     <Compile Include="dbModels\Concrete\EFBlacklistEntryRepository.cs" />
     <Compile Include="dbModels\Concrete\EFChatLogRepository.cs" />
@@ -267,10 +270,12 @@
     <Compile Include="dbModels\Concrete\EFDMRollRepository.cs" />
     <Compile Include="dbModels\Concrete\EFDonatorRepository.cs" />
     <Compile Include="dbModels\Concrete\EFFurnitureRepository.cs" />
+    <Compile Include="dbModels\Concrete\EFMindControlRepository.cs" />
     <Compile Include="dbModels\Concrete\EFPlayerExtraRepository.cs" />
     <Compile Include="dbModels\Concrete\EFPollEntryRepository.cs" />
     <Compile Include="dbModels\Concrete\EFRPPointRespository.cs" />
     <Compile Include="dbModels\Concrete\EFTFMessageRepository.cs" />
+    <Compile Include="dbModels\Models\Achievement.cs" />
     <Compile Include="dbModels\Models\AuthorArtistBio.cs" />
     <Compile Include="dbModels\Models\BlacklistEntry.cs" />
     <Compile Include="dbModels\Models\Buff.cs" />
@@ -315,6 +320,7 @@
     <Compile Include="dbModels\Models\Item.cs" />
     <Compile Include="dbModels\Models\LocationLog.cs" />
     <Compile Include="dbModels\Models\Message.cs" />
+    <Compile Include="dbModels\Models\MindControl.cs" />
     <Compile Include="dbModels\Models\Player.cs" />
     <Compile Include="dbModels\Models\PlayerBio.cs" />
     <Compile Include="dbModels\Models\PlayerExtra.cs" />
@@ -679,6 +685,7 @@
     <Content Include="Images\PvP\portraits\satyr_martiandawn.jpg" />
     <Content Include="Images\PvP\portraits\sexy_princess_Meddle.png" />
     <Content Include="Images\PvP\portraits\shark_girl_Luxianne.png" />
+    <Content Include="Images\PvP\portraits\shoemaker_babblingfaces.jpg" />
     <Content Include="Images\PvP\portraits\shy_sheep_girl_Luxianne.png" />
     <Content Include="Images\PvP\portraits\skunk_boi_Luxianne.png" />
     <Content Include="Images\PvP\portraits\skyclad_witch_Meddle.png" />

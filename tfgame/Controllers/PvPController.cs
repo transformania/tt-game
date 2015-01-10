@@ -2132,8 +2132,10 @@ namespace tfgame.Controllers
             Contribution cont = contributionRepo.Contributions.FirstOrDefault(c => c.Id == input.ContributionId);
 
             cont.AssignedToArtist = input.Status;
+            cont.History += "Assigned artist changed by " + WebSecurity.CurrentUserName + " on " + DateTime.UtcNow + ".<br>";
 
             contributionRepo.SaveContribution(cont);
+             
 
             TempData["Result"] = "Status saved!";
             return RedirectToAction("ContributeGraphicsNeeded");
@@ -2300,10 +2302,9 @@ namespace tfgame.Controllers
             SaveMe.AdditionalSubmitterNames = input.AdditionalSubmitterNames;
             SaveMe.Notes = input.Notes;
             SaveMe.NeedsToBeUpdated = input.NeedsToBeUpdated;
+            SaveMe.IsNonstandard = input.IsNonstandard;
 
             SaveMe.AssignedToArtist = input.AssignedToArtist;
-
-
 
             if (input.ImageURL != null && input.ImageURL != "" && User.IsInRole(PvPStatics.Permissions_Admin) == true)
             {

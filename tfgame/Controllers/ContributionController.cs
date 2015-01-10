@@ -116,10 +116,10 @@ namespace tfgame.Controllers
 
             BalanceBox bbox = new BalanceBox();
             bbox.LoadBalanceBox(output);
-            decimal balance = bbox.GetBalance();
+            decimal balance = bbox.GetBalance__NoModifiersOrCaps();
 
             try { 
-                ViewBag.BalanceScore = balance/output.Effect_Duration;
+                ViewBag.BalanceScore = balance*output.Effect_Duration;
             }
             catch (DivideByZeroException e)
             {

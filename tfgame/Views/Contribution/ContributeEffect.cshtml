@@ -200,7 +200,7 @@
         </div>
 
         <div class="form__panel">
-            <label for="Effect_Bonuses">Abilities affected by this curse.  Please use the bonus calculator @Html.ActionLink("which can be opened in a new tab by clicking here", "ContributeBalanceCalculator", new { controller = "PvP" }, new { target = "_blank" }) as a reference to see which bonuses / penalties are available and to see whether your curse falls within acceptable limits.  Mote:  Curses gained from searching a location ARE EXEMPT from these balancing rules.</label>
+            <label for="Effect_Bonuses">Abilities affected by this curse.  The current balance score is:  <b>@ViewBag.BalanceScore</b>  Please use the bonus calculator @Html.ActionLink("which can be opened in a new tab by clicking here", "ContributeBalanceCalculatorEffect", new { controller = "PvP" }, new { target = "_blank" }) as a reference to see which bonuses / penalties are available and to see whether your curse falls within acceptable limits.  Mote:  Curses gained from searching a location ARE EXEMPT from these balancing rules but may be changed by the admins as seen fit.</label>
             @Html.TextAreaFor(e => e.Effect_Bonuses)
         </div>
 
@@ -256,7 +256,7 @@
 
         <div class="form__panel externalMessage">The current balance score is:  <b>@ViewBag.BalanceScore</b>.  Animate forms should have a balance score close to 0.  Items should have a balance score close to 25, and pets should have a balance score close to 50.  Curses can have a score of -400 or more.</div>
 
-        <p>@Html.ActionLink("Use calculator (save contribution before doing this!)", "ContributeBalanceCalculator", "PvP", new { id = Model.Id }, null)<br /></p>
+        <p>@Html.ActionLink("Use calculator (save contribution before doing this!)", "ContributeBalanceCalculatorEffect", "PvP", new { id = Model.Id }, null)<br /></p>
     </div>
 
     <h2>Finishing up</h2>

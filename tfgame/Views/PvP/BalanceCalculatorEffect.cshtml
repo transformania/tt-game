@@ -14,27 +14,24 @@
 
 <p>(Amt):  Means a direct, static amount.  Ex:  30 maxiumum willpower increase adds 30 extra willpower points.</p>
 
-<p>(%):  Means a percentage modifier.  Ex:  a 10% bonus on extra willpower damage per spell attack means 7 damage becomes 7*1.1 = 7.7 damage.</p>
+<p>(%):  Means a percentage modifier.  Ex:  a 10% bonus on extra willpower damage per spell attack means 7 damage becomes 7*1.1 = 7.7 damage.  </p>
 
-<p>Fields that have a Negative Modifier receive fewer points when the stat is put into the negative.</p>
+<p>Fields that have a Negative Modifier receive fewer points when the stat is put into the negative.  DISABLED FOR EFFECTS.</p>
 
-<p>Fields that have a Minimum Cap will not give any additional points beyond a certain value.</p>
+<p>Fields that have a Minimum Cap will not give any additional points beyond a certain value.  DISABLED FOR EFFECTS.</p>
 
 <p>What type of spell is this?</p>
 <select id="mobilityType">
-    <option value="full">Animate Form</option>
-    <option value="item">Item</option>
-    <option value="pet">Animal/Pet</option>
     <option value="curse">Curse</option>
 </select>
 
-<p id="curseDurationWrapper" style="display: none;">
-    Turn duration of curse?
+<p id="curseDurationWrapper">
+    Turn duration of curse?  (This number is not saved from here; you must set the final number on the main ContributeEffect page!)
     <input type="text" id="curseDurationInput">
 </p>
 
 
-<h2>Net balance:  <span id="total"></span>     Target:  <span id="desired"></span>  Total points used (400 max allowed):  <span id="absolute_total"></span></h2>
+<h2>Net balance:  <span id="total"></span>     Target:  <span id="desired">-500</span>  Total points used:  <span id="absolute_total"></span></h2>
 
 <p>
     <button type="button" onclick="Clear()">Clear</button>
@@ -261,7 +258,7 @@
 
 <script>
 
-    var choice = "full";
+    var choice = "curse";
 
     $(document).ready(function () {
 
@@ -304,19 +301,11 @@
         $("#mobilityType").change(function () {
             choice = $("#mobilityType").val();
 
-            if (choice == "full") {
-                $("#desired").html("0");
-                $("#curseDurationWrapper").hide();
-            } else if (choice == "item") {
-                $("#desired").html("25");
-                $("#curseDurationWrapper").hide();
-            } else if (choice == "pet") {
-                $("#desired").html("50");
-                $("#curseDurationWrapper").hide();
-            } else if (choice == "curse") {
-                $("#desired").html("-400");
+            if (choice == "curse") {
+                $("#desired").html("-500");
                 $("#curseDurationWrapper").show();
             }
+
         });
 
         $("#curseDurationInput").focusout(function () {
@@ -366,6 +355,8 @@
             $("#total").removeClass("bad");
         }
 
+     //   total *= $("#curseDurationInput").html();
+
     }
 
     function recalculateCells() {
@@ -388,14 +379,14 @@
                 var inputCell = $(this).parent().find("input");
 
                 // decrease if there's a negative modifier
-                if ((inputCell.attr("negative-mod") != undefined) && (calculated < 0) && (parseFloat(inputCell.attr("negative-mod")) != 0)) {
-                    calculated *= parseFloat(inputCell.attr("negative-mod"));
-                }
+               // if ((inputCell.attr("negative-mod") != undefined) && (calculated < 0) && (parseFloat(inputCell.attr("negative-mod")) != 0)) {
+                //    calculated *= parseFloat(inputCell.attr("negative-mod"));
+               // }
 
                 // add negative clamp if it has one
-                if ((inputCell.attr("negative-cap") != undefined) && (calculated < parseFloat(inputCell.attr("negative-cap")))) {
-                    calculated = parseFloat(inputCell.attr("negative-cap"));
-                }
+               // if ((inputCell.attr("negative-cap") != undefined) && (calculated < parseFloat(inputCell.attr("negative-cap")))) {
+                //    calculated = parseFloat(inputCell.attr("negative-cap"));
+               // }
 
 
                 calculateCell.html(calculated);

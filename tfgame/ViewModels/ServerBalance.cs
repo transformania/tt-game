@@ -131,6 +131,19 @@ namespace tfgame.ViewModels
             return total;
         }
 
+        public decimal GetBalance__NoModifiersOrCaps()
+        {
+
+            decimal total = 0;
+
+            foreach (BuffStat buff in this.BuffStats)
+            {
+                decimal value = buff.Amount * buff.Value;
+                total += value;
+            }
+            return total;
+        }
+
         public decimal GetPointTotal()
         {
             decimal total = 0;

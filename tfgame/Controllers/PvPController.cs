@@ -1945,7 +1945,7 @@ namespace tfgame.Controllers
         }
 
         [Authorize]
-        public ActionResult ContributeBalanceCalculator(int id)
+        public ActionResult ContributeBalanceCalculatorEffect(int id)
         {
             IEffectContributionRepository contributionRepo = new EFEffectContributionRepository();
             EffectContribution contribution = contributionRepo.EffectContributions.FirstOrDefault(c => c.Id == id);
@@ -1963,7 +1963,7 @@ namespace tfgame.Controllers
 
             }
 
-            return View("~/Views/PvP/BalanceCalculator.cshtml", contribution);
+            return View("~/Views/PvP/BalanceCalculatorEffect.cshtml", contribution);
         }
 
         [Authorize]

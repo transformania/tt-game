@@ -1414,23 +1414,26 @@ namespace tfgame.Controllers
         {
             List<BalancePageViewModel> output = new List<BalancePageViewModel>();
 
-            foreach (DbStaticEffect effect in EffectStatics.GetAllStaticEffects())
+            IEffectContributionRepository effectContributionRepo = new EFEffectContributionRepository();
+            List<EffectContribution> effectsToAnalyze = effectContributionRepo.EffectContributions.Where(e => e.IsLive == true && e.ProofreadingCopy == true).ToList();
+
+            foreach (EffectContribution effect in effectsToAnalyze)
             {
                 BalanceBox bbox = new BalanceBox();
                 bbox.LoadBalanceBox(effect);
-                decimal balance = bbox.GetBalance();
+                decimal balance = bbox.GetBalance__NoModifiersOrCaps();
                 decimal absolute = bbox.GetPointTotal();
                 BalancePageViewModel addme = new BalancePageViewModel
                 {
-                    dbName = effect.dbName,
-                    FriendlyName = effect.FriendlyName,
+                    dbName = effect.GetEffectDbName(),
+                    FriendlyName = effect.Effect_FriendlyName,
                     Balance = balance,
                     AbsolutePoints = absolute
                 };
                 output.Add(addme);
             }
 
-            ViewBag.Text = "Pets";
+            ViewBag.Text = "Effects";
             return View("ServerBalance", output.OrderByDescending(s => s.Balance));
 
         }

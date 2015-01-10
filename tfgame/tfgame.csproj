@@ -1430,7 +1430,7 @@
     <Content Include="Views\PvP\ContributeSetGraphicStatus.cshtml" />
     <Content Include="Views\PvP\GameNews_PlannedFeatures.cshtml" />
     <Content Include="Views\PvPAdmin\Play.cshtml" />
-    <Content Include="Views\PvP\BalanceCalculator.cshtml" />
+    <Content Include="Views\PvP\BalanceCalculatorEffect.cshtml" />
     <Content Include="Views\PvP\LevelupPerk.cshtml" />
     <Content Include="Views\PvP\MyPerks.cshtml" />
     <Content Include="Views\PvP\partial\partial_perkBonus.cshtml" />

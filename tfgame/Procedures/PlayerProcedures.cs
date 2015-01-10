@@ -733,7 +733,7 @@ namespace tfgame.Procedures
                     {
                         if (worldStats.IsDonnaAvailable())
                         {
-                            AIProcedures.SpawnDonna();
+                            BossProcedures_Donna.SpawnDonna();
                             PvPWorldStatProcedures.Boss_StartDonna();
                             string summontext = BossSummonDictionary.GetActivationText("Donna");
                             PlayerLogProcedures.AddPlayerLog(player.Id, summontext, true);

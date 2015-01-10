@@ -1,0 +1,285 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using tfgame.dbModels.Abstract;
+using tfgame.dbModels.Concrete;
+using tfgame.dbModels.Models;
+using tfgame.Statics;
+using tfgame.ViewModels;
+
+namespace tfgame.Procedures.BossProcedures
+{
+    
+    public class BossProcedures_Donna
+    {
+
+        private const int DonnaSpellCount = 4;
+        private const string Spell1 = "skill_Donna's_Bitch_LexamTheGemFox";
+        private const string Spell2 = "skill_Donna's_Cow_LexamtheGemFox";
+        private const string Spell3 = "skill_Donna's_Pig_LexamtheGemFox";
+        private const string Spell4 = "skill_Donna's_Mare_LexamtheGemFox";
+
+        public static void SpawnDonna()
+        {
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            Player donna = playerRepo.Players.FirstOrDefault(f => f.FirstName == "'Aunt' Donna" && f.LastName == "Milton");
+
+            if (donna == null)
+            {
+                donna = new Player()
+                {
+                    FirstName = "'Aunt' Donna",
+                    LastName = "Milton",
+                    ActionPoints = 120,
+                    dbLocationName = "ranch_bedroom",
+                    LastActionTimestamp = DateTime.UtcNow,
+                    LastCombatTimestamp = DateTime.UtcNow,
+                    LastCombatAttackedTimestamp = DateTime.UtcNow,
+                    OnlineActivityTimestamp = DateTime.UtcNow,
+                    NonPvP_GameOverSpellsAllowedLastChange = DateTime.UtcNow,
+                    Gender = "female",
+                    Health = 9999,
+                    Mana = 9999,
+                    MaxHealth = 9999,
+                    MaxMana = 9999,
+                    Form = "form_Mythical_Sorceress_LexamTheGemFox",
+                    IsPetToId = -1,
+                    Money = 1000,
+                    Mobility = "full",
+                    Level = 20,
+                    MembershipId = -4,
+                    ActionPoints_Refill = 360,
+                };
+
+                playerRepo.SavePlayer(donna);
+
+                donna = PlayerProcedures.ReadjustMaxes(donna, ItemProcedures.GetPlayerBuffs(donna));
+
+                playerRepo.SavePlayer(donna);
+
+            }
+
+
+
+        }
+
+        public static void RunDonnaActions()
+        {
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            IServerLogRepository serverLogRepo = new EFServerLogRepository();
+
+            int worldTurnNumber = PvPWorldStatProcedures.GetWorldTurnNumber() - 1;
+            ServerLog log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == worldTurnNumber);
+
+            Player donna = playerRepo.Players.FirstOrDefault(p => p.MembershipId == -4);
+
+            if (donna.Mobility != "full")
+            {
+                PvPWorldStatProcedures.Boss_EndDonna();
+            }
+
+            else if (donna.Mobility == "full")
+            {
+
+                log.AddLog("Starting AI for Donna.");
+
+                donna.Form = "form_Mythical_Sorceress_LexamTheGemFox";
+
+                BuffBox donnasBuffs = ItemProcedures.GetPlayerBuffs(donna);
+
+                // have donna meditate and cleanse if needed
+                if (donna.Health < donna.MaxHealth / 6)
+                {
+                    PlayerProcedures.Cleanse(donna, donnasBuffs);
+                }
+                if (donna.Mana < donna.MaxMana)
+                {
+                    PlayerProcedures.Meditate(donna, donnasBuffs);
+                }
+
+                AIDirective directive = AIDirectiveProcedures.GetAIDirective(donna.Id);
+
+                if (directive.State == "attack" || directive.State == "idle")
+                {
+
+
+
+                    Player target = playerRepo.Players.FirstOrDefault(p => p.Id == directive.TargetPlayerId);
+
+                    if (target != null)
+                    {
+                        log.AddLog("Donna is set to attack " + target.FirstName + " " + target.LastName);
+                    }
+
+
+                    // if Donna's target goes offline, have her teleport back to the ranch
+                    if (target == null || target.Mobility != "full" || PlayerProcedures.PlayerIsOffline(target))
+                    {
+
+                        if (donna.dbLocationName != "ranch_bedroom")
+                        {
+                            log.AddLog("Donna's target, " + target.FirstName + " " + target.LastName + ", is invalid.  Teleporting home and idling.");
+                            LocationLogProcedures.AddLocationLog(donna.dbLocationName, donna.FirstName + " " + donna.LastName + " vanished from here in a flash of smoke.");
+                            donna.dbLocationName = "ranch_bedroom";
+                            LocationLogProcedures.AddLocationLog(donna.dbLocationName, donna.FirstName + " " + donna.LastName + " appeared here in a flash of smoke.");
+                            playerRepo.SavePlayer(donna);
+                        }
+
+
+                        AIDirectiveProcedures.SetAIDirective_Idle(donna.Id);
+
+                    }
+
+                    // Donna has a valid target; go chase it down and attack.  Donna does not look for new targets.
+                    else
+                    {
+                        string newplace = AIProcedures.MoveTo(donna, target.dbLocationName, 9);
+                        donna.dbLocationName = newplace;
+                        playerRepo.SavePlayer(donna);
+
+                        log.AddLog("Donna has moved to " + newplace + " to attack " + target.FirstName + " " + target.LastName);
+
+                        if (target.dbLocationName == newplace)
+                        {
+
+                            SkillViewModel2 skill = SkillProcedures.GetSkillViewModelsOwnedByPlayer(donna.Id).FirstOrDefault(s => s.dbSkill.Name != "lowerHealth");
+
+                            Random rand = new Random();
+                            double roll = rand.NextDouble() * 3 + 2;
+                            for (int i = 0; i < roll; i++)
+                            {
+                                AttackProcedures.Attack(donna, target, skill);
+                                log.AddLog("Donna attacked " + target.FirstName + " " + target.LastName + ".");
+                            }
+                        }
+                        else
+                        {
+                            log.AddLog("Donna did not move far enough to get to target.");
+                        }
+
+                    }
+                }
+                else
+                {
+                    log.AddLog("Donna is idling.");
+                }
+
+                // have Donna equip all the pets she owns
+                IItemRepository itemRepo = new EFItemRepository();
+                IEnumerable<Item> donnasItems = itemRepo.Items.Where(i => i.OwnerId == donna.Id && i.IsEquipped == false && i.Level > 3);
+                List<Item> itemsToEquip = new List<Item>();
+                foreach (Item i in donnasItems)
+                {
+                    itemsToEquip.Add(i);
+                }
+                foreach (Item i in itemsToEquip)
+                {
+                    i.IsEquipped = true;
+                    i.dbLocationName = donna.dbLocationName;
+                    itemRepo.SaveItem(i);
+                    log.AddLog("Donna equipped a pet.");
+                }
+
+                List<Player> donnasPlayerPets = playerRepo.Players.Where(p => p.IsPetToId == donna.Id).ToList();
+                List<Player> donnasPlayerPetsToSave = new List<Player>();
+                foreach (Player p in donnasPlayerPets)
+                {
+                    p.dbLocationName = donna.dbLocationName;
+                    donnasPlayerPetsToSave.Add(p);
+                }
+                foreach (Player p in donnasPlayerPetsToSave)
+                {
+                    playerRepo.SavePlayer(p);
+                }
+
+                // have Donna release her weakest pet if she has more than 10 already
+                if (donnasPlayerPets.Count() > 10)
+                {
+                    IEnumerable<Item> weakest = itemRepo.Items.Where(i => i.OwnerId == donna.Id).OrderBy(i => i.Level);
+                    Item weakestItem = weakest.First();
+                    ItemProcedures.DropItem(weakestItem.Id, donna.dbLocationName);
+                    log.AddLog("Donna released " + weakestItem.VictimName);
+                    LocationLogProcedures.AddLocationLog(donna.dbLocationName, "Donna released one of her weaker pets, " + weakestItem.VictimName + ", here.");
+                    Player luckyVictim = PlayerProcedures.GetPlayerWithExactName(weakestItem.VictimName);
+                    PlayerLogProcedures.AddPlayerLog(luckyVictim.Id, "Donna has released you, allowing you to wander about or be tamed by a new owner.", true);
+                }
+                log.AddLog("Donna actions completed.");
+                serverLogRepo.SaveServerLog(log);
+
+            }
+
+        }
+
+        public static void DonnaCounterattack(Player personAttacking, Player donna)
+        {
+            PlayerProcedures.GiveXP(personAttacking.Id, 20);
+            PlayerLogProcedures.AddPlayerLog(personAttacking.Id, "You gain 20 extra XP from daring to fight Donna.", true);
+
+            Random rand = new Random();
+            double roll = rand.NextDouble() * 4;
+
+            for (int i = 0; i < roll; i++)
+            {
+                AttackProcedures.Attack(donna, personAttacking, ChooseSpell(PvPStatics.LastGameTurn));
+            }
+
+
+            // if Donna is weak enough start having her mega-attack anyone in the room
+            if (donna.Health < donna.MaxHealth / 5)
+            {
+                List<PlayerFormViewModel> PlayersHere = PlayerProcedures.GetPlayerFormViewModelsAtLocation(donna.dbLocationName).ToList();
+                List<PlayerFormViewModel> targets = new List<PlayerFormViewModel>();
+
+                foreach (PlayerFormViewModel p in PlayersHere)
+                {
+                    if (p.Player.MembershipId > 0 && p.Player.Level > 3 && p.Player.Mobility == "full" && !PlayerProcedures.PlayerIsOffline(p.Player) && p.Player.Id != personAttacking.Id)
+                    {
+                        AttackProcedures.Attack(donna, personAttacking, ChooseSpell(PvPStatics.LastGameTurn));
+                    }
+                }
+
+
+            }
+
+
+            //AIDirective directive = AIDirectiveProcedures.GetAIDirective(bot.Id);
+            AIDirective directive = AIDirectiveProcedures.GetAIDirective(donna.Id);
+
+            // if Donna has no target or by a random chance, make her target this attacker
+            if (directive.TargetPlayerId == -1 || directive.State == "idle" || roll < 1)
+            {
+                AIDirectiveProcedures.SetAIDirective_Attack(donna.Id, personAttacking.Id);
+            }
+        }
+
+        public static string ChooseSpell(int turnNumber)
+        {
+
+            int mod = turnNumber % (3*DonnaSpellCount);
+
+            if (mod >= 0 && mod < 3)
+            {
+                return Spell1;
+            }
+            else if (mod >= 4 && mod < 6)
+            {
+                return Spell2;
+            }
+            else if (mod >= 7 && mod < 9)
+            {
+                return Spell3;
+            }
+            else if (mod >= 10 && mod < 12)
+            {
+                return Spell4;
+            }
+            else
+            {
+                return Spell1;
+            }
+
+        }
+
+    }
+}

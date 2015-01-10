@@ -340,6 +340,7 @@
     <Compile Include="Procedures\AttackProcedures.cs" />
     <Compile Include="Procedures\BlacklistProcedures.cs" />
     <Compile Include="Procedures\BossProcedures\BossProcedures_BimboBoss.cs" />
+    <Compile Include="Procedures\BossProcedures\BossProcedures_Donna.cs" />
     <Compile Include="Procedures\BossProcedures\BossProcedures_Fae.cs" />
     <Compile Include="Procedures\BossProcedures\BossProcedures_PetMerchant.cs" />
     <Compile Include="Procedures\BossProcedures\BossProcedures_Thieves.cs" />
@@ -465,6 +466,8 @@
     <Content Include="Images\PvP\animalPortraits\djinn_slave_Luxianne.png" />
     <Content Include="Images\PvP\animalPortraits\brainwashed_bitch_LexamTheGemFox.png" />
     <Content Include="Images\PvP\animalPortraits\docile_cowgirl_Meddle.png" />
+    <Content Include="Images\PvP\animalPortraits\docile_mare_Martiandawn.jpg" />
+    <Content Include="Images\PvP\animalPortraits\donnas_cow_Martiandawn.jpg" />
     <Content Include="Images\PvP\animalPortraits\fairy_familiar_Meddle.png" />
     <Content Include="Images\PvP\animalPortraits\fennec_fox_luxianne.png" />
     <Content Include="Images\PvP\animalPortraits\horny_hog_Martiandawn.jpg" />

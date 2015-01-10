@@ -25,6 +25,7 @@ namespace tfgame.Statics
 
         //public static string LastGameUpdate = DateTime.UtcNow.ToString("MMMM") + " " + DateTime.UtcNow.Day.ToString();
         public static string LastGameUpdate = "";
+        public static int LastGameTurn = 0;
 
         public static bool AnimateUpdateInProgress = false;
 

@@ -1917,7 +1917,7 @@ namespace tfgame.Controllers
                 }
                 else
                 {
-                    ViewBag.StaticSkillExists += "<p class='good'>Static skill found.</p>";
+                    ViewBag.StaticSkillExists += "<p class='good'>Static skill found:  " + skilldbname + "</p>";
                 }
 
                 if (sform == null)
@@ -1926,7 +1926,7 @@ namespace tfgame.Controllers
                 }
                 else
                 {
-                    ViewBag.StaticFormExists = "<p class='good'>Static form found.</p>";
+                    ViewBag.StaticFormExists = "<p class='good'>Static form found:  " + formdbname + "</p>";
                 }
 
                 if (sitem == null && (contribution.Form_MobilityType == "inanimate" || contribution.Form_MobilityType == "animal"))
@@ -1935,7 +1935,7 @@ namespace tfgame.Controllers
                 }
                 else if (contribution.Form_MobilityType == "inanimate" || contribution.Form_MobilityType == "animal")
                 {
-                    ViewBag.StaticItemExists += "<p class='good'>Static item/pet found.</p>";
+                    ViewBag.StaticItemExists += "<p class='good'>Static item/pet found:  " + itemdbname + "</p>";
                 }
 
             }
@@ -3232,7 +3232,7 @@ namespace tfgame.Controllers
 
             
             int turnNo = worldStats.TurnNumber;
-
+            PvPStatics.LastGameTurn = turnNo;
 
             if (turnNo < PvPStatics.RoundDuration)
             {
@@ -3688,7 +3688,7 @@ namespace tfgame.Controllers
                     {
                         log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started Donna actions");
                         serverLogRepo.SaveServerLog(log);
-                        AIProcedures.RunDonnaActions();
+                        BossProcedures_Donna.RunDonnaActions();
                         log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == turnNo);
                         log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished Donna actions");
                     }

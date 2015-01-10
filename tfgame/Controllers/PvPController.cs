@@ -696,7 +696,7 @@ namespace tfgame.Controllers
             DbStaticForm futureForm = FormStatics.GetForm(skill.FormdbName);
 
             // prevent low level players from taking on high level bots
-            if (targeted.MembershipId <= -4)
+            if (targeted.MembershipId <= -3)
             {
                 if ((targeted.MembershipId == -3 || targeted.MembershipId == -10 || targeted.MembershipId == -6) && PvPStatics.ChaosMode==true)
                 {

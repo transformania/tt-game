@@ -1031,7 +1031,7 @@ namespace tfgame.Controllers
             //    }
             //}
 
-            tfgame.Procedures.BossProcedures.BossProcedures_PetMerchant.SpawnPetMerchant();
+            tfgame.Procedures.BossProcedures.BossProcedures_Donna.RunDonnaActions();
 
 
            // BossProcedures_PetMerchant.RunPetMerchantActions(PvPWorldStatProcedures.GetWorldTurnNumber());

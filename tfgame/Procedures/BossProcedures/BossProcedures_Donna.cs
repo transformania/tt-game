@@ -143,13 +143,13 @@ namespace tfgame.Procedures.BossProcedures
                         if (target.dbLocationName == newplace)
                         {
 
-                            SkillViewModel2 skill = SkillProcedures.GetSkillViewModelsOwnedByPlayer(donna.Id).FirstOrDefault(s => s.dbSkill.Name != "lowerHealth");
+                           // SkillViewModel2 skill = SkillProcedures.GetSkillViewModelsOwnedByPlayer(donna.Id).FirstOrDefault(s => s.dbSkill.Name != "lowerHealth");
 
                             Random rand = new Random();
                             double roll = rand.NextDouble() * 3 + 2;
                             for (int i = 0; i < roll; i++)
                             {
-                                AttackProcedures.Attack(donna, target, skill);
+                                AttackProcedures.Attack(donna, target, ChooseSpell(PvPStatics.LastGameTurn));
                                 log.AddLog("Donna attacked " + target.FirstName + " " + target.LastName + ".");
                             }
                         }

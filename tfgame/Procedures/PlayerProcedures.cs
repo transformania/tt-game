@@ -1664,8 +1664,7 @@ namespace tfgame.Procedures
             dbPlayer.PvPScore += amount;
 
             playerRepo.SavePlayer(dbPlayer);
-            //return "  You have gained " + amount + " PvP score from your victory over " + loser.FirstName + " " + loser.LastName + ".";
-            return "";
+            return "  You have gained " + amount + " PvP score from your victory over " + loser.FirstName + " " + loser.LastName + ".";
         }
 
         public static string RemovePlayerPvPScore(Player loser, Player attacker)
@@ -1682,20 +1681,30 @@ namespace tfgame.Procedures
                 dbPlayer.PvPScore = 0;
             }
 
+            // loser is in PvP mode and attacker is not; double the loss penalty
+            if (loser.InPvP == false && attacker.InPvP == true)
+            {
+                dbPlayer.PvPScore -= loss;
+            }
+
             playerRepo.SavePlayer(dbPlayer);
-           // return "  You have lost " + loss + " PvP score from your defeat to " + attacker.FirstName + " " + attacker.LastName + ".";
-            return "";
+            return "  You have lost " + loss + " PvP score from your defeat to " + attacker.FirstName + " " + attacker.LastName + ".";
+            //return "";
         }
 
         public static decimal GetPvPScoreFromWin(Player attacker, Player victim)
         {
             decimal scoreFromLevel = 0;
-            if (attacker.Level - victim.Level <= 3)
+            decimal scoreFromSteal = 0;
+            int levelDiff = Math.Abs(attacker.Level - victim.Level);
+            if (levelDiff <= 3)
             {
                 scoreFromLevel = victim.Level * 10;
-            }
 
-            decimal scoreFromSteal = Math.Floor(victim.PvPScore / 4);
+                if (attacker.PvPScore / 2 <= victim.PvPScore) { 
+                    scoreFromSteal = Math.Floor(victim.PvPScore / 4);
+                }
+            }
 
             return scoreFromLevel + scoreFromSteal;
         }

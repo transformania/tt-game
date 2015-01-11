@@ -468,7 +468,7 @@ namespace tfgame.Procedures
                     PlayerProcedures.GiveMoneyToPlayer(attacker, moneygain);
                     PlayerProcedures.GiveMoneyToPlayer(victim, -moneygain/2);
 
-                    // ONLY GIVE XP LUMP SUM IF BOTH PLAYERS ARE IN PLAYER VERSUS PLAYER MODE NOW
+                    // ONLY GIVE XP LUMP SUM AND PVP SCORE IF BOTH PLAYERS ARE IN PLAYER VERSUS PLAYER MODE NOW
                     if (attacker.InPvP == false && victim.InPvP == false)
                     {
                         // only give the lump sum XP if the target is within 3 levels of the attacker AND the attack is in PvP mode AND the victim is not in the same covenant
@@ -487,6 +487,12 @@ namespace tfgame.Procedures
                             output.VictimLog += PlayerProcedures.RemovePlayerPvPScore(victim, attacker);
                         }
 
+                    }
+
+                    // VICTIM IS N PVP BUT ATTACKER IS NOT.  Reduce half of their PvP score.
+                    if (victim.InPvP == false && attacker.InPvP == true)
+                    {
+                        output.VictimLog += PlayerProcedures.RemovePlayerPvPScore(victim, attacker);
                     }
 
                     output.AttackerLog += "  You collect " + Math.Round(moneygain,0) + " Arpeyjis your victim dropped during the transformation.";

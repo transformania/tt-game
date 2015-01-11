@@ -35,7 +35,7 @@
             int rank = 1;
         }
 
-        @foreach (Player p in Model)
+        @foreach (Player p in Model.OrderByDescending(p => p.PvPScore).ThenByDescending(p => p.Level))
         {
             <tr>
                 <td style="width:15px">

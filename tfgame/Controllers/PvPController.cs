@@ -526,6 +526,12 @@ namespace tfgame.Controllers
                 output = output.Where(s => s.MobilityType == "full");
             }
 
+            // filter out MC spells for bots
+            if (target.MembershipId < 0)
+            {
+                output = output.Where(s => s.MobilityType != "mindcontrol");
+            }
+
             // only show inaniames for rat thieves
             if (target.MembershipId == -8 || target.MembershipId == -9)
             {
@@ -688,8 +694,16 @@ namespace tfgame.Controllers
                 {
                     TempData["Error"] = "This target is already afflicted with this curse or else is still in the immune cooldown period of it.";
                     TempData["SubError"] = "You can always try again later...";
-                return RedirectToAction("Play");
+                    return RedirectToAction("Play");
                 }
+            }
+
+             // if the spell is a form of mind control, check that the target is not a bot
+            if (skillBeingUsed.MobilityType == "mindcontrol" && targeted.MembershipId < 0)
+            {
+                TempData["Error"] = "This target is immune to mind control.";
+                TempData["SubError"] = "Mind control currently only works against human opponents.";
+                return RedirectToAction("Play");
             }
 
             DbStaticSkill skill = SkillStatics.GetStaticSkill(attackName);

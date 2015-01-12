@@ -36,8 +36,9 @@
 <li>@Html.ActionLink("Covenant", "MyCovenant", "Covenant")</li>
 <li>@Html.ActionLink("Settings", "Settings", "PvP")</li>
 <li>@Html.ActionLink("Last Actions (" + Model.PlayerLog.Count() + ")", "ViewLog", "PvP")</li>
-<li>@Html.ActionLink("My Spells", "MySkills", "PvP")</li>
+<li>@Html.ActionLink("Spells", "MySkills", "PvP")</li>
 <li>@Html.ActionLink("My Effects", "MyPerks", "PvP")</li>
+<li>@Html.ActionLink("Mind Control", "MindControlList", "NPC")</li>
 <li class="visible-xs-inline"><a href="http://transformaniatime.com/PvP/MyInventory">Inventory @Model.PlayerItems.Where(i => i.dbItem.IsEquipped == false).Count()/@Model.InventoryMaxSize </a></li>
 @{
     if (Model.You.Player.UnusedLevelUpPerks > 0)

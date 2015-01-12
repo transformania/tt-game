@@ -499,5 +499,11 @@ namespace tfgame.Controllers
             TempData["Result"] = "You sold your " + itemBeingSold.Item.FriendlyName + " to Wüffie for " + (int)cost + " Arpeyjis.";
             return RedirectToAction("TradeWithPetMerchant");
         }
+
+        [Authorize]
+        public ActionResult MindControlList()
+        {
+            return View();
+        }
 	}
 }

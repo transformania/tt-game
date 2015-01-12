@@ -82,8 +82,6 @@ namespace tfgame.Procedures.BossProcedures
             else if (donna.Mobility == "full")
             {
 
-                log.AddLog("Starting AI for Donna.");
-
                 donna.Form = "form_Mythical_Sorceress_LexamTheGemFox";
 
                 BuffBox donnasBuffs = ItemProcedures.GetPlayerBuffs(donna);
@@ -107,10 +105,6 @@ namespace tfgame.Procedures.BossProcedures
 
                     Player target = playerRepo.Players.FirstOrDefault(p => p.Id == directive.TargetPlayerId);
 
-                    if (target != null)
-                    {
-                        log.AddLog("Donna is set to attack " + target.FirstName + " " + target.LastName);
-                    }
 
 
                     // if Donna's target goes offline, have her teleport back to the ranch
@@ -119,7 +113,6 @@ namespace tfgame.Procedures.BossProcedures
 
                         if (donna.dbLocationName != "ranch_bedroom")
                         {
-                            log.AddLog("Donna's target, " + target.FirstName + " " + target.LastName + ", is invalid.  Teleporting home and idling.");
                             LocationLogProcedures.AddLocationLog(donna.dbLocationName, donna.FirstName + " " + donna.LastName + " vanished from here in a flash of smoke.");
                             donna.dbLocationName = "ranch_bedroom";
                             LocationLogProcedures.AddLocationLog(donna.dbLocationName, donna.FirstName + " " + donna.LastName + " appeared here in a flash of smoke.");
@@ -138,8 +131,6 @@ namespace tfgame.Procedures.BossProcedures
                         donna.dbLocationName = newplace;
                         playerRepo.SavePlayer(donna);
 
-                        log.AddLog("Donna has moved to " + newplace + " to attack " + target.FirstName + " " + target.LastName);
-
                         if (target.dbLocationName == newplace)
                         {
 
@@ -150,19 +141,19 @@ namespace tfgame.Procedures.BossProcedures
                             for (int i = 0; i < roll; i++)
                             {
                                 AttackProcedures.Attack(donna, target, ChooseSpell(PvPStatics.LastGameTurn));
-                                log.AddLog("Donna attacked " + target.FirstName + " " + target.LastName + ".");
+                               
                             }
                         }
                         else
                         {
-                            log.AddLog("Donna did not move far enough to get to target.");
+                            
                         }
 
                     }
                 }
                 else
                 {
-                    log.AddLog("Donna is idling.");
+                    
                 }
 
                 // have Donna equip all the pets she owns
@@ -178,7 +169,6 @@ namespace tfgame.Procedures.BossProcedures
                     i.IsEquipped = true;
                     i.dbLocationName = donna.dbLocationName;
                     itemRepo.SaveItem(i);
-                    log.AddLog("Donna equipped a pet.");
                 }
 
                 List<Player> donnasPlayerPets = playerRepo.Players.Where(p => p.IsPetToId == donna.Id).ToList();
@@ -199,12 +189,10 @@ namespace tfgame.Procedures.BossProcedures
                     IEnumerable<Item> weakest = itemRepo.Items.Where(i => i.OwnerId == donna.Id).OrderBy(i => i.Level);
                     Item weakestItem = weakest.First();
                     ItemProcedures.DropItem(weakestItem.Id, donna.dbLocationName);
-                    log.AddLog("Donna released " + weakestItem.VictimName);
                     LocationLogProcedures.AddLocationLog(donna.dbLocationName, "Donna released one of her weaker pets, " + weakestItem.VictimName + ", here.");
                     Player luckyVictim = PlayerProcedures.GetPlayerWithExactName(weakestItem.VictimName);
                     PlayerLogProcedures.AddPlayerLog(luckyVictim.Id, "Donna has released you, allowing you to wander about or be tamed by a new owner.", true);
                 }
-                log.AddLog("Donna actions completed.");
                 serverLogRepo.SaveServerLog(log);
 
             }

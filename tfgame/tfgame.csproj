@@ -1533,6 +1533,7 @@
     <Content Include="Views\PvP\RoundLeaderboards\Alpha_14.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_14.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\XP\Alpha_14.cshtml" />
+    <Content Include="Views\NPC\MindControlList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

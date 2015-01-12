@@ -326,17 +326,29 @@ namespace tfgame.Procedures
             Player dbAttacker = playerRepo.Players.FirstOrDefault(p => p.Id == attacker.Id);
             Player dbVictim = playerRepo.Players.FirstOrDefault(p => p.Id == victim.Id);
 
-            MindControl mc = new MindControl
+            MindControl mc = mcRepo.MindControls.FirstOrDefault(m => m.VictimId == victim.Id && m.MasterId == attacker.Id);
+
+            if (mc == null)
             {
-                TurnsRemaining = 12,
-                MasterId = attacker.Id,
-                VictimId = victim.Id,
-                Type = type,
-            };
+                mc = new MindControl
+                {
+                    TurnsRemaining = 6,
+                    MasterId = attacker.Id,
+                    VictimId = victim.Id,
+                    Type = type,
+                };
+            }
+            else
+            {
+                mc.TurnsRemaining = 6;
+            }
+
+            
 
             mcRepo.SaveMindControl(mc);
 
             dbVictim.MindControlIsActive = true;
+            playerRepo.SavePlayer(dbVictim);
 
 
         }

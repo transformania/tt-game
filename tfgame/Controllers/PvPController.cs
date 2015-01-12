@@ -3527,6 +3527,25 @@ namespace tfgame.Controllers
                     }
                 }
 
+                #region decrement mind control timers
+                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started mind control cooldown.");
+
+                using (var context = new StatsContext())
+                {
+                    try
+                    {
+                        context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[MindControls] SET TurnsRemaining = TurnsRemaining - 1");
+                        context.Database.ExecuteSqlCommand("DELETE FROM [Stats].[dbo].[MindControls] WHERE TurnsRemaining <= 0");
+
+                        log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished mind control cooldown.");
+                    }
+                    catch (Exception e)
+                    {
+                        log.AddLog(updateTimer.ElapsedMilliseconds + "MIND CONTROLL COOLDOWN UPDATE FAILED.  Reason:  " + e.ToString());
+                    }
+                }
+                #endregion
+
                 PvPStatics.AnimateUpdateInProgress = false;
 
                 // bump down the timer on all items that are reuseable consumables
@@ -3642,8 +3661,6 @@ namespace tfgame.Controllers
                     log.AddLog(updateTimer.ElapsedMilliseconds + ":  ERROR running Wuffie actions:  " + e.ToString());
                 }
 
-               // log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == turnNo);
-                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished Wuffie actions");
 
                 #region furniture
                 if (turnNo % 6 == 0)

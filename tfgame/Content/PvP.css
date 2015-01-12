@@ -717,6 +717,14 @@ a.animal {
         background-color: white;
     }
 
+a.mindcontrol {
+    background-color: violet;
+}
+
+a.mindcontrol:hover {
+    background-color: white;
+}
+
 a.weaken {
     background-color: #FFAD5C;
 }
@@ -836,7 +844,7 @@ height: 350px;
 
 /*attack modal stuff*/
 
-#expand, #toggle_all, #toggle_animates, #toggle_inanimates, #toggle_animal, #toggle_other {
+#expand, #toggle_all, #toggle_animates, #toggle_inanimates, #toggle_animal, #toggle_mindcontrol, #toggle_other {
     cursor: pointer;
     font-weight: 600;
     border: 1px solid black;

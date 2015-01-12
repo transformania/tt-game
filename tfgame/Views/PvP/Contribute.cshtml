@@ -271,6 +271,7 @@
                        new { value = "full"  , text = "Full (Animate)"  },
                        new { value = "inanimate"  , text = "Inanimate"  },
                         new { value = "animal"  , text = "Animal"  },
+                        new { value = "mindcontrol"  , text = "Mind Control (not open to public submissions)"  },
                     },
                   "value",
                   "text",
@@ -467,7 +468,7 @@
             </div>
             <input type="submit" value="Save" />
 
-            <h2>Item Created by a Completed Transformation</h2>
+            <h2>Item or Pet Created by a Completed Transformation</h2>
             <div class="form__panel group" id="itemCreatedPanel" style="background-color: #FFE0A3;">
                 <div class="form__panel">
                     @Html.LabelFor(m => m.Item_FriendlyName)
@@ -528,7 +529,7 @@
 
             <div class="form__panel group" id="itemCreatedPanelNotPresent" style="background-color: #FFE0A3; display: none;">
                 <div class="form__panel externalMessage">
-                    Because the form type is not set to inanimate, no item will be created.
+                    Because the form type is not set to inanimate, no item or pet will be created.
                 </div>
             </div>
 
@@ -633,8 +634,10 @@
 
             if ($("#Form_MobilityType").val() == "full") {
                 displayForAnimate();
-            } else {
+            } else if ($("#Form_MobilityType").val() == "animal" || $("#Form_MobilityType").val() == "inanimate") {
                 displayForInanimate();
+            } else if ($("#Form_MobilityType").val() == "mindcontrol") {
+                displayForAnimate();
             }
 
             if ($("#Item_ItemType").val() != "consumable_reuseable") {
@@ -649,8 +652,10 @@
                 } else if ($("#Form_MobilityType").val() == "animal") {
                     alert("Be sure to set 'What type of item is this?' to 'Pet' at the bottom of this page.  Treat the 'item created' panel as if the word 'item' were replaced with 'animal' since the game mechanics work the same: tamed animals give bonuses to the player who owns them.");
                     displayForInanimate();
-                } else {
+                } else if ($("#Form_MobilityType").val() == "inanimate" ) {
                     displayForInanimate();
+                } else if ($("#Form_MobilityType").val() == "mindcontrol" ) {
+                    displayForAnimate();
                 }
             });
 

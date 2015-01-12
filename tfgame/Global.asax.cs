@@ -27,9 +27,9 @@ namespace tfgame
             AuthConfig.RegisterAuth();
 
             // start duel loop
-            var duelUpdateTic = new System.Timers.Timer(5000);
-            duelUpdateTic.Enabled = true;
-            duelUpdateTic.Elapsed += new ElapsedEventHandler(Duel.RunTick);
+            //var duelUpdateTic = new System.Timers.Timer(5000);
+            //duelUpdateTic.Enabled = true;
+            //duelUpdateTic.Elapsed += new ElapsedEventHandler(Duel.RunTick);
 
         }
     }

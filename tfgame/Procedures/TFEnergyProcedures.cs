@@ -128,13 +128,6 @@ namespace tfgame.Procedures
                 percentTransformed = 100;
             }
 
-            // load the TF Messages from the appropriate XML file if need be
-            //if (eventualForm.TFMessage_20_Percent_1st == null && eventualForm.TFMessage_20_Percent_1st_M == null && eventualForm.TFMessage_20_Percent_1st_F == null)
-            //{
-            //    eventualForm = LoadTFMessagesFromXML(eventualForm);
-            //}
-
-
             // only print the lower of the two tf % values
             decimal percentPrintedOutput;
             if (percentTransformed < percentTransformedByHealth)
@@ -148,7 +141,7 @@ namespace tfgame.Procedures
 
             percentPrintedOutput = Math.Round(percentPrintedOutput, 3);
 
-            if (eventualForm.MobilityType == "inanimate" || eventualForm.MobilityType=="animal")
+            if (eventualForm.MobilityType == "inanimate" || eventualForm.MobilityType=="animal" || eventualForm.MobilityType == "mindcontrol")
             {
 
                 if (percentTransformed < 20 || percentTransformedByHealth < 20)
@@ -189,39 +182,32 @@ namespace tfgame.Procedures
             {
                 if (percentTransformed < 20 || percentTransformedByHealth < 20)
                 {
-
                     output.AttackerLog += GetTFMessage(eventualForm, victim, "20", "third") + " (" + percentPrintedOutput + "%)";
                     output.VictimLog += GetTFMessage(eventualForm, victim, "20", "first") + " (" + percentPrintedOutput + "%)";
-
                 }
                 else if (percentTransformed < 40 || percentTransformedByHealth < 40)
                 {
-
                     output.AttackerLog += GetTFMessage(eventualForm, victim, "40", "third") + " (" + percentPrintedOutput + "%)";
                     output.VictimLog += GetTFMessage(eventualForm, victim, "40", "first") + " (" + percentPrintedOutput + "%)";
                 }
                 else if (percentTransformed < 60 || percentTransformedByHealth < 60)
                 {
-
                     output.AttackerLog += GetTFMessage(eventualForm, victim, "60", "third") + " (" + percentPrintedOutput + "%)";
                     output.VictimLog += GetTFMessage(eventualForm, victim, "60", "first") + " (" + percentPrintedOutput + "%)";
                 }
                 else if (percentTransformed < 80 || percentTransformedByHealth < 80)
                 {
-
                     output.AttackerLog += GetTFMessage(eventualForm, victim, "80", "third") + " (" + percentPrintedOutput + "%)";
                     output.VictimLog += GetTFMessage(eventualForm, victim, "80", "first") + " (" + percentPrintedOutput + "%)";
                 }
 
                 else if (percentTransformed < 100 || percentTransformedByHealth < 100)
                 {
-
                     output.AttackerLog += GetTFMessage(eventualForm, victim, "100", "third") + " (" + percentPrintedOutput + "%)";
                     output.VictimLog += GetTFMessage(eventualForm, victim, "100", "first") + " (" + percentPrintedOutput + "%)";
                 }
                 else if (percentTransformed >= 100)
                 {
-
                     output.AttackerLog += GetTFMessage(eventualForm, victim, "complete", "third") + " (" + percentPrintedOutput + "%)";
                     output.VictimLog += GetTFMessage(eventualForm, victim, "complete", "first") + " (" + percentPrintedOutput + "%)";
                 }
@@ -243,93 +229,35 @@ namespace tfgame.Procedures
             {
                 xpEarned = 15;
             }
+
             // animate TFs recieve an XP bonus
             if (eventualForm.MobilityType == "full")
             {
                 xpEarned *= PvPStatics.XP__AnimateTFXPBonusModifier;
             }
 
-            // modify the XP earned if the target is offline
-            if (PlayerProcedures.PlayerIsOffline(victim))
-            {
-                xpEarned *= 1.0M-PvPStatics.OfflineDamageReduction;
-            }
-
             // decrease the XP earned if the player is high leveled and TFing an animate spell AND the xp isn't already negative
             if (eventualForm.MobilityType == "full" && xpEarned > 0)
             {
-                //if (attacker.Level == 3)
-                //{
-                //    xpEarned *= .92M;
-                //}
-                //else if (attacker.Level == 4)
-                //{
-                //    xpEarned *= .7M;
-                //}
-                //else if (attacker.Level == 5)
-                //{
-                //    xpEarned *= .55M;
-                //}
-                //else if (attacker.Level == 6)
-                //{
-                //    xpEarned *= .4M;
-                //}
-                //else if (attacker.Level == 7)
-                //{
-                //    xpEarned *= .25M;
-                //}
-                //else if (attacker.Level >= 8)
-                //{
-                //    xpEarned *= .1M;
-                //}
-
                 xpEarned *= GetHigherLevelXPModifier(attacker.Level, 4);
-
             }
 
             // decrease the XP earned if the player is high leveled and TFing an inanimate / animal spell AND the xp isn't already negative
-            if (eventualForm.MobilityType == "inanimate" || eventualForm.MobilityType == "animal")
+            if (eventualForm.MobilityType == "inanimate" || eventualForm.MobilityType == "animal" || eventualForm.MobilityType == "mindcontrol")
             {
 
                 xpEarned *= GetHigherLevelXPModifier(attacker.Level, 6);
 
-                //if (attacker.Level == 5)
-                //{
-                //    xpEarned *= .85M;
-                //}
-                //else if (attacker.Level == 6)
-                //{
-                //    xpEarned *= .7M;
-                //}
-                //else if (attacker.Level == 7)
-                //{
-                //    xpEarned *= .55M;
-                //}
-                //else if (attacker.Level == 8)
-                //{
-                //    xpEarned *= .4M;
-                //}
-                //else if (attacker.Level == 9)
-                //{
-                //    xpEarned *= .25M;
-                //}
-                //else if (attacker.Level >= 10)
-                //{
-                //    xpEarned *= .1M;
-                //}
+
             }
 
-            // give XP to the attacker IF they are not in the same covenant or if the attacker is not in a covenant at all
-           // if (attacker.Covenant <= 0 || (attacker.Covenant != victim.Covenant))
-            //{
-
+            // give XP to the attacker
                 output.AttackerLog += " (+" + xpEarned + " XP)";
                 output.ResultMessage += " (+" + xpEarned + " XP)";
 
                 string lvlMessage = PlayerProcedures.GiveXP(attacker.Id, xpEarned);
                 output.AttackerLog += lvlMessage;
                 output.ResultMessage += lvlMessage;
-           // }
 
             return output;
 
@@ -389,7 +317,7 @@ namespace tfgame.Procedures
 
                 DbStaticForm oldForm = FormStatics.GetForm(target.Form);
 
-
+                #region animate transformation
                 // target is turning into an animate form
                 if (targetForm.MobilityType == "full")
                 {
@@ -431,7 +359,9 @@ namespace tfgame.Procedures
                     TFEnergyProcedures.DeleteAllPlayerTFEnergiesOfType(target.Id, targetForm.dbName);
 
                 }
+                #endregion
 
+                #region inanimate and animal
                 // target is turning into an inanimate or animal form, both are endgame
                 else if ((targetForm.MobilityType == "inanimate" || targetForm.MobilityType == "animal") && target.Health <= 0)
                 {
@@ -489,7 +419,7 @@ namespace tfgame.Procedures
 
                     }
 
-                    // VICTIM IS N PVP BUT ATTACKER IS NOT.  Reduce half of their PvP score.
+                    // VICTIM IS IN PVP BUT ATTACKER IS NOT.  Reduce half of their PvP score.
                     if (victim.InPvP == false && attacker.InPvP == true)
                     {
                         output.VictimLog += PlayerProcedures.RemovePlayerPvPScore(victim, attacker);
@@ -519,6 +449,21 @@ namespace tfgame.Procedures
 
 
                 }
+                #endregion
+
+                #region
+                else if (targetForm.MobilityType == "mindcontrol" && target.Health <= 0)
+                {
+                    Player attacker = playerRepo.Players.FirstOrDefault(p => p.Id == attackerId);
+                    AttackProcedures.AddMindControl(attacker, victim, targetForm.dbName);
+
+                    output.LocationLog = "<br><b>" + target.GetFullName() + " was partially mind controlled by " + targetForm.FriendlyName + " here.</b>";
+                    output.AttackerLog = "<br><b>You have seized the mind of " + target.GetFullName() + "!  You can now force them into forming certain actions.";
+                    output.VictimLog = "<br><b>You are now being partially mind controlled by " + targetForm.FriendlyName + "!</b>";
+
+                    TFEnergyProcedures.DeleteAllPlayerTFEnergiesOfType(target.Id, targetForm.dbName);
+                }
+                #endregion
             }
 
             return output;

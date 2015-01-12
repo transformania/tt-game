@@ -356,6 +356,10 @@ namespace tfgame.CustomHtmlHelpers
             {
                 return new MvcHtmlString("action_attack curse");
             }
+            else if (skill.MobilityType == "mindcontrol")
+            {
+                return new MvcHtmlString("action_attack mindcontrol");
+            }
             else 
 
             return new MvcHtmlString("");

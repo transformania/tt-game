@@ -8,8 +8,9 @@
     <span id="toggle_animates" onclick="toggleAnimates()">Animate</span>
     <span id="toggle_inanimates" onclick="toggleInanimates()">Inanimate</span>
     <span id="toggle_animal" onclick="toggleAnimal()">Pet/Animal</span>
+    <span id="toggle_mindcontrol" onclick="toggleMindControl()">Mind Control</span>
     <span id="toggle_other" onclick="toggleOthers()">Other</span>
-<span>@Html.ActionLink("View/Archive My Spells", "MySkills", "PvP")</span>
+<span>@Html.ActionLink("View/Archive My Spells", "MySkills", "PvP", null, new {@id="toggle_mindcontrol"})</span>
     <br /><br />
 
     @foreach (tfgame.ViewModels.SkillViewModel2 s in Model.OrderBy(s => s.Skill.FriendlyName))
@@ -74,6 +75,18 @@
         var spellLinks = $("#attackModal a");
         spellLinks.each(function () {
             if ($(this).attr('class') == "action_attack animal") {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    }
+
+
+    function toggleMindControl() {
+        var spellLinks = $("#attackModal a");
+        spellLinks.each(function () {
+            if ($(this).attr('class') == "action_attack mindcontrol") {
                 $(this).show();
             } else {
                 $(this).hide();

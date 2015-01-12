@@ -178,19 +178,6 @@ namespace tfgame.Procedures
                         // add even more damage if the spell is "weaken"
                         extraDamageFromLevels = (skillBeingUsed.Skill.TFPointsAmount == 0) ? extraDamageFromLevels + (1.15M * (decimal)lowestLevel) : extraDamageFromLevels;
 
-                        // increase the damage done if player has +health damage buff.  Convert to 1.X format.
-                        //decimal extraDamageMultiplierFromBuffs = 1 + meBuffs.SpellExtraHealthDamagePercent() / 100.0M;
-
-
-
-                        //// decrease the damage done if the victim has health resistance.  Convert to 1.0-X format.
-                        //decimal reducedDamageMultiplierFromBuffs = 1 - targetedBuffs.SpellHealthDamageResistance() / 100.0M;
-
-                        //// clamp at 25% damage (75% reduction)
-                        //if (reducedDamageMultiplierFromBuffs < .5M)
-                        //{
-                        //    reducedDamageMultiplierFromBuffs = .5M;
-                        //}
 
                         // calculator the modifier as extra attack - defense.      15 - 20 = -5 modifier
                         decimal willpowerDamageModifierFromBonuses = 1 + ((meDmgExtra - targetProt) / 100.0M);
@@ -330,6 +317,28 @@ namespace tfgame.Procedures
 
 
             return attackerMessage;
+        }
+
+        public static void AddMindControl(Player attacker, Player victim, string type)
+        {
+            IMindControlRepository mcRepo = new EFMindControlRepository();
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            Player dbAttacker = playerRepo.Players.FirstOrDefault(p => p.Id == attacker.Id);
+            Player dbVictim = playerRepo.Players.FirstOrDefault(p => p.Id == victim.Id);
+
+            MindControl mc = new MindControl
+            {
+                TurnsRemaining = 12,
+                MasterId = attacker.Id,
+                VictimId = victim.Id,
+                Type = type,
+            };
+
+            mcRepo.SaveMindControl(mc);
+
+            dbVictim.MindControlIsActive = true;
+
+
         }
 
     }

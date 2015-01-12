@@ -50,6 +50,10 @@
         {
             <span class="mobilityClass">(temporary curse)</span>
         }
+        else if (skill.MobilityType != null && skill.MobilityType == "mindcontrol")
+        {
+            <span class="mobilityClass">(temporary mind control)</span>
+        }
         if (skill.dbSkill.IsArchived == true)
         {
             <b id="@skill.dbSkill.Id">(ARCHIVED)</b>   

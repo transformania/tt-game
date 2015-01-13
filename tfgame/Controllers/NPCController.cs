@@ -504,6 +504,9 @@ namespace tfgame.Controllers
         public ActionResult MindControlList()
         {
             Player me = PlayerProcedures.GetPlayerFromMembership();
+
+            MindControlProcedures.ClearPlayerMindControlFlagIfOn(me);
+
             ViewBag.MyId = me.Id;
 
             IEnumerable<MindControlViewModel> output = MindControlProcedures.GetAllMindControlVMsWithPlayer(me);
@@ -559,19 +562,27 @@ namespace tfgame.Controllers
             decimal apCost = MindControlProcedures.GetAPCostToMove(ItemProcedures.GetPlayerBuffs(victim), victim.dbLocationName, to);
             if (victim.ActionPoints < apCost)
             {
-                TempData["Error"] = errorsBox.Error;
-                TempData["SubError"] = errorsBox.SubError;
+                TempData["Error"] = "Your victim does not have enough action points to move there.";
+                TempData["SubError"] = "Wait for your victim to regenerate more.";
+                return RedirectToAction("MindControlList");
+            }
+
+            // assert that the location is not the same as current
+            if (victim.dbLocationName == to)
+            {
+                TempData["Error"] = "Your victim is already in this location.";
                 return RedirectToAction("MindControlList");
             }
 
             // success; move the victim.
             PlayerProcedures.MovePlayerMultipleLocations(victim, to, apCost);
 
-            string message = "You commanded " + victim.GetFullName() + " to move to " + LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == to).Name + ", using " + apCost + " of their action points in the process.";
-            PlayerLogProcedures.AddPlayerLog(me.Id, message, false);
+            string attackerMessage = "You commanded " + victim.GetFullName() + " to move to " + LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == to).Name + ", using " + apCost + " of their action points in the process.";
+            PlayerLogProcedures.AddPlayerLog(me.Id, attackerMessage, false);
+            TempData["Result"] = attackerMessage;
 
-            message = me.GetFullName() + " commanded you to move to " + LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == to).Name + ", using " + apCost + " of your action points in the process!";
-            PlayerLogProcedures.AddPlayerLog(victim.Id, message, true);
+           string victimMessage = me.GetFullName() + " commanded you to move to " + LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == to).Name + ", using " + apCost + " of your action points in the process!";
+           PlayerLogProcedures.AddPlayerLog(victim.Id, victimMessage, true);
 
             return RedirectToAction("MindControlList");
         }

@@ -411,6 +411,23 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play");
             }
 
+            // assert that the player is not mind controlled and cannot move on their own
+            if (me.MindControlIsActive == true)
+            {
+                if (MindControlProcedures.PlayerIsMindControlledWithType(me, PvPStatics.MindControl__Movement) == true)
+                {
+                    TempData["Error"] = "You try to move but discover you cannot!";
+                    TempData["SubError"] = "Some other mage has partial control of your mind, disabling your ability to move on your own!";
+                    return RedirectToAction("Play");
+                }
+                else
+                {
+                    // turn off mind control is the player has no more MC effects on them
+                    bool isNowFree = MindControlProcedures.ClearPlayerMindControlFlagIfOn(me);
+                    me.MindControlIsActive = false;
+                }
+            }
+
             Location currentLocation = LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName);
             Location nextLocation = LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == locname);
 
@@ -706,13 +723,22 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play");
             }
 
+
+
             DbStaticSkill skill = SkillStatics.GetStaticSkill(attackName);
             DbStaticForm futureForm = FormStatics.GetForm(skill.FormdbName);
+
+            // if the spell is a form of mind control, check that the target is not already afflicated with it
+            if (me.MindControlIsActive == true && MindControlProcedures.PlayerIsMindControlledWithType(me, futureForm.dbName) == true)
+            {
+                TempData["Error"] = "This player is already under the influence of this type of mind control.";
+                TempData["SubError"] = "You must wait for their current mind control of this kind to expire before attempting to seize control yourself.";
+            }
 
             // prevent low level players from taking on high level bots
             if (targeted.MembershipId <= -3)
             {
-                if ((targeted.MembershipId == -3 || targeted.MembershipId == -10 || targeted.MembershipId == -6) && PvPStatics.ChaosMode==true)
+                if ((targeted.MembershipId == -3 || targeted.MembershipId == -10 || targeted.MembershipId == -6) && PvPStatics.ChaosMode == true)
                 {
                     TempData["Error"] = "Attacking merchants and Jewdewfae is disabled in chaos mode.";
                     return RedirectToAction("Play");

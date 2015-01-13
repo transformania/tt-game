@@ -98,6 +98,14 @@ namespace tfgame.Procedures
             ErrorBox output = new ErrorBox();
             output.HasError = true;
 
+            // assert that world update is not in progress
+            if (PvPStatics.AnimateUpdateInProgress == true)
+            {
+                output.Error = "Animate portion of world update is in progress.";
+                output.SubError = "Try again in a few seconds.";
+                return output;
+            }
+
             // assert both commander and victim is animate
             if (master.Mobility != "full" || victim.Mobility != "full")
             {
@@ -148,6 +156,34 @@ namespace tfgame.Procedures
             output *= 1-buffs.MoveActionPointDiscount();
 
             return output;
+        }
+
+        public static bool ClearPlayerMindControlFlagIfOn(Player player)
+        {
+            IMindControlRepository mcRepo = new EFMindControlRepository();
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+
+            if (mcRepo.MindControls.Where(m => m.VictimId == player.Id).Count() == 0)
+            {
+                Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+                dbPlayer.MindControlIsActive = false;
+                playerRepo.SavePlayer(dbPlayer);
+                return true;
+            }
+            return false;
+        }
+
+        public static bool PlayerIsMindControlledWithType(Player player, string type)
+        {
+            IMindControlRepository mcRepo = new EFMindControlRepository();
+            if (mcRepo.MindControls.Where(p => p.VictimId == player.Id && p.Type == type).Count() > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
     }

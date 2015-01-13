@@ -22,15 +22,15 @@
 <div class="containerInner">
 
     <p>Where would you like to command your victim, @ViewBag.Victim.GetFullName(), to move to?  Your victim has @ViewBag.Victim.ActionPoints AP available.</p><br />
-    
+
     @{
 
         foreach (tfgame.ViewModels.Location loc in Model)
         {
-            @Html.ActionLink(loc.Name, "MoveVictimSend", "NPC", new { id=ViewBag.Victim.Id,  to = loc.dbName }, null)
-    <span>(@tfgame.Procedures.MindControlProcedures.GetAPCostToMove(ViewBag.Buffs, ViewBag.Victim.dbLocationName, loc.dbName) AP)</span><br />
+            @Html.ActionLink(loc.Name, "MoveVictimSend", "NPC", new { id = ViewBag.Victim.Id, to = loc.dbName }, null)
+            <span>(@tfgame.Procedures.MindControlProcedures.GetAPCostToMove(ViewBag.Buffs, ViewBag.Victim.dbLocationName, loc.dbName) AP)</span><br />
         }
 
-}
+    }
 
 </div>

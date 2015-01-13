@@ -68,6 +68,7 @@ namespace tfgame.Procedures
                 {
                     MindControl = mc,
                     Victim = PlayerProcedures.GetPlayerFormViewModel(mc.VictimId),
+                    Master = PlayerProcedures.GetPlayerFormViewModel(mc.MasterId),
                     TypeFriendlyName = GetMCFriendlyName(mc.Type),
                 };
                 output.Add(addme);

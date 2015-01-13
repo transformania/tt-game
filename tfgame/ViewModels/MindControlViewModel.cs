@@ -10,6 +10,7 @@ namespace tfgame.ViewModels
     {
         public MindControl MindControl { get; set; }
         public PlayerFormViewModel Victim { get; set; }
+        public PlayerFormViewModel Master { get; set; }
         public string TypeFriendlyName { get; set;}
     }
 }

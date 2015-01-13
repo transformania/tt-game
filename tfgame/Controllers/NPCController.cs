@@ -503,7 +503,12 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult MindControlList()
         {
-            return View();
+            Player me = PlayerProcedures.GetPlayerFromMembership();
+            ViewBag.MyId = me.Id;
+
+            IEnumerable<MindControlViewModel> output = MindControlProcedures.GetAllMindControlVMsWithPlayer(me);
+
+            return View(output);
         }
 	}
 }

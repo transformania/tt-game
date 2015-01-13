@@ -1160,6 +1160,7 @@ namespace tfgame.Controllers
             ProofreadCopy.Skill_ManaCost = OldCopy.Skill_ManaCost;
             ProofreadCopy.Skill_TFPointsAmount = OldCopy.Skill_TFPointsAmount;
             ProofreadCopy.Skill_HealthDamageAmount = OldCopy.Skill_HealthDamageAmount;
+            ProofreadCopy.Skill_LearnedAtLocationOrRegion = OldCopy.Skill_LearnedAtLocationOrRegion;
             ProofreadCopy.Skill_LearnedAtRegion = OldCopy.Skill_LearnedAtRegion;
             ProofreadCopy.Skill_DiscoveryMessage = OldCopy.Skill_DiscoveryMessage;
 

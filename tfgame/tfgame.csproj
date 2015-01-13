@@ -349,6 +349,7 @@
     <Compile Include="Procedures\DMRollProcedures.cs" />
     <Compile Include="Procedures\DonatorProcedures.cs" />
     <Compile Include="Procedures\FurnitureProcedures.cs" />
+    <Compile Include="Procedures\MindControlProcedures.cs" />
     <Compile Include="Procedures\Pathfinding.cs" />
     <Compile Include="Procedures\CovenantProcedures.cs" />
     <Compile Include="Procedures\EffectProcedures.cs" />
@@ -398,6 +399,7 @@
     <Compile Include="ViewModels\LogBox.cs" />
     <Compile Include="ViewModels\MessageBag.cs" />
     <Compile Include="ViewModels\MessageCountDataViewModel.cs" />
+    <Compile Include="ViewModels\MindControlViewModel.cs" />
     <Compile Include="ViewModels\NewCharacterViewModel.cs" />
     <Compile Include="ViewModels\PlayerFormItemsSkillsViewModel.cs" />
     <Compile Include="ViewModels\PlayerFormViewModel.cs" />
@@ -1534,6 +1536,7 @@
     <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_14.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\XP\Alpha_14.cshtml" />
     <Content Include="Views\NPC\MindControlList.cshtml" />
+    <Content Include="Views\NPC\partial\CommandLinks.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -455,9 +455,9 @@ namespace tfgame.Procedures
                 else if (targetForm.MobilityType == "mindcontrol" && target.Health <= 0)
                 {
                     Player attacker = playerRepo.Players.FirstOrDefault(p => p.Id == attackerId);
-                    AttackProcedures.AddMindControl(attacker, victim, targetForm.dbName);
+                    MindControlProcedures.AddMindControl(attacker, victim, targetForm.dbName);
 
-                    output.LocationLog = "<br><b>" + target.GetFullName() + " was partially mind controlled by " + targetForm.FriendlyName + " here.</b>";
+                    output.LocationLog = "<br><b>" + target.GetFullName() + " was partially mind controlled by " + attacker.GetFullName() + " here.</b>";
                     output.AttackerLog = "<br><b>You have seized the mind of " + target.GetFullName() + "!  You can now force them into forming certain actions.";
                     output.VictimLog = "<br><b>You are now being partially mind controlled by " + targetForm.FriendlyName + "!</b>";
 

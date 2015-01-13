@@ -414,7 +414,7 @@ namespace tfgame.Controllers
             // assert that the player is not mind controlled and cannot move on their own
             if (me.MindControlIsActive == true)
             {
-                if (MindControlProcedures.PlayerIsMindControlledWithType(me, PvPStatics.MindControl__Movement) == true)
+                if (MindControlProcedures.PlayerIsMindControlledWithType(me, MindControlStatics.MindControl__Movement) == true)
                 {
                     TempData["Error"] = "You try to move but discover you cannot!";
                     TempData["SubError"] = "Some other mage has partial control of your mind, disabling your ability to move on your own!";
@@ -3576,6 +3576,7 @@ namespace tfgame.Controllers
                     {
                         context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[MindControls] SET TurnsRemaining = TurnsRemaining - 1");
                         context.Database.ExecuteSqlCommand("DELETE FROM [Stats].[dbo].[MindControls] WHERE TurnsRemaining <= 0");
+                        context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[MindControls] SET TimesUsedThisTurn = 0");
 
                         log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished mind control cooldown.");
                     }

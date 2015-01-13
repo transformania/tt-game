@@ -23,8 +23,8 @@
 
 <div>
     <p class="infoMessage result">@ViewBag.Result</p>
-    <p class="infoMessage error">@ViewBag.Error</p>
-    <p class="infoMessage suberror">@ViewBag.SubError</p>
+    <p class="infoMessage error">@ViewBag.ErrorMessage</p>
+    <p class="infoMessage suberror">@ViewBag.SubErrorMessage</p>
 </div>
 
 @*<div class="specialBox specialBox2">
@@ -55,7 +55,7 @@
                         <div>
                             <p>
                                 @Html.Partial("~/Views/PvP/Player_Partial.cshtml", m.Victim)
-                                <span><b>@m.TypeFriendlyName</b> ( @m.MindControl.TurnsRemaining turns remaining)</span>
+                                <span><b>@m.TypeFriendlyName</b> ( @m.MindControl.TurnsRemaining turns remaining.  Used @m.MindControl.TimesUsedThisTurn/@tfgame.Procedures.MindControlProcedures.GetCommandLimitOfType(m.MindControl.Type) this turn.)</span>
                                 <span>@Html.Partial("partial/CommandLinks", m)</span>
                             </p>
                         </div>
@@ -78,7 +78,7 @@
                         <div>
                             <p>
                                 @Html.Partial("~/Views/PvP/Player_Partial.cshtml", m.Master)
-                                <span><b>@m.TypeFriendlyName</b> ( @m.MindControl.TurnsRemaining turns remaining)</span>
+                                <span><b>@m.TypeFriendlyName</b> ( @m.MindControl.TurnsRemaining turns remaining.  Used @m.MindControl.TimesUsedThisTurn/@tfgame.Procedures.MindControlProcedures.GetCommandLimitOfType(m.MindControl.Type) this turn.)</span>
                             </p>
                         </div>
                     </div>

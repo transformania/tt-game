@@ -144,9 +144,27 @@ namespace tfgame.Procedures
                 return output;
             }
 
+            // assert that this mind control has not reached its limit
+            if (mc.TimesUsedThisTurn >= GetCommandLimitOfType(mc.Type))
+            {
+                output.Error = "You've issued this command too many times this turn.";
+                output.SubError = "Wait until next turn to issue your next command.";
+                return output;
+            }
+
             output.HasError = false;
             return output;
 
+        }
+
+        public static int GetCommandLimitOfType(string type)
+        {
+            if (type == MindControlStatics.MindControl__Movement)
+            {
+                return MindControlStatics.MindControl__Movement_Limit;
+            }
+
+            return 0;
         }
 
         public static decimal GetAPCostToMove(BuffBox buffs, string oldLocation, string newLocation)
@@ -185,6 +203,14 @@ namespace tfgame.Procedures
             {
                 return false;
             }
+        }
+
+        public static void AddCommandUsedToMindControl(Player master, Player victim)
+        {
+            IMindControlRepository mcRepo = new EFMindControlRepository();
+            MindControl mc = mcRepo.MindControls.FirstOrDefault(m => m.MasterId == master.Id && m.VictimId == victim.Id);
+            mc.TimesUsedThisTurn++;
+            mcRepo.SaveMindControl(mc);
         }
 
     }

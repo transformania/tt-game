@@ -141,7 +141,7 @@ namespace tfgame.Statics
         public static decimal CleanseManaCost = 3M;
         public static decimal CleanseTFEnergyPercentDecrease = 2.0M;
         public static decimal MeditateManaRestoreBase = 10.0M;
-        public static decimal CleanseHealthRestoreBase = 10.0M;
+        public static decimal CleanseHealthRestoreBase = 7.0M;
         public static decimal SearchAPCost = 4.0M;
 
         public static int MaxCarryableItemCountBase = 6;
@@ -174,7 +174,7 @@ namespace tfgame.Statics
         public static string ItemType_Shoes = "shoes";
         public static string ItemType_Pet = "pet";
 
-        public const string MindControl__Movement = "form_(MC-Movement)_Judoo";
+        
 
         public const int PsychopathDefaultAmount = 15;
         public const int Covenant_MaximumAnimatePlayerCount = 25;
@@ -203,6 +203,12 @@ namespace tfgame.Statics
         public const string SpellHealthDamageResistance_Description = "Willpower damage reduction when hit by a spell (%)";
         public const string SpellTFEnergyDamageResistance_Description = "Transformation energy damage reduction when hit by a spell (%)";
         public const string ExtraInventorySpace_Description = "Extra inventory spaces (Amt)";
+    }
+
+    public static class MindControlStatics
+    {
+        public const string MindControl__Movement = "form_(MC-Movement)_Judoo";
+        public const int MindControl__Movement_Limit = 2;
     }
 
     public static class InanimateXPStatics

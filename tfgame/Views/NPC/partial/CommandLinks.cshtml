@@ -1,7 +1,7 @@
 ﻿@model tfgame.ViewModels.MindControlViewModel
 
 @{
-    if (Model.MindControl.Type == tfgame.Statics.PvPStatics.MindControl__Movement)
+    if (Model.MindControl.Type == tfgame.Statics.MindControlStatics.MindControl__Movement)
     {
         @Html.ActionLink("Command Movement","MoveVictim","NPC", new {id=Model.Victim.Player.Id}, null)
     }

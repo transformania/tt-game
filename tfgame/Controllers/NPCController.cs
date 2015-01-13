@@ -18,6 +18,8 @@ namespace tfgame.Controllers
 
         // This controller should handle all interactions with NPC characters, ie Lindella, Wuffie, and Jewdewfae, and any others
 
+        public const int MovementControlLimit = 2;
+
         public ActionResult Index()
         {
             return View();
@@ -574,8 +576,19 @@ namespace tfgame.Controllers
                 return RedirectToAction("MindControlList");
             }
 
+            // assert that the player has not attacked too recently to move
+            double lastAttackTimeAgo = Math.Abs(Math.Floor(victim.LastCombatTimestamp.Subtract(DateTime.UtcNow).TotalSeconds));
+            if (lastAttackTimeAgo < 45)
+            {
+                TempData["Error"] = "Your victim is resting from a recent attack.";
+                TempData["SubError"] = "You must wait " + (45 - lastAttackTimeAgo) + " more seconds your victim will be able to move.";
+                return RedirectToAction("Play");
+            }
+
+
             // success; move the victim.
             PlayerProcedures.MovePlayerMultipleLocations(victim, to, apCost);
+            MindControlProcedures.AddCommandUsedToMindControl(me, victim);
 
             string attackerMessage = "You commanded " + victim.GetFullName() + " to move to " + LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == to).Name + ", using " + apCost + " of their action points in the process.";
             PlayerLogProcedures.AddPlayerLog(me.Id, attackerMessage, false);

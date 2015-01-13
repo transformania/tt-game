@@ -508,7 +508,72 @@ namespace tfgame.Controllers
 
             IEnumerable<MindControlViewModel> output = MindControlProcedures.GetAllMindControlVMsWithPlayer(me);
 
+            ViewBag.ErrorMessage = TempData["Error"];
+            ViewBag.SubErrorMessage = TempData["SubError"];
+            ViewBag.Result = TempData["Result"];
+
             return View(output);
+        }
+
+        [Authorize]
+        public ActionResult MoveVictim(int id)
+        {
+
+            Player me = PlayerProcedures.GetPlayerFromMembership();
+            Player victim = PlayerProcedures.GetPlayer(id);
+
+            // run generic MC checks
+            ErrorBox errorsBox = MindControlProcedures.AssertBasicMindControlConditions(me, victim);
+            if (errorsBox.HasError == true)
+            {
+                TempData["Error"] = errorsBox.Error;
+                TempData["SubError"] = errorsBox.SubError;
+                return RedirectToAction("MindControlList");
+            }
+
+            ViewBag.Victim = victim;
+            ViewBag.Buffs = ItemProcedures.GetPlayerBuffs(victim);
+
+            IEnumerable<Location> output = LocationsStatics.GetLocation.Where(l => l.dbName != "");
+
+            return View(output);
+        }
+
+        [Authorize]
+        public ActionResult MoveVictimSend(int id, string to)
+        {
+
+            Player me = PlayerProcedures.GetPlayerFromMembership();
+            Player victim = PlayerProcedures.GetPlayer(id);
+
+            // run generic MC checks
+            ErrorBox errorsBox = MindControlProcedures.AssertBasicMindControlConditions(me, victim);
+            if (errorsBox.HasError == true)
+            {
+                TempData["Error"] = errorsBox.Error;
+                TempData["SubError"] = errorsBox.SubError;
+                return RedirectToAction("MindControlList");
+            }
+
+            // assert that the victim has enough AP for the journey
+            decimal apCost = MindControlProcedures.GetAPCostToMove(ItemProcedures.GetPlayerBuffs(victim), victim.dbLocationName, to);
+            if (victim.ActionPoints < apCost)
+            {
+                TempData["Error"] = errorsBox.Error;
+                TempData["SubError"] = errorsBox.SubError;
+                return RedirectToAction("MindControlList");
+            }
+
+            // success; move the victim.
+            PlayerProcedures.MovePlayerMultipleLocations(victim, to, apCost);
+
+            string message = "You commanded " + victim.GetFullName() + " to move to " + LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == to).Name + ", using " + apCost + " of their action points in the process.";
+            PlayerLogProcedures.AddPlayerLog(me.Id, message, false);
+
+            message = me.GetFullName() + " commanded you to move to " + LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == to).Name + ", using " + apCost + " of your action points in the process!";
+            PlayerLogProcedures.AddPlayerLog(victim.Id, message, true);
+
+            return RedirectToAction("MindControlList");
         }
 	}
 }

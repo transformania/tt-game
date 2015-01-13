@@ -5,6 +5,7 @@ using System.Web;
 using tfgame.dbModels.Abstract;
 using tfgame.dbModels.Concrete;
 using tfgame.dbModels.Models;
+using tfgame.Statics;
 using tfgame.ViewModels;
 
 namespace tfgame.Procedures
@@ -84,6 +85,69 @@ namespace tfgame.Procedures
             {
                 return "ERROR:  UNKNOWN";
             }
+        }
+
+        public static MindControl GetMindControlBetweenPlayers(Player master, Player victim)
+        {
+            IMindControlRepository mcRepo = new EFMindControlRepository();
+            return mcRepo.MindControls.FirstOrDefault(m => m.MasterId == master.Id || m.VictimId == victim.Id);
+        }
+
+        public static ErrorBox AssertBasicMindControlConditions(Player master, Player victim)
+        {
+            ErrorBox output = new ErrorBox();
+            output.HasError = true;
+
+            // assert both commander and victim is animate
+            if (master.Mobility != "full" || victim.Mobility != "full")
+            {
+                output.Error = "Both you and your victim must be animate in order to invoke any mind control commands.";
+                return output;
+            }
+
+            // assert that the victim is not offline
+            if (PlayerProcedures.PlayerIsOffline(victim) == true)
+            {
+                output.Error = "Your victim has gone offline.";
+                output.SubError = "You can only issue commands to online players under your mind control.";
+                return output;
+            }
+
+            // assert that there is indeed a mind control between these two players
+            MindControl mc = MindControlProcedures.GetMindControlBetweenPlayers(master, victim);
+            if (mc == null)
+            {
+                output.Error = "You are not mind controlling this person with this type of mind control.";
+                return output;
+            }
+
+            // assert that the player is the master of the mind control
+            if (mc.MasterId != master.Id)
+            {
+                output.Error = "You are not mind controlling this person with this type of mind control.";
+                return output;
+            }
+
+            // assert that the mind control is not expired, if for whatever reason it has not been deleted
+            if (mc.TurnsRemaining <= 0)
+            {
+                output.Error = "This mind control has expired.";
+                return output;
+            }
+
+            output.HasError = false;
+            return output;
+
+        }
+
+        public static decimal GetAPCostToMove(BuffBox buffs, string oldLocation, string newLocation)
+        {
+            Location oldLocationl = LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == oldLocation);
+            Location newLocationl = LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == newLocation);
+            decimal output = Math.Abs(oldLocationl.X - newLocationl.X) + Math.Abs(oldLocationl.Y - newLocationl.Y);
+            output *= 1-buffs.MoveActionPointDiscount();
+
+            return output;
         }
 
     }

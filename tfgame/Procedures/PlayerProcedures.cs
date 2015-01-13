@@ -597,6 +597,18 @@ namespace tfgame.Procedures
             return MovePlayer(GetPlayerFromMembership().Id, destinationDbName, actionPointDiscount);
         }
 
+        public static void MovePlayerMultipleLocations(Player player, string destinationDbName, decimal actionPointCost)
+        {
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            AIProcedures.MoveTo(dbPlayer, destinationDbName, 99999);
+            dbPlayer.ActionPoints -= actionPointCost;
+            dbPlayer.dbLocationName = destinationDbName;
+            dbPlayer.LastActionTimestamp = DateTime.UtcNow;
+            playerRepo.SavePlayer(dbPlayer);
+
+        }
+
         public static string TeleportPlayer(Player player, string destination, bool showDestinationInLocationLog)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();

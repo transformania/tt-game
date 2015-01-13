@@ -22,6 +22,13 @@ namespace tfgame.ViewModels
 
     }
 
+    public class ErrorBox
+    {
+        public bool HasError { get; set; }
+        public string Error { get; set; }
+        public string SubError { get; set; }
+    }
+
     //public class ViewModel
     //{
 

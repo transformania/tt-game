@@ -8,7 +8,7 @@
 @{
     
     foreach (Location loc in Model) {
-        @Html.ActionLink(loc.Name, "Teleport", "PvP", new { to = loc.dbName}, null)<br />
+        @Html.ActionLink(loc.Name, "Teleport", "PvP", new { id = ViewBag.Victim.Id, to = loc.dbName}, null)<br />
     }
     
 }

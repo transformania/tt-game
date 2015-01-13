@@ -390,7 +390,7 @@ namespace tfgame.Controllers
             }
 
             // assert that the player does not already have a pet
-            if (ItemProcedures.PlayerHasNumberOfThisItem(me, PvPStatics.ItemType_Pet) > 0 )
+            if (ItemProcedures.PlayerIsWearingNumberOfThisType(me.Id, PvPStatics.ItemType_Pet) > 0)
             {
                 TempData["Error"] = "You already have a pet.";
                 TempData["SubError"] = "You can only keep one pet at a time.";

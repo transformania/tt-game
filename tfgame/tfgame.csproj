@@ -674,10 +674,12 @@
     <Content Include="Images\PvP\portraits\Minotaur_Meddle.png" />
     <Content Include="Images\PvP\portraits\mouse_boy_Danaume.jpg" />
     <Content Include="Images\PvP\portraits\naga_JBovinne.png" />
+    <Content Include="Images\PvP\portraits\neurotic_author_Babblingfaces.jpg" />
     <Content Include="Images\PvP\portraits\new_age_retro_hippy_Meddle.png" />
     <Content Include="Images\PvP\portraits\nighthuntress_Martiandawn.png" />
     <Content Include="Images\PvP\portraits\Omnibus_Meddle.png" />
     <Content Include="Images\PvP\portraits\otter_boy_Kyethusky.png" />
+    <Content Include="Images\PvP\portraits\pet_merchant_Luxianne.png" />
     <Content Include="Images\PvP\portraits\pig_girl_Meddle.png" />
     <Content Include="Images\PvP\portraits\possessed_doll_Foxpower93.png" />
     <Content Include="Images\PvP\portraits\psycho_female.png" />

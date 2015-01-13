@@ -560,8 +560,9 @@ namespace tfgame.Controllers
                 return RedirectToAction("MindControlList");
             }
 
+            BuffBox victimBuffs = ItemProcedures.GetPlayerBuffs(victim);
             // assert that the victim has enough AP for the journey
-            decimal apCost = MindControlProcedures.GetAPCostToMove(ItemProcedures.GetPlayerBuffs(victim), victim.dbLocationName, to);
+            decimal apCost = MindControlProcedures.GetAPCostToMove(victimBuffs, victim.dbLocationName, to);
             if (victim.ActionPoints < apCost)
             {
                 TempData["Error"] = "Your victim does not have enough action points to move there.";
@@ -582,6 +583,13 @@ namespace tfgame.Controllers
             {
                 TempData["Error"] = "Your victim is resting from a recent attack.";
                 TempData["SubError"] = "You must wait " + (45 - lastAttackTimeAgo) + " more seconds your victim will be able to move.";
+                return RedirectToAction("Play");
+            }
+
+            // assert that the victim is not carrying too much to move
+            if (ItemProcedures.PlayerIsCarryingTooMuch(victim.Id, 0, victimBuffs))
+            {
+                TempData["Error"] = "Your victim is carrying too much to be able to move.";
                 return RedirectToAction("Play");
             }
 

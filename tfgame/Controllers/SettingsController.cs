@@ -119,7 +119,7 @@ namespace tfgame.Controllers
 
              if (output == null)
              {
-                 TempData["Error"] = "It seems that " + player.FirstName + " " + player.LastName + " has not written a player biography yet.";
+                 TempData["Error"] = "It seems that this player has not written a player biography yet.";
                  return RedirectToAction("Play", "PvP");
              }
 

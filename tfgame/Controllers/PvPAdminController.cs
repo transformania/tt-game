@@ -1031,7 +1031,11 @@ namespace tfgame.Controllers
             //    }
             //}
 
-            tfgame.Procedures.BossProcedures.BossProcedures_Donna.RunDonnaActions();
+          //  tfgame.Procedures.BossProcedures.BossProcedures_Donna.RunDonnaActions();
+
+            AIProcedures.SpawnLindella();
+            BossProcedures_Fae.SpawnFae();
+            BossProcedures_PetMerchant.SpawnPetMerchant();
 
             return RedirectToAction("Index");
         }

@@ -20,6 +20,19 @@ namespace tfgame.CustomHtmlHelpers
             return new MvcHtmlString(output);
         }
 
+
+        public static MvcHtmlString PrintMCIcon(Player player)
+        {
+            string output = "";
+
+            if (player.MindControlIsActive == true)
+            {
+                output = "<span class='mindControlled'></span>";
+            }
+
+            return new MvcHtmlString(output);
+        }
+
         public static MvcHtmlString PrintGenderIcon(Player player)
         {
             string output = "<span class=";

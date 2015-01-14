@@ -146,6 +146,13 @@ locationDescription {
     display: inline-block;
 }
 
+.mindControlled {
+     width: 25px;
+    height: 25px;
+    background-size: 100% 100%;
+    background-image: url("../Images/PvP/Icons/mc_swirl.gif");
+    display: inline-block;
+}
 
 
 .icon-online {

@@ -16,6 +16,9 @@ DELETE FROM [Stats].[dbo].[PlayerExtras]
 DELETE FROM [Stats].[dbo].[AIDirectives]
 DELETE FROM [Stats].[dbo].[InanimateXPs]
 DELETE FROM [Stats].[dbo].[Furnitures]
+DELETE FROM [Stats].[dbo].[MindControls]
+
+UPDATE [Stats].[dbo].[PvPWorldStats] SET Boss_Donna = 'unstarted', [Boss_Valentine] = 'unstarted', [Boss_Bimbo] = 'unstarted', [Boss_Thief] = 'unstarted', [TurnNumber] = 0
 
 
 reset PvPWorldStatistics
@@ -24,3 +27,6 @@ set chaos mode to false
 
 spawn Lindella
 spawn jewdewfae
+spawn pet merchant
+
+Change leaderboard turn numbers

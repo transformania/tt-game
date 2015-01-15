@@ -544,6 +544,7 @@
     <Content Include="Images\PvP\itemsPortraits\flirty_two_toned_bow_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\french_maid_petticoat_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\gemstone_Lux.gif" />
+    <Content Include="Images\PvP\itemsPortraits\golden_rat_trophy_Luxianne.png" />
     <Content Include="Images\PvP\itemsPortraits\gothic_lolita_boots_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\heart_glasses_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\Honeypot_Luxianne.png" />
@@ -578,7 +579,6 @@
     <Content Include="Images\PvP\itemsPortraits\platform_heels_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\posessed_doll_foxpower93.png" />
     <Content Include="Images\PvP\itemsPortraits\Queens_Panties_Luxianne.png" />
-    <Content Include="Images\PvP\itemsPortraits\rat_trophy_Judoo.jpg" />
     <Content Include="Images\PvP\itemsPortraits\red_leather_boots_Jbovinne.png" />
     <Content Include="Images\PvP\itemsPortraits\red_wavy_wig_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\runic_dildo_Meddle.png" />

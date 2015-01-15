@@ -462,6 +462,7 @@ namespace tfgame.Procedures
                     output.VictimLog = "<br><b>You are now being partially mind controlled by " + targetForm.FriendlyName + "!</b>";
 
                     TFEnergyProcedures.DeleteAllPlayerTFEnergiesOfType(target.Id, targetForm.dbName);
+                    EffectProcedures.GivePerkToPlayer(MindControlStatics.MindControl__Movement_DebuffEffect, target);
                 }
                 #endregion
             }

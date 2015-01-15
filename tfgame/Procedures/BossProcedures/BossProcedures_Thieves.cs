@@ -17,6 +17,7 @@ namespace tfgame.Procedures.BossProcedures
         private const string MaleBossLastName = "Seekshadow";
         private const string FemaleBossFirstName = "Sister Lujienne";
         private const string FemaleBossLastName = "Seekshadow";
+        public const string GoldenTrophySpellDbName = "skill_Seekshadow's_Triumph_Judoo";
 
         public static void SpawnThieves()
         {
@@ -273,8 +274,8 @@ namespace tfgame.Procedures.BossProcedures
                         playerRepo.SavePlayer(attackingThief);
                         AttackProcedures.Attack(attackingThief, target, "lowerHealth");
                         AttackProcedures.Attack(attackingThief, target, "lowerHealth");
-                        AttackProcedures.Attack(attackingThief, target, "skill_Marble_Maiden_Judoo");
-                        AttackProcedures.Attack(attackingThief, target, "skill_Marble_Maiden_Judoo");
+                        AttackProcedures.Attack(attackingThief, target, "skill_Seekshadow's_Triumph_Judoo");
+                        AttackProcedures.Attack(attackingThief, target, "skill_Seekshadow's_Triumph_Judoo");
                         target = playerRepo.Players.FirstOrDefault(p => p.Id == victimThiefItem.OwnerId && p.MembershipId != -8 && p.MembershipId != -9);
 
                         // if we have managed to turn the target, take back the victim-item
@@ -343,8 +344,8 @@ namespace tfgame.Procedures.BossProcedures
 
                 if (femalethief.Mobility == "full")
                 {
-                    AttackProcedures.Attack(femalethief, attacker, "skill_Marble_Maiden_Judoo");
-                    AttackProcedures.Attack(femalethief, attacker, "skill_Marble_Maiden_Judoo");
+                    AttackProcedures.Attack(femalethief, attacker, "skill_Seekshadow's_Triumph_Judoo");
+                    AttackProcedures.Attack(femalethief, attacker, "skill_Seekshadow's_Triumph_Judoo");
                     femalethief = playerRepo.Players.FirstOrDefault(f => f.FirstName == FemaleBossFirstName && f.LastName == FemaleBossLastName);
                 }
 
@@ -374,7 +375,7 @@ namespace tfgame.Procedures.BossProcedures
                     for (int i = 0; i < roll; i++)
                     {
                         AttackProcedures.Attack(malethief, attacker, "lowerHealth");
-                        AttackProcedures.Attack(malethief, attacker, "skill_Marble_Maiden_Judoo");
+                        AttackProcedures.Attack(malethief, attacker, "skill_Seekshadow's_Triumph_Judoo");
                     }
                 }
                 else if (femalethief.Mobility == "full")
@@ -382,7 +383,7 @@ namespace tfgame.Procedures.BossProcedures
                     for (int i = 0; i < roll; i++)
                     {
                         AttackProcedures.Attack(malethief, attacker, "lowerHealth");
-                        AttackProcedures.Attack(malethief, attacker, "skill_Marble_Maiden_Judoo");
+                        AttackProcedures.Attack(malethief, attacker, "skill_Seekshadow's_Triumph_Judoo");
                     }
                 }
             }

@@ -99,7 +99,7 @@ namespace tfgame.CustomHtmlHelpers
         public static MvcHtmlString PrintPvPIcon(Item item)
         {
 
-            if (item.PvPEnabled == true)
+            if (item.PvPEnabled == false)
             {
                 return new MvcHtmlString("<span class='icon-pvp' title='This item is in PvP mode.'></span>");
             }
@@ -112,7 +112,7 @@ namespace tfgame.CustomHtmlHelpers
         public static MvcHtmlString PrintPvPIcon(Item_VM item)
         {
 
-            if (item.PvPEnabled == true)
+            if (item.PvPEnabled == false)
             {
                 return new MvcHtmlString("<span class='icon-pvp' title='This item is in PvP mode.'></span>");
             }
@@ -125,7 +125,7 @@ namespace tfgame.CustomHtmlHelpers
         public static MvcHtmlString PrintPvPIcon(Covenant covenant)
         {
 
-            if (covenant.IsPvP == true)
+            if (covenant.IsPvP == false)
             {
                 return new MvcHtmlString("<span class='icon-pvp' title='This covenant is in PvP mode.'></span>");
             }

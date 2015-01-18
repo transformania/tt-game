@@ -59,7 +59,7 @@ namespace tfgame.dbModels.Models
 
         public bool IsTheifAvailable()
         {
-            if (Boss_Thief == "unstarted" && Boss_Valentine != "active" && Boss_Donna != "active" && Boss_Bimbo != "active" && TurnNumber >= BossSummonDictionary.GlobalBossSummonDictionary.Values.FirstOrDefault(p => p.BossName == "BimboBoss").MinimumTurn)
+            if (Boss_Thief == "unstarted" && Boss_Valentine != "active" && Boss_Donna != "active" && Boss_Bimbo != "active" && TurnNumber >= BossSummonDictionary.GlobalBossSummonDictionary.Values.FirstOrDefault(p => p.BossName == "Thieves").MinimumTurn)
             {
                 return true;
             }

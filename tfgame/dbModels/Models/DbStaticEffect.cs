@@ -22,6 +22,8 @@ namespace tfgame.dbModels.Models
 
         public string ObtainedAtLocation { get; set; }
 
+        public bool IsRemovable { get; set; }
+
         public string MessageWhenHit { get; set; }
         public string MessageWhenHit_M { get; set; }
         public string MessageWhenHit_F { get; set; }

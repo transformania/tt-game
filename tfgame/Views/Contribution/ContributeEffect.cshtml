@@ -200,6 +200,11 @@
         </div>
 
         <div class="form__panel">
+            <label for="Effect_IsRemovable">Is this effect removable through use of certain items?  (All non-boss curses and blessing must have this checked.)</label>
+            @Html.CheckBoxFor(e => e.Effect_IsRemovable)
+        </div>
+
+        <div class="form__panel">
             <label for="Effect_Bonuses">Abilities affected by this curse.  The current balance score is:  <b>@ViewBag.BalanceScore</b>  Please use the bonus calculator @Html.ActionLink("which can be opened in a new tab by clicking here", "ContributeBalanceCalculatorEffect", new { controller = "PvP" }, new { target = "_blank" }) as a reference to see which bonuses / penalties are available and to see whether your curse falls within acceptable limits.  Mote:  Curses gained from searching a location ARE EXEMPT from these balancing rules but may be changed by the admins as seen fit.</label>
             @Html.TextAreaFor(e => e.Effect_Bonuses)
         </div>

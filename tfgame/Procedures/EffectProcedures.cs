@@ -32,6 +32,7 @@ namespace tfgame.Procedures
                                                            Cooldown = i.Cooldown,
                                                            dbName = i.dbName,
 
+
                                                        },
 
                                                        Effect = new tfgame.ViewModels.StaticEffect
@@ -45,6 +46,8 @@ namespace tfgame.Procedures
                                                            Duration = si.Duration,
                                                            Cooldown = si.Cooldown,
                                                            ObtainedAtLocation = si.ObtainedAtLocation,
+                                                           IsRemovable = si.IsRemovable,
+                                                          
                                                            MessageWhenHit = si.MessageWhenHit,
                                                            MessageWhenHit_M = si.MessageWhenHit_M,
                                                            MessageWhenHit_F = si.MessageWhenHit_F,
@@ -247,6 +250,16 @@ namespace tfgame.Procedures
 
             Effect effect = effectRepo.Effects.FirstOrDefault(e => e.dbName == perkName && e.OwnerId == player.Id);
             effectRepo.DeleteEffect(effect.Id);
+        }
+
+
+        public static void SetPerkDurationToZero(string perkName, Player player)
+        {
+            IEffectRepository effectRepo = new EFEffectRepository();
+
+            Effect effect = effectRepo.Effects.FirstOrDefault(e => e.dbName == perkName && e.OwnerId == player.Id);
+            effect.Duration = 0;
+            effectRepo.SaveEffect(effect);
         }
 
         public static void DeleteAllPlayerEffects(int playerId)

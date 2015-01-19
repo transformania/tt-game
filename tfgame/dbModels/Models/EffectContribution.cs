@@ -24,6 +24,7 @@ namespace tfgame.dbModels.Models
 
         public string Effect_FriendlyName { get; set; }
         public string Effect_Description { get; set; }
+        public bool Effect_IsRemovable { get; set; }
 
         public int Effect_Duration { get; set; }
         public int Effect_Cooldown { get; set; }

@@ -20,6 +20,7 @@ namespace tfgame.ViewModels
         public int Cooldown { get; set; }
 
         public string ObtainedAtLocation { get; set; }
+        public bool IsRemovable { get; set; }
 
         public string MessageWhenHit { get; set; }
         public string MessageWhenHit_M { get; set; }

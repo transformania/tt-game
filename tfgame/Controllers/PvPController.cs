@@ -1356,6 +1356,13 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play");
             }
 
+             // assert that if this item is of a reusable type that it's not on cooldown
+            if (item.Item.ItemType == PvPStatics.ItemType_Consumable_Reuseable && item.dbItem.TurnsUntilUse > 0)
+            {
+                TempData["Error"] = "This item is still on cooldown and cannot be used again yet.";
+                return RedirectToAction("Play");
+            }
+
             // if this item is a teleportation scroll, redirect to the teleportation page.
             if (item.dbItem.dbName == "item_consumeable_teleportation_scroll")
             {
@@ -1369,6 +1376,11 @@ namespace tfgame.Controllers
             {
                
                 return RedirectToAction("SelfCast","Item");
+            }
+
+            if (item.dbItem.dbName == "item_consumable_curselifter")
+            {
+                return RedirectToAction("RemoveCurse", "Item");
             }
          
             string result = ItemProcedures.UseItem(itemId);

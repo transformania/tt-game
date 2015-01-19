@@ -432,6 +432,14 @@ namespace tfgame.Procedures
 
         }
 
+        public static void ResetUseCooldown(ItemViewModel input)
+        {
+            IItemRepository itemRepo = new EFItemRepository();
+            Item dbItem = itemRepo.Items.FirstOrDefault(i => i.Id == input.dbItem.Id);
+            dbItem.TurnsUntilUse = input.Item.UseCooldown;
+            itemRepo.SaveItem(dbItem);
+        }
+
         public static int PlayerIsWearingNumberOfThisType(int playerId, string itemType)
         {
             IItemRepository itemRepo = new EFItemRepository();
@@ -1208,6 +1216,15 @@ namespace tfgame.Procedures
             IItemRepository itemRepo = new EFItemRepository();
 
             return itemRepo.Items.Where(i => i.dbName == itemdbname && i.OwnerId == player.Id).Count();
+        }
+
+        public static void DeleteItem(int id)
+        {
+            IItemRepository itemRepo = new EFItemRepository();
+
+            Item item = itemRepo.Items.FirstOrDefault(i => i.Id == id);
+
+            itemRepo.DeleteItem(item.Id);
         }
 
         public static void DeleteItemOfName(Player player, string itemdbname)

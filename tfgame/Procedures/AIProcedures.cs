@@ -56,6 +56,10 @@ namespace tfgame.Procedures
         private const string LindellaItem_Spellbook_Giant_DbName = "item_consumable_spellbook_giant";
         private const int LindellaItem_Spellbook_Giant_Count = 1;
 
+        private const string LindellaItem_CurseRemover_DbName = "item_consumable_curselifter";
+        private const int LindellaItem_CurseRemover_Count = 6;
+
+
 
 
         // Membership ID code:  
@@ -777,7 +781,7 @@ namespace tfgame.Procedures
                         }
                     }
 
-                    // small spellbooks
+                    // large spellbooks
                     if (lindellasItems.Where(i => i.dbName == LindellaItem_Spellbook_Large_DbName).Count() < LindellaItem_Spellbook_Large_Count)
                     {
                         for (int x = 0; x < LindellaItem_SelfCastItem_Count; x++)
@@ -800,7 +804,7 @@ namespace tfgame.Procedures
                         }
                     }
 
-                    // small spellbooks
+                    // giant spellbooks
                     if (lindellasItems.Where(i => i.dbName == LindellaItem_Spellbook_Giant_DbName).Count() < LindellaItem_Spellbook_Giant_Count)
                     {
                         for (int x = 0; x < LindellaItem_SelfCastItem_Count; x++)
@@ -808,6 +812,29 @@ namespace tfgame.Procedures
                             Item wproot = new Item
                             {
                                 dbName = LindellaItem_Spellbook_Giant_DbName,
+                                dbLocationName = "",
+                                OwnerId = merchant.Id,
+                                IsEquipped = false,
+                                IsPermanent = true,
+                                Level = 0,
+                                PvPEnabled = false,
+                                TimeDropped = DateTime.UtcNow,
+                                TurnsUntilUse = 0,
+                                VictimName = "",
+                                EquippedThisTurn = false,
+                            };
+                            itemRepo.SaveItem(wproot);
+                        }
+                    }
+
+                    // giant spellbooks
+                    if (lindellasItems.Where(i => i.dbName == LindellaItem_CurseRemover_DbName).Count() < LindellaItem_CurseRemover_Count)
+                    {
+                        for (int x = 0; x < LindellaItem_CurseRemover_Count; x++)
+                        {
+                            Item wproot = new Item
+                            {
+                                dbName = LindellaItem_CurseRemover_DbName,
                                 dbLocationName = "",
                                 OwnerId = merchant.Id,
                                 IsEquipped = false,

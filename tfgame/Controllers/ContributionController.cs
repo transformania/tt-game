@@ -185,6 +185,7 @@ namespace tfgame.Controllers
             saveme.Effect_Duration = input.Effect_Duration ;
             saveme.Effect_Cooldown = input.Effect_Cooldown ;
             saveme.Effect_Bonuses = input.Effect_Bonuses ;
+            saveme.Effect_IsRemovable = input.Effect_IsRemovable;
             saveme.Effect_VictimHitText = input.Effect_VictimHitText ;
             saveme.Effect_VictimHitText_M = input.Effect_VictimHitText_M ;
             saveme.Effect_VictimHitText_F = input.Effect_VictimHitText_F ;
@@ -608,6 +609,7 @@ namespace tfgame.Controllers
             effect.Cooldown = contribution.Effect_Cooldown;
 
             effect.ObtainedAtLocation = contribution.Skill_UniqueToLocation;
+            effect.IsRemovable = contribution.Effect_IsRemovable;
 
             effect.MessageWhenHit = contribution.Effect_VictimHitText;
             effect.MessageWhenHit_M = contribution.Effect_VictimHitText_M;

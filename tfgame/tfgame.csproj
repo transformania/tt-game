@@ -1552,6 +1552,7 @@
     <Content Include="Views\NPC\MindControlList.cshtml" />
     <Content Include="Views\NPC\partial\CommandLinks.cshtml" />
     <Content Include="Views\NPC\MoveVictim.cshtml" />
+    <Content Include="Views\Item\RemoveCurse.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

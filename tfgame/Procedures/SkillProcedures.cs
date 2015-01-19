@@ -237,6 +237,51 @@ namespace tfgame.Procedures
             }
         }
 
+        public static string GiveRandomFindableSkillsToPlayer(Player player, int amount)
+        {
+            ISkillRepository skillRepo = new EFSkillRepository();
+            string output = "You learned the spells:  ";
+
+            IEnumerable<string> playerSkills = skillRepo.Skills.Where(s => s.OwnerId == player.Id).Select(s => s.Name).ToList();
+            IEnumerable<string> learnableSkills = skillRepo.DbStaticSkills.Where(s => (s.LearnedAtLocation != null && s.LearnedAtLocation != "") || (s.LearnedAtRegion != null && s.LearnedAtRegion != "")).Select(s => s.dbName).ToList();
+
+
+            IEnumerable<string> eligibleSkills = from s in learnableSkills
+                                                 let sx = playerSkills
+                                     where !sx.Contains(s)
+                                     select s;
+
+            eligibleSkills = eligibleSkills.ToList();
+
+            if (eligibleSkills.Count() == 0)
+            {
+                return "Unfortunately as you flip through the spellbook you don't learn any new spells that you didn't already know and it crumbles to dust in your hands.";
+            }
+
+            Random rand = new Random(DateTime.UtcNow.Millisecond);
+
+            for (int i = 0; i < amount; i++)
+            {
+                if (eligibleSkills.Count() == 0)
+                {
+                    break;
+                }
+                else
+                {
+                    double max = eligibleSkills.Count();
+                    int randIndex = Convert.ToInt32(Math.Floor(rand.NextDouble() * max));
+                    string skillToGive = eligibleSkills.ElementAt(randIndex);
+                    DbStaticSkill staticSkill = SkillStatics.GetStaticSkill(skillToGive);
+                    GiveSkillToPlayer(player.Id, staticSkill);
+                    eligibleSkills = eligibleSkills.Where(s => s != skillToGive);
+                    output += "<b>" + staticSkill.FriendlyName + "</b>, ";
+                }
+            }
+
+            output += " from reading your spellbook before it crumbles and vanishes into dust.";
+            return output;
+        }
+
         public static void DeleteAllPlayerSkills(int playerId)
         {
             ISkillRepository skillRepo = new EFSkillRepository();
@@ -366,7 +411,6 @@ namespace tfgame.Procedures
                 File.Delete(xmlpath);
             }
         }
-
 
         public static int GetCountOfLearnableSpells()
         {

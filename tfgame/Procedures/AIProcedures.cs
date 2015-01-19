@@ -44,6 +44,18 @@ namespace tfgame.Procedures
         private const string LindellaItem_SelfCastItem_DbName = "item_consumable_selfcaster";
         private const int LindellaItem_SelfCastItem_Count = 5;
 
+        private const string LindellaItem_Spellbook_Small_DbName = "item_consumable_spellbook_small";
+        private const int LindellaItem_Spellbook_Small_Count = 4;
+
+        private const string LindellaItem_Spellbook_Medium_DbName = "item_consumable_spellbook_medium";
+        private const int LindellaItem_Spellbook_Medium_Count = 3;
+
+        private const string LindellaItem_Spellbook_Large_DbName = "item_consumable_spellbook_large";
+        private const int LindellaItem_Spellbook_Large_Count = 2;
+
+        private const string LindellaItem_Spellbook_Giant_DbName = "item_consumable_spellbook_giant";
+        private const int LindellaItem_Spellbook_Giant_Count = 1;
+
 
 
         // Membership ID code:  
@@ -704,6 +716,98 @@ namespace tfgame.Procedures
                             Item wproot = new Item
                             {
                                 dbName = LindellaItem_SelfCastItem_DbName,
+                                dbLocationName = "",
+                                OwnerId = merchant.Id,
+                                IsEquipped = false,
+                                IsPermanent = true,
+                                Level = 0,
+                                PvPEnabled = false,
+                                TimeDropped = DateTime.UtcNow,
+                                TurnsUntilUse = 0,
+                                VictimName = "",
+                                EquippedThisTurn = false,
+                            };
+                            itemRepo.SaveItem(wproot);
+                        }
+                    }
+
+                    // small spellbooks
+                    if (lindellasItems.Where(i => i.dbName == LindellaItem_Spellbook_Small_DbName).Count() < LindellaItem_Spellbook_Small_Count)
+                    {
+                        for (int x = 0; x < LindellaItem_SelfCastItem_Count; x++)
+                        {
+                            Item wproot = new Item
+                            {
+                                dbName = LindellaItem_Spellbook_Small_DbName,
+                                dbLocationName = "",
+                                OwnerId = merchant.Id,
+                                IsEquipped = false,
+                                IsPermanent = true,
+                                Level = 0,
+                                PvPEnabled = false,
+                                TimeDropped = DateTime.UtcNow,
+                                TurnsUntilUse = 0,
+                                VictimName = "",
+                                EquippedThisTurn = false,
+                            };
+                            itemRepo.SaveItem(wproot);
+                        }
+                    }
+
+                    // medium spellbooks
+                    if (lindellasItems.Where(i => i.dbName == LindellaItem_Spellbook_Medium_DbName).Count() < LindellaItem_Spellbook_Medium_Count)
+                    {
+                        for (int x = 0; x < LindellaItem_SelfCastItem_Count; x++)
+                        {
+                            Item wproot = new Item
+                            {
+                                dbName = LindellaItem_Spellbook_Medium_DbName,
+                                dbLocationName = "",
+                                OwnerId = merchant.Id,
+                                IsEquipped = false,
+                                IsPermanent = true,
+                                Level = 0,
+                                PvPEnabled = false,
+                                TimeDropped = DateTime.UtcNow,
+                                TurnsUntilUse = 0,
+                                VictimName = "",
+                                EquippedThisTurn = false,
+                            };
+                            itemRepo.SaveItem(wproot);
+                        }
+                    }
+
+                    // small spellbooks
+                    if (lindellasItems.Where(i => i.dbName == LindellaItem_Spellbook_Large_DbName).Count() < LindellaItem_Spellbook_Large_Count)
+                    {
+                        for (int x = 0; x < LindellaItem_SelfCastItem_Count; x++)
+                        {
+                            Item wproot = new Item
+                            {
+                                dbName = LindellaItem_Spellbook_Large_DbName,
+                                dbLocationName = "",
+                                OwnerId = merchant.Id,
+                                IsEquipped = false,
+                                IsPermanent = true,
+                                Level = 0,
+                                PvPEnabled = false,
+                                TimeDropped = DateTime.UtcNow,
+                                TurnsUntilUse = 0,
+                                VictimName = "",
+                                EquippedThisTurn = false,
+                            };
+                            itemRepo.SaveItem(wproot);
+                        }
+                    }
+
+                    // small spellbooks
+                    if (lindellasItems.Where(i => i.dbName == LindellaItem_Spellbook_Giant_DbName).Count() < LindellaItem_Spellbook_Giant_Count)
+                    {
+                        for (int x = 0; x < LindellaItem_SelfCastItem_Count; x++)
+                        {
+                            Item wproot = new Item
+                            {
+                                dbName = LindellaItem_Spellbook_Giant_DbName,
                                 dbLocationName = "",
                                 OwnerId = merchant.Id,
                                 IsEquipped = false,

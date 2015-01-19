@@ -588,6 +588,7 @@
     <Content Include="Images\PvP\itemsPortraits\silk_dragon_dress_jbovinne.png" />
     <Content Include="Images\PvP\itemsPortraits\silk_pants_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\spankmes_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\spellbook_Judoo.jpg" />
     <Content Include="Images\PvP\itemsPortraits\spellweaver_jawbreaker_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\spellweaver_jawbreaker_small.jpg" />
     <Content Include="Images\PvP\itemsPortraits\spellweaver_jawbreaker__Large_Meddle.png" />
@@ -1555,6 +1556,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="XMLs\FairyChallengeText\SingleBags\" />
+    <Folder Include="XMLs\XPBooks\" />
     <Folder Include="Z_SelfHelp\" />
   </ItemGroup>
   <ItemGroup>

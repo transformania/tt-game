@@ -925,7 +925,7 @@ namespace tfgame.Procedures
                     return name + " consumed a " + itemPlus.Item.FriendlyName + ", immediately restoring " + (itemPlus.Item.InstantManaRestore) + " mana.  " + owner.Mana + "/" + owner.MaxMana + " Mana";
                 }
 
-                // special items time
+                // special items time!
                 if (itemPlus.Item.dbName == "item_consumeable_ClassicMeLotion")
                 {
 
@@ -987,6 +987,30 @@ namespace tfgame.Procedures
                     }
 
                     string output = PlayerProcedures.TeleportPlayer(owner, myCov.HomeLocation, true);
+                    itemRepo.DeleteItem(itemPlus.dbItem.Id);
+                    return output;
+                }
+
+                // spellbooks; these give the reader some spells they do not know.
+                if (itemPlus.Item.dbName.Contains("item_consumable_spellbook_"))
+                {
+                    int amount = 3;
+                    if (itemPlus.Item.dbName.Contains("small"))
+                    {
+                        amount = 3;
+                    }
+                    else if (itemPlus.Item.dbName.Contains("medium"))
+                    {
+                        amount = 6;
+                    } if (itemPlus.Item.dbName.Contains("large"))
+                    {
+                        amount = 9;
+                    }
+                    if (itemPlus.Item.dbName.Contains("giant"))
+                    {
+                        amount = 12;
+                    }
+                    string output = SkillProcedures.GiveRandomFindableSkillsToPlayer(owner, amount);
                     itemRepo.DeleteItem(itemPlus.dbItem.Id);
                     return output;
                 }

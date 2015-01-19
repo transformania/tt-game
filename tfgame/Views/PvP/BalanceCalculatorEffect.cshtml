@@ -25,10 +25,7 @@
     <option value="curse">Curse</option>
 </select>
 
-<p id="curseDurationWrapper">
-    Turn duration of curse?  (This number is not saved from here; you must set the final number on the main ContributeEffect page!)
-    <input type="text" id="curseDurationInput">
-</p>
+
 
 
 <h2>Net balance:  <span id="total"></span>     Target:  <span id="desired">-500</span>  Total points used:  <span id="absolute_total"></span></h2>
@@ -39,6 +36,12 @@
 
 @using (Html.BeginForm("ContributeBalanceCalculatorSend_Effect", "PvP", FormMethod.Post))
 {
+
+    <p id="curseDurationWrapper">
+        Turn duration of curse?  (This number is not saved from here; you must set the final number on the main ContributeEffect page!)
+        @Html.TextBoxFor(m => m.Effect_Duration)
+        @*<input type="text" id="Effect_Duration">*@
+    </p>
 
     @Html.HiddenFor(m => m.Id)
 
@@ -308,7 +311,7 @@
 
         });
 
-        $("#curseDurationInput").focusout(function () {
+        $("#Effect_Duration").focusout(function () {
             recalculateValues();
         });
 
@@ -338,7 +341,7 @@
         });
 
         if (choice == "curse") {
-            total *= $("#curseDurationInput").val();
+            total *= $("#Effect_Duration").val();
         }
 
         $("#total").html(total);
@@ -355,7 +358,7 @@
             $("#total").removeClass("bad");
         }
 
-     //   total *= $("#curseDurationInput").html();
+     //   total *= $("#Effect_Duration").html();
 
     }
 

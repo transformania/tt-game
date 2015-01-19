@@ -2108,6 +2108,8 @@ namespace tfgame.Controllers
                  SaveMe.SpellTFEnergyDamageResistance = input.SpellTFEnergyDamageResistance;
                  SaveMe.ExtraInventorySpace = input.ExtraInventorySpace;
 
+                 SaveMe.Effect_Duration = input.Effect_Duration;
+
                //  SaveMe.History += "Bonus values edited by " + WebSecurity.CurrentUserName + " on " + DateTime.UtcNow + ".<br>";
 
                  contributionRepo.SaveEffectContribution(SaveMe);

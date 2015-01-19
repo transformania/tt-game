@@ -1477,9 +1477,10 @@ namespace tfgame.Procedures
         public static IEnumerable<Player> GetLeadingPlayers__PvP(int number)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            //  return playerRepo.Players.Where(p => p.InPvP==true).OrderByDescending(p => p.Level).ThenByDescending(p => p.XP).Take(number);
-          //  return playerRepo.Players.Where(p => p.MembershipId > 0 && p.InPvP == false).OrderByDescending(p => p.PvPScore).ThenByDescending(p => p.Level).ThenByDescending(p => p.XP).Take(number);
-            return playerRepo.Players.Where(p => p.MembershipId > 0 && p.InPvP == false).OrderByDescending(p => p.Level).ThenByDescending(p => p.Level).ThenByDescending(p => p.XP).Take(number);
+
+            //return playerRepo.Players.Where(p => p.MembershipId > 0 && p.InPvP == false).OrderByDescending(p => p.Level).ThenByDescending(p => p.Level).ThenByDescending(p => p.XP).Take(number);
+
+            return playerRepo.Players.Where(p => p.MembershipId > 0).OrderByDescending(p => p.Level).ThenByDescending(p => p.Level).ThenByDescending(p => p.XP).Take(number);
 
         }
 

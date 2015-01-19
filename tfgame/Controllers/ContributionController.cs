@@ -645,7 +645,7 @@ namespace tfgame.Controllers
 
             effectRepo.SaveDbStaticEffect(effect);
 
-            contribution.History += "Published on " + DateTime.UtcNow + ".<br>";
+            contribution.History += "Published effect on " + DateTime.UtcNow + ".<br>";
             contRepo.SaveEffectContribution(contribution);
 
             ViewBag.Message = message;
@@ -696,7 +696,7 @@ namespace tfgame.Controllers
 
             skillRepo.SaveDbStaticSkill(skill);
 
-            contribution.History += "Published on " + DateTime.UtcNow + ".<br>";
+            contribution.History += "Published spell on " + DateTime.UtcNow + ".<br>";
             contRepo.SaveEffectContribution(contribution);
 
             ViewBag.Message = message;

@@ -74,6 +74,7 @@ namespace tfgame.Statics
         public const string Permissions_MultiAccountWhitelist = "whitelisted";
         public const string Permissions_Proofreader = "proofreader";
         public const string Permissions_Artist = "artist";
+        public const string Permissions_JSON = "json";
 
 
         public static int[] XP__LevelupRequirementByLevel = {

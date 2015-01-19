@@ -1043,7 +1043,7 @@ namespace tfgame.Controllers
         public ActionResult ItemPetJSON()
         {
             // assert only admins can view this
-            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false && User.IsInRole(PvPStatics.Permissions_JSON) == false)
             {
                 return View("Play", "PvP");
             }
@@ -1055,7 +1055,7 @@ namespace tfgame.Controllers
         public ActionResult FormJSON()
         {
             // assert only admins can view this
-            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false && User.IsInRole(PvPStatics.Permissions_JSON) == false)
             {
                 return View("Play", "PvP");
             }
@@ -1067,7 +1067,7 @@ namespace tfgame.Controllers
         public ActionResult SpellJSON()
         {
             // assert only admins can view this
-            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false && User.IsInRole(PvPStatics.Permissions_JSON) == false)
             {
                 return View("Play", "PvP");
             }
@@ -1085,7 +1085,7 @@ namespace tfgame.Controllers
         public ActionResult EffectJSON()
         {
             // assert only admins can view this
-            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false && User.IsInRole(PvPStatics.Permissions_JSON) == false)
             {
                 return View("Play", "PvP");
             }
@@ -1097,7 +1097,7 @@ namespace tfgame.Controllers
         public ActionResult FurnitureJSON()
         {
             // assert only admins can view this
-            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false && User.IsInRole(PvPStatics.Permissions_JSON) == false)
             {
                 return View("Play", "PvP");
             }

@@ -30,3 +30,13 @@ spawn jewdewfae
 spawn pet merchant
 
 Change leaderboard turn numbers
+
+
+
+------------------------------------
+Restore data to local db:
+
+ALTER DATABASE Stats SET SINGLE_USER WITH ROLLBACK IMMEDIATE
+GO
+RESTORE DATABASE Stats FROM DISK = 'D:\Database backups\Stats.bak' 
+GO

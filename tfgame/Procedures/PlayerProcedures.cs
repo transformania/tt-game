@@ -592,6 +592,14 @@ namespace tfgame.Procedures
             return "";
         }
 
+        public static void MovePlayer_InstantNoLog(int playerId, string newLocation)
+        {
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            Player player = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);
+            player.dbLocationName = newLocation;
+            playerRepo.SavePlayer(player);
+        }
+
         public static string MovePlayer(string destinationDbName, decimal actionPointDiscount)
         {
             return MovePlayer(GetPlayerFromMembership().Id, destinationDbName, actionPointDiscount);
@@ -1480,7 +1488,7 @@ namespace tfgame.Procedures
 
             //return playerRepo.Players.Where(p => p.MembershipId > 0 && p.InPvP == false).OrderByDescending(p => p.Level).ThenByDescending(p => p.Level).ThenByDescending(p => p.XP).Take(number);
 
-            return playerRepo.Players.Where(p => p.MembershipId > 0).OrderByDescending(p => p.Level).ThenByDescending(p => p.Level).ThenByDescending(p => p.XP).Take(number);
+            return playerRepo.Players.Where(p => p.MembershipId > 0).OrderByDescending(p => p.PvPScore).ThenByDescending(p => p.Level).ThenByDescending(p => p.XP).Take(number);
 
         }
 

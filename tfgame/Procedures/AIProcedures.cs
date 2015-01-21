@@ -827,28 +827,28 @@ namespace tfgame.Procedures
                         }
                     }
 
-                    // giant spellbooks
-                    if (lindellasItems.Where(i => i.dbName == LindellaItem_CurseRemover_DbName).Count() < LindellaItem_CurseRemover_Count)
-                    {
-                        for (int x = 0; x < LindellaItem_CurseRemover_Count; x++)
-                        {
-                            Item wproot = new Item
-                            {
-                                dbName = LindellaItem_CurseRemover_DbName,
-                                dbLocationName = "",
-                                OwnerId = merchant.Id,
-                                IsEquipped = false,
-                                IsPermanent = true,
-                                Level = 0,
-                                PvPEnabled = false,
-                                TimeDropped = DateTime.UtcNow,
-                                TurnsUntilUse = 0,
-                                VictimName = "",
-                                EquippedThisTurn = false,
-                            };
-                            itemRepo.SaveItem(wproot);
-                        }
-                    }
+                    // curse lifters
+                    //if (lindellasItems.Where(i => i.dbName == LindellaItem_CurseRemover_DbName).Count() < LindellaItem_CurseRemover_Count)
+                    //{
+                    //    for (int x = 0; x < LindellaItem_CurseRemover_Count; x++)
+                    //    {
+                    //        Item wproot = new Item
+                    //        {
+                    //            dbName = LindellaItem_CurseRemover_DbName,
+                    //            dbLocationName = "",
+                    //            OwnerId = merchant.Id,
+                    //            IsEquipped = false,
+                    //            IsPermanent = true,
+                    //            Level = 0,
+                    //            PvPEnabled = false,
+                    //            TimeDropped = DateTime.UtcNow,
+                    //            TurnsUntilUse = 0,
+                    //            VictimName = "",
+                    //            EquippedThisTurn = false,
+                    //        };
+                    //        itemRepo.SaveItem(wproot);
+                    //    }
+                    //}
 
 
                 }

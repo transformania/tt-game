@@ -174,9 +174,6 @@ namespace tfgame.Controllers
 
                 inanimateOutput.PlayersHere = playersHere.OrderByDescending(p => p.Player.Level);
                 
-                
-
-
                 return View("Play_Inanimate", inanimateOutput);
             }
 
@@ -189,8 +186,15 @@ namespace tfgame.Controllers
 
                 animalOutput.Form = FormStatics.GetForm(me.Form);
 
-                try { 
+                try
+                {
                     animalOutput.OwnedBy = PlayerProcedures.GetPlayerFormViewModel(me.IsPetToId);
+                    if (me.dbLocationName != animalOutput.OwnedBy.Player.dbLocationName)
+                    {
+                        PlayerProcedures.MovePlayer_InstantNoLog(me.Id, animalOutput.OwnedBy.Player.dbLocationName);
+                        me.dbLocationName = animalOutput.OwnedBy.Player.dbLocationName;
+                        animalOutput.You.dbLocationName = animalOutput.OwnedBy.Player.dbLocationName;
+                    }
                 }
                 catch
                 {
@@ -1768,6 +1772,8 @@ namespace tfgame.Controllers
                 TempData["SubError"] = "You can only interact 1 times per update as an animal.  Wait a bit.";
                 return RedirectToAction("Play");
             }
+
+             
 
             // assert that the target is still in the same room
             Player targeted = PlayerProcedures.GetPlayer(targetId);
@@ -3848,9 +3854,9 @@ namespace tfgame.Controllers
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started stored procedure maintenance");
                 using (var context = new StatsContext())
                 {
-                    context.Database.ExecuteSqlCommand("ClearOldLocationLogs");
+                    context.Database.ExecuteSqlCommand("DELETE FROM [Stats].[dbo].[LocationLogs] WHERE Timestamp < DATEADD(hour, -1, GETUTCDATE())");
                     context.Database.ExecuteSqlCommand("DELETE FROM [Stats].[dbo].[Messages] WHERE Timestamp < DATEADD(hour, -72, GETUTCDATE()) AND DoNotRecycleMe = 0");
-                    context.Database.ExecuteSqlCommand("ClearValuelessTFEnergies");
+                    context.Database.ExecuteSqlCommand("DELETE FROM [Stats].[dbo].[TFEnergies] WHERE Amount < .5");
                     context.Database.ExecuteSqlCommand("DELETE FROM [Stats].[dbo].[PlayerLogs] WHERE Timestamp < DATEADD(hour, -72, GETUTCDATE())");
                     context.Database.ExecuteSqlCommand("DELETE FROM [Stats].[dbo].[ChatLogs] WHERE Timestamp < DATEADD(hour, -72, GETUTCDATE())");
                     context.Database.ExecuteSqlCommand("DELETE FROM [Stats].[dbo].[AIDirectives] WHERE Timestamp < DATEADD(hour, -72, GETUTCDATE()) AND DoNotRecycleMe = 0");

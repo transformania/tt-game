@@ -1,5 +1,5 @@
 ﻿html {
-    overflow-y:scroll;
+    overflow-y: scroll;
 }
 
 
@@ -9,19 +9,19 @@
     height: 20px;
 }
 
-.deleteMessegeConfirm{
-    display:none;
+.deleteMessegeConfirm {
+    display: none;
     text-align: center;
-    border:2px solid black;
+    border: 2px solid black;
     padding: 5px;
     width: 300px;
     margin-left: auto;
     margin-right: auto;
 }
 
-.messageTextContainer{
-    border:1px solid gray;
-    height:auto;
+.messageTextContainer {
+    border: 1px solid gray;
+    height: auto;
     margin-top: auto;
     margin-bottom: auto;
     padding-left: 10px;
@@ -70,7 +70,7 @@ a {
     font-weight: bold;
 }
 
-.petItemPortrait{
+.petItemPortrait {
     width: 450px;
     height: 450px;
     float: left;
@@ -82,7 +82,7 @@ a {
     clear: left;
 }
 
-.petItemInfo{
+.petItemInfo {
     float: left;
     position: relative;
     display: block;
@@ -147,7 +147,7 @@ locationDescription {
 }
 
 .mindControlled {
-     width: 25px;
+    width: 25px;
     height: 25px;
     background-size: 100% 100%;
     background-image: url("../Images/PvP/Icons/mc_swirl.gif");
@@ -270,16 +270,16 @@ locationDescription {
 }
 
 .icon-level {
-width: 25px;
-height: 16px;
-display: inline-block;
-text-align: center;
-/* text-shadow: 1px 1px #FFF;*/
-padding-bottom: 5px;
-background: rgba(255, 255, 255, 0.7);
-border-right: 1px solid #D3D3D3;
-border-bottom: 1px solid #D3D3D3;
-border-bottom-right-radius: 10px;
+    width: 25px;
+    height: 16px;
+    display: inline-block;
+    text-align: center;
+    /* text-shadow: 1px 1px #FFF;*/
+    padding-bottom: 5px;
+    background: rgba(255, 255, 255, 0.7);
+    border-right: 1px solid #D3D3D3;
+    border-bottom: 1px solid #D3D3D3;
+    border-bottom-right-radius: 10px;
 }
 
 .icon-pvp {
@@ -307,11 +307,11 @@ border-bottom-right-radius: 10px;
 }
 
 .portraitIconRP {
-position: relative;
-left: 10px;
-top: 80px;
-text-align: right;
-float: right;
+    position: relative;
+    left: 10px;
+    top: 80px;
+    text-align: right;
+    float: right;
 }
 
 .icon-donator1 {
@@ -393,7 +393,7 @@ float: right;
     margin-bottom: 3px;
 }
 
-.covenContainer{
+.covenContainer {
     text-align: center;
 }
 
@@ -440,8 +440,8 @@ a.talkLink {
     float: left;
 }
 
-.floorItemName{
-    font-size:11px;
+.floorItemName {
+    font-size: 11px;
 }
 
 .portrait_item_mainpage {
@@ -471,9 +471,9 @@ a.talkLink {
 
 
 
-.onlineCharWrapper{
-    width:302px;
-    height:160px;
+.onlineCharWrapper {
+    width: 302px;
+    height: 160px;
     display: block;
     float: left;
     margin-right: 8px;
@@ -481,11 +481,11 @@ a.talkLink {
     margin-top: 30px;
 }
 
-.covonlineCharWrapper{
-margin-right: 8px;
-margin-bottom: 30px;
-margin-top: 30px;
-display: inline-block;
+.covonlineCharWrapper {
+    margin-right: 8px;
+    margin-bottom: 30px;
+    margin-top: 30px;
+    display: inline-block;
 }
 
 
@@ -496,19 +496,19 @@ display: inline-block;
     margin-right: 8px;
     margin-bottom: 10px;
     display: block;
-    float: left; 
+    float: left;
     /*background-color: #FFFFEC;*/
 }
 
     .charwrapper.bot {
         border: 1px solid pink;
         background-color: mistyrose;
-    height: 100px;
-    width: 302px;
-    margin-right: 8px;
-    margin-bottom: 10px;
-    display: block;
-    float: left; 
+        height: 100px;
+        width: 302px;
+        margin-right: 8px;
+        margin-bottom: 10px;
+        display: block;
+        float: left;
         /*background-color: #FFFFEC;*/
     }
 
@@ -519,7 +519,7 @@ display: inline-block;
     border: 1px solid #D3D3D3;
     height: 32px;
     padding-top: 6px;
-    margin-bottom:20px;
+    margin-bottom: 20px;
 }
 
 .timeago {
@@ -623,9 +623,9 @@ display: inline-block;
     font-style: italic;
 }
 
-#logSize{
+#logSize {
     text-align: left;
-    display:block;
+    display: block;
     float: left;
 }
 
@@ -668,7 +668,7 @@ display: inline-block;
     border: 3px solid red;
     padding: 10px;
     overflow: scroll;
-        -webkit-overflow-scrolling: touch;
+    -webkit-overflow-scrolling: touch;
 }
 
 #modalBackdrop {
@@ -728,9 +728,9 @@ a.mindcontrol {
     background-color: violet;
 }
 
-a.mindcontrol:hover {
-    background-color: white;
-}
+    a.mindcontrol:hover {
+        background-color: white;
+    }
 
 a.weaken {
     background-color: #FFAD5C;
@@ -749,28 +749,28 @@ a.curse {
     }
 
 .perkBox {
-border: 2px solid #808080;
-padding: 5px;
-display: inline-table;
-width: 300px;
-margin-bottom: 5px;
-margin-right: 3px;
-height: 350px;
+    border: 2px solid #808080;
+    padding: 5px;
+    display: inline-table;
+    width: 300px;
+    margin-bottom: 5px;
+    margin-right: 3px;
+    height: 350px;
 }
 
-.perkBoxTitle{
+.perkBoxTitle {
     color: white;
-    background:black;
-    font-size:20px;
-    line-height:40px;
+    background: black;
+    font-size: 20px;
+    line-height: 40px;
 }
 
-.perkBoxStats{
+.perkBoxStats {
     color: white;
     font-size: 10px;
     line-height: 20px;
-    background:gray;
-    width:100%;
+    background: gray;
+    width: 100%;
 }
 
 .effectturnsRemaining {
@@ -886,16 +886,16 @@ height: 350px;
 
 
 
-#playerActionBox{
-text-align: center;
-clear: both;
-margin-bottom:8px;
+#playerActionBox {
+    text-align: center;
+    clear: both;
+    margin-bottom: 8px;
 }
 
 .returnButton {
     border-right: 2px solid #808080;
-    display:block;
-    clear:both;
+    display: block;
+    clear: both;
     max-width: 100%;
     transition: background 1s ease;
     text-align: center;
@@ -904,12 +904,12 @@ margin-bottom:8px;
     text-decoration: none;
 }
 
-.returnButton:hover{
-    background: #F0FFF0;
-    border-bottom: 2px black solid;
-    line-height:38px;
-    padding-top:2px;
-}
+    .returnButton:hover {
+        background: #F0FFF0;
+        border-bottom: 2px black solid;
+        line-height: 38px;
+        padding-top: 2px;
+    }
 
 .bioTitle {
     font-size: 24px;
@@ -930,21 +930,21 @@ margin-bottom:8px;
     width: 600px;
 }
 
-.bioDescImg{
+.bioDescImg {
     max-width: 150px;
     padding: 10px;
 }
 
-.bioDescImg:first-child{
-    padding-top:20px;
-}
+    .bioDescImg:first-child {
+        padding-top: 20px;
+    }
 
     .bioDescImg:last-child {
         padding-bottom: 15px;
     }
 
 @media (max-width: 768px) {
-    .bioTitle{
+    .bioTitle {
         width: 400px;
     }
 
@@ -954,7 +954,7 @@ margin-bottom:8px;
 }
 
 @media (max-width: 480px) {
-    .bioTitle{
+    .bioTitle {
         font-size: 12px;
         line-height: 24px;
         width: 200px;
@@ -966,57 +966,57 @@ margin-bottom:8px;
     }
 }
 
-.textBio a{
+.textBio a {
     background: none;
     text-decoration: none;
     padding: 0;
     margin: 0;
 }
 
-.textBio{
+.textBio {
     text-align: center;
 }
 
-.textBio p{
-    margin: 0;
-    padding: 0px 20px 0px 20px;
+    .textBio p {
+        margin: 0;
+        padding: 0px 20px 0px 20px;
+    }
+
+
+.rpTag {
+    border: 1px solid black;
+    cursor: pointer;
+    padding-left: 2px;
+    padding-right: 2px;
+    border-radius: 2px;
+    margin: 2px;
+    position: relative;
+    font-weight: bold;
 }
 
-
-.rpTag{
-        border: 1px solid black;
-        cursor: pointer;
-        padding-left: 2px;
-        padding-right: 2px;
-        border-radius: 2px;
-        margin: 2px;
-        position: relative;
-        font-weight: bold;
-    }
-
-    .on{
-        background-color: lightgreen;
-    }
+.on {
+    background-color: lightgreen;
+}
 
     .on:hover {
         background-color: red;
     }
 
-    .off{
-        background-color:pink;
-    }
+.off {
+    background-color: pink;
+}
 
     .off:hover {
         background-color: green;
     }
-	
-	#timerBox{
-	color: white;
-	line-height: 46px;
-	cursor: pointer;
-	}
 
-    #attackModal a {
+#timerBox {
+    color: white;
+    line-height: 46px;
+    cursor: pointer;
+}
+
+#attackModal a {
     height: auto;
     width: auto;
     font-size: 14px;
@@ -1024,4 +1024,26 @@ margin-bottom:8px;
     margin: 1px;
     border: 1px solid black;
     line-height: 14px;
+}
+
+.listdots li {
+    list-style-type:circle;
+    list-style-position: outside;
+    list-style-image: none;
+    /*display: block;*/
+    border-radius: 5px;
+    text-align: left;
+    margin: 10px 0px;
+}
+
+.listdots hr {
+    height: 30px;
+    border-style: solid;
+    border-color: #000;
+    border-width: 1px 0px 0px;
+    border-radius: 20px;
+}
+
+.listdots p {
+    font-size: 18px;
 }

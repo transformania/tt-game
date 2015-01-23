@@ -1033,9 +1033,13 @@ namespace tfgame.Controllers
 
           //  tfgame.Procedures.BossProcedures.BossProcedures_Donna.RunDonnaActions();
 
-            AIProcedures.SpawnLindella();
-            BossProcedures_Fae.SpawnFae();
-            BossProcedures_PetMerchant.SpawnPetMerchant();
+          //  AIProcedures.SpawnLindella();
+           // BossProcedures_Fae.SpawnFae();
+           // BossProcedures_PetMerchant.SpawnPetMerchant();
+
+            bool active = PvPWorldStatProcedures.IsAnyBossActive();
+            PvPWorldStat stats = PvPWorldStatProcedures.GetWorldStats();
+            bool v = stats.IsValentineAvailable();
 
             return RedirectToAction("Index");
         }

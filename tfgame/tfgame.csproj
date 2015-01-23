@@ -470,6 +470,7 @@
     <Content Include="Images\PvP\animalPortraits\docile_cowgirl_Meddle.png" />
     <Content Include="Images\PvP\animalPortraits\docile_mare_Martiandawn.jpg" />
     <Content Include="Images\PvP\animalPortraits\donnas_cow_Martiandawn.jpg" />
+    <Content Include="Images\PvP\animalPortraits\donnas_hen_Martiandawn.jpg" />
     <Content Include="Images\PvP\animalPortraits\fairy_familiar_Meddle.png" />
     <Content Include="Images\PvP\animalPortraits\fennec_fox_luxianne.png" />
     <Content Include="Images\PvP\animalPortraits\goldfish_mermaid_roxanne13579.jpg" />
@@ -511,6 +512,7 @@
     <Content Include="Images\PvP\itemsPortraits\3tiered_skirt_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\5_inch_heels_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\amathyst_tieara_jbovinne.png" />
+    <Content Include="Images\PvP\itemsPortraits\badass_leather_braces_Martiandawn.jpg" />
     <Content Include="Images\PvP\itemsPortraits\ballgag_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\balloon_girl_babblingfaces.png" />
     <Content Include="Images\PvP\itemsPortraits\bimbo_cure_syringe_babblingfaces.png" />
@@ -544,6 +546,7 @@
     <Content Include="Images\PvP\itemsPortraits\flirty_two_toned_bow_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\french_maid_petticoat_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\gemstone_Lux.gif" />
+    <Content Include="Images\PvP\itemsPortraits\glorious_butt_stompers_Martiandawn.jpg" />
     <Content Include="Images\PvP\itemsPortraits\golden_rat_trophy_Luxianne.png" />
     <Content Include="Images\PvP\itemsPortraits\gothic_lolita_boots_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\heart_glasses_Meddle.png" />
@@ -555,7 +558,10 @@
     <Content Include="Images\PvP\itemsPortraits\knitted_panties_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\latex_collar_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\latex_corset_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\leather_bra_Martiandawn.jpg" />
     <Content Include="Images\PvP\itemsPortraits\Leather_Shoes_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\leather_skirt_Martiandawn.jpg" />
+    <Content Include="Images\PvP\itemsPortraits\lewd_leather_thong_Martiandawn.jpg" />
     <Content Include="Images\PvP\itemsPortraits\licking_tongue_babblingfaces.png" />
     <Content Include="Images\PvP\itemsPortraits\lipstick.png" />
     <Content Include="Images\PvP\itemsPortraits\Lipstick_Meddle.png" />
@@ -587,6 +593,7 @@
     <Content Include="Images\PvP\itemsPortraits\silky_gothic_nightgown_Luxianne.png" />
     <Content Include="Images\PvP\itemsPortraits\silk_dragon_dress_jbovinne.png" />
     <Content Include="Images\PvP\itemsPortraits\silk_pants_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\soulblight_Martiandawn.jpg" />
     <Content Include="Images\PvP\itemsPortraits\spankmes_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\spellbook_Judoo.jpg" />
     <Content Include="Images\PvP\itemsPortraits\spellweaver_jawbreaker_Meddle.png" />
@@ -656,11 +663,13 @@
     <Content Include="Images\PvP\portraits\gummy_girl_Luxianne.png" />
     <Content Include="Images\PvP\portraits\harpy_maiden_babblingfaces.png" />
     <Content Include="Images\PvP\portraits\headless_mannequin_JBovinne.png" />
+    <Content Include="Images\PvP\portraits\head_maid_jbovinne.jpg" />
     <Content Include="Images\PvP\portraits\hero_babblingfaces.png" />
     <Content Include="Images\PvP\portraits\hulking_hellspawn_Meddle.jpg" />
     <Content Include="Images\PvP\portraits\hyperactive_ferret_girl_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\Ice_Queen_Meddle.png" />
     <Content Include="Images\PvP\portraits\incubus_servant_boy_spacedande.png" />
+    <Content Include="Images\PvP\portraits\insectoid_alien_Dandelion.jpg" />
     <Content Include="Images\PvP\portraits\jester_Meddle.png" />
     <Content Include="Images\PvP\portraits\jewdewfae_Luxianne.png" />
     <Content Include="Images\PvP\portraits\jungle_girl_Meddle.png" />

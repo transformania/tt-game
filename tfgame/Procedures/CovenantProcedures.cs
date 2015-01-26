@@ -400,6 +400,15 @@ namespace tfgame.Procedures
             string covMessage = "Covenant safeground was establish at " + LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == location).Name + ".";
             WriteCovenantLog(covMessage, covenant.Id, true);
 
+            AttackProcedures.InstantTakeoverLocation(dbCovenant, location);
+
+        }
+
+        public static bool CovenantHasSafeground(int covenantId)
+        {
+            ICovenantRepository repo = new EFCovenantRepository();
+            Covenant cov = repo.Covenants.FirstOrDefault(c => c.Id == covenantId);
+            return CovenantHasSafeground(cov);
         }
 
         public static bool CovenantHasSafeground(Covenant covenant)
@@ -517,6 +526,124 @@ namespace tfgame.Procedures
             string idString = player.Id + ";";
             return covenant.Captains.Contains(idString);
 
+        }
+
+
+        public static string AttackLocation(Player player)
+        {
+            ILocationInfoRepository repo = new EFLocationInfoRepository();
+            ICovenantRepository covRepo = new EFCovenantRepository();
+            LocationInfo info = repo.LocationInfos.FirstOrDefault(l => l.dbName == player.dbLocationName);
+            string output = "";
+            if (info == null)
+            {
+                info = new LocationInfo{
+                    TakeoverAmount = 150,
+                    CovenantId = -1,
+                    dbName = player.dbLocationName,
+                };
+            }
+
+            // location is not controlled; give it to whichever covenant is attacking it
+            if (info.TakeoverAmount <= 0)
+            {
+                info.CovenantId = player.Covenant;
+                info.TakeoverAmount = player.Level/2;
+                info.LastTakeoverTurn = PvPWorldStatProcedures.GetWorldTurnNumber();
+                output = "<b>Your enchantment settles in this location, converting its energies from the previous controlling covenant to your own!</b>";
+                LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == player.dbLocationName).CovenantController = player.Covenant;
+                Covenant myCov = covRepo.Covenants.First(c => c.Id == player.Covenant);
+
+                string locationLogMessage = "<b class='playerAttackNotification'>" + player.GetFullName() + " enchanted this location and claimed it for " + myCov.Name + "!</b>";
+                LocationLogProcedures.AddLocationLog(player.dbLocationName, locationLogMessage);
+
+            }
+
+            // otherwise the location is controlled by someone
+            else
+            {
+                // add points toward the attacker's covenant or take them away if it belongs to another
+                if (info.CovenantId == player.Covenant)
+                {
+                    info.TakeoverAmount += player.Level/2;
+                    Covenant cov = covRepo.Covenants.FirstOrDefault(c => c.Id == player.Covenant);
+                    output = "Your enchantment reinforces this location by " + (player.Level/2) + ".  New influence level is " + info.TakeoverAmount + " for your covenant, " + cov.Name + ".";
+                }
+                else
+                {
+                    info.TakeoverAmount -= player.Level/2;
+                    Covenant cov = covRepo.Covenants.FirstOrDefault(c => c.Id == info.CovenantId);
+
+                    if (info.TakeoverAmount <= 0)
+                    {
+                        info.CovenantId = -1;
+                        info.LastTakeoverTurn = PvPWorldStatProcedures.GetWorldTurnNumber();
+                    }
+
+                    if (cov != null)
+                    {
+                        output = "You dispell the enchantment at this location by " + (player.Level / 2) + ".  New influence level is " + info.TakeoverAmount + " for the location's existing controlled, " + cov.Name + ".";
+                    }
+                    else
+                    {
+                        output = "You dispell the enchantment at this location by " + (player.Level / 2) + ".  New influence level is " + info.TakeoverAmount + ".";
+                    }
+
+                  
+
+                }
+
+                string locationLogMessage = "<span class='playerAttackNotification'>" + player.GetFullName() + " cast an enchantment on this location.</span>";
+                LocationLogProcedures.AddLocationLog(player.dbLocationName, locationLogMessage);
+
+            }
+
+
+
+            // cap at 0 to 100 points
+            if (info.TakeoverAmount >= 100 && info.CovenantId != -1)
+            {
+                info.TakeoverAmount = 100;
+            }
+            else if (info.TakeoverAmount <= 0)
+            {
+                info.CovenantId = -1;
+                info.TakeoverAmount = 0;
+            }
+
+            
+
+            repo.SaveLocationInfo(info);
+
+            return output;
+        }
+
+        public static int GetLocationCovenantOwner(string location)
+        {
+            ILocationInfoRepository repo = new EFLocationInfoRepository();
+
+            LocationInfo info = repo.LocationInfos.FirstOrDefault(l => l.dbName == location);
+
+            if (info != null)
+            {
+                return info.CovenantId;
+            }
+            else
+            {
+                return -1;
+            }
+        }
+
+        public static int GetLocationControlCount(Covenant cov)
+        {
+            ILocationInfoRepository repo = new EFLocationInfoRepository();
+            return repo.LocationInfos.Where(c => c.CovenantId == cov.Id).Count();
+        }
+
+        public static IEnumerable<LocationInfo> GetLocationInfos()
+        {
+            ILocationInfoRepository repo = new EFLocationInfoRepository();
+            return repo.LocationInfos;
         }
 
     }

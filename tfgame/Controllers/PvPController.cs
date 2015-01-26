@@ -271,6 +271,9 @@ namespace tfgame.Controllers
             // output.Location = Locations.GetLocation()
 
             output.Location = LocationsStatics.GetLocation.FirstOrDefault(x => x.dbName == me.dbLocationName);
+
+            output.Location.CovenantController = CovenantProcedures.GetLocationCovenantOwner(me.dbLocationName);
+
             output.Location.FriendlyName_North = LocationsStatics.GetConnectionName(output.Location.Name_North);
             output.Location.FriendlyName_East = LocationsStatics.GetConnectionName(output.Location.Name_East);
             output.Location.FriendlyName_South = LocationsStatics.GetConnectionName(output.Location.Name_South);
@@ -575,11 +578,7 @@ namespace tfgame.Controllers
 
             #region validation checks
 
-            // assert player is logged in
-            if (WebSecurity.CurrentUserId == -1)
-            {
-                return View("~/Views/PvP/LoginRequired.cshtml");
-            }
+
 
             // assert player is in an okay form to do this
             if (PlayerCanPerformAction(me, "attack") == false)
@@ -733,10 +732,11 @@ namespace tfgame.Controllers
             DbStaticForm futureForm = FormStatics.GetForm(skill.FormdbName);
 
             // if the spell is a form of mind control, check that the target is not already afflicated with it
-            if (me.MindControlIsActive == true && MindControlProcedures.PlayerIsMindControlledWithType(me, futureForm.dbName) == true)
+            if (me.MindControlIsActive == true && MindControlProcedures.PlayerIsMindControlledWithType(targeted, futureForm.dbName) == true)
             {
                 TempData["Error"] = "This player is already under the influence of this type of mind control.";
                 TempData["SubError"] = "You must wait for their current mind control of this kind to expire before attempting to seize control yourself.";
+                return RedirectToAction("Play");
             }
 
             // prevent low level players from taking on high level bots
@@ -869,6 +869,85 @@ namespace tfgame.Controllers
 
             return RedirectToAction("Play");
         }
+
+         [Authorize]
+         public ActionResult EnchantLocation()
+         {
+             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+
+             // assert player is in an okay form to do this
+             if (me.Mobility != "full")
+             {
+                 TempData["Error"] = "You must be animate in order to attempt to take over a location.";
+                 return RedirectToAction("Play");
+             }
+
+             // assert player is a high enough level
+             if (me.Level < 4)
+             {
+                 TempData["Error"] = "You must be at least level 4 in order to try and take over a location.";
+                 return RedirectToAction("Play");
+             }
+
+             // assert player is in PvP mode
+             if (me.InPvP != false)
+             {
+                 TempData["Error"] = "You must be in PvP mode in order to try and take over a location.";
+                 return RedirectToAction("Play");
+             }
+
+             // assert player is in a covenant
+             if (me.Covenant <= 0)
+             {
+                 TempData["Error"] = "You must be in a covenant in order to attempt and take over a location.";
+                 return RedirectToAction("Play");
+             }
+
+             // assert player hasn't made too many attacks this update
+             if (me.TimesAttackingThisUpdate >= PvPStatics.MaxAttacksPerUpdate)
+             {
+                 TempData["Error"] = "You have attacked too much this update.";
+                 TempData["SubError"] = "You can only attack " + PvPStatics.MaxAttacksPerUpdate + " times per update.  Wait a bit.";
+                 return RedirectToAction("Play");
+             }
+
+             // assert that player has enough action points to attack
+             if (me.ActionPoints < PvPStatics.AttackCost)
+             {
+                 TempData["Error"] = "You don't have enough action points to attack.";
+                 TempData["SubError"] = "You will receive more action points next turn.";
+                 return RedirectToAction("Play");
+             }
+
+             // assert player update is in not in progress
+             if (PvPStatics.AnimateUpdateInProgress == true)
+             {
+                 TempData["Error"] = "Player update portion of the world update is still in progress.";
+                 TempData["SubError"] = "Try again a bit later when the update has progressed farther along.";
+                 return RedirectToAction("Play");
+             }
+
+             // assert that the location is not a covenant's safeground
+             if (CovenantProcedures.ACovenantHasASafegroundHere(me.dbLocationName))
+             {
+                 TempData["Error"] = "This location is the safeground of another covenant.";
+                 TempData["SubError"] = "You cannot take over a location with a safeground established there.";
+                 return RedirectToAction("Play");
+             }
+
+             // assert that this player's covenant does have a safeground
+             if (CovenantProcedures.CovenantHasSafeground(me.Covenant) == false)
+             {
+                 TempData["Error"] = "Your covenant must have established a safeground before it can enchanted locations.";
+                 return RedirectToAction("Play");
+             }
+
+            string output = CovenantProcedures.AttackLocation(me);
+             PlayerProcedures.AddAttackCount(me);
+
+             TempData["Result"] = output;
+             return RedirectToAction("Play");
+         }
 
          [Authorize]
         public ActionResult Meditate()
@@ -2650,16 +2729,23 @@ namespace tfgame.Controllers
         }
 
          [Authorize]
-        public ActionResult WorldMap()
+        public ActionResult WorldMap(string showEnchant)
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
             Location here = null;
 
+            IEnumerable<LocationInfo> ownerInfo = null;
+
             here = LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName);
+
+            if (showEnchant == "true")
+            {
+                ownerInfo = CovenantProcedures.GetLocationInfos();
+            }
 
             ViewBag.MapX = here.X;
             ViewBag.MapY = here.Y;
-            return View("WorldMap");
+            return View(ownerInfo);
         }
 
          [Authorize]
@@ -2934,13 +3020,13 @@ namespace tfgame.Controllers
             //}
 
             //// assert that it is not too late in the round for the player to enter PvP mode
-            //int turnNumber = PvPWorldStatProcedures.GetWorldTurnNumber();
-            //if (turnNumber > PvPStatics.RoundDuration_LastPvPEntryTurn)
-            //{
-            //    TempData["Error"] = "You cannot enter PvP mode.";
-            //    TempData["SubError"] = "You cannot enter PvP mode later than turn " + PvPStatics.RoundDuration_LastPvPEntryTurn + ".";
-            //    return RedirectToAction("Play");
-            //}
+            int turnNumber = PvPWorldStatProcedures.GetWorldTurnNumber();
+            if (turnNumber > PvPStatics.RoundDuration_LastPvPEntryTurn)
+            {
+                TempData["Error"] = "You cannot enter PvP mode anymore this round.";
+                TempData["SubError"] = "You cannot enter PvP mode later than turn " + PvPStatics.RoundDuration_LastPvPEntryTurn + ".";
+                return RedirectToAction("Play");
+            }
 
             PlayerProcedures.SetPvPFlag(me, false);
            // PlayerExtraProcedures.SetNextProtectionToggleTurn(me);
@@ -3697,6 +3783,30 @@ namespace tfgame.Controllers
                     itemsRepo.SaveItem(item);
                 }
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished resetting items that have been recently equipped");
+
+                #region give covenants money based on territories
+                if (turnNo % 3 == 0)
+                {
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started giving covenants money from territories");
+                    ICovenantRepository covRepo =  new EFCovenantRepository();
+                    List<Covenant> covs = covRepo.Covenants.Where(c => c.HomeLocation != null && c.HomeLocation != "").ToList();
+
+
+                    foreach (Covenant c in covs)
+                    {
+                        int locationControlledSum = CovenantProcedures.GetLocationControlCount(c);
+                        decimal moneyGain = (decimal)Math.Floor(Convert.ToDouble(locationControlledSum) / 2.0D);
+                        c.Money += moneyGain;
+
+                        if (moneyGain > 0)
+                        {
+                            CovenantProcedures.WriteCovenantLog("Your covenant collected " + moneyGain + " Arpeyis from the locations you have enchanted.",c.Id, false);
+                        }
+                    }
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished giving covenants money from territories");
+
+                }
+                #endregion
 
                 serverLogRepo.SaveServerLog(log);
                 log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == turnNo);

@@ -29,7 +29,7 @@
                     <span id="timerBox" class="glyphicon glyphicon-time" aria-hidden="true" title="Click to see how long ago the last update ran."></span>
                     <span id="turn_countdown">-:--</span>
                 </li>
-                <li>@Html.ActionLink("Map", "WorldMap", "PvP")</li>
+                <li>@Html.ActionLink("Map", "WorldMap", "PvP", new { showEnchant = "false" }, null)</li>
                 <li>@Html.ActionLink("Last Actions", "ViewLog", "PvP")</li>
                 <li>@Html.ActionLink("Friends", "MyFriends", "PvP")</li>
                 <li>@Html.ActionLink("Chat", "Chat", "PvP", new { room = "global" }, new { target = "_blank" })</li>

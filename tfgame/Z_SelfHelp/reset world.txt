@@ -17,6 +17,7 @@ DELETE FROM [Stats].[dbo].[AIDirectives]
 DELETE FROM [Stats].[dbo].[InanimateXPs]
 DELETE FROM [Stats].[dbo].[Furnitures]
 DELETE FROM [Stats].[dbo].[MindControls]
+DELETE FROM [Stats].[dbo].[LocationInfos]
 
 UPDATE [Stats].[dbo].[PvPWorldStats] SET Boss_Donna = 'unstarted', [Boss_Valentine] = 'unstarted', [Boss_Bimbo] = 'unstarted', [Boss_Thief] = 'unstarted', [TurnNumber] = 0
 

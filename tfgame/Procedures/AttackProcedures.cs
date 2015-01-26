@@ -319,6 +319,45 @@ namespace tfgame.Procedures
             return attackerMessage;
         }
 
+        public static void InstantTakeoverLocation(Covenant cov, string location)
+        {
+            ILocationInfoRepository repo = new EFLocationInfoRepository();
+            LocationInfo info = repo.LocationInfos.FirstOrDefault(l => l.dbName == location);
+            if (info == null)
+            {
+                info = new LocationInfo
+                {
+                    dbName = location,
+
+                };
+            }
+            info.TakeoverAmount = 100;
+            info.CovenantId = cov.Id;
+            info.LastTakeoverTurn = PvPWorldStatProcedures.GetWorldTurnNumber();
+            repo.SaveLocationInfo(info);
+
+            LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == location).CovenantController = cov.Id;
+
+        }
+
+        public static void LoadCovenantOwnersIntoRAM()
+        {
+            ILocationInfoRepository repo = new EFLocationInfoRepository();
+            List<LocationInfo> info = repo.LocationInfos.ToList();
+            foreach (Location loc in LocationsStatics.GetLocation)
+            {
+                LocationInfo temp = info.FirstOrDefault(l => l.dbName == loc.dbName);
+                if (temp == null)
+                {
+                    LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == loc.dbName).CovenantController = -1;
+                }
+                else
+                {
+                    LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == loc.dbName).CovenantController = temp.CovenantId;
+                }
+            }
+        }
+
         
 
     }

@@ -28,10 +28,12 @@ namespace tfgame.Controllers
 
             try { 
                  output = CovenantProcedures.GetCovenantViewModel(me);
+                 ViewBag.LocationsControlled = CovenantProcedures.GetLocationControlCount(output.dbCovenant);
             }
             catch
             {
                 output = new CovenantViewModel();
+                ViewBag.LocationsControlled = 0;
             }
 
             ViewBag.MyMoney = Math.Floor(me.Money);
@@ -43,6 +45,8 @@ namespace tfgame.Controllers
             ViewBag.IAmCaptain = CovenantProcedures.PlayerIsCaptain(output.dbCovenant, me);
            
             ViewBag.HasApplication = CovenantProcedures.PlayerHasPendingApplication(me);
+
+            
 
             return View(output);
         }
@@ -332,6 +336,7 @@ namespace tfgame.Controllers
         public ActionResult LookAtCovenant(int id)
         {
             CovenantViewModel output = CovenantProcedures.GetCovenantViewModel(id);
+            ViewBag.LocationsControlled = CovenantProcedures.GetLocationControlCount(output.dbCovenant);
             return View(output);
         }
 

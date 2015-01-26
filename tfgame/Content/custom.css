@@ -318,6 +318,11 @@ li {
   clear: both;
   display: block; }
 
+.covController {
+  color: darkred;
+  font-style: italic;
+  display: block; }
+
 .tableLines {
   margin-left: auto;
   margin-right: auto; }

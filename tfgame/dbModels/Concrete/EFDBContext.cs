@@ -30,6 +30,7 @@ namespace tfgame.dbModels.Concrete
         public DbSet<Contribution> Contributions { get; set; }
         public DbSet<PvPWorldStat> PvPWorldStats { get; set; }
         public DbSet<Friend> Friends { get; set; }
+        public DbSet<LocationInfo> LocationInfos { get; set; }
         public DbSet<BlacklistEntry> BlacklistEntries { get; set; }
         public DbSet<InanimateXP> InanimateXPs { get; set; }
         public DbSet<Effect> Effects { get; set; }

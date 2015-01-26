@@ -1,8 +1,10 @@
-﻿@using tfgame.ViewModels
+﻿@model IEnumerable<tfgame.dbModels.Models.LocationInfo>
+
+@using tfgame.ViewModels
 @using tfgame.Statics
 
 <div style="position: relative; float: left; margin-bottom: 15px;">
-    @Html.ActionLink("Back to game", "Play", "PvP")
+  @Html.ActionLink("Show with Location Enchantments", "WorldMap", "PvP", new { showEnchant = "true" }, null)
 </div>
 
 <div class="mapWrapper">
@@ -24,10 +26,52 @@
                  @{ if (loc.Name_North == null) { <text> border-top: 1px solid black; </text>       } }
                  @{ if (loc.Name_West == null) { <text> border-left: 1px solid black; </text>      } }
                  @{ if (loc.Name_South == null) { <text> border-bottom: 1px solid black; </text>     } }
-                 @{ if (loc.Region == "streets") { <text> background-color: lightgray; </text>     } }
-                 @{ if (loc.X == ViewBag.MapX && loc.Y == ViewBag.MapY) { <text> background-color: lightpink; </text>     } }
+
+
+                 @{ 
+                     if (loc.Region == "streets" && Model == null) { 
+                         <text> background-color: lightgray; </text>  
+                 }
+
+                     @*else if (Model != null)
+                     {
+                        
+                     }*@
+                 
+                  }
+
+
+                 @{ if (Model == null && loc.X == ViewBag.MapX && loc.Y == ViewBag.MapY) { <text> background-color: lightpink; </text>     } }
                  ">
-            <div class="mapcelltext">@loc.Name</div>
+
+            @{
+            if (Model == null)
+            {
+                <div class="mapcelltext">@loc.Name</div>
+            }
+            else
+            {
+                tfgame.dbModels.Models.LocationInfo temp = Model.FirstOrDefault(c => c.dbName == loc.dbName);
+                if (temp != null)
+                {
+                    try
+                    {
+                        CovenantNameFlag temp2 = CovenantDictionary.IdNameFlagLookup[temp.CovenantId];
+
+                        if (temp2 != null)
+                        {
+                            <div class="mapcelltext">@temp2.Name (@temp.TakeoverAmount)</div>
+                        }
+                    }
+                    catch
+                    {
+
+                    }
+                }
+            }
+}
+
+            
   
         </div>
 

@@ -551,5 +551,33 @@ namespace tfgame.CustomHtmlHelpers
             return new MvcHtmlString(output);
         }
 
+        public static MvcHtmlString PrintCovenantColorCode(LocationInfo info)
+        {
+            string output = "red";
+
+            string hexValue = info.CovenantId.ToString("X");
+
+            Random rand = new Random();
+
+            // Convert the hex string back to the number
+           // int decAgain = int.Parse(hexValue, System.Globalization.NumberStyles.HexNumber);
+
+            return new MvcHtmlString(output);
+        }
+
+        //public static MvcHtmlString PrintCovenantColorCode(LocationInfo info)
+        //{
+        //    string output = "red";
+
+        //    string hexValue = info.CovenantId.ToString("X");
+
+        //    Random rand = new Random();
+
+        //    // Convert the hex string back to the number
+        //    // int decAgain = int.Parse(hexValue, System.Globalization.NumberStyles.HexNumber);
+
+        //    return new MvcHtmlString(output);
+        //}
+
     }
 }

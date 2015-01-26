@@ -242,6 +242,7 @@
     <Compile Include="dbModels\Abstract\IFurnitureRepository.cs" />
     <Compile Include="dbModels\Abstract\IInanimateXPRepository.cs" />
     <Compile Include="dbModels\Abstract\IItemRepository.cs" />
+    <Compile Include="dbModels\Abstract\ILocationInfoRepository.cs" />
     <Compile Include="dbModels\Abstract\ILocationLogRepository.cs" />
     <Compile Include="dbModels\Abstract\IMessageRepository.cs" />
     <Compile Include="dbModels\Abstract\IMindControlRepository.cs" />
@@ -270,6 +271,7 @@
     <Compile Include="dbModels\Concrete\EFDMRollRepository.cs" />
     <Compile Include="dbModels\Concrete\EFDonatorRepository.cs" />
     <Compile Include="dbModels\Concrete\EFFurnitureRepository.cs" />
+    <Compile Include="dbModels\Concrete\EFLocationInfoRepository.cs" />
     <Compile Include="dbModels\Concrete\EFMindControlRepository.cs" />
     <Compile Include="dbModels\Concrete\EFPlayerExtraRepository.cs" />
     <Compile Include="dbModels\Concrete\EFPollEntryRepository.cs" />
@@ -318,6 +320,7 @@
     <Compile Include="dbModels\Models\Furniture.cs" />
     <Compile Include="dbModels\Models\InanimateXP.cs" />
     <Compile Include="dbModels\Models\Item.cs" />
+    <Compile Include="dbModels\Models\LocationInfo.cs" />
     <Compile Include="dbModels\Models\LocationLog.cs" />
     <Compile Include="dbModels\Models\Message.cs" />
     <Compile Include="dbModels\Models\MindControl.cs" />

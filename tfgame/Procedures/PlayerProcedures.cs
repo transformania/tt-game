@@ -1228,6 +1228,7 @@ namespace tfgame.Procedures
             Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
             dbPlayer.TimesAttackingThisUpdate += amount;
             dbPlayer.LastCombatTimestamp = DateTime.UtcNow;
+            dbPlayer.LastActionTimestamp = DateTime.UtcNow;
             playerRepo.SavePlayer(player);
         }
 

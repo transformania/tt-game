@@ -965,6 +965,7 @@ namespace tfgame.Controllers
 
             string output = CovenantProcedures.AttackLocation(me);
              PlayerProcedures.AddAttackCount(me);
+           
 
              TempData["Result"] = output;
              return RedirectToAction("Play");

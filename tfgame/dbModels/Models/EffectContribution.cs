@@ -51,6 +51,8 @@ namespace tfgame.dbModels.Models
         public int ProofreadingCopyForOriginalId { get; set; }
         public DateTime Timestamp { get; set; }
 
+        public bool NeedsToBeUpdated { get; set; }
+
         public decimal HealthBonusPercent { get; set; }
         public decimal ManaBonusPercent { get; set; }
         public decimal ExtraSkillCriticalPercent { get; set; }

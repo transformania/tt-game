@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -236,6 +237,20 @@ namespace tfgame.Controllers
                 return RedirectToAction("MyCovenant");
             }
 
+            List<string> flagURLs = new List<string>();
+
+            string path = Server.MapPath("~/Images/PvP/CovenantFlags/");
+            DirectoryInfo d = new DirectoryInfo(path);//Assuming Test is your Folder
+            FileInfo[] Files = d.GetFiles("*.jpg"); //Getting Text files
+            foreach (FileInfo file in Files)
+            {
+                flagURLs.Add(file.Name);
+            }
+
+            flagURLs = CovenantProcedures.FilterAvailableFlags(flagURLs);
+
+            ViewBag.FlagURLS = flagURLs;
+
             return View(myCov);
         }
 
@@ -267,8 +282,23 @@ namespace tfgame.Controllers
                 return RedirectToAction("MyCovenant");
             }
 
+            // assert that the flag is not taken
+            if (CovenantProcedures.FlagIsInUse(input.FlagUrl))
+            {
+                TempData["Error"] = "That flag is already in use.";
+                TempData["SubError"] = "Select a different one.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            string path = Server.MapPath("~/Images/PvP/CovenantFlags/" + input.FlagUrl);
+            if (System.IO.File.Exists(path) == false)
+            {
+                TempData["Error"] = "Flag not found.";
+                return RedirectToAction("MyCovenant");
+            }
+
             // finally update the covenant
-            CovenantProcedures.UpdateCovenantDescription(myCov.Id, input.SelfDescription);
+            CovenantProcedures.UpdateCovenantDescription(myCov.Id, input.SelfDescription, input.FlagUrl);
             TempData["Result"] = "Description updated.";
 
 
@@ -1072,6 +1102,8 @@ namespace tfgame.Controllers
             TempData["Result"] = result;
             return RedirectToAction("MyCovenant");
         }
+
+
 
 
     }

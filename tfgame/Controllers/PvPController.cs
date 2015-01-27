@@ -927,6 +927,27 @@ namespace tfgame.Controllers
                  return RedirectToAction("Play");
              }
 
+             // assert that it is not too late in the round for this attack to happen
+             DateTime lastupdate = PvPWorldStatProcedures.GetLastWorldUpdate();
+             double secondsAgo = Math.Abs(Math.Floor(lastupdate.Subtract(DateTime.UtcNow).TotalSeconds));
+
+             if (secondsAgo > 570 && PvPStatics.ChaosMode == false)
+             {
+                 TempData["Error"] = "It is too late into this turn to attack.";
+                 TempData["SubError"] = "You must attack within the first 9.5 minutes of a round.";
+                 return RedirectToAction("Play");
+             }
+
+             // assert that it is not too EARLY in the round for this attack to happen
+             double secondsFrom = Math.Abs(Math.Floor(lastupdate.Subtract(DateTime.UtcNow).TotalSeconds));
+
+             if (secondsAgo < 90)
+             {
+                 TempData["Error"] = "It is too early into this turn to attack.";
+                 TempData["SubError"] = "You must wait at least 90 seconds after the round update has started to attack.";
+                 return RedirectToAction("Play");
+             }
+
              // assert that the location is not a covenant's safeground
              if (CovenantProcedures.ACovenantHasASafegroundHere(me.dbLocationName))
              {
@@ -3029,6 +3050,7 @@ namespace tfgame.Controllers
             }
 
             PlayerProcedures.SetPvPFlag(me, false);
+            EffectProcedures.GivePerkToPlayer("help_entered_PvP", me);
            // PlayerExtraProcedures.SetNextProtectionToggleTurn(me);
 
             TempData["Result"] = "You are no longer in protection mode.";

@@ -28,12 +28,34 @@
 
     @using (Html.BeginForm("ChangeCovenantDescriptionSubmit", "Covenant", FormMethod.Post))
     {
-        @Html.TextAreaFor(m => m.SelfDescription)
+        @Html.TextAreaFor(m => m.SelfDescription, new { @class="form__panel textarea"})
+        
+        <hr />
+        
+        <p>Choose a flag for your covenant from the options below.</p>
+        
+        @*<p>Set flag</p>
+         @Html.DropDownListFor(m => m.FlagUrl, new SelectList(
+                  new List<Object>{
+                       new { value = "region"  , text = "1"  },
+                       new { value = "location"  , text = "Location"  },
+                    },
+                  "value",
+                  "text",
+                   2))*@
+        
+        <img src="../Images/PvP/CovenantFlags/bars1.jpg" width="150px" width="150px" id="choice"/>
+        
+        foreach (string s in ViewBag.FlagURLS)
+        {
+            <img src="../Images/PvP/CovenantFlags/@s" height="50px" width="50px" class="selectable" filename="@s">
+        }
+        
         <input type="submit" value="Save" />
 
         @Html.HiddenFor(m => m.Name)
         @Html.HiddenFor(m => m.Id)
-        @Html.HiddenFor(m => m.FlagUrl)
+        @Html.TextBoxFor(m => m.FlagUrl)
         @Html.HiddenFor(m => m.FounderMembershipId)
         @Html.HiddenFor(m => m.LastMemberAcceptance)
         @Html.HiddenFor(m => m.IsPvP)
@@ -41,3 +63,20 @@
     }
 
 </div>
+
+
+<script>
+    $(".selectable").click(function () {
+        var img = $(this).attr("src");
+        var filename = $(this).attr("filename")
+       // alert(img);
+        $("#choice").attr("src", img);
+        $("#FlagUrl").val(filename);
+    });
+</script>
+
+<style>
+    .selectable:hover{
+        border:2px solid red;
+    }
+</style>

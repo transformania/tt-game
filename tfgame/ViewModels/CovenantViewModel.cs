@@ -28,6 +28,12 @@ namespace tfgame.ViewModels
         public int CovLevel { get; set; }
     }
 
+    public class CovenantUpdateViewModel
+    {
+        public string Description { get; set; }
+        public string Flag { get; set; }
+    }
+
     public class CovenantApplicationViewModel
     {
         public Player dbPlayer { get; set; }

@@ -409,6 +409,7 @@
     <Compile Include="ViewModels\PlayerSearchViewModel.cs" />
     <Compile Include="ViewModels\PlayPageViewModel.cs" />
     <Compile Include="ViewModels\PublicBroadcastViewModel.cs" />
+    <Compile Include="ViewModels\SelectListItem.cs" />
     <Compile Include="ViewModels\ServerBalance.cs" />
     <Compile Include="ViewModels\SkillViewModel.cs" />
     <Compile Include="ViewModels\StaticEffect.cs" />
@@ -480,6 +481,7 @@
     <Content Include="Images\PvP\animalPortraits\horny_hog_Martiandawn.jpg" />
     <Content Include="Images\PvP\animalPortraits\husky_Luxianne.png" />
     <Content Include="Images\PvP\animalPortraits\living_inflateable_pooltoy_Luxianne.jpg" />
+    <Content Include="Images\PvP\animalPortraits\living_plush_dragon_spacedande.jpg" />
     <Content Include="Images\PvP\animalPortraits\mischevious_crow_Luxianne.png" />
     <Content Include="Images\PvP\animalPortraits\pocket_dragon_Meddle.png" />
     <Content Include="Images\PvP\animalPortraits\pocket_googirl_Luxianne.png" />
@@ -493,7 +495,20 @@
     <Content Include="Images\PvP\animalPortraits\tiny_mouse_girl_curry_senpai.png" />
     <Content Include="Images\PvP\animalPortraits\white_tiger_Luxianne.png" />
     <Content Include="Images\PvP\animalPortraits\wolf_cub_lux.png" />
+    <Content Include="Images\PvP\CovenantFlags\bars1.jpg" />
+    <Content Include="Images\PvP\CovenantFlags\bars2.jpg" />
+    <Content Include="Images\PvP\CovenantFlags\blobs.jpg" />
+    <Content Include="Images\PvP\CovenantFlags\crossguard.jpg" />
+    <Content Include="Images\PvP\CovenantFlags\flower1.jpg" />
     <Content Include="Images\PvP\CovenantFlags\generic.jpg" />
+    <Content Include="Images\PvP\CovenantFlags\mirror.jpg" />
+    <Content Include="Images\PvP\CovenantFlags\pinkflower.jpg" />
+    <Content Include="Images\PvP\CovenantFlags\snow.jpg" />
+    <Content Include="Images\PvP\CovenantFlags\star1.jpg" />
+    <Content Include="Images\PvP\CovenantFlags\sun1.jpg" />
+    <Content Include="Images\PvP\CovenantFlags\sunrise.jpg" />
+    <Content Include="Images\PvP\CovenantFlags\sunset.jpg" />
+    <Content Include="Images\PvP\CovenantFlags\water.jpg" />
     <Content Include="Images\PvP\Icons\Backpack_Meddle.png" />
     <Content Include="Images\PvP\Icons\cleansemeditate.png" />
     <Content Include="Images\PvP\Icons\donator_1.gif" />
@@ -683,6 +698,7 @@
     <Content Include="Images\PvP\portraits\LilithValentine_Luxianne.png" />
     <Content Include="Images\PvP\portraits\Lindella_Luxianne.png" />
     <Content Include="Images\PvP\portraits\lovely_dragon_boy_spacedande.png" />
+    <Content Include="Images\PvP\portraits\loving_sweetheart_spacedande.jpg" />
     <Content Include="Images\PvP\portraits\lusty_mare_UYS.jpg" />
     <Content Include="Images\PvP\portraits\Man_01_Meddle.png" />
     <Content Include="Images\PvP\portraits\Man_02_Meddle.png" />
@@ -699,6 +715,7 @@
     <Content Include="Images\PvP\portraits\neurotic_author_Babblingfaces.jpg" />
     <Content Include="Images\PvP\portraits\new_age_retro_hippy_Meddle.png" />
     <Content Include="Images\PvP\portraits\nighthuntress_Martiandawn.png" />
+    <Content Include="Images\PvP\portraits\ninja_girl_spacedande.jpg" />
     <Content Include="Images\PvP\portraits\Omnibus_Meddle.png" />
     <Content Include="Images\PvP\portraits\otter_boy_Kyethusky.png" />
     <Content Include="Images\PvP\portraits\pet_merchant_Luxianne.png" />

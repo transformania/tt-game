@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using tfgame.dbModels.Abstract;
@@ -316,11 +317,12 @@ namespace tfgame.Procedures
             return covAppRepo.CovenantApplications.FirstOrDefault(c => c.Id == id);
         }
 
-        public static void UpdateCovenantDescription(int covId, string newDescription)
+        public static void UpdateCovenantDescription(int covId, string newDescription, string flagUrl)
         {
             ICovenantRepository covRepo = new EFCovenantRepository();
             Covenant oldcov = covRepo.Covenants.FirstOrDefault(c => c.Id == covId);
             oldcov.SelfDescription = newDescription;
+            oldcov.FlagUrl = flagUrl;
             covRepo.SaveCovenant(oldcov);
         }
 
@@ -534,6 +536,7 @@ namespace tfgame.Procedures
             ILocationInfoRepository repo = new EFLocationInfoRepository();
             ICovenantRepository covRepo = new EFCovenantRepository();
             LocationInfo info = repo.LocationInfos.FirstOrDefault(l => l.dbName == player.dbLocationName);
+            Location location = LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == player.dbLocationName);
             string output = "";
             if (info == null)
             {
@@ -544,11 +547,20 @@ namespace tfgame.Procedures
                 };
             }
 
+            float takeoverAmount = player.Level / 2;
+
             // location is not controlled; give it to whichever covenant is attacking it
             if (info.TakeoverAmount <= 0)
             {
+
+                if (info.CovenantId > 0)
+                {
+                    string covLogLoser= player.GetFullName() + " enchanted " + location.Name + ", stealing it out of the covenant's influence!";
+                    CovenantProcedures.WriteCovenantLog(covLogLoser, info.CovenantId, true);
+                }
+
                 info.CovenantId = player.Covenant;
-                info.TakeoverAmount = player.Level/2;
+                info.TakeoverAmount = takeoverAmount;
                 info.LastTakeoverTurn = PvPWorldStatProcedures.GetWorldTurnNumber();
                 output = "<b>Your enchantment settles in this location, converting its energies from the previous controlling covenant to your own!</b>";
                 LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == player.dbLocationName).CovenantController = player.Covenant;
@@ -556,6 +568,10 @@ namespace tfgame.Procedures
 
                 string locationLogMessage = "<b class='playerAttackNotification'>" + player.GetFullName() + " enchanted this location and claimed it for " + myCov.Name + "!</b>";
                 LocationLogProcedures.AddLocationLog(player.dbLocationName, locationLogMessage);
+
+
+                string covLogWinner = player.GetFullName() + " enchanted " + location.Name + " and has claimed it for this covenant.";
+                CovenantProcedures.WriteCovenantLog(covLogWinner, myCov.Id, true);
 
             }
 
@@ -565,13 +581,13 @@ namespace tfgame.Procedures
                 // add points toward the attacker's covenant or take them away if it belongs to another
                 if (info.CovenantId == player.Covenant)
                 {
-                    info.TakeoverAmount += player.Level/2;
+                    info.TakeoverAmount += takeoverAmount;
                     Covenant cov = covRepo.Covenants.FirstOrDefault(c => c.Id == player.Covenant);
-                    output = "Your enchantment reinforces this location by " + (player.Level/2) + ".  New influence level is " + info.TakeoverAmount + " for your covenant, " + cov.Name + ".";
+                    output = "Your enchantment reinforces this location by " + (takeoverAmount) + ".  New influence level is " + info.TakeoverAmount + " for your covenant, " + cov.Name + ".";
                 }
                 else
                 {
-                    info.TakeoverAmount -= player.Level/2;
+                    info.TakeoverAmount -= takeoverAmount;
                     Covenant cov = covRepo.Covenants.FirstOrDefault(c => c.Id == info.CovenantId);
 
                     if (info.TakeoverAmount <= 0)
@@ -582,11 +598,11 @@ namespace tfgame.Procedures
 
                     if (cov != null)
                     {
-                        output = "You dispell the enchantment at this location by " + (player.Level / 2) + ".  New influence level is " + info.TakeoverAmount + " for the location's existing controlled, " + cov.Name + ".";
+                        output = "You dispell the enchantment at this location by " + takeoverAmount + ".  New influence level is " + info.TakeoverAmount + " for the location's existing controlled, " + cov.Name + ".";
                     }
                     else
                     {
-                        output = "You dispell the enchantment at this location by " + (player.Level / 2) + ".  New influence level is " + info.TakeoverAmount + ".";
+                        output = "You dispell the enchantment at this location by " + takeoverAmount + ".  New influence level is " + info.TakeoverAmount + ".";
                     }
 
                   
@@ -644,6 +660,40 @@ namespace tfgame.Procedures
         {
             ILocationInfoRepository repo = new EFLocationInfoRepository();
             return repo.LocationInfos;
+        }
+
+        public static bool FlagIsInUse(string flagURL)
+        {
+            ICovenantRepository covRepo = new EFCovenantRepository();
+            Covenant covWithFlag = covRepo.Covenants.FirstOrDefault(c => c.FlagUrl == flagURL);
+
+            if (covWithFlag != null)
+            {
+                return true;
+            }
+            else
+            {
+                
+                return false;
+            }
+
+        }
+
+        public static List<string> FilterAvailableFlags(List<string> input)
+        {
+            ICovenantRepository covRepo = new EFCovenantRepository();
+            List<string> usedFlags = covRepo.Covenants.Select(c => c.FlagUrl).ToList();
+
+            List<string> output = new List<string>();
+
+            foreach (string s in input)
+            {
+                if (usedFlags.Contains(s) == false)
+                {
+                    output.Add(s);
+                }
+            }
+            return output;
         }
 
     }

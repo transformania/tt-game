@@ -1010,6 +1010,22 @@ a.curse {
         background-color: green;
     }
 
+     .neg2 {
+        background-color: red;
+    }
+
+    .neg1 {
+        background-color: pink;
+    }
+
+    .pos1 {
+        background-color: lightgreen;
+    }
+
+    .pos2 {
+        background-color: green;
+    }
+
 #timerBox {
     color: white;
     line-height: 46px;

@@ -65,49 +65,120 @@
 
     $(document).ready(function () {
 
+        var tagstring = $("#Tags").val();
+        console.log("Raw string:  " + tagstring);
+
         // assign the proper styling onload
         $(".rpTag").each(function () {
+
             var code = $(this).attr("tagcode");
-            if ($("#Tags").val().indexOf(";" + code + ";") > -1) {
-                $(this).addClass("on");
-                $(this).removeClass("off");
-            } else {
-                $(this).addClass("off");
-                $(this).removeClass("on");
+            var regexs = code + ".[0-9];";
+            var regex = new RegExp(regexs, "i")
+            var smatch = tagstring.match(regex);
+
+            // currently exists; increment its state
+            if (smatch !== null) {
+                console.log("Match found:  " + smatch);
+                var numberValue = smatch[0].match(/[0-9]/);
+                console.log("Value of match:  " + numberValue);
+                
+                if (numberValue == 0) {
+                    $(this).addClass("neg2");
+                } else if (numberValue == 1) {
+                    $(this).addClass("neg1");
+                } else if (numberValue == 2) {
+                    $(this).addClass("pos1");
+                } else if (numberValue == 3) {
+                    $(this).addClass("pos2");
+                }  
             }
         });
 
         // assign onclick logic to buttons
         $(".rpTag").each(function () {
-            $(this).click(function () { 
-            var code = $(this).attr("tagcode");
-            
-            if ($("#Tags").val().indexOf(";" + code + ";") == -1) {
-                $("#Tags").val($("#Tags").val() + ";" + code + ";");
-                $(this).removeClass("off");
-                $(this).addClass("on");
-            } else {
-                $("#Tags").val($("#Tags").val().replace(";" + code + ";", ""));
-                $(this).removeClass("on");
-                $(this).addClass("off");
-            }
+
+            $(this).click(function () {
+
+                var code = $(this).attr("tagcode");
+
+                var regexs = code + ".[0-9];";
+                var regex = new RegExp(regexs, "i")
+
+                var smatch = tagstring.match(regex);
+
+                // currently exists; increment its state
+                if (smatch !== null) {
+
+                    console.log("Click match found:  " + smatch);
+                    var numberValue = parseInt(smatch[0].match(/[0-9]/));
+                    console.log("Value of click match:  " + numberValue);
+
+                    var oldstring = code + "." + numberValue + ";";
+                    var newstring = code + "." + (numberValue + 1) + ";";
+
+                    console.log("replacing " + oldstring + " with " + newstring);
+
+                    cleanClasses($(this));
+
+                    if (numberValue == 0) {
+                        $(this).addClass("neg1");
+                        tagstring = tagstring.replace(oldstring, newstring);
+                    } else if (numberValue == 1) {
+                        $(this).addClass("pos1");
+                        tagstring = tagstring.replace(oldstring, newstring);
+                    } else if (numberValue == 2) {
+                        $(this).addClass("pos2");
+                        tagstring = tagstring.replace(oldstring, newstring);
+                    } else if (numberValue == 3) {
+                        tagstring = tagstring.replace(oldstring, "");
+                    }
+                }
+
+                    // does not exist; add it with default (lowest) value
+                else {
+                    tagstring += code + "." + 0 + ";";
+                    $(this).addClass("neg2");
+                }
+
+                $("#Tags").val(tagstring);
+
             });
+
+
 
         });
 
         $("#resetTags").click(function(){
             $("#Tags").val("");
+            tagstring = "";
             $(".rpTag").each(function () {
-                $(this).removeClass("on");
-                $(this).addClass("off");
+                $(this).removeClass("neg2");
+                $(this).removeClass("neg1");
+                $(this).removeClass("pos1");
+                $(this).removeClass("pos2");
             });
         });
 
     });
+
+    function cleanClasses(tag) {
+        tag.removeClass("neg2");
+        tag.removeClass("neg1");
+        tag.removeClass("pos1");
+        tag.removeClass("pos2");
+    }
 
     function confirmDeletion() {
         document.getElementById('realLink').style.display = "block";
     }
 
 </script>
+
+<style>
+    textbox, textarea, input {
+        width: 100%;
+    }
+
+   
+</style>
 

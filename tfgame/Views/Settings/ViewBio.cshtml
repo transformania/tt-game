@@ -75,15 +75,32 @@
 
     $(document).ready(function () {
 
+        var tagstring = $("#Tags").val();
+        console.log("Raw string:  " + tagstring);
+
         // assign the proper styling onload
         $(".rpTag").each(function () {
+
             var code = $(this).attr("tagcode");
-            if ($("#Tags").val().indexOf(";" + code + ";") > -1) {
-                $(this).addClass("on");
-                $(this).removeClass("off");
-            } else {
-                $(this).addClass("off");
-                $(this).removeClass("on");
+            var regexs = code + ".[0-9];";
+            var regex = new RegExp(regexs, "i")
+            var smatch = tagstring.match(regex);
+
+            // currently exists; increment its state
+            if (smatch !== null) {
+                console.log("Match found:  " + smatch);
+                var numberValue = smatch[0].match(/[0-9]/);
+                console.log("Value of match:  " + numberValue);
+
+                if (numberValue == 0) {
+                    $(this).addClass("neg2");
+                } else if (numberValue == 1) {
+                    $(this).addClass("neg1");
+                } else if (numberValue == 2) {
+                    $(this).addClass("pos1");
+                } else if (numberValue == 3) {
+                    $(this).addClass("pos2");
+                }
             }
         });
 

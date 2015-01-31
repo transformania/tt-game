@@ -1016,33 +1016,12 @@ namespace tfgame.Controllers
                 return View("Play", "PvP");
             }
 
-            //Player Lindella = PlayerProcedures.GetPlayerFromMembership(-3);
-
-            //using (var context = new StatsContext())
-            //{
-            //    try
-            //    {
-            //        context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Items] SET OwnerId = " + Lindella.Id + ", dbLocationName = '', TimeDropped = '" + DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss") + "'  WHERE  dbLocationName <> '' AND dbLocationName IS NOT NULL AND TimeDropped < DATEADD(hour, -1, GETUTCDATE()) AND OwnerId = -1 AND dbName LIKE 'item_%'");
-
-            //    }
-            //    catch (Exception e)
-            //    {
-
-            //    }
-            //}
-
-          //  tfgame.Procedures.BossProcedures.BossProcedures_Donna.RunDonnaActions();
-
-          //  AIProcedures.SpawnLindella();
-           // BossProcedures_Fae.SpawnFae();
-           // BossProcedures_PetMerchant.SpawnPetMerchant();
-
-            bool active = PvPWorldStatProcedures.IsAnyBossActive();
-            PvPWorldStat stats = PvPWorldStatProcedures.GetWorldStats();
-            bool v = stats.IsValentineAvailable();
+            BossProcedures_Sisters.SpawnSisters();
 
             return RedirectToAction("Index");
         }
+
+
 
         public ActionResult ItemPetJSON()
         {

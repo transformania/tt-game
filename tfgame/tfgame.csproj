@@ -346,6 +346,7 @@
     <Compile Include="Procedures\BossProcedures\BossProcedures_Donna.cs" />
     <Compile Include="Procedures\BossProcedures\BossProcedures_Fae.cs" />
     <Compile Include="Procedures\BossProcedures\BossProcedures_PetMerchant.cs" />
+    <Compile Include="Procedures\BossProcedures\BossProcedures_Sisters.cs" />
     <Compile Include="Procedures\BossProcedures\BossProcedures_Thieves.cs" />
     <Compile Include="Procedures\BossProcedures\BossProcedures_Valentine.cs" />
     <Compile Include="Procedures\ChatLogProcedures.cs" />
@@ -653,6 +654,8 @@
     <Content Include="Images\PvP\portraits\beat_cop_Babblingfaces.jpg" />
     <Content Include="Images\PvP\portraits\belle_of_the_ball_Meddle.png" />
     <Content Include="Images\PvP\portraits\bimbo_mother_babblingfaces.png" />
+    <Content Include="Images\PvP\portraits\bimbo_mouse_boss_Dandelion.jpg" />
+    <Content Include="Images\PvP\portraits\bimbo_mouse_girl_Dandelion.jpg" />
     <Content Include="Images\PvP\portraits\bimbo_plague_bearer_Meddle.png" />
     <Content Include="Images\PvP\portraits\bimbo_victim_babblingfaces.png" />
     <Content Include="Images\PvP\portraits\birdie_luxianne.png" />
@@ -723,6 +726,8 @@
     <Content Include="Images\PvP\portraits\Minotaur_Meddle.png" />
     <Content Include="Images\PvP\portraits\mouse_boy_Danaume.jpg" />
     <Content Include="Images\PvP\portraits\naga_JBovinne.png" />
+    <Content Include="Images\PvP\portraits\nerd_mouse_boss_Dandelion.jpg" />
+    <Content Include="Images\PvP\portraits\nerd_mouse_Dandelion.jpg" />
     <Content Include="Images\PvP\portraits\neurotic_author_Babblingfaces.jpg" />
     <Content Include="Images\PvP\portraits\new_age_retro_hippy_Meddle.png" />
     <Content Include="Images\PvP\portraits\nighthuntress_Martiandawn.png" />

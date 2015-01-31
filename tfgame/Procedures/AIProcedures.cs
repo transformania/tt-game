@@ -72,7 +72,9 @@ namespace tfgame.Procedures
         // -7 Bimbo Boss
         // -8 Male rat thief
         // -9 Female rat thief
-        // - 10 pet merchant
+        // -10 pet merchant
+        // -11 Nerd mouse sister
+        // -12 bimbo mouse sister
 
         public static void SpawnAIPsychopaths(int count, int offset)
         {

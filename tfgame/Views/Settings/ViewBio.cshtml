@@ -82,7 +82,7 @@
         $(".rpTag").each(function () {
 
             var code = $(this).attr("tagcode");
-            var regexs = code + ".[0-9];";
+            var regexs = ";" + code + ".[0-9];";
             var regex = new RegExp(regexs, "i")
             var smatch = tagstring.match(regex);
 

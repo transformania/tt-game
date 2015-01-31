@@ -33,7 +33,9 @@
     
     @Html.Partial("partial/rptags");
     
+    <hr />
     <p id="resetTags" style="cursor: pointer;"><b>Click here to reset tags</b></p>
+     <hr />
     
     @Html.HiddenFor(m => m.Tags)
 
@@ -72,7 +74,7 @@
         $(".rpTag").each(function () {
 
             var code = $(this).attr("tagcode");
-            var regexs = code + ".[0-9];";
+            var regexs = ";" + code + ".[0-9];";
             var regex = new RegExp(regexs, "i")
             var smatch = tagstring.match(regex);
 
@@ -101,7 +103,7 @@
 
                 var code = $(this).attr("tagcode");
 
-                var regexs = code + ".[0-9];";
+                var regexs = ";" + code + ".[0-9];";
                 var regex = new RegExp(regexs, "i")
 
                 var smatch = tagstring.match(regex);
@@ -113,8 +115,8 @@
                     var numberValue = parseInt(smatch[0].match(/[0-9]/));
                     console.log("Value of click match:  " + numberValue);
 
-                    var oldstring = code + "." + numberValue + ";";
-                    var newstring = code + "." + (numberValue + 1) + ";";
+                    var oldstring = ";" + code + "." + numberValue + ";";
+                    var newstring = ";" + code + "." + (numberValue + 1) + ";";
 
                     console.log("replacing " + oldstring + " with " + newstring);
 
@@ -136,7 +138,7 @@
 
                     // does not exist; add it with default (lowest) value
                 else {
-                    tagstring += code + "." + 0 + ";";
+                    tagstring += ";" + code + "." + 0 + ";";
                     $(this).addClass("neg2");
                 }
 

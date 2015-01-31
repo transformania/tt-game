@@ -3825,9 +3825,10 @@ namespace tfgame.Controllers
                         {
                             CovenantProcedures.WriteCovenantLog("Your covenant collected " + moneyGain + " Arpeyis from the locations you have enchanted.",c.Id, false);
                         }
+                        covRepo.SaveCovenant(c);
                     }
                     log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished giving covenants money from territories");
-
+                    
                 }
                 #endregion
 

@@ -1005,6 +1005,8 @@ namespace tfgame.Procedures
 
             if (amount > 0)
             {
+
+
                 #region xp level checks positive
                 if (player.Level == 1)
                 {
@@ -1184,6 +1186,69 @@ namespace tfgame.Procedures
                         player.Level++;
                         player.XP -= PvPStatics.XP__Level_21;
                         output += GiveLevelingBonus(player, 21);
+                    }
+                }
+                else if (player.Level == 21)
+                {
+                    if (player.XP > PvPStatics.XP__Level_22)
+                    {
+                        player.Level++;
+                        player.XP -= PvPStatics.XP__Level_22;
+                        output += GiveLevelingBonus(player, 22);
+                    }
+                }
+                else if (player.Level == 22)
+                {
+                    if (player.XP > PvPStatics.XP__Level_23)
+                    {
+                        player.Level++;
+                        player.XP -= PvPStatics.XP__Level_23;
+                        output += GiveLevelingBonus(player, 23);
+                    }
+                }
+                else if (player.Level == 23)
+                {
+                    if (player.XP > PvPStatics.XP__Level_24)
+                    {
+                        player.Level++;
+                        player.XP -= PvPStatics.XP__Level_24;
+                        output += GiveLevelingBonus(player, 24);
+                    }
+                }
+                else if (player.Level == 24)
+                {
+                    if (player.XP > PvPStatics.XP__Level_25)
+                    {
+                        player.Level++;
+                        player.XP -= PvPStatics.XP__Level_25;
+                        output += GiveLevelingBonus(player, 25);
+                    }
+                }
+                else if (player.Level == 25)
+                {
+                    if (player.XP > PvPStatics.XP__Level_26)
+                    {
+                        player.Level++;
+                        player.XP -= PvPStatics.XP__Level_26;
+                        output += GiveLevelingBonus(player, 26);
+                    }
+                }
+                else if (player.Level == 26)
+                {
+                    if (player.XP > PvPStatics.XP__Level_27)
+                    {
+                        player.Level++;
+                        player.XP -= PvPStatics.XP__Level_27;
+                        output += GiveLevelingBonus(player, 27);
+                    }
+                }
+                else if (player.Level == 27)
+                {
+                    if (player.XP > PvPStatics.XP__Level_28)
+                    {
+                        player.Level++;
+                        player.XP -= PvPStatics.XP__Level_28;
+                        output += GiveLevelingBonus(player, 28);
                     }
                 }
 

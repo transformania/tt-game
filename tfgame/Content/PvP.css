@@ -1063,3 +1063,7 @@ a.curse {
 .listdots p {
     font-size: 18px;
 }
+
+.specialNoticeBox {
+    background-color: orange;
+}

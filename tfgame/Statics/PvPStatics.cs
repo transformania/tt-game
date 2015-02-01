@@ -68,6 +68,13 @@ namespace tfgame.Statics
         public static decimal XP__Level_19 = 3600; //+370
         public static decimal XP__Level_20 = 3970; //+390
         public static decimal XP__Level_21 = 4360; //+410
+        public static decimal XP__Level_22 = 4790; //+430
+        public static decimal XP__Level_23 = 5240; //+450
+        public static decimal XP__Level_24 = 5710; //+470
+        public static decimal XP__Level_25 = 6200; //+490
+        public static decimal XP__Level_26 = 6710; //+510
+        public static decimal XP__Level_27 = 7240; //+530
+        public static decimal XP__Level_28 = 7790; //+550
 
         public const string Permissions_Admin = "admin";
         public const string Permissions_Moderator = "moderator";
@@ -99,7 +106,13 @@ namespace tfgame.Statics
            3600, // 17 to 18
            3970, // 18 to 19
            4360, // 19 to 20
-           2600, // 20 to 21
+           4790, // 20 to 21
+           5240, // 21 to 22
+           5710, // 22 to 23
+           6200, // 23 to 24
+           6710, // 24 to 25
+           7240, // 25 to 26
+           7790, // 26 to 27
        };
 
         public static int[] XP__HealthManaBaseByLevel = {
@@ -125,6 +138,13 @@ namespace tfgame.Statics
            370, // 19
            385, // 20
            400, // 21
+           415, // 22
+           430, // 23
+           445, // 24
+           460, // 25
+           475, // 26
+           490, // 27
+           505, // 28
        };
 
         public static decimal LevelUpHealthMaxIncreaseBase = 10;

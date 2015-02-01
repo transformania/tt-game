@@ -1016,7 +1016,8 @@ namespace tfgame.Controllers
                 return View("Play", "PvP");
             }
 
-            BossProcedures_Sisters.SpawnSisters();
+            //BossProcedures_Sisters.SpawnSisters();
+            BossProcedures_Sisters.RunSistersAction();
 
             return RedirectToAction("Index");
         }

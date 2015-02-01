@@ -11,9 +11,11 @@ namespace tfgame.Procedures.BossProcedures
     public static class BossProcedures_Sisters
     {
         public const string NerdBossFirstName = "Headmistress Adrianna";
-        public const string NerdBossForm = "form_Head_Beautician_of_Blazes_and_Glamour_Judoo_and_Elyn";
+        public const string NerdBossForm = "form_Headmistress_of_SCCC_Elyn_and_Judoo";
+
         public const string BimboBossFirstName = "Beautrician Candice";
-        public const string BimboBossForm = "form_Headmistress_of_SCCC_Elyn_and_Judoo";
+        public const string BimboBossForm = "form_Head_Beautician_of_Blazes_and_Glamour_Judoo_and_Elyn";
+        
         public const string BossesLastName = "Brisby";
 
         public const string BimboSpell = "skill_Pinky!_Judoo";
@@ -96,6 +98,20 @@ namespace tfgame.Procedures.BossProcedures
 
         public static string SpellIsValid(Player attacker, Player target, string spellDbName)
         {
+
+            // only allow nerd mouse girls to attack bimbo boss
+            if (target.FirstName == NerdBossFirstName && attacker.Form != BimboSpellForm)
+            {
+                return "You can't seem to find the right peeved-off mindset to cast this spell against Adrianna.  Maybe you'd have better luck if you were casting magic against her as a Bimbo Mousegirl...";
+            }
+
+            // only allow nerd mouse girls to attack bimbo boss
+            if (target.FirstName == BimboBossFirstName && attacker.Form != NerdSpellForm)
+            {
+                return "You can't seem to find the right peeved-off mindset to cast this spell against Candice.  Maybe you'd have better luck if you were casting magic against her as a Nerdy Mousegirl...";
+            }
+            // only allow bimbo mouse girls to attack nerd boss
+
             // only allow bimbo spell against nerd boss
             if (target.Form == NerdBossForm && spellDbName != BimboSpell)
             {
@@ -103,7 +119,7 @@ namespace tfgame.Procedures.BossProcedures
             }
             else if (target.Form == BimboBossForm && spellDbName != NerdSpell)
             {
-                return "This spell won't work against Adrianna.";
+                return "This spell won't work against Candice.";
             }
 
             //disallow spells cast against the bosses if they have changed animate forms

@@ -945,7 +945,7 @@ namespace tfgame.Procedures
                 BossProcedures_BimboBoss.CounterAttack(personAttacking, bot);
             }
 
-            // male rat thief counterattack
+            // rat thieves counterattack
             else if (bot.MembershipId == -8 || bot.MembershipId == -9)
             {
                 BossProcedures_Thieves.CounterAttack(personAttacking);
@@ -954,6 +954,11 @@ namespace tfgame.Procedures
             else if (bot.MembershipId == -10)
             {
                 BossProcedures_PetMerchant.CounterAttack(personAttacking);
+            }
+
+            else if (bot.MembershipId == -11 || bot.MembershipId == -12)
+            {
+                BossProcedures_Sisters.CounterAttack(personAttacking, bot);
             }
 
 

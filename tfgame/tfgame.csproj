@@ -787,6 +787,7 @@
     <Content Include="Scripts\jquery.rotate.js" />
     <Content Include="Scripts\jQueryRotateCompressed.js" />
     <Content Include="XMLs\BossSummonText\BimboBoss.txt" />
+    <Content Include="XMLs\BossSummonText\Sisters.txt" />
     <Content Include="XMLs\BossSummonText\Donna.txt" />
     <Content Include="XMLs\BossSummonText\Thieves.txt" />
     <Content Include="XMLs\BossSummonText\Valentine.txt" />

@@ -942,7 +942,7 @@ namespace tfgame.Statics
 
      new Location {
                 dbName = "350_west_9th_ave",
-                Name = "Street: 350 W. 9th Avenu",
+                Name = "Street: 350 W. 9th Avenue",
                 Region = "streets",
                 X = -2,
                 Y = 0,

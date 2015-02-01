@@ -147,6 +147,22 @@ namespace tfgame.Procedures
             worldStatRepo.SavePvPWorldStat(stat);
         }
 
+        public static void Boss_StartSisters()
+        {
+            IPvPWorldStatRepository worldStatRepo = new EFPvPWorldStatRepository();
+            PvPWorldStat stat = worldStatRepo.PvPWorldStats.First();
+            stat.Boss_Sisters = "active";
+            worldStatRepo.SavePvPWorldStat(stat);
+        }
+
+        public static void Boss_EndSisters()
+        {
+            IPvPWorldStatRepository worldStatRepo = new EFPvPWorldStatRepository();
+            PvPWorldStat stat = worldStatRepo.PvPWorldStats.First();
+            stat.Boss_Sisters = "completed";
+            worldStatRepo.SavePvPWorldStat(stat);
+        }
+
         #endregion
 
         public static bool IsAnyBossActive()

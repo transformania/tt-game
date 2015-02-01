@@ -794,6 +794,17 @@ namespace tfgame.Procedures
                             return summontext;
                         }
                     }
+                    else if (roll < 1 && dbLocationName == "lab_lobby")
+                    {
+                        if (worldStats.IsSistersAvailable())
+                        {
+                            BossProcedures_Sisters.SpawnSisters();
+                            PvPWorldStatProcedures.Boss_StartSisters();
+                            string summontext = BossSummonDictionary.GetActivationText("Sisters");
+                            PlayerLogProcedures.AddPlayerLog(player.Id, summontext, true);
+                            return summontext;
+                        }
+                    }
                 }
             }
 

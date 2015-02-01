@@ -562,6 +562,18 @@ namespace tfgame.Controllers
                 output = output.Where(s => s.MobilityType == "inanimate");
             }
 
+            // only bimbo spell works on nerd mouse boss
+            if (target.MembershipId == -11)
+            {
+                output = output.Where(s => s.Skill.dbName == BossProcedures_Sisters.BimboSpell);
+            }
+
+            // only nerd spell works on nerd bimbo boss
+            if (target.MembershipId == -12)
+            {
+                output = output.Where(s => s.Skill.dbName == BossProcedures_Sisters.NerdSpell);
+            }
+
             ViewBag.TargetId = targetId;
             ViewBag.TargetName = target.FirstName + " " + target.LastName;
              return PartialView("partial/AjaxAttackModal", output);
@@ -739,6 +751,7 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play");
             }
 
+            #region bot attack type checks
             // prevent low level players from taking on high level bots
             if (targeted.MembershipId <= -3)
             {
@@ -806,10 +819,21 @@ namespace tfgame.Controllers
 
                 }
 
+                // Thieves Boss
+                if (targeted.MembershipId == -11 || targeted.MembershipId == -12)
+                {
+                    string result = BossProcedures_Sisters.SpellIsValid(me, targeted, attackName);
+                    if (result != "") {
+                        TempData["Error"] = result;
+                        return RedirectToAction("Play");
+                    }
+                }
+
             }
+            #endregion
 
 
-             // don't worry about bots
+            // don't worry about bots
             if (targeted.MembershipId > 0)
             {
 
@@ -3947,7 +3971,7 @@ namespace tfgame.Controllers
                     log.AddLog(updateTimer.ElapsedMilliseconds + ":  Bimbo ERROR:  " + e.InnerException.ToString());
                 }
 
-                // BIMBO
+                // THIEVES
                 try
                 {
                     // run boss logic if one is active
@@ -3963,6 +3987,24 @@ namespace tfgame.Controllers
                 catch (Exception e)
                 {
                     log.AddLog(updateTimer.ElapsedMilliseconds + ":  Bimbo ERROR:  " + e.InnerException.ToString());
+                }
+
+                // SISTERS
+                try
+                {
+                    // run boss logic if one is active
+                    if (worldStats.Boss_Sisters == "active")
+                    {
+                        log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started Sisters actions");
+                        serverLogRepo.SaveServerLog(log);
+                        tfgame.Procedures.BossProcedures.BossProcedures_Sisters.RunSistersAction();
+                        log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == turnNo);
+                        log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished Sisters actions");
+                    }
+                }
+                catch (Exception e)
+                {
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Sisters ERROR:  " + e.InnerException.ToString());
                 }
 
                 #endregion bosses

@@ -530,6 +530,7 @@
     <Content Include="Images\PvP\Icons\icon-mana_recovery.png" />
     <Content Include="Images\PvP\Icons\icon-permanent.png" />
     <Content Include="Images\PvP\Icons\icon-protection.png" />
+    <Content Include="Images\PvP\Icons\icon-superprotection.png" />
     <Content Include="Images\PvP\Icons\inventory.jpg" />
     <Content Include="Images\PvP\Icons\mc_swirl.gif" />
     <Content Include="Images\PvP\Icons\money.png" />
@@ -1502,7 +1503,7 @@
     <Content Include="Views\PvP\partial\partial_perkBonus.cshtml" />
     <Content Include="Views\PvP\partial\partial_AllBuffsTable.cshtml" />
     <Content Include="Views\PvP\partial\attackModal.cshtml" />
-    <Content Include="Views\PvP\Settings.cshtml" />
+    <Content Include="Views\Settings\Settings.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Alpha_3.cshtml" />
     <Content Include="Views\PvP\TeleportMap.cshtml" />
     <Content Include="Views\Contribution\ContributeEffect.cshtml" />

@@ -545,9 +545,17 @@ namespace tfgame.Controllers
             {
                 // do nothing, all spells are okay
             }
-            else if (me.InPvP == true && target.InPvP == true)
+
+            // both players are in protection; only allow animate spells
+            else if (me.GameMode == 1 && target.GameMode == 1)
             {
                 output = output.Where(s => s.MobilityType == "full");
+            }
+
+            // target is in superprotection and not a friend; no spells work
+            else if (target.GameMode == 0)
+            {
+                output = output.Where(s => s.MobilityType == "NONEXISTANT");
             }
 
             // filter out MC spells for bots
@@ -556,7 +564,7 @@ namespace tfgame.Controllers
                 output = output.Where(s => s.MobilityType != "mindcontrol");
             }
 
-            // only show inaniames for rat thieves
+            // only show inanimates for rat thieves
             if (target.MembershipId == -8 || target.MembershipId == -9)
             {
                 output = output.Where(s => s.MobilityType == "inanimate");
@@ -674,7 +682,7 @@ namespace tfgame.Controllers
             }
 
             // assert no blacklist exists if player is in protection mode
-            if (me.InPvP == true && BlacklistProcedures.PlayersHaveBlacklistedEachOther(me, targeted, "attack") == true)
+            if (me.GameMode < 2 && BlacklistProcedures.PlayersHaveBlacklistedEachOther(me, targeted, "attack") == true)
             {
                 TempData["Error"] = "This player has blacklisted you or is on your own blacklist.";
                 TempData["SubError"] = "You cannot attack Protection mode players who have blacklisted you.  Remove them from your blacklist or ask them to remove you from theirs.";
@@ -837,7 +845,7 @@ namespace tfgame.Controllers
             if (targeted.MembershipId > 0)
             {
 
-                if (me.InPvP == true || targeted.InPvP == true)
+                if (me.GameMode < 2 || targeted.GameMode < 2)
                 {
                     if (FriendProcedures.PlayerIsMyFriend(me, targeted) == true)
                     {
@@ -845,12 +853,10 @@ namespace tfgame.Controllers
                     }
 
                     // no inter protection/non spell casting
-                    else if (me.InPvP != targeted.InPvP)
+                    else if ((me.GameMode == 2 && targeted.GameMode < 2)  || (me.GameMode < 2 && targeted.GameMode == 2) )
                     {
-                        
                         TempData["Error"] = "You must be in the same Protection/non-Protection mode as your target in order to cast spells at them.";
                         return RedirectToAction("Play");
-
                     }
 
                     // no weaken between Protection mode players
@@ -902,28 +908,28 @@ namespace tfgame.Controllers
              // assert player is in an okay form to do this
              if (me.Mobility != "full")
              {
-                 TempData["Error"] = "You must be animate in order to attempt to take over a location.";
+                 TempData["Error"] = "You must be animate in order to attempt to enchant a location.";
                  return RedirectToAction("Play");
              }
 
              // assert player is a high enough level
-             if (me.Level < 4)
+             if (me.Level < 3)
              {
-                 TempData["Error"] = "You must be at least level 4 in order to try and take over a location.";
+                 TempData["Error"] = "You must be at least level 3 in order to try and enchant a location.";
                  return RedirectToAction("Play");
              }
 
              // assert player is in PvP mode
-             if (me.InPvP != false)
+             if (me.GameMode != 2)
              {
-                 TempData["Error"] = "You must be in PvP mode in order to try and take over a location.";
+                 TempData["Error"] = "You must be in PvP mode in order to enchant a location.";
                  return RedirectToAction("Play");
              }
 
              // assert player is in a covenant
              if (me.Covenant <= 0)
              {
-                 TempData["Error"] = "You must be in a covenant in order to attempt and take over a location.";
+                 TempData["Error"] = "You must be in a covenant in order to attempt to enchant a location.";
                  return RedirectToAction("Play");
              }
 
@@ -1253,8 +1259,8 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play");
             }
 
-            // assert the item is not a consumeable type or else is AND is in the same mode as the player
-            if (pickup.Item.ItemType == "consumable" && pickup.dbItem.PvPEnabled != me.InPvP)
+            // assert the item is not a consumeable type or else is AND is in the same mode as the player (GameMode 2 is PvP)
+            if (pickup.Item.ItemType == "consumable" && ((pickup.dbItem.PvPEnabled == true && me.GameMode != 2) || (pickup.dbItem.PvPEnabled == false && me.GameMode == 2)))
             {
                 TempData["Error"] = "This item is marked as being in a different PvP mode from you.";
                 TempData["SubError"] = "You are not allowed to pick up consumable-type items that are not in PvP if you are not in PvP and the same for non-PvP.";
@@ -2966,123 +2972,6 @@ namespace tfgame.Controllers
          }
 
          [Authorize]
-        public ActionResult Settings()
-        {
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
-
-            ViewBag.InProtection = me.InPvP;
-
-            ViewBag.TimeUntilLogout = 60-Math.Abs(Math.Floor(me.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
-
-            return View(me);
-        }
-
-        [Authorize]
-        public ActionResult EnableRP()
-        {
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
-            TempData["Result"] = PlayerProcedures.SetRPFlag(me, true);
-            return RedirectToAction("Play");
-        }
-
-        [Authorize]
-        public ActionResult DisableRP()
-        {
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
-            TempData["Result"] = PlayerProcedures.SetRPFlag(me, false);
-            return RedirectToAction("Play");
-        }
-
-        [Authorize]
-        public ActionResult EnablePvP()
-        {
-            //Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
-
-            //// get this player's covenant, if any, and see if it is non-PvP.  If so, make them leave first.
-            //if (me.Covenant > 0)
-            //{
-            //    Covenant myCov = CovenantProcedures.GetDbCovenant(me.Covenant);
-            //    if (myCov.IsPvP == false)
-            //    {
-            //        TempData["Error"] = "Before you can enter PvP mode, you must leave your current non-PvP covenant.";
-            //        return RedirectToAction("Play");
-            //    }
-            //}
-
-            //TempData["Result"] = PlayerProcedures.SetPvPFlag(me);
-            return RedirectToAction("Play");
-        }
-
-        [Authorize]
-        public ActionResult EnterProtection()
-        {
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
-
-            double minutesAgo = Math.Abs(Math.Floor(me.GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalMinutes));
-            if (minutesAgo < 60 && me.Mobility == "full")
-            {
-                TempData["Error"] = "You must have not been in any combat in the past 60 minutes to do this if you are animate.";
-                return RedirectToAction("Play");
-            }
-
-            // assert it is not too early for the player to change into/out of protection mode
-            //PlayerExtra playerExtra = PlayerExtraProcedures.GetPlayerExtra(me);
-          //  int turnNo = PvPWorldStatProcedures.GetWorldTurnNumber();
-           // if (playerExtra.ProtectionToggleTurnsRemaining > 0)
-           // {
-            //    TempData["Error"] = "You cannot enter protection mode right now.";
-            //    TempData["SubError"] = "You must wait for " + playerExtra.ProtectionToggleTurnsRemaining + " more updates to complete while your character is online in order to leave protection mode.";
-           //     return RedirectToAction("Play");
-           // }
-
-            PlayerProcedures.SetPvPFlag(me, true);
-          //  PlayerExtraProcedures.SetNextProtectionToggleTurn(me);
-           // EffectProcedures.GivePerkToPlayer("help_entered_PvP", me);
-
-            TempData["Result"] = "You are now in protection mode.  You cannot be hit by inanimate or animal spells nor cast them, except against those on your friends list.";
-            return RedirectToAction("Play");
-        }
-
-        [Authorize]
-        public ActionResult LeaveProtection()
-        {
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
-
-            double minutesAgo = Math.Abs(Math.Floor(me.GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalMinutes));
-            if (minutesAgo < 60 && me.Mobility == "full")
-            {
-                TempData["Error"] = "You must have not been in any combat in the past 60 minutes to do this if you are animate.";
-                return RedirectToAction("Play");
-            }
-
-           // assert it is not too early for the player to change into/out of protection mode
-            //PlayerExtra playerExtra = PlayerExtraProcedures.GetPlayerExtra(me);
-            //int turnNo = PvPWorldStatProcedures.GetWorldTurnNumber();
-            //if (playerExtra.ProtectionToggleTurnsRemaining > 0)
-            //{
-            //    TempData["Error"] = "You cannot leave protection mode right now.";
-            //    TempData["SubError"] = "You must wait until turn " + playerExtra.ProtectionToggleTurnsRemaining + " while your character is online in order to leave protection mode.";
-            //    return RedirectToAction("Play");
-            //}
-
-            //// assert that it is not too late in the round for the player to enter PvP mode
-            int turnNumber = PvPWorldStatProcedures.GetWorldTurnNumber();
-            if (turnNumber > PvPStatics.RoundDuration_LastPvPEntryTurn)
-            {
-                TempData["Error"] = "You cannot enter PvP mode anymore this round.";
-                TempData["SubError"] = "You cannot enter PvP mode later than turn " + PvPStatics.RoundDuration_LastPvPEntryTurn + ".";
-                return RedirectToAction("Play");
-            }
-
-            PlayerProcedures.SetPvPFlag(me, false);
-            EffectProcedures.GivePerkToPlayer("help_entered_PvP", me);
-           // PlayerExtraProcedures.SetNextProtectionToggleTurn(me);
-
-            TempData["Result"] = "You are no longer in protection mode.";
-            return RedirectToAction("Play");
-        }
-
-         [Authorize]
         public ActionResult Teleport(string to)
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
@@ -3299,10 +3188,6 @@ namespace tfgame.Controllers
             }
 
         }
-
-
-
-
 
          [Authorize]
          public ActionResult ReserveName()

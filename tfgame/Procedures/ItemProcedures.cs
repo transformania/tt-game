@@ -170,7 +170,7 @@ namespace tfgame.Procedures
             foreach (ItemViewModel m in items)
             {
                 //  if the item is a consumeable and not in the same PvP-nonPvP mode, do not add it
-                if (m.Item.ItemType == "consumable" && m.dbItem.PvPEnabled != player.InPvP)
+                if (m.Item.ItemType == "consumable" && ((m.dbItem.PvPEnabled == true && player.GameMode < 2) || (m.dbItem.PvPEnabled == false && player.GameMode == 2)))
                 {
                     // do nothing
                 }
@@ -334,8 +334,18 @@ namespace tfgame.Procedures
                 VictimName = "",
                 dbLocationName = "",
                 TimeDropped = DateTime.UtcNow,
-                PvPEnabled = player.InPvP,
+               // PvPEnabled = player.InPvP,
             };
+
+            if (player.GameMode == 2)
+            {
+                newitem.PvPEnabled = true;
+            }
+            else
+            {
+                newitem.PvPEnabled = false;
+            }
+
             itemRepo.SaveItem(newitem);
             return "You found a " + item.FriendlyName + "!";
         }
@@ -669,9 +679,17 @@ namespace tfgame.Procedures
                 dbName = targetForm.BecomesItemDbName,
                 Level = victim.Level,
                 TimeDropped = DateTime.UtcNow,
-                PvPEnabled = victim.InPvP,
                 IsPermanent = permanent,
             };
+
+            if (victim.GameMode == 2)
+            {
+                newItem.PvPEnabled = true;
+            }
+            else
+            {
+                newItem.PvPEnabled = false;
+            }
 
             BuffBox attackerBuffs = ItemProcedures.GetPlayerBuffs(attacker);
             decimal maxInventorySize = PvPStatics.MaxCarryableItemCountBase + attackerBuffs.ExtraInventorySpace();

@@ -24,6 +24,115 @@ namespace tfgame.Controllers
         }
 
          [Authorize]
+         public ActionResult Settings()
+         {
+             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+
+             ViewBag.GameMode = me.GameMode;
+
+             ViewBag.TimeUntilLogout = 60 - Math.Abs(Math.Floor(me.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
+
+             return View(me);
+         }
+
+
+         [Authorize]
+         public ActionResult EnterProtection()
+         {
+             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+
+             double minutesAgo = Math.Abs(Math.Floor(me.GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalMinutes));
+             if (minutesAgo < 60 && me.Mobility == "full")
+             {
+                 TempData["Error"] = "You must have not been in any combat in the past 60 minutes to do this if you are animate.";
+                 return RedirectToAction("Play");
+             }
+
+             PlayerProcedures.SetPvPFlag(me, 1);
+
+             TempData["Result"] = "You are now in protection mode.  You cannot be hit by inanimate, pet, or mind control spells nor can you cast them except against those on your friends list.";
+             return RedirectToAction("Play");
+         }
+
+         [Authorize]
+         public ActionResult LeaveProtection()
+         {
+             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+
+             double minutesAgo = Math.Abs(Math.Floor(me.GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalMinutes));
+             if (minutesAgo < 60 && me.Mobility == "full")
+             {
+                 TempData["Error"] = "You must have not been in any combat in the past 60 minutes to do this if you are animate.";
+                 return RedirectToAction("Play", "PvP");
+             }
+
+             // assert that it is not too late in the round for the player to enter PvP mode
+             int turnNumber = PvPWorldStatProcedures.GetWorldTurnNumber();
+             if (turnNumber > PvPStatics.RoundDuration_LastPvPEntryTurn)
+             {
+                 TempData["Error"] = "You cannot enter PvP mode anymore this round.";
+                 TempData["SubError"] = "You cannot enter PvP mode later than turn " + PvPStatics.RoundDuration_LastPvPEntryTurn + ".";
+                 return RedirectToAction("Play", "PvP");
+             }
+
+             PlayerProcedures.SetPvPFlag(me, 2);
+             EffectProcedures.GivePerkToPlayer("help_entered_PvP", me);
+
+             TempData["Result"] = "You are no longer in protection mode.";
+             return RedirectToAction("Play", "PvP");
+         }
+
+         [Authorize]
+         public ActionResult EnterSuperProtection()
+         {
+             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+
+             if (me.GameMode != 1)
+             {
+                 TempData["Error"] = "You must be in Protection mode in order to enter SuperProtection mode.";
+                 return RedirectToAction("Play","PvP");
+             }
+
+             PlayerProcedures.SetPvPFlag(me, 0);
+
+             TempData["Result"] = "You are now in superprotection mode.  All spells are disabled against you except those cast by players on your friends list and bots.";
+             return RedirectToAction("Play", "PvP");
+         }
+
+         [Authorize]
+         public ActionResult LeaveSuperProtection()
+         {
+             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+
+             if (me.GameMode != 0)
+             {
+                 TempData["Error"] = "You must be in SuperProtection mode in order to enter Protection mode.";
+                 return RedirectToAction("Play", "PvP");
+             }
+
+             PlayerProcedures.SetPvPFlag(me, 1);
+
+             TempData["Result"] = "You are no longer in SuperProtection mode.";
+             return RedirectToAction("Play", "PvP");
+         }
+
+         [Authorize]
+         public ActionResult EnableRP()
+         {
+             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+             TempData["Result"] = PlayerProcedures.SetRPFlag(me, true);
+             return RedirectToAction("Play","PvP");
+         }
+
+         [Authorize]
+         public ActionResult DisableRP()
+         {
+             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+             TempData["Result"] = PlayerProcedures.SetRPFlag(me, false);
+             return RedirectToAction("Play", "PvP");
+         }
+
+         [Authorize]
         public ActionResult SetBio()
         {
 
@@ -162,9 +271,9 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
-            if (me.InPvP == false)
+            if (me.GameMode == 2)
             {
-                TempData["Error"] = "You must be fully animate and in protection mode in order to drop your willpower.";
+                TempData["Error"] = "You must be fully animate and in Protection or SuperProtection mode in order to drop your willpower.";
                 return RedirectToAction("Play", "PvP");
             }
 

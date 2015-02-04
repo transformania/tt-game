@@ -298,6 +298,15 @@ locationDescription {
     background-image: url("../Images/PvP/Icons/icon-protection.png");
 }
 
+
+.icon-superprotection {
+    width: 16px;
+    height: 16px;
+    background-size: 100% 100%;
+    display: inline-block;
+    background-image: url("../Images/PvP/Icons/icon-superprotection.png");
+}
+
 .icon-rp {
     width: 16px;
     height: 16px;

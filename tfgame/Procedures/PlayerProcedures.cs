@@ -56,7 +56,6 @@ namespace tfgame.Procedures
                                                               LastCombatAttackedTimestamp = p.LastCombatAttackedTimestamp,
                                                               FlaggedForAbuse = p.FlaggedForAbuse,
                                                               UnusedLevelUpPerks = p.UnusedLevelUpPerks,
-                                                              InPvP = p.InPvP,
                                                               GameMode = p.GameMode,
                                                               NonPvP_GameoverSpellsAllowed = p.NonPvP_GameoverSpellsAllowed,
                                                               NonPvP_GameOverSpellsAllowedLastChange = p.NonPvP_GameOverSpellsAllowedLastChange,
@@ -148,7 +147,6 @@ namespace tfgame.Procedures
                                                               LastCombatAttackedTimestamp = p.LastCombatAttackedTimestamp,
                                                               FlaggedForAbuse = p.FlaggedForAbuse,
                                                               UnusedLevelUpPerks = p.UnusedLevelUpPerks,
-                                                              InPvP = p.InPvP,
                                                               GameMode = p.GameMode,
                                                               NonPvP_GameoverSpellsAllowed = p.NonPvP_GameoverSpellsAllowed,
                                                               NonPvP_GameOverSpellsAllowedLastChange = p.NonPvP_GameOverSpellsAllowedLastChange,
@@ -240,7 +238,6 @@ namespace tfgame.Procedures
                                                               LastCombatAttackedTimestamp = p.LastCombatAttackedTimestamp,
                                                               FlaggedForAbuse = p.FlaggedForAbuse,
                                                               UnusedLevelUpPerks = p.UnusedLevelUpPerks,
-                                                              InPvP = p.InPvP,
                                                               GameMode = p.GameMode,
                                                               NonPvP_GameoverSpellsAllowed = p.NonPvP_GameoverSpellsAllowed,
                                                               NonPvP_GameOverSpellsAllowedLastChange = p.NonPvP_GameOverSpellsAllowedLastChange,
@@ -430,8 +427,16 @@ namespace tfgame.Procedures
 
             }
 
-            // start player in PvP if they choose.  Remember, PvP = protection now...
-            newplayer.InPvP = !player.StartInPVP;
+            // start player in PvP if they choose, otherwise put them in protection
+            if (player.StartInPVP == true)
+            {
+                newplayer.GameMode = 2;
+            }
+            else
+            {
+                newplayer.GameMode = 1;
+            }
+
 
             if (player.StartInRP == true)
             {
@@ -1327,21 +1332,12 @@ namespace tfgame.Procedures
 
         }
 
-        public static void SetTimestampToNow(Player player, bool PvPOnly)
+        public static void SetTimestampToNow(Player player)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
             Player dbplayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
-
-            if (PvPOnly == true && dbplayer.InPvP == false)
-            {
-                dbplayer.LastActionTimestamp = DateTime.UtcNow;
-                playerRepo.SavePlayer(dbplayer);
-            }
-            else if (PvPOnly == false)
-            {
-                dbplayer.LastActionTimestamp = DateTime.UtcNow;
-                playerRepo.SavePlayer(dbplayer);
-            }
+            dbplayer.LastActionTimestamp = DateTime.UtcNow;
+            playerRepo.SavePlayer(dbplayer);
         }
 
         public static void AddMinutesToTimestamp(Player player, int amount, bool PvPOnly)
@@ -1399,26 +1395,8 @@ namespace tfgame.Procedures
         public static bool IsMyIPInUseAndAnimate(string ip, Player player)
         {
 
-            int extra = 0;
-
-            // 3800 = Luxianne
-            // 3490 = Mizuho
-            // 224 = Lexam
-            // 254 = Addie (Lexam's girlfriend)
-            // 4481 = Lilith (Luxianne's alt)
-           //  5931 = Mitsuho (Mizuho's PvP alt)
-            if (player.MembershipId == 3800 || 
-                player.MembershipId == 3490 || 
-                player.MembershipId == 224 || 
-                player.MembershipId == 254 || 
-                player.MembershipId == 4481 || 
-                player.MembershipId == 5931)
-            {
-                return false;
-            }
-
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            decimal num = playerRepo.Players.Where(p => p.MembershipId > 0 && p.IpAddress == ip && p.Mobility == "full" && p.InPvP == player.InPvP).Count() + extra;
+            decimal num = playerRepo.Players.Where(p => p.MembershipId > 0 && p.IpAddress == ip && p.Mobility == "full" && p.GameMode == player.GameMode).Count();
             if (num > 1)
             {
                 return true;
@@ -1558,7 +1536,6 @@ namespace tfgame.Procedures
         public static IEnumerable<Player> GetLeadingPlayers__XP(int number)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-          //  return playerRepo.Players.Where(p => p.InPvP==true).OrderByDescending(p => p.Level).ThenByDescending(p => p.XP).Take(number);
             return playerRepo.Players.Where(p => p.MembershipId > 0).OrderByDescending(p => p.Level).ThenByDescending(p => p.XP).Take(number);
         }
 
@@ -1566,7 +1543,6 @@ namespace tfgame.Procedures
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
 
-            //return playerRepo.Players.Where(p => p.MembershipId > 0 && p.InPvP == false).OrderByDescending(p => p.Level).ThenByDescending(p => p.Level).ThenByDescending(p => p.XP).Take(number);
 
             return playerRepo.Players.Where(p => p.MembershipId > 0).OrderByDescending(p => p.PvPScore).ThenByDescending(p => p.Level).ThenByDescending(p => p.XP).Take(number);
 
@@ -1655,35 +1631,30 @@ namespace tfgame.Procedures
             IPlayerRepository playerRepo = new EFPlayerRepository();
             Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
 
+            string message = "";
+
             if (turnOn == true)
             {
                 dbPlayer.InRP = true;
+                message = "You have turned on your RP flag.";
             }
             else
             {
                 dbPlayer.InRP = false;
+                message = "You have turned off your RP flag.";
             }
             playerRepo.SavePlayer(dbPlayer);
 
-            return "You are now in RP mode.";
+            return message;
         }
 
-        public static string SetPvPFlag(Player player)
+        public static string SetPvPFlag(Player player, int level)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
             Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
-            dbPlayer.InPvP = true;
-            dbPlayer.NonPvP_GameOverSpellsAllowedLastChange = DateTime.UtcNow;
-            playerRepo.SavePlayer(dbPlayer);
-            return "You are now in PvP mode.";
-        }
 
-        public static string SetPvPFlag(Player player, bool trueOrFalse)
-        {
-            IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
-            dbPlayer.InPvP = trueOrFalse;
-            dbPlayer.NonPvP_GameOverSpellsAllowedLastChange = DateTime.UtcNow;
+            dbPlayer.GameMode = level;
+
             playerRepo.SavePlayer(dbPlayer);
             return "You are now in PvP mode.";
         }
@@ -1783,7 +1754,7 @@ namespace tfgame.Procedures
             }
 
             // loser is in PvP mode and attacker is not; double the loss penalty
-            if (loser.InPvP == false && attacker.InPvP == true)
+            if (loser.GameMode < 2 && attacker.GameMode == 2)
             {
                 dbPlayer.PvPScore -= loss;
             }

@@ -70,18 +70,26 @@ namespace tfgame.CustomHtmlHelpers
         public static MvcHtmlString PrintPvPIcon(Player player)
         {
 
-            if (player.InPvP == true && player.MembershipId > 0)
+            if (player.MembershipId < 0)
             {
-                return new MvcHtmlString("<span class='icon-protection' title='This player is in protection mode.'></span>");
+                return new MvcHtmlString("");
+            }
+
+            if (player.GameMode == 0)
+            {
+                return new MvcHtmlString("<span class='icon-superprotection' title='This player is in SuperProtection mode.'></span>");
+            }
+            if (player.GameMode == 1)
+            {
+                return new MvcHtmlString("<span class='icon-protection' title='This player is in Protection mode.'></span>");
             }
             else if (player.MembershipId > 0)
             {
                 return new MvcHtmlString("<span class='icon-pvp' title='This player is in PvP mode.'></span>");
             }
-            else
-            {
-                return new MvcHtmlString("");
-            }
+
+            return new MvcHtmlString("");
+
         }
 
         public static MvcHtmlString PrintDonatorIcon(Player player)
@@ -318,26 +326,6 @@ namespace tfgame.CustomHtmlHelpers
             {
                 return new MvcHtmlString("");
             }
-        }
-
-        public static bool IsAttackable(Player attacker, Player victim)
-        {
-            if (victim.MembershipId < 0)
-            {
-                return true;
-            }
-            else
-            {
-                if (attacker.InPvP == true && victim.InPvP == true)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            
         }
 
         public static MvcHtmlString GetEffectFriendlyName(string effect)

@@ -351,7 +351,7 @@ namespace tfgame.Controllers
             input.FlagUrl = "generic.jpg";
             input.FounderMembershipId = WebSecurity.CurrentUserId;
             input.LeaderId = me.Id;
-            input.IsPvP = me.InPvP;
+            //input.IsPvP = me.InPvP;
             CovenantProcedures.StartNewCovenant(input);
 
             // retrieve the recently made covenant's id so the player can be added to it

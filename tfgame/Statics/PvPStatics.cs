@@ -195,7 +195,7 @@ namespace tfgame.Statics
         public static string ItemType_Shoes = "shoes";
         public static string ItemType_Pet = "pet";
 
-        
+        public enum GameModes { Superprotection = 0, Protection = 1, PvP = 2}
 
         public const int PsychopathDefaultAmount = 15;
         public const int Covenant_MaximumAnimatePlayerCount = 25;

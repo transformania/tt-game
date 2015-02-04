@@ -272,13 +272,13 @@ namespace tfgame.Procedures
 
             List<Player> playersHere = new List<Player>();
             List<Player> playersHereOnline = new List<Player>();
-            if (attacker.InPvP == true)
+            if (attacker.GameMode == 2)
             {
-                playersHere = playerREpo.Players.Where(p => p.dbLocationName == attacker.dbLocationName && (p.InPvP == true || p.MembershipId < -1) && p.Mobility == "full").ToList();
+                playersHere = playerREpo.Players.Where(p => p.dbLocationName == attacker.dbLocationName && (p.GameMode == 2 || p.MembershipId < -1) && p.Mobility == "full").ToList();
             }
-            else
+            else if (attacker.GameMode == 1)
             {
-                playersHere = playerREpo.Players.Where(p => p.dbLocationName == attacker.dbLocationName && (p.InPvP == false || p.MembershipId < -1) && p.Mobility == "full").ToList();
+                playersHere = playerREpo.Players.Where(p => p.dbLocationName == attacker.dbLocationName && (p.GameMode == 1 || p.MembershipId < -1) && p.Mobility == "full").ToList();
             }
 
             // filter out offline players as well as the attacker

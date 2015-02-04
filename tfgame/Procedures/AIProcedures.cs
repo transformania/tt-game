@@ -341,7 +341,7 @@ namespace tfgame.Procedures
 
                         foreach (Player p in playersHere)
                         {
-                            if (!PlayerProcedures.PlayerIsOffline(p) && p.Id != bot.Id && p.Mobility == "full" && p.InPvP == false && p.MembershipId >= -2 && p.Level >= bot.Level)
+                            if (!PlayerProcedures.PlayerIsOffline(p) && p.Id != bot.Id && p.Mobility == "full" && p.MembershipId == -2 && p.Level >= bot.Level)
                             {
                                 onlinePlayersHere.Add(p);
                             }

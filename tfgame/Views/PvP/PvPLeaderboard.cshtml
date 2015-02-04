@@ -55,9 +55,13 @@
                 <span class="icon-offline"></span>
             }
 
-            if (p.InPvP == true)
+            if (p.GameMode == 2)
             {
                 <span class="icon-protection"></span>
+            }
+            else if (p.GameMode == 1)
+            {
+                <span class="icon-superprotection"></span>
             }
             
                     }

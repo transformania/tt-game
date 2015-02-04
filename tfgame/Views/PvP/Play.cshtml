@@ -36,7 +36,7 @@
                 <li>@Html.ActionLink("Friends", "MyFriends", "PvP")</li>
                 <li>@Html.ActionLink("Chat", "Chat", "PvP", new { room = "global" }, new { target = "_blank" })</li>
                 <li>@Html.ActionLink("Covenant", "MyCovenant", "Covenant")</li>
-                <li>@Html.ActionLink("Settings", "Settings", "PvP")</li>
+                <li>@Html.ActionLink("Settings", "Settings", "Settings")</li>
                 <li>@Html.ActionLink("Last Actions (" + Model.PlayerLog.Count() + ")", "ViewLog", "PvP")</li>
                 <li>@Html.ActionLink("Spells", "MySkills", "PvP")</li>
                 <li>@Html.ActionLink("My Effects", "MyPerks", "PvP")</li>
@@ -160,7 +160,7 @@
                 }
 
 
-                if (Model.You.Player.InPvP == false)
+                if (Model.You.Player.GameMode == 2)
                 {
                      @Html.ActionLink("Enchant", "EnchantLocation", "PvP")
                 }

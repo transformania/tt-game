@@ -245,7 +245,6 @@ namespace tfgame.dbModels.Models
                 LastCombatAttackedTimestamp = this.LastCombatAttackedTimestamp,
                 FlaggedForAbuse = this.FlaggedForAbuse,
                 UnusedLevelUpPerks = this.UnusedLevelUpPerks,
-                InPvP = this.InPvP,
                 GameMode = this.GameMode,
                 NonPvP_GameoverSpellsAllowed = this.NonPvP_GameoverSpellsAllowed,
                 NonPvP_GameOverSpellsAllowedLastChange = this.NonPvP_GameOverSpellsAllowedLastChange,

@@ -32,7 +32,7 @@
                 <li>@Html.ActionLink("Friends", "MyFriends", "PvP")</li>
                 <li>@Html.ActionLink("Chat", "Chat", "PvP", new { room = "global" }, new { target = "_blank" })</li>
                 <li>@Html.ActionLink("Covenant", "MyCovenant", "Covenant")</li>
-                <li>@Html.ActionLink("Settings", "Settings", "PvP")</li>
+                <li>@Html.ActionLink("Settings", "Settings", "Settings")</li>
                 @{if (Model.NewMessageCount > 0)
                 {
                     <li>@Html.ActionLink("(" + Model.NewMessageCount + " unread)", "MyMessages", "PvP", null, new { @class = "inboxNew" })</li>

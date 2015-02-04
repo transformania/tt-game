@@ -410,20 +410,20 @@ namespace tfgame.Procedures
                         }
 
                         // exclude PvP score for bots
-                        if (victim.MembershipId > 0)
-                        {
-                            decimal score = PlayerProcedures.GetPvPScoreFromWin(attacker, victim);
-                            output.AttackerLog += PlayerProcedures.GivePlayerPvPScore(attacker, victim, score);
-                            output.VictimLog += PlayerProcedures.RemovePlayerPvPScore(victim, attacker);
-                        }
+                        //if (victim.MembershipId > 0)
+                        //{
+                        //    decimal score = PlayerProcedures.GetPvPScoreFromWin(attacker, victim);
+                        //    output.AttackerLog += PlayerProcedures.GivePlayerPvPScore(attacker, victim, score);
+                        //    output.VictimLog += PlayerProcedures.RemovePlayerPvPScore(victim, attacker);
+                        //}
 
                     }
 
                     // VICTIM IS IN PVP BUT ATTACKER IS NOT.  Reduce half of their PvP score.
-                    if (victim.InPvP == false && attacker.InPvP == true)
-                    {
-                        output.VictimLog += PlayerProcedures.RemovePlayerPvPScore(victim, attacker);
-                    }
+                    //if (victim.InPvP == false && attacker.InPvP == true)
+                    //{
+                    //    output.VictimLog += PlayerProcedures.RemovePlayerPvPScore(victim, attacker);
+                    //}
 
                     output.AttackerLog += "  You collect " + Math.Round(moneygain,0) + " Arpeyjis your victim dropped during the transformation.";
 
@@ -451,7 +451,7 @@ namespace tfgame.Procedures
                 }
                 #endregion
 
-                #region
+                #region mind control
                 else if (targetForm.MobilityType == "mindcontrol" && target.Health <= 0)
                 {
                     Player attacker = playerRepo.Players.FirstOrDefault(p => p.Id == attackerId);

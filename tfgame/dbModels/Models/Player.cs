@@ -39,6 +39,7 @@ namespace tfgame.dbModels.Models
         public bool FlaggedForAbuse { get; set; }
         public int UnusedLevelUpPerks { get; set; }
         public bool InPvP { get; set; }
+        public int GameMode { get; set; }
         public bool NonPvP_GameoverSpellsAllowed { get; set; }
         public DateTime NonPvP_GameOverSpellsAllowedLastChange { get; set; }
         public bool InRP { get; set; }
@@ -170,7 +171,8 @@ namespace tfgame.dbModels.Models
         public DateTime LastCombatAttackedTimestamp { get; set; }
         public bool FlaggedForAbuse { get; set; }
         public int UnusedLevelUpPerks { get; set; }
-        public bool InPvP { get; set; }
+        public bool InPvP { get; set; } // 0 == Superprotection, 1 == Protection, 2 == PvP
+        public int GameMode { get; set; }
         public bool NonPvP_GameoverSpellsAllowed { get; set; }
         public DateTime NonPvP_GameOverSpellsAllowedLastChange { get; set; }
         public bool InRP { get; set; }
@@ -244,6 +246,7 @@ namespace tfgame.dbModels.Models
                 FlaggedForAbuse = this.FlaggedForAbuse,
                 UnusedLevelUpPerks = this.UnusedLevelUpPerks,
                 InPvP = this.InPvP,
+                GameMode = this.GameMode,
                 NonPvP_GameoverSpellsAllowed = this.NonPvP_GameoverSpellsAllowed,
                 NonPvP_GameOverSpellsAllowedLastChange = this.NonPvP_GameOverSpellsAllowedLastChange,
                 InRP = this.InRP,

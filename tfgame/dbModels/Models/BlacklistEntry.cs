@@ -11,5 +11,6 @@ namespace tfgame.dbModels.Models
         public int CreatorMembershipId { get; set; }
         public int TargetMembershipId { get; set; }
         public DateTime Timestamp { get; set; }
+        public int BlacklistLevel { get; set; } // 0 == No attacking, // 1 == No attacking or messaging
     }
 }

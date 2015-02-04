@@ -674,7 +674,7 @@ namespace tfgame.Controllers
             }
 
             // assert no blacklist exists if player is in protection mode
-            if (me.InPvP == true && BlacklistProcedures.PlayersHaveBlacklistedEachOther(me, targeted) == true)
+            if (me.InPvP == true && BlacklistProcedures.PlayersHaveBlacklistedEachOther(me, targeted, "attack") == true)
             {
                 TempData["Error"] = "This player has blacklisted you or is on your own blacklist.";
                 TempData["SubError"] = "You cannot attack Protection mode players who have blacklisted you.  Remove them from your blacklist or ask them to remove you from theirs.";
@@ -1771,7 +1771,7 @@ namespace tfgame.Controllers
              Player receiver = PlayerProcedures.GetPlayer(input.ReceiverId);
 
              // assert no blacklist exists
-             if (BlacklistProcedures.PlayersHaveBlacklistedEachOther(me, receiver) == true)
+             if (BlacklistProcedures.PlayersHaveBlacklistedEachOther(me, receiver, "message") == true)
              {
                  TempData["Error"] = "This player has blacklisted you or is on your own blacklist.";
                  TempData["SubError"] = "You cannot send messages to players who have blacklisted you.  Remove them from your blacklist or ask them to remove you from theirs.";
@@ -2567,7 +2567,7 @@ namespace tfgame.Controllers
             Player friend = PlayerProcedures.GetPlayer(playerId);
 
             // assert no blacklist exists if player is in protection mode
-            if (BlacklistProcedures.PlayersHaveBlacklistedEachOther(me, friend) == true)
+            if (BlacklistProcedures.PlayersHaveBlacklistedEachOther(me, friend, "any") == true)
             {
                 TempData["Error"] = "This player has blacklisted you or is on your own blacklist.";
                 TempData["SubError"] = "You cannot request friendship with players who have blacklisted you.  Remove them from your blacklist or ask them to remove you from theirs.";

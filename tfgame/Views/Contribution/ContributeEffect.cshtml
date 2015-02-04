@@ -287,22 +287,24 @@
             @Html.TextAreaFor(e => e.Notes)
         </div>
     </div>
-    
-     if (Model.ProofreadingCopy == true)
-        {
-            <h1 class="good">THIS IS A PROOFREADING COPY.</h1>
-            <div class="form__panel group" style="background-color: #ffc278; ">
-                @*<div class="form__panel">
-                    @Html.LabelFor(m => m.NeedsToBeUpdated)
-                    @Html.CheckBoxFor(m => m.NeedsToBeUpdated)
-                </div>*@
-                <div class="form__panel">
-                    <label>Proofreading edit history:</label>
-                    @Html.Raw(Model.History)
-                </div>
+
+    if (Model.ProofreadingCopy == true)
+    {
+        <h1 class="good">THIS IS A PROOFREADING COPY.</h1>
+
+
+        <div class="form__panel group" style="background-color: #ffc278; ">
+            <div class="form__panel">
+                <label>Have you made changes to this effect that needs to be republished?  (Only select this if the effect is already live in the game.)</label>
+                @Html.CheckBoxFor(m => m.NeedsToBeUpdated)
             </div>
-           
-        }
+            <div class="form__panel">
+                <label>Proofreading edit history:</label>
+                @Html.Raw(Model.History)
+            </div>
+        </div>
+
+    }
 
 
 

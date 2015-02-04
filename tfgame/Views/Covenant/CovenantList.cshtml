@@ -30,7 +30,6 @@
         foreach (CovenantListItemViewModel c in Model.OrderByDescending(c => c.MemberCount))
         {
             <div class="covListing">
-                @CharactersHere.PrintPvPIcon(c.dbCovenant)
                 <div class="covFlag" style="background-image: url(/Images/PvP/CovenantFlags/@c.dbCovenant.FlagUrl)"></div>
                 <span class="covBigName">@Html.ActionLink(c.dbCovenant.Name, "LookAtCovenant", "Covenant", new { id = c.dbCovenant.Id }, null)</span>
                 <span>(lvl @c.dbCovenant.Level)</span>

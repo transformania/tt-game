@@ -1513,7 +1513,7 @@ namespace tfgame.Controllers
                 return RedirectToAction("SelfCast","Item");
             }
 
-            if (item.dbItem.dbName == "item_consumable_curselifter")
+            if (item.dbItem.dbName == "item_consumable_curselifter" || item.dbItem.dbName == "item_Butt_Plug_Hanna")
             {
                 return RedirectToAction("RemoveCurse", "Item");
             }

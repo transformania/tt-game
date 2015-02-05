@@ -230,7 +230,7 @@
                     if (Model.dbItem.TurnsUntilUse > 0)
                     {
                         @Html.ActionLink("Drop", "Drop", "PvP", new { itemId = Model.dbItem.Id }, null)
-                        <span style="color: red;">This item is still replenishing its content and cannot be eaten or drank from until <b>@Model.dbItem.TurnsUntilUse</b> more world updates.</span>
+                        <span style="color: red;">This item is still replenishing its energy and cannot be used for <b>@Model.dbItem.TurnsUntilUse</b> more world updates.</span>
                     }
                     else
                     {

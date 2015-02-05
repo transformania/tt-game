@@ -447,6 +447,17 @@ namespace tfgame.Procedures
             IItemRepository itemRepo = new EFItemRepository();
             Item dbItem = itemRepo.Items.FirstOrDefault(i => i.Id == input.dbItem.Id);
             dbItem.TurnsUntilUse = input.Item.UseCooldown;
+
+            // these special reusable consumables can have a lower cooldown at higher levels
+            if (dbItem.dbName == "item_Butt_Plug_Hanna" || dbItem.dbName == "item_Hot_Coffee_Mug_Alex_Wise")
+            {
+                dbItem.TurnsUntilUse -= dbItem.Level;
+                if (dbItem.TurnsUntilUse < 0)
+                {
+                    dbItem.TurnsUntilUse = 0;
+                }
+            }
+
             itemRepo.SaveItem(dbItem);
         }
 

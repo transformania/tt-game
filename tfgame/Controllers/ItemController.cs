@@ -92,7 +92,7 @@ namespace tfgame.Controllers
             }
 
             // assert player owns at least one of the type of item needed
-            ItemViewModel itemToUse = ItemProcedures.GetAllPlayerItems(me.Id).FirstOrDefault(i => i.dbItem.dbName == "item_consumable_curselifter");
+            ItemViewModel itemToUse = ItemProcedures.GetAllPlayerItems(me.Id).FirstOrDefault(i => i.dbItem.dbName == "item_consumable_curselifter" || i.dbItem.dbName == "item_Butt_Plug_Hanna");
             if (itemToUse == null)
             {
                 TempData["Error"] = "You do not own the item needed to do this.";
@@ -126,7 +126,7 @@ namespace tfgame.Controllers
 
 
             // assert that the item can remove curses and is not any old item
-            if (itemToUse.dbItem.dbName != "item_consumable_curselifter")
+            if (itemToUse.dbItem.dbName != "item_consumable_curselifter" && itemToUse.dbItem.dbName != "item_Butt_Plug_Hanna")
             {
                 TempData["Error"] = "This item cannot remove curses.";
                 return RedirectToAction("Play", "PvP");

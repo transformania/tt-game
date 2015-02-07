@@ -14,7 +14,7 @@ namespace tfgame.Statics
 
         public const int RoundDuration = 2500;
         public const int RoundDuration_LastPvPEntryTurn = 1800;
-        public const bool ChaosMode = true;
+        public const bool ChaosMode = false;
 
         public static String GenderMale = "male";
         public static String GenderFemale = "female";

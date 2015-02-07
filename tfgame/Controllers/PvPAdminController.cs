@@ -911,6 +911,26 @@ namespace tfgame.Controllers
             ProofreadCopy.AdditionalSubmitterNames = OldCopy.AdditionalSubmitterNames;
             ProofreadCopy.Notes = OldCopy.Notes;
 
+            // stats
+            ProofreadCopy.HealthBonusPercent = OldCopy.HealthBonusPercent;
+            ProofreadCopy.ManaBonusPercent = OldCopy.ManaBonusPercent;
+            ProofreadCopy.ExtraSkillCriticalPercent = OldCopy.ExtraSkillCriticalPercent;
+            ProofreadCopy.HealthRecoveryPerUpdate = OldCopy.HealthRecoveryPerUpdate;
+            ProofreadCopy.ManaRecoveryPerUpdate = OldCopy.ManaRecoveryPerUpdate;
+            ProofreadCopy.SneakPercent = OldCopy.SneakPercent;
+            ProofreadCopy.EvasionPercent = OldCopy.EvasionPercent;
+            ProofreadCopy.EvasionNegationPercent = OldCopy.EvasionNegationPercent;
+            ProofreadCopy.MeditationExtraMana = OldCopy.MeditationExtraMana;
+            ProofreadCopy.CleanseExtraHealth = OldCopy.CleanseExtraHealth;
+            ProofreadCopy.MoveActionPointDiscount = OldCopy.MoveActionPointDiscount;
+            ProofreadCopy.SpellExtraTFEnergyPercent = OldCopy.SpellExtraTFEnergyPercent;
+            ProofreadCopy.SpellExtraHealthDamagePercent = OldCopy.SpellExtraHealthDamagePercent;
+            ProofreadCopy.CleanseExtraTFEnergyRemovalPercent = OldCopy.CleanseExtraTFEnergyRemovalPercent;
+            ProofreadCopy.SpellMisfireChanceReduction = OldCopy.SpellMisfireChanceReduction;
+            ProofreadCopy.SpellHealthDamageResistance = OldCopy.SpellHealthDamageResistance;
+            ProofreadCopy.SpellTFEnergyDamageResistance = OldCopy.SpellTFEnergyDamageResistance;
+            ProofreadCopy.ExtraInventorySpace = OldCopy.ExtraInventorySpace;
+
             effectConRepo.SaveEffectContribution(ProofreadCopy);
 
 
@@ -1017,7 +1037,9 @@ namespace tfgame.Controllers
             }
 
             //BossProcedures_Sisters.SpawnSisters();
-            BossProcedures_Sisters.RunSistersAction();
+            AIProcedures.SpawnLindella();
+            BossProcedures_PetMerchant.SpawnPetMerchant();
+            BossProcedures_Fae.SpawnFae();
 
             return RedirectToAction("Index");
         }

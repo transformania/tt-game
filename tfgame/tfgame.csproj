@@ -664,6 +664,7 @@
     <Content Include="Images\PvP\portraits\bimbo_victim_babblingfaces.png" />
     <Content Include="Images\PvP\portraits\birdie_luxianne.png" />
     <Content Include="Images\PvP\portraits\blue_chaffinch_Lux.png" />
+    <Content Include="Images\PvP\portraits\boyish_girl_Babblingfaces.jpg" />
     <Content Include="Images\PvP\portraits\bunnygirl_nymictf_fixed.png" />
     <Content Include="Images\PvP\portraits\captivating_siren_babblingfaces.png" />
     <Content Include="Images\PvP\portraits\catchcum_spacedande.png" />
@@ -727,12 +728,14 @@
     <Content Include="Images\PvP\portraits\Man_03_Meddle.png" />
     <Content Include="Images\PvP\portraits\Man_04_Meddle.png" />
     <Content Include="Images\PvP\portraits\Man_05_Meddle.png" />
+    <Content Include="Images\PvP\portraits\martial_artist_Babblingfaces.jpg" />
     <Content Include="Images\PvP\portraits\massively_obese_woman_Meddle.png" />
     <Content Include="Images\PvP\portraits\mechanical_man_Meddle.png" />
     <Content Include="Images\PvP\portraits\mermaid_Luxianne.png" />
     <Content Include="Images\PvP\portraits\milkmaid_Luxianne.png" />
     <Content Include="Images\PvP\portraits\Minotaur_Meddle.png" />
     <Content Include="Images\PvP\portraits\mouse_boy_Danaume.jpg" />
+    <Content Include="Images\PvP\portraits\mummy_Babblingfaces.jpg" />
     <Content Include="Images\PvP\portraits\naga_JBovinne.png" />
     <Content Include="Images\PvP\portraits\nerd_mouse_boss_Dandelion.jpg" />
     <Content Include="Images\PvP\portraits\nerd_mouse_Dandelion.jpg" />
@@ -773,6 +776,7 @@
     <Content Include="Images\PvP\portraits\unicorn_mare_Luxianne.png" />
     <Content Include="Images\PvP\portraits\unicorn_stallion_Luxianne.png" />
     <Content Include="Images\PvP\portraits\unimagineably_bbl_Meddle.png" />
+    <Content Include="Images\PvP\portraits\Usagi_Yobimbo_Dandelion.jpg" />
     <Content Include="Images\PvP\portraits\Valiant_Valkyrie_Meddle.png" />
     <Content Include="Images\PvP\portraits\vampireboss.png" />
     <Content Include="Images\PvP\portraits\vampire_female_Lux.png" />

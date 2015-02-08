@@ -281,7 +281,7 @@
 
                                 }
 
-                                <span class="floorItemName">@item.Item.FriendlyName <br /></span>
+                                <span class="floorItemName">@CharactersHere.TruncateToLength(item.Item.FriendlyName, 75) <br /></span>
                                 @{
                 if (item.dbItem.VictimName != "")
                 {

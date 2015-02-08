@@ -549,6 +549,8 @@ namespace tfgame.Procedures
 
             float takeoverAmount = player.Level / 2;
 
+            decimal XPGain = Convert.ToDecimal(takeoverAmount);
+
             // location is not controlled; give it to whichever covenant is attacking it
             if (info.TakeoverAmount <= 0)
             {
@@ -562,7 +564,7 @@ namespace tfgame.Procedures
                 info.CovenantId = player.Covenant;
                 info.TakeoverAmount = takeoverAmount;
                 info.LastTakeoverTurn = PvPWorldStatProcedures.GetWorldTurnNumber();
-                output = "<b>Your enchantment settles in this location, converting its energies from the previous controlling covenant to your own!</b>";
+                output = "<b>Your enchantment settles in this location, converting its energies from the previous controlling covenant to your own!  (+" + XPGain + " XP)</b>";
                 LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == player.dbLocationName).CovenantController = player.Covenant;
                 Covenant myCov = covRepo.Covenants.First(c => c.Id == player.Covenant);
 
@@ -583,7 +585,8 @@ namespace tfgame.Procedures
                 {
                     info.TakeoverAmount += takeoverAmount;
                     Covenant cov = covRepo.Covenants.FirstOrDefault(c => c.Id == player.Covenant);
-                    output = "Your enchantment reinforces this location by " + (takeoverAmount) + ".  New influence level is " + info.TakeoverAmount + " for your covenant, " + cov.Name + ".";
+                    output = "Your enchantment reinforces this location by " + (takeoverAmount) + ".  New influence level is " + info.TakeoverAmount + " for your covenant, " + cov.Name + ".  (+" + XPGain + " XP)</b>";
+                    PlayerProcedures.GiveXP(player.Id, 3);
                 }
                 else
                 {
@@ -598,11 +601,11 @@ namespace tfgame.Procedures
 
                     if (cov != null)
                     {
-                        output = "You dispell the enchantment at this location by " + takeoverAmount + ".  New influence level is " + info.TakeoverAmount + " for the location's existing controlled, " + cov.Name + ".";
+                        output = "You dispell the enchantment at this location by " + takeoverAmount + ".  New influence level is " + info.TakeoverAmount + " for the location's existing controlled, " + cov.Name + ".  (+" + XPGain + " XP)</b>";
                     }
                     else
                     {
-                        output = "You dispell the enchantment at this location by " + takeoverAmount + ".  New influence level is " + info.TakeoverAmount + ".";
+                        output = "You dispell the enchantment at this location by " + takeoverAmount + ".  New influence level is " + info.TakeoverAmount + ".  (+" + XPGain + " XP)</b>";
                     }
 
                   
@@ -630,6 +633,7 @@ namespace tfgame.Procedures
             
 
             repo.SaveLocationInfo(info);
+            PlayerProcedures.GiveXP(player.Id, XPGain);
 
             return output;
         }

@@ -1400,6 +1400,45 @@ namespace tfgame.Procedures
             }
         }
 
+        public static bool PlayerHasReadBook(Player player, string bookDbName)
+        {
+            IBookReadingRepository repo = new EFBookReadingRepository();
+
+            BookReading reading = repo.BookReadings.FirstOrDefault(b => b.PlayerId == player.Id && b.BookDbName == bookDbName);
+
+            if (reading == null)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+
+            
+        }
+
+        public static void AddBookReading(Player player, string bookDbName)
+        {
+            IBookReadingRepository repo = new EFBookReadingRepository();
+
+            BookReading reading = repo.BookReadings.FirstOrDefault(b => b.PlayerId == player.Id && b.BookDbName == bookDbName);
+
+            if (reading == null)
+            {
+                BookReading newReading = new BookReading
+                {
+                    PlayerId = player.Id,
+                    BookDbName = bookDbName,
+                    Timestamp = DateTime.UtcNow,
+                };
+                repo.SaveBookReading(newReading);
+            }
+            
+        }
+
+
+
         
 
     }

@@ -224,6 +224,7 @@
     <Compile Include="dbModels\Abstract\IAIDirective.cs" />
     <Compile Include="dbModels\Abstract\IAuthorArtistBioRepository.cs" />
     <Compile Include="dbModels\Abstract\IBlacklistEntryRepository.cs" />
+    <Compile Include="dbModels\Abstract\IBookReadingRepository.cs" />
     <Compile Include="dbModels\Abstract\IBuffRepository.cs" />
     <Compile Include="dbModels\Abstract\IChatLogRepository.cs" />
     <Compile Include="dbModels\Abstract\IContributionRepository.cs" />
@@ -262,6 +263,7 @@
     <Compile Include="dbModels\Concrete\EFAchievementRepository.cs" />
     <Compile Include="dbModels\Concrete\EFAuthorArtistBioRepository.cs" />
     <Compile Include="dbModels\Concrete\EFBlacklistEntryRepository.cs" />
+    <Compile Include="dbModels\Concrete\EFBookReadingRepository.cs" />
     <Compile Include="dbModels\Concrete\EFChatLogRepository.cs" />
     <Compile Include="dbModels\Concrete\EFCovenantLogRepository.cs" />
     <Compile Include="dbModels\Concrete\EFDbStaticEffectRepository.cs" />
@@ -280,6 +282,7 @@
     <Compile Include="dbModels\Models\Achievement.cs" />
     <Compile Include="dbModels\Models\AuthorArtistBio.cs" />
     <Compile Include="dbModels\Models\BlacklistEntry.cs" />
+    <Compile Include="dbModels\Models\BookReading.cs" />
     <Compile Include="dbModels\Models\Buff.cs" />
     <Compile Include="dbModels\Concrete\EFAIDirectiveRepository.cs" />
     <Compile Include="dbModels\Concrete\EFBuffRepository.cs" />
@@ -413,6 +416,7 @@
     <Compile Include="ViewModels\PublicBroadcastViewModel.cs" />
     <Compile Include="ViewModels\SelectListItem.cs" />
     <Compile Include="ViewModels\ServerBalance.cs" />
+    <Compile Include="ViewModels\SkillBookViewModel.cs" />
     <Compile Include="ViewModels\SkillViewModel.cs" />
     <Compile Include="ViewModels\StaticEffect.cs" />
     <Compile Include="ViewModels\StaticFurniture.cs" />
@@ -1002,6 +1006,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="XMLs\LocationDescriptions\tavern_private_room.xml" />
+    <Content Include="XMLs\SkillBooks\founding.txt" />
     <Content Include="XMLs\SkillMessages\skill_Circine%27s_Compassion_LexamTheGemFox.xml" />
     <Content Include="XMLs\SkillMessages\skill_Doggy_Owner_Arnisd.xml" />
     <Content Include="XMLs\SkillMessages\skill_Donna%27s_Bitch_LexamTheGemFox.xml" />
@@ -1617,6 +1622,7 @@
     <Content Include="Views\PvP\RoundLeaderboards\XP\Alpha_15.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_15.cshtml" />
     <Content Include="Views\Settings\MyBlacklistEntries.cshtml" />
+    <Content Include="Views\Item\SkillBook.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

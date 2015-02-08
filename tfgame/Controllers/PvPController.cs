@@ -994,6 +994,7 @@ namespace tfgame.Controllers
              }
 
             string output = CovenantProcedures.AttackLocation(me);
+
              PlayerProcedures.AddAttackCount(me);
            
 
@@ -1505,12 +1506,30 @@ namespace tfgame.Controllers
                 return View("TeleportMap", output);
             }
 
+            //// if this item is a teleportation scroll, redirect to the teleportation page.
+            //if (item.dbItem.dbName == "item_consumeable_teleportation_scroll")
+            //{
+            //    IEnumerable<Location> output = LocationsStatics.GetLocation.Where(l => l.dbName != "");
+            //    return View("TeleportMap", output);
+            //}
 
-             // if this item is the self recaster, redirect to the animate spell listing page
-            if (item.dbItem.dbName == "item_consumable_selfcaster")
+             // if this item is a skill book, aka a tome, redirect to that page with the appropriate text
+            if (item.dbItem.dbName.Contains("item_consumable_tome-") == true)
             {
-               
-                return RedirectToAction("SelfCast","Item");
+
+                string tomeName = item.dbItem.dbName.Split('-')[1];
+
+                string filename = System.Web.HttpContext.Current.Server.MapPath("~/XMLs/SkillBooks/" + tomeName + ".txt");
+                string text = System.IO.File.ReadAllText(filename);
+
+                SkillBookViewModel output = new SkillBookViewModel
+                {
+                    Text = text,
+                    AlreadyRead = ItemProcedures.PlayerHasReadBook(me, item.dbItem.dbName),
+                    BookId = item.dbItem.Id,
+                };
+                
+                return View("~/Views/Item/SkillBook.cshtml", output);
             }
 
             if (item.dbItem.dbName == "item_consumable_curselifter" || item.dbItem.dbName == "item_Butt_Plug_Hanna")

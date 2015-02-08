@@ -174,6 +174,21 @@ namespace tfgame.CustomHtmlHelpers
             return new MvcHtmlString(output);
         }
 
+        public static MvcHtmlString TruncateToLength(string text, int maxLength)
+        {
+            if (text.Length <= maxLength)
+            {
+                return new MvcHtmlString(text);
+            }
+            else
+            {
+                int actualLength = text.Length;
+                string output = text.Substring(0, maxLength);
+
+                return new MvcHtmlString(output + "...");
+            }
+        }
+
 
 
       //  public static MvcHtmlString

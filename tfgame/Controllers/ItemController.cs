@@ -16,6 +16,7 @@ namespace tfgame.Controllers
     {
         //
         // GET: /Item/
+         [Authorize]
         public ActionResult SelfCast()
         {
             Player me = PlayerProcedures.GetPlayerFromMembership();
@@ -32,6 +33,7 @@ namespace tfgame.Controllers
             return View(output);
         }
 
+         [Authorize]
         public ActionResult SelfCastSend(string spell)
         {
             Player me = PlayerProcedures.GetPlayerFromMembership();
@@ -81,6 +83,7 @@ namespace tfgame.Controllers
             return RedirectToAction("Play", "PvP");
         }
 
+         [Authorize]
         public ActionResult RemoveCurse()
         {
             Player me = PlayerProcedures.GetPlayerFromMembership();
@@ -105,6 +108,7 @@ namespace tfgame.Controllers
             return View(output);
         }
 
+         [Authorize]
         public ActionResult RemoveCurseSend(string curse, int id)
         {
 
@@ -123,7 +127,6 @@ namespace tfgame.Controllers
                 TempData["Error"] = "You do not own the item needed to do this.";
                 return RedirectToAction("Play", "PvP");
             }
-
 
             // assert that the item can remove curses and is not any old item
             if (itemToUse.dbItem.dbName != "item_consumable_curselifter" && itemToUse.dbItem.dbName != "item_Butt_Plug_Hanna")
@@ -159,6 +162,43 @@ namespace tfgame.Controllers
             TempData["Result"] = "You have successfully removed the curse <b>" + curseToRemove.FriendlyName + "</b> from your body!";
             return RedirectToAction("Play","PvP");
         }
+
+         //[Authorize]
+         public ActionResult ReadSkillBook(int id)
+         {
+             Player me = PlayerProcedures.GetPlayerFromMembership();
+
+             // assert player is animate
+             if (me.Mobility != "full")
+             {
+                 TempData["Error"] = "This curse is too strong to be lifted.";
+                 return RedirectToAction("Play", "PvP");
+             }
+
+             ItemViewModel book = ItemProcedures.GetItemViewModel(id);
+
+             // assert player owns this book
+             if (book.dbItem.OwnerId != me.Id)
+             {
+                 TempData["Error"] = "You do not own this book.";
+                 return RedirectToAction("Play", "PvP");
+             }
+
+             // assert player hasn't already read this book
+             if (ItemProcedures.PlayerHasReadBook(me, book.dbItem.dbName) == true)
+             {
+                 TempData["Error"] = "You have already absorbed the knowledge from this book and can learn nothing more from it.";
+                 TempData["SubError"] = "Perhaps a friend could use this tome more than you right now.";
+                 return RedirectToAction("Play", "PvP");
+             }
+
+             ItemProcedures.DeleteItem(book.dbItem.Id);
+             ItemProcedures.AddBookReading(me, book.dbItem.dbName);
+             PlayerProcedures.GiveXP(me.Id, 50);
+             TempData["Result"] = "You read your copy of " + book.Item.FriendlyName + ", absorbing its knowledge for 50 XP.  The tome slips into thin air so it can provide its knowledge to another mage in a different time and place.";
+             return RedirectToAction("Play", "PvP");
+
+         }
 
 
 	}

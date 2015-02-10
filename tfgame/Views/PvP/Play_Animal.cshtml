@@ -46,6 +46,14 @@
                 }
                 <li>@Html.ActionLink("Submit Content", "Contribute", "PvP", new { Id = -1 }, null)</li>
                 <li>@Html.ActionLink("Start again as someone else", "Restart", "PvP")</li>
+                @{
+                    if (User.IsInRole(PvPStatics.Permissions_Admin) == true)
+                    {
+                        <li>
+                            @Html.ActionLink("Admin", "Index", "PvPAdmin")
+                        </li>
+                    }
+                }                   
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -63,13 +71,6 @@
     <span class="turnNumber">Turn #<b>@ViewBag.WorldTurnNumber/@PvPStatics.RoundDuration</b></span>
     Transformania Time has <b>@Model.WorldStats.TotalPlayers</b> players, <b>@Model.WorldStats.CurrentOnlinePlayers</b> of which are currently online.
 </div>
-
-@{
-    if (User.IsInRole(PvPStatics.Permissions_Admin) == true)
-    {
-        @Html.ActionLink("Admin", "Index", "PvPAdmin")
-    }
-}
 
 @{
     if (Model.PlayerLogImportant.Count() > 0)

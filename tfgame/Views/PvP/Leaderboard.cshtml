@@ -3,123 +3,83 @@
 @using tfgame.Statics
 @using tfgame.CustomHtmlHelpers
 
-<head>
-    <link href="~/Content/PvP.css" rel="stylesheet" />
-    <script src="~/Scripts/jquery-2.1.0.min.js"></script>
-</head>
-
-@Html.ActionLink("Back to game", "Play", "PvP")<br />
-@*@Html.ActionLink("View PvP Leaderboard", "PvPLeaderboard", "PvP")<br />*@
-@Html.ActionLink("View Item Leaderboard", "ItemLeaderboard", "PvP")<br />
-
-<h1>XP Leaderboard -- Alpha Round 16</h1>
-
-<p>These are the most experienced magic casters in the town.</p>
-
-
-<table>
-
-    <thead>
-    <th>Rank</th>
-    <th>Name</th>
-    <th>Covenant</th>
-    <th>Form</th>
-    <th>Mobility</th>
-    <th>Level</th>
-    <th>XP</th>
-    </thead>
-
-    <tbody>
-
-        @{
-            int rank = 1;
-        }
-
-        @foreach (Player p in Model)
-        {
-            <tr>
-                <td>
-                    @rank
-                </td>
-                <td>
-                    @Html.ActionLink(p.GetFullName(), "LookAtPlayer", "PvP", new { id = p.Id }, null)
-                    <span class="icon-@p.Gender"></span>
-                    @*@CharactersHere.PrintRPIcon(p)*@
-                </td>
-                <td>
-                    @CharactersHere.GetCovenantInfoShort(p)
-                </td>
-                <td>
-                    @FormStatics.GetForm(p.Form).FriendlyName
-                </td>
-                <td>
-                    @{
-            if (p.Mobility == "full")
-            {
-                <span style="color: green">Animate</span>
-            }
-            else if (p.Mobility == "animal")
-            {
-                <span style="color: red">Animal</span>
-            }
-            else
-            {
-                <span style="color: red">Inanimate</span>
-            }
-                    }
-                </td>
-               
-                <td>
-                    @p.Level
-                </td>
-                <td>
-                    @p.XP
-                </td>
-            </tr>
-            rank++;
-
-        }
-
-    </tbody>
-
-
-
-</table>
-
-
-
-
-<p>
-    @*@Html.ActionLink("View PvP Leaderboard", "PvPLeaderboard", "PvP")<br />*@
-    @Html.ActionLink("View Item Leaderboard", "ItemLeaderboard", "PvP")<br />
-    @Html.ActionLink("Back to game", "Play", "PvP")
+<p style="text-align: center; margin-top:0px;">
+    @Html.ActionLink("Back to game", "Play", "PvP") @Html.ActionLink("View Item Leaderboard", "ItemLeaderboard", "PvP")
 </p>
+<div class="specialBox">XP Leaderboard -- Alpha Round 16</div>
+<div class="specialBox">These are the most experienced magic casters in the town.</div>
+<div class="containerInner">
+    <table>
 
-<style>
-    table {
-        padding: 3px;
-        border: 1px solid black;
-    }
+        <thead>
+            <tr>
+                <th style="width:15px">#</th>
+                <th class="leaderBoardName">Name</th>
+                <th class="leaderBoardCovenant mobile">Covenant</th>
+                <th class="leaderBoardForm mobile">Form</th>
+                <th>Mobility</th>
+                <th>Lvl</th>
+                <th>Exp</th>
+            </tr>
+        </thead>
+        <tbody>
 
-    th {
-        background-color: black;
-        color: white;
-        text-align: center;
-    }
+            @{
+                int rank = 1;
+            }
 
-    tr {
-        padding: 3px;
-        border: 1px solid black;
-    }
+            @foreach (Player p in Model)
+            {
+                <tr>
+                    <td style="width:15px">
+                        @rank
+                    </td>
+                    <td>
+                        @Html.ActionLink(p.GetFullName(), "LookAtPlayer", "PvP", new { id = p.Id }, null)
+                        <span class="icon-@p.Gender"></span>
+                        @*@CharactersHere.PrintRPIcon(p)*@
+                    </td>
+                    <td class="mobile">
+                        @CharactersHere.GetCovenantInfoShort(p)
+                    </td>
+                    <td class="mobile">
+                        @FormStatics.GetForm(p.Form).FriendlyName
+                    </td>
+                    <td>
+                        @{
+                if (p.Mobility == "full")
+                {
+                    <span style="color: green">Animate</span>
+                }
+                else if (p.Mobility == "animal")
+                {
+                    <span style="color: red">Animal</span>
+                }
+                else
+                {
+                    <span style="color: red">Inanimate</span>
+                }
+                        }
+                    </td>
 
-        tr:nth-child(odd) {
-            background-color: lightgray;
-        }
+                    <td>
+                        @p.Level
+                    </td>
+                    <td>
+                        @p.XP
+                    </td>
+                </tr>
+                rank++;
 
-    td {
-        text-align: center;
-    }
-</style>
+            }
+
+        </tbody>
+
+
+
+    </table>
+</div>
+
 
 <script>
     $("tr td:contains('@ViewBag.MyName')").each(function () {

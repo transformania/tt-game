@@ -60,6 +60,10 @@ namespace tfgame.Procedures
         private const int LindellaItem_CurseRemover_Count = 6;
 
 
+        private const string LindellaItem_XpBook1_DbName = "item_consumable_curselifter";
+        private const int LindellaItem_XpBook1_Count = 25;
+
+
 
 
         // Membership ID code:  
@@ -837,6 +841,29 @@ namespace tfgame.Procedures
                             Item wproot = new Item
                             {
                                 dbName = LindellaItem_CurseRemover_DbName,
+                                dbLocationName = "",
+                                OwnerId = merchant.Id,
+                                IsEquipped = false,
+                                IsPermanent = true,
+                                Level = 0,
+                                PvPEnabled = false,
+                                TimeDropped = DateTime.UtcNow,
+                                TurnsUntilUse = 0,
+                                VictimName = "",
+                                EquippedThisTurn = false,
+                            };
+                            itemRepo.SaveItem(wproot);
+                        }
+                    }
+
+                    // xp books
+                    if (lindellasItems.Where(i => i.dbName == LindellaItem_XpBook1_DbName).Count() < LindellaItem_XpBook1_Count)
+                    {
+                        for (int x = 0; x < LindellaItem_XpBook1_Count; x++)
+                        {
+                            Item wproot = new Item
+                            {
+                                dbName = LindellaItem_XpBook1_DbName,
                                 dbLocationName = "",
                                 OwnerId = merchant.Id,
                                 IsEquipped = false,

@@ -3,11 +3,31 @@
 @using tfgame.Statics
 @using tfgame.CustomHtmlHelpers
 
-<p style="text-align: center; margin-top:0px;">
-    @Html.ActionLink("Back to game", "Play", "PvP") @Html.ActionLink("View Item Leaderboard", "ItemLeaderboard", "PvP")
-</p>
-<div class="specialBox">XP Leaderboard -- Alpha Round 16</div>
-<div class="specialBox">These are the most experienced magic casters in the town.</div>
+<nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav">
+            <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+             <li>@Html.ActionLink("View Item Leaderboard", "ItemLeaderboard", "PvP")</li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+<div class="specialBox"><b>XP Leaderboard -- Alpha Round 16</b><br />
+    These are the most experienced magic casters in the town</div>
+
 <div class="containerInner">
     <table>
 
@@ -80,6 +100,63 @@
     </table>
 </div>
 
+<style>
+    .leaderBoardName {
+        width: auto;
+    }
+
+    .leaderBoardCovenant {
+        width: 20%;
+    }
+
+    .leaderBoardForm {
+        width: 30%;
+    }
+
+    table {
+        padding: 3px;
+        border: 1px solid black;
+        width: 100%;
+    }
+
+    th {
+        background-color: black;
+        color: white;
+        text-align: center;
+        padding: 0px;
+    }
+
+    tr {
+        padding: 3px;
+        border: 1px solid black;
+    }
+
+        tr:nth-child(odd) {
+            background-color: lightgray;
+        }
+
+    td {
+        text-align: center;
+        padding: 2px 0px 2px 0px;
+    }
+
+    .dark {
+        background-color: #CCCCCC;
+    }
+
+    tr.dark:nth-child(odd) {
+        background-color: #B8B8B8;
+    }
+
+    .mobile {
+    }
+
+    @@media screen and (max-width: 767px) {
+        .mobile {
+            display: none;
+        }
+    }
+</style>
 
 <script>
     $("tr td:contains('@ViewBag.MyName')").each(function () {

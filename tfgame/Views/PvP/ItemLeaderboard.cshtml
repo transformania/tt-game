@@ -4,103 +4,137 @@
 @using tfgame.CustomHtmlHelpers
 @using tfgame.ViewModels
 
-<head>
-    <link href="~/Content/PvP.css" rel="stylesheet" />
-    <script src="~/Scripts/jquery-2.1.0.min.js"></script>
-</head>
+<nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
 
-@Html.ActionLink("Back to game", "Play", "PvP")<br />
-@*@Html.ActionLink("View PvP Leaderboard", "PvPLeaderboard", "PvP")<br />*@
-@Html.ActionLink("View XP Leaderboard", "Leaderboard", "PvP")
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+                <li>@Html.ActionLink("View XP Leaderboard", "Leaderboard", "PvP")</li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
 
-<h1>Item Leaderboard -- Alpha Round 16</h1>
+<div class="specialBox">
+    <b>Item Leaderboard -- Alpha Round 16</b><br />
+    These are the most powerful once-human items and pets in the town.  Some may be able to revert their old human forms but many have embraced their new existence as personal pets and belongings.  Treat them kindly should you come to posses them!  <i>Note:  this leaderboard will only update once in ten minutes.</i>
+</div>
 
-<p>These are the most powerful once-human items and pets in the town.  Some may be able to revert their old human forms but many have embraced their new existence as personal pets and belongings.  Treat them kindly should you come to posses them!  <i>Note:  this leaderboard will only update once in ten minutes.</i></p>
+<div class="containerInner">
+    <table>
 
-
-<table>
-
-    <thead>
-        <th>Rank</th>
-    <th>Human Name</th>
-    <th>Item Type</th>
-    <th>Level</th>
-    <th>XP</th>
-    </thead>
-
-    <tbody>
-
-        @{
-            int rank = 1;
-        }
-
-        @foreach (SimpleItemLeaderboardViewModel p in Model)
-        {
+        <thead>
             <tr>
-                <td>
-                    @rank
-                </td>
-                <td>
-                   @Html.ActionLink(p.Item.VictimName, "LookAtPlayerItem", "PvP", new { vicname = p.Item.VictimName}, null)
-                    @CharactersHere.PrintGenderIcon(p.Gender)
-                   @CharactersHere.PrintItemTypeIcon(p.StaticItem)
-                    @CharactersHere.PrintPermanencyIcon(p.Item)
-                </td>
-                <td>
-                    @p.StaticItem.FriendlyName
-                </td>
-                <td>
-                    @p.Item.Level
-                </td>
-                <td>@p.ItemXP</td>
+                <th style="width:15px">#</th>
+                <th class="leaderBoardName">Human Name</th>
+                <th class="leaderBoardForm mobile">Item Type</th>
+                <th>Lvl</th>
+                <th>Exp</th>
             </tr>
-            rank++;
+        </thead>
+        <tbody>
+
+            @{
+                int rank = 1;
+            }
+
+            @foreach (SimpleItemLeaderboardViewModel p in Model)
+            {
+                <tr>
+                    <td>
+                        @rank
+                    </td>
+                    <td>
+                        @CharactersHere.PrintPermanencyIcon(p.Item)
+                        @Html.ActionLink(p.Item.VictimName, "LookAtPlayerItem", "PvP", new { vicname = p.Item.VictimName }, null)
+                        @CharactersHere.PrintGenderIcon(p.Gender)
+                        @CharactersHere.PrintItemTypeIcon(p.StaticItem)                        
+                    </td>
+                    <td class="mobile">
+                        @p.StaticItem.FriendlyName
+                    </td>
+                    <td>
+                        @p.Item.Level
+                    </td>
+                    <td>@p.ItemXP</td>
+                </tr>
+                rank++;
+            }
+        </tbody>
+    </table>
+
+    <style>
+        .leaderBoardName {
+            width: auto;
         }
 
-    </tbody>
-
-
-
-</table>
-
-
-
-
-<p>
-    @*@Html.ActionLink("View PvP Leaderboard", "PvPLeaderboard", "PvP")<br />*@
-    @Html.ActionLink("Back to game", "Play", "PvP")<br />
-    @Html.ActionLink("View XP Leaderboard", "Leaderboard", "PvP")
-</p>
-
-<style>
-    table {
-        padding: 3px;
-        border: 1px solid black;
-    }
-
-    th {
-        background-color: black;
-        color: white;
-        text-align: center;
-    }
-
-    tr {
-        padding: 3px;
-        border: 1px solid black;
-    }
-
-        tr:nth-child(odd) {
-            background-color: lightgray;
+        .leaderBoardCovenant {
+            width: 20%;
         }
 
-    td {
-        text-align: center;
-    }
-</style>
+        .leaderBoardForm {
+            width: 30%;
+        }
 
-@*<script>
-    $("tr td:contains('@ViewBag.MyName')").each(function () {
-        $(this).parent('tr').css("background-color", "pink");
-    });
+        table {
+            padding: 3px;
+            border: 1px solid black;
+            width: 100%;
+        }
 
-</script>*@
+        th {
+            background-color: black;
+            color: white;
+            text-align: center;
+            padding: 0px;
+        }
+
+        tr {
+            padding: 3px;
+            border: 1px solid black;
+        }
+
+            tr:nth-child(odd) {
+                background-color: lightgray;
+            }
+
+        td {
+            text-align: center;
+            padding: 2px 0px 2px 0px;
+        }
+
+        .dark {
+            background-color: #CCCCCC;
+        }
+
+        tr.dark:nth-child(odd) {
+            background-color: #B8B8B8;
+        }
+
+        .mobile {
+        }
+
+        @@media screen and (max-width: 767px) {
+            .mobile {
+                display: none;
+            }
+        }
+    </style>
+
+    @*<script>
+            $("tr td:contains('@ViewBag.MyName')").each(function () {
+                $(this).parent('tr').css("background-color", "pink");
+            });
+
+        </script>*@

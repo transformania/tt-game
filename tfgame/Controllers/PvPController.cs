@@ -827,7 +827,7 @@ namespace tfgame.Controllers
 
                 }
 
-                // Thieves Boss
+                // Mouse Sisters Boss
                 if (targeted.MembershipId == -11 || targeted.MembershipId == -12)
                 {
                     string result = BossProcedures_Sisters.SpellIsValid(me, targeted, attackName);

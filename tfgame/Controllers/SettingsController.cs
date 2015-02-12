@@ -45,13 +45,13 @@ namespace tfgame.Controllers
              if (minutesAgo < 60 && me.Mobility == "full")
              {
                  TempData["Error"] = "You must have not been in any combat in the past 60 minutes to do this if you are animate.";
-                 return RedirectToAction("Play");
+                 return RedirectToAction("Play", "PvP");
              }
 
              PlayerProcedures.SetPvPFlag(me, 1);
 
              TempData["Result"] = "You are now in protection mode.  You cannot be hit by inanimate, pet, or mind control spells nor can you cast them except against those on your friends list.";
-             return RedirectToAction("Play");
+             return RedirectToAction("Play", "PvP");
          }
 
          [Authorize]

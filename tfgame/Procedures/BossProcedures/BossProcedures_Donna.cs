@@ -14,11 +14,12 @@ namespace tfgame.Procedures.BossProcedures
     public class BossProcedures_Donna
     {
 
-        private const int DonnaSpellCount = 4;
+        private const int DonnaSpellCount = 5;
         private const string Spell1 = "skill_Donna's_Bitch_LexamTheGemFox";
         private const string Spell2 = "skill_Donna's_Cow_LexamtheGemFox";
         private const string Spell3 = "skill_Donna's_Pig_LexamtheGemFox";
         private const string Spell4 = "skill_Donna's_Mare_LexamtheGemFox";
+        private const string Spell5 = "skill_Donna's_Chicken_LexamtheGemFox";
 
         public static void SpawnDonna()
         {
@@ -259,6 +260,10 @@ namespace tfgame.Procedures.BossProcedures
                 return Spell3;
             }
             else if (mod >= 10 && mod < 12)
+            {
+                return Spell4;
+            }
+            else if (mod >= 13 && mod < 15)
             {
                 return Spell4;
             }

@@ -919,6 +919,23 @@ namespace tfgame.Controllers
                  return RedirectToAction("Play");
              }
 
+
+             // assert player has enough mana
+             if (me.Mana < 10)
+             {
+                 TempData["Error"] = "Not enough mana.";
+                 TempData["SubError"] = "You need at least 10 mana to enchant a location.";
+                 return RedirectToAction("Play");
+             }
+
+             // assert player has enough AP
+             if (me.ActionPoints < 10)
+             {
+                 TempData["Error"] = "Not enough AP.";
+                 TempData["SubError"] = "You need at least 3 action points to enchant a location.";
+                 return RedirectToAction("Play");
+             }
+
              // assert player is in PvP mode
              if (me.GameMode != 2)
              {
@@ -996,6 +1013,7 @@ namespace tfgame.Controllers
             string output = CovenantProcedures.AttackLocation(me);
 
              PlayerProcedures.AddAttackCount(me);
+             PlayerProcedures.ChangePlayerActionMana(3, 0, -10, me.Id);
            
 
              TempData["Result"] = output;
@@ -1995,6 +2013,11 @@ namespace tfgame.Controllers
         public ActionResult GameNews()
         {
             return View("~/Views/PvP/GameNews.cshtml");
+        }
+
+        public ActionResult Rules()
+        {
+            return View("Rules");
         }
 
         public ActionResult GameNews_Archive()

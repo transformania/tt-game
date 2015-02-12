@@ -1650,6 +1650,7 @@
     <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_15.cshtml" />
     <Content Include="Views\Settings\MyBlacklistEntries.cshtml" />
     <Content Include="Views\Item\SkillBook.cshtml" />
+    <Content Include="Views\PvP\Rules.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -547,7 +547,7 @@ namespace tfgame.Procedures
                 };
             }
 
-            float takeoverAmount = player.Level / 2;
+            float takeoverAmount = (float)player.Level / 2.0F;
 
             decimal XPGain = Convert.ToDecimal(takeoverAmount);
 

@@ -1506,12 +1506,11 @@ namespace tfgame.Controllers
                 return View("TeleportMap", output);
             }
 
-            //// if this item is a teleportation scroll, redirect to the teleportation page.
-            //if (item.dbItem.dbName == "item_consumeable_teleportation_scroll")
-            //{
-            //    IEnumerable<Location> output = LocationsStatics.GetLocation.Where(l => l.dbName != "");
-            //    return View("TeleportMap", output);
-            //}
+            // if this item is the self recaster, redirect to the animate spell listing page
+            if (item.dbItem.dbName == "item_consumable_selfcaster")
+            {
+                return RedirectToAction("SelfCast", "Item");
+            }
 
              // if this item is a skill book, aka a tome, redirect to that page with the appropriate text
             if (item.dbItem.dbName.Contains("item_consumable_tome-") == true)

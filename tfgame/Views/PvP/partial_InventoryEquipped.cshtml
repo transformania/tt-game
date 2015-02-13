@@ -26,221 +26,146 @@
     {
         rhand = null;
     }
-    
-    
-    
+
+
+
 }
-
-
-<div id="bodyOutline">
-
-
+<div class="row">
     @{
 
-    if (hat != null)
-    {
-        <div id="body_hat" style="background-image: url(@CharactersHere.GetImageURL(hat));" title="@hat.Item.FriendlyName--@hat.Item.Description">
-            <span class="icon-level"><b>@hat.dbItem.Level</b></span>
+        if (hat != null)
+        {
+            <div class="portrait col-md-2 col-sm-4 col-xs-12 " style="background-image: url(@CharactersHere.GetImageURL(hat));" title="@hat.Item.FriendlyName--@hat.Item.Description">
+                <span class="icon-level"><b>@hat.dbItem.Level</b></span>
+                <p class="slotName">Hat</p>
+            </div>
+        }
+        else
+        {
+            <div class="portrait col-md-2 col-sm-4 col-xs-12 " style="background-image: url('/Images/PvP/itemsportraits/none.jpg');"><p class="slotName">Hat</p></div>
+        }
 
-        </div>
-    }
-    else
-    {
-            <div id="body_hat" style="background-image: url('/Images/PvP/itemsPortraits/none.jpg');"></div>
-    }
-
-    if (shirt != null)
-    {
-        <div id="body_shirt" style="background-image: url(@CharactersHere.GetImageURL(shirt));" title="@shirt.Item.FriendlyName--@shirt.Item.Description">
-            <span class="icon-level"><b>@shirt.dbItem.Level</b></span>
-        </div>
-    }
-    else
-    {
-            <div id="body_shirt" style="background-image: url('/Images/PvP/itemsPortraits/none.jpg');"></div>
+        if (shirt != null)
+        {
+            <div class="portrait col-md-2 col-sm-4 col-xs-12 " style="background-image: url(@CharactersHere.GetImageURL(shirt));" title="@shirt.Item.FriendlyName--@shirt.Item.Description">
+                <span class="icon-level"><b>@shirt.dbItem.Level</b></span>
+                <p class="slotName">Shirt</p>
+            </div>
+        }
+        else
+        {
+            <div class="portrait col-md-2 col-sm-4 col-xs-12 " style="background-image: url('/Images/PvP/itemsportraits/none.jpg');"><p class="slotName">Shirt</p></div>
         }
 
         if (undershirt != null)
         {
-            <div id="body_undershirt" style="background-image: url(@CharactersHere.GetImageURL(undershirt)); " title="@undershirt.Item.FriendlyName--@undershirt.Item.Description">
+            <div class="portrait col-md-2 col-sm-4 col-xs-12 " style="background-image: url(@CharactersHere.GetImageURL(undershirt)); " title="@undershirt.Item.FriendlyName--@undershirt.Item.Description">
                 <span class="icon-level"><b>@undershirt.dbItem.Level</b></span>
+                <p class="slotName">Undershirt</p>
             </div>
         }
         else
         {
-            <div id="body_undershirt" style="background-image: url('/Images/PvP/itemsPortraits/none.jpg');"></div>
+            <div class="portrait col-md-2 col-sm-4 col-xs-12 " style="background-image: url('/Images/PvP/itemsportraits/none.jpg');"><p class="slotName">Undershirt</p></div>
         }
 
         if (pants != null)
         {
-            <div id="body_pants" style="background-image: url(@CharactersHere.GetImageURL(pants)); " title="@pants.Item.FriendlyName--@pants.Item.Description">
+            <div class="portrait col-md-2 col-sm-4 col-xs-12 " style="background-image: url(@CharactersHere.GetImageURL(pants)); " title="@pants.Item.FriendlyName--@pants.Item.Description">
                 <span class="icon-level"><b>@pants.dbItem.Level</b></span>
+                <p class="slotName">Pants</p>
             </div>
         }
         else
         {
-            <div id="body_pants" style="background-image: url('/Images/PvP/itemsPortraits/none.jpg');"></div>
+            <div class="portrait col-md-2 col-sm-4 col-xs-12 " style="background-image: url('/Images/PvP/itemsportraits/none.jpg');">
+                <p class="slotName">Pants</p>
+            </div>
         }
 
         if (underpants != null)
         {
-            <div id="body_underpants" style="background-image: url(@CharactersHere.GetImageURL(underpants)); " title="@underpants.Item.FriendlyName--@underpants.Item.Description">
+            <div class="portrait col-md-2 col-sm-4 col-xs-12 " style="background-image: url(@CharactersHere.GetImageURL(underpants)); " title="@underpants.Item.FriendlyName--@underpants.Item.Description">
                 <span class="icon-level"><b>@underpants.dbItem.Level</b></span>
+                <p class="slotName slotUnderpants">Underpants</p>
             </div>
         }
         else
         {
-            <div id="body_underpants" style="background-image: url('/Images/PvP/itemsPortraits/none.jpg');"></div>
+            <div class="portrait col-md-2 col-sm-4 col-xs-12 " style="background-image: url('/Images/PvP/itemsportraits/none.jpg');"><p class="slotName slotUnderpants">Underpants</p></div>
         }
 
         if (shoes != null)
         {
-            <div id="body_shoes" style="background-image: url(@CharactersHere.GetImageURL(shoes)); " title="@shoes.Item.FriendlyName--@shoes.Item.Description">
+            <div class="portrait col-md-2 col-sm-4 col-xs-12 " style="background-image: url(@CharactersHere.GetImageURL(shoes)); " title="@shoes.Item.FriendlyName--@shoes.Item.Description">
                 <span class="icon-level"><b>@shoes.dbItem.Level</b></span>
+                <p class="slotName">Shoes</p>
             </div>
         }
         else
         {
-            <div id="body_shoes" style="background-image: url('/Images/PvP/itemsPortraits/none.jpg');"></div>
+            <div class="portrait col-md-2 col-sm-4 col-xs-12 " style="background-image: url('/Images/PvP/itemsportraits/none.jpg');"><p class="slotName">Shoes</p></div>
         }
 
         if (lhand != null)
         {
-            <div id="body_lhand" style="background-image: url(@CharactersHere.GetImageURL(lhand)); " title="@lhand.Item.FriendlyName--@lhand.Item.Description">
+            <div class="portrait col-md-2 col-sm-4 col-xs-12 " style="background-image: url(@CharactersHere.GetImageURL(lhand)); " title="@lhand.Item.FriendlyName--@lhand.Item.Description">
                 <span class="icon-level"><b>@lhand.dbItem.Level</b></span>
+                <p class="slotName">Acc 1</p>
             </div>
         }
         else
         {
-            <div id="body_lhand" style="background-image: url('/Images/PvP/itemsPortraits/none.jpg');"></div>
+            <div class="portrait col-md-2 col-sm-4 col-xs-12 " style="background-image: url('/Images/PvP/itemsportraits/none.jpg');"><p class="slotName">Acc 1</p></div>
         }
 
         if (rhand != null)
         {
-            <div id="body_rhand" style="background-image: url(@CharactersHere.GetImageURL(rhand)); " title="@rhand.Item.FriendlyName--@rhand.Item.Description">
+            <div class="portrait col-md-2 col-sm-4 col-xs-12 " style="background-image: url(@CharactersHere.GetImageURL(rhand)); " title="@rhand.Item.FriendlyName--@rhand.Item.Description">
                 <span class="icon-level"><b>@rhand.dbItem.Level</b></span>
+                <p class="slotName">Acc 2</p>
             </div>
         }
         else
         {
-            <div id="body_rhand" style="background-image: url('/Images/PvP/itemsPortraits/none.jpg');"></div>
+            <div class="portrait col-md-2 col-sm-4 col-xs-12 " style="background-image: url('/Images/PvP/itemsportraits/none.jpg');"><p class="slotName">Acc 2</p></div>
         }
         if (pet != null)
         {
-            <div id="body_pet" style="background-image: url(@CharactersHere.GetImageURL(pet)); " title="@pet.Item.FriendlyName--@pet.Item.Description">
+            <div class="portrait col-md-2 col-sm-4 col-xs-12 " style="background-image: url(@CharactersHere.GetImageURL(pet)); " title="@pet.Item.FriendlyName--@pet.Item.Description">
                 <span class="icon-level"><b>@pet.dbItem.Level</b></span>
+                <p class="slotName">Pet</p>
             </div>
         }
         else
         {
-            <div id="body_pet" style="background-image: url('/Images/PvP/itemsPortraits/none.jpg');"></div>
+            <div class="portrait col-md-2 col-sm-4 col-xs-12 " style="background-image: url('/Images/PvP/itemsportraits/none.jpg');"><p class="slotName">Pet</p></div>
         }
-
-}
-
-
-
+    }
 </div>
 
 <style>
-    #bodyOutline {
-        width: 700px;
-        height: 700px;
-        background-image: url("/Images/PvP/body.jpg");
-        background-size: 100% 100%;
-        position: relative;
-        border: 2px solid black;
+    .slotName{
+        position: absolute;
+        text-align: center;
+        top: 0px;
+        width: 70px;
+        background: white;
+    }
+
+    .slotUnderpants {
+    font-size: 10px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    }
+
+    .portrait{
+        margin-left: 10px;
+        margin-right: 10px;
         margin-bottom: 10px;
-        float: left;
     }
 
-    #body_hat {
-        position: relative;
-        left: 8px;
-        top: 8px;
-        width: 100px;
-        height: 100px;
-        background-size: 100% 100%;
-        position: absolute;
-    }
-
-    #body_shirt {
-        position: relative;
-        left: 8px;
-        top: 116px;
-        width: 100px;
-        height: 100px;
-        position: absolute;
-        background-size: 100% 100%;
-    }
-
-    #body_undershirt {
-        position: relative;
-        left: 7px;
-        top: 225px;
-        width: 100px;
-        height: 100px;
-        position: absolute;
-        background-size: 100% 100%;
-    }
-
-    #body_pants {
-        position: relative;
-        left: 8px;
-        top: 441px;
-        width: 100px;
-        height: 100px;
-        position: absolute;
-        background-size: 100% 100%;
-    }
-
-    #body_underpants {
-        position: relative;
-        left: 8px;
-        top: 332px;
-        width: 100px;
-        height: 100px;
-        position: absolute;
-        background-size: 100% 100%;
-    }
-
-    #body_shoes {
-        position: relative;
-        left: 7px;
-        top: 551px;
-        width: 100px;
-        height: 100px;
-        position: absolute;
-        background-size: 100% 100%;
-    }
-
-    #body_lhand {
-        position: relative;
-        left: 394px;
-        top: 272px;
-        width: 100px;
-        height: 100px;
-        position: absolute;
-        background-size: 100% 100%;
-    }
-
-    #body_rhand {
-        position: relative;
-        left: 528px;
-        top: 272px;
-        width: 100px;
-        height: 100px;
-        position: absolute;
-        background-size: 100% 100%;
-    }
-
-    #body_pet {
-        position: relative;
-        left: 473px;
-        top: 549px;
-        width: 100px;
-        height: 100px;
-        position: absolute;
-        background-size: 100% 100%;
+    .portrait:first-child{
+        margin-left: 15px;
     }
 </style>

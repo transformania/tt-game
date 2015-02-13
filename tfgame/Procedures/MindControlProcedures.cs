@@ -91,7 +91,7 @@ namespace tfgame.Procedures
         public static MindControl GetMindControlBetweenPlayers(Player master, Player victim)
         {
             IMindControlRepository mcRepo = new EFMindControlRepository();
-            return mcRepo.MindControls.FirstOrDefault(m => m.MasterId == master.Id || m.VictimId == victim.Id);
+            return mcRepo.MindControls.FirstOrDefault(m => m.MasterId == master.Id && m.VictimId == victim.Id);
         }
 
         public static ErrorBox AssertBasicMindControlConditions(Player master, Player victim)

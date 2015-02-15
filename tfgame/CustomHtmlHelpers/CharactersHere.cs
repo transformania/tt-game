@@ -331,6 +331,27 @@ namespace tfgame.CustomHtmlHelpers
 
         }
 
+        public static MvcHtmlString GetImageURL(DbStaticItem item)
+        {
+
+
+
+            string output = "";
+
+
+            if (item.ItemType == PvPStatics.ItemType_Pet)
+            {
+                output = "/Images/PvP/animalPortraits/" + item.PortraitUrl;
+            }
+            else
+            {
+                output = "/Images/PvP/itemsPortraits/" + item.PortraitUrl;
+            }
+
+            return new MvcHtmlString(output);
+
+        }
+
         public static MvcHtmlString StyleIfBot(Player player)
         {
             if (player.MembershipId <= -2)

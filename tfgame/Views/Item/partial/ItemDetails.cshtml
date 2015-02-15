@@ -1,0 +1,124 @@
+﻿@model tfgame.ViewModels.ItemViewModel
+
+<div class="portrait col-md-2 col-sm-4 col-xs-12 " style="background-image: url(@tfgame.CustomHtmlHelpers.CharactersHere.GetImageURL(Model));">
+    @tfgame.CustomHtmlHelpers.CharactersHere.PrintItemTypeIcon(Model.Item)
+   @* @tfgame.CustomHtmlHelpers.CharactersHere.Print(Model.Item)*@
+</div>
+
+<b>
+    @Model.Item.FriendlyName (Lvl @Model.dbItem.Level)<br />
+</b>
+
+@Model.Item.Description <br />
+
+<div class="bonuses">
+
+    <ul>
+        @{
+
+            if (@Model.Item.GivesEffect != null && @Model.Item.GivesEffect != "")
+            {
+                <li>Gives the @tfgame.CustomHtmlHelpers.CharactersHere.GetEffectFriendlyName(@Model.Item.GivesEffect) effect</li>
+            }
+
+            if (@Model.Item.HealthBonusPercent != 0)
+            {
+                <li>Extra willpower % maximum:  @tfgame.CustomHtmlHelpers.CharactersHere.GetBuffedStat(Model, Model.Item.HealthBonusPercent)</li>
+            }
+            if (@Model.Item.ManaBonusPercent != 0)
+            {
+                <li>Extra mana % maximum: @tfgame.CustomHtmlHelpers.CharactersHere.GetBuffedStat(Model, Model.Item.ManaBonusPercent)</li>
+            }
+            if (@Model.Item.HealthRecoveryPerUpdate != 0)
+            {
+                <li>Willpower recovery per update: @tfgame.CustomHtmlHelpers.CharactersHere.GetBuffedStat(Model, Model.Item.HealthRecoveryPerUpdate)</li>
+            }
+            if (@Model.Item.ManaRecoveryPerUpdate != 0)
+            {
+                <li>Mana recovery per update: @tfgame.CustomHtmlHelpers.CharactersHere.GetBuffedStat(Model, Model.Item.ManaRecoveryPerUpdate)</li>
+            }
+            if (@Model.Item.SneakPercent != 0)
+            {
+                <li>Sneak chance percent: @tfgame.CustomHtmlHelpers.CharactersHere.GetBuffedStat(Model, Model.Item.SneakPercent)</li>
+            }
+            if (@Model.Item.SpellResistancePercent != 0)
+            {
+                <li>Spell resistance bonus percent: @tfgame.CustomHtmlHelpers.CharactersHere.GetBuffedStat(Model, @Model.Item.SpellResistancePercent)</li>
+            }
+            if (@Model.Item.MeditationExtraMana != 0)
+            {
+                <li>Extra mana recovering from meditating: @tfgame.CustomHtmlHelpers.CharactersHere.GetBuffedStat(Model, @Model.Item.MeditationExtraMana)</li>
+            }
+            if (@Model.Item.CleanseExtraHealth != 0)
+            {
+                <li>Extra willpower recovered from cleansing: @tfgame.CustomHtmlHelpers.CharactersHere.GetBuffedStat(Model, @Model.Item.CleanseExtraHealth)</li>
+            }
+            if (@Model.Item.InstantHealthRestore != 0)
+            {
+                <li>Willpower restored from eating or drinking: @tfgame.CustomHtmlHelpers.CharactersHere.GetBuffedStat(Model, @Model.Item.InstantHealthRestore)</li>
+            }
+            if (@Model.Item.InstantManaRestore != 0)
+            {
+                <li>Mana restored from eating or drinking: @tfgame.CustomHtmlHelpers.CharactersHere.GetBuffedStat(Model, @Model.Item.InstantManaRestore)</li>
+            }
+            if (@Model.Item.MoveActionPointDiscount != 0.0M)
+            {
+                <li>Action point discount when moving: @tfgame.CustomHtmlHelpers.CharactersHere.GetBuffedStat(Model, @Model.Item.MoveActionPointDiscount)</li>
+            }
+            if (@Model.Item.ExtraSkillCriticalPercent != 0)
+            {
+                <li>Extra chance of spell critical hits: @tfgame.CustomHtmlHelpers.CharactersHere.GetBuffedStat(Model, @Model.Item.ExtraSkillCriticalPercent)</li>
+            }
+            if (@Model.Item.ReuseableHealthRestore != 0)
+            {
+                <li>Willpower restored from eating or drinking from this: @tfgame.CustomHtmlHelpers.CharactersHere.GetBuffedStat(Model, @Model.Item.ReuseableHealthRestore)</li>
+            }
+            if (@Model.Item.ReuseableManaRestore != 0)
+            {
+                <li>Mana restored from eating or drinking from this: @tfgame.CustomHtmlHelpers.CharactersHere.GetBuffedStat(Model, @Model.Item.ReuseableManaRestore)</li>
+            }
+            if (@Model.Item.EvasionPercent != 0)
+            {
+                <li>Percent chance to evade an attack: @tfgame.CustomHtmlHelpers.CharactersHere.GetBuffedStat(Model, @Model.Item.EvasionPercent)</li>
+            }
+            if (@Model.Item.EvasionNegationPercent != 0)
+            {
+                <li>Percent negation of opponent's ability to evade a spell: @tfgame.CustomHtmlHelpers.CharactersHere.GetBuffedStat(Model, @Model.Item.EvasionNegationPercent)</li>
+            }
+            if (@Model.Item.SpellExtraTFEnergyPercent != 0.0M)
+            {
+                <li>Extra transformation energy damage percent: @tfgame.CustomHtmlHelpers.CharactersHere.GetBuffedStat(Model, @Model.Item.SpellExtraTFEnergyPercent)</li>
+            }
+            if (@Model.Item.SpellExtraHealthDamagePercent != 0.0M)
+            {
+                <li>Extra willpower damage dealt from spells: @tfgame.CustomHtmlHelpers.CharactersHere.GetBuffedStat(Model, @Model.Item.SpellExtraHealthDamagePercent)</li>
+            }
+            if (@Model.Item.CleanseExtraTFEnergyRemovalPercent != 0.0M)
+            {
+                <li>Extra transformation energy percent removed when cleansing: @tfgame.CustomHtmlHelpers.CharactersHere.GetBuffedStat(Model, @Model.Item.CleanseExtraTFEnergyRemovalPercent)</li>
+            }
+            if (@Model.Item.SpellMisfireChanceReduction != 0.0M)
+            {
+                <li>Misfire percent chance reduction: @tfgame.CustomHtmlHelpers.CharactersHere.GetBuffedStat(Model, @Model.Item.SpellMisfireChanceReduction)</li>
+            }
+            if (@Model.Item.SpellHealthDamageResistance != 0.0M)
+            {
+                <li>Willpower damage reduction when hit by spells: @tfgame.CustomHtmlHelpers.CharactersHere.GetBuffedStat(Model, @Model.Item.SpellHealthDamageResistance)</li>
+            }
+            if (@Model.Item.SpellTFEnergyDamageResistance != 0.0M)
+            {
+                <li>Transformation energy reduction when hit by spells: @tfgame.CustomHtmlHelpers.CharactersHere.GetBuffedStat(Model, @Model.Item.SpellTFEnergyDamageResistance)</li>
+            }
+            if (@Model.Item.ExtraInventorySpace != 0.0M)
+            {
+                <li>Extra inventory space: @tfgame.CustomHtmlHelpers.CharactersHere.GetBuffedStat(Model, @Model.Item.ExtraInventorySpace)</li>
+            }
+
+
+
+
+        }
+
+    </ul>
+
+</div>

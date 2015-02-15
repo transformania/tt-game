@@ -3,6 +3,9 @@
             @using tfgame.Statics
 
 
+
+
+
 <nav class="navbar navbar-default outsideContainer navbarTT2">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -82,11 +85,51 @@
             foreach (tfgame.ViewModels.ItemViewModel item in Model.Items)
             {
                 @Html.Partial("partial_InventoryItem", item)
+                
             }
 
         }
         </div>
     </div>
+
+<div class="modal fade" id="itemDetailModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title text-center" id="myModalLabel">Pet Actions</h4>
+            </div>
+            <div class="modal-body">
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="fullDetails">
+
+</div>
+
+
+
+<script>
+
+    function detail_success() {
+        //$('#itemDetailModal').modal('show');
+    }
+
+    function detail_failure() {
+        $("#fullDetails").html("Failed to load details");
+    }
+
+    function detail_wait() {
+        $("#fullDetails").html("Loading details...");
+    }
+
+</script>
+
+
+
     <style>
         .itemName {
             font-size: 20px;

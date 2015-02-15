@@ -8,13 +8,18 @@
             if (Model.dbItem.Level > 0 && Model.Item.ItemType != PvPStatics.ItemType_Consumeable)
             {
                 <span class="icon-level"><b>@Model.dbItem.Level</b></span>
+         
             }
+
+            if (ViewBag.ShowDetailLinks != null && ViewBag.ShowDetailLinks == true)
+            {
+                   @Ajax.ActionLink("[+]", "ShowItemDetails", "Item", new { id = Model.dbItem.Id }, new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
+            }
+            
         }
-
-
-
         @CharactersHere.PrintItemTypeIcon(Model.Item)
     </div>
+
     @{
 
         if (ViewBag.DisableLinks == null || ViewBag.DisableLinks == "false")

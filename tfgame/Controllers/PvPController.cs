@@ -1229,6 +1229,8 @@ namespace tfgame.Controllers
             ViewBag.SubErrorMessage = TempData["SubError"];
             ViewBag.Result = TempData["Result"];
 
+            ViewBag.ShowDetailLinks = true;
+
             return View("Inventory", output);
         }
 

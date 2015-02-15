@@ -200,6 +200,12 @@ namespace tfgame.Controllers
 
          }
 
+         public ActionResult ShowItemDetails(int id)
+         {
+             ItemViewModel output = ItemProcedures.GetItemViewModel(id);
+             return PartialView("partial/ItemDetails", output);
+         }
+
 
 	}
 }

@@ -6,8 +6,32 @@
 </div>
 
 <b>
-    @Model.Item.FriendlyName (Lvl @Model.dbItem.Level)<br />
+    @Model.Item.FriendlyName
+  
+
+    @{
+
+    if (Model.dbItem.Level > 0)
+    {
+        <span>(Lvl @Model.dbItem.Level)</span>
+    }
+
+    if (Model.dbItem.IsEquipped == true)
+    {
+            <span> (Equipped)</span>
+        }
+
+        if (@Model.dbItem.VictimName != "")
+        {
+            <span class="formerly">Formerly @Html.ActionLink(Model.dbItem.VictimName, "LookAtPlayerItem", "PvP", new { vicname = Model.dbItem.VictimName }, null)</span>
+            @tfgame.CustomHtmlHelpers.CharactersHere.PrintPermanencyIcon(Model)
+        }
+
+    }
+
+    <br />
 </b>
+
 
 @Model.Item.Description <br />
 

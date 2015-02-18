@@ -1223,6 +1223,11 @@ namespace tfgame.Controllers
             {
                 Items = ItemProcedures.GetAllPlayerItems(me.Id),
                 Bonuses = ItemProcedures.GetPlayerBuffs(me),
+                Health = me.Health,
+                MaxHealth = me.MaxHealth,
+                Mana = me.Mana,
+                MaxMana = me.MaxMana,
+
             };
 
             ViewBag.ErrorMessage = TempData["Error"];
@@ -1230,6 +1235,8 @@ namespace tfgame.Controllers
             ViewBag.Result = TempData["Result"];
 
             ViewBag.ShowDetailLinks = true;
+
+          
 
             return View("Inventory", output);
         }

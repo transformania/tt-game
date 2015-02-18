@@ -2,7 +2,7 @@
            @using tfgame.CustomHtmlHelpers
 @using tfgame.Statics
 
-<div class="col-md-2 col-sm-4 col-xs-12" style="height: 150px;">
+<div class="col-md-2 col-sm-3 col-xs-6 charaBox">
     <div class="portrait" style="background-image: url(@CharactersHere.GetImageURL(Model));">
         @{
             if (Model.dbItem.Level > 0 && Model.Item.ItemType != PvPStatics.ItemType_Consumeable)
@@ -26,7 +26,10 @@
         {
 
 
-            <div class="Links">
+            <div>
+                <p style="text-align: center;">@Model.Item.FriendlyName</p>
+
+
 
 
                 @{
@@ -35,37 +38,37 @@
 
                 if (@Model.dbItem.IsEquipped == false)
                 {
-                    @Html.ActionLink("Wear", "Equip", "PvP", new { itemId = Model.dbItem.Id, putOn = "true" }, null)<br />
-                    @Html.ActionLink("Drop", "Drop", "PvP", new { itemId = Model.dbItem.Id }, null)
+                    @Html.ActionLink("Wear", "Equip", "PvP", new { itemId = Model.dbItem.Id, putOn = "true" }, new { @class = "attackLink" })<br />
+                    @Html.ActionLink("Drop", "Drop", "PvP", new { itemId = Model.dbItem.Id }, new { @class = "attackLink" })
                 }
 
                 if (@Model.dbItem.IsEquipped == true && @Model.dbItem.EquippedThisTurn == false)
                 {
-                    @Html.ActionLink("Take off", "Equip", "PvP", new { itemId = Model.dbItem.Id, putOn = "false" }, null)
+                    @Html.ActionLink("Take off", "Equip", "PvP", new { itemId = Model.dbItem.Id, putOn = "false" }, new { @class = "attackLink" })
                 }
 
             }
             if (Model.Item.ItemType == PvPStatics.ItemType_Pet && (ViewBag.DisableReleaseLink == null || ViewBag.DisableReleaseLink == false))
             {
-                @Html.ActionLink("Release", "Drop", "PvP", new { itemId = Model.dbItem.Id }, null)
+                @Html.ActionLink("Release", "Drop", "PvP", new { itemId = Model.dbItem.Id }, new { @class = "attackLink" })
             }
             else if (Model.Item.ItemType == "consumable")
             {
-                @Html.ActionLink("Use", "Use", "PvP", new { itemId = Model.dbItem.Id }, null)<br />
-                    @Html.ActionLink("Drop", "Drop", "PvP", new { itemId = Model.dbItem.Id }, null)
+                @Html.ActionLink("Use", "Use", "PvP", new { itemId = Model.dbItem.Id }, new { @class = "attackLink" })<br />
+                    @Html.ActionLink("Drop", "Drop", "PvP", new { itemId = Model.dbItem.Id }, new { @class = "attackLink" })
             }
             else if (Model.Item.ItemType == "consumable_reuseable")
             {
 
                 if (Model.dbItem.TurnsUntilUse > 0)
                 {
-                    @Html.ActionLink("Drop", "Drop", "PvP", new { itemId = Model.dbItem.Id }, null)<br />
+                    @Html.ActionLink("Drop", "Drop", "PvP", new { itemId = Model.dbItem.Id }, new { @class = "attackLink" })<br />
                     <span style="color: red;">Reuse in <b>@Model.dbItem.TurnsUntilUse</b> turns.</span>
                 }
                 else
                 {
-                    @Html.ActionLink("Use", "Use", "PvP", new { itemId = Model.dbItem.Id }, null)<br />
-                    @Html.ActionLink("Drop", "Drop", "PvP", new { itemId = Model.dbItem.Id }, null)
+                    @Html.ActionLink("Use", "Use", "PvP", new { itemId = Model.dbItem.Id }, new { @class = "attackLink" })<br />
+                    @Html.ActionLink("Drop", "Drop", "PvP", new { itemId = Model.dbItem.Id }, new { @class = "attackLink" })
                 }
 
 
@@ -96,16 +99,7 @@
             font-style: italic;
         }
 
-        .itemBox {
-            border: 1px solid black;
-            padding: 3px;
-            position: relative;
-            float: left;
-            width: 100%;
-            margin-bottom: 10px;
-        }
-
-        .Links {
+        .attackLink {
             text-align: center;
         }
     </style>

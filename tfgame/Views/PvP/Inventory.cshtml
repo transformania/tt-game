@@ -68,17 +68,11 @@
                 }
             </div>*@
 
-  <div class="itemInformationWrapper">
-        <div class="itemName">
-            <span>item name</span><br />
-                    <span><b>(Worn/Equipped)</b></span>
-                    <span class="formerly">Formerly someone</span>
-                    <span>description</span>
-                    <span>stats</span>
-        </div>
-</div>
-   
 
+      <div id="fullDetails">
+
+      </div> 
+ 
     <div class="row">
         @{
 
@@ -104,10 +98,6 @@
             </div>
         </div>
     </div>
-</div>
-
-<div id="fullDetails">
-
 </div>
 
 
@@ -139,5 +129,11 @@
             font-size: 15px;
             color: chocolate;
             font-style: italic;
+        }
+
+        #fullDetails{
+            height: 200px;
+            resize:vertical;
+            overflow-y: scroll;
         }
     </style>

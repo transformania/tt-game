@@ -68,6 +68,10 @@
                 }
             </div>*@
 
+    <div id="tempdiv">
+        You have @Model.Health / @Model.MaxHealth WP and @Model.Mana / @Model.MaxMana mana.  You are carring @Model.Items.Where(i => i.dbItem.IsEquipped == false).Count() / @tfgame.Procedures.ItemProcedures.GetInventoryMaxSize(Model.Bonuses) items. 
+    </div>
+
 
       <div id="fullDetails">
 

@@ -2,62 +2,69 @@
 @using tfgame.ViewModels
 @using tfgame.CustomHtmlHelpers
 
-<head>
-    <link href="~/Content/PvP.css" rel="stylesheet" />
-</head>
 
-<p>@Html.ActionLink("Back to game", "Play", "PvP")</p>
+    <nav class="navbar navbar-default outsideContainer navbarTT2">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
 
-<div class="result">
-    @Html.Raw(ViewBag.Result)
-</div>
-<div class="error">
-    @ViewBag.ErrorMessage
-</div>
-<div class="suberror">
-    @ViewBag.SubErrorMessage
-</div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
 
-<p>You can purchase clothing and items that were once fellow mages like you from Lindella, as well as a variety of non-human magical consumable items that will help you from ending up in a similar fate from your enemies.  Please keep in mind that some of Lindella's formerly-human merchandise may not be fond of their new inanimate lifestyle or their owners and change back after struggling against the magic trapping them long enough.  No refunds!</p>
+    <div>
+        <p class="infoMessage result">@Html.Raw(ViewBag.Result)</p>
+        <p class="infoMessage error">@ViewBag.ErrorMessage</p>
+        <p class="infoMessage suberror">@ViewBag.SubErrorMessage</p>
+    </div>
+<div class="containerInner">
+    <p>You can purchase clothing and items that were once fellow mages like you from Lindella, as well as a variety of non-human magical consumable items that will help you from ending up in a similar fate from your enemies.  Please keep in mind that some of Lindella's formerly-human merchandise may not be fond of their new inanimate lifestyle or their owners and change back after struggling against the magic trapping them long enough.  No refunds!</p>
 
-<h3>You currently have @ViewBag.MyMoney <span title="Arpeyjis" class="icon-money"></span> Arpeyjis to spend.</h3>
+    <h3>You currently have @ViewBag.MyMoney <span title="Arpeyjis" class="icon-money"></span> Arpeyjis to spend.</h3>
 
-<p>@Html.ActionLink("Sell Something", "SellList", "NPC")</p>
+    <p>@Html.ActionLink("Sell Something", "SellList", "NPC")</p>
 
-@{
-    if (ViewBag.NoRoom == true)
-    {
-        <p class="playerCleansingNotification">You will not be able to purchase anything from Lindella since you do not have room to carry anything else in your inventory.</p>
+    @{
+        if (ViewBag.NoRoom == true)
+        {
+            <p class="playerCleansingNotification">You will not be able to purchase anything from Lindella since you do not have room to carry anything else in your inventory.</p>
+        }
     }
-}
 
-<p>Show by type:</p>
+    <p>Show by type:</p>
 
-@Html.ActionLink("Hats / Headwear", "TradeWithMerchant", "NPC", new { filter = "hat" }, null) <br />
-@Html.ActionLink("Shirts and Dresses", "TradeWithMerchant", "NPC", new { filter = "shirt" }, null) <br />
-@Html.ActionLink("Bras and Undershirts", "TradeWithMerchant", "NPC", new { filter = "undershirt" }, null) <br />
-@Html.ActionLink("Skirts and Pants", "TradeWithMerchant", "NPC", new { filter = "pants" }, null) <br />
-@Html.ActionLink("Underwear", "TradeWithMerchant", "NPC", new { filter = "underpants" }, null) <br />
-@Html.ActionLink("Shoes", "TradeWithMerchant", "NPC", new { filter = "shoes" }, null) <br />
-@Html.ActionLink("Accessories", "TradeWithMerchant", "NPC", new { filter = "accessory" }, null) <br />
-@Html.ActionLink("Reusable Consumables", "TradeWithMerchant", "NPC", new { filter = "consumable_reusable" }, null) <br />
-@Html.ActionLink("Consumables", "TradeWithMerchant", "NPC", new { filter = "consumables" }, null) <br />
-
+    @Html.ActionLink("Hats / Headwear", "TradeWithMerchant", "NPC", new { filter = "hat" }, null) <br />
+    @Html.ActionLink("Shirts and Dresses", "TradeWithMerchant", "NPC", new { filter = "shirt" }, null) <br />
+    @Html.ActionLink("Bras and Undershirts", "TradeWithMerchant", "NPC", new { filter = "undershirt" }, null) <br />
+    @Html.ActionLink("Skirts and Pants", "TradeWithMerchant", "NPC", new { filter = "pants" }, null) <br />
+    @Html.ActionLink("Underwear", "TradeWithMerchant", "NPC", new { filter = "underpants" }, null) <br />
+    @Html.ActionLink("Shoes", "TradeWithMerchant", "NPC", new { filter = "shoes" }, null) <br />
+    @Html.ActionLink("Accessories", "TradeWithMerchant", "NPC", new { filter = "accessory" }, null) <br />
+    @Html.ActionLink("Reusable Consumables", "TradeWithMerchant", "NPC", new { filter = "consumable_reusable" }, null) <br />
+    @Html.ActionLink("Consumables", "TradeWithMerchant", "NPC", new { filter = "consumables" }, null) <br />
 
 
-@{
-    foreach (ItemViewModel i in Model.OrderBy(i => i.dbItem.dbName).ThenByDescending(i => i.dbItem.Level))
-    {
-        @Html.Partial("~/Views/PvP/partial_InventoryItem.cshtml", i)
-        @CharactersHere.PrintPvPIcon(i.dbItem)
-        <span class="price">Price:  @tfgame.Procedures.ItemProcedures.GetCostOfItem(i, "buy") Arpeyjis</span>
-        @Html.ActionLink("Purchase", "Purchase", "NPC", new { id = i.dbItem.Id }, null)<br /><br /><br />
 
+    @{
+        foreach (ItemViewModel i in Model.OrderBy(i => i.dbItem.dbName).ThenByDescending(i => i.dbItem.Level))
+        {
+            @Html.Partial("~/Views/PvP/partial_ShopkeeperItem.cshtml", i)
+        }
     }
-}
 
-<p>@Html.ActionLink("Back to game", "Play", "PvP")</p>
-
+</div>
 <style>
     .price {
         margin-bottom: 15px;

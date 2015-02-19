@@ -54,10 +54,8 @@
 
         foreach (ItemViewModel i in Model.OrderBy(i => i.dbItem.dbName).ThenByDescending(i => i.dbItem.Level))
         {
-            @Html.Partial("~/Views/PvP/partial_InventoryItem.cshtml", i)
-            @CharactersHere.PrintPvPIcon(i.dbItem)
-            <span class="price">Price:  @tfgame.Procedures.ItemProcedures.GetCostOfItem(i, "buy") Arpeyjis</span>
-            @Html.ActionLink("Purchase", "PurchasePet", "NPC", new { id = i.dbItem.Id }, null)<br /><br /><br />
+            @Html.Partial("~/Views/PvP/partial_ShopkeeperItem.cshtml", i)
+
 
         }
     }

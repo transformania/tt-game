@@ -75,6 +75,10 @@
             }
                 }
 
+                @CharactersHere.PrintPvPIcon(i.dbItem)
+                <span class="price">Price:  @tfgame.Procedures.ItemProcedures.GetCostOfItem(i, "buy") Arpeyjis</span>
+                @Html.ActionLink("Purchase", "Purchase", "NPC", new { id = i.dbItem.Id }, null)<br /><br /><br />
+
             </div>
 
         }

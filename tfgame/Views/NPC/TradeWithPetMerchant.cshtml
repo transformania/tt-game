@@ -48,17 +48,21 @@
     <h3>You currently have @ViewBag.MyMoney <span title="Arpeyjis" class="icon-money"></span> Arpeyjis to spend.</h3>
 
 
+    <div id="fullDetails">
 
-    @{
-        
-
-        foreach (ItemViewModel i in Model.OrderBy(i => i.dbItem.dbName).ThenByDescending(i => i.dbItem.Level))
-        {
-            @Html.Partial("~/Views/PvP/partial_ShopkeeperItem.cshtml", i)
+    </div> 
+    <div id="row">
+        @{
 
 
+            foreach (ItemViewModel i in Model.OrderBy(i => i.dbItem.dbName).ThenByDescending(i => i.dbItem.Level))
+            {
+                @Html.Partial("~/Views/PvP/partial_ShopkeeperItem.cshtml", i)
+
+
+            }
         }
-    }
+    </div>
 </div>
 
 <style>
@@ -67,4 +71,11 @@
         color: darkblue;
         font-weight: 700;
     }
+
+    
+        #fullDetails{
+            height: 200px;
+            resize:vertical;
+            overflow-y: scroll;
+        }
 </style>

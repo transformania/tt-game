@@ -45,30 +45,40 @@
 
     <p>Show by type:</p>
 
-    @Html.ActionLink("Hats / Headwear", "TradeWithMerchant", "NPC", new { filter = "hat" }, null) <br />
-    @Html.ActionLink("Shirts and Dresses", "TradeWithMerchant", "NPC", new { filter = "shirt" }, null) <br />
+    @Html.ActionLink("Hats / Headwear", "TradeWithMerchant", "NPC", new { filter = "hat" }, null) ---
+    @Html.ActionLink("Shirts and Dresses", "TradeWithMerchant", "NPC", new { filter = "shirt" }, null) ---
     @Html.ActionLink("Bras and Undershirts", "TradeWithMerchant", "NPC", new { filter = "undershirt" }, null) <br />
-    @Html.ActionLink("Skirts and Pants", "TradeWithMerchant", "NPC", new { filter = "pants" }, null) <br />
-    @Html.ActionLink("Underwear", "TradeWithMerchant", "NPC", new { filter = "underpants" }, null) <br />
+    @Html.ActionLink("Skirts and Pants", "TradeWithMerchant", "NPC", new { filter = "pants" }, null) ---
+    @Html.ActionLink("Underwear", "TradeWithMerchant", "NPC", new { filter = "underpants" }, null) ---
     @Html.ActionLink("Shoes", "TradeWithMerchant", "NPC", new { filter = "shoes" }, null) <br />
-    @Html.ActionLink("Accessories", "TradeWithMerchant", "NPC", new { filter = "accessory" }, null) <br />
-    @Html.ActionLink("Reusable Consumables", "TradeWithMerchant", "NPC", new { filter = "consumable_reusable" }, null) <br />
+    @Html.ActionLink("Accessories", "TradeWithMerchant", "NPC", new { filter = "accessory" }, null) ---
+    @Html.ActionLink("Reusable Consumables", "TradeWithMerchant", "NPC", new { filter = "consumable_reusable" }, null) ---
     @Html.ActionLink("Consumables", "TradeWithMerchant", "NPC", new { filter = "consumables" }, null) <br />
 
+    <div id="fullDetails">
 
+    </div>
+    <div id="row">
 
-    @{
-        foreach (ItemViewModel i in Model.OrderBy(i => i.dbItem.dbName).ThenByDescending(i => i.dbItem.Level))
-        {
-            @Html.Partial("~/Views/PvP/partial_ShopkeeperItem.cshtml", i)
+        @{
+            foreach (ItemViewModel i in Model.OrderBy(i => i.dbItem.dbName).ThenByDescending(i => i.dbItem.Level))
+            {
+                @Html.Partial("~/Views/PvP/partial_ShopkeeperItem.cshtml", i)
+            }
         }
-    }
-
-</div>
+    </div>
+    </div>
 <style>
     .price {
         margin-bottom: 15px;
         color: darkblue;
         font-weight: 700;
     }
+
+    
+        #fullDetails{
+            height: 200px;
+            resize:vertical;
+            overflow-y: scroll;
+        }
 </style>

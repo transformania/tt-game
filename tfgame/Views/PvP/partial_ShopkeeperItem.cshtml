@@ -28,58 +28,19 @@
 
             <div style="text-align: center;">
                 <p>@Model.Item.FriendlyName</p>
+                <p class="formerly">@Html.ActionLink(Model.dbItem.VictimName, "LookAtPlayerItem", "PvP", new { vicname = Model.dbItem.VictimName }, null)</p>
 
 
 
 
-                @{
-            if (Model.Item.ItemType != "consumable" && Model.Item.ItemType != "consumable_reuseable" && Model.Item.ItemType != PvPStatics.ItemType_Pet)
-            {
-
-                if (@Model.dbItem.IsEquipped == false)
-                {
-                    @Html.ActionLink("Wear", "Equip", "PvP", new { itemId = Model.dbItem.Id, putOn = "true" }, new { @class = "attackLink" })<br />
-                    @Html.ActionLink("Drop", "Drop", "PvP", new { itemId = Model.dbItem.Id }, new { @class = "attackLink" })
-                }
-
-                if (@Model.dbItem.IsEquipped == true && @Model.dbItem.EquippedThisTurn == false)
-                {
-                    @Html.ActionLink("Take off", "Equip", "PvP", new { itemId = Model.dbItem.Id, putOn = "false" }, new { @class = "attackLink" })
-                }
-
-            }
-            if (Model.Item.ItemType == PvPStatics.ItemType_Pet && (ViewBag.DisableReleaseLink == null || ViewBag.DisableReleaseLink == false))
-            {
-                @Html.ActionLink("Release", "Drop", "PvP", new { itemId = Model.dbItem.Id }, new { @class = "attackLink" })
-            }
-            else if (Model.Item.ItemType == "consumable")
-            {
-                @Html.ActionLink("Use", "Use", "PvP", new { itemId = Model.dbItem.Id }, new { @class = "attackLink" })<br />
-                    @Html.ActionLink("Drop", "Drop", "PvP", new { itemId = Model.dbItem.Id }, new { @class = "attackLink" })
-            }
-            else if (Model.Item.ItemType == "consumable_reuseable")
-            {
-
-                if (Model.dbItem.TurnsUntilUse > 0)
-                {
-                    <span style="color: red;">Reuse in <b>@Model.dbItem.TurnsUntilUse</b> turns.</span>
-                    @Html.ActionLink("Drop", "Drop", "PvP", new { itemId = Model.dbItem.Id }, new { @class = "attackLink" })<br />
-                }
-                else
-                {
-                    @Html.ActionLink("Use", "Use", "PvP", new { itemId = Model.dbItem.Id }, new { @class = "attackLink" })<br />
-                    @Html.ActionLink("Drop", "Drop", "PvP", new { itemId = Model.dbItem.Id }, new { @class = "attackLink" })
-                }
-
-
-            }
-                }
 
                 @CharactersHere.PrintPvPIcon(Model.dbItem)
                 <span class="price">Price:  @tfgame.Procedures.ItemProcedures.GetCostOfItem(Model, "buy") Arpeyjis</span>
                 @Html.ActionLink("Purchase", "Purchase", "NPC", new { id = Model.dbItem.Id }, null)<br /><br /><br />
 
             </div>
+
+
 
         }
 

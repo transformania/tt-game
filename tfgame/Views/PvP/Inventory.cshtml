@@ -27,6 +27,34 @@
     </div><!-- /.container-fluid -->
 </nav>
 
+@{
+
+    int HealthWidth = Convert.ToInt32(Model.Health / Model.MaxHealth * 100);
+    if (HealthWidth > 100) { HealthWidth = 100; }
+    int ManaWidth = Convert.ToInt32(Model.Mana / Model.MaxMana * 100);
+    if (ManaWidth > 100) { ManaWidth = 100; }
+
+}
+
+<div class="specialBox specialBox2">
+    <div class="avatarBars">
+        <div class="barWrapper">
+            <div class="barText">@Model.Health / @Model.MaxHealth willpower</div>
+            <div class="barData barWP" style="width: @HealthWidth%"></div>
+        </div>
+
+        <div style="padding-right: 20px;"></div>
+
+        <div class="barWrapper">
+            <div class="barText">@Model.Mana / @Model.MaxMana mana</div>
+            <div class="barData barMP" style="width: @ManaWidth%"></div>
+        </div>
+
+        <div style="padding-right: 20px;"></div>
+    </div>
+
+    You are carring @Model.Items.Where(i => i.dbItem.IsEquipped == false).Count() / @tfgame.Procedures.ItemProcedures.GetInventoryMaxSize(Model.Bonuses) items.
+</div>
 
 <div>
     <p class="infoMessage result">@Html.Raw(ViewBag.Result)</p>
@@ -67,11 +95,6 @@
                     }
                 }
             </div>*@
-
-    <div id="tempdiv">
-        You have @Model.Health / @Model.MaxHealth WP and @Model.Mana / @Model.MaxMana mana.  You are carring @Model.Items.Where(i => i.dbItem.IsEquipped == false).Count() / @tfgame.Procedures.ItemProcedures.GetInventoryMaxSize(Model.Bonuses) items. 
-    </div>
-
 
       <div id="fullDetails">
 
@@ -139,5 +162,9 @@
             height: 200px;
             resize:vertical;
             overflow-y: scroll;
+        }
+
+        .avatarBars {
+            display: -moz-box !important;
         }
     </style>

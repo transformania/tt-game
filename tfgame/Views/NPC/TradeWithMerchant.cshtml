@@ -34,7 +34,7 @@
 
     <h3>You currently have @ViewBag.MyMoney <span title="Arpeyjis" class="icon-money"></span> Arpeyjis to spend.</h3>
 
-    <p>@Html.ActionLink("Sell Something", "SellList", "NPC")</p>
+    <p>@Html.ActionLink("Sell Something", "SellList", "NPC", new { @class = "attackLink" })</p>
 
     @{
         if (ViewBag.NoRoom == true)
@@ -43,18 +43,29 @@
         }
     }
 
-    <p>Show by type:</p>
+    <p style="text-align: center;"><br />
+        Show by type:<br />
+        <table style="width: 100%; text-align: center;">
+            <tr style="width: 40%;">
+                <td>@Html.ActionLink("Hats / Headwear", "TradeWithMerchant", "NPC", new { filter = "hat" }, null)</td>
+                <td>@Html.ActionLink("Shirts and Dresses", "TradeWithMerchant", "NPC", new { filter = "shirt" }, null)</td>
+                <td> @Html.ActionLink("Bras and Undershirts", "TradeWithMerchant", "NPC", new { filter = "undershirt" }, null)</td>
+            </tr>
+            <tr style="width: 30%;">
+                <td>@Html.ActionLink("Skirts and Pants", "TradeWithMerchant", "NPC", new { filter = "pants" }, null)</td>
+                <td>@Html.ActionLink("Underwear", "TradeWithMerchant", "NPC", new { filter = "underpants" }, null)</td>
+                <td> @Html.ActionLink("Shoes", "TradeWithMerchant", "NPC", new { filter = "shoes" }, null)</td>
+            </tr>
+            <tr style="width: 30%;">
+                <td>@Html.ActionLink("Accessories", "TradeWithMerchant", "NPC", new { filter = "accessory" }, null)</td>
+                <td>@Html.ActionLink("Reusable Consumables", "TradeWithMerchant", "NPC", new { filter = "consumable_reusable" }, null)</td>
+                <td> @Html.ActionLink("Consumables", "TradeWithMerchant", "NPC", new { filter = "consumables" }, null)</td>
+            </tr>
 
-    @Html.ActionLink("Hats / Headwear", "TradeWithMerchant", "NPC", new { filter = "hat" }, null) ---
-    @Html.ActionLink("Shirts and Dresses", "TradeWithMerchant", "NPC", new { filter = "shirt" }, null) ---
-    @Html.ActionLink("Bras and Undershirts", "TradeWithMerchant", "NPC", new { filter = "undershirt" }, null) <br />
-    @Html.ActionLink("Skirts and Pants", "TradeWithMerchant", "NPC", new { filter = "pants" }, null) ---
-    @Html.ActionLink("Underwear", "TradeWithMerchant", "NPC", new { filter = "underpants" }, null) ---
-    @Html.ActionLink("Shoes", "TradeWithMerchant", "NPC", new { filter = "shoes" }, null) <br />
-    @Html.ActionLink("Accessories", "TradeWithMerchant", "NPC", new { filter = "accessory" }, null) ---
-    @Html.ActionLink("Reusable Consumables", "TradeWithMerchant", "NPC", new { filter = "consumable_reusable" }, null) ---
-    @Html.ActionLink("Consumables", "TradeWithMerchant", "NPC", new { filter = "consumables" }, null) <br />
+        </table>
 
+
+    </p>
     <div id="fullDetails">
 
     </div>

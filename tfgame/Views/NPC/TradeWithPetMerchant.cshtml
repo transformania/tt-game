@@ -53,17 +53,30 @@
     </div> 
     <div id="row">
         @{
-
-
             foreach (ItemViewModel i in Model.OrderBy(i => i.dbItem.dbName).ThenByDescending(i => i.dbItem.Level))
             {
                 @Html.Partial("~/Views/PvP/partial_ShopkeeperItem.cshtml", i)
-
-
             }
         }
     </div>
 </div>
+
+
+<script>
+
+    function detail_success() {
+        //$('#itemDetailModal').modal('show');
+    }
+
+    function detail_failure() {
+        $("#fullDetails").html("Failed to load details");
+    }
+
+    function detail_wait() {
+        $("#fullDetails").html("Loading details...");
+    }
+
+</script>
 
 <style>
     .price {

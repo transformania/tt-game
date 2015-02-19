@@ -11,21 +11,14 @@
          
             }
 
-            if (ViewBag.ShowDetailLinks != null && ViewBag.ShowDetailLinks == true)
-            {
+           
                    @Ajax.ActionLink("[+]", "ShowItemDetails", "Item", new { id = Model.dbItem.Id }, new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
-            }
             
         }
         @CharactersHere.PrintItemTypeIcon(Model.Item)
     </div>
 
     @{
-
-        if (ViewBag.DisableLinks == null || ViewBag.DisableLinks == "false")
-        {
-
-
             <div style="text-align: center;">
                 <p>@Model.Item.FriendlyName</p>
                 <p class="formerly">@Html.ActionLink(Model.dbItem.VictimName, "LookAtPlayerItem", "PvP", new { vicname = Model.dbItem.VictimName }, null)</p>
@@ -39,11 +32,6 @@
                 @Html.ActionLink("Purchase", "Purchase", "NPC", new { id = Model.dbItem.Id }, null)<br /><br /><br />
 
             </div>
-
-
-
-        }
-
     }
 </div>
     

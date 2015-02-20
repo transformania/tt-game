@@ -108,13 +108,6 @@
 @Html.Partial("partial/partial_AllBuffsTable", Model.Bonuses)
 @Html.Partial("partial_InventoryEquipped", Model.Items)
 
-@{
-    foreach (ItemViewModel item in Model.Items)
-    {
-        @Html.Partial("partial_InventoryItem", item)
-    }
-}
-
 
 @{
     if (Model.Bonuses.SneakPercent() <= PvPStatics.SneakAmountBeforeLocationIsPublic * 3)

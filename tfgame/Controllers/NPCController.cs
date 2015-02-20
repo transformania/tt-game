@@ -331,6 +331,8 @@ namespace tfgame.Controllers
                 ViewBag.PlayerHasPet = true;
             }
 
+            ViewBag.Wuffie = true;
+
             ViewBag.DisableReleaseLink = true;
             IEnumerable<ItemViewModel> output = ItemProcedures.GetAllPlayerItems(merchant.Id).Where(i => i.Item.ItemType == PvPStatics.ItemType_Pet);
 
@@ -402,6 +404,9 @@ namespace tfgame.Controllers
             ItemProcedures.GiveItemToPlayer_Nocheck(purchased.dbItem.Id, me.Id);
             SkillProcedures.UpdateItemSpecificSkillsToPlayer(me.Id);
 
+
+
+
             TempData["Result"] = "You have purchased a " + purchased.Item.FriendlyName + " from Wüffie.";
             return RedirectToAction("TradeWithPetMerchant");
         }
@@ -434,6 +439,9 @@ namespace tfgame.Controllers
                 TempData["SubError"] = "She may have moved since beginning this transaction.";
                 return RedirectToAction("Play", "PvP");
             }
+
+
+           
 
             // show the permanent and consumable items the player is carrying
             IEnumerable<ItemViewModel> output = ItemProcedures.GetAllPlayerItems(me.Id).Where(i => i.Item.ItemType == PvPStatics.ItemType_Pet && i.dbItem.IsEquipped == true && i.dbItem.IsPermanent == true);

@@ -38,7 +38,7 @@
 
                 if (@Model.dbItem.IsEquipped == false)
                 {
-                    @Html.ActionLink("Wear", "Equip", "PvP", new { itemId = Model.dbItem.Id, putOn = "true" }, new { @class = "attackLink" })<br />
+                    @Html.ActionLink("Wear", "Equip", "PvP", new { itemId = Model.dbItem.Id, putOn = "true" }, new { @class = "attackLink" })
                     @Html.ActionLink("Drop", "Drop", "PvP", new { itemId = Model.dbItem.Id }, new { @class = "attackLink" })
                 }
 
@@ -54,8 +54,9 @@
             }
             else if (Model.Item.ItemType == "consumable")
             {
-                @Html.ActionLink("Use", "Use", "PvP", new { itemId = Model.dbItem.Id }, new { @class = "attackLink" })<br />
+                @Html.ActionLink("Use", "Use", "PvP", new { itemId = Model.dbItem.Id }, new { @class = "attackLink" })
                     @Html.ActionLink("Drop", "Drop", "PvP", new { itemId = Model.dbItem.Id }, new { @class = "attackLink" })
+                    
             }
             else if (Model.Item.ItemType == "consumable_reuseable")
             {
@@ -63,11 +64,11 @@
                 if (Model.dbItem.TurnsUntilUse > 0)
                 {
                     <span style="color: red;">Reuse in <b>@Model.dbItem.TurnsUntilUse</b> turns.</span>
-                    @Html.ActionLink("Drop", "Drop", "PvP", new { itemId = Model.dbItem.Id }, new { @class = "attackLink" })<br />
+                    @Html.ActionLink("Drop", "Drop", "PvP", new { itemId = Model.dbItem.Id }, new { @class = "attackLink" })
                 }
                 else
                 {
-                    @Html.ActionLink("Use", "Use", "PvP", new { itemId = Model.dbItem.Id }, new { @class = "attackLink" })<br />
+                    @Html.ActionLink("Use", "Use", "PvP", new { itemId = Model.dbItem.Id }, new { @class = "attackLink" })
                     @Html.ActionLink("Drop", "Drop", "PvP", new { itemId = Model.dbItem.Id }, new { @class = "attackLink" })
                 }
 

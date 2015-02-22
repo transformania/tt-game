@@ -63,7 +63,7 @@
 </div>
 
 <div class="containerInner">
-    @Html.Partial("partial/partial_AllBuffsTable", Model.Bonuses)
+
 
     <div style="clear:both;"></div>
     @Html.Partial("partial_InventoryEquipped", Model.Items)
@@ -111,8 +111,8 @@
 
         }
         </div>
-    </div>
-
+@Html.Partial("partial/partial_AllBuffsTable", Model.Bonuses)    
+</div>
 <div class="modal fade" id="itemDetailModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -156,12 +156,6 @@
             font-size: 15px;
             color: chocolate;
             font-style: italic;
-        }
-
-        #fullDetails{
-            height: 200px;
-            resize:vertical;
-            overflow-y: scroll;
         }
 
         .avatarBars {

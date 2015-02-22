@@ -530,6 +530,11 @@ namespace tfgame.Controllers
             string playerLogMessage = "You moved from <b>" + currentLocation.Name + "</b> to <b>" + nextLocation.Name + "</b>.";
             PlayerLogProcedures.AddPlayerLog(me.Id, playerLogMessage, false);
 
+            // record into statistics
+            new Thread(() =>
+                StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__TimesMoved, 1)
+            ).Start();
+
 
             return RedirectToAction("Play");
         }
@@ -3064,6 +3069,10 @@ namespace tfgame.Controllers
 
             ItemProcedures.DeleteItemOfName(me, "item_consumeable_teleportation_scroll");
 
+            new Thread(() =>
+                 StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__TimesTeleported_Scroll, 1)
+             ).Start();
+
             return RedirectToAction("Play");
         }
 
@@ -3254,6 +3263,11 @@ namespace tfgame.Controllers
                 ViewBag.XPGain = xpGained;
                 ViewBag.ShowSuccess = true;
                 ViewBag.HadRecentInteraction = false;
+
+                new Thread(() =>
+                     StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__JewdewfaeEncountersCompleted, 1)
+                 ).Start();
+
                 return View("TalkWithJewdewfae", output);
             }
             else

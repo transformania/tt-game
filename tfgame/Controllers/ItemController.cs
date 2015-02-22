@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using tfgame.dbModels.Models;
@@ -195,6 +196,11 @@ namespace tfgame.Controllers
              ItemProcedures.DeleteItem(book.dbItem.Id);
              ItemProcedures.AddBookReading(me, book.dbItem.dbName);
              PlayerProcedures.GiveXP(me.Id, 50);
+
+             new Thread(() =>
+                  StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__LoreBooksRead, 1)
+              ).Start();
+
              TempData["Result"] = "You read your copy of " + book.Item.FriendlyName + ", absorbing its knowledge for 50 XP.  The tome slips into thin air so it can provide its knowledge to another mage in a different time and place.";
              return RedirectToAction("Play", "PvP");
 

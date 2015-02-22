@@ -35,5 +35,9 @@
     <p>Enchantments cast:  @Model.Where(a => a.AchievementType == StatsProcedures.Stat__TimesEnchanted).Sum(x => x.Amount)</p>
     <p>Times meditated:  @Model.Where(a => a.AchievementType == StatsProcedures.Stat__TimesMeditated).Sum(x => x.Amount)</p>
     <p>Times cleansed:  @Model.Where(a => a.AchievementType == StatsProcedures.Stat__TimesCleansed).Sum(x => x.Amount)</p>
-
+    <p>Times transformed into an animate form:  @Model.Where(a => a.AchievementType == StatsProcedures.Stat__TimesAnimateTFed).Sum(x => x.Amount)</p>
+    <p>Times transformed into an inanimate form:  @Model.Where(a => a.AchievementType == StatsProcedures.Stat__TimesInanimateTFed).Sum(x => x.Amount)</p>
+    <p>Times transformed into an pet form:  @Model.Where(a => a.AchievementType == StatsProcedures.Stat__TimesAnimalTFed).Sum(x => x.Amount)</p>
+    <p>Scrolls of Teleportation used:  @Model.Where(a => a.AchievementType == StatsProcedures.Stat__TimesTeleported_Scroll).Sum(x => x.Amount)</p>
+    <p>Times played with Jewdewfae:  @Model.Where(a => a.AchievementType == StatsProcedures.Stat__JewdewfaeEncountersCompleted).Sum(x => x.Amount)</p>
 </div>

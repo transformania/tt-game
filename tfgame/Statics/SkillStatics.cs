@@ -1755,7 +1755,7 @@ namespace tfgame.Statics
         public static IEnumerable<DbStaticSkill> GetLearnablePsychopathSkills()
         {
             ISkillRepository statSkillRepo = new EFSkillRepository();
-            return statSkillRepo.DbStaticSkills.Where(s => s.dbName != "" && s.dbName != "lowerHealth" && s.ExclusiveToForm == null && s.GivesEffect == null && (s.LearnedAtLocation != null || s.LearnedAtLocation != null) && s.MobilityType != "full" && s.IsLive == "live");
+            return statSkillRepo.DbStaticSkills.Where(s => s.dbName != "" && s.dbName != "lowerHealth" && s.ExclusiveToForm == null && s.GivesEffect == null && (s.LearnedAtLocation != null || s.LearnedAtLocation != null) && s.MobilityType != "full" && s.MobilityType != "mindcontrol" && s.IsLive == "live");
         }
 
         public static IEnumerable<DbStaticSkill> GetFormSpecificSkills(string formdbName)

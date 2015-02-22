@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using tfgame.dbModels.Models;
@@ -580,6 +581,11 @@ namespace tfgame.Controllers
             CovenantProcedures.SendPlayerMoneyToCovenant(me, amount);
 
             TempData["Result"] = "You have successfully sent " + amount + " Arpeyjis to your covenant.";
+
+            new Thread(() =>
+                 StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__CovenantDonationTotal, amount)
+             ).Start();
+
             return RedirectToAction("MyCovenant");
 
         }
@@ -637,7 +643,12 @@ namespace tfgame.Controllers
 
              CovenantProcedures.SendCovenantMoneyToPlayer(me.Covenant, giftee, amount);
 
-             TempData["Result"] = "You have successfully sent " + amount + " Arpeyjis to " + giftee.FirstName + " " + giftee.LastName + ".";
+
+             new Thread(() =>
+                  StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__CovenantGiftsReceived, (float)amount)
+              ).Start();
+
+             TempData["Result"] = "You have successfully sent " + amount + " Arpeyjis to " + giftee.GetFullName() + ".";
              return RedirectToAction("MyCovenant");
 
          }

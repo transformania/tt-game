@@ -17,6 +17,19 @@ namespace tfgame.Procedures
         public const string Stat__TimesCleansed = "times_cleansed";
         public const string Stat__TimesMeditated = "times_meditated";
         public const string Stat__TimesEnchanted = "times_enchanted";
+        public const string Stat__CovenantDonationTotal = "covenant_donations";
+        public const string Stat__CovenantGiftsReceived = "covenant_gif_receieved";
+        public const string Stat__TimesAnimateTFed = "times_self_animated";
+        public const string Stat__TimesInanimateTFed = "times_self_inanimated";
+        public const string Stat__TimesAnimalTFed = "times_self_animal";
+        public const string Stat__TimesTeleported_Scroll = "times_teleported_scroll";
+        public const string Stat__JewdewfaeEncountersCompleted = "jewdewfae_completions";
+        public const string Stat__LoreBooksRead = "lore_books_read";
+
+
+           //new Thread(() =>
+           //     StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__TimesMoved, 1)
+           // ).Start();
 
         public static void AddStat(int membershipId, string type, float amount)
         {

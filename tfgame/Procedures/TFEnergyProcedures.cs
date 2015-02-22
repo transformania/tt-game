@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using System.Xml;
 using System.Xml.Serialization;
@@ -358,6 +359,10 @@ namespace tfgame.Procedures
 
                     TFEnergyProcedures.DeleteAllPlayerTFEnergiesOfType(target.Id, targetForm.dbName);
 
+                    new Thread(() =>
+                         StatsProcedures.AddStat(target.MembershipId, StatsProcedures.Stat__TimesAnimateTFed, 1)
+                     ).Start();
+
                 }
                 #endregion
 
@@ -374,10 +379,20 @@ namespace tfgame.Procedures
                     if (targetForm.MobilityType == "inanimate")
                     {
                         target.Mobility = "inanimate";
+
+                        new Thread(() =>
+                             StatsProcedures.AddStat(target.MembershipId, StatsProcedures.Stat__TimesInanimateTFed, 1)
+                        ).Start();
+
                     }
                     else if (targetForm.MobilityType == "animal")
                     {
                         target.Mobility = "animal";
+
+                        new Thread(() =>
+                             StatsProcedures.AddStat(target.MembershipId, StatsProcedures.Stat__TimesAnimalTFed, 1)
+                        ).Start();
+
                     }
                    
                     target.Health = 0;

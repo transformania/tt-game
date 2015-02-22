@@ -1437,7 +1437,36 @@ namespace tfgame.Procedures
             
         }
 
+        public static IEnumerable<ItemViewModel> SortByItemType(IEnumerable<ItemViewModel> input)
+        {
+            List<ItemViewModel> inputList = input.ToList();
+            List<ItemViewModel> output = new List<ItemViewModel>();
 
+
+            // consumable types first
+            foreach (ItemViewModel i in inputList.Where(i => i.Item.ItemType == "consumable").OrderBy(i => i.Item.FriendlyName))
+            {
+                output.Add(i);
+                inputList.Remove(i);
+            }
+
+            // reusable consumable types second
+            foreach (ItemViewModel i in inputList.Where(i => i.Item.ItemType == "consumable_reuseable").OrderBy(i => i.Item.FriendlyName))
+            {
+                output.Add(i);
+                inputList.Remove(i);
+            }
+
+
+            // then all the rest
+            foreach (ItemViewModel i in inputList.OrderBy(i => i.Item.FriendlyName))
+            {
+                output.Add(i);
+                inputList.Remove(i);
+            }
+
+            return output;
+        }
 
         
 

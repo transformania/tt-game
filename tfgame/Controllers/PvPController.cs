@@ -1260,6 +1260,8 @@ namespace tfgame.Controllers
 
             };
 
+            output.Items = ItemProcedures.SortByItemType(output.Items);
+
             ViewBag.ErrorMessage = TempData["Error"];
             ViewBag.SubErrorMessage = TempData["SubError"];
             ViewBag.Result = TempData["Result"];

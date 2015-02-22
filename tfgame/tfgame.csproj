@@ -371,6 +371,7 @@
     <Compile Include="Procedures\PvPWorldStatProcedures.cs" />
     <Compile Include="Procedures\SettingsProcedures.cs" />
     <Compile Include="Procedures\SkillProcedures.cs" />
+    <Compile Include="Procedures\StatsProcedures.cs" />
     <Compile Include="Procedures\TFEnergyProcedures.cs" />
     <Compile Include="Statics\CovenantDictionary.cs" />
     <Compile Include="Statics\EffectStatics.cs" />
@@ -1667,6 +1668,7 @@
     <Content Include="Views\Item\partial\ItemDetails.cshtml" />
     <Content Include="Views\PvP\partial_ShopkeeperItem.cshtml" />
     <Content Include="Views\PvP\partial_InventoryEquippedLook.cshtml" />
+    <Content Include="Views\Settings\PlayerStats.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

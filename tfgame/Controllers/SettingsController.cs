@@ -67,13 +67,13 @@ namespace tfgame.Controllers
              }
 
              // assert that it is not too late in the round for the player to enter PvP mode
-             int turnNumber = PvPWorldStatProcedures.GetWorldTurnNumber();
-             if (turnNumber > PvPStatics.RoundDuration_LastPvPEntryTurn)
-             {
-                 TempData["Error"] = "You cannot enter PvP mode anymore this round.";
-                 TempData["SubError"] = "You cannot enter PvP mode later than turn " + PvPStatics.RoundDuration_LastPvPEntryTurn + ".";
-                 return RedirectToAction("Play", "PvP");
-             }
+             //int turnNumber = PvPWorldStatProcedures.GetWorldTurnNumber();
+             //if (turnNumber > PvPStatics.RoundDuration_LastPvPEntryTurn)
+             //{
+             //    TempData["Error"] = "You cannot enter PvP mode anymore this round.";
+             //    TempData["SubError"] = "You cannot enter PvP mode later than turn " + PvPStatics.RoundDuration_LastPvPEntryTurn + ".";
+             //    return RedirectToAction("Play", "PvP");
+             //}
 
              PlayerProcedures.SetPvPFlag(me, 2);
              EffectProcedures.GivePerkToPlayer("help_entered_PvP", me);
@@ -656,6 +656,15 @@ namespace tfgame.Controllers
             
            
             return RedirectToAction("Play", "PvP");
+        }
+
+        public ActionResult PlayerStats(int id)
+        {
+            Player player = PlayerProcedures.GetPlayerFromMembership(id);
+            ViewBag.Name = player.GetFullName();
+            ViewBag.PlayerId = player.Id;
+            IEnumerable<Achievement> output = StatsProcedures.GetPlayerStats(id);
+            return View(output);
         }
 
 

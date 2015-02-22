@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -883,6 +884,12 @@ namespace tfgame.Controllers
 
             try { 
                 TempData["Result"] = AttackProcedures.Attack(me, targeted, skillBeingUsed);
+
+                // record into statistics
+                new Thread(() =>
+                    StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__SpellsCast, 1)
+                ).Start();
+
             }
             catch (Exception e)
             {
@@ -892,6 +899,7 @@ namespace tfgame.Controllers
                // PlayerProcedures.ChangePlayerActionMana(4, 0, skillBeingUsed.Skill.ManaCost, me.Id);
             }
 
+            
 
             AIProcedures.CheckAICounterattackRoutine(me, targeted);
 
@@ -1014,7 +1022,11 @@ namespace tfgame.Controllers
 
              PlayerProcedures.AddAttackCount(me);
              PlayerProcedures.ChangePlayerActionMana(3, 0, -10, me.Id);
-           
+
+             // record into statistics
+             new Thread(() =>
+                 StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__TimesEnchanted, 1)
+             ).Start();
 
              TempData["Result"] = output;
              return RedirectToAction("Play");
@@ -1058,6 +1070,11 @@ namespace tfgame.Controllers
             BuffBox mybuffs = ItemProcedures.GetPlayerBuffs(me);
 
             TempData["Result"] = PlayerProcedures.Meditate(me, mybuffs);
+
+            // record into statistics
+            new Thread(() =>
+                StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__TimesMeditated, 1)
+            ).Start();
 
 
             return RedirectToAction("Play");
@@ -1110,7 +1127,10 @@ namespace tfgame.Controllers
 
             TempData["Result"] = PlayerProcedures.Cleanse(me, mybuffs);
 
-
+            // record into statistics
+            new Thread(() =>
+                StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__TimesCleansed, 1)
+            ).Start();
 
             return RedirectToAction("Play");
         }
@@ -1177,6 +1197,11 @@ namespace tfgame.Controllers
             Location here = LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName);
             string playerLogMessage = "You searched at " + here.Name + ".";
             PlayerLogProcedures.AddPlayerLog(me.Id, playerLogMessage, false);
+
+            // record into statistics
+            new Thread(() =>
+                StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__SearchCount, 1)
+            ).Start();
 
             return RedirectToAction("Play");
         }

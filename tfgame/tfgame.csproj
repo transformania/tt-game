@@ -1667,7 +1667,6 @@
     <Content Include="Views\PvP\Rules.cshtml" />
     <Content Include="Views\Item\partial\ItemDetails.cshtml" />
     <Content Include="Views\PvP\partial_ShopkeeperItem.cshtml" />
-    <Content Include="Views\PvP\partial_InventoryEquippedLook.cshtml" />
     <Content Include="Views\Settings\PlayerStats.cshtml" />
   </ItemGroup>
   <ItemGroup>

@@ -30,6 +30,11 @@
 
 
 }
+
+<div id="fullDetails">
+
+</div>
+
 <div class="row rowP">
     @{
 
@@ -37,7 +42,14 @@
         {
             <div class="portrait equipmentMargin col-md-2 col-sm-4 col-xs-12 " style="background-image: url(@CharactersHere.GetImageURL(hat));" title="@hat.Item.FriendlyName--@hat.Item.Description">
                 <span class="icon-level"><b>@hat.dbItem.Level</b></span>
-                <p class="slotName">Hat</p>
+                <p class="slotName">Hat
+                
+                    @Ajax.ActionLink("[+]", "ShowItemDetails", "Item", new { id = hat.dbItem.Id }, new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
+                
+                </p>
+
+                
+
             </div>
         }
         else
@@ -49,7 +61,11 @@
         {
             <div class="portrait equipmentMargin col-md-2 col-sm-4 col-xs-12 " style="background-image: url(@CharactersHere.GetImageURL(shirt));" title="@shirt.Item.FriendlyName--@shirt.Item.Description">
                 <span class="icon-level"><b>@shirt.dbItem.Level</b></span>
-                <p class="slotName">Shirt</p>
+                <p class="slotName">Shirt
+                
+                @Ajax.ActionLink("[+]", "ShowItemDetails", "Item", new { id = shirt.dbItem.Id }, new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
+                
+                </p>
             </div>
         }
         else
@@ -61,7 +77,11 @@
         {
             <div class="portrait equipmentMargin col-md-2 col-sm-4 col-xs-12 " style="background-image: url(@CharactersHere.GetImageURL(undershirt)); " title="@undershirt.Item.FriendlyName--@undershirt.Item.Description">
                 <span class="icon-level"><b>@undershirt.dbItem.Level</b></span>
-                <p class="slotName">Undershirt</p>
+                <p class="slotName">Undershirt
+                
+                @Ajax.ActionLink("[+]", "ShowItemDetails", "Item", new { id = undershirt.dbItem.Id }, new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
+                
+                </p>
             </div>
         }
         else
@@ -73,7 +93,11 @@
         {
             <div class="portrait equipmentMargin col-md-2 col-sm-4 col-xs-12 " style="background-image: url(@CharactersHere.GetImageURL(pants)); " title="@pants.Item.FriendlyName--@pants.Item.Description">
                 <span class="icon-level"><b>@pants.dbItem.Level</b></span>
-                <p class="slotName">Pants</p>
+                <p class="slotName">Pants
+                
+                    @Ajax.ActionLink("[+]", "ShowItemDetails", "Item", new { id = pants.dbItem.Id }, new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
+                
+                </p>
             </div>
         }
         else
@@ -87,7 +111,11 @@
         {
             <div class="portrait equipmentMargin col-md-2 col-sm-4 col-xs-12 " style="background-image: url(@CharactersHere.GetImageURL(underpants)); " title="@underpants.Item.FriendlyName--@underpants.Item.Description">
                 <span class="icon-level"><b>@underpants.dbItem.Level</b></span>
-                <p class="slotName slotUnderpants">Underpants</p>
+                <p class="slotName slotUnderpants">Underpants
+                
+                @Ajax.ActionLink("[+]", "ShowItemDetails", "Item", new { id = underpants.dbItem.Id }, new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
+                
+                </p>
             </div>
         }
         else
@@ -99,7 +127,11 @@
         {
             <div class="portrait equipmentMargin col-md-2 col-sm-4 col-xs-12 " style="background-image: url(@CharactersHere.GetImageURL(shoes)); " title="@shoes.Item.FriendlyName--@shoes.Item.Description">
                 <span class="icon-level"><b>@shoes.dbItem.Level</b></span>
-                <p class="slotName">Shoes</p>
+                <p class="slotName">Shoes
+                
+                    @Ajax.ActionLink("[+]", "ShowItemDetails", "Item", new { id = shoes.dbItem.Id }, new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
+                
+                </p>
             </div>
         }
         else
@@ -111,7 +143,11 @@
         {
             <div class="portrait equipmentMargin col-md-2 col-sm-4 col-xs-12 " style="background-image: url(@CharactersHere.GetImageURL(lhand)); " title="@lhand.Item.FriendlyName--@lhand.Item.Description">
                 <span class="icon-level"><b>@lhand.dbItem.Level</b></span>
-                <p class="slotName">Acc 1</p>
+                <p class="slotName">Acc 1
+                
+                    @Ajax.ActionLink("[+]", "ShowItemDetails", "Item", new { id = lhand.dbItem.Id }, new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
+                
+                </p>
             </div>
         }
         else
@@ -123,7 +159,11 @@
         {
             <div class="portrait equipmentMargin col-md-2 col-sm-4 col-xs-12 " style="background-image: url(@CharactersHere.GetImageURL(rhand)); " title="@rhand.Item.FriendlyName--@rhand.Item.Description">
                 <span class="icon-level"><b>@rhand.dbItem.Level</b></span>
-                <p class="slotName">Acc 2</p>
+                <p class="slotName">Acc 2
+                
+                @Ajax.ActionLink("[+]", "ShowItemDetails", "Item", new { id = rhand.dbItem.Id }, new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
+                
+                </p>
             </div>
         }
         else
@@ -134,7 +174,11 @@
         {
             <div class="portrait equipmentMargin col-md-2 col-sm-4 col-xs-12 " style="background-image: url(@CharactersHere.GetImageURL(pet)); " title="@pet.Item.FriendlyName--@pet.Item.Description">
                 <span class="icon-level"><b>@pet.dbItem.Level</b></span>
-                <p class="slotName">Pet</p>
+                <p class="slotName">Pet
+                
+                @Ajax.ActionLink("[+]", "ShowItemDetails", "Item", new { id = pet.dbItem.Id }, new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
+                
+                </p>
             </div>
         }
         else

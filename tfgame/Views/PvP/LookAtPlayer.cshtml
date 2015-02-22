@@ -153,6 +153,9 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
                  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
                       <ul class="nav navbar-nav" style="width:100%;">
+
+                          @{
+
                             if (@Model.PlayerForm.Player.FlaggedForAbuse == false)
                            {
                            <li>@Html.ActionLink("Lock this player for suspicious activity", "FlagForSuspiciousActivity", "PvP", new { playerId = Model.PlayerForm.Player.Id }, null)</li>
@@ -161,6 +164,9 @@
                           {
                               <li>@Html.ActionLink("Unlock this player for suspicious activity", "FlagForSuspiciousActivity", "PvP", new { playerId = Model.PlayerForm.Player.Id }, null)</li>
                           }
+                          
+                          }
+                          
                          <li>@Html.ActionLink("Reset IP Address", "ResetAllPlayersWithIPAddress", "PvPAdmin", new { address = Model.PlayerForm.Player.IpAddress }, null)</li>
                          <li>@Html.ActionLink("Toggle ban on global chat", "ToggleBanOnGlobalChat", "PvPAdmin", new { id = Model.PlayerForm.Player.Id }, null)</li>
                       </ul>

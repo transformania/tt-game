@@ -20,6 +20,7 @@
             <ul class="nav navbar-nav">
                 <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
                <li>@Html.ActionLink("Look at Player", "LookAtPlayer", "PvP", new { id = ViewBag.PlayerId }, null)</li>
+                <li>@Html.ActionLink("Global Statistics", "PlayerStatsLeaders", "Settings")</li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -29,7 +30,7 @@
 
 <div class="containerInner">
     <h1>@ViewBag.Name's Round Statistics</h1>
-    <p>Spells moved:  @Model.Where(a => a.AchievementType == StatsProcedures.Stat__TimesMoved).Sum(x => x.Amount)</p>
+    <p>Times moved:  @Model.Where(a => a.AchievementType == StatsProcedures.Stat__TimesMoved).Sum(x => x.Amount)</p>
     <p>Times searched:  @Model.Where(a => a.AchievementType == StatsProcedures.Stat__SearchCount).Sum(x => x.Amount)</p>
     <p>Spells cast:  @Model.Where(a => a.AchievementType == StatsProcedures.Stat__SpellsCast).Sum(x => x.Amount)</p>
     <p>Enchantments cast:  @Model.Where(a => a.AchievementType == StatsProcedures.Stat__TimesEnchanted).Sum(x => x.Amount)</p>

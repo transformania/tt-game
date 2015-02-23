@@ -667,6 +667,12 @@ namespace tfgame.Controllers
             return View(output);
         }
 
+        public ActionResult PlayerStatsLeaders()
+        {
+            List<PlayerAchievementViewModel> output = StatsProcedures.GetPlayerMaxStats().ToList();
+            return View(output);
+        }
+
 
        
 

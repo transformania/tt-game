@@ -5,6 +5,7 @@ using System.Web;
 using tfgame.dbModels.Abstract;
 using tfgame.dbModels.Concrete;
 using tfgame.dbModels.Models;
+using tfgame.ViewModels;
 
 namespace tfgame.Procedures
 {
@@ -64,6 +65,47 @@ namespace tfgame.Procedures
             IAchievementRepository repo = new EFAchievementRepository();
 
             return repo.Achievements.Where(a => a.OwnerMembershipId == membershipId);
+        }
+
+        public static IEnumerable<PlayerAchievementViewModel> GetPlayerMaxStats()
+        {
+            IAchievementRepository repo = new EFAchievementRepository();
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+
+         // return repo.Achievements.GroupBy(a => a.AchievementType).OrderByDescending(a => a.Amount).First();
+          //  IEnumerable<Achievement> output = repo.Achievements.OrderByDescending(t => t.Amount).GroupBy(t => t.AchievementType).First();
+
+            //IEnumerable<Achievement> output = from a in repo.Achievements
+            //                                  group a by a.AchievementType into dptgrp
+            //                                  let topsal = dptgrp.Max(x => x.Amount)
+            //                                  select new Achievement
+            //                                  {
+            //                                      AchievementType = dptgrp.Key,
+            //                                      Amount = dptgrp.First(y => y.Amount == topsal).Amount,
+            //                                      OwnerMembershipId = dptgrp.First(y => y.Amount == topsal).OwnerMembershipId,
+            //                                  };
+
+            IEnumerable<Achievement> types = repo.Achievements.GroupBy(a => a.AchievementType).Select(grp => grp.FirstOrDefault()).ToList();
+
+            List<PlayerAchievementViewModel> output = new List<PlayerAchievementViewModel>();
+
+            foreach (Achievement t in types) {
+                Achievement a = repo.Achievements.Where(b => b.AchievementType == t.AchievementType).OrderByDescending(b => b.Amount).FirstOrDefault();
+
+                if (a != null)
+                {
+                    PlayerAchievementViewModel addMe = new PlayerAchievementViewModel
+                    {
+                        Player = playerRepo.Players.FirstOrDefault(p => p.MembershipId == a.OwnerMembershipId),
+                        Achivement = a,
+                    };
+                    output.Add(addMe);
+                }
+
+            }
+
+            return output;
+
         }
     }
 }

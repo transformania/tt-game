@@ -5,6 +5,7 @@ using System.Web;
 using tfgame.dbModels.Abstract;
 using tfgame.dbModels.Concrete;
 using tfgame.dbModels.Models;
+using tfgame.Statics;
 using tfgame.ViewModels;
 
 namespace tfgame.Procedures
@@ -18,15 +19,33 @@ namespace tfgame.Procedures
         public const string Stat__TimesCleansed = "times_cleansed";
         public const string Stat__TimesMeditated = "times_meditated";
         public const string Stat__TimesEnchanted = "times_enchanted";
+
+
         public const string Stat__CovenantDonationTotal = "covenant_donations";
         public const string Stat__CovenantGiftsReceived = "covenant_gif_receieved";
+
         public const string Stat__TimesAnimateTFed = "times_self_animated";
         public const string Stat__TimesInanimateTFed = "times_self_inanimated";
         public const string Stat__TimesAnimalTFed = "times_self_animal";
+
+        public const string Stat__TimesAnimateTFing = "times_self_animating";
+        public const string Stat__TimesInanimateTFing = "times_self_inanimating";
+        public const string Stat__TimesAnimalTFing = "times_self_animaling";
+
+        public const string Stat__PsychopathsDefeated = "psychos_defeated";
+
         public const string Stat__TimesTeleported_Scroll = "times_teleported_scroll";
         public const string Stat__JewdewfaeEncountersCompleted = "jewdewfae_completions";
         public const string Stat__LoreBooksRead = "lore_books_read";
 
+        public const string Stat__InanimateXPEarned = "inanimateXPEarned";
+        public const string Stat__PetXPEarned = "petXPEarned";
+
+        public const string Stat__LindellaCostsAmount = "lindella_costs_amount";
+        public const string Stat__LindellaProfitsAmount = "lindella_profit_amount";
+
+        public const string Stat__WuffieCostsAmount = "lindella_costs_amount";
+        public const string Stat__WuffieProfitsAmount = "lindella_profit_amount";
 
            //new Thread(() =>
            //     StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__TimesMoved, 1)
@@ -35,6 +54,8 @@ namespace tfgame.Procedures
         public static void AddStat(int membershipId, string type, float amount)
         {
             // don't keep stats for an AI characters
+
+          //  if (membershipId > 0 && PvPStatics.ChaosMode == false) 
             if (membershipId > 0)
             {
                 IAchievementRepository repo = new EFAchievementRepository();

@@ -645,7 +645,7 @@ namespace tfgame.Controllers
 
 
              new Thread(() =>
-                  StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__CovenantGiftsReceived, (float)amount)
+                  StatsProcedures.AddStat(giftee.MembershipId, StatsProcedures.Stat__CovenantGiftsReceived, (float)amount)
               ).Start();
 
              TempData["Result"] = "You have successfully sent " + amount + " Arpeyjis to " + giftee.GetFullName() + ".";

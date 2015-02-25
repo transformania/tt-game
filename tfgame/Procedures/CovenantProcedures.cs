@@ -541,15 +541,26 @@ namespace tfgame.Procedures
             if (info == null)
             {
                 info = new LocationInfo{
-                    TakeoverAmount = 150,
+                    TakeoverAmount = 75,
                     CovenantId = -1,
                     dbName = player.dbLocationName,
                 };
             }
 
+            if (info.TakeoverAmount == 100 && info.CovenantId == player.Covenant)
+            {
+                output = "You cast an enchantment here, but it did no effect as this location's enchantment is already at its highest possible level, 100.";
+                return output;
+            }
+
             float takeoverAmount = (float)player.Level / 2.0F;
 
             decimal XPGain = Convert.ToDecimal(takeoverAmount);
+
+            if (XPGain > 5)
+            {
+                XPGain = 5;
+            }
 
             // location is not controlled; give it to whichever covenant is attacking it
             if (info.TakeoverAmount <= 0)
@@ -561,8 +572,16 @@ namespace tfgame.Procedures
                     CovenantProcedures.WriteCovenantLog(covLogLoser, info.CovenantId, true);
                 }
 
+
                 info.CovenantId = player.Covenant;
                 info.TakeoverAmount = takeoverAmount;
+
+
+                if (info.TakeoverAmount > 100)
+                {
+                    info.TakeoverAmount = 100;
+                }
+
                 info.LastTakeoverTurn = PvPWorldStatProcedures.GetWorldTurnNumber();
                 output = "<b>Your enchantment settles in this location, converting its energies from the previous controlling covenant to your own!  (+" + XPGain + " XP)</b>";
                 LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == player.dbLocationName).CovenantController = player.Covenant;
@@ -620,11 +639,7 @@ namespace tfgame.Procedures
 
 
             // cap at 0 to 100 points
-            if (info.TakeoverAmount >= 100 && info.CovenantId != -1)
-            {
-                info.TakeoverAmount = 100;
-            }
-            else if (info.TakeoverAmount <= 0)
+           if (info.TakeoverAmount <= 0)
             {
                 info.CovenantId = -1;
                 info.TakeoverAmount = 0;

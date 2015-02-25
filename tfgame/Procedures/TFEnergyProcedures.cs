@@ -312,6 +312,7 @@ namespace tfgame.Procedures
 
             // check and see if the target's health is low enough to be eligible for the TF
             Player target = playerRepo.Players.FirstOrDefault(p => p.Id == victim.Id);
+            Player attacker = playerRepo.Players.FirstOrDefault(p => p.Id == attackerId);
 
             if ((target.Health / target.MaxHealth * 100) < PvPStatics.PercentHealthToAllowFullMobilityFormTF)
             {
@@ -363,6 +364,10 @@ namespace tfgame.Procedures
                          StatsProcedures.AddStat(target.MembershipId, StatsProcedures.Stat__TimesAnimateTFed, 1)
                      ).Start();
 
+                    new Thread(() =>
+                         StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__TimesAnimateTFing, 1)
+                     ).Start();
+
                 }
                 #endregion
 
@@ -384,6 +389,17 @@ namespace tfgame.Procedures
                              StatsProcedures.AddStat(target.MembershipId, StatsProcedures.Stat__TimesInanimateTFed, 1)
                         ).Start();
 
+                        new Thread(() =>
+                            StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__TimesInanimateTFing, 1)
+                        ).Start();
+
+                        if (target.MembershipId == -2)
+                        {
+                            new Thread(() =>
+                                StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__PsychopathsDefeated, 1)
+                            ).Start();
+                        }
+
                     }
                     else if (targetForm.MobilityType == "animal")
                     {
@@ -392,6 +408,19 @@ namespace tfgame.Procedures
                         new Thread(() =>
                              StatsProcedures.AddStat(target.MembershipId, StatsProcedures.Stat__TimesAnimalTFed, 1)
                         ).Start();
+
+
+                        new Thread(() =>
+                             StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__TimesAnimalTFing, 1)
+                        ).Start();
+
+                        if (target.MembershipId == -2)
+                        {
+                            new Thread(() =>
+                                StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__PsychopathsDefeated, 1)
+                            ).Start();
+                        }
+
 
                     }
                    
@@ -402,7 +431,10 @@ namespace tfgame.Procedures
                     playerRepo.SavePlayer(target);
 
                     // extra log stuff for turning into item
-                    Player attacker = playerRepo.Players.FirstOrDefault(p => p.Id == attackerId);
+                    
+
+
+
                     LogBox extra = ItemProcedures.PlayerBecomesItem(target, targetForm, attacker);
                     output.AttackerLog += extra.AttackerLog;
                     output.VictimLog += extra.VictimLog;
@@ -469,7 +501,7 @@ namespace tfgame.Procedures
                 #region mind control
                 else if (targetForm.MobilityType == "mindcontrol" && target.Health <= 0)
                 {
-                    Player attacker = playerRepo.Players.FirstOrDefault(p => p.Id == attackerId);
+                    //Player attacker = playerRepo.Players.FirstOrDefault(p => p.Id == attackerId);
                     MindControlProcedures.AddMindControl(attacker, victim, targetForm.dbName);
 
                     output.LocationLog = "<br><b>" + target.GetFullName() + " was partially mind controlled by " + attacker.GetFullName() + " here.</b>";

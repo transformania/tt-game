@@ -38,10 +38,29 @@
     <p>Times cleansed:  @Model.Where(a => a.AchievementType == StatsProcedures.Stat__TimesCleansed).Sum(x => x.Amount)</p>
     <p>Arpeyjis donated to covenant:  @Model.Where(a => a.AchievementType == StatsProcedures.Stat__CovenantDonationTotal).Sum(x => x.Amount)</p>
     <p>Arpeyjis received from covenant:  @Model.Where(a => a.AchievementType == StatsProcedures.Stat__CovenantGiftsReceived).Sum(x => x.Amount)</p>
+
     <p>Times transformed into an animate form:  @Model.Where(a => a.AchievementType == StatsProcedures.Stat__TimesAnimateTFed).Sum(x => x.Amount)</p>
     <p>Times transformed into an inanimate form:  @Model.Where(a => a.AchievementType == StatsProcedures.Stat__TimesInanimateTFed).Sum(x => x.Amount)</p>
-    <p>Times transformed into an pet form:  @Model.Where(a => a.AchievementType == StatsProcedures.Stat__TimesAnimalTFed).Sum(x => x.Amount)</p>
+    <p>Times transformed into a pet form:  @Model.Where(a => a.AchievementType == StatsProcedures.Stat__TimesAnimalTFed).Sum(x => x.Amount)</p>
+
+    <p>Targets transformed into an animate form:  @Model.Where(a => a.AchievementType == StatsProcedures.Stat__TimesAnimateTFing).Sum(x => x.Amount)</p>
+    <p>Targets transformed into an inanimate form:  @Model.Where(a => a.AchievementType == StatsProcedures.Stat__TimesInanimateTFing).Sum(x => x.Amount)</p>
+    <p>Targets transformed into a pet form:  @Model.Where(a => a.AchievementType == StatsProcedures.Stat__TimesAnimalTFing).Sum(x => x.Amount)</p>
+
+    <p>Psychopathic Spellslingers Defeated:  @Model.Where(a => a.AchievementType == StatsProcedures.Stat__PsychopathsDefeated).Sum(x => x.Amount)</p>
+
+
     <p>Scrolls of Teleportation used:  @Model.Where(a => a.AchievementType == StatsProcedures.Stat__TimesTeleported_Scroll).Sum(x => x.Amount)</p>
     <p>Times played with Jewdewfae:  @Model.Where(a => a.AchievementType == StatsProcedures.Stat__JewdewfaeEncountersCompleted).Sum(x => x.Amount)</p>
     <p>Tomes read:  @Model.Where(a => a.AchievementType == StatsProcedures.Stat__LoreBooksRead).Sum(x => x.Amount)</p>
+
+    <p>Inanimate XP gained:  @Model.Where(a => a.AchievementType == StatsProcedures.Stat__InanimateXPEarned).Sum(x => x.Amount)</p>
+    <p>Animal/Pet XP gained:  @Model.Where(a => a.AchievementType == StatsProcedures.Stat__PetXPEarned).Sum(x => x.Amount)</p>
+
+    <p>Arpeyjis spent buying from Lindella:  @Model.Where(a => a.AchievementType == StatsProcedures.Stat__LindellaCostsAmount).Sum(x => x.Amount)</p>
+    <p>Arpeyjis earned from selling to Lindella:  @Model.Where(a => a.AchievementType == StatsProcedures.Stat__LindellaProfitsAmount).Sum(x => x.Amount)</p>
+
+    <p>Arpeyjis spent buying from Wüffie:  @Model.Where(a => a.AchievementType == StatsProcedures.Stat__WuffieCostsAmount).Sum(x => x.Amount)</p>
+    <p>Arpeyjis earned from selling to Wüffie:  @Model.Where(a => a.AchievementType == StatsProcedures.Stat__WuffieProfitsAmount).Sum(x => x.Amount)</p>
+
 </div>

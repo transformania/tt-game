@@ -1670,6 +1670,8 @@
     <Content Include="Views\PvP\partial_ShopkeeperItem.cshtml" />
     <Content Include="Views\Settings\PlayerStats.cshtml" />
     <Content Include="Views\Settings\PlayerStatsLeaders.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_16.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\XP\Alpha_16.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

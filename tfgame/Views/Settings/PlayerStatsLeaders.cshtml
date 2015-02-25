@@ -25,100 +25,178 @@
 
 
 <div class="containerInner">
-   
+
     <h1>Statistics Leaders</h1>
 
     @{
         PlayerAchievementViewModel ach = Model.FirstOrDefault(a => a.Achivement.AchievementType == StatsProcedures.Stat__TimesMoved);
         if (ach != null)
         {
-             <p>Times moved: @ach.Player.GetFullName() (@ach.Achivement.Amount)</p>
+            <p>Times moved: @ach.Player.GetFullName() (@ach.Achivement.Amount)</p>
         }
-
+        
         ach = Model.FirstOrDefault(a => a.Achivement.AchievementType == StatsProcedures.Stat__SearchCount);
         if (ach != null)
         {
-             <p>Times searched: @ach.Player.GetFullName() (@ach.Achivement.Amount)</p>
+            <p>Times searched: @ach.Player.GetFullName() (@ach.Achivement.Amount)</p>
         }
-
 
         ach = Model.FirstOrDefault(a => a.Achivement.AchievementType == StatsProcedures.Stat__SpellsCast);
         if (ach != null)
         {
-             <p>Spells cast: @ach.Player.GetFullName() (@ach.Achivement.Amount)</p>
+            <p>Spells cast: @ach.Player.GetFullName() (@ach.Achivement.Amount)</p>
         }
 
         ach = Model.FirstOrDefault(a => a.Achivement.AchievementType == StatsProcedures.Stat__TimesEnchanted);
         if (ach != null)
         {
-             <p>Enchantments cast: @ach.Player.GetFullName() (@ach.Achivement.Amount)</p>
+            <p>Enchantments cast: @ach.Player.GetFullName() (@ach.Achivement.Amount)</p>
         }
 
         ach = Model.FirstOrDefault(a => a.Achivement.AchievementType == StatsProcedures.Stat__TimesMeditated);
         if (ach != null)
         {
-             <p>Times meditated: @ach.Player.GetFullName() (@ach.Achivement.Amount)</p>
+            <p>Times meditated: @ach.Player.GetFullName() (@ach.Achivement.Amount)</p>
         }
 
         ach = Model.FirstOrDefault(a => a.Achivement.AchievementType == StatsProcedures.Stat__TimesCleansed);
         if (ach != null)
         {
-             <p>Times cleansed: @ach.Player.GetFullName() (@ach.Achivement.Amount)</p>
+            <p>Times cleansed: @ach.Player.GetFullName() (@ach.Achivement.Amount)</p>
         }
 
         ach = Model.FirstOrDefault(a => a.Achivement.AchievementType == StatsProcedures.Stat__CovenantDonationTotal);
         if (ach != null)
         {
-             <p>Arpeyjis donated to covenant: @ach.Player.GetFullName() (@ach.Achivement.Amount)</p>
+            <p>Arpeyjis donated to covenant: @ach.Player.GetFullName() (@ach.Achivement.Amount)</p>
+        }
+        
+        
+           ach = Model.FirstOrDefault(a => a.Achivement.AchievementType == StatsProcedures.Stat__CovenantGiftsReceived);
+        if (ach != null)
+        {
+            <p>Arpeyjis received from covenant: @ach.Player.GetFullName() (@ach.Achivement.Amount)</p>
         }
 
 
         ach = Model.FirstOrDefault(a => a.Achivement.AchievementType == StatsProcedures.Stat__CovenantGiftsReceived);
         if (ach != null)
         {
-             <p>Arpeyjis received from covenant: @ach.Player.GetFullName() (@ach.Achivement.Amount)</p>
+            <p>Arpeyjis received from covenant: @ach.Player.GetFullName() (@ach.Achivement.Amount)</p>
         }
 
         ach = Model.FirstOrDefault(a => a.Achivement.AchievementType == StatsProcedures.Stat__TimesAnimateTFed);
         if (ach != null)
         {
-             <p>Times transformed into an animate form: @ach.Player.GetFullName() (@ach.Achivement.Amount)</p>
+            <p>Times transformed into an animate form: @ach.Player.GetFullName() (@ach.Achivement.Amount)</p>
         }
 
         ach = Model.FirstOrDefault(a => a.Achivement.AchievementType == StatsProcedures.Stat__TimesInanimateTFed);
         if (ach != null)
         {
-             <p>Times transformed into an inanimate form: @ach.Player.GetFullName() (@ach.Achivement.Amount)</p>
+            <p>Times transformed into an inanimate form: @ach.Player.GetFullName() (@ach.Achivement.Amount)</p>
         }
 
 
-        ach = Model.FirstOrDefault(a => a.Achivement.AchievementType == StatsProcedures.Stat__TimesAnimalTFed);
+         ach = Model.FirstOrDefault(a => a.Achivement.AchievementType == StatsProcedures.Stat__TimesAnimalTFed);
         if (ach != null)
         {
-             <p>Times transformed into an animal/pet form: @ach.Player.GetFullName() (@ach.Achivement.Amount)</p>
+            <p>Times transformed into an animal/pet form: @ach.Player.GetFullName() (@ach.Achivement.Amount)</p>
         }
+
+
+        ach = Model.FirstOrDefault(a => a.Achivement.AchievementType == StatsProcedures.Stat__TimesAnimateTFing);
+        if (ach != null)
+        {
+            <p>Targets transformed into an animate form: @ach.Player.GetFullName() (@ach.Achivement.Amount)</p>
+        }
+
+        ach = Model.FirstOrDefault(a => a.Achivement.AchievementType == StatsProcedures.Stat__TimesInanimateTFing);
+        if (ach != null)
+        {
+            <p>Targets transformed into an inanimate form: @ach.Player.GetFullName() (@ach.Achivement.Amount)</p>
+        }
+
+
+        ach = Model.FirstOrDefault(a => a.Achivement.AchievementType == StatsProcedures.Stat__TimesAnimalTFing);
+        if (ach != null)
+        {
+            <p>Targets transformed into an animal/pet form: @ach.Player.GetFullName() (@ach.Achivement.Amount)</p>
+        }
+        
+        
+        ach = Model.FirstOrDefault(a => a.Achivement.AchievementType == StatsProcedures.Stat__PsychopathsDefeated);
+        if (ach != null)
+        {
+            <p>Psychopathic Spellslingers Defeated: @ach.Player.GetFullName() (@ach.Achivement.Amount)</p>
+        }
+
+     
+
+
+
+
 
         ach = Model.FirstOrDefault(a => a.Achivement.AchievementType == StatsProcedures.Stat__TimesTeleported_Scroll);
         if (ach != null)
         {
-             <p>Scrolls of Teleportation used: @ach.Player.GetFullName() (@ach.Achivement.Amount)</p>
+            <p>Scrolls of Teleportation used: @ach.Player.GetFullName() (@ach.Achivement.Amount)</p>
         }
 
 
         ach = Model.FirstOrDefault(a => a.Achivement.AchievementType == StatsProcedures.Stat__JewdewfaeEncountersCompleted);
         if (ach != null)
         {
-             <p>Times played with Jewdewfae: @ach.Player.GetFullName() (@ach.Achivement.Amount)</p>
+            <p>Times played with Jewdewfae: @ach.Player.GetFullName() (@ach.Achivement.Amount)</p>
         }
 
         ach = Model.FirstOrDefault(a => a.Achivement.AchievementType == StatsProcedures.Stat__LoreBooksRead);
         if (ach != null)
         {
-             <p>Tomes read: @ach.Player.GetFullName() (@ach.Achivement.Amount)</p>
+            <p>Tomes read: @ach.Player.GetFullName() (@ach.Achivement.Amount)</p>
         }
         
         
+         ach = Model.FirstOrDefault(a => a.Achivement.AchievementType == StatsProcedures.Stat__InanimateXPEarned);
+        if (ach != null)
+        {
+            <p>Inanimate XP: @ach.Player.GetFullName() (@ach.Achivement.Amount)</p>
+        }
         
+        
+         ach = Model.FirstOrDefault(a => a.Achivement.AchievementType == StatsProcedures.Stat__PetXPEarned);
+        if (ach != null)
+        {
+            <p>Pet/Animal XP: @ach.Player.GetFullName() (@ach.Achivement.Amount)</p>
+        }
+
+        ach = Model.FirstOrDefault(a => a.Achivement.AchievementType == StatsProcedures.Stat__LindellaCostsAmount);
+        if (ach != null)
+        {
+            <p>Arpeyjis spent buying from Lindella: @ach.Player.GetFullName() (@ach.Achivement.Amount)</p>
+        }
+        
+         ach = Model.FirstOrDefault(a => a.Achivement.AchievementType == StatsProcedures.Stat__LindellaProfitsAmount);
+        if (ach != null)
+        {
+            <p>Arpeyjis earned from selling to Lindella: @ach.Player.GetFullName() (@ach.Achivement.Amount)</p>
+        }
+        
+        
+          ach = Model.FirstOrDefault(a => a.Achivement.AchievementType == StatsProcedures.Stat__WuffieCostsAmount);
+        if (ach != null)
+        {
+            <p>Arpeyjis spent buying from Wüffie: @ach.Player.GetFullName() (@ach.Achivement.Amount)</p>
+        }
+        
+         ach = Model.FirstOrDefault(a => a.Achivement.AchievementType == StatsProcedures.Stat__WuffieProfitsAmount);
+        if (ach != null)
+        {
+            <p>Arpeyjis earned from selling to Wüffie: @ach.Player.GetFullName() (@ach.Achivement.Amount)</p>
+        }
+
+
+
     }
 
 </div>

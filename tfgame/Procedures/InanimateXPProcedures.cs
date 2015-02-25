@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using tfgame.dbModels.Abstract;
 using tfgame.dbModels.Concrete;
@@ -73,6 +74,21 @@ namespace tfgame.Procedures
                     LastActionTimestamp = DateTime.UtcNow,
                     LastActionTurnstamp = currentGameTurn-1,
                 };
+
+                if (me.Mobility == "inanimate")
+                {
+                    new Thread(() =>
+                        StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__InanimateXPEarned, (float)xpGain)
+                    ).Start();
+                }
+                else if (me.Mobility == "animal")
+                {
+                    new Thread(() =>
+                        StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__PetXPEarned, (float)xpGain)
+                    ).Start();
+                }
+               
+
             }
             else
             {
@@ -93,6 +109,19 @@ namespace tfgame.Procedures
                 
 
                 xpGain += Convert.ToDecimal(timeBonus) * InanimateXPStatics.XPGainPerInanimateAction;
+
+                if (me.Mobility == "inanimate")
+                {
+                    new Thread(() =>
+                        StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__InanimateXPEarned, (float)xpGain)
+                    ).Start();
+                }
+                else if (me.Mobility == "animal")
+                {
+                    new Thread(() =>
+                        StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__PetXPEarned, (float)xpGain)
+                    ).Start();
+                }
 
                 xp.Amount += xpGain;
                 xp.TimesStruggled-= 2*Convert.ToInt32(timeBonus);

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using tfgame.dbModels.Models;
@@ -187,6 +188,11 @@ namespace tfgame.Controllers
 
             // checks have passed.  Transfer the item
             PlayerProcedures.GiveMoneyToPlayer(me, -cost);
+
+            new Thread(() =>
+                 StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__LindellaCostsAmount, (float)cost)
+             ).Start();
+
             ItemProcedures.GiveItemToPlayer_Nocheck(purchased.dbItem.Id, me.Id);
             SkillProcedures.UpdateItemSpecificSkillsToPlayer(me.Id);
 
@@ -283,6 +289,10 @@ namespace tfgame.Controllers
             ItemProcedures.GiveItemToPlayer_Nocheck(itemBeingSold.dbItem.Id, merchant.Id);
             decimal cost = ItemProcedures.GetCostOfItem(itemBeingSold, "sell");
             PlayerProcedures.GiveMoneyToPlayer(me, cost);
+
+            new Thread(() =>
+                 StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__LindellaProfitsAmount, (float)cost)
+             ).Start();
 
 
             TempData["Result"] = "You sold your " + itemBeingSold.Item.FriendlyName + " to Lindella for " + (int)cost + " Arpeyjis.";
@@ -401,6 +411,12 @@ namespace tfgame.Controllers
 
             // checks have passed.  Transfer the item
             PlayerProcedures.GiveMoneyToPlayer(me, -cost);
+
+
+            new Thread(() =>
+                 StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__WuffieCostsAmount, (float)cost)
+             ).Start();
+
             ItemProcedures.GiveItemToPlayer_Nocheck(purchased.dbItem.Id, me.Id);
             SkillProcedures.UpdateItemSpecificSkillsToPlayer(me.Id);
 
@@ -505,6 +521,9 @@ namespace tfgame.Controllers
             decimal cost = ItemProcedures.GetCostOfItem(itemBeingSold, "sell");
             PlayerProcedures.GiveMoneyToPlayer(me, cost);
 
+            new Thread(() =>
+                 StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__WuffieProfitsAmount, (float)cost)
+             ).Start();
 
             TempData["Result"] = "You sold your " + itemBeingSold.Item.FriendlyName + " to Wüffie for " + (int)cost + " Arpeyjis.";
             return RedirectToAction("TradeWithPetMerchant");

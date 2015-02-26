@@ -475,7 +475,7 @@ namespace tfgame.Procedures
 
         public static int GetCovenantFurnitureLimit(Covenant covenant)
         {
-            return covenant.Level + 4;
+            return covenant.Level + 2;
         }
 
         public static int GetCurrentFurnitureOwnedByCovenant(Covenant covenant)
@@ -531,7 +531,7 @@ namespace tfgame.Procedures
         }
 
 
-        public static string AttackLocation(Player player)
+        public static string AttackLocation(Player player, BuffBox buffs)
         {
             ILocationInfoRepository repo = new EFLocationInfoRepository();
             ICovenantRepository covRepo = new EFCovenantRepository();
@@ -547,13 +547,15 @@ namespace tfgame.Procedures
                 };
             }
 
-            if (info.TakeoverAmount == 100 && info.CovenantId == player.Covenant)
+            if (info.TakeoverAmount >= 100 && info.CovenantId == player.Covenant)
             {
                 output = "You cast an enchantment here, but it did no effect as this location's enchantment is already at its highest possible level, 100.";
                 return output;
             }
 
             float takeoverAmount = (float)player.Level / 2.0F;
+
+            takeoverAmount += buffs.EnchantmentBoost;
 
             decimal XPGain = Convert.ToDecimal(takeoverAmount);
 
@@ -637,9 +639,13 @@ namespace tfgame.Procedures
             }
 
 
+            if (info.TakeoverAmount > 100)
+            {
+                info.TakeoverAmount = 100;
+            }
 
             // cap at 0 to 100 points
-           if (info.TakeoverAmount <= 0)
+           else if (info.TakeoverAmount <= 0)
             {
                 info.CovenantId = -1;
                 info.TakeoverAmount = 0;

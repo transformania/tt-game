@@ -44,8 +44,8 @@ namespace tfgame.Procedures
         public const string Stat__LindellaCostsAmount = "lindella_costs_amount";
         public const string Stat__LindellaProfitsAmount = "lindella_profit_amount";
 
-        public const string Stat__WuffieCostsAmount = "lindella_costs_amount";
-        public const string Stat__WuffieProfitsAmount = "lindella_profit_amount";
+        public const string Stat__WuffieCostsAmount = "wuffie_costs_amount";
+        public const string Stat__WuffieProfitsAmount = "wuffie_profit_amount";
 
            //new Thread(() =>
            //     StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__TimesMoved, 1)

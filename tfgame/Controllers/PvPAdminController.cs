@@ -1116,7 +1116,7 @@ namespace tfgame.Controllers
         {
             // assert only admin can view this
             // assert only admins can view this
-            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false && User.IsInRole(PvPStatics.Permissions_Previewer) == false)
             {
                 return View("Play", "PvP");
             }
@@ -1127,6 +1127,8 @@ namespace tfgame.Controllers
             return View(output);
 
         }
+
+        
 
         public ActionResult ApproveContribution(int id)
         {
@@ -1142,6 +1144,14 @@ namespace tfgame.Controllers
             Contribution OldCopy = contributionRepo.Contributions.FirstOrDefault(c => c.Id == id);
 
             Contribution ProofreadCopy = contributionRepo.Contributions.FirstOrDefault(c => c.ProofreadingCopy == true && c.Skill_FriendlyName == OldCopy.Skill_FriendlyName);
+
+
+            Player owner = PlayerProcedures.GetPlayerFromMembership(OldCopy.OwnerMembershipId);
+
+            if (owner != null)
+            {
+                PlayerLogProcedures.AddPlayerLog(owner.Id, "<b>A contribution you have submitted has been approved.</b>", true);
+            }
 
             if (ProofreadCopy != null)
             {
@@ -1278,6 +1288,32 @@ namespace tfgame.Controllers
             ViewBag.Message = "Success.";
             return RedirectToAction("ApproveContributionList");
 
+        }
+
+        public ActionResult RejectContribution(int id)
+        {
+            // assert only admin can view this
+            // assert only admins can view this
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            {
+                return View("Play", "PvP");
+            }
+
+            IContributionRepository contRepo = new EFContributionRepository();
+
+            Contribution contribution = contRepo.Contributions.FirstOrDefault(i => i.Id == id);
+            contribution.IsReadyForReview = false;
+            contRepo.SaveContribution(contribution);
+
+            Player owner = PlayerProcedures.GetPlayerFromMembership(contribution.OwnerMembershipId);
+
+            if (owner != null)
+            {
+                PlayerLogProcedures.AddPlayerLog(owner.Id, "<b>A contribution you have submitted has been rejected.  You should have received or will soon a message explaining why or what else needs to be done before this contribution can be accepted.  If you do not, please message Judoo on the forums.</b>", true);
+            }
+
+
+            return RedirectToAction("ApproveContributionList");
         }
 
         public ActionResult SpawnLindella()

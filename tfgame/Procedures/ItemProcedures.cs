@@ -577,7 +577,29 @@ namespace tfgame.Procedures
                 if (eff.dbEffect.dbName == "perk_sharp_eye")
                 {
                     output.HasSearchDiscount = true;
-                    break;
+                    //break;
+                }
+                else if (eff.dbEffect.dbName == "perk_apprentice_enchanter_1_lvl")
+                {
+                    if (output.EnchantmentBoost < 1)
+                    {
+                        output.EnchantmentBoost = 1;
+                    }
+                    
+                }
+                else if (eff.dbEffect.dbName == "perk_apprentice_enchanter_2_lvl")
+                {
+                    if (output.EnchantmentBoost < 2)
+                    {
+                        output.EnchantmentBoost = 2;
+                    }
+                }
+                else if (eff.dbEffect.dbName == "perk_apprentice_enchanter_3_lvl")
+                {
+                    if (output.EnchantmentBoost < 3)
+                    {
+                        output.EnchantmentBoost = 3;
+                    }
                 }
             }
 

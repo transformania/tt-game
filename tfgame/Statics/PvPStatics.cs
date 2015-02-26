@@ -82,6 +82,7 @@ namespace tfgame.Statics
         public const string Permissions_Proofreader = "proofreader";
         public const string Permissions_Artist = "artist";
         public const string Permissions_JSON = "json";
+        public const string Permissions_Previewer = "previewer";
 
 
         public static int[] XP__LevelupRequirementByLevel = {

@@ -848,7 +848,7 @@ namespace tfgame.Controllers
                  return RedirectToAction("MyCovenant");
              }
 
-             FurnitureProcedures.MoveExpiredFurnitureBackToMarket();
+           //  FurnitureProcedures.MoveExpiredFurnitureBackToMarket();
              IEnumerable<FurnitureViewModel> output = FurnitureProcedures.GetAvailableFurnitureViewModels();
 
              Covenant myCov = CovenantProcedures.GetDbCovenant(me.Covenant);
@@ -943,7 +943,7 @@ namespace tfgame.Controllers
                 return RedirectToAction("MyCovenant");
             }
 
-            FurnitureProcedures.MoveExpiredFurnitureBackToMarket();
+           // FurnitureProcedures.MoveExpiredFurnitureBackToMarket();
             IEnumerable<FurnitureViewModel> output = FurnitureProcedures.GetCovenantFurnitureViewModels(me.Covenant);
             ViewBag.MyLocation = LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName).Name;
 
@@ -1007,12 +1007,12 @@ namespace tfgame.Controllers
             }
 
             // assert that the contract has not expired nor has not begun yet
-            int turnNumber = PvPWorldStatProcedures.GetWorldTurnNumber();
-            if (furniture.ContractStartTurn > turnNumber || furniture.ContractEndTurn < turnNumber)
-            {
-                TempData["Error"] = "This contract for this piece of furniture has either expired or not begun yet.";
-                return RedirectToAction("MyCovenant");
-            }
+            //int turnNumber = PvPWorldStatProcedures.GetWorldTurnNumber();
+            //if (furniture.ContractStartTurn > turnNumber || furniture.ContractEndTurn < turnNumber)
+            //{
+            //    TempData["Error"] = "This contract for this piece of furniture has either expired or not begun yet.";
+            //    return RedirectToAction("MyCovenant");
+            //}
 
             // assert that the item is not on recharge
             if (FurnitureProcedures.GetMinutesUntilReuse(furniture) > 0)

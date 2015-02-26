@@ -79,12 +79,6 @@
         }
 
 
-        ach = Model.FirstOrDefault(a => a.Achivement.AchievementType == StatsProcedures.Stat__CovenantGiftsReceived);
-        if (ach != null)
-        {
-            <p>Arpeyjis received from covenant: @ach.Player.GetFullName() (@ach.Achivement.Amount)</p>
-        }
-
         ach = Model.FirstOrDefault(a => a.Achivement.AchievementType == StatsProcedures.Stat__TimesAnimateTFed);
         if (ach != null)
         {

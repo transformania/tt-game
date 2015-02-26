@@ -86,6 +86,7 @@ namespace tfgame.ViewModels
         public decimal SpellTFEnergyDamageResistance() { return FromItems_SpellTFEnergyDamageResistance + FromForm_SpellTFEnergyDamageResistance + FromEffects_SpellTFEnergyDamageResistance; }
 
         public bool HasSearchDiscount;
+        public int EnchantmentBoost;
 
         // there is a special consideration for extra inventory space so -1.2 from an item doesn't get rounded down to -2 later on
         public decimal ExtraInventorySpace() {

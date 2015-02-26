@@ -41,6 +41,9 @@
         <p>
             Click below to load one of your existing contributions (save first before navigating away if you need to!):<br />
             @{
+                
+                if (ViewBag.DisableLinks == null) { 
+                
                 foreach (Contribution contribution in ViewBag.OtherContributions)
                 {
 
@@ -69,6 +72,7 @@
 
                     <br />
                 }
+            }
             }
             <br />
             @{
@@ -241,7 +245,11 @@
                 <h1 class="good">THIS IS A PROOFREADING COPY.</h1>
             }
 
-            <input type="submit" value="Save" />
+            if (ViewBag.DisableLinks == null)
+            {
+                <input type="submit" value="Save" />
+            }
+            
             <h2>Form</h2>
             <div class="form__panel group" style="background-color: lightblue;">
                 <div class="form__panel">
@@ -469,7 +477,10 @@
                     @Html.TextAreaFor(m => m.Form_TFMessage_Completed_3rd_F, new { @placeholder = "Your spell hits your target.  She gasps as her body begins to change... (your target is female)" })
                 </div>
             </div>
-            <input type="submit" value="Save" />
+              if (ViewBag.DisableLinks == null)
+            {
+                <input type="submit" value="Save" />
+            }
 
             <h2>Item or Pet Created by a Completed Transformation</h2>
             <div class="form__panel group" id="itemCreatedPanel" style="background-color: #FFE0A3;">
@@ -599,7 +610,10 @@
             }
 
             <br /><br />
-            <input type="submit" value="Save" />
+              if (ViewBag.DisableLinks == null)
+            {
+                <input type="submit" value="Save" />
+            }
 
             if (TrustStatics.PlayerIsProofreader(WebSecurity.CurrentUserId) == true)
             {

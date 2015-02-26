@@ -11,6 +11,7 @@
     <th>Form Name</th>
     <th>Item Name</th>
     <th>Approve?</th>
+    <th>Reject?</th>
     <th>Snoop</th>
     </th>
 
@@ -24,8 +25,25 @@
                     <td>@c.Skill_FriendlyName</td>
                     <td>@c.Form_FriendlyName</td>
                     <td>@c.Item_FriendlyName</td>
+
+
+
+                    @{
+                if (User.IsInRole(tfgame.Statics.PvPStatics.Permissions_Admin) == true)
+                {
                     <td>@Html.ActionLink("Approve", "ApproveContribution", "PvPAdmin", new { id = c.Id }, null)</td>
-                    <td>@Html.ActionLink("Snoop", "Contribute", "PvP", new { Id = c.Id }, null)</td>
+                        <td>@Html.ActionLink("Reject", "RejectContribution", "PvPAdmin", new { id = c.Id }, null)</td>
+                }
+                else
+                {
+                    <td></td>
+                        <td></td>
+                }
+                    }
+
+
+
+                    <td>@Html.ActionLink("Snoop", "ContributePreview", "PvP", new { Id = c.Id }, null)</td>
                 </tr>
             }
         }

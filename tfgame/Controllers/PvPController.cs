@@ -1023,7 +1023,9 @@ namespace tfgame.Controllers
                  return RedirectToAction("Play");
              }
 
-            string output = CovenantProcedures.AttackLocation(me);
+             BuffBox myBuffs = ItemProcedures.GetPlayerBuffs(me);
+
+             string output = CovenantProcedures.AttackLocation(me, myBuffs);
 
              PlayerProcedures.AddAttackCount(me);
              PlayerProcedures.ChangePlayerActionMana(3, 0, -10, me.Id);
@@ -2214,6 +2216,29 @@ namespace tfgame.Controllers
 
             return View(contribution);
         }
+
+         [Authorize]
+         public ActionResult ContributePreview(int Id)
+         {
+
+             // assert only previewers can view this
+             if (User.IsInRole(PvPStatics.Permissions_Previewer) == false)
+             {
+                 return View("Play", "PvP");
+             }
+
+             IContributionRepository contributionRepo = new EFContributionRepository();
+             Contribution contribution = contributionRepo.Contributions.FirstOrDefault(c => c.Id == Id && c.IsReadyForReview == true && c.ProofreadingCopy == false);
+             ViewBag.DisableLinks = true;
+
+             BalanceBox bbox = new BalanceBox();
+             bbox.LoadBalanceBox(contribution);
+             decimal balance = bbox.GetBalance();
+             ViewBag.BalanceScore = balance;
+
+             return View("Contribute", contribution);
+         }
+
 
         [Authorize]
         public ActionResult ContributeBalanceCalculatorEffect(int id)

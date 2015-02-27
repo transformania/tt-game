@@ -558,8 +558,8 @@ namespace tfgame.Controllers
                 output = output.Where(s => s.MobilityType == "full");
             }
 
-            // target is in superprotection and not a friend; no spells work
-            else if (target.GameMode == 0)
+            // attack or the target is in superprotection and not a friend or bot; no spells work
+            else if (target.GameMode == 0 || (me.GameMode == 0 && target.MembershipId > 0))
             {
                 output = output.Where(s => s.MobilityType == "NONEXISTANT");
             }
@@ -862,6 +862,13 @@ namespace tfgame.Controllers
                     else if ((me.GameMode == 2 && targeted.GameMode < 2)  || (me.GameMode < 2 && targeted.GameMode == 2) )
                     {
                         TempData["Error"] = "You must be in the same Protection/non-Protection mode as your target in order to cast spells at them.";
+                        return RedirectToAction("Play");
+                    }
+
+                    // no casting spells on non-friend Protection mode players unless the target is a bot
+                    else if (targeted.GameMode == 0 || (me.GameMode == 0 && targeted.MembershipId > 0))
+                    {
+                        TempData["Error"] = "Either you and your target is in SuperProtection mode and are not friends or bots.";
                         return RedirectToAction("Play");
                     }
 

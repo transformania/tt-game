@@ -195,7 +195,7 @@ namespace tfgame.Controllers
 
              ItemProcedures.DeleteItem(book.dbItem.Id);
              ItemProcedures.AddBookReading(me, book.dbItem.dbName);
-             PlayerProcedures.GiveXP(me.Id, 50);
+             PlayerProcedures.GiveXP(me.Id, 35);
 
              new Thread(() =>
                   StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__LoreBooksRead, 1)

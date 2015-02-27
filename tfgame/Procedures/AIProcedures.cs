@@ -60,8 +60,8 @@ namespace tfgame.Procedures
         private const int LindellaItem_CurseRemover_Count = 6;
 
 
-        private const string LindellaItem_XpBook1_DbName = "item_consumable_curselifter";
-        private const int LindellaItem_XpBook1_Count = 25;
+        private const string LindellaItem_XpBook1_DbName = "item_consumable_tome-founding";
+        private const int LindellaItem_XpBook1_Count = 5;
 
 
 

@@ -134,7 +134,7 @@ namespace tfgame.Procedures.BossProcedures
             }
 
             // Var1 will keep track how how many interactions Jewdewfae has had.  Award a bit less XP based on how many people she has played with down to 15 at lowest
-            decimal xpGain = 50 - directive.Var1 * 2;
+            decimal xpGain = 75 - directive.Var1 * 3;
 
             if (xpGain < 15) {
                 xpGain = 15;

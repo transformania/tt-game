@@ -14,7 +14,7 @@ namespace tfgame.Statics
 
         public const int RoundDuration = 2500;
         public const int RoundDuration_LastPvPEntryTurn = 1800;
-        public const bool ChaosMode = true;
+        public const bool ChaosMode = false;
 
         public static String GenderMale = "male";
         public static String GenderFemale = "female";
@@ -238,7 +238,7 @@ namespace tfgame.Statics
     {
         public static decimal XPGainPerInanimateAction = 5M;
 
-        public static decimal[] XP__LevelupRequirements = new decimal[15] { 0, 100, 150, 220, 310, 420, 550, 700, 870, 1060, 1270, 1500, 1750, 2020, 2310 };
+        public static decimal[] XP__LevelupRequirements = new decimal[22] { 0, 100, 150, 220, 310, 420, 550, 700, 870, 1060, 1270, 1500, 1750, 2020, 2310, 2620, 2950, 3300, 3670, 4060, 4470, 4900 }; // +450
 
     }
 

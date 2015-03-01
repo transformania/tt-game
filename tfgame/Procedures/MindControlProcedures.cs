@@ -20,7 +20,7 @@ namespace tfgame.Procedures
             Player dbAttacker = playerRepo.Players.FirstOrDefault(p => p.Id == attacker.Id);
             Player dbVictim = playerRepo.Players.FirstOrDefault(p => p.Id == victim.Id);
 
-            MindControl mc = mcRepo.MindControls.FirstOrDefault(m => m.VictimId == victim.Id && m.MasterId == attacker.Id);
+            MindControl mc = mcRepo.MindControls.FirstOrDefault(m => m.VictimId == victim.Id && m.MasterId == attacker.Id && m.Type == type);
 
             if (mc == null)
             {
@@ -79,8 +79,12 @@ namespace tfgame.Procedures
 
         public static string GetMCFriendlyName(string input)
         {
-            if (input == "form_(MC-Movement)_Judoo") {
+            if (input == MindControlStatics.MindControl__Movement) {
                 return "Forced March";
+            }
+            else if (input == MindControlStatics.MindControl__Strip)
+            {
+                return "Take a Load Off!";
             }
             else
             {
@@ -88,13 +92,13 @@ namespace tfgame.Procedures
             }
         }
 
-        public static MindControl GetMindControlBetweenPlayers(Player master, Player victim)
+        public static IEnumerable<MindControl> GetMindControlsBetweenPlayers(Player master, Player victim)
         {
             IMindControlRepository mcRepo = new EFMindControlRepository();
-            return mcRepo.MindControls.FirstOrDefault(m => m.MasterId == master.Id && m.VictimId == victim.Id);
+            return mcRepo.MindControls.Where(m => m.MasterId == master.Id && m.VictimId == victim.Id);
         }
 
-        public static ErrorBox AssertBasicMindControlConditions(Player master, Player victim)
+        public static ErrorBox AssertBasicMindControlConditions(Player master, Player victim, string mcType)
         {
             ErrorBox output = new ErrorBox();
             output.HasError = true;
@@ -123,7 +127,10 @@ namespace tfgame.Procedures
             }
 
             // assert that there is indeed a mind control between these two players
-            MindControl mc = MindControlProcedures.GetMindControlBetweenPlayers(master, victim);
+            IEnumerable<MindControl> mcs = MindControlProcedures.GetMindControlsBetweenPlayers(master, victim);
+
+            MindControl mc = mcs.FirstOrDefault(m => m.Type == mcType);
+
             if (mc == null)
             {
                 output.Error = "You are not mind controlling this person with this type of mind control.";
@@ -162,6 +169,10 @@ namespace tfgame.Procedures
             if (type == MindControlStatics.MindControl__Movement)
             {
                 return MindControlStatics.MindControl__Movement_Limit;
+            }
+            else if (type == MindControlStatics.MindControl__Strip)
+            {
+                return MindControlStatics.MindControl__Strip_Limit;
             }
 
             return 0;
@@ -205,10 +216,34 @@ namespace tfgame.Procedures
             }
         }
 
-        public static void AddCommandUsedToMindControl(Player master, Player victim)
+        public static bool PlayerIsMindControlledWithType(Player player, IEnumerable<MindControl> controls, string type)
+        {
+            if (controls.Where(p => p.VictimId == player.Id && p.Type == type).Count() > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public static bool PlayerIsMindControlledWithSomeType(Player player, IEnumerable<MindControl> controls)
+        {
+            if (controls.Where(p => p.VictimId == player.Id).Count() > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public static void AddCommandUsedToMindControl(Player master, Player victim, string type)
         {
             IMindControlRepository mcRepo = new EFMindControlRepository();
-            MindControl mc = mcRepo.MindControls.FirstOrDefault(m => m.MasterId == master.Id && m.VictimId == victim.Id);
+            MindControl mc = mcRepo.MindControls.FirstOrDefault(m => m.MasterId == master.Id && m.VictimId == victim.Id && m.Type == type);
             mc.TimesUsedThisTurn++;
             mcRepo.SaveMindControl(mc);
         }

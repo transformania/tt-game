@@ -5,4 +5,8 @@
     {
         @Html.ActionLink("Command Movement","MoveVictim","NPC", new {id=Model.Victim.Player.Id}, null)
     }
+    if (Model.MindControl.Type == tfgame.Statics.MindControlStatics.MindControl__Strip)
+    {
+        @Html.ActionLink("Command Strip","StripVictim","NPC", new {id=Model.Victim.Player.Id}, null)
+    }
 }

@@ -119,7 +119,7 @@ namespace tfgame.Chat
             {
                 if (me.MembershipId > 0)
                 {
-                    string message = "[-[" + me.FirstName + " " + me.LastName + " has joined the room.]-]";
+                    string message = "[-[" + me.GetFullName() + " has joined the room.]-]";
 
                     if (me.MembershipId != 69 && me.MembershipId != 3490)
                     {

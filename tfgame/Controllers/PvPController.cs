@@ -422,13 +422,16 @@ namespace tfgame.Controllers
             // assert that the player is not mind controlled and cannot move on their own
             if (me.MindControlIsActive == true)
             {
-                if (MindControlProcedures.PlayerIsMindControlledWithType(me, MindControlStatics.MindControl__Movement) == true)
+
+                IEnumerable<MindControl> myExistingMCs = MindControlProcedures.GetAllMindControlsWithPlayer(me);
+
+                if (MindControlProcedures.PlayerIsMindControlledWithType(me, myExistingMCs, MindControlStatics.MindControl__Movement) == true)
                 {
                     TempData["Error"] = "You try to move but discover you cannot!";
                     TempData["SubError"] = "Some other mage has partial control of your mind, disabling your ability to move on your own!";
                     return RedirectToAction("Play");
                 }
-                else
+                else if (MindControlProcedures.PlayerIsMindControlledWithSomeType(me, myExistingMCs) == false)
                 {
                     // turn off mind control is the player has no more MC effects on them
                     bool isNowFree = MindControlProcedures.ClearPlayerMindControlFlagIfOn(me);
@@ -1302,9 +1305,27 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play");
             }
 
+            // assert that the player is not mind controlled and cannot pick up anything on their own
+            if (me.MindControlIsActive == true)
+            {
+
+                IEnumerable<MindControl> myExistingMCs = MindControlProcedures.GetAllMindControlsWithPlayer(me);
+
+                if (MindControlProcedures.PlayerIsMindControlledWithType(me, myExistingMCs, MindControlStatics.MindControl__Strip) == true)
+                {
+                    TempData["Error"] = "You try to take it but find you cannot!";
+                    TempData["SubError"] = "Some other mage has partial control of your mind, disabling your ability to pick anything up off the ground or tame any pets!";
+                    return RedirectToAction("Play");
+                }
+                else if (MindControlProcedures.PlayerIsMindControlledWithSomeType(me, myExistingMCs) == false)
+                {
+                    // turn off mind control is the player has no more MC effects on them
+                    bool isNowFree = MindControlProcedures.ClearPlayerMindControlFlagIfOn(me);
+                    me.MindControlIsActive = false;
+                }
+            }
+
             ItemViewModel pickup = ItemProcedures.GetItemViewModel(id);
-
-
 
             //assert that the item is indeed at this location and on the ground
             if (pickup.dbItem.dbLocationName != me.dbLocationName)

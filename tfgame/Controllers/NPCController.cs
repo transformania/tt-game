@@ -555,7 +555,7 @@ namespace tfgame.Controllers
             Player victim = PlayerProcedures.GetPlayer(id);
 
             // run generic MC checks
-            ErrorBox errorsBox = MindControlProcedures.AssertBasicMindControlConditions(me, victim);
+            ErrorBox errorsBox = MindControlProcedures.AssertBasicMindControlConditions(me, victim, MindControlStatics.MindControl__Movement);
             if (errorsBox.HasError == true)
             {
                 TempData["Error"] = errorsBox.Error;
@@ -571,6 +571,76 @@ namespace tfgame.Controllers
             return View(output);
         }
 
+
+        [Authorize]
+        public ActionResult StripVictim(int id)
+        {
+
+            Player me = PlayerProcedures.GetPlayerFromMembership();
+            Player victim = PlayerProcedures.GetPlayer(id);
+
+            // run generic MC checks
+            ErrorBox errorsBox = MindControlProcedures.AssertBasicMindControlConditions(me, victim, MindControlStatics.MindControl__Strip);
+            if (errorsBox.HasError == true)
+            {
+                TempData["Error"] = errorsBox.Error;
+                TempData["SubError"] = errorsBox.SubError;
+                return RedirectToAction("MindControlList");
+            }
+
+            List<ItemViewModel> victimItems = ItemProcedures.GetAllPlayerItems(victim.Id).ToList();
+
+            if (victimItems.Count() > 0)
+            {
+                double max = victimItems.Count();
+                Random rand = new Random();
+                double num = rand.NextDouble();
+
+                int index = Convert.ToInt32(Math.Floor(num * max));
+                ItemViewModel itemToDrop = victimItems.ElementAt(index);
+
+                MindControlProcedures.AddCommandUsedToMindControl(me, victim, MindControlStatics.MindControl__Strip);
+
+                string attackerMessage = "";
+
+                if (itemToDrop.Item.ItemType != PvPStatics.ItemType_Pet)
+                {
+                    attackerMessage = "You commanded " + victim.GetFullName() + " to drop something.  They let go of a " + itemToDrop.Item.FriendlyName + " that they were carrying.";
+                } else {
+                    attackerMessage = "You commanded " + victim.GetFullName() + " to drop something.  They released their pet " + itemToDrop.Item.FriendlyName + " that they had tamed.";
+                }
+
+                PlayerLogProcedures.AddPlayerLog(me.Id, attackerMessage, false);
+                TempData["Result"] = attackerMessage;
+
+                string victimMessage = "";
+
+                if (itemToDrop.Item.ItemType != PvPStatics.ItemType_Pet)
+                {
+                     victimMessage = "You commanded " + victim.GetFullName() + " to drop something. You had no choice but to go of a " + itemToDrop.Item.FriendlyName + " that you were carrying.";
+                }
+                else
+                {
+                     victimMessage = "You commanded " + victim.GetFullName() + " to drop something. You had no choice but to release your pet " + itemToDrop.Item.FriendlyName + " that you had tamed.";
+                }
+
+                PlayerLogProcedures.AddPlayerLog(victim.Id, victimMessage, true);
+
+                ItemProcedures.DropItem(itemToDrop.dbItem.Id, victim.dbLocationName);
+
+                string locationLogMessage = "<b>" + victim.GetFullName() + " was forced to drop their " + itemToDrop.Item.FriendlyName + " by someone mind controlling them.";
+                LocationLogProcedures.AddLocationLog(locationLogMessage, victim.dbLocationName);
+
+
+            }
+            else
+            {
+                TempData["Error"] = "It seems " + victim.GetFullName() + " was not carrying or wearing anything to drop!";
+            }
+
+            return RedirectToAction("Play","PvP");
+        }
+
         [Authorize]
         public ActionResult MoveVictimSend(int id, string to)
         {
@@ -579,7 +649,7 @@ namespace tfgame.Controllers
             Player victim = PlayerProcedures.GetPlayer(id);
 
             // run generic MC checks
-            ErrorBox errorsBox = MindControlProcedures.AssertBasicMindControlConditions(me, victim);
+            ErrorBox errorsBox = MindControlProcedures.AssertBasicMindControlConditions(me, victim, MindControlStatics.MindControl__Movement);
             if (errorsBox.HasError == true)
             {
                 TempData["Error"] = errorsBox.Error;
@@ -623,7 +693,7 @@ namespace tfgame.Controllers
 
             // success; move the victim.
             PlayerProcedures.MovePlayerMultipleLocations(victim, to, apCost);
-            MindControlProcedures.AddCommandUsedToMindControl(me, victim);
+            MindControlProcedures.AddCommandUsedToMindControl(me, victim, MindControlStatics.MindControl__Movement);
 
             string attackerMessage = "You commanded " + victim.GetFullName() + " to move to " + LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == to).Name + ", using " + apCost + " of their action points in the process.";
             PlayerLogProcedures.AddPlayerLog(me.Id, attackerMessage, false);

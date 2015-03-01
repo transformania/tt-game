@@ -509,7 +509,17 @@ namespace tfgame.Procedures
                     output.VictimLog = "<br><b>You are now being partially mind controlled by " + targetForm.FriendlyName + "!</b>";
 
                     TFEnergyProcedures.DeleteAllPlayerTFEnergiesOfType(target.Id, targetForm.dbName);
-                    EffectProcedures.GivePerkToPlayer(MindControlStatics.MindControl__Movement_DebuffEffect, target);
+
+                    // give curse debuff
+                    if (targetForm.dbName == MindControlStatics.MindControl__Movement)
+                    {
+                        EffectProcedures.GivePerkToPlayer(MindControlStatics.MindControl__Movement_DebuffEffect, target);
+                    }
+                    else if (targetForm.dbName == MindControlStatics.MindControl__Strip)
+                    {
+                        EffectProcedures.GivePerkToPlayer(MindControlStatics.MindControl__Strip_DebuffEffect, target);
+                    } 
+                    
                 }
                 #endregion
             }

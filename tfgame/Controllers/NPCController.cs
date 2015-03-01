@@ -617,19 +617,19 @@ namespace tfgame.Controllers
 
                 if (itemToDrop.Item.ItemType != PvPStatics.ItemType_Pet)
                 {
-                     victimMessage = "You commanded " + victim.GetFullName() + " to drop something. You had no choice but to go of a " + itemToDrop.Item.FriendlyName + " that you were carrying.";
+                     victimMessage =  me.GetFullName() + " commanded you to to drop something. You had no choice but to go of a " + itemToDrop.Item.FriendlyName + " that you were carrying.";
                 }
                 else
                 {
-                     victimMessage = "You commanded " + victim.GetFullName() + " to drop something. You had no choice but to release your pet " + itemToDrop.Item.FriendlyName + " that you had tamed.";
+                    victimMessage = me.GetFullName() + " commanded you to drop something. You had no choice but to release your pet " + itemToDrop.Item.FriendlyName + " that you had tamed.";
                 }
 
                 PlayerLogProcedures.AddPlayerLog(victim.Id, victimMessage, true);
 
                 ItemProcedures.DropItem(itemToDrop.dbItem.Id, victim.dbLocationName);
 
-                string locationLogMessage = "<b>" + victim.GetFullName() + " was forced to drop their " + itemToDrop.Item.FriendlyName + " by someone mind controlling them.";
-                LocationLogProcedures.AddLocationLog(locationLogMessage, victim.dbLocationName);
+                string locationLogMessage = victim.GetFullName() + " was forced to drop their <b>" + itemToDrop.Item.FriendlyName + "</b> by someone mind controlling them.";
+                LocationLogProcedures.AddLocationLog(victim.dbLocationName, locationLogMessage);
 
 
             }

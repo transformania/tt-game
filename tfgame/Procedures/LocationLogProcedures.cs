@@ -30,28 +30,28 @@ namespace tfgame.Procedures
             newlog.Message = message;
             newlog.Timestamp = DateTime.UtcNow;
 
-            IEnumerable<LocationLog> ExistingLogs = LocationLogRepo.LocationLogs.Where(l => l.dbLocationName == dbLocationName);
+            //IEnumerable<LocationLog> ExistingLogs = LocationLogRepo.LocationLogs.Where(l => l.dbLocationName == dbLocationName);
 
-            bool DO_NOT_RECYCLE = true;
+            //bool DO_NOT_RECYCLE = true;
 
 
-            // delete oldest entry to keep log size from growing too large
-            if (ExistingLogs.Count() >= PvPStatics.MaxLogMessagesPerLocation && DO_NOT_RECYCLE==false)
-            {
-                IEnumerable<LocationLog> reordered = ExistingLogs.OrderByDescending(l => l.Timestamp).Skip(PvPStatics.MaxLogMessagesPerLocation).ToList();
+            //// delete oldest entry to keep log size from growing too large
+            //if (ExistingLogs.Count() >= PvPStatics.MaxLogMessagesPerLocation && DO_NOT_RECYCLE==false)
+            //{
+            //    IEnumerable<LocationLog> reordered = ExistingLogs.OrderByDescending(l => l.Timestamp).Skip(PvPStatics.MaxLogMessagesPerLocation).ToList();
 
-                foreach (LocationLog l in reordered)
-                {
-                    try
-                    {
-                        LocationLogRepo.DeleteLocationLog(l.Id);
-                    }
-                    catch
-                    {
-                        // catch errors in case of concurrency problems... players moving during updates.
-                    }
-                }
-            }
+            //    foreach (LocationLog l in reordered)
+            //    {
+            //        try
+            //        {
+            //            LocationLogRepo.DeleteLocationLog(l.Id);
+            //        }
+            //        catch
+            //        {
+            //            // catch errors in case of concurrency problems... players moving during updates.
+            //        }
+            //    }
+            //}
            
             LocationLogRepo.SaveLocationLog(newlog);
         }

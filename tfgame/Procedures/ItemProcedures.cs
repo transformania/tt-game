@@ -1320,12 +1320,18 @@ namespace tfgame.Procedures
                 // selling, pay less money
             else
             {
-                decimal price = 50 + 50 * item.dbItem.Level * .75M;
+                decimal price = 50 + (30 * item.dbItem.Level * .75M);
 
                 // item is not permanent, charge less
                 if (item.dbItem.IsPermanent == false)
                 {
                     price *= .5M;
+                }
+
+                // item has custom sell value set and is consumable, use its sell override amount
+                if (item.Item.ItemType == "consumable" && item.Item.MoneyValueSell != null && item.Item.MoneyValueSell > 0)
+                {
+                    price = item.Item.MoneyValueSell;
                 }
 
                 return Math.Ceiling(price);

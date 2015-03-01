@@ -3840,7 +3840,7 @@ namespace tfgame.Controllers
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished resetting items that have been recently equipped");
 
                 #region give covenants money based on territories
-                if (turnNo % 3 == 0)
+                if (turnNo % 6 == 0)
                 {
                     log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started giving covenants money from territories");
                     ICovenantRepository covRepo =  new EFCovenantRepository();
@@ -3850,7 +3850,7 @@ namespace tfgame.Controllers
                     foreach (Covenant c in covs)
                     {
                         int locationControlledSum = CovenantProcedures.GetLocationControlCount(c);
-                        decimal moneyGain = (decimal)Math.Floor(Convert.ToDouble(locationControlledSum) / 2.0D);
+                        decimal moneyGain = (decimal)Math.Floor(Convert.ToDouble(locationControlledSum));
                         c.Money += moneyGain;
 
                         if (moneyGain > 0)

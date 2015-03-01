@@ -1059,6 +1059,7 @@
     </Content>
     <Content Include="XMLs\LocationDescriptions\tavern_private_room.xml" />
     <Content Include="XMLs\SkillBooks\founding.txt" />
+    <Content Include="XMLs\SkillBooks\psycho_Duhad.txt" />
     <Content Include="XMLs\SkillMessages\skill_Circine%27s_Compassion_LexamTheGemFox.xml" />
     <Content Include="XMLs\SkillMessages\skill_Doggy_Owner_Arnisd.xml" />
     <Content Include="XMLs\SkillMessages\skill_Donna%27s_Bitch_LexamTheGemFox.xml" />

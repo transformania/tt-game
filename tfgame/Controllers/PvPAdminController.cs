@@ -1036,15 +1036,25 @@ namespace tfgame.Controllers
                 return View("Play", "PvP");
             }
 
-            //BossProcedures_Sisters.SpawnSisters();
+            AIProcedures.RunAIMerchantActions(17);
+
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult SpawnNPCs()
+        {
+            // assert only admins can view this
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            {
+                return View("Play", "PvP");
+            }
+
             AIProcedures.SpawnLindella();
             BossProcedures_PetMerchant.SpawnPetMerchant();
             BossProcedures_Fae.SpawnFae();
 
             return RedirectToAction("Index");
         }
-
-
 
         public ActionResult ItemPetJSON()
         {

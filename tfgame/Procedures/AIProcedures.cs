@@ -17,55 +17,6 @@ namespace tfgame.Procedures
     {
 
 
-        private const string LindellaItem_WPRoot_DbName = "item_consumeable_willflower_root_sparse";
-        private const int LindellaItem_WPRoot_Count = 8;
-
-        private const string LindellaItem_ManaRoot_DbName = "item_consumeable_spellweaver_root_sparse";
-        private const int LindellaItem_ManaRoot_Count = 8;
-
-        private const string LindellaItem_TeleportScroll_DbName = "item_consumeable_teleportation_scroll";
-        private const int LindellaItem_TeleportScroll_Count = 3;
-
-        private const string LindellaItem_ClassicMe_DbName = "item_consumeable_ClassicMeLotion";
-        private const int LindellaItem_ClassicMe_Count = 3;
-
-        private const string LindellaItem_LullabyWhistle_DbName = "item_consumeable_Lullaby_Whistle";
-        private const int LindellaItem_LullabyWhistle_Count = 7;
-
-        private const string LindellaItem_FireFritter_DbName = "item_consumaeable_fire_fritter";
-        private const int LindellaItem_FireFritter_Count = 6;
-
-        private const string LindellaItem_BarricadeBrownie_DbName = "item_barricade_brownie";
-        private const int LindellaItem_BarricadeBrownie_Count = 6;
-
-        private const string LindellaItem_TrueshotTruffles_DbName = "item_consumeable_trueshot_truffles";
-        private const int LindellaItem_TrueshotTruffles_Count = 6;
-
-        private const string LindellaItem_SelfCastItem_DbName = "item_consumable_selfcaster";
-        private const int LindellaItem_SelfCastItem_Count = 5;
-
-        private const string LindellaItem_Spellbook_Small_DbName = "item_consumable_spellbook_small";
-        private const int LindellaItem_Spellbook_Small_Count = 4;
-
-        private const string LindellaItem_Spellbook_Medium_DbName = "item_consumable_spellbook_medium";
-        private const int LindellaItem_Spellbook_Medium_Count = 3;
-
-        private const string LindellaItem_Spellbook_Large_DbName = "item_consumable_spellbook_large";
-        private const int LindellaItem_Spellbook_Large_Count = 2;
-
-        private const string LindellaItem_Spellbook_Giant_DbName = "item_consumable_spellbook_giant";
-        private const int LindellaItem_Spellbook_Giant_Count = 1;
-
-        private const string LindellaItem_CurseRemover_DbName = "item_consumable_curselifter";
-        private const int LindellaItem_CurseRemover_Count = 6;
-
-
-        private const string LindellaItem_XpBook1_DbName = "item_consumable_tome-founding";
-        private const int LindellaItem_XpBook1_Count = 5;
-
-
-
-
         // Membership ID code:  
         // -1 (player has rerolled, player is abandoned)
         // -2 (psychopath spellslinger)
@@ -532,354 +483,45 @@ namespace tfgame.Procedures
                     IItemRepository itemRepo = new EFItemRepository();
                     List<Item> lindellasItems = itemRepo.Items.Where(i => i.OwnerId == merchant.Id && i.Level == 0).ToList();
 
+                    string path = HttpContext.Current.Server.MapPath("~/XMLs/RestockList.xml");
+                    List<RestockListItem> restockItems = new List<RestockListItem>();
 
-                    // sparse willpower roots
-                    if (lindellasItems.Where(i => i.dbName == LindellaItem_WPRoot_DbName).Count() < LindellaItem_WPRoot_Count)
+                    var serializer = new XmlSerializer(typeof(List<RestockListItem>));
+                    using (var reader = XmlReader.Create(path))
                     {
-                        for (int x = 0; x < LindellaItem_WPRoot_Count; x++)
-                        {
-                            Item wproot = new Item
-                            {
-                                dbName = LindellaItem_WPRoot_DbName,
-                                dbLocationName = "",
-                                OwnerId = merchant.Id,
-                                IsEquipped = false,
-                                IsPermanent = true,
-                                Level = 0,
-                                PvPEnabled = false,
-                                TimeDropped = DateTime.UtcNow,
-                                TurnsUntilUse = 0,
-                                VictimName = "",
-                                EquippedThisTurn = false,
-                            };
-                            itemRepo.SaveItem(wproot);
-                        }
+                        restockItems = (List<RestockListItem>)serializer.Deserialize(reader);
                     }
 
-                    // sparse spellweaver roots
-                    if (lindellasItems.Where(i => i.dbName == LindellaItem_ManaRoot_DbName).Count() < LindellaItem_ManaRoot_Count)
+                    foreach (RestockListItem item in restockItems)
                     {
-                        for (int x = 0; x < LindellaItem_ManaRoot_Count; x++)
+
+                        if (item.Merchant == "Lindella")
                         {
-                            Item wproot = new Item
+                            int currentCount = lindellasItems.Where(i => i.dbName == item.dbName).Count();
+                            if (currentCount < item.AmountBeforeRestock)
                             {
-                                dbName = LindellaItem_ManaRoot_DbName,
-                                dbLocationName = "",
-                                OwnerId = merchant.Id,
-                                IsEquipped = false,
-                                IsPermanent = true,
-                                Level = 0,
-                                PvPEnabled = false,
-                                TimeDropped = DateTime.UtcNow,
-                                TurnsUntilUse = 0,
-                                VictimName = "",
-                                EquippedThisTurn = false,
-                            };
-                            itemRepo.SaveItem(wproot);
+                                for (int x = 0; x < item.AmountToRestockTo - currentCount; x++)
+                                {
+                                    Item newItem = new Item
+                                {
+                                    dbName = item.dbName,
+                                    dbLocationName = "",
+                                    OwnerId = merchant.Id,
+                                    IsEquipped = false,
+                                    IsPermanent = true,
+                                    Level = 0,
+                                    PvPEnabled = false,
+                                    TimeDropped = DateTime.UtcNow,
+                                    TurnsUntilUse = 0,
+                                    VictimName = "",
+                                    EquippedThisTurn = false,
+                                };
+                                    itemRepo.SaveItem(newItem);
+                                }
+
+                            }
                         }
                     }
-
-                    // teleportation scrolls
-                    if (lindellasItems.Where(i => i.dbName == LindellaItem_TeleportScroll_DbName).Count() < LindellaItem_TeleportScroll_Count)
-                    {
-                        for (int x = 0; x < LindellaItem_TeleportScroll_Count; x++)
-                        {
-                            Item wproot = new Item
-                            {
-                                dbName = LindellaItem_TeleportScroll_DbName,
-                                dbLocationName = "",
-                                OwnerId = merchant.Id,
-                                IsEquipped = false,
-                                IsPermanent = true,
-                                Level = 0,
-                                PvPEnabled = false,
-                                TimeDropped = DateTime.UtcNow,
-                                TurnsUntilUse = 0,
-                                VictimName = "",
-                                EquippedThisTurn = false,
-                            };
-                            itemRepo.SaveItem(wproot);
-                        }
-                    }
-
-                    // Classic Me potions
-                    if (lindellasItems.Where(i => i.dbName == LindellaItem_ClassicMe_DbName).Count() < LindellaItem_ClassicMe_Count)
-                    {
-                        for (int x = 0; x < LindellaItem_ClassicMe_Count; x++)
-                        {
-                            Item wproot = new Item
-                            {
-                                dbName = LindellaItem_ClassicMe_DbName,
-                                dbLocationName = "",
-                                OwnerId = merchant.Id,
-                                IsEquipped = false,
-                                IsPermanent = true,
-                                Level = 0,
-                                PvPEnabled = false,
-                                TimeDropped = DateTime.UtcNow,
-                                TurnsUntilUse = 0,
-                                VictimName = "",
-                                EquippedThisTurn = false,
-                            };
-                            itemRepo.SaveItem(wproot);
-                        }
-                    }
-
-                    // Lullaby Whistles
-                    if (lindellasItems.Where(i => i.dbName == LindellaItem_LullabyWhistle_DbName).Count() < LindellaItem_LullabyWhistle_Count)
-                    {
-                        for (int x = 0; x < LindellaItem_LullabyWhistle_Count; x++)
-                        {
-                            Item wproot = new Item
-                            {
-                                dbName = LindellaItem_LullabyWhistle_DbName,
-                                dbLocationName = "",
-                                OwnerId = merchant.Id,
-                                IsEquipped = false,
-                                IsPermanent = true,
-                                Level = 0,
-                                PvPEnabled = false,
-                                TimeDropped = DateTime.UtcNow,
-                                TurnsUntilUse = 0,
-                                VictimName = "",
-                                EquippedThisTurn = false,
-                            };
-                            itemRepo.SaveItem(wproot);
-                        }
-                    }
-
-                    // Fire Fritters
-                    if (lindellasItems.Where(i => i.dbName == LindellaItem_FireFritter_DbName).Count() < LindellaItem_FireFritter_Count)
-                    {
-                        for (int x = 0; x < LindellaItem_FireFritter_Count; x++)
-                        {
-                            Item wproot = new Item
-                            {
-                                dbName = LindellaItem_FireFritter_DbName,
-                                dbLocationName = "",
-                                OwnerId = merchant.Id,
-                                IsEquipped = false,
-                                IsPermanent = true,
-                                Level = 0,
-                                PvPEnabled = false,
-                                TimeDropped = DateTime.UtcNow,
-                                TurnsUntilUse = 0,
-                                VictimName = "",
-                                EquippedThisTurn = false,
-                            };
-                            itemRepo.SaveItem(wproot);
-                        }
-                    }
-
-                    // LindellaItem_FireFritter_DbName
-                    if (lindellasItems.Where(i => i.dbName == LindellaItem_BarricadeBrownie_DbName).Count() < LindellaItem_BarricadeBrownie_Count)
-                    {
-                        for (int x = 0; x < LindellaItem_BarricadeBrownie_Count; x++)
-                        {
-                            Item wproot = new Item
-                            {
-                                dbName = LindellaItem_BarricadeBrownie_DbName,
-                                dbLocationName = "",
-                                OwnerId = merchant.Id,
-                                IsEquipped = false,
-                                IsPermanent = true,
-                                Level = 0,
-                                PvPEnabled = false,
-                                TimeDropped = DateTime.UtcNow,
-                                TurnsUntilUse = 0,
-                                VictimName = "",
-                                EquippedThisTurn = false,
-                            };
-                            itemRepo.SaveItem(wproot);
-                        }
-                    }
-
-                    // Trueshot Truffles
-                    if (lindellasItems.Where(i => i.dbName == LindellaItem_TrueshotTruffles_DbName).Count() < LindellaItem_TrueshotTruffles_Count)
-                    {
-                        for (int x = 0; x < LindellaItem_TrueshotTruffles_Count; x++)
-                        {
-                            Item wproot = new Item
-                            {
-                                dbName = LindellaItem_TrueshotTruffles_DbName,
-                                dbLocationName = "",
-                                OwnerId = merchant.Id,
-                                IsEquipped = false,
-                                IsPermanent = true,
-                                Level = 0,
-                                PvPEnabled = false,
-                                TimeDropped = DateTime.UtcNow,
-                                TurnsUntilUse = 0,
-                                VictimName = "",
-                                EquippedThisTurn = false,
-                            };
-                            itemRepo.SaveItem(wproot);
-                        }
-                    }
-
-                    
-                         // Self cast machines
-                    if (lindellasItems.Where(i => i.dbName == LindellaItem_SelfCastItem_DbName).Count() < LindellaItem_SelfCastItem_Count)
-                    {
-                        for (int x = 0; x < LindellaItem_SelfCastItem_Count; x++)
-                        {
-                            Item wproot = new Item
-                            {
-                                dbName = LindellaItem_SelfCastItem_DbName,
-                                dbLocationName = "",
-                                OwnerId = merchant.Id,
-                                IsEquipped = false,
-                                IsPermanent = true,
-                                Level = 0,
-                                PvPEnabled = false,
-                                TimeDropped = DateTime.UtcNow,
-                                TurnsUntilUse = 0,
-                                VictimName = "",
-                                EquippedThisTurn = false,
-                            };
-                            itemRepo.SaveItem(wproot);
-                        }
-                    }
-
-                    // small spellbooks
-                    if (lindellasItems.Where(i => i.dbName == LindellaItem_Spellbook_Small_DbName).Count() < LindellaItem_Spellbook_Small_Count)
-                    {
-                        for (int x = 0; x < LindellaItem_SelfCastItem_Count; x++)
-                        {
-                            Item wproot = new Item
-                            {
-                                dbName = LindellaItem_Spellbook_Small_DbName,
-                                dbLocationName = "",
-                                OwnerId = merchant.Id,
-                                IsEquipped = false,
-                                IsPermanent = true,
-                                Level = 0,
-                                PvPEnabled = false,
-                                TimeDropped = DateTime.UtcNow,
-                                TurnsUntilUse = 0,
-                                VictimName = "",
-                                EquippedThisTurn = false,
-                            };
-                            itemRepo.SaveItem(wproot);
-                        }
-                    }
-
-                    // medium spellbooks
-                    if (lindellasItems.Where(i => i.dbName == LindellaItem_Spellbook_Medium_DbName).Count() < LindellaItem_Spellbook_Medium_Count)
-                    {
-                        for (int x = 0; x < LindellaItem_SelfCastItem_Count; x++)
-                        {
-                            Item wproot = new Item
-                            {
-                                dbName = LindellaItem_Spellbook_Medium_DbName,
-                                dbLocationName = "",
-                                OwnerId = merchant.Id,
-                                IsEquipped = false,
-                                IsPermanent = true,
-                                Level = 0,
-                                PvPEnabled = false,
-                                TimeDropped = DateTime.UtcNow,
-                                TurnsUntilUse = 0,
-                                VictimName = "",
-                                EquippedThisTurn = false,
-                            };
-                            itemRepo.SaveItem(wproot);
-                        }
-                    }
-
-                    // large spellbooks
-                    if (lindellasItems.Where(i => i.dbName == LindellaItem_Spellbook_Large_DbName).Count() < LindellaItem_Spellbook_Large_Count)
-                    {
-                        for (int x = 0; x < LindellaItem_SelfCastItem_Count; x++)
-                        {
-                            Item wproot = new Item
-                            {
-                                dbName = LindellaItem_Spellbook_Large_DbName,
-                                dbLocationName = "",
-                                OwnerId = merchant.Id,
-                                IsEquipped = false,
-                                IsPermanent = true,
-                                Level = 0,
-                                PvPEnabled = false,
-                                TimeDropped = DateTime.UtcNow,
-                                TurnsUntilUse = 0,
-                                VictimName = "",
-                                EquippedThisTurn = false,
-                            };
-                            itemRepo.SaveItem(wproot);
-                        }
-                    }
-
-                    // giant spellbooks
-                    if (lindellasItems.Where(i => i.dbName == LindellaItem_Spellbook_Giant_DbName).Count() < LindellaItem_Spellbook_Giant_Count)
-                    {
-                        for (int x = 0; x < LindellaItem_SelfCastItem_Count; x++)
-                        {
-                            Item wproot = new Item
-                            {
-                                dbName = LindellaItem_Spellbook_Giant_DbName,
-                                dbLocationName = "",
-                                OwnerId = merchant.Id,
-                                IsEquipped = false,
-                                IsPermanent = true,
-                                Level = 0,
-                                PvPEnabled = false,
-                                TimeDropped = DateTime.UtcNow,
-                                TurnsUntilUse = 0,
-                                VictimName = "",
-                                EquippedThisTurn = false,
-                            };
-                            itemRepo.SaveItem(wproot);
-                        }
-                    }
-
-                     // curse lifters
-                    if (lindellasItems.Where(i => i.dbName == LindellaItem_CurseRemover_DbName).Count() < LindellaItem_CurseRemover_Count)
-                    {
-                        for (int x = 0; x < LindellaItem_CurseRemover_Count; x++)
-                        {
-                            Item wproot = new Item
-                            {
-                                dbName = LindellaItem_CurseRemover_DbName,
-                                dbLocationName = "",
-                                OwnerId = merchant.Id,
-                                IsEquipped = false,
-                                IsPermanent = true,
-                                Level = 0,
-                                PvPEnabled = false,
-                                TimeDropped = DateTime.UtcNow,
-                                TurnsUntilUse = 0,
-                                VictimName = "",
-                                EquippedThisTurn = false,
-                            };
-                            itemRepo.SaveItem(wproot);
-                        }
-                    }
-
-                    // xp books
-                    if (lindellasItems.Where(i => i.dbName == LindellaItem_XpBook1_DbName).Count() < LindellaItem_XpBook1_Count)
-                    {
-                        for (int x = 0; x < LindellaItem_XpBook1_Count; x++)
-                        {
-                            Item wproot = new Item
-                            {
-                                dbName = LindellaItem_XpBook1_DbName,
-                                dbLocationName = "",
-                                OwnerId = merchant.Id,
-                                IsEquipped = false,
-                                IsPermanent = true,
-                                Level = 0,
-                                PvPEnabled = false,
-                                TimeDropped = DateTime.UtcNow,
-                                TurnsUntilUse = 0,
-                                VictimName = "",
-                                EquippedThisTurn = false,
-                            };
-                            itemRepo.SaveItem(wproot);
-                        }
-                    }
-
-
                 }
 #endregion
 

@@ -416,6 +416,7 @@
     <Compile Include="ViewModels\PlayerSearchViewModel.cs" />
     <Compile Include="ViewModels\PlayPageViewModel.cs" />
     <Compile Include="ViewModels\PublicBroadcastViewModel.cs" />
+    <Compile Include="ViewModels\RestockList.cs" />
     <Compile Include="ViewModels\SelectListItem.cs" />
     <Compile Include="ViewModels\ServerBalance.cs" />
     <Compile Include="ViewModels\SkillBookViewModel.cs" />
@@ -861,6 +862,7 @@
     <Content Include="XMLs\BossSummonText\Donna.txt" />
     <Content Include="XMLs\BossSummonText\Thieves.txt" />
     <Content Include="XMLs\BossSummonText\Valentine.txt" />
+    <Content Include="XMLs\restockList.xml" />
     <Content Include="XMLs\custom_bases.xml" />
     <Content Include="XMLs\Effects\effect_Circine%27s_Hypnosis_LexamTheGemFox.xml" />
     <Content Include="XMLs\Effects\effect_Hemorrhage_Izz_Valentine.xml">

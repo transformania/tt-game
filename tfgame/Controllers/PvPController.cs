@@ -952,7 +952,7 @@ namespace tfgame.Controllers
              }
 
              // assert player has enough AP
-             if (me.ActionPoints < 10)
+             if (me.ActionPoints < 3)
              {
                  TempData["Error"] = "Not enough AP.";
                  TempData["SubError"] = "You need at least 3 action points to enchant a location.";
@@ -1854,7 +1854,7 @@ namespace tfgame.Controllers
             output.SenderId = me.Id;
             output.ReceiverId = playerId;
             Player sendingTo = PlayerProcedures.GetPlayer(output.ReceiverId);
-            ViewBag.SendingToName = sendingTo.FirstName + " " + sendingTo.LastName;
+            ViewBag.SendingToName = sendingTo.GetFullName();
 
             if (responseTo != -1)
             {

@@ -493,6 +493,8 @@
     <Content Include="Images\PvP\animalPortraits\husky_Luxianne.png" />
     <Content Include="Images\PvP\animalPortraits\living_inflateable_pooltoy_Luxianne.jpg" />
     <Content Include="Images\PvP\animalPortraits\living_plush_dragon_spacedande.jpg" />
+    <Content Include="Images\PvP\animalPortraits\living_shadow_Dandelion.jpg" />
+    <Content Include="Images\PvP\animalPortraits\mana_ray_Dandelion.jpg" />
     <Content Include="Images\PvP\animalPortraits\mink_Dandelion.jpg" />
     <Content Include="Images\PvP\animalPortraits\mischevious_crow_Luxianne.png" />
     <Content Include="Images\PvP\animalPortraits\pocket_dragon_Meddle.png" />
@@ -770,6 +772,7 @@
     <Content Include="Images\PvP\portraits\Lindella_Luxianne.png" />
     <Content Include="Images\PvP\portraits\lovely_dragon_boy_spacedande.png" />
     <Content Include="Images\PvP\portraits\loving_sweetheart_spacedande.jpg" />
+    <Content Include="Images\PvP\portraits\loyal_dog_girl_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\lusty_mare_UYS.jpg" />
     <Content Include="Images\PvP\portraits\mad_female_scientist_Babblingfaces.jpg" />
     <Content Include="Images\PvP\portraits\Man_01_Meddle.png" />
@@ -808,10 +811,12 @@
     <Content Include="Images\PvP\portraits\quoxotic_ranger_Babblingfaces.gif" />
     <Content Include="Images\PvP\portraits\rat_thief_m_Thrax.png" />
     <Content Include="Images\PvP\portraits\razing_ruin_Mai_Omega.jpg" />
+    <Content Include="Images\PvP\portraits\red_panda_boi_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\robotgirl_thurosis.png" />
     <Content Include="Images\PvP\portraits\robot_Meddle.png" />
     <Content Include="Images\PvP\portraits\sailor_seal_girl_Dandelion.jpg" />
     <Content Include="Images\PvP\portraits\satyr_martiandawn.jpg" />
+    <Content Include="Images\PvP\portraits\seekshadow_apprentice_thief_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\seekshadow_master_thief_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\sexy_princess_Meddle.png" />
     <Content Include="Images\PvP\portraits\sexy_secretary_Meddle.jpg" />

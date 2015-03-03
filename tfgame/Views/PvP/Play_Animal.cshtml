@@ -90,43 +90,46 @@
 }
 
 <div class="containerInner">
-    <div class="petItemPortrait" style="background-image: url(../Images/PvP/animalPortraits/@ViewBag.AnimalImgUrl);">
-        @CharactersHere.PrintOwnerSubPortrait(Model.OwnedBy)
-    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="petItemPortrait img-responsive" style="background-image: url(../Images/PvP/animalPortraits/@ViewBag.AnimalImgUrl);">
+                @CharactersHere.PrintOwnerSubPortrait(Model.OwnedBy)
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-justify">
+            <p>Your name is <b>@Model.You.FirstName @Model.You.LastName</b>, or at least it used to be.  At the height of your humanity you achieved level <b>@Model.You.Level</b> with @Model.You.XP experience points toward the next.  But now it's time to embrace your new existence as a <b>@Model.Form.FriendlyName</b>.</p>
+            <p>
+    @Model.Form.Description
+    @{
+        if (Model.You.IsPetToId == -1)
+        {
+            <span>You are feral and can move freely about the world until a new master tames you.</span>
+        }
+        else
+        {
+            <span><br><br>You have been tamed by @Html.ActionLink(Model.OwnedBy.Player.FirstName + " " + Model.OwnedBy.Player.LastName, "LookAtPlayer", "PvP", new { id = Model.OwnedBy.Player.Id }, null) and will follow your master wherever they go.</span>
+        }
+    }
+    @{
+        if (Model.IsPermanent == false)
+        {
+        <p class="center-block">
+            <span class="place">Chance to return human: @Model.StruggleChance %.</span>
+            @Html.ActionLink("Fight your transformation and attempt to return to an animate form!", "FightTheTransformation", "PvP", new { @class = "check inanimateAction" })
+        </p>
+        }
 
-    <div class="petItemInfo">
-        <p>Your name is <b>@Model.You.FirstName @Model.You.LastName</b>, or at least it used to be.  At the height of your humanity you achieved level <b>@Model.You.Level</b> with @Model.You.XP experience points toward the next.  But now it's time to embrace your new existence as a <b>@Model.Form.FriendlyName</b>.</p>
-        <p>
-            @Model.Form.Description
-                @{
-                    if (Model.You.IsPetToId == -1)
-                    {
-                        <span>You are feral and can move freely about the world until a new master tames you.</span>
-                    }
-                    else
-                    {
-                        <span><br><br>You have been tamed by @Html.ActionLink(Model.OwnedBy.Player.FirstName + " " + Model.OwnedBy.Player.LastName, "LookAtPlayer", "PvP", new { id = Model.OwnedBy.Player.Id }, null) and will follow your master wherever they go.</span>
-                    }
-                }
-                @{
-                    if (Model.IsPermanent == false)
-                    {
-                <p>
-                    Chance to return human:  @Model.StruggleChance %.
-                    @Html.ActionLink("Fight your transformation and attempt to return to an animate form!", "FightTheTransformation", "PvP")
-                </p>
-                    }
-
-                    if (Model.OwnedBy != null)
-                    {
-                        <p><br />
-                        @Html.ActionLink("Attempt to slip free from your owner", "EscapeFromOwner", "PvP")
+        if (Model.OwnedBy != null)
+        {
+                        <p>
+                            <br />
+                            @Html.ActionLink("Attempt to slip free from your owner", "EscapeFromOwner", "PvP", new { @class = "inanimateAction" })
                         </p>
                     }
 
                 }
                 </p>
-            </div>
+            </div>           
 
 
             @*                  This needs to be rewritten !!!                 *@
@@ -247,7 +250,10 @@
             @*                  This needs to be rewritten !!!                 *@
             @*                  This needs to be rewritten !!!                 *@
 
-        </div>
+
+        
+    </div>
+</div>
 
         @*all players who are online*@
 

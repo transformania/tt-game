@@ -85,66 +85,68 @@
     }
 }
 <div class="containerInner">
-    <div class="petItemPortrait" style="background-image: url(../Images/PvP/itemsPortraits/@Model.Item.PortraitUrl);">
-        @CharactersHere.PrintOwnerSubPortrait(Model.WornBy)
-        @CharactersHere.PrintItemTypeIcon(Model.Item)
-    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="petItemPortrait img-responsive" style="background-image: url(../Images/PvP/itemsPortraits/@Model.Item.PortraitUrl);">
+                @CharactersHere.PrintOwnerSubPortrait(Model.WornBy)
+                @CharactersHere.PrintItemTypeIcon(Model.Item)
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-justify">
+            <p>Your name is <b>@Model.Player.FirstName @Model.Player.LastName</b>, or at least it used to be.  Should you regain a human form you will find yourself at level <b>@Model.Player.Level</b> with @Model.Player.XP experience points toward the next.  But now it's time to embrace your new existence as a <b>@Model.Form.FriendlyName</b>.</p>
 
-    <div class="petItemInfo">
-        <p>Your name is <b>@Model.Player.FirstName @Model.Player.LastName</b>, or at least it used to be.  Should you regain a human form you will find yourself at level <b>@Model.Player.Level</b> with @Model.Player.XP experience points toward the next.  But now it's time to embrace your new existence as a <b>@Model.Form.FriendlyName</b>.</p>
-
-        <p>@Model.Form.Description</p>
-        @{
-            if (Model.AtLocation != null)
-            {
-                <p>You are currently resting on the ground at <b>@Model.AtLocation.</b>  Maybe someone will come by soon and pick you up--since you're stuck this way, you might as well be appreciated...</p>
-            }
-            else if (Model.WornBy != null)
-            {
-                <p>You are currently being worn by <b>@Html.ActionLink(Model.WornBy.Player.FirstName + " " + Model.WornBy.Player.LastName, "LookAtPlayer", "PvP", new { id = Model.WornBy.Player.Id }, null)</b>, a @Model.WornBy.Player.Gender @Model.WornBy.Form.FriendlyName.  You hope they will take good care of you, or should they too find themselves as an object, whoever picks you up next.</p>
-
-                <p>
-                    @Html.ActionLink("Telepathically communicate with " + Model.WornBy.Player.FirstName + " " + Model.WornBy.Player.LastName, "Write", "PvP", new { playerId = Model.WornBy.Player.Id, responseTo = -1, }, null)
-                </p>
-
-                <p>
-                    Although inanimate, you can still move just the tiniest bit.  You can still...
-                    <ul class="inanimateActionList">
-                        <li>
-                            @Html.ActionLink("Affectionately rub against your owner", "InanimateAction", "PvP", new { actionName = "rub" }, new { @class = "check inanimateAction" })
-                        </li>
-                        <li>
-                            @Html.ActionLink("Peskily pinch your owner", "InanimateAction", "PvP", new { actionName = "pinch" }, new { @class = "check inanimateAction" })
-                        </li>
-                        <li>
-                            @Html.ActionLink("Kindly soothe your owner", "InanimateAction", "PvP", new { actionName = "soothe" }, new { @class = "check inanimateAction" })
-                        </li>
-                        <li>
-                            @Html.ActionLink("Agitatedly zap your owner", "InanimateAction", "PvP", new { actionName = "zap" }, new { @class = "check inanimateAction" })
-                        </li>
-                        @{
-                if (Model.WornBy != null)
+            <p>@Model.Form.Description</p>
+            @{
+                if (Model.AtLocation != null)
                 {
-                    <li>@Html.ActionLink("Attempt to slip free from your owner", "EscapeFromOwner", "PvP", null, new { @class = "inanimateAction" })</li>
+                    <p>You are currently resting on the ground at <b>@Model.AtLocation.</b>  Maybe someone will come by soon and pick you up--since you're stuck this way, you might as well be appreciated...</p>
                 }
-                        }
+                else if (Model.WornBy != null)
+                {
+                    <p>You are currently being worn by <b>@Html.ActionLink(Model.WornBy.Player.FirstName + " " + Model.WornBy.Player.LastName, "LookAtPlayer", "PvP", new { id = Model.WornBy.Player.Id }, null)</b>, a @Model.WornBy.Player.Gender @Model.WornBy.Form.FriendlyName.  You hope they will take good care of you, or should they too find themselves as an object, whoever picks you up next.</p>
 
-                    </ul>
-                </p>
+                    <p>
+                        @Html.ActionLink("Telepathically communicate with " + Model.WornBy.Player.FirstName + " " + Model.WornBy.Player.LastName, "Write", "PvP", new { playerId = Model.WornBy.Player.Id, responseTo = -1, }, new { @class = "inanimateAction" })
+                    </p>
 
+                    <p>
+                        Although inanimate, you can still move just the tiniest bit.  You can still...
+                        <ul class="inanimateActionList">
+                            <li>
+                                @Html.ActionLink("Affectionately rub against your owner", "InanimateAction", "PvP", new { actionName = "rub" }, new { @class = "check inanimateAction" })
+                            </li>
+                            <li>
+                                @Html.ActionLink("Peskily pinch your owner", "InanimateAction", "PvP", new { actionName = "pinch" }, new { @class = "check inanimateAction" })
+                            </li>
+                            <li>
+                                @Html.ActionLink("Kindly soothe your owner", "InanimateAction", "PvP", new { actionName = "soothe" }, new { @class = "check inanimateAction" })
+                            </li>
+                            <li>
+                                @Html.ActionLink("Agitatedly zap your owner", "InanimateAction", "PvP", new { actionName = "zap" }, new { @class = "check inanimateAction" })
+                            </li>
+                            @{
+                    if (Model.WornBy != null)
+                    {
+                        <li>@Html.ActionLink("Attempt to slip free from your owner", "EscapeFromOwner", "PvP", null, new { @class = "inanimateAction" })</li>
+                    }
+                            }
+
+                        </ul>
+                    </p>
+
+                }
             }
-        }
 
-        @{
-            if (Model.IsPermanent == false)
-            {
-                <p>
-                    Chance to return human:  @Model.StruggleChance %.
-                    @Html.ActionLink("Fight your transformation and attempt to return to an animate form!", "FightTheTransformation", "PvP")
-                </p>
+                        @{
+                if (Model.IsPermanent == false)
+                {
+                    <p class="center-block">
+                        <span class="place">Chance to return human: @Model.StruggleChance %.</span>
+                        @Html.ActionLink("Fight your transformation and attempt to return to an animate form!", "FightTheTransformation", "PvP", new { @class = "check inanimateAction" })
+                    </p>
+                }
             }
-        }
-
+        </div>
     </div>
 </div>
 

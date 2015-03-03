@@ -70,18 +70,6 @@ a {
     font-weight: bold;
 }
 
-.petItemPortrait {
-    width: 450px;
-    height: 450px;
-    float: left;
-    position: relative;
-    display: block;
-    margin-right: 20px;
-    background-size: 450px 450px;
-    background-position: center center;
-    clear: left;
-}
-
 .petItemInfo {
     float: left;
     position: relative;

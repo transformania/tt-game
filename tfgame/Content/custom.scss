@@ -482,13 +482,14 @@ li {
     border: 1px solid #7B6461;
     margin: 4px auto 8px auto;
     display: block;
-    width: 300px;
+    max-width: 300px;
     background: $containerColor;
     text-align: center;
 }
 
 .inanimateActionList {
     list-style: none;
+    padding-left: 0px;
 }
 
 .disabled {
@@ -785,4 +786,13 @@ p .textSpaced {
     height: 200px;
     resize:vertical;
     overflow-y: scroll;
+}
+
+.petItemPortrait {
+    width: 450px;
+    height: 450px;
+    background-size: cover;
+    background-position: center center;
+    margin-left: auto;
+    margin-right: auto;
 }

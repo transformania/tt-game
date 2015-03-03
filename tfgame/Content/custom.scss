@@ -796,3 +796,20 @@ p .textSpaced {
     margin-left: auto;
     margin-right: auto;
 }
+
+.rpTag {
+    border: 1px black solid;
+    cursor: pointer;
+    padding: 4px;
+    line-height: 2.5em;
+}
+
+.on {background-color: lightgreen;}
+.on:hover {background-color: #FF6B6B;}
+.off {background-color: pink;}
+.off:hover {background-color: #25C325;}
+
+.neg2 {background-color: #FF6B6B;}
+.neg1 {background-color: pink;}
+.pos1 {background-color: lightgreen;}
+.pos2 {background-color: #25C325;}

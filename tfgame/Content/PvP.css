@@ -979,50 +979,6 @@ a.curse {
         padding: 0px 20px 0px 20px;
     }
 
-
-.rpTag {
-    border: 1px solid black;
-    cursor: pointer;
-    padding-left: 2px;
-    padding-right: 2px;
-    border-radius: 2px;
-    margin: 2px;
-    position: relative;
-    font-weight: bold;
-}
-
-.on {
-    background-color: lightgreen;
-}
-
-    .on:hover {
-        background-color: red;
-    }
-
-.off {
-    background-color: pink;
-}
-
-    .off:hover {
-        background-color: green;
-    }
-
-     .neg2 {
-        background-color: red;
-    }
-
-    .neg1 {
-        background-color: pink;
-    }
-
-    .pos1 {
-        background-color: lightgreen;
-    }
-
-    .pos2 {
-        background-color: green;
-    }
-
 #timerBox {
     color: white;
     line-height: 46px;

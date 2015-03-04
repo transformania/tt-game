@@ -606,6 +606,7 @@
     <Content Include="Images\PvP\itemsPortraits\doggy_dick_Luxianne.png" />
     <Content Include="Images\PvP\itemsPortraits\dog_collar_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\electronic_toy_jbovinne.png" />
+    <Content Include="Images\PvP\itemsPortraits\elegant_gothic_stockings_Luxianne.jpg" />
     <Content Include="Images\PvP\itemsPortraits\evening_gown_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\Feather_Duster_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\fetish_staff_Meddle.png" />
@@ -668,6 +669,8 @@
     <Content Include="Images\PvP\itemsPortraits\running_shoes_Luxianne.jpg" />
     <Content Include="Images\PvP\itemsPortraits\sandals_Luxianne.png" />
     <Content Include="Images\PvP\itemsPortraits\scroll_of_teleportation.jpg" />
+    <Content Include="Images\PvP\itemsPortraits\silky_bikini_thong_JBovinne.jpg" />
+    <Content Include="Images\PvP\itemsPortraits\silky_bikini_top_Jbovinne.jpg" />
     <Content Include="Images\PvP\itemsPortraits\silky_gothic_nightgown_Luxianne.png" />
     <Content Include="Images\PvP\itemsPortraits\silk_dragon_dress_jbovinne.png" />
     <Content Include="Images\PvP\itemsPortraits\silk_pants_Meddle.png" />
@@ -686,6 +689,7 @@
     <Content Include="Images\PvP\itemsPortraits\tennis_racket_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\tied_croptop_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\tome_Judoo.jpg" />
+    <Content Include="Images\PvP\itemsPortraits\transmog_Judoo.jpg" />
     <Content Include="Images\PvP\itemsPortraits\Whip_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\willbomb_weak.jpg" />
     <Content Include="Images\PvP\itemsPortraits\willflower_jawbreaker_Large_Meddle.png" />
@@ -737,6 +741,7 @@
     <Content Include="Images\PvP\portraits\Fembot_Meddle.png" />
     <Content Include="Images\PvP\portraits\femboy_Meddle.png" />
     <Content Include="Images\PvP\portraits\fembunni_Luxianne.png" />
+    <Content Include="Images\PvP\portraits\fierce_she_wolf_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\foxtheif_Luxianne.png" />
     <Content Include="Images\PvP\portraits\frog_girl_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\fuzzy_moth_girl_Luxianne.png" />

@@ -90,16 +90,18 @@ namespace tfgame.Procedures
             IMessageRepository messageRepo = new EFMessageRepository();
             IPlayerRepository playerRepo = new EFPlayerRepository();
 
-            List<Message> mydbMessagesALL = messageRepo.Messages.Where(m => m.ReceiverId == player.Id).OrderByDescending(m => m.Timestamp).ToList();
-
-            List<Message> mydbMessages = mydbMessagesALL.Take(150).ToList();
-
             int inboxLimit = 150;
 
             if (DonatorProcedures.DonatorGetsMessagesRewards(player) == true)
             {
                 inboxLimit = 500;
             }
+
+            List<Message> mydbMessagesALL = messageRepo.Messages.Where(m => m.ReceiverId == player.Id).OrderByDescending(m => m.Timestamp).ToList();
+
+            List<Message> mydbMessages = mydbMessagesALL.Take(inboxLimit).ToList();
+
+            
 
             List<Message> mydbMessagesTODELETE = mydbMessagesALL.Skip(inboxLimit).ToList();
 

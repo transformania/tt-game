@@ -15,6 +15,11 @@ namespace tfgame.Controllers
             return View();
         }
 
+        public ActionResult FashionWars()
+        {
+            return View();
+        }
+
         public ActionResult Play()
         {
            // using (var db = new StatsContext())

@@ -865,6 +865,7 @@
     <Content Include="Images\PvP\Smilies\smile.png" />
     <Content Include="Reports\Updates\1963.txt" />
     <Content Include="Scripts\boxesResize.js" />
+    <Content Include="Scripts\fwars.js" />
     <Content Include="Scripts\jquery.rotate.js" />
     <Content Include="Scripts\jQueryRotateCompressed.js" />
     <Content Include="XMLs\BossSummonText\BimboBoss.txt" />
@@ -1695,6 +1696,7 @@
     <Content Include="Views\Settings\PlayerStatsLeaders.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_16.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\XP\Alpha_16.cshtml" />
+    <Content Include="Views\TransformaniaTime\FashionWars.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -26,6 +26,8 @@
     var person22 = new Person('Gary', 'Fadi');
     var person33 = new Person('Goliath', 'Bads');
     var person44 = new Person('Sassa', 'Fraut');
+    var person55 = new Person('Berrie', 'Vasta');
+    var person66 = new Person('Holas', 'Shoes');
     person22.levelUp();
     person22.levelUp();
     person22.levelUp();
@@ -34,6 +36,8 @@
     p2.addPerson(person22);
     p2.addPerson(person33);
     p2.addPerson(person44);
+    p2.addPerson(person55);
+    p2.addPerson(person66);
 
     p1.fightGroup(p2);
 
@@ -160,3 +164,4 @@ Person.prototype.fight = function (opponent) {
 };
 
 // ---------------------------------------------
+

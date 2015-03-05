@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     Layout = "";
 }
 
@@ -9,13 +8,38 @@
 <head>
     <script src="~/Scripts/jquery-2.1.0.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
-    <script src="~/Scripts/fwars.js"></script>
+    <script src="~/Scripts/fwars/fwars.js"></script>
+    <script src="~/Scripts/fwars/controllers/personsController.js"></script>
 
     <meta name="viewport" content="width=device-width" />
-    <title>Fashion Wars</title>
+    <title>...</title>
 </head>
-<body>
-    <h1>Fashion Wars</h1>
-    What is the name of your sorceress?  <input type="text" id="nameBox" ng-model="name" /> {{name}}
+<body ng-controllers="PersonsController">
+    <h1>Wars</h1>
+
+    <div ng-hide="isHidden">
+        <span> First name:  <input type="text" id="nameBoxFirst" ng-model="nameFirst" /></span>
+        <span> Last name: <input type="text" id="nameBoxLast" ng-model="nameLast" /></span><br />
+        <button ng-click="nameFirst='Bob'">Recruit</button>
+        <span>Name: {{nameFirst}}  {{nameLast}}</span>
+
+    </div>
+
+    <span>Hide: <input type="checkbox" ng-model="isHidden" /></span>
+
+    <div class="container" data-ng-controller="PersonsController as ctrl">
+        <h3>Your members:</h3>
+        <ul>
+            <li ng-repeat="person in personsPlayer.persons | orderBy:'firstName'">{{person.firstName}} {{person.lastName}} (lvl {{person.level}})</li>
+        </ul>
+    </div>
+
+    <div class="container" data-ng-controller="PersonsController as ctrl">
+        <h3>Opponents:</h3>
+        <ul>
+            <li ng-repeat="person in personsAI.persons | orderBy:'firstName'">{{person.firstName}} {{person.lastName}} (lvl {{person.level}})</li>
+        </ul>
+    </div>
+
 </body>
 </html>

@@ -369,7 +369,7 @@ li {
     min-height: 0px !important;
 }
 
-#MessageText {
+#MessageText, #WebsiteURL, #Text {
     width: 100%;
     resize: vertical;
 }
@@ -802,6 +802,15 @@ p .textSpaced {
     cursor: pointer;
     padding: 4px;
     line-height: 2.5em;
+}
+
+.buttonSetBio {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    line-height: 30px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .on {background-color: lightgreen;}

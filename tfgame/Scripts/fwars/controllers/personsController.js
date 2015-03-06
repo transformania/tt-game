@@ -1,31 +1,11 @@
 ﻿function PersonsController($scope) {
 
-    //$scope.persons = [
-    //    { name: 'Dave', city: 'Memphis' }, { name: 'Sam', city: 'Troy' }, { name: 'Elijah', city: 'Hamburg' }
+    $scope.personsPlayer = new PersonGroup();
+    $scope.personsAI = new PersonGroup();
 
-    //];
-
-    var p1 = new PersonGroup();
-
-    var person1 = new Person('Alice', 'Magerson');
-    person1.levelUp();
-    person1.levelUp();
-    var person2 = new Person('Bob', 'Marley');
-    var person3 = new Person('Argoyle', 'Mauler');
-    var person4 = new Person('Ruby', 'Lilia');
-    person4.levelUp();
-    person4.levelUp();
-    person4.levelUp();
-
-    p1.addPerson(person1);
-    p1.addPerson(person2);
-    p1.addPerson(person3);
-    p1.addPerson(person4);
-
-    $scope.personsPlayer = p1;
-
-    var p2 = new PersonGroup();
-
+    $scope.startVisible = true;
+    $scope.fightVisible = false;
+  
     var person11 = new Person('Leah', 'Logarts');
     person11.levelUp();
     person11.levelUp();
@@ -38,14 +18,45 @@
     person22.levelUp();
     person22.levelUp();
 
-    p2.addPerson(person11);
-    p2.addPerson(person22);
-    p2.addPerson(person33);
-    p2.addPerson(person44);
-    p2.addPerson(person55);
-    p2.addPerson(person66);
+    $scope.personsAI.addPerson(person11);
+     $scope.personsAI.addPerson(person22);
+     $scope.personsAI.addPerson(person33);
+     $scope.personsAI.addPerson(person44);
+     $scope.personsAI.addPerson(person55);
+     $scope.personsAI.addPerson(person66);
+
+     var welcome = new Log("Welcome!");
+
+     $scope.logs = [];
+
+     $scope.logs.push(welcome);
 
 
-    $scope.personsAI = p2;
+    $scope.fight = function () {
+
+        var fightMsg = new Log("Fight started!");
+        $scope.logs.push(fightMsg);
+
+        var newLogs = $scope.personsPlayer.fightGroup($scope.personsAI);
+
+        for (var i = 0; i < newLogs.length; i++) {
+            $scope.logs.push(newLogs[i]);
+        }
+
+    }
+
+    $scope.addPlayerAndStart = function (firstName, lastName) {
+        var newbie = new Person(firstName, lastName, "Fashion Witch");
+        $scope.personsPlayer.addPerson(newbie);
+
+        var welcome = new Log(newbie.fullName() + " has founded a new covenant!");
+
+        $scope.logs.push(welcome);
+
+        $scope.startVisible = false;
+        $scope.fightVisible = true;
+    }
+
+
 
 }

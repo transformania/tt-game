@@ -1,55 +1,27 @@
-﻿$(document).ready(function () {
+﻿personIdNext = 0;
+logsIdNext = 0;
+logs = [];
 
-    var p1 = new PersonGroup();
+var gameStatus = "";
 
-    var person1 = new Person('Alice', 'Magerson');
-    person1.levelUp();
-    person1.levelUp();
-    var person2 = new Person('Bob', 'Marley');
-    var person3 = new Person('Argoyle', 'Mauler');
-    var person4 = new Person('Ruby', 'Lilia');
-    person4.levelUp();
-    person4.levelUp();
-    person4.levelUp();
-
-    p1.addPerson(person1);
-    p1.addPerson(person2);
-    p1.addPerson(person3);
-    p1.addPerson(person4);
-
-
-    var p2 = new PersonGroup();
-
-    var person11 = new Person('Leah', 'Logarts');
-    person11.levelUp();
-    person11.levelUp();
-    var person22 = new Person('Gary', 'Fadi');
-    var person33 = new Person('Goliath', 'Bads');
-    var person44 = new Person('Sassa', 'Fraut');
-    var person55 = new Person('Berrie', 'Vasta');
-    var person66 = new Person('Holas', 'Shoes');
-    person22.levelUp();
-    person22.levelUp();
-    person22.levelUp();
-
-    p2.addPerson(person11);
-    p2.addPerson(person22);
-    p2.addPerson(person33);
-    p2.addPerson(person44);
-    p2.addPerson(person55);
-    p2.addPerson(person66);
-
-    p1.fightGroup(p2);
-
-    console.log(p1);
-    console.log(p2);
-
-
-    // var fightResult = person1.fight(person2);
-
+$(document).ready(function () {
 
 
 });
+
+// --------------------- LOG --------------------
+
+var Log = function (message, outcome) {
+
+    if (typeof outcome === undefined) {
+        outcome = "";
+    }
+
+    this.id = logsIdNext;
+    logsIdNext++;
+    this.message = message;
+    this.outcome = outcome;
+}
 
 // --------------------- PERSON GROUP --------------------
 
@@ -75,9 +47,11 @@ PersonGroup.prototype.fightGroup = function (attackingGroup) {
 
     var max = this.persons.length;
 
-    if (attackingGroup.length > max) {
-        max = attackingGroup.length;
+    if (attackingGroup.persons.length > max) {
+        max = attackingGroup.persons.length;
     }
+
+    var logMessages = [];
 
     for (var i = 0; i < max; i++) {
 
@@ -86,12 +60,11 @@ PersonGroup.prototype.fightGroup = function (attackingGroup) {
             var p2target = attackingGroup.getRandomPerson();
             var fightResult = this.persons[i].fight(p2target);
 
-            console.log("g1 attacking");
-            console.log(fightResult);
-
-            if (fightResult == "win") {
+            if (fightResult.outcome == "win") {
                 attackingGroup.removePerson(p2target);
             }
+
+            logMessages.push(fightResult);
 
         } catch (err) {
 
@@ -102,12 +75,14 @@ PersonGroup.prototype.fightGroup = function (attackingGroup) {
             var p1target = this.getRandomPerson();
             var fightResult2 = attackingGroup.persons[i].fight(p1target);
 
-            console.log("g2 attacking");
-            console.log(fightResult2);
+          //  logs.push(fightResult);
 
-            if (fightResult2 == "win") {
+            if (fightResult2.outcome == "win") {
                 this.removePerson(p1target);
             }
+
+            logMessages.push(fightResult2);
+
         } catch (err) {
 
         }
@@ -115,20 +90,38 @@ PersonGroup.prototype.fightGroup = function (attackingGroup) {
 
     }
 
-
+  
+    return logMessages;
 
 };
 
 // --------------------- PERSON ----------------------
 
 // constructor and model
-var Person = function (firstName, lastName) {
+var Person = function (firstName, lastName, type) {
+
+    this.id = personIdNext;
     this.firstName = firstName;
     this.lastName = lastName;
     this.level = 1;
-    this.type = 'Male Civilian';
-    this.status = 'alive';
+  
+    this.status = 'ok';
     this.xp = 0;
+    this.health = 5;
+
+    // set type
+    if (type === undefined) {
+        this.type = 'Male Civilian';
+    } else {
+        this.type = type;
+    }
+
+    // set health based on form
+    var formStats = formStatsMap[this.type];
+    this.health = formStats.baseHP;
+
+    personIdNext++;
+
 };
 
 // methods
@@ -142,26 +135,62 @@ Person.prototype.levelUp = function () {
 
 Person.prototype.fight = function (opponent) {
 
-    var roll = Math.random();
-    var levelDiff = this.level - opponent.level;
+    var result = "" + this.fullName() + ' [lvl ' + this.level + ' ' + this.type +  '] fighting ' + opponent.fullName() + ' [lvl ' + opponent.level + ' ' + opponent.type + '].';
 
-    if (levelDiff <= 0) {
-        levelDiff = 0;
+    var formStatsAttacker = formStatsMap[this.type];
+    var formStatsDefender = formStatsMap[opponent.type];
+
+    console.log(formStatsAttacker);
+    console.log(formStatsDefender);
+
+    var damage = formStatsAttacker.seductionAttack - formStatsDefender.seductionDefense;
+
+    console.log(damage);
+
+    if (damage < 1) {
+        damage = 1;
     }
 
-    rollNeeded = levelDiff * .2 + .05;
+    result += '  ' + this.fullName() + ' dealt ' + damage + ' damage.';
+    opponent.health -= damage;
 
-    console.log(this.fullName() + '(' + this.level + ') fighting ' + opponent.fullName() + '(' + opponent.level + ') with roll ' + roll + '(needs < ' + rollNeeded + ' )');
+    //  rollNeeded = levelDiff * .2 + .05;
 
-    if (roll < rollNeeded) {
-        opponent.status = 'dead';
+    if (opponent.health <= 0) {
+        opponent.health = 0;
+        outcome = "win";
+        opponent.status = 'defeated';
         this.xp++;
-        return "win";
+        result += "  VICTORY!  " + opponent.fullName() + " was turned into a pair of panties.";
     } else {
-        return "No result.";
+      
+        outcome = "";
     }
+
+    var resultLog = new Log(result, outcome);
+
+    return resultLog;
 
 };
 
-// ---------------------------------------------
+// ----------------- FORM TYPE STATICS ------------------
+    
 
+// ----------------- FORM TYPE MAP ------------------
+var formStatsMap = {};
+
+formStatsMap['Male Civilian'] = {
+    'baseHP': 1,
+    'strengthAttack': 0,
+    'strengthDefense': 0,
+    'seductionAttack': 0,
+    'seductionDefense': 0,
+};
+
+formStatsMap['Fashion Witch'] = {
+    'baseHP': 50,
+    'strengthAttack': 1,
+    'strengthDefense': 0,
+    'seductionAttack': 3,
+    'seductionDefense': 3,
+};

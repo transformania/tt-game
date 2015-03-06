@@ -16,29 +16,44 @@
 </head>
 <body ng-controllers="PersonsController">
     <h1>Wars</h1>
+   
+    <div data-ng-controller="PersonsController as ctrl">
 
-    <div ng-hide="isHidden">
-        <span> First name:  <input type="text" id="nameBoxFirst" ng-model="nameFirst" /></span>
-        <span> Last name: <input type="text" id="nameBoxLast" ng-model="nameLast" /></span><br />
-        <button ng-click="nameFirst='Bob'">Recruit</button>
-        <span>Name: {{nameFirst}}  {{nameLast}}</span>
+        <div ng-show="startVisible">
+            <p>What is your name?</p>
+            <span> First name:  <input type="text" id="nameBoxFirst" ng-model="nameFirst" /></span>
+            <span> Last name: <input type="text" id="nameBoxLast" ng-model="nameLast" /></span><br />
+            <button ng-click="addPlayerAndStart(nameFirst, nameLast)">Join</button>
+            <span>Name: {{nameFirst}}  {{nameLast}}</span>
 
-    </div>
+        </div>
 
-    <span>Hide: <input type="checkbox" ng-model="isHidden" /></span>
+        @*<span>Hide: <input type="checkbox" ng-model="isHidden" /></span>*@
 
-    <div class="container" data-ng-controller="PersonsController as ctrl">
-        <h3>Your members:</h3>
-        <ul>
-            <li ng-repeat="person in personsPlayer.persons | orderBy:'firstName'">{{person.firstName}} {{person.lastName}} (lvl {{person.level}})</li>
-        </ul>
-    </div>
+        <div class="container">
+            <h3>Your members:</h3>
+            <ul>
+                <li ng-repeat="person in personsPlayer.persons | orderBy:'firstName'">{{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}] [{{person.health}} HP]</li>
+            </ul>
+        </div>
 
-    <div class="container" data-ng-controller="PersonsController as ctrl">
-        <h3>Opponents:</h3>
-        <ul>
-            <li ng-repeat="person in personsAI.persons | orderBy:'firstName'">{{person.firstName}} {{person.lastName}} (lvl {{person.level}})</li>
-        </ul>
+        <div class="container">
+            <h3>Opponents:</h3>
+            <ul>
+                <li ng-repeat="person in personsAI.persons | orderBy:'firstName'">{{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}] [{{person.health}} HP]</li>
+            </ul>
+        </div>
+
+        <button ng-click="fight()" ng-show="fightVisible">Fight</button>
+
+
+        <div id="log">
+            <p>Recent:</p>
+            <ul>
+                <li ng-repeat="log in logs" ng-bind-html-unsafe="item.html">{{log.message}}</li>
+            </ul>
+        </div>
+
     </div>
 
 </body>

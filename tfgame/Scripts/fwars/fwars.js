@@ -1,5 +1,6 @@
 ﻿personIdNext = 0;
 logsIdNext = 0;
+itemIdNext = 0;
 logs = [];
 
 var gameStatus = "";
@@ -8,6 +9,15 @@ $(document).ready(function () {
 
 
 });
+
+// --------------------- ITEM --------------------
+
+var Item = function (type) {
+    this.type = type;
+    this.id = itemIdNext;
+    itemIdNext++;
+}
+
 
 // --------------------- LOG --------------------
 
@@ -107,7 +117,6 @@ var Person = function (firstName, lastName, type) {
   
     this.status = 'ok';
     this.xp = 0;
-    this.health = 5;
 
     // set type
     if (type === undefined) {
@@ -118,6 +127,11 @@ var Person = function (firstName, lastName, type) {
 
     // set health based on form
     var formStats = formStatsMap[this.type];
+    this.health = formStats.baseHP;
+
+    this.items = [];
+    this.finishingSpells = [];
+
     this.health = formStats.baseHP;
 
     personIdNext++;
@@ -133,19 +147,66 @@ Person.prototype.levelUp = function () {
     this.level++;
 };
 
+Person.prototype.giveItem = function (item) {
+    this.items.push(item);
+};
+
+
+Person.prototype.getMaxHP = function () {
+    var formStats = formStatsMap[this.type];
+
+    var maxHP = formStats.baseHP;
+
+    // get stats from items
+    for (var i = 0; i < this.items.length; i++) {
+        var itemForm = itemStatsMap[this.items[i].type];
+        maxHP += itemForm.bonusHP;
+    }
+
+    return maxHP;
+};
+
 Person.prototype.fight = function (opponent) {
 
     var result = "" + this.fullName() + ' [lvl ' + this.level + ' ' + this.type +  '] fighting ' + opponent.fullName() + ' [lvl ' + opponent.level + ' ' + opponent.type + '].';
 
+    // get stats from form
     var formStatsAttacker = formStatsMap[this.type];
     var formStatsDefender = formStatsMap[opponent.type];
 
-    console.log(formStatsAttacker);
-    console.log(formStatsDefender);
+    var damageFromForm = formStatsAttacker.seductionAttack - formStatsDefender.seductionDefense;
 
-    var damage = formStatsAttacker.seductionAttack - formStatsDefender.seductionDefense;
+    var extraDamageFromGear = 0;
 
+
+    // get stats from items
+    for (var i = 0; i < this.items.length; i++) {
+        var itemForm = itemStatsMap[this.items[i].type];
+        extraDamageFromGear += itemForm.seductionAttack;
+    }
+
+    // get stats from items
+  //  for (var i = 0; i < opponent.items.length; i++) {
+     //   var itemForm = itemStatsMap[opponent.items[i].type];
+     //   damage -= itemForm.seductionDefense;
+    //}
+
+  //  console.log("damage from items:");
+  //  console.log(extraDamageFromGear);
+
+
+
+    var damage = damageFromForm + extraDamageFromGear;
+
+      console.log("damage from form:");
+      console.log(damageFromForm);
+
+      console.log("damage from items:");
+      console.log(extraDamageFromGear);
+
+   console.log("damage total:");
     console.log(damage);
+
 
     if (damage < 1) {
         damage = 1;
@@ -192,5 +253,68 @@ formStatsMap['Fashion Witch'] = {
     'strengthAttack': 1,
     'strengthDefense': 0,
     'seductionAttack': 3,
-    'seductionDefense': 3,
+    'seductionDefense': 0,
 };
+
+formStatsMap['Witchling'] = {
+    'baseHP': 5,
+    'strengthAttack': 1,
+    'strengthDefense': 0,
+    'seductionAttack': 2,
+    'seductionDefense': 0,
+};
+
+
+// ----------------- ITEM TYPE MAP ------------------
+
+var itemStatsMap = {};
+
+itemStatsMap['Cotton Panties'] = {
+    'bonusHP': 3,
+    'value': 5,
+    'strengthAttack': 0,
+    'strengthDefense': 0,
+    'seductionAttack': 1,
+    'seductionDefense': 1,
+};
+
+itemStatsMap['Latex Catsuit'] = {
+    'bonusHP': 3,
+    'value': 5,
+    'strengthAttack': 0,
+    'strengthDefense': 0,
+    'seductionAttack': 1,
+    'seductionDefense': 1,
+};
+
+
+// ----------------- ATTACK TEXT MAP ---------------------
+
+var attackTextMap = {};
+
+attackTextMap['Fashion Witch'] = {
+    'texts': [
+        " makes a nasty comment about their target's hair.  ",
+        " pokes fun of her target's skin.  "
+    ],
+
+};
+
+
+attackTextMap['Witchling'] = {
+    'texts': [
+        " asdfasdfasdf.  ",
+        " asdfasdfadsf.  "
+    ],
+
+};
+
+function getRandomAttackText(formName) {
+    var texts = attackTextMap[formName];
+    console.log(texts);
+  
+    //console.log(texts.length);
+    var randIndex = Math.floor(Math.random() * texts.length);
+
+    return texts[randIndex];
+}

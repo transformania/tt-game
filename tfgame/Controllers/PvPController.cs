@@ -1062,6 +1062,26 @@ namespace tfgame.Controllers
 
             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
 
+            // assert that the player is not mind controlled and cannot pick up anything on their own
+            if (me.MindControlIsActive == true)
+            {
+
+                IEnumerable<MindControl> myExistingMCs = MindControlProcedures.GetAllMindControlsWithPlayer(me);
+
+                if (MindControlProcedures.PlayerIsMindControlledWithType(me, myExistingMCs, MindControlStatics.MindControl__Meditate) == true)
+                {
+                    TempData["Error"] = "You try to meditate but find you cannot!";
+                    TempData["SubError"] = "The moment you try and focus, your head swims with nonsensical thoughts implanted by someone partially mind controlling you!";
+                    return RedirectToAction("Play");
+                }
+                else if (MindControlProcedures.PlayerIsMindControlledWithSomeType(me, myExistingMCs) == false)
+                {
+                    // turn off mind control is the player has no more MC effects on them
+                    bool isNowFree = MindControlProcedures.ClearPlayerMindControlFlagIfOn(me);
+                    me.MindControlIsActive = false;
+                }
+            }
+
             // assert player has sufficient action points to meditate
             if (me.ActionPoints < PvPStatics.MeditateCost)
             {

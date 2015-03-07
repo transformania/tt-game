@@ -642,6 +642,27 @@ namespace tfgame.Controllers
         }
 
         [Authorize]
+        public ActionResult DeMeditateVictim(int id)
+        {
+            Player me = PlayerProcedures.GetPlayerFromMembership();
+            Player victim = PlayerProcedures.GetPlayer(id);
+
+            // run generic MC checks
+            ErrorBox errorsBox = MindControlProcedures.AssertBasicMindControlConditions(me, victim, MindControlStatics.MindControl__Meditate);
+            if (errorsBox.HasError == true)
+            {
+                TempData["Error"] = errorsBox.Error;
+                TempData["SubError"] = errorsBox.SubError;
+                return RedirectToAction("MindControlList");
+            }
+
+            BuffBox buffs = ItemProcedures.GetPlayerBuffs(victim);
+            string result = PlayerProcedures.DeMeditate(victim, me, buffs);
+
+            return RedirectToAction("Play", "PvP");
+        }
+
+        [Authorize]
         public ActionResult MoveVictimSend(int id, string to)
         {
 

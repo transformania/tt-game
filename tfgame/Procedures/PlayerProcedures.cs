@@ -695,9 +695,17 @@ namespace tfgame.Procedures
             {
                 player.Mana = player.MaxMana;
             }
+            if (player.Mana < 0)
+            {
+                player.Mana = 0;
+            }
             if (player.Health > player.MaxHealth)
             {
                 player.Health = player.MaxHealth;
+            }
+            if (player.Health < 0)
+            {
+                player.Health = 0;
             }
 
             playerRepo.SavePlayer(player);
@@ -1621,6 +1629,29 @@ namespace tfgame.Procedures
             Location here = LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == player.dbLocationName);
             string playerLogMessage = "You meditated at " + here.Name + ".";
             PlayerLogProcedures.AddPlayerLog(player.Id, playerLogMessage, false);
+
+            return result;
+
+        }
+
+        public static string DeMeditate(Player player, Player mindcontroller, BuffBox buffs) {
+            decimal meditateManaRestore = PvPStatics.MeditateManaRestoreBase + buffs.MeditationExtraMana() + player.Level;
+
+            if (meditateManaRestore < 0)
+            {
+                meditateManaRestore = 0;
+            }
+
+            PlayerProcedures.ChangePlayerActionMana(PvPStatics.MeditateCost, 0, -meditateManaRestore, player.Id);
+
+
+            string result = "Your mind partially possessed by " + mindcontroller.GetFullName() +", your head swims with strange and random thoughts implanted by your agressor, shattering your focus and leaving your mana drained.";
+          
+
+            PlayerLogProcedures.AddPlayerLog(player.Id, result, true);
+
+
+            PlayerProcedures.AddCleanseMeditateCount(player);
 
             return result;
 

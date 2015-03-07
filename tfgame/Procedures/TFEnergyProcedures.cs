@@ -518,6 +518,11 @@ namespace tfgame.Procedures
                     else if (targetForm.dbName == MindControlStatics.MindControl__Strip)
                     {
                         EffectProcedures.GivePerkToPlayer(MindControlStatics.MindControl__Strip_DebuffEffect, target);
+                    }
+                    else if (targetForm.dbName == MindControlStatics.MindControl__Meditate)
+                    {
+                        // TODO
+                        //EffectProcedures.GivePerkToPlayer(MindControlStatics.MindControl__Strip_DebuffEffect, target);
                     } 
                     
                 }

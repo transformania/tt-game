@@ -21,8 +21,8 @@
 
         <div ng-show="startVisible">
             <p>What is your name?</p>
-            <span> First name:  <input type="text" id="nameBoxFirst" ng-model="nameFirst" /></span>
-            <span> Last name: <input type="text" id="nameBoxLast" ng-model="nameLast" /></span><br />
+            <span> First name:  <input type="text" id="nameBoxFirst" ng-model="nameFirst" ng-init="nameFirst='Nina'" /></span>
+            <span> Last name: <input type="text" id="nameBoxLast" ng-model="nameLast" ng-init="nameLast='Bryker'" /></span><br />
             <button ng-click="addPlayerAndStart(nameFirst, nameLast)">Join</button>
             <span>Name: {{nameFirst}}  {{nameLast}}</span>
 
@@ -33,14 +33,14 @@
         <div class="container">
             <h3>Your members:</h3>
             <ul>
-                <li ng-repeat="person in personsPlayer.persons | orderBy:'firstName'">{{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}] [{{person.health}} HP]</li>
+                <li ng-repeat="person in personsPlayer.persons | orderBy:'firstName'">{{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}] [{{person.health}}/{{person.getMaxHP()}} HP]</li>
             </ul>
         </div>
 
         <div class="container">
             <h3>Opponents:</h3>
             <ul>
-                <li ng-repeat="person in personsAI.persons | orderBy:'firstName'">{{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}] [{{person.health}} HP]</li>
+                <li ng-repeat="person in personsAI.persons | orderBy:'firstName'">{{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}][{{person.health}}/{{person.getMaxHP()}} HP]</li>
             </ul>
         </div>
 

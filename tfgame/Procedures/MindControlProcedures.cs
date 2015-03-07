@@ -86,6 +86,10 @@ namespace tfgame.Procedures
             {
                 return "Take a Load Off!";
             }
+            else if (input == MindControlStatics.MindControl__Meditate)
+            {
+                return "Am I Bugging You?";
+            }
             else
             {
                 return "ERROR:  UNKNOWN";
@@ -173,6 +177,10 @@ namespace tfgame.Procedures
             else if (type == MindControlStatics.MindControl__Strip)
             {
                 return MindControlStatics.MindControl__Strip_Limit;
+            }
+            else if (type == MindControlStatics.MindControl__Meditate)
+            {
+                return MindControlStatics.MindControl__Meditate_Limit;
             }
 
             return 0;

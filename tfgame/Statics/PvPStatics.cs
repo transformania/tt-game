@@ -236,6 +236,10 @@ namespace tfgame.Statics
         public const string MindControl__Strip = "form_(MC-Strip)_Martiandawn";
         public const int MindControl__Strip_Limit = 1;
         public const string MindControl__Strip_DebuffEffect = "effect_Mind_Control_-_Strip_Judoo";
+
+        public const string MindControl__Meditate = "form_(MC-Meditation)_Duhad";
+        public const int MindControl__Meditate_Limit = 1;
+        public const string MindControl__Meditate_DebuffEffect = "";
     }
 
     public static class InanimateXPStatics

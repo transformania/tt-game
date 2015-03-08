@@ -871,6 +871,9 @@
     <Content Include="Scripts\boxesResize.js" />
     <Content Include="Scripts\fwars\controllers\personsController.js" />
     <Content Include="Scripts\fwars\fwars.js" />
+    <Content Include="Scripts\fwars\models\item.js" />
+    <Content Include="Scripts\fwars\models\log.js" />
+    <Content Include="Scripts\fwars\models\person.js" />
     <Content Include="Scripts\jquery.rotate.js" />
     <Content Include="Scripts\jQueryRotateCompressed.js" />
     <Content Include="XMLs\BossSummonText\BimboBoss.txt" />

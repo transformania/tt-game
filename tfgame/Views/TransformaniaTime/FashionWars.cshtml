@@ -8,6 +8,9 @@
 <head>
     <script src="~/Scripts/jquery-2.1.0.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
+    <script src="~/Scripts/fwars/models/person.js"></script>
+    <script src="~/Scripts/fwars/models/item.js"></script>
+    <script src="~/Scripts/fwars/models/log.js"></script>
     <script src="~/Scripts/fwars/fwars.js"></script>
     <script src="~/Scripts/fwars/controllers/personsController.js"></script>
 
@@ -44,17 +47,50 @@
             </ul>
         </div>
 
+
+        <div class="container">
+            <h3>Submissive Opponents:</h3>
+            <ul>
+                <li ng-repeat="person in defeatedAI.persons | orderBy:'firstName'">{{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}][{{person.health}}/{{person.getMaxHP()}} HP]</li>
+            </ul>
+        </div>
+
+        <div class="container">
+            <h3>Submissive Allies:</h3>
+            <ul>
+                <li ng-repeat="person in defeatedPlayer.persons | orderBy:'firstName'">{{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}][{{person.health}}/{{person.getMaxHP()}} HP]</li>
+            </ul>
+        </div>
+
         <button ng-click="fight()" ng-show="fightVisible">Fight</button>
 
 
         <div id="log">
-            <p>Recent:</p>
             <ul>
                 <li ng-repeat="log in logs" ng-bind-html-unsafe="item.html">{{log.message}}</li>
+            </ul>
+        </div>
+
+        <div id="unequippedItems">
+            <h3>New items from fight:</h3>
+            <ul>
+                <li ng-repeat="item in newItems.items">{{item.type}}</li>
             </ul>
         </div>
 
     </div>
 
 </body>
+
+
+
 </html>
+
+<style>
+    #log {
+        height: 300px;
+        border: 1px solid black;
+        width: 100%;
+        overflow: scroll;
+    }
+</style>

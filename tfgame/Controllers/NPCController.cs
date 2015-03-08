@@ -659,6 +659,10 @@ namespace tfgame.Controllers
             BuffBox buffs = ItemProcedures.GetPlayerBuffs(victim);
             string result = PlayerProcedures.DeMeditate(victim, me, buffs);
 
+            MindControlProcedures.AddCommandUsedToMindControl(me, victim, MindControlStatics.MindControl__Meditate);
+
+
+            TempData["Result"] = "You force " + victim.GetFullName() + " to meditate while filling their mind with nonsense instead of relaxation, lowering their mana instead of increasing it!";
             return RedirectToAction("Play", "PvP");
         }
 

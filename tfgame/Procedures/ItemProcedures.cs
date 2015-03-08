@@ -1329,7 +1329,7 @@ namespace tfgame.Procedures
                 }
 
                 // item has custom sell value set and is consumable, use its sell override amount
-                if (item.Item.ItemType == "consumable" && item.Item.MoneyValueSell != null && item.Item.MoneyValueSell > 0)
+                if (item.Item.ItemType == "consumable" && item.Item.MoneyValueSell > 0)
                 {
                     price = item.Item.MoneyValueSell;
                 }

@@ -568,11 +568,9 @@ namespace tfgame.Procedures
             if (info.TakeoverAmount <= 0)
             {
 
-                if (info.CovenantId > 0)
-                {
-                    string covLogLoser= player.GetFullName() + " enchanted " + location.Name + ", stealing it out of the covenant's influence!";
-                    CovenantProcedures.WriteCovenantLog(covLogLoser, info.CovenantId, true);
-                }
+
+
+            //    int oldCovId = info.CovenantId;
 
 
                 info.CovenantId = player.Covenant;
@@ -596,6 +594,8 @@ namespace tfgame.Procedures
                 string covLogWinner = player.GetFullName() + " enchanted " + location.Name + " and has claimed it for this covenant.";
                 CovenantProcedures.WriteCovenantLog(covLogWinner, myCov.Id, true);
 
+                
+
             }
 
             // otherwise the location is controlled by someone
@@ -607,7 +607,7 @@ namespace tfgame.Procedures
                     info.TakeoverAmount += takeoverAmount;
                     Covenant cov = covRepo.Covenants.FirstOrDefault(c => c.Id == player.Covenant);
                     output = "Your enchantment reinforces this location by " + (takeoverAmount) + ".  New influence level is " + info.TakeoverAmount + " for your covenant, " + cov.Name + ".  (+" + XPGain + " XP)</b>";
-                    PlayerProcedures.GiveXP(player.Id, 3);
+                   
                 }
                 else
                 {
@@ -616,13 +616,22 @@ namespace tfgame.Procedures
 
                     if (info.TakeoverAmount <= 0)
                     {
+
+                        // notify old covenant who stole the location and their covenant
+                        if (info.CovenantId > 0)
+                        {
+                            CovenantViewModel attackingCov = CovenantProcedures.GetCovenantViewModel(player.Covenant);
+                            string covLogLoser = player.GetFullName() + " of " + attackingCov.dbCovenant.Name + " enchanted " + location.Name + ", removing it from this covenant's influence!";
+                            CovenantProcedures.WriteCovenantLog(covLogLoser, info.CovenantId, true);
+                        }
+
                         info.CovenantId = -1;
                         info.LastTakeoverTurn = PvPWorldStatProcedures.GetWorldTurnNumber();
                     }
 
                     if (cov != null)
                     {
-                        output = "You dispell the enchantment at this location by " + takeoverAmount + ".  New influence level is " + info.TakeoverAmount + " for the location's existing controlled, " + cov.Name + ".  (+" + XPGain + " XP)</b>";
+                        output = "You dispell the enchantment at this location by " + takeoverAmount + ".  New influence level is " + info.TakeoverAmount + " for the location's existing controller, " + cov.Name + ".  (+" + XPGain + " XP)</b>";
                     }
                     else
                     {
@@ -655,6 +664,7 @@ namespace tfgame.Procedures
 
             repo.SaveLocationInfo(info);
             PlayerProcedures.GiveXP(player.Id, XPGain);
+            PlayerLogProcedures.AddPlayerLog(player.Id, output, false);
 
             return output;
         }

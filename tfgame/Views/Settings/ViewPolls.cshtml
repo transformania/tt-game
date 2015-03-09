@@ -28,19 +28,20 @@
 
     <ul>
         <li> @Html.ActionLink("Tell us about yourself!", "ViewPoll", "Settings", new { id = 2 }, null)</li>
-        <li> @Html.ActionLink("What features would you like to see be added to the game the most?  How did you feel about Alpha Round 12's turn length?", "ViewPoll", "Settings", new { id = 1 }, null)</li>
     </ul>
 
     <h2>Open Poll Results</h2>
 
     <ul>
         <li>@Html.ActionLink("Tell us about yourself!", "PollResults", "Settings", new { id = 2 }, null)</li>
-        <li>@Html.ActionLink("What features would you like to see be added to the game the most?  How did you feel about Alpha Round 12's turn length?", "PollResults", "Settings", new { id = 1 }, null)</li>
+
     </ul>
 
     <h2>Closed Poll Results</h2>
 
-    <p class="bad text-center">No closed polls</p>
+    <ul>
+        <li>@Html.ActionLink("What features would you like to see be added to the game the most?  How did you feel about Alpha Round 12's turn length?", "PollResults", "Settings", new { id = 1 }, null)</li>
+    </ul>
 
     <ul>
         <li></li>

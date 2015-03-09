@@ -25,7 +25,7 @@
     </div><!-- /.container-fluid -->
 </nav>
 
-<div class="specialBox"><b>XP Leaderboard -- Alpha Round 16</b><br />
+<div class="specialBox"><b>XP Leaderboard -- Alpha Round 17</b><br />
     These are the most experienced magic casters in the town</div>
 
 <div class="containerInner">
@@ -57,7 +57,7 @@
                     <td>
                         @Html.ActionLink(p.GetFullName(), "LookAtPlayer", "PvP", new { id = p.Id }, null)
                         <span class="icon-@p.Gender"></span>
-                        @*@CharactersHere.PrintRPIcon(p)*@
+                        @CharactersHere.PrintPvPIcon(p)
                     </td>
                     <td class="mobile">
                         @CharactersHere.GetCovenantInfoShort(p)

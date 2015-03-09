@@ -1,14 +1,9 @@
-﻿@model IEnumerable<tfgame.dbModels.Models.PollEntry>
-
-<nav class="navbar navbar-default outsideContainer navbarTT2">
+﻿<nav class="navbar navbar-default outsideContainer navbarTT2">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
                 <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
             </button>
         </div>
 
@@ -16,131 +11,284 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
                 <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
-                <li>@Html.ActionLink("View All Polls", "ViewPolls", "Settings")</li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
-<div class="containerInner text-center">
 
-    @{
-        decimal totalCount = Model.Count();
 
-        decimal Num1_Choice1 = Model.Where(m => m.Num1 == 1).Count() / totalCount * 100;
-        decimal Num1_Choice2 = Model.Where(m => m.Num1 == 2).Count() / totalCount * 100;
-        decimal Num1_Choice3 = Model.Where(m => m.Num1 == 3).Count() / totalCount * 100;
-        decimal Num1_Choice4 = Model.Where(m => m.Num1 == 4).Count() / totalCount * 100;
-        decimal Num1_Choice5 = Model.Where(m => m.Num1 == 5).Count() / totalCount * 100;
-        decimal Num1_Choice6 = Model.Where(m => m.Num1 == 6).Count() / totalCount * 100;
-        decimal Num1_Choice7 = Model.Where(m => m.Num1 == 7).Count() / totalCount * 100;
 
-        decimal Num2_Choice1 = Model.Where(m => m.Num2 == 1).Count() / totalCount * 100;
-        decimal Num2_Choice2 = Model.Where(m => m.Num2 == 2).Count() / totalCount * 100;
-        decimal Num2_Choice3 = Model.Where(m => m.Num2 == 3).Count() / totalCount * 100;
-        decimal Num2_Choice4 = Model.Where(m => m.Num2 == 4).Count() / totalCount * 100;
-        decimal Num2_Choice5 = Model.Where(m => m.Num2 == 5).Count() / totalCount * 100;
-        decimal Num2_Choice6 = Model.Where(m => m.Num2 == 6).Count() / totalCount * 100;
-        decimal Num2_Choice7 = Model.Where(m => m.Num2 == 7).Count() / totalCount * 100;
+<div class="containerInner">
+    <div style="" class="containerInner text-center">
 
-        decimal Num3_Choice1 = Model.Where(m => m.Num3 == 1).Count() / totalCount * 100;
-        decimal Num3_Choice2 = Model.Where(m => m.Num3 == 2).Count() / totalCount * 100;
-        decimal Num3_Choice3 = Model.Where(m => m.Num3 == 3).Count() / totalCount * 100;
-        decimal Num3_Choice4 = Model.Where(m => m.Num3 == 4).Count() / totalCount * 100;
-        decimal Num3_Choice5 = Model.Where(m => m.Num3 == 5).Count() / totalCount * 100;
-        decimal Num3_Choice6 = Model.Where(m => m.Num3 == 6).Count() / totalCount * 100;
-        decimal Num3_Choice7 = Model.Where(m => m.Num3 == 7).Count() / totalCount * 100;
 
-        decimal Num4_Choice1 = Model.Where(m => m.Num4 == 1).Count() / totalCount * 100;
-        decimal Num4_Choice2 = Model.Where(m => m.Num4 == 2).Count() / totalCount * 100;
-        decimal Num4_Choice3 = Model.Where(m => m.Num4 == 3).Count() / totalCount * 100;
-        decimal Num4_Choice4 = Model.Where(m => m.Num4 == 4).Count() / totalCount * 100;
-        decimal Num4_Choice5 = Model.Where(m => m.Num4 == 5).Count() / totalCount * 100;
 
-    }
+        <h1>What features would you like to see added the most?</h1>
 
-    <h1>What features would you like to see added the most?</h1>
+        <hr>
+        <h3>This poll received 411 responses.</h3>
 
-    <hr />
-    <h3>This poll received @Model.Count() responses.</h3>
+        <i>Percentages may not add up to 100% as all fields are optional; any remaining percent can be attributed to 'no response' entries.</i>
 
-    <i>Percentages may not add up to 100% as all fields are optional; any remaining percent can be attributed to 'no response' entries.</i>
+        <hr>
 
-    <hr />
+        <p><b>What game mechanic would you like to see added first?  (First preference)</b></p>
 
-    <p><b>What game mechanic would you like to see added first?  (First preference)</b></p>
+        <p>Questing system:  <b>22.6 %</b></p>
 
-    <p>Questing system:  <b>@Math.Round(Num1_Choice1, 1) %</b></p>
+        <p>More RP game mechanics:  <b>20.2 %</b></p>
 
-    <p>More RP game mechanics:  <b>@Math.Round(Num1_Choice2, 1) %</b></p>
+        <p>More PvP game mechanics--covenant wars, etc:  <b>1.5 %</b></p>
 
-    <p>More PvP game mechanics--covenant wars, etc:  <b>@Math.Round(Num1_Choice3, 1) %</b></p>
+        <p>1v1 Duels:  <b>4.6 %</b></p>
 
-    <p>1v1 Duels:  <b>@Math.Round(Num1_Choice4, 1) %</b></p>
+        <p>More bosses and world events:  <b>9.0 %</b></p>
 
-    <p>More bosses and world events:  <b>@Math.Round(Num1_Choice5, 1) %</b></p>
+        <p>Mind-control type transformation:  <b>24.8 %</b></p>
 
-    <p>Mind-control type transformation:  <b>@Math.Round(Num1_Choice6, 1) %</b></p>
+        <p>Absorption type transformation:  <b>16.3 %</b></p>
 
-    <p>Absorption type transformation:  <b>@Math.Round(Num1_Choice7, 1) %</b></p>
+        <hr>
 
-    <hr />
+        <p><b>What game mechanic would you like to see added first?  (Second preference)</b></p>
 
-    <p><b>What game mechanic would you like to see added first?  (Second preference)</b></p>
+        <p>Questing system:  <b>19.7 %</b></p>
 
-    <p>Questing system:  <b>@Math.Round(Num2_Choice1, 1) %</b></p>
+        <p>More RP game mechanics:  <b>16.5 %</b></p>
 
-    <p>More RP game mechanics:  <b>@Math.Round(Num2_Choice2, 1) %</b></p>
+        <p>More PvP game mechanics--covenant wars, etc:  <b>6.8 %</b></p>
 
-    <p>More PvP game mechanics--covenant wars, etc:  <b>@Math.Round(Num2_Choice3, 1) %</b></p>
+        <p>1v1 Duels:  <b>7.5 %</b></p>
 
-    <p>1v1 Duels:  <b>@Math.Round(Num2_Choice4, 1) %</b></p>
+        <p>More bosses and world events:  <b>15.1 %</b></p>
 
-    <p>More bosses and world events:  <b>@Math.Round(Num2_Choice5, 1) %</b></p>
+        <p>Mind-control type transformation:  <b>16.8 %</b></p>
 
-    <p>Mind-control type transformation:  <b>@Math.Round(Num2_Choice6, 1) %</b></p>
+        <p>Absorption type transformation:  <b>15.6 %</b></p>
 
-    <p>Absorption type transformation:  <b>@Math.Round(Num2_Choice7, 1) %</b></p>
+        <hr>
 
-    <hr />
+        <p><b>What game mechanic would you like to see added first?  (Third preference)</b></p>
 
-    <p><b>What game mechanic would you like to see added first?  (Third preference)</b></p>
+        <p>Questing system:  <b>16.1 %</b></p>
 
-    <p>Questing system:  <b>@Math.Round(Num3_Choice1, 1) %</b></p>
+        <p>More RP game mechanics:  <b>12.7 %</b></p>
 
-    <p>More RP game mechanics:  <b>@Math.Round(Num3_Choice2, 1) %</b></p>
+        <p>More PvP game mechanics--covenant wars, etc:  <b>6.8 %</b></p>
 
-    <p>More PvP game mechanics--covenant wars, etc:  <b>@Math.Round(Num3_Choice3, 1) %</b></p>
+        <p>1v1 Duels:  <b>12.9 %</b></p>
 
-    <p>1v1 Duels:  <b>@Math.Round(Num3_Choice4, 1) %</b></p>
+        <p>More bosses and world events:  <b>22.1 %</b></p>
 
-    <p>More bosses and world events:  <b>@Math.Round(Num3_Choice5, 1) %</b></p>
+        <p>Mind-control type transformation:  <b>13.9 %</b></p>
 
-    <p>Mind-control type transformation:  <b>@Math.Round(Num3_Choice6, 1) %</b></p>
+        <p>Absorption type transformation:  <b>12.7 %</b></p>
 
-    <p>Absorption type transformation:  <b>@Math.Round(Num3_Choice7, 1) %</b></p>
+        <hr>
 
-    <hr />
+        <p><b>How did you feel about the 3000 turn round?</b></p>
 
-    <p><b>How did you feel about the 3000 turn round?</b></p>
+        <p>Way too long:  <b>7.3 %</b></p>
 
-    <p>Way too long:  <b>@Math.Round(Num4_Choice1, 1) %</b></p>
+        <p>A little too long:  <b>32.4 %</b></p>
 
-    <p>A little too long:  <b>@Math.Round(Num4_Choice2, 1) %</b></p>
+        <p>Just the right length:  <b>39.7 %</b></p>
 
-    <p>Just the right length:  <b>@Math.Round(Num4_Choice3, 1) %</b></p>
+        <p>A little too short:  <b>6.8 %</b></p>
 
-    <p>A little too short:  <b>@Math.Round(Num4_Choice4, 1) %</b></p>
+        <p>Way too short:  <b>3.6 %</b></p>
 
-    <p>Way too short:  <b>@Math.Round(Num4_Choice5, 1) %</b></p>
+        <hr>
 
-    <hr />
+        <p><b>What other new features would you like to see in the game not listed above?</b></p>
 
-    <p><b>What other new features would you like to see in the game not listed above?</b></p>
+        <p>"I would like to see more interactive item/pet play. Don't get me wrong, I like that the current system is restrictive, but it feels like you don't really influence much by clicking on a button once every four hours. Also! Struggle mechanics need revisiting. It should be possible to fail to struggle out of form. Perhaps a system where struggled efforts are contested by the owner of the item?"</p><br>
+        <p>"The ability to let items temporarily turn back into a human so that one may transform them into something else."</p><br>
+        <p>"More Pet/item gameplay things!"</p><br>
+        <p>"More Map."</p><br>
+        <p>"gem slots for items to imbue and customize added effects... like 2 slots for breasts to simulate piercings, perhaps."</p><br>
+        <p>
+            "greetings.
+            ever thought about the possibility to let a transformed charachter get animate again without the need to stuggle free or re-roll ? i mean its okay the way it is right now, but a special feature for the owner of an animal / inanimte player to try to return them to there animate form would be nice, even after there soul is locked. or well, only when there soul is locked. they can't transform back on there own after there mind 'snaped', but with the help of another mage maybe."
+        </p><br>
+        <p>"I personally would like to see more PvE and RP stuff added and less PvP.  Like the covenant limit.  I believe there should be a PvE guild without that limit but cannot have any PvP/unprotected players.    PvP has been making it less and less appealing to me without stuff for PvE."</p><br>
+        <p>"Expansion on item/pet gameplay, more interactivity with items and a revamp to the way struggling is handled to make it less of a time-out from gameplay and make getting sealed against your will a threat"</p><br>
+        <p>"Cookie boss :3 &lt;3 Love you Juderp."</p><br>
+        <p>"&amp;lt;a href=&amp;quot;http://google.com&amp;quot;&amp;gt;test&amp;lt;/a&amp;gt;"</p><br>
+        <p>
+            "1) Convent-wide chatrooms.
+            2) More options (or perhaps just documented ones) for color and/or emphasis (italic/bold) in chat and mail. As is, it's difficult to keep track of multiple layers of RP.
+            3) Consider longer-lengthed mail; I have to send multiple messages 2-3 times/week.
+            4) Private body-sized chatrooms (so the items, pet, and player can all talk on there).
+            5) Have an action being emoting or speaking into the room.
+            6) Individualized description."
+        </p><br>
+        <p>"Human. Furniture. And pets being able to cast animate spells on their owner without damaging willpower."</p><br>
+        <p>
+            "permanent animate transform
+            ( the victim only can use "the classic of me" or transform into animal/inanimate )"
+        </p><br>
+        <p>
+            "The ability to become a god.
 
-    @{
-        foreach (tfgame.dbModels.Models.PollEntry e in Model.Where(p => p.String1 != null && p.String1 != ""))
-        {
-            <p>"@e.String1"</p><br />
-        }
-    }
+            They told me I could be anything I wanted, so I decided to be a god... but there is no way. You're really interfering with my life dream here, Judoo. I expect to see this remedied before the next round starts or I'm gonna be slightly cross with you."
+        </p><br>
+        <p>"some kind of more interaction while inanimate"</p><br>
+        <p>"Something more for items to do, or greater rights for higher level locked items. Such as active owner assistance during battles, interaction with other players within the room. "</p><br>
+        <p>"The ability for pets to Critically Hit with their 4 actions. Example: Critically Licking possibly an erogenous zone for more recovery than usual / Critically Headbutting for more damage."</p><br>
+        <p>"More options for what items actions items can do.  More balanced item stats. "</p><br>
+        <p>"1v1 Duels"</p><br>
+        <p>"Consumables that initiate a tf, maybe even randomized with possibility to end up inanimate. Further down this path maybe one or two special animate forms with a higher stat lining than the usual animate forms to tempt people into using that item (risk/reward) and most importantly, can't be acquired anywhere else."</p><br>
+        <p>"Achievements"</p><br>
+        <p>"Forum post later"</p><br>
+        <p>"I would love to see more to do with Items/pets and along with Absorption, that could come in useful. Say someone was absorbed into someone's breasts, they could then limit or increase their size (movement ability) depending on the Rp. But it could only be temp and have a cooldown"</p><br>
+        <p>"I'd like to see small improvements to the game interface, namely chat, and additional options for items/pets.  I'd also like to see more curses and item/form-dependent spells. But I love everything so far, so thanks!"</p><br>
+        <p>"A limited stash system at a covenant safe ground to keep items in."</p><br>
+        <p>"special abilities for some forms, (goo girls moving through drains to travel in special directions, or vampires taking mist form to instantly warp to graveyard once every 20 turns or so etc.)"</p><br>
+        <p>"Being able to self transform sometimes"</p><br>
+        <p>"Hmm the entire list pretty much covers it"</p><br>
+        <p>"That Endgame thing the one person suggested, where you give in to your new form."</p><br>
+        <p>"Transformation into public / covenant items to be used by all or the covenant. Comes with set charges based per level."</p><br>
+        <p>"animations for different parts of the transformation"</p><br>
+        <p>"I think some kind of dynamic area stuff would be cool. Like too many people were in the bar, owner comes out and turns people into bar maids to help out. Not like a boss... just an event that happens and is done. Help a girl find her dog in the park, become her dog. There's tons of ideas. (These could be risk reward too, were you chose to help these events and maybe get something cool... or lose and be changed. This way people can avoid it if they don't want there form changed)"</p><br>
+        <p>"More or varied actions for items and pets, in particular a greater role in combat - at the very least, maybe a different flair for the actions of each item or pet (replace "rub", "soothe," etc. with more colorful and form-specific actions)"</p><br>
+        <p>"Way more trap forms! AND a trap starting form"</p><br>
+        <p>"More unique world encounters. Maybe not just bosses but items in the world that interacting with too much might cause transformations.  What if every time you got that burden buff at the farm, it also put some transformation energy into turning you into a mule.  Do it too many times and it completes itself."</p><br>
+        <p>"Private chat rooms!"</p><br>
+        <p>"Better inanimate gameplay. More item/owner interaction."</p><br>
+        <p>"Wouldn't it be better to gave all player a little bit more AP per turn?? Only 10 AP-Points is a little bit low. (20 AP per turn would be nice)"</p><br>
+        <p>"Probably under RP game mechanics, but a way to pose so the people in the room all see it."</p><br>
+        <p>"More Curses, I really enjoy the one at the farm and the one at the school."</p><br>
+        <p>"A way to give items to other players, especially friends and covenant members. Too often, I've dropped an item I wanted to give and seen it disappear completely. Directly transfers would be very helpful."</p><br>
+        <p>"Suggestion for a new Perk: Arcane Seeker - If you search in an area where a spell can be learned, you are twice as likely to learn a spell as usual if you have this Perk. An interesting 'early benefit, late tradeoff' perk, much like Sharp Eye, and extra useful for people trying to fill their spellbooks."</p><br>
+        <p>"New Location: Waluigi's Mansion"</p><br>
+        <p>"Some form of area-based local chat."</p><br>
+        <p>"Alts built into user accounts - instead of separate log-ins for each character."</p><br>
+        <p>"A way to change current items/pets to another item/pet when needed.  This would take up your own attacks, Mana, and time to do such and not gain XP."</p><br>
+        <p>"Body swap!!! "</p><br>
+        <p>"A special bonus for souled items/pets similar to the perks system where the perks are now bonuses to the owner. Bonuses would vanish if the item became no longer souled (but base item level would still stay) It would let an item slowly customize it's own bonuses the higher level it attained. "</p><br>
+        <p>"I hate to say it... But more unified avatar styles would be nice..."</p><br>
+        <p>"Chance to learn a spell from it being cast on you. "</p><br>
+        <p>"Maybe when the items use their actions, the strength of the action become greater the greater the level of the item."</p><br>
+        <p>"Being able to cast on yourself, instantly transforming you for all your willpower and mana if you're out of combat for 30 minutes."</p><br>
+        <p>"After a player defeats a particular boss that they would in turn learn that bosses' unique spell"</p><br>
+        <p>"Dunno you tell me Judoo"</p><br>
+        <p>"expanded options for players who enjoy being permanent items or pets!"</p><br>
+        <p>"In regards to the inanimate transformations, perhaps some kinda dynamic that rewards a person for rescuing those trapped as an item. One that restores the person, could be a second vendor that pays with additional pvp points. "</p><br>
+        <p>"N/A"</p><br>
+        <p>"A way to tell how you can find your friends in the new round"</p><br>
+        <p>"Possibly competing NPC factions. Say, whenever a psychopath comes into contact with their enemy NPC faction they make them their priority target and vice-versa."</p><br>
+        <p>"Some item and NPC interaction beyond fight and sell, i.e. rape or sex."</p><br>
+        <p>"Sexual Encounters depending on the form you currently are."</p><br>
+        <p>"Remove AP.  Waiting isn't fun."</p><br>
+        <p>"More balance between different forms some of the forms horribly outdoes the other in every way. And some are a bit too overpowered."</p><br>
+        <p>"New location: a beach! Tropical island optional."</p><br>
+        <p>"Improved inanimate gameplay"</p><br>
+        <p>"Perhaps have the mind control force people to use specific spells or follow a specific behaviour (though for trapped cases allow a way out like the current inanimate system). Merging? Surprise environment transformation such as one triggered through interacting with something."</p><br>
+        <p>"Ways to make being an inanimate or pet more interesting."</p><br>
+        <p>"Mermaids. And Djinns."</p><br>
+        <p>"Being able to have 2 or 3 pets!"</p><br>
+        <p>"A way for players to hand off items directly to each other w/out having to drop them on the ground."</p><br>
+        <p>"More ways to be changed outside of Bosses/Psychopaths/Players. Possibly through location events/items/player items."</p><br>
+        <p>"Being able to play as fully transformed animal without being tamed instantly by anyone, along with some kind of new mechanic for them"</p><br>
+        <p>"Maybe a consumable that would let you use an animate spell on yourself.    "</p><br>
+        <p>"local room chat, and a quick, easy way to open a small chat popup for talking to a single player."</p><br>
+        <p>"The ability to transform one's self or struggle out of an animate form back into a human form, spells stacking with a friend's spells so that you can team up on psychopaths and transform them faster as a group, the ability to change your character's name when you're transformed, i.e. changing gender."</p><br>
+        <p>"I would like to get something along the lines of +5, +10, +15 AP regeneration from supporting the Patreon!"</p><br>
+        <p>
+            "Covens are becoming a larger part of the game, and it'd be neat to see an area really become theirs once their level is high enough. Maybe if a coven hits level 4, anyone approaching their spot would get a notification, followed by a message written by the owners.
+            And for trespassers - traps! Offensive furniture to catch the unwary. Maybe a submissiveness orb that regenerates once every few hours? A tar pit that keeps a single person in place for 30 minutes?"
+        </p><br>
+        <p>"Furry type transformation. Expanding on the Cow-girl idea."</p><br>
+        <p>"Slave spells - the only way to get bake to normal is by helping the user"</p><br>
+        <p>"MONSTER COCKS"</p><br>
+        <p>"update action listing for pets, current options list is confusing. (-mana, +will, -will, +mana) Why the arbitrary order?"</p><br>
+        <p>"Faster transformations against willing targets!"</p><br>
+        <p>
+            "Level System for pets and Clothes:
+            Why not implementation a level system for soul items and pets. For example:
+            Level 1 pets or clothings = 1 willpower or mana;
+            Level 2 pets or clothings = 2 willpower or mana
+            etc. etc.
+
+            So transformed players could support their owner and don't reroll their characters so often. Think that would be a good incitement to stay with your transformed player and level him up to support your owner better. The same goes for the pets.
+            "
+        </p><br>
+        <p>"More not-animate forms mechanics, more locations"</p><br>
+        <p>"Self transformations. If it's in the game I haven't found it. "</p><br>
+        <p>"Ability to transform oneself into any animate form; one of my biggest pet peeve is the need to beg other players to change me into the form I want, especially after getting tfed by a player or psycho!"</p><br>
+        <p>"Wars, doesn't have to be simply against players, but suppose the psychopaths get the idea that if they unite, or if one boss psychopath can lead a group, etc.  But the idea is for a group of random players or a covenant banding together against this threat and gaon either a few items or a buff or something like that. "</p><br>
+        <p>"that could be fun if we could see the state of our character evolving on the picture in function of the life level and the spells she took"</p><br>
+        <p>"Being able to transform yourself with a spell you know."</p><br>
+        <p>"spells you can cast on yourself. be it defensive or self transformation."</p><br>
+        <p>"As a new player coming in I'd like to see a few more NPCs to practice on before thinking of PVP, and a way to chat 'in room' in the same screen I'm on when I move into a space"</p><br>
+        <p>
+            "Items for Pets:
+            Why not making one or two slots for some items what your pet can wear. The item can give your pet some more stats or maybe a curse what the pet can cast on someone. Would be funny! "
+        </p><br>
+        <p>"Maybe a way to carry over a favorite item from round to round."</p><br>
+        <p>"Merge type transformation where players share control afterwards. (Or like being turned inanimate/pet can opt to make a new character)"</p><br>
+        <p>
+            "1.) Items and abilities to change yourself
+
+            2.) Timers until next turn show up when you are an object
+
+            3.)slightly shorter time for each turn round"
+        </p><br>
+        <p>"Sex and/or pregnancy system"</p><br>
+        <p>"Perhaps something along the lines of a "I want to be transformed" flag for players to display? "</p><br>
+        <p>"more interactions wirt clothes "</p><br>
+        <p>"Weight gain/growth/expansion type transformation"</p><br>
+        <p>"Transformations into food with options to recover small parts of the current form per turn. The person who eats the food item can only eat a bit of the food, if there is a specific mass left of the food."</p><br>
+        <p>"Epidemics"</p><br>
+        <p>"Change search feature---after you learn all the spells in the area it'll say below the search bar "You have all the spells in this location, but can continue to search here for extra items and exp." When I burn through AP at night I hate using 100+ AP just for 10 of the searches to say "you already learned all the spells here""</p><br>
+        <p>"*casting spells on self (including (advantageous) self transformation). *Shorter turns"</p><br>
+        <p>"The ability to cast spells on yourself."</p><br>
+        <p>"The ability for Items/Pets to struggle to escape there owners rather then just return to normal."</p><br>
+        <p>"nothing really"</p><br>
+        <p>"Body Swapping Spells"</p><br>
+        <p>"It would be nice to have an easy way to inspect yourself... see the text for your current form and the modifiers that it grants.  Maybe even have flavor text explaining the modifiers, rather than just the raw numbers, when looking at yourself."</p><br>
+        <p>"Covenant furniture transformations"</p><br>
+        <p>"safe zone or place/method to log out in a timely manner."</p><br>
+        <p>"A way for animate players to interact with their pets, clothes and accessories. something similar to how pets interact with their owners and the people around them. "</p><br>
+        <p>
+            "Traps. Set a high mana cost spell on the floor an much like triggered events when searching also the ability to detect traps whether through items or through spells and searching. Have it so that certain areas can't be trapped. Such as Lindella's path to prevent abuse.  etc. There's a % chance of success and a % chance of failure to cast catching you in your own trap.
+            Ability to cast inanimate spells on yourself."
+        </p><br>
+        <p>
+            "- Bigger World
+            -Slave Maker Training
+            -Fuck events"
+        </p><br>
+        <p>"A very simple feature that most people would most probably love is the ability to cast some animate spells on yourself. Perhaps at double the cost?"</p><br>
+        <p>"WAY more creatures or whatever RIGHT off the bat. Not going around... Doing nothing (I wanna solo play NOT pvp.)"</p><br>
+        <p>"How about increasing the number of characters allowed in the messages? As it is now, if I get into a decent, involved RP sometimes I have to split one message into two in order to send it!"</p><br>
+        <p>"Don't know yet, just started playing"</p><br>
+        <p>"Shorter round time.  5 minutes?  2 minutes?"</p><br>
+        <p>"A curse that forcibly takes up an opponent's gear slots."</p><br>
+        <p>"More actions for pets/items and owners to have with each other, spells can backfire on TF caster into what they are casting if misfire is very high (over 25/30%), also special scenes/interactions between players that have been transformed, super infections too, chaos invasion/hell beast's tf-ing players into more beast/demons."</p><br>
+        <p>"Character measurements that could be slowly altered over the course of the game."</p><br>
+        <p>"More PvE content in general, though I've always been biased against PvP.  "</p><br>
+        <p>"A share item feature that doesn't require dropping items on the ground."</p><br>
+        <p>"When starting over as a new character after becoming inanimate, I would like to be able to access the inanimate one for RPing.  Making a new character should make it impossible for the old one to become animate again."</p><br>
+        <p>"Physical modification spells like weight, muscles, height. Why not include variant version of transformation : (irritable bear maid/quiet bear maid/slutty bear maid) "</p><br>
+        <p>"more equin tf"</p><br>
+        <p>"A way to view which spells you don't have. A spell to turn a friend (inanimate or pet) back into their original form."</p><br>
+        <p>
+            "submission system .master/slave with perks like % of exp sub got got so master , lvl of submision/dominance which would add more options
+            master marking slave , trade , some restrictions like not seeign names (bloindfold) and so on ... yee pretty big idea would take time to plan it
+            pregnancy ? "
+        </p><br>
+        <p>
+            "Trading system between players.
+            Interact with some living objects/pets to change its "mood" or "state" so that the stats of the owner are affected differently.
+            An "arousal" meter to enhance certain spells or cause distraction for other spells.
+            An ability to learn/steal spells from the object/pet after it is owned.
+            An ability to cast certain spells on self.
+            Transform objects/pets to other objects/pets.
+            Specific descriptions for pet/objects as they are being used by the owner"
+        </p><br>
+        <p>"Maybe a TF preview option as optional so you know what your casting.  "</p><br>
+
+    </div>
 </div>

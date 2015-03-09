@@ -478,7 +478,13 @@ namespace tfgame.Controllers
         public ActionResult PollResults(int id)
         {
             IEnumerable<PollEntry> output = SettingsProcedures.GetAllPollResults(id);
-            return View("Polls/Closed/poll" + id, output);
+            return View("Polls/Read/poll" + id, output);
+        }
+
+        public ActionResult PollResultsClosed(int id)
+        {
+           // IEnumerable<PollEntry> output = SettingsProcedures.GetAllPollResults(id);
+            return View("Polls/Closed/poll" + id);
         }
 
         [Authorize]

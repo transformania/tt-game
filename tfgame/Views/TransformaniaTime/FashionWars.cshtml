@@ -33,49 +33,54 @@
 
         @*<span>Hide: <input type="checkbox" ng-model="isHidden" /></span>*@
 
-        <div class="container">
-            <h3>Your members:</h3>
-            <ul>
-                <li ng-repeat="person in personsPlayer.persons | orderBy:'firstName'">{{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}] [{{person.health}}/{{person.getMaxHP()}} HP]</li>
-            </ul>
-        </div>
+        <div ng-show="mainGame">
 
-        <div class="container">
-            <h3>Opponents:</h3>
-            <ul>
-                <li ng-repeat="person in personsAI.persons | orderBy:'firstName'">{{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}][{{person.health}}/{{person.getMaxHP()}} HP]</li>
-            </ul>
-        </div>
+            <div class="container">
+                <h3>Your members:</h3>
+                <ul>
+                    <li ng-repeat="person in personsPlayer.persons | orderBy:'firstName'">{{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}] [{{person.health}}/{{person.getMaxHP()}} HP]</li>
+                </ul>
+            </div>
 
-
-        <div class="container">
-            <h3>Submissive Opponents:</h3>
-            <ul>
-                <li ng-repeat="person in defeatedAI.persons | orderBy:'firstName'">{{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}][{{person.health}}/{{person.getMaxHP()}} HP]</li>
-            </ul>
-        </div>
-
-        <div class="container">
-            <h3>Submissive Allies:</h3>
-            <ul>
-                <li ng-repeat="person in defeatedPlayer.persons | orderBy:'firstName'">{{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}][{{person.health}}/{{person.getMaxHP()}} HP]</li>
-            </ul>
-        </div>
-
-        <button ng-click="fight()" ng-show="fightVisible">Fight</button>
+            <div class="container">
+                <h3>Opponents:</h3>
+                <ul>
+                    <li ng-repeat="person in personsAI.persons | orderBy:'firstName'">{{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}][{{person.health}}/{{person.getMaxHP()}} HP]</li>
+                </ul>
+            </div>
 
 
-        <div id="log">
-            <ul>
-                <li ng-repeat="log in logs" ng-bind-html-unsafe="item.html">{{log.message}}</li>
-            </ul>
-        </div>
+            <div class="container">
+                <h3>Submissive Opponents:</h3>
+                <ul>
+                    <li ng-repeat="person in defeatedAI.persons | orderBy:'firstName'">{{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}][{{person.health}}/{{person.getMaxHP()}} HP]</li>
+                </ul>
+            </div>
 
-        <div id="unequippedItems">
-            <h3>New items from fight:</h3>
-            <ul>
-                <li ng-repeat="item in newItems.items">{{item.type}}</li>
-            </ul>
+            <div class="container">
+                <h3>Submissive Allies:</h3>
+                <ul>
+                    <li ng-repeat="person in defeatedPlayer.persons | orderBy:'firstName'">{{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}][{{person.health}}/{{person.getMaxHP()}} HP]</li>
+                </ul>
+            </div>
+
+            <div id="unequippedItems">
+                <h3>New items from fight:</h3>
+                <ul>
+                    <li ng-repeat="item in newItems.items">{{item.type}} {{item.getVictimName()}}</li>
+                </ul>
+            </div>
+
+            <button ng-click="startFight()" ng-show="startFightVisible">Begin Fight</button>
+            <button ng-click="fight()" ng-show="continueFightVisible">Continue Fight (Round {{turnsSinceCombatStart}})</button>
+            <button ng-click="aftermath()" ng-show="fightAftermathVisible">View Fight Aftermath</button>
+
+            <div id="log">
+                <p ng-repeat="log in logs" ng-bind-html-unsafe="log.html">
+                    {{log.message}}
+                </p>
+            </div>
+
         </div>
 
     </div>
@@ -92,5 +97,10 @@
         border: 1px solid black;
         width: 100%;
         overflow: scroll;
+    }
+
+    #id li {
+        margin-top: 5px;
+        margin-bottom: 5px;
     }
 </style>

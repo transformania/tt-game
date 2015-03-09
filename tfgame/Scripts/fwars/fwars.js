@@ -69,27 +69,31 @@ var attackTextMap = {};
 
 attackTextMap['Fashion Witch'] = {
     'texts': [
-        " makes a nasty comment about their target's hair.  ",
-        " pokes fun of her target's skin.  "
+        " makes a nasty comment about their target's hair,",
+        " pokes fun of her target's skin,"
     ],
 
 };
 
 attackTextMap['Witchling'] = {
     'texts': [
-        " asdfasdfasdf.  ",
-        " asdfasdfadsf.  "
+        " zapped her target with a pale blue bolt of lightning,",
+        " whispered some words into her target's ear,"
+    ],
+
+};
+
+attackTextMap['Bystander'] = {
+    'texts': [
+        " throws a desperate punch at their target,",
+        " shrieks loudly in fright,"
     ],
 
 };
 
 function getRandomAttackText(formName) {
-    var texts = attackTextMap[formName];
-  //  console.log(texts);
-  
-    //console.log(texts.length);
+    var texts = attackTextMap[formName].texts;
     var randIndex = Math.floor(Math.random() * texts.length);
-
     return texts[randIndex];
 }
 
@@ -100,3 +104,23 @@ spawnNumbers['bystanders_easy'] = {
     'Witchling': 1,
     'Bystander': 5,
 };
+
+spawnNumbers['bystanders_medium'] = {
+    'Fashion Witch': 0,
+    'Witchling': 1,
+    'Bystander': 5,
+};
+
+var defeatMessage = {};
+
+defeatMessage['Cotton Panties'] = {
+    'texts': [
+          " gasps and shrinks into a pair of pink panties.",
+    ],
+};
+
+function getRandomDefeatText(formName) {
+    var texts = defeatMessage[formName].texts;
+    var randIndex = Math.floor(Math.random() * texts.length);
+    return texts[randIndex];
+}

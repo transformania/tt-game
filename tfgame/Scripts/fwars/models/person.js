@@ -38,12 +38,22 @@ PersonGroup.prototype.fightGroup = function (attackingGroup, defeatedAI, defeate
             var fightResult = this.persons[i].fight(p2target);
 
             if (fightResult.outcome == "win") {
-                attackingGroup.removePerson(p2target);
-                //defeatedAI.addPerson(p2target);
 
-                var newItem = new Item('Latex Catsuit');
-                newItems.addItem(newItem);
+                // target is not turned into any item, have them submit
+                if (this.persons[i].finishingSpells.length == 0) {
+                    fightResult.message += p2target.fullName() + ' falls to their knees and submits to your overwhelming power!';
+                    attackingGroup.removePerson(p2target);
+                    defeatedAI.addPerson(p2target);
 
+
+                    // target IS turned into an item, delete them and create the item
+                } else {
+                    var newItemName = this.persons[i].getRandomFinishingSpell();
+                    fightResult.message += p2target.fullName() + ' ' + getRandomDefeatText(newItemName);
+                    var newItem = new Item(newItemName,  p2target.fullName());
+                    newItems.addItem(newItem);
+                    attackingGroup.removePerson(p2target);
+                }
             }
 
             logMessages.push(fightResult);
@@ -57,11 +67,23 @@ PersonGroup.prototype.fightGroup = function (attackingGroup, defeatedAI, defeate
             var p1target = this.getRandomPerson();
             var fightResult2 = attackingGroup.persons[i].fight(p1target);
 
-            //  logs.push(fightResult);
-
             if (fightResult2.outcome == "win") {
-                this.removePerson(p1target);
-                defeatedPlayer.addPerson(p2target);
+
+                // target is not turned into any item, have them submit
+                if (attackingGroup.persons[i].finishingSpells.length == 0) {
+                    fightResult2.message += p1target.fullName() + ' falls to their knees and submits to your opponent\'s overwhelming power!';
+                    this.removePerson(p1target);
+                    defeatedPlayer.addPerson(p1target);
+
+
+                // target IS turned into an item, delete them and create the item
+                } else {
+                    var newItemName = attackingGroup.persons[i].getRandomFinishingSpell();
+                    fightResult2.message += p1target.fullName() + ' ' + getRandomDefeatText(newItemName);
+                    var newItem = new Item(newItemName, p1target.fullName());
+                    newItems.addItem(newItem);
+                    this.removePerson(p1target);
+                }
             }
 
             logMessages.push(fightResult2);
@@ -128,6 +150,10 @@ Person.prototype.giveItem = function (item) {
     this.items.push(item);
 };
 
+Person.prototype.giveFinishingSpell = function (spell) {
+    this.finishingSpells.push(spell);
+};
+
 
 Person.prototype.getMaxHP = function () {
     var formStats = formStatsMap[this.type];
@@ -174,7 +200,9 @@ Person.prototype.fight = function (opponent) {
         damage = 1;
     }
 
-    result += '  ' + this.fullName() + ' dealt ' + damage + ' damage.';
+    result += '  ' + this.fullName() + ' ' + getRandomAttackText(this.type);
+
+    result += ' dealing ' + damage + ' damage.';
     opponent.health -= damage;
 
     //  rollNeeded = levelDiff * .2 + .05;
@@ -184,7 +212,7 @@ Person.prototype.fight = function (opponent) {
         outcome = "win";
         opponent.status = 'defeated';
         this.xp++;
-        result += "  VICTORY!  " + opponent.fullName() + " was turned into a pair of panties.";
+        result += "  VICTORY!  ";
     } else {
 
         outcome = "";
@@ -201,20 +229,23 @@ Person.prototype.getRandomName = function () {
     this.lastName = randomLastName[Math.floor(Math.random() * randomLastName.length)];
 };
 
+Person.prototype.getRandomFinishingSpell = function () {
+    return this.finishingSpells[Math.floor(Math.random() * this.finishingSpells.length)];
+}
+
 PersonGroup.prototype.spawnGroup = function (type) {
 
     this.persons = [];
-    console.log("spawning...");
-
-
     var spawnGroup = spawnNumbers[type];
 
-
-    for (var i = 0; i < spawnGroup['Bystander']; i++) {
+    var extra = Math.floor(Math.random() * 5) - 2;
+    for (var i = 0; i < spawnGroup['Bystander'] + extra; i++) {
         var spawn = new Person(undefined, undefined, 'Bystander');
         this.addPerson(spawn);
     }
-    for (var i = 0; i < spawnGroup['Witchling']; i++) {
+
+    extra = Math.floor(Math.random() * 5) - 2;
+    for (var i = 0; i < spawnGroup['Witchling'] + extra; i++) {
         var spawn = new Person(undefined, undefined, 'Witchling');
         this.addPerson(spawn);
     }

@@ -1066,7 +1066,7 @@ namespace tfgame.Controllers
 
             // create base location
             int intname = 0;
-            int breakout = 100;
+            int breakout = 0;
             Location baseNode = new Location
             {
                 dbName = intname.ToString(),
@@ -1185,6 +1185,60 @@ namespace tfgame.Controllers
                 intname++;
             }
 
+            double randomBeforeNoWall = .35;
+           maze.Reverse();
+
+            // break out some random walls
+            foreach (Location loc in maze)
+            {
+                double breakRoll = rand.NextDouble();
+
+                // easter neighbor
+                if (breakRoll < .25*randomBeforeNoWall && loc.Name_East == null)
+                {
+                    Location neighbor = maze.FirstOrDefault(l => l.X == loc.X + 1 && l.Y == loc.Y);
+                    if (neighbor != null)
+                    {
+                        loc.Name_East = neighbor.Name;
+                        neighbor.Name_West = loc.Name;
+                    }
+                }
+                // western neighbor
+                else if (breakRoll < .5*randomBeforeNoWall && loc.Name_West == null)
+                {
+                    Location neighbor = maze.FirstOrDefault(l => l.X == loc.X - 1 && l.Y == loc.Y);
+                    if (neighbor != null)
+                    {
+                        loc.Name_West = neighbor.Name;
+                        neighbor.Name_East = loc.Name;
+                    }
+                }
+
+                    // northern neighbor
+                else if (breakRoll < .75*randomBeforeNoWall && loc.Name_North == null)
+                {
+                    Location neighbor = maze.FirstOrDefault(l => l.X == loc.X && l.Y == loc.Y + 1);
+                    if (neighbor != null)
+                    {
+                        loc.Name_North = neighbor.Name;
+                        neighbor.Name_South = loc.Name;
+                    }
+                }
+
+                    // southern neighbor
+                else if (breakRoll < 1.0*randomBeforeNoWall && loc.Name_South == null)
+                {
+                    Location neighbor = maze.FirstOrDefault(l => l.X == loc.X && l.Y == loc.Y - 1);
+                    if (neighbor != null)
+                    {
+                        loc.Name_South = neighbor.Name;
+                        neighbor.Name_North = loc.Name;
+                    }
+                }
+
+            }
+
+            // assign names
             foreach (Location loc in maze)
             {
                 int connectionCount = 0;
@@ -1225,7 +1279,7 @@ namespace tfgame.Controllers
                 int adjindex = Convert.ToInt32(Math.Floor(num * maxAdj));
                 string adjToUse = adjectives.ElementAt(adjindex);
                 loc.Name += adjToUse + " ";
-                // TODO:  REMOVE ADJECTIVE FROM LIST
+                adjectives.Remove(adjToUse);
 
                 // get random noun
                 double maxNoun = nouns.Count();
@@ -1233,7 +1287,7 @@ namespace tfgame.Controllers
                 int nounindex = Convert.ToInt32(Math.Floor(num * maxNoun));
                 string nounToUse = nouns.ElementAt(nounindex);
                 loc.Name += nounToUse;
-                // TODO:  REMOVE NOUN FROM LIST
+                nouns.Remove(nounToUse);
             }
 
 

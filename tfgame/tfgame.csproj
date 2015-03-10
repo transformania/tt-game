@@ -881,6 +881,8 @@
     <Content Include="XMLs\BossSummonText\Donna.txt" />
     <Content Include="XMLs\BossSummonText\Thieves.txt" />
     <Content Include="XMLs\BossSummonText\Valentine.txt" />
+    <Content Include="XMLs\DungeonNouns.xml" />
+    <Content Include="XMLs\DungeonAdjectives.xml" />
     <Content Include="XMLs\restockList.xml" />
     <Content Include="XMLs\custom_bases.xml" />
     <Content Include="XMLs\Effects\effect_Circine%27s_Hypnosis_LexamTheGemFox.xml" />
@@ -1706,6 +1708,7 @@
     <Content Include="Views\PvP\RoundLeaderboards\XP\Alpha_16.cshtml" />
     <Content Include="Views\TransformaniaTime\FashionWars.cshtml" />
     <Content Include="Views\Settings\Polls\Closed\poll1.cshtml" />
+    <Content Include="Views\PvPAdmin\DungeonTest.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

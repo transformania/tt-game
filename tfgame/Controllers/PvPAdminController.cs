@@ -1041,6 +1041,214 @@ namespace tfgame.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult DungeonTest()
+        {
+
+            // get a random name
+            List<string> adjectives = new List<string>();
+            List<string> nouns = new List<string>();
+
+            var serializer = new XmlSerializer(typeof(List<string>));
+            string path = Server.MapPath("~/XMLs/DungeonAdjectives.xml");
+            using (var reader = XmlReader.Create(path))
+            {
+                adjectives = (List<string>)serializer.Deserialize(reader);
+            }
+           
+            string path2 = Server.MapPath("~/XMLs/DungeonNouns.xml");
+            using (var reader = XmlReader.Create(path2))
+            {
+                nouns = (List<string>)serializer.Deserialize(reader);
+            }
+
+            List<Location> maze = new List<Location>();
+
+
+            // create base location
+            int intname = 0;
+            int breakout = 100;
+            Location baseNode = new Location
+            {
+                dbName = intname.ToString(),
+                CovenantController = -1,
+                Description = "",
+                Region = "dungeon",
+                X = 0,
+                Y = 0,
+                Name = intname.ToString(),
+            };
+
+            maze.Add(baseNode);
+            intname++;
+
+            Random rand = new Random();
+
+
+            // loop until dungeon is built
+            while (intname < 100 && breakout < 1000) {
+
+                // get a random existing location
+                double max = maze.Count();
+                
+                double num = rand.NextDouble();
+
+                int index = Convert.ToInt32(Math.Floor(num * max));
+                Location baseLocation = maze.ElementAt(index);
+
+                double xory = rand.NextDouble();
+
+                int newX = baseLocation.X;
+                int newY = baseLocation.Y;
+
+                if (xory > .5)
+                {
+                    double xroll = rand.NextDouble();
+                    if (xroll < .5)
+                    {
+                        newX -= 1;
+                    }
+                    else
+                    {
+                        newX += 1;
+                    }
+                }
+                else
+                {
+                    double yroll = rand.NextDouble();
+                    if (yroll < .5)
+                    {
+                        newY -= 1;
+                    }
+                    else
+                    {
+                        newY += 1;
+                    }
+                
+                }
+
+                // get coordinates for a random neighbor
+                Location possible = maze.FirstOrDefault(l => l.X == newX && l.Y == newY);
+
+                // we have a location already, so try over
+                if (possible != null)
+                {
+                    breakout++;
+                    continue;
+                }
+
+                // no location:  make a new one here
+                else
+                {
+                    Location newblock = new Location
+                    {
+                        dbName = intname.ToString(),
+                        X = newX,
+                        Y = newY,
+                        Name = intname.ToString(),
+                        CovenantController = -1,
+                        Region = "dungeon",
+                    };
+
+                    // connects to the right
+                    if (newblock.X == baseLocation.X + 1 && newblock.Y == baseLocation.Y)
+                    {
+                        newblock.Name_West = baseLocation.Name;
+                        baseLocation.Name_East = newblock.Name;
+                    }
+
+                    // connects to the left
+                    else if (newblock.X == baseLocation.X + -1 && newblock.Y == baseLocation.Y)
+                    {
+                        newblock.Name_East = baseLocation.Name;
+                        baseLocation.Name_West = newblock.Name;
+                    }
+
+
+                     // connects to the north
+                    else if (newblock.X == baseLocation.X && newblock.Y == baseLocation.Y + 1)
+                    {
+                        newblock.Name_South = baseLocation.Name;
+                        baseLocation.Name_North = newblock.Name;
+                    }
+
+                    else if (newblock.X == baseLocation.X && newblock.Y == baseLocation.Y -1)
+                    {
+                        newblock.Name_North = baseLocation.Name;
+                        baseLocation.Name_South = newblock.Name;
+                    }
+
+                    maze.Add(newblock);
+
+
+                }
+
+                intname++;
+            }
+
+            foreach (Location loc in maze)
+            {
+                int connectionCount = 0;
+                if (loc.Name_East != null)
+                {
+                    connectionCount++;
+                } if (loc.Name_West != null)
+                {
+                    connectionCount++;
+                } if (loc.Name_North != null)
+                {
+                    connectionCount++;
+                } if (loc.Name_South != null)
+                {
+                    connectionCount++;
+                }
+
+                if (connectionCount == 1)
+                {
+                    loc.Name = "Chamber of the ";
+                }
+                else if (connectionCount == 2)
+                {
+                    loc.Name = "Passageway of the ";
+                }
+                else if (connectionCount == 3)
+                {
+                    loc.Name = "Junction of the ";
+                }
+                else if (connectionCount == 4)
+                {
+                    loc.Name = "Crossing of the ";
+                }
+
+                // get random adjective
+                double maxAdj = adjectives.Count();
+                double num = rand.NextDouble();
+                int adjindex = Convert.ToInt32(Math.Floor(num * maxAdj));
+                string adjToUse = adjectives.ElementAt(adjindex);
+                loc.Name += adjToUse + " ";
+                // TODO:  REMOVE ADJECTIVE FROM LIST
+
+                // get random noun
+                double maxNoun = nouns.Count();
+                num = rand.NextDouble();
+                int nounindex = Convert.ToInt32(Math.Floor(num * maxNoun));
+                string nounToUse = nouns.ElementAt(nounindex);
+                loc.Name += nounToUse;
+                // TODO:  REMOVE NOUN FROM LIST
+            }
+
+
+            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Location here = null;
+
+            IEnumerable<LocationInfo> ownerInfo = null;
+
+            here = LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName);
+
+            ViewBag.MapX = here.X;
+            ViewBag.MapY = here.Y;
+            return View(maze);
+        }
+
         public ActionResult SpawnNPCs()
         {
             // assert only admins can view this

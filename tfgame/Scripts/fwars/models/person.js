@@ -40,7 +40,7 @@ PersonGroup.prototype.fightGroup = function (attackingGroup, defeatedAI, defeate
             if (fightResult.outcome == "win") {
 
                 // target is not turned into any item, have them submit
-                if (this.persons[i].finishingSpells.length == 0) {
+                if (this.persons[i].finishingSpells.length == 0 || this.persons[i].id == leaderId) {
                     fightResult.message += p2target.fullName() + ' falls to their knees and submits to your overwhelming power!';
                     attackingGroup.removePerson(p2target);
                     defeatedAI.addPerson(p2target);
@@ -99,6 +99,47 @@ PersonGroup.prototype.fightGroup = function (attackingGroup, defeatedAI, defeate
     return logMessages;
 
 };
+
+PersonGroup.prototype.spawnGroup = function (type) {
+
+    this.persons = [];
+    var spawnGroup = spawnNumbers[type];
+
+    var extra = Math.floor(Math.random() * 5) - 2;
+    for (var i = 0; i < spawnGroup['Bystander'] + extra; i++) {
+        var spawn = new Person(undefined, undefined, 'Bystander');
+        this.addPerson(spawn);
+    }
+
+    extra = Math.floor(Math.random() * 5) - 2;
+    for (var i = 0; i < spawnGroup['Witchling'] + extra; i++) {
+        var spawn = new Person(undefined, undefined, 'Witchling');
+        this.addPerson(spawn);
+    }
+
+};
+
+PersonGroup.prototype.healGroup = function (amount) {
+    console.log("healing...");
+    for (var i = 0; i < this.persons.length; i++) {
+        this.persons[i].health += amount;
+
+        if (this.persons[i].health > this.persons[i].getMaxHP()) {
+            this.persons[i].health = this.persons[i].getMaxHP();
+        }
+
+    }
+};
+
+PersonGroup.prototype.mergeIntoGroup = function (otherGroup) {
+    for (var i = 0; i < otherGroup.persons.length; i++) {
+        this.addPerson(otherGroup.persons[i]);
+    }
+
+    otherGroup.persons = [];
+
+};
+
 
 // --------------------- PERSON ----------------------
 
@@ -233,24 +274,23 @@ Person.prototype.getRandomFinishingSpell = function () {
     return this.finishingSpells[Math.floor(Math.random() * this.finishingSpells.length)];
 }
 
-PersonGroup.prototype.spawnGroup = function (type) {
+Person.prototype.resetXP = function () {
+    this.xp = 0;
+}
 
-    this.persons = [];
-    var spawnGroup = spawnNumbers[type];
+Person.prototype.xpNeededForLevelup = function () {
 
-    var extra = Math.floor(Math.random() * 5) - 2;
-    for (var i = 0; i < spawnGroup['Bystander'] + extra; i++) {
-        var spawn = new Person(undefined, undefined, 'Bystander');
-        this.addPerson(spawn);
-    }
+}
 
-    extra = Math.floor(Math.random() * 5) - 2;
-    for (var i = 0; i < spawnGroup['Witchling'] + extra; i++) {
-        var spawn = new Person(undefined, undefined, 'Witchling');
-        this.addPerson(spawn);
-    }
+Person.prototype.getRecruitmentCost = function () {
+    return formStatsMap[this.type].energyNeededToRecruit;
+}
 
-};
+Person.prototype.getTransformCost = function (itemName) {
+    return itemStatsMap[itemName].energyNeededToTF;
+}
+
+
 
 var randomFirstNames = ['Mary', 'Jane', 'Elessa', 'Jamie', 'Sarah', 'Caroline', 'Janice', 'Gloria', 'Alice',];
 var randomLastName = ['Smith', 'Brown', 'White', 'Blue', 'Black', 'Green', 'Tanner', 'Shoemaker', 'Telae'];

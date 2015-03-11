@@ -7,6 +7,13 @@
     $scope.newItems = new ItemGroup();
     $scope.unequippedItems = new ItemGroup();
     $scope.turnsSinceCombatStart = 1;
+    $scope.newfight_btn = true;
+
+    $scope.leader;
+    $scope.energy = 100;
+    $scope.energyMax = 100;
+    $scope.money = 0;
+    $scope.day = 1;
 
     $scope.logs = [];
 
@@ -17,7 +24,10 @@
     $scope.continueFightVisible = false;
     $scope.startFightVisible = false;
 
-    $scope.fightAftermathVisible = false;
+    $scope.aftermathBtn = false;
+    $scope.aftermathView = false;
+    $scope.aftermathViewLevelup = false;
+  
 
     $scope.mainGame = false;
 
@@ -30,8 +40,11 @@
     // have player enter their name to kick off the game
      $scope.addPlayerAndStart = function (firstName, lastName) {
          var newbie = new Person(firstName, lastName, "Fashion Witch");
+         leaderId = newbie.id;
 
-         // newbie.giveFinishingSpell('Cotton Panties');
+         newbie.giveFinishingSpell('Cotton Panties');
+         newbie.giveFinishingSpell('Latex Catsuit');
+         $scope.leader = newbie;
 
          $scope.personsPlayer.addPerson(newbie);
 
@@ -49,9 +62,14 @@
 
     // kick off a fight
      $scope.startFight = function () {
+
+         $scope.defeatedAI.persons = [];
+         $scope.defeatedPlayer.persons = [];
+
          $scope.turnsSinceCombatStart = 1;
          $scope.continueFightVisible = true;
          $scope.startFightVisible = false;
+         $scope.retreatBtnVisible = false;
      }
 
     // begin a round of fighting
@@ -70,21 +88,83 @@
            
         }
 
+        // give the option to retreat after the 3rd round
+        if ($scope.turnsSinceCombatStart >= 4) {
+            $scope.retreatBtnVisible = true;
+        }
+
+        // fight is over, one side or the other has lost!
         if ($scope.fightInProgress == true && ($scope.personsPlayer.persons.length == 0 || $scope.personsAI.persons.length == 0)) {
             $scope.continueFightVisible = false;
-            $scope.fightAftermathVisible = true;
+            $scope.retreatBtnVisible = false;
+            $scope.aftermathBtn = true;
         }
+
+       
     }
 
     $scope.retreat = function () {
-
+        $scope.logs = [];
+        var retreatMsg = new Log("Retreat!  The aggressors flee the field of battle in disarray, choosing to remain animate and fight another day.");
+        $scope.logs.push(retreatMsg);
+        $scope.mainGame = false;
+        $scope.aftermathView = true;
+        $scope.aftermathViewLevelup_btn = true;
+        $scope.defeatedAI = [];
     }
 
     $scope.aftermath = function () {
+
+        // if victory carry on, if defeat then show end game screen
+
+        $scope.energy = $scope.energyMax;
+        $scope.logs = [];
         $scope.mainGame = false;
+        $scope.aftermathView = true;
+        $scope.aftermathViewLevelup_btn = true;
     }
 
+    $scope.recruit = function (person) {
+        person.resetXP();
+        $scope.personsPlayer.addPerson(person);
+        $scope.defeatedAI.removePerson(person);
+        $scope.energy -= person.getRecruitmentCost();
+
+        var newlog = new Log(person.fullName() + " agrees to join your covenant for a life of adventure, danger, and sexy clothes made out rivals!");
+        $scope.logs.push(newlog);
+    }
    
+    $scope.inanimate = function (person, spell) {
+        $scope.defeatedAI.removePerson(person);
+        var newItem = new Item(spell, person.fullName());
+        $scope.newItems.addItem(newItem);
+        $scope.energy -= person.getTransformCost(spell);
+        var newlog = new Log(person.fullName() + " " + getRandomDefeatText(newItem.type));
+        $scope.logs.push(newlog);
+    }
+
+
+    $scope.aftermathLevelupShow = function () {
+        $scope.aftermathViewLevelup = true;
+        $scope.aftermathView = false;
+       // $scope.defeatedAI = [];
+       
+    }
+
+    $scope.nextFight = function () {
+       
+        $scope.personsAI.spawnGroup('bystanders_easy');
+        $scope.startFightVisible = true;
+        $scope.aftermathView = false;
+        $scope.mainGame = true;
+        $scope.aftermathBtn = false;
+        $scope.personsPlayer.mergeIntoGroup($scope.defeatedPlayer);
+        $scope.personsPlayer.healGroup(15);
+        $scope.defeatedAI.persons = [];
+        $scope.defeatedPlayer.persons = [];
+        $scope.day++;
+    }
+
 
 
 

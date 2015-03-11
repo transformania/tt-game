@@ -19,8 +19,10 @@
 </head>
 <body ng-controllers="PersonsController">
     <h1>Wars</h1>
-   
+
     <div data-ng-controller="PersonsController as ctrl">
+
+        <p>Day {{day}}</p>
 
         <div ng-show="startVisible">
             <p>What is your name?</p>
@@ -73,7 +75,35 @@
 
             <button ng-click="startFight()" ng-show="startFightVisible">Begin Fight</button>
             <button ng-click="fight()" ng-show="continueFightVisible">Continue Fight (Round {{turnsSinceCombatStart}})</button>
-            <button ng-click="aftermath()" ng-show="fightAftermathVisible">View Fight Aftermath</button>
+            <button ng-click="retreat()" ng-show="retreatBtnVisible">Retreat!</button>
+            <button ng-click="aftermath()" ng-show="aftermathBtn">View Fight Aftermath</button>
+
+            <div id="log">
+                <p ng-repeat="log in logs" >
+                    {{log.message}}
+                </p>
+            </div>
+
+        </div>
+
+        <div ng-show="aftermathView">
+            <p>With the day over you can now take stock of your prisoners.  What shall you do with them?  Recruit them to your cause?  Or change them into cute little clothes for you, your friends, or the store next door?  <b>You have {{energy}}/{{energyMax}}</b> energy left.  You have {{money}} dollars.</p>
+
+            <button ng-show="aftermathViewLevelup_btn" ng-click="aftermathLevelupShow()">Release remaining {{defeatedAI.persons.length}} prisoners and continue</button>
+
+            <div class="container">
+                <h3>Submissive Opponents:</h3>
+                <ul>
+                    <li ng-repeat="person in defeatedAI.persons | orderBy:'firstName'">
+                        {{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}]
+                        <button ng-click="recruit(person)" ng-show="person.getRecruitmentCost() <= energy">Recruit ({{person.getRecruitmentCost()}} energy required)</button>
+
+                        <span ng-repeat="spell in leader.finishingSpells"><button ng-click="inanimate(person, spell)" ng-show="leader.getTransformCost(spell) <= energy">Turn into {{spell}} ({{leader.getTransformCost(spell)}} energy required))</button></span>
+
+
+                    </li>
+                </ul>
+            </div>
 
             <div id="log">
                 <p ng-repeat="log in logs" ng-bind-html-unsafe="log.html">
@@ -81,9 +111,28 @@
                 </p>
             </div>
 
+            <div id="unequippedItems">
+                <h3>New items from fight:</h3>
+                <ul>
+                    <li ng-repeat="item in newItems.items">{{item.type}} {{item.getVictimName()}}</li>
+                </ul>
+            </div>
+
+            <div id="unequippedItems">
+                <h3>Unequipped items:</h3>
+                <ul>
+                    <li ng-repeat="item in unequippedItems.items">{{item.type}} {{item.getVictimName()}}</li>
+                </ul>
+            </div>
+
         </div>
 
-    </div>
+        <div ng-show="aftermathViewLevelup">
+            <p>Level up and train your members...</p>
+
+            <button ng-show="newfight_btn" ng-click="nextFight()">Start new fight</button>
+
+        </div>
 
 </body>
 

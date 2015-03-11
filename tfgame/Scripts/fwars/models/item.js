@@ -5,6 +5,7 @@ var ItemGroup = function (type) {
 }
 
 ItemGroup.prototype.addItem = function (newitem) {
+    console.log(newitem);
     this.items.push(newitem);
 };
 

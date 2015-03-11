@@ -1,4 +1,5 @@
-﻿personIdNext = 0;
+﻿leaderId = -1;
+personIdNext = 0;
 logsIdNext = 0;
 itemIdNext = 0;
 logs = [];
@@ -12,6 +13,8 @@ $(document).ready(function () {
 
 
 
+
+
 // ----------------- FORM TYPE MAP ------------------
 var formStatsMap = {};
 
@@ -21,6 +24,8 @@ formStatsMap['Bystander'] = {
     'strengthDefense': 0,
     'seductionAttack': 0,
     'seductionDefense': 0,
+    'energyNeededToRecruit': 100,
+    'xpNeededForLevelup':2,
 };
 
 formStatsMap['Fashion Witch'] = {
@@ -29,6 +34,8 @@ formStatsMap['Fashion Witch'] = {
     'strengthDefense': 0,
     'seductionAttack': 3,
     'seductionDefense': 0,
+    'energyNeededToRecruit': 10000,
+    'xpNeededForLevelup': 10,
 };
 
 formStatsMap['Witchling'] = {
@@ -37,6 +44,8 @@ formStatsMap['Witchling'] = {
     'strengthDefense': 0,
     'seductionAttack': 2,
     'seductionDefense': 0,
+    'energyNeededToRecruit': 200,
+    'xpNeededForLevelup': 5,
 };
 
 
@@ -51,6 +60,7 @@ itemStatsMap['Cotton Panties'] = {
     'strengthDefense': 0,
     'seductionAttack': 1,
     'seductionDefense': 1,
+    'energyNeededToTF': 25,
 };
 
 itemStatsMap['Latex Catsuit'] = {
@@ -60,6 +70,7 @@ itemStatsMap['Latex Catsuit'] = {
     'strengthDefense': 0,
     'seductionAttack': 1,
     'seductionDefense': 1,
+    'energyNeededToTF': 25,
 };
 
 
@@ -116,6 +127,12 @@ var defeatMessage = {};
 defeatMessage['Cotton Panties'] = {
     'texts': [
           " gasps and shrinks into a pair of pink panties.",
+    ],
+};
+
+defeatMessage['Latex Catsuit'] = {
+    'texts': [
+          " gasps as their skin turns pink and shiny like latex, shrinking down into a tight latex catsuit!",
     ],
 };
 

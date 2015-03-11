@@ -448,7 +448,7 @@ namespace tfgame.Procedures
             }
 
             // set a random location for this character to spawn in
-            List<string> spawnableLocations = LocationsStatics.GetLocation.Select(l => l.dbName).ToList();
+            List<string> spawnableLocations = LocationsStatics.LocationList.GetLocation.Select(l => l.dbName).ToList();
             double max = spawnableLocations.Count();
             Random rand = new Random();
             double num = rand.NextDouble();
@@ -632,8 +632,8 @@ namespace tfgame.Procedures
 
             Player user = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
 
-            Location oldLocation = LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == user.dbLocationName);
-            Location newLocation = LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == destination);
+            Location oldLocation = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == user.dbLocationName);
+            Location newLocation = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == destination);
 
             user.dbLocationName = destination;
             playerRepo.SavePlayer(user);
@@ -824,7 +824,7 @@ namespace tfgame.Procedures
                 }
             }
 
-            Location here = LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == dbLocationName);
+            Location here = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == dbLocationName);
             
 
             // learn a new skill
@@ -1590,7 +1590,7 @@ namespace tfgame.Procedures
             LocationLogProcedures.AddLocationLog(player.dbLocationName, logmessage);
 
 
-            Location here = LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == player.dbLocationName);
+            Location here = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == player.dbLocationName);
             string playerLogMessage = "You cleansed at " + here.Name + ".";
             PlayerLogProcedures.AddPlayerLog(player.Id, playerLogMessage, false);
 
@@ -1626,7 +1626,7 @@ namespace tfgame.Procedures
             LocationLogProcedures.AddLocationLog(player.dbLocationName, logmessage);
 
 
-            Location here = LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == player.dbLocationName);
+            Location here = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == player.dbLocationName);
             string playerLogMessage = "You meditated at " + here.Name + ".";
             PlayerLogProcedures.AddPlayerLog(player.Id, playerLogMessage, false);
 

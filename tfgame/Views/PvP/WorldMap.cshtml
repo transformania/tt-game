@@ -12,10 +12,10 @@
         string posX;
         string posY;
 
-        decimal minX = LocationsStatics.GetLocation.Select(l => l.X).Min();
-        decimal maxY = LocationsStatics.GetLocation.Select(l => l.Y).Max();
+        decimal minX = LocationsStatics.LocationList.GetLocation.Select(l => l.X).Min();
+        decimal maxY = LocationsStatics.LocationList.GetLocation.Select(l => l.Y).Max();
 
-        foreach (Location loc in LocationsStatics.GetLocation)
+        foreach (Location loc in LocationsStatics.LocationList.GetLocation.Where(l => l.Region != "dungeon"))
         {
 
             posX = ((loc.X - minX) * 100 + 10).ToString() + "px";

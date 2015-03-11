@@ -317,7 +317,7 @@ namespace tfgame.Controllers
 
             if (contribution.Skill_LearnedAtLocationOrRegion == "location")
             {
-                Location temp = LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == spell.LearnedAtLocation);
+                Location temp = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == spell.LearnedAtLocation);
                 if (temp == null)
                 {
                     message += "<span class='bad'> !!!!! WARNING:  NO LOCATION FOUND FOR THIS SPELL.</span>  ";
@@ -326,7 +326,7 @@ namespace tfgame.Controllers
 
             if (contribution.Skill_LearnedAtLocationOrRegion == "region")
             {
-                Location temp = LocationsStatics.GetLocation.FirstOrDefault(l => l.Region == spell.LearnedAtRegion);
+                Location temp = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.Region == spell.LearnedAtRegion);
                 if (temp == null)
                 {
                     message += "<span class='bad'> !!!!! WARNING:  NO REGION FOUND FOR THIS SPELL.</span>  ";

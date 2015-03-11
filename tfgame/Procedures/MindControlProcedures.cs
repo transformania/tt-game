@@ -188,8 +188,8 @@ namespace tfgame.Procedures
 
         public static decimal GetAPCostToMove(BuffBox buffs, string oldLocation, string newLocation)
         {
-            Location oldLocationl = LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == oldLocation);
-            Location newLocationl = LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == newLocation);
+            Location oldLocationl = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == oldLocation);
+            Location newLocationl = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == newLocation);
             decimal output = Math.Abs(oldLocationl.X - newLocationl.X) + Math.Abs(oldLocationl.Y - newLocationl.Y);
             output *= 1-buffs.MoveActionPointDiscount();
 

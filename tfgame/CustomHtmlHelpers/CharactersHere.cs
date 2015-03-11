@@ -568,7 +568,7 @@ namespace tfgame.CustomHtmlHelpers
 
             if (cov.HomeLocation != null && cov.HomeLocation != "")
             {
-                string locName = LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == cov.HomeLocation).Name;
+                string locName = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == cov.HomeLocation).Name;
                 output = "<span class = 'covMemberCount'>Safeground at <b>" + locName + "</b>.</span>";
             }
 

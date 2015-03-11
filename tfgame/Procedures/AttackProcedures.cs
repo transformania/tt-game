@@ -268,7 +268,7 @@ namespace tfgame.Procedures
 
             IPlayerRepository playerREpo = new EFPlayerRepository();
 
-            Location here = LocationsStatics.GetLocation.First(l => l.dbName == attacker.dbLocationName);
+            Location here = LocationsStatics.LocationList.GetLocation.First(l => l.dbName == attacker.dbLocationName);
 
             List<Player> playersHere = new List<Player>();
             List<Player> playersHereOnline = new List<Player>();
@@ -336,7 +336,7 @@ namespace tfgame.Procedures
             info.LastTakeoverTurn = PvPWorldStatProcedures.GetWorldTurnNumber();
             repo.SaveLocationInfo(info);
 
-            LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == location).CovenantController = cov.Id;
+            LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == location).CovenantController = cov.Id;
 
         }
 
@@ -344,16 +344,16 @@ namespace tfgame.Procedures
         {
             ILocationInfoRepository repo = new EFLocationInfoRepository();
             List<LocationInfo> info = repo.LocationInfos.ToList();
-            foreach (Location loc in LocationsStatics.GetLocation)
+            foreach (Location loc in LocationsStatics.LocationList.GetLocation)
             {
                 LocationInfo temp = info.FirstOrDefault(l => l.dbName == loc.dbName);
                 if (temp == null)
                 {
-                    LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == loc.dbName).CovenantController = -1;
+                    LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == loc.dbName).CovenantController = -1;
                 }
                 else
                 {
-                    LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == loc.dbName).CovenantController = temp.CovenantId;
+                    LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == loc.dbName).CovenantController = temp.CovenantId;
                 }
             }
         }

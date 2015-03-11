@@ -399,7 +399,7 @@ namespace tfgame.Procedures
             covRepo.SaveCovenant(dbCovenant);
             LoadCovenantDictionary();
 
-            string covMessage = "Covenant safeground was establish at " + LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == location).Name + ".";
+            string covMessage = "Covenant safeground was establish at " + LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == location).Name + ".";
             WriteCovenantLog(covMessage, covenant.Id, true);
 
             AttackProcedures.InstantTakeoverLocation(dbCovenant, location);
@@ -536,7 +536,7 @@ namespace tfgame.Procedures
             ILocationInfoRepository repo = new EFLocationInfoRepository();
             ICovenantRepository covRepo = new EFCovenantRepository();
             LocationInfo info = repo.LocationInfos.FirstOrDefault(l => l.dbName == player.dbLocationName);
-            Location location = LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == player.dbLocationName);
+            Location location = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == player.dbLocationName);
             string output = "";
             if (info == null)
             {
@@ -584,7 +584,7 @@ namespace tfgame.Procedures
 
                 info.LastTakeoverTurn = PvPWorldStatProcedures.GetWorldTurnNumber();
                 output = "<b>Your enchantment settles in this location, converting its energies from the previous controlling covenant to your own!  (+" + XPGain + " XP)</b>";
-                LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == player.dbLocationName).CovenantController = player.Covenant;
+                LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == player.dbLocationName).CovenantController = player.Covenant;
                 Covenant myCov = covRepo.Covenants.First(c => c.Id == player.Covenant);
 
                 string locationLogMessage = "<b class='playerAttackNotification'>" + player.GetFullName() + " enchanted this location and claimed it for " + myCov.Name + "!</b>";

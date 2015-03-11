@@ -122,7 +122,7 @@ namespace tfgame.Procedures
             List<LocationNode> nodes = new List<LocationNode>();
 
             // populate the location nodes
-            foreach (Location loc in LocationsStatics.GetLocation.Where(l => l.dbName != ""))
+            foreach (Location loc in LocationsStatics.LocationList.GetLocation.Where(l => l.dbName != ""))
             {
                 LocationNode addMe = new LocationNode
                 {
@@ -209,7 +209,7 @@ namespace tfgame.Procedures
 
             foreach (string s in pathList)
             {
-                output += LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == s).dbName + ";";
+                output += LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == s).dbName + ";";
             }
 
             output += updateTimer.ElapsedMilliseconds.ToString();

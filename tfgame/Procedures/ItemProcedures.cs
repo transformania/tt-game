@@ -808,7 +808,7 @@ namespace tfgame.Procedures
 
 
             DbStaticItem item = ItemStatics.GetStaticItem(targetForm.BecomesItemDbName);
-            Location here = LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == victim.dbLocationName);
+            Location here = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == victim.dbLocationName);
 
             itemRepo.SaveItem(newItem);
 
@@ -870,7 +870,7 @@ namespace tfgame.Procedures
             string victimName = player.FirstName + " " + player.LastName;
             Item item = itemRepo.Items.FirstOrDefault(i => i.VictimName == victimName);
 
-            Location place = LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == item.dbLocationName);
+            Location place = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == item.dbLocationName);
        
             if (place==null) {
                 return null;

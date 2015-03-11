@@ -205,11 +205,11 @@ namespace tfgame.Controllers
 
                 if (animalOutput.OwnedBy != null)
                 {
-                    animalOutput.Location = LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == animalOutput.OwnedBy.Player.dbLocationName);
+                    animalOutput.Location = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == animalOutput.OwnedBy.Player.dbLocationName);
                 }
                 else
                 {
-                    animalOutput.Location = LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName);
+                    animalOutput.Location = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName);
                 }
                 
                 animalOutput.Location.FriendlyName_North = LocationsStatics.GetConnectionName(animalOutput.Location.Name_North);
@@ -271,7 +271,13 @@ namespace tfgame.Controllers
 
             // output.Location = Locations.GetLocation()
 
-            output.Location = LocationsStatics.GetLocation.FirstOrDefault(x => x.dbName == me.dbLocationName);
+            output.Location = LocationsStatics.LocationList.GetLocation.FirstOrDefault(x => x.dbName == me.dbLocationName);
+
+            if (output.Location == null && me.dbLocationName.Contains("dungeon_"))
+            {
+                DungeonProcedures.GenerateDungeon();
+                output.Location = LocationsStatics.LocationList.GetLocation.FirstOrDefault(x => x.dbName == me.dbLocationName);
+            }
 
             output.Location.CovenantController = CovenantProcedures.GetLocationCovenantOwner(me.dbLocationName);
 
@@ -439,8 +445,8 @@ namespace tfgame.Controllers
                 }
             }
 
-            Location currentLocation = LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName);
-            Location nextLocation = LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == locname);
+            Location currentLocation = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName);
+            Location nextLocation = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == locname);
 
             // assert this location does have a connection to the next one
             if (currentLocation.Name_North != locname && currentLocation.Name_East != locname && currentLocation.Name_South != locname && currentLocation.Name_West != locname)
@@ -1231,7 +1237,7 @@ namespace tfgame.Controllers
             // write to logs
             string locationLogMessage = "<span class='playerSearchingNotification'>" + me.FirstName + " " + me.LastName + " searched here.</span>";
             LocationLogProcedures.AddLocationLog(me.dbLocationName, locationLogMessage);
-            Location here = LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName);
+            Location here = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName);
             string playerLogMessage = "You searched at " + here.Name + ".";
             PlayerLogProcedures.AddPlayerLog(me.Id, playerLogMessage, false);
 
@@ -1379,7 +1385,7 @@ namespace tfgame.Controllers
 
             string playerLogMessage = "";
             string locationLogMessage = "";
-            Location here = LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName);
+            Location here = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName);
 
 
             // if the item is inanimate, the item to the player's inventory
@@ -1456,7 +1462,7 @@ namespace tfgame.Controllers
 
             TempData["Result"] = ItemProcedures.DropItem(itemId, me.dbLocationName);
 
-            Location here = LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName);
+            Location here = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName);
 
             string playerLogMessage;
             string locationLogMessage;
@@ -1577,7 +1583,7 @@ namespace tfgame.Controllers
             }
 
             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
-            Location here = LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName);
+            Location here = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName);
 
             // assert player is in an okay form to do this
             if (PlayerCanPerformAction(me, "equip") == false)
@@ -1611,7 +1617,7 @@ namespace tfgame.Controllers
             // if this item is a teleportation scroll, redirect to the teleportation page.
             if (item.dbItem.dbName == "item_consumeable_teleportation_scroll")
             {
-                IEnumerable<Location> output = LocationsStatics.GetLocation.Where(l => l.dbName != "");
+                IEnumerable<Location> output = LocationsStatics.LocationList.GetLocation.Where(l => l.dbName != "");
                 return View("TeleportMap", output);
             }
 
@@ -1744,7 +1750,7 @@ namespace tfgame.Controllers
             }
             else {
 
-                ViewBag.AtLocation = LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == output.PlayerForm.Player.dbLocationName).Name;
+                ViewBag.AtLocation = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == output.PlayerForm.Player.dbLocationName).Name;
 
                 return View("LookAtPlayer", output);
             }
@@ -2047,7 +2053,7 @@ namespace tfgame.Controllers
             }
             else if (me.Mobility == "animal")
             {
-                Location here = LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName);
+                Location here = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName);
                 if (here.dbName != targeted.dbLocationName)
                 {
                     TempData["Error"] = "Your target no longer seems to be here.";
@@ -2943,7 +2949,7 @@ namespace tfgame.Controllers
 
             IEnumerable<LocationInfo> ownerInfo = null;
 
-            here = LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName);
+            here = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName);
 
             if (showEnchant == "true")
             {

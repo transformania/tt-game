@@ -256,7 +256,7 @@ namespace tfgame.Statics
         public static string GetRandomLocation()
         {
             // set a random location for this character to spawn in
-            List<string> spawnableLocations = LocationsStatics.GetLocation.Select(l => l.dbName).ToList();
+            List<string> spawnableLocations = LocationList.GetLocation.Select(l => l.dbName).ToList();
             double max = spawnableLocations.Count();
             Random rand = new Random();
             double num = rand.NextDouble();
@@ -269,7 +269,7 @@ namespace tfgame.Statics
         public static string GetRandomLocation_NoStreets()
         {
             // set a random location for this character to spawn in
-            List<string> spawnableLocations = LocationsStatics.GetLocation.Where(l => l.Region != "streets").Select(l => l.dbName ).ToList();
+            List<string> spawnableLocations = LocationList.GetLocation.Where(l => l.Region != "streets").Select(l => l.dbName).ToList();
             double max = spawnableLocations.Count();
             Random rand = new Random();
             double num = rand.NextDouble();
@@ -282,7 +282,7 @@ namespace tfgame.Statics
         public static string GetRandomLocation_InRegion(string region)
         {
             // set a random location for this character to spawn in
-            List<string> spawnableLocations = LocationsStatics.GetLocation.Where(l => l.Region == region).Select(l => l.dbName).ToList();
+            List<string> spawnableLocations = LocationList.GetLocation.Where(l => l.Region == region).Select(l => l.dbName).ToList();
             double max = spawnableLocations.Count();
             Random rand = new Random();
             double num = rand.NextDouble();
@@ -292,15 +292,23 @@ namespace tfgame.Statics
             return locationToSpawnIn;
         }
 
-        public static List<Location> GetLocation
+        public static class LocationList
         {
 
+            public static List<Location> GetLocation;
+
+              public static void AddLocation(Location location) {
+                GetLocation.Add(location);
+            }
+
+            static LocationList() {
+                GetLocation = new List<Location>{
 
 
-            get
-            {
-                return new List<Location>
-                {
+          
+
+           
+
             new Location {
                 dbName = "coffee_shop",
                 Name = "Carolyne's Coffee Shop (Front Counter)",
@@ -2408,7 +2416,7 @@ namespace tfgame.Statics
         };
 
             }
-            set { }
+    
         }
 
 
@@ -2417,7 +2425,7 @@ namespace tfgame.Statics
         {
             try
             {
-                return GetLocation.FirstOrDefault(l => l.dbName == locDbName).Name;
+                return LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == locDbName).Name;
             }
             catch
             {

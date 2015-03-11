@@ -682,7 +682,7 @@ namespace tfgame.Controllers
                  return RedirectToAction("MyCovenant");
              }
 
-             ViewBag.MyLocation = LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName).Name;
+             ViewBag.MyLocation = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName).Name;
              ViewBag.CovenantMoney = myCov.Money;
 
              return View();
@@ -720,7 +720,7 @@ namespace tfgame.Controllers
             // assert that the covenant does not already have a safeground set
             if (CovenantProcedures.CovenantHasSafeground(myCov) == true)
             {
-                TempData["Error"] = "Your covenant already has a safeground at " + LocationsStatics.GetLocation.FirstOrDefault(f => f.dbName == myCov.HomeLocation).Name + ".";
+                TempData["Error"] = "Your covenant already has a safeground at " + LocationsStatics.LocationList.GetLocation.FirstOrDefault(f => f.dbName == myCov.HomeLocation).Name + ".";
                 TempData["SubError"] = "Covenants can only establish a safeground once per round.";
                 return RedirectToAction("MyCovenant");
             }
@@ -945,11 +945,11 @@ namespace tfgame.Controllers
 
            // FurnitureProcedures.MoveExpiredFurnitureBackToMarket();
             IEnumerable<FurnitureViewModel> output = FurnitureProcedures.GetCovenantFurnitureViewModels(me.Covenant);
-            ViewBag.MyLocation = LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName).Name;
+            ViewBag.MyLocation = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName).Name;
 
             string covSafegroundLocation = "";
             if (myCov.HomeLocation != null && myCov.HomeLocation != "") {
-                covSafegroundLocation = "Your covenant's safeground is at " + LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == myCov.HomeLocation).Name;
+                covSafegroundLocation = "Your covenant's safeground is at " + LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == myCov.HomeLocation).Name;
             }
             else
             {

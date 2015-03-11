@@ -355,6 +355,7 @@
     <Compile Include="Procedures\ChatLogProcedures.cs" />
     <Compile Include="Procedures\DMRollProcedures.cs" />
     <Compile Include="Procedures\DonatorProcedures.cs" />
+    <Compile Include="Procedures\DungeonProcedures.cs" />
     <Compile Include="Procedures\FurnitureProcedures.cs" />
     <Compile Include="Procedures\MindControlProcedures.cs" />
     <Compile Include="Procedures\Pathfinding.cs" />

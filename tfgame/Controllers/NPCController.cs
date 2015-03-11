@@ -566,7 +566,7 @@ namespace tfgame.Controllers
             ViewBag.Victim = victim;
             ViewBag.Buffs = ItemProcedures.GetPlayerBuffs(victim);
 
-            IEnumerable<Location> output = LocationsStatics.GetLocation.Where(l => l.dbName != "");
+            IEnumerable<Location> output = LocationsStatics.LocationList.GetLocation.Where(l => l.dbName != "");
 
             return View(output);
         }
@@ -720,11 +720,11 @@ namespace tfgame.Controllers
             PlayerProcedures.MovePlayerMultipleLocations(victim, to, apCost);
             MindControlProcedures.AddCommandUsedToMindControl(me, victim, MindControlStatics.MindControl__Movement);
 
-            string attackerMessage = "You commanded " + victim.GetFullName() + " to move to " + LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == to).Name + ", using " + apCost + " of their action points in the process.";
+            string attackerMessage = "You commanded " + victim.GetFullName() + " to move to " + LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == to).Name + ", using " + apCost + " of their action points in the process.";
             PlayerLogProcedures.AddPlayerLog(me.Id, attackerMessage, false);
             TempData["Result"] = attackerMessage;
 
-           string victimMessage = me.GetFullName() + " commanded you to move to " + LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == to).Name + ", using " + apCost + " of your action points in the process!";
+           string victimMessage = me.GetFullName() + " commanded you to move to " + LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == to).Name + ", using " + apCost + " of your action points in the process!";
            PlayerLogProcedures.AddPlayerLog(victim.Id, victimMessage, true);
 
             return RedirectToAction("MindControlList");

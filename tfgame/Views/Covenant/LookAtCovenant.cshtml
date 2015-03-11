@@ -35,7 +35,7 @@
                 @{
             if (Model.dbCovenant.HomeLocation != null && Model.dbCovenant.HomeLocation != "")
             {
-                <i>This covenant has a safeground at <b>@LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == Model.dbCovenant.HomeLocation).Name</b> and has enchanted <b>@ViewBag.LocationsControlled</b> locations.</i>
+                <i>This covenant has a safeground at <b>@LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == Model.dbCovenant.HomeLocation).Name</b> and has enchanted <b>@ViewBag.LocationsControlled</b> locations.</i>
             }
         }
     </p>

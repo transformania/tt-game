@@ -635,8 +635,8 @@ namespace tfgame.Procedures
 
         public static string MoveTo(Player bot, string locationDbName, int distance)
         {
-            Location start = LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == bot.dbLocationName);
-            Location end = LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == locationDbName);
+            Location start = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == bot.dbLocationName);
+            Location end = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == locationDbName);
 
             if (bot.dbLocationName == locationDbName)
             {
@@ -660,8 +660,8 @@ namespace tfgame.Procedures
             // the first movement, from current to 2nd place, is not in the array... write it manually
             if (pathTiles.Length > 0)
             {
-                string enteringMessage = bot.FirstName + " " + bot.LastName + " entered from " + LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == start.dbName).Name;
-                string leavingMessage = bot.FirstName + " " + bot.LastName + " left toward " + LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == pathTiles[0]).Name;
+                string enteringMessage = bot.FirstName + " " + bot.LastName + " entered from " + LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == start.dbName).Name;
+                string leavingMessage = bot.FirstName + " " + bot.LastName + " left toward " + LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == pathTiles[0]).Name;
                 LocationLogProcedures.AddLocationLog(start.dbName, leavingMessage);
                 LocationLogProcedures.AddLocationLog(pathTiles[0], enteringMessage);
                 output += leavingMessage + "<br>";
@@ -671,8 +671,8 @@ namespace tfgame.Procedures
                 {
                     try
                     {
-                        enteringMessage = bot.FirstName + " " + bot.LastName + " entered from " + LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == pathTiles[i]).Name;
-                        leavingMessage = bot.FirstName + " " + bot.LastName + " left toward " + LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == pathTiles[i + 1]).Name;
+                        enteringMessage = bot.FirstName + " " + bot.LastName + " entered from " + LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == pathTiles[i]).Name;
+                        leavingMessage = bot.FirstName + " " + bot.LastName + " left toward " + LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == pathTiles[i + 1]).Name;
                         LocationLogProcedures.AddLocationLog(pathTiles[i], leavingMessage);
                         LocationLogProcedures.AddLocationLog(pathTiles[i + 1], enteringMessage);
 

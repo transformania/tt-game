@@ -19,7 +19,7 @@ namespace tfgame.Procedures
             Player victim = playerRepo.Players.FirstOrDefault(p => p.Id == victimId);
 
             Player attackerOwner = playerRepo.Players.FirstOrDefault(p => p.Id == attacker.IsPetToId);
-            Location here = LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == attacker.dbLocationName);
+            Location here = tfgame.Statics.LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == attacker.dbLocationName);
 
 
             PlayerFormViewModel attackerPlus = PlayerProcedures.GetPlayerFormViewModel(attackerId);
@@ -175,11 +175,11 @@ namespace tfgame.Procedures
         //{
         //    if (me.IsPetToId != -1)
         //    {
-        //        return LocationsStatics.GetLocation.FirstOrDefault(l => l.dbName == owner.dbLocationName);
+        //        return LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == owner.dbLocationName);
         //    }
         //    else
         //    {
-        //        return LocationsStatics.GetLocation.First(l => l.dbName == me.dbLocationName);
+        //        return LocationsStatics.LocationList.GetLocation.First(l => l.dbName == me.dbLocationName);
         //    }
         //}
 

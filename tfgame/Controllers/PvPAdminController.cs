@@ -1069,7 +1069,7 @@ namespace tfgame.Controllers
             int breakout = 0;
             Location baseNode = new Location
             {
-                dbName = intname.ToString(),
+                dbName = "dungeon_" + intname.ToString(),
                 CovenantController = -1,
                 Description = "",
                 Region = "dungeon",
@@ -1141,7 +1141,7 @@ namespace tfgame.Controllers
                 {
                     Location newblock = new Location
                     {
-                        dbName = intname.ToString(),
+                        dbName = "dungeon_" +  intname.ToString(),
                         X = newX,
                         Y = newY,
                         Name = intname.ToString(),
@@ -1193,7 +1193,7 @@ namespace tfgame.Controllers
             {
                 double breakRoll = rand.NextDouble();
 
-                // easter neighbor
+                // eastern neighbor
                 if (breakRoll < .25*randomBeforeNoWall && loc.Name_East == null)
                 {
                     Location neighbor = maze.FirstOrDefault(l => l.X == loc.X + 1 && l.Y == loc.Y);
@@ -1203,6 +1203,7 @@ namespace tfgame.Controllers
                         neighbor.Name_West = loc.Name;
                     }
                 }
+
                 // western neighbor
                 else if (breakRoll < .5*randomBeforeNoWall && loc.Name_West == null)
                 {
@@ -1214,7 +1215,7 @@ namespace tfgame.Controllers
                     }
                 }
 
-                    // northern neighbor
+                // northern neighbor
                 else if (breakRoll < .75*randomBeforeNoWall && loc.Name_North == null)
                 {
                     Location neighbor = maze.FirstOrDefault(l => l.X == loc.X && l.Y == loc.Y + 1);
@@ -1225,7 +1226,7 @@ namespace tfgame.Controllers
                     }
                 }
 
-                    // southern neighbor
+                // southern neighbor
                 else if (breakRoll < 1.0*randomBeforeNoWall && loc.Name_South == null)
                 {
                     Location neighbor = maze.FirstOrDefault(l => l.X == loc.X && l.Y == loc.Y - 1);
@@ -1245,13 +1246,16 @@ namespace tfgame.Controllers
                 if (loc.Name_East != null)
                 {
                     connectionCount++;
-                } if (loc.Name_West != null)
+                } 
+                if (loc.Name_West != null)
                 {
                     connectionCount++;
-                } if (loc.Name_North != null)
+                } 
+                if (loc.Name_North != null)
                 {
                     connectionCount++;
-                } if (loc.Name_South != null)
+                } 
+                if (loc.Name_South != null)
                 {
                     connectionCount++;
                 }
@@ -1300,6 +1304,16 @@ namespace tfgame.Controllers
 
             ViewBag.MapX = here.X;
             ViewBag.MapY = here.Y;
+
+            List<Location> old = LocationsStatics.GetLocation.ToList();
+
+            foreach (Location loc in maze)
+            {
+                old.Add(loc);
+            }
+
+            LocationsStatics.GetLocation = old;
+
             return View(maze);
         }
 

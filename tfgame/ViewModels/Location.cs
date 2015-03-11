@@ -31,6 +31,11 @@ namespace tfgame.ViewModels
         public string GetDescription()
         {
 
+            if (Region == "dungeon")
+            {
+                return "You are wandering in the shifting corridors of the multidimensional dungeon beneath the town, lost amid an ocean of forgotten places and histories in this world and countless others.  Mortal minds must tread carefully down here... danger is around every corner, not just from the various demonic inhabitants of this twisted realm but of other mages eager to prove their superiority over you, possibly even wearing you as another trophy of their conquests.";
+            }
+
             try
             {
                 //load up form XML

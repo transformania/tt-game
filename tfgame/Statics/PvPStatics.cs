@@ -292,12 +292,14 @@ namespace tfgame.Statics
             return locationToSpawnIn;
         }
 
-        public static IEnumerable<Location> GetLocation
+        public static List<Location> GetLocation
         {
+
+
 
             get
             {
-                return new[]
+                return new List<Location>
                 {
             new Location {
                 dbName = "coffee_shop",
@@ -2406,7 +2408,7 @@ namespace tfgame.Statics
         };
 
             }
-
+            set { }
         }
 
 

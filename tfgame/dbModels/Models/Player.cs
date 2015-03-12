@@ -138,6 +138,15 @@ namespace tfgame.dbModels.Models
             }
         }
 
+        public bool IsInDungeon()
+        {
+            if (this.dbLocationName.Contains("dungeon_")) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
     }
 
     public class Player_VM

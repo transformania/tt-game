@@ -203,7 +203,7 @@ namespace tfgame.Procedures.BossProcedures
                         infectee = PlayerProcedures.ReadjustMaxes(infectee,ItemProcedures.GetPlayerBuffsRAM(infectee));
                         playerRepo.SavePlayer(infectee);
 
-                        string message = "You gasp, your body shiftig as the virus infecting you overwhelms your biological and arcane defenses.  Before long you find that your body has been transformed into that of one of the many bimbonic plague victims and you can't help but succumb to the urges to spread your infection--no, your gift!--on to the rest of mankind.";
+                        string message = "You gasp, your body shifting as the virus infecting you overwhelms your biological and arcane defenses.  Before long you find that your body has been transformed into that of one of the many bimbonic plague victims and you can't help but succumb to the urges to spread your infection--no, your gift!--on to the rest of mankind.";
                         string loclogMessage = "<b style='color: red'>" + infectee.GetFullName() + " succumbed to the bimbonic virus, spontaneously transforming into one of Lady Lovebringer's bimbos.</b>";
 
                         PlayerLogProcedures.AddPlayerLog(infectee.Id, message, true);
@@ -281,7 +281,7 @@ namespace tfgame.Procedures.BossProcedures
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
             DateTime cutoff = DateTime.UtcNow.AddHours(-1);
-            IEnumerable<string> locs = playerRepo.Players.Where(p => p.Mobility == "full" && p.LastActionTimestamp > cutoff && p.Form != RegularBimboFormDbName).GroupBy(p => p.dbLocationName).OrderByDescending(p => p.Count()).Select(p => p.Key);
+            IEnumerable<string> locs = playerRepo.Players.Where(p => p.Mobility == "full" && p.LastActionTimestamp > cutoff && p.Form != RegularBimboFormDbName && p.dbLocationName.Contains("dungeon_") == false).GroupBy(p => p.dbLocationName).OrderByDescending(p => p.Count()).Select(p => p.Key);
             return locs.First();
         }
 

@@ -1635,8 +1635,15 @@ namespace tfgame.Controllers
             // if this item is a teleportation scroll, redirect to the teleportation page.
             if (item.dbItem.dbName == "item_consumeable_teleportation_scroll")
             {
-                IEnumerable<Location> output = LocationsStatics.LocationList.GetLocation.Where(l => l.dbName != "");
-                return View("TeleportMap", output);
+                if (me.IsInDungeon() == true)
+                {
+                     IEnumerable<Location> output = LocationsStatics.LocationList.GetLocation.Where(l => l.dbName != "" && l.Region == "dungeon");
+                      return View("TeleportMap", output);
+
+                } else {
+                     IEnumerable<Location>  output = LocationsStatics.LocationList.GetLocation.Where(l => l.dbName != "" && l.Region != "dungeon");
+                      return View("TeleportMap", output);
+                }              
             }
 
             // if this item is the self recaster, redirect to the animate spell listing page
@@ -3163,6 +3170,17 @@ namespace tfgame.Controllers
                 TempData["Error"] = "You don't have one of these.";
                 return RedirectToAction("Play");
             }
+
+             // assert player is not TPing into the dungeon from out in or vice versa
+             bool destinationIsInDungeon = false;
+             if (to.Contains("dungeon_")) {
+                 destinationIsInDungeon = true;
+             }
+             if (me.IsInDungeon() != destinationIsInDungeon)
+             {
+                 TempData["Error"] = "You can't teleport inside the dungeon from outside of it, nor can you teleport out of it from inside.";
+                 return RedirectToAction("Play");
+             }
 
             TempData["Result"] = PlayerProcedures.TeleportPlayer(me, to, false);
 

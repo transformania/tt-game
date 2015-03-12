@@ -108,8 +108,8 @@ namespace tfgame.Procedures.BossProcedures
 
 
 
-                    // if Donna's target goes offline, have her teleport back to the ranch
-                    if (target == null || target.Mobility != "full" || PlayerProcedures.PlayerIsOffline(target))
+                    // if Donna's target goes offline, is inanimate, or in the dungeon, have her teleport back to the ranch
+                    if (target == null || target.Mobility != "full" || PlayerProcedures.PlayerIsOffline(target) || target.IsInDungeon() == true)
                     {
 
                         if (donna.dbLocationName != "ranch_bedroom")

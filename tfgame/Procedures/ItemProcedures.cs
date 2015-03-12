@@ -1027,6 +1027,12 @@ namespace tfgame.Procedures
                 if (itemPlus.Item.dbName == "item_consumeable_covenant_crystal")
                 {
 
+                    // assert owner is not in the dungeon
+                    if (owner.IsInDungeon() == true)
+                    {
+                        return "The dark magic seeping through the dungeon prevents your crystal from working.";
+                    }
+
                     // assert owner has not been in combat recently
                     double minutesSinceCombat = Math.Abs(Math.Floor(owner.GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalMinutes));
                     if (minutesSinceCombat < 30)

@@ -566,9 +566,16 @@ namespace tfgame.Controllers
             ViewBag.Victim = victim;
             ViewBag.Buffs = ItemProcedures.GetPlayerBuffs(victim);
 
-            IEnumerable<Location> output = LocationsStatics.LocationList.GetLocation.Where(l => l.dbName != "");
-
-            return View(output);
+            if (victim.IsInDungeon() == true)
+            {
+                IEnumerable<Location> output = LocationsStatics.LocationList.GetLocation.Where(l => l.dbName != "" && l.Region == "dungeon");
+                return View(output);
+            }
+            else
+            {
+                IEnumerable<Location> output = LocationsStatics.LocationList.GetLocation.Where(l => l.dbName != "" && l.Region != "dungeon");
+                return View(output);
+            } 
         }
 
 
@@ -712,6 +719,19 @@ namespace tfgame.Controllers
             if (ItemProcedures.PlayerIsCarryingTooMuch(victim.Id, 0, victimBuffs))
             {
                 TempData["Error"] = "Your victim is carrying too much to be able to move.";
+                return RedirectToAction("Play");
+            }
+
+
+            // assert player is not TPing into the dungeon from out in or vice versa
+            bool destinationIsInDungeon = false;
+            if (to.Contains("dungeon_"))
+            {
+                destinationIsInDungeon = true;
+            }
+            if (victim.IsInDungeon() != destinationIsInDungeon)
+            {
+                TempData["Error"] = "You can't order your victim to move into the dungeon from outside of it or the other way around.";
                 return RedirectToAction("Play");
             }
 

@@ -242,8 +242,8 @@ namespace tfgame.Procedures
                     {
                         Player myTarget = PlayerProcedures.GetPlayer(directive.TargetPlayerId);
 
-                        // if the target is offline, no longer animate, or in the same form as the spells' target, go into idle mode
-                        if (PlayerProcedures.PlayerIsOffline(myTarget) || myTarget.Mobility != "full" || myTarget.Form == skill.Skill.FormdbName)
+                        // if the target is offline, no longer animate, in the dungeon, or in the same form as the spells' target, go into idle mode
+                        if (PlayerProcedures.PlayerIsOffline(myTarget) || myTarget.Mobility != "full" || myTarget.Form == skill.Skill.FormdbName || myTarget.IsInDungeon() == true)
                         {
                             AIDirectiveProcedures.SetAIDirective_Idle(bot.Id);
                             log.AddLog(bot.FirstName + " " + bot.LastName + ":  target is invalid.  Idling.");

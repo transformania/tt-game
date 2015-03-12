@@ -100,18 +100,21 @@ PersonGroup.prototype.fightGroup = function (attackingGroup, defeatedAI, defeate
 
 };
 
-PersonGroup.prototype.spawnGroup = function (type) {
+PersonGroup.prototype.spawnGroup = function (type, variation) {
 
     this.persons = [];
     var spawnGroup = spawnNumbers[type];
 
-    var extra = Math.floor(Math.random() * 5) - 2;
+    var extra = Math.floor(Math.random() * variation) - (Math.floor(variation / 2));
+    console.log(extra);
     for (var i = 0; i < spawnGroup['Bystander'] + extra; i++) {
         var spawn = new Person(undefined, undefined, 'Bystander');
         this.addPerson(spawn);
     }
 
-    extra = Math.floor(Math.random() * 5) - 2;
+
+    extra = Math.floor(Math.random() * variation) - (Math.floor(variation / 2));
+    console.log(extra);
     for (var i = 0; i < spawnGroup['Witchling'] + extra; i++) {
         var spawn = new Person(undefined, undefined, 'Witchling');
         this.addPerson(spawn);

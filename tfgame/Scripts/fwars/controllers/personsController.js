@@ -12,6 +12,7 @@
     $scope.sellItem_btn = true;
     $scope.buyItem_btn = true;
     $scope.buySellItemsView = false;
+    $scope.chooseBattlegroundView = false;
 
     $scope.itemsMap = itemStatsMap;
 
@@ -35,9 +36,9 @@
     $scope.aftermathViewLevelup = false;
   
 
-    $scope.mainGame = false;
+    $scope.fightView = false;
 
-    $scope.personsAI.spawnGroup('bystanders_easy');
+   
 
      var welcome = new Log("Welcome!");
 
@@ -58,11 +59,24 @@
 
          $scope.logs.push(welcome);
 
+         $scope.chooseBattlegroundView = true;
+
+     }
+
+     $scope.chooseBattleground = function () {
+         $scope.chooseBattlegroundView = true;
+         $scope.buySellItemsView = false;
+     }
+
+     $scope.chooseBattlegroundSend = function (location, variation) {
          $scope.startVisible = false;
-         $scope.mainGame = true;
+         $scope.fightView = true;
 
          $scope.continueFightVisible = false;
          $scope.startFightVisible = true;
+
+         $scope.chooseBattlegroundView = false;
+         $scope.personsAI.spawnGroup(location, variation);
 
      }
 
@@ -111,7 +125,7 @@
         $scope.logs = [];
         var retreatMsg = new Log("Retreat!  The aggressors flee the field of battle in disarray, choosing to remain animate and fight another day.");
         $scope.logs.push(retreatMsg);
-        $scope.mainGame = false;
+        $scope.fightView = false;
         $scope.aftermathView = true;
         $scope.aftermathViewLevelup_btn = true;
         $scope.defeatedAI.persons = [];
@@ -123,7 +137,7 @@
 
         $scope.energy = $scope.energyMax;
         $scope.logs = [];
-        $scope.mainGame = false;
+        $scope.fightView = false;
         $scope.aftermathView = true;
         $scope.aftermathViewLevelup_btn = true;
     }
@@ -166,6 +180,8 @@
         $scope.aftermathViewLevelup = false;
         $scope.buySellItemsView = true;
         $scope.logs = [];
+        $scope.personsPlayer.healGroup(15);
+        $scope.day++;
     }
 
     $scope.sellItem = function (item) {
@@ -186,16 +202,16 @@
 
     $scope.nextFight = function () {
        
-        $scope.personsAI.spawnGroup('bystanders_easy');
+     //   $scope.personsAI.spawnGroup('bystanders_easy');
         $scope.startFightVisible = true;
         $scope.aftermathView = false;
-        $scope.mainGame = true;
+        $scope.fightView = true;
         $scope.aftermathBtn = false;
         
         $scope.personsPlayer.healGroup(15);
         $scope.defeatedAI.persons = [];
         $scope.defeatedPlayer.persons = [];
-        $scope.day++;
+       
     }
 
 

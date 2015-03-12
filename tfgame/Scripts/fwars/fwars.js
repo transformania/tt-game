@@ -122,17 +122,32 @@ function getRandomAttackText(formName) {
 
 var spawnNumbers = {};
 
-spawnNumbers['bystanders_easy'] = {
+spawnNumbers['park_forest_trail'] = {
     'Fashion Witch': 0,
-    'Witchling': 1,
-    'Bystander': 5,
+    'Witchling': 0,
+    'Bystander': 2
 };
 
-spawnNumbers['bystanders_medium'] = {
+spawnNumbers['park_parking_lot'] = {
     'Fashion Witch': 0,
     'Witchling': 1,
-    'Bystander': 5,
+    'Bystander': 3
 };
+
+spawnNumbers['park_lodge'] = {
+    'Fashion Witch': 0,
+    'Witchling': 2,
+    'Bystander': 5
+};
+
+spawnNumbers['coffeestore'] = {
+    'Fashion Witch': 0,
+    'Witchling': 4,
+    'Bystander': 7
+};
+
+
+
 
 var defeatMessage = {};
 

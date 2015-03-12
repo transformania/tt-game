@@ -5,13 +5,21 @@ var ItemGroup = function (type) {
 }
 
 ItemGroup.prototype.addItem = function (newitem) {
-    console.log(newitem);
     this.items.push(newitem);
 };
 
 ItemGroup.prototype.removeItem = function (itemToRemove) {
     var removalIndex = this.items.indexOf(itemToRemove);
     this.items.splice(removalIndex, 1);
+};
+
+ItemGroup.prototype.mergeIntoGroup = function (otherGroup) {
+    for (var i = 0; i < otherGroup.items.length; i++) {
+        this.addItem(otherGroup.items[i]);
+    }
+
+    otherGroup.items = [];
+
 };
 
 // --------------------- ITEM --------------------
@@ -26,6 +34,8 @@ var Item = function (type, formerName) {
         this.oldName = formerName;
     }
 
+    console.log(this.oldName);
+
     itemIdNext++;
 }
 
@@ -36,3 +46,11 @@ Item.prototype.getVictimName = function () {
         return '';
     }
 };
+
+Item.prototype.getBasePrice = function () {
+    return itemStatsMap[this.type].value;
+}
+
+Item.prototype.getSellPrice = function () {
+    return Math.floor(itemStatsMap[this.type].value * .75);
+}

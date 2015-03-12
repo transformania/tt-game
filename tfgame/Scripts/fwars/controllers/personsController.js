@@ -8,6 +8,12 @@
     $scope.unequippedItems = new ItemGroup();
     $scope.turnsSinceCombatStart = 1;
     $scope.newfight_btn = true;
+    $scope.endDay_btn = true;
+    $scope.sellItem_btn = true;
+    $scope.buyItem_btn = true;
+    $scope.buySellItemsView = false;
+
+    $scope.itemsMap = itemStatsMap;
 
     $scope.leader;
     $scope.energy = 100;
@@ -99,8 +105,6 @@
             $scope.retreatBtnVisible = false;
             $scope.aftermathBtn = true;
         }
-
-       
     }
 
     $scope.retreat = function () {
@@ -110,7 +114,7 @@
         $scope.mainGame = false;
         $scope.aftermathView = true;
         $scope.aftermathViewLevelup_btn = true;
-        $scope.defeatedAI = [];
+        $scope.defeatedAI.persons = [];
     }
 
     $scope.aftermath = function () {
@@ -147,8 +151,37 @@
     $scope.aftermathLevelupShow = function () {
         $scope.aftermathViewLevelup = true;
         $scope.aftermathView = false;
-       // $scope.defeatedAI = [];
+        $scope.personsPlayer.mergeIntoGroup($scope.defeatedPlayer);
+        $scope.unequippedItems.mergeIntoGroup($scope.newItems);
        
+    }
+
+    $scope.promote = function (person, nextForm) {
+        var newlog = new Log(person.fullName() + " " + getRandomDefeatText(nextForm));
+        $scope.logs.push(newlog);
+        person.changeType(nextForm);
+    }
+
+    $scope.endDay = function () {
+        $scope.aftermathViewLevelup = false;
+        $scope.buySellItemsView = true;
+        $scope.logs = [];
+    }
+
+    $scope.sellItem = function (item) {
+        $scope.unequippedItems.removeItem(item);
+        $scope.money += Math.floor(item.getSellPrice());
+        var newlog = new Log("You sold " + item.getVictimName() + " for " + item.getBasePrice() + " dollars.  May they find a wonderful owner who will treasure them!");
+        $scope.logs.push(newlog);
+    }
+
+    $scope.buyItem = function (itemType) {
+        var itemInfo = itemStatsMap[itemType];
+        $scope.money -= itemInfo.value;
+        var newItem = new Item(itemType, '');
+        $scope.unequippedItems.addItem(newItem);
+        var newlog = new Log("You purchased 1 " + itemType + " for the covenant for " + itemInfo.value + " dollars.");
+        $scope.logs.push(newlog);
     }
 
     $scope.nextFight = function () {
@@ -158,7 +191,7 @@
         $scope.aftermathView = false;
         $scope.mainGame = true;
         $scope.aftermathBtn = false;
-        $scope.personsPlayer.mergeIntoGroup($scope.defeatedPlayer);
+        
         $scope.personsPlayer.healGroup(15);
         $scope.defeatedAI.persons = [];
         $scope.defeatedPlayer.persons = [];

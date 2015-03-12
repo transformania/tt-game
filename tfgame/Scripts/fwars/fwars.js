@@ -54,6 +54,7 @@ formStatsMap['Witchling'] = {
 var itemStatsMap = {};
 
 itemStatsMap['Cotton Panties'] = {
+    'name': 'Cotton Panties',
     'bonusHP': 3,
     'value': 5,
     'strengthAttack': 0,
@@ -64,6 +65,7 @@ itemStatsMap['Cotton Panties'] = {
 };
 
 itemStatsMap['Latex Catsuit'] = {
+    'name': 'Latex Catsuit',
     'bonusHP': 3,
     'value': 5,
     'strengthAttack': 0,
@@ -73,6 +75,16 @@ itemStatsMap['Latex Catsuit'] = {
     'energyNeededToTF': 25,
 };
 
+itemStatsMap['Ankh Necklace'] = {
+    'name': 'Ankh Necklace',
+    'bonusHP': 3,
+    'value': 25,
+    'strengthAttack': 0,
+    'strengthDefense': 0,
+    'seductionAttack': 1,
+    'seductionDefense': 1,
+    'energyNeededToTF': 50,
+};
 
 // ----------------- ATTACK TEXT MAP ---------------------
 
@@ -133,6 +145,12 @@ defeatMessage['Cotton Panties'] = {
 defeatMessage['Latex Catsuit'] = {
     'texts': [
           " gasps as their skin turns pink and shiny like latex, shrinking down into a tight latex catsuit!",
+    ],
+};
+
+defeatMessage['Witchling'] = {
+    'texts': [
+          " moans as a bolt of lighting pierces through their chest, setting their veins aglow with an influx of magic as they transform into a cute young witchling, eager to serve the covenant until inanimation do her part!",
     ],
 };
 

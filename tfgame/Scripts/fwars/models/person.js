@@ -120,7 +120,6 @@ PersonGroup.prototype.spawnGroup = function (type) {
 };
 
 PersonGroup.prototype.healGroup = function (amount) {
-    console.log("healing...");
     for (var i = 0; i < this.persons.length; i++) {
         this.persons[i].health += amount;
 
@@ -186,6 +185,11 @@ Person.prototype.fullName = function () {
 Person.prototype.levelUp = function () {
     this.level++;
 };
+
+Person.prototype.changeType = function (newType) {
+    this.type = newType;
+    this.xp = 0;
+}
 
 Person.prototype.giveItem = function (item) {
     this.items.push(item);
@@ -279,7 +283,7 @@ Person.prototype.resetXP = function () {
 }
 
 Person.prototype.xpNeededForLevelup = function () {
-
+    return formStatsMap[this.type].xpNeededForLevelup + (this.level - 1) * 3;
 }
 
 Person.prototype.getRecruitmentCost = function () {

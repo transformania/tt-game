@@ -78,11 +78,11 @@
             <button ng-click="retreat()" ng-show="retreatBtnVisible">Retreat!</button>
             <button ng-click="aftermath()" ng-show="aftermathBtn">View Fight Aftermath</button>
 
-            <div id="log">
-                <p ng-repeat="log in logs" >
+            @*<div id="log">
+                <p ng-repeat="log in logs">
                     {{log.message}}
                 </p>
-            </div>
+            </div>*@
 
         </div>
 
@@ -105,11 +105,11 @@
                 </ul>
             </div>
 
-            <div id="log">
+            @*<div id="log">
                 <p ng-repeat="log in logs" ng-bind-html-unsafe="log.html">
                     {{log.message}}
                 </p>
-            </div>
+            </div>*@
 
             <div id="unequippedItems">
                 <h3>New items from fight:</h3>
@@ -130,9 +130,61 @@
         <div ng-show="aftermathViewLevelup">
             <p>Level up and train your members...</p>
 
-            <button ng-show="newfight_btn" ng-click="nextFight()">Start new fight</button>
+            <div class="container">
+                <h3>Members:</h3>
+                <ul>
+                    <li ng-repeat="person in personsPlayer.persons | orderBy:'firstName'">
+                        {{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}][{{person.health}}/{{person.getMaxHP()}} HP] [{{person.xp}}/{{person.xpNeededForLevelup()}} XP before levelup]
+
+                        <button ng-click="promote(person,'Witchling')" ng-show="person.xp >= person.xpNeededForLevelup() && person.type == 'Bystander'">Transform into Witchling</button>
+
+
+                    </li>
+                </ul>
+            </div>
+
+            @*<div id="log">
+                <p ng-repeat="log in logs">
+                    {{log.message}}
+                </p>
+            </div>*@
+
+            <button ng-show="endDay_btn" ng-click="endDay()">End day</button>
+
+           
 
         </div>
+
+        <div ng-show="buySellItemsView">
+            <p>It's another bright day and your soul item dealer is stopping by.  You can sell your inanimate victims or purchase some new powerful items for them if you wish.  You have {{money}} dollars.</p>
+
+            <div id="unequippedItems">
+                <h3>Your inventory:</h3>
+                <ul>
+                    <li ng-repeat="item in unequippedItems.items">{{item.type}} {{item.getVictimName()}}
+                        <button ng-show="sellItem_btn" ng-click="sellItem(item)">Sell for {{item.getSellPrice()}} $</button>
+                    </li>
+                </ul>
+            </div>
+
+            <div>
+                <h3>Purchase:</h3>
+                <ul>
+                    <li ng-repeat="item in itemsMap">{{item.name}} ({{item.value}} dollars)
+                        <button ng-show="money >= item.value" ng-click="buyItem(item.name)">Buy</button>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div id="log">
+            <p ng-repeat="log in logs">
+                {{log.message}}
+            </p>
+        </div>
+
+        <button ng-show="newfight_btn" ng-click="nextFight()">Start new fight</button>
 
 </body>
 

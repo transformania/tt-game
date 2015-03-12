@@ -382,6 +382,8 @@ namespace tfgame.Procedures
 
             SkillProcedures.UpdateItemSpecificSkillsToPlayer(oldOwnerId);
 
+            
+
             // item is an animal
             if (itemPlus.ItemType == PvPStatics.ItemType_Pet)
             {

@@ -256,7 +256,7 @@ namespace tfgame.Statics
         public static string GetRandomLocation()
         {
             // set a random location for this character to spawn in
-            List<string> spawnableLocations = LocationList.GetLocation.Select(l => l.dbName).ToList();
+            List<string> spawnableLocations = LocationList.GetLocation.Where(s => s.Region != "dungeon").Select(l => l.dbName).ToList();
             double max = spawnableLocations.Count();
             Random rand = new Random();
             double num = rand.NextDouble();
@@ -269,7 +269,20 @@ namespace tfgame.Statics
         public static string GetRandomLocation_NoStreets()
         {
             // set a random location for this character to spawn in
-            List<string> spawnableLocations = LocationList.GetLocation.Where(l => l.Region != "streets").Select(l => l.dbName).ToList();
+            List<string> spawnableLocations = LocationList.GetLocation.Where(l => l.Region != "streets" && l.Region != "dungeon").Select(l => l.dbName).ToList();
+            double max = spawnableLocations.Count();
+            Random rand = new Random();
+            double num = rand.NextDouble();
+
+            int index = Convert.ToInt32(Math.Floor(num * max));
+            string locationToSpawnIn = spawnableLocations.ElementAt(index);
+            return locationToSpawnIn;
+        }
+
+        public static string GetRandomLocation_InDungeon()
+        {
+            // set a random location for this character to spawn in
+            List<string> spawnableLocations = LocationList.GetLocation.Where(l => l.Region == "dungeon").Select(l => l.dbName).ToList();
             double max = spawnableLocations.Count();
             Random rand = new Random();
             double num = rand.NextDouble();

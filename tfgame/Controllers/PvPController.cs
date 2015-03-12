@@ -1003,6 +1003,15 @@ namespace tfgame.Controllers
                  return RedirectToAction("Play");
              }
 
+             // assert player is not in the dungeon
+             Location myLocation = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName);
+             if (myLocation.Region == "dungeon")
+             {
+                 TempData["Error"] = "You can't enchant in the dungeon.";
+                 TempData["SubError"] = "You can only enchant locations in the overworld.  The magic down here is too strong.";
+                 return RedirectToAction("Play");
+             }
+
              // assert that it is not too late in the round for this attack to happen
              DateTime lastupdate = PvPWorldStatProcedures.GetLastWorldUpdate();
              double secondsAgo = Math.Abs(Math.Floor(lastupdate.Subtract(DateTime.UtcNow).TotalSeconds));
@@ -1459,10 +1468,19 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play");
             }
 
-
-            TempData["Result"] = ItemProcedures.DropItem(itemId, me.dbLocationName);
-
             Location here = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName);
+
+            if (here.Region != "dungeon") { 
+                // in overworld, drop at player's feet
+                TempData["Result"] = ItemProcedures.DropItem(itemId, me.dbLocationName);
+            }
+            else
+            {
+                // in dungeon, have it drop in a random place in the overworld
+                string overworldLocation = LocationsStatics.GetRandomLocation();
+                string resultmsg = ItemProcedures.DropItem(itemId, overworldLocation);
+                TempData["Result"] = resultmsg + "  It shimmers and falls through the dungeon floor, appearing somewhere in the town above.";
+            }
 
             string playerLogMessage;
             string locationLogMessage;

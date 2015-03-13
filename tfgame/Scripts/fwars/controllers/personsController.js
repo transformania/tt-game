@@ -13,6 +13,13 @@
     $scope.buyItem_btn = true;
     $scope.buySellItemsView = false;
     $scope.chooseBattlegroundView = false;
+    $scope.assignItemsView = false;
+    $scope.equipView_btn = true;
+    $scope.showTeachSpells = false;
+    $scope.teachSpells_btn = true;
+
+    $scope.equipNext = true;
+    $scope.equipPrevious = true;
 
     $scope.itemsMap = itemStatsMap;
 
@@ -21,6 +28,8 @@
     $scope.energyMax = 100;
     $scope.money = 0;
     $scope.day = 1;
+
+    $scope.currentlySelectedItem;
 
     $scope.logs = [];
 
@@ -34,63 +43,63 @@
     $scope.aftermathBtn = false;
     $scope.aftermathView = false;
     $scope.aftermathViewLevelup = false;
-  
+
 
     $scope.fightView = false;
 
-   
+    var welcome = new Log("Welcome!");
 
-     var welcome = new Log("Welcome!");
-
-     $scope.logs.push(welcome);
+    $scope.logs.push(welcome);
 
     // have player enter their name to kick off the game
-     $scope.addPlayerAndStart = function (firstName, lastName) {
-         var newbie = new Person(firstName, lastName, "Fashion Witch");
-         leaderId = newbie.id;
+    $scope.addPlayerAndStart = function (firstName, lastName) {
+        var newbie = new Person(firstName, lastName, "Fashion Witch");
+        leaderId = newbie.id;
 
-         newbie.giveFinishingSpell('Cotton Panties');
-         newbie.giveFinishingSpell('Latex Catsuit');
-         $scope.leader = newbie;
+        newbie.giveFinishingSpell('Cotton Panties');
+        newbie.giveFinishingSpell('Latex Catsuit');
+        $scope.leader = newbie;
 
-         $scope.personsPlayer.addPerson(newbie);
+        $scope.personsPlayer.addPerson(newbie);
 
-         var welcome = new Log(newbie.fullName() + " <b>has</b> founded a new covenant!");
+        var welcome = new Log(newbie.fullName() + " <b>has</b> founded a new covenant!");
 
-         $scope.logs.push(welcome);
+        $scope.logs.push(welcome);
 
-         $scope.chooseBattlegroundView = true;
+        $scope.chooseBattlegroundView = true;
 
-     }
+    }
 
-     $scope.chooseBattleground = function () {
-         $scope.chooseBattlegroundView = true;
-         $scope.buySellItemsView = false;
-     }
+    $scope.chooseBattleground = function () {
+        $scope.chooseBattlegroundView = true;
+        $scope.buySellItemsView = false;
+        $scope.assignItemsView = false;
+        $scope.teachSpellsView = false;
+    }
 
-     $scope.chooseBattlegroundSend = function (location, variation) {
-         $scope.startVisible = false;
-         $scope.fightView = true;
+    $scope.chooseBattlegroundSend = function (location, variation) {
+        $scope.startVisible = false;
+        $scope.fightView = true;
 
-         $scope.continueFightVisible = false;
-         $scope.startFightVisible = true;
+        $scope.continueFightVisible = false;
+        $scope.startFightVisible = true;
 
-         $scope.chooseBattlegroundView = false;
-         $scope.personsAI.spawnGroup(location, variation);
+        $scope.chooseBattlegroundView = false;
+        $scope.personsAI.spawnGroup(location, variation);
 
-     }
+    }
 
     // kick off a fight
-     $scope.startFight = function () {
+    $scope.startFight = function () {
 
-         $scope.defeatedAI.persons = [];
-         $scope.defeatedPlayer.persons = [];
+        $scope.defeatedAI.persons = [];
+        $scope.defeatedPlayer.persons = [];
 
-         $scope.turnsSinceCombatStart = 1;
-         $scope.continueFightVisible = true;
-         $scope.startFightVisible = false;
-         $scope.retreatBtnVisible = false;
-     }
+        $scope.turnsSinceCombatStart = 1;
+        $scope.continueFightVisible = true;
+        $scope.startFightVisible = false;
+        $scope.retreatBtnVisible = false;
+    }
 
     // begin a round of fighting
     $scope.fight = function () {
@@ -105,7 +114,7 @@
 
         for (var i = 0; i < newLogs.length; i++) {
             $scope.logs.push(newLogs[i]);
-           
+
         }
 
         // give the option to retreat after the 3rd round
@@ -140,6 +149,7 @@
         $scope.fightView = false;
         $scope.aftermathView = true;
         $scope.aftermathViewLevelup_btn = true;
+        $scope.aftermathBtn = false;
     }
 
     $scope.recruit = function (person) {
@@ -151,7 +161,7 @@
         var newlog = new Log(person.fullName() + " agrees to join your covenant for a life of adventure, danger, and sexy clothes made out rivals!");
         $scope.logs.push(newlog);
     }
-   
+
     $scope.inanimate = function (person, spell) {
         $scope.defeatedAI.removePerson(person);
         var newItem = new Item(spell, person.fullName());
@@ -167,7 +177,7 @@
         $scope.aftermathView = false;
         $scope.personsPlayer.mergeIntoGroup($scope.defeatedPlayer);
         $scope.unequippedItems.mergeIntoGroup($scope.newItems);
-       
+
     }
 
     $scope.promote = function (person, nextForm) {
@@ -200,18 +210,68 @@
         $scope.logs.push(newlog);
     }
 
+    $scope.showEquipMembersView = function () {
+        $scope.buySellItemsView = false;
+        $scope.assignItemsView = true;
+        $scope.currentlySelectedItem = $scope.unequippedItems.items[0];
+    }
+
+
+    $scope.equipNext = function () {
+        var index = $scope.unequippedItems.items.indexOf($scope.currentlySelectedItem);
+        index++;
+        $scope.currentlySelectedItem = $scope.unequippedItems.items[index];
+
+        if ($scope.currentlySelectedItem === undefined) {
+            $scope.currentlySelectedItem = $scope.unequippedItems.items[0];
+        }
+    }
+
+    $scope.equipPrevious = function (item) {
+        var index = $scope.unequippedItems.items.indexOf($scope.currentlySelectedItem);
+        index--;
+        $scope.currentlySelectedItem = $scope.unequippedItems.items[index];
+
+        if ($scope.currentlySelectedItem === undefined) {
+            $scope.currentlySelectedItem = $scope.unequippedItems.items[$scope.unequippedItems.items.length - 1];
+        }
+    }
+
+    $scope.assignTo = function (person, item) {
+        person.giveItem(item);
+        $scope.unequippedItems.removeItem(item);
+        $scope.currentlySelectedItem = $scope.unequippedItems.items[0];
+    }
+
+    $scope.strip = function (person) {
+        var numberEquipped = person.items.length;
+        for (var i = 0; i < numberEquipped; i++) {
+            var item = person.items[0];
+            person.removeItem(item);
+            $scope.unequippedItems.addItem(item);
+        }
+        $scope.currentlySelectedItem = $scope.unequippedItems.items[0];
+    }
+
+    $scope.showTeachSpells = function () {
+        $scope.teachSpellsView = true;
+        $scope.assignItemsView = false;
+        $scope.logs = [];
+    }
+
     $scope.nextFight = function () {
-       
-     //   $scope.personsAI.spawnGroup('bystanders_easy');
+
+        //   $scope.personsAI.spawnGroup('bystanders_easy');
         $scope.startFightVisible = true;
         $scope.aftermathView = false;
         $scope.fightView = true;
         $scope.aftermathBtn = false;
-        
+        $scope.assignItemsView = false;
+
         $scope.personsPlayer.healGroup(15);
         $scope.defeatedAI.persons = [];
         $scope.defeatedPlayer.persons = [];
-       
+
     }
 
 

@@ -34,8 +34,6 @@ var Item = function (type, formerName) {
         this.oldName = formerName;
     }
 
-    console.log(this.oldName);
-
     itemIdNext++;
 }
 

@@ -38,11 +38,8 @@
             <button ng-click="chooseBattlegroundSend('park_parking_lot', 2)">Park:  Parking Lot</button>
             <button ng-click="chooseBattlegroundSend('park_lodge', 2)">Park:  Lodge</button>
             <button ng-click="chooseBattlegroundSend('coffeestore', 2)">Coffee Shop</button>
-
-
         </div>
 
-        @*<span>Hide: <input type="checkbox" ng-model="isHidden" /></span>*@
 
         <div ng-show="fightView">
 
@@ -86,13 +83,6 @@
             <button ng-click="fight()" ng-show="continueFightVisible">Continue Fight (Round {{turnsSinceCombatStart}})</button>
             <button ng-click="retreat()" ng-show="retreatBtnVisible">Retreat!</button>
             <button ng-click="aftermath()" ng-show="aftermathBtn">View Fight Aftermath</button>
-
-            @*<div id="log">
-                <p ng-repeat="log in logs">
-                    {{log.message}}
-                </p>
-            </div>*@
-
         </div>
 
         <div ng-show="aftermathView">
@@ -113,12 +103,6 @@
                     </li>
                 </ul>
             </div>
-
-            @*<div id="log">
-                <p ng-repeat="log in logs" ng-bind-html-unsafe="log.html">
-                    {{log.message}}
-                </p>
-            </div>*@
 
             <div id="unequippedItems">
                 <h3>New items from fight:</h3>
@@ -152,15 +136,7 @@
                 </ul>
             </div>
 
-            @*<div id="log">
-                <p ng-repeat="log in logs">
-                    {{log.message}}
-                </p>
-            </div>*@
-
             <button ng-show="endDay_btn" ng-click="endDay()">End day</button>
-
-           
 
         </div>
 
@@ -170,7 +146,8 @@
             <div id="unequippedItems">
                 <h3>Your inventory:</h3>
                 <ul>
-                    <li ng-repeat="item in unequippedItems.items">{{item.type}} {{item.getVictimName()}}
+                    <li ng-repeat="item in unequippedItems.items">
+                        {{item.type}} {{item.getVictimName()}}
                         <button ng-show="sellItem_btn" ng-click="sellItem(item)">Sell for {{item.getSellPrice()}} $</button>
                     </li>
                 </ul>
@@ -179,15 +156,75 @@
             <div>
                 <h3>Purchase:</h3>
                 <ul>
-                    <li ng-repeat="item in itemsMap">{{item.name}} ({{item.value}} dollars)
+                    <li ng-repeat="item in itemsMap">
+                        {{item.name}} ({{item.value}} dollars)
                         <button ng-show="money >= item.value" ng-click="buyItem(item.name)">Buy</button>
                     </li>
                 </ul>
             </div>
 
+            <button ng-show="equipView_btn" ng-click="showEquipMembersView()">Equip Members</button>
+
+        </div>
+
+
+        <div ng-show="assignItemsView">
+            <h3>Equip your Members</h3>
+
+            <div id="unequippedItems">
+                <h3>Unequipped items:</h3>
+                <ul>
+                    <li ng-repeat="item in unequippedItems.items">
+                        {{item.type}} {{item.getVictimName()}}
+                        <span ng-show="item.id == currentlySelectedItem.id">CURRENT</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div ng-show="unequippedItems.items.length > 0">
+                <span>Currently assigning {{currentlySelectedItem.type}} {{item.getVictimName()}}</span>
+
+                <button ng-click="equipPrevious()" ng-show="unequippedItems.items.length > 0">Previous</button>
+                <button ng-click="equipNext()" ng-show="unequippedItems.items.length > 0">Next</button>
+
+            </div>
+
+            <div class="container">
+                <h3>Members:</h3>
+                <ul>
+                    <li ng-repeat="person in personsPlayer.persons | orderBy:'firstName'">
+                        {{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}][{{person.health}}/{{person.getMaxHP()}} HP] [{{person.items.length}} items equipped]
+
+                        <button ng-click="assignTo(person, currentlySelectedItem)" ng-show="person.items.length < 2 && unequippedItems.items.length > 0">Assign To Me</button>
+                        <button ng-click="strip(person)" ng-show="person.items.length > 0">Remove All Items</button>
+
+
+                    </li>
+                </ul>
+            </div>
+
+
+            <button ng-show="teachSpells_btn" ng-click="showTeachSpells()">Teach Spells</button>
+
+        </div>
+
+        <div ng-show="teachSpellsView">
+            <h3>Teach new Spells to Members</h3>
+
+            <ul>
+                <li ng-repeat="person in personsPlayer.persons | orderBy:'firstName'">
+                    {{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}]
+                    Knows: <span ng-repeat="spell in person.finishingSpells"> {{spell}},</span>
+                </li>
+            </ul>
+
             <button ng-show="newfight_btn" ng-click="chooseBattleground()">Choose Location</button>
 
         </div>
+
+
+
+
 
         <div id="log">
             <p ng-repeat="log in logs">
@@ -195,8 +232,8 @@
             </p>
         </div>
 
-        @*<button ng-show="newfight_btn" ng-click="chooseBattlegroundSend()">Start new fight</button>*@
 
+    </div>
 </body>
 
 

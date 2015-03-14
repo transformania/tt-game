@@ -195,6 +195,8 @@ namespace tfgame.Statics
         public static string ItemType_Hat = "hat";
         public static string ItemType_Shoes = "shoes";
         public static string ItemType_Pet = "pet";
+        public const string ItemType_DungeonArtifact = "item_consumeable_dungeon_artifact";
+        public const decimal DungeonArtifact_Value = 2;
 
         public enum GameModes { Superprotection = 0, Protection = 1, PvP = 2}
 

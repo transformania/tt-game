@@ -1770,6 +1770,14 @@ namespace tfgame.Procedures
             return "  You have gained " + amount + " PvP score from your victory over " + loser.FirstName + " " + loser.LastName + ".";
         }
 
+        public static void GivePlayerPvPScore_NoLoser(Player player, decimal amount)
+        {
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            dbPlayer.PvPScore += amount;
+            playerRepo.SavePlayer(dbPlayer);
+        }
+
         public static string RemovePlayerPvPScore(Player loser, Player attacker)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();

@@ -1223,6 +1223,14 @@ namespace tfgame.Controllers
             {
                 searchCostAfterbuffs = 3;
             }
+
+             // assert player is not in the dungeon
+            if (me.IsInDungeon() == true)
+            {
+                TempData["Error"] = "The constantly shifting chambers and corridors of the dungeon make searching unlikely to find anything down here.";
+                return RedirectToAction("Play");
+            }
+
             // assert player has sufficient action points to search
             if (me.ActionPoints < searchCostAfterbuffs)
             {
@@ -1369,8 +1377,8 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play");
             }
 
-            // assert that the player is not carrying too much already UNLESS the item is a pet
-            if (ItemProcedures.PlayerIsCarryingTooMuch(me.Id, 0, myBuffs)==true && pickup.Item.ItemType!=PvPStatics.ItemType_Pet) {
+            // assert that the player is not carrying too much already UNLESS the item is a pet OR dungeon token
+            if (ItemProcedures.PlayerIsCarryingTooMuch(me.Id, 0, myBuffs)==true && pickup.Item.ItemType!=PvPStatics.ItemType_Pet && pickup.Item.dbName!=PvPStatics.ItemType_DungeonArtifact) {
                 TempData["Error"] = "You are carrying too many items to pick this up.";
                 TempData["SubError"] = "Use, drop, or wear/equip something you are carrying to make more room.  Some accessories may also allow you to carry more.";
                 return RedirectToAction("Play");
@@ -1396,13 +1404,21 @@ namespace tfgame.Controllers
             string locationLogMessage = "";
             Location here = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName);
 
+             // item is a dungeon artifact; immediately give the points to the player and delete it
+            if (pickup.Item.dbName == PvPStatics.ItemType_DungeonArtifact)
+            {
+                PlayerProcedures.GivePlayerPvPScore_NoLoser(me, PvPStatics.DungeonArtifact_Value);
+                ItemProcedures.DeleteItem(pickup.dbItem.Id);
+                TempData["Result"] = "You pick up the artifact.  As soon as it touches your hands, it fades away, leaving you with its dark power.";
+                playerLogMessage = "You picked up a <b>" + pickup.Item.FriendlyName + "</b> at " + here.Name + " and absorbed its dark power into your soul.";
+                locationLogMessage = me.FirstName + " " + me.LastName + " picked up a <b>" + pickup.Item.FriendlyName + "</b> here and immediately absorbed its dark powers.";
+            }
 
-            // if the item is inanimate, the item to the player's inventory
-            if (pickup.Item.ItemType!=PvPStatics.ItemType_Pet) {
+            // if the item is inanimate, give the item to the player's inventory
+            else if (pickup.Item.ItemType!=PvPStatics.ItemType_Pet) {
                 TempData["Result"] = ItemProcedures.GiveItemToPlayer(pickup.dbItem.Id, me.Id);
                 playerLogMessage = "You picked up a <b>" + pickup.Item.FriendlyName + "</b> at " + here.Name + " and put it into your inventory.";
                 locationLogMessage = me.FirstName + " " + me.LastName + " picked up a <b>" + pickup.Item.FriendlyName + "</b> here.";
-                
             }
                 // item is an animal, equip it automatically
             else if (pickup.Item.ItemType == PvPStatics.ItemType_Pet)
@@ -3232,6 +3248,19 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play");
             }
 
+            // don't allow items or pets to struggle while their owner is online in the dungeon
+            if (itemMe.OwnerId > 0)
+            {
+                Player owner = PlayerProcedures.GetPlayer(itemMe.OwnerId);
+
+                if (owner.IsInDungeon() == true && PlayerProcedures.PlayerIsOffline(owner) == false)
+                {
+                    TempData["Error"] = "The dark powers of the dungeon prevent you from being able to fight your transformation while your owner is online.";
+                    return RedirectToAction("Play");
+                }
+            }
+        
+
             TempData["Result"] = InanimateXPProcedures.ReturnToAnimate(me);
             return RedirectToAction("Play");
         }
@@ -3271,6 +3300,13 @@ namespace tfgame.Controllers
                  return RedirectToAction("Play");
              }
 
+             // don't allow items or pets to struggle while their owner is online in the dungeon
+             if (owner.IsInDungeon() == true && PlayerProcedures.PlayerIsOffline(owner) == false)
+             {
+                 TempData["Error"] = "The dark powers of the dungeon prevent you from being able to slip free while your owner is in the dungeon and online.";
+                 return RedirectToAction("Play");
+             }
+             
              // all checks pass; drop item and notify owner
              ItemProcedures.DropItem(inanimateMe.Id, owner.dbLocationName);
              ItemViewModel inaniamteMePlus = ItemProcedures.GetItemViewModel(inanimateMe.Id);
@@ -3945,6 +3981,36 @@ namespace tfgame.Controllers
                     log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished giving covenants money from territories");
                     
                 }
+                #endregion
+
+                #region drop dungeon artifacts and spawn demons if needed
+                if (turnNo % 9 == 2)
+                {
+                    int dungeonArtifactCount = itemsRepo.Items.Where(i => i.dbName == PvPStatics.ItemType_DungeonArtifact).Count();
+
+                    for (int x = 0; x < 5 - dungeonArtifactCount; x++)
+                    {
+                        string randDungeon = LocationsStatics.GetRandomLocation_InDungeon();
+                        Item newArtifact = new Item{
+                            dbLocationName = randDungeon,
+                            OwnerId = -1,
+                            EquippedThisTurn = false,
+                            IsPermanent = true,
+                            TimeDropped = DateTime.UtcNow,
+                            Level = 0,
+                            PvPEnabled = true,
+                            IsEquipped = false,
+                            TurnsUntilUse = 0,
+                            VictimName = "",
+                            dbName = PvPStatics.ItemType_DungeonArtifact,
+                        };
+                        itemsRepo.SaveItem(newArtifact);
+                    }
+
+                    // TODO:  spawn demons
+
+                }
+
                 #endregion
 
                 serverLogRepo.SaveServerLog(log);

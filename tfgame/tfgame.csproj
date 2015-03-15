@@ -347,6 +347,7 @@
     <Compile Include="Procedures\BlacklistProcedures.cs" />
     <Compile Include="Procedures\BossProcedures\BossProcedures_BimboBoss.cs" />
     <Compile Include="Procedures\BossProcedures\BossProcedures_Donna.cs" />
+    <Compile Include="Procedures\BossProcedures\BossProcedures_DungeonDemon.cs" />
     <Compile Include="Procedures\BossProcedures\BossProcedures_Fae.cs" />
     <Compile Include="Procedures\BossProcedures\BossProcedures_PetMerchant.cs" />
     <Compile Include="Procedures\BossProcedures\BossProcedures_Sisters.cs" />

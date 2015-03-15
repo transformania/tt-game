@@ -30,6 +30,7 @@ namespace tfgame.Procedures
         // -10 pet merchant
         // -11 Nerd mouse sister
         // -12 bimbo mouse sister
+        // -13 dungeon demon
 
         public static void SpawnAIPsychopaths(int count, int offset)
         {
@@ -620,14 +621,22 @@ namespace tfgame.Procedures
                 BossProcedures_Thieves.CounterAttack(personAttacking);
             }
 
+            // Wuffie counterattack
             else if (bot.MembershipId == -10)
             {
                 BossProcedures_PetMerchant.CounterAttack(personAttacking);
             }
 
+            // mouse sisters counterattack
             else if (bot.MembershipId == -11 || bot.MembershipId == -12)
             {
                 BossProcedures_Sisters.CounterAttack(personAttacking, bot);
+            }
+
+            // demon counterattack
+            else if (bot.MembershipId == -13)
+            {
+                BossProcedures_DungeonDemon.CounterAttack(bot, personAttacking);
             }
 
 

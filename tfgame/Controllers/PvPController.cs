@@ -852,6 +852,17 @@ namespace tfgame.Controllers
                     }
                 }
 
+                // TODO:  Dungeon Demons can only be vanquished
+                if (targeted.MembershipId == -13)
+                {
+                //    string result = BossProcedures_Sisters.SpellIsValid(me, targeted, attackName);
+                //    if (result != "")
+                //    {
+                //        TempData["Error"] = result;
+                //        return RedirectToAction("Play");
+                //    }
+                }
+
             }
             #endregion
 
@@ -3987,8 +3998,7 @@ namespace tfgame.Controllers
                 if (turnNo % 9 == 2)
                 {
                     int dungeonArtifactCount = itemsRepo.Items.Where(i => i.dbName == PvPStatics.ItemType_DungeonArtifact).Count();
-
-                    for (int x = 0; x < 5 - dungeonArtifactCount; x++)
+                    for (int x = 0; x < 5 - PvPStatics.DungeonArtifact_SpawnLimit; x++)
                     {
                         string randDungeon = LocationsStatics.GetRandomLocation_InDungeon();
                         Item newArtifact = new Item{
@@ -4007,8 +4017,46 @@ namespace tfgame.Controllers
                         itemsRepo.SaveItem(newArtifact);
                     }
 
-                    // TODO:  spawn demons
+                    int dungeonDemonCount = playerRepo.Players.Where(i => i.Form == PvPStatics.DungeonDemon).Count();
 
+                    for (int x = 0; x < PvPStatics.DungeonDemon_Limit - dungeonDemonCount; x++)
+                    {
+                        string randDungeon = LocationsStatics.GetRandomLocation_InDungeon();
+                        Location spawnLocation = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == randDungeon);
+
+                        string demonlastName = spawnLocation.dbName.Replace("Chamber", "").Replace("Junction", "").Replace("Passageway", "").Replace("Crossing", "");
+
+                        Player newDemon = new Player
+                        {
+                         
+                            MembershipId = -13,
+                            FirstName = "Guardian of ",
+                            LastName = demonlastName,
+                            Mobility = "full",
+                            ActionPoints = 120,
+                            ActionPoints_Refill = 360,
+                            Form = PvPStatics.DungeonDemon,
+                            Gender = "female",
+                            GameMode = 2,
+                            Health = 500,
+                            Mana = 500,
+                            OriginalForm = PvPStatics.DungeonDemon,
+                            Covenant = -1,
+                            dbLocationName = randDungeon,
+                            FlaggedForAbuse = false,
+                            LastActionTimestamp = DateTime.UtcNow,
+                            LastCombatAttackedTimestamp = DateTime.UtcNow,
+                            LastCombatTimestamp = DateTime.UtcNow,
+                            Level = 10,
+                            MaxHealth = 500,
+                            MaxMana = 500,
+                            IsPetToId = -1,
+                            OnlineActivityTimestamp = DateTime.UtcNow,
+                            NonPvP_GameOverSpellsAllowedLastChange = DateTime.UtcNow,
+                        };
+                        playerRepo.SavePlayer(newDemon);
+
+                    }
                 }
 
                 #endregion

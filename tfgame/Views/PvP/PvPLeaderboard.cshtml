@@ -12,8 +12,8 @@
 
     @Html.Partial("partial/OldLeaderboardLinks")
 
-    <h1 style="text-align: center; margin-top:-10px;">PvP Leaderboard</h1>
-    <h2 style="text-align: center; margin-top:0;">Alpha Round 15</h2>
+    <h1 style="text-align: center; margin-top:-10px;">Dungeon Leaderboard</h1>
+    <h2 style="text-align: center; margin-top:0;">@PvPStatics.AlphaRound</h2>
 
 
 
@@ -57,9 +57,12 @@
 
             if (p.GameMode == 2)
             {
-                <span class="icon-protection"></span>
+                <span class="icon-pvp"></span>
             }
             else if (p.GameMode == 1)
+            {
+                <span class="icon-protection"></span>
+            } else if (p.GameMode == 0)
             {
                 <span class="icon-superprotection"></span>
             }

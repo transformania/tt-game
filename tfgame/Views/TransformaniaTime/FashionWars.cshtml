@@ -22,7 +22,7 @@
 
     <div data-ng-controller="PersonsController as ctrl">
 
-        <p>Day {{day}}</p>
+        <p>Day {{day}} - {{money}} $ - {{infamy}} infamy</p>
 
         <div ng-show="startVisible">
             <p>What is your name?</p>
@@ -86,7 +86,7 @@
         </div>
 
         <div ng-show="aftermathView">
-            <p>With the day over you can now take stock of your prisoners.  What shall you do with them?  Recruit them to your cause?  Or change them into cute little clothes for you, your friends, or the store next door?  <b>You have {{energy}}/{{energyMax}}</b> energy left.  You have {{money}} dollars.</p>
+            <p>With the day over you can now take stock of your prisoners.  What shall you do with them?  Recruit them to your cause?  Or change them into cute little clothes for you, your friends, or the store next door?  You can also brainwash your opponents, leaving them with an altered body and mind so as to avoid increasing your infamy as high.  <b>You have {{energy}}/{{energyMax}}</b> energy left.  You have {{money}} dollars.</p>
 
             <button ng-show="aftermathViewLevelup_btn" ng-click="aftermathLevelupShow()">Release remaining {{defeatedAI.persons.length}} prisoners and continue</button>
 
@@ -95,10 +95,13 @@
                 <ul>
                     <li ng-repeat="person in defeatedAI.persons | orderBy:'firstName'">
                         {{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}]
-                        <button ng-click="recruit(person)" ng-show="person.getRecruitmentCost() <= energy">Recruit ({{person.getRecruitmentCost()}} energy required)</button>
+                        <button ng-click="recruit(person)" ng-show="person.getRecruitmentCost() <= energy" class="recruit">Recruit ({{person.getRecruitmentCost()}} energy)</button>
 
-                        <span ng-repeat="spell in leader.finishingSpells"><button ng-click="inanimate(person, spell)" ng-show="leader.getTransformCost(spell) <= energy">Turn into {{spell}} ({{leader.getTransformCost(spell)}} energy required))</button></span>
+                        <span ng-repeat="spell in leader.finishingSpells"><button ng-click="inanimate(person, spell)" ng-show="leader.getTransformCost(spell) <= energy && leader.itemIsSpell(spell)== true" class="inanimate">Turn into {{spell}} ({{leader.getTransformCost(spell)}} energy))</button></span>
 
+                        <button ng-click="amnesia(person)" ng-show="energy > person.getBrainwashCost()" class="brainwash">Brainwash ({{person.getBrainwashCost()}} energy)</button>
+
+                        <button ng-click="absorb(person)" ng-show="leader.getTransformCost('Absorb') <= energy && leader.knowsAbsorb()==true" class="absorb">Absorb ({{leader.getTransformCost('Absorb')}} energy)</button>
 
                     </li>
                 </ul>
@@ -195,8 +198,10 @@
                     <li ng-repeat="person in personsPlayer.persons | orderBy:'firstName'">
                         {{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}][{{person.health}}/{{person.getMaxHP()}} HP] [{{person.items.length}} items equipped]
 
-                        <button ng-click="assignTo(person, currentlySelectedItem)" ng-show="person.items.length < 2 && unequippedItems.items.length > 0">Assign To Me</button>
-                        <button ng-click="strip(person)" ng-show="person.items.length > 0">Remove All Items</button>
+                        Wearing:  <span ng-repeat="item in person.items"><b>{{item.type}}</b>, </span>
+
+                        <button ng-click="assignTo(person, currentlySelectedItem)" ng-show="person.items.length < 2 && unequippedItems.items.length > 0" class="assign">Assign To Me</button>
+                        <button ng-click="strip(person)" ng-show="person.items.length > 0" class="remove">Remove All Items</button>
 
 
                     </li>
@@ -211,20 +216,30 @@
         <div ng-show="teachSpellsView">
             <h3>Teach new Spells to Members</h3>
 
+            <p>You may teach your covenant members some new spells to cast against their defeated opponents right in battle.</p>
+
             <ul>
                 <li ng-repeat="person in personsPlayer.persons | orderBy:'firstName'">
                     {{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}]
-                    Knows: <span ng-repeat="spell in person.finishingSpells"> {{spell}},</span>
+                    Knows: <span ng-repeat="spell in person.finishingSpells"> <b>{{spell}}</b>,</span>
+                    <span ng-show="person.id == currentlySelectedPerson.id">CURRENT</span>
                 </li>
             </ul>
 
-            <button ng-show="newfight_btn" ng-click="chooseBattleground()">Choose Location</button>
+            <button ng-click="teachPrevious()" ng-show="personsPlayer.persons.length > 0">Previous</button>
+            <button ng-click="teachNext()" ng-show="personsPlayer.persons.length > 0">Next</button>
+           
+            <p>Teaching {{currentlySelectedPerson.fullName()}}...</p>
+
+            <li ng-repeat="item in itemsMap">
+                {{item.name}} ({{item.spellTrainingCost}} dollars)
+                <button ng-show="money >= item.spellTrainingCost && currentlySelectedPerson.knowsSpell(item.name) == false" ng-click="teachSpell(item.name)" class="assign">Train</button>
+                <span ng-show="currentlySelectedPerson.knowsSpell(item.name) == true">(Already known)</span>
+            </li>
+
+            <button ng-show="newfight_btn" ng-click="chooseBattleground()">Choose Battleground</button>
 
         </div>
-
-
-
-
 
         <div id="log">
             <p ng-repeat="log in logs">
@@ -252,4 +267,25 @@
         margin-top: 5px;
         margin-bottom: 5px;
     }
+
+    .remove {
+        background-color:lightpink;
+    }
+
+    .assign {
+        background-color: lightgreen;
+    }
+
+    .inanimate {
+        background-color: lightyellow;
+    }
+
+    .recruit {
+        background-color: lightblue;
+    }
+
+    .brainwash {
+        background-color: orange;
+    }
+
 </style>

@@ -266,7 +266,7 @@ namespace tfgame.Statics
             // set a random location for this character to spawn in
             List<string> spawnableLocations = LocationList.GetLocation.Where(s => s.Region != "dungeon").Select(l => l.dbName).ToList();
             double max = spawnableLocations.Count();
-            Random rand = new Random();
+            Random rand = new Random(Guid.NewGuid().GetHashCode());
             double num = rand.NextDouble();
 
             int index = Convert.ToInt32(Math.Floor(num * max));
@@ -279,7 +279,7 @@ namespace tfgame.Statics
             // set a random location for this character to spawn in
             List<string> spawnableLocations = LocationList.GetLocation.Where(l => l.Region != "streets" && l.Region != "dungeon").Select(l => l.dbName).ToList();
             double max = spawnableLocations.Count();
-            Random rand = new Random();
+            Random rand = new Random(Guid.NewGuid().GetHashCode());
             double num = rand.NextDouble();
 
             int index = Convert.ToInt32(Math.Floor(num * max));
@@ -292,7 +292,7 @@ namespace tfgame.Statics
             // set a random location for this character to spawn in
             List<string> spawnableLocations = LocationList.GetLocation.Where(l => l.Region == "dungeon").Select(l => l.dbName).ToList();
             double max = spawnableLocations.Count();
-            Random rand = new Random();
+            Random rand = new Random(Guid.NewGuid().GetHashCode());
             double num = rand.NextDouble();
 
             int index = Convert.ToInt32(Math.Floor(num * max));
@@ -305,7 +305,7 @@ namespace tfgame.Statics
             // set a random location for this character to spawn in
             List<string> spawnableLocations = LocationList.GetLocation.Where(l => l.Region == region).Select(l => l.dbName).ToList();
             double max = spawnableLocations.Count();
-            Random rand = new Random();
+            Random rand = new Random(Guid.NewGuid().GetHashCode());
             double num = rand.NextDouble();
 
             int index = Convert.ToInt32(Math.Floor(num * max));

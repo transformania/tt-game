@@ -52,3 +52,10 @@ Item.prototype.getBasePrice = function () {
 Item.prototype.getSellPrice = function () {
     return Math.floor(itemStatsMap[this.type].value * .75);
 }
+
+Item.prototype.isSpell = function () {
+    return Math.floor(itemStatsMap[this.type].isSpell);
+}
+
+
+

@@ -3911,9 +3911,9 @@ namespace tfgame.Controllers
                     {
                         try
                         {
-                            context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Items] SET OwnerId = " + merchant.Id + ", dbLocationName = '', TimeDropped = '" + DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss") + "'  WHERE  dbLocationName <> '' AND dbLocationName IS NOT NULL AND TimeDropped < DATEADD(hour, -8, GETUTCDATE()) AND OwnerId = -1 AND dbName LIKE 'item_%'");
+                            context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Items] SET OwnerId = " + merchant.Id + ", dbLocationName = '', TimeDropped = '" + DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss") + "'  WHERE  dbLocationName <> '' AND dbLocationName IS NOT NULL AND TimeDropped < DATEADD(hour, -8, GETUTCDATE()) AND OwnerId = -1 AND dbName LIKE 'item_%' AND dbName != '" + PvPStatics.ItemType_DungeonArtifact + "'");
 
-                            context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Players] SET dbLocationName = '" + merchant.dbLocationName + "' WHERE (FirstName + ' ' + LastName) IN ( SELECT VictimName FROM [Stats].[dbo].[Items] WHERE  dbLocationName <> '' AND dbLocationName IS NOT NULL AND TimeDropped < DATEADD(hour, -8, GETUTCDATE()) AND OwnerId = -1 AND dbName LIKE 'item_%' )");
+                            context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Players] SET dbLocationName = '" + merchant.dbLocationName + "' WHERE (FirstName + ' ' + LastName) IN ( SELECT VictimName FROM [Stats].[dbo].[Items] WHERE  dbLocationName <> '' AND dbLocationName IS NOT NULL AND TimeDropped < DATEADD(hour, -8, GETUTCDATE()) AND OwnerId = -1 AND dbName LIKE 'item_%' AND dbName != '" + PvPStatics.ItemType_DungeonArtifact + "')");
 
                             log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished collecting all abandoned items for Lindella");
 
@@ -3995,8 +3995,9 @@ namespace tfgame.Controllers
                 #endregion
 
                 #region drop dungeon artifacts and spawn demons if needed
-                if (turnNo % 9 == 2)
+                if (turnNo % 3 == 2)
                 {
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Starting dungeon item / demon spawning");
                     int dungeonArtifactCount = itemsRepo.Items.Where(i => i.dbName == PvPStatics.ItemType_DungeonArtifact).Count();
                     for (int x = 0; x < 5 - PvPStatics.DungeonArtifact_SpawnLimit; x++)
                     {
@@ -4019,12 +4020,18 @@ namespace tfgame.Controllers
 
                     int dungeonDemonCount = playerRepo.Players.Where(i => i.Form == PvPStatics.DungeonDemon).Count();
 
+                    Random randLevel = new Random(Guid.NewGuid().GetHashCode());
+
                     for (int x = 0; x < PvPStatics.DungeonDemon_Limit - dungeonDemonCount; x++)
                     {
                         string randDungeon = LocationsStatics.GetRandomLocation_InDungeon();
                         Location spawnLocation = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == randDungeon);
 
-                        string demonlastName = spawnLocation.dbName.Replace("Chamber", "").Replace("Junction", "").Replace("Passageway", "").Replace("Crossing", "");
+                        string demonlastName = spawnLocation.Name.Replace("Chamber", "").Replace("Junction", "").Replace("Passageway", "").Replace("Crossing", "");
+
+                        double levelRoll = randLevel.NextDouble();
+                        int level = (int)Math.Floor(levelRoll * 8 + 3);
+
 
                         Player newDemon = new Player
                         {
@@ -4057,6 +4064,7 @@ namespace tfgame.Controllers
                         playerRepo.SavePlayer(newDemon);
 
                     }
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  FINISHED dungeon item / demon spawning");
                 }
 
                 #endregion

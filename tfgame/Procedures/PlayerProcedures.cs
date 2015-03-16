@@ -1767,7 +1767,7 @@ namespace tfgame.Procedures
             dbPlayer.PvPScore += amount;
 
             playerRepo.SavePlayer(dbPlayer);
-            return "  You have gained " + amount + " PvP score from your victory over " + loser.FirstName + " " + loser.LastName + ".";
+            return "  You steal " + amount + " Dungeon Points from your victory over " + loser.GetFullName() + "!";
         }
 
         public static void GivePlayerPvPScore_NoLoser(Player player, decimal amount)
@@ -1778,14 +1778,16 @@ namespace tfgame.Procedures
             playerRepo.SavePlayer(dbPlayer);
         }
 
-        public static string RemovePlayerPvPScore(Player loser, Player attacker)
+        public static string RemovePlayerPvPScore(Player loser, Player attacker, decimal amount)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
             Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == loser.Id);
 
-            decimal loss = Math.Floor(dbPlayer.PvPScore / 4);
+            // impose a greater net loss to discourage swapping
+            amount = Math.Floor(amount * 1.5M);
 
-            dbPlayer.PvPScore -= loss;
+
+            dbPlayer.PvPScore -= amount;
 
             if (dbPlayer.PvPScore < 0)
             {
@@ -1793,31 +1795,35 @@ namespace tfgame.Procedures
             }
 
             // loser is in PvP mode and attacker is not; double the loss penalty
-            if (loser.GameMode < 2 && attacker.GameMode == 2)
-            {
-                dbPlayer.PvPScore -= loss;
-            }
+            //if (loser.GameMode < 2 && attacker.GameMode == 2)
+            //{
+            //    dbPlayer.PvPScore -= loss;
+            //}
 
             playerRepo.SavePlayer(dbPlayer);
-            return "  You have lost " + loss + " PvP score from your defeat to " + attacker.FirstName + " " + attacker.LastName + ".";
+            return "  You have lost " + amount + " Dungeon Points from your defeat to " + attacker.GetFullName() + ".";
             //return "";
         }
 
         public static decimal GetPvPScoreFromWin(Player attacker, Player victim)
         {
-            decimal scoreFromLevel = 0;
-            decimal scoreFromSteal = 0;
-            int levelDiff = Math.Abs(attacker.Level - victim.Level);
-            if (levelDiff <= 3)
-            {
-                scoreFromLevel = victim.Level * 10;
+            //decimal scoreFromLevel = 0;
+            //decimal scoreFromSteal = 0;
 
-                if (attacker.PvPScore / 2 <= victim.PvPScore) { 
-                    scoreFromSteal = Math.Floor(victim.PvPScore / 4);
-                }
-            }
+            //int levelDiff = Math.Abs(attacker.Level - victim.Level);
+            //if (levelDiff <= 3)
+            //{
+            //    //scoreFromLevel = victim.Level * 10;
 
-            return scoreFromLevel + scoreFromSteal;
+            //    if (attacker.PvPScore / 2 <= victim.PvPScore) { 
+            //        scoreFromSteal = Math.Floor(victim.PvPScore / 4);
+            //    }
+            //}
+
+            decimal scoreFromSteal = Math.Floor(victim.PvPScore / 3);
+
+           // return scoreFromLevel + scoreFromSteal;
+            return scoreFromSteal;
         }
 
         public static void SetNickname(string nickname)

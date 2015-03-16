@@ -457,12 +457,21 @@ namespace tfgame.Procedures
                         }
 
                         // exclude PvP score for bots
-                        //if (victim.MembershipId > 0)
-                        //{
-                        //    decimal score = PlayerProcedures.GetPvPScoreFromWin(attacker, victim);
-                        //    output.AttackerLog += PlayerProcedures.GivePlayerPvPScore(attacker, victim, score);
-                        //    output.VictimLog += PlayerProcedures.RemovePlayerPvPScore(victim, attacker);
-                        //}
+                        if (victim.MembershipId > 0)
+                        {
+                            decimal score = PlayerProcedures.GetPvPScoreFromWin(attacker, victim);
+
+                            if (score > 0)
+                            {
+
+                                output.AttackerLog += PlayerProcedures.GivePlayerPvPScore(attacker, victim, score);
+                                output.VictimLog += PlayerProcedures.RemovePlayerPvPScore(victim, attacker, score);
+                            }
+                            else
+                            {
+                                output.AttackerLog += "  " + victim.GetFullName() + " unfortunately did not have any dungeon points for you to steal for yourself.";
+                            }
+                        }
 
                     }
 

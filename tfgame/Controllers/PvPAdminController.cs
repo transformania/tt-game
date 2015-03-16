@@ -1036,7 +1036,23 @@ namespace tfgame.Controllers
                 return View("Play", "PvP");
             }
 
-            AIProcedures.RunAIMerchantActions(17);
+            Player merchant = PlayerProcedures.GetPlayerFromMembership(-3);
+            using (var context = new StatsContext())
+            {
+                try
+                {
+                    context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Items] SET OwnerId = " + merchant.Id + ", dbLocationName = '', TimeDropped = '" + DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss") + "'  WHERE  dbLocationName <> '' AND dbLocationName IS NOT NULL AND TimeDropped < DATEADD(hour, -8, GETUTCDATE()) AND OwnerId = -1 AND dbName LIKE 'item_%' AND dbName != '" + PvPStatics.ItemType_DungeonArtifact + "'");
+
+                    context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Players] SET dbLocationName = '" + merchant.dbLocationName + "' WHERE (FirstName + ' ' + LastName) IN ( SELECT VictimName FROM [Stats].[dbo].[Items] WHERE  dbLocationName <> '' AND dbLocationName IS NOT NULL AND TimeDropped < DATEADD(hour, -8, GETUTCDATE()) AND OwnerId = -1 AND dbName LIKE 'item_%' AND dbName != '" + PvPStatics.ItemType_DungeonArtifact + "')");
+
+                  //  log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished collecting all abandoned items for Lindella");
+
+                }
+                catch (Exception e)
+                {
+                   // log.AddLog(updateTimer.ElapsedMilliseconds + ":  ERROR collecting all abandoned items for Lindella:  " + e.ToString());
+                }
+            }
 
             return RedirectToAction("Index");
         }

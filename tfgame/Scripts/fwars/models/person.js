@@ -50,8 +50,16 @@ PersonGroup.prototype.fightGroup = function (attackingGroup, defeatedAI, defeate
                 } else {
                     var newItemName = this.persons[i].getRandomFinishingSpell();
                     fightResult.message += p2target.fullName() + ' ' + getRandomDefeatText(newItemName);
-                    var newItem = new Item(newItemName,  p2target.fullName());
-                    newItems.addItem(newItem);
+
+                    if (newItemName == "Absorb") {
+                        this.persons[i].health += Math.floor(p2target.getMaxHP() / 4);
+                        if (this.persons[i].health > this.persons[i].getMaxHP()) {
+                            this.persons[i].health - this.persons[i].getMaxHP();
+                        }
+                    } else {
+                        var newItem = new Item(newItemName, p2target.fullName());
+                        newItems.addItem(newItem);
+                    }
                     attackingGroup.removePerson(p2target);
                 }
             }
@@ -80,8 +88,18 @@ PersonGroup.prototype.fightGroup = function (attackingGroup, defeatedAI, defeate
                 } else {
                     var newItemName = attackingGroup.persons[i].getRandomFinishingSpell();
                     fightResult2.message += p1target.fullName() + ' ' + getRandomDefeatText(newItemName);
-                    var newItem = new Item(newItemName, p1target.fullName());
-                    newItems.addItem(newItem);
+
+                    if (newItemName == "Absorb") {
+                        this.persons[i].health += Math.floor(p1target.getMaxHP() / 4);
+                        if (this.persons[i].health > this.persons[i].getMaxHP()) {
+                            this.persons[i].health - this.persons[i].getMaxHP();
+                        }
+                    } else {
+                        var newItem = new Item(newItemName, p1target.fullName());
+                        newItems.addItem(newItem);
+                    }
+
+
                     this.removePerson(p1target);
                 }
             }
@@ -205,6 +223,15 @@ Person.prototype.giveFinishingSpell = function (spell) {
     this.finishingSpells.push(spell);
 };
 
+Person.prototype.knowsSpell = function (spell) {
+    var index = this.finishingSpells.indexOf(spell);
+    if (index >= 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 
 Person.prototype.getMaxHP = function () {
     var formStats = formStatsMap[this.type];
@@ -296,11 +323,27 @@ Person.prototype.getRecruitmentCost = function () {
     return formStatsMap[this.type].energyNeededToRecruit;
 }
 
+Person.prototype.getBrainwashCost = function () {
+    return formStatsMap[this.type].brainwashCost;
+}
+
 Person.prototype.getTransformCost = function (itemName) {
     return itemStatsMap[itemName].energyNeededToTF;
 }
 
+Person.prototype.itemIsSpell = function (item) {
+    return itemStatsMap[item].isSpell;
+}
 
+Person.prototype.knowsAbsorb = function () {
+    var index = this.finishingSpells.indexOf('Absorb');
+    console.log(index);
+    if (index >= 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
 
 var randomFirstNames = ['Mary', 'Jane', 'Elessa', 'Jamie', 'Sarah', 'Caroline', 'Janice', 'Gloria', 'Alice',];
 var randomLastName = ['Smith', 'Brown', 'White', 'Blue', 'Black', 'Green', 'Tanner', 'Shoemaker', 'Telae'];

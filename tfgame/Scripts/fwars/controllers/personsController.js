@@ -26,10 +26,12 @@
     $scope.leader;
     $scope.energy = 100;
     $scope.energyMax = 100;
-    $scope.money = 0;
+    $scope.money = 100;
     $scope.day = 1;
+    $scope.infamy = 0;
 
     $scope.currentlySelectedItem;
+    $scope.currentlySelectedPerson;
 
     $scope.logs = [];
 
@@ -58,6 +60,7 @@
 
         newbie.giveFinishingSpell('Cotton Panties');
         newbie.giveFinishingSpell('Latex Catsuit');
+        newbie.giveFinishingSpell('Absorb');
         $scope.leader = newbie;
 
         $scope.personsPlayer.addPerson(newbie);
@@ -163,6 +166,7 @@
     }
 
     $scope.inanimate = function (person, spell) {
+        $scope.infamy+=2;
         $scope.defeatedAI.removePerson(person);
         var newItem = new Item(spell, person.fullName());
         $scope.newItems.addItem(newItem);
@@ -172,9 +176,25 @@
     }
 
 
+    $scope.absorb = function (person) {
+        $scope.leader.health += Math.floor(person.getMaxHP() / 4);
+        $scope.defeatedAI.removePerson(person);
+        var newlog = new Log(person.fullName() + " " + getRandomDefeatText('Absorb'));
+        $scope.logs.push(newlog);
+    }
+
+    $scope.amnesia = function (person) {
+        $scope.infamy += 1;
+        $scope.defeatedAI.removePerson(person);
+        var newlog = new Log(person.fullName() + " " + getRandomDefeatText('brainwash'));
+        $scope.logs.push(newlog);
+    }
+
+
     $scope.aftermathLevelupShow = function () {
         $scope.aftermathViewLevelup = true;
         $scope.aftermathView = false;
+        $scope.infamy += $scope.defeatedAI.persons.length*5;
         $scope.personsPlayer.mergeIntoGroup($scope.defeatedPlayer);
         $scope.unequippedItems.mergeIntoGroup($scope.newItems);
 
@@ -256,7 +276,34 @@
     $scope.showTeachSpells = function () {
         $scope.teachSpellsView = true;
         $scope.assignItemsView = false;
+        $scope.currentlySelectedPerson = $scope.personsPlayer.persons[0];
         $scope.logs = [];
+    }
+
+    $scope.teachNext = function () {
+        var index = $scope.personsPlayer.persons.indexOf($scope.currentlySelectedPerson);
+        index++;
+        $scope.currentlySelectedPerson = $scope.personsPlayer.persons[index];
+
+        if ($scope.currentlySelectedPerson === undefined) {
+            $scope.currentlySelectedPerson = $scope.personsPlayer.persons[0];
+        }
+    }
+
+    $scope.teachPrevious = function () {
+        var index = $scope.personsPlayer.persons.indexOf($scope.currentlySelectedPerson);
+        index--;
+        $scope.currentlySelectedPerson = $scope.personsPlayer.persons[index];
+
+        if ($scope.currentlySelectedPerson === undefined) {
+            $scope.currentlySelectedPerson = $scope.personsPlayer.persons[$scope.personsPlayer.persons.length-1];
+        }
+    }
+
+    $scope.teachSpell = function (itemName) {
+        var spellInfo = itemStatsMap[itemName];
+        $scope.money -= spellInfo.spellTrainingCost;
+        $scope.currentlySelectedPerson.giveFinishingSpell(itemName);
     }
 
     $scope.nextFight = function () {

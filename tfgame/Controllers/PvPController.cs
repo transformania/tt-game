@@ -7,6 +7,8 @@ using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using System.Xml;
+using System.Xml.Serialization;
 using tfgame.dbModels.Abstract;
 using tfgame.dbModels.Concrete;
 using tfgame.dbModels.Models;
@@ -3008,9 +3010,26 @@ namespace tfgame.Controllers
                 ownerInfo = CovenantProcedures.GetLocationInfos();
             }
 
+            MapViewModel output = new MapViewModel
+            {
+                LocationInfo = ownerInfo,
+               
+            };
+
+            if (me.IsInDungeon() == true || showEnchant == "false")
+            {
+                output.Locations = LocationsStatics.LocationList.GetLocation.Where(l => l.Region == "");
+                ViewBag.IsInDungeon = true;
+            }
+            else
+            {
+                output.Locations = LocationsStatics.LocationList.GetLocation.Where(l => l.Region != "dungeon");
+                ViewBag.IsInDungeon = false;            
+            }
+
             ViewBag.MapX = here.X;
             ViewBag.MapY = here.Y;
-            return View(ownerInfo);
+            return View(output);
         }
 
          [Authorize]
@@ -3929,7 +3948,7 @@ namespace tfgame.Controllers
 
 
                 // delete all consumable type items that have been sitting around on the ground for too long
-                List<Item> possibleToDelete = itemsRepo.Items.Where(i => (i.dbLocationName != "" && i.OwnerId == -1) || (i.OwnerId == merchantId)).ToList();
+                List<Item> possibleToDelete = itemsRepo.Items.Where(i => (i.dbLocationName != "" && i.OwnerId == -1) || (i.OwnerId == merchantId) && i.dbName != PvPStatics.ItemType_DungeonArtifact).ToList();
                 List<Item> deleteItems = new List<Item>();
 
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started deleting expired consumables");
@@ -3999,7 +4018,7 @@ namespace tfgame.Controllers
                 {
                     log.AddLog(updateTimer.ElapsedMilliseconds + ":  Starting dungeon item / demon spawning");
                     int dungeonArtifactCount = itemsRepo.Items.Where(i => i.dbName == PvPStatics.ItemType_DungeonArtifact).Count();
-                    for (int x = 0; x < 5 - PvPStatics.DungeonArtifact_SpawnLimit; x++)
+                    for (int x = 0; x <  PvPStatics.DungeonArtifact_SpawnLimit - dungeonArtifactCount; x++)
                     {
                         string randDungeon = LocationsStatics.GetRandomLocation_InDungeon();
                         Item newArtifact = new Item{
@@ -4018,16 +4037,39 @@ namespace tfgame.Controllers
                         itemsRepo.SaveItem(newArtifact);
                     }
 
-                    int dungeonDemonCount = playerRepo.Players.Where(i => i.Form == PvPStatics.DungeonDemon).Count();
+                    
+                    IEnumerable<Player> demons = playerRepo.Players.Where(i => i.Form == PvPStatics.DungeonDemon);
+                    int dungeonDemonCount = demons.Count();
 
                     Random randLevel = new Random(Guid.NewGuid().GetHashCode());
+
+                    List<string> demonNames = new List<string>();
+
+                    var serializer = new XmlSerializer(typeof(List<string>));
+                    string path = System.Web.HttpContext.Current.Server.MapPath("~/XMLs/DungeonDemonNames.xml");
+                    using (var reader = XmlReader.Create(path))
+                    {
+                        demonNames = (List<string>)serializer.Deserialize(reader);
+                    }
 
                     for (int x = 0; x < PvPStatics.DungeonDemon_Limit - dungeonDemonCount; x++)
                     {
                         string randDungeon = LocationsStatics.GetRandomLocation_InDungeon();
                         Location spawnLocation = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == randDungeon);
 
-                        string demonlastName = spawnLocation.Name.Replace("Chamber", "").Replace("Junction", "").Replace("Passageway", "").Replace("Crossing", "");
+                        // pull a random last demon name
+                        double maxDemonNameCount = demonNames.Count();
+                        double num = randLevel.NextDouble();
+                        int demonIndex = Convert.ToInt32(Math.Floor(num * maxDemonNameCount));
+                        string demonlastName = demonNames.ElementAt(demonIndex);
+
+                        // if there's already a demon with this last name, reroll and try again
+                        if (demons.FirstOrDefault(d => d.LastName == demonlastName) != null)
+                        {
+                            x--;
+                            continue;
+                        }
+
 
                         double levelRoll = randLevel.NextDouble();
                         int level = (int)Math.Floor(levelRoll * 8 + 3);
@@ -4037,7 +4079,7 @@ namespace tfgame.Controllers
                         {
                          
                             MembershipId = -13,
-                            FirstName = "Guardian of ",
+                            FirstName = "Spirit of ",
                             LastName = demonlastName,
                             Mobility = "full",
                             ActionPoints = 120,

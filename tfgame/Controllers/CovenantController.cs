@@ -717,6 +717,13 @@ namespace tfgame.Controllers
                 return RedirectToAction("MyCovenant");
             }
 
+            // assert that the location is not in the dungeon
+            if (me.dbLocationName.Contains("dungeon_"))
+            {
+                TempData["Error"] = "You cannot establish a safeground in the dungeon.";
+                return RedirectToAction("MyCovenant");
+            }
+
             // assert that the covenant does not already have a safeground set
             if (CovenantProcedures.CovenantHasSafeground(myCov) == true)
             {

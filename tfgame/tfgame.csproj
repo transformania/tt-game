@@ -408,6 +408,7 @@
     <Compile Include="ViewModels\Location.cs" />
     <Compile Include="ViewModels\LocationDropdown.cs" />
     <Compile Include="ViewModels\LogBox.cs" />
+    <Compile Include="ViewModels\MapViewModel.cs" />
     <Compile Include="ViewModels\MessageBag.cs" />
     <Compile Include="ViewModels\MessageCountDataViewModel.cs" />
     <Compile Include="ViewModels\MindControlViewModel.cs" />
@@ -883,6 +884,7 @@
     <Content Include="XMLs\BossSummonText\Donna.txt" />
     <Content Include="XMLs\BossSummonText\Thieves.txt" />
     <Content Include="XMLs\BossSummonText\Valentine.txt" />
+    <Content Include="XMLs\DungeonDemonNames.xml" />
     <Content Include="XMLs\DungeonNouns.xml" />
     <Content Include="XMLs\DungeonAdjectives.xml" />
     <Content Include="XMLs\restockList.xml" />

@@ -37,5 +37,10 @@ namespace tfgame.Procedures.BossProcedures
 
         }
 
+        public static void SpawnArtifactsAndDemons()
+        {
+
+        }
+
     }
 }

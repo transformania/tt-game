@@ -192,10 +192,6 @@ defeatMessage['Absorb']['Generic'] = {
 
 
 function getRandomDefeatText(victimForm, defeatType) {
-
-    console.log(defeatType);
-    console.log(victimForm);
-
     try {
         var texts = defeatMessage[defeatType][victimForm].texts;
         var randIndex = Math.floor(Math.random() * texts.length);

@@ -3016,10 +3016,15 @@ namespace tfgame.Controllers
                
             };
 
-            if (me.IsInDungeon() == true || showEnchant == "false")
+            if (me.IsInDungeon() == true && showEnchant == "false")
             {
                 output.Locations = LocationsStatics.LocationList.GetLocation.Where(l => l.Region == "");
                 ViewBag.IsInDungeon = true;
+            }
+            else if (me.IsInDungeon() == true && showEnchant == "true")
+            {
+                output.Locations = LocationsStatics.LocationList.GetLocation.Where(l => l.Region != "dungeon");
+                ViewBag.IsInDungeon = false;    
             }
             else
             {
@@ -3979,7 +3984,7 @@ namespace tfgame.Controllers
 
                 // allow all items that have been recently equipped to be taken back off
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started resetting items that have been recently equipped");
-                List<Item> recentlyEquipped = itemsRepo.Items.Where(i => i.EquippedThisTurn==true).ToList();
+                List<Item> recentlyEquipped = itemsRepo.Items.Where(i => i.EquippedThisTurn == true).ToList();
 
                 foreach (Item item in recentlyEquipped)
                 {
@@ -3992,7 +3997,7 @@ namespace tfgame.Controllers
                 if (turnNo % 6 == 0)
                 {
                     log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started giving covenants money from territories");
-                    ICovenantRepository covRepo =  new EFCovenantRepository();
+                    ICovenantRepository covRepo = new EFCovenantRepository();
                     List<Covenant> covs = covRepo.Covenants.Where(c => c.HomeLocation != null && c.HomeLocation != "").ToList();
 
 
@@ -4004,110 +4009,123 @@ namespace tfgame.Controllers
 
                         if (moneyGain > 0)
                         {
-                            CovenantProcedures.WriteCovenantLog("Your covenant collected " + moneyGain + " Arpeyis from the locations you have enchanted.",c.Id, false);
+                            CovenantProcedures.WriteCovenantLog("Your covenant collected " + moneyGain + " Arpeyis from the locations you have enchanted.", c.Id, false);
                         }
                         covRepo.SaveCovenant(c);
                     }
                     log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished giving covenants money from territories");
-                    
+
                 }
                 #endregion
 
                 #region drop dungeon artifacts and spawn demons if needed
-                if (turnNo % 3 == 2)
+
+                try
                 {
-                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Starting dungeon item / demon spawning");
-                    int dungeonArtifactCount = itemsRepo.Items.Where(i => i.dbName == PvPStatics.ItemType_DungeonArtifact).Count();
-                    for (int x = 0; x <  PvPStatics.DungeonArtifact_SpawnLimit - dungeonArtifactCount; x++)
+
+                    if (turnNo % 3 == 2)
                     {
-                        string randDungeon = LocationsStatics.GetRandomLocation_InDungeon();
-                        Item newArtifact = new Item{
-                            dbLocationName = randDungeon,
-                            OwnerId = -1,
-                            EquippedThisTurn = false,
-                            IsPermanent = true,
-                            TimeDropped = DateTime.UtcNow,
-                            Level = 0,
-                            PvPEnabled = true,
-                            IsEquipped = false,
-                            TurnsUntilUse = 0,
-                            VictimName = "",
-                            dbName = PvPStatics.ItemType_DungeonArtifact,
-                        };
-                        itemsRepo.SaveItem(newArtifact);
-                    }
-
-                    
-                    IEnumerable<Player> demons = playerRepo.Players.Where(i => i.Form == PvPStatics.DungeonDemon);
-                    int dungeonDemonCount = demons.Count();
-
-                    Random randLevel = new Random(Guid.NewGuid().GetHashCode());
-
-                    List<string> demonNames = new List<string>();
-
-                    var serializer = new XmlSerializer(typeof(List<string>));
-                    string path = System.Web.HttpContext.Current.Server.MapPath("~/XMLs/DungeonDemonNames.xml");
-                    using (var reader = XmlReader.Create(path))
-                    {
-                        demonNames = (List<string>)serializer.Deserialize(reader);
-                    }
-
-                    for (int x = 0; x < PvPStatics.DungeonDemon_Limit - dungeonDemonCount; x++)
-                    {
-                        string randDungeon = LocationsStatics.GetRandomLocation_InDungeon();
-                        Location spawnLocation = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == randDungeon);
-
-                        // pull a random last demon name
-                        double maxDemonNameCount = demonNames.Count();
-                        double num = randLevel.NextDouble();
-                        int demonIndex = Convert.ToInt32(Math.Floor(num * maxDemonNameCount));
-                        string demonlastName = demonNames.ElementAt(demonIndex);
-
-                        // if there's already a demon with this last name, reroll and try again
-                        if (demons.FirstOrDefault(d => d.LastName == demonlastName) != null)
+                        log.AddLog(updateTimer.ElapsedMilliseconds + ":  Starting dungeon item / demon spawning");
+                        int dungeonArtifactCount = itemsRepo.Items.Where(i => i.dbName == PvPStatics.ItemType_DungeonArtifact).Count();
+                        for (int x = 0; x < PvPStatics.DungeonArtifact_SpawnLimit - dungeonArtifactCount; x++)
                         {
-                            x--;
-                            continue;
+                            string randDungeon = LocationsStatics.GetRandomLocation_InDungeon();
+                            Item newArtifact = new Item
+                            {
+                                dbLocationName = randDungeon,
+                                OwnerId = -1,
+                                EquippedThisTurn = false,
+                                IsPermanent = true,
+                                TimeDropped = DateTime.UtcNow,
+                                Level = 0,
+                                PvPEnabled = true,
+                                IsEquipped = false,
+                                TurnsUntilUse = 0,
+                                VictimName = "",
+                                dbName = PvPStatics.ItemType_DungeonArtifact,
+                            };
+                            itemsRepo.SaveItem(newArtifact);
                         }
 
 
-                        double levelRoll = randLevel.NextDouble();
-                        int level = (int)Math.Floor(levelRoll * 8 + 3);
+                        IEnumerable<Player> demons = playerRepo.Players.Where(i => i.Form == PvPStatics.DungeonDemon);
+                        int dungeonDemonCount = demons.Count();
 
+                        Random randLevel = new Random(Guid.NewGuid().GetHashCode());
 
-                        Player newDemon = new Player
+                        List<string> demonNames = new List<string>();
+
+                        var serializer = new XmlSerializer(typeof(List<string>));
+                        string path = System.Web.HttpContext.Current.Server.MapPath("~/XMLs/DungeonDemonNames.xml");
+                        using (var reader = XmlReader.Create(path))
                         {
-                         
-                            MembershipId = -13,
-                            FirstName = "Spirit of ",
-                            LastName = demonlastName,
-                            Mobility = "full",
-                            ActionPoints = 120,
-                            ActionPoints_Refill = 360,
-                            Form = PvPStatics.DungeonDemon,
-                            Gender = "female",
-                            GameMode = 2,
-                            Health = 1000,
-                            Mana = 1000,
-                            OriginalForm = PvPStatics.DungeonDemon,
-                            Covenant = -1,
-                            dbLocationName = randDungeon,
-                            FlaggedForAbuse = false,
-                            LastActionTimestamp = DateTime.UtcNow,
-                            LastCombatAttackedTimestamp = DateTime.UtcNow,
-                            LastCombatTimestamp = DateTime.UtcNow,
-                            Level = level,
-                            MaxHealth = 500,
-                            MaxMana = 500,
-                            IsPetToId = -1,
-                            OnlineActivityTimestamp = DateTime.UtcNow,
-                            NonPvP_GameOverSpellsAllowedLastChange = DateTime.UtcNow,
-                        };
-                        playerRepo.SavePlayer(newDemon);
+                            demonNames = (List<string>)serializer.Deserialize(reader);
+                        }
+
+                        for (int x = 0; x < PvPStatics.DungeonDemon_Limit - dungeonDemonCount; x++)
+                        {
+                            string randDungeon = LocationsStatics.GetRandomLocation_InDungeon();
+                            Location spawnLocation = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == randDungeon);
+
+                            // pull a random last demon name
+                            double maxDemonNameCount = demonNames.Count();
+                            double num = randLevel.NextDouble();
+                            int demonIndex = Convert.ToInt32(Math.Floor(num * maxDemonNameCount));
+                            string demonlastName = demonNames.ElementAt(demonIndex);
+
+                            // if there's already a demon with this last name, reroll and try again
+                            if (demons.FirstOrDefault(d => d.LastName == demonlastName) != null)
+                            {
+                                x--;
+                                continue;
+                            }
+
+
+                            double levelRoll = randLevel.NextDouble();
+                            int level = (int)Math.Floor(levelRoll * 8 + 3);
+
+
+                            Player newDemon = new Player
+                            {
+
+                                MembershipId = -13,
+                                FirstName = "Spirit of ",
+                                LastName = demonlastName,
+                                Mobility = "full",
+                                ActionPoints = 120,
+                                ActionPoints_Refill = 360,
+                                Form = PvPStatics.DungeonDemon,
+                                Gender = "female",
+                                GameMode = 2,
+                                Health = 1000,
+                                Mana = 1000,
+                                OriginalForm = PvPStatics.DungeonDemon,
+                                Covenant = -1,
+                                dbLocationName = randDungeon,
+                                FlaggedForAbuse = false,
+                                LastActionTimestamp = DateTime.UtcNow,
+                                LastCombatAttackedTimestamp = DateTime.UtcNow,
+                                LastCombatTimestamp = DateTime.UtcNow,
+                                Level = level,
+                                MaxHealth = 500,
+                                MaxMana = 500,
+                                IsPetToId = -1,
+                                OnlineActivityTimestamp = DateTime.UtcNow,
+                                NonPvP_GameOverSpellsAllowedLastChange = DateTime.UtcNow,
+                            };
+                            playerRepo.SavePlayer(newDemon);
+
+                        }
+                        log.AddLog(updateTimer.ElapsedMilliseconds + ":  FINISHED dungeon item / demon spawning");
 
                     }
-                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  FINISHED dungeon item / demon spawning");
+
                 }
+                catch (Exception e)
+                {
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  ERROR running dungeon actions:  " + e.ToString());
+                }
+                
 
                 #endregion
 

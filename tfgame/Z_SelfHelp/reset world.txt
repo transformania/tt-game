@@ -26,6 +26,9 @@ UPDATE [Stats].[dbo].[PvPWorldStats] SET Boss_Donna = 'unstarted', [Boss_Valenti
 
 reset PvPWorldStatistics
 
+RESET IDENTITIES BACK TO 0:
+DBCC CHECKIDENT ('dbo.Messages', RESEED, 0);
+
 set chaos mode to false
 
 spawn Lindella

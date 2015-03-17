@@ -1714,6 +1714,9 @@
     <Content Include="Views\TransformaniaTime\FashionWars.cshtml" />
     <Content Include="Views\Settings\Polls\Closed\poll1.cshtml" />
     <Content Include="Views\PvPAdmin\DungeonTest.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\XP\Alpha_17.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_17.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\Statistics\Alpha_17.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

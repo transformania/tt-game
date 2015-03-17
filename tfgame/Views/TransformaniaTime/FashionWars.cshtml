@@ -11,6 +11,7 @@
     <script src="~/Scripts/fwars/models/person.js"></script>
     <script src="~/Scripts/fwars/models/item.js"></script>
     <script src="~/Scripts/fwars/models/log.js"></script>
+    <script src="~/Scripts/fwars/models/tfText.js"></script>
     <script src="~/Scripts/fwars/fwars.js"></script>
     <script src="~/Scripts/fwars/controllers/personsController.js"></script>
 
@@ -22,7 +23,7 @@
 
     <div data-ng-controller="PersonsController as ctrl">
 
-        <p>Day {{day}} - {{money}} $ - {{infamy}} infamy</p>
+        <p>{{timeOfDay}} Day {{day}} - {{money}} $ - {{infamy}} infamy</p>
 
         <div ng-show="startVisible">
             <p>What is your name?</p>
@@ -132,7 +133,7 @@
                     <li ng-repeat="person in personsPlayer.persons | orderBy:'firstName'">
                         {{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}][{{person.health}}/{{person.getMaxHP()}} HP] [{{person.xp}}/{{person.xpNeededForLevelup()}} XP before levelup]
 
-                        <button ng-click="promote(person,'Witchling')" ng-show="person.xp >= person.xpNeededForLevelup() && person.type == 'Bystander'">Transform into Witchling</button>
+                        <button ng-click="promote(person,'Witchling')" ng-show="person.xp >= person.xpNeededForLevelup() && person.type == 'Female Bystander' || person.type == 'Male Bystander'">Transform into Witchling</button>
 
 
                     </li>
@@ -286,6 +287,10 @@
 
     .brainwash {
         background-color: orange;
+    }
+
+    .absorb {
+        background-color: lightseagreen;
     }
 
 </style>

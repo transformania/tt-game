@@ -27,6 +27,7 @@
     $scope.energy = 100;
     $scope.energyMax = 100;
     $scope.money = 100;
+    $scope.timeOfDay = "Afternoon";
     $scope.day = 1;
     $scope.infamy = 0;
 
@@ -74,6 +75,7 @@
     }
 
     $scope.chooseBattleground = function () {
+        $scope.timeOfDay = "Afternoon";
         $scope.chooseBattlegroundView = true;
         $scope.buySellItemsView = false;
         $scope.assignItemsView = false;
@@ -146,7 +148,7 @@
     $scope.aftermath = function () {
 
         // if victory carry on, if defeat then show end game screen
-
+        $scope.timeOfDay = "Evening";
         $scope.energy = $scope.energyMax;
         $scope.logs = [];
         $scope.fightView = false;
@@ -171,7 +173,10 @@
         var newItem = new Item(spell, person.fullName());
         $scope.newItems.addItem(newItem);
         $scope.energy -= person.getTransformCost(spell);
-        var newlog = new Log(person.fullName() + " " + getRandomDefeatText(newItem.type));
+
+        var result = insertNames(getRandomDefeatText(person.type, newItem.type), $scope.leader, person);
+
+        var newlog = new Log(result);
         $scope.logs.push(newlog);
     }
 
@@ -179,14 +184,18 @@
     $scope.absorb = function (person) {
         $scope.leader.health += Math.floor(person.getMaxHP() / 4);
         $scope.defeatedAI.removePerson(person);
-        var newlog = new Log(person.fullName() + " " + getRandomDefeatText('Absorb'));
+
+        var result = insertNames(getRandomDefeatText(person.type, 'Absorb'), $scope.leader, person);
+        var newlog = new Log(result);
+
         $scope.logs.push(newlog);
     }
 
     $scope.amnesia = function (person) {
         $scope.infamy += 1;
         $scope.defeatedAI.removePerson(person);
-        var newlog = new Log(person.fullName() + " " + getRandomDefeatText('brainwash'));
+        var result = insertNames(getRandomDefeatText(person.type, 'brainwash'), $scope.leader, person);
+        var newlog = new Log(result);
         $scope.logs.push(newlog);
     }
 
@@ -201,12 +210,14 @@
     }
 
     $scope.promote = function (person, nextForm) {
-        var newlog = new Log(person.fullName() + " " + getRandomDefeatText(nextForm));
+        var result = insertNames(getRandomDefeatText(person.type, nextForm), $scope.leader, person);
+        var newlog = new Log(result);
         $scope.logs.push(newlog);
         person.changeType(nextForm);
     }
 
     $scope.endDay = function () {
+        $scope.timeOfDay = "Morning";
         $scope.aftermathViewLevelup = false;
         $scope.buySellItemsView = true;
         $scope.logs = [];
@@ -308,7 +319,7 @@
 
     $scope.nextFight = function () {
 
-        //   $scope.personsAI.spawnGroup('bystanders_easy');
+        $scope.timeOfDay = "Afternoon";
         $scope.startFightVisible = true;
         $scope.aftermathView = false;
         $scope.fightView = true;

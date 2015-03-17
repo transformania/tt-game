@@ -877,6 +877,7 @@
     <Content Include="Scripts\fwars\models\item.js" />
     <Content Include="Scripts\fwars\models\log.js" />
     <Content Include="Scripts\fwars\models\person.js" />
+    <Content Include="Scripts\fwars\models\tfText.js" />
     <Content Include="Scripts\jquery.rotate.js" />
     <Content Include="Scripts\jQueryRotateCompressed.js" />
     <Content Include="XMLs\BossSummonText\BimboBoss.txt" />

@@ -49,7 +49,7 @@ PersonGroup.prototype.fightGroup = function (attackingGroup, defeatedAI, defeate
                     // target IS turned into an item, delete them and create the item
                 } else {
                     var newItemName = this.persons[i].getRandomFinishingSpell();
-                    fightResult.message += p2target.fullName() + ' ' + getRandomDefeatText(newItemName);
+                    fightResult.message += insertNames(getRandomDefeatText(this.type, newItemName),this.persons[i], p2target);
 
                     if (newItemName == "Absorb") {
                         this.persons[i].health += Math.floor(p2target.getMaxHP() / 4);
@@ -87,8 +87,8 @@ PersonGroup.prototype.fightGroup = function (attackingGroup, defeatedAI, defeate
                 // target IS turned into an item, delete them and create the item
                 } else {
                     var newItemName = attackingGroup.persons[i].getRandomFinishingSpell();
-                    fightResult2.message += p1target.fullName() + ' ' + getRandomDefeatText(newItemName);
-
+                   // fightResult2.message += p1target.fullName() + ' ' + getRandomDefeatText(newItemName);
+                    fightResult2.message += insertNames(getRandomDefeatText(this.type, newItemName), attackingGroup.persons[i], p1target);
                     if (newItemName == "Absorb") {
                         this.persons[i].health += Math.floor(p1target.getMaxHP() / 4);
                         if (this.persons[i].health > this.persons[i].getMaxHP()) {
@@ -124,9 +124,19 @@ PersonGroup.prototype.spawnGroup = function (type, variation) {
     var spawnGroup = spawnNumbers[type];
 
     var extra = Math.floor(Math.random() * variation) - (Math.floor(variation / 2));
-    for (var i = 0; i < spawnGroup['Bystander'] + extra; i++) {
-        var spawn = new Person(undefined, undefined, 'Bystander');
-        this.addPerson(spawn);
+    for (var i = 0; i < spawnGroup['Female Bystander'] + extra; i++) {
+        
+        var gender = Math.random();
+
+        if (gender < .5) {
+            var spawn = new Person(undefined, undefined, 'Female Bystander');
+            spawn.setRandomNameFemale();
+            this.addPerson(spawn);
+        } else {
+            var spawn = new Person(undefined, undefined, 'Male Bystander');
+            spawn.setRandomNameMale();
+            this.addPerson(spawn);
+        }
     }
 
     extra = Math.floor(Math.random() * variation) - (Math.floor(variation / 2));
@@ -169,7 +179,7 @@ var Person = function (firstName, lastName, type) {
     this.level = 1;
 
     if (firstName === undefined || lastName === undefined) {
-        this.getRandomName();
+        this.getRandomNameFemale();
     }
 
     this.status = 'ok';
@@ -177,7 +187,7 @@ var Person = function (firstName, lastName, type) {
 
     // set type
     if (type === undefined) {
-        this.type = 'Bystander';
+        this.type = 'Female Bystander';
     } else {
         this.type = type;
     }
@@ -278,9 +288,10 @@ Person.prototype.fight = function (opponent) {
         damage = 1;
     }
 
-    result += '  ' + this.fullName() + ' ' + getRandomAttackText(this.type);
+    result += '  ' + getRandomAttackText(this.type, opponent.type);
+    result = insertNames(result, this, opponent);
 
-    result += ' dealing ' + damage + ' damage.';
+    result += '  (' + damage + ' damage)';
     opponent.health -= damage;
 
     //  rollNeeded = levelDiff * .2 + .05;
@@ -302,9 +313,18 @@ Person.prototype.fight = function (opponent) {
 
 };
 
-Person.prototype.getRandomName = function () {
-    this.firstName = randomFirstNames[Math.floor(Math.random() * randomFirstNames.length)];
+Person.prototype.getRandomNameFemale = function () {
+    this.firstName = randomFirstNamesFemale[Math.floor(Math.random() * randomFirstNamesFemale.length)];
     this.lastName = randomLastName[Math.floor(Math.random() * randomLastName.length)];
+};
+
+Person.prototype.setRandomNameFemale = function () {
+    this.firstName = randomFirstNamesFemale[Math.floor(Math.random() * randomFirstNamesFemale.length)];
+};
+
+
+Person.prototype.setRandomNameMale = function () {
+    this.firstName = randomFirstNamesMale[Math.floor(Math.random() * randomFirstNamesMale.length)];
 };
 
 Person.prototype.getRandomFinishingSpell = function () {
@@ -337,7 +357,6 @@ Person.prototype.itemIsSpell = function (item) {
 
 Person.prototype.knowsAbsorb = function () {
     var index = this.finishingSpells.indexOf('Absorb');
-    console.log(index);
     if (index >= 0) {
         return true;
     } else {
@@ -345,5 +364,6 @@ Person.prototype.knowsAbsorb = function () {
     }
 }
 
-var randomFirstNames = ['Mary', 'Jane', 'Elessa', 'Jamie', 'Sarah', 'Caroline', 'Janice', 'Gloria', 'Alice',];
+var randomFirstNamesFemale = ['Mary', 'Jane', 'Elessa', 'Jamie', 'Sarah', 'Caroline', 'Janice', 'Gloria', 'Alice', ];
+var randomFirstNamesMale = ['James', 'Tim', 'Jason', 'Bob', 'Gary', 'Chris', 'Max', 'Mike', 'Derrick', ];
 var randomLastName = ['Smith', 'Brown', 'White', 'Blue', 'Black', 'Green', 'Tanner', 'Shoemaker', 'Telae'];

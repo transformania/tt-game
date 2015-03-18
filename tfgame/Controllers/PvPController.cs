@@ -1425,6 +1425,13 @@ namespace tfgame.Controllers
                 TempData["Result"] = "You pick up the artifact.  As soon as it touches your hands, it fades away, leaving you with its dark power.";
                 playerLogMessage = "You picked up a <b>" + pickup.Item.FriendlyName + "</b> at " + here.Name + " and absorbed its dark power into your soul.";
                 locationLogMessage = me.FirstName + " " + me.LastName + " picked up a <b>" + pickup.Item.FriendlyName + "</b> here and immediately absorbed its dark powers.";
+
+                new Thread(() =>
+                     StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__DungeonArtifactsFound, 1)
+                 ).Start();
+
+                EffectProcedures.GivePerkToPlayer(PvPStatics.Dungeon_ArtifactCurse, me);
+
             }
 
             // if the item is inanimate, give the item to the player's inventory

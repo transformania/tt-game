@@ -63,4 +63,8 @@
     <p>Arpeyjis spent buying from Wüffie:  @Model.Where(a => a.AchievementType == StatsProcedures.Stat__WuffieCostsAmount).Sum(x => x.Amount)</p>
     <p>Arpeyjis earned from selling to Wüffie:  @Model.Where(a => a.AchievementType == StatsProcedures.Stat__WuffieProfitsAmount).Sum(x => x.Amount)</p>
 
+    <p>Dungeon Artifacts Found:  @Model.Where(a => a.AchievementType == StatsProcedures.Stat__DungeonArtifactsFound).Sum(x => x.Amount)</p>
+    <p>Dungeon demons defeated:  @Model.Where(a => a.AchievementType == StatsProcedures.Stat__DungeonDemonsDefeated).Sum(x => x.Amount)</p>
+    <p>Dungeon points stolen from other players:  @Model.Where(a => a.AchievementType == StatsProcedures.Stat__DungeonPointsStolen).Sum(x => x.Amount)</p>
+
 </div>

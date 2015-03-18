@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using tfgame.dbModels.Abstract;
 using tfgame.dbModels.Concrete;
@@ -18,13 +19,18 @@ namespace tfgame.Procedures.BossProcedures
             if (dbDemon.Mobility != "full")
             {
                 decimal xpGain = 30+5*dbDemon.Level;
-                PlayerProcedures.GivePlayerPvPScore_NoLoser(attacker, dbDemon.Level);
-                string playerLog = "You absorb dark magic from your vanquished opponent, earning " + dbDemon.Level + " points and " + xpGain + " XP.  Unfortunately the demon's new form fades into mist, denying you any other trophies of your conquest.";
+                decimal pointsGain = dbDemon.Level * 2;
+                PlayerProcedures.GivePlayerPvPScore_NoLoser(attacker, pointsGain);
+                string playerLog = "You absorb dark magic from your vanquished opponent, earning " + pointsGain + " points and " + xpGain + " XP.  Unfortunately the demon's new form fades into mist, denying you any other trophies of your conquest.";
                 PlayerLogProcedures.AddPlayerLog(attacker.Id, playerLog, true);
                 PlayerProcedures.GiveXP(attacker.Id, xpGain);
 
                 Item item = ItemProcedures.GetItemByVictimName(dbDemon.FirstName, dbDemon.LastName);
                 ItemProcedures.DeleteItem(item.Id);
+
+                new Thread(() =>
+                  StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__DungeonDemonsDefeated, 1)
+              ).Start();
 
 
             }

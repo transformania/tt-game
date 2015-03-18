@@ -47,6 +47,11 @@ namespace tfgame.Procedures
         public const string Stat__WuffieCostsAmount = "wuffie_costs_amount";
         public const string Stat__WuffieProfitsAmount = "wuffie_profit_amount";
 
+        public const string Stat__DungeonArtifactsFound = "dungeon_artifacts_found";
+        public const string Stat__DungeonDemonsDefeated = "dungeon_demons_defeated";
+          public const string Stat__DungeonPointsStolen = "dungeon_points_stolen";
+        
+
            //new Thread(() =>
            //     StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__TimesMoved, 1)
            // ).Start();

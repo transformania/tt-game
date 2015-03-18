@@ -466,6 +466,11 @@ namespace tfgame.Procedures
 
                                 output.AttackerLog += PlayerProcedures.GivePlayerPvPScore(attacker, victim, score);
                                 output.VictimLog += PlayerProcedures.RemovePlayerPvPScore(victim, attacker, score);
+
+                                new Thread(() =>
+                                    StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__DungeonPointsStolen, (float)score)
+                                ).Start();
+
                             }
                             else
                             {

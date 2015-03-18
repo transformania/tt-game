@@ -198,11 +198,15 @@ namespace tfgame.Statics
         public static string ItemType_Hat = "hat";
         public static string ItemType_Shoes = "shoes";
         public static string ItemType_Pet = "pet";
+
         public const string ItemType_DungeonArtifact = "item_consumeable_dungeon_artifact";
+        public const string Dungeon_ArtifactCurse = "effect_Dark_Transfixation_Judoo";
+
         public const decimal DungeonArtifact_Value = 2;
         public const int DungeonArtifact_SpawnLimit = 5;
         public const string DungeonDemon = "form_Dark_Demononic_Guardian_Judoo";
         public const int DungeonDemon_Limit = 5;
+
 
         public enum GameModes { Superprotection = 0, Protection = 1, PvP = 2}
 

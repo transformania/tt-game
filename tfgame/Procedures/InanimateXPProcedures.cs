@@ -287,6 +287,13 @@ namespace tfgame.Procedures
             double roll = rand.NextDouble() * 100;
 
             Item dbPlayerItem = ItemProcedures.GetItemByVictimName(player.FirstName, player.LastName);
+
+            if (dbPlayerItem.OwnerId > 0)
+            {
+                Player owner = PlayerProcedures.GetPlayer(dbPlayerItem.OwnerId);
+                dbPlayer.dbLocationName = owner.dbLocationName;
+            }
+
             DbStaticItem itemPlus = ItemStatics.GetStaticItem(dbPlayerItem.dbName);
 
             if (roll < strugglesMade)
@@ -324,6 +331,12 @@ namespace tfgame.Procedures
                 dbPlayer.Mobility = "full";
                 dbPlayer.IsItemId = -1;
                 dbPlayer.IsPetToId = -1;
+
+                // don't let the player spawn in the dungeon if they are not in PvP mode
+                if (dbPlayer.GameMode < 2 && dbPlayer.IsInDungeon() == true)
+                {
+                    dbPlayer.dbLocationName = LocationsStatics.GetRandomLocation();
+                }
 
                 dbPlayer = PlayerProcedures.ReadjustMaxes(dbPlayer, ItemProcedures.GetPlayerBuffs(dbPlayer));
                 dbPlayer.Health = dbPlayer.MaxHealth / 3;

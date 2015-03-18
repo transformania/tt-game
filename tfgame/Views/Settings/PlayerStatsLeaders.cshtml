@@ -188,6 +188,25 @@
         {
             <p>Arpeyjis earned from selling to Wüffie: @ach.Player.GetFullName() (@ach.Achivement.Amount)</p>
         }
+        
+        
+           ach = Model.FirstOrDefault(a => a.Achivement.AchievementType == StatsProcedures.Stat__DungeonArtifactsFound);
+        if (ach != null)
+        {
+            <p>Dungeon Artifacts Found: @ach.Player.GetFullName() (@ach.Achivement.Amount)</p>
+        }
+        
+           ach = Model.FirstOrDefault(a => a.Achivement.AchievementType == StatsProcedures.Stat__DungeonDemonsDefeated);
+        if (ach != null)
+        {
+            <p>Dungeon demons defeated: @ach.Player.GetFullName() (@ach.Achivement.Amount)</p>
+        }
+        
+           ach = Model.FirstOrDefault(a => a.Achivement.AchievementType == StatsProcedures.Stat__DungeonPointsStolen);
+        if (ach != null)
+        {
+            <p>Dungeon points stolen from other players: @ach.Player.GetFullName() (@ach.Achivement.Amount)</p>
+        }
 
 
 

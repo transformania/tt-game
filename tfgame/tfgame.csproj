@@ -872,6 +872,7 @@
     <Content Include="Images\PvP\Smilies\smile.png" />
     <Content Include="Reports\Updates\1963.txt" />
     <Content Include="Scripts\boxesResize.js" />
+    <Content Include="Scripts\fwars\app.js" />
     <Content Include="Scripts\fwars\controllers\personsController.js" />
     <Content Include="Scripts\fwars\fwars.js" />
     <Content Include="Scripts\fwars\models\item.js" />

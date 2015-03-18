@@ -4,22 +4,24 @@
 
 <!DOCTYPE html>
 
-<html ng-app>
+<html ng-app="fashionApp">
 <head>
     <script src="~/Scripts/jquery-2.1.0.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
+    <script src="~/Scripts/fwars/app.js"></script>
+    <script src="~/Scripts/fwars/controllers/personsController.js"></script>
     <script src="~/Scripts/fwars/models/person.js"></script>
     <script src="~/Scripts/fwars/models/item.js"></script>
     <script src="~/Scripts/fwars/models/log.js"></script>
     <script src="~/Scripts/fwars/models/tfText.js"></script>
     <script src="~/Scripts/fwars/fwars.js"></script>
-    <script src="~/Scripts/fwars/controllers/personsController.js"></script>
+
 
     <meta name="viewport" content="width=device-width" />
     <title>...</title>
 </head>
 <body ng-controllers="PersonsController">
-    <h1>Wars</h1>
+    <h1>Fashion Wars</h1>
 
     <div data-ng-controller="PersonsController as ctrl">
 
@@ -29,7 +31,7 @@
             <p>What is your name?</p>
             <span> First name:  <input type="text" id="nameBoxFirst" ng-model="nameFirst" ng-init="nameFirst='Nina'" /></span>
             <span> Last name: <input type="text" id="nameBoxLast" ng-model="nameLast" ng-init="nameLast='Bryker'" /></span><br />
-            <button ng-click="addPlayerAndStart(nameFirst, nameLast)">Join</button>
+            <button ng-click="addPlayerAndStart(nameFirst, nameLast)">Found your Covenant!</button>
             <span>Name: {{nameFirst}}  {{nameLast}}</span>
         </div>
 
@@ -133,7 +135,7 @@
                     <li ng-repeat="person in personsPlayer.persons | orderBy:'firstName'">
                         {{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}][{{person.health}}/{{person.getMaxHP()}} HP] [{{person.xp}}/{{person.xpNeededForLevelup()}} XP before levelup]
 
-                        <button ng-click="promote(person,'Witchling')" ng-show="person.xp >= person.xpNeededForLevelup() && person.type == 'Female Bystander' || person.type == 'Male Bystander'">Transform into Witchling</button>
+                        <button ng-click="promote(person,'Witchling')" ng-show="person.xp >= person.xpNeededForLevelup() && (person.type == 'Female Bystander' || person.type == 'Male Bystander')">Transform into Witchling</button>
 
 
                     </li>
@@ -162,7 +164,7 @@
                 <ul>
                     <li ng-repeat="item in itemsMap">
                         {{item.name}} ({{item.value}} dollars)
-                        <button ng-show="money >= item.value" ng-click="buyItem(item.name)">Buy</button>
+                        <button ng-show="item.isPurchaseableItem == true && money >= item.value" ng-click="buyItem(item.name)">Buy</button>
                     </li>
                 </ul>
             </div>
@@ -229,7 +231,7 @@
 
             <button ng-click="teachPrevious()" ng-show="personsPlayer.persons.length > 0">Previous</button>
             <button ng-click="teachNext()" ng-show="personsPlayer.persons.length > 0">Next</button>
-           
+
             <p>Teaching {{currentlySelectedPerson.fullName()}}...</p>
 
             <li ng-repeat="item in itemsMap">

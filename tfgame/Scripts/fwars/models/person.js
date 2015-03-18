@@ -90,9 +90,9 @@ PersonGroup.prototype.fightGroup = function (attackingGroup, defeatedAI, defeate
                    // fightResult2.message += p1target.fullName() + ' ' + getRandomDefeatText(newItemName);
                     fightResult2.message += insertNames(getRandomDefeatText(this.type, newItemName), attackingGroup.persons[i], p1target);
                     if (newItemName == "Absorb") {
-                        this.persons[i].health += Math.floor(p1target.getMaxHP() / 4);
-                        if (this.persons[i].health > this.persons[i].getMaxHP()) {
-                            this.persons[i].health - this.persons[i].getMaxHP();
+                        attackingGroup.persons[i].health += Math.floor(p1target.getMaxHP() / 4);
+                        if (attackingGroup.persons[i].health > attackingGroup.persons[i].getMaxHP()) {
+                            attackingGroup.persons[i].health - attackingGroup.persons[i].getMaxHP();
                         }
                     } else {
                         var newItem = new Item(newItemName, p1target.fullName());

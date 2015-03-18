@@ -1,4 +1,6 @@
-﻿function PersonsController($scope) {
+﻿var fashionApp = angular.module('fashionApp', []);
+
+angular.module('fashionApp').controller('PersonsController', function ($scope) {
 
     $scope.personsPlayer = new PersonGroup();
     $scope.personsAI = new PersonGroup();
@@ -168,7 +170,7 @@
     }
 
     $scope.inanimate = function (person, spell) {
-        $scope.infamy+=2;
+        $scope.infamy += 2;
         $scope.defeatedAI.removePerson(person);
         var newItem = new Item(spell, person.fullName());
         $scope.newItems.addItem(newItem);
@@ -203,7 +205,7 @@
     $scope.aftermathLevelupShow = function () {
         $scope.aftermathViewLevelup = true;
         $scope.aftermathView = false;
-        $scope.infamy += $scope.defeatedAI.persons.length*5;
+        $scope.infamy += $scope.defeatedAI.persons.length * 5;
         $scope.personsPlayer.mergeIntoGroup($scope.defeatedPlayer);
         $scope.unequippedItems.mergeIntoGroup($scope.newItems);
 
@@ -307,7 +309,7 @@
         $scope.currentlySelectedPerson = $scope.personsPlayer.persons[index];
 
         if ($scope.currentlySelectedPerson === undefined) {
-            $scope.currentlySelectedPerson = $scope.personsPlayer.persons[$scope.personsPlayer.persons.length-1];
+            $scope.currentlySelectedPerson = $scope.personsPlayer.persons[$scope.personsPlayer.persons.length - 1];
         }
     }
 
@@ -332,7 +334,13 @@
 
     }
 
+});
+
+//function PersonsController($scope) {
+
+   
 
 
 
-}
+
+//}

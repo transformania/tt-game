@@ -78,6 +78,7 @@ itemStatsMap['Cotton Panties'] = {
     'energyNeededToTF': 25,
     'spellTrainingCost': 15,
     'isSpell': true,
+    'isPurchaseableItem':true,
 };
 
 itemStatsMap['Latex Catsuit'] = {
@@ -91,6 +92,7 @@ itemStatsMap['Latex Catsuit'] = {
     'energyNeededToTF': 25,
     'spellTrainingCost': 25,
     'isSpell': true,
+    'isPurchaseableItem': true,
 };
 
 itemStatsMap['Ankh Necklace'] = {
@@ -104,6 +106,7 @@ itemStatsMap['Ankh Necklace'] = {
     'energyNeededToTF': 50,
     'spellTrainingCost': 200,
     'isSpell': false,
+    'isPurchaseableItem': true,
 };
 
 
@@ -114,6 +117,7 @@ itemStatsMap['Absorb'] = {
     'energyNeededToTF': 25,
     'spellTrainingCost': 25,
     'isSpell': false,
+    'isPurchaseableItem': false,
 };
 
 

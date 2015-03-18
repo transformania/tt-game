@@ -1,6 +1,6 @@
-﻿var fashionApp = angular.module('fashionApp', []);
+﻿var fashionApp = angular.module('fashionApp', ['ngSanitize']);
 
-angular.module('fashionApp').controller('PersonsController', function ($scope) {
+angular.module('fashionApp').controller('PersonsController', function ($scope, $sce) {
 
     $scope.personsPlayer = new PersonGroup();
     $scope.personsAI = new PersonGroup();
@@ -68,7 +68,7 @@ angular.module('fashionApp').controller('PersonsController', function ($scope) {
 
         $scope.personsPlayer.addPerson(newbie);
 
-        var welcome = new Log(newbie.fullName() + " <b>has</b> founded a new covenant!");
+        var welcome = new Log("<span class='newcov'>" + newbie.fullName() + " has founded a new covenant!</span>");
 
         $scope.logs.push(welcome);
 

@@ -41,7 +41,7 @@ PersonGroup.prototype.fightGroup = function (attackingGroup, defeatedAI, defeate
 
                 // target is not turned into any item, have them submit
                 if (this.persons[i].finishingSpells.length == 0 || this.persons[i].id == leaderId) {
-                    fightResult.message += p2target.fullName() + ' falls to their knees and submits to your overwhelming power!';
+                    fightResult.message += "<span class='submit'>" + p2target.fullName() + ' falls to their knees and submits to your overwhelming power!</span>';
                     attackingGroup.removePerson(p2target);
                     defeatedAI.addPerson(p2target);
 
@@ -49,7 +49,7 @@ PersonGroup.prototype.fightGroup = function (attackingGroup, defeatedAI, defeate
                     // target IS turned into an item, delete them and create the item
                 } else {
                     var newItemName = this.persons[i].getRandomFinishingSpell();
-                    fightResult.message += insertNames(getRandomDefeatText(this.type, newItemName),this.persons[i], p2target);
+                    fightResult.message += "<span class='inanimated'>" + insertNames(getRandomDefeatText(this.type, newItemName),this.persons[i], p2target) + "</span>";
 
                     if (newItemName == "Absorb") {
                         this.persons[i].health += Math.floor(p2target.getMaxHP() / 4);
@@ -79,7 +79,7 @@ PersonGroup.prototype.fightGroup = function (attackingGroup, defeatedAI, defeate
 
                 // target is not turned into any item, have them submit
                 if (attackingGroup.persons[i].finishingSpells.length == 0) {
-                    fightResult2.message += p1target.fullName() + ' falls to their knees and submits to your opponent\'s overwhelming power!';
+                    fightResult2.message += "<span class='submit'>" + p1target.fullName() + ' falls to their knees and submits to your opponent\'s overwhelming power!</span>';
                     this.removePerson(p1target);
                     defeatedPlayer.addPerson(p1target);
 
@@ -88,7 +88,7 @@ PersonGroup.prototype.fightGroup = function (attackingGroup, defeatedAI, defeate
                 } else {
                     var newItemName = attackingGroup.persons[i].getRandomFinishingSpell();
                    // fightResult2.message += p1target.fullName() + ' ' + getRandomDefeatText(newItemName);
-                    fightResult2.message += insertNames(getRandomDefeatText(this.type, newItemName), attackingGroup.persons[i], p1target);
+                    fightResult2.message += "<span class='inanimated'>" + insertNames(getRandomDefeatText(this.type, newItemName), attackingGroup.persons[i], p1target) + "</span>";
                     if (newItemName == "Absorb") {
                         attackingGroup.persons[i].health += Math.floor(p1target.getMaxHP() / 4);
                         if (attackingGroup.persons[i].health > attackingGroup.persons[i].getMaxHP()) {
@@ -259,7 +259,7 @@ Person.prototype.getMaxHP = function () {
 
 Person.prototype.fight = function (opponent) {
 
-    var result = "" + this.fullName() + ' [lvl ' + this.level + ' ' + this.type + '] fighting ' + opponent.fullName() + ' [lvl ' + opponent.level + ' ' + opponent.type + '].';
+    var result = "<span class='fight'>" + this.fullName() + ' [lvl ' + this.level + ' ' + this.type + '] fighting ' + opponent.fullName() + ' [lvl ' + opponent.level + ' ' + opponent.type + '].</span>';
 
     // get stats from form
     var formStatsAttacker = formStatsMap[this.type];

@@ -8,7 +8,8 @@
 <head>
     <script src="~/Scripts/jquery-2.1.0.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
-    <script src="~/Scripts/fwars/app.js"></script>
+    <script src="http://code.angularjs.org/1.2.20/angular-sanitize.min.js"></script>
+<script src="~/Scripts/fwars/app.js"></script>
     <script src="~/Scripts/fwars/controllers/personsController.js"></script>
     <script src="~/Scripts/fwars/models/person.js"></script>
     <script src="~/Scripts/fwars/models/item.js"></script>
@@ -246,7 +247,7 @@
 
         <div id="log">
             <p ng-repeat="log in logs">
-                {{log.message}}
+                <span ng-bind-html="log.message"></span>
             </p>
         </div>
 
@@ -293,6 +294,27 @@
 
     .absorb {
         background-color: lightseagreen;
+    }
+
+
+    .newcov {
+        color: darkgreen;
+        font-weight: bolder;
+    }
+
+    .fight {
+        color: red;
+        font-weight: bolder;
+    }
+
+    .inanimated {
+        color: darkviolet;
+        font-weight: bolder;
+    }
+
+    .submit {
+        color: indianred;
+        font-weight: bolder;
     }
 
 </style>

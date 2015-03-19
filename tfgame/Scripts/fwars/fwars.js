@@ -19,7 +19,7 @@ $(document).ready(function () {
 var formStatsMap = {};
 
 formStatsMap['Female Bystander'] = {
-    'baseHP': 1,
+    'baseHP': 2,
     'strengthAttack': 0,
     'strengthDefense': 0,
     'seductionAttack': 0,
@@ -30,7 +30,7 @@ formStatsMap['Female Bystander'] = {
 };
 
 formStatsMap['Male Bystander'] = {
-    'baseHP': 1,
+    'baseHP': 2,
     'strengthAttack': 0,
     'strengthDefense': 0,
     'seductionAttack': 0,
@@ -52,7 +52,7 @@ formStatsMap['Fashion Witch'] = {
 };
 
 formStatsMap['Witchling'] = {
-    'baseHP': 5,
+    'baseHP': 4,
     'strengthAttack': 1,
     'strengthDefense': 0,
     'seductionAttack': 2,
@@ -60,6 +60,17 @@ formStatsMap['Witchling'] = {
     'energyNeededToRecruit': 200,
     'xpNeededForLevelup': 5,
     'brainwashCost': 35,
+};
+
+formStatsMap['Senior Witchling'] = {
+    'baseHP': 8,
+    'strengthAttack': 1,
+    'strengthDefense': 1,
+    'seductionAttack': 3,
+    'seductionDefense': 3,
+    'energyNeededToRecruit': 300,
+    'xpNeededForLevelup': 8,
+    'brainwashCost': 50,
 };
 
 
@@ -75,10 +86,11 @@ itemStatsMap['Cotton Panties'] = {
     'strengthDefense': 0,
     'seductionAttack': 1,
     'seductionDefense': 1,
-    'energyNeededToTF': 25,
+    'energyNeededToTF': 20,
     'spellTrainingCost': 15,
     'isSpell': true,
-    'isPurchaseableItem':true,
+    'isPurchaseableItem': true,
+    'Description' : 'A pair of common pink panties.  Nothing too special or sexy.',
 };
 
 itemStatsMap['Latex Catsuit'] = {
@@ -93,6 +105,37 @@ itemStatsMap['Latex Catsuit'] = {
     'spellTrainingCost': 25,
     'isSpell': true,
     'isPurchaseableItem': true,
+    'Description': 'A tight pink catsuit.  She squeaks a lot even when slightly touched; one can only imagine how she must feel when someone squeezes inside!',
+};
+
+itemStatsMap['Comfy Sports Bra'] = {
+    'name': 'Comfy Sports Bra',
+    'bonusHP': 4,
+    'value': 25,
+    'strengthAttack': 0,
+    'strengthDefense': 2,
+    'seductionAttack': 0,
+    'seductionDefense': 0,
+    'energyNeededToTF': 35,
+    'spellTrainingCost': 40,
+    'isSpell': true,
+    'isPurchaseableItem': true,
+    'Description': 'A comfortable sports bra, perfect for bustier witches who need to stay light on their feet.',
+};
+
+itemStatsMap['Lacy Corset'] = {
+    'name': 'Lacy Corset',
+    'bonusHP': -2,
+    'value': 40,
+    'strengthAttack': 0,
+    'strengthDefense': 0,
+    'seductionAttack': 5,
+    'seductionDefense': 5,
+    'energyNeededToTF': 50,
+    'spellTrainingCost': 40,
+    'isSpell': true,
+    'isPurchaseableItem': true,
+    'Description': 'A lacy violet corset, drawn tight around the waist with black strings.  A bit uncomfortable to wear but worth it... maybe.',
 };
 
 itemStatsMap['Ankh Necklace'] = {
@@ -107,6 +150,7 @@ itemStatsMap['Ankh Necklace'] = {
     'spellTrainingCost': 200,
     'isSpell': false,
     'isPurchaseableItem': true,
+    'Description': 'An enchanted little amulet, boosting the power of whichever witch or wizard wearing it.',
 };
 
 
@@ -128,27 +172,35 @@ itemStatsMap['Absorb'] = {
 var spawnNumbers = {};
 
 spawnNumbers['park_forest_trail'] = {
+    'Female Bystander': 2,
     'Fashion Witch': 0,
     'Witchling': 0,
-    'Female Bystander': 2
+    'Senior Witchling': 0,
+   
 };
 
 spawnNumbers['park_parking_lot'] = {
+
+     'Female Bystander': 3,
     'Fashion Witch': 0,
     'Witchling': 1,
-    'Female Bystander': 3
+    'Senior Witchling': 0,
+   
 };
 
 spawnNumbers['park_lodge'] = {
+    'Female Bystander': 5,
     'Fashion Witch': 0,
     'Witchling': 2,
-    'Female Bystander': 5
+    'Senior Witchling': 0,
 };
 
 spawnNumbers['coffeestore'] = {
+    'Female Bystander': 7,
     'Fashion Witch': 0,
     'Witchling': 4,
-    'Female Bystander': 7
+    'Witchling': 1,
+  
 };
 
 
@@ -177,10 +229,31 @@ defeatMessage['Latex Catsuit']['Generic'] = {
     ],
 };
 
+defeatMessage['Comfy Sports Bra'] = {};
+defeatMessage['Comfy Sports Bra']['Generic'] = {
+    'texts': [
+    '[VICTIM] gasps as their chest erupts into two wire-supported cups pushing out, arms and legs vanishing as the torso shrinks down to a few straps and buckle.  [VICTIM] clatters on the ground, the metal hook clinking on the ground.',
+    ],
+};
+
+defeatMessage['Lacy Corset'] = {};
+defeatMessage['Lacy Corset']['Generic'] = {
+    'texts': [
+    'A pair of black strings appear out of [VICTIM]\s hips, coiling around them like a pair of twin serpants until their arms are bound tightly to their sides.  "I... can\t... breath"... [VICTIM] coughs moments before their limbs shrink into lacy frills running along the counters of their chest, head sucked in to a now-hollow torso defined by a violet garment, a corset tightly bound by the settling black strings.  It flops on the ground, empty and motionless, though one can\'t help but feel it beckins for someone to wrap around and squeeze tight.',
+    ],
+};
+
 defeatMessage['Witchling'] = {};
 defeatMessage['Witchling']['Generic'] = {
     'texts': [
     '[VICTIM] moans as a bolt of lighting pierces through their chest, setting their veins aglow with an influx of magic as they transform into a cute young witchling, eager to serve the covenant until inanimation do her part!',
+    ],
+};
+
+defeatMessage['Senior Witchling'] = {};
+defeatMessage['Senior Witchling']['Generic'] = {
+    'texts': [
+    '[VICTIM] giggles elatedly as the magic fills her body, expanding her breasts and hips a bit larger, her skin a little clearer and the predatorial glint in her eyes just a bit stronger and ruthless.',
     ],
 };
 

@@ -32,6 +32,16 @@ attackTextMap['Witchling']['Female Bystander'] = {
     ],
 };
 
+// ------------------------ SENIOR WITCHLING --------------------
+
+attackTextMap['Senior Witchling'] = {};
+attackTextMap['Senior Witchling']['Generic'] = {
+    'texts': [
+    '"TODO',
+    ],
+};
+
+
 // ------------------------ FEMALE BYSTANDER --------------------
 
 attackTextMap['Female Bystander'] = {};

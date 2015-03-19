@@ -145,6 +145,12 @@ PersonGroup.prototype.spawnGroup = function (type, variation) {
         this.addPerson(spawn);
     }
 
+    extra = Math.floor(Math.random() * variation) - (Math.floor(variation / 2));
+    for (var i = 0; i < spawnGroup['Senior Witchling'] + extra; i++) {
+        var spawn = new Person(undefined, undefined, 'Senior Witchling');
+        this.addPerson(spawn);
+    }
+
 };
 
 PersonGroup.prototype.healGroup = function (amount) {

@@ -1,4 +1,4 @@
-﻿var fashionApp = angular.module('fashionApp', ['ngSanitize']);
+﻿var fashionApp = angular.module('fashionApp', ['ngSanitize', 'ngAnimate']);
 
 angular.module('fashionApp').controller('PersonsController', function ($scope, $sce) {
 
@@ -62,8 +62,6 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
         leaderId = newbie.id;
 
         newbie.giveFinishingSpell('Cotton Panties');
-        newbie.giveFinishingSpell('Latex Catsuit');
-        newbie.giveFinishingSpell('Absorb');
         $scope.leader = newbie;
 
         $scope.personsPlayer.addPerson(newbie);
@@ -73,15 +71,18 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
         $scope.logs.push(welcome);
 
         $scope.chooseBattlegroundView = true;
+        $scope.startVisible = false;
 
     }
 
     $scope.chooseBattleground = function () {
+        
         $scope.timeOfDay = "Afternoon";
         $scope.chooseBattlegroundView = true;
         $scope.buySellItemsView = false;
         $scope.assignItemsView = false;
         $scope.teachSpellsView = false;
+        $scope.defeatedPlayer.persons = [];
     }
 
     $scope.chooseBattlegroundSend = function (location, variation) {
@@ -176,7 +177,7 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
         $scope.newItems.addItem(newItem);
         $scope.energy -= person.getTransformCost(spell);
 
-        var result = insertNames(getRandomDefeatText(person.type, newItem.type), $scope.leader, person);
+        var result = "<span class='inanimated'>" + insertNames(getRandomDefeatText(person.type, newItem.type), $scope.leader, person) + "</span>";
 
         var newlog = new Log(result);
         $scope.logs.push(newlog);
@@ -187,7 +188,7 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
         $scope.leader.health += Math.floor(person.getMaxHP() / 4);
         $scope.defeatedAI.removePerson(person);
 
-        var result = insertNames(getRandomDefeatText(person.type, 'Absorb'), $scope.leader, person);
+        var result = "<span class='absorb'>" + insertNames(getRandomDefeatText(person.type, 'Absorb'), $scope.leader, person) + "</span>";
         var newlog = new Log(result);
 
         $scope.logs.push(newlog);
@@ -196,7 +197,7 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
     $scope.amnesia = function (person) {
         $scope.infamy += 1;
         $scope.defeatedAI.removePerson(person);
-        var result = insertNames(getRandomDefeatText(person.type, 'brainwash'), $scope.leader, person);
+        var result = "<span class='brainwashed'>" + insertNames(getRandomDefeatText(person.type, 'brainwash'), $scope.leader, person) + "</span>";
         var newlog = new Log(result);
         $scope.logs.push(newlog);
     }

@@ -364,6 +364,16 @@ Person.prototype.knowsAbsorb = function () {
     }
 }
 
-var randomFirstNamesFemale = ['Mary', 'Jane', 'Elessa', 'Jamie', 'Sarah', 'Caroline', 'Janice', 'Gloria', 'Alice', ];
-var randomFirstNamesMale = ['James', 'Tim', 'Jason', 'Bob', 'Gary', 'Chris', 'Max', 'Mike', 'Derrick', ];
+Person.prototype.canLearnSpells = function () {
+    if (this.type == 'Male Bystander' || this.type == 'Female Bystander') {
+        return false;
+    } else {
+        return true;
+    }
+}
+
+var randomFirstNamesFemale = ['Mary', 'Jane', 'Elessa', 'Jamie', 'Sarah', 'Caroline', 'Janice', 'Gloria', 'Alice', 'Janice', 'Ellen', 'Amy', 'Bella', 'Crissy', 'Elizabeth', 'Laura'];
+
+var randomFirstNamesMale = ['Allen', 'Bart', 'Corey', 'Deryl', 'James', 'Tim', 'Jason', 'Bob', 'Gary', 'Chris', 'Max', 'Mike', 'Derrick', ];
+
 var randomLastName = ['Smith', 'Brown', 'White', 'Blue', 'Black', 'Green', 'Tanner', 'Shoemaker', 'Telae'];

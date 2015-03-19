@@ -9,6 +9,7 @@
     <script src="~/Scripts/jquery-2.1.0.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
     <script src="http://code.angularjs.org/1.2.20/angular-sanitize.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.1/angular-animate.min.js"></script>
 <script src="~/Scripts/fwars/app.js"></script>
     <script src="~/Scripts/fwars/controllers/personsController.js"></script>
     <script src="~/Scripts/fwars/models/person.js"></script>
@@ -164,8 +165,10 @@
                 <h3>Purchase:</h3>
                 <ul>
                     <li ng-repeat="item in itemsMap">
-                        {{item.name}} ({{item.value}} dollars)
-                        <button ng-show="item.isPurchaseableItem == true && money >= item.value" ng-click="buyItem(item.name)">Buy</button>
+                        <div ng-show="item.isPurchaseableItem == true">
+                            {{item.name}} ({{item.value}} dollars)
+                            <button ng-show=" money >= item.value" ng-click="buyItem(item.name)">Buy</button>
+                        </div>
                     </li>
                 </ul>
             </div>
@@ -237,7 +240,7 @@
 
             <li ng-repeat="item in itemsMap">
                 {{item.name}} ({{item.spellTrainingCost}} dollars)
-                <button ng-show="money >= item.spellTrainingCost && currentlySelectedPerson.knowsSpell(item.name) == false" ng-click="teachSpell(item.name)" class="assign">Train</button>
+                <button ng-show="money >= item.spellTrainingCost && currentlySelectedPerson.knowsSpell(item.name) == false && currentlySelectedPerson.canLearnSpells()==true" ng-click="teachSpell(item.name)" class="assign">Train</button>
                 <span ng-show="currentlySelectedPerson.knowsSpell(item.name) == true">(Already known)</span>
             </li>
 
@@ -291,6 +294,13 @@
     .brainwash {
         background-color: orange;
     }
+
+
+    .brainwashed {
+        color: darkcyan;
+        font-weight: bolder;
+    }
+
 
     .absorb {
         background-color: lightseagreen;

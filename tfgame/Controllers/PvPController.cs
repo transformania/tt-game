@@ -546,9 +546,96 @@ namespace tfgame.Controllers
                 StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__TimesMoved, 1)
             ).Start();
 
+            if (me.IsInDungeon() == true)
+            {
+                new Thread(() =>
+               StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__DungeonMovements, 1)
+           ).Start();
+            }
 
             return RedirectToAction("Play");
         }
+
+        [Authorize]
+         public ActionResult EnterDungeon(string entering)
+         {
+             if (PvPStatics.AnimateUpdateInProgress == true)
+             {
+                 TempData["Error"] = "Player update portion of the world update is still in progress.";
+                 TempData["SubError"] = "Try again a bit later when the update has progressed farther along.";
+                 return RedirectToAction("Play");
+             }
+
+             PlayerProcedures.LogIP(Request.UserHostAddress);
+
+             Player me = PlayerProcedures.GetPlayerFromMembership();
+
+
+            // assert player is animate
+             if (me.Mobility != "full")
+             {
+                 TempData["Error"] = "You must be animate in order to enter or exit the dungeon.";
+                 return RedirectToAction("Play");
+             }
+
+            // assert player has enough action points
+             if (me.ActionPoints < 30)
+             {
+                 TempData["Error"] = "You need 30 action points to enter or exit the dungeon.";
+                 return RedirectToAction("Play");
+             }
+
+            // assert player is in PvP mode
+             if (me.GameMode < 2)
+             {
+                 TempData["Error"] = "You must be in PvP mode in order to enter the dungeon.  It is not a safe place...";
+                 return RedirectToAction("Play");
+             }
+
+            // assert player is in a correct location to do this if in overworld
+             if (me.IsInDungeon() == false && (me.dbLocationName != "street_9th" && me.dbLocationName != "street_14th_north"))
+             {
+                 TempData["Error"] = "You cannot enter the dungeon here.";
+                 TempData["SubError"] = "You must be at Street: Main Street and Sunnyglade Drive Intersection or Street: Main Street and E. 9th Avenue Intersection in order to enter the dungeon.";
+                 return RedirectToAction("Play");
+             }
+
+             // assert player has not been in combat recently if trying to leave the dungeon
+             if (me.IsInDungeon() == true)
+             {
+                 double lastAttackTimeAgo = Math.Abs(Math.Floor(me.GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalMinutes));
+                 if (lastAttackTimeAgo < 30)
+                 {
+                     TempData["Error"] = "You have been in combat too recently in order to leave the dungeon right now.";
+                     TempData["SubError"] = "You must stay out of combat for another " + (30 - lastAttackTimeAgo) + " minutes without being in combat.";
+                     return RedirectToAction("Play");
+                 }
+             }
+
+             if (entering == "true")
+             {
+                 string dungeonLocation = LocationsStatics.GetRandomLocation_InDungeon();
+                 PlayerProcedures.TeleportPlayer(me, dungeonLocation, false);
+                 TempData["Result"] = "You slipped down a manhole, tumbling through a dark tunnel and ending up down in the otherworldly dungeon deep below Sunnyglade, both physically and dimensionally.  Be careful where you tread... danger could come from anywhere and the magic down here is likely to keep you imprisoned much longer of permanently should you find yourself defeated...";
+                 PlayerLogProcedures.AddPlayerLog(me.Id, "You entered the dungeon.", false);
+                 LocationLogProcedures.AddLocationLog(me.dbLocationName, me.GetFullName() + " slid down a manhole to the dungeon deep below.");
+                 LocationLogProcedures.AddLocationLog(dungeonLocation, me.GetFullName() + " fell through the a portal in the ceiling from the town above.");
+             }
+             else if (entering == "false")
+             {
+                 string overworldLocation = LocationsStatics.GetRandomLocation();
+                 PlayerProcedures.TeleportPlayer(me, overworldLocation, false);
+                 TempData["Result"] = "Gasping for fresh air, you use your magic to tunnel your way up and out of the hellish labrynth of the dungeon.  ";
+                 PlayerLogProcedures.AddPlayerLog(me.Id, "You left the dungeon.", false);
+                 LocationLogProcedures.AddLocationLog(me.dbLocationName, me.GetFullName() + " cast an earthmoving spell, tunneling back up to the town.");
+                 LocationLogProcedures.AddLocationLog(overworldLocation, me.GetFullName() + " slides out from a portal out from the dungeon.");
+             }
+
+             PlayerProcedures.ChangePlayerActionMana(30, 0, 0, me.Id);
+          
+
+             return RedirectToAction("Play");
+         }
 
         [Authorize]
          public ActionResult AttackModal(int targetId)

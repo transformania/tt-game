@@ -1057,42 +1057,6 @@ namespace tfgame.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult DungeonTest()
-        {
-
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
-            Location here = null;
-
-            IEnumerable<Location> maze = DungeonProcedures.GenerateDungeon();
-
-            return View(maze);
-        }
-
-
-        public ActionResult ToggleDungeon()
-        {
-
-            IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player dbMe = playerRepo.Players.FirstOrDefault(p => p.MembershipId == WebSecurity.CurrentUserId);
-            Location myPlace = LocationsStatics.LocationList.GetLocation.FirstOrDefault(d => d.dbName == dbMe.dbLocationName);
-
-            if (myPlace.dbName.Contains("dungeon_"))
-            {
-                dbMe.dbLocationName = "street_01";
-                
-            }
-            else
-            {
-                dbMe.dbLocationName = "dungeon_0";
-            }
-
-            playerRepo.SavePlayer(dbMe);
-
-            TempData["Result"] = "Dungeon toggled.  This is a test feature.";
-            return RedirectToAction("Play","PvP");
-
-        }
-
         public ActionResult SpawnNPCs()
         {
             // assert only admins can view this

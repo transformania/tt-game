@@ -207,6 +207,12 @@
         {
             <p>Dungeon points stolen from other players: @ach.Player.GetFullName() (@ach.Achivement.Amount)</p>
         }
+        
+                   ach = Model.FirstOrDefault(a => a.Achivement.AchievementType == StatsProcedures.Stat__DungeonMovements);
+        if (ach != null)
+        {
+            <p>Times moved in dungeon: @ach.Player.GetFullName() (@ach.Achivement.Amount)</p>
+        }
 
 
 

@@ -66,5 +66,6 @@
     <p>Dungeon Artifacts Found:  @Model.Where(a => a.AchievementType == StatsProcedures.Stat__DungeonArtifactsFound).Sum(x => x.Amount)</p>
     <p>Dungeon demons defeated:  @Model.Where(a => a.AchievementType == StatsProcedures.Stat__DungeonDemonsDefeated).Sum(x => x.Amount)</p>
     <p>Dungeon points stolen from other players:  @Model.Where(a => a.AchievementType == StatsProcedures.Stat__DungeonPointsStolen).Sum(x => x.Amount)</p>
+    <p>Times moved in Dungeon:  @Model.Where(a => a.AchievementType == StatsProcedures.Stat__DungeonMovements).Sum(x => x.Amount)</p>
 
 </div>

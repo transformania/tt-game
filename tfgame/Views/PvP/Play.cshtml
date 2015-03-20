@@ -142,9 +142,23 @@
                 {
                     <span class="covSafeground">Safeground for the <b>@temp.Value.Name</b> Covenant</span>
                 }
+
+
+           
+                
             }
             @Model.Location.GetDescription()
             @{
+                
+                     if (Model.You.Player.GameMode >= 2 && Model.You.Player.IsInDungeon() == false && (Model.You.Player.dbLocationName == "street_9th" || Model.You.Player.dbLocationName == "street_14th_north"))
+                {
+                     @Html.ActionLink("Enter the PvP Dungeon (30 AP)", "EnterDungeon", "PvP", new { entering = "true" }, null)
+                }
+               else if (Model.You.Player.IsInDungeon() == true)
+               {
+                   @Html.ActionLink("Leave the PvP Dungeon (30 AP)", "EnterDungeon", "PvP", new { entering = "false" }, null)
+               }
+                
                 try
                 {
                     CovenantNameFlag temp2 = CovenantDictionary.IdNameFlagLookup[Model.Location.CovenantController];
@@ -160,7 +174,7 @@
                 }
 
 
-                if (Model.You.Player.GameMode == 2)
+                if (Model.You.Player.GameMode == 2 && Model.You.Player.IsInDungeon() == false)
                 {
                      @Html.ActionLink("Enchant (3 AP, 10 Mana)", "EnchantLocation", "PvP")
                 }

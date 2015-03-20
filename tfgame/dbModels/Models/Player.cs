@@ -272,5 +272,18 @@ namespace tfgame.dbModels.Models
             };
             return output;
         }
+
+
+        public bool IsInDungeon()
+        {
+            if (this.dbLocationName.Contains("dungeon_"))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

@@ -49,7 +49,8 @@ namespace tfgame.Procedures
 
         public const string Stat__DungeonArtifactsFound = "dungeon_artifacts_found";
         public const string Stat__DungeonDemonsDefeated = "dungeon_demons_defeated";
-          public const string Stat__DungeonPointsStolen = "dungeon_points_stolen";
+        public const string Stat__DungeonPointsStolen = "dungeon_points_stolen";
+        public const string Stat__DungeonMovements = "dungeon_movements";
         
 
            //new Thread(() =>

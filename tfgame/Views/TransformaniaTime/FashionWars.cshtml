@@ -57,7 +57,7 @@
                         <ul>
                             <li ng-repeat="person in personsPlayer.persons | orderBy:'firstName'">{{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}] [{{person.health}}/{{person.getMaxHP()}} HP]
                                 <div class="progress">
-                                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{person.health}}" aria-valuemin="0" aria-valuemax="{{person.getMaxHP()}}" ng-style="{width : ( getPercentage() + '%' ) }">
+                                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{person.health}}" aria-valuemin="0" aria-valuemax="{{person.getMaxHP()}}" ng-style="{width : ( person.getHealthAsPercentage() + '%' ) }">
                                         <span class="sr-only">---</span>
                                     </div>
                                 </div>

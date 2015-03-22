@@ -1,5 +1,5 @@
 $color1: #5C57EA;
-$color2: #928FFA;
+$color2: #CCCAFF;
 $color3: #7672F2;
 $color4: #EACD40;
 $color5: #F2DC72;
@@ -16,11 +16,29 @@ h3 {
 margin-top: 10px !important;
 }
 
+ul {
+    list-style-type: none;
+	padding: 0px;
+	margin: 0px;
+	}
+
+.btn {
+margin-bottom: 5px;
+margin-right: auto;
+margin-left: auto;
+}
+
 .container {
+margin-top: 50px;
 background-color: $color2 !important;
 border: $border;
-border-top: none !important;
 padding-bottom: 50px;
+}
+
+@media screen and (max-width: 769px) {
+.container {
+margin-top: 0px;
+}
 }
 
 .containerSmall{
@@ -61,27 +79,10 @@ color: $color5;
         background-color: lightgreen;
     }
 
-    .inanimate {
-        background-color: lightyellow;
-    }
-
-    .recruit {
-        background-color: lightblue;
-    }
-
-    .brainwash {
-        background-color: orange;
-    }
-
 
     .brainwashed {
         color: darkcyan;
         font-weight: bolder;
-    }
-
-
-    .absorb {
-        background-color: lightseagreen;
     }
 
 

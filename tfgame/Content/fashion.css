@@ -5,12 +5,25 @@ body {
 h3 {
   margin-top: 10px !important; }
 
+ul {
+  list-style-type: none;
+  padding: 0px;
+  margin: 0px; }
+
+.btn {
+  margin-bottom: 5px;
+  margin-right: auto;
+  margin-left: auto; }
+
 .container {
-  background-color: #928FFA !important;
+  margin-top: 50px;
+  background-color: #CCCAFF !important;
   border: 4px #7672F2 solid;
-  border-top: none !important;
   padding-bottom: 50px; }
 
+@media screen and (max-width: 769px) {
+  .container {
+    margin-top: 0px; } }
 .containerSmall {
   border: 4px #7672F2 solid;
   background-color: #EACD40;
@@ -42,21 +55,9 @@ a:hover {
 .assign {
   background-color: lightgreen; }
 
-.inanimate {
-  background-color: lightyellow; }
-
-.recruit {
-  background-color: lightblue; }
-
-.brainwash {
-  background-color: orange; }
-
 .brainwashed {
   color: darkcyan;
   font-weight: bolder; }
-
-.absorb {
-  background-color: lightseagreen; }
 
 .newcov {
   color: darkgreen;

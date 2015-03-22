@@ -123,7 +123,7 @@ PersonGroup.prototype.spawnGroup = function (type, variation) {
     this.persons = [];
     var spawnGroup = spawnNumbers[type];
 
-    var extra = Math.floor(Math.random() * variation) - (Math.floor(variation / 2));
+    var extra = Math.floor(Math.random() * variation);
     for (var i = 0; i < spawnGroup['Female Bystander'] + extra; i++) {
         
         var gender = Math.random();
@@ -139,13 +139,13 @@ PersonGroup.prototype.spawnGroup = function (type, variation) {
         }
     }
 
-    extra = Math.floor(Math.random() * variation) - (Math.floor(variation / 2));
+    extra = Math.floor(Math.random() * variation);
     for (var i = 0; i < spawnGroup['Witchling'] + extra; i++) {
         var spawn = new Person(undefined, undefined, 'Witchling');
         this.addPerson(spawn);
     }
 
-    extra = Math.floor(Math.random() * variation) - (Math.floor(variation / 2));
+    extra = Math.floor(Math.random() * variation);
     for (var i = 0; i < spawnGroup['Senior Witchling'] + extra; i++) {
         var spawn = new Person(undefined, undefined, 'Senior Witchling');
         this.addPerson(spawn);

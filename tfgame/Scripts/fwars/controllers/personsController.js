@@ -19,6 +19,8 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
     $scope.equipView_btn = true;
     $scope.showTeachSpells = false;
     $scope.teachSpells_btn = true;
+    $scope.defatedView = false;
+    $scope.logsView = true;
 
     $scope.equipNext = true;
     $scope.equipPrevious = true;
@@ -68,7 +70,7 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
 
         $scope.personsPlayer.addPerson(newbie);
 
-        var welcome = new Log("<span class='newcov'>" + newbie.fullName() + " has founded a new covenant!</span>");
+        var welcome = new Log("<span class='newcov'>" + newbie.fullName() + ", the young yet talented fashion witch, has decided to found her own covenant to best all her rivals and become the most powerful fashion witch in the world!  </span>");
 
         $scope.logs.push(welcome);
 
@@ -96,9 +98,6 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
 
         $scope.chooseBattlegroundView = false;
         $scope.personsAI.spawnGroup(location, variation);
-
-        console.log($scope.leader.getHealthAsPercentage());
-
     }
 
     // kick off a fight
@@ -159,8 +158,17 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
         $scope.energy = $scope.energyMax;
         $scope.logs = [];
         $scope.fightView = false;
-        $scope.aftermathView = true;
-        $scope.aftermathViewLevelup_btn = true;
+
+        if ($scope.personsPlayer.persons.indexOf($scope.leader) < 0) {
+            $scope.defatedView = true;
+        } else {
+            $scope.aftermathView = true;
+            $scope.aftermathViewLevelup_btn = true;
+        }
+
+   
+
+
         $scope.aftermathBtn = false;
     }
 

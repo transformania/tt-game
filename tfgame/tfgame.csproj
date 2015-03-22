@@ -696,6 +696,7 @@
     <Content Include="Images\PvP\itemsPortraits\tied_croptop_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\tome_Judoo.jpg" />
     <Content Include="Images\PvP\itemsPortraits\transmog_Judoo.jpg" />
+    <Content Include="Images\PvP\itemsPortraits\trueshot_truffles_Luxianne.jpg" />
     <Content Include="Images\PvP\itemsPortraits\Whip_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\whiteboard_and_marker_Dandelion.jpg" />
     <Content Include="Images\PvP\itemsPortraits\willbomb_weak.jpg" />
@@ -735,6 +736,7 @@
     <Content Include="Images\PvP\portraits\donkey_dominatrix_danaume.png" />
     <Content Include="Images\PvP\portraits\Donna_Wrenzephyr.png" />
     <Content Include="Images\PvP\portraits\dryder_jbovinne.png" />
+    <Content Include="Images\PvP\portraits\dungeon_demon_babblingfaces.jpg" />
     <Content Include="Images\PvP\portraits\d_loving_girl_Meddle.png" />
     <Content Include="Images\PvP\portraits\egyptian_priestess_Lux.png" />
     <Content Include="Images\PvP\portraits\elf_hero_babblingfaces.jpg" />

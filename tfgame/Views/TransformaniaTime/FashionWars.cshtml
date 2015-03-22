@@ -45,6 +45,7 @@
                     <button ng-click="chooseBattlegroundSend('coffeestore', 2)" class="btn btn-danger">Coffee Shop</button>
                 </div>
 
+                
 
                 <div ng-show="fightView">
                     <button ng-click="startFight()" ng-show="startFightVisible" class="btn btn-danger">Begin Fight</button>
@@ -93,6 +94,11 @@
                             <li ng-repeat="item in newItems.items">{{item.type}} {{item.getVictimName()}}</li>
                         </ul>
                     </div>
+                </div>
+
+                <div ng-show="defatedView">
+                    <h3>Defeat!</h3>
+                    <p>It's the fate of a fashion witch to, sooner or later, join someone's closet.  You had a pretty good run though, all things considered...  Not that it matters much now.</p>
                 </div>
 
                 <div ng-show="aftermathView">
@@ -253,11 +259,11 @@
 
                 </div>
 
-                <div id="log">
-                    <p ng-repeat="log in logs">
-                        <span ng-bind-html="log.message"></span>
-                    </p>
-                </div>
+            <div id="log" ng-show="logsView">
+                <p ng-repeat="log in logs">
+                    <span ng-bind-html="log.message"></span>
+                </p>
+            </div>
 
 
             

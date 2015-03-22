@@ -382,6 +382,10 @@ Person.prototype.getHealthAsPercentage = function () {
     return (this.health / this.getMaxHP()) * 100;
 }
 
+Person.prototype.getGraphic = function () {
+    return formStatsMap[this.type].graphic;
+}
+
 var randomFirstNamesFemale = ['Mary', 'Jane', 'Elessa', 'Jamie', 'Sarah', 'Caroline', 'Janice', 'Gloria', 'Alice', 'Janice', 'Ellen', 'Amy', 'Bella', 'Crissy', 'Elizabeth', 'Laura'];
 
 var randomFirstNamesMale = ['Allen', 'Bart', 'Corey', 'Deryl', 'James', 'Tim', 'Jason', 'Bob', 'Gary', 'Chris', 'Max', 'Mike', 'Derrick', ];

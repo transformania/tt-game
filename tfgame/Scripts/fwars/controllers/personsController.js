@@ -351,12 +351,3 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
     }
 
 });
-
-//function PersonsController($scope) {
-
-   
-
-
-
-
-//}

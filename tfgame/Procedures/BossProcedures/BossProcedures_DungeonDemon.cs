@@ -6,6 +6,7 @@ using System.Web;
 using tfgame.dbModels.Abstract;
 using tfgame.dbModels.Concrete;
 using tfgame.dbModels.Models;
+using tfgame.Statics;
 
 namespace tfgame.Procedures.BossProcedures
 {
@@ -36,9 +37,9 @@ namespace tfgame.Procedures.BossProcedures
             }
             else if (dbDemon != null && dbDemon.Mobility == "full" && attacker.Mobility == "full")
             {
-                AttackProcedures.Attack(dbDemon, attacker, "skill_Lilitu_Yah_Shaddai_Christopher");
-                AttackProcedures.Attack(dbDemon, attacker, "skill_Lilitu_Yah_Shaddai_Christopher");
-                AttackProcedures.Attack(dbDemon, attacker, "skill_Lilitu_Yah_Shaddai_Christopher");
+                AttackProcedures.Attack(dbDemon, attacker, PvPStatics.Dungeon_VanquishSpell);
+                AttackProcedures.Attack(dbDemon, attacker, PvPStatics.Dungeon_VanquishSpell);
+                AttackProcedures.Attack(dbDemon, attacker, PvPStatics.Dungeon_VanquishSpell);
             }
 
         }

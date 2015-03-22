@@ -208,7 +208,7 @@ namespace tfgame.Statics
         public const string DungeonDemon = "form_Dark_Demonic_Guardian_Judoo";
         public const int DungeonDemon_Limit = 5;
 
-        public const string Dungeon_VanquishSpell = "";
+        public const string Dungeon_VanquishSpell = "skill_Vanquish_Judoo";
 
 
         public enum GameModes { Superprotection = 0, Protection = 1, PvP = 2}

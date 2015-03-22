@@ -11,9 +11,19 @@ attackTextMap['Fashion Witch']['Generic'] = {
 attackTextMap['Fashion Witch']['Female Bystander'] = {
     'texts': [
 
-    '"What have we here?  Some boring old nine-to-five white collar dweeb who needs a little... change in their lives?" [ATTACKER] asks, running a finger along [VICTIM]\'s chest seductively, leaving a streak of magic seeping into their body with them knowing.',
+    '"What have we here?  Some boring old nine-to-five white collar chick who needs a little... change in her life?" [ATTACKER] asks, running a finger along [VICTIM]\'s nipples, leaving a streak of magic seeping into her breasts without [VICTIM] suspecting a thing.',
 
-     '"I bet you haven\t taken a nice vacation in a very long time know.  You stuff, stuff always comes up... long hours at work... nagging boyfriend or girlfriend... all those bills to pay...  Wouldn\t you like to have some time off?" [ATTACKER] coaxes.  [VICTIM] nods reluctantly, looking disheartened and both scared and excited at what [ATTACKER] might have in store for them.',
+     '"I bet you haven\'t taken a nice vacation in a very long time know.  You stuff, stuff always comes up... long hours at work... nagging boyfriend.. all those bills to pay... all that time putting on makeup to try and look good for just a few short hours... Wouldn\'t you like to have some time off?" [ATTACKER] coaxes.  [VICTIM] nods reluctantly, looking disheartened and both scared and excited at what [ATTACKER] might have in store for her.',
+
+    ],
+};
+
+attackTextMap['Fashion Witch']['Male Bystander'] = {
+    'texts': [
+
+    '"What have we here?  Some boring old nine-to-five white collar dweeb who needs a little... change in his life?" [ATTACKER] asks, running a finger along [VICTIM]\'s stiffening manhood seductively, leaving a streak of magic seeping into his cock without him suspecting a thing.',
+
+     '"I bet you haven\'t taken a nice vacation in a very long time know.  You stuff, stuff always comes up... long hours at work... girlfriend... all those bills to pay... all that time spent at the gym trying to buff up for girls who never notice...  Wouldn\'t you like to have some time off?" [ATTACKER] coaxes.  [VICTIM] nods reluctantly, looking disheartened and both scared and excited at what [ATTACKER] might have in store for him...',
 
     ],
 };
@@ -47,7 +57,7 @@ attackTextMap['Senior Witchling']['Generic'] = {
 attackTextMap['Female Bystander'] = {};
 attackTextMap['Female Bystander']['Generic'] = {
     'texts': [
-    '"I don\'t know any magic, but I can slap like a queen bitch..." [ATTACKER] squeaks timidly.  It\s just enough to make [VICTIM] recoil a little in fright.',
+    '"I don\'t know any magic, but I can sure slap like a bitch..." [ATTACKER] squeaks timidly.  It\s just enough to make [VICTIM] recoil a little in fright.',
     ],
 };
 attackTextMap['Female Bystander']['Female Bystander'] = {
@@ -66,7 +76,7 @@ attackTextMap['Male Bystander']['Generic'] = {
 };
 attackTextMap['Male Bystander']['Male Bystander'] = {
     'texts': [
-   '"So it looks like neither of us know any fun little spells," [ATTACKER] sighs, tossing a clod of dirt from the ground at [VICTIM], envious of the warlocks whose attacks are a little less... lame.',
+   '"So it looks like neither of us know any fun little spells," [ATTACKER] sighs, tossing some coins out of his wallet at [VICTIM], envious of the witches and warlock whose attacks are a little less... lame.',
     ],
 };
 

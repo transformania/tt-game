@@ -26,6 +26,7 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
     $scope.equipPrevious = true;
 
     $scope.itemsMap = itemStatsMap;
+    $scope.locationsMap = locationsMap;
 
     $scope.leader;
     $scope.energy = 100;
@@ -143,7 +144,7 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
 
     $scope.retreat = function () {
         $scope.logs = [];
-        var retreatMsg = new Log("Retreat!  The aggressors flee the field of battle in disarray, choosing to remain animate and fight another day.");
+        var retreatMsg = new Log("Retreat!  Your covenants flee the field of battle in disarray, choosing to remain animate and fight another day.  At least those who still have feet anyway.");
         $scope.logs.push(retreatMsg);
         $scope.fightView = false;
         $scope.aftermathView = true;
@@ -165,9 +166,6 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
             $scope.aftermathView = true;
             $scope.aftermathViewLevelup_btn = true;
         }
-
-   
-
 
         $scope.aftermathBtn = false;
     }

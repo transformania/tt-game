@@ -12,9 +12,6 @@ $(document).ready(function () {
 });
 
 
-
-
-
 // ----------------- FORM TYPE MAP ------------------
 var formStatsMap = {};
 
@@ -171,37 +168,6 @@ itemStatsMap['Absorb'] = {
 
 var spawnNumbers = {};
 
-spawnNumbers['park_forest_trail'] = {
-    'Female Bystander': 2,
-    'Fashion Witch': 0,
-    'Witchling': 0,
-    'Senior Witchling': 0,
-   
-};
-
-spawnNumbers['park_parking_lot'] = {
-
-     'Female Bystander': 3,
-    'Fashion Witch': 0,
-    'Witchling': 1,
-    'Senior Witchling': 0,
-   
-};
-
-spawnNumbers['park_lodge'] = {
-    'Female Bystander': 5,
-    'Fashion Witch': 0,
-    'Witchling': 2,
-    'Senior Witchling': 0,
-};
-
-spawnNumbers['coffeestore'] = {
-    'Female Bystander': 7,
-    'Fashion Witch': 0,
-    'Witchling': 4,
-    'Witchling': 1,
-  
-};
 
 
 

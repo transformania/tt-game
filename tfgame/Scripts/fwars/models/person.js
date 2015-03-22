@@ -121,9 +121,16 @@ PersonGroup.prototype.fightGroup = function (attackingGroup, defeatedAI, defeate
 PersonGroup.prototype.spawnGroup = function (type, variation) {
 
     this.persons = [];
-    var spawnGroup = spawnNumbers[type];
+    var spawnGroup = locationsMap[type];
+
+    console.log(spawnGroup);
 
     var extra = Math.floor(Math.random() * variation);
+
+    console.log(spawnGroup['Female Bystander']);
+
+    console.log(extra);
+ 
     for (var i = 0; i < spawnGroup['Female Bystander'] + extra; i++) {
         
         var gender = Math.random();

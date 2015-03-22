@@ -2,6 +2,9 @@ body {
   font-size: 14px !important;
   background-color: #5C57EA !important; }
 
+h1 {
+  margin-top: 10px !important; }
+
 h3 {
   margin-top: 10px !important; }
 
@@ -22,12 +25,14 @@ ul {
 .container {
   background-color: #CCCAFF !important;
   border: 4px #7672F2 solid;
-  padding-bottom: 50px; }
+  padding: 0px !important; }
 
 .containerPlus {
-  margin-top: 50px;
-  padding: 4px;
+  padding: 5px 15px 5px 15px;
   text-align: center;
+  border-bottom: 4px #7672F2 solid; }
+
+.containerPlus:last-child {
   border-bottom: none !important; }
 
 @media screen and (max-width: 769px) {

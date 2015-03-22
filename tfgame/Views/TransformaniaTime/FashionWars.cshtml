@@ -40,17 +40,9 @@
 
                 <div ng-show="chooseBattlegroundView">
                     <p>Where would you like to go to find new targets?</p>
-
-                    @*<button ng-click="chooseBattlegroundSend('park_forest_trail', 2)" class="btn btn-default">Park:  Forest Trail</button>
-                    <button ng-click="chooseBattlegroundSend('park_parking_lot', 2)" class="btn btn-info">Park:  Parking Lot</button>
-                    <button ng-click="chooseBattlegroundSend('park_lodge', 2)" class="btn btn-success">Park:  Lodge</button>
-                    <button ng-click="chooseBattlegroundSend('coffeestore', 2)" class="btn btn-danger">Coffee Shop</button>*@
-
                     <span ng-repeat="loc in locationsMap | orderBy:'infamyLimit'">
-                        @*<button ng-show="infamy < loc.infamyLimit" class="btn btn-default" ng-click="chooseBattlegroundSend(loc.name, 2)">{{loc.name}}</button>*@
-                        <button ng-show="infamy < loc.infamyLimit" class="btn {{loc.btnClass}}"  ng-click="chooseBattlegroundSend(loc.name, 2)">{{loc.name}}</button>
+                        <button ng-show="infamy < loc.infamyLimit" class="btn {{loc.btnClass}}" ng-click="chooseBattlegroundSend(loc.name, 2)">{{loc.name}}</button>
                     </span>
-
                 </div>
 
                 

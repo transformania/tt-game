@@ -122,14 +122,7 @@ PersonGroup.prototype.spawnGroup = function (type, variation) {
 
     this.persons = [];
     var spawnGroup = locationsMap[type];
-
-    console.log(spawnGroup);
-
     var extra = Math.floor(Math.random() * variation);
-
-    console.log(spawnGroup['Female Bystander']);
-
-    console.log(extra);
  
     for (var i = 0; i < spawnGroup['Female Bystander'] + extra; i++) {
         

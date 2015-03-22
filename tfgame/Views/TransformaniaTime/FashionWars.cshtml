@@ -28,31 +28,60 @@
 <body ng-controllers="PersonsController">
     <div class="container" data-ng-controller="PersonsController as ctrl">
         <div class="containerPlus">[{{timeOfDay}} Day <b>{{day}}</b>] [<b>{{money}}</b> $] [<b>{{infamy}}</b> infamy]</div>
-        <div class="containerPlus">button container</div>
+        
         <div class="containerPlus">
-            <h1>Fashion Wars</h1> 
-                <div ng-show="startVisible">
-                    <p>What is your name?</p>
-                    <span> First name:  <input type="text" id="nameBoxFirst" ng-model="nameFirst" ng-init="nameFirst='Nina'" /></span>
-                    <span> Last name: <input type="text" id="nameBoxLast" ng-model="nameLast" ng-init="nameLast='Bryker'" /></span><br />
-                    <button ng-click="addPlayerAndStart(nameFirst, nameLast)" class="btn btn-default center-block">Start as {{nameFirst}}  {{nameLast}}!</button>
+            <div ng-show="startVisible">
+                <button ng-click="addPlayerAndStart(nameFirst, nameLast)" class="btn btn-default center-block">Start as {{nameFirst}}  {{nameLast}}!</button>
                 </div>
 
-                <div ng-show="chooseBattlegroundView">
-                    <p>Where would you like to go to find new targets?</p>
-                    <span ng-repeat="loc in locationsMap | orderBy:'infamyLimit'">
-                        <button ng-show="infamy < loc.infamyLimit" class="btn {{loc.btnClass}}" ng-click="chooseBattlegroundSend(loc.name, 2)">{{loc.name}}</button>
-                    </span>
+            <div ng-show="chooseBattlegroundView">
+                <span ng-repeat="loc in locationsMap | orderBy:'infamyLimit'">
+                    <button ng-show="infamy < loc.infamyLimit" class="btn {{loc.btnClass}}" ng-click="chooseBattlegroundSend(loc.name, 2)">{{loc.name}}</button>
+                </span>
                 </div>
-
-                
 
                 <div ng-show="fightView">
                     <button ng-click="startFight()" ng-show="startFightVisible" class="btn btn-danger">Begin Fight</button>
                     <button ng-click="fight()" ng-show="continueFightVisible" class="btn btn-warning">Continue Fight (Round {{turnsSinceCombatStart}})</button>
                     <button ng-click="retreat()" ng-show="retreatBtnVisible" class="btn btn-info">Retreat!</button>
                     <button ng-click="aftermath()" ng-show="aftermathBtn" class="btn btn-default">View Fight Aftermath</button>
+                </div>
 
+            <div ng-show="aftermathView">
+                <button ng-show="aftermathViewLevelup_btn" ng-click="aftermathLevelupShow()" class="btn btn-default">Release remaining {{defeatedAI.persons.length}} prisoners and continue</button>    
+            </div>
+
+            <div ng-show="aftermathViewLevelup">
+                <button class="recruit btn btn-default" ng-show="endDay_btn" ng-click="endDay()">End day</button>
+                </div>
+
+            <div ng-show="buySellItemsView">
+                <button class="recruit btn btn-default" ng-show="equipView_btn" ng-click="showEquipMembersView()">Equip Members</button>
+                </div>
+
+            <div ng-show="assignItemsView">
+                <button class="recruit btn btn-info" ng-show="teachSpells_btn" ng-click="showTeachSpells()">Teach Spells</button>
+             </div>
+
+            <div ng-show="teachSpellsView">
+                <button class="recruit btn btn-default" ng-show="newfight_btn" ng-click="chooseBattleground()">Choose Battleground</button>
+                </div>
+
+            </div>
+
+        <div class="containerPlus">
+            <h1>Fashion Wars</h1> 
+                <div ng-show="startVisible">
+                    <p>What is your name?</p>
+                    <span> First name:  <input type="text" id="nameBoxFirst" ng-model="nameFirst" ng-init="nameFirst='Nina'" /></span>
+                    <span> Last name: <input type="text" id="nameBoxLast" ng-model="nameLast" ng-init="nameLast='Bryker'" /></span><br />
+                </div>
+
+                <div ng-show="chooseBattlegroundView">
+                    <p>Where would you like to go to find new targets?</p>
+                </div>
+
+                <div ng-show="fightView">
                     <div class="containerSmall">
                         <h3>Your members:</h3>
                         <ul>
@@ -104,7 +133,7 @@
                 <div ng-show="aftermathView">
                     <p>With the day over you can now take stock of your prisoners.  What shall you do with them?  Recruit them to your cause?  Or change them into cute little clothes for you, your friends, or the store next door?  You can also brainwash your opponents, leaving them with an altered body and mind so as to avoid increasing your infamy as high.  <b>You have {{energy}}/{{energyMax}}</b> energy left.  You have {{money}} dollars.</p>
 
-                    <button ng-show="aftermathViewLevelup_btn" ng-click="aftermathLevelupShow()" class="btn btn-default">Release remaining {{defeatedAI.persons.length}} prisoners and continue</button>
+                    
 
                     <div class="containerSmall">
                         <h3>Submissive Opponents:</h3>
@@ -155,7 +184,7 @@
                         </ul>
                     </div>
 
-                    <button class="recruit btn btn-default" ng-show="endDay_btn" ng-click="endDay()">End day</button>
+                    
 
                 </div>
 
@@ -184,7 +213,7 @@
                         </ul>
                     </div>
 
-                    <button class="recruit btn btn-default" ng-show="equipView_btn" ng-click="showEquipMembersView()">Equip Members</button>
+                  
 
                 </div>
 
@@ -227,7 +256,7 @@
                     </div>
 
 
-                    <button class="recruit btn btn-info" ng-show="teachSpells_btn" ng-click="showTeachSpells()">Teach Spells</button>
+                   
 
                 </div>
 
@@ -255,7 +284,6 @@
                             <span ng-show="currentlySelectedPerson.knowsSpell(item.name) == true">(Already known)</span>
                         </li>
                     </ul>
-                    <button class="recruit btn btn-default" ng-show="newfight_btn" ng-click="chooseBattleground()">Choose Battleground</button>
 
                 </div>
 

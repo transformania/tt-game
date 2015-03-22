@@ -347,7 +347,7 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
     }
 
     $scope.getEnergyPercentage = function () {
-        return $(scope.energy / $scope.energyMax) * 100;
+        return ($scope.energy / $scope.energyMax) * 100;
     }
 
 });

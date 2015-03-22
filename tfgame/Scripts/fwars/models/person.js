@@ -378,6 +378,10 @@ Person.prototype.canLearnSpells = function () {
     }
 }
 
+Person.prototype.getHealthAsPercentage = function () {
+    return (this.health / this.getMaxHP()) * 100;
+}
+
 var randomFirstNamesFemale = ['Mary', 'Jane', 'Elessa', 'Jamie', 'Sarah', 'Caroline', 'Janice', 'Gloria', 'Alice', 'Janice', 'Ellen', 'Amy', 'Bella', 'Crissy', 'Elizabeth', 'Laura'];
 
 var randomFirstNamesMale = ['Allen', 'Bart', 'Corey', 'Deryl', 'James', 'Tim', 'Jason', 'Bob', 'Gary', 'Chris', 'Max', 'Mike', 'Derrick', ];

@@ -459,6 +459,13 @@ namespace tfgame.Controllers
 
             BuffBox buffs = ItemProcedures.GetPlayerBuffs(me);
 
+            if (buffs.MoveActionPointDiscount() < -120)
+            {
+                TempData["Error"] = "You can't move since you have been immobilized!";
+                TempData["SubError"] = "Your current form or a curse on you is temporarily keeping you here.";
+                return RedirectToAction("Play");
+            }
+
             // assert that this player has sufficient action points for this move
             if (me.ActionPoints < PvPStatics.LocationMoveCost - buffs.MoveActionPointDiscount())
             {
@@ -614,6 +621,10 @@ namespace tfgame.Controllers
 
              if (entering == "true")
              {
+
+                 // give player the Vanquish spell if they don't already know it
+                 SkillProcedures.GiveSkillToPlayer(me.Id, PvPStatics.Dungeon_VanquishSpell);
+
                  string dungeonLocation = LocationsStatics.GetRandomLocation_InDungeon();
                  PlayerProcedures.TeleportPlayer(me, dungeonLocation, false);
                  TempData["Result"] = "You slipped down a manhole, tumbling through a dark tunnel and ending up down in the otherworldly dungeon deep below Sunnyglade, both physically and dimensionally.  Be careful where you tread... danger could come from anywhere and the magic down here is likely to keep you imprisoned much longer of permanently should you find yourself defeated...";
@@ -684,6 +695,18 @@ namespace tfgame.Controllers
             if (target.MembershipId == -12)
             {
                 output = output.Where(s => s.Skill.dbName == BossProcedures_Sisters.NerdSpell);
+            }
+
+            // Vanquish only works against dungeon demons
+            if (target.MembershipId == 13)
+            {
+                output = output.Where(s => s.Skill.dbName == PvPStatics.Dungeon_VanquishSpell || s.Skill.dbName == "lowerHealth");
+            }
+
+            // Vanquish only works against dungeon demons
+            if (target.MembershipId != 13)
+            {
+                output = output.Where(s => s.Skill.dbName != PvPStatics.Dungeon_VanquishSpell);
             }
 
             ViewBag.TargetId = targetId;
@@ -863,6 +886,13 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play");
             }
 
+             // if the spell is Vanquish, only have it work against demons
+            if (skill.dbName == PvPStatics.Dungeon_VanquishSpell && targeted.Form != PvPStatics.DungeonDemon)
+            {
+                TempData["Error"] = "Vanquish can only be cast against the Dark Demonic Guardians in the dungoen.";
+                return RedirectToAction("Play");
+            }
+
             #region bot attack type checks
             // prevent low level players from taking on high level bots
             if (targeted.MembershipId <= -3)
@@ -942,14 +972,12 @@ namespace tfgame.Controllers
                 }
 
                 // TODO:  Dungeon Demons can only be vanquished
-                if (targeted.MembershipId == -13)
+                if (targeted.MembershipId == -13 && skill.dbName != PvPStatics.Dungeon_VanquishSpell)
                 {
-                //    string result = BossProcedures_Sisters.SpellIsValid(me, targeted, attackName);
-                //    if (result != "")
-                //    {
-                //        TempData["Error"] = result;
-                //        return RedirectToAction("Play");
-                //    }
+
+                    TempData["Error"] = "Only the 'Vanquish' spell can work against the Dark Demonic Guardians.";
+                    return RedirectToAction("Play");
+
                 }
 
             }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using tfgame.Procedures;
 using tfgame.ViewModels;
 
 namespace tfgame.Statics
@@ -204,8 +205,10 @@ namespace tfgame.Statics
 
         public const decimal DungeonArtifact_Value = 2;
         public const int DungeonArtifact_SpawnLimit = 5;
-        public const string DungeonDemon = "form_Dark_Demononic_Guardian_Judoo";
+        public const string DungeonDemon = "form_Dark_Demonic_Guardian_Judoo";
         public const int DungeonDemon_Limit = 5;
+
+        public const string Dungeon_VanquishSpell = "";
 
 
         public enum GameModes { Superprotection = 0, Protection = 1, PvP = 2}
@@ -296,6 +299,16 @@ namespace tfgame.Statics
             // set a random location for this character to spawn in
             List<string> spawnableLocations = LocationList.GetLocation.Where(l => l.Region == "dungeon").Select(l => l.dbName).ToList();
             double max = spawnableLocations.Count();
+
+
+            // someone wants to enter the dungeon but it hasn't been generated yet; build it now
+            if (spawnableLocations.Count() == 0)
+            {
+                DungeonProcedures.GenerateDungeon();
+                spawnableLocations = LocationList.GetLocation.Where(l => l.Region == "dungeon").Select(l => l.dbName).ToList();
+                max = spawnableLocations.Count();
+            }
+
             Random rand = new Random(Guid.NewGuid().GetHashCode());
             double num = rand.NextDouble();
 

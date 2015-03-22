@@ -448,14 +448,17 @@ namespace tfgame.Procedures
             }
 
             // set a random location for this character to spawn in
-            List<string> spawnableLocations = LocationsStatics.LocationList.GetLocation.Select(l => l.dbName).ToList();
-            double max = spawnableLocations.Count();
-            Random rand = new Random();
-            double num = rand.NextDouble();
+            //List<string> spawnableLocations = LocationsStatics.LocationList.GetLocation.Select(l => l.dbName).ToList();
+            //double max = spawnableLocations.Count();
+            //Random rand = new Random();
+            //double num = rand.NextDouble();
 
-            int index = Convert.ToInt32(Math.Floor(num*max));
-            string locationToSpawnIn = spawnableLocations.ElementAt(index);
-            newplayer.dbLocationName = locationToSpawnIn;
+            //int index = Convert.ToInt32(Math.Floor(num*max));
+            //string locationToSpawnIn = spawnableLocations.ElementAt(index);
+
+
+
+            newplayer.dbLocationName = LocationsStatics.GetRandomLocation();
 
             playerRepo.SavePlayer(newplayer);
 

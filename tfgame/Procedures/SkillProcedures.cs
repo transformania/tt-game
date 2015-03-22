@@ -201,6 +201,13 @@ namespace tfgame.Procedures
             return output;
         }
 
+        public static string GiveSkillToPlayer(int playerId, string skilldbName)
+        {
+            ISkillRepository skillRepo = new EFSkillRepository();
+            DbStaticSkill skill = skillRepo.DbStaticSkills.FirstOrDefault(s => s.dbName == skilldbName);
+            return GiveSkillToPlayer(playerId, skill);
+        }
+
         public static string GiveSkillToPlayer(int playerId, DbStaticSkill skill)
         {
             ISkillRepository skillRepo = new EFSkillRepository();

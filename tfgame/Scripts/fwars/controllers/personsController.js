@@ -61,6 +61,8 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
         var newbie = new Person(firstName, lastName, "Fashion Witch");
         leaderId = newbie.id;
 
+        
+
         newbie.giveFinishingSpell('Cotton Panties');
         $scope.leader = newbie;
 
@@ -94,6 +96,8 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
 
         $scope.chooseBattlegroundView = false;
         $scope.personsAI.spawnGroup(location, variation);
+
+        console.log($scope.leader.getHealthAsPercentage());
 
     }
 

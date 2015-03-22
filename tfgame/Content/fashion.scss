@@ -28,15 +28,26 @@ margin-right: auto;
 margin-left: auto;
 }
 
+.btn-xs {
+margin-left: 1px;
+margin-right: 1px;
+}
+
 .container {
-margin-top: 50px;
 background-color: $color2 !important;
 border: $border;
 padding-bottom: 50px;
 }
 
+.containerPlus{
+margin-top: 50px;
+padding: 4px;
+text-align: center;
+border-bottom: none !important;
+}
+
 @media screen and (max-width: 769px) {
-.container {
+.containerPlus {
 margin-top: 0px;
 }
 }

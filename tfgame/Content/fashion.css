@@ -15,14 +15,23 @@ ul {
   margin-right: auto;
   margin-left: auto; }
 
+.btn-xs {
+  margin-left: 1px;
+  margin-right: 1px; }
+
 .container {
-  margin-top: 50px;
   background-color: #CCCAFF !important;
   border: 4px #7672F2 solid;
   padding-bottom: 50px; }
 
+.containerPlus {
+  margin-top: 50px;
+  padding: 4px;
+  text-align: center;
+  border-bottom: none !important; }
+
 @media screen and (max-width: 769px) {
-  .container {
+  .containerPlus {
     margin-top: 0px; } }
 .containerSmall {
   border: 4px #7672F2 solid;

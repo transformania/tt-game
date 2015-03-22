@@ -25,19 +25,18 @@
     <title>...</title>
 </head>
 <body ng-controllers="PersonsController">
+    <div class="container containerPlus" data-ng-controller="PersonsController as ctrl">
+        [{{timeOfDay}} Day <b>{{day}}</b>] [<b>{{money}}</b> $] [<b>{{infamy}}</b> infamy]
+    </div>
     <div class="container">
         <h1>Fashion Wars</h1>
 
-        <div data-ng-controller="PersonsController as ctrl">
-
-            <p>{{timeOfDay}} Day {{day}} - {{money}} $ - {{infamy}} infamy</p>
-
+        <div data-ng-controller="PersonsController as ctrl">     
             <div ng-show="startVisible">
                 <p>What is your name?</p>
                 <span> First name:  <input type="text" id="nameBoxFirst" ng-model="nameFirst" ng-init="nameFirst='Nina'" /></span>
                 <span> Last name: <input type="text" id="nameBoxLast" ng-model="nameLast" ng-init="nameLast='Bryker'" /></span><br />
-                <button ng-click="addPlayerAndStart(nameFirst, nameLast)" class="btn btn-default">Found your Covenant!</button>
-                <span>Name: {{nameFirst}}  {{nameLast}}</span>
+                <button ng-click="addPlayerAndStart(nameFirst, nameLast)" class="btn btn-default center-block">Start as {{nameFirst}}  {{nameLast}}!</button>
             </div>
 
             <div ng-show="chooseBattlegroundView">
@@ -50,6 +49,10 @@
 
 
             <div ng-show="fightView">
+                <button ng-click="startFight()" ng-show="startFightVisible" class="btn btn-danger">Begin Fight</button>
+                <button ng-click="fight()" ng-show="continueFightVisible" class="btn btn-warning">Continue Fight (Round {{turnsSinceCombatStart}})</button>
+                <button ng-click="retreat()" ng-show="retreatBtnVisible" class="btn btn-info">Retreat!</button>
+                <button ng-click="aftermath()" ng-show="aftermathBtn" class="btn btn-default">View Fight Aftermath</button>
 
                 <div class="containerSmall">
                     <h3>Your members:</h3>
@@ -80,17 +83,12 @@
                     </ul>
                 </div>
 
-                <div id="unequippedItems">
+                <div class="containerSmall" id="unequippedItems">
                     <h3>New items from fight:</h3>
                     <ul>
                         <li ng-repeat="item in newItems.items">{{item.type}} {{item.getVictimName()}}</li>
                     </ul>
                 </div>
-
-                <button ng-click="startFight()" ng-show="startFightVisible" class="btn btn-danger">Begin Fight</button>
-                <button ng-click="fight()" ng-show="continueFightVisible" class="btn btn-warning">Continue Fight (Round {{turnsSinceCombatStart}})</button>
-                <button ng-click="retreat()" ng-show="retreatBtnVisible" class="btn btn-info">Retreat!</button>
-                <button ng-click="aftermath()" ng-show="aftermathBtn" class="btn btn-default">View Fight Aftermath</button>
             </div>
 
             <div ng-show="aftermathView">
@@ -140,7 +138,7 @@
                         <li ng-repeat="person in personsPlayer.persons | orderBy:'firstName'">
                             {{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}][{{person.health}}/{{person.getMaxHP()}} HP] [{{person.xp}}/{{person.xpNeededForLevelup()}} XP before levelup]
 
-                            <button class="recruit btn btn-primary" ng-click="promote(person,'Witchling')" ng-show="person.xp >= person.xpNeededForLevelup() && (person.type == 'Female Bystander' || person.type == 'Male Bystander')">Transform into Witchling</button>
+                            <button class="recruit btn btn-primary btn-xs" ng-click="promote(person,'Witchling')" ng-show="person.xp >= person.xpNeededForLevelup() && (person.type == 'Female Bystander' || person.type == 'Male Bystander')">Transform into Witchling</button>
 
 
                         </li>

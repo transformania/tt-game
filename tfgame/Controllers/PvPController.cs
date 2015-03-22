@@ -698,13 +698,13 @@ namespace tfgame.Controllers
             }
 
             // Vanquish only works against dungeon demons
-            if (target.MembershipId == 13)
+            if (target.MembershipId == -13)
             {
                 output = output.Where(s => s.Skill.dbName == PvPStatics.Dungeon_VanquishSpell || s.Skill.dbName == "lowerHealth");
             }
 
             // Vanquish only works against dungeon demons
-            if (target.MembershipId != 13)
+            if (target.MembershipId != -13)
             {
                 output = output.Where(s => s.Skill.dbName != PvPStatics.Dungeon_VanquishSpell);
             }
@@ -972,12 +972,10 @@ namespace tfgame.Controllers
                 }
 
                 // TODO:  Dungeon Demons can only be vanquished
-                if (targeted.MembershipId == -13 && skill.dbName != PvPStatics.Dungeon_VanquishSpell)
+                if (targeted.MembershipId == -13 && skill.dbName != PvPStatics.Dungeon_VanquishSpell && skill.dbName != "lowerHealth")
                 {
-
-                    TempData["Error"] = "Only the 'Vanquish' spell can work against the Dark Demonic Guardians.";
+                    TempData["Error"] = "Only the 'Vanquish' spell and Weaken have any effect on the Dark Demonic Guardians.";
                     return RedirectToAction("Play");
-
                 }
 
             }
@@ -3410,7 +3408,7 @@ namespace tfgame.Controllers
             {
                 Player owner = PlayerProcedures.GetPlayer(itemMe.OwnerId);
 
-                if (owner.IsInDungeon() == true && PlayerProcedures.PlayerIsOffline(owner) == false)
+                if (owner.IsInDungeon() == true && PlayerProcedures.PlayerIsOffline(owner) == false && owner.Form != PvPStatics.DungeonDemon)
                 {
                     TempData["Error"] = "The dark powers of the dungeon prevent you from being able to fight your transformation while your owner is online.";
                     return RedirectToAction("Play");

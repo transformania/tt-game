@@ -1,0 +1,106 @@
+$color1: #5C57EA;
+$color2: #928FFA;
+$color3: #7672F2;
+$color4: #EACD40;
+$color5: #F2DC72;
+
+$fsize: 14px;
+$border: 4px $color3 solid;
+
+body {
+font-size:  $fsize !important;
+background-color: $color1 !important;
+}
+
+h3 {
+margin-top: 10px !important;
+}
+
+.container {
+background-color: $color2 !important;
+border: $border;
+border-top: none !important;
+padding-bottom: 50px;
+}
+
+.containerSmall{
+border: $border;
+background-color: $color4;
+margin-bottom: 10px;
+padding: 5px;
+}
+
+a {
+color: $color4;
+}
+
+a:hover {
+color: $color5;
+}
+
+   #log {
+        min-height: 300px;
+        border: $border;
+        width: 100%;
+        overflow-y: scroll;
+		resize: vertical;
+		background-color: $color5;
+		padding: 10px;
+    }
+
+    #id li {
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+
+    .remove {
+        background-color:lightpink;
+    }
+
+    .assign {
+        background-color: lightgreen;
+    }
+
+    .inanimate {
+        background-color: lightyellow;
+    }
+
+    .recruit {
+        background-color: lightblue;
+    }
+
+    .brainwash {
+        background-color: orange;
+    }
+
+
+    .brainwashed {
+        color: darkcyan;
+        font-weight: bolder;
+    }
+
+
+    .absorb {
+        background-color: lightseagreen;
+    }
+
+
+    .newcov {
+        color: darkgreen;
+        font-weight: bolder;
+    }
+
+    .fight {
+        color: red;
+        font-weight: bolder;
+    }
+
+    .inanimated {
+        color: darkviolet;
+        font-weight: bolder;
+    }
+
+    .submit {
+        color: indianred;
+        font-weight: bolder;
+    }

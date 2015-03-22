@@ -17,6 +17,7 @@ var formStatsMap = {};
 
 formStatsMap['Female Bystander'] = {
     'baseHP': 2,
+    'graphic':'blurg.png',
     'strengthAttack': 0,
     'strengthDefense': 0,
     'seductionAttack': 0,
@@ -28,6 +29,7 @@ formStatsMap['Female Bystander'] = {
 
 formStatsMap['Male Bystander'] = {
     'baseHP': 2,
+    'graphic': 'blurg.png',
     'strengthAttack': 0,
     'strengthDefense': 0,
     'seductionAttack': 0,
@@ -39,6 +41,7 @@ formStatsMap['Male Bystander'] = {
 
 formStatsMap['Fashion Witch'] = {
     'baseHP': 50,
+    'graphic': 'blurg.png',
     'strengthAttack': 1,
     'strengthDefense': 0,
     'seductionAttack': 3,
@@ -50,6 +53,7 @@ formStatsMap['Fashion Witch'] = {
 
 formStatsMap['Witchling'] = {
     'baseHP': 4,
+    'graphic': 'blurg.png',
     'strengthAttack': 1,
     'strengthDefense': 0,
     'seductionAttack': 2,
@@ -61,6 +65,7 @@ formStatsMap['Witchling'] = {
 
 formStatsMap['Senior Witchling'] = {
     'baseHP': 8,
+    'graphic': 'blurg.png',
     'strengthAttack': 1,
     'strengthDefense': 1,
     'seductionAttack': 3,

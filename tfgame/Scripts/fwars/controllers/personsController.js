@@ -207,6 +207,7 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
     $scope.amnesia = function (person) {
         $scope.infamy += 1;
         $scope.defeatedAI.removePerson(person);
+        $scope.energy -= person.getBrainwashCost();
         var result = "<span class='brainwashed'>" + insertNames(getRandomDefeatText(person.type, 'brainwash'), $scope.leader, person) + "</span>";
         var newlog = new Log(result);
         $scope.logs.push(newlog);
@@ -343,6 +344,10 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
         $scope.defeatedAI.persons = [];
         $scope.defeatedPlayer.persons = [];
 
+    }
+
+    $scope.getEnergyPercentage = function () {
+        return $(scope.energy / $scope.energyMax) * 100;
     }
 
 });

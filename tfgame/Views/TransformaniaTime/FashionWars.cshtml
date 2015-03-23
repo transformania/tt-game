@@ -82,55 +82,60 @@
                 </div>
 
                 <div ng-show="fightView">
-                    <div class="containerSmall">
-                        <h3>Your members:</h3>
-                        <ul>
-                            <li ng-repeat="person in personsPlayer.persons | orderBy:'firstName'">{{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}] [{{person.health}}/{{person.getMaxHP()}} HP]
-                                <img ng-src="~/Images/FashionWars/Forms/{{person.getGraphic()}}" />
-                                <div class="progress">
-                                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{person.health}}" aria-valuemin="0" aria-valuemax="{{person.getMaxHP()}}" ng-style="{width : ( person.getHealthAsPercentage() + '%' ) }">
-                                        <span class="sr-only">---</span>
+                    <div class="row" style="padding-left: 15px; padding-right: 15px;">
+                        <div class="containerSmall col-md-6 col-sm-12">
+                            <h3>Your members:</h3>
+                            <ul>
+                                <li ng-repeat="person in personsPlayer.persons | orderBy:'firstName'">
+                                    {{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}] [{{person.health}}/{{person.getMaxHP()}} HP]
+                                    <img ng-src="~/Images/FashionWars/Forms/{{person.getGraphic()}}" />
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{person.health}}" aria-valuemin="0" aria-valuemax="{{person.getMaxHP()}}" ng-style="{width : ( person.getHealthAsPercentage() + '%' ) }">
+                                            <span class="sr-only">---</span>
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
+                                </li>
+                            </ul>
+                        </div>
 
-                    <div class="containerSmall">
-                        <h3>Opponents:</h3>
-                        <ul>
-                            <li ng-repeat="person in personsAI.persons | orderBy:'firstName'">{{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}][{{person.health}}/{{person.getMaxHP()}} HP]
-                                <div class="progress">
-                                    <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="{{person.health}}" aria-valuemin="0" aria-valuemax="{{person.getMaxHP()}}" ng-style="{width : ( person.getHealthAsPercentage() + '%' ) }">
-                                        <span class="sr-only">---</span>
+                        <div class="containerSmall col-md-6 col-sm-12">
+                            <h3>Opponents:</h3>
+                            <ul>
+                                <li ng-repeat="person in personsAI.persons | orderBy:'firstName'">
+                                    {{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}][{{person.health}}/{{person.getMaxHP()}} HP]
+                                    <img ng-src="~/Images/FashionWars/Forms/{{person.getGraphic()}}" />
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="{{person.health}}" aria-valuemin="0" aria-valuemax="{{person.getMaxHP()}}" ng-style="{width : ( person.getHealthAsPercentage() + '%' ) }">
+                                            <span class="sr-only">---</span>
+                                        </div>
                                     </div>
-                                    </div>
-</li>                       
-                        </ul>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
 
+                    <div class="row" style="padding-left: 15px; padding-right: 15px;">
+                        <div class="containerSmall col-md-6 col-sm-12">
+                            <h3>Submissive Opponents:</h3>
+                            <ul>
+                                <li ng-repeat="person in defeatedAI.persons | orderBy:'firstName'">{{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}][{{person.health}}/{{person.getMaxHP()}} HP]</li>
+                            </ul>
+                        </div>
 
-                    <div class="containerSmall">
-                        <h3>Submissive Opponents:</h3>
-                        <ul>
-                            <li ng-repeat="person in defeatedAI.persons | orderBy:'firstName'">{{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}][{{person.health}}/{{person.getMaxHP()}} HP]</li>
-                        </ul>
+                        <div class="containerSmall col-md-6 col-sm-12">
+                            <h3>Submissive Allies:</h3>
+                            <ul>
+                                <li ng-repeat="person in defeatedPlayer.persons | orderBy:'firstName'">{{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}][{{person.health}}/{{person.getMaxHP()}} HP]</li>
+                            </ul>
+                        </div>
+                        </div>
+                        <div class="containerSmall" id="unequippedItems">
+                            <h3>New items from fight:</h3>
+                            <ul>
+                                <li ng-repeat="item in newItems.items">{{item.type}} {{item.getVictimName()}}</li>
+                            </ul>
+                        </div>
                     </div>
-
-                    <div class="containerSmall">
-                        <h3>Submissive Allies:</h3>
-                        <ul>
-                            <li ng-repeat="person in defeatedPlayer.persons | orderBy:'firstName'">{{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}][{{person.health}}/{{person.getMaxHP()}} HP]</li>
-                        </ul>
-                    </div>
-
-                    <div class="containerSmall" id="unequippedItems">
-                        <h3>New items from fight:</h3>
-                        <ul>
-                            <li ng-repeat="item in newItems.items">{{item.type}} {{item.getVictimName()}}</li>
-                        </ul>
-                    </div>
-                </div>
 
                 <div ng-show="defatedView">
                     <h3>Defeat!</h3>

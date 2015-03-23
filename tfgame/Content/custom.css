@@ -137,7 +137,7 @@ li {
 .infoMessage {
   font-size: 15px;
   border-bottom: 4px solid #A16969;
-  padding: 4px;
+  padding: 4px 10px;
   text-align: center;
   background: #475374; }
 

@@ -1,24 +1,43 @@
 ﻿@model IEnumerable<tfgame.dbModels.Models.DbStaticEffect>
 @using tfgame.ViewModels
 
-@Html.ActionLink("Back to game", "Play", "PvP")
+<nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
 
-<center style="margin-bottom: 10px;">
-    Your experiences have allowed you to choose a perk that will permanently boost your abilities.  Which perk do you want?<br /><br />
-    You have <b>@ViewBag.PerksRemaining</b> unused perks remaining.<br />
-</center>
-<center>
-    @{
-        foreach (tfgame.dbModels.Models.DbStaticEffect e in Model)
-        {
-            <div class="perkBox">
-                <h3>@e.FriendlyName</h3>
-                <p>@e.Description</p>
-                @Html.Partial("partial/partial_perkBonus", e.ToStaticEffect())
-                @Html.ActionLink("Choose this perk!", "ChoosePerk", "PvP", new { perk = e.dbName }, null)
-            </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+<p class="infoMessage result">You have <b>@ViewBag.PerksRemaining</b> unused perks remaining.</p>
+<div class="containerInner center-block">
+
+    <p style="margin-bottom: 10px;">
+        Your experiences have allowed you to choose a perk that will permanently boost your abilities.  Which perk do you want?<br /><br />
+    </p>
+    <center>
+        @{
+            foreach (tfgame.dbModels.Models.DbStaticEffect e in Model)
+            {
+                <div class="perkBox">
+                    <h3>@e.FriendlyName</h3>
+                    <p>@e.Description</p>
+                    @Html.Partial("partial/partial_perkBonus", e.ToStaticEffect())
+                    @Html.ActionLink("Choose this perk!", "ChoosePerk", "PvP", new { perk = e.dbName }, null)
+                </div>
+            }
         }
-    }
-</center>
-
-@Html.ActionLink("Back to game", "Play", "PvP")
+    </center>
+</div>

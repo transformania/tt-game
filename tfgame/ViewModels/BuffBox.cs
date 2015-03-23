@@ -76,7 +76,22 @@ namespace tfgame.ViewModels
         public decimal EvasionNegationPercent() { return FromItems_EvasionNegationPercent + FromForm_EvasionNegationPercent + FromEffects_EvasionNegationPercent; ; }
         public decimal MeditationExtraMana() { return FromItems_MeditationExtraMana + FromForm_MeditationExtraMana + FromEffects_MeditationExtraMana; }
         public decimal CleanseExtraHealth() { return FromItems_CleanseExtraHealth + FromForm_CleanseExtraHealth + FromEffects_CleanseExtraHealth; }
-        public decimal MoveActionPointDiscount() { return FromItems_MoveActionPointDiscount + FromForm_MoveActionPointDiscount + FromEffects_MoveActionPointDiscount; }
+
+
+        public decimal MoveActionPointDiscount() {
+
+            decimal output = FromItems_MoveActionPointDiscount + FromForm_MoveActionPointDiscount + FromEffects_MoveActionPointDiscount;
+
+            if (output > .66M)
+            {
+                output = .66M;
+            }
+
+            return output;
+        }
+
+
+
         public decimal SpellExtraTFEnergyPercent() { return FromItems_SpellExtraTFEnergyPercent + FromForm_SpellExtraTFEnergyPercent + FromEffects_SpellExtraTFEnergyPercent; }
         public decimal SpellExtraHealthDamagePercent() { return FromItems_SpellExtraHealthDamagePercent + FromForm_SpellExtraHealthDamagePercent + FromEffects_SpellExtraHealthDamagePercent; }
         public decimal CleanseExtraTFEnergyRemovalPercent() { return FromItems_CleanseExtraTFEnergyRemovalPercent + FromForm_CleanseExtraTFEnergyRemovalPercent + FromEffects_CleanseExtraTFEnergyRemovalPercent; ; }

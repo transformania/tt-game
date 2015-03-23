@@ -47,7 +47,7 @@ formStatsMap['Fashion Witch'] = {
     'seductionAttack': 3,
     'seductionDefense': 0,
     'energyNeededToRecruit': 10000,
-    'xpNeededForLevelup': 10,
+    'xpNeededForLevelup': 15,
     'brainwashCost': 9999,
 };
 

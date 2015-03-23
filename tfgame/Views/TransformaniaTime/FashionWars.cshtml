@@ -8,6 +8,7 @@
 <head>
     <link href="~/Content/bootstrap.min.css" rel="stylesheet">
     <link href="~/Content/fashion.css" rel="stylesheet" />
+    <link href="~/Content/ng-animation.css" rel="stylesheet" />
     <script src="~/Scripts/jquery-2.1.0.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
     <script src="http://code.angularjs.org/1.2.20/angular-sanitize.min.js"></script>
@@ -30,15 +31,15 @@
         <div class="containerPlus">[{{timeOfDay}} Day <b>{{day}}</b>] [<b>{{money}}</b> $] [<b>{{infamy}}</b> infamy]</div>
         
         <div class="containerPlus">
-            <div ng-show="startVisible">
+            <div ng-show="startVisible" class="spin-toggle">
                 <button ng-click="addPlayerAndStart(nameFirst, nameLast)" class="btn btn-default center-block">Start as {{nameFirst}}  {{nameLast}}!</button>
-                </div>
+            </div>
 
-            <div ng-show="chooseBattlegroundView">
+            <div ng-show="chooseBattlegroundView" class="spin-toggle">
                 <span ng-repeat="loc in locationsMap | orderBy:'infamyLimit'">
                     <button ng-show="infamy < loc.infamyLimit" class="btn {{loc.btnClass}}" ng-click="chooseBattlegroundSend(loc.name, 2)">{{loc.name}}</button>
                 </span>
-                </div>
+            </div>
 
                 <div ng-show="fightView">
                     <button ng-click="startFight()" ng-show="startFightVisible" class="btn btn-danger">Begin Fight</button>
@@ -47,8 +48,8 @@
                     <button ng-click="aftermath()" ng-show="aftermathBtn" class="btn btn-default">View Fight Aftermath</button>
                 </div>
 
-            <div ng-show="aftermathView">
-                <button ng-show="aftermathViewLevelup_btn" ng-click="aftermathLevelupShow()" class="btn btn-default">Release remaining {{defeatedAI.persons.length}} prisoners and continue</button>    
+            <div ng-show="aftermathView" class="spin-toggle">
+                <button ng-show="aftermathViewLevelup_btn" ng-click="aftermathLevelupShow()" class="btn btn-default">Release remaining {{defeatedAI.persons.length}} prisoners and continue</button>
             </div>
 
             <div ng-show="aftermathViewLevelup">
@@ -86,7 +87,7 @@
                         <div class="containerSmall col-md-6 col-sm-12">
                             <h3>Your members:</h3>
                             <ul>
-                                <li ng-repeat="person in personsPlayer.persons | orderBy:'firstName'">
+                                <li ng-repeat="person in personsPlayer.persons" class="spin-toggle">
                                     {{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}] [{{person.health}}/{{person.getMaxHP()}} HP]
                                     <img style="border: 4px #5CB85C solid; width: 50px; height:50px; margin-bottom: 4px;" ng-src="~/Images/FashionWars/Forms/{{person.getGraphic()}}" />
                                     <div class="progress">
@@ -101,7 +102,7 @@
                         <div class="containerSmall col-md-6 col-sm-12">
                             <h3>Opponents:</h3>
                             <ul>
-                                <li ng-repeat="person in personsAI.persons | orderBy:'firstName'">
+                                <li ng-repeat="person in personsAI.persons" class="spin-toggle">
                                     {{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}][{{person.health}}/{{person.getMaxHP()}} HP]
                                     <img style="border: 4px #D9534F solid; width: 50px; height:50px; margin-bottom: 4px;" ng-src="~/Images/FashionWars/Forms/{{person.getGraphic()}}" />
                                     <div class="progress">
@@ -118,14 +119,14 @@
                         <div class="containerSmall col-md-6 col-sm-12">
                             <h3>Submissive Opponents:</h3>
                             <ul>
-                                <li ng-repeat="person in defeatedAI.persons | orderBy:'firstName'">{{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}][{{person.health}}/{{person.getMaxHP()}} HP]</li>
+                                <li ng-repeat="person in defeatedAI.persons" class="spin-toggle">{{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}][{{person.health}}/{{person.getMaxHP()}} HP]</li>
                             </ul>
                         </div>
 
                         <div class="containerSmall col-md-6 col-sm-12">
                             <h3>Submissive Allies:</h3>
                             <ul>
-                                <li ng-repeat="person in defeatedPlayer.persons | orderBy:'firstName'">{{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}][{{person.health}}/{{person.getMaxHP()}} HP]</li>
+                                <li ng-repeat="person in defeatedPlayer.persons" class="spin-toggle">{{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}][{{person.health}}/{{person.getMaxHP()}} HP]</li>
                             </ul>
                         </div>
                         </div>
@@ -150,7 +151,7 @@
                     <div class="containerSmall">
                         <h3>Submissive Opponents:</h3>
                         <ul>
-                            <li ng-repeat="person in defeatedAI.persons | orderBy:'firstName'">
+                            <li ng-repeat="person in defeatedAI.persons">
                                 {{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}]
                                 <button ng-click="recruit(person)" ng-show="person.getRecruitmentCost() <= energy" class="recruit btn btn-success btn-xs">Recruit ({{person.getRecruitmentCost()}} energy)</button>
 
@@ -186,7 +187,7 @@
                     <div class="containerSmall">
                         <h3>Members:</h3>
                         <ul>
-                            <li ng-repeat="person in personsPlayer.persons | orderBy:'firstName'">
+                            <li ng-repeat="person in personsPlayer.persons">
                                 {{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}][{{person.health}}/{{person.getMaxHP()}} HP] [{{person.xp}}/{{person.xpNeededForLevelup()}} XP before levelup]
 
                                 <button class="recruit btn btn-primary btn-xs" ng-click="promote(person,'Witchling')" ng-show="person.xp >= person.xpNeededForLevelup() && (person.type == 'Female Bystander' || person.type == 'Male Bystander')">Transform into Witchling</button>
@@ -254,7 +255,7 @@
                     <div class="containerSmall">
                         <h3>Members:</h3>
                         <ul>
-                            <li ng-repeat="person in personsPlayer.persons | orderBy:'firstName'">
+                            <li ng-repeat="person in personsPlayer.persons">
                                 {{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}][{{person.health}}/{{person.getMaxHP()}} HP] [{{person.items.length}} items equipped]
 
                                 Wearing:  <span ng-repeat="item in person.items"><b>{{item.type}}</b>, </span>
@@ -278,7 +279,7 @@
                     <p>You may teach your covenant members some new spells to cast against their defeated opponents right in battle.</p>
 
                     <ul>
-                        <li ng-repeat="person in personsPlayer.persons | orderBy:'firstName'">
+                        <li ng-repeat="person in personsPlayer.persons">
                             {{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}]
                             Knows: <span ng-repeat="spell in person.finishingSpells"> <b>{{spell}}</b>,</span>
                             <span ng-show="person.id == currentlySelectedPerson.id">CURRENT</span>

@@ -469,6 +469,7 @@
     <Compile Include="Models\Game.cs" />
     <Compile Include="Procedures\Procedures.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Content Include="Content\ng-animation.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Images\FashionWars\Forms\blurg.png" />
     <Content Include="Images\PvP\animalPortraits\adorable_donkey_dominque.png" />

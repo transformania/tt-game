@@ -23,7 +23,7 @@
 
 
     <meta name="viewport" content="width=device-width" />
-    <title>...</title>
+    <title>Fashion Wars</title>
 </head>
 <body ng-controllers="PersonsController">
     <div class="container" data-ng-controller="PersonsController as ctrl">
@@ -100,10 +100,12 @@
                         <h3>Opponents:</h3>
                         <ul>
                             <li ng-repeat="person in personsAI.persons | orderBy:'firstName'">{{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}][{{person.health}}/{{person.getMaxHP()}} HP]
-                                <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="{{person.health}}" aria-valuemin="0" aria-valuemax="{{person.getMaxHP()}}" ng-style="{width : ( person.getHealthAsPercentage() + '%' ) }">
-                                    <span class="sr-only">---</span>
-                                </div>
-                            </li>                       
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="{{person.health}}" aria-valuemin="0" aria-valuemax="{{person.getMaxHP()}}" ng-style="{width : ( person.getHealthAsPercentage() + '%' ) }">
+                                        <span class="sr-only">---</span>
+                                    </div>
+                                    </div>
+</li>                       
                         </ul>
                     </div>
 

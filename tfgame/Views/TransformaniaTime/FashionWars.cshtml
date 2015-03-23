@@ -99,7 +99,11 @@
                     <div class="containerSmall">
                         <h3>Opponents:</h3>
                         <ul>
-                            <li ng-repeat="person in personsAI.persons | orderBy:'firstName'">{{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}][{{person.health}}/{{person.getMaxHP()}} HP]</li>
+                            <li ng-repeat="person in personsAI.persons | orderBy:'firstName'">{{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}][{{person.health}}/{{person.getMaxHP()}} HP]
+                                <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="{{person.health}}" aria-valuemin="0" aria-valuemax="{{person.getMaxHP()}}" ng-style="{width : ( person.getHealthAsPercentage() + '%' ) }">
+                                    <span class="sr-only">---</span>
+                                </div>
+                            </li>                       
                         </ul>
                     </div>
 

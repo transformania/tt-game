@@ -88,7 +88,7 @@
                             <ul>
                                 <li ng-repeat="person in personsPlayer.persons | orderBy:'firstName'">
                                     {{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}] [{{person.health}}/{{person.getMaxHP()}} HP]
-                                    <img style="border: 4px #5CB85C solid;" ng-src="~/Images/FashionWars/Forms/{{person.getGraphic()}}" />
+                                    <img style="border: 4px #5CB85C solid; width: 50px; height:50px; margin-bottom: 4px;" ng-src="~/Images/FashionWars/Forms/{{person.getGraphic()}}" />
                                     <div class="progress">
                                         <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{person.health}}" aria-valuemin="0" aria-valuemax="{{person.getMaxHP()}}" ng-style="{width : ( person.getHealthAsPercentage() + '%' ) }">
                                             <span class="sr-only">---</span>
@@ -103,7 +103,7 @@
                             <ul>
                                 <li ng-repeat="person in personsAI.persons | orderBy:'firstName'">
                                     {{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}][{{person.health}}/{{person.getMaxHP()}} HP]
-                                    <img style="border: 4px #D9534F solid;" ng-src="~/Images/FashionWars/Forms/{{person.getGraphic()}}" />
+                                    <img style="border: 4px #D9534F solid; width: 50px; height:50px; margin-bottom: 4px;" ng-src="~/Images/FashionWars/Forms/{{person.getGraphic()}}" />
                                     <div class="progress">
                                         <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="{{person.health}}" aria-valuemin="0" aria-valuemax="{{person.getMaxHP()}}" ng-style="{width : ( person.getHealthAsPercentage() + '%' ) }">
                                             <span class="sr-only">---</span>

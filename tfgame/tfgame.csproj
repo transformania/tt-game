@@ -592,6 +592,7 @@
     <Content Include="Images\PvP\itemsPortraits\black_leather_handbag_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\bondage_harnass_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\bondage_magazine_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\booty_babblingfaces.jpg" />
     <Content Include="Images\PvP\itemsPortraits\bplug_Martiandawn.jpg" />
     <Content Include="Images\PvP\itemsPortraits\callback_crystal_MIzuho.gif" />
     <Content Include="Images\PvP\itemsPortraits\checkered_cotten_panties_Meddle.png" />
@@ -661,6 +662,7 @@
     <Content Include="Images\PvP\itemsPortraits\onepiece_latex_swimsuit_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\page_turner_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\parasitic_heelless_hooves_spacedande.png" />
+    <Content Include="Images\PvP\itemsPortraits\parasitic_shrug_dandelion.jpg" />
     <Content Include="Images\PvP\itemsPortraits\pillow_girl_Dandelion.jpg" />
     <Content Include="Images\PvP\itemsPortraits\pink_bicycle_Martiandawn.jpg" />
     <Content Include="Images\PvP\itemsPortraits\pink_combat_boots_Meddle.png" />
@@ -728,6 +730,7 @@
     <Content Include="Images\PvP\portraits\bunnygirl_nymictf_fixed.png" />
     <Content Include="Images\PvP\portraits\captivating_siren_babblingfaces.png" />
     <Content Include="Images\PvP\portraits\catchcum_spacedande.jpg" />
+    <Content Include="Images\PvP\portraits\centaur_mare_babblingfaces.jpg" />
     <Content Include="Images\PvP\portraits\CircineMilton_Wrenzephyr.png" />
     <Content Include="Images\PvP\portraits\corrupted_nun_babblingfaces.jpg" />
     <Content Include="Images\PvP\portraits\councilorman_babblingfaces.jpg" />
@@ -781,6 +784,7 @@
     <Content Include="Images\PvP\portraits\juderp_babblingfaces.jpg" />
     <Content Include="Images\PvP\portraits\jungle_girl_Meddle.png" />
     <Content Include="Images\PvP\portraits\kitsune_shrine_maiden_lux.png" />
+    <Content Include="Images\PvP\portraits\korps_recruiter_babblingfaces.jpg" />
     <Content Include="Images\PvP\portraits\lady_jianshi_spacedande.png" />
     <Content Include="Images\PvP\portraits\latex_dominatrix_Babblingfaces.png" />
     <Content Include="Images\PvP\portraits\lilath_Meddle.png" />

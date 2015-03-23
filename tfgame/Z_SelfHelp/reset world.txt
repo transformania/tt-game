@@ -17,7 +17,7 @@ DELETE FROM [Stats].[dbo].[AIDirectives]
 DELETE FROM [Stats].[dbo].[InanimateXPs]
 DELETE FROM [Stats].[dbo].[Furnitures]
 DELETE FROM [Stats].[dbo].[MindControls]
-DELETE FROM [Stats].[dbo].[LocationInfos]
+DELETE FROM [Stats].[dbo].[LocationInfoes]
 DELETE FROM [Stats].[dbo].[BookReadings]
 DELETE FROM [Stats].[dbo].[Achievements]
 

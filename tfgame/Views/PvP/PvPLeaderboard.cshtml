@@ -4,183 +4,203 @@
 @using tfgame.CustomHtmlHelpers
 @using tfgame.Procedures
 
-@Html.ActionLink("Back to game", "Play", "PvP")<br />
+<nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
 
-<p style="text-align: center; margin-top:0px;">
-    @Html.ActionLink("View XP Leaderboard", "Leaderboard", "PvP") @Html.ActionLink("View Item Leaderboard", "ItemLeaderboard", "PvP")
-</p>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+                <li>@Html.ActionLink("View Item Leaderboard", "ItemLeaderboard", "PvP")</li>
+                <li>@Html.ActionLink("View XP Leaderboard", "Leaderboard", "PvP")</li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
 
-    @Html.Partial("partial/OldLeaderboardLinks")
 
-    <h1 style="text-align: center; margin-top:-10px;">Dungeon Leaderboard</h1>
-    <h2 style="text-align: center; margin-top:0;">@PvPStatics.AlphaRound</h2>
+<div class="specialBox specialBox2">
+@Html.Partial("partial/OldLeaderboardLinks")
+</div>
 
+<div class="specialBox">
+    <b>Dungeon Leaderboard -- @PvPStatics.AlphaRound</b><br />
+</div>
 
-
-<table>
-    <thead>
-        <tr>
-            <th style="width:15px">#</th>
-            <th class="leaderBoardName">Name</th>
-            <th class="leaderBoardCovenant mobile">Covenant</th>
-            <th class="leaderBoardForm mobile">Form</th>
-            <th>Mobility</th>
-            <th>Lvl</th>
-            <th>Dungeon Points</th>
-        </tr>
-    </thead>
-    <tbody>
-
-        @{
-            int rank = 1;
-        }
-
-        @foreach (Player p in Model.OrderByDescending(p => p.PvPScore).ThenByDescending(p => p.Level))
-        {
+<div class="containerInner">
+    <table>
+        <thead>
             <tr>
-                <td style="width:15px">
-                    @rank
-                </td>
-                <td>
-                    @Html.ActionLink(p.GetFullName(), "LookAtPlayer", "PvP", new { id = p.Id }, null)
-                    <span class="icon-@p.Gender"></span>
-
-                    @{
-            if (!PlayerProcedures.PlayerIsOffline(p))
-            {
-                <span class="icon-online"></span>
-            }
-            else
-            {
-                <span class="icon-offline"></span>
-            }
-
-            if (p.GameMode == 2)
-            {
-                <span class="icon-pvp"></span>
-            }
-            else if (p.GameMode == 1)
-            {
-                <span class="icon-protection"></span>
-            } else if (p.GameMode == 0)
-            {
-                <span class="icon-superprotection"></span>
-            }
-            
-                    }
-
-                </td>
-                <td class="mobile">
-                    @CharactersHere.GetCovenantInfoShort(p)
-                </td>
-                <td class="mobile">
-                    <span style="font-size:11px;">@FormStatics.GetForm(p.Form).FriendlyName</span>
-                </td>
-                <td>
-                    @{
-            if (p.Mobility == "full")
-            {
-                <span style="color: green">Animate</span>
-            }
-            else if (p.Mobility == "animal")
-            {
-                <span style="color: red">Animal</span>
-            }
-            else
-            {
-                <span style="color: red">Inanimate</span>
-            }
-                    }
-                </td>
-
-                <td>
-                    @p.Level
-                </td>
-                <td>
-                    @Math.Floor(p.PvPScore)
-                </td>
+                <th style="width:15px">#</th>
+                <th class="leaderBoardName">Name</th>
+                <th class="leaderBoardCovenant mobile">Covenant</th>
+                <th class="leaderBoardForm mobile">Form</th>
+                <th>Mobility</th>
+                <th>Lvl</th>
+                <th>Dungeon Points</th>
             </tr>
-            rank++;
+        </thead>
+        <tbody>
 
+            @{
+                int rank = 1;
+            }
+
+            @foreach (Player p in Model.OrderByDescending(p => p.PvPScore).ThenByDescending(p => p.Level))
+            {
+                <tr>
+                    <td style="width:15px">
+                        @rank
+                    </td>
+                    <td>
+                        @Html.ActionLink(p.GetFullName(), "LookAtPlayer", "PvP", new { id = p.Id }, null)
+                        <span class="icon-@p.Gender"></span>
+
+                        @{
+                if (!PlayerProcedures.PlayerIsOffline(p))
+                {
+                    <span class="icon-online"></span>
+                }
+                else
+                {
+                    <span class="icon-offline"></span>
+                }
+
+                if (p.GameMode == 2)
+                {
+                    <span class="icon-pvp"></span>
+                }
+                else if (p.GameMode == 1)
+                {
+                    <span class="icon-protection"></span>
+                }
+                else if (p.GameMode == 0)
+                {
+                    <span class="icon-superprotection"></span>
+                }
+
+                        }
+
+                    </td>
+                    <td class="mobile">
+                        @CharactersHere.GetCovenantInfoShort(p)
+                    </td>
+                    <td class="mobile">
+                        <span style="font-size:11px;">@FormStatics.GetForm(p.Form).FriendlyName</span>
+                    </td>
+                    <td>
+                        @{
+                if (p.Mobility == "full")
+                {
+                    <span style="color: green">Animate</span>
+                }
+                else if (p.Mobility == "animal")
+                {
+                    <span style="color: red">Animal</span>
+                }
+                else
+                {
+                    <span style="color: red">Inanimate</span>
+                }
+                        }
+                    </td>
+
+                    <td>
+                        @p.Level
+                    </td>
+                    <td>
+                        @Math.Floor(p.PvPScore)
+                    </td>
+                </tr>
+                rank++;
+
+            }
+
+        </tbody>
+
+
+
+    </table>
+</div>
+
+
+    <style>
+        .leaderBoardName {
+            width: auto;
         }
 
-    </tbody>
-
-
-
-</table>
-<br />
-@Html.ActionLink("Back to game", "Play", "PvP")
-
-
-<style>
-    .leaderBoardName{
-        width:auto;
-    }
-    .leaderBoardCovenant{
-        width:20%;
-    }
-    .leaderBoardForm{
-        width:30%;
-    }
-
-    table {
-        padding: 3px;
-        border: 1px solid black;
-        width:100%;
-    }
-
-    th {
-        background-color: black;
-        color: white;
-        text-align: center;
-        padding:0px;
-    }
-
-    tr {
-        padding: 3px;
-        border: 1px solid black;
-    }
-
-        tr:nth-child(odd) {
-            background-color: lightgray;
+        .leaderBoardCovenant {
+            width: 20%;
         }
 
-    td {
-        text-align: center;
-        padding: 2px 0px 2px 0px;
-    }
-
-    .dark {
-        background-color: #CCCCCC;
-    }
-
-    tr.dark:nth-child(odd) {
-        background-color: #B8B8B8;
-    }
-
-    .mobile{
-
-    }
-
-    @@media screen and (max-width: 767px) {
-        .mobile{
-            display: none;
+        .leaderBoardForm {
+            width: 30%;
         }
-    }
 
-</style>
-
-<script>
-    
-    $("table tbody td:nth-child(7)").each(function () {
-        if ($(this).html() == 0) {
-            $(this).parent('tr').addClass("dark");
+        table {
+            padding: 3px;
+            border: 1px solid black;
+            width: 100%;
         }
-    });
 
-    $("tr td:contains('@ViewBag.MyName')").each(function () {
-        $(this).parent('tr').css("background-color", "pink");
-    });
+        th {
+            background-color: black;
+            color: white;
+            text-align: center;
+            padding: 0px;
+        }
 
-</script>
+        tr {
+            padding: 3px;
+            border: 1px solid black;
+        }
+
+            tr:nth-child(odd) {
+                background-color: lightgray;
+            }
+
+        td {
+            text-align: center;
+            padding: 2px 0px 2px 0px;
+        }
+
+        .dark {
+            background-color: #CCCCCC;
+        }
+
+        tr.dark:nth-child(odd) {
+            background-color: #B8B8B8;
+        }
+
+        .mobile {
+        }
+
+        @@media screen and (max-width: 767px) {
+            .mobile {
+                display: none;
+            }
+        }
+    </style>
+
+    <script>
+
+        $("table tbody td:nth-child(7)").each(function () {
+            if ($(this).html() == 0) {
+                $(this).parent('tr').addClass("dark");
+            }
+        });
+
+        $("tr td:contains('@ViewBag.MyName')").each(function () {
+            $(this).parent('tr').css("background-color", "pink");
+        });
+
+    </script>

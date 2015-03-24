@@ -19,7 +19,7 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
     $scope.equipView_btn = true;
     $scope.showTeachSpells = false;
     $scope.teachSpells_btn = true;
-    $scope.defatedView = false;
+    $scope.defeatedView = false;
     $scope.logsView = true;
 
     $scope.equipNext = true;
@@ -161,13 +161,24 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
         $scope.fightView = false;
 
         if ($scope.personsPlayer.persons.indexOf($scope.leader) < 0) {
-            $scope.defatedView = true;
+            $scope.defeatedView = true;
         } else {
             $scope.aftermathView = true;
             $scope.aftermathViewLevelup_btn = true;
         }
 
         $scope.aftermathBtn = false;
+    }
+
+    $scope.viewUpgrades = function () {
+        $scope.viewLeaderUpgrades = true;
+        $scope.aftermathView = false;
+        $scope.aftermathBtn = false;
+        $scope.aftermathViewLevelup = false;
+    }
+
+    $scope.upgradeSend = function (upgrade, cost) {
+
     }
 
     $scope.recruit = function (person) {
@@ -217,6 +228,7 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
     $scope.aftermathLevelupShow = function () {
         $scope.aftermathViewLevelup = true;
         $scope.aftermathView = false;
+        $scope.viewLeaderUpgrades = false;
         $scope.infamy += $scope.defeatedAI.persons.length * 5;
         $scope.personsPlayer.mergeIntoGroup($scope.defeatedPlayer);
         $scope.unequippedItems.mergeIntoGroup($scope.newItems);

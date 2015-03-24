@@ -2095,7 +2095,7 @@ namespace tfgame.Statics
           }, new Location {
                 dbName = "salon_massage",
                 Name = "Blazes and Glamour Beauty Spa (Massage Parlor)",
-                Region = "parlor",
+                Region = "salon",
                 X = 7,
                 Y = 0,
                 IsSafe = false,

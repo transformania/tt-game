@@ -48,6 +48,15 @@
     <input type="text" id="message" maxlength="500" class="chatInput" />
     <input type="button" id="sendmessage" value="Send" style="width: 50%; padding: 6px; margin-left: auto; margin-right: auto; display: block;" />
     <input type="hidden" id="displayname" />
+    
+    <button id="showIgnore" >Ignore</button>
+    <div id="ignoreDiv" style="display: none;">
+        <p>Adding in any text to the ignore list will stop you from seeing any chat posts containing your entry, even if you write it.</p>
+        <input type="text" id="ignore" />
+        <button id="ignoreAdd">Add to Ignore</button>
+        <button id="ignoreReset">Reset Ignore</button>
+    </div>
+ 
 </div>
      @section scripts {
     <!--Script references. -->
@@ -67,6 +76,8 @@
 
         var myVar = setInterval(function () { myTimer() }, 3000);
         var autoScrollEnabled = true;
+
+        var ignored = [];
 
         $("#autoScrollToggle").click(function () {
             if (autoScrollEnabled == true) {
@@ -112,30 +123,46 @@
 
             chat.client.addNewMessageToPage = function (name, message, chatColor) {
 
-                // if this is not a / command, write out the name and colon.  Otherwise only write the message.
-                if (name.length > 0) {
-                    $('#discussion ').append('<li><strong>' + htmlEncodeName(name, chatColor) + '</strong>: ' + htmlEncode(message) + '</li>');
+
+
+                // check and see if this poster or message has a banned substring.  If so, ignore it.  Otherwise display as normal
+                var doNotDisplay = false;
+                for (var i = 0; i < ignored.length; i++) {
+                    if (name.indexOf(ignored[i]) >= 0 || message.indexOf(ignored[i]) >= 0) {
+                        doNotDisplay = true;
+                        break;
+                    }
+                }
+
+                if (doNotDisplay == false) {
+
+                    // if this is not a / command, write out the name and colon.  Otherwise only write the message.
+                    if (name.length > 0) {
+                        $('#discussion ').append('<li><strong>' + htmlEncodeName(name, chatColor) + '</strong>: ' + htmlEncode(message) + '</li>');
+                    } else {
+                        $('#discussion ').append('<li><strong>' + injectColor(chatColor, "start") + htmlEncode(message) + '</span></li>');
+                    }
+
+                    if (autoScrollEnabled == true) {
+                        $('#discussion ').animate({ scrollTop: $('#discussion').prop("scrollHeight") }, 500);
+                    }
+
+                    // add onclick to last element
+                    $('ul#discussion li:last strong:first').dblclick(function () {
+                        $('#message').val("@@" + name + "  " + $('#message').val());
+                        $('#message').focus();
+                    });
+
+                    if (!document.hasFocus()) {
+                        unreadCount++;
+                        $(document).attr('title', 'Chat - ' + unreadCount + ' new messages');
+                    }
+
+                    $("#disconnected").hide();
+
                 } else {
-                    $('#discussion ').append('<li><strong>' + injectColor(chatColor, "start") + htmlEncode(message) + '</span></li>');
+                   
                 }
-
-                if (autoScrollEnabled == true) {
-                    $('#discussion ').animate({ scrollTop: $('#discussion').prop("scrollHeight") }, 500);
-                }
-
-                // add onclick to last element
-                $('ul#discussion li:last strong:first').dblclick(function () {
-                    $('#message').val("@@" + name + "  " + $('#message').val());
-                    $('#message').focus();
-                });
-
-                if (!document.hasFocus()) {
-                    unreadCount++;
-                    $(document).attr('title', 'Chat - ' + unreadCount + ' new messages');
-                }
-
-                $("#disconnected").hide();
-
             };
 
             $('#displayname').val("");
@@ -238,6 +265,27 @@
             }
             
         }
+
+        $("#ignoreAdd").click(function () {
+            ignored.push($("#ignore").val());
+            $("#ignore").val("");
+            alert("Now ignoring:  " + ignored);
+        });
+
+        $("#ignoreReset").click(function () {
+            ignored = [];
+            alert("No longer ignoring anyone.");
+        });
+
+        $("#showIgnore").click(function () {
+            if ($("#ignoreDiv").is(":visible")==false) {
+                $("#ignoreDiv").show();
+            } else {
+                $("#ignoreDiv").hide();
+            }
+        });
+
+        
 
     </script>
 }

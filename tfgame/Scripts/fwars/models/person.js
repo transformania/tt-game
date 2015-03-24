@@ -263,6 +263,14 @@ Person.prototype.getMaxHP = function () {
     return maxHP;
 };
 
+Person.prototype.heal = function (healAmount) {
+    this.health += healAmount;
+
+    if (this.health > this.getMaxHP()) {
+        this.health = this.getMaxHP();
+    }
+};
+
 Person.prototype.fight = function (opponent) {
 
     var result = "<span class='fight'>" + this.fullName() + ' [lvl ' + this.level + ' ' + this.type + '] fighting ' + opponent.fullName() + ' [lvl ' + opponent.level + ' ' + opponent.type + '].</span>';

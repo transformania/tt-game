@@ -178,7 +178,16 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
     }
 
     $scope.upgradeSend = function (upgrade, cost) {
+        $scope.leader.xp -= cost;
 
+        if (upgrade == 'selfHeal') {
+            $scope.leader.heal(99999);
+        }
+        else if (upgrade == 'energyPlus01') {
+            $scope.energyMax += 15;
+        }
+
+       // console.log(upgarde, cost);
     }
 
     $scope.recruit = function (person) {

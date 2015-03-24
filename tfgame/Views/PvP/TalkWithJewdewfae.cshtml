@@ -1,67 +1,72 @@
 ﻿@model tfgame.ViewModels.FairyChallengeBag
 
-<head>
-    <link href="~/Content/PvP.css" rel="stylesheet" />
-</head>
 
-<div class="boxwrapper">
+<nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
 
-    <div class="portrait large" style="background-image: url(../../Images/PvP/portraits/jewdewfae_Luxianne.png);">
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
 
-    </div>
-
-    <div style="display: block;">
-
-        @{
-            if (ViewBag.ShowSuccess == false && ViewBag.HadRecentInteraction == false)
-            {
-                <p>@Html.Raw(Model.IntroText)</p>
-
-                if (ViewBag.IsInWrongForm == true)
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6 col-sm-6 col-xs-12" style="padding: 20px">
+            <img class="img-responsive center-block" src="http://transformaniatime.com/Images/PvP/portraits/jewdewfae_Luxianne.png">
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-12" style="padding: 20px; text-align: justify;">
+            @{
+                if (ViewBag.ShowSuccess == false && ViewBag.HadRecentInteraction == false)
                 {
-                    <p>@Html.Raw(Model.FailureText)</p>
+                    <p>@Html.Raw(Model.IntroText)</p>
+
+                    if (ViewBag.IsInWrongForm == true)
+                    {
+                        <p>@Html.Raw(Model.FailureText)</p>
+                    }
+                    else if (ViewBag.IsTired == true)
+                    {
+                        <p class="faevoice">"You look too tired to be any fun right now.  Come back later when you're a little more awake, mkay?"</p>
+                    }
+                    else
+                    {
+                        <p>@Html.ActionLink("Play with Jewfewfae (5 AP)", "PlayWithJewdewfae", "PvP", new { @class = "inanimateAction center-block" })</p>
+                    }
                 }
-                else if (ViewBag.IsTired == true)
+                else if (ViewBag.HadRecentInteraction == true)
                 {
-                    <p class="faevoice">"You look too tired to be any fun right now.  Come back later when you're a little more awake, mkay?"</p>
+                    <p class="faevoice">"Thanks for playing with me!  Maybe we can have some more fun somewhere else later..."</p>
                 }
                 else
                 {
-                    <p>@Html.ActionLink("Play with Jewfewfae (5 AP)", "PlayWithJewdewfae", "PvP")</p>
+                    <p>@Html.Raw(Model.CorrectFormText)</p>
+                    <p style="text-align: center !important"><b><i>You earned @Math.Floor(ViewBag.XPGain) XP from Jewdewfae's magic.</i></b></p>
                 }
             }
-            else if (ViewBag.HadRecentInteraction == true)
-            {
-                <p class="faevoice">"Thanks for playing with me!  Maybe we can have some more fun somewhere else later..."</p>
-            }
-            else
-            {
-                <p>@Html.Raw(Model.CorrectFormText)</p>
-                <p><b><i>You earned @Math.Floor(ViewBag.XPGain) XP from Jewdewfae's magic.</i></b></p>
-            }
-        }
-
+        </div>
     </div>
-
 </div>
 
-<style>
-    .boxwrapper {
-        border: 1px solid blue;
-        border-radius: 10px;
-        min-height: 450px;
-        height: auto;
-        width: 100%;
-        padding: 5px;
-        background-color: #c4fdff;
-        font-size: 16px;
-        overflow: auto;
-    }
 
+
+
+
+<style>
     .faevoice,fae {
         color: darkviolet;
     }
 
 </style>
-
-<p>@Html.ActionLink("Back to game", "Play", "PvP")</p>

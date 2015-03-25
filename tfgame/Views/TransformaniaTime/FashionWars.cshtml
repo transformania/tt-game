@@ -30,14 +30,20 @@
 </head>
 <body ng-controllers="PersonsController">
     <div class="container" data-ng-controller="PersonsController as ctrl">
-        <div class="containerPlus">[{{timeOfDay}} Day <b>{{day}}</b>] [<b>{{money}}</b> $] [<b>{{infamy}}</b> infamy]  [<b>{{energy}}/{{maxEnergy}}</b> energy]</div>
+        <div class="containerPlus">[{{timeOfDay}} Day <b>{{day}}</b>] [<b>{{money}}</b> $] [<b>{{infamy}}</b> infamy]
+            <span class="label label-default" style="display: inline-block; margin-bottom: 0px !important; vertical-align: middle;">Energy</span><div class="progress" style="width: 150px; display: inline-block; margin-bottom: 0px !important; vertical-align: middle;">               
+                    <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="{{energy}}" aria-valuemin="0" aria-valuemax="{{maxEnergy}}" ng-style="{width : ( getEnergyPercentage() + '%' ) }">
+                        <span class="badge">{{energy}}</span>
+                    </div>
+</div>
+        </div>
 
         <div class="containerPlus">
-            <div ng-show="page == 'newPlayer'" class="spin-toggle">
+            <div ng-show="page == 'newPlayer'">
                 <button ng-click="addPlayerAndStart(nameFirst, nameLast)" class="btn btn-default center-block">Start as {{nameFirst}}  {{nameLast}}!</button>
             </div>
 
-            <div ng-show="page == 'chooseBattleground'" class="spin-toggle">
+            <div ng-show="page == 'chooseBattleground'">
                 <span ng-repeat="loc in locationsMap | orderBy:'infamyLimit'">
                     <button ng-show="infamy < loc.infamyLimit" class="btn {{loc.btnClass}}" ng-click="chooseBattlegroundSend(loc.name, 2)">{{loc.name}}</button>
                 </span>
@@ -50,7 +56,7 @@
                 <button ng-click="aftermath()" ng-show="aftermathBtn" class="btn btn-default">View Fight Aftermath</button>
             </div>
 
-            <div ng-show="page == 'aftermath'" class="spin-toggle">
+            <div ng-show="page == 'aftermath'">
                 <button ng-hide="aftermathViewLevelup_btn" ng-click="aftermathLevelupShow()" class="btn btn-default">Release remaining {{defeatedAI.persons.length}} prisoners and continue</button>
             </div>
 
@@ -339,8 +345,12 @@
 
 
 </html>
-<style>
-    .personList {
-        height: 200px;
-    }
-</style>
+
+<script>
+    boxes = $('.personList');
+    maxHeight = Math.max.apply(
+    Math, boxes.map(function () {
+        return $(this).height();
+    }).get());
+    boxes.height(maxHeight);
+</script>

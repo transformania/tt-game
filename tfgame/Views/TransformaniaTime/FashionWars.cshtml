@@ -85,33 +85,35 @@
                 <div ng-show="fightView">
                     <div class="row" style="padding-left: 15px; padding-right: 15px;">
                         <div class="containerSmall col-md-6 col-sm-12">
-                            <h3>Your members:</h3>
-                            <ul>
-                                <li ng-repeat="person in personsPlayer.persons" class="spin-toggle">
-                                    {{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}] [{{person.health}}/{{person.getMaxHP()}} HP]
-                                    <img style="border: 4px #5CB85C solid; width: 50px; height:50px; margin-bottom: 4px;" ng-src="~/Images/FashionWars/Forms/{{person.getGraphic()}}" />
-                                    <div class="progress">
-                                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{person.health}}" aria-valuemin="0" aria-valuemax="{{person.getMaxHP()}}" ng-style="{width : ( person.getHealthAsPercentage() + '%' ) }">
-                                            <span class="sr-only">---</span>
+                            <div class="row">
+                                <div ng-repeat="person in personsPlayer.persons" class="spin-toggle col-md-4">
+                                    <div class="personList">
+                                        {{person.firstName}} {{person.lastName}}<br />
+                                        [lvl {{person.level}} {{person.type}}]<br />
+                                        <img style="border: 4px #5CB85C solid; width: 50px; height:50px; margin-bottom: 4px;" ng-src="~/Images/FashionWars/Forms/{{person.getGraphic()}}" />
+                                        <div class="progress">
+                                            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{person.health}}" aria-valuemin="0" aria-valuemax="{{person.getMaxHP()}}" ng-style="{width : ( person.getHealthAsPercentage() + '%' ) }">
+                                                <span>[{{person.health}}/{{person.getMaxHP()}} HP]</span>
+                                            </div>
                                         </div>
                                     </div>
-                                </li>
-                            </ul>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="containerSmall col-md-6 col-sm-12">
-                            <h3>Opponents:</h3>
-                            <ul>
-                                <li ng-repeat="person in personsAI.persons" class="spin-toggle">
-                                    {{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}][{{person.health}}/{{person.getMaxHP()}} HP]
+                            <div ng-repeat="person in personsAI.persons" class="spin-toggle col-md-4">
+                                <div class="personList">
+                                    {{person.firstName}} {{person.lastName}}<br />
+                                    [lvl {{person.level}} {{person.type}}]<br />
                                     <img style="border: 4px #D9534F solid; width: 50px; height:50px; margin-bottom: 4px;" ng-src="~/Images/FashionWars/Forms/{{person.getGraphic()}}" />
                                     <div class="progress">
                                         <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="{{person.health}}" aria-valuemin="0" aria-valuemax="{{person.getMaxHP()}}" ng-style="{width : ( person.getHealthAsPercentage() + '%' ) }">
-                                            <span class="sr-only">---</span>
+                                            <span>[{{person.health}}/{{person.getMaxHP()}} HP]</span>
                                         </div>
                                     </div>
-                                </li>
-                            </ul>
+                                    </div>
+                                </div>
                         </div>
                     </div>
 
@@ -315,3 +317,8 @@
 
 
 </html>
+<style>
+    .personList {
+        height: 200px;
+    }
+</style>

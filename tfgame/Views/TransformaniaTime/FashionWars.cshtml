@@ -202,9 +202,10 @@
                         <li ng-repeat="person in personsPlayer.persons">
                             {{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}][{{person.health}}/{{person.getMaxHP()}} HP] [{{person.xp}}/{{person.xpNeededForLevelup()}} XP before levelup]
 
-                            <button class="recruit btn btn-primary btn-xs" ng-click="promote(person,'Witchling')" ng-show="person.xp >= person.xpNeededForLevelup() && (person.type == 'Female Bystander' || person.type == 'Male Bystander')">Transform into Witchling</button>
-
-
+                            <span ng-repeat="form in person.getPromotionForms()">
+                                <button class="recruit btn btn-primary btn-xs" ng-click="promote(person,form)" ng-show="person.xp >= person.xpNeededForLevelup()">Promote to {{form}}</button>
+                            </span>
+                                 
                         </li>
                     </ul>
                     <button class="recruit btn btn-primary btn-xs" ng-click="viewUpgrades()">Upgrade Personal Skills</button>
@@ -337,6 +338,10 @@
             </div>
 
 
+            <button class="recruit btn btn-default" ng-click="debug_fullXP()">Max XP</button>
+            <button class="recruit btn btn-default" ng-click="debug_fullEnergy()">Max Energy</button>
+            <button class="recruit btn btn-default" ng-click="debug_moreMoney()">+1000 money</button>
+            <button class="recruit btn btn-default" ng-click="debug_spawnMeMembers()">Spawn members</button>
 
         </div>
     </div>

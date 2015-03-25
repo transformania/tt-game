@@ -386,4 +386,24 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
         return ($scope.energy / $scope.energyMax) * 100;
     }
 
+    ////////////////////////// DEBUG /////////////////////////
+
+    $scope.debug_fullXP = function () {
+        for (var i = 0; i < $scope.personsPlayer.persons.length; i++) {
+            $scope.personsPlayer.persons[i].xp = $scope.personsPlayer.persons[i].xpNeededForLevelup();
+        }
+    }
+
+    $scope.debug_fullEnergy = function () {
+        $scope.energy = $scope.energyMax;
+    }
+
+
+    $scope.debug_moreMoney = function () {
+        $scope.money += 1000;
+    }
+
+    $scope.debug_spawnMeMembers = function () {
+        $scope.personsPlayer.spawnGroup('Park:  Parking Lot', 0);
+    }
 });

@@ -120,7 +120,7 @@ PersonGroup.prototype.fightGroup = function (attackingGroup, defeatedAI, defeate
 
 PersonGroup.prototype.spawnGroup = function (type, variation) {
 
-    this.persons = [];
+   // this.persons = [];
     var spawnGroup = locationsMap[type];
     var extra = Math.floor(Math.random() * variation);
  
@@ -367,6 +367,10 @@ Person.prototype.getTransformCost = function (itemName) {
     return itemStatsMap[itemName].energyNeededToTF;
 }
 
+Person.prototype.getPromotionForms = function () {
+    return formStatsMap[this.type].promotesTo;
+}
+
 Person.prototype.itemIsSpell = function (item) {
     return itemStatsMap[item].isSpell;
 }
@@ -396,7 +400,7 @@ Person.prototype.getGraphic = function () {
     return formStatsMap[this.type].graphic;
 }
 
-var randomFirstNamesFemale = ['Mary', 'Jane', 'Elessa', 'Jamie', 'Sarah', 'Caroline', 'Janice', 'Gloria', 'Alice', 'Janice', 'Ellen', 'Amy', 'Bella', 'Crissy', 'Elizabeth', 'Laura'];
+var randomFirstNamesFemale = ['Mary', 'Jane', 'Elessa', 'Jamie', 'Sarah', 'Caroline', 'Janice', 'Gloria', 'Alice', 'Janice', 'Ellen', 'Amy', 'Bella', 'Crissy', 'Elizabeth', 'Laura', 'Eileen','Lily','Debby', 'Darla', 'Janice', 'Greta'];
 
 var randomFirstNamesMale = ['Allen', 'Bart', 'Corey', 'Deryl', 'James', 'Tim', 'Jason', 'Bob', 'Gary', 'Chris', 'Max', 'Mike', 'Derrick', ];
 

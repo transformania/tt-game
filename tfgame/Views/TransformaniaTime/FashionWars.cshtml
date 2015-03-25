@@ -33,40 +33,42 @@
         <div class="containerPlus">[{{timeOfDay}} Day <b>{{day}}</b>] [<b>{{money}}</b> $] [<b>{{infamy}}</b> infamy]  [<b>{{energy}}/{{maxEnergy}}</b> energy]</div>
 
         <div class="containerPlus">
-            <div ng-show="startVisible" class="spin-toggle">
+            <div ng-show="page == 'newPlayer'" class="spin-toggle">
                 <button ng-click="addPlayerAndStart(nameFirst, nameLast)" class="btn btn-default center-block">Start as {{nameFirst}}  {{nameLast}}!</button>
             </div>
 
-            <div ng-show="chooseBattlegroundView" class="spin-toggle">
+            <div ng-show="page == 'chooseBattleground'" class="spin-toggle">
                 <span ng-repeat="loc in locationsMap | orderBy:'infamyLimit'">
                     <button ng-show="infamy < loc.infamyLimit" class="btn {{loc.btnClass}}" ng-click="chooseBattlegroundSend(loc.name, 2)">{{loc.name}}</button>
                 </span>
             </div>
 
-            <div ng-show="fightView">
+            <div ng-show="page == 'fight'">
                 <button ng-click="startFight()" ng-show="startFightVisible" class="btn btn-danger">Begin Fight</button>
                 <button ng-click="fight()" ng-show="continueFightVisible" class="btn btn-warning">Continue Fight (Round {{turnsSinceCombatStart}})</button>
                 <button ng-click="retreat()" ng-show="retreatBtnVisible" class="btn btn-info">Retreat!</button>
                 <button ng-click="aftermath()" ng-show="aftermathBtn" class="btn btn-default">View Fight Aftermath</button>
             </div>
 
-            <div ng-show="aftermathView" class="spin-toggle">
-                <button ng-show="aftermathViewLevelup_btn" ng-click="aftermathLevelupShow()" class="btn btn-default">Release remaining {{defeatedAI.persons.length}} prisoners and continue</button>
+            <div ng-show="page == 'aftermath'" class="spin-toggle">
+                <button ng-hide="aftermathViewLevelup_btn" ng-click="aftermathLevelupShow()" class="btn btn-default">Release remaining {{defeatedAI.persons.length}} prisoners and continue</button>
             </div>
 
-            <div ng-show="aftermathViewLevelup">
-                <button class="recruit btn btn-default" ng-show="endDay_btn" ng-click="endDay()">End day</button>
+            <div ng-show="page == 'promotions'">
+                <button class="recruit btn btn-default" ng-click="endDay()">End day</button>
             </div>
 
-            <div ng-show="buySellItemsView">
-                <button class="recruit btn btn-default" ng-show="equipView_btn" ng-click="showEquipMembersView()">Equip Members</button>
+            <div ng-show="page == 'buySell'">
+                <button class=" recruit btn btn-default" ng-click="showEquipMembersView()">
+                Equip Members</button>
             </div>
 
-            <div ng-show="assignItemsView">
-                <button class="recruit btn btn-info" ng-show="teachSpells_btn" ng-click="showTeachSpells()">Teach Spells</button>
+            <div ng-show="page == 'assign'">
+                <button class=" recruit btn btn-info" ng-click="showTeachSpells()">
+                Teach Spells</button>
             </div>
 
-            <div ng-show="teachSpellsView">
+            <div ng-show="page == 'teach'">
                 <button class="recruit btn btn-default" ng-show="newfight_btn" ng-click="chooseBattleground()">Choose Battleground</button>
             </div>
 
@@ -142,12 +144,12 @@
                 </div>
             </div>
 
-            <div ng-show="defatedView">
+            <div ng-show="page == 'chooseBattleground'">
                 <h3>Defeat!</h3>
                 <p>It's the fate of a fashion witch to, sooner or later, join someone's closet.  You had a pretty good run though, all things considered...  Not that it matters much now.</p>
             </div>
 
-            <div ng-show="aftermathView">
+            <div ng-show="page == 'aftermath'">
                 <p>With the day over you can now take stock of your prisoners.  What shall you do with them?  Recruit them to your cause?  Or change them into cute little clothes for you, your friends, or the store next door?  You can also brainwash your opponents, leaving them with an altered body and mind so as to avoid increasing your infamy as high.  <b>You have {{energy}}/{{energyMax}}</b> energy left.  You have {{money}} dollars.</p>
 
 
@@ -185,7 +187,7 @@
 
             </div>
 
-            <div ng-show="aftermathViewLevelup">
+            <div ng-show="page == 'promotions'">
                 <p>Level up and train your members...</p>
 
                 <div class="containerSmall">
@@ -203,7 +205,7 @@
                 </div>
             </div>
 
-            <div ng-show="viewLeaderUpgrades">
+            <div ng-show="page == 'selfUpgrade'">
                 <p>With the experience you have gained you may expand your covenant leader's abilities!  You have <b>{{leader.xp}}</b> XP to upgrade with.  Your maximum energy amount is <b>{{energyMax}}</b>.  You currently have <b>{{leader.health}}/{{leader.getMaxHP()}}</b> HP.</p>
 
                 <hr />
@@ -226,11 +228,11 @@
 
                 <hr />
 
-                <button ng-click="aftermath()" class="btn btn-default">Back to Fight Aftermath / Promotions</button>
+                <button ng-click="showPromotions()" class="btn btn-default">Back to Fight Aftermath / Promotions</button>
 
             </div>
 
-            <div ng-show="buySellItemsView">
+            <div ng-show="page == 'buySell'">
                 <p>It's another bright day and your soul item dealer is stopping by.  You can sell your inanimate victims or purchase some new powerful items for them if you wish.  You have {{money}} dollars.</p>
 
                 <div id="unequippedItems">
@@ -257,7 +259,7 @@
             </div>
 
 
-            <div ng-show="assignItemsView">
+            <div ng-show="page == 'assign'">
                 <h3>Equip your Members</h3>
 
                 <div id="unequippedItems">
@@ -295,7 +297,7 @@
                 </div>
             </div>
 
-            <div ng-show="teachSpellsView">
+            <div ng-show="page == 'teach'">
                 <h3>Teach new Spells to Members</h3>
 
                 <p>You may teach your covenant members some new spells to cast against their defeated opponents right in battle.</p>

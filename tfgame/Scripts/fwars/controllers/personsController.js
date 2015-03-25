@@ -2,6 +2,8 @@
 
 angular.module('fashionApp').controller('PersonsController', function ($scope, $sce) {
 
+    $scope.page = "newPlayer";
+
     $scope.personsPlayer = new PersonGroup();
     $scope.personsAI = new PersonGroup();
     $scope.defeatedAI = new PersonGroup();
@@ -10,15 +12,12 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
     $scope.unequippedItems = new ItemGroup();
     $scope.turnsSinceCombatStart = 1;
     $scope.newfight_btn = true;
-    $scope.endDay_btn = true;
     $scope.sellItem_btn = true;
     $scope.buyItem_btn = true;
     $scope.buySellItemsView = false;
     $scope.chooseBattlegroundView = false;
     $scope.assignItemsView = false;
-    $scope.equipView_btn = true;
     $scope.showTeachSpells = false;
-    $scope.teachSpells_btn = true;
     $scope.defeatedView = false;
     $scope.logsView = true;
 
@@ -75,18 +74,17 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
 
         $scope.logs.push(welcome);
 
-        $scope.chooseBattlegroundView = true;
-        $scope.startVisible = false;
+        $scope.page = "chooseBattleground";
+
 
     }
 
     $scope.chooseBattleground = function () {
-        
+
+        $scope.page = "chooseBattleground";
+
+        $scope.aftermathBtn = false;
         $scope.timeOfDay = "Afternoon";
-        $scope.chooseBattlegroundView = true;
-        $scope.buySellItemsView = false;
-        $scope.assignItemsView = false;
-        $scope.teachSpellsView = false;
         $scope.defeatedPlayer.persons = [];
     }
 
@@ -97,8 +95,11 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
         $scope.continueFightVisible = false;
         $scope.startFightVisible = true;
 
-        $scope.chooseBattlegroundView = false;
         $scope.personsAI.spawnGroup(location, variation);
+
+        // launch fight page
+        $scope.page = "fight";
+
     }
 
     // kick off a fight
@@ -115,6 +116,8 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
 
     // begin a round of fighting
     $scope.fight = function () {
+
+        $scope.page = "fight";
 
         $scope.logs = [];
         $scope.fightInProgress = true;
@@ -147,9 +150,11 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
         var retreatMsg = new Log("Retreat!  Your covenants flee the field of battle in disarray, choosing to remain animate and fight another day.  At least those who still have feet anyway.");
         $scope.logs.push(retreatMsg);
         $scope.fightView = false;
-        $scope.aftermathView = true;
-        $scope.aftermathViewLevelup_btn = true;
         $scope.defeatedAI.persons = [];
+
+        // launch aftermath page
+        $scope.page = "aftermath";
+
     }
 
     $scope.aftermath = function () {
@@ -161,20 +166,18 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
         $scope.fightView = false;
 
         if ($scope.personsPlayer.persons.indexOf($scope.leader) < 0) {
-            $scope.defeatedView = true;
+            // launch defeated page
+            $scope.page = "defeat";
         } else {
-            $scope.aftermathView = true;
-            $scope.aftermathViewLevelup_btn = true;
+            // launch aftermath page
+            $scope.page = "aftermath";
         }
-
-        $scope.aftermathBtn = false;
     }
 
     $scope.viewUpgrades = function () {
-        $scope.viewLeaderUpgrades = true;
-        $scope.aftermathView = false;
-        $scope.aftermathBtn = false;
-        $scope.aftermathViewLevelup = false;
+        // launch promotions page
+        $scope.page = "selfUpgrade";
+
     }
 
     $scope.upgradeSend = function (upgrade, cost) {
@@ -235,13 +238,21 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
 
 
     $scope.aftermathLevelupShow = function () {
-        $scope.aftermathViewLevelup = true;
-        $scope.aftermathView = false;
-        $scope.viewLeaderUpgrades = false;
+
+
+
         $scope.infamy += $scope.defeatedAI.persons.length * 5;
         $scope.personsPlayer.mergeIntoGroup($scope.defeatedPlayer);
         $scope.unequippedItems.mergeIntoGroup($scope.newItems);
 
+        // launch promotions page
+        $scope.page = "promotions";
+
+    }
+
+    $scope.showPromotions = function () {
+        // launch promotions page
+        $scope.page = "promotions";
     }
 
     $scope.promote = function (person, nextForm) {
@@ -253,11 +264,13 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
 
     $scope.endDay = function () {
         $scope.timeOfDay = "Morning";
-        $scope.aftermathViewLevelup = false;
-        $scope.buySellItemsView = true;
         $scope.logs = [];
         $scope.personsPlayer.healGroup(15);
         $scope.day++;
+
+        // launch buy/sell page
+        $scope.page = "buySell";
+
     }
 
     $scope.sellItem = function (item) {
@@ -277,8 +290,10 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
     }
 
     $scope.showEquipMembersView = function () {
-        $scope.buySellItemsView = false;
-        $scope.assignItemsView = true;
+
+        // launch promotions page
+        $scope.page = "assign";
+
         $scope.currentlySelectedItem = $scope.unequippedItems.items[0];
     }
 
@@ -320,8 +335,10 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
     }
 
     $scope.showTeachSpells = function () {
-        $scope.teachSpellsView = true;
-        $scope.assignItemsView = false;
+        
+        // launch promotions page
+        $scope.page = "teach";
+
         $scope.currentlySelectedPerson = $scope.personsPlayer.persons[0];
         $scope.logs = [];
     }
@@ -356,8 +373,6 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
 
         $scope.timeOfDay = "Afternoon";
         $scope.startFightVisible = true;
-        $scope.aftermathView = false;
-        $scope.fightView = true;
         $scope.aftermathBtn = false;
         $scope.assignItemsView = false;
 

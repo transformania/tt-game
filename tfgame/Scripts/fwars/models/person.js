@@ -142,12 +142,14 @@ PersonGroup.prototype.spawnGroup = function (type, variation) {
     extra = Math.floor(Math.random() * variation);
     for (var i = 0; i < spawnGroup['Witchling'][0] + spawnGroup['Witchling'][1]; i++) {
         var spawn = new Person(undefined, undefined, 'Witchling');
+        spawn.giveFinishingSpell('Cotton Panties');
         this.addPerson(spawn);
     }
 
     extra = Math.floor(Math.random() * variation);
     for (var i = 0; i < spawnGroup['Senior Witchling'][0] + spawnGroup['Senior Witchling'][1]; i++) {
         var spawn = new Person(undefined, undefined, 'Senior Witchling');
+        spawn.giveFinishingSpell('Cotton Panties');
         this.addPerson(spawn);
     }
 

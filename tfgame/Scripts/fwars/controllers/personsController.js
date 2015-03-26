@@ -3,6 +3,7 @@
 angular.module('fashionApp').controller('PersonsController', function ($scope, $sce) {
 
     $scope.page = "newPlayer";
+    $scope.pageBack = "";
 
     $scope.personsPlayer = new PersonGroup();
     $scope.personsAI = new PersonGroup();
@@ -385,6 +386,18 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
 
     $scope.getEnergyPercentage = function () {
         return ($scope.energy / $scope.energyMax) * 100;
+    }
+
+    $scope.showItemDetail = function (itemType) {
+        // launch promotions page
+        $scope.pageBack = $scope.page;
+        $scope.page = "itemDetail";
+        $scope.detailedItemSelection = itemStatsMap[itemType];
+    }
+
+    $scope.detailBack = function () {
+        // launch promotions page
+        $scope.page = $scope.pageBack;
     }
 
     ////////////////////////// DEBUG /////////////////////////

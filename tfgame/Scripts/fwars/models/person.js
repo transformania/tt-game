@@ -373,7 +373,6 @@ Person.prototype.xpNeededForLevelup = function () {
 }
 
 Person.prototype.levelRequiredForPromotion = function () {
-    console.log(formStatsMap[this.type].levelRequiredForPromotion);
     return formStatsMap[this.type].levelRequiredForPromotion;
 }
 

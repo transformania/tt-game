@@ -30,12 +30,23 @@
 </head>
 <body ng-controllers="PersonsController">
     <div class="container" data-ng-controller="PersonsController as ctrl">
-        <div class="containerPlus">[{{timeOfDay}} Day <b>{{day}}</b>] [<b>{{money}}</b> $] [<b>{{infamy}}</b> infamy]
-            <span class="label label-default" style="display: inline-block; margin-bottom: 0px !important; vertical-align: middle;">Energy</span><div class="progress" style="width: 150px; display: inline-block; margin-bottom: 0px !important; vertical-align: middle;">               
+        <div class="containerPlus">
+            <span class="label label-default" style="display: inline-block; margin-bottom: 0px !important; vertical-align: middle;">Day <b>{{day}}</b></span> <span class="btn btn-default btn-xs" style="display: inline-block; margin-bottom: 0px !important; vertical-align: middle;">{{timeOfDay}}</span>
+            <span class="label label-default" style="display: inline-block; margin-bottom: 0px !important; vertical-align: middle;">Money</span> <span class="btn btn-default btn-xs" style="display: inline-block; margin-bottom: 0px !important; vertical-align: middle;"><b>{{money}}</b>$</span>
+            <span class="label label-default" style="display: inline-block; margin-bottom: 0px !important; vertical-align: middle;">Infamy</span> <span class="btn btn-default btn-xs" style="display: inline-block; margin-bottom: 0px !important; vertical-align: middle;"><b>{{infamy}}</b></span> 
+            <span class="label label-default" style="display: inline-block; margin-bottom: 0px !important; vertical-align: middle;">Energy</span>
+                <div class="progress" style="width: 150px; display: inline-block; margin-bottom: 0px !important; vertical-align: middle;">
                     <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="{{energy}}" aria-valuemin="0" aria-valuemax="{{maxEnergy}}" ng-style="{width : ( getEnergyPercentage() + '%' ) }">
-                        <span class="badge">{{energy}}</span>
-                    </div>
-</div>
+                    <span class="badge">{{energy}}</span>
+                </div>
+            </div>
+
+            <span class="label label-default" style="display: inline-block; margin-bottom: 0px !important; vertical-align: middle;">LeaderHP</span>
+            <div class="progress" style="width: 150px; display: inline-block; margin-bottom: 0px !important; vertical-align: middle;">
+                <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{leader.health}}" aria-valuemin="0" aria-valuemax="{{leader.getMaxHP()}}" ng-style="{width : ( leader.getHealthAsPercentage() + '%' ) }">
+                    <span class="badge">{{leader.health}}</span>
+                </div>
+            </div>
         </div>
 
         <div class="containerPlus">
@@ -82,7 +93,7 @@
 
         <div class="containerPlus">
             <h1>Fashion Wars</h1>
-            <div ng-show="startVisible">
+            <div ng-show="startVisible" style="margin-bottom: 20px;">
                 <p>What is your name?</p>
                 <span> First name:  <input type="text" id="nameBoxFirst" ng-model="nameFirst" ng-init="nameFirst='Nina'" /></span>
                 <span> Last name: <input type="text" id="nameBoxLast" ng-model="nameLast" ng-init="nameLast='Bryker'" /></span><br />

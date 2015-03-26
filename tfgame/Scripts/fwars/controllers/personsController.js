@@ -161,7 +161,7 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
 
         // if victory carry on, if defeat then show end game screen
         $scope.timeOfDay = "Evening";
-        $scope.energy = $scope.energyMax;
+       
         $scope.logs = [];
         $scope.fightView = false;
 
@@ -266,6 +266,7 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
         $scope.timeOfDay = "Morning";
         $scope.logs = [];
         $scope.personsPlayer.healGroup(15);
+        $scope.energy = $scope.energyMax;
         $scope.day++;
 
         // launch buy/sell page

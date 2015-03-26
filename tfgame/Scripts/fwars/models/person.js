@@ -281,6 +281,8 @@ Person.prototype.fight = function (opponent) {
     var formStatsAttacker = formStatsMap[this.type];
     var formStatsDefender = formStatsMap[opponent.type];
 
+    var levelRequiredForMyPromotion = this.levelRequiredForPromotion();
+
     var damageFromForm = formStatsAttacker.seductionAttack - formStatsDefender.seductionDefense;
 
     var extraDamageFromGear = 0;
@@ -316,10 +318,25 @@ Person.prototype.fight = function (opponent) {
         opponent.health = 0;
         outcome = "win";
         opponent.status = 'defeated';
-        this.xp++;
+
+        
+
+        // assign some XP if this person is not stuck on waiting for upgrade
+        if (this.level < levelRequiredForMyPromotion) {
+            this.xp++;
+        }
+
+        if (this.xp >= this.xpNeededForLevelup()) {
+            this.level++;
+            this.xp = 0;
+            result += " LEVEL UP!  ";
+        }
+
         result += "  VICTORY!  ";
     } else {
-
+        if (this.level < levelRequiredForMyPromotion) {
+            this.xp += .25;;
+        }
         outcome = "";
     }
 
@@ -353,6 +370,11 @@ Person.prototype.resetXP = function () {
 
 Person.prototype.xpNeededForLevelup = function () {
     return formStatsMap[this.type].xpNeededForLevelup + (this.level - 1) * 3;
+}
+
+Person.prototype.levelRequiredForPromotion = function () {
+    console.log(formStatsMap[this.type].levelRequiredForPromotion);
+    return formStatsMap[this.type].levelRequiredForPromotion;
 }
 
 Person.prototype.getRecruitmentCost = function () {

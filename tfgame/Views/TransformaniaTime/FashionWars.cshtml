@@ -203,7 +203,7 @@
                             {{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}][{{person.health}}/{{person.getMaxHP()}} HP] [{{person.xp}}/{{person.xpNeededForLevelup()}} XP before levelup]
 
                             <span ng-repeat="form in person.getPromotionForms()">
-                                <button class="recruit btn btn-primary btn-xs" ng-click="promote(person,form)" ng-show="person.xp >= person.xpNeededForLevelup()">Promote to {{form}}</button>
+                                <button class="recruit btn btn-primary btn-xs" ng-click="promote(person,form)" ng-show="person.level >= person.levelRequiredForPromotion()">Promote to {{form}}</button>
                             </span>
                                  
                         </li>

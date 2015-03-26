@@ -4,12 +4,12 @@ var itemStatsMap = {};
 
 itemStatsMap['Cotton Panties'] = {
     'name': 'Cotton Panties',
-    'bonusHP': 3,
+    'bonusHP': 1,
     'value': 10,
     'strengthAttack': 0,
     'strengthDefense': 0,
-    'seductionAttack': 1,
-    'seductionDefense': 1,
+    'seductionAttack': 0,
+    'seductionDefense': 0,
     'energyNeededToTF': 20,
     'spellTrainingCost': 15,
     'isSpell': true,
@@ -19,12 +19,12 @@ itemStatsMap['Cotton Panties'] = {
 
 itemStatsMap['Latex Catsuit'] = {
     'name': 'Latex Catsuit',
-    'bonusHP': 3,
+    'bonusHP': 2,
     'value': 15,
     'strengthAttack': 0,
     'strengthDefense': 0,
     'seductionAttack': 1,
-    'seductionDefense': 1,
+    'seductionDefense': 0,
     'energyNeededToTF': 25,
     'spellTrainingCost': 25,
     'isSpell': true,

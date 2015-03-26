@@ -24,7 +24,7 @@ var formStatsMap = {};
 
 formStatsMap['Female Bystander'] = {
     'baseHP': 2,
-    'graphic': 'blurg.png',
+    'graphic': 'Female_Bystander.jpg',
     'description': '',
     'gender': 'female',
     'class': 'civilian',
@@ -45,7 +45,7 @@ formStatsMap['Female Bystander'] = {
 
 formStatsMap['Male Bystander'] = {
     'baseHP': 2,
-    'graphic': 'blurg.png',
+    'graphic': 'Male_Bystander.jpg',
     'description': '',
     'gender': 'male',
     'class': 'civilian',
@@ -64,7 +64,7 @@ formStatsMap['Male Bystander'] = {
 
 formStatsMap['Fashion Witch'] = {
     'baseHP': 50,
-    'graphic': 'blurg.png',
+    'graphic': 'Fashion_Witch.jpg',
     'description': '',
     'gender': 'female',
     'promotesTo': [],
@@ -83,7 +83,7 @@ formStatsMap['Fashion Witch'] = {
 
 formStatsMap['Witchling'] = {
     'baseHP': 4,
-    'graphic': 'blurg.png',
+    'graphic': 'Witchling.jpg',
     'description': '',
     'gender': 'female',
     'promotesTo': ['Senior Witchling'],
@@ -102,7 +102,7 @@ formStatsMap['Witchling'] = {
 
 formStatsMap['Senior Witchling'] = {
     'baseHP': 8,
-    'graphic': 'blurg.png',
+    'graphic': 'Senior_Witchling.jpg',
     'description': '',
     'gender': 'female',
     'promotesTo': [],

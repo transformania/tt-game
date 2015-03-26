@@ -38,14 +38,14 @@
             <span class="label label-default menuAlign">Money</span> <span class="btn btn-default btn-xs menuAlign"><b>{{money}}</b>$</span>
             <span class="label label-default menuAlign">Infamy</span> <span class="btn btn-default btn-xs menuAlign"><b>{{infamy}}</b></span>
             <span class="label label-default menuAlign">Energy</span>
-            <div class="progress menuAlign">
+            <div class="progress progressMenu menuAlign">
                 <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="{{energy}}" aria-valuemin="0" aria-valuemax="{{maxEnergy}}" ng-style="{width : ( getEnergyPercentage() + '%' ) }">
                     <span class="badge">{{energy}}</span>
                 </div>
             </div>
 
             <span class="label label-default">LeaderHP</span>
-            <div class="progress menuAlign">
+            <div class="progress progressMenu menuAlign">
                 <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{leader.health}}" aria-valuemin="0" aria-valuemax="{{leader.getMaxHP()}}" ng-style="{width : ( leader.getHealthAsPercentage() + '%' ) }">
                     <span class="badge">{{leader.health}}</span>
                 </div>
@@ -380,6 +380,7 @@
                 <button class="recruit btn btn-default" ng-click="debug_fullEnergy()">Max Energy</button><br /><br />
                 <button class="recruit btn btn-default" ng-click="debug_moreMoney()">+1000 money</button><br /><br />
                 <button class="recruit btn btn-default" ng-click="debug_spawnMeMembers()">Spawn members</button><br /><br />
+                <button class="recruit btn btn-default" onclick="reload()">Reload page</button>
             </div>
         </div>
     </div>
@@ -396,4 +397,12 @@
         return $(this).height()+50;
     }).get());
     boxes.height(maxHeight);
+</script>
+
+
+
+<script>
+    function reload() {
+        location.reload();
+    }
 </script>

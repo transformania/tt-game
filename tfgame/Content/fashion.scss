@@ -60,7 +60,7 @@ border-bottom: $border;
         margin-bottom: 0px !important;
     }
 
-        .containerPlus .progress{
+        .progressMenu{
         width: 150px;
     }
 
@@ -69,12 +69,6 @@ border-bottom: $border;
     width: 100px;
     height: 100px; 
     margin-bottom: 4px;
-}
-
-.portraitSmall:hover {
-    width: 300px;
-    height: 300px; 
-    transition: all linear 1s;
 }
 
 .containerPlus:last-child{

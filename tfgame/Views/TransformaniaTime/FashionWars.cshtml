@@ -262,7 +262,7 @@
                     <ul>
                         <li ng-repeat="item in unequippedItems.items">
                             {{item.type}} {{item.getVictimName()}}
-                            <button class="recruit btn btn-default" ng-show="sellItem_btn" ng-click="sellItem(item)">Sell for {{item.getSellPrice()}} $</button>
+                            <button class="recruit btn btn-danger btn-xs" ng-show="sellItem_btn" ng-click="sellItem(item)">Sell for {{item.getSellPrice()}} $</button>
                         </li>
                     </ul>
                 </div>
@@ -273,15 +273,15 @@
                         <li ng-repeat="item in itemsMap">
                             <div ng-show="item.isPurchaseableItem == true">
                                 {{item.name}} ({{item.value}} dollars)
-                                <button class="recruit btn btn-default" ng-show=" money >= item.value" ng-click="buyItem(item.name)">Buy</button>
-                                <button class="recruit btn btn-default" ng-click="showItemDetail(item.name)">?</button>
+                                <button class="recruit btn btn-success btn-xs" ng-show=" money >= item.value" ng-click="buyItem(item.name)">Buy</button>
+                                <button class="recruit btn btn-info btn-xs" ng-click="showItemDetail(item.name)">?</button>
                             </div>
                         </li>
                     </ul>
                 </div>
             </div>
 
-
+            <!--Equipment page-->
             <div ng-show="page == 'assign'">
                 <h3>Equip your Members</h3>
 
@@ -289,18 +289,18 @@
                     <h3>Unequipped items:</h3>
                     <ul>
                         <li ng-repeat="item in unequippedItems.items">
+                            <span ng-show="item.id == currentlySelectedItem.id" style="background: red; color: yellow;"> >>> </span>
                             {{item.type}} {{item.getVictimName()}}
-                            <span ng-show="item.id == currentlySelectedItem.id">CURRENT</span>
+                            <span ng-show="item.id == currentlySelectedItem.id" style="background: red; color: yellow;"> <<< </span>
                         </li>
                     </ul>
-                </div>
 
-                <div class="containerSmall" ng-show="unequippedItems.items.length > 0">
-                    <span>Currently assigning {{currentlySelectedItem.type}} {{item.getVictimName()}}</span>
+                    <div ng-show="unequippedItems.items.length > 0">
+                        <span>Currently assigning {{currentlySelectedItem.type}} {{item.getVictimName()}}<br /></span>
+                        <button class="recruit btn btn-default" ng-click="equipPrevious()" ng-show="unequippedItems.items.length > 0">Previous</button>
+                        <button class="recruit btn btn-default" ng-click="equipNext()" ng-show="unequippedItems.items.length > 0">Next</button>
 
-                    <button class="recruit btn btn-default" ng-click="equipPrevious()" ng-show="unequippedItems.items.length > 0">Previous</button>
-                    <button class="recruit btn btn-default" ng-click="equipNext()" ng-show="unequippedItems.items.length > 0">Next</button>
-
+                    </div>
                 </div>
 
                 <div class="containerSmall">
@@ -311,8 +311,8 @@
 
                             Wearing:  <span ng-repeat="item in person.items"><b>{{item.type}}</b>, </span>
 
-                            <button class="recruit btn btn-sucess" ng-click="assignTo(person, currentlySelectedItem)" ng-show="person.items.length < 2 && unequippedItems.items.length > 0">Assign To Me</button>
-                            <button class="recruit btn btn-danger" ng-click="strip(person)" ng-show="person.items.length > 0">Remove All Items</button>
+                            <button class="recruit btn btn-sucess btn-xs" ng-click="assignTo(person, currentlySelectedItem)" ng-show="person.items.length < 2 && unequippedItems.items.length > 0">Assign To Me</button>
+                            <button class="recruit btn btn-danger btn-xs" ng-click="strip(person)" ng-show="person.items.length > 0">Remove All Items</button>
 
 
                         </li>
@@ -320,6 +320,7 @@
                 </div>
             </div>
 
+            <!--Teaching spells page-->
             <div ng-show="page == 'teach'">
                 <div class="containerSmall">
                     <h3>Teach new Spells to Members</h3>
@@ -343,7 +344,7 @@
                     <ul>
                         <li ng-repeat="item in itemsMap">
                             {{item.name}} ({{item.spellTrainingCost}} dollars)
-                            <button class="recruit btn btn-warning" ng-show="money >= item.spellTrainingCost && currentlySelectedPerson.knowsSpell(item.name) == false && currentlySelectedPerson.canLearnSpells()==true" ng-click="teachSpell(item.name)">Train</button>
+                            <button class="recruit btn btn-warning btn-xs" ng-show="money >= item.spellTrainingCost && currentlySelectedPerson.knowsSpell(item.name) == false && currentlySelectedPerson.canLearnSpells()==true" ng-click="teachSpell(item.name)">Train</button>
                             <span ng-show="currentlySelectedPerson.knowsSpell(item.name) == true">(Already known)</span>
                         </li>
                     </ul>

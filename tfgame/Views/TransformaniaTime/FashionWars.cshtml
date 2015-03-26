@@ -92,7 +92,6 @@
         </div>
 
         <div class="containerPlus">
-            <h1>Fashion Wars</h1>
             <div ng-show="startVisible" style="margin-bottom: 20px;">
                 <p>What is your name?</p>
                 <span> First name:  <input type="text" id="nameBoxFirst" ng-model="nameFirst" ng-init="nameFirst='Nina'" /></span>
@@ -188,14 +187,14 @@
                     </ul>
                 </div>
 
-                <div id="unequippedItems">
+                <div class="containerSmall" id="unequippedItems">
                     <h3>New items from fight:</h3>
                     <ul>
                         <li ng-repeat="item in newItems.items">{{item.type}} {{item.getVictimName()}}</li>
                     </ul>
                 </div>
 
-                <div id="unequippedItems">
+                <div class="containerSmall" id="unequippedItems">
                     <h3>Unequipped items:</h3>
                     <ul>
                         <li ng-repeat="item in unequippedItems.items">{{item.type}} {{item.getVictimName()}}</li>
@@ -253,7 +252,7 @@
             <div ng-show="page == 'buySell'">
                 <p>It's another bright day and your soul item dealer is stopping by.  You can sell your inanimate victims or purchase some new powerful items for them if you wish.  You have {{money}} dollars.</p>
 
-                <div id="unequippedItems">
+                <div class ="containerSmall" id="unequippedItems">
                     <h3>Your inventory:</h3>
                     <ul>
                         <li ng-repeat="item in unequippedItems.items">
@@ -263,7 +262,7 @@
                     </ul>
                 </div>
 
-                <div>
+                <div class="containerSmall">
                     <h3>Purchase:</h3>
                     <ul>
                         <li ng-repeat="item in itemsMap">
@@ -280,7 +279,7 @@
             <div ng-show="page == 'assign'">
                 <h3>Equip your Members</h3>
 
-                <div id="unequippedItems">
+                <div class="containerSmall" id="unequippedItems">
                     <h3>Unequipped items:</h3>
                     <ul>
                         <li ng-repeat="item in unequippedItems.items">
@@ -290,7 +289,7 @@
                     </ul>
                 </div>
 
-                <div ng-show="unequippedItems.items.length > 0">
+                <div class="containerSmall" ng-show="unequippedItems.items.length > 0">
                     <span>Currently assigning {{currentlySelectedItem.type}} {{item.getVictimName()}}</span>
 
                     <button class="recruit btn btn-default" ng-click="equipPrevious()" ng-show="unequippedItems.items.length > 0">Previous</button>
@@ -316,30 +315,32 @@
             </div>
 
             <div ng-show="page == 'teach'">
-                <h3>Teach new Spells to Members</h3>
+                <div class="containerSmall">
+                    <h3>Teach new Spells to Members</h3>
 
-                <p>You may teach your covenant members some new spells to cast against their defeated opponents right in battle.</p>
+                    <p>You may teach your covenant members some new spells to cast against their defeated opponents right in battle.</p>
 
-                <ul>
-                    <li ng-repeat="person in personsPlayer.persons">
-                        {{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}]
-                        Knows: <span ng-repeat="spell in person.finishingSpells"> <b>{{spell}}</b>,</span>
-                        <span ng-show="person.id == currentlySelectedPerson.id">CURRENT</span>
-                    </li>
-                </ul>
+                    <ul>
+                        <li ng-repeat="person in personsPlayer.persons">
+                            {{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}]
+                            Knows: <span ng-repeat="spell in person.finishingSpells"> <b>{{spell}}</b>,</span>
+                            <span ng-show="person.id == currentlySelectedPerson.id">CURRENT</span>
+                        </li>
+                    </ul>
 
-                <button class="recruit btn btn-default" ng-click="teachPrevious()" ng-show="personsPlayer.persons.length > 0">Previous</button>
-                <button class="recruit btn btn-default" ng-click="teachNext()" ng-show="personsPlayer.persons.length > 0">Next</button>
-
-                <p>Teaching {{currentlySelectedPerson.fullName()}}...</p>
-                <ul>
-                    <li ng-repeat="item in itemsMap">
-                        {{item.name}} ({{item.spellTrainingCost}} dollars)
-                        <button class="recruit btn btn-warning" ng-show="money >= item.spellTrainingCost && currentlySelectedPerson.knowsSpell(item.name) == false && currentlySelectedPerson.canLearnSpells()==true" ng-click="teachSpell(item.name)" class="assign">Train</button>
-                        <span ng-show="currentlySelectedPerson.knowsSpell(item.name) == true">(Already known)</span>
-                    </li>
-                </ul>
-
+                    <button class="recruit btn btn-default" ng-click="teachPrevious()" ng-show="personsPlayer.persons.length > 0">Previous</button>
+                    <button class="recruit btn btn-default" ng-click="teachNext()" ng-show="personsPlayer.persons.length > 0">Next</button>
+                    </div>
+                <div class="containerSmall">
+                    <p>Teaching {{currentlySelectedPerson.fullName()}}...</p>
+                    <ul>
+                        <li ng-repeat="item in itemsMap">
+                            {{item.name}} ({{item.spellTrainingCost}} dollars)
+                            <button class="recruit btn btn-warning" ng-show="money >= item.spellTrainingCost && currentlySelectedPerson.knowsSpell(item.name) == false && currentlySelectedPerson.canLearnSpells()==true" ng-click="teachSpell(item.name)" class="assign">Train</button>
+                            <span ng-show="currentlySelectedPerson.knowsSpell(item.name) == true">(Already known)</span>
+                        </li>
+                    </ul>
+                </div>
             </div>
 
             <div id="log" ng-show="logsView">
@@ -370,3 +371,9 @@
     }).get());
     boxes.height(maxHeight);
 </script>
+
+<style>
+    .containerPlus .btn{
+        margin-bottom: 0px !important;
+    }
+</style>

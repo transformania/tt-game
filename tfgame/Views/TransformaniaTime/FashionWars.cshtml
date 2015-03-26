@@ -213,7 +213,7 @@
                             {{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}][{{person.health}}/{{person.getMaxHP()}} HP] [{{person.xp}}/{{person.xpNeededForLevelup()}} XP before levelup]
 
                             <span ng-repeat="form in person.getPromotionForms()">
-                                <button class="recruit btn btn-primary btn-xs" ng-click="promote(person,form)" ng-show="person.xp >= person.xpNeededForLevelup()">Promote to {{form}}</button>
+                                <button class="recruit btn btn-primary btn-xs" ng-click="promote(person,form)" ng-show="person.level >= person.levelRequiredForPromotion()">Promote to {{form}}</button>
                             </span>
                                  
                         </li>
@@ -269,6 +269,7 @@
                             <div ng-show="item.isPurchaseableItem == true">
                                 {{item.name}} ({{item.value}} dollars)
                                 <button class="recruit btn btn-default" ng-show=" money >= item.value" ng-click="buyItem(item.name)">Buy</button>
+                                <button class="recruit btn btn-default" ng-click="showItemDetail(item.name)">?</button>
                             </div>
                         </li>
                     </ul>
@@ -320,6 +321,7 @@
 
                     <p>You may teach your covenant members some new spells to cast against their defeated opponents right in battle.</p>
 
+<<<<<<< HEAD
                     <ul>
                         <li ng-repeat="person in personsPlayer.persons">
                             {{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}]
@@ -327,6 +329,16 @@
                             <span ng-show="person.id == currentlySelectedPerson.id">CURRENT</span>
                         </li>
                     </ul>
+=======
+                <p>Teaching {{currentlySelectedPerson.fullName()}}...</p>
+                <ul>
+                    <li ng-repeat="item in itemsMap">
+                        {{item.name}} ({{item.spellTrainingCost}} dollars)
+                        <button class="recruit btn btn-warning" ng-show="money >= item.spellTrainingCost && currentlySelectedPerson.knowsSpell(item.name) == false && currentlySelectedPerson.canLearnSpells()==true" ng-click="teachSpell(item.name)">Train</button>
+                        <span ng-show="currentlySelectedPerson.knowsSpell(item.name) == true">(Already known)</span>
+                    </li>
+                </ul>
+>>>>>>> 21e3e7b070d016b3183b49c6efeb244299147bcb
 
                     <button class="recruit btn btn-default" ng-click="teachPrevious()" ng-show="personsPlayer.persons.length > 0">Previous</button>
                     <button class="recruit btn btn-default" ng-click="teachNext()" ng-show="personsPlayer.persons.length > 0">Next</button>
@@ -343,11 +355,25 @@
                 </div>
             </div>
 
+            <div ng-show="page=='itemDetail' ">
+                <h3><b>{{detailedItemSelection.name}}</b></h3>
+
+                <p><i>{{detailedItemSelection.description}}</i></p>
+                <p>Extra HP:  {{detailedItemSelection.bonusHP}}</p>
+                <p>Value:  {{detailedItemSelection.value}}</p>
+                
+
+
+                <button class="recruit btn btn-default" ng-click="detailBack()">Back</button>
+            </div>
+
             <div id="log" ng-show="logsView">
                 <p ng-repeat="log in logs">
                     <span ng-bind-html="log.message"></span>
                 </p>
             </div>
+
+           
 
 
             <button class="recruit btn btn-default" ng-click="debug_fullXP()">Max XP</button>

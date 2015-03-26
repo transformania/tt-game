@@ -889,6 +889,7 @@
     <Content Include="Scripts\fwars\app.js" />
     <Content Include="Scripts\fwars\controllers\personsController.js" />
     <Content Include="Scripts\fwars\fwars.js" />
+    <Content Include="Scripts\fwars\models\encounter.js" />
     <Content Include="Scripts\fwars\models\formStatics.js" />
     <Content Include="Scripts\fwars\models\item.js" />
     <Content Include="Scripts\fwars\models\itemStatics.js" />

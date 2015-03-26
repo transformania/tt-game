@@ -24,7 +24,13 @@ ItemGroup.prototype.mergeIntoGroup = function (otherGroup) {
 
 // --------------------- ITEM --------------------
 
-var Item = function (type, formerName) {
+/*
+    type -- item type / name, ie 'Cotton Panties.'  Must match up with something in item statics
+    oldName -- name of human who got turned into this.  Empty string if it is store bought or other
+    quality -- power modifier.  "default", ""
+*/
+
+var Item = function (type, formerName, quality) {
     this.type = type;
     this.id = itemIdNext;
 
@@ -32,6 +38,12 @@ var Item = function (type, formerName) {
         this.oldName = '';
     } else {
         this.oldName = formerName;
+    }
+
+    if (typeof quality === undefined) {
+        this.quality = 'default';
+    } else {
+        this.quality = quality;
     }
 
     itemIdNext++;

@@ -273,7 +273,6 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
         $scope.day++;
 
         var roll = Math.random();
-        console.log(roll);
 
         if (roll < .5) {
             // launch random encounter page

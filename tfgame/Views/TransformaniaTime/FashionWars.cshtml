@@ -9,10 +9,13 @@
     <link href="~/Content/bootstrap.min.css" rel="stylesheet">
     <link href="~/Content/fashion.css" rel="stylesheet" />
     <link href="~/Content/ng-animation.css" rel="stylesheet" />
+
     <script src="~/Scripts/jquery-2.1.0.min.js"></script>
+
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
     <script src="http://code.angularjs.org/1.2.20/angular-sanitize.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.1/angular-animate.min.js"></script>
+
     <script src="~/Scripts/fwars/app.js"></script>
     <script src="~/Scripts/fwars/controllers/personsController.js"></script>
     <script src="~/Scripts/fwars/models/person.js"></script>
@@ -25,25 +28,24 @@
     <script src="~/Scripts/fwars/models/encounter.js"></script>
     <script src="~/Scripts/fwars/fwars.js"></script>
 
-
     <meta name="viewport" content="width=device-width" />
     <title>Fashion Wars</title>
 </head>
 <body ng-controllers="PersonsController">
     <div class="container" data-ng-controller="PersonsController as ctrl">
         <div class="containerPlus">
-            <span class="label label-default" style="display: inline-block; margin-bottom: 0px !important; vertical-align: middle;">Day <b>{{day}}</b></span> <span class="btn btn-default btn-xs" style="display: inline-block; margin-bottom: 0px !important; vertical-align: middle;">{{timeOfDay}}</span>
-            <span class="label label-default" style="display: inline-block; margin-bottom: 0px !important; vertical-align: middle;">Money</span> <span class="btn btn-default btn-xs" style="display: inline-block; margin-bottom: 0px !important; vertical-align: middle;"><b>{{money}}</b>$</span>
-            <span class="label label-default" style="display: inline-block; margin-bottom: 0px !important; vertical-align: middle;">Infamy</span> <span class="btn btn-default btn-xs" style="display: inline-block; margin-bottom: 0px !important; vertical-align: middle;"><b>{{infamy}}</b></span>
-            <span class="label label-default" style="display: inline-block; margin-bottom: 0px !important; vertical-align: middle;">Energy</span>
-            <div class="progress" style="width: 150px; display: inline-block; margin-bottom: 0px !important; vertical-align: middle;">
+            <span class="label label-default menuAlign">Day <b>{{day}}</b></span> <span class="btn btn-default btn-xs menuAlign">{{timeOfDay}}</span>
+            <span class="label label-default menuAlign">Money</span> <span class="btn btn-default btn-xs menuAlign"><b>{{money}}</b>$</span>
+            <span class="label label-default menuAlign">Infamy</span> <span class="btn btn-default btn-xs menuAlign"><b>{{infamy}}</b></span>
+            <span class="label label-default menuAlign">Energy</span>
+            <div class="progress menuAlign">
                 <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="{{energy}}" aria-valuemin="0" aria-valuemax="{{maxEnergy}}" ng-style="{width : ( getEnergyPercentage() + '%' ) }">
                     <span class="badge">{{energy}}</span>
                 </div>
             </div>
 
-            <span class="label label-default" style="display: inline-block; margin-bottom: 0px !important; vertical-align: middle;">LeaderHP</span>
-            <div class="progress" style="width: 150px; display: inline-block; margin-bottom: 0px !important; vertical-align: middle;">
+            <span class="label label-default">LeaderHP</span>
+            <div class="progress menuAlign">
                 <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{leader.health}}" aria-valuemin="0" aria-valuemax="{{leader.getMaxHP()}}" ng-style="{width : ( leader.getHealthAsPercentage() + '%' ) }">
                     <span class="badge">{{leader.health}}</span>
                 </div>
@@ -113,7 +115,7 @@
                                 <div class="personList">
                                     {{person.firstName}} {{person.lastName}}<br />
                                     [lvl {{person.level}} {{person.type}}]<br />
-                                    <img style="border: 4px #5CB85C solid; width: 50px; height:50px; margin-bottom: 4px;" ng-src="~/Images/FashionWars/Forms/{{person.getGraphic()}}" />
+                                    <img class="portraitSmall" ng-src="~/Images/FashionWars/Forms/{{person.getGraphic()}}" />
                                     <div class="progress">
                                         <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{person.health}}" aria-valuemin="0" aria-valuemax="{{person.getMaxHP()}}" ng-style="{width : ( person.getHealthAsPercentage() + '%' ) }">
                                             <span>[{{person.health}}/{{person.getMaxHP()}} HP]</span>
@@ -129,7 +131,7 @@
                             <div class="personList">
                                 {{person.firstName}} {{person.lastName}}<br />
                                 [lvl {{person.level}} {{person.type}}]<br />
-                                <img style="border: 4px #D9534F solid; width: 50px; height:50px; margin-bottom: 4px;" ng-src="~/Images/FashionWars/Forms/{{person.getGraphic()}}" />
+                                <img class="portraitSmall" ng-src="~/Images/FashionWars/Forms/{{person.getGraphic()}}" />
                                 <div class="progress">
                                     <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="{{person.health}}" aria-valuemin="0" aria-valuemax="{{person.getMaxHP()}}" ng-style="{width : ( person.getHealthAsPercentage() + '%' ) }">
                                         <span>[{{person.health}}/{{person.getMaxHP()}} HP]</span>
@@ -309,8 +311,8 @@
 
                             Wearing:  <span ng-repeat="item in person.items"><b>{{item.type}}</b>, </span>
 
-                            <button class="recruit btn btn-sucess" ng-click="assignTo(person, currentlySelectedItem)" ng-show="person.items.length < 2 && unequippedItems.items.length > 0" class="assign">Assign To Me</button>
-                            <button class="recruit btn btn-danger" ng-click="strip(person)" ng-show="person.items.length > 0" class="remove">Remove All Items</button>
+                            <button class="recruit btn btn-sucess" ng-click="assignTo(person, currentlySelectedItem)" ng-show="person.items.length < 2 && unequippedItems.items.length > 0">Assign To Me</button>
+                            <button class="recruit btn btn-danger" ng-click="strip(person)" ng-show="person.items.length > 0">Remove All Items</button>
 
 
                         </li>
@@ -324,24 +326,14 @@
 
                     <p>You may teach your covenant members some new spells to cast against their defeated opponents right in battle.</p>
 
-                    <<<<<<< HEAD
                     <ul>
                         <li ng-repeat="person in personsPlayer.persons">
+                            <span ng-show="person.id == currentlySelectedPerson.id" style="background: red; color: yellow;"> >>> </span>
                             {{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}]
                             Knows: <span ng-repeat="spell in person.finishingSpells"> <b>{{spell}}</b>,</span>
-                            <span ng-show="person.id == currentlySelectedPerson.id">CURRENT</span>
+                            <span ng-show="person.id == currentlySelectedPerson.id" style="background: red; color: yellow;"> <<< </span>
                         </li>
                     </ul>
-                    =======
-                    <p>Teaching {{currentlySelectedPerson.fullName()}}...</p>
-                    <ul>
-                        <li ng-repeat="item in itemsMap">
-                            {{item.name}} ({{item.spellTrainingCost}} dollars)
-                            <button class="recruit btn btn-warning" ng-show="money >= item.spellTrainingCost && currentlySelectedPerson.knowsSpell(item.name) == false && currentlySelectedPerson.canLearnSpells()==true" ng-click="teachSpell(item.name)">Train</button>
-                            <span ng-show="currentlySelectedPerson.knowsSpell(item.name) == true">(Already known)</span>
-                        </li>
-                    </ul>
-                    >>>>>>> 21e3e7b070d016b3183b49c6efeb244299147bcb
 
                     <button class="recruit btn btn-default" ng-click="teachPrevious()" ng-show="personsPlayer.persons.length > 0">Previous</button>
                     <button class="recruit btn btn-default" ng-click="teachNext()" ng-show="personsPlayer.persons.length > 0">Next</button>
@@ -351,7 +343,7 @@
                     <ul>
                         <li ng-repeat="item in itemsMap">
                             {{item.name}} ({{item.spellTrainingCost}} dollars)
-                            <button class="recruit btn btn-warning" ng-show="money >= item.spellTrainingCost && currentlySelectedPerson.knowsSpell(item.name) == false && currentlySelectedPerson.canLearnSpells()==true" ng-click="teachSpell(item.name)" class="assign">Train</button>
+                            <button class="recruit btn btn-warning" ng-show="money >= item.spellTrainingCost && currentlySelectedPerson.knowsSpell(item.name) == false && currentlySelectedPerson.canLearnSpells()==true" ng-click="teachSpell(item.name)">Train</button>
                             <span ng-show="currentlySelectedPerson.knowsSpell(item.name) == true">(Already known)</span>
                         </li>
                     </ul>
@@ -383,11 +375,12 @@
                 </p>
             </div>
 
-            <button class="recruit btn btn-default" ng-click="debug_fullXP()">Max XP</button>
-            <button class="recruit btn btn-default" ng-click="debug_fullEnergy()">Max Energy</button>
-            <button class="recruit btn btn-default" ng-click="debug_moreMoney()">+1000 money</button>
-            <button class="recruit btn btn-default" ng-click="debug_spawnMeMembers()">Spawn members</button>
-
+            <div style="display: block; position: absolute; left: 120px; top: 50px;">
+                <button class="recruit btn btn-default" ng-click="debug_fullXP()">Max XP</button><br /><br />
+                <button class="recruit btn btn-default" ng-click="debug_fullEnergy()">Max Energy</button><br /><br />
+                <button class="recruit btn btn-default" ng-click="debug_moreMoney()">+1000 money</button><br /><br />
+                <button class="recruit btn btn-default" ng-click="debug_spawnMeMembers()">Spawn members</button><br /><br />
+            </div>
         </div>
     </div>
 </body>
@@ -400,13 +393,7 @@
     boxes = $('.personList');
     maxHeight = Math.max.apply(
     Math, boxes.map(function () {
-        return $(this).height();
+        return $(this).height()+50;
     }).get());
     boxes.height(maxHeight);
 </script>
-
-<style>
-    .containerPlus .btn{
-        margin-bottom: 0px !important;
-    }
-</style>

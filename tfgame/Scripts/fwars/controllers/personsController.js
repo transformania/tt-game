@@ -50,6 +50,8 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
     $scope.continueFightVisible = false;
     $scope.startFightVisible = false;
 
+    $scope.selectedAftermathPerson;
+
     $scope.aftermathBtn = false;
     $scope.aftermathView = false;
     $scope.aftermathViewLevelup = false;
@@ -176,7 +178,12 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
         } else {
             // launch aftermath page
             $scope.page = "aftermath";
+            $scope.selectedAftermathPerson = $scope.defeatedAI.persons[0];
         }
+    }
+
+    $scope.changeSelectedPerson = function (newPerson) {
+        $scope.selectedAftermathPerson = newPerson;
     }
 
     $scope.viewUpgrades = function () {
@@ -204,8 +211,13 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
         $scope.defeatedAI.removePerson(person);
         $scope.energy -= person.getRecruitmentCost();
 
+
         var newlog = new Log(person.fullName() + " agrees to join your covenant for a life of adventure, danger, and sexy clothes made out rivals!");
         $scope.logs.push(newlog);
+
+
+        $scope.selectedAftermathPerson = $scope.defeatedAI.persons[0];
+
     }
 
     $scope.inanimate = function (person, spell) {
@@ -219,6 +231,9 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
 
         var newlog = new Log(result);
         $scope.logs.push(newlog);
+
+        $scope.selectedAftermathPerson = $scope.defeatedAI.persons[0];
+
     }
 
 
@@ -230,6 +245,8 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
         var newlog = new Log(result);
 
         $scope.logs.push(newlog);
+
+        $scope.selectedAftermathPerson = $scope.defeatedAI.persons[0];
     }
 
     $scope.amnesia = function (person) {
@@ -239,6 +256,8 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
         var result = "<span class='brainwashed'>" + insertNames(getRandomDefeatText(person.type, 'brainwash'), $scope.leader, person) + "</span>";
         var newlog = new Log(result);
         $scope.logs.push(newlog);
+
+        $scope.selectedAftermathPerson = $scope.defeatedAI.persons[0];
     }
 
 

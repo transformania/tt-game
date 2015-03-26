@@ -214,17 +214,30 @@
                     <h3>Submissive Opponents:</h3>
                     <ul>
                         <li ng-repeat="person in defeatedAI.persons">
+
+                            <span ng-show="person.id == selectedAftermathPerson.id" style="background: red; color: yellow;"> >>> </span>
                             {{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}]
-                            <button ng-click="recruit(person)" ng-show="person.getRecruitmentCost() <= energy" class="recruit btn btn-success btn-xs">Recruit ({{person.getRecruitmentCost()}} energy)</button>
-
-                            <span ng-repeat="spell in leader.finishingSpells"><button ng-click="inanimate(person, spell)" ng-show="leader.getTransformCost(spell) <= energy && leader.itemIsSpell(spell)== true" class="recruit btn btn-danger btn-xs">Turn into {{spell}} ({{leader.getTransformCost(spell)}} energy))</button></span>
-
-                            <button ng-click="amnesia(person)" ng-show="energy > person.getBrainwashCost()" class="recruit btn btn-info btn-xs">Brainwash ({{person.getBrainwashCost()}} energy)</button>
-
-                            <button ng-click="absorb(person)" ng-show="leader.getTransformCost('Absorb') <= energy && leader.knowsAbsorb()==true" class="recruit btn btn-primary btn-xs">Absorb ({{leader.getTransformCost('Absorb')}} energy)</button>
+                           
+                           
+                            <button ng-click="changeSelectedPerson(person)" ng-show="person.id != selectedAftermathPerson.id" class="recruit btn btn-primary btn-xs">Select</button>
+                            <span ng-show="person.id == selectedAftermathPerson.id" style="background: red; color: yellow;"> <<< </span>
 
                         </li>
+
+
+
                     </ul>
+                    <hr />
+                    <span ng-show="defeatedAI.persons.length > 0">
+                        You are deciding the fate of:  <b>{{selectedAftermathPerson.fullName()}}</b>
+                        <button ng-click="recruit(selectedAftermathPerson)" ng-show="selectedAftermathPerson.getRecruitmentCost() <= energy" class="recruit btn btn-success btn-xs">Recruit ({{selectedAftermathPerson.getRecruitmentCost()}} energy)</button>
+
+                        <span ng-repeat="spell in leader.finishingSpells"><button ng-click="inanimate(selectedAftermathPerson, spell)" ng-show="leader.getTransformCost(spell) <= energy && leader.itemIsSpell(spell)== true" class="recruit btn btn-danger btn-xs">Turn into {{spell}} ({{leader.getTransformCost(spell)}} energy))</button></span>
+
+                        <button ng-click="amnesia(selectedAftermathPerson)" ng-show="energy > selectedAftermathPerson.getBrainwashCost()" class="recruit btn btn-info btn-xs">Brainwash ({{selectedAftermathPerson.getBrainwashCost()}} energy)</button>
+
+                        <button ng-click="absorb(selectedAftermathPerson)" ng-show="leader.getTransformCost('Absorb') <= energy && leader.knowsAbsorb()==true" class="recruit btn btn-primary btn-xs">Absorb ({{selectedAftermathPerson.getTransformCost('Absorb')}} energy)</button>
+                    </span>
                 </div>
 
                 <div class="containerSmall" id="unequippedItems">

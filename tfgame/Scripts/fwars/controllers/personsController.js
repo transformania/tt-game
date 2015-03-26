@@ -4,6 +4,7 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
 
     $scope.page = "newPlayer";
     $scope.pageBack = "";
+    $scope.randomEncounter = "";
 
     $scope.personsPlayer = new PersonGroup();
     $scope.personsAI = new PersonGroup();
@@ -264,15 +265,28 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
     }
 
     $scope.endDay = function () {
+
         $scope.timeOfDay = "Morning";
         $scope.logs = [];
         $scope.personsPlayer.healGroup(15);
         $scope.energy = $scope.energyMax;
         $scope.day++;
 
+        var roll = Math.random();
+        console.log(roll);
+
+        if (roll < .5) {
+            // launch random encounter page
+            $scope.page = "randomEncounter";
+        } else {
+            // launch buy/sell page
+            $scope.page = "buySell";
+        }
+    }
+
+    $scope.randomEncounterContinue = function () {
         // launch buy/sell page
         $scope.page = "buySell";
-
     }
 
     $scope.sellItem = function (item) {

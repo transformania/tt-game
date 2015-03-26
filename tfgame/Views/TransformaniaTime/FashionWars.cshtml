@@ -33,10 +33,10 @@
         <div class="containerPlus">
             <span class="label label-default" style="display: inline-block; margin-bottom: 0px !important; vertical-align: middle;">Day <b>{{day}}</b></span> <span class="btn btn-default btn-xs" style="display: inline-block; margin-bottom: 0px !important; vertical-align: middle;">{{timeOfDay}}</span>
             <span class="label label-default" style="display: inline-block; margin-bottom: 0px !important; vertical-align: middle;">Money</span> <span class="btn btn-default btn-xs" style="display: inline-block; margin-bottom: 0px !important; vertical-align: middle;"><b>{{money}}</b>$</span>
-            <span class="label label-default" style="display: inline-block; margin-bottom: 0px !important; vertical-align: middle;">Infamy</span> <span class="btn btn-default btn-xs" style="display: inline-block; margin-bottom: 0px !important; vertical-align: middle;"><b>{{infamy}}</b></span> 
+            <span class="label label-default" style="display: inline-block; margin-bottom: 0px !important; vertical-align: middle;">Infamy</span> <span class="btn btn-default btn-xs" style="display: inline-block; margin-bottom: 0px !important; vertical-align: middle;"><b>{{infamy}}</b></span>
             <span class="label label-default" style="display: inline-block; margin-bottom: 0px !important; vertical-align: middle;">Energy</span>
-                <div class="progress" style="width: 150px; display: inline-block; margin-bottom: 0px !important; vertical-align: middle;">
-                    <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="{{energy}}" aria-valuemin="0" aria-valuemax="{{maxEnergy}}" ng-style="{width : ( getEnergyPercentage() + '%' ) }">
+            <div class="progress" style="width: 150px; display: inline-block; margin-bottom: 0px !important; vertical-align: middle;">
+                <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="{{energy}}" aria-valuemin="0" aria-valuemax="{{maxEnergy}}" ng-style="{width : ( getEnergyPercentage() + '%' ) }">
                     <span class="badge">{{energy}}</span>
                 </div>
             </div>
@@ -77,12 +77,14 @@
 
             <div ng-show="page == 'buySell'">
                 <button class=" recruit btn btn-default" ng-click="showEquipMembersView()">
-                Equip Members</button>
+                    Equip Members
+                </button>
             </div>
 
             <div ng-show="page == 'assign'">
                 <button class=" recruit btn btn-info" ng-click="showTeachSpells()">
-                Teach Spells</button>
+                    Teach Spells
+                </button>
             </div>
 
             <div ng-show="page == 'teach'">
@@ -215,7 +217,7 @@
                             <span ng-repeat="form in person.getPromotionForms()">
                                 <button class="recruit btn btn-primary btn-xs" ng-click="promote(person,form)" ng-show="person.level >= person.levelRequiredForPromotion()">Promote to {{form}}</button>
                             </span>
-                                 
+
                         </li>
                     </ul>
                     <button class="recruit btn btn-primary btn-xs" ng-click="viewUpgrades()">Upgrade Personal Skills</button>
@@ -252,7 +254,7 @@
             <div ng-show="page == 'buySell'">
                 <p>It's another bright day and your soul item dealer is stopping by.  You can sell your inanimate victims or purchase some new powerful items for them if you wish.  You have {{money}} dollars.</p>
 
-                <div class ="containerSmall" id="unequippedItems">
+                <div class="containerSmall" id="unequippedItems">
                     <h3>Your inventory:</h3>
                     <ul>
                         <li ng-repeat="item in unequippedItems.items">
@@ -321,7 +323,7 @@
 
                     <p>You may teach your covenant members some new spells to cast against their defeated opponents right in battle.</p>
 
-<<<<<<< HEAD
+                    <<<<<<< HEAD
                     <ul>
                         <li ng-repeat="person in personsPlayer.persons">
                             {{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}]
@@ -329,20 +331,20 @@
                             <span ng-show="person.id == currentlySelectedPerson.id">CURRENT</span>
                         </li>
                     </ul>
-=======
-                <p>Teaching {{currentlySelectedPerson.fullName()}}...</p>
-                <ul>
-                    <li ng-repeat="item in itemsMap">
-                        {{item.name}} ({{item.spellTrainingCost}} dollars)
-                        <button class="recruit btn btn-warning" ng-show="money >= item.spellTrainingCost && currentlySelectedPerson.knowsSpell(item.name) == false && currentlySelectedPerson.canLearnSpells()==true" ng-click="teachSpell(item.name)">Train</button>
-                        <span ng-show="currentlySelectedPerson.knowsSpell(item.name) == true">(Already known)</span>
-                    </li>
-                </ul>
->>>>>>> 21e3e7b070d016b3183b49c6efeb244299147bcb
+                    =======
+                    <p>Teaching {{currentlySelectedPerson.fullName()}}...</p>
+                    <ul>
+                        <li ng-repeat="item in itemsMap">
+                            {{item.name}} ({{item.spellTrainingCost}} dollars)
+                            <button class="recruit btn btn-warning" ng-show="money >= item.spellTrainingCost && currentlySelectedPerson.knowsSpell(item.name) == false && currentlySelectedPerson.canLearnSpells()==true" ng-click="teachSpell(item.name)">Train</button>
+                            <span ng-show="currentlySelectedPerson.knowsSpell(item.name) == true">(Already known)</span>
+                        </li>
+                    </ul>
+                    >>>>>>> 21e3e7b070d016b3183b49c6efeb244299147bcb
 
                     <button class="recruit btn btn-default" ng-click="teachPrevious()" ng-show="personsPlayer.persons.length > 0">Previous</button>
                     <button class="recruit btn btn-default" ng-click="teachNext()" ng-show="personsPlayer.persons.length > 0">Next</button>
-                    </div>
+                </div>
                 <div class="containerSmall">
                     <p>Teaching {{currentlySelectedPerson.fullName()}}...</p>
                     <ul>
@@ -361,10 +363,17 @@
                 <p><i>{{detailedItemSelection.description}}</i></p>
                 <p>Extra HP:  {{detailedItemSelection.bonusHP}}</p>
                 <p>Value:  {{detailedItemSelection.value}}</p>
-                
+
 
 
                 <button class="recruit btn btn-default" ng-click="detailBack()">Back</button>
+            </div>
+
+            <div ng-show="page=='randomEncounter' ">
+                <div class="containerSmall">
+                    <h3>Random encounter!</h3>
+                    <button class="recruit btn btn-default" ng-click="randomEncounterContinue()">Continue</button>
+                </div>
             </div>
 
             <div id="log" ng-show="logsView">
@@ -372,9 +381,6 @@
                     <span ng-bind-html="log.message"></span>
                 </p>
             </div>
-
-           
-
 
             <button class="recruit btn btn-default" ng-click="debug_fullXP()">Max XP</button>
             <button class="recruit btn btn-default" ng-click="debug_fullEnergy()">Max Energy</button>

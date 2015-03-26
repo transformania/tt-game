@@ -3403,20 +3403,24 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play");
             }
 
+
+            bool dungeonHalfPoints = false;
+
             // don't allow items or pets to struggle while their owner is online in the dungeon
-            if (itemMe.OwnerId > 0)
+            if (itemMe.OwnerId > 0 && me.GameMode < 2)
             {
                 Player owner = PlayerProcedures.GetPlayer(itemMe.OwnerId);
 
-                if (owner.IsInDungeon() == true && PlayerProcedures.PlayerIsOffline(owner) == false && owner.Form != PvPStatics.DungeonDemon)
-                {
-                    TempData["Error"] = "The dark powers of the dungeon prevent you from being able to fight your transformation while your owner is online.";
-                    return RedirectToAction("Play");
-                }
+                //if (owner.IsInDungeon() == true && PlayerProcedures.PlayerIsOffline(owner) == false && owner.Form != PvPStatics.DungeonDemon)
+                //{
+                //    TempData["Error"] = "The dark powers of the dungeon prevent you from being able to fight your transformation while your owner is online.";
+                //    return RedirectToAction("Play");
+                //}
+                dungeonHalfPoints = true;
             }
-        
 
-            TempData["Result"] = InanimateXPProcedures.ReturnToAnimate(me);
+
+            TempData["Result"] = InanimateXPProcedures.ReturnToAnimate(me, dungeonHalfPoints);
             return RedirectToAction("Play");
         }
 

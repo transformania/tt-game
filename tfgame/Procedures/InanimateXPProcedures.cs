@@ -62,6 +62,16 @@ namespace tfgame.Procedures
 
             decimal xpGain = 0;
 
+            // get the number of inanimate accounts under this IP
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            decimal playerCount = playerRepo.Players.Where(p => p.IpAddress == me.IpAddress && (p.Mobility == "inanimate" || p.Mobility == "animal") && p.MembershipId > 0).Count();
+
+            if (playerCount == 0)
+            {
+                playerCount = 1;
+            }
+            xpGain = xpGain / playerCount;
+
             InanimateXP xp = inanimXpRepo.InanimateXPs.FirstOrDefault(i => i.OwnerId == playerId);
 
             if (xp == null)
@@ -69,7 +79,7 @@ namespace tfgame.Procedures
                 xp = new InanimateXP
                 {
                     OwnerId = playerId,
-                    Amount = xpGain,
+                    Amount = xpGain / playerCount,
                     TimesStruggled = -6*me.Level,
                     LastActionTimestamp = DateTime.UtcNow,
                     LastActionTurnstamp = currentGameTurn-1,
@@ -110,6 +120,9 @@ namespace tfgame.Procedures
 
                 xpGain += Convert.ToDecimal(timeBonus) * InanimateXPStatics.XPGainPerInanimateAction;
 
+
+                xpGain = xpGain / playerCount;
+
                 if (me.Mobility == "inanimate")
                 {
                     new Thread(() =>
@@ -131,15 +144,7 @@ namespace tfgame.Procedures
 
             string resultMessage = "  ";
 
-            // get the number of inanimate accounts under this IP
-            IPlayerRepository playerRepo = new EFPlayerRepository();
-            decimal playerCount = playerRepo.Players.Where(p => p.IpAddress == me.IpAddress && p.Mobility == "inanimate" && p.MembershipId > 0).Count();
-
-            if (playerCount == 0)
-            {
-                playerCount = 1;
-            }
-            xpGain = xpGain / playerCount;
+          
 
             if (xp.Amount >= InanimateXPStatics.XP__LevelupRequirements[inanimateMe.Level])
             {
@@ -223,8 +228,9 @@ namespace tfgame.Procedures
 
         }
 
-        public static string ReturnToAnimate(Player player)
+        public static string ReturnToAnimate(Player player, bool dungeonHalfPoints)
         {
+
 
             IInanimateXPRepository inanimXpRepo = new EFInanimateXPRepository();
             IItemRepository itemRepo = new EFItemRepository();
@@ -285,6 +291,12 @@ namespace tfgame.Procedures
 
             Random rand = new Random();
             double roll = rand.NextDouble() * 100;
+
+            // if player is in dungeon, make struggling chance much lower
+            if (dungeonHalfPoints == true)
+            {
+                roll = roll * 3;
+            }
 
             Item dbPlayerItem = ItemProcedures.GetItemByVictimName(player.FirstName, player.LastName);
 

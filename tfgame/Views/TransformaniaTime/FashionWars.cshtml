@@ -82,15 +82,29 @@
                 <button class=" recruit btn btn-default" ng-click="showEquipMembersView()">
                     Equip Members
                 </button>
-            </div>
-
-            <div ng-show="page == 'assign'">
                 <button class=" recruit btn btn-info" ng-click="showTeachSpells()">
                     Teach Spells
                 </button>
+                <button class="recruit btn btn-default" ng-show="newfight_btn" ng-click="chooseBattleground()">Choose Battleground</button>
+            </div>
+
+            <div ng-show="page == 'assign'">
+                <button class=" recruit btn btn-default" ng-click="showBuySell()">
+                    Purchase / Sell Inventory
+                </button>
+                <button class=" recruit btn btn-info" ng-click="showTeachSpells()">
+                    Teach Spells
+                </button>
+                <button class="recruit btn btn-default" ng-show="newfight_btn" ng-click="chooseBattleground()">Choose Battleground</button>
             </div>
 
             <div ng-show="page == 'teach'">
+                <button class=" recruit btn btn-default" ng-click="showBuySell()">
+                    Purchase / Sell Inventory
+                </button>
+                <button class=" recruit btn btn-default" ng-click="showEquipMembersView()">
+                    Equip Members
+                </button>
                 <button class="recruit btn btn-default" ng-show="newfight_btn" ng-click="chooseBattleground()">Choose Battleground</button>
             </div>
 

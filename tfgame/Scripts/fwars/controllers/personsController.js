@@ -288,6 +288,11 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
         $scope.page = "buySell";
     }
 
+    $scope.showBuySell = function () {
+        // launch buy/sell page
+        $scope.page = "buySell";
+    }
+
     $scope.sellItem = function (item) {
         $scope.unequippedItems.removeItem(item);
         $scope.money += Math.floor(item.getSellPrice());

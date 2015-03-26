@@ -7,6 +7,7 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
     $scope.randomEncounter = "";
 
     $scope.personsPlayer = new PersonGroup();
+    $scope.personsPlayerBteam = new PersonGroup();
     $scope.personsAI = new PersonGroup();
     $scope.defeatedAI = new PersonGroup();
     $scope.defeatedPlayer = new PersonGroup();
@@ -88,6 +89,8 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
         $scope.aftermathBtn = false;
         $scope.timeOfDay = "Afternoon";
         $scope.defeatedPlayer.persons = [];
+        $scope.defeatedAI.persons = [];
+        $scope.personsAI.persons = [];
     }
 
     $scope.chooseBattlegroundSend = function (location, variation) {
@@ -317,6 +320,10 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
         $scope.currentlySelectedItem = $scope.unequippedItems.items[0];
     }
 
+    $scope.showPartyStatus = function () {
+        // launch promotions page
+        $scope.page = "partyStatus";
+    }
 
     $scope.equipNext = function () {
         var index = $scope.unequippedItems.items.indexOf($scope.currentlySelectedItem);

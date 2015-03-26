@@ -78,6 +78,8 @@
                 <button class="recruit btn btn-default" ng-click="endDay()">End day</button>
             </div>
 
+
+
             <div ng-show="page == 'buySell'">
                 <button class=" recruit btn btn-default" ng-click="showEquipMembersView()">
                     Equip Members
@@ -85,7 +87,9 @@
                 <button class=" recruit btn btn-info" ng-click="showTeachSpells()">
                     Teach Spells
                 </button>
-                <button class="recruit btn btn-default" ng-show="newfight_btn" ng-click="chooseBattleground()">Choose Battleground</button>
+             
+                <button class="recruit btn btn-default" ng-click="showPartyStatus()">View Covenant Status</button>
+                <button class="recruit btn btn-default" ng-show="newfight_btn" ng-click="chooseBattleground()">Proceed to Battle</button>
             </div>
 
             <div ng-show="page == 'assign'">
@@ -95,7 +99,22 @@
                 <button class=" recruit btn btn-info" ng-click="showTeachSpells()">
                     Teach Spells
                 </button>
-                <button class="recruit btn btn-default" ng-show="newfight_btn" ng-click="chooseBattleground()">Choose Battleground</button>
+               
+                <button class="recruit btn btn-default" ng-click="showPartyStatus()">View Covenant Status</button>
+                <button class="recruit btn btn-default" ng-show="newfight_btn" ng-click="chooseBattleground()">Proceed to Battle</button>
+            </div>
+
+            <div ng-show="page == 'partyStatus'">
+                <button class=" recruit btn btn-default" ng-click="showEquipMembersView()">
+                    Equip Members
+                </button>
+                <button class=" recruit btn btn-default" ng-click="showBuySell()">
+                    Purchase / Sell Inventory
+                </button>
+                <button class=" recruit btn btn-info" ng-click="showTeachSpells()">
+                    Teach Spells
+                </button>
+                <button class="recruit btn btn-default" ng-show="newfight_btn" ng-click="chooseBattleground()">Proceed to Battle</button>
             </div>
 
             <div ng-show="page == 'teach'">
@@ -105,7 +124,9 @@
                 <button class=" recruit btn btn-default" ng-click="showEquipMembersView()">
                     Equip Members
                 </button>
-                <button class="recruit btn btn-default" ng-show="newfight_btn" ng-click="chooseBattleground()">Choose Battleground</button>
+
+                <button class="recruit btn btn-default" ng-click="showPartyStatus()">View Covenant Status</button>
+                <button class="recruit btn btn-default" ng-show="newfight_btn" ng-click="chooseBattleground()">Proceed to Battle</button>
             </div>
 
         </div>
@@ -334,70 +355,76 @@
                 </div>
             </div>
 
-            <!--Teaching spells page-->
-            <div ng-show="page == 'teach'">
-                <div class="containerSmall">
-                    <h3>Teach new Spells to Members</h3>
 
-                    <p>You may teach your covenant members some new spells to cast against their defeated opponents right in battle.</p>
+            <div ng-show="page == 'partyStatus'">
+                <h3>Covenant Member Status</h3>
+                <p>You can transfer party members between your active team and backup members here.</p>
+            </div>
 
-                    <ul>
-                        <li ng-repeat="person in personsPlayer.persons">
-                            <span ng-show="person.id == currentlySelectedPerson.id" style="background: red; color: yellow;"> >>> </span>
-                            {{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}]
-                            Knows: <span ng-repeat="spell in person.finishingSpells"> <b>{{spell}}</b>,</span>
-                            <span ng-show="person.id == currentlySelectedPerson.id" style="background: red; color: yellow;"> <<< </span>
-                        </li>
-                    </ul>
+                <!--Teaching spells page-->
+                <div ng-show="page == 'teach'">
+                    <div class="containerSmall">
+                        <h3>Teach new Spells to Members</h3>
 
-                    <button class="recruit btn btn-default" ng-click="teachPrevious()" ng-show="personsPlayer.persons.length > 0">Previous</button>
-                    <button class="recruit btn btn-default" ng-click="teachNext()" ng-show="personsPlayer.persons.length > 0">Next</button>
+                        <p>You may teach your covenant members some new spells to cast against their defeated opponents right in battle.</p>
+
+                        <ul>
+                            <li ng-repeat="person in personsPlayer.persons">
+                                <span ng-show="person.id == currentlySelectedPerson.id" style="background: red; color: yellow;"> >>> </span>
+                                {{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}]
+                                Knows: <span ng-repeat="spell in person.finishingSpells"> <b>{{spell}}</b>,</span>
+                                <span ng-show="person.id == currentlySelectedPerson.id" style="background: red; color: yellow;"> <<< </span>
+                            </li>
+                        </ul>
+
+                        <button class="recruit btn btn-default" ng-click="teachPrevious()" ng-show="personsPlayer.persons.length > 0">Previous</button>
+                        <button class="recruit btn btn-default" ng-click="teachNext()" ng-show="personsPlayer.persons.length > 0">Next</button>
+                    </div>
+                    <div class="containerSmall">
+                        <p>Teaching {{currentlySelectedPerson.fullName()}}...</p>
+                        <ul>
+                            <li ng-repeat="item in itemsMap">
+                                {{item.name}} ({{item.spellTrainingCost}} dollars)
+                                <button class="recruit btn btn-warning btn-xs" ng-show="money >= item.spellTrainingCost && currentlySelectedPerson.knowsSpell(item.name) == false && currentlySelectedPerson.canLearnSpells()==true" ng-click="teachSpell(item.name)">Train</button>
+                                <span ng-show="currentlySelectedPerson.knowsSpell(item.name) == true">(Already known)</span>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="containerSmall">
-                    <p>Teaching {{currentlySelectedPerson.fullName()}}...</p>
-                    <ul>
-                        <li ng-repeat="item in itemsMap">
-                            {{item.name}} ({{item.spellTrainingCost}} dollars)
-                            <button class="recruit btn btn-warning btn-xs" ng-show="money >= item.spellTrainingCost && currentlySelectedPerson.knowsSpell(item.name) == false && currentlySelectedPerson.canLearnSpells()==true" ng-click="teachSpell(item.name)">Train</button>
-                            <span ng-show="currentlySelectedPerson.knowsSpell(item.name) == true">(Already known)</span>
-                        </li>
-                    </ul>
+
+                <div ng-show="page=='itemDetail' ">
+                    <h3><b>{{detailedItemSelection.name}}</b></h3>
+
+                    <p><i>{{detailedItemSelection.description}}</i></p>
+                    <p>Extra HP:  {{detailedItemSelection.bonusHP}}</p>
+                    <p>Value:  {{detailedItemSelection.value}}</p>
+
+
+
+                    <button class="recruit btn btn-default" ng-click="detailBack()">Back</button>
+                </div>
+
+                <div ng-show="page=='randomEncounter' ">
+                    <div class="containerSmall">
+                        <h3>Random encounter!</h3>
+                        <button class="recruit btn btn-default" ng-click="randomEncounterContinue()">Continue</button>
+                    </div>
+                </div>
+
+                <div id="log" ng-show="logsView">
+                    <p ng-repeat="log in logs">
+                        <span ng-bind-html="log.message"></span>
+                    </p>
+                </div>
+
+                <div style="display: block; position: absolute; left: 120px; top: 50px;">
+                    <button class="recruit btn btn-default" ng-click="debug_fullXP()">Max XP</button><br /><br />
+                    <button class="recruit btn btn-default" ng-click="debug_fullEnergy()">Max Energy</button><br /><br />
+                    <button class="recruit btn btn-default" ng-click="debug_moreMoney()">+1000 money</button><br /><br />
+                    <button class="recruit btn btn-default" ng-click="debug_spawnMeMembers()">Spawn members</button><br /><br />
+                    <button class="recruit btn btn-default" onclick="reload()">Reload page</button>
                 </div>
             </div>
-
-            <div ng-show="page=='itemDetail' ">
-                <h3><b>{{detailedItemSelection.name}}</b></h3>
-
-                <p><i>{{detailedItemSelection.description}}</i></p>
-                <p>Extra HP:  {{detailedItemSelection.bonusHP}}</p>
-                <p>Value:  {{detailedItemSelection.value}}</p>
-
-
-
-                <button class="recruit btn btn-default" ng-click="detailBack()">Back</button>
-            </div>
-
-            <div ng-show="page=='randomEncounter' ">
-                <div class="containerSmall">
-                    <h3>Random encounter!</h3>
-                    <button class="recruit btn btn-default" ng-click="randomEncounterContinue()">Continue</button>
-                </div>
-            </div>
-
-            <div id="log" ng-show="logsView">
-                <p ng-repeat="log in logs">
-                    <span ng-bind-html="log.message"></span>
-                </p>
-            </div>
-
-            <div style="display: block; position: absolute; left: 120px; top: 50px;">
-                <button class="recruit btn btn-default" ng-click="debug_fullXP()">Max XP</button><br /><br />
-                <button class="recruit btn btn-default" ng-click="debug_fullEnergy()">Max Energy</button><br /><br />
-                <button class="recruit btn btn-default" ng-click="debug_moreMoney()">+1000 money</button><br /><br />
-                <button class="recruit btn btn-default" ng-click="debug_spawnMeMembers()">Spawn members</button><br /><br />
-                <button class="recruit btn btn-default" onclick="reload()">Reload page</button>
-            </div>
-        </div>
     </div>
 </body>
 

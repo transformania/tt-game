@@ -22,46 +22,7 @@
 
 var formStatsMap = {};
 
-formStatsMap['Female Bystander'] = {
-    'baseHP': 2,
-    'graphic': 'Female_Bystander.jpg',
-    'description': '',
-    'gender': 'female',
-    'class': 'civilian',
-    'promotesTo': ['Witchling'],
-
-    'strengthAttack': 0,
-    'strengthDefense': 0,
-    'seductionAttack': 0,
-    'seductionDefense': 0,
-    'energyNeededToRecruit': 100,
-
-    'levelRequiredForPromotion': 3,
-    'xpNeededForLevelup': 2,
-
-
-    'brainwashCost': 15,
-};
-
-formStatsMap['Male Bystander'] = {
-    'baseHP': 2,
-    'graphic': 'Male_Bystander.jpg',
-    'description': '',
-    'gender': 'male',
-    'class': 'civilian',
-    'promotesTo': ['Witchling'],
-
-    'strengthAttack': 0,
-    'strengthDefense': 0,
-    'seductionAttack': 0,
-    'seductionDefense': 0,
-    'energyNeededToRecruit': 100,
-
-    'levelRequiredForPromotion': 3,
-    'xpNeededForLevelup': 2,
-    'brainwashCost': 15,
-};
-
+/* HERO CLASS */
 formStatsMap['Fashion Witch'] = {
     'baseHP': 50,
     'graphic': 'Fashion_Witch.jpg',
@@ -81,6 +42,28 @@ formStatsMap['Fashion Witch'] = {
     'brainwashCost': 9999,
 };
 
+/* FEMALE FORMS - NOOB CLASS */
+formStatsMap['Female Bystander'] = {
+    'baseHP': 2,
+    'graphic': 'Female_Bystander.jpg',
+    'description': '',
+    'gender': 'female',
+    'class': 'civilian',
+    'promotesTo': ['Witchling'],
+
+    'strengthAttack': 0,
+    'strengthDefense': 0,
+    'seductionAttack': 0,
+    'seductionDefense': 0,
+    'energyNeededToRecruit': 100,
+
+    'levelRequiredForPromotion': 5,
+    'xpNeededForLevelup': 2,
+
+
+    'brainwashCost': 15,
+};
+
 formStatsMap['Witchling'] = {
     'baseHP': 4,
     'graphic': 'Witchling.jpg',
@@ -95,7 +78,7 @@ formStatsMap['Witchling'] = {
     'seductionDefense': 0,
     'energyNeededToRecruit': 200,
 
-    'levelRequiredForPromotion': 5,
+    'levelRequiredForPromotion': 10,
     'xpNeededForLevelup': 5,
     'brainwashCost': 35,
 };
@@ -114,7 +97,66 @@ formStatsMap['Senior Witchling'] = {
     'seductionDefense': 3,
     'energyNeededToRecruit': 300,
 
-    'levelRequiredForPromotion': 83,
+    'levelRequiredForPromotion': 99,
     'xpNeededForLevelup': 8,
     'brainwashCost': 50,
 };
+
+/* MALE FORMS - NOOB CLASS */
+formStatsMap['Male Bystander'] = {
+    'baseHP': 2,
+    'graphic': 'Male_Bystander.jpg',
+    'description': '',
+    'gender': 'male',
+    'class': 'civilian',
+    'promotesTo': ['Apprentice'],
+
+    'strengthAttack': 0,
+    'strengthDefense': 0,
+    'seductionAttack': 0,
+    'seductionDefense': 0,
+    'energyNeededToRecruit': 100,
+
+    'levelRequiredForPromotion': 5,
+    'xpNeededForLevelup': 2,
+    'brainwashCost': 15,
+};
+
+formStatsMap['Apprentice'] = {
+    'baseHP': 4,
+    'graphic': 'Apprentice.jpg',
+    'description': '',
+    'gender': 'male',
+    'promotesTo': ['Mage'],
+    'class': 'witch',
+
+    'strengthAttack': 0,
+    'strengthDefense': 1,
+    'seductionAttack': 0,
+    'seductionDefense': 2,
+    'energyNeededToRecruit': 200,
+
+    'levelRequiredForPromotion': 10,
+    'xpNeededForLevelup': 5,
+    'brainwashCost': 35,
+};
+
+formStatsMap['Mage'] = {
+    'baseHP': 8,
+    'graphic': 'Mage.jpg',
+    'description': '',
+    'gender': 'male',
+    'promotesTo': [],
+    'class': 'witch',
+
+    'strengthAttack': 3,
+    'strengthDefense': 3,
+    'seductionAttack': 1,
+    'seductionDefense': 1,
+    'energyNeededToRecruit': 300,
+
+    'levelRequiredForPromotion': 99,
+    'xpNeededForLevelup': 8,
+    'brainwashCost': 50,
+};
+

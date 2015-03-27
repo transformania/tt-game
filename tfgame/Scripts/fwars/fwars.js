@@ -6,27 +6,18 @@ logs = [];
 
 var gameStatus = "";
 
-$(document).ready(function () {
-
-
-});
-
-
-
-
-
-
-
-
-// ----------------- ATTACK TEXT MAP ---------------------
-
-
 
 var spawnNumbers = {};
 
 
 
+/* 
+    defeatMessage[NEW FORM][OLD FORM] = {
 
+    New Form is what the victim is turning into
+    Old Form is what the victim is before their transformation
+
+*/
 
 var defeatMessage = {};
 

@@ -444,10 +444,17 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
     }
 
     $scope.showItemDetail = function (itemType) {
-        // launch promotions page
+        // launch item detail page
         $scope.pageBack = $scope.page;
         $scope.page = "itemDetail";
         $scope.detailedItemSelection = itemStatsMap[itemType];
+    }
+
+    $scope.showFormDetail = function (formType) {
+        // launch form detail page
+        $scope.pageBack = $scope.page;
+        $scope.page = "formDetail";
+        $scope.detailedFormSelection = formStatsMap[formType];
     }
 
     $scope.detailBack = function () {

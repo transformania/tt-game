@@ -152,7 +152,7 @@
                 <div class="row" style="padding-left: 15px; padding-right: 15px;">
                     <div class="containerSmall col-md-6 col-sm-12">
                         <div class="row">
-                            <div ng-repeat="person in personsPlayer.persons" class="spin-toggle col-md-4">
+                            <div ng-repeat="person in personsPlayer.persons" class="col-md-4">
                                 <div class="personList">
                                     {{person.firstName}} {{person.lastName}}<br />
                                     [lvl {{person.level}} {{person.type}}]<br />
@@ -381,8 +381,18 @@
                     <h3>Covenant Member Status</h3>
                     <p>You can transfer party members between your active team and backup members here.</p></div>
 
+<<<<<<< HEAD
                 <div class="containerSmall">
                     <h3>Active members</h3>
+=======
+                <ul>
+                    <li ng-repeat="person in personsPlayer.persons">
+                        {{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}][{{person.health}}/{{person.getMaxHP()}} HP] [{{person.items.length}} items equipped]
+                        <button ng-show="person.id != leader.id" ng-click="moveToBTeam(person, true)">Send to Backup Team</button>
+                        <button ng-click="showFormDetail(person.type)" class="recruit btn btn-info btn-xs">?</button>
+                    </li>
+                </ul>
+>>>>>>> 43cfce4ac296177f7dbfeb11c59bc51370d93c55
 
                     <ul>
                         <li ng-repeat="person in personsPlayer.persons">
@@ -446,6 +456,12 @@
 
                     <button class="recruit btn btn-default" ng-click="detailBack()">Back</button>
                 </div>
+
+            <div ng-show="page=='formDetail'">
+                <h3>{{detailedFormSelection.name}}</h3>
+                <p>{{detailedFormSelection.description}}</p>
+                <button class="recruit btn btn-default" ng-click="detailBack()">Back</button>
+            </div>
 
                 <div ng-show="page=='randomEncounter' ">
                     <div class="containerSmall">

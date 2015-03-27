@@ -24,9 +24,10 @@ var formStatsMap = {};
 
 /* HERO CLASS */
 formStatsMap['Fashion Witch'] = {
+    'name':'Fashion Witch',
     'baseHP': 50,
     'graphic': 'Fashion_Witch.jpg',
-    'description': '',
+    'description': 'A powerful woman knowledgeable of many types of magic... mainly improving fashion by turning people into new clothes!',
     'gender': 'female',
     'promotesTo': [],
     'class': 'witch',
@@ -44,9 +45,10 @@ formStatsMap['Fashion Witch'] = {
 
 /* FEMALE FORMS - NOOB CLASS */
 formStatsMap['Female Bystander'] = {
+    'name': 'Female Bystander',
     'baseHP': 2,
     'graphic': 'Female_Bystander.jpg',
-    'description': '',
+    'description': 'A regular, non-magical woman like the kind who make of the majority of the female population.',
     'gender': 'female',
     'class': 'civilian',
     'promotesTo': ['Witchling'],
@@ -65,8 +67,10 @@ formStatsMap['Female Bystander'] = {
 };
 
 formStatsMap['Witchling'] = {
+    'name': 'Witchling',
     'baseHP': 4,
     'graphic': 'Witchling.jpg',
+    'description': 'A young witch, still learning her newfound powers!',
     'description': '',
     'gender': 'female',
     'promotesTo': ['Senior Witchling'],
@@ -84,9 +88,10 @@ formStatsMap['Witchling'] = {
 };
 
 formStatsMap['Senior Witchling'] = {
+    'name': 'Senior Witchling',
     'baseHP': 8,
     'graphic': 'Senior_Witchling.jpg',
-    'description': '',
+    'description': 'A more accomplished witch, ready to move on to her specialization.',
     'gender': 'female',
     'promotesTo': [],
     'class': 'witch',
@@ -104,9 +109,10 @@ formStatsMap['Senior Witchling'] = {
 
 /* MALE FORMS - NOOB CLASS */
 formStatsMap['Male Bystander'] = {
+    'name': 'Male Bystander',
     'baseHP': 2,
     'graphic': 'Male_Bystander.jpg',
-    'description': '',
+    'description': 'A regular male human, the kind that most males in the area are like.',
     'gender': 'male',
     'class': 'civilian',
     'promotesTo': ['Apprentice'],
@@ -123,9 +129,10 @@ formStatsMap['Male Bystander'] = {
 };
 
 formStatsMap['Apprentice'] = {
+    'name': 'Apprentice',
     'baseHP': 4,
     'graphic': 'Apprentice.jpg',
-    'description': '',
+    'description': 'A male possessing some basic magic.',
     'gender': 'male',
     'promotesTo': ['Mage'],
     'class': 'witch',
@@ -142,9 +149,10 @@ formStatsMap['Apprentice'] = {
 };
 
 formStatsMap['Mage'] = {
+    'name': 'Mage',
     'baseHP': 8,
     'graphic': 'Mage.jpg',
-    'description': '',
+    'description': 'A male human posessing some slightly more powerful magic.',
     'gender': 'male',
     'promotesTo': [],
     'class': 'witch',

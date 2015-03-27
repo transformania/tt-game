@@ -57,7 +57,7 @@ formStatsMap['Female Bystander'] = {
     'seductionDefense': 0,
     'energyNeededToRecruit': 100,
 
-    'levelRequiredForPromotion': 5,
+    'levelRequiredForPromotion': 3,
     'xpNeededForLevelup': 2,
 
 
@@ -78,7 +78,7 @@ formStatsMap['Witchling'] = {
     'seductionDefense': 0,
     'energyNeededToRecruit': 200,
 
-    'levelRequiredForPromotion': 10,
+    'levelRequiredForPromotion': 5,
     'xpNeededForLevelup': 5,
     'brainwashCost': 35,
 };
@@ -117,7 +117,7 @@ formStatsMap['Male Bystander'] = {
     'seductionDefense': 0,
     'energyNeededToRecruit': 100,
 
-    'levelRequiredForPromotion': 5,
+    'levelRequiredForPromotion': 3,
     'xpNeededForLevelup': 2,
     'brainwashCost': 15,
 };
@@ -136,7 +136,7 @@ formStatsMap['Apprentice'] = {
     'seductionDefense': 2,
     'energyNeededToRecruit': 200,
 
-    'levelRequiredForPromotion': 10,
+    'levelRequiredForPromotion': 5,
     'xpNeededForLevelup': 5,
     'brainwashCost': 35,
 };

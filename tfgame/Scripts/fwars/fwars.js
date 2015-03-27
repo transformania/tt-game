@@ -79,6 +79,20 @@ defeatMessage['Senior Witchling']['Generic'] = {
     ],
 };
 
+defeatMessage['Apprentice'] = {};
+defeatMessage['Apprentice']['Generic'] = {
+    'texts': [
+    '[VICTIM] apprentice text',
+    ],
+};
+
+defeatMessage['Mage'] = {};
+defeatMessage['Mage']['Generic'] = {
+    'texts': [
+    '[VICTIM] mage text',
+    ],
+};
+
 defeatMessage['Absorb'] = {};
 defeatMessage['Absorb']['Generic'] = {
     'texts': [

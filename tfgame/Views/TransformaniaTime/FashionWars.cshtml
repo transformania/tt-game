@@ -83,52 +83,52 @@
 
 
             <div ng-show="page == 'buySell'">
-                <button class=" recruit btn btn-default" ng-click="showEquipMembersView()">
+                <button class="btn btn-default" ng-click="showEquipMembersView()">
                     Equip Members
                 </button>
-                <button class=" recruit btn btn-info" ng-click="showTeachSpells()">
+                <button class="btn btn-default" ng-click="showTeachSpells()">
                     Teach Spells
                 </button>
 
                 <button class="recruit btn btn-default" ng-click="showPartyStatus()">View Covenant Status</button>
-                <button class="recruit btn btn-default" ng-show="newfight_btn" ng-click="chooseBattleground()">Proceed to Battle</button>
+                <button class="recruit btn btn-danger" ng-show="newfight_btn" ng-click="chooseBattleground()">Proceed to Battle</button>
             </div>
 
             <div ng-show="page == 'assign'">
-                <button class=" recruit btn btn-default" ng-click="showBuySell()">
+                <button class="btn btn-default" ng-click="showBuySell()">
                     Purchase / Sell Inventory
                 </button>
-                <button class=" recruit btn btn-info" ng-click="showTeachSpells()">
+                <button class="btn btn-default" ng-click="showTeachSpells()">
                     Teach Spells
                 </button>
 
                 <button class="recruit btn btn-default" ng-click="showPartyStatus()">View Covenant Status</button>
-                <button class="recruit btn btn-default" ng-show="newfight_btn" ng-click="chooseBattleground()">Proceed to Battle</button>
+                <button class="recruit btn btn-danger" ng-show="newfight_btn" ng-click="chooseBattleground()">Proceed to Battle</button>
             </div>
 
             <div ng-show="page == 'partyStatus'">
-                <button class=" recruit btn btn-default" ng-click="showEquipMembersView()">
+                <button class="btn btn-default" ng-click="showEquipMembersView()">
                     Equip Members
                 </button>
-                <button class=" recruit btn btn-default" ng-click="showBuySell()">
+                <button class="btn btn-default" ng-click="showBuySell()">
                     Purchase / Sell Inventory
                 </button>
-                <button class=" recruit btn btn-default" ng-click="showTeachSpells()">
+                <button class="btn btn-default" ng-click="showTeachSpells()">
                     Teach Spells
                 </button>
                 <button class="recruit btn btn-danger" ng-show="newfight_btn" ng-click="chooseBattleground()">Proceed to Battle</button>
             </div>
 
             <div ng-show="page == 'teach'">
-                <button class=" recruit btn btn-default" ng-click="showBuySell()">
+                <button class="btn btn-default" ng-click="showBuySell()">
                     Purchase / Sell Inventory
                 </button>
-                <button class=" recruit btn btn-default" ng-click="showEquipMembersView()">
+                <button class="btn btn-default" ng-click="showEquipMembersView()">
                     Equip Members
                 </button>
 
                 <button class="recruit btn btn-default" ng-click="showPartyStatus()">View Covenant Status</button>
-                <button class="recruit btn btn-default" ng-show="newfight_btn" ng-click="chooseBattleground()">Proceed to Battle</button>
+                <button class="recruit btn btn-danger" ng-show="newfight_btn" ng-click="chooseBattleground()">Proceed to Battle</button>
             </div>
 
             <div ng-show="page == 'selfUpgrade'">
@@ -159,7 +159,7 @@
                                     <img class="portraitSmall" ng-src="~/Images/FashionWars/Forms/{{person.getGraphic()}}" />
                                     <div class="progress">
                                         <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{person.health}}" aria-valuemin="0" aria-valuemax="{{person.getMaxHP()}}" ng-style="{width : ( person.getHealthAsPercentage() + '%' ) }">
-                                            <span>[{{person.health}}/{{person.getMaxHP()}} HP]</span>
+                                            <span class="badge">{{person.health}}/{{person.getMaxHP()}}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -175,7 +175,7 @@
                                 <img class="portraitSmall" ng-src="~/Images/FashionWars/Forms/{{person.getGraphic()}}" />
                                 <div class="progress">
                                     <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="{{person.health}}" aria-valuemin="0" aria-valuemax="{{person.getMaxHP()}}" ng-style="{width : ( person.getHealthAsPercentage() + '%' ) }">
-                                        <span>[{{person.health}}/{{person.getMaxHP()}} HP]</span>
+                                        <span class="badge">{{person.health}}/{{person.getMaxHP()}}</span>
                                     </div>
                                 </div>
                             </div>
@@ -348,15 +348,16 @@
                             <span ng-show="item.id == currentlySelectedItem.id" style="background: red; color: yellow;"> >>> </span>
                             {{item.type}} {{item.getVictimName()}}
                             <span ng-show="item.id == currentlySelectedItem.id" style="background: red; color: yellow;"> <<< </span>
+                            <button ng-click="equipSelectedItem(item)" ng-show="item.id != currentlySelectedItem.id" class="recruit btn btn-primary btn-xs">Select</button>
                         </li>
                     </ul>
 
-                    <div ng-show="unequippedItems.items.length > 0">
-                        <span>Currently assigning {{currentlySelectedItem.type}} {{item.getVictimName()}}<br /></span>
-                        <button class="recruit btn btn-default" ng-click="equipPrevious()" ng-show="unequippedItems.items.length > 0">Previous</button>
-                        <button class="recruit btn btn-default" ng-click="equipNext()" ng-show="unequippedItems.items.length > 0">Next</button>
 
+                    <!-- item.getVictimName doens't work here! -->
+                    <div ng-show="unequippedItems.items.length > 0">
+                        <span style="margin-top: 10px; margin-bottom: 10px;">Currently assigning {{currentlySelectedItem.type}} {{item.getVictimName()}}</span>
                     </div>
+                    <!-- item.getVictimName doens't work here! -->
                 </div>
 
                 <div class="containerSmall">
@@ -418,11 +419,9 @@
                             {{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}]
                             Knows: <span ng-repeat="spell in person.finishingSpells"> <b>{{spell}}</b>,</span>
                             <span ng-show="person.id == currentlySelectedPerson.id" style="background: red; color: yellow;"> <<< </span>
+                            <button ng-click="teachSelectedPerson(person)" ng-show="person.id != currentlySelectedPerson.id" class="btn btn-primary btn-xs">Select</button>
                         </li>
                     </ul>
-
-                    <button class="recruit btn btn-default" ng-click="teachPrevious()" ng-show="personsPlayer.persons.length > 0">Previous</button>
-                    <button class="recruit btn btn-default" ng-click="teachNext()" ng-show="personsPlayer.persons.length > 0">Next</button>
                 </div>
                 <div class="containerSmall">
                     <p>Teaching {{currentlySelectedPerson.fullName()}}...</p>

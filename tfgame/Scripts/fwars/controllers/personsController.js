@@ -318,7 +318,9 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
     $scope.sellItem = function (item) {
         $scope.unequippedItems.removeItem(item);
         $scope.money += Math.floor(item.getSellPrice());
-        var newlog = new Log("You sold " + item.getVictimName() + " for " + item.getBasePrice() + " dollars.  May they find a wonderful owner who will treasure them!");
+        //        var newlog = new Log("You sold " + item.getVictimName() + " for " + item.getBasePrice() + " dollars.  May they find a wonderful owner who will treasure them!");
+        // needs itemType
+        var newlog = new Log("You sold " + item.getVictimName() + " for " + item.getSellPrice() + " dollars.  May they find a wonderful owner who will treasure them!");
         $scope.logs.push(newlog);
     }
 
@@ -344,6 +346,11 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
         $scope.page = "partyStatus";
     }
 
+    $scope.equipSelectedItem = function (newItem) {
+        $scope.currentlySelectedItem = newItem;
+    }
+
+    /*
     $scope.equipNext = function () {
         var index = $scope.unequippedItems.items.indexOf($scope.currentlySelectedItem);
         index++;
@@ -362,7 +369,7 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
         if ($scope.currentlySelectedItem === undefined) {
             $scope.currentlySelectedItem = $scope.unequippedItems.items[$scope.unequippedItems.items.length - 1];
         }
-    }
+    }*/
 
     $scope.assignTo = function (person, item) {
         person.giveItem(item);
@@ -400,6 +407,11 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
         $scope.logs = [];
     }
 
+    $scope.teachSelectedPerson = function (newPerson) {
+        $scope.currentlySelectedPerson = newPerson;
+    }
+
+    /*
     $scope.teachNext = function () {
         var index = $scope.personsPlayer.persons.indexOf($scope.currentlySelectedPerson);
         index++;
@@ -418,7 +430,7 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
         if ($scope.currentlySelectedPerson === undefined) {
             $scope.currentlySelectedPerson = $scope.personsPlayer.persons[$scope.personsPlayer.persons.length - 1];
         }
-    }
+    }*/
 
     $scope.teachSpell = function (itemName) {
         var spellInfo = itemStatsMap[itemName];

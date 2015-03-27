@@ -75,61 +75,67 @@
             </div>
 
             <div ng-show="page == 'promotions'">
-                <button class="recruit btn btn-default" ng-click="endDay()">End day</button>
+                <button class="recruit btn btn-default" ng-click="viewUpgrades()">Upgrade Personal Skills</button>
+                <button class="recruit btn btn-danger" ng-click="endDay()">End day</button>
             </div>
 
+            
 
 
-            <div ng-show="page == 'buySell'">
-                <button class=" recruit btn btn-default" ng-click="showEquipMembersView()">
-                    Equip Members
-                </button>
-                <button class=" recruit btn btn-info" ng-click="showTeachSpells()">
-                    Teach Spells
-                </button>
-             
-                <button class="recruit btn btn-default" ng-click="showPartyStatus()">View Covenant Status</button>
-                <button class="recruit btn btn-default" ng-show="newfight_btn" ng-click="chooseBattleground()">Proceed to Battle</button>
+                <div ng-show="page == 'buySell'">
+                    <button class=" recruit btn btn-default" ng-click="showEquipMembersView()">
+                        Equip Members
+                    </button>
+                    <button class=" recruit btn btn-info" ng-click="showTeachSpells()">
+                        Teach Spells
+                    </button>
+
+                    <button class="recruit btn btn-default" ng-click="showPartyStatus()">View Covenant Status</button>
+                    <button class="recruit btn btn-default" ng-show="newfight_btn" ng-click="chooseBattleground()">Proceed to Battle</button>
+                </div>
+
+                <div ng-show="page == 'assign'">
+                    <button class=" recruit btn btn-default" ng-click="showBuySell()">
+                        Purchase / Sell Inventory
+                    </button>
+                    <button class=" recruit btn btn-info" ng-click="showTeachSpells()">
+                        Teach Spells
+                    </button>
+
+                    <button class="recruit btn btn-default" ng-click="showPartyStatus()">View Covenant Status</button>
+                    <button class="recruit btn btn-default" ng-show="newfight_btn" ng-click="chooseBattleground()">Proceed to Battle</button>
+                </div>
+
+                <div ng-show="page == 'partyStatus'">
+                    <button class=" recruit btn btn-default" ng-click="showEquipMembersView()">
+                        Equip Members
+                    </button>
+                    <button class=" recruit btn btn-default" ng-click="showBuySell()">
+                        Purchase / Sell Inventory
+                    </button>
+                    <button class=" recruit btn btn-default" ng-click="showTeachSpells()">
+                        Teach Spells
+                    </button>
+                    <button class="recruit btn btn-danger" ng-show="newfight_btn" ng-click="chooseBattleground()">Proceed to Battle</button>
+                </div>
+
+                <div ng-show="page == 'teach'">
+                    <button class=" recruit btn btn-default" ng-click="showBuySell()">
+                        Purchase / Sell Inventory
+                    </button>
+                    <button class=" recruit btn btn-default" ng-click="showEquipMembersView()">
+                        Equip Members
+                    </button>
+
+                    <button class="recruit btn btn-default" ng-click="showPartyStatus()">View Covenant Status</button>
+                    <button class="recruit btn btn-default" ng-show="newfight_btn" ng-click="chooseBattleground()">Proceed to Battle</button>
+                </div>
+
+            <div ng-show="page == 'selfUpgrade'">
+                <button ng-click="showPromotions()" class="btn btn-default">Back to Fight Aftermath / Promotions</button>
             </div>
 
-            <div ng-show="page == 'assign'">
-                <button class=" recruit btn btn-default" ng-click="showBuySell()">
-                    Purchase / Sell Inventory
-                </button>
-                <button class=" recruit btn btn-info" ng-click="showTeachSpells()">
-                    Teach Spells
-                </button>
-               
-                <button class="recruit btn btn-default" ng-click="showPartyStatus()">View Covenant Status</button>
-                <button class="recruit btn btn-default" ng-show="newfight_btn" ng-click="chooseBattleground()">Proceed to Battle</button>
             </div>
-
-            <div ng-show="page == 'partyStatus'">
-                <button class=" recruit btn btn-default" ng-click="showEquipMembersView()">
-                    Equip Members
-                </button>
-                <button class=" recruit btn btn-default" ng-click="showBuySell()">
-                    Purchase / Sell Inventory
-                </button>
-                <button class=" recruit btn btn-info" ng-click="showTeachSpells()">
-                    Teach Spells
-                </button>
-                <button class="recruit btn btn-default" ng-show="newfight_btn" ng-click="chooseBattleground()">Proceed to Battle</button>
-            </div>
-
-            <div ng-show="page == 'teach'">
-                <button class=" recruit btn btn-default" ng-click="showBuySell()">
-                    Purchase / Sell Inventory
-                </button>
-                <button class=" recruit btn btn-default" ng-click="showEquipMembersView()">
-                    Equip Members
-                </button>
-
-                <button class="recruit btn btn-default" ng-click="showPartyStatus()">View Covenant Status</button>
-                <button class="recruit btn btn-default" ng-show="newfight_btn" ng-click="chooseBattleground()">Proceed to Battle</button>
-            </div>
-
-        </div>
 
         <div class="containerPlus">
             <div ng-show="startVisible" style="margin-bottom: 20px;">
@@ -206,30 +212,15 @@
             </div>
 
             <div ng-show="page == 'aftermath'">
-                <p>With the day over you can now take stock of your prisoners.  What shall you do with them?  Recruit them to your cause?  Or change them into cute little clothes for you, your friends, or the store next door?  You can also brainwash your opponents, leaving them with an altered body and mind so as to avoid increasing your infamy as high.  <b>You have {{energy}}/{{energyMax}}</b> energy left.  You have {{money}} dollars.</p>
-
-
+                <div class="containerSmall">
+                    With the day over you can now take stock of your prisoners.  What shall you do with them?  Recruit them to your cause?  Or change them into cute little clothes for you, your friends, or the store next door?  You can also brainwash your opponents, leaving them with an altered body and mind so as to avoid increasing your infamy as high.
+                </div>
 
                 <div class="containerSmall">
-                    <h3>Submissive Opponents:</h3>
-                    <ul>
-                        <li ng-repeat="person in defeatedAI.persons">
-
-                            <span ng-show="person.id == selectedAftermathPerson.id" style="background: red; color: yellow;"> >>> </span>
-                            {{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}]
-                           
-                           
-                            <button ng-click="changeSelectedPerson(person)" ng-show="person.id != selectedAftermathPerson.id" class="recruit btn btn-primary btn-xs">Select</button>
-                            <span ng-show="person.id == selectedAftermathPerson.id" style="background: red; color: yellow;"> <<< </span>
-
-                        </li>
-
-
-
-                    </ul>
-                    <hr />
+                        <h3>Submissive Opponents:</h3>
+                    
                     <span ng-show="defeatedAI.persons.length > 0">
-                        You are deciding the fate of:  <b>{{selectedAftermathPerson.fullName()}}</b>
+                        You are deciding the fate of:  <b>{{selectedAftermathPerson.fullName()}}</b></br>
                         <button ng-click="recruit(selectedAftermathPerson)" ng-show="selectedAftermathPerson.getRecruitmentCost() <= energy" class="recruit btn btn-success btn-xs">Recruit ({{selectedAftermathPerson.getRecruitmentCost()}} energy)</button>
 
                         <span ng-repeat="spell in leader.finishingSpells"><button ng-click="inanimate(selectedAftermathPerson, spell)" ng-show="leader.getTransformCost(spell) <= energy && leader.itemIsSpell(spell)== true" class="recruit btn btn-danger btn-xs">Turn into {{spell}} ({{leader.getTransformCost(spell)}} energy))</button></span>
@@ -237,97 +228,113 @@
                         <button ng-click="amnesia(selectedAftermathPerson)" ng-show="energy > selectedAftermathPerson.getBrainwashCost()" class="recruit btn btn-info btn-xs">Brainwash ({{selectedAftermathPerson.getBrainwashCost()}} energy)</button>
 
                         <button ng-click="absorb(selectedAftermathPerson)" ng-show="leader.getTransformCost('Absorb') <= energy && leader.knowsAbsorb()==true" class="recruit btn btn-primary btn-xs">Absorb ({{selectedAftermathPerson.getTransformCost('Absorb')}} energy)</button>
-                    </span>
-                </div>
-
-                <div class="containerSmall" id="unequippedItems">
-                    <h3>New items from fight:</h3>
+                    </span>    
+                    <hr />
                     <ul>
-                        <li ng-repeat="item in newItems.items">{{item.type}} {{item.getVictimName()}}</li>
-                    </ul>
-                </div>
+                            <li ng-repeat="person in defeatedAI.persons">
 
-                <div class="containerSmall" id="unequippedItems">
-                    <h3>Unequipped items:</h3>
-                    <ul>
-                        <li ng-repeat="item in unequippedItems.items">{{item.type}} {{item.getVictimName()}}</li>
-                    </ul>
-                </div>
+                                <span ng-show="person.id == selectedAftermathPerson.id" style="background: red; color: yellow;"> >>> </span>
+                                {{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}]
 
-            </div>
+
+                                <button ng-click="changeSelectedPerson(person)" ng-show="person.id != selectedAftermathPerson.id" class="recruit btn btn-primary btn-xs">Select</button>
+                                <span ng-show="person.id == selectedAftermathPerson.id" style="background: red; color: yellow;"> <<< </span>
+
+                            </li>
+
+
+
+                        </ul>
+                        
+                    </div>
+
+                    <div class="containerSmall" id="unequippedItems">
+                        <h3>New items from fight:</h3>
+                        <ul>
+                            <li ng-repeat="item in newItems.items">{{item.type}} {{item.getVictimName()}}</li>
+                        </ul>
+                    </div>
+
+                    <div class="containerSmall" id="unequippedItems">
+                        <h3>Unequipped items:</h3>
+                        <ul>
+                            <li ng-repeat="item in unequippedItems.items">{{item.type}} {{item.getVictimName()}}</li>
+                        </ul>
+                    </div>
+
+                </div>
 
             <div ng-show="page == 'promotions'">
-                <p>Level up and train your members...</p>
-
                 <div class="containerSmall">
-                    <h3>Members:</h3>
-                    <ul>
-                        <li ng-repeat="person in personsPlayer.persons">
-                            {{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}][{{person.health}}/{{person.getMaxHP()}} HP] [{{person.xp}}/{{person.xpNeededForLevelup()}} XP before levelup]
-
-                            <span ng-repeat="form in person.getPromotionForms()">
-                                <button class="recruit btn btn-primary btn-xs" ng-click="promote(person,form)" ng-show="person.level >= person.levelRequiredForPromotion()">Promote to {{form}}</button>
-                            </span>
-
-                        </li>
-                    </ul>
-                    <button class="recruit btn btn-primary btn-xs" ng-click="viewUpgrades()">Upgrade Personal Skills</button>
+                    Level up and train your members...
                 </div>
-            </div>
+
+                    <div class="containerSmall">
+                        <h3>Members:</h3>
+                        <ul>
+                            <li ng-repeat="person in personsPlayer.persons">
+                                {{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}][{{person.health}}/{{person.getMaxHP()}} HP] [{{person.xp}}/{{person.xpNeededForLevelup()}} XP before levelup]
+
+                                <span ng-repeat="form in person.getPromotionForms()">
+                                    <button class="recruit btn btn-primary btn-xs" ng-click="promote(person,form)" ng-show="person.level >= person.levelRequiredForPromotion()">Promote to {{form}}</button>
+                                </span>
+
+                            </li>
+                        </ul>
+                        
+                    </div>
+                </div>
 
             <div ng-show="page == 'selfUpgrade'">
-                <p>With the experience you have gained you may expand your covenant leader's abilities!  You have <b>{{leader.xp}}</b> XP to upgrade with.  Your maximum energy amount is <b>{{energyMax}}</b>.  You currently have <b>{{leader.health}}/{{leader.getMaxHP()}}</b> HP.</p>
+                <div class="containerSmall">
+                    <p>With the experience you have gained you may expand your covenant leader's abilities!  You have <b>{{leader.xp}}</b> XP to upgrade with.  Your maximum energy amount is <b>{{energyMax}}</b>.  You currently have <b>{{leader.health}}/{{leader.getMaxHP()}}</b> HP.</p>
 
-                <hr />
+                    <hr />
 
-                <ul>
+                    <ul>
 
-                    <li>
-                        Full Heal (self)
-                        <button ng-show="leader.xp >= 15" ng-click="upgradeSend('selfHeal', 15)">Heal</button>
-                        <span ng-show="leader.xp < 15">Insufficient XP</span>
-                    </li>
-                    <li>
-                        +15 max transformation power
-                        <button ng-show="leader.xp >= 15" ng-click="upgradeSend('energyPlus01', 15)">Upgrade</button>
-                        <span ng-show="leader.xp < 15">Insufficient XP</span>
-                    </li>
+                        <li>
+                            Full Heal (self)
+                            <button ng-show="leader.xp >= 15" ng-click="upgradeSend('selfHeal', 15)">Heal</button>
+                            <span ng-show="leader.xp < 15">Insufficient XP</span>
+                        </li>
+                        <li>
+                            +15 max transformation power
+                            <button ng-show="leader.xp >= 15" ng-click="upgradeSend('energyPlus01', 15)">Upgrade</button>
+                            <span ng-show="leader.xp < 15">Insufficient XP</span>
+                        </li>
 
-                </ul>
-
-
-                <hr />
-
-                <button ng-click="showPromotions()" class="btn btn-default">Back to Fight Aftermath / Promotions</button>
-
-            </div>
+                    </ul>
+                    </div>
+                </div>
 
             <div ng-show="page == 'buySell'">
-                <p>It's another bright day and your soul item dealer is stopping by.  You can sell your inanimate victims or purchase some new powerful items for them if you wish.  You have {{money}} dollars.</p>
-
-                <div class="containerSmall" id="unequippedItems">
-                    <h3>Your inventory:</h3>
-                    <ul>
-                        <li ng-repeat="item in unequippedItems.items">
-                            {{item.type}} {{item.getVictimName()}}
-                            <button class="recruit btn btn-danger btn-xs" ng-show="sellItem_btn" ng-click="sellItem(item)">Sell for {{item.getSellPrice()}} $</button>
-                        </li>
-                    </ul>
-                </div>
-
                 <div class="containerSmall">
-                    <h3>Purchase:</h3>
-                    <ul>
-                        <li ng-repeat="item in itemsMap">
-                            <div ng-show="item.isPurchaseableItem == true">
-                                {{item.name}} ({{item.value}} dollars)
-                                <button class="recruit btn btn-success btn-xs" ng-show=" money >= item.value" ng-click="buyItem(item.name)">Buy</button>
-                                <button class="recruit btn btn-info btn-xs" ng-click="showItemDetail(item.name)">?</button>
-                            </div>
-                        </li>
-                    </ul>
+                    It's another bright day and your soul item dealer is stopping by.  You can sell your inanimate victims or purchase some new powerful items for them if you wish.</div>
+
+                    <div class="containerSmall" id="unequippedItems">
+                        <h3>Your inventory:</h3>
+                        <ul>
+                            <li ng-repeat="item in unequippedItems.items">
+                                {{item.type}} {{item.getVictimName()}}
+                                <button class="recruit btn btn-danger btn-xs" ng-show="sellItem_btn" ng-click="sellItem(item)">Sell for {{item.getSellPrice()}} $</button>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="containerSmall">
+                        <h3>Purchase:</h3>
+                        <ul>
+                            <li ng-repeat="item in itemsMap">
+                                <div ng-show="item.isPurchaseableItem == true">
+                                    {{item.name}} ({{item.value}} dollars)
+                                    <button class="recruit btn btn-success btn-xs" ng-show=" money >= item.value" ng-click="buyItem(item.name)">Buy</button>
+                                    <button class="recruit btn btn-info btn-xs" ng-click="showItemDetail(item.name)">?</button>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
 
             <!--Equipment page-->
             <div ng-show="page == 'assign'">
@@ -370,30 +377,32 @@
 
 
             <div ng-show="page == 'partyStatus'">
-                <h3>Covenant Member Status</h3>
-                <p>You can transfer party members between your active team and backup members here.</p>
+                <div class="containerSmall">
+                    <h3>Covenant Member Status</h3>
+                    <p>You can transfer party members between your active team and backup members here.</p></div>
 
-                <h3>Active members</h3>
+                <div class="containerSmall">
+                    <h3>Active members</h3>
 
-                <ul>
-                    <li ng-repeat="person in personsPlayer.persons">
-                        {{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}][{{person.health}}/{{person.getMaxHP()}} HP] [{{person.items.length}} items equipped]
-                        <button ng-show="person.id != leader.id" ng-click="moveToBTeam(person, true)">Send to Backup Team</button>
-                    </li>
-                </ul>
+                    <ul>
+                        <li ng-repeat="person in personsPlayer.persons">
+                            {{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}][{{person.health}}/{{person.getMaxHP()}} HP] [{{person.items.length}} items equipped]
+                            <button ng-show="person.id != leader.id" ng-click="moveToBTeam(person, true)">Send to Backup Team</button>
+                        </li>
+                    </ul>
 
 
-                <hr />
+                    <hr />
 
-                <h3>Inactive members</h3>
-                <ul>
-                    <li ng-repeat="person in personsPlayerBteam.persons">
-                        {{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}][{{person.health}}/{{person.getMaxHP()}} HP] [{{person.items.length}} items equipped]
-                        <button ng-click="moveToBTeam(person, false)">Send to Active Team</button>
-                    </li>
-                </ul>
-
-            </div>
+                    <h3>Inactive members</h3>
+                    <ul>
+                        <li ng-repeat="person in personsPlayerBteam.persons">
+                            {{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}][{{person.health}}/{{person.getMaxHP()}} HP] [{{person.items.length}} items equipped]
+                            <button ng-click="moveToBTeam(person, false)">Send to Active Team</button>
+                        </li>
+                    </ul>
+</div>
+                </div>
 
                 <!--Teaching spells page-->
                 <div ng-show="page == 'teach'">

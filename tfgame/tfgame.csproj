@@ -896,6 +896,7 @@
     <Content Include="Scripts\fwars\models\locations.js" />
     <Content Include="Scripts\fwars\models\log.js" />
     <Content Include="Scripts\fwars\models\person.js" />
+    <Content Include="Scripts\fwars\models\tfDefeatText.js" />
     <Content Include="Scripts\fwars\models\tfText.js" />
     <Content Include="Scripts\jquery.rotate.js" />
     <Content Include="Scripts\jQueryRotateCompressed.js" />

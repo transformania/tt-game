@@ -1,5 +1,12 @@
 ﻿var fashionApp = angular.module('fashionApp', ['ngSanitize', 'ngAnimate']);
 
+logs = [];
+leaderId = -1;
+personIdNext = 0;
+logsIdNext = 0;
+itemIdNext = 0;
+
+
 angular.module('fashionApp').controller('PersonsController', function ($scope, $sce) {
 
     $scope.page = "newPlayer";
@@ -128,8 +135,6 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
 
         $scope.logs = [];
         $scope.fightInProgress = true;
-        var fightMsg = new Log("Fight started!");
-        $scope.logs.push(fightMsg);
 
         var newLogs = $scope.personsPlayer.fightGroup($scope.personsAI, $scope.defeatedAI, $scope.defeatedPlayer, $scope.newItems);
         $scope.turnsSinceCombatStart++;
@@ -411,26 +416,6 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
         $scope.currentlySelectedPerson = newPerson;
     }
 
-    /*
-    $scope.teachNext = function () {
-        var index = $scope.personsPlayer.persons.indexOf($scope.currentlySelectedPerson);
-        index++;
-        $scope.currentlySelectedPerson = $scope.personsPlayer.persons[index];
-
-        if ($scope.currentlySelectedPerson === undefined) {
-            $scope.currentlySelectedPerson = $scope.personsPlayer.persons[0];
-        }
-    }
-
-    $scope.teachPrevious = function () {
-        var index = $scope.personsPlayer.persons.indexOf($scope.currentlySelectedPerson);
-        index--;
-        $scope.currentlySelectedPerson = $scope.personsPlayer.persons[index];
-
-        if ($scope.currentlySelectedPerson === undefined) {
-            $scope.currentlySelectedPerson = $scope.personsPlayer.persons[$scope.personsPlayer.persons.length - 1];
-        }
-    }*/
 
     $scope.teachSpell = function (itemName) {
         var spellInfo = itemStatsMap[itemName];

@@ -380,6 +380,17 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
         $scope.currentlySelectedItem = $scope.unequippedItems.items[0];
     }
 
+    $scope.moveToBTeam = function (person, toB) {
+        if (toB == true) {
+            $scope.personsPlayer.removePerson(person);
+            $scope.personsPlayerBteam.addPerson(person);
+        } else {
+            $scope.personsPlayerBteam.removePerson(person);
+            $scope.personsPlayer.addPerson(person);
+        }
+       
+    }
+
     $scope.showTeachSpells = function () {
         
         // launch promotions page

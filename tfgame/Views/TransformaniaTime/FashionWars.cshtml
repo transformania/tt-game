@@ -372,6 +372,27 @@
             <div ng-show="page == 'partyStatus'">
                 <h3>Covenant Member Status</h3>
                 <p>You can transfer party members between your active team and backup members here.</p>
+
+                <h3>Active members</h3>
+
+                <ul>
+                    <li ng-repeat="person in personsPlayer.persons">
+                        {{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}][{{person.health}}/{{person.getMaxHP()}} HP] [{{person.items.length}} items equipped]
+                        <button ng-show="person.id != leader.id" ng-click="moveToBTeam(person, true)">Send to Backup Team</button>
+                    </li>
+                </ul>
+
+
+                <hr />
+
+                <h3>Inactive members</h3>
+                <ul>
+                    <li ng-repeat="person in personsPlayerBteam.persons">
+                        {{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}][{{person.health}}/{{person.getMaxHP()}} HP] [{{person.items.length}} items equipped]
+                        <button ng-click="moveToBTeam(person, false)">Send to Active Team</button>
+                    </li>
+                </ul>
+
             </div>
 
                 <!--Teaching spells page-->

@@ -393,14 +393,6 @@
                         </li>
                     </ul>
 
-                    <ul>
-                        <li ng-repeat="person in personsPlayer.persons">
-                            {{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}][{{person.health}}/{{person.getMaxHP()}} HP] [{{person.items.length}} items equipped]
-                            <button ng-show="person.id != leader.id" ng-click="moveToBTeam(person, true)">Send to Backup Team</button>
-                        </li>
-                    </ul>
-
-
                     <hr />
 
                     <h3>Inactive members</h3>

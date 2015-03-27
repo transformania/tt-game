@@ -2,6 +2,16 @@ body {
   font-size: 14px !important;
   background-color: #5C57EA !important; }
 
+a {
+  color: #5C57EA;
+  font-weight: bold; }
+
+a:hover {
+  color: black; }
+
+.listSelected {
+  background-color: white; }
+
 h1 {
   margin-top: 10px !important; }
 
@@ -66,12 +76,6 @@ ul {
   background-color: #EACD40;
   margin-bottom: 10px;
   padding: 5px; }
-
-a {
-  color: #EACD40; }
-
-a:hover {
-  color: #F2DC72; }
 
 #log {
   min-height: 300px;

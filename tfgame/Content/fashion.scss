@@ -13,6 +13,20 @@ background-color: $color1 !important;
 }
 
 
+a {
+    color: $color1;
+    font-weight: bold;
+}
+
+a:hover{
+    color: black;
+    
+}
+
+.listSelected {
+    background-color: white;
+}
+
 h1 {
 margin-top: 10px !important;
 }
@@ -93,14 +107,6 @@ border: $border;
 background-color: $color4;
 margin-bottom: 10px;
 padding: 5px;
-}
-
-a {
-color: $color4;
-}
-
-a:hover {
-color: $color5;
 }
 
    #log {

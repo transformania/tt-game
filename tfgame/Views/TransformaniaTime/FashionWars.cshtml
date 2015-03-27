@@ -453,11 +453,9 @@
 
                     <ul>
                         <li ng-repeat="person in personsPlayer.persons">
-                            <span ng-show="person.id == currentlySelectedPerson.id" style="background: red; color: yellow;"> >>> </span>
-                            {{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}]
-                            Knows: <span ng-repeat="spell in person.finishingSpells"> <b>{{spell}}</b>,</span>
-                            <span ng-show="person.id == currentlySelectedPerson.id" style="background: red; color: yellow;"> <<< </span>
-                            <button ng-click="teachSelectedPerson(person)" ng-show="person.id != currentlySelectedPerson.id" class="btn btn-primary btn-xs">Select</button>
+
+                            <a href="#" ng-click="teachSelectedPerson(person)" ng-show="person.id != currentlySelectedPerson.id">{{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}]</a><span ng-show="person.id != currentlySelectedPerson.id"> knows <span ng-repeat="spell in person.finishingSpells"> <b>{{spell}}</b>,</span></span>
+                            <span ng-show="person.id == currentlySelectedPerson.id" class="listSelected">{{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}] Knows: <span ng-repeat="spell in person.finishingSpells"> <b>{{spell}}</b>,</span></span>
                         </li>
                     </ul>
                 </div>

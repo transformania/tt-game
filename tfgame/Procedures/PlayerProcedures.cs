@@ -371,11 +371,13 @@ namespace tfgame.Procedures
                  Item oldItemMe = itemRepo.Items.FirstOrDefault(i => i.VictimName == oldplayer.FirstName + " " + oldplayer.LastName);
                  oldItemMe.IsPermanent = true;
                  itemRepo.SaveItem(oldItemMe);
+
+          
                 
              }
             
 
-            // clean the name entered by the player
+            // clean the name entered by the player, capitalize first letter and downcase the rest
              string cleanFirstName = char.ToUpper(player.FirstName[0]) + player.FirstName.Substring(1).ToLower();
              string cleanLastName = char.ToUpper(player.LastName[0]) + player.LastName.Substring(1).ToLower();
 
@@ -447,17 +449,6 @@ namespace tfgame.Procedures
                 newplayer.InRP = false;
             }
 
-            // set a random location for this character to spawn in
-            //List<string> spawnableLocations = LocationsStatics.LocationList.GetLocation.Select(l => l.dbName).ToList();
-            //double max = spawnableLocations.Count();
-            //Random rand = new Random();
-            //double num = rand.NextDouble();
-
-            //int index = Convert.ToInt32(Math.Floor(num*max));
-            //string locationToSpawnIn = spawnableLocations.ElementAt(index);
-
-
-
             newplayer.dbLocationName = LocationsStatics.GetRandomLocation();
 
             playerRepo.SavePlayer(newplayer);
@@ -466,6 +457,25 @@ namespace tfgame.Procedures
             {
                 // transfer all of the old player's skills that are NOT form specific or weaken
                 SkillProcedures.TransferAllPlayerSkills(oldplayer.Id, newplayer.Id);
+
+                // transfer their old messages to new account
+                if (player.MigrateLetters == true)
+                {
+                    using (var context = new StatsContext())
+                    {
+                        try
+                        {
+                            context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Messages] SET ReceiverId = " + newplayer.Id + " WHERE ReceiverId = " + oldplayer.Id);
+                            context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Messages] SET SenderId = " + newplayer.Id + " WHERE SenderId = " + oldplayer.Id);
+                        }
+                        catch (Exception e)
+                        {
+
+                        }
+                    }
+
+                }
+
             }
 
             // assign the player their appropriate donation level

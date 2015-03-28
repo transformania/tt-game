@@ -26,5 +26,8 @@ namespace tfgame.ViewModels
 
         public bool StartInPVP { get; set; }
         public bool StartInRP { get; set; }
+
+        public bool MigrateLetters { get; set; }
+
     }
 }

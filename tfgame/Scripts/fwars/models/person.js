@@ -20,6 +20,31 @@ PersonGroup.prototype.getRandomPerson = function () {
     return this.persons[Math.floor(Math.random() * this.persons.length)];
 }
 
+PersonGroup.prototype.getNextFighter = function () {
+    for (var i = 0; i < this.persons.length; i++) {
+        if (this.persons[i].hasAttacked == false) {
+            return this.persons[i];
+        }
+    }
+    return -1;
+}
+
+PersonGroup.prototype.resetFighterMarkers = function () {
+    for (var i = 0; i < this.persons.length; i++) {
+        this.persons[i].hasAttacked = false;
+    }
+}
+
+PersonGroup.prototype.getAvailableFighterCount = function ()
+{
+    var freeCount = 0;
+    for (var i = 0; i < this.persons.length; i++) {
+        if (this.persons[i].hasAttacked == false) {
+            freeCount++;
+        }
+    }
+    return freeCount;
+}
 PersonGroup.prototype.fightGroup = function (attackingGroup, defeatedAI, defeatedPlayer, newItems) {
 
     var max = this.persons.length;
@@ -209,6 +234,8 @@ var Person = function (firstName, lastName, type) {
 
     this.health = formStats.baseHP;
 
+    this.hasAttacked = false;
+
     personIdNext++;
 
 };
@@ -274,6 +301,8 @@ Person.prototype.heal = function (healAmount) {
 };
 
 Person.prototype.fight = function (opponent) {
+
+    this.hasAttacked = true;
 
     var result = "<span class='fight'>" + this.fullName() + ' [lvl ' + this.level + ' ' + this.type + '] fighting ' + opponent.fullName() + ' [lvl ' + opponent.level + ' ' + opponent.type + '].</span>';
 

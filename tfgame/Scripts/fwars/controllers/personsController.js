@@ -59,6 +59,11 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
 
     $scope.selectedAftermathPerson;
 
+
+    $scope.fightSelectedPlayer;
+    $scope.fightSelectedOpponent;
+    $scope.fightTurn = "player";
+
     $scope.aftermathBtn = false;
     $scope.aftermathView = false;
     $scope.aftermathViewLevelup = false;
@@ -111,6 +116,9 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
 
         $scope.personsAI.spawnGroup(location, variation);
 
+        $scope.fightSelectedPlayer = $scope.personsPlayer.persons[0];
+        $scope.fightSelectedOpponent = $scope.personsAI.persons[0];
+
         // launch fight page
         $scope.page = "fight";
 
@@ -121,6 +129,9 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
 
         $scope.defeatedAI.persons = [];
         $scope.defeatedPlayer.persons = [];
+        $scope.fightTurn == "player"
+
+        $scope.personsPlayer.resetFighterMarkers();
 
         $scope.turnsSinceCombatStart = 1;
         $scope.continueFightVisible = true;
@@ -128,26 +139,96 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
         $scope.retreatBtnVisible = false;
     }
 
-    // begin a round of fighting
+   //  begin a round of fighting
     $scope.fight = function () {
 
         $scope.page = "fight";
 
-        $scope.logs = [];
         $scope.fightInProgress = true;
 
-        var newLogs = $scope.personsPlayer.fightGroup($scope.personsAI, $scope.defeatedAI, $scope.defeatedPlayer, $scope.newItems);
-        $scope.turnsSinceCombatStart++;
+        //   var newLog = $scope.personsPlayer.fightGroup($scope.personsAI, $scope.defeatedAI, $scope.defeatedPlayer, $scope.newItems);
 
-        for (var i = 0; i < newLogs.length; i++) {
-            $scope.logs.push(newLogs[i]);
+        var attacker;
+        var attackerGroup;
+        var victim;
+        var victimGroup;
+        var defeatedVictims;
 
+        if ($scope.fightTurn == "player") {
+            attacker = $scope.fightSelectedPlayer;
+            attackerGroup = $scope.personsPlayer;
+
+            victim = $scope.personsAI.getRandomPerson();
+
+            victimGroup = $scope.personsAI;
+            defeatedVictims = $scope.defeatedAI;
+            $scope.fightTurn = "ai";
+        } else {
+            attacker = $scope.fightSelectedOpponent;
+            attackerGroup = $scope.personsAI;
+
+            victim = $scope.personsPlayer.getRandomPerson();
+
+            victimGroup = $scope.personsPlayer;
+            defeatedVictims = $scope.defeatedPlayer;
+            $scope.fightTurn = "player";
         }
+
+        var fightResult = attacker.fight(victim);
+
+        if (fightResult.outcome == "win") {
+
+            if (attacker.finishingSpells.length == 0 || attacker.id == leaderId) {
+                fightResult.message += "<span class='submit'>" + victim.fullName() + ' falls to their knees and submits to your overwhelming power!</span>';
+                
+                victimGroup.removePerson(victim);
+                defeatedVictims.addPerson(victim);
+
+
+                // target IS turned into an item, delete them and create the item
+            } else {
+                var newItemName = attacker.getRandomFinishingSpell();
+                fightResult.message += "<span class='inanimated'>" + insertNames(getRandomDefeatText(this.type, newItemName),attacker,victim) + "</span>";
+
+                if (newItemName == "Absorb") {
+                    attacker.health += Math.floor(victim.getMaxHP() / 4);
+                    if (attacker.health >attacker.getMaxHP()) {
+                        attacker.health = attacker.getMaxHP();
+                    }
+                } else {
+                    var newItem = new Item(newItemName, victim.fullName());
+                    $scope.newItems.addItem(newItem);
+                }
+                victimGroup.removePerson($scope.fightSelectedOpponent);
+            }
+        }
+            
+        $scope.logs.push(fightResult);
+
+        var freePlayerCombatants = $scope.personsPlayer.getAvailableFighterCount();
+        var freeAICombatants = $scope.personsAI.getAvailableFighterCount();
+    
+        // --------
+        if (freePlayerCombatants > 0) {
+            $scope.fightSelectedPlayer = $scope.personsPlayer.getNextFighter();
+        } else {
+            $scope.personsPlayer.resetFighterMarkers();
+            $scope.fightSelectedPlayer = $scope.personsPlayer.getNextFighter();
+        }
+
+        if (freeAICombatants > 0) {
+            $scope.fightSelectedOpponent = $scope.personsAI.getNextFighter();
+        } else {
+            $scope.personsAI.resetFighterMarkers();
+            $scope.fightSelectedOpponent = $scope.personsPlayer.getNextFighter();
+        }
+       
+
 
         // give the option to retreat after the 3rd round
-        if ($scope.turnsSinceCombatStart >= 4) {
-            $scope.retreatBtnVisible = true;
-        }
+        //if ($scope.turnsSinceCombatStart >= 4) {
+        //    $scope.retreatBtnVisible = true;
+        //}
 
         // fight is over, one side or the other has lost!
         if ($scope.fightInProgress == true && ($scope.personsPlayer.persons.length == 0 || $scope.personsAI.persons.length == 0)) {
@@ -207,7 +288,6 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
             $scope.energyMax += 15;
         }
 
-       // console.log(upgarde, cost);
     }
 
     $scope.recruit = function (person) {

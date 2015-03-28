@@ -115,6 +115,7 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
         $scope.startFightVisible = true;
 
         $scope.personsAI.spawnGroup(location, variation);
+        $scope.fightTurn = "player";
 
         $scope.fightSelectedPlayer = $scope.personsPlayer.persons[0];
         $scope.fightSelectedOpponent = $scope.personsAI.persons[0];
@@ -211,6 +212,8 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
         // --------
         if (freePlayerCombatants > 0) {
             $scope.fightSelectedPlayer = $scope.personsPlayer.getNextFighter();
+        } else if (freePlayerCombatants == 0 && freeAICombatants > 0) {
+            $scope.fightTurn = "ai";
         } else {
             $scope.personsPlayer.resetFighterMarkers();
             $scope.fightSelectedPlayer = $scope.personsPlayer.getNextFighter();
@@ -218,6 +221,8 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
 
         if (freeAICombatants > 0) {
             $scope.fightSelectedOpponent = $scope.personsAI.getNextFighter();
+        } else if (freeAICombatants == 0 && freePlayerCombatants > 0) {
+            $scope.fightTurn = "player";
         } else {
             $scope.personsAI.resetFighterMarkers();
             $scope.fightSelectedOpponent = $scope.personsPlayer.getNextFighter();

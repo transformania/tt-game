@@ -155,8 +155,8 @@
                             <div ng-repeat="person in personsPlayer.persons" class="col-md-4">
                                 <div class="personList">
                                     {{person.firstName}} {{person.lastName}}<br />
-                                    [lvl {{person.level}} {{person.type}}]<br />
-                                    <span ng-show="person.hasAttacked==true" style="color:red;">HAS ATTACKED</span>
+                                    [lvl {{person.level}} {{person.type}}]<span ng-show="person.hasAttacked==true" style="background-color:red;">X</span><br />
+                                   
                                     <img class="portraitSmall" ng-src="~/Images/FashionWars/Forms/{{person.getGraphic()}}" />
                                     <div class="progress">
                                         <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{person.health}}" aria-valuemin="0" aria-valuemax="{{person.getMaxHP()}}" ng-style="{width : ( person.getHealthAsPercentage() + '%' ) }">
@@ -172,8 +172,8 @@
                         <div ng-repeat="person in personsAI.persons" class="spin-toggle col-md-4">
                             <div class="personList">
                                 {{person.firstName}} {{person.lastName}}<br />
-                                [lvl {{person.level}} {{person.type}}]<br />
-                                <span ng-show="person.hasAttacked==true" style="color:red;">HAS ATTACKED</span>
+                                [lvl {{person.level}} {{person.type}}]<span ng-show="person.hasAttacked==true" style="background-color: red;">X</span><br />
+                              
                                 <img class="portraitSmall" ng-src="~/Images/FashionWars/Forms/{{person.getGraphic()}}" />
                                 <div class="progress">
                                     <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="{{person.health}}" aria-valuemin="0" aria-valuemax="{{person.getMaxHP()}}" ng-style="{width : ( person.getHealthAsPercentage() + '%' ) }">

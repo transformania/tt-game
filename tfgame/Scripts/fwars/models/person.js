@@ -300,11 +300,19 @@ Person.prototype.heal = function (healAmount) {
     }
 };
 
-Person.prototype.fight = function (opponent) {
+Person.prototype.fight = function (opponent, attackerIsAllied) {
 
     this.hasAttacked = true;
 
-    var result = "<span class='fight'>" + this.fullName() + ' [lvl ' + this.level + ' ' + this.type + '] fighting ' + opponent.fullName() + ' [lvl ' + opponent.level + ' ' + opponent.type + '].</span>';
+    var result = "";
+
+    if (attackerIsAllied == true) {
+        result = "<span class='fightFriend'>" + this.fullName() + ' [lvl ' + this.level + ' ' + this.type + ']</span> fighting <span class=\'fightEnemy\'>' + opponent.fullName() + ' [lvl ' + opponent.level + ' ' + opponent.type + '].</span>';
+    } else {
+        result = "<span class='fightEnemy'>" + this.fullName() + ' [lvl ' + this.level + ' ' + this.type + ']</span> fighting <span class=\'fightFriend\'>' + opponent.fullName() + ' [lvl ' + opponent.level + ' ' + opponent.type + '].</span>';
+    }
+
+
 
     // get stats from form
     var formStatsAttacker = formStatsMap[this.type];

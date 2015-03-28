@@ -130,7 +130,7 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
 
         $scope.defeatedAI.persons = [];
         $scope.defeatedPlayer.persons = [];
-        $scope.fightTurn == "player"
+        $scope.fightTurn = "player"
 
         $scope.personsPlayer.resetFighterMarkers();
 
@@ -147,13 +147,13 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
 
         $scope.fightInProgress = true;
 
-        //   var newLog = $scope.personsPlayer.fightGroup($scope.personsAI, $scope.defeatedAI, $scope.defeatedPlayer, $scope.newItems);
-
         var attacker;
         var attackerGroup;
         var victim;
         var victimGroup;
         var defeatedVictims;
+       
+        var fightResult;
 
         if ($scope.fightTurn == "player") {
             attacker = $scope.fightSelectedPlayer;
@@ -164,6 +164,7 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
             victimGroup = $scope.personsAI;
             defeatedVictims = $scope.defeatedAI;
             $scope.fightTurn = "ai";
+            var fightResult = attacker.fight(victim, true);
         } else {
             attacker = $scope.fightSelectedOpponent;
             attackerGroup = $scope.personsAI;
@@ -173,14 +174,15 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
             victimGroup = $scope.personsPlayer;
             defeatedVictims = $scope.defeatedPlayer;
             $scope.fightTurn = "player";
+            var fightResult = attacker.fight(victim, false);
         }
 
-        var fightResult = attacker.fight(victim);
+       
 
         if (fightResult.outcome == "win") {
 
             if (attacker.finishingSpells.length == 0 || attacker.id == leaderId) {
-                fightResult.message += "<span class='submit'>" + victim.fullName() + ' falls to their knees and submits to your overwhelming power!</span>';
+                fightResult.message += "<span class='submit'>" + victim.fullName() + ' falls to their knees and submits to their attacker!</span>';
                 
                 victimGroup.removePerson(victim);
                 defeatedVictims.addPerson(victim);
@@ -383,6 +385,8 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
         $scope.personsPlayer.healGroup(15);
         $scope.energy = $scope.energyMax;
         $scope.day++;
+
+        $scope.personsPlayer.resetFighterMarkers();
 
         var roll = Math.random();
 

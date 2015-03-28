@@ -98,9 +98,15 @@ ul {
   color: darkgreen;
   font-weight: bolder; }
 
-.fight {
+.fightEnemy {
   color: red;
   font-weight: bolder; }
+
+
+.fightFriend {
+  color: blue;
+  font-weight: bolder; }
+
 
 .inanimated {
   color: darkviolet;

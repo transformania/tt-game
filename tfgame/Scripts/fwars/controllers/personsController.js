@@ -202,7 +202,7 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
                     var newItem = new Item(newItemName, victim.fullName());
                     $scope.newItems.addItem(newItem);
                 }
-                victimGroup.removePerson($scope.fightSelectedOpponent);
+                victimGroup.removePerson(victim);
             }
         }
             
@@ -218,6 +218,7 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
             $scope.fightTurn = "ai";
         } else {
             $scope.personsPlayer.resetFighterMarkers();
+            $scope.turnsSinceCombatStart++;
             $scope.fightSelectedPlayer = $scope.personsPlayer.getNextFighter();
         }
 
@@ -233,9 +234,9 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
 
 
         // give the option to retreat after the 3rd round
-        //if ($scope.turnsSinceCombatStart >= 4) {
-        //    $scope.retreatBtnVisible = true;
-        //}
+        if ($scope.turnsSinceCombatStart >= 4) {
+            $scope.retreatBtnVisible = true;
+        }
 
         // fight is over, one side or the other has lost!
         if ($scope.fightInProgress == true && ($scope.personsPlayer.persons.length == 0 || $scope.personsAI.persons.length == 0)) {

@@ -85,7 +85,8 @@ ul {
   filter: grayscale(20%); }
 
 .activeUnit {
-  border-radius: 20%; }
+  border-radius: 20%;
+  border: 10px; }
 
 .defeatedUnit {
   -webkit-filter: grayscale(100%);

@@ -24,7 +24,8 @@
     </div>
 
     <div class="visible-xs center-block">
-        <p class="avatarName">@Model.Player.GetFullName() <span style="font-size: 12px">Level: <b>@Model.Player.Level</b></span> <span class="icon-@Model.Player.Gender"></span></p>
+        <p class="avatarFormName">@Model.Player.GetFullName()</p>
+        <p><span style="font-size: 12px">Level: <b>@Model.Player.Level</b></span> - @Model.Form.FriendlyName <span class="icon-@Model.Player.Gender"></span></p>
         <div class="portraitMobile" style="background-image: url(../Images/PvP/portraits/@Model.Form.PortraitUrl);" title="@Model.Form.Description">
             @{if (PlayerProcedures.PlayerIsOffline(Model.Player) == true)
             {
@@ -40,20 +41,20 @@
         </div>
 
             <div class="barWrapper">
-                <div class="barText">@Model.Player.Health / @Model.Player.MaxHealth willpower</div>
+                <div class="barText" style="font-size: 12px;">@Model.Player.Health / @Model.Player.MaxHealth WP</div>
                 <div class="barData barWP" style="width: @HealthWidth%"></div>
             </div>
 
 
             <div class="barWrapper">
-                <div class="barText">@Model.Player.Mana / @Model.Player.MaxMana mana</div>
+                <div class="barText" style="font-size: 12px;">@Model.Player.Mana / @Model.Player.MaxMana MP</div>
                 <div class="barData barMP" style="width: @ManaWidth%"></div>
             </div>
 
 
 
             <div class="barWrapper">
-                <div class="barText">@Model.Player.ActionPoints / @PvPStatics.MaximumStoreableActionPoints AP (@Model.Player.ActionPoints_Refill in Reserve) </div>
+                <div class="barText" style="font-size: 12px;">@Model.Player.ActionPoints / @PvPStatics.MaximumStoreableActionPoints AP (res: @Model.Player.ActionPoints_Refill) </div>
                 <div class="barData barAP" style="width: @ActionWidth%"></div>
             </div>
 

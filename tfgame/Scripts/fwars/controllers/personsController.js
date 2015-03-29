@@ -57,7 +57,7 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
     $scope.startFightVisible = false;
 
     $scope.selectedAftermathPerson;
-
+    $scope.renamePerson;
 
     $scope.fightSelectedPlayer;
     $scope.fightSelectedOpponent;
@@ -435,6 +435,12 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
         // launch promotions page
         $scope.page = "partyStatus";
     }
+
+    $scope.rename = function (player) {
+        $scope.page = "rename";
+        $scope.renamePerson = player;
+    }
+
 
     $scope.equipSelectedItem = function (newItem) {
         $scope.currentlySelectedItem = newItem;

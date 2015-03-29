@@ -119,6 +119,10 @@
                 <button class="recruit btn btn-danger" ng-show="newfight_btn" ng-click="chooseBattleground()">Proceed to Battle</button>
             </div>
 
+            <div ng-show="page=='rename'">
+                <button class="recruit btn btn-default" ng-click="showPartyStatus()">View Covenant Status</button>
+            </div>
+
             <div ng-show="page == 'teach'">
                 <button class="btn btn-default" ng-click="showBuySell()">
                     Purchase / Sell Inventory
@@ -433,6 +437,7 @@
                         <li ng-repeat="person in personsPlayer.persons">
                             {{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}][{{person.health}}/{{person.getMaxHP()}} HP] [{{person.items.length}} items equipped]
                             <button ng-show="person.id != leader.id" ng-click="moveToBTeam(person, true)">Send to Backup Team</button>
+                            <button ng-show="person.id != leader.id" ng-click="rename(person)">Rename</button>
                             <button ng-click="showFormDetail(person.type)" class="recruit btn btn-info btn-xs">?</button>
                         </li>
                     </ul>
@@ -444,6 +449,7 @@
                         <li ng-repeat="person in personsPlayerBteam.persons">
                             {{person.firstName}} {{person.lastName}} [lvl {{person.level}} {{person.type}}][{{person.health}}/{{person.getMaxHP()}} HP] [{{person.items.length}} items equipped]
                             <button ng-click="moveToBTeam(person, false)">Send to Active Team</button>
+                            <button ng-show="person.id != leader.id" ng-click="rename(person)">Rename</button>
                         </li>
                     </ul>
                 </div>
@@ -492,6 +498,15 @@
                 <h3>{{detailedFormSelection.name}}</h3>
                 <p>{{detailedFormSelection.description}}</p>
                 <button class="recruit btn btn-default" ng-click="detailBack()">Back</button>
+            </div>
+
+            <div ng-show="page == 'rename'">
+                <div class="containerSmall">
+                    <h3>Rename</h3>
+                    <p>How do you want to rename <b>{{renamePerson.fullName()}}</b>?</p>
+                    <span> First name:  <input type="text" ng-model="renamePerson.firstName" /></span>
+                    <span> Last name: <input type="text"  ng-model="renamePerson.lastName" " /></span><br />
+                </div>
             </div>
 
             <div ng-show="page=='randomEncounter' ">

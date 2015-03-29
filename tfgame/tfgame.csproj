@@ -641,6 +641,7 @@
     <Content Include="Images\PvP\itemsPortraits\laptop_kevin_portalz.jpg" />
     <Content Include="Images\PvP\itemsPortraits\latex_collar_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\latex_corset_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\latex_stockings_Babblingfaces.jpg" />
     <Content Include="Images\PvP\itemsPortraits\leather_bra_Martiandawn.jpg" />
     <Content Include="Images\PvP\itemsPortraits\Leather_Shoes_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\leather_skirt_Martiandawn.jpg" />
@@ -650,6 +651,7 @@
     <Content Include="Images\PvP\itemsPortraits\Lipstick_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\lovers_gift_heart_thong_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\love_cups_heart_bra_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\love_potion_number_9_Meddle.jpg" />
     <Content Include="Images\PvP\itemsPortraits\lullaby_whistle_Judoo.jpg" />
     <Content Include="Images\PvP\itemsPortraits\magic_chocker_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\magic_wand_Meddle.png" />
@@ -694,6 +696,7 @@
     <Content Include="Images\PvP\itemsPortraits\spellweaver_jawbreaker_small.jpg" />
     <Content Include="Images\PvP\itemsPortraits\spellweaver_jawbreaker__Large_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\spellweaver_root_meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\spirit_shard_Luxianne.jpg" />
     <Content Include="Images\PvP\itemsPortraits\stallion_Danaume.jpg" />
     <Content Include="Images\PvP\itemsPortraits\star_studded_cloak_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\sucker_Meddle.png" />
@@ -743,6 +746,7 @@
     <Content Include="Images\PvP\portraits\dollmistress_babblingfaces.png" />
     <Content Include="Images\PvP\portraits\donkey_dominatrix_danaume.png" />
     <Content Include="Images\PvP\portraits\Donna_Wrenzephyr.png" />
+    <Content Include="Images\PvP\portraits\dragon_winged_adventurer_Blekarotva.jpg" />
     <Content Include="Images\PvP\portraits\dryder_jbovinne.png" />
     <Content Include="Images\PvP\portraits\dungeon_demon_babblingfaces.jpg" />
     <Content Include="Images\PvP\portraits\d_loving_girl_Meddle.png" />

@@ -47,14 +47,13 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
 
     $scope.currentlySelectedItem;
     $scope.currentlySelectedPerson;
+    $scope.freePlayerCombatantsScoped = 1;
 
     $scope.logs = [];
 
     $scope.fightInProgress = false;
 
     $scope.startVisible = true;
-
-    $scope.continueFightVisible = false;
     $scope.startFightVisible = false;
 
     $scope.selectedAftermathPerson;
@@ -111,11 +110,15 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
         $scope.startVisible = false;
         $scope.fightView = true;
 
-        $scope.continueFightVisible = false;
+        $scope.continueFightVisible = true;
         $scope.startFightVisible = true;
-
+        $scope.defeatedAI.persons = [];
+        $scope.defeatedPlayer.persons = [];
+        $scope.personsPlayer.resetFighterMarkers();
+        $scope.turnsSinceCombatStart = 1;
         $scope.personsAI.spawnGroup(location, variation);
         $scope.fightTurn = "player";
+        $scope.retreatBtnVisible = false;
 
         $scope.fightSelectedPlayer = $scope.personsPlayer.persons[0];
         $scope.fightSelectedOpponent = $scope.personsAI.persons[0];
@@ -125,23 +128,10 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
 
     }
 
-    // kick off a fight
-    $scope.startFight = function () {
-
-        $scope.defeatedAI.persons = [];
-        $scope.defeatedPlayer.persons = [];
-        $scope.fightTurn = "player"
-
-        $scope.personsPlayer.resetFighterMarkers();
-
-        $scope.turnsSinceCombatStart = 1;
-        $scope.continueFightVisible = true;
-        $scope.startFightVisible = false;
-        $scope.retreatBtnVisible = false;
-    }
-
    //  begin a round of fighting
-    $scope.fight = function () {
+    $scope.fight = function (target) {
+
+       
 
         $scope.page = "fight";
 
@@ -159,7 +149,12 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
             attacker = $scope.fightSelectedPlayer;
             attackerGroup = $scope.personsPlayer;
 
-            victim = $scope.personsAI.getRandomPerson();
+            // if leader is attacking, use their target.  Otherwise select random vic
+            if (typeof target === "undefined") {
+                victim = $scope.personsAI.getRandomPerson();
+            } else {
+                victim = target;
+            }
 
             victimGroup = $scope.personsAI;
             defeatedVictims = $scope.defeatedAI;
@@ -168,9 +163,7 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
         } else {
             attacker = $scope.fightSelectedOpponent;
             attackerGroup = $scope.personsAI;
-
             victim = $scope.personsPlayer.getRandomPerson();
-
             victimGroup = $scope.personsPlayer;
             defeatedVictims = $scope.defeatedPlayer;
             $scope.fightTurn = "player";
@@ -209,6 +202,7 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
         $scope.logs.push(fightResult);
 
         var freePlayerCombatants = $scope.personsPlayer.getAvailableFighterCount();
+        $scope.freePlayerCombatantsScoped = freePlayerCombatants;
         var freeAICombatants = $scope.personsAI.getAvailableFighterCount();
     
         // --------
@@ -220,6 +214,7 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
             $scope.personsPlayer.resetFighterMarkers();
             $scope.turnsSinceCombatStart++;
             $scope.fightSelectedPlayer = $scope.personsPlayer.getNextFighter();
+            $scope.freePlayerCombatantsScoped = 1;
         }
 
         if (freeAICombatants > 0) {

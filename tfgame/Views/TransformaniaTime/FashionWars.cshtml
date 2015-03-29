@@ -64,7 +64,7 @@
             </div>
 
             <div ng-show="page == 'fight'">
-                <button ng-click="startFight()" ng-show="startFightVisible" class="btn btn-danger">Begin Fight</button>
+                @*<button ng-click="startFight()" ng-show="startFightVisible" class="btn btn-danger">Begin Fight</button>*@
                 <button ng-click="fight()" ng-show="continueFightVisible" class="btn btn-warning">Continue Fight (Round {{turnsSinceCombatStart}})</button>
                 <button ng-click="retreat()" ng-show="retreatBtnVisible" class="btn btn-info">Retreat!</button>
                 <button ng-click="aftermath()" ng-show="aftermathBtn" class="btn btn-default">View Fight Aftermath</button>
@@ -175,7 +175,10 @@
                                 [lvl {{person.level}} {{person.type}}]<span ng-show="person.hasAttacked==true" style="background-color: red;">X</span><br />
                               
                                 <img class="portraitSmall" ng-src="~/Images/FashionWars/Forms/{{person.getGraphic()}}" />
-                                <div class="progress">
+
+                                <button ng-click="fight(person)" ng-show="fightSelectedPlayer.id == leader.id && freePlayerCombatantsScoped > 0">ATK</button>
+                             
+                                   <div class="progress">
                                     <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="{{person.health}}" aria-valuemin="0" aria-valuemax="{{person.getMaxHP()}}" ng-style="{width : ( person.getHealthAsPercentage() + '%' ) }">
                                         <span class="badge">{{person.health}}/{{person.getMaxHP()}}</span>
                                     </div>

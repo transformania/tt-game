@@ -86,11 +86,20 @@ border-bottom: $border;
     }
 
 .portraitSmall {
-    border: 4px #5CB85C solid;
     width: 100px;
     height: 100px; 
     margin-bottom: 4px;
 }
+
+.atkButton {
+    position: relative !important;
+    right: 70px !important;
+    top: 0px !important;
+}
+
+.friendlyUnit { border: 4px #5CB85C solid; }
+.enemyUnit { border: 4px solid #B85C5C; }
+.restingUnit { border: 4px solid #717D80; }
 
 .containerPlus:last-child{
     border-bottom: none !important;

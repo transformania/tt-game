@@ -157,7 +157,7 @@
                                     {{person.firstName}} {{person.lastName}}<br />
                                     [lvl {{person.level}} {{person.type}}]<span ng-show="person.hasAttacked==true" style="background-color:red;">X</span><br />
                                    
-                                    <img class="portraitSmall" ng-src="~/Images/FashionWars/Forms/{{person.getGraphic()}}" />
+                                    <img class="portraitSmall friendlyUnit" ng-src="~/Images/FashionWars/Forms/{{person.getGraphic()}}" />
                                     <div class="progress">
                                         <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{person.health}}" aria-valuemin="0" aria-valuemax="{{person.getMaxHP()}}" ng-style="{width : ( person.getHealthAsPercentage() + '%' ) }">
                                             <span class="badge">{{person.health}}/{{person.getMaxHP()}}</span>
@@ -174,9 +174,9 @@
                                 {{person.firstName}} {{person.lastName}}<br />
                                 [lvl {{person.level}} {{person.type}}]<span ng-show="person.hasAttacked==true" style="background-color: red;">X</span><br />
                               
-                                <img class="portraitSmall" ng-src="~/Images/FashionWars/Forms/{{person.getGraphic()}}" />
+                                <img class="portraitSmall enemyUnit" ng-src="~/Images/FashionWars/Forms/{{person.getGraphic()}}" />
 
-                                <button ng-click="fight(person)" ng-show="fightSelectedPlayer.id == leader.id && freePlayerCombatantsScoped > 0">ATK</button>
+                                <button class="atkButton btn btn-danger btn-xs" ng-click="fight(person)" ng-show="fightSelectedPlayer.id == leader.id && freePlayerCombatantsScoped > 0">ATK</button>
                              
                                    <div class="progress">
                                     <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="{{person.health}}" aria-valuemin="0" aria-valuemax="{{person.getMaxHP()}}" ng-style="{width : ( person.getHealthAsPercentage() + '%' ) }">

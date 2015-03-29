@@ -39,6 +39,7 @@ namespace tfgame.Statics
            272, // Wrenzephyr2
            1117, // Meddle
            3800, // Luxianne
+           3490, // Mizuho
            4481, // Lillith (Luxianne's alt)
            2090, // Danaume Rook
            1214, // Matt Fox (Goldendawn69)

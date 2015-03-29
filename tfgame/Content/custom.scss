@@ -33,6 +33,11 @@ body {
     font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
 }
 
+// fix for margins of headers
+h1, h2, h3 {
+    margin-top: 10px !important;
+}
+
 p {
     margin: 0px;
     padding: 0px;
@@ -770,7 +775,7 @@ strong {
     background: $containerColor;
 }
 
-p .textSpaced {
+.textSpaced p {
     margin-bottom: 5px;
 }
 
@@ -822,3 +827,20 @@ p .textSpaced {
 .neg1 {background-color: pink;}
 .pos1 {background-color: lightgreen;}
 .pos2 {background-color: #25C325;}
+
+.donateButton {
+    background-color: white;
+    border: $border;
+    padding: 15px;
+}
+
+.portraitMobile {
+    height: 50px;
+    width: 240px;
+    background-size: 80%;
+    background-position: 0px -20px;
+    border: $border;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+}

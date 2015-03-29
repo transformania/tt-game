@@ -1,13 +1,12 @@
-﻿<head>
-    <link href="~/Content/PvP.css" rel="stylesheet" />
-</head>
-
-@{
+﻿@{
     ViewBag.Title = "LoginRequired";
 }
 
-You need to log in!
+<div class="containerInner textSpaced">
+    <p>Welcome to Transformania Time! You need to log in!</p>
 
-<p>Or did you want to play 
-    @Html.ActionLink("Transformania Time", "Play", "TransformaniaTime") ?</p>
-
+    <p>
+        Or did you want to play single player javascript game - 
+        @Html.ActionLink("Transformania Gameshow", "Play", "TransformaniaTime") ?
+    </p>
+</div>

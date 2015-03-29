@@ -76,7 +76,12 @@ ul {
   border: 4px solid #B85C5C; }
 
 .restingUnit {
-  border: 4px solid #717D80; }
+  border: 4px solid #717D80 !important;
+  -webkit-filter: grayscale(100%);
+  -moz-filter: grayscale(100%);
+  -o-filter: grayscale(100%);
+  -ms-filter: grayscale(100%);
+  filter: grayscale(100%); }
 
 .containerPlus:last-child {
   border-bottom: none !important; }

@@ -12,11 +12,12 @@ a:hover {
 .listSelected {
   background-color: white; }
 
-h1 {
+h1, h2, h3 {
   margin-top: 10px !important; }
 
-h3 {
-  margin-top: 10px !important; }
+.badge {
+  display: inline !important;
+  border-radius: 0px !important; }
 
 hr {
   border-color: #7672F2 -moz-use-text-color -moz-use-text-color !important;
@@ -66,9 +67,10 @@ ul {
   transition: 0.5s all linear; }
 
 .atkButton {
-  position: relative !important;
-  right: 70px !important;
-  top: 0px !important; }
+  position: absolute;
+  left: 73px;
+  top: 108px;
+  border: 1px white solid; }
 
 .friendlyUnit {
   border: 4px #5CB85C solid; }

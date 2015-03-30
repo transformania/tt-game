@@ -26,12 +26,13 @@ a:hover {
     background-color: white;
 }
 
-h1 {
+h1, h2, h3 {
     margin-top: 10px !important;
 }
 
-h3 {
-    margin-top: 10px !important;
+.badge {
+    display: inline !important;
+    border-radius: 0px !important;
 }
 
 hr {
@@ -92,9 +93,10 @@ ul {
 }
 
 .atkButton {
-    position: relative !important;
-    right: 70px !important;
-    top: 0px !important;
+    position: absolute;
+left: 73px;
+top: 108px;
+border: 1px white solid;
 }
 
 .friendlyUnit {

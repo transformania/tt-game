@@ -46,15 +46,15 @@
 <div class="containerInner">
     <div id="ignoreDiv" style="display: none;" class="center-block">
         <p>Adding in any text to the ignore list will stop you from seeing any chat posts containing your entry, even if you write it.</p>
-        <input type="text" id="ignore" />
-        <button id="ignoreAdd">Add to Ignore</button>
-        <button id="ignoreReset">Reset Ignore</button>
+        <input type="text" id="ignore" /><br />
+        <button id="ignoreAdd" class="btn btn-danger btn-xs">Add to Ignore</button>
+        <button id="ignoreReset" class="btn btn-success btn-xs">Reset Ignore</button>
     </div>
 
     <ul id="discussion"></ul>
     <div class="roomName">Room:  @ViewBag.ChatName <span id="autoScrollToggle">Autoscroll ON</span></div>
     <input type="text" id="message" maxlength="500" class="chatInput" />
-    <input type="button" id="sendmessage" value="Send" style="width: 50%; padding: 6px; margin-left: auto; margin-right: auto; display: block;" />
+    <input class="btn btn-chat center-block" type="button" id="sendmessage" value="Send"  />
     <input type="hidden" id="displayname" /> 
 </div>
      @section scripts {
@@ -232,7 +232,7 @@
             encodedValue = encodedValue.replace("Judoo (admin)", "<span class='adminFont'>Judoo (admin)</span>");
             encodedValue = encodedValue.replace("Mizuho (dev)", "<span class='adminFont'>Mizuho (dev)</span>");
             encodedValue = encodedValue.replace(myname, "<span style='background: #FFE9D5; color: " + mynameColor + ";'><strong> " + myname + "</strong></span>");
-            encodedValue = encodedValue.replace("[luxa]", "<a onclick='chatLink()'>Luxianne is streaming now</a>");
+            encodedValue = encodedValue.replace("[luxa]", "<a onclick='chatLink()'><img src='http://i.imgur.com/khaIWKZ.jpg'></a>");
             encodedValue = encodedValue.replace("[blanca]", "<a onclick='dandyStream()'>Blanca is streaming now</a>");
             encodedValue = encodedValue.replace("[poll]", "Please take part in our Transformation Preferences Poll. <a onclick='chatLink2()'>Transformation Poll - http://goo.gl/forms/Zu0JeZBLn9 </a>");
 

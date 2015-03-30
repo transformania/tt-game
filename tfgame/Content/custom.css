@@ -533,12 +533,13 @@ li {
 .chatInput {
   border: 1px solid black;
   margin: 5px 0px 0px 0px;
-  width: 80%;
+  width: 100%;
   margin-left: auto;
   margin-right: auto;
   display: block;
   padding: 6px;
-  resize: both; }
+  resize: both;
+  margin-bottom: 10px; }
 
 #discussion {
   max-width: 100%;
@@ -552,6 +553,25 @@ li {
   border: 4px solid #A16969;
   word-break: break-all;
   margin-bottom: 0px; }
+
+.btn-chat {
+  color: white;
+  background-color: #A16969;
+  border: #734752 1px solid;
+  width: 100%; }
+
+.btn-chat:hover {
+  color: white;
+  background-color: #734752;
+  border: #A16969 1px solid; }
+
+#ignoreDiv {
+  border: 4px solid #A16969;
+  width: 100%;
+  padding: 15px; }
+
+#ignore {
+  margin-bottom: 5px; }
 
 #discussion li {
   padding: 4px; }

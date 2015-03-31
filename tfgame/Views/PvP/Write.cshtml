@@ -32,7 +32,7 @@
 
     @using (Html.BeginForm("SendMessage", "PvP", Model))
     {
-        <div class="messageInfoContainer">
+        <div class="messageInfoContainer clearfix">
             Writting to <span class="messageNicknameContainer">@ViewBag.SendingToName</span>:
         </div>
         @Html.TextAreaFor(m => m.MessageText)<br />

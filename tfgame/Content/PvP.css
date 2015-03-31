@@ -19,20 +19,6 @@
     margin-right: auto;
 }
 
-.messageTextContainer {
-    border: 1px solid gray;
-    height: auto;
-    margin-top: auto;
-    margin-bottom: auto;
-    padding-left: 10px;
-    padding-right: 10px;
-    text-align: justify;
-    word-wrap: break-word;
-}
-
-
-
-
 .name {
     font-size: 12px;
 }
@@ -70,11 +56,6 @@ a {
 }
 
 
-
-.newlink a {
-    background-color: lightpink;
-    /*font-size: 18px;*/
-}
 
 .newlinkgreen a {
     background-color: lightgreen !important;

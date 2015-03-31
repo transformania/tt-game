@@ -32,7 +32,10 @@
 </nav>
 
 <div class="containerInner">
-    <b>@Model.SenderName said to you </b> <span class="timeago">@CharactersHere.DatetimeToTimeago(Model.dbMessage.Timestamp):</span>
+    <div class="messageInfoContainer">
+        <span class="messageNicknameContainer">@Model.SenderName</span>:
+        <span class="messageTimeContainer">@CharactersHere.DatetimeToTimeago(Model.dbMessage.Timestamp)</span>
+    </div>
     <div class="messageTextContainer">
         <p>@Html.Raw(Model.dbMessage.MessageText.Replace("[br]", "<br/>"))</p>
     </div>

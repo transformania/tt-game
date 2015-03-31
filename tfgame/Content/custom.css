@@ -278,7 +278,9 @@ li {
 
 #MessageText, #WebsiteURL, #Text {
   width: 100%;
-  resize: vertical; }
+  resize: vertical;
+  border: 1px solid #808080;
+  padding: 10px; }
 
 .petActionBad {
   color: #9E0E0E; }
@@ -705,5 +707,49 @@ strong {
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 10px; }
+
+.messageTextContainer {
+  border: 1px solid gray;
+  height: auto;
+  margin-top: auto;
+  margin-bottom: auto;
+  padding: 10px;
+  text-align: justify;
+  word-wrap: break-word; }
+
+.messageInfoContainer {
+  background-color: #734752;
+  color: white;
+  padding-left: 10px;
+  padding-right: 10px; }
+
+.messageNicknameContainer {
+  font-weight: bold;
+  text-align: left; }
+
+.messageTimeContainer {
+  text-align: right;
+  float: right; }
+
+.messageTable {
+  text-align: center;
+  border: 1px solid #808080;
+  margin-bottom: 0px !important; }
+
+.messageTable td {
+  border-top: 1px solid #808080;
+  border-bottom: 1px solid #808080; }
+
+.messageTable th {
+  text-align: center;
+  border-bottom: 1px solid #808080 !important;
+  color: white;
+  background-color: #734752; }
+
+.messageTable tr:nth-child(2n) {
+  background-color: gainsboro; }
+
+.messageTable td.newlink {
+  background-color: rgba(120, 186, 181, 0.5) !important; }
 
 /*# sourceMappingURL=custom.css.map */

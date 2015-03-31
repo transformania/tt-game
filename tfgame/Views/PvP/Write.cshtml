@@ -24,16 +24,17 @@
     @{
         if (ViewBag.RespondingToMsg != null && ViewBag.RespondingToMsg != "")
         {
-            <p class="responseText">
-                "@ViewBag.RespondingToMsg
+            <p class="messageTextContainer messageResponse">
+                @ViewBag.RespondingToMsg
             </p>
         }
     }
 
     @using (Html.BeginForm("SendMessage", "PvP", Model))
     {
-
-        <p><br /><b>What is your message to @ViewBag.SendingToName?</b></p>
+        <div class="messageInfoContainer">
+            Writting to <span class="messageNicknameContainer">@ViewBag.SendingToName</span>:
+        </div>
         @Html.TextAreaFor(m => m.MessageText)<br />
         <span class="charCounter" id="textRemaining"></span>
 
@@ -51,12 +52,12 @@
     </div>
 </div>
 <style>
-    .responseText {
+    .messageResponse {
         color: #4C4C4C;
         font-style: oblique;
-        border: 1px solid lightgray;
-        height: auto;
-        border-radius: 10px;
+        margin-bottom: 10px;
+
+
     }
 
     .responseText::first-letter {

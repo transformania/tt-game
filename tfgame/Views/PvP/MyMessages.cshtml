@@ -18,7 +18,7 @@
             <ul class="nav navbar-nav" style="width:100%;">
                 <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
                 <li>@Html.ActionLink("Search for player by name", "PlayerLookup", "PvP")</li>
-                <li><a href="javascript:confirmDeletion()" />Delete All Messeges</a></li>
+                <li><a href="#" id="deleteAll" style="color: #734752 !important; font-weight:bold;">Delete All Messages</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -27,23 +27,33 @@
 <p class="infoMessage result">@Html.Raw(ViewBag.Result)</p>
 
     <script>
-        function confirmDeletion() {
-            document.getElementById('realLink').style.display = "block";
-        }
+
+        $("#deleteAll").click(function () {
+            if ($("#realLink").is(":visible") == false) {
+                $("#realLink").show();
+            } else {
+                $("#realLink").hide();
+            }
+        });
     </script>
 
-    <div class="containerInner">
-        <div id="realLink" class="deleteMessegeConfirm">
-            <span style="color:red; font-weight: bold;">Do you really want to delete all the messages? If yes then please click link bellow:</span></br>
-            @Html.ActionLink("Yes, I want to delete", "DeleteAllMessages", "PvP")
-        </div>
-        <h1 style="text-align: center; margin-top:0px;">Received Messages (@Model.Messages.Count()/150)</h1>
+<div id="realLink" class="specialBox specialBox2" style="display: none;">
+    <span style="color:red;">Do you really want to delete all the messages? If yes then please click link bellow:</span><br />
+    @Html.ActionLink("Yes, I want to delete", "DeleteAllMessages", "PvP")
+</div>
 
-        <table>
+<div class="specialBox">
+    <b>Received Messages (@Model.Messages.Count()/150)</b>
+</div>
+
+    <div class="containerInner">
+
+
+        <table class="table table-hover messageTable">
             <thead>
             <th style="width: 25%;">Sender</th>
             <th>Message</th>
-            <th style="width: 16%;">Time Sent</thstyle>
+            <th style="width: 16%;">Time Sent</th>
             <th style="width: 10%;">Delete</th>
             </thead>
             <tbody>
@@ -104,26 +114,31 @@
 
             if (ViewBag.IsDonator == null || ViewBag.IsDonator == false)
             {
-<p style="color: red; text-align: center;">
+<p style="color: red; text-align: center; margin-top:20px;">
                 Only the 150 most recent messages you've recieved will be saved.  Older messages will be deleted automatically.
             </p>
         }
 
         else if (ViewBag.IsDonator == true)
         {
-            <p style="color: red; text-align: center;">
+            <p style="color: red; text-align: center; margin-top:20px;">
                 <b>You are marked as having a Tier 3 donator level, which means you can keep up to 500 messages in your inbox and your older messages will NOT be deleted automatically by the turn update.</b>
             </p>
         }
     }
+</div>
 
-    <h1 style="text-align: center;">Sent Messages</h1>
+<div class="specialBox" style="border-top: 4px solid #A16969">
+    <b>Sent Messages</b>
+</div>
 
-    <table>
+<div class="containerInner">
+
+    <table class="table table-hover messageTable">
         <thead>
         <th style="width: 25%;">Recipient</th>
         <th>Message</th>
-        <th style="width: 16%;">Time Sent</thstyle>
+        <th style="width: 16%;">Time Sent</th>
         <th style="width: 10%;">Read</th>
         </thead>
         <tbody>
@@ -163,40 +178,6 @@
         }
     }
 </div>
-
-<style>
-    table{
-        width: 100%;
-        text-align: center;
-    }
-    td {
-        border: 1px solid black;
-        text-align: center;
-        padding: 5px 0px 5px 0px;
-    }
-
-
-    th {
-        text-align: center;
-        border: 1px solid black;
-        background-color: black;
-        color: white;
-    }
-
-    tr:nth-child(odd) {
-        background-color: lightgray;
-    }
-
-    tr:nth-child(even) {
-        background-color: #E4C7C2;
-    }
-
-    .timeSent {
-        color: white;
-        background: #475374;
-    }
-
-</style>
 
 <script>
     $("#Text").keydown(function () {

@@ -123,6 +123,8 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
         $scope.fightSelectedPlayer = $scope.personsPlayer.persons[0];
         $scope.fightSelectedOpponent = $scope.personsAI.persons[0];
 
+        $scope.freePlayerCombatantsScoped = 1;
+
         // launch fight page
         $scope.page = "fight";
 
@@ -211,10 +213,10 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
         } else if (freePlayerCombatants == 0 && freeAICombatants > 0) {
             $scope.fightTurn = "ai";
         } else {
-            $scope.personsPlayer.resetFighterMarkers();
+            $scope.nextRoundVisible = true;
             $scope.turnsSinceCombatStart++;
-            $scope.fightSelectedPlayer = $scope.personsPlayer.getNextFighter();
-            $scope.freePlayerCombatantsScoped = 1;
+            $scope.continueFightVisible = false;
+            
         }
 
         if (freeAICombatants > 0) {
@@ -222,8 +224,9 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
         } else if (freeAICombatants == 0 && freePlayerCombatants > 0) {
             $scope.fightTurn = "player";
         } else {
-            $scope.personsAI.resetFighterMarkers();
-            $scope.fightSelectedOpponent = $scope.personsPlayer.getNextFighter();
+            $scope.nextRoundVisible = true;
+            $scope.continueFightVisible = false;
+            
         }
        
 
@@ -238,7 +241,19 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
             $scope.continueFightVisible = false;
             $scope.retreatBtnVisible = false;
             $scope.aftermathBtn = true;
+            $scope.nextRoundVisible = false;
         }
+
+    }
+
+    $scope.nextRound = function () {
+        $scope.nextRoundVisible = false;
+        $scope.continueFightVisible = true;
+        $scope.personsPlayer.resetFighterMarkers();
+        $scope.personsAI.resetFighterMarkers();
+        $scope.fightSelectedOpponent = $scope.personsAI.getNextFighter();
+        $scope.fightSelectedPlayer = $scope.personsPlayer.getNextFighter();
+        $scope.freePlayerCombatantsScoped = 1;
     }
 
     $scope.retreat = function () {
@@ -558,6 +573,36 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
         }
     }
 
+    $scope.debug_levelUp = function () {
+        for (var i = 0; i < $scope.personsPlayer.persons.length; i++) {
+            $scope.personsPlayer.persons[i].level = $scope.personsPlayer.persons[i].levelRequiredForPromotion();
+        }
+    }
+
+
+    $scope.debug_healPlayers = function () {
+        for (var i = 0; i < $scope.personsPlayer.persons.length; i++) {
+            $scope.personsPlayer.persons[i].health = $scope.personsPlayer.persons[i].getMaxHP();
+        }
+    }
+
+    $scope.debug_healEnemies = function () {
+        for (var i = 0; i < $scope.personsAI.persons.length; i++) {
+            $scope.personsAI.persons[i].health = $scope.personsAI.persons[i].getMaxHP();
+        }
+    }
+
+    $scope.debug_hurtEnemies = function () {
+        for (var i = 0; i < $scope.personsAI.persons.length; i++) {
+            $scope.personsAI.persons[i].health = 0;
+        }
+    }
+
+    $scope.debug_hurtPlayers = function () {
+        for (var i = 0; i < $scope.personsPlayer.persons.length; i++) {
+            $scope.personsPlayer.persons[i].health = 0;
+        }
+    }
     $scope.debug_fullEnergy = function () {
         $scope.energy = $scope.energyMax;
     }
@@ -570,4 +615,9 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
     $scope.debug_spawnMeMembers = function () {
         $scope.personsPlayer.spawnGroup('Park:  Parking Lot', 0);
     }
+
+    $scope.debug_spawnAIMembers = function () {
+        $scope.personsAI.spawnGroup('Park:  Parking Lot', 0);
+    }
+
 });

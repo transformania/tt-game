@@ -65,6 +65,7 @@
 
             <div ng-show="page == 'fight'">
                 <button ng-click="fight()" ng-show="continueFightVisible" class="btn btn-warning">Continue Fight (Round {{turnsSinceCombatStart}})</button>
+                <button ng-click="nextRound()" ng-show="nextRoundVisible" class="btn btn-warning">NEXT ROUND</button>
                 <button ng-click="retreat()" ng-show="retreatBtnVisible" class="btn btn-info">Retreat!</button>
                 <button ng-click="aftermath()" ng-show="aftermathBtn" class="btn btn-default">View Fight Aftermath</button>
             </div>
@@ -523,9 +524,15 @@
 
             <div style="display: block; position: absolute; left: 120px; top: 50px;">
                 <button class="recruit btn btn-default" ng-click="debug_fullXP()">Max XP</button><br /><br />
+                <button class="recruit btn btn-default" ng-click="debug_levelUp()">Level up</button><br /><br />
                 <button class="recruit btn btn-default" ng-click="debug_fullEnergy()">Max Energy</button><br /><br />
                 <button class="recruit btn btn-default" ng-click="debug_moreMoney()">+1000 money</button><br /><br />
-                <button class="recruit btn btn-default" ng-click="debug_spawnMeMembers()">Spawn members</button><br /><br />
+                <button class="recruit btn btn-default" ng-click="debug_spawnMeMembers()">Spawn Player Members</button><br /><br />
+                <button class="recruit btn btn-default" ng-click="debug_spawnAIMembers()">Spawn AI Members</button><br /><br />
+                <button class="recruit btn btn-default" ng-click="debug_healPlayers()">Heal Allies</button><br /><br />
+                <button class="recruit btn btn-default" ng-click="debug_hurtPlayers()">Hurt Allies</button><br /><br />
+                <button class="recruit btn btn-default" ng-click="debug_healEnemies()">Heal Enemies</button><br /><br />
+                <button class="recruit btn btn-default" ng-click="debug_hurtEnemies()">Hurt Enemies</button><br /><br />
                 <button class="recruit btn btn-default" onclick="reload()">Reload page</button>
             </div>
         </div>

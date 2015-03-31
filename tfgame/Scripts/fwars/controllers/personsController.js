@@ -40,6 +40,8 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
     $scope.leader;
     $scope.energy = 100;
     $scope.energyMax = 100;
+    $scope.energyDailyRestore = 50;
+
     $scope.money = 100;
     $scope.timeOfDay = "Afternoon";
     $scope.day = 1;
@@ -216,7 +218,6 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
             $scope.nextRoundVisible = true;
             $scope.turnsSinceCombatStart++;
             $scope.continueFightVisible = false;
-            
         }
 
         if (freeAICombatants > 0) {
@@ -304,6 +305,10 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
         }
         else if (upgrade == 'energyPlus01') {
             $scope.energyMax += 15;
+        }
+
+        else if (upgrade == 'energyRestorePlus01') {
+            $scope.energyDailyRestore += 15;
         }
 
     }
@@ -394,8 +399,14 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
         $scope.timeOfDay = "Morning";
         $scope.logs = [];
         $scope.personsPlayer.healGroup(15);
-        $scope.energy = $scope.energyMax;
+
+        $scope.energy += $scope.energyDailyRestore;
+        if ($scope.energy > $scope.energyMax) {
+            $scope.energy = $scope.energyMax;
+        }
+
         $scope.day++;
+
 
         $scope.personsPlayer.resetFighterMarkers();
 
@@ -461,27 +472,6 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
         $scope.currentlySelectedItem = newItem;
     }
 
-    /*
-    $scope.equipNext = function () {
-        var index = $scope.unequippedItems.items.indexOf($scope.currentlySelectedItem);
-        index++;
-        $scope.currentlySelectedItem = $scope.unequippedItems.items[index];
-
-        if ($scope.currentlySelectedItem === undefined) {
-            $scope.currentlySelectedItem = $scope.unequippedItems.items[0];
-        }
-    }
-
-    $scope.equipPrevious = function (item) {
-        var index = $scope.unequippedItems.items.indexOf($scope.currentlySelectedItem);
-        index--;
-        $scope.currentlySelectedItem = $scope.unequippedItems.items[index];
-
-        if ($scope.currentlySelectedItem === undefined) {
-            $scope.currentlySelectedItem = $scope.unequippedItems.items[$scope.unequippedItems.items.length - 1];
-        }
-    }*/
-
     $scope.assignTo = function (person, item) {
         person.giveItem(item);
         $scope.unequippedItems.removeItem(item);
@@ -511,7 +501,7 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
 
     $scope.showTeachSpells = function () {
         
-        // launch promotions page
+        // launch spell teaching page
         $scope.page = "teach";
 
         $scope.currentlySelectedPerson = $scope.personsPlayer.persons[0];
@@ -606,7 +596,6 @@ angular.module('fashionApp').controller('PersonsController', function ($scope, $
     $scope.debug_fullEnergy = function () {
         $scope.energy = $scope.energyMax;
     }
-
 
     $scope.debug_moreMoney = function () {
         $scope.money += 1000;

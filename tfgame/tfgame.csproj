@@ -794,6 +794,7 @@
     <Content Include="Images\PvP\portraits\korps_recruiter_babblingfaces.jpg" />
     <Content Include="Images\PvP\portraits\lady_jianshi_spacedande.png" />
     <Content Include="Images\PvP\portraits\latex_dominatrix_Babblingfaces.png" />
+    <Content Include="Images\PvP\portraits\lazy_catgirl_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\lilath_Meddle.png" />
     <Content Include="Images\PvP\portraits\LilithValentine_Luxianne.png" />
     <Content Include="Images\PvP\portraits\Lindella_Luxianne.png" />
@@ -901,7 +902,7 @@
     <Content Include="Scripts\fwars\models\log.js" />
     <Content Include="Scripts\fwars\models\person.js" />
     <Content Include="Scripts\fwars\models\tfDefeatText.js" />
-    <Content Include="Scripts\fwars\models\tfText.js" />
+    <Content Include="Scripts\fwars\models\fightText.js" />
     <Content Include="Scripts\jquery.rotate.js" />
     <Content Include="Scripts\jQueryRotateCompressed.js" />
     <Content Include="XMLs\BossSummonText\BimboBoss.txt" />

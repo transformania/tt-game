@@ -711,6 +711,7 @@ li {
     background-color: $bodyColor;
     border: $navbarDark 1px solid;
     width: 100%;
+    border-radius: 0px !important;
 }
 
 
@@ -875,7 +876,7 @@ strong {
     border: 1px solid gray;
     height: auto;
     margin-top: auto;
-    margin-bottom: auto;
+    margin-bottom: 10px;
     padding: 10px;
     text-align: justify;
     word-wrap: break-word;
@@ -922,4 +923,12 @@ strong {
 
 .messageTable td.newlink {
     background-color: rgba(120, 186, 181, 0.5) !important;
+}
+
+.charCounter {
+    font-size: 10px;
+    color: white;
+    float: right;
+    text-align: right;
+    line-height: 19px;
 }

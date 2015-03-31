@@ -812,12 +812,6 @@ a.curse {
 }
 
 
-.charCounter {
-    font-size: 10px;
-    color: red;
-    font-style: italic;
-}
-
 /*attack modal stuff*/
 
 #expand, #toggle_all, #toggle_animates, #toggle_inanimates, #toggle_animal, #toggle_mindcontrol, #toggle_other {

@@ -34,16 +34,16 @@
     {
         <div class="messageInfoContainer clearfix">
             Writting to <span class="messageNicknameContainer">@ViewBag.SendingToName</span>:
+            <span class="charCounter" id="textRemaining"></span>
         </div>
         @Html.TextAreaFor(m => m.MessageText)<br />
-        <span class="charCounter" id="textRemaining"></span>
 
 
         @Html.HiddenFor(m => m.ReceiverId)
         @Html.HiddenFor(m => m.SenderId)
 
         <br />
-        <input type="submit" value="Send" />
+        <input type="submit" class="btn btn-chat" value="Send" />
 
     }
 
@@ -51,20 +51,6 @@
         @ViewBag.ErrorMessage
     </div>
 </div>
-<style>
-    .messageResponse {
-        color: #4C4C4C;
-        font-style: oblique;
-        margin-bottom: 10px;
-
-
-    }
-
-    .responseText::first-letter {
-        font-size: 30px;
-        font-weight: 500;
-    }
-</style>
 
 <script>
     $("#MessageText").keydown(function () {

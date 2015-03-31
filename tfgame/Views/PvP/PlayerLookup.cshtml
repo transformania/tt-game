@@ -1,33 +1,52 @@
 ﻿@model tfgame.ViewModels.PlayerSearchViewModel
 
-@using (Html.BeginForm("PlayerLookupSend", "PvP", Model))
-{
-    <p>Full name</p>
-    @Html.EditorFor(m => m.FirstName)
-    
-    <br />
-    
-     <input type="submit" value="Search" />
-}
+<nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
 
-@{
-    if (Model != null && Model.FoundThem == true)
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav" style="width:100%;">
+                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+                <li>@Html.ActionLink("Back to Messages", "MyMessages", "PvP")</li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+<div class="containerInner center-block">
+    @using (Html.BeginForm("PlayerLookupSend", "PvP", Model))
     {
-        <p>  <b>Player found!  </b>
-            @Html.ActionLink("Look At " + Model.ExactPlayer.FirstName + " " + Model.ExactPlayer.LastName, "LookAtPlayer", "PvP", new { id = Model.ExactPlayer.Id }, null)
-            @Html.ActionLink("Message " + Model.ExactPlayer.FirstName + " " + Model.ExactPlayer.LastName, "Write", "PvP", new { playerId = Model.ExactPlayer.Id, responseTo = -1 }, null)
-        </p>
-    }
-    else
-    {
-        <p>No players of this name were found.</p>
-    }
-}
+        <p>Full name<br /></p>
+        @Html.EditorFor(m => m.FirstName)
 
 
-<p>
-    @Html.ActionLink("Back to Messages", "MyMessages", "PvP")
-</p>
-<p>
-    @Html.ActionLink("Back to game", "Play", "PvP")
-</p>
+        <br />
+
+        <input type="submit" class="btn btn-default btn-xs" style="margin-top: 10px; margin-bottom: 10px;" value="Search" />
+    }
+
+    @{
+        if (Model != null && Model.FoundThem == true)
+        {
+            <p>
+                <b>Player found!<br /></b>
+                @Html.ActionLink("Look At " + Model.ExactPlayer.FirstName + " " + Model.ExactPlayer.LastName, "LookAtPlayer", "PvP", new { id = Model.ExactPlayer.Id }, new { @class = "btn btn-default btn-xs" })
+                @Html.ActionLink("Message " + Model.ExactPlayer.FirstName + " " + Model.ExactPlayer.LastName, "Write", "PvP", new { playerId = Model.ExactPlayer.Id, responseTo = -1 }, new { @class = "btn btn-default btn-xs" })
+            </p>
+        }
+        else
+        {
+            <p>No players of this name were found.</p>
+        }
+    }
+
+</div>

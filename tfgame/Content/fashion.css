@@ -142,4 +142,13 @@ ul {
   color: indianred;
   font-weight: bolder; }
 
+.fightEnemy {
+  color: red;
+  font-weight: bolder; }
+
+
+.fightFriend {
+  color: blue;
+  font-weight: bolder; }
+
 /*# sourceMappingURL=fashion.css.map */

@@ -28,6 +28,22 @@ attackTextMap['Fashion Witch']['Male Bystander'] = {
     ],
 };
 
+attackTextMap['Fashion Witch']['Female'] = {
+    'texts': [
+
+    '"Hey there, girl.  Think of all those pretty clothes in your closet, looking good all the time and you have to do is wash and iron them every now and then.  I bet you\'ve never heard tried chilling out in someone\'s closet or panty drawer, have you?  I\'m told it\'s a very relaxing experience...  Just think about it..." [ATTACKER] coaxes, her words intermixed with a magic subtly infiltrating [VICTIM]\'s mind.',
+
+    ],
+};
+
+attackTextMap['Fashion Witch']['Male'] = {
+    'texts': [
+
+          '"Hey there, boy.  Just think of all those pretty clothes in your sister or girlfriend\'s closet, looking good all the time and you she has to do is wash and iron them every now and then.  I bet you\'ve never heard tried chilling out in someone\'s closet or panty drawer, have you?  I\'m told it\'s a very relaxing experience...  Just think about it..." [ATTACKER] coaxes, her words intermixed with a magic subtly infiltrating [VICTIM]\'s mind.',
+
+    ],
+};
+
 // ------------------------ WITCHLING --------------------
 
 attackTextMap['Witchling'] = {};
@@ -38,7 +54,7 @@ attackTextMap['Witchling']['Generic'] = {
 };
 attackTextMap['Witchling']['Female Bystander'] = {
     'texts': [
-    '"I was like you once," [ATTACKER] taunts.  "Then I learned a thing... or two or three..." [ATTACKER] says, shooting small bolts of crackling magic at [VICTIM]\'s feet.',
+    '"I was like you once, some dumb schmuck off the streets without even the smallest spell in your reportoir..." [ATTACKER] taunts.  "Then I learned a thing... or two or three..." [ATTACKER] says, shooting small bolts of crackling magic at [VICTIM]\'s feet.',
     ],
 };
 
@@ -82,17 +98,24 @@ attackTextMap['Male Bystander']['Male Bystander'] = {
 
 
 function getRandomAttackText(attackerForm, victimForm) {
-    try {
-        var texts = attackTextMap[attackerForm][victimForm].texts;
-        var randIndex = Math.floor(Math.random() * texts.length);
-        var result = texts[randIndex];
-        return result;
-    } catch (e) {
-        var texts = attackTextMap[attackerForm]['Generic'].texts;
-        var randIndex = Math.floor(Math.random() * texts.length);
-        var result = texts[randIndex];
-        return result;
+    
+    var texts = "";
+
+    if (typeof attackTextMap[attackerForm][victimForm] != "undefined") {
+        texts = attackTextMap[attackerForm][victimForm].texts;
+    } else if (formStatsMap[victimForm].gender == "female" && typeof attackTextMap[attackerForm]['Female'] != "undefined") {
+        texts = attackTextMap[attackerForm]['Female'].texts;
+    } else if (formStatsMap[victimForm].gender == "male" && typeof attackTextMap[attackerForm]['Male'] != "undefined") {
+        texts = attackTextMap[attackerForm]['Male'].texts;
+    } else if (typeof attackTextMap[attackerForm]['Generic'] != "undefined") {
+        texts = attackTextMap[attackerForm]['Generic'].texts;
+    } else {
+        return "[ATTACKER] shoots a bolt of magic at [VICTIM]."
     }
+
+    var randIndex = Math.floor(Math.random() * texts.length);
+    var result = texts[randIndex];
+    return result;
 }
 
 function insertNames(text, attacker, victim) {

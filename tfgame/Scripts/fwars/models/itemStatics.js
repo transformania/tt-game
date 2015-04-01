@@ -4,6 +4,7 @@ var itemStatsMap = {};
 
 itemStatsMap['Cotton Panties'] = {
     'name': 'Cotton Panties',
+    'graphic': 'cotton_panties.jpg',
     'bonusHP': 1,
     'value': 10,
     'strengthAttack': 0,
@@ -20,6 +21,7 @@ itemStatsMap['Cotton Panties'] = {
 
 itemStatsMap['Latex Catsuit'] = {
     'name': 'Latex Catsuit',
+    'graphic': 'cotton_panties.jpg',
     'bonusHP': 2,
     'value': 15,
     'strengthAttack': 0,
@@ -36,6 +38,7 @@ itemStatsMap['Latex Catsuit'] = {
 
 itemStatsMap['Comfy Sports Bra'] = {
     'name': 'Comfy Sports Bra',
+    'graphic': 'cotton_panties.jpg',
     'bonusHP': 4,
     'value': 25,
     'strengthAttack': 0,
@@ -52,6 +55,7 @@ itemStatsMap['Comfy Sports Bra'] = {
 
 itemStatsMap['Lacy Corset'] = {
     'name': 'Lacy Corset',
+    'graphic': 'cotton_panties.jpg',
     'bonusHP': -2,
     'value': 40,
     'strengthAttack': 0,
@@ -68,6 +72,7 @@ itemStatsMap['Lacy Corset'] = {
 
 itemStatsMap['Ankh Necklace'] = {
     'name': 'Ankh Necklace',
+    'graphic': 'cotton_panties.jpg',
     'bonusHP': 3,
     'value': 25,
     'strengthAttack': 0,
@@ -85,6 +90,7 @@ itemStatsMap['Ankh Necklace'] = {
 
 itemStatsMap['Absorb'] = {
     'name': 'Absorb',
+    'graphic': 'cotton_panties.jpg',
     'bonusHP': 0,
     'value': 99999,
     'energyNeededToTF': 25,

@@ -69,5 +69,9 @@ Item.prototype.isSpell = function () {
     return Math.floor(itemStatsMap[this.type].isSpell);
 }
 
+Item.prototype.getGraphic = function () {
+    return itemStatsMap[this.type].graphic;
+}
+
 
 

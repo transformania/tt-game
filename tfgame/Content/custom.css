@@ -753,11 +753,17 @@ strong {
 .messageTable td.newlink {
   background-color: rgba(120, 186, 181, 0.5) !important; }
 
+.newlink a {
+  background-color: rgba(120, 186, 181, 0.5) !important; }
+
 .charCounter {
   font-size: 10px;
   color: white;
   float: right;
   text-align: right;
   line-height: 19px; }
+
+.contributionsBox a {
+  line-height: 25px; }
 
 /*# sourceMappingURL=custom.css.map */

@@ -2029,8 +2029,49 @@ namespace tfgame.Controllers
             return View();
         }
 
+        public ActionResult AuditDonators()
+        {
 
+            // assert only admin can view this
+            bool iAmAdmin= User.IsInRole(PvPStatics.Permissions_Admin);
+            if (iAmAdmin == false)
+            {
+                return View("~/Views/PvP/PvPAdmin.cshtml");
+            }
 
+            string output = "";
+
+            IDonatorRepository repo = new EFDonatorRepository();
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+
+            foreach (Donator d in repo.Donators)
+            {
+                Player player = playerRepo.Players.FirstOrDefault(p => p.MembershipId == d.OwnerMembershipId);
+
+                if (player != null && player.DonatorLevel > 0)
+                {
+                    output += "Looking at " + player.GetFullName() + ".";
+
+                    if (player.DonatorLevel > d.Tier)
+                    {
+                        player.DonatorLevel = d.Tier;
+                        output += "  Knocking down to tier " + d.Tier + ".  </br>";
+                        string message = "<span class='bad'>MESSAGE FROM SERVER:  Your Patreon donation tier has been changed to " + d.Tier + ".  If you feel this is in error, please send a private message to Judoo on the forums or through Patreon.  Thank you for your past support!</span>";
+                        PlayerLogProcedures.AddPlayerLog(player.Id, message, true);
+                    }
+                    else
+                    {
+                        output += "  Okay at tier " + d.Tier + ".  </br>";
+                        string message = "<span class='bad'>MESSAGE FROM SERVER:  Your Patreon donation has been processed and remains at Tier " + d.Tier + ".  Thank you for your support!</span>";
+                        PlayerLogProcedures.AddPlayerLog(player.Id, message, true);
+                    }
+                }
+
+            }
+
+            TempData["Result"] = output;
+            return RedirectToAction("Play", "PvP");
+        }
 
     }
 

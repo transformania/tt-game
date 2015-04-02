@@ -30,6 +30,7 @@ formStatsMap['Fashion Witch'] = {
     'description': 'A powerful woman knowledgeable of many types of magic... mainly improving fashion by turning people into new clothes!',
     'gender': 'female',
     'promotesTo': [],
+    'spawnableSpells': [],
     'class': 'witch',
 
     'strengthAttack': 1,
@@ -52,6 +53,7 @@ formStatsMap['Female Bystander'] = {
     'gender': 'female',
     'class': 'civilian',
     'promotesTo': ['Witchling'],
+    'spawnableSpells': [],
 
     'strengthAttack': 0,
     'strengthDefense': 0,
@@ -71,9 +73,9 @@ formStatsMap['Witchling'] = {
     'baseHP': 4,
     'graphic': 'Witchling.jpg',
     'description': 'A young witch, still learning her newfound powers!',
-    'description': '',
     'gender': 'female',
     'promotesTo': ['Senior Witchling'],
+    'spawnableSpells': ['Cotton Panties', 'Latex Catsuit','Absorb'],
     'class': 'witch',
 
     'strengthAttack': 1,
@@ -94,6 +96,7 @@ formStatsMap['Senior Witchling'] = {
     'description': 'A more accomplished witch, ready to move on to her specialization.',
     'gender': 'female',
     'promotesTo': [],
+    'spawnableSpells': ['Cotton Panties', 'Latex Catsuit', 'Absorb'],
     'class': 'witch',
 
     'strengthAttack': 1,
@@ -116,7 +119,7 @@ formStatsMap['Male Bystander'] = {
     'gender': 'male',
     'class': 'civilian',
     'promotesTo': ['Apprentice'],
-
+    'spawnableSpells': [],
     'strengthAttack': 0,
     'strengthDefense': 0,
     'seductionAttack': 0,
@@ -135,6 +138,7 @@ formStatsMap['Apprentice'] = {
     'description': 'A male possessing some basic magic.',
     'gender': 'male',
     'promotesTo': ['Mage'],
+    'spawnableSpells': ['Cotton Panties'],
     'class': 'witch',
 
     'strengthAttack': 0,
@@ -155,6 +159,7 @@ formStatsMap['Mage'] = {
     'description': 'A male human posessing some slightly more powerful magic.',
     'gender': 'male',
     'promotesTo': [],
+    'spawnableSpells': ['Cotton Panties'],
     'class': 'witch',
 
     'strengthAttack': 3,

@@ -1517,7 +1517,9 @@
     <Content Include="Scripts\game_sequence.js" />
     <Content Include="Scripts\GenericCharData.js" />
     <Content Include="Scripts\GenericPlayerData.js" />
-    <None Include="Properties\PublishProfiles\transformaniatime.com - Web Deploy %286%29.pubxml" />
+    <None Include="Properties\PublishProfiles\transformaniatime.com - Web Deploy %286%29.pubxml">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.0.js" />
     <Content Include="Scripts\jquery-2.1.0.min.js" />

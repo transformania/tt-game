@@ -2044,7 +2044,7 @@ namespace tfgame.Controllers
             IDonatorRepository repo = new EFDonatorRepository();
             IPlayerRepository playerRepo = new EFPlayerRepository();
 
-            foreach (Donator d in repo.Donators)
+            foreach (Donator d in repo.Donators.ToList())
             {
                 Player player = playerRepo.Players.FirstOrDefault(p => p.MembershipId == d.OwnerMembershipId);
 
@@ -2065,7 +2065,12 @@ namespace tfgame.Controllers
                         string message = "<span class='bad'>MESSAGE FROM SERVER:  Your Patreon donation has been processed and remains at Tier " + d.Tier + ".  Thank you for your support!</span>";
                         PlayerLogProcedures.AddPlayerLog(player.Id, message, true);
                     }
+
+                    playerRepo.SavePlayer(player);
+
                 }
+
+               
 
             }
 

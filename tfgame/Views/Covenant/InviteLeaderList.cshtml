@@ -1,0 +1,36 @@
+﻿@model tfgame.ViewModels.CovenantViewModel
+
+<nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+                <li>@Html.ActionLink("Back to My Covenant", "MyCovenant", "Covenant")</li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+<div class="containerInner">
+    <h3>Set a new Covenant Leader</h3>
+    <p>Click on one of the names below to set a member of the covenant as the leader.</p>
+    <p>Covenant leaders are the highest trusted member of the covenant and are permitted all covenant administrative access. Setting a new covenant leader will revoke your leadership status.</p>
+    @{
+        foreach (tfgame.ViewModels.PlayerFormViewModel p in Model.Members)
+        {
+            <p>
+                @Html.ActionLink(p.Player.GetFullName(), "InviteLeaderSend", "Covenant", new { id = p.Player.Id }, null)
+            </p>
+        }
+    }
+</div>

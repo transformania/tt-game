@@ -526,7 +526,7 @@ namespace tfgame.Procedures
 
             dbCovenant.LeaderId = player.Id;
             covRepo.SaveCovenant(dbCovenant);
-            WriteCovenantLog(player.GetFullName() + " is now the captain of the covenant.", covenant.Id, true);
+            WriteCovenantLog(player.GetFullName() + " is now the leader of the covenant.", covenant.Id, true);
             return player.GetFullName() + " is now the leader of the covenant.";
         }
 

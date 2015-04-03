@@ -1121,8 +1121,71 @@ namespace tfgame.Controllers
             return RedirectToAction("MyCovenant");
         }
 
+        [Authorize]
+        public ActionResult InviteLeaderList()
+        {
+            Player me = PlayerProcedures.GetPlayerFromMembership();
+
+            // assert that player is in a covenant
+            if (me.Covenant <= 0)
+            {
+                TempData["Error"] = "You are not in a covenant.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            // assert that the player is a covenant leader
+            Covenant myCov = CovenantProcedures.GetDbCovenant(me.Covenant);
+            if (myCov.LeaderId != me.Id)
+            {
+                TempData["Error"] = "You are not the leader of your covenant.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            CovenantViewModel output = CovenantProcedures.GetCovenantViewModel(me.Covenant);
+            return View(output);
+        }
 
 
+        [Authorize]
+        public ActionResult InviteLeaderSend(int id)
+        {
+            Player me = PlayerProcedures.GetPlayerFromMembership();
 
+            // assert that player is in a covenant
+            if (me.Covenant <= 0)
+            {
+                TempData["Error"] = "You are not in a covenant.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            // assert that the player is a covenant leader
+            Covenant myCov = CovenantProcedures.GetDbCovenant(me.Covenant);
+            if (myCov.LeaderId != me.Id)
+            {
+                TempData["Error"] = "You are not the leader of your covenant.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            Player newLeader = PlayerProcedures.GetPlayer(id);
+
+            // assert that the target player is in the same covenant
+            if (newLeader.Covenant != myCov.Id)
+            {
+                TempData["Error"] = "This player is not a member of your covenant and cannot be made the leader.";
+                return RedirectToAction("MyCovenant");
+            }
+
+            // assert that the target is not the covenant leader
+            if (newLeader.Id == myCov.LeaderId)
+            {
+                TempData["Error"] = "This player is already the leader of the covenant.";
+                return RedirectToAction("MyCovenant");
+            }
+            string result = CovenantProcedures.ChangeCovenantLeader(myCov, newLeader);
+
+            TempData["Result"] = result;
+            return RedirectToAction("MyCovenant");
+
+        }
     }
 }

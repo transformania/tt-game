@@ -1745,6 +1745,7 @@
     <Content Include="Views\PvP\RoundLeaderboards\XP\Alpha_17.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_17.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Statistics\Alpha_17.cshtml" />
+    <Content Include="Views\Covenant\InviteLeaderList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

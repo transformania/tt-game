@@ -519,6 +519,17 @@ namespace tfgame.Procedures
             
         }
 
+        public static string ChangeCovenantLeader(Covenant covenant, Player player)
+        {
+            ICovenantRepository covRepo = new EFCovenantRepository();
+            Covenant dbCovenant = covRepo.Covenants.FirstOrDefault(i => i.Id == covenant.Id);
+
+            dbCovenant.LeaderId = player.Id;
+            covRepo.SaveCovenant(dbCovenant);
+            WriteCovenantLog(player.GetFullName() + " is now the leader of the covenant.", covenant.Id, true);
+            return player.GetFullName() + " is now the leader of the covenant.";
+        }
+
         public static bool PlayerIsCaptain(Covenant covenant, Player player)
         {
             if (covenant == null)

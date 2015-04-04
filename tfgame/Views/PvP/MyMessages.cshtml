@@ -51,10 +51,12 @@
 
         <table class="table table-hover messageTable">
             <thead>
-            <th style="width: 25%;">Sender</th>
-            <th>Message</th>
-            <th style="width: 16%;">Time Sent</th>
-            <th style="width: 10%;">Delete</th>
+                <tr>
+                    <th style="width: 25%;">Sender</th>
+                    <th>Message</th>
+                    <th style="width: 16%;">Time Sent</th>
+                    <th style="width: 10%;">Delete</th>
+                </tr>
             </thead>
             <tbody>
                 @{
@@ -114,21 +116,21 @@
 
             if (ViewBag.IsDonator == null || ViewBag.IsDonator == false)
             {
-<p style="color: red; text-align: center; margin-top:20px;">
+<p class="warningText">
                 Only the 150 most recent messages you've recieved will be saved.  Older messages will be deleted automatically.
             </p>
-        }
+            }
 
-        else if (ViewBag.IsDonator == true)
-        {
-            <p style="color: red; text-align: center; margin-top:20px;">
-                <b>You are marked as having a Tier 3 donator level, which means you can keep up to 500 messages in your inbox and your older messages will NOT be deleted automatically by the turn update.</b>
-            </p>
+            else if (ViewBag.IsDonator == true)
+            {
+                <p class="warningText">
+                    <b>You are marked as having a Tier 3 donator level, which means you can keep up to 500 messages in your inbox and your older messages will NOT be deleted automatically by the turn update.</b>
+                </p>
+            }
         }
-    }
 </div>
 
-<div class="specialBox specialHeader" style="border-top: 4px solid #A16969">
+<div class="specialBox specialHeader topBorder">
     <b>Sent Messages</b>
 </div>
 

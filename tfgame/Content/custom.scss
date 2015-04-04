@@ -945,3 +945,13 @@ strong {
 .specialHeader {
     background-color:#EDAF6B !important;
 }
+
+.topBorder {
+    border-top: $border;
+}
+
+.warningText {
+    color: $navbarDark;
+    text-align: center;
+    margin-top:20px;
+}

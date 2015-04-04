@@ -23,123 +23,128 @@
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
+
+<div class="specialBox specialHeader">
+    <b>Active Friends (@Model.ConfirmedFriends.Count())</b>
+</div>
+
 <div class="containerInner">
-    <div class="divblock">
-        <div class="divblock">
-            <h1 style="margin-top:0px;">Active Friends (@Model.ConfirmedFriends.Count())</h1>
+            <table class="table table-hover messageTable">
+                <thead>
+                    <tr>
+                        <th style="width: 55%;">Name</th>
+                        <th style="width: 30%;">Last Activity</th>
+                        <th style="width: 15%;">Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
 
-            @{
-                foreach (tfgame.ViewModels.FriendPlayerViewModel fp in Model.ConfirmedFriends.Where(m => m.dbPlayer != null))
-                {
-                    <div class="friendListing">
+                    @{
+                        foreach (tfgame.ViewModels.FriendPlayerViewModel fp in Model.ConfirmedFriends.Where(m => m.dbPlayer != null))
+                        {
+                            <tr>
 
-                        @{
-                    if (fp.dbPlayer.Mobility == "full")
-                    {
-                        <span>
-                            @Html.ActionLink(fp.dbPlayer.GetFullName() + "  (#" + fp.dbPlayer.MembershipId + ")", "LookAtPlayer", "PvP", new { id = fp.dbPlayer.Id }, null)
-                        </span>
+                                @{
+                                    if (fp.dbPlayer.Mobility == "full")
+                                    {
+                                        <td>
+                                            @Html.ActionLink(fp.dbPlayer.GetFullName() + "  (#" + fp.dbPlayer.MembershipId + ")", "LookAtPlayer", "PvP", new { id = fp.dbPlayer.Id }, null)
+                                        </td>
+                                    }
+                                    else if (fp.dbPlayer.Mobility == "inanimate")
+                                    {
+                                        <td>
+                                            @Html.ActionLink(fp.dbPlayer.GetFullName() + " (inanimate)" + "  (#" + fp.dbPlayer.MembershipId + ")", "LookAtPlayer", "PvP", new { id = fp.dbPlayer.Id }, null)
+                                        </td>
+                                    }
 
-                            <span class="timeago">Online as of @CharactersHere.DatetimeToTimeago(fp.dbPlayer.OnlineActivityTimestamp)</span>
+                                    else if (fp.dbPlayer.Mobility == "animal")
+                                    {
+                                        <td>
+                                            @Html.ActionLink(fp.dbPlayer.GetFullName() + " (animal)" + "  (#" + fp.dbPlayer.MembershipId + ")", "LookAtPlayer", "PvP", new { id = fp.dbPlayer.Id }, null)
+                                        </td>
+                                    }
+                                <td class="timeago" style="line-height: 17px;">@CharactersHere.DatetimeToTimeago(fp.dbPlayer.OnlineActivityTimestamp)</td>
+                                    <td>
+                                        @Html.ActionLink("Defriend", "RespondToFriendRequest", "PvP", new { id = fp.dbFriend.Id, response = "defriend" }, null)
+                                    </td>
+
+                                }
+
+                            </tr>
+                                    }
 
                     }
-                    else if (fp.dbPlayer.Mobility == "inanimate")
-                    {
-                        <span>
-                            @Html.ActionLink(fp.dbPlayer.GetFullName() + " (inanimate)" + "  (#" + fp.dbPlayer.MembershipId + ")", "LookAtPlayer", "PvP", new { id = fp.dbPlayer.Id }, null)
-                        </span>
+                </tbody>
+            </table>
 
-                            <span class="timeago">Online as of @CharactersHere.DatetimeToTimeago(fp.dbPlayer.OnlineActivityTimestamp)</span>
+</div>
 
+<div class="specialBox specialHeader topBorder">
+    <b>Requests sent to You (@Model.RequestsForMe.Count())</b>
+</div>
 
-                    }
-
-                    else if (fp.dbPlayer.Mobility == "animal")
-                    {
-                        <span>
-                            @Html.ActionLink(fp.dbPlayer.GetFullName() + " (animal)" + "  (#" + fp.dbPlayer.MembershipId + ")", "LookAtPlayer", "PvP", new { id = fp.dbPlayer.Id }, null)
-                        </span>
-
-                            <span class="timeago">Online as of @CharactersHere.DatetimeToTimeago(fp.dbPlayer.OnlineActivityTimestamp)</span>
-
-
-                    }
-
-                    <span style="float: right">
-                        @Html.ActionLink("Defriend", "RespondToFriendRequest", "PvP", new { id = fp.dbFriend.Id, response = "defriend" }, null)
-                    </span>
-
-                        }
-
-                    </div>
-                }
-
-            }
-
-
-
-            <h1>Requests sent to You (@Model.RequestsForMe.Count())</h1>
-
-            @{foreach (tfgame.ViewModels.FriendPlayerViewModel fp2 in Model.RequestsForMe.Where(m => m.dbPlayer != null))
+<div class="containerInner">
+    @{foreach (tfgame.ViewModels.FriendPlayerViewModel fp2 in Model.RequestsForMe.Where(m => m.dbPlayer != null))
             {
-                <div class="friendListing">
+            <div class="friendListing">
+                @fp2.dbPlayer.GetFullName()
+                @Html.ActionLink("Accept", "RespondToFriendRequest", "PvP", new { id = fp2.dbFriend.Id, response = "accept" }, null)
+                @Html.ActionLink("Deny", "RespondToFriendRequest", "PvP", new { id = fp2.dbFriend.Id, response = "deny" }, null)
+            </div>
+        }
+    }
+</div>
 
-                    @fp2.dbPlayer.GetFullName()
-                    @Html.ActionLink("Accept", "RespondToFriendRequest", "PvP", new { id = fp2.dbFriend.Id, response = "accept" }, null)
-                    @Html.ActionLink("Deny", "RespondToFriendRequest", "PvP", new { id = fp2.dbFriend.Id, response = "deny" }, null)
+<div class="specialBox specialHeader topBorder">
+    <b>Requests you've sent (@Model.MyOutgoingRequests.Count())</b>
+</div>
 
-                </div>
-            }
-            }
+<div class="containerInner">
+    @{
+        foreach (tfgame.ViewModels.FriendPlayerViewModel fp3 in Model.MyOutgoingRequests.Where(m => m.dbPlayer != null))
+        {
+            <div class="friendListing">
+                @fp3.dbPlayer.GetFullName()
+                @Html.ActionLink("Cancel", "RespondToFriendRequest", "PvP", new { id = fp3.dbFriend.Id, response = "cancel" }, null)
+            </div>
+        }
+    }
 
-
-            <h1>Requests you've sent (@Model.MyOutgoingRequests.Count())</h1>
-
-            @{
-                foreach (tfgame.ViewModels.FriendPlayerViewModel fp3 in Model.MyOutgoingRequests.Where(m => m.dbPlayer != null))
-                {
-                    <div class="friendListing">
-                        @fp3.dbPlayer.GetFullName()
-                        @Html.ActionLink("Cancel", "RespondToFriendRequest", "PvP", new { id = fp3.dbFriend.Id, response = "cancel" }, null)
-                    </div>
-                }
-            }
-
-
-
-        </div>
-
-        <div class="divblock">
-            <p>You may have more friends who have not yet made a character this round.  They will appear on this page when they have.</p>
-        </div>
-
-
+    <div class="center-block">
+        <p>You may have more friends who have not yet made a character this round.  They will appear on this page when they have.</p>
     </div>
 </div>
-<style>
-    h1{
-        text-align: center;
-    }
-    .friendListing {
-        width: 100%;
-        border: 1px solid lightgray;
-        position: relative;
-        float: left;
-        margin-top: 5px;
-        padding:0;
-    }
 
-    .friendonline {
-        color: green;
-    }
 
-    .friendoffline {
-        color: red;
-    }
 
-    .divblock {
-        position: relative;
-        float: left;
-        width: 100%;
-    }
-</style>
+
+
+    <style>
+        h1 {
+            text-align: center;
+        }
+
+        .friendListing {
+            width: 100%;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+            margin-top: 5px;
+            padding: 0;
+        }
+
+        .friendonline {
+            color: green;
+        }
+
+        .friendoffline {
+            color: red;
+        }
+
+        .divblock {
+            position: relative;
+            float: left;
+            width: 100%;
+        }
+    </style>

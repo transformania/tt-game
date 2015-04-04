@@ -3219,6 +3219,11 @@ namespace tfgame.Controllers
                 TempData["MyName"] = "Mizuho (dev)";
             }
 
+            else if (me.MembershipId == 251)
+            {
+                TempData["MyName"] = "Arrhae (dev)";
+            }
+
             ViewBag.ChatName = room;
 
             //if (room == "global")

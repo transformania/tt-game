@@ -12,7 +12,7 @@
 
 
 
-<h2>Known Spells (@Model.Where(c => c.MobilityType == "full" || c.MobilityType == "inanimate" || c.MobilityType == "animal" || c.MobilityType == "mindcontrol").Count() / @ViewBag.TotalLearnableSkills)</h2>
+<h2>Known Spells (@Model.Where(c => c.dbSkill.Name != tfgame.Statics.PvPStatics.Dungeon_VanquishSpell && (c.MobilityType == "full" || c.MobilityType == "inanimate" || c.MobilityType == "animal" || c.MobilityType == "mindcontrol")).Count() / @ViewBag.TotalLearnableSkills)</h2>
 
 <div id="resultPrompt"></div>
 

@@ -45,6 +45,11 @@
             <p class="good">You are on the multiple account whitelist.</p>
         }
         
+         if (User.IsInRole(PvPStatics.Permissions_Moderator) == true)
+        {
+            <p class="good">You are on the chat moderators list.</p>
+        }
+        
         if (User.IsInRole(PvPStatics.Permissions_Proofreader) == true)
         {
             <p class="good">You are on the proofreaders list.</p>

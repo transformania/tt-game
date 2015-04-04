@@ -3198,9 +3198,9 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play");
             }
 
-            if (room == "")
+            if (room == "" || room[0]=='_')
             {
-                TempData["Result"] = "A chat room must have a name.";
+                TempData["Result"] = "A chat room must have a name and not begin with an underscore";
                 return RedirectToAction("Play");
             }
 

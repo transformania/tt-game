@@ -74,37 +74,53 @@
                     </div>
                 }
 
-            }
+                if (Model.ConfirmedFriends.Where(m => m.dbPlayer != null).Count() == 0)
+                {
+                    <p>How sad, you don't appear to have any active friends this round!</p>
+                }
 
+                if (Model.RequestsForMe.Where(m => m.dbPlayer != null).Count() > 0)
+                {
+                        <h1>Requests sent to You (@Model.RequestsForMe.Where(m => m.dbPlayer != null).Count())</h1>
 
-
-            <h1>Requests sent to You (@Model.RequestsForMe.Count())</h1>
-
-            @{foreach (tfgame.ViewModels.FriendPlayerViewModel fp2 in Model.RequestsForMe.Where(m => m.dbPlayer != null))
-            {
-                <div class="friendListing">
-
-                    @fp2.dbPlayer.GetFullName()
-                    @Html.ActionLink("Accept", "RespondToFriendRequest", "PvP", new { id = fp2.dbFriend.Id, response = "accept" }, null)
-                    @Html.ActionLink("Deny", "RespondToFriendRequest", "PvP", new { id = fp2.dbFriend.Id, response = "deny" }, null)
-
-                </div>
-            }
-            }
-
-
-            <h1>Requests you've sent (@Model.MyOutgoingRequests.Count())</h1>
-
-            @{
-                foreach (tfgame.ViewModels.FriendPlayerViewModel fp3 in Model.MyOutgoingRequests.Where(m => m.dbPlayer != null))
+                foreach (tfgame.ViewModels.FriendPlayerViewModel fp2 in Model.RequestsForMe.Where(m => m.dbPlayer != null))
                 {
                     <div class="friendListing">
-                        @fp3.dbPlayer.GetFullName()
-                        @Html.ActionLink("Cancel", "RespondToFriendRequest", "PvP", new { id = fp3.dbFriend.Id, response = "cancel" }, null)
+
+                        @fp2.dbPlayer.GetFullName()
+                        @Html.ActionLink("Accept", "RespondToFriendRequest", "PvP", new { id = fp2.dbFriend.Id, response = "accept" }, null)
+                        @Html.ActionLink("Deny", "RespondToFriendRequest", "PvP", new { id = fp2.dbFriend.Id, response = "deny" }, null)
+
                     </div>
                 }
-            }
+                }
+                else
+                {
+                    <p>Nobody has sent an unaccepted or denied friend request sent to you right now.</p>
+                }
 
+            
+
+                if (Model.MyOutgoingRequests.Where(m => m.dbPlayer != null).Count() > 0)
+                {
+                    <h1>Requests you've sent</h1>
+                    foreach (tfgame.ViewModels.FriendPlayerViewModel fp3 in Model.MyOutgoingRequests.Where(m => m.dbPlayer != null))
+                    {
+                        <div class="friendListing">
+                            @fp3.dbPlayer.GetFullName()
+                            @Html.ActionLink("Cancel", "RespondToFriendRequest", "PvP", new { id = fp3.dbFriend.Id, response = "cancel" }, null)
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p>You don't have any pending friend requests that you have sent out.</p>
+                }
+
+
+
+
+}
 
 
         </div>
@@ -117,16 +133,17 @@
     </div>
 </div>
 <style>
-    h1{
+    h1 {
         text-align: center;
     }
+
     .friendListing {
         width: 100%;
         border: 1px solid lightgray;
         position: relative;
         float: left;
         margin-top: 5px;
-        padding:0;
+        padding: 0;
     }
 
     .friendonline {

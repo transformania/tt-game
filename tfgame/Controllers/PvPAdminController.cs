@@ -1028,6 +1028,51 @@ namespace tfgame.Controllers
             }
         }
 
+        public ActionResult ChangeGameDate()
+        {
+            // assert only admins can view this
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            {
+                return View("Play", "PvP");
+            }
+            else
+            {
+                PublicBroadcastViewModel output = new PublicBroadcastViewModel();
+                IPvPWorldStatRepository repo = new EFPvPWorldStatRepository();
+
+                PvPWorldStat stats = repo.PvPWorldStats.FirstOrDefault(p => p.Id != -1);
+
+                if (stats != null)
+                {
+                    output.Message = stats.GameNewsDate;
+                }
+
+                return View(output);
+            }
+        }
+
+        public ActionResult ChangeGameDateSend(PublicBroadcastViewModel input)
+        {
+            // assert only admins can view this
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            {
+                return View("Play", "PvP");
+            }
+            else
+            {
+                IPvPWorldStatRepository repo = new EFPvPWorldStatRepository();
+
+                PvPWorldStat stats = repo.PvPWorldStats.FirstOrDefault(p => p.Id != -1);
+                stats.GameNewsDate = input.Message;
+                repo.SavePvPWorldStat(stats);
+                PvPStatics.LastGameUpdate = stats.GameNewsDate;
+
+             //   TempData["Message"] = errors;
+
+                return RedirectToAction("Index");
+            }
+        }
+
         public ActionResult test()
         {
             // assert only admins can view this
@@ -2062,7 +2107,7 @@ namespace tfgame.Controllers
                     else
                     {
                         output += "  Okay at tier " + d.Tier + ".  </br>";
-                        string message = "<span class='bad'>MESSAGE FROM SERVER:  Your Patreon donation has been processed and remains at Tier " + d.Tier + ".  Thank you for your support!</span>";
+                        string message = "<span class='good'>MESSAGE FROM SERVER:  Your Patreon donation has been processed and remains at Tier " + d.Tier + ".  Thank you for your support!</span>";
                         PlayerLogProcedures.AddPlayerLog(player.Id, message, true);
                     }
 

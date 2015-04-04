@@ -313,7 +313,7 @@
     <br /><br />
     <input type="submit" value="Save" />
     
-    if (tfgame.Statics.TrustStatics.PlayerIsProofreader(WebSecurity.CurrentUserId) == true)
+    if ((User.IsInRole(tfgame.Statics.PvPStatics.Permissions_Proofreader) == true) == true)
         {
             @Html.ActionLink("Unlock but DO NOT Save", "UnlockEffectContribution", "Contribution", new { id = Model.Id }, null)
         }

@@ -23,7 +23,7 @@
                 <li>@Html.ActionLink("Submit Curse", "ContributeEffect", "Contribution", new { Id = "-1" }, FormMethod.Post)</li>
                 <li>@Html.ActionLink("Submit DM Encounter", "MyDMRolls", "Contribution")</li>
                 <li>@Html.ActionLink("New Contribution", "Contribute", "PvP", new { Id = "-1" }, FormMethod.Post)</li>
-                @{if (TrustStatics.PlayerIsProofreader(WebSecurity.CurrentUserId) == true)
+                @{if (User.IsInRole(PvPStatics.Permissions_Proofreader) == true)
                 {
                     <li>@Html.ActionLink("Unlock but DO NOT Save", "SendContributionUndoLock", "PvP", new { id = Model.Id }, null)</li>
                 }}     
@@ -162,7 +162,7 @@
 
         <p><b>NOTE:  I would STRONGLY recommend saving your longer inputs somewhere on your computer, particularly item / form descriptions and transformation messages.  I do not know how reliable my hosting service is or if there are bugs that might erase some data.  I also recommend saving after every few text boxes you fill out.</b></p>
 
-        @{ if (TrustStatics.PlayerIsProofreader(WebSecurity.CurrentUserId) == true)
+        @{ if ((User.IsInRole(PvPStatics.Permissions_Proofreader) == true) == true)
          {
             @Html.ActionLink("Unlock but DO NOT Save", "SendContributionUndoLock", "PvP", new { id = Model.Id }, null)
          }
@@ -615,7 +615,7 @@
                 <input type="submit" value="Save" />
             }
 
-            if (TrustStatics.PlayerIsProofreader(WebSecurity.CurrentUserId) == true)
+            if ((User.IsInRole(PvPStatics.Permissions_Proofreader) == true) == true)
             {
                 @Html.ActionLink("Unlock but DO NOT Save", "SendContributionUndoLock", "PvP", new { id = Model.Id }, null)
             }

@@ -2309,7 +2309,7 @@ namespace tfgame.Controllers
         }
 
          [Authorize]
-        public ActionResult Contribute(int Id)
+        public ActionResult Contribute(int Id = -1, string sort = "spellname")
         {
 
             IContributionRepository contributionRepo = new EFContributionRepository();
@@ -2325,6 +2325,13 @@ namespace tfgame.Controllers
             if (iAmProofreader == true)
             {
                 proofreading = contributionRepo.Contributions.Where(c => c.AdminApproved == true && c.ProofreadingCopy == true);
+                if (sort == "spellname")
+                {
+                    proofreading = proofreading.OrderBy(c => c.IsLive).ThenBy(c => c.Skill_FriendlyName);
+                } else if (sort == "formname")
+                {
+                    proofreading = proofreading.OrderBy(c => c.IsLive).ThenBy(c => c.Form_FriendlyName);
+                }
             }
 
             Contribution contribution;

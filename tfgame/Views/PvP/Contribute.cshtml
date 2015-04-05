@@ -81,7 +81,7 @@
                 if (ViewBag.Proofreading != null)
                 {
 
-                <p>CONTRIBUTIONS AVAILABLE TO PROOFREAD</p>
+                <p>CONTRIBUTIONS AVAILABLE TO PROOFREAD (Sort by: @Html.ActionLink("Spell name", "Contribute", "PvP", new { Id = -1, sort = "spellname" }, null), @Html.ActionLink("Form name", "Contribute", "PvP", new { Id = -1, sort = "formname" }, null))</p>
 
                     foreach (Contribution contribution in ViewBag.Proofreading)
                     {

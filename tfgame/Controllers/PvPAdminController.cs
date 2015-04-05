@@ -1081,22 +1081,8 @@ namespace tfgame.Controllers
                 return View("Play", "PvP");
             }
 
-          //  if (player.MigrateLetters == true)
-         //   {
-                using (var context = new StatsContext())
-                {
-                    try
-                    {
-                        context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Messages] SET ReceiverId = " + "91801" + " WHERE ReceiverId = " + "91802");
-                        context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Messages] SET SenderId = " + "91801" + " WHERE SenderId = " + "91802");
-                    }
-                    catch (Exception e)
-                    {
-
-                    }
-                }
-
-           // }
+            
+            NoticeProcedures.PushNotice(PlayerProcedures.GetPlayerFromMembership(), "test");
 
             return RedirectToAction("Index");
         }

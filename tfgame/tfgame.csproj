@@ -211,6 +211,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Chat\ChatHub.cs" />
     <Compile Include="Chat\DuelHub.cs" />
+    <Compile Include="Chat\NoticeHub.cs" />
     <Compile Include="Chat\Startup.cs" />
     <Compile Include="Controllers\ContributionController.cs" />
     <Compile Include="Controllers\CovenantController.cs" />
@@ -360,6 +361,7 @@
     <Compile Include="Procedures\DungeonProcedures.cs" />
     <Compile Include="Procedures\FurnitureProcedures.cs" />
     <Compile Include="Procedures\MindControlProcedures.cs" />
+    <Compile Include="Procedures\NoticeProcedures.cs" />
     <Compile Include="Procedures\Pathfinding.cs" />
     <Compile Include="Procedures\CovenantProcedures.cs" />
     <Compile Include="Procedures\EffectProcedures.cs" />
@@ -910,6 +912,7 @@
     <Content Include="Scripts\fwars\models\fightText.js" />
     <Content Include="Scripts\jquery.rotate.js" />
     <Content Include="Scripts\jQueryRotateCompressed.js" />
+    <Content Include="Scripts\notices.js" />
     <Content Include="XMLs\BossSummonText\BimboBoss.txt" />
     <Content Include="XMLs\BossSummonText\Sisters.txt" />
     <Content Include="XMLs\BossSummonText\Donna.txt" />

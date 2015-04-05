@@ -6,9 +6,10 @@ $(document).ready(function () {
 
     $(function () {
         var link = $.connection.noticeHub;
-        alert("connected");
         link.client.receiveNotice = function (data) {
+            
             alert(data);
+
         };
 
 

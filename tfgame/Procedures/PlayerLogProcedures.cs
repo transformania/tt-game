@@ -39,6 +39,9 @@ namespace tfgame.Procedures
             }
 
             playerLogRepo.SavePlayerLog(newlog);
+
+            NoticeProcedures.PushNotice(playerId, newlog.Message);
+
         }
 
         public static void ClearPlayerLog(int playerId)

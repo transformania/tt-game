@@ -24,99 +24,167 @@
     </div><!-- /.container-fluid -->
 </nav>
 
-<div class="specialBox specialHeader">
-    <b>Active Friends (@Model.ConfirmedFriends.Count())</b>
-</div>
 
-<div class="containerInner">
-    <table class="table table-hover messageTable">
-        <thead>
-            <tr>
-                <th style="width: 55%;">Name</th>
-                <th style="width: 30%;">Last Activity</th>
-                <th style="width: 15%;">Delete</th>
-            </tr>
-        </thead>
-        <tbody>
+@{
+    if (Model.ConfirmedFriends.Where(m => m.dbPlayer != null).Count() > 0)
+    {
+        <div class="specialBox specialHeader">
+            <b>Active Friends (@Model.ConfirmedFriends.Where(m => m.dbPlayer != null).Count())</b>
+        </div>
 
-            @{
-                foreach (tfgame.ViewModels.FriendPlayerViewModel fp in Model.ConfirmedFriends.Where(m => m.dbPlayer != null))
-                {
+        <div class="containerInner">
+            <table class="table table-hover messageTable">
+                <thead>
                     <tr>
-
-                        @{
-                    if (fp.dbPlayer.Mobility == "full")
-                    {
-                        <td>
-                            @Html.ActionLink(fp.dbPlayer.GetFullName() + "  (#" + fp.dbPlayer.MembershipId + ")", "LookAtPlayer", "PvP", new { id = fp.dbPlayer.Id }, null)
-                        </td>
-                    }
-                    else if (fp.dbPlayer.Mobility == "inanimate")
-                    {
-                        <td>
-                            @Html.ActionLink(fp.dbPlayer.GetFullName() + " (inanimate)" + "  (#" + fp.dbPlayer.MembershipId + ")", "LookAtPlayer", "PvP", new { id = fp.dbPlayer.Id }, null)
-                        </td>
-                    }
-
-                    else if (fp.dbPlayer.Mobility == "animal")
-                    {
-                        <td>
-                            @Html.ActionLink(fp.dbPlayer.GetFullName() + " (animal)" + "  (#" + fp.dbPlayer.MembershipId + ")", "LookAtPlayer", "PvP", new { id = fp.dbPlayer.Id }, null)
-                        </td>
-                    }
-                    <td class="timeago" style="line-height: 17px;">@CharactersHere.DatetimeToTimeago(fp.dbPlayer.OnlineActivityTimestamp)</td>
-                            <td>
-                                @Html.ActionLink("Defriend", "RespondToFriendRequest", "PvP", new { id = fp.dbFriend.Id, response = "defriend" }, null)
-                            </td>
-
-                        }
-
+                        <th style="width: 55%;">Name</th>
+                        <th style="width: 30%;">Last Activity</th>
+                        <th style="width: 15%;">Delete</th>
                     </tr>
+                </thead>
+                <tbody>
+
+                    @{
+        foreach (tfgame.ViewModels.FriendPlayerViewModel fp in Model.ConfirmedFriends.Where(m => m.dbPlayer != null))
+        {
+            <tr>
+
+                @{
+            if (fp.dbPlayer.Mobility == "full")
+            {
+                <td>
+                    @Html.ActionLink(fp.dbPlayer.GetFullName() + "  (#" + fp.dbPlayer.MembershipId + ")", "LookAtPlayer", "PvP", new { id = fp.dbPlayer.Id }, null)
+                </td>
+            }
+            else if (fp.dbPlayer.Mobility == "inanimate")
+            {
+                <td>
+                    @Html.ActionLink(fp.dbPlayer.GetFullName() + " (inanimate)" + "  (#" + fp.dbPlayer.MembershipId + ")", "LookAtPlayer", "PvP", new { id = fp.dbPlayer.Id }, null)
+                </td>
+            }
+
+            else if (fp.dbPlayer.Mobility == "animal")
+            {
+                <td>
+                    @Html.ActionLink(fp.dbPlayer.GetFullName() + " (animal)" + "  (#" + fp.dbPlayer.MembershipId + ")", "LookAtPlayer", "PvP", new { id = fp.dbPlayer.Id }, null)
+                </td>
+            }
+            <td class="timeago" style="line-height: 17px;">@CharactersHere.DatetimeToTimeago(fp.dbPlayer.OnlineActivityTimestamp)</td>
+                    <td>
+                        @Html.ActionLink("Defriend", "RespondToFriendRequest", "PvP", new { id = fp.dbFriend.Id, response = "defriend" }, null)
+                    </td>
+
                 }
 
-            }
-        </tbody>
-    </table>
+            </tr>
+        }
 
-</div>
+                    }
+                </tbody>
+            </table>
 
-<div class="specialBox specialHeader topBorder">
-    <b>Requests sent to You (@Model.RequestsForMe.Count())</b>
-</div>
-
-<div class="containerInner">
-    @{foreach (tfgame.ViewModels.FriendPlayerViewModel fp2 in Model.RequestsForMe.Where(m => m.dbPlayer != null))
-    {
-        <div class="friendListing">
-            @fp2.dbPlayer.GetFullName()
-            @Html.ActionLink("Accept", "RespondToFriendRequest", "PvP", new { id = fp2.dbFriend.Id, response = "accept" }, null)
-            @Html.ActionLink("Deny", "RespondToFriendRequest", "PvP", new { id = fp2.dbFriend.Id, response = "deny" }, null)
         </div>
     }
+    else
+    {
+        <b>How sad, you don't have any friends yet this round!</b>
     }
-</div>
+}
 
-<div class="specialBox specialHeader topBorder">
-    <b>Requests you've sent (@Model.MyOutgoingRequests.Count())</b>
-</div>
 
-<div class="containerInner">
-    @{
-        foreach (tfgame.ViewModels.FriendPlayerViewModel fp3 in Model.MyOutgoingRequests.Where(m => m.dbPlayer != null))
-        {
-            <div class="friendListing">
-                @fp3.dbPlayer.GetFullName()
-                @Html.ActionLink("Cancel", "RespondToFriendRequest", "PvP", new { id = fp3.dbFriend.Id, response = "cancel" }, null)
-            </div>
-        }
+
+
+@{
+    if (Model.RequestsForMe.Where(m => m.dbPlayer != null).Count() > 0)
+    {
+
+        <div class="specialBox specialHeader">
+            <b>Requests sent to You (@Model.RequestsForMe.Where(m => m.dbPlayer != null).Count())</b>
+        </div>
+
+
+
+        <div class="containerInner">
+            <table class="table table-hover messageTable">
+
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (tfgame.ViewModels.FriendPlayerViewModel fp2 in Model.RequestsForMe.Where(m => m.dbPlayer != null))
+                    {
+                        <tr>
+                            <td>@Html.ActionLink(fp2.dbPlayer.GetFullName() + "  (#" + fp2.dbPlayer.MembershipId + ")", "LookAtPlayer", "PvP", new { id = fp2.dbPlayer.Id }, null)</td>
+                            <td>@Html.ActionLink("Accept", "RespondToFriendRequest", "PvP", new { id = fp2.dbFriend.Id, response = "accept" }, null)</td>
+                            <td>@Html.ActionLink("Deny", "RespondToFriendRequest", "PvP", new { id = fp2.dbFriend.Id, response = "deny" }, null)</td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>
+
+
     }
+    else
+    {
+        <p>You don't have any unaccepted requests sent to you.</p>
+    }
+}
 
-    <div class="center-block">
-        <p>You may have more friends who have not yet made a character this round.  They will appear on this page when they have.</p>
-    </div>
-</div>
+
+@{
+    if (Model.MyOutgoingRequests.Where(m => m.dbPlayer != null).Count() > 0)
+    {
+        <div class="specialBox specialHeader topBorder">
+            <b>Requests you've sent (@Model.MyOutgoingRequests.Count())</b>
+        </div>
+
+        <div class="containerInner">
+            <table class="table table-hover messageTable">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (tfgame.ViewModels.FriendPlayerViewModel fp3 in Model.MyOutgoingRequests.Where(m => m.dbPlayer != null))
+                    {
+                        <tr>
+                            <td>
+                                @fp3.dbPlayer.GetFullName()
+                            </td>
+                            <td>
+                                @Html.ActionLink("Cancel", "RespondToFriendRequest", "PvP", new { id = fp3.dbFriend.Id, response = "cancel" }, null)
+                            </td>
+
+                        </tr>
+                    }
+                    
 
 
+
+                </tbody>
+            </table>
+        </div>
+
+    }
+    else
+    {
+        <b>You don't have any unaccepted friend requests that you have sent out.</b>
+    }
+}
+
+
+
+
+<p>You may have more friends who have not yet made a character this round.  They will appear on this page when they have.</p>
 
 
 

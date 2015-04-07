@@ -3712,7 +3712,7 @@ namespace tfgame.Controllers
             }
 
             DateTime lastupdate = PvPWorldStatProcedures.GetLastWorldUpdate();
-            double minutesAgo = Math.Abs(Math.Floor(lastupdate.Subtract(DateTime.UtcNow).TotalMinutes));
+            double minutesAgo = -Math.Floor(lastupdate.Subtract(DateTime.UtcNow).TotalMinutes);
 
           //  if (minutesAgo < 10 && WebSecurity.CurrentUserId != 69)
             if (minutesAgo < 10)

@@ -2109,6 +2109,42 @@ namespace tfgame.Controllers
             return RedirectToAction("Play", "PvP");
         }
 
+        public ActionResult Killswitch()
+        {
+            if (User.IsInRole(PvPStatics.Permissions_Killswitcher) == true)
+            {
+                IPvPWorldStatRepository repo = new EFPvPWorldStatRepository();
+                PvPWorldStat stats = repo.PvPWorldStats.FirstOrDefault(p => p.Id != -1);
+                stats.LastUpdateTimestamp = stats.LastUpdateTimestamp.AddDays(1);
+                repo.SavePvPWorldStat(stats);
+
+                IPlayerLogRepository logRepo = new EFPlayerLogRepository();
+                Player me = PlayerProcedures.GetPlayerFromMembership(69);
+                PlayerLog newlog = new PlayerLog
+                {
+                    IsImportant = true,
+                    Message = "<span class='bad'><b>" + WebSecurity.CurrentUserName + " activated the game pause killswitch.</b></span>",
+                    PlayerId = me.Id,
+                    Timestamp = DateTime.UtcNow,
+                };
+                logRepo.SavePlayerLog(newlog);
+
+            }
+            return RedirectToAction("Play", "PvP");
+        }
+
+        public ActionResult KillswitchRestore()
+        {
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == true)
+            {
+                IPvPWorldStatRepository repo = new EFPvPWorldStatRepository();
+                PvPWorldStat stats = repo.PvPWorldStats.FirstOrDefault(p => p.Id != -1);
+                stats.LastUpdateTimestamp = DateTime.UtcNow;
+                repo.SavePvPWorldStat(stats);
+            }
+            return RedirectToAction("Play", "PvP");
+        }
+
     }
 
 

@@ -11,4 +11,20 @@
     <p><a href="/PvP/Chat?room=global" target="_blank">Global Chat</a></p>
     <p><a href="/PvP/MyMessages">Inbox</a></p>
     <p><a href="/PvP/Contribute/-1">Submit Content</a></p>
+
+    @{
+        try
+        {
+            if (User.IsInRole(tfgame.Statics.PvPStatics.Permissions_Killswitcher) == true)
+            {
+                <p class="bad">Activate this link when and ONLY when you and a number of animate players are receiving error screens and are unable to play.  Clicking this link will temporarily disable turn updates so bots do not attacker players who are incapable of responding.  @Html.ActionLink("CLICK HERE TO ACTIVATE KILLSWITCH.", "Killswitch","PvPAdmin")</p>
+            }
+        }
+        catch
+        {
+            
+        }
+    }
+
 </hgroup>
+

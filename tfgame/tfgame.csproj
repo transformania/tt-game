@@ -1751,6 +1751,7 @@
     <Content Include="Views\PvP\RoundLeaderboards\Statistics\Alpha_17.cshtml" />
     <Content Include="Views\PvPAdmin\ChangeGameDate.cshtml" />
     <Content Include="Views\Covenant\InviteLeaderList.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\Alpha_18.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

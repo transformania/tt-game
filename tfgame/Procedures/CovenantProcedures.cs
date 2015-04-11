@@ -642,11 +642,11 @@ namespace tfgame.Procedures
 
                     if (cov != null)
                     {
-                        output = "You dispell the enchantment at this location by " + takeoverAmount + ".  New influence level is " + info.TakeoverAmount + " for the location's existing controller, " + cov.Name + ".  (+" + XPGain + " XP)</b>";
+                        output = "You dispel the enchantment at this location by " + takeoverAmount + ".  New influence level is " + info.TakeoverAmount + " for the location's existing controller, " + cov.Name + ".  (+" + XPGain + " XP)</b>";
                     }
                     else
                     {
-                        output = "You dispell the enchantment at this location by " + takeoverAmount + ".  New influence level is " + info.TakeoverAmount + ".  (+" + XPGain + " XP)</b>";
+                        output = "You dispel the enchantment at this location by " + takeoverAmount + ".  New influence level is " + info.TakeoverAmount + ".  (+" + XPGain + " XP)</b>";
                     }
 
                   

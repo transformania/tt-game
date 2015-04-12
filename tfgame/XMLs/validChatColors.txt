@@ -8,3 +8,4 @@ darkcyan;
 darkolivegreen;
 indigo;
 mediumpurple;
+#ffa600;

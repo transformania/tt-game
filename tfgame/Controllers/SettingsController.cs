@@ -36,65 +36,65 @@ namespace tfgame.Controllers
          }
 
 
-         [Authorize]
-         public ActionResult EnterProtection()
-         {
-             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+         //[Authorize]
+         //public ActionResult EnterProtection()
+         //{
+         //    Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
 
-             double minutesAgo = Math.Abs(Math.Floor(me.GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalMinutes));
-             if (minutesAgo < 60 && me.Mobility == "full")
-             {
-                 TempData["Error"] = "You must have not been in any combat in the past 60 minutes to do this if you are animate.";
-                 return RedirectToAction("Play", "PvP");
-             }
+         //    double minutesAgo = Math.Abs(Math.Floor(me.GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalMinutes));
+         //    if (minutesAgo < 60 && me.Mobility == "full")
+         //    {
+         //        TempData["Error"] = "You must have not been in any combat in the past 60 minutes to do this if you are animate.";
+         //        return RedirectToAction("Play", "PvP");
+         //    }
 
-             // assert player is animate
-             if (me.Mobility != "full")
-             {
-                 TempData["Error"] = "You must be animate in order to enter Protection mode.";
-                 return RedirectToAction("Play", "PvP");
-             }
+         //    // assert player is animate
+         //    if (me.Mobility != "full")
+         //    {
+         //        TempData["Error"] = "You must be animate in order to enter Protection mode.";
+         //        return RedirectToAction("Play", "PvP");
+         //    }
 
-             PlayerProcedures.SetPvPFlag(me, 1);
+         //    PlayerProcedures.SetPvPFlag(me, 1);
 
-             TempData["Result"] = "You are now in protection mode.  You cannot be hit by inanimate, pet, or mind control spells nor can you cast them except against those on your friends list.";
-             return RedirectToAction("Play", "PvP");
-         }
+         //    TempData["Result"] = "You are now in protection mode.  You cannot be hit by inanimate, pet, or mind control spells nor can you cast them except against those on your friends list.";
+         //    return RedirectToAction("Play", "PvP");
+         //}
 
-         [Authorize]
-         public ActionResult LeaveProtection()
-         {
-             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+         //[Authorize]
+         //public ActionResult LeaveProtection()
+         //{
+         //    Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
 
-             double minutesAgo = Math.Abs(Math.Floor(me.GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalMinutes));
-             if (minutesAgo < 60 && me.Mobility == "full")
-             {
-                 TempData["Error"] = "You must have not been in any combat in the past 60 minutes to do this if you are animate.";
-                 return RedirectToAction("Play", "PvP");
-             }
+         //    double minutesAgo = Math.Abs(Math.Floor(me.GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalMinutes));
+         //    if (minutesAgo < 60 && me.Mobility == "full")
+         //    {
+         //        TempData["Error"] = "You must have not been in any combat in the past 60 minutes to do this if you are animate.";
+         //        return RedirectToAction("Play", "PvP");
+         //    }
 
-             // assert player is animate
-             if (me.Mobility != "full")
-             {
-                 TempData["Error"] = "You must be animate in order to enter PvP mode.";
-                 return RedirectToAction("Play", "PvP");
-             }
+         //    // assert player is animate
+         //    if (me.Mobility != "full")
+         //    {
+         //        TempData["Error"] = "You must be animate in order to enter PvP mode.";
+         //        return RedirectToAction("Play", "PvP");
+         //    }
 
-             // assert that it is not too late in the round for the player to enter PvP mode
-             //int turnNumber = PvPWorldStatProcedures.GetWorldTurnNumber();
-             //if (turnNumber > PvPStatics.RoundDuration_LastPvPEntryTurn)
-             //{
-             //    TempData["Error"] = "You cannot enter PvP mode anymore this round.";
-             //    TempData["SubError"] = "You cannot enter PvP mode later than turn " + PvPStatics.RoundDuration_LastPvPEntryTurn + ".";
-             //    return RedirectToAction("Play", "PvP");
-             //}
+         //    // assert that it is not too late in the round for the player to enter PvP mode
+         //    //int turnNumber = PvPWorldStatProcedures.GetWorldTurnNumber();
+         //    //if (turnNumber > PvPStatics.RoundDuration_LastPvPEntryTurn)
+         //    //{
+         //    //    TempData["Error"] = "You cannot enter PvP mode anymore this round.";
+         //    //    TempData["SubError"] = "You cannot enter PvP mode later than turn " + PvPStatics.RoundDuration_LastPvPEntryTurn + ".";
+         //    //    return RedirectToAction("Play", "PvP");
+         //    //}
 
-             PlayerProcedures.SetPvPFlag(me, 2);
-             EffectProcedures.GivePerkToPlayer("help_entered_PvP", me);
+         //    PlayerProcedures.SetPvPFlag(me, 2);
+         //    EffectProcedures.GivePerkToPlayer("help_entered_PvP", me);
 
-             TempData["Result"] = "You are no longer in protection mode.";
-             return RedirectToAction("Play", "PvP");
-         }
+         //    TempData["Result"] = "You are no longer in protection mode.";
+         //    return RedirectToAction("Play", "PvP");
+         //}
 
          [Authorize]
          public ActionResult EnterSuperProtection()

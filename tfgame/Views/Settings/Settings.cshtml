@@ -117,17 +117,17 @@
     <h2>Protection Mode</h2>
 
     <p>
-        There are three game modes:  1) Superprotection disables ALL spells from being cast against you by others players.  2) Protection.  Being in protection mode disallows other players from casting inanimate, pet, and mind control spells against you.  3) PvP mode enables all spells to be cast against you in a competative manner by other PvP players.  Friends and AI players (psychopathic spellslingers and bosses) are exempt from these rules.  Additionally, being someone's friend enables them to cast any spell against you they choose regardless of which game mode either of you are in.<br />
+        There are three game modes:  1) Superprotection disables ALL spells from being cast against you by others players.  2) Protection.  Being in protection mode disallows other players from casting inanimate, pet, and mind control spells against you.  3) PvP mode enables all spells to be cast against you in a competative manner by other PvP players.  Friends and AI players (psychopathic spellslingers and bosses) are exempt from these rules.  Additionally, being someone's friend enables them to cast any spell against you they choose regardless of which game mode either of you are in.  <span class="bad">As of Alpha Round 19 you can no longer freely move between Protection and PvP game modes.</span><br />
 
         @{
             if (Model.GameMode == 1)
             {
                 @Html.ActionLink("Enter SuperProtection Mode", "EnterSuperProtection", "Settings")<br />
-                @Html.ActionLink("Enter PvP Mode", "LeaveProtection", "Settings")
+                @*@Html.ActionLink("Enter PvP Mode", "LeaveProtection", "Settings")*@
             }
             else if (Model.GameMode == 2)
             {
-                @Html.ActionLink("Enter Protection Mode", "EnterProtection", "Settings")
+                @*@Html.ActionLink("Enter Protection Mode", "EnterProtection", "Settings")*@
             }
             else if (Model.GameMode == 0)
             {
@@ -166,6 +166,7 @@
             <span style="color:indigo;">[] @Html.ActionLink("Indigo", "SetChatColor", "Settings", new { color = "indigo" }, null)</span>
             <span style="color:lightcoral;">[] @Html.ActionLink("Light Coral", "SetChatColor", "Settings", new { color = "lightcoral" }, null)</span>
             <span style="color:mediumpurple;">[] @Html.ActionLink("Medium Purple", "SetChatColor", "Settings", new { color = "mediumpurple" }, null)</span>
+            <span style="color:#ffa600;">[] @Html.ActionLink("Yellow Orange", "SetChatColor", "Settings", new { color = "#ffa600" }, null)</span>
         </b>
     </p>
 

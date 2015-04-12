@@ -4161,7 +4161,7 @@ namespace tfgame.Controllers
                 try
                 {
 
-                    if (turnNo % 3 == 2)
+                    if (turnNo % 7 == 2)
                     {
                         log.AddLog(updateTimer.ElapsedMilliseconds + ":  Starting dungeon item / demon spawning");
                         int dungeonArtifactCount = itemsRepo.Items.Where(i => i.dbName == PvPStatics.ItemType_DungeonArtifact).Count();
@@ -4450,6 +4450,23 @@ namespace tfgame.Controllers
                     context.Database.ExecuteSqlCommand("DELETE FROM [Stats].[dbo].[CovenantLogs] WHERE Timestamp < DATEADD(hour, -72, GETUTCDATE())");
                 }
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished stored procedure maintenance");
+
+                #region regenerate dungeon
+                if (turnNo % 30 == 7)
+                {
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Dungeon generation started.");
+                    try
+                    {
+                        DungeonProcedures.GenerateDungeon();
+                        log.AddLog(updateTimer.ElapsedMilliseconds + ":  Dungeon generation completed.");
+                    }
+                    catch (Exception e)
+                    {
+                        log.AddLog(updateTimer.ElapsedMilliseconds + ":  Dungeon generation FAILED.  Reason:  " + e.ToString());
+                    }
+                }
+                #endregion
+
                 log.FinishTimestamp = DateTime.UtcNow;
                 serverLogRepo.SaveServerLog(log);
                 

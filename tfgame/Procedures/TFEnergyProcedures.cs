@@ -106,6 +106,9 @@ namespace tfgame.Procedures
 
             DbStaticForm eventualForm = FormStatics.GetForm(skill.Skill.FormdbName);
 
+            output.AttackerLog += "  [" + energy.Amount + " / " + eventualForm.TFEnergyRequired + " TF energy]  ";
+            output.VictimLog += "  [" + energy.Amount + " / " + eventualForm.TFEnergyRequired + " TF energy]  ";
+
             if (victim.Form == eventualForm.dbName)
             {
                 output.AttackerLog += "Since " + victim.FirstName + " is already in this form, the spell has no transforming effect.";

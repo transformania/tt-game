@@ -21,6 +21,7 @@ namespace tfgame.Statics
            "Lindella",
            "Hitler",
            "Jewdewfae",
+           "Wuffie",
            };
 
 

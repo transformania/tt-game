@@ -546,6 +546,23 @@ namespace tfgame.Procedures
                 #endregion
             }
 
+            // add in some extra WP damage if TF energy high enough for TF but WP is still high
+            else if (energyAccumulated > targetForm.TFEnergyRequired * 1.25M && target.MembershipId > 0)
+            {
+                output.VictimLog += "  You gasp as your body shivers with a surplus of transformation energy built up within it, leaving your distracted and your willpower increasingly impaired.";
+                target.Health -= 3;
+                target.NormalizeHealthMana();
+                playerRepo.SavePlayer(target);
+            }
+            else if (energyAccumulated > targetForm.TFEnergyRequired * 1.5M && target.MembershipId > 0)
+            {
+                output.VictimLog += "  You body spasms as the surplus of transformation energy threatens to transform you spontaneously.  You fight it but only after it drains you of more of your precious remaining willpower!";
+                target.Health -= 6;
+                target.NormalizeHealthMana();
+                playerRepo.SavePlayer(target);
+            }
+        
+
             return output;
 
         }

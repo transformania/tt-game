@@ -4287,11 +4287,19 @@ namespace tfgame.Controllers
                 TempData["Result"] = "WORLD UPDATED";
 
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started Lindella actions");
-                serverLogRepo.SaveServerLog(log);
-                AIProcedures.RunAIMerchantActions(turnNo);
+                try { 
+                    serverLogRepo.SaveServerLog(log);
+                    AIProcedures.RunAIMerchantActions(turnNo);
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished Lindella actions");
+                }
+                catch (Exception e)
+                {
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  FAILED Lindella actions.  Reason:  " + e.ToString());
+                }
+               
 
-                log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == turnNo);
-                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished Lindella actions");
+               // log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == turnNo);
+               
 
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started Wuffie actions");
                 serverLogRepo.SaveServerLog(log);

@@ -319,11 +319,70 @@ namespace tfgame.Procedures
 
              IPlayerRepository playerRepo = new EFPlayerRepository();
 
-             //check that the last name / first name combo is not already in use
-             Player ghost = playerRepo.Players.FirstOrDefault(p => p.FirstName == player.FirstName && p.LastName == player.LastName);
-             if (ghost != null)
+            string noGenerationLastName = player.LastName.Split(' ')[0];
+
+            Player ghost = playerRepo.Players.FirstOrDefault(p => p.FirstName == player.FirstName && p.LastName == noGenerationLastName);
+           
+             if (ghost != null && ghost.MembershipId != WebSecurity.CurrentUserId && ghost.MembershipId != -1)
              {
                  return "A character of this name already exists.";
+             }
+
+             string generationTitle = "";
+
+             if (ghost != null && (ghost.MembershipId == WebSecurity.CurrentUserId || ghost.MembershipId == -1) && ghost.FirstName == player.FirstName && ghost.LastName == player.LastName)
+             {
+
+                 List<Player> possibleOldGens = playerRepo.Players.Where(p => p.FirstName == player.FirstName && p.LastName.Contains(player.LastName)).ToList();
+
+                 if (possibleOldGens.FirstOrDefault(p => p.FirstName == player.FirstName && p.LastName == player.LastName) == null)
+                 {
+                     generationTitle = " II";
+                 }
+                 else if (possibleOldGens.FirstOrDefault(p => p.FirstName == player.FirstName && p.LastName == player.LastName + " II") == null) {
+                     generationTitle = " II";
+                 }
+                 else if (possibleOldGens.FirstOrDefault(p => p.FirstName == player.FirstName && p.LastName == player.LastName + " III") == null)
+                 {
+                     generationTitle = " III";
+                 }
+                 else if (possibleOldGens.FirstOrDefault(p => p.FirstName == player.FirstName && p.LastName == player.LastName + " IV") == null)
+                 {
+                     generationTitle = " IV";
+                 }
+                 else if (possibleOldGens.FirstOrDefault(p => p.FirstName == player.FirstName && p.LastName == player.LastName + " V") == null)
+                 {
+                     generationTitle = " V";
+                 }
+                 else if (possibleOldGens.FirstOrDefault(p => p.FirstName == player.FirstName && p.LastName == player.LastName + " VI") == null)
+                 {
+                     generationTitle = " VI";
+                 }
+                 else if (possibleOldGens.FirstOrDefault(p => p.FirstName == player.FirstName && p.LastName == player.LastName + " VII") == null)
+                 {
+                     generationTitle = " VII";
+                 }
+                 else if (possibleOldGens.FirstOrDefault(p => p.FirstName == player.FirstName && p.LastName == player.LastName + " VIII") == null)
+                 {
+                     generationTitle = " VIII";
+                 }
+                 else if (possibleOldGens.FirstOrDefault(p => p.FirstName == player.FirstName && p.LastName == player.LastName + " IX") == null)
+                 {
+                     generationTitle = " IX";
+                 }
+                 else if (possibleOldGens.FirstOrDefault(p => p.FirstName == player.FirstName && p.LastName == player.LastName + " X") == null)
+                 {
+                     generationTitle = " X";
+                 }
+                 else
+                 {
+                     return "This name has gone through too many generations.  Choose another one.";
+                 }
+                
+               
+                 
+                     
+             
              }
 
             // check that the name has not been reserved by someone else with a different Membership Id
@@ -333,7 +392,7 @@ namespace tfgame.Procedures
 
             if (resNameGhost != null && resNameGhost.MembershipId != WebSecurity.CurrentUserId)
             {
-                return "This name has been reserved for a different player.";
+                return "This name has been reserved by a different player.  Choose another.";
             }
 
             // assert that the form is a valid staring form
@@ -382,7 +441,7 @@ namespace tfgame.Procedures
              string cleanLastName = char.ToUpper(player.LastName[0]) + player.LastName.Substring(1).ToLower();
 
              player.FirstName = cleanFirstName;
-             player.LastName = cleanLastName;
+             player.LastName = cleanLastName + generationTitle;
            
             Player newplayer = new Player();
             newplayer.FirstName = player.FirstName;

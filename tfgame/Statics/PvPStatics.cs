@@ -18,7 +18,7 @@ namespace tfgame.Statics
 
         public const string AlphaRound = "Alpha Round 18";
 
-        public const bool ChaosMode = false;
+        public const bool ChaosMode = true;
 
         public static String GenderMale = "male";
         public static String GenderFemale = "female";
@@ -205,7 +205,7 @@ namespace tfgame.Statics
         public const string Dungeon_ArtifactCurse = "effect_Dark_Transfixation_Judoo";
 
         public const decimal DungeonArtifact_Value = 2;
-        public const int DungeonArtifact_SpawnLimit = 5;
+        public const int DungeonArtifact_SpawnLimit = 3;
         public const string DungeonDemon = "form_Dark_Demonic_Guardian_Judoo";
         public const int DungeonDemon_Limit = 5;
 

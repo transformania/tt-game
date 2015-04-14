@@ -351,7 +351,7 @@ namespace tfgame.Controllers
                 player.Gender = "male";
             }
 
-            // assert that neither the first name nor last name is reserved
+            // assert that the first name is not reserved by the system
             string fnamecheck = TrustStatics.NameIsReserved(player.FirstName);
             if (fnamecheck != "")
             {
@@ -359,7 +359,7 @@ namespace tfgame.Controllers
                 return View("~/Views/PvP/MakeNewCharacter.cshtml");
             }
 
-            // assert that neither the first name nor last name is reserved
+            // assert that the last name is not reserved by the system
             string lnamecheck = TrustStatics.NameIsReserved(player.LastName);
             if (lnamecheck != "")
             {
@@ -402,7 +402,20 @@ namespace tfgame.Controllers
          [Authorize]
         public ActionResult Restart()
         {
-        
+            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            ViewBag.IsRerolling = false;
+            ViewBag.OldFirstName = "";
+            ViewBag.OldLastName = "";
+            ViewBag.OldForm = "";
+
+            if (me != null)
+            {
+                ViewBag.IsRerolling = true;
+                ViewBag.OldFirstName = me.FirstName;
+                ViewBag.OldLastName = me.LastName.Split(' ')[0];
+                ViewBag.OldForm = me.OriginalForm;
+            }
+
             return View("~/Views/PvP/MakeNewCharacter.cshtml");
         }
 

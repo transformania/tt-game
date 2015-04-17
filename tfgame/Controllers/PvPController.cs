@@ -2043,8 +2043,6 @@ namespace tfgame.Controllers
 
         public ActionResult PlayerLookupSend(PlayerSearchViewModel results)
         {
-
-            IPlayerRepository playerRepo = new EFPlayerRepository();
             IEnumerable<Player> result = PlayerProcedures.GetPlayersWithPartialName(results.FirstName);
             if (result != null)
             {

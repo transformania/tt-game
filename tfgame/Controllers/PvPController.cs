@@ -2044,18 +2044,17 @@ namespace tfgame.Controllers
         public ActionResult PlayerLookupSend(PlayerSearchViewModel results)
         {
 
-            Player result = PlayerProcedures.GetPlayerWithExactName(results.FirstName + " " + results.LastName);
-
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            IEnumerable<Player> result = playerRepo.Players.Where(p => (p.FirstName + " " + p.LastName).Contains(results.FirstName)).Take(25).ToList();
             if (result != null)
             {
-                results.ExactPlayer = result;
+                results.PlayersFound = result;
                 results.FoundThem = true;
             }
             else
             {
                 results.FoundThem = false;
             }
-
             return View("PlayerLookup", results);
         }
 

@@ -25,7 +25,7 @@
 <div class="containerInner center-block">
     @using (Html.BeginForm("PlayerLookupSend", "PvP", Model))
     {
-        <p>Full name<br /></p>
+        <p>Partial name<br /></p>
         @Html.EditorFor(m => m.FirstName)
 
 
@@ -38,10 +38,16 @@
         if (Model != null && Model.FoundThem == true)
         {
             <p>
-                <b>Player found!<br /></b>
-                @Html.ActionLink("Look At " + Model.ExactPlayer.FirstName + " " + Model.ExactPlayer.LastName, "LookAtPlayer", "PvP", new { id = Model.ExactPlayer.Id }, new { @class = "btn btn-default btn-xs" })
-                @Html.ActionLink("Message " + Model.ExactPlayer.FirstName + " " + Model.ExactPlayer.LastName, "Write", "PvP", new { playerId = Model.ExactPlayer.Id, responseTo = -1 }, new { @class = "btn btn-default btn-xs" })
+                <b>Player found!</b>
             </p>
+            foreach (tfgame.dbModels.Models.Player p in Model.PlayersFound)
+            {
+                <p>
+                    @p.GetFullName()
+                    @Html.ActionLink("Look At", "LookAtPlayer", "PvP", new { id = p.Id }, new { @class = "btn btn-default btn-xs" })
+                    @Html.ActionLink("Message", "Write", "PvP", new { playerId = p.Id, responseTo = -1 }, new { @class = "btn btn-default btn-xs" })
+                </p>
+            }
         }
         else
         {

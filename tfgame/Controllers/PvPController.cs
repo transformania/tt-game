@@ -518,6 +518,12 @@ namespace tfgame.Controllers
             }
 
             decimal sneakChance = buffs.SneakPercent();
+
+            if (sneakChance > 75)
+            {
+                sneakChance = 75;
+            }
+
             decimal stumbleChance = -1*buffs.EvasionPercent();
              decimal moveAPdiscount = buffs.MoveActionPointDiscount();
 

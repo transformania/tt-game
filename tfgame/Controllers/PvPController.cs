@@ -2045,7 +2045,7 @@ namespace tfgame.Controllers
         {
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            IEnumerable<Player> result = playerRepo.Players.Where(p => (p.FirstName + " " + p.LastName).Contains(results.FirstName)).Take(25).ToList();
+            IEnumerable<Player> result = PlayerProcedures.GetPlayersWithPartialName(results.FirstName);
             if (result != null)
             {
                 results.PlayersFound = result;

@@ -592,12 +592,14 @@
     <Content Include="Images\PvP\itemsPortraits\barricade_brownie_bites_Luxianne.jpg" />
     <Content Include="Images\PvP\itemsPortraits\bimbo_cure_syringe_babblingfaces.png" />
     <Content Include="Images\PvP\itemsPortraits\binding_tattoo_spacedande.png" />
+    <Content Include="Images\PvP\itemsPortraits\black_latex_opera_gloves_Jbovinne.jpg" />
     <Content Include="Images\PvP\itemsPortraits\black_leather_handbag_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\bondage_harnass_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\bondage_magazine_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\booty_babblingfaces.jpg" />
     <Content Include="Images\PvP\itemsPortraits\bplug_Martiandawn.jpg" />
     <Content Include="Images\PvP\itemsPortraits\callback_crystal_MIzuho.gif" />
+    <Content Include="Images\PvP\itemsPortraits\cargo_pants_babblingfaces.jpg" />
     <Content Include="Images\PvP\itemsPortraits\checkered_cotten_panties_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\checkered_cotton_apron_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\Cheerleader_Shell_Meddle.png" />
@@ -759,6 +761,7 @@
     <Content Include="Images\PvP\portraits\elf_princess_jbovinne.png" />
     <Content Include="Images\PvP\portraits\elven_femboi_Luxianne.png" />
     <Content Include="Images\PvP\portraits\elvish_bard_BabblingFaces.png" />
+    <Content Include="Images\PvP\portraits\emo_koala_babblingfaces.jpg" />
     <Content Include="Images\PvP\portraits\Feisty_Firebrand_Luxianne.png" />
     <Content Include="Images\PvP\portraits\female_armor_Meddle.png" />
     <Content Include="Images\PvP\portraits\female_rat_thief_Luxianne.png" />

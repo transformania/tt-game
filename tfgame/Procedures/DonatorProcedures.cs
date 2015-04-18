@@ -78,6 +78,16 @@ namespace tfgame.Procedures
             string playerFirstName = playerFullName.Split(' ')[0];
             string playerLastName = playerFullName.Split(' ')[1];
 
+            //add the title on the last name if there is one
+            try
+            {
+                playerLastName += " " + playerFullName.Split(' ')[2];
+            }
+            catch
+            {
+                // do nothing, there probably wasn't a title
+            }
+
             Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.FirstName == playerFirstName && p.LastName == playerLastName);
 
             int rank = 0;
@@ -98,5 +108,32 @@ namespace tfgame.Procedures
             playerRepo.SavePlayer(dbPlayer);
 
         }
+
+        public static void SetNewPlayerDonationRank(int playerId)
+        {
+            IDonatorRepository donatorRepo = new EFDonatorRepository();
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+
+
+            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);
+
+            int rank = 0;
+
+            Donator donatorStatus = donatorRepo.Donators.FirstOrDefault(p => p.OwnerMembershipId == dbPlayer.MembershipId);
+
+            if (donatorStatus == null)
+            {
+                rank = 0;
+                dbPlayer.DonatorLevel = 0;
+
+            }
+            else
+            {
+                dbPlayer.DonatorLevel = donatorStatus.Tier;
+            }
+
+            playerRepo.SavePlayer(dbPlayer);
+        }
+
     }
 }

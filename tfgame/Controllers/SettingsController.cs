@@ -353,7 +353,7 @@ namespace tfgame.Controllers
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
 
-            DonatorProcedures.SetNewPlayerDonationRank(me.FirstName + " " + me.LastName);
+            DonatorProcedures.SetNewPlayerDonationRank(me.Id);
 
             me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
 

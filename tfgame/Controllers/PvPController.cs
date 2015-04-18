@@ -2050,7 +2050,7 @@ namespace tfgame.Controllers
         public ActionResult PlayerLookupSend(PlayerSearchViewModel results)
         {
             IEnumerable<Player> result = PlayerProcedures.GetPlayersWithPartialName(results.FirstName);
-            if (result != null)
+            if (result != null && result.Count() > 0)
             {
                 results.PlayersFound = result;
                 results.FoundThem = true;

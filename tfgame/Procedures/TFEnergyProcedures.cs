@@ -591,7 +591,7 @@ namespace tfgame.Procedures
 
             foreach (TFEnergy energy in mydbEnergies)
             {
-                energy.Amount *= 1 - ((PvPStatics.CleanseTFEnergyPercentDecrease + bonusPercentageFromBuffs) / 100.0M);
+                energy.Amount *= 1 - (bonusPercentageFromBuffs / 100.0M);
                 repo.SaveTFEnergy(energy);
             }
 

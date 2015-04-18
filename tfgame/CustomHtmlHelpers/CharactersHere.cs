@@ -283,7 +283,7 @@ namespace tfgame.CustomHtmlHelpers
             return new MvcHtmlString(output);
         }
 
-        public static MvcHtmlString GetImageURL(PlayerFormViewModel player)
+        public static MvcHtmlString GetImageURL(PlayerFormViewModel player, bool thumb = false)
         {
 
             ///Images/PvP/itemsPortraits/@Model.Item.PortraitUrl
@@ -306,46 +306,59 @@ namespace tfgame.CustomHtmlHelpers
                 route = "/Images/PvP/itemsPortraits/";
             }
 
+            if (thumb)
+            {
+                route += "Thumbnails/100/";
+            }
 
 
             string output = "";
             return new MvcHtmlString(output);
         }
 
-        public static MvcHtmlString GetImageURL(ItemViewModel item)
+        public static MvcHtmlString GetImageURL(ItemViewModel item, bool thumb = false)
         {
 
             
 
             string output = "";
+            string strThumb = "";
+            if(thumb)
+            {
+                strThumb = "Thumbnails/100/";
+            }
 
 
             if (item.Item.ItemType == PvPStatics.ItemType_Pet)
             {
-                output = "/Images/PvP/animalPortraits/" + item.Item.PortraitUrl;
+                output = "/Images/PvP/animalPortraits/" + strThumb + item.Item.PortraitUrl;
             } else {
-                output = "/Images/PvP/itemsPortraits/" + item.Item.PortraitUrl;
+                output = "/Images/PvP/itemsPortraits/" + strThumb + item.Item.PortraitUrl;
             }
 
             return new MvcHtmlString(output);
 
         }
 
-        public static MvcHtmlString GetImageURL(DbStaticItem item)
+        public static MvcHtmlString GetImageURL(DbStaticItem item, bool thumb = false)
         {
 
 
 
             string output = "";
-
+            string strThumb = "";
+            if (thumb)
+            {
+                strThumb = "Thumbnails/100/";
+            }
 
             if (item.ItemType == PvPStatics.ItemType_Pet)
             {
-                output = "/Images/PvP/animalPortraits/" + item.PortraitUrl;
+                output = "/Images/PvP/animalPortraits/" + strThumb + item.PortraitUrl;
             }
             else
             {
-                output = "/Images/PvP/itemsPortraits/" + item.PortraitUrl;
+                output = "/Images/PvP/itemsPortraits/" + strThumb + item.PortraitUrl;
             }
 
             return new MvcHtmlString(output);
@@ -415,7 +428,7 @@ namespace tfgame.CustomHtmlHelpers
             }
             else
             {
-                output = "<div class='subportrait' style='background-image: url(../Images/PvP/portraits/" + owner.Form.PortraitUrl + ");' title = 'You are owned by " + owner.Player.FirstName + " " + owner.Player.LastName + ", a " + owner.Form.FriendlyName + ".'></div>";
+                output = "<div class='subportrait' style='background-image: url(../Images/PvP/portraits/Thumbnails/100/" + owner.Form.PortraitUrl + ");' title = 'You are owned by " + owner.Player.FirstName + " " + owner.Player.LastName + ", a " + owner.Form.FriendlyName + ".'></div>";
                 return new MvcHtmlString(output);
             }
         }

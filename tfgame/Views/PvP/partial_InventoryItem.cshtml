@@ -3,7 +3,7 @@
 @using tfgame.Statics
 
 <div class="col-md-2 col-sm-3 col-xs-6 charaBox">
-    <div class="portrait" style="background-image: url(@CharactersHere.GetImageURL(Model));">
+    <div class="portrait" style="background-image: url(@CharactersHere.GetImageURL(Model, true));">
         @{
             if (Model.dbItem.Level > 0 && Model.Item.ItemType != PvPStatics.ItemType_Consumeable)
             {

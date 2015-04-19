@@ -3915,7 +3915,7 @@ namespace tfgame.Controllers
                 {
                     try
                     {
-                        context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Players] SET TimesAttackingThisUpdate = 0, CleansesMeditatesThisRound = 0, ActionPoints = ActionPoints + 10 WHERE Mobility='full', ShoutsRemaining = 1" +
+                        context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Players] SET TimesAttackingThisUpdate = 0, CleansesMeditatesThisRound = 0, ShoutsRemaining = 1, ActionPoints = ActionPoints + 10 WHERE Mobility='full'" +
 
                         "UPDATE [Stats].[dbo].[Players] SET ActionPoints_Refill = ActionPoints_Refill + (ActionPoints % 120 / 2) WHERE ActionPoints >= 120 AND Mobility='full'" + 
 

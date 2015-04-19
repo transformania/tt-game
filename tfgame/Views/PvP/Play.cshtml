@@ -274,7 +274,7 @@
                 <div class="col-md-2 col-sm-4 col-xs-12 itemBox itemBoxPP">
                     <div class="charaBoxInner">
                         <div>
-                            <div class="portrait_item_mainpage" style="background-image: url(..@CharactersHere.GetImageURL(item));">
+                            <div class="portrait_item_mainpage" style="background-image: url(..@CharactersHere.GetImageURL(item,true));">
                                 @{ if (item.Item.ItemType != PvPStatics.ItemType_Consumeable && item.dbItem.Level > 0)
                                  {
                                     <span class="floorItemLevel"><b>@item.dbItem.Level</b></span>

@@ -68,6 +68,7 @@ namespace tfgame.Procedures
                                                               DonatorLevel = p.DonatorLevel,
                                                               OnlineActivityTimestamp = p.OnlineActivityTimestamp,
                                                               Nickname = p.Nickname,
+                                                              ShoutsRemaining = p.ShoutsRemaining,
                                                           },
 
                                                           Form = new tfgame.ViewModels.Form
@@ -159,6 +160,7 @@ namespace tfgame.Procedures
                                                               DonatorLevel = p.DonatorLevel,
                                                               OnlineActivityTimestamp = p.OnlineActivityTimestamp,
                                                               Nickname = p.Nickname,
+                                                              ShoutsRemaining = p.ShoutsRemaining,
                                                           },
 
                                                           Form = new tfgame.ViewModels.Form
@@ -250,6 +252,7 @@ namespace tfgame.Procedures
                                                               DonatorLevel = p.DonatorLevel,
                                                               OnlineActivityTimestamp = p.OnlineActivityTimestamp,
                                                               Nickname = p.Nickname,
+                                                              ShoutsRemaining = p.ShoutsRemaining,
                                                           },
 
                                                           Form = new tfgame.ViewModels.Form

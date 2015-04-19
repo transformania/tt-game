@@ -3688,6 +3688,70 @@ namespace tfgame.Controllers
             return View("~/Views/PvP/RoundLeaderboards/Alpha_" + round + ".cshtml");
         }
 
+        [Authorize]
+        public ActionResult Shout()
+        {
+            Player me = PlayerProcedures.GetPlayerFromMembership();
+
+            // assert player is mobile
+            if (me.Mobility != "full")
+            {
+                TempData["Error"] = "You must be fully animate in order to shout.";
+                return RedirectToAction("Play");
+            }
+
+            // assert player has shouts remaining
+            if (me.ShoutsRemaining <= 0) {
+                TempData["Error"] = "You do not have any shouts remaining for this turn.";
+                TempData["SubError"] = "You will be able to shout more in future updates.";
+                return RedirectToAction("Play");
+            }
+
+            return View();
+        }
+
+        [Authorize]
+        public ActionResult ShoutSend(PublicBroadcastViewModel input)
+        {
+            Player me = PlayerProcedures.GetPlayerFromMembership();
+
+            // assert player is mobile
+            if (me.Mobility != "full")
+            {
+                TempData["Error"] = "You must be fully animate in order to shout.";
+                return RedirectToAction("Play");
+            }
+
+            // assert player has shouts remaining
+            if (me.ShoutsRemaining <= 0)
+            {
+                TempData["Error"] = "You do not have any shouts remaining for this turn.";
+                TempData["SubError"] = "You will be able to shout more in future updates.";
+                return RedirectToAction("Play");
+            }
+
+            // assert shout is not too long
+            if (input.Message.Length > 100)
+            {
+                TempData["Error"] = "Your shout must be under 100 characters.";
+                return View("Shout", input);
+            }
+
+            // strip out some possible malicious tags
+            input.Message = input.Message.Replace('<',' ').Replace('>',' ');
+
+            LocationLogProcedures.Shout(me, input.Message);
+
+            
+            Location temp = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName);
+            string message = "You shouted '" + input.Message + "' at " + temp.Name;
+            PlayerLogProcedures.AddPlayerLog(me.Id, message, false);
+
+            TempData["Result"] = message;
+
+            return RedirectToAction("Play");
+        }
+
 
         private List<DropDownListItem> getGenderChoiceList()
         {
@@ -3851,7 +3915,7 @@ namespace tfgame.Controllers
                 {
                     try
                     {
-                        context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Players] SET TimesAttackingThisUpdate = 0, CleansesMeditatesThisRound = 0, ActionPoints = ActionPoints + 10 WHERE Mobility='full' " +
+                        context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Players] SET TimesAttackingThisUpdate = 0, CleansesMeditatesThisRound = 0, ActionPoints = ActionPoints + 10 WHERE Mobility='full', ShoutsRemaining = 1" +
 
                         "UPDATE [Stats].[dbo].[Players] SET ActionPoints_Refill = ActionPoints_Refill + (ActionPoints % 120 / 2) WHERE ActionPoints >= 120 AND Mobility='full'" + 
 

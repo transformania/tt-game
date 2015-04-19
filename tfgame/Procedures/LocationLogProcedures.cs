@@ -6,6 +6,7 @@ using tfgame.dbModels.Abstract;
 using tfgame.dbModels.Concrete;
 using tfgame.dbModels.Models;
 using tfgame.Statics;
+using tfgame.ViewModels;
 
 namespace tfgame.Procedures
 {
@@ -54,6 +55,19 @@ namespace tfgame.Procedures
             //}
            
             LocationLogRepo.SaveLocationLog(newlog);
+        }
+
+        public static void Shout(Player player, string message)
+        {
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+
+            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.MembershipId == player.MembershipId);
+            dbPlayer.ShoutsRemaining--;
+            playerRepo.SavePlayer(dbPlayer);
+
+            message = "<span class='playerShoutNotification'>" + player.GetFullName() + " shouted <b>\"" + message + "\"</b> here.</span>";
+
+            AddLocationLog(player.dbLocationName, message);
         }
 
     }

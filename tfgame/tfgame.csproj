@@ -363,6 +363,7 @@
     <Compile Include="Procedures\DonatorProcedures.cs" />
     <Compile Include="Procedures\DungeonProcedures.cs" />
     <Compile Include="Procedures\FurnitureProcedures.cs" />
+    <Compile Include="Procedures\ItemTransferLogProcedures.cs" />
     <Compile Include="Procedures\MindControlProcedures.cs" />
     <Compile Include="Procedures\NoticeProcedures.cs" />
     <Compile Include="Procedures\Pathfinding.cs" />

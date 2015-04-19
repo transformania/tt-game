@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -289,80 +290,82 @@ namespace tfgame.CustomHtmlHelpers
             ///Images/PvP/itemsPortraits/@Model.Item.PortraitUrl
             ///
 
-            string route = "";
+            string output = "";
+            string strThumb = "";
 
             if (player.Player.Mobility == "animal")
             {
-                route = "/Images/PvP/animalPortraits/";
+                output = "/Images/PvP/animalPortraits/";
             }
 
             if (player.Player.Mobility == "full")
             {
-                route = "/Images/PvP/portraits/";
+                output = "/Images/PvP/portraits/";
             }
 
             if (player.Player.Mobility == "item")
             {
-                route = "/Images/PvP/itemsPortraits/";
+                output = "/Images/PvP/itemsPortraits/";
             }
 
             if (thumb)
             {
-                route += "Thumbnails/100/";
+                strThumb = "Thumbnails/100/";
+                if (!File.Exists(HttpContext.Current.Server.MapPath(output + strThumb + player.Form.PortraitUrl))) strThumb = "";
             }
 
-
-            string output = "";
+            output += strThumb + player.Form.PortraitUrl;
             return new MvcHtmlString(output);
         }
 
         public static MvcHtmlString GetImageURL(ItemViewModel item, bool thumb = false)
         {
-
-            
-
             string output = "";
             string strThumb = "";
-            if(thumb)
-            {
-                strThumb = "Thumbnails/100/";
-            }
-
+            string strItemType;
 
             if (item.Item.ItemType == PvPStatics.ItemType_Pet)
             {
-                output = "/Images/PvP/animalPortraits/" + strThumb + item.Item.PortraitUrl;
-            } else {
-                output = "/Images/PvP/itemsPortraits/" + strThumb + item.Item.PortraitUrl;
+                strItemType = "animalPortraits/";
+            }
+            else
+            {
+                strItemType = "itemsPortraits/";
             }
 
-            return new MvcHtmlString(output);
+            if (thumb)
+            {
+                strThumb = "Thumbnails/100/";
+                if (!File.Exists(HttpContext.Current.Server.MapPath("/Images/PvP/" + strItemType + strThumb + item.Item.PortraitUrl))) strThumb = "";
+            }
 
+            output = "/Images/PvP/" + strItemType + strThumb + item.Item.PortraitUrl;
+            return new MvcHtmlString(output);
         }
 
         public static MvcHtmlString GetImageURL(DbStaticItem item, bool thumb = false)
         {
-
-
-
             string output = "";
             string strThumb = "";
-            if (thumb)
-            {
-                strThumb = "Thumbnails/100/";
-            }
+            string strItemType;
 
             if (item.ItemType == PvPStatics.ItemType_Pet)
             {
-                output = "/Images/PvP/animalPortraits/" + strThumb + item.PortraitUrl;
+                strItemType = "animalPortraits/";
             }
             else
             {
-                output = "/Images/PvP/itemsPortraits/" + strThumb + item.PortraitUrl;
+                strItemType = "itemsPortraits/";
             }
 
-            return new MvcHtmlString(output);
+            if (thumb)
+            {
+                strThumb = "Thumbnails/100/";
+                if (!File.Exists(HttpContext.Current.Server.MapPath("/Images/PvP/" + strItemType + strThumb + item.PortraitUrl))) strThumb = "";
+            }
 
+            output = "/Images/PvP/" + strItemType + strThumb + item.PortraitUrl;
+            return new MvcHtmlString(output);
         }
 
         public static MvcHtmlString StyleIfBot(Player player)
@@ -428,7 +431,9 @@ namespace tfgame.CustomHtmlHelpers
             }
             else
             {
-                output = "<div class='subportrait' style='background-image: url(../Images/PvP/portraits/Thumbnails/100/" + owner.Form.PortraitUrl + ");' title = 'You are owned by " + owner.Player.FirstName + " " + owner.Player.LastName + ", a " + owner.Form.FriendlyName + ".'></div>";
+                string strThumb = "Thumbnails/100/";
+                if (!File.Exists(HttpContext.Current.Server.MapPath("/Images/PvP/portraits/" + strThumb + owner.Form.PortraitUrl))) strThumb = "";
+                output = "<div class='subportrait' style='background-image: url(../Images/PvP/portraits/" + strThumb + owner.Form.PortraitUrl + ");' title = 'You are owned by " + owner.Player.FirstName + " " + owner.Player.LastName + ", a " + owner.Form.FriendlyName + ".'></div>";
                 return new MvcHtmlString(output);
             }
         }

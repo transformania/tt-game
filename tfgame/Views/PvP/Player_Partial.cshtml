@@ -25,7 +25,7 @@
 
 <div class="@CharactersHere.StyleIfBot(Model.Player.ToDbPlayer())" playnum="@Model.Player.Id">
     
-    <div class="portrait" style="background-image: url(/Images/PvP/portraits/Thumbnails/100/@Model.Form.PortraitUrl);">
+    <div class="portrait" style="background-image: url(@CharactersHere.GetImageURL(Model, true));">
         
         <span class="icon-@Model.Player.Gender" style="float:right;"></span>
         <span class="icon-level"><b>@Model.Player.Level</b></span>

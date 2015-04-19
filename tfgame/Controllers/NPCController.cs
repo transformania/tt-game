@@ -749,5 +749,118 @@ namespace tfgame.Controllers
 
             return RedirectToAction("MindControlList");
         }
+
+        [Authorize]
+        public ActionResult TalkToBartender(string question)
+        {
+            Player me = PlayerProcedures.GetPlayerFromMembership();
+            Player bartender = PlayerProcedures.GetPlayerFromMembership();
+
+            // assert player is mobile
+            if (me.Mobility != "full")
+            {
+                TempData["Error"] = "You must be animate in order to chat with Rusty.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            // assert bartender is mobile
+            if (bartender.Mobility != "full")
+            {
+                TempData["Error"] = "Rusty must be animate in order to chat with you.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            // assert player is animate
+            if (me.dbLocationName != bartender.dbLocationName)
+            {
+                TempData["Error"] = "You cannot chat with Rusty as you are not in the same location as him.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            if (question == "none")
+            {
+
+                if (me.Gender == "male") {
+                    ViewBag.Speech = "Greetings, sir " + me.GetFullName() + "!  How may I assist you today?";
+                } else if (me.Gender == "female") {
+                    ViewBag.Speech = "Greetings, madam " + me.GetFullName() + "!  How may I assist you today?";
+                }
+                
+            }
+            else if (question == "lindella")
+            {
+                Player lindella = PlayerProcedures.GetPlayerFromMembership(AIProcedures.LindellaMembershipId);
+                if (lindella != null)
+                {
+                    Location temp = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == lindella.dbLocationName);
+                    ViewBag.Speech = "\"The last I have heard, Lindella is at <b>" + temp.Name + "</b>.  She is always moving about town to find new customers, but she tends to stick to the streets because of her wagon.  Is there anything else I can assist you with?\"";
+                }
+                else
+                {
+                    ViewBag.Speech = "Unfortunately I do not have any information on Lindella at this time.  Is there anything else I can assist you with?";
+                }
+            }
+
+            else if (question == "wuffie")
+            {
+                Player wuffie = PlayerProcedures.GetPlayerFromMembership(AIProcedures.WuffieMembershipId);
+                if (wuffie != null)
+                {
+                    Location temp = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == wuffie.dbLocationName);
+                    ViewBag.Speech = "\"The last I have heard, Wüffie is at <b>" + temp.Name + "</b>.  She moves around every now and then to graze her animals and pets, so you'll typically see her where there is plenty of grass.  Is there anything else I can assist you with?\"";
+                }
+                else
+                {
+                    ViewBag.Speech = "Unfortunately I do not have any information on Wüffie at this time.  Is there anything else I can assist you with?";
+                }
+            }
+            else if (question == "jewdewfae")
+            {
+                Player jewdewfae = PlayerProcedures.GetPlayerFromMembership(AIProcedures.JewdewfaeMembershipId);
+                if (jewdewfae != null)
+                {
+                    Location temp = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == jewdewfae.dbLocationName);
+                    ViewBag.Speech = "\"The last I have heard, Jewdewfae is at <b>" + temp.Name + "</b>.  She is always looking for people to play with, and unlike many of her more mischevious peers, she won't do it by turning you into a statue for a hundred years!  Probably.  Is there anything else I can assist you with?\"";
+                }
+                else
+                {
+                    ViewBag.Speech = "Unfortunately I do not have any information on Jewdewfae at this time.  Is there anything else I can assist you with?";
+                }
+            }
+            else if (question == "boss")
+            {
+                PvPWorldStat stats = PvPWorldStatProcedures.GetWorldStats();
+                string output = "";
+
+
+                if (stats.Boss_Thief == "active")
+                {
+                    output += "\"There are a pair of rat thieves from the Seekshadow guild going about the town brashly mugging any inhabitants with enough Arpeyjis in their wallet.  Keep an eye out for them, and if possible make sure you don't carry too much money on you at once.  Careful, if you manage to defeat one, the other will not be too happy and will relentlessly pursue anyone who possesses the other.\"<br><br>";
+                }
+                if (stats.Boss_Donna == "active") {
+                    output += "\"There is a powerful sorceress about the town, a relative of the witchling Circine Milton of whom you may have seen about town.  She won't attack you unprovoked, but know that she holds a grudge, and once she has you in her sights... well, let's just say don't be surprised to join the livestock down at the Milton Ranch.  Unless she's on the hunt for someone who has tried to fight her, you can find her in her bedroom at the Milton Ranch.  Be careful however, when Donna is near defeat, her magic amplifies and she will attack anyone and everyone in sight, regardless of how innocent they are!\"<br><br>";
+
+                } if (stats.Boss_Bimbo == "active") {
+                    output += "\"There is a woman named Lady Lovebringer, a renowned scientist who has recently arrived at the town.  I have heard she carries a powerful virus that can transform anyone who catches it into voluptuous women who spread the virus even further.  Those who have been infected will shortly transform into a bimbo and may find themselves attacking any other bystanders against their own will.  Luckily the Center for Transformation Control and Prevention are airdropping cures which will make you immune from the virus for a while, so keep an eye open for them lying around on the ground!\"<br><br>";
+                
+
+                } if (stats.Boss_Valentine == "active") {
+                    output += "\"A powerful vampire lord named Valentine is in town, letting people try to test their skills against him.  He won't leave the castle at all, so you can safely disengage him as you please; he holds no grudges.  However, it's best not to be standing near him for too long; he seeks to turn vampires out of the population here, and if he grows tired of you as a vampire he will try to turn you into a sleek sword for his personal collection instead!\"<br><br>";
+
+                } if (stats.Boss_Sisters == "active") {
+                    output += "\"A pair of feuding sisters is about town trying to turn the other into a form, physically and mentally, into something more desirable.  Perhaps you can take a side and help the issue to be resolved... after all, nobody likes it when family fights.\"<br><br>";
+                }
+
+                if (output == "")
+                {
+                    output += "\"I do not know of anything strange going about Sunnyglade right now.  Well, stranger than usual, anyway.  Is there anything else I can assist you with?\"";
+                }
+
+                ViewBag.Speech = output;
+
+            }
+
+            return View();
+        }
 	}
 }

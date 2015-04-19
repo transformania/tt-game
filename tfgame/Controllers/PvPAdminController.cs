@@ -1081,6 +1081,7 @@ namespace tfgame.Controllers
                 return View("Play", "PvP");
             }
 
+            AIProcedures.SpawnBartender();
             
             NoticeProcedures.PushNotice(PlayerProcedures.GetPlayerFromMembership(), "test");
 

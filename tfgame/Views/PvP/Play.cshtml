@@ -203,17 +203,21 @@
                                 <div style="text-align:center; margin-top:2px;">
                                     @Ajax.ActionLink("Attack", "AttackModal", "PvP", new { targetId = p.Player.Id }, new AjaxOptions { UpdateTargetId = "attackModal", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "attack_Success", OnFailure = "attack_Failure", OnBegin = "attack_Wait" }, new { @class = "attackLink" })
                                     @{
-                if (p.Player.MembershipId == -3)
+                if (p.Player.MembershipId == AIProcedures.LindellaMembershipId)
                 {
                     @Html.ActionLink("Trade", "TradeWithMerchant", "NPC", new { filter = "shirt" }, new { @class = "attackLink" })
                 }
-                if (p.Player.MembershipId == -6)
+                if (p.Player.MembershipId == AIProcedures.JewdewfaeMembershipId)
                 {
                     @Html.ActionLink("Talk", "TalkWithJewdewfae", "PvP", null, new { @class = "attackLink" })
                 }
-                if (p.Player.MembershipId == -10)
+                if (p.Player.MembershipId == AIProcedures.WuffieMembershipId)
                 {
                     @Html.ActionLink("Trade", "TradeWithPetMerchant", "NPC", null, new { @class = "attackLink" })
+                }
+                if (p.Player.MembershipId == AIProcedures.BartenderMembershipId)
+                {
+                    @Html.ActionLink("Talk", "TalkToBartender", "NPC", new { question = "none" }, new { @class = "attackLink" })
                 }
                                     }
                                 </div>

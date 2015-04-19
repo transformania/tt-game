@@ -15,7 +15,10 @@ namespace tfgame.Procedures
 {
     public static class AIProcedures
     {
-
+        public const int LindellaMembershipId = -3;
+        public const int WuffieMembershipId = -10;
+        public const int JewdewfaeMembershipId = -6;
+        public const int BartenderMembershipId = -14;
 
         // Membership ID code:  
         // -1 (player has rerolled, player is abandoned)
@@ -31,6 +34,7 @@ namespace tfgame.Procedures
         // -11 Nerd mouse sister
         // -12 bimbo mouse sister
         // -13 dungeon demon
+        // -14 bartender
 
         public static void SpawnAIPsychopaths(int count, int offset)
         {
@@ -837,6 +841,43 @@ namespace tfgame.Procedures
 
             return 1;
 
+        }
+
+        public static void SpawnBartender()
+        {
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            Player bartender = playerRepo.Players.FirstOrDefault(f => f.MembershipId == AIProcedures.BartenderMembershipId);
+
+            if (bartender == null)
+            {
+                bartender = new Player()
+                {
+                    FirstName = "Rusty",
+                    LastName = "Steamstein",
+                    ActionPoints = 120,
+                    dbLocationName = "tavern_counter",
+                    LastActionTimestamp = DateTime.UtcNow,
+                    LastCombatTimestamp = DateTime.UtcNow,
+                    LastCombatAttackedTimestamp = DateTime.UtcNow,
+                    OnlineActivityTimestamp = DateTime.UtcNow,
+                    NonPvP_GameOverSpellsAllowedLastChange = DateTime.UtcNow,
+                    Gender = "male",
+                    Health = 9999,
+                    Mana = 9999,
+                    MaxHealth = 9999,
+                    MaxMana = 9999,
+                    Form = "form_The_Perfect_Barman_Judoo",
+                    IsPetToId = -1,
+                    Money = 0,
+                    Mobility = "full",
+                    Level = 3,
+                    MembershipId = -14,
+                    ActionPoints_Refill = 360,
+                };
+
+                playerRepo.SavePlayer(bartender);
+
+            }
         }
 
         

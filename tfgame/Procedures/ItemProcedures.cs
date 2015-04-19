@@ -815,8 +815,8 @@ namespace tfgame.Procedures
 
             DbStaticItem item = ItemStatics.GetStaticItem(targetForm.BecomesItemDbName);
             Location here = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == victim.dbLocationName);
-
             itemRepo.SaveItem(newItem);
+            ItemTransferLogProcedures.AddItemTransferLog(newItem.Id, newItem.OwnerId);
 
             output.LocationLog = "<br><b>" + victim.FirstName + " " + victim.LastName + " was completely transformed into a " + item.FriendlyName + " here.</b>";
             output.AttackerLog = "<br><b>You fully transformed " + victim.FirstName + " " + victim.LastName + " into a " + item.FriendlyName + "</b>!";

@@ -113,4 +113,11 @@
     <Merchant>Lindella</Merchant>
   </RestockListItem>
 
+  <RestockListItem>
+    <dbName>item_consumable_tome-founding_tree</dbName>
+    <AmountBeforeRestock>1</AmountBeforeRestock>
+    <AmountToRestockTo>3</AmountToRestockTo>
+    <Merchant>Lindella</Merchant>
+  </RestockListItem>
+
 </ArrayOfRestockListItem>

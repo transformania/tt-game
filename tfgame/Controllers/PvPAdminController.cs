@@ -1099,6 +1099,7 @@ namespace tfgame.Controllers
             AIProcedures.SpawnLindella();
             BossProcedures_PetMerchant.SpawnPetMerchant();
             BossProcedures_Fae.SpawnFae();
+            AIProcedures.SpawnBartender();
 
             return RedirectToAction("Index");
         }

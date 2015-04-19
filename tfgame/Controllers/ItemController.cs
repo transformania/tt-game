@@ -201,7 +201,7 @@ namespace tfgame.Controllers
                   StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__LoreBooksRead, 1)
               ).Start();
 
-             TempData["Result"] = "You read your copy of " + book.Item.FriendlyName + ", absorbing its knowledge for 50 XP.  The tome slips into thin air so it can provide its knowledge to another mage in a different time and place.";
+             TempData["Result"] = "You read your copy of " + book.Item.FriendlyName + ", absorbing its knowledge for 35 XP.  The tome slips into thin air so it can provide its knowledge to another mage in a different time and place.";
              return RedirectToAction("Play", "PvP");
 
          }

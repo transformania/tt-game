@@ -853,7 +853,7 @@ namespace tfgame.Procedures
                 bartender = new Player()
                 {
                     FirstName = "Rusty",
-                    LastName = "Steamstein",
+                    LastName = "Steamstein the Automaton Bartender",
                     ActionPoints = 120,
                     dbLocationName = "tavern_counter",
                     LastActionTimestamp = DateTime.UtcNow,

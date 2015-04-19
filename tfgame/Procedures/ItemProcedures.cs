@@ -287,6 +287,7 @@ namespace tfgame.Procedures
                 item.dbLocationName = "";
                 item.OwnerId = newOwnerId;
                 item.IsEquipped = false;
+                ItemTransferLogProcedures.AddItemTransferLog(itemId, newOwnerId);
                 itemRepo.SaveItem(item);
 
                 // if item is not an animal
@@ -320,6 +321,7 @@ namespace tfgame.Procedures
             }
            
             item.TimeDropped = DateTime.UtcNow;
+            ItemTransferLogProcedures.AddItemTransferLog(itemId, newOwnerId);
             itemRepo.SaveItem(item);
         }
 
@@ -347,6 +349,7 @@ namespace tfgame.Procedures
             }
 
             itemRepo.SaveItem(newitem);
+            ItemTransferLogProcedures.AddItemTransferLog(newitem.Id, player.Id);
             return "You found a " + item.FriendlyName + "!";
         }
 
@@ -379,6 +382,7 @@ namespace tfgame.Procedures
             item.IsEquipped = false;
             item.TimeDropped = DateTime.UtcNow;
             itemRepo.SaveItem(item);
+            ItemTransferLogProcedures.AddItemTransferLog(itemId, -1);
 
             SkillProcedures.UpdateItemSpecificSkillsToPlayer(oldOwnerId);
 
@@ -837,7 +841,7 @@ namespace tfgame.Procedures
                 item.OwnerId = -1;
                 item.dbLocationName = player.dbLocationName;
                 item.TimeDropped = DateTime.UtcNow;
-
+                ItemTransferLogProcedures.AddItemTransferLog(item.Id, -1);
             }
 
             foreach (Item item in itemsToDrop)

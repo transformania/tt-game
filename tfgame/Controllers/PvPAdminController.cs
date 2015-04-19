@@ -2145,6 +2145,19 @@ namespace tfgame.Controllers
             return RedirectToAction("Play", "PvP");
         }
 
+        [Authorize]
+        public ActionResult FindMissingThumbnails()
+        {
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == true)
+            {
+                return View();
+            }
+            else
+            {
+                ViewBag.Message = "You aren't allowed to do this.";
+                return View("~/Views/PvP/PvPAdmin.cshtml");
+            }
+        }
     }
 
 

@@ -558,7 +558,7 @@ namespace tfgame.Procedures
             else if (energyAccumulated > targetForm.TFEnergyRequired * 1.5M && target.MembershipId > 0)
             {
                 output.VictimLog += "  You body spasms as the surplus of transformation energy threatens to transform you spontaneously.  You fight it but only after it drains you of more of your precious remaining willpower! You take an extra 6 willpower damage.";
-                output.AttackerLog += "  Your victim has an extremely high amount of transformation energy built up and takes an extra 6 willpower damage."
+                output.AttackerLog += "  Your victim has an extremely high amount of transformation energy built up and takes an extra 6 willpower damage.";
                 target.Health -= 6;
                 target.NormalizeHealthMana();
                 playerRepo.SavePlayer(target);

@@ -2172,7 +2172,11 @@
     <Content Include="Views\PvP\RoundLeaderboards\XP\Alpha_18.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_18.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Statistics\Alpha_18.cshtml" />
+<<<<<<< HEAD
     <Content Include="Views\NPC\TalkToBartender.cshtml" />
+=======
+    <Content Include="Views\PvPAdmin\FindMissingThumbnails.cshtml" />
+>>>>>>> 346b2c53f95e9c495f3b12366248fe0748712ee2
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

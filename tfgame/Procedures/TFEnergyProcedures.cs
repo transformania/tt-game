@@ -549,14 +549,16 @@ namespace tfgame.Procedures
             // add in some extra WP damage if TF energy high enough for TF but WP is still high
             else if (energyAccumulated > targetForm.TFEnergyRequired * 1.25M && target.MembershipId > 0)
             {
-                output.VictimLog += "  You gasp as your body shivers with a surplus of transformation energy built up within it, leaving your distracted and your willpower increasingly impaired.";
+                output.VictimLog += "  You gasp as your body shivers with a surplus of transformation energy built up within it, leaving you distracted and your willpower increasingly impaired. You take an extra 3 willpower damage.";
+                output.AttackerLog += "  Your victim has a high amount of transformation energy built up and takes an extra 3 willpower damage.";
                 target.Health -= 3;
                 target.NormalizeHealthMana();
                 playerRepo.SavePlayer(target);
             }
             else if (energyAccumulated > targetForm.TFEnergyRequired * 1.5M && target.MembershipId > 0)
             {
-                output.VictimLog += "  You body spasms as the surplus of transformation energy threatens to transform you spontaneously.  You fight it but only after it drains you of more of your precious remaining willpower!";
+                output.VictimLog += "  You body spasms as the surplus of transformation energy threatens to transform you spontaneously.  You fight it but only after it drains you of more of your precious remaining willpower! You take an extra 6 willpower damage.";
+                output.AttackerLog += "  Your victim has an extremely high amount of transformation energy built up and takes an extra 6 willpower damage."
                 target.Health -= 6;
                 target.NormalizeHealthMana();
                 playerRepo.SavePlayer(target);

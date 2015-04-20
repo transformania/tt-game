@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FairyChallengeBag xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <dbLocationName>comicstore_gaming_room</dbLocationName>
+  <IntroText>[p]As you enter the gaming room of Extended Universe, you come across an overturned box of some strategic wargame or other with the pieces all scattered about, little plastic toy cannons and horsemen toppled about cluttering the continents and jutting out of the ocean.  You hear a tiny voice amongst them, shouting commands at imaginary units and imitating the crack of rifles and booming of cannons in her tiny squeaks.[/p]
+
+[p][fae]”Oh, hello!”[/fae] you hear, watching as one of the tiny figures grows from only a couple centimeters tall to nine inches.  It doesn’t take long to see that the figure is Jewdewfae the fairy, except in place of wearing her usual blue dress she has a tiny red uniform on, complete with badges and stripes (made out of buttons and cardboard paper) glued on.[/p]
+
+[p][fae]”Hey there, biggie!”[/fae] she chirps at you, hearing the clinking of your gears.. [fae] “Ten-hut!  Left face!  Right face!  Up face!  Down face!  Attention!  Wanna play soldier?  I bet you’d look rather spiffy as an Unyielding Toy Soldier!”[/fae][/p]</IntroText>
+  <CorrectFormText>[p][fae]”Shiny red uniform… elegant musket… really tall hat… you’re a perfect little toy soldier!”[/fae] Jewdewfae giggles, eyeing you up and down, delighting in the details of your craftwork..  [fae]“Now stand here.  I command you!”[/fae][/p]
+
+[p]You feel your clockwork ticking, eager to accept her orders and find yourself marching forward, even as a quick zap sends you shrinking down to just four inches tall, half the height of Jewdewfae herself.  You loyally resume your step forward, your military stride unbreaking even as your stride itself becomes shorter.  With a loud click and a smile on your rosy painted porcelain face, you shoulder your musket as you stand at attention in front of the fairy.[/p]
+
+[p][fae]”Okay, private!  Now I’m gonna tell you about a famous battle that took place a few dozen miles from Sunnyglade oh, what was it… two hundred years ago?  Three hundred?  I forget now.  But anyway!  There were these two silly biggie armies and they had all their guns and cannons and wanted to shoot each other, but you know what I did?  My sister and I turned them all into little toys like you, every single one of ‘em, even shrunk down their horses and cannons too!  And they still tried to fight each other, but none of them could actually be hurt ‘cause they were all made of tin!  It was soooo hilarious!  Took all day before the dumb biggies realized nobody could win and signed a peace.  We changed em’ all back to biggies a few days later… well, except for the generals and officers, the dumb ones who tried to start the war again.  They’re still cute little toys to this day!”[/fae][p]  
+
+[p][fae]”Right then, any questions?  No?  All right, then, soldier!  My order for you is to go out and keep this city safe like a good little soldier!  Dis-MISSED!”[/fae][/p]
+
+[p]Jewdewfae zaps you as she flies back to her game, restoring you back to your original height and leaving you with some of her magic as a parting gift.[/p]</CorrectFormText>
+  <FailureText>[p][fae]”Psh, what kind of soldier are you?  Where’s your uniform?  Where’s your musket?  Come back later when you’ve got some good ol’ army training drilled in you, civilian!”[/fae] [/p]</FailureText>
+  <RequiredForm>form_Unyielding_Toy_Soldier_Ninian</RequiredForm>
+</FairyChallengeBag>

@@ -410,6 +410,7 @@
     <Compile Include="ViewModels\FriendPlayerViewModel.cs" />
     <Compile Include="ViewModels\GameOverViewModel.cs" />
     <Compile Include="ViewModels\InventoryBonusesViewModel.cs" />
+    <Compile Include="ViewModels\ItemTransferLogViewModel.cs" />
     <Compile Include="ViewModels\ItemLeaderboardViewModel.cs" />
     <Compile Include="ViewModels\ItemViewModel.cs" />
     <Compile Include="ViewModels\Location.cs" />
@@ -2180,6 +2181,8 @@
     <Content Include="Views\NPC\TalkToBartender.cshtml" />
     <Content Include="Views\PvPAdmin\FindMissingThumbnails.cshtml" />
     <Content Include="Views\PvP\Shout.cshtml" />
+    <Content Include="Views\PvPAdmin\ViewItemTransferLog.cshtml" />
+    <Content Include="Views\PvPAdmin\ViewPlayerItems.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

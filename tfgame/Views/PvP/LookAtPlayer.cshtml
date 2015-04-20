@@ -169,6 +169,7 @@
                           
                          <li>@Html.ActionLink("Reset IP Address", "ResetAllPlayersWithIPAddress", "PvPAdmin", new { address = Model.PlayerForm.Player.IpAddress }, null)</li>
                          <li>@Html.ActionLink("Toggle ban on global chat", "ToggleBanOnGlobalChat", "PvPAdmin", new { id = Model.PlayerForm.Player.Id }, null)</li>
+                         <li>@Html.ActionLink("Audit items", "ViewPlayerItems", "PvPAdmin", new { id = Model.PlayerForm.Player.Id }, null)</li>
                       </ul>
                  </div><!-- /.navbar-collapse -->
                 </div><!-- /.container-fluid -->

@@ -5,16 +5,36 @@ using System.Web;
 using tfgame.dbModels.Abstract;
 using tfgame.dbModels.Concrete;
 using tfgame.dbModels.Models;
+using tfgame.ViewModels;
 using tfgame.Statics;
 
 namespace tfgame.Procedures
 {
     public class ItemTransferLogProcedures
     {
-        public static IEnumerable<ItemTransferLog> GetItemTransferLog(int iItem)
+        public static List<ItemTransferLogViewModel> GetItemTransferLog(int iItem)
         {
             IItemTransferLogRepository ItemTransferLogRepo = new EFItemTransferLogRepository();
-            IEnumerable<ItemTransferLog> output = ItemTransferLogRepo.ItemTransferLogs.Where(p => p.ItemId == iItem).OrderBy(l => l.Timestamp).ToList();
+            IPlayerRepository PlayerRepo = new EFPlayerRepository();
+            var query = from p in ItemTransferLogRepo.ItemTransferLogs
+                        where p.ItemId == iItem
+                        from o in ItemTransferLogRepo.Players
+                        .Where(q => q.Id == p.OwnerId)
+                        .DefaultIfEmpty()
+                        select new ItemTransferLogViewModel
+                        {
+                            OwnerIP = o.IpAddress ?? "-1",
+                            OwnerName = (o.FirstName == null || o.LastName == null ? "-1" : o.FirstName + " " + o.LastName),
+                            ItemLog = new ItemTransferLog_VM
+                            {
+                                Id = p.Id,
+                                ItemId = p.ItemId,
+                                OwnerId = p.OwnerId,
+                                Timestamp = p.Timestamp
+                            }
+                        };
+            List<ItemTransferLogViewModel> output = query.OrderByDescending(p => p.ItemLog.Timestamp).ToList();
+
             return output;
         }
 

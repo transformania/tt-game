@@ -10,6 +10,7 @@ namespace tfgame.dbModels.Abstract
     {
 
         IQueryable<ItemTransferLog> ItemTransferLogs { get; }
+        IQueryable<Player> Players { get; }
 
         void SaveItemTransferLog(ItemTransferLog ItemTransferLog);
 

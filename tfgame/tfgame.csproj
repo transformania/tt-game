@@ -1342,6 +1342,7 @@
     <Content Include="XMLs\DungeonDemonNames.xml" />
     <Content Include="XMLs\DungeonNouns.xml" />
     <Content Include="XMLs\DungeonAdjectives.xml" />
+    <Content Include="XMLs\FairyChallengeText\fae_toy_soldier.xml" />
     <Content Include="XMLs\restockList.xml" />
     <Content Include="XMLs\custom_bases.xml" />
     <Content Include="XMLs\Effects\effect_Circine%27s_Hypnosis_LexamTheGemFox.xml" />

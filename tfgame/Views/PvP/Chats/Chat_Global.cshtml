@@ -236,6 +236,7 @@
             encodedValue = encodedValue.replace("[luxa]", "<a onclick='chatLink()'><img src='http://i.imgur.com/khaIWKZ.jpg'></a>");
             encodedValue = encodedValue.replace("[blanca]", "<a onclick='dandyStream()'>Blanca is streaming now</a>");
             encodedValue = encodedValue.replace("[poll]", "Please take part in our Transformation Preferences Poll. <a onclick='chatLink2()'>Transformation Poll - http://goo.gl/forms/Zu0JeZBLn9 </a>");
+            encodedValue = fixLinks(encodedValue);
 
 
 
@@ -254,6 +255,7 @@
             encodedValue = encodedValue.replace("Mizuho (dev)", "<span class='adminFont'>Mizuho (dev)</span>");
             encodedValue = encodedValue.replace("Arrhae (dev)", "<span class='adminFont'>Arrhae (dev)</span>");
             encodedValue = encodedValue.replace(myname, "<span style='text-decoration: underline; color: " + mynameColor + ";'><strong> " + myname + "</strong></span>");
+            encodedValue = fixLinks(encodedValue);
 
             return encodedValue;
         }
@@ -265,6 +267,25 @@
                 return "</span>";
             }
             
+        }
+
+        //this is the function that fixes links
+        function fixLinks(input) {
+           
+            if (input) {
+               
+                input = input.replace(
+                /((https?\:\/\/)|(www\.))(\S+)(\w{2,4})(:[0-9]+)?(\/|\/([\w#!:.?+=&%@@!\-\/]))?/gi,
+                function (url) {
+                    var full_url = url;
+                    if (!full_url.match('^https?:\/\/')) {
+                        full_url = 'http://' + full_url;
+                    }
+                    return "<a class='chatlink' data-url='" + full_url + "'>" + url + "</a>";
+                }
+                );
+            }
+            return input;
         }
 
         $("#ignoreAdd").click(function () {
@@ -286,7 +307,27 @@
             }
         });
 
+        //This section has to go somewhere, when someone clicks something with the "chatlink" class, it will run the popup.
+        $("#discussion").on('click', '.chatlink', function () {
+            console.log("xyz");
+            var magicurl = $(this).data('url');
+            var r = confirm("Are you sure you want to go to " + magicurl + "?  Be aware that this may be an external link that leads outside of Transformania Time, so be careful to only proceed if intended.");
+            if (r == true) {
+                window.open(magicurl);
+            } else {
+            }
+        });
+
         
 
     </script>
 }
+
+<style>
+     .chatlink {
+        text-decoration: underline;
+        color: blue;
+        cursor: pointer;
+
+    }
+</style>

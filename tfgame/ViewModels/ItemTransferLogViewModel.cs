@@ -8,9 +8,6 @@ namespace tfgame.ViewModels
 {
     public class ItemTransferLogViewModel
     {
-        /*public Player_VM ItemPlayer { get; set; }
-        public Player_VM Owner { get; set; }
-        public ItemTransferLog_VM ItemLog { get; set; }*/
         public string OwnerIP { get; set; }
         public string OwnerName { get; set; }
         public ItemTransferLog_VM ItemLog {get; set; }

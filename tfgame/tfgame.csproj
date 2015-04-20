@@ -769,6 +769,7 @@
     <Content Include="Images\PvP\itemsPortraits\Thumbnails\100\bimbo_cure_syringe_babblingfaces.png" />
     <Content Include="Images\PvP\itemsPortraits\Thumbnails\100\binding_tattoo_spacedande.png" />
     <Content Include="Images\PvP\itemsPortraits\Thumbnails\100\BlackSilkTopHat.png" />
+    <Content Include="Images\PvP\itemsPortraits\Thumbnails\100\black_latex_opera_gloves_Jbovinne.jpg" />
     <Content Include="Images\PvP\itemsPortraits\Thumbnails\100\black_latex_pants_jbovinne.png" />
     <Content Include="Images\PvP\itemsPortraits\Thumbnails\100\black_leather_handbag_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\Thumbnails\100\black_stilettos_by_nymic-tf.jpg" />
@@ -779,6 +780,7 @@
     <Content Include="Images\PvP\itemsPortraits\Thumbnails\100\bplug_Martiandawn.jpg" />
     <Content Include="Images\PvP\itemsPortraits\Thumbnails\100\ButtonUpSchoolgirlBlouse_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\Thumbnails\100\callback_crystal_MIzuho.gif" />
+    <Content Include="Images\PvP\itemsPortraits\Thumbnails\100\cargo_pants_babblingfaces.jpg" />
     <Content Include="Images\PvP\itemsPortraits\Thumbnails\100\carousel_horse.png" />
     <Content Include="Images\PvP\itemsPortraits\Thumbnails\100\CatEars_HB_Eq.jpg" />
     <Content Include="Images\PvP\itemsPortraits\Thumbnails\100\CatEyeGlasses_meddle.png" />
@@ -1137,6 +1139,7 @@
     <Content Include="Images\PvP\portraits\Thumbnails\100\elf_princess_jbovinne.png" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\elven_femboi_Luxianne.png" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\elvish_bard_BabblingFaces.png" />
+    <Content Include="Images\PvP\portraits\Thumbnails\100\emo_koala_babblingfaces.jpg" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\enchanted_tree.png" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\Feisty_Firebrand_Luxianne.png" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\female_armor_Meddle.png" />
@@ -1265,6 +1268,7 @@
     <Content Include="Images\PvP\portraits\Thumbnails\100\sunnyglade_brigade_magic_fighter_Meddle.png" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\teacher_Meddle.png" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\traveling_merchant_Luxianne.jpg" />
+    <Content Include="Images\PvP\portraits\Thumbnails\100\troodon_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\tt_cowgirl_by_wrenzephyr2-d7evem4.png" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\tt_technokitty_by_wrenzephyr2-d7eozjf.png" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\tubby_tanuki_Dandelion.jpg" />

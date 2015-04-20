@@ -16,6 +16,11 @@ namespace tfgame.dbModels.Concrete
             get { return context.ItemTransferLogs; }
         }
 
+        public IQueryable<Player> Players
+        {
+            get { return context.Players; }
+        }
+
         public void SaveItemTransferLog(ItemTransferLog ItemTransferLog)
         {
             if (ItemTransferLog.Id == 0)

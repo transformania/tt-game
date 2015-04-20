@@ -2160,6 +2160,39 @@ namespace tfgame.Controllers
                 return View("~/Views/PvP/PvPAdmin.cshtml");
             }
         }
+
+        [Authorize]
+        public ActionResult ViewPlayerItems(int id)
+        {
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == true || User.IsInRole(PvPStatics.Permissions_Moderator) == true)
+            {
+                ViewBag.playeritems = ItemProcedures.GetAllPlayerItems(id).OrderByDescending(i => i.dbItem.Level);
+                ViewBag.player = PlayerProcedures.GetPlayerFormViewModel(id);
+                return View();
+            }
+            else
+            {
+                ViewBag.Message = "You aren't allowed to do this.";
+                return View("~/Views/PvP/PvPAdmin.cshtml");
+            }
+        }
+
+        [Authorize]
+        public ActionResult ViewItemTransferLog(int id)
+        {
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == true || User.IsInRole(PvPStatics.Permissions_Moderator) == true)
+            {
+                ViewBag.item = ItemProcedures.GetItemViewModel(id);
+                ViewBag.transferlog = ItemTransferLogProcedures.GetItemTransferLog(id);
+                return View();
+            }
+            else
+            {
+                ViewBag.Message = "You aren't allowed to do this.";
+                return View("~/Views/PvP/PvPAdmin.cshtml");
+            }
+        }
+
     }
 
 

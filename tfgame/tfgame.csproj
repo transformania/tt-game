@@ -1549,6 +1549,7 @@
     <Content Include="XMLs\LocationDescriptions\tavern_private_room.xml" />
     <Content Include="XMLs\SkillBooks\founding.txt" />
     <Content Include="XMLs\SkillBooks\founding_tree.txt" />
+    <Content Include="XMLs\SkillBooks\ironic_tfs_1.txt" />
     <Content Include="XMLs\SkillBooks\psycho_Duhad.txt" />
     <Content Include="XMLs\SkillMessages\skill_Circine%27s_Compassion_LexamTheGemFox.xml" />
     <Content Include="XMLs\SkillMessages\skill_Doggy_Owner_Arnisd.xml" />

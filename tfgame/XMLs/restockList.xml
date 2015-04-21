@@ -120,4 +120,11 @@
     <Merchant>Lindella</Merchant>
   </RestockListItem>
 
+  <RestockListItem>
+    <dbName>item_consumable_tome-ironic_tfs_1</dbName>
+    <AmountBeforeRestock>1</AmountBeforeRestock>
+    <AmountToRestockTo>3</AmountToRestockTo>
+    <Merchant>Lindella</Merchant>
+  </RestockListItem>
+
 </ArrayOfRestockListItem>

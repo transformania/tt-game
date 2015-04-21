@@ -1,4 +1,5 @@
 ﻿@model tfgame.dbModels.Models.AuthorArtistBio
+@using System.IO;
 @Html.ActionLink("Back to game", "Play", "PvP", null, new { @class = "returnButton" })
 <div class="textBio">
     <p class="bioTitle">Author / Artist Biography</p>
@@ -85,8 +86,13 @@
                         IEnumerable<string> animateGraphics = Model.AnimateImages.Split(';');
                         foreach (string s in animateGraphics.Where(s => s.Length > 0))
                         {
+                            string strThumb = "";
+                            if (File.Exists(HttpContext.Current.Server.MapPath("/Images/PvP/portraits/Thumbnails/100/"+s)))
+                            {
+                                strThumb = "Thumbnails/100/";
+                            }
                             <a href="/Images/PvP/portraits/@s" onclick="return popitup('/Images/PvP/portraits/@s')">
-                                <img src="/Images/PvP/portraits/@s" class="bioDescImg" />
+                                <img src="/Images/PvP/portraits/@strThumb@s" class="bioDescImg" />
                             </a>
                         }
                     }
@@ -101,8 +107,13 @@
                         IEnumerable<string> inanimateGraphics = Model.InanimateImages.Split(';');
                         foreach (string s in inanimateGraphics.Where(s => s.Length > 0))
                         {
+                            string strThumb = "";
+                            if (File.Exists(HttpContext.Current.Server.MapPath("/Images/PvP/itemsPortraits/Thumbnails/100/" + s)))
+                            {
+                                strThumb = "Thumbnails/100/";
+                            }
                             <a href="/Images/PvP/itemsPortraits/@s" onclick="return popitup('/Images/PvP/itemsPortraits/@s')">
-                                <img src="/Images/PvP/itemsPortraits/@s" class="bioDescImg" />
+                                <img src="/Images/PvP/itemsPortraits/@strThumb@s" class="bioDescImg" />
                             </a>
                         }
                     }
@@ -116,8 +127,13 @@
                         IEnumerable<string> animalGraphics = Model.AnimalImages.Split(';');
                         foreach (string s in animalGraphics.Where(s => s.Length > 0))
                         {
+                            string strThumb = "";
+                            if (File.Exists(HttpContext.Current.Server.MapPath("/Images/PvP/animalPortraits/Thumbnails/100/" + s)))
+                            {
+                                strThumb = "Thumbnails/100/";
+                            }
                             <a href="/Images/PvP/animalPortraits/@s" onclick="return popitup('/Images/PvP/animalPortraits/@s')">
-                                <img src="/Images/PvP/animalPortraits/@s" class="bioDescImg" />
+                                <img src="/Images/PvP/animalPortraits/@strThumb@s" class="bioDescImg" />
                             </a>
                         }
                     }

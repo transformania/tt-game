@@ -626,16 +626,13 @@ namespace tfgame.Controllers
                  return RedirectToAction("Play");
              }
 
-             // assert player has not been in combat recently if trying to leave the dungeon
-             if (me.IsInDungeon() == true)
+             // assert player has not been in combat recently if trying to enter OR leave the dungeon
+             double lastAttackTimeAgo = Math.Abs(Math.Floor(me.GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalMinutes));
+             if (lastAttackTimeAgo < 30)
              {
-                 double lastAttackTimeAgo = Math.Abs(Math.Floor(me.GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalMinutes));
-                 if (lastAttackTimeAgo < 30)
-                 {
-                     TempData["Error"] = "You have been in combat too recently in order to leave the dungeon right now.";
-                     TempData["SubError"] = "You must stay out of combat for another " + (30 - lastAttackTimeAgo) + " minutes without being in combat.";
-                     return RedirectToAction("Play");
-                 }
+                 TempData["Error"] = "You have been in combat too recently in order to enter or leave the dungeon right now.";
+                 TempData["SubError"] = "You must stay out of combat for another " + (30 - lastAttackTimeAgo) + " minutes.";
+                 return RedirectToAction("Play");
              }
 
              if (entering == "true")

@@ -14,7 +14,7 @@
 
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
     <script src="http://code.angularjs.org/1.2.20/angular-sanitize.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.1/angular-animate.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.6/angular-animate.min.js"></script>
 
     <script src="~/Scripts/fwars/app.js"></script>
     <script src="~/Scripts/fwars/controllers/personsController.js"></script>
@@ -156,11 +156,11 @@
                 <div class="row" style="padding-left: 15px; padding-right: 15px;">
                     <div class="containerSmall col-md-6 col-sm-12" ng-show="personsPlayer.persons.length > 0 && personsAI.persons.length > 0">
                         <div class="row">
-                            <div ng-repeat="person in personsPlayer.persons" class="col-md-4">
+                            <div ng-repeat="person in personsPlayer.persons" class="spin-toggle col-md-4">
                                 <div class="personList">
                                     {{person.firstName}} {{person.lastName}}<br />
                                     [lvl {{person.level}} {{person.type}}]<br />
-                                   
+
                                     <img ng-class="{portraitSmall: true, friendlyUnit: true, restingUnit: person.hasAttacked}" ng-src="~/Images/FashionWars/Forms/{{person.getGraphic()}}" />
                                     <div class="progress">
                                         <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{person.health}}" aria-valuemin="0" aria-valuemax="{{person.getMaxHP()}}" ng-style="{width : ( person.getHealthAsPercentage() + '%' ) }">

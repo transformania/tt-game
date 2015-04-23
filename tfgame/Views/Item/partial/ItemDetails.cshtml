@@ -1,6 +1,6 @@
 ﻿@model tfgame.ViewModels.ItemViewModel
 
-<div class="portrait col-md-2 col-sm-4 col-xs-12 " style="background-image: url(@tfgame.CustomHtmlHelpers.CharactersHere.GetImageURL(Model));">
+<div class="portrait col-md-2 col-sm-4 col-xs-12 " style="background-image: url(@tfgame.CustomHtmlHelpers.CharactersHere.GetImageURL(Model, true));">
     @tfgame.CustomHtmlHelpers.CharactersHere.PrintItemTypeIcon(Model.Item)
    @* @tfgame.CustomHtmlHelpers.CharactersHere.Print(Model.Item)*@
 </div>

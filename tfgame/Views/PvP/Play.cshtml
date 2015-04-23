@@ -111,7 +111,7 @@
             foreach (ItemViewModel item in Model.PlayerItems.Where(i => i.dbItem.IsEquipped == true))
             {
                 <div class="col-md-1">
-                    <div class="playPageInventoryItem" style="background-image: url(..@CharactersHere.GetImageURL(item));" title='@item.Item.FriendlyName'></div>
+                    <div class="playPageInventoryItem" style="background-image: url(..@CharactersHere.GetImageURL(item, true));" title='@item.Item.FriendlyName'></div>
                 </div>
             }
         }

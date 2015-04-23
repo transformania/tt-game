@@ -1,6 +1,6 @@
 black;
 green;
-goldenrod;
+#A1770F;
 lightcoral;
 blueviolet;
 cadetblue;

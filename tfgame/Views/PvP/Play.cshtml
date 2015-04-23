@@ -103,9 +103,7 @@
 <div class="offlinePlayersWrapperBG hidden-xs">
     <div class="row">
         <div class="col-md-1">
-            <div class="playPageInventoryItem openInventory" style="background-image: url(../Images/PvP/Icons/Backpack_Meddle.png);" title='View Inventory' onclick="location.href='/PvP/MyInventory';">
-                @Model.PlayerItems.Where(i => i.dbItem.IsEquipped == false).Count()/@Model.InventoryMaxSize
-            </div>
+           @Html.ActionLink(Model.PlayerItems.Where(i => i.dbItem.IsEquipped == false).Count() + "/" + Model.InventoryMaxSize, "MyInventory", "PvP", null, new { @class = "playPageInventoryItem openInventory", @style = "background-image: url(../Images/PvP/Icons/Backpack_Meddle.png)", @title = "View Inventory" })
         </div>
         @{
             foreach (ItemViewModel item in Model.PlayerItems.Where(i => i.dbItem.IsEquipped == true))

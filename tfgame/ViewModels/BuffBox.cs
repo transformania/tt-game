@@ -28,6 +28,21 @@ namespace tfgame.ViewModels
         public decimal FromItems_SpellTFEnergyDamageResistance { get; set; }
         public decimal FromItems_ExtraInventorySpace { get; set; }
 
+        public float FromItems_Discipline { get; set; }
+        public float FromItems_Perception { get; set; }
+        public float FromItems_Charisma { get; set; }
+        public float FromItems_Submission_Dominance { get; set; }
+
+        public float FromItems_Fortitude { get; set; }
+        public float FromItems_Agility { get; set; }
+        public float FromItems_Allure { get; set; }
+        public float FromItems_Corruption_Purity { get; set; }
+
+        public float FromItems_Magicka { get; set; }
+        public float FromItems_Succour { get; set; }
+        public float FromItems_Luck { get; set; }
+        public float FromItems_Chaos_Order { get; set; }
+
         public decimal FromForm_HealthBonusPercent { get; set; }
         public decimal FromForm_ManaBonusPercent { get; set; }
         public decimal FromForm_ExtraSkillCriticalPercent { get; set; }
@@ -47,6 +62,21 @@ namespace tfgame.ViewModels
         public decimal FromForm_SpellTFEnergyDamageResistance { get; set; }
         public decimal FromForm_ExtraInventorySpace { get; set; }
 
+        public float FromForm_Discipline { get; set; }
+        public float FromForm_Perception { get; set; }
+        public float FromForm_Charisma { get; set; }
+        public float FromForm_Submission_Dominance { get; set; }
+
+        public float FromForm_Fortitude { get; set; }
+        public float FromForm_Agility { get; set; }
+        public float FromForm_Allure { get; set; }
+        public float FromForm_Corruption_Purity { get; set; }
+
+        public float FromForm_Magicka { get; set; }
+        public float FromForm_Succour { get; set; }
+        public float FromForm_Luck { get; set; }
+        public float FromForm_Chaos_Order { get; set; }
+
         public decimal FromEffects_HealthBonusPercent { get; set; }
         public decimal FromEffects_ManaBonusPercent { get; set; }
         public decimal FromEffects_ExtraSkillCriticalPercent { get; set; }
@@ -65,6 +95,21 @@ namespace tfgame.ViewModels
         public decimal FromEffects_SpellHealthDamageResistance { get; set; }
         public decimal FromEffects_SpellTFEnergyDamageResistance { get; set; }
         public decimal FromEffects_ExtraInventorySpace { get; set; }
+
+        public float FromEffects_Discipline { get; set; }
+        public float FromEffects_Perception { get; set; }
+        public float FromEffects_Charisma { get; set; }
+        public float FromEffects_Submission_Dominance { get; set; }
+
+        public float FromEffects_Fortitude { get; set; }
+        public float FromEffects_Agility { get; set; }
+        public float FromEffects_Allure { get; set; }
+        public float FromEffects_Corruption_Purity { get; set; }
+
+        public float FromEffects_Magicka { get; set; }
+        public float FromEffects_Succour { get; set; }
+        public float FromEffects_Luck { get; set; }
+        public float FromEffects_Chaos_Order { get; set; }
 
         public decimal HealthBonusPercent() { return FromItems_HealthBonusPercent + FromForm_HealthBonusPercent + FromEffects_HealthBonusPercent; }
         public decimal ManaBonusPercent() { return FromItems_ManaBonusPercent + FromForm_ManaBonusPercent + FromEffects_ManaBonusPercent; }
@@ -118,7 +163,20 @@ namespace tfgame.ViewModels
 
         #region non-stat perks
 
-        
+        public float Discipline() { return FromItems_Discipline + FromForm_Discipline + FromEffects_Discipline; }
+        public float Perception() { return FromItems_Perception + FromForm_Perception + FromEffects_Perception; }
+        public float Charisma() { return FromItems_Charisma + FromForm_Charisma + FromEffects_Charisma; }
+        public float Submission_Dominance() { return FromItems_Submission_Dominance + FromForm_Submission_Dominance + FromEffects_Submission_Dominance; }
+
+        public float Fortitude() { return FromItems_Fortitude + FromForm_Fortitude + FromEffects_Fortitude; }
+        public float Agility() { return FromItems_Agility + FromForm_Agility + FromEffects_Agility; }
+        public float Allure() { return FromItems_Allure + FromForm_Allure + FromEffects_Allure; }
+        public float Corruption_Purity() { return FromItems_Corruption_Purity + FromForm_Corruption_Purity + FromEffects_Corruption_Purity; }
+
+        public float Magicka() { return FromItems_Magicka + FromForm_Magicka + FromEffects_Magicka; }
+        public float Succour() { return FromItems_Succour + FromForm_Succour + FromEffects_Succour; }
+        public float Luck() { return FromItems_Luck + FromForm_Luck + FromEffects_Luck; }
+        public float Chaos_Order() { return FromItems_Chaos_Order + FromForm_Chaos_Order + FromEffects_Chaos_Order; }
 
         #endregion
     }

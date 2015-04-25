@@ -517,8 +517,6 @@ namespace tfgame.Procedures
             output.FromItems_EvasionNegationPercent = wornItems.Sum(x => x.Item.EvasionNegationPercent + x.Item.EvasionNegationPercent * ((x.dbItem.Level - 1) * PvPStatics.Item_LevelBonusModifier));
 
 
-          //  output.FromItems_SpellResistancePercent = wornItems.Sum(x => x.Item.SpellResistancePercent + x.Item.SpellResistancePercent * ((x.dbItem.Level - 1) * PvPStatics.Item_LevelBonusModifier));
-
             output.FromItems_MoveActionPointDiscount = wornItems.Sum(x => x.Item.MoveActionPointDiscount + x.Item.MoveActionPointDiscount * ((x.dbItem.Level - 1) * PvPStatics.Item_LevelBonusModifier));
 
             output.FromItems_SpellExtraTFEnergyPercent = wornItems.Sum(x => x.Item.SpellExtraTFEnergyPercent + x.Item.SpellExtraTFEnergyPercent * ((x.dbItem.Level - 1) * PvPStatics.Item_LevelBonusModifier));

@@ -161,8 +161,6 @@ namespace tfgame.ViewModels
 
         }
 
-        #region non-stat perks
-
         public float Discipline() { return FromItems_Discipline + FromForm_Discipline + FromEffects_Discipline; }
         public float Perception() { return FromItems_Perception + FromForm_Perception + FromEffects_Perception; }
         public float Charisma() { return FromItems_Charisma + FromForm_Charisma + FromEffects_Charisma; }
@@ -178,7 +176,6 @@ namespace tfgame.ViewModels
         public float Luck() { return FromItems_Luck + FromForm_Luck + FromEffects_Luck; }
         public float Chaos_Order() { return FromItems_Chaos_Order + FromForm_Chaos_Order + FromEffects_Chaos_Order; }
 
-        #endregion
     }
 
     public class RAMBuffBox

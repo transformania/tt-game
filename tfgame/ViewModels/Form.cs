@@ -39,6 +39,22 @@ namespace tfgame.ViewModels
         public decimal SpellTFEnergyDamageResistance { get; set; }
         public decimal ExtraInventorySpace { get; set; }
 
+
+        public float Discipline { get; set; }
+        public float Perception { get; set; }
+        public float Charisma { get; set; }
+        public float Submission_Dominance { get; set; }
+
+        public float Fortitude { get; set; }
+        public float Agility { get; set; }
+        public float Allure { get; set; }
+        public float Corruption_Purity { get; set; }
+
+        public float Magicka { get; set; }
+        public float Succour { get; set; }
+        public float Luck { get; set; }
+        public float Chaos_Order { get; set; }
+
         public string TFMessage_20_Percent_1st { get; set; }
         public string TFMessage_40_Percent_1st { get; set; }
         public string TFMessage_60_Percent_1st { get; set; }

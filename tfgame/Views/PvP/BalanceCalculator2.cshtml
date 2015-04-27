@@ -8,24 +8,22 @@
 
 <h1>Item balancing calculator</h1>
 
-<p>Use this calculator to try and balance items.  <b>Good items will only have a total bonus amount of 30--too much and it is likely overpowered and too low and it is likely underpowered.  You can enter negative numbers to impose penalties on that effect instead.</b>  NOTE:  This is very much a work in progress and the exact balancing will change.</p>
+<p>Use this calculator to try and balance items.  <b>Good items will only have a total bonus amount of 30--too much and it is likely overpowered and too low and it is likely underpowered.  You can enter negative numbers to impose penalties on that effect instead UP TO A MAXIMUM OF -3.</b></p>
 
-<p style="color: red;">Items and Animals should not have more than 4 different effects on them.  Animate forms should not have more than 6 different effects on them.</p>
-
-<p>(Amt):  Means a direct, static amount.  Ex:  30 maxiumum willpower increase adds 30 extra willpower points.</p>
+@*<p>(Amt):  Means a direct, static amount.  Ex:  30 maxiumum willpower increase adds 30 extra willpower points.</p>
 
 <p>(%):  Means a percentage modifier.  Ex:  a 10% bonus on extra willpower damage per spell attack means 7 damage becomes 7*1.1 = 7.7 damage.</p>
 
 <p>Fields that have a Negative Modifier receive fewer points when the stat is put into the negative.</p>
 
-<p>Fields that have a Minimum Cap will not give any additional points beyond a certain value.</p>
+<p>Fields that have a Minimum Cap will not give any additional points beyond a certain value.</p>*@
 
 <p>What type of spell is this?</p>
 <select id="mobilityType">
     <option value="full">Animate Form</option>
     <option value="item">Item</option>
     <option value="pet">Animal/Pet</option>
-    <option value="curse">Curse</option>
+    @*<option value="curse">Curse</option>*@
 </select>
 
 <p id="curseDurationWrapper" style="display: none;">
@@ -34,7 +32,7 @@
 </p>
 
 
-<h2>Net balance:  <span id="total"></span>     Target:  <span id="desired"></span>  Total points used (400 max allowed):  <span id="absolute_total"></span></h2>
+<h2>Net balance:  <span id="total"></span>     Target:  <span id="desired"></span>  Total points used (3/13/23 max):  <span id="absolute_total"></span></h2>
 
 <p>
     <button type="button" onclick="Clear()">Clear</button>
@@ -489,10 +487,10 @@
                 $("#desired").html("0");
                 $("#curseDurationWrapper").hide();
             } else if (choice == "item") {
-                $("#desired").html("25");
+                $("#desired").html("10");
                 $("#curseDurationWrapper").hide();
             } else if (choice == "pet") {
-                $("#desired").html("50");
+                $("#desired").html("20");
                 $("#curseDurationWrapper").hide();
             } else if (choice == "curse") {
                 $("#desired").html("-400");
@@ -564,7 +562,10 @@
 
             var calculateCell = $(this).parent().find("td").eq(5);
 
-            if (calculated != "" && calculated != 0) {
+            var rowNum = $(this).parent().parent().children().index($(this).parent());
+           // alert('Row: ' + row);
+
+            if (calculated != "" && calculated != 0 && rowNum < 12) {
 
                 var inputCell = $(this).parent().find("input");
 

@@ -284,6 +284,23 @@ namespace tfgame.CustomHtmlHelpers
             return new MvcHtmlString(output);
         }
 
+        public static MvcHtmlString GetBuffedStat(ItemViewModel item, float amount)
+        {
+            string output = "";
+
+            if (item.dbItem.Level > 1 && item.Item.ItemType != "consumable")
+            {
+                output = "<b>" + amount + "</b><span style='color:  blue;'>  <b>(" + (((item.dbItem.Level - 1) * (float)PvPStatics.Item_LevelBonusModifier * amount) + amount) + ")</b></span>";
+            }
+            else
+            {
+                output = "<b>" + amount + "</b>";
+            }
+
+
+            return new MvcHtmlString(output);
+        }
+
         public static MvcHtmlString GetImageURL(PlayerFormViewModel player, bool thumb = false)
         {
 

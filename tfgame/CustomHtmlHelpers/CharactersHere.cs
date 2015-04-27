@@ -624,6 +624,41 @@ namespace tfgame.CustomHtmlHelpers
             return new MvcHtmlString(output);
         }
 
+        public static MvcHtmlString PrintStatDescriptionPopup(string statName)
+        {
+            string output = statName + " <span class='statPopupBubble' onclick='alert(\"";
+
+            if (statName == "Discipline")
+            {
+               output += "Discipline affects the strength of your mental defenses; resistance to willpower attacks and ability to recover lost willpower. Improving your defense against willpower attacks reduces the power of your own willpower attacks by a small amount.";
+            }
+
+            else if (statName == "Perception")
+            {
+                output += "Perception affects the accuracy of your spell-casting and your ability to detect hidden things. The price that you pay for taking the time to observe and analyze your surroundings is slower movement speed and a reduction to the amount of mana you glean from meditation.";
+            }
+
+            else if (statName == "Charisma")
+            {
+                output += "Charisma affects the strength of your willpower and transformation attacks; it represents your ability to influence people and bend them to your design. However, the desire to persuade others leaves you vulnerable to their desires in turn, reducing your willpower defenses slightly.";
+            }
+
+            else if (statName == "Submission_Dominance")
+            {
+                output += "Submission/Dominance reflects the extent to which you desire to control others, as opposed to wanting others to control you. The more dominant your personality, the more persuasive you are; yet the growth of you ego impedes your ability to tap into ambient magical energy to replenish your mana.";
+            }
+
+            else
+            {
+
+                output += "Stat not defined yet.";
+            }
+
+
+            output += "\");'>[?]</span>";
+            return new MvcHtmlString(output);
+        }
+
         //public static MvcHtmlString PrintCovenantColorCode(LocationInfo info)
         //{
         //    string output = "red";

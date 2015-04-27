@@ -1,5 +1,5 @@
 ﻿@model tfgame.ViewModels.BuffBox
-
+@using tfgame.CustomHtmlHelpers
 
 
 <table id="bufftable">
@@ -287,11 +287,14 @@
         }
 
 
+
+
+
         @{
             if (Model.Discipline() != 0.0F)
             {
                 <tr>
-                    <td>Discipline:</td>
+                    <td>@CharactersHere.PrintStatDescriptionPopup("Discipline")</td>
                     <td>
                         @Model.Discipline()
                     </td>
@@ -305,7 +308,7 @@
             if (Model.Perception() != 0.0F)
             {
                 <tr>
-                    <td>Perception:</td>
+                    <td>@CharactersHere.PrintStatDescriptionPopup("Perception")</td>
                     <td>
                         @Model.Perception()
                     </td>
@@ -318,7 +321,7 @@
             if (Model.Charisma() != 0.0F)
             {
                 <tr>
-                    <td>Charisma:</td>
+                    <td>@CharactersHere.PrintStatDescriptionPopup("Charisma")</td>
                     <td>
                         @Model.Charisma()
                     </td>
@@ -332,7 +335,7 @@
             if (Model.Submission_Dominance() != 0.0F)
             {
                 <tr>
-                    <td>Submission -- Dominance:</td>
+                    <td>@CharactersHere.PrintStatDescriptionPopup("Submission_Dominance")</td>
                     <td>
                         @Model.Submission_Dominance()
                     </td>
@@ -346,7 +349,7 @@
             if (Model.Fortitude() != 0.0F)
             {
                 <tr>
-                    <td>Fortitude:</td>
+                    <td>@CharactersHere.PrintStatDescriptionPopup("Fortitude")</td>
                     <td>
                         @Model.Submission_Dominance()
                     </td>
@@ -359,7 +362,7 @@
             if (Model.Agility() != 0.0F)
             {
                 <tr>
-                    <td>Agility:</td>
+                    <td>@CharactersHere.PrintStatDescriptionPopup("Agility")</td>
                     <td>
                         @Model.Agility()
                     </td>
@@ -372,7 +375,7 @@
             if (Model.Allure() != 0.0F)
             {
                 <tr>
-                    <td>Allure:</td>
+                    <td>@CharactersHere.PrintStatDescriptionPopup("Allure")</td>
                     <td>
                         @Model.Allure()
                     </td>
@@ -385,7 +388,7 @@
             if (Model.Corruption_Purity() != 0.0F)
             {
                 <tr>
-                    <td>Corruption -- Purity:</td>
+                    <td>@CharactersHere.PrintStatDescriptionPopup("Corruption_Purity")</td>
                     <td>
                         @Model.Corruption_Purity()
                     </td>
@@ -399,7 +402,7 @@
             if (Model.Magicka() != 0.0F)
             {
                 <tr>
-                    <td>Magicka:</td>
+                    <td>@CharactersHere.PrintStatDescriptionPopup("Magicka")</td>
                     <td>
                         @Model.Magicka()
                     </td>
@@ -413,7 +416,7 @@
             if (Model.Succour() != 0.0F)
             {
                 <tr>
-                    <td>Succour:</td>
+                    <td>@CharactersHere.PrintStatDescriptionPopup("Succour")</td>
                     <td>
                         @Model.Succour()
                     </td>
@@ -426,7 +429,7 @@
             if (Model.Luck() != 0.0F)
             {
                 <tr>
-                    <td>Luck:</td>
+                    <td>@CharactersHere.PrintStatDescriptionPopup("Luck")</td>
                     <td>
                         @Model.Luck()
                     </td>
@@ -439,7 +442,7 @@
             if (Model.Chaos_Order() != 0.0F)
             {
                 <tr>
-                    <td>Chaos -- Order:</td>
+                    <td>@CharactersHere.PrintStatDescriptionPopup("Chaos_Order")</td>
                     <td>
                         @Model.Chaos_Order()
                     </td>

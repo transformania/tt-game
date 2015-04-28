@@ -52,7 +52,7 @@
             @(" on " + itemlog.ItemLog.Timestamp + " ")
             if (lasttime != DateTime.MinValue)
             {
-                TimeSpan timediff = (lasttime - itemlog.ItemLog.Timestamp);
+                TimeSpan timediff = itemlog.ItemLog.Timestamp - lasttime;
                 if (timediff.TotalMinutes <= 15)
                 {
                     if (timediff.TotalMinutes < 1)

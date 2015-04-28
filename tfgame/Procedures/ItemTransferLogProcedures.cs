@@ -33,7 +33,7 @@ namespace tfgame.Procedures
                                 Timestamp = p.Timestamp
                             }
                         };
-            List<ItemTransferLogViewModel> output = query.OrderByDescending(p => p.ItemLog.Timestamp).ToList();
+            List<ItemTransferLogViewModel> output = query.OrderBy(p => p.ItemLog.Timestamp).ToList();
 
             return output;
         }

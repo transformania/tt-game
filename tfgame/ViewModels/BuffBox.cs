@@ -111,9 +111,9 @@ namespace tfgame.ViewModels
         public float FromEffects_Luck { get; set; }
         public float FromEffects_Chaos_Order { get; set; }
 
-        public decimal HealthBonusPercent() { return FromItems_HealthBonusPercent + FromForm_HealthBonusPercent + FromEffects_HealthBonusPercent; }
+      //  public decimal HealthBonusPercent() { return FromItems_HealthBonusPercent + FromForm_HealthBonusPercent + FromEffects_HealthBonusPercent; }
         public decimal ManaBonusPercent() { return FromItems_ManaBonusPercent + FromForm_ManaBonusPercent + FromEffects_ManaBonusPercent; }
-        public decimal ExtraSkillCriticalPercent() { return FromItems_ExtraSkillCriticalPercent + FromForm_ExtraSkillCriticalPercent + FromEffects_ExtraSkillCriticalPercent ; }
+        public decimal ExtraSkillCriticalPercent() { return FromItems_ExtraSkillCriticalPercent + FromForm_ExtraSkillCriticalPercent + FromEffects_ExtraSkillCriticalPercent; }
         public decimal HealthRecoveryPerUpdate() { return FromItems_HealthRecoveryPerUpdate + FromForm_HealthRecoveryPerUpdate + FromEffects_HealthRecoveryPerUpdate; }
         public decimal ManaRecoveryPerUpdate() { return FromItems_ManaRecoveryPerUpdate + FromForm_ManaRecoveryPerUpdate + FromEffects_ManaRecoveryPerUpdate; }
         public decimal SneakPercent() { return FromItems_SneakPercent + FromForm_SneakPercent + FromEffects_SneakPercent; }
@@ -123,7 +123,8 @@ namespace tfgame.ViewModels
         public decimal CleanseExtraHealth() { return FromItems_CleanseExtraHealth + FromForm_CleanseExtraHealth + FromEffects_CleanseExtraHealth; }
 
 
-        public decimal MoveActionPointDiscount() {
+        public decimal MoveActionPointDiscount()
+        {
 
             decimal output = FromItems_MoveActionPointDiscount + FromForm_MoveActionPointDiscount + FromEffects_MoveActionPointDiscount;
 
@@ -149,7 +150,8 @@ namespace tfgame.ViewModels
         public int EnchantmentBoost;
 
         // there is a special consideration for extra inventory space so -1.2 from an item doesn't get rounded down to -2 later on
-        public decimal ExtraInventorySpace() {
+        public decimal ExtraInventorySpace()
+        {
             decimal output = FromItems_ExtraInventorySpace + FromForm_ExtraInventorySpace + FromEffects_ExtraInventorySpace;
 
             // if the output from items is less than 0, round up
@@ -175,6 +177,15 @@ namespace tfgame.ViewModels
         public float Succour() { return FromItems_Succour + FromForm_Succour + FromEffects_Succour; }
         public float Luck() { return FromItems_Luck + FromForm_Luck + FromEffects_Luck; }
         public float Chaos_Order() { return FromItems_Chaos_Order + FromForm_Chaos_Order + FromEffects_Chaos_Order; }
+
+        public decimal HealthBonusPercent()
+        {
+            return Convert.ToDecimal(
+            1.0F * (FromItems_Discipline + FromForm_Discipline + FromEffects_Discipline) +
+             -1.0F * (FromItems_Allure + FromForm_Allure + FromEffects_Allure)
+             );
+        }
+
 
     }
 

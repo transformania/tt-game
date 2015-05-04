@@ -257,7 +257,7 @@
                 <div class="containerSmall" id="unequippedItems" ng-show="newItems.items.length > 0">
                     <h3>New items from fight:</h3>
                     <ul>
-                        <li ng-repeat="item in newItems.items">{{item.type}} {{item.getVictimName()}}</li>
+                        <li ng-repeat="item in newItems.items">{{item.getModifier()}} {{item.type}} {{item.getVictimName()}}</li>
                     </ul>
                 </div>
             </div>
@@ -298,14 +298,14 @@
                 <div class="containerSmall" id="unequippedItems" ng-show="newItems.items.length > 0">
                     <h3>New items from fight:</h3>
                     <ul>
-                        <li ng-repeat="item in newItems.items">{{item.type}} {{item.getVictimName()}}</li>
+                        <li ng-repeat="item in newItems.items">{{item.getModifier()}} {{item.type}} {{item.getVictimName()}}</li>
                     </ul>
                 </div>
 
                 <div class="containerSmall" id="unequippedItems" ng-show="unequippedItems.items.length > 0">
                     <h3>Unequipped items:</h3>
                     <ul>
-                        <li ng-repeat="item in unequippedItems.items">{{item.type}} {{item.getVictimName()}}</li>
+                        <li ng-repeat="item in unequippedItems.items">{{item.getModifier()}} {{item.type}} {{item.getVictimName()}}</li>
                     </ul>
                 </div>
 
@@ -369,7 +369,7 @@
                     <h3>Your inventory:</h3>
                     <ul>
                         <li ng-repeat="item in unequippedItems.items">
-                            {{item.type}} {{item.getVictimName()}}
+                            {{item.getModifier()}} {{item.type}}  {{item.getVictimName()}}
                             <button class="recruit btn btn-danger btn-xs" ng-show="sellItem_btn" ng-click="sellItem(item)">Sell for {{item.getSellPrice()}} $</button>
                         </li>
                     </ul>
@@ -398,7 +398,7 @@
                     <ul>
                         <li ng-repeat="item in unequippedItems.items">
                             <span ng-show="item.id == currentlySelectedItem.id" style="background: red; color: yellow;"> >>> </span>
-                            {{item.type}} {{item.getVictimName()}}
+                            {{item.getModifier()}} {{item.type}} {{item.getVictimName()}}
                             <span ng-show="item.id == currentlySelectedItem.id" style="background: red; color: yellow;"> <<< </span>
                             <button ng-click="equipSelectedItem(item)" ng-show="item.id != currentlySelectedItem.id" class="recruit btn btn-primary btn-xs">Select</button>
                         </li>
@@ -407,7 +407,7 @@
 
                     <!-- item.getVictimName doens't work here! -->
                     <div ng-show="unequippedItems.items.length > 0">
-                        <span style="margin-top: 10px; margin-bottom: 10px;">Currently assigning {{currentlySelectedItem.type}} {{item.getVictimName()}}</span>
+                        <span style="margin-top: 10px; margin-bottom: 10px;">Currently assigning {{item.getModifier()}} {{currentlySelectedItem.type}} {{item.getVictimName()}}</span>
                     </div>
                     <!-- item.getVictimName doens't work here! -->
                 </div>

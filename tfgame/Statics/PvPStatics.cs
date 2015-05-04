@@ -1078,7 +1078,7 @@ namespace tfgame.Statics
 
            }, new Location {
                 dbName = "gym_aerobics",
-                Name = "Sweater Girls Gym (Aeorobics Room)",
+                Name = "Sweater Girls Gym (Aerobics Room)",
                 Region = "gym",
                 X = -6,
                 Y = 1,

@@ -31,29 +31,41 @@
 <h1>Item transfer log for @item.Item.FriendlyName</h1>
 <ul>
 @{
+    DateTime lasttime = new DateTime();
     foreach(ItemTransferLogViewModel itemlog in ViewBag.transferlog)
     {
         <li>
             @{
-            string message = "";
             if (itemlog.OwnerName == "-1")
             {
-                message = "Dropped";
-                @message;
+                @("Dropped")
             }
             else
             {
-                message = "Transferred to ";
-                @message
+                @("Transferred to ")
                 @Html.ActionLink(itemlog.OwnerName, "LookAtPlayer", "PvP", new { id = itemlog.ItemLog.OwnerId }, null)
             }
-            message = " ";
             if (itemlog.OwnerIP != "-1")
             {
-                message += "(" + itemlog.OwnerIP + ") ";
+                @("(" + itemlog.OwnerIP + ") ")
             }
-            message += "on " + itemlog.ItemLog.Timestamp;
-            @message;
+            @(" on " + itemlog.ItemLog.Timestamp + " ")
+            if (lasttime != DateTime.MinValue)
+            {
+                TimeSpan timediff = itemlog.ItemLog.Timestamp - lasttime;
+                if (timediff.TotalMinutes <= 15)
+                {
+                    if (timediff.TotalMinutes < 1)
+                    {
+                        <b>(@Math.Round(timediff.TotalSeconds,2) second(s) difference from above)</b>
+                    }
+                    else
+                    {
+                        <b>(@Math.Round(timediff.TotalMinutes,2) minutes(s) difference from above)</b>
+                    }
+                }
+            }
+            lasttime = itemlog.ItemLog.Timestamp;
             }
         </li>
     }

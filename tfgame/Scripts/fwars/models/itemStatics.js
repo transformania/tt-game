@@ -5,6 +5,7 @@ var itemStatsMap = {};
 itemStatsMap['Cotton Panties'] = {
     'name': 'Cotton Panties',
     'graphic': 'cotton_panties.jpg',
+    'targetGender': 'female',
     'bonusHP': 1,
     'value': 10,
     'strengthAttack': 0,
@@ -19,9 +20,28 @@ itemStatsMap['Cotton Panties'] = {
     'Description': 'A pair of common pink panties.  Nothing too special or sexy.',
 };
 
+itemStatsMap['Baggy Blue Jeans'] = {
+    'name': 'Baggy Blue Jeans',
+    'graphic': 'default.jpg',
+    'targetGender': 'male',
+    'bonusHP': 1,
+    'value': 18,
+    'strengthAttack': 0,
+    'strengthDefense': 0,
+    'seductionAttack': 0,
+    'seductionDefense': 0,
+    'energyNeededToTF': 20,
+    'spellTrainingCost': 15,
+    'spellLevelRequiredToLearn': 0,
+    'isSpell': true,
+    'isPurchaseableItem': true,
+    'Description': 'A pair of baggy blue jeans, tall enough to slide along the ground a bit.',
+};
+
 itemStatsMap['Latex Catsuit'] = {
     'name': 'Latex Catsuit',
     'graphic': 'cotton_panties.jpg',
+    'targetGender': 'female',
     'bonusHP': 2,
     'value': 15,
     'strengthAttack': 0,
@@ -39,6 +59,7 @@ itemStatsMap['Latex Catsuit'] = {
 itemStatsMap['Comfy Sports Bra'] = {
     'name': 'Comfy Sports Bra',
     'graphic': 'cotton_panties.jpg',
+    'targetGender': 'female',
     'bonusHP': 4,
     'value': 25,
     'strengthAttack': 0,
@@ -56,6 +77,7 @@ itemStatsMap['Comfy Sports Bra'] = {
 itemStatsMap['Lacy Corset'] = {
     'name': 'Lacy Corset',
     'graphic': 'cotton_panties.jpg',
+    'targetGender': 'female',
     'bonusHP': -2,
     'value': 40,
     'strengthAttack': 0,
@@ -73,6 +95,7 @@ itemStatsMap['Lacy Corset'] = {
 itemStatsMap['Ankh Necklace'] = {
     'name': 'Ankh Necklace',
     'graphic': 'cotton_panties.jpg',
+    'targetGender': 'female',
     'bonusHP': 3,
     'value': 25,
     'strengthAttack': 0,
@@ -91,6 +114,7 @@ itemStatsMap['Ankh Necklace'] = {
 itemStatsMap['Absorb'] = {
     'name': 'Absorb',
     'graphic': 'cotton_panties.jpg',
+    'targetGender': 'female',
     'bonusHP': 0,
     'value': 99999,
     'energyNeededToTF': 25,

@@ -217,14 +217,13 @@ namespace tfgame.Procedures.BossProcedures
             // if Donna is weak enough start having her mega-attack anyone in the room
             if (donna.Health < donna.MaxHealth / 5)
             {
-                List<PlayerFormViewModel> PlayersHere = PlayerProcedures.GetPlayerFormViewModelsAtLocation(donna.dbLocationName).ToList();
-                List<PlayerFormViewModel> targets = new List<PlayerFormViewModel>();
+                List<Player> PlayersHere = PlayerProcedures.GetPlayersAtLocation(donna.dbLocationName).ToList();
 
-                foreach (PlayerFormViewModel p in PlayersHere)
+                foreach (Player p in PlayersHere)
                 {
-                    if (p.Player.MembershipId > 0 && p.Player.Level > 3 && p.Player.Mobility == "full" && !PlayerProcedures.PlayerIsOffline(p.Player) && p.Player.Id != personAttacking.Id)
+                    if (p.MembershipId > 0 && p.Level > 3 && p.Mobility == "full" && !PlayerProcedures.PlayerIsOffline(p) && p.Id != personAttacking.Id)
                     {
-                        AttackProcedures.Attack(donna, personAttacking, ChooseSpell(PvPStatics.LastGameTurn));
+                        AttackProcedures.Attack(donna, p, ChooseSpell(PvPStatics.LastGameTurn));
                     }
                 }
 
@@ -265,7 +264,7 @@ namespace tfgame.Procedures.BossProcedures
             }
             else if (mod >= 13 && mod < 15)
             {
-                return Spell4;
+                return Spell5;
             }
             else
             {

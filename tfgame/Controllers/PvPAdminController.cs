@@ -184,47 +184,6 @@ namespace tfgame.Controllers
             return View();
         }
 
-        public ActionResult UpdateWorld()
-        {
-
-            IPlayerRepository playerRepo = new EFPlayerRepository();
-            List<Player> players = playerRepo.Players.ToList();
-
-            foreach (Player player in players)
-            {
-                player.ActionPoints += 3;
-
-                if (player.ActionPoints > PvPStatics.MaximumStoreableActionPoints)
-                {
-                    player.ActionPoints = PvPStatics.MaximumStoreableActionPoints;
-                }
-                BuffBox buffs = ItemProcedures.GetPlayerBuffs(player);
-                player.Health += buffs.HealthRecoveryPerUpdate();
-                player.Mana += buffs.ManaRecoveryPerUpdate();
-
-                if (player.Health > player.MaxHealth)
-                {
-                    player.Health = player.MaxHealth;
-                }
-                if (player.Mana > player.MaxMana)
-                {
-                    player.Mana = player.MaxMana;
-                }
-
-            }
-
-            foreach (Player player in players)
-            {
-                playerRepo.SavePlayer(player);
-            }
-
-            string output = "done";
-
-            return View("~/Views/PvPAdmin/UpdateWorld.cshtml", output); ;
-            // return View("UpdateWorld.cshtml","PvPAdmin", output);
-
-        }
-
         public ActionResult SpawnAI(int number, int offset)
         {
             AIProcedures.SpawnAIPsychopaths(number, offset);

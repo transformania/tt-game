@@ -127,7 +127,7 @@
             }
         </div>
         
-        </p>
+      
 
 
         <h1>Would you like to contribute to the Game?</h1>
@@ -168,6 +168,8 @@
          }
         }
 
+    
+
         @using (Html.BeginForm("SendContribution", "PvP", FormMethod.Post))
         {
             @Html.HiddenFor(m => m.Id);
@@ -203,17 +205,17 @@
 
                 <div class="form__panel">
                     @Html.LabelFor(m => m.Skill_ManaCost)
-                    @Html.TextBoxFor(m => m.Skill_ManaCost)
+                    @Html.TextBoxFor(m => m.Skill_ManaCost, new { @readonly = "readonly" })
                 </div>
 
                 <div class="form__panel">
                     @Html.LabelFor(m => m.Skill_TFPointsAmount)
-                    @Html.TextBoxFor(m => m.Skill_TFPointsAmount)
+                    @Html.TextBoxFor(m => m.Skill_TFPointsAmount, new { @readonly = "readonly" })
                 </div>
 
                 <div class="form__panel">
                     @Html.LabelFor(m => m.Skill_HealthDamageAmount)
-                    @Html.TextBoxFor(m => m.Skill_HealthDamageAmount)
+                    @Html.TextBoxFor(m => m.Skill_HealthDamageAmount, new { @readonly = "readonly" })
                 </div>
 
                 <div class="form__panel">
@@ -262,7 +264,7 @@
                 </div>
                 <div class="form__panel">
                     @Html.LabelFor(m => m.Form_TFEnergyRequired)
-                    @Html.TextBoxFor(m => m.Form_TFEnergyRequired)
+                    @Html.TextBoxFor(m => m.Form_TFEnergyRequired, new { @readonly = "readonly" })
                 </div>
                 <div class="form__panel">
                     @Html.LabelFor(m => m.Form_Gender)
@@ -294,7 +296,7 @@
                 </div>
                 <div class="form__panel">
                     @Html.LabelFor(m => m.Form_Bonuses)
-                    @Html.TextAreaFor(m => m.Form_Bonuses)
+                    @Html.TextAreaFor(m => m.Form_Bonuses, new { @readonly = "readonly" })
                 </div>
 
                 <div class="form__panel externalMessage">
@@ -516,7 +518,7 @@
                 </div>
                 <div class="form__panel">
                     @Html.LabelFor(m => m.Item_Bonuses)
-                    @Html.TextAreaFor(m => m.Item_Bonuses)
+                    @Html.TextAreaFor(m => m.Item_Bonuses, new { @readonly = "readonly" })
                 </div>
 
             </div>
@@ -536,7 +538,7 @@
 
             <div class="form__panel group" style="background-color: #82ffe0; ">
 
-                <div class="form__panel externalMessage">The current balance score is:  <b>@ViewBag.BalanceScore</b>.  Animate forms should have a balance score close to 0.  Items should have a balance score close to 25, and pets should have a balance score close to 50.</div>
+                <div class="form__panel externalMessage">The current balance score is:  <b>@ViewBag.BalanceScore</b>.  Animate forms should have a balance score of 0.  Items should have a balance scoreof 10 and pets should have a balance score close to 20.</div>
 
                 <p>@Html.ActionLink("Use calculator (save contribution before doing this!)", "ContributeBalanceCalculator2", "PvP", new { id = Model.Id }, null)<br /></p>
             </div>
@@ -641,6 +643,9 @@
                 @Html.ActionLink("Check if statics exist", "StaticsExist", "Contribution", new { id = Model.Id }, null)<br />
             }
         }
+
+    <input type="button" id="disableReadonly" value="Click to enable readonly fields (this is only for updating older contributions and admins/proofreaders.  Do not use this for any new forms except with permission.)" />
+
     </div>
     <script>
 
@@ -686,6 +691,15 @@
                 }
 
             });
+
+            $("#disableReadonly").click(function() {
+                alert("This functionality should only be done by admins or proofreaders and is meant for the sake of updating older contributions.");
+                $("[readonly='readonly']").each(function() {
+                    $(this).removeAttr("readonly");
+                });
+            });
+
+
 
             //$("#closeBonusWindow").click(function () {
             //    $("#bonusesList").hide();
@@ -776,4 +790,20 @@
                 border: 2px solid darkviolet;
                 border-radius: 5px;
             }
+
+        input:-moz-read-only { /* For Firefox */
+        background-color: lightgray;
+    }
+
+    input:read-only {
+        background-color: lightgray;
+    } 
+
+    textarea:-moz-read-only { /* For Firefox */
+        background-color: lightgray;
+    }
+
+    textarea:read-only {
+        background-color: lightgray;
+    } 
     </style>

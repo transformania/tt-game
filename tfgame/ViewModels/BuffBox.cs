@@ -126,7 +126,10 @@ namespace tfgame.ViewModels
         {
             return Convert.ToDecimal(
               0.1F * Discipline() +
-              -0.1F * Allure()
+              -0.1F * Allure() +
+                (float)FromForm_HealthBonusPercent +
+               (float)FromItems_HealthBonusPercent +
+               (float)FromEffects_HealthBonusPercent
              );
         }
 
@@ -207,7 +210,10 @@ namespace tfgame.ViewModels
         {
             return Convert.ToDecimal(
                -.005F * Perception() +
-               .008F * Agility()
+               .008F * Agility() +
+               (float)FromForm_MoveActionPointDiscount +
+               (float)FromItems_MoveActionPointDiscount +
+               (float)FromEffects_MoveActionPointDiscount
             );
         }
 

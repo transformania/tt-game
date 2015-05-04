@@ -174,410 +174,226 @@ namespace tfgame.ViewModels
         {
             BuffStats = new List<BuffStat>();
             BuffStat addme = new BuffStat();
-            if (input.HealthBonusPercent != 0)
-            {
-                addme = new BuffStat {
-                    Amount = input.HealthBonusPercent,
-                    Value = Statics.BalanceStatics.HealthBonusPercent__Value,
-                    NegativeModifier = Statics.BalanceStatics.HealthBonusPercent__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.HealthBonusPercent__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.ManaBonusPercent != 0)
+
+            if (input.Discipline != 0)
             {
                 addme = new BuffStat
                 {
-                    Amount = input.ManaBonusPercent,
-                    Value = Statics.BalanceStatics.ManaBonusPercent__Value,
-                    NegativeModifier = Statics.BalanceStatics.ManaBonusPercent__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.ManaBonusPercent__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.ExtraSkillCriticalPercent != 0)
-            {
-                addme = new BuffStat
-                {
-                    Amount = input.ExtraSkillCriticalPercent,
-                    Value = Statics.BalanceStatics.ExtraSkillCriticalPercent__Value,
-                    NegativeModifier = Statics.BalanceStatics.ExtraSkillCriticalPercent__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.ExtraSkillCriticalPercent__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.HealthRecoveryPerUpdate != 0)
-            {
-                addme = new BuffStat
-                {
-                    Amount = input.HealthRecoveryPerUpdate,
-                    Value = Statics.BalanceStatics.HealthRecoveryPerUpdate__Value,
-                    NegativeModifier = Statics.BalanceStatics.HealthRecoveryPerUpdate__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.HealthRecoveryPerUpdate__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.ManaRecoveryPerUpdate != 0)
-            {
-                addme = new BuffStat
-                {
-                    Amount = input.ManaRecoveryPerUpdate,
-                    Value = Statics.BalanceStatics.ManaRecoveryPerUpdate__Value,
-                    NegativeModifier = Statics.BalanceStatics.ManaRecoveryPerUpdate__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.ManaRecoveryPerUpdate__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.SneakPercent != 0)
-            {
-                addme = new BuffStat
-                {
-                    Amount = input.SneakPercent,
-                    Value = Statics.BalanceStatics.SneakPercent__Value,
-                    NegativeModifier = Statics.BalanceStatics.SneakPercent__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.SneakPercent__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.EvasionPercent != 0)
-            {
-                addme = new BuffStat
-                {
-                    Amount = input.EvasionPercent,
-                    Value = Statics.BalanceStatics.EvasionPercent__Value,
-                    NegativeModifier = Statics.BalanceStatics.EvasionPercent__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.EvasionPercent__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.EvasionNegationPercent != 0)
-            {
-                addme = new BuffStat
-                {
-                    Amount = input.EvasionNegationPercent,
-                    Value = Statics.BalanceStatics.EvasionNegationPercent__Value,
-                    NegativeModifier = Statics.BalanceStatics.EvasionNegationPercent__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.EvasionNegationPercent__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.MeditationExtraMana != 0)
-            {
-                addme = new BuffStat
-                {
-                    Amount = input.MeditationExtraMana,
-                    Value = Statics.BalanceStatics.MeditationExtraMana__Value,
-                    NegativeModifier = Statics.BalanceStatics.MeditationExtraMana__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.MeditationExtraMana__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.CleanseExtraHealth != 0)
-            {
-                addme = new BuffStat
-                {
-                    Amount = input.CleanseExtraHealth,
-                    Value = Statics.BalanceStatics.CleanseExtraHealth__Value,
-                    NegativeModifier = Statics.BalanceStatics.CleanseExtraHealth__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.CleanseExtraHealth__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.MoveActionPointDiscount != 0)
-            {
-                addme = new BuffStat
-                {
-                    Amount = input.MoveActionPointDiscount,
-                    Value = Statics.BalanceStatics.MoveActionPointDiscount__Value,
-                    NegativeModifier = Statics.BalanceStatics.MoveActionPointDiscount__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.MoveActionPointDiscount__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.SpellExtraTFEnergyPercent != 0)
-            {
-                addme = new BuffStat
-                {
-                    Amount = input.SpellExtraTFEnergyPercent,
-                    Value = Statics.BalanceStatics.SpellExtraTFEnergyPercent__Value,
-                    NegativeModifier = Statics.BalanceStatics.SpellExtraTFEnergyPercent__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.SpellExtraTFEnergyPercent__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.SpellExtraHealthDamagePercent != 0)
-            {
-                addme = new BuffStat
-                {
-                    Amount = input.SpellExtraHealthDamagePercent,
-                    Value = Statics.BalanceStatics.SpellExtraHealthDamagePercent__Value,
-                    NegativeModifier = Statics.BalanceStatics.SpellExtraHealthDamagePercent__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.SpellExtraHealthDamagePercent__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.CleanseExtraTFEnergyRemovalPercent != 0)
-            {
-                addme = new BuffStat
-                {
-                    Amount = input.CleanseExtraTFEnergyRemovalPercent,
-                    Value = Statics.BalanceStatics.CleanseExtraTFEnergyRemovalPercent__Value,
-                    NegativeModifier = Statics.BalanceStatics.CleanseExtraTFEnergyRemovalPercent__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.CleanseExtraTFEnergyRemovalPercent__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.SpellMisfireChanceReduction != 0)
-            {
-                addme = new BuffStat
-                {
-                    Amount = input.SpellMisfireChanceReduction,
-                    Value = Statics.BalanceStatics.SpellMisfireChanceReduction__Value,
-                    NegativeModifier = Statics.BalanceStatics.SpellMisfireChanceReduction__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.SpellMisfireChanceReduction__NegativeCap,
+                    Amount = Convert.ToDecimal(input.Discipline),
+                    Value = 1,
+                    NegativeModifier = 0,
+                    NegativeCap = -99999,
                 };
                 this.BuffStats.Add(addme);
             }
 
-            if (input.SpellHealthDamageResistance != 0)
+            if (input.Perception != 0)
             {
                 addme = new BuffStat
                 {
-                    Amount = input.SpellHealthDamageResistance,
-                    Value = Statics.BalanceStatics.SpellHealthDamageResistance__Value,
-                    NegativeModifier = Statics.BalanceStatics.SpellHealthDamageResistance__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.SpellHealthDamageResistance__NegativeCap,
+                    Amount = Convert.ToDecimal(input.Perception),
+                    Value = 1,
+                    NegativeModifier = 0,
+                    NegativeCap = -99999,
                 };
                 this.BuffStats.Add(addme);
             }
 
-            if (input.SpellTFEnergyDamageResistance != 0)
+            if (input.Charisma != 0)
             {
                 addme = new BuffStat
                 {
-                    Amount = input.SpellTFEnergyDamageResistance,
-                    Value = Statics.BalanceStatics.SpellTFEnergyDamageResistance__Value,
-                    NegativeModifier = Statics.BalanceStatics.SpellTFEnergyDamageResistance__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.SpellTFEnergyDamageResistance__NegativeCap,
+                    Amount = Convert.ToDecimal(input.Charisma),
+                    Value = 1,
+                    NegativeModifier = 0,
+                    NegativeCap = -99999,
                 };
                 this.BuffStats.Add(addme);
             }
 
-            if (input.ExtraInventorySpace != 0)
+            if (input.Fortitude != 0)
             {
                 addme = new BuffStat
                 {
-                    Amount = input.ExtraInventorySpace,
-                    Value = Statics.BalanceStatics.ExtraInventorySpace__Value,
-                    NegativeModifier = Statics.BalanceStatics.ExtraInventorySpace__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.ExtraInventorySpace__NegativeCap,
+                    Amount = Convert.ToDecimal(input.Fortitude),
+                    Value = 1,
+                    NegativeModifier = 0,
+                    NegativeCap = -99999,
                 };
                 this.BuffStats.Add(addme);
             }
+
+            if (input.Agility != 0)
+            {
+                addme = new BuffStat
+                {
+                    Amount = Convert.ToDecimal(input.Agility),
+                    Value = 1,
+                    NegativeModifier = 0,
+                    NegativeCap = -99999,
+                };
+                this.BuffStats.Add(addme);
+            }
+
+            if (input.Allure != 0)
+            {
+                addme = new BuffStat
+                {
+                    Amount = Convert.ToDecimal(input.Allure),
+                    Value = 1,
+                    NegativeModifier = 0,
+                    NegativeCap = -99999,
+                };
+                this.BuffStats.Add(addme);
+            }
+
+            if (input.Magicka != 0)
+            {
+                addme = new BuffStat
+                {
+                    Amount = Convert.ToDecimal(input.Magicka),
+                    Value = 1,
+                    NegativeModifier = 0,
+                    NegativeCap = -99999,
+                };
+                this.BuffStats.Add(addme);
+            }
+
+            if (input.Succour != 0)
+            {
+                addme = new BuffStat
+                {
+                    Amount = Convert.ToDecimal(input.Succour),
+                    Value = 1,
+                    NegativeModifier = 0,
+                    NegativeCap = -99999,
+                };
+                this.BuffStats.Add(addme);
+            }
+
+            if (input.Luck != 0)
+            {
+                addme = new BuffStat
+                {
+                    Amount = Convert.ToDecimal(input.Luck),
+                    Value = 1,
+                    NegativeModifier = 0,
+                    NegativeCap = -99999,
+                };
+                this.BuffStats.Add(addme);
+            }
+
         }
 
         public void LoadBalanceBox(DbStaticItem input)
         {
             BuffStats = new List<BuffStat>();
             BuffStat addme = new BuffStat();
-            if (input.HealthBonusPercent != 0)
+
+            if (input.Discipline != 0)
             {
                 addme = new BuffStat
                 {
-                    Amount = input.HealthBonusPercent,
-                    Value = Statics.BalanceStatics.HealthBonusPercent__Value,
-                    NegativeModifier = Statics.BalanceStatics.HealthBonusPercent__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.HealthBonusPercent__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.ManaBonusPercent != 0)
-            {
-                addme = new BuffStat
-                {
-                    Amount = input.ManaBonusPercent,
-                    Value = Statics.BalanceStatics.ManaBonusPercent__Value,
-                    NegativeModifier = Statics.BalanceStatics.ManaBonusPercent__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.ManaBonusPercent__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.ExtraSkillCriticalPercent != 0)
-            {
-                addme = new BuffStat
-                {
-                    Amount = input.ExtraSkillCriticalPercent,
-                    Value = Statics.BalanceStatics.ExtraSkillCriticalPercent__Value,
-                    NegativeModifier = Statics.BalanceStatics.ExtraSkillCriticalPercent__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.ExtraSkillCriticalPercent__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.HealthRecoveryPerUpdate != 0)
-            {
-                addme = new BuffStat
-                {
-                    Amount = input.HealthRecoveryPerUpdate,
-                    Value = Statics.BalanceStatics.HealthRecoveryPerUpdate__Value,
-                    NegativeModifier = Statics.BalanceStatics.HealthRecoveryPerUpdate__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.HealthRecoveryPerUpdate__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.ManaRecoveryPerUpdate != 0)
-            {
-                addme = new BuffStat
-                {
-                    Amount = input.ManaRecoveryPerUpdate,
-                    Value = Statics.BalanceStatics.ManaRecoveryPerUpdate__Value,
-                    NegativeModifier = Statics.BalanceStatics.ManaRecoveryPerUpdate__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.ManaRecoveryPerUpdate__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.SneakPercent != 0)
-            {
-                addme = new BuffStat
-                {
-                    Amount = input.SneakPercent,
-                    Value = Statics.BalanceStatics.SneakPercent__Value,
-                    NegativeModifier = Statics.BalanceStatics.SneakPercent__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.SneakPercent__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.EvasionPercent != 0)
-            {
-                addme = new BuffStat
-                {
-                    Amount = input.EvasionPercent,
-                    Value = Statics.BalanceStatics.EvasionPercent__Value,
-                    NegativeModifier = Statics.BalanceStatics.EvasionPercent__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.EvasionPercent__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.EvasionNegationPercent != 0)
-            {
-                addme = new BuffStat
-                {
-                    Amount = input.EvasionNegationPercent,
-                    Value = Statics.BalanceStatics.EvasionNegationPercent__Value,
-                    NegativeModifier = Statics.BalanceStatics.EvasionNegationPercent__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.EvasionNegationPercent__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.MeditationExtraMana != 0)
-            {
-                addme = new BuffStat
-                {
-                    Amount = input.MeditationExtraMana,
-                    Value = Statics.BalanceStatics.MeditationExtraMana__Value,
-                    NegativeModifier = Statics.BalanceStatics.MeditationExtraMana__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.MeditationExtraMana__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.CleanseExtraHealth != 0)
-            {
-                addme = new BuffStat
-                {
-                    Amount = input.CleanseExtraHealth,
-                    Value = Statics.BalanceStatics.CleanseExtraHealth__Value,
-                    NegativeModifier = Statics.BalanceStatics.CleanseExtraHealth__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.CleanseExtraHealth__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.MoveActionPointDiscount != 0)
-            {
-                addme = new BuffStat
-                {
-                    Amount = input.MoveActionPointDiscount,
-                    Value = Statics.BalanceStatics.MoveActionPointDiscount__Value,
-                    NegativeModifier = Statics.BalanceStatics.MoveActionPointDiscount__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.MoveActionPointDiscount__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.SpellExtraTFEnergyPercent != 0)
-            {
-                addme = new BuffStat
-                {
-                    Amount = input.SpellExtraTFEnergyPercent,
-                    Value = Statics.BalanceStatics.SpellExtraTFEnergyPercent__Value,
-                    NegativeModifier = Statics.BalanceStatics.SpellExtraTFEnergyPercent__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.SpellExtraTFEnergyPercent__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.SpellExtraHealthDamagePercent != 0)
-            {
-                addme = new BuffStat
-                {
-                    Amount = input.SpellExtraHealthDamagePercent,
-                    Value = Statics.BalanceStatics.SpellExtraHealthDamagePercent__Value,
-                    NegativeModifier = Statics.BalanceStatics.SpellExtraHealthDamagePercent__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.SpellExtraHealthDamagePercent__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.CleanseExtraTFEnergyRemovalPercent != 0)
-            {
-                addme = new BuffStat
-                {
-                    Amount = input.CleanseExtraTFEnergyRemovalPercent,
-                    Value = Statics.BalanceStatics.CleanseExtraTFEnergyRemovalPercent__Value,
-                    NegativeModifier = Statics.BalanceStatics.CleanseExtraTFEnergyRemovalPercent__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.CleanseExtraTFEnergyRemovalPercent__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.SpellMisfireChanceReduction != 0)
-            {
-                addme = new BuffStat
-                {
-                    Amount = input.SpellMisfireChanceReduction,
-                    Value = Statics.BalanceStatics.SpellMisfireChanceReduction__Value,
-                    NegativeModifier = Statics.BalanceStatics.SpellMisfireChanceReduction__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.SpellMisfireChanceReduction__NegativeCap,
+                    Amount = Convert.ToDecimal(input.Discipline),
+                    Value = 1,
+                    NegativeModifier = 0,
+                    NegativeCap = -99999,
                 };
                 this.BuffStats.Add(addme);
             }
 
-            if (input.SpellHealthDamageResistance != 0)
+            if (input.Perception != 0)
             {
                 addme = new BuffStat
                 {
-                    Amount = input.SpellHealthDamageResistance,
-                    Value = Statics.BalanceStatics.SpellHealthDamageResistance__Value,
-                    NegativeModifier = Statics.BalanceStatics.SpellHealthDamageResistance__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.SpellHealthDamageResistance__NegativeCap,
+                    Amount = Convert.ToDecimal(input.Perception),
+                    Value = 1,
+                    NegativeModifier = 0,
+                    NegativeCap = -99999,
                 };
                 this.BuffStats.Add(addme);
             }
 
-            if (input.SpellTFEnergyDamageResistance != 0)
+            if (input.Charisma != 0)
             {
                 addme = new BuffStat
                 {
-                    Amount = input.SpellTFEnergyDamageResistance,
-                    Value = Statics.BalanceStatics.SpellTFEnergyDamageResistance__Value,
-                    NegativeModifier = Statics.BalanceStatics.SpellTFEnergyDamageResistance__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.SpellTFEnergyDamageResistance__NegativeCap,
+                    Amount = Convert.ToDecimal(input.Charisma),
+                    Value = 1,
+                    NegativeModifier = 0,
+                    NegativeCap = -99999,
                 };
                 this.BuffStats.Add(addme);
             }
 
-            if (input.ExtraInventorySpace != 0)
+            if (input.Fortitude != 0)
             {
                 addme = new BuffStat
                 {
-                    Amount = input.ExtraInventorySpace,
-                    Value = Statics.BalanceStatics.ExtraInventorySpace__Value,
-                    NegativeModifier = Statics.BalanceStatics.ExtraInventorySpace__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.ExtraInventorySpace__NegativeCap,
+                    Amount = Convert.ToDecimal(input.Fortitude),
+                    Value = 1,
+                    NegativeModifier = 0,
+                    NegativeCap = -99999,
+                };
+                this.BuffStats.Add(addme);
+            }
+
+            if (input.Agility != 0)
+            {
+                addme = new BuffStat
+                {
+                    Amount = Convert.ToDecimal(input.Agility),
+                    Value = 1,
+                    NegativeModifier = 0,
+                    NegativeCap = -99999,
+                };
+                this.BuffStats.Add(addme);
+            }
+
+            if (input.Allure != 0)
+            {
+                addme = new BuffStat
+                {
+                    Amount = Convert.ToDecimal(input.Allure),
+                    Value = 1,
+                    NegativeModifier = 0,
+                    NegativeCap = -99999,
+                };
+                this.BuffStats.Add(addme);
+            }
+
+            if (input.Magicka != 0)
+            {
+                addme = new BuffStat
+                {
+                    Amount = Convert.ToDecimal(input.Magicka),
+                    Value = 1,
+                    NegativeModifier = 0,
+                    NegativeCap = -99999,
+                };
+                this.BuffStats.Add(addme);
+            }
+
+            if (input.Succour != 0)
+            {
+                addme = new BuffStat
+                {
+                    Amount = Convert.ToDecimal(input.Succour),
+                    Value = 1,
+                    NegativeModifier = 0,
+                    NegativeCap = -99999,
+                };
+                this.BuffStats.Add(addme);
+            }
+
+            if (input.Luck != 0)
+            {
+                addme = new BuffStat
+                {
+                    Amount = Convert.ToDecimal(input.Luck),
+                    Value = 1,
+                    NegativeModifier = 0,
+                    NegativeCap = -99999,
                 };
                 this.BuffStats.Add(addme);
             }
@@ -587,204 +403,111 @@ namespace tfgame.ViewModels
         {
             BuffStats = new List<BuffStat>();
             BuffStat addme = new BuffStat();
-            if (input.HealthBonusPercent != 0)
+
+            if (input.Discipline != 0)
             {
                 addme = new BuffStat
                 {
-                    Amount = input.HealthBonusPercent,
-                    Value = Statics.BalanceStatics.HealthBonusPercent__Value,
-                    NegativeModifier = Statics.BalanceStatics.HealthBonusPercent__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.HealthBonusPercent__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.ManaBonusPercent != 0)
-            {
-                addme = new BuffStat
-                {
-                    Amount = input.ManaBonusPercent,
-                    Value = Statics.BalanceStatics.ManaBonusPercent__Value,
-                    NegativeModifier = Statics.BalanceStatics.ManaBonusPercent__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.ManaBonusPercent__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.ExtraSkillCriticalPercent != 0)
-            {
-                addme = new BuffStat
-                {
-                    Amount = input.ExtraSkillCriticalPercent,
-                    Value = Statics.BalanceStatics.ExtraSkillCriticalPercent__Value,
-                    NegativeModifier = Statics.BalanceStatics.ExtraSkillCriticalPercent__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.ExtraSkillCriticalPercent__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.HealthRecoveryPerUpdate != 0)
-            {
-                addme = new BuffStat
-                {
-                    Amount = input.HealthRecoveryPerUpdate,
-                    Value = Statics.BalanceStatics.HealthRecoveryPerUpdate__Value,
-                    NegativeModifier = Statics.BalanceStatics.HealthRecoveryPerUpdate__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.HealthRecoveryPerUpdate__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.ManaRecoveryPerUpdate != 0)
-            {
-                addme = new BuffStat
-                {
-                    Amount = input.ManaRecoveryPerUpdate,
-                    Value = Statics.BalanceStatics.ManaRecoveryPerUpdate__Value,
-                    NegativeModifier = Statics.BalanceStatics.ManaRecoveryPerUpdate__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.ManaRecoveryPerUpdate__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.SneakPercent != 0)
-            {
-                addme = new BuffStat
-                {
-                    Amount = input.SneakPercent,
-                    Value = Statics.BalanceStatics.SneakPercent__Value,
-                    NegativeModifier = Statics.BalanceStatics.SneakPercent__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.SneakPercent__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.EvasionPercent != 0)
-            {
-                addme = new BuffStat
-                {
-                    Amount = input.EvasionPercent,
-                    Value = Statics.BalanceStatics.EvasionPercent__Value,
-                    NegativeModifier = Statics.BalanceStatics.EvasionPercent__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.EvasionPercent__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.EvasionNegationPercent != 0)
-            {
-                addme = new BuffStat
-                {
-                    Amount = input.EvasionNegationPercent,
-                    Value = Statics.BalanceStatics.EvasionNegationPercent__Value,
-                    NegativeModifier = Statics.BalanceStatics.EvasionNegationPercent__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.EvasionNegationPercent__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.MeditationExtraMana != 0)
-            {
-                addme = new BuffStat
-                {
-                    Amount = input.MeditationExtraMana,
-                    Value = Statics.BalanceStatics.MeditationExtraMana__Value,
-                    NegativeModifier = Statics.BalanceStatics.MeditationExtraMana__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.MeditationExtraMana__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.CleanseExtraHealth != 0)
-            {
-                addme = new BuffStat
-                {
-                    Amount = input.CleanseExtraHealth,
-                    Value = Statics.BalanceStatics.CleanseExtraHealth__Value,
-                    NegativeModifier = Statics.BalanceStatics.CleanseExtraHealth__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.CleanseExtraHealth__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.MoveActionPointDiscount != 0)
-            {
-                addme = new BuffStat
-                {
-                    Amount = input.MoveActionPointDiscount,
-                    Value = Statics.BalanceStatics.MoveActionPointDiscount__Value,
-                    NegativeModifier = Statics.BalanceStatics.MoveActionPointDiscount__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.MoveActionPointDiscount__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.SpellExtraTFEnergyPercent != 0)
-            {
-                addme = new BuffStat
-                {
-                    Amount = input.SpellExtraTFEnergyPercent,
-                    Value = Statics.BalanceStatics.SpellExtraTFEnergyPercent__Value,
-                    NegativeModifier = Statics.BalanceStatics.SpellExtraTFEnergyPercent__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.SpellExtraTFEnergyPercent__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.SpellExtraHealthDamagePercent != 0)
-            {
-                addme = new BuffStat
-                {
-                    Amount = input.SpellExtraHealthDamagePercent,
-                    Value = Statics.BalanceStatics.SpellExtraHealthDamagePercent__Value,
-                    NegativeModifier = Statics.BalanceStatics.SpellExtraHealthDamagePercent__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.SpellExtraHealthDamagePercent__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.CleanseExtraTFEnergyRemovalPercent != 0)
-            {
-                addme = new BuffStat
-                {
-                    Amount = input.CleanseExtraTFEnergyRemovalPercent,
-                    Value = Statics.BalanceStatics.CleanseExtraTFEnergyRemovalPercent__Value,
-                    NegativeModifier = Statics.BalanceStatics.CleanseExtraTFEnergyRemovalPercent__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.CleanseExtraTFEnergyRemovalPercent__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.SpellMisfireChanceReduction != 0)
-            {
-                addme = new BuffStat
-                {
-                    Amount = input.SpellMisfireChanceReduction,
-                    Value = Statics.BalanceStatics.SpellMisfireChanceReduction__Value,
-                    NegativeModifier = Statics.BalanceStatics.SpellMisfireChanceReduction__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.SpellMisfireChanceReduction__NegativeCap,
+                    Amount = Convert.ToDecimal(input.Discipline),
+                    Value = 1,
+                    NegativeModifier = 0,
+                    NegativeCap = -99999,
                 };
                 this.BuffStats.Add(addme);
             }
 
-            if (input.SpellHealthDamageResistance != 0)
+            if (input.Perception != 0)
             {
                 addme = new BuffStat
                 {
-                    Amount = input.SpellHealthDamageResistance,
-                    Value = Statics.BalanceStatics.SpellHealthDamageResistance__Value,
-                    NegativeModifier = Statics.BalanceStatics.SpellHealthDamageResistance__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.SpellHealthDamageResistance__NegativeCap,
+                    Amount = Convert.ToDecimal(input.Perception),
+                    Value = 1,
+                    NegativeModifier = 0,
+                    NegativeCap = -99999,
                 };
                 this.BuffStats.Add(addme);
             }
 
-            if (input.SpellTFEnergyDamageResistance != 0)
+            if (input.Charisma != 0)
             {
                 addme = new BuffStat
                 {
-                    Amount = input.SpellTFEnergyDamageResistance,
-                    Value = Statics.BalanceStatics.SpellTFEnergyDamageResistance__Value,
-                    NegativeModifier = Statics.BalanceStatics.SpellTFEnergyDamageResistance__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.SpellTFEnergyDamageResistance__NegativeCap,
+                    Amount = Convert.ToDecimal(input.Charisma),
+                    Value = 1,
+                    NegativeModifier = 0,
+                    NegativeCap = -99999,
                 };
                 this.BuffStats.Add(addme);
             }
 
-            if (input.ExtraInventorySpace != 0)
+            if (input.Fortitude != 0)
             {
                 addme = new BuffStat
                 {
-                    Amount = input.ExtraInventorySpace,
-                    Value = Statics.BalanceStatics.ExtraInventorySpace__Value,
-                    NegativeModifier = Statics.BalanceStatics.ExtraInventorySpace__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.ExtraInventorySpace__NegativeCap,
+                    Amount = Convert.ToDecimal(input.Fortitude),
+                    Value = 1,
+                    NegativeModifier = 0,
+                    NegativeCap = -99999,
+                };
+                this.BuffStats.Add(addme);
+            }
+
+            if (input.Agility != 0)
+            {
+                addme = new BuffStat
+                {
+                    Amount = Convert.ToDecimal(input.Agility),
+                    Value = 1,
+                    NegativeModifier = 0,
+                    NegativeCap = -99999,
+                };
+                this.BuffStats.Add(addme);
+            }
+
+            if (input.Allure != 0)
+            {
+                addme = new BuffStat
+                {
+                    Amount = Convert.ToDecimal(input.Allure),
+                    Value = 1,
+                    NegativeModifier = 0,
+                    NegativeCap = -99999,
+                };
+                this.BuffStats.Add(addme);
+            }
+
+            if (input.Magicka != 0)
+            {
+                addme = new BuffStat
+                {
+                    Amount = Convert.ToDecimal(input.Magicka),
+                    Value = 1,
+                    NegativeModifier = 0,
+                    NegativeCap = -99999,
+                };
+                this.BuffStats.Add(addme);
+            }
+
+            if (input.Succour != 0)
+            {
+                addme = new BuffStat
+                {
+                    Amount = Convert.ToDecimal(input.Succour),
+                    Value = 1,
+                    NegativeModifier = 0,
+                    NegativeCap = -99999,
+                };
+                this.BuffStats.Add(addme);
+            }
+
+            if (input.Luck != 0)
+            {
+                addme = new BuffStat
+                {
+                    Amount = Convert.ToDecimal(input.Luck),
+                    Value = 1,
+                    NegativeModifier = 0,
+                    NegativeCap = -99999,
                 };
                 this.BuffStats.Add(addme);
             }
@@ -794,204 +517,111 @@ namespace tfgame.ViewModels
         {
             BuffStats = new List<BuffStat>();
             BuffStat addme = new BuffStat();
-            if (input.HealthBonusPercent != 0)
+
+            if (input.Discipline != 0)
             {
                 addme = new BuffStat
                 {
-                    Amount = input.HealthBonusPercent,
-                    Value = Statics.BalanceStatics.HealthBonusPercent__Value,
-                    NegativeModifier = Statics.BalanceStatics.HealthBonusPercent__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.HealthBonusPercent__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.ManaBonusPercent != 0)
-            {
-                addme = new BuffStat
-                {
-                    Amount = input.ManaBonusPercent,
-                    Value = Statics.BalanceStatics.ManaBonusPercent__Value,
-                    NegativeModifier = Statics.BalanceStatics.ManaBonusPercent__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.ManaBonusPercent__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.ExtraSkillCriticalPercent != 0)
-            {
-                addme = new BuffStat
-                {
-                    Amount = input.ExtraSkillCriticalPercent,
-                    Value = Statics.BalanceStatics.ExtraSkillCriticalPercent__Value,
-                    NegativeModifier = Statics.BalanceStatics.ExtraSkillCriticalPercent__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.ExtraSkillCriticalPercent__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.HealthRecoveryPerUpdate != 0)
-            {
-                addme = new BuffStat
-                {
-                    Amount = input.HealthRecoveryPerUpdate,
-                    Value = Statics.BalanceStatics.HealthRecoveryPerUpdate__Value,
-                    NegativeModifier = Statics.BalanceStatics.HealthRecoveryPerUpdate__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.HealthRecoveryPerUpdate__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.ManaRecoveryPerUpdate != 0)
-            {
-                addme = new BuffStat
-                {
-                    Amount = input.ManaRecoveryPerUpdate,
-                    Value = Statics.BalanceStatics.ManaRecoveryPerUpdate__Value,
-                    NegativeModifier = Statics.BalanceStatics.ManaRecoveryPerUpdate__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.ManaRecoveryPerUpdate__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.SneakPercent != 0)
-            {
-                addme = new BuffStat
-                {
-                    Amount = input.SneakPercent,
-                    Value = Statics.BalanceStatics.SneakPercent__Value,
-                    NegativeModifier = Statics.BalanceStatics.SneakPercent__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.SneakPercent__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.EvasionPercent != 0)
-            {
-                addme = new BuffStat
-                {
-                    Amount = input.EvasionPercent,
-                    Value = Statics.BalanceStatics.EvasionPercent__Value,
-                    NegativeModifier = Statics.BalanceStatics.EvasionPercent__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.EvasionPercent__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.EvasionNegationPercent != 0)
-            {
-                addme = new BuffStat
-                {
-                    Amount = input.EvasionNegationPercent,
-                    Value = Statics.BalanceStatics.EvasionNegationPercent__Value,
-                    NegativeModifier = Statics.BalanceStatics.EvasionNegationPercent__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.EvasionNegationPercent__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.MeditationExtraMana != 0)
-            {
-                addme = new BuffStat
-                {
-                    Amount = input.MeditationExtraMana,
-                    Value = Statics.BalanceStatics.MeditationExtraMana__Value,
-                    NegativeModifier = Statics.BalanceStatics.MeditationExtraMana__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.MeditationExtraMana__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.CleanseExtraHealth != 0)
-            {
-                addme = new BuffStat
-                {
-                    Amount = input.CleanseExtraHealth,
-                    Value = Statics.BalanceStatics.CleanseExtraHealth__Value,
-                    NegativeModifier = Statics.BalanceStatics.CleanseExtraHealth__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.CleanseExtraHealth__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.MoveActionPointDiscount != 0)
-            {
-                addme = new BuffStat
-                {
-                    Amount = input.MoveActionPointDiscount,
-                    Value = Statics.BalanceStatics.MoveActionPointDiscount__Value,
-                    NegativeModifier = Statics.BalanceStatics.MoveActionPointDiscount__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.MoveActionPointDiscount__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.SpellExtraTFEnergyPercent != 0)
-            {
-                addme = new BuffStat
-                {
-                    Amount = input.SpellExtraTFEnergyPercent,
-                    Value = Statics.BalanceStatics.SpellExtraTFEnergyPercent__Value,
-                    NegativeModifier = Statics.BalanceStatics.SpellExtraTFEnergyPercent__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.SpellExtraTFEnergyPercent__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.SpellExtraHealthDamagePercent != 0)
-            {
-                addme = new BuffStat
-                {
-                    Amount = input.SpellExtraHealthDamagePercent,
-                    Value = Statics.BalanceStatics.SpellExtraHealthDamagePercent__Value,
-                    NegativeModifier = Statics.BalanceStatics.SpellExtraHealthDamagePercent__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.SpellExtraHealthDamagePercent__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.CleanseExtraTFEnergyRemovalPercent != 0)
-            {
-                addme = new BuffStat
-                {
-                    Amount = input.CleanseExtraTFEnergyRemovalPercent,
-                    Value = Statics.BalanceStatics.CleanseExtraTFEnergyRemovalPercent__Value,
-                    NegativeModifier = Statics.BalanceStatics.CleanseExtraTFEnergyRemovalPercent__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.CleanseExtraTFEnergyRemovalPercent__NegativeCap,
-                };
-                this.BuffStats.Add(addme);
-            }
-            if (input.SpellMisfireChanceReduction != 0)
-            {
-                addme = new BuffStat
-                {
-                    Amount = input.SpellMisfireChanceReduction,
-                    Value = Statics.BalanceStatics.SpellMisfireChanceReduction__Value,
-                    NegativeModifier = Statics.BalanceStatics.SpellMisfireChanceReduction__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.SpellMisfireChanceReduction__NegativeCap,
+                    Amount = Convert.ToDecimal(input.Discipline),
+                    Value = 1,
+                    NegativeModifier = 0,
+                    NegativeCap = -99999,
                 };
                 this.BuffStats.Add(addme);
             }
 
-            if (input.SpellHealthDamageResistance != 0)
+            if (input.Perception != 0)
             {
                 addme = new BuffStat
                 {
-                    Amount = input.SpellHealthDamageResistance,
-                    Value = Statics.BalanceStatics.SpellHealthDamageResistance__Value,
-                    NegativeModifier = Statics.BalanceStatics.SpellHealthDamageResistance__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.SpellHealthDamageResistance__NegativeCap,
+                    Amount = Convert.ToDecimal(input.Perception),
+                    Value = 1,
+                    NegativeModifier = 0,
+                    NegativeCap = -99999,
                 };
                 this.BuffStats.Add(addme);
             }
 
-            if (input.SpellTFEnergyDamageResistance != 0)
+            if (input.Charisma != 0)
             {
                 addme = new BuffStat
                 {
-                    Amount = input.SpellTFEnergyDamageResistance,
-                    Value = Statics.BalanceStatics.SpellTFEnergyDamageResistance__Value,
-                    NegativeModifier = Statics.BalanceStatics.SpellTFEnergyDamageResistance__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.SpellTFEnergyDamageResistance__NegativeCap,
+                    Amount = Convert.ToDecimal(input.Charisma),
+                    Value = 1,
+                    NegativeModifier = 0,
+                    NegativeCap = -99999,
                 };
                 this.BuffStats.Add(addme);
             }
 
-            if (input.ExtraInventorySpace != 0)
+            if (input.Fortitude != 0)
             {
                 addme = new BuffStat
                 {
-                    Amount = input.ExtraInventorySpace,
-                    Value = Statics.BalanceStatics.ExtraInventorySpace__Value,
-                    NegativeModifier = Statics.BalanceStatics.ExtraInventorySpace__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.ExtraInventorySpace__NegativeCap,
+                    Amount = Convert.ToDecimal(input.Fortitude),
+                    Value = 1,
+                    NegativeModifier = 0,
+                    NegativeCap = -99999,
+                };
+                this.BuffStats.Add(addme);
+            }
+
+            if (input.Agility != 0)
+            {
+                addme = new BuffStat
+                {
+                    Amount = Convert.ToDecimal(input.Agility),
+                    Value = 1,
+                    NegativeModifier = 0,
+                    NegativeCap = -99999,
+                };
+                this.BuffStats.Add(addme);
+            }
+
+            if (input.Allure != 0)
+            {
+                addme = new BuffStat
+                {
+                    Amount = Convert.ToDecimal(input.Allure),
+                    Value = 1,
+                    NegativeModifier = 0,
+                    NegativeCap = -99999,
+                };
+                this.BuffStats.Add(addme);
+            }
+
+            if (input.Magicka != 0)
+            {
+                addme = new BuffStat
+                {
+                    Amount = Convert.ToDecimal(input.Magicka),
+                    Value = 1,
+                    NegativeModifier = 0,
+                    NegativeCap = -99999,
+                };
+                this.BuffStats.Add(addme);
+            }
+
+            if (input.Succour != 0)
+            {
+                addme = new BuffStat
+                {
+                    Amount = Convert.ToDecimal(input.Succour),
+                    Value = 1,
+                    NegativeModifier = 0,
+                    NegativeCap = -99999,
+                };
+                this.BuffStats.Add(addme);
+            }
+
+            if (input.Luck != 0)
+            {
+                addme = new BuffStat
+                {
+                    Amount = Convert.ToDecimal(input.Luck),
+                    Value = 1,
+                    NegativeModifier = 0,
+                    NegativeCap = -99999,
                 };
                 this.BuffStats.Add(addme);
             }

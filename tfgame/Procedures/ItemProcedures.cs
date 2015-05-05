@@ -129,7 +129,7 @@ namespace tfgame.Procedures
                                                          PvPEnabled = i.PvPEnabled,
                                                          TimeDropped = i.TimeDropped,
                                                          TurnsUntilUse = i.TurnsUntilUse,
-                                                         VictimName = i.VictimName,
+                                                         VictimName = i.VictimName
                                                      },
 
 
@@ -232,7 +232,7 @@ namespace tfgame.Procedures
                                                          PvPEnabled = i.PvPEnabled,
                                                          TimeDropped = i.TimeDropped,
                                                          TurnsUntilUse = i.TurnsUntilUse,
-                                                         VictimName = i.VictimName,
+                                                         VictimName = i.VictimName
                                                      },
 
 

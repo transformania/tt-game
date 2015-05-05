@@ -36,7 +36,6 @@ namespace tfgame.Procedures
                                                              TimeDropped = i.TimeDropped,
                                                              TurnsUntilUse = i.TurnsUntilUse,
                                                              VictimName = i.VictimName
-                                                             
                                                           },
 
 
@@ -113,7 +112,7 @@ namespace tfgame.Procedures
         {
             IItemRepository itemRepo = new EFItemRepository();
             IEnumerable<ItemViewModel> items  = from i in itemRepo.Items
-                                                 where i.dbLocationName == dbLocationName
+                                                 where i.dbLocationName == dbLocationName && ((i.PvPEnabled == 2 && player.GameMode == 2) || (i.PvPEnabled == 1 && player.GameMode != 2) || i.PvPEnabled == -1)
                                                  join si in itemRepo.DbStaticItems on i.dbName equals si.dbName
                                                  select new ItemViewModel
                                                  {
@@ -130,8 +129,7 @@ namespace tfgame.Procedures
                                                          PvPEnabled = i.PvPEnabled,
                                                          TimeDropped = i.TimeDropped,
                                                          TurnsUntilUse = i.TurnsUntilUse,
-                                                         VictimName = i.VictimName
-
+                                                         VictimName = i.VictimName,
                                                      },
 
 
@@ -199,8 +197,8 @@ namespace tfgame.Procedures
 
             foreach (ItemViewModel m in items)
             {
-                //  if the item is a consumeable and not in the same PvP-nonPvP mode, do not add it
-                if (m.Item.ItemType == "consumable" && ((m.dbItem.PvPEnabled == true && player.GameMode < 2) || (m.dbItem.PvPEnabled == false && player.GameMode == 2)))
+                //  if the item is a mode locked and not in the same PvP-nonPvP mode, do not add it
+                if (((m.dbItem.PvPEnabled == 2 && player.GameMode < 2) || (m.dbItem.PvPEnabled == 1 && player.GameMode == 2)))
                 {
                     // do nothing
                 }
@@ -234,8 +232,7 @@ namespace tfgame.Procedures
                                                          PvPEnabled = i.PvPEnabled,
                                                          TimeDropped = i.TimeDropped,
                                                          TurnsUntilUse = i.TurnsUntilUse,
-                                                         VictimName = i.VictimName
-
+                                                         VictimName = i.VictimName,
                                                      },
 
 
@@ -324,11 +321,23 @@ namespace tfgame.Procedures
             IItemRepository itemRepo = new EFItemRepository();
             Item item = itemRepo.Items.FirstOrDefault(i => i.Id == itemId);
             DbStaticItem itemPlus = ItemStatics.GetStaticItem(item.dbName);
+            Player owner = PlayerProcedures.GetPlayer(newOwnerId);
             //LogBox log = new LogBox();
 
 
             if (item.dbLocationName != "")
             {
+                if (owner.MembershipId > 0 && item.PvPEnabled == -1)
+                {
+                    if (owner.GameMode == 2)
+                    {
+                        item.PvPEnabled = 2;
+                    }
+                    else
+                    {
+                        item.PvPEnabled = 1;
+                    }
+                }
                 item.dbLocationName = "";
                 item.OwnerId = newOwnerId;
                 item.IsEquipped = false;
@@ -356,6 +365,19 @@ namespace tfgame.Procedures
             Item item = itemRepo.Items.FirstOrDefault(i => i.Id == itemId);
             DbStaticItem itemPlus = ItemStatics.GetStaticItem(item.dbName);
             item.OwnerId = newOwnerId;
+            Player owner = PlayerProcedures.GetPlayer(newOwnerId);
+
+            if (owner.MembershipId > 0 && item.PvPEnabled == -1)
+            {
+                if (owner.GameMode == 2)
+                {
+                    item.PvPEnabled = 2;
+                }
+                else
+                {
+                    item.PvPEnabled = 1;
+                }
+            }
 
             if (itemPlus.ItemType == PvPStatics.ItemType_Pet)
             {
@@ -384,15 +406,21 @@ namespace tfgame.Procedures
                // PvPEnabled = player.InPvP,
             };
 
-            if (player.GameMode == 2)
+            if (player.MembershipId < 0)
             {
-                newitem.PvPEnabled = true;
+                newitem.PvPEnabled = -1;
             }
             else
             {
-                newitem.PvPEnabled = false;
+                if (player.GameMode == 2)
+                {
+                    newitem.PvPEnabled = 2;
+                }
+                else
+                {
+                    newitem.PvPEnabled = 1;
+                }
             }
-
             itemRepo.SaveItem(newitem);
             ItemTransferLogProcedures.AddItemTransferLog(newitem.Id, player.Id);
             return "You found a " + item.FriendlyName + "!";
@@ -804,13 +832,6 @@ namespace tfgame.Procedures
             LogBox output = new LogBox();
             IItemRepository itemRepo = new EFItemRepository();
 
-            bool permanent = false;
-
-            if (victim.MembershipId < 0)
-            {
-                permanent = true;
-            }
-
             Item newItem = new Item
             {
                 IsEquipped = false,
@@ -818,16 +839,29 @@ namespace tfgame.Procedures
                 dbName = targetForm.BecomesItemDbName,
                 Level = victim.Level,
                 TimeDropped = DateTime.UtcNow,
-                IsPermanent = permanent,
             };
 
-            if (victim.GameMode == 2)
+            if (attacker.MembershipId < 0)
             {
-                newItem.PvPEnabled = true;
+                newItem.PvPEnabled = -1;
+            }
+            else if (attacker.GameMode == 2)
+            {
+                newItem.PvPEnabled = 2;
             }
             else
             {
-                newItem.PvPEnabled = false;
+                newItem.PvPEnabled = 1;
+            }
+
+            if (victim.MembershipId < 0)
+            {
+                newItem.IsPermanent = true;
+
+            }
+            else
+            {
+                newItem.IsPermanent = false;
             }
 
             BuffBox attackerBuffs = ItemProcedures.GetPlayerBuffs(attacker);

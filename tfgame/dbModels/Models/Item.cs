@@ -17,9 +17,8 @@ namespace tfgame.dbModels.Models
         public int Level { get; set; }
         public DateTime TimeDropped { get; set; }
         public bool EquippedThisTurn { get; set; }
-        public bool PvPEnabled { get; set; }
+        public int PvPEnabled { get; set; }
         public bool IsPermanent { get; set; }
-      
     }
 
     public class Item_VM
@@ -34,7 +33,7 @@ namespace tfgame.dbModels.Models
         public int Level { get; set; }
         public DateTime TimeDropped { get; set; }
         public bool EquippedThisTurn { get; set; }
-        public bool PvPEnabled { get; set; }
+        public int PvPEnabled { get; set; }
         public bool IsPermanent { get; set; }
     }
 }

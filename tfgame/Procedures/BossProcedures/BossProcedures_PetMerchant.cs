@@ -136,7 +136,7 @@ namespace tfgame.Procedures.BossProcedures
                     {
                         try
                         {
-                            context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Items] SET OwnerId = " + petMerchant.Id + ", dbLocationName = '', TimeDropped = '" + DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss") + "'  WHERE  dbLocationName <> '' AND dbLocationName IS NOT NULL AND TimeDropped < DATEADD(hour, -8, GETUTCDATE()) AND OwnerId = -1 AND dbName LIKE 'animal_%'");
+                            context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Items] SET OwnerId = " + petMerchant.Id + ", PvPEnabled = -1, dbLocationName = '', TimeDropped = '" + DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss") + "'  WHERE  dbLocationName <> '' AND dbLocationName IS NOT NULL AND TimeDropped < DATEADD(hour, -8, GETUTCDATE()) AND OwnerId = -1 AND dbName LIKE 'animal_%'");
 
                             context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Players] SET dbLocationName = '" + petMerchant.dbLocationName + ", IsPetToId = " + petMerchant.Id + " WHERE (FirstName + ' ' + LastName) IN ( SELECT VictimName FROM [Stats].[dbo].[Items] WHERE  dbLocationName <> '' AND dbLocationName IS NOT NULL AND TimeDropped < DATEADD(hour, -8, GETUTCDATE()) AND OwnerId = -1 AND dbName LIKE 'animal_%' )");
 

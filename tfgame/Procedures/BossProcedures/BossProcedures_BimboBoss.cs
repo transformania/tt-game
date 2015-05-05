@@ -347,7 +347,7 @@ namespace tfgame.Procedures.BossProcedures
                     IsEquipped = false,
                     IsPermanent = false,
                     Level = 0,
-                    PvPEnabled = true,
+                    PvPEnabled = 2,
                     OwnerId = -1,
                     VictimName = "",
                     TimeDropped = DateTime.UtcNow,
@@ -357,7 +357,7 @@ namespace tfgame.Procedures.BossProcedures
 
                 if (turnNumber % 3 == 0)
                 {
-                    newVial.PvPEnabled = false;
+                    newVial.PvPEnabled = 1;
                 }
 
                 itemRepo.SaveItem(newVial);

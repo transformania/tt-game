@@ -2396,6 +2396,10 @@ namespace tfgame.Controllers
             else
             {
                 contribution = new Contribution();
+                contribution.Skill_ManaCost = 7;
+                contribution.Form_TFEnergyRequired = 70;
+                contribution.Skill_TFPointsAmount = 10;
+                contribution.Skill_HealthDamageAmount = 4.5M;
             }
 
             ViewBag.Result = TempData["Result"];
@@ -2569,6 +2573,23 @@ namespace tfgame.Controllers
                  SaveMe.SpellTFEnergyDamageResistance = input.SpellTFEnergyDamageResistance;
                  SaveMe.ExtraInventorySpace = input.ExtraInventorySpace;
 
+                 // new stats
+                 SaveMe.Discipline = input.Discipline;
+                 SaveMe.Perception = input.Perception;
+                 SaveMe.Charisma = input.Charisma;
+                 SaveMe.Submission_Dominance = input.Submission_Dominance;
+
+                 SaveMe.Fortitude = input.Fortitude;
+                 SaveMe.Agility = input.Agility;
+                 SaveMe.Allure = input.Allure;
+                 SaveMe.Corruption_Purity = input.Corruption_Purity;
+
+                 SaveMe.Magicka = input.Magicka;
+                 SaveMe.Succour = input.Succour;
+                 SaveMe.Luck = input.Luck;
+                 SaveMe.Chaos_Order = input.Chaos_Order;
+
+
                  SaveMe.History += "Bonus values edited by " + WebSecurity.CurrentUserName + " on " + DateTime.UtcNow + ".<br>";
 
                  contributionRepo.SaveContribution(SaveMe);
@@ -2613,6 +2634,22 @@ namespace tfgame.Controllers
                  SaveMe.SpellHealthDamageResistance = input.SpellHealthDamageResistance;
                  SaveMe.SpellTFEnergyDamageResistance = input.SpellTFEnergyDamageResistance;
                  SaveMe.ExtraInventorySpace = input.ExtraInventorySpace;
+
+                 // new stats
+                 SaveMe.Discipline = input.Discipline;
+                 SaveMe.Perception = input.Perception;
+                 SaveMe.Charisma = input.Charisma;
+                 SaveMe.Submission_Dominance = input.Submission_Dominance;
+
+                 SaveMe.Fortitude = input.Fortitude;
+                 SaveMe.Agility = input.Agility;
+                 SaveMe.Allure = input.Allure;
+                 SaveMe.Corruption_Purity = input.Corruption_Purity;
+
+                 SaveMe.Magicka = input.Magicka;
+                 SaveMe.Succour = input.Succour;
+                 SaveMe.Luck = input.Luck;
+                 SaveMe.Chaos_Order = input.Chaos_Order;
 
                  SaveMe.Effect_Duration = input.Effect_Duration;
 
@@ -2844,6 +2881,10 @@ namespace tfgame.Controllers
             //SaveMe.SpellHealthDamageResistance = input.SpellHealthDamageResistance;
             //SaveMe.SpellTFEnergyDamageResistance = input.SpellTFEnergyDamageResistance;
             //SaveMe.ExtraInventorySpace = input.ExtraInventorySpace;
+
+
+
+
 
             SaveMe.SubmitterName = input.SubmitterName;
             SaveMe.SubmitterUrl = input.SubmitterUrl;

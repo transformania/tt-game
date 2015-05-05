@@ -184,47 +184,6 @@ namespace tfgame.Controllers
             return View();
         }
 
-        public ActionResult UpdateWorld()
-        {
-
-            IPlayerRepository playerRepo = new EFPlayerRepository();
-            List<Player> players = playerRepo.Players.ToList();
-
-            foreach (Player player in players)
-            {
-                player.ActionPoints += 3;
-
-                if (player.ActionPoints > PvPStatics.MaximumStoreableActionPoints)
-                {
-                    player.ActionPoints = PvPStatics.MaximumStoreableActionPoints;
-                }
-                BuffBox buffs = ItemProcedures.GetPlayerBuffs(player);
-                player.Health += buffs.HealthRecoveryPerUpdate();
-                player.Mana += buffs.ManaRecoveryPerUpdate();
-
-                if (player.Health > player.MaxHealth)
-                {
-                    player.Health = player.MaxHealth;
-                }
-                if (player.Mana > player.MaxMana)
-                {
-                    player.Mana = player.MaxMana;
-                }
-
-            }
-
-            foreach (Player player in players)
-            {
-                playerRepo.SavePlayer(player);
-            }
-
-            string output = "done";
-
-            return View("~/Views/PvPAdmin/UpdateWorld.cshtml", output); ;
-            // return View("UpdateWorld.cshtml","PvPAdmin", output);
-
-        }
-
         public ActionResult SpawnAI(int number, int offset)
         {
             AIProcedures.SpawnAIPsychopaths(number, offset);
@@ -1172,7 +1131,6 @@ namespace tfgame.Controllers
 
         public ActionResult ApproveContributionList()
         {
-            // assert only admin can view this
             // assert only admins can view this
             if (User.IsInRole(PvPStatics.Permissions_Admin) == false && User.IsInRole(PvPStatics.Permissions_Previewer) == false)
             {
@@ -1372,6 +1330,60 @@ namespace tfgame.Controllers
 
 
             return RedirectToAction("ApproveContributionList");
+        }
+
+        public ActionResult RenameSkill(string oldSkillName, string newSkillName, bool practice)
+        {
+
+            practice = true;
+
+            // assert only admins can view this
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            {
+                return View("Play", "PvP");
+            }
+
+            string output = "";
+
+            oldSkillName = oldSkillName.Trim();
+            newSkillName = newSkillName.Trim();
+
+            IDbStaticSkillRepository sskillRepo = new EFDbStaticSkillRepository();
+            DbStaticSkill sskill = sskillRepo.DbStaticSkills.FirstOrDefault(s => s.dbName == oldSkillName);
+
+            if (sskill != null)
+            {
+                sskill.dbName = newSkillName;
+
+                if (practice == false)
+                {
+                    sskillRepo.SaveDbStaticSkill(sskill);
+                }
+                output += "Renamed static skill to <b>" + newSkillName + "</b>.</br>";
+            }
+            else
+            {
+                output += "NO STATIC SKILL TO RENAME.</br>";
+            }
+
+            ISkillRepository skillRepo = new EFSkillRepository();
+            List<Skill> skills = skillRepo.Skills.Where(s => s.Name == oldSkillName).ToList();
+
+            foreach (Skill s in skills)
+            {
+                s.Name = newSkillName;
+                if (practice == false)
+                {
+                    skillRepo.SaveSkill(s);
+                }
+            }
+
+            output += "Renamed <b>" + skills.Count() + "</b> player-known skills to <b>" + newSkillName + "</b>.</br>";
+
+            output += "</br> DON'T FORGET TO UPDATE ANY SKILLS HARDCODED INTO THE PROJECT.</br>";
+
+            TempData["Message"] = output;
+            return RedirectToAction("Index");
         }
 
         public ActionResult SpawnLindella()

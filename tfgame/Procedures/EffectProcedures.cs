@@ -74,6 +74,22 @@ namespace tfgame.Procedures
                                                            SpellTFEnergyDamageResistance = si.SpellTFEnergyDamageResistance,
                                                            ExtraInventorySpace = si.ExtraInventorySpace,
 
+                                                           Discipline = si.Discipline,
+                                                           Perception = si.Perception,
+                                                           Charisma = si.Charisma,
+                                                           Submission_Dominance = si.Submission_Dominance,
+
+                                                           Fortitude = si.Fortitude,
+                                                           Agility = si.Agility,
+                                                           Allure = si.Allure,
+                                                           Corruption_Purity = si.Corruption_Purity,
+
+                                                           Magicka = si.Magicka,
+                                                           Succour = si.Succour,
+                                                           Luck = si.Luck,
+                                                           Chaos_Order = si.Chaos_Order,
+
+
                                                        }
 
                                                    };

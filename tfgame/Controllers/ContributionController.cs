@@ -422,6 +422,23 @@ namespace tfgame.Controllers
             form.SpellTFEnergyDamageResistance = contribution.SpellTFEnergyDamageResistance;
             form.ExtraInventorySpace = contribution.ExtraInventorySpace;
 
+
+            // new stats
+            form.Discipline = contribution.Discipline;
+            form.Perception = contribution.Perception;
+            form.Charisma = contribution.Charisma;
+            form.Submission_Dominance = contribution.Submission_Dominance;
+
+            form.Fortitude = contribution.Fortitude;
+            form.Agility = contribution.Agility;
+            form.Allure = contribution.Allure;
+            form.Corruption_Purity = contribution.Corruption_Purity;
+
+            form.Magicka = contribution.Magicka;
+            form.Succour = contribution.Succour;
+            form.Luck = contribution.Luck;
+            form.Chaos_Order = contribution.Chaos_Order;
+
             if (contribution.Form_MobilityType == "full")
             {
                 form.PortraitUrl = contribution.ImageURL;
@@ -549,6 +566,22 @@ namespace tfgame.Controllers
             item.SpellHealthDamageResistance = contribution.SpellHealthDamageResistance;
             item.SpellTFEnergyDamageResistance = contribution.SpellTFEnergyDamageResistance;
             item.ExtraInventorySpace = contribution.ExtraInventorySpace;
+
+            // new stats
+            item.Discipline = contribution.Discipline;
+            item.Perception = contribution.Perception;
+            item.Charisma = contribution.Charisma;
+            item.Submission_Dominance = contribution.Submission_Dominance;
+
+            item.Fortitude = contribution.Fortitude;
+            item.Agility = contribution.Agility;
+            item.Allure = contribution.Allure;
+            item.Corruption_Purity = contribution.Corruption_Purity;
+
+            item.Magicka = contribution.Magicka;
+            item.Succour = contribution.Succour;
+            item.Luck = contribution.Luck;
+            item.Chaos_Order = contribution.Chaos_Order;
             
         //           public decimal InstantHealthRestore { get; set; }
         //public decimal InstantManaRestore { get; set; }
@@ -637,6 +670,22 @@ namespace tfgame.Controllers
             effect.SpellHealthDamageResistance = contribution.SpellHealthDamageResistance;
             effect.SpellTFEnergyDamageResistance = contribution.SpellTFEnergyDamageResistance;
             effect.ExtraInventorySpace = contribution.ExtraInventorySpace;
+
+            // new stats
+            effect.Discipline = contribution.Discipline;
+            effect.Perception = contribution.Perception;
+            effect.Charisma = contribution.Charisma;
+            effect.Submission_Dominance = contribution.Submission_Dominance;
+
+            effect.Fortitude = contribution.Fortitude;
+            effect.Agility = contribution.Agility;
+            effect.Allure = contribution.Allure;
+            effect.Corruption_Purity = contribution.Corruption_Purity;
+
+            effect.Magicka = contribution.Magicka;
+            effect.Succour = contribution.Succour;
+            effect.Luck = contribution.Luck;
+            effect.Chaos_Order = contribution.Chaos_Order;
 
             // if this is a castable skill, we need to create or update the skill as well.
             if ((contribution.Skill_UniqueToForm != null && contribution.Skill_UniqueToForm != "") || (contribution.Skill_UniqueToItem != null && contribution.Skill_UniqueToLocation != ""))

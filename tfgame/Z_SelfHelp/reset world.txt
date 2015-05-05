@@ -20,6 +20,7 @@ DELETE FROM [Stats].[dbo].[MindControls]
 DELETE FROM [Stats].[dbo].[LocationInfoes]
 DELETE FROM [Stats].[dbo].[BookReadings]
 DELETE FROM [Stats].[dbo].[Achievements]
+DELETE FROM [Stats].[dbo].[ItemTransferLogs]
 
 UPDATE [Stats].[dbo].[PvPWorldStats] SET Boss_Donna = 'unstarted', [Boss_Valentine] = 'unstarted', [Boss_Bimbo] = 'unstarted', [Boss_Thief] = 'unstarted', [TurnNumber] = 0
 

@@ -28,6 +28,19 @@ namespace tfgame.ViewModels
         public decimal FromItems_SpellTFEnergyDamageResistance { get; set; }
         public decimal FromItems_ExtraInventorySpace { get; set; }
 
+        public float FromItems_Discipline { get; set; }
+        public float FromItems_Perception { get; set; }
+        public float FromItems_Charisma { get; set; }
+        public float FromItems_Submission_Dominance { get; set; }
+        public float FromItems_Fortitude { get; set; }
+        public float FromItems_Agility { get; set; }
+        public float FromItems_Allure { get; set; }
+        public float FromItems_Corruption_Purity { get; set; }
+        public float FromItems_Magicka { get; set; }
+        public float FromItems_Succour { get; set; }
+        public float FromItems_Luck { get; set; }
+        public float FromItems_Chaos_Order { get; set; }
+
         public decimal FromForm_HealthBonusPercent { get; set; }
         public decimal FromForm_ManaBonusPercent { get; set; }
         public decimal FromForm_ExtraSkillCriticalPercent { get; set; }
@@ -46,6 +59,19 @@ namespace tfgame.ViewModels
         public decimal FromForm_SpellHealthDamageResistance { get; set; }
         public decimal FromForm_SpellTFEnergyDamageResistance { get; set; }
         public decimal FromForm_ExtraInventorySpace { get; set; }
+
+        public float FromForm_Discipline { get; set; }
+        public float FromForm_Perception { get; set; }
+        public float FromForm_Charisma { get; set; }
+        public float FromForm_Submission_Dominance { get; set; }
+        public float FromForm_Fortitude { get; set; }
+        public float FromForm_Agility { get; set; }
+        public float FromForm_Allure { get; set; }
+        public float FromForm_Corruption_Purity { get; set; }
+        public float FromForm_Magicka { get; set; }
+        public float FromForm_Succour { get; set; }
+        public float FromForm_Luck { get; set; }
+        public float FromForm_Chaos_Order { get; set; }
 
         public decimal FromEffects_HealthBonusPercent { get; set; }
         public decimal FromEffects_ManaBonusPercent { get; set; }
@@ -66,61 +92,197 @@ namespace tfgame.ViewModels
         public decimal FromEffects_SpellTFEnergyDamageResistance { get; set; }
         public decimal FromEffects_ExtraInventorySpace { get; set; }
 
-        public decimal HealthBonusPercent() { return FromItems_HealthBonusPercent + FromForm_HealthBonusPercent + FromEffects_HealthBonusPercent; }
-        public decimal ManaBonusPercent() { return FromItems_ManaBonusPercent + FromForm_ManaBonusPercent + FromEffects_ManaBonusPercent; }
-        public decimal ExtraSkillCriticalPercent() { return FromItems_ExtraSkillCriticalPercent + FromForm_ExtraSkillCriticalPercent + FromEffects_ExtraSkillCriticalPercent ; }
-        public decimal HealthRecoveryPerUpdate() { return FromItems_HealthRecoveryPerUpdate + FromForm_HealthRecoveryPerUpdate + FromEffects_HealthRecoveryPerUpdate; }
-        public decimal ManaRecoveryPerUpdate() { return FromItems_ManaRecoveryPerUpdate + FromForm_ManaRecoveryPerUpdate + FromEffects_ManaRecoveryPerUpdate; }
-        public decimal SneakPercent() { return FromItems_SneakPercent + FromForm_SneakPercent + FromEffects_SneakPercent; }
-        public decimal EvasionPercent() { return FromItems_EvasionPercent + FromForm_EvasionPercent + FromEffects_EvasionPercent; }
-        public decimal EvasionNegationPercent() { return FromItems_EvasionNegationPercent + FromForm_EvasionNegationPercent + FromEffects_EvasionNegationPercent; ; }
-        public decimal MeditationExtraMana() { return FromItems_MeditationExtraMana + FromForm_MeditationExtraMana + FromEffects_MeditationExtraMana; }
-        public decimal CleanseExtraHealth() { return FromItems_CleanseExtraHealth + FromForm_CleanseExtraHealth + FromEffects_CleanseExtraHealth; }
-
-
-        public decimal MoveActionPointDiscount() {
-
-            decimal output = FromItems_MoveActionPointDiscount + FromForm_MoveActionPointDiscount + FromEffects_MoveActionPointDiscount;
-
-            if (output > .66M)
-            {
-                output = .66M;
-            }
-
-            return output;
-        }
-
-
-
-        public decimal SpellExtraTFEnergyPercent() { return FromItems_SpellExtraTFEnergyPercent + FromForm_SpellExtraTFEnergyPercent + FromEffects_SpellExtraTFEnergyPercent; }
-        public decimal SpellExtraHealthDamagePercent() { return FromItems_SpellExtraHealthDamagePercent + FromForm_SpellExtraHealthDamagePercent + FromEffects_SpellExtraHealthDamagePercent; }
-        public decimal CleanseExtraTFEnergyRemovalPercent() { return FromItems_CleanseExtraTFEnergyRemovalPercent + FromForm_CleanseExtraTFEnergyRemovalPercent + FromEffects_CleanseExtraTFEnergyRemovalPercent; ; }
-        public decimal SpellMisfireChanceReduction() { return FromItems_SpellMisfireChanceReduction + FromForm_SpellMisfireChanceReduction + FromEffects_SpellMisfireChanceReduction; }
-
-        public decimal SpellHealthDamageResistance() { return FromItems_SpellHealthDamageResistance + FromForm_SpellHealthDamageResistance + FromEffects_SpellHealthDamageResistance; }
-        public decimal SpellTFEnergyDamageResistance() { return FromItems_SpellTFEnergyDamageResistance + FromForm_SpellTFEnergyDamageResistance + FromEffects_SpellTFEnergyDamageResistance; }
+        public float FromEffects_Discipline { get; set; }
+        public float FromEffects_Perception { get; set; }
+        public float FromEffects_Charisma { get; set; }
+        public float FromEffects_Submission_Dominance { get; set; }
+        public float FromEffects_Fortitude { get; set; }
+        public float FromEffects_Agility { get; set; }
+        public float FromEffects_Allure { get; set; }
+        public float FromEffects_Corruption_Purity { get; set; }
+        public float FromEffects_Magicka { get; set; }
+        public float FromEffects_Succour { get; set; }
+        public float FromEffects_Luck { get; set; }
+        public float FromEffects_Chaos_Order { get; set; }
 
         public bool HasSearchDiscount;
         public int EnchantmentBoost;
 
-        // there is a special consideration for extra inventory space so -1.2 from an item doesn't get rounded down to -2 later on
-        public decimal ExtraInventorySpace() {
-            decimal output = FromItems_ExtraInventorySpace + FromForm_ExtraInventorySpace + FromEffects_ExtraInventorySpace;
+        public float Discipline() { return FromItems_Discipline + FromForm_Discipline + FromEffects_Discipline; }
+        public float Perception() { return FromItems_Perception + FromForm_Perception + FromEffects_Perception; }
+        public float Charisma() { return FromItems_Charisma + FromForm_Charisma + FromEffects_Charisma; }
+        public float Submission_Dominance() { return FromItems_Submission_Dominance + FromForm_Submission_Dominance + FromEffects_Submission_Dominance; }
+        public float Fortitude() { return FromItems_Fortitude + FromForm_Fortitude + FromEffects_Fortitude; }
+        public float Agility() { return FromItems_Agility + FromForm_Agility + FromEffects_Agility; }
+        public float Allure() { return FromItems_Allure + FromForm_Allure + FromEffects_Allure; }
+        public float Corruption_Purity() { return FromItems_Corruption_Purity + FromForm_Corruption_Purity + FromEffects_Corruption_Purity; }
+        public float Magicka() { return FromItems_Magicka + FromForm_Magicka + FromEffects_Magicka; }
+        public float Succour() { return FromItems_Succour + FromForm_Succour + FromEffects_Succour; }
+        public float Luck() { return FromItems_Luck + FromForm_Luck + FromEffects_Luck; }
+        public float Chaos_Order() { return FromItems_Chaos_Order + FromForm_Chaos_Order + FromEffects_Chaos_Order; }
 
-            // if the output from items is less than 0, round up
-            if (FromItems_ExtraInventorySpace < 0)
-            {
-                output = Math.Ceiling(FromItems_ExtraInventorySpace) + FromForm_ExtraInventorySpace + FromEffects_ExtraInventorySpace;
-            }
-            return output;
-
+        // new system
+        public decimal HealthBonusPercent()
+        {
+            return Convert.ToDecimal(
+              0.1F * Discipline() +
+              -0.1F * Allure() +
+                (float)FromForm_HealthBonusPercent +
+               (float)FromItems_HealthBonusPercent +
+               (float)FromEffects_HealthBonusPercent
+             );
         }
 
-        #region non-stat perks
+        public decimal ManaBonusPercent()
+        {
+            return Convert.ToDecimal(
+               .2F * Magicka() +
+               -.1F * Succour()
+            );
+        }
 
+        public decimal ExtraSkillCriticalPercent()
+        {
+            return Convert.ToDecimal(
+               .1F * Luck() +
+               -.1F * Discipline()
+            );
+        }
+
+        public decimal HealthRecoveryPerUpdate()
+        {
+            return Convert.ToDecimal(
+               .1F * Succour()
+            );
+        }
+
+        public decimal ManaRecoveryPerUpdate()
+        {
+            return Convert.ToDecimal(
+               .1F * Succour()
+            );
+        }
+
+        public decimal SneakPercent()
+        {
+            return Convert.ToDecimal(
+               .1F * Perception() +
+               -.4F * Fortitude() + 
+               .15F * Agility() +
+               -.2F * Allure()
+            );
+        }
+
+        public decimal EvasionPercent()
+        {
+            return Convert.ToDecimal(
+               -.2F * Fortitude() +
+               .2F * Agility()
+            );
+        }
+
+        public decimal EvasionNegationPercent()
+        {
+            return Convert.ToDecimal(
+               .3F * Perception() +
+               .2F * Allure() +
+               -.2F * Magicka()
+            );
+        }
+
+        public decimal MeditationExtraMana()
+        {
+            return Convert.ToDecimal(
+               -.1F * Perception() +
+               .1F * Magicka()
+            );
+        }
+
+        public decimal CleanseExtraHealth()
+        {
+            return Convert.ToDecimal(
+               .05F * Discipline() +
+               -.05F * Fortitude()
+            );
+        }
+
+        public decimal MoveActionPointDiscount()
+        {
+            return Convert.ToDecimal(
+               -.005F * Perception() +
+               .008F * Agility() +
+               (float)FromForm_MoveActionPointDiscount +
+               (float)FromItems_MoveActionPointDiscount +
+               (float)FromEffects_MoveActionPointDiscount
+            );
+        }
+
+        public decimal SpellExtraTFEnergyPercent()
+        {
+            return Convert.ToDecimal(
+               .2F * Charisma() +
+               .2F * Magicka() +
+               -.1F * Succour()
+            );
+        }
+
+        public decimal SpellExtraHealthDamagePercent()
+        {
+            return Convert.ToDecimal(
+               .2F * Charisma() +
+               -.1F * Discipline() +
+               .3F * Allure()
+            );
+        }
+
+        public decimal CleanseExtraTFEnergyRemovalPercent()
+        {
+            return Convert.ToDecimal(
+               -.05F * Magicka() +
+               .075F * Luck()
+            );
+        }
+
+        public decimal SpellMisfireChanceReduction()
+        {
+            return Convert.ToDecimal(
+               .15F * Perception() +
+               -.05F * Charisma()
+            );
+        }
+
+        public decimal SpellHealthDamageResistance()
+        {
+            return Convert.ToDecimal(
+                .2F * Discipline() +
+               -.1F * Charisma() +
+               -.1F * Luck()
+            );
+        }
+
+        public decimal SpellTFEnergyDamageResistance()
+        {
+            return Convert.ToDecimal(
+                .2F * Fortitude() +
+                -.1F * Agility() +
+                -.075F * Luck()
+            );
+        }
+
+        public decimal ExtraInventorySpace()
+        {
+            decimal amt = Convert.ToDecimal(
+                .05F * Fortitude() +
+                -.05F * Agility()
+            );
+
+            amt = Math.Floor(amt);
+
+            return amt;
+        }
         
 
-        #endregion
+
     }
 
     public class RAMBuffBox

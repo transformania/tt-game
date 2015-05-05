@@ -18,7 +18,7 @@ namespace tfgame.Statics
 
         public const string AlphaRound = "Alpha Round 19";
 
-        public const bool ChaosMode = false;
+        public const bool ChaosMode = true;
 
         public static String GenderMale = "male";
         public static String GenderFemale = "female";

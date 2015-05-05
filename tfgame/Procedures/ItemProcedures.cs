@@ -74,6 +74,21 @@ namespace tfgame.Procedures
                                                             SpellTFEnergyDamageResistance = si.SpellTFEnergyDamageResistance,
                                                             ExtraInventorySpace = si.ExtraInventorySpace,
 
+                                                            Discipline = si.Discipline,
+                                                            Perception = si.Perception,
+                                                            Charisma = si.Charisma,
+                                                            Submission_Dominance = si.Submission_Dominance,
+
+                                                            Fortitude = si.Fortitude,
+                                                            Agility = si.Agility,
+                                                            Allure = si.Allure,
+                                                            Corruption_Purity  = si.Corruption_Purity,
+
+                                                            Magicka = si.Magicka,
+                                                            Succour = si.Succour,
+                                                            Luck = si.Luck,
+                                                            Chaos_Order = si.Chaos_Order,
+
 
                                                             InstantHealthRestore = si.InstantHealthRestore,
                                                             InstantManaRestore = si.InstantManaRestore,
@@ -153,6 +168,21 @@ namespace tfgame.Procedures
                                                          SpellHealthDamageResistance = si.SpellHealthDamageResistance,
                                                          SpellTFEnergyDamageResistance = si.SpellTFEnergyDamageResistance,
                                                          ExtraInventorySpace = si.ExtraInventorySpace,
+
+                                                         Discipline = si.Discipline,
+                                                         Perception = si.Perception,
+                                                         Charisma = si.Charisma,
+                                                         Submission_Dominance = si.Submission_Dominance,
+
+                                                         Fortitude = si.Fortitude,
+                                                         Agility = si.Agility,
+                                                         Allure = si.Allure,
+                                                         Corruption_Purity = si.Corruption_Purity,
+
+                                                         Magicka = si.Magicka,
+                                                         Succour = si.Succour,
+                                                         Luck = si.Luck,
+                                                         Chaos_Order = si.Chaos_Order,
 
 
                                                          InstantHealthRestore = si.InstantHealthRestore,
@@ -241,6 +271,21 @@ namespace tfgame.Procedures
                                                          SpellHealthDamageResistance = si.SpellHealthDamageResistance,
                                                          SpellTFEnergyDamageResistance = si.SpellTFEnergyDamageResistance,
                                                          ExtraInventorySpace = si.ExtraInventorySpace,
+
+                                                         Discipline = si.Discipline,
+                                                         Perception = si.Perception,
+                                                         Charisma = si.Charisma,
+                                                         Submission_Dominance = si.Submission_Dominance,
+
+                                                         Fortitude = si.Fortitude,
+                                                         Agility = si.Agility,
+                                                         Allure = si.Allure,
+                                                         Corruption_Purity = si.Corruption_Purity,
+
+                                                         Magicka = si.Magicka,
+                                                         Succour = si.Succour,
+                                                         Luck = si.Luck,
+                                                         Chaos_Order = si.Chaos_Order,
 
 
                                                          InstantHealthRestore = si.InstantHealthRestore,
@@ -517,8 +562,6 @@ namespace tfgame.Procedures
             output.FromItems_EvasionNegationPercent = wornItems.Sum(x => x.Item.EvasionNegationPercent + x.Item.EvasionNegationPercent * ((x.dbItem.Level - 1) * PvPStatics.Item_LevelBonusModifier));
 
 
-          //  output.FromItems_SpellResistancePercent = wornItems.Sum(x => x.Item.SpellResistancePercent + x.Item.SpellResistancePercent * ((x.dbItem.Level - 1) * PvPStatics.Item_LevelBonusModifier));
-
             output.FromItems_MoveActionPointDiscount = wornItems.Sum(x => x.Item.MoveActionPointDiscount + x.Item.MoveActionPointDiscount * ((x.dbItem.Level - 1) * PvPStatics.Item_LevelBonusModifier));
 
             output.FromItems_SpellExtraTFEnergyPercent = wornItems.Sum(x => x.Item.SpellExtraTFEnergyPercent + x.Item.SpellExtraTFEnergyPercent * ((x.dbItem.Level - 1) * PvPStatics.Item_LevelBonusModifier));
@@ -574,6 +617,63 @@ namespace tfgame.Procedures
             output.FromEffects_SpellHealthDamageResistance = myEffects.Sum(e => e.Effect.SpellHealthDamageResistance);
             output.FromEffects_SpellTFEnergyDamageResistance = myEffects.Sum(e => e.Effect.SpellTFEnergyDamageResistance);
             output.FromEffects_ExtraInventorySpace = myEffects.Sum(e => e.Effect.ExtraInventorySpace);
+
+            #region newbuffs
+
+
+
+
+            output.FromItems_Discipline = wornItems.Sum(x => x.Item.Discipline + x.Item.Discipline * ((x.dbItem.Level - 1) * (float)PvPStatics.Item_LevelBonusModifier));
+            output.FromItems_Perception = wornItems.Sum(x => x.Item.Perception + x.Item.Perception * ((x.dbItem.Level - 1) * (float)PvPStatics.Item_LevelBonusModifier));
+            output.FromItems_Charisma = wornItems.Sum(x => x.Item.Charisma + x.Item.Charisma * ((x.dbItem.Level - 1) * (float)PvPStatics.Item_LevelBonusModifier));
+            output.FromItems_Submission_Dominance = wornItems.Sum(x => x.Item.Submission_Dominance + x.Item.Submission_Dominance * ((x.dbItem.Level - 1) * (float)PvPStatics.Item_LevelBonusModifier));
+
+            output.FromItems_Fortitude = wornItems.Sum(x => x.Item.Fortitude + x.Item.Fortitude * ((x.dbItem.Level - 1) * (float)PvPStatics.Item_LevelBonusModifier));
+            output.FromItems_Agility = wornItems.Sum(x => x.Item.Agility + x.Item.Agility * ((x.dbItem.Level - 1) * (float)PvPStatics.Item_LevelBonusModifier));
+            output.FromItems_Allure = wornItems.Sum(x => x.Item.Allure + x.Item.Allure * ((x.dbItem.Level - 1) * (float)PvPStatics.Item_LevelBonusModifier));
+            output.FromItems_Corruption_Purity = wornItems.Sum(x => x.Item.Corruption_Purity + x.Item.Corruption_Purity * ((x.dbItem.Level - 1) * (float)PvPStatics.Item_LevelBonusModifier));
+
+            output.FromItems_Magicka = wornItems.Sum(x => x.Item.Magicka + x.Item.Magicka * ((x.dbItem.Level - 1) * (float)PvPStatics.Item_LevelBonusModifier));
+            output.FromItems_Succour = wornItems.Sum(x => x.Item.Succour + x.Item.Succour * ((x.dbItem.Level - 1) * (float)PvPStatics.Item_LevelBonusModifier));
+            output.FromItems_Luck = wornItems.Sum(x => x.Item.Luck + x.Item.Luck * ((x.dbItem.Level - 1) * (float)PvPStatics.Item_LevelBonusModifier));
+            output.FromItems_Chaos_Order = wornItems.Sum(x => x.Item.Chaos_Order + x.Item.Chaos_Order * ((x.dbItem.Level - 1) * (float)PvPStatics.Item_LevelBonusModifier));
+
+
+            // new stats
+            output.FromForm_Discipline = myform.Discipline;
+            output.FromForm_Perception = myform.Perception;
+            output.FromForm_Charisma = myform.Charisma;
+            output.FromForm_Submission_Dominance = myform.Submission_Dominance;
+
+            output.FromForm_Fortitude = myform.Fortitude;
+            output.FromForm_Agility = myform.Agility;
+            output.FromForm_Allure = myform.Allure;
+            output.FromForm_Corruption_Purity = myform.Corruption_Purity;
+
+            output.FromForm_Magicka = myform.Magicka;
+            output.FromForm_Succour = myform.Succour;
+            output.FromForm_Luck = myform.Luck;
+            output.FromForm_Chaos_Order = myform.Chaos_Order;
+
+
+
+
+            output.FromEffects_Discipline = myEffects.Sum(e => e.Effect.Discipline);
+            output.FromEffects_Perception = myEffects.Sum(e => e.Effect.Perception);
+            output.FromEffects_Charisma = myEffects.Sum(e => e.Effect.Charisma);
+            output.FromEffects_Submission_Dominance = myEffects.Sum(e => e.Effect.Submission_Dominance);
+
+            output.FromEffects_Fortitude = myEffects.Sum(e => e.Effect.Fortitude);
+            output.FromEffects_Agility = myEffects.Sum(e => e.Effect.Agility);
+            output.FromEffects_Allure = myEffects.Sum(e => e.Effect.Allure);
+            output.FromEffects_Corruption_Purity = myEffects.Sum(e => e.Effect.Corruption_Purity);
+
+            output.FromEffects_Magicka = myEffects.Sum(e => e.Effect.Magicka);
+            output.FromEffects_Succour = myEffects.Sum(e => e.Effect.Succour);
+            output.FromEffects_Luck = myEffects.Sum(e => e.Effect.Luck);
+            output.FromEffects_Chaos_Order = myEffects.Sum(e => e.Effect.Chaos_Order);
+
+            #endregion
 
             // non-stat buffs
 

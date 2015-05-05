@@ -102,6 +102,21 @@ namespace tfgame.Procedures
                                                               SpellHealthDamageResistance = f.SpellHealthDamageResistance,
                                                               SpellTFEnergyDamageResistance = f.SpellTFEnergyDamageResistance,
                                                               ExtraInventorySpace = f.ExtraInventorySpace,
+
+                                                              Discipline = f.Discipline,
+                                                              Perception = f.Perception,
+                                                              Charisma = f.Charisma,
+                                                              Submission_Dominance = f.Submission_Dominance,
+
+                                                              Fortitude = f.Fortitude,
+                                                              Agility = f.Agility,
+                                                              Allure = f.Allure,
+                                                              Corruption_Purity = f.Corruption_Purity,
+
+                                                              Magicka = f.Magicka,
+                                                              Succour = f.Succour,
+                                                              Luck = f.Luck,
+                                                              Chaos_Order = f.Chaos_Order,
                                                           }
 
                                                       };
@@ -194,6 +209,22 @@ namespace tfgame.Procedures
                                                               SpellHealthDamageResistance = f.SpellHealthDamageResistance,
                                                               SpellTFEnergyDamageResistance = f.SpellTFEnergyDamageResistance,
                                                               ExtraInventorySpace = f.ExtraInventorySpace,
+
+                                                              Discipline = f.Discipline,
+                                                              Perception = f.Perception,
+                                                              Charisma = f.Charisma,
+                                                              Submission_Dominance = f.Submission_Dominance,
+
+                                                              Fortitude = f.Fortitude,
+                                                              Agility = f.Agility,
+                                                              Allure = f.Allure,
+                                                              Corruption_Purity = f.Corruption_Purity,
+
+                                                              Magicka = f.Magicka,
+                                                              Succour = f.Succour,
+                                                              Luck = f.Luck,
+                                                              Chaos_Order = f.Chaos_Order,
+
                                                           }
 
                                                       };
@@ -286,6 +317,21 @@ namespace tfgame.Procedures
                                                               SpellHealthDamageResistance = f.SpellHealthDamageResistance,
                                                               SpellTFEnergyDamageResistance = f.SpellTFEnergyDamageResistance,
                                                               ExtraInventorySpace = f.ExtraInventorySpace,
+
+                                                              Discipline = f.Discipline,
+                                                              Perception = f.Perception,
+                                                              Charisma = f.Charisma,
+                                                              Submission_Dominance = f.Submission_Dominance,
+
+                                                              Fortitude = f.Fortitude,
+                                                              Agility = f.Agility,
+                                                              Allure = f.Allure,
+                                                              Corruption_Purity = f.Corruption_Purity,
+
+                                                              Magicka = f.Magicka,
+                                                              Succour = f.Succour,
+                                                              Luck = f.Luck,
+                                                              Chaos_Order = f.Chaos_Order,
                                                           }
 
                                                       };

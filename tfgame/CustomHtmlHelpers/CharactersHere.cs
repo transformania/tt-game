@@ -284,6 +284,23 @@ namespace tfgame.CustomHtmlHelpers
             return new MvcHtmlString(output);
         }
 
+        public static MvcHtmlString GetBuffedStat(ItemViewModel item, float amount)
+        {
+            string output = "";
+
+            if (item.dbItem.Level > 1 && item.Item.ItemType != "consumable")
+            {
+                output = "<b>" + amount + "</b><span style='color:  blue;'>  <b>(" + (((item.dbItem.Level - 1) * (float)PvPStatics.Item_LevelBonusModifier * amount) + amount) + ")</b></span>";
+            }
+            else
+            {
+                output = "<b>" + amount + "</b>";
+            }
+
+
+            return new MvcHtmlString(output);
+        }
+
         public static MvcHtmlString GetImageURL(PlayerFormViewModel player, bool thumb = false)
         {
 
@@ -604,6 +621,71 @@ namespace tfgame.CustomHtmlHelpers
             // Convert the hex string back to the number
            // int decAgain = int.Parse(hexValue, System.Globalization.NumberStyles.HexNumber);
 
+            return new MvcHtmlString(output);
+        }
+
+        public static MvcHtmlString PrintStatDescriptionPopup(string statName)
+        {
+            string output = statName + " <span class='statPopupBubble' onclick='alert(\"";
+
+            if (statName == "Discipline")
+            {
+               output += "Discipline affects the strength of your mental defenses; resistance to willpower attacks and ability to recover lost willpower. Improving your defense against willpower attacks reduces the power of your own willpower attacks by a small amount.";
+            }
+
+            else if (statName == "Perception")
+            {
+                output += "Perception affects the accuracy of your spell-casting and your ability to detect hidden things. The price that you pay for taking the time to observe and analyze your surroundings is slower movement speed and a reduction to the amount of mana you glean from meditation.";
+            }
+
+            else if (statName == "Charisma")
+            {
+                output += "Charisma affects the strength of your willpower and transformation attacks; it represents your ability to influence people and bend them to your design. However, the desire to persuade others leaves you vulnerable to their desires in turn, reducing your willpower defenses slightly.";
+            }
+
+            else if (statName == "Submission_Dominance")
+            {
+                output += "Submission/Dominance reflects the extent to which you desire to control others, as opposed to wanting others to control you. The more dominant your personality, the more persuasive you are; yet the growth of you ego impedes your ability to tap into ambient magical energy to replenish your mana.";
+            }
+
+            else if (statName == "Fortitude")
+            {
+                output += "Fortitude affects the strength of your physical defenses; resistance to transformation attacks and the ability to carry more gear. Toughening your body reduces its limberness, inhibiting your ability to move stealthily and dodge incoming attacks.";
+            }
+
+            else if (statName == "Agility")
+            {
+                output += "Agility affects your ability to move quickly, which helps you dodge attacks and avoid detection. Quickness requires a light build that is not able to take a lot of physical abuse; thus your resistance to transformation damage is inhibited and you are not able to carry as much gear.";
+            }
+
+            else if (statName == "Allure")
+            {
+                output += "Allure affects your innate sex appeal or animal magnetism. The more attractive you are, the more susceptible your opponents are to your willpower attacks and the less likely they are to dodge. Yet physical beauty makes one susceptible to vanity, which increases your vulnerability to willpower damage. Your attractiveness also makes it hard to go unnoticed.";
+            }
+
+            else if (statName == "Magicka")
+            {
+                output += "Magicka reflects you raw magic potential; the stronger your connection to the ambient magical fields around you, the more mana you have at your disposal and the more transformation energy you can focus on your opponents. Yet having so much magic flowing through you makes it harder to purge transformation energy, and interferes with your ability to focus on your targets.";
+            }
+
+            else if (statName == "Succour")
+            {
+                output += "Succour affects your ability to tap into ambient magical energies and manipulate them to recover mana and willpower. Some of your mana is constantly diverted into the recovery of mana and willpower, reducing your maximum pool. Focusing on the healing powers of magic invokes a natural aversion toward harming others.";
+            }
+
+            else if (statName == "Luck")
+            {
+                output += "Luck is a random chance that seems to operate in your favor. Or maybe the gods look kindly upon you. However you choose to rationalize it, luck affects your chance to score amazingly successful blows against your opponents. Luck also helps you shrug off accumulated transformation energy. Yet relying on luck can leave you exposed if the dice roll goes against you.";
+            }
+
+            else
+            {
+
+                output += "Stat not defined yet.";
+            }
+
+
+            output += "\");'>[?]</span>";
             return new MvcHtmlString(output);
         }
 

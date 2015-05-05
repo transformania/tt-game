@@ -51,6 +51,21 @@ namespace tfgame.dbModels.Models
         public decimal SpellTFEnergyDamageResistance { get; set; }
         public decimal ExtraInventorySpace { get; set; }
 
+        public float Discipline { get; set; }
+        public float Perception { get; set; }
+        public float Charisma { get; set; }
+        public float Submission_Dominance { get; set; }
+
+        public float Fortitude { get; set; }
+        public float Agility { get; set; }
+        public float Allure { get; set; }
+        public float Corruption_Purity { get; set; }
+
+        public float Magicka { get; set; }
+        public float Succour { get; set; }
+        public float Luck { get; set; }
+        public float Chaos_Order { get; set; }
+
         public StaticEffect ToStaticEffect()
         {
             StaticEffect output = new StaticEffect
@@ -89,6 +104,23 @@ namespace tfgame.dbModels.Models
                 SpellHealthDamageResistance = this.SpellHealthDamageResistance,
                 SpellTFEnergyDamageResistance = this.SpellTFEnergyDamageResistance,
                 ExtraInventorySpace = this.ExtraInventorySpace,
+
+                
+
+        //                public float Discipline { get; set; }
+        //public float Perception { get; set; }
+        //public float Charisma { get; set; }
+        //public float Submission_Dominance { get; set; }
+
+        //public float Fortitude { get; set; }
+        //public float Agility { get; set; }
+        //public float Allure { get; set; }
+        //public float Corruption_Purity { get; set; }
+
+        //public float Magicka { get; set; }
+        //public float Succour { get; set; }
+        //public float Luck { get; set; }
+        //public float Chaos_Order { get; set; }
 
             };
 

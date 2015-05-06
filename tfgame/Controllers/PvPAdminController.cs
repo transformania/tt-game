@@ -1332,6 +1332,17 @@ namespace tfgame.Controllers
             return RedirectToAction("ApproveContributionList");
         }
 
+        public ActionResult RenameStuff()
+        {
+            // assert only admins can view this
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            {
+                return View("Play", "PvP");
+            }
+
+            return View();
+        }
+
         public ActionResult RenameSkill(string oldSkillName, string newSkillName, bool practice)
         {
 
@@ -1343,7 +1354,7 @@ namespace tfgame.Controllers
                 return View("Play", "PvP");
             }
 
-            string output = "";
+            string output = "<br><br>";
 
             oldSkillName = oldSkillName.Trim();
             newSkillName = newSkillName.Trim();
@@ -1381,6 +1392,211 @@ namespace tfgame.Controllers
             output += "Renamed <b>" + skills.Count() + "</b> player-known skills to <b>" + newSkillName + "</b>.</br>";
 
             output += "</br> DON'T FORGET TO UPDATE ANY SKILLS HARDCODED INTO THE PROJECT.</br>";
+
+            TempData["Message"] = output;
+            return RedirectToAction("Index");
+        }
+
+     
+
+        public ActionResult RenameForm(string oldFormName, string newFormName, bool practice)
+        {
+
+            practice = true;
+
+            // assert only admins can view this
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            {
+                return View("Play", "PvP");
+            }
+
+            string output = "<br><br>";
+
+            oldFormName = oldFormName.Trim();
+            newFormName = newFormName.Trim();
+
+            #region static form to rename
+            IDbStaticFormRepository sFormRepo = new EFDbStaticFormRepository();
+            DbStaticForm sform = sFormRepo.DbStaticForms.FirstOrDefault(s => s.dbName == oldFormName);
+            if (sform != null)
+            {
+                sform.dbName = newFormName;
+
+                if (practice == false)
+                {
+                    sFormRepo.SaveDbStaticForm(sform);
+                }
+                output += "Renamed static form to <b>" + newFormName + "</b>.</br>";
+            }
+            else
+            {
+                output += "NO STATIC FORM TO RENAME.</br>";
+            }
+            #endregion
+
+            #region players form to update
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            List<Player> players = playerRepo.Players.Where(s => s.Form == oldFormName).ToList();
+            foreach (Player p in players)
+            {
+                p.Form = newFormName;
+                if (practice == false)
+                {
+                    playerRepo.SavePlayer(p);
+                }
+            }
+            output += "Set <b>" + players.Count() + "</b> players to new form <b>" + newFormName + "</b>.</br>";
+            #endregion
+
+            #region static skills exclusive to form
+            IDbStaticSkillRepository sskillRepo = new EFDbStaticSkillRepository();
+            List<DbStaticSkill> skills = sskillRepo.DbStaticSkills.Where(s => s.ExclusiveToForm == oldFormName).ToList();
+            foreach (DbStaticSkill ss in skills)
+            {
+                ss.ExclusiveToForm = newFormName;
+
+                if (practice == false)
+                {
+                    sskillRepo.SaveDbStaticSkill(ss);
+                }
+            }
+            output += "Set <b>" + skills.Count() + "</b> static skills to be exclusive to form <b>" + newFormName + "</b>.</br>";
+            #endregion
+
+            #region effect contributions to update
+            IEffectContributionRepository contRepo = new EFEffectContributionRepository();
+            List<EffectContribution> contributions = contRepo.EffectContributions.Where(s => s.Skill_UniqueToForm == oldFormName).ToList();
+            foreach (EffectContribution c in contributions)
+            {
+                c.Skill_UniqueToForm = newFormName;
+
+                if (practice == false)
+                {
+                    contRepo.SaveEffectContribution(c);
+                }
+            }
+            output += "Set <b>" + contributions.Count() + "</b> effect contributions to be exclusive to form <b>" + newFormName + "</b>.</br>";
+            #endregion
+
+
+            #region tf energies to update
+            ITFEnergyRepository energyRepo = new EFTFEnergyRepository();
+            List<TFEnergy> energies = energyRepo.TFEnergies.Where(s => s.FormName == oldFormName).ToList();
+            foreach (TFEnergy en in energies)
+            {
+                en.FormName = newFormName;
+
+                if (practice == false)
+                {
+                    energyRepo.SaveTFEnergy(en);
+                }
+            }
+            output += "Set <b>" + energies.Count() + "</b> TF energies to use form <b>" + newFormName + "</b>.</br>";
+            #endregion
+
+
+            #region tf messages
+            ITFMessageRepository messageRepo = new EFTFMessageRepository();
+            List<TFMessage> messages = messageRepo.TFMessages.Where(s => s.FormDbName == oldFormName).ToList();
+            foreach (TFMessage fm in messages)
+            {
+                fm.FormDbName = newFormName;
+
+                if (practice == false)
+                {
+                    messageRepo.SaveTFMessage(fm);
+                }
+            }
+            output += "Set <b>" + messages.Count() + "</b> TF messages to use form <b>" + newFormName + "</b>.</br>";
+            #endregion
+
+            output += "</br> DON'T FORGET TO UPDATE ANY PLAYERS HARDCODED INTO THE PROJECT, INCLUDING JEWDEWFAE.</br>";
+
+            TempData["Message"] = output;
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult RenameItem(string oldItemName, string newItemName, bool practice)
+        {
+
+            practice = true;
+
+            // assert only admins can view this
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            {
+                return View("Play", "PvP");
+            }
+
+            string output = "<br><br>";
+
+            oldItemName = oldItemName.Trim();
+            newItemName = newItemName.Trim();
+
+            #region static item to rename
+            IDbStaticItemRepository sitemRepo = new EFDbStaticItemRepository();
+            DbStaticItem sitem = sitemRepo.DbStaticItems.FirstOrDefault(s => s.dbName == oldItemName);
+            if (sitem != null)
+            {
+                sitem.dbName = newItemName;
+
+                if (practice == false)
+                {
+                    sitemRepo.SaveDbStaticItem(sitem);
+                }
+                output += "Renamed static item to <b>" + newItemName + "</b>.</br>";
+            }
+            else
+            {
+                output += "NO STATIC ITEM TO RENAME.</br>";
+            }
+            #endregion
+
+            #region items to update
+            IItemRepository itemRepo = new EFItemRepository();
+            List<Item> items = itemRepo.Items.Where(s => s.dbName == oldItemName).ToList();
+            foreach (Item i in items)
+            {
+                i.dbName = newItemName;
+                if (practice == false)
+                {
+                    itemRepo.SaveItem(i);
+                }
+            }
+            output += "Set <b>" + items.Count() + "</b> items to new item type <b>" + newItemName + "</b>.</br>";
+            #endregion
+
+            #region static skills exclusive to item
+            IDbStaticSkillRepository sskillRepo = new EFDbStaticSkillRepository();
+            List<DbStaticSkill> skills = sskillRepo.DbStaticSkills.Where(s => s.ExclusiveToItem == oldItemName).ToList();
+            foreach (DbStaticSkill ss in skills)
+            {
+                ss.ExclusiveToItem = oldItemName;
+
+                if (practice == false)
+                {
+                    sskillRepo.SaveDbStaticSkill(ss);
+                }
+            }
+            output += "Set <b>" + skills.Count() + "</b> static skills to be exclusive to form <b>" + oldItemName + "</b>.</br>";
+            #endregion
+
+
+            #region effect contributions to update
+            IEffectContributionRepository contRepo = new EFEffectContributionRepository();
+            List<EffectContribution> contributions = contRepo.EffectContributions.Where(s => s.Skill_UniqueToItem == oldItemName).ToList();
+            foreach (EffectContribution c in contributions)
+            {
+                c.Skill_UniqueToItem = newItemName;
+
+                if (practice == false)
+                {
+                    contRepo.SaveEffectContribution(c);
+                }
+            }
+            output += "Set <b>" + contributions.Count() + "</b> effect contributions to be exclusive to item <b>" + newItemName + "</b>.</br>";
+            #endregion
+
+            output += "</br> DON'T FORGET TO UPDATE ANY ITEMS HARDCODED INTO THE PROJECT.</br>";
 
             TempData["Message"] = output;
             return RedirectToAction("Index");

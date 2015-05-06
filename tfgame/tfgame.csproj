@@ -2197,6 +2197,7 @@
     <Content Include="Views\PvP\RoundLeaderboards\XP\Alpha_19.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_19.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Statistics\Alpha_19.cshtml" />
+    <Content Include="Views\PvPAdmin\RenameStuff.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

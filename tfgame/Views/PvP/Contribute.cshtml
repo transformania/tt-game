@@ -41,14 +41,21 @@
         <p>
             Click below to load one of your existing contributions (save first before navigating away if you need to!):<br />
             @{
-                
-                if (ViewBag.DisableLinks == null) { 
-                
-                foreach (Contribution contribution in ViewBag.OtherContributions)
+
+                if (ViewBag.DisableLinks == null)
                 {
 
-                    if (contribution.IsLive == true)
+                    foreach (Contribution contribution in ViewBag.OtherContributions)
                     {
+
+
+                        if (contribution.NeedsToBeUpdated == true)
+                        {
+                            <span class="icon-timesattacking"></span>
+                        }
+
+                        if (contribution.IsLive == true)
+                        {
                         <span class='newlink'>
                             @Html.ActionLink("Spell name:  " + contribution.Skill_FriendlyName + ". Form name:  " + contribution.Form_FriendlyName + ".", "Contribute", "PvP", new { Id = contribution.Id }, null)
                         </span>
@@ -85,6 +92,11 @@
 
                     foreach (Contribution contribution in ViewBag.Proofreading)
                     {
+
+                        if (contribution.NeedsToBeUpdated == true)
+                        {
+                            <span class="icon-timesattacking"></span>
+                        }
 
                         if (contribution.IsLive == true)
                         {

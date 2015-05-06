@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using System.Xml;
 using System.Xml.Serialization;
+using tfgame.CustomHtmlHelpers;
 using tfgame.dbModels.Abstract;
 using tfgame.dbModels.Concrete;
 using tfgame.dbModels.Models;
@@ -1567,7 +1568,7 @@ namespace tfgame.Controllers
             else if (pickup.Item.ItemType!=PvPStatics.ItemType_Pet) {
                 TempData["Result"] = ItemProcedures.GiveItemToPlayer(pickup.dbItem.Id, me.Id);
                 playerLogMessage = "You picked up a <b>" + pickup.Item.FriendlyName + "</b> at " + here.Name + " and put it into your inventory.";
-                locationLogMessage = me.FirstName + " " + me.LastName + " picked up a <b>" + pickup.Item.FriendlyName + "</b> here.";
+                locationLogMessage = me.FirstName + " " + me.LastName + " picked up a <b>" + pickup.Item.FriendlyName + CharactersHere.PrintPvPIcon(pickup.dbItem) + "</b> here.";
             }
                 // item is an animal, equip it automatically
             else if (pickup.Item.ItemType == PvPStatics.ItemType_Pet)
@@ -1577,7 +1578,7 @@ namespace tfgame.Controllers
                 AnimalProcedures.ChangeOwner(pickup.dbItem, me.Id);
                 playerLogMessage = "You tamed <b>" + pickup.dbItem.VictimName + " the " + pickup.Item.FriendlyName + "</b> at " + here.Name + " and put it into your inventory.";
                // PlayerLogProcedures.AddPlayerLog()
-                locationLogMessage = me.FirstName + " " + me.LastName + " tamed <b>" + pickup.dbItem.VictimName + " the " + pickup.Item.FriendlyName + "</b> here.";
+                locationLogMessage = me.FirstName + " " + me.LastName + " tamed <b>" + pickup.dbItem.VictimName + " the " + pickup.Item.FriendlyName + CharactersHere.PrintPvPIcon(pickup.dbItem) + "</b> here.";
 
                 Player personAnimal = PlayerProcedures.GetPlayerWithExactName(pickup.dbItem.VictimName);
 
@@ -1654,7 +1655,7 @@ namespace tfgame.Controllers
             if (dropme.Item.ItemType == PvPStatics.ItemType_Pet)
             {
                 playerLogMessage = "You released your " + dropme.Item.FriendlyName + " at " + here.Name + ".";
-                locationLogMessage = me.FirstName + " " + me.LastName + " released a <b>" + dropme.Item.FriendlyName + "</b> here.";
+                locationLogMessage = me.FirstName + " " + me.LastName + " released a <b>" + dropme.Item.FriendlyName + CharactersHere.PrintPvPIcon(dropme.dbItem) + "</b> here.";
 
                 Player personAnimal = PlayerProcedures.GetPlayerWithExactName(dropme.dbItem.VictimName);
 
@@ -1667,7 +1668,7 @@ namespace tfgame.Controllers
             else
             {
                 playerLogMessage = "You dropped a " + dropme.Item.FriendlyName + " at " + here.Name + ".";
-                locationLogMessage = me.FirstName + " " + me.LastName + " dropped a <b>" + dropme.Item.FriendlyName + "</b> here.";
+                locationLogMessage = me.FirstName + " " + me.LastName + " dropped a <b>" + dropme.Item.FriendlyName + CharactersHere.PrintPvPIcon(dropme.dbItem) + "</b> here.";
             }
 
             PlayerProcedures.AddMinutesToTimestamp(me, 15, true);

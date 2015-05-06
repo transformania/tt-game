@@ -125,6 +125,10 @@ namespace tfgame.CustomHtmlHelpers
             {
                 return new MvcHtmlString("<span class='icon-pvp' title='This item is in PvP mode.'></span>");
             }
+            else if (item.PvPEnabled == 1)
+            {
+                return new MvcHtmlString("<span class='icon-protection' title='This item is in Protection mode.'></span>");
+            }
             else
             {
                 return new MvcHtmlString("");

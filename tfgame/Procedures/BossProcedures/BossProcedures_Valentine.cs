@@ -79,7 +79,7 @@ namespace tfgame.Procedures.BossProcedures
                     Level = 11,
                     OwnerId = valentine.Id,
                     TimeDropped = DateTime.UtcNow,
-                    PvPEnabled = true,
+                    PvPEnabled = -1,
                     VictimName = "",
                 };
 

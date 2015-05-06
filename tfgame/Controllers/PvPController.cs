@@ -1535,10 +1535,10 @@ namespace tfgame.Controllers
             }
 
             // assert the item is not a consumeable type or else is AND is in the same mode as the player (GameMode 2 is PvP)
-            if (pickup.Item.ItemType == "consumable" && ((pickup.dbItem.PvPEnabled == true && me.GameMode != 2) || (pickup.dbItem.PvPEnabled == false && me.GameMode == 2)))
+            if ((pickup.dbItem.PvPEnabled == 2 && me.GameMode != 2) || (pickup.dbItem.PvPEnabled == 1 && me.GameMode == 2))
             {
                 TempData["Error"] = "This item is marked as being in a different PvP mode from you.";
-                TempData["SubError"] = "You are not allowed to pick up consumable-type items that are not in PvP if you are not in PvP and the same for non-PvP.";
+                TempData["SubError"] = "You are not allowed to pick up items that are not in PvP if you are not in PvP and the same for non-PvP.";
                 return RedirectToAction("Play");
             }
 
@@ -4191,7 +4191,7 @@ namespace tfgame.Controllers
                     {
                         try
                         {
-                            context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Items] SET OwnerId = " + merchant.Id + ", dbLocationName = '', TimeDropped = '" + DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss") + "'  WHERE  dbLocationName <> '' AND dbLocationName IS NOT NULL AND TimeDropped < DATEADD(hour, -8, GETUTCDATE()) AND OwnerId = -1 AND dbName LIKE 'item_%' AND dbName != '" + PvPStatics.ItemType_DungeonArtifact + "'");
+                            context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Items] SET OwnerId = " + merchant.Id + ", dbLocationName = '', PvPEnabled = -1, TimeDropped = '" + DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss") + "'  WHERE  dbLocationName <> '' AND dbLocationName IS NOT NULL AND TimeDropped < DATEADD(hour, -8, GETUTCDATE()) AND OwnerId = -1 AND dbName LIKE 'item_%' AND dbName != '" + PvPStatics.ItemType_DungeonArtifact + "'");
 
                             context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Players] SET dbLocationName = '" + merchant.dbLocationName + "' WHERE (FirstName + ' ' + LastName) IN ( SELECT VictimName FROM [Stats].[dbo].[Items] WHERE  dbLocationName <> '' AND dbLocationName IS NOT NULL AND TimeDropped < DATEADD(hour, -8, GETUTCDATE()) AND OwnerId = -1 AND dbName LIKE 'item_%' AND dbName != '" + PvPStatics.ItemType_DungeonArtifact + "')");
 
@@ -4294,7 +4294,7 @@ namespace tfgame.Controllers
                                 IsPermanent = true,
                                 TimeDropped = DateTime.UtcNow,
                                 Level = 0,
-                                PvPEnabled = true,
+                                PvPEnabled = 2,
                                 IsEquipped = false,
                                 TurnsUntilUse = 0,
                                 VictimName = "",

@@ -515,11 +515,11 @@ namespace tfgame.Procedures
                                     IsEquipped = false,
                                     IsPermanent = true,
                                     Level = 0,
-                                    PvPEnabled = false,
+                                    PvPEnabled = -1,
                                     TimeDropped = DateTime.UtcNow,
                                     TurnsUntilUse = 0,
                                     VictimName = "",
-                                    EquippedThisTurn = false,
+                                    EquippedThisTurn = false
                                 };
                                     itemRepo.SaveItem(newItem);
                                 }

@@ -545,7 +545,7 @@ namespace tfgame.Controllers
                     double roll = rand.NextDouble() * 200;
                     if (roll < (double)stumbleChance)
                     {
-                        msg = "Due to your poor evasion and clumbsiness you trip and fall, wasting some energy.  ";
+                        msg = "Due to your poor evasion and clumsiness you trip and fall, wasting some energy.  ";
                         PlayerProcedures.ChangePlayerActionMana(1, 0, 0, me.Id);
                     }
 

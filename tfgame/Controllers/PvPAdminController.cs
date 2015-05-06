@@ -1346,8 +1346,6 @@ namespace tfgame.Controllers
         public ActionResult RenameSkill(string oldSkillName, string newSkillName, bool practice)
         {
 
-            practice = true;
-
             // assert only admins can view this
             if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
             {
@@ -1355,6 +1353,15 @@ namespace tfgame.Controllers
             }
 
             string output = "<br><br>";
+
+            if (practice == true)
+            {
+                output += "<b>PRACTICE MODE</b>";
+            }
+            else
+            {
+                output += "<b>LIVE EDIT MODE</b>";
+            }
 
             oldSkillName = oldSkillName.Trim();
             newSkillName = newSkillName.Trim();
@@ -1402,8 +1409,6 @@ namespace tfgame.Controllers
         public ActionResult RenameForm(string oldFormName, string newFormName, bool practice)
         {
 
-            practice = true;
-
             // assert only admins can view this
             if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
             {
@@ -1411,6 +1416,15 @@ namespace tfgame.Controllers
             }
 
             string output = "<br><br>";
+
+            if (practice == true)
+            {
+                output += "<b>PRACTICE MODE</b>";
+            }
+            else
+            {
+                output += "<b>LIVE EDIT MODE</b>";
+            }
 
             oldFormName = oldFormName.Trim();
             newFormName = newFormName.Trim();
@@ -1519,8 +1533,6 @@ namespace tfgame.Controllers
         public ActionResult RenameItem(string oldItemName, string newItemName, bool practice)
         {
 
-            practice = true;
-
             // assert only admins can view this
             if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
             {
@@ -1528,6 +1540,15 @@ namespace tfgame.Controllers
             }
 
             string output = "<br><br>";
+
+            if (practice == true)
+            {
+                output += "<b>PRACTICE MODE</b>";
+            }
+            else
+            {
+                output += "<b>LIVE EDIT MODE</b>";
+            }
 
             oldItemName = oldItemName.Trim();
             newItemName = newItemName.Trim();

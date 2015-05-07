@@ -12,5 +12,7 @@ namespace tfgame.dbModels.Models
         public int FriendMembershipId { get; set; }
         public DateTime FriendsSince { get; set; }
         public bool IsAccepted { get; set; }
+        public string OwnerNicknameForFriend { get; set; }
+        public string FriendNicknameForOwner { get; set; }
     }
 }

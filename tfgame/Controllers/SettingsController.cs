@@ -693,7 +693,100 @@ namespace tfgame.Controllers
             return View(output);
         }
 
+        [Authorize]
+        public ActionResult SetFriendNickname(int id)
+        {
+            Player me = PlayerProcedures.GetPlayerFromMembership();
+            Friend friend = FriendProcedures.GetFriend(id);
 
+            Player pFriend;
+
+            if (friend.OwnerMembershipId == me.MembershipId)
+            {
+                pFriend = PlayerProcedures.GetPlayerFromMembership(friend.FriendMembershipId);
+            }
+            else
+            {
+                pFriend = PlayerProcedures.GetPlayerFromMembership(friend.OwnerMembershipId);
+            }
+
+            if (friend.OwnerMembershipId != me.MembershipId && friend.OwnerMembershipId != pFriend.MembershipId)
+            {
+                TempData["Error"] = "This player is not a friend with you.";
+                return RedirectToAction("MyFriends", "PvP");
+            }
+
+            SetFriendNicknameViewModel output = new SetFriendNicknameViewModel
+            {
+                Owner = me,
+                OwnerMembershipId = me.MembershipId,
+                Friend = pFriend,
+                FriendMembershipId = pFriend.MembershipId,
+                Nickname = "[SET NICKNAME]",
+                FriendshipId = friend.Id,
+            };
+
+                return View(output);
+        }
+
+        [Authorize]
+        public ActionResult SetFriendNicknameSend(SetFriendNicknameViewModel input)
+        {
+
+            if (input.Nickname == null)
+            {
+                input.Nickname = "";
+            }
+            input.Nickname = input.Nickname.Trim();
+
+            // asset the nickname falls within an appropriate range
+            if (input.Nickname.Length == 0)
+            {
+                TempData["Error"] = "You must provide a nickname.";
+                return RedirectToAction("MyFriends", "PvP");
+            }
+            else if (input.Nickname.Length > 50)
+            {
+                TempData["Error"] = "Nicknames must be under 50 characters.";
+                return RedirectToAction("MyFriends", "PvP");
+            }
+
+            Player me = PlayerProcedures.GetPlayerFromMembership();
+            Friend friend = FriendProcedures.GetFriend(input.FriendshipId);
+
+            Player pFriend;
+
+            // this player is the owner of the friendship
+            if (friend.OwnerMembershipId == me.MembershipId)
+            {
+                pFriend = PlayerProcedures.GetPlayerFromMembership(friend.FriendMembershipId);
+            }
+
+            // this player is the receiver of the friendship
+            else
+            {
+                pFriend = PlayerProcedures.GetPlayerFromMembership(friend.OwnerMembershipId);
+            }
+
+            if (friend.OwnerMembershipId != me.MembershipId && friend.OwnerMembershipId != pFriend.MembershipId)
+            {
+                TempData["Error"] = "This player is not a friend with you.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            // set the nickname based on whether the current player is the owner or the friend
+            else if (friend.OwnerMembershipId == me.MembershipId)
+            {
+                TempData["Result"] = FriendProcedures.OwnerSetNicknameOfFriend(friend.Id, input.Nickname);
+            }
+            else if (friend.OwnerMembershipId == pFriend.MembershipId)
+            {
+                TempData["Result"] = FriendProcedures.FriendSetNicknameOfOwner(friend.Id, input.Nickname);
+            }
+
+            
+            return RedirectToAction("MyFriends", "PvP");
+        }
        
 
 	}

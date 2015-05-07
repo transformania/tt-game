@@ -10,5 +10,6 @@ namespace tfgame.ViewModels
     {
         public Friend dbFriend;
         public Player dbPlayer;
+        public int friendId;
     }
 }

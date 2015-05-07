@@ -430,6 +430,7 @@
     <Compile Include="ViewModels\RestockList.cs" />
     <Compile Include="ViewModels\SelectListItem.cs" />
     <Compile Include="ViewModels\ServerBalance.cs" />
+    <Compile Include="ViewModels\SetFriendNicknameViewModel.cs" />
     <Compile Include="ViewModels\SkillBookViewModel.cs" />
     <Compile Include="ViewModels\SkillViewModel.cs" />
     <Compile Include="ViewModels\StaticEffect.cs" />
@@ -2198,6 +2199,7 @@
     <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_19.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Statistics\Alpha_19.cshtml" />
     <Content Include="Views\PvPAdmin\RenameStuff.cshtml" />
+    <Content Include="Views\Settings\SetFriendNickname.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -24,6 +24,12 @@
     </div><!-- /.container-fluid -->
 </nav>
 
+<div>
+    <p class="infoMessage result">@Html.Raw(ViewBag.Result)</p>
+    <p class="infoMessage error">@ViewBag.ErrorMessage</p>
+    <p class="infoMessage suberror">@ViewBag.SubErrorMessage</p>
+</div>
+
 
 @{
     if (Model.ConfirmedFriends.Where(m => m.dbPlayer != null).Count() > 0)
@@ -37,8 +43,9 @@
                 <thead>
                     <tr>
                         <th style="width: 55%;">Name</th>
-                        <th style="width: 30%;">Last Activity</th>
+                        <th style="width: 20%;">Last Activity</th>
                         <th style="width: 15%;">Delete</th>
+                        <th style="width: 10%;">Nickname</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -73,6 +80,22 @@
                         @Html.ActionLink("Defriend", "RespondToFriendRequest", "PvP", new { id = fp.dbFriend.Id, response = "defriend" }, null)
                     </td>
 
+                    <td>
+
+                        
+            @if (fp.dbPlayer.MembershipId != fp.dbFriend.OwnerMembershipId)
+            {
+                @Html.ActionLink(fp.dbFriend.OwnerNicknameForFriend, "SetFriendNickname", "Settings", new { id = fp.friendId }, null)
+            }
+            else
+            {
+                @Html.ActionLink(fp.dbFriend.FriendNicknameForOwner, "SetFriendNickname", "Settings", new { id = fp.friendId }, null)
+            }
+                       
+
+
+                    </td>
+
                 }
 
             </tr>
@@ -83,141 +106,141 @@
             </table>
 
         </div>
+    }
+    else
+    {
+        <div class="containerInner">
+            <p class="center-block">You don't have any friends yet this round! Maybe it's time to make some new allies?</p>
+        </div>
+    }
+}
+
+
+
+
+@{
+    if (Model.RequestsForMe.Where(m => m.dbPlayer != null).Count() > 0)
+    {
+
+        <div class="specialBox specialHeader topBorder">
+            <b>Requests sent to You (@Model.RequestsForMe.Where(m => m.dbPlayer != null).Count())</b>
+        </div>
+
+
+
+        <div class="containerInner">
+            <table class="table table-hover messageTable">
+
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (tfgame.ViewModels.FriendPlayerViewModel fp2 in Model.RequestsForMe.Where(m => m.dbPlayer != null))
+                    {
+                        <tr>
+                            <td>@Html.ActionLink(fp2.dbPlayer.GetFullName() + "  (#" + fp2.dbPlayer.MembershipId + ")", "LookAtPlayer", "PvP", new { id = fp2.dbPlayer.Id }, null)</td>
+                            <td>@Html.ActionLink("Accept", "RespondToFriendRequest", "PvP", new { id = fp2.dbFriend.Id, response = "accept" }, null)</td>
+                            <td>@Html.ActionLink("Deny", "RespondToFriendRequest", "PvP", new { id = fp2.dbFriend.Id, response = "deny" }, null)</td>
+                        </tr>
                     }
-                    else
+                </tbody>
+
+            </table>
+        </div>
+
+
+    }
+    else
+    {
+        <div class="containerInner" style="padding-top:0px !important;">
+            <p class="center-block">You don't have any unaccepted requests sent to you.</p>
+        </div>
+    }
+}
+
+
+@{
+    if (Model.MyOutgoingRequests.Where(m => m.dbPlayer != null).Count() > 0)
+    {
+        <div class="specialBox specialHeader topBorder">
+            <b>Requests you've sent (@Model.MyOutgoingRequests.Count())</b>
+        </div>
+
+        <div class="containerInner">
+            <table class="table table-hover messageTable">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (tfgame.ViewModels.FriendPlayerViewModel fp3 in Model.MyOutgoingRequests.Where(m => m.dbPlayer != null))
                     {
-                        <div class="containerInner">
-                            <p class="center-block">You don't have any friends yet this round! Maybe it's time to make some new allies?</p>
-                            </div>
-                            }
-                            }
+                        <tr>
+                            <td>
+                                @Html.ActionLink(fp3.dbPlayer.GetFullName() + "", "LookAtPlayer", "PvP", new { id = fp3.dbPlayer.Id }, null)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Cancel", "RespondToFriendRequest", "PvP", new { id = fp3.dbFriend.Id, response = "cancel" }, null)
+                            </td>
+
+                        </tr>
+                    }
 
 
 
 
-                            @{
-                                if (Model.RequestsForMe.Where(m => m.dbPlayer != null).Count() > 0)
-                                {
+                </tbody>
+            </table>
+        </div>
 
-                                    <div class="specialBox specialHeader topBorder">
-                                        <b>Requests sent to You (@Model.RequestsForMe.Where(m => m.dbPlayer != null).Count())</b>
-                                    </div>
-
-
-
-                                    <div class="containerInner">
-                                        <table class="table table-hover messageTable">
-
-                                            <thead>
-                                                <tr>
-                                                    <th>Name</th>
-                                                    <th></th>
-                                                    <th></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-
-                                                @foreach (tfgame.ViewModels.FriendPlayerViewModel fp2 in Model.RequestsForMe.Where(m => m.dbPlayer != null))
-                    {
-                                                    <tr>
-                                                        <td>@Html.ActionLink(fp2.dbPlayer.GetFullName() + "  (#" + fp2.dbPlayer.MembershipId + ")", "LookAtPlayer", "PvP", new { id = fp2.dbPlayer.Id }, null)</td>
-                                                        <td>@Html.ActionLink("Accept", "RespondToFriendRequest", "PvP", new { id = fp2.dbFriend.Id, response = "accept" }, null)</td>
-                                                        <td>@Html.ActionLink("Deny", "RespondToFriendRequest", "PvP", new { id = fp2.dbFriend.Id, response = "deny" }, null)</td>
-                                                    </tr>
-                                                }
-                                            </tbody>
-
-                                        </table>
-                                    </div>
-
-
-                                }
-                                else
-                                {
-                                    <div class="containerInner"  style="padding-top:0px !important;">
-                                        <p class="center-block">You don't have any unaccepted requests sent to you.</p>
-                                    </div>
-                                }
-                            }
-
-
-                            @{
-                                if (Model.MyOutgoingRequests.Where(m => m.dbPlayer != null).Count() > 0)
-                                {
-                                    <div class="specialBox specialHeader topBorder">
-                                        <b>Requests you've sent (@Model.MyOutgoingRequests.Count())</b>
-                                    </div>
-
-                                    <div class="containerInner">
-                                        <table class="table table-hover messageTable">
-                                            <thead>
-                                                <tr>
-                                                    <th>Name</th>
-                                                    <th></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-
-                                                @foreach (tfgame.ViewModels.FriendPlayerViewModel fp3 in Model.MyOutgoingRequests.Where(m => m.dbPlayer != null))
-                    {
-                                                    <tr>
-                                                        <td>
-                                                           @Html.ActionLink(fp3.dbPlayer.GetFullName() + "", "LookAtPlayer", "PvP", new { id = fp3.dbPlayer.Id }, null)
-                                                        </td>
-                                                        <td>
-                                                            @Html.ActionLink("Cancel", "RespondToFriendRequest", "PvP", new { id = fp3.dbFriend.Id, response = "cancel" }, null)
-                                                        </td>
-
-                                                    </tr>
-                                                }
-
-
-
-
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-                                }
-                                else
-                                {
-                                    <div class="containerInner" style="padding-top:0px !important;">
-                                        <p class="center-block">You don't have any unaccepted friend requests that you have sent out.</p>
-                                    </div>
-                                }
-                            }
+    }
+    else
+    {
+        <div class="containerInner" style="padding-top:0px !important;">
+            <p class="center-block">You don't have any unaccepted friend requests that you have sent out.</p>
+        </div>
+    }
+}
 
 <div class="containerInner" style="padding-top:0px !important;">
     <p class="center-block">You may have more friends who have not yet made a character this round.  They will appear on this page when they have.</p>
-    </div>
+</div>
 
 
-    <style>
-        h1 {
-            text-align: center;
-        }
+<style>
+    h1 {
+        text-align: center;
+    }
 
-        .friendListing {
-            width: 100%;
-            border: 1px solid lightgray;
-            position: relative;
-            float: left;
-            margin-top: 5px;
-            padding: 0;
-        }
+    .friendListing {
+        width: 100%;
+        border: 1px solid lightgray;
+        position: relative;
+        float: left;
+        margin-top: 5px;
+        padding: 0;
+    }
 
-        .friendonline {
-            color: green;
-        }
+    .friendonline {
+        color: green;
+    }
 
-        .friendoffline {
-            color: red;
-        }
+    .friendoffline {
+        color: red;
+    }
 
-        .divblock {
-            position: relative;
-            float: left;
-            width: 100%;
-        }
-    </style>
+    .divblock {
+        position: relative;
+        float: left;
+        width: 100%;
+    }
+</style>
 

@@ -26,10 +26,18 @@ namespace tfgame.Procedures
                 friend.FriendMembershipId = player.MembershipId;
                 friend.IsAccepted = false;
                 friend.FriendsSince = DateTime.UtcNow;
+                friend.FriendNicknameForOwner = "[UNASSIGNED]";
+                friend.OwnerNicknameForFriend = "[UNASSIGNED]";
 
                 friendRepo.SaveFriend(friend);
             }
 
+        }
+
+        public static Friend GetFriend(int friendId)
+        {
+            IFriendRepository friendRepo = new EFFriendRepository();
+            return friendRepo.Friends.FirstOrDefault(f => f.Id == friendId);
         }
 
         public static string DeleteFriend(int friendId)
@@ -96,6 +104,7 @@ namespace tfgame.Procedures
                         {
                             friendPlayer.dbPlayer = plyr;
                             friendPlayer.dbFriend = friend;
+                            friendPlayer.friendId = friend.Id;
                             output.Add(friendPlayer);
                         }
                     }
@@ -112,7 +121,7 @@ namespace tfgame.Procedures
                     {
                         friendPlayer.dbPlayer = playerRepo.Players.FirstOrDefault(p => p.MembershipId == friend.OwnerMembershipId);
                         friendPlayer.dbFriend = friend;
-
+                        friendPlayer.friendId = friend.Id;
                         output.Add(friendPlayer);
                     }
                     catch
@@ -174,6 +183,24 @@ namespace tfgame.Procedures
             {
                 return "";
             }
+        }
+
+        public static string OwnerSetNicknameOfFriend(int id, string input)
+        {
+            IFriendRepository friendRepo = new EFFriendRepository();
+            Friend friend = friendRepo.Friends.FirstOrDefault(f => f.Id == id);
+            friend.OwnerNicknameForFriend = input;
+            friendRepo.SaveFriend(friend);
+            return "You set the nickname of this friend to '" + input + "'.";
+        }
+
+        public static string FriendSetNicknameOfOwner(int id, string input)
+        {
+            IFriendRepository friendRepo = new EFFriendRepository();
+            Friend friend = friendRepo.Friends.FirstOrDefault(f => f.Id == id);
+            friend.FriendNicknameForOwner = input;
+            friendRepo.SaveFriend(friend);
+            return "You set the nickname of this friend to '" + input + "'.";
         }
 
     }

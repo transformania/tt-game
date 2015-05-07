@@ -2947,10 +2947,10 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult MyFriends()
         {
-            if (WebSecurity.CurrentUserId == -1)
-            {
-                return View("~/Views/PvP/LoginRequired.cshtml");
-            }
+
+            ViewBag.ErrorMessage = TempData["Error"];
+            ViewBag.SubErrorMessage = TempData["SubError"];
+            ViewBag.Result = TempData["Result"];
 
             FriendPageViewModel output = new FriendPageViewModel();
 

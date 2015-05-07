@@ -66,6 +66,7 @@ namespace tfgame.Procedures.BossProcedures
                     SpawnTurn = 0,
                     DoNotRecycleMe = true,
                     sVar1 = ";", // this is used to keep track of which players have interacted with her by appending their id to this string
+                    sVar2 = "", // this is used to keep track of which locations Jewdewfae has been in during the past cycle
                     Var1 = 0, // this keeps track of how many people she has played with in the current location
                     Var2 = 0 // this stores the turn number of Jewdewfae's last move
                 };
@@ -79,24 +80,42 @@ namespace tfgame.Procedures.BossProcedures
         {
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player fae = playerRepo.Players.FirstOrDefault(f => f.FirstName == "Jewdewfae" && f.LastName == "the Pervfae");
+            Player fae = playerRepo.Players.FirstOrDefault(f => f.MembershipId == AIProcedures.JewdewfaeMembershipId);
 
-            FairyChallengeViewModel fairyChallenges = new FairyChallengeViewModel();
-            fairyChallenges.FairyChallengeBags = new List<FairyChallengeBag>();
+            IJewdewfaeEncounterRepository faeRepo = new EFJewdewfaeEncounterRepository();
 
-            // load data from the xml
-            string filename = System.Web.HttpContext.Current.Server.MapPath("~/XMLs/FairyChallengeText/template.xml");
-            System.Xml.Serialization.XmlSerializer reader = new System.Xml.Serialization.XmlSerializer(typeof(FairyChallengeViewModel));
-            System.IO.StreamReader file = new System.IO.StreamReader(filename);
-            fairyChallenges = (FairyChallengeViewModel)reader.Deserialize(file);
+             IAIDirectiveRepository aiRepo = new EFAIDirectiveRepository();
+            AIDirective directive = aiRepo.AIDirectives.FirstOrDefault(i => i.OwnerId == fae.Id);
 
-            List<string> fairyLocations = fairyChallenges.FairyChallengeBags.Where(f => f.dbLocationName != fae.dbLocationName).Select(f => f.dbLocationName).ToList();
-            double max = fairyLocations.Count();
+            // add fae's current location to the list of places visited
+            directive.sVar2 += fae.dbLocationName + ";";
+
+            List<string> fairyLocations = faeRepo.JewdewfaeEncounters.Where(f => f.IsLive == true).Select(f => f.dbLocationName).ToList();
+
+            List<string> visitedFairyLocations = directive.sVar2.Split(';').Where(f => f.Length > 1).ToList();
+
+            List<string> possibleLocations = fairyLocations.Except(visitedFairyLocations).ToList();
+
+            // if there are no locations left to visit, reset
+            if (possibleLocations.Count() == 0)
+            {
+                possibleLocations = fairyLocations;
+                directive.sVar2 = "";
+            }
+
+            double max = possibleLocations.Count();
             Random rand = new Random();
             double num = rand.NextDouble();
 
             int index = Convert.ToInt32(Math.Floor(num * max));
-            string newLocation = fairyLocations.ElementAt(index);
+            string newLocation = possibleLocations.ElementAt(index);
+
+          
+            directive.Var1 = 0;
+            directive.Var2 = PvPWorldStatProcedures.GetWorldTurnNumber();
+            directive.sVar1 = ";";
+           
+            aiRepo.SaveAIDirective(directive);
 
             LocationLogProcedures.AddLocationLog(fae.dbLocationName, "<b>Jewdewfae got bored and flew away from here.</b>");
 
@@ -105,19 +124,14 @@ namespace tfgame.Procedures.BossProcedures
 
             LocationLogProcedures.AddLocationLog(fae.dbLocationName, "<b>Jewdewfae flew here.  She looks bored and wants to play with someone.</b>");
 
-            IAIDirectiveRepository aiRepo = new EFAIDirectiveRepository();
-            AIDirective directive = aiRepo.AIDirectives.FirstOrDefault(i => i.OwnerId == fae.Id);
-            directive.Var1 = 0;
-            directive.Var2 = PvPWorldStatProcedures.GetWorldTurnNumber();
-            directive.sVar1 = ";";
-            aiRepo.SaveAIDirective(directive);
+            
 
 
         }
 
         public static decimal AddInteraction(Player player) {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player fae = playerRepo.Players.FirstOrDefault(f => f.FirstName == "Jewdewfae" && f.LastName == "the Pervfae");
+            Player fae = playerRepo.Players.FirstOrDefault(f => f.MembershipId == AIProcedures.JewdewfaeMembershipId);
 
             IAIDirectiveRepository aiRepo = new EFAIDirectiveRepository();
             AIDirective directive = aiRepo.AIDirectives.FirstOrDefault(i => i.OwnerId == fae.Id);
@@ -157,19 +171,10 @@ namespace tfgame.Procedures.BossProcedures
 
         }
 
-        public static FairyChallengeBag GetFairyChallengeInfoAtLocation(string location)
+        public static JewdewfaeEncounter GetFairyChallengeInfoAtLocation(string location)
         {
-
-            FairyChallengeViewModel fairyChallenges = new FairyChallengeViewModel();
-            fairyChallenges.FairyChallengeBags = new List<FairyChallengeBag>();
-
-            // load data from the xml
-            string filename = System.Web.HttpContext.Current.Server.MapPath("~/XMLs/FairyChallengeText/template.xml");
-            System.Xml.Serialization.XmlSerializer reader = new System.Xml.Serialization.XmlSerializer(typeof(FairyChallengeViewModel));
-            System.IO.StreamReader file = new System.IO.StreamReader(filename);
-            fairyChallenges = (FairyChallengeViewModel)reader.Deserialize(file);
-
-            return fairyChallenges.FairyChallengeBags.FirstOrDefault(f => f.dbLocationName == location);
+            IJewdewfaeEncounterRepository repo = new EFJewdewfaeEncounterRepository();
+            return repo.JewdewfaeEncounters.FirstOrDefault(e => e.dbLocationName == location);
         }
 
         public static bool PlayerHasHadRecentInteraction(Player player, Player fae)

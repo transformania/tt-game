@@ -3565,7 +3565,7 @@ namespace tfgame.Controllers
                  return RedirectToAction("Play");
              }
 
-             FairyChallengeBag output = tfgame.Procedures.BossProcedures.BossProcedures_Fae.GetFairyChallengeInfoAtLocation(fae.dbLocationName);
+             JewdewfaeEncounter output = tfgame.Procedures.BossProcedures.BossProcedures_Fae.GetFairyChallengeInfoAtLocation(fae.dbLocationName);
 
              output.IntroText = output.IntroText.Replace("[", "<").Replace("]", ">");
              output.CorrectFormText = output.CorrectFormText.Replace("[", "<").Replace("]", ">");
@@ -3630,7 +3630,7 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play");
             }
 
-            FairyChallengeBag output = tfgame.Procedures.BossProcedures.BossProcedures_Fae.GetFairyChallengeInfoAtLocation(fae.dbLocationName);
+            JewdewfaeEncounter output = tfgame.Procedures.BossProcedures.BossProcedures_Fae.GetFairyChallengeInfoAtLocation(fae.dbLocationName);
 
             output.IntroText = output.IntroText.Replace("[", "<").Replace("]", ">");
             output.CorrectFormText = output.CorrectFormText.Replace("[", "<").Replace("]", ">");

@@ -238,7 +238,7 @@ namespace tfgame.Controllers
         public ActionResult PublishSpell(int id)
         {
 
-            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false && User.IsInRole(PvPStatics.Permissions_Publisher) == false)
             {
                 return View("ContributorBioList");
             }
@@ -342,7 +342,7 @@ namespace tfgame.Controllers
 
         public ActionResult PublishForm(int id)
         {
-            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false && User.IsInRole(PvPStatics.Permissions_Publisher) == false)
             {
                 return View("ContributorBioList");
             }
@@ -501,7 +501,7 @@ namespace tfgame.Controllers
         public ActionResult PublishItem(int id)
         {
 
-            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false && User.IsInRole(PvPStatics.Permissions_Publisher) == false)
             {
                 return View("ContributorBioList");
             }

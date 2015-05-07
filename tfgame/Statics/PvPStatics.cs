@@ -84,6 +84,7 @@ namespace tfgame.Statics
         public const string Permissions_Moderator = "moderator";
         public const string Permissions_MultiAccountWhitelist = "whitelisted";
         public const string Permissions_Proofreader = "proofreader";
+        public const string Permissions_Publisher = "publisher";
         public const string Permissions_Artist = "artist";
         public const string Permissions_JSON = "json";
         public const string Permissions_Previewer = "previewer";

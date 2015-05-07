@@ -54,7 +54,12 @@
         {
             <p class="good">You are on the proofreaders list.</p>
         }
-        
+
+        if (User.IsInRole(PvPStatics.Permissions_Publisher) == true)
+        {
+            <p class="good">You are on the publishers list.</p>
+        }
+
         if (User.IsInRole(PvPStatics.Permissions_Previewer) == true)
         {
             <p class="good">You are on the contribution previewer list.  @Html.ActionLink("Preview Contributions", "ApproveContributionList", "PvPAdmin")<br /></p>

@@ -641,7 +641,7 @@
         @Html.ActionLink("Back to game (Don't forget to save!)", "Play", "PvP")
 
         @{
-            if (User.IsInRole(PvPStatics.Permissions_Admin) == true)
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == true || User.IsInRole(PvPStatics.Permissions_Publisher) == true)
             {
                 <br /><br />
                 <p>@Html.Raw(ViewBag.StaticSkillExists)</p>
@@ -650,11 +650,17 @@
                 @Html.ActionLink("Publish Spell", "PublishSpell", "Contribution", new { id = Model.Id }, null)<br />
                 @Html.ActionLink("Publish Form", "PublishForm", "Contribution", new { id = Model.Id }, null)<br />
                 @Html.ActionLink("Publish Item", "PublishItem", "Contribution", new { id = Model.Id }, null)<br />
+
+            }
+
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == true)
+            {
                 @Html.ActionLink("Mark as Live", "MarkAsLive", "Contribution", new { id = Model.Id }, null)<br />
                 @Html.ActionLink("Release Spell", "SetSpellAsLive", "Contribution", new { id = Model.Id }, null)<br />
                 @Html.ActionLink("Check if statics exist", "StaticsExist", "Contribution", new { id = Model.Id }, null)<br />
             }
-        }
+
+}
 
     <input type="button" id="disableReadonly" value="Click to enable readonly fields (this is only for updating older contributions and admins/proofreaders.  Do not use this for any new forms except with permission.)" />
 

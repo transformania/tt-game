@@ -364,7 +364,7 @@ namespace tfgame.Procedures
                 merchant.LastCombatTimestamp = DateTime.UtcNow;
                 merchant.LastCombatAttackedTimestamp = DateTime.UtcNow;
                 merchant.OnlineActivityTimestamp = DateTime.UtcNow;
-                merchant.Form = "botform_clothes_merchant";
+                merchant.Form = "form_Soul_Item_Vendor_Judoo";
                 merchant.NonPvP_GameOverSpellsAllowedLastChange = DateTime.UtcNow;
                 merchant.dbLocationName = "270_west_9th_ave"; // Lindella starts her rounds here
                 merchant.Gender = "female";
@@ -424,7 +424,7 @@ namespace tfgame.Procedures
 
                 string oldLocation = merchant.dbLocationName;
 
-                merchant.Form = "botform_clothes_merchant";
+                merchant.Form = "form_Soul_Item_Vendor_Judoo";
                 merchant.Level = 5;
 
                 AIDirective directive = AIDirectiveProcedures.GetAIDirective(merchant.Id);

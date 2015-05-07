@@ -54,6 +54,7 @@ namespace tfgame.dbModels.Concrete
         public DbSet<Furniture> Furnitures { get; set; }
         public DbSet<MindControl> MindControls { get; set; }
         public DbSet<BookReading> BookReadings { get; set; }
+        public DbSet<JewdewfaeEncounter> JewdewfaeEncounters { get; set; }
 
         public DbSet<DbStaticFurniture> DbStaticFurniture { get; set; }
         public DbSet<CovenantLog> CovenantLogs { get; set; }

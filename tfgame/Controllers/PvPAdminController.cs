@@ -1039,10 +1039,8 @@ namespace tfgame.Controllers
             {
                 return View("Play", "PvP");
             }
-
-            AIProcedures.SpawnBartender();
             
-            NoticeProcedures.PushNotice(PlayerProcedures.GetPlayerFromMembership(), "test");
+         //   NoticeProcedures.PushNotice(PlayerProcedures.GetPlayerFromMembership(), "test");
 
             return RedirectToAction("Index");
         }
@@ -2170,6 +2168,122 @@ namespace tfgame.Controllers
         {
             IServerLogRepository serverLogRepo = new EFServerLogRepository();
             return View(serverLogRepo.ServerLogs);
+        }
+
+        public ActionResult FaeList()
+        {
+
+            // assert only admins can view this
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            {
+                return View("Play", "PvP");
+            }
+
+            IJewdewfaeEncounterRepository repo = new EFJewdewfaeEncounterRepository();
+            IEnumerable<JewdewfaeEncounter> encounters = repo.JewdewfaeEncounters.ToList();
+
+            return View(encounters);
+
+        }
+
+        public ActionResult WriteFae(int id)
+        {
+            // assert only admins can view this
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            {
+                return View("Play", "PvP");
+            }
+
+            IJewdewfaeEncounterRepository repo = new EFJewdewfaeEncounterRepository();
+            JewdewfaeEncounter encounter = repo.JewdewfaeEncounters.FirstOrDefault(e => e.Id == id);
+
+            if (encounter == null)
+            {
+                encounter = new JewdewfaeEncounter
+                {
+                    IsLive = false,
+                };
+            }
+
+            if (encounter.IntroText == null)
+            {
+                encounter.IntroText = "";
+            }
+
+            if (encounter.FailureText == null)
+            {
+                encounter.FailureText = "";
+            }
+
+            if (encounter.CorrectFormText == null)
+            {
+                encounter.CorrectFormText = "";
+            }
+
+
+            ViewBag.IntroText = encounter.IntroText.Replace("[", "<").Replace("]", ">");
+            ViewBag.FailureText = encounter.FailureText.Replace("[", "<").Replace("]", ">");
+            ViewBag.CorrectFormText = encounter.CorrectFormText.Replace("[", "<").Replace("]", ">");
+
+            ViewBag.LocationExists = "";
+            ViewBag.FormExists = "";
+
+            Location loc = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == encounter.dbLocationName);
+
+            if (loc == null)
+            {
+                ViewBag.LocationExists = "<span class='bad'>LOCATION " + encounter.dbLocationName + " DOES NOT EXIST.</span>";
+            } else {
+                ViewBag.LocationExists = "<span class='good'>LOCATION " + encounter.dbLocationName + " EXISTs.</span>";
+            }
+
+            DbStaticForm form = FormStatics.GetForm(encounter.RequiredForm);
+
+            if (form == null)
+            {
+                ViewBag.FormExists = "<span class='bad'>FORM " + encounter.RequiredForm + " DOES NOT EXIST.</span>";
+            }
+            else
+            {
+                ViewBag.FormExists = "<span class='good'>FORM " + encounter.RequiredForm + " EXISTs.</span>";
+            }
+
+            return View(encounter);
+        }
+
+        public ActionResult WriteFaeSend(JewdewfaeEncounter input)
+        {
+            // assert only admins can do this
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            {
+                return View("Play", "PvP");
+            }
+
+            input.RequiredForm = input.RequiredForm.Trim();
+            input.dbLocationName = input.dbLocationName.Trim();
+
+            IJewdewfaeEncounterRepository repo = new EFJewdewfaeEncounterRepository();
+
+            JewdewfaeEncounter encounter = repo.JewdewfaeEncounters.FirstOrDefault(f => f.Id == input.Id);
+
+            if (encounter == null)
+            {
+                encounter = new JewdewfaeEncounter();
+            }
+
+          //  encounter.Id = input.Id;
+            encounter.dbLocationName = input.dbLocationName;
+            encounter.RequiredForm = input.RequiredForm;
+            encounter.IsLive = input.IsLive;
+            encounter.FailureText = input.FailureText;
+            encounter.IntroText = input.IntroText;
+            encounter.CorrectFormText = input.CorrectFormText;
+
+            repo.SaveJewdewfaeEncounter(encounter);
+
+            return RedirectToAction("FaeList","PvPAdmin");
+
+
         }
 
         public ActionResult WriteFaeEncounter()

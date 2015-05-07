@@ -246,6 +246,7 @@
     <Compile Include="dbModels\Abstract\IInanimateXPRepository.cs" />
     <Compile Include="dbModels\Abstract\IItemRepository.cs" />
     <Compile Include="dbModels\Abstract\IItemTransferLogRepository.cs" />
+    <Compile Include="dbModels\Abstract\IJewdewfaeEncounterRepository.cs" />
     <Compile Include="dbModels\Abstract\ILocationInfoRepository.cs" />
     <Compile Include="dbModels\Abstract\ILocationLogRepository.cs" />
     <Compile Include="dbModels\Abstract\IMessageRepository.cs" />
@@ -277,6 +278,7 @@
     <Compile Include="dbModels\Concrete\EFDonatorRepository.cs" />
     <Compile Include="dbModels\Concrete\EFFurnitureRepository.cs" />
     <Compile Include="dbModels\Concrete\EFItemTransferLogRepository.cs" />
+    <Compile Include="dbModels\Concrete\EFJewdewfaeEncounterRepository.cs" />
     <Compile Include="dbModels\Concrete\EFLocationInfoRepository.cs" />
     <Compile Include="dbModels\Concrete\EFMindControlRepository.cs" />
     <Compile Include="dbModels\Concrete\EFPlayerExtraRepository.cs" />
@@ -328,6 +330,7 @@
     <Compile Include="dbModels\Models\InanimateXP.cs" />
     <Compile Include="dbModels\Models\Item.cs" />
     <Compile Include="dbModels\Models\ItemTransferLog.cs" />
+    <Compile Include="dbModels\Models\JewdewfaeEncounter.cs" />
     <Compile Include="dbModels\Models\LocationInfo.cs" />
     <Compile Include="dbModels\Models\LocationLog.cs" />
     <Compile Include="dbModels\Models\Message.cs" />
@@ -2200,6 +2203,8 @@
     <Content Include="Views\PvP\RoundLeaderboards\Statistics\Alpha_19.cshtml" />
     <Content Include="Views\PvPAdmin\RenameStuff.cshtml" />
     <Content Include="Views\Settings\SetFriendNickname.cshtml" />
+    <Content Include="Views\PvPAdmin\FaeList.cshtml" />
+    <Content Include="Views\PvPAdmin\WriteFae.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

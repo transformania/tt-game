@@ -20,5 +20,6 @@ namespace tfgame.dbModels.Models
         public DateTime Timestamp { get; set; }
 
         public bool DoNotRecycleMe { get; set; }
+        public bool ReceiverMarkedAsDeleted { get; set; }
     }
 }

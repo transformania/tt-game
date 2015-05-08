@@ -9,17 +9,17 @@
 
     if (Model.TurnNumber >= PvPStatics.RoundDuration)
     {
-        <div class="specialBox specialBox2 specialNoticeBox"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>The round has ended.  Check back soon to start again on a fresh round.<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></div>
+        <div class="specialBox specialBox2 specialNoticeBox"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> The round has ended.  Check back soon to start again on a fresh round. <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></div>
     }
 
     if (Model.InbetweenRoundsNonChaos == true)
     {
-        <div class="specialBox specialBox2 specialNoticeBox"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>The round has ended but is NOT currently in chaos mode.  Check the news page for updates on when next round will start.<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></div>
+        <div class="specialBox specialBox2 specialNoticeBox"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> The round has ended but is NOT currently in chaos mode.  Check the news page for updates on when next round will start. <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></div>
     }
 
     if (Model.TurnNumber < PvPStatics.RoundDuration && PvPStatics.ChaosMode == true)
     {
-        <div class="specialBox specialBox2"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>The game is currently in "chaos mode" in which attacks are unlimited.  This is an inbetween round rapid test mode and is not representative of regular in-round gameplay.<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></div>
+        <div class="specialBox specialBox2"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> The game is currently in "chaos mode" in which attacks are unlimited.  This is an inbetween round rapid test mode and is not representative of regular in-round gameplay. <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></div>
     }
 
     if (ViewBag.UpdateInProgress == true)

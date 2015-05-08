@@ -745,7 +745,7 @@ namespace tfgame.Controllers
                 TempData["Error"] = "You must provide a nickname.";
                 return RedirectToAction("MyFriends", "PvP");
             }
-            else if (input.Nickname.Length > 50)
+            else if (input.Nickname.Length > 20)
             {
                 TempData["Error"] = "Nicknames must be under 50 characters.";
                 return RedirectToAction("MyFriends", "PvP");

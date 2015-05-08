@@ -4372,6 +4372,20 @@ namespace tfgame.Controllers
                             };
                             playerRepo.SavePlayer(newDemon);
 
+                            if (newDemon.Level <= 5)
+                            {
+                                ItemProcedures.GiveNewItemToPlayer(newDemon, "item_consumable_spellbook_medium");
+                            }
+                            else if (newDemon.Level <= 7)
+                            {
+                                ItemProcedures.GiveNewItemToPlayer(newDemon, "item_consumable_spellbook_large");
+                            }
+
+                            else if (newDemon.Level > 7)
+                            {
+                                ItemProcedures.GiveNewItemToPlayer(newDemon, "item_consumable_spellbook_giant");
+                            }
+                            
                         }
                         log.AddLog(updateTimer.ElapsedMilliseconds + ":  FINISHED dungeon item / demon spawning");
 

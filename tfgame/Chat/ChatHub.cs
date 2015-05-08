@@ -113,10 +113,10 @@ namespace tfgame.Chat
                     }
                     else
                     {
-                        message = message.Replace("[luxa]", "");
-                        message = message.Replace("[blanca]", "");
-                        message = message.Replace("[poll]", "");
-                        message = message.Replace("[fp]", "");
+                        message = message.Replace("[luxa]", " ");
+                        message = message.Replace("[blanca]", " ");
+                        message = message.Replace("[poll]", " ");
+                        message = message.Replace("[fp]", " ");
                         message += "   [.[" + DateTime.UtcNow.ToShortTimeString() + "].]";
                         Clients.Group(room).addNewMessageToPage(name, message, me.ChatColor);
                         ChatLogProcedures.WriteLogToDatabase(room, name, message);

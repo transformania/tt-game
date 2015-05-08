@@ -107,6 +107,7 @@ namespace tfgame.Chat
                 {
                     if (HttpContext.Current.User.IsInRole(PvPStatics.Permissions_Moderator) || HttpContext.Current.User.IsInRole(PvPStatics.Permissions_Admin))
                     {
+                        message += "   [.[" + DateTime.UtcNow.ToShortTimeString() + "].]";
                         Clients.Group(room).addNewMessageToPage(name, message, me.ChatColor);
                         ChatLogProcedures.WriteLogToDatabase(room, name, message);
                     }

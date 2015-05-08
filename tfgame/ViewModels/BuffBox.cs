@@ -125,8 +125,8 @@ namespace tfgame.ViewModels
         public decimal HealthBonusPercent()
         {
             return Convert.ToDecimal(
-              0.1F * Discipline() +
-              -0.1F * Allure() +
+              0.5F * Discipline() +
+              -0.5F * Allure() +
                 (float)FromForm_HealthBonusPercent +
                (float)FromItems_HealthBonusPercent +
                (float)FromEffects_HealthBonusPercent
@@ -136,81 +136,81 @@ namespace tfgame.ViewModels
         public decimal ManaBonusPercent()
         {
             return Convert.ToDecimal(
-               .2F * Magicka() +
-               -.1F * Succour()
+               1.0F * Magicka() +
+               -.5F * Succour()
             );
         }
 
         public decimal ExtraSkillCriticalPercent()
         {
             return Convert.ToDecimal(
-               .1F * Luck() +
-               -.1F * Discipline()
+               .5F * Luck() +
+               -.5F * Discipline()
             );
         }
 
         public decimal HealthRecoveryPerUpdate()
         {
             return Convert.ToDecimal(
-               .1F * Succour()
+               .5F * Succour()
             );
         }
 
         public decimal ManaRecoveryPerUpdate()
         {
             return Convert.ToDecimal(
-               .1F * Succour()
+               .5F * Succour()
             );
         }
 
         public decimal SneakPercent()
         {
             return Convert.ToDecimal(
-               .1F * Perception() +
-               -.4F * Fortitude() + 
-               .15F * Agility() +
-               -.2F * Allure()
+               .5F * Perception() +
+               -2.0F * Fortitude() + 
+               .75F * Agility() +
+               -1.0F * Allure()
             );
         }
 
         public decimal EvasionPercent()
         {
             return Convert.ToDecimal(
-               -.2F * Fortitude() +
-               .2F * Agility()
+               -1.0F * Fortitude() +
+               1.0F * Agility()
             );
         }
 
         public decimal EvasionNegationPercent()
         {
             return Convert.ToDecimal(
-               .3F * Perception() +
-               .2F * Allure() +
-               -.2F * Magicka()
+               1.5F * Perception() +
+               1.0F * Allure() +
+               -1.0F * Magicka()
             );
         }
 
         public decimal MeditationExtraMana()
         {
             return Convert.ToDecimal(
-               -.1F * Perception() +
-               .1F * Magicka()
+               -.5F * Perception() +
+               .5F * Magicka()
             );
         }
 
         public decimal CleanseExtraHealth()
         {
             return Convert.ToDecimal(
-               .05F * Discipline() +
-               -.05F * Fortitude()
+               .25F * Discipline() +
+               -.25F * Fortitude()
             );
         }
 
         public decimal MoveActionPointDiscount()
         {
             return Convert.ToDecimal(
-               -.005F * Perception() +
-               .008F * Agility() +
+               -.025F * Perception() +
+               .04F * Agility() +
                (float)FromForm_MoveActionPointDiscount +
                (float)FromItems_MoveActionPointDiscount +
                (float)FromEffects_MoveActionPointDiscount
@@ -220,60 +220,60 @@ namespace tfgame.ViewModels
         public decimal SpellExtraTFEnergyPercent()
         {
             return Convert.ToDecimal(
-               .2F * Charisma() +
-               .2F * Magicka() +
-               -.1F * Succour()
+               1.0F * Charisma() +
+               1.0F * Magicka() +
+               -.5F * Succour()
             );
         }
 
         public decimal SpellExtraHealthDamagePercent()
         {
             return Convert.ToDecimal(
-               .2F * Charisma() +
-               -.1F * Discipline() +
-               .3F * Allure()
+               1.0F * Charisma() +
+               -.5F * Discipline() +
+               .15F * Allure()
             );
         }
 
         public decimal CleanseExtraTFEnergyRemovalPercent()
         {
             return Convert.ToDecimal(
-               -.05F * Magicka() +
-               .075F * Luck()
+               -.25F * Magicka() +
+               .375F * Luck()
             );
         }
 
         public decimal SpellMisfireChanceReduction()
         {
             return Convert.ToDecimal(
-               .15F * Perception() +
-               -.05F * Charisma()
+               .75F * Perception() +
+               -.25F * Charisma()
             );
         }
 
         public decimal SpellHealthDamageResistance()
         {
             return Convert.ToDecimal(
-                .2F * Discipline() +
-               -.1F * Charisma() +
-               -.1F * Luck()
+                1.0F * Discipline() +
+               -.5F * Charisma() +
+               -.5F * Luck()
             );
         }
 
         public decimal SpellTFEnergyDamageResistance()
         {
             return Convert.ToDecimal(
-                .2F * Fortitude() +
-                -.1F * Agility() +
-                -.075F * Luck()
+                1.0F * Fortitude() +
+                -.5F * Agility() +
+                -.375F * Luck()
             );
         }
 
         public decimal ExtraInventorySpace()
         {
             decimal amt = Convert.ToDecimal(
-                .05F * Fortitude() +
-                -.05F * Agility()
+                .25F * Fortitude() +
+                -.25F * Agility()
             );
 
             amt = Math.Floor(amt);

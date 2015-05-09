@@ -1002,7 +1002,7 @@ namespace tfgame.Procedures
                 }
 
             }
-            catch
+            catch (Exception)
             {
                 // throw a more user-friendly exception if the XML file can't be loaded for some reason or other.
                 throw new Exception("Failed to load XML for this spell's transformation form.  This is a server error.");

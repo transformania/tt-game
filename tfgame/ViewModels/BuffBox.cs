@@ -231,7 +231,7 @@ namespace tfgame.ViewModels
             return Convert.ToDecimal(
                1.0F * Charisma() +
                -.5F * Discipline() +
-               .15F * Allure()
+               1.5F * Allure()
             );
         }
 

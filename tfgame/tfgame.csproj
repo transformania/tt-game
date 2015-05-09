@@ -1810,6 +1810,7 @@
     <Content Include="Content\custom.scss" />
     <Content Include="Content\fashion.css.map" />
     <Content Include="Content\fashion.scss" />
+    <Content Include="Content\custom.css.map" />
     <None Include="Properties\PublishProfiles\transformania-time.com - Web Deploy.pubxml" />
     <Content Include="Images\back.png" />
     <Content Include="Images\background1.jpg" />

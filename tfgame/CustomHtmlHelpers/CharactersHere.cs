@@ -313,29 +313,34 @@ namespace tfgame.CustomHtmlHelpers
 
             string output = "";
             string strThumb = "";
-
-            if (player.Player.Mobility == "animal")
-            {
-                output = "/Images/PvP/animalPortraits/";
-            }
+            string strPortraitUrl = "";
 
             if (player.Player.Mobility == "full")
             {
                 output = "/Images/PvP/portraits/";
+                strPortraitUrl = player.Form.PortraitUrl;
             }
-
-            if (player.Player.Mobility == "item")
+            else
             {
-                output = "/Images/PvP/itemsPortraits/";
+                strPortraitUrl = ItemStatics.GetStaticItem(player.Form.BecomesItemDbName).PortraitUrl;
+                if (player.Player.Mobility == "animal")
+                {
+                    output = "/Images/PvP/animalPortraits/";
+                }
+                if (player.Player.Mobility == "inanimate")
+                {
+                    output = "/Images/PvP/itemsPortraits/";
+                }
+
             }
 
             if (thumb)
             {
                 strThumb = "Thumbnails/100/";
-                if (!File.Exists(HttpContext.Current.Server.MapPath(output + strThumb + player.Form.PortraitUrl))) strThumb = "";
+                if (!File.Exists(HttpContext.Current.Server.MapPath(output + strThumb + strPortraitUrl))) strThumb = "";
             }
 
-            output += strThumb + player.Form.PortraitUrl;
+            output += strThumb + strPortraitUrl;
             return new MvcHtmlString(output);
         }
 

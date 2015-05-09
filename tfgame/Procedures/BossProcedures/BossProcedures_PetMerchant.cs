@@ -143,7 +143,7 @@ namespace tfgame.Procedures.BossProcedures
                            
 
                         }
-                        catch (Exception e)
+                        catch
                         {
                            
                         }

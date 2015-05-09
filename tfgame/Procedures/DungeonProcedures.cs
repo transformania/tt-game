@@ -269,7 +269,6 @@ namespace tfgame.Procedures
 
          
 
-            IEnumerable<LocationInfo> ownerInfo = null;
 
           
 

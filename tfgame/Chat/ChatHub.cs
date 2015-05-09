@@ -57,8 +57,26 @@ namespace tfgame.Chat
 
             if (name != " " && name != "" && message != "")
             {
-
-                if (message.StartsWith("/dm message"))
+                if (message.Contains("[luxa]") || message.Contains("[blanca]")  || message.Contains("[poll]")  || message.Contains("[fp]"))
+                {
+                    if (HttpContext.Current.User.IsInRole(PvPStatics.Permissions_Moderator) || HttpContext.Current.User.IsInRole(PvPStatics.Permissions_Admin))
+                    {
+                        message += "   [.[" + DateTime.UtcNow.ToShortTimeString() + "].]";
+                        Clients.Group(room).addNewMessageToPage(name, message, me.ChatColor);
+                        ChatLogProcedures.WriteLogToDatabase(room, name, message);
+                    }
+                    else
+                    {
+                        message = message.Replace("[luxa]", " ");
+                        message = message.Replace("[blanca]", " ");
+                        message = message.Replace("[poll]", " ");
+                        message = message.Replace("[fp]", " ");
+                        message += "   [.[" + DateTime.UtcNow.ToShortTimeString() + "].]";
+                        Clients.Group(room).addNewMessageToPage(name, message, me.ChatColor);
+                        ChatLogProcedures.WriteLogToDatabase(room, name, message);
+                    }
+                }
+                else if (message.StartsWith("/dm message"))
                 {
                     message = message.Replace("/dm message", "");
                     string output = "[=[" + name + " [DM]:  " + message + "]=]";
@@ -100,25 +118,6 @@ namespace tfgame.Chat
                         int value = Convert.ToInt32(x.Value);
                         message = "[-[" + name + " rolled a " + PlayerProcedures.RollDie(value) + " (d" + value + ").]-]";
                         Clients.Group(room).addNewMessageToPage("", message);
-                        ChatLogProcedures.WriteLogToDatabase(room, name, message);
-                    }
-                }
-                else if (message.Contains("[luxa]") || message.Contains("[blanca]")  || message.Contains("[poll]")  || message.Contains("[fp]"))
-                {
-                    if (HttpContext.Current.User.IsInRole(PvPStatics.Permissions_Moderator) || HttpContext.Current.User.IsInRole(PvPStatics.Permissions_Admin))
-                    {
-                        message += "   [.[" + DateTime.UtcNow.ToShortTimeString() + "].]";
-                        Clients.Group(room).addNewMessageToPage(name, message, me.ChatColor);
-                        ChatLogProcedures.WriteLogToDatabase(room, name, message);
-                    }
-                    else
-                    {
-                        message = message.Replace("[luxa]", " ");
-                        message = message.Replace("[blanca]", " ");
-                        message = message.Replace("[poll]", " ");
-                        message = message.Replace("[fp]", " ");
-                        message += "   [.[" + DateTime.UtcNow.ToShortTimeString() + "].]";
-                        Clients.Group(room).addNewMessageToPage(name, message, me.ChatColor);
                         ChatLogProcedures.WriteLogToDatabase(room, name, message);
                     }
                 }

@@ -90,13 +90,11 @@ namespace tfgame.Procedures
 
             Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.FirstName == playerFirstName && p.LastName == playerLastName);
 
-            int rank = 0;
 
             Donator donatorStatus = donatorRepo.Donators.FirstOrDefault(p => p.OwnerMembershipId == dbPlayer.MembershipId);
 
             if (donatorStatus == null)
             {
-                rank = 0;
                 dbPlayer.DonatorLevel = 0;
 
             }
@@ -117,13 +115,11 @@ namespace tfgame.Procedures
 
             Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);
 
-            int rank = 0;
 
             Donator donatorStatus = donatorRepo.Donators.FirstOrDefault(p => p.OwnerMembershipId == dbPlayer.MembershipId);
 
             if (donatorStatus == null)
             {
-                rank = 0;
                 dbPlayer.DonatorLevel = 0;
 
             }

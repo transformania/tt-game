@@ -121,7 +121,7 @@ namespace tfgame.Controllers
             try { 
                 ViewBag.BalanceScore = balance*output.Effect_Duration;
             }
-            catch (DivideByZeroException e)
+            catch (DivideByZeroException)
             {
                 ViewBag.BalanceScore = "NEEDS DURATION";
             }

@@ -23,7 +23,7 @@
 </nav>
 
 <div class="containerInner center-block">
-    @using (Html.BeginForm("PlayerLookupSend", "PvP", Model))
+    @using (Html.BeginForm("PlayerLookupSend", "PvP"))
     {
         <p>Partial name<br /></p>
         @Html.EditorFor(m => m.FirstName)

@@ -15,8 +15,126 @@
     <tbody>
 
         @{
-            if (Model.HealthBonusPercent() != 0.0M)
-            {
+
+
+            <tr>
+                <td>@CharactersHere.PrintStatDescriptionPopup("Discipline")</td>
+                <td>
+                    @Model.Discipline()
+                </td>
+                <td class="mobile">@Model.FromForm_Discipline</td>
+                <td class="mobile">@Model.FromItems_Discipline</td>
+                <td class="mobile">@Model.FromEffects_Discipline</td>
+            </tr>
+
+
+
+
+            <tr>
+                <td>@CharactersHere.PrintStatDescriptionPopup("Perception")</td>
+                <td>
+                    @Model.Perception()
+                </td>
+                <td class="mobile">@Model.FromForm_Perception</td>
+                <td class="mobile">@Model.FromItems_Perception</td>
+                <td class="mobile">@Model.FromEffects_Perception</td>
+            </tr>
+
+
+
+            <tr>
+                <td>@CharactersHere.PrintStatDescriptionPopup("Charisma")</td>
+                <td>
+                    @Model.Charisma()
+                </td>
+                <td class="mobile">@Model.FromForm_Charisma</td>
+                <td class="mobile">@Model.FromItems_Charisma</td>
+                <td class="mobile">@Model.FromEffects_Charisma</td>
+            </tr>
+
+
+
+            <tr>
+                <td>@CharactersHere.PrintStatDescriptionPopup("Fortitude")</td>
+                <td>
+                    @Model.Fortitude()
+                </td>
+                <td class="mobile">@Model.FromForm_Fortitude</td>
+                <td class="mobile">@Model.FromItems_Fortitude</td>
+                <td class="mobile">@Model.FromEffects_Fortitude</td>
+            </tr>
+
+
+
+            <tr>
+                <td>@CharactersHere.PrintStatDescriptionPopup("Agility")</td>
+                <td>
+                    @Model.Agility()
+                </td>
+                <td class="mobile">@Model.FromForm_Agility</td>
+                <td class="mobile">@Model.FromItems_Agility</td>
+                <td class="mobile">@Model.FromEffects_Agility</td>
+            </tr>
+
+
+
+            <tr>
+                <td>@CharactersHere.PrintStatDescriptionPopup("Allure")</td>
+                <td>
+                    @Model.Allure()
+                </td>
+                <td class="mobile">@Model.FromForm_Allure</td>
+                <td class="mobile">@Model.FromItems_Allure</td>
+                <td class="mobile">@Model.FromEffects_Allure</td>
+            </tr>
+
+
+
+            <tr>
+                <td>@CharactersHere.PrintStatDescriptionPopup("Magicka")</td>
+                <td>
+                    @Model.Magicka()
+                </td>
+                <td class="mobile">@Model.FromForm_Magicka</td>
+                <td class="mobile">@Model.FromItems_Magicka</td>
+                <td class="mobile">@Model.FromEffects_Magicka</td>
+            </tr>
+
+
+
+
+            <tr>
+                <td>@CharactersHere.PrintStatDescriptionPopup("Succour")</td>
+                <td>
+                    @Model.Succour()
+                </td>
+                <td class="mobile">@Model.FromForm_Succour</td>
+                <td class="mobile">@Model.FromItems_Succour</td>
+                <td class="mobile">@Model.FromEffects_Succour</td>
+            </tr>
+
+
+
+            <tr>
+                <td>@CharactersHere.PrintStatDescriptionPopup("Luck")</td>
+                <td>
+                    @Model.Luck()
+                </td>
+                <td class="mobile">@Model.FromForm_Luck</td>
+                <td class="mobile">@Model.FromItems_Luck</td>
+                <td class="mobile">@Model.FromEffects_Luck</td>
+            </tr>
+
+    <tr class="rowDivider">
+        <td><b>Decomposite Stats:</b></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+
+    if (Model.HealthBonusPercent() != 0.0M)
+    {
                 <tr>
                     <td>Extra willpower % maximum:</td>
                     <td>
@@ -290,169 +408,6 @@
 
 
 
-        @{
-            if (Model.Discipline() != 0.0F)
-            {
-                <tr>
-                    <td>@CharactersHere.PrintStatDescriptionPopup("Discipline")</td>
-                    <td>
-                        @Model.Discipline()
-                    </td>
-                    <td class="mobile">@Model.FromForm_Discipline</td>
-                    <td class="mobile">@Model.FromItems_Discipline</td>
-                    <td class="mobile">@Model.FromEffects_Discipline</td>
-                </tr>
-            }
-
-
-            if (Model.Perception() != 0.0F)
-            {
-                <tr>
-                    <td>@CharactersHere.PrintStatDescriptionPopup("Perception")</td>
-                    <td>
-                        @Model.Perception()
-                    </td>
-                    <td class="mobile">@Model.FromForm_Perception</td>
-                    <td class="mobile">@Model.FromItems_Perception</td>
-                    <td class="mobile">@Model.FromEffects_Perception</td>
-                </tr>
-            }
-
-            if (Model.Charisma() != 0.0F)
-            {
-                <tr>
-                    <td>@CharactersHere.PrintStatDescriptionPopup("Charisma")</td>
-                    <td>
-                        @Model.Charisma()
-                    </td>
-                    <td class="mobile">@Model.FromForm_Charisma</td>
-                    <td class="mobile">@Model.FromItems_Charisma</td>
-                    <td class="mobile">@Model.FromEffects_Charisma</td>
-                </tr>
-            }
-
-
-            if (Model.Submission_Dominance() != 0.0F)
-            {
-                <tr>
-                    <td>@CharactersHere.PrintStatDescriptionPopup("Submission_Dominance")</td>
-                    <td>
-                        @Model.Submission_Dominance()
-                    </td>
-                    <td class="mobile">@Model.FromForm_Submission_Dominance</td>
-                    <td class="mobile">@Model.FromItems_Submission_Dominance</td>
-                    <td class="mobile">@Model.FromEffects_Submission_Dominance</td>
-                </tr>
-            }
-
-
-            if (Model.Fortitude() != 0.0F)
-            {
-                <tr>
-                    <td>@CharactersHere.PrintStatDescriptionPopup("Fortitude")</td>
-                    <td>
-                        @Model.Fortitude()
-                    </td>
-                    <td class="mobile">@Model.FromForm_Fortitude</td>
-                    <td class="mobile">@Model.FromItems_Fortitude</td>
-                    <td class="mobile">@Model.FromEffects_Fortitude</td>
-                </tr>
-            }
-
-            if (Model.Agility() != 0.0F)
-            {
-                <tr>
-                    <td>@CharactersHere.PrintStatDescriptionPopup("Agility")</td>
-                    <td>
-                        @Model.Agility()
-                    </td>
-                    <td class="mobile">@Model.FromForm_Agility</td>
-                    <td class="mobile">@Model.FromItems_Agility</td>
-                    <td class="mobile">@Model.FromEffects_Agility</td>
-                </tr>
-            }
-
-            if (Model.Allure() != 0.0F)
-            {
-                <tr>
-                    <td>@CharactersHere.PrintStatDescriptionPopup("Allure")</td>
-                    <td>
-                        @Model.Allure()
-                    </td>
-                    <td class="mobile">@Model.FromForm_Allure</td>
-                    <td class="mobile">@Model.FromItems_Allure</td>
-                    <td class="mobile">@Model.FromEffects_Allure</td>
-                </tr>
-            }
-
-            if (Model.Corruption_Purity() != 0.0F)
-            {
-                <tr>
-                    <td>@CharactersHere.PrintStatDescriptionPopup("Corruption_Purity")</td>
-                    <td>
-                        @Model.Corruption_Purity()
-                    </td>
-                    <td class="mobile">@Model.FromForm_Corruption_Purity</td>
-                    <td class="mobile">@Model.FromItems_Corruption_Purity</td>
-                    <td class="mobile">@Model.FromEffects_Corruption_Purity</td>
-                </tr>
-            }
-
-
-            if (Model.Magicka() != 0.0F)
-            {
-                <tr>
-                    <td>@CharactersHere.PrintStatDescriptionPopup("Magicka")</td>
-                    <td>
-                        @Model.Magicka()
-                    </td>
-                    <td class="mobile">@Model.FromForm_Magicka</td>
-                    <td class="mobile">@Model.FromItems_Magicka</td>
-                    <td class="mobile">@Model.FromEffects_Magicka</td>
-                </tr>
-            }
-
-
-            if (Model.Succour() != 0.0F)
-            {
-                <tr>
-                    <td>@CharactersHere.PrintStatDescriptionPopup("Succour")</td>
-                    <td>
-                        @Model.Succour()
-                    </td>
-                    <td class="mobile">@Model.FromForm_Succour</td>
-                    <td class="mobile">@Model.FromItems_Succour</td>
-                    <td class="mobile">@Model.FromEffects_Succour</td>
-                </tr>
-            }
-
-            if (Model.Luck() != 0.0F)
-            {
-                <tr>
-                    <td>@CharactersHere.PrintStatDescriptionPopup("Luck")</td>
-                    <td>
-                        @Model.Luck()
-                    </td>
-                    <td class="mobile">@Model.FromForm_Luck</td>
-                    <td class="mobile">@Model.FromItems_Luck</td>
-                    <td class="mobile">@Model.FromEffects_Luck</td>
-                </tr>
-            }
-
-            if (Model.Chaos_Order() != 0.0F)
-            {
-                <tr>
-                    <td>@CharactersHere.PrintStatDescriptionPopup("Chaos_Order")</td>
-                    <td>
-                        @Model.Chaos_Order()
-                    </td>
-                    <td class="mobile">@Model.FromForm_Chaos_Order</td>
-                    <td class="mobile">@Model.FromItems_Chaos_Order</td>
-                    <td class="mobile">@Model.FromEffects_Chaos_Order</td>
-                </tr>
-            }
-            
-        }
 
 
 
@@ -463,15 +418,15 @@
     table {
         padding: 3px;
         border: 1px solid black;
-        width:100%;
+        width: 100%;
     }
 
     th {
         background-color: black;
         color: white;
         text-align: center;
-        padding:2px 0px 2px 0px;
-        margin:0;
+        padding: 2px 0px 2px 0px;
+        margin: 0;
     }
 
     tr {
@@ -485,8 +440,8 @@
 
     td {
         text-align: center;
-        margin:0;
-        padding:2px 0px 2px 0px;
+        margin: 0;
+        padding: 2px 0px 2px 0px;
     }
 
     #bufftable {
@@ -495,9 +450,13 @@
         position: relative;
     }
 
+    .rowDivider {
+         background-color: black;
+        color: white;
+    }
 
     @@media screen and (max-width: 767px) {
-        .mobile{
+        .mobile {
             display: none;
         }
     }
@@ -507,7 +466,7 @@
     $(document).ready(function () {
         $('#bufftable tr').each(function () {
             $(this).find('td').each(function () {
-                
+
                 if ($(this).index() > 0.0) {
                     var num = parseFloat($(this).html());
                     if (num > 0) {

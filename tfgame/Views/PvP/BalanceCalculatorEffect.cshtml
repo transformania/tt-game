@@ -1,14 +1,15 @@
 ﻿@model tfgame.dbModels.Models.EffectContribution
 @using tfgame.Statics
+@using tfgame.CustomHtmlHelpers
 
 <head>
     <link href="~/Content/PvP.css" rel="stylesheet" />
     <script src="~/Scripts/jquery-2.1.0.min.js"></script>
 </head>
 
-<h1>Item balancing calculator</h1>
+<h1>Curse/Blessing balancing calculator</h1>
 
-<p>Use this calculator to try and balance items.  <b>Good items will only have a total bonus amount of 30--too much and it is likely overpowered and too low and it is likely underpowered.  You can enter negative numbers to impose penalties on that effect instead.</b>  NOTE:  This is very much a work in progress and the exact balancing will change.</p>
+<p>Use this calculator to try and balance effects.</p>
 
 <p style="color: red;">Items and Animals should not have more than 4 different effects on them.  Animate forms should not have more than 6 different effects on them.</p>
 
@@ -63,7 +64,7 @@
         <tbody>
 
             <tr>
-                <td>Discipline</td>
+                <td>@CharactersHere.PrintStatDescriptionPopup("Discipline")</td>
                 <td>
                     @Html.TextBoxFor(m => m.Discipline, new
        {
@@ -78,7 +79,7 @@
 
 
             <tr>
-                <td>Perception</td>
+                <td>@CharactersHere.PrintStatDescriptionPopup("Perception") </td>
                 <td>
                     @Html.TextBoxFor(m => m.Perception, new
        {
@@ -92,7 +93,7 @@
             </tr>
 
             <tr>
-                <td>Charisma</td>
+                <td>@CharactersHere.PrintStatDescriptionPopup("Charisma")</td>
                 <td>
                     @Html.TextBoxFor(m => m.Charisma, new
        {
@@ -105,23 +106,23 @@
                 <td></td>
             </tr>
 
-            <tr>
-                <td>Submission/Dominance</td>
-                <td>
-                    @Html.TextBoxFor(m => m.Submission_Dominance, new
-       {
-           @id = "Submission_Dominance",
-       })
-                </td>
-                <td>1</td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
+            @*<tr>
+                     <td>@CharactersHere.PrintStatDescriptionPopup("Submission_Dominance")</td>
+                     <td>
+                         @Html.TextBoxFor(m => m.Submission_Dominance, new
+                {
+                    @id = "Submission_Dominance",
+                })
+                     </td>
+                     <td>1</td>
+                     <td></td>
+                     <td></td>
+                     <td></td>
+                 </tr>*@
 
 
             <tr>
-                <td>Fortitude</td>
+                <td>@CharactersHere.PrintStatDescriptionPopup("Fortitude")</td>
                 <td>
                     @Html.TextBoxFor(m => m.Fortitude, new
        {
@@ -135,7 +136,7 @@
             </tr>
 
             <tr>
-                <td>Agility</td>
+                <td>@CharactersHere.PrintStatDescriptionPopup("Agility")</td>
                 <td>
                     @Html.TextBoxFor(m => m.Agility, new
        {
@@ -149,7 +150,7 @@
             </tr>
 
             <tr>
-                <td>Allure</td>
+                <td>@CharactersHere.PrintStatDescriptionPopup("Allure")</td>
                 <td>
                     @Html.TextBoxFor(m => m.Allure, new
        {
@@ -162,22 +163,22 @@
                 <td></td>
             </tr>
 
-            <tr>
-                <td>Corruption/Purity</td>
-                <td>
-                    @Html.TextBoxFor(m => m.Corruption_Purity, new
-       {
-           @id = "Corruption_Purity",
-       })
-                </td>
-                <td>1</td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
+            @*<tr>
+                     <td>@CharactersHere.PrintStatDescriptionPopup("Corruption_Purity")</td>
+                     <td>
+                         @Html.TextBoxFor(m => m.Corruption_Purity, new
+                {
+                    @id = "Corruption_Purity",
+                })
+                     </td>
+                     <td>1</td>
+                     <td></td>
+                     <td></td>
+                     <td></td>
+                 </tr>*@
 
             <tr>
-                <td>Magicka</td>
+                <td>@CharactersHere.PrintStatDescriptionPopup("Magicka")</td>
                 <td>
                     @Html.TextBoxFor(m => m.Magicka, new
        {
@@ -191,7 +192,7 @@
             </tr>
 
             <tr>
-                <td>Succour</td>
+                <td>@CharactersHere.PrintStatDescriptionPopup("Succour")</td>
                 <td>
                     @Html.TextBoxFor(m => m.Succour, new
        {
@@ -205,7 +206,7 @@
             </tr>
 
             <tr>
-                <td>Luck</td>
+                <td>@CharactersHere.PrintStatDescriptionPopup("Luck")</td>
                 <td>
                     @Html.TextBoxFor(m => m.Luck, new
        {
@@ -219,19 +220,19 @@
             </tr>
 
 
-            <tr>
-                <td>Chaos/Order</td>
-                <td>
-                    @Html.TextBoxFor(m => m.Chaos_Order, new
-       {
-           @id = "Luck",
-       })
-                </td>
-                <td>1</td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
+            @*<tr>
+                     <td>@CharactersHere.PrintStatDescriptionPopup("Chaos_Order")</td>
+                     <td>
+                         @Html.TextBoxFor(m => m.Chaos_Order, new
+                {
+                    @id = "Luck",
+                })
+                     </td>
+                     <td>1</td>
+                     <td></td>
+                     <td></td>
+                     <td></td>
+                 </tr>*@
 
 
             <tr>
@@ -323,7 +324,7 @@
             </tr>
             <tr>
                 <td>Action point discount when moving (Amt)</td>
-                <td>@Html.TextBoxFor(m => m.MoveActionPointDiscount, new { @id = "MoveActionPointDiscount", @negative_mod = tfgame.Statics.BalanceStatics.MoveActionPointDiscount__NegativeModifier, @negative_cap = tfgame.Statics.BalanceStatics.MoveActionPointDiscount__NegativeCap, @readonly = "readonly" })</td>
+                <td>@Html.TextBoxFor(m => m.MoveActionPointDiscount, new { @id = "MoveActionPointDiscount", @negative_mod = tfgame.Statics.BalanceStatics.MoveActionPointDiscount__NegativeModifier, @negative_cap = tfgame.Statics.BalanceStatics.MoveActionPointDiscount__NegativeCap })</td>
                 <td>@tfgame.Statics.BalanceStatics.MoveActionPointDiscount__Value</td>
                 <td>@tfgame.Statics.BalanceStatics.MoveActionPointDiscount__NegativeModifier</td>
                 <td>@tfgame.Statics.BalanceStatics.MoveActionPointDiscount__NegativeCap</td>
@@ -430,13 +431,8 @@
 
 <br />
 
-@*<button type="button" onclick="SetCodeText()">Generate Code</button>*@
 
-<br />
-@*<p class="bad">Before submitting a contribution, please paste this text into the relevant 'effects' field.  This will help save some time during implementation and testing. </p>
-    <textarea rows="4" cols="50" id="textCode">*@
-
-</textarea>
+<input type="button" id="disableReadonly" value="Click to enable readonly fields (this is only for updating older contributions and admins/proofreaders.  Do not use this for any new forms except with permission.)" />
 
 
 
@@ -499,7 +495,12 @@
         // default page load
         $("#desired").html("0");
 
-
+        $("#disableReadonly").click(function () {
+            alert("This functionality should only be done by admins or proofreaders and is meant for the sake of updating older contributions.");
+            $("[readonly='readonly']").each(function () {
+                $(this).removeAttr("readonly");
+            });
+        });
 
 
     });

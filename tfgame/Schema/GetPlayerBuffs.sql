@@ -10,7 +10,10 @@ GO
 -- Create date: 2015-04-06
 -- Description:	Fetch player buffs
 -- =============================================
-CREATE PROCEDURE [dbo].[GetPlayerBuffs] 
+IF OBJECT_ID('[dbo].[GetPlayerBuffs]') IS NULL
+	EXEC('CREATE PROCEDURE [dbo].[GetPlayerBuffs] AS SET NOCOUNT ON;');
+GO
+ALTER PROCEDURE [dbo].[GetPlayerBuffs]
 	-- Add the parameters for the stored procedure here
 	@PlayerId int = -1,
 	@Item_LevelBonusModifier decimal(18,2) = 0.1

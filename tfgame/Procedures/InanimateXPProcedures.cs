@@ -350,7 +350,7 @@ namespace tfgame.Procedures
                     dbPlayer.dbLocationName = LocationsStatics.GetRandomLocation();
                 }
 
-                dbPlayer = PlayerProcedures.ReadjustMaxes(dbPlayer, ItemProcedures.GetPlayerBuffs(dbPlayer));
+                dbPlayer = PlayerProcedures.ReadjustMaxes(dbPlayer, ItemProcedures.GetPlayerBuffsSQL(dbPlayer));
                 dbPlayer.Health = dbPlayer.MaxHealth / 3;
                 dbPlayer.Mana = dbPlayer.MaxHealth / 3;
                 playerRepo.SavePlayer(dbPlayer);

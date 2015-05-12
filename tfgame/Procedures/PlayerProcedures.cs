@@ -695,7 +695,7 @@ namespace tfgame.Procedures
             decimal totalMoveCost = PvPStatics.LocationMoveCost - actionPointDiscount;
 
             // TEMP
-            BuffBox mybuffs = ItemProcedures.GetPlayerBuffs(dbPlayer);
+            BuffBox mybuffs = ItemProcedures.GetPlayerBuffsSQL(dbPlayer);
 
             dbPlayer = ReadjustMaxes(dbPlayer, mybuffs);
 
@@ -1015,7 +1015,7 @@ namespace tfgame.Procedures
                 string output = ItemProcedures.GiveNewItemToPlayer(player, justFound);
 
                 Player me = PlayerProcedures.GetPlayer(player.Id);
-                BuffBox myBuffs = ItemProcedures.GetPlayerBuffs(me);
+                BuffBox myBuffs = ItemProcedures.GetPlayerBuffsSQL(me);
 
                 // drop an item of the same type that you are carrying if you are over the limit
                 if (ItemProcedures.PlayerIsCarryingTooMuch(player.Id, 1, myBuffs) == true)

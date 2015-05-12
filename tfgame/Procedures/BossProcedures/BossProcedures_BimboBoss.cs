@@ -56,7 +56,7 @@ namespace tfgame.Procedures.BossProcedures
 
                 playerRepo.SavePlayer(bimboBoss);
 
-                bimboBoss = PlayerProcedures.ReadjustMaxes(bimboBoss, ItemProcedures.GetPlayerBuffs(bimboBoss));
+                bimboBoss = PlayerProcedures.ReadjustMaxes(bimboBoss, ItemProcedures.GetPlayerBuffsSQL(bimboBoss));
 
                 playerRepo.SavePlayer(bimboBoss);
 

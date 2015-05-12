@@ -55,7 +55,7 @@ namespace tfgame.Procedures.BossProcedures
 
                 playerRepo.SavePlayer(donna);
 
-                donna = PlayerProcedures.ReadjustMaxes(donna, ItemProcedures.GetPlayerBuffs(donna));
+                donna = PlayerProcedures.ReadjustMaxes(donna, ItemProcedures.GetPlayerBuffsSQL(donna));
 
                 playerRepo.SavePlayer(donna);
 
@@ -85,7 +85,7 @@ namespace tfgame.Procedures.BossProcedures
 
                 donna.Form = "form_Mythical_Sorceress_LexamTheGemFox";
 
-                BuffBox donnasBuffs = ItemProcedures.GetPlayerBuffs(donna);
+                BuffBox donnasBuffs = ItemProcedures.GetPlayerBuffsSQL(donna);
 
                 // have donna meditate and cleanse if needed
                 if (donna.Health < donna.MaxHealth / 6)

@@ -495,7 +495,7 @@ namespace tfgame.Procedures
                 item.EquippedThisTurn = true;
                 itemRepo.SaveItem(item);
 
-                BuffBox targetbuffs = ItemProcedures.GetPlayerBuffs(dbOwner);
+                BuffBox targetbuffs = ItemProcedures.GetPlayerBuffsSQL(dbOwner);
 
                 dbOwner = PlayerProcedures.ReadjustMaxes(dbOwner, targetbuffs);
                 playerRepo.SavePlayer(dbOwner);
@@ -510,7 +510,7 @@ namespace tfgame.Procedures
                 item.IsEquipped = false;
                 itemRepo.SaveItem(item);
 
-                BuffBox targetbuffs = ItemProcedures.GetPlayerBuffs(dbOwner);
+                BuffBox targetbuffs = ItemProcedures.GetPlayerBuffsSQL(dbOwner);
 
                 dbOwner = PlayerProcedures.ReadjustMaxes(dbOwner, targetbuffs);
                 playerRepo.SavePlayer(dbOwner);
@@ -1030,7 +1030,7 @@ namespace tfgame.Procedures
                 newItem.IsPermanent = false;
             }
 
-            BuffBox attackerBuffs = ItemProcedures.GetPlayerBuffs(attacker);
+            BuffBox attackerBuffs = ItemProcedures.GetPlayerBuffsSQL(attacker);
             decimal maxInventorySize = PvPStatics.MaxCarryableItemCountBase + attackerBuffs.ExtraInventorySpace();
 
             DbStaticItem newItemPlus = ItemStatics.GetStaticItem(newItem.dbName);

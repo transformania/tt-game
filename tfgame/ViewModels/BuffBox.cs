@@ -166,9 +166,8 @@ namespace tfgame.ViewModels
         public decimal SneakPercent()
         {
             return Convert.ToDecimal(
-               .5F * Perception() +
                -2.0F * Fortitude() + 
-               .75F * Agility() +
+               1.25F * Agility() +
                -1.0F * Allure()
             );
         }

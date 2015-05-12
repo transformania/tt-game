@@ -735,7 +735,7 @@ namespace tfgame.Procedures
 
             DbStaticForm myform = FormStatics.GetForm(player.Form);
 
-            output.FromItems_HealthBonusPercent = wornItems.Sum(x => x.Item.HealthBonusPercent + x.Item.HealthBonusPercent * ((x.dbItem.Level - 1) * PvPStatics.Item_LevelBonusModifier));
+            output.FromItems_HealthBonusPercent = wornItems.Sum(x => x.Item.HealthBonusPercent + x.Item.HealthBonusPercent * ( (x.dbItem.Level - 1) * PvPStatics.Item_LevelBonusModifier));
 
             output.FromItems_ManaBonusPercent = wornItems.Sum(x => x.Item.ManaBonusPercent + x.Item.ManaBonusPercent * ((x.dbItem.Level - 1) * PvPStatics.Item_LevelBonusModifier));
 
@@ -772,7 +772,7 @@ namespace tfgame.Procedures
 
             output.FromItems_ExtraInventorySpace = wornItems.Sum(x => x.Item.ExtraInventorySpace + x.Item.ExtraInventorySpace * ((x.dbItem.Level - 1) * PvPStatics.Item_LevelBonusModifier));
 
-
+        
 
             output.FromForm_HealthBonusPercent = myform.HealthBonusPercent;
             output.FromForm_ManaBonusPercent = myform.ManaBonusPercent;
@@ -885,7 +885,7 @@ namespace tfgame.Procedures
                     {
                         output.EnchantmentBoost = 1;
                     }
-
+                    
                 }
                 else if (eff.dbEffect.dbName == "perk_apprentice_enchanter_2_lvl")
                 {

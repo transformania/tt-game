@@ -5,6 +5,43 @@ using System.Web;
 
 namespace tfgame.ViewModels
 {
+    public class BuffStoredProc
+    {
+        // holds all of the bonuses
+        public string Type { get; set; }
+        public decimal HealthBonusPercent { get; set; }
+        public decimal ManaBonusPercent { get; set; }
+        public decimal ExtraSkillCriticalPercent { get; set; }
+        public decimal HealthRecoveryPerUpdate { get; set; }
+        public decimal ManaRecoveryPerUpdate { get; set; }
+        public decimal SneakPercent { get; set; }
+        public decimal EvasionPercent { get; set; }
+        public decimal EvasionNegationPercent { get; set; }
+        public decimal MeditationExtraMana { get; set; }
+        public decimal CleanseExtraHealth { get; set; }
+        public decimal MoveActionPointDiscount { get; set; }
+        public decimal SpellExtraTFEnergyPercent { get; set; }
+        public decimal SpellExtraHealthDamagePercent { get; set; }
+        public decimal CleanseExtraTFEnergyRemovalPercent { get; set; }
+        public decimal SpellMisfireChanceReduction { get; set; }
+        public decimal SpellHealthDamageResistance { get; set; }
+        public decimal SpellTFEnergyDamageResistance { get; set; }
+        public decimal ExtraInventorySpace { get; set; }
+
+        public float Discipline { get; set; }
+        public float Perception { get; set; }
+        public float Charisma { get; set; }
+        public float Submission_Dominance { get; set; }
+        public float Fortitude { get; set; }
+        public float Agility { get; set; }
+        public float Allure { get; set; }
+        public float Corruption_Purity { get; set; }
+        public float Magicka { get; set; }
+        public float Succour { get; set; }
+        public float Luck { get; set; }
+        public float Chaos_Order { get; set; }
+    }
+
     public class BuffBox
     {
 
@@ -166,9 +203,8 @@ namespace tfgame.ViewModels
         public decimal SneakPercent()
         {
             return Convert.ToDecimal(
-               .5F * Perception() +
                -2.0F * Fortitude() + 
-               .75F * Agility() +
+               1.25F * Agility() +
                -1.0F * Allure()
             );
         }

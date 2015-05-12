@@ -1331,6 +1331,7 @@
     <Content Include="Images\PvP\portraits\zombie_aid_babblingfaces.png" />
     <Content Include="Images\PvP\Smilies\smile.png" />
     <Content Include="Reports\Updates\1963.txt" />
+    <Content Include="Schema\GetPlayerBuffs.sql" />
     <Content Include="Scripts\boxesResize.js" />
     <Content Include="Scripts\fwars\app.js" />
     <Content Include="Scripts\fwars\controllers\personsController.js" />

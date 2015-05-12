@@ -209,7 +209,7 @@ namespace tfgame.Procedures
                         continue;
                     }
 
-                    BuffBox botbuffs = ItemProcedures.GetPlayerBuffs(bot);
+                    BuffBox botbuffs = ItemProcedures.GetPlayerBuffsSQL(bot);
 
                     // meditate if needed
                     if (bot.Mana < bot.MaxMana * .75M)
@@ -461,7 +461,7 @@ namespace tfgame.Procedures
                 }
 
                 playerRepo.SavePlayer(merchant);
-                BuffBox box = ItemProcedures.GetPlayerBuffs(merchant);
+                BuffBox box = ItemProcedures.GetPlayerBuffsSQL(merchant);
 
                 if ((merchant.Health / merchant.MaxHealth) < .75M)
                 {

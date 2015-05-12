@@ -366,7 +366,7 @@ namespace tfgame.Procedures
                         target.Mana = 0;
                     }
 
-                    BuffBox targetbuffs = ItemProcedures.GetPlayerBuffs(target);
+                    BuffBox targetbuffs = ItemProcedures.GetPlayerBuffsSQL(target);
                     target = PlayerProcedures.ReadjustMaxes(target, targetbuffs);
 
 

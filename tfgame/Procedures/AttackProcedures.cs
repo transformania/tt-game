@@ -108,8 +108,8 @@ namespace tfgame.Procedures
                     victimPronoun = "their";
                 }
 
-                BuffBox meBuffs = ItemProcedures.GetPlayerBuffs(me);
-                BuffBox targetedBuffs = ItemProcedures.GetPlayerBuffs(targeted);
+                BuffBox meBuffs = ItemProcedures.GetPlayerBuffsSQL(me);
+                BuffBox targetedBuffs = ItemProcedures.GetPlayerBuffsSQL(targeted);
 
                 Random rand = new Random(Guid.NewGuid().GetHashCode());
                 double basehitChance = rand.NextDouble() * 100;

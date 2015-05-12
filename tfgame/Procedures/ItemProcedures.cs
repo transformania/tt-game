@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Data;
+using System.Data.SqlClient;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -493,7 +495,7 @@ namespace tfgame.Procedures
                 item.EquippedThisTurn = true;
                 itemRepo.SaveItem(item);
 
-                BuffBox targetbuffs = ItemProcedures.GetPlayerBuffs(dbOwner);
+                BuffBox targetbuffs = ItemProcedures.GetPlayerBuffsSQL(dbOwner);
 
                 dbOwner = PlayerProcedures.ReadjustMaxes(dbOwner, targetbuffs);
                 playerRepo.SavePlayer(dbOwner);
@@ -508,7 +510,7 @@ namespace tfgame.Procedures
                 item.IsEquipped = false;
                 itemRepo.SaveItem(item);
 
-                BuffBox targetbuffs = ItemProcedures.GetPlayerBuffs(dbOwner);
+                BuffBox targetbuffs = ItemProcedures.GetPlayerBuffsSQL(dbOwner);
 
                 dbOwner = PlayerProcedures.ReadjustMaxes(dbOwner, targetbuffs);
                 playerRepo.SavePlayer(dbOwner);
@@ -552,6 +554,170 @@ namespace tfgame.Procedures
             IItemRepository itemRepo = new EFItemRepository();
             IEnumerable<ItemViewModel> itemsOfThisType = GetAllPlayerItems(playerId).Where(i => i.Item.dbName == itemDbName && i.dbItem.IsEquipped == true);
             return itemsOfThisType.Count();
+        }
+
+        public static BuffBox GetPlayerBuffsSQL(Player player)
+        {
+
+            BuffBox output = new BuffBox();
+
+            // grab all of the bonuses coming from effects
+            IEnumerable<EffectViewModel2> myEffects = EffectProcedures.GetPlayerEffects2(player.Id).Where(e => e.dbEffect.Duration > 0);
+            var context = new StatsContext();
+            var bonusparam = new SqlParameter("Item_LevelBonusModifier", SqlDbType.Real);
+            bonusparam.Value = PvPStatics.Item_LevelBonusModifier;
+            var playerparam = new SqlParameter("PlayerId", SqlDbType.Int);
+            playerparam.Value = player.Id;
+            object[] parameters = new object[] { playerparam, bonusparam };
+            var query = context.Database.SqlQuery<BuffStoredProc>("exec [dbo].[GetPlayerBuffs] @PlayerId, @Item_LevelBonusModifier", parameters);
+
+            foreach (BuffStoredProc q in query)
+            {
+                if (q.Type == "Items")
+                {
+                    output.FromItems_HealthBonusPercent = q.HealthBonusPercent;
+                    output.FromItems_ManaBonusPercent = q.ManaBonusPercent;
+                    output.FromItems_MeditationExtraMana = q.MeditationExtraMana;
+                    output.FromItems_CleanseExtraHealth = q.CleanseExtraHealth;
+                    output.FromItems_ExtraSkillCriticalPercent = q.ExtraSkillCriticalPercent;
+                    output.FromItems_HealthBonusPercent = q.HealthBonusPercent;
+                    output.FromItems_ManaRecoveryPerUpdate = q.ManaRecoveryPerUpdate;
+                    output.FromItems_SneakPercent = q.SneakPercent;
+                    output.FromItems_EvasionPercent = q.EvasionPercent;
+                    output.FromItems_EvasionNegationPercent = q.EvasionNegationPercent;
+                    output.FromItems_MoveActionPointDiscount = q.MoveActionPointDiscount;
+                    output.FromItems_SpellExtraTFEnergyPercent = q.SpellExtraTFEnergyPercent;
+                    output.FromItems_SpellExtraHealthDamagePercent = q.SpellExtraHealthDamagePercent;
+                    output.FromItems_CleanseExtraTFEnergyRemovalPercent = q.CleanseExtraTFEnergyRemovalPercent;
+                    output.FromItems_SpellMisfireChanceReduction = q.SpellMisfireChanceReduction;
+                    output.FromItems_SpellHealthDamageResistance = q.SpellHealthDamageResistance;
+                    output.FromItems_SpellTFEnergyDamageResistance = q.SpellTFEnergyDamageResistance;
+                    output.FromItems_ExtraInventorySpace = q.ExtraInventorySpace;
+
+                    output.FromItems_Discipline = q.Discipline;
+                    output.FromItems_Perception = q.Perception;
+                    output.FromItems_Charisma = q.Charisma;
+                    output.FromItems_Submission_Dominance = q.Submission_Dominance;
+
+                    output.FromItems_Fortitude = q.Fortitude;
+                    output.FromItems_Agility = q.Agility;
+                    output.FromItems_Allure = q.Allure;
+                    output.FromItems_Corruption_Purity = q.Corruption_Purity;
+
+                    output.FromItems_Magicka = q.Magicka;
+                    output.FromItems_Succour = q.Succour;
+                    output.FromItems_Luck = q.Luck;
+                    output.FromItems_Chaos_Order = q.Chaos_Order;
+                }
+                else if (q.Type == "Form")
+                {
+                    output.FromForm_HealthBonusPercent = q.HealthBonusPercent;
+                    output.FromForm_ManaBonusPercent = q.ManaBonusPercent;
+                    output.FromForm_MeditationExtraMana = q.MeditationExtraMana;
+                    output.FromForm_CleanseExtraHealth = q.CleanseExtraHealth;
+                    output.FromForm_ExtraSkillCriticalPercent = q.ExtraSkillCriticalPercent;
+                    output.FromForm_HealthBonusPercent = q.HealthBonusPercent;
+                    output.FromForm_ManaRecoveryPerUpdate = q.ManaRecoveryPerUpdate;
+                    output.FromForm_SneakPercent = q.SneakPercent;
+                    output.FromForm_EvasionPercent = q.EvasionPercent;
+                    output.FromForm_EvasionNegationPercent = q.EvasionNegationPercent;
+                    output.FromForm_MoveActionPointDiscount = q.MoveActionPointDiscount;
+                    output.FromForm_SpellExtraTFEnergyPercent = q.SpellExtraTFEnergyPercent;
+                    output.FromForm_SpellExtraHealthDamagePercent = q.SpellExtraHealthDamagePercent;
+                    output.FromForm_CleanseExtraTFEnergyRemovalPercent = q.CleanseExtraTFEnergyRemovalPercent;
+                    output.FromForm_SpellMisfireChanceReduction = q.SpellMisfireChanceReduction;
+                    output.FromForm_SpellHealthDamageResistance = q.SpellHealthDamageResistance;
+                    output.FromForm_SpellTFEnergyDamageResistance = q.SpellTFEnergyDamageResistance;
+                    output.FromForm_ExtraInventorySpace = q.ExtraInventorySpace;
+
+                    output.FromForm_Discipline = q.Discipline;
+                    output.FromForm_Perception = q.Perception;
+                    output.FromForm_Charisma = q.Charisma;
+                    output.FromForm_Submission_Dominance = q.Submission_Dominance;
+
+                    output.FromForm_Fortitude = q.Fortitude;
+                    output.FromForm_Agility = q.Agility;
+                    output.FromForm_Allure = q.Allure;
+                    output.FromForm_Corruption_Purity = q.Corruption_Purity;
+
+                    output.FromForm_Magicka = q.Magicka;
+                    output.FromForm_Succour = q.Succour;
+                    output.FromForm_Luck = q.Luck;
+                    output.FromForm_Chaos_Order = q.Chaos_Order;
+                }
+                else if (q.Type == "Effects")
+                {
+                    output.FromEffects_HealthBonusPercent = q.HealthBonusPercent;
+                    output.FromEffects_ManaBonusPercent = q.ManaBonusPercent;
+                    output.FromEffects_MeditationExtraMana = q.MeditationExtraMana;
+                    output.FromEffects_CleanseExtraHealth = q.CleanseExtraHealth;
+                    output.FromEffects_ExtraSkillCriticalPercent = q.ExtraSkillCriticalPercent;
+                    output.FromEffects_HealthBonusPercent = q.HealthBonusPercent;
+                    output.FromEffects_ManaRecoveryPerUpdate = q.ManaRecoveryPerUpdate;
+                    output.FromEffects_SneakPercent = q.SneakPercent;
+                    output.FromEffects_EvasionPercent = q.EvasionPercent;
+                    output.FromEffects_EvasionNegationPercent = q.EvasionNegationPercent;
+                    output.FromEffects_MoveActionPointDiscount = q.MoveActionPointDiscount;
+                    output.FromEffects_SpellExtraTFEnergyPercent = q.SpellExtraTFEnergyPercent;
+                    output.FromEffects_SpellExtraHealthDamagePercent = q.SpellExtraHealthDamagePercent;
+                    output.FromEffects_CleanseExtraTFEnergyRemovalPercent = q.CleanseExtraTFEnergyRemovalPercent;
+                    output.FromEffects_SpellMisfireChanceReduction = q.SpellMisfireChanceReduction;
+                    output.FromEffects_SpellHealthDamageResistance = q.SpellHealthDamageResistance;
+                    output.FromEffects_SpellTFEnergyDamageResistance = q.SpellTFEnergyDamageResistance;
+                    output.FromEffects_ExtraInventorySpace = q.ExtraInventorySpace;
+
+                    output.FromEffects_Discipline = q.Discipline;
+                    output.FromEffects_Perception = q.Perception;
+                    output.FromEffects_Charisma = q.Charisma;
+                    output.FromEffects_Submission_Dominance = q.Submission_Dominance;
+
+                    output.FromEffects_Fortitude = q.Fortitude;
+                    output.FromEffects_Agility = q.Agility;
+                    output.FromEffects_Allure = q.Allure;
+                    output.FromEffects_Corruption_Purity = q.Corruption_Purity;
+
+                    output.FromEffects_Magicka = q.Magicka;
+                    output.FromEffects_Succour = q.Succour;
+                    output.FromEffects_Luck = q.Luck;
+                    output.FromEffects_Chaos_Order = q.Chaos_Order;
+
+                }
+            }
+            // non-stat buffs
+
+            output.HasSearchDiscount = false;
+            foreach (EffectViewModel2 eff in myEffects)
+            {
+                if (eff.dbEffect.dbName == "perk_sharp_eye")
+                {
+                    output.HasSearchDiscount = true;
+                    //break;
+                }
+                else if (eff.dbEffect.dbName == "perk_apprentice_enchanter_1_lvl")
+                {
+                    if (output.EnchantmentBoost < 1)
+                    {
+                        output.EnchantmentBoost = 1;
+                    }
+                    
+                }
+                else if (eff.dbEffect.dbName == "perk_apprentice_enchanter_2_lvl")
+                {
+                    if (output.EnchantmentBoost < 2)
+                    {
+                        output.EnchantmentBoost = 2;
+                    }
+                }
+                else if (eff.dbEffect.dbName == "perk_apprentice_enchanter_3_lvl")
+                {
+                    if (output.EnchantmentBoost < 3)
+                    {
+                        output.EnchantmentBoost = 3;
+                    }
+                }
+            }
+
+            return output;
         }
 
         public static BuffBox GetPlayerBuffs(Player player)
@@ -864,7 +1030,7 @@ namespace tfgame.Procedures
                 newItem.IsPermanent = false;
             }
 
-            BuffBox attackerBuffs = ItemProcedures.GetPlayerBuffs(attacker);
+            BuffBox attackerBuffs = ItemProcedures.GetPlayerBuffsSQL(attacker);
             decimal maxInventorySize = PvPStatics.MaxCarryableItemCountBase + attackerBuffs.ExtraInventorySpace();
 
             DbStaticItem newItemPlus = ItemStatics.GetStaticItem(newItem.dbName);

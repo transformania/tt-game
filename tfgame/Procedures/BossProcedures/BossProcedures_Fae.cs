@@ -47,7 +47,7 @@ namespace tfgame.Procedures.BossProcedures
 
                 playerRepo.SavePlayer(fae);
 
-                fae = PlayerProcedures.ReadjustMaxes(fae, ItemProcedures.GetPlayerBuffs(fae));
+                fae = PlayerProcedures.ReadjustMaxes(fae, ItemProcedures.GetPlayerBuffsSQL(fae));
 
                 playerRepo.SavePlayer(fae);
 

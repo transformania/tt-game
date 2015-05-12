@@ -49,7 +49,7 @@ namespace tfgame.Procedures.BossProcedures
 
                 playerRepo.SavePlayer(valentine);
 
-                valentine = PlayerProcedures.ReadjustMaxes(valentine, ItemProcedures.GetPlayerBuffs(valentine));
+                valentine = PlayerProcedures.ReadjustMaxes(valentine, ItemProcedures.GetPlayerBuffsSQL(valentine));
 
                 playerRepo.SavePlayer(valentine);
 

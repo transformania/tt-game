@@ -248,7 +248,7 @@ namespace tfgame.Controllers
             output.PvPWorldStat = WorldStat;
 
             loadtime += "Before loading buffs:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
-            BuffBox myBuffs = ItemProcedures.GetPlayerBuffs(me);
+            BuffBox myBuffs = ItemProcedures.GetPlayerBuffsSQL(me);
             loadtime += "After loading buffs:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
 
             if (myBuffs.HasSearchDiscount == true)
@@ -471,7 +471,7 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play");
             }
 
-            BuffBox buffs = ItemProcedures.GetPlayerBuffs(me);
+            BuffBox buffs = ItemProcedures.GetPlayerBuffsSQL(me);
 
             if (buffs.MoveActionPointDiscount() < -120)
             {
@@ -1191,7 +1191,7 @@ namespace tfgame.Controllers
                  return RedirectToAction("Play");
              }
 
-             BuffBox myBuffs = ItemProcedures.GetPlayerBuffs(me);
+             BuffBox myBuffs = ItemProcedures.GetPlayerBuffsSQL(me);
 
              string output = CovenantProcedures.AttackLocation(me, myBuffs);
 
@@ -1262,7 +1262,7 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play");
             }
 
-            BuffBox mybuffs = ItemProcedures.GetPlayerBuffs(me);
+            BuffBox mybuffs = ItemProcedures.GetPlayerBuffsSQL(me);
 
             TempData["Result"] = PlayerProcedures.Meditate(me, mybuffs);
 
@@ -1296,7 +1296,7 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play");
             }
 
-            BuffBox mybuffs = ItemProcedures.GetPlayerBuffs(me);
+            BuffBox mybuffs = ItemProcedures.GetPlayerBuffsSQL(me);
 
             // assert player is in an okay form to do this
             if (PlayerCanPerformAction(me, "cleanse") == false)
@@ -1359,7 +1359,7 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play");
             }
 
-            BuffBox mybuffs = ItemProcedures.GetPlayerBuffs(me);
+            BuffBox mybuffs = ItemProcedures.GetPlayerBuffsSQL(me);
 
             decimal searchCostAfterbuffs = PvPStatics.SearchAPCost;
             if (mybuffs.HasSearchDiscount)
@@ -1450,7 +1450,7 @@ namespace tfgame.Controllers
             InventoryBonusesViewModel output = new InventoryBonusesViewModel
             {
                 Items = ItemProcedures.GetAllPlayerItems(me.Id),
-                Bonuses = ItemProcedures.GetPlayerBuffs(me),
+                Bonuses = ItemProcedures.GetPlayerBuffsSQL(me),
                 Health = me.Health,
                 MaxHealth = me.MaxHealth,
                 Mana = me.Mana,
@@ -1483,7 +1483,7 @@ namespace tfgame.Controllers
 
             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
 
-            BuffBox myBuffs = ItemProcedures.GetPlayerBuffs(me);
+            BuffBox myBuffs = ItemProcedures.GetPlayerBuffsSQL(me);
 
             // assert player is in an okay form to do this
             if (PlayerCanPerformAction(me, "pickup") == false)
@@ -1881,7 +1881,7 @@ namespace tfgame.Controllers
                 PlayerForm = playerLookedAt,
                 Skills = SkillProcedures.GetSkillViewModelsOwnedByPlayer(id),
                 Items = ItemProcedures.GetAllPlayerItems(id).Where(i => i.dbItem.IsEquipped == true),
-                Bonuses = ItemProcedures.GetPlayerBuffs(playerLookedAt.Player.ToDbPlayer())
+                Bonuses = ItemProcedures.GetPlayerBuffsSQL(playerLookedAt.Player.ToDbPlayer())
             };
 
 

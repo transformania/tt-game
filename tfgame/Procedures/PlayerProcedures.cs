@@ -576,7 +576,7 @@ namespace tfgame.Procedures
                             context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Messages] SET ReceiverId = " + newplayer.Id + " WHERE ReceiverId = " + oldplayer.Id);
                             context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Messages] SET SenderId = " + newplayer.Id + " WHERE SenderId = " + oldplayer.Id);
                         }
-                        catch (Exception e)
+                        catch (Exception)
                         {
 
                         }

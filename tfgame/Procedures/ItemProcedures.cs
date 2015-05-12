@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Data;
+using System.Data.SqlClient;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -559,150 +561,128 @@ namespace tfgame.Procedures
 
             BuffBox output = new BuffBox();
 
-            // grab all of the bonuses coming from worn equipment
-            IEnumerable<ItemViewModel> wornItems = GetAllPlayerItems(player.Id).Where(i => i.dbItem.IsEquipped == true);
-
             // grab all of the bonuses coming from effects
             IEnumerable<EffectViewModel2> myEffects = EffectProcedures.GetPlayerEffects2(player.Id).Where(e => e.dbEffect.Duration > 0);
+            var context = new StatsContext();
+            var bonusparam = new SqlParameter("Item_LevelBonusModifier", SqlDbType.Real);
+            bonusparam.Value = PvPStatics.Item_LevelBonusModifier;
+            var playerparam = new SqlParameter("PlayerId", SqlDbType.Int);
+            playerparam.Value = player.Id;
+            object[] parameters = new object[] { playerparam, bonusparam };
+            var query = context.Database.SqlQuery<BuffStoredProc>("exec [dbo].[GetPlayerBuffs] @PlayerId, @Item_LevelBonusModifier", parameters);
 
-            // formula:  bonus = amount * (itemlevel - 1) * PvPStatics.Item_LevelBonusModifier
+            foreach (BuffStoredProc q in query)
+            {
+                if (q.Type == "Items")
+                {
+                    output.FromItems_HealthBonusPercent = q.HealthBonusPercent;
+                    output.FromItems_ManaBonusPercent = q.ManaBonusPercent;
+                    output.FromItems_MeditationExtraMana = q.MeditationExtraMana;
+                    output.FromItems_CleanseExtraHealth = q.CleanseExtraHealth;
+                    output.FromItems_ExtraSkillCriticalPercent = q.ExtraSkillCriticalPercent;
+                    output.FromItems_HealthBonusPercent = q.HealthBonusPercent;
+                    output.FromItems_ManaRecoveryPerUpdate = q.ManaRecoveryPerUpdate;
+                    output.FromItems_SneakPercent = q.SneakPercent;
+                    output.FromItems_EvasionPercent = q.EvasionPercent;
+                    output.FromItems_EvasionNegationPercent = q.EvasionNegationPercent;
+                    output.FromItems_MoveActionPointDiscount = q.MoveActionPointDiscount;
+                    output.FromItems_SpellExtraTFEnergyPercent = q.SpellExtraTFEnergyPercent;
+                    output.FromItems_SpellExtraHealthDamagePercent = q.SpellExtraHealthDamagePercent;
+                    output.FromItems_CleanseExtraTFEnergyRemovalPercent = q.CleanseExtraTFEnergyRemovalPercent;
+                    output.FromItems_SpellMisfireChanceReduction = q.SpellMisfireChanceReduction;
+                    output.FromItems_SpellHealthDamageResistance = q.SpellHealthDamageResistance;
+                    output.FromItems_SpellTFEnergyDamageResistance = q.SpellTFEnergyDamageResistance;
+                    output.FromItems_ExtraInventorySpace = q.ExtraInventorySpace;
 
-            DbStaticForm myform = FormStatics.GetForm(player.Form);
+                    output.FromItems_Discipline = q.Discipline;
+                    output.FromItems_Perception = q.Perception;
+                    output.FromItems_Charisma = q.Charisma;
+                    output.FromItems_Submission_Dominance = q.Submission_Dominance;
 
-            output.FromItems_HealthBonusPercent = wornItems.Sum(x => x.Item.HealthBonusPercent + x.Item.HealthBonusPercent * ( (x.dbItem.Level - 1) * PvPStatics.Item_LevelBonusModifier));
+                    output.FromItems_Fortitude = q.Fortitude;
+                    output.FromItems_Agility = q.Agility;
+                    output.FromItems_Allure = q.Allure;
+                    output.FromItems_Corruption_Purity = q.Corruption_Purity;
 
-            output.FromItems_ManaBonusPercent = wornItems.Sum(x => x.Item.ManaBonusPercent + x.Item.ManaBonusPercent * ((x.dbItem.Level - 1) * PvPStatics.Item_LevelBonusModifier));
+                    output.FromItems_Magicka = q.Magicka;
+                    output.FromItems_Succour = q.Succour;
+                    output.FromItems_Luck = q.Luck;
+                    output.FromItems_Chaos_Order = q.Chaos_Order;
+                }
+                else if (q.Type == "Form")
+                {
+                    output.FromForm_HealthBonusPercent = q.HealthBonusPercent;
+                    output.FromForm_ManaBonusPercent = q.ManaBonusPercent;
+                    output.FromForm_MeditationExtraMana = q.MeditationExtraMana;
+                    output.FromForm_CleanseExtraHealth = q.CleanseExtraHealth;
+                    output.FromForm_ExtraSkillCriticalPercent = q.ExtraSkillCriticalPercent;
+                    output.FromForm_HealthBonusPercent = q.HealthBonusPercent;
+                    output.FromForm_ManaRecoveryPerUpdate = q.ManaRecoveryPerUpdate;
+                    output.FromForm_SneakPercent = q.SneakPercent;
+                    output.FromForm_EvasionPercent = q.EvasionPercent;
+                    output.FromForm_EvasionNegationPercent = q.EvasionNegationPercent;
+                    output.FromForm_MoveActionPointDiscount = q.MoveActionPointDiscount;
+                    output.FromForm_SpellExtraTFEnergyPercent = q.SpellExtraTFEnergyPercent;
+                    output.FromForm_SpellExtraHealthDamagePercent = q.SpellExtraHealthDamagePercent;
+                    output.FromForm_CleanseExtraTFEnergyRemovalPercent = q.CleanseExtraTFEnergyRemovalPercent;
+                    output.FromForm_SpellMisfireChanceReduction = q.SpellMisfireChanceReduction;
+                    output.FromForm_SpellHealthDamageResistance = q.SpellHealthDamageResistance;
+                    output.FromForm_SpellTFEnergyDamageResistance = q.SpellTFEnergyDamageResistance;
+                    output.FromForm_ExtraInventorySpace = q.ExtraInventorySpace;
 
-            output.FromItems_MeditationExtraMana = wornItems.Sum(x => x.Item.MeditationExtraMana + x.Item.MeditationExtraMana * ((x.dbItem.Level - 1) * PvPStatics.Item_LevelBonusModifier));
+                    output.FromForm_Discipline = q.Discipline;
+                    output.FromForm_Perception = q.Perception;
+                    output.FromForm_Charisma = q.Charisma;
+                    output.FromForm_Submission_Dominance = q.Submission_Dominance;
 
-            output.FromItems_CleanseExtraHealth = wornItems.Sum(x => x.Item.CleanseExtraHealth + x.Item.CleanseExtraHealth * ((x.dbItem.Level - 1) * PvPStatics.Item_LevelBonusModifier));
+                    output.FromForm_Fortitude = q.Fortitude;
+                    output.FromForm_Agility = q.Agility;
+                    output.FromForm_Allure = q.Allure;
+                    output.FromForm_Corruption_Purity = q.Corruption_Purity;
 
-            output.FromItems_ExtraSkillCriticalPercent = wornItems.Sum(x => x.Item.ExtraSkillCriticalPercent + x.Item.ExtraSkillCriticalPercent * ((x.dbItem.Level - 1) * PvPStatics.Item_LevelBonusModifier));
+                    output.FromForm_Magicka = q.Magicka;
+                    output.FromForm_Succour = q.Succour;
+                    output.FromForm_Luck = q.Luck;
+                    output.FromForm_Chaos_Order = q.Chaos_Order;
+                }
+                else if (q.Type == "Effects")
+                {
+                    output.FromEffects_HealthBonusPercent = q.HealthBonusPercent;
+                    output.FromEffects_ManaBonusPercent = q.ManaBonusPercent;
+                    output.FromEffects_MeditationExtraMana = q.MeditationExtraMana;
+                    output.FromEffects_CleanseExtraHealth = q.CleanseExtraHealth;
+                    output.FromEffects_ExtraSkillCriticalPercent = q.ExtraSkillCriticalPercent;
+                    output.FromEffects_HealthBonusPercent = q.HealthBonusPercent;
+                    output.FromEffects_ManaRecoveryPerUpdate = q.ManaRecoveryPerUpdate;
+                    output.FromEffects_SneakPercent = q.SneakPercent;
+                    output.FromEffects_EvasionPercent = q.EvasionPercent;
+                    output.FromEffects_EvasionNegationPercent = q.EvasionNegationPercent;
+                    output.FromEffects_MoveActionPointDiscount = q.MoveActionPointDiscount;
+                    output.FromEffects_SpellExtraTFEnergyPercent = q.SpellExtraTFEnergyPercent;
+                    output.FromEffects_SpellExtraHealthDamagePercent = q.SpellExtraHealthDamagePercent;
+                    output.FromEffects_CleanseExtraTFEnergyRemovalPercent = q.CleanseExtraTFEnergyRemovalPercent;
+                    output.FromEffects_SpellMisfireChanceReduction = q.SpellMisfireChanceReduction;
+                    output.FromEffects_SpellHealthDamageResistance = q.SpellHealthDamageResistance;
+                    output.FromEffects_SpellTFEnergyDamageResistance = q.SpellTFEnergyDamageResistance;
+                    output.FromEffects_ExtraInventorySpace = q.ExtraInventorySpace;
 
-            output.FromItems_HealthRecoveryPerUpdate = wornItems.Sum(x => x.Item.HealthRecoveryPerUpdate + x.Item.HealthRecoveryPerUpdate * ((x.dbItem.Level - 1) * PvPStatics.Item_LevelBonusModifier));
+                    output.FromEffects_Discipline = q.Discipline;
+                    output.FromEffects_Perception = q.Perception;
+                    output.FromEffects_Charisma = q.Charisma;
+                    output.FromEffects_Submission_Dominance = q.Submission_Dominance;
 
-            output.FromItems_ManaRecoveryPerUpdate = wornItems.Sum(x => x.Item.ManaRecoveryPerUpdate + x.Item.ManaRecoveryPerUpdate * ((x.dbItem.Level - 1) * PvPStatics.Item_LevelBonusModifier));
+                    output.FromEffects_Fortitude = q.Fortitude;
+                    output.FromEffects_Agility = q.Agility;
+                    output.FromEffects_Allure = q.Allure;
+                    output.FromEffects_Corruption_Purity = q.Corruption_Purity;
 
-            output.FromItems_SneakPercent = wornItems.Sum(x => x.Item.SneakPercent + x.Item.SneakPercent * ((x.dbItem.Level - 1) * PvPStatics.Item_LevelBonusModifier));
+                    output.FromEffects_Magicka = q.Magicka;
+                    output.FromEffects_Succour = q.Succour;
+                    output.FromEffects_Luck = q.Luck;
+                    output.FromEffects_Chaos_Order = q.Chaos_Order;
 
-            output.FromItems_EvasionPercent = wornItems.Sum(x => x.Item.EvasionPercent + x.Item.EvasionPercent * ((x.dbItem.Level - 1) * PvPStatics.Item_LevelBonusModifier));
-
-            output.FromItems_EvasionNegationPercent = wornItems.Sum(x => x.Item.EvasionNegationPercent + x.Item.EvasionNegationPercent * ((x.dbItem.Level - 1) * PvPStatics.Item_LevelBonusModifier));
-
-
-            output.FromItems_MoveActionPointDiscount = wornItems.Sum(x => x.Item.MoveActionPointDiscount + x.Item.MoveActionPointDiscount * ((x.dbItem.Level - 1) * PvPStatics.Item_LevelBonusModifier));
-
-            output.FromItems_SpellExtraTFEnergyPercent = wornItems.Sum(x => x.Item.SpellExtraTFEnergyPercent + x.Item.SpellExtraTFEnergyPercent * ((x.dbItem.Level - 1) * PvPStatics.Item_LevelBonusModifier));
-
-            output.FromItems_SpellExtraHealthDamagePercent = wornItems.Sum(x => x.Item.SpellExtraHealthDamagePercent + x.Item.SpellExtraHealthDamagePercent * ((x.dbItem.Level - 1) * PvPStatics.Item_LevelBonusModifier));
-
-            output.FromItems_CleanseExtraTFEnergyRemovalPercent = wornItems.Sum(x => x.Item.CleanseExtraTFEnergyRemovalPercent + x.Item.CleanseExtraTFEnergyRemovalPercent * ((x.dbItem.Level - 1) * PvPStatics.Item_LevelBonusModifier));
-
-            output.FromItems_SpellMisfireChanceReduction = wornItems.Sum(x => x.Item.SpellMisfireChanceReduction + x.Item.SpellMisfireChanceReduction * ((x.dbItem.Level - 1) * PvPStatics.Item_LevelBonusModifier));
-
-            output.FromItems_SpellHealthDamageResistance = wornItems.Sum(x => x.Item.SpellHealthDamageResistance + x.Item.SpellHealthDamageResistance * ((x.dbItem.Level - 1) * PvPStatics.Item_LevelBonusModifier));
-
-            output.FromItems_SpellTFEnergyDamageResistance = wornItems.Sum(x => x.Item.SpellTFEnergyDamageResistance + x.Item.SpellTFEnergyDamageResistance * ((x.dbItem.Level - 1) * PvPStatics.Item_LevelBonusModifier));
-
-            output.FromItems_ExtraInventorySpace = wornItems.Sum(x => x.Item.ExtraInventorySpace + x.Item.ExtraInventorySpace * ((x.dbItem.Level - 1) * PvPStatics.Item_LevelBonusModifier));
-
-        
-
-            output.FromForm_HealthBonusPercent = myform.HealthBonusPercent;
-            output.FromForm_ManaBonusPercent = myform.ManaBonusPercent;
-            output.FromForm_MeditationExtraMana = myform.MeditationExtraMana;
-            output.FromForm_CleanseExtraHealth = myform.CleanseExtraHealth;
-            output.FromForm_ExtraSkillCriticalPercent = myform.ExtraSkillCriticalPercent;
-            output.FromForm_HealthRecoveryPerUpdate = myform.HealthRecoveryPerUpdate;
-            output.FromForm_ManaRecoveryPerUpdate = myform.ManaRecoveryPerUpdate;
-            output.FromForm_SneakPercent = myform.SneakPercent;
-            output.FromForm_EvasionPercent = myform.EvasionPercent;
-            output.FromForm_EvasionNegationPercent = myform.EvasionNegationPercent;
-            output.FromForm_MoveActionPointDiscount = myform.MoveActionPointDiscount;
-            output.FromForm_SpellExtraTFEnergyPercent = myform.SpellExtraTFEnergyPercent;
-            output.FromForm_SpellExtraHealthDamagePercent = myform.SpellExtraHealthDamagePercent;
-            output.FromForm_CleanseExtraTFEnergyRemovalPercent = myform.CleanseExtraTFEnergyRemovalPercent;
-            output.FromForm_SpellMisfireChanceReduction = myform.SpellMisfireChanceReduction;
-            output.FromForm_SpellHealthDamageResistance = myform.SpellHealthDamageResistance;
-            output.FromForm_SpellTFEnergyDamageResistance = myform.SpellTFEnergyDamageResistance;
-            output.FromForm_ExtraInventorySpace = myform.ExtraInventorySpace;
-
-            output.FromEffects_HealthBonusPercent = myEffects.Sum(e => e.Effect.HealthBonusPercent);
-            output.FromEffects_ManaBonusPercent = myEffects.Sum(e => e.Effect.ManaBonusPercent);
-            output.FromEffects_MeditationExtraMana = myEffects.Sum(e => e.Effect.MeditationExtraMana);
-            output.FromEffects_CleanseExtraHealth = myEffects.Sum(e => e.Effect.CleanseExtraHealth);
-            output.FromEffects_ExtraSkillCriticalPercent = myEffects.Sum(e => e.Effect.ExtraSkillCriticalPercent);
-            output.FromEffects_HealthRecoveryPerUpdate = myEffects.Sum(e => e.Effect.HealthRecoveryPerUpdate);
-            output.FromEffects_ManaRecoveryPerUpdate = myEffects.Sum(e => e.Effect.ManaRecoveryPerUpdate);
-            output.FromEffects_SneakPercent = myEffects.Sum(e => e.Effect.SneakPercent);
-            output.FromEffects_EvasionPercent = myEffects.Sum(e => e.Effect.EvasionPercent);
-            output.FromEffects_EvasionNegationPercent = myEffects.Sum(e => e.Effect.EvasionNegationPercent);
-            output.FromEffects_MoveActionPointDiscount = myEffects.Sum(e => e.Effect.MoveActionPointDiscount);
-            output.FromEffects_SpellExtraTFEnergyPercent = myEffects.Sum(e => e.Effect.SpellExtraTFEnergyPercent);
-            output.FromEffects_SpellExtraHealthDamagePercent = myEffects.Sum(e => e.Effect.SpellExtraHealthDamagePercent);
-            output.FromEffects_CleanseExtraTFEnergyRemovalPercent = myEffects.Sum(e => e.Effect.CleanseExtraTFEnergyRemovalPercent);
-            output.FromEffects_SpellMisfireChanceReduction = myEffects.Sum(e => e.Effect.SpellMisfireChanceReduction);
-            output.FromEffects_SpellHealthDamageResistance = myEffects.Sum(e => e.Effect.SpellHealthDamageResistance);
-            output.FromEffects_SpellTFEnergyDamageResistance = myEffects.Sum(e => e.Effect.SpellTFEnergyDamageResistance);
-            output.FromEffects_ExtraInventorySpace = myEffects.Sum(e => e.Effect.ExtraInventorySpace);
-
-            #region newbuffs
-
-
-
-
-            output.FromItems_Discipline = wornItems.Sum(x => x.Item.Discipline + x.Item.Discipline * ((x.dbItem.Level - 1) * (float)PvPStatics.Item_LevelBonusModifier));
-            output.FromItems_Perception = wornItems.Sum(x => x.Item.Perception + x.Item.Perception * ((x.dbItem.Level - 1) * (float)PvPStatics.Item_LevelBonusModifier));
-            output.FromItems_Charisma = wornItems.Sum(x => x.Item.Charisma + x.Item.Charisma * ((x.dbItem.Level - 1) * (float)PvPStatics.Item_LevelBonusModifier));
-            output.FromItems_Submission_Dominance = wornItems.Sum(x => x.Item.Submission_Dominance + x.Item.Submission_Dominance * ((x.dbItem.Level - 1) * (float)PvPStatics.Item_LevelBonusModifier));
-
-            output.FromItems_Fortitude = wornItems.Sum(x => x.Item.Fortitude + x.Item.Fortitude * ((x.dbItem.Level - 1) * (float)PvPStatics.Item_LevelBonusModifier));
-            output.FromItems_Agility = wornItems.Sum(x => x.Item.Agility + x.Item.Agility * ((x.dbItem.Level - 1) * (float)PvPStatics.Item_LevelBonusModifier));
-            output.FromItems_Allure = wornItems.Sum(x => x.Item.Allure + x.Item.Allure * ((x.dbItem.Level - 1) * (float)PvPStatics.Item_LevelBonusModifier));
-            output.FromItems_Corruption_Purity = wornItems.Sum(x => x.Item.Corruption_Purity + x.Item.Corruption_Purity * ((x.dbItem.Level - 1) * (float)PvPStatics.Item_LevelBonusModifier));
-
-            output.FromItems_Magicka = wornItems.Sum(x => x.Item.Magicka + x.Item.Magicka * ((x.dbItem.Level - 1) * (float)PvPStatics.Item_LevelBonusModifier));
-            output.FromItems_Succour = wornItems.Sum(x => x.Item.Succour + x.Item.Succour * ((x.dbItem.Level - 1) * (float)PvPStatics.Item_LevelBonusModifier));
-            output.FromItems_Luck = wornItems.Sum(x => x.Item.Luck + x.Item.Luck * ((x.dbItem.Level - 1) * (float)PvPStatics.Item_LevelBonusModifier));
-            output.FromItems_Chaos_Order = wornItems.Sum(x => x.Item.Chaos_Order + x.Item.Chaos_Order * ((x.dbItem.Level - 1) * (float)PvPStatics.Item_LevelBonusModifier));
-
-
-            // new stats
-            output.FromForm_Discipline = myform.Discipline;
-            output.FromForm_Perception = myform.Perception;
-            output.FromForm_Charisma = myform.Charisma;
-            output.FromForm_Submission_Dominance = myform.Submission_Dominance;
-
-            output.FromForm_Fortitude = myform.Fortitude;
-            output.FromForm_Agility = myform.Agility;
-            output.FromForm_Allure = myform.Allure;
-            output.FromForm_Corruption_Purity = myform.Corruption_Purity;
-
-            output.FromForm_Magicka = myform.Magicka;
-            output.FromForm_Succour = myform.Succour;
-            output.FromForm_Luck = myform.Luck;
-            output.FromForm_Chaos_Order = myform.Chaos_Order;
-
-
-
-
-            output.FromEffects_Discipline = myEffects.Sum(e => e.Effect.Discipline);
-            output.FromEffects_Perception = myEffects.Sum(e => e.Effect.Perception);
-            output.FromEffects_Charisma = myEffects.Sum(e => e.Effect.Charisma);
-            output.FromEffects_Submission_Dominance = myEffects.Sum(e => e.Effect.Submission_Dominance);
-
-            output.FromEffects_Fortitude = myEffects.Sum(e => e.Effect.Fortitude);
-            output.FromEffects_Agility = myEffects.Sum(e => e.Effect.Agility);
-            output.FromEffects_Allure = myEffects.Sum(e => e.Effect.Allure);
-            output.FromEffects_Corruption_Purity = myEffects.Sum(e => e.Effect.Corruption_Purity);
-
-            output.FromEffects_Magicka = myEffects.Sum(e => e.Effect.Magicka);
-            output.FromEffects_Succour = myEffects.Sum(e => e.Effect.Succour);
-            output.FromEffects_Luck = myEffects.Sum(e => e.Effect.Luck);
-            output.FromEffects_Chaos_Order = myEffects.Sum(e => e.Effect.Chaos_Order);
-
-            #endregion
-
+                }
+            }
             // non-stat buffs
 
             output.HasSearchDiscount = false;

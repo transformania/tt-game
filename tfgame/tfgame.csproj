@@ -216,6 +216,7 @@
     <Compile Include="Controllers\ContributionController.cs" />
     <Compile Include="Controllers\CovenantController.cs" />
     <Compile Include="Controllers\DuelController.cs" />
+    <Compile Include="Controllers\InfoController.cs" />
     <Compile Include="Controllers\ItemController.cs" />
     <Compile Include="Controllers\NPCController.cs" />
     <Compile Include="Controllers\PvPAdminController.cs" />
@@ -2039,10 +2040,10 @@
     <Content Include="Views\PvP\partial_ItemBuffs.cshtml" />
     <Content Include="Views\PvP\partial_InventoryItem.cshtml" />
     <Content Include="Views\PvP\Play_Inanimate.cshtml" />
-    <Content Include="Views\PvP\HowToPlay.cshtml" />
+    <Content Include="Views\Info\HowToPlay.cshtml" />
     <Content Include="Views\PvP\LookAtPlayer.cshtml" />
     <Content Include="Views\PvPAdmin\UpdateWorld.cshtml" />
-    <Content Include="Views\PvP\GameNews.cshtml" />
+    <Content Include="Views\Info\GameNews.cshtml" />
     <Content Include="Views\PvP\partial_XpBar.cshtml" />
     <Content Include="Views\PvP\partial_FormBuffs.cshtml" />
     <Content Include="Views\PvP\MyMessages.cshtml" />
@@ -2064,7 +2065,7 @@
     <Content Include="Views\PvP\RoundLeaderboards\Alpha_2.cshtml" />
     <Content Include="Views\PvP\ContributeGraphicsNeeded.cshtml" />
     <Content Include="Views\PvP\ContributeSetGraphicStatus.cshtml" />
-    <Content Include="Views\PvP\GameNews_PlannedFeatures.cshtml" />
+    <Content Include="Views\Info\GameNews_PlannedFeatures.cshtml" />
     <Content Include="Views\PvPAdmin\Play.cshtml" />
     <Content Include="Views\PvP\BalanceCalculatorEffect.cshtml" />
     <Content Include="Views\PvP\LevelupPerk.cshtml" />
@@ -2122,10 +2123,10 @@
     <Content Include="Views\Settings\Donate.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Alpha_10.cshtml" />
     <Content Include="Views\Shared\_MenuPartial.cshtml" />
-    <Content Include="Views\PvP\GameNews_Archive.cshtml" />
-    <Content Include="Views\PvP\TalkWithJewdewfae.cshtml" />
+    <Content Include="Views\Info\GameNews_Archive.cshtml" />
+    <Content Include="Views\NPC\TalkWithJewdewfae.cshtml" />
     <Content Include="Views\PvPAdmin\WriteFaeEncounter.cshtml" />
-    <Content Include="Views\PvP\FAQ.cshtml" />
+    <Content Include="Views\Info\FAQ.cshtml" />
     <Content Include="Views\Settings\SetNickname.cshtml" />
     <Content Include="Views\PvP\partial\partial_recentActivity.cshtml" />
     <Content Include="Views\PvP\ViewEffects.cshtml" />
@@ -2175,7 +2176,7 @@
     <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_15.cshtml" />
     <Content Include="Views\Settings\MyBlacklistEntries.cshtml" />
     <Content Include="Views\Item\SkillBook.cshtml" />
-    <Content Include="Views\PvP\Rules.cshtml" />
+    <Content Include="Views\Info\Rules.cshtml" />
     <Content Include="Views\Item\partial\ItemDetails.cshtml" />
     <Content Include="Views\PvP\partial_ShopkeeperItem.cshtml" />
     <Content Include="Views\Settings\PlayerStats.cshtml" />

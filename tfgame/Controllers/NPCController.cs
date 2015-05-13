@@ -795,9 +795,9 @@ namespace tfgame.Controllers
             {
 
                 if (me.Gender == "male") {
-                    ViewBag.Speech = "Greetings, sir " + me.GetFullName() + "!  How may I assist you today?";
+                    ViewBag.Speech = "\"Greetings, sir " + me.GetFullName() + "!  How may I assist you today?\"";
                 } else if (me.Gender == "female") {
-                    ViewBag.Speech = "Greetings, madam " + me.GetFullName() + "!  How may I assist you today?";
+                    ViewBag.Speech = "\"Greetings, madam " + me.GetFullName() + "!  How may I assist you today?\"";
                 }
                 
             }
@@ -875,6 +875,120 @@ namespace tfgame.Controllers
             }
 
             return View();
+        }
+
+        [Authorize]
+        public ActionResult TalkWithJewdewfae()
+        {
+            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player fae = PlayerProcedures.GetPlayerFromMembership(-6);
+
+            // assert player is mobile
+            if (me.Mobility != "full")
+            {
+                TempData["Error"] = "You must be fully animate in order to talk with Jewdewfae.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            // assert player is in same location as jewdewfae
+            if (me.dbLocationName != fae.dbLocationName)
+            {
+                TempData["Error"] = "You must be in the same location as Jewfewfae in order to talk with her.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            JewdewfaeEncounter output = tfgame.Procedures.BossProcedures.BossProcedures_Fae.GetFairyChallengeInfoAtLocation(fae.dbLocationName);
+
+            output.IntroText = output.IntroText.Replace("[", "<").Replace("]", ">");
+            output.CorrectFormText = output.CorrectFormText.Replace("[", "<").Replace("]", ">");
+            output.FailureText = output.FailureText.Replace("[", "<").Replace("]", ">");
+
+            ViewBag.IsInWrongForm = false;
+
+            if (me.Form != output.RequiredForm)
+            {
+                ViewBag.IsInWrongForm = true;
+            }
+
+            if (me.ActionPoints < 5)
+            {
+                ViewBag.IsTired = true;
+            }
+
+            ViewBag.ShowSuccess = false;
+
+            ViewBag.HadRecentInteraction = false;
+            if (tfgame.Procedures.BossProcedures.BossProcedures_Fae.PlayerHasHadRecentInteraction(me, fae))
+            {
+                ViewBag.HadRecentInteraction = true;
+            }
+
+            return View(output);
+        }
+
+        [Authorize]
+        public ActionResult PlayWithJewdewfae()
+        {
+
+            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player fae = PlayerProcedures.GetPlayerFromMembership(-6);
+
+            // assert player is mobile
+            if (me.Mobility != "full")
+            {
+                TempData["Error"] = "You must be fully animate in order to talk with Jewdewfae.";
+                return RedirectToAction("Play","PvP");
+            }
+
+            // assert player is in same location as jewdewfae
+            if (me.dbLocationName != fae.dbLocationName)
+            {
+                TempData["Error"] = "You must be in the same location as Jewfewfae in order to talk with her.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            // assert player has enough AP
+            if (me.ActionPoints < 5)
+            {
+                TempData["Error"] = "You need 5 action points to play with Jewdewfae.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            // assert player has not already interacted this location
+            if (tfgame.Procedures.BossProcedures.BossProcedures_Fae.PlayerHasHadRecentInteraction(me, fae))
+            {
+                TempData["Error"] = "You have already interacted with Jewdewfae here.";
+                TempData["SubError"] = "Wait for her to move somewhere else.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            JewdewfaeEncounter output = tfgame.Procedures.BossProcedures.BossProcedures_Fae.GetFairyChallengeInfoAtLocation(fae.dbLocationName);
+
+            output.IntroText = output.IntroText.Replace("[", "<").Replace("]", ">");
+            output.CorrectFormText = output.CorrectFormText.Replace("[", "<").Replace("]", ">");
+            output.FailureText = output.FailureText.Replace("[", "<").Replace("]", ">");
+
+            if (me.Form == output.RequiredForm)
+            {
+                decimal xpGained = tfgame.Procedures.BossProcedures.BossProcedures_Fae.AddInteraction(me);
+                PlayerProcedures.GiveXP(me.Id, xpGained);
+                PlayerProcedures.ChangePlayerActionMana(5, 0, 0, me.Id);
+                ViewBag.XPGain = xpGained;
+                ViewBag.ShowSuccess = true;
+                ViewBag.HadRecentInteraction = false;
+
+                new Thread(() =>
+                     StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__JewdewfaeEncountersCompleted, 1)
+                 ).Start();
+
+                return View("TalkWithJewdewfae", output);
+            }
+            else
+            {
+                TempData["Error"] = "You are not in the correct form to play with Jewdewfae right now.";
+                return RedirectToAction("Play", "PvP");
+            }
+
         }
 	}
 }

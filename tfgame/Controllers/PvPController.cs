@@ -343,6 +343,12 @@ namespace tfgame.Controllers
                 return View("~/Views/PvP/MakeNewCharacter.cshtml");
             }
 
+            if (player.StartGameMode != 0 && player.StartGameMode != 1 && player.StartGameMode != 2)
+            {
+                ViewBag.ValidationMessage = "That is not a valid game mode.";
+                return View("~/Views/PvP/MakeNewCharacter.cshtml");
+            }
+
             if (player.FormName.Contains("woman_"))
             {
                 player.Gender = "female";
@@ -914,9 +920,11 @@ namespace tfgame.Controllers
             // prevent low level players from taking on high level bots
             if (targeted.MembershipId <= -3)
             {
-                if ((targeted.MembershipId == -3 || targeted.MembershipId == -10 || targeted.MembershipId == -6) && PvPStatics.ChaosMode == true)
+
+                // disable attacks on "friendly" NPCs
+                if (targeted.MembershipId == -3 || targeted.MembershipId == -10 || targeted.MembershipId == -6 || targeted.MembershipId == -14)
                 {
-                    TempData["Error"] = "Attacking merchants and Jewdewfae is disabled in chaos mode.";
+                    TempData["Error"] = "A little smile tells you it might just be a bad idea to try and attack this person...";
                     return RedirectToAction("Play");
                 }
 

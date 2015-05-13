@@ -7,7 +7,7 @@
     <p class="infoMessage error">@ViewBag.ErrorMessage</p>
 </div>
 
-<div class="specialBox">
+<div class="specialBox textSpaced">
     <p>
         <b>
             Welcome to Transformania Time!  Here you can choose a name for your brace mage who dares to enter the town of Sunnyglade in all its dangers and oddities.  If you are starting your first character for the round, you will begin at level 1.  If your previous character has been inanimated or turned into a pet, you can "reroll" yourself a new character immediately but will lose 3 levels and all of your Arpeyjis.  You may keep your same name as before, but your newer incarnation will have a roman numeral appended to the end, ie "Aelianus Marcellius II".
@@ -68,12 +68,17 @@
         <p class="good">Start in Roleplaying (RP) mode?</p>
         @Html.CheckBoxFor(x => x.StartInRP)
 
+    <p class="good">Which game mode should this character start in?</p>
+        @Html.RadioButtonFor(x => x.StartGameMode, "0")<span class=""> SuperProtection</span><br />
+     @Html.RadioButtonFor(x => x.StartGameMode, "1", new { @checked = "checked" })<span class=""> Protection</span><br />
+    @Html.RadioButtonFor(x => x.StartGameMode, "2")<span class="bad"> PvP</span>
+
         <br /><br />
 
-    <p class="bad">Start in Player Versus Player (PvP) mode?</p>
-        @Html.CheckBoxFor(x => x.StartInPVP)
+    @*<p class="bad">Start in Player Versus Player (PvP) mode?</p>
+        @Html.CheckBoxFor(x => x.StartInPVP)*@
         
-           <p class="good">Migrate any old messages to this character?</p>
+           <p class="good">Migrate any old messages to this character?  <br />(Note:This will not work inbetween rounds.)</p>
         @Html.CheckBoxFor(x => x.MigrateLetters)
 
         <br /><br />
@@ -132,6 +137,8 @@
             setPortrait();
 
             $("#MigrateLetters").prop('checked', true);
+
+
 
 
         });

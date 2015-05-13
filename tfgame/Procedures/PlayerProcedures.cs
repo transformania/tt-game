@@ -538,14 +538,7 @@ namespace tfgame.Procedures
             }
 
             // start player in PvP if they choose, otherwise put them in protection
-            if (player.StartInPVP == true)
-            {
-                newplayer.GameMode = 2;
-            }
-            else
-            {
-                newplayer.GameMode = 1;
-            }
+            newplayer.GameMode = player.StartGameMode;
 
 
             if (player.StartInRP == true)

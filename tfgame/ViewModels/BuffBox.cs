@@ -203,7 +203,7 @@ namespace tfgame.ViewModels
         public decimal SneakPercent()
         {
             return Convert.ToDecimal(
-               -1.0F * Fortitude() + 
+               -1.0F * Fortitude() +
                1.25F * Agility() +
                -0.5F * Allure()
             );
@@ -316,9 +316,6 @@ namespace tfgame.ViewModels
 
             return amt;
         }
-        
-
-
     }
 
     public class RAMBuffBox
@@ -343,4 +340,44 @@ namespace tfgame.ViewModels
         //public float SpellTFEnergyDamageResistance { get; set; }
         //public float ExtraInventorySpace { get; set; }
     }
+
+    public static class BuffMap
+    {
+
+        public static Dictionary<string, Dictionary<string, float>> BuffsMap = new Dictionary<string, Dictionary<string, float>> {
+
+
+
+            {
+                "HealthBonusPercent",
+                new Dictionary<string,float> {
+                      	{"Discipline", .5F},
+	                    {"Perception", 0},
+	                    {"Charisma", 0},
+	                    {"Fortitude", 0},
+	                    {"Agility", 0},
+	                    {"Allure", -.25F},
+	                    {"Magicka", 0},
+	                    {"Succour", 0},
+	                    {"Luck", 0},
+                    }
+                
+                },
+                {
+                "ManaBonusPercent",
+                new Dictionary<string,float> {
+                      	{"Discipline", 0},
+	                    {"Perception", 0},
+	                    {"Charisma", 0},
+	                    {"Fortitude", 0},
+	                    {"Agility", 0},
+	                    {"Allure", 0},
+	                    {"Magicka", 1.0F},
+	                    {"Succour", -.25F},
+	                    {"Luck", 0},
+                    }
+                
+                },
+            };
+    };
 }

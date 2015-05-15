@@ -163,7 +163,7 @@ namespace tfgame.ViewModels
         {
             return Convert.ToDecimal(
               0.5F * Discipline() +
-              -0.5F * Allure() +
+              -0.25F * Allure() +
                 (float)FromForm_HealthBonusPercent +
                (float)FromItems_HealthBonusPercent +
                (float)FromEffects_HealthBonusPercent
@@ -174,7 +174,7 @@ namespace tfgame.ViewModels
         {
             return Convert.ToDecimal(
                1.0F * Magicka() +
-               -.5F * Succour()
+               -.25F * Succour()
             );
         }
 
@@ -182,7 +182,7 @@ namespace tfgame.ViewModels
         {
             return Convert.ToDecimal(
                .5F * Luck() +
-               -.5F * Discipline()
+               -.25F * Discipline()
             );
         }
 
@@ -203,16 +203,16 @@ namespace tfgame.ViewModels
         public decimal SneakPercent()
         {
             return Convert.ToDecimal(
-               -2.0F * Fortitude() + 
+               -1.0F * Fortitude() + 
                1.25F * Agility() +
-               -1.0F * Allure()
+               -0.5F * Allure()
             );
         }
 
         public decimal EvasionPercent()
         {
             return Convert.ToDecimal(
-               -1.0F * Fortitude() +
+               -0.5F * Fortitude() +
                1.0F * Agility()
             );
         }
@@ -222,14 +222,14 @@ namespace tfgame.ViewModels
             return Convert.ToDecimal(
                1.5F * Perception() +
                1.0F * Allure() +
-               -1.0F * Magicka()
+               -0.5F * Magicka()
             );
         }
 
         public decimal MeditationExtraMana()
         {
             return Convert.ToDecimal(
-               -.5F * Perception() +
+               -.25F * Perception() +
                .5F * Magicka()
             );
         }
@@ -238,14 +238,14 @@ namespace tfgame.ViewModels
         {
             return Convert.ToDecimal(
                .25F * Discipline() +
-               -.25F * Fortitude()
+               -.125F * Fortitude()
             );
         }
 
         public decimal MoveActionPointDiscount()
         {
             return Convert.ToDecimal(
-               -.025F * Perception() +
+               -.0125F * Perception() +
                .04F * Agility() +
                (float)FromForm_MoveActionPointDiscount +
                (float)FromItems_MoveActionPointDiscount +
@@ -258,7 +258,7 @@ namespace tfgame.ViewModels
             return Convert.ToDecimal(
                1.0F * Charisma() +
                1.0F * Magicka() +
-               -.5F * Succour()
+               -.25F * Succour()
             );
         }
 
@@ -266,7 +266,7 @@ namespace tfgame.ViewModels
         {
             return Convert.ToDecimal(
                1.0F * Charisma() +
-               -.5F * Discipline() +
+               -.25F * Discipline() +
                1.5F * Allure()
             );
         }
@@ -274,7 +274,7 @@ namespace tfgame.ViewModels
         public decimal CleanseExtraTFEnergyRemovalPercent()
         {
             return Convert.ToDecimal(
-               -.25F * Magicka() +
+               -.125F * Magicka() +
                .375F * Luck()
             );
         }
@@ -283,7 +283,7 @@ namespace tfgame.ViewModels
         {
             return Convert.ToDecimal(
                .75F * Perception() +
-               -.25F * Charisma()
+               -.125F * Charisma()
             );
         }
 
@@ -291,8 +291,8 @@ namespace tfgame.ViewModels
         {
             return Convert.ToDecimal(
                 1.0F * Discipline() +
-               -.5F * Charisma() +
-               -.5F * Luck()
+               -.25F * Charisma() +
+               -.25F * Luck()
             );
         }
 
@@ -300,8 +300,8 @@ namespace tfgame.ViewModels
         {
             return Convert.ToDecimal(
                 1.0F * Fortitude() +
-                -.5F * Agility() +
-                -.375F * Luck()
+                -.25F * Agility() +
+                -.1875 * Luck()
             );
         }
 
@@ -309,7 +309,7 @@ namespace tfgame.ViewModels
         {
             decimal amt = Convert.ToDecimal(
                 .25F * Fortitude() +
-                -.25F * Agility()
+                -.025F * Agility()
             );
 
             amt = Math.Floor(amt);

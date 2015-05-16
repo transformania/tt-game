@@ -1040,12 +1040,13 @@ namespace tfgame.Controllers
                 return View("Play", "PvP");
             }
 
-            BossProcedures_Fae.MoveToNewLocation();
-         
             
-         //   NoticeProcedures.PushNotice(PlayerProcedures.GetPlayerFromMembership(), "test");
 
             return RedirectToAction("Index");
+        }
+
+        public ActionResult ShowStatsTable() {
+            return View();
         }
 
         public ActionResult SpawnNPCs()

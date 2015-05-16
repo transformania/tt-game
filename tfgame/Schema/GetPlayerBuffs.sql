@@ -149,7 +149,7 @@ BEGIN
 		,CAST(ISNULL(SUM(se.Chaos_Order), 0) AS real)
 
 		FROM [dbo].Effects
-		JOIN [dbo].DbStaticEffects AS se ON se.dbName=Effects.dbName WHERE Effects.OwnerId = @PlayerId
+		JOIN [dbo].DbStaticEffects AS se ON se.dbName=Effects.dbName WHERE Effects.OwnerId = @PlayerId AND Effects.Duration > 0
 	)
 	RETURN 1;
 	END

@@ -376,7 +376,230 @@ namespace tfgame.ViewModels
 	                    {"Succour", -.25F},
 	                    {"Luck", 0},
                     }
-                
+                },
+                {
+                "ExtraSkillCriticalPercent",
+                new Dictionary<string,float> {
+                      	{"Discipline", -.25F},
+	                    {"Perception", 0},
+	                    {"Charisma", 0},
+	                    {"Fortitude", 0},
+	                    {"Agility", 0},
+	                    {"Allure", 0},
+	                    {"Magicka", 0},
+	                    {"Succour", 0},
+	                    {"Luck", .5F},
+                    }
+                },
+                {
+                "HealthRecoveryPerUpdate",
+                new Dictionary<string,float> {
+                      	{"Discipline", 0},
+	                    {"Perception", 0},
+	                    {"Charisma", 0},
+	                    {"Fortitude", 0},
+	                    {"Agility", 0},
+	                    {"Allure", 0},
+	                    {"Magicka", 0},
+	                    {"Succour", .5F},
+	                    {"Luck", 0},
+                    }
+                },
+                {
+                "ManaRecoveryPerUpdate",
+                new Dictionary<string,float> {
+                      	{"Discipline", 0},
+	                    {"Perception", 0},
+	                    {"Charisma", 0},
+	                    {"Fortitude", 0},
+	                    {"Agility", 0},
+	                    {"Allure", 0},
+	                    {"Magicka", 0},
+	                    {"Succour", .5F},
+	                    {"Luck", 0},
+                    }
+                },
+                {
+                "SneakPercent",
+                new Dictionary<string,float> {
+                      	{"Discipline", 0},
+	                    {"Perception", 0},
+	                    {"Charisma", 0},
+	                    {"Fortitude", -1.0F},
+	                    {"Agility", 1.25F},
+	                    {"Allure", -.5F},
+	                    {"Magicka", 0},
+	                    {"Succour", 0},
+	                    {"Luck", 0},
+                    }
+                },
+                {
+                "EvasionPercent",
+                new Dictionary<string,float> {
+                      	{"Discipline", 0},
+	                    {"Perception", 0},
+	                    {"Charisma", 0},
+	                    {"Fortitude", -.5F},
+	                    {"Agility", 1.0F},
+	                    {"Allure", 0},
+	                    {"Magicka", 0},
+	                    {"Succour", 0},
+	                    {"Luck", 0},
+                    }
+                },
+                {
+                "EvasionNegationPercent",
+                new Dictionary<string,float> {
+                      	{"Discipline", 0},
+	                    {"Perception", 1.5F},
+	                    {"Charisma", 0},
+	                    {"Fortitude", 0},
+	                    {"Agility", 0},
+	                    {"Allure", 1.0F},
+	                    {"Magicka", -.5F},
+	                    {"Succour", 0},
+	                    {"Luck", 0},
+                    }
+                },
+                {
+                "MeditationExtraMana",
+                new Dictionary<string,float> {
+                      	{"Discipline", 0},
+	                    {"Perception", -.25F},
+	                    {"Charisma", 0},
+	                    {"Fortitude", 0},
+	                    {"Agility", 0},
+	                    {"Allure", 0},
+	                    {"Magicka", 0.5F},
+	                    {"Succour", 0},
+	                    {"Luck", 0},
+                    }
+                },
+                {
+                "CleanseExtraHealth",
+                new Dictionary<string,float> {
+                      	{"Discipline", .25F},
+	                    {"Perception", 0},
+	                    {"Charisma", 0},
+	                    {"Fortitude", -.125F},
+	                    {"Agility", 0},
+	                    {"Allure", 0},
+	                    {"Magicka", 0},
+	                    {"Succour", 0},
+	                    {"Luck", 0},
+                    }
+                },
+                {
+                "MoveActionPointDiscount",
+                new Dictionary<string,float> {
+                      	{"Discipline", 0},
+	                    {"Perception", -.0125F},
+	                    {"Charisma", 0},
+	                    {"Fortitude", 0},
+	                    {"Agility", .04F},
+	                    {"Allure", 0},
+	                    {"Magicka", 0},
+	                    {"Succour", 0},
+	                    {"Luck", 0},
+                    }
+                },
+                {
+                "SpellExtraTFEnergyPercent",
+                new Dictionary<string,float> {
+                      	{"Discipline", 0},
+	                    {"Perception", 0},
+	                    {"Charisma", 1.0F},
+	                    {"Fortitude", 0},
+	                    {"Agility", 0},
+	                    {"Allure", 0},
+	                    {"Magicka", 1.0F},
+	                    {"Succour", -.25F},
+	                    {"Luck", 0},
+                    }
+                },
+                {
+                "SpellExtraHealthDamagePercent",
+                new Dictionary<string,float> {
+                      	{"Discipline", -.25F},
+	                    {"Perception", 0},
+	                    {"Charisma", 1.0F},
+	                    {"Fortitude", 0},
+	                    {"Agility", 0},
+	                    {"Allure", 1.5F},
+	                    {"Magicka", 0},
+	                    {"Succour", 0},
+	                    {"Luck", 0},
+                    }
+                },
+                {
+                "CleanseExtraTFEnergyRemovalPercent",
+                new Dictionary<string,float> {
+                      	{"Discipline", 0},
+	                    {"Perception", 0},
+	                    {"Charisma", 0},
+	                    {"Fortitude", 0},
+	                    {"Agility", 0},
+	                    {"Allure", 0},
+	                    {"Magicka", -.125F},
+	                    {"Succour", 0},
+	                    {"Luck", .375F},
+                    }
+                },
+                {
+                "SpellMisfireChanceReduction",
+                new Dictionary<string,float> {
+                      	{"Discipline", 0},
+	                    {"Perception", .75F},
+	                    {"Charisma", -.125F},
+	                    {"Fortitude", 0},
+	                    {"Agility", 0},
+	                    {"Allure", 0},
+	                    {"Magicka", 0},
+	                    {"Succour", 0},
+	                    {"Luck", 0},
+                    }
+                },
+                {
+                "SpellHealthDamageResistance",
+                new Dictionary<string,float> {
+                      	{"Discipline", 1.0F},
+	                    {"Perception", 0},
+	                    {"Charisma", -.25F},
+	                    {"Fortitude", 0},
+	                    {"Agility", 0},
+	                    {"Allure", 0},
+	                    {"Magicka", 0},
+	                    {"Succour", 0},
+	                    {"Luck", -.25F},
+                    }
+                },
+                {
+                "SpellTFEnergyDamageResistance",
+                new Dictionary<string,float> {
+                      	{"Discipline", 0},
+	                    {"Perception", 0},
+	                    {"Charisma", 0},
+	                    {"Fortitude", 1.0F},
+	                    {"Agility", -.25F},
+	                    {"Allure", 0},
+	                    {"Magicka", 0},
+	                    {"Succour", 0},
+	                    {"Luck", -.1875F},
+                    }
+                },
+                {
+                "ExtraInventorySpace",
+                new Dictionary<string,float> {
+                      	{"Discipline", 0},
+	                    {"Perception", 0},
+	                    {"Charisma", 0},
+	                    {"Fortitude", .10F},
+	                    {"Agility", -.025F},
+	                    {"Allure", 0},
+	                    {"Magicka", 0},
+	                    {"Succour", 0},
+	                    {"Luck", 0},
+                    }
                 },
             };
     };

@@ -2211,6 +2211,7 @@
     <Content Include="Views\Settings\SetFriendNickname.cshtml" />
     <Content Include="Views\PvPAdmin\FaeList.cshtml" />
     <Content Include="Views\PvPAdmin\WriteFae.cshtml" />
+    <Content Include="Views\PvPAdmin\ShowStatsTable.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

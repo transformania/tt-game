@@ -772,6 +772,16 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play");
             }
 
+
+             // assert player hasn't attacked in past second
+            double secondsSinceLastAttack = Math.Abs(Math.Floor(me.LastCombatTimestamp.Subtract(DateTime.UtcNow).TotalSeconds));
+
+            if (secondsSinceLastAttack < 3)
+            {
+                TempData["Error"] = "You must wait at least three seconds between attacks.";
+                return RedirectToAction("Play");
+            }
+
             // assert that it is not too late in the round for this attack to happen
             DateTime lastupdate = PvPWorldStatProcedures.GetLastWorldUpdate();
             double secondsAgo = Math.Abs(Math.Floor(lastupdate.Subtract(DateTime.UtcNow).TotalSeconds));
@@ -1896,7 +1906,7 @@ namespace tfgame.Controllers
             ViewBag.HasBio = SettingsProcedures.PlayerHasBio(output.PlayerForm.Player.MembershipId);
             ViewBag.HasArtistAuthorBio = SettingsProcedures.PlayerHasArtistAuthorBio(output.PlayerForm.Player.MembershipId);
 
-            ViewBag.TimeUntilLogout = 60 - Math.Abs(Math.Floor(playerLookedAt.Player.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
+            ViewBag.TimeUntilLogout = PvPStatics.OfflineAfterXMinutes - Math.Abs(Math.Floor(playerLookedAt.Player.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
 
             if (playerLookedAt.Form.MobilityType == "inanimate" || playerLookedAt.Form.MobilityType == "animal")
             {

@@ -30,7 +30,7 @@ namespace tfgame.Controllers
 
              ViewBag.GameMode = me.GameMode;
 
-             ViewBag.TimeUntilLogout = 60 - Math.Abs(Math.Floor(me.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
+             ViewBag.TimeUntilLogout = PvPStatics.OfflineAfterXMinutes - Math.Abs(Math.Floor(me.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
 
              return View(me);
          }

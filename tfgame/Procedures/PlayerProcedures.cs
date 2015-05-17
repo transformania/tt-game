@@ -1581,36 +1581,6 @@ namespace tfgame.Procedures
             }
         }
 
-        public static bool PlayerIsVeryOffline(Player player)
-        {
-
-
-            try
-            {
-
-                if (player.MembershipId < -1)
-                {
-                    return false;
-                }
-
-                double minutesAgo = Math.Abs(Math.Floor(player.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
-
-                if (minutesAgo > PvPStatics.OfflineAfterXMinutes*2)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            catch
-            {
-                return false;
-            }
-
-
-        }
 
         public static IEnumerable<Player> GetPlayersWithFirstNameOf(string firstname)
         {

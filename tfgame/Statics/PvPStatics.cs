@@ -16,6 +16,10 @@ namespace tfgame.Statics
         public const int RoundDuration = 2500;
         public const int RoundDuration_LastPvPEntryTurn = 1800;
 
+        public const int TurnSecondLength = 300;
+        public const int StartTurnNoAttackSeconds = 30;
+        public const int EndTurnNoAttackSeconds = 30;
+
         public const string AlphaRound = "Alpha Round 19";
 
         public const bool ChaosMode = true;
@@ -27,7 +31,6 @@ namespace tfgame.Statics
         public static String MobilityNoCast = "nocast";
         public static String MobilityNone = "inanimate";
 
-        //public static string LastGameUpdate = DateTime.UtcNow.ToString("MMMM") + " " + DateTime.UtcNow.Day.ToString();
         public static string LastGameUpdate = "";
         public static int LastGameTurn = 0;
 
@@ -50,7 +53,7 @@ namespace tfgame.Statics
         public static decimal ExtraHealthDamagePerLevel = 1.25M;
 
         public static decimal OfflineDamageReduction = .75M;
-        public static double OfflineAfterXMinutes = 60;
+        public static double OfflineAfterXMinutes = 30;
 
         public static decimal XP__Level_2 = 100;
         public static decimal XP__Level_3 = 150; //+50

@@ -161,160 +161,331 @@ namespace tfgame.ViewModels
         // new system
         public decimal HealthBonusPercent()
         {
-            return Convert.ToDecimal(
-              0.5F * Discipline() +
-              -0.25F * Allure() +
-                (float)FromForm_HealthBonusPercent +
-               (float)FromItems_HealthBonusPercent +
-               (float)FromEffects_HealthBonusPercent
-             );
+
+            float output = 0;
+            string substat = "HealthBonusPercent"; ;
+
+            output += Discipline() * BuffMap.BuffsMap[substat]["Discipline"];
+            output += Perception() * BuffMap.BuffsMap[substat]["Perception"];
+            output += Charisma() * BuffMap.BuffsMap[substat]["Charisma"];
+            output += Fortitude() * BuffMap.BuffsMap[substat]["Fortitude"];
+            output += Agility() * BuffMap.BuffsMap[substat]["Agility"];
+            output += Allure() * BuffMap.BuffsMap[substat]["Allure"];
+            output += Magicka() * BuffMap.BuffsMap[substat]["Magicka"];
+            output += Succour() * BuffMap.BuffsMap[substat]["Succour"];
+            output += Luck() * BuffMap.BuffsMap[substat]["Luck"];
+
+            return Convert.ToDecimal(output);
+
         }
 
         public decimal ManaBonusPercent()
         {
-            return Convert.ToDecimal(
-               1.0F * Magicka() +
-               -.25F * Succour()
-            );
+            float output = 0;
+            string substat = "ManaBonusPercent"; ;
+
+            output += Discipline() * BuffMap.BuffsMap[substat]["Discipline"];
+            output += Perception() * BuffMap.BuffsMap[substat]["Perception"];
+            output += Charisma() * BuffMap.BuffsMap[substat]["Charisma"];
+            output += Fortitude() * BuffMap.BuffsMap[substat]["Fortitude"];
+            output += Agility() * BuffMap.BuffsMap[substat]["Agility"];
+            output += Allure() * BuffMap.BuffsMap[substat]["Allure"];
+            output += Magicka() * BuffMap.BuffsMap[substat]["Magicka"];
+            output += Succour() * BuffMap.BuffsMap[substat]["Succour"];
+            output += Luck() * BuffMap.BuffsMap[substat]["Luck"];
+
+            return Convert.ToDecimal(output);
+
         }
 
         public decimal ExtraSkillCriticalPercent()
         {
-            return Convert.ToDecimal(
-               .5F * Luck() +
-               -.25F * Discipline()
-            );
+            float output = 0;
+            string substat = "ExtraSkillCriticalPercent"; ;
+
+            output += Discipline() * BuffMap.BuffsMap[substat]["Discipline"];
+            output += Perception() * BuffMap.BuffsMap[substat]["Perception"];
+            output += Charisma() * BuffMap.BuffsMap[substat]["Charisma"];
+            output += Fortitude() * BuffMap.BuffsMap[substat]["Fortitude"];
+            output += Agility() * BuffMap.BuffsMap[substat]["Agility"];
+            output += Allure() * BuffMap.BuffsMap[substat]["Allure"];
+            output += Magicka() * BuffMap.BuffsMap[substat]["Magicka"];
+            output += Succour() * BuffMap.BuffsMap[substat]["Succour"];
+            output += Luck() * BuffMap.BuffsMap[substat]["Luck"];
+
+            return Convert.ToDecimal(output);
         }
 
         public decimal HealthRecoveryPerUpdate()
         {
-            return Convert.ToDecimal(
-               .5F * Succour()
-            );
+            float output = 0;
+            string substat = "HealthRecoveryPerUpdate"; ;
+
+            output += Discipline() * BuffMap.BuffsMap[substat]["Discipline"];
+            output += Perception() * BuffMap.BuffsMap[substat]["Perception"];
+            output += Charisma() * BuffMap.BuffsMap[substat]["Charisma"];
+            output += Fortitude() * BuffMap.BuffsMap[substat]["Fortitude"];
+            output += Agility() * BuffMap.BuffsMap[substat]["Agility"];
+            output += Allure() * BuffMap.BuffsMap[substat]["Allure"];
+            output += Magicka() * BuffMap.BuffsMap[substat]["Magicka"];
+            output += Succour() * BuffMap.BuffsMap[substat]["Succour"];
+            output += Luck() * BuffMap.BuffsMap[substat]["Luck"];
+
+            return Convert.ToDecimal(output);
         }
 
         public decimal ManaRecoveryPerUpdate()
         {
-            return Convert.ToDecimal(
-               .5F * Succour()
-            );
+            float output = 0;
+            string substat = "ManaRecoveryPerUpdate"; ;
+
+            output += Discipline() * BuffMap.BuffsMap[substat]["Discipline"];
+            output += Perception() * BuffMap.BuffsMap[substat]["Perception"];
+            output += Charisma() * BuffMap.BuffsMap[substat]["Charisma"];
+            output += Fortitude() * BuffMap.BuffsMap[substat]["Fortitude"];
+            output += Agility() * BuffMap.BuffsMap[substat]["Agility"];
+            output += Allure() * BuffMap.BuffsMap[substat]["Allure"];
+            output += Magicka() * BuffMap.BuffsMap[substat]["Magicka"];
+            output += Succour() * BuffMap.BuffsMap[substat]["Succour"];
+            output += Luck() * BuffMap.BuffsMap[substat]["Luck"];
+
+            return Convert.ToDecimal(output);
         }
 
         public decimal SneakPercent()
         {
-            return Convert.ToDecimal(
-               -1.0F * Fortitude() +
-               1.25F * Agility() +
-               -0.5F * Allure()
-            );
+            float output = 0;
+            string substat = "SneakPercent"; ;
+
+            output += Discipline() * BuffMap.BuffsMap[substat]["Discipline"];
+            output += Perception() * BuffMap.BuffsMap[substat]["Perception"];
+            output += Charisma() * BuffMap.BuffsMap[substat]["Charisma"];
+            output += Fortitude() * BuffMap.BuffsMap[substat]["Fortitude"];
+            output += Agility() * BuffMap.BuffsMap[substat]["Agility"];
+            output += Allure() * BuffMap.BuffsMap[substat]["Allure"];
+            output += Magicka() * BuffMap.BuffsMap[substat]["Magicka"];
+            output += Succour() * BuffMap.BuffsMap[substat]["Succour"];
+            output += Luck() * BuffMap.BuffsMap[substat]["Luck"];
+
+            return Convert.ToDecimal(output);
         }
 
         public decimal EvasionPercent()
         {
-            return Convert.ToDecimal(
-               -0.5F * Fortitude() +
-               1.0F * Agility()
-            );
+            float output = 0;
+            string substat = "EvasionPercent"; ;
+
+            output += Discipline() * BuffMap.BuffsMap[substat]["Discipline"];
+            output += Perception() * BuffMap.BuffsMap[substat]["Perception"];
+            output += Charisma() * BuffMap.BuffsMap[substat]["Charisma"];
+            output += Fortitude() * BuffMap.BuffsMap[substat]["Fortitude"];
+            output += Agility() * BuffMap.BuffsMap[substat]["Agility"];
+            output += Allure() * BuffMap.BuffsMap[substat]["Allure"];
+            output += Magicka() * BuffMap.BuffsMap[substat]["Magicka"];
+            output += Succour() * BuffMap.BuffsMap[substat]["Succour"];
+            output += Luck() * BuffMap.BuffsMap[substat]["Luck"];
+
+            return Convert.ToDecimal(output);
         }
 
         public decimal EvasionNegationPercent()
         {
-            return Convert.ToDecimal(
-               1.5F * Perception() +
-               1.0F * Allure() +
-               -0.5F * Magicka()
-            );
+            float output = 0;
+            string substat = "EvasionNegationPercent"; ;
+
+            output += Discipline() * BuffMap.BuffsMap[substat]["Discipline"];
+            output += Perception() * BuffMap.BuffsMap[substat]["Perception"];
+            output += Charisma() * BuffMap.BuffsMap[substat]["Charisma"];
+            output += Fortitude() * BuffMap.BuffsMap[substat]["Fortitude"];
+            output += Agility() * BuffMap.BuffsMap[substat]["Agility"];
+            output += Allure() * BuffMap.BuffsMap[substat]["Allure"];
+            output += Magicka() * BuffMap.BuffsMap[substat]["Magicka"];
+            output += Succour() * BuffMap.BuffsMap[substat]["Succour"];
+            output += Luck() * BuffMap.BuffsMap[substat]["Luck"];
+
+            return Convert.ToDecimal(output);
         }
 
         public decimal MeditationExtraMana()
         {
-            return Convert.ToDecimal(
-               -.25F * Perception() +
-               .5F * Magicka()
-            );
+            float output = 0;
+            string substat = "MeditationExtraMana"; ;
+
+            output += Discipline() * BuffMap.BuffsMap[substat]["Discipline"];
+            output += Perception() * BuffMap.BuffsMap[substat]["Perception"];
+            output += Charisma() * BuffMap.BuffsMap[substat]["Charisma"];
+            output += Fortitude() * BuffMap.BuffsMap[substat]["Fortitude"];
+            output += Agility() * BuffMap.BuffsMap[substat]["Agility"];
+            output += Allure() * BuffMap.BuffsMap[substat]["Allure"];
+            output += Magicka() * BuffMap.BuffsMap[substat]["Magicka"];
+            output += Succour() * BuffMap.BuffsMap[substat]["Succour"];
+            output += Luck() * BuffMap.BuffsMap[substat]["Luck"];
+
+            return Convert.ToDecimal(output);
         }
 
         public decimal CleanseExtraHealth()
         {
-            return Convert.ToDecimal(
-               .25F * Discipline() +
-               -.125F * Fortitude()
-            );
+            float output = 0;
+            string substat = "CleanseExtraHealth"; ;
+
+            output += Discipline() * BuffMap.BuffsMap[substat]["Discipline"];
+            output += Perception() * BuffMap.BuffsMap[substat]["Perception"];
+            output += Charisma() * BuffMap.BuffsMap[substat]["Charisma"];
+            output += Fortitude() * BuffMap.BuffsMap[substat]["Fortitude"];
+            output += Agility() * BuffMap.BuffsMap[substat]["Agility"];
+            output += Allure() * BuffMap.BuffsMap[substat]["Allure"];
+            output += Magicka() * BuffMap.BuffsMap[substat]["Magicka"];
+            output += Succour() * BuffMap.BuffsMap[substat]["Succour"];
+            output += Luck() * BuffMap.BuffsMap[substat]["Luck"];
+
+            return Convert.ToDecimal(output);
         }
 
         public decimal MoveActionPointDiscount()
         {
-            return Convert.ToDecimal(
-               -.0125F * Perception() +
-               .04F * Agility() +
-               (float)FromForm_MoveActionPointDiscount +
-               (float)FromItems_MoveActionPointDiscount +
-               (float)FromEffects_MoveActionPointDiscount
-            );
+            float output = 0;
+            string substat = "MoveActionPointDiscount"; ;
+
+            output += Discipline() * BuffMap.BuffsMap[substat]["Discipline"];
+            output += Perception() * BuffMap.BuffsMap[substat]["Perception"];
+            output += Charisma() * BuffMap.BuffsMap[substat]["Charisma"];
+            output += Fortitude() * BuffMap.BuffsMap[substat]["Fortitude"];
+            output += Agility() * BuffMap.BuffsMap[substat]["Agility"];
+            output += Allure() * BuffMap.BuffsMap[substat]["Allure"];
+            output += Magicka() * BuffMap.BuffsMap[substat]["Magicka"];
+            output += Succour() * BuffMap.BuffsMap[substat]["Succour"];
+            output += Luck() * BuffMap.BuffsMap[substat]["Luck"];
+
+            return Convert.ToDecimal(output);
         }
 
         public decimal SpellExtraTFEnergyPercent()
         {
-            return Convert.ToDecimal(
-               1.0F * Charisma() +
-               1.0F * Magicka() +
-               -.25F * Succour()
-            );
+            float output = 0;
+            string substat = "SpellExtraTFEnergyPercent"; ;
+
+            output += Discipline() * BuffMap.BuffsMap[substat]["Discipline"];
+            output += Perception() * BuffMap.BuffsMap[substat]["Perception"];
+            output += Charisma() * BuffMap.BuffsMap[substat]["Charisma"];
+            output += Fortitude() * BuffMap.BuffsMap[substat]["Fortitude"];
+            output += Agility() * BuffMap.BuffsMap[substat]["Agility"];
+            output += Allure() * BuffMap.BuffsMap[substat]["Allure"];
+            output += Magicka() * BuffMap.BuffsMap[substat]["Magicka"];
+            output += Succour() * BuffMap.BuffsMap[substat]["Succour"];
+            output += Luck() * BuffMap.BuffsMap[substat]["Luck"];
+
+            return Convert.ToDecimal(output);
         }
 
         public decimal SpellExtraHealthDamagePercent()
         {
-            return Convert.ToDecimal(
-               1.0F * Charisma() +
-               -.25F * Discipline() +
-               1.5F * Allure()
-            );
+            float output = 0;
+            string substat = "SpellExtraHealthDamagePercent"; ;
+
+            output += Discipline() * BuffMap.BuffsMap[substat]["Discipline"];
+            output += Perception() * BuffMap.BuffsMap[substat]["Perception"];
+            output += Charisma() * BuffMap.BuffsMap[substat]["Charisma"];
+            output += Fortitude() * BuffMap.BuffsMap[substat]["Fortitude"];
+            output += Agility() * BuffMap.BuffsMap[substat]["Agility"];
+            output += Allure() * BuffMap.BuffsMap[substat]["Allure"];
+            output += Magicka() * BuffMap.BuffsMap[substat]["Magicka"];
+            output += Succour() * BuffMap.BuffsMap[substat]["Succour"];
+            output += Luck() * BuffMap.BuffsMap[substat]["Luck"];
+
+            return Convert.ToDecimal(output);
         }
 
         public decimal CleanseExtraTFEnergyRemovalPercent()
         {
-            return Convert.ToDecimal(
-               -.125F * Magicka() +
-               .375F * Luck()
-            );
+            float output = 0;
+            string substat = "CleanseExtraTFEnergyRemovalPercent"; ;
+
+            output += Discipline() * BuffMap.BuffsMap[substat]["Discipline"];
+            output += Perception() * BuffMap.BuffsMap[substat]["Perception"];
+            output += Charisma() * BuffMap.BuffsMap[substat]["Charisma"];
+            output += Fortitude() * BuffMap.BuffsMap[substat]["Fortitude"];
+            output += Agility() * BuffMap.BuffsMap[substat]["Agility"];
+            output += Allure() * BuffMap.BuffsMap[substat]["Allure"];
+            output += Magicka() * BuffMap.BuffsMap[substat]["Magicka"];
+            output += Succour() * BuffMap.BuffsMap[substat]["Succour"];
+            output += Luck() * BuffMap.BuffsMap[substat]["Luck"];
+
+            return Convert.ToDecimal(output);
         }
 
         public decimal SpellMisfireChanceReduction()
         {
-            return Convert.ToDecimal(
-               .75F * Perception() +
-               -.125F * Charisma()
-            );
+            float output = 0;
+            string substat = "SpellMisfireChanceReduction"; ;
+
+            output += Discipline() * BuffMap.BuffsMap[substat]["Discipline"];
+            output += Perception() * BuffMap.BuffsMap[substat]["Perception"];
+            output += Charisma() * BuffMap.BuffsMap[substat]["Charisma"];
+            output += Fortitude() * BuffMap.BuffsMap[substat]["Fortitude"];
+            output += Agility() * BuffMap.BuffsMap[substat]["Agility"];
+            output += Allure() * BuffMap.BuffsMap[substat]["Allure"];
+            output += Magicka() * BuffMap.BuffsMap[substat]["Magicka"];
+            output += Succour() * BuffMap.BuffsMap[substat]["Succour"];
+            output += Luck() * BuffMap.BuffsMap[substat]["Luck"];
+
+            return Convert.ToDecimal(output);
         }
 
         public decimal SpellHealthDamageResistance()
         {
-            return Convert.ToDecimal(
-                1.0F * Discipline() +
-               -.25F * Charisma() +
-               -.25F * Luck()
-            );
+            float output = 0;
+            string substat = "SpellHealthDamageResistance"; ;
+
+            output += Discipline() * BuffMap.BuffsMap[substat]["Discipline"];
+            output += Perception() * BuffMap.BuffsMap[substat]["Perception"];
+            output += Charisma() * BuffMap.BuffsMap[substat]["Charisma"];
+            output += Fortitude() * BuffMap.BuffsMap[substat]["Fortitude"];
+            output += Agility() * BuffMap.BuffsMap[substat]["Agility"];
+            output += Allure() * BuffMap.BuffsMap[substat]["Allure"];
+            output += Magicka() * BuffMap.BuffsMap[substat]["Magicka"];
+            output += Succour() * BuffMap.BuffsMap[substat]["Succour"];
+            output += Luck() * BuffMap.BuffsMap[substat]["Luck"];
+
+            return Convert.ToDecimal(output);
         }
 
         public decimal SpellTFEnergyDamageResistance()
         {
-            return Convert.ToDecimal(
-                1.0F * Fortitude() +
-                -.25F * Agility() +
-                -.1875 * Luck()
-            );
+            float output = 0;
+            string substat = "SpellTFEnergyDamageResistance"; ;
+
+            output += Discipline() * BuffMap.BuffsMap[substat]["Discipline"];
+            output += Perception() * BuffMap.BuffsMap[substat]["Perception"];
+            output += Charisma() * BuffMap.BuffsMap[substat]["Charisma"];
+            output += Fortitude() * BuffMap.BuffsMap[substat]["Fortitude"];
+            output += Agility() * BuffMap.BuffsMap[substat]["Agility"];
+            output += Allure() * BuffMap.BuffsMap[substat]["Allure"];
+            output += Magicka() * BuffMap.BuffsMap[substat]["Magicka"];
+            output += Succour() * BuffMap.BuffsMap[substat]["Succour"];
+            output += Luck() * BuffMap.BuffsMap[substat]["Luck"];
+
+            return Convert.ToDecimal(output);
         }
 
         public decimal ExtraInventorySpace()
         {
-            decimal amt = Convert.ToDecimal(
-                .25F * Fortitude() +
-                -.025F * Agility()
-            );
+            float output = 0;
+            string substat = "ExtraInventorySpace"; ;
 
-            amt = Math.Floor(amt);
+            output += Discipline() * BuffMap.BuffsMap[substat]["Discipline"];
+            output += Perception() * BuffMap.BuffsMap[substat]["Perception"];
+            output += Charisma() * BuffMap.BuffsMap[substat]["Charisma"];
+            output += Fortitude() * BuffMap.BuffsMap[substat]["Fortitude"];
+            output += Agility() * BuffMap.BuffsMap[substat]["Agility"];
+            output += Allure() * BuffMap.BuffsMap[substat]["Allure"];
+            output += Magicka() * BuffMap.BuffsMap[substat]["Magicka"];
+            output += Succour() * BuffMap.BuffsMap[substat]["Succour"];
+            output += Luck() * BuffMap.BuffsMap[substat]["Luck"];
 
-            return amt;
+            output = (float)Math.Floor(output);
+
+            return Convert.ToDecimal(output);
         }
     }
 

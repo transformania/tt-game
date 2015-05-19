@@ -643,6 +643,7 @@
     <Content Include="Images\PvP\Icons\tt_logo.ico" />
     <Content Include="Images\PvP\itemsPortraits\3tiered_skirt_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\5_inch_heels_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\alien_screwdriver_Zeke_Manning.jpg" />
     <Content Include="Images\PvP\itemsPortraits\amathyst_tieara_jbovinne.png" />
     <Content Include="Images\PvP\itemsPortraits\badass_leather_braces_Martiandawn.jpg" />
     <Content Include="Images\PvP\itemsPortraits\ballgag_Meddle.png" />
@@ -681,6 +682,7 @@
     <Content Include="Images\PvP\itemsPortraits\electronic_toy_jbovinne.png" />
     <Content Include="Images\PvP\itemsPortraits\elegant_gothic_stockings_Luxianne.jpg" />
     <Content Include="Images\PvP\itemsPortraits\evening_gown_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\excaliber_Martiandawn.jpg" />
     <Content Include="Images\PvP\itemsPortraits\Feather_Duster_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\fetish_staff_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\fire_fritter_Luxianne.png" />
@@ -960,6 +962,7 @@
     <Content Include="Images\PvP\portraits\batgirl_Luxianne.png" />
     <Content Include="Images\PvP\portraits\beach_babe_enthusiast_TheGreatDaeo.jpg" />
     <Content Include="Images\PvP\portraits\beat_cop_Babblingfaces.jpg" />
+    <Content Include="Images\PvP\portraits\bee_girl_spacedande.jpg" />
     <Content Include="Images\PvP\portraits\belle_of_the_ball_Meddle.png" />
     <Content Include="Images\PvP\portraits\bimbo_mother_babblingfaces.png" />
     <Content Include="Images\PvP\portraits\bimbo_mouse_boss_Dandelion.jpg" />
@@ -994,6 +997,7 @@
     <Content Include="Images\PvP\portraits\emo_koala_babblingfaces.jpg" />
     <Content Include="Images\PvP\portraits\Feisty_Firebrand_Luxianne.png" />
     <Content Include="Images\PvP\portraits\female_armor_Meddle.png" />
+    <Content Include="Images\PvP\portraits\female_ogre_babblingfaces.jpg" />
     <Content Include="Images\PvP\portraits\female_rat_thief_Luxianne.png" />
     <Content Include="Images\PvP\portraits\femboi_skunk_Luxianne.png" />
     <Content Include="Images\PvP\portraits\Fembot_Meddle.png" />
@@ -1320,6 +1324,7 @@
     <Content Include="Images\PvP\portraits\vampireboss.png" />
     <Content Include="Images\PvP\portraits\vampire_female_Lux.png" />
     <Content Include="Images\PvP\portraits\vampire_Lux.png" />
+    <Content Include="Images\PvP\portraits\vicious_gorgon_babblingfaces.jpg" />
     <Content Include="Images\PvP\portraits\vine_girl_CyberKaku.jpg" />
     <Content Include="Images\PvP\portraits\warrior_queen_Martiandawn.png" />
     <Content Include="Images\PvP\portraits\werewolf_Luxianne.png" />

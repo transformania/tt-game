@@ -20,9 +20,9 @@ namespace tfgame.Statics
         public const int StartTurnNoAttackSeconds = 30;
         public const int EndTurnNoAttackSeconds = 30;
 
-        public const string AlphaRound = "Alpha Round 19";
+        public const string AlphaRound = "Alpha Round 20";
 
-        public const bool ChaosMode = true;
+        public const bool ChaosMode = false;
 
         public static String GenderMale = "male";
         public static String GenderFemale = "female";

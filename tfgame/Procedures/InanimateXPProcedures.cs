@@ -106,9 +106,9 @@ namespace tfgame.Procedures
                 //double timeBonus = Math.Floor(Math.Abs(Math.Floor(xp.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalMinutes)) / 10);
                 double timeBonus = currentGameTurn - xp.LastActionTurnstamp;
 
-                if (timeBonus > 24)
+                if (timeBonus > 48)
                 {
-                    timeBonus = 24;
+                    timeBonus = 48;
                 }
 
                 if (timeBonus < 0)
@@ -256,9 +256,9 @@ namespace tfgame.Procedures
 
             double strugglebonus = currentGameTurn - inanimXP.LastActionTurnstamp;
 
-            if (strugglebonus > 24)
+            if (strugglebonus > 48)
             {
-                strugglebonus = 24;
+                strugglebonus = 48;
             }
 
             if (strugglebonus < 0)

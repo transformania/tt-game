@@ -218,7 +218,7 @@ namespace tfgame.Procedures
                     //player.TimesAttackingThisUpdate = 0;
                     //player.CleansesMeditatesThisRound = 0;
 
-                    BuffBox buffs = ItemProcedures.GetPlayerBuffsRAM(player);
+                    BuffBox buffs = ItemProcedures.GetPlayerBuffsSQL(player);
                     //BuffBox buffs = ItemProcedures.GetPlayerBuffsRAM(player);
                     player.Health += buffs.HealthRecoveryPerUpdate();
                     player.Mana += buffs.ManaRecoveryPerUpdate();

@@ -2300,7 +2300,7 @@ namespace tfgame.Statics
 
            }, new Location {
                 dbName = "medclinic_lobby",
-                Name = "Henryson Medical Clinic (Lobby and Payee Window",
+                Name = "Henryson Medical Clinic (Lobby and Payee Window)",
                 Region = "medclinic",
                 X = -2,
                 Y = -5,

@@ -77,6 +77,10 @@ namespace tfgame.Procedures.BossProcedures
 
         public static void CounterAttack(Player human, Player bimboss)
         {
+
+            // record that human attacked the boss
+            AIProcedures.DealBossDamage(bimboss, human, true, 1);
+
             // if the bimboboss is inanimate, end this boss event
             if (bimboss.Mobility != "full")
             {
@@ -88,6 +92,7 @@ namespace tfgame.Procedures.BossProcedures
             if (EffectProcedures.PlayerHasEffect(human, KissEffectdbName) == false && EffectProcedures.PlayerHasEffect(human, CureEffectdbName) == false)
             {
                 AttackProcedures.Attack(bimboss, human, KissSkilldbName);
+                AIProcedures.DealBossDamage(bimboss, human, false, 1);
             }
 
             // otherwise run the regular trasformation
@@ -98,6 +103,7 @@ namespace tfgame.Procedures.BossProcedures
                 for (int i = 0; i < attackCount; i++) {
                     AttackProcedures.Attack(bimboss, human, RegularTFSpellDbName);
                 }
+                AIProcedures.DealBossDamage(bimboss, human, false, attackCount);
             }
 
             // otherwise make the human wander away to find more targets
@@ -163,16 +169,15 @@ namespace tfgame.Procedures.BossProcedures
                 if (EffectProcedures.PlayerHasEffect(p, KissEffectdbName) == false && EffectProcedures.PlayerHasEffect(p, CureEffectdbName) == false)
                 {
                     AttackProcedures.Attack(bimboBoss, p, KissSkilldbName);
+                    AIProcedures.DealBossDamage(bimboBoss, p, false, 1);
                 }
+
 
                 // otherwise run the regular trasformation
                 else if (p.Form != RegularBimboFormDbName)
                 {
-                   // int attackCount = (int)Math.Floor(rand.NextDouble() * 3 + 1);
-                   // for (int i = 0; i < attackCount; i++)
-                   // {
-                        AttackProcedures.Attack(bimboBoss, p, RegularTFSpellDbName);
-                   // }
+                    AttackProcedures.Attack(bimboBoss, p, RegularTFSpellDbName);
+                    AIProcedures.DealBossDamage(bimboBoss, p, false, 1);
                 }
             }
 

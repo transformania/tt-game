@@ -910,6 +910,44 @@ namespace tfgame.Procedures
             }
         }
 
+        public static void DealBossDamage(Player boss, Player attacker, bool humanAttacker, int attackCount)
+        {
+            IBossDamageRepository repo = new EFBossDamageRepository();
+
+            BossDamage damage = repo.BossDamages.FirstOrDefault(bf => bf.PlayerId == attacker.Id && bf.BossMembershipId == boss.MembershipId);
+
+            if (damage == null)
+            {
+                damage = new BossDamage
+                {
+                    PlayerId = attacker.Id,
+                    BossMembershipId = boss.MembershipId,
+                    Timestamp = DateTime.UtcNow,
+                };
+            }
+
+            if (humanAttacker == true)
+            {
+                damage.PlayerAttacksOnBoss += attackCount;
+               
+            } else {
+                damage.BossAttacksOnPlayer += attackCount;
+            }
+
+            // calculate a unique score to add, weighted a little in favor of higher level human attackers / victims
+            damage.TotalPoints += (float)attackCount * (.75F + .25F * (float)attacker.Level);
+            damage.Timestamp = DateTime.UtcNow;
+
+            repo.SaveBossDamage(damage);
+
+        }
+
+        public static List<BossDamage> GetTopAttackers(int bossMembershipId, int amount)
+        {
+            IBossDamageRepository repo = new EFBossDamageRepository();
+            return repo.BossDamages.Where(b => b.BossMembershipId == bossMembershipId).OrderByDescending(b => b.TotalPoints).Take(amount).ToList();
+        }
+
         
 
     }

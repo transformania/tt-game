@@ -134,13 +134,18 @@ namespace tfgame.Procedures.BossProcedures
 
         public static void CounterAttack(Player attacker, Player bossTarget)
         {
+
+            AIProcedures.DealBossDamage(bossTarget, attacker, true, 1);
+
             // nerd counters with nerd spell unless she has changed form
             if (bossTarget.FirstName == NerdBossFirstName && bossTarget.Form == NerdBossForm)
             {
                 AttackProcedures.Attack(bossTarget, attacker, NerdSpell);
                 AttackProcedures.Attack(bossTarget, attacker, NerdSpell);
                 AttackProcedures.Attack(bossTarget, attacker, NerdSpell);
+                AIProcedures.DealBossDamage(bossTarget, attacker, false, 3);
             }
+           
 
             // bimbo counters with bimbo spell unless she has changed form
             else if (bossTarget.FirstName == BimboBossFirstName && bossTarget.Form == BimboBossForm)
@@ -148,6 +153,7 @@ namespace tfgame.Procedures.BossProcedures
                 AttackProcedures.Attack(bossTarget, attacker, BimboSpell);
                 AttackProcedures.Attack(bossTarget, attacker, BimboSpell);
                 AttackProcedures.Attack(bossTarget, attacker, BimboSpell);
+                AIProcedures.DealBossDamage(bossTarget, attacker, false, 3);
             }
 
         }
@@ -179,6 +185,7 @@ namespace tfgame.Procedures.BossProcedures
                     AttackProcedures.Attack(nerdBoss, p, NerdSpell);
                     AttackProcedures.Attack(nerdBoss, p, NerdSpell);
                     AttackProcedures.Attack(nerdBoss, p, NerdSpell);
+                    AIProcedures.DealBossDamage(nerdBoss, p, false, 3);
                 }
 
 
@@ -187,6 +194,7 @@ namespace tfgame.Procedures.BossProcedures
                     AttackProcedures.Attack(bimboBoss, p, BimboSpell);
                     AttackProcedures.Attack(bimboBoss, p, BimboSpell);
                     AttackProcedures.Attack(bimboBoss, p, BimboSpell);
+                    AIProcedures.DealBossDamage(bimboBoss, p, false, 3);
                 }
 
             }

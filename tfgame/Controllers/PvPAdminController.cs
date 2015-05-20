@@ -1040,7 +1040,44 @@ namespace tfgame.Controllers
                 return View("Play", "PvP");
             }
 
-            
+         
+
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult TopBossAttackers()
+        {
+            // assert only admins can view this
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            {
+                return View("Play", "PvP");
+            }
+
+            List<BossDamage> damages = AIProcedures.GetTopAttackers(-4, 25);
+
+            string output = "";
+            foreach (BossDamage d in damages)
+            {
+                output += PlayerProcedures.GetPlayer(d.PlayerId).GetFullName() + " attacked Donna with " + d.TotalPoints + " points.</br>"; 
+            }
+
+            damages = AIProcedures.GetTopAttackers(-5, 25);
+
+            output += "Valentine:</br>";
+            foreach (BossDamage d in damages)
+            {
+                output += PlayerProcedures.GetPlayer(d.PlayerId).GetFullName() + " attacked Valentine with " + d.TotalPoints + " points.</br>"; 
+            }
+
+            damages = AIProcedures.GetTopAttackers(-7, 25);
+
+            output += "Valentine:</br>";
+            foreach (BossDamage d in damages)
+            {
+                output += PlayerProcedures.GetPlayer(d.PlayerId).GetFullName() + " attacked Lovebringer with " + d.TotalPoints + " points.</br>";
+            }
+
+            TempData["Message"] = output;
 
             return RedirectToAction("Index");
         }

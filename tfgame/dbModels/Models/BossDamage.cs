@@ -14,6 +14,7 @@ namespace tfgame.dbModels.Models
         public int BossAttacksOnPlayer { get; set; }
         public float PlayerDamageOnBoss { get; set; }
         public float BossDamageOnPlayer { get; set; }
+        public float TotalPoints { get; set;}
         public DateTime Timestamp { get; set; }
     }
 }

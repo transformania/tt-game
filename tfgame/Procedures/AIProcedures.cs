@@ -209,6 +209,35 @@ namespace tfgame.Procedures
                         continue;
                     }
 
+                    #region drop excess items
+                    List<ItemViewModel> botItems = ItemProcedures.GetAllPlayerItems(bot.Id).ToList();
+
+                    string[] itemTypes = { PvPStatics.ItemType_Hat, PvPStatics.ItemType_Accessory, PvPStatics.ItemType_Pants, PvPStatics.ItemType_Pet, PvPStatics.ItemType_Shirt, PvPStatics.ItemType_Shoes, PvPStatics.ItemType_Underpants, PvPStatics.ItemType_Undershirt };
+
+                    foreach (string typeToDrop in itemTypes)
+                    {
+                        if (botItems.Where(i => i.Item.ItemType == typeToDrop).Count() > 1)
+                        {
+                            List<ItemViewModel> dropList = botItems.Where(i => i.Item.ItemType == typeToDrop).Skip(1).ToList();
+
+                            foreach (ItemViewModel i in dropList)
+                            {
+                                ItemProcedures.DropItem(i.dbItem.Id, bot.dbLocationName);
+
+                                if (i.Item.ItemType == PvPStatics.ItemType_Pet)
+                                {
+                                    LocationLogProcedures.AddLocationLog(bot.dbLocationName, "<b>" + bot.GetFullName() + "</b> released <b>" + i.dbItem.VictimName + "</b> the pet <b>" + i.Item.FriendlyName + "</b> here.");
+                                }
+                                else
+                                {
+                                    LocationLogProcedures.AddLocationLog(bot.dbLocationName, "<b>" + bot.GetFullName() + "</b> dropped <b>" + i.dbItem.VictimName + "</b> the <b>" + i.Item.FriendlyName + "</b> here.");
+                                }
+                             
+                            }
+                        }
+                    }
+                    #endregion
+
                     BuffBox botbuffs = ItemProcedures.GetPlayerBuffsSQL(bot);
 
                     // meditate if needed
@@ -233,6 +262,7 @@ namespace tfgame.Procedures
                         }
                     }
 
+                   
 
 
                     AIDirective directive = AIDirectiveProcedures.GetAIDirective(bot.Id);

@@ -122,8 +122,8 @@ namespace tfgame.Procedures
                 decimal criticalMissPercentChance = PvPStatics.CriticalMissPercentChance - meBuffs.SpellMisfireChanceReduction();
                 decimal evasionPercentChance = targetedBuffs.EvasionPercent() - meBuffs.EvasionNegationPercent();
 
-                // clamp evasion at 66% max for human players
-                if (evasionPercentChance > 66 && victim.MembershipId > 0)
+                // clamp evasion at 66% max
+                if (evasionPercentChance > 66)
                 {
                     evasionPercentChance = 66;
                 }

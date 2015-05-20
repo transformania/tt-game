@@ -11,15 +11,6 @@
 
 <p>Use this calculator to try and balance effects.</p>
 
-<p style="color: red;">Items and Animals should not have more than 4 different effects on them.  Animate forms should not have more than 6 different effects on them.</p>
-
-<p>(Amt):  Means a direct, static amount.  Ex:  30 maxiumum willpower increase adds 30 extra willpower points.</p>
-
-<p>(%):  Means a percentage modifier.  Ex:  a 10% bonus on extra willpower damage per spell attack means 7 damage becomes 7*1.1 = 7.7 damage.  </p>
-
-<p>Fields that have a Negative Modifier receive fewer points when the stat is put into the negative.  DISABLED FOR EFFECTS.</p>
-
-<p>Fields that have a Minimum Cap will not give any additional points beyond a certain value.  DISABLED FOR EFFECTS.</p>
 
 <p>What type of spell is this?</p>
 <select id="mobilityType">
@@ -27,9 +18,19 @@
 </select>
 
 
+<p>Balancing rules:</p>
 
+<ul>
+    <li>-60 points maximum for curses and 60 for blessings. The cost of your selection is multiplied for each turn duration, so a curse costing 10 points will cost 60 if it lasts 6 turns.
+    <li>Curses must last in duration between 2 and 18 turns.</li>
+    <li>Curses must have all negative stats and blessings must have all positive stats. Unlike with form / items / pets, no mixing and matching positives and negatives.</li>
+    <li>All non-boss curses must be marked as removable via the Hex-B-Gone consumables.</li>
+    <li>All castable curses should cost 7 mana.</li>
+    <li>Cooldown should be set between 2 and 3 times the duration of the curse.</li>
+    <li>If the curse makes the target immobile, treat this as 20 points per turn even if the calculator ignores it.</li>
+</ul>
 
-<h2>Net balance:  <span id="total"></span>     Target:  <span id="desired">-500</span>  Total points used:  <span id="absolute_total"></span></h2>
+<h2>Net balance:  <span id="total"></span>     Target:  <span id="desired">-60</span>  Total points used:  <span id="absolute_total"></span></h2>
 
 <p>
     <button type="button" onclick="Clear()">Clear</button>
@@ -482,7 +483,7 @@
             choice = $("#mobilityType").val();
 
             if (choice == "curse") {
-                $("#desired").html("-500");
+                $("#desired").html("-60");
                 $("#curseDurationWrapper").show();
             }
 

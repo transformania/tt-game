@@ -196,6 +196,7 @@ namespace tfgame.Controllers
             saveme.Timestamp = DateTime.UtcNow;
             saveme.AdditionalSubmitterNames = input.AdditionalSubmitterNames;
             saveme.Notes = input.Notes;
+            saveme.NeedsToBeUpdated = input.NeedsToBeUpdated;
 
             if (saveme.ProofreadingCopy)
             {

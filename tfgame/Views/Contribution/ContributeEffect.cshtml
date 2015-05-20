@@ -52,6 +52,12 @@
 
             if (contribution.IsLive == true)
             {
+
+                if (contribution.NeedsToBeUpdated == true)
+                {
+                    <span class="icon-timesattacking"></span>
+                }
+
                 <span class='newlink'>
                     @Html.ActionLink("Effect name:  " + contribution.Effect_FriendlyName, "ContributeEffect", "Contribution", new { Id = contribution.Id }, null)
 

@@ -1311,7 +1311,7 @@ namespace tfgame.Procedures
                     AIDirectiveProcedures.DeaggroPsychopathsOnPlayer(owner);
                     itemRepo.DeleteItem(itemPlus.dbItem.Id);
                     LocationLogProcedures.AddLocationLog(owner.dbLocationName, owner.FirstName + " " + owner.LastName + " used a " + itemPlus.Item.FriendlyName + " here.");
-                    return name + "You take a quick blow with the whistle, sending a magical melody out into the air that should force any psychopathic spellslingers intend on taking you down forget all about you, so long as you don't provoke them again...";
+                    return name + " take a quick blow with the whistle, sending a magical melody out into the air that should force any psychopathic spellslingers intent on taking you down to forget all about you, so long as you don't provoke them again...";
                 }
 
                 if (itemPlus.Item.dbName == BossProcedures.BossProcedures_BimboBoss.CureItemDbName)

@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using tfgame.dbModels.Models;
 using tfgame.Filters;
+using tfgame.Procedures;
 
 namespace tfgame.Controllers
 {
@@ -39,6 +41,12 @@ namespace tfgame.Controllers
          public ActionResult GameNews()
          {
              return View();
+         }
+
+         public ActionResult RecentRPClassifieds()
+         {
+            IEnumerable<RPClassifiedAd> output =  RPClassifiedAdsProcedures.GetClassifiedAds();
+            return View(output);
          }
     }
 }

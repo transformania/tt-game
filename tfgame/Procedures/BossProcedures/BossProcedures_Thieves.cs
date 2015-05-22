@@ -196,6 +196,7 @@ namespace tfgame.Procedures.BossProcedures
                     playerRepo.SavePlayer(femalethief);
 
                     AttackProcedures.Attack(femalethief, target, "skill_Seekshadow's_Silence_Judoo");
+                    AIProcedures.DealBossDamage(femalethief, target, false, 1);
 
                     string message = malethief.GetFullName() + " and " + femalethief.GetFullName() + " the Seekshadow rat thieves suddenly appear in front of you!  In the blink of an eye they've swept you off your feet and have expertly swiped " + Math.Floor(target.Money * .10M) + " of your Arpeyjis.";
                     string locationMessage = "<b>" + malethief.GetFullName() + " and " + femalethief.GetFullName() + " robbed " + target.GetFullName() + " here.</b>";
@@ -276,6 +277,7 @@ namespace tfgame.Procedures.BossProcedures
                         AttackProcedures.Attack(attackingThief, target, "lowerHealth");
                         AttackProcedures.Attack(attackingThief, target, "skill_Seekshadow's_Triumph_Judoo");
                         AttackProcedures.Attack(attackingThief, target, "skill_Seekshadow's_Triumph_Judoo");
+                        AIProcedures.DealBossDamage(attackingThief, target, false, 4);
                         target = playerRepo.Players.FirstOrDefault(p => p.Id == victimThiefItem.OwnerId && p.MembershipId != -8 && p.MembershipId != -9);
 
                         // if we have managed to turn the target, take back the victim-item
@@ -339,6 +341,7 @@ namespace tfgame.Procedures.BossProcedures
                 if (malethief.Mobility == "full")
                 {
                     AttackProcedures.Attack(malethief, attacker, "lowerHealth");
+                    AIProcedures.DealBossDamage(malethief, attacker, true, 1);
                     malethief = playerRepo.Players.FirstOrDefault(f => f.FirstName == MaleBossFirstName && f.LastName == MaleBossLastName);
                 }
 
@@ -346,6 +349,7 @@ namespace tfgame.Procedures.BossProcedures
                 {
                     AttackProcedures.Attack(femalethief, attacker, "skill_Seekshadow's_Triumph_Judoo");
                     AttackProcedures.Attack(femalethief, attacker, "skill_Seekshadow's_Triumph_Judoo");
+                    AIProcedures.DealBossDamage(femalethief, attacker, true, 2);
                     femalethief = playerRepo.Players.FirstOrDefault(f => f.FirstName == FemaleBossFirstName && f.LastName == FemaleBossLastName);
                 }
 
@@ -356,6 +360,7 @@ namespace tfgame.Procedures.BossProcedures
                 if (roll < .166)
                 {
                     AttackProcedures.Attack(femalethief, attacker, "skill_Seekshadow's_Silence_Judoo");
+                    AIProcedures.DealBossDamage(femalethief, attacker, false, 1);
                     string locationMessage = "<b>" + malethief.GetFullName() + " and " + femalethief.GetFullName() + " ran off in an unknown direction.";
                     LocationLogProcedures.AddLocationLog(femalethief.dbLocationName, locationMessage);
                     string newlocation = LocationsStatics.GetRandomLocation_NoStreets();
@@ -376,14 +381,16 @@ namespace tfgame.Procedures.BossProcedures
                     {
                         AttackProcedures.Attack(malethief, attacker, "lowerHealth");
                         AttackProcedures.Attack(malethief, attacker, "skill_Seekshadow's_Triumph_Judoo");
+                        AIProcedures.DealBossDamage(malethief, attacker, false, 2);
                     }
                 }
                 else if (femalethief.Mobility == "full")
                 {
                     for (int i = 0; i < roll; i++)
                     {
-                        AttackProcedures.Attack(malethief, attacker, "lowerHealth");
-                        AttackProcedures.Attack(malethief, attacker, "skill_Seekshadow's_Triumph_Judoo");
+                        AttackProcedures.Attack(femalethief, attacker, "lowerHealth");
+                        AttackProcedures.Attack(femalethief, attacker, "skill_Seekshadow's_Triumph_Judoo");
+                        AIProcedures.DealBossDamage(femalethief, attacker, false, 2);
                     }
                 }
             }

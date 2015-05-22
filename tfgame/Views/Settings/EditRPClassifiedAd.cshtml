@@ -1,0 +1,97 @@
+﻿@model tfgame.dbModels.Models.RPClassifiedAd
+
+<nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+                <li>@Html.ActionLink("My RP Classified Ads", "MyRPClassifiedAds", "Settings")</li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+<div>
+    <p class="infoMessage result">@Html.Raw(ViewBag.Result)</p>
+    <p class="infoMessage error">@ViewBag.ErrorMessage</p>
+    <p class="infoMessage suberror">@ViewBag.SubErrorMessage</p>
+</div>
+
+
+<div class="containerInner">
+    <h1>Edit/Create RP Classified Ad</h1>
+
+    @using (Html.BeginForm("EditRPClassifiedAdSend", "Settings", Model))
+    {
+        <div class="messageInfoContainer clearfix">
+
+            <span class="charCounter" id="textRemaining"></span>
+        </div>
+
+        <div class="messageInfoContainer clearfix">
+            Write a general description of what kind of roleplaying experience you are looking for.  (Must be between 50 and 300 characters)
+            <span class="charCounter" id="Text_textRemaining"></span>
+        </div>
+        @Html.TextAreaFor(m => m.Text)<br /><br />
+
+        <div class="messageInfoContainer clearfix">
+            What themes would you like this RP <b class="good">TO</b> contain?   (optional, limit 200 characters)
+            <span class="charCounter" id="YesThemes_textRemaining"></span>
+        </div>
+        @Html.TextAreaFor(m => m.YesThemes)<br /><br />
+
+        <div class="messageInfoContainer clearfix">
+            What themes would you like this RP <b class="bad">TO NOT</b> contain?   (optional, limit 200 characters)
+            <span class="charCounter" id="NoThemes_textRemaining"></span>
+        </div>
+
+        @Html.TextAreaFor(m => m.NoThemes)<br /><br />
+
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.OwnerMembershipId)
+
+        <br />
+        <input type="submit" class="btn btn-chat" value="Send" />
+
+    }
+
+</div>
+
+<script>
+
+
+
+    $("#Text").keydown(function () {
+        var remaining = 300 - $("#Text").val().length;
+        $("#Text_textRemaining").html(remaining + " characters remaining");
+    });
+
+    $("#YesThemes").keydown(function () {
+        var remaining = 300 - $("#YesThemes").val().length;
+        $("#YesThemes_textRemaining").html(remaining + " characters remaining");
+    });
+
+    $("#NoThemes").keydown(function () {
+        var remaining = 300 - $("#NoThemes").val().length;
+        $("#NoThemes_textRemaining").html(remaining + " characters remaining");
+    });
+
+</script>
+
+
+<style>
+    textarea {
+        width: 100%;
+    }
+</style>

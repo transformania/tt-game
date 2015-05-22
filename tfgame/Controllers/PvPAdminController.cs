@@ -1040,7 +1040,7 @@ namespace tfgame.Controllers
                 return View("Play", "PvP");
             }
 
-         
+            AIProcedures.SpawnBartender();
 
             return RedirectToAction("Index");
         }
@@ -2422,6 +2422,7 @@ namespace tfgame.Controllers
             {
                 p.IpAddress = "reset";
                 playerRepo.SavePlayer(p);
+                PlayerLogProcedures.AddPlayerLog(p.Id, "<b class='good'>Server notice:  Your IP address has been reset.</b>", true);
            }
 
             return View("Play");

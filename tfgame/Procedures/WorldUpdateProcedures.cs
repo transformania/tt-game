@@ -773,6 +773,7 @@ namespace tfgame.Procedures
                     context.Database.ExecuteSqlCommand("DELETE FROM [Stats].[dbo].[ChatLogs] WHERE Timestamp < DATEADD(hour, -72, GETUTCDATE())");
                     context.Database.ExecuteSqlCommand("DELETE FROM [Stats].[dbo].[AIDirectives] WHERE Timestamp < DATEADD(hour, -72, GETUTCDATE()) AND DoNotRecycleMe = 0");
                     context.Database.ExecuteSqlCommand("DELETE FROM [Stats].[dbo].[CovenantLogs] WHERE Timestamp < DATEADD(hour, -72, GETUTCDATE())");
+                    context.Database.ExecuteSqlCommand("DELETE FROM [Stats].[dbo].[RPClassifiedAds] WHERE RefreshTimestamp < DATEADD(hour, -72, GETUTCDATE())");
                 }
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished stored procedure maintenance");
 

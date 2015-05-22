@@ -652,6 +652,7 @@ namespace tfgame.Procedures
             // rat thieves counterattack
             else if (bot.MembershipId == -8 || bot.MembershipId == -9)
             {
+                AIProcedures.DealBossDamage(bot, personAttacking, true, 1);
                 BossProcedures_Thieves.CounterAttack(personAttacking);
             }
 
@@ -900,7 +901,7 @@ namespace tfgame.Procedures
                     IsPetToId = -1,
                     Money = 0,
                     Mobility = "full",
-                    Level = 3,
+                    Level = 15,
                     MembershipId = -14,
                     ActionPoints_Refill = 360,
                 };

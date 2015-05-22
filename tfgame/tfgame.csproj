@@ -260,6 +260,7 @@
     <Compile Include="dbModels\Abstract\IPollEntryRepository.cs" />
     <Compile Include="dbModels\Abstract\IPvPWorldStatRepository.cs" />
     <Compile Include="dbModels\Abstract\IReservedNameRepository.cs" />
+    <Compile Include="dbModels\Abstract\IRPClassifiedAdRepository.cs" />
     <Compile Include="dbModels\Abstract\IRPPointRepository.cs" />
     <Compile Include="dbModels\Abstract\IServerLogRepository.cs" />
     <Compile Include="dbModels\Abstract\ISkillRepository.cs" />
@@ -286,6 +287,7 @@
     <Compile Include="dbModels\Concrete\EFMindControlRepository.cs" />
     <Compile Include="dbModels\Concrete\EFPlayerExtraRepository.cs" />
     <Compile Include="dbModels\Concrete\EFPollEntryRepository.cs" />
+    <Compile Include="dbModels\Concrete\EFRPClassifiedAdRepository.cs" />
     <Compile Include="dbModels\Concrete\EFRPPointRespository.cs" />
     <Compile Include="dbModels\Concrete\EFTFMessageRepository.cs" />
     <Compile Include="dbModels\Models\Achievement.cs" />
@@ -346,6 +348,7 @@
     <Compile Include="dbModels\Models\PollEntry.cs" />
     <Compile Include="dbModels\Models\PvPWorldStat.cs" />
     <Compile Include="dbModels\Models\ReservedName.cs" />
+    <Compile Include="dbModels\Models\RPClassifiedAd.cs" />
     <Compile Include="dbModels\Models\RPPoint.cs" />
     <Compile Include="dbModels\Models\ServerLog.cs" />
     <Compile Include="dbModels\Models\Skill.cs" />
@@ -385,6 +388,7 @@
     <Compile Include="Procedures\PlayerLogProcedures.cs" />
     <Compile Include="Procedures\PlayerProcedures.cs" />
     <Compile Include="Procedures\PvPWorldStatProcedures.cs" />
+    <Compile Include="Procedures\RPClassifiedAdsProcedures.cs" />
     <Compile Include="Procedures\SettingsProcedures.cs" />
     <Compile Include="Procedures\SkillProcedures.cs" />
     <Compile Include="Procedures\StatsProcedures.cs" />
@@ -959,6 +963,7 @@
     <Content Include="Images\PvP\portraits\alraune_Luxianne.png" />
     <Content Include="Images\PvP\portraits\Amazonian_Futa_Meddle.png" />
     <Content Include="Images\PvP\portraits\angel_Meddle.png" />
+    <Content Include="Images\PvP\portraits\bartender_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\batgirl_Luxianne.png" />
     <Content Include="Images\PvP\portraits\beach_babe_enthusiast_TheGreatDaeo.jpg" />
     <Content Include="Images\PvP\portraits\beat_cop_Babblingfaces.jpg" />
@@ -1017,6 +1022,7 @@
     <Content Include="Images\PvP\portraits\Gracious_Clockwork_Ballerina_Ninian.jpg" />
     <Content Include="Images\PvP\portraits\great_fairy_Luxianne.png" />
     <Content Include="Images\PvP\portraits\gummy_girl_Luxianne.png" />
+    <Content Include="Images\PvP\portraits\harlot_babblingfaces.jpg" />
     <Content Include="Images\PvP\portraits\harpy_maiden_babblingfaces.png" />
     <Content Include="Images\PvP\portraits\headless_mannequin_JBovinne.png" />
     <Content Include="Images\PvP\portraits\head_maid_jbovinne.jpg" />
@@ -2220,6 +2226,9 @@
     <Content Include="Views\PvPAdmin\ShowStatsTable.cshtml" />
     <Content Include="Views\Settings\Polls\Open\poll3.cshtml" />
     <Content Include="Views\Settings\Polls\Read\poll3.cshtml" />
+    <Content Include="Views\Settings\MyRPClassifiedAds.cshtml" />
+    <Content Include="Views\Info\RecentRPClassifieds.cshtml" />
+    <Content Include="Views\Settings\EditRPClassifiedAd.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

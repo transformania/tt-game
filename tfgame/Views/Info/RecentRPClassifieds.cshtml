@@ -31,25 +31,26 @@
 
 <div class="containerInner">
     <h1>Recent RP Classified Ads</h1>
+    <p style="margin: 20px 0px; text-align: center;">Looking for an RP partner?  On this page you will find all recent RP Classified Ad postings that have been updated within the past 3 days.</p>
 
+    <div class="row">
+        @{
+            foreach (tfgame.dbModels.Models.RPClassifiedAd ad in Model.OrderByDescending(m => m.RefreshTimestamp))
+            {
+                <div class="col-xs-12 col-md-3 rp-ad textSpaced">
+                    <p><b>Description</b><br />
+                    <i>@ad.Text</i></p>
+                    <p><span class="good">Desired themes</span><br />
+                    @ad.YesThemes</p>
+                    <p><span class="bad">Undesired themes</span><br />
+                    @ad.NoThemes</p>
+                    <p class="timeago">Created @tfgame.CustomHtmlHelpers.CharactersHere.DatetimeToTimeago(ad.CreationTimestamp)<br />
+                    Last Refreshed @tfgame.CustomHtmlHelpers.CharactersHere.DatetimeToTimeago(ad.RefreshTimestamp)</p>
 
-    <p>Looking for an RP partner?  On this page you will find all recent RP Classified Ad postings that have been updated within the past 3 days.</p>
+                    <p>@Html.ActionLink("Look at Ad Poster", "LookAtPlayer_FromMembershipId", "PvP", new { id = ad.OwnerMembershipId }, null)</p>
+                </div>
+            }
 
-    <hr />
-
-    @{
-        foreach (tfgame.dbModels.Models.RPClassifiedAd ad in Model.OrderByDescending(m => m.RefreshTimestamp))
-        {
-            <p><i>@ad.Text</i></p>
-            <p><span class="good">Desired themes:  </span>@ad.YesThemes</p>
-            <p><span class="bad">Undesired themes:  </span>@ad.NoThemes</p>
-            <p class="timeago">Created @tfgame.CustomHtmlHelpers.CharactersHere.DatetimeToTimeago(ad.CreationTimestamp)</p>
-            <p class="timeago">Last Refreshed @tfgame.CustomHtmlHelpers.CharactersHere.DatetimeToTimeago(ad.RefreshTimestamp)</p>
-
-            <p>@Html.ActionLink("Look at Owner", "LookAtPlayer_FromMembershipId", "PvP", new { id = ad.OwnerMembershipId }, null)</p>
-            <hr />
         }
-
-    }
-
+    </div>
 </div>

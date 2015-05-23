@@ -6,6 +6,21 @@ body {
 h1, h2, h3 {
   margin-top: 10px !important; }
 
+h1 {
+  text-align: center;
+  border-bottom: 1px #734752 dashed;
+  width: 50%;
+  margin: 10px auto 10px auto;
+  font-size: 26px;
+  padding-bottom: 4px; }
+
+@media (max-width: 768px) {
+  h1 {
+    width: 80%;
+    font-size: 20px; } }
+@media (max-width: 480px) {
+  h1 {
+    width: 100%; } }
 p {
   margin: 0px;
   padding: 0px; }
@@ -276,7 +291,7 @@ li {
 .col-md-1 {
   min-height: 0px !important; }
 
-#MessageText, #WebsiteURL, #Text {
+#MessageText, #WebsiteURL, #Text, .text-container {
   width: 100%;
   resize: vertical;
   border: 1px solid #808080;
@@ -635,7 +650,7 @@ strong {
   background: #E4E0D4; }
 
 .textSpaced p {
-  margin-bottom: 5px; }
+  margin-bottom: 10px; }
 
 .detailLink {
   background-color: rgba(255, 255, 255, 0.5);
@@ -761,7 +776,7 @@ strong {
   color: white;
   float: right;
   text-align: right;
-  line-height: 19px; }
+  line-height: 18px; }
 
 .contributionsBox a {
   line-height: 25px; }
@@ -776,5 +791,19 @@ strong {
   color: #734752;
   text-align: center;
   margin-top: 20px; }
+
+.rp-ad {
+  text-align: center;
+  margin: 0px 48px 20px;
+  padding: 15px;
+  border: 2px #734752 dashed;
+  border-top: 2px #734752 solid; }
+
+@media (max-width: 1199px) {
+  .rp-ad {
+    margin: 0px 39px 20px; } }
+@media (max-width: 991px) {
+  .rp-ad {
+    margin: 0px 0px 20px; } }
 
 /*# sourceMappingURL=custom.css.map */

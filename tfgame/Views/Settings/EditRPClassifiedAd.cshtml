@@ -43,20 +43,20 @@
             Write a general description of what kind of roleplaying experience you are looking for.  (Must be between 50 and 300 characters)
             <span class="charCounter" id="Text_textRemaining"></span>
         </div>
-        @Html.TextAreaFor(m => m.Text)<br /><br />
+        @Html.TextAreaFor(m => m.Text, new { @class = "text-container" })
 
         <div class="messageInfoContainer clearfix">
             What themes would you like this RP <b class="good">TO</b> contain?   (optional, limit 200 characters)
             <span class="charCounter" id="YesThemes_textRemaining"></span>
         </div>
-        @Html.TextAreaFor(m => m.YesThemes)<br /><br />
+        @Html.TextAreaFor(m => m.YesThemes, new { @class = "text-container" })
 
         <div class="messageInfoContainer clearfix">
             What themes would you like this RP <b class="bad">TO NOT</b> contain?   (optional, limit 200 characters)
             <span class="charCounter" id="NoThemes_textRemaining"></span>
         </div>
 
-        @Html.TextAreaFor(m => m.NoThemes)<br /><br />
+        @Html.TextAreaFor(m => m.NoThemes, new { @class = "text-container" })
 
         @Html.HiddenFor(m => m.Id)
         @Html.HiddenFor(m => m.OwnerMembershipId)
@@ -69,29 +69,24 @@
 </div>
 
 <script>
-
-
-
     $("#Text").keydown(function () {
         var remaining = 300 - $("#Text").val().length;
         $("#Text_textRemaining").html(remaining + " characters remaining");
     });
 
     $("#YesThemes").keydown(function () {
-        var remaining = 300 - $("#YesThemes").val().length;
+        var remaining = 200 - $("#YesThemes").val().length;
         $("#YesThemes_textRemaining").html(remaining + " characters remaining");
     });
 
     $("#NoThemes").keydown(function () {
-        var remaining = 300 - $("#NoThemes").val().length;
+        var remaining = 200 - $("#NoThemes").val().length;
         $("#NoThemes_textRemaining").html(remaining + " characters remaining");
     });
-
 </script>
 
-
 <style>
-    textarea {
-        width: 100%;
-    }
+    .bad {color: #E18948 !important;}
+    .good {color: #77D777 !important; }
+    .text-container{margin-bottom: 20px;}
 </style>

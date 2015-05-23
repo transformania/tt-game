@@ -31,35 +31,44 @@
 
 <div class="containerInner">
     <h1>Your RP Classified Ads</h1>
-
-    <p>Below are all of the RP Classified Ads created by you.  You can only have 3 ads open at a time so make them count!</p>
-
-    <br />
+    <p style="margin: 20px 0px; text-align: center;">Below are all of the RP Classified Ads created by you.  You can only have 3 ads open at a time so make them count!</p>
 
     @{
-        foreach (tfgame.dbModels.Models.RPClassifiedAd ad in Model.OrderByDescending(m => m.RefreshTimestamp))
-        {
-            <p><i>@ad.Text</i></p>
-            <p><span class="good">Desired themes:  </span>@ad.YesThemes</p>
-            <p><span class="bad">Undesired themes:  </span>@ad.NoThemes</p>
-            <p class="timeago">Created @tfgame.CustomHtmlHelpers.CharactersHere.DatetimeToTimeago(ad.CreationTimestamp)</p>
-            <p class="timeago">Last Refreshed @tfgame.CustomHtmlHelpers.CharactersHere.DatetimeToTimeago(ad.RefreshTimestamp)</p>
+      <div class="row">
+            @{
+                foreach (tfgame.dbModels.Models.RPClassifiedAd ad in Model.OrderByDescending(m => m.RefreshTimestamp))
+                {
+                    <div class="col-xs-12 col-md-3 rp-ad textSpaced">
+                        <p><i>@ad.Text</i></p>
+                        <p>
+                            <span class="good">Desired themes</span><br />
+                            @ad.YesThemes
+                        </p>
+                        <p>
+                            <span class="bad">Undesired themes</span><br />
+                            @ad.NoThemes
+                        </p>
+                        <p class="timeago">
+                            Created @tfgame.CustomHtmlHelpers.CharactersHere.DatetimeToTimeago(ad.CreationTimestamp)<br />
+                            Last Refreshed @tfgame.CustomHtmlHelpers.CharactersHere.DatetimeToTimeago(ad.RefreshTimestamp)
+                        </p>
 
-            @Html.ActionLink("Edit Ad", "EditRPClassifiedAd", "Settings", new { id = ad.Id }, null)<br />
-        @Html.ActionLink("Refresh Ad", "RefreshRPClassifiedAd", "Settings", new { id = ad.Id }, null)<br />
-            @Html.ActionLink("Delete Ad", "DeleteRPClassifiedAd", "Settings", new { id = ad.Id }, null)<br />
-            <hr />
-        }
+                        <p>
+                            @Html.ActionLink("Edit Ad", "EditRPClassifiedAd", "Settings", new { id = ad.Id }, null)<br />
+                            @Html.ActionLink("Refresh Ad", "RefreshRPClassifiedAd", "Settings", new { id = ad.Id }, null)<br />
+                            @Html.ActionLink("Delete Ad", "DeleteRPClassifiedAd", "Settings", new { id = ad.Id }, null)<br />
+                        </p>
+                    </div>
+                }
 
-        <br />        <br />
+            }
+        </div>
 
-
-        if (Model.Count() < 3)
-        {
-            @Html.ActionLink("New Ad", "EditRPClassifiedAd", "Settings", new { id = -1 }, null)
-        }
-
-
+                if (Model.Count() < 3)
+                {
+                    @Html.ActionLink("New Ad", "EditRPClassifiedAd", "Settings", new { id = -1 }, null)
+                }
     }
+
 
 </div>

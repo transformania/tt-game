@@ -89,7 +89,7 @@
             </span>
         </div>
         <div class="rightDisplay">
-            <h1 style="margin-top: 0px; text-align: center;">@Model.PlayerForm.Player.GetFullName()</h1>
+            <p class="avatarName center-block">@Model.PlayerForm.Player.GetFullName()</p>
             <center>
                 @CharactersHere.GetCovenantInfo(Model.PlayerForm.Player.ToDbPlayer())
                 @{
@@ -263,7 +263,7 @@
         }
 
         .rightDisplay {
-            width: 380px;
+            width: 100%;
         }
     }
 

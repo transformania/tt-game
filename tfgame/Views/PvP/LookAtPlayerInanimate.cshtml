@@ -69,7 +69,7 @@
             <span class="icon-level"><b>@ViewBag.ItemLevel</b></span>
         </div>
         <div class="rightDisplay">
-            <h1 style="margin-top: 0px; text-align: center;">@Model.PlayerForm.Player.GetFullName()</h1>
+            <p class="avatarName center-block">@Model.PlayerForm.Player.GetFullName()</p>
             @{if (Model.PlayerForm.Player.Mobility == "inanimate")
             {
                 <span class="textMobility">
@@ -160,7 +160,7 @@
         }
 
         .rightDisplay {
-            width: 380px;
+            width: 100%;
         }
     }
 </style>

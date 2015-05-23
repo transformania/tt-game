@@ -34,6 +34,11 @@
     <p style="margin: 20px 0px; text-align: center;">Below are all of the RP Classified Ads created by you.  You can only have 3 ads open at a time so make them count!</p>
 
     @{
+        if (Model.Count() < 3)
+        {
+            <p style="margin: 0px 0px 20px 0px; text-align: center;">@Html.ActionLink("New Ad", "EditRPClassifiedAd", "Settings", new { id = -1 }, null)</p>
+        }
+
       <div class="row">
             @{
                 foreach (tfgame.dbModels.Models.RPClassifiedAd ad in Model.OrderByDescending(m => m.RefreshTimestamp))
@@ -64,10 +69,7 @@
             }
         </div>
 
-                if (Model.Count() < 3)
-                {
-                    @Html.ActionLink("New Ad", "EditRPClassifiedAd", "Settings", new { id = -1 }, null)
-                }
+
     }
 
 

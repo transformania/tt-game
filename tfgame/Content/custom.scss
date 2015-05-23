@@ -982,6 +982,7 @@ line-height: 18px;
     padding: 15px;
     border: 2px $navbarDark dashed;
     border-top: 2px $navbarDark solid;
+    word-break: break-all;
 }
 
 @media (max-width: 1199px) {

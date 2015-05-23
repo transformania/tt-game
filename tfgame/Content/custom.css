@@ -797,7 +797,8 @@ strong {
   margin: 0px 48px 20px;
   padding: 15px;
   border: 2px #734752 dashed;
-  border-top: 2px #734752 solid; }
+  border-top: 2px #734752 solid;
+  word-break: break-all; }
 
 @media (max-width: 1199px) {
   .rp-ad {

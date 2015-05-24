@@ -1964,5 +1964,13 @@ namespace tfgame.Procedures
             }
         }
 
+        public static void ResetPlayerPetStatus(Player player)
+        {
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            dbPlayer.IsPetToId = -1;
+            playerRepo.SavePlayer(dbPlayer);
+        }
+
     }
 }

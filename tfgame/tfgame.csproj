@@ -1019,6 +1019,7 @@
     <Content Include="Images\PvP\portraits\gloom_Dandelion.jpg" />
     <Content Include="Images\PvP\portraits\gluttenous_kitsune_Daniel_Kay.jpg" />
     <Content Include="Images\PvP\portraits\goblin_girl_Meddle.png" />
+    <Content Include="Images\PvP\portraits\gorilla_bodybuilder_daniel_kay.jpg" />
     <Content Include="Images\PvP\portraits\Gracious_Clockwork_Ballerina_Ninian.jpg" />
     <Content Include="Images\PvP\portraits\great_fairy_Luxianne.png" />
     <Content Include="Images\PvP\portraits\gummy_girl_Luxianne.png" />
@@ -1028,6 +1029,7 @@
     <Content Include="Images\PvP\portraits\head_maid_jbovinne.jpg" />
     <Content Include="Images\PvP\portraits\hero_babblingfaces.png" />
     <Content Include="Images\PvP\portraits\holy_nun_babblingfaces.jpg" />
+    <Content Include="Images\PvP\portraits\honeybadger_daniel_kay.jpg" />
     <Content Include="Images\PvP\portraits\hulking_hellspawn_Meddle.jpg" />
     <Content Include="Images\PvP\portraits\hyperactive_ferret_girl_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\Ice_Queen_Meddle.png" />
@@ -1099,6 +1101,7 @@
     <Content Include="Images\PvP\portraits\robot_Meddle.png" />
     <Content Include="Images\PvP\portraits\sailor_seal_girl_Dandelion.jpg" />
     <Content Include="Images\PvP\portraits\satyr_martiandawn.jpg" />
+    <Content Include="Images\PvP\portraits\seductive_skunk_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\seekshadow_apprentice_thief_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\seekshadow_master_thief_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\sexy_princess_Meddle.png" />

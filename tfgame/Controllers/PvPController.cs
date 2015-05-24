@@ -192,13 +192,35 @@ namespace tfgame.Controllers
 
                 try
                 {
-                    animalOutput.OwnedBy = PlayerProcedures.GetPlayerFormViewModel(me.IsPetToId);
-                    if (me.dbLocationName != animalOutput.OwnedBy.Player.dbLocationName)
+                    // get player item
+                    Item meItem = ItemProcedures.GetItemByVictimName(me.FirstName, me.LastName);
+
+                    if (meItem.OwnerId == -1)
                     {
-                        PlayerProcedures.MovePlayer_InstantNoLog(me.Id, animalOutput.OwnedBy.Player.dbLocationName);
-                        me.dbLocationName = animalOutput.OwnedBy.Player.dbLocationName;
-                        animalOutput.You.dbLocationName = animalOutput.OwnedBy.Player.dbLocationName;
+                        animalOutput.OwnedBy = null;
+
+                        // somehow the game got desynched and the owner as recorded by the player is not the same as who actually owns them as an item.
+                        // TODO:  Get rid of this .IsPetToId bullshit altogether :P
+                        if (me.IsPetToId > 0 && meItem.OwnerId == -1)
+                        {
+                            PlayerProcedures.ResetPlayerPetStatus(me);
+                        }
+
                     }
+                    else
+                    {
+                        animalOutput.OwnedBy = PlayerProcedures.GetPlayerFormViewModel(me.IsPetToId);
+
+                        // update the player version of the pet so they struggle out in their owner's most recent location
+                        if (me.dbLocationName != animalOutput.OwnedBy.Player.dbLocationName)
+                        {
+                            PlayerProcedures.MovePlayer_InstantNoLog(me.Id, animalOutput.OwnedBy.Player.dbLocationName);
+                            me.dbLocationName = animalOutput.OwnedBy.Player.dbLocationName;
+                            animalOutput.You.dbLocationName = animalOutput.OwnedBy.Player.dbLocationName;
+                        }
+                    }
+
+                   
                 }
                 catch
                 {

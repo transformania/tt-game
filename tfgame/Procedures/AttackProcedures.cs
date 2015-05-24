@@ -37,8 +37,8 @@ namespace tfgame.Procedures
 
             PlayerProcedures.LogCombatTimestampsAndAddAttackCount(targeted, me);
 
-            string attackerFullName = me.FirstName + " " + me.LastName;
-            string victimFullName = targeted.FirstName + " " + targeted.LastName;
+            string attackerFullName = me.GetFullName();
+            string victimFullName = targeted.GetFullName();
 
             // if the spell is a curse, give the effect and that's all
             if (skillBeingUsed.Skill.GivesEffect != null)
@@ -183,7 +183,7 @@ namespace tfgame.Procedures
                         decimal willpowerDamageModifierFromBonuses = 1 + ((meDmgExtra - targetProt) / 100.0M);
 
                         // cap the modifier at at 50 % IF the target is a human
-                        if (willpowerDamageModifierFromBonuses < .5M && victim.MembershipId > 0)
+                        if (willpowerDamageModifierFromBonuses < .5M)
                         {
                             willpowerDamageModifierFromBonuses = .5M;
                         }
@@ -223,7 +223,7 @@ namespace tfgame.Procedures
                         decimal tfEnergyDamageModifierFromBonuses = 1 + ((TFEnergyDmg - TFEnergyArmor) / 100.0M);
 
                         // cap the modifier at at 50 % IF the target is a human
-                        if (tfEnergyDamageModifierFromBonuses < .5M && victim.MembershipId > 0)
+                        if (tfEnergyDamageModifierFromBonuses < .5M)
                         {
                             tfEnergyDamageModifierFromBonuses = .5M;
                         }

@@ -222,7 +222,15 @@
                 {
                     @Html.ActionLink("Talk", "TalkToBartender", "NPC", new { question = "none" }, new { @class = "attackLink" })
                 }
-                                    }
+                if (p.Player.MembershipId == AIProcedures.MouseBimboMembershipId)
+                {
+                    @Html.ActionLink("Talk", "TalkToCandice", "NPC", null, new { @class = "attackLink" })
+                }
+                if (p.Player.MembershipId == AIProcedures.MouseNerdMembershipId)
+                {
+                    @Html.ActionLink("Talk", "TalkToAdrianna", "NPC", null, new { @class = "attackLink" })
+                }
+}
                                 </div>
                             </p>
                         </div>

@@ -924,7 +924,7 @@ namespace tfgame.Procedures
                             return summontext;
                         }
                     }
-                    else if (roll < 1 && dbLocationName == "lab_lobby")
+                    else if (roll < 1 && dbLocationName == "college_foyer")
                     {
                         if (worldStats.IsSistersAvailable())
                         {

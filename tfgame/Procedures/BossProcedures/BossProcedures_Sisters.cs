@@ -47,7 +47,7 @@ namespace tfgame.Procedures.BossProcedures
                     Mana = 10000,
                     MaxHealth = 10000,
                     MaxMana = 10000,
-                    Form = BimboBossForm,
+                    Form = NerdBossForm,
                     IsPetToId = -1,
                     Money = 2000,
                     Mobility = "full",
@@ -80,7 +80,7 @@ namespace tfgame.Procedures.BossProcedures
                     Mana = 10000,
                     MaxHealth = 10000,
                     MaxMana = 10000,
-                    Form = NerdBossForm,
+                    Form = BimboBossForm,
                     IsPetToId = -1,
                     Money = 6000,
                     Mobility = "full",
@@ -204,6 +204,57 @@ namespace tfgame.Procedures.BossProcedures
 
         public static void EndEvent()
         {
+            PvPWorldStatProcedures.Boss_EndSisters();
+
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            Player nerdBoss = playerRepo.Players.FirstOrDefault(p => p.MembershipId == AIProcedures.MouseNerdMembershipId);
+            Player bimboBoss = playerRepo.Players.FirstOrDefault(p => p.MembershipId == AIProcedures.MouseBimboMembershipId);
+
+            string winner = "";
+
+            if (nerdBoss.Form != NerdBossForm) {
+                winner = "bimbo";
+            } else {
+                winner = "nerd";
+            }
+
+
+            // find the players who dealt the most damage and award them with XP
+            List<BossDamage> damages = null;
+            
+            if (winner == "bimbo") {
+                damages  = AIProcedures.GetTopAttackers(nerdBoss.MembershipId, 10);
+            } else if (winner == "nerd") {
+                damages  = AIProcedures.GetTopAttackers(bimboBoss.MembershipId, 10);
+            }
+
+            // top player gets 500 XP, each player down the line receives 25 fewer
+            int i = 0;
+            int maxReward = 500;
+
+            foreach (BossDamage damage in damages)
+            {
+                Player victor = playerRepo.Players.FirstOrDefault(p => p.Id == damage.PlayerId);
+                int reward = maxReward - (i * 50);
+                victor.XP += reward;
+                i++;
+
+                if (winner == "bimbo")
+                {
+                    PlayerLogProcedures.AddPlayerLog(victor.Id, "<b>For your contribution in defeating " + nerdBoss.GetFullName() + ", " + bimboBoss.GetFullName() + " gifts you with " + reward + " XP from her powerful magic of seduction!</b>", true);
+                }
+                else
+                {
+                    PlayerLogProcedures.AddPlayerLog(victor.Id, "<b>For your contribution in defeating " + bimboBoss.GetFullName() + ", " + nerdBoss.GetFullName() + " gifts you with " + reward + " XP from her unchallenged mastery of the natural world!</b>", true);
+                }
+
+                playerRepo.SavePlayer(victor);
+                
+            }
+
+            playerRepo.DeletePlayer(nerdBoss.Id);
+            playerRepo.DeletePlayer(bimboBoss.Id);
+           
 
         }
     }

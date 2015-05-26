@@ -20,6 +20,9 @@ namespace tfgame.Procedures
         public const int JewdewfaeMembershipId = -6;
         public const int BartenderMembershipId = -14;
 
+        public const int MouseNerdMembershipId = -11;
+        public const int MouseBimboMembershipId = -12;
+
         // Membership ID code:  
         // -1 (player has rerolled, player is abandoned)
         // -2 (psychopath spellslinger)

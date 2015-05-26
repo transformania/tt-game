@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using tfgame.dbModels.Models;
 using tfgame.Filters;
 using tfgame.Procedures;
+using tfgame.Procedures.BossProcedures;
 using tfgame.Statics;
 using tfgame.ViewModels;
 using WebMatrix.WebData;
@@ -988,6 +989,68 @@ namespace tfgame.Controllers
                 TempData["Error"] = "You are not in the correct form to play with Jewdewfae right now.";
                 return RedirectToAction("Play", "PvP");
             }
+
+        }
+
+        [Authorize]
+        public ActionResult TalkToCandice()
+        {
+            Player me = PlayerProcedures.GetPlayerFromMembership();
+            Player bimbo = PlayerProcedures.GetPlayerFromMembership(AIProcedures.MouseBimboMembershipId);
+
+            // assert player is mobile
+            if (me.Mobility != "full")
+            {
+                TempData["Error"] = "You must be animate in order to chat with " + BossProcedures_Sisters.BimboBossFirstName + ".";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            // assert player is in the same place as Candice
+            if (me.dbLocationName != bimbo.dbLocationName)
+            {
+                TempData["Error"] = "You must be in the same location as " + BossProcedures_Sisters.BimboBossFirstName + " in order to talk with her.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            // assert bimbo is still in base form
+            if (bimbo.Form != BossProcedures_Sisters.NerdBossForm)
+            {
+                TempData["Error"] = BossProcedures_Sisters.BimboBossFirstName + " seems to be too distracted with her recent change to want to talk to you.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            return View();
+
+        }
+
+        [Authorize]
+        public ActionResult TalkToAdrianna()
+        {
+            Player me = PlayerProcedures.GetPlayerFromMembership();
+            Player nerd = PlayerProcedures.GetPlayerFromMembership(AIProcedures.MouseNerdMembershipId);
+
+            // assert player is mobile
+            if (me.Mobility != "full")
+            {
+                TempData["Error"] = "You must be animate in order to chat with " + BossProcedures_Sisters.NerdBossFirstName + ".";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            // assert player is in the same place as Candice
+            if (me.dbLocationName != nerd.dbLocationName)
+            {
+                TempData["Error"] = "You must be in the same location as " + BossProcedures_Sisters.NerdBossFirstName + " in order to talk with her.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            // assert nerd is still in base form
+            if (nerd.Form != BossProcedures_Sisters.NerdBossForm)
+            {
+                TempData["Error"] = BossProcedures_Sisters.NerdBossFirstName + " seems to be too distracted with her recent change to want to talk to you.";
+                  return RedirectToAction("Play", "PvP");
+            }
+
+            return View();
 
         }
 	}

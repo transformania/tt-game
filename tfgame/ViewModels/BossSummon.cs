@@ -16,6 +16,8 @@ namespace tfgame.ViewModels
 
      { "tavern_pool", new BossSummon { BossName="Thieves", MinimumTurn = 144, ActivationText = "" }},
 
+     { "college_foyer", new BossSummon { BossName="Sisters", MinimumTurn = 2000, ActivationText = "" }},
+
 
     };
 

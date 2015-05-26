@@ -1040,7 +1040,9 @@ namespace tfgame.Controllers
                 return View("Play", "PvP");
             }
 
-            AIProcedures.SpawnBartender();
+           // BossProcedures_Sisters.RunSistersAction();
+            BossProcedures_Sisters.EndEvent();
+         //   BossP
 
             return RedirectToAction("Index");
         }

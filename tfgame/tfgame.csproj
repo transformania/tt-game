@@ -2232,6 +2232,8 @@
     <Content Include="Views\Settings\MyRPClassifiedAds.cshtml" />
     <Content Include="Views\Info\RecentRPClassifieds.cshtml" />
     <Content Include="Views\Settings\EditRPClassifiedAd.cshtml" />
+    <Content Include="Views\NPC\TalkToCandice.cshtml" />
+    <Content Include="Views\NPC\TalkToAdrianna.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

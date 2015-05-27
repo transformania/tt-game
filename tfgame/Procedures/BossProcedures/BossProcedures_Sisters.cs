@@ -160,6 +160,9 @@ namespace tfgame.Procedures.BossProcedures
 
         public static void RunSistersAction()
         {
+
+            
+
             IPlayerRepository playerRepo = new EFPlayerRepository();
             Player nerdBoss = playerRepo.Players.FirstOrDefault(p => p.MembershipId == -11);
             Player bimboBoss = playerRepo.Players.FirstOrDefault(p => p.MembershipId == -12);
@@ -167,7 +170,7 @@ namespace tfgame.Procedures.BossProcedures
             // check to see if a sister has been TFed and the event should end
             if (nerdBoss.Form != NerdBossForm || bimboBoss.Form != BimboBossForm)
             {
-                // end event
+                EndEvent();
             }
             else
             {
@@ -214,10 +217,11 @@ namespace tfgame.Procedures.BossProcedures
 
             if (nerdBoss.Form != NerdBossForm) {
                 winner = "bimbo";
-            } else {
+            } else if (bimboBoss.Form != BimboBossForm) {
                 winner = "nerd";
+            } else {
+                return;
             }
-
 
             // find the players who dealt the most damage and award them with XP
             List<BossDamage> damages = null;

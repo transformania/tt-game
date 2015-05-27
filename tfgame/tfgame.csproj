@@ -2234,6 +2234,8 @@
     <Content Include="Views\Settings\EditRPClassifiedAd.cshtml" />
     <Content Include="Views\NPC\TalkToCandice.cshtml" />
     <Content Include="Views\NPC\TalkToAdrianna.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\XP\Alpha_20.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_20.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

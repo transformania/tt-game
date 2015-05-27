@@ -1013,7 +1013,7 @@ namespace tfgame.Controllers
             }
 
             // assert bimbo is still in base form
-            if (bimbo.Form != BossProcedures_Sisters.NerdBossForm)
+            if (bimbo.Form != BossProcedures_Sisters.BimboBossForm)
             {
                 TempData["Error"] = BossProcedures_Sisters.BimboBossFirstName + " seems to be too distracted with her recent change to want to talk to you.";
                 return RedirectToAction("Play", "PvP");

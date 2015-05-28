@@ -801,7 +801,7 @@ namespace tfgame.Controllers
             // assert only admins can view this
             if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
             {
-                return View("Play","PvP");
+                return View("Play", "PvP");
             }
 
             IEffectContributionRepository effectConRepo = new EFEffectContributionRepository();
@@ -917,7 +917,7 @@ namespace tfgame.Controllers
                     {
                         output += xmlpathLocation + "</br>";
                     }
-                   // SkillProcedures.DeleteOldXML(xmlpathLocation);
+                    // SkillProcedures.DeleteOldXML(xmlpathLocation);
 
                     //using (StreamWriter writer = new StreamWriter(xmlpathLocation, false))
                     //{
@@ -1026,7 +1026,7 @@ namespace tfgame.Controllers
                 repo.SavePvPWorldStat(stats);
                 PvPStatics.LastGameUpdate = stats.GameNewsDate;
 
-             //   TempData["Message"] = errors;
+                //   TempData["Message"] = errors;
 
                 return RedirectToAction("Index");
             }
@@ -1040,9 +1040,11 @@ namespace tfgame.Controllers
                 return View("Play", "PvP");
             }
 
-           // BossProcedures_Sisters.RunSistersAction();
-            BossProcedures_Sisters.EndEvent();
-         //   BossP
+            // BossProcedures_Sisters.RunSistersAction();
+           // BossProcedures_Sisters.EndEvent();
+            //   BossP
+
+
 
             return RedirectToAction("Index");
         }
@@ -1060,7 +1062,7 @@ namespace tfgame.Controllers
             string output = "";
             foreach (BossDamage d in damages)
             {
-                output += PlayerProcedures.GetPlayer(d.PlayerId).GetFullName() + " attacked Donna with " + d.TotalPoints + " points.</br>"; 
+                output += PlayerProcedures.GetPlayer(d.PlayerId).GetFullName() + " attacked Donna with " + d.TotalPoints + " points.</br>";
             }
 
             damages = AIProcedures.GetTopAttackers(-5, 25);
@@ -1068,7 +1070,7 @@ namespace tfgame.Controllers
             output += "Valentine:</br>";
             foreach (BossDamage d in damages)
             {
-                output += PlayerProcedures.GetPlayer(d.PlayerId).GetFullName() + " attacked Valentine with " + d.TotalPoints + " points.</br>"; 
+                output += PlayerProcedures.GetPlayer(d.PlayerId).GetFullName() + " attacked Valentine with " + d.TotalPoints + " points.</br>";
             }
 
             damages = AIProcedures.GetTopAttackers(-7, 25);
@@ -1084,7 +1086,8 @@ namespace tfgame.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult ShowStatsTable() {
+        public ActionResult ShowStatsTable()
+        {
             return View();
         }
 
@@ -1185,7 +1188,7 @@ namespace tfgame.Controllers
 
         }
 
-        
+
 
         public ActionResult ApproveContribution(int id)
         {
@@ -1337,7 +1340,7 @@ namespace tfgame.Controllers
             OldCopy.AdminApproved = true;
             OldCopy.ProofreadingCopy = false;
 
-            
+
 
             contributionRepo.SaveContribution(ProofreadCopy);
             contributionRepo.SaveContribution(OldCopy);
@@ -1445,7 +1448,7 @@ namespace tfgame.Controllers
             return RedirectToAction("Index");
         }
 
-     
+
 
         public ActionResult RenameForm(string oldFormName, string newFormName, bool practice)
         {
@@ -1927,7 +1930,7 @@ namespace tfgame.Controllers
             //    repo.SaveDbStaticForm(s);
             //}
 
-            
+
 
             //    public string dbName { get; set; }
             //public string FriendlyName { get; set; }
@@ -1977,121 +1980,121 @@ namespace tfgame.Controllers
 
             //    repo.SaveDbStaticForm(sf);
 
-                // load the TF Messages from the appropriate XML file if need be
-                //if (f.TFMessage_20_Percent_1st == null && f.TFMessage_20_Percent_1st_M == null && f.TFMessage_20_Percent_1st_F == null)
-                //{
-                //    Form copy = f;
+            // load the TF Messages from the appropriate XML file if need be
+            //if (f.TFMessage_20_Percent_1st == null && f.TFMessage_20_Percent_1st_M == null && f.TFMessage_20_Percent_1st_F == null)
+            //{
+            //    Form copy = f;
 
-                //    try
-                //    {
-                     //   copy = TFEnergyProcedures.LoadTFMessagesFromXML(f);
+            //    try
+            //    {
+            //   copy = TFEnergyProcedures.LoadTFMessagesFromXML(f);
 
-                //        TFMessage tfm = new TFMessage
-                //        {
-                //            FormDbName = copy.dbName,
-                //            TFMessage_20_Percent_1st = copy.TFMessage_20_Percent_1st,
-                //            TFMessage_40_Percent_1st = copy.TFMessage_40_Percent_1st,
-                //            TFMessage_60_Percent_1st = copy.TFMessage_60_Percent_1st,
-                //            TFMessage_80_Percent_1st = copy.TFMessage_80_Percent_1st,
-                //            TFMessage_100_Percent_1st = copy.TFMessage_100_Percent_1st,
-                //            TFMessage_Completed_1st = copy.TFMessage_Completed_1st,
+            //        TFMessage tfm = new TFMessage
+            //        {
+            //            FormDbName = copy.dbName,
+            //            TFMessage_20_Percent_1st = copy.TFMessage_20_Percent_1st,
+            //            TFMessage_40_Percent_1st = copy.TFMessage_40_Percent_1st,
+            //            TFMessage_60_Percent_1st = copy.TFMessage_60_Percent_1st,
+            //            TFMessage_80_Percent_1st = copy.TFMessage_80_Percent_1st,
+            //            TFMessage_100_Percent_1st = copy.TFMessage_100_Percent_1st,
+            //            TFMessage_Completed_1st = copy.TFMessage_Completed_1st,
 
-                //            TFMessage_20_Percent_1st_M = copy.TFMessage_20_Percent_1st_M,
-                //            TFMessage_40_Percent_1st_M = copy.TFMessage_40_Percent_1st_M,
-                //            TFMessage_60_Percent_1st_M = copy.TFMessage_60_Percent_1st_M,
-                //            TFMessage_80_Percent_1st_M = copy.TFMessage_80_Percent_1st_M,
-                //            TFMessage_100_Percent_1st_M = copy.TFMessage_100_Percent_1st_M,
-                //            TFMessage_Completed_1st_M = copy.TFMessage_Completed_1st_M,
+            //            TFMessage_20_Percent_1st_M = copy.TFMessage_20_Percent_1st_M,
+            //            TFMessage_40_Percent_1st_M = copy.TFMessage_40_Percent_1st_M,
+            //            TFMessage_60_Percent_1st_M = copy.TFMessage_60_Percent_1st_M,
+            //            TFMessage_80_Percent_1st_M = copy.TFMessage_80_Percent_1st_M,
+            //            TFMessage_100_Percent_1st_M = copy.TFMessage_100_Percent_1st_M,
+            //            TFMessage_Completed_1st_M = copy.TFMessage_Completed_1st_M,
 
-                //            TFMessage_20_Percent_1st_F = copy.TFMessage_20_Percent_1st_F,
-                //            TFMessage_40_Percent_1st_F = copy.TFMessage_40_Percent_1st_F,
-                //            TFMessage_60_Percent_1st_F = copy.TFMessage_60_Percent_1st_F,
-                //            TFMessage_80_Percent_1st_F = copy.TFMessage_80_Percent_1st_F,
-                //            TFMessage_100_Percent_1st_F = copy.TFMessage_100_Percent_1st_F,
-                //            TFMessage_Completed_1st_F = copy.TFMessage_Completed_1st_F,
+            //            TFMessage_20_Percent_1st_F = copy.TFMessage_20_Percent_1st_F,
+            //            TFMessage_40_Percent_1st_F = copy.TFMessage_40_Percent_1st_F,
+            //            TFMessage_60_Percent_1st_F = copy.TFMessage_60_Percent_1st_F,
+            //            TFMessage_80_Percent_1st_F = copy.TFMessage_80_Percent_1st_F,
+            //            TFMessage_100_Percent_1st_F = copy.TFMessage_100_Percent_1st_F,
+            //            TFMessage_Completed_1st_F = copy.TFMessage_Completed_1st_F,
 
-                //            TFMessage_20_Percent_3rd = copy.TFMessage_20_Percent_3rd,
-                //            TFMessage_40_Percent_3rd = copy.TFMessage_40_Percent_3rd,
-                //            TFMessage_60_Percent_3rd = copy.TFMessage_60_Percent_3rd,
-                //            TFMessage_80_Percent_3rd = copy.TFMessage_80_Percent_3rd,
-                //            TFMessage_100_Percent_3rd = copy.TFMessage_100_Percent_3rd,
-                //            TFMessage_Completed_3rd = copy.TFMessage_Completed_3rd,
+            //            TFMessage_20_Percent_3rd = copy.TFMessage_20_Percent_3rd,
+            //            TFMessage_40_Percent_3rd = copy.TFMessage_40_Percent_3rd,
+            //            TFMessage_60_Percent_3rd = copy.TFMessage_60_Percent_3rd,
+            //            TFMessage_80_Percent_3rd = copy.TFMessage_80_Percent_3rd,
+            //            TFMessage_100_Percent_3rd = copy.TFMessage_100_Percent_3rd,
+            //            TFMessage_Completed_3rd = copy.TFMessage_Completed_3rd,
 
-                //            TFMessage_20_Percent_3rd_M = copy.TFMessage_20_Percent_3rd_M,
-                //            TFMessage_40_Percent_3rd_M = copy.TFMessage_40_Percent_3rd_M,
-                //            TFMessage_60_Percent_3rd_M = copy.TFMessage_60_Percent_3rd_M,
-                //            TFMessage_80_Percent_3rd_M = copy.TFMessage_80_Percent_3rd_M,
-                //            TFMessage_100_Percent_3rd_M = copy.TFMessage_100_Percent_3rd_M,
-                //            TFMessage_Completed_3rd_M = copy.TFMessage_Completed_3rd_M,
+            //            TFMessage_20_Percent_3rd_M = copy.TFMessage_20_Percent_3rd_M,
+            //            TFMessage_40_Percent_3rd_M = copy.TFMessage_40_Percent_3rd_M,
+            //            TFMessage_60_Percent_3rd_M = copy.TFMessage_60_Percent_3rd_M,
+            //            TFMessage_80_Percent_3rd_M = copy.TFMessage_80_Percent_3rd_M,
+            //            TFMessage_100_Percent_3rd_M = copy.TFMessage_100_Percent_3rd_M,
+            //            TFMessage_Completed_3rd_M = copy.TFMessage_Completed_3rd_M,
 
-                //            TFMessage_20_Percent_3rd_F = copy.TFMessage_20_Percent_3rd_F,
-                //            TFMessage_40_Percent_3rd_F = copy.TFMessage_40_Percent_3rd_F,
-                //            TFMessage_60_Percent_3rd_F = copy.TFMessage_60_Percent_3rd_F,
-                //            TFMessage_80_Percent_3rd_F = copy.TFMessage_80_Percent_3rd_F,
-                //            TFMessage_100_Percent_3rd_F = copy.TFMessage_100_Percent_3rd_F,
-                //            TFMessage_Completed_3rd_F = copy.TFMessage_Completed_3rd_F,
+            //            TFMessage_20_Percent_3rd_F = copy.TFMessage_20_Percent_3rd_F,
+            //            TFMessage_40_Percent_3rd_F = copy.TFMessage_40_Percent_3rd_F,
+            //            TFMessage_60_Percent_3rd_F = copy.TFMessage_60_Percent_3rd_F,
+            //            TFMessage_80_Percent_3rd_F = copy.TFMessage_80_Percent_3rd_F,
+            //            TFMessage_100_Percent_3rd_F = copy.TFMessage_100_Percent_3rd_F,
+            //            TFMessage_Completed_3rd_F = copy.TFMessage_Completed_3rd_F,
 
-                //        };
-                //        tfrepo.SaveTFMessage(tfm);
+            //        };
+            //        tfrepo.SaveTFMessage(tfm);
 
-                //    }
-                //    catch
-                //    {
+            //    }
+            //    catch
+            //    {
 
-                //    }
+            //    }
 
-                //}
-                //else
-                //{
-                //    TFMessage tfm = new TFMessage
-                //    {
-                //        FormDbName = f.dbName,
-                //        TFMessage_20_Percent_1st = f.TFMessage_20_Percent_1st,
-                //        TFMessage_40_Percent_1st = f.TFMessage_40_Percent_1st,
-                //        TFMessage_60_Percent_1st = f.TFMessage_60_Percent_1st,
-                //        TFMessage_80_Percent_1st = f.TFMessage_80_Percent_1st,
-                //        TFMessage_100_Percent_1st = f.TFMessage_100_Percent_1st,
-                //        TFMessage_Completed_1st = f.TFMessage_Completed_1st,
+            //}
+            //else
+            //{
+            //    TFMessage tfm = new TFMessage
+            //    {
+            //        FormDbName = f.dbName,
+            //        TFMessage_20_Percent_1st = f.TFMessage_20_Percent_1st,
+            //        TFMessage_40_Percent_1st = f.TFMessage_40_Percent_1st,
+            //        TFMessage_60_Percent_1st = f.TFMessage_60_Percent_1st,
+            //        TFMessage_80_Percent_1st = f.TFMessage_80_Percent_1st,
+            //        TFMessage_100_Percent_1st = f.TFMessage_100_Percent_1st,
+            //        TFMessage_Completed_1st = f.TFMessage_Completed_1st,
 
-                //        TFMessage_20_Percent_1st_M = f.TFMessage_20_Percent_1st_M,
-                //        TFMessage_40_Percent_1st_M = f.TFMessage_40_Percent_1st_M,
-                //        TFMessage_60_Percent_1st_M = f.TFMessage_60_Percent_1st_M,
-                //        TFMessage_80_Percent_1st_M = f.TFMessage_80_Percent_1st_M,
-                //        TFMessage_100_Percent_1st_M = f.TFMessage_100_Percent_1st_M,
-                //        TFMessage_Completed_1st_M = f.TFMessage_Completed_1st_M,
+            //        TFMessage_20_Percent_1st_M = f.TFMessage_20_Percent_1st_M,
+            //        TFMessage_40_Percent_1st_M = f.TFMessage_40_Percent_1st_M,
+            //        TFMessage_60_Percent_1st_M = f.TFMessage_60_Percent_1st_M,
+            //        TFMessage_80_Percent_1st_M = f.TFMessage_80_Percent_1st_M,
+            //        TFMessage_100_Percent_1st_M = f.TFMessage_100_Percent_1st_M,
+            //        TFMessage_Completed_1st_M = f.TFMessage_Completed_1st_M,
 
-                //        TFMessage_20_Percent_1st_F = f.TFMessage_20_Percent_1st_F,
-                //        TFMessage_40_Percent_1st_F = f.TFMessage_40_Percent_1st_F,
-                //        TFMessage_60_Percent_1st_F = f.TFMessage_60_Percent_1st_F,
-                //        TFMessage_80_Percent_1st_F = f.TFMessage_80_Percent_1st_F,
-                //        TFMessage_100_Percent_1st_F = f.TFMessage_100_Percent_1st_F,
-                //        TFMessage_Completed_1st_F = f.TFMessage_Completed_1st_F,
+            //        TFMessage_20_Percent_1st_F = f.TFMessage_20_Percent_1st_F,
+            //        TFMessage_40_Percent_1st_F = f.TFMessage_40_Percent_1st_F,
+            //        TFMessage_60_Percent_1st_F = f.TFMessage_60_Percent_1st_F,
+            //        TFMessage_80_Percent_1st_F = f.TFMessage_80_Percent_1st_F,
+            //        TFMessage_100_Percent_1st_F = f.TFMessage_100_Percent_1st_F,
+            //        TFMessage_Completed_1st_F = f.TFMessage_Completed_1st_F,
 
-                //        TFMessage_20_Percent_3rd = f.TFMessage_20_Percent_3rd,
-                //        TFMessage_40_Percent_3rd = f.TFMessage_40_Percent_3rd,
-                //        TFMessage_60_Percent_3rd = f.TFMessage_60_Percent_3rd,
-                //        TFMessage_80_Percent_3rd = f.TFMessage_80_Percent_3rd,
-                //        TFMessage_100_Percent_3rd = f.TFMessage_100_Percent_3rd,
-                //        TFMessage_Completed_3rd = f.TFMessage_Completed_3rd,
+            //        TFMessage_20_Percent_3rd = f.TFMessage_20_Percent_3rd,
+            //        TFMessage_40_Percent_3rd = f.TFMessage_40_Percent_3rd,
+            //        TFMessage_60_Percent_3rd = f.TFMessage_60_Percent_3rd,
+            //        TFMessage_80_Percent_3rd = f.TFMessage_80_Percent_3rd,
+            //        TFMessage_100_Percent_3rd = f.TFMessage_100_Percent_3rd,
+            //        TFMessage_Completed_3rd = f.TFMessage_Completed_3rd,
 
-                //        TFMessage_20_Percent_3rd_M = f.TFMessage_20_Percent_3rd_M,
-                //        TFMessage_40_Percent_3rd_M = f.TFMessage_40_Percent_3rd_M,
-                //        TFMessage_60_Percent_3rd_M = f.TFMessage_60_Percent_3rd_M,
-                //        TFMessage_80_Percent_3rd_M = f.TFMessage_80_Percent_3rd_M,
-                //        TFMessage_100_Percent_3rd_M = f.TFMessage_100_Percent_3rd_M,
-                //        TFMessage_Completed_3rd_M = f.TFMessage_Completed_3rd_M,
+            //        TFMessage_20_Percent_3rd_M = f.TFMessage_20_Percent_3rd_M,
+            //        TFMessage_40_Percent_3rd_M = f.TFMessage_40_Percent_3rd_M,
+            //        TFMessage_60_Percent_3rd_M = f.TFMessage_60_Percent_3rd_M,
+            //        TFMessage_80_Percent_3rd_M = f.TFMessage_80_Percent_3rd_M,
+            //        TFMessage_100_Percent_3rd_M = f.TFMessage_100_Percent_3rd_M,
+            //        TFMessage_Completed_3rd_M = f.TFMessage_Completed_3rd_M,
 
-                //        TFMessage_20_Percent_3rd_F = f.TFMessage_20_Percent_3rd_F,
-                //        TFMessage_40_Percent_3rd_F = f.TFMessage_40_Percent_3rd_F,
-                //        TFMessage_60_Percent_3rd_F = f.TFMessage_60_Percent_3rd_F,
-                //        TFMessage_80_Percent_3rd_F = f.TFMessage_80_Percent_3rd_F,
-                //        TFMessage_100_Percent_3rd_F = f.TFMessage_100_Percent_3rd_F,
-                //        TFMessage_Completed_3rd_F = f.TFMessage_Completed_3rd_F,
+            //        TFMessage_20_Percent_3rd_F = f.TFMessage_20_Percent_3rd_F,
+            //        TFMessage_40_Percent_3rd_F = f.TFMessage_40_Percent_3rd_F,
+            //        TFMessage_60_Percent_3rd_F = f.TFMessage_60_Percent_3rd_F,
+            //        TFMessage_80_Percent_3rd_F = f.TFMessage_80_Percent_3rd_F,
+            //        TFMessage_100_Percent_3rd_F = f.TFMessage_100_Percent_3rd_F,
+            //        TFMessage_Completed_3rd_F = f.TFMessage_Completed_3rd_F,
 
-                //    };
+            //    };
 
-                //    tfrepo.SaveTFMessage(tfm);
-                //}
+            //    tfrepo.SaveTFMessage(tfm);
+            //}
 
 
 
@@ -2276,7 +2279,9 @@ namespace tfgame.Controllers
             if (loc == null)
             {
                 ViewBag.LocationExists = "<span class='bad'>LOCATION " + encounter.dbLocationName + " DOES NOT EXIST.</span>";
-            } else {
+            }
+            else
+            {
                 ViewBag.LocationExists = "<span class='good'>LOCATION " + encounter.dbLocationName + " EXISTs.</span>";
             }
 
@@ -2314,7 +2319,7 @@ namespace tfgame.Controllers
                 encounter = new JewdewfaeEncounter();
             }
 
-          //  encounter.Id = input.Id;
+            //  encounter.Id = input.Id;
             encounter.dbLocationName = input.dbLocationName;
             encounter.RequiredForm = input.RequiredForm;
             encounter.IsLive = input.IsLive;
@@ -2324,7 +2329,7 @@ namespace tfgame.Controllers
 
             repo.SaveJewdewfaeEncounter(encounter);
 
-            return RedirectToAction("FaeList","PvPAdmin");
+            return RedirectToAction("FaeList", "PvPAdmin");
 
 
         }
@@ -2373,7 +2378,7 @@ namespace tfgame.Controllers
             return View("WriteFaeEncounter", output);
         }
 
-        [ValidateInput(false)] 
+        [ValidateInput(false)]
         public ActionResult WriteFaeEncounterSend(FairyChallengeBag input)
         {
 
@@ -2385,7 +2390,7 @@ namespace tfgame.Controllers
 
             string path = Server.MapPath("~/XMLs/FairyChallengeText/");
 
-           // input.title = "Serialization Overview";
+            // input.title = "Serialization Overview";
             System.Xml.Serialization.XmlSerializer writer =
                 new System.Xml.Serialization.XmlSerializer(typeof(FairyChallengeBag));
 
@@ -2400,7 +2405,7 @@ namespace tfgame.Controllers
             ViewBag.FailureText = input.FailureText.Replace("[", "<").Replace("]", ">");
             ViewBag.CorrectFormText = input.CorrectFormText.Replace("[", "<").Replace("]", ">");
 
-       
+
 
             return View("WriteFaeEncounter", input);
         }
@@ -2417,7 +2422,7 @@ namespace tfgame.Controllers
                 return View("~/Views/PvP/PvPAdmin.cshtml");
             }
 
-           
+
             IPlayerRepository playerRepo = new EFPlayerRepository();
             List<Player> players = playerRepo.Players.Where(p => p.IpAddress == address).ToList();
             foreach (Player p in players)
@@ -2425,10 +2430,10 @@ namespace tfgame.Controllers
                 p.IpAddress = "reset";
                 playerRepo.SavePlayer(p);
                 PlayerLogProcedures.AddPlayerLog(p.Id, "<b class='good'>Server notice:  Your IP address has been reset.</b>", true);
-           }
+            }
 
             return View("Play");
-        
+
         }
 
         [Authorize]
@@ -2449,7 +2454,7 @@ namespace tfgame.Controllers
 
             if (bannedPlayer.IsBannedFromGlobalChat == true)
             {
-                
+
                 bannedPlayer.IsBannedFromGlobalChat = false;
                 TempData["Result"] = "Ban has been LIFTED.";
             }
@@ -2473,7 +2478,7 @@ namespace tfgame.Controllers
         {
 
             // assert only admin can view this
-            bool iAmAdmin= User.IsInRole(PvPStatics.Permissions_Admin);
+            bool iAmAdmin = User.IsInRole(PvPStatics.Permissions_Admin);
             if (iAmAdmin == false)
             {
                 return View("~/Views/PvP/PvPAdmin.cshtml");
@@ -2510,7 +2515,7 @@ namespace tfgame.Controllers
 
                 }
 
-               
+
 
             }
 
@@ -2598,6 +2603,92 @@ namespace tfgame.Controllers
                 ViewBag.Message = "You aren't allowed to do this.";
                 return View("~/Views/PvP/PvPAdmin.cshtml");
             }
+        }
+
+        [Authorize]
+        public ActionResult RenamePlayer()
+        {
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == true)
+            {
+                PlayerNameViewModel output = new PlayerNameViewModel();
+                return View();
+            }
+            else
+            {
+                return View("Play", "PvP");
+            }
+        }
+
+        [Authorize]
+        public ActionResult RenamePlayerSend(PlayerNameViewModel input)
+        {
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == true)
+            {
+
+                if (PvPStatics.ChaosMode == false)
+                {
+                    return RedirectToAction("Play", "PvP");
+                }
+
+                IPlayerRepository playerRepo = new EFPlayerRepository();
+                Player player = playerRepo.Players.FirstOrDefault(p => p.Id == input.Id);
+
+                string origFirstName = player.FirstName;
+                string origLastName = player.LastName;
+
+                if (input.NewFirstName != null && input.NewFirstName.Length > 0)
+                {
+                    player.FirstName = input.NewFirstName;
+                }
+
+                if (input.NewLastName != null && input.NewLastName.Length > 0)
+                {
+                    player.LastName = input.NewLastName;
+                }
+
+                if (input.NewForm != null && input.NewForm.Length > 0)
+                {
+                    IDbStaticFormRepository staticFormRepo = new EFDbStaticFormRepository();
+                    DbStaticForm form = staticFormRepo.DbStaticForms.FirstOrDefault(f => f.dbName == input.NewForm);
+
+                    if (form != null && form.MobilityType == "full")
+                    {
+                        player.Form = form.dbName;
+                        player.Health = 99999;
+                    }
+
+                    if (form.MobilityType == "full" && player.Mobility != "full")
+                    {
+                        IItemRepository itemRepo = new EFItemRepository();
+                        Item item = itemRepo.Items.FirstOrDefault(i => i.VictimName == origFirstName + " " + origLastName);
+                        player.Mobility = "full";
+                        itemRepo.DeleteItem(item.Id);
+                    }
+
+                }
+
+                playerRepo.SavePlayer(player);
+
+                if (player.Mobility != "full")
+                {
+                    IItemRepository itemRepo = new EFItemRepository();
+                    Item item = itemRepo.Items.FirstOrDefault(i => i.VictimName == origFirstName + " " + origLastName);
+                    item.VictimName = input.NewFirstName + " " + input.NewLastName;
+                    itemRepo.SaveItem(item);
+
+
+                }
+
+
+
+            }
+            else
+            {
+                return RedirectToAction("Play", "PvP");
+            }
+
+            TempData["Result"] = "Yay!";
+            return RedirectToAction("Play", "PvP");
         }
 
     }

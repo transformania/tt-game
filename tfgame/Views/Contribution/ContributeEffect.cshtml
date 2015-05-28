@@ -201,7 +201,7 @@
         </div>
 
         <div class="form__panel">
-            <label for="Effect_Cooldown">Turns of cooldown of effect.  This must be <b>greater</b> than the duration of the curse and is burned down at the same time as the duration.  For example, a curse with 6 duration and 9 cooldown will have 6 turns of giving the player immunity followed by 3 turns of immunity.</label>
+            <label for="Effect_Cooldown">Turns of cooldown of effect.  This must be <b>greater</b> than the duration of the curse and is burned down at the same time as the duration.  For example, a curse with 6 duration and 12 cooldown will have 6 turns of giving the player immunity followed by 6 turns of immunity.  Cooldown must be at least two times greater than duration and are advised to be under 3 times greater than duration.</label>
             @Html.TextBoxFor(e => e.Effect_Cooldown)
         </div>
 

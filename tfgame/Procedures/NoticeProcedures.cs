@@ -12,12 +12,12 @@ namespace tfgame.Procedures
 
         public static void PushNotice(Player player, string message)
         {
-            PushNotice(player.Id, message);
+          //  PushNotice(player.Id, message);
         }
 
         public static void PushNotice(int playerId, string message)
         {
-            //var context = Microsoft.AspNet.SignalR.GlobalHost.ConnectionManager.GetHubContext<tfgame.Chat.NoticeHub>();
+           // var context = Microsoft.AspNet.SignalR.GlobalHost.ConnectionManager.GetHubContext<tfgame.Chat.NoticeHub>();
           //  context.Clients.Group("_" + playerId).receiveNotice(message);
         }
 

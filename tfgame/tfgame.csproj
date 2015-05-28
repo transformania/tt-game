@@ -1377,7 +1377,9 @@
     <Content Include="XMLs\DungeonAdjectives.xml" />
     <Content Include="XMLs\FairyChallengeText\fae_toy_soldier.xml" />
     <Content Include="XMLs\restockList.xml" />
-    <Content Include="XMLs\custom_bases.xml" />
+    <Content Include="XMLs\custom_bases.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="XMLs\Effects\effect_Circine%27s_Hypnosis_LexamTheGemFox.xml" />
     <Content Include="XMLs\Effects\effect_Hemorrhage_Izz_Valentine.xml">
       <SubType>Designer</SubType>
@@ -2236,6 +2238,8 @@
     <Content Include="Views\NPC\TalkToAdrianna.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\XP\Alpha_20.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_20.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\Statistics\Alpha_20.cshtml" />
+    <Content Include="Views\PvPAdmin\RenamePlayer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

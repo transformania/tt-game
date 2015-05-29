@@ -40,9 +40,9 @@ namespace tfgame.Procedures
 
             playerLogRepo.SavePlayerLog(newlog);
 
-            if (isImportant == true) { 
-                NoticeProcedures.PushNotice(playerId, newlog.Message);
-            }
+            //if (isImportant == true) { 
+            //    NoticeProcedures.PushNotice(playerId, newlog.Message, NoticeProcedures.PushType__PlayerMessage);
+            //}
 
         }
 

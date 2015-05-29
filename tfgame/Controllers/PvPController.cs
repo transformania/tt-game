@@ -2158,8 +2158,7 @@ namespace tfgame.Controllers
              }
 
              MessageProcedures.AddMessage(input);
-             NoticeProcedures.PushNotice(receiver, input.MessageText);
-             NoticeProcedures.PushNotice(me, "You sent:  " + input.MessageText);
+             NoticeProcedures.PushNotice(receiver, "<b>" + me.GetFullName() + " has sent you a new message.</b>", NoticeProcedures.PushType__PlayerMessage);
              TempData["Result"] = "Your message has been sent.";
              return RedirectToAction("MyMessages");
          }

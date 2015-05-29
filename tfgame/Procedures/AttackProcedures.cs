@@ -253,6 +253,8 @@ namespace tfgame.Procedures
             LocationLogProcedures.AddLocationLog(me.dbLocationName, logs.LocationLog);
             PlayerLogProcedures.AddPlayerLog(me.Id, logs.AttackerLog, false);
             PlayerLogProcedures.AddPlayerLog(targeted.Id, logs.VictimLog, true);
+            NoticeProcedures.PushAttackNotice(targeted, logs.VictimLog);
+
 
             return result;
         }

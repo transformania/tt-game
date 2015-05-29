@@ -21,8 +21,16 @@ namespace tfgame.Chat
         public Task Connect()
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
-            string room = "_" + me.Id;
-            return Groups.Add(Context.ConnectionId, room);
+
+            if (me.DonatorLevel >= 1)
+            {
+                string room = "_" + me.Id;
+                return Groups.Add(Context.ConnectionId, room);
+            }
+
+            // do nothing...
+            return Task.FromResult(0);
+           
         }
 
         public void ReceiveNotice(int playerId, string message)

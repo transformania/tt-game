@@ -291,7 +291,7 @@ li {
 .col-md-1 {
   min-height: 0px !important; }
 
-#MessageText, #WebsiteURL, #Text, .text-container {
+#MessageText, #Message, #WebsiteURL, #Text, .text-container {
   width: 100%;
   resize: vertical;
   border: 1px solid #808080;
@@ -813,5 +813,9 @@ strong {
 @media (max-width: 991px) {
   .rp-ad {
     margin: 0px 0px 20px; } }
+.pvpAdmin {
+  text-align: center;
+  font-size: 20px;
+  line-height: 50px; }
 
 /*# sourceMappingURL=custom.css.map */

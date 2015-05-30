@@ -1,61 +1,60 @@
 ﻿@model IEnumerable<tfgame.dbModels.Models.EffectContribution>
 
 
-<head>
-    <link href="~/Content/PvP.css" rel="stylesheet" />
-</head>
+<div class="containerInner">
 
-<table>
-    <thead>
-        <tr>
-            <th>Submitter</th>
-            <th>Spell Name</th>
-            <th>Effect Name</th>
-            <th>Approve?</th>
-            <th>Snoop</th>
-        </tr>
-    </thead>
+    <table>
+        <thead>
+            <tr>
+                <th>Submitter</th>
+                <th>Spell Name</th>
+                <th>Effect Name</th>
+                <th>Approve?</th>
+                <th>Snoop</th>
+            </tr>
+        </thead>
 
-    <tbody>
+        <tbody>
 
-        @{
-            foreach (tfgame.dbModels.Models.EffectContribution c in Model)
-            {
-                <tr>
-                    <td>@c.SubmitterName</td>
-                    <td>@c.Skill_FriendlyName</td>
-                    <td>@c.Effect_FriendlyName</td>
-                    <td>@Html.ActionLink("Approve", "ApproveEffectContribution", "PvPAdmin", new { id = c.Id }, null)</td>
-                    <td>@Html.ActionLink("Snoop", "ContributeEffect", "Contribution", new { Id = c.Id }, null)</td>
-                </tr>
+            @{
+                foreach (tfgame.dbModels.Models.EffectContribution c in Model)
+                {
+                    <tr>
+                        <td>@c.SubmitterName</td>
+                        <td>@c.Skill_FriendlyName</td>
+                        <td>@c.Effect_FriendlyName</td>
+                        <td>@Html.ActionLink("Approve", "ApproveEffectContribution", "PvPAdmin", new { id = c.Id }, null)</td>
+                        <td>@Html.ActionLink("Snoop", "ContributeEffect", "Contribution", new { Id = c.Id }, null)</td>
+                    </tr>
+                }
             }
-        }
-    </tbody>
-</table>
-
-<style>
-    table {
-        padding: 3px;
-        border: 1px solid black;
-    }
-
-    th {
-        background-color: black;
-        color: white;
-        text-align: center;
-    }
-
-    tr {
-        padding: 3px;
-        border: 1px solid black;
-    }
-
-        tr:nth-child(odd) {
-            background-color: lightgray;
+        </tbody>
+    </table>
+</div>
+    <style>
+        table {
+            padding: 3px;
+            border: 1px solid black;
+            width: 100%;
         }
 
-    td {
-        text-align: center;
-    }
-</style>
+        th {
+            background-color: black;
+            color: white;
+            text-align: center;
+        }
+
+        tr {
+            padding: 3px;
+            border: 1px solid black;
+        }
+
+            tr:nth-child(odd) {
+                background-color: lightgray;
+            }
+
+        td {
+            text-align: center;
+        }
+    </style>
 

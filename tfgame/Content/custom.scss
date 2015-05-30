@@ -396,7 +396,7 @@ li {
     min-height: 0px !important;
 }
 
-#MessageText, #WebsiteURL, #Text, .text-container{
+#MessageText, #Message, #WebsiteURL, #Text, .text-container{
     width: 100%;
     resize: vertical;
     border: 1px solid #808080;
@@ -1003,4 +1003,10 @@ line-height: 18px;
     .rp-ad{
         margin: 0px 0px 20px;
     }
+}
+
+.pvpAdmin {
+    text-align: center;
+    font-size: $fontBig;
+    line-height: 50px;
 }

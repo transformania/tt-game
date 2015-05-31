@@ -12,7 +12,7 @@ $(document).ready(function () {
         $("#dismissNotficationBox").hide();
     }
 
-    if (donatorTier >= 1) {
+    if (donatorTier >= 0) {
 
         $(function () {
             var link = $.connection.noticeHub;

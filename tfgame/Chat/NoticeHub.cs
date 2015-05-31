@@ -22,7 +22,9 @@ namespace tfgame.Chat
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
 
-            if (me.DonatorLevel >= 1)
+            int minimumDonatorLevelForNotifications = 0;
+
+            if (me.DonatorLevel >= minimumDonatorLevelForNotifications)
             {
                 string room = "_" + me.Id;
                 return Groups.Add(Context.ConnectionId, room);

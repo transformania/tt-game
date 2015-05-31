@@ -2692,6 +2692,20 @@ namespace tfgame.Controllers
             return RedirectToAction("Play", "PvP");
         }
 
+        [Authorize]
+        public ActionResult ModDeleteClassified(int id)
+        {
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false && User.IsInRole(PvPStatics.Permissions_Moderator) == false)
+            {
+                return View("Play", "PvP");
+            }
+
+            RPClassifiedAdsProcedures.DeleteAd(id);
+
+            TempData["Result"] = "Delete successful.";
+            return RedirectToAction("RecentRPClassifieds", "Info");
+        }
+
     }
 
 

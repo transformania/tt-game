@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Web;
 using System.Web.Mvc;
@@ -1458,11 +1459,11 @@ namespace tfgame.Controllers
         }
 
         [Authorize]
-        public ActionResult DismissNotifications()
+        public ActionResult DismissNotifications_Ajax()
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
             PlayerLogProcedures.DismissImportantLogs(me.Id);
-            return RedirectToAction("Play");
+            return new HttpStatusCodeResult(HttpStatusCode.OK); 
         }
 
         [Authorize]

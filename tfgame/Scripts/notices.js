@@ -1,4 +1,4 @@
-﻿
+﻿var attackPulse = 0;
 
 
 $(document).ready(function () {
@@ -40,6 +40,7 @@ $(document).ready(function () {
                     $("#wp_num2").html(notice.wp);
 
                     // $("body").css("background-color", "darkred");
+                    attackPulse = 1;
                     backgroundPulse();
                 }
 
@@ -69,5 +70,18 @@ $(document).ready(function () {
 });
 
 function backgroundPulse() {
-    $("body").animate({ backgroundColor: "red" }, 1000).animate({ backgroundColor: "black" }, 1000, backgroundPulse);
+    if (attackPulse == 1) {
+        $("body").animate({ backgroundColor: "red" }, 1000).animate({ backgroundColor: "black" }, 1000, backgroundPulse);
+    }
+}
+
+function dismissNotificationsSuccess() {
+    attackPulse = 0;
+    $("#notificationBox").html("");
+    $("#notificationBox").hide();
+    $("#dismissNotficationBox").hide();
+}
+
+function dismissNotificationsFail() {
+    alert("Something went wrong.  Unable to dismiss notifications.");
 }

@@ -2706,6 +2706,130 @@ namespace tfgame.Controllers
             return RedirectToAction("RecentRPClassifieds", "Info");
         }
 
+        [Authorize]
+        public ActionResult FastInanimateMe()
+        {
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            {
+                return RedirectToAction("Play", "PvP");
+            }
+
+            PvPWorldStat stats = PvPWorldStatProcedures.GetWorldStats();
+            if (PvPStatics.ChaosMode == false && stats.TestServer == false)
+            {
+                TempData["Error"] = "Cant' do this in live non-chaos server.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            IItemRepository itemRepo = new EFItemRepository();
+
+            Player me = playerRepo.Players.FirstOrDefault(p => p.MembershipId == WebSecurity.CurrentUserId);
+            me.Mobility = "inanimate";
+            me.Form = "form_Flirty_Three-Tiered_Skirt_Martiandawn";
+            playerRepo.SavePlayer(me);
+
+            // delete old item you are if you are one
+            Item possibleMeItem = itemRepo.Items.FirstOrDefault(i => i.VictimName == me.FirstName + " " + me.LastName);
+            itemRepo.DeleteItem(possibleMeItem.Id);
+
+            Item newMeItem = new Item{
+                dbLocationName = me.dbLocationName,
+                dbName = "item_Flirty_Three-Tiered_Skirt_Martiandawn",
+                VictimName = me.FirstName + " " + me.LastName,
+                TimeDropped = DateTime.UtcNow,
+                OwnerId = -1,
+                IsEquipped = false,
+                Level = me.Level,
+            };
+
+            itemRepo.SaveItem(newMeItem);
+
+            TempData["Result"] = "You are inanimate.";
+            return RedirectToAction("Play", "PvP");
+
+        }
+
+        [Authorize]
+        public ActionResult FastPetMe()
+        {
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            {
+                return RedirectToAction("Play", "PvP");
+            }
+
+            PvPWorldStat stats = PvPWorldStatProcedures.GetWorldStats();
+            if (PvPStatics.ChaosMode == false && stats.TestServer == false)
+            {
+                TempData["Error"] = "Cant' do this in live non-chaos server.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            IItemRepository itemRepo = new EFItemRepository();
+
+            Player me = playerRepo.Players.FirstOrDefault(p => p.MembershipId == WebSecurity.CurrentUserId);
+            me.Mobility = "animal";
+            me.Form = "form_Cuddly_Pocket_Goo_Girl_GooGirl";
+            playerRepo.SavePlayer(me);
+
+            // delete old item you are if you are one
+            Item possibleMeItem = itemRepo.Items.FirstOrDefault(i => i.VictimName == me.FirstName + " " + me.LastName);
+            itemRepo.DeleteItem(possibleMeItem.Id);
+
+            Item newMeItem = new Item
+            {
+                dbLocationName = me.dbLocationName,
+                dbName = "animal_Cuddly_Pocket_Goo_Girl_GooGirl",
+                VictimName = me.FirstName + " " + me.LastName,
+                TimeDropped = DateTime.UtcNow,
+                OwnerId = -1,
+                IsEquipped = false,
+                Level = me.Level,
+            };
+
+            itemRepo.SaveItem(newMeItem);
+
+            TempData["Result"] = "You are now a pet.";
+            return RedirectToAction("Play", "PvP");
+
+        }
+
+        [Authorize]
+        public ActionResult FastAnimateMe()
+        {
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            {
+                return RedirectToAction("Play", "PvP");
+            }
+
+            PvPWorldStat stats = PvPWorldStatProcedures.GetWorldStats();
+            if (PvPStatics.ChaosMode == false && stats.TestServer == false)
+            {
+                TempData["Error"] = "Cant' do this in live non-chaos server.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            IItemRepository itemRepo = new EFItemRepository();
+
+            Player me = playerRepo.Players.FirstOrDefault(p => p.MembershipId == WebSecurity.CurrentUserId);
+            me.Mobility = "full";
+            me.Form = me.OriginalForm;
+            playerRepo.SavePlayer(me);
+
+            // delete old item you are if you are one
+            Item possibleMeItem = itemRepo.Items.FirstOrDefault(i => i.VictimName == me.FirstName + " " + me.LastName);
+            itemRepo.DeleteItem(possibleMeItem.Id);
+
+
+            TempData["Result"] = "You are now fully animate.";
+            return RedirectToAction("Play", "PvP");
+
+        }
+
+
+
     }
 
 

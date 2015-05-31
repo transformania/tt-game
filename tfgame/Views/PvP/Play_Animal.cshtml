@@ -3,6 +3,8 @@
 @using tfgame.Procedures
 @using tfgame.Statics
 
+<script src="~/Scripts/notices.js"></script>
+
 @{
     if (@ViewBag.WorldTurnNumber >= @PvPStatics.RoundDuration)
     {
@@ -72,22 +74,19 @@
     Transformania Time has <b>@Model.WorldStats.TotalPlayers</b> players, <b>@Model.WorldStats.CurrentOnlinePlayers</b> of which are currently online.
 </div>
 
-@{
-    if (Model.PlayerLogImportant.Count() > 0)
-    {
-        <ul id="notificationBox">
-            @{
+
+<ul id="notificationBox" style="display:none;">
+    @{
         foreach (tfgame.dbModels.Models.PlayerLog log in Model.PlayerLogImportant)
         {
             <li class="frontPageNotification">
                 @Html.Raw(log.Message) <span class="timeago">@CharactersHere.DatetimeToTimeago(log.Timestamp)</span>
             </li>
         }
-            }
-        </ul>
-        <p id="dismissNotficationBox"><a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '0px'">[ -- ]</a> <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '100px'">[ - ]</a> @Html.ActionLink("Dismiss Notifications", "DismissNotifications", "PvP") <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '250px'">[ + ]</a> <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '500px'">[ ++ ]</a></p>
     }
-}
+</ul>
+
+<p id="dismissNotficationBox" style="display:none;"><a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '0px'">[ -- ]</a> <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '100px'">[ - ]</a> @Ajax.ActionLink("Dismiss Notifications", "DismissNotifications_Ajax", "PvP", null, new AjaxOptions { HttpMethod = "GET", OnSuccess = "dismissNotificationsSuccess", OnFailure = "dismissNotificationsFail" }, null) <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '250px'">[ + ]</a> <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '500px'">[ ++ ]</a></p>
 
 <div class="containerInner">
     <div class="row">
@@ -345,6 +344,7 @@
     var togglestate = 0;
     var blinkEnabled = 0;
     var secondsToUpdate = @ViewBag.SecondsUntilUpdate;
+            var donatorTier = @Model.You.DonatorLevel;
 
             $(document).ready(function () {
 
@@ -431,12 +431,12 @@
         // alert("fail");
     }
 
-    
+
 
     $(".attackLink").click(function() {
 
         var id = $(this).attr("playernum");
-        
+
 
         $(".modal-body a").each(function(){
             var href = $(this).attr('href');

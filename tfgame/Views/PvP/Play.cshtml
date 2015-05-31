@@ -80,7 +80,7 @@
 @Html.Partial("partial/RoundStatus", Model.PvPWorldStat)
 
 <div class="specialBox specialBox2">
-    <span class="turnNumber">Turn #<b>@ViewBag.WorldTurnNumber/@PvPStatics.RoundDuration</b></span><span id="liveConnectionNotice" class="noticeOff"><span class="glyphicon glyphicon-ok-circle"> </span></span>
+    <span class="turnNumber">Turn #<b>@ViewBag.WorldTurnNumber/@PvPStatics.RoundDuration</b></span><span id="liveConnectionNotice" class="noticeOff" title="If this icon is green, you are connected to the server and will receive live notifications when attacked or messaged."><span class="glyphicon glyphicon-ok-circle"> </span></span>
     Transformania Time has <b>@Model.WorldStats.TotalPlayers</b> players, <b>@Model.WorldStats.CurrentOnlinePlayers</b> of which are currently online.
 </div>
 
@@ -95,7 +95,8 @@
         }
     }
 </ul>
-<p id="dismissNotficationBox" style="display:none;"><a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '0px'">[ -- ]</a> <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '100px'">[ - ]</a> @Html.ActionLink("Dismiss Notifications", "DismissNotifications", "PvP") <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '250px'">[ + ]</a> <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '500px'">[ ++ ]</a></p>
+
+<p id="dismissNotficationBox" style="display:none;"><a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '0px'">[ -- ]</a> <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '100px'">[ - ]</a> @Ajax.ActionLink("Dismiss Notifications", "DismissNotifications_Ajax", "PvP", null, new AjaxOptions { HttpMethod = "GET", OnSuccess = "dismissNotificationsSuccess", OnFailure = "dismissNotificationsFail" }, null) <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '250px'">[ + ]</a> <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '500px'">[ ++ ]</a></p>
 
 
 <div class="offlinePlayersWrapperBG hidden-xs">
@@ -544,6 +545,8 @@
         $("#attackModal").hide();
         $("#modalBackdrop").hide();
     }
+
+  
 
     $( "#attackModal" ).draggable();
     $( "#attackModal" ).resizable();

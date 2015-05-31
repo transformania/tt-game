@@ -1040,6 +1040,8 @@ namespace tfgame.Controllers
                 return View("Play", "PvP");
             }
 
+            NoticeProcedures.PushNotice(106271, "boooo", NoticeProcedures.PushType__PlayerMessage);
+
         
             // BossProcedures_Sisters.RunSistersAction();
            // BossProcedures_Sisters.EndEvent();
@@ -2715,7 +2717,7 @@ namespace tfgame.Controllers
             }
 
             PvPWorldStat stats = PvPWorldStatProcedures.GetWorldStats();
-            if (PvPStatics.ChaosMode == false && stats.TestServer == false)
+            if (stats.TestServer == false && PvPStatics.ChaosMode == false)
             {
                 TempData["Error"] = "Cant' do this in live non-chaos server.";
                 return RedirectToAction("Play", "PvP");
@@ -2731,7 +2733,9 @@ namespace tfgame.Controllers
 
             // delete old item you are if you are one
             Item possibleMeItem = itemRepo.Items.FirstOrDefault(i => i.VictimName == me.FirstName + " " + me.LastName);
-            itemRepo.DeleteItem(possibleMeItem.Id);
+            if (possibleMeItem != null) { 
+                itemRepo.DeleteItem(possibleMeItem.Id);
+            }
 
             Item newMeItem = new Item{
                 dbLocationName = me.dbLocationName,
@@ -2759,7 +2763,7 @@ namespace tfgame.Controllers
             }
 
             PvPWorldStat stats = PvPWorldStatProcedures.GetWorldStats();
-            if (PvPStatics.ChaosMode == false && stats.TestServer == false)
+            if (stats.TestServer == false && PvPStatics.ChaosMode == false)
             {
                 TempData["Error"] = "Cant' do this in live non-chaos server.";
                 return RedirectToAction("Play", "PvP");
@@ -2775,7 +2779,10 @@ namespace tfgame.Controllers
 
             // delete old item you are if you are one
             Item possibleMeItem = itemRepo.Items.FirstOrDefault(i => i.VictimName == me.FirstName + " " + me.LastName);
-            itemRepo.DeleteItem(possibleMeItem.Id);
+            if (possibleMeItem != null)
+            {
+                itemRepo.DeleteItem(possibleMeItem.Id);
+            }
 
             Item newMeItem = new Item
             {
@@ -2804,7 +2811,7 @@ namespace tfgame.Controllers
             }
 
             PvPWorldStat stats = PvPWorldStatProcedures.GetWorldStats();
-            if (PvPStatics.ChaosMode == false && stats.TestServer == false)
+            if (stats.TestServer == false && PvPStatics.ChaosMode == false)
             {
                 TempData["Error"] = "Cant' do this in live non-chaos server.";
                 return RedirectToAction("Play", "PvP");
@@ -2820,7 +2827,10 @@ namespace tfgame.Controllers
 
             // delete old item you are if you are one
             Item possibleMeItem = itemRepo.Items.FirstOrDefault(i => i.VictimName == me.FirstName + " " + me.LastName);
-            itemRepo.DeleteItem(possibleMeItem.Id);
+            if (possibleMeItem != null)
+            {
+                itemRepo.DeleteItem(possibleMeItem.Id);
+            }
 
 
             TempData["Result"] = "You are now fully animate.";

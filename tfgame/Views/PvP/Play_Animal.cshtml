@@ -3,6 +3,10 @@
 @using tfgame.Procedures
 @using tfgame.Statics
 
+<script src="~/Scripts/jquery-ui-1.10.4.js"></script>
+
+<script src="~/Scripts/jquery.signalR-2.0.3.min.js"></script>
+<script src="~/signalr/hubs"></script>
 <script src="~/Scripts/notices.js"></script>
 
 @{
@@ -71,6 +75,7 @@
 
 <div class="specialBox specialBox2">
     <span class="turnNumber">Turn #<b>@ViewBag.WorldTurnNumber/@PvPStatics.RoundDuration</b></span>
+    <span id="liveConnectionNotice" class="noticeOff" title="If this icon is green, you are connected to the server and will receive live notifications when attacked or messaged."><span class="glyphicon glyphicon-ok-circle"> </span></span>
     Transformania Time has <b>@Model.WorldStats.TotalPlayers</b> players, <b>@Model.WorldStats.CurrentOnlinePlayers</b> of which are currently online.
 </div>
 

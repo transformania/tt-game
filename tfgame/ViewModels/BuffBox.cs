@@ -42,6 +42,13 @@ namespace tfgame.ViewModels
         public float Chaos_Order { get; set; }
     }
 
+    public class BuffDetail
+    {
+        public string Description { get; set; }
+        public List<string> PlusIcons { get; set; }
+        public List<string> MinusIcons { get; set; }
+    }
+
     public class BuffBox
     {
 
@@ -528,6 +535,91 @@ namespace tfgame.ViewModels
 
     public static class BuffMap
     {
+
+        private const string DefenseIconClass = "icon-defense";
+        private const string WPUpIconClass = "icon-health_recovery";
+        private const string ManaUpIconClass = "icon-mana_recovery";
+        private const string RestorationIconCLass = "icon-cleansemeditate";
+        private const string AttackIconClass = "icon-timesattacking";
+
+        public static Dictionary<string, BuffDetail> BuffDetailsMap = new Dictionary<string, BuffDetail>{
+
+            
+            { 
+                "Discipline", 
+                new BuffDetail {
+                    Description = "Discipline affects the strength of your mental defenses; resistance to willpower attacks and ability to recover lost willpower. Improving your defense against willpower attacks reduces the power of your own willpower attacks by a small amount.", 
+                    PlusIcons = new List<string> { DefenseIconClass, WPUpIconClass }, 
+                    MinusIcons =  new  List<string> { AttackIconClass }
+                }
+            },
+            { 
+                "Perception", 
+                new BuffDetail {
+                    Description = "Perception affects the accuracy of your spell-casting and your ability to detect hidden things. The price that you pay for taking the time to observe and analyze your surroundings is slower movement speed and a reduction to the amount of mana you glean from meditation.", 
+                    PlusIcons = new List<string> { AttackIconClass }, 
+                    MinusIcons =  new  List<string> { RestorationIconCLass }
+                }
+            },
+            { 
+                "Charisma", 
+                new BuffDetail {
+                    Description = "Charisma affects the strength of your willpower and transformation attacks; it represents your ability to influence people and bend them to your design. However, the desire to persuade others leaves you vulnerable to their desires in turn, reducing your willpower defenses slightly.", 
+                    PlusIcons = new List<string> { AttackIconClass }, 
+                    MinusIcons =  new  List<string> { DefenseIconClass }
+                }
+            },
+            { 
+                "Fortitude", 
+                new BuffDetail {
+                    Description = "Fortitude affects the strength of your physical defenses; resistance to transformation attacks and the ability to carry more gear. Toughening your body reduces its limberness, inhibiting your ability to move stealthily and dodge incoming attacks.", 
+                    PlusIcons = new List<string> { DefenseIconClass }, 
+                    MinusIcons =  new  List<string> { "" }
+                }
+            },
+            { 
+                "Agility", 
+                new BuffDetail {
+                    Description = "Agility affects your ability to move quickly, which helps you dodge attacks and avoid detection. Quickness requires a light build that is not able to take a lot of physical abuse; thus your resistance to transformation damage is inhibited and you are not able to carry as much gear.", 
+                    PlusIcons = new List<string> { DefenseIconClass }, 
+                    MinusIcons =  new  List<string> { "" }
+                }
+            },
+            { 
+                "Allure", 
+                new BuffDetail {
+                    Description = "Allure affects your innate sex appeal or animal magnetism. The more attractive you are, the more susceptible your opponents are to your willpower attacks and the less likely they are to dodge. Yet physical beauty makes one susceptible to vanity, which increases your vulnerability to willpower damage. Your attractiveness also makes it hard to go unnoticed.", 
+                    PlusIcons = new List<string> { AttackIconClass }, 
+                    MinusIcons =  new  List<string> { "" }
+                }
+            },
+            { 
+                "Magicka", 
+                new BuffDetail {
+                    Description = "Magicka reflects you raw magic potential; the stronger your connection to the ambient magical fields around you, the more mana you have at your disposal and the more transformation energy you can focus on your opponents. Yet having so much magic flowing through you makes it harder to purge transformation energy, and interferes with your ability to focus on your targets.", 
+                    PlusIcons = new List<string> { ManaUpIconClass }, 
+                    MinusIcons =  new  List<string> { "" }
+                }
+            },
+            { 
+                "Succour", 
+                new BuffDetail {
+                    Description = "Succour affects your ability to tap into ambient magical energies and manipulate them to recover mana and willpower. Some of your mana is constantly diverted into the recovery of mana and willpower, reducing your maximum pool. Focusing on the healing powers of magic invokes a natural aversion toward harming others.", 
+                    PlusIcons = new List<string> { RestorationIconCLass }, 
+                    MinusIcons =  new  List<string> { "" }
+                }
+            },
+            { 
+                "Luck", 
+                new BuffDetail {
+                    Description = "Luck is a random chance that seems to operate in your favor. Or maybe the gods look kindly upon you. However you choose to rationalize it, luck affects your chance to score amazingly successful blows against your opponents. Luck also helps you shrug off accumulated transformation energy. Yet relying on luck can leave you exposed if the dice roll goes against you.", 
+                    PlusIcons = new List<string> { AttackIconClass }, 
+                    MinusIcons =  new  List<string> {  }
+                }
+            },
+        };
+
+  
 
         public static Dictionary<string, Dictionary<string, float>> BuffsMap = new Dictionary<string, Dictionary<string, float>> {
 

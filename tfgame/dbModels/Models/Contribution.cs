@@ -226,6 +226,27 @@ namespace tfgame.dbModels.Models
         [Display(Name = "What bonuses or penalties does wearing/equipping give to the owner?")]
          public string Item_Bonuses { get; set; }
 
+        [Display(Name = "(Optional) Target animate form of this item/pet's transformation curse")]
+        public string CursedTF_FormdbName { get; set; }
+
+        [Display(Name = "(Optional) Text shown to the OWNER of this item/pet when it tries to transform its owner but FAILS.  Gender-neutral.")]
+        public string CursedTF_Fail { get; set; }
+
+        [Display(Name = "(Optional) Text shown to the OWNER of this item/pet when it tries to transform its owner but FAILS.  Male-specific.")]
+        public string CursedTF_Fail_M { get; set; }
+
+        [Display(Name = "(Optional) Text shown to the OWNER of this item/pet when it tries to transform its owner but FAILS.  Female-specific.")]
+        public string CursedTF_Fail_F { get; set; }
+
+        [Display(Name = "(Optional) Text shown to the OWNER of this item/pet when it tries to transform its owner but FAILS.  Gender-neutral.")]
+        public string CursedTF_Succeed { get; set; }
+
+        [Display(Name = "(Optional) Text shown to the OWNER of this item/pet when it tries to transform its owner but FAILS.  Male-specific.")]
+        public string CursedTF_Succeed_M { get; set; }
+
+        [Display(Name = "(Optional) Text shown to the OWNER of this item/pet when it tries to transform its owner but FAILS.  Female-specific.")]
+        public string CursedTF_Succeed_F { get; set; }
+
         #endregion
 
         [Display(Name = "Are you ready for an administrator to review this form and include it in the game?  Check below if yes, otherwise leave unchecked.")]

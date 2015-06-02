@@ -1297,6 +1297,14 @@ namespace tfgame.Controllers
             ProofreadCopy.Form_TFMessage_100_Percent_3rd_F = OldCopy.Form_TFMessage_100_Percent_3rd_F;
             ProofreadCopy.Form_TFMessage_Completed_3rd_F = OldCopy.Form_TFMessage_Completed_3rd_F;
 
+            ProofreadCopy.CursedTF_FormdbName = OldCopy.CursedTF_FormdbName;
+            ProofreadCopy.CursedTF_Fail = OldCopy.CursedTF_Fail;
+            ProofreadCopy.CursedTF_Fail_M = OldCopy.CursedTF_Fail_M;
+            ProofreadCopy.CursedTF_Fail_F = OldCopy.CursedTF_Fail_F;
+            ProofreadCopy.CursedTF_Succeed = OldCopy.CursedTF_Succeed;
+            ProofreadCopy.CursedTF_Succeed_M = OldCopy.CursedTF_Succeed_M;
+            ProofreadCopy.CursedTF_Succeed_F = OldCopy.CursedTF_Succeed_F;
+
             ProofreadCopy.Item_FriendlyName = OldCopy.Item_FriendlyName;
             ProofreadCopy.Item_Description = OldCopy.Item_Description;
             ProofreadCopy.Item_ItemType = OldCopy.Item_ItemType;
@@ -1509,9 +1517,24 @@ namespace tfgame.Controllers
             output += "Set <b>" + players.Count() + "</b> players to new form <b>" + newFormName + "</b>.</br>";
             #endregion
 
-            #region static skills exclusive to form
+            #region static skills that turn target into this form
             IDbStaticSkillRepository sskillRepo = new EFDbStaticSkillRepository();
-            List<DbStaticSkill> skills = sskillRepo.DbStaticSkills.Where(s => s.ExclusiveToForm == oldFormName).ToList();
+            List<DbStaticSkill> skills = sskillRepo.DbStaticSkills.Where(s => s.FormdbName == oldFormName).ToList();
+            foreach (DbStaticSkill ss in skills)
+            {
+                ss.FormdbName = newFormName;
+
+                if (practice == false)
+                {
+                    sskillRepo.SaveDbStaticSkill(ss);
+                }
+            }
+            output += "Set <b>" + skills.Count() + "</b> static skills to that turn victim into form <b>" + newFormName + "</b>.</br>";
+            #endregion
+
+            #region static skills exclusive to form
+            //IDbStaticSkillRepository sskillRepo = new EFDbStaticSkillRepository();
+            skills = sskillRepo.DbStaticSkills.Where(s => s.ExclusiveToForm == oldFormName).ToList();
             foreach (DbStaticSkill ss in skills)
             {
                 ss.ExclusiveToForm = newFormName;
@@ -1570,6 +1593,8 @@ namespace tfgame.Controllers
             }
             output += "Set <b>" + messages.Count() + "</b> TF messages to use form <b>" + newFormName + "</b>.</br>";
             #endregion
+
+            // TODO:  rename the field in Contributions and DbStaticItems for CurseTFFormDbName 
 
             output += "</br> DON'T FORGET TO UPDATE ANY PLAYERS HARDCODED INTO THE PROJECT, INCLUDING JEWDEWFAE.</br>";
 

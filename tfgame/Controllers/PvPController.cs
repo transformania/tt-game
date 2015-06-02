@@ -2862,6 +2862,13 @@ namespace tfgame.Controllers
             SaveMe.Form_TFMessage_100_Percent_3rd_F = input.Form_TFMessage_100_Percent_3rd_F;
             SaveMe.Form_TFMessage_Completed_3rd_F = input.Form_TFMessage_Completed_3rd_F;
 
+            SaveMe.CursedTF_FormdbName = input.CursedTF_FormdbName;
+            SaveMe.CursedTF_Fail = input.CursedTF_Fail;
+            SaveMe.CursedTF_Fail_M = input.CursedTF_Fail_M;
+            SaveMe.CursedTF_Fail_F = input.CursedTF_Fail_F;
+            SaveMe.CursedTF_Succeed = input.CursedTF_Succeed;
+            SaveMe.CursedTF_Succeed_M = input.CursedTF_Succeed_M;
+            SaveMe.CursedTF_Succeed_F = input.CursedTF_Succeed_F;
 
             SaveMe.Item_FriendlyName = input.Item_FriendlyName;
             SaveMe.Item_Description = input.Item_Description;

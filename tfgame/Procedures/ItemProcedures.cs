@@ -96,6 +96,8 @@ namespace tfgame.Procedures
                                                             ReuseableHealthRestore = si.ReuseableHealthRestore,
                                                             ReuseableManaRestore = si.ReuseableManaRestore,
 
+                                                            CurseTFFormdbName = si.CurseTFFormdbName,
+
 
                                                           }
 
@@ -189,6 +191,8 @@ namespace tfgame.Procedures
                                                          InstantManaRestore = si.InstantManaRestore,
                                                          ReuseableHealthRestore = si.ReuseableHealthRestore,
                                                          ReuseableManaRestore = si.ReuseableManaRestore,
+
+                                                         CurseTFFormdbName = si.CurseTFFormdbName,
 
 
                                                      }
@@ -292,7 +296,7 @@ namespace tfgame.Procedures
                                                          ReuseableHealthRestore = si.ReuseableHealthRestore,
                                                          ReuseableManaRestore = si.ReuseableManaRestore,
 
-
+                                                         CurseTFFormdbName = si.CurseTFFormdbName,
                                                      }
 
                                                  };

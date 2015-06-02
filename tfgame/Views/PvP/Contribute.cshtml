@@ -533,6 +533,46 @@
                     @Html.TextAreaFor(m => m.Item_Bonuses, new { @readonly = "readonly" })
                 </div>
 
+
+                <div class="form__panel externalMessage">
+                    The next group of inputs are to give the ability to items and pets to have a chance of transforming their owner.  Provide the name of an animate form that this item can change its owner into and provide some text to describe how it feels TO THE OWNER when the item fails to transform its owner and when it succeeds in transforming its owner.
+                </div>
+
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.CursedTF_FormdbName)
+                    @Html.TextBoxFor(m => m.CursedTF_FormdbName, new {  })
+                </div>
+
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.CursedTF_Fail)
+                    @Html.TextAreaFor(m => m.CursedTF_Fail, new { @placeholder = "You wiggle against your owner, making them grow a rabbit tail!  Unfortunately they resist your influence and changes back to their previous form" })
+                </div>
+
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.CursedTF_Fail_M) <span class="icon-male"></span>
+                    @Html.TextAreaFor(m => m.CursedTF_Fail_M, new { @placeholder = "You wiggle against your owner, making him grow a rabbit tail!  Unfortunately he resists your influence and changes back to his previous form" })
+                </div>
+
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.CursedTF_Fail_F) <span class="icon-female"></span>
+                    @Html.TextAreaFor(m => m.CursedTF_Fail_F, new { @placeholder = "You wiggle against your owner, making her grow a rabbit tail!  Unfortunately she resists your influence and changes back to her previous form" })
+                </div>
+
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.CursedTF_Succeed)
+                    @Html.TextAreaFor(m => m.CursedTF_Succeed, new { @placeholder = "Success!  You wiggle against your owner, making them grow a rabbit tail!  They succombs to your influence and suddenly transforms into a bunnygirl!" })
+                </div>
+
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.CursedTF_Succeed_M) <span class="icon-male"></span>
+                    @Html.TextAreaFor(m => m.CursedTF_Succeed_M, new { @placeholder = "Success!  You wiggle against your owner, making him grow a rabbit tail!  He succombs to your influence and suddenly transforms into a bunnygirl!" })
+                </div>
+
+                <div class="form__panel">
+                    @Html.LabelFor(m => m.CursedTF_Succeed_F) <span class="icon-female"></span>
+                    @Html.TextAreaFor(m => m.CursedTF_Succeed_F, new { @placeholder = "Success!  You wiggle against your owner, making her grow a rabbit tail!  She succombs to your influence and suddenly transforms into a bunnygirl!" })
+                </div>
+
             </div>
 
             <div class="form__panel group" id="itemCreatedPanelNotPresent" style="background-color: #FFE0A3; display: none;">

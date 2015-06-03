@@ -13,14 +13,13 @@ namespace tfgame.Statics
     public static class PvPStatics
     {
 
-        public const int RoundDuration = 2500;
-        public const int RoundDuration_LastPvPEntryTurn = 1800;
+        public const int RoundDuration = 4000;
 
         public const int TurnSecondLength = 300;
         public const int StartTurnNoAttackSeconds = 30;
         public const int EndTurnNoAttackSeconds = 30;
 
-        public const string AlphaRound = "Alpha Round 20";
+        public const string AlphaRound = "Alpha Round 21";
 
         public const bool ChaosMode = true;
 
@@ -163,6 +162,7 @@ namespace tfgame.Statics
         public static decimal LevelUpManaMaxIncreasePerLevel = 5;
 
         public static decimal Item_LevelBonusModifier = .1M;
+        public const int ItemTurnBuildupMaximum = 48;
 
         public static int MaxAttacksPerUpdate = 3;
         public static decimal LocationMoveCost = 1.0M;
@@ -265,6 +265,7 @@ namespace tfgame.Statics
     public static class InanimateXPStatics
     {
         public static decimal XPGainPerInanimateAction = 5M;
+        public const int ItemMaxTurnsBuildup = 48;
 
         public static decimal[] XP__LevelupRequirements = new decimal[22] { 0, 100, 150, 220, 310, 420, 550, 700, 870, 1060, 1270, 1500, 1750, 2020, 2310, 2620, 2950, 3300, 3670, 4060, 4470, 4900 }; // +450
 

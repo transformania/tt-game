@@ -212,6 +212,11 @@ namespace tfgame.Controllers
              return PartialView("partial/ItemDetails", output);
          }
 
+         public ActionResult ShowStatsTable()
+         {
+             return View();
+         }
+
 
 	}
 }

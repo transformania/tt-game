@@ -2228,7 +2228,7 @@
     <Content Include="Views\Settings\SetFriendNickname.cshtml" />
     <Content Include="Views\PvPAdmin\FaeList.cshtml" />
     <Content Include="Views\PvPAdmin\WriteFae.cshtml" />
-    <Content Include="Views\PvPAdmin\ShowStatsTable.cshtml" />
+    <Content Include="Views\Item\ShowStatsTable.cshtml" />
     <Content Include="Views\Settings\Polls\Open\poll3.cshtml" />
     <Content Include="Views\Settings\Polls\Read\poll3.cshtml" />
     <Content Include="Views\Settings\MyRPClassifiedAds.cshtml" />

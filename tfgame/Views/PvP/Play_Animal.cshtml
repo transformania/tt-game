@@ -104,16 +104,31 @@
             <p>Your name is <b>@Model.You.FirstName @Model.You.LastName</b>, or at least it used to be.  At the height of your humanity you achieved level <b>@Model.You.Level</b> with @Model.You.XP experience points toward the next.  But now it's time to embrace your new existence as a <b>@Model.Form.FriendlyName</b>.</p>
             <p>
     @Model.Form.Description
-    @{
-        if (Model.You.IsPetToId == -1)
-        {
-            <span>You are feral and can move freely about the world until a new master tames you.</span>
-        }
-        else
-        {
-            <span><br><br>You have been tamed by @Html.ActionLink(Model.OwnedBy.Player.FirstName + " " + Model.OwnedBy.Player.LastName, "LookAtPlayer", "PvP", new { id = Model.OwnedBy.Player.Id }, null) and will follow your master wherever they go.</span>
-        }
-    }
+                @{
+                    if (Model.YouItem.dbItem.OwnerId == -1)
+                    {
+                        <span>You are feral and can move freely about the world until a new master tames you.</span>
+                    }
+                    else
+                    {
+                        <span>
+                            <br><br>You have been tamed by @Html.ActionLink(Model.OwnedBy.Player.FirstName + " " + Model.OwnedBy.Player.LastName, "LookAtPlayer", "PvP", new { id = Model.OwnedBy.Player.Id }, null) and will follow your master wherever they go.
+
+                            @{
+                        if (Model.YouItem.Item.CurseTFFormdbName != null && Model.YouItem.Item.CurseTFFormdbName != "")
+                        {
+                            @Html.ActionLink("Attempt to transform your owner!", "CurseTransformOwner", "PvP")
+                        }
+                            }
+
+
+
+                        </span>
+
+
+
+                    }
+                }
     @{
         if (Model.IsPermanent == false)
         {

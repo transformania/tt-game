@@ -133,7 +133,7 @@ namespace tfgame.Controllers
 
                 inanimateOutput.Player = me;
                 inanimateOutput.Form = FormStatics.GetForm(me.Form);
-                inanimateOutput.Item = ItemStatics.GetStaticItem(inanimateOutput.Form.BecomesItemDbName);
+                inanimateOutput.Item = ItemProcedures.GetItemViewModel(me.FirstName, me.LastName);
 
                 inanimateOutput.IsPermanent = ItemProcedures.GetItemByVictimName(me.FirstName, me.LastName).IsPermanent;
 
@@ -191,42 +191,55 @@ namespace tfgame.Controllers
 
                 animalOutput.Form = FormStatics.GetForm(me.Form);
 
-                try
+                animalOutput.YouItem = ItemProcedures.GetItemViewModel(me.FirstName, me.LastName);
+                if (animalOutput.YouItem.dbItem.OwnerId > 0)
                 {
-                    // get player item
-                    Item meItem = ItemProcedures.GetItemByVictimName(me.FirstName, me.LastName);
+                    animalOutput.OwnedBy = PlayerProcedures.GetPlayerFormViewModel(animalOutput.YouItem.dbItem.OwnerId);
+                }
 
-                    if (meItem.OwnerId == -1)
-                    {
-                        animalOutput.OwnedBy = null;
+                //try
+                //{
+                //    // get player item
+                    
 
-                        // somehow the game got desynched and the owner as recorded by the player is not the same as who actually owns them as an item.
-                        // TODO:  Get rid of this .IsPetToId bullshit altogether :P
-                        if (me.IsPetToId > 0 && meItem.OwnerId == -1)
-                        {
-                            PlayerProcedures.ResetPlayerPetStatus(me);
-                        }
+                //    if (meItem.OwnerId == -1)
+                //    {
+                //        animalOutput.OwnedBy = null;
 
-                    }
-                    else
-                    {
-                        animalOutput.OwnedBy = PlayerProcedures.GetPlayerFormViewModel(me.IsPetToId);
+                //        // somehow the game got desynched and the owner as recorded by the player is not the same as who actually owns them as an item.
+                //        // TODO:  Get rid of this .IsPetToId bullshit altogether :P
+                //        if (me.IsPetToId > 0 && meItem.OwnerId == -1)
+                //        {
+                //            PlayerProcedures.ResetPlayerPetStatus(me);
+                //        }
 
-                        // update the player version of the pet so they struggle out in their owner's most recent location
-                        if (me.dbLocationName != animalOutput.OwnedBy.Player.dbLocationName)
-                        {
-                            PlayerProcedures.MovePlayer_InstantNoLog(me.Id, animalOutput.OwnedBy.Player.dbLocationName);
-                            me.dbLocationName = animalOutput.OwnedBy.Player.dbLocationName;
-                            animalOutput.You.dbLocationName = animalOutput.OwnedBy.Player.dbLocationName;
-                        }
-                    }
+                //    }
+                //    else
+                //    {
+                //        animalOutput.OwnedBy = PlayerProcedures.GetPlayerFormViewModel(meItem.OwnerId);
+
+                //        // update the player version of the pet so they struggle out in their owner's most recent location
+                //        if (me.dbLocationName != animalOutput.OwnedBy.Player.dbLocationName)
+                //        {
+                //            PlayerProcedures.MovePlayer_InstantNoLog(me.Id, animalOutput.OwnedBy.Player.dbLocationName);
+                //            me.dbLocationName = animalOutput.OwnedBy.Player.dbLocationName;
+                //            animalOutput.You.dbLocationName = animalOutput.OwnedBy.Player.dbLocationName;
+                //        }
+
+                //        // somehow the game got desynched and the owner as recorded by the player is not the same as who actually owns them as an item.
+                //        // TODO:  Get rid of this .IsPetToId bullshit altogether :P
+                //        if (me.IsPetToId > 0 && meItem.OwnerId == -1)
+                //        {
+                //            PlayerProcedures.ResetPlayerPetStatus(me);
+                //        }
+                //    }
 
                    
-                }
-                catch
-                {
+                //}
+                //catch
+                //{
 
-                }
+                //}
                 animalOutput.WorldStats = PlayerProcedures.GetWorldPlayerStats();
 
                 if (animalOutput.OwnedBy != null)
@@ -321,10 +334,6 @@ namespace tfgame.Controllers
             loadtime += "End get player logs:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
 
             output.PlayerLogImportant = output.PlayerLog.Where(l => l.IsImportant == true);
-
-            //loadtime += "Start get player spells:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
-            //output.Skills = SkillProcedures.GetSkillViewModelsOwnedByPlayer(me.Id);
-            //loadtime += "End get player logs:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
 
             loadtime += "Start get player items:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
             output.PlayerItems = ItemProcedures.GetAllPlayerItems(me.Id);
@@ -3541,6 +3550,78 @@ namespace tfgame.Controllers
             TempData["Result"] = InanimateXPProcedures.ReturnToAnimate(me, dungeonHalfPoints);
             return RedirectToAction("Play");
         }
+
+        [Authorize]
+         public ActionResult CurseTransformOwner()
+         {
+             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+
+             // assert player is inanimate or an animal
+             if (me.Mobility != "inanimate" && me.Mobility != "animal")
+             {
+                 TempData["Error"] = "You can't do this.";
+                 TempData["SubError"] = "You are still in an animate form.  You must be inanimate or an animal.";
+                 return RedirectToAction("Play","PvP");
+             }
+
+
+             // assert player has not acted too many times already
+             if (me.TimesAttackingThisUpdate >= 1)
+             {
+                 TempData["Error"] = "You don't have enough energy to try and transform your owner.";
+                 TempData["SubError"] = "Wait a bit.";
+                 return RedirectToAction("Play", "PvP");
+             }
+
+             Item itemMe = ItemProcedures.GetItemByVictimName(me.FirstName, me.LastName);
+             DbStaticItem itemMePlus = ItemStatics.GetStaticItem(itemMe.dbName);
+
+            // assert item does have the ability to curse transform
+             if (itemMePlus.CurseTFFormdbName == null || itemMePlus.CurseTFFormdbName == "")
+             {
+                 TempData["Error"] = "Unfortunately your new form does not have a transformation curse that it can use.";
+                 return RedirectToAction("Play", "PvP");
+             }
+
+             Player owner = PlayerProcedures.GetPlayer(itemMe.OwnerId);
+            // assert player is owned
+             if (owner == null)
+             {
+                 TempData["Error"] = "You aren't owned by anyone.";
+                 TempData["SubError"] = "You don't currently belong to an owner and as such have nobody to curse.";
+                 return RedirectToAction("Play", "PvP");
+             }
+
+            // assert owner is not an invalid bot
+             if (owner.MembershipId < -2)
+             {
+                 TempData["Error"] = "Unfortunately it seems your owner is immune to your transformation curse!";
+                 TempData["SubError"] = "Only Psychopathic spellslingers and other players are susceptible to transformation curses.";
+                 return RedirectToAction("Play", "PvP");
+             }
+
+            // assert owner is animate (they always should be, but just in case...)
+             if (owner.Mobility != "full")
+             {
+                 TempData["Error"] = "Your owner must be animate in order for you to curse transform them.";
+                 return RedirectToAction("Play", "PvP");
+             }
+
+            // assert that the form does exist
+             DbStaticForm form = FormStatics.GetForm(itemMePlus.CurseTFFormdbName);
+             if (form == null || form.IsUnique == true)
+             {
+                 TempData["Error"] = "Unfortunately it seems that the animate form has either not yet been added to the game or is ineligible.";
+                 return RedirectToAction("Play", "PvP");
+             }
+
+            // all checks pass
+             TempData["Result"] = InanimateXPProcedures.CurseTransformOwner(me, owner, itemMe, itemMePlus);
+
+
+             return RedirectToAction("Play", "PvP");
+
+         }
 
          [Authorize]
          public ActionResult EscapeFromOwner()

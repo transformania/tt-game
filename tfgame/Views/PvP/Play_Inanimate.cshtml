@@ -91,9 +91,9 @@
 <div class="containerInner">
     <div class="row">
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-            <div class="petItemPortrait img-responsive" style="background-image: url(../Images/PvP/itemsPortraits/@Model.Item.PortraitUrl);">
+            <div class="petItemPortrait img-responsive" style="background-image: url(../Images/PvP/itemsPortraits/@Model.Item.Item.PortraitUrl);">
                 @CharactersHere.PrintOwnerSubPortrait(Model.WornBy)
-                @CharactersHere.PrintItemTypeIcon(Model.Item)
+                @CharactersHere.PrintItemTypeIcon(Model.Item.Item)
             </div>
         </div>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-justify">
@@ -128,13 +128,25 @@
                             <li>
                                 @Html.ActionLink("Agitatedly zap your owner", "InanimateAction", "PvP", new { actionName = "zap" }, new { @class = "check inanimateAction" })
                             </li>
-                            @{
+                            
+
+    @{
+                    if (Model.Item.Item.CurseTFFormdbName != null && Model.Item.Item.CurseTFFormdbName != "")
+                    {
+                        <li>
+                            @Html.ActionLink("Attempt to transform your owner!", "CurseTransformOwner", "PvP", null, new { @class = "check inanimateAction" })
+                        </li>
+                    }
+   
+                            
+                            
+                            
                     if (Model.WornBy != null)
                     {
                         <li>@Html.ActionLink("Attempt to slip free from your owner", "EscapeFromOwner", "PvP", null, new { @class = "inanimateAction" })</li>
                     }
-                            }
 
+                }
                         </ul>
                     </p>
 

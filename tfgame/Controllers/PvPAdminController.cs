@@ -1040,7 +1040,7 @@ namespace tfgame.Controllers
                 return View("Play", "PvP");
             }
 
-            NoticeProcedures.PushNotice(106271, "boooo", NoticeProcedures.PushType__PlayerMessage);
+            ItemViewModel temp = ItemProcedures.GetItemViewModel("Livia", "Hildebrand");
 
         
             // BossProcedures_Sisters.RunSistersAction();
@@ -1089,10 +1089,7 @@ namespace tfgame.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult ShowStatsTable()
-        {
-            return View();
-        }
+        
 
         public ActionResult SpawnNPCs()
         {

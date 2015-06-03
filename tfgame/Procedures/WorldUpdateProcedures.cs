@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using System.Xml;
 using System.Xml.Serialization;
@@ -19,6 +20,16 @@ namespace tfgame.Procedures
 
         public static void UpdateWorld()
         {
+            new Thread(() =>
+                 UpdateWorldThread()
+             ).Start();
+        }
+
+        public static void UpdateWorldThread()
+        {
+
+            
+
             PvPWorldStat worldStats = PvPWorldStatProcedures.GetWorldStats();
 
 

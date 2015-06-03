@@ -304,6 +304,93 @@ namespace tfgame.Procedures
             return output.First();
         }
 
+        public static ItemViewModel GetItemViewModel(string firstName, string lastName)
+        {
+            IItemRepository itemRepo = new EFItemRepository();
+            IEnumerable<ItemViewModel> output = from i in itemRepo.Items
+                                                where i.VictimName == firstName + " " + lastName
+                                                join si in itemRepo.DbStaticItems on i.dbName equals si.dbName
+                                                select new ItemViewModel
+                                                {
+                                                    dbItem = new Item_VM
+                                                    {
+                                                        Id = i.Id,
+                                                        dbName = i.dbName,
+                                                        dbLocationName = i.dbLocationName,
+                                                        EquippedThisTurn = i.EquippedThisTurn,
+                                                        IsEquipped = i.IsEquipped,
+                                                        IsPermanent = i.IsPermanent,
+                                                        Level = i.Level,
+                                                        OwnerId = i.OwnerId,
+                                                        PvPEnabled = i.PvPEnabled,
+                                                        TimeDropped = i.TimeDropped,
+                                                        TurnsUntilUse = i.TurnsUntilUse,
+                                                        VictimName = i.VictimName
+                                                    },
+
+
+
+                                                    Item = new tfgame.ViewModels.StaticItem
+                                                    {
+                                                        dbName = si.dbName,
+                                                        FriendlyName = si.FriendlyName,
+                                                        Description = si.Description,
+                                                        PortraitUrl = si.PortraitUrl,
+                                                        MoneyValue = si.MoneyValue,
+                                                        ItemType = si.ItemType,
+                                                        UseCooldown = si.UseCooldown,
+                                                        Findable = si.Findable,
+                                                        FindWeight = si.FindWeight,
+                                                        GivesEffect = si.GivesEffect,
+
+                                                        HealthBonusPercent = si.HealthBonusPercent,
+                                                        ManaBonusPercent = si.ManaBonusPercent,
+                                                        ExtraSkillCriticalPercent = si.ExtraSkillCriticalPercent,
+                                                        HealthRecoveryPerUpdate = si.HealthRecoveryPerUpdate,
+                                                        ManaRecoveryPerUpdate = si.ManaRecoveryPerUpdate,
+                                                        SneakPercent = si.SneakPercent,
+                                                        EvasionPercent = si.EvasionPercent,
+                                                        EvasionNegationPercent = si.EvasionNegationPercent,
+                                                        MeditationExtraMana = si.MeditationExtraMana,
+                                                        CleanseExtraHealth = si.CleanseExtraHealth,
+                                                        MoveActionPointDiscount = si.MoveActionPointDiscount,
+                                                        SpellExtraHealthDamagePercent = si.SpellExtraHealthDamagePercent,
+                                                        SpellExtraTFEnergyPercent = si.SpellExtraTFEnergyPercent,
+                                                        CleanseExtraTFEnergyRemovalPercent = si.CleanseExtraTFEnergyRemovalPercent,
+                                                        SpellMisfireChanceReduction = si.SpellMisfireChanceReduction,
+                                                        SpellHealthDamageResistance = si.SpellHealthDamageResistance,
+                                                        SpellTFEnergyDamageResistance = si.SpellTFEnergyDamageResistance,
+                                                        ExtraInventorySpace = si.ExtraInventorySpace,
+
+                                                        Discipline = si.Discipline,
+                                                        Perception = si.Perception,
+                                                        Charisma = si.Charisma,
+                                                        Submission_Dominance = si.Submission_Dominance,
+
+                                                        Fortitude = si.Fortitude,
+                                                        Agility = si.Agility,
+                                                        Allure = si.Allure,
+                                                        Corruption_Purity = si.Corruption_Purity,
+
+                                                        Magicka = si.Magicka,
+                                                        Succour = si.Succour,
+                                                        Luck = si.Luck,
+                                                        Chaos_Order = si.Chaos_Order,
+
+
+                                                        InstantHealthRestore = si.InstantHealthRestore,
+                                                        InstantManaRestore = si.InstantManaRestore,
+                                                        ReuseableHealthRestore = si.ReuseableHealthRestore,
+                                                        ReuseableManaRestore = si.ReuseableManaRestore,
+
+                                                        CurseTFFormdbName = si.CurseTFFormdbName,
+                                                    }
+
+                                                };
+
+            return output.First();
+        }
+
         public static bool PlayerIsCarryingTooMuch(int newOwnerId, int offset, BuffBox buffs)
         {
             IItemRepository itemRepo = new EFItemRepository();

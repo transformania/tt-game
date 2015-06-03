@@ -238,13 +238,13 @@ namespace tfgame.dbModels.Models
         [Display(Name = "(Optional) Text shown to the OWNER of this item/pet when it tries to transform its owner but FAILS.  Female-specific.")]
         public string CursedTF_Fail_F { get; set; }
 
-        [Display(Name = "(Optional) Text shown to the OWNER of this item/pet when it tries to transform its owner but FAILS.  Gender-neutral.")]
+        [Display(Name = "(Optional) Text shown to the OWNER of this item/pet when it tries to transform its owner and SUCCEEDS.  Gender-neutral.")]
         public string CursedTF_Succeed { get; set; }
 
-        [Display(Name = "(Optional) Text shown to the OWNER of this item/pet when it tries to transform its owner but FAILS.  Male-specific.")]
+        [Display(Name = "(Optional) Text shown to the OWNER of this item/pet when it tries to transform its owner and SUCCEEDS.  Male-specific.")]
         public string CursedTF_Succeed_M { get; set; }
 
-        [Display(Name = "(Optional) Text shown to the OWNER of this item/pet when it tries to transform its owner but FAILS.  Female-specific.")]
+        [Display(Name = "(Optional) Text shown to the OWNER of this item/pet when it tries to transform its owner and SUCCEEDS.  Female-specific.")]
         public string CursedTF_Succeed_F { get; set; }
 
         #endregion

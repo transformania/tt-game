@@ -18,20 +18,11 @@ namespace tfgame.Procedures
     public static  class WorldUpdateProcedures
     {
 
+
         public static void UpdateWorld()
         {
-            new Thread(() =>
-                 UpdateWorldThread()
-             ).Start();
-        }
-
-        public static void UpdateWorldThread()
-        {
-
-            
 
             PvPWorldStat worldStats = PvPWorldStatProcedures.GetWorldStats();
-
 
             int turnNo = worldStats.TurnNumber;
             PvPStatics.LastGameTurn = turnNo;

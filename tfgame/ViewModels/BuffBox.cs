@@ -582,7 +582,7 @@ namespace tfgame.ViewModels
                 new BuffDetail {
                     Description = "Agility affects your ability to move quickly, which helps you dodge attacks and avoid detection. Quickness requires a light build that is not able to take a lot of physical abuse; thus your resistance to transformation damage is inhibited and you are not able to carry as much gear.", 
                     PlusIcons = new List<string> { DefenseIconClass }, 
-                    MinusIcons =  new  List<string> { "" }
+                    MinusIcons =  new  List<string> { DefenseIconClass }
                 }
             },
             { 
@@ -590,7 +590,7 @@ namespace tfgame.ViewModels
                 new BuffDetail {
                     Description = "Allure affects your innate sex appeal or animal magnetism. The more attractive you are, the more susceptible your opponents are to your willpower attacks and the less likely they are to dodge. Yet physical beauty makes one susceptible to vanity, which increases your vulnerability to willpower damage. Your attractiveness also makes it hard to go unnoticed.", 
                     PlusIcons = new List<string> { AttackIconClass }, 
-                    MinusIcons =  new  List<string> { "" }
+                    MinusIcons =  new  List<string> { DefenseIconClass, }
                 }
             },
             { 
@@ -598,7 +598,7 @@ namespace tfgame.ViewModels
                 new BuffDetail {
                     Description = "Magicka reflects you raw magic potential; the stronger your connection to the ambient magical fields around you, the more mana you have at your disposal and the more transformation energy you can focus on your opponents. Yet having so much magic flowing through you makes it harder to purge transformation energy, and interferes with your ability to focus on your targets.", 
                     PlusIcons = new List<string> { ManaUpIconClass }, 
-                    MinusIcons =  new  List<string> { "" }
+                    MinusIcons =  new  List<string> { AttackIconClass, RestorationIconCLass  }
                 }
             },
             { 
@@ -606,7 +606,7 @@ namespace tfgame.ViewModels
                 new BuffDetail {
                     Description = "Succour affects your ability to tap into ambient magical energies and manipulate them to recover mana and willpower. Some of your mana is constantly diverted into the recovery of mana and willpower, reducing your maximum pool. Focusing on the healing powers of magic invokes a natural aversion toward harming others.", 
                     PlusIcons = new List<string> { RestorationIconCLass }, 
-                    MinusIcons =  new  List<string> { "" }
+                    MinusIcons =  new  List<string> { ManaUpIconClass, AttackIconClass }
                 }
             },
             { 
@@ -614,7 +614,7 @@ namespace tfgame.ViewModels
                 new BuffDetail {
                     Description = "Luck is a random chance that seems to operate in your favor. Or maybe the gods look kindly upon you. However you choose to rationalize it, luck affects your chance to score amazingly successful blows against your opponents. Luck also helps you shrug off accumulated transformation energy. Yet relying on luck can leave you exposed if the dice roll goes against you.", 
                     PlusIcons = new List<string> { AttackIconClass }, 
-                    MinusIcons =  new  List<string> {  }
+                    MinusIcons =  new  List<string> { DefenseIconClass }
                 }
             },
         };
@@ -665,7 +665,7 @@ namespace tfgame.ViewModels
 	                    {"Allure", 0},
 	                    {"Magicka", 0},
 	                    {"Succour", 0},
-	                    {"Luck", .5F},
+	                    {"Luck", .3F},
                     }
                 },
                 {
@@ -678,7 +678,7 @@ namespace tfgame.ViewModels
 	                    {"Agility", 0},
 	                    {"Allure", 0},
 	                    {"Magicka", 0},
-	                    {"Succour", .5F},
+	                    {"Succour", .2F},
 	                    {"Luck", 0},
                     }
                 },
@@ -692,7 +692,7 @@ namespace tfgame.ViewModels
 	                    {"Agility", 0},
 	                    {"Allure", 0},
 	                    {"Magicka", 0},
-	                    {"Succour", .5F},
+	                    {"Succour", .2F},
 	                    {"Luck", 0},
                     }
                 },
@@ -799,10 +799,10 @@ namespace tfgame.ViewModels
                 new Dictionary<string,float> {
                       	{"Discipline", -.25F},
 	                    {"Perception", 0},
-	                    {"Charisma", 1.0F},
+	                    {"Charisma", 0.7F},
 	                    {"Fortitude", 0},
 	                    {"Agility", 0},
-	                    {"Allure", 1.5F},
+	                    {"Allure", 1.1F},
 	                    {"Magicka", 0},
 	                    {"Succour", 0},
 	                    {"Luck", 0},

@@ -409,32 +409,6 @@ namespace tfgame.Procedures
 
                 merchant = playerRepo.Players.FirstOrDefault(f => f.FirstName == "Lindella" && f.LastName == "the Soul Vendor" && f.Mobility == "full");
 
-                List<DbStaticSkill> skillsToGive = new List<DbStaticSkill>();
-
-                skillsToGive.Add(SkillStatics.GetStaticSkill("skill_A_Mother's_Touch_Purple_Autumn"));
-                skillsToGive.Add(SkillStatics.GetStaticSkill("skill_lingerie_inveigh_PsychoticPie"));
-                skillsToGive.Add(SkillStatics.GetStaticSkill("skill_Haute_Couture_Hanna"));
-                skillsToGive.Add(SkillStatics.GetStaticSkill("skill_reflecius_fabricos_Haretia"));
-                skillsToGive.Add(SkillStatics.GetStaticSkill("skill_Schoolyard_Strut_Christopher"));
-                skillsToGive.Add(SkillStatics.GetStaticSkill("skill_Put_a_Sock_In_It_Christopher"));
-                skillsToGive.Add(SkillStatics.GetStaticSkill("skill_Fit_to_Be_Tied!_Martiandawn"));
-                skillsToGive.Add(SkillStatics.GetStaticSkill("skill_It's_Got_Ruffles!_Martiandawn"));
-                skillsToGive.Add(SkillStatics.GetStaticSkill("skill_Lucky_Lips_Greg_Mackenzie_and_Fiona_Mason"));
-                skillsToGive.Add(SkillStatics.GetStaticSkill("skill_Spank'Me_Zatur"));
-                skillsToGive.Add(SkillStatics.GetStaticSkill("skill_Who_Wears_the_Pants_Arbitrary_Hal"));
-                skillsToGive.Add(SkillStatics.GetStaticSkill("skill_Clothes_Make_the_Man_Arbitrary_Hal"));
-                skillsToGive.Add(SkillStatics.GetStaticSkill("skill_Sgnikcots_Tenhsif_Zatur"));
-                skillsToGive.Add(SkillStatics.GetStaticSkill("skill_Sea_of_Frills_Hanna"));
-                skillsToGive.Add(SkillStatics.GetStaticSkill("skill_schooltop_bop_PsychoticPie"));
-                skillsToGive.Add(SkillStatics.GetStaticSkill("skill_schooltop_bop_PsychoticPie"));
-                skillsToGive.Add(SkillStatics.GetStaticSkill("skill_tip_of_the_hat_Zatur"));
-                skillsToGive.Add(SkillStatics.GetStaticSkill("skill_Atexlay_Abray_Arrhae"));
-
-                foreach (DbStaticSkill s in skillsToGive)
-                {
-                    SkillProcedures.GiveSkillToPlayer(merchant.Id, s);
-                }
-
                 Player Lindella = playerRepo.Players.FirstOrDefault(f => f.MembershipId == -3);
 
                 AIDirectiveProcedures.GetAIDirective(Lindella.Id);

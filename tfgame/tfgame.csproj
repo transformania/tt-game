@@ -1077,6 +1077,7 @@
     <Content Include="Images\PvP\portraits\new_age_retro_hippy_Meddle.png" />
     <Content Include="Images\PvP\portraits\nighthuntress_Martiandawn.png" />
     <Content Include="Images\PvP\portraits\ninja_girl_spacedande.jpg" />
+    <Content Include="Images\PvP\portraits\nyx_custom_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\ogre_babblingfaces.jpg" />
     <Content Include="Images\PvP\portraits\Omnibus_Meddle.png" />
     <Content Include="Images\PvP\portraits\otter_boy_Kyethusky.png" />
@@ -1101,6 +1102,7 @@
     <Content Include="Images\PvP\portraits\robot_Meddle.png" />
     <Content Include="Images\PvP\portraits\sailor_seal_girl_Dandelion.jpg" />
     <Content Include="Images\PvP\portraits\satyr_martiandawn.jpg" />
+    <Content Include="Images\PvP\portraits\scholarly_schoolgirl_Babblingfaces.jpg" />
     <Content Include="Images\PvP\portraits\seductive_skunk_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\seekshadow_apprentice_thief_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\seekshadow_master_thief_Luxianne.jpg" />

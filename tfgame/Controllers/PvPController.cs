@@ -3533,17 +3533,14 @@ namespace tfgame.Controllers
 
             bool dungeonHalfPoints = false;
 
-            // don't allow items or pets to struggle while their owner is online in the dungeon
-            if (itemMe.OwnerId > 0 && me.GameMode < 2)
+            // Give items/pets a struggle penalty if their owner isn't a bot and is in the dungeon
+            if (itemMe.OwnerId > 0)
             {
                 Player owner = PlayerProcedures.GetPlayer(itemMe.OwnerId);
-
-                //if (owner.IsInDungeon() == true && PlayerProcedures.PlayerIsOffline(owner) == false && owner.Form != PvPStatics.DungeonDemon)
-                //{
-                //    TempData["Error"] = "The dark powers of the dungeon prevent you from being able to fight your transformation while your owner is online.";
-                //    return RedirectToAction("Play");
-                //}
-                dungeonHalfPoints = true;
+                if (owner.IsInDungeon())
+                {
+                    dungeonHalfPoints = true;
+                }
             }
 
 

@@ -21,7 +21,6 @@
     @{
             <div style="text-align: center;">
                 <p>@Model.Item.FriendlyName</p>
-                @*<p class="formerly">@Html.ActionLink(Model.dbItem.VictimName, "LookAtPlayerItem", "PvP", new { vicname = Model.dbItem.VictimName }, null)</p>*@
 
                 @CharactersHere.PrintPvPIcon(Model.dbItem)
                 <span class="price">Price:  @tfgame.Procedures.ItemProcedures.GetCostOfItem(Model, "buy") Arpeyjis</span>

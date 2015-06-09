@@ -383,6 +383,11 @@ namespace tfgame.Controllers
 
             PlayerProcedures.SetNickname(input.MessageText);
 
+            if (me.Mobility == "inanimate" || me.Mobility == "animal")
+            {
+                ItemProcedures.SetNickname(me, input.MessageText);
+            }
+
             TempData["Result"] = "Your new nickname has been set.";
             return RedirectToAction("Play", "PvP");
         }
@@ -848,6 +853,20 @@ namespace tfgame.Controllers
         {
 
             // assert the text fields are not too long
+            if (input.Title.Length > 35)
+            {
+                ViewBag.ErrorMessage = "The ad title is too long.";
+                return View("EditRPClassifiedAd", input);
+            }
+
+            // assert the text fields are not too long
+            if (input.Title.Length < 5)
+            {
+                ViewBag.ErrorMessage = "The ad title is too short.";
+                return View("EditRPClassifiedAd", input);
+            }
+
+            // assert the text fields are not too long
             if (input.Text.Length > 300)
             {
                 ViewBag.ErrorMessage = "The ad description is too long.";
@@ -876,6 +895,13 @@ namespace tfgame.Controllers
                 return View("EditRPClassifiedAd", input);
             }
 
+            // assert the timezone fields is not too long
+            if (input.PreferredTimezones.Length > 70)
+            {
+                ViewBag.ErrorMessage = "The ad title is too long.";
+                return View("EditRPClassifiedAd", input);
+            }
+
 
             Player me = PlayerProcedures.GetPlayerFromMembership();
             RPClassifiedAd ad = RPClassifiedAdsProcedures.GetClassifiedAd(input.Id);
@@ -887,7 +913,7 @@ namespace tfgame.Controllers
                 return RedirectToAction("MyRPClassifiedAds", "Settings");
             }
 
-            // TODO: assert player does not have too many ads out already
+            // assert player does not have too many ads out already
             if (RPClassifiedAdsProcedures.GetPlayerClassifiedAdCount(me) >= 3)
             {
                 TempData["Error"] = "You already have the maximum number of RP Classified Ads posted per player.";

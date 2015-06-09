@@ -31,7 +31,7 @@
     @{
         if (Model.Count() > 0 && Model.First().dbItem.IsPermanent == true)
         {
-            <p>You can sell your pet to Wuffie.  Wuffie will make sure <b>@Model.First().dbItem.VictimName</b> your <b>@Model.First().Item.FriendlyName</b> is well taken care of until a new owner can be found for them!</p>
+            <p>You can sell your pet to Wuffie.  Wuffie will make sure <b>@Model.First().dbItem.GetFullName()</b> your <b>@Model.First().Item.FriendlyName</b> is well taken care of until a new owner can be found for them!</p>
         }
         else if (Model.Count() > 0 && Model.First().dbItem.IsPermanent == false)
         {
@@ -57,7 +57,7 @@
             }
                 }
 
-                @item.Item.FriendlyName <span> (@item.dbItem.VictimName)</span>
+                @item.Item.FriendlyName <span> (@item.dbItem.GetFullName())</span>
             </h3>
             <p>
                 You will receive:  @tfgame.Procedures.ItemProcedures.GetCostOfItem(item, "sell") Arpeyjis

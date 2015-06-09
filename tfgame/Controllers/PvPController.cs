@@ -1626,13 +1626,13 @@ namespace tfgame.Controllers
                 TempData["Result"] = ItemProcedures.GiveItemToPlayer(pickup.dbItem.Id, me.Id);
                 ItemProcedures.EquipItem(pickup.dbItem.Id, true);
                 AnimalProcedures.ChangeOwner(pickup.dbItem, me.Id);
-                playerLogMessage = "You tamed <b>" + pickup.dbItem.VictimName + " the " + pickup.Item.FriendlyName + "</b> at " + here.Name + " and put it into your inventory.";
+                playerLogMessage = "You tamed <b>" + pickup.dbItem.GetFullName() + " the " + pickup.Item.FriendlyName + "</b> at " + here.Name + " and put it into your inventory.";
                // PlayerLogProcedures.AddPlayerLog()
-                locationLogMessage = me.FirstName + " " + me.LastName + " tamed <b>" + pickup.dbItem.VictimName + " the " + pickup.Item.FriendlyName + CharactersHere.PrintPvPIcon(pickup.dbItem) + "</b> here.";
+                locationLogMessage = me.FirstName + " " + me.LastName + " tamed <b>" + pickup.dbItem.GetFullName() + " the " + pickup.Item.FriendlyName + CharactersHere.PrintPvPIcon(pickup.dbItem) + "</b> here.";
 
                 Player personAnimal = PlayerProcedures.GetPlayerWithExactName(pickup.dbItem.VictimName);
 
-                string notificationMsg = me.FirstName + " " + me.LastName + " has tamed you.  You will now follow them wherever they go and magically enhance their abilities by being their faithful companion.";
+                string notificationMsg = me.GetFullName() + " has tamed you.  You will now follow them wherever they go and magically enhance their abilities by being their faithful companion.";
                 PlayerLogProcedures.AddPlayerLog(personAnimal.Id, notificationMsg, true);
 
             }
@@ -1709,7 +1709,7 @@ namespace tfgame.Controllers
 
                 Player personAnimal = PlayerProcedures.GetPlayerWithExactName(dropme.dbItem.VictimName);
 
-                string notificationMsg = me.FirstName + " " + me.LastName + " has released you.  You are now feral and may now wander the town at will until another master tames you.";
+                string notificationMsg = me.GetFullName() + " has released you.  You are now feral and may now wander the town at will until another master tames you.";
                 PlayerLogProcedures.AddPlayerLog(personAnimal.Id, notificationMsg, true);
 
                

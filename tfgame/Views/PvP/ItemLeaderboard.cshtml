@@ -58,7 +58,7 @@
                     </td>
                     <td>
                         @CharactersHere.PrintPermanencyIcon(p.Item)
-                        @Html.ActionLink(p.Item.VictimName, "LookAtPlayerItem", "PvP", new { vicname = p.Item.VictimName }, null)
+                        @Html.ActionLink(p.Item.GetFullName(), "LookAtPlayerItem", "PvP", new { vicname = p.Item.VictimName }, null)
                         @CharactersHere.PrintGenderIcon(p.Gender)
                         @CharactersHere.PrintItemTypeIcon(p.StaticItem)                        
                     </td>

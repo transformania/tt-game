@@ -37,7 +37,8 @@ namespace tfgame.Procedures
                                                              PvPEnabled = i.PvPEnabled,
                                                              TimeDropped = i.TimeDropped,
                                                              TurnsUntilUse = i.TurnsUntilUse,
-                                                             VictimName = i.VictimName
+                                                             VictimName = i.VictimName,
+                                                             Nickname = i.Nickname,
                                                           },
 
 
@@ -133,7 +134,8 @@ namespace tfgame.Procedures
                                                          PvPEnabled = i.PvPEnabled,
                                                          TimeDropped = i.TimeDropped,
                                                          TurnsUntilUse = i.TurnsUntilUse,
-                                                         VictimName = i.VictimName
+                                                         VictimName = i.VictimName,
+                                                         Nickname = i.Nickname,
                                                      },
 
 
@@ -238,7 +240,8 @@ namespace tfgame.Procedures
                                                          PvPEnabled = i.PvPEnabled,
                                                          TimeDropped = i.TimeDropped,
                                                          TurnsUntilUse = i.TurnsUntilUse,
-                                                         VictimName = i.VictimName
+                                                         VictimName = i.VictimName,
+                                                         Nickname = i.Nickname,
                                                      },
 
 
@@ -325,7 +328,8 @@ namespace tfgame.Procedures
                                                         PvPEnabled = i.PvPEnabled,
                                                         TimeDropped = i.TimeDropped,
                                                         TurnsUntilUse = i.TurnsUntilUse,
-                                                        VictimName = i.VictimName
+                                                        VictimName = i.VictimName,
+                                                        Nickname = i.Nickname,
                                                     },
 
 
@@ -445,7 +449,7 @@ namespace tfgame.Procedures
                 // item is an animal
                 else
                 {
-                    return "You tame " + item.VictimName + " the " + itemPlus.FriendlyName + " and are now keeping them as a pet.";
+                    return "You tame " + item.GetFullName() + " the " + itemPlus.FriendlyName + " and are now keeping them as a pet.";
                 }
 
             }
@@ -558,7 +562,7 @@ namespace tfgame.Procedures
             if (itemPlus.ItemType == PvPStatics.ItemType_Pet)
             {
                 AnimalProcedures.ChangeOwner(item, -1);
-                return "You released " + item.VictimName + " the " + itemPlus.FriendlyName + " that you were keeping as a pet.";
+                return "You released " + item.GetFullName() + " the " + itemPlus.FriendlyName + " that you were keeping as a pet.";
             }
 
             // item is a regular item
@@ -1897,6 +1901,14 @@ namespace tfgame.Procedures
             }
 
             return output;
+        }
+
+        public static void SetNickname(Player player, string nickname)
+        {
+            IItemRepository itemRepo = new EFItemRepository();
+            Item playerItem = itemRepo.Items.FirstOrDefault(i => i.VictimName == player.FirstName + " " + player.LastName);
+            playerItem.Nickname = nickname;
+            itemRepo.SaveItem(playerItem);
         }
 
         

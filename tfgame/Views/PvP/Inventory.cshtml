@@ -69,36 +69,6 @@
     @Html.Partial("partial_InventoryEquipped", Model.Items)
 
     <br /><br />
-
- @*    <div class="itemInformationWrapper">
-            <div class="itemName">
-                @Model.Item.FriendlyName
-
-                @{
-                    if (Model.dbItem.IsEquipped == true && Model.Item.ItemType != PvPStatics.ItemType_Pet)
-                    {
-                        <span><b>(Worn/Equipped)</b></span>
-                    }
-                    else if (Model.dbItem.IsEquipped == true && Model.Item.ItemType == PvPStatics.ItemType_Pet)
-                    {
-                        <span><b>(Pet)</b></span>
-                    }
-                }
-
-                @{
-                    if (@Model.dbItem.VictimName != "")
-                    {
-                        @*<span class="formerly">Formerly @Model.dbItem.VictimName</span>
-
-                        <span class="formerly">Formerly @Html.ActionLink(Model.dbItem.VictimName, "LookAtPlayerItem", "PvP", new { vicname = Model.dbItem.VictimName }, null)</span>
-                        @CharactersHere.PrintPermanencyIcon(Model)
-                    }
-                }
-            </div>*@
-
-      @*<div id="fullDetails">
-
-      </div>*@ 
  
     <div class="row">
         @{

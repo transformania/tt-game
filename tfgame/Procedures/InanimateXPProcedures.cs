@@ -459,7 +459,7 @@ namespace tfgame.Procedures
 
                     playerMessage = "Your subtle transformation curse overwhelms your owner, transforming them into a " + newForm.FriendlyName + "!";
                     PlayerLogProcedures.AddPlayerLog(owner.Id, ownerMessage, true);
-                    LocationLogProcedures.AddLocationLog(owner.dbLocationName, "<b> " + owner.GetFullName() + " is suddenly transformed by " + playerItem.VictimName + " the " + playerItemPlus.FriendlyName + ", one of their belongings!</b>");
+                    LocationLogProcedures.AddLocationLog(owner.dbLocationName, "<b> " + owner.GetFullName() + " is suddenly transformed by " + playerItem.GetFullName() + " the " + playerItemPlus.FriendlyName + ", one of their belongings!</b>");
                 }
             }
 

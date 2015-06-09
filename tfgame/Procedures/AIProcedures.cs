@@ -229,11 +229,11 @@ namespace tfgame.Procedures
 
                                 if (i.Item.ItemType == PvPStatics.ItemType_Pet)
                                 {
-                                    LocationLogProcedures.AddLocationLog(bot.dbLocationName, "<b>" + bot.GetFullName() + "</b> released <b>" + i.dbItem.VictimName + "</b> the pet <b>" + i.Item.FriendlyName + "</b> here.");
+                                    LocationLogProcedures.AddLocationLog(bot.dbLocationName, "<b>" + bot.GetFullName() + "</b> released <b>" + i.dbItem.GetFullName() + "</b> the pet <b>" + i.Item.FriendlyName + "</b> here.");
                                 }
                                 else
                                 {
-                                    LocationLogProcedures.AddLocationLog(bot.dbLocationName, "<b>" + bot.GetFullName() + "</b> dropped <b>" + i.dbItem.VictimName + "</b> the <b>" + i.Item.FriendlyName + "</b> here.");
+                                    LocationLogProcedures.AddLocationLog(bot.dbLocationName, "<b>" + bot.GetFullName() + "</b> dropped <b>" + i.dbItem.GetFullName() + "</b> the <b>" + i.Item.FriendlyName + "</b> here.");
                                 }
                              
                             }

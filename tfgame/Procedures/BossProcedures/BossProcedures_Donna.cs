@@ -191,7 +191,7 @@ namespace tfgame.Procedures.BossProcedures
                     IEnumerable<Item> weakest = itemRepo.Items.Where(i => i.OwnerId == donna.Id).OrderBy(i => i.Level);
                     Item weakestItem = weakest.First();
                     ItemProcedures.DropItem(weakestItem.Id, donna.dbLocationName);
-                    LocationLogProcedures.AddLocationLog(donna.dbLocationName, "Donna released one of her weaker pets, " + weakestItem.VictimName + ", here.");
+                    LocationLogProcedures.AddLocationLog(donna.dbLocationName, "Donna released one of her weaker pets, " + weakestItem.GetFullName() + ", here.");
                     Player luckyVictim = PlayerProcedures.GetPlayerWithExactName(weakestItem.VictimName);
                     PlayerLogProcedures.AddPlayerLog(luckyVictim.Id, "Donna has released you, allowing you to wander about or be tamed by a new owner.", true);
                 }

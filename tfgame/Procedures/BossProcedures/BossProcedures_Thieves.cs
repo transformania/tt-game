@@ -265,7 +265,7 @@ namespace tfgame.Procedures.BossProcedures
                     else if (target.MembershipId == -3)
                     {
                         ItemProcedures.GiveItemToPlayer(victimThiefItem.Id, attackingThief.Id);
-                        LocationLogProcedures.AddLocationLog(target.dbLocationName, "<b>" + attackingThief.GetFullName() + " stole " + victimThiefItem.VictimName + " the " + victimThiefItemPlus.Item.FriendlyName + " from Lindella.</b>");
+                        LocationLogProcedures.AddLocationLog(target.dbLocationName, "<b>" + attackingThief.GetFullName() + " stole " + victimThiefItem.GetFullName() + " the " + victimThiefItemPlus.Item.FriendlyName + " from Lindella.</b>");
                     }
 
                     // target is a human and they are not offline
@@ -284,7 +284,7 @@ namespace tfgame.Procedures.BossProcedures
                         if (target.Mobility != "full")
                         {
                             ItemProcedures.GiveItemToPlayer(victimThiefItem.Id, attackingThief.Id);
-                            LocationLogProcedures.AddLocationLog(target.dbLocationName, "<b>" + attackingThief.GetFullName() + " recovered " + victimThiefItem.VictimName + " the " + victimThiefItemPlus.Item.FriendlyName + ".</b>");
+                            LocationLogProcedures.AddLocationLog(target.dbLocationName, "<b>" + attackingThief.GetFullName() + " recovered " + victimThiefItem.GetFullName() + " the " + victimThiefItemPlus.Item.FriendlyName + ".</b>");
                         }
                     }
 
@@ -302,7 +302,7 @@ namespace tfgame.Procedures.BossProcedures
                     attackingThief.dbLocationName = victimThiefItem.dbLocationName;
                     playerRepo.SavePlayer(attackingThief);
                     ItemProcedures.GiveItemToPlayer(victimThiefItem.Id, attackingThief.Id);
-                    LocationLogProcedures.AddLocationLog(attackingThief.dbLocationName, "<b>" + attackingThief.GetFullName() + " recovered " + victimThiefItem.VictimName + " the " + victimThiefItemPlus.Item.FriendlyName + ".</b>");
+                    LocationLogProcedures.AddLocationLog(attackingThief.dbLocationName, "<b>" + attackingThief.GetFullName() + " recovered " + victimThiefItem.GetFullName() + " the " + victimThiefItemPlus.Item.FriendlyName + ".</b>");
                 }
 
                 

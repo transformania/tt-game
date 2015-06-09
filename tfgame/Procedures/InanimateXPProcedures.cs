@@ -148,7 +148,7 @@ namespace tfgame.Procedures
 
             if (xp.Amount >= InanimateXPStatics.XP__LevelupRequirements[inanimateMe.Level])
             {
-                xp.Amount = 0;
+                xp.Amount -= InanimateXPStatics.XP__LevelupRequirements[inanimateMe.Level];
                 inanimateMe.Level++;
                 itemRep.SaveItem(inanimateMe);
 

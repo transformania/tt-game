@@ -66,7 +66,7 @@ namespace tfgame.Procedures
             IPlayerRepository playerRepo = new EFPlayerRepository();
             decimal playerCount = playerRepo.Players.Where(p => p.IpAddress == me.IpAddress && (p.Mobility == "inanimate" || p.Mobility == "animal") && p.MembershipId > 0).Count();
 
-            if (playerCount == 0)
+            if (playerCount == 0 || HttpContext.Current.User.IsInRole(PvPStatics.Permissions_MultiAccountWhitelist))
             {
                 playerCount = 1;
             }

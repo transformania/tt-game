@@ -479,9 +479,6 @@ namespace tfgame.Procedures
                  Item oldItemMe = itemRepo.Items.FirstOrDefault(i => i.VictimName == oldplayer.FirstName + " " + oldplayer.LastName);
                  oldItemMe.IsPermanent = true;
                  itemRepo.SaveItem(oldItemMe);
-
-          
-                
              }
             
 

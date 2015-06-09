@@ -39,6 +39,9 @@
             {
                 <div class="col-xs-12 col-md-3 rp-ad textSpaced">
                     <p>
+                        <i><b><u>@ad.Title</u></b></i>
+                    </p>
+                    <p>
                         <b>Description</b><br />
                         <i>@ad.Text</i>
                     </p>
@@ -49,6 +52,10 @@
                     <p>
                         <span class="bad">Undesired themes</span><br />
                         @ad.NoThemes
+                    </p>
+                    <p>
+                        <span class="timeago">Availability / Timezones</span><br />
+                        @ad.PreferredTimezones
                     </p>
                     <p class="timeago">
                         Created @tfgame.CustomHtmlHelpers.CharactersHere.DatetimeToTimeago(ad.CreationTimestamp)<br />

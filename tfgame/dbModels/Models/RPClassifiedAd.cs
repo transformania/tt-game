@@ -14,5 +14,7 @@ namespace tfgame.dbModels.Models
         public string NoThemes { get; set; }
         public DateTime CreationTimestamp { get; set; }
         public DateTime RefreshTimestamp { get; set; }
+        public string PreferredTimezones { get; set; }
+        public string Title { get; set; }
     }
 }

@@ -29,6 +29,8 @@ namespace tfgame.Procedures
             ad.YesThemes = input.YesThemes;
             ad.NoThemes = input.NoThemes;
             ad.RefreshTimestamp = DateTime.UtcNow;
+            ad.Title = input.Title;
+            ad.PreferredTimezones = input.PreferredTimezones;
 
             repo.SaveRPClassifiedAd(ad);
 

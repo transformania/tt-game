@@ -40,6 +40,12 @@
         </div>
 
         <div class="messageInfoContainer clearfix">
+           Write a short title for your classified ad.  (Must be between 5 and 35 characters)
+            <span class="charCounter" id="Title_textRemaining"></span>
+        </div>
+        @Html.TextAreaFor(m => m.Title, new { @class = "text-container" })
+
+        <div class="messageInfoContainer clearfix">
             Write a general description of what kind of roleplaying experience you are looking for.  (Must be between 50 and 300 characters)
             <span class="charCounter" id="Text_textRemaining"></span>
         </div>
@@ -55,8 +61,13 @@
             What themes would you like this RP <b class="bad">TO NOT</b> contain?   (optional, limit 200 characters)
             <span class="charCounter" id="NoThemes_textRemaining"></span>
         </div>
-
         @Html.TextAreaFor(m => m.NoThemes, new { @class = "text-container" })
+
+    <div class="messageInfoContainer clearfix">
+        (OPTIONAL) What times are you best available for this RP?  Include your time zone.
+        <span class="charCounter" id="Timezone_textRemaining"></span>
+    </div>
+    @Html.TextAreaFor(m => m.PreferredTimezones, new { @class = "text-container" })
 
         @Html.HiddenFor(m => m.Id)
         @Html.HiddenFor(m => m.OwnerMembershipId)
@@ -83,10 +94,29 @@
         var remaining = 200 - $("#NoThemes").val().length;
         $("#NoThemes_textRemaining").html(remaining + " characters remaining");
     });
+
+    $("#Title").keydown(function () {
+        var remaining = 35 - $("#Title").val().length;
+        $("#Title_textRemaining").html(remaining + " characters remaining");
+    });
+
+    $("#PreferredTimezones").keydown(function () {
+        var remaining = 70 - $("#PreferredTimezones").val().length;
+        $("#Timezone_textRemaining").html(remaining + " characters remaining");
+    });
+
 </script>
 
 <style>
-    .bad {color: #E18948 !important;}
-    .good {color: #77D777 !important; }
-    .text-container{margin-bottom: 20px;}
+    .bad {
+        color: #E18948 !important;
+    }
+
+    .good {
+        color: #77D777 !important;
+    }
+
+    .text-container {
+        margin-bottom: 20px;
+    }
 </style>

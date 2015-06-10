@@ -1040,7 +1040,7 @@ namespace tfgame.Controllers
                 return View("Play", "PvP");
             }
 
-            ItemViewModel temp = ItemProcedures.GetItemViewModel("Livia", "Hildebrand");
+    
 
         
             // BossProcedures_Sisters.RunSistersAction();
@@ -1052,7 +1052,9 @@ namespace tfgame.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult TopBossAttackers()
+         
+
+        public ActionResult MigrateItemPortraits()
         {
             // assert only admins can view this
             if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
@@ -1060,31 +1062,21 @@ namespace tfgame.Controllers
                 return View("Play", "PvP");
             }
 
-            List<BossDamage> damages = AIProcedures.GetTopAttackers(-4, 25);
+            IDbStaticItemRepository itemRepo = new EFDbStaticItemRepository();
+            IDbStaticFormRepository formRepo = new EFDbStaticFormRepository();
 
-            string output = "";
-            foreach (BossDamage d in damages)
-            {
-                output += PlayerProcedures.GetPlayer(d.PlayerId).GetFullName() + " attacked Donna with " + d.TotalPoints + " points.</br>";
+            List<DbStaticForm> forms = formRepo.DbStaticForms.Where(f => f.MobilityType == "inanimate" || f.MobilityType == "animal").ToList();
+            
+            foreach (DbStaticForm form in forms) {
+
+                DbStaticItem item = itemRepo.DbStaticItems.FirstOrDefault(i => i.dbName == form.BecomesItemDbName);
+
+                if (item != null)
+                {
+                    form.PortraitUrl = item.PortraitUrl;
+                    formRepo.SaveDbStaticForm(form);
+                }
             }
-
-            damages = AIProcedures.GetTopAttackers(-5, 25);
-
-            output += "Valentine:</br>";
-            foreach (BossDamage d in damages)
-            {
-                output += PlayerProcedures.GetPlayer(d.PlayerId).GetFullName() + " attacked Valentine with " + d.TotalPoints + " points.</br>";
-            }
-
-            damages = AIProcedures.GetTopAttackers(-7, 25);
-
-            output += "Valentine:</br>";
-            foreach (BossDamage d in damages)
-            {
-                output += PlayerProcedures.GetPlayer(d.PlayerId).GetFullName() + " attacked Lovebringer with " + d.TotalPoints + " points.</br>";
-            }
-
-            TempData["Message"] = output;
 
             return RedirectToAction("Index");
         }

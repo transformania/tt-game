@@ -547,6 +547,16 @@ namespace tfgame.Controllers
             if (contribution.Form_MobilityType == "inanimate" || contribution.Form_MobilityType == "animal")
             {
                 item.PortraitUrl = contribution.ImageURL;
+
+                // update the form's graphic too while we're at it.
+                IDbStaticFormRepository formRepo = new EFDbStaticFormRepository();
+                DbStaticForm form = formRepo.DbStaticForms.FirstOrDefault(f => f.BecomesItemDbName == item.dbName);
+                if (form != null)
+                {
+                    form.PortraitUrl = item.PortraitUrl;
+                    formRepo.SaveDbStaticForm(form);
+                }
+
             }
 
             item.HealthBonusPercent = contribution.HealthBonusPercent;

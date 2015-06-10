@@ -36,6 +36,7 @@
                 </li>
                 <li>@Html.ActionLink("Commands", "ChatCommands", "PvP", null, new { target = "_blank" })</li>
                 <li><a href="#" id="showIgnore" style="color: #734752 !important; font-weight:bold;">Ignore</a></li>
+                <li><a href="#" id="toggleImages" style="color: #734752 !important; font-weight:bold;">Toggle Images</a></li>
 </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -77,6 +78,7 @@
         var autoScrollEnabled = true;
 
         var ignored = [];
+        var imagesOn = true;
 
         $("#autoScrollToggle").click(function () {
             if (autoScrollEnabled == true) {
@@ -140,23 +142,27 @@
 
                     var final = "";
 
-                    if (mobility == "a") {
-                        final = "/Images/PvP/portraits/Thumbnails/100/" + image;
-                    } else if (mobility == "i") {
-                        final = "/Images/PvP/itemsPortraits/Thumbnails/100/" + image;
-                    } else if (mobility == "p") {
-                        final = "/Images/PvP/animalPortraits/Thumbnails/100/" + image;
-                    } else if (mobility == "x" && name == "Judoo (admin)") {
-                        final = "/Images/PvP/portraits/Thumbnails/100/Judoo.jpg";
-                    } else if (mobility == "x" && name == "Mizuho (dev)") {
-                        final = "/Images/PvP/portraits/Thumbnails/100/Mizuho.jpg";
-                    } else if (mobility == "x" && name == "Arrhae (dev)") {
-                        final = "/Images/PvP/portraits/Thumbnails/100/Arrhae.jpg";
-                    }
+                    
+                        if (mobility == "a") {
+                            final = "/Images/PvP/portraits/Thumbnails/100/" + image;
+                        } else if (mobility == "i") {
+                            final = "/Images/PvP/itemsPortraits/Thumbnails/100/" + image;
+                        } else if (mobility == "p") {
+                            final = "/Images/PvP/animalPortraits/Thumbnails/100/" + image;
+                        } else if (mobility == "x" && name == "Judoo (admin)") {
+                            final = "/Images/PvP/portraits/Thumbnails/100/Judoo.jpg";
+                        } else if (mobility == "x" && name == "Mizuho (dev)") {
+                            final = "/Images/PvP/portraits/Thumbnails/100/Mizuho.jpg";
+                        } else if (mobility == "x" && name == "Arrhae (dev)") {
+                            final = "/Images/PvP/portraits/Thumbnails/100/Arrhae.jpg";
+                        }
+                    
 
                     // if this is not a / command, write out the name and colon.  Otherwise only write the message.
-                    if (name.length > 0) {
+                        if (name.length > 0 && imagesOn == true) {
                         $('#discussion ').append('<li><img src="' + final + '" height="38" width="38"><strong>' + htmlEncodeName(name, chatColor) + '</strong>: ' + htmlEncode(message) + '</li>');
+                        } else if (name.length > 0 && imagesOn == false) {
+                        $('#discussion ').append('<li><strong>' + htmlEncodeName(name, chatColor) + '</strong>: ' + htmlEncode(message) + '</li>');
                     } else {
                         $('#discussion ').append('<li><strong>' + injectColor(chatColor, "start") + htmlEncode(message) + '</span></li>');
                     }
@@ -324,6 +330,15 @@
                 $("#ignoreDiv").show();
             } else {
                 $("#ignoreDiv").hide();
+            }
+        });
+
+        $("#toggleImages").click(function () {
+            imagesOn = !imagesOn;
+            if (imagesOn == false) {
+                alert("Images disabled.");
+            } else {
+                alert("Images enabled.");
             }
         });
 

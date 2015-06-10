@@ -35,7 +35,7 @@
                     @Html.ActionLink("Chat Log", "ChatLog", "PvP", new { room = "global", filter = "lasth" }, new { target = "_blank" })
                 </li>
                 <li>@Html.ActionLink("Commands", "ChatCommands", "PvP", null, new { target = "_blank" })</li>
-                <li><a href="#" id="showIgnore" style="color: #734752 !important; font-weight:bold;">Ignore</a></li>
+                <li><a href="#" id="showIgnore">Ignore</a></li>
                 <li><a href="#" id="toggleImages" style="color: #734752 !important; font-weight:bold;">Toggle Images</a></li>
 </ul>
         </div><!-- /.navbar-collapse -->
@@ -160,7 +160,7 @@
 
                     // if this is not a / command, write out the name and colon.  Otherwise only write the message.
                         if (name.length > 0 && imagesOn == true) {
-                        $('#discussion ').append('<li><img src="' + final + '" height="38" width="38"><strong>' + htmlEncodeName(name, chatColor) + '</strong>: ' + htmlEncode(message) + '</li>');
+                        $('#discussion ').append('<li><img src="' + final + '"><strong>' + htmlEncodeName(name, chatColor) + '</strong>: ' + htmlEncode(message) + '</li>');
                         } else if (name.length > 0 && imagesOn == false) {
                         $('#discussion ').append('<li><strong>' + htmlEncodeName(name, chatColor) + '</strong>: ' + htmlEncode(message) + '</li>');
                     } else {
@@ -359,15 +359,21 @@
 }
 
 <style>
-     .chatlink {
+    .chatlink {
         text-decoration: underline;
         color: blue;
         cursor: pointer;
-
     }
 
-     li img {
-         margin-right: 2px;
-         border: 1px solid black;
-     }
+    li img {
+        width: 32px;
+        height: 32px;
+        transition: 0.4s all linear;
+    }
+
+
+        li img:hover {
+            width: 64px;
+            height: 64px;
+        }
 </style>

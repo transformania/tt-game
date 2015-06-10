@@ -137,30 +137,9 @@
 
                     // /Images/PvP/portraits/Thumbnails/100/
 
-                    var mobility = pic.substring(0, 1);
-                    var image = pic.substring(2, pic.length);
-
-                    var final = "";
-
-                    
-                        if (mobility == "a") {
-                            final = "/Images/PvP/portraits/Thumbnails/100/" + image;
-                        } else if (mobility == "i") {
-                            final = "/Images/PvP/itemsPortraits/Thumbnails/100/" + image;
-                        } else if (mobility == "p") {
-                            final = "/Images/PvP/animalPortraits/Thumbnails/100/" + image;
-                        } else if (mobility == "x" && name == "Judoo (admin)") {
-                            final = "/Images/PvP/portraits/Thumbnails/100/Judoo.jpg";
-                        } else if (mobility == "x" && name == "Mizuho (dev)") {
-                            final = "/Images/PvP/portraits/Thumbnails/100/Mizuho.jpg";
-                        } else if (mobility == "x" && name == "Arrhae (dev)") {
-                            final = "/Images/PvP/portraits/Thumbnails/100/Arrhae.jpg";
-                        }
-                    
-
                     // if this is not a / command, write out the name and colon.  Otherwise only write the message.
                         if (name.length > 0 && imagesOn == true) {
-                        $('#discussion ').append('<li><img src="' + final + '"><strong>' + htmlEncodeName(name, chatColor) + '</strong>: ' + htmlEncode(message) + '</li>');
+                        $('#discussion ').append('<li><img src="' + pic + '"><strong>' + htmlEncodeName(name, chatColor) + '</strong>: ' + htmlEncode(message) + '</li>');
                         } else if (name.length > 0 && imagesOn == false) {
                         $('#discussion ').append('<li><strong>' + htmlEncodeName(name, chatColor) + '</strong>: ' + htmlEncode(message) + '</li>');
                     } else {

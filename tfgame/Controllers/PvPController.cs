@@ -523,7 +523,7 @@ namespace tfgame.Controllers
             {
 
                 TempData["Error"] = "You don't have enough action points to move.";
-                TempData["SubError"] = "Wait a while; you will receive more action points every ten minutes.";
+                TempData["SubError"] = "Wait a while; you will receive more action points every five minutes.";
                 return RedirectToAction("Play");
             }
 

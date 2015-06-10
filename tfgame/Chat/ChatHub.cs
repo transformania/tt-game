@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using tfgame.dbModels.Abstract;
 using tfgame.dbModels.Concrete;
 using System.Collections.Generic;
+using tfgame.ViewModels;
 
 
 
@@ -22,35 +23,52 @@ namespace tfgame.Chat
         {
 
             string room = Clients.Caller.toRoom;
-            //string test = Context.
+            PlayerFormViewModel me = PlayerProcedures.GetPlayerFormViewModel_FromMembership(WebSecurity.CurrentUserId);
 
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            string pic = "a-" + me.Form.PortraitUrl;
+
+            if (me.Player.Mobility != "full")
+            {
+                if (me.Player.Mobility == "inanimate") {
+                    pic = "i-";
+                }
+                else if (me.Player.Mobility == "animal")
+                {
+                    pic = "p-";
+                }
+                pic += ItemStatics.GetStaticItem(me.Form.BecomesItemDbName).PortraitUrl;
+                
+
+            }
 
             // assert player is not banned
-            if (me.IsBannedFromGlobalChat == true && room == "global")
+            if (me.Player.IsBannedFromGlobalChat == true && room == "global")
             {
                 return;
             }
 
-            if (me.MembershipId == 69)
+            if (me.Player.MembershipId == 69)
             {
                 name = "Judoo (admin)";
+                pic = "x-";
             }
-            else if (me.MembershipId == 3490)
+            else if (me.Player.MembershipId == 3490)
             {
                 name = "Mizuho (dev)";
+                pic = "x-";
             }
-            else if (me.MembershipId == 251)
+            else if (me.Player.MembershipId == 251)
             {
                 name = "Arrhae (dev)";
+                pic = "x-";
             }
-            else if (me.MembershipId == -1)
+            else if (me.Player.MembershipId == -1)
             {
 
             }
             else
             {
-                name = me.GetFullName();
+                name = me.Player.GetFullName();
             }
 
 
@@ -62,7 +80,7 @@ namespace tfgame.Chat
                     if (HttpContext.Current.User.IsInRole(PvPStatics.Permissions_Moderator) || HttpContext.Current.User.IsInRole(PvPStatics.Permissions_Admin))
                     {
                         message += "   [.[" + DateTime.UtcNow.ToShortTimeString() + "].]";
-                        Clients.Group(room).addNewMessageToPage(name, message, me.ChatColor);
+                        Clients.Group(room).addNewMessageToPage(pic, name, message, me.Player.ChatColor);
                         ChatLogProcedures.WriteLogToDatabase(room, name, message);
                     }
                     else
@@ -72,7 +90,7 @@ namespace tfgame.Chat
                         message = message.Replace("[poll]", " ");
                         message = message.Replace("[fp]", " ");
                         message += "   [.[" + DateTime.UtcNow.ToShortTimeString() + "].]";
-                        Clients.Group(room).addNewMessageToPage(name, message, me.ChatColor);
+                        Clients.Group(room).addNewMessageToPage(pic, name, message, me.Player.ChatColor);
                         ChatLogProcedures.WriteLogToDatabase(room, name, message);
                     }
                 }
@@ -80,7 +98,7 @@ namespace tfgame.Chat
                 {
                     message = message.Replace("/dm message", "");
                     string output = "[=[" + name + " [DM]:  " + message + "]=]";
-                    Clients.Group(room).addNewMessageToPage("", output, me.ChatColor);
+                    Clients.Group(room).addNewMessageToPage(pic, "", output, me.Player.ChatColor);
                     ChatLogProcedures.WriteLogToDatabase(room, name, output);
                 }
 
@@ -94,7 +112,7 @@ namespace tfgame.Chat
                     else
                     {
                         message = "[=[" + message + "]=]";
-                        Clients.Group(room).addNewMessageToPage(name, message, me.ChatColor);
+                        Clients.Group(room).addNewMessageToPage(pic, name, message, me.Player.ChatColor);
                         ChatLogProcedures.WriteLogToDatabase(room, name, message);
                     }
 
@@ -103,7 +121,7 @@ namespace tfgame.Chat
                 {
                     message = message.Replace("/me", "");
                     string output = "[+[" + name + message + "]+]";
-                    Clients.Group(room).addNewMessageToPage("", output, me.ChatColor);
+                    Clients.Group(room).addNewMessageToPage(pic, "", output, me.Player.ChatColor);
                     ChatLogProcedures.WriteLogToDatabase(room, name, output);
                 }
 
@@ -117,14 +135,14 @@ namespace tfgame.Chat
                         Match x = Regex.Match(message, @"\d+");
                         int value = Convert.ToInt32(x.Value);
                         message = "[-[" + name + " rolled a " + PlayerProcedures.RollDie(value) + " (d" + value + ").]-]";
-                        Clients.Group(room).addNewMessageToPage("", message);
+                        Clients.Group(room).addNewMessageToPage(pic, "", message);
                         ChatLogProcedures.WriteLogToDatabase(room, name, message);
                     }
                 }
                 else
                 {
                     message += "   [.[" + DateTime.UtcNow.ToShortTimeString() + "].]";
-                    Clients.Group(room).addNewMessageToPage(name, message, me.ChatColor);
+                    Clients.Group(room).addNewMessageToPage(pic, name, message, me.Player.ChatColor);
                     ChatLogProcedures.WriteLogToDatabase(room, name, message);
                 }
             }
@@ -146,7 +164,7 @@ namespace tfgame.Chat
 
                     if (me.MembershipId != 69 && me.MembershipId != 3490)
                     {
-                        Clients.Group(roomName).addNewMessageToPage("", message, me.ChatColor);
+                        Clients.Group(roomName).addNewMessageToPage("", "", message, me.ChatColor);
                     }
                 }
             }

@@ -120,9 +120,7 @@
             var chat = $.connection.chatHub;
 
 
-            chat.client.addNewMessageToPage = function (name, message, chatColor) {
-
-
+            chat.client.addNewMessageToPage = function (pic, name, message, chatColor) {
 
                 // check and see if this poster or message has a banned substring.  If so, ignore it.  Otherwise display as normal
                 var doNotDisplay = false;
@@ -135,9 +133,30 @@
 
                 if (doNotDisplay == false) {
 
+                    // /Images/PvP/portraits/Thumbnails/100/
+
+                    var mobility = pic.substring(0, 1);
+                    var image = pic.substring(2, pic.length);
+
+                    var final = "";
+
+                    if (mobility == "a") {
+                        final = "/Images/PvP/portraits/Thumbnails/100/" + image;
+                    } else if (mobility == "i") {
+                        final = "/Images/PvP/itemsPortraits/Thumbnails/100/" + image;
+                    } else if (mobility == "p") {
+                        final = "/Images/PvP/animalPortraits/Thumbnails/100/" + image;
+                    } else if (mobility == "x" && name == "Judoo (admin)") {
+                        final = "/Images/PvP/animalPortraits/Thumbnails/100/Judoo.jpg";
+                    } else if (mobility == "x" && name == "Mizuho (dev)") {
+                        final = "/Images/PvP/animalPortraits/Thumbnails/100/Mizuho.jpg";
+                    } else if (mobility == "x" && name == "Arrhae (dev)") {
+                        final = "/Images/PvP/animalPortraits/Thumbnails/100/Arrhae.jpg";
+                    }
+
                     // if this is not a / command, write out the name and colon.  Otherwise only write the message.
                     if (name.length > 0) {
-                        $('#discussion ').append('<li><strong>' + htmlEncodeName(name, chatColor) + '</strong>: ' + htmlEncode(message) + '</li>');
+                        $('#discussion ').append('<li><img src="' + final + '" height="38" width="38"><strong>' + htmlEncodeName(name, chatColor) + '</strong>: ' + htmlEncode(message) + '</li>');
                     } else {
                         $('#discussion ').append('<li><strong>' + injectColor(chatColor, "start") + htmlEncode(message) + '</span></li>');
                     }
@@ -331,4 +350,9 @@
         cursor: pointer;
 
     }
+
+     li img {
+         padding-right: 2px;
+         border: 1px solid black;
+     }
 </style>

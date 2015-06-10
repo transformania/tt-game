@@ -11,6 +11,7 @@ using tfgame.dbModels.Abstract;
 using tfgame.dbModels.Concrete;
 using System.Collections.Generic;
 using tfgame.ViewModels;
+using tfgame.CustomHtmlHelpers;
 
 
 
@@ -25,21 +26,7 @@ namespace tfgame.Chat
             string room = Clients.Caller.toRoom;
             PlayerFormViewModel me = PlayerProcedures.GetPlayerFormViewModel_FromMembership(WebSecurity.CurrentUserId);
 
-            string pic = "a-" + me.Form.PortraitUrl;
-
-            if (me.Player.Mobility != "full")
-            {
-                if (me.Player.Mobility == "inanimate") {
-                    pic = "i-";
-                }
-                else if (me.Player.Mobility == "animal")
-                {
-                    pic = "p-";
-                }
-                pic += ItemStatics.GetStaticItem(me.Form.BecomesItemDbName).PortraitUrl;
-                
-
-            }
+            string pic = CharactersHere.GetImageURL(me, true).ToString();
 
             // assert player is not banned
             if (me.Player.IsBannedFromGlobalChat == true && room == "global")
@@ -50,17 +37,17 @@ namespace tfgame.Chat
             if (me.Player.MembershipId == 69)
             {
                 name = "Judoo (admin)";
-                pic = "x-";
+                pic = "/Images/PvP/portraits/Thumbnails/100/Judoo.jpg";
             }
             else if (me.Player.MembershipId == 3490)
             {
                 name = "Mizuho (dev)";
-                pic = "x-";
+                pic = "/Images/PvP/portraits/Thumbnails/100/Mizuho.jpg";
             }
             else if (me.Player.MembershipId == 251)
             {
                 name = "Arrhae (dev)";
-                pic = "x-";
+                pic = "/Images/PvP/portraits/Thumbnails/100/Arrhae.jpg";
             }
             else if (me.Player.MembershipId == -1)
             {

@@ -47,7 +47,7 @@ namespace tfgame.Chat
             else if (me.Player.MembershipId == 251)
             {
                 name = "Arrhae (dev)";
-                pic = "/Images/PvP/portraits/Thumbnails/100/Arrhae.jpg";
+                // Arrhae wants to keep regular portrait for now, not admin/dev custom one
             }
             else if (me.Player.MembershipId == -1)
             {
@@ -141,17 +141,17 @@ namespace tfgame.Chat
 
         public Task JoinRoom(string roomName)
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            PlayerFormViewModel me = PlayerProcedures.GetPlayerFormViewModel_FromMembership(WebSecurity.CurrentUserId);
 
             try
             {
-                if (me.MembershipId > 0)
+                if (me.Player.MembershipId > 0)
                 {
-                    string message = "[-[" + me.GetFullName() + " has joined the room.]-]";
+                    string message = "[-[" + me.Player.GetFullName() + " has joined the room.]-]";
 
-                    if (me.MembershipId != 69 && me.MembershipId != 3490)
+                    if (me.Player.MembershipId != 69 && me.Player.MembershipId != 3490)
                     {
-                        Clients.Group(roomName).addNewMessageToPage("", "", message, me.ChatColor);
+                        Clients.Group(roomName).addNewMessageToPage("", "", message, me.Player.ChatColor);
                     }
                 }
             }

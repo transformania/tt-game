@@ -135,13 +135,14 @@
 
                 if (doNotDisplay == false) {
 
-                    // /Images/PvP/portraits/Thumbnails/100/
-
                     // if this is not a / command, write out the name and colon.  Otherwise only write the message.
-                        if (name.length > 0 && imagesOn == true) {
+                    if (name.length > 0 && imagesOn == true) {
                         $('#discussion ').append('<li><img src="' + pic + '"><strong>' + htmlEncodeName(name, chatColor) + '</strong>: ' + htmlEncode(message) + '</li>');
-                        } else if (name.length > 0 && imagesOn == false) {
+                    } else if (name.length > 0 && imagesOn == false) {
                         $('#discussion ').append('<li><strong>' + htmlEncodeName(name, chatColor) + '</strong>: ' + htmlEncode(message) + '</li>');
+
+                    } else if (imagesOn == true && pic.length > 0) {
+                        $('#discussion ').append('<li><img src="' + pic + '"><strong>' + injectColor(chatColor, "start") + htmlEncode(message) + '</span></li>');
                     } else {
                         $('#discussion ').append('<li><strong>' + injectColor(chatColor, "start") + htmlEncode(message) + '</span></li>');
                     }
@@ -348,6 +349,7 @@
         width: 32px;
         height: 32px;
         transition: 0.4s all linear;
+        margin-right: 5px;
     }
 
 

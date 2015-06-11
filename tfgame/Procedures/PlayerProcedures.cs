@@ -69,6 +69,9 @@ namespace tfgame.Procedures
                                                               OnlineActivityTimestamp = p.OnlineActivityTimestamp,
                                                               Nickname = p.Nickname,
                                                               ShoutsRemaining = p.ShoutsRemaining,
+                                                              ChatColor = p.ChatColor,
+                                                              IsBannedFromGlobalChat = p.IsBannedFromGlobalChat,
+                                                              
                                                           },
 
                                                           Form = new tfgame.ViewModels.Form
@@ -174,6 +177,8 @@ namespace tfgame.Procedures
                                                               OnlineActivityTimestamp = p.OnlineActivityTimestamp,
                                                               Nickname = p.Nickname,
                                                               ShoutsRemaining = p.ShoutsRemaining,
+                                                              ChatColor = p.ChatColor,
+                                                              IsBannedFromGlobalChat = p.IsBannedFromGlobalChat,
                                                           },
 
                                                           Form = new tfgame.ViewModels.Form
@@ -281,6 +286,8 @@ namespace tfgame.Procedures
                                                               OnlineActivityTimestamp = p.OnlineActivityTimestamp,
                                                               Nickname = p.Nickname,
                                                               ShoutsRemaining = p.ShoutsRemaining,
+                                                              ChatColor = p.ChatColor,
+                                                              IsBannedFromGlobalChat = p.IsBannedFromGlobalChat,
                                                           },
 
                                                           Form = new tfgame.ViewModels.Form
@@ -389,6 +396,8 @@ namespace tfgame.Procedures
                                                               OnlineActivityTimestamp = p.OnlineActivityTimestamp,
                                                               Nickname = p.Nickname,
                                                               ShoutsRemaining = p.ShoutsRemaining,
+                                                              ChatColor = p.ChatColor,
+                                                              IsBannedFromGlobalChat = p.IsBannedFromGlobalChat,
                                                           },
 
                                                           Form = new tfgame.ViewModels.Form

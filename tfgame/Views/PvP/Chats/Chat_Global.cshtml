@@ -35,7 +35,8 @@
                     @Html.ActionLink("Chat Log", "ChatLog", "PvP", new { room = "global", filter = "lasth" }, new { target = "_blank" })
                 </li>
                 <li>@Html.ActionLink("Commands", "ChatCommands", "PvP", null, new { target = "_blank" })</li>
-                <li><a href="#" id="showIgnore" style="color: #734752 !important; font-weight:bold;">Ignore</a></li>
+                <li><a href="#" id="showIgnore">Ignore</a></li>
+                <li><a href="#" id="toggleImages" style="color: #734752 !important; font-weight:bold;">Toggle Images</a></li>
 </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -77,6 +78,7 @@
         var autoScrollEnabled = true;
 
         var ignored = [];
+        var imagesOn = true;
 
         $("#autoScrollToggle").click(function () {
             if (autoScrollEnabled == true) {
@@ -120,9 +122,7 @@
             var chat = $.connection.chatHub;
 
 
-            chat.client.addNewMessageToPage = function (name, message, chatColor) {
-
-
+            chat.client.addNewMessageToPage = function (pic, name, message, chatColor) {
 
                 // check and see if this poster or message has a banned substring.  If so, ignore it.  Otherwise display as normal
                 var doNotDisplay = false;
@@ -136,8 +136,13 @@
                 if (doNotDisplay == false) {
 
                     // if this is not a / command, write out the name and colon.  Otherwise only write the message.
-                    if (name.length > 0) {
+                    if (name.length > 0 && imagesOn == true) {
+                        $('#discussion ').append('<li><img src="' + pic + '"><strong>' + htmlEncodeName(name, chatColor) + '</strong>: ' + htmlEncode(message) + '</li>');
+                    } else if (name.length > 0 && imagesOn == false) {
                         $('#discussion ').append('<li><strong>' + htmlEncodeName(name, chatColor) + '</strong>: ' + htmlEncode(message) + '</li>');
+
+                    } else if (imagesOn == true && pic.length > 0) {
+                        $('#discussion ').append('<li><img src="' + pic + '"><strong>' + injectColor(chatColor, "start") + htmlEncode(message) + '</span></li>');
                     } else {
                         $('#discussion ').append('<li><strong>' + injectColor(chatColor, "start") + htmlEncode(message) + '</span></li>');
                     }
@@ -308,6 +313,15 @@
             }
         });
 
+        $("#toggleImages").click(function () {
+            imagesOn = !imagesOn;
+            if (imagesOn == false) {
+                alert("Images disabled.");
+            } else {
+                alert("Images enabled.");
+            }
+        });
+
         //This section has to go somewhere, when someone clicks something with the "chatlink" class, it will run the popup.
         $("#discussion").on('click', '.chatlink', function () {
             console.log("xyz");
@@ -325,10 +339,22 @@
 }
 
 <style>
-     .chatlink {
+    .chatlink {
         text-decoration: underline;
         color: blue;
         cursor: pointer;
-
     }
+
+    li img {
+        width: 32px;
+        height: 32px;
+        transition: 0.4s all linear;
+        margin-right: 5px;
+    }
+
+
+        li img:hover {
+            width: 64px;
+            height: 64px;
+        }
 </style>

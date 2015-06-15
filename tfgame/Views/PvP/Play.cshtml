@@ -356,8 +356,17 @@
 
     var donatorTier = @Model.You.Player.DonatorLevel;
 
+    var playUpdateSound = false;
+
     $(document).ready(function () {
 
+        //// load whether or not to play audio notifications
+        //var playUpdateSoundLoad = JSON.parse(localStorage.getItem("play_updateSoundEnabled"));
+        //if (playUpdateSoundLoad == undefined ) {
+        //    localStorage.setItem("chat_IgnoreList", "false");
+        //} else if (localStorage.getItem("play_updateSoundEnabled") == "true") {
+        //    playUpdateSound = true;
+        //}
 
         setInterval(function(){
             secondsToUpdate--;
@@ -384,14 +393,10 @@
         var text = $("#RecentActivityLog").html();
 
 
-
         for (var i = 0; i <= @ViewBag.MaxLogSize; i++) {
-
             text = text.replace(name, "You");
             text = text.replace("You was", "You were");
-
         }
-
 
         $( "#timerBox" ).click(function() {
             alert("The last update was  @CharactersHere.DatetimeToTimeago_WithSeconds(Model.LastUpdateTimestamp) (based on when this page was loaded.)  Turns last 5 minutes.");
@@ -399,9 +404,6 @@
 
 
         $("#RecentActivityLog").html(text);
-
-
-
 
         if (ap < cleanseCost) {
             $("#action_cleanse").attr("href", "#");
@@ -425,10 +427,6 @@
             });
         }
 
-
-
-        // on page load, hide offline players
-        // $("#offlinePlayersWrapper").hide();
 
         // show offline player section when player clicks on the proper div
         $("#showOfflinePlayersButton").click(function() {
@@ -476,32 +474,22 @@
     }
 
 
-    function pingForUpdate() {
-        $.ajax({
-            url: 'PvP/ClientUpdateCheck/',
-            type: 'POST',
-            fail: fail,
-            success: pingDone,
-            dataType: 'text'
-        });
-    }
-
-    function pingDone(data) {
-        if (data > turnNo) {
-            turnNo = data;
-            blinkEnabled = 1;
-        }
-    }
-
     function titleToggle() {
 
         if (blinkEnabled==1) {
             if (togglestate == 0) {
                 $('title').text('Transformania Time!');
                 togglestate = 1;
+
             } else if (togglestate == 1){
                 $('title').text('[UPDATED--reload page!]');
                 togglestate = 0;
+            }
+
+            console.log((secondsToUpdate + 3) % 7);
+            if (playUpdateSound == true && (secondsToUpdate + 3) % 7 == 0) {
+                var audio = new Audio('../Sounds/turnUpdate1.wav');
+                audio.play();
             }
         }
     }

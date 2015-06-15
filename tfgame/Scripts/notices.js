@@ -42,6 +42,9 @@ $(document).ready(function () {
                     // $("body").css("background-color", "darkred");
                     attackPulse = 1;
                     backgroundPulse();
+
+
+
                 }
 
 
@@ -61,8 +64,16 @@ $(document).ready(function () {
                 $("#liveConnectionNotice").removeClass("noticeOn");
             });
 
+            // load whether or not to play audio notifications
+            var playUpdateSoundLoad = JSON.parse(localStorage.getItem("play_updateSoundEnabled"));
+            if (playUpdateSoundLoad == undefined) {
+                localStorage.setItem("chat_IgnoreList", "false");
+            } else if (localStorage.getItem("play_updateSoundEnabled") == "true") {
+                playUpdateSound = true;
+            }
 
-
+            var attackedAudio = new Audio('../Sounds/attack.wav');
+            audio.play();
 
         });
     }

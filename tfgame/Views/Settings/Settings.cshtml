@@ -198,7 +198,30 @@
     <p>
         View and update any blacklist entries you have set.  @Html.ActionLink("My Blacklist Entries", "MyBlacklistEntries", "Settings")
     </p>
+
+    <h2>Audio Notifications</h2>
+    <p id="toggleAudio"><a href="">Click here to toggle Update Audio Notification.</a>  This will play a short sound when there is a turn update and when you are attacked.</p>
+
 </div>
+
+<script>
+    $(document).ready(function () {
+       
+        $("#toggleAudio").click(function () {
+            var toggle = localStorage.getItem("play_updateSoundEnabled");
+
+            if (toggle == undefined || toggle == "false") {
+                var toggle = localStorage.setItem("play_updateSoundEnabled", "true");
+                alert("Update audio notifications ENABLED.");
+            } else {
+                var toggle = localStorage.setItem("play_updateSoundEnabled", "false");
+                alert("Update audio notifications DISABLED.");
+            }
+
+        });
+
+    });
+</script>
 
 
 <style>

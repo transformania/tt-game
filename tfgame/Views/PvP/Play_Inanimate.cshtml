@@ -230,6 +230,7 @@
 
     var secondsToUpdate = @ViewBag.SecondsUntilUpdate;
     var donatorTier = @Model.Player.DonatorLevel;
+    var playUpdateSound = false;
 
     $(document).ready(function() {
 
@@ -240,7 +241,6 @@
             }
         });
 
-       // var myVar=setInterval(function(){pingForUpdate()},30000);
         var myVa2r=setInterval(function(){titleToggle()},1000);
 
         setInterval(function(){
@@ -270,33 +270,10 @@
         alert("The last update was  @CharactersHere.DatetimeToTimeago_WithSeconds(Model.LastUpdateTimestamp) (based on when this page was loaded.)  Updates should happen every 10 minutes.");
     });
 
-    function pingForUpdate() {
-        $.ajax({
-            url: 'PvP/ClientUpdateCheck/',
-            type: 'POST',
-            fail: fail,
-            success: pingDone,
-            dataType: 'text'
-        });
-    }
-
     function pingDone(data) {
         if (data > turnNo) {
             turnNo = data;
             blinkEnabled = 1;
-        }
-    }
-
-    function titleToggle() {
-
-        if (blinkEnabled==1) {
-            if (togglestate == 0) {
-                $('title').text('Transformania Time!');
-                togglestate = 1;
-            } else if (togglestate == 1){
-                $('title').text('[UPDATED--reload page!]');
-                togglestate = 0;
-            }
         }
     }
 

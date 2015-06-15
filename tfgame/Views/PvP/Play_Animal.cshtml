@@ -364,7 +364,8 @@
     var togglestate = 0;
     var blinkEnabled = 0;
     var secondsToUpdate = @ViewBag.SecondsUntilUpdate;
-            var donatorTier = @Model.You.DonatorLevel;
+    var donatorTier = @Model.You.DonatorLevel;
+    var playUpdateSound = false;
 
             $(document).ready(function () {
 
@@ -417,33 +418,10 @@
 
     });
 
-    function pingForUpdate() {
-        $.ajax({
-            url: 'PvP/ClientUpdateCheck/',
-            type: 'POST',
-            fail: fail,
-            success: pingDone,
-            dataType: 'text'
-        });
-    }
-
     function pingDone(data) {
         if (data > turnNo) {
             turnNo = data;
             blinkEnabled = 1;
-        }
-    }
-
-    function titleToggle() {
-
-        if (blinkEnabled==1) {
-            if (togglestate == 0) {
-                $('title').text('Transformania Time!');
-                togglestate = 1;
-            } else if (togglestate == 1){
-                $('title').text('[UPDATED--reload page!]');
-                togglestate = 0;
-            }
         }
     }
 

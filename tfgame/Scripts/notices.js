@@ -18,9 +18,6 @@ $(document).ready(function () {
             var link = $.connection.noticeHub;
             link.client.receiveNotice = function (data) {
 
-                //alert(data);
-                //   console.log(data);
-
                 var notice = JSON.parse(data);
 
                 $("#notificationBox").show();
@@ -43,7 +40,8 @@ $(document).ready(function () {
                     attackPulse = 1;
                     backgroundPulse();
 
-
+                    var attackedAudio = new Audio('../Sounds/attack.wav');
+                    attackedAudio.play();
 
                 }
 
@@ -72,8 +70,7 @@ $(document).ready(function () {
                 playUpdateSound = true;
             }
 
-            var attackedAudio = new Audio('../Sounds/attack.wav');
-            audio.play();
+           
 
         });
     }
@@ -95,4 +92,21 @@ function dismissNotificationsSuccess() {
 
 function dismissNotificationsFail() {
     alert("Something went wrong.  Unable to dismiss notifications.");
+}
+
+
+function titleToggle() {
+    if (blinkEnabled == 1) {
+        if (togglestate == 0) {
+            $('title').text('Transformania Time!');
+            togglestate = 1;
+        } else if (togglestate == 1) {
+            $('title').text('[UPDATED--reload page!]');
+            togglestate = 0;
+        }
+        if (playUpdateSound == true && (secondsToUpdate + 3) % 7 == 0) {
+            var audio = new Audio('../Sounds/turnUpdate1.wav');
+            audio.play();
+        }
+    }
 }

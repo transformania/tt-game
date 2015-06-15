@@ -360,14 +360,6 @@
 
     $(document).ready(function () {
 
-        //// load whether or not to play audio notifications
-        //var playUpdateSoundLoad = JSON.parse(localStorage.getItem("play_updateSoundEnabled"));
-        //if (playUpdateSoundLoad == undefined ) {
-        //    localStorage.setItem("chat_IgnoreList", "false");
-        //} else if (localStorage.getItem("play_updateSoundEnabled") == "true") {
-        //    playUpdateSound = true;
-        //}
-
         setInterval(function(){
             secondsToUpdate--;
             timer_minutes = Math.floor(secondsToUpdate/60);
@@ -474,25 +466,7 @@
     }
 
 
-    function titleToggle() {
-
-        if (blinkEnabled==1) {
-            if (togglestate == 0) {
-                $('title').text('Transformania Time!');
-                togglestate = 1;
-
-            } else if (togglestate == 1){
-                $('title').text('[UPDATED--reload page!]');
-                togglestate = 0;
-            }
-
-            console.log((secondsToUpdate + 3) % 7);
-            if (playUpdateSound == true && (secondsToUpdate + 3) % 7 == 0) {
-                var audio = new Audio('../Sounds/turnUpdate1.wav');
-                audio.play();
-            }
-        }
-    }
+    
 
     // on page click return to old page title
     //$(document).click(function () {

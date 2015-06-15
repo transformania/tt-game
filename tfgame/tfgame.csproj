@@ -1369,6 +1369,7 @@
     <Content Include="Scripts\jquery.rotate.js" />
     <Content Include="Scripts\jQueryRotateCompressed.js" />
     <Content Include="Scripts\notices.js" />
+    <Content Include="Sounds\turnUpdate1.wav" />
     <Content Include="XMLs\BossSummonText\BimboBoss.txt" />
     <Content Include="XMLs\BossSummonText\Sisters.txt" />
     <Content Include="XMLs\BossSummonText\Donna.txt" />

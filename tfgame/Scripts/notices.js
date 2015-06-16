@@ -24,6 +24,13 @@ $(document).ready(function () {
                 $("#dismissNotficationBox").show();
                 $("#notificationBox").prepend(notice.jMessage + "</br></br>");
 
+                if (notificationsEnabled == true) {
+                    var message = notice.jMessage;
+                    message = message.replace(/<(?:.|\n)*?>/gm, '');
+                    sendAlertBox(message);
+                }
+               
+
                 if (notice.type == "attack") {
                     var wpWidth = notice.wp / notice.maxwp * 100;
                     var mnWidth = notice.mana / notice.maxmana * 100;
@@ -40,9 +47,17 @@ $(document).ready(function () {
                     attackPulse = 1;
                     backgroundPulse();
 
-                    var attackedAudio = new Audio('../Sounds/attack.wav');
-                    attackedAudio.play();
+                    if (playUpdateSound == true) {
+                        var attackedAudio = new Audio('../Sounds/attack.wav');
+                        attackedAudio.play();
+                    }
+                    
 
+                } else if (notice.type == "message") {
+                    if (playUpdateSound == true) {
+                        var attackedAudio = new Audio('../Sounds/paper.wav');
+                        attackedAudio.play();
+                    }
                 }
 
 
@@ -63,11 +78,19 @@ $(document).ready(function () {
             });
 
             // load whether or not to play audio notifications
-            var playUpdateSoundLoad = JSON.parse(localStorage.getItem("play_updateSoundEnabled"));
+            var playUpdateSoundLoad = localStorage.getItem("play_updateSoundEnabled");
             if (playUpdateSoundLoad == undefined) {
                 localStorage.setItem("chat_IgnoreList", "false");
             } else if (localStorage.getItem("play_updateSoundEnabled") == "true") {
                 playUpdateSound = true;
+            }
+
+            // load whether or not to use html5 notifications
+            var notificationsEnabledLoad = localStorage.getItem("play_html5PushEnabled");
+            if (notificationsEnabledLoad == undefined) {
+                localStorage.setItem("play_html5PushEnabled", "false");
+            } else if (localStorage.getItem("play_html5PushEnabled") == "true") {
+                notificationsEnabled = true;
             }
 
            
@@ -108,5 +131,28 @@ function titleToggle() {
             var audio = new Audio('../Sounds/turnUpdate1.wav');
             audio.play();
         }
+    }
+}
+
+function sendAlertBox(noticemessage) {
+    if (window.Notification && Notification.permission !== "granted") {
+        Notification.requestPermission(function (status) {
+            if (Notification.permission !== status) {
+                Notification.permission = status;
+            }
+        });
+    }
+    if (window.Notification && Notification.permission === "granted") {
+        var n = new Notification("Alert!", { body: noticemessage, icon: "/Images/PvP/Icons/tt_logo.ico" });
+    }
+    else if (window.Notification && Notification.permission !== "denied") {
+        Notification.requestPermission(function (status) {
+            if (Notification.permission !== status) {
+                Notification.permission = status;
+            }
+            if (status === "granted") {
+                var n = new Notification("Alert!", { body: noticemessage, icon: "/Images/PvP/Icons/tt_logo.ico" });
+            }
+        });
     }
 }

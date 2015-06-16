@@ -29,6 +29,7 @@ namespace tfgame.Procedures
                 var obj = new 
                 {
                     jMessage = "NOTICE:  " + message,
+                    
                 };
                 var json = new JavaScriptSerializer().Serialize(obj);
                 context.Clients.Group(group).receiveNotice(json);
@@ -37,7 +38,8 @@ namespace tfgame.Procedures
             {
                 var obj = new
                 {
-                    jMessage = "YOU RECEIVED A NEW MESSAGE:  " + message,
+                    jMessage = message,
+                    type = PushType__PlayerMessage,
                 };
                 var json = new JavaScriptSerializer().Serialize(obj);
                 context.Clients.Group(group).receiveNotice(json);

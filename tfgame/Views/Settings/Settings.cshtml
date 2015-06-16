@@ -200,13 +200,16 @@
     </p>
 
     <h2>Audio Notifications</h2>
-    <p id="toggleAudio"><a>Click here to toggle Update Audio Notification.</a>  This will play a short sound when there is a turn update and when you are attacked.</p>
+    <p id="toggleAudio"><a>Click here to toggle audio notifications.</a>  This will play a short sounds when a turn updates and when you are attacked or messaged.</p>
+
+    <h2>Chrome/Firefox push Notifications</h2>
+    <p id="togglePush"><a>Click here to toggle Chrome/Firefox push notifications.</a>  EXPERIMENTAL</p>
 
 </div>
 
 <script>
     $(document).ready(function () {
-       
+
         $("#toggleAudio").click(function () {
             var toggle = localStorage.getItem("play_updateSoundEnabled");
 
@@ -216,6 +219,20 @@
             } else {
                 var toggle = localStorage.setItem("play_updateSoundEnabled", "false");
                 alert("Update audio notifications DISABLED.");
+            }
+
+        });
+
+
+        $("#togglePush").click(function () {
+            var toggle = localStorage.getItem("play_html5PushEnabled");
+
+            if (toggle == undefined || toggle == "false") {
+                var toggle = localStorage.setItem("play_html5PushEnabled", "true");
+                alert("HTML Notifications ENABLED.");
+            } else {
+                var toggle = localStorage.setItem("play_html5PushEnabled", "false");
+                alert("HTML Notifications DISABLED");
             }
 
         });

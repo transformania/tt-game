@@ -1,0 +1,138 @@
+﻿@{
+    Layout = "";
+}
+
+<head>
+    <script src="~/Scripts/bombieGame.js"></script>
+    <script src="~/Scripts/jquery-2.1.0.js"></script>
+</head>
+
+<body>
+    <canvas id="backmap" class="canvas" width="500" height="500" style="border:1px solid black;"></canvas>
+    <canvas id="game" class="canvas"  width="500" height="500" style="border:1px solid black;"></canvas>
+
+    <img id="map1" src="~/Images/bombie/map1.jpg" style="display:none;" />
+</body>
+
+<script>
+    var gameCanvas = document.getElementById("map");
+    var ctx = game.getContext("2d");
+
+    var mapCanvas = document.getElementById("map");
+    var ctx_map = backmap.getContext("2d");
+
+    var globalSpawnId = 0;
+    var gameOver = false;
+
+    var MAP_WIDTH = 500;
+    var MAP_HEIGHT = 500;
+    var COLLISION_DISTANCE = 20;
+    var ACCELERATION = 1;
+
+    var sx = Math.random() * MAP_WIDTH;
+    var sy = Math.random() * MAP_HEIGHT;
+    var player = new Entity(100, 100, "human");
+
+    sx = Math.random() * MAP_WIDTH;
+    sy = Math.random() * MAP_HEIGHT;
+    var enemy1 = new Entity(400, 400, "bimbo");
+    sx = Math.random() * MAP_WIDTH;
+    sy = Math.random() * MAP_HEIGHT;
+    var enemy2 = new Entity(300, 300, "bimbo");
+    sx = Math.random() * MAP_WIDTH;
+    sy = Math.random() * MAP_HEIGHT;
+    var enemy3 = new Entity(200, 200, "bimbo");
+    sx = Math.random() * MAP_WIDTH;
+    sy = Math.random() * MAP_HEIGHT;
+    var enemy4 = new Entity(250, 250, "bimbo");
+    sx = Math.random() * MAP_WIDTH;
+    sy = Math.random() * MAP_HEIGHT;
+    var enemy5 = new Entity(sx, sy, "bimbo");
+    sx = Math.random() * MAP_WIDTH;
+    sy = Math.random() * MAP_HEIGHT;
+    var enemy6 = new Entity(sx, sy, "bimbo");
+    sx = Math.random() * MAP_WIDTH;
+    sy = Math.random() * MAP_HEIGHT;
+    var enemy7 = new Entity(sx, sy, "bimbo");
+
+   // var allEntities = [player, enemy1, enemy2, enemy3, enemy4, enemy5, enemy6, enemy7];
+    var allEntities = [player, enemy1, enemy2, enemy3, enemy4];
+   //var enemies = [enemy1, enemy2, enemy3, enemy4, enemy5, enemy6, enemy7];
+    var enemies = [enemy1, enemy2, enemy3, enemy4];
+
+    setInterval(function () { loop(); }, 50);
+
+    setInterval(function () { setRandTarget(); }, 250);
+
+    var img = document.getElementById("map1");
+    ctx_map.drawImage(img, 0, 0);
+
+    function loop() {
+
+        //ctx.clearRect(0, 0, MAP_WIDTH, MAP_HEIGHT);
+
+        
+        ctx.drawImage(img, 0, 0);
+
+        if (player.type == "human") {
+            player.moveTo(allEntities, ctx_map);
+            player.draw(ctx);
+        }
+
+        
+
+        for (var i = 0; i < enemies.length; i++) {
+            enemies[i].moveTo(allEntities, ctx_map);
+        }
+
+        for (var i = 0; i < enemies.length; i++) {
+            enemies[i].draw(ctx);
+        }
+
+        if (gameOver == true) {
+            ctx.fillStyle = "red";
+            ctx.font = "bold 16px Arial";
+            ctx.fillText("DEFEATED!  YOU HAVE BEEN TURNED INTO A BIMBO!", 25, 100);
+        }
+
+
+    }
+
+    function setRandTarget() {
+
+        for (var i = 0; i < enemies.length; i++) {
+            if (Math.random() < .1) {
+                sx = Math.random() * MAP_WIDTH;
+                sy = Math.random() * MAP_HEIGHT;
+                enemies[i].setTarget(sx, sy);
+            }
+        }
+    }
+
+    function endGame() {
+
+    }
+
+    $("#game").click(function (e) {
+
+        if (player.type == "human") {
+            var newX = e.pageX - $(this).position().left;
+            var newY = e.pageY - $(this).position().top;
+            player.setTarget(newX, newY);
+        }
+
+    });
+
+</script>
+
+<style>
+    #container {
+        position: relative;
+    }
+
+    .canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+</style>

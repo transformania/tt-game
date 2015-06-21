@@ -492,6 +492,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="Content\ng-animation.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Images\bombie\map1.jpg" />
     <Content Include="Images\FashionWars\Forms\blurg.png" />
     <Content Include="Images\PvP\animalPortraits\adorable_donkey_dominque.png" />
     <Content Include="Images\PvP\animalPortraits\Adorable_Penguin_Luxianne.png" />
@@ -1384,6 +1385,7 @@
     <Content Include="Images\PvP\Smilies\smile.png" />
     <Content Include="Reports\Updates\1963.txt" />
     <Content Include="Schema\GetPlayerBuffs.sql" />
+    <Content Include="Scripts\bombieGame.js" />
     <Content Include="Scripts\boxesResize.js" />
     <Content Include="Scripts\fwars\app.js" />
     <Content Include="Scripts\fwars\controllers\personsController.js" />
@@ -2277,6 +2279,7 @@
     <Content Include="Views\PvP\RoundLeaderboards\XP\Alpha_21.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_21.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Statistics\Alpha_21.cshtml" />
+    <Content Include="Views\TransformaniaTime\bombie.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

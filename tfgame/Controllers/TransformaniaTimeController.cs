@@ -20,6 +20,11 @@ namespace tfgame.Controllers
             return View();
         }
 
+        public ActionResult Bombie()
+        {
+            return View();
+        }
+
         public ActionResult Play()
         {
            // using (var db = new StatsContext())

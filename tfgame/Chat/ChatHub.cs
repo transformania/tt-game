@@ -62,7 +62,7 @@ namespace tfgame.Chat
 
             if (name != " " && name != "" && message != "")
             {
-                if (message.Contains("[luxa]") || message.Contains("[blanca]")  || message.Contains("[poll]")  || message.Contains("[fp]"))
+                if (message.Contains("[luxa]") || message.Contains("[blanca]") || message.Contains("[poll]") || message.Contains("[fp]") || message.Contains("[sd]"))
                 {
                     if (HttpContext.Current.User.IsInRole(PvPStatics.Permissions_Moderator) || HttpContext.Current.User.IsInRole(PvPStatics.Permissions_Admin))
                     {
@@ -76,6 +76,7 @@ namespace tfgame.Chat
                         message = message.Replace("[blanca]", " ");
                         message = message.Replace("[poll]", " ");
                         message = message.Replace("[fp]", " ");
+                        message = message.Replace("[sd]", " ");
                         message += "   [.[" + DateTime.UtcNow.ToShortTimeString() + "].]";
                         Clients.Group(room).addNewMessageToPage(pic, name, message, me.Player.ChatColor);
                         ChatLogProcedures.WriteLogToDatabase(room, name, message);

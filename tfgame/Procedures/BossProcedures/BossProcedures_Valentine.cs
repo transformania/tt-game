@@ -109,20 +109,14 @@ namespace tfgame.Procedures.BossProcedures
             // if Valentine's willpower is down to zero, have him hand over the panties and vanish.
             if (valentine.Health <= 0)
             {
-                IItemRepository itemRepo = new EFItemRepository();
-                Item panties = itemRepo.Items.FirstOrDefault(i => i.dbName == "item_Queen_Valentine’s_Panties_Ashley_Valentine");
-                panties.OwnerId = human.Id;
-                itemRepo.SaveItem(panties);
-
-                ItemProcedures.DropAllItems(valentine);
-
-                IPlayerRepository playerRepo = new EFPlayerRepository();
-                playerRepo.DeletePlayer(valentine.Id);
-                PvPWorldStatProcedures.Boss_EndValentine();
-
+               
                 string victoryMessage = "'It's over!' - you yell in a thrill, already feeling the excitement of your victory over this sly, old fox as you lunge at him at point blank range, your palm tightly clenching a spell to finish it off. However, something is wrong. Grin, that paints itself on his lips, states about anything but an imminent defeat. His movements change, becoming more fuid, unreadable, as he steps to the side - or teleports? you don't even notice - and sticks his leg out, providing you with wonderful opportunity to trip over it. Opportunity that you, of course, took, falling over onto the floor, barely managing to not smash your face on it. Immediately after two blades tickle your neck, and the his voice agrees with your previous statement: - 'Indeed, it's over.' - suddenly the sharp steel by your throat vanishes into thin air as the man laughs heartily: - 'I admire your passion, young one.' - as you get up, you look at him and see a sincere smile on his face, as he continues: - 'Mind calling it a draw for today? It won't work good for my reputation if other's would know how you've beaten me.' - he winks. - 'And here's a little prize for your effort. Something very special, That I most certainly do not just trying to get rid of before i got caught...' - he reaches into his pocket, and gives you... a pair of panties. Before you can object or question this 'gift', he explains: - 'Thise are not just any panties. They belong to the Queen herself... so if i were you I'd keep them hidden to avoid being tuurned into a matching bra...' - before he could finish, a loud, furious woman's voice echoes through the room: - 'Israel Victis Valentine!!!.. Care to explain yourself?!!' - the mans face goes noticeably paler than it was before as he whispers to you: - 'Run! Run, I'll distract her!' - as you are snraking out through the other door, you can hear his voice, growing distant: - 'Oh, dear, i did expect you to wake up so soon...'";
 
                 PlayerLogProcedures.AddPlayerLog(human.Id, victoryMessage, true);
+
+
+
+                EndEvent(human.Id);
             }
 
             // Valentine is fine, do counterattack
@@ -258,6 +252,45 @@ namespace tfgame.Procedures.BossProcedures
             foreach (Item sword in swordsToSave)
             {
                 itemRepo.SaveItem(sword);
+            }
+
+        }
+
+        public static void EndEvent(int newOwnerId)
+        {
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            IItemRepository itemRepo = new EFItemRepository();
+
+            Player valentine = playerRepo.Players.FirstOrDefault(f => f.FirstName == "Lord 'Teaserael'" && f.LastName == "Valentine");
+            playerRepo.DeletePlayer(valentine.Id);
+
+            Item panties = itemRepo.Items.FirstOrDefault(i => i.dbName == "item_Queen_Valentine’s_Panties_Ashley_Valentine");
+            panties.OwnerId = newOwnerId;
+            itemRepo.SaveItem(panties);
+
+            ItemProcedures.DropAllItems(valentine);
+
+            
+            PvPWorldStatProcedures.Boss_EndValentine();
+
+            // find the players who dealt the most damage and award them with XP
+            List<BossDamage> damages = AIProcedures.GetTopAttackers(valentine.MembershipId, 15);
+
+            // top player gets 500 XP, each player down the line receives 25 fewer
+            int l = 0;
+            int maxReward = 500;
+
+            foreach (BossDamage damage in damages)
+            {
+                Player victor = playerRepo.Players.FirstOrDefault(p => p.Id == damage.PlayerId);
+                int reward = maxReward - (l * 30);
+                victor.XP += reward;
+                l++;
+
+                PlayerLogProcedures.AddPlayerLog(victor.Id, "<b>For your valiant (maybe foolish?) efforts in challenging Lord 'Teaserael' Valentine you receieve " + reward + " XP from your risky struggle!</b>", true);
+
+                playerRepo.SavePlayer(victor);
+
             }
 
         }

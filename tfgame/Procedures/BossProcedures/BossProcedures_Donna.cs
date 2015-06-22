@@ -77,7 +77,7 @@ namespace tfgame.Procedures.BossProcedures
 
             if (donna.Mobility != "full")
             {
-                PvPWorldStatProcedures.Boss_EndDonna();
+                EndEvent(donna);
             }
 
             else if (donna.Mobility == "full")
@@ -135,8 +135,6 @@ namespace tfgame.Procedures.BossProcedures
                         if (target.dbLocationName == newplace)
                         {
 
-                           // SkillViewModel2 skill = SkillProcedures.GetSkillViewModelsOwnedByPlayer(donna.Id).FirstOrDefault(s => s.dbSkill.Name != "lowerHealth");
-
                             Random rand = new Random();
                             double roll = rand.NextDouble() * 3 + 2;
                             for (int i = 0; i < roll; i++)
@@ -185,8 +183,8 @@ namespace tfgame.Procedures.BossProcedures
                     playerRepo.SavePlayer(p);
                 }
 
-                // have Donna release her weakest pet if she has more than 10 already
-                if (donnasPlayerPets.Count() > 10)
+                // have Donna release her weakest pet every so often
+                if (worldTurnNumber % 6 == 0 && donnasPlayerPets.Count() > 0)
                 {
                     IEnumerable<Item> weakest = itemRepo.Items.Where(i => i.OwnerId == donna.Id).OrderBy(i => i.Level);
                     Item weakestItem = weakest.First();
@@ -273,6 +271,30 @@ namespace tfgame.Procedures.BossProcedures
                 return Spell1;
             }
 
+        }
+
+        public static void EndEvent(Player donna)
+        {
+            PvPWorldStatProcedures.Boss_EndDonna();
+            List<BossDamage> damages = AIProcedures.GetTopAttackers(-4, 20);
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+
+            // top player gets 800 XP, each player down the line receives 35 fewer
+            int i = 0;
+            int maxReward = 800;
+
+            foreach (BossDamage damage in damages)
+            {
+                Player victor = playerRepo.Players.FirstOrDefault(p => p.Id == damage.PlayerId);
+                int reward = maxReward - (i * 40);
+                victor.XP += reward;
+                i++;
+
+                PlayerLogProcedures.AddPlayerLog(victor.Id, "<b>For your contribution in defeating " + donna.GetFullName() + ", you earn " + reward + " XP from your spells cast against the mythical sorceress.</b>", true);
+
+                playerRepo.SavePlayer(victor);
+
+            }
         }
 
     }

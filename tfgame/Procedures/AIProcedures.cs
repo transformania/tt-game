@@ -923,7 +923,7 @@ namespace tfgame.Procedures
         public static List<BossDamage> GetTopAttackers(int bossMembershipId, int amount)
         {
             IBossDamageRepository repo = new EFBossDamageRepository();
-            return repo.BossDamages.Where(b => b.BossMembershipId == bossMembershipId).OrderByDescending(b => b.TotalPoints).Take(amount).ToList();
+            return repo.BossDamages.Where(b => b.BossMembershipId == bossMembershipId && b.PlayerAttacksOnBoss > 0).OrderByDescending(b => b.TotalPoints).Take(amount).ToList();
         }
 
         

@@ -84,7 +84,6 @@ namespace tfgame.Procedures.BossProcedures
             // if the bimboboss is inanimate, end this boss event
             if (bimboss.Mobility != "full")
             {
-                EndThisBossEvent();
                 return;
             }
 
@@ -145,7 +144,7 @@ namespace tfgame.Procedures.BossProcedures
 
             // move her toward the location with the most eligible targets
             if (bimboBoss.Mobility != "full") {
-                EndThisBossEvent();
+                EndEvent();
                 return;
             }
 
@@ -290,7 +289,7 @@ namespace tfgame.Procedures.BossProcedures
             return locs.First();
         }
 
-        public static void EndThisBossEvent()
+        public static void EndEvent()
         {
             PvPWorldStatProcedures.Boss_EndBimbo();
 
@@ -327,6 +326,26 @@ namespace tfgame.Procedures.BossProcedures
                     PlayerLogProcedures.AddPlayerLog(p.Id, message, true);
                 }
             }
+
+            List<BossDamage> damages = AIProcedures.GetTopAttackers(-7, 17);
+
+            // top player gets 800 XP, each player down the line receives 35 fewer
+            int l = 0;
+            int maxReward = 650;
+
+            foreach (BossDamage damage in damages)
+            {
+                Player victor = playerRepo.Players.FirstOrDefault(p => p.Id == damage.PlayerId);
+                int reward = maxReward - (l * 35);
+                victor.XP += reward;
+                l++;
+
+                PlayerLogProcedures.AddPlayerLog(victor.Id, "<b>For your contribution in defeating " + BossFirstName + " " + BossLastName + ", you earn " + reward + " XP from your spells cast against the plague mother.</b>", true);
+
+                playerRepo.SavePlayer(victor);
+
+            }
+
         }
 
         private static List<Player> GetEligibleTargetsInLocation(string location, Player attacker)

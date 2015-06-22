@@ -45,7 +45,7 @@ namespace tfgame.Procedures.BossProcedures
                     MaxMana = 10000,
                     Form = "form_Apprentice_Seekshadow_Thief_Judoo",
                     IsPetToId = -1,
-                    Money = 2000,
+                    Money = 0,
                     Mobility = "full",
                     Level = 5,
                     MembershipId = -8,
@@ -92,7 +92,7 @@ namespace tfgame.Procedures.BossProcedures
                     MaxMana = 10000,
                     Form = "form_Master_Seekshadow_Thief_Judoo",
                     IsPetToId = -1,
-                    Money = 6000,
+                    Money = 0,
                     Mobility = "full",
                     Level = 7,
                     MembershipId = -9,
@@ -188,8 +188,8 @@ namespace tfgame.Procedures.BossProcedures
                     // take money from victim and give some to the thieves with an uneven split.  Multiple the thieves' gain by 3
                     // because only about a third of Arpeyis are actually collected from a completed inanimation
                     target.Money = Math.Floor(target.Money * .90M);
-                    malethief.Money += Math.Floor(target.Money * .025M*3);
-                    femalethief.Money += Math.Floor(target.Money * .075M * 3);
+                    malethief.Money += Math.Floor(target.Money * .025M);
+                    femalethief.Money += Math.Floor(target.Money * .075M);
 
                     playerRepo.SavePlayer(target);
                     playerRepo.SavePlayer(malethief);
@@ -304,10 +304,6 @@ namespace tfgame.Procedures.BossProcedures
                     ItemProcedures.GiveItemToPlayer(victimThiefItem.Id, attackingThief.Id);
                     LocationLogProcedures.AddLocationLog(attackingThief.dbLocationName, "<b>" + attackingThief.GetFullName() + " recovered " + victimThiefItem.GetFullName() + " the " + victimThiefItemPlus.Item.FriendlyName + ".</b>");
                 }
-
-                
-
-
             }
             #endregion
 
@@ -317,7 +313,7 @@ namespace tfgame.Procedures.BossProcedures
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
             DateTime cutoff = DateTime.UtcNow.AddHours(-1);
-            IEnumerable<int> ids = playerRepo.Players.Where(p => p.Mobility == "full" && p.MembershipId >= -2 && p.OnlineActivityTimestamp >= cutoff).OrderByDescending(p => p.Money).Take(20).Select(p => p.Id);
+            IEnumerable<int> ids = playerRepo.Players.Where(p => p.Mobility == "full" && p.MembershipId >= -2 && p.OnlineActivityTimestamp >= cutoff && p.dbLocationName.Contains("dungeon_") == false).OrderByDescending(p => p.Money).Take(20).Select(p => p.Id);
 
             string output = "";
             foreach (int s in ids)
@@ -330,6 +326,8 @@ namespace tfgame.Procedures.BossProcedures
 
         public static void CounterAttack(Player attacker)
         {
+        
+
             IPlayerRepository playerRepo = new EFPlayerRepository();
             Player malethief = playerRepo.Players.FirstOrDefault(f => f.FirstName == MaleBossFirstName && f.LastName == MaleBossLastName);
             Player femalethief = playerRepo.Players.FirstOrDefault(f => f.FirstName == FemaleBossFirstName && f.LastName == FemaleBossLastName);
@@ -407,6 +405,39 @@ namespace tfgame.Procedures.BossProcedures
 
             AIDirectiveProcedures.DeleteAIDirectiveByPlayerId(malethief.Id);
             AIDirectiveProcedures.DeleteAIDirectiveByPlayerId(femalethief.Id);
+
+            // find the players who dealt the most damage and award them with money
+            List<BossDamage> damages_male = AIProcedures.GetTopAttackers(malethief.MembershipId, 10);
+            List<BossDamage> damages_female = AIProcedures.GetTopAttackers(femalethief.MembershipId, 10);
+
+            // top player gets 500 XP, each player down the line receives 25 fewer
+            decimal maxReward_Female = 1000 + Math.Floor(femalethief.Money);
+            decimal maxReward_Male = 300 + Math.Floor(malethief.Money);
+
+            foreach (BossDamage damage in damages_male)
+            {
+                Player victor = playerRepo.Players.FirstOrDefault(p => p.Id == damage.PlayerId);
+                decimal reward = Math.Floor(maxReward_Male);
+                victor.Money += maxReward_Male;
+
+                PlayerLogProcedures.AddPlayerLog(victor.Id, "<b>For your contribution in defeating " + MaleBossFirstName + " you have been given " + (int)reward + " Arpeyjis from an old bounty placed on him.</b>", true);
+
+                playerRepo.SavePlayer(victor);
+                maxReward_Male *= .75M; 
+            }
+
+            foreach (BossDamage damage in damages_female)
+            {
+                Player victor = playerRepo.Players.FirstOrDefault(p => p.Id == damage.PlayerId);
+                decimal reward = Math.Floor(maxReward_Female);
+                victor.Money += maxReward_Female;
+
+                PlayerLogProcedures.AddPlayerLog(victor.Id, "<b>For your contribution in defeating " + FemaleBossFirstName + " you have been given " + (int)reward + " Arpeyjis from an old bounty placed on her.</b>", true);
+
+                playerRepo.SavePlayer(victor);
+                maxReward_Female *= .75M;
+            }
+
         }
 
     }

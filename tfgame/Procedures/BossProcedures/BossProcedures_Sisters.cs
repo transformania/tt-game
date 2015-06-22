@@ -227,14 +227,14 @@ namespace tfgame.Procedures.BossProcedures
             List<BossDamage> damages = null;
             
             if (winner == "bimbo") {
-                damages  = AIProcedures.GetTopAttackers(nerdBoss.MembershipId, 10);
+                damages = AIProcedures.GetTopAttackers(nerdBoss.MembershipId, 10);
             } else if (winner == "nerd") {
                 damages  = AIProcedures.GetTopAttackers(bimboBoss.MembershipId, 10);
             }
 
             // top player gets 500 XP, each player down the line receives 25 fewer
             int i = 0;
-            int maxReward = 500;
+            int maxReward = 1000;
 
             foreach (BossDamage damage in damages)
             {

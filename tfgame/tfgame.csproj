@@ -493,6 +493,7 @@
     <Content Include="Content\ng-animation.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Images\bombie\map1.jpg" />
+    <Content Include="Images\bombie\map1_large.jpg" />
     <Content Include="Images\FashionWars\Forms\blurg.png" />
     <Content Include="Images\PvP\animalPortraits\adorable_donkey_dominque.png" />
     <Content Include="Images\PvP\animalPortraits\Adorable_Penguin_Luxianne.png" />

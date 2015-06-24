@@ -38,7 +38,7 @@
 
             if (item.dbItem.VictimName != "")
             {
-                strItemName += " (" + item.dbItem.VictimName + ")";
+                strItemName += " (" + item.dbItem.GetFullName() + ")";
             }
             <li>@Html.ActionLink(strItemName, "ViewItemTransferLog", "PvPAdmin", new { id = item.dbItem.Id }, null)</li>
         }

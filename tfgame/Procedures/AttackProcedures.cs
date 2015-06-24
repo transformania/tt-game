@@ -37,8 +37,8 @@ namespace tfgame.Procedures
 
             PlayerProcedures.LogCombatTimestampsAndAddAttackCount(targeted, me);
 
-            string attackerFullName = me.FirstName + " " + me.LastName;
-            string victimFullName = targeted.FirstName + " " + targeted.LastName;
+            string attackerFullName = me.GetFullName();
+            string victimFullName = targeted.GetFullName();
 
             // if the spell is a curse, give the effect and that's all
             if (skillBeingUsed.Skill.GivesEffect != null)
@@ -108,8 +108,8 @@ namespace tfgame.Procedures
                     victimPronoun = "their";
                 }
 
-                BuffBox meBuffs = ItemProcedures.GetPlayerBuffs(me);
-                BuffBox targetedBuffs = ItemProcedures.GetPlayerBuffs(targeted);
+                BuffBox meBuffs = ItemProcedures.GetPlayerBuffsSQL(me);
+                BuffBox targetedBuffs = ItemProcedures.GetPlayerBuffsSQL(targeted);
 
                 Random rand = new Random(Guid.NewGuid().GetHashCode());
                 double basehitChance = rand.NextDouble() * 100;
@@ -122,8 +122,8 @@ namespace tfgame.Procedures
                 decimal criticalMissPercentChance = PvPStatics.CriticalMissPercentChance - meBuffs.SpellMisfireChanceReduction();
                 decimal evasionPercentChance = targetedBuffs.EvasionPercent() - meBuffs.EvasionNegationPercent();
 
-                // clamp evasion at 66% max for human players
-                if (evasionPercentChance > 66 && victim.MembershipId > 0)
+                // clamp evasion at 66% max
+                if (evasionPercentChance > 66)
                 {
                     evasionPercentChance = 66;
                 }
@@ -183,7 +183,7 @@ namespace tfgame.Procedures
                         decimal willpowerDamageModifierFromBonuses = 1 + ((meDmgExtra - targetProt) / 100.0M);
 
                         // cap the modifier at at 50 % IF the target is a human
-                        if (willpowerDamageModifierFromBonuses < .5M && victim.MembershipId > 0)
+                        if (willpowerDamageModifierFromBonuses < .5M)
                         {
                             willpowerDamageModifierFromBonuses = .5M;
                         }
@@ -223,7 +223,7 @@ namespace tfgame.Procedures
                         decimal tfEnergyDamageModifierFromBonuses = 1 + ((TFEnergyDmg - TFEnergyArmor) / 100.0M);
 
                         // cap the modifier at at 50 % IF the target is a human
-                        if (tfEnergyDamageModifierFromBonuses < .5M && victim.MembershipId > 0)
+                        if (tfEnergyDamageModifierFromBonuses < .5M)
                         {
                             tfEnergyDamageModifierFromBonuses = .5M;
                         }
@@ -253,6 +253,8 @@ namespace tfgame.Procedures
             LocationLogProcedures.AddLocationLog(me.dbLocationName, logs.LocationLog);
             PlayerLogProcedures.AddPlayerLog(me.Id, logs.AttackerLog, false);
             PlayerLogProcedures.AddPlayerLog(targeted.Id, logs.VictimLog, true);
+            NoticeProcedures.PushAttackNotice(targeted, logs.VictimLog);
+
 
             return result;
         }

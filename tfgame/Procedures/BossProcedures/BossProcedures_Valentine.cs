@@ -49,7 +49,7 @@ namespace tfgame.Procedures.BossProcedures
 
                 playerRepo.SavePlayer(valentine);
 
-                valentine = PlayerProcedures.ReadjustMaxes(valentine, ItemProcedures.GetPlayerBuffs(valentine));
+                valentine = PlayerProcedures.ReadjustMaxes(valentine, ItemProcedures.GetPlayerBuffsSQL(valentine));
 
                 playerRepo.SavePlayer(valentine);
 
@@ -104,8 +104,7 @@ namespace tfgame.Procedures.BossProcedures
         public static void CounterAttack(Player human, Player valentine)
         {
 
-            PlayerProcedures.GiveXP(human.Id, 20);
-            PlayerLogProcedures.AddPlayerLog(human.Id, "You gain 20 XP from your duel with Valentine.", true);
+            AIProcedures.DealBossDamage(valentine, human, true, 1);
 
             // if Valentine's willpower is down to zero, have him hand over the panties and vanish.
             if (valentine.Health <= 0)
@@ -135,6 +134,7 @@ namespace tfgame.Procedures.BossProcedures
                     SkillViewModel2 danceOfBlades = SkillProcedures.GetSkillViewModel("skill_The_Dance_of_Blades_Ashley_Valentine", valentine.Id);
                     AttackProcedures.Attack(valentine, human, danceOfBlades);
                     AttackProcedures.Attack(valentine, human, danceOfBlades);
+                    AIProcedures.DealBossDamage(valentine, human, false, 2);
                     if (EffectProcedures.PlayerHasEffect(human, "Valentine's_Presence_Lilith") == false)
                     {
                         SkillViewModel2 valentinesPresence = SkillProcedures.GetSkillViewModel("skill_Valentine's_Presence_Lilith", valentine.Id);
@@ -156,6 +156,7 @@ namespace tfgame.Procedures.BossProcedures
                         AttackProcedures.Attack(valentine, p, danceOfBlades);
                         AttackProcedures.Attack(valentine, p, danceOfBlades);
                         AttackProcedures.Attack(valentine, p, danceOfBlades);
+                        AIProcedures.DealBossDamage(valentine, p, false, 3);
                     }
                 }
             }
@@ -182,12 +183,14 @@ namespace tfgame.Procedures.BossProcedures
                     AttackProcedures.Attack(valentine, p, maleVampSpell);
                     AttackProcedures.Attack(valentine, p, maleVampSpell);
                     AttackProcedures.Attack(valentine, p, maleVampSpell);
+                    AIProcedures.DealBossDamage(valentine, p, false, 3);
                 }
                 else if (p.Gender == "male" && p.Form == "form_Vampire_Lord_Blood_Knight")
                 {
                     SkillViewModel2 danceOfBlades = SkillProcedures.GetSkillViewModel("skill_The_Dance_of_Blades_Ashley_Valentine", valentine.Id);
                     AttackProcedures.Attack(valentine, p, danceOfBlades);
                     AttackProcedures.Attack(valentine, p, danceOfBlades);
+                    AIProcedures.DealBossDamage(valentine, p, false, 2);
                 }
 
 
@@ -198,12 +201,15 @@ namespace tfgame.Procedures.BossProcedures
                     AttackProcedures.Attack(valentine, p, femaleVampSpell);
                     AttackProcedures.Attack(valentine, p, femaleVampSpell);
                     AttackProcedures.Attack(valentine, p, femaleVampSpell);
+                    AIProcedures.DealBossDamage(valentine, p, false, 3);
                 }
                 else if (p.Gender == "female" && p.Form == "form_Seductive_vampire_Foxpower93")
                 {
                     SkillViewModel2 danceOfBlades = SkillProcedures.GetSkillViewModel("skill_The_Dance_of_Blades_Ashley_Valentine", valentine.Id);
                     AttackProcedures.Attack(valentine, p, danceOfBlades);
                     AttackProcedures.Attack(valentine, p, danceOfBlades);
+                    AttackProcedures.Attack(valentine, p, danceOfBlades);
+                    AIProcedures.DealBossDamage(valentine, p, false, 3);
                 }
 
                 // give this player the vampire curse if they do not yet have it
@@ -213,6 +219,7 @@ namespace tfgame.Procedures.BossProcedures
                     //EffectProcedures.GivePerkToPlayer("skill_a_bloody_kiss_Lilith", p);
                     SkillViewModel2 bloodyKiss = SkillProcedures.GetSkillViewModel("skill_A_Bloody_Curse", valentine.Id);
                     AttackProcedures.Attack(valentine, p, bloodyKiss);
+                    AIProcedures.DealBossDamage(valentine, p, false, 1);
                 }
 
                 Random rand = new Random();
@@ -220,7 +227,6 @@ namespace tfgame.Procedures.BossProcedures
 
                 if (turnNo % 3 == 0 && EffectProcedures.PlayerHasEffect(p, "Valentine's_Presence_Lilith") == false)
                 {
-                    // TODO:  HAVE VALENTINE ACTUALLY CAST THIS AS A SPELL
                    SkillViewModel2 valentinesPresence = SkillProcedures.GetSkillViewModel("skill_Valentine's_Presence_Lilith", valentine.Id);
                    AttackProcedures.Attack(valentine, p, valentinesPresence);
                 }

@@ -19,6 +19,22 @@ namespace tfgame.dbModels.Models
         public bool EquippedThisTurn { get; set; }
         public int PvPEnabled { get; set; }
         public bool IsPermanent { get; set; }
+        public string Nickname { get; set; }
+
+
+        public string GetFullName()
+        {
+             if (this.Nickname == null || this.Nickname == "")
+            {
+                return VictimName;
+            }
+             else
+             {
+                 string[] nameArray = this.VictimName.Split(' ');
+                 return nameArray[0] + " '" + this.Nickname + "' " + nameArray[1];
+             }
+        }
+
     }
 
     public class Item_VM
@@ -35,5 +51,20 @@ namespace tfgame.dbModels.Models
         public bool EquippedThisTurn { get; set; }
         public int PvPEnabled { get; set; }
         public bool IsPermanent { get; set; }
+        public string Nickname { get; set; }
+
+
+        public string GetFullName()
+        {
+            if (this.Nickname == null || this.Nickname == "")
+            {
+                return VictimName;
+            }
+            else
+            {
+                string[] nameArray = this.VictimName.Split(' ');
+                return nameArray[0] + " " + this.Nickname + " " + nameArray[1];
+            }
+        }
     }
 }

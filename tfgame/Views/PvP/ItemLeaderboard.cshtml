@@ -29,7 +29,7 @@
 
 <div class="specialBox">
     <b>Item Leaderboard -- @PvPStatics.AlphaRound</b><br />
-    These are the most powerful once-human items and pets in the town.  Some may be able to revert their old human forms but many have embraced their new existence as personal pets and belongings.  Treat them kindly should you come to posses them!  <i>Note:  this leaderboard will only update once in ten minutes.</i>
+    These are the most powerful once-human items and pets in the town.  Some may be able to revert their old human forms but many have embraced their new existence as personal pets and belongings.  Treat them kindly should you come to posses them!
 </div>
 
 <div class="containerInner">
@@ -58,7 +58,7 @@
                     </td>
                     <td>
                         @CharactersHere.PrintPermanencyIcon(p.Item)
-                        @Html.ActionLink(p.Item.VictimName, "LookAtPlayerItem", "PvP", new { vicname = p.Item.VictimName }, null)
+                        @Html.ActionLink(p.Item.GetFullName(), "LookAtPlayerItem", "PvP", new { vicname = p.Item.VictimName }, null)
                         @CharactersHere.PrintGenderIcon(p.Gender)
                         @CharactersHere.PrintItemTypeIcon(p.StaticItem)                        
                     </td>

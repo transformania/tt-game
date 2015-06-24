@@ -20,6 +20,9 @@ namespace tfgame.Procedures
         public const int JewdewfaeMembershipId = -6;
         public const int BartenderMembershipId = -14;
 
+        public const int MouseNerdMembershipId = -11;
+        public const int MouseBimboMembershipId = -12;
+
         // Membership ID code:  
         // -1 (player has rerolled, player is abandoned)
         // -2 (psychopath spellslinger)
@@ -209,7 +212,36 @@ namespace tfgame.Procedures
                         continue;
                     }
 
-                    BuffBox botbuffs = ItemProcedures.GetPlayerBuffs(bot);
+                    #region drop excess items
+                    List<ItemViewModel> botItems = ItemProcedures.GetAllPlayerItems(bot.Id).ToList();
+
+                    string[] itemTypes = { PvPStatics.ItemType_Hat, PvPStatics.ItemType_Accessory, PvPStatics.ItemType_Pants, PvPStatics.ItemType_Pet, PvPStatics.ItemType_Shirt, PvPStatics.ItemType_Shoes, PvPStatics.ItemType_Underpants, PvPStatics.ItemType_Undershirt };
+
+                    foreach (string typeToDrop in itemTypes)
+                    {
+                        if (botItems.Where(i => i.Item.ItemType == typeToDrop).Count() > 1)
+                        {
+                            List<ItemViewModel> dropList = botItems.Where(i => i.Item.ItemType == typeToDrop).Skip(1).ToList();
+
+                            foreach (ItemViewModel i in dropList)
+                            {
+                                ItemProcedures.DropItem(i.dbItem.Id, bot.dbLocationName);
+
+                                if (i.Item.ItemType == PvPStatics.ItemType_Pet)
+                                {
+                                    LocationLogProcedures.AddLocationLog(bot.dbLocationName, "<b>" + bot.GetFullName() + "</b> released <b>" + i.dbItem.GetFullName() + "</b> the pet <b>" + i.Item.FriendlyName + "</b> here.");
+                                }
+                                else
+                                {
+                                    LocationLogProcedures.AddLocationLog(bot.dbLocationName, "<b>" + bot.GetFullName() + "</b> dropped <b>" + i.dbItem.GetFullName() + "</b> the <b>" + i.Item.FriendlyName + "</b> here.");
+                                }
+                             
+                            }
+                        }
+                    }
+                    #endregion
+
+                    BuffBox botbuffs = ItemProcedures.GetPlayerBuffsSQL(bot);
 
                     // meditate if needed
                     if (bot.Mana < bot.MaxMana * .75M)
@@ -233,6 +265,7 @@ namespace tfgame.Procedures
                         }
                     }
 
+                   
 
 
                     AIDirective directive = AIDirectiveProcedures.GetAIDirective(bot.Id);
@@ -376,32 +409,6 @@ namespace tfgame.Procedures
 
                 merchant = playerRepo.Players.FirstOrDefault(f => f.FirstName == "Lindella" && f.LastName == "the Soul Vendor" && f.Mobility == "full");
 
-                List<DbStaticSkill> skillsToGive = new List<DbStaticSkill>();
-
-                skillsToGive.Add(SkillStatics.GetStaticSkill("skill_A_Mother's_Touch_Purple_Autumn"));
-                skillsToGive.Add(SkillStatics.GetStaticSkill("skill_lingerie_inveigh_PsychoticPie"));
-                skillsToGive.Add(SkillStatics.GetStaticSkill("skill_Haute_Couture_Hanna"));
-                skillsToGive.Add(SkillStatics.GetStaticSkill("skill_reflecius_fabricos_Haretia"));
-                skillsToGive.Add(SkillStatics.GetStaticSkill("skill_Schoolyard_Strut_Christopher"));
-                skillsToGive.Add(SkillStatics.GetStaticSkill("skill_Put_a_Sock_In_It_Christopher"));
-                skillsToGive.Add(SkillStatics.GetStaticSkill("skill_Fit_to_Be_Tied!_Martiandawn"));
-                skillsToGive.Add(SkillStatics.GetStaticSkill("skill_It's_Got_Ruffles!_Martiandawn"));
-                skillsToGive.Add(SkillStatics.GetStaticSkill("skill_Lucky_Lips_Greg_Mackenzie_and_Fiona_Mason"));
-                skillsToGive.Add(SkillStatics.GetStaticSkill("skill_Spank'Me_Zatur"));
-                skillsToGive.Add(SkillStatics.GetStaticSkill("skill_Who_Wears_the_Pants_Arbitrary_Hal"));
-                skillsToGive.Add(SkillStatics.GetStaticSkill("skill_Clothes_Make_the_Man_Arbitrary_Hal"));
-                skillsToGive.Add(SkillStatics.GetStaticSkill("skill_Sgnikcots_Tenhsif_Zatur"));
-                skillsToGive.Add(SkillStatics.GetStaticSkill("skill_Sea_of_Frills_Hanna"));
-                skillsToGive.Add(SkillStatics.GetStaticSkill("skill_schooltop_bop_PsychoticPie"));
-                skillsToGive.Add(SkillStatics.GetStaticSkill("skill_schooltop_bop_PsychoticPie"));
-                skillsToGive.Add(SkillStatics.GetStaticSkill("skill_tip_of_the_hat_Zatur"));
-                skillsToGive.Add(SkillStatics.GetStaticSkill("skill_Atexlay_Abray_Arrhae"));
-
-                foreach (DbStaticSkill s in skillsToGive)
-                {
-                    SkillProcedures.GiveSkillToPlayer(merchant.Id, s);
-                }
-
                 Player Lindella = playerRepo.Players.FirstOrDefault(f => f.MembershipId == -3);
 
                 AIDirectiveProcedures.GetAIDirective(Lindella.Id);
@@ -461,7 +468,7 @@ namespace tfgame.Procedures
                 }
 
                 playerRepo.SavePlayer(merchant);
-                BuffBox box = ItemProcedures.GetPlayerBuffs(merchant);
+                BuffBox box = ItemProcedures.GetPlayerBuffsSQL(merchant);
 
                 if ((merchant.Health / merchant.MaxHealth) < .75M)
                 {
@@ -622,6 +629,7 @@ namespace tfgame.Procedures
             // rat thieves counterattack
             else if (bot.MembershipId == -8 || bot.MembershipId == -9)
             {
+                AIProcedures.DealBossDamage(bot, personAttacking, true, 1);
                 BossProcedures_Thieves.CounterAttack(personAttacking);
             }
 
@@ -870,7 +878,7 @@ namespace tfgame.Procedures
                     IsPetToId = -1,
                     Money = 0,
                     Mobility = "full",
-                    Level = 3,
+                    Level = 15,
                     MembershipId = -14,
                     ActionPoints_Refill = 360,
                 };
@@ -878,6 +886,44 @@ namespace tfgame.Procedures
                 playerRepo.SavePlayer(bartender);
 
             }
+        }
+
+        public static void DealBossDamage(Player boss, Player attacker, bool humanAttacker, int attackCount)
+        {
+            IBossDamageRepository repo = new EFBossDamageRepository();
+
+            BossDamage damage = repo.BossDamages.FirstOrDefault(bf => bf.PlayerId == attacker.Id && bf.BossMembershipId == boss.MembershipId);
+
+            if (damage == null)
+            {
+                damage = new BossDamage
+                {
+                    PlayerId = attacker.Id,
+                    BossMembershipId = boss.MembershipId,
+                    Timestamp = DateTime.UtcNow,
+                };
+            }
+
+            if (humanAttacker == true)
+            {
+                damage.PlayerAttacksOnBoss += attackCount;
+               
+            } else {
+                damage.BossAttacksOnPlayer += attackCount;
+            }
+
+            // calculate a unique score to add, weighted a little in favor of higher level human attackers / victims
+            damage.TotalPoints += (float)attackCount * (.75F + .25F * (float)attacker.Level);
+            damage.Timestamp = DateTime.UtcNow;
+
+            repo.SaveBossDamage(damage);
+
+        }
+
+        public static List<BossDamage> GetTopAttackers(int bossMembershipId, int amount)
+        {
+            IBossDamageRepository repo = new EFBossDamageRepository();
+            return repo.BossDamages.Where(b => b.BossMembershipId == bossMembershipId).OrderByDescending(b => b.TotalPoints).Take(amount).ToList();
         }
 
         

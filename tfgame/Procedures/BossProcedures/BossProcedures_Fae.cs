@@ -47,15 +47,15 @@ namespace tfgame.Procedures.BossProcedures
 
                 playerRepo.SavePlayer(fae);
 
-                fae = PlayerProcedures.ReadjustMaxes(fae, ItemProcedures.GetPlayerBuffs(fae));
+                fae = PlayerProcedures.ReadjustMaxes(fae, ItemProcedures.GetPlayerBuffsSQL(fae));
 
                 playerRepo.SavePlayer(fae);
 
                 // give fae the fairy spell to counterattack with
                 fae = playerRepo.Players.FirstOrDefault(f => f.FirstName == "Jewdewfae" && f.LastName == "the Pervfae");
-                DbStaticSkill skillToAdd = SkillStatics.GetStaticSkill("hey_listed_Varn");
+              //  DbStaticSkill skillToAdd = SkillStatics.GetStaticSkill("hey_listed_Varn");
 
-                SkillProcedures.GiveSkillToPlayer(fae.Id, skillToAdd);
+              //  SkillProcedures.GiveSkillToPlayer(fae.Id, skillToAdd);
 
                 // set up her AI directive so it is not deleted
                 IAIDirectiveRepository aiRepo = new EFAIDirectiveRepository();

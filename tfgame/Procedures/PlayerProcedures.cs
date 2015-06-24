@@ -69,6 +69,116 @@ namespace tfgame.Procedures
                                                               OnlineActivityTimestamp = p.OnlineActivityTimestamp,
                                                               Nickname = p.Nickname,
                                                               ShoutsRemaining = p.ShoutsRemaining,
+                                                              ChatColor = p.ChatColor,
+                                                              IsBannedFromGlobalChat = p.IsBannedFromGlobalChat,
+                                                              
+                                                          },
+
+                                                          Form = new tfgame.ViewModels.Form
+                                                          {
+                                                              dbName = f.dbName,
+                                                              FriendlyName = f.FriendlyName,
+                                                              Description = f.Description,
+                                                              TFEnergyType = f.TFEnergyType,
+                                                              TFEnergyRequired = f.TFEnergyRequired,
+                                                              Gender = f.Gender,
+                                                              MobilityType = f.MobilityType,
+                                                              BecomesItemDbName = f.BecomesItemDbName,
+                                                              PortraitUrl = f.PortraitUrl,
+                                                              IsUnique = f.IsUnique,
+
+                                                              HealthBonusPercent = f.HealthBonusPercent,
+                                                              ManaBonusPercent = f.ManaBonusPercent,
+                                                              ExtraSkillCriticalPercent = f.ExtraSkillCriticalPercent,
+                                                              HealthRecoveryPerUpdate = f.HealthRecoveryPerUpdate,
+                                                              ManaRecoveryPerUpdate = f.ManaRecoveryPerUpdate,
+                                                              SneakPercent = f.SneakPercent,
+                                                              EvasionPercent = f.EvasionPercent,
+                                                              EvasionNegationPercent = f.EvasionNegationPercent,
+                                                              MeditationExtraMana = f.MeditationExtraMana,
+                                                              CleanseExtraHealth = f.CleanseExtraHealth,
+                                                              MoveActionPointDiscount = f.MoveActionPointDiscount,
+                                                              SpellExtraHealthDamagePercent = f.SpellExtraHealthDamagePercent,
+                                                              SpellExtraTFEnergyPercent = f.SpellExtraTFEnergyPercent,
+                                                              CleanseExtraTFEnergyRemovalPercent = f.CleanseExtraTFEnergyRemovalPercent,
+                                                              SpellMisfireChanceReduction = f.SpellMisfireChanceReduction,
+                                                              SpellHealthDamageResistance = f.SpellHealthDamageResistance,
+                                                              SpellTFEnergyDamageResistance = f.SpellTFEnergyDamageResistance,
+                                                              ExtraInventorySpace = f.ExtraInventorySpace,
+
+                                                              Discipline = f.Discipline,
+                                                              Perception = f.Perception,
+                                                              Charisma = f.Charisma,
+                                                              Submission_Dominance = f.Submission_Dominance,
+
+                                                              Fortitude = f.Fortitude,
+                                                              Agility = f.Agility,
+                                                              Allure = f.Allure,
+                                                              Corruption_Purity = f.Corruption_Purity,
+
+                                                              Magicka = f.Magicka,
+                                                              Succour = f.Succour,
+                                                              Luck = f.Luck,
+                                                              Chaos_Order = f.Chaos_Order,
+                                                          }
+
+                                                      };
+
+            return output.First();
+        }
+
+        public static PlayerFormViewModel GetPlayerFormViewModel_FromMembership(int membershipId)
+        {
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            IEnumerable<PlayerFormViewModel> output = from p in playerRepo.Players
+                                                      where p.MembershipId == membershipId
+                                                      join f in playerRepo.DbStaticForms on p.Form equals f.dbName
+                                                      select new PlayerFormViewModel
+                                                      {
+                                                          Player = new Player_VM
+                                                          {
+                                                              Id = p.Id,
+                                                              MembershipId = p.MembershipId,
+                                                              FirstName = p.FirstName,
+                                                              LastName = p.LastName,
+                                                              dbLocationName = p.dbLocationName,
+                                                              Form = p.Form,
+                                                              Health = p.Health,
+                                                              MaxHealth = p.MaxHealth,
+                                                              Mana = p.Mana,
+                                                              MaxMana = p.MaxMana,
+                                                              ActionPoints = p.ActionPoints,
+                                                              ActionPoints_Refill = p.ActionPoints_Refill,
+                                                              ResistanceModifier = p.ResistanceModifier,
+                                                              Gender = p.Gender,
+                                                              Mobility = p.Mobility,
+                                                              IsItemId = p.IsItemId,
+                                                              IsPetToId = p.IsPetToId,
+                                                              MindControlIsActive = p.MindControlIsActive,
+                                                              XP = p.XP,
+                                                              Level = p.Level,
+                                                              TimesAttackingThisUpdate = p.TimesAttackingThisUpdate,
+                                                              IpAddress = p.IpAddress,
+                                                              LastActionTimestamp = p.LastActionTimestamp,
+                                                              LastCombatTimestamp = p.LastCombatTimestamp,
+                                                              LastCombatAttackedTimestamp = p.LastCombatAttackedTimestamp,
+                                                              FlaggedForAbuse = p.FlaggedForAbuse,
+                                                              UnusedLevelUpPerks = p.UnusedLevelUpPerks,
+                                                              GameMode = p.GameMode,
+                                                              NonPvP_GameoverSpellsAllowed = p.NonPvP_GameoverSpellsAllowed,
+                                                              NonPvP_GameOverSpellsAllowedLastChange = p.NonPvP_GameOverSpellsAllowedLastChange,
+                                                              InRP = p.InRP,
+                                                              CleansesMeditatesThisRound = p.CleansesMeditatesThisRound,
+                                                              Money = p.Money,
+                                                              Covenant = p.Covenant,
+                                                              OriginalForm = p.OriginalForm,
+                                                              PvPScore = p.PvPScore,
+                                                              DonatorLevel = p.DonatorLevel,
+                                                              OnlineActivityTimestamp = p.OnlineActivityTimestamp,
+                                                              Nickname = p.Nickname,
+                                                              ShoutsRemaining = p.ShoutsRemaining,
+                                                              ChatColor = p.ChatColor,
+                                                              IsBannedFromGlobalChat = p.IsBannedFromGlobalChat,
                                                           },
 
                                                           Form = new tfgame.ViewModels.Form
@@ -176,6 +286,8 @@ namespace tfgame.Procedures
                                                               OnlineActivityTimestamp = p.OnlineActivityTimestamp,
                                                               Nickname = p.Nickname,
                                                               ShoutsRemaining = p.ShoutsRemaining,
+                                                              ChatColor = p.ChatColor,
+                                                              IsBannedFromGlobalChat = p.IsBannedFromGlobalChat,
                                                           },
 
                                                           Form = new tfgame.ViewModels.Form
@@ -284,6 +396,8 @@ namespace tfgame.Procedures
                                                               OnlineActivityTimestamp = p.OnlineActivityTimestamp,
                                                               Nickname = p.Nickname,
                                                               ShoutsRemaining = p.ShoutsRemaining,
+                                                              ChatColor = p.ChatColor,
+                                                              IsBannedFromGlobalChat = p.IsBannedFromGlobalChat,
                                                           },
 
                                                           Form = new tfgame.ViewModels.Form
@@ -479,9 +593,6 @@ namespace tfgame.Procedures
                  Item oldItemMe = itemRepo.Items.FirstOrDefault(i => i.VictimName == oldplayer.FirstName + " " + oldplayer.LastName);
                  oldItemMe.IsPermanent = true;
                  itemRepo.SaveItem(oldItemMe);
-
-          
-                
              }
             
 
@@ -538,14 +649,7 @@ namespace tfgame.Procedures
             }
 
             // start player in PvP if they choose, otherwise put them in protection
-            if (player.StartInPVP == true)
-            {
-                newplayer.GameMode = 2;
-            }
-            else
-            {
-                newplayer.GameMode = 1;
-            }
+            newplayer.GameMode = player.StartGameMode;
 
 
             if (player.StartInRP == true)
@@ -695,7 +799,7 @@ namespace tfgame.Procedures
             decimal totalMoveCost = PvPStatics.LocationMoveCost - actionPointDiscount;
 
             // TEMP
-            BuffBox mybuffs = ItemProcedures.GetPlayerBuffs(dbPlayer);
+            BuffBox mybuffs = ItemProcedures.GetPlayerBuffsSQL(dbPlayer);
 
             dbPlayer = ReadjustMaxes(dbPlayer, mybuffs);
 
@@ -931,7 +1035,7 @@ namespace tfgame.Procedures
                             return summontext;
                         }
                     }
-                    else if (roll < 1 && dbLocationName == "lab_lobby")
+                    else if (roll < 1 && dbLocationName == "college_foyer")
                     {
                         if (worldStats.IsSistersAvailable())
                         {
@@ -1015,7 +1119,7 @@ namespace tfgame.Procedures
                 string output = ItemProcedures.GiveNewItemToPlayer(player, justFound);
 
                 Player me = PlayerProcedures.GetPlayer(player.Id);
-                BuffBox myBuffs = ItemProcedures.GetPlayerBuffs(me);
+                BuffBox myBuffs = ItemProcedures.GetPlayerBuffsSQL(me);
 
                 // drop an item of the same type that you are carrying if you are over the limit
                 if (ItemProcedures.PlayerIsCarryingTooMuch(player.Id, 1, myBuffs) == true)
@@ -1588,36 +1692,6 @@ namespace tfgame.Procedures
             }
         }
 
-        public static bool PlayerIsVeryOffline(Player player)
-        {
-
-
-            try
-            {
-
-                if (player.MembershipId < -1)
-                {
-                    return false;
-                }
-
-                double minutesAgo = Math.Abs(Math.Floor(player.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
-
-                if (minutesAgo > PvPStatics.OfflineAfterXMinutes*2)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            catch
-            {
-                return false;
-            }
-
-
-        }
 
         public static IEnumerable<Player> GetPlayersWithFirstNameOf(string firstname)
         {
@@ -1999,6 +2073,14 @@ namespace tfgame.Procedures
                 p.IpAddress = "reset";
                 playerRepo.SavePlayer(p);
             }
+        }
+
+        public static void ResetPlayerPetStatus(Player player)
+        {
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            dbPlayer.IsPetToId = -1;
+            playerRepo.SavePlayer(dbPlayer);
         }
 
     }

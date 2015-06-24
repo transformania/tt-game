@@ -10,7 +10,7 @@ namespace tfgame.ViewModels
     {
         public Player Player { get; set; }
         public DbStaticForm Form { get; set; }
-        public DbStaticItem Item { get; set; }
+        public ItemViewModel Item { get; set; }
         public PlayerFormViewModel WornBy { get; set; }
         public string AtLocation { get; set; }
         public int NewMessageCount { get; set; }

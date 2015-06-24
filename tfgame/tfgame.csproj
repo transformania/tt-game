@@ -216,6 +216,7 @@
     <Compile Include="Controllers\ContributionController.cs" />
     <Compile Include="Controllers\CovenantController.cs" />
     <Compile Include="Controllers\DuelController.cs" />
+    <Compile Include="Controllers\InfoController.cs" />
     <Compile Include="Controllers\ItemController.cs" />
     <Compile Include="Controllers\NPCController.cs" />
     <Compile Include="Controllers\PvPAdminController.cs" />
@@ -227,6 +228,7 @@
     <Compile Include="dbModels\Abstract\IAuthorArtistBioRepository.cs" />
     <Compile Include="dbModels\Abstract\IBlacklistEntryRepository.cs" />
     <Compile Include="dbModels\Abstract\IBookReadingRepository.cs" />
+    <Compile Include="dbModels\Abstract\IBossDamageRepository.cs" />
     <Compile Include="dbModels\Abstract\IBuffRepository.cs" />
     <Compile Include="dbModels\Abstract\IChatLogRepository.cs" />
     <Compile Include="dbModels\Abstract\IContributionRepository.cs" />
@@ -258,6 +260,7 @@
     <Compile Include="dbModels\Abstract\IPollEntryRepository.cs" />
     <Compile Include="dbModels\Abstract\IPvPWorldStatRepository.cs" />
     <Compile Include="dbModels\Abstract\IReservedNameRepository.cs" />
+    <Compile Include="dbModels\Abstract\IRPClassifiedAdRepository.cs" />
     <Compile Include="dbModels\Abstract\IRPPointRepository.cs" />
     <Compile Include="dbModels\Abstract\IServerLogRepository.cs" />
     <Compile Include="dbModels\Abstract\ISkillRepository.cs" />
@@ -268,6 +271,7 @@
     <Compile Include="dbModels\Concrete\EFAuthorArtistBioRepository.cs" />
     <Compile Include="dbModels\Concrete\EFBlacklistEntryRepository.cs" />
     <Compile Include="dbModels\Concrete\EFBookReadingRepository.cs" />
+    <Compile Include="dbModels\Concrete\EFBossDamageRepository.cs" />
     <Compile Include="dbModels\Concrete\EFChatLogRepository.cs" />
     <Compile Include="dbModels\Concrete\EFCovenantLogRepository.cs" />
     <Compile Include="dbModels\Concrete\EFDbStaticEffectRepository.cs" />
@@ -283,12 +287,14 @@
     <Compile Include="dbModels\Concrete\EFMindControlRepository.cs" />
     <Compile Include="dbModels\Concrete\EFPlayerExtraRepository.cs" />
     <Compile Include="dbModels\Concrete\EFPollEntryRepository.cs" />
+    <Compile Include="dbModels\Concrete\EFRPClassifiedAdRepository.cs" />
     <Compile Include="dbModels\Concrete\EFRPPointRespository.cs" />
     <Compile Include="dbModels\Concrete\EFTFMessageRepository.cs" />
     <Compile Include="dbModels\Models\Achievement.cs" />
     <Compile Include="dbModels\Models\AuthorArtistBio.cs" />
     <Compile Include="dbModels\Models\BlacklistEntry.cs" />
     <Compile Include="dbModels\Models\BookReading.cs" />
+    <Compile Include="dbModels\Models\BossDamage.cs" />
     <Compile Include="dbModels\Models\Buff.cs" />
     <Compile Include="dbModels\Concrete\EFAIDirectiveRepository.cs" />
     <Compile Include="dbModels\Concrete\EFBuffRepository.cs" />
@@ -342,6 +348,7 @@
     <Compile Include="dbModels\Models\PollEntry.cs" />
     <Compile Include="dbModels\Models\PvPWorldStat.cs" />
     <Compile Include="dbModels\Models\ReservedName.cs" />
+    <Compile Include="dbModels\Models\RPClassifiedAd.cs" />
     <Compile Include="dbModels\Models\RPPoint.cs" />
     <Compile Include="dbModels\Models\ServerLog.cs" />
     <Compile Include="dbModels\Models\Skill.cs" />
@@ -381,10 +388,12 @@
     <Compile Include="Procedures\PlayerLogProcedures.cs" />
     <Compile Include="Procedures\PlayerProcedures.cs" />
     <Compile Include="Procedures\PvPWorldStatProcedures.cs" />
+    <Compile Include="Procedures\RPClassifiedAdsProcedures.cs" />
     <Compile Include="Procedures\SettingsProcedures.cs" />
     <Compile Include="Procedures\SkillProcedures.cs" />
     <Compile Include="Procedures\StatsProcedures.cs" />
     <Compile Include="Procedures\TFEnergyProcedures.cs" />
+    <Compile Include="Procedures\WorldUpdateProcedures.cs" />
     <Compile Include="Statics\CovenantDictionary.cs" />
     <Compile Include="Statics\EffectStatics.cs" />
     <Compile Include="Statics\Forms.cs" />
@@ -483,6 +492,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="Content\ng-animation.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Images\bombie\map1.jpg" />
     <Content Include="Images\FashionWars\Forms\blurg.png" />
     <Content Include="Images\PvP\animalPortraits\adorable_donkey_dominque.png" />
     <Content Include="Images\PvP\animalPortraits\Adorable_Penguin_Luxianne.png" />
@@ -519,6 +529,7 @@
     <Content Include="Images\PvP\animalPortraits\pocket_googirl_Luxianne.png" />
     <Content Include="Images\PvP\animalPortraits\pocket_waifu_Dandelion.jpg" />
     <Content Include="Images\PvP\animalPortraits\prancing_pony_boy_Martiandawn.png" />
+    <Content Include="Images\PvP\animalPortraits\puppy_girl_pet_Martiandawn.jpg" />
     <Content Include="Images\PvP\animalPortraits\rubber_love_doll_babblingfaces.jpg" />
     <Content Include="Images\PvP\animalPortraits\skunk_lux.png" />
     <Content Include="Images\PvP\animalPortraits\spellbound_cat_boy_Luxianne.png" />
@@ -560,6 +571,7 @@
     <Content Include="Images\PvP\animalPortraits\Thumbnails\100\pocket_googirl_Luxianne.png" />
     <Content Include="Images\PvP\animalPortraits\Thumbnails\100\pocket_waifu_Dandelion.jpg" />
     <Content Include="Images\PvP\animalPortraits\Thumbnails\100\prancing_pony_boy_Martiandawn.png" />
+    <Content Include="Images\PvP\animalPortraits\Thumbnails\100\puppy_girl_pet_Martiandawn.jpg" />
     <Content Include="Images\PvP\animalPortraits\Thumbnails\100\rubber_love_doll_babblingfaces.jpg" />
     <Content Include="Images\PvP\animalPortraits\Thumbnails\100\skunk_lux.png" />
     <Content Include="Images\PvP\animalPortraits\Thumbnails\100\spellbound_cat_boy_Luxianne.png" />
@@ -638,6 +650,7 @@
     <Content Include="Images\PvP\Icons\tt_logo.ico" />
     <Content Include="Images\PvP\itemsPortraits\3tiered_skirt_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\5_inch_heels_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\alien_screwdriver_Zeke_Manning.jpg" />
     <Content Include="Images\PvP\itemsPortraits\amathyst_tieara_jbovinne.png" />
     <Content Include="Images\PvP\itemsPortraits\badass_leather_braces_Martiandawn.jpg" />
     <Content Include="Images\PvP\itemsPortraits\ballgag_Meddle.png" />
@@ -647,6 +660,7 @@
     <Content Include="Images\PvP\itemsPortraits\binding_tattoo_spacedande.png" />
     <Content Include="Images\PvP\itemsPortraits\black_latex_opera_gloves_Jbovinne.jpg" />
     <Content Include="Images\PvP\itemsPortraits\black_leather_handbag_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\blue_silk_yakuta_Dandelion.jpg" />
     <Content Include="Images\PvP\itemsPortraits\bondage_harnass_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\bondage_magazine_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\booty_babblingfaces.jpg" />
@@ -676,6 +690,7 @@
     <Content Include="Images\PvP\itemsPortraits\electronic_toy_jbovinne.png" />
     <Content Include="Images\PvP\itemsPortraits\elegant_gothic_stockings_Luxianne.jpg" />
     <Content Include="Images\PvP\itemsPortraits\evening_gown_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\excaliber_Martiandawn.jpg" />
     <Content Include="Images\PvP\itemsPortraits\Feather_Duster_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\fetish_staff_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\fire_fritter_Luxianne.png" />
@@ -749,6 +764,7 @@
     <Content Include="Images\PvP\itemsPortraits\silky_gothic_nightgown_Luxianne.png" />
     <Content Include="Images\PvP\itemsPortraits\silk_dragon_dress_jbovinne.png" />
     <Content Include="Images\PvP\itemsPortraits\silk_pants_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\slouch_socks_Luxianne.jpg" />
     <Content Include="Images\PvP\itemsPortraits\soulblight_Martiandawn.jpg" />
     <Content Include="Images\PvP\itemsPortraits\spankmes_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\spellbook_Judoo.jpg" />
@@ -765,6 +781,7 @@
     <Content Include="Images\PvP\itemsPortraits\tennis_racket_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\Thumbnails\100\3tiered_skirt_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\Thumbnails\100\5_inch_heels_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\Thumbnails\100\alien_screwdriver_Zeke_Manning.jpg" />
     <Content Include="Images\PvP\itemsPortraits\Thumbnails\100\amathyst_tieara_jbovinne.png" />
     <Content Include="Images\PvP\itemsPortraits\Thumbnails\100\AthleticShoes_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\Thumbnails\100\badass_leather_braces_Martiandawn.jpg" />
@@ -778,11 +795,13 @@
     <Content Include="Images\PvP\itemsPortraits\Thumbnails\100\black_latex_pants_jbovinne.png" />
     <Content Include="Images\PvP\itemsPortraits\Thumbnails\100\black_leather_handbag_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\Thumbnails\100\black_stilettos_by_nymic-tf.jpg" />
+    <Content Include="Images\PvP\itemsPortraits\Thumbnails\100\blue_silk_yakuta_Dandelion.jpg" />
     <Content Include="Images\PvP\itemsPortraits\Thumbnails\100\bondage_harnass_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\Thumbnails\100\bondage_magazine_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\Thumbnails\100\booty_babblingfaces.jpg" />
     <Content Include="Images\PvP\itemsPortraits\Thumbnails\100\BoxerShorts_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\Thumbnails\100\bplug_Martiandawn.jpg" />
+    <Content Include="Images\PvP\itemsPortraits\Thumbnails\100\breeny_skirt_babblingfaces.jpg" />
     <Content Include="Images\PvP\itemsPortraits\Thumbnails\100\ButtonUpSchoolgirlBlouse_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\Thumbnails\100\cargo_pants_babblingfaces.jpg" />
     <Content Include="Images\PvP\itemsPortraits\Thumbnails\100\carousel_horse.png" />
@@ -813,6 +832,7 @@
     <Content Include="Images\PvP\itemsPortraits\Thumbnails\100\electronic_toy_jbovinne.png" />
     <Content Include="Images\PvP\itemsPortraits\Thumbnails\100\elegant_gothic_stockings_Luxianne.jpg" />
     <Content Include="Images\PvP\itemsPortraits\Thumbnails\100\evening_gown_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\Thumbnails\100\excaliber_Martiandawn.jpg" />
     <Content Include="Images\PvP\itemsPortraits\Thumbnails\100\fairy_familiar_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\Thumbnails\100\Feather_Duster_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\Thumbnails\100\FertilityIdol1_Meddle.png" />
@@ -902,6 +922,7 @@
     <Content Include="Images\PvP\itemsPortraits\Thumbnails\100\silk_dragon_dress_jbovinne.png" />
     <Content Include="Images\PvP\itemsPortraits\Thumbnails\100\silk_pants_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\Thumbnails\100\silk_tube_top_by_nymic-tf.jpg" />
+    <Content Include="Images\PvP\itemsPortraits\Thumbnails\100\slouch_socks_Luxianne.jpg" />
     <Content Include="Images\PvP\itemsPortraits\Thumbnails\100\SmartLookingTie.png" />
     <Content Include="Images\PvP\itemsPortraits\Thumbnails\100\soulblight_Martiandawn.jpg" />
     <Content Include="Images\PvP\itemsPortraits\Thumbnails\100\spankmes_Meddle.png" />
@@ -952,9 +973,11 @@
     <Content Include="Images\PvP\portraits\alraune_Luxianne.png" />
     <Content Include="Images\PvP\portraits\Amazonian_Futa_Meddle.png" />
     <Content Include="Images\PvP\portraits\angel_Meddle.png" />
+    <Content Include="Images\PvP\portraits\bartender_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\batgirl_Luxianne.png" />
     <Content Include="Images\PvP\portraits\beach_babe_enthusiast_TheGreatDaeo.jpg" />
     <Content Include="Images\PvP\portraits\beat_cop_Babblingfaces.jpg" />
+    <Content Include="Images\PvP\portraits\bee_girl_spacedande.jpg" />
     <Content Include="Images\PvP\portraits\belle_of_the_ball_Meddle.png" />
     <Content Include="Images\PvP\portraits\bimbo_mother_babblingfaces.png" />
     <Content Include="Images\PvP\portraits\bimbo_mouse_boss_Dandelion.jpg" />
@@ -965,9 +988,11 @@
     <Content Include="Images\PvP\portraits\blue_chaffinch_Lux.png" />
     <Content Include="Images\PvP\portraits\boyish_girl_Babblingfaces.jpg" />
     <Content Include="Images\PvP\portraits\bunnygirl_nymictf_fixed.png" />
+    <Content Include="Images\PvP\portraits\cake_dragon_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\captivating_siren_babblingfaces.png" />
     <Content Include="Images\PvP\portraits\catchcum_spacedande.jpg" />
     <Content Include="Images\PvP\portraits\centaur_mare_babblingfaces.jpg" />
+    <Content Include="Images\PvP\portraits\chubby_tanuki_lady_marx50.jpg" />
     <Content Include="Images\PvP\portraits\CircineMilton_Wrenzephyr.png" />
     <Content Include="Images\PvP\portraits\corrupted_nun_babblingfaces.jpg" />
     <Content Include="Images\PvP\portraits\councilorman_babblingfaces.jpg" />
@@ -987,8 +1012,10 @@
     <Content Include="Images\PvP\portraits\elven_femboi_Luxianne.png" />
     <Content Include="Images\PvP\portraits\elvish_bard_BabblingFaces.png" />
     <Content Include="Images\PvP\portraits\emo_koala_babblingfaces.jpg" />
+    <Content Include="Images\PvP\portraits\enchanted_tree_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\Feisty_Firebrand_Luxianne.png" />
     <Content Include="Images\PvP\portraits\female_armor_Meddle.png" />
+    <Content Include="Images\PvP\portraits\female_ogre_babblingfaces.jpg" />
     <Content Include="Images\PvP\portraits\female_rat_thief_Luxianne.png" />
     <Content Include="Images\PvP\portraits\femboi_skunk_Luxianne.png" />
     <Content Include="Images\PvP\portraits\Fembot_Meddle.png" />
@@ -1005,14 +1032,17 @@
     <Content Include="Images\PvP\portraits\gloom_Dandelion.jpg" />
     <Content Include="Images\PvP\portraits\gluttenous_kitsune_Daniel_Kay.jpg" />
     <Content Include="Images\PvP\portraits\goblin_girl_Meddle.png" />
+    <Content Include="Images\PvP\portraits\gorilla_bodybuilder_daniel_kay.jpg" />
     <Content Include="Images\PvP\portraits\Gracious_Clockwork_Ballerina_Ninian.jpg" />
     <Content Include="Images\PvP\portraits\great_fairy_Luxianne.png" />
     <Content Include="Images\PvP\portraits\gummy_girl_Luxianne.png" />
+    <Content Include="Images\PvP\portraits\harlot_babblingfaces.jpg" />
     <Content Include="Images\PvP\portraits\harpy_maiden_babblingfaces.png" />
     <Content Include="Images\PvP\portraits\headless_mannequin_JBovinne.png" />
     <Content Include="Images\PvP\portraits\head_maid_jbovinne.jpg" />
     <Content Include="Images\PvP\portraits\hero_babblingfaces.png" />
     <Content Include="Images\PvP\portraits\holy_nun_babblingfaces.jpg" />
+    <Content Include="Images\PvP\portraits\honeybadger_daniel_kay.jpg" />
     <Content Include="Images\PvP\portraits\hulking_hellspawn_Meddle.jpg" />
     <Content Include="Images\PvP\portraits\hyperactive_ferret_girl_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\Ice_Queen_Meddle.png" />
@@ -1038,6 +1068,7 @@
     <Content Include="Images\PvP\portraits\loyal_dog_girl_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\lusty_mare_UYS.jpg" />
     <Content Include="Images\PvP\portraits\mad_female_scientist_Babblingfaces.jpg" />
+    <Content Include="Images\PvP\portraits\male_Lilith_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\Man_01_Meddle.png" />
     <Content Include="Images\PvP\portraits\Man_02_Meddle.png" />
     <Content Include="Images\PvP\portraits\Man_03_Meddle.png" />
@@ -1060,6 +1091,7 @@
     <Content Include="Images\PvP\portraits\new_age_retro_hippy_Meddle.png" />
     <Content Include="Images\PvP\portraits\nighthuntress_Martiandawn.png" />
     <Content Include="Images\PvP\portraits\ninja_girl_spacedande.jpg" />
+    <Content Include="Images\PvP\portraits\nyx_custom_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\ogre_babblingfaces.jpg" />
     <Content Include="Images\PvP\portraits\Omnibus_Meddle.png" />
     <Content Include="Images\PvP\portraits\otter_boy_Kyethusky.png" />
@@ -1084,6 +1116,8 @@
     <Content Include="Images\PvP\portraits\robot_Meddle.png" />
     <Content Include="Images\PvP\portraits\sailor_seal_girl_Dandelion.jpg" />
     <Content Include="Images\PvP\portraits\satyr_martiandawn.jpg" />
+    <Content Include="Images\PvP\portraits\scholarly_schoolgirl_Babblingfaces.jpg" />
+    <Content Include="Images\PvP\portraits\seductive_skunk_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\seekshadow_apprentice_thief_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\seekshadow_master_thief_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\sexy_princess_Meddle.png" />
@@ -1109,9 +1143,11 @@
     <Content Include="Images\PvP\portraits\Thumbnails\100\alraune_Luxianne.png" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\Amazonian_Futa_Meddle.png" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\angel_Meddle.png" />
+    <Content Include="Images\PvP\portraits\Thumbnails\100\bartender_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\batgirl_Luxianne.png" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\beach_babe_enthusiast_TheGreatDaeo.jpg" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\beat_cop_Babblingfaces.jpg" />
+    <Content Include="Images\PvP\portraits\Thumbnails\100\bee_girl_spacedande.jpg" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\belle_of_the_ball_Meddle.png" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\bimbo_mother_babblingfaces.png" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\bimbo_mouse_boss_Dandelion.jpg" />
@@ -1124,10 +1160,12 @@
     <Content Include="Images\PvP\portraits\Thumbnails\100\boyish_girl_Babblingfaces.jpg" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\bunnygirl_nymictf_fixed.png" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\bunnygirl_tfnymic.jpg" />
+    <Content Include="Images\PvP\portraits\Thumbnails\100\cake_dragon_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\captivating_siren_babblingfaces.png" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\catchcum_spacedande.jpg" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\centaur_mare_babblingfaces.jpg" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\cheerleader_meddle.png" />
+    <Content Include="Images\PvP\portraits\Thumbnails\100\chubby_tanuki_lady_marx50.jpg" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\CircineMilton_Wrenzephyr.png" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\corrupted_nun_babblingfaces.jpg" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\councilorman_babblingfaces.jpg" />
@@ -1148,8 +1186,10 @@
     <Content Include="Images\PvP\portraits\Thumbnails\100\elvish_bard_BabblingFaces.png" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\emo_koala_babblingfaces.jpg" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\enchanted_tree.png" />
+    <Content Include="Images\PvP\portraits\Thumbnails\100\enchanted_tree_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\Feisty_Firebrand_Luxianne.png" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\female_armor_Meddle.png" />
+    <Content Include="Images\PvP\portraits\Thumbnails\100\female_ogre_babblingfaces.jpg" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\female_rat_thief_Luxianne.png" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\femboi_skunk_Luxianne.png" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\Fembot_Meddle.png" />
@@ -1170,14 +1210,17 @@
     <Content Include="Images\PvP\portraits\Thumbnails\100\gluttenous_kitsune_Daniel_Kay.jpg" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\goblin_girl_Meddle.png" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\goo_girl_b_meddle.png" />
+    <Content Include="Images\PvP\portraits\Thumbnails\100\gorilla_bodybuilder_daniel_kay.jpg" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\Gracious_Clockwork_Ballerina_Ninian.jpg" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\great_fairy_Luxianne.png" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\gummy_girl_Luxianne.png" />
+    <Content Include="Images\PvP\portraits\Thumbnails\100\harlot_babblingfaces.jpg" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\harpy_maiden_babblingfaces.png" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\headless_mannequin_JBovinne.png" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\head_maid_jbovinne.jpg" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\hero_babblingfaces.png" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\holy_nun_babblingfaces.jpg" />
+    <Content Include="Images\PvP\portraits\Thumbnails\100\honeybadger_daniel_kay.jpg" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\hulking_hellspawn_Meddle.jpg" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\hyperactive_ferret_girl_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\ibbl.jpg" />
@@ -1206,6 +1249,7 @@
     <Content Include="Images\PvP\portraits\Thumbnails\100\loyal_dog_girl_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\lusty_mare_UYS.jpg" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\mad_female_scientist_Babblingfaces.jpg" />
+    <Content Include="Images\PvP\portraits\Thumbnails\100\male_Lilith_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\manly_man_Meddle.png" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\Man_01_Meddle.png" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\Man_02_Meddle.png" />
@@ -1215,6 +1259,7 @@
     <Content Include="Images\PvP\portraits\Thumbnails\100\martial_artist_Babblingfaces.jpg" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\massively_obese_woman_Meddle.png" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\mechanical_man_Meddle.png" />
+    <Content Include="Images\PvP\portraits\Thumbnails\100\mechanized_clockwork_doll_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\mermaid_Luxianne.png" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\milkmaid_Luxianne.png" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\Minotaur_Meddle.png" />
@@ -1232,6 +1277,8 @@
     <Content Include="Images\PvP\portraits\Thumbnails\100\nighthuntress_Martiandawn.png" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\ninja_girl_spacedande.jpg" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\noGraphic.png" />
+    <Content Include="Images\PvP\portraits\Thumbnails\100\nyx_custom_Luxianne.jpg" />
+    <Content Include="Images\PvP\portraits\Thumbnails\100\ogre_babblingfaces.jpg" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\Omnibus_Meddle.png" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\otter_boy_Kyethusky.png" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\panty_raiden_jbovinne.jpg" />
@@ -1240,6 +1287,7 @@
     <Content Include="Images\PvP\portraits\Thumbnails\100\pinup_bunny_Meddle.jpg" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\pirate_prince_Jbovinne.jpg" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\pixie_jbovinne.jpg" />
+    <Content Include="Images\PvP\portraits\Thumbnails\100\playful_imp_Indigo_Clardmond.jpg" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\possessed_doll_Foxpower93.png" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\psycho_female.png" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\psycho_male.png" />
@@ -1253,7 +1301,9 @@
     <Content Include="Images\PvP\portraits\Thumbnails\100\robot_Meddle.png" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\sailor_seal_girl_Dandelion.jpg" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\satyr_martiandawn.jpg" />
+    <Content Include="Images\PvP\portraits\Thumbnails\100\scholarly_schoolgirl_Babblingfaces.jpg" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\scipio_pirate.png" />
+    <Content Include="Images\PvP\portraits\Thumbnails\100\seductive_skunk_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\seekshadow_apprentice_thief_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\seekshadow_master_thief_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\sexy_princess_Meddle.png" />
@@ -1269,6 +1319,7 @@
     <Content Include="Images\PvP\portraits\Thumbnails\100\slutty_nurse_Meddle.png" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\space_odditiy_Daniel_Kay.jpg" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\squirrel_maid_Luxianne.png" />
+    <Content Include="Images\PvP\portraits\Thumbnails\100\stone_lion_jbovinne.jpg" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\stripper_Meddle.png" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\succubus.png" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\succubus_by_nymic_tf-d7euc8y.jpg" />
@@ -1288,6 +1339,7 @@
     <Content Include="Images\PvP\portraits\Thumbnails\100\vampireboss.png" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\vampire_female_Lux.png" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\vampire_Lux.png" />
+    <Content Include="Images\PvP\portraits\Thumbnails\100\vicious_gorgon_babblingfaces.jpg" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\vine_girl_CyberKaku.jpg" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\warrior_queen_Martiandawn.png" />
     <Content Include="Images\PvP\portraits\Thumbnails\100\wereleopard_luxianne.png" />
@@ -1315,6 +1367,7 @@
     <Content Include="Images\PvP\portraits\vampireboss.png" />
     <Content Include="Images\PvP\portraits\vampire_female_Lux.png" />
     <Content Include="Images\PvP\portraits\vampire_Lux.png" />
+    <Content Include="Images\PvP\portraits\vicious_gorgon_babblingfaces.jpg" />
     <Content Include="Images\PvP\portraits\vine_girl_CyberKaku.jpg" />
     <Content Include="Images\PvP\portraits\warrior_queen_Martiandawn.png" />
     <Content Include="Images\PvP\portraits\werewolf_Luxianne.png" />
@@ -1331,6 +1384,8 @@
     <Content Include="Images\PvP\portraits\zombie_aid_babblingfaces.png" />
     <Content Include="Images\PvP\Smilies\smile.png" />
     <Content Include="Reports\Updates\1963.txt" />
+    <Content Include="Schema\GetPlayerBuffs.sql" />
+    <Content Include="Scripts\bombieGame.js" />
     <Content Include="Scripts\boxesResize.js" />
     <Content Include="Scripts\fwars\app.js" />
     <Content Include="Scripts\fwars\controllers\personsController.js" />
@@ -1347,6 +1402,7 @@
     <Content Include="Scripts\jquery.rotate.js" />
     <Content Include="Scripts\jQueryRotateCompressed.js" />
     <Content Include="Scripts\notices.js" />
+    <Content Include="Sounds\turnUpdate1.wav" />
     <Content Include="XMLs\BossSummonText\BimboBoss.txt" />
     <Content Include="XMLs\BossSummonText\Sisters.txt" />
     <Content Include="XMLs\BossSummonText\Donna.txt" />
@@ -1357,7 +1413,9 @@
     <Content Include="XMLs\DungeonAdjectives.xml" />
     <Content Include="XMLs\FairyChallengeText\fae_toy_soldier.xml" />
     <Content Include="XMLs\restockList.xml" />
-    <Content Include="XMLs\custom_bases.xml" />
+    <Content Include="XMLs\custom_bases.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="XMLs\Effects\effect_Circine%27s_Hypnosis_LexamTheGemFox.xml" />
     <Content Include="XMLs\Effects\effect_Hemorrhage_Izz_Valentine.xml">
       <SubType>Designer</SubType>
@@ -2038,10 +2096,10 @@
     <Content Include="Views\PvP\partial_ItemBuffs.cshtml" />
     <Content Include="Views\PvP\partial_InventoryItem.cshtml" />
     <Content Include="Views\PvP\Play_Inanimate.cshtml" />
-    <Content Include="Views\PvP\HowToPlay.cshtml" />
+    <Content Include="Views\Info\HowToPlay.cshtml" />
     <Content Include="Views\PvP\LookAtPlayer.cshtml" />
     <Content Include="Views\PvPAdmin\UpdateWorld.cshtml" />
-    <Content Include="Views\PvP\GameNews.cshtml" />
+    <Content Include="Views\Info\GameNews.cshtml" />
     <Content Include="Views\PvP\partial_XpBar.cshtml" />
     <Content Include="Views\PvP\partial_FormBuffs.cshtml" />
     <Content Include="Views\PvP\MyMessages.cshtml" />
@@ -2063,7 +2121,7 @@
     <Content Include="Views\PvP\RoundLeaderboards\Alpha_2.cshtml" />
     <Content Include="Views\PvP\ContributeGraphicsNeeded.cshtml" />
     <Content Include="Views\PvP\ContributeSetGraphicStatus.cshtml" />
-    <Content Include="Views\PvP\GameNews_PlannedFeatures.cshtml" />
+    <Content Include="Views\Info\GameNews_PlannedFeatures.cshtml" />
     <Content Include="Views\PvPAdmin\Play.cshtml" />
     <Content Include="Views\PvP\BalanceCalculatorEffect.cshtml" />
     <Content Include="Views\PvP\LevelupPerk.cshtml" />
@@ -2121,10 +2179,10 @@
     <Content Include="Views\Settings\Donate.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Alpha_10.cshtml" />
     <Content Include="Views\Shared\_MenuPartial.cshtml" />
-    <Content Include="Views\PvP\GameNews_Archive.cshtml" />
-    <Content Include="Views\PvP\TalkWithJewdewfae.cshtml" />
+    <Content Include="Views\Info\GameNews_Archive.cshtml" />
+    <Content Include="Views\NPC\TalkWithJewdewfae.cshtml" />
     <Content Include="Views\PvPAdmin\WriteFaeEncounter.cshtml" />
-    <Content Include="Views\PvP\FAQ.cshtml" />
+    <Content Include="Views\Info\FAQ.cshtml" />
     <Content Include="Views\Settings\SetNickname.cshtml" />
     <Content Include="Views\PvP\partial\partial_recentActivity.cshtml" />
     <Content Include="Views\PvP\ViewEffects.cshtml" />
@@ -2174,7 +2232,7 @@
     <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_15.cshtml" />
     <Content Include="Views\Settings\MyBlacklistEntries.cshtml" />
     <Content Include="Views\Item\SkillBook.cshtml" />
-    <Content Include="Views\PvP\Rules.cshtml" />
+    <Content Include="Views\Info\Rules.cshtml" />
     <Content Include="Views\Item\partial\ItemDetails.cshtml" />
     <Content Include="Views\PvP\partial_ShopkeeperItem.cshtml" />
     <Content Include="Views\Settings\PlayerStats.cshtml" />
@@ -2206,6 +2264,22 @@
     <Content Include="Views\Settings\SetFriendNickname.cshtml" />
     <Content Include="Views\PvPAdmin\FaeList.cshtml" />
     <Content Include="Views\PvPAdmin\WriteFae.cshtml" />
+    <Content Include="Views\Item\ShowStatsTable.cshtml" />
+    <Content Include="Views\Settings\Polls\Open\poll3.cshtml" />
+    <Content Include="Views\Settings\Polls\Read\poll3.cshtml" />
+    <Content Include="Views\Settings\MyRPClassifiedAds.cshtml" />
+    <Content Include="Views\Info\RecentRPClassifieds.cshtml" />
+    <Content Include="Views\Settings\EditRPClassifiedAd.cshtml" />
+    <Content Include="Views\NPC\TalkToCandice.cshtml" />
+    <Content Include="Views\NPC\TalkToAdrianna.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\XP\Alpha_20.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_20.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\Statistics\Alpha_20.cshtml" />
+    <Content Include="Views\PvPAdmin\RenamePlayer.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\XP\Alpha_21.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_21.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\Statistics\Alpha_21.cshtml" />
+    <Content Include="Views\TransformaniaTime\bombie.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

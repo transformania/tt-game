@@ -35,7 +35,8 @@
                     @Html.ActionLink("Chat Log", "ChatLog", "PvP", new { room = "global", filter = "lasth" }, new { target = "_blank" })
                 </li>
                 <li>@Html.ActionLink("Commands", "ChatCommands", "PvP", null, new { target = "_blank" })</li>
-                <li><a href="#" id="showIgnore" style="color: #734752 !important; font-weight:bold;">Ignore</a></li>
+                <li><a href="#" id="showIgnore">Ignore</a></li>
+                <li><a href="#" id="toggleImages" style="color: #734752 !important; font-weight:bold;">Toggle Images</a></li>
 </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -45,10 +46,11 @@
 
 <div class="containerInner">
     <div id="ignoreDiv" style="display: none;" class="center-block">
-        <p>Adding in any text to the ignore list will stop you from seeing any chat posts containing your entry, even if you write it.</p>
+        <p>Adding in any text to the ignore list will stop you from seeing any chat posts containing your entry, even if you write it.  Your entries will are now saved in local storage which means this setting should not be forgotten even if close your browser (unless your cache is cleared).</p>
         <input type="text" id="ignore" /><br />
         <button id="ignoreAdd" class="btn btn-danger btn-xs">Add to Ignore</button>
         <button id="ignoreReset" class="btn btn-success btn-xs">Reset Ignore</button>
+        <button id="ignoreView" class="btn btn-alert btn-xs">View Ignored</button>
     </div>
 
     <ul id="discussion"></ul>
@@ -77,6 +79,7 @@
         var autoScrollEnabled = true;
 
         var ignored = [];
+        var imagesOn = true;
 
         $("#autoScrollToggle").click(function () {
             if (autoScrollEnabled == true) {
@@ -126,7 +129,7 @@
             var scrollTimeout = 0;
 
 
-            chat.client.addNewMessageToPage = function (name, message, chatColor) {
+            chat.client.addNewMessageToPage = function (pic, name, message, chatColor) {
 
                 if(scrollTimeout != 0)
                 {
@@ -148,8 +151,13 @@
                 if (doNotDisplay == false) {
 
                     // if this is not a / command, write out the name and colon.  Otherwise only write the message.
-                    if (name.length > 0) {
+                    if (name.length > 0 && imagesOn == true) {
+                        $('#discussion ').append('<li><img src="' + pic + '"><strong>' + htmlEncodeName(name, chatColor) + '</strong>: ' + htmlEncode(message) + '</li>');
+                    } else if (name.length > 0 && imagesOn == false) {
                         $('#discussion ').append('<li><strong>' + htmlEncodeName(name, chatColor) + '</strong>: ' + htmlEncode(message) + '</li>');
+
+                    } else if (imagesOn == true && pic.length > 0) {
+                        $('#discussion ').append('<li><img src="' + pic + '"><strong>' + injectColor(chatColor, "start") + htmlEncode(message) + '</span></li>');
                     } else {
                         $('#discussion ').append('<li><strong>' + injectColor(chatColor, "start") + htmlEncode(message) + '</span></li>');
                     }
@@ -246,7 +254,7 @@
             encodedValue = encodedValue.replace("Mizuho (dev)", "<span class='adminFont'>Mizuho (dev)</span>");
             encodedValue = encodedValue.replace("Arrhae (dev)", "<span class='adminFont'>Arrhae (dev)</span>");
             encodedValue = encodedValue.replace(myname, "<span style='background: #FFE9D5; color: " + mynameColor + ";'><strong> " + myname + "</strong></span>");
-            encodedValue = encodedValue.replace("[luxa]", "<a onclick='chatLink()'><img src='//i.imgur.com/khaIWKZ.jpg'></a>");
+            encodedValue = encodedValue.replace("[luxa]", "<a onclick='chatLink()'><img style='width:436px; height:49px' src='//i.imgur.com/khaIWKZ.jpg'></a>");
             encodedValue = encodedValue.replace("[blanca]", "<a onclick='dandyStream()'>Blanca is streaming now</a>");
             encodedValue = encodedValue.replace("[poll]", "Please take part in our Transformation Preferences Poll. <a onclick='chatLink2()'>Transformation Poll - http://goo.gl/forms/Zu0JeZBLn9 </a>");
             encodedValue = encodedValue.replace("[fp]", "<pre>  .-'---`-.\n,'          `.\n|             \\\n|              \\\n\\           _  \\\n,\\  _    ,'-,/-)\\\n( * \\ \\,' ,' ,'-)\n `._,)     -',-')\n   \\/         ''/\n    )        / /\n   /       ,'-'</pre>");
@@ -306,6 +314,7 @@
             ignored.push($("#ignore").val());
             $("#ignore").val("");
             alert("Now ignoring:  " + ignored);
+            localStorage.setItem("chat_IgnoreList", JSON.stringify(ignored));
         });
 
         $("#ignoreReset").click(function () {
@@ -313,11 +322,34 @@
             alert("No longer ignoring anyone.");
         });
 
+        $("#ignoreView").click(function () {
+            $('#discussion ').append('<li><b>You will not see any chat messages that contain the following substrings:</b></li>');
+            if (ignored.length > 0) {
+            for (var x = 0; x < ignored.length; x++) {
+                $('#discussion ').append('<li>' + ignored[x] + ' </li>');
+            }
+            } else {
+                $('#discussion ').append('<li><i>You do not have anyone or anything on your ignore list.</i></li>');
+            }
+        });
+
         $("#showIgnore").click(function () {
             if ($("#ignoreDiv").is(":visible")==false) {
                 $("#ignoreDiv").show();
             } else {
                 $("#ignoreDiv").hide();
+            }
+        });
+
+        $("#toggleImages").click(function () {
+            imagesOn = !imagesOn;
+           
+            if (imagesOn == false) {
+                alert("Images disabled.");
+                localStorage.setItem("chat_ImagesOn", "false");
+            } else {
+                alert("Images enabled.");
+                localStorage.setItem("chat_ImagesOn", "true");
             }
         });
 
@@ -332,16 +364,46 @@
             }
         });
 
-        
+         // load some defaults
+        $(document).ready(function () {
+            var imagesOnValue = localStorage.getItem("chat_ImagesOn");
+            if (imagesOnValue === "true") {
+                imagesOn = true;
+            } else if (imagesOnValue === "false") {
+                imagesOn = false;
+            } else {
+                imagesOn = true; // first time load undefined
+            }
+
+            ignored = JSON.parse(localStorage.getItem("chat_IgnoreList"));
+            if (ignored == null) {
+                ignored = [];
+            }
+
+        });
+
+
 
     </script>
 }
 
 <style>
-     .chatlink {
+    .chatlink {
         text-decoration: underline;
         color: blue;
         cursor: pointer;
-
     }
+
+    li img {
+        width: 32px;
+        height: 32px;
+        transition: 0.1s all linear;
+        margin-right: 5px;
+    }
+
+
+        li img:hover {
+            width: 64px;
+            height: 64px;
+        }
 </style>

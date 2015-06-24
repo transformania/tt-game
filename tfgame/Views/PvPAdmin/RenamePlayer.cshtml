@@ -1,0 +1,21 @@
+﻿@model tfgame.ViewModels.PlayerNameViewModel
+
+<h1>Public broadcast</h1>
+
+@using (Html.BeginForm("RenamePlayerSend", "PvPAdmin", FormMethod.Post))
+{
+    <span>Id:</span>
+    @Html.TextAreaFor(m => m.Id)    <br />    <br />
+
+    <span>FirstName:</span>
+    @Html.TextAreaFor(m => m.NewFirstName)    <br />    <br />
+
+    <span>LastName:</span>
+    @Html.TextAreaFor(m => m.NewLastName)    <br />    <br />
+
+
+    <span>Form:</span>
+    @Html.TextAreaFor(m => m.NewForm)    <br />    <br />
+
+    <input type="submit" value="Send" />
+}

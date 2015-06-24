@@ -2,7 +2,7 @@
 <ArrayOfCustomFormViewModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <CustomFormViewModel>
     <MembershipId>4481</MembershipId>
-    <Form>form_Queen_of_the_Vampires_Luxianne</Form>
+    <Form>form_Bewitching_Vampire_Count_Lilith</Form>
   </CustomFormViewModel>
   <CustomFormViewModel>
     <MembershipId>873</MembershipId>
@@ -35,6 +35,10 @@
   <CustomFormViewModel>
     <MembershipId>12044</MembershipId>
     <Form>form_Philoso-raptor_Troodon</Form>
+  </CustomFormViewModel>
+  <CustomFormViewModel>
+    <MembershipId>4245</MembershipId>
+    <Form>form_Burrito_Queen_Nyx</Form>
   </CustomFormViewModel>
 
   

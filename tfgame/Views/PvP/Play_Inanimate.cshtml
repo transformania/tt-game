@@ -2,6 +2,12 @@
 @using tfgame.CustomHtmlHelpers
 @using tfgame.Statics
 
+<script src="~/Scripts/jquery-ui-1.10.4.js"></script>
+
+<script src="~/Scripts/jquery.signalR-2.0.3.min.js"></script>
+<script src="~/signalr/hubs"></script>
+<script src="~/Scripts/notices.js"></script>
+
 @{
     if (@ViewBag.WorldTurnNumber >= @PvPStatics.RoundDuration)
     {
@@ -64,32 +70,30 @@
 @Html.Partial("partial/RoundStatus", Model.PvPWorldStat)
 
 <div class="specialBox specialBox2">
-    <span class="turnNumber">Turn #<b>@ViewBag.WorldTurnNumber/@PvPStatics.RoundDuration</b></span>
+    <span class="turnNumber">Turn #<b>@ViewBag.WorldTurnNumber/@PvPStatics.RoundDuration</b></span><span id="liveConnectionNotice" class="noticeOff" title="If this icon is green, you are connected to the server and will receive live notifications when attacked or messaged."><span class="glyphicon glyphicon-ok-circle"> </span></span>
     Transformania Time has <b>@Model.WorldStats.TotalPlayers</b> players, <b>@Model.WorldStats.CurrentOnlinePlayers</b> of which are currently online.
 </div>
 
-@{
-    if (Model.PlayerLogImportant.Count() > 0)
-    {
-        <ul id="notificationBox">
-            @{
+<ul id="notificationBox" style="display:none;">
+    @{
         foreach (tfgame.dbModels.Models.PlayerLog log in Model.PlayerLogImportant)
         {
             <li class="frontPageNotification">
                 @Html.Raw(log.Message) <span class="timeago">@CharactersHere.DatetimeToTimeago(log.Timestamp)</span>
             </li>
         }
-            }
-        </ul>    
-    <p id="dismissNotficationBox"><a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '0px'">[ -- ]</a> <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '100px'">[ - ]</a> @Html.ActionLink("Dismiss Notifications", "DismissNotifications", "PvP") <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '250px'">[ + ]</a> <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '500px'">[ ++ ]</a></p>
     }
-}
+</ul>
+
+<p id="dismissNotficationBox" style="display:none;"><a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '0px'">[ -- ]</a> <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '100px'">[ - ]</a> @Ajax.ActionLink("Dismiss Notifications", "DismissNotifications_Ajax", "PvP", null, new AjaxOptions { HttpMethod = "GET", OnSuccess = "dismissNotificationsSuccess", OnFailure = "dismissNotificationsFail" }, null) <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '250px'">[ + ]</a> <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '500px'">[ ++ ]</a></p>
+
+
 <div class="containerInner">
     <div class="row">
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-            <div class="petItemPortrait img-responsive" style="background-image: url(../Images/PvP/itemsPortraits/@Model.Item.PortraitUrl);">
+            <div class="petItemPortrait img-responsive" style="background-image: url(../Images/PvP/itemsPortraits/@Model.Item.Item.PortraitUrl);">
                 @CharactersHere.PrintOwnerSubPortrait(Model.WornBy)
-                @CharactersHere.PrintItemTypeIcon(Model.Item)
+                @CharactersHere.PrintItemTypeIcon(Model.Item.Item)
             </div>
         </div>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-justify">
@@ -124,20 +128,32 @@
                             <li>
                                 @Html.ActionLink("Agitatedly zap your owner", "InanimateAction", "PvP", new { actionName = "zap" }, new { @class = "check inanimateAction" })
                             </li>
-                            @{
+                            
+
+    @{
+                    if (Model.Item.Item.CurseTFFormdbName != null && Model.Item.Item.CurseTFFormdbName != "")
+                    {
+                        <li>
+                            @Html.ActionLink("Attempt to transform your owner!", "CurseTransformOwner", "PvP", null, new { @class = "check inanimateAction" })
+                        </li>
+                    }
+   
+                            
+                            
+                            
                     if (Model.WornBy != null)
                     {
                         <li>@Html.ActionLink("Attempt to slip free from your owner", "EscapeFromOwner", "PvP", null, new { @class = "inanimateAction" })</li>
                     }
-                            }
 
+                }
                         </ul>
                     </p>
 
                 }
             }
 
-                        @{
+            @{
                 if (Model.IsPermanent == false)
                 {
                     <p class="center-block">
@@ -213,6 +229,9 @@
     var blinkEnabled = 0;
 
     var secondsToUpdate = @ViewBag.SecondsUntilUpdate;
+    var donatorTier = @Model.Player.DonatorLevel;
+    var playUpdateSound = false;
+    var notificationsEnabled = false;
 
     $(document).ready(function() {
 
@@ -223,7 +242,6 @@
             }
         });
 
-       // var myVar=setInterval(function(){pingForUpdate()},30000);
         var myVa2r=setInterval(function(){titleToggle()},1000);
 
         setInterval(function(){
@@ -253,33 +271,10 @@
         alert("The last update was  @CharactersHere.DatetimeToTimeago_WithSeconds(Model.LastUpdateTimestamp) (based on when this page was loaded.)  Updates should happen every 10 minutes.");
     });
 
-    function pingForUpdate() {
-        $.ajax({
-            url: 'PvP/ClientUpdateCheck/',
-            type: 'POST',
-            fail: fail,
-            success: pingDone,
-            dataType: 'text'
-        });
-    }
-
     function pingDone(data) {
         if (data > turnNo) {
             turnNo = data;
             blinkEnabled = 1;
-        }
-    }
-
-    function titleToggle() {
-
-        if (blinkEnabled==1) {
-            if (togglestate == 0) {
-                $('title').text('Transformania Time!');
-                togglestate = 1;
-            } else if (togglestate == 1){
-                $('title').text('[UPDATED--reload page!]');
-                togglestate = 0;
-            }
         }
     }
 

@@ -10,6 +10,7 @@ namespace tfgame.ViewModels
     {
         public Player You { get; set; }
         public DbStaticForm Form { get; set; }
+        public ItemViewModel YouItem { get; set; }
         public PlayerFormViewModel OwnedBy { get; set; }
         public Location Location { get; set; }
 

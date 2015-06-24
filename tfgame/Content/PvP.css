@@ -351,6 +351,16 @@ locationDescription {
     background-size: 100% 100%;
 }
 
+.goodEffectGroup{
+    background-color:lightgreen;
+    border: 1px solid green;
+}
+
+.badEffectGroup{
+    background-color:pink;
+    border: 1px solid red;
+}
+
 
 .mainPageWorldStats {
     border: 1px solid black;

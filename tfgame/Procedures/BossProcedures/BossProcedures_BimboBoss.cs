@@ -56,7 +56,7 @@ namespace tfgame.Procedures.BossProcedures
 
                 playerRepo.SavePlayer(bimboBoss);
 
-                bimboBoss = PlayerProcedures.ReadjustMaxes(bimboBoss, ItemProcedures.GetPlayerBuffs(bimboBoss));
+                bimboBoss = PlayerProcedures.ReadjustMaxes(bimboBoss, ItemProcedures.GetPlayerBuffsSQL(bimboBoss));
 
                 playerRepo.SavePlayer(bimboBoss);
 
@@ -77,6 +77,10 @@ namespace tfgame.Procedures.BossProcedures
 
         public static void CounterAttack(Player human, Player bimboss)
         {
+
+            // record that human attacked the boss
+            AIProcedures.DealBossDamage(bimboss, human, true, 1);
+
             // if the bimboboss is inanimate, end this boss event
             if (bimboss.Mobility != "full")
             {
@@ -88,6 +92,7 @@ namespace tfgame.Procedures.BossProcedures
             if (EffectProcedures.PlayerHasEffect(human, KissEffectdbName) == false && EffectProcedures.PlayerHasEffect(human, CureEffectdbName) == false)
             {
                 AttackProcedures.Attack(bimboss, human, KissSkilldbName);
+                AIProcedures.DealBossDamage(bimboss, human, false, 1);
             }
 
             // otherwise run the regular trasformation
@@ -98,6 +103,7 @@ namespace tfgame.Procedures.BossProcedures
                 for (int i = 0; i < attackCount; i++) {
                     AttackProcedures.Attack(bimboss, human, RegularTFSpellDbName);
                 }
+                AIProcedures.DealBossDamage(bimboss, human, false, attackCount);
             }
 
             // otherwise make the human wander away to find more targets
@@ -163,16 +169,15 @@ namespace tfgame.Procedures.BossProcedures
                 if (EffectProcedures.PlayerHasEffect(p, KissEffectdbName) == false && EffectProcedures.PlayerHasEffect(p, CureEffectdbName) == false)
                 {
                     AttackProcedures.Attack(bimboBoss, p, KissSkilldbName);
+                    AIProcedures.DealBossDamage(bimboBoss, p, false, 1);
                 }
+
 
                 // otherwise run the regular trasformation
                 else if (p.Form != RegularBimboFormDbName)
                 {
-                   // int attackCount = (int)Math.Floor(rand.NextDouble() * 3 + 1);
-                   // for (int i = 0; i < attackCount; i++)
-                   // {
-                        AttackProcedures.Attack(bimboBoss, p, RegularTFSpellDbName);
-                   // }
+                    AttackProcedures.Attack(bimboBoss, p, RegularTFSpellDbName);
+                    AIProcedures.DealBossDamage(bimboBoss, p, false, 1);
                 }
             }
 
@@ -200,7 +205,7 @@ namespace tfgame.Procedures.BossProcedures
                     {
                         infectee.Form = RegularBimboFormDbName;
                         infectee.Gender = "female";
-                        infectee = PlayerProcedures.ReadjustMaxes(infectee,ItemProcedures.GetPlayerBuffsRAM(infectee));
+                        infectee = PlayerProcedures.ReadjustMaxes(infectee,ItemProcedures.GetPlayerBuffsSQL(infectee));
                         playerRepo.SavePlayer(infectee);
 
                         string message = "You gasp, your body shifting as the virus infecting you overwhelms your biological and arcane defenses.  Before long you find that your body has been transformed into that of one of the many bimbonic plague victims and you can't help but succumb to the urges to spread your infection--no, your gift!--on to the rest of mankind.";

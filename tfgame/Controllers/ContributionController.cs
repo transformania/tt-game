@@ -196,6 +196,7 @@ namespace tfgame.Controllers
             saveme.Timestamp = DateTime.UtcNow;
             saveme.AdditionalSubmitterNames = input.AdditionalSubmitterNames;
             saveme.Notes = input.Notes;
+            saveme.NeedsToBeUpdated = input.NeedsToBeUpdated;
 
             if (saveme.ProofreadingCopy)
             {
@@ -546,6 +547,16 @@ namespace tfgame.Controllers
             if (contribution.Form_MobilityType == "inanimate" || contribution.Form_MobilityType == "animal")
             {
                 item.PortraitUrl = contribution.ImageURL;
+
+                // update the form's graphic too while we're at it.
+                IDbStaticFormRepository formRepo = new EFDbStaticFormRepository();
+                DbStaticForm form = formRepo.DbStaticForms.FirstOrDefault(f => f.BecomesItemDbName == item.dbName);
+                if (form != null)
+                {
+                    form.PortraitUrl = item.PortraitUrl;
+                    formRepo.SaveDbStaticForm(form);
+                }
+
             }
 
             item.HealthBonusPercent = contribution.HealthBonusPercent;
@@ -582,6 +593,8 @@ namespace tfgame.Controllers
             item.Succour = contribution.Succour;
             item.Luck = contribution.Luck;
             item.Chaos_Order = contribution.Chaos_Order;
+
+            item.CurseTFFormdbName = contribution.CursedTF_FormdbName;
             
         //           public decimal InstantHealthRestore { get; set; }
         //public decimal InstantManaRestore { get; set; }
@@ -589,6 +602,33 @@ namespace tfgame.Controllers
         //public decimal ReuseableManaRestore { get; set; }
 
             //item.InstantHealthRestore = contribution.Item_
+
+            // write the form to
+           // string formdbname = "form_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
+            if (item.CurseTFFormdbName != null && item.CurseTFFormdbName.Length > 0) { 
+                ITFMessageRepository tfRepo = new EFTFMessageRepository();
+                TFMessage tf = tfRepo.TFMessages.FirstOrDefault(t => t.FormDbName == item.CurseTFFormdbName);
+
+                if (tf == null)
+                {
+                    message += "<p class='bad'>Unable to locate TF message " + item.CurseTFFormdbName + ".  Not writing curse text.  Make sure to publish the form first if needed.</p>";
+                }
+                else
+                {
+                    tf.CursedTF_Fail = contribution.CursedTF_Fail;
+                    tf.CursedTF_Fail_M = contribution.CursedTF_Fail_M;
+                    tf.CursedTF_Fail_F = contribution.CursedTF_Fail_F;
+                    tf.CursedTF_Succeed = contribution.CursedTF_Succeed;
+                    tf.CursedTF_Succeed_M = contribution.CursedTF_Succeed_M;
+                    tf.CursedTF_Succeed_F = contribution.CursedTF_Succeed_F;
+                    tfRepo.SaveTFMessage(tf);
+
+                    message += "<p class='good'>Added TF curse text.</p>";
+                }
+
+            }
+
+            
 
             itemRepo.SaveDbStaticItem(item);
 

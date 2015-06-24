@@ -27,13 +27,16 @@
     <h2>Open</h2>
 
     <ul>
+        <li> @Html.ActionLink("How do you feel about the new stats system and the double turn speed?", "ViewPoll", "Settings", new { id = 3 }, null)</li>
         <li> @Html.ActionLink("Tell us about yourself!", "ViewPoll", "Settings", new { id = 2 }, null)</li>
+      
     </ul>
 
     <h2>Open Poll Results</h2>
 
     <ul>
         <li>@Html.ActionLink("Tell us about yourself!", "PollResults", "Settings", new { id = 2 }, null)</li>
+        <li>@Html.ActionLink("How do you feel about the new stats system and the double turn speed?", "PollResults", "Settings", new { id = 3 }, null)</li>
 
     </ul>
 

@@ -38,6 +38,28 @@ h1, h2, h3 {
     margin-top: 10px !important;
 }
 
+h1 {
+    text-align: center;
+    border-bottom: 1px $navbarDark dashed;
+    width: 50%;
+    margin: 10px auto 10px auto;
+    font-size: $fontHuge;
+    padding-bottom:4px;
+}
+
+@media (max-width: 768px) {
+h1{
+    width: 80%;
+    font-size: $fontBig;
+}
+}
+
+@media (max-width: 480px) {
+h1{
+    width: 100%;
+}
+}
+
 p {
     margin: 0px;
     padding: 0px;
@@ -374,7 +396,7 @@ li {
     min-height: 0px !important;
 }
 
-#MessageText, #WebsiteURL, #Text {
+#MessageText, #Message, #WebsiteURL, #Text, .text-container{
     width: 100%;
     resize: vertical;
     border: 1px solid #808080;
@@ -804,7 +826,7 @@ strong {
 }
 
 .textSpaced p {
-    margin-bottom: 5px;
+    margin-bottom: 10px;
 }
 
 .detailLink{
@@ -935,7 +957,7 @@ strong {
     color: white;
     float: right;
     text-align: right;
-    line-height: 19px;
+line-height: 18px;
 }
 
 .contributionsBox a {
@@ -946,6 +968,13 @@ strong {
     background-color:#EDAF6B !important;
 }
 
+ .noticeOn{
+        color: green;
+    }
+    .noticeOff{
+        color: red;
+    }
+
 .topBorder {
   border-top: 4px solid #A16969; }
 
@@ -954,3 +983,30 @@ strong {
   text-align: center;
   margin-top: 20px; }
 
+.rp-ad{
+    text-align: center;
+    margin: 0px 48px 20px;
+    padding: 15px;
+    border: 2px $navbarDark dashed;
+    border-top: 2px $navbarDark solid;
+    background: #DFCBBF;
+    overflow: hidden;
+}
+
+@media (max-width: 1199px) {
+    .rp-ad{
+        margin: 0px 39px 20px;
+    }
+}
+
+@media (max-width: 991px) {
+    .rp-ad{
+        margin: 0px 0px 20px;
+    }
+}
+
+.pvpAdmin {
+    text-align: center;
+    font-size: $fontBig;
+    line-height: 50px;
+}

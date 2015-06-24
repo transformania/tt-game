@@ -66,7 +66,7 @@ namespace tfgame.Procedures
             IPlayerRepository playerRepo = new EFPlayerRepository();
             decimal playerCount = playerRepo.Players.Where(p => p.IpAddress == me.IpAddress && (p.Mobility == "inanimate" || p.Mobility == "animal") && p.MembershipId > 0).Count();
 
-            if (playerCount == 0)
+            if (playerCount == 0 || HttpContext.Current.User.IsInRole(PvPStatics.Permissions_MultiAccountWhitelist))
             {
                 playerCount = 1;
             }
@@ -80,9 +80,9 @@ namespace tfgame.Procedures
                 {
                     OwnerId = playerId,
                     Amount = xpGain / playerCount,
-                    TimesStruggled = -6*me.Level,
+                    TimesStruggled = -6 * me.Level,
                     LastActionTimestamp = DateTime.UtcNow,
-                    LastActionTurnstamp = currentGameTurn-1,
+                    LastActionTurnstamp = currentGameTurn - 1,
                 };
 
                 if (me.Mobility == "inanimate")
@@ -97,7 +97,7 @@ namespace tfgame.Procedures
                         StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__PetXPEarned, (float)xpGain)
                     ).Start();
                 }
-               
+
 
             }
             else
@@ -106,9 +106,9 @@ namespace tfgame.Procedures
                 //double timeBonus = Math.Floor(Math.Abs(Math.Floor(xp.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalMinutes)) / 10);
                 double timeBonus = currentGameTurn - xp.LastActionTurnstamp;
 
-                if (timeBonus > 24)
+                if (timeBonus > InanimateXPStatics.ItemMaxTurnsBuildup)
                 {
-                    timeBonus = 24;
+                    timeBonus = InanimateXPStatics.ItemMaxTurnsBuildup;
                 }
 
                 if (timeBonus < 0)
@@ -116,7 +116,7 @@ namespace tfgame.Procedures
                     timeBonus = 0;
                 }
 
-                
+
 
                 xpGain += Convert.ToDecimal(timeBonus) * InanimateXPStatics.XPGainPerInanimateAction;
 
@@ -137,18 +137,18 @@ namespace tfgame.Procedures
                 }
 
                 xp.Amount += xpGain;
-                xp.TimesStruggled-= 2*Convert.ToInt32(timeBonus);
+                xp.TimesStruggled -= 2 * Convert.ToInt32(timeBonus);
                 xp.LastActionTimestamp = DateTime.UtcNow;
                 xp.LastActionTurnstamp = currentGameTurn;
             }
 
             string resultMessage = "  ";
 
-          
+
 
             if (xp.Amount >= InanimateXPStatics.XP__LevelupRequirements[inanimateMe.Level])
             {
-                xp.Amount = 0;
+                xp.Amount -= InanimateXPStatics.XP__LevelupRequirements[inanimateMe.Level];
                 inanimateMe.Level++;
                 itemRep.SaveItem(inanimateMe);
 
@@ -164,7 +164,7 @@ namespace tfgame.Procedures
 
                     if (inanimateMePlus.Item.HealthBonusPercent != 0.0M || inanimateMePlus.Item.ManaBonusPercent != 0.0M)
                     {
-                       
+
                         Player myowner = playerRepo.Players.FirstOrDefault(p => p.Id == inanimateMe.OwnerId);
 
                         decimal healthChange = PvPStatics.Item_LevelBonusModifier * inanimateMePlus.Item.HealthBonusPercent;
@@ -210,7 +210,6 @@ namespace tfgame.Procedures
             inanimXpRepo.SaveInanimateXP(xp);
 
             // lock the player into their fate if their inanimate XP gets too high
-
             if (xp.TimesStruggled <= -100 && xp.TimesStruggled > -160)
             {
                 resultMessage += "  Careful, if you keep doing this you may find yourself stuck in your current form forever...";
@@ -247,18 +246,18 @@ namespace tfgame.Procedures
                     Amount = 0,
 
                     // set the initial times struggled proportional to how high of a level the player is
-                    TimesStruggled = -6*player.Level,
+                    TimesStruggled = -6 * player.Level,
                     LastActionTimestamp = DateTime.UtcNow,
-                    LastActionTurnstamp = currentGameTurn-1,
+                    LastActionTurnstamp = currentGameTurn - 1,
 
                 };
             }
 
             double strugglebonus = currentGameTurn - inanimXP.LastActionTurnstamp;
 
-            if (strugglebonus > 24)
+            if (strugglebonus > InanimateXPStatics.ItemMaxTurnsBuildup)
             {
-                strugglebonus = 24;
+                strugglebonus = InanimateXPStatics.ItemMaxTurnsBuildup;
             }
 
             if (strugglebonus < 0)
@@ -268,7 +267,7 @@ namespace tfgame.Procedures
 
             if (PvPStatics.ChaosMode == true)
             {
-                strugglebonus = 5;
+                strugglebonus = 100;
             }
 
             // increment the player's attack count.  Also decrease their player XP some.
@@ -284,7 +283,7 @@ namespace tfgame.Procedures
             {
                 dbPlayer.Level--;
                 dbPlayer.UnusedLevelUpPerks--;
-                dbPlayer.XP = PvPStatics.XP__LevelupRequirementByLevel[player.Level-1] - 1;
+                dbPlayer.XP = PvPStatics.XP__LevelupRequirementByLevel[player.Level - 1] - 1;
             }
 
             double strugglesMade = Convert.ToDouble(inanimXP.TimesStruggled);
@@ -320,13 +319,13 @@ namespace tfgame.Procedures
                         return "Although you had enough energy to break free from your body as a " + itemPlus.FriendlyName + " and restore your regular body, you were unfortunately not able to break free because there is no more room in your covenant for any more animate mages.";
                     }
                 }
-        
-               
+
+
                 // if the item has an owner, notify them via a message.
                 if (dbPlayerItem.OwnerId != -1)
                 {
                     string message = player.FirstName + " " + player.LastName + ", your " + itemPlus.FriendlyName + ", successfully struggles against your magic and reverses their transformation.  You can no longer claim them as your property, not unless you manage to turn them back again...";
-                    PlayerLogProcedures.AddPlayerLog(dbPlayerItem.OwnerId, message, true); 
+                    PlayerLogProcedures.AddPlayerLog(dbPlayerItem.OwnerId, message, true);
                 }
 
                 // change the player's form and mobility
@@ -350,7 +349,7 @@ namespace tfgame.Procedures
                     dbPlayer.dbLocationName = LocationsStatics.GetRandomLocation();
                 }
 
-                dbPlayer = PlayerProcedures.ReadjustMaxes(dbPlayer, ItemProcedures.GetPlayerBuffs(dbPlayer));
+                dbPlayer = PlayerProcedures.ReadjustMaxes(dbPlayer, ItemProcedures.GetPlayerBuffsSQL(dbPlayer));
                 dbPlayer.Health = dbPlayer.MaxHealth / 3;
                 dbPlayer.Mana = dbPlayer.MaxHealth / 3;
                 playerRepo.SavePlayer(dbPlayer);
@@ -395,6 +394,137 @@ namespace tfgame.Procedures
                 return "Unfortunately you are not able to struggle free from your form as " + itemPlus.FriendlyName + ".  Keep trying and you might succeed later... [Recovery chance next struggle:  " + inanimXP.TimesStruggled + "%]";
             }
         }
+
+        public static string CurseTransformOwner(Player player, Player owner, Item playerItem, DbStaticItem playerItemPlus)
+        {
+            Random rand = new Random();
+            double roll = rand.NextDouble() * 100;
+
+
+            IInanimateXPRepository inanimateXpRepo = new EFInanimateXPRepository();
+            InanimateXP xp = inanimateXpRepo.InanimateXPs.FirstOrDefault(x => x.OwnerId == player.Id);
+            int gameTurn = PvPWorldStatProcedures.GetWorldTurnNumber();
+
+            // assign the player inanimate XP based on turn building
+            if (xp == null)
+            {
+                xp = new InanimateXP
+                {
+                    OwnerId = player.Id,
+                    Amount = 0,
+                    TimesStruggled = -6 * player.Level,
+                    LastActionTimestamp = DateTime.UtcNow,
+                    LastActionTurnstamp = gameTurn - 1,
+                };
+            }
+
+            double chanceOfSuccess = (gameTurn - xp.LastActionTurnstamp);
+
+            ITFMessageRepository tfMessageRepo = new EFTFMessageRepository();
+            TFMessage tf = tfMessageRepo.TFMessages.FirstOrDefault(t => t.FormDbName == playerItemPlus.CurseTFFormdbName);
+
+            string ownerMessage = "";
+            string playerMessage = "";
+
+
+
+            // success; owner is transformed!
+            if (roll < chanceOfSuccess)
+            {
+                IPlayerRepository playerRepo = new EFPlayerRepository();
+                Player dbOwner = playerRepo.Players.FirstOrDefault(p => p.Id == owner.Id);
+                DbStaticForm newForm = FormStatics.GetForm(playerItemPlus.CurseTFFormdbName);
+
+                if (newForm.MobilityType == "full")
+                {
+                    dbOwner.Form = playerItemPlus.CurseTFFormdbName;
+                    dbOwner.Gender = newForm.Gender;
+                    dbOwner.ReadjustMaxes(ItemProcedures.GetPlayerBuffsSQL(dbOwner));
+                    dbOwner.Mana -= dbOwner.MaxMana * .5M;
+                    dbOwner.NormalizeHealthMana();
+                    playerRepo.SavePlayer(dbOwner);
+
+                    if (owner.Gender == "male" && tf.CursedTF_Succeed_M != null && tf.CursedTF_Succeed_M != "")
+                    {
+                        ownerMessage = tf.CursedTF_Succeed_M;
+                    }
+                    else if (owner.Gender == "female" && tf.CursedTF_Succeed_F != null && tf.CursedTF_Succeed_F != "")
+                    {
+                        ownerMessage = tf.CursedTF_Succeed_F;
+                    }
+                    else if (tf.CursedTF_Succeed != null && tf.CursedTF_Succeed != "")
+                    {
+                        ownerMessage = tf.CursedTF_Succeed;
+                    }
+
+                    playerMessage = "Your subtle transformation curse overwhelms your owner, transforming them into a " + newForm.FriendlyName + "!";
+                    PlayerLogProcedures.AddPlayerLog(owner.Id, ownerMessage, true);
+                    LocationLogProcedures.AddLocationLog(owner.dbLocationName, "<b> " + owner.GetFullName() + " is suddenly transformed by " + playerItem.GetFullName() + " the " + playerItemPlus.FriendlyName + ", one of their belongings!</b>");
+                }
+            }
+
+
+            // fail; owner is not transformed
+            else
+            {
+                if (owner.Gender == "male" && tf.CursedTF_Fail_M != null && tf.CursedTF_Fail_M != "")
+                {
+                    ownerMessage = tf.CursedTF_Fail_M;
+                }
+                else if (owner.Gender == "female" && tf.CursedTF_Fail_F != null && tf.CursedTF_Fail_F != "")
+                {
+                    ownerMessage = tf.CursedTF_Fail_F;
+                }
+                else if (tf.CursedTF_Fail != null && tf.CursedTF_Fail != "")
+                {
+                    ownerMessage = tf.CursedTF_Fail;
+                }
+
+                playerMessage = "Unfortunately your subtle transformation curse fails to transform your owner.";
+                PlayerLogProcedures.AddPlayerLog(owner.Id, ownerMessage, true);
+            }
+
+            
+           // else
+           // {
+
+                double timeBonus = gameTurn - xp.LastActionTurnstamp;
+                if (timeBonus > InanimateXPStatics.ItemMaxTurnsBuildup)
+                {
+                    timeBonus = InanimateXPStatics.ItemMaxTurnsBuildup;
+                }
+                else if (timeBonus < 0)
+                {
+                    timeBonus = 0;
+                }
+
+
+                decimal xpGain = Convert.ToDecimal(timeBonus) * InanimateXPStatics.XPGainPerInanimateAction;
+
+                xp.Amount += xpGain;
+
+                // lock the player into their fate if their inanimate XP gets too high
+                if (xp.TimesStruggled <= -100 && xp.TimesStruggled > -160)
+                {
+                    playerMessage += "  Careful, if you keep doing this you may find yourself stuck in your current form forever...";
+                }
+
+                if (xp.TimesStruggled <= -160 && playerItem.IsPermanent == false)
+                {
+
+                    IItemRepository itemRepo = new EFItemRepository();
+                    Item dbItemPlayer = itemRepo.Items.FirstOrDefault(i => i.Id == playerItem.Id);
+                    dbItemPlayer.IsPermanent = true;
+                    itemRepo.SaveItem(dbItemPlayer);
+                    playerMessage += "  <b>You find the last of your old human self slip away as you permanently embrace your new form.</b>";
+                }
+
+
+                PlayerProcedures.AddAttackCount(player);
+
+            return playerMessage;
+        }
+
 
     }
 }

@@ -30,7 +30,7 @@ namespace tfgame.Controllers
 
              ViewBag.GameMode = me.GameMode;
 
-             ViewBag.TimeUntilLogout = 60 - Math.Abs(Math.Floor(me.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
+             ViewBag.TimeUntilLogout = PvPStatics.OfflineAfterXMinutes - Math.Abs(Math.Floor(me.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
 
              return View(me);
          }
@@ -382,6 +382,11 @@ namespace tfgame.Controllers
             }
 
             PlayerProcedures.SetNickname(input.MessageText);
+
+            if (me.Mobility == "inanimate" || me.Mobility == "animal")
+            {
+                ItemProcedures.SetNickname(me, input.MessageText);
+            }
 
             TempData["Result"] = "Your new nickname has been set.";
             return RedirectToAction("Play", "PvP");
@@ -787,7 +792,189 @@ namespace tfgame.Controllers
             
             return RedirectToAction("MyFriends", "PvP");
         }
-       
+
+        [Authorize]
+        public ActionResult MyRPClassifiedAds()
+        {
+             Player me = PlayerProcedures.GetPlayerFromMembership();
+             IEnumerable<RPClassifiedAd> output = RPClassifiedAdsProcedures.GetPlayersClassifiedAds(me);
+
+             ViewBag.ErrorMessage = TempData["Error"];
+             ViewBag.SubErrorMessage = TempData["SubError"];
+             ViewBag.Result = TempData["Result"];
+
+             return View(output);
+        }
+
+        [Authorize]
+        public ActionResult EditRPClassifiedAd(int id)
+        {
+
+            Player me = PlayerProcedures.GetPlayerFromMembership();
+            RPClassifiedAd ad = RPClassifiedAdsProcedures.GetClassifiedAd(id);
+
+            // assert player is owner of the RP add or else it is new
+            if (me.MembershipId != ad.OwnerMembershipId && ad.Id > 0)
+            {
+                TempData["Error"] = "You do not own this RP Classified Ad.";
+                return RedirectToAction("MyRPClassifiedAds", "Settings");
+            }
+
+            ViewBag.ErrorMessage = TempData["Error"];
+            ViewBag.SubErrorMessage = TempData["SubError"];
+            ViewBag.Result = TempData["Result"];
+
+
+            return View(ad);
+        }
+
+        [Authorize]
+        public ActionResult RefreshRPClassifiedAd(int id)
+        {
+
+            Player me = PlayerProcedures.GetPlayerFromMembership();
+            RPClassifiedAd ad = RPClassifiedAdsProcedures.GetClassifiedAd(id);
+
+            // assert player is owner of the RP add or else it is new
+            if (me.MembershipId != ad.OwnerMembershipId && ad.Id > 0)
+            {
+                TempData["Error"] = "You do not own this RP Classified Ad.";
+                return RedirectToAction("MyRPClassifiedAds", "Settings");
+            }
+
+            RPClassifiedAdsProcedures.RefreshAd(id);
+
+            TempData["Result"] = "RP classified ad successfully refreshed.";
+            return RedirectToAction("MyRPClassifiedAds", "Settings");
+        }
+
+        [Authorize]
+        public ActionResult EditRPClassifiedAdSend(RPClassifiedAd input)
+        {
+
+            // assert the text fields are not too long
+            if (input.Title.Length > 35)
+            {
+                ViewBag.ErrorMessage = "The ad title is too long.";
+                return View("EditRPClassifiedAd", input);
+            }
+
+            // assert the text fields are not too long
+            if (input.Title.Length < 5)
+            {
+                ViewBag.ErrorMessage = "The ad title is too short.";
+                return View("EditRPClassifiedAd", input);
+            }
+
+            // assert the text fields are not too long
+            if (input.Text.Length > 300)
+            {
+                ViewBag.ErrorMessage = "The ad description is too long.";
+                return View("EditRPClassifiedAd", input);
+            }
+
+
+            // assert the text fields are not too short
+            if (input.Text == null || input.Text.Length < 50)
+            {
+                ViewBag.ErrorMessage = "The ad description is too short.";
+                return View("EditRPClassifiedAd", input);
+            }
+
+            // assert the yes field is not too long
+            if (input.YesThemes.Length > 200)
+            {
+                ViewBag.ErrorMessage = "The ad description is too long.";
+                return View("EditRPClassifiedAd", input);
+            }
+
+            // assert the no field is not too long
+            if (input.NoThemes.Length > 200)
+            {
+                ViewBag.ErrorMessage = "The ad description is too long.";
+                return View("EditRPClassifiedAd", input);
+            }
+
+            // assert the timezone fields is not too long
+            if (input.PreferredTimezones.Length > 70)
+            {
+                ViewBag.ErrorMessage = "The ad title is too long.";
+                return View("EditRPClassifiedAd", input);
+            }
+
+
+            Player me = PlayerProcedures.GetPlayerFromMembership();
+            RPClassifiedAd ad = RPClassifiedAdsProcedures.GetClassifiedAd(input.Id);
+
+            // assert player is owner of the RP add or else it is new
+            if (me.MembershipId != ad.OwnerMembershipId && ad.Id > 0)
+            {
+                TempData["Error"] = "You do not own this RP Classified Ad.";
+                return RedirectToAction("MyRPClassifiedAds", "Settings");
+            }
+
+            // assert player does not have too many ads out already
+            if (RPClassifiedAdsProcedures.GetPlayerClassifiedAdCount(me) >= 3)
+            {
+                TempData["Error"] = "You already have the maximum number of RP Classified Ads posted per player.";
+                TempData["SubError"] = "Wait a while for old postings to get automatically deleted or delete some of your own yourself.";
+                return RedirectToAction("MyRPClassifiedAds", "Settings");
+            }
+
+            RPClassifiedAdsProcedures.SaveAd(input, me);
+
+            TempData["Result"] = "RP classified ad successfully saved.";
+            return RedirectToAction("MyRPClassifiedAds", "Settings");
+        }
+
+
+        [Authorize]
+        public ActionResult DeleteRPClassifiedAd(int id)
+        {
+            Player me = PlayerProcedures.GetPlayerFromMembership();
+            RPClassifiedAd ad = RPClassifiedAdsProcedures.GetClassifiedAd(id);
+
+            // assert player is owner of the RP add
+            if (me.MembershipId != ad.OwnerMembershipId)
+            {
+                TempData["Error"] = "You do not own this RP Classified Ad.";
+                return RedirectToAction("MyRPClassifiedAds", "Settings");
+            }
+
+            RPClassifiedAdsProcedures.DeleteAd(ad.Id);
+            TempData["Result"] = "RP classified ad successfully deleted.";
+            return RedirectToAction("MyRPClassifiedAds", "Settings");
+        }
+
+        [Authorize]
+        public ActionResult ReplyToAd(int id)
+        {
+            Player me = PlayerProcedures.GetPlayerFromMembership();
+            RPClassifiedAd ad = RPClassifiedAdsProcedures.GetClassifiedAd(id);
+
+            // assert that the player does not own the ad
+            if (ad.OwnerMembershipId == me.MembershipId)
+            {
+                if (me.MembershipId != ad.OwnerMembershipId)
+                {
+                    TempData["Error"] = "You own this RP Classified Ad.";
+                    return RedirectToAction("MyRPClassifiedAds", "Settings");
+                }
+            }
+
+            Player target = PlayerProcedures.GetPlayerFromMembership(ad.OwnerMembershipId);
+
+            if (target == null) {
+                 if (me.MembershipId != ad.OwnerMembershipId)
+                {
+                    TempData["Error"] = "Unfortunately it seems the owner of this classified ad does not have a character this round and cannot reply.";
+                    return RedirectToAction("MyRPClassifiedAds", "Settings");
+                }
+            }
+
+            return View();
+
+        }
 
 	}
 }

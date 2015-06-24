@@ -52,5 +52,12 @@ namespace tfgame.dbModels.Models
         public string TFMessage_100_Percent_3rd_F { get; set; }
         public string TFMessage_Completed_3rd_F { get; set; }
 
+        public string CursedTF_Fail { get; set; }
+        public string CursedTF_Fail_M { get; set; }
+        public string CursedTF_Fail_F { get; set; }
+        public string CursedTF_Succeed { get; set; }
+        public string CursedTF_Succeed_M { get; set; }
+        public string CursedTF_Succeed_F { get; set; }
+
     }
 }

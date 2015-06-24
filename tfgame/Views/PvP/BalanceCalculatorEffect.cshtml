@@ -1,24 +1,16 @@
 ﻿@model tfgame.dbModels.Models.EffectContribution
 @using tfgame.Statics
+@using tfgame.CustomHtmlHelpers
 
 <head>
     <link href="~/Content/PvP.css" rel="stylesheet" />
     <script src="~/Scripts/jquery-2.1.0.min.js"></script>
 </head>
 
-<h1>Item balancing calculator</h1>
+<h1>Curse/Blessing balancing calculator</h1>
 
-<p>Use this calculator to try and balance items.  <b>Good items will only have a total bonus amount of 30--too much and it is likely overpowered and too low and it is likely underpowered.  You can enter negative numbers to impose penalties on that effect instead.</b>  NOTE:  This is very much a work in progress and the exact balancing will change.</p>
+<p>Use this calculator to try and balance effects.</p>
 
-<p style="color: red;">Items and Animals should not have more than 4 different effects on them.  Animate forms should not have more than 6 different effects on them.</p>
-
-<p>(Amt):  Means a direct, static amount.  Ex:  30 maxiumum willpower increase adds 30 extra willpower points.</p>
-
-<p>(%):  Means a percentage modifier.  Ex:  a 10% bonus on extra willpower damage per spell attack means 7 damage becomes 7*1.1 = 7.7 damage.  </p>
-
-<p>Fields that have a Negative Modifier receive fewer points when the stat is put into the negative.  DISABLED FOR EFFECTS.</p>
-
-<p>Fields that have a Minimum Cap will not give any additional points beyond a certain value.  DISABLED FOR EFFECTS.</p>
 
 <p>What type of spell is this?</p>
 <select id="mobilityType">
@@ -26,9 +18,19 @@
 </select>
 
 
+<p>Balancing rules:</p>
 
+<ul>
+    <li>-60 points maximum for curses and 60 for blessings. The cost of your selection is multiplied for each turn duration, so a curse costing 10 points will cost 60 if it lasts 6 turns.
+    <li>Curses must last in duration between 2 and 18 turns.</li>
+    <li>Curses must have all negative stats and blessings must have all positive stats. Unlike with form / items / pets, no mixing and matching positives and negatives.</li>
+    <li>All non-boss curses must be marked as removable via the Hex-B-Gone consumables.</li>
+    <li>All castable curses should cost 7 mana.</li>
+    <li>Cooldown should be set between 2 and 3 times the duration of the curse.</li>
+    <li>If the curse makes the target immobile, treat this as 20 points per turn even if the calculator ignores it.</li>
+</ul>
 
-<h2>Net balance:  <span id="total"></span>     Target:  <span id="desired">-500</span>  Total points used:  <span id="absolute_total"></span></h2>
+<h2>Net balance:  <span id="total"></span>     Target:  <span id="desired">-60</span>  Total points used:  <span id="absolute_total"></span></h2>
 
 <p>
     <button type="button" onclick="Clear()">Clear</button>
@@ -47,23 +49,20 @@
 
     <table id="balanceTable">
         <thead>
-
-        <th>Bonus/Penalty</th>
-        <th>Amount</th>
-        <th width="80px">Cost / Unit</th>
-        <th>Negative Modifier</th>
-        <th>Minimum Cap</th>
-        <th>Bonus total</th>
-
+            <tr>
+                <th>Bonus/Penalty</th>
+                <th>Amount</th>
+                <th width="80px">Cost / Unit</th>
+                <th>Negative Modifier</th>
+                <th>Minimum Cap</th>
+                <th>Bonus total</th>
+            </tr>
         </thead>
-
-
-
 
         <tbody>
 
             <tr>
-                <td>Discipline</td>
+                <td>@CharactersHere.PrintStatDescriptionPopup("Discipline") @CharactersHere.PrintStatIcons("Discipline")</td>
                 <td>
                     @Html.TextBoxFor(m => m.Discipline, new
        {
@@ -78,7 +77,7 @@
 
 
             <tr>
-                <td>Perception</td>
+                <td>@CharactersHere.PrintStatDescriptionPopup("Perception") @CharactersHere.PrintStatIcons("Perception")</td>
                 <td>
                     @Html.TextBoxFor(m => m.Perception, new
        {
@@ -92,7 +91,7 @@
             </tr>
 
             <tr>
-                <td>Charisma</td>
+                <td>@CharactersHere.PrintStatDescriptionPopup("Charisma") @CharactersHere.PrintStatIcons("Charisma")</td>
                 <td>
                     @Html.TextBoxFor(m => m.Charisma, new
        {
@@ -106,22 +105,7 @@
             </tr>
 
             <tr>
-                <td>Submission/Dominance</td>
-                <td>
-                    @Html.TextBoxFor(m => m.Submission_Dominance, new
-       {
-           @id = "Submission_Dominance",
-       })
-                </td>
-                <td>1</td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-
-
-            <tr>
-                <td>Fortitude</td>
+                <td>@CharactersHere.PrintStatDescriptionPopup("Fortitude") @CharactersHere.PrintStatIcons("Fortitude")</td>
                 <td>
                     @Html.TextBoxFor(m => m.Fortitude, new
        {
@@ -135,7 +119,7 @@
             </tr>
 
             <tr>
-                <td>Agility</td>
+                <td>@CharactersHere.PrintStatDescriptionPopup("Agility") @CharactersHere.PrintStatIcons("Agility")</td>
                 <td>
                     @Html.TextBoxFor(m => m.Agility, new
        {
@@ -149,7 +133,7 @@
             </tr>
 
             <tr>
-                <td>Allure</td>
+                <td>@CharactersHere.PrintStatDescriptionPopup("Allure") @CharactersHere.PrintStatIcons("Allure")</td>
                 <td>
                     @Html.TextBoxFor(m => m.Allure, new
        {
@@ -163,21 +147,7 @@
             </tr>
 
             <tr>
-                <td>Corruption/Purity</td>
-                <td>
-                    @Html.TextBoxFor(m => m.Corruption_Purity, new
-       {
-           @id = "Corruption_Purity",
-       })
-                </td>
-                <td>1</td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-
-            <tr>
-                <td>Magicka</td>
+                <td>@CharactersHere.PrintStatDescriptionPopup("Magicka") @CharactersHere.PrintStatIcons("Magicka")</td>
                 <td>
                     @Html.TextBoxFor(m => m.Magicka, new
        {
@@ -191,7 +161,7 @@
             </tr>
 
             <tr>
-                <td>Succour</td>
+                <td>@CharactersHere.PrintStatDescriptionPopup("Succour") @CharactersHere.PrintStatIcons("Succour")</td>
                 <td>
                     @Html.TextBoxFor(m => m.Succour, new
        {
@@ -205,7 +175,7 @@
             </tr>
 
             <tr>
-                <td>Luck</td>
+                <td>@CharactersHere.PrintStatDescriptionPopup("Luck") @CharactersHere.PrintStatIcons("Luck")</td>
                 <td>
                     @Html.TextBoxFor(m => m.Luck, new
        {
@@ -217,22 +187,6 @@
                 <td></td>
                 <td></td>
             </tr>
-
-
-            <tr>
-                <td>Chaos/Order</td>
-                <td>
-                    @Html.TextBoxFor(m => m.Chaos_Order, new
-       {
-           @id = "Luck",
-       })
-                </td>
-                <td>1</td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-
 
             <tr>
                 <td>
@@ -323,7 +277,7 @@
             </tr>
             <tr>
                 <td>Action point discount when moving (Amt)</td>
-                <td>@Html.TextBoxFor(m => m.MoveActionPointDiscount, new { @id = "MoveActionPointDiscount", @negative_mod = tfgame.Statics.BalanceStatics.MoveActionPointDiscount__NegativeModifier, @negative_cap = tfgame.Statics.BalanceStatics.MoveActionPointDiscount__NegativeCap, @readonly = "readonly" })</td>
+                <td>@Html.TextBoxFor(m => m.MoveActionPointDiscount, new { @id = "MoveActionPointDiscount", @negative_mod = tfgame.Statics.BalanceStatics.MoveActionPointDiscount__NegativeModifier, @negative_cap = tfgame.Statics.BalanceStatics.MoveActionPointDiscount__NegativeCap })</td>
                 <td>@tfgame.Statics.BalanceStatics.MoveActionPointDiscount__Value</td>
                 <td>@tfgame.Statics.BalanceStatics.MoveActionPointDiscount__NegativeModifier</td>
                 <td>@tfgame.Statics.BalanceStatics.MoveActionPointDiscount__NegativeCap</td>
@@ -430,13 +384,8 @@
 
 <br />
 
-@*<button type="button" onclick="SetCodeText()">Generate Code</button>*@
 
-<br />
-@*<p class="bad">Before submitting a contribution, please paste this text into the relevant 'effects' field.  This will help save some time during implementation and testing. </p>
-    <textarea rows="4" cols="50" id="textCode">*@
-
-</textarea>
+<input type="button" id="disableReadonly" value="Click to enable readonly fields (this is only for updating older contributions and admins/proofreaders.  Do not use this for any new forms except with permission.)" />
 
 
 
@@ -486,7 +435,7 @@
             choice = $("#mobilityType").val();
 
             if (choice == "curse") {
-                $("#desired").html("-500");
+                $("#desired").html("-60");
                 $("#curseDurationWrapper").show();
             }
 
@@ -499,7 +448,12 @@
         // default page load
         $("#desired").html("0");
 
-
+        $("#disableReadonly").click(function () {
+            alert("This functionality should only be done by admins or proofreaders and is meant for the sake of updating older contributions.");
+            $("[readonly='readonly']").each(function () {
+                $(this).removeAttr("readonly");
+            });
+        });
 
 
     });

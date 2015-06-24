@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Web;
 using System.Web.Mvc;
@@ -83,10 +84,10 @@ namespace tfgame.Controllers
             ViewBag.UpdateInProgress = false;
 
             double secondsSinceUpdate = Math.Abs(Math.Floor(WorldStat.LastUpdateTimestamp.Subtract(DateTime.UtcNow).TotalSeconds));
-            ViewBag.SecondsUntilUpdate = 600-(int)secondsSinceUpdate;
+            ViewBag.SecondsUntilUpdate = PvPStatics.TurnSecondLength-(int)secondsSinceUpdate;
 
             // if it has been long enough since last update, force an update to occur
-            if (secondsSinceUpdate > 605 && WorldStat.WorldIsUpdating == false && PvPStatics.AnimateUpdateInProgress == false)
+            if (secondsSinceUpdate > PvPStatics.TurnSecondLength && WorldStat.WorldIsUpdating == false && PvPStatics.AnimateUpdateInProgress == false)
             {
                 UpdateWorld("oogabooga99");
             }
@@ -132,7 +133,7 @@ namespace tfgame.Controllers
 
                 inanimateOutput.Player = me;
                 inanimateOutput.Form = FormStatics.GetForm(me.Form);
-                inanimateOutput.Item = ItemStatics.GetStaticItem(inanimateOutput.Form.BecomesItemDbName);
+                inanimateOutput.Item = ItemProcedures.GetItemViewModel(me.FirstName, me.LastName);
 
                 inanimateOutput.IsPermanent = ItemProcedures.GetItemByVictimName(me.FirstName, me.LastName).IsPermanent;
 
@@ -190,20 +191,55 @@ namespace tfgame.Controllers
 
                 animalOutput.Form = FormStatics.GetForm(me.Form);
 
-                try
+                animalOutput.YouItem = ItemProcedures.GetItemViewModel(me.FirstName, me.LastName);
+                if (animalOutput.YouItem.dbItem.OwnerId > 0)
                 {
-                    animalOutput.OwnedBy = PlayerProcedures.GetPlayerFormViewModel(me.IsPetToId);
-                    if (me.dbLocationName != animalOutput.OwnedBy.Player.dbLocationName)
-                    {
-                        PlayerProcedures.MovePlayer_InstantNoLog(me.Id, animalOutput.OwnedBy.Player.dbLocationName);
-                        me.dbLocationName = animalOutput.OwnedBy.Player.dbLocationName;
-                        animalOutput.You.dbLocationName = animalOutput.OwnedBy.Player.dbLocationName;
-                    }
+                    animalOutput.OwnedBy = PlayerProcedures.GetPlayerFormViewModel(animalOutput.YouItem.dbItem.OwnerId);
                 }
-                catch
-                {
 
-                }
+                //try
+                //{
+                //    // get player item
+                    
+
+                //    if (meItem.OwnerId == -1)
+                //    {
+                //        animalOutput.OwnedBy = null;
+
+                //        // somehow the game got desynched and the owner as recorded by the player is not the same as who actually owns them as an item.
+                //        // TODO:  Get rid of this .IsPetToId bullshit altogether :P
+                //        if (me.IsPetToId > 0 && meItem.OwnerId == -1)
+                //        {
+                //            PlayerProcedures.ResetPlayerPetStatus(me);
+                //        }
+
+                //    }
+                //    else
+                //    {
+                //        animalOutput.OwnedBy = PlayerProcedures.GetPlayerFormViewModel(meItem.OwnerId);
+
+                //        // update the player version of the pet so they struggle out in their owner's most recent location
+                //        if (me.dbLocationName != animalOutput.OwnedBy.Player.dbLocationName)
+                //        {
+                //            PlayerProcedures.MovePlayer_InstantNoLog(me.Id, animalOutput.OwnedBy.Player.dbLocationName);
+                //            me.dbLocationName = animalOutput.OwnedBy.Player.dbLocationName;
+                //            animalOutput.You.dbLocationName = animalOutput.OwnedBy.Player.dbLocationName;
+                //        }
+
+                //        // somehow the game got desynched and the owner as recorded by the player is not the same as who actually owns them as an item.
+                //        // TODO:  Get rid of this .IsPetToId bullshit altogether :P
+                //        if (me.IsPetToId > 0 && meItem.OwnerId == -1)
+                //        {
+                //            PlayerProcedures.ResetPlayerPetStatus(me);
+                //        }
+                //    }
+
+                   
+                //}
+                //catch
+                //{
+
+                //}
                 animalOutput.WorldStats = PlayerProcedures.GetWorldPlayerStats();
 
                 if (animalOutput.OwnedBy != null)
@@ -248,7 +284,7 @@ namespace tfgame.Controllers
             output.PvPWorldStat = WorldStat;
 
             loadtime += "Before loading buffs:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
-            BuffBox myBuffs = ItemProcedures.GetPlayerBuffs(me);
+            BuffBox myBuffs = ItemProcedures.GetPlayerBuffsSQL(me);
             loadtime += "After loading buffs:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
 
             if (myBuffs.HasSearchDiscount == true)
@@ -299,10 +335,6 @@ namespace tfgame.Controllers
 
             output.PlayerLogImportant = output.PlayerLog.Where(l => l.IsImportant == true);
 
-            //loadtime += "Start get player spells:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
-            //output.Skills = SkillProcedures.GetSkillViewModelsOwnedByPlayer(me.Id);
-            //loadtime += "End get player logs:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
-
             loadtime += "Start get player items:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
             output.PlayerItems = ItemProcedures.GetAllPlayerItems(me.Id);
             loadtime += "End get player items:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
@@ -340,6 +372,12 @@ namespace tfgame.Controllers
             if (!ModelState.IsValid)
             {
                 ViewBag.ValidationMessage = "Your character was not created.  You can only use letters and your first and last names must be between 2 and 30 letters long." ;
+                return View("~/Views/PvP/MakeNewCharacter.cshtml");
+            }
+
+            if (player.StartGameMode != 0 && player.StartGameMode != 1 && player.StartGameMode != 2)
+            {
+                ViewBag.ValidationMessage = "That is not a valid game mode.";
                 return View("~/Views/PvP/MakeNewCharacter.cshtml");
             }
 
@@ -471,7 +509,7 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play");
             }
 
-            BuffBox buffs = ItemProcedures.GetPlayerBuffs(me);
+            BuffBox buffs = ItemProcedures.GetPlayerBuffsSQL(me);
 
             if (buffs.MoveActionPointDiscount() < -120)
             {
@@ -485,7 +523,7 @@ namespace tfgame.Controllers
             {
 
                 TempData["Error"] = "You don't have enough action points to move.";
-                TempData["SubError"] = "Wait a while; you will receive more action points every ten minutes.";
+                TempData["SubError"] = "Wait a while; you will receive more action points every five minutes.";
                 return RedirectToAction("Play");
             }
 
@@ -766,24 +804,34 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play");
             }
 
+
+             // assert player hasn't attacked in past second
+            double secondsSinceLastAttack = Math.Abs(Math.Floor(me.LastCombatTimestamp.Subtract(DateTime.UtcNow).TotalSeconds));
+
+            if (secondsSinceLastAttack < 3)
+            {
+                TempData["Error"] = "You must wait at least three seconds between attacks.";
+                return RedirectToAction("Play");
+            }
+
             // assert that it is not too late in the round for this attack to happen
             DateTime lastupdate = PvPWorldStatProcedures.GetLastWorldUpdate();
             double secondsAgo = Math.Abs(Math.Floor(lastupdate.Subtract(DateTime.UtcNow).TotalSeconds));
 
-            if (secondsAgo > 570 && PvPStatics.ChaosMode == false)
+            if (secondsAgo > (PvPStatics.TurnSecondLength - PvPStatics.EndTurnNoAttackSeconds) && PvPStatics.ChaosMode == false)
             {
                 TempData["Error"] = "It is too late into this turn to attack.";
-                TempData["SubError"] = "You must attack within the first 9.5 minutes of a round.";
+                TempData["SubError"] = "You can't attack in the last " + PvPStatics.EndTurnNoAttackSeconds + " seconds of a turn.";
                 return RedirectToAction("Play");
             }
 
             // assert that it is not too EARLY in the round for this attack to happen
             double secondsFrom = Math.Abs(Math.Floor(lastupdate.Subtract(DateTime.UtcNow).TotalSeconds));
 
-            if (secondsAgo < 90)
+            if (secondsAgo < PvPStatics.StartTurnNoAttackSeconds)
             {
                 TempData["Error"] = "It is too early into this turn to attack.";
-                TempData["SubError"] = "You must wait at least 90 seconds after the round update has started to attack.";
+                TempData["SubError"] = "You can't attack in the first " + PvPStatics.StartTurnNoAttackSeconds + " seconds of a turn.";
                 return RedirectToAction("Play");
             }
 
@@ -914,9 +962,11 @@ namespace tfgame.Controllers
             // prevent low level players from taking on high level bots
             if (targeted.MembershipId <= -3)
             {
-                if ((targeted.MembershipId == -3 || targeted.MembershipId == -10 || targeted.MembershipId == -6) && PvPStatics.ChaosMode == true)
+
+                // disable attacks on "friendly" NPCs
+                if (targeted.MembershipId == -3 || targeted.MembershipId == -10 || targeted.MembershipId == -6 || targeted.MembershipId == -14)
                 {
-                    TempData["Error"] = "Attacking merchants and Jewdewfae is disabled in chaos mode.";
+                    TempData["Error"] = "A little smile tells you it might just be a bad idea to try and attack this person...";
                     return RedirectToAction("Play");
                 }
 
@@ -1159,20 +1209,20 @@ namespace tfgame.Controllers
              DateTime lastupdate = PvPWorldStatProcedures.GetLastWorldUpdate();
              double secondsAgo = Math.Abs(Math.Floor(lastupdate.Subtract(DateTime.UtcNow).TotalSeconds));
 
-             if (secondsAgo > 570 && PvPStatics.ChaosMode == false)
+             if (secondsAgo > (PvPStatics.TurnSecondLength - PvPStatics.EndTurnNoAttackSeconds) && PvPStatics.ChaosMode == false)
              {
-                 TempData["Error"] = "It is too late into this turn to attack.";
-                 TempData["SubError"] = "You must attack within the first 9.5 minutes of a round.";
+                 TempData["Error"] = "It is too late into this turn to enchant.";
+                 TempData["SubError"] = "You can't enchant in the last " + PvPStatics.EndTurnNoAttackSeconds + " seconds of a turn.";
                  return RedirectToAction("Play");
              }
 
              // assert that it is not too EARLY in the round for this attack to happen
              double secondsFrom = Math.Abs(Math.Floor(lastupdate.Subtract(DateTime.UtcNow).TotalSeconds));
 
-             if (secondsAgo < 90)
+             if (secondsAgo < PvPStatics.StartTurnNoAttackSeconds)
              {
-                 TempData["Error"] = "It is too early into this turn to attack.";
-                 TempData["SubError"] = "You must wait at least 90 seconds after the round update has started to attack.";
+                 TempData["Error"] = "It is too early into this turn to enchant.";
+                 TempData["SubError"] = "You can't enchant in the first " + PvPStatics.StartTurnNoAttackSeconds + " seconds of a turn.";
                  return RedirectToAction("Play");
              }
 
@@ -1187,11 +1237,11 @@ namespace tfgame.Controllers
              // assert that this player's covenant does have a safeground
              if (CovenantProcedures.CovenantHasSafeground(me.Covenant) == false)
              {
-                 TempData["Error"] = "Your covenant must have established a safeground before it can enchanted locations.";
+                 TempData["Error"] = "Your covenant must have established a safeground before it can enchant locations.";
                  return RedirectToAction("Play");
              }
 
-             BuffBox myBuffs = ItemProcedures.GetPlayerBuffs(me);
+             BuffBox myBuffs = ItemProcedures.GetPlayerBuffsSQL(me);
 
              string output = CovenantProcedures.AttackLocation(me, myBuffs);
 
@@ -1262,7 +1312,7 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play");
             }
 
-            BuffBox mybuffs = ItemProcedures.GetPlayerBuffs(me);
+            BuffBox mybuffs = ItemProcedures.GetPlayerBuffsSQL(me);
 
             TempData["Result"] = PlayerProcedures.Meditate(me, mybuffs);
 
@@ -1296,7 +1346,7 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play");
             }
 
-            BuffBox mybuffs = ItemProcedures.GetPlayerBuffs(me);
+            BuffBox mybuffs = ItemProcedures.GetPlayerBuffsSQL(me);
 
             // assert player is in an okay form to do this
             if (PlayerCanPerformAction(me, "cleanse") == false)
@@ -1359,7 +1409,7 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play");
             }
 
-            BuffBox mybuffs = ItemProcedures.GetPlayerBuffs(me);
+            BuffBox mybuffs = ItemProcedures.GetPlayerBuffsSQL(me);
 
             decimal searchCostAfterbuffs = PvPStatics.SearchAPCost;
             if (mybuffs.HasSearchDiscount)
@@ -1418,11 +1468,11 @@ namespace tfgame.Controllers
         }
 
         [Authorize]
-        public ActionResult DismissNotifications()
+        public ActionResult DismissNotifications_Ajax()
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
             PlayerLogProcedures.DismissImportantLogs(me.Id);
-            return RedirectToAction("Play");
+            return new HttpStatusCodeResult(HttpStatusCode.OK); 
         }
 
         [Authorize]
@@ -1450,7 +1500,7 @@ namespace tfgame.Controllers
             InventoryBonusesViewModel output = new InventoryBonusesViewModel
             {
                 Items = ItemProcedures.GetAllPlayerItems(me.Id),
-                Bonuses = ItemProcedures.GetPlayerBuffs(me),
+                Bonuses = ItemProcedures.GetPlayerBuffsSQL(me),
                 Health = me.Health,
                 MaxHealth = me.MaxHealth,
                 Mana = me.Mana,
@@ -1483,7 +1533,7 @@ namespace tfgame.Controllers
 
             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
 
-            BuffBox myBuffs = ItemProcedures.GetPlayerBuffs(me);
+            BuffBox myBuffs = ItemProcedures.GetPlayerBuffsSQL(me);
 
             // assert player is in an okay form to do this
             if (PlayerCanPerformAction(me, "pickup") == false)
@@ -1576,13 +1626,13 @@ namespace tfgame.Controllers
                 TempData["Result"] = ItemProcedures.GiveItemToPlayer(pickup.dbItem.Id, me.Id);
                 ItemProcedures.EquipItem(pickup.dbItem.Id, true);
                 AnimalProcedures.ChangeOwner(pickup.dbItem, me.Id);
-                playerLogMessage = "You tamed <b>" + pickup.dbItem.VictimName + " the " + pickup.Item.FriendlyName + "</b> at " + here.Name + " and put it into your inventory.";
+                playerLogMessage = "You tamed <b>" + pickup.dbItem.GetFullName() + " the " + pickup.Item.FriendlyName + "</b> at " + here.Name + " and put it into your inventory.";
                // PlayerLogProcedures.AddPlayerLog()
-                locationLogMessage = me.FirstName + " " + me.LastName + " tamed <b>" + pickup.dbItem.VictimName + " the " + pickup.Item.FriendlyName + CharactersHere.PrintPvPIcon(pickup.dbItem) + "</b> here.";
+                locationLogMessage = me.FirstName + " " + me.LastName + " tamed <b>" + pickup.dbItem.GetFullName() + " the " + pickup.Item.FriendlyName + CharactersHere.PrintPvPIcon(pickup.dbItem) + "</b> here.";
 
                 Player personAnimal = PlayerProcedures.GetPlayerWithExactName(pickup.dbItem.VictimName);
 
-                string notificationMsg = me.FirstName + " " + me.LastName + " has tamed you.  You will now follow them wherever they go and magically enhance their abilities by being their faithful companion.";
+                string notificationMsg = me.GetFullName() + " has tamed you.  You will now follow them wherever they go and magically enhance their abilities by being their faithful companion.";
                 PlayerLogProcedures.AddPlayerLog(personAnimal.Id, notificationMsg, true);
 
             }
@@ -1659,7 +1709,7 @@ namespace tfgame.Controllers
 
                 Player personAnimal = PlayerProcedures.GetPlayerWithExactName(dropme.dbItem.VictimName);
 
-                string notificationMsg = me.FirstName + " " + me.LastName + " has released you.  You are now feral and may now wander the town at will until another master tames you.";
+                string notificationMsg = me.GetFullName() + " has released you.  You are now feral and may now wander the town at will until another master tames you.";
                 PlayerLogProcedures.AddPlayerLog(personAnimal.Id, notificationMsg, true);
 
                
@@ -1881,14 +1931,14 @@ namespace tfgame.Controllers
                 PlayerForm = playerLookedAt,
                 Skills = SkillProcedures.GetSkillViewModelsOwnedByPlayer(id),
                 Items = ItemProcedures.GetAllPlayerItems(id).Where(i => i.dbItem.IsEquipped == true),
-                Bonuses = ItemProcedures.GetPlayerBuffs(playerLookedAt.Player.ToDbPlayer())
+                Bonuses = ItemProcedures.GetPlayerBuffsSQL(playerLookedAt.Player.ToDbPlayer())
             };
 
 
             ViewBag.HasBio = SettingsProcedures.PlayerHasBio(output.PlayerForm.Player.MembershipId);
             ViewBag.HasArtistAuthorBio = SettingsProcedures.PlayerHasArtistAuthorBio(output.PlayerForm.Player.MembershipId);
 
-            ViewBag.TimeUntilLogout = 60 - Math.Abs(Math.Floor(playerLookedAt.Player.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
+            ViewBag.TimeUntilLogout = PvPStatics.OfflineAfterXMinutes - Math.Abs(Math.Floor(playerLookedAt.Player.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
 
             if (playerLookedAt.Form.MobilityType == "inanimate" || playerLookedAt.Form.MobilityType == "animal")
             {
@@ -2118,8 +2168,7 @@ namespace tfgame.Controllers
              }
 
              MessageProcedures.AddMessage(input);
-             NoticeProcedures.PushNotice(receiver, input.MessageText);
-             NoticeProcedures.PushNotice(me, "You sent:  " + input.MessageText);
+             NoticeProcedures.PushNotice(receiver, "<b>" + me.GetFullName() + " has sent you a new message.</b>", NoticeProcedures.PushType__PlayerMessage);
              TempData["Result"] = "Your message has been sent.";
              return RedirectToAction("MyMessages");
          }
@@ -2293,34 +2342,12 @@ namespace tfgame.Controllers
             return RedirectToAction("Play");
         }
 
-        public ActionResult HowToPlay()
-        {
-            return View("~/Views/PvP/HowToPlay.cshtml");
-        }
-        public ActionResult GameNews()
-        {
-            return View("~/Views/PvP/GameNews.cshtml");
-        }
+       
+     
 
-        public ActionResult Rules()
-        {
-            return View("Rules");
-        }
+       
 
-        public ActionResult GameNews_Archive()
-        {
-            return View("~/Views/PvP/GameNews_Archive.cshtml");
-        }
-
-        public ActionResult FAQ()
-        {
-            return View();
-        }
-
-        public ActionResult GameNews_PlannedFeatures()
-        {
-            return View("~/Views/PvP/GameNews_PlannedFeatures.cshtml");
-        }
+       
 
          [Authorize]
         public ActionResult Contribute(int Id = -1, string sort = "spellname")
@@ -2754,7 +2781,6 @@ namespace tfgame.Controllers
                 if (SaveMe != null && SaveMe.OwnerMembershipId == WebSecurity.CurrentUserId)
                 {
                     SaveMe.Id = input.Id;
-                    //SaveMe.ProofreadingCopy = false;
                 }
 
                 // submitter is not original author.  Do more logic...
@@ -2772,18 +2798,6 @@ namespace tfgame.Controllers
                         return RedirectToAction("Play");
                     }
 
-                    // this is not yet a proofreading copy.  Recreate and mark it as a proofreading copy IF the editor is a proofreader
-                   // else if (TrustStatics.PlayerIsProofreader(WebSecurity.CurrentUserId))
-                   // {
-                   //     SaveMe = new Contribution();
-                    //    SaveMe.ProofreadingCopy = true;
-                     //   SaveMe.AdminApproved = true;
-                    //    SaveMe.OwnerMembershipId = input.OwnerMembershipId;
-                  //  }
-                  //  else
-                   // {
-//
-                   // }
                 }
    
 
@@ -2816,51 +2830,58 @@ namespace tfgame.Controllers
             SaveMe.Form_Bonuses = input.Form_Bonuses;
 
             SaveMe.Form_TFMessage_20_Percent_1st = input.Form_TFMessage_20_Percent_1st;
-            SaveMe.Form_TFMessage_40_Percent_1st = input.Form_TFMessage_40_Percent_1st ;
-            SaveMe.Form_TFMessage_60_Percent_1st = input.Form_TFMessage_60_Percent_1st ;
-            SaveMe.Form_TFMessage_80_Percent_1st = input.Form_TFMessage_80_Percent_1st ;
-            SaveMe.Form_TFMessage_100_Percent_1st = input.Form_TFMessage_100_Percent_1st ;
-            SaveMe.Form_TFMessage_Completed_1st = input.Form_TFMessage_Completed_1st ;
+            SaveMe.Form_TFMessage_40_Percent_1st = input.Form_TFMessage_40_Percent_1st;
+            SaveMe.Form_TFMessage_60_Percent_1st = input.Form_TFMessage_60_Percent_1st;
+            SaveMe.Form_TFMessage_80_Percent_1st = input.Form_TFMessage_80_Percent_1st;
+            SaveMe.Form_TFMessage_100_Percent_1st = input.Form_TFMessage_100_Percent_1st;
+            SaveMe.Form_TFMessage_Completed_1st = input.Form_TFMessage_Completed_1st;
 
-            SaveMe.Form_TFMessage_20_Percent_1st_M = input.Form_TFMessage_20_Percent_1st_M ;
-            SaveMe.Form_TFMessage_40_Percent_1st_M = input.Form_TFMessage_40_Percent_1st_M ;
-            SaveMe.Form_TFMessage_60_Percent_1st_M = input.Form_TFMessage_60_Percent_1st_M ;
-            SaveMe.Form_TFMessage_80_Percent_1st_M = input.Form_TFMessage_80_Percent_1st_M ;
-            SaveMe.Form_TFMessage_100_Percent_1st_M = input.Form_TFMessage_100_Percent_1st_M ;
-            SaveMe.Form_TFMessage_Completed_1st_M = input.Form_TFMessage_Completed_1st_M ;
+            SaveMe.Form_TFMessage_20_Percent_1st_M = input.Form_TFMessage_20_Percent_1st_M;
+            SaveMe.Form_TFMessage_40_Percent_1st_M = input.Form_TFMessage_40_Percent_1st_M;
+            SaveMe.Form_TFMessage_60_Percent_1st_M = input.Form_TFMessage_60_Percent_1st_M;
+            SaveMe.Form_TFMessage_80_Percent_1st_M = input.Form_TFMessage_80_Percent_1st_M;
+            SaveMe.Form_TFMessage_100_Percent_1st_M = input.Form_TFMessage_100_Percent_1st_M;
+            SaveMe.Form_TFMessage_Completed_1st_M = input.Form_TFMessage_Completed_1st_M;
 
-            SaveMe.Form_TFMessage_20_Percent_1st_F = input.Form_TFMessage_20_Percent_1st_F ;
-            SaveMe.Form_TFMessage_40_Percent_1st_F = input.Form_TFMessage_40_Percent_1st_F ;
-            SaveMe.Form_TFMessage_60_Percent_1st_F = input.Form_TFMessage_60_Percent_1st_F ;
-            SaveMe.Form_TFMessage_80_Percent_1st_F = input.Form_TFMessage_80_Percent_1st_F ;
-            SaveMe.Form_TFMessage_100_Percent_1st_F = input.Form_TFMessage_100_Percent_1st_F ;
-            SaveMe.Form_TFMessage_Completed_1st_F = input.Form_TFMessage_Completed_1st_F ;
+            SaveMe.Form_TFMessage_20_Percent_1st_F = input.Form_TFMessage_20_Percent_1st_F;
+            SaveMe.Form_TFMessage_40_Percent_1st_F = input.Form_TFMessage_40_Percent_1st_F;
+            SaveMe.Form_TFMessage_60_Percent_1st_F = input.Form_TFMessage_60_Percent_1st_F;
+            SaveMe.Form_TFMessage_80_Percent_1st_F = input.Form_TFMessage_80_Percent_1st_F;
+            SaveMe.Form_TFMessage_100_Percent_1st_F = input.Form_TFMessage_100_Percent_1st_F;
+            SaveMe.Form_TFMessage_Completed_1st_F = input.Form_TFMessage_Completed_1st_F;
 
             SaveMe.Form_TFMessage_20_Percent_3rd = input.Form_TFMessage_20_Percent_3rd;
-            SaveMe.Form_TFMessage_40_Percent_3rd = input.Form_TFMessage_40_Percent_3rd ;
-            SaveMe.Form_TFMessage_60_Percent_3rd = input.Form_TFMessage_60_Percent_3rd ;
-            SaveMe.Form_TFMessage_80_Percent_3rd = input.Form_TFMessage_80_Percent_3rd ;
-            SaveMe.Form_TFMessage_100_Percent_3rd = input.Form_TFMessage_100_Percent_3rd ;
-            SaveMe.Form_TFMessage_Completed_3rd = input.Form_TFMessage_Completed_3rd ;
+            SaveMe.Form_TFMessage_40_Percent_3rd = input.Form_TFMessage_40_Percent_3rd;
+            SaveMe.Form_TFMessage_60_Percent_3rd = input.Form_TFMessage_60_Percent_3rd;
+            SaveMe.Form_TFMessage_80_Percent_3rd = input.Form_TFMessage_80_Percent_3rd;
+            SaveMe.Form_TFMessage_100_Percent_3rd = input.Form_TFMessage_100_Percent_3rd;
+            SaveMe.Form_TFMessage_Completed_3rd = input.Form_TFMessage_Completed_3rd;
 
-            SaveMe.Form_TFMessage_20_Percent_3rd_M = input.Form_TFMessage_20_Percent_3rd_M ;
-            SaveMe.Form_TFMessage_40_Percent_3rd_M = input.Form_TFMessage_40_Percent_3rd_M ;
-            SaveMe.Form_TFMessage_60_Percent_3rd_M = input.Form_TFMessage_60_Percent_3rd_M ;
-            SaveMe.Form_TFMessage_80_Percent_3rd_M = input.Form_TFMessage_80_Percent_3rd_M ;
-            SaveMe.Form_TFMessage_100_Percent_3rd_M = input.Form_TFMessage_100_Percent_3rd_M ;
-            SaveMe.Form_TFMessage_Completed_3rd_M = input.Form_TFMessage_Completed_3rd_M ;
+            SaveMe.Form_TFMessage_20_Percent_3rd_M = input.Form_TFMessage_20_Percent_3rd_M;
+            SaveMe.Form_TFMessage_40_Percent_3rd_M = input.Form_TFMessage_40_Percent_3rd_M;
+            SaveMe.Form_TFMessage_60_Percent_3rd_M = input.Form_TFMessage_60_Percent_3rd_M;
+            SaveMe.Form_TFMessage_80_Percent_3rd_M = input.Form_TFMessage_80_Percent_3rd_M;
+            SaveMe.Form_TFMessage_100_Percent_3rd_M = input.Form_TFMessage_100_Percent_3rd_M;
+            SaveMe.Form_TFMessage_Completed_3rd_M = input.Form_TFMessage_Completed_3rd_M;
 
-            SaveMe.Form_TFMessage_20_Percent_3rd_F = input.Form_TFMessage_20_Percent_3rd_F ;
-            SaveMe.Form_TFMessage_40_Percent_3rd_F = input.Form_TFMessage_40_Percent_3rd_F ;
-            SaveMe.Form_TFMessage_60_Percent_3rd_F = input.Form_TFMessage_60_Percent_3rd_F ;
-            SaveMe.Form_TFMessage_80_Percent_3rd_F = input.Form_TFMessage_80_Percent_3rd_F ;
-            SaveMe.Form_TFMessage_100_Percent_3rd_F = input.Form_TFMessage_100_Percent_3rd_F ;
-            SaveMe.Form_TFMessage_Completed_3rd_F = input.Form_TFMessage_Completed_3rd_F ;
+            SaveMe.Form_TFMessage_20_Percent_3rd_F = input.Form_TFMessage_20_Percent_3rd_F;
+            SaveMe.Form_TFMessage_40_Percent_3rd_F = input.Form_TFMessage_40_Percent_3rd_F;
+            SaveMe.Form_TFMessage_60_Percent_3rd_F = input.Form_TFMessage_60_Percent_3rd_F;
+            SaveMe.Form_TFMessage_80_Percent_3rd_F = input.Form_TFMessage_80_Percent_3rd_F;
+            SaveMe.Form_TFMessage_100_Percent_3rd_F = input.Form_TFMessage_100_Percent_3rd_F;
+            SaveMe.Form_TFMessage_Completed_3rd_F = input.Form_TFMessage_Completed_3rd_F;
 
+            SaveMe.CursedTF_FormdbName = input.CursedTF_FormdbName;
+            SaveMe.CursedTF_Fail = input.CursedTF_Fail;
+            SaveMe.CursedTF_Fail_M = input.CursedTF_Fail_M;
+            SaveMe.CursedTF_Fail_F = input.CursedTF_Fail_F;
+            SaveMe.CursedTF_Succeed = input.CursedTF_Succeed;
+            SaveMe.CursedTF_Succeed_M = input.CursedTF_Succeed_M;
+            SaveMe.CursedTF_Succeed_F = input.CursedTF_Succeed_F;
 
-            SaveMe.Item_FriendlyName = input.Item_FriendlyName ;
-            SaveMe.Item_Description = input.Item_Description ;
-            SaveMe.Item_ItemType = input.Item_ItemType ;
+            SaveMe.Item_FriendlyName = input.Item_FriendlyName;
+            SaveMe.Item_Description = input.Item_Description;
+            SaveMe.Item_ItemType = input.Item_ItemType;
             SaveMe.Item_UseCooldown = input.Item_UseCooldown ;
             SaveMe.Item_Bonuses = input.Item_Bonuses ;
 
@@ -2910,7 +2931,45 @@ namespace tfgame.Controllers
 
             contributionRepo.SaveContribution(SaveMe);
 
-  
+            #region notify admins
+
+            // Idea here is to notify the admins that there is a new contribution if it is the first time it has been sent in review and the first time only.  (I don't
+            // want admins to get spammed if a user edits it 5 times while waiting for it to get approved.)
+
+            //// if contribution is set to ready for review and wasn't before, notify admins to take a look
+            //if (SaveMe.IsReadyForReview == false && input.IsReadyForReview == true && input.ProofreadingCopy == false)
+            //{
+            //    // Judoo
+            //    try {
+            //        Player derp = PlayerProcedures.GetPlayerFromMembership(69);
+            //        PlayerLogProcedures.AddPlayerLog(derp.Id, "<b>A new contribution has been sent in for review by " + input.SubmitterName + " on " + DateTime.UtcNow + ".</b>", true);
+            //    } catch {
+
+            //    }
+
+            //    // Mizuho
+            //    try
+            //    {
+            //        Player mizu = PlayerProcedures.GetPlayerFromMembership(3490);
+            //        PlayerLogProcedures.AddPlayerLog(mizu.Id, "<b>A new contribution has been sent in for review by " + input.SubmitterName + " on " + DateTime.UtcNow + ".</b>", true);
+            //    }
+            //    catch
+            //    {
+
+            //    }
+
+            //    // Arrhae
+            //    try
+            //    {
+            //        Player Arrhae = PlayerProcedures.GetPlayerFromMembership(251);
+            //        PlayerLogProcedures.AddPlayerLog(Arrhae.Id, "<b>A new contribution has been sent in for review by " + input.SubmitterName + " on " + DateTime.UtcNow + ".</b>", true);
+            //    }
+            //    catch
+            //    {
+
+            //    }
+            //}
+            #endregion
 
             TempData["Result"] = "Contribution Saved!";
             return RedirectToAction("Play");
@@ -3173,11 +3232,7 @@ namespace tfgame.Controllers
             return true;
         }
 
-        private string ParseForGender(string gender, string message)
-        {
-           
-            return message;
-        }
+   
 
          [Authorize]
         public ActionResult WorldMap(string showEnchant)
@@ -3231,9 +3286,12 @@ namespace tfgame.Controllers
 
          public ActionResult PvPLeaderboard()
          {
-             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
-             ViewBag.MyName = me.FirstName + " " + me.LastName;
-             return View(PlayerProcedures.GetLeadingPlayers__PvP(100));
+
+             return RedirectToAction("Leaderboard");
+
+             //Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+             //ViewBag.MyName = me.FirstName + " " + me.LastName;
+             //return View(PlayerProcedures.GetLeadingPlayers__PvP(100));
          }
 
          public ActionResult ItemLeaderboard()
@@ -3475,23 +3533,92 @@ namespace tfgame.Controllers
 
             bool dungeonHalfPoints = false;
 
-            // don't allow items or pets to struggle while their owner is online in the dungeon
-            if (itemMe.OwnerId > 0 && me.GameMode < 2)
+            // Give items/pets a struggle penalty if their owner isn't a bot and is in the dungeon
+            if (itemMe.OwnerId > 0)
             {
                 Player owner = PlayerProcedures.GetPlayer(itemMe.OwnerId);
-
-                //if (owner.IsInDungeon() == true && PlayerProcedures.PlayerIsOffline(owner) == false && owner.Form != PvPStatics.DungeonDemon)
-                //{
-                //    TempData["Error"] = "The dark powers of the dungeon prevent you from being able to fight your transformation while your owner is online.";
-                //    return RedirectToAction("Play");
-                //}
-                dungeonHalfPoints = true;
+                if (owner.IsInDungeon())
+                {
+                    dungeonHalfPoints = true;
+                }
             }
 
 
             TempData["Result"] = InanimateXPProcedures.ReturnToAnimate(me, dungeonHalfPoints);
             return RedirectToAction("Play");
         }
+
+        [Authorize]
+         public ActionResult CurseTransformOwner()
+         {
+             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+
+             // assert player is inanimate or an animal
+             if (me.Mobility != "inanimate" && me.Mobility != "animal")
+             {
+                 TempData["Error"] = "You can't do this.";
+                 TempData["SubError"] = "You are still in an animate form.  You must be inanimate or an animal.";
+                 return RedirectToAction("Play","PvP");
+             }
+
+
+             // assert player has not acted too many times already
+             if (me.TimesAttackingThisUpdate >= 1)
+             {
+                 TempData["Error"] = "You don't have enough energy to try and transform your owner.";
+                 TempData["SubError"] = "Wait a bit.";
+                 return RedirectToAction("Play", "PvP");
+             }
+
+             Item itemMe = ItemProcedures.GetItemByVictimName(me.FirstName, me.LastName);
+             DbStaticItem itemMePlus = ItemStatics.GetStaticItem(itemMe.dbName);
+
+            // assert item does have the ability to curse transform
+             if (itemMePlus.CurseTFFormdbName == null || itemMePlus.CurseTFFormdbName == "")
+             {
+                 TempData["Error"] = "Unfortunately your new form does not have a transformation curse that it can use.";
+                 return RedirectToAction("Play", "PvP");
+             }
+
+             Player owner = PlayerProcedures.GetPlayer(itemMe.OwnerId);
+            // assert player is owned
+             if (owner == null)
+             {
+                 TempData["Error"] = "You aren't owned by anyone.";
+                 TempData["SubError"] = "You don't currently belong to an owner and as such have nobody to curse.";
+                 return RedirectToAction("Play", "PvP");
+             }
+
+            // assert owner is not an invalid bot
+             if (owner.MembershipId < -2)
+             {
+                 TempData["Error"] = "Unfortunately it seems your owner is immune to your transformation curse!";
+                 TempData["SubError"] = "Only Psychopathic spellslingers and other players are susceptible to transformation curses.";
+                 return RedirectToAction("Play", "PvP");
+             }
+
+            // assert owner is animate (they always should be, but just in case...)
+             if (owner.Mobility != "full")
+             {
+                 TempData["Error"] = "Your owner must be animate in order for you to curse transform them.";
+                 return RedirectToAction("Play", "PvP");
+             }
+
+            // assert that the form does exist
+             DbStaticForm form = FormStatics.GetForm(itemMePlus.CurseTFFormdbName);
+             if (form == null || form.IsUnique == true)
+             {
+                 TempData["Error"] = "Unfortunately it seems that the animate form has either not yet been added to the game or is ineligible.";
+                 return RedirectToAction("Play", "PvP");
+             }
+
+            // all checks pass
+             TempData["Result"] = InanimateXPProcedures.CurseTransformOwner(me, owner, itemMe, itemMePlus);
+
+
+             return RedirectToAction("Play", "PvP");
+
+         }
 
          [Authorize]
          public ActionResult EscapeFromOwner()
@@ -3545,119 +3672,7 @@ namespace tfgame.Controllers
              return RedirectToAction("Play");
          }
 
-        [Authorize]
-         public ActionResult TalkWithJewdewfae()
-         {
-             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
-            Player fae = PlayerProcedures.GetPlayerFromMembership(-6);
 
-            // assert player is mobile
-             if (me.Mobility != "full")
-             {
-                 TempData["Error"] = "You must be fully animate in order to talk with Jewdewfae.";
-                 return RedirectToAction("Play");
-             }
-
-            // assert player is in same location as jewdewfae
-             if (me.dbLocationName != fae.dbLocationName)
-             {
-                 TempData["Error"] = "You must be in the same location as Jewfewfae in order to talk with her.";
-                 return RedirectToAction("Play");
-             }
-
-             JewdewfaeEncounter output = tfgame.Procedures.BossProcedures.BossProcedures_Fae.GetFairyChallengeInfoAtLocation(fae.dbLocationName);
-
-             output.IntroText = output.IntroText.Replace("[", "<").Replace("]", ">");
-             output.CorrectFormText = output.CorrectFormText.Replace("[", "<").Replace("]", ">");
-             output.FailureText = output.FailureText.Replace("[", "<").Replace("]", ">");
-
-             ViewBag.IsInWrongForm = false;
-
-             if (me.Form != output.RequiredForm)
-             {
-                 ViewBag.IsInWrongForm = true;
-             }
-
-             if (me.ActionPoints < 5)
-             {
-                 ViewBag.IsTired = true;
-             }
-
-             ViewBag.ShowSuccess = false;
-
-             ViewBag.HadRecentInteraction = false;
-             if (tfgame.Procedures.BossProcedures.BossProcedures_Fae.PlayerHasHadRecentInteraction(me, fae))
-             {
-                 ViewBag.HadRecentInteraction = true;
-             }
-
-             return View(output);
-         }
-
-        [Authorize]
-        public ActionResult PlayWithJewdewfae()
-        {
-
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
-            Player fae = PlayerProcedures.GetPlayerFromMembership(-6);
-
-            // assert player is mobile
-            if (me.Mobility != "full")
-            {
-                TempData["Error"] = "You must be fully animate in order to talk with Jewdewfae.";
-                return RedirectToAction("Play");
-            }
-
-            // assert player is in same location as jewdewfae
-            if (me.dbLocationName != fae.dbLocationName)
-            {
-                TempData["Error"] = "You must be in the same location as Jewfewfae in order to talk with her.";
-                return RedirectToAction("Play");
-            }
-
-            // assert player has enough AP
-            if (me.ActionPoints < 5)
-            {
-                TempData["Error"] = "You need 5 action points to play with Jewdewfae.";
-                return RedirectToAction("Play");
-            }
-
-            // assert player has not already interacted this location
-            if (tfgame.Procedures.BossProcedures.BossProcedures_Fae.PlayerHasHadRecentInteraction(me, fae))
-            {
-                TempData["Error"] = "You have already interacted with Jewdewfae here.";
-                TempData["SubError"] = "Wait for her to move somewhere else.";
-                return RedirectToAction("Play");
-            }
-
-            JewdewfaeEncounter output = tfgame.Procedures.BossProcedures.BossProcedures_Fae.GetFairyChallengeInfoAtLocation(fae.dbLocationName);
-
-            output.IntroText = output.IntroText.Replace("[", "<").Replace("]", ">");
-            output.CorrectFormText = output.CorrectFormText.Replace("[", "<").Replace("]", ">");
-            output.FailureText = output.FailureText.Replace("[", "<").Replace("]", ">");
-
-            if (me.Form == output.RequiredForm)
-            {
-                decimal xpGained = tfgame.Procedures.BossProcedures.BossProcedures_Fae.AddInteraction(me);
-                PlayerProcedures.GiveXP(me.Id, xpGained);
-                PlayerProcedures.ChangePlayerActionMana(5, 0, 0, me.Id);
-                ViewBag.XPGain = xpGained;
-                ViewBag.ShowSuccess = true;
-                ViewBag.HadRecentInteraction = false;
-
-                new Thread(() =>
-                     StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__JewdewfaeEncountersCompleted, 1)
-                 ).Start();
-
-                return View("TalkWithJewdewfae", output);
-            }
-            else
-            {
-                TempData["Error"] = "You are not in the correct form to play with Jewdewfae right now.";
-                return RedirectToAction("Play");
-            }
-
-        }
 
          [Authorize]
          public ActionResult ReserveName()
@@ -3820,799 +3835,19 @@ namespace tfgame.Controllers
         public ActionResult UpdateWorld(string password)
         {
 
-            
-            // localhost:64397/PvP/UpdateWorld/?password=oogabooga99
-
-
-            if (password == null || password != "oogabooga99")
-            {
-                TempData["Result"] = "WRONG PASSWORD";
-                return RedirectToAction("Play");
-            }
+           
 
             DateTime lastupdate = PvPWorldStatProcedures.GetLastWorldUpdate();
-            double minutesAgo = -Math.Floor(lastupdate.Subtract(DateTime.UtcNow).TotalMinutes);
+            double secondsAgo = -Math.Floor(lastupdate.Subtract(DateTime.UtcNow).TotalSeconds);
 
           //  if (minutesAgo < 10 && WebSecurity.CurrentUserId != 69)
-            if (minutesAgo < 10)
+            if (secondsAgo < PvPStatics.TurnSecondLength)
             {
                 TempData["Result"] = "You can't update the world again yet--it is too soon.";
                 return RedirectToAction("Play");
             }
 
-            PvPWorldStat worldStats = PvPWorldStatProcedures.GetWorldStats();
-
-            
-            int turnNo = worldStats.TurnNumber;
-            PvPStatics.LastGameTurn = turnNo;
-
-            if (turnNo < PvPStatics.RoundDuration)
-            {
-
-                PvPStatics.AnimateUpdateInProgress = true;
-
-                IServerLogRepository serverLogRepo = new EFServerLogRepository();
-                ServerLog log = new ServerLog
-                {
-                    TurnNumber = turnNo,
-                    StartTimestamp = DateTime.UtcNow,
-                    FinishTimestamp = DateTime.UtcNow,
-                    Errors = 0,
-                    FullLog = "",
-                };
-                log.AddLog("Started new log for turn " + turnNo + ".");
-                Stopwatch updateTimer = new Stopwatch();
-                updateTimer.Start();
-
-                
-
-                PvPWorldStatProcedures.UpdateWorldTurnCounter();
-
-                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started loading animate players");
-                IPlayerRepository playerRepo = new EFPlayerRepository();
-                //List<Player> players_Animate = playerRepo.Players.Where(p => p.Mobility != "inanimate").ToList();
-                //List<Player> players_Animate_to_Save = new List<Player>();
-
-                IEffectRepository effectRepo = new EFEffectRepository();
-
-                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started loading effects");
-                List<Effect> temporaryEffects = effectRepo.Effects.Where(e => e.IsPermanent == false).ToList();
-                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished loading effects");
-                List<Effect> effectsToDelete = new List<Effect>();
-
-                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started updating effects");
-                foreach (Effect e in temporaryEffects)
-                {
-                    e.Duration--;
-                    e.Cooldown--;
-
-                    if (e.Duration < 0)
-                    {
-                        e.Duration = 0;
-                    }
-
-                    if (e.Cooldown <= 0)
-                    {
-                        effectsToDelete.Add(e);
-                    }
-                    else
-                    {
-                        effectRepo.SaveEffect(e);
-                    }
-                }
-                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished updating effects");
-
-                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started deleting expired effects");
-                foreach (Effect e in effectsToDelete)
-                {
-                    effectRepo.DeleteEffect(e.Id);
-                }
-                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished deleting expired effects");
-
-                #region playerExtra / protection cooldown loop
-                IPlayerExtraRepository playerExtraRepo = new EFPlayerExtraRepository();
-                List<PlayerExtra> extrasToIncrement = playerExtraRepo.PlayerExtras.ToList();
-                List<PlayerExtra> extrasToIncrement_SaveList = new List<PlayerExtra>();
-                List<PlayerExtra> extrasToIncrement_DeleteList = new List<PlayerExtra>();
-                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started updating protection change cooldown (" + extrasToIncrement.Count + ")");
-
-                foreach (PlayerExtra e in extrasToIncrement) {
-                    Player owner = PlayerProcedures.GetPlayer(e.PlayerId);
-                    if (PlayerProcedures.PlayerIsOffline(owner))
-                    {
-                        extrasToIncrement_SaveList.Add(e);
-                    }
-                }
-
-                foreach (PlayerExtra e in extrasToIncrement_SaveList)
-                {
-                    if (e.ProtectionToggleTurnsRemaining > 0)
-                    {
-                        e.ProtectionToggleTurnsRemaining--;
-                        playerExtraRepo.SavePlayerExtra(e);
-                    }
-                    else if (e.ProtectionToggleTurnsRemaining <= 0)
-                    {
-                        extrasToIncrement_DeleteList.Add(e);
-                    }
-                }
-
-                foreach (PlayerExtra e in extrasToIncrement_DeleteList)
-                {
-                    playerExtraRepo.DeletePlayerExtra(e.Id);
-                }
-
-                #endregion
-
-                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished updating protection change cooldown.");
-
-                //log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started updating animate players (" + players_Animate.Count + ")");
-
-                #region main player loop
-
-                using (var context = new StatsContext())
-                {
-                    try
-                    {
-                        context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Players] SET TimesAttackingThisUpdate = 0, CleansesMeditatesThisRound = 0, ShoutsRemaining = 1, ActionPoints = ActionPoints + 10 WHERE Mobility='full'" +
-
-                        "UPDATE [Stats].[dbo].[Players] SET ActionPoints_Refill = ActionPoints_Refill + (ActionPoints % 120 / 2) WHERE ActionPoints >= 120 AND Mobility='full'" + 
-
-                        "UPDATE [Stats].[dbo].[Players] SET ActionPoints = 120 WHERE ActionPoints > 120 AND Mobility='full'" + 
-                        
-                        "UPDATE [Stats].[dbo].[Players] SET ActionPoints_Refill = 360 WHERE ActionPoints_Refill > 360 AND Mobility='full'" + 
-                        
-                        "UPDATE [Stats].[dbo].[Players] SET ActionPoints = ActionPoints + 20, ActionPoints_Refill = ActionPoints_Refill - 20 WHERE ActionPoints <= 100 AND ActionPoints_Refill >= 20 AND Mobility='full'");
-
-                        if (PvPStatics.ChaosMode == true)
-                        {
-                            context.Database.ExecuteSqlCommand("Update [Stats].[dbo].[Players] SET ActionPoints = 120, ActionPoints_Refill = 360, TimesAttackingThisUpdate = -999, Mana = MaxMana");
-                        }
-
-                        log.AddLog(updateTimer.ElapsedMilliseconds + ":  ANIMATE SQL UPDATE SUCCEEDED!");
-                    }
-                    catch (Exception e)
-                    {
-                        log.AddLog(updateTimer.ElapsedMilliseconds + "ANIMATE SQL UPDATE FAILED.  Reason:  " + e.ToString());
-                    }
-                }
-
-                DateTime timeCutoff = DateTime.UtcNow.AddHours(-8);
-
-                List<int> playerIdsToSave = playerRepo.Players.Where(p => p.Mobility == "full" && p.LastActionTimestamp > timeCutoff).Select(p => p.Id).ToList();
-
-                foreach (int i in playerIdsToSave)
-                {
-
-                    Player player = playerRepo.Players.FirstOrDefault(p => p.Id == i);
-
-                    // skip players who have not done anything in the past 24 hours
-                    double hoursSinceLastAction = Math.Abs(Math.Floor(player.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalHours));
-                    if (hoursSinceLastAction > 24)
-                    {
-                        continue;
-                    }
-
-                    //// if the player is already sitting at max AP, throw it in their reserves instead
-                    //if (player.ActionPoints == PvPStatics.MaximumStoreableActionPoints)
-                    //{
-                    //    player.ActionPoints_Refill += PvPStatics.APRestoredPerUpdate/2;
-
-                    //    if (player.ActionPoints_Refill > PvPStatics.MaximumStoreableActionPoints_Refill)
-                    //    {
-                    //        player.ActionPoints_Refill = PvPStatics.MaximumStoreableActionPoints_Refill;
-                    //    }
-
-                    //}
-                    //else
-                    //{
-                    //    // give the usual base 10
-                    //    player.ActionPoints += PvPStatics.APRestoredPerUpdate;
-
-                    //    if (player.ActionPoints > PvPStatics.MaximumStoreableActionPoints)
-                    //    {
-                    //        player.ActionPoints = PvPStatics.MaximumStoreableActionPoints;
-                    //    }
-
-                    //    // Now consider the bonus.
-                    //    // the limiting factor is the difference between current AP and max AP
-                    //    decimal possibleBonus = PvPStatics.MaximumStoreableActionPoints - player.ActionPoints;
-
-                    //    // the limiting factor may be ALL of the reserved AP
-                    //    if (player.ActionPoints_Refill < possibleBonus)
-                    //    {
-                    //        possibleBonus = player.ActionPoints_Refill;
-                    //    }
-
-                    //    // the limiting factor may be the maximum bonus
-                    //    if (possibleBonus > 20)
-                    //    {
-                    //        possibleBonus = 20;
-                    //    }
-
-                    //    player.ActionPoints += possibleBonus;
-                    //    player.ActionPoints_Refill -= possibleBonus;
-                    //}
-                    
-
-                    //player.TimesAttackingThisUpdate = 0;
-                    //player.CleansesMeditatesThisRound = 0;
-
-                    BuffBox buffs = ItemProcedures.GetPlayerBuffsRAM(player);
-                    //BuffBox buffs = ItemProcedures.GetPlayerBuffsRAM(player);
-                    player.Health += buffs.HealthRecoveryPerUpdate();
-                    player.Mana += buffs.ManaRecoveryPerUpdate();
-
-
-                    player.ReadjustMaxes(buffs);
-
-                    // give the player some extra AP refill if they are at their safeground
-                    if (player.Covenant > 0) {
-                        CovenantNameFlag playerCov = CovenantDictionary.IdNameFlagLookup.FirstOrDefault(c => c.Key == player.Covenant).Value;
-
-                        if (playerCov != null && playerCov.HomeLocation != null && playerCov.HomeLocation != "" && player.dbLocationName == playerCov.HomeLocation)
-                        {
-                            player.ActionPoints_Refill += .25M * playerCov.CovLevel;
-                            if (player.ActionPoints_Refill > PvPStatics.MaximumStoreableActionPoints_Refill)
-                            {
-                                player.ActionPoints_Refill = PvPStatics.MaximumStoreableActionPoints_Refill;
-                            }
-                        }
-
-                    }
-
-                    // give the player their PvP score trickle if they are in it
-                   // if (player.InPvP == false)
-                   // {
-                      //  player.PvPScore += PvPStatics.PvPScoreTricklePerUpdate;
-                   // }
-                    
-
-                    if (player.MaxHealth < 1)
-                    {
-                        player.MaxHealth = 1;
-                    }
-
-                    if (player.MaxMana < 1)
-                    {
-                        player.MaxMana = 1;
-                    }
-
-
-                    if (player.Health > player.MaxHealth)
-                    {
-                        player.Health = player.MaxHealth;
-                    }
-                    if (player.Mana > player.MaxMana)
-                    {
-                        player.Mana = player.MaxMana;
-                    }
-                    if (player.Health < 0)
-                    {
-                        player.Health = 0;
-                    }
-                    if (player.Mana < 0)
-                    {
-                        player.Mana = 0;
-                    }
-
-                    playerRepo.SavePlayer(player);
-
-                    // for inbetween round testing
-                    //if (PvPStatics.ChaosMode == true)
-                    //{
-                    //    player.Mana = player.MaxMana;
-                    //    player.ActionPoints = 120;
-                    //    player.TimesAttackingThisUpdate = -999;
-                    //    player.ActionPoints_Refill = 360;
-                    //}
-
-                   // players_Animate_to_Save.Add(player);
-
-                }
-
-                //foreach (Player player in players_Animate_to_Save)
-                //{
-                //    playerRepo.SavePlayer(player);
-                //}
-
-                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished updating animate players (" + playerIdsToSave.Count + ")");
-
-#endregion main player loop
-
-                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started updating inanimate/animal players");
-
-               // List<Player> players_Inanimate_Animal = playerRepo.Players.Where(p => (p.Mobility == "inanimate" || p.Mobility == "animal") && p.MembershipId > 0).ToList();
-
-                //////////////////////////
-
-                using (var context = new StatsContext())
-                {
-                    try
-                    {
-                        context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Players] SET TimesAttackingThisUpdate = 0 WHERE (Mobility = 'inanimate' OR Mobility = 'animal') AND MembershipId > 0");
-                        log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished updating inanimate/animal players");
-                    }
-                    catch (Exception e)
-                    {
-                        log.AddLog(updateTimer.ElapsedMilliseconds + "ERROR UPDATING INANIMATE/ANIMAL PLAYERS:  " + e.ToString());
-                    }
-                }
-
-                #region decrement mind control timers
-                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started mind control cooldown.");
-
-                using (var context = new StatsContext())
-                {
-                    try
-                    {
-                        context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[MindControls] SET TurnsRemaining = TurnsRemaining - 1");
-                        context.Database.ExecuteSqlCommand("DELETE FROM [Stats].[dbo].[MindControls] WHERE TurnsRemaining <= 0");
-                        context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[MindControls] SET TimesUsedThisTurn = 0");
-
-                        log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished mind control cooldown.");
-                    }
-                    catch (Exception e)
-                    {
-                        log.AddLog(updateTimer.ElapsedMilliseconds + "MIND CONTROLL COOLDOWN UPDATE FAILED.  Reason:  " + e.ToString());
-                    }
-                }
-                #endregion
-
-                PvPStatics.AnimateUpdateInProgress = false;
-
-                // bump down the timer on all items that are reuseable consumables
-                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started updating items on cooldown");
-                IItemRepository itemsRepo = new EFItemRepository();
-                List<Item> itemsToUpdate = itemsRepo.Items.Where(i => i.TurnsUntilUse > 0).ToList();
-
-                foreach (Item item in itemsToUpdate)
-                {
-                    item.TurnsUntilUse--;
-                }
-
-                foreach (Item item in itemsToUpdate)
-                {
-                    itemsRepo.SaveItem(item);
-                }
-                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished updating items on cooldown");
-
-                // we need to find the merchant to get her ID
-
-                int merchantId = -999;
-                Player merchant = PlayerProcedures.GetPlayerFromMembership(-3);
-                merchantId = merchant.Id;
-
-                // have abandoned items go to Lindella
-                if (turnNo % 11 == 3 && merchant.Mobility == "full")
-                {
-                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started collecting all abandoned items for Lindella");
-
-                    using (var context = new StatsContext())
-                    {
-                        try
-                        {
-                            context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Items] SET OwnerId = " + merchant.Id + ", dbLocationName = '', PvPEnabled = -1, TimeDropped = '" + DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss") + "'  WHERE  dbLocationName <> '' AND dbLocationName IS NOT NULL AND TimeDropped < DATEADD(hour, -8, GETUTCDATE()) AND OwnerId = -1 AND dbName LIKE 'item_%' AND dbName != '" + PvPStatics.ItemType_DungeonArtifact + "'");
-
-                            context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Players] SET dbLocationName = '" + merchant.dbLocationName + "' WHERE (FirstName + ' ' + LastName) IN ( SELECT VictimName FROM [Stats].[dbo].[Items] WHERE  dbLocationName <> '' AND dbLocationName IS NOT NULL AND TimeDropped < DATEADD(hour, -8, GETUTCDATE()) AND OwnerId = -1 AND dbName LIKE 'item_%' AND dbName != '" + PvPStatics.ItemType_DungeonArtifact + "')");
-
-                            log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished collecting all abandoned items for Lindella");
-
-                        }
-                        catch (Exception e)
-                        {
-                            log.AddLog(updateTimer.ElapsedMilliseconds + ":  ERROR collecting all abandoned items for Lindella:  " + e.ToString());
-                        }
-                    }
-
-                    
-                }
-
-
-                // delete all consumable type items that have been sitting around on the ground for too long
-                List<Item> possibleToDelete = itemsRepo.Items.Where(i => (i.dbLocationName != "" && i.OwnerId == -1) || (i.OwnerId == merchantId) && i.dbName != PvPStatics.ItemType_DungeonArtifact).ToList();
-                List<Item> deleteItems = new List<Item>();
-
-                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started deleting expired consumables");
-                foreach (Item item in possibleToDelete)
-                {
-                    DbStaticItem temp = ItemStatics.GetStaticItem(item.dbName);
-                    if (temp.ItemType != "consumable")
-                    {
-                        continue;
-                    }
-                    double droppedMinutesAgo = Math.Abs(Math.Floor(item.TimeDropped.Subtract(DateTime.UtcNow).TotalMinutes));
-
-                    if (droppedMinutesAgo > PvPStatics.MinutesToDroppedItemDelete && item.OwnerId == -1)
-                    {
-                        deleteItems.Add(item);
-                    }
-                    else if (droppedMinutesAgo > PvPStatics.MinutesToDroppedItemDelete * 12)
-                    {
-                        deleteItems.Add(item);
-                    }
-                }
-
-                foreach (Item item in deleteItems)
-                {
-                    itemsRepo.DeleteItem(item.Id);
-                }
-                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished deleting expired consumables");
-
-                // allow all items that have been recently equipped to be taken back off
-                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started resetting items that have been recently equipped");
-                List<Item> recentlyEquipped = itemsRepo.Items.Where(i => i.EquippedThisTurn == true).ToList();
-
-                foreach (Item item in recentlyEquipped)
-                {
-                    item.EquippedThisTurn = false;
-                    itemsRepo.SaveItem(item);
-                }
-                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished resetting items that have been recently equipped");
-
-                #region give covenants money based on territories
-                if (turnNo % 6 == 0)
-                {
-                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started giving covenants money from territories");
-                    ICovenantRepository covRepo = new EFCovenantRepository();
-                    List<Covenant> covs = covRepo.Covenants.Where(c => c.HomeLocation != null && c.HomeLocation != "").ToList();
-
-
-                    foreach (Covenant c in covs)
-                    {
-                        int locationControlledSum = CovenantProcedures.GetLocationControlCount(c);
-                        decimal moneyGain = (decimal)Math.Floor(Convert.ToDouble(locationControlledSum));
-                        c.Money += moneyGain;
-
-                        if (moneyGain > 0)
-                        {
-                            CovenantProcedures.WriteCovenantLog("Your covenant collected " + moneyGain + " Arpeyis from the locations you have enchanted.", c.Id, false);
-                        }
-                        covRepo.SaveCovenant(c);
-                    }
-                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished giving covenants money from territories");
-
-                }
-                #endregion
-
-                #region drop dungeon artifacts and spawn demons if needed
-
-                try
-                {
-
-                    if (turnNo % 7 == 2)
-                    {
-                        log.AddLog(updateTimer.ElapsedMilliseconds + ":  Starting dungeon item / demon spawning");
-                        int dungeonArtifactCount = itemsRepo.Items.Where(i => i.dbName == PvPStatics.ItemType_DungeonArtifact).Count();
-                        for (int x = 0; x < PvPStatics.DungeonArtifact_SpawnLimit - dungeonArtifactCount; x++)
-                        {
-                            string randDungeon = LocationsStatics.GetRandomLocation_InDungeon();
-                            Item newArtifact = new Item
-                            {
-                                dbLocationName = randDungeon,
-                                OwnerId = -1,
-                                EquippedThisTurn = false,
-                                IsPermanent = true,
-                                TimeDropped = DateTime.UtcNow,
-                                Level = 0,
-                                PvPEnabled = 2,
-                                IsEquipped = false,
-                                TurnsUntilUse = 0,
-                                VictimName = "",
-                                dbName = PvPStatics.ItemType_DungeonArtifact,
-                            };
-                            itemsRepo.SaveItem(newArtifact);
-                        }
-
-
-                        IEnumerable<Player> demons = playerRepo.Players.Where(i => i.Form == PvPStatics.DungeonDemon);
-                        int dungeonDemonCount = demons.Count();
-
-                        Random randLevel = new Random(Guid.NewGuid().GetHashCode());
-
-                        List<string> demonNames = new List<string>();
-
-                        var serializer = new XmlSerializer(typeof(List<string>));
-                        string path = System.Web.HttpContext.Current.Server.MapPath("~/XMLs/DungeonDemonNames.xml");
-                        using (var reader = XmlReader.Create(path))
-                        {
-                            demonNames = (List<string>)serializer.Deserialize(reader);
-                        }
-
-                        for (int x = 0; x < PvPStatics.DungeonDemon_Limit - dungeonDemonCount; x++)
-                        {
-                            string randDungeon = LocationsStatics.GetRandomLocation_InDungeon();
-                            Location spawnLocation = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == randDungeon);
-
-                            // pull a random last demon name
-                            double maxDemonNameCount = demonNames.Count();
-                            double num = randLevel.NextDouble();
-                            int demonIndex = Convert.ToInt32(Math.Floor(num * maxDemonNameCount));
-                            string demonlastName = demonNames.ElementAt(demonIndex);
-
-                            // if there's already a demon with this last name, reroll and try again
-                            if (demons.FirstOrDefault(d => d.LastName == demonlastName) != null)
-                            {
-                                x--;
-                                continue;
-                            }
-
-
-                            double levelRoll = randLevel.NextDouble();
-                            int level = (int)Math.Floor(levelRoll * 8 + 3);
-
-
-                            Player newDemon = new Player
-                            {
-
-                                MembershipId = -13,
-                                FirstName = "Spirit of ",
-                                LastName = demonlastName,
-                                Mobility = "full",
-                                ActionPoints = 120,
-                                ActionPoints_Refill = 360,
-                                Form = PvPStatics.DungeonDemon,
-                                Gender = "female",
-                                GameMode = 2,
-                                Health = 1000,
-                                Mana = 1000,
-                                OriginalForm = PvPStatics.DungeonDemon,
-                                Covenant = -1,
-                                dbLocationName = randDungeon,
-                                FlaggedForAbuse = false,
-                                LastActionTimestamp = DateTime.UtcNow,
-                                LastCombatAttackedTimestamp = DateTime.UtcNow,
-                                LastCombatTimestamp = DateTime.UtcNow,
-                                Level = level,
-                                MaxHealth = 500,
-                                MaxMana = 500,
-                                IsPetToId = -1,
-                                OnlineActivityTimestamp = DateTime.UtcNow,
-                                NonPvP_GameOverSpellsAllowedLastChange = DateTime.UtcNow,
-                            };
-                            playerRepo.SavePlayer(newDemon);
-
-                            if (newDemon.Level <= 5)
-                            {
-                                ItemProcedures.GiveNewItemToPlayer(newDemon, "item_consumable_spellbook_medium");
-                            }
-                            else if (newDemon.Level <= 7)
-                            {
-                                ItemProcedures.GiveNewItemToPlayer(newDemon, "item_consumable_spellbook_large");
-                            }
-
-                            else if (newDemon.Level > 7)
-                            {
-                                ItemProcedures.GiveNewItemToPlayer(newDemon, "item_consumable_spellbook_giant");
-                            }
-                            
-                        }
-                        log.AddLog(updateTimer.ElapsedMilliseconds + ":  FINISHED dungeon item / demon spawning");
-
-                    }
-
-                }
-                catch (Exception e)
-                {
-                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  ERROR running dungeon actions:  " + e.ToString());
-                }
-                
-
-                #endregion
-
-                serverLogRepo.SaveServerLog(log);
-                log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == turnNo);
-                
-
-                TempData["Result"] = "WORLD UPDATED";
-
-                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started Lindella actions");
-                try { 
-                    serverLogRepo.SaveServerLog(log);
-                    AIProcedures.RunAIMerchantActions(turnNo);
-                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished Lindella actions");
-                }
-                catch (Exception e)
-                {
-                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  FAILED Lindella actions.  Reason:  " + e.ToString());
-                }
-               
-
-               // log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == turnNo);
-               
-
-                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started Wuffie actions");
-                serverLogRepo.SaveServerLog(log);
-                try { 
-                    tfgame.Procedures.BossProcedures.BossProcedures_PetMerchant.RunPetMerchantActions(turnNo);
-                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished Wuffie actions");
-                }
-                catch (Exception e)
-                {
-                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  ERROR running Wuffie actions:  " + e.ToString());
-                }
-
-
-                #region furniture
-                if (turnNo % 6 == 0)
-                {
-
-                    // move some furniture around on the market
-                    try
-                    {
-                        FurnitureProcedures.MoveFurnitureOnMarket();
-                    }
-                    catch (Exception e)
-                    {
-                        log.AddLog(updateTimer.ElapsedMilliseconds + "ERROR MOVING FURNITURE ON MARKET:  " + e.ToString());
-                    }
-
-                    // move Jewdewfae to a new location if she has been in one place for more than 48 turns, 8 hours
-                    try
-                    {
-                        Player fae = PlayerProcedures.GetPlayerFromMembership(-6);
-                        AIDirective faeAI = AIDirectiveProcedures.GetAIDirective(fae.Id);
-
-                        // if the turn since her last move has been long enough, relocate her
-                        if (turnNo - (int)faeAI.Var2 > 48)
-                        {
-                            log.AddLog(updateTimer.ElapsedMilliseconds + ":  FORCED JEWDEWFAE TO MOVE.");
-                            BossProcedures_Fae.MoveToNewLocation();
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        log.AddLog(updateTimer.ElapsedMilliseconds + "ERROR TRYING TO MOVE JEWDEWFAE:  " + e.ToString());
-                    }
-                }
-#endregion furniture
-
-                #region bosses
-
-                // DONNA
-                try {
-                    // run boss logic if one is active
-                    if (worldStats.Boss_Donna == "active")
-                    {
-                        log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started Donna actions");
-                        serverLogRepo.SaveServerLog(log);
-                        BossProcedures_Donna.RunDonnaActions();
-                        log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == turnNo);
-                        log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished Donna actions");
-                    }
-                }
-                catch (Exception e)
-                {
-                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  DONNA ERROR:  " + e.InnerException.ToString());
-                }
-
-
-                // VALENTINE
-                try
-                {
-                    // run boss logic if one is active
-                    if (worldStats.Boss_Valentine == "active")
-                    {
-                        log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started Valentine actions");
-                        serverLogRepo.SaveServerLog(log);
-                        tfgame.Procedures.BossProcedures.BossProcedures_Valentine.RunValentineActions();
-                        log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == turnNo);
-                        log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished Valentine actions");
-                    }
-                }
-                catch (Exception e)
-                {
-                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Valentine ERROR:  " + e.InnerException.ToString());
-                }
-
-                // BIMBO
-                try
-                {
-                    // run boss logic if one is active
-                    if (worldStats.Boss_Bimbo == "active")
-                    {
-                        log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started Bimbo actions");
-                        serverLogRepo.SaveServerLog(log);
-                        tfgame.Procedures.BossProcedures.BossProcedures_BimboBoss.RunActions(turnNo);
-                        log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == turnNo);
-                        log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished Bimbo actions");
-                    }
-                }
-                catch (Exception e)
-                {
-                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Bimbo ERROR:  " + e.InnerException.ToString());
-                }
-
-                // THIEVES
-                try
-                {
-                    // run boss logic if one is active
-                    if (worldStats.Boss_Thief == "active")
-                    {
-                        log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started Thieves actions");
-                        serverLogRepo.SaveServerLog(log);
-                        tfgame.Procedures.BossProcedures.BossProcedures_Thieves.RunThievesAction(turnNo);
-                        log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == turnNo);
-                        log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished Thieves actions");
-                    }
-                }
-                catch (Exception e)
-                {
-                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Bimbo ERROR:  " + e.InnerException.ToString());
-                }
-
-                // SISTERS
-                try
-                {
-                    // run boss logic if one is active
-                    if (worldStats.Boss_Sisters == "active")
-                    {
-                        log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started Sisters actions");
-                        serverLogRepo.SaveServerLog(log);
-                        tfgame.Procedures.BossProcedures.BossProcedures_Sisters.RunSistersAction();
-                        log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == turnNo);
-                        log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished Sisters actions");
-                    }
-                }
-                catch (Exception e)
-                {
-                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Sisters ERROR:  " + e.InnerException.ToString());
-                }
-
-                #endregion bosses
-
-                // psychopaths
-                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started psychopath actions");
-                serverLogRepo.SaveServerLog(log);
-
-                try
-                {
-                    AIProcedures.RunPsychopathActions();
-                    log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == turnNo);
-                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished psychopath actions");
-                }
-                catch (Exception e)
-                {
-                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  PSYCHOPATH RUNTIME ERROR:  " + e);
-                }
-
-            
-                PvPWorldStatProcedures.UpdateWorldTurnCounter_UpdateDone();
-
-                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started stored procedure maintenance");
-                using (var context = new StatsContext())
-                {
-                    context.Database.ExecuteSqlCommand("DELETE FROM [Stats].[dbo].[LocationLogs] WHERE Timestamp < DATEADD(hour, -1, GETUTCDATE())");
-                    context.Database.ExecuteSqlCommand("DELETE FROM [Stats].[dbo].[Messages] WHERE Timestamp < DATEADD(hour, -72, GETUTCDATE()) AND DoNotRecycleMe = 0");
-                    context.Database.ExecuteSqlCommand("DELETE FROM [Stats].[dbo].[TFEnergies] WHERE Amount < .5");
-                    context.Database.ExecuteSqlCommand("DELETE FROM [Stats].[dbo].[PlayerLogs] WHERE Timestamp < DATEADD(hour, -72, GETUTCDATE())");
-                    context.Database.ExecuteSqlCommand("DELETE FROM [Stats].[dbo].[ChatLogs] WHERE Timestamp < DATEADD(hour, -72, GETUTCDATE())");
-                    context.Database.ExecuteSqlCommand("DELETE FROM [Stats].[dbo].[AIDirectives] WHERE Timestamp < DATEADD(hour, -72, GETUTCDATE()) AND DoNotRecycleMe = 0");
-                    context.Database.ExecuteSqlCommand("DELETE FROM [Stats].[dbo].[CovenantLogs] WHERE Timestamp < DATEADD(hour, -72, GETUTCDATE())");
-                }
-                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished stored procedure maintenance");
-
-                #region regenerate dungeon
-                if (turnNo % 30 == 7)
-                {
-                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Dungeon generation started.");
-                    try
-                    {
-                        DungeonProcedures.GenerateDungeon();
-                        log.AddLog(updateTimer.ElapsedMilliseconds + ":  Dungeon generation completed.");
-                    }
-                    catch (Exception e)
-                    {
-                        log.AddLog(updateTimer.ElapsedMilliseconds + ":  Dungeon generation FAILED.  Reason:  " + e.ToString());
-                    }
-                }
-                #endregion
-
-                log.FinishTimestamp = DateTime.UtcNow;
-                serverLogRepo.SaveServerLog(log);
-                
-
-            }
+            WorldUpdateProcedures.UpdateWorld();
 
             return RedirectToAction("Play");
             // return View("UpdateWorld.cshtml","PvPAdmin", output);

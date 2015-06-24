@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using tfgame.dbModels.Models;
 using tfgame.Filters;
 using tfgame.Procedures;
+using tfgame.Procedures.BossProcedures;
 using tfgame.Statics;
 using tfgame.ViewModels;
 using WebMatrix.WebData;
@@ -67,13 +68,13 @@ namespace tfgame.Controllers
             }
 
             // assert that the player has room in their inventory
-            //if (ItemProcedures.PlayerIsCarryingTooMuch(me.Id, 0, ItemProcedures.GetPlayerBuffs(me))) {
+            //if (ItemProcedures.PlayerIsCarryingTooMuch(me.Id, 0, ItemProcedures.GetPlayerBuffsSQL(me))) {
             //    TempData["Error"] = "You are carrying too many items to purchase a new one.";
             //    TempData["SubError"] = "You need to free up a space in your inventory before purchasing something from Lindella.";
             //    return RedirectToAction("Play", "PvP");
             //}
 
-            ViewBag.NoRoom = ItemProcedures.PlayerIsCarryingTooMuch(me.Id, 0, ItemProcedures.GetPlayerBuffs(me));
+            ViewBag.NoRoom = ItemProcedures.PlayerIsCarryingTooMuch(me.Id, 0, ItemProcedures.GetPlayerBuffsSQL(me));
 
             ViewBag.DisableLinks = "true";
 
@@ -185,7 +186,7 @@ namespace tfgame.Controllers
             }
 
             // assert that the player has room in their inventory
-            if (ItemProcedures.PlayerIsCarryingTooMuch(me.Id, 0, ItemProcedures.GetPlayerBuffs(me)))
+            if (ItemProcedures.PlayerIsCarryingTooMuch(me.Id, 0, ItemProcedures.GetPlayerBuffsSQL(me)))
             {
                 TempData["Error"] = "You are carrying too many items to purchase a new one.";
                 TempData["SubError"] = "You need to free up a space in your inventory before purchasing something from Lindella.";
@@ -578,7 +579,7 @@ namespace tfgame.Controllers
             }
 
             ViewBag.Victim = victim;
-            ViewBag.Buffs = ItemProcedures.GetPlayerBuffs(victim);
+            ViewBag.Buffs = ItemProcedures.GetPlayerBuffsSQL(victim);
 
             if (victim.IsInDungeon() == true)
             {
@@ -677,7 +678,7 @@ namespace tfgame.Controllers
                 return RedirectToAction("MindControlList");
             }
 
-            BuffBox buffs = ItemProcedures.GetPlayerBuffs(victim);
+            BuffBox buffs = ItemProcedures.GetPlayerBuffsSQL(victim);
             string result = PlayerProcedures.DeMeditate(victim, me, buffs);
 
             MindControlProcedures.AddCommandUsedToMindControl(me, victim, MindControlStatics.MindControl__Meditate);
@@ -703,7 +704,7 @@ namespace tfgame.Controllers
                 return RedirectToAction("MindControlList");
             }
 
-            BuffBox victimBuffs = ItemProcedures.GetPlayerBuffs(victim);
+            BuffBox victimBuffs = ItemProcedures.GetPlayerBuffsSQL(victim);
             // assert that the victim has enough AP for the journey
             decimal apCost = MindControlProcedures.GetAPCostToMove(victimBuffs, victim.dbLocationName, to);
             if (victim.ActionPoints < apCost)
@@ -795,9 +796,9 @@ namespace tfgame.Controllers
             {
 
                 if (me.Gender == "male") {
-                    ViewBag.Speech = "Greetings, sir " + me.GetFullName() + "!  How may I assist you today?";
+                    ViewBag.Speech = "\"Greetings, sir " + me.GetFullName() + "!  How may I assist you today?\"";
                 } else if (me.Gender == "female") {
-                    ViewBag.Speech = "Greetings, madam " + me.GetFullName() + "!  How may I assist you today?";
+                    ViewBag.Speech = "\"Greetings, madam " + me.GetFullName() + "!  How may I assist you today?\"";
                 }
                 
             }
@@ -875,6 +876,182 @@ namespace tfgame.Controllers
             }
 
             return View();
+        }
+
+        [Authorize]
+        public ActionResult TalkWithJewdewfae()
+        {
+            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player fae = PlayerProcedures.GetPlayerFromMembership(-6);
+
+            // assert player is mobile
+            if (me.Mobility != "full")
+            {
+                TempData["Error"] = "You must be fully animate in order to talk with Jewdewfae.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            // assert player is in same location as jewdewfae
+            if (me.dbLocationName != fae.dbLocationName)
+            {
+                TempData["Error"] = "You must be in the same location as Jewfewfae in order to talk with her.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            JewdewfaeEncounter output = tfgame.Procedures.BossProcedures.BossProcedures_Fae.GetFairyChallengeInfoAtLocation(fae.dbLocationName);
+
+            output.IntroText = output.IntroText.Replace("[", "<").Replace("]", ">");
+            output.CorrectFormText = output.CorrectFormText.Replace("[", "<").Replace("]", ">");
+            output.FailureText = output.FailureText.Replace("[", "<").Replace("]", ">");
+
+            ViewBag.IsInWrongForm = false;
+
+            if (me.Form != output.RequiredForm)
+            {
+                ViewBag.IsInWrongForm = true;
+            }
+
+            if (me.ActionPoints < 5)
+            {
+                ViewBag.IsTired = true;
+            }
+
+            ViewBag.ShowSuccess = false;
+
+            ViewBag.HadRecentInteraction = false;
+            if (tfgame.Procedures.BossProcedures.BossProcedures_Fae.PlayerHasHadRecentInteraction(me, fae))
+            {
+                ViewBag.HadRecentInteraction = true;
+            }
+
+            return View(output);
+        }
+
+        [Authorize]
+        public ActionResult PlayWithJewdewfae()
+        {
+
+            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player fae = PlayerProcedures.GetPlayerFromMembership(-6);
+
+            // assert player is mobile
+            if (me.Mobility != "full")
+            {
+                TempData["Error"] = "You must be fully animate in order to talk with Jewdewfae.";
+                return RedirectToAction("Play","PvP");
+            }
+
+            // assert player is in same location as jewdewfae
+            if (me.dbLocationName != fae.dbLocationName)
+            {
+                TempData["Error"] = "You must be in the same location as Jewfewfae in order to talk with her.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            // assert player has enough AP
+            if (me.ActionPoints < 5)
+            {
+                TempData["Error"] = "You need 5 action points to play with Jewdewfae.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            // assert player has not already interacted this location
+            if (tfgame.Procedures.BossProcedures.BossProcedures_Fae.PlayerHasHadRecentInteraction(me, fae))
+            {
+                TempData["Error"] = "You have already interacted with Jewdewfae here.";
+                TempData["SubError"] = "Wait for her to move somewhere else.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            JewdewfaeEncounter output = tfgame.Procedures.BossProcedures.BossProcedures_Fae.GetFairyChallengeInfoAtLocation(fae.dbLocationName);
+
+            output.IntroText = output.IntroText.Replace("[", "<").Replace("]", ">");
+            output.CorrectFormText = output.CorrectFormText.Replace("[", "<").Replace("]", ">");
+            output.FailureText = output.FailureText.Replace("[", "<").Replace("]", ">");
+
+            if (me.Form == output.RequiredForm)
+            {
+                decimal xpGained = tfgame.Procedures.BossProcedures.BossProcedures_Fae.AddInteraction(me);
+                PlayerProcedures.GiveXP(me.Id, xpGained);
+                PlayerProcedures.ChangePlayerActionMana(5, 0, 0, me.Id);
+                ViewBag.XPGain = xpGained;
+                ViewBag.ShowSuccess = true;
+                ViewBag.HadRecentInteraction = false;
+
+                new Thread(() =>
+                     StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__JewdewfaeEncountersCompleted, 1)
+                 ).Start();
+
+                return View("TalkWithJewdewfae", output);
+            }
+            else
+            {
+                TempData["Error"] = "You are not in the correct form to play with Jewdewfae right now.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+        }
+
+        [Authorize]
+        public ActionResult TalkToCandice()
+        {
+            Player me = PlayerProcedures.GetPlayerFromMembership();
+            Player bimbo = PlayerProcedures.GetPlayerFromMembership(AIProcedures.MouseBimboMembershipId);
+
+            // assert player is mobile
+            if (me.Mobility != "full")
+            {
+                TempData["Error"] = "You must be animate in order to chat with " + BossProcedures_Sisters.BimboBossFirstName + ".";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            // assert player is in the same place as Candice
+            if (me.dbLocationName != bimbo.dbLocationName)
+            {
+                TempData["Error"] = "You must be in the same location as " + BossProcedures_Sisters.BimboBossFirstName + " in order to talk with her.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            // assert bimbo is still in base form
+            if (bimbo.Form != BossProcedures_Sisters.BimboBossForm)
+            {
+                TempData["Error"] = BossProcedures_Sisters.BimboBossFirstName + " seems to be too distracted with her recent change to want to talk to you.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            return View();
+
+        }
+
+        [Authorize]
+        public ActionResult TalkToAdrianna()
+        {
+            Player me = PlayerProcedures.GetPlayerFromMembership();
+            Player nerd = PlayerProcedures.GetPlayerFromMembership(AIProcedures.MouseNerdMembershipId);
+
+            // assert player is mobile
+            if (me.Mobility != "full")
+            {
+                TempData["Error"] = "You must be animate in order to chat with " + BossProcedures_Sisters.NerdBossFirstName + ".";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            // assert player is in the same place as Candice
+            if (me.dbLocationName != nerd.dbLocationName)
+            {
+                TempData["Error"] = "You must be in the same location as " + BossProcedures_Sisters.NerdBossFirstName + " in order to talk with her.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            // assert nerd is still in base form
+            if (nerd.Form != BossProcedures_Sisters.NerdBossForm)
+            {
+                TempData["Error"] = BossProcedures_Sisters.NerdBossFirstName + " seems to be too distracted with her recent change to want to talk to you.";
+                  return RedirectToAction("Play", "PvP");
+            }
+
+            return View();
+
         }
 	}
 }

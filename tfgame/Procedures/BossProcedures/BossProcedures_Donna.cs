@@ -55,7 +55,7 @@ namespace tfgame.Procedures.BossProcedures
 
                 playerRepo.SavePlayer(donna);
 
-                donna = PlayerProcedures.ReadjustMaxes(donna, ItemProcedures.GetPlayerBuffs(donna));
+                donna = PlayerProcedures.ReadjustMaxes(donna, ItemProcedures.GetPlayerBuffsSQL(donna));
 
                 playerRepo.SavePlayer(donna);
 
@@ -85,7 +85,7 @@ namespace tfgame.Procedures.BossProcedures
 
                 donna.Form = "form_Mythical_Sorceress_LexamTheGemFox";
 
-                BuffBox donnasBuffs = ItemProcedures.GetPlayerBuffs(donna);
+                BuffBox donnasBuffs = ItemProcedures.GetPlayerBuffsSQL(donna);
 
                 // have donna meditate and cleanse if needed
                 if (donna.Health < donna.MaxHealth / 6)
@@ -142,8 +142,9 @@ namespace tfgame.Procedures.BossProcedures
                             for (int i = 0; i < roll; i++)
                             {
                                 AttackProcedures.Attack(donna, target, ChooseSpell(PvPStatics.LastGameTurn));
-                               
+                                
                             }
+                            AIProcedures.DealBossDamage(donna, target, false, (int)roll);
                         }
                         else
                         {
@@ -190,7 +191,7 @@ namespace tfgame.Procedures.BossProcedures
                     IEnumerable<Item> weakest = itemRepo.Items.Where(i => i.OwnerId == donna.Id).OrderBy(i => i.Level);
                     Item weakestItem = weakest.First();
                     ItemProcedures.DropItem(weakestItem.Id, donna.dbLocationName);
-                    LocationLogProcedures.AddLocationLog(donna.dbLocationName, "Donna released one of her weaker pets, " + weakestItem.VictimName + ", here.");
+                    LocationLogProcedures.AddLocationLog(donna.dbLocationName, "Donna released one of her weaker pets, " + weakestItem.GetFullName() + ", here.");
                     Player luckyVictim = PlayerProcedures.GetPlayerWithExactName(weakestItem.VictimName);
                     PlayerLogProcedures.AddPlayerLog(luckyVictim.Id, "Donna has released you, allowing you to wander about or be tamed by a new owner.", true);
                 }
@@ -202,8 +203,7 @@ namespace tfgame.Procedures.BossProcedures
 
         public static void DonnaCounterattack(Player personAttacking, Player donna)
         {
-            PlayerProcedures.GiveXP(personAttacking.Id, 20);
-            PlayerLogProcedures.AddPlayerLog(personAttacking.Id, "You gain 20 extra XP from daring to fight Donna.", true);
+            AIProcedures.DealBossDamage(donna, personAttacking, true, 1);
 
             Random rand = new Random();
             double roll = rand.NextDouble() * 4;
@@ -213,6 +213,7 @@ namespace tfgame.Procedures.BossProcedures
                 AttackProcedures.Attack(donna, personAttacking, ChooseSpell(PvPStatics.LastGameTurn));
             }
 
+            AIProcedures.DealBossDamage(donna, personAttacking, false, (int)roll);
 
             // if Donna is weak enough start having her mega-attack anyone in the room
             if (donna.Health < donna.MaxHealth / 5)
@@ -224,6 +225,7 @@ namespace tfgame.Procedures.BossProcedures
                     if (p.MembershipId > 0 && p.Level > 3 && p.Mobility == "full" && !PlayerProcedures.PlayerIsOffline(p) && p.Id != personAttacking.Id)
                     {
                         AttackProcedures.Attack(donna, p, ChooseSpell(PvPStatics.LastGameTurn));
+                        AIProcedures.DealBossDamage(donna, p, false, 1);
                     }
                 }
 

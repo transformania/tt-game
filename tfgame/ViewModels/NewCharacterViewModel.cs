@@ -24,7 +24,10 @@ namespace tfgame.ViewModels
         [Required(ErrorMessage = "You must choose a character form.")]
         public string FormName { get; set; }
 
-        public bool StartInPVP { get; set; }
+        //public bool StartInPVP { get; set; }
+
+        public int StartGameMode { get; set; }
+
         public bool StartInRP { get; set; }
 
         public bool MigrateLetters { get; set; }

@@ -1,10 +1,12 @@
 ﻿@model tfgame.ViewModels.PublicBroadcastViewModel
 
-<h1>Change News date</h1>
+<div class="containerInner">
+    <h1>Change News date</h1>
 
-@using (Html.BeginForm("ChangeGameDateSend", "PvPAdmin", FormMethod.Post))
-{
-    @Html.TextAreaFor(m => m.Message)
-    <br />
-    <input type="submit" value="Send" />
-}
+    @using (Html.BeginForm("ChangeGameDateSend", "PvPAdmin", FormMethod.Post))
+    {
+        @Html.TextAreaFor(m => m.Message)
+        <br />
+        <input type="submit" class="btn btn-chat" value="Send" />
+    }
+</div>

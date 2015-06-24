@@ -198,7 +198,47 @@
     <p>
         View and update any blacklist entries you have set.  @Html.ActionLink("My Blacklist Entries", "MyBlacklistEntries", "Settings")
     </p>
+
+    <h2>Audio Notifications</h2>
+    <p id="toggleAudio"><a>Click here to toggle audio notifications.</a>  This will play a short sounds when a turn updates and when you are attacked or messaged.  (This does not work across all browers, particularly mobile OSes.)</p>
+
+    <h2>Chrome/Firefox push Notifications</h2>
+    <p id="togglePush"><a>Click here to toggle Chrome/Firefox push notifications.</a>  If you enable these, you will recieve HTML5 Notifications which will create small popups on your screen when you receieve a notice, even if the browsers is minimized.  You must also grant this site permission to send notifications; your browser should prompt you for permission the first time it tries to send one.</p>
+
 </div>
+
+<script>
+    $(document).ready(function () {
+
+        $("#toggleAudio").click(function () {
+            var toggle = localStorage.getItem("play_updateSoundEnabled");
+
+            if (toggle == undefined || toggle == "false") {
+                var toggle = localStorage.setItem("play_updateSoundEnabled", "true");
+                alert("Update audio notifications ENABLED.");
+            } else {
+                var toggle = localStorage.setItem("play_updateSoundEnabled", "false");
+                alert("Update audio notifications DISABLED.");
+            }
+
+        });
+
+
+        $("#togglePush").click(function () {
+            var toggle = localStorage.getItem("play_html5PushEnabled");
+
+            if (toggle == undefined || toggle == "false") {
+                var toggle = localStorage.setItem("play_html5PushEnabled", "true");
+                alert("HTML Notifications ENABLED.");
+            } else {
+                var toggle = localStorage.setItem("play_html5PushEnabled", "false");
+                alert("HTML Notifications DISABLED");
+            }
+
+        });
+
+    });
+</script>
 
 
 <style>

@@ -801,7 +801,7 @@ namespace tfgame.Controllers
             // assert only admins can view this
             if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
             {
-                return View("Play","PvP");
+                return View("Play", "PvP");
             }
 
             IEffectContributionRepository effectConRepo = new EFEffectContributionRepository();
@@ -917,7 +917,7 @@ namespace tfgame.Controllers
                     {
                         output += xmlpathLocation + "</br>";
                     }
-                   // SkillProcedures.DeleteOldXML(xmlpathLocation);
+                    // SkillProcedures.DeleteOldXML(xmlpathLocation);
 
                     //using (StreamWriter writer = new StreamWriter(xmlpathLocation, false))
                     //{
@@ -1026,7 +1026,7 @@ namespace tfgame.Controllers
                 repo.SavePvPWorldStat(stats);
                 PvPStatics.LastGameUpdate = stats.GameNewsDate;
 
-             //   TempData["Message"] = errors;
+                //   TempData["Message"] = errors;
 
                 return RedirectToAction("Index");
             }
@@ -1040,13 +1040,48 @@ namespace tfgame.Controllers
                 return View("Play", "PvP");
             }
 
-            BossProcedures_Fae.MoveToNewLocation();
-         
-            
-         //   NoticeProcedures.PushNotice(PlayerProcedures.GetPlayerFromMembership(), "test");
+    
+
+        
+            // BossProcedures_Sisters.RunSistersAction();
+           // BossProcedures_Sisters.EndEvent();
+            //   BossP
+
+
 
             return RedirectToAction("Index");
         }
+
+         
+
+        public ActionResult MigrateItemPortraits()
+        {
+            // assert only admins can view this
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            {
+                return View("Play", "PvP");
+            }
+
+            IDbStaticItemRepository itemRepo = new EFDbStaticItemRepository();
+            IDbStaticFormRepository formRepo = new EFDbStaticFormRepository();
+
+            List<DbStaticForm> forms = formRepo.DbStaticForms.Where(f => f.MobilityType == "inanimate" || f.MobilityType == "animal").ToList();
+            
+            foreach (DbStaticForm form in forms) {
+
+                DbStaticItem item = itemRepo.DbStaticItems.FirstOrDefault(i => i.dbName == form.BecomesItemDbName);
+
+                if (item != null)
+                {
+                    form.PortraitUrl = item.PortraitUrl;
+                    formRepo.SaveDbStaticForm(form);
+                }
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        
 
         public ActionResult SpawnNPCs()
         {
@@ -1145,7 +1180,7 @@ namespace tfgame.Controllers
 
         }
 
-        
+
 
         public ActionResult ApproveContribution(int id)
         {
@@ -1251,6 +1286,14 @@ namespace tfgame.Controllers
             ProofreadCopy.Form_TFMessage_100_Percent_3rd_F = OldCopy.Form_TFMessage_100_Percent_3rd_F;
             ProofreadCopy.Form_TFMessage_Completed_3rd_F = OldCopy.Form_TFMessage_Completed_3rd_F;
 
+            ProofreadCopy.CursedTF_FormdbName = OldCopy.CursedTF_FormdbName;
+            ProofreadCopy.CursedTF_Fail = OldCopy.CursedTF_Fail;
+            ProofreadCopy.CursedTF_Fail_M = OldCopy.CursedTF_Fail_M;
+            ProofreadCopy.CursedTF_Fail_F = OldCopy.CursedTF_Fail_F;
+            ProofreadCopy.CursedTF_Succeed = OldCopy.CursedTF_Succeed;
+            ProofreadCopy.CursedTF_Succeed_M = OldCopy.CursedTF_Succeed_M;
+            ProofreadCopy.CursedTF_Succeed_F = OldCopy.CursedTF_Succeed_F;
+
             ProofreadCopy.Item_FriendlyName = OldCopy.Item_FriendlyName;
             ProofreadCopy.Item_Description = OldCopy.Item_Description;
             ProofreadCopy.Item_ItemType = OldCopy.Item_ItemType;
@@ -1297,7 +1340,7 @@ namespace tfgame.Controllers
             OldCopy.AdminApproved = true;
             OldCopy.ProofreadingCopy = false;
 
-            
+
 
             contributionRepo.SaveContribution(ProofreadCopy);
             contributionRepo.SaveContribution(OldCopy);
@@ -1405,7 +1448,7 @@ namespace tfgame.Controllers
             return RedirectToAction("Index");
         }
 
-     
+
 
         public ActionResult RenameForm(string oldFormName, string newFormName, bool practice)
         {
@@ -1463,9 +1506,24 @@ namespace tfgame.Controllers
             output += "Set <b>" + players.Count() + "</b> players to new form <b>" + newFormName + "</b>.</br>";
             #endregion
 
-            #region static skills exclusive to form
+            #region static skills that turn target into this form
             IDbStaticSkillRepository sskillRepo = new EFDbStaticSkillRepository();
-            List<DbStaticSkill> skills = sskillRepo.DbStaticSkills.Where(s => s.ExclusiveToForm == oldFormName).ToList();
+            List<DbStaticSkill> skills = sskillRepo.DbStaticSkills.Where(s => s.FormdbName == oldFormName).ToList();
+            foreach (DbStaticSkill ss in skills)
+            {
+                ss.FormdbName = newFormName;
+
+                if (practice == false)
+                {
+                    sskillRepo.SaveDbStaticSkill(ss);
+                }
+            }
+            output += "Set <b>" + skills.Count() + "</b> static skills to that turn victim into form <b>" + newFormName + "</b>.</br>";
+            #endregion
+
+            #region static skills exclusive to form
+            //IDbStaticSkillRepository sskillRepo = new EFDbStaticSkillRepository();
+            skills = sskillRepo.DbStaticSkills.Where(s => s.ExclusiveToForm == oldFormName).ToList();
             foreach (DbStaticSkill ss in skills)
             {
                 ss.ExclusiveToForm = newFormName;
@@ -1524,6 +1582,8 @@ namespace tfgame.Controllers
             }
             output += "Set <b>" + messages.Count() + "</b> TF messages to use form <b>" + newFormName + "</b>.</br>";
             #endregion
+
+            // TODO:  rename the field in Contributions and DbStaticItems for CurseTFFormDbName 
 
             output += "</br> DON'T FORGET TO UPDATE ANY PLAYERS HARDCODED INTO THE PROJECT, INCLUDING JEWDEWFAE.</br>";
 
@@ -1887,7 +1947,7 @@ namespace tfgame.Controllers
             //    repo.SaveDbStaticForm(s);
             //}
 
-            
+
 
             //    public string dbName { get; set; }
             //public string FriendlyName { get; set; }
@@ -1937,121 +1997,121 @@ namespace tfgame.Controllers
 
             //    repo.SaveDbStaticForm(sf);
 
-                // load the TF Messages from the appropriate XML file if need be
-                //if (f.TFMessage_20_Percent_1st == null && f.TFMessage_20_Percent_1st_M == null && f.TFMessage_20_Percent_1st_F == null)
-                //{
-                //    Form copy = f;
+            // load the TF Messages from the appropriate XML file if need be
+            //if (f.TFMessage_20_Percent_1st == null && f.TFMessage_20_Percent_1st_M == null && f.TFMessage_20_Percent_1st_F == null)
+            //{
+            //    Form copy = f;
 
-                //    try
-                //    {
-                     //   copy = TFEnergyProcedures.LoadTFMessagesFromXML(f);
+            //    try
+            //    {
+            //   copy = TFEnergyProcedures.LoadTFMessagesFromXML(f);
 
-                //        TFMessage tfm = new TFMessage
-                //        {
-                //            FormDbName = copy.dbName,
-                //            TFMessage_20_Percent_1st = copy.TFMessage_20_Percent_1st,
-                //            TFMessage_40_Percent_1st = copy.TFMessage_40_Percent_1st,
-                //            TFMessage_60_Percent_1st = copy.TFMessage_60_Percent_1st,
-                //            TFMessage_80_Percent_1st = copy.TFMessage_80_Percent_1st,
-                //            TFMessage_100_Percent_1st = copy.TFMessage_100_Percent_1st,
-                //            TFMessage_Completed_1st = copy.TFMessage_Completed_1st,
+            //        TFMessage tfm = new TFMessage
+            //        {
+            //            FormDbName = copy.dbName,
+            //            TFMessage_20_Percent_1st = copy.TFMessage_20_Percent_1st,
+            //            TFMessage_40_Percent_1st = copy.TFMessage_40_Percent_1st,
+            //            TFMessage_60_Percent_1st = copy.TFMessage_60_Percent_1st,
+            //            TFMessage_80_Percent_1st = copy.TFMessage_80_Percent_1st,
+            //            TFMessage_100_Percent_1st = copy.TFMessage_100_Percent_1st,
+            //            TFMessage_Completed_1st = copy.TFMessage_Completed_1st,
 
-                //            TFMessage_20_Percent_1st_M = copy.TFMessage_20_Percent_1st_M,
-                //            TFMessage_40_Percent_1st_M = copy.TFMessage_40_Percent_1st_M,
-                //            TFMessage_60_Percent_1st_M = copy.TFMessage_60_Percent_1st_M,
-                //            TFMessage_80_Percent_1st_M = copy.TFMessage_80_Percent_1st_M,
-                //            TFMessage_100_Percent_1st_M = copy.TFMessage_100_Percent_1st_M,
-                //            TFMessage_Completed_1st_M = copy.TFMessage_Completed_1st_M,
+            //            TFMessage_20_Percent_1st_M = copy.TFMessage_20_Percent_1st_M,
+            //            TFMessage_40_Percent_1st_M = copy.TFMessage_40_Percent_1st_M,
+            //            TFMessage_60_Percent_1st_M = copy.TFMessage_60_Percent_1st_M,
+            //            TFMessage_80_Percent_1st_M = copy.TFMessage_80_Percent_1st_M,
+            //            TFMessage_100_Percent_1st_M = copy.TFMessage_100_Percent_1st_M,
+            //            TFMessage_Completed_1st_M = copy.TFMessage_Completed_1st_M,
 
-                //            TFMessage_20_Percent_1st_F = copy.TFMessage_20_Percent_1st_F,
-                //            TFMessage_40_Percent_1st_F = copy.TFMessage_40_Percent_1st_F,
-                //            TFMessage_60_Percent_1st_F = copy.TFMessage_60_Percent_1st_F,
-                //            TFMessage_80_Percent_1st_F = copy.TFMessage_80_Percent_1st_F,
-                //            TFMessage_100_Percent_1st_F = copy.TFMessage_100_Percent_1st_F,
-                //            TFMessage_Completed_1st_F = copy.TFMessage_Completed_1st_F,
+            //            TFMessage_20_Percent_1st_F = copy.TFMessage_20_Percent_1st_F,
+            //            TFMessage_40_Percent_1st_F = copy.TFMessage_40_Percent_1st_F,
+            //            TFMessage_60_Percent_1st_F = copy.TFMessage_60_Percent_1st_F,
+            //            TFMessage_80_Percent_1st_F = copy.TFMessage_80_Percent_1st_F,
+            //            TFMessage_100_Percent_1st_F = copy.TFMessage_100_Percent_1st_F,
+            //            TFMessage_Completed_1st_F = copy.TFMessage_Completed_1st_F,
 
-                //            TFMessage_20_Percent_3rd = copy.TFMessage_20_Percent_3rd,
-                //            TFMessage_40_Percent_3rd = copy.TFMessage_40_Percent_3rd,
-                //            TFMessage_60_Percent_3rd = copy.TFMessage_60_Percent_3rd,
-                //            TFMessage_80_Percent_3rd = copy.TFMessage_80_Percent_3rd,
-                //            TFMessage_100_Percent_3rd = copy.TFMessage_100_Percent_3rd,
-                //            TFMessage_Completed_3rd = copy.TFMessage_Completed_3rd,
+            //            TFMessage_20_Percent_3rd = copy.TFMessage_20_Percent_3rd,
+            //            TFMessage_40_Percent_3rd = copy.TFMessage_40_Percent_3rd,
+            //            TFMessage_60_Percent_3rd = copy.TFMessage_60_Percent_3rd,
+            //            TFMessage_80_Percent_3rd = copy.TFMessage_80_Percent_3rd,
+            //            TFMessage_100_Percent_3rd = copy.TFMessage_100_Percent_3rd,
+            //            TFMessage_Completed_3rd = copy.TFMessage_Completed_3rd,
 
-                //            TFMessage_20_Percent_3rd_M = copy.TFMessage_20_Percent_3rd_M,
-                //            TFMessage_40_Percent_3rd_M = copy.TFMessage_40_Percent_3rd_M,
-                //            TFMessage_60_Percent_3rd_M = copy.TFMessage_60_Percent_3rd_M,
-                //            TFMessage_80_Percent_3rd_M = copy.TFMessage_80_Percent_3rd_M,
-                //            TFMessage_100_Percent_3rd_M = copy.TFMessage_100_Percent_3rd_M,
-                //            TFMessage_Completed_3rd_M = copy.TFMessage_Completed_3rd_M,
+            //            TFMessage_20_Percent_3rd_M = copy.TFMessage_20_Percent_3rd_M,
+            //            TFMessage_40_Percent_3rd_M = copy.TFMessage_40_Percent_3rd_M,
+            //            TFMessage_60_Percent_3rd_M = copy.TFMessage_60_Percent_3rd_M,
+            //            TFMessage_80_Percent_3rd_M = copy.TFMessage_80_Percent_3rd_M,
+            //            TFMessage_100_Percent_3rd_M = copy.TFMessage_100_Percent_3rd_M,
+            //            TFMessage_Completed_3rd_M = copy.TFMessage_Completed_3rd_M,
 
-                //            TFMessage_20_Percent_3rd_F = copy.TFMessage_20_Percent_3rd_F,
-                //            TFMessage_40_Percent_3rd_F = copy.TFMessage_40_Percent_3rd_F,
-                //            TFMessage_60_Percent_3rd_F = copy.TFMessage_60_Percent_3rd_F,
-                //            TFMessage_80_Percent_3rd_F = copy.TFMessage_80_Percent_3rd_F,
-                //            TFMessage_100_Percent_3rd_F = copy.TFMessage_100_Percent_3rd_F,
-                //            TFMessage_Completed_3rd_F = copy.TFMessage_Completed_3rd_F,
+            //            TFMessage_20_Percent_3rd_F = copy.TFMessage_20_Percent_3rd_F,
+            //            TFMessage_40_Percent_3rd_F = copy.TFMessage_40_Percent_3rd_F,
+            //            TFMessage_60_Percent_3rd_F = copy.TFMessage_60_Percent_3rd_F,
+            //            TFMessage_80_Percent_3rd_F = copy.TFMessage_80_Percent_3rd_F,
+            //            TFMessage_100_Percent_3rd_F = copy.TFMessage_100_Percent_3rd_F,
+            //            TFMessage_Completed_3rd_F = copy.TFMessage_Completed_3rd_F,
 
-                //        };
-                //        tfrepo.SaveTFMessage(tfm);
+            //        };
+            //        tfrepo.SaveTFMessage(tfm);
 
-                //    }
-                //    catch
-                //    {
+            //    }
+            //    catch
+            //    {
 
-                //    }
+            //    }
 
-                //}
-                //else
-                //{
-                //    TFMessage tfm = new TFMessage
-                //    {
-                //        FormDbName = f.dbName,
-                //        TFMessage_20_Percent_1st = f.TFMessage_20_Percent_1st,
-                //        TFMessage_40_Percent_1st = f.TFMessage_40_Percent_1st,
-                //        TFMessage_60_Percent_1st = f.TFMessage_60_Percent_1st,
-                //        TFMessage_80_Percent_1st = f.TFMessage_80_Percent_1st,
-                //        TFMessage_100_Percent_1st = f.TFMessage_100_Percent_1st,
-                //        TFMessage_Completed_1st = f.TFMessage_Completed_1st,
+            //}
+            //else
+            //{
+            //    TFMessage tfm = new TFMessage
+            //    {
+            //        FormDbName = f.dbName,
+            //        TFMessage_20_Percent_1st = f.TFMessage_20_Percent_1st,
+            //        TFMessage_40_Percent_1st = f.TFMessage_40_Percent_1st,
+            //        TFMessage_60_Percent_1st = f.TFMessage_60_Percent_1st,
+            //        TFMessage_80_Percent_1st = f.TFMessage_80_Percent_1st,
+            //        TFMessage_100_Percent_1st = f.TFMessage_100_Percent_1st,
+            //        TFMessage_Completed_1st = f.TFMessage_Completed_1st,
 
-                //        TFMessage_20_Percent_1st_M = f.TFMessage_20_Percent_1st_M,
-                //        TFMessage_40_Percent_1st_M = f.TFMessage_40_Percent_1st_M,
-                //        TFMessage_60_Percent_1st_M = f.TFMessage_60_Percent_1st_M,
-                //        TFMessage_80_Percent_1st_M = f.TFMessage_80_Percent_1st_M,
-                //        TFMessage_100_Percent_1st_M = f.TFMessage_100_Percent_1st_M,
-                //        TFMessage_Completed_1st_M = f.TFMessage_Completed_1st_M,
+            //        TFMessage_20_Percent_1st_M = f.TFMessage_20_Percent_1st_M,
+            //        TFMessage_40_Percent_1st_M = f.TFMessage_40_Percent_1st_M,
+            //        TFMessage_60_Percent_1st_M = f.TFMessage_60_Percent_1st_M,
+            //        TFMessage_80_Percent_1st_M = f.TFMessage_80_Percent_1st_M,
+            //        TFMessage_100_Percent_1st_M = f.TFMessage_100_Percent_1st_M,
+            //        TFMessage_Completed_1st_M = f.TFMessage_Completed_1st_M,
 
-                //        TFMessage_20_Percent_1st_F = f.TFMessage_20_Percent_1st_F,
-                //        TFMessage_40_Percent_1st_F = f.TFMessage_40_Percent_1st_F,
-                //        TFMessage_60_Percent_1st_F = f.TFMessage_60_Percent_1st_F,
-                //        TFMessage_80_Percent_1st_F = f.TFMessage_80_Percent_1st_F,
-                //        TFMessage_100_Percent_1st_F = f.TFMessage_100_Percent_1st_F,
-                //        TFMessage_Completed_1st_F = f.TFMessage_Completed_1st_F,
+            //        TFMessage_20_Percent_1st_F = f.TFMessage_20_Percent_1st_F,
+            //        TFMessage_40_Percent_1st_F = f.TFMessage_40_Percent_1st_F,
+            //        TFMessage_60_Percent_1st_F = f.TFMessage_60_Percent_1st_F,
+            //        TFMessage_80_Percent_1st_F = f.TFMessage_80_Percent_1st_F,
+            //        TFMessage_100_Percent_1st_F = f.TFMessage_100_Percent_1st_F,
+            //        TFMessage_Completed_1st_F = f.TFMessage_Completed_1st_F,
 
-                //        TFMessage_20_Percent_3rd = f.TFMessage_20_Percent_3rd,
-                //        TFMessage_40_Percent_3rd = f.TFMessage_40_Percent_3rd,
-                //        TFMessage_60_Percent_3rd = f.TFMessage_60_Percent_3rd,
-                //        TFMessage_80_Percent_3rd = f.TFMessage_80_Percent_3rd,
-                //        TFMessage_100_Percent_3rd = f.TFMessage_100_Percent_3rd,
-                //        TFMessage_Completed_3rd = f.TFMessage_Completed_3rd,
+            //        TFMessage_20_Percent_3rd = f.TFMessage_20_Percent_3rd,
+            //        TFMessage_40_Percent_3rd = f.TFMessage_40_Percent_3rd,
+            //        TFMessage_60_Percent_3rd = f.TFMessage_60_Percent_3rd,
+            //        TFMessage_80_Percent_3rd = f.TFMessage_80_Percent_3rd,
+            //        TFMessage_100_Percent_3rd = f.TFMessage_100_Percent_3rd,
+            //        TFMessage_Completed_3rd = f.TFMessage_Completed_3rd,
 
-                //        TFMessage_20_Percent_3rd_M = f.TFMessage_20_Percent_3rd_M,
-                //        TFMessage_40_Percent_3rd_M = f.TFMessage_40_Percent_3rd_M,
-                //        TFMessage_60_Percent_3rd_M = f.TFMessage_60_Percent_3rd_M,
-                //        TFMessage_80_Percent_3rd_M = f.TFMessage_80_Percent_3rd_M,
-                //        TFMessage_100_Percent_3rd_M = f.TFMessage_100_Percent_3rd_M,
-                //        TFMessage_Completed_3rd_M = f.TFMessage_Completed_3rd_M,
+            //        TFMessage_20_Percent_3rd_M = f.TFMessage_20_Percent_3rd_M,
+            //        TFMessage_40_Percent_3rd_M = f.TFMessage_40_Percent_3rd_M,
+            //        TFMessage_60_Percent_3rd_M = f.TFMessage_60_Percent_3rd_M,
+            //        TFMessage_80_Percent_3rd_M = f.TFMessage_80_Percent_3rd_M,
+            //        TFMessage_100_Percent_3rd_M = f.TFMessage_100_Percent_3rd_M,
+            //        TFMessage_Completed_3rd_M = f.TFMessage_Completed_3rd_M,
 
-                //        TFMessage_20_Percent_3rd_F = f.TFMessage_20_Percent_3rd_F,
-                //        TFMessage_40_Percent_3rd_F = f.TFMessage_40_Percent_3rd_F,
-                //        TFMessage_60_Percent_3rd_F = f.TFMessage_60_Percent_3rd_F,
-                //        TFMessage_80_Percent_3rd_F = f.TFMessage_80_Percent_3rd_F,
-                //        TFMessage_100_Percent_3rd_F = f.TFMessage_100_Percent_3rd_F,
-                //        TFMessage_Completed_3rd_F = f.TFMessage_Completed_3rd_F,
+            //        TFMessage_20_Percent_3rd_F = f.TFMessage_20_Percent_3rd_F,
+            //        TFMessage_40_Percent_3rd_F = f.TFMessage_40_Percent_3rd_F,
+            //        TFMessage_60_Percent_3rd_F = f.TFMessage_60_Percent_3rd_F,
+            //        TFMessage_80_Percent_3rd_F = f.TFMessage_80_Percent_3rd_F,
+            //        TFMessage_100_Percent_3rd_F = f.TFMessage_100_Percent_3rd_F,
+            //        TFMessage_Completed_3rd_F = f.TFMessage_Completed_3rd_F,
 
-                //    };
+            //    };
 
-                //    tfrepo.SaveTFMessage(tfm);
-                //}
+            //    tfrepo.SaveTFMessage(tfm);
+            //}
 
 
 
@@ -2236,7 +2296,9 @@ namespace tfgame.Controllers
             if (loc == null)
             {
                 ViewBag.LocationExists = "<span class='bad'>LOCATION " + encounter.dbLocationName + " DOES NOT EXIST.</span>";
-            } else {
+            }
+            else
+            {
                 ViewBag.LocationExists = "<span class='good'>LOCATION " + encounter.dbLocationName + " EXISTs.</span>";
             }
 
@@ -2274,7 +2336,7 @@ namespace tfgame.Controllers
                 encounter = new JewdewfaeEncounter();
             }
 
-          //  encounter.Id = input.Id;
+            //  encounter.Id = input.Id;
             encounter.dbLocationName = input.dbLocationName;
             encounter.RequiredForm = input.RequiredForm;
             encounter.IsLive = input.IsLive;
@@ -2284,7 +2346,7 @@ namespace tfgame.Controllers
 
             repo.SaveJewdewfaeEncounter(encounter);
 
-            return RedirectToAction("FaeList","PvPAdmin");
+            return RedirectToAction("FaeList", "PvPAdmin");
 
 
         }
@@ -2333,7 +2395,7 @@ namespace tfgame.Controllers
             return View("WriteFaeEncounter", output);
         }
 
-        [ValidateInput(false)] 
+        [ValidateInput(false)]
         public ActionResult WriteFaeEncounterSend(FairyChallengeBag input)
         {
 
@@ -2345,7 +2407,7 @@ namespace tfgame.Controllers
 
             string path = Server.MapPath("~/XMLs/FairyChallengeText/");
 
-           // input.title = "Serialization Overview";
+            // input.title = "Serialization Overview";
             System.Xml.Serialization.XmlSerializer writer =
                 new System.Xml.Serialization.XmlSerializer(typeof(FairyChallengeBag));
 
@@ -2360,7 +2422,7 @@ namespace tfgame.Controllers
             ViewBag.FailureText = input.FailureText.Replace("[", "<").Replace("]", ">");
             ViewBag.CorrectFormText = input.CorrectFormText.Replace("[", "<").Replace("]", ">");
 
-       
+
 
             return View("WriteFaeEncounter", input);
         }
@@ -2377,17 +2439,18 @@ namespace tfgame.Controllers
                 return View("~/Views/PvP/PvPAdmin.cshtml");
             }
 
-           
+
             IPlayerRepository playerRepo = new EFPlayerRepository();
             List<Player> players = playerRepo.Players.Where(p => p.IpAddress == address).ToList();
             foreach (Player p in players)
             {
                 p.IpAddress = "reset";
                 playerRepo.SavePlayer(p);
-           }
+                PlayerLogProcedures.AddPlayerLog(p.Id, "<b class='good'>Server notice:  Your IP address has been reset.</b>", true);
+            }
 
             return View("Play");
-        
+
         }
 
         [Authorize]
@@ -2408,7 +2471,7 @@ namespace tfgame.Controllers
 
             if (bannedPlayer.IsBannedFromGlobalChat == true)
             {
-                
+
                 bannedPlayer.IsBannedFromGlobalChat = false;
                 TempData["Result"] = "Ban has been LIFTED.";
             }
@@ -2432,7 +2495,7 @@ namespace tfgame.Controllers
         {
 
             // assert only admin can view this
-            bool iAmAdmin= User.IsInRole(PvPStatics.Permissions_Admin);
+            bool iAmAdmin = User.IsInRole(PvPStatics.Permissions_Admin);
             if (iAmAdmin == false)
             {
                 return View("~/Views/PvP/PvPAdmin.cshtml");
@@ -2469,7 +2532,7 @@ namespace tfgame.Controllers
 
                 }
 
-               
+
 
             }
 
@@ -2558,6 +2621,240 @@ namespace tfgame.Controllers
                 return View("~/Views/PvP/PvPAdmin.cshtml");
             }
         }
+
+        [Authorize]
+        public ActionResult RenamePlayer()
+        {
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == true)
+            {
+                PlayerNameViewModel output = new PlayerNameViewModel();
+                return View();
+            }
+            else
+            {
+                return View("Play", "PvP");
+            }
+        }
+
+        [Authorize]
+        public ActionResult RenamePlayerSend(PlayerNameViewModel input)
+        {
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == true)
+            {
+
+                if (PvPStatics.ChaosMode == false)
+                {
+                    return RedirectToAction("Play", "PvP");
+                }
+
+                IPlayerRepository playerRepo = new EFPlayerRepository();
+                Player player = playerRepo.Players.FirstOrDefault(p => p.Id == input.Id);
+
+                string origFirstName = player.FirstName;
+                string origLastName = player.LastName;
+
+                if (input.NewFirstName != null && input.NewFirstName.Length > 0)
+                {
+                    player.FirstName = input.NewFirstName;
+                }
+
+                if (input.NewLastName != null && input.NewLastName.Length > 0)
+                {
+                    player.LastName = input.NewLastName;
+                }
+
+                if (input.NewForm != null && input.NewForm.Length > 0)
+                {
+                    IDbStaticFormRepository staticFormRepo = new EFDbStaticFormRepository();
+                    DbStaticForm form = staticFormRepo.DbStaticForms.FirstOrDefault(f => f.dbName == input.NewForm);
+
+                    if (form != null && form.MobilityType == "full")
+                    {
+                        player.Form = form.dbName;
+                        player.Health = 99999;
+                    }
+
+                    if (form.MobilityType == "full" && player.Mobility != "full")
+                    {
+                        IItemRepository itemRepo = new EFItemRepository();
+                        Item item = itemRepo.Items.FirstOrDefault(i => i.VictimName == origFirstName + " " + origLastName);
+                        player.Mobility = "full";
+                        itemRepo.DeleteItem(item.Id);
+                    }
+
+                }
+
+                playerRepo.SavePlayer(player);
+
+                if (player.Mobility != "full")
+                {
+                    IItemRepository itemRepo = new EFItemRepository();
+                    Item item = itemRepo.Items.FirstOrDefault(i => i.VictimName == origFirstName + " " + origLastName);
+                    item.VictimName = input.NewFirstName + " " + input.NewLastName;
+                    itemRepo.SaveItem(item);
+
+
+                }
+
+
+
+            }
+            else
+            {
+                return RedirectToAction("Play", "PvP");
+            }
+
+            TempData["Result"] = "Yay!";
+            return RedirectToAction("Play", "PvP");
+        }
+
+        [Authorize]
+        public ActionResult ModDeleteClassified(int id)
+        {
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false && User.IsInRole(PvPStatics.Permissions_Moderator) == false)
+            {
+                return View("Play", "PvP");
+            }
+
+            RPClassifiedAdsProcedures.DeleteAd(id);
+
+            TempData["Result"] = "Delete successful.";
+            return RedirectToAction("RecentRPClassifieds", "Info");
+        }
+
+        [Authorize]
+        public ActionResult FastInanimateMe()
+        {
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            {
+                return RedirectToAction("Play", "PvP");
+            }
+
+            PvPWorldStat stats = PvPWorldStatProcedures.GetWorldStats();
+            if (stats.TestServer == false && PvPStatics.ChaosMode == false)
+            {
+                TempData["Error"] = "Cant' do this in live non-chaos server.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            IItemRepository itemRepo = new EFItemRepository();
+
+            Player me = playerRepo.Players.FirstOrDefault(p => p.MembershipId == WebSecurity.CurrentUserId);
+            me.Mobility = "inanimate";
+            me.Form = "form_Flirty_Three-Tiered_Skirt_Martiandawn";
+            playerRepo.SavePlayer(me);
+
+            // delete old item you are if you are one
+            Item possibleMeItem = itemRepo.Items.FirstOrDefault(i => i.VictimName == me.FirstName + " " + me.LastName);
+            if (possibleMeItem != null) { 
+                itemRepo.DeleteItem(possibleMeItem.Id);
+            }
+
+            Item newMeItem = new Item{
+                dbLocationName = me.dbLocationName,
+                dbName = "item_Flirty_Three-Tiered_Skirt_Martiandawn",
+                VictimName = me.FirstName + " " + me.LastName,
+                Nickname = me.Nickname,
+                TimeDropped = DateTime.UtcNow,
+                OwnerId = -1,
+                IsEquipped = false,
+                Level = me.Level,
+            };
+
+            itemRepo.SaveItem(newMeItem);
+
+            TempData["Result"] = "You are inanimate.";
+            return RedirectToAction("Play", "PvP");
+
+        }
+
+        [Authorize]
+        public ActionResult FastPetMe()
+        {
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            {
+                return RedirectToAction("Play", "PvP");
+            }
+
+            PvPWorldStat stats = PvPWorldStatProcedures.GetWorldStats();
+            if (stats.TestServer == false && PvPStatics.ChaosMode == false)
+            {
+                TempData["Error"] = "Cant' do this in live non-chaos server.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            IItemRepository itemRepo = new EFItemRepository();
+
+            Player me = playerRepo.Players.FirstOrDefault(p => p.MembershipId == WebSecurity.CurrentUserId);
+            me.Mobility = "animal";
+            me.Form = "form_Cuddly_Pocket_Goo_Girl_GooGirl";
+            playerRepo.SavePlayer(me);
+
+            // delete old item you are if you are one
+            Item possibleMeItem = itemRepo.Items.FirstOrDefault(i => i.VictimName == me.FirstName + " " + me.LastName);
+            if (possibleMeItem != null)
+            {
+                itemRepo.DeleteItem(possibleMeItem.Id);
+            }
+
+            Item newMeItem = new Item
+            {
+                dbLocationName = me.dbLocationName,
+                dbName = "animal_Cuddly_Pocket_Goo_Girl_GooGirl",
+                VictimName = me.FirstName + " " + me.LastName,
+                Nickname = me.Nickname,
+                TimeDropped = DateTime.UtcNow,
+                OwnerId = -1,
+                IsEquipped = false,
+                Level = me.Level,
+            };
+
+            itemRepo.SaveItem(newMeItem);
+
+            TempData["Result"] = "You are now a pet.";
+            return RedirectToAction("Play", "PvP");
+
+        }
+
+        [Authorize]
+        public ActionResult FastAnimateMe()
+        {
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            {
+                return RedirectToAction("Play", "PvP");
+            }
+
+            PvPWorldStat stats = PvPWorldStatProcedures.GetWorldStats();
+            if (stats.TestServer == false && PvPStatics.ChaosMode == false)
+            {
+                TempData["Error"] = "Cant' do this in live non-chaos server.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            IItemRepository itemRepo = new EFItemRepository();
+
+            Player me = playerRepo.Players.FirstOrDefault(p => p.MembershipId == WebSecurity.CurrentUserId);
+            me.Mobility = "full";
+            me.Form = me.OriginalForm;
+            playerRepo.SavePlayer(me);
+
+            // delete old item you are if you are one
+            Item possibleMeItem = itemRepo.Items.FirstOrDefault(i => i.VictimName == me.FirstName + " " + me.LastName);
+            if (possibleMeItem != null)
+            {
+                itemRepo.DeleteItem(possibleMeItem.Id);
+            }
+
+
+            TempData["Result"] = "You are now fully animate.";
+            return RedirectToAction("Play", "PvP");
+
+        }
+
+
 
     }
 

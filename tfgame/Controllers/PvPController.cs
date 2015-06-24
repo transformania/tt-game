@@ -485,13 +485,13 @@ namespace tfgame.Controllers
 
                 IEnumerable<MindControl> myExistingMCs = MindControlProcedures.GetAllMindControlsWithPlayer(me);
 
-                if (MindControlProcedures.PlayerIsMindControlledWithType(me, myExistingMCs, MindControlStatics.MindControl__Movement) == true)
+                if (MindControlProcedures.PlayerIsicon icon-mcWithType(me, myExistingMCs, MindControlStatics.MindControl__Movement) == true)
                 {
                     TempData["Error"] = "You try to move but discover you cannot!";
                     TempData["SubError"] = "Some other mage has partial control of your mind, disabling your ability to move on your own!";
                     return RedirectToAction("Play");
                 }
-                else if (MindControlProcedures.PlayerIsMindControlledWithSomeType(me, myExistingMCs) == false)
+                else if (MindControlProcedures.PlayerIsicon icon-mcWithSomeType(me, myExistingMCs) == false)
                 {
                     // turn off mind control is the player has no more MC effects on them
                     bool isNowFree = MindControlProcedures.ClearPlayerMindControlFlagIfOn(me);
@@ -944,7 +944,7 @@ namespace tfgame.Controllers
             DbStaticForm futureForm = FormStatics.GetForm(skill.FormdbName);
 
             // if the spell is a form of mind control, check that the target is not already afflicated with it
-            if (me.MindControlIsActive == true && MindControlProcedures.PlayerIsMindControlledWithType(targeted, futureForm.dbName) == true)
+            if (me.MindControlIsActive == true && MindControlProcedures.PlayerIsicon icon-mcWithType(targeted, futureForm.dbName) == true)
             {
                 TempData["Error"] = "This player is already under the influence of this type of mind control.";
                 TempData["SubError"] = "You must wait for their current mind control of this kind to expire before attempting to seize control yourself.";
@@ -1276,13 +1276,13 @@ namespace tfgame.Controllers
 
                 IEnumerable<MindControl> myExistingMCs = MindControlProcedures.GetAllMindControlsWithPlayer(me);
 
-                if (MindControlProcedures.PlayerIsMindControlledWithType(me, myExistingMCs, MindControlStatics.MindControl__Meditate) == true)
+                if (MindControlProcedures.PlayerIsicon icon-mcWithType(me, myExistingMCs, MindControlStatics.MindControl__Meditate) == true)
                 {
                     TempData["Error"] = "You try to meditate but find you cannot!";
                     TempData["SubError"] = "The moment you try and focus, your head swims with nonsensical thoughts implanted by someone partially mind controlling you!";
                     return RedirectToAction("Play");
                 }
-                else if (MindControlProcedures.PlayerIsMindControlledWithSomeType(me, myExistingMCs) == false)
+                else if (MindControlProcedures.PlayerIsicon icon-mcWithSomeType(me, myExistingMCs) == false)
                 {
                     // turn off mind control is the player has no more MC effects on them
                     bool isNowFree = MindControlProcedures.ClearPlayerMindControlFlagIfOn(me);
@@ -1547,13 +1547,13 @@ namespace tfgame.Controllers
 
                 IEnumerable<MindControl> myExistingMCs = MindControlProcedures.GetAllMindControlsWithPlayer(me);
 
-                if (MindControlProcedures.PlayerIsMindControlledWithType(me, myExistingMCs, MindControlStatics.MindControl__Strip) == true)
+                if (MindControlProcedures.PlayerIsicon icon-mcWithType(me, myExistingMCs, MindControlStatics.MindControl__Strip) == true)
                 {
                     TempData["Error"] = "You try to take it but find you cannot!";
                     TempData["SubError"] = "Some other mage has partial control of your mind, disabling your ability to pick anything up off the ground or tame any pets!";
                     return RedirectToAction("Play");
                 }
-                else if (MindControlProcedures.PlayerIsMindControlledWithSomeType(me, myExistingMCs) == false)
+                else if (MindControlProcedures.PlayerIsicon icon-mcWithSomeType(me, myExistingMCs) == false)
                 {
                     // turn off mind control is the player has no more MC effects on them
                     bool isNowFree = MindControlProcedures.ClearPlayerMindControlFlagIfOn(me);

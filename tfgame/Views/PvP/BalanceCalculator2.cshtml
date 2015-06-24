@@ -190,7 +190,7 @@
 
         <tr>
             <td>
-                <span class='icon-health_recovery'></span>
+                <span class='icon icon-health_recovery'></span>
                 Maximum willpower increase (%)
             </td>
             <td>@Html.TextBoxFor(m => m.HealthBonusPercent, new { @id = "HealthBonusPercent", @negative_mod = tfgame.Statics.BalanceStatics.HealthBonusPercent__NegativeModifier, @negative_cap = tfgame.Statics.BalanceStatics.HealthBonusPercent__NegativeCap, @readonly = "readonly" })</td>
@@ -200,7 +200,7 @@
             <td></td>
         </tr>
         <tr>
-            <td><span class='icon-mana_recovery'></span>Maximum mana increase (%)</td>
+            <td><span class='icon icon-mana_recovery'></span>Maximum mana increase (%)</td>
             <td>@Html.TextBoxFor(m => m.ManaBonusPercent, new { @id = "ManaBonusPercent", @negative_mod = tfgame.Statics.BalanceStatics.ManaBonusPercent__NegativeModifier, @negative_cap = tfgame.Statics.BalanceStatics.ManaBonusPercent__NegativeCap, @readonly = "readonly" })</td>
             <td>@tfgame.Statics.BalanceStatics.ManaBonusPercent__Value</td>
             <td>@tfgame.Statics.BalanceStatics.ManaBonusPercent__NegativeModifier</td>
@@ -209,7 +209,7 @@
         </tr>
         <tr>
             <td>
-                <span class='icon-health_recovery'></span>Willpower recovery per game update (Amt)
+                <span class='icon icon-health_recovery'></span>Willpower recovery per game update (Amt)
             </td>
             <td>@Html.TextBoxFor(m => m.HealthRecoveryPerUpdate, new { @id = "HealthRecoveryPerUpdate", @negative_mod = tfgame.Statics.BalanceStatics.HealthRecoveryPerUpdate__NegativeModifier, @negative_cap = tfgame.Statics.BalanceStatics.HealthRecoveryPerUpdate__NegativeCap, @readonly = "readonly" })</td>
             <td>@tfgame.Statics.BalanceStatics.HealthRecoveryPerUpdate__Value</td>
@@ -218,7 +218,7 @@
             <td></td>
         </tr>
         <tr>
-            <td><span class='icon-mana_recovery'></span>Mana recovery per game update (Amt)</td>
+            <td><span class='icon icon-mana_recovery'></span>Mana recovery per game update (Amt)</td>
             <td>@Html.TextBoxFor(m => m.ManaRecoveryPerUpdate, new { @id = "ManaRecoveryPerUpdate", @negative_mod = tfgame.Statics.BalanceStatics.HealthRecoveryPerUpdate__NegativeModifier, @negative_cap = tfgame.Statics.BalanceStatics.ManaRecoveryPerUpdate__NegativeCap, @readonly = "readonly" })</td>
             <td>@tfgame.Statics.BalanceStatics.ManaRecoveryPerUpdate__Value</td>
             <td>@tfgame.Statics.BalanceStatics.HealthRecoveryPerUpdate__NegativeModifier</td>
@@ -234,7 +234,7 @@
             <td></td>
         </tr>
         <tr>
-            <td><span class='icon-defense'></span>Spell evasion (%) <red>*</red></td>
+            <td><span class='icon icon-defense'></span>Spell evasion (%) <red>*</red></td>
             <td>@Html.TextBoxFor(m => m.EvasionPercent, new { @id = "EvasionPercent", @negative_mod = tfgame.Statics.BalanceStatics.EvasionPercent__NegativeModifier, @negative_cap = tfgame.Statics.BalanceStatics.EvasionPercent__NegativeCap, @readonly = "readonly" })</td>
             <td>@tfgame.Statics.BalanceStatics.EvasionPercent__Value</td>
             <td>@tfgame.Statics.BalanceStatics.EvasionPercent__NegativeModifier</td>
@@ -242,7 +242,7 @@
             <td></td>
         </tr>
         <tr>
-            <td><span class='icon-timesattacking'></span> evasion NEGATION (%) <red>*</red></td>
+            <td><span class='icon icon-timesattacking'></span> evasion NEGATION (%) <red>*</red></td>
             <td>@Html.TextBoxFor(m => m.EvasionNegationPercent, new { @id = "EvasionNegationPercent", @negative_mod = tfgame.Statics.BalanceStatics.EvasionNegationPercent__NegativeModifier, @negative_cap = tfgame.Statics.BalanceStatics.EvasionNegationPercent__NegativeCap, @readonly = "readonly" })</td>
             <td>@tfgame.Statics.BalanceStatics.EvasionNegationPercent__Value</td>
             <td>@tfgame.Statics.BalanceStatics.EvasionNegationPercent__NegativeModifier</td>
@@ -251,7 +251,7 @@
         </tr>
         <tr>
             <td>
-                <span class='icon-cleansemeditate'></span>Extra mana recovered from meditating (Amt)
+                <span class='icon icon-cleansemeditate'></span>Extra mana recovered from meditating (Amt)
             </td>
             <td>@Html.TextBoxFor(m => m.MeditationExtraMana, new { @id = "MeditationExtraMana", @negative_mod = tfgame.Statics.BalanceStatics.MeditationExtraMana__NegativeModifier, @negative_cap = tfgame.Statics.BalanceStatics.MeditationExtraMana__NegativeCap, @readonly = "readonly" })</td>
             <td>@tfgame.Statics.BalanceStatics.MeditationExtraMana__Value</td>
@@ -260,7 +260,7 @@
             <td></td>
         </tr>
         <tr>
-            <td><span class='icon-cleansemeditate'></span>Extra willpower recovered from cleansing (Amt)</td>
+            <td><span class='icon icon-cleansemeditate'></span>Extra willpower recovered from cleansing (Amt)</td>
             <td>@Html.TextBoxFor(m => m.CleanseExtraHealth, new { @id = "CleanseExtraHealth", @negative_mod = tfgame.Statics.BalanceStatics.CleanseExtraHealth__NegativeModifier, @negative_cap = tfgame.Statics.BalanceStatics.CleanseExtraHealth__NegativeCap, @readonly = "readonly" })</td>
             <td>@tfgame.Statics.BalanceStatics.CleanseExtraHealth__Value</td>
             <td>@tfgame.Statics.BalanceStatics.CleanseExtraHealth__NegativeModifier</td>
@@ -268,7 +268,7 @@
             <td></td>
         </tr>
         <tr>
-            <td><span class='icon-timesattacking'></span>Extra spell critical hit chance (%)</td>
+            <td><span class='icon icon-timesattacking'></span>Extra spell critical hit chance (%)</td>
             <td>@Html.TextBoxFor(m => m.ExtraSkillCriticalPercent, new { @id = "ExtraSkillCriticalPercent", @negative_mod = tfgame.Statics.BalanceStatics.ExtraSkillCriticalPercent__NegativeModifier, @negative_cap = tfgame.Statics.BalanceStatics.ExtraSkillCriticalPercent__NegativeCap, @readonly = "readonly" })</td>
             <td>@tfgame.Statics.BalanceStatics.ExtraSkillCriticalPercent__Value</td>
             <td>@tfgame.Statics.BalanceStatics.ExtraSkillCriticalPercent__NegativeModifier</td>
@@ -284,7 +284,7 @@
             <td></td>
         </tr>
         <tr>
-            <td><span class='icon-timesattacking'></span>Extra transformation energy from spells (%)</td>
+            <td><span class='icon icon-timesattacking'></span>Extra transformation energy from spells (%)</td>
             <td>@Html.TextBoxFor(m => m.SpellExtraTFEnergyPercent, new { @id = "SpellExtraTFEnergyPercent", @negative_mod = tfgame.Statics.BalanceStatics.SpellExtraTFEnergyPercent__NegativeModifier, @negative_cap = tfgame.Statics.BalanceStatics.SpellExtraTFEnergyPercent__NegativeCap, @readonly = "readonly" })</td>
             <td>@tfgame.Statics.BalanceStatics.SpellExtraTFEnergyPercent__Value</td>
             <td>@tfgame.Statics.BalanceStatics.SpellExtraTFEnergyPercent__NegativeModifier</td>
@@ -292,7 +292,7 @@
             <td></td>
         </tr>
         <tr>
-            <td><span class='icon-timesattacking'></span>Extra willpower damage from spells (%)</td>
+            <td><span class='icon icon-timesattacking'></span>Extra willpower damage from spells (%)</td>
             <td>@Html.TextBoxFor(m => m.SpellExtraHealthDamagePercent, new { @id = "SpellExtraHealthDamagePercent", @negative_mod = tfgame.Statics.BalanceStatics.SpellExtraHealthDamagePercent__NegativeModifier, @negative_cap = tfgame.Statics.BalanceStatics.SpellExtraHealthDamagePercent__NegativeCap, @readonly = "readonly" })</td>
             <td>@tfgame.Statics.BalanceStatics.SpellExtraHealthDamagePercent__Value</td>
             <td>@tfgame.Statics.BalanceStatics.SpellExtraHealthDamagePercent__NegativeModifier</td>
@@ -300,7 +300,7 @@
             <td></td>
         </tr>
         <tr>
-            <td><span class='icon-cleansemeditate'></span>Extra transformation energy removal when cleansing (%)</td>
+            <td><span class='icon icon-cleansemeditate'></span>Extra transformation energy removal when cleansing (%)</td>
             <td>@Html.TextBoxFor(m => m.CleanseExtraTFEnergyRemovalPercent, new { @id = "CleanseExtraTFEnergyRemovalPercent", @negative_mod = tfgame.Statics.BalanceStatics.CleanseExtraTFEnergyRemovalPercent__NegativeModifier, @negative_cap = tfgame.Statics.BalanceStatics.CleanseExtraTFEnergyRemovalPercent__NegativeCap, @readonly = "readonly" })</td>
             <td>@tfgame.Statics.BalanceStatics.CleanseExtraTFEnergyRemovalPercent__Value</td>
             <td>@tfgame.Statics.BalanceStatics.CleanseExtraTFEnergyRemovalPercent__NegativeModifier</td>
@@ -324,7 +324,7 @@
         <td></td>
     </tr>
     <tr>
-        <td><span class='icon-defense'></span>Willpower damage reduction when hit by a spell (%)</td>
+        <td><span class='icon icon-defense'></span>Willpower damage reduction when hit by a spell (%)</td>
         <td>
             @Html.TextBoxFor(m => m.SpellHealthDamageResistance, new
            {
@@ -340,7 +340,7 @@
         <td></td>
     </tr>
     <tr>
-        <td><span class='icon-defense'></span>Transformation energy damage reduction when hit by a spell (%)</td>
+        <td><span class='icon icon-defense'></span>Transformation energy damage reduction when hit by a spell (%)</td>
         <td>
             @Html.TextBoxFor(m => m.SpellTFEnergyDamageResistance, new
        {

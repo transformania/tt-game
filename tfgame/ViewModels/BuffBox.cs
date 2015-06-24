@@ -536,11 +536,11 @@ namespace tfgame.ViewModels
     public static class BuffMap
     {
 
-        private const string DefenseIconClass = "icon-defense";
-        private const string WPUpIconClass = "icon-health_recovery";
-        private const string ManaUpIconClass = "icon-mana_recovery";
-        private const string RestorationIconCLass = "icon-cleansemeditate";
-        private const string AttackIconClass = "icon-timesattacking";
+        private const string DefenseIconClass = "icon icon-defense";
+        private const string WPUpIconClass = "icon icon-health_recovery";
+        private const string ManaUpIconClass = "icon icon-mana_recovery";
+        private const string RestorationIconCLass = "icon icon-cleansemeditate";
+        private const string AttackIconClass = "icon icon-timesattacking";
 
         public static Dictionary<string, BuffDetail> BuffDetailsMap = new Dictionary<string, BuffDetail>{
 

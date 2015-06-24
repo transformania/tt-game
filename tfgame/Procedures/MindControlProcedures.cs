@@ -211,7 +211,7 @@ namespace tfgame.Procedures
             return false;
         }
 
-        public static bool PlayerIsicon icon-mcWithType(Player player, string type)
+        public static bool PlayerIsMindControlledWithType(Player player, string type)
         {
             IMindControlRepository mcRepo = new EFMindControlRepository();
             if (mcRepo.MindControls.Where(p => p.VictimId == player.Id && p.Type == type).Count() > 0)
@@ -224,7 +224,7 @@ namespace tfgame.Procedures
             }
         }
 
-        public static bool PlayerIsicon icon-mcWithType(Player player, IEnumerable<MindControl> controls, string type)
+        public static bool PlayerIsMindControlledWithType(Player player, IEnumerable<MindControl> controls, string type)
         {
             if (controls.Where(p => p.VictimId == player.Id && p.Type == type).Count() > 0)
             {
@@ -236,7 +236,7 @@ namespace tfgame.Procedures
             }
         }
 
-        public static bool PlayerIsicon icon-mcWithSomeType(Player player, IEnumerable<MindControl> controls)
+        public static bool PlayerIsMindControlledWithSomeType(Player player, IEnumerable<MindControl> controls)
         {
             if (controls.Where(p => p.VictimId == player.Id).Count() > 0)
             {

@@ -91,6 +91,11 @@
             }
         });
 
+        function disableAutoScroll() {
+            $("#autoScrollToggle").text("Autoscroll OFF");
+            autoScrollEnabled = false;
+        }
+
         function myTimer() {
             clear = true;
         }
@@ -121,9 +126,18 @@
 
         $(function () {
             var chat = $.connection.chatHub;
+            var scrollTimeout = 0;
 
 
             chat.client.addNewMessageToPage = function (pic, name, message, chatColor) {
+
+                if(scrollTimeout != 0)
+                {
+                    clearTimeout(scrollTimeout);
+                    scrollTimeout = 0;
+                }
+                $("#discussion").off("scroll");
+
 
                 // check and see if this poster or message has a banned substring.  If so, ignore it.  Otherwise display as normal
                 var doNotDisplay = false;
@@ -168,6 +182,7 @@
                 } else {
                    
                 }
+                scrollTimeout = setTimeout('$("#discussion").on("scroll", disableAutoScroll)', 1000);
             };
 
             $('#displayname').val("");

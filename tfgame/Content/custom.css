@@ -237,14 +237,158 @@ li {
   text-align: center;
   border-bottom: 4px solid #A16969; }
 
-.icon-sleep {
+.icon {
   width: 15px;
   height: 15px;
   background-size: 100% 100%;
-  background-image: url("../Images/PvP/Icons/icon-sleep.png");
   display: inline-block;
-  bottom: 0;
-  left: 0; }
+  position: relative; }
+
+.icon-level {
+  width: 25px;
+  height: 16px;
+  text-align: center;
+  /* text-shadow: 1px 1px #FFF;*/
+  padding-bottom: 5px;
+  background: rgba(255, 255, 255, 0.7);
+  border-right: 1px solid #D3D3D3;
+  border-bottom: 1px solid #D3D3D3;
+  border-bottom-right-radius: 10px;
+  top: -2px;
+  left: 0px; }
+
+.icon-female {
+  background-image: url("../Images/PvP/Icons/female.png"); }
+
+.icon-male {
+  background-image: url("../Images/PvP/Icons/male.png"); }
+
+.icon-detail {
+  background-image: url("../Images/PvP/Icons/details.png"); }
+
+.icon-mc {
+  width: 25px;
+  height: 25px;
+  background-image: url("../Images/PvP/Icons/mc_swirl.gif"); }
+
+.icon-online {
+  background-image: url("../Images/PvP/Icons/online.png"); }
+
+.icon-offline {
+  background-image: url("../Images/PvP/Icons/offline.png"); }
+
+.icon-permanent {
+  background-image: url("../Images/PvP/Icons/icon-permanent.png"); }
+
+.icon-turn {
+  width: auto;
+  height: 17px;
+  background-color: yellow;
+  border: 1px solid red; }
+
+.icon-consumable {
+  background-image: url("../Images/PvP/Icons/consumeable.png"); }
+
+.icon-shirt {
+  background-image: url("../Images/PvP/Icons/shirt.png"); }
+
+.icon-undershirt {
+  background-image: url("../Images/PvP/Icons/undershirt.png"); }
+
+.icon-pants {
+  background-image: url("../Images/PvP/Icons/pants.png"); }
+
+.icon-underpants {
+  background-image: url("../Images/PvP/Icons/underpants.png"); }
+
+.icon-shoes {
+  background-image: url("../Images/PvP/Icons/shoes.png"); }
+
+.icon-pet {
+  background-image: url("../Images/PvP/Icons/pet.png"); }
+
+.icon-accessory {
+  background-image: url("../Images/PvP/Icons/accessory.png"); }
+
+.icon-hat {
+  background-image: url("../Images/PvP/Icons/hat.png"); }
+
+.icon-pvp {
+  width: 16px;
+  height: 16px;
+  background-image: url("../Images/PvP/Icons/PVP.png"); }
+
+.icon-protection {
+  width: 16px;
+  height: 16px;
+  background-image: url("../Images/PvP/Icons/icon-protection.png"); }
+
+.icon-superprotection {
+  width: 16px;
+  height: 16px;
+  background-image: url("../Images/PvP/Icons/icon-superprotection.png"); }
+
+.icon-rp {
+  width: 16px;
+  height: 16px;
+  background-image: url("../Images/PvP/Icons/RP.png"); }
+
+.icon-donate {
+  width: 16px;
+  height: 16px;
+  background-image: url("../Images/PvP/Icons/donator_1.gif"); }
+
+.portraitIconRP {
+  position: relative;
+  left: 10px;
+  top: 80px;
+  text-align: right;
+  float: right; }
+
+.icon-timesattacking {
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  text-shadow: 1px 1px #ffffff;
+  background-image: url("../Images/PvP/Icons/target.png"); }
+
+.icon-cleansemeditate {
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  text-shadow: 1px 1px #ffffff;
+  background-image: url("../Images/PvP/Icons/cleansemeditate.png"); }
+
+.icon-health_recovery {
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  text-shadow: 1px 1px #ffffff;
+  background-image: url("../Images/PvP/Icons/icon-health_recovery.png"); }
+
+.icon-mana_recovery {
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  text-shadow: 1px 1px #ffffff;
+  background-image: url("../Images/PvP/Icons/icon-mana_recovery.png"); }
+
+.icon-defense {
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  text-shadow: 1px 1px #ffffff;
+  background-image: url("../Images/PvP/Icons/icon-defense.png"); }
+
+.icon-money {
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  text-shadow: 1px 1px #ffffff;
+  background-image: url("../Images/PvP/Icons/money.png"); }
+
+.icon-sleep {
+  background-image: url("../Images/PvP/Icons/icon-sleep.png"); }
 
 .covBox:empty {
   display: none; }
@@ -256,20 +400,29 @@ li {
   text-align: center; }
 
 .actionButton {
-  border: 4px solid #A16969;
+  border: none;
   padding: 10px;
   margin: 10px;
   font-size: 15px;
-  display: inline-block; }
+  display: inline-block;
+  font-weight: normal;
+  color: white !important; }
+
+@media (max-width: 768px) {
+  .actionButton {
+    padding: 5px;
+    margin: 5px; } }
+.actionButton:hover {
+  color: #E4E0D4 !important; }
 
 #actionMeditate {
-  background: #6673D4; }
+  background: #00008B; }
 
 #actionCleanse {
-  background: #C95DA2; }
+  background: #8B0000; }
 
 #actionSearch {
-  background: #C36C0A; }
+  background: #FF8C00; }
 
 .formerly a {
   font-weight: bold; }
@@ -422,7 +575,8 @@ li {
   margin-left: auto;
   margin-right: auto;
   background-size: contain;
-  border: 4px solid #A16969; }
+  border: 4px solid #A16969;
+  position: relative; }
 
 .barWrapper {
   height: 30px;
@@ -817,5 +971,14 @@ strong {
   text-align: center;
   font-size: 20px;
   line-height: 50px; }
+
+.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus, .dropdown-menu {
+  background-color: #A16969; }
+
+.dropdown-menu {
+  text-align: center; }
+
+.dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {
+  background-color: #CF8C81; }
 
 /*# sourceMappingURL=custom.css.map */

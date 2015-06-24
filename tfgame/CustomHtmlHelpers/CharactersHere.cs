@@ -28,7 +28,7 @@ namespace tfgame.CustomHtmlHelpers
 
             if (player.MindControlIsActive == true)
             {
-                output = "<span class='mindControlled'></span>";
+                output = "<span class='icon icon-mc'></span>";
             }
 
             return new MvcHtmlString(output);
@@ -40,9 +40,9 @@ namespace tfgame.CustomHtmlHelpers
 
             if (player.Gender == "male")
             {
-                output += "'icon-male'>";
+                output += "'icon icon-male'>";
             } else {
-                output += "'icon-female'>";
+                output += "'icon icon-female'>";
             }
 
             output += "</span>";
@@ -56,11 +56,11 @@ namespace tfgame.CustomHtmlHelpers
 
             if (gender == "male")
             {
-                output += "'icon-male'>";
+                output += "'icon icon-male'>";
             }
             else
             {
-                output += "'icon-female'>";
+                output += "'icon icon-female'>";
             }
 
             output += "</span>";
@@ -78,15 +78,15 @@ namespace tfgame.CustomHtmlHelpers
 
             if (player.GameMode == 0)
             {
-                return new MvcHtmlString("<span class='icon-superprotection' title='This player is in SuperProtection mode.'></span>");
+                return new MvcHtmlString("<span class='icon icon-superprotection' title='This player is in SuperProtection mode.'></span>");
             }
             if (player.GameMode == 1)
             {
-                return new MvcHtmlString("<span class='icon-protection' title='This player is in Protection mode.'></span>");
+                return new MvcHtmlString("<span class='icon icon-protection' title='This player is in Protection mode.'></span>");
             }
             else if (player.MembershipId > 0)
             {
-                return new MvcHtmlString("<span class='icon-pvp' title='This player is in PvP mode.'></span>");
+                return new MvcHtmlString("<span class='icon icon-pvp' title='This player is in PvP mode.'></span>");
             }
 
             return new MvcHtmlString("");
@@ -97,7 +97,7 @@ namespace tfgame.CustomHtmlHelpers
         {
             if (player.DonatorLevel >= 1)
             {
-                return new MvcHtmlString("<span class='icon-donator1' title='This player supports this game on Patreon monthly.'></span>");
+                return new MvcHtmlString("<span class='icon icon-donate' title='This player supports this game on Patreon monthly.'></span>");
             }
             else
             {
@@ -110,7 +110,7 @@ namespace tfgame.CustomHtmlHelpers
 
             if (item.PvPEnabled == 2)
             {
-                return new MvcHtmlString("<span class='icon-pvp' title='This item is in PvP mode.'></span>");
+                return new MvcHtmlString("<span class='icon icon-pvp' title='This item is in PvP mode.'></span>");
             }
             else
             {
@@ -123,11 +123,11 @@ namespace tfgame.CustomHtmlHelpers
 
             if (item.PvPEnabled == 2)
             {
-                return new MvcHtmlString("<span class='icon-pvp' title='This item is in PvP mode.'></span>");
+                return new MvcHtmlString("<span class='icon icon-pvp' title='This item is in PvP mode.'></span>");
             }
             else if (item.PvPEnabled == 1)
             {
-                return new MvcHtmlString("<span class='icon-protection' title='This item is in Protection mode.'></span>");
+                return new MvcHtmlString("<span class='icon icon-protection' title='This item is in Protection mode.'></span>");
             }
             else
             {
@@ -140,7 +140,7 @@ namespace tfgame.CustomHtmlHelpers
 
             if (covenant.IsPvP == true)
             {
-                return new MvcHtmlString("<span class='icon-pvp' title='This covenant is in PvP mode.'></span>");
+                return new MvcHtmlString("<span class='icon icon-pvp' title='This covenant is in PvP mode.'></span>");
             }
             else
             {
@@ -153,7 +153,7 @@ namespace tfgame.CustomHtmlHelpers
 
             if (player.InRP == true)
             {
-                return new MvcHtmlString("<span class='icon-rp' title='This player has indicated that they enjoy roleplaying.'></span>");
+                return new MvcHtmlString("<span class='icon icon-rp' title='This player has indicated that they enjoy roleplaying.'></span>");
             }
             else
             {
@@ -510,7 +510,7 @@ namespace tfgame.CustomHtmlHelpers
         {
             if (item.dbItem.IsPermanent == true)
             {
-                return new MvcHtmlString("<span class='icon-permanent' title=\"This player\'s soul is permanently sealed into this item.\"></span>");
+                return new MvcHtmlString("<span class='icon icon-permanent' title=\"This player\'s soul is permanently sealed into this item.\"></span>");
             }
             else
             {
@@ -522,7 +522,7 @@ namespace tfgame.CustomHtmlHelpers
         {
             if (item.IsPermanent == true)
             {
-                return new MvcHtmlString("<span class='icon-permanent' title=\"This player\'s soul is permanently sealed into this item.\"></span>");
+                return new MvcHtmlString("<span class='icon icon-permanent' title=\"This player\'s soul is permanently sealed into this item.\"></span>");
             }
             else
             {

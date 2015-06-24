@@ -33,19 +33,25 @@
                     <span id="turn_countdown">-:--</span>
                 </li>
                 <li>@Html.ActionLink("Map", "WorldMap", "PvP", new { showEnchant = "false" }, null)</li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">My Player <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li>@Html.ActionLink("Last Actions (" + Model.PlayerLog.Count() + ")", "ViewLog", "PvP")</li>
+                        <li>@Html.ActionLink("Spells", "MySkills", "PvP")</li>
+                        <li>@Html.ActionLink("My Effects", "MyPerks", "PvP")</li>
+                        <li>@Html.ActionLink("Mind Control", "MindControlList", "NPC")</li>
+                    </ul>
+                </li>
                 <li>@Html.ActionLink("Friends", "MyFriends", "PvP")</li>
                 <li>@Html.ActionLink("Chat", "Chat", "PvP", new { room = "global" }, new { target = "_blank" })</li>
                 <li>@Html.ActionLink("Covenant", "MyCovenant", "Covenant")</li>
                 <li>@Html.ActionLink("Settings", "Settings", "Settings")</li>
-                <li>@Html.ActionLink("Last Actions (" + Model.PlayerLog.Count() + ")", "ViewLog", "PvP")</li>
-                <li>@Html.ActionLink("Spells", "MySkills", "PvP")</li>
-                <li>@Html.ActionLink("My Effects", "MyPerks", "PvP")</li>
-                <li>@Html.ActionLink("Mind Control", "MindControlList", "NPC")</li>
+
                 <li class="visible-xs-inline"><a href="http://transformaniatime.com/PvP/MyInventory">Inventory @Model.PlayerItems.Where(i => i.dbItem.IsEquipped == false).Count()/@Model.InventoryMaxSize </a></li>
                 @{
                     if (Model.You.Player.UnusedLevelUpPerks > 0)
                     {
-                    <li>@Html.ActionLink("Level Up!", "LevelupPerk", "PvP", null, new { @class = "levelUp" })</li> }
+                        <li>@Html.ActionLink("Level Up!", "LevelupPerk", "PvP", null, new { @class = "levelUp" })</li> }
                 }
 
                 @{

@@ -1553,7 +1553,7 @@ namespace tfgame.Controllers
                     TempData["SubError"] = "Some other mage has partial control of your mind, disabling your ability to pick anything up off the ground or tame any pets!";
                     return RedirectToAction("Play");
                 }
-                else if (MindControlProcedures.PlayerIsMindControlledqqWithSomeType(me, myExistingMCs) == false)
+                else if (MindControlProcedures.PlayerIsMindControlledWithSomeType(me, myExistingMCs) == false)
                 {
                     // turn off mind control is the player has no more MC effects on them
                     bool isNowFree = MindControlProcedures.ClearPlayerMindControlFlagIfOn(me);

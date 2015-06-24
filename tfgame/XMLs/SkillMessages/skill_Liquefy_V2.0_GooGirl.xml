@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?><StaticSkill xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-
-<DiscoveryMessage>You search through a busted-open file cabinet, which, to your amazement, seems to contain something other than petals! Wanting to be completely sure that it's just not petals in disguise, you pull out a folder at random. To your delight, the folder contains a letter! You read:  "Management is worried about the potential for a goo outbreak. Simulations suggest the possibility of a 'Goopocalypse,' their choice of words. The fools suggested we ramp up the mental component to make the goo easier to control, and also to reduce its size. Supposedly, 'Pocket Monsters' are all the rage with kids these days; they consider our research an opportunity to enter that market!  Anyway, to put them at ease I started to work on a Liquefy V2.0 according to their specifications. Hide the old goo in the secret lab and continue with our personal project. The goo shall not be contained!"  You shrug and put the letter down. Whoever received this is probably not in town anymore. Still, a small and docile goo girl sounds like a pretty good idea!</DiscoveryMessage>
-
-<Description>Not to be used interchangeably with older versions of Liquefy! The mental component of the transformation has been ramped up, while the spell now shrinks the target in addition to liquefying them. The downside is a somewhat increased mana cost and a negative impact on the environment, as the goo that disappears in the shrinking process must end up somewhere else.</Description>
-
-</StaticSkill>
-

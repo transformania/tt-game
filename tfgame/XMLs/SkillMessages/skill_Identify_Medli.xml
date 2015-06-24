@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?><StaticSkill xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-
-<DiscoveryMessage>Looking around the room you spot a small lens hovering over a book, obviously this is used to make reading easier. You imagine using a larger one of these would make finding your targets much easier....</DiscoveryMessage>
-
-<Description>Transforms your target into a magnifying glass to help you seek out your targets a little more efficiently.</Description>
-
-</StaticSkill>
-

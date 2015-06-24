@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?><StaticSkill xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-
-<DiscoveryMessage>While watching a game of tennis, you notice that one of the players is always hitting. You're sure that their racket must be enchanted, because no one could hit THAT accurately...</DiscoveryMessage>
-
-<Description>This spell transforms its victim into an enchanted professional tennis racket.</Description>
-
-</StaticSkill>
-

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?><StaticSkill xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-
-<DiscoveryMessage>While exploring the secret lab, you notice that there's an unusual abundance of pink goo in an overflow tank. You study the goo, and decide that you might be able to make a spell that puts it to good use. Now you just need a victim to test it on.</DiscoveryMessage>
-
-<Description>This spell will turn its target into a more fluid form.</Description>
-
-</StaticSkill>
-

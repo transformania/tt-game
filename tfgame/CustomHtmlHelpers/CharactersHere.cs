@@ -164,7 +164,7 @@ namespace tfgame.CustomHtmlHelpers
         public static MvcHtmlString PrintItemTypeIcon(DbStaticItem item)
         {
             string output = "<span class=";
-            output += "'icon-" + item.ItemType + "' title='" + item.ItemType + "'>";
+            output += "'icon icon-" + item.ItemType + "' title='" + item.ItemType + "'>";
             output += "</span>";
 
             return new MvcHtmlString(output);
@@ -173,7 +173,7 @@ namespace tfgame.CustomHtmlHelpers
         public static MvcHtmlString PrintItemTypeIcon(StaticItem item)
         {
             string output = "<span class=";
-            output += "'icon-" + item.ItemType + "' title='" + item.ItemType + "'>";
+            output += "'icon icon-" + item.ItemType + "' title='" + item.ItemType + "'>";
             output += "</span>";
 
             return new MvcHtmlString(output);

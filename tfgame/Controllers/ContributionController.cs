@@ -25,6 +25,663 @@ namespace tfgame.Controllers
             return View();
         }
 
+
+        [Authorize]
+        public ActionResult Contribute(int Id = -1, string sort = "spellname")
+        {
+
+            IContributionRepository contributionRepo = new EFContributionRepository();
+
+            int currentUserId = WebSecurity.CurrentUserId;
+
+            IEnumerable<Contribution> myContributions = contributionRepo.Contributions.Where(c => c.OwnerMembershipId == currentUserId);
+            IEnumerable<Contribution> proofreading = null;
+
+            bool iAmProofreader = User.IsInRole(PvPStatics.Permissions_Proofreader);
+
+            // add the rest of the submitted contributions if the player is a proofread
+            if (iAmProofreader == true)
+            {
+                proofreading = contributionRepo.Contributions.Where(c => c.AdminApproved == true && c.ProofreadingCopy == true);
+                if (sort == "spellname")
+                {
+                    proofreading = proofreading.OrderBy(c => c.IsLive).ThenBy(c => c.Skill_FriendlyName);
+                }
+                else if (sort == "formname")
+                {
+                    proofreading = proofreading.OrderBy(c => c.IsLive).ThenBy(c => c.Form_FriendlyName);
+                }
+            }
+
+            Contribution contribution;
+
+            if (Id != -1)
+            {
+                try
+                {
+                    // contribution = myContributions.FirstOrDefault(c => c.Id == Id);
+                    contribution = contributionRepo.Contributions.FirstOrDefault(c => c.Id == Id);
+                    ViewBag.Result = "Load successful.";
+
+                    // assert player owns this
+                    if (contribution.OwnerMembershipId != currentUserId && iAmProofreader == false)
+                    {
+                        TempData["Error"] = "This contribution does not belong to your account.";
+                        return RedirectToAction("Play", "PvP");
+                    }
+
+                    // if this player is a proofreader and this contribution is not marked as ready for proofreading, tell the editor to go to the proofreading version instead.
+                    if (iAmProofreader == true && contribution.ProofreadingCopy == false)
+                    {
+                        Contribution contributionProofed = contributionRepo.Contributions.FirstOrDefault(c => c.OwnerMembershipId == contribution.OwnerMembershipId && c.ProofreadingCopy == true && c.Skill_FriendlyName == contribution.Skill_FriendlyName && c.Form_FriendlyName == contribution.Form_FriendlyName);
+                        if (contributionProofed != null)
+                        {
+                            TempData["Error"] = "There is already a proofreading version of this available.  Please load that instead.";
+                            return RedirectToAction("Play", "PvP");
+                        }
+
+
+
+                    }
+
+                    // save the proofreading lock on this contribution
+                    if (contribution.ProofreadingCopy == true)
+                    {
+                        contribution.ProofreadingLockIsOn = true;
+                        contribution.CheckedOutBy = WebSecurity.CurrentUserName;
+                        contribution.CreationTimestamp = DateTime.UtcNow;
+                        contributionRepo.SaveContribution(contribution);
+                    }
+
+                }
+                catch
+                {
+                    contribution = new Contribution();
+                    contribution.OwnerMembershipId = WebSecurity.CurrentUserId;
+                }
+            }
+            else
+            {
+                contribution = new Contribution();
+                contribution.Skill_ManaCost = 7;
+                contribution.Form_TFEnergyRequired = 70;
+                contribution.Skill_TFPointsAmount = 10;
+                contribution.Skill_HealthDamageAmount = 4.5M;
+            }
+
+            ViewBag.Result = TempData["Result"];
+
+            ViewBag.OtherContributions = myContributions;
+            ViewBag.Proofreading = proofreading;
+
+            BalanceBox bbox = new BalanceBox();
+            bbox.LoadBalanceBox(contribution);
+            decimal balance = bbox.GetBalance();
+            ViewBag.BalanceScore = balance;
+
+
+            #region for admin use only, see if statics exist
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == true && contribution.ProofreadingCopy == true)
+            {
+                IDbStaticSkillRepository skillRepo = new EFDbStaticSkillRepository();
+                IDbStaticFormRepository formRepo = new EFDbStaticFormRepository();
+                IDbStaticItemRepository itemRepo = new EFDbStaticItemRepository();
+
+                string skilldbname = "skill_" + contribution.Skill_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
+                string formdbname = "form_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
+
+                string itemdbname = "";
+
+                if (contribution.Form_MobilityType == "inanimate")
+                {
+                    itemdbname = "item_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
+                }
+                else if (contribution.Form_MobilityType == "animal")
+                {
+                    itemdbname = "animal_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
+                }
+
+                DbStaticSkill sskill = skillRepo.DbStaticSkills.FirstOrDefault(s => s.dbName == skilldbname);
+                DbStaticForm sform = formRepo.DbStaticForms.FirstOrDefault(f => f.dbName == formdbname);
+                DbStaticItem sitem = itemRepo.DbStaticItems.FirstOrDefault(f => f.dbName == itemdbname);
+
+                if (sskill == null)
+                {
+                    ViewBag.StaticSkillExists = "<p class='bad'>No static skill found:  " + skilldbname + "</p>";
+                }
+                else
+                {
+                    ViewBag.StaticSkillExists += "<p class='good'>Static skill found:  " + skilldbname + "</p>";
+                }
+
+                if (sform == null)
+                {
+                    ViewBag.StaticFormExists = "<p class='bad'>No static form found:  " + formdbname + "</p>";
+                }
+                else
+                {
+                    ViewBag.StaticFormExists = "<p class='good'>Static form found:  " + formdbname + "</p>";
+                }
+
+                if (sitem == null && (contribution.Form_MobilityType == "inanimate" || contribution.Form_MobilityType == "animal"))
+                {
+                    ViewBag.StaticItemExists += "<p class='bad'>No static item/pet found:  " + itemdbname + "</p>";
+                }
+                else if (contribution.Form_MobilityType == "inanimate" || contribution.Form_MobilityType == "animal")
+                {
+                    ViewBag.StaticItemExists += "<p class='good'>Static item/pet found:  " + itemdbname + "</p>";
+                }
+
+            }
+            #endregion
+
+            return View(contribution);
+        }
+
+        [Authorize]
+        public ActionResult ContributePreview(int Id)
+        {
+
+            // assert only previewers can view this
+            if (User.IsInRole(PvPStatics.Permissions_Previewer) == false)
+            {
+                return View("Play", "PvP");
+            }
+
+            IContributionRepository contributionRepo = new EFContributionRepository();
+            Contribution contribution = contributionRepo.Contributions.FirstOrDefault(c => c.Id == Id && c.IsReadyForReview == true && c.ProofreadingCopy == false);
+            ViewBag.DisableLinks = true;
+
+            BalanceBox bbox = new BalanceBox();
+            bbox.LoadBalanceBox(contribution);
+            decimal balance = bbox.GetBalance();
+            ViewBag.BalanceScore = balance;
+
+            return View("Contribute", contribution);
+        }
+
+
+        [Authorize]
+        public ActionResult ContributeBalanceCalculatorEffect(int id)
+        {
+            IEffectContributionRepository contributionRepo = new EFEffectContributionRepository();
+            EffectContribution contribution = contributionRepo.EffectContributions.FirstOrDefault(c => c.Id == id);
+
+            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            bool iAmProofreader = User.IsInRole(PvPStatics.Permissions_Proofreader);
+
+            if (iAmProofreader == false && contribution.OwnerMemberhipId != me.MembershipId)
+            {
+                TempData["Error"] = "That does not belong to you and you are not a proofreader.";
+                return RedirectToAction("Play", "PvP");
+            }
+            else
+            {
+
+            }
+
+            return View("~/Views/Contribution/BalanceCalculatorEffect.cshtml", contribution);
+        }
+
+        [Authorize]
+        public ActionResult ContributeBalanceCalculator2(int id)
+        {
+            IContributionRepository contributionRepo = new EFContributionRepository();
+            Contribution contribution = contributionRepo.Contributions.FirstOrDefault(c => c.Id == id);
+
+            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            bool iAmProofreader = User.IsInRole(PvPStatics.Permissions_Proofreader);
+
+            if (iAmProofreader == false && contribution.OwnerMembershipId != me.MembershipId)
+            {
+                TempData["Error"] = "That does not belong to you and you are not a proofreader.";
+                return RedirectToAction("Play", "PvP");
+            }
+            else
+            {
+
+            }
+
+            return View("~/Views/Contribution/BalanceCalculator2.cshtml", contribution);
+        }
+
+        [Authorize]
+        public ActionResult ContributeBalanceCalculatorSend(Contribution input)
+        {
+            IContributionRepository contributionRepo = new EFContributionRepository();
+            Contribution SaveMe = contributionRepo.Contributions.FirstOrDefault(c => c.Id == input.Id);
+
+            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            bool iAmProofreader = User.IsInRole(PvPStatics.Permissions_Proofreader);
+
+            if (iAmProofreader == false && SaveMe.OwnerMembershipId != me.MembershipId)
+            {
+                TempData["Error"] = "That does not belong to you and you are not a proofreader.";
+                return RedirectToAction("Play", "PvP");
+            }
+            else
+            {
+                SaveMe.HealthBonusPercent = input.HealthBonusPercent;
+                SaveMe.ManaBonusPercent = input.ManaBonusPercent;
+                SaveMe.ExtraSkillCriticalPercent = input.ExtraSkillCriticalPercent;
+                SaveMe.HealthRecoveryPerUpdate = input.HealthRecoveryPerUpdate;
+                SaveMe.ManaRecoveryPerUpdate = input.ManaRecoveryPerUpdate;
+                SaveMe.SneakPercent = input.SneakPercent;
+                SaveMe.EvasionPercent = input.EvasionPercent;
+                SaveMe.EvasionNegationPercent = input.EvasionNegationPercent;
+                SaveMe.MeditationExtraMana = input.MeditationExtraMana;
+                SaveMe.CleanseExtraHealth = input.CleanseExtraHealth;
+                SaveMe.MoveActionPointDiscount = input.MoveActionPointDiscount;
+                SaveMe.SpellExtraTFEnergyPercent = input.SpellExtraTFEnergyPercent;
+                SaveMe.SpellExtraHealthDamagePercent = input.SpellExtraHealthDamagePercent;
+                SaveMe.CleanseExtraTFEnergyRemovalPercent = input.CleanseExtraTFEnergyRemovalPercent;
+                SaveMe.SpellMisfireChanceReduction = input.SpellMisfireChanceReduction;
+                SaveMe.SpellHealthDamageResistance = input.SpellHealthDamageResistance;
+                SaveMe.SpellTFEnergyDamageResistance = input.SpellTFEnergyDamageResistance;
+                SaveMe.ExtraInventorySpace = input.ExtraInventorySpace;
+
+                // new stats
+                SaveMe.Discipline = input.Discipline;
+                SaveMe.Perception = input.Perception;
+                SaveMe.Charisma = input.Charisma;
+                SaveMe.Submission_Dominance = input.Submission_Dominance;
+
+                SaveMe.Fortitude = input.Fortitude;
+                SaveMe.Agility = input.Agility;
+                SaveMe.Allure = input.Allure;
+                SaveMe.Corruption_Purity = input.Corruption_Purity;
+
+                SaveMe.Magicka = input.Magicka;
+                SaveMe.Succour = input.Succour;
+                SaveMe.Luck = input.Luck;
+                SaveMe.Chaos_Order = input.Chaos_Order;
+
+
+                SaveMe.History += "Bonus values edited by " + WebSecurity.CurrentUserName + " on " + DateTime.UtcNow + ".<br>";
+
+                contributionRepo.SaveContribution(SaveMe);
+
+                TempData["Result"] = "Contribution stats saved.";
+                return RedirectToAction("Play", "PvP");
+
+            }
+        }
+
+        [Authorize]
+        public ActionResult ContributeBalanceCalculatorSend_Effect(EffectContribution input)
+        {
+            IEffectContributionRepository contributionRepo = new EFEffectContributionRepository();
+            EffectContribution SaveMe = contributionRepo.EffectContributions.FirstOrDefault(c => c.Id == input.Id);
+
+            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            bool iAmProofreader = User.IsInRole(PvPStatics.Permissions_Proofreader);
+
+            if (iAmProofreader == false && SaveMe.OwnerMemberhipId != me.MembershipId)
+            {
+                TempData["Error"] = "That does not belong to you and you are not a proofreader.";
+                return RedirectToAction("Play", "PvP");
+            }
+            else
+            {
+                SaveMe.HealthBonusPercent = input.HealthBonusPercent;
+                SaveMe.ManaBonusPercent = input.ManaBonusPercent;
+                SaveMe.ExtraSkillCriticalPercent = input.ExtraSkillCriticalPercent;
+                SaveMe.HealthRecoveryPerUpdate = input.HealthRecoveryPerUpdate;
+                SaveMe.ManaRecoveryPerUpdate = input.ManaRecoveryPerUpdate;
+                SaveMe.SneakPercent = input.SneakPercent;
+                SaveMe.EvasionPercent = input.EvasionPercent;
+                SaveMe.EvasionNegationPercent = input.EvasionNegationPercent;
+                SaveMe.MeditationExtraMana = input.MeditationExtraMana;
+                SaveMe.CleanseExtraHealth = input.CleanseExtraHealth;
+                SaveMe.MoveActionPointDiscount = input.MoveActionPointDiscount;
+                SaveMe.SpellExtraTFEnergyPercent = input.SpellExtraTFEnergyPercent;
+                SaveMe.SpellExtraHealthDamagePercent = input.SpellExtraHealthDamagePercent;
+                SaveMe.CleanseExtraTFEnergyRemovalPercent = input.CleanseExtraTFEnergyRemovalPercent;
+                SaveMe.SpellMisfireChanceReduction = input.SpellMisfireChanceReduction;
+                SaveMe.SpellHealthDamageResistance = input.SpellHealthDamageResistance;
+                SaveMe.SpellTFEnergyDamageResistance = input.SpellTFEnergyDamageResistance;
+                SaveMe.ExtraInventorySpace = input.ExtraInventorySpace;
+
+                // new stats
+                SaveMe.Discipline = input.Discipline;
+                SaveMe.Perception = input.Perception;
+                SaveMe.Charisma = input.Charisma;
+                SaveMe.Submission_Dominance = input.Submission_Dominance;
+
+                SaveMe.Fortitude = input.Fortitude;
+                SaveMe.Agility = input.Agility;
+                SaveMe.Allure = input.Allure;
+                SaveMe.Corruption_Purity = input.Corruption_Purity;
+
+                SaveMe.Magicka = input.Magicka;
+                SaveMe.Succour = input.Succour;
+                SaveMe.Luck = input.Luck;
+                SaveMe.Chaos_Order = input.Chaos_Order;
+
+                SaveMe.Effect_Duration = input.Effect_Duration;
+
+                //  SaveMe.History += "Bonus values edited by " + WebSecurity.CurrentUserName + " on " + DateTime.UtcNow + ".<br>";
+
+                contributionRepo.SaveEffectContribution(SaveMe);
+
+                TempData["Result"] = "Contribution stats saved.";
+                return RedirectToAction("Play", "PvP");
+
+            }
+        }
+
+        [Authorize]
+        public ActionResult ContributeGraphicsNeeded()
+        {
+            IContributionRepository contributionRepo = new EFContributionRepository();
+            IEnumerable<Contribution> output = contributionRepo.Contributions.Where(c => c.IsReadyForReview == true && c.AdminApproved == true && c.IsLive == false && c.ProofreadingCopy == true);
+
+            ViewBag.ErrorMessage = TempData["Error"];
+            ViewBag.SubErrorMessage = TempData["SubError"];
+            ViewBag.Result = TempData["Result"];
+
+            return View("ContributeGraphicsNeeded", output);
+        }
+
+        [Authorize]
+        public ActionResult ContributeSetGraphicStatus(int id)
+        {
+
+            bool iAmArtist = User.IsInRole(PvPStatics.Permissions_Artist);
+
+            if (iAmArtist == false)
+            {
+                TempData["Result"] = "You don't have permissions to do that.  If you are an artist and are interested in contributing artwork, please contact the administrator, Judoo.";
+                return RedirectToAction("ContributeGraphicsNeeded");
+            }
+
+            IContributionRepository contributionRepo = new EFContributionRepository();
+            Contribution cont = contributionRepo.Contributions.FirstOrDefault(c => c.Id == id);
+
+            ContributionStatusViewModel output = new ContributionStatusViewModel
+            {
+                ContributionId = id,
+                OwnerMembershipId = cont.OwnerMembershipId,
+                Status = cont.AssignedToArtist,
+            };
+
+            return View("ContributeSetGraphicStatus", output);
+        }
+
+        [Authorize]
+        public ActionResult ContributeSetGraphicStatusSubmit(ContributionStatusViewModel input)
+        {
+
+            bool iAmArtist = User.IsInRole(PvPStatics.Permissions_Artist);
+
+            if (iAmArtist == false)
+            {
+                TempData["Result"] = "You don't have permissions to do that.  If you are an artist and are interested in contributing artwork, please contact the administrator, Judoo.";
+                return RedirectToAction("ContributeGraphicsNeeded");
+            }
+
+            IContributionRepository contributionRepo = new EFContributionRepository();
+            Contribution cont = contributionRepo.Contributions.FirstOrDefault(c => c.Id == input.ContributionId);
+
+            cont.AssignedToArtist = input.Status;
+            cont.History += "Assigned artist changed by " + WebSecurity.CurrentUserName + " on " + DateTime.UtcNow + ".<br>";
+
+            contributionRepo.SaveContribution(cont);
+
+
+            TempData["Result"] = "Status saved!";
+            return RedirectToAction("ContributeGraphicsNeeded");
+
+        }
+
+        [HttpPost]
+        public ActionResult SendContribution(Contribution input)
+        {
+
+            IContributionRepository contributionRepo = new EFContributionRepository();
+            Contribution SaveMe;
+
+            Session["ContributionId"] = input.Id;
+
+            bool iAmProofreader = User.IsInRole(PvPStatics.Permissions_Proofreader);
+
+            SaveMe = contributionRepo.Contributions.FirstOrDefault(c => c.Id == input.Id);
+            if (SaveMe == null)
+            {
+                SaveMe = new Contribution();
+                SaveMe.OwnerMembershipId = WebSecurity.CurrentUserId;
+            }
+
+
+            if (input.Id != -1)
+            {
+
+                // submitter is original author, ID stays the same and do NOT mark as proofreading version
+                if (SaveMe != null && SaveMe.OwnerMembershipId == WebSecurity.CurrentUserId)
+                {
+                    SaveMe.Id = input.Id;
+                }
+
+                // submitter is not original author.  Do more logic...
+                else if (SaveMe != null && SaveMe.OwnerMembershipId != WebSecurity.CurrentUserId)
+                {
+                    // this is a poorfreading copy.  Keep Id the same and keep it marked as a proofreading copy IF the editor is a proofreader
+                    if (SaveMe.ProofreadingCopy == true && iAmProofreader == true)
+                    {
+                        SaveMe.Id = input.Id;
+                        //SaveMe.ProofreadingCopy = true;
+                    }
+                    else
+                    {
+                        TempData["Result"] = "You do not have the authorization to edit this.  If you are a proofreader, make sure to load up the proofreading version instead.";
+                        return RedirectToAction("Play", "PvP");
+                    }
+
+                }
+
+
+            }
+
+            // unlock the proofreading flag since it has been saved
+            input.ProofreadingLockIsOn = false;
+            SaveMe.ProofreadingLockIsOn = false;
+            SaveMe.CheckedOutBy = "";
+
+            SaveMe.IsReadyForReview = input.IsReadyForReview;
+            SaveMe.IsLive = input.IsLive;
+
+            SaveMe.Skill_FriendlyName = input.Skill_FriendlyName;
+            SaveMe.Skill_FormFriendlyName = input.Skill_FormFriendlyName;
+            SaveMe.Skill_Description = input.Skill_Description;
+            SaveMe.Skill_ManaCost = input.Skill_ManaCost;
+            SaveMe.Skill_TFPointsAmount = input.Skill_TFPointsAmount;
+            SaveMe.Skill_HealthDamageAmount = input.Skill_HealthDamageAmount;
+            SaveMe.Skill_LearnedAtRegion = input.Skill_LearnedAtRegion;
+            SaveMe.Skill_LearnedAtLocationOrRegion = input.Skill_LearnedAtLocationOrRegion;
+            SaveMe.Skill_DiscoveryMessage = input.Skill_DiscoveryMessage;
+
+            SaveMe.Form_FriendlyName = input.Form_FriendlyName;
+            SaveMe.Form_Description = input.Form_Description;
+            SaveMe.Form_TFEnergyRequired = input.Form_TFEnergyRequired;
+            SaveMe.Form_Gender = input.Form_Gender;
+            SaveMe.Form_MobilityType = input.Form_MobilityType;
+            SaveMe.Form_BecomesItemDbName = input.Form_BecomesItemDbName;
+            SaveMe.Form_Bonuses = input.Form_Bonuses;
+
+            SaveMe.Form_TFMessage_20_Percent_1st = input.Form_TFMessage_20_Percent_1st;
+            SaveMe.Form_TFMessage_40_Percent_1st = input.Form_TFMessage_40_Percent_1st;
+            SaveMe.Form_TFMessage_60_Percent_1st = input.Form_TFMessage_60_Percent_1st;
+            SaveMe.Form_TFMessage_80_Percent_1st = input.Form_TFMessage_80_Percent_1st;
+            SaveMe.Form_TFMessage_100_Percent_1st = input.Form_TFMessage_100_Percent_1st;
+            SaveMe.Form_TFMessage_Completed_1st = input.Form_TFMessage_Completed_1st;
+
+            SaveMe.Form_TFMessage_20_Percent_1st_M = input.Form_TFMessage_20_Percent_1st_M;
+            SaveMe.Form_TFMessage_40_Percent_1st_M = input.Form_TFMessage_40_Percent_1st_M;
+            SaveMe.Form_TFMessage_60_Percent_1st_M = input.Form_TFMessage_60_Percent_1st_M;
+            SaveMe.Form_TFMessage_80_Percent_1st_M = input.Form_TFMessage_80_Percent_1st_M;
+            SaveMe.Form_TFMessage_100_Percent_1st_M = input.Form_TFMessage_100_Percent_1st_M;
+            SaveMe.Form_TFMessage_Completed_1st_M = input.Form_TFMessage_Completed_1st_M;
+
+            SaveMe.Form_TFMessage_20_Percent_1st_F = input.Form_TFMessage_20_Percent_1st_F;
+            SaveMe.Form_TFMessage_40_Percent_1st_F = input.Form_TFMessage_40_Percent_1st_F;
+            SaveMe.Form_TFMessage_60_Percent_1st_F = input.Form_TFMessage_60_Percent_1st_F;
+            SaveMe.Form_TFMessage_80_Percent_1st_F = input.Form_TFMessage_80_Percent_1st_F;
+            SaveMe.Form_TFMessage_100_Percent_1st_F = input.Form_TFMessage_100_Percent_1st_F;
+            SaveMe.Form_TFMessage_Completed_1st_F = input.Form_TFMessage_Completed_1st_F;
+
+            SaveMe.Form_TFMessage_20_Percent_3rd = input.Form_TFMessage_20_Percent_3rd;
+            SaveMe.Form_TFMessage_40_Percent_3rd = input.Form_TFMessage_40_Percent_3rd;
+            SaveMe.Form_TFMessage_60_Percent_3rd = input.Form_TFMessage_60_Percent_3rd;
+            SaveMe.Form_TFMessage_80_Percent_3rd = input.Form_TFMessage_80_Percent_3rd;
+            SaveMe.Form_TFMessage_100_Percent_3rd = input.Form_TFMessage_100_Percent_3rd;
+            SaveMe.Form_TFMessage_Completed_3rd = input.Form_TFMessage_Completed_3rd;
+
+            SaveMe.Form_TFMessage_20_Percent_3rd_M = input.Form_TFMessage_20_Percent_3rd_M;
+            SaveMe.Form_TFMessage_40_Percent_3rd_M = input.Form_TFMessage_40_Percent_3rd_M;
+            SaveMe.Form_TFMessage_60_Percent_3rd_M = input.Form_TFMessage_60_Percent_3rd_M;
+            SaveMe.Form_TFMessage_80_Percent_3rd_M = input.Form_TFMessage_80_Percent_3rd_M;
+            SaveMe.Form_TFMessage_100_Percent_3rd_M = input.Form_TFMessage_100_Percent_3rd_M;
+            SaveMe.Form_TFMessage_Completed_3rd_M = input.Form_TFMessage_Completed_3rd_M;
+
+            SaveMe.Form_TFMessage_20_Percent_3rd_F = input.Form_TFMessage_20_Percent_3rd_F;
+            SaveMe.Form_TFMessage_40_Percent_3rd_F = input.Form_TFMessage_40_Percent_3rd_F;
+            SaveMe.Form_TFMessage_60_Percent_3rd_F = input.Form_TFMessage_60_Percent_3rd_F;
+            SaveMe.Form_TFMessage_80_Percent_3rd_F = input.Form_TFMessage_80_Percent_3rd_F;
+            SaveMe.Form_TFMessage_100_Percent_3rd_F = input.Form_TFMessage_100_Percent_3rd_F;
+            SaveMe.Form_TFMessage_Completed_3rd_F = input.Form_TFMessage_Completed_3rd_F;
+
+            SaveMe.CursedTF_FormdbName = input.CursedTF_FormdbName;
+            SaveMe.CursedTF_Fail = input.CursedTF_Fail;
+            SaveMe.CursedTF_Fail_M = input.CursedTF_Fail_M;
+            SaveMe.CursedTF_Fail_F = input.CursedTF_Fail_F;
+            SaveMe.CursedTF_Succeed = input.CursedTF_Succeed;
+            SaveMe.CursedTF_Succeed_M = input.CursedTF_Succeed_M;
+            SaveMe.CursedTF_Succeed_F = input.CursedTF_Succeed_F;
+
+            SaveMe.Item_FriendlyName = input.Item_FriendlyName;
+            SaveMe.Item_Description = input.Item_Description;
+            SaveMe.Item_ItemType = input.Item_ItemType;
+            SaveMe.Item_UseCooldown = input.Item_UseCooldown;
+            SaveMe.Item_Bonuses = input.Item_Bonuses;
+
+            //SaveMe.HealthBonusPercent = input.HealthBonusPercent;
+            //SaveMe.ManaBonusPercent = input.ManaBonusPercent;
+            //SaveMe.ExtraSkillCriticalPercent = input.ExtraSkillCriticalPercent;
+            //SaveMe.HealthRecoveryPerUpdate = input.HealthRecoveryPerUpdate;
+            //SaveMe.ManaRecoveryPerUpdate = input.ManaRecoveryPerUpdate;
+            //SaveMe.SneakPercent = input.SneakPercent;
+            //SaveMe.EvasionPercent = input.EvasionPercent;
+            //SaveMe.EvasionNegationPercent = input.EvasionNegationPercent;
+            //SaveMe.MeditationExtraMana = input.MeditationExtraMana;
+            //SaveMe.CleanseExtraHealth = input.CleanseExtraHealth;
+            //SaveMe.MoveActionPointDiscount = input.MoveActionPointDiscount;
+            //SaveMe.SpellExtraTFEnergyPercent = input.SpellExtraTFEnergyPercent;
+            //SaveMe.SpellExtraHealthDamagePercent = input.SpellExtraHealthDamagePercent;
+            //SaveMe.CleanseExtraTFEnergyRemovalPercent = input.CleanseExtraTFEnergyRemovalPercent;
+            //SaveMe.SpellMisfireChanceReduction = input.SpellMisfireChanceReduction;
+            //SaveMe.SpellHealthDamageResistance = input.SpellHealthDamageResistance;
+            //SaveMe.SpellTFEnergyDamageResistance = input.SpellTFEnergyDamageResistance;
+            //SaveMe.ExtraInventorySpace = input.ExtraInventorySpace;
+
+
+
+
+
+            SaveMe.SubmitterName = input.SubmitterName;
+            SaveMe.SubmitterUrl = input.SubmitterUrl;
+            SaveMe.AdditionalSubmitterNames = input.AdditionalSubmitterNames;
+            SaveMe.Notes = input.Notes;
+            SaveMe.NeedsToBeUpdated = input.NeedsToBeUpdated;
+            SaveMe.IsNonstandard = input.IsNonstandard;
+
+            SaveMe.AssignedToArtist = input.AssignedToArtist;
+
+            if (input.ImageURL != null && input.ImageURL != "" && User.IsInRole(PvPStatics.Permissions_Admin) == true)
+            {
+                SaveMe.ImageURL = input.ImageURL;
+            }
+
+            SaveMe.CreationTimestamp = DateTime.UtcNow;
+
+            if (SaveMe.ProofreadingCopy == true)
+            {
+                SaveMe.History += "Edited by " + WebSecurity.CurrentUserName + " on " + DateTime.UtcNow + ".<br>";
+            }
+
+            contributionRepo.SaveContribution(SaveMe);
+
+            #region notify admins
+
+            // Idea here is to notify the admins that there is a new contribution if it is the first time it has been sent in review and the first time only.  (I don't
+            // want admins to get spammed if a user edits it 5 times while waiting for it to get approved.)
+
+            //// if contribution is set to ready for review and wasn't before, notify admins to take a look
+            //if (SaveMe.IsReadyForReview == false && input.IsReadyForReview == true && input.ProofreadingCopy == false)
+            //{
+            //    // Judoo
+            //    try {
+            //        Player derp = PlayerProcedures.GetPlayerFromMembership(69);
+            //        PlayerLogProcedures.AddPlayerLog(derp.Id, "<b>A new contribution has been sent in for review by " + input.SubmitterName + " on " + DateTime.UtcNow + ".</b>", true);
+            //    } catch {
+
+            //    }
+
+            //    // Mizuho
+            //    try
+            //    {
+            //        Player mizu = PlayerProcedures.GetPlayerFromMembership(3490);
+            //        PlayerLogProcedures.AddPlayerLog(mizu.Id, "<b>A new contribution has been sent in for review by " + input.SubmitterName + " on " + DateTime.UtcNow + ".</b>", true);
+            //    }
+            //    catch
+            //    {
+
+            //    }
+
+            //    // Arrhae
+            //    try
+            //    {
+            //        Player Arrhae = PlayerProcedures.GetPlayerFromMembership(251);
+            //        PlayerLogProcedures.AddPlayerLog(Arrhae.Id, "<b>A new contribution has been sent in for review by " + input.SubmitterName + " on " + DateTime.UtcNow + ".</b>", true);
+            //    }
+            //    catch
+            //    {
+
+            //    }
+            //}
+            #endregion
+
+            TempData["Result"] = "Contribution Saved!";
+            return RedirectToAction("Play", "PvP");
+        }
+
+        [Authorize]
+        public ActionResult SendContributionUndoLock(int id)
+        {
+            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            bool iAmProofreader = User.IsInRole(PvPStatics.Permissions_Proofreader);
+
+            if (iAmProofreader == false)
+            {
+                TempData["Error"] = "You must be a proofreader in order to do this.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            IContributionRepository contributionRepo = new EFContributionRepository();
+            Contribution contribution = contributionRepo.Contributions.FirstOrDefault(c => c.Id == id);
+
+            if (contribution.ProofreadingCopy == false)
+            {
+                TempData["Error"] = "This is not a proofreading copy.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            contribution.ProofreadingLockIsOn = false;
+            contribution.CheckedOutBy = "";
+            contributionRepo.SaveContribution(contribution);
+
+            return RedirectToAction("Play", "PvP");
+        }
+
         public ActionResult ContributeEffect(int id)
         {
             // get all of this players effect contributions
@@ -64,7 +721,7 @@ namespace tfgame.Controllers
                 if (output.OwnerMemberhipId != WebSecurity.CurrentUserId && (iAmProofreader == false || (output.ProofreadingCopy == false && iAmAdmin == false)))
                 {
                     TempData["Error"] = TempData["You do not have permission to view this."];
-                    return RedirectToAction("Play", "PvPController");
+                    return RedirectToAction("Play", "PvP");
                 }
             }
 

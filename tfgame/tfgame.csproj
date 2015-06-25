@@ -1384,7 +1384,6 @@
     <Content Include="Images\PvP\portraits\wood_mannequin_Lux.png" />
     <Content Include="Images\PvP\portraits\zombie_aid_babblingfaces.png" />
     <Content Include="Images\PvP\Smilies\smile.png" />
-    <Content Include="Reports\Updates\1963.txt" />
     <Content Include="Schema\GetPlayerBuffs.sql" />
     <Content Include="Scripts\bombieGame.js" />
     <Content Include="Scripts\boxesResize.js" />
@@ -1412,16 +1411,10 @@
     <Content Include="XMLs\DungeonDemonNames.xml" />
     <Content Include="XMLs\DungeonNouns.xml" />
     <Content Include="XMLs\DungeonAdjectives.xml" />
-    <Content Include="XMLs\FairyChallengeText\fae_toy_soldier.xml" />
     <Content Include="XMLs\restockList.xml" />
     <Content Include="XMLs\custom_bases.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="XMLs\Effects\effect_Circine%27s_Hypnosis_LexamTheGemFox.xml" />
-    <Content Include="XMLs\Effects\effect_Hemorrhage_Izz_Valentine.xml">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="XMLs\FairyChallengeText\template.xml" />
     <Content Include="XMLs\FirstNames.xml" />
     <Content Include="XMLs\LastNames.xml" />
     <Content Include="XMLs\LocationDescriptions\270_west_9th_ave.xml" />
@@ -1617,46 +1610,6 @@
     <Content Include="XMLs\SkillBooks\founding_tree.txt" />
     <Content Include="XMLs\SkillBooks\ironic_tfs_1.txt" />
     <Content Include="XMLs\SkillBooks\psycho_Duhad.txt" />
-    <Content Include="XMLs\SkillMessages\skill_Circine%27s_Compassion_LexamTheGemFox.xml" />
-    <Content Include="XMLs\SkillMessages\skill_Doggy_Owner_Arnisd.xml" />
-    <Content Include="XMLs\SkillMessages\skill_Donna%27s_Bitch_LexamTheGemFox.xml" />
-    <Content Include="XMLs\SkillMessages\skill_Exeunt_Omnes_Varn.xml" />
-    <Content Include="XMLs\SkillMessages\skill_Feather_Flight_Medli.xml" />
-    <Content Include="XMLs\SkillMessages\skill_Fit_to_Be_Tied!_Martiandawn.xml" />
-    <Content Include="XMLs\SkillMessages\skill_Flower_Power_Foxpower93.xml" />
-    <Content Include="XMLs\SkillMessages\skill_glass_cannon_psychoticpie.xml" />
-    <Content Include="XMLs\SkillMessages\skill_Happily_Ever_After_BlackTGKitty.xml" />
-    <Content Include="XMLs\SkillMessages\skill_Help_in_High_Places_Christopher.xml" />
-    <Content Include="XMLs\SkillMessages\skill_Honey_Pot_Rayner.xml" />
-    <Content Include="XMLs\SkillMessages\skill_Identify_Medli.xml" />
-    <Content Include="XMLs\SkillMessages\skill_Let%27s_Make_a_Deal_Rayner.xml" />
-    <Content Include="XMLs\SkillMessages\skill_Liquefy_V2.0_GooGirl.xml" />
-    <Content Include="XMLs\SkillMessages\skill_liquify_Arrhae.xml" />
-    <Content Include="XMLs\SkillMessages\skill_Love_Struck_Christopher.xml" />
-    <Content Include="XMLs\SkillMessages\skill_Lucky_Lips_Greg_Mackenzie_.xml" />
-    <Content Include="XMLs\SkillMessages\skill_Maiden%27s_Armor_Keyne_Vangsten.xml" />
-    <Content Include="XMLs\SkillMessages\skill_Make_a_Wish_Danaume_Rook.xml" />
-    <Content Include="XMLs\SkillMessages\skill_Make_Love_Not_War_Varn.xml" />
-    <Content Include="XMLs\SkillMessages\skill_meow_remix_lexamthegemfox.xml" />
-    <Content Include="XMLs\SkillMessages\skill_Mommy_Needs_Panties!_Lily.xml" />
-    <Content Include="XMLs\SkillMessages\skill_mutt_girl.xml" />
-    <Content Include="XMLs\SkillMessages\skill_Panty_Maker_Judoo.xml" />
-    <Content Include="XMLs\SkillMessages\skill_Put_a_Sock_In_It_Christopher.xml" />
-    <Content Include="XMLs\SkillMessages\skill_Quiver_and_Shaft_Aingelproject667.xml" />
-    <Content Include="XMLs\SkillMessages\skill_Ratticus_Buckthievious_Draggony.xml" />
-    <Content Include="XMLs\SkillMessages\skill_Return_of_the_King_Varn.xml" />
-    <Content Include="XMLs\SkillMessages\skill_Shadow%27s_Embrace_Techhead.xml" />
-    <Content Include="XMLs\SkillMessages\skill_Shadow_Ditz_Great_Daeo.xml" />
-    <Content Include="XMLs\SkillMessages\skill_Show_Me_Where_it_Hurts_Ashley_Maid.xml" />
-    <Content Include="XMLs\SkillMessages\skill_Slippery_Swimsuit_Illia_Malvusin.xml" />
-    <Content Include="XMLs\SkillMessages\skill_Sly_Fox_Rayner.xml" />
-    <Content Include="XMLs\SkillMessages\skill_Staff_Fetish_Lily.xml" />
-    <Content Include="XMLs\SkillMessages\skill_studious_sucker_christyd.xml" />
-    <Content Include="XMLs\SkillMessages\skill_Sunny_Happiness_Great_Daeo.xml" />
-    <Content Include="XMLs\SkillMessages\skill_That%27s_No_Cat_Nyx.xml" />
-    <Content Include="XMLs\SkillMessages\skill_Vg%27f_Lbhe_Freir!__themorpher606.xml" />
-    <Content Include="XMLs\SkillMessages\skill_Vibrating_Vex_PsychoticPie.xml" />
-    <Content Include="XMLs\SkillMessages\skill_Writ_of_Sealing_Taenil_Auxifur.xml" />
     <Content Include="XMLs\TFMessages\form_Adorable_Donkey_Foal_LexamTheGemFox_&amp;_Hachik0048.xml" />
     <Content Include="XMLs\TFMessages\form_Donna_LexamTheGemFox.xml" />
     <Content Include="XMLs\TFMessages\form_Alraune_Foxpower93.xml" />
@@ -1781,6 +1734,7 @@
     <Content Include="XMLs\TFMessages\form_Wizard%27s_Wand_themorpher606.xml" />
     <Content Include="XMLs\TFMessages\form_wolf_cub_Alessandro.xml" />
     <Content Include="XMLs\validChatColors.txt" />
+    <Content Include="Z_DeveloperGuide.txt" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Characters\Caroline Plessica.txt" />
@@ -1870,7 +1824,9 @@
     <Content Include="Content\fashion.css.map" />
     <Content Include="Content\fashion.scss" />
     <Content Include="Content\custom.css.map" />
-    <None Include="Properties\PublishProfiles\transformania-time.com - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\transformania-time.com - Web Deploy.pubxml">
+      <SubType>Designer</SubType>
+    </None>
     <Content Include="Images\back.png" />
     <Content Include="Images\background1.jpg" />
     <Content Include="Images\background2.jpg" />
@@ -2093,7 +2049,6 @@
     <Content Include="Views\PvP\MySkills.cshtml" />
     <Content Include="Views\PvP\ViewLog.cshtml" />
     <Content Include="Views\PvP\Inventory.cshtml" />
-    <Content Include="Views\PvP\PvPAdmin.cshtml" />
     <Content Include="Views\PvP\partial_ItemBuffs.cshtml" />
     <Content Include="Views\PvP\partial_InventoryItem.cshtml" />
     <Content Include="Views\PvP\Play_Inanimate.cshtml" />
@@ -2107,7 +2062,7 @@
     <Content Include="Views\PvP\ReadMessage.cshtml" />
     <Content Include="Views\PvP\Write.cshtml" />
     <Content Include="Views\PvP\partial_FrontPageAvatar.cshtml" />
-    <Content Include="Views\PvP\Contribute.cshtml" />
+    <Content Include="Views\Contribution\Contribute.cshtml" />
     <Content Include="Views\PvP\partial_InventoryEquipped.cshtml" />
     <Content Include="Views\PvP\WorldMap.cshtml" />
     <Content Include="Views\PvP\PlayerLookup.cshtml" />
@@ -2120,11 +2075,11 @@
     <Content Include="Views\PvP\partial\spellsList.cshtml" />
     <Content Include="Views\PvP\Play_Animal.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Alpha_2.cshtml" />
-    <Content Include="Views\PvP\ContributeGraphicsNeeded.cshtml" />
-    <Content Include="Views\PvP\ContributeSetGraphicStatus.cshtml" />
+    <Content Include="Views\Contribution\ContributeGraphicsNeeded.cshtml" />
+    <Content Include="Views\Contribution\ContributeSetGraphicStatus.cshtml" />
     <Content Include="Views\Info\GameNews_PlannedFeatures.cshtml" />
     <Content Include="Views\PvPAdmin\Play.cshtml" />
-    <Content Include="Views\PvP\BalanceCalculatorEffect.cshtml" />
+    <Content Include="Views\Contribution\BalanceCalculatorEffect.cshtml" />
     <Content Include="Views\PvP\LevelupPerk.cshtml" />
     <Content Include="Views\PvP\MyPerks.cshtml" />
     <Content Include="Views\PvP\partial\partial_perkBonus.cshtml" />
@@ -2134,7 +2089,6 @@
     <Content Include="Views\PvP\RoundLeaderboards\Alpha_3.cshtml" />
     <Content Include="Views\PvP\TeleportMap.cshtml" />
     <Content Include="Views\Contribution\ContributeEffect.cshtml" />
-    <Content Include="Views\Contribution\EffectModalContent.cshtml" />
     <Content Include="Views\Covenant\MyCovenant.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Alpha_4.cshtml" />
     <Content Include="Views\PvP\partial\OldLeaderboardLinks.cshtml" />
@@ -2149,11 +2103,6 @@
     <Content Include="Views\PvP\RoundLeaderboards\Alpha_5.cshtml" />
     <Content Include="Views\PvPAdmin\ApproveContributionList.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Alpha_6.cshtml" />
-    <Content Include="Views\Contribution\Bios\Meddle.cshtml" />
-    <Content Include="Views\Contribution\ContributorBioList.cshtml" />
-    <Content Include="Views\Contribution\ContributorBio.cshtml" />
-    <Content Include="Views\Contribution\Bios\Luxianne.cshtml" />
-    <Content Include="Views\Contribution\Bios\Nymic-TF.cshtml" />
     <Content Include="Views\PvPAdmin\Index.cshtml" />
     <Content Include="Views\PvPAdmin\ApproveEffectContributionList.cshtml" />
     <Content Include="Views\Covenant\CovenantWideMessage.cshtml" />
@@ -2173,7 +2122,7 @@
     <Content Include="Views\PvP\Chats\ChatLog.cshtml" />
     <Content Include="Views\PvP\Chats\ChatCommands.cshtml" />
     <Content Include="Views\Duel\Duel.cshtml" />
-    <Content Include="Views\PvP\BalanceCalculator2.cshtml" />
+    <Content Include="Views\Contribution\BalanceCalculator2.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Alpha_9.cshtml" />
     <Content Include="Views\PvP\PvPLeaderboard.cshtml" />
     <Content Include="Views\PvP\ItemLeaderboard.cshtml" />
@@ -2284,8 +2233,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="XMLs\FairyChallengeText\SingleBags\" />
-    <Folder Include="XMLs\XPBooks\" />
     <Folder Include="Z_SelfHelp\" />
   </ItemGroup>
   <ItemGroup>

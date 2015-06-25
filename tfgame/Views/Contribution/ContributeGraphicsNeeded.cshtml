@@ -94,11 +94,11 @@
 
                 try
                 {
-                    @Html.ActionLink(c.AssignedToArtist, "ContributeSetGraphicStatus", "PvP", new { id = c.Id }, null)
+                    @Html.ActionLink(c.AssignedToArtist, "ContributeSetGraphicStatus", "Contribution", new { id = c.Id }, null)
                 }
                 catch
                 {
-                    @Html.ActionLink("(none)", "ContributeSetGraphicStatus", "PvP", new { id = c.Id }, null)
+                    @Html.ActionLink("(none)", "ContributeSetGraphicStatus", "Contribution", new { id = c.Id }, null)
                 }
                         }
 

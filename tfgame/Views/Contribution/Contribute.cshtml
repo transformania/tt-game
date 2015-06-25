@@ -19,13 +19,13 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
                 <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
-                <li>@Html.ActionLink("Contributions in review", "ContributeGraphicsNeeded", "PvP")</li>
+                <li>@Html.ActionLink("Contributions in review", "ContributeGraphicsNeeded", "Contribution")</li>
                 <li>@Html.ActionLink("Submit Curse", "ContributeEffect", "Contribution", new { Id = "-1" }, FormMethod.Post)</li>
                 <li>@Html.ActionLink("Submit DM Encounter", "MyDMRolls", "Contribution")</li>
-                <li>@Html.ActionLink("New Contribution", "Contribute", "PvP", new { Id = "-1" }, FormMethod.Post)</li>
+                <li>@Html.ActionLink("New Contribution", "Contribute", "Contribution", new { Id = "-1" }, FormMethod.Post)</li>
                 @{if (User.IsInRole(PvPStatics.Permissions_Proofreader) == true)
                 {
-                    <li>@Html.ActionLink("Unlock but DO NOT Save", "SendContributionUndoLock", "PvP", new { id = Model.Id }, null)</li>
+                    <li>@Html.ActionLink("Unlock but DO NOT Save", "SendContributionUndoLock", "Contribution", new { id = Model.Id }, null)</li>
                 }}     
             </ul>
         </div><!-- /.navbar-collapse -->
@@ -57,13 +57,13 @@
                         if (contribution.IsLive == true)
                         {
                         <span class='newlink'>
-                            @Html.ActionLink("Spell name:  " + contribution.Skill_FriendlyName + ". Form name:  " + contribution.Form_FriendlyName + ".", "Contribute", "PvP", new { Id = contribution.Id }, null)
+                            @Html.ActionLink("Spell name:  " + contribution.Skill_FriendlyName + ". Form name:  " + contribution.Form_FriendlyName + ".", "Contribute", "Contribution", new { Id = contribution.Id }, null)
                         </span>
 
                     }
                     else
                     {
-                        @Html.ActionLink("Spell name:  " + contribution.Skill_FriendlyName + ". Form name:  " + contribution.Form_FriendlyName + ".", "Contribute", "PvP", new { Id = contribution.Id }, null)
+                        @Html.ActionLink("Spell name:  " + contribution.Skill_FriendlyName + ". Form name:  " + contribution.Form_FriendlyName + ".", "Contribute", "Contribution", new { Id = contribution.Id }, null)
                     }
                     if (contribution.ProofreadingCopy == true)
                     {
@@ -88,7 +88,7 @@
                 if (ViewBag.Proofreading != null)
                 {
 
-                <p>CONTRIBUTIONS AVAILABLE TO PROOFREAD (Sort by: @Html.ActionLink("Spell name", "Contribute", "PvP", new { Id = -1, sort = "spellname" }, null), @Html.ActionLink("Form name", "Contribute", "PvP", new { Id = -1, sort = "formname" }, null))</p>
+                <p>CONTRIBUTIONS AVAILABLE TO PROOFREAD (Sort by: @Html.ActionLink("Spell name", "Contribute", "Contribution", new { Id = -1, sort = "spellname" }, null), @Html.ActionLink("Form name", "Contribute", "Contribution", new { Id = -1, sort = "formname" }, null))</p>
 
                     foreach (Contribution contribution in ViewBag.Proofreading)
                     {
@@ -101,7 +101,7 @@
                         if (contribution.IsLive == true)
                         {
                             <span class='newlink'>
-                                @Html.ActionLink("Spell name:  " + contribution.Skill_FriendlyName + ". Form name:  " + contribution.Form_FriendlyName + ".", "Contribute", "PvP", new { Id = contribution.Id }, null)
+                                @Html.ActionLink("Spell name:  " + contribution.Skill_FriendlyName + ". Form name:  " + contribution.Form_FriendlyName + ".", "Contribute", "Contribution", new { Id = contribution.Id }, null)
 
                                 @{
                             if (contribution.ProofreadingCopy == true)
@@ -120,7 +120,7 @@
                         }
                         else
                         {
-                            @Html.ActionLink("Spell name:  " + contribution.Skill_FriendlyName + ". Form name:  " + contribution.Form_FriendlyName + ".", "Contribute", "PvP", new { Id = contribution.Id }, null)
+                            @Html.ActionLink("Spell name:  " + contribution.Skill_FriendlyName + ". Form name:  " + contribution.Form_FriendlyName + ".", "Contribute", "Contribution", new { Id = contribution.Id }, null)
                             if (contribution.ProofreadingCopy == true)
                             {
                                 <span class="good">PROOFREADING COPY</span>
@@ -176,13 +176,13 @@
 
         @{ if ((User.IsInRole(PvPStatics.Permissions_Proofreader) == true) == true)
          {
-            @Html.ActionLink("Unlock but DO NOT Save", "SendContributionUndoLock", "PvP", new { id = Model.Id }, null)
+            @Html.ActionLink("Unlock but DO NOT Save", "SendContributionUndoLock", "Contribution", new { id = Model.Id }, null)
          }
         }
 
     
 
-        @using (Html.BeginForm("SendContribution", "PvP", FormMethod.Post))
+        @using (Html.BeginForm("SendContribution", "Contribution", FormMethod.Post))
         {
             @Html.HiddenFor(m => m.Id);
             @Html.HiddenFor(m => m.IsLive);
@@ -592,7 +592,7 @@
 
                 <div class="form__panel externalMessage">The current balance score is:  <b>@ViewBag.BalanceScore</b>.  Animate forms should have a balance score of 0.  Items should have a balance scoreof 10 and pets should have a balance score close to 20.</div>
 
-                <p>@Html.ActionLink("Use calculator (save contribution before doing this!)", "ContributeBalanceCalculator2", "PvP", new { id = Model.Id }, null)<br /></p>
+                <p>@Html.ActionLink("Use calculator (save contribution before doing this!)", "ContributeBalanceCalculator2", "Contribution", new { id = Model.Id }, null)<br /></p>
             </div>
 
             <div class="form__panel group" id="itemCreatedPanelNotPresent" style="background-color: #FFE0A3; display: none;">
@@ -671,7 +671,7 @@
 
             if ((User.IsInRole(PvPStatics.Permissions_Proofreader) == true) == true)
             {
-                @Html.ActionLink("Unlock but DO NOT Save", "SendContributionUndoLock", "PvP", new { id = Model.Id }, null)
+                @Html.ActionLink("Unlock but DO NOT Save", "SendContributionUndoLock", "Contribution", new { id = Model.Id }, null)
             }
 
 

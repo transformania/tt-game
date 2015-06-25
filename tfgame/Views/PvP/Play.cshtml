@@ -64,7 +64,7 @@
                         <li>@Html.ActionLink("Inbox", "MyMessages", "PvP")</li>
                     }
                 }
-                <li>@Html.ActionLink("Submit Content", "Contribute", "PvP", new { Id = -1 }, null)</li>
+                <li>@Html.ActionLink("Submit Content", "Contribute", "Contribution", new { Id = -1 }, null)</li>
 
                 @{
                     if (User.IsInRole(PvPStatics.Permissions_Admin) == true)

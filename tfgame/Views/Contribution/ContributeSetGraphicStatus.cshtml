@@ -1,6 +1,6 @@
 ﻿@model tfgame.ViewModels.ContributionStatusViewModel
 
-@using (Html.BeginForm("ContributeSetGraphicStatusSubmit", "PvP", FormMethod.Post))
+@using (Html.BeginForm("ContributeSetGraphicStatusSubmit", "Contribution", FormMethod.Post))
 {
     
      <p>@Html.ActionLink("Look at this author's player profile","LookAtPlayer_FromMembershipId","PvP", new {id = Model.OwnerMembershipId}, null)</p>

@@ -890,6 +890,16 @@ namespace tfgame.Controllers
             ProofreadCopy.SpellTFEnergyDamageResistance = OldCopy.SpellTFEnergyDamageResistance;
             ProofreadCopy.ExtraInventorySpace = OldCopy.ExtraInventorySpace;
 
+            ProofreadCopy.Discipline = OldCopy.Discipline;
+            ProofreadCopy.Perception = OldCopy.Perception;
+            ProofreadCopy.Charisma = OldCopy.Charisma;
+            ProofreadCopy.Fortitude = OldCopy.Fortitude;
+            ProofreadCopy.Agility = OldCopy.Agility;
+            ProofreadCopy.Allure = OldCopy.Allure;
+            ProofreadCopy.Magicka = OldCopy.Magicka;
+            ProofreadCopy.Succour = OldCopy.Succour;
+            ProofreadCopy.Luck = OldCopy.Luck;
+
             effectConRepo.SaveEffectContribution(ProofreadCopy);
 
 
@@ -1329,6 +1339,17 @@ namespace tfgame.Controllers
             ProofreadCopy.SpellHealthDamageResistance = OldCopy.SpellHealthDamageResistance;
             ProofreadCopy.SpellTFEnergyDamageResistance = OldCopy.SpellTFEnergyDamageResistance;
             ProofreadCopy.ExtraInventorySpace = OldCopy.ExtraInventorySpace;
+
+
+            ProofreadCopy.Discipline = OldCopy.Discipline;
+            ProofreadCopy.Perception = OldCopy.Perception;
+            ProofreadCopy.Charisma = OldCopy.Charisma;
+            ProofreadCopy.Fortitude = OldCopy.Fortitude;
+            ProofreadCopy.Agility = OldCopy.Agility;
+            ProofreadCopy.Allure = OldCopy.Allure;
+            ProofreadCopy.Magicka = OldCopy.Magicka;
+            ProofreadCopy.Succour = OldCopy.Succour;
+            ProofreadCopy.Luck = OldCopy.Luck;
 
             ProofreadCopy.ImageURL = OldCopy.ImageURL;
 

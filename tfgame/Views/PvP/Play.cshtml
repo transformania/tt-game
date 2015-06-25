@@ -134,14 +134,11 @@
     </div>
 
     <div class="row">
-        <div class="col-md-4 col-md-offset-1">@Html.Partial("partial/movementTable", Model)</div>
-        <div class="col-md-6 covenDescription">
-            <span class="place">@Model.Location.Name [@Model.Location.X,@Model.Location.Y]  <br /> </span>
-
+        <div class="col-md-4 col-md-offset-1" style="text-align: center;">@Html.Partial("partial/movementTable", Model)
             @{
                 if (Model.You.Player.ShoutsRemaining > 0)
                 {
-                    @Html.ActionLink("Shout", "Shout", "PvP", null, new { @class = "" })
+                    @Html.ActionLink("Shout", "Shout", "PvP", null, new { @class = "shout" })
                 }
 
                 KeyValuePair<int, CovenantNameFlag> temp = CovenantDictionary.IdNameFlagLookup.FirstOrDefault(c => c.Value.HomeLocation == Model.Location.dbName);
@@ -152,9 +149,14 @@
                 }
 
 
-           
-                
+
+
             }
+        </div>
+        <div class="col-md-6 covenDescription">
+            <span class="place">@Model.Location.Name [@Model.Location.X,@Model.Location.Y]  <br /> </span>
+
+
             @Model.Location.GetDescription()
             @{
                 

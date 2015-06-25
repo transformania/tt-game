@@ -2,112 +2,133 @@
 @using tfgame.ViewModels
 @using tfgame.CustomHtmlHelpers
 
-@*<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>*@
 
-@Html.ActionLink("Back to game", "Play", "PvP")
+<nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
 
-@Html.ActionLink("Archive All My Spells", "ArchiveAllMySpells", "Settings", new { archive = true}, null)
-@Html.ActionLink("Restore All My Spells", "ArchiveAllMySpells", "Settings", new { archive = false }, null)
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav" style="width:100%;">
+                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+                <li>@Html.ActionLink("Archive All My Spells", "ArchiveAllMySpells", "Settings", new { archive = true }, null)</li>
+                <li>@Html.ActionLink("Restore All My Spells", "ArchiveAllMySpells", "Settings", new { archive = false }, null)</li>
+                <li><a href="#" style="color: white !important; cursor: default">Known Spells (@Model.Where(c => c.dbSkill.Name != tfgame.Statics.PvPStatics.Dungeon_VanquishSpell && (c.MobilityType == "full" || c.MobilityType == "inanimate" || c.MobilityType == "animal" || c.MobilityType == "mindcontrol")).Count() / @ViewBag.TotalLearnableSkills)</a></li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+<div class="containerInner">
+    <div id="resultPrompt"></div>
+    <table>
+        <tr style="font-weight: bold;">
+            <td>Spell Name</td>
+            <td>Description</td>
+            <td>MP</td>
+            <td>WP</td>
+            <td>TFE</td>
+            <td>Archive</td>
+        </tr>
+        @{
+            string chargeVisible = "none";
+            string timeVisible = "none";
 
 
-
-
-<h2>Known Spells (@Model.Where(c => c.dbSkill.Name != tfgame.Statics.PvPStatics.Dungeon_VanquishSpell && (c.MobilityType == "full" || c.MobilityType == "inanimate" || c.MobilityType == "animal" || c.MobilityType == "mindcontrol")).Count() / @ViewBag.TotalLearnableSkills)</h2>
-
-<div id="resultPrompt"></div>
-
-@{
-    string chargeVisible = "none";
-    string timeVisible = "none";
-
-
-    foreach (SkillViewModel2 skill in Model.OrderBy(s => s.Skill.FriendlyName))
-    {
-        if (skill.dbSkill.Charge != -1.0M)
-        {
-            chargeVisible = "block";
-        }
-
-        if (skill.dbSkill.Duration != -1.0M)
-        {
-            timeVisible = "block";
-        }
-
-        <div class="skillBox">
-            <div class="skillname">
-                @skill.Skill.FriendlyName
-
-                @{
-        if (skill.MobilityType != null && skill.MobilityType == "inanimate")
-        {
-            <span class="mobilityClass">(inanimate)</span>
-        }
-        else if (skill.MobilityType != null && skill.MobilityType == "animal")
-        {
-            <span class="mobilityClass">(animal/familiar)</span>
-        }
-        else if (skill.MobilityType != null && skill.MobilityType == "curse")
-        {
-            <span class="mobilityClass">(temporary curse)</span>
-        }
-        else if (skill.MobilityType != null && skill.MobilityType == "mindcontrol")
-        {
-            <span class="mobilityClass">(temporary mind control)</span>
-        }
-        if (skill.dbSkill.IsArchived == true)
-        {
-            <b id="@skill.dbSkill.Id">(ARCHIVED)</b>   
-        }
-        else
-        {
-            <b id="@skill.dbSkill.Id"></b>   
-        }
+            foreach (SkillViewModel2 skill in Model.OrderBy(s => s.Skill.FriendlyName))
+            {
+                if (skill.dbSkill.Charge != -1.0M)
+                {
+                    chargeVisible = "block";
                 }
 
-            </div>
+                if (skill.dbSkill.Duration != -1.0M)
+                {
+                    timeVisible = "block";
+                }
+
+                <tr>
+                    <td class="skillname">
+                        @skill.Skill.FriendlyName
+
+                        @{
+                            if (skill.MobilityType != null && skill.MobilityType == "inanimate")
+                            {
+                                <span class="mobilityClass">(inanimate)</span>
+                            }
+                            else if (skill.MobilityType != null && skill.MobilityType == "animal")
+                            {
+                                <span class="mobilityClass">(animal/familiar)</span>
+                            }
+                            else if (skill.MobilityType != null && skill.MobilityType == "curse")
+                            {
+                                <span class="mobilityClass">(temporary curse)</span>
+                            }
+                            else if (skill.MobilityType != null && skill.MobilityType == "mindcontrol")
+                            {
+                                <span class="mobilityClass">(temporary mind control)</span>
+                            }
+                            if (skill.dbSkill.IsArchived == true)
+                            {
+                                <b id="@skill.dbSkill.Id">(ARCHIVED)</b>
+                            }
+                            else
+                            {
+                                <b id="@skill.dbSkill.Id"></b>
+                            }
+                        }
+
+                    </td>
 
 
 
-            <div class="description">@skill.Skill.Description</div>
-            <div class="manacost">Requires @skill.Skill.ManaCost mana</div>
+                    <td class="description">@skill.Skill.Description</td>
+                    <td class="manacost" style="width:50px;">@skill.Skill.ManaCost</td>
 
-            @{
-        if (@skill.Skill.HealthDamageAmount > 0)
-        {
-            <div class="damage">Decreases target's willpower by @skill.Skill.HealthDamageAmount</div>
+                    @{
+                        if (@skill.Skill.HealthDamageAmount > 0)
+                        {
+                            <td class="damage" style="width:50px;">@skill.Skill.HealthDamageAmount</td>
+                        }
+                        if (@skill.Skill.TFPointsAmount > 0)
+                        {
+                            <td class="tfpoints" style="width:50px;">@skill.Skill.TFPointsAmount</td>
+                        }
+                    }
+
+
+
+
+
+
+
+                    <td class="charges" style="display:  @chargeVisible">Casts remaining:  @skill.dbSkill.Charge</td>
+                    <td class="time" style="display:  @timeVisible">Time remaining:  @skill.dbSkill.Duration</td>
+
+                    @{
+                        if (@skill.Skill.GivesEffect != null)
+                        {
+                            <td class="effect"><b>Gives the @CharactersHere.GetEffectFriendlyName(skill.Skill.GivesEffect) effect</b></td>
+                        }
+                    }
+
+                    @*@Html.ActionLink("Toggle Archive", "ArchiveSpell", "Settings", new { name = @skill.dbSkill.Name }, null)*@
+
+                    <td>@Ajax.ActionLink("[x]", "ArchiveSpell", "Settings", new { name = @skill.dbSkill.Name }, new AjaxOptions { UpdateTargetId = "resultPrompt", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "prompt_success", OnFailure = "prompt_failure", OnBegin = "prompt_wait" }, null)</td>
+
+                </tr>
+                        }
         }
-        if (@skill.Skill.TFPointsAmount > 0)
-        {
-            <div class="tfpoints">Increases target's transformation energy by @skill.Skill.TFPointsAmount</div>
-        }
-            }
-
-
-
-
-
-
-
-            <div class="charges" style="display:  @chargeVisible">Casts remaining:  @skill.dbSkill.Charge</div>
-            <div class="time" style="display:  @timeVisible">Time remaining:  @skill.dbSkill.Duration</div>
-
-            @{
-        if (@skill.Skill.GivesEffect != null)
-        {
-            <div class="effect"><b>Gives the @CharactersHere.GetEffectFriendlyName(skill.Skill.GivesEffect) effect</b></div>
-        }
-            }
-
-            @*@Html.ActionLink("Toggle Archive", "ArchiveSpell", "Settings", new { name = @skill.dbSkill.Name }, null)*@
-
-            @Ajax.ActionLink("Toggle Archive", "ArchiveSpell", "Settings", new { name = @skill.dbSkill.Name }, new AjaxOptions { UpdateTargetId = "resultPrompt", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "prompt_success", OnFailure = "prompt_failure", OnBegin = "prompt_wait" }, null)
-
-        </div>
-    }
-}
-
-<br />
-@Html.ActionLink("Back to game", "Play", "PvP")
+    </table>
+</div>
 
 <style>
     .skillBox {
@@ -116,28 +137,19 @@
     }
 
     .skillname {
-        font-size: 30px;
     }
 
-    .description {
-        color: purple;
-        font-size: 20px;
-        font-style: italic;
-    }
 
     .manacost {
         color: blue;
-        font-style: oblique;
     }
 
     .damage {
         color: red;
-        font-style: oblique;
     }
 
     .tfpoints {
         color: darkgreen;
-        font-style: oblique;
     }
 
     .duration {
@@ -156,9 +168,26 @@
         color: darkolivegreen;
         font-weight: 900;
     }
+
+    tr {
+       border: 1px dashed rgb(161, 105, 105);
+       text-align: center;
+    }
+
+    .description {
+        color: purple;
+        padding: 10px 5px;
+        text-align:justify;
+    }
+
 </style>
 
-<script>
+
+
+
+
+ 
+    <script>
     function prompt_success() {
       //  alert($("#changeMessage").text());
         var changeNumber = $("#changeNumber").text();
@@ -168,7 +197,7 @@
         } else {
             $("#" + changeNumber).text("");
         }
-        
+
     }
 
     function prompt_wait() {
@@ -176,4 +205,4 @@
     }
 
 
-</script>
+    </script>

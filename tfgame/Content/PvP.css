@@ -714,11 +714,7 @@ a.curse {
 }
 
 .listdots hr {
-    height: 30px;
-    border-style: solid;
-    border-color: #000;
-    border-width: 1px 0px 0px;
-    border-radius: 20px;
+    border-top: 3px dotted #A16969;
 }
 
 .listdots p {

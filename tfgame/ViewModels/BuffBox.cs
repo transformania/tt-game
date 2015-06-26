@@ -717,7 +717,7 @@ namespace tfgame.ViewModels
 	                    {"Perception", 0},
 	                    {"Charisma", 0},
 	                    {"Fortitude", -.5F},
-	                    {"Agility", 1.0F},
+	                    {"Agility", 0.7F},
 	                    {"Allure", 0},
 	                    {"Magicka", 0},
 	                    {"Succour", 0},

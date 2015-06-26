@@ -104,7 +104,7 @@ namespace tfgame.Controllers
             {
                 contribution = new Contribution();
                 contribution.Skill_ManaCost = 7;
-                contribution.Form_TFEnergyRequired = 70;
+                contribution.Form_TFEnergyRequired = 100;
                 contribution.Skill_TFPointsAmount = 10;
                 contribution.Skill_HealthDamageAmount = 4.5M;
             }

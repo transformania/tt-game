@@ -10,33 +10,45 @@
     <p>In order to register you must agree to these terms and the @Html.ActionLink("rules of play", "Rules", "Info", null, new { target = "_blank" }) by clicking clicking on the checkbox <span class="bad"><u>here</u>:</span>  <input type="checkbox" id="consent" /></p>
 </div>
 <div class="onlinePlayersWrapperBG containerInner text-center">
-    @using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl }))
-    {
-        @Html.AntiForgeryToken()
-        @Html.ValidationSummary(true)
+    <div class="row">
+        <div class="col-md-4 hidden-sm hidden-xs">
+            <img src="~/Images/login-left.png" style="        margin-top: -100px;  margin-left: -10px;
+      " /></div>
 
-        <fieldset>
+        <div class="col-md-4 col-sm-12 loginCenter">
+            @using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+
+                <fieldset>
 
 
-                   @* @Html.LabelFor(m => m.UserName)*@
-        @Html.TextBoxFor(m => m.UserName, new { disabled = "disabled", @class = "form-control frontForm", placeholder = "Username" })
-        @Html.ValidationMessageFor(m => m.UserName)
+                    @* @Html.LabelFor(m => m.UserName)*@
+                    @Html.TextBoxFor(m => m.UserName, new { disabled = "disabled", @class = "form-control frontForm", placeholder = "Username" })
+                    @Html.ValidationMessageFor(m => m.UserName)
 
-        @*@Html.LabelFor(m => m.Password)*@
-                        @Html.PasswordFor(m => m.Password, new { disabled = "disabled", @class = "form-control frontForm", placeholder = "Password" })
-                        @Html.ValidationMessageFor(m => m.Password)
-                     
-                        @Html.LabelFor(m => m.RememberMe, new { @class = "checkbox" }) @Html.CheckBoxFor(m => m.RememberMe, new { disabled = "disabled" }) <br />
+                    @*@Html.LabelFor(m => m.Password)*@
+                    @Html.PasswordFor(m => m.Password, new { disabled = "disabled", @class = "form-control frontForm", placeholder = "Password" })
+                    @Html.ValidationMessageFor(m => m.Password)
 
-            <input type="submit" class="btn btn-default" value="Login" id="submitBtn" disabled="disabled" />
-            </fieldset>
+                    @Html.LabelFor(m => m.RememberMe, new { @class = "checkbox2" }) @Html.CheckBoxFor(m => m.RememberMe, new { disabled = "disabled" }) <br />
 
-            <p style="margin-top: 50px;">
-                @Html.ActionLink("Register", "Register") <br />if you don't have an account.
-            </p>
-        }
+                    <input type="submit" class="btn btn-default" value="Login" id="submitBtn" disabled="disabled" />
+                </fieldset>
+
+                <p style="margin-top: 50px;">
+                    @Html.ActionLink("Register", "Register") <br />if you don't have an account.
+                </p>
+            }
+        </div>
+        
+
+        <div class="col-md-4 hidden-sm hidden-xs">
+            <img src="~/Images/login-right.png" style="        margin-top: -100px;
+        margin-left: -75px;" /></div>
     </div>
-
+</div>
     <section id="loginForm">
 
     </section>
@@ -75,4 +87,14 @@
     input:disabled {
         background: #b6b6b6;
     }
+
+    .loginCenter{
+        padding: 150px 0px;
+    }
+
+   @@media (max-width: 768px) {
+    .loginCenter{
+        padding: 0px;
+    }
+}
 </style>

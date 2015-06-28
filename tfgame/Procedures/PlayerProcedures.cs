@@ -1903,8 +1903,8 @@ namespace tfgame.Procedures
         public static Player ReadjustMaxes(Player player, BuffBox buffs)
         {
             // readjust player health/mana by grabbing base amount plus effects from buffs
-            player.MaxHealth = PvPStatics.XP__HealthManaBaseByLevel[player.Level] * (1.0M + (buffs.HealthBonusPercent() / 100.0M));
-            player.MaxMana = PvPStatics.XP__HealthManaBaseByLevel[player.Level] * (1.0M + (buffs.ManaBonusPercent() / 100.0M));
+            player.MaxHealth = PvPStatics.XP__HealthBaseByLevel[player.Level] * (1.0M + (buffs.HealthBonusPercent() / 100.0M));
+            player.MaxMana = PvPStatics.XP__ManaBaseByLevel[player.Level] * (1.0M + (buffs.ManaBonusPercent() / 100.0M));
 
 
             // keep player's health within proper bounds

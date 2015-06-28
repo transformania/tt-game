@@ -91,8 +91,8 @@ namespace tfgame.dbModels.Models
         public void ReadjustMaxes(BuffBox buffs)
         {
             // readjust this health/mana by grabbing base amount plus effects from buffs
-            this.MaxHealth = PvPStatics.XP__HealthManaBaseByLevel[this.Level] * (1.0M + (buffs.HealthBonusPercent() / 100.0M));
-            this.MaxMana = PvPStatics.XP__HealthManaBaseByLevel[this.Level] * (1.0M + (buffs.ManaBonusPercent() / 100.0M));
+            this.MaxHealth = PvPStatics.XP__HealthBaseByLevel[this.Level] * (1.0M + (buffs.HealthBonusPercent() / 100.0M));
+            this.MaxMana = PvPStatics.XP__ManaBaseByLevel[this.Level] * (1.0M + (buffs.ManaBonusPercent() / 100.0M));
 
 
             // keep this's health within proper bounds

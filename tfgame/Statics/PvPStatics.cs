@@ -19,7 +19,7 @@ namespace tfgame.Statics
         public const int StartTurnNoAttackSeconds = 30;
         public const int EndTurnNoAttackSeconds = 30;
 
-        public const string AlphaRound = "Alpha Round 21";
+        public const string AlphaRound = "Alpha Round 22";
 
         public const bool ChaosMode = false;
 
@@ -124,7 +124,7 @@ namespace tfgame.Statics
            7790, // 26 to 27
        };
 
-        public static int[] XP__HealthManaBaseByLevel = {
+        public static int[] XP__ManaBaseByLevel = {
            5, // 0 (nobody should ever be at 0!)
            50, // 1
            60, // 2
@@ -154,6 +154,38 @@ namespace tfgame.Statics
            290, // 26
            300, // 27
            310, // 28
+       };
+
+        public static int[] XP__HealthBaseByLevel = {
+           5, // 0 (nobody should ever be at 0!)
+           100, // 1
+           115, // 2
+           130, // 3
+           145, // 4
+           160, // 5
+           175, // 6
+           190, // 7
+           205, // 8
+           220, // 9
+           235, //10
+           250, // 11
+           265, // 12
+           280, // 13
+           295, // 14
+           310, // 15
+           325, // 16
+           340, // 17
+           355, // 18
+           370, // 19
+           385, // 20
+           400, // 21
+           415, // 22
+           430, // 23
+           445, // 24
+           460, // 25
+           475, // 26
+           490, // 27
+           505, // 28
        };
 
         public static decimal LevelUpHealthMaxIncreaseBase = 10;

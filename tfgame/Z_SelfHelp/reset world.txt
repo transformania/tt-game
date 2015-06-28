@@ -23,7 +23,7 @@ DELETE FROM [Stats].[dbo].[Achievements]
 DELETE FROM [Stats].[dbo].[ItemTransferLogs]
 DELETE FROM [Stats].[dbo].[BossDamages]
 
-UPDATE [Stats].[dbo].[PvPWorldStats] SET Boss_Donna = 'unstarted', [Boss_Valentine] = 'unstarted', [Boss_Bimbo] = 'unstarted', [Boss_Thief] = 'unstarted', [TurnNumber] = 0
+UPDATE [Stats].[dbo].[PvPWorldStats] SET Boss_Donna = 'unstarted', [Boss_Valentine] = 'unstarted', [Boss_Bimbo] = 'unstarted', [Boss_Thief] = 'unstarted', [Boss_Sisters] = 'unstarted', [TurnNumber] = 0
 
 
 reset PvPWorldStatistics

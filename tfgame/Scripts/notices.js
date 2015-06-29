@@ -102,7 +102,7 @@ $(document).ready(function () {
 
 function backgroundPulse() {
     if (attackPulse == 1) {
-        $("body").animate({ backgroundColor: "red" }, 1000).animate({ backgroundColor: "black" }, 1000, backgroundPulse);
+        $("body").animate({ backgroundColor: "#A16969" }, 1500).animate({ backgroundColor: "#475374" }, 1500, backgroundPulse);
     }
 }
 

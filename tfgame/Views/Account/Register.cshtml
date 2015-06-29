@@ -13,12 +13,20 @@
     <p>In order to register you must agree to these terms and the @Html.ActionLink("rules of play", "Rules", "Info", null, new { target = "_blank" }) by clicking clicking on the checkbox <span class="bad"><u>here</u>:</span>  <input type="checkbox" id="consent" /></p>
 </div>
 <div class="onlinePlayersWrapperBG containerInner text-center">
-    @using (Html.BeginForm())
-    {
-        @Html.AntiForgeryToken()
-        @Html.ValidationSummary()
 
-        <fieldset>
+    <div class="row">
+        <div class="col-md-4 col-lg-4 hidden-sm hidden-xs">
+            <img src="~/Images/login-left.png" />
+        </div>
+
+        <div class="col-md-3 col-lg-4 col-sm-12 loginCenter">
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary()
+
+                <fieldset>
 
                     @Html.LabelFor(m => m.UserName)
                     @Html.TextBoxFor(m => m.UserName, new { disabled = "disabled", @class = "form-control frontForm", placeholder = "Username" })
@@ -29,53 +37,58 @@
                     @Html.LabelFor(m => m.ConfirmPassword)
                     @Html.PasswordFor(m => m.ConfirmPassword, new { disabled = "disabled", @class = "form-control frontForm", placeholder = "Confirm Password" })
 
-            <input type="submit" value="Register" id="registerBtn" class="btn btn-default" disabled="disabled" />
-        </fieldset>
-    }
+                    <input type="submit" value="Register" id="registerBtn" class="btn btn-default" disabled="disabled" />
+                </fieldset>
+            }
 
-    @section Scripts {
-        @Scripts.Render("~/bundles/jqueryval")
-    }
+            @section Scripts {
+                @Scripts.Render("~/bundles/jqueryval")
+            }
+
+        </div>
+
+        <div class="col-md-4 hidden-sm hidden-xs">
+            <img src="~/Images/login-right.png" />
+        </div>
+    </div>
 
 </div>
 
-
-
-    <script>
-        $(document).ready(function () {
-            //toggleForms(true);
-            $("#consent").click(function () {
-                if ((this).checked) {
-                    toggleForms(false);
-                } else {
-                    toggleForms(true);
-                }
-            });
+<script>
+    $(document).ready(function () {
+        //toggleForms(true);
+        $("#consent").click(function () {
+            if ((this).checked) {
+                toggleForms(false);
+            } else {
+                toggleForms(true);
+            }
         });
+    });
 
-        function toggleForms(value) {
-            $("#UserName").prop("disabled", value);
-            $("#Password").prop("disabled", value);
-            $("#ConfirmPassword").prop("disabled", value);
-            $("#registerBtn").prop("disabled", value);
-        }
+    function toggleForms(value) {
+        $("#UserName").prop("disabled", value);
+        $("#Password").prop("disabled", value);
+        $("#ConfirmPassword").prop("disabled", value);
+        $("#registerBtn").prop("disabled", value);
+    }
 
-    </script>
+</script>
 
-    <style>
-        .fullpageWarning {
-            width: 100%;
-            height: 100%;
-            font-size: 15px;
-            background-color: #ffc1fe;
-            color: black;
-            border: 5px solid darkviolet;
-            border-radius: 15px;
-            padding: 15px;
-            text-align: center;
-        }
+<style>
+    .fullpageWarning {
+        width: 100%;
+        height: 100%;
+        font-size: 15px;
+        background-color: #ffc1fe;
+        color: black;
+        border: 5px solid darkviolet;
+        border-radius: 15px;
+        padding: 15px;
+        text-align: center;
+    }
 
-        input:disabled {
-            background: #b6b6b6;
-        }
-    </style>
+    input:disabled {
+        background: #b6b6b6;
+    }
+</style>

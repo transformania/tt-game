@@ -529,6 +529,20 @@ namespace tfgame.Procedures
 
                     TFEnergyProcedures.DeleteAllPlayerTFEnergiesOfType(target.Id, targetForm.dbName);
 
+                    // if the attacker is a psycho, have them change to a new spell and equip whatever they just earned
+                    if (attacker.MembershipId == AIProcedures.PsychopathMembershipId)
+                    {
+                       SkillProcedures.DeleteAllPlayerSkills(attacker.Id);
+                       SkillProcedures.GiveRandomFindableSkillsToPlayer(attacker, 1);
+
+                       List<ItemViewModel> psychoItems = ItemProcedures.GetAllPlayerItems(attacker.Id).ToList();
+
+                       foreach (ItemViewModel i in psychoItems)
+                       {
+                           ItemProcedures.EquipItem(i.dbItem.Id, true);
+                       }
+
+                    }
 
                 }
                 #endregion

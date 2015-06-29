@@ -15,6 +15,7 @@ namespace tfgame.Procedures
 {
     public static class AIProcedures
     {
+        public const int PsychopathMembershipId = -2;
         public const int LindellaMembershipId = -3;
         public const int WuffieMembershipId = -10;
         public const int JewdewfaeMembershipId = -6;

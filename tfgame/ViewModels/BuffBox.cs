@@ -183,7 +183,7 @@ namespace tfgame.ViewModels
             output += Luck() * BuffMap.BuffsMap[substat]["Luck"];
 
             output += (float)FromForm_HealthBonusPercent;
-
+            output += (float)FromEffects_HealthBonusPercent;
 
             return Convert.ToDecimal(output);
 
@@ -205,6 +205,7 @@ namespace tfgame.ViewModels
             output += Luck() * BuffMap.BuffsMap[substat]["Luck"];
 
             output += (float)FromForm_ManaBonusPercent;
+            output += (float)FromEffects_ManaBonusPercent;
 
             return Convert.ToDecimal(output);
 
@@ -224,6 +225,9 @@ namespace tfgame.ViewModels
             output += Magicka() * BuffMap.BuffsMap[substat]["Magicka"];
             output += Succour() * BuffMap.BuffsMap[substat]["Succour"];
             output += Luck() * BuffMap.BuffsMap[substat]["Luck"];
+
+            output += (float)FromForm_ExtraSkillCriticalPercent;
+            output += (float)FromEffects_ExtraSkillCriticalPercent;
 
             return Convert.ToDecimal(output);
         }
@@ -285,6 +289,9 @@ namespace tfgame.ViewModels
             output += Succour() * BuffMap.BuffsMap[substat]["Succour"];
             output += Luck() * BuffMap.BuffsMap[substat]["Luck"];
 
+            output += (float)FromForm_SneakPercent;
+            output += (float)FromEffects_SneakPercent;
+
             return Convert.ToDecimal(output);
         }
 
@@ -302,6 +309,9 @@ namespace tfgame.ViewModels
             output += Magicka() * BuffMap.BuffsMap[substat]["Magicka"];
             output += Succour() * BuffMap.BuffsMap[substat]["Succour"];
             output += Luck() * BuffMap.BuffsMap[substat]["Luck"];
+
+            output += (float)FromForm_EvasionPercent;
+            output += (float)FromEffects_EvasionPercent;
 
             return Convert.ToDecimal(output);
         }
@@ -321,6 +331,9 @@ namespace tfgame.ViewModels
             output += Succour() * BuffMap.BuffsMap[substat]["Succour"];
             output += Luck() * BuffMap.BuffsMap[substat]["Luck"];
 
+            output += (float)FromForm_EvasionNegationPercent;
+            output += (float)FromEffects_EvasionNegationPercent;
+
             return Convert.ToDecimal(output);
         }
 
@@ -339,6 +352,9 @@ namespace tfgame.ViewModels
             output += Succour() * BuffMap.BuffsMap[substat]["Succour"];
             output += Luck() * BuffMap.BuffsMap[substat]["Luck"];
 
+            output += (float)FromForm_MeditationExtraMana;
+            output += (float)FromEffects_MeditationExtraMana;
+
             return Convert.ToDecimal(output);
         }
 
@@ -356,6 +372,9 @@ namespace tfgame.ViewModels
             output += Magicka() * BuffMap.BuffsMap[substat]["Magicka"];
             output += Succour() * BuffMap.BuffsMap[substat]["Succour"];
             output += Luck() * BuffMap.BuffsMap[substat]["Luck"];
+
+            output += (float)FromForm_CleanseExtraHealth;
+            output += (float)FromEffects_CleanseExtraHealth;
 
             return Convert.ToDecimal(output);
         }
@@ -396,6 +415,9 @@ namespace tfgame.ViewModels
             output += Succour() * BuffMap.BuffsMap[substat]["Succour"];
             output += Luck() * BuffMap.BuffsMap[substat]["Luck"];
 
+            output += (float)FromForm_SpellExtraTFEnergyPercent;
+            output += (float)FromEffects_SpellExtraTFEnergyPercent;
+
             return Convert.ToDecimal(output);
         }
 
@@ -413,6 +435,9 @@ namespace tfgame.ViewModels
             output += Magicka() * BuffMap.BuffsMap[substat]["Magicka"];
             output += Succour() * BuffMap.BuffsMap[substat]["Succour"];
             output += Luck() * BuffMap.BuffsMap[substat]["Luck"];
+
+            output += (float)FromForm_SpellExtraHealthDamagePercent;
+            output += (float)FromEffects_SpellExtraHealthDamagePercent;
 
             return Convert.ToDecimal(output);
         }
@@ -432,6 +457,9 @@ namespace tfgame.ViewModels
             output += Succour() * BuffMap.BuffsMap[substat]["Succour"];
             output += Luck() * BuffMap.BuffsMap[substat]["Luck"];
 
+            output += (float)FromForm_CleanseExtraTFEnergyRemovalPercent;
+            output += (float)FromEffects_CleanseExtraTFEnergyRemovalPercent;
+
             return Convert.ToDecimal(output);
         }
 
@@ -449,6 +477,9 @@ namespace tfgame.ViewModels
             output += Magicka() * BuffMap.BuffsMap[substat]["Magicka"];
             output += Succour() * BuffMap.BuffsMap[substat]["Succour"];
             output += Luck() * BuffMap.BuffsMap[substat]["Luck"];
+
+            output += (float)FromForm_SpellMisfireChanceReduction;
+            output += (float)FromEffects_SpellMisfireChanceReduction;
 
             return Convert.ToDecimal(output);
         }
@@ -468,6 +499,9 @@ namespace tfgame.ViewModels
             output += Succour() * BuffMap.BuffsMap[substat]["Succour"];
             output += Luck() * BuffMap.BuffsMap[substat]["Luck"];
 
+            output += (float)FromForm_SpellHealthDamageResistance;
+            output += (float)FromEffects_SpellHealthDamageResistance;
+
             return Convert.ToDecimal(output);
         }
 
@@ -486,6 +520,9 @@ namespace tfgame.ViewModels
             output += Succour() * BuffMap.BuffsMap[substat]["Succour"];
             output += Luck() * BuffMap.BuffsMap[substat]["Luck"];
 
+            output += (float)FromForm_SpellTFEnergyDamageResistance;
+            output += (float)FromEffects_SpellTFEnergyDamageResistance;
+
             return Convert.ToDecimal(output);
         }
 
@@ -503,6 +540,9 @@ namespace tfgame.ViewModels
             output += Magicka() * BuffMap.BuffsMap[substat]["Magicka"];
             output += Succour() * BuffMap.BuffsMap[substat]["Succour"];
             output += Luck() * BuffMap.BuffsMap[substat]["Luck"];
+
+            output += (float)FromForm_ExtraInventorySpace;
+            output += (float)FromEffects_ExtraInventorySpace;
 
             output = (float)Math.Floor(output);
 

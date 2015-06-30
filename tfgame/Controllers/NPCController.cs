@@ -771,6 +771,9 @@ namespace tfgame.Controllers
             Player me = PlayerProcedures.GetPlayerFromMembership();
             Player bartender = PlayerProcedures.GetPlayerFromMembership();
 
+            // update timestamp (so that he can heal naturally)
+            PlayerProcedures.SetTimestampToNow(bartender);
+
             // assert player is mobile
             if (me.Mobility != "full")
             {

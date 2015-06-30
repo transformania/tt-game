@@ -340,8 +340,6 @@ namespace tfgame.Procedures
                 }
 
                 dbPlayer.Mobility = "full";
-                dbPlayer.IsItemId = -1;
-                dbPlayer.IsPetToId = -1;
 
                 // don't let the player spawn in the dungeon if they are not in PvP mode
                 if (dbPlayer.GameMode < 2 && dbPlayer.IsInDungeon() == true)

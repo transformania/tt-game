@@ -43,8 +43,6 @@ namespace tfgame.Procedures.BossProcedures
                 petMerchant.NonPvP_GameOverSpellsAllowedLastChange = DateTime.UtcNow;
                 petMerchant.dbLocationName = "270_west_9th_ave"; // Lindella starts her rounds here
                 petMerchant.Gender = "female";
-                petMerchant.IsItemId = -1;
-                petMerchant.IsPetToId = -1;
                 petMerchant.ActionPoints = 120;
 
                 playerRepo.SavePlayer(petMerchant);

@@ -85,7 +85,7 @@ namespace tfgame.Procedures
                 bot.MaxMana = 200;
                 bot.MembershipId = -2;
                 bot.Mobility = "full";
-                bot.IsPetToId = -1;
+                //bot.IsPetToId = -1;
                 bot.UnusedLevelUpPerks = 0;
                 bot.XP = 0;
                 bot.LastActionTimestamp = DateTime.UtcNow;
@@ -402,8 +402,8 @@ namespace tfgame.Procedures
                 merchant.NonPvP_GameOverSpellsAllowedLastChange = DateTime.UtcNow;
                 merchant.dbLocationName = "270_west_9th_ave"; // Lindella starts her rounds here
                 merchant.Gender = "female";
-                merchant.IsItemId = -1;
-                merchant.IsPetToId = -1;
+               // merchant.IsItemId = -1;
+               // merchant.IsPetToId = -1;
                 merchant.ActionPoints = 120;
 
                 playerRepo.SavePlayer(merchant);
@@ -876,7 +876,7 @@ namespace tfgame.Procedures
                     MaxHealth = 9999,
                     MaxMana = 9999,
                     Form = "form_The_Perfect_Barman_Judoo",
-                    IsPetToId = -1,
+                    //IsPetToId = -1,
                     Money = 0,
                     Mobility = "full",
                     Level = 15,

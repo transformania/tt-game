@@ -1625,9 +1625,7 @@ namespace tfgame.Controllers
             {
                 TempData["Result"] = ItemProcedures.GiveItemToPlayer(pickup.dbItem.Id, me.Id);
                 ItemProcedures.EquipItem(pickup.dbItem.Id, true);
-                AnimalProcedures.ChangeOwner(pickup.dbItem, me.Id);
                 playerLogMessage = "You tamed <b>" + pickup.dbItem.GetFullName() + " the " + pickup.Item.FriendlyName + "</b> at " + here.Name + " and put it into your inventory.";
-               // PlayerLogProcedures.AddPlayerLog()
                 locationLogMessage = me.FirstName + " " + me.LastName + " tamed <b>" + pickup.dbItem.GetFullName() + " the " + pickup.Item.FriendlyName + CharactersHere.PrintPvPIcon(pickup.dbItem) + "</b> here.";
 
                 Player personAnimal = PlayerProcedures.GetPlayerWithExactName(pickup.dbItem.VictimName);
@@ -2444,11 +2442,16 @@ namespace tfgame.Controllers
                     return false;
                 }
                 // animal
-                if (me.IsPetToId != -1)
+                if (myform.MobilityType == "inanimate")
                 {
-                    TempData["Error"] = "You can't move by yourself.";
-                    TempData["SubError"] = "You are an animal and are currently tamed as a pet.";
-                    return false;
+                    Item meAnimal = ItemProcedures.GetItemByVictimName(me.FirstName, me.LastName);
+                    if (meAnimal.OwnerId > 0)
+                    {
+                        TempData["Error"] = "You can't move by yourself.";
+                        TempData["SubError"] = "You are an animal and are currently tamed as a pet.";
+                        return false;
+                    }
+                    
                 }
             }
             else if (actionType == "attack")

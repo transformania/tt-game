@@ -501,21 +501,7 @@ namespace tfgame.Procedures
 
                     }
 
-                    // VICTIM IS IN PVP BUT ATTACKER IS NOT.  Reduce half of their PvP score.
-                    //if (victim.InPvP == false && attacker.InPvP == true)
-                    //{
-                    //    output.VictimLog += PlayerProcedures.RemovePlayerPvPScore(victim, attacker);
-                    //}
-
                     output.AttackerLog += "  You collect " + Math.Round(moneygain,0) + " Arpeyjis your victim dropped during the transformation.";
-
-                    // release the player's pet if there is one
-                    Player pet = playerRepo.Players.FirstOrDefault(p => p.IsPetToId == victim.Id);
-                    if (pet != null)
-                    {
-                        pet.IsPetToId = -1;
-                        playerRepo.SavePlayer(pet);
-                    }
 
                     // create inanimate XP for the victim
                     InanimateXPProcedures.GetStruggleChance(victim);

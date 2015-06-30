@@ -46,7 +46,6 @@ namespace tfgame.Procedures.BossProcedures
                     MaxHealth = 9999,
                     MaxMana = 9999,
                     Form = "form_Bimbonic_Plague_Mother_Judoo",
-                    IsPetToId = -1,
                     Money = 2500,
                     Mobility = "full",
                     Level = 15,

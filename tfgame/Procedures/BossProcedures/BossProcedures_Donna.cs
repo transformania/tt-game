@@ -45,7 +45,7 @@ namespace tfgame.Procedures.BossProcedures
                     MaxHealth = 9999,
                     MaxMana = 9999,
                     Form = "form_Mythical_Sorceress_LexamTheGemFox",
-                    IsPetToId = -1,
+                    //IsPetToId = -1,
                     Money = 1000,
                     Mobility = "full",
                     Level = 20,
@@ -171,17 +171,19 @@ namespace tfgame.Procedures.BossProcedures
                     itemRepo.SaveItem(i);
                 }
 
-                List<Player> donnasPlayerPets = playerRepo.Players.Where(p => p.IsPetToId == donna.Id).ToList();
-                List<Player> donnasPlayerPetsToSave = new List<Player>();
-                foreach (Player p in donnasPlayerPets)
-                {
-                    p.dbLocationName = donna.dbLocationName;
-                    donnasPlayerPetsToSave.Add(p);
-                }
-                foreach (Player p in donnasPlayerPetsToSave)
-                {
-                    playerRepo.SavePlayer(p);
-                }
+                List<ItemViewModel> donnasPlayerPets = ItemProcedures.GetAllPlayerItems(donna.Id).ToList();
+
+                //List<Player> donnasPlayerPets = playerRepo.Players.Where(p => p.IsPetToId == donna.Id).ToList();
+                //List<Player> donnasPlayerPetsToSave = new List<Player>();
+                //foreach (Player p in donnasPlayerPets)
+                //{
+                //    p.dbLocationName = donna.dbLocationName;
+                //    donnasPlayerPetsToSave.Add(p);
+                //}
+                //foreach (Player p in donnasPlayerPetsToSave)
+                //{
+                //    playerRepo.SavePlayer(p);
+                //}
 
                 // have Donna release her weakest pet every so often
                 if (worldTurnNumber % 6 == 0 && donnasPlayerPets.Count() > 0)

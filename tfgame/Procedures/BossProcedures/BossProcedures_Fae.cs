@@ -37,7 +37,6 @@ namespace tfgame.Procedures.BossProcedures
                     MaxHealth = 9999,
                     MaxMana = 9999,
                     Form = "form_Perverted_Fairy_Judoo",
-                    IsPetToId = -1,
                     Money = 1000,
                     Mobility = "full",
                     Level = 7,
@@ -51,11 +50,7 @@ namespace tfgame.Procedures.BossProcedures
 
                 playerRepo.SavePlayer(fae);
 
-                // give fae the fairy spell to counterattack with
                 fae = playerRepo.Players.FirstOrDefault(f => f.FirstName == "Jewdewfae" && f.LastName == "the Pervfae");
-              //  DbStaticSkill skillToAdd = SkillStatics.GetStaticSkill("hey_listed_Varn");
-
-              //  SkillProcedures.GiveSkillToPlayer(fae.Id, skillToAdd);
 
                 // set up her AI directive so it is not deleted
                 IAIDirectiveRepository aiRepo = new EFAIDirectiveRepository();

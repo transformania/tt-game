@@ -44,8 +44,6 @@ namespace tfgame.Procedures
                                                               ResistanceModifier = p.ResistanceModifier,
                                                               Gender = p.Gender,
                                                               Mobility = p.Mobility,
-                                                              IsItemId = p.IsItemId,
-                                                              IsPetToId = p.IsPetToId,
                                                               MindControlIsActive = p.MindControlIsActive,
                                                               XP = p.XP,
                                                               Level = p.Level,
@@ -152,8 +150,6 @@ namespace tfgame.Procedures
                                                               ResistanceModifier = p.ResistanceModifier,
                                                               Gender = p.Gender,
                                                               Mobility = p.Mobility,
-                                                              IsItemId = p.IsItemId,
-                                                              IsPetToId = p.IsPetToId,
                                                               MindControlIsActive = p.MindControlIsActive,
                                                               XP = p.XP,
                                                               Level = p.Level,
@@ -259,8 +255,6 @@ namespace tfgame.Procedures
                                                               ResistanceModifier = p.ResistanceModifier,
                                                               Gender = p.Gender,
                                                               Mobility = p.Mobility,
-                                                              IsItemId = p.IsItemId,
-                                                              IsPetToId = p.IsPetToId,
 
                                                               MindControlIsActive = p.MindControlIsActive,
 
@@ -369,8 +363,6 @@ namespace tfgame.Procedures
                                                               ResistanceModifier = p.ResistanceModifier,
                                                               Gender = p.Gender,
                                                               Mobility = p.Mobility,
-                                                              IsItemId = p.IsItemId,
-                                                              IsPetToId = p.IsPetToId,
 
                                                               MindControlIsActive = p.MindControlIsActive,
 
@@ -627,7 +619,6 @@ namespace tfgame.Procedures
             newplayer.ActionPoints_Refill = 360;
             newplayer.CleansesMeditatesThisRound = 0;
             newplayer.NonPvP_GameOverSpellsAllowedLastChange = DateTime.UtcNow;
-            newplayer.IsPetToId = -1;
             newplayer.Mobility = Statics.PvPStatics.MobilityFull;
             newplayer.ChatColor = "black";
           
@@ -813,15 +804,6 @@ namespace tfgame.Procedures
 
             playerRepo.SavePlayer(dbPlayer);
 
-            // move any of this player's pets
-            Player pet = playerRepo.Players.FirstOrDefault(p => p.IsPetToId == dbPlayer.Id);
-
-            if (pet != null)
-            {
-                pet.dbLocationName = dbPlayer.dbLocationName;
-                playerRepo.SavePlayer(pet);
-            }
-
             return "";
         }
 
@@ -883,17 +865,6 @@ namespace tfgame.Procedures
             LocationLogProcedures.AddLocationLog(oldLocation.dbName, locationMessageOld);
             LocationLogProcedures.AddLocationLog(destination, locationMessageNew);
             PlayerLogProcedures.AddPlayerLog(player.Id, playerLogMessage, false);
-
-
-            // teleport this player's pet if they have one
-            Player pet = playerRepo.Players.FirstOrDefault(p => p.IsPetToId == player.Id);
-
-            if (pet != null)
-            {
-                pet.dbLocationName = destination;
-                playerRepo.SavePlayer(pet);
-            }
-
 
             return playerLogMessage;
         }
@@ -2073,14 +2044,6 @@ namespace tfgame.Procedures
                 p.IpAddress = "reset";
                 playerRepo.SavePlayer(p);
             }
-        }
-
-        public static void ResetPlayerPetStatus(Player player)
-        {
-            IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
-            dbPlayer.IsPetToId = -1;
-            playerRepo.SavePlayer(dbPlayer);
         }
 
     }

@@ -39,7 +39,6 @@ namespace tfgame.Procedures.BossProcedures
                     MaxHealth = 9999,
                     MaxMana = 9999,
                     Form = "form_First_Lord_of_the_Valentine_Castle_Valentine's_Family",
-                    IsPetToId = -1,
                     Money = 1000,
                     Mobility = "full",
                     Level = 10,

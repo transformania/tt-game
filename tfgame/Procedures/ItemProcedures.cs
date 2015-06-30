@@ -561,7 +561,6 @@ namespace tfgame.Procedures
             // item is an animal
             if (itemPlus.ItemType == PvPStatics.ItemType_Pet)
             {
-                AnimalProcedures.ChangeOwner(item, -1);
                 return "You released " + item.GetFullName() + " the " + itemPlus.FriendlyName + " that you were keeping as a pet.";
             }
 
@@ -1170,7 +1169,6 @@ namespace tfgame.Procedures
                     newItem.OwnerId = attacker.Id;
                     newItem.IsEquipped = true;
                     newItem.dbLocationName = "";
-                    dbVictim.IsPetToId = attacker.Id;
                     SkillProcedures.UpdateItemSpecificSkillsToPlayer(attacker.Id, newItem.dbName);
                 }
 
@@ -1184,26 +1182,16 @@ namespace tfgame.Procedures
                         newItem.OwnerId = attacker.Id;
                         newItem.IsEquipped = true;
                         newItem.dbLocationName = "";
-                        dbVictim.IsPetToId = attacker.Id;
                     }
                     else
                     {
 
                         newItem.dbLocationName = victim.dbLocationName;
                         newItem.OwnerId = -1;
-                        dbVictim.IsPetToId = -1;
                     }
                 }
 
                 playerRepo.SavePlayer(dbVictim);
-
-                // release any pets the victim currently has (the item is already considered dropeed)
-                Player pet = playerRepo.Players.FirstOrDefault(p => p.IsPetToId == victim.Id);
-                if (pet != null)
-                {
-                    pet.IsPetToId = -1;
-                    playerRepo.SavePlayer(pet);
-                }
 
             }
 

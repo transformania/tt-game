@@ -549,7 +549,6 @@ namespace tfgame.Procedures
                                 Level = level,
                                 MaxHealth = 500,
                                 MaxMana = 500,
-                                IsPetToId = -1,
                                 OnlineActivityTimestamp = DateTime.UtcNow,
                                 NonPvP_GameOverSpellsAllowedLastChange = DateTime.UtcNow,
                             };

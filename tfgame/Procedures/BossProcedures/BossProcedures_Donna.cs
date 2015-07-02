@@ -173,18 +173,6 @@ namespace tfgame.Procedures.BossProcedures
 
                 List<ItemViewModel> donnasPlayerPets = ItemProcedures.GetAllPlayerItems(donna.Id).ToList();
 
-                //List<Player> donnasPlayerPets = playerRepo.Players.Where(p => p.IsPetToId == donna.Id).ToList();
-                //List<Player> donnasPlayerPetsToSave = new List<Player>();
-                //foreach (Player p in donnasPlayerPets)
-                //{
-                //    p.dbLocationName = donna.dbLocationName;
-                //    donnasPlayerPetsToSave.Add(p);
-                //}
-                //foreach (Player p in donnasPlayerPetsToSave)
-                //{
-                //    playerRepo.SavePlayer(p);
-                //}
-
                 // have Donna release her weakest pet every so often
                 if (worldTurnNumber % 6 == 0 && donnasPlayerPets.Count() > 0)
                 {

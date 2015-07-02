@@ -195,51 +195,16 @@ namespace tfgame.Controllers
                 if (animalOutput.YouItem.dbItem.OwnerId > 0)
                 {
                     animalOutput.OwnedBy = PlayerProcedures.GetPlayerFormViewModel(animalOutput.YouItem.dbItem.OwnerId);
+
+                    // move player over to owner
+                    if (me.dbLocationName != animalOutput.OwnedBy.Player.dbLocationName)
+                    {
+                        PlayerProcedures.MovePlayer_InstantNoLog(me.Id, animalOutput.OwnedBy.Player.dbLocationName);
+                    }
+
                 }
 
-                //try
-                //{
-                //    // get player item
-                    
-
-                //    if (meItem.OwnerId == -1)
-                //    {
-                //        animalOutput.OwnedBy = null;
-
-                //        // somehow the game got desynched and the owner as recorded by the player is not the same as who actually owns them as an item.
-                //        // TODO:  Get rid of this .IsPetToId bullshit altogether :P
-                //        if (me.IsPetToId > 0 && meItem.OwnerId == -1)
-                //        {
-                //            PlayerProcedures.ResetPlayerPetStatus(me);
-                //        }
-
-                //    }
-                //    else
-                //    {
-                //        animalOutput.OwnedBy = PlayerProcedures.GetPlayerFormViewModel(meItem.OwnerId);
-
-                //        // update the player version of the pet so they struggle out in their owner's most recent location
-                //        if (me.dbLocationName != animalOutput.OwnedBy.Player.dbLocationName)
-                //        {
-                //            PlayerProcedures.MovePlayer_InstantNoLog(me.Id, animalOutput.OwnedBy.Player.dbLocationName);
-                //            me.dbLocationName = animalOutput.OwnedBy.Player.dbLocationName;
-                //            animalOutput.You.dbLocationName = animalOutput.OwnedBy.Player.dbLocationName;
-                //        }
-
-                //        // somehow the game got desynched and the owner as recorded by the player is not the same as who actually owns them as an item.
-                //        // TODO:  Get rid of this .IsPetToId bullshit altogether :P
-                //        if (me.IsPetToId > 0 && meItem.OwnerId == -1)
-                //        {
-                //            PlayerProcedures.ResetPlayerPetStatus(me);
-                //        }
-                //    }
-
-                   
-                //}
-                //catch
-                //{
-
-                //}
+              
                 animalOutput.WorldStats = PlayerProcedures.GetWorldPlayerStats();
 
                 if (animalOutput.OwnedBy != null)

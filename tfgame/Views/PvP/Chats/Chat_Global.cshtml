@@ -2,6 +2,8 @@
     ViewBag.Title = "Chat";
 }
 
+<script src="~/Scripts/ttchat.js"></script>
+
 <nav class="navbar navbar-default outsideContainer navbarTT2">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -57,7 +59,7 @@
             <ul id="discussion"></ul>
         </div>
         <div class="col-md-2 hidden-sm hidden-xs">
-            <div class="userlist-chat">place for userlist</div>
+            <div class="userlist-chat"></div>
         </div>
     </div>
         <div class="roomName">Room:  @ViewBag.ChatName <span id="autoScrollToggle">Autoscroll ON</span></div>
@@ -131,6 +133,8 @@
 
 
             chat.client.addNewMessageToPage = function (pic, name, message, chatColor) {
+
+                addUserPing(name);
 
                 // check and see if this poster or message has a banned substring.  If so, ignore it.  Otherwise display as normal
                 var doNotDisplay = false;

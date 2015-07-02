@@ -1,4 +1,5 @@
 ﻿var onlineChatters = [];
+var lowActivityThreshold = 30000; // time before name turns from green to red without activity.  In milliseconds.
 
 function addUserPing(name) {
     var refresh = false;
@@ -35,25 +36,30 @@ function renderUserList() {
 
     onlinePanel.html("");
 
+    // filter into recent talkers and nonrecent talkers
     for (var i = 0; i < onlineChatters.length; i++) {
-        if (Date.now() - onlineChatters[i].time < 30000) {
+        if (Date.now() - onlineChatters[i].time < lowActivityThreshold) {
             highActivity.push(onlineChatters[i]);
         } else {
             lowActivity.push(onlineChatters[i]);
         }
     }
 
-
-
+    // render to userlist panel
     for (var i = 0; i < highActivity.length; i++) {
-        onlinePanel.append("<span class='good'>" + highActivity[i].name + "</span></br>");
+        onlinePanel.append("<span class='good userlistRow'>" + highActivity[i].name + "</span></br>");
     }
-
     for (var i = 0; i < lowActivity.length; i++) {
-        onlinePanel.append("<span class='bad'>" + lowActivity[i].name + "</span></br>");
+        onlinePanel.append("<span class='bad userlistRow'>" + lowActivity[i].name + "</span></br>");
     }
 
-
+    // assign double click to print out the @ reference
+    $('.userlistRow').each(function () {
+        $(this).dblclick(function () {
+            $('#message').val("@" + $(this).html() + "  " + $('#message').val());
+            $('#message').focus();
+        });
+    });
 
 }
 

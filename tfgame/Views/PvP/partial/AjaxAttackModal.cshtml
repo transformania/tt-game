@@ -11,7 +11,10 @@
     <span id="toggle_mindcontrol" onclick="toggleMindControl()">Mind Control</span>
     <span id="toggle_other" onclick="toggleOthers()">Other</span>
 <span>@Html.ActionLink("View/Archive My Spells", "MySkills", "PvP", null, new {@id="toggle_mindcontrol"})</span>
+
     <br /><br />
+
+<span id="lastAttack"></span>
 
     @foreach (tfgame.ViewModels.SkillViewModel2 s in Model.OrderBy(s => s.Skill.FriendlyName))
     {
@@ -36,6 +39,7 @@
 
         $(".action_attack").each(function () {
             $(this).css("font-size", "20px");
+
         });
     }
 

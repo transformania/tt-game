@@ -40,6 +40,7 @@
                         <li>@Html.ActionLink("Spells", "MySkills", "PvP")</li>
                         <li>@Html.ActionLink("My Effects", "MyPerks", "PvP")</li>
                         <li>@Html.ActionLink("Mind Control", "MindControlList", "NPC")</li>
+                        <li>@Html.ActionLink("Look at Yourself", "LookAtPlayer", "PvP", new { id = Model.You.Player.Id }, null)</li>
                     </ul>
                 </li>
                 <li>@Html.ActionLink("Friends", "MyFriends", "PvP")</li>
@@ -64,7 +65,15 @@
                         <li>@Html.ActionLink("Inbox", "MyMessages", "PvP")</li>
                     }
                 }
-                <li>@Html.ActionLink("Submit Content", "Contribute", "Contribution", new { Id = -1 }, null)</li>
+                
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Contribute <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li>@Html.ActionLink("Submit Spell/Form/Item/Pet", "Contribute", "Contribution", new { Id = -1 }, null)</li>
+                        <li>@Html.ActionLink("Submit Blessing/Curse", "ContributeEffect", "Contribution", new { Id = -1 }, null)</li>
+                    </ul>
+                </li>
 
                 @{
                     if (User.IsInRole(PvPStatics.Permissions_Admin) == true)
@@ -366,6 +375,9 @@
 
     var playUpdateSound = false;
     var notificationsEnabled = false;
+    var name = "@Model.You.Player.FirstName" + " @Model.You.Player.LastName";
+    var playerMana = @Model.You.Player.Mana;
+    var maxLogSize = @ViewBag.MaxLogSize;
 
     $(document).ready(function () {
 
@@ -388,13 +400,11 @@
             $("#turn_countdown").html(timer_minutes + ":" + timer_seconds);
         }, 1000);
 
-
-        var name = "@Model.You.Player.FirstName" + " @Model.You.Player.LastName";
         // var msgToReplace = name + " has"
         var text = $("#RecentActivityLog").html();
 
 
-        for (var i = 0; i <= @ViewBag.MaxLogSize; i++) {
+        for (var i = 0; i <= maxLogSize; i++) {
             text = text.replace(name, "You");
             text = text.replace("You was", "You were");
         }
@@ -431,7 +441,6 @@
 
         // show offline player section when player clicks on the proper div
         $("#showOfflinePlayersButton").click(function() {
-            //$("#showOfflinePlayersButton").hide();
             $("#offlinePlayersWrapper").show();
         });
 
@@ -440,95 +449,11 @@
 
         });
 
-
-        // var myVar=setInterval(function(){pingForUpdate()},30000);
         var myVa2r=setInterval(function(){titleToggle()},1000);
 
-
-
     }); // end document.ready
-
-    function parseAttackLinks() {
-        if (attacksMade >= attackCap) {
-            $(".action_attack").each(function() {
-                $( this ).attr("href", "#");
-                $( this ).addClass("disabled");
-
-            });
-        } else {
-            $(".action_attack").each(function() {
-
-                var cost = $(this).attr("manacost");
-
-                if (cost > @Model.You.Player.Mana) {
-                    $( this ).attr("href", "#");
-                $( this ).addClass("disabled");
-            }
-
-
-
-
-            });
-
-    }
-
-    }
-
-
-    
-
-    // on page click return to old page title
-    //$(document).click(function () {
-    //    $(document).attr('title', 'Transformania Time');
-    //    var blinkEnabled = 0;
-    //});
-
-    function fail() {
-        // alert("fail");
-    }
-
-    function showAttackModal() {
-        $("#attackModal").show();
-        $("#modalBackdrop").show();
-        parseAttackLinks();
-    }
-
-    function closeAttackModal() {
-        $("#attackModal").hide();
-        $("#modalBackdrop").hide();
-    }
-
-    function attack_Success() {
-        showAttackModal();
-    }
-
-    function attack_Wait() {
-        $("#attackModal").show();
-        $("#attackModal").html("Loading...");
-        $("#modalBackdrop").show();
-    }
-
-    function attack_Failure() {
-        alert("ERROR:  Failed to launch attack modal window.  Try again shortly.  If this persists, you have either been logged out or the server is momentarily having problems.");
-    }
-
-    function closeAttackModal() {
-        $("#attackModal").hide();
-        $("#modalBackdrop").hide();
-    }
-
-  
 
     $( "#attackModal" ).draggable();
     $( "#attackModal" ).resizable();
 
-
-
-</script>
-
-<script>
-    function hidePlayers() {
-        document.getElementsByClassName('onlinePlayersWrapperBG')[0].style.display='none';
-        document.getElementsByClassName('onlinePlayersButton')[0].style.display='none';
-    }
 </script>

@@ -156,3 +156,87 @@ function sendAlertBox(noticemessage) {
         });
     }
 }
+
+function parseAttackLinks() {
+
+    var lastAttackSpan = $("#lastAttack");
+    var lastAttackLoaded = localStorage.getItem("play_lastAttack");
+
+    if (lastAttackLoaded === undefined) {
+        lastAttackLoaded = "?";
+    }
+
+    if (attacksMade >= attackCap) {
+
+        $(".action_attack").each(function () {
+            $(this).attr("href", "#");
+            $(this).addClass("disabled");
+        });
+
+    } else {
+
+        $(".action_attack").each(function () {
+
+            $(this).click(function (event) {
+                localStorage.setItem("play_lastAttack", $(this).html());
+            });
+
+            if ($(this).html() == lastAttackLoaded) {
+                $(this).clone().prependTo(lastAttackSpan);
+                lastAttackSpan.html("<b>Last:</b>  " + lastAttackSpan.html());
+                lastAttackSpan.css("background-color", "#996699");
+            }
+
+            var cost = $(this).attr("manacost");
+
+            // disable if too costly
+            if (cost > playerMana) {
+                $(this).attr("href", "#");
+                $(this).addClass("disabled");
+            }
+
+        });
+
+    }
+
+}
+
+
+function fail() {
+    // alert("fail");
+}
+
+function showAttackModal() {
+    $("#attackModal").show();
+    $("#modalBackdrop").show();
+    parseAttackLinks();
+}
+
+function closeAttackModal() {
+    $("#attackModal").hide();
+    $("#modalBackdrop").hide();
+}
+
+function attack_Success() {
+    showAttackModal();
+}
+
+function attack_Wait() {
+    $("#attackModal").show();
+    $("#attackModal").html("Loading...");
+    $("#modalBackdrop").show();
+}
+
+function attack_Failure() {
+    alert("ERROR:  Failed to launch attack modal window.  Try again shortly.  If this persists, you have either been logged out or the server is momentarily having problems.");
+}
+
+function closeAttackModal() {
+    $("#attackModal").hide();
+    $("#modalBackdrop").hide();
+}
+
+function hidePlayers() {
+    document.getElementsByClassName('onlinePlayersWrapperBG')[0].style.display = 'none';
+    document.getElementsByClassName('onlinePlayersButton')[0].style.display = 'none';
+}

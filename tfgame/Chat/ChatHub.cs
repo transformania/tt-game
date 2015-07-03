@@ -34,6 +34,7 @@ namespace tfgame.Chat
                 return;
             }
 
+            // replace admin and dev player names
             if (me.Player.MembershipId == 69)
             {
                 name = "Judoo (admin)";
@@ -48,6 +49,16 @@ namespace tfgame.Chat
             {
                 name = "Arrhae (dev)";
                 // Arrhae wants to keep regular portrait for now, not admin/dev custom one
+            }
+            else if (me.Player.MembershipId == 12865)
+            {
+                name = "Mezaron (dev)";
+                pic = "/Images/PvP/portraits/Thumbnails/100/mezaron_portrait.jpg";
+            }
+            else if (me.Player.MembershipId == 14039)
+            {
+                name = "Tempest (dev)";
+                // no custom portrait yet
             }
             else if (me.Player.MembershipId == -1)
             {

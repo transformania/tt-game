@@ -23,6 +23,9 @@
 </nav>
 
 <div class="containerInner center-block">
+
+    <p>Looking for someone?  Enter their name in here or as close to it as you can.  Only the top 20 matches will be returned.</p>
+
     @using (Html.BeginForm("PlayerLookupSend", "PvP"))
     {
         <p>Partial name<br /></p>
@@ -38,7 +41,7 @@
         if (Model != null && Model.FoundThem == true)
         {
             <p>
-                <b>Player found!</b>
+                <b>Player(s) found!</b>
             </p>
             foreach (tfgame.dbModels.Models.Player p in Model.PlayersFound)
             {

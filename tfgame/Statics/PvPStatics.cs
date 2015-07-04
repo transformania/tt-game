@@ -36,7 +36,7 @@ namespace tfgame.Statics
         public static bool AnimateUpdateInProgress = false;
 
         public const int MinutesToDroppedItemDelete = 20;
-        public const int HoursBeforeInanimatesCanSlipFree = 48;
+        public const int HoursBeforeInanimatesCanSlipFree = 24;
 
         public const decimal SneakAmountBeforeLocationIsPublic = -25;
 

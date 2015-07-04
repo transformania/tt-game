@@ -71,8 +71,10 @@ namespace tfgame.Controllers
             ViewBag.SubErrorMessage = TempData["SubError"];
             ViewBag.Result = TempData["Result"];
 
-            // refresh player online number
+ 
             DateTime markOnlineCutoff = DateTime.UtcNow.AddMinutes(-2);
+
+            // update the player's "last online" attribute if it's been long enough
             if (me.OnlineActivityTimestamp < markOnlineCutoff && PvPStatics.AnimateUpdateInProgress == false)
             {
                 PlayerProcedures.MarkOnlineActivityTimestamp(me);

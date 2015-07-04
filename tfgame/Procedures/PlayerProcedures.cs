@@ -777,7 +777,17 @@ namespace tfgame.Procedures
             Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
             dbPlayer.OnlineActivityTimestamp = DateTime.UtcNow;
 
-            playerRepo.SavePlayer(player);
+            playerRepo.SavePlayer(dbPlayer);
+        }
+
+        public static void MarkOnlineActivityTimestamp(Player_VM player)
+        {
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+
+            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            dbPlayer.OnlineActivityTimestamp = DateTime.UtcNow;
+
+            playerRepo.SavePlayer(dbPlayer);
         }
 
         public static string MovePlayer(int playerId, string destinationDbName, decimal actionPointDiscount)

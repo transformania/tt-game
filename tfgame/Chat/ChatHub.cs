@@ -26,6 +26,15 @@ namespace tfgame.Chat
             string room = Clients.Caller.toRoom;
             PlayerFormViewModel me = PlayerProcedures.GetPlayerFormViewModel_FromMembership(WebSecurity.CurrentUserId);
 
+            // refresh player online number
+            DateTime markOnlineCutoff = DateTime.UtcNow.AddMinutes(-2);
+
+            // update the player's "last online" attribute if it's been long enough
+            if (me.Player.OnlineActivityTimestamp < markOnlineCutoff && PvPStatics.AnimateUpdateInProgress == false)
+            {
+                PlayerProcedures.MarkOnlineActivityTimestamp(me.Player);
+            }
+
             string pic = CharactersHere.GetImageURL(me, true).ToString();
 
             // assert player is not banned

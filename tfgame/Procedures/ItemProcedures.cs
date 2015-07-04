@@ -53,6 +53,8 @@ namespace tfgame.Procedures
                                                             MoneyValueSell = si.MoneyValueSell,
                                                             ItemType = si.ItemType,
                                                             UseCooldown = si.UseCooldown,
+                                                            UsageMessage_Item = si.UsageMessage_Item,
+                                                            UsageMessage_Player = si.UsageMessage_Player,
                                                             Findable = si.Findable,
                                                             FindWeight = si.FindWeight,
                                                             GivesEffect = si.GivesEffect,
@@ -150,6 +152,8 @@ namespace tfgame.Procedures
                                                          MoneyValueSell = si.MoneyValueSell,
                                                          ItemType = si.ItemType,
                                                          UseCooldown = si.UseCooldown,
+                                                         UsageMessage_Item = si.UsageMessage_Item,
+                                                         UsageMessage_Player = si.UsageMessage_Player,
                                                          Findable = si.Findable,
                                                          FindWeight = si.FindWeight,
                                                          GivesEffect = si.GivesEffect,
@@ -255,6 +259,8 @@ namespace tfgame.Procedures
                                                          MoneyValue = si.MoneyValue,
                                                          ItemType = si.ItemType,
                                                          UseCooldown = si.UseCooldown,
+                                                         UsageMessage_Item = si.UsageMessage_Item,
+                                                         UsageMessage_Player = si.UsageMessage_Player,
                                                          Findable = si.Findable,
                                                          FindWeight = si.FindWeight,
                                                          GivesEffect = si.GivesEffect,
@@ -343,6 +349,8 @@ namespace tfgame.Procedures
                                                         MoneyValue = si.MoneyValue,
                                                         ItemType = si.ItemType,
                                                         UseCooldown = si.UseCooldown,
+                                                        UsageMessage_Item = si.UsageMessage_Item,
+                                                        UsageMessage_Player = si.UsageMessage_Player,
                                                         Findable = si.Findable,
                                                         FindWeight = si.FindWeight,
                                                         GivesEffect = si.GivesEffect,
@@ -1287,7 +1295,7 @@ namespace tfgame.Procedures
             }
             else
             {
-                name = owner.FirstName + " " + owner.LastName;
+                name = owner.GetFullName();
             }
 
             #region single use consumeables
@@ -1590,7 +1598,7 @@ namespace tfgame.Procedures
                         
                     }
 
-                    LocationLogProcedures.AddLocationLog(owner.dbLocationName, owner.FirstName + " " + owner.LastName + " used a " + itemPlus.Item.FriendlyName + " here.");
+                    LocationLogProcedures.AddLocationLog(owner.dbLocationName, owner.GetFullName() + " used a " + itemPlus.Item.FriendlyName + " here.");
 
                 }
             }

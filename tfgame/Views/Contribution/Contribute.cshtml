@@ -524,10 +524,23 @@
                   "text",
                   2))
                 </div>
-                <div class="form__panel" id="Item_UseCooldownPanel">
-                    @Html.LabelFor(m => m.Item_UseCooldown)
-                    @Html.TextBoxFor(m => m.Item_UseCooldown)
+
+                <div id="Item_UseCooldownPanel">
+                    <div class="form__panel">
+                        @Html.LabelFor(m => m.Item_UseCooldown)
+                        @Html.TextBoxFor(m => m.Item_UseCooldown)
+                    </div>
+                    <div class="form__panel">
+                        @Html.LabelFor(m => m.Item_UsageMessage_Item)
+                        @Html.TextAreaFor(m => m.Item_UsageMessage_Item, new { @placeholder = "Your owner unscrews your lid and places their lip to your top.  You shiver in ecstasy as your warm liquid passes through into their body, happy to provide your owner with sustenance." }))
+                    </div>
+                    <div class="form__panel">
+                        @Html.LabelFor(m => m.Item_UsageMessage_Player)
+                        @Html.TextAreaFor(m => m.Item_UsageMessage_Player, new { @placeholder = "You unscrew the lid from your flask and take a few large swigs, feeling the flask shiver in ecstasy as you swallow its fluids, happy to provide you with sustenance." }))
+                    </div>
                 </div>
+
+               
                 <div class="form__panel">
                     @Html.LabelFor(m => m.Item_Bonuses)
                     @Html.TextAreaFor(m => m.Item_Bonuses, new { @readonly = "readonly" })

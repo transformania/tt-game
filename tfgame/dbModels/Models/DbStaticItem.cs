@@ -16,6 +16,8 @@ namespace tfgame.dbModels.Models
         public decimal MoneyValueSell { get; set; }
         public string ItemType { get; set; }
         public int UseCooldown { get; set; }
+        public string UsageMessage_Item { get; set; }
+        public string UsageMessage_Player { get; set; }
         public bool Findable { get; set; }
         public double FindWeight { get; set; }
         public string GivesEffect { get; set; }

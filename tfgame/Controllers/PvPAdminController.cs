@@ -1308,6 +1308,8 @@ namespace tfgame.Controllers
             ProofreadCopy.Item_Description = OldCopy.Item_Description;
             ProofreadCopy.Item_ItemType = OldCopy.Item_ItemType;
             ProofreadCopy.Item_UseCooldown = OldCopy.Item_UseCooldown;
+            ProofreadCopy.Item_UsageMessage_Item = OldCopy.Item_UsageMessage_Item;
+            ProofreadCopy.Item_UsageMessage_Player = OldCopy.Item_UsageMessage_Player;
             ProofreadCopy.Item_Bonuses = OldCopy.Item_Bonuses;
 
             ProofreadCopy.SubmitterName = OldCopy.SubmitterName;

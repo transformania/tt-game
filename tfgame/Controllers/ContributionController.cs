@@ -564,6 +564,9 @@ namespace tfgame.Controllers
             SaveMe.Item_UseCooldown = input.Item_UseCooldown;
             SaveMe.Item_Bonuses = input.Item_Bonuses;
 
+            SaveMe.Item_UsageMessage_Item = input.Item_UsageMessage_Item;
+            SaveMe.Item_UsageMessage_Player = input.Item_UsageMessage_Player;
+
             //SaveMe.HealthBonusPercent = input.HealthBonusPercent;
             //SaveMe.ManaBonusPercent = input.ManaBonusPercent;
             //SaveMe.ExtraSkillCriticalPercent = input.ExtraSkillCriticalPercent;
@@ -1199,6 +1202,10 @@ namespace tfgame.Controllers
             message += "<p>You must set the filename for the image yourself.</p>";
             item.ItemType = contribution.Item_ItemType;
             item.UseCooldown = contribution.Item_UseCooldown;
+
+            item.UsageMessage_Item = contribution.Item_UsageMessage_Item;
+            item.UsageMessage_Player = contribution.Item_UsageMessage_Player;
+
             item.Findable = false;
 
             if (contribution.Form_MobilityType == "inanimate" || contribution.Form_MobilityType == "animal")

@@ -2953,8 +2953,6 @@ namespace tfgame.Controllers
 
              Item inanimateMe = ItemProcedures.GetItemByVictimName(me.FirstName, me.LastName);
              
-
-
              // assert that the player is owned
              if (inanimateMe.OwnerId <= 0)
              {

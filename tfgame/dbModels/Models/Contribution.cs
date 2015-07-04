@@ -247,6 +247,12 @@ namespace tfgame.dbModels.Models
         [Display(Name = "(Optional) Text shown to the OWNER of this item/pet when it tries to transform its owner and SUCCEEDS.  Female-specific.")]
         public string CursedTF_Succeed_F { get; set; }
 
+        [Display(Name = "Text shown to the animate player using this consumable type item.")]
+        public string Item_UsageMessage_Player { get; set; }
+
+        [Display(Name = "Text shown to the item that is being used.")]
+        public string Item_UsageMessage_Item { get; set; }
+
         #endregion
 
         [Display(Name = "Are you ready for an administrator to review this form and include it in the game?  Check below if yes, otherwise leave unchecked.")]

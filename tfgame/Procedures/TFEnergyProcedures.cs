@@ -452,10 +452,6 @@ namespace tfgame.Procedures
                     playerRepo.SavePlayer(target);
 
                     // extra log stuff for turning into item
-                    
-
-
-
                     LogBox extra = ItemProcedures.PlayerBecomesItem(target, targetForm, attacker);
                     output.AttackerLog += extra.AttackerLog;
                     output.VictimLog += extra.VictimLog;
@@ -519,8 +515,17 @@ namespace tfgame.Procedures
                     if (attacker.MembershipId == AIProcedures.PsychopathMembershipId)
                     {
                        SkillProcedures.DeleteAllPlayerSkills(attacker.Id);
-                       SkillProcedures.GiveRandomFindableSkillsToPlayer(attacker, 1);
 
+                       // give this bot a random skill
+                       List<DbStaticSkill> eligibleSkills = SkillStatics.GetLearnablePsychopathSkills().ToList();
+                       Random rand = new Random();
+                       double max = eligibleSkills.Count();
+                       int randIndex = Convert.ToInt32(Math.Floor(rand.NextDouble() * max));
+
+                       DbStaticSkill skillToLearn = eligibleSkills.ElementAt(randIndex);
+                       SkillProcedures.GiveSkillToPlayer(attacker.Id, skillToLearn);
+
+                        // have the psycho equip any items they are carrying (if they have any duplicates in a slot, they'll take them off later in world update)
                        List<ItemViewModel> psychoItems = ItemProcedures.GetAllPlayerItems(attacker.Id).ToList();
 
                        foreach (ItemViewModel i in psychoItems)

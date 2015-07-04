@@ -344,7 +344,8 @@ namespace tfgame.Controllers
             }
 
             Message output = new Message();
-            ViewBag.OldNickname = me.Nickname;
+            output.MessageText = me.Nickname;
+
             return View(output);
         }
 
@@ -375,7 +376,7 @@ namespace tfgame.Controllers
             }
 
 
-            if (input.MessageText.Length > 20) {
+            if (input.MessageText != null && input.MessageText.Length > 20) {
                 TempData["Error"] = "That nickname is too long. ";
                 TempData["SubError"] = "Nicknames must be no longer than 20 characters.";
                 return RedirectToAction("Play", "PvP");

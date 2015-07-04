@@ -2012,7 +2012,16 @@ namespace tfgame.Procedures
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
             Player player = playerRepo.Players.FirstOrDefault(p => p.MembershipId == WebSecurity.CurrentUserId);
-            player.Nickname = nickname;
+
+            if (nickname != null && nickname.Length > 0)
+            {
+                player.Nickname = nickname;
+            }
+            else
+            {
+                player.Nickname = "";
+            }
+            
             playerRepo.SavePlayer(player);
         }
 

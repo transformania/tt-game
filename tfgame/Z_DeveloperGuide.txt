@@ -26,19 +26,12 @@ The link above takes you to a Dropbox folder that contains files that can be dow
 ------- Creating a local test database --------
 Being able to build the project and run it on your local machine isn't very useful if you don't have a test database to work with, so you'll probably want to set up a copy of SQL Server Express on your dev box and import the .SQL backup of the database. Here's how to get started!
 
-  1. Download a copy of a database dump from dropbox and unzip the .7z file,
-creating a .SQL file.
-  2. Start up SQL Server Management Studio, right click on Databases, and
-select New Database. Name the database "Stats", and select OK.
-  3. Open the extracted .SQL file. This will take some period of time, because
-this is a large file.
-  4. Click on Execute on the toolbar, and the .SQL file will get imported into
-your local database. This will probably take a few minutes.
-  5. Close SQL Management Studio, and switch to Visual Studio, opening up the
-TT project.
-  6. Switch to the Package Manager Console, and enter "Update-Database". This
-will create any missing tables that were not in the database, such as the one
-for user accounts.
+  1. Download a copy of a database dump from dropbox and unzip the .7z file, creating a .SQL file.
+  2. Start up SQL Server Management Studio, right click on Databases, and select New Database. Name the database "Stats", and select OK.
+  3. Open the extracted .SQL file. This will take some period of time, because this is a large file.
+  4. Click on Execute on the toolbar, and the .SQL file will get imported into your local database. This will probably take a few minutes.
+  5. Close SQL Management Studio, and switch to Visual Studio, opening up the TT project.
+  6. Switch to the Package Manager Console, and enter "Update-Database". This will create any missing tables that were not in the database, such as the one for user accounts.
 
  ------------ Random things to know -----------
 

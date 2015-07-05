@@ -18,6 +18,11 @@ Visual Studio 2013 Express (free download.  I might consider moving to a newer v
 SQL Server Management Studio 2012 (provides a nice way to access the database in greater detail.  Visual Studio also has some limited built in tools for this)
 Sourcetree (GUI for Git; command line via Bash also works fine if you are comfortable with it)
 
+------------- Files you'll want ---------------
+
+https://www.dropbox.com/sh/iifq0ht8z7ucu00/AAC-mCl8Ce_5Kj2gXyLt9vnma?dl=0 
+The link above takes you to a Dropbox folder that contains files that can be downloaded and used by any TT dev.  It contains information such as as .SQL backup of the database which will allow you to seed your local database with some saved live data, populating your local database with forms / spells / item information that will be useful in development or to get an idea of how the database is arranged.
+
  ------------ Random things to know -----------
 
  TT uses (mostly) Entity Framework Code First to interact with an SQL database.  Entity Framework is meant to be a tool to help abstract away some SQL by writing queries in C#, automatically converting them to SQL queries and executing them behind the scenes.  Unfortunately Entity Framework has some drawbacks, such as:
@@ -27,7 +32,7 @@ Sourcetree (GUI for Git; command line via Bash also works fine if you are comfor
   - A stored procedure is used to retrieve the Buffs (bonuses from form / gear / effects) for a player.  The script to alter this is found in the Schema folder.
   - If you want to do a join between two tables (such as the GetPlayerFormViewModel() method under PlayerProcedures) you have to have them in the same contex
 
-  This repo has a few different projects in it, having evolved from a simple server that hosted the singleplayer Transformania Time game (the gameshow one) to also including some experiments with AngularJS (Fashion Wars) and HTML5 canvas (Bombie).  These have nothing to do with the core multiplayer TT game so they should be left alone for the time being unless you're just curious.
+  This repo has a few different projects in it, having evolved from a simple server that hosted the singleplayer Transformania Time game (the gameshow one) to also including some experiments with AngularJS (Fashion Wars) and HTML5 canvas (Bombie).  These have nothing to do with the core multiplayer TT game so they should be left alone for the time being unless you're just curious.  (As June 24, a different repo was created and all future code in those projects will go there.  TT gameshow code will stay here.)
 
 
 
@@ -37,7 +42,7 @@ There are few conventions I've tried to follow to keep organized.  The big ones 
 
 Used Controllers:
 
-- PvPController has most of the core game methods such as moving, cleansing, attacking, etc.  There are still methods that should be refactored out of there such as those regarding Contributions.
+- PvPController has most of the core game methods such as moving, cleansing, attacking, etc.
 - PvPAdminController has administrator / moderator type methods used to keep the game running without having to directly alter the database.  
 - NPCController has methods for interacting with non-player characters, namely interacting with merchants and Rusty as well as some mind control stuff
 - SettingsController deals with various customization aspects, allowing player to write bio, RP classified ads, respond to polls, etc.
@@ -45,7 +50,7 @@ Used Controllers:
 - ItemController deals with interaction with inventory items.  A lot more methods should be refactored into here from PvPController.
 - TransformaniaTimeController is for non TT-multiplayer stuff such as singleplayer gameshow, Fashion Wars, and Bombie.  Pleave leave this alone
 - AccountController deals with account registrations, login, etc.  This is all code straight from Simple Membership
-- ContributionController deals with contributed content pages and actions.  Some code in PvPController should be moved here.
+- ContributionController deals with contributed content pages and actions.
 - CovenantController deals with anything covenant related: joining, leaving, donating Arpeyjis, using furniture, etc
 
 

@@ -1019,10 +1019,18 @@ strong {
   resize: vertical;
   border: 4px solid #A16969;
   word-break: break-all;
-  margin-bottom: 0px; }
+  margin-bottom: 0px;
+  padding-left: 3px;
+  border-left: none; }
 
 .userlistRow {
   cursor: pointer; }
+
+.chat-container .good {
+  color: #734752 !important; }
+
+.chat-container .bad {
+  color: #CF8C81 !important; }
 
 #discussion .chatlink {
   text-decoration: underline;
@@ -1038,5 +1046,11 @@ strong {
 #discussion li img:hover {
   width: 64px;
   height: 64px; }
+
+.chat-container .col-md-10 {
+  padding-right: 0px !important; }
+
+.chat-container .col-md-2 {
+  padding-left: 0px !important; }
 
 /*# sourceMappingURL=custom.css.map */

@@ -16,6 +16,8 @@ Below are some tools I keep in my developer environment used daily:
 
 Visual Studio 2013 Express (free download.  I might consider moving to a newer version in the future, possibly Visual Studio Community)
 SQL Server Management Studio 2012 (provides a nice way to access the database in greater detail.  Visual Studio also has some limited built in tools for this)
+SQL Server Express 2012 (to set up a local test database, allowing you to have a full running copy of the game in your dev machine)
+7-Zip or another similar file archiving program (to extract the SQL backups)
 Sourcetree (GUI for Git; command line via Bash also works fine if you are comfortable with it)
 
 ------------- Files you'll want ---------------

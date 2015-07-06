@@ -1,5 +1,5 @@
 ﻿var onlineChatters = [];
-var lowActivityThreshold = 30000; // time before name turns from green to red without activity.  In milliseconds.
+var lowActivityThreshold = 180000; // time before name turns from green to red without activity.  In milliseconds.
 
 function addUserPing(name) {
     var refresh = false;

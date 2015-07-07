@@ -772,19 +772,19 @@ namespace tfgame.Procedures
 
         public static void MarkOnlineActivityTimestamp(Player player)
         {
-            IPlayerRepository playerRepo = new EFPlayerRepository();
-
-            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
-            dbPlayer.OnlineActivityTimestamp = DateTime.UtcNow;
-
-            playerRepo.SavePlayer(dbPlayer);
+            MarkOnlineActivityTimestamp(player.Id);
         }
 
         public static void MarkOnlineActivityTimestamp(Player_VM player)
         {
+            MarkOnlineActivityTimestamp(player.Id);
+        }
+
+        private static void MarkOnlineActivityTimestamp(int playerId)
+        {
             IPlayerRepository playerRepo = new EFPlayerRepository();
 
-            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);
             dbPlayer.OnlineActivityTimestamp = DateTime.UtcNow;
 
             playerRepo.SavePlayer(dbPlayer);

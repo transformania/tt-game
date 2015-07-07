@@ -13,6 +13,8 @@ namespace tfgame.dbModels.Abstract
 
         IQueryable<DbStaticSkill> DbStaticSkills { get; }
 
+        IQueryable<DbStaticForm> DbStaticForms { get; }
+
         void SaveSkill(Skill Skill);
 
         void DeleteSkill(int SkillId);

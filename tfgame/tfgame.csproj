@@ -268,6 +268,8 @@
     <Compile Include="dbModels\Abstract\ITFEnergyRepository.cs" />
     <Compile Include="dbModels\Abstract\ITFMessageRepository.cs" />
     <Compile Include="dbModels\Command.cs" />
+    <Compile Include="dbModels\Commands\ChatLog\WriteLogToDatabase.cs" />
+    <Compile Include="dbModels\Commands\Player\MarkOnlineActivityTimestamp.cs" />
     <Compile Include="dbModels\Concrete\EFAchievementRepository.cs" />
     <Compile Include="dbModels\Concrete\EFAuthorArtistBioRepository.cs" />
     <Compile Include="dbModels\Concrete\EFBlacklistEntryRepository.cs" />
@@ -357,6 +359,8 @@
     <Compile Include="dbModels\Models\DbStaticSkill.cs" />
     <Compile Include="dbModels\Models\TFEnergy.cs" />
     <Compile Include="dbModels\Models\TFMessage.cs" />
+    <Compile Include="dbModels\Queries\DMRoll\GetRoll.cs" />
+    <Compile Include="dbModels\Queries\Player\GetPlayerFormFromMembership.cs" />
     <Compile Include="dbModels\Query.cs" />
     <Compile Include="dbModels\Root.cs" />
     <Compile Include="Procedures\AIDirectiveProcedures.cs" />
@@ -2251,8 +2255,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="dbModels\Commands\" />
-    <Folder Include="dbModels\Queries\" />
     <Folder Include="Z_SelfHelp\" />
   </ItemGroup>
   <ItemGroup>

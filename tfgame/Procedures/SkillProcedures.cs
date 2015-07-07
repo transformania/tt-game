@@ -52,8 +52,8 @@ namespace tfgame.Procedures
                                                       Form_FriendlyName = sf.FriendlyName
                                                   };
             return output;
-
         }
+
         public static IEnumerable<SkillViewModel2> GetSkillViewModelsOwnedByPlayer(int playerId)
         {
             ISkillRepository skillRepo = new EFSkillRepository();

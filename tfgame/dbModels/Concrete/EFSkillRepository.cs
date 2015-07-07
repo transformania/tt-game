@@ -21,6 +21,11 @@ namespace tfgame.dbModels.Concrete
             get { return context.DbStaticSkills; }
         }
 
+        public IQueryable<DbStaticForm> DbStaticForms
+        {
+            get { return context.DbStaticForms;  }
+        }
+
         public void SaveSkill(Skill Skill)
         {
             if (Skill.Id == 0)

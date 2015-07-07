@@ -1354,7 +1354,7 @@ namespace tfgame.Controllers
 
             ViewBag.TotalLearnableSkills = SkillProcedures.GetCountOfLearnableSpells();
 
-            return View("MySkills", SkillProcedures.GetSkillViewModelsOwnedByPlayer(me.Id));
+            return View("MySkills", SkillProcedures.GetMySkillsViewModel(me.Id));
         }
 
          [Authorize]

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<tfgame.ViewModels.SkillViewModel2>
+﻿@model IEnumerable<tfgame.ViewModels.MySkillsViewModel>
 @using tfgame.ViewModels
 @using tfgame.CustomHtmlHelpers
 
@@ -21,7 +21,7 @@
                 <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
                 <li>@Html.ActionLink("Archive All My Spells", "ArchiveAllMySpells", "Settings", new { archive = true }, null)</li>
                 <li>@Html.ActionLink("Restore All My Spells", "ArchiveAllMySpells", "Settings", new { archive = false }, null)</li>
-                <li><a href="#" style="color: white !important; cursor: default">Known Spells (@Model.Where(c => c.dbSkill.Name != tfgame.Statics.PvPStatics.Dungeon_VanquishSpell && (c.MobilityType == "full" || c.MobilityType == "inanimate" || c.MobilityType == "animal" || c.MobilityType == "mindcontrol")).Count() / @ViewBag.TotalLearnableSkills)</a></li>
+                <li><a href="#" style="color: white !important; cursor: default">Known Spells (@Model.Where(c => c.Skill_Name != tfgame.Statics.PvPStatics.Dungeon_VanquishSpell && (c.Skill_MobilityType == "full" || c.Skill_MobilityType == "inanimate" || c.Skill_MobilityType == "animal" || c.Skill_MobilityType == "mindcontrol")).Count() / @ViewBag.TotalLearnableSkills)</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -32,6 +32,7 @@
     <table>
         <tr style="font-weight: bold;">
             <td>Spell Name</td>
+            <td>Form Name</td>
             <td>Description</td>
             <td>MP</td>
             <td>WP</td>
@@ -43,64 +44,64 @@
             string timeVisible = "none";
 
 
-            foreach (SkillViewModel2 skill in Model.OrderBy(s => s.Skill.FriendlyName))
+            foreach (MySkillsViewModel skill in Model.OrderBy(s => s.Skill_FriendlyName))
             {
-                if (skill.dbSkill.Charge != -1.0M)
+                if (skill.Skill_Charge != -1.0M)
                 {
                     chargeVisible = "block";
                 }
 
-                if (skill.dbSkill.Duration != -1.0M)
+                if (skill.Skill_Duration != -1.0M)
                 {
                     timeVisible = "block";
                 }
 
                 <tr>
                     <td class="skillname">
-                        @skill.Skill.FriendlyName
+                        @skill.Skill_FriendlyName
 
                         @{
-                            if (skill.MobilityType != null && skill.MobilityType == "inanimate")
+                            if (skill.Skill_MobilityType != null && skill.Skill_MobilityType == "inanimate")
                             {
                                 <span class="mobilityClass">(inanimate)</span>
                             }
-                            else if (skill.MobilityType != null && skill.MobilityType == "animal")
+                            else if (skill.Skill_MobilityType != null && skill.Skill_MobilityType == "animal")
                             {
                                 <span class="mobilityClass">(animal/familiar)</span>
                             }
-                            else if (skill.MobilityType != null && skill.MobilityType == "curse")
+                            else if (skill.Skill_MobilityType != null && skill.Skill_MobilityType == "curse")
                             {
                                 <span class="mobilityClass">(temporary curse)</span>
                             }
-                            else if (skill.MobilityType != null && skill.MobilityType == "mindcontrol")
+                            else if (skill.Skill_MobilityType != null && skill.Skill_MobilityType == "mindcontrol")
                             {
                                 <span class="mobilityClass">(temporary mind control)</span>
                             }
-                            if (skill.dbSkill.IsArchived == true)
+                            if (skill.Skill_IsArchived == true)
                             {
-                                <b id="@skill.dbSkill.Id">(ARCHIVED)</b>
+                                <b id="@skill.Skill_Id">(ARCHIVED)</b>
                             }
                             else
                             {
-                                <b id="@skill.dbSkill.Id"></b>
+                                <b id="@skill.Skill_Id"></b>
                             }
                         }
 
                     </td>
 
+                    <td class="formname">@skill.Form_FriendlyName</td>
 
-
-                    <td class="description">@skill.Skill.Description</td>
-                    <td class="manacost" style="width:50px;">@skill.Skill.ManaCost</td>
+                    <td class="description">@skill.Skill_Description</td>
+                    <td class="manacost" style="width:50px;">@skill.Skill_ManaCost</td>
 
                     @{
-                        if (@skill.Skill.HealthDamageAmount > 0)
+                        if (@skill.Skill_HealthDamageAmount > 0)
                         {
-                            <td class="damage" style="width:50px;">@skill.Skill.HealthDamageAmount</td>
+                            <td class="damage" style="width:50px;">@skill.Skill_HealthDamageAmount</td>
                         }
-                        if (@skill.Skill.TFPointsAmount > 0)
+                        if (@skill.Skill_TFPointsAmount > 0)
                         {
-                            <td class="tfpoints" style="width:50px;">@skill.Skill.TFPointsAmount</td>
+                            <td class="tfpoints" style="width:50px;">@skill.Skill_TFPointsAmount</td>
                         }
                     }
 
@@ -110,19 +111,19 @@
 
 
 
-                    <td class="charges" style="display:  @chargeVisible">Casts remaining:  @skill.dbSkill.Charge</td>
-                    <td class="time" style="display:  @timeVisible">Time remaining:  @skill.dbSkill.Duration</td>
+                    <td class="charges" style="display:  @chargeVisible">Casts remaining:  @skill.Skill_Charge</td>
+                    <td class="time" style="display:  @timeVisible">Time remaining:  @skill.Skill_Duration</td>
 
                     @{
-                        if (@skill.Skill.GivesEffect != null)
+                        if (@skill.Skill_GivesEffect != null)
                         {
-                            <td class="effect"><b>Gives the @CharactersHere.GetEffectFriendlyName(skill.Skill.GivesEffect) effect</b></td>
+                            <td class="effect"><b>Gives the @CharactersHere.GetEffectFriendlyName(skill.Skill_GivesEffect) effect</b></td>
                         }
                     }
 
                     @*@Html.ActionLink("Toggle Archive", "ArchiveSpell", "Settings", new { name = @skill.dbSkill.Name }, null)*@
 
-                    <td>@Ajax.ActionLink("[x]", "ArchiveSpell", "Settings", new { name = @skill.dbSkill.Name }, new AjaxOptions { UpdateTargetId = "resultPrompt", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "prompt_success", OnFailure = "prompt_failure", OnBegin = "prompt_wait" }, null)</td>
+                    <td>@Ajax.ActionLink("[x]", "ArchiveSpell", "Settings", new { name = @skill.Skill_Name }, new AjaxOptions { UpdateTargetId = "resultPrompt", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "prompt_success", OnFailure = "prompt_failure", OnBegin = "prompt_wait" }, null)</td>
 
                 </tr>
                         }

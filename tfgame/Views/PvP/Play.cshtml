@@ -246,6 +246,10 @@
                 {
                     @Html.ActionLink("Talk", "TalkToAdrianna", "NPC", null, new { @class = "attackLink" })
                 }
+                if (p.Player.MembershipId == AIProcedures.LoremasterMembershipId)
+                {
+                    @Html.ActionLink("Talk", "TalkToLorekeeper", "NPC", null, new { @class = "attackLink" })
+                }
 }
                                 </div>
                             </p>

@@ -364,6 +364,7 @@
     <Compile Include="Procedures\BossProcedures\BossProcedures_Donna.cs" />
     <Compile Include="Procedures\BossProcedures\BossProcedures_DungeonDemon.cs" />
     <Compile Include="Procedures\BossProcedures\BossProcedures_Fae.cs" />
+    <Compile Include="Procedures\BossProcedures\BossProcedures_Loremaster.cs" />
     <Compile Include="Procedures\BossProcedures\BossProcedures_PetMerchant.cs" />
     <Compile Include="Procedures\BossProcedures\BossProcedures_Sisters.cs" />
     <Compile Include="Procedures\BossProcedures\BossProcedures_Thieves.cs" />
@@ -2244,6 +2245,8 @@
     <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_21.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Statistics\Alpha_21.cshtml" />
     <Content Include="Views\TransformaniaTime\bombie.cshtml" />
+    <Content Include="Views\NPC\TalkToLorekeeper.cshtml" />
+    <Content Include="Views\NPC\LorekeeperPurchaseBook.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

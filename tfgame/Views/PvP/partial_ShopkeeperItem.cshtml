@@ -30,7 +30,10 @@
                     {
                          @Html.ActionLink("Purchase", "PurchasePet", "NPC", new { id = Model.dbItem.Id }, new { @class = "attackLink" })
                     }
-                    else
+                    else if (ViewBag.Lorekeeper != null && ViewBag.Lorekeeper == true)
+                    {
+                        @Html.ActionLink("Purchase", "LorekeeperPurchaseBookSend", "NPC", new { id = Model.dbItem.Id }, new { @class = "attackLink" })
+                    } else
                     {
                         @Html.ActionLink("Purchase", "Purchase", "NPC", new { id = Model.dbItem.Id }, new { @class = "attackLink" })
                     }

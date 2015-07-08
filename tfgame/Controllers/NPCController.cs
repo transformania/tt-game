@@ -136,13 +136,6 @@ namespace tfgame.Controllers
             // assert that player is logged in
             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
 
-            // assert player is logged in
-            if (me.MembershipId < 0)
-            {
-                TempData["Error"] = "You need to log in.";
-                return RedirectToAction("Play", "PvP");
-            }
-
             if (me.Mobility != "full")
             {
                 TempData["Error"] = "You must be animate in order to trade with Lindella.";
@@ -1052,6 +1045,167 @@ namespace tfgame.Controllers
                 TempData["Error"] = BossProcedures_Sisters.NerdBossFirstName + " seems to be too distracted with her recent change to want to talk to you.";
                   return RedirectToAction("Play", "PvP");
             }
+
+            return View();
+
+        }
+
+        [Authorize]
+        public ActionResult TalkToLorekeeper()
+        {
+            Player me = PlayerProcedures.GetPlayerFromMembership();
+            Player loremaster = PlayerProcedures.GetPlayerFromMembership(AIProcedures.LoremasterMembershipId);
+
+            // assert player is mobile
+            if (me.Mobility != "full")
+            {
+                TempData["Error"] = "You must be animate in order to chat with " + loremaster.GetFullName() + ".";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            // assert player is in the same place as loremaster
+            if (me.dbLocationName != loremaster.dbLocationName)
+            {
+                TempData["Error"] = "You must be in the same location as " + loremaster.GetFullName() +" in order to talk with him.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            // transfer all of the books Lindella owns over to Lorekeeper
+            BossProcedures_Loremaster.TransferBooksFromLindellaToLorekeeper(loremaster);
+
+           
+
+            return View();
+
+        }
+
+        [Authorize]
+        public ActionResult LorekeeperPurchaseBook()
+        {
+            Player me = PlayerProcedures.GetPlayerFromMembership();
+            Player loremaster = PlayerProcedures.GetPlayerFromMembership(AIProcedures.LoremasterMembershipId);
+
+            // assert player is mobile
+            if (me.Mobility != "full")
+            {
+                TempData["Error"] = "You must be animate in order to chat with " + loremaster.GetFullName() + ".";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            // assert player is in the same place as loremaster
+            if (me.dbLocationName != loremaster.dbLocationName)
+            {
+                TempData["Error"] = "You must be in the same location as " + loremaster.GetFullName() + " in order to talk with him.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            IEnumerable<ItemViewModel> inventory = ItemProcedures.GetAllPlayerItems(loremaster.Id);
+
+            ViewBag.MyMoney = Math.Floor(me.Money);
+            ViewBag.Lorekeeper = true;
+
+            return View(inventory);
+
+        }
+
+        [Authorize]
+        public ActionResult LorekeeperPurchaseBookSend(int id)
+        {
+            Player me = PlayerProcedures.GetPlayerFromMembership();
+            Player loremaster = PlayerProcedures.GetPlayerFromMembership(AIProcedures.LoremasterMembershipId);
+
+            // assert player is mobile
+            if (me.Mobility != "full")
+            {
+                TempData["Error"] = "You must be animate in order to chat with " + loremaster.GetFullName() + ".";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            // assert player is in the same place as loremaster
+            if (me.dbLocationName != loremaster.dbLocationName)
+            {
+                TempData["Error"] = "You must be in the same location as " + loremaster.GetFullName() + " in order to talk with him.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            // assert lorekeeper owns this book
+            ItemViewModel purchased = ItemProcedures.GetItemViewModel(id);
+            if (purchased.dbItem.OwnerId != loremaster.Id)
+            {
+                TempData["Error"] = "You can't purchse this as " + loremaster.GetFullName() + " does not own it.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+
+            decimal cost = ItemProcedures.GetCostOfItem(purchased, "buy");
+
+            // assert that the player has enough money for this
+            if (me.Money < cost)
+            {
+                TempData["Error"] = "You can't afford this right now.";
+                TempData["SubError"] = "Try finding some more Arpeyjis from searching or take them off of players who you have turned inanimate or an animal.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            // checks have passed.  Transfer the item
+            PlayerProcedures.GiveMoneyToPlayer(me, -cost);
+
+            //new Thread(() =>
+            //     StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__WuffieCostsAmount, (float)cost)
+            // ).Start();
+
+            ItemProcedures.GiveItemToPlayer_Nocheck(purchased.dbItem.Id, me.Id);
+
+            TempData["Result"] = "You purchased " + purchased.Item.FriendlyName + " from " + loremaster.GetFullName() + " for " + cost + " Arpeyjis.";
+            return RedirectToAction("Play", "PvP");
+
+        }
+
+        [Authorize]
+        public ActionResult LorekeeperLearnSpell()
+        {
+            Player me = PlayerProcedures.GetPlayerFromMembership();
+            Player loremaster = PlayerProcedures.GetPlayerFromMembership(AIProcedures.LoremasterMembershipId);
+
+            // assert player is mobile
+            if (me.Mobility != "full")
+            {
+                TempData["Error"] = "You must be animate in order to chat with " + loremaster.GetFullName() + ".";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            // assert player is in the same place as loremaster
+            if (me.dbLocationName != loremaster.dbLocationName)
+            {
+                TempData["Error"] = "You must be in the same location as " + loremaster.GetFullName() + " in order to talk with him.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            return View();
+
+        }
+
+        [Authorize]
+        public ActionResult LorekeeperLearnSpellSend()
+        {
+            Player me = PlayerProcedures.GetPlayerFromMembership();
+            Player loremaster = PlayerProcedures.GetPlayerFromMembership(AIProcedures.LoremasterMembershipId);
+
+            // assert player is mobile
+            if (me.Mobility != "full")
+            {
+                TempData["Error"] = "You must be animate in order to chat with " + loremaster.GetFullName() + ".";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            // assert player is in the same place as loremaster
+            if (me.dbLocationName != loremaster.dbLocationName)
+            {
+                TempData["Error"] = "You must be in the same location as " + loremaster.GetFullName() + " in order to talk with him.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+
 
             return View();
 

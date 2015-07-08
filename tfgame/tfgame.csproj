@@ -260,6 +260,7 @@
     <Compile Include="dbModels\Abstract\IPollEntryRepository.cs" />
     <Compile Include="dbModels\Abstract\IPvPWorldStatRepository.cs" />
     <Compile Include="dbModels\Abstract\IReservedNameRepository.cs" />
+    <Compile Include="dbModels\Abstract\IRoot.cs" />
     <Compile Include="dbModels\Abstract\IRPClassifiedAdRepository.cs" />
     <Compile Include="dbModels\Abstract\IRPPointRepository.cs" />
     <Compile Include="dbModels\Abstract\IServerLogRepository.cs" />
@@ -402,6 +403,7 @@
     <Compile Include="Procedures\StatsProcedures.cs" />
     <Compile Include="Procedures\TFEnergyProcedures.cs" />
     <Compile Include="Procedures\WorldUpdateProcedures.cs" />
+    <Compile Include="Services\ChatService.cs" />
     <Compile Include="Statics\CovenantDictionary.cs" />
     <Compile Include="Statics\EffectStatics.cs" />
     <Compile Include="Statics\Forms.cs" />

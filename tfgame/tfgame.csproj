@@ -362,6 +362,7 @@
     <Compile Include="dbModels\Models\TFMessage.cs" />
     <Compile Include="dbModels\Queries\DMRoll\GetRoll.cs" />
     <Compile Include="dbModels\Queries\Player\GetPlayerFormFromMembership.cs" />
+    <Compile Include="dbModels\Queries\Statics\GetStaticItem.cs" />
     <Compile Include="dbModels\Query.cs" />
     <Compile Include="dbModels\Root.cs" />
     <Compile Include="Procedures\AIDirectiveProcedures.cs" />

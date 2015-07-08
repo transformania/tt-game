@@ -1,3 +1,5 @@
+using tfgame.dbModels.Abstract;
+
 namespace tfgame.dbModels
 {
     /// <summary>
@@ -6,6 +8,6 @@ namespace tfgame.dbModels
     /// </summary>
     public static class DomainRegistry
     {
-        public static Root Root { get; set; }
+        public static IRoot Root { get; set; }
     }
 }

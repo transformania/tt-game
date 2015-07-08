@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using tfgame.dbModels.Abstract;
 
 namespace tfgame.dbModels
 {
@@ -7,7 +8,7 @@ namespace tfgame.dbModels
     /// domain-logic can be mocked. 
     /// http://broloco.blogspot.com/2009/05/who-is-responsible-party-when-nobody.html
     /// </summary>
-    public class Root
+    public class Root : IRoot
     {
         public IList<T> Find<T>(Query<T> query)
         {

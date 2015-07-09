@@ -2522,6 +2522,15 @@ namespace tfgame.Statics
             { 12865, new Tuple<string, string>("Mezaron (dev)", "/Images/PvP/portraits/Thumbnails/100/mezaron_portrait.jpg") },
             { 14039, new Tuple<string, string>("Tempest (dev)", string.Empty) }, // no custom portrait yet
         };
+
+        public static IEnumerable<string> ReservedText = new List<string>
+        {
+            "[luxa]",
+            "[blanca]",
+            "[poll]",
+            "[fp]",
+            "[sd]",
+        };
     }
 }
 

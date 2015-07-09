@@ -54,6 +54,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Services\TestChatMessageProcessors.cs" />
     <Compile Include="Services\TestChatService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

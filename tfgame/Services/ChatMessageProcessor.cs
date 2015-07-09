@@ -83,7 +83,7 @@ namespace tfgame.Services
         
         protected override bool CanHandle(MessageData data)
         {
-            return true;
+            return ChatStatics.ReservedText.Any(reservedText => data.Message.Contains(reservedText));
         }
 
         protected override void ProcessInternal(MessageData data)

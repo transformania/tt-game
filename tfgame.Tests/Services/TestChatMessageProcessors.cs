@@ -81,6 +81,15 @@ namespace tfgame.Tests.Services
                 data.Output.Should().Be(string.Format("    [.[{0}].]", DateTime.UtcNow.ToShortTimeString()));
             }
         }
+
+        [Test]
+        public void Should_not_process_message_without_trigger()
+        {
+            var data = new MessageData("Tester", "[notluxa]");
+            new ReservedTextProcessor().Process(data);
+
+            data.Processed.Should().BeFalse();
+        }
     }
 
     [TestFixture]

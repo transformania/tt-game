@@ -21,5 +21,27 @@ namespace tfgame.Services
             var cmd = new MarkOnlineActivityTimestamp {Player = player};
             DomainRegistry.Root.Execute(cmd);
         }
+
+        public Tuple<string, string> GetPlayerDescriptorFor(Player_VM player)
+        {
+            var name = string.Empty;
+            var pic = string.Empty;
+
+            if (player.MembershipId == -1)
+                return new Tuple<string, string>(name, pic);
+
+            if (ChatStatics.Staff.ContainsKey(player.MembershipId))
+            {
+                var descriptor = ChatStatics.Staff[player.MembershipId];
+                name = descriptor.Item1;
+                pic = descriptor.Item2;
+
+                return new Tuple<string, string>(name, pic);
+            }
+
+            name = player.GetFullName();
+
+            return new Tuple<string, string>(name, pic);
+        }
     }
 }

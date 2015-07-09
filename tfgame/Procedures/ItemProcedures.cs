@@ -1504,7 +1504,6 @@ namespace tfgame.Procedures
                     // add waiting time back on to the item
                     Item thisdbItem = itemRepo.Items.FirstOrDefault(i => i.Id == itemPlus.dbItem.Id);
                     thisdbItem.TurnsUntilUse = itemPlus.Item.UseCooldown;
-                    itemRepo.SaveItem(thisdbItem);
 
                     // formula:  bonus = amount * (itemlevel - 1) * PvPStatics.Item_LevelBonusModifier
 
@@ -1525,7 +1524,7 @@ namespace tfgame.Procedures
                         }
                         if (owner.Health < 0)
                         {
-                            owner.Health = 0;
+                            return "You don't have enough willpower to use this item.";
                         }
 
                         owner.Mana = owner.Mana += itemPlus.Item.ReuseableManaRestore + bonusFromLevelMana;
@@ -1535,10 +1534,10 @@ namespace tfgame.Procedures
                         }
                         if (owner.Mana < 0)
                         {
-                            owner.Mana = 0;
+                            return "You don't have enough mana to use this item.";
                         }
 
-
+                        itemRepo.SaveItem(thisdbItem);
                         playerRepo.SavePlayer(owner);
 
                         return name + " used a " + itemPlus.Item.FriendlyName + ", immediately restoring " + (itemPlus.Item.ReuseableHealthRestore + bonusFromLevelHealth) + " willpower and " + (itemPlus.Item.ReuseableManaRestore + bonusFromLevelMana) + " mana.  " + owner.Health + "/" + owner.MaxHealth + " WP, " + owner.Mana + "/" + owner.MaxMana + " Mana";
@@ -1557,6 +1556,8 @@ namespace tfgame.Procedures
                         {
                             owner.Health = owner.MaxHealth;
                         }
+
+                        itemRepo.SaveItem(thisdbItem);
                         playerRepo.SavePlayer(owner);
 
                         return name + " consumed from a " + itemPlus.Item.FriendlyName + ", immediately restoring " + (itemPlus.Item.ReuseableHealthRestore + bonusFromLevel) + " willpower.  " + owner.Health + "/" + owner.MaxHealth + " WP";
@@ -1574,6 +1575,8 @@ namespace tfgame.Procedures
                         {
                             owner.Mana = owner.MaxMana;
                         }
+
+                        itemRepo.SaveItem(thisdbItem);
                         playerRepo.SavePlayer(owner);
 
                         return name + " consumed from a " + itemPlus.Item.FriendlyName + ", immediately restoring " + (itemPlus.Item.ReuseableManaRestore + bonusFromLevel) + " mana.  " + owner.Mana + "/" + owner.MaxMana + " Mana";
@@ -1581,6 +1584,7 @@ namespace tfgame.Procedures
 
                     else if (itemPlus.Item.GivesEffect != null && itemPlus.Item.GivesEffect != "")
                     {
+                        itemRepo.SaveItem(thisdbItem);
                         EffectProcedures.GivePerkToPlayer(itemPlus.Item.GivesEffect, owner);
                         DbStaticEffect effectPlus = EffectStatics.GetStaticEffect2(itemPlus.Item.GivesEffect);
                         if (owner.Gender == "male" && effectPlus.MessageWhenHit_M != null && effectPlus.MessageWhenHit_M != "")
@@ -1597,7 +1601,7 @@ namespace tfgame.Procedures
                         }
                         
                     }
-
+                    itemRepo.SaveItem(thisdbItem);
                     LocationLogProcedures.AddLocationLog(owner.dbLocationName, owner.GetFullName() + " used a " + itemPlus.Item.FriendlyName + " here.");
 
                 }

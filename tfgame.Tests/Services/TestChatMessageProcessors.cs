@@ -82,4 +82,26 @@ namespace tfgame.Tests.Services
             }
         }
     }
+
+    [TestFixture]
+    public class TestDmTextProcessor
+    {
+        [Test]
+        public void Should_format_dm_message_text()
+        {
+            var data = new MessageData("Tester", "/dm message something happens");
+            new DmMessageTextProcessor().Process(data);
+
+            data.Output.Should().Be(string.Format("[=[{0} [DM]:   {1}]=]", "Tester", "something happens"));
+        }
+
+        [Test]
+        public void Should_not_process_message_without_trigger()
+        {
+            var data = new MessageData("Tester", "/not dm message something happens");
+
+            new DmMessageTextProcessor().Process(data);
+            data.Processed.Should().BeFalse();
+        }
+    }
 }

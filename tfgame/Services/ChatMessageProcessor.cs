@@ -100,4 +100,20 @@ namespace tfgame.Services
             data.MarkAsProcessed();
         }
     }
+
+    public class DmMessageTextProcessor : MessageProcessingTask
+    {
+        protected override bool CanHandle(MessageData data)
+        {
+            return data.Message.StartsWith("/dm message");
+        }
+
+        protected override void ProcessInternal(MessageData data)
+        {
+            var output = data.Message.Replace("/dm message", "");
+
+            data.Output = string.Format("[=[{0} [DM]:  {1}]=]", data.Name , output);
+            data.MarkAsProcessed();
+        }
+    }
 }

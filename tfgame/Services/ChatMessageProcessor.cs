@@ -11,7 +11,7 @@ namespace tfgame.Services
 {
     public static class ChatMessageProcessor
     {
-        public static string ProcessMessage(MessageData data)
+        public static MessageOutput ProcessMessage(MessageData data)
         {
             var processors = new List<MessageProcessingTask>
             {
@@ -30,7 +30,7 @@ namespace tfgame.Services
                     return data.Output;
             }
 
-            return string.Empty;
+            return new MessageOutput(string.Empty);
         }
     }
 
@@ -39,8 +39,8 @@ namespace tfgame.Services
         public string Name { get; private set; }
         public string Message { get; private set; }
         public bool Processed { get; private set; }
-        
-        public string Output { get; set; }
+
+        public MessageOutput Output { get; set; }
         
         public MessageData(string name, string message)
         {
@@ -51,6 +51,20 @@ namespace tfgame.Services
         public void MarkAsProcessed()
         {
             Processed = true;
+        }
+    }
+
+    public class MessageOutput
+    {
+        public string Text { get; private set; }
+        public bool SendNameToClient { get; private set; }
+        public bool SendPlayerChatColor { get; private set; }
+
+        public MessageOutput(string text, bool sendNameToClient = true, bool sendPlayerChatColor = true)
+        {
+            Text = text;
+            SendNameToClient = sendNameToClient;
+            SendPlayerChatColor = sendPlayerChatColor;
         }
     }
 
@@ -75,7 +89,7 @@ namespace tfgame.Services
 
         protected override void ProcessInternal(MessageData data)
         {
-            data.Output = string.Format("{0}   [.[{1}].]", data.Message, DateTime.UtcNow.ToShortTimeString());
+            data.Output = new MessageOutput(string.Format("{0}   [.[{1}].]", data.Message, DateTime.UtcNow.ToShortTimeString()));
             data.MarkAsProcessed();
         }
     }
@@ -97,13 +111,13 @@ namespace tfgame.Services
         {
             if (allowedRoles.Any(allowedRole => HttpContext.Current.User.IsInRole(allowedRole)))
             {
-                data.Output = string.Format("{0}   [.[{1}].]", data.Message, DateTime.UtcNow.ToShortTimeString());
+                data.Output = new MessageOutput(string.Format("{0}   [.[{1}].]", data.Message, DateTime.UtcNow.ToShortTimeString()));
                 data.MarkAsProcessed();
                 return;
             }
 
             var output = ChatStatics.ReservedText.Aggregate(data.Message, (current, reservedText) => current.Replace(reservedText, " "));
-            data.Output = string.Format("{0}   [.[{1}].]", output, DateTime.UtcNow.ToShortTimeString());
+            data.Output = new MessageOutput(string.Format("{0}   [.[{1}].]", output, DateTime.UtcNow.ToShortTimeString()));
             data.MarkAsProcessed();
         }
     }
@@ -119,7 +133,7 @@ namespace tfgame.Services
         {
             var output = data.Message.Replace("/dm message", "");
 
-            data.Output = string.Format("[=[{0} [DM]:  {1}]=]", data.Name , output);
+            data.Output = new MessageOutput(string.Format("[=[{0} [DM]:  {1}]=]", data.Name, output), false);
             data.MarkAsProcessed();
         }
     }
@@ -143,7 +157,7 @@ namespace tfgame.Services
             var match = new Regex(regex).Match(data.Message);
 
             var cmd = new GetRollText { ActionType = match.Groups[1].Value, Tag = match.Groups[2].Value };
-            data.Output = string.Format("[=[{0}]=]", cmd.Find());
+            data.Output = new MessageOutput(string.Format("[=[{0}]=]", cmd.Find()));
             data.MarkAsProcessed();
         }
     }
@@ -162,8 +176,9 @@ namespace tfgame.Services
         {
             var match = Regex.Match(data.Message, regex);
             var die = Convert.ToInt32(match.Groups[1].Value);
+            var output = string.Format("[-[{0} rolled a {1} (d{2}).]-]", data.Name, PlayerProcedures.RollDie(die), die);
 
-            data.Output = string.Format("[-[{0} rolled a {1} (d{2}).]-]", data.Name, PlayerProcedures.RollDie(die), die);
+            data.Output = new MessageOutput(output, false, false);
             data.MarkAsProcessed();
         }
     }
@@ -179,7 +194,7 @@ namespace tfgame.Services
         {
             var output = data.Message.Replace("/me", "");
 
-            data.Output = string.Format("[+[{0}{1}]+]", data.Name, output);
+            data.Output = new MessageOutput(string.Format("[+[{0}{1}]+]", data.Name, output), false);
             data.MarkAsProcessed();
         }
     }

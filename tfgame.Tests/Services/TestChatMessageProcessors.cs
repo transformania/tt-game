@@ -22,7 +22,9 @@ namespace tfgame.Tests.Services
             var data = new MessageData("Tester", "Testing");
             new RegularTextProcessor().Process(data);
 
-            data.Output.Should().Be(string.Format("{0}   [.[{1}].]", "Testing", DateTime.UtcNow.ToShortTimeString()));
+            data.Output.Text.Should().Be(string.Format("{0}   [.[{1}].]", "Testing", DateTime.UtcNow.ToShortTimeString()));
+            data.Output.SendNameToClient.Should().BeTrue();
+            data.Output.SendPlayerChatColor.Should().BeTrue();
         }
 
         [TestCase("")]
@@ -70,7 +72,9 @@ namespace tfgame.Tests.Services
             foreach (var data in ChatStatics.ReservedText.Select(reservedText => new MessageData("Tester", reservedText)))
             {
                 new ReservedTextProcessor().Process(data);
-                data.Output.Should().Be(string.Format("{0}   [.[{1}].]", data.Message, DateTime.UtcNow.ToShortTimeString()));
+                data.Output.Text.Should().Be(string.Format("{0}   [.[{1}].]", data.Message, DateTime.UtcNow.ToShortTimeString()));
+                data.Output.SendNameToClient.Should().BeTrue();
+                data.Output.SendPlayerChatColor.Should().BeTrue();
             }
         }
 
@@ -82,7 +86,9 @@ namespace tfgame.Tests.Services
             foreach (var data in ChatStatics.ReservedText.Select(reservedText => new MessageData("Tester", reservedText)))
             {
                 new ReservedTextProcessor().Process(data);
-                data.Output.Should().Be(string.Format("    [.[{0}].]", DateTime.UtcNow.ToShortTimeString()));
+                data.Output.Text.Should().Be(string.Format("    [.[{0}].]", DateTime.UtcNow.ToShortTimeString()));
+                data.Output.SendNameToClient.Should().BeTrue();
+                data.Output.SendPlayerChatColor.Should().BeTrue();
             }
         }
 
@@ -105,7 +111,9 @@ namespace tfgame.Tests.Services
             var data = new MessageData("Tester", "/dm message something happens");
             new DmMessageTextProcessor().Process(data);
 
-            data.Output.Should().Be(string.Format("[=[{0} [DM]:   {1}]=]", "Tester", "something happens"));
+            data.Output.Text.Should().Be(string.Format("[=[{0} [DM]:   {1}]=]", "Tester", "something happens"));
+            data.Output.SendNameToClient.Should().BeFalse();
+            data.Output.SendPlayerChatColor.Should().BeTrue();
         }
 
         [Test]
@@ -140,7 +148,10 @@ namespace tfgame.Tests.Services
             
             new DmActionTextProcessor().Process(data);
 
-            data.Output.Should().Be(string.Format("[=[{0}]=]", rollOutput));
+            data.Output.Text.Should().Be(string.Format("[=[{0}]=]", rollOutput));
+            data.Output.SendNameToClient.Should().BeTrue();
+            data.Output.SendPlayerChatColor.Should().BeTrue();
+
             DomainRegistry.Root.Received().Find(Arg.Is<GetRollText>(cmd => cmd.ActionType == actionType && cmd.Tag == tag));
         }
         
@@ -181,7 +192,9 @@ namespace tfgame.Tests.Services
             var data = new MessageData("Tester", "/roll d1");
             new RollTextProcessor().Process(data);
 
-            data.Output.Should().Be(string.Format("[-[{0} rolled a 1 (d1).]-]", data.Name));    
+            data.Output.Text.Should().Be(string.Format("[-[{0} rolled a 1 (d1).]-]", data.Name));
+            data.Output.SendNameToClient.Should().BeFalse();
+            data.Output.SendPlayerChatColor.Should().BeFalse();
         }
 
         [Test]
@@ -214,7 +227,9 @@ namespace tfgame.Tests.Services
 
             new PlayerActionTextProcessor().Process(data);
 
-            data.Output.Should().Be(string.Format("[+[{0} {1}]+]", data.Name, "does something"));
+            data.Output.Text.Should().Be(string.Format("[+[{0} {1}]+]", data.Name, "does something"));
+            data.Output.SendNameToClient.Should().BeFalse();
+            data.Output.SendPlayerChatColor.Should().BeTrue();
         }
 
         [Test]

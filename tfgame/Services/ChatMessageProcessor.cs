@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
 using tfgame.dbModels.Queries.DMRoll;
+using tfgame.Procedures;
 using tfgame.Statics;
 
 namespace tfgame.Services
@@ -139,6 +140,26 @@ namespace tfgame.Services
 
             var cmd = new GetRollText { ActionType = match.Groups[1].Value, Tag = match.Groups[2].Value };
             data.Output = string.Format("[=[{0}]=]", cmd.Find());
+            data.MarkAsProcessed();
+        }
+    }
+
+    public class RollTextProcessor : MessageProcessingTask
+    {
+        private const string regex = @"/roll d([0-9]*)";
+        
+        protected override bool CanHandle(MessageData data)
+        {
+            var match = Regex.Match(data.Message, regex);
+            return match.Success && !string.IsNullOrWhiteSpace(match.Groups[1].Value);
+        }
+
+        protected override void ProcessInternal(MessageData data)
+        {
+            var match = Regex.Match(data.Message, regex);
+            var die = Convert.ToInt32(match.Groups[1].Value);
+
+            data.Output = string.Format("[-[{0} rolled a {1} (d{2}).]-]", data.Name, PlayerProcedures.RollDie(die), die);
             data.MarkAsProcessed();
         }
     }

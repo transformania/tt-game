@@ -171,4 +171,36 @@ namespace tfgame.Tests.Services
             data.Processed.Should().BeFalse();
         }
     }
+
+    [TestFixture]
+    public class TestRollTextProcessor
+    {
+        [Test]
+        public void Should_format_die_roll()
+        {
+            var data = new MessageData("Tester", "/roll d1");
+            new RollTextProcessor().Process(data);
+
+            data.Output.Should().Be(string.Format("[-[{0} rolled a 1 (d1).]-]", data.Name));    
+        }
+
+        [Test]
+        public void Should_not_process_message_without_trigger()
+        {
+            var data = new MessageData("Tester", "/not roll d1");
+
+            new RollTextProcessor().Process(data);
+            data.Processed.Should().BeFalse();
+        }
+
+        [TestCase("/roll d")]
+        [TestCase("/roll 20")]
+        public void Should_not_process_message_without_die_value(string message)
+        {
+            var data = new MessageData("Tester", message);
+
+            new RollTextProcessor().Process(data);
+            data.Processed.Should().BeFalse();
+        }
+    }
 }

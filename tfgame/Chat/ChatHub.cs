@@ -1,20 +1,10 @@
-﻿using System;
-using System.Web;
-using Microsoft.AspNet.SignalR;
+﻿using Microsoft.AspNet.SignalR;
 using tfgame.Procedures;
-using tfgame.Statics;
+using tfgame.Services;
 using WebMatrix.WebData;
-using tfgame.dbModels.Models;
 using System.Threading.Tasks;
-using System.Text.RegularExpressions;
-using tfgame.dbModels.Abstract;
-using tfgame.dbModels.Concrete;
-using System.Collections.Generic;
 using tfgame.ViewModels;
 using tfgame.CustomHtmlHelpers;
-
-
-
 
 namespace tfgame.Chat
 {
@@ -22,142 +12,28 @@ namespace tfgame.Chat
     {
         public void Send(string name, string message)
         {
-
             string room = Clients.Caller.toRoom;
-            PlayerFormViewModel me = PlayerProcedures.GetPlayerFormViewModel_FromMembership(WebSecurity.CurrentUserId);
+            var me = PlayerProcedures.GetPlayerFormViewModel_FromMembership(WebSecurity.CurrentUserId);
+            var chatService = new ChatService();
+            
+            chatService.MarkOnlineActivityTimestamp(me.Player);
 
-            // refresh player online number
-            DateTime markOnlineCutoff = DateTime.UtcNow.AddMinutes(-2);
-
-            // update the player's "last online" attribute if it's been long enough
-            if (me.Player.OnlineActivityTimestamp < markOnlineCutoff && PvPStatics.AnimateUpdateInProgress == false)
-            {
-                PlayerProcedures.MarkOnlineActivityTimestamp(me.Player);
-            }
-
-            string pic = CharactersHere.GetImageURL(me, true).ToString();
-
-            // assert player is not banned
-            if (me.Player.IsBannedFromGlobalChat == true && room == "global")
-            {
+            // Assert player is not banned
+            if (me.Player.IsBannedFromGlobalChat && room == "global")
                 return;
-            }
 
-            // replace admin and dev player names
-            if (me.Player.MembershipId == 69)
-            {
-                name = "Judoo (admin)";
-                pic = "/Images/PvP/portraits/Thumbnails/100/Judoo.jpg";
-            }
-            else if (me.Player.MembershipId == 3490)
-            {
-                name = "Mizuho (dev)";
-                pic = "/Images/PvP/portraits/Thumbnails/100/Mizuho.jpg";
-            }
-            else if (me.Player.MembershipId == 251)
-            {
-                name = "Arrhae (dev)";
-                // Arrhae wants to keep regular portrait for now, not admin/dev custom one
-            }
-            else if (me.Player.MembershipId == 12865)
-            {
-                name = "Mezaron (dev)";
-                pic = "/Images/PvP/portraits/Thumbnails/100/mezaron_portrait.jpg";
-            }
-            else if (me.Player.MembershipId == 14039)
-            {
-                name = "Tempest (dev)";
-                // no custom portrait yet
-            }
-            else if (me.Player.MembershipId == -1)
-            {
+            // Get player picture and name
+            var pic = CharactersHere.GetImageURL(me, true).ToString();
+            var descriptor = chatService.GetPlayerDescriptorFor(me.Player);
 
-            }
-            else
-            {
-                name = me.Player.GetFullName();
-            }
+            name = descriptor.Item1;
+            pic = string.IsNullOrWhiteSpace(descriptor.Item2) ? pic : descriptor.Item2;
 
+            // Performs message processing to correctly format any special text
+            var output = ChatMessageProcessor.ProcessMessage(new MessageData(name, message));
 
-
-            if (name != " " && name != "" && message != "")
-            {
-                if (message.Contains("[luxa]") || message.Contains("[blanca]") || message.Contains("[poll]") || message.Contains("[fp]") || message.Contains("[sd]"))
-                {
-                    if (HttpContext.Current.User.IsInRole(PvPStatics.Permissions_Moderator) || HttpContext.Current.User.IsInRole(PvPStatics.Permissions_Admin))
-                    {
-                        message += "   [.[" + DateTime.UtcNow.ToShortTimeString() + "].]";
-                        Clients.Group(room).addNewMessageToPage(pic, name, message, me.Player.ChatColor);
-                        ChatLogProcedures.WriteLogToDatabase(room, name, message);
-                    }
-                    else
-                    {
-                        message = message.Replace("[luxa]", " ");
-                        message = message.Replace("[blanca]", " ");
-                        message = message.Replace("[poll]", " ");
-                        message = message.Replace("[fp]", " ");
-                        message = message.Replace("[sd]", " ");
-                        message += "   [.[" + DateTime.UtcNow.ToShortTimeString() + "].]";
-                        Clients.Group(room).addNewMessageToPage(pic, name, message, me.Player.ChatColor);
-                        ChatLogProcedures.WriteLogToDatabase(room, name, message);
-                    }
-                }
-                else if (message.StartsWith("/dm message"))
-                {
-                    message = message.Replace("/dm message", "");
-                    string output = "[=[" + name + " [DM]:  " + message + "]=]";
-                    Clients.Group(room).addNewMessageToPage(pic, "", output, me.Player.ChatColor);
-                    ChatLogProcedures.WriteLogToDatabase(room, name, output);
-                }
-
-                else if (message.StartsWith("/dm"))
-                {
-                    message = RPCommand(message);
-                    if (message == "")
-                    {
-                        // do nothing, bad command
-                    }
-                    else
-                    {
-                        message = "[=[" + message + "]=]";
-                        Clients.Group(room).addNewMessageToPage(pic, name, message, me.Player.ChatColor);
-                        ChatLogProcedures.WriteLogToDatabase(room, name, message);
-                    }
-
-                }
-                else if (message.StartsWith("/me"))
-                {
-                    message = message.Replace("/me", "");
-                    string output = "[+[" + name + message + "]+]";
-                    Clients.Group(room).addNewMessageToPage(pic, "", output, me.Player.ChatColor);
-                    ChatLogProcedures.WriteLogToDatabase(room, name, output);
-                }
-
-               
-
-                else if (message.StartsWith("/roll"))
-                {
-                    Match m = Regex.Match(message, @"/roll d([0-9]*)");
-                    if (m.Success)
-                    {
-                        Match x = Regex.Match(message, @"\d+");
-                        int value = Convert.ToInt32(x.Value);
-                        message = "[-[" + name + " rolled a " + PlayerProcedures.RollDie(value) + " (d" + value + ").]-]";
-                        Clients.Group(room).addNewMessageToPage(pic, "", message);
-                        ChatLogProcedures.WriteLogToDatabase(room, name, message);
-                    }
-                }
-                else
-                {
-                    message += "   [.[" + DateTime.UtcNow.ToShortTimeString() + "].]";
-                    Clients.Group(room).addNewMessageToPage(pic, name, message, me.Player.ChatColor);
-                    ChatLogProcedures.WriteLogToDatabase(room, name, message);
-                }
-            }
-            else
-            {
-
-            }
+            Clients.Group(room).addNewMessageToPage(pic, output.SendNameToClient ? name : "", output.Text, output.SendPlayerChatColor ? me.Player.ChatColor : "");
+            ChatLogProcedures.WriteLogToDatabase(room, name, output.Text);
         }
 
         public Task JoinRoom(string roomName)
@@ -182,70 +58,5 @@ namespace tfgame.Chat
             }
             return Groups.Add(Context.ConnectionId, roomName);
         }
-
-        public string RPCommand(string input)
-        {
-            string output = "";
-            if (input.StartsWith("/dm"))
-            {
-
-                int tagIndex = input.IndexOf(':') + 1;
-                string tag = "";
-
-                if (tagIndex > 0)
-                {
-                    tag = input.Substring(tagIndex);
-                }
-
-
-                if (input.StartsWith("/dm creature"))
-                {
-                    output = DMRollProcedures.GetRoll("creature", tag);
-                }
-                else if (input.StartsWith("/dm item"))
-                {
-                    output = DMRollProcedures.GetRoll("item", tag);
-                }
-                else if (input.StartsWith("/dm event"))
-                {
-                    output = DMRollProcedures.GetRoll("event", tag);
-                }
-                else if (input.StartsWith("/dm trap"))
-                {
-                    output = DMRollProcedures.GetRoll("trap", tag);
-                }
-                else if (input.StartsWith("/dm tf.animate"))
-                {
-                    output = DMRollProcedures.GetRoll("tf.animate", tag);
-                }
-                else if (input.StartsWith("/dm tf.inanimate"))
-                {
-                    output = DMRollProcedures.GetRoll("tf.inanimate", tag);
-                }
-                else if (input.StartsWith("/dm tf.animal"))
-                {
-                    output = DMRollProcedures.GetRoll("tf.animal", tag);
-                }
-                else if (input.StartsWith("/dm tf.partial"))
-                {
-                    output = DMRollProcedures.GetRoll("tf.partial", tag);
-                }
-
-                //    output = "DM (" + ;
-
-                else
-                {
-                    return "";
-                }
-
-                return output;
-            }
-            else
-            {
-                return output;
-            }
-        }
-
-        // public static void addEnterMessageToPage(Message)
     }
 }

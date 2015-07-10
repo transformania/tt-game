@@ -203,4 +203,27 @@ namespace tfgame.Tests.Services
             data.Processed.Should().BeFalse();
         }
     }
+
+    [TestFixture]
+    public class TestPlayerActionTextProcessor
+    {
+        [Test]
+        public void Should_format_action_text()
+        {
+            var data = new MessageData("Tester", "/me does something");
+
+            new PlayerActionTextProcessor().Process(data);
+
+            data.Output.Should().Be(string.Format("[+[{0} {1}]+]", data.Name, "does something"));
+        }
+
+        [Test]
+        public void Should_not_process_message_without_trigger()
+        {
+            var data = new MessageData("Tester", "/not me does something");
+            new PlayerActionTextProcessor().Process(data);
+
+            data.Processed.Should().BeFalse();
+        }
+    }
 }

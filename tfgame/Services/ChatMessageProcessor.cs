@@ -16,6 +16,10 @@ namespace tfgame.Services
             var processors = new List<MessageProcessingTask>
             {
                 new ReservedTextProcessor(),
+                new DmMessageTextProcessor(),
+                new DmActionTextProcessor(),
+                new PlayerActionTextProcessor(),
+                new RollTextProcessor(),
                 new RegularTextProcessor() // Must be called last to handle regular messages
             };
 
@@ -160,6 +164,22 @@ namespace tfgame.Services
             var die = Convert.ToInt32(match.Groups[1].Value);
 
             data.Output = string.Format("[-[{0} rolled a {1} (d{2}).]-]", data.Name, PlayerProcedures.RollDie(die), die);
+            data.MarkAsProcessed();
+        }
+    }
+
+    public class PlayerActionTextProcessor : MessageProcessingTask
+    {
+        protected override bool CanHandle(MessageData data)
+        {
+            return data.Message.StartsWith("/me");
+        }
+
+        protected override void ProcessInternal(MessageData data)
+        {
+            var output = data.Message.Replace("/me", "");
+
+            data.Output = string.Format("[+[{0}{1}]+]", data.Name, output);
             data.MarkAsProcessed();
         }
     }

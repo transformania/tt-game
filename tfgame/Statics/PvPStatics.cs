@@ -2531,6 +2531,29 @@ namespace tfgame.Statics
             "[fp]",
             "[sd]",
         };
+
+        public static IEnumerable<string> ActionTypes = new List<string>
+        {
+            "creature",
+            "item",
+            "event",
+            "trap",
+            "tf.animate",
+            "tf.inanimate",
+            "tf.animal",
+            "tf.partial",
+        };
+
+        public static IEnumerable<string> Tags = new List<string>
+        {
+            "forest",
+            "highschool",
+            "bimbocalypse",
+            "latexfactory",
+            "highschool",
+            "forest",
+            "bimbocalypse",
+            "latexfactory",
+        };
     }
 }
-

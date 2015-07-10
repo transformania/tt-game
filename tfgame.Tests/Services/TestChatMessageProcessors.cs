@@ -3,7 +3,11 @@ using System.Linq;
 using System.Security.Principal;
 using System.Web;
 using FluentAssertions;
+using NSubstitute;
 using NUnit.Framework;
+using tfgame.dbModels;
+using tfgame.dbModels.Abstract;
+using tfgame.dbModels.Queries.DMRoll;
 using tfgame.Services;
 using tfgame.Statics;
 
@@ -93,7 +97,7 @@ namespace tfgame.Tests.Services
     }
 
     [TestFixture]
-    public class TestDmTextProcessor
+    public class TestDmMessageTextProcessor
     {
         [Test]
         public void Should_format_dm_message_text()
@@ -110,6 +114,60 @@ namespace tfgame.Tests.Services
             var data = new MessageData("Tester", "/not dm message something happens");
 
             new DmMessageTextProcessor().Process(data);
+            data.Processed.Should().BeFalse();
+        }
+    }
+
+    [TestFixture]
+    public class TestDmActionTextProcessor
+    {
+        [TestCase("creature", "forest")]
+        [TestCase("item", "highschool")]
+        [TestCase("event", "bimbocalypse")]
+        [TestCase("trap", "latexfactory")]
+        [TestCase("tf.animate", "highschool")]
+        [TestCase("tf.inanimate", "forest")]
+        [TestCase("tf.animal", "bimbocalypse")]
+        [TestCase("tf.partial", "latexfactory")]
+        public void Should_format_dm_rp_command(string actionType, string tag)
+        {
+            var rollOutput = string.Format("DM[{0}:{1}]:  {2}", actionType, tag, "Wibble happens");
+
+            DomainRegistry.Root = Substitute.For<IRoot>();
+            DomainRegistry.Root.Find(Arg.Any<GetRollText>()).Returns(rollOutput);
+
+            var data = new MessageData("Tester", string.Format("/dm {0}:{1}", actionType, tag));
+            
+            new DmActionTextProcessor().Process(data);
+
+            data.Output.Should().Be(string.Format("[=[{0}]=]", rollOutput));
+            DomainRegistry.Root.Received().Find(Arg.Is<GetRollText>(cmd => cmd.ActionType == actionType && cmd.Tag == tag));
+        }
+        
+        [Test]
+        public void Should_not_process_message_without_trigger()
+        {
+            var data = new MessageData("Tester", "/not dm creature:forest");
+
+            new DmActionTextProcessor().Process(data);
+            data.Processed.Should().BeFalse();
+        }
+
+        [Test]
+        public void Should_not_process_message_with_invalid_action_type()
+        {
+            var data = new MessageData("Tester", "/dm wibble:forest");
+
+            new DmActionTextProcessor().Process(data);
+            data.Processed.Should().BeFalse();
+        }
+
+        [Test]
+        public void Should_not_process_message_with_invalid_tag()
+        {
+            var data = new MessageData("Tester", "/dm creature:wibble");
+
+            new DmActionTextProcessor().Process(data);
             data.Processed.Should().BeFalse();
         }
     }

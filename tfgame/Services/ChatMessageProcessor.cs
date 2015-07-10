@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
+using tfgame.dbModels.Queries.DMRoll;
 using tfgame.Statics;
 
 namespace tfgame.Services
@@ -113,6 +115,30 @@ namespace tfgame.Services
             var output = data.Message.Replace("/dm message", "");
 
             data.Output = string.Format("[=[{0} [DM]:  {1}]=]", data.Name , output);
+            data.MarkAsProcessed();
+        }
+    }
+
+    public class DmActionTextProcessor : MessageProcessingTask
+    {
+        private const string regex = @"\/dm ([a-zA-Z]|.*):([a-zA-Z]*)";
+        
+        protected override bool CanHandle(MessageData data)
+        {
+            var match = new Regex(regex).Match(data.Message);
+
+            var actionType = match.Groups[1].Value;
+            var tag = match.Groups[2].Value;
+
+            return match.Success && ChatStatics.ActionTypes.Contains(actionType) && ChatStatics.Tags.Contains(tag);
+        }
+
+        protected override void ProcessInternal(MessageData data)
+        {
+            var match = new Regex(regex).Match(data.Message);
+
+            var cmd = new GetRollText { ActionType = match.Groups[1].Value, Tag = match.Groups[2].Value };
+            data.Output = string.Format("[=[{0}]=]", cmd.Find());
             data.MarkAsProcessed();
         }
     }

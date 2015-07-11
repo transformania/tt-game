@@ -1,6 +1,4 @@
 ﻿using System;
-using System.CodeDom;
-using System.Web;
 using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;
@@ -10,7 +8,6 @@ using tfgame.dbModels.Commands.Player;
 using tfgame.dbModels.Models;
 using tfgame.Services;
 using tfgame.Statics;
-using tfgame.ViewModels;
 
 namespace tfgame.Tests.Services
 {
@@ -94,29 +91,46 @@ namespace tfgame.Tests.Services
         [Test]
         public void Should_add_user_to_chat_user_list_on_connection()
         {
-            DomainRegistry.Root = new Root(); // Need to override the setup method here and use a real Root instance
-
             var chatService = new ChatService();
             var player = new Player_VM { MembershipId = 100, FirstName = "Test", LastName = "User", Nickname = "Wibble", DonatorLevel = 2};
             
-            chatService.OnUserConnected(player);
+            chatService.OnUserConnected(player, Guid.NewGuid().ToString());
 
-            chatService.ChatPersistance.Should().ContainKey(player.MembershipId);
-            chatService.ChatPersistance[player.MembershipId].Name.Should().Be(player.GetFullName());
+            ChatService.ChatPersistance.Should().ContainKey(player.MembershipId);
+            ChatService.ChatPersistance[player.MembershipId].Name.Should().Be(player.GetFullName());
+            ChatService.ChatPersistance[player.MembershipId].Connections.Should().HaveCount(1);
         }
 
         [Test]
         public void Should_add_staff_to_chat_user_list_with_correct_name_on_connection()
         {
-            DomainRegistry.Root = new Root(); // Need to override the setup method here and use a real Root instance
-
             var chatService = new ChatService();
             var player = new Player_VM { MembershipId = 69, FirstName = "Test", LastName = "User"};
 
-            chatService.OnUserConnected(player);
+            chatService.OnUserConnected(player, Guid.NewGuid().ToString());
 
-            chatService.ChatPersistance.Should().ContainKey(player.MembershipId);
-            chatService.ChatPersistance[player.MembershipId].Name.Should().Be(ChatStatics.Staff[player.MembershipId].Item1);
+            ChatService.ChatPersistance[player.MembershipId].Name.Should().Be(ChatStatics.Staff[player.MembershipId].Item1);
+        }
+
+        [Test]
+        public void Should_keep_track_of_multiple_connections_for_same_user()
+        {
+            var chatService = new ChatService();
+            var player1 = new Player_VM { MembershipId = 100, FirstName = "Test1", LastName = "User1", Nickname = "Wibble", DonatorLevel = 2 };
+            var player2 = new Player_VM { MembershipId = 200, FirstName = "Test2", LastName = "User2" };
+
+            chatService.OnUserConnected(player1, Guid.NewGuid().ToString());
+            chatService.OnUserConnected(player1, Guid.NewGuid().ToString());
+
+            chatService.OnUserConnected(player2, Guid.NewGuid().ToString());
+            chatService.OnUserConnected(player2, Guid.NewGuid().ToString());
+            chatService.OnUserConnected(player2, Guid.NewGuid().ToString());
+
+            ChatService.ChatPersistance.Should().ContainKey(player1.MembershipId);
+            ChatService.ChatPersistance.Should().ContainKey(player2.MembershipId);
+
+            ChatService.ChatPersistance[player1.MembershipId].Connections.Should().HaveCount(2);
+            ChatService.ChatPersistance[player2.MembershipId].Connections.Should().HaveCount(3);
         }
     }
 }

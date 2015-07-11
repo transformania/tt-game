@@ -11,9 +11,9 @@ namespace tfgame.Services
     {
         private const int OnlineActivityCutoffMinutes = -2;
 
-        public IDictionary<int, ChatUser> ChatPersistance { get; private set; }
+        public static IDictionary<int, ChatUser> ChatPersistance { get; private set; }
 
-        public ChatService()
+        static ChatService()
         {
             ChatPersistance = new Dictionary<int, ChatUser>();
         }
@@ -52,13 +52,21 @@ namespace tfgame.Services
             return new Tuple<string, string>(name, pic);
         }
 
-        public void OnUserConnected(Player_VM player)
+        public void OnUserConnected(Player_VM player, string connectionId)
         {
-            if (!ChatPersistance.ContainsKey(player.MembershipId))
+            ChatUser user;
+            
+            if (ChatPersistance.ContainsKey(player.MembershipId))
             {
-                var user = new ChatUser(player.MembershipId, GetPlayerDescriptorFor(player).Item1);
-                ChatPersistance.Add(player.MembershipId,user);
+                user = ChatPersistance[player.MembershipId];
             }
+            else
+            {
+                user = new ChatUser(player.MembershipId, GetPlayerDescriptorFor(player).Item1);
+                ChatPersistance.Add(player.MembershipId, user);
+            }
+
+            user.ConnectedWith(connectionId);
         }
     }
 }

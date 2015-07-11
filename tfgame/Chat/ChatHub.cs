@@ -47,7 +47,7 @@ namespace tfgame.Chat
         {
             var me = new GetPlayerFromUserName {UserName = Context.User.Identity.Name}.Find();
             
-            chatService.OnUserConnected(me);
+            chatService.OnUserConnected(me, Context.ConnectionId);
 
             return base.OnConnected();
         }

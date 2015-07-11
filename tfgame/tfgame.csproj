@@ -1621,6 +1621,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="XMLs\LocationDescriptions\tavern_private_room.xml" />
+    <Content Include="XMLs\SkillBooks\donna1_Lexam.txt" />
     <Content Include="XMLs\SkillBooks\founding.txt" />
     <Content Include="XMLs\SkillBooks\founding_tree.txt" />
     <Content Include="XMLs\SkillBooks\ironic_tfs_1.txt" />
@@ -2247,6 +2248,10 @@
     <Content Include="Views\TransformaniaTime\bombie.cshtml" />
     <Content Include="Views\NPC\TalkToLorekeeper.cshtml" />
     <Content Include="Views\NPC\LorekeeperPurchaseBook.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\XP\Alpha_22.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_22.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\Statistics\Alpha_22.cshtml" />
+    <Content Include="Views\NPC\LorekeeperLearnSpell.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -18,6 +18,7 @@ namespace tfgame.Tests.Services
         public void SetUp()
         {
             DomainRegistry.Root = Substitute.For<IRoot>();
+            ChatService.ChatPersistance.Clear();
         }
         
         [Test]
@@ -81,7 +82,7 @@ namespace tfgame.Tests.Services
         public void Should_get_descriptor_with_full_player_name_if_not_staff()
         {
             var chatService = new ChatService();
-            var player = new Player_VM { MembershipId = 100, FirstName = "Test", LastName = "User", Nickname = "Wibble", DonatorLevel = 2};
+            var player = CreateRegularPlayer();
 
             var descriptor = chatService.GetPlayerDescriptorFor(player);
             descriptor.Item1.Should().Be("Test 'Wibble' User");
@@ -92,7 +93,7 @@ namespace tfgame.Tests.Services
         public void Should_add_user_to_chat_user_list_on_connection()
         {
             var chatService = new ChatService();
-            var player = new Player_VM { MembershipId = 100, FirstName = "Test", LastName = "User", Nickname = "Wibble", DonatorLevel = 2};
+            var player = CreateRegularPlayer();
             
             chatService.OnUserConnected(player, Guid.NewGuid().ToString());
 
@@ -105,7 +106,7 @@ namespace tfgame.Tests.Services
         public void Should_add_staff_to_chat_user_list_with_correct_name_on_connection()
         {
             var chatService = new ChatService();
-            var player = new Player_VM { MembershipId = 69, FirstName = "Test", LastName = "User"};
+            var player = CreateStaffPlayer();
 
             chatService.OnUserConnected(player, Guid.NewGuid().ToString());
 
@@ -116,8 +117,8 @@ namespace tfgame.Tests.Services
         public void Should_keep_track_of_multiple_connections_for_same_user()
         {
             var chatService = new ChatService();
-            var player1 = new Player_VM { MembershipId = 100, FirstName = "Test1", LastName = "User1", Nickname = "Wibble", DonatorLevel = 2 };
-            var player2 = new Player_VM { MembershipId = 200, FirstName = "Test2", LastName = "User2" };
+            var player1 = CreateRegularPlayer(100, "Test1", "User1");
+            var player2 = CreateRegularPlayer(200, "Test2", "User2", false);
 
             chatService.OnUserConnected(player1, Guid.NewGuid().ToString());
             chatService.OnUserConnected(player1, Guid.NewGuid().ToString());
@@ -131,6 +132,23 @@ namespace tfgame.Tests.Services
 
             ChatService.ChatPersistance[player1.MembershipId].Connections.Should().HaveCount(2);
             ChatService.ChatPersistance[player2.MembershipId].Connections.Should().HaveCount(3);
+        }
+
+        private Player_VM CreateRegularPlayer(int membershipId = 100, string firstName = "Test", string lastName = "User", bool donator = true)
+        {
+            return new Player_VM
+            {
+                MembershipId = membershipId, 
+                FirstName = firstName, 
+                LastName = lastName, 
+                Nickname = donator ? "Wibble" : null, 
+                DonatorLevel = donator ? 2 : 0
+            };
+        }
+
+        private Player_VM CreateStaffPlayer()
+        {
+            return new Player_VM { MembershipId = 69, FirstName = "Test", LastName = "User" };
         }
     }
 }

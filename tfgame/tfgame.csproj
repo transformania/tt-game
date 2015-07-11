@@ -324,6 +324,7 @@
     <Compile Include="dbModels\Concrete\EFTFEnergyRepository.cs" />
     <Compile Include="dbModels\Models\AIDirective.cs" />
     <Compile Include="dbModels\Models\ChatLog.cs" />
+    <Compile Include="dbModels\Models\ChatUser.cs" />
     <Compile Include="dbModels\Models\Contribution.cs" />
     <Compile Include="dbModels\Models\Covenant.cs" />
     <Compile Include="dbModels\Models\CovenantApplication.cs" />
@@ -362,6 +363,7 @@
     <Compile Include="dbModels\Models\TFMessage.cs" />
     <Compile Include="dbModels\Queries\DMRoll\GetRoll.cs" />
     <Compile Include="dbModels\Queries\Player\GetPlayerFormFromMembership.cs" />
+    <Compile Include="dbModels\Queries\Player\GetPlayerFromUserName.cs" />
     <Compile Include="dbModels\Queries\Statics\GetStaticItem.cs" />
     <Compile Include="dbModels\Query.cs" />
     <Compile Include="dbModels\Root.cs" />

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Web;
 using FluentAssertions;
 using NSubstitute;
@@ -9,6 +10,7 @@ using tfgame.dbModels.Commands.Player;
 using tfgame.dbModels.Models;
 using tfgame.Services;
 using tfgame.Statics;
+using tfgame.ViewModels;
 
 namespace tfgame.Tests.Services
 {
@@ -87,6 +89,34 @@ namespace tfgame.Tests.Services
             var descriptor = chatService.GetPlayerDescriptorFor(player);
             descriptor.Item1.Should().Be("Test 'Wibble' User");
             descriptor.Item2.Should().BeEmpty();
+        }
+
+        [Test]
+        public void Should_add_user_to_chat_user_list_on_connection()
+        {
+            DomainRegistry.Root = new Root(); // Need to override the setup method here and use a real Root instance
+
+            var chatService = new ChatService();
+            var player = new Player_VM { MembershipId = 100, FirstName = "Test", LastName = "User", Nickname = "Wibble", DonatorLevel = 2};
+            
+            chatService.OnUserConnected(player);
+
+            chatService.ChatPersistance.Should().ContainKey(player.MembershipId);
+            chatService.ChatPersistance[player.MembershipId].Name.Should().Be(player.GetFullName());
+        }
+
+        [Test]
+        public void Should_add_staff_to_chat_user_list_with_correct_name_on_connection()
+        {
+            DomainRegistry.Root = new Root(); // Need to override the setup method here and use a real Root instance
+
+            var chatService = new ChatService();
+            var player = new Player_VM { MembershipId = 69, FirstName = "Test", LastName = "User"};
+
+            chatService.OnUserConnected(player);
+
+            chatService.ChatPersistance.Should().ContainKey(player.MembershipId);
+            chatService.ChatPersistance[player.MembershipId].Name.Should().Be(ChatStatics.Staff[player.MembershipId].Item1);
         }
     }
 }

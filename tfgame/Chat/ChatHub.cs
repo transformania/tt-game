@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.SignalR;
+using tfgame.dbModels.Queries.Player;
 using tfgame.Procedures;
 using tfgame.Services;
 using WebMatrix.WebData;
@@ -10,11 +11,17 @@ namespace tfgame.Chat
 {
     public class ChatHub : Hub
     {
+        private readonly ChatService chatService;
+        
+        public ChatHub()
+        {
+            chatService = new ChatService();
+        }
+        
         public void Send(string name, string message)
         {
             string room = Clients.Caller.toRoom;
             var me = PlayerProcedures.GetPlayerFormViewModel_FromMembership(WebSecurity.CurrentUserId);
-            var chatService = new ChatService();
             
             chatService.MarkOnlineActivityTimestamp(me.Player);
 
@@ -34,6 +41,15 @@ namespace tfgame.Chat
 
             Clients.Group(room).addNewMessageToPage(pic, output.SendNameToClient ? name : "", output.Text, output.SendPlayerChatColor ? me.Player.ChatColor : "");
             ChatLogProcedures.WriteLogToDatabase(room, name, output.Text);
+        }
+
+        public override Task OnConnected()
+        {
+            var me = new GetPlayerFromUserName {UserName = Context.User.Identity.Name}.Find();
+            
+            chatService.OnUserConnected(me);
+
+            return base.OnConnected();
         }
 
         public Task JoinRoom(string roomName)

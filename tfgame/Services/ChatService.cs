@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using tfgame.dbModels;
 using tfgame.dbModels.Commands.Player;
 using tfgame.dbModels.Models;
@@ -9,6 +10,13 @@ namespace tfgame.Services
     public class ChatService
     {
         private const int OnlineActivityCutoffMinutes = -2;
+
+        public IDictionary<int, ChatUser> ChatPersistance { get; private set; }
+
+        public ChatService()
+        {
+            ChatPersistance = new Dictionary<int, ChatUser>();
+        }
         
         public void MarkOnlineActivityTimestamp(Player_VM player)
         {
@@ -42,6 +50,15 @@ namespace tfgame.Services
             name = player.GetFullName();
 
             return new Tuple<string, string>(name, pic);
+        }
+
+        public void OnUserConnected(Player_VM player)
+        {
+            if (!ChatPersistance.ContainsKey(player.MembershipId))
+            {
+                var user = new ChatUser(player.MembershipId, GetPlayerDescriptorFor(player).Item1);
+                ChatPersistance.Add(player.MembershipId,user);
+            }
         }
     }
 }

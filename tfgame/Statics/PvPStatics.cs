@@ -2523,6 +2523,12 @@ namespace tfgame.Statics
             { 14039, new Tuple<string, string>("Tempest (dev)", string.Empty) }, // no custom portrait yet
         };
 
+        public static IEnumerable<int> HideOnJoinChat = new List<int>
+        {
+            69,
+            3490,
+        };
+
         public static IEnumerable<string> ReservedText = new List<string>
         {
             "[luxa]",

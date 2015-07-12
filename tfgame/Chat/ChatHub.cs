@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNet.SignalR;
+﻿using System.Linq;
+using Microsoft.AspNet.SignalR;
 using tfgame.dbModels.Queries.Player;
 using tfgame.Procedures;
 using tfgame.Services;
+using tfgame.Statics;
 using WebMatrix.WebData;
 using System.Threading.Tasks;
-using tfgame.ViewModels;
 using tfgame.CustomHtmlHelpers;
 
 namespace tfgame.Chat
@@ -61,18 +62,16 @@ namespace tfgame.Chat
 
         public Task JoinRoom(string roomName)
         {
-            PlayerFormViewModel me = PlayerProcedures.GetPlayerFormViewModel_FromMembership(WebSecurity.CurrentUserId);
+            var me = PlayerProcedures.GetPlayerFormViewModel_FromMembership(WebSecurity.CurrentUserId);
 
             try
             {
                 if (me.Player.MembershipId > 0)
                 {
-                    string message = "[-[" + me.Player.GetFullName() + " has joined the room.]-]";
-
-                    if (me.Player.MembershipId != 69 && me.Player.MembershipId != 3490)
-                    {
+                    var message = string.Format("[-[{0} has joined the room.]-]", me.Player.GetFullName());
+                    
+                    if (!ChatStatics.HideOnJoinChat.Contains(me.Player.MembershipId))
                         Clients.Group(roomName).addNewMessageToPage("", "", message, me.Player.ChatColor);
-                    }
                 }
             }
             catch

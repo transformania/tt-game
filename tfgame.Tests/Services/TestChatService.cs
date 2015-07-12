@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;
@@ -150,7 +151,7 @@ namespace tfgame.Tests.Services
             chatService.OnUserDisconnected(player, connectionId1);
 
             ChatService.ChatPersistance[player.MembershipId].Connections.Should().HaveCount(1);
-            ChatService.ChatPersistance[player.MembershipId].Connections.Should().Contain(connectionId2);
+            ChatService.ChatPersistance[player.MembershipId].Connections.Should().Contain(x => x.ConnectionId == connectionId2);
         }
 
         [Test]
@@ -167,6 +168,40 @@ namespace tfgame.Tests.Services
             chatService.OnUserDisconnected(player, connectionId);
 
             ChatService.ChatPersistance.ContainsKey(player.MembershipId).Should().BeFalse();
+        }
+
+        [Test]
+        public void Should_track_when_user_joins_a_room()
+        {
+            const string room = "global";
+            var chatService = new ChatService();
+            var player = CreateRegularPlayer();
+            var connectionId = Guid.NewGuid().ToString();
+            
+            chatService.OnUserConnected(player, connectionId);
+            chatService.OnUserJoinRoom(player, connectionId, room);
+
+            ChatService.ChatPersistance[player.MembershipId].Connections.Should().Contain(x => x.ConnectionId == connectionId && x.Room == room);
+        }
+
+        [Test]
+        public void Should_track_when_user_joins_multiple_rooms()
+        {
+            const string room1 = "global";
+            const string room2 = "test";
+            var chatService = new ChatService();
+            var player = CreateRegularPlayer();
+            var connectionId1 = Guid.NewGuid().ToString();
+            var connectionId2 = Guid.NewGuid().ToString();
+
+            chatService.OnUserConnected(player, connectionId1);
+            chatService.OnUserJoinRoom(player, connectionId1, room1);
+
+            chatService.OnUserConnected(player, connectionId2);
+            chatService.OnUserJoinRoom(player, connectionId2, room2);
+
+            ChatService.ChatPersistance[player.MembershipId].Connections.Should().Contain(x => x.ConnectionId == connectionId1 && x.Room == room1);
+            ChatService.ChatPersistance[player.MembershipId].Connections.Should().Contain(x => x.ConnectionId == connectionId2 && x.Room == room2);
         }
 
         private Player_VM CreateRegularPlayer(int membershipId = 100, string firstName = "Test", string lastName = "User", bool donator = true)

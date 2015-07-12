@@ -80,5 +80,14 @@ namespace tfgame.Services
             if (user.ConnectionCount <= 0)
                 ChatPersistance.Remove(player.MembershipId);
         }
+
+        public void OnUserJoinRoom(Player_VM player, string connectionId, string room)
+        {
+            if (!ChatPersistance.ContainsKey(player.MembershipId))
+                return;
+
+            var user = ChatPersistance[player.MembershipId];
+            user.JoinedRoom(room, connectionId);
+        }
     }
 }

@@ -79,6 +79,8 @@ namespace tfgame.Chat
             {
 
             }
+
+            chatService.OnUserJoinRoom(me.Player, Context.ConnectionId, roomName);
             return Groups.Add(Context.ConnectionId, roomName);
         }
     }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Microsoft.AspNet.SignalR;
 using tfgame.dbModels.Queries.Player;
 using tfgame.Extensions;
@@ -31,8 +30,21 @@ namespace tfgame.Chat
 
         public override Task OnDisconnected()
         {
+            var connectionId = Context.ConnectionId;
+            var room = string.Empty;
             var me = new GetPlayerFromUserName { UserName = Context.User.Identity.Name }.Find();
-            chatService.OnUserDisconnected(me, Context.ConnectionId);
+            
+            if (ChatService.ChatPersistance.ContainsKey(me.MembershipId))
+            {
+                var connection = ChatService.ChatPersistance[me.MembershipId].Connections.SingleOrDefault(x => x.ConnectionId == connectionId);
+                if (connection != null && connection.Room != null)
+                    room = connection.Room;
+            }
+            
+            chatService.OnUserDisconnected(me, connectionId);
+
+            if (!string.IsNullOrWhiteSpace(room))
+                UpdateUserList(room, false);
 
             return base.OnDisconnected();
         }
@@ -59,7 +71,9 @@ namespace tfgame.Chat
             var output = ChatMessageProcessor.ProcessMessage(new MessageData(name, message));
 
             Clients.Group(room).addNewMessageToPage(pic, output.SendNameToClient ? name : "", output.Text, output.SendPlayerChatColor ? me.Player.ChatColor : "");
+
             ChatLogProcedures.WriteLogToDatabase(room, name, output.Text);
+            chatService.OnUserSentMessage(me.Player, Context.ConnectionId);
         }
 
         public Task JoinRoom(string roomName)
@@ -87,7 +101,7 @@ namespace tfgame.Chat
             return Groups.Add(Context.ConnectionId, roomName);
         }
 
-        private void UpdateUserList(string room)
+        private void UpdateUserList(string room, bool includeCaller = true)
         {           
             var userList = ChatService.ChatPersistance
                 .Where(x => x.Value.InRooms.Contains(room))
@@ -99,9 +113,11 @@ namespace tfgame.Chat
                         .OrderByDescending(con => con.LastActivity)
                         .First().LastActivity.ToUnixTime()
                 }).ToList();
-            
+
             Clients.Group(room).updateUserList(userList);
-            Clients.Caller.updateUserList(userList);
+            
+            if (includeCaller)
+                Clients.Caller.updateUserList(userList);
         }
     }
 }

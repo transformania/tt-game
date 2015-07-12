@@ -338,13 +338,13 @@ namespace tfgame.Controllers
 
             if (!ModelState.IsValid)
             {
-                ViewBag.ValidationMessage = "Your character was not created.  You can only use letters and your first and last names must be between 2 and 30 letters long." ;
+                ViewBag.ErrorMessage = "Your character was not created.  You can only use letters and your first and last names must be between 2 and 30 letters long." ;
                 return View("~/Views/PvP/MakeNewCharacter.cshtml");
             }
 
             if (player.StartGameMode != 0 && player.StartGameMode != 1 && player.StartGameMode != 2)
             {
-                ViewBag.ValidationMessage = "That is not a valid game mode.";
+                ViewBag.ErrorMessage = "That is not a valid game mode.";
                 return View("~/Views/PvP/MakeNewCharacter.cshtml");
             }
 
@@ -361,7 +361,7 @@ namespace tfgame.Controllers
             string fnamecheck = TrustStatics.NameIsReserved(player.FirstName);
             if (fnamecheck != "")
             {
-                ViewBag.ValidationMessage = "You can't use the first name '" + player.FirstName + "'.  It is reserved.";
+                ViewBag.ErrorMessage = "You can't use the first name '" + player.FirstName + "'.  It is reserved.";
                 return View("~/Views/PvP/MakeNewCharacter.cshtml");
             }
 
@@ -369,7 +369,7 @@ namespace tfgame.Controllers
             string lnamecheck = TrustStatics.NameIsReserved(player.LastName);
             if (lnamecheck != "")
             {
-                ViewBag.ValidationMessage = "You can't use the last name '" + player.LastName + "'.  It is reserved or else not allowed.";
+                ViewBag.ErrorMessage = "You can't use the last name '" + player.LastName + "'.  It is reserved or else not allowed.";
                 return View("~/Views/PvP/MakeNewCharacter.cshtml");
             }
             
@@ -377,7 +377,7 @@ namespace tfgame.Controllers
             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
             if (me != null && me.Mobility == "full")
             {
-                ViewBag.ValidationMessage = "You cannot create a new character right now.  You already have a fully animate character already, " + me.FirstName + " " + me.LastName + ".";
+                ViewBag.ErrorMessage = "You cannot create a new character right now.  You already have a fully animate character already, " + me.FirstName + " " + me.LastName + ".";
                 return View("~/Views/PvP/MakeNewCharacter.cshtml");
             }
 
@@ -388,7 +388,7 @@ namespace tfgame.Controllers
             if (iAmWhitelisted == false && PlayerProcedures.IsMyIPInUseAndAnimate(Request.UserHostAddress) == true)
             {
 
-                ViewBag.ValidationMessage = "Your character was not created.  It looks like your IP address, <b>" + Request.UserHostAddress + "</b> already has 1 animate character in this world, and the current limit is 1. ";
+                ViewBag.ErrorMessage = "Your character was not created.  It looks like your IP address, <b>" + Request.UserHostAddress + "</b> already has 1 animate character in this world, and the current limit is 1. ";
                 return View("~/Views/PvP/MakeNewCharacter.cshtml");
             }
 
@@ -396,7 +396,7 @@ namespace tfgame.Controllers
 
             if (result != "saved")
             {
-                ViewBag.ValidationMessage = "Your character was not created.  Reason:  " + result;
+                ViewBag.ErrorMessage = "Your character was not created.  Reason:  " + result;
                 return View("~/Views/PvP/MakeNewCharacter.cshtml");
             }
 

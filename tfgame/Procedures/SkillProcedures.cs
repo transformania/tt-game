@@ -25,6 +25,12 @@ namespace tfgame.Procedures
             return GetSkillViewModelsOwnedByPlayer(playerId).Select(s => s.Skill).ToList();
         }
 
+        public static IEnumerable<DbStaticSkill> GetAllLearnableSpells()
+        {
+            IDbStaticSkillRepository skillRepo = new EFDbStaticSkillRepository();
+            return skillRepo.DbStaticSkills.Where(s => s.LearnedAtLocation != null && s.LearnedAtLocation != "" || s.LearnedAtRegion != null && s.LearnedAtRegion != "");
+        }
+
         public static IEnumerable<MySkillsViewModel> GetMySkillsViewModel(int playerId)
         {
             ISkillRepository skillRepo = new EFSkillRepository();

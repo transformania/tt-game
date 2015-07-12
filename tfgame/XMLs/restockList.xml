@@ -68,28 +68,28 @@
     <dbName>item_consumable_spellbook_small</dbName>
     <AmountBeforeRestock>2</AmountBeforeRestock>
     <AmountToRestockTo>4</AmountToRestockTo>
-    <Merchant>Lindella</Merchant>
+    <Merchant>Lorekeeper</Merchant>
   </RestockListItem>
 
   <RestockListItem>
     <dbName>item_consumable_spellbook_medium</dbName>
     <AmountBeforeRestock>2</AmountBeforeRestock>
     <AmountToRestockTo>3</AmountToRestockTo>
-    <Merchant>Lindella</Merchant>
+    <Merchant>Lorekeeper</Merchant>
   </RestockListItem>
 
   <RestockListItem>
     <dbName>item_consumable_spellbook_large</dbName>
     <AmountBeforeRestock>1</AmountBeforeRestock>
     <AmountToRestockTo>2</AmountToRestockTo>
-    <Merchant>Lindella</Merchant>
+    <Merchant>Lorekeeper</Merchant>
   </RestockListItem>
 
   <RestockListItem>
     <dbName>item_consumable_spellbook_giant</dbName>
     <AmountBeforeRestock>1</AmountBeforeRestock>
     <AmountToRestockTo>1</AmountToRestockTo>
-    <Merchant>Lindella</Merchant>
+    <Merchant>Lorekeeper</Merchant>
   </RestockListItem>
 
   <RestockListItem>
@@ -103,28 +103,28 @@
     <dbName>item_consumable_tome-founding</dbName>
     <AmountBeforeRestock>1</AmountBeforeRestock>
     <AmountToRestockTo>3</AmountToRestockTo>
-    <Merchant>Lindella</Merchant>
+    <Merchant>Lorekeeper</Merchant>
   </RestockListItem>
 
   <RestockListItem>
     <dbName>item_consumable_tome-psycho_Duhad</dbName>
     <AmountBeforeRestock>1</AmountBeforeRestock>
     <AmountToRestockTo>3</AmountToRestockTo>
-    <Merchant>Lindella</Merchant>
+    <Merchant>Lorekeeper</Merchant>
   </RestockListItem>
 
   <RestockListItem>
     <dbName>item_consumable_tome-founding_tree</dbName>
     <AmountBeforeRestock>1</AmountBeforeRestock>
     <AmountToRestockTo>3</AmountToRestockTo>
-    <Merchant>Lindella</Merchant>
+    <Merchant>Lorekeeper</Merchant>
   </RestockListItem>
 
   <RestockListItem>
     <dbName>item_consumable_tome-ironic_tfs_1</dbName>
     <AmountBeforeRestock>1</AmountBeforeRestock>
     <AmountToRestockTo>3</AmountToRestockTo>
-    <Merchant>Lindella</Merchant>
+    <Merchant>Lorekeeper</Merchant>
   </RestockListItem>
 
 </ArrayOfRestockListItem>

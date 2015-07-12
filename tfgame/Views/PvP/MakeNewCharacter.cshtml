@@ -82,7 +82,12 @@
         @Html.CheckBoxFor(x => x.MigrateLetters)
 
         <br /><br />
+        
+        <p class="good">Start as an inanimate object or pet?</p>
+        @Html.EnumDropDownListFor(model => model.InanimateForm)
 
+        <br /><br />
+        
         <text>Original Form:</text>
 
         @Html.DropDownListFor(i => i.FormName, new SelectList(

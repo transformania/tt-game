@@ -558,6 +558,26 @@ namespace tfgame.Procedures
                  return "That is not a valid starting form.";
              }
 
+            Player vendor = null;
+            if (player.InanimateForm != null)
+            {
+                if (player.InanimateForm.ToString() == "pet" || player.InanimateForm.ToString() == "random")
+                {
+                    vendor = PlayerProcedures.GetPlayerFromMembership(AIProcedures.WuffieMembershipId);
+                    if (vendor == null)
+                    {
+                        return "Wüffie is not currently available to accept new pets. Please try again later.";
+                    }
+                }
+                if (player.InanimateForm.ToString() != "pet")
+                {
+                    vendor = PlayerProcedures.GetPlayerFromMembership(AIProcedures.LindellaMembershipId);
+                    if (vendor == null)
+                    {
+                        return "Lindella is not currently available to accept new items. Please try again later.";
+                    }
+                }
+            }
             // remove the old Player--Membership binding
              Player oldplayer = playerRepo.Players.FirstOrDefault(p => p.MembershipId == WebSecurity.CurrentUserId);
 
@@ -713,6 +733,23 @@ namespace tfgame.Procedures
             };
             skillRepo.SaveSkill(baseskill);
 
+            if (player.InanimateForm != null)
+            {
+                DbStaticForm startform = ItemProcedures.GetFormFromItem(ItemProcedures.GetRandomItemOfType(player.InanimateForm.ToString()));
+                if (player.InanimateForm.ToString() == "random" && startform.MobilityType == "animal") vendor = PlayerProcedures.GetPlayerFromMembership(AIProcedures.WuffieMembershipId);
+
+                newplayer.Form = startform.dbName;
+                newplayer.Gender = startform.Gender;
+                newplayer.Mobility = startform.MobilityType;
+
+                newplayer.Health = 0;
+                newplayer.Mana = 0;
+                newplayer.ActionPoints = 120;
+
+                playerRepo.SavePlayer(newplayer);
+                ItemProcedures.PlayerBecomesItem(newplayer, startform, vendor);
+                ItemProcedures.LockItem(newplayer);
+            }
             return "saved";
 
         }

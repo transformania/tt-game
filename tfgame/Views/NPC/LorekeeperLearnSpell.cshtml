@@ -1,0 +1,64 @@
+﻿@model IEnumerable<tfgame.dbModels.Models.DbStaticSkill>
+@using tfgame.dbModels.Models
+
+<nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+                <li>@Html.ActionLink("Talk", "TalkToLorekeeper", "NPC")</li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+<div>
+    <p class="infoMessage result">@Html.Raw(ViewBag.Result)</p>
+    <p class="infoMessage error">@ViewBag.ErrorMessage</p>
+    <p class="infoMessage suberror">@ViewBag.SubErrorMessage</p>
+</div>
+
+<div class="containerInner">
+    <p>Which spell would you like to learn?  There are currently @Model.Count() spells in this category that you can be taught, each at the price of @tfgame.Statics.PvPStatics.LorekeeperSpellPrice Arpeyjis <span title="Arpeyjis" class="icon icon-money"></span> each.</p>
+
+    <p>You have <b>@ViewBag.Money</b> Arpeyjis <span title="Arpeyjis" class="icon icon-money"></span> available for spending.</p>
+
+    <ul>
+        <li>@Html.ActionLink("Animate spells", "LorekeeperLearnSpell", "NPC", new { filter = "animate" }, null)</li>
+        <li>@Html.ActionLink("Inanimate spells", "LorekeeperLearnSpell", "NPC", new { filter = "inanimate" }, null)</li>
+        <li>@Html.ActionLink("Pet/Animal spells", "LorekeeperLearnSpell", "NPC", new { filter = "animal" }, null)</li>
+        <li>@Html.ActionLink("Other", "LorekeeperLearnSpell", "NPC", new { filter = "other" }, null)</li>
+    </ul>
+
+    <hr />
+    @{
+        foreach (DbStaticSkill s in Model.OrderBy(s => s.FriendlyName))
+        {
+            <h3>
+                <b>@s.FriendlyName</b>
+            </h3>
+
+            <p>@Html.ActionLink("Purchase Training", "LorekeeperLearnSpellSend", "NPC", new { spell = s.dbName }, null)</p>
+            <hr />
+
+        }
+
+    }
+
+
+
+
+
+
+</div>

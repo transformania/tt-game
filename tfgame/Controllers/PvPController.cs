@@ -931,7 +931,11 @@ namespace tfgame.Controllers
             {
 
                 // disable attacks on "friendly" NPCs
-                if (targeted.MembershipId == -3 || targeted.MembershipId == -10 || targeted.MembershipId == -6 || targeted.MembershipId == -14)
+                if (targeted.MembershipId == AIProcedures.LindellaMembershipId ||
+                    targeted.MembershipId == AIProcedures.WuffieMembershipId ||
+                    targeted.MembershipId == AIProcedures.JewdewfaeMembershipId ||
+                    targeted.MembershipId == AIProcedures.BartenderMembershipId ||
+                    targeted.MembershipId == AIProcedures.LoremasterMembershipId)
                 {
                     TempData["Error"] = "A little smile tells you it might just be a bad idea to try and attack this person...";
                     return RedirectToAction("Play");

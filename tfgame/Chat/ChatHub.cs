@@ -18,6 +18,7 @@ namespace tfgame.Chat
         public ChatHub()
         {
             chatService = new ChatService();
+            chatService.NameChanged += OnNameChanged;
         }
 
         public override Task OnConnected()
@@ -47,6 +48,12 @@ namespace tfgame.Chat
                 UpdateUserList(room, false);
 
             return base.OnDisconnected();
+        }
+
+        public void OnNameChanged(object sender, ChatService.NameChangedEventArgs e)
+        {
+            foreach (var room in ChatService.ChatPersistance[e.MembershipId].InRooms)
+                UpdateUserList(room);
         }
 
         public void Send(string name, string message)

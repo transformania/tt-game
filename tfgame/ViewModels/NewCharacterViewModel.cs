@@ -37,8 +37,8 @@ namespace tfgame.ViewModels
         {
             [Display(Name = "Accessory")]
             accessory,
-            [Display(Name = "Consumable")]
-            consumable_reusable,
+            [Display(Name = "Reusable Consumable")]
+            consumable_reuseable,
             [Display(Name = "Shirt")]
             shirt,
             [Display(Name = "Undershirt")]

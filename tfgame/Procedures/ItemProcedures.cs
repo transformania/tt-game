@@ -1673,7 +1673,7 @@ namespace tfgame.Procedures
             int iCount = item.Count();
             if (iCount > 0)
             {
-                return item.ElementAt(rand.Next(0, iCount-1));
+                return item.ElementAt(rand.Next(0, iCount));
             }
             else
             {

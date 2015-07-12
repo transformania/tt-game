@@ -2514,5 +2514,54 @@ namespace tfgame.Statics
 
     }
 
-}
+    public static class ChatStatics
+    {
+        public static IDictionary<int, Tuple<string, string>> Staff = new Dictionary<int, Tuple<string, string>>
+        {
+            { 69, new Tuple<string, string>("Judoo (admin)", "/Images/PvP/portraits/Thumbnails/100/Judoo.jpg") },
+            { 3490, new Tuple<string, string>("Mizuho (dev)", "/Images/PvP/portraits/Thumbnails/100/Mizuho.jpg") },
+            { 251, new Tuple<string, string>("Arrhae (dev)", string.Empty) }, // Arrhae wants to keep regular portrait for now, not admin/dev custom one
+            { 12865, new Tuple<string, string>("Mezaron (dev)", "/Images/PvP/portraits/Thumbnails/100/mezaron_portrait.jpg") },
+            { 14039, new Tuple<string, string>("Tempest (dev)", string.Empty) }, // no custom portrait yet
+        };
 
+        public static IEnumerable<int> HideOnJoinChat = new List<int>
+        {
+            69,
+            3490,
+        };
+
+        public static IEnumerable<string> ReservedText = new List<string>
+        {
+            "[luxa]",
+            "[blanca]",
+            "[poll]",
+            "[fp]",
+            "[sd]",
+        };
+
+        public static IEnumerable<string> ActionTypes = new List<string>
+        {
+            "creature",
+            "item",
+            "event",
+            "trap",
+            "tf.animate",
+            "tf.inanimate",
+            "tf.animal",
+            "tf.partial",
+        };
+
+        public static IEnumerable<string> Tags = new List<string>
+        {
+            "forest",
+            "highschool",
+            "bimbocalypse",
+            "latexfactory",
+            "highschool",
+            "forest",
+            "bimbocalypse",
+            "latexfactory",
+        };
+    }
+}

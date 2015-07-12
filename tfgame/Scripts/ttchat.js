@@ -25,6 +25,21 @@ function addUserPing(name) {
     renderUserList();
 }
 
+function updateUserList(userList) {
+    onlineChatters = [];
+    userList.forEach(function(item) {
+
+        var newUser = {
+            name: item.User,
+            time: item.LastActive,
+        };
+
+        onlineChatters.push(newUser)
+    });
+
+    renderUserList();
+}
+
 setInterval(function () { renderUserList(); }, 3000);
 
 function renderUserList() {

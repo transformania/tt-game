@@ -68,5 +68,17 @@ namespace tfgame.Services
 
             user.ConnectedWith(connectionId);
         }
+
+        public void OnUserDisconnected(Player_VM player, string connectionId)
+        {
+            if (!ChatPersistance.ContainsKey(player.MembershipId))
+                return;
+
+            var user = ChatPersistance[player.MembershipId];
+            user.DisconnectedWith(connectionId);
+
+            if (user.ConnectionCount <= 0)
+                ChatPersistance.Remove(player.MembershipId);
+        }
     }
 }

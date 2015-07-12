@@ -46,10 +46,17 @@ namespace tfgame.Chat
         public override Task OnConnected()
         {
             var me = new GetPlayerFromUserName {UserName = Context.User.Identity.Name}.Find();
-            
             chatService.OnUserConnected(me, Context.ConnectionId);
 
             return base.OnConnected();
+        }
+
+        public override Task OnDisconnected()
+        {
+            var me = new GetPlayerFromUserName { UserName = Context.User.Identity.Name }.Find();
+            chatService.OnUserDisconnected(me, Context.ConnectionId);
+
+            return base.OnDisconnected();
         }
 
         public Task JoinRoom(string roomName)

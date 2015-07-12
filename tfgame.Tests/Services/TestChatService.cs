@@ -134,6 +134,41 @@ namespace tfgame.Tests.Services
             ChatService.ChatPersistance[player2.MembershipId].Connections.Should().HaveCount(3);
         }
 
+        [Test]
+        public void Should_remove_connection_on_disconnect()
+        {
+            var chatService = new ChatService();
+            var player = CreateRegularPlayer();
+            var connectionId1 = Guid.NewGuid().ToString();
+            var connectionId2 = Guid.NewGuid().ToString();
+
+            chatService.OnUserConnected(player, connectionId1);
+            chatService.OnUserConnected(player, connectionId2);
+
+            ChatService.ChatPersistance[player.MembershipId].Connections.Should().HaveCount(2);
+
+            chatService.OnUserDisconnected(player, connectionId1);
+
+            ChatService.ChatPersistance[player.MembershipId].Connections.Should().HaveCount(1);
+            ChatService.ChatPersistance[player.MembershipId].Connections.Should().Contain(connectionId2);
+        }
+
+        [Test]
+        public void Should_remove_player_from_persistance_when_they_have_no_connections()
+        {
+            var chatService = new ChatService();
+            var player = CreateRegularPlayer();
+            var connectionId = Guid.NewGuid().ToString();
+
+            chatService.OnUserConnected(player, connectionId);
+
+            ChatService.ChatPersistance[player.MembershipId].Connections.Should().HaveCount(1);
+
+            chatService.OnUserDisconnected(player, connectionId);
+
+            ChatService.ChatPersistance.ContainsKey(player.MembershipId).Should().BeFalse();
+        }
+
         private Player_VM CreateRegularPlayer(int membershipId = 100, string firstName = "Test", string lastName = "User", bool donator = true)
         {
             return new Player_VM

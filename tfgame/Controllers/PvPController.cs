@@ -385,7 +385,7 @@ namespace tfgame.Controllers
 
             bool iAmWhitelisted = User.IsInRole(PvPStatics.Permissions_MultiAccountWhitelist);
 
-            if (iAmWhitelisted == false && PlayerProcedures.IsMyIPInUseAndAnimate(Request.UserHostAddress) == true)
+            if (iAmWhitelisted == false && player.InanimateForm == null && PlayerProcedures.IsMyIPInUseAndAnimate(Request.UserHostAddress) == true)
             {
 
                 ViewBag.ErrorMessage = "Your character was not created.  It looks like your IP address, <b>" + Request.UserHostAddress + "</b> already has 1 animate character in this world, and the current limit is 1. ";

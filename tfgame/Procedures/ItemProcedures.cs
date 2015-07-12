@@ -1825,6 +1825,18 @@ namespace tfgame.Procedures
 
         }
 
+        public static void LockItem(Player player)
+        {
+            IItemRepository itemRepo = new EFItemRepository();
+            Item item = itemRepo.Items.FirstOrDefault(i => i.VictimName == player.FirstName + " " + player.LastName);
+            if (item == null)
+            {
+                return;
+            }
+            item.IsPermanent = true;
+            itemRepo.SaveItem(item);
+        }
+
         public static void LoadItemRAMBuffBox()
         {
             IDbStaticItemRepository dbStaticItemRepo = new EFDbStaticItemRepository();

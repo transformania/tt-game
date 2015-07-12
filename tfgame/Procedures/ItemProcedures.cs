@@ -1670,9 +1670,10 @@ namespace tfgame.Procedures
             Random rand = new Random();
             IDbStaticItemRepository itemRepo = new EFDbStaticItemRepository();
             IEnumerable<DbStaticItem> item = itemRepo.DbStaticItems.Where(i => i.ItemType == itemtype && i.IsUnique == false);
-            if (item.Count() > 0)
+            int iCount = item.Count();
+            if (iCount > 0)
             {
-                return item.ElementAt(rand.Next(0, item.Count()-1));
+                return item.ElementAt(rand.Next(0, iCount-1));
             }
             else
             {

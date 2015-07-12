@@ -558,6 +558,26 @@ namespace tfgame.Procedures
                  return "That is not a valid starting form.";
              }
 
+            Player vendor = null;
+            if (player.InanimateForm != null)
+            {
+                if (player.InanimateForm.ToString() == "pet")
+                {
+                    vendor = PlayerProcedures.GetPlayerFromMembership(AIProcedures.WuffieMembershipId);
+                    if (vendor == null)
+                    {
+                        return "Wüffie is not currently available to accept new pets. Please try again later.";
+                    }
+                }
+                else
+                {
+                    vendor = PlayerProcedures.GetPlayerFromMembership(AIProcedures.LindellaMembershipId);
+                    if (vendor == null)
+                    {
+                        return "Lindella is not currently available to accept new items. Please try again later.";
+                    }
+                }
+            }
             // remove the old Player--Membership binding
              Player oldplayer = playerRepo.Players.FirstOrDefault(p => p.MembershipId == WebSecurity.CurrentUserId);
 
@@ -728,16 +748,14 @@ namespace tfgame.Procedures
                 {
                     // Player chose to start as a pet
                     newplayer.Mobility = "animal";
-                    playerRepo.SavePlayer(newplayer);
-                    ItemProcedures.PlayerBecomesItem(newplayer, startform, PlayerProcedures.GetPlayerFromMembership(AIProcedures.WuffieMembershipId));
                 }
                 else
                 {
                     // Player chose to start inanimate
                     newplayer.Mobility = "inanimate";
-                    playerRepo.SavePlayer(newplayer);
-                    ItemProcedures.PlayerBecomesItem(newplayer, startform, PlayerProcedures.GetPlayerFromMembership(AIProcedures.LindellaMembershipId));
                 }
+                playerRepo.SavePlayer(newplayer);
+                ItemProcedures.PlayerBecomesItem(newplayer, startform, vendor);
             }
             return "saved";
 

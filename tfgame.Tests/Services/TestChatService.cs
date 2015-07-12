@@ -181,7 +181,10 @@ namespace tfgame.Tests.Services
             chatService.OnUserConnected(player, connectionId);
             chatService.OnUserJoinRoom(player, connectionId, room);
 
-            ChatService.ChatPersistance[player.MembershipId].Connections.Should().Contain(x => x.ConnectionId == connectionId && x.Room == room);
+            var connection = ChatService.ChatPersistance[player.MembershipId].Connections.Single();
+            connection.ConnectionId.Should().Be(connectionId);
+            connection.Room.Should().Be(room);
+            connection.LastActivity.ToShortTimeString().Should().Be(DateTime.UtcNow.ToShortTimeString());
         }
 
         [Test]
@@ -202,6 +205,20 @@ namespace tfgame.Tests.Services
 
             ChatService.ChatPersistance[player.MembershipId].Connections.Should().Contain(x => x.ConnectionId == connectionId1 && x.Room == room1);
             ChatService.ChatPersistance[player.MembershipId].Connections.Should().Contain(x => x.ConnectionId == connectionId2 && x.Room == room2);
+        }
+
+        [Test]
+        public void Should_track_last_time_user_sent_a_message()
+        {
+            var chatService = new ChatService();
+            var player = CreateRegularPlayer();
+            var connectionId = Guid.NewGuid().ToString();
+
+            chatService.OnUserConnected(player, connectionId);
+            chatService.OnUserSentMessage(player, connectionId);
+
+            var connection = ChatService.ChatPersistance[player.MembershipId].Connections.Single(x => x.ConnectionId == connectionId);
+            connection.LastActivity.ToShortTimeString().Should().Be(DateTime.UtcNow.ToShortTimeString());
         }
 
         private Player_VM CreateRegularPlayer(int membershipId = 100, string firstName = "Test", string lastName = "User", bool donator = true)

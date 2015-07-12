@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Microsoft.AspNet.SignalR;
 using tfgame.dbModels.Queries.Player;
+using tfgame.Extensions;
 using tfgame.Procedures;
 using tfgame.Services;
 using tfgame.Statics;
@@ -86,8 +88,18 @@ namespace tfgame.Chat
         }
 
         private void UpdateUserList(string room)
-        {
-            var userList = ChatService.ChatPersistance.Where(x => x.Value.InRooms.Contains(room)).Select(x => new { User = x.Value.Name });
+        {           
+            var userList = ChatService.ChatPersistance
+                .Where(x => x.Value.InRooms.Contains(room))
+                .Select(x => new
+                {
+                    User = x.Value.Name, 
+                    LastActive = x.Value.Connections
+                        .Where(con => con.Room == room)
+                        .OrderByDescending(con => con.LastActivity)
+                        .First().LastActivity.ToUnixTime()
+                }).ToList();
+            
             Clients.Group(room).updateUserList(userList);
             Clients.Caller.updateUserList(userList);
         }

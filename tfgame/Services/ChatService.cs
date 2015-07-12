@@ -89,5 +89,14 @@ namespace tfgame.Services
             var user = ChatPersistance[player.MembershipId];
             user.JoinedRoom(room, connectionId);
         }
+
+        public void OnUserSentMessage(Player_VM player, string connectionId)
+        {
+            if (!ChatPersistance.ContainsKey(player.MembershipId))
+                return;
+
+            var user = ChatPersistance[player.MembershipId];
+            user.ActiveOn(connectionId);
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace tfgame.dbModels.Models
@@ -41,10 +42,18 @@ namespace tfgame.dbModels.Models
                 connection.ForRoom(room);
         }
 
+        public void ActiveOn(string connectionId)
+        {
+            var connection = connections.SingleOrDefault(con => con.ConnectionId == connectionId);
+            if (connection != null)
+                connection.RecordActivity();
+        }
+
         public class ChatConnection
         {
             public string ConnectionId { get; private set; }
             public string Room { get; private set; }
+            public DateTime LastActivity { get; private set; }
 
             public ChatConnection(string connectionId)
             {
@@ -54,6 +63,12 @@ namespace tfgame.dbModels.Models
             public void ForRoom(string room)
             {
                 Room = room;
+                RecordActivity();
+            }
+
+            public void RecordActivity()
+            {
+                LastActivity = DateTime.UtcNow;
             }
         }
     }

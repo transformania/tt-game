@@ -31,7 +31,7 @@ function updateUserList(userList) {
 
         var newUser = {
             name: item.User,
-            time: Date.now(),
+            time: item.LastActive,
         };
 
         onlineChatters.push(newUser)

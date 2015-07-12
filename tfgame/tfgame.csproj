@@ -367,6 +367,7 @@
     <Compile Include="dbModels\Queries\Statics\GetStaticItem.cs" />
     <Compile Include="dbModels\Query.cs" />
     <Compile Include="dbModels\Root.cs" />
+    <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Procedures\AIDirectiveProcedures.cs" />
     <Compile Include="Procedures\AIProcedures.cs" />
     <Compile Include="Procedures\AnimalProcedures.cs" />

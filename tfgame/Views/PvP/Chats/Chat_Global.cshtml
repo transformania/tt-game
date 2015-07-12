@@ -131,6 +131,9 @@
         $(function () {
             var chat = $.connection.chatHub;
 
+            chat.client.updateUserList = function(userList) {
+                updateUserList(userList);
+            };
 
             chat.client.addNewMessageToPage = function (pic, name, message, chatColor) {
 

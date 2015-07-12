@@ -18,7 +18,23 @@ namespace tfgame.Chat
         {
             chatService = new ChatService();
         }
-        
+
+        public override Task OnConnected()
+        {
+            var me = new GetPlayerFromUserName { UserName = Context.User.Identity.Name }.Find();
+            chatService.OnUserConnected(me, Context.ConnectionId);
+
+            return base.OnConnected();
+        }
+
+        public override Task OnDisconnected()
+        {
+            var me = new GetPlayerFromUserName { UserName = Context.User.Identity.Name }.Find();
+            chatService.OnUserDisconnected(me, Context.ConnectionId);
+
+            return base.OnDisconnected();
+        }
+
         public void Send(string name, string message)
         {
             string room = Clients.Caller.toRoom;
@@ -44,22 +60,6 @@ namespace tfgame.Chat
             ChatLogProcedures.WriteLogToDatabase(room, name, output.Text);
         }
 
-        public override Task OnConnected()
-        {
-            var me = new GetPlayerFromUserName {UserName = Context.User.Identity.Name}.Find();
-            chatService.OnUserConnected(me, Context.ConnectionId);
-
-            return base.OnConnected();
-        }
-
-        public override Task OnDisconnected()
-        {
-            var me = new GetPlayerFromUserName { UserName = Context.User.Identity.Name }.Find();
-            chatService.OnUserDisconnected(me, Context.ConnectionId);
-
-            return base.OnDisconnected();
-        }
-
         public Task JoinRoom(string roomName)
         {
             var me = PlayerProcedures.GetPlayerFormViewModel_FromMembership(WebSecurity.CurrentUserId);
@@ -80,7 +80,16 @@ namespace tfgame.Chat
             }
 
             chatService.OnUserJoinRoom(me.Player, Context.ConnectionId, roomName);
+            UpdateUserList(roomName);
+
             return Groups.Add(Context.ConnectionId, roomName);
+        }
+
+        private void UpdateUserList(string room)
+        {
+            var userList = ChatService.ChatPersistance.Where(x => x.Value.InRooms.Contains(room)).Select(x => new { User = x.Value.Name });
+            Clients.Group(room).updateUserList(userList);
+            Clients.Caller.updateUserList(userList);
         }
     }
 }

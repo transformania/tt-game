@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using tfgame.dbModels.Models;
+using tfgame.dbModels.Queries.Statics;
 using tfgame.Procedures;
 using tfgame.Statics;
 using tfgame.ViewModels;
@@ -322,7 +323,7 @@ namespace tfgame.CustomHtmlHelpers
             }
             else
             {
-                strPortraitUrl = ItemStatics.GetStaticItem(player.Form.BecomesItemDbName).PortraitUrl;
+                strPortraitUrl = new GetStaticItem { DbName = player.Form.BecomesItemDbName }.FindSingle().PortraitUrl;
                 if (player.Player.Mobility == "animal")
                 {
                     output = "/Images/PvP/animalPortraits/";

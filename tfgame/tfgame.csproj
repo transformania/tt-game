@@ -260,6 +260,7 @@
     <Compile Include="dbModels\Abstract\IPollEntryRepository.cs" />
     <Compile Include="dbModels\Abstract\IPvPWorldStatRepository.cs" />
     <Compile Include="dbModels\Abstract\IReservedNameRepository.cs" />
+    <Compile Include="dbModels\Abstract\IRoot.cs" />
     <Compile Include="dbModels\Abstract\IRPClassifiedAdRepository.cs" />
     <Compile Include="dbModels\Abstract\IRPPointRepository.cs" />
     <Compile Include="dbModels\Abstract\IServerLogRepository.cs" />
@@ -267,6 +268,9 @@
     <Compile Include="dbModels\Abstract\IDbStaticSkillRepository.cs" />
     <Compile Include="dbModels\Abstract\ITFEnergyRepository.cs" />
     <Compile Include="dbModels\Abstract\ITFMessageRepository.cs" />
+    <Compile Include="dbModels\Command.cs" />
+    <Compile Include="dbModels\Commands\ChatLog\WriteLogToDatabase.cs" />
+    <Compile Include="dbModels\Commands\Player\MarkOnlineActivityTimestamp.cs" />
     <Compile Include="dbModels\Concrete\EFAchievementRepository.cs" />
     <Compile Include="dbModels\Concrete\EFAuthorArtistBioRepository.cs" />
     <Compile Include="dbModels\Concrete\EFBlacklistEntryRepository.cs" />
@@ -290,6 +294,7 @@
     <Compile Include="dbModels\Concrete\EFRPClassifiedAdRepository.cs" />
     <Compile Include="dbModels\Concrete\EFRPPointRespository.cs" />
     <Compile Include="dbModels\Concrete\EFTFMessageRepository.cs" />
+    <Compile Include="dbModels\DomainRegistry.cs" />
     <Compile Include="dbModels\Models\Achievement.cs" />
     <Compile Include="dbModels\Models\AuthorArtistBio.cs" />
     <Compile Include="dbModels\Models\BlacklistEntry.cs" />
@@ -319,6 +324,7 @@
     <Compile Include="dbModels\Concrete\EFTFEnergyRepository.cs" />
     <Compile Include="dbModels\Models\AIDirective.cs" />
     <Compile Include="dbModels\Models\ChatLog.cs" />
+    <Compile Include="dbModels\Models\ChatUser.cs" />
     <Compile Include="dbModels\Models\Contribution.cs" />
     <Compile Include="dbModels\Models\Covenant.cs" />
     <Compile Include="dbModels\Models\CovenantApplication.cs" />
@@ -355,6 +361,13 @@
     <Compile Include="dbModels\Models\DbStaticSkill.cs" />
     <Compile Include="dbModels\Models\TFEnergy.cs" />
     <Compile Include="dbModels\Models\TFMessage.cs" />
+    <Compile Include="dbModels\Queries\DMRoll\GetRoll.cs" />
+    <Compile Include="dbModels\Queries\Player\GetPlayerFormFromMembership.cs" />
+    <Compile Include="dbModels\Queries\Player\GetPlayerFromUserName.cs" />
+    <Compile Include="dbModels\Queries\Statics\GetStaticItem.cs" />
+    <Compile Include="dbModels\Query.cs" />
+    <Compile Include="dbModels\Root.cs" />
+    <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Procedures\AIDirectiveProcedures.cs" />
     <Compile Include="Procedures\AIProcedures.cs" />
     <Compile Include="Procedures\AnimalProcedures.cs" />
@@ -395,6 +408,8 @@
     <Compile Include="Procedures\StatsProcedures.cs" />
     <Compile Include="Procedures\TFEnergyProcedures.cs" />
     <Compile Include="Procedures\WorldUpdateProcedures.cs" />
+    <Compile Include="Services\ChatMessageProcessor.cs" />
+    <Compile Include="Services\ChatService.cs" />
     <Compile Include="Statics\CovenantDictionary.cs" />
     <Compile Include="Statics\EffectStatics.cs" />
     <Compile Include="Statics\Forms.cs" />

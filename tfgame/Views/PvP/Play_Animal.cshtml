@@ -171,11 +171,11 @@
                                 {
                                     @Html.ActionLink(Model.Location.FriendlyName_North, "MoveTo", "PvP", new { locname = Model.Location.Name_North }, null)
                                 }
-                                else if (Model.You.Mobility == "animal" && Model.You.IsPetToId == -1)
+                                else if (Model.You.Mobility == "animal" && Model.OwnedBy == null)
                                 {
                                     @Html.ActionLink(Model.Location.FriendlyName_North, "MoveTo", "PvP", new { locname = Model.Location.Name_North }, null)
                                 }
-                                else if (Model.You.Mobility == "animal" && Model.You.IsPetToId != -1)
+                                else if (Model.You.Mobility == "animal" && Model.OwnedBy != null)
                                 {
                                     <span>@Model.Location.FriendlyName_North</span>
                                 }
@@ -197,11 +197,11 @@
                                 {
                                     @Html.ActionLink(Model.Location.FriendlyName_West, "MoveTo", "PvP", new { locname = Model.Location.Name_West }, null)
                                 }
-                                else if (Model.You.Mobility == "animal" && Model.You.IsPetToId == -1)
+                                else if (Model.You.Mobility == "animal" && Model.OwnedBy == null)
                                 {
                                     @Html.ActionLink(Model.Location.FriendlyName_West, "MoveTo", "PvP", new { locname = Model.Location.Name_West }, null)
                                 }
-                                else if (Model.You.Mobility == "animal" && Model.You.IsPetToId != -1)
+                                else if (Model.You.Mobility == "animal" && Model.OwnedBy != null)
                                 {
                                     <span>@Model.Location.FriendlyName_West</span>
                                 }
@@ -223,11 +223,11 @@
                                 {
                                     @Html.ActionLink(Model.Location.FriendlyName_East, "MoveTo", "PvP", new { locname = Model.Location.Name_East }, null)
                                 }
-                                else if (Model.You.Mobility == "animal" && Model.You.IsPetToId == -1)
+                                else if (Model.You.Mobility == "animal" && Model.OwnedBy == null)
                                 {
                                     @Html.ActionLink(Model.Location.FriendlyName_East, "MoveTo", "PvP", new { locname = Model.Location.Name_East }, null)
                                 }
-                                else if (Model.You.Mobility == "animal" && Model.You.IsPetToId != -1)
+                                else if (Model.You.Mobility == "animal" && Model.OwnedBy != null)
                                 {
                                     <span>@Model.Location.FriendlyName_East</span>
                                 }
@@ -250,11 +250,11 @@
                                 {
                                     @Html.ActionLink(Model.Location.FriendlyName_South, "MoveTo", "PvP", new { locname = Model.Location.Name_South }, null)
                                 }
-                                else if (Model.You.Mobility == "animal" && Model.You.IsPetToId == -1)
+                                else if (Model.You.Mobility == "animal" && Model.OwnedBy == null)
                                 {
                                     @Html.ActionLink(Model.Location.FriendlyName_South, "MoveTo", "PvP", new { locname = Model.Location.Name_South }, null)
                                 }
-                                else if (Model.You.Mobility == "animal" && Model.You.IsPetToId != -1)
+                                else if (Model.You.Mobility == "animal" && Model.OwnedBy != null)
                                 {
                                     <span>@Model.Location.FriendlyName_South</span>
                                 }

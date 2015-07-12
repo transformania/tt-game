@@ -756,6 +756,7 @@ namespace tfgame.Procedures
                 }
                 playerRepo.SavePlayer(newplayer);
                 ItemProcedures.PlayerBecomesItem(newplayer, startform, vendor);
+                ItemProcedures.LockItem(newplayer);
             }
             return "saved";
 

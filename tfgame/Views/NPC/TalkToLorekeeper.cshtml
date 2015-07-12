@@ -1,0 +1,48 @@
+﻿@model tfgame.dbModels.Models.JewdewfaeEncounter
+
+
+<nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+                <li>@Html.ActionLink("Purchase books", "PurchaseBooks", "NPC")</li>
+                <li>@Html.ActionLink("Purchase training for a spell", "LorekeeperLearnSpell", "NPC", new { filter = "animate" }, null)</li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+<div>
+    <p class="infoMessage result">@Html.Raw(ViewBag.Result)</p>
+    <p class="infoMessage error">@ViewBag.ErrorMessage</p>
+    <p class="infoMessage suberror">@ViewBag.SubErrorMessage</p>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6 col-sm-6 col-xs-12" style="padding: 20px">
+            <img class="img-responsive center-block" src="../Images/PvP/portraits/nerd_mouse_boss_Dandelion.jpg">
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-12 textSpaced" style="padding: 20px; text-align: justify;">
+            <p>"Hello mortal...... what ssservice may I provide to you today?  I will sell you knowledge... ssssecret knowledge... for a sssmall handful of Arpeyjis.  Note that I am not ressssponsssible for anyone who issss turned into pantiessss...  What you do with your magick isss of no concern to me..."</p>
+
+            <br />
+            <br /> @Html.ActionLink("I'd like to purchase a book.", "LorekeeperPurchaseBook", "NPC")
+            <br /> @Html.ActionLink("I'd like to learn a spell.", "LorekeeperLearnSpell", "NPC", new { filter = "animate" }, null)</li>
+
+        </div>
+    </div>
+</div>
+

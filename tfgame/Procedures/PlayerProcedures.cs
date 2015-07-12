@@ -561,7 +561,7 @@ namespace tfgame.Procedures
             Player vendor = null;
             if (player.InanimateForm != null)
             {
-                if (player.InanimateForm.ToString() == "pet")
+                if (player.InanimateForm.ToString() == "pet" || player.InanimateForm.ToString() == "random")
                 {
                     vendor = PlayerProcedures.GetPlayerFromMembership(AIProcedures.WuffieMembershipId);
                     if (vendor == null)
@@ -569,7 +569,7 @@ namespace tfgame.Procedures
                         return "Wüffie is not currently available to accept new pets. Please try again later.";
                     }
                 }
-                else
+                if (player.InanimateForm.ToString() != "pet")
                 {
                     vendor = PlayerProcedures.GetPlayerFromMembership(AIProcedures.LindellaMembershipId);
                     if (vendor == null)
@@ -736,6 +736,8 @@ namespace tfgame.Procedures
             if (player.InanimateForm != null)
             {
                 DbStaticForm startform = ItemProcedures.GetFormFromItem(ItemProcedures.GetRandomItemOfType(player.InanimateForm.ToString()));
+                if (player.InanimateForm.ToString() == "random" && startform.MobilityType == "animal") vendor = PlayerProcedures.GetPlayerFromMembership(AIProcedures.WuffieMembershipId);
+
                 newplayer.Form = startform.dbName;
                 newplayer.Gender = startform.Gender;
                 newplayer.Mobility = startform.MobilityType;

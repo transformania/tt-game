@@ -52,7 +52,9 @@ namespace tfgame.ViewModels
             [Display(Name = "Shoes")]
             shoes,
             [Display(Name = "Pet")]
-            pet
+            pet,
+            [Display(Name = "Surprise me!")]
+            random
         }
 
         public virtual Nullable<InanimateTypesEnum> InanimateForm { get; set; }

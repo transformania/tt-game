@@ -1663,11 +1663,21 @@ namespace tfgame.Procedures
             DbStaticForm form = formRepo.DbStaticForms.Where(f => f.BecomesItemDbName == item.dbName).FirstOrDefault();
             return form;
         }
+
         public static DbStaticItem GetRandomItemOfType(string itemtype)
+        {
+            if (itemtype == "random") return GetRandomPlayableItem();
+            Random rand = new Random();
+            IDbStaticItemRepository itemRepo = new EFDbStaticItemRepository();
+            IEnumerable<DbStaticItem> item = itemRepo.DbStaticItems.Where(i => i.ItemType == itemtype && i.IsUnique == false);
+            return item.ElementAt(rand.Next(0, item.Count()));
+        }
+
+        public static DbStaticItem GetRandomPlayableItem()
         {
             Random rand = new Random();
             IDbStaticItemRepository itemRepo = new EFDbStaticItemRepository();
-            IEnumerable<DbStaticItem> item = itemRepo.DbStaticItems.Where(i => i.ItemType == itemtype);
+            IEnumerable<DbStaticItem> item = itemRepo.DbStaticItems.Where(i => i.ItemType != "consumable" && i.IsUnique == false);
             return item.ElementAt(rand.Next(0, item.Count()));
         }
 

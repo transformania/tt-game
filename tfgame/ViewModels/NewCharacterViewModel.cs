@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.ComponentModel;
 
 namespace tfgame.ViewModels
 {
@@ -31,6 +32,30 @@ namespace tfgame.ViewModels
         public bool StartInRP { get; set; }
 
         public bool MigrateLetters { get; set; }
+
+        public enum InanimateTypesEnum
+        {
+            [Display(Name = "Accessory")]
+            accessory,
+            [Display(Name = "Consumable")]
+            consumable_reusable,
+            [Display(Name = "Shirt")]
+            shirt,
+            [Display(Name = "Undershirt")]
+            undershirt,
+            [Display(Name = "Pants")]
+            pants,
+            [Display(Name = "Underpants")]
+            underpants,
+            [Display(Name = "Hat")]
+            hat,
+            [Display(Name = "Shoes")]
+            shoes,
+            [Display(Name = "Pet")]
+            pet
+        }
+
+        public virtual Nullable<InanimateTypesEnum> InanimateForm { get; set; }
 
     }
 }

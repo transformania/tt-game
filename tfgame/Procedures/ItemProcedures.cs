@@ -1657,6 +1657,20 @@ namespace tfgame.Procedures
             return foundItem;
         }
 
+        public static DbStaticForm GetFormFromItem(DbStaticItem item)
+        {
+            IDbStaticFormRepository formRepo = new EFDbStaticFormRepository();
+            DbStaticForm form = formRepo.DbStaticForms.Where(f => f.BecomesItemDbName == item.dbName).FirstOrDefault();
+            return form;
+        }
+        public static DbStaticItem GetRandomItemOfType(string itemtype)
+        {
+            Random rand = new Random();
+            IDbStaticItemRepository itemRepo = new EFDbStaticItemRepository();
+            IEnumerable<DbStaticItem> item = itemRepo.DbStaticItems.Where(i => i.ItemType == itemtype);
+            return item.ElementAt(rand.Next(0, item.Count()));
+        }
+
         public static void MoveAnimalItem(Player player, string destination)
         {
             IItemRepository itemRepo = new EFItemRepository();

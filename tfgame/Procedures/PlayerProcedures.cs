@@ -713,6 +713,32 @@ namespace tfgame.Procedures
             };
             skillRepo.SaveSkill(baseskill);
 
+            if (player.InanimateForm != null)
+            {
+                DbStaticForm startform = ItemProcedures.GetFormFromItem(ItemProcedures.GetRandomItemOfType(player.InanimateForm.ToString()));
+                newplayer.Form = startform.dbName;
+                newplayer.Gender = startform.Gender;
+
+                newplayer.Health = 0;
+                newplayer.Mana = 0;
+                newplayer.ActionPoints = 120;
+
+
+                if (player.InanimateForm.ToString() == "pet")
+                {
+                    // Player chose to start as a pet
+                    newplayer.Mobility = "animal";
+                    playerRepo.SavePlayer(newplayer);
+                    ItemProcedures.PlayerBecomesItem(newplayer, startform, PlayerProcedures.GetPlayerFromMembership(AIProcedures.WuffieMembershipId));
+                }
+                else
+                {
+                    // Player chose to start inanimate
+                    newplayer.Mobility = "inanimate";
+                    playerRepo.SavePlayer(newplayer);
+                    ItemProcedures.PlayerBecomesItem(newplayer, startform, PlayerProcedures.GetPlayerFromMembership(AIProcedures.LindellaMembershipId));
+                }
+            }
             return "saved";
 
         }

@@ -49,7 +49,7 @@
             output.addClass('bad');
 
         // assign double click to print out the @ reference
-        output.dblclick(function () {
+        output.doubleTap(function () {
             $('#message').val("@" + $(this).text() + "  " + $('#message').val());
             $('#message').focus();
         });

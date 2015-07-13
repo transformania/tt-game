@@ -539,7 +539,7 @@ namespace tfgame.Procedures
                 #endregion
 
                 #region mind control
-                else if (targetForm.MobilityType == "mindcontrol" && target.Health <= 0)
+                else if (targetForm.MobilityType == "mindcontrol" && (target.Health / target.MaxHealth * 100) < PvPStatics.PercentHealthToAllowMindControlTF)
                 {
                     //Player attacker = playerRepo.Players.FirstOrDefault(p => p.Id == attackerId);
                     MindControlProcedures.AddMindControl(attacker, victim, targetForm.dbName);

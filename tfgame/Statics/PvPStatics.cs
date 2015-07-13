@@ -228,8 +228,8 @@ namespace tfgame.Statics
         public static string NoActionPointsErrorMessage = "Wait a while; you will receive more action points every half hour.";
 
 
-        public static decimal PercentHealthToAllowFullMobilityFormTF = 50;
-        public static decimal PercentHealthToAllowMindControlTF = 25;
+        public static decimal PercentHealthToAllowFullMobilityFormTF = 0.50m;
+        public static decimal PercentHealthToAllowMindControlTF = 0.25m;
         public static decimal PercentHealthToAllowInanimateFormTF = 0;
 
         public static decimal NonPvPXPGainModifier = .5M;

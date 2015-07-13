@@ -131,10 +131,6 @@
         $(function () {
             var chat = $.connection.chatHub;
 
-            window.setInterval(function() {
-                ChatModule.renderUserList();
-            }, 60000);
-
             chat.client.updateUserList = function(userList) {
                 ChatModule.updateUserList(userList);
             };

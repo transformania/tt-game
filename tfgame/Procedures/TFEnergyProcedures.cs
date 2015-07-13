@@ -361,7 +361,7 @@ namespace tfgame.Procedures
 
                 #region inanimate and animal
                 // target is turning into an inanimate or animal form, both are endgame
-                else if ((targetForm.MobilityType == "inanimate" || targetForm.MobilityType == "animal") && target.Health <= PvPStatics.PercentHealthToAllowInanimateFormTF)
+                else if ((targetForm.MobilityType == "inanimate" || targetForm.MobilityType == "animal") && (target.Health / target.MaxHealth) <= PvPStatics.PercentHealthToAllowInanimateFormTF)
                 {
 
                     SkillProcedures.UpdateFormSpecificSkillsToPlayer(target, oldForm.dbName, targetForm.dbName);

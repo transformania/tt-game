@@ -12,6 +12,8 @@ namespace tfgame.Services
         private const int OnlineActivityCutoffMinutes = -2;
 
         public static IDictionary<int, ChatUser> ChatPersistance { get; private set; }
+        
+        public event EventHandler<NameChangedEventArgs> NameChanged = delegate {};
 
         static ChatService()
         {
@@ -62,7 +64,7 @@ namespace tfgame.Services
             }
             else
             {
-                user = new ChatUser(player.MembershipId, GetPlayerDescriptorFor(player).Item1);
+                user = new ChatUser(player.MembershipId, GetPlayerDescriptorFor(player).Item1, player.DonatorLevel > 0);
                 ChatPersistance.Add(player.MembershipId, user);
             }
 
@@ -88,6 +90,8 @@ namespace tfgame.Services
 
             var user = ChatPersistance[player.MembershipId];
             user.JoinedRoom(room, connectionId);
+
+            CheckForNameChange(user, GetPlayerDescriptorFor(player).Item1);
         }
 
         public void OnUserSentMessage(Player_VM player, string connectionId)
@@ -97,6 +101,27 @@ namespace tfgame.Services
 
             var user = ChatPersistance[player.MembershipId];
             user.ActiveOn(connectionId);
+
+            CheckForNameChange(user, GetPlayerDescriptorFor(player).Item1);
+        }
+
+        private void CheckForNameChange(ChatUser user, string name)
+        {
+            if (user.Name == name)
+                return;
+
+            user.ChangedNameTo(name);
+            NameChanged(this, new NameChangedEventArgs(user.MembershipId));
+        }
+
+        public class NameChangedEventArgs : EventArgs
+        {
+            public int MembershipId { get; private set; }
+
+            public NameChangedEventArgs(int membershipId)
+            {
+                MembershipId = membershipId;
+            }
         }
     }
 }

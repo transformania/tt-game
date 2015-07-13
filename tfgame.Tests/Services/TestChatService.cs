@@ -101,6 +101,7 @@ namespace tfgame.Tests.Services
             ChatService.ChatPersistance.Should().ContainKey(player.MembershipId);
             ChatService.ChatPersistance[player.MembershipId].Name.Should().Be(player.GetFullName());
             ChatService.ChatPersistance[player.MembershipId].Connections.Should().HaveCount(1);
+            ChatService.ChatPersistance[player.MembershipId].IsDonator.Should().BeTrue();
         }
 
         [Test]
@@ -221,6 +222,50 @@ namespace tfgame.Tests.Services
             connection.LastActivity.ToShortTimeString().Should().Be(DateTime.UtcNow.ToShortTimeString());
         }
 
+        [Test]
+        public void Should_update_name_of_user_after_reroll_on_joining_room()
+        {
+            const string room = "global";
+            var chatService = new ChatService();
+            var player = CreateRegularPlayer();
+            var connectionId = Guid.NewGuid().ToString();
+
+            chatService.OnUserConnected(player, connectionId);
+            chatService.OnUserJoinRoom(player, connectionId, room);
+
+            ChatService.ChatPersistance[player.MembershipId].Name.Should().Be("Test 'Wibble' User");
+
+            player.FirstName = "Re";
+            player.LastName = "Roll";
+
+            chatService.MonitorEvents();
+            chatService.OnUserJoinRoom(player, connectionId, room);
+
+            chatService.ShouldRaise("NameChanged");
+            ChatService.ChatPersistance[player.MembershipId].Name.Should().Be("Re 'Wibble' Roll");
+        }
+
+        [Test]
+        public void Should_update_name_of_user_after_reroll_on_message_sent()
+        {
+            var chatService = new ChatService();
+            var player = CreateRegularPlayer();
+            var connectionId = Guid.NewGuid().ToString();
+
+            chatService.OnUserConnected(player, connectionId);
+
+            ChatService.ChatPersistance[player.MembershipId].Name.Should().Be("Test 'Wibble' User");
+
+            player.FirstName = "Re";
+            player.LastName = "Roll";
+            
+            chatService.MonitorEvents();
+            chatService.OnUserSentMessage(player, connectionId);
+
+            chatService.ShouldRaise("NameChanged");
+            ChatService.ChatPersistance[player.MembershipId].Name.Should().Be("Re 'Wibble' Roll");
+        }
+        
         private Player_VM CreateRegularPlayer(int membershipId = 100, string firstName = "Test", string lastName = "User", bool donator = true)
         {
             return new Player_VM

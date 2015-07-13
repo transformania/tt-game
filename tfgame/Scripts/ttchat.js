@@ -1,80 +1,63 @@
-﻿var onlineChatters = [];
-var lowActivityThreshold = 180000; // time before name turns from green to red without activity.  In milliseconds.
+﻿ChatModule = (function() {
+    var lowActivityThreshold = 180000; // time before name turns from green to red without activity.  In milliseconds.
+    var onlineChatters;
 
-function addUserPing(name) {
-    var refresh = false;
-    for (var i = 0; i < onlineChatters.length; i++) {
-        if (onlineChatters[i].name == name) {
-            onlineChatters[i].time = Date.now();
-            refresh = true;
+    var pub = {};
+    
+    pub.updateUserList = function(userList) {
+        onlineChatters = userList;
+
+        renderUserList();
+    };
+
+    var renderUserList = function() {
+
+        if (onlineChatters === undefined)
+            return;
+
+        var i;
+        var onlinePanel = $(".userlist-chat");
+        onlinePanel.html("");
+        
+        for (i = 0; i < onlineChatters.Staff.length; i++) {
+            onlinePanel.append(renderUserListItem(onlineChatters.Staff[i], false)); // admins shouldn't show a donator star
+        }
+
+        for (i = 0; i < onlineChatters.Donators.length; i++) {
+            onlinePanel.append(renderUserListItem(onlineChatters.Donators[i], true));
+        }
+
+        for (i = 0; i < onlineChatters.Users.length; i++) {
+            onlinePanel.append(renderUserListItem(onlineChatters.Users[i], false));
         }
     }
 
-    if (refresh == false) {
+    var renderUserListItem = function(item, isDonator) {
 
-        var newUser = {
-            name: name,
-            time: Date.now(),
-        };
+        var output = $('<span />', { text : ' '+item.User}).addClass('userlistRow');
 
-        if (name != "") {
-            onlineChatters.push(newUser);
+        if (isDonator === true) 
+        {
+            $("<span />", { title: 'This player supports this game on Patreon monthly.' })
+                .addClass('icon icon-donate')
+                .prependTo(output);
         }
-    }
 
-    renderUserList();
-}
+        if (Date.now() - item.LastActivity < lowActivityThreshold)
+            output.addClass('good');
+        else
+            output.addClass('bad');
 
-function updateUserList(userList) {
-    onlineChatters = [];
-    userList.forEach(function(item) {
-
-        var newUser = {
-            name: item.User,
-            time: item.LastActive,
-        };
-
-        onlineChatters.push(newUser)
-    });
-
-    renderUserList();
-}
-
-setInterval(function () { renderUserList(); }, 3000);
-
-function renderUserList() {
-
-    var lowActivity = [];
-    var highActivity = [];
-
-    var onlinePanel = $(".userlist-chat");
-
-    onlinePanel.html("");
-
-    // filter into recent talkers and nonrecent talkers
-    for (var i = 0; i < onlineChatters.length; i++) {
-        if (Date.now() - onlineChatters[i].time < lowActivityThreshold) {
-            highActivity.push(onlineChatters[i]);
-        } else {
-            lowActivity.push(onlineChatters[i]);
-        }
-    }
-
-    // render to userlist panel
-    for (var i = 0; i < highActivity.length; i++) {
-        onlinePanel.append("<span class='good userlistRow'>" + highActivity[i].name + "</span></br>");
-    }
-    for (var i = 0; i < lowActivity.length; i++) {
-        onlinePanel.append("<span class='bad userlistRow'>" + lowActivity[i].name + "</span></br>");
-    }
-
-    // assign double click to print out the @ reference
-    $('.userlistRow').each(function () {
-        $(this).dblclick(function () {
-            $('#message').val("@" + $(this).html() + "  " + $('#message').val());
+        // assign double click to print out the @ reference
+        output.dblclick(function () {
+            $('#message').val("@" + $(this).text() + "  " + $('#message').val());
             $('#message').focus();
         });
-    });
 
-}
+        return output.append("<br />");
+    }
+
+    return pub;
+
+})();
 

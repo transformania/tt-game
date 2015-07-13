@@ -1,10 +1,12 @@
 ﻿using System.Linq;
 using Microsoft.AspNet.SignalR;
+using tfgame.dbModels.Models;
 using tfgame.dbModels.Queries.Player;
 using tfgame.Extensions;
 using tfgame.Procedures;
 using tfgame.Services;
 using tfgame.Statics;
+using tfgame.ViewModels;
 using WebMatrix.WebData;
 using System.Threading.Tasks;
 using tfgame.CustomHtmlHelpers;
@@ -18,6 +20,7 @@ namespace tfgame.Chat
         public ChatHub()
         {
             chatService = new ChatService();
+            chatService.NameChanged += OnNameChanged;
         }
 
         public override Task OnConnected()
@@ -43,10 +46,19 @@ namespace tfgame.Chat
             
             chatService.OnUserDisconnected(me, connectionId);
 
-            if (!string.IsNullOrWhiteSpace(room))
-                UpdateUserList(room, false);
+            if (string.IsNullOrWhiteSpace(room) || ChatService.ChatPersistance[me.MembershipId].InRooms.Contains(room)) 
+                return base.OnDisconnected();
+
+            SendNoticeToRoom(room, me, "has left the room.");
+            UpdateUserList(room, false);
 
             return base.OnDisconnected();
+        }
+
+        public void OnNameChanged(object sender, ChatService.NameChangedEventArgs e)
+        {
+            foreach (var room in ChatService.ChatPersistance[e.MembershipId].InRooms)
+                UpdateUserList(room);
         }
 
         public void Send(string name, string message)
@@ -80,20 +92,8 @@ namespace tfgame.Chat
         {
             var me = PlayerProcedures.GetPlayerFormViewModel_FromMembership(WebSecurity.CurrentUserId);
 
-            try
-            {
-                if (me.Player.MembershipId > 0)
-                {
-                    var message = string.Format("[-[{0} has joined the room.]-]", me.Player.GetFullName());
-                    
-                    if (!ChatStatics.HideOnJoinChat.Contains(me.Player.MembershipId))
-                        Clients.Group(roomName).addNewMessageToPage("", "", message, me.Player.ChatColor);
-                }
-            }
-            catch
-            {
-
-            }
+            if (!ChatService.ChatPersistance[me.Player.MembershipId].InRooms.Contains(roomName))
+                SendNoticeToRoom(roomName, me.Player, "has joined the room.");
 
             chatService.OnUserJoinRoom(me.Player, Context.ConnectionId, roomName);
             UpdateUserList(roomName);
@@ -101,18 +101,53 @@ namespace tfgame.Chat
             return Groups.Add(Context.ConnectionId, roomName);
         }
 
+        private void SendNoticeToRoom(string roomName, Player_VM me, string text)
+        {
+            try
+            {
+                if (me.MembershipId <= 0) 
+                    return;
+
+                var message = string.Format("[-[{0} {1}]-]", me.GetFullName(), text);
+
+                if (!ChatStatics.HideOnJoinChat.Contains(me.MembershipId))
+                    Clients.Group(roomName).addNewMessageToPage("", "", message, me.ChatColor);
+            }
+            catch
+            {
+            }
+        }
+
         private void UpdateUserList(string room, bool includeCaller = true)
-        {           
-            var userList = ChatService.ChatPersistance
+        {
+            var usersInChat = ChatService.ChatPersistance
                 .Where(x => x.Value.InRooms.Contains(room))
                 .Select(x => new
                 {
-                    User = x.Value.Name, 
+                    User = x.Value.Name,
                     LastActive = x.Value.Connections
                         .Where(con => con.Room == room)
                         .OrderByDescending(con => con.LastActivity)
-                        .First().LastActivity.ToUnixTime()
-                }).ToList();
+                        .First().LastActivity.ToUnixTime(),
+                    IsDonator = x.Value.IsDonator,
+                    IsStaff = ChatStatics.Staff.ContainsKey(x.Key),
+                })
+                .ToList();
+
+            var userList = new
+            {
+                Staff = usersInChat.Where(x => x.IsStaff)
+                .OrderBy(x => x.User)
+                .Select(uic => new { User = uic.User, LastActivity = uic.LastActive }),
+
+                Donators = usersInChat.Where(x => !x.IsStaff && x.IsDonator)
+                .OrderBy(x => x.User)
+                .Select(uic => new { User = uic.User, LastActivity = uic.LastActive }),
+
+                Users = usersInChat.Where(x => !x.IsStaff && !x.IsDonator)
+                .OrderBy(x => x.User)
+                .Select(uic => new { User = uic.User, LastActivity = uic.LastActive }),
+            };
 
             Clients.Group(room).updateUserList(userList);
             

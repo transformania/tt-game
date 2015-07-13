@@ -64,7 +64,7 @@ namespace tfgame.Services
             }
             else
             {
-                user = new ChatUser(player.MembershipId, GetPlayerDescriptorFor(player).Item1);
+                user = new ChatUser(player.MembershipId, GetPlayerDescriptorFor(player).Item1, player.DonatorLevel > 0);
                 ChatPersistance.Add(player.MembershipId, user);
             }
 

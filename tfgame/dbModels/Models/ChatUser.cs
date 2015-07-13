@@ -14,11 +14,14 @@ namespace tfgame.dbModels.Models
         public string Name { get; private set; }
 
         public IEnumerable<string> InRooms { get { return connections.Select(x => x.Room).Distinct(); } }
+        public bool IsDonator { get; private set; }
 
-        public ChatUser(int membershipId, string name)
+        public ChatUser(int membershipId, string name, bool isDonator = false)
         {
             MembershipId = membershipId;
             Name = name;
+            IsDonator = isDonator;
+
             connections = new List<ChatConnection>();
         }
 

@@ -132,12 +132,10 @@
             var chat = $.connection.chatHub;
 
             chat.client.updateUserList = function(userList) {
-                updateUserList(userList);
+                ChatModule.updateUserList(userList);
             };
 
             chat.client.addNewMessageToPage = function (pic, name, message, chatColor) {
-
-                addUserPing(name);
 
                 // check and see if this poster or message has a banned substring.  If so, ignore it.  Otherwise display as normal
                 var doNotDisplay = false;
@@ -178,6 +176,8 @@
                     }
 
                     $("#disconnected").hide();
+
+                    ChatModule.renderUserList();
 
                 } else {
                    

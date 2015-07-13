@@ -109,17 +109,35 @@ namespace tfgame.Chat
         }
 
         private void UpdateUserList(string room, bool includeCaller = true)
-        {           
-            var userList = ChatService.ChatPersistance
+        {
+            var usersInChat = ChatService.ChatPersistance
                 .Where(x => x.Value.InRooms.Contains(room))
                 .Select(x => new
                 {
-                    User = x.Value.Name, 
+                    User = x.Value.Name,
                     LastActive = x.Value.Connections
                         .Where(con => con.Room == room)
                         .OrderByDescending(con => con.LastActivity)
-                        .First().LastActivity.ToUnixTime()
-                }).ToList();
+                        .First().LastActivity.ToUnixTime(),
+                    IsDonator = x.Value.IsDonator,
+                    IsStaff = ChatStatics.Staff.ContainsKey(x.Key),
+                })
+                .ToList();
+
+            var userList = new
+            {
+                Staff = usersInChat.Where(x => x.IsStaff)
+                .OrderBy(x => x.User)
+                .Select(uic => new { User = uic.User, LastActivity = uic.LastActive }),
+
+                Donators = usersInChat.Where(x => !x.IsStaff && x.IsDonator)
+                .OrderBy(x => x.User)
+                .Select(uic => new { User = uic.User, LastActivity = uic.LastActive }),
+
+                Users = usersInChat.Where(x => !x.IsStaff && !x.IsDonator)
+                .OrderBy(x => x.User)
+                .Select(uic => new { User = uic.User, LastActivity = uic.LastActive }),
+            };
 
             Clients.Group(room).updateUserList(userList);
             

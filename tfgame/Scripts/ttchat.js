@@ -7,10 +7,10 @@
     pub.updateUserList = function(userList) {
         onlineChatters = userList;
 
-        renderUserList();
+        pub.renderUserList();
     };
 
-    var renderUserList = function() {
+    pub.renderUserList = function() {
 
         if (onlineChatters === undefined)
             return;

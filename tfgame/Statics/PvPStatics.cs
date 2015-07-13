@@ -188,6 +188,13 @@ namespace tfgame.Statics
            505, // 28
        };
 
+        public static int[] RerollTimer = {
+            30,     // 30 minutes
+            60,     // 1 hour
+            240,    // 4 hours
+            1440    // 24 hours
+        };
+
         public static decimal LevelUpHealthMaxIncreaseBase = 10;
         public static decimal LevelUpManaMaxIncreaseBase = 10;
         public static decimal LevelUpHealthMaxIncreasePerLevel = 5;

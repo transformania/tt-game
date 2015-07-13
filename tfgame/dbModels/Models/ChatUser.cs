@@ -49,6 +49,11 @@ namespace tfgame.dbModels.Models
                 connection.RecordActivity();
         }
 
+        public void ChangedNameTo(string name)
+        {
+            Name = name;
+        }
+
         public class ChatConnection
         {
             public string ConnectionId { get; private set; }

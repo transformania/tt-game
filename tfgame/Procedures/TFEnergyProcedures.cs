@@ -305,14 +305,11 @@ namespace tfgame.Procedures
                 playerRepo.SavePlayer(target);
             }
 
-            if ((target.Health / target.MaxHealth) < PvPStatics.PercentHealthToAllowFullMobilityFormTF)
-            {
-
                 DbStaticForm oldForm = FormStatics.GetForm(target.Form);
 
                 #region animate transformation
                 // target is turning into an animate form
-                if (targetForm.MobilityType == "full")
+                if (targetForm.MobilityType == "full" && (target.Health / target.MaxHealth) <= PvPStatics.PercentHealthToAllowFullMobilityFormTF)
                 {
 
                     SkillProcedures.UpdateFormSpecificSkillsToPlayer(target, oldForm.dbName, targetForm.dbName);
@@ -364,7 +361,7 @@ namespace tfgame.Procedures
 
                 #region inanimate and animal
                 // target is turning into an inanimate or animal form, both are endgame
-                else if ((targetForm.MobilityType == "inanimate" || targetForm.MobilityType == "animal") && target.Health <= 0)
+                else if ((targetForm.MobilityType == "inanimate" || targetForm.MobilityType == "animal") && target.Health <= PvPStatics.PercentHealthToAllowInanimateFormTF)
                 {
 
                     SkillProcedures.UpdateFormSpecificSkillsToPlayer(target, oldForm.dbName, targetForm.dbName);
@@ -509,7 +506,7 @@ namespace tfgame.Procedures
                 #endregion
 
                 #region mind control
-                else if (targetForm.MobilityType == "mindcontrol" && (target.Health / target.MaxHealth) < PvPStatics.PercentHealthToAllowMindControlTF)
+                else if (targetForm.MobilityType == "mindcontrol" && (target.Health / target.MaxHealth) <= PvPStatics.PercentHealthToAllowMindControlTF)
                 {
                     //Player attacker = playerRepo.Players.FirstOrDefault(p => p.Id == attackerId);
                     MindControlProcedures.AddMindControl(attacker, victim, targetForm.dbName);
@@ -537,7 +534,6 @@ namespace tfgame.Procedures
                     
                 }
                 #endregion
-            }
         
 
             return output;

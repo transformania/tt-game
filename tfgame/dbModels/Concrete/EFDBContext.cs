@@ -62,6 +62,8 @@ namespace tfgame.dbModels.Concrete
         public DbSet<CovenantLog> CovenantLogs { get; set; }
         public DbSet<ItemTransferLog> ItemTransferLogs { get; set; }
 
+        public DbSet<Reroll> Rerolls { get; set; }
+
         public DbSet<ChatLog> ChatLogs { get; set; }
         public DbSet<DMRoll> DMRolls { get; set; }
         public DbSet<PollEntry> PollEntries { get; set; }

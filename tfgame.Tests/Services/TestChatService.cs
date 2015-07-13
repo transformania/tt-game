@@ -101,6 +101,7 @@ namespace tfgame.Tests.Services
             ChatService.ChatPersistance.Should().ContainKey(player.MembershipId);
             ChatService.ChatPersistance[player.MembershipId].Name.Should().Be(player.GetFullName());
             ChatService.ChatPersistance[player.MembershipId].Connections.Should().HaveCount(1);
+            ChatService.ChatPersistance[player.MembershipId].IsDonator.Should().BeTrue();
         }
 
         [Test]

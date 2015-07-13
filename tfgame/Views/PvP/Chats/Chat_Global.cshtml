@@ -167,9 +167,11 @@
                     }
 
                     // add onclick to last element
-                    $('ul#discussion li:last strong:first').doubleTap(function () {
-                        $('#message').val("@@" + name + "  " + $('#message').val());
-                        $('#message').focus();
+                    $('ul#discussion li:last strong:first').doubleTap(function (e) {
+                        if (name.length == 0)
+                            name = $(this).find('strong').first().text();
+
+                        ChatModule.onUserDoubleTapped(name, e);
                     });
 
                     if (!document.hasFocus()) {

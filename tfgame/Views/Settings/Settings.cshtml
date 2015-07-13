@@ -40,6 +40,19 @@
         
         <p>You were last in combat <b>@Math.Abs(Math.Floor(Model.GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalMinutes))</b> minutes ago.</p>
 
+        if (@ViewBag.Mobility != "full")
+        {
+            if (@ViewBag.TimeUntilReroll > 0)
+            {
+                <p>You can restart your character in <b>@ViewBag.TimeUntilReroll</b> minutes.</p>
+            }
+            else
+            {
+                <p>You can restart your character <b>now</b>.</p>
+            }
+        }
+
+
         if (User.IsInRole(PvPStatics.Permissions_MultiAccountWhitelist) == true)
         {
             <p class="good">You are on the multiple account whitelist.</p>

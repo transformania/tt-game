@@ -29,7 +29,8 @@ namespace tfgame.Controllers
              Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
 
              ViewBag.GameMode = me.GameMode;
-
+             ViewBag.Mobility = me.Mobility;
+             ViewBag.TimeUntilReroll = Math.Round(RerollProcedures.GetTimeUntilReroll(me).TotalMinutes);
              ViewBag.TimeUntilLogout = PvPStatics.OfflineAfterXMinutes - Math.Abs(Math.Floor(me.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
 
              return View(me);

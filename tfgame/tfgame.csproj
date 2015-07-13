@@ -247,6 +247,7 @@
     <Compile Include="dbModels\Abstract\IFurnitureRepository.cs" />
     <Compile Include="dbModels\Abstract\IInanimateXPRepository.cs" />
     <Compile Include="dbModels\Abstract\IItemRepository.cs" />
+    <Compile Include="dbModels\Abstract\IRerollRepository.cs" />
     <Compile Include="dbModels\Abstract\IItemTransferLogRepository.cs" />
     <Compile Include="dbModels\Abstract\IJewdewfaeEncounterRepository.cs" />
     <Compile Include="dbModels\Abstract\ILocationInfoRepository.cs" />
@@ -285,6 +286,7 @@
     <Compile Include="dbModels\Concrete\EFDMRollRepository.cs" />
     <Compile Include="dbModels\Concrete\EFDonatorRepository.cs" />
     <Compile Include="dbModels\Concrete\EFFurnitureRepository.cs" />
+    <Compile Include="dbModels\Concrete\EFRerollRepository.cs" />
     <Compile Include="dbModels\Concrete\EFItemTransferLogRepository.cs" />
     <Compile Include="dbModels\Concrete\EFJewdewfaeEncounterRepository.cs" />
     <Compile Include="dbModels\Concrete\EFLocationInfoRepository.cs" />
@@ -341,6 +343,7 @@
     <Compile Include="dbModels\Models\Furniture.cs" />
     <Compile Include="dbModels\Models\InanimateXP.cs" />
     <Compile Include="dbModels\Models\Item.cs" />
+    <Compile Include="dbModels\Models\Reroll.cs" />
     <Compile Include="dbModels\Models\ItemTransferLog.cs" />
     <Compile Include="dbModels\Models\JewdewfaeEncounter.cs" />
     <Compile Include="dbModels\Models\LocationInfo.cs" />
@@ -387,6 +390,7 @@
     <Compile Include="Procedures\DonatorProcedures.cs" />
     <Compile Include="Procedures\DungeonProcedures.cs" />
     <Compile Include="Procedures\FurnitureProcedures.cs" />
+    <Compile Include="Procedures\RerollProcedures.cs" />
     <Compile Include="Procedures\ItemTransferLogProcedures.cs" />
     <Compile Include="Procedures\MindControlProcedures.cs" />
     <Compile Include="Procedures\NoticeProcedures.cs" />

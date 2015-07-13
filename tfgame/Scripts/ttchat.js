@@ -32,6 +32,10 @@
         }
     }
 
+    pub.autoRender = function() {
+        window.setInterval(pub.renderUserList(), 10000);
+    }
+
     var renderUserListItem = function(item, isDonator) {
 
         var output = $('<span />', { text : ' '+item.User}).addClass('userlistRow');

@@ -585,6 +585,12 @@ namespace tfgame.Procedures
 
              if (oldplayer != null)
              {
+                 TimeSpan rerollTime = RerollProcedures.GetTimeUntilReroll(oldplayer);
+                 if (rerollTime.TotalSeconds > 0)
+                 {
+                     return "It is too soon for you to start again. Please try again in " + rerollTime.ToString(@"hh\:mm\:ss") + ".";
+                 }
+
                  // remove all of the old player's player logs
                  PlayerLogProcedures.ClearPlayerLog(oldplayer.Id);
 
@@ -675,6 +681,7 @@ namespace tfgame.Procedures
             newplayer.dbLocationName = LocationsStatics.GetRandomLocation();
 
             playerRepo.SavePlayer(newplayer);
+            RerollProcedures.AddRerollGeneration(newplayer);
 
             if (oldplayer != null)
             {

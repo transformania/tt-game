@@ -230,6 +230,7 @@ namespace tfgame.Statics
 
         public static decimal PercentHealthToAllowFullMobilityFormTF = 0.50m;
         public static decimal PercentHealthToAllowMindControlTF = 0.25m;
+        public static decimal PercentHealthToAllowAnimalFormTF = 0;
         public static decimal PercentHealthToAllowInanimateFormTF = 0;
 
         public static decimal NonPvPXPGainModifier = .5M;

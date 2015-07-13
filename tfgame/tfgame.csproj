@@ -1432,6 +1432,8 @@
     <Content Include="Scripts\fwars\models\person.js" />
     <Content Include="Scripts\fwars\models\tfDefeatText.js" />
     <Content Include="Scripts\fwars\models\fightText.js" />
+    <Content Include="Scripts\jquery.mobile.custom.js" />
+    <Content Include="Scripts\jquery.mobile.custom.min.js" />
     <Content Include="Scripts\jquery.rotate.js" />
     <Content Include="Scripts\jQueryRotateCompressed.js" />
     <Content Include="Scripts\notices.js" />
@@ -2024,6 +2026,7 @@
     <Content Include="Scripts\jquery-ui-1.10.4.min.js" />
     <Content Include="Scripts\jquery.animate-color.min.js" />
     <Content Include="Scripts\jquery.js" />
+    <Content Include="Scripts\jquery.mobile.doubletap.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.signalR-2.0.3.js" />
     <Content Include="Scripts\jquery.signalR-2.0.3.min.js" />

@@ -57,6 +57,10 @@
         return output.append("<br />");
     }
 
+    window.setInterval(function () {
+        pub.renderUserList();
+    }, 60000);
+
     return pub;
 
 })();

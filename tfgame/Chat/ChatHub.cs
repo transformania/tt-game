@@ -6,7 +6,6 @@ using tfgame.Extensions;
 using tfgame.Procedures;
 using tfgame.Services;
 using tfgame.Statics;
-using tfgame.ViewModels;
 using WebMatrix.WebData;
 using System.Threading.Tasks;
 using tfgame.CustomHtmlHelpers;
@@ -88,6 +87,8 @@ namespace tfgame.Chat
 
             ChatLogProcedures.WriteLogToDatabase(room, name, output.Text);
             chatService.OnUserSentMessage(me.Player, Context.ConnectionId);
+
+            UpdateUserList(room);
         }
 
         public Task JoinRoom(string roomName)

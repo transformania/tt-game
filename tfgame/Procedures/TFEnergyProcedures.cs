@@ -117,19 +117,34 @@ namespace tfgame.Procedures
             }
 
 
-            decimal percentTransformedByHealth = 100 - (victim.Health / victim.MaxHealth * 100);
+            decimal percentTransformedByHealth = 1 - (victim.Health / victim.MaxHealth);
 
             // animate forms only need half of health requirement, so double the amount completed
+            decimal PercentHealthToAllowTF = 0;
             if (eventualForm.MobilityType == "full")
             {
-                percentTransformedByHealth *= 2;
+                PercentHealthToAllowTF = PvPStatics.PercentHealthToAllowFullMobilityFormTF;
+            }
+            else if (eventualForm.MobilityType == "inanimate")
+            {
+                PercentHealthToAllowTF = PvPStatics.PercentHealthToAllowInanimateFormTF;
+            }
+            else if (eventualForm.MobilityType == "animal")
+            {
+                PercentHealthToAllowTF = PvPStatics.PercentHealthToAllowAnimalFormTF;
+            }
+            else if (eventualForm.MobilityType == "mindcontrol")
+            {
+                PercentHealthToAllowTF = PvPStatics.PercentHealthToAllowMindControlTF;
             }
 
-            decimal percentTransformed = energy.Amount / eventualForm.TFEnergyRequired * 100;
+            percentTransformedByHealth /= 1-PercentHealthToAllowTF;
 
-            if (percentTransformed > 100)
+            decimal percentTransformed = energy.Amount / eventualForm.TFEnergyRequired;
+
+            if (percentTransformed > 1)
             {
-                percentTransformed = 100;
+                percentTransformed = 1;
             }
 
             // only print the lower of the two tf % values
@@ -143,78 +158,37 @@ namespace tfgame.Procedures
                 percentPrintedOutput = percentTransformedByHealth;
             }
 
-            percentPrintedOutput = Math.Round(percentPrintedOutput, 3);
+            percentPrintedOutput = Math.Round(percentPrintedOutput*100, 3);
 
-            if (eventualForm.MobilityType == "inanimate" || eventualForm.MobilityType=="animal" || eventualForm.MobilityType == "mindcontrol")
+            if (percentTransformed < 0.20m || percentTransformedByHealth < 0.20m)
             {
-
-                if (percentTransformed < 20 || percentTransformedByHealth < 20)
-                {
-
-                    output.AttackerLog += GetTFMessage(eventualForm, victim, "20", "third") + " (" + percentPrintedOutput + "%)";
-                    output.VictimLog += GetTFMessage(eventualForm, victim, "20", "first") + " (" + percentPrintedOutput + "%)";
-                }
-                else if (percentTransformed < 40 || percentTransformedByHealth < 40)
-                {
-                    output.AttackerLog += GetTFMessage(eventualForm, victim, "40", "third") + " (" + percentPrintedOutput + "%)";
-                    output.VictimLog += GetTFMessage(eventualForm, victim, "40", "first") + " (" + percentPrintedOutput + "%)";
-                }
-                else if (percentTransformed < 60 || percentTransformedByHealth < 60)
-                {
-                    output.AttackerLog += GetTFMessage(eventualForm, victim, "60", "third") + " (" + percentPrintedOutput + "%)";
-                    output.VictimLog += GetTFMessage(eventualForm, victim, "60", "first") + " (" + percentPrintedOutput + "%)";
-                }
-                else if (percentTransformed < 80 || percentTransformedByHealth < 80)
-                {
-                    output.AttackerLog += GetTFMessage(eventualForm, victim, "80", "third") + " (" + percentPrintedOutput + "%)";
-                    output.VictimLog += GetTFMessage(eventualForm, victim, "80", "first") + " (" + percentPrintedOutput + "%)";
-                }
-
-                else if (percentTransformed < 100 || percentTransformedByHealth < 100)
-                {
-                    output.AttackerLog += GetTFMessage(eventualForm, victim, "100", "third") + " (" + percentPrintedOutput + "%)";
-                    output.VictimLog += GetTFMessage(eventualForm, victim, "100", "first") + " (" + percentPrintedOutput + "%)";
-                }
-                else if (percentTransformed >= 100)
-                {
-                    output.AttackerLog += GetTFMessage(eventualForm, victim, "complete", "third") + " (" + percentPrintedOutput + "%)";
-                    output.VictimLog += GetTFMessage(eventualForm, victim, "complete", "first") + " (" + percentPrintedOutput + "%)";
-                }
-
+                output.AttackerLog += GetTFMessage(eventualForm, victim, "20", "third") + " (" + percentPrintedOutput + "%)";
+                output.VictimLog += GetTFMessage(eventualForm, victim, "20", "first") + " (" + percentPrintedOutput + "%)";
             }
-            else if (eventualForm.MobilityType == "full")
+            else if (percentTransformed < 0.40m || percentTransformedByHealth < 0.40m)
             {
-                if (percentTransformed < 20 || percentTransformedByHealth < 20)
-                {
-                    output.AttackerLog += GetTFMessage(eventualForm, victim, "20", "third") + " (" + percentPrintedOutput + "%)";
-                    output.VictimLog += GetTFMessage(eventualForm, victim, "20", "first") + " (" + percentPrintedOutput + "%)";
-                }
-                else if (percentTransformed < 40 || percentTransformedByHealth < 40)
-                {
-                    output.AttackerLog += GetTFMessage(eventualForm, victim, "40", "third") + " (" + percentPrintedOutput + "%)";
-                    output.VictimLog += GetTFMessage(eventualForm, victim, "40", "first") + " (" + percentPrintedOutput + "%)";
-                }
-                else if (percentTransformed < 60 || percentTransformedByHealth < 60)
-                {
-                    output.AttackerLog += GetTFMessage(eventualForm, victim, "60", "third") + " (" + percentPrintedOutput + "%)";
-                    output.VictimLog += GetTFMessage(eventualForm, victim, "60", "first") + " (" + percentPrintedOutput + "%)";
-                }
-                else if (percentTransformed < 80 || percentTransformedByHealth < 80)
-                {
-                    output.AttackerLog += GetTFMessage(eventualForm, victim, "80", "third") + " (" + percentPrintedOutput + "%)";
-                    output.VictimLog += GetTFMessage(eventualForm, victim, "80", "first") + " (" + percentPrintedOutput + "%)";
-                }
-
-                else if (percentTransformed < 100 || percentTransformedByHealth < 100)
-                {
-                    output.AttackerLog += GetTFMessage(eventualForm, victim, "100", "third") + " (" + percentPrintedOutput + "%)";
-                    output.VictimLog += GetTFMessage(eventualForm, victim, "100", "first") + " (" + percentPrintedOutput + "%)";
-                }
-                else if (percentTransformed >= 100)
-                {
-                    output.AttackerLog += GetTFMessage(eventualForm, victim, "complete", "third") + " (" + percentPrintedOutput + "%)";
-                    output.VictimLog += GetTFMessage(eventualForm, victim, "complete", "first") + " (" + percentPrintedOutput + "%)";
-                }
+                output.AttackerLog += GetTFMessage(eventualForm, victim, "40", "third") + " (" + percentPrintedOutput + "%)";
+                output.VictimLog += GetTFMessage(eventualForm, victim, "40", "first") + " (" + percentPrintedOutput + "%)";
+            }
+            else if (percentTransformed < 0.60m || percentTransformedByHealth < 0.60m)
+            {
+                output.AttackerLog += GetTFMessage(eventualForm, victim, "60", "third") + " (" + percentPrintedOutput + "%)";
+                output.VictimLog += GetTFMessage(eventualForm, victim, "60", "first") + " (" + percentPrintedOutput + "%)";
+            }
+            else if (percentTransformed < 0.80m || percentTransformedByHealth < 0.80m)
+            {
+                output.AttackerLog += GetTFMessage(eventualForm, victim, "80", "third") + " (" + percentPrintedOutput + "%)";
+                output.VictimLog += GetTFMessage(eventualForm, victim, "80", "first") + " (" + percentPrintedOutput + "%)";
+            }
+            else if (percentTransformed < 1 || percentTransformedByHealth < 1)
+            {
+                output.AttackerLog += GetTFMessage(eventualForm, victim, "100", "third") + " (" + percentPrintedOutput + "%)";
+                output.VictimLog += GetTFMessage(eventualForm, victim, "100", "first") + " (" + percentPrintedOutput + "%)";
+            }
+            else if (percentTransformed >= 1)
+            {
+                output.AttackerLog += GetTFMessage(eventualForm, victim, "complete", "third") + " (" + percentPrintedOutput + "%)";
+                output.VictimLog += GetTFMessage(eventualForm, victim, "complete", "first") + " (" + percentPrintedOutput + "%)";
             }
 
             // calculate the xp earned for this transformation
@@ -335,14 +309,11 @@ namespace tfgame.Procedures
                 playerRepo.SavePlayer(target);
             }
 
-            if ((target.Health / target.MaxHealth * 100) < PvPStatics.PercentHealthToAllowFullMobilityFormTF)
-            {
-
                 DbStaticForm oldForm = FormStatics.GetForm(target.Form);
 
                 #region animate transformation
                 // target is turning into an animate form
-                if (targetForm.MobilityType == "full")
+                if (targetForm.MobilityType == "full" && (target.Health / target.MaxHealth) <= PvPStatics.PercentHealthToAllowFullMobilityFormTF)
                 {
 
                     SkillProcedures.UpdateFormSpecificSkillsToPlayer(target, oldForm.dbName, targetForm.dbName);
@@ -394,7 +365,7 @@ namespace tfgame.Procedures
 
                 #region inanimate and animal
                 // target is turning into an inanimate or animal form, both are endgame
-                else if ((targetForm.MobilityType == "inanimate" || targetForm.MobilityType == "animal") && target.Health <= 0)
+                else if ((targetForm.MobilityType == "inanimate" && (target.Health / target.MaxHealth) <= PvPStatics.PercentHealthToAllowInanimateFormTF) || (targetForm.MobilityType == "animal" && (target.Health / target.MaxHealth) <= PvPStatics.PercentHealthToAllowAnimalFormTF))
                 {
 
                     SkillProcedures.UpdateFormSpecificSkillsToPlayer(target, oldForm.dbName, targetForm.dbName);
@@ -539,7 +510,7 @@ namespace tfgame.Procedures
                 #endregion
 
                 #region mind control
-                else if (targetForm.MobilityType == "mindcontrol" && target.Health <= 0)
+                else if (targetForm.MobilityType == "mindcontrol" && (target.Health / target.MaxHealth) <= PvPStatics.PercentHealthToAllowMindControlTF)
                 {
                     //Player attacker = playerRepo.Players.FirstOrDefault(p => p.Id == attackerId);
                     MindControlProcedures.AddMindControl(attacker, victim, targetForm.dbName);
@@ -567,7 +538,6 @@ namespace tfgame.Procedures
                     
                 }
                 #endregion
-            }
         
 
             return output;

@@ -210,7 +210,7 @@ namespace tfgame.Procedures
             inanimXpRepo.SaveInanimateXP(xp);
 
             // lock the player into their fate if their inanimate XP gets too high
-            if (xp.TimesStruggled <= -100 && xp.TimesStruggled > -160)
+            if (xp.TimesStruggled <= -100 && xp.TimesStruggled > -160 && inanimateMe.IsPermanent == false)
             {
                 resultMessage += "  Careful, if you keep doing this you may find yourself stuck in your current form forever...";
             }

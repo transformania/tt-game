@@ -32,6 +32,13 @@
         }
     }
 
+    pub.onUserDoubleTapped = function(name, e) {
+        $('#message').val("@" + name + "  " + $('#message').val());
+        $('#message').focus();
+
+        e.preventDefault();
+    }
+
     var renderUserListItem = function(item, isDonator) {
 
         var output = $('<span />', { text : ' '+item.User}).addClass('userlistRow');
@@ -48,11 +55,7 @@
         else
             output.addClass('bad');
 
-        // assign double click to print out the @ reference
-        output.doubleTap(function () {
-            $('#message').val("@" + $(this).text() + "  " + $('#message').val());
-            $('#message').focus();
-        });
+        output.doubleTap(function (e) { pub.onUserDoubleTapped($(this).text(), e); });
 
         return output.append("<br />");
     }

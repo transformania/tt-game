@@ -9,7 +9,7 @@
                 lastTap = now;
                 if (diff < 250) {
                     if ($.isFunction(doubleTapCallback)) {
-                        doubleTapCallback.call(elm);
+                        doubleTapCallback.call(elm, e);
                     }
                 }
             });

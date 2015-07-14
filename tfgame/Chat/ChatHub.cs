@@ -83,11 +83,16 @@ namespace tfgame.Chat
             // Performs message processing to correctly format any special text
             var output = ChatMessageProcessor.ProcessMessage(new MessageData(name, message));
 
-            Clients.Group(room).addNewMessageToPage(pic, output.SendNameToClient ? name : "", output.Text, output.SendPlayerChatColor ? me.Player.ChatColor : "");
+            if (!string.IsNullOrWhiteSpace(output.Text))
+            {
+                var nameOut = output.SendNameToClient ? name : "";
+                var colorOut = output.SendPlayerChatColor ? me.Player.ChatColor : "";
+                
+                Clients.Group(room).addNewMessageToPage(pic, nameOut , output.Text, colorOut);
+                ChatLogProcedures.WriteLogToDatabase(room, name, output.Text);
+            }
 
-            ChatLogProcedures.WriteLogToDatabase(room, name, output.Text);
             chatService.OnUserSentMessage(me.Player, Context.ConnectionId);
-
             UpdateUserList(room);
         }
 

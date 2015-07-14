@@ -1436,6 +1436,10 @@
     <Content Include="Scripts\jquery.mobile.custom.min.js" />
     <Content Include="Scripts\jquery.rotate.js" />
     <Content Include="Scripts\jQueryRotateCompressed.js" />
+    <Content Include="Scripts\moment-with-locales.js" />
+    <Content Include="Scripts\moment-with-locales.min.js" />
+    <Content Include="Scripts\moment.js" />
+    <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\notices.js" />
     <Content Include="Scripts\ttchat.js" />
     <Content Include="Sounds\turnUpdate1.wav" />

@@ -39,12 +39,12 @@
         </div>
 
         <div class="containerInner">
-            <table class="table table-hover messageTable">
+            <table id="MyFriends" class="table table-hover dt-responsive messageTable" data-paging="false" data-info="false">
                 <thead>
                     <tr>
                         <th style="width: 55%;">Name</th>
                         <th style="width: 20%;">Last Activity</th>
-                        <th style="width: 15%;">Delete</th>
+                        <th style="width: 15%;" data-orderable="false">Delete</th>
                         <th style="width: 10%;">Nickname</th>
                     </tr>
                 </thead>
@@ -75,7 +75,7 @@
                     @Html.ActionLink(fp.dbPlayer.GetFullName() + " (animal)" + "  (#" + fp.dbPlayer.MembershipId + ")", "LookAtPlayer", "PvP", new { id = fp.dbPlayer.Id }, null)
                 </td>
             }
-            <td class="timeago" style="line-height: 17px;">@CharactersHere.DatetimeToTimeago(fp.dbPlayer.OnlineActivityTimestamp)</td>
+            <td class="timeago" style="line-height: 17px;">@fp.dbPlayer.OnlineActivityTimestamp.ToString("u")</td>
                     <td>
                         @Html.ActionLink("Defriend", "RespondToFriendRequest", "PvP", new { id = fp.dbFriend.Id, response = "defriend" }, null)
                     </td>
@@ -244,3 +244,16 @@
     }
 </style>
 
+<script>
+    $(document).ready(function () {
+        $('#MyFriends').dataTable({
+            "columnDefs": [{
+                "targets": 1,
+                "render": function (data, type, full, meta) {
+                    if (type == "display") return moment(data).fromNow();
+                    return data;
+                }
+            }]
+        });
+    });
+</script>

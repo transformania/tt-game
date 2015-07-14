@@ -69,6 +69,8 @@ namespace tfgame.Procedures
                                                               ShoutsRemaining = p.ShoutsRemaining,
                                                               ChatColor = p.ChatColor,
                                                               IsBannedFromGlobalChat = p.IsBannedFromGlobalChat,
+                                                              InDuel = p.InDuel,
+                                                              
                                                               
                                                           },
 
@@ -175,6 +177,7 @@ namespace tfgame.Procedures
                                                               ShoutsRemaining = p.ShoutsRemaining,
                                                               ChatColor = p.ChatColor,
                                                               IsBannedFromGlobalChat = p.IsBannedFromGlobalChat,
+                                                              InDuel = p.InDuel,
                                                           },
 
                                                           Form = new tfgame.ViewModels.Form
@@ -282,6 +285,7 @@ namespace tfgame.Procedures
                                                               ShoutsRemaining = p.ShoutsRemaining,
                                                               ChatColor = p.ChatColor,
                                                               IsBannedFromGlobalChat = p.IsBannedFromGlobalChat,
+                                                              InDuel = p.InDuel,
                                                           },
 
                                                           Form = new tfgame.ViewModels.Form
@@ -390,6 +394,7 @@ namespace tfgame.Procedures
                                                               ShoutsRemaining = p.ShoutsRemaining,
                                                               ChatColor = p.ChatColor,
                                                               IsBannedFromGlobalChat = p.IsBannedFromGlobalChat,
+                                                              InDuel = p.InDuel,
                                                           },
 
                                                           Form = new tfgame.ViewModels.Form

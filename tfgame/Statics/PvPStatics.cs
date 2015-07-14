@@ -51,8 +51,8 @@ namespace tfgame.Statics
         public static decimal XP__EndgameTFCompletionLevelBase = 15;
         public static decimal ExtraHealthDamagePerLevel = 1.25M;
 
-        public static decimal OfflineDamageReduction = .75M;
         public static double OfflineAfterXMinutes = 30;
+        public const int DuelNoCombatMinutes = 30;
 
         public static decimal XP__Level_2 = 100;
         public static decimal XP__Level_3 = 150; //+50

@@ -54,6 +54,7 @@ namespace tfgame.dbModels.Models
         public bool IsBannedFromGlobalChat { get; set; }
         public string ChatColor { get; set; }
         public int ShoutsRemaining { get; set; }
+        public int InDuel { get; set; }
 
         public string GetFullName()
         {
@@ -198,6 +199,7 @@ namespace tfgame.dbModels.Models
 
         public string ChatColor { get; set; }
         public int ShoutsRemaining { get; set; }
+        public int InDuel { get; set; }
 
         public string GetFullName()
         {

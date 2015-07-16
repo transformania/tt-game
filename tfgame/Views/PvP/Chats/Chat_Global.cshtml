@@ -176,7 +176,7 @@
 
                     if (!document.hasFocus()) {
                         unreadCount++;
-                        $(document).attr('title', 'Chat - ' + unreadCount + ' new messages');
+                        $(document).attr('title', '(' + unreadCount + ') TT - @ViewBag.ChatName');
                     }
 
                     $("#disconnected").hide();
@@ -195,7 +195,7 @@
                 chat.state.toRoom = "@ViewBag.ChatName";
                 $("#disconnected").hide();
                 $(window).focus(function () {
-                    $(document).attr('title', 'Chat');
+                    $(document).attr('title', 'TT - @ViewBag.ChatName');
                     unreadCount = 0;
                 });
 
@@ -237,7 +237,7 @@
             });
 
             $(document).click(function () {
-                $(document).attr('title', 'Chat');
+                $(document).attr('title', 'TT - @ViewBag.ChatName');
                 unreadCount = 0;
             });
 
@@ -374,6 +374,7 @@
 
          // load some defaults
         $(document).ready(function () {
+            $(document).attr('title', 'TT - @ViewBag.ChatName');
             var imagesOnValue = localStorage.getItem("chat_ImagesOn");
             if (imagesOnValue === "true") {
                 imagesOn = true;

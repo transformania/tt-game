@@ -22,6 +22,8 @@ DELETE FROM [Stats].[dbo].[BookReadings]
 DELETE FROM [Stats].[dbo].[Achievements]
 DELETE FROM [Stats].[dbo].[ItemTransferLogs]
 DELETE FROM [Stats].[dbo].[BossDamages]
+DELETE FROM [Stats].[dbo].[Rerolls]
+DELETE FROM [Stats].[dbo].[Duels]
 
 UPDATE [Stats].[dbo].[PvPWorldStats] SET Boss_Donna = 'unstarted', [Boss_Valentine] = 'unstarted', [Boss_Bimbo] = 'unstarted', [Boss_Thief] = 'unstarted', [Boss_Sisters] = 'unstarted', [TurnNumber] = 0
 
@@ -44,7 +46,9 @@ Change leaderboard turn numbers
 ------------------------------------
 Restore data to local db:
 
-ALTER DATABASE Stats SET SINGLE_USER WITH ROLLBACK IMMEDIATE
+USE [master]
+ALTER DATABASE Stats SET MULTI_USER WITH ROLLBACK IMMEDIATE
 GO
 RESTORE DATABASE Stats FROM DISK = 'D:\Database backups\Stats.bak' 
+WITH REPLACE
 GO

@@ -12,6 +12,11 @@ namespace tfgame.dbModels.Models
         public int StartTurn { get; set; }
         public int CompletionTurn { get; set; }
         public string Status { get; set; }
+
+        
+        public virtual DuelRules Rules { get; set; }
+        public virtual List<DuelCombatant> Combatants { get; set; }
+
     }
 
     public class DuelCombatant
@@ -20,7 +25,7 @@ namespace tfgame.dbModels.Models
         public int DuelId { get; set; }
         public int PlayerId { get; set; }
         public int Team { get; set; }
-        public int StartForm { get; set; }
+        public string StartForm { get; set; }
     }
 
     public class DuelRules

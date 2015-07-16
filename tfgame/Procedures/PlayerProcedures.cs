@@ -2114,5 +2114,16 @@ namespace tfgame.Procedures
             }
         }
 
+        public static void EnterDuel(int playerId, int duelId)
+        {
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);
+            dbPlayer.InDuel = duelId;
+            dbPlayer.LastActionTimestamp = DateTime.UtcNow;
+            dbPlayer.LastCombatTimestamp = DateTime.UtcNow;
+            playerRepo.SavePlayer(dbPlayer);
+
+        }
+
     }
 }

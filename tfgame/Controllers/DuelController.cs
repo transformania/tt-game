@@ -64,6 +64,14 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
+            // assert no blacklist exists
+            if (BlacklistProcedures.PlayersHaveBlacklistedEachOther(me, duelTarget, "attack") == true)
+            {
+                TempData["Error"] = "This player has blacklisted you or is on your own blacklist.";
+                TempData["SubError"] = "You cannot duel players who are on your blacklist.  Remove them from your blacklist first or ask them to remove you from theirs.";
+                return RedirectToAction("Play");
+            }
+
             // assert target is not already in a duel
             if (duelTarget.InDuel > 0)
             {

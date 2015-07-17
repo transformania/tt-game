@@ -37,49 +37,65 @@
 </div>
 
 <div class="containerInner">
-    <div class="contributionsBox">
         <p>
             Click below to load one of your existing contributions (save first before navigating away if you need to!):<br />
             @{
 
                 if (ViewBag.DisableLinks == null)
                 {
-
-                    foreach (Contribution contribution in ViewBag.OtherContributions)
-                    {
-
-
-                        if (contribution.NeedsToBeUpdated == true)
+                    <table id="YourContributions" class="table table-hover messageTable dt-responsive">
+                        <thead>
+                        <tr>
+                            <th>Update?</th>
+                            <th>Spell</th>
+                            <th>Form</th>
+                            <th>Copy?</th>
+                            <th>Proofreader</th>
+                            <th>Lock time</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (Contribution contribution in ViewBag.OtherContributions)
                         {
-                            <span class="icon icon-timesattacking"></span>
+                            <tr>
+                                <td>
+                                    @if (contribution.NeedsToBeUpdated == true)
+                                    {
+                                        <span class="icon icon-timesattacking"></span>
+                                    }
+                                </td>
+                                @if (contribution.IsLive == true)
+                                {
+                                    <td><span class='newlink'>@Html.ActionLink(contribution.Skill_FriendlyName, "Contribute", "Contribution", new { Id = contribution.Id }, null)</span></td>
+                                    <td><span class='newlink'>@Html.ActionLink(contribution.Form_FriendlyName, "Contribute", "Contribution", new { Id = contribution.Id }, null)</span></td>
+                                }
+                                else
+                                {
+                                    <td>@Html.ActionLink(contribution.Skill_FriendlyName, "Contribute", "Contribution", new { Id = contribution.Id }, null)</td>
+                                    <td>@Html.ActionLink(contribution.Form_FriendlyName, "Contribute", "Contribution", new { Id = contribution.Id }, null)</td>
+                                }
+                                <td>
+                                    @if (contribution.ProofreadingCopy == true)
+                                    {
+                                        <span class="good">PROOFREADING COPY</span>
+                                    }
+                                </td>
+                                @if (contribution.ProofreadingLockIsOn == true)
+                                {
+                                    <td><span class="bad">@contribution.CheckedOutBy</span></td>
+                                    <td><span>@CharactersHere.DatetimeToTimeago(contribution.CreationTimestamp)</span></td>
+                                }
+                                else
+                                {
+                                    <td></td>
+                                    <td></td>
+                                }
+                            </tr>
                         }
+                        </tbody>
+                    </table>
 
-                        if (contribution.IsLive == true)
-                        {
-                        <span class='newlink'>
-                            @Html.ActionLink("Spell name:  " + contribution.Skill_FriendlyName + ". Form name:  " + contribution.Form_FriendlyName + ".", "Contribute", "Contribution", new { Id = contribution.Id }, null)
-                        </span>
-
-                    }
-                    else
-                    {
-                        @Html.ActionLink("Spell name:  " + contribution.Skill_FriendlyName + ". Form name:  " + contribution.Form_FriendlyName + ".", "Contribute", "Contribution", new { Id = contribution.Id }, null)
-                    }
-                    if (contribution.ProofreadingCopy == true)
-                    {
-                        <span class="good">PROOFREADING COPY</span>
-                    }
-
-                    if (contribution.ProofreadingLockIsOn == true)
-                    {
-                        <span class="bad">Being Proofread by @contribution.CheckedOutBy</span> <span>@CharactersHere.DatetimeToTimeago(contribution.CreationTimestamp)</span>
-                    }
-
-
-
-                    <br />
                 }
-            }
             }
             <br />
             @{
@@ -89,55 +105,60 @@
                 {
 
                 <p>CONTRIBUTIONS AVAILABLE TO PROOFREAD (Sort by: @Html.ActionLink("Spell name", "Contribute", "Contribution", new { Id = -1, sort = "spellname" }, null), @Html.ActionLink("Form name", "Contribute", "Contribution", new { Id = -1, sort = "formname" }, null))</p>
-
-                    foreach (Contribution contribution in ViewBag.Proofreading)
+                <table id="ProofContributions" class="table table-hover messageTable dt-responsive">
+                    <thead>
+                    <tr>
+                        <th>Update?</th>
+                        <th>Spell</th>
+                        <th>Form</th>
+                        <th>Copy?</th>
+                        <th>Proofreader</th>
+                        <th>Lock time</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (Contribution contribution in ViewBag.Proofreading)
                     {
-
-                        if (contribution.NeedsToBeUpdated == true)
-                        {
-                            <span class="icon icon-timesattacking"></span>
-                        }
-
-                        if (contribution.IsLive == true)
-                        {
-                            <span class='newlink'>
-                                @Html.ActionLink("Spell name:  " + contribution.Skill_FriendlyName + ". Form name:  " + contribution.Form_FriendlyName + ".", "Contribute", "Contribution", new { Id = contribution.Id }, null)
-
-                                @{
-                            if (contribution.ProofreadingCopy == true)
-                            {
-                                <span class="good">PROOFREADING COPY</span>
-                            }
-                            if (contribution.ProofreadingLockIsOn == true)
-                            {
-                                <span class="bad">Being Proofread by @contribution.CheckedOutBy</span> <span>@CharactersHere.DatetimeToTimeago(contribution.CreationTimestamp)</span>
-                            }
+                        <tr>
+                            <td>
+                                @if (contribution.NeedsToBeUpdated == true)
+                                {
+                                    <span class="icon icon-timesattacking"></span>
                                 }
-
-                                <br />
-                            </span>
-
-                        }
-                        else
-                        {
-                            @Html.ActionLink("Spell name:  " + contribution.Skill_FriendlyName + ". Form name:  " + contribution.Form_FriendlyName + ".", "Contribute", "Contribution", new { Id = contribution.Id }, null)
-                            if (contribution.ProofreadingCopy == true)
+                            </td>
+                            @if (contribution.IsLive == true)
                             {
-                                <span class="good">PROOFREADING COPY</span>
+                                <td><span class='newlink'>@Html.ActionLink(contribution.Skill_FriendlyName, "Contribute", "Contribution", new { Id = contribution.Id }, null)</span></td>
+                                <td><span class='newlink'>@Html.ActionLink(contribution.Form_FriendlyName, "Contribute", "Contribution", new { Id = contribution.Id }, null)</span></td>
                             }
-
-                            if (contribution.ProofreadingLockIsOn == true)
+                            else
                             {
-                                <span class="bad">Being Proofread by @contribution.CheckedOutBy</span> <span>@CharactersHere.DatetimeToTimeago(contribution.CreationTimestamp)</span>
+                                <td>@Html.ActionLink(contribution.Skill_FriendlyName, "Contribute", "Contribution", new { Id = contribution.Id }, null)</td>
+                                <td>@Html.ActionLink(contribution.Form_FriendlyName, "Contribute", "Contribution", new { Id = contribution.Id }, null)</td>
                             }
-
-                            <br />
-                        }
+                            <td>
+                                @if (contribution.ProofreadingCopy == true)
+                                {
+                                    <span class="good">PROOFREADING COPY</span>
+                                }
+                            </td>
+                            @if (contribution.ProofreadingLockIsOn == true)
+                            {
+                                <td><span class="bad">@contribution.CheckedOutBy</span></td>
+                                <td><span>@CharactersHere.DatetimeToTimeago(contribution.CreationTimestamp)</span></td>
+                            }
+                            else
+                            {
+                                <td></td>
+                                <td></td>
+                            }
+                        </tr>
                     }
+                    </tbody>
+                </table>
 
                 }
             }
-        </div>
         
       
 
@@ -723,6 +744,8 @@
         var proofreadingCopy = @Model.ProofreadingCopy.ToString().ToLower();
 
         $(document).ready(function () {
+            $('#YourContributions').dataTable();
+            $('#ProofContributions').dataTable();
 
 
             if ($("#Form_MobilityType").val() == "full") {

@@ -46,12 +46,13 @@
                     <table id="YourContributions" class="table table-hover messageTable dt-responsive">
                         <thead>
                         <tr>
-                            <th>Update?</th>
-                            <th>Spell</th>
-                            <th>Form</th>
-                            <th>Copy?</th>
-                            <th>Proofreader</th>
-                            <th>Lock time</th>
+                            <th style="width: 8%;">Update</th>
+                            <th style="width: 7%;">Live</th>
+                            <th style="width: 25%;">Spell</th>
+                            <th style="width: 25%;">Form</th>
+                            <th style="width: 7%;">Copy</th>
+                            <th style="width: 15%;">Proofreader</th>
+                            <th style="width: 15%;">Lock time</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -66,18 +67,24 @@
                                 </td>
                                 @if (contribution.IsLive == true)
                                 {
+                                    <td><span class="good">Y</span></td>
                                     <td><span class='newlink'>@Html.ActionLink(contribution.Skill_FriendlyName, "Contribute", "Contribution", new { Id = contribution.Id }, null)</span></td>
                                     <td><span class='newlink'>@Html.ActionLink(contribution.Form_FriendlyName, "Contribute", "Contribution", new { Id = contribution.Id }, null)</span></td>
                                 }
                                 else
                                 {
+                                    <td><span class="bad">N</span></td>
                                     <td>@Html.ActionLink(contribution.Skill_FriendlyName, "Contribute", "Contribution", new { Id = contribution.Id }, null)</td>
                                     <td>@Html.ActionLink(contribution.Form_FriendlyName, "Contribute", "Contribution", new { Id = contribution.Id }, null)</td>
                                 }
                                 <td>
                                     @if (contribution.ProofreadingCopy == true)
                                     {
-                                        <span class="good">PROOFREADING COPY</span>
+                                        <span class="good">Y</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="bad">N</span>
                                     }
                                 </td>
                                 @if (contribution.ProofreadingLockIsOn == true)
@@ -108,12 +115,13 @@
                 <table id="ProofContributions" class="table table-hover messageTable dt-responsive">
                     <thead>
                     <tr>
-                        <th>Update?</th>
-                        <th>Spell</th>
-                        <th>Form</th>
-                        <th>Copy?</th>
-                        <th>Proofreader</th>
-                        <th>Lock time</th>
+                        <th style="width: 8%;">Update</th>
+                        <th style="width: 7%;">Live</th>
+                        <th style="width: 25%;">Spell</th>
+                        <th style="width: 25%;">Form</th>
+                        <th style="width: 7%;">Copy</th>
+                        <th style="width: 15%;">Proofreader</th>
+                        <th style="width: 15%;">Lock time</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -128,18 +136,24 @@
                             </td>
                             @if (contribution.IsLive == true)
                             {
+                                <td><span class="good">Y</span></td>
                                 <td><span class='newlink'>@Html.ActionLink(contribution.Skill_FriendlyName, "Contribute", "Contribution", new { Id = contribution.Id }, null)</span></td>
                                 <td><span class='newlink'>@Html.ActionLink(contribution.Form_FriendlyName, "Contribute", "Contribution", new { Id = contribution.Id }, null)</span></td>
                             }
                             else
                             {
+                                <td><span class="bad">N</span></td>
                                 <td>@Html.ActionLink(contribution.Skill_FriendlyName, "Contribute", "Contribution", new { Id = contribution.Id }, null)</td>
                                 <td>@Html.ActionLink(contribution.Form_FriendlyName, "Contribute", "Contribution", new { Id = contribution.Id }, null)</td>
                             }
                             <td>
                                 @if (contribution.ProofreadingCopy == true)
                                 {
-                                    <span class="good">PROOFREADING COPY</span>
+                                    <span class="good">Y</span>
+                                }
+                                else
+                                {
+                                    <span class="bad">N</span>
                                 }
                             </td>
                             @if (contribution.ProofreadingLockIsOn == true)
@@ -745,8 +759,9 @@
 
         $(document).ready(function () {
             $('#YourContributions').dataTable({
+                "order": [[ 1, "desc" ], [2, "asc"]],
                 "columnDefs": [{
-                    "targets": 5,
+                    "targets": 6,
                     "render": function (data, type, full, meta) {
                         if (type == "display" && data != "") return moment(data).fromNow();
                         return data;
@@ -754,8 +769,9 @@
                 }]
             });
             $('#ProofContributions').dataTable({
+                "order": [[ 1, "desc" ], [2, "asc"]],
                 "columnDefs": [{
-                    "targets": 5,
+                    "targets": 6,
                     "render": function (data, type, full, meta) {
                         if (type == "display" && data != "") return moment(data).fromNow();
                         return data;

@@ -206,10 +206,6 @@ namespace tfgame.Controllers
             TempData["Result"] = "Your duel has started!";
             DuelProcedures.BeginDuel(duel.Id);
 
-
-
-            
-
             return RedirectToAction("Play","PvP");
         }
 

@@ -50,6 +50,13 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
+            // assert that this player is not in a duel
+            if (me.InDuel > 0)
+            {
+                TempData["Error"] = "You must finish your duel before you can purchase or sell anything to Lindella.";
+                return RedirectToAction("Play", "PvP");
+            }
+
             Player merchant = PlayerProcedures.GetPlayerFromMembership(-3);
 
             // assert the merchant is animate
@@ -139,6 +146,13 @@ namespace tfgame.Controllers
             if (me.Mobility != "full")
             {
                 TempData["Error"] = "You must be animate in order to trade with Lindella.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            // assert that this player is not in a duel
+            if (me.InDuel > 0)
+            {
+                TempData["Error"] = "You must finish your duel before you can purchase or sell anything to Lindella.";
                 return RedirectToAction("Play", "PvP");
             }
 
@@ -251,6 +265,14 @@ namespace tfgame.Controllers
             if (me.Mobility != "full")
             {
                 TempData["Error"] = "You must be animate in order to trade with Lindella.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+
+            // assert that this player is not in a duel
+            if (me.InDuel > 0)
+            {
+                TempData["Error"] = "You must finish your duel before you can purchase or sell anything to Lindella.";
                 return RedirectToAction("Play", "PvP");
             }
 
@@ -373,6 +395,20 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
+            // assert that this player is not in a duel
+            if (me.InDuel > 0)
+            {
+                TempData["Error"] = "You must finish your duel before you can interact with Wuffie.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            // assert player is animate
+            if (me.InDuel > 0)
+            {
+                TempData["Error"] = "You must conclude your duel before you can interact with Wuffie.";
+                return RedirectToAction("Play", "PvP");
+            }
+
             Player merchant = PlayerProcedures.GetPlayerFromMembership(-10);
 
             // assert the merchant is animate
@@ -482,6 +518,13 @@ namespace tfgame.Controllers
             if (me.Mobility != "full")
             {
                 TempData["Error"] = "You must be animate in order to trade with Wüffie.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            // assert player is not in a duel
+            if (me.InDuel > 0)
+            {
+                TempData["Error"] = "You must conclude your duel before you can interact with Wuffie.";
                 return RedirectToAction("Play", "PvP");
             }
 
@@ -935,6 +978,13 @@ namespace tfgame.Controllers
             {
                 TempData["Error"] = "You must be fully animate in order to talk with Jewdewfae.";
                 return RedirectToAction("Play","PvP");
+            }
+
+            // assert that this player is not in a duel
+            if (me.InDuel > 0)
+            {
+                TempData["Error"] = "You must finish your duel before you can play with Jewdewfae.";
+                return RedirectToAction("Play", "PvP");
             }
 
             // assert player is in same location as jewdewfae

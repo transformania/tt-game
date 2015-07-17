@@ -30,6 +30,13 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
+            // assert that this player is not in a duel
+            if (me.InDuel > 0)
+            {
+                TempData["Error"] = "You must finish your duel before you use this item.";
+                return RedirectToAction("Play", "PvP");
+            }
+
             IEnumerable<SkillViewModel2> output = SkillProcedures.GetSkillViewModelsOwnedByPlayer(me.Id).Where(m => m.MobilityType == "full");
             return View(output);
         }
@@ -43,6 +50,14 @@ namespace tfgame.Controllers
             if (me.Mobility != "full")
             {
                 TempData["Error"] = "You must be animate in order to use this.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+
+            // assert that this player is not in a duel
+            if (me.InDuel > 0)
+            {
+                TempData["Error"] = "You must finish your duel before you use this item.";
                 return RedirectToAction("Play", "PvP");
             }
 

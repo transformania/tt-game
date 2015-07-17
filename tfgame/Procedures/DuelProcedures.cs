@@ -108,5 +108,30 @@ namespace tfgame.Procedures
             duelRepo.SaveDuel(duel);
 
         }
+
+        public static bool PlayerIsNotInDuel(Player attacker, Player target)
+        {
+
+            Duel duel = DuelProcedures.GetDuel(attacker.InDuel);
+
+            bool notInDuel = true;
+            foreach (DuelCombatant d in duel.Combatants)
+            {
+                if (target.Id == d.PlayerId)
+                {
+                    notInDuel = false;
+                    break;
+                }
+            }
+
+            if (notInDuel == true)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

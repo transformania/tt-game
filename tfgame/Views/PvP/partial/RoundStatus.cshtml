@@ -27,6 +27,11 @@
         <p class="infoMessage error">TURN UPDATE IN PROGRESS</p>
     }
 
+    if (ViewBag.Duel != null && ViewBag.Duel != "")
+    {
+        <p class="infoMessage specialBox2 specialNoticeBox">You are currently engaged in a duel with @ViewBag.Duel!</p>
+    }
+
     if (Model.Boss_Donna == "active")
     {
         <div class="specialBox"> <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Rumor has it a powerful sorceress known as Donna Milton is wandering the streets turning those she meets into animals... <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> </div>

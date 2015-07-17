@@ -1,7 +1,9 @@
 ﻿@{
     ViewBag.Title = "Chat";
 }
-
+<script><!--
+    var chatTitle = "TT - @ViewBag.ChatName";
+    // --></script>
 <script src="~/Scripts/jquery.mobile.custom.min.js"></script>
 <script src="~/Scripts/jquery.mobile.doubletap.js"></script>
 <script src="~/Scripts/ttchat.js"></script>
@@ -176,7 +178,7 @@
 
                     if (!document.hasFocus()) {
                         unreadCount++;
-                        $(document).attr('title', '(' + unreadCount + ') TT - @ViewBag.ChatName');
+                        $(document).attr('title', '(' + unreadCount + ') ' + chatTitle);
                     }
 
                     $("#disconnected").hide();
@@ -195,7 +197,7 @@
                 chat.state.toRoom = "@ViewBag.ChatName";
                 $("#disconnected").hide();
                 $(window).focus(function () {
-                    $(document).attr('title', 'TT - @ViewBag.ChatName');
+                    $(document).attr('title', chatTitle);
                     unreadCount = 0;
                 });
 
@@ -237,7 +239,7 @@
             });
 
             $(document).click(function () {
-                $(document).attr('title', 'TT - @ViewBag.ChatName');
+                $(document).attr('title', chatTitle);
                 unreadCount = 0;
             });
 
@@ -374,7 +376,7 @@
 
          // load some defaults
         $(document).ready(function () {
-            $(document).attr('title', 'TT - @ViewBag.ChatName');
+            $(document).attr('title', chatTitle);
             var imagesOnValue = localStorage.getItem("chat_ImagesOn");
             if (imagesOnValue === "true") {
                 imagesOn = true;

@@ -83,7 +83,7 @@
                                 @if (contribution.ProofreadingLockIsOn == true)
                                 {
                                     <td><span class="bad">@contribution.CheckedOutBy</span></td>
-                                    <td><span>@CharactersHere.DatetimeToTimeago(contribution.CreationTimestamp)</span></td>
+                                    <td>@contribution.CreationTimestamp.ToString("u")</td>
                                 }
                                 else
                                 {
@@ -145,7 +145,7 @@
                             @if (contribution.ProofreadingLockIsOn == true)
                             {
                                 <td><span class="bad">@contribution.CheckedOutBy</span></td>
-                                <td><span>@CharactersHere.DatetimeToTimeago(contribution.CreationTimestamp)</span></td>
+                                <td>@contribution.CreationTimestamp.ToString("u")</td>
                             }
                             else
                             {
@@ -744,8 +744,24 @@
         var proofreadingCopy = @Model.ProofreadingCopy.ToString().ToLower();
 
         $(document).ready(function () {
-            $('#YourContributions').dataTable();
-            $('#ProofContributions').dataTable();
+            $('#YourContributions').dataTable({
+                "columnDefs": [{
+                    "targets": 5,
+                    "render": function (data, type, full, meta) {
+                        if (type == "display" && data != "") return moment(data).fromNow();
+                        return data;
+                    }
+                }]
+            });
+            $('#ProofContributions').dataTable({
+                "columnDefs": [{
+                    "targets": 5,
+                    "render": function (data, type, full, meta) {
+                        if (type == "display" && data != "") return moment(data).fromNow();
+                        return data;
+                    }
+                }]
+            });
 
 
             if ($("#Form_MobilityType").val() == "full") {

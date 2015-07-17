@@ -1,9 +1,35 @@
 ﻿@model tfgame.dbModels.Models.EffectContribution
+@using tfgame.Statics
 @using tfgame.dbModels.Models
 @using tfgame.CustomHtmlHelpers
 
-@Html.ActionLink("Back to game (Don't forget to save!)", "Play", "PvP")<br />
-@Html.ActionLink("Go to Spell / Form / Item Contribution Form", "Contribute", "Contribution", new { Id = Session["ContributionId"] }, null)
+<nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+                <li>@Html.ActionLink("Contributions in review", "ContributeGraphicsNeeded", "Contribution")</li>
+                <li>@Html.ActionLink("Submit Spell / Form / Item", "Contribute", "Contribution", new { Id = "-1" }, FormMethod.Post)</li>
+                <li>@Html.ActionLink("Submit DM Encounter", "MyDMRolls", "Contribution")</li>
+                <li>@Html.ActionLink("New Contribution", "ContributeEffect", "Contribution", new { Id = "-1" }, FormMethod.Post)</li>
+                @{if (User.IsInRole(PvPStatics.Permissions_Proofreader) == true)
+                {
+                    <li>@Html.ActionLink("Unlock but DO NOT Save", "UnlockEffectContribution", "Contribution", new { id = Model.Id }, null)</li>
+                }}
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
 
 <div class="result">
     @Html.Raw(ViewBag.Result)

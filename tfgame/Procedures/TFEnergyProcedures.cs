@@ -506,6 +506,31 @@ namespace tfgame.Procedures
 
                     }
 
+
+                    // if there is a duel going on, end it if all but 1 player is defeated
+                    if (victim.InDuel > 0)
+                    {
+                        Duel duel = DuelProcedures.GetDuel(victim.InDuel);
+                        List<PlayerFormViewModel> duelParticipants = DuelProcedures.GetPlayerViewModelsInDuel(duel.Id);
+
+                        int remainders = duelParticipants.Count();
+
+                        foreach (PlayerFormViewModel p in duelParticipants)
+                        {
+                            if (p.Player.Mobility != "full")
+                            {
+                                remainders--;
+                            }
+                        }
+
+                        if (remainders <= 1)
+                        {
+                            DuelProcedures.EndDuel(duel.Id);
+                        }
+
+
+                    }
+
                 }
                 #endregion
 

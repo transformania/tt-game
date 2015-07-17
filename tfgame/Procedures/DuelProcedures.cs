@@ -133,5 +133,23 @@ namespace tfgame.Procedures
                 return false;
             }
         }
+
+        public static void EndDuel(int duelId)
+        {
+            IDuelRepository duelRepo = new EFDuelRepository();
+            Duel duel = duelRepo.Duels.FirstOrDefault(d => d.Id == duelId);
+            duel.CompletionTurn = PvPWorldStatProcedures.GetWorldTurnNumber();
+            duel.Status = FINISHED;
+
+            duelRepo.SaveDuel(duel);
+
+            foreach (DuelCombatant d in duel.Combatants)
+            {
+                PlayerProcedures.EnterDuel(d.PlayerId, 0);
+                string message = "<b>Your duel has ended.</b>";
+                PlayerLogProcedures.AddPlayerLog(d.PlayerId, message, true);
+            }
+
+        }
     }
 }

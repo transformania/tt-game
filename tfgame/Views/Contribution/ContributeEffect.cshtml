@@ -2,11 +2,6 @@
 @using tfgame.dbModels.Models
 @using tfgame.CustomHtmlHelpers
 
-<head>
-    <link href="~/Content/PvP.css" rel="stylesheet" />
-    <script src="~/Scripts/jquery-2.1.0.min.js"></script>
-</head>
-
 @Html.ActionLink("Back to game (Don't forget to save!)", "Play", "PvP")<br />
 @Html.ActionLink("Go to Spell / Form / Item Contribution Form", "Contribute", "Contribution", new { Id = Session["ContributionId"] }, null)
 
@@ -27,12 +22,61 @@
 
 <p>
     Click below to load one of your existing curse contributions (save first before navigating away if you need to!):<br />
-    @{
-        foreach (EffectContribution contribution in ViewBag.OtherEffectContributions)
+    <table id="YourContributions" class="table table-hover messageTable dt-responsive">
+        <thead>
+        <tr>
+            <th style="width: 8%;">Update</th>
+            <th style="width: 7%;">Live</th>
+            <th style="width: 50%;">Curse</th>
+            <th style="width: 7%;">Copy</th>
+            <th style="width: 15%;">Proofreader</th>
+            <th style="width: 15%;">Lock time</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        @foreach (EffectContribution contribution in ViewBag.OtherEffectContributions)
         {
-            @Html.ActionLink("Curse name:  " + contribution.Effect_FriendlyName + ",", "ContributeEffect", "Contribution", new { Id = contribution.Id }, null)<br />
+            <tr>
+                <td>
+                @if (contribution.NeedsToBeUpdated == true)
+                {
+                    <span class="icon icon-timesattacking"></span>
+                }
+                </td>
+                @if (contribution.IsLive == true)
+                {
+                    <td><span class="good">Y</span></td>
+                    <td><span class='newlink'>@Html.ActionLink(contribution.Effect_FriendlyName, "ContributeEffect", "Contribution", new { Id = contribution.Id }, null)</span></td>
+                }
+                else
+                {
+                    <td><span class="bad">N</span></td>
+                    <td><span>@Html.ActionLink(contribution.Effect_FriendlyName, "ContributeEffect", "Contribution", new { Id = contribution.Id }, null)</span></td>
+                }
+                    <td>
+                @if (contribution.ProofreadingCopy == true)
+                {
+                    <span class="good">Y</span>
+                }
+                else
+                {
+                    <span class="bad">N</span>
+                }
+                </td>
+                @if (contribution.ProofreadingLockIsOn == true)
+                {
+                    <td><span class="bad">@contribution.CheckedOutBy</span></td><td>@contribution.Timestamp.ToString("u")</td>
+                }
+                else
+                {
+                    <td></td><td></td>
+                }
+            </tr>
         }
-    }
+        </tbody>
+    </table>
+
     @Html.ActionLink("[Start a new contribution]", "ContributeEffect", "Contribution", new { Id = "-1" }, FormMethod.Post)
 </p>
 
@@ -46,53 +90,60 @@
     {
 
         <p>CONTRIBUTIONS AVAILABLE TO PROOFREAD</p>
+        <table id="ProofContributions" class="table table-hover messageTable dt-responsive">
+        <thead>
+        <tr>
+            <th style="width: 8%;">Update</th>
+            <th style="width: 7%;">Live</th>
+            <th style="width: 50%;">Curse</th>
+            <th style="width: 7%;">Copy</th>
+            <th style="width: 15%;">Proofreader</th>
+            <th style="width: 15%;">Lock time</th>
+        </tr>
+        </thead>
+        <tbody>
 
-        foreach (EffectContribution contribution in ViewBag.Proofreading)
+        @foreach (EffectContribution contribution in ViewBag.Proofreading)
         {
-
-            if (contribution.IsLive == true)
-            {
-
-                if (contribution.NeedsToBeUpdated == true)
+            <tr>
+                <td>
+                @if (contribution.NeedsToBeUpdated == true)
                 {
                     <span class="icon icon-timesattacking"></span>
                 }
-
-                <span class='newlink'>
-                    @Html.ActionLink("Effect name:  " + contribution.Effect_FriendlyName, "ContributeEffect", "Contribution", new { Id = contribution.Id }, null)
-
-                    @{
-                if (contribution.ProofreadingCopy == true)
+                </td>
+                @if (contribution.IsLive == true)
                 {
-                    <span class="good">PROOFREADING COPY</span>
+                    <td><span class="good">Y</span></td>
+                    <td><span class='newlink'>@Html.ActionLink(contribution.Effect_FriendlyName, "ContributeEffect", "Contribution", new { Id = contribution.Id }, null)</span></td>
                 }
-                if (contribution.ProofreadingLockIsOn == true)
+                else
                 {
-                    <span class="bad">Being Proofread by @contribution.CheckedOutBy</span> <span>@CharactersHere.DatetimeToTimeago(contribution.Timestamp)</span>
+                    <td><span class="bad">N</span></td>
+                    <td><span>@Html.ActionLink(contribution.Effect_FriendlyName, "ContributeEffect", "Contribution", new { Id = contribution.Id }, null)</span></td>
                 }
-                    }
-
-                    <br />
-                </span>
-
-            }
-            else
-            {
-                @Html.ActionLink("Effect name:  " + contribution.Effect_FriendlyName, "ContributeEffect", "Contribution", new { Id = contribution.Id }, null)
-                if (contribution.ProofreadingCopy == true)
+                    <td>
+                @if (contribution.ProofreadingCopy == true)
                 {
-                    <span class="good">PROOFREADING COPY</span>
+                    <span class="good">Y</span>
                 }
-
-                if (contribution.ProofreadingLockIsOn == true)
+                else
                 {
-                    <span class="bad">Being Proofread by @contribution.CheckedOutBy</span> <span>@CharactersHere.DatetimeToTimeago(contribution.Timestamp)</span>
+                    <span class="bad">N</span>
                 }
-
-                <br />
-            }
+                </td>
+                @if (contribution.ProofreadingLockIsOn == true)
+                {
+                    <td><span class="bad">@contribution.CheckedOutBy</span></td><td>@contribution.Timestamp.ToString("u")</td>
+                }
+                else
+                {
+                    <td></td><td></td>
+                }
+            </tr>
         }
-
+        </tbody>
+    </table>
     }
 }
 
@@ -344,6 +395,26 @@
 <script>
 
     $(document).ready(function () {
+        $('#YourContributions').dataTable({
+            "order": [[1, "asc"], [2, "asc"]],
+            "columnDefs": [{
+                "targets": 5,
+                "render": function (data, type, full, meta) {
+                    if (type == "display" && data != "") return moment(data).fromNow();
+                    return data;
+                }
+            }]
+        });
+        $('#ProofContributions').dataTable({
+            "order": [[1, "asc"], [2, "asc"]],
+            "columnDefs": [{
+                "targets": 5,
+                "render": function (data, type, full, meta) {
+                    if (type == "display" && data != "") return moment(data).fromNow();
+                    return data;
+                }
+            }]
+        });
 
        
 

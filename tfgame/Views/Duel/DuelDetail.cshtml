@@ -45,9 +45,18 @@
             </ul>
         </p>
 
-    <p>This duel began on turn <b>@Model.Duel.StartTurn</b> and it is now turn <b>@ViewBag.CurrentTurn</b>.  There are <b class="bad">@(tfgame.Statics.PvPStatics.MaximumDuelTurnLength - (ViewBag.CurrentTurn - @Model.Duel.StartTurn))</b> turns remaining in this duel before it ends in a no-winner.</p>
+    <p>This duel began on turn <b>@Model.Duel.StartTurn</b> and it is now turn <b>@ViewBag.CurrentTurn</b>.  There are <b class="bad">@ViewBag.TurnsRemaining</b> turns remaining in this duel before it ends in a no-winner.</p>
 
 
         <p>If both players have expended all their attacks, click @Html.ActionLink("here","AdvanceTurn","Duel") to reset attacks and cleanse/meditate limits.</p>
+
+        @{
+            if (ViewBag.TurnsRemaining <= 0)
+            {
+                <p>
+                   This duel has taken too long and will end in a no-victory.  Click @Html.ActionLink("here", "DuelTimeout", "Duel") to end it.
+                </p>
+            }
+        }
 
     </div>

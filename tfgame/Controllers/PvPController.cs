@@ -1435,7 +1435,7 @@ namespace tfgame.Controllers
             // assert that this player is not in a duel
             if (me.InDuel > 0)
             {
-                TempData["Error"] = "You must finish your duel before you can purchase or sell anything to Lindella.";
+                TempData["Error"] = "You must finish your duel before you can search your environment.";
                 return RedirectToAction("Play", "PvP");
             }
 

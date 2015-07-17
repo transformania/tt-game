@@ -15,6 +15,7 @@ namespace tfgame.Procedures
         public const string PENDING = "pending";
         public const string ACTIVE = "active";
         public const string FINISHED = "finished";
+        public const string TIMEOUT = "timeout";
         public const string REJECTED = "rejected";
 
         public static void SendDuelChallenge(Player challenger, Player target)
@@ -141,12 +142,12 @@ namespace tfgame.Procedures
             }
         }
 
-        public static void EndDuel(int duelId)
+        public static void EndDuel(int duelId, string endStatus)
         {
             IDuelRepository duelRepo = new EFDuelRepository();
             Duel duel = duelRepo.Duels.FirstOrDefault(d => d.Id == duelId);
             duel.CompletionTurn = PvPWorldStatProcedures.GetWorldTurnNumber();
-            duel.Status = FINISHED;
+            duel.Status = endStatus;
 
             duelRepo.SaveDuel(duel);
 
@@ -158,5 +159,7 @@ namespace tfgame.Procedures
             }
 
         }
+
+
     }
 }

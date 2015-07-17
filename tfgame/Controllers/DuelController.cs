@@ -235,6 +235,7 @@ namespace tfgame.Controllers
             };
 
             ViewBag.CurrentTurn = PvPWorldStatProcedures.GetWorldTurnNumber();
+            ViewBag.TurnsRemaining = PvPStatics.MaximumDuelTurnLength - (ViewBag.CurrentTurn - duel.StartTurn);
 
             return View(output);
         }
@@ -254,12 +255,15 @@ namespace tfgame.Controllers
 
              List<PlayerFormViewModel> combatants = DuelProcedures.GetPlayerViewModelsInDuel(duel.Id);
 
-             foreach (PlayerFormViewModel p in combatants)
+             if (PvPStatics.ChaosMode == false)
              {
-                 if (p.Player.TimesAttackingThisUpdate < PvPStatics.MaxAttacksPerUpdate)
+                 foreach (PlayerFormViewModel p in combatants)
                  {
-                     TempData["Error"] = "Cannot advance this turn."  + p.Player.GetFullName() + " has not used up all of their attacks.";
-                     return RedirectToAction("Play", "PvP");
+                     if (p.Player.TimesAttackingThisUpdate < PvPStatics.MaxAttacksPerUpdate)
+                     {
+                         TempData["Error"] = "Cannot advance this turn." + p.Player.GetFullName() + " has not used up all of their attacks.";
+                         return RedirectToAction("Play", "PvP");
+                     }
                  }
              }
 
@@ -275,6 +279,38 @@ namespace tfgame.Controllers
 
              TempData["Result"] = "Duel turn advanced.  All combatants have had their attack and cleanse/meditate limits reset.";
              return RedirectToAction("Play", "PvP");
+         }
+
+         [Authorize]
+         public ActionResult DuelTimeout()
+         {
+            
+
+             Player me = PlayerProcedures.GetPlayerFromMembership();
+
+             if (me.InDuel <= 0)
+             {
+                 TempData["Error"] = "You are not in a duel.";
+                 return RedirectToAction("Play", "PvP");
+             }
+
+             Duel duel = DuelProcedures.GetDuel(me.InDuel);
+
+             int turnsLeft = PvPStatics.MaximumDuelTurnLength - (PvPWorldStatProcedures.GetWorldTurnNumber() - duel.StartTurn);
+
+             if (turnsLeft > 0)
+             {
+                 TempData["Error"] = "You cannot end this duel as there are still turns remaining.";
+                 return RedirectToAction("Play", "PvP");
+             }
+
+
+             DuelProcedures.EndDuel(duel.Id, DuelProcedures.TIMEOUT);
+
+             TempData["Result"] = "This duel has timed out in a no-winner result.";
+             return RedirectToAction("Play", "PvP");
+
+
          }
 
 

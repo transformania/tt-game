@@ -525,7 +525,7 @@ namespace tfgame.Procedures
 
                         if (remainders <= 1)
                         {
-                            DuelProcedures.EndDuel(duel.Id);
+                            DuelProcedures.EndDuel(duel.Id, DuelProcedures.FINISHED);
                         }
 
 

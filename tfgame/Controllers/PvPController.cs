@@ -338,6 +338,7 @@ namespace tfgame.Controllers
                     i++;
                 }
                 ViewBag.Duel = duelNames;
+                ViewBag.DuelId = me.InDuel;
             }
 
             return View(output);

@@ -437,6 +437,7 @@
     <Compile Include="ViewModels\CovenantViewModel.cs" />
     <Compile Include="ViewModels\CustomFormViewModel.cs" />
     <Compile Include="ViewModels\Die.cs" />
+    <Compile Include="ViewModels\DuelPlayersViewModel.cs" />
     <Compile Include="ViewModels\EffectViewModel.cs" />
     <Compile Include="ViewModels\FairyChallengeViewModel.cs" />
     <Compile Include="ViewModels\FurnitureTypeViewModel.cs" />
@@ -2282,6 +2283,7 @@
     <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_22.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Statistics\Alpha_22.cshtml" />
     <Content Include="Views\NPC\LorekeeperLearnSpell.cshtml" />
+    <Content Include="Views\Duel\DuelDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

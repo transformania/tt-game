@@ -103,7 +103,7 @@ namespace tfgame.Procedures
                 PlayerLogProcedures.AddPlayerLog(p.Player.Id, playerMessage, true);
             }
 
-            LocationLogProcedures.AddLocationLog(members.First().Player.dbLocationName, "<b class='playerAttackNotification'>A duel started here.<b>");
+            LocationLogProcedures.AddLocationLog(members.First().Player.dbLocationName, "<b class='playerAttackNotification'>A duel started here.</b>");
 
             duelRepo.SaveDuel(duel);
 
@@ -114,6 +114,13 @@ namespace tfgame.Procedures
 
             Duel duel = DuelProcedures.GetDuel(attacker.InDuel);
 
+            // attacker is not in any duel, so obviously they are not in this duel
+            if (duel == null)
+            {
+                return true;
+            }
+
+            // otherwise scan through participants and see if the target is amongst them
             bool notInDuel = true;
             foreach (DuelCombatant d in duel.Combatants)
             {

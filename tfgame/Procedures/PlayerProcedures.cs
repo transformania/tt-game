@@ -1579,6 +1579,16 @@ namespace tfgame.Procedures
             playerRepo.SavePlayer(player);
         }
 
+        public static void SetAttackCount(Player player, int amount)
+        {
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            dbPlayer.TimesAttackingThisUpdate = amount;
+            dbPlayer.LastCombatTimestamp = DateTime.UtcNow;
+            dbPlayer.LastActionTimestamp = DateTime.UtcNow;
+            playerRepo.SavePlayer(player);
+        }
+
         public static void LogCombatTimestampsAndAddAttackCount(Player victim, Player attacker)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
@@ -1926,6 +1936,15 @@ namespace tfgame.Procedures
             IPlayerRepository playerRepo = new EFPlayerRepository();
             Player dbplayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
             dbplayer.CleansesMeditatesThisRound++;
+            playerRepo.SavePlayer(dbplayer);
+
+        }
+
+        public static void SetCleanseMeditateCount(Player player, int amount)
+        {
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            Player dbplayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            dbplayer.CleansesMeditatesThisRound = amount;
             playerRepo.SavePlayer(dbplayer);
 
         }

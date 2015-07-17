@@ -29,7 +29,7 @@
 
     if (ViewBag.Duel != null && ViewBag.Duel != "")
     {
-        <p class="infoMessage specialBox2 specialNoticeBox">You are currently engaged in a duel with @ViewBag.Duel!</p>
+        <p class="infoMessage specialBox2 specialNoticeBox">You are currently engaged in a duel with @ViewBag.Duel!  Click @Html.ActionLink("here", "DuelDetail","Duel", new { id = ViewBag.DuelId}, null) to see details.</p>
     }
 
     if (Model.Boss_Donna == "active")

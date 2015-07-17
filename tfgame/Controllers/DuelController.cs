@@ -217,6 +217,66 @@ namespace tfgame.Controllers
             return RedirectToAction("Play","PvP");
         }
 
+         [Authorize]
+        public ActionResult DuelDetail(int id)
+        {
+            Player me = PlayerProcedures.GetPlayerFromMembership();
+            Duel duel = DuelProcedures.GetDuel(id);
+            if (me.InDuel != duel.Id)
+            {
+                TempData["Error"] = "You are not in this duel.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            DuelPlayersViewModel output = new DuelPlayersViewModel
+            {
+                Duel = duel,
+                Combatants = DuelProcedures.GetPlayerViewModelsInDuel(duel.Id)
+            };
+
+            ViewBag.CurrentTurn = PvPWorldStatProcedures.GetWorldTurnNumber();
+
+            return View(output);
+        }
+
+         [Authorize]
+         public ActionResult AdvanceTurn()
+         {
+             Player me = PlayerProcedures.GetPlayerFromMembership();
+
+             if (me.InDuel <= 0)
+             {
+                 TempData["Error"] = "You are not in a duel.";
+                 return RedirectToAction("Play", "PvP");
+             }
+
+             Duel duel = DuelProcedures.GetDuel(me.InDuel);
+
+             List<PlayerFormViewModel> combatants = DuelProcedures.GetPlayerViewModelsInDuel(duel.Id);
+
+             foreach (PlayerFormViewModel p in combatants)
+             {
+                 if (p.Player.TimesAttackingThisUpdate < PvPStatics.MaxAttacksPerUpdate)
+                 {
+                     TempData["Error"] = "Cannot advance this turn."  + p.Player.GetFullName() + " has not used up all of their attacks.";
+                     return RedirectToAction("Play", "PvP");
+                 }
+             }
+
+             foreach (PlayerFormViewModel p in combatants)
+             {
+                 PlayerProcedures.SetAttackCount(p.Player.ToDbPlayer(), 0);
+                 PlayerProcedures.SetCleanseMeditateCount(p.Player.ToDbPlayer(), 0);
+                 string message = "<b>" + me.GetFullName() + " has advanced the duel turn.  Attacks and cleanse/meditate limits have been reset.</b>";
+                 PlayerLogProcedures.AddPlayerLog(p.Player.Id, message, true);
+                 NoticeProcedures.PushNotice(p.Player.Id, message, NoticeProcedures.PushType__PlayerLog);
+             }
+
+
+             TempData["Result"] = "Duel turn advanced.  All combatants have had their attack and cleanse/meditate limits reset.";
+             return RedirectToAction("Play", "PvP");
+         }
+
 
 	}
 }

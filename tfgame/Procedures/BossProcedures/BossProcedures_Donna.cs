@@ -45,7 +45,6 @@ namespace tfgame.Procedures.BossProcedures
                     MaxHealth = 9999,
                     MaxMana = 9999,
                     Form = "form_Mythical_Sorceress_LexamTheGemFox",
-                    //IsPetToId = -1,
                     Money = 1000,
                     Mobility = "full",
                     Level = 20,
@@ -102,14 +101,14 @@ namespace tfgame.Procedures.BossProcedures
                 if (directive.State == "attack" || directive.State == "idle")
                 {
 
-
-
                     Player target = playerRepo.Players.FirstOrDefault(p => p.Id == directive.TargetPlayerId);
 
-
-
                     // if Donna's target goes offline, is inanimate, or in the dungeon, have her teleport back to the ranch
-                    if (target == null || target.Mobility != "full" || PlayerProcedures.PlayerIsOffline(target) || target.IsInDungeon() == true)
+                    if (target == null || 
+                        target.Mobility != "full" ||
+                        PlayerProcedures.PlayerIsOffline(target) || 
+                        target.IsInDungeon() == true ||
+                        target.InDuel > 0)
                     {
 
                         if (donna.dbLocationName != "ranch_bedroom")
@@ -210,7 +209,12 @@ namespace tfgame.Procedures.BossProcedures
 
                 foreach (Player p in PlayersHere)
                 {
-                    if (p.MembershipId > 0 && p.Level > 3 && p.Mobility == "full" && !PlayerProcedures.PlayerIsOffline(p) && p.Id != personAttacking.Id)
+                    if (p.MembershipId > 0 && 
+                        p.Level > 3 && 
+                        p.Mobility == "full" && 
+                        !PlayerProcedures.PlayerIsOffline(p) &&
+                        p.Id != personAttacking.Id &&
+                        p.InDuel <= 0)
                     {
                         AttackProcedures.Attack(donna, p, ChooseSpell(PvPStatics.LastGameTurn));
                         AIProcedures.DealBossDamage(donna, p, false, 1);

@@ -175,12 +175,22 @@ namespace tfgame.Procedures.BossProcedures
             {
                 // get all of the players in the room by nerd
                 List<Player> playersByNerd = PlayerProcedures.GetPlayersAtLocation(nerdBoss.dbLocationName).ToList();
-                playersByNerd = playersByNerd.Where(p => p.Mobility == "full" && PlayerProcedures.PlayerIsOffline(p) == false && p.MembershipId > 0 && p.Id != nerdBoss.Id && p.Form != NerdSpellForm).ToList();
+                playersByNerd = playersByNerd.Where(p => p.Mobility == "full" &&
+                    PlayerProcedures.PlayerIsOffline(p) == false &&
+                    p.MembershipId > 0 &&
+                    p.Id != nerdBoss.Id &&
+                    p.Form != NerdSpellForm &&
+                    p.InDuel <= 0).ToList();
 
 
                 // get all of the players in the room by bimbo
                 List<Player> playersByBimbo = PlayerProcedures.GetPlayersAtLocation(bimboBoss.dbLocationName).ToList();
-                playersByBimbo = playersByBimbo.Where(p => p.Mobility == "full" && PlayerProcedures.PlayerIsOffline(p) == false && p.MembershipId > 0 && p.Id != bimboBoss.Id && p.Form != BimboSpellForm).ToList();
+                playersByBimbo = playersByBimbo.Where(p => p.Mobility == "full" &&
+                    PlayerProcedures.PlayerIsOffline(p) == false &&
+                    p.MembershipId > 0 &&
+                    p.Id != bimboBoss.Id &&
+                    p.Form != BimboSpellForm &&
+                    p.InDuel <= 0).ToList();
 
                 foreach (Player p in playersByNerd)
                 {

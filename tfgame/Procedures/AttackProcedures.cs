@@ -276,11 +276,17 @@ namespace tfgame.Procedures
             List<Player> playersHereOnline = new List<Player>();
             if (attacker.GameMode == 2)
             {
-                playersHere = playerREpo.Players.Where(p => p.dbLocationName == attacker.dbLocationName && (p.GameMode == 2 || p.MembershipId < -1) && p.Mobility == "full").ToList();
+                playersHere = playerREpo.Players.Where(p => p.dbLocationName == attacker.dbLocationName &&
+                    (p.GameMode == 2 || p.MembershipId < -1) &&
+                    p.Mobility == "full" &&
+                    p.InDuel <= 0).ToList();
             }
             else if (attacker.GameMode == 1)
             {
-                playersHere = playerREpo.Players.Where(p => p.dbLocationName == attacker.dbLocationName && (p.GameMode == 1 || p.MembershipId < -1) && p.Mobility == "full").ToList();
+                playersHere = playerREpo.Players.Where(p => p.dbLocationName == attacker.dbLocationName &&
+                    (p.GameMode == 1 || p.MembershipId < -1) &&
+                    p.Mobility == "full" &&
+                    p.InDuel <- 0).ToList();
             }
 
             // filter out offline players as well as the attacker
@@ -300,7 +306,7 @@ namespace tfgame.Procedures
                     p.Health = 0;
                 }
                 playerREpo.SavePlayer(p);
-                string message = "<span class='playerAttackNotification'>" + attacker.FirstName + " " + attacker.LastName + " threw a " + orbStrengthName + " Submissiveness Splash Orb at " + here.Name + ", lowering your willpower by " + damage + " along with " + (playersHereOnline.Count() - 1) + " others.</span>";
+                string message = "<span class='playerAttackNotification'>" + attacker.GetFullName() + " threw a " + orbStrengthName + " Submissiveness Splash Orb at " + here.Name + ", lowering your willpower by " + damage + " along with " + (playersHereOnline.Count() - 1) + " others.</span>";
                 PlayerLogProcedures.AddPlayerLog(p.Id, message, true);
 
             }

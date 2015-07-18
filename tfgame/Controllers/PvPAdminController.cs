@@ -2639,12 +2639,22 @@ namespace tfgame.Controllers
         }
 
         [Authorize]
-        public ActionResult RenamePlayer()
+        public ActionResult RenamePlayer(int id)
         {
             if (User.IsInRole(PvPStatics.Permissions_Admin) == true)
             {
                 PlayerNameViewModel output = new PlayerNameViewModel();
-                return View();
+
+                if (id != -1)
+                {
+                    PlayerFormViewModel pm = PlayerProcedures.GetPlayerFormViewModel(id);
+                    output.Id = id;
+                    output.NewFirstName = pm.Player.FirstName;
+                    output.NewLastName = pm.Player.LastName;
+                    output.NewForm = pm.Player.Form;
+                }
+
+                return View(output);
             }
             else
             {

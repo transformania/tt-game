@@ -58,6 +58,14 @@
                         <tbody>
                         @foreach (Contribution contribution in ViewBag.OtherContributions)
                         {
+                            if (contribution.Form_FriendlyName == null)
+                            {
+                                contribution.Form_FriendlyName = "(Form name not set)";
+                            }
+                            if (contribution.Skill_FriendlyName == null)
+                            {
+                                contribution.Skill_FriendlyName = "(Skill name not set)";
+                            }
                             <tr>
                                 <td>
                                     @if (contribution.NeedsToBeUpdated == true)
@@ -127,6 +135,14 @@
                     <tbody>
                     @foreach (Contribution contribution in ViewBag.Proofreading)
                     {
+                        if (contribution.Form_FriendlyName == null)
+                        {
+                            contribution.Form_FriendlyName = "(Form name not set)";
+                        }
+                        if (contribution.Skill_FriendlyName == null)
+                        {
+                            contribution.Skill_FriendlyName = "(Skill name not set)";
+                        }
                         <tr>
                             <td>
                                 @if (contribution.NeedsToBeUpdated == true)

@@ -319,8 +319,27 @@ namespace tfgame.Controllers
 
             ViewBag.LoadTime = loadtime;
 
-           
-
+            if (me.InDuel > 0)
+            {
+                string duelNames = "";
+                List<PlayerFormViewModel> playersInDuel = DuelProcedures.GetPlayerViewModelsInDuel(me.InDuel);
+                int playersInDuelCount = playersInDuel.Count();
+                int i = 1;
+                foreach (PlayerFormViewModel p in playersInDuel)
+                {
+                    // ignore if own name
+                    if (p.Player.GetFullName() != me.GetFullName()) {
+                        duelNames += p.Player.GetFullName();
+                        if (i < playersInDuelCount)
+                        {
+                            duelNames += ", ";
+                        }
+                    }
+                    i++;
+                }
+                ViewBag.Duel = duelNames;
+                ViewBag.DuelId = me.InDuel;
+            }
 
             return View(output);
         }
@@ -444,6 +463,13 @@ namespace tfgame.Controllers
             if (PlayerCanPerformAction(me, "move") == false)
             {
                 return RedirectToAction("Play");
+            }
+
+            // assert that this player is not in a duel
+            if (me.InDuel > 0)
+            {
+                TempData["Error"] = "You must finish your duel before you can move again.";
+                return RedirectToAction("Play","PvP");
             }
 
             // assert that the player is not mind controlled and cannot move on their own
@@ -610,6 +636,13 @@ namespace tfgame.Controllers
                  return RedirectToAction("Play");
              }
 
+             // assert that this player is not in a duel
+             if (me.InDuel > 0)
+             {
+                 TempData["Error"] = "You must finish your duel before you enter or leave the dungeon.";
+                 return RedirectToAction("Play", "PvP");
+             }
+
             // assert player has enough action points
              if (me.ActionPoints < 30)
              {
@@ -772,7 +805,7 @@ namespace tfgame.Controllers
             }
 
 
-             // assert player hasn't attacked in past second
+            // assert player hasn't attacked in past second
             double secondsSinceLastAttack = Math.Abs(Math.Floor(me.LastCombatTimestamp.Subtract(DateTime.UtcNow).TotalSeconds));
 
             if (secondsSinceLastAttack < 3)
@@ -903,6 +936,18 @@ namespace tfgame.Controllers
                 TempData["Error"] = "This target is immune to mind control.";
                 TempData["SubError"] = "Mind control currently only works against human opponents.";
                 return RedirectToAction("Play");
+            }
+
+             // if anyone is dueling, make sure they are in the combatants list
+            if (me.InDuel > 0 || targeted.InDuel > 0)
+            {
+                if (DuelProcedures.PlayerIsNotInDuel(me, targeted) == true)
+                {
+                    TempData["Error"] = "You or your target is in a duel that the other is not participating in.";
+                    TempData["SubError"] = "Conclude all duels before attacks can resume.";
+                    return RedirectToAction("Play");
+                }
+
             }
 
 
@@ -1103,6 +1148,13 @@ namespace tfgame.Controllers
              {
                  TempData["Error"] = "You must be animate in order to attempt to enchant a location.";
                  return RedirectToAction("Play");
+             }
+
+             // assert that this player is not in a duel
+             if (me.InDuel > 0)
+             {
+                 TempData["Error"] = "You must finish your duel before you can enchant any locations.";
+                 return RedirectToAction("Play", "PvP");
              }
 
              // assert player is a high enough level
@@ -1380,6 +1432,13 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play");
             }
 
+            // assert that this player is not in a duel
+            if (me.InDuel > 0)
+            {
+                TempData["Error"] = "You must finish your duel before you can search your environment.";
+                return RedirectToAction("Play", "PvP");
+            }
+
             BuffBox mybuffs = ItemProcedures.GetPlayerBuffsSQL(me);
 
             decimal searchCostAfterbuffs = PvPStatics.SearchAPCost;
@@ -1512,6 +1571,13 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play");
             }
 
+            // assert that this player is not in a duel
+            if (me.InDuel > 0)
+            {
+                TempData["Error"] = "You must finish your duel before you can pick anything up off of the ground.";
+                return RedirectToAction("Play", "PvP");
+            }
+
             // assert that the player is not mind controlled and cannot pick up anything on their own
             if (me.MindControlIsActive == true)
             {
@@ -1635,6 +1701,13 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play");
             }
 
+            // assert that this player is not in a duel
+            if (me.InDuel > 0)
+            {
+                TempData["Error"] = "You must finish your duel before you can drop any items or release your pet.";
+                return RedirectToAction("Play", "PvP");
+            }
+
             ItemViewModel dropme = ItemProcedures.GetItemViewModel(itemId);
 
             // assert player does own this
@@ -1715,6 +1788,13 @@ namespace tfgame.Controllers
             if (PlayerCanPerformAction(me, "equip") == false)
             {
                 return RedirectToAction("Play");
+            }
+
+            // assert that this player is not in a duel
+            if (me.InDuel > 0)
+            {
+                TempData["Error"] = "You must finish your duel before you equip or unequip any equipment.";
+                return RedirectToAction("Play", "PvP");
             }
 
             ItemViewModel item = ItemProcedures.GetItemViewModel(itemId);
@@ -1820,6 +1900,14 @@ namespace tfgame.Controllers
             // if this item is a teleportation scroll, redirect to the teleportation page.
             if (item.dbItem.dbName == "item_consumeable_teleportation_scroll")
             {
+
+                // assert that this player is not in a duel
+                if (me.InDuel > 0)
+                {
+                    TempData["Error"] = "You must finish your duel before you use this item.";
+                    return RedirectToAction("Play", "PvP");
+                }
+
                 if (me.IsInDungeon() == true)
                 {
                      IEnumerable<Location> output = LocationsStatics.LocationList.GetLocation.Where(l => l.dbName != "" && l.Region == "dungeon");
@@ -2783,6 +2871,12 @@ namespace tfgame.Controllers
             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
 
             // no need to assert player is mobile; inanimates and items have no inventory
+            // assert that this player is not in a duel
+            if (me.InDuel > 0)
+            {
+                TempData["Error"] = "You must finish your duel before you can purchase or sell anything to Lindella.";
+                return RedirectToAction("Play", "PvP");
+            }
 
             // assert player actually does own one of this
             if (ItemProcedures.PlayerHasNumberOfThisItem(me, "item_consumeable_teleportation_scroll") <= 0)

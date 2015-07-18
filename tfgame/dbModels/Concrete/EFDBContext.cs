@@ -68,5 +68,7 @@ namespace tfgame.dbModels.Concrete
         public DbSet<DMRoll> DMRolls { get; set; }
         public DbSet<PollEntry> PollEntries { get; set; }
         public DbSet<Achievement> Achievements { get; set; }
+        public DbSet<Duel> Duels { get; set; }
+
     }
 }

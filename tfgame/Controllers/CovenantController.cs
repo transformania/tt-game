@@ -992,6 +992,13 @@ namespace tfgame.Controllers
                 return RedirectToAction("MyCovenant");
             }
 
+            // assert that this player is not in a duel
+            if (me.InDuel > 0)
+            {
+                TempData["Error"] = "You must finish your duel before you use covenant furniture.";
+                return RedirectToAction("Play", "PvP");
+            }
+
             // assert that player is in a covenant
             if (me.Covenant <= 0)
             {

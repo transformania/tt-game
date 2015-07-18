@@ -247,6 +247,7 @@
     <Compile Include="dbModels\Abstract\IFurnitureRepository.cs" />
     <Compile Include="dbModels\Abstract\IInanimateXPRepository.cs" />
     <Compile Include="dbModels\Abstract\IItemRepository.cs" />
+    <Compile Include="dbModels\Abstract\IDuelRepository.cs" />
     <Compile Include="dbModels\Abstract\IRerollRepository.cs" />
     <Compile Include="dbModels\Abstract\IItemTransferLogRepository.cs" />
     <Compile Include="dbModels\Abstract\IJewdewfaeEncounterRepository.cs" />
@@ -285,6 +286,7 @@
     <Compile Include="dbModels\Concrete\EFDbStaticItemRepository.cs" />
     <Compile Include="dbModels\Concrete\EFDMRollRepository.cs" />
     <Compile Include="dbModels\Concrete\EFDonatorRepository.cs" />
+    <Compile Include="dbModels\Concrete\EFDuelRepository.cs" />
     <Compile Include="dbModels\Concrete\EFFurnitureRepository.cs" />
     <Compile Include="dbModels\Concrete\EFRerollRepository.cs" />
     <Compile Include="dbModels\Concrete\EFItemTransferLogRepository.cs" />
@@ -337,6 +339,7 @@
     <Compile Include="dbModels\Models\DbStaticItem.cs" />
     <Compile Include="dbModels\Models\DMItem.cs" />
     <Compile Include="dbModels\Models\Donator.cs" />
+    <Compile Include="dbModels\Models\Duel.cs" />
     <Compile Include="dbModels\Models\Effect.cs" />
     <Compile Include="dbModels\Models\EffectContribution.cs" />
     <Compile Include="dbModels\Models\Friend.cs" />
@@ -388,6 +391,7 @@
     <Compile Include="Procedures\ChatLogProcedures.cs" />
     <Compile Include="Procedures\DMRollProcedures.cs" />
     <Compile Include="Procedures\DonatorProcedures.cs" />
+    <Compile Include="Procedures\DuelProcedures.cs" />
     <Compile Include="Procedures\DungeonProcedures.cs" />
     <Compile Include="Procedures\FurnitureProcedures.cs" />
     <Compile Include="Procedures\RerollProcedures.cs" />
@@ -433,6 +437,7 @@
     <Compile Include="ViewModels\CovenantViewModel.cs" />
     <Compile Include="ViewModels\CustomFormViewModel.cs" />
     <Compile Include="ViewModels\Die.cs" />
+    <Compile Include="ViewModels\DuelPlayersViewModel.cs" />
     <Compile Include="ViewModels\EffectViewModel.cs" />
     <Compile Include="ViewModels\FairyChallengeViewModel.cs" />
     <Compile Include="ViewModels\FurnitureTypeViewModel.cs" />
@@ -2278,6 +2283,7 @@
     <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_22.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Statistics\Alpha_22.cshtml" />
     <Content Include="Views\NPC\LorekeeperLearnSpell.cshtml" />
+    <Content Include="Views\Duel\DuelDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

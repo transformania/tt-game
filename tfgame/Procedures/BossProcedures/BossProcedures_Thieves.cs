@@ -312,7 +312,11 @@ namespace tfgame.Procedures.BossProcedures
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
             DateTime cutoff = DateTime.UtcNow.AddHours(-1);
-            IEnumerable<int> ids = playerRepo.Players.Where(p => p.Mobility == "full" && p.MembershipId >= -2 && p.OnlineActivityTimestamp >= cutoff && p.dbLocationName.Contains("dungeon_") == false).OrderByDescending(p => p.Money).Take(20).Select(p => p.Id);
+            IEnumerable<int> ids = playerRepo.Players.Where(p => p.Mobility == "full" &&
+                p.MembershipId >= -2 &&
+                p.OnlineActivityTimestamp >= cutoff &&
+                p.dbLocationName.Contains("dungeon_") == false &&
+                p.InDuel <= 0).OrderByDescending(p => p.Money).Take(20).Select(p => p.Id);
 
             string output = "";
             foreach (int s in ids)

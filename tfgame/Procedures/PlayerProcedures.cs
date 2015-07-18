@@ -69,6 +69,8 @@ namespace tfgame.Procedures
                                                               ShoutsRemaining = p.ShoutsRemaining,
                                                               ChatColor = p.ChatColor,
                                                               IsBannedFromGlobalChat = p.IsBannedFromGlobalChat,
+                                                              InDuel = p.InDuel,
+                                                              
                                                               
                                                           },
 
@@ -175,6 +177,7 @@ namespace tfgame.Procedures
                                                               ShoutsRemaining = p.ShoutsRemaining,
                                                               ChatColor = p.ChatColor,
                                                               IsBannedFromGlobalChat = p.IsBannedFromGlobalChat,
+                                                              InDuel = p.InDuel,
                                                           },
 
                                                           Form = new tfgame.ViewModels.Form
@@ -282,6 +285,7 @@ namespace tfgame.Procedures
                                                               ShoutsRemaining = p.ShoutsRemaining,
                                                               ChatColor = p.ChatColor,
                                                               IsBannedFromGlobalChat = p.IsBannedFromGlobalChat,
+                                                              InDuel = p.InDuel,
                                                           },
 
                                                           Form = new tfgame.ViewModels.Form
@@ -390,6 +394,7 @@ namespace tfgame.Procedures
                                                               ShoutsRemaining = p.ShoutsRemaining,
                                                               ChatColor = p.ChatColor,
                                                               IsBannedFromGlobalChat = p.IsBannedFromGlobalChat,
+                                                              InDuel = p.InDuel,
                                                           },
 
                                                           Form = new tfgame.ViewModels.Form
@@ -1574,6 +1579,16 @@ namespace tfgame.Procedures
             playerRepo.SavePlayer(player);
         }
 
+        public static void SetAttackCount(Player player, int amount)
+        {
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            dbPlayer.TimesAttackingThisUpdate = amount;
+            dbPlayer.LastCombatTimestamp = DateTime.UtcNow;
+            dbPlayer.LastActionTimestamp = DateTime.UtcNow;
+            playerRepo.SavePlayer(player);
+        }
+
         public static void LogCombatTimestampsAndAddAttackCount(Player victim, Player attacker)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
@@ -1925,6 +1940,15 @@ namespace tfgame.Procedures
 
         }
 
+        public static void SetCleanseMeditateCount(Player player, int amount)
+        {
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            Player dbplayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            dbplayer.CleansesMeditatesThisRound = amount;
+            playerRepo.SavePlayer(dbplayer);
+
+        }
+
         public static Player ReadjustMaxes(Player player, BuffBox buffs)
         {
             // readjust player health/mana by grabbing base amount plus effects from buffs
@@ -2107,6 +2131,17 @@ namespace tfgame.Procedures
                 p.IpAddress = "reset";
                 playerRepo.SavePlayer(p);
             }
+        }
+
+        public static void EnterDuel(int playerId, int duelId)
+        {
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);
+            dbPlayer.InDuel = duelId;
+            dbPlayer.LastActionTimestamp = DateTime.UtcNow;
+            dbPlayer.LastCombatTimestamp = DateTime.UtcNow;
+            playerRepo.SavePlayer(dbPlayer);
+
         }
 
     }

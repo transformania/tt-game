@@ -199,7 +199,7 @@ namespace tfgame.Procedures.BossProcedures
                 // random chance of spontaneously transforming
                 if (infectee.Form != RegularBimboFormDbName && PlayerProcedures.PlayerIsOffline(infectee) == false)
                 {
-                    if (roll < .16)
+                    if (roll < .16 && infectee.InDuel <= 0)
                     {
                         infectee.Form = RegularBimboFormDbName;
                         infectee.Gender = "female";
@@ -284,7 +284,7 @@ namespace tfgame.Procedures.BossProcedures
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
             DateTime cutoff = DateTime.UtcNow.AddHours(-1);
-            IEnumerable<string> locs = playerRepo.Players.Where(p => p.Mobility == "full" && p.LastActionTimestamp > cutoff && p.Form != RegularBimboFormDbName && p.dbLocationName.Contains("dungeon_") == false).GroupBy(p => p.dbLocationName).OrderByDescending(p => p.Count()).Select(p => p.Key);
+            IEnumerable<string> locs = playerRepo.Players.Where(p => p.Mobility == "full" && p.LastActionTimestamp > cutoff && p.Form != RegularBimboFormDbName && p.dbLocationName.Contains("dungeon_") == false && p.InDuel <= 0).GroupBy(p => p.dbLocationName).OrderByDescending(p => p.Count()).Select(p => p.Key);
             return locs.First();
         }
 
@@ -350,7 +350,7 @@ namespace tfgame.Procedures.BossProcedures
         private static List<Player> GetEligibleTargetsInLocation(string location, Player attacker)
         {
             DateTime cutoff = DateTime.UtcNow.AddHours(-1);
-            List<Player> playersHere = PlayerProcedures.GetPlayersAtLocation(location).Where(m => m.Mobility == "full" && m.Id != attacker.Id && m.Form != RegularBimboFormDbName && m.MembershipId >= -2 && m.LastActionTimestamp > cutoff && m.MembershipId != -7).ToList();
+            List<Player> playersHere = PlayerProcedures.GetPlayersAtLocation(location).Where(m => m.Mobility == "full" && m.Id != attacker.Id && m.Form != RegularBimboFormDbName && m.MembershipId >= -2 && m.LastActionTimestamp > cutoff && m.MembershipId != -7 && m.InDuel <= 0).ToList();
 
             return playersHere;
         }

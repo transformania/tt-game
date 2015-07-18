@@ -1390,6 +1390,12 @@ namespace tfgame.Procedures
                         return "You could use this lotion, but as you are already in your base form it wouldn't do you any good.";
                     }
 
+                    // assert that this player is not in a duel
+                    if (owner.InDuel > 0)
+                    {
+                        return "You must finish your duel before you can use this item.";
+                    }
+
                     PlayerProcedures.InstantRestoreToBase(owner);
                     TFEnergyProcedures.CleanseTFEnergies(owner, 25);
                     itemRepo.DeleteItem(itemPlus.dbItem.Id);
@@ -1426,6 +1432,12 @@ namespace tfgame.Procedures
                     if (owner.IsInDungeon() == true)
                     {
                         return "The dark magic seeping through the dungeon prevents your crystal from working.";
+                    }
+
+                    // assert that this player is not in a duel
+                    if (owner.InDuel > 0)
+                    {
+                        return "You must finish your duel before you can use this item.";
                     }
 
                     // assert owner has not been in combat recently

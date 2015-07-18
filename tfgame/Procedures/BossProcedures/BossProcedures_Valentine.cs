@@ -163,7 +163,12 @@ namespace tfgame.Procedures.BossProcedures
             // get all of the players in the room
             List<Player> playersHere = PlayerProcedures.GetPlayersAtLocation(valentine.dbLocationName).ToList();
 
-            playersHere = playersHere.Where(p => p.Mobility == "full" && PlayerProcedures.PlayerIsOffline(p) == false && p.Level >= 3 && p.MembershipId > 0 && p.Id != valentine.Id).ToList();
+            playersHere = playersHere.Where(p => p.Mobility == "full" &&
+                PlayerProcedures.PlayerIsOffline(p) == false &&
+                p.Level >= 3 &&
+                p.MembershipId > 0 &&
+                p.Id != valentine.Id &&
+                p.InDuel <= 0).ToList();
 
             int turnNo = PvPWorldStatProcedures.GetWorldTurnNumber();
 

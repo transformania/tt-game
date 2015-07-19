@@ -18,6 +18,8 @@ namespace tfgame.Procedures
         public const string TIMEOUT = "timeout";
         public const string REJECTED = "rejected";
 
+        public const string TIMEOUT_CURSE = "effect_Disappointing_Duelist_Judoo";
+
         public static void SendDuelChallenge(Player challenger, Player target)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
@@ -33,6 +35,7 @@ namespace tfgame.Procedures
                 ProposalTurn = PvPWorldStatProcedures.GetWorldTurnNumber(),
                 CompletionTurn = -1,
                 Status = PENDING,
+                LastResetTimestamp = DateTime.UtcNow,
                 Combatants = new List<DuelCombatant> {
                     new DuelCombatant {
                         PlayerId = challenger.Id,
@@ -154,12 +157,28 @@ namespace tfgame.Procedures
             foreach (DuelCombatant d in duel.Combatants)
             {
                 PlayerProcedures.EnterDuel(d.PlayerId, 0);
-                string message = "<b>Your duel has ended.</b>";
+
+                string message = "";
+
+                if (endStatus==TIMEOUT) {
+                    message = "<b class='bad'>Your duel has timed out, ending in a disappointing draw.  You feel as if some frustrated spirits have left you weakened by a curse...</b>";
+                    EffectProcedures.GivePerkToPlayer(TIMEOUT_CURSE, d.PlayerId);
+                } else {
+                    message = "<b>Your duel has ended.</b>";
+                }
+
                 PlayerLogProcedures.AddPlayerLog(d.PlayerId, message, true);
             }
 
         }
 
+        public static void SetLastDuelAttackTimestamp(int duelId)
+        {
+            IDuelRepository duelRepo = new EFDuelRepository();
+            Duel duel = duelRepo.Duels.FirstOrDefault(d => d.Id == duelId);
+            duel.LastResetTimestamp = DateTime.UtcNow;
+            duelRepo.SaveDuel(duel);
+        }
 
     }
 }

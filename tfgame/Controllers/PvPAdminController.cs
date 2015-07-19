@@ -2668,7 +2668,8 @@ namespace tfgame.Controllers
             if (User.IsInRole(PvPStatics.Permissions_Admin) == true)
             {
 
-                if (PvPStatics.ChaosMode == false)
+                PvPWorldStat stats = PvPWorldStatProcedures.GetWorldStats();
+                if (PvPStatics.ChaosMode == false && stats.TestServer == false)
                 {
                     return RedirectToAction("Play", "PvP");
                 }

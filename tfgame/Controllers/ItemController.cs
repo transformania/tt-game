@@ -5,14 +5,12 @@ using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using tfgame.dbModels.Models;
-using tfgame.Filters;
 using tfgame.Procedures;
 using tfgame.Statics;
 using tfgame.ViewModels;
 
 namespace tfgame.Controllers
 {
-     [InitializeSimpleMembership]
     public class ItemController : Controller
     {
         //

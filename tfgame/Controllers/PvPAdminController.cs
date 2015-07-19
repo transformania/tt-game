@@ -9,7 +9,6 @@ using System.Xml.Serialization;
 using tfgame.dbModels.Abstract;
 using tfgame.dbModels.Concrete;
 using tfgame.dbModels.Models;
-using tfgame.Filters;
 using tfgame.Procedures;
 using tfgame.Procedures.BossProcedures;
 using tfgame.Statics;
@@ -18,7 +17,6 @@ using WebMatrix.WebData;
 
 namespace tfgame.Controllers
 {
-    [InitializeSimpleMembership]
     public class PvPAdminController : Controller
     {
         //

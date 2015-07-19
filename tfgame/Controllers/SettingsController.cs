@@ -8,13 +8,11 @@ using WebMatrix.WebData;
 using tfgame.Procedures;
 using tfgame.Statics;
 using tfgame.ViewModels;
-using tfgame.Filters;
 using tfgame.dbModels.Abstract;
 using tfgame.dbModels.Concrete;
 
 namespace tfgame.Controllers
 {
-    [InitializeSimpleMembership]
     public class SettingsController : Controller
     {
          [Authorize]

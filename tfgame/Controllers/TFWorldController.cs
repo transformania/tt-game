@@ -7,7 +7,6 @@ using System.Xml;
 using System.Xml.Serialization;
 using tfgame.dbModels.Abstract;
 using tfgame.dbModels.Concrete;
-using tfgame.Filters;
 using tfgame.Models;
 using tfgame.Procedures;
 using WebMatrix.WebData;
@@ -15,7 +14,6 @@ using WebMatrix.WebData;
 namespace tfgame.Controllers
 {
 
-    [InitializeSimpleMembership]
     [Authorize]
     public class TFWorldController : Controller
     {

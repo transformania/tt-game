@@ -6,7 +6,6 @@ using System.Web.Mvc;
 using tfgame.dbModels.Abstract;
 using tfgame.dbModels.Concrete;
 using tfgame.dbModels.Models;
-using tfgame.Filters;
 using tfgame.Procedures;
 using tfgame.Statics;
 using tfgame.ViewModels;
@@ -15,7 +14,6 @@ using WebMatrix.WebData;
 namespace tfgame.Controllers
 {
 
-     [InitializeSimpleMembership]
     public class ContributionController : Controller
     {
         //

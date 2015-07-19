@@ -2,7 +2,7 @@
 
 using Microsoft.Owin;
 using Owin;
-[assembly: OwinStartup(typeof(tfgame.Chat.Startup))]
+
 namespace tfgame.Chat
 {
     public class Startup

@@ -8,7 +8,7 @@
 <div class="result">@ViewBag.Result</div>
 
 @{
-    if (WebSecurity.CurrentUserId == 69)
+    if (((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1) == 69)
     {
        <p>@Html.ActionLink("Approve DM Encounters", "ReviewDMRolls", "Contribution")</p>
     }

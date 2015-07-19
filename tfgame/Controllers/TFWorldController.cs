@@ -10,6 +10,7 @@ using tfgame.dbModels.Concrete;
 using tfgame.Models;
 using tfgame.Procedures;
 using WebMatrix.WebData;
+using Microsoft.AspNet.Identity;
 
 namespace tfgame.Controllers
 {
@@ -100,7 +101,7 @@ namespace tfgame.Controllers
             
             dbModels.Models.Character dbMe = new dbModels.Models.Character();
 
-            dbModels.Models.Character oldDbMe = characterRepo.Characters.FirstOrDefault(c => c.SimpleMembershipId == WebSecurity.CurrentUserId);
+            dbModels.Models.Character oldDbMe = characterRepo.Characters.FirstOrDefault(c => c.SimpleMembershipId == ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
 
             if (oldDbMe == null)
             {

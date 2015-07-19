@@ -33,12 +33,12 @@ namespace tfgame.Procedures
         public static void LoadCharacterIntoMemory()
         {
             Game game = System.Web.HttpContext.Current.Application["main"] as Game;
-            Character me = game.Characters.FirstOrDefault(c => c.Id == WebSecurity.CurrentUserId);
+            Character me = game.Characters.FirstOrDefault(c => c.Id == ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
             if (me == null)
             {
                 me = new Character();
                 ICharacterRepository characterRepo = new EFCharacterRepository();
-                dbModels.Models.Character dbme = characterRepo.Characters.FirstOrDefault(c => c.SimpleMembershipId == WebSecurity.CurrentUserId);
+                dbModels.Models.Character dbme = characterRepo.Characters.FirstOrDefault(c => c.SimpleMembershipId == ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
 
                 // character is in the database, so load up stats from there
                 if (dbme != null)
@@ -58,7 +58,7 @@ namespace tfgame.Procedures
                     // player is not in memory nor has a presence in the database, so start a new one from scratch
                 else
                 {
-                    me.Id = WebSecurity.CurrentUserId;
+                    me.Id = ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1);
                     me.Health = 100;
                     me.HealthMax = 100;
                     me.Mana = 100;
@@ -82,7 +82,7 @@ namespace tfgame.Procedures
         public static Character GetCharacter()
         {
             Game game = System.Web.HttpContext.Current.Application["main"] as Game;
-            Character me = game.Characters.FirstOrDefault(c => c.Id == WebSecurity.CurrentUserId);
+            Character me = game.Characters.FirstOrDefault(c => c.Id == ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
             return me;
         }
 
@@ -97,7 +97,7 @@ namespace tfgame.Procedures
         {
             Game game = System.Web.HttpContext.Current.Application["main"] as Game;
 
-            string sceneName = game.Characters.FirstOrDefault(c => c.Id == WebSecurity.CurrentUserId).AtScene;
+            string sceneName = game.Characters.FirstOrDefault(c => c.Id == ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1)).AtScene;
             Scene thisScene = game.Scenes.FirstOrDefault(s => s.dbName == sceneName);
             thisScene.Connections = game.Connections.Where(c => c.ParentSceneDbName == thisScene.dbName).ToList();
             //thisScene.Img = 
@@ -115,7 +115,7 @@ namespace tfgame.Procedures
         public static void SaveCharacter(Character character)
         {
             Game game = System.Web.HttpContext.Current.Application["main"] as Game;
-            Character me = game.Characters.FirstOrDefault(c => c.Id == WebSecurity.CurrentUserId);
+            Character me = game.Characters.FirstOrDefault(c => c.Id == ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
         }
 
         public static void AddMessageToScene(Scene scene, string message)
@@ -145,7 +145,7 @@ namespace tfgame.Procedures
         public static List<Character> GetCharactersHere(Scene scene)
         {
             Game game = System.Web.HttpContext.Current.Application["main"] as Game;
-            return game.Characters.Where(c => c.AtScene == scene.dbName && c.Id != WebSecurity.CurrentUserId).ToList();
+            return game.Characters.Where(c => c.AtScene == scene.dbName && c.Id != ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1)).ToList();
         }
 
         public static void WriteScenesToXML()

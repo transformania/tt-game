@@ -55,7 +55,7 @@ namespace tfgame.Procedures
             IItemRepository itemRep = new EFItemRepository();
 
             // get the current level of this player based on what item they are
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
             Item inanimateMe = itemRep.Items.FirstOrDefault(i => i.VictimName == me.FirstName + " " + me.LastName);
 
             int currentGameTurn = PvPWorldStatProcedures.GetWorldTurnNumber();

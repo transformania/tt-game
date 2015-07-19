@@ -10,6 +10,7 @@ using tfgame.Statics;
 using tfgame.ViewModels;
 using tfgame.dbModels.Abstract;
 using tfgame.dbModels.Concrete;
+using Microsoft.AspNet.Identity;
 
 namespace tfgame.Controllers
 {
@@ -24,7 +25,7 @@ namespace tfgame.Controllers
          [Authorize]
          public ActionResult Settings()
          {
-             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+             Player me = PlayerProcedures.GetPlayerFromMembership(((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
 
              ViewBag.GameMode = me.GameMode;
              ViewBag.Mobility = me.Mobility;
@@ -38,7 +39,7 @@ namespace tfgame.Controllers
          //[Authorize]
          //public ActionResult EnterProtection()
          //{
-         //    Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+         //    Player me = PlayerProcedures.GetPlayerFromMembership(((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
 
          //    double minutesAgo = Math.Abs(Math.Floor(me.GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalMinutes));
          //    if (minutesAgo < 60 && me.Mobility == "full")
@@ -63,7 +64,7 @@ namespace tfgame.Controllers
          //[Authorize]
          //public ActionResult LeaveProtection()
          //{
-         //    Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+         //    Player me = PlayerProcedures.GetPlayerFromMembership(((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
 
          //    double minutesAgo = Math.Abs(Math.Floor(me.GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalMinutes));
          //    if (minutesAgo < 60 && me.Mobility == "full")
@@ -98,7 +99,7 @@ namespace tfgame.Controllers
          [Authorize]
          public ActionResult EnterSuperProtection()
          {
-             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+             Player me = PlayerProcedures.GetPlayerFromMembership(((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
 
              if (me.GameMode != 1)
              {
@@ -115,7 +116,7 @@ namespace tfgame.Controllers
          [Authorize]
          public ActionResult LeaveSuperProtection()
          {
-             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+             Player me = PlayerProcedures.GetPlayerFromMembership(((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
 
              if (me.GameMode != 0)
              {
@@ -132,7 +133,7 @@ namespace tfgame.Controllers
          [Authorize]
          public ActionResult EnableRP()
          {
-             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+             Player me = PlayerProcedures.GetPlayerFromMembership(((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
              TempData["Result"] = PlayerProcedures.SetRPFlag(me, true);
              return RedirectToAction("Play","PvP");
          }
@@ -140,7 +141,7 @@ namespace tfgame.Controllers
          [Authorize]
          public ActionResult DisableRP()
          {
-             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+             Player me = PlayerProcedures.GetPlayerFromMembership(((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
              TempData["Result"] = PlayerProcedures.SetRPFlag(me, false);
              return RedirectToAction("Play", "PvP");
          }
@@ -149,12 +150,12 @@ namespace tfgame.Controllers
         public ActionResult SetBio()
         {
 
-            PlayerBio output = SettingsProcedures.GetPlayerBioFromMembershipId(WebSecurity.CurrentUserId);
+            PlayerBio output = SettingsProcedures.GetPlayerBioFromMembershipId(((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
 
             if (output == null)
             {
                 output = new PlayerBio{
-                    OwnerMembershipId = WebSecurity.CurrentUserId,
+                    OwnerMembershipId = ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1),
                     Timestamp = DateTime.UtcNow,
                     WebsiteURL = "",
                     Text = "",
@@ -162,7 +163,7 @@ namespace tfgame.Controllers
             }
             else
             {
-                if (output.OwnerMembershipId != WebSecurity.CurrentUserId)
+                if (output.OwnerMembershipId != ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1))
                 {
                     TempData["Error"] = "This is not your biography.";
                     return RedirectToAction("Play", "PvP");
@@ -226,7 +227,7 @@ namespace tfgame.Controllers
          public ActionResult SetBioDelete(PlayerBio input)
          {
 
-             SettingsProcedures.DeletePlayerBio(WebSecurity.CurrentUserId);
+             SettingsProcedures.DeletePlayerBio(((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
 
              TempData["Result"] = "Your bio has been deleted.";
              return RedirectToAction("Play", "PvP");
@@ -340,7 +341,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult SetNickname()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
 
             if (DonatorProcedures.DonatorGetsNickname(me) == false)
             {
@@ -358,11 +359,11 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult VerifyDonatorStatus()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
 
             DonatorProcedures.SetNewPlayerDonationRank(me.Id);
 
-            me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            me = PlayerProcedures.GetPlayerFromMembership(((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
 
             TempData["Result"] = "Your donation tier has been verified and set to tier " + me.DonatorLevel + ".";
             return RedirectToAction("Play", "PvP");
@@ -372,7 +373,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult SetNicknameSend(Message input)
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
 
             if (me.DonatorLevel < 2)
             {
@@ -516,7 +517,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult SetChatColor(string color)
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
 
             string filename = System.Web.HttpContext.Current.Server.MapPath("~/XMLs/validChatColors.txt");
             string text = System.IO.File.ReadAllText(filename);
@@ -543,7 +544,7 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
-            AuthorArtistBio output = SettingsProcedures.GetAuthorArtistBio(WebSecurity.CurrentUserId);
+            AuthorArtistBio output = SettingsProcedures.GetAuthorArtistBio(((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
             return View(output);
         }
 
@@ -570,7 +571,7 @@ namespace tfgame.Controllers
         {
             AuthorArtistBio output = SettingsProcedures.GetAuthorArtistBio(id);
             Player artistIngamePlayer = PlayerProcedures.GetPlayerFromMembership(id);
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
             ViewBag.IngameCharacter = "This artist does not currently have a character ingame.";
 
             bool friends = false;
@@ -618,7 +619,7 @@ namespace tfgame.Controllers
             System.IO.StreamReader file = new System.IO.StreamReader(filename);
             List<CustomFormViewModel> output = (List<CustomFormViewModel>)reader.Deserialize(file);
 
-            CustomFormViewModel newForm = output.FirstOrDefault(p => p.MembershipId == WebSecurity.CurrentUserId);
+            CustomFormViewModel newForm = output.FirstOrDefault(p => p.MembershipId == ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
 
             if (newForm == null)
             {

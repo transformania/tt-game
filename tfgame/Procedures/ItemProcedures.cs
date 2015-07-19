@@ -1289,7 +1289,7 @@ namespace tfgame.Procedures
             string name;
 
             // get pronoun
-            if (WebSecurity.CurrentUserId == owner.MembershipId)
+            if (((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1) == owner.MembershipId)
             {
                 name = "You";
             }

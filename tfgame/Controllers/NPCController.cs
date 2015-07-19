@@ -10,6 +10,7 @@ using tfgame.Procedures.BossProcedures;
 using tfgame.Statics;
 using tfgame.ViewModels;
 using WebMatrix.WebData;
+using Microsoft.AspNet.Identity;
 
 namespace tfgame.Controllers
 {
@@ -36,7 +37,7 @@ namespace tfgame.Controllers
             }
 
             // assert that player is logged in
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
 
             ViewBag.MyMoney = Math.Floor(me.Money);
 
@@ -139,7 +140,7 @@ namespace tfgame.Controllers
         public ActionResult Purchase(int id)
         {
             // assert that player is logged in
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
 
             if (me.Mobility != "full")
             {
@@ -223,7 +224,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult SellList()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
 
             // assert player is animate
             if (me.Mobility != "full")
@@ -257,7 +258,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult Sell(int id)
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
 
             // assert player is animate
             if (me.Mobility != "full")
@@ -331,7 +332,7 @@ namespace tfgame.Controllers
         public ActionResult TradeWithPetMerchant()
         {
 
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
             ViewBag.MyMoney = Math.Floor(me.Money);
 
             // assert player is animate
@@ -385,7 +386,7 @@ namespace tfgame.Controllers
         public ActionResult PurchasePet(int id)
         {
             // assert that player is logged in
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
 
             if (me.Mobility != "full")
             {
@@ -472,7 +473,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult SellPetList()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
 
             // assert player is animate
             if (me.Mobility != "full")
@@ -510,7 +511,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult SellPet(int id)
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
 
             // assert player is animate
             if (me.Mobility != "full")
@@ -918,7 +919,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult TalkWithJewdewfae()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
             Player fae = PlayerProcedures.GetPlayerFromMembership(-6);
 
             // assert player is mobile
@@ -968,7 +969,7 @@ namespace tfgame.Controllers
         public ActionResult PlayWithJewdewfae()
         {
 
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
             Player fae = PlayerProcedures.GetPlayerFromMembership(-6);
 
             // assert player is mobile

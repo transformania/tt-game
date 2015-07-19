@@ -16,13 +16,13 @@ namespace tfgame.Procedures
         {
             IFriendRepository friendRepo = new EFFriendRepository();
 
-            Friend friend = friendRepo.Friends.FirstOrDefault(f => (f.OwnerMembershipId == WebSecurity.CurrentUserId && f.FriendMembershipId == player.MembershipId) || (f.FriendMembershipId == WebSecurity.CurrentUserId && f.OwnerMembershipId == player.MembershipId));
+            Friend friend = friendRepo.Friends.FirstOrDefault(f => (f.OwnerMembershipId == ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1) && f.FriendMembershipId == player.MembershipId) || (f.FriendMembershipId == ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1) && f.OwnerMembershipId == player.MembershipId));
 
             // if friend is null, add a new unnaccepted friend binding
             if (friend == null)
             {
                 friend = new Friend();
-                friend.OwnerMembershipId = WebSecurity.CurrentUserId;
+                friend.OwnerMembershipId = ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1);
                 friend.FriendMembershipId = player.MembershipId;
                 friend.IsAccepted = false;
                 friend.FriendsSince = DateTime.UtcNow;
@@ -53,7 +53,7 @@ namespace tfgame.Procedures
             }
 
             //assert friend is yours
-            if (deleteMe.OwnerMembershipId != WebSecurity.CurrentUserId)
+            if (deleteMe.OwnerMembershipId != ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1))
             {
                 return "This is not your friend listing.";
             }
@@ -84,7 +84,7 @@ namespace tfgame.Procedures
             IFriendRepository friendRepo = new EFFriendRepository();
             IPlayerRepository playerRepo = new EFPlayerRepository();
 
-            IEnumerable<Friend> mydbfriends = friendRepo.Friends.Where(f => f.OwnerMembershipId == WebSecurity.CurrentUserId || f.FriendMembershipId == WebSecurity.CurrentUserId);
+            IEnumerable<Friend> mydbfriends = friendRepo.Friends.Where(f => f.OwnerMembershipId == ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1) || f.FriendMembershipId == ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
 
             List<FriendPlayerViewModel> output = new List<FriendPlayerViewModel>();
 
@@ -93,7 +93,7 @@ namespace tfgame.Procedures
                 FriendPlayerViewModel friendPlayer = new FriendPlayerViewModel();
 
                 // this was a request sent BY me.  Grab the player who it was sent to
-                if (friend.OwnerMembershipId == WebSecurity.CurrentUserId)
+                if (friend.OwnerMembershipId == ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1))
                 {
                     try
                     {
@@ -115,7 +115,7 @@ namespace tfgame.Procedures
                 }
 
                     // this was a request sent TO me.  Grab the player who sent it
-                else if (friend.FriendMembershipId == WebSecurity.CurrentUserId)
+                else if (friend.FriendMembershipId == ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1))
                 {
                     try
                     {
@@ -147,7 +147,7 @@ namespace tfgame.Procedures
             }
 
             // assert you've sent this, or else it was sent to you
-            else if (friend.OwnerMembershipId == WebSecurity.CurrentUserId || friend.FriendMembershipId == WebSecurity.CurrentUserId)
+            else if (friend.OwnerMembershipId == ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1) || friend.FriendMembershipId == ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1))
             {
                 friendRepo.DeleteFriend(friend.Id);
                 return "";
@@ -173,7 +173,7 @@ namespace tfgame.Procedures
             }
 
             // assert this was sent to you
-            else if (friend.FriendMembershipId == WebSecurity.CurrentUserId)
+            else if (friend.FriendMembershipId == ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1))
             {
                 friend.IsAccepted = true;
                 friendRepo.SaveFriend(friend);

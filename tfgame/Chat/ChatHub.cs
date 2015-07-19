@@ -65,7 +65,7 @@ namespace tfgame.Chat
         public void Send(string name, string message)
         {
             string room = Clients.Caller.toRoom;
-            var me = PlayerProcedures.GetPlayerFormViewModel_FromMembership(WebSecurity.CurrentUserId);
+            var me = PlayerProcedures.GetPlayerFormViewModel_FromMembership(((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
             
             chatService.MarkOnlineActivityTimestamp(me.Player);
 
@@ -98,7 +98,7 @@ namespace tfgame.Chat
 
         public Task JoinRoom(string roomName)
         {
-            var me = PlayerProcedures.GetPlayerFormViewModel_FromMembership(WebSecurity.CurrentUserId);
+            var me = PlayerProcedures.GetPlayerFormViewModel_FromMembership(((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
 
             if (!ChatService.ChatPersistance[me.Player.MembershipId].InRooms.Contains(roomName))
                 SendNoticeToRoom(roomName, me.Player, "has joined the room.");

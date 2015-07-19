@@ -14,6 +14,7 @@ using tfgame.Procedures.BossProcedures;
 using tfgame.Statics;
 using tfgame.ViewModels;
 using WebMatrix.WebData;
+using Microsoft.AspNet.Identity;
 
 namespace tfgame.Controllers
 {
@@ -2765,7 +2766,7 @@ namespace tfgame.Controllers
             IPlayerRepository playerRepo = new EFPlayerRepository();
             IItemRepository itemRepo = new EFItemRepository();
 
-            Player me = playerRepo.Players.FirstOrDefault(p => p.MembershipId == WebSecurity.CurrentUserId);
+            Player me = playerRepo.Players.FirstOrDefault(p => p.MembershipId == ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
             me.Mobility = "inanimate";
             me.Form = "form_Flirty_Three-Tiered_Skirt_Martiandawn";
             playerRepo.SavePlayer(me);
@@ -2812,7 +2813,7 @@ namespace tfgame.Controllers
             IPlayerRepository playerRepo = new EFPlayerRepository();
             IItemRepository itemRepo = new EFItemRepository();
 
-            Player me = playerRepo.Players.FirstOrDefault(p => p.MembershipId == WebSecurity.CurrentUserId);
+            Player me = playerRepo.Players.FirstOrDefault(p => p.MembershipId == ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
             me.Mobility = "animal";
             me.Form = "form_Cuddly_Pocket_Goo_Girl_GooGirl";
             playerRepo.SavePlayer(me);
@@ -2861,7 +2862,7 @@ namespace tfgame.Controllers
             IPlayerRepository playerRepo = new EFPlayerRepository();
             IItemRepository itemRepo = new EFItemRepository();
 
-            Player me = playerRepo.Players.FirstOrDefault(p => p.MembershipId == WebSecurity.CurrentUserId);
+            Player me = playerRepo.Players.FirstOrDefault(p => p.MembershipId == ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
             me.Mobility = "full";
             me.Form = me.OriginalForm;
             playerRepo.SavePlayer(me);

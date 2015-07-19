@@ -13,7 +13,6 @@ using tfgame.Procedures;
 using tfgame.Procedures.BossProcedures;
 using tfgame.Statics;
 using tfgame.ViewModels;
-using WebMatrix.WebData;
 using Microsoft.AspNet.Identity;
 
 namespace tfgame.Controllers
@@ -2569,7 +2568,7 @@ namespace tfgame.Controllers
                 PlayerLog newlog = new PlayerLog
                 {
                     IsImportant = true,
-                    Message = "<span class='bad'><b>" + WebSecurity.CurrentUserName + " activated the game pause killswitch.</b></span>",
+                    Message = "<span class='bad'><b>" + User.Identity.Name + " activated the game pause killswitch.</b></span>",
                     PlayerId = me.Id,
                     Timestamp = DateTime.UtcNow,
                 };

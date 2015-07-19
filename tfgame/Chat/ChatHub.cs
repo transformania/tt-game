@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System;
 using Microsoft.AspNet.SignalR;
 using tfgame.dbModels.Models;
 using tfgame.dbModels.Queries.Player;
@@ -6,7 +7,6 @@ using tfgame.Extensions;
 using tfgame.Procedures;
 using tfgame.Services;
 using tfgame.Statics;
-using WebMatrix.WebData;
 using System.Threading.Tasks;
 using tfgame.CustomHtmlHelpers;
 
@@ -65,7 +65,7 @@ namespace tfgame.Chat
         public void Send(string name, string message)
         {
             string room = Clients.Caller.toRoom;
-            var me = PlayerProcedures.GetPlayerFormViewModel_FromMembership(((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
+            var me = PlayerProcedures.GetPlayerFormViewModel_FromMembership(Convert.ToInt32(Context.User.Identity.Name));
             
             chatService.MarkOnlineActivityTimestamp(me.Player);
 
@@ -98,7 +98,7 @@ namespace tfgame.Chat
 
         public Task JoinRoom(string roomName)
         {
-            var me = PlayerProcedures.GetPlayerFormViewModel_FromMembership(((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
+            var me = PlayerProcedures.GetPlayerFormViewModel_FromMembership(Convert.ToInt32(Context.User.Identity.Name));
 
             if (!ChatService.ChatPersistance[me.Player.MembershipId].InRooms.Contains(roomName))
                 SendNoticeToRoom(roomName, me.Player, "has joined the room.");

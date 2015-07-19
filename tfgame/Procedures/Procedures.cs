@@ -8,7 +8,6 @@ using System.Xml.Serialization;
 using tfgame.dbModels.Abstract;
 using tfgame.dbModels.Concrete;
 using tfgame.Models;
-using WebMatrix.WebData;
 
 namespace tfgame.Procedures
 {
@@ -63,7 +62,7 @@ namespace tfgame.Procedures
                     me.HealthMax = 100;
                     me.Mana = 100;
                     me.ManaMax = 100;
-                    me.Name = WebSecurity.CurrentUserName;
+                    me.Name = "No name";
                     me.Form = game.Forms.FirstOrDefault(f => f.FormName == "plainguy_01");
                     me.Form.FormName = "plain";
                     me.AtScene = "EastRoom";

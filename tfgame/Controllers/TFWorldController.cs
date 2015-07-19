@@ -9,7 +9,6 @@ using tfgame.dbModels.Abstract;
 using tfgame.dbModels.Concrete;
 using tfgame.Models;
 using tfgame.Procedures;
-using WebMatrix.WebData;
 using Microsoft.AspNet.Identity;
 
 namespace tfgame.Controllers
@@ -70,7 +69,7 @@ namespace tfgame.Controllers
             TimeMessage newPost = new TimeMessage
             {
                 Timestamp = DateTime.UtcNow,
-                Message = WebSecurity.CurrentUserName + ":<tiny>" + DateTime.UtcNow.ToString("HH:mm:ss") + ":</tiny>  <b>" + statement + " </b> <br>"
+                Message = User.Identity.Name + ":<tiny>" + DateTime.UtcNow.ToString("HH:mm:ss") + ":</tiny>  <b>" + statement + " </b> <br>"
             };
 
             System.Web.HttpContext.Current.Application["main"] = chatlog;

@@ -9,7 +9,6 @@ using tfgame.dbModels.Models;
 using tfgame.Procedures;
 using tfgame.Statics;
 using tfgame.ViewModels;
-using WebMatrix.WebData;
 using Microsoft.AspNet.Identity;
 
 namespace tfgame.Controllers
@@ -79,7 +78,7 @@ namespace tfgame.Controllers
                     if (contribution.ProofreadingCopy == true)
                     {
                         contribution.ProofreadingLockIsOn = true;
-                        contribution.CheckedOutBy = WebSecurity.CurrentUserName;
+                        contribution.CheckedOutBy = User.Identity.Name;
                         contribution.CreationTimestamp = DateTime.UtcNow;
                         contributionRepo.SaveContribution(contribution);
                     }
@@ -288,7 +287,7 @@ namespace tfgame.Controllers
                 SaveMe.Chaos_Order = input.Chaos_Order;
 
 
-                SaveMe.History += "Bonus values edited by " + WebSecurity.CurrentUserName + " on " + DateTime.UtcNow + ".<br>";
+                SaveMe.History += "Bonus values edited by " + User.Identity.Name + " on " + DateTime.UtcNow + ".<br>";
 
                 contributionRepo.SaveContribution(SaveMe);
 
@@ -415,7 +414,7 @@ namespace tfgame.Controllers
             Contribution cont = contributionRepo.Contributions.FirstOrDefault(c => c.Id == input.ContributionId);
 
             cont.AssignedToArtist = input.Status;
-            cont.History += "Assigned artist changed by " + WebSecurity.CurrentUserName + " on " + DateTime.UtcNow + ".<br>";
+            cont.History += "Assigned artist changed by " + User.Identity.Name + " on " + DateTime.UtcNow + ".<br>";
 
             contributionRepo.SaveContribution(cont);
 
@@ -599,7 +598,7 @@ namespace tfgame.Controllers
 
             if (SaveMe.ProofreadingCopy == true)
             {
-                SaveMe.History += "Edited by " + WebSecurity.CurrentUserName + " on " + DateTime.UtcNow + ".<br>";
+                SaveMe.History += "Edited by " + User.Identity.Name + " on " + DateTime.UtcNow + ".<br>";
             }
 
             contributionRepo.SaveContribution(SaveMe);
@@ -724,7 +723,7 @@ namespace tfgame.Controllers
             if (output.ProofreadingCopy)
             {
                 output.ProofreadingLockIsOn = true;
-                output.CheckedOutBy = WebSecurity.CurrentUserName;
+                output.CheckedOutBy = User.Identity.Name;
                 output.Timestamp = DateTime.UtcNow;
                 effectContRepo.SaveEffectContribution(output);
             }
@@ -853,7 +852,7 @@ namespace tfgame.Controllers
             {
                 saveme.ProofreadingLockIsOn = false;
                 saveme.CheckedOutBy = "";
-                saveme.History += "Edited by " + WebSecurity.CurrentUserName + " on " + DateTime.UtcNow + ".<br>";
+                saveme.History += "Edited by " + User.Identity.Name + " on " + DateTime.UtcNow + ".<br>";
             }
  
 

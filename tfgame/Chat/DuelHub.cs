@@ -2,7 +2,6 @@
 using System.Web;
 using Microsoft.AspNet.SignalR;
 using tfgame.Procedures;
-using WebMatrix.WebData;
 using tfgame.dbModels.Models;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
@@ -24,13 +23,13 @@ namespace tfgame.Chat
         public void Send(string input)
         {
             string room = Clients.Caller.toRoom;
-            Player me = PlayerProcedures.GetPlayerFromMembership(((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
+            Player me = PlayerProcedures.GetPlayerFromMembership(Convert.ToInt32(Context.User.Identity.Name));
            // Clients.Group(room).addNewMessageToPage(input);
         }
 
         public Task JoinRoom(string roomName)
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
+            Player me = PlayerProcedures.GetPlayerFromMembership(Convert.ToInt32(Context.User.Identity.Name));
             string message = "[-[" + me.FirstName + " " + me.LastName + " has joined the room.]-]";
             Clients.Group(roomName).addNewMessageToPage(message);
             return Groups.Add(Context.ConnectionId, roomName);

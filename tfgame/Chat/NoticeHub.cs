@@ -2,7 +2,6 @@
 using System.Web;
 using Microsoft.AspNet.SignalR;
 using tfgame.Procedures;
-using WebMatrix.WebData;
 using tfgame.dbModels.Models;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
@@ -20,7 +19,7 @@ namespace tfgame.Chat
 
         public Task Connect()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
+            Player me = PlayerProcedures.GetPlayerFromMembership(Convert.ToInt32(Context.User.Identity.Name));
 
             int minimumDonatorLevelForNotifications = 0;
 

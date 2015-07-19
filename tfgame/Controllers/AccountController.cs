@@ -8,15 +8,58 @@ using System.Web.Security;
 using DotNetOpenAuth.AspNet;
 using Microsoft.Web.WebPages.OAuth;
 using WebMatrix.WebData;
-using tfgame.Filters;
 using tfgame.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace tfgame.Controllers
 {
     [Authorize]
-    [InitializeSimpleMembership]
     public class AccountController : Controller
     {
+        public AccountController()
+        {
+        }
+
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
+        {
+            UserManager = userManager;
+            SignInManager = signInManager;
+        }
+
+        private ApplicationUserManager _userManager;
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
+
+        private ApplicationSignInManager _signInManager;
+
+        public ApplicationSignInManager SignInManager
+        {
+            get
+            {
+                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+            }
+            private set { _signInManager = value; }
+        }
+
+        private Microsoft.Owin.Security.IAuthenticationManager AuthenticationManager
+        {
+            get
+            {
+                return HttpContext.GetOwinContext().Authentication;
+            }
+        }
+
         //
         // GET: /Account/Login
 
@@ -35,13 +78,21 @@ namespace tfgame.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginModel model, string returnUrl)
         {
-            if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
+            if (ModelState.IsValid)
             {
-                return RedirectToLocal(returnUrl);
+                var result = SignInManager.PasswordSignIn(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
+
+                if (result == SignInStatus.Success)
+                {
+                    return RedirectToLocal(returnUrl);
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Invalid username or password.");
+                }
             }
 
             // If we got this far, something failed, redisplay form
-            ModelState.AddModelError("", "The user name or password provided is incorrect.");
             return View(model);
         }
 
@@ -52,9 +103,9 @@ namespace tfgame.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
-            WebSecurity.Logout();
+            AuthenticationManager.SignOut();
+            return RedirectToAction("Index", "Home");
 
-            return RedirectToAction("Play", "PvP");
         }
 
         //
@@ -76,16 +127,16 @@ namespace tfgame.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Attempt to register the user
-                try
+                var user = new User() { UserName = model.UserName, Email=model.UserName };
+                var result = UserManager.Create(user, model.Password);
+                if (result.Succeeded)
                 {
-                    WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
-                    WebSecurity.Login(model.UserName, model.Password);
-                    return RedirectToAction("Play", "PvP");
+                    SignInManager.SignIn(user, isPersistent: false, rememberBrowser:false);
+                    return RedirectToAction("Index", "Home");
                 }
-                catch (MembershipCreateUserException e)
+                else
                 {
-                    ModelState.AddModelError("", ErrorCodeToString(e.StatusCode));
+                    AddErrors(result);
                 }
             }
 
@@ -100,25 +151,20 @@ namespace tfgame.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Disassociate(string provider, string providerUserId)
         {
-            string ownerAccount = OAuthWebSecurity.GetUserName(provider, providerUserId);
             ManageMessageId? message = null;
-
-            // Only disassociate the account if the currently logged in user is the owner
-            if (ownerAccount == User.Identity.Name)
+            var owner = UserManager.Find(new UserLoginInfo(provider, providerUserId));
+            if (owner != null && owner.UserName == User.Identity.Name)
             {
-                // Use a transaction to prevent the user from deleting their last login credential
-                using (var scope = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions { IsolationLevel = IsolationLevel.Serializable }))
+                IdentityResult result = UserManager.RemoveLogin(owner.Id, new UserLoginInfo(provider, providerUserId));
+                if (result.Succeeded)
                 {
-                    bool hasLocalAccount = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
-                    if (hasLocalAccount || OAuthWebSecurity.GetAccountsFromUserName(User.Identity.Name).Count > 1)
-                    {
-                        OAuthWebSecurity.DeleteAccount(provider, providerUserId);
-                        scope.Complete();
-                        message = ManageMessageId.RemoveLoginSuccess;
-                    }
+                    message = ManageMessageId.RemoveLoginSuccess;
+                }
+                else
+                {
+                    message = ManageMessageId.Error;
                 }
             }
-
             return RedirectToAction("Manage", new { Message = message });
         }
 
@@ -132,7 +178,7 @@ namespace tfgame.Controllers
                 : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
                 : message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
                 : "";
-            ViewBag.HasLocalPassword = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
+            ViewBag.HasLocalPassword = HasPassword();
             ViewBag.ReturnUrl = Url.Action("Manage");
             return View();
         }
@@ -144,38 +190,34 @@ namespace tfgame.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Manage(LocalPasswordModel model)
         {
-            bool hasLocalAccount = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
-            ViewBag.HasLocalPassword = hasLocalAccount;
+            bool hasPassword = HasPassword();
+            var user = GetUser();
+            ViewBag.HasLocalPassword = hasPassword;
             ViewBag.ReturnUrl = Url.Action("Manage");
-            if (hasLocalAccount)
+            if (hasPassword)
             {
                 if (ModelState.IsValid)
                 {
-                    // ChangePassword will throw an exception rather than return false in certain failure scenarios.
-                    bool changePasswordSucceeded;
-                    try
+                    IdentityResult result = UserManager.ChangePassword(user.Id, model.OldPassword, model.NewPassword);
+                    if (result.Succeeded)
                     {
-                        changePasswordSucceeded = WebSecurity.ChangePassword(User.Identity.Name, model.OldPassword, model.NewPassword);
-                    }
-                    catch (Exception)
-                    {
-                        changePasswordSucceeded = false;
-                    }
+                        user = UserManager.FindById(User.Identity.GetUserId());
+                        if (user != null)
+                        {
+                            SignInManager.SignIn(user, isPersistent: false,rememberBrowser:false);
+                        }
 
-                    if (changePasswordSucceeded)
-                    {
                         return RedirectToAction("Manage", new { Message = ManageMessageId.ChangePasswordSuccess });
                     }
                     else
                     {
-                        ModelState.AddModelError("", "The current password is incorrect or the new password is invalid.");
+                        AddErrors(result);
                     }
                 }
             }
             else
             {
-                // User does not have a local password so remove any validation errors caused by a missing
-                // OldPassword field
+                // User does not have a password so remove any validation errors caused by a missing OldPassword field
                 ModelState state = ModelState["OldPassword"];
                 if (state != null)
                 {
@@ -184,14 +226,14 @@ namespace tfgame.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    try
+                    IdentityResult result = UserManager.AddPassword(user.Id, model.NewPassword);
+                    if (result.Succeeded)
                     {
-                        WebSecurity.CreateAccount(User.Identity.Name, model.NewPassword);
                         return RedirectToAction("Manage", new { Message = ManageMessageId.SetPasswordSuccess });
                     }
-                    catch (Exception)
+                    else
                     {
-                        ModelState.AddModelError("", String.Format("Unable to create local account. An account with the name \"{0}\" may already exist.", User.Identity.Name));
+                        AddErrors(result);
                     }
                 }
             }
@@ -223,23 +265,30 @@ namespace tfgame.Controllers
                 return RedirectToAction("ExternalLoginFailure");
             }
 
-            if (OAuthWebSecurity.Login(result.Provider, result.ProviderUserId, createPersistentCookie: false))
+            // Sign in the user with this external login provider if the user already has a login
+            var login = new UserLoginInfo(result.Provider, result.ProviderUserId);
+            var user = UserManager.Find(login);
+            if (user != null)
             {
+                SignInManager.SignIn(user, false, false);
                 return RedirectToLocal(returnUrl);
             }
-
-            if (User.Identity.IsAuthenticated)
+            else if (User.Identity.IsAuthenticated)
             {
-                // If the current user is logged in add the new account
-                OAuthWebSecurity.CreateOrUpdateAccount(result.Provider, result.ProviderUserId, User.Identity.Name);
-                return RedirectToLocal(returnUrl);
+                user = GetUser();
+                var identityResult = UserManager.AddLogin(user.Id, login);
+                if (identityResult.Succeeded)
+                {
+                    return RedirectToAction("Manage");
+                }
+                return RedirectToAction("Manage", new { Message = ManageMessageId.Error });
             }
             else
             {
-                // User is new, ask for their desired membership name
+                // If the user does not have an account, then prompt the user to create an account
                 string loginData = OAuthWebSecurity.SerializeProviderUserId(result.Provider, result.ProviderUserId);
-                ViewBag.ProviderDisplayName = OAuthWebSecurity.GetOAuthClientData(result.Provider).DisplayName;
                 ViewBag.ReturnUrl = returnUrl;
+                ViewBag.ProviderDisplayName = result.Provider;
                 return View("ExternalLoginConfirmation", new RegisterExternalLoginModel { UserName = result.UserName, ExternalLoginData = loginData });
             }
         }
@@ -262,27 +311,18 @@ namespace tfgame.Controllers
 
             if (ModelState.IsValid)
             {
-                // Insert a new user into the database
-                using (UsersContext db = new UsersContext())
+                var user = new User() { UserName = model.UserName };
+                var result = UserManager.Create(user);
+                if (result.Succeeded)
                 {
-                    UserProfile user = db.UserProfiles.FirstOrDefault(u => u.UserName.ToLower() == model.UserName.ToLower());
-                    // Check if user already exists
-                    if (user == null)
+                    result = UserManager.AddLogin(user.Id, new UserLoginInfo(provider, providerUserId));
+                    if (result.Succeeded)
                     {
-                        // Insert name into the profile table
-                        db.UserProfiles.Add(new UserProfile { UserName = model.UserName });
-                        db.SaveChanges();
-
-                        OAuthWebSecurity.CreateOrUpdateAccount(provider, providerUserId, model.UserName);
-                        OAuthWebSecurity.Login(provider, providerUserId, createPersistentCookie: false);
-
+                        SignInManager.SignIn(user, false, false);
                         return RedirectToLocal(returnUrl);
                     }
-                    else
-                    {
-                        ModelState.AddModelError("UserName", "User name already exists. Please enter a different user name.");
-                    }
                 }
+                AddErrors(result);
             }
 
             ViewBag.ProviderDisplayName = OAuthWebSecurity.GetOAuthClientData(provider).DisplayName;
@@ -310,22 +350,16 @@ namespace tfgame.Controllers
         [ChildActionOnly]
         public ActionResult RemoveExternalLogins()
         {
-            ICollection<OAuthAccount> accounts = OAuthWebSecurity.GetAccountsFromUserName(User.Identity.Name);
-            List<ExternalLogin> externalLogins = new List<ExternalLogin>();
-            foreach (OAuthAccount account in accounts)
-            {
-                AuthenticationClientData clientData = OAuthWebSecurity.GetOAuthClientData(account.Provider);
-
-                externalLogins.Add(new ExternalLogin
+            var user = GetUser();
+            var linkedAccounts = UserManager.GetLogins(user.Id).Select(login =>
+                new ExternalLogin
                 {
-                    Provider = account.Provider,
-                    ProviderDisplayName = clientData.DisplayName,
-                    ProviderUserId = account.ProviderUserId,
-                });
-            }
-
-            ViewBag.ShowRemoveButton = externalLogins.Count > 1 || OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
-            return PartialView("_RemoveExternalLoginsPartial", externalLogins);
+                    Provider = login.LoginProvider,
+                    ProviderDisplayName = OAuthWebSecurity.GetOAuthClientData(login.LoginProvider).DisplayName,
+                    ProviderUserId = login.ProviderKey
+                }).ToList();
+            ViewBag.ShowRemoveButton = HasPassword() || linkedAccounts.Count > 1;
+            return (ActionResult)PartialView("_RemoveExternalLoginsPartial", linkedAccounts);
         }
 
         #region Helpers
@@ -337,7 +371,7 @@ namespace tfgame.Controllers
             }
             else
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction("Index", "Home");
             }
         }
 
@@ -346,6 +380,7 @@ namespace tfgame.Controllers
             ChangePasswordSuccess,
             SetPasswordSuccess,
             RemoveLoginSuccess,
+            Error
         }
 
         internal class ExternalLoginResult : ActionResult
@@ -401,6 +436,38 @@ namespace tfgame.Controllers
                 default:
                     return "An unknown error occurred. Please verify your entry and try again. If the problem persists, please contact your system administrator.";
             }
+        }
+        #endregion
+
+
+        #region Identity Helpers
+
+        private void AddErrors(IdentityResult result)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error);
+            }
+        }
+
+        private bool HasPassword()
+        {
+            var user = GetUser();
+            if (user != null)
+            {
+                return user.PasswordHash != null;
+            }
+            return false;
+        }
+
+        private User GetUser()
+        {
+            if (User != null && User.Identity != null)
+            {
+                return UserManager.FindByName(User.Identity.Name);
+            }
+
+            return null;
         }
         #endregion
     }

@@ -7,6 +7,7 @@ using tfgame.dbModels.Models;
 using tfgame.Procedures;
 using tfgame.Statics;
 using tfgame.ViewModels;
+using Microsoft.AspNet.Identity;
 
 namespace tfgame.Controllers
 {
@@ -22,7 +23,8 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult IssueChallenge(int id)
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership();
+            int myMembershipId = ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1);
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert player is animate
             if (me.Mobility != "full")
@@ -125,9 +127,9 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult AcceptChallenge(int id)
         {
-
+            int myMembershipId = ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1);
             Duel duel = DuelProcedures.GetDuel(id);
-            Player me = PlayerProcedures.GetPlayerFromMembership();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert duel challenge is not too old
             if (duel.ProposalTurn > PvPWorldStatProcedures.GetWorldTurnNumber() + 1)
@@ -234,7 +236,8 @@ namespace tfgame.Controllers
          [Authorize]
         public ActionResult DuelDetail(int id)
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership();
+            int myMembershipId = ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1);
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             Duel duel = DuelProcedures.GetDuel(id);
             if (me.InDuel != duel.Id)
             {
@@ -257,7 +260,8 @@ namespace tfgame.Controllers
          [Authorize]
          public ActionResult AdvanceTurn()
          {
-             Player me = PlayerProcedures.GetPlayerFromMembership();
+             int myMembershipId = ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1);
+             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
              if (me.InDuel <= 0)
              {
@@ -299,9 +303,9 @@ namespace tfgame.Controllers
          [Authorize]
          public ActionResult DuelTimeout()
          {
-            
 
-             Player me = PlayerProcedures.GetPlayerFromMembership();
+             int myMembershipId = ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1);
+             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
              if (me.InDuel <= 0)
              {

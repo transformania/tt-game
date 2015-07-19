@@ -30,15 +30,15 @@ namespace tfgame.Procedures
 
         }
 
-        public static void LoadCharacterIntoMemory()
+        public static void LoadCharacterIntoMemory(int membershipId)
         {
             Game game = System.Web.HttpContext.Current.Application["main"] as Game;
-            Character me = game.Characters.FirstOrDefault(c => c.Id == ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
+            Character me = game.Characters.FirstOrDefault(c => c.Id == membershipId);
             if (me == null)
             {
                 me = new Character();
                 ICharacterRepository characterRepo = new EFCharacterRepository();
-                dbModels.Models.Character dbme = characterRepo.Characters.FirstOrDefault(c => c.SimpleMembershipId == ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
+                dbModels.Models.Character dbme = characterRepo.Characters.FirstOrDefault(c => c.SimpleMembershipId == membershipId);
 
                 // character is in the database, so load up stats from there
                 if (dbme != null)
@@ -58,7 +58,7 @@ namespace tfgame.Procedures
                     // player is not in memory nor has a presence in the database, so start a new one from scratch
                 else
                 {
-                    me.Id = ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1);
+                    me.Id = membershipId;
                     me.Health = 100;
                     me.HealthMax = 100;
                     me.Mana = 100;
@@ -79,10 +79,10 @@ namespace tfgame.Procedures
 
 
 
-        public static Character GetCharacter()
+        public static Character GetCharacter(int membershipId)
         {
             Game game = System.Web.HttpContext.Current.Application["main"] as Game;
-            Character me = game.Characters.FirstOrDefault(c => c.Id == ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
+            Character me = game.Characters.FirstOrDefault(c => c.Id == membershipId);
             return me;
         }
 
@@ -93,11 +93,11 @@ namespace tfgame.Procedures
             return character;
         }
 
-        public static Scene GetScene()
+        public static Scene GetScene(int membershipId)
         {
             Game game = System.Web.HttpContext.Current.Application["main"] as Game;
 
-            string sceneName = game.Characters.FirstOrDefault(c => c.Id == ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1)).AtScene;
+            string sceneName = game.Characters.FirstOrDefault(c => c.Id == membershipId).AtScene;
             Scene thisScene = game.Scenes.FirstOrDefault(s => s.dbName == sceneName);
             thisScene.Connections = game.Connections.Where(c => c.ParentSceneDbName == thisScene.dbName).ToList();
             //thisScene.Img = 
@@ -112,10 +112,10 @@ namespace tfgame.Procedures
             return thisScene;
         }
 
-        public static void SaveCharacter(Character character)
+        public static void SaveCharacter(Character character, int membershipId)
         {
             Game game = System.Web.HttpContext.Current.Application["main"] as Game;
-            Character me = game.Characters.FirstOrDefault(c => c.Id == ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
+            Character me = game.Characters.FirstOrDefault(c => c.Id == membershipId);
         }
 
         public static void AddMessageToScene(Scene scene, string message)
@@ -137,15 +137,15 @@ namespace tfgame.Procedures
             }
         }
 
-        public static List<Character> GetCharactersHere()
+        public static List<Character> GetCharactersHere(int membershipId)
         {
-            return GetCharactersHere(GetScene());
+            return GetCharactersHere(membershipId, GetScene(membershipId));
         }
 
-        public static List<Character> GetCharactersHere(Scene scene)
+        public static List<Character> GetCharactersHere(int membershipId, Scene scene)
         {
             Game game = System.Web.HttpContext.Current.Application["main"] as Game;
-            return game.Characters.Where(c => c.AtScene == scene.dbName && c.Id != ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1)).ToList();
+            return game.Characters.Where(c => c.AtScene == scene.dbName && c.Id != membershipId).ToList();
         }
 
         public static void WriteScenesToXML()
@@ -220,13 +220,13 @@ namespace tfgame.Procedures
             game.Forms = restoredForms.ToList();
         }
 
-        public static List<BooleanPlogEntry> MeetsRequirements(List<Requirement> requirements)
+        public static List<BooleanPlogEntry> MeetsRequirements(List<Requirement> requirements, int membershipId)
         {
 
             List<BooleanPlogEntry> output = new List<BooleanPlogEntry>();
 
             Game game = System.Web.HttpContext.Current.Application["main"] as Game;
-            Character me = GetCharacter();
+            Character me = GetCharacter(membershipId);
 
             // no requirements; we're good here.
             if (requirements == null)
@@ -238,7 +238,7 @@ namespace tfgame.Procedures
 
                 foreach (Requirement req in requirements)
                 {
-                    BooleanPlogEntry data = MeetsRequirement(req);
+                    BooleanPlogEntry data = MeetsRequirement(req, membershipId);
                     output.Add(data);
 
                 }
@@ -250,13 +250,13 @@ namespace tfgame.Procedures
 
         }
 
-        public static BooleanPlogEntry MeetsRequirement(Requirement requirement)
+        public static BooleanPlogEntry MeetsRequirement(Requirement requirement, int membershipId)
         {
 
             BooleanPlogEntry output = new BooleanPlogEntry();
 
             Game game = System.Web.HttpContext.Current.Application["main"] as Game;
-            Character me = GetCharacter();
+            Character me = GetCharacter(membershipId);
 
             // FORM TYPE
             if (requirement.Type == Statics.RequirementTypes.Form)
@@ -318,7 +318,7 @@ namespace tfgame.Procedures
             return true;
         }
 
-        public static List<PlogEntry> RunEntryEvents(Scene scene, List<PlogEntry> log)
+        public static List<PlogEntry> RunEntryEvents(Scene scene, List<PlogEntry> log, int membershipId)
         {
             List<BooleanPlogEntry> blog = new List<BooleanPlogEntry>();
             Boolean passed = true;
@@ -330,7 +330,7 @@ namespace tfgame.Procedures
                 foreach (Requirement req in evt.Requirements)
                 {
 
-                    BooleanPlogEntry result = MeetsRequirement(req);
+                    BooleanPlogEntry result = MeetsRequirement(req, membershipId);
 
                     // condition has passed
                     if (result.Passed == true)
@@ -350,9 +350,9 @@ namespace tfgame.Procedures
                 // conditions have passed so execute success actions
                 if (passed == true)
                 {
-                    ExecuteActions(evt, "pass", blog);
+                    ExecuteActions(evt, "pass", blog, membershipId);
                 } else {
-                     ExecuteActions(evt, "fail", blog);
+                     ExecuteActions(evt, "fail", blog, membershipId);
                 }
 
             }
@@ -367,7 +367,7 @@ namespace tfgame.Procedures
             return log;
         }
 
-        public static List<BooleanPlogEntry> ExecuteActions(Event evt, string passOrFail, List<BooleanPlogEntry> log)
+        public static List<BooleanPlogEntry> ExecuteActions(Event evt, string passOrFail, List<BooleanPlogEntry> log, int membershipId)
         {
         
             List<tfgame.Models.Action> actionsToExecute;
@@ -384,7 +384,7 @@ namespace tfgame.Procedures
             foreach (tfgame.Models.Action action in actionsToExecute)
             {
 
-                List<BooleanPlogEntry> results = ExecuteAction(action, log);
+                List<BooleanPlogEntry> results = ExecuteAction(action, log, membershipId);
 
                 ////List<BooleanPlogEntry> result = ExecuteAction(action, log);
                 //foreach (BooleanPlogEntry message in results)
@@ -397,7 +397,7 @@ namespace tfgame.Procedures
             return log;
         }
 
-        public static List<BooleanPlogEntry> ExecuteAction(tfgame.Models.Action action, List<BooleanPlogEntry> log)
+        public static List<BooleanPlogEntry> ExecuteAction(tfgame.Models.Action action, List<BooleanPlogEntry> log, int membershipId)
         {
             Game game = System.Web.HttpContext.Current.Application["main"] as Game;
 
@@ -407,7 +407,7 @@ namespace tfgame.Procedures
             {
                 case Statics.ActionTypes.SetForm:
                     {
-                        Character me = GetCharacter();
+                        Character me = GetCharacter(membershipId);
                         me.Form = game.Forms.FirstOrDefault(f => f.FormName == action.Value);
                         break;
                     }
@@ -429,7 +429,7 @@ namespace tfgame.Procedures
             return log;
         }
 
-        public static List<PlogEntry> RunEntryEvents(Scene scene, List<PlogEntry> log, string passOrFail)
+        public static List<PlogEntry> RunEntryEvents(Scene scene, List<PlogEntry> log, string passOrFail, int membershipId)
         {
 
             List<BooleanPlogEntry> blog = new List<BooleanPlogEntry>();
@@ -452,14 +452,14 @@ namespace tfgame.Procedures
             {
                 foreach (tfgame.Models.Action action in scene.EntrySuccessActions)
                 {
-                    ExecuteAction(action, blog);
+                    ExecuteAction(action, blog, membershipId);
                 }
             }
             else
             {
                 foreach (tfgame.Models.Action action in scene.EntryFailActions)
                 {
-                    ExecuteAction(action, blog);
+                    ExecuteAction(action, blog, membershipId);
                 }
             }
 

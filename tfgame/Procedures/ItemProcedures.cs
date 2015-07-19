@@ -1278,7 +1278,7 @@ namespace tfgame.Procedures
 
         }
 
-        public static string UseItem(int itemId)
+        public static string UseItem(int itemId, int membershipId)
         {
             IItemRepository itemRepo = new EFItemRepository();
             IPlayerRepository playerRepo = new EFPlayerRepository();
@@ -1289,7 +1289,7 @@ namespace tfgame.Procedures
             string name;
 
             // get pronoun
-            if (((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1) == owner.MembershipId)
+            if (membershipId == owner.MembershipId)
             {
                 name = "You";
             }

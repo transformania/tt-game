@@ -233,11 +233,11 @@ namespace tfgame.Procedures
             return output.First();
         }
 
-        public static IEnumerable<PlayerFormViewModel> GetPlayerFormViewModelsAtLocation(string destinationDbName)
+        public static IEnumerable<PlayerFormViewModel> GetPlayerFormViewModelsAtLocation(string destinationDbName, int membershipId)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
             IEnumerable<PlayerFormViewModel> output = from p in playerRepo.Players
-                                                      where p.dbLocationName == destinationDbName && p.MembershipId != ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1)
+                                                      where p.dbLocationName == destinationDbName && p.MembershipId != membershipId
                                                       join f in playerRepo.DbStaticForms on p.Form equals f.dbName
                                                       select new PlayerFormViewModel
                                                       {
@@ -460,13 +460,6 @@ namespace tfgame.Procedures
 
         }
 
-        public static Player GetPlayerFromMembership()
-        {
-
-            return GetPlayerFromMembership(((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
-
-        }
-
         public static Player GetPlayer(int playerId)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
@@ -474,7 +467,7 @@ namespace tfgame.Procedures
             return player;
         }
 
-        public static string SaveNewPlayer(NewCharacterViewModel player)
+        public static string SaveNewPlayer(NewCharacterViewModel player, int membershipId)
         {
 
              IPlayerRepository playerRepo = new EFPlayerRepository();
@@ -483,14 +476,14 @@ namespace tfgame.Procedures
 
             Player ghost = playerRepo.Players.FirstOrDefault(p => p.FirstName == player.FirstName && p.LastName == noGenerationLastName);
            
-             if (ghost != null && ghost.MembershipId != ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1) && ghost.MembershipId != -1)
+             if (ghost != null && ghost.MembershipId != membershipId && ghost.MembershipId != -1)
              {
                  return "A character of this name already exists.";
              }
 
              string generationTitle = "";
 
-             if (ghost != null && (ghost.MembershipId == ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1) || ghost.MembershipId == -1) && ghost.FirstName == player.FirstName && ghost.LastName == player.LastName)
+             if (ghost != null && (ghost.MembershipId == membershipId || ghost.MembershipId == -1) && ghost.FirstName == player.FirstName && ghost.LastName == player.LastName)
              {
 
                  List<Player> possibleOldGens = playerRepo.Players.Where(p => p.FirstName == player.FirstName && p.LastName.Contains(player.LastName)).ToList();
@@ -550,7 +543,7 @@ namespace tfgame.Procedures
             IReservedNameRepository resNameRepo = new EFReservedNameRepository();
             ReservedName resNameGhost = resNameRepo.ReservedNames.FirstOrDefault(r => r.FullName == player.FirstName + " " + player.LastName);
 
-            if (resNameGhost != null && resNameGhost.MembershipId != ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1))
+            if (resNameGhost != null && resNameGhost.MembershipId != membershipId)
             {
                 return "This name has been reserved by a different player.  Choose another.";
             }
@@ -584,7 +577,7 @@ namespace tfgame.Procedures
                 }
             }
             // remove the old Player--Membership binding
-             Player oldplayer = playerRepo.Players.FirstOrDefault(p => p.MembershipId == ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
+             Player oldplayer = playerRepo.Players.FirstOrDefault(p => p.MembershipId == membershipId);
 
              int oldCovId = 0;
 
@@ -637,7 +630,7 @@ namespace tfgame.Procedures
             newplayer.ResistanceModifier = 0;
             newplayer.ActionPoints = PvPStatics.MaximumStoreableActionPoints;
             newplayer.dbLocationName = "coffee_shop";
-            newplayer.MembershipId = ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1);
+            newplayer.MembershipId = membershipId;
             newplayer.Form = player.FormName;
             newplayer.OriginalForm = player.FormName;
             newplayer.Level = 1;
@@ -874,9 +867,9 @@ namespace tfgame.Procedures
             playerRepo.SavePlayer(player);
         }
 
-        public static string MovePlayer(string destinationDbName, decimal actionPointDiscount)
+        public static string MovePlayer(string destinationDbName, decimal actionPointDiscount, int membershipId)
         {
-            return MovePlayer(GetPlayerFromMembership().Id, destinationDbName, actionPointDiscount);
+            return MovePlayer(GetPlayerFromMembership(membershipId).Id, destinationDbName, actionPointDiscount);
         }
 
         public static void MovePlayerMultipleLocations(Player player, string destinationDbName, decimal actionPointCost)
@@ -1640,10 +1633,10 @@ namespace tfgame.Procedures
             return "  <b><i>Congratulations, you have gained an experience level!</i></b>";
         }
 
-        public static void LogIP(string ip)
+        public static void LogIP(string ip, int membershipId)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.MembershipId == ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
+            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.MembershipId == membershipId);
             dbPlayer.IpAddress = ip;
             playerRepo.SavePlayer(dbPlayer);
         }
@@ -2076,10 +2069,10 @@ namespace tfgame.Procedures
             return scoreFromSteal;
         }
 
-        public static void SetNickname(string nickname)
+        public static void SetNickname(string nickname, int membershipId)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player player = playerRepo.Players.FirstOrDefault(p => p.MembershipId == ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
+            Player player = playerRepo.Players.FirstOrDefault(p => p.MembershipId == membershipId);
 
             if (nickname != null && nickname.Length > 0)
             {

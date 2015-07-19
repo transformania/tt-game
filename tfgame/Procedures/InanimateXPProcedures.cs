@@ -49,13 +49,13 @@ namespace tfgame.Procedures
             }
         }
 
-        public static string GiveInanimateXP(int playerId)
+        public static string GiveInanimateXP(int membershipId)
         {
             IInanimateXPRepository inanimXpRepo = new EFInanimateXPRepository();
             IItemRepository itemRep = new EFItemRepository();
 
             // get the current level of this player based on what item they are
-            Player me = PlayerProcedures.GetPlayerFromMembership(((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
+            Player me = PlayerProcedures.GetPlayerFromMembership(membershipId);
             Item inanimateMe = itemRep.Items.FirstOrDefault(i => i.VictimName == me.FirstName + " " + me.LastName);
 
             int currentGameTurn = PvPWorldStatProcedures.GetWorldTurnNumber();
@@ -72,13 +72,13 @@ namespace tfgame.Procedures
             }
             xpGain = xpGain / playerCount;
 
-            InanimateXP xp = inanimXpRepo.InanimateXPs.FirstOrDefault(i => i.OwnerId == playerId);
+            InanimateXP xp = inanimXpRepo.InanimateXPs.FirstOrDefault(i => i.OwnerId == me.Id);
 
             if (xp == null)
             {
                 xp = new InanimateXP
                 {
-                    OwnerId = playerId,
+                    OwnerId = me.Id,
                     Amount = xpGain / playerCount,
                     TimesStruggled = -6 * me.Level,
                     LastActionTimestamp = DateTime.UtcNow,

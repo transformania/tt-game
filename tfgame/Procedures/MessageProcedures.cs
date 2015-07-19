@@ -141,9 +141,9 @@ namespace tfgame.Procedures
             messageRepo.DeleteMessage(messageId);
         }
 
-        public static bool PlayerOwnsMessage(int messageId)
+        public static bool PlayerOwnsMessage(int messageId, int membershipId)
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership();
+            Player me = PlayerProcedures.GetPlayerFromMembership(membershipId);
             IMessageRepository messageRepo = new EFMessageRepository();
             Message message = messageRepo.Messages.FirstOrDefault(m => m.Id == messageId && m.ReceiverId == me.Id);
             if (message != null)
@@ -156,9 +156,9 @@ namespace tfgame.Procedures
             }
         }
 
-        public static void DeleteAllMessages()
+        public static void DeleteAllMessages(int membershipId)
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership();
+            Player me = PlayerProcedures.GetPlayerFromMembership(membershipId);
             IMessageRepository messageRepo = new EFMessageRepository();
 
             List<Message> myMessagesToDelete = messageRepo.Messages.Where(m => m.ReceiverId == me.Id).ToList();
@@ -171,9 +171,9 @@ namespace tfgame.Procedures
            
         }
 
-        public static void AddMessage(Message message)
+        public static void AddMessage(Message message, int membershipId)
         {
-            Player sender = PlayerProcedures.GetPlayerFromMembership();
+            Player sender = PlayerProcedures.GetPlayerFromMembership(membershipId);
             Player receiver = PlayerProcedures.GetPlayer(message.ReceiverId);
             IMessageRepository messageRepo = new EFMessageRepository();
 
@@ -212,7 +212,7 @@ namespace tfgame.Procedures
                         MessageText = input.Message,
                         Timestamp = DateTime.UtcNow,
                     };
-                    AddMessage(message);
+                    AddMessage(message, covLeader.MembershipId);
                 }
             }
         }

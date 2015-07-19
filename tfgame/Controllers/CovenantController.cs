@@ -872,7 +872,8 @@ namespace tfgame.Controllers
         [Authorize]
          public ActionResult PurchaseFurniture(int id)
          {
-             Player me = PlayerProcedures.GetPlayerFromMembership();
+             int myMembershipId = ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1);
+             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
              // assert that player is in a covenant
              if (me.Covenant <= 0)
@@ -1043,7 +1044,8 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult MyCovenantLog()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership();
+            int myMembershipId = ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1);
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert that player is in a covenant
             if (me.Covenant <= 0)
@@ -1060,7 +1062,8 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult InviteCaptainList()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership();
+            int myMembershipId = ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1);
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert that player is in a covenant
             if (me.Covenant <= 0)
@@ -1087,7 +1090,8 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult InviteCaptainSend(int id)
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership();
+            int myMembershipId = ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1);
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert that player is in a covenant
             if (me.Covenant <= 0)
@@ -1130,7 +1134,8 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult InviteLeaderList()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership();
+            int myMembershipId = ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1);
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert that player is in a covenant
             if (me.Covenant <= 0)
@@ -1155,7 +1160,8 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult InviteLeaderSend(int id)
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership();
+            int myMembershipId = ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1);
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert that player is in a covenant
             if (me.Covenant <= 0)

@@ -27,7 +27,7 @@ namespace tfgame.Controllers
             if (System.Web.HttpContext.Current.Application["main"] == null)
             {
                 Procedures.Procedures.LoadGameIntoMemory();
-                Procedures.Procedures.LoadCharacterIntoMemory();
+                Procedures.Procedures.LoadCharacterIntoMemory(((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
 
             }
 
@@ -36,7 +36,7 @@ namespace tfgame.Controllers
 
         public string GetLog()
         {
-
+            int myMembershipId = ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1);
             if (System.Web.HttpContext.Current.Application["main"] == null)
             {
                 //Procedures.Procedures.LoadGameIntoMemory();
@@ -44,13 +44,13 @@ namespace tfgame.Controllers
                 
             }
 
-            Procedures.Procedures.LoadCharacterIntoMemory();
+            Procedures.Procedures.LoadCharacterIntoMemory(myMembershipId);
 
             Game timelog = System.Web.HttpContext.Current.Application["main"] as Game;
 
             string output = "";
 
-            Character me = Procedures.Procedures.GetCharacter();
+            Character me = Procedures.Procedures.GetCharacter(myMembershipId);
             Scene scene = timelog.Scenes.FirstOrDefault(s => s.dbName == me.AtScene);
 
             foreach (string s in scene.SceneLog.Select(s => s.Message))
@@ -63,7 +63,7 @@ namespace tfgame.Controllers
 
         public string AjaxTestChat(string statement)
         {
-
+            int myMembershipId = ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1);
             int LogMaxSize = 20;
 
             Game chatlog = System.Web.HttpContext.Current.Application["main"] as Game;
@@ -75,7 +75,7 @@ namespace tfgame.Controllers
 
             System.Web.HttpContext.Current.Application["main"] = chatlog;
 
-            Scene scene = Procedures.Procedures.GetScene();
+            Scene scene = Procedures.Procedures.GetScene(myMembershipId);
 
             string output = "";
             foreach (string s in scene.SceneLog.Select(l => l.Message))
@@ -95,13 +95,14 @@ namespace tfgame.Controllers
 
         public void SaveUserToDatabase()
         {
-            Character me = Procedures.Procedures.GetCharacter();
+            int myMembershipId = ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1);
+            Character me = Procedures.Procedures.GetCharacter(myMembershipId);
             ICharacterRepository characterRepo = new EFCharacterRepository();
             
             
             dbModels.Models.Character dbMe = new dbModels.Models.Character();
 
-            dbModels.Models.Character oldDbMe = characterRepo.Characters.FirstOrDefault(c => c.SimpleMembershipId == ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
+            dbModels.Models.Character oldDbMe = characterRepo.Characters.FirstOrDefault(c => c.SimpleMembershipId == myMembershipId);
 
             if (oldDbMe == null)
             {
@@ -122,32 +123,34 @@ namespace tfgame.Controllers
 
         public JsonResult GetSceneInfo()
         {
+            int myMembershipId = ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1);
             Game game = System.Web.HttpContext.Current.Application["main"] as Game;
 
-            Scene thisScene = Procedures.Procedures.GetScene();
+            Scene thisScene = Procedures.Procedures.GetScene(myMembershipId);
             SceneData output = new SceneData();
 
             output.Connections = thisScene.Connections;
             output.SceneName = thisScene.CasualName;
             output.Img = thisScene.Img;
-            output.Characters = Procedures.Procedures.GetCharactersHere();
-            output.Me = Procedures.Procedures.GetCharacter();
+            output.Characters = Procedures.Procedures.GetCharactersHere(myMembershipId);
+            output.Me = Procedures.Procedures.GetCharacter(myMembershipId);
 
             return Json(output, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult Move(string direction)
         {
+            int myMembershipId = ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1);
             Game game = System.Web.HttpContext.Current.Application["main"] as Game;
-            Character me = Procedures.Procedures.GetCharacter();
-            Scene here = Procedures.Procedures.GetScene();
+            Character me = Procedures.Procedures.GetCharacter(myMembershipId);
+            Scene here = Procedures.Procedures.GetScene(myMembershipId);
             Scene there = Procedures.Procedures.GetScene(direction);
             SelfQuery output = new SelfQuery();
 
             output.pLog = new List<PlogEntry>();
 
             // STEP 1:  Check to see that we pass all of the entry requirements
-            List<BooleanPlogEntry> conditionResults = Procedures.Procedures.MeetsRequirements(there.EntryRequirements);
+            List<BooleanPlogEntry> conditionResults = Procedures.Procedures.MeetsRequirements(there.EntryRequirements, myMembershipId);
 
             foreach (BooleanPlogEntry bentry in conditionResults)
             {
@@ -157,14 +160,14 @@ namespace tfgame.Controllers
             // move success; move this character!
             if (Procedures.Procedures.DidAllRequirementsPass(conditionResults) == true)
             {
-                Procedures.Procedures.RunEntryEvents(there, output.pLog, "pass");
+                Procedures.Procedures.RunEntryEvents(there, output.pLog, "pass", myMembershipId);
                 // move character and trigger any entry events
                 me.AtScene = direction;
-                Procedures.Procedures.RunEntryEvents(there, output.pLog);
+                Procedures.Procedures.RunEntryEvents(there, output.pLog, myMembershipId);
             }
             else
             {
-                Procedures.Procedures.RunEntryEvents(there, output.pLog, "fail");
+                Procedures.Procedures.RunEntryEvents(there, output.pLog, "fail", myMembershipId);
             }
 
             return Json(output, JsonRequestBehavior.AllowGet);
@@ -173,7 +176,8 @@ namespace tfgame.Controllers
 
         public JsonResult RefreshCharactersItems()
         {
-            List<Character> output = Procedures.Procedures.GetCharactersHere();
+            int myMembershipId = ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1);
+            List<Character> output = Procedures.Procedures.GetCharactersHere(myMembershipId);
             return Json(output, JsonRequestBehavior.AllowGet);
         }
 
@@ -186,9 +190,10 @@ namespace tfgame.Controllers
 
         public JsonResult SelfQuery()
         {
+            int myMembershipId = ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1);
             SelfQuery output = new SelfQuery();
 
-            Character me = Procedures.Procedures.GetCharacter();
+            Character me = Procedures.Procedures.GetCharacter(myMembershipId);
 
             output.character = me;
             output.pLog = new List<PlogEntry>();
@@ -205,7 +210,8 @@ namespace tfgame.Controllers
 
         public JsonResult LookAtScene()
         {
-            Scene here = Procedures.Procedures.GetScene();
+            int myMembershipId = ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1);
+            Scene here = Procedures.Procedures.GetScene(myMembershipId);
             SceneImgDescription output = new SceneImgDescription();
             output.Img = here.Img;
             output.Description = "-> " + here.Description + "<br><br>";

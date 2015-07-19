@@ -950,6 +950,16 @@ namespace tfgame.Controllers
                     return RedirectToAction("Play");
                 }
 
+                Duel duel = DuelProcedures.GetDuel(me.InDuel);
+                double duelSecondsAgo = Math.Abs(Math.Floor(duel.LastResetTimestamp.Subtract(DateTime.UtcNow).TotalSeconds));
+
+                if (duelSecondsAgo < 20)
+                {
+                    TempData["Error"] = "You or your target is in a duel that the other is not participating in.";
+                    TempData["SubError"] = "Conclude all duels before attacks can resume.";
+                    return RedirectToAction("Play");
+                }
+
             }
 
 

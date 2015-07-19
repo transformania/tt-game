@@ -12,6 +12,7 @@ namespace tfgame.dbModels.Models
         public int StartTurn { get; set; }
         public int CompletionTurn { get; set; }
         public string Status { get; set; }
+        public DateTime LastResetTimestamp { get; set; }
 
         
         public virtual DuelRules Rules { get; set; }

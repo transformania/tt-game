@@ -35,6 +35,7 @@ namespace tfgame.Procedures
                 ProposalTurn = PvPWorldStatProcedures.GetWorldTurnNumber(),
                 CompletionTurn = -1,
                 Status = PENDING,
+                LastResetTimestamp = DateTime.UtcNow,
                 Combatants = new List<DuelCombatant> {
                     new DuelCombatant {
                         PlayerId = challenger.Id,
@@ -160,7 +161,7 @@ namespace tfgame.Procedures
                 string message = "";
 
                 if (endStatus==TIMEOUT) {
-                    message = "<b>Your duel has timed out, ending in a disappointing draw.</b>";
+                    message = "<b class='bad'>Your duel has timed out, ending in a disappointing draw.  You feel as if some frustrated spirits have left you weakened by a curse...</b>";
                     EffectProcedures.GivePerkToPlayer(TIMEOUT_CURSE, d.PlayerId);
                 } else {
                     message = "<b>Your duel has ended.</b>";
@@ -171,6 +172,13 @@ namespace tfgame.Procedures
 
         }
 
+        public static void SetLastDuelAttackTimestamp(int duelId)
+        {
+            IDuelRepository duelRepo = new EFDuelRepository();
+            Duel duel = duelRepo.Duels.FirstOrDefault(d => d.Id == duelId);
+            duel.LastResetTimestamp = DateTime.UtcNow;
+            duelRepo.SaveDuel(duel);
+        }
 
     }
 }

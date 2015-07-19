@@ -182,6 +182,22 @@ namespace tfgame.Controllers
                     return RedirectToAction("Play", "PvP");
                 }
 
+                // assert player has sufficient WP  to start
+                if (p.Player.Health < p.Player.MaxHealth * .8M)
+                {
+                    TempData["Error"] = "Duel cannot start yet.  " + p.Player.GetFullName() + " has too low willpower.";
+                    TempData["SubError"] = "Each player must be at least 80% willpower in order to begin dueling.";
+                    return RedirectToAction("Play", "PvP");
+                }
+
+                // assert player has sufficient Mana to start
+                if (p.Player.Mana < p.Player.MaxMana * .8M)
+                {
+                    TempData["Error"] = "Duel cannot start yet.  " + p.Player.GetFullName() + " has too low mana.";
+                    TempData["SubError"] = "Each player must be at least 80% mana in order to begin dueling.";
+                    return RedirectToAction("Play", "PvP");
+                }
+
                 // assert all players are in an okay game mode
                 bool weAreFriends = FriendProcedures.PlayerIsMyFriend(me, p.Player.ToDbPlayer());
                 if (weAreFriends == false)
@@ -271,13 +287,14 @@ namespace tfgame.Controllers
              {
                  PlayerProcedures.SetAttackCount(p.Player.ToDbPlayer(), 0);
                  PlayerProcedures.SetCleanseMeditateCount(p.Player.ToDbPlayer(), 0);
-                 string message = "<b>" + me.GetFullName() + " has advanced the duel turn.  Attacks and cleanse/meditate limits have been reset.</b>";
+                 string message = "<b>" + me.GetFullName() + " has advanced the duel turn.  Attacks and cleanse/meditate limits have been reset.  Attacks may resume in 20 seconds.</b>";
                  PlayerLogProcedures.AddPlayerLog(p.Player.Id, message, true);
                  NoticeProcedures.PushNotice(p.Player.Id, message, NoticeProcedures.PushType__PlayerLog);
              }
 
+             DuelProcedures.SetLastDuelAttackTimestamp(duel.Id);
 
-             TempData["Result"] = "Duel turn advanced.  All combatants have had their attack and cleanse/meditate limits reset.";
+             TempData["Result"] = "Duel turn advanced.  All combatants have had their attack and cleanse/meditate limits reset.  Attacks may resume in 20 seconds.";
              return RedirectToAction("Play", "PvP");
          }
 

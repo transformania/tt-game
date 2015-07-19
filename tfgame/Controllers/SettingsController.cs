@@ -286,6 +286,13 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
+            // assert player is not a duel
+            if (me.InDuel > 0)
+            {
+                TempData["Error"] = "You must finish your duel before you can drop your willpower.";
+                return RedirectToAction("Play", "PvP");
+            }
+
             if (me.GameMode == 2)
             {
                 TempData["Error"] = "You must be fully animate and in Protection or SuperProtection mode in order to drop your willpower.";

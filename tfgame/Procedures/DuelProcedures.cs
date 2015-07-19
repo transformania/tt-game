@@ -18,6 +18,8 @@ namespace tfgame.Procedures
         public const string TIMEOUT = "timeout";
         public const string REJECTED = "rejected";
 
+        public const string TIMEOUT_CURSE = "effect_Disappointing_Duelist_Judoo";
+
         public static void SendDuelChallenge(Player challenger, Player target)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
@@ -154,7 +156,16 @@ namespace tfgame.Procedures
             foreach (DuelCombatant d in duel.Combatants)
             {
                 PlayerProcedures.EnterDuel(d.PlayerId, 0);
-                string message = "<b>Your duel has ended.</b>";
+
+                string message = "";
+
+                if (endStatus==TIMEOUT) {
+                    message = "<b>Your duel has timed out, ending in a disappointing draw.</b>";
+                    EffectProcedures.GivePerkToPlayer(TIMEOUT_CURSE, d.PlayerId);
+                } else {
+                    message = "<b>Your duel has ended.</b>";
+                }
+
                 PlayerLogProcedures.AddPlayerLog(d.PlayerId, message, true);
             }
 

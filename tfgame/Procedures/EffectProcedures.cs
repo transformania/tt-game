@@ -144,6 +144,13 @@ namespace tfgame.Procedures
 
         }
 
+        public static string GivePerkToPlayer(string perkName, int playerId)
+        {
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);
+            return GivePerkToPlayer(perkName, dbPlayer);
+        }
+
         public static string GivePerkToPlayer(string perkName, Player player)
         {
 
@@ -156,8 +163,6 @@ namespace tfgame.Procedures
             {
                 return "You already have this perk.  Choose another.";
             }
-
-            // if this perct
 
             // grab the static part of this effect
             DbStaticEffect effectPlus = EffectStatics.GetStaticEffect2(perkName);

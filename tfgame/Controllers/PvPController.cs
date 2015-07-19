@@ -321,8 +321,9 @@ namespace tfgame.Controllers
 
             if (me.InDuel > 0)
             {
-                string duelNames = "";
+                Duel duel = DuelProcedures.GetDuel(me.InDuel);
                 List<PlayerFormViewModel> playersInDuel = DuelProcedures.GetPlayerViewModelsInDuel(me.InDuel);
+                string duelNames = "";
                 int playersInDuelCount = playersInDuel.Count();
                 int i = 1;
                 foreach (PlayerFormViewModel p in playersInDuel)
@@ -339,6 +340,7 @@ namespace tfgame.Controllers
                 }
                 ViewBag.Duel = duelNames;
                 ViewBag.DuelId = me.InDuel;
+                ViewBag.TurnsLeft = PvPStatics.MaximumDuelTurnLength - (PvPWorldStatProcedures.GetWorldTurnNumber() - duel.StartTurn);
             }
 
             return View(output);
@@ -3248,8 +3250,6 @@ namespace tfgame.Controllers
 
         public ActionResult UpdateWorld(string password)
         {
-
-           
 
             DateTime lastupdate = PvPWorldStatProcedures.GetLastWorldUpdate();
             double secondsAgo = -Math.Floor(lastupdate.Subtract(DateTime.UtcNow).TotalSeconds);

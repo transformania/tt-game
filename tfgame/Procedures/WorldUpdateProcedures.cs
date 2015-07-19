@@ -585,6 +585,30 @@ namespace tfgame.Procedures
                 serverLogRepo.SaveServerLog(log);
                 log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == turnNo);
 
+                #region forcibly terminate duels that have timed out
+                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started duel updates");
+                try
+                {
+                    IDuelRepository duelRepo = new EFDuelRepository();
+                    List<Duel> duels = duelRepo.Duels.Where(d => d.Status == DuelProcedures.ACTIVE).ToList();
+
+                    foreach (Duel d in duels)
+                    {
+                        // if the duel has timed out, end it forcibly
+                        if ((turnNo - d.StartTurn) >= PvPStatics.MaximumDuelTurnLength)
+                        {
+                            DuelProcedures.EndDuel(d.Id, DuelProcedures.TIMEOUT);
+                        }
+                    }
+
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Successfully completed duel updates");
+                }
+                catch (Exception e)
+                {
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Failed to complete duel updates.  Reason:  " + e.ToString());
+                }
+                #endregion duel updates
+
 
                 //TempData["Result"] = "WORLD UPDATED";
 

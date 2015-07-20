@@ -189,7 +189,7 @@ namespace tfgame.Procedures
                         }
 
                         // cap the modifier at at 200 % IF the target is a human
-                        if (willpowerDamageModifierFromBonuses > 2 && victim.MembershipId > 0)
+                        if (willpowerDamageModifierFromBonuses > 2 && victim.BotId == 0)
                         {
                             willpowerDamageModifierFromBonuses = 2;
                         }
@@ -229,7 +229,7 @@ namespace tfgame.Procedures
                         }
 
                         // cap the modifier at at 200 % IF the target is a human
-                        if (tfEnergyDamageModifierFromBonuses > 2 && victim.MembershipId > 0)
+                        if (tfEnergyDamageModifierFromBonuses > 2 && victim.BotId == 0)
                         {
                             tfEnergyDamageModifierFromBonuses = 2;
                         }
@@ -277,14 +277,14 @@ namespace tfgame.Procedures
             if (attacker.GameMode == 2)
             {
                 playersHere = playerREpo.Players.Where(p => p.dbLocationName == attacker.dbLocationName &&
-                    (p.GameMode == 2 || p.MembershipId < -1) &&
+                    (p.GameMode == 2 || p.BotId < -1) &&
                     p.Mobility == "full" &&
                     p.InDuel <= 0).ToList();
             }
             else if (attacker.GameMode == 1)
             {
                 playersHere = playerREpo.Players.Where(p => p.dbLocationName == attacker.dbLocationName &&
-                    (p.GameMode == 1 || p.MembershipId < -1) &&
+                    (p.GameMode == 1 || p.BotId < -1) &&
                     p.Mobility == "full" &&
                     p.InDuel <- 0).ToList();
             }

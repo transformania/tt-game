@@ -25,7 +25,7 @@ namespace tfgame.Controllers
          [Authorize]
          public ActionResult Settings()
          {
-             int myMembershipId = User.Identity.GetCurrentUserId();
+             string myMembershipId = User.Identity.GetUserId();
              Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
              ViewBag.GameMode = me.GameMode;
@@ -40,7 +40,7 @@ namespace tfgame.Controllers
          //[Authorize]
          //public ActionResult EnterProtection()
          //{
-         //    Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetCurrentUserId());
+         //    Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
          //    double minutesAgo = Math.Abs(Math.Floor(me.GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalMinutes));
          //    if (minutesAgo < 60 && me.Mobility == "full")
@@ -65,7 +65,7 @@ namespace tfgame.Controllers
          //[Authorize]
          //public ActionResult LeaveProtection()
          //{
-         //    Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetCurrentUserId());
+         //    Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
          //    double minutesAgo = Math.Abs(Math.Floor(me.GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalMinutes));
          //    if (minutesAgo < 60 && me.Mobility == "full")
@@ -100,7 +100,7 @@ namespace tfgame.Controllers
          [Authorize]
          public ActionResult EnterSuperProtection()
          {
-             int myMembershipId = User.Identity.GetCurrentUserId();
+             string myMembershipId = User.Identity.GetUserId();
              Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
              if (me.GameMode != 1)
@@ -118,7 +118,7 @@ namespace tfgame.Controllers
          [Authorize]
          public ActionResult LeaveSuperProtection()
          {
-             int myMembershipId = User.Identity.GetCurrentUserId();
+             string myMembershipId = User.Identity.GetUserId();
              Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
              if (me.GameMode != 0)
@@ -136,7 +136,7 @@ namespace tfgame.Controllers
          [Authorize]
          public ActionResult EnableRP()
          {
-             int myMembershipId = User.Identity.GetCurrentUserId();
+             string myMembershipId = User.Identity.GetUserId();
              Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
              TempData["Result"] = PlayerProcedures.SetRPFlag(me, true);
              return RedirectToAction("Play","PvP");
@@ -145,7 +145,7 @@ namespace tfgame.Controllers
          [Authorize]
          public ActionResult DisableRP()
          {
-             int myMembershipId = User.Identity.GetCurrentUserId();
+             string myMembershipId = User.Identity.GetUserId();
              Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
              TempData["Result"] = PlayerProcedures.SetRPFlag(me, false);
              return RedirectToAction("Play", "PvP");
@@ -154,7 +154,7 @@ namespace tfgame.Controllers
          [Authorize]
         public ActionResult SetBio()
         {
-            int myMembershipId = User.Identity.GetCurrentUserId();
+            string myMembershipId = User.Identity.GetUserId();
             PlayerBio output = SettingsProcedures.GetPlayerBioFromMembershipId(myMembershipId);
 
             if (output == null)
@@ -181,7 +181,7 @@ namespace tfgame.Controllers
          [Authorize]
          public ActionResult SetBioSend(PlayerBio input)
          {
-             int myMembershipId = User.Identity.GetCurrentUserId();
+             string myMembershipId = User.Identity.GetUserId();
              if (input.Text == null)
              {
                  input.Text = "";
@@ -231,7 +231,7 @@ namespace tfgame.Controllers
         [Authorize]
          public ActionResult SetBioDelete(PlayerBio input)
          {
-             int myMembershipId = User.Identity.GetCurrentUserId();
+             string myMembershipId = User.Identity.GetUserId();
              SettingsProcedures.DeletePlayerBio(myMembershipId);
 
              TempData["Result"] = "Your bio has been deleted.";
@@ -239,7 +239,7 @@ namespace tfgame.Controllers
          }
 
         [Authorize]
-         public ActionResult ViewBio(int id)
+         public ActionResult ViewBio(string id)
          {
              Player player = PlayerProcedures.GetPlayerFromMembership(id);
              ViewBag.Name = player.FirstName + " " + player.LastName;
@@ -281,7 +281,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult DumpWillpower(string amount)
         {
-            int myMembershipId = User.Identity.GetCurrentUserId();
+            string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             if (me.Mobility != "full")
@@ -346,7 +346,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult SetNickname()
         {
-            int myMembershipId = User.Identity.GetCurrentUserId();
+            string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             if (DonatorProcedures.DonatorGetsNickname(me) == false)
@@ -365,7 +365,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult VerifyDonatorStatus()
         {
-            int myMembershipId = User.Identity.GetCurrentUserId();
+            string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             DonatorProcedures.SetNewPlayerDonationRank(me.Id);
@@ -380,7 +380,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult SetNicknameSend(Message input)
         {
-            int myMembershipId = User.Identity.GetCurrentUserId();
+            string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             if (me.DonatorLevel < 2)
@@ -411,12 +411,12 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult ToggleBlacklistOnPlayer(int id)
         {
-            int myMembershipId = User.Identity.GetCurrentUserId();
+            string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             Player target = PlayerProcedures.GetPlayer(id);
 
             // assert that this player is not a bot
-            if (target.MembershipId < 0)
+            if (target.BotId < 0)
             {
                 TempData["Error"] = "You cannot blacklist an AI character.";
                 return RedirectToAction("Play", "PvP");
@@ -440,7 +440,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult MyBlacklistEntries()
         {
-            int myMembershipId = User.Identity.GetCurrentUserId();
+            string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             IEnumerable<BlacklistEntryViewModel> output = BlacklistProcedures.GetMyBlacklistEntries(me);
 
@@ -450,13 +450,13 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult ChangeBlacklistType(int id, int playerId, string type)
         {
-            int myMembershipId = User.Identity.GetCurrentUserId();
+            string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             Player target = PlayerProcedures.GetPlayer(playerId);
 
 
             // assert that this player is not a bot
-            if (target.MembershipId < 0)
+            if (target.BotId < 0)
             {
                 TempData["Error"] = "You cannot blacklist an AI character.";
                 return RedirectToAction("Play", "PvP");
@@ -486,7 +486,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult ViewPoll(int id)
         {
-            int myMembershipId = User.Identity.GetCurrentUserId();
+            string myMembershipId = User.Identity.GetUserId();
             PollEntry output = SettingsProcedures.LoadPoll(id, myMembershipId);
             return View("Polls/Open/poll" + id, output);
         }
@@ -494,7 +494,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult ReplyToPoll(PollEntry input)
         {
-            int myMembershipId = User.Identity.GetCurrentUserId();
+            string myMembershipId = User.Identity.GetUserId();
             if (!ModelState.IsValid)
             {
                 ViewBag.Error = "Invalid input.";
@@ -528,7 +528,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult SetChatColor(string color)
         {
-            int myMembershipId = User.Identity.GetCurrentUserId();
+            string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             string filename = System.Web.HttpContext.Current.Server.MapPath("~/XMLs/validChatColors.txt");
@@ -549,7 +549,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult WriteAuthorArtistBio()
         {
-            int myMembershipId = User.Identity.GetCurrentUserId();
+            string myMembershipId = User.Identity.GetUserId();
             // assert player has on the artist whitelist
             if (User.IsInRole(PvPStatics.Permissions_Artist) == false)
             {
@@ -566,7 +566,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult WriteAuthorArtistSend(AuthorArtistBio input)
         {
-            int myMembershipId = User.Identity.GetCurrentUserId();
+            string myMembershipId = User.Identity.GetUserId();
             // assert player has on the artist whitelist
             if (User.IsInRole(PvPStatics.Permissions_Artist) == false)
             {
@@ -581,9 +581,9 @@ namespace tfgame.Controllers
         }
 
         [Authorize]
-        public ActionResult AuthorArtistBio(int id)
+        public ActionResult AuthorArtistBio(string id)
         {
-            int myMembershipId = User.Identity.GetCurrentUserId();
+            string myMembershipId = User.Identity.GetUserId();
             AuthorArtistBio output = SettingsProcedures.GetAuthorArtistBio(id);
             Player artistIngamePlayer = PlayerProcedures.GetPlayerFromMembership(id);
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -627,7 +627,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult UseMyCustomForm()
         {
-            int myMembershipId = User.Identity.GetCurrentUserId();
+            string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             string filename = System.Web.HttpContext.Current.Server.MapPath("~/XMLs/custom_bases.xml");
@@ -665,7 +665,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult ArchiveSpell(string name)
         {
-            int myMembershipId = User.Identity.GetCurrentUserId();
+            string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             // assert that player does own this skill
             SkillViewModel2 skill = SkillProcedures.GetSkillViewModel(name, me.Id);
@@ -692,7 +692,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult ArchiveAllMySpells(string archive)
         {
-            int myMembershipId = User.Identity.GetCurrentUserId();
+            string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             if (archive == "True")
             {
@@ -709,7 +709,7 @@ namespace tfgame.Controllers
             return RedirectToAction("Play", "PvP");
         }
 
-        public ActionResult PlayerStats(int id)
+        public ActionResult PlayerStats(string id)
         {
             Player player = PlayerProcedures.GetPlayerFromMembership(id);
             ViewBag.Name = player.GetFullName();
@@ -727,7 +727,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult SetFriendNickname(int id)
         {
-            int myMembershipId = User.Identity.GetCurrentUserId();
+            string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             Friend friend = FriendProcedures.GetFriend(id);
 
@@ -764,7 +764,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult SetFriendNicknameSend(SetFriendNicknameViewModel input)
         {
-            int myMembershipId = User.Identity.GetCurrentUserId();
+            string myMembershipId = User.Identity.GetUserId();
             if (input.Nickname == null)
             {
                 input.Nickname = "";
@@ -823,7 +823,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult MyRPClassifiedAds()
         {
-            int myMembershipId = User.Identity.GetCurrentUserId();
+            string myMembershipId = User.Identity.GetUserId();
              Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
              IEnumerable<RPClassifiedAd> output = RPClassifiedAdsProcedures.GetPlayersClassifiedAds(me);
 
@@ -837,7 +837,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult EditRPClassifiedAd(int id)
         {
-            int myMembershipId = User.Identity.GetCurrentUserId();
+            string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             RPClassifiedAd ad = RPClassifiedAdsProcedures.GetClassifiedAd(id);
 
@@ -859,7 +859,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult RefreshRPClassifiedAd(int id)
         {
-            int myMembershipId = User.Identity.GetCurrentUserId();
+            string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             RPClassifiedAd ad = RPClassifiedAdsProcedures.GetClassifiedAd(id);
 
@@ -879,7 +879,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult EditRPClassifiedAdSend(RPClassifiedAd input)
         {
-            int myMembershipId = User.Identity.GetCurrentUserId();
+            string myMembershipId = User.Identity.GetUserId();
             // assert the text fields are not too long
             if (input.Title.Length > 35)
             {
@@ -959,7 +959,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult DeleteRPClassifiedAd(int id)
         {
-            int myMembershipId = User.Identity.GetCurrentUserId();
+            string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             RPClassifiedAd ad = RPClassifiedAdsProcedures.GetClassifiedAd(id);
 
@@ -978,7 +978,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult ReplyToAd(int id)
         {
-            int myMembershipId = User.Identity.GetCurrentUserId();
+            string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             RPClassifiedAd ad = RPClassifiedAdsProcedures.GetClassifiedAd(id);
 

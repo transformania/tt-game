@@ -141,7 +141,7 @@ namespace tfgame.Procedures
             messageRepo.DeleteMessage(messageId);
         }
 
-        public static bool PlayerOwnsMessage(int messageId, int membershipId)
+        public static bool PlayerOwnsMessage(int messageId, string membershipId)
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(membershipId);
             IMessageRepository messageRepo = new EFMessageRepository();
@@ -156,7 +156,7 @@ namespace tfgame.Procedures
             }
         }
 
-        public static void DeleteAllMessages(int membershipId)
+        public static void DeleteAllMessages(string membershipId)
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(membershipId);
             IMessageRepository messageRepo = new EFMessageRepository();
@@ -171,7 +171,7 @@ namespace tfgame.Procedures
            
         }
 
-        public static void AddMessage(Message message, int membershipId)
+        public static void AddMessage(Message message, string membershipId)
         {
             Player sender = PlayerProcedures.GetPlayerFromMembership(membershipId);
             Player receiver = PlayerProcedures.GetPlayer(message.ReceiverId);

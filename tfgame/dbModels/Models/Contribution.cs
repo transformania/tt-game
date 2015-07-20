@@ -9,7 +9,7 @@ namespace tfgame.dbModels.Models
     public class Contribution
     {
         public int Id { get; set; }
-        public int OwnerMembershipId {get; set;}
+        public string OwnerMembershipId {get; set;}
 
         [Display(Name = "What name do you want to be credited with?  Only write the original author's own name here.  Co-contributors should be listed later on.")]
         public string SubmitterName { get; set; }

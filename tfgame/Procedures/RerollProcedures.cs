@@ -39,7 +39,7 @@ namespace tfgame.Procedures
             AddRerollGeneration(player.MembershipId);
         }
 
-        public static void AddRerollGeneration(int playerMembershipId)
+        public static void AddRerollGeneration(string playerMembershipId)
         {
             IRerollRepository RerollRepo = new EFRerollRepository();
             Reroll playerReroll = RerollRepo.Rerolls.Where(r => r.MembershipId == playerMembershipId).FirstOrDefault();
@@ -67,7 +67,7 @@ namespace tfgame.Procedures
             return GetTimeUntilReroll(player.MembershipId);
         }
 
-        public static TimeSpan GetTimeUntilReroll(int playerMembershipId)
+        public static TimeSpan GetTimeUntilReroll(string playerMembershipId)
         {
             IRerollRepository RerollRepo = new EFRerollRepository();
             Reroll playerReroll = RerollRepo.Rerolls.Where(r => r.MembershipId == playerMembershipId).FirstOrDefault();

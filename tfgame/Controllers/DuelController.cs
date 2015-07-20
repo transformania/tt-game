@@ -24,7 +24,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult IssueChallenge(int id)
         {
-            int myMembershipId = User.Identity.GetCurrentUserId();
+            string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert player is animate
@@ -53,7 +53,7 @@ namespace tfgame.Controllers
             Player duelTarget = PlayerProcedures.GetPlayer(id);
 
             // assert target is not a bot
-            if (duelTarget.MembershipId < 0)
+            if (duelTarget.BotId < 0)
             {
                 TempData["Error"] = "You cannot challenge an NPC to a bot.";
             }
@@ -128,7 +128,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult AcceptChallenge(int id)
         {
-            int myMembershipId = User.Identity.GetCurrentUserId();
+            string myMembershipId = User.Identity.GetUserId();
             Duel duel = DuelProcedures.GetDuel(id);
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
@@ -155,7 +155,7 @@ namespace tfgame.Controllers
             {
 
                 // assert player is not a bot... somehow
-                if (p.Player.MembershipId < 0)
+                if (p.Player.BotId < 0)
                 {
                     TempData["Error"] =  p.Player.GetFullName() + " is an NPC and thus cannot engage in a duel.";
                     return RedirectToAction("Play", "PvP");
@@ -237,7 +237,7 @@ namespace tfgame.Controllers
          [Authorize]
         public ActionResult DuelDetail(int id)
         {
-            int myMembershipId = User.Identity.GetCurrentUserId();
+            string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             Duel duel = DuelProcedures.GetDuel(id);
             if (me.InDuel != duel.Id)
@@ -261,7 +261,7 @@ namespace tfgame.Controllers
          [Authorize]
          public ActionResult AdvanceTurn()
          {
-             int myMembershipId = User.Identity.GetCurrentUserId();
+             string myMembershipId = User.Identity.GetUserId();
              Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
              if (me.InDuel <= 0)
@@ -305,7 +305,7 @@ namespace tfgame.Controllers
          public ActionResult DuelTimeout()
          {
 
-             int myMembershipId = User.Identity.GetCurrentUserId();
+             string myMembershipId = User.Identity.GetUserId();
              Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
              if (me.InDuel <= 0)

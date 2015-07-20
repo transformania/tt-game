@@ -8,7 +8,7 @@ namespace tfgame.dbModels.Models
     public class AuthorArtistBio
     {
         public int Id { get; set; }
-        public int OwnerMembershipId { get; set; }
+        public string OwnerMembershipId { get; set; }
         public int PlayerNamePrivacyLevel { get; set; }
         public string OtherNames { get; set; }
         public string Email { get; set; }

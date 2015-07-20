@@ -14,7 +14,7 @@ namespace tfgame.dbModels.Models
         public decimal Mana { get; set; }
         public decimal HealthMax { get; set; }
         public decimal ManaMax { get; set; }
-        public int SimpleMembershipId { get; set; }
+        public string SimpleMembershipId { get; set; }
         public string AtScene { get; set; }
         public DateTime LastDbSave { get; set; }
     }

@@ -11,7 +11,7 @@ namespace tfgame.Procedures
 {
     public static class FriendProcedures
     {
-        public static void AddFriend(Player player, int membershipId)
+        public static void AddFriend(Player player, string membershipId)
         {
             IFriendRepository friendRepo = new EFFriendRepository();
 
@@ -39,7 +39,7 @@ namespace tfgame.Procedures
             return friendRepo.Friends.FirstOrDefault(f => f.Id == friendId);
         }
 
-        public static string DeleteFriend(int friendId, int membershipId)
+        public static string DeleteFriend(int friendId, string membershipId)
         {
             IFriendRepository friendRepo = new EFFriendRepository();
 
@@ -78,7 +78,7 @@ namespace tfgame.Procedures
             }
         }
 
-        public static IEnumerable<FriendPlayerViewModel> GetMyFriends(int membershipId)
+        public static IEnumerable<FriendPlayerViewModel> GetMyFriends(string membershipId)
         {
             IFriendRepository friendRepo = new EFFriendRepository();
             IPlayerRepository playerRepo = new EFPlayerRepository();
@@ -133,7 +133,7 @@ namespace tfgame.Procedures
             return output;
         }
 
-        public static string CancelFriendRequest(int id, int membershipId)
+        public static string CancelFriendRequest(int id, string membershipId)
         {
             IFriendRepository friendRepo = new EFFriendRepository();
             Friend friend = friendRepo.Friends.FirstOrDefault(f => f.Id == id);
@@ -159,7 +159,7 @@ namespace tfgame.Procedures
 
         }
 
-        public static string AcceptFriendRequest(int id, int membershipId)
+        public static string AcceptFriendRequest(int id, string membershipId)
         {
             IFriendRepository friendRepo = new EFFriendRepository();
             Friend friend = friendRepo.Friends.FirstOrDefault(f => f.Id == id);

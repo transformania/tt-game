@@ -431,7 +431,7 @@ namespace tfgame.Procedures
 
             if (item.dbLocationName != "")
             {
-                if (owner.MembershipId > 0 && item.PvPEnabled == -1)
+                if (owner.BotId == 0 && item.PvPEnabled == -1)
                 {
                     if (owner.GameMode == 2)
                     {
@@ -471,7 +471,7 @@ namespace tfgame.Procedures
             item.OwnerId = newOwnerId;
             Player owner = PlayerProcedures.GetPlayer(newOwnerId);
 
-            if (owner.MembershipId > 0 && item.PvPEnabled == -1)
+            if (owner.BotId == 0 && item.PvPEnabled == -1)
             {
                 if (owner.GameMode == 2)
                 {
@@ -510,7 +510,7 @@ namespace tfgame.Procedures
                // PvPEnabled = player.InPvP,
             };
 
-            if (player.MembershipId < 0)
+            if (player.BotId < 0)
             {
                 newitem.PvPEnabled = -1;
             }
@@ -1108,7 +1108,7 @@ namespace tfgame.Procedures
                 TimeDropped = DateTime.UtcNow,
             };
 
-            if (attacker.MembershipId < 0)
+            if (attacker.BotId < 0)
             {
                 newItem.PvPEnabled = -1;
             }
@@ -1121,7 +1121,7 @@ namespace tfgame.Procedures
                 newItem.PvPEnabled = 1;
             }
 
-            if (victim.MembershipId < 0)
+            if (victim.BotId < 0)
             {
                 newItem.IsPermanent = true;
 
@@ -1148,7 +1148,7 @@ namespace tfgame.Procedures
                     newItem.dbLocationName = "";
 
                     // UNLESS the attacker is a boss, then give it to them for free
-                } else if (attacker.MembershipId <= -3) {
+                } else if (attacker.BotId <= -3) {
                     newItem.OwnerId = attacker.Id;
                     newItem.dbLocationName = "";
                 }
@@ -1171,7 +1171,7 @@ namespace tfgame.Procedures
 
 
                 // this player currently has no tamed pets, so give it to them auto equipped
-                if (AttackerExistingItems.Where(e => e.Item.ItemType == PvPStatics.ItemType_Pet).Count() == 0 && attacker.MembershipId >= -2)
+                if (AttackerExistingItems.Where(e => e.Item.ItemType == PvPStatics.ItemType_Pet).Count() == 0 && attacker.BotId >= -2)
                 {
                     newItem.OwnerId = attacker.Id;
                     newItem.IsEquipped = true;
@@ -1184,7 +1184,7 @@ namespace tfgame.Procedures
                 {
 
                     // bots can keep everything
-                    if (attacker.MembershipId < -1)
+                    if (attacker.BotId < -1)
                     {
                         newItem.OwnerId = attacker.Id;
                         newItem.IsEquipped = true;
@@ -1277,7 +1277,7 @@ namespace tfgame.Procedures
 
         }
 
-        public static string UseItem(int itemId, int membershipId)
+        public static string UseItem(int itemId, string membershipId)
         {
             IItemRepository itemRepo = new EFItemRepository();
             IPlayerRepository playerRepo = new EFPlayerRepository();

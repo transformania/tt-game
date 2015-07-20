@@ -8,7 +8,7 @@ namespace tfgame.dbModels.Models
     public class PlayerBio
     {
         public int Id { get; set; }
-        public int OwnerMembershipId { get; set; }
+        public string OwnerMembershipId { get; set; }
         public string Text { get; set; }
         public string WebsiteURL { get; set; }
         public int PublicVisibility { get; set; }

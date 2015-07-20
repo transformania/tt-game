@@ -8,7 +8,7 @@ namespace tfgame.dbModels.Models
     public class EffectContribution
     {
         public int Id { get; set; }
-        public int OwnerMemberhipId { get; set; }
+        public string OwnerMemberhipId { get; set; }
         public string SubmitterName { get; set; }
 
         public string AdditionalSubmitterNames { get; set; }

@@ -10,7 +10,7 @@ namespace tfgame.dbModels.Models
     public class Player
     {
         public int Id {get; set;}
-        public int MembershipId { get; set; }
+        public string MembershipId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string dbLocationName { get; set; }
@@ -25,6 +25,7 @@ namespace tfgame.dbModels.Models
         public string Gender { get; set; }
         public string Mobility { get; set; }
 
+        public int BotId { get; set; }
         public int IsItemId { get; set; }
         public int IsPetToId { get; set; }
         public bool MindControlIsActive { get; set; }
@@ -153,7 +154,7 @@ namespace tfgame.dbModels.Models
     public class Player_VM
     {
         public int Id { get; set; }
-        public int MembershipId { get; set; }
+        public string MembershipId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string dbLocationName { get; set; }
@@ -167,6 +168,7 @@ namespace tfgame.dbModels.Models
         public decimal ResistanceModifier { get; set; }
         public string Gender { get; set; }
         public string Mobility { get; set; }
+        public int BotId { get; set; }
         public int IsItemId { get; set; }
         public int IsPetToId { get; set; }
 
@@ -244,6 +246,7 @@ namespace tfgame.dbModels.Models
                 ResistanceModifier = this.ResistanceModifier,
                 Gender = this.Gender,
                 Mobility = this.Mobility,
+                BotId = this.BotId,
                 IsItemId = this.IsItemId,
                 IsPetToId = this.IsPetToId,
 

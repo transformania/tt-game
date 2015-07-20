@@ -8,8 +8,8 @@ namespace tfgame.dbModels.Models
     public class Friend
     {
         public int Id { get; set; }
-        public int OwnerMembershipId { get; set; }
-        public int FriendMembershipId { get; set; }
+        public string OwnerMembershipId { get; set; }
+        public string FriendMembershipId { get; set; }
         public DateTime FriendsSince { get; set; }
         public bool IsAccepted { get; set; }
         public string OwnerNicknameForFriend { get; set; }

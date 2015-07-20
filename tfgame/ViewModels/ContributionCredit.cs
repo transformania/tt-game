@@ -7,7 +7,7 @@ namespace tfgame.ViewModels
 {
     public class ContributionCredit
     {
-        public int OwnerMembershipId { get; set; }
+        public string OwnerMembershipId { get; set; }
         public string AuthorName { get; set; }
         public int SpellCount { get; set; }
         public int AnimateFormCount { get; set; }

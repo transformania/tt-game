@@ -57,12 +57,12 @@ namespace tfgame.Procedures
            //     StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__TimesMoved, 1)
            // ).Start();
 
-        public static void AddStat(int membershipId, string type, float amount)
+        public static void AddStat(string membershipId, string type, float amount)
         {
             // don't keep stats for an AI characters
 
           //  if (membershipId > 0 && PvPStatics.ChaosMode == false) 
-            if (membershipId > 0)
+            if (PlayerProcedures.GetPlayerFromMembership(membershipId).BotId == 0)
             {
                 IAchievementRepository repo = new EFAchievementRepository();
                 Achievement x = repo.Achievements.FirstOrDefault(a => a.OwnerMembershipId == membershipId && a.AchievementType == type);
@@ -87,7 +87,7 @@ namespace tfgame.Procedures
             }
         }
 
-        public static IEnumerable<Achievement> GetPlayerStats(int membershipId)
+        public static IEnumerable<Achievement> GetPlayerStats(string membershipId)
         {
             IAchievementRepository repo = new EFAchievementRepository();
 

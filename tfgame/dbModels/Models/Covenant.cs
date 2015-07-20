@@ -25,7 +25,7 @@ namespace tfgame.dbModels.Models
 
         public DateTime LastMemberAcceptance { get; set; }
         public int LeaderId { get; set; }
-        public int FounderMembershipId { get; set; }
+        public string FounderMembershipId { get; set; }
         public bool IsPvP { get; set; }
         public string formerMembers { get; set; }
         public string Captains { get; set; }

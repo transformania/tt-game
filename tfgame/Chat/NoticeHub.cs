@@ -21,7 +21,7 @@ namespace tfgame.Chat
 
         public Task Connect()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(Context.User.Identity.GetCurrentUserId());
+            Player me = PlayerProcedures.GetPlayerFromMembership(Context.User.Identity.GetUserId());
 
             int minimumDonatorLevelForNotifications = 0;
 

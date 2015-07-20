@@ -10,13 +10,13 @@ namespace tfgame.dbModels.Models
         public IEnumerable<ChatConnection> Connections { get { return connections; } }
         public int ConnectionCount { get { return connections.Count; } }
 
-        public int MembershipId { get; private set; }
+        public string MembershipId { get; private set; }
         public string Name { get; private set; }
 
         public IEnumerable<string> InRooms { get { return connections.Select(x => x.Room).Distinct(); } }
         public bool IsDonator { get; private set; }
 
-        public ChatUser(int membershipId, string name, bool isDonator = false)
+        public ChatUser(string membershipId, string name, bool isDonator = false)
         {
             MembershipId = membershipId;
             Name = name;

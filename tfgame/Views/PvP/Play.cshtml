@@ -222,31 +222,31 @@
                                 <div style="text-align:center; margin-top:2px;">
                                     @Ajax.ActionLink("Attack", "AttackModal", "PvP", new { targetId = p.Player.Id }, new AjaxOptions { UpdateTargetId = "attackModal", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "attack_Success", OnFailure = "attack_Failure", OnBegin = "attack_Wait" }, new { @class = "attackLink" })
                                     @{
-                if (p.Player.MembershipId == AIProcedures.LindellaMembershipId)
+                if (p.Player.BotId == AIProcedures.LindellaMembershipId)
                 {
                     @Html.ActionLink("Trade", "TradeWithMerchant", "NPC", new { filter = "shirt" }, new { @class = "attackLink" })
                 }
-                if (p.Player.MembershipId == AIProcedures.JewdewfaeMembershipId)
+                if (p.Player.BotId == AIProcedures.JewdewfaeMembershipId)
                 {
                     @Html.ActionLink("Talk", "TalkWithJewdewfae", "NPC", null, new { @class = "attackLink" })
                 }
-                if (p.Player.MembershipId == AIProcedures.WuffieMembershipId)
+                if (p.Player.BotId == AIProcedures.WuffieMembershipId)
                 {
                     @Html.ActionLink("Trade", "TradeWithPetMerchant", "NPC", null, new { @class = "attackLink" })
                 }
-                if (p.Player.MembershipId == AIProcedures.BartenderMembershipId)
+                if (p.Player.BotId == AIProcedures.BartenderMembershipId)
                 {
                     @Html.ActionLink("Talk", "TalkToBartender", "NPC", new { question = "none" }, new { @class = "attackLink" })
                 }
-                if (p.Player.MembershipId == AIProcedures.MouseBimboMembershipId)
+                if (p.Player.BotId == AIProcedures.MouseBimboMembershipId)
                 {
                     @Html.ActionLink("Talk", "TalkToCandice", "NPC", null, new { @class = "attackLink" })
                 }
-                if (p.Player.MembershipId == AIProcedures.MouseNerdMembershipId)
+                if (p.Player.BotId == AIProcedures.MouseNerdMembershipId)
                 {
                     @Html.ActionLink("Talk", "TalkToAdrianna", "NPC", null, new { @class = "attackLink" })
                 }
-                if (p.Player.MembershipId == AIProcedures.LoremasterMembershipId)
+                if (p.Player.BotId == AIProcedures.LoremasterMembershipId)
                 {
                     @Html.ActionLink("Talk", "TalkToLorekeeper", "NPC", null, new { @class = "attackLink" })
                 }

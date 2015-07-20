@@ -29,7 +29,7 @@ namespace tfgame.Procedures
 
         }
 
-        public static void LoadCharacterIntoMemory(int membershipId)
+        public static void LoadCharacterIntoMemory(string membershipId)
         {
             Game game = System.Web.HttpContext.Current.Application["main"] as Game;
             Character me = game.Characters.FirstOrDefault(c => c.Id == membershipId);
@@ -78,21 +78,21 @@ namespace tfgame.Procedures
 
 
 
-        public static Character GetCharacter(int membershipId)
+        public static Character GetCharacter(string membershipId)
         {
             Game game = System.Web.HttpContext.Current.Application["main"] as Game;
             Character me = game.Characters.FirstOrDefault(c => c.Id == membershipId);
             return me;
         }
 
-        public static Character GetCharacter(string Name)
+        public static Character GetCharacterByName(string Name)
         {
             Game game = System.Web.HttpContext.Current.Application["main"] as Game;
             Character character = game.Characters.FirstOrDefault(c => c.Name == Name);
             return character;
         }
 
-        public static Scene GetScene(int membershipId)
+        public static Scene GetScene(string membershipId)
         {
             Game game = System.Web.HttpContext.Current.Application["main"] as Game;
 
@@ -104,14 +104,14 @@ namespace tfgame.Procedures
             return thisScene;
         }
 
-        public static Scene GetScene(string dbname)
+        public static Scene GetSceneByName(string dbname)
         {
             Game game = System.Web.HttpContext.Current.Application["main"] as Game;
             Scene thisScene = game.Scenes.FirstOrDefault(s => s.dbName == dbname);
             return thisScene;
         }
 
-        public static void SaveCharacter(Character character, int membershipId)
+        public static void SaveCharacter(Character character, string membershipId)
         {
             Game game = System.Web.HttpContext.Current.Application["main"] as Game;
             Character me = game.Characters.FirstOrDefault(c => c.Id == membershipId);
@@ -136,12 +136,12 @@ namespace tfgame.Procedures
             }
         }
 
-        public static List<Character> GetCharactersHere(int membershipId)
+        public static List<Character> GetCharactersHere(string membershipId)
         {
             return GetCharactersHere(membershipId, GetScene(membershipId));
         }
 
-        public static List<Character> GetCharactersHere(int membershipId, Scene scene)
+        public static List<Character> GetCharactersHere(string membershipId, Scene scene)
         {
             Game game = System.Web.HttpContext.Current.Application["main"] as Game;
             return game.Characters.Where(c => c.AtScene == scene.dbName && c.Id != membershipId).ToList();
@@ -219,7 +219,7 @@ namespace tfgame.Procedures
             game.Forms = restoredForms.ToList();
         }
 
-        public static List<BooleanPlogEntry> MeetsRequirements(List<Requirement> requirements, int membershipId)
+        public static List<BooleanPlogEntry> MeetsRequirements(List<Requirement> requirements, string membershipId)
         {
 
             List<BooleanPlogEntry> output = new List<BooleanPlogEntry>();
@@ -249,7 +249,7 @@ namespace tfgame.Procedures
 
         }
 
-        public static BooleanPlogEntry MeetsRequirement(Requirement requirement, int membershipId)
+        public static BooleanPlogEntry MeetsRequirement(Requirement requirement, string membershipId)
         {
 
             BooleanPlogEntry output = new BooleanPlogEntry();
@@ -317,7 +317,7 @@ namespace tfgame.Procedures
             return true;
         }
 
-        public static List<PlogEntry> RunEntryEvents(Scene scene, List<PlogEntry> log, int membershipId)
+        public static List<PlogEntry> RunEntryEvents(Scene scene, List<PlogEntry> log, string membershipId)
         {
             List<BooleanPlogEntry> blog = new List<BooleanPlogEntry>();
             Boolean passed = true;
@@ -366,7 +366,7 @@ namespace tfgame.Procedures
             return log;
         }
 
-        public static List<BooleanPlogEntry> ExecuteActions(Event evt, string passOrFail, List<BooleanPlogEntry> log, int membershipId)
+        public static List<BooleanPlogEntry> ExecuteActions(Event evt, string passOrFail, List<BooleanPlogEntry> log, string membershipId)
         {
         
             List<tfgame.Models.Action> actionsToExecute;
@@ -396,7 +396,7 @@ namespace tfgame.Procedures
             return log;
         }
 
-        public static List<BooleanPlogEntry> ExecuteAction(tfgame.Models.Action action, List<BooleanPlogEntry> log, int membershipId)
+        public static List<BooleanPlogEntry> ExecuteAction(tfgame.Models.Action action, List<BooleanPlogEntry> log, string membershipId)
         {
             Game game = System.Web.HttpContext.Current.Application["main"] as Game;
 
@@ -428,7 +428,7 @@ namespace tfgame.Procedures
             return log;
         }
 
-        public static List<PlogEntry> RunEntryEvents(Scene scene, List<PlogEntry> log, string passOrFail, int membershipId)
+        public static List<PlogEntry> RunEntryEvents(Scene scene, List<PlogEntry> log, string passOrFail, string membershipId)
         {
 
             List<BooleanPlogEntry> blog = new List<BooleanPlogEntry>();

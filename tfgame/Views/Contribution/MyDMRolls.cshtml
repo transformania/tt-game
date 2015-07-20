@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<tfgame.dbModels.Models.DMRoll>
            @using tfgame.dbModels.Models
+@using Microsoft.AspNet.Identity;
 
 <head>
     <link href="~/Content/PvP.css" rel="stylesheet" />
@@ -8,7 +9,7 @@
 <div class="result">@ViewBag.Result</div>
 
 @{
-    if (User.Identity.GetCurrentUserId() == 69)
+    if (User.Identity.GetUserId() == "69")
     {
        <p>@Html.ActionLink("Approve DM Encounters", "ReviewDMRolls", "Contribution")</p>
     }

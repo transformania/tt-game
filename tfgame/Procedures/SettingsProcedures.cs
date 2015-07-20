@@ -10,7 +10,7 @@ namespace tfgame.Procedures
 {
     public class SettingsProcedures
     {
-        public static void SavePlayerBio(PlayerBio bio, int membershipId)
+        public static void SavePlayerBio(PlayerBio bio, string membershipId)
         {
             IPlayerBioRepository playerBioRepo = new EFPlayerBioRepository();
 
@@ -36,7 +36,7 @@ namespace tfgame.Procedures
             // playerBioRe
         }
 
-        public static void DeletePlayerBio(int ownerMembershipId)
+        public static void DeletePlayerBio(string ownerMembershipId)
         {
             IPlayerBioRepository playerBioRepo = new EFPlayerBioRepository();
             PlayerBio myBio = playerBioRepo.PlayerBios.FirstOrDefault(p => p.OwnerMembershipId == ownerMembershipId);
@@ -45,14 +45,14 @@ namespace tfgame.Procedures
             }
         }
 
-        public static PlayerBio GetPlayerBioFromMembershipId(int id)
+        public static PlayerBio GetPlayerBioFromMembershipId(string id)
         {
             IPlayerBioRepository playerBioRepo = new EFPlayerBioRepository();
             PlayerBio playerBio = playerBioRepo.PlayerBios.FirstOrDefault(p => p.OwnerMembershipId == id);
             return playerBio;
         }
 
-        public static bool PlayerHasBio(int id)
+        public static bool PlayerHasBio(string id)
         {
             IPlayerBioRepository playerBioRepo = new EFPlayerBioRepository();
             PlayerBio playerBio = playerBioRepo.PlayerBios.FirstOrDefault(p => p.OwnerMembershipId == id);
@@ -66,7 +66,7 @@ namespace tfgame.Procedures
             }
         }
 
-        public static void SavePoll(PollEntry input, int round, int pollId, int membershipId)
+        public static void SavePoll(PollEntry input, int round, int pollId, string membershipId)
         {
             IPollEntryRepository pollRepo = new EFPollEntriesRepository();
             PollEntry dbPoll = pollRepo.PollEntries.FirstOrDefault(p => p.OwnerMembershipId == membershipId && p.PollId == pollId);
@@ -95,7 +95,7 @@ namespace tfgame.Procedures
 
         }
 
-        public static PollEntry LoadPoll(int pollId, int membershipId)
+        public static PollEntry LoadPoll(int pollId, string membershipId)
         {
             IPollEntryRepository pollRepo = new EFPollEntriesRepository();
             PollEntry dbPoll = pollRepo.PollEntries.FirstOrDefault(p => p.OwnerMembershipId == membershipId && p.PollId == pollId);
@@ -113,7 +113,7 @@ namespace tfgame.Procedures
             return pollRepo.PollEntries.Where(p => p.PollId == pollId);
         }
 
-        public static AuthorArtistBio GetAuthorArtistBio(int ownerMembershipId)
+        public static AuthorArtistBio GetAuthorArtistBio(string ownerMembershipId)
         {
             IAuthorArtistBioRepository repo = new EFAuthorArtistBioRepository();
             AuthorArtistBio output = repo.AuthorArtistBios.FirstOrDefault(a => a.OwnerMembershipId == ownerMembershipId);
@@ -144,7 +144,7 @@ namespace tfgame.Procedures
             }
         }
 
-        public static void SaveAuthorArtistBio(AuthorArtistBio input, int membershipId)
+        public static void SaveAuthorArtistBio(AuthorArtistBio input, string membershipId)
         {
             IAuthorArtistBioRepository repo = new EFAuthorArtistBioRepository();
             AuthorArtistBio saveMe = repo.AuthorArtistBios.FirstOrDefault(a => a.OwnerMembershipId == membershipId);
@@ -171,7 +171,7 @@ namespace tfgame.Procedures
             repo.SaveAuthorArtistBio(saveMe);
         }
 
-        public static bool PlayerHasArtistAuthorBio(int id)
+        public static bool PlayerHasArtistAuthorBio(string id)
         {
             IAuthorArtistBioRepository repo = new EFAuthorArtistBioRepository();
             AuthorArtistBio bio = repo.AuthorArtistBios.FirstOrDefault(p => p.OwnerMembershipId == id);

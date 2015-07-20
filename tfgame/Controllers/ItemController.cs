@@ -20,7 +20,7 @@ namespace tfgame.Controllers
          [Authorize]
         public ActionResult SelfCast()
         {
-            int myMembershipId = User.Identity.GetCurrentUserId();
+            string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert player owns at least one of the type of item needed
@@ -45,7 +45,7 @@ namespace tfgame.Controllers
          [Authorize]
         public ActionResult SelfCastSend(string spell)
         {
-            int myMembershipId = User.Identity.GetCurrentUserId();
+            string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             
             // assert player is animate
@@ -104,7 +104,7 @@ namespace tfgame.Controllers
          [Authorize]
         public ActionResult RemoveCurse()
         {
-            int myMembershipId = User.Identity.GetCurrentUserId();
+            string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             // assert player is animate
             if (me.Mobility != "full")
@@ -130,7 +130,7 @@ namespace tfgame.Controllers
          [Authorize]
         public ActionResult RemoveCurseSend(string curse, int id)
         {
-            int myMembershipId = User.Identity.GetCurrentUserId();
+            string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             // assert player is animate
             if (me.Mobility != "full")
@@ -185,7 +185,7 @@ namespace tfgame.Controllers
          //[Authorize]
          public ActionResult ReadSkillBook(int id)
          {
-             int myMembershipId = User.Identity.GetCurrentUserId();
+             string myMembershipId = User.Identity.GetUserId();
              Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
              // assert player is animate

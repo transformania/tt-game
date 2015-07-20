@@ -363,7 +363,7 @@ namespace tfgame.Procedures
                 // we need to find the merchant to get her ID
 
                 int merchantId = -999;
-                Player merchant = PlayerProcedures.GetPlayerFromMembership(-3);
+                Player merchant = PlayerProcedures.GetPlayerFromBotId(-3);
                 merchantId = merchant.Id;
 
                 // have abandoned items go to Lindella
@@ -528,7 +528,8 @@ namespace tfgame.Procedures
                             Player newDemon = new Player
                             {
 
-                                MembershipId = -13,
+                                MembershipId = "-13",
+                                BotId = -13,
                                 FirstName = "Spirit of ",
                                 LastName = demonlastName,
                                 Mobility = "full",
@@ -658,7 +659,7 @@ namespace tfgame.Procedures
                     // move Jewdewfae to a new location if she has been in one place for more than 48 turns, 8 hours
                     try
                     {
-                        Player fae = PlayerProcedures.GetPlayerFromMembership(-6);
+                        Player fae = PlayerProcedures.GetPlayerFromBotId(-6);
                         AIDirective faeAI = AIDirectiveProcedures.GetAIDirective(fae.Id);
 
                         // if the turn since her last move has been long enough, relocate her

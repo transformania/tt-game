@@ -26,7 +26,7 @@ namespace tfgame.Controllers
 
             if (System.Web.HttpContext.Current.Application["main"] == null)
             {
-                int myMembershipId = User.Identity.GetCurrentUserId();
+                string myMembershipId = User.Identity.GetUserId();
                 Procedures.Procedures.LoadGameIntoMemory();
                 Procedures.Procedures.LoadCharacterIntoMemory(myMembershipId);
 
@@ -37,7 +37,7 @@ namespace tfgame.Controllers
 
         public string GetLog()
         {
-            int myMembershipId = User.Identity.GetCurrentUserId();
+            string myMembershipId = User.Identity.GetUserId();
             if (System.Web.HttpContext.Current.Application["main"] == null)
             {
                 //Procedures.Procedures.LoadGameIntoMemory();
@@ -64,7 +64,7 @@ namespace tfgame.Controllers
 
         public string AjaxTestChat(string statement)
         {
-            int myMembershipId = User.Identity.GetCurrentUserId();
+            string myMembershipId = User.Identity.GetUserId();
             int LogMaxSize = 20;
 
             Game chatlog = System.Web.HttpContext.Current.Application["main"] as Game;
@@ -96,7 +96,7 @@ namespace tfgame.Controllers
 
         public void SaveUserToDatabase()
         {
-            int myMembershipId = User.Identity.GetCurrentUserId();
+            string myMembershipId = User.Identity.GetUserId();
             Character me = Procedures.Procedures.GetCharacter(myMembershipId);
             ICharacterRepository characterRepo = new EFCharacterRepository();
             
@@ -124,7 +124,7 @@ namespace tfgame.Controllers
 
         public JsonResult GetSceneInfo()
         {
-            int myMembershipId = User.Identity.GetCurrentUserId();
+            string myMembershipId = User.Identity.GetUserId();
             Game game = System.Web.HttpContext.Current.Application["main"] as Game;
 
             Scene thisScene = Procedures.Procedures.GetScene(myMembershipId);
@@ -141,11 +141,11 @@ namespace tfgame.Controllers
 
         public JsonResult Move(string direction)
         {
-            int myMembershipId = User.Identity.GetCurrentUserId();
+            string myMembershipId = User.Identity.GetUserId();
             Game game = System.Web.HttpContext.Current.Application["main"] as Game;
             Character me = Procedures.Procedures.GetCharacter(myMembershipId);
             Scene here = Procedures.Procedures.GetScene(myMembershipId);
-            Scene there = Procedures.Procedures.GetScene(direction);
+            Scene there = Procedures.Procedures.GetSceneByName(direction);
             SelfQuery output = new SelfQuery();
 
             output.pLog = new List<PlogEntry>();
@@ -177,21 +177,21 @@ namespace tfgame.Controllers
 
         public JsonResult RefreshCharactersItems()
         {
-            int myMembershipId = User.Identity.GetCurrentUserId();
+            string myMembershipId = User.Identity.GetUserId();
             List<Character> output = Procedures.Procedures.GetCharactersHere(myMembershipId);
             return Json(output, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult CharacterQuery(string character)
         {
-            Character person = Procedures.Procedures.GetCharacter(character);
+            Character person = Procedures.Procedures.GetCharacterByName(character);
 
             return Json(person, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult SelfQuery()
         {
-            int myMembershipId = User.Identity.GetCurrentUserId();
+            string myMembershipId = User.Identity.GetUserId();
             SelfQuery output = new SelfQuery();
 
             Character me = Procedures.Procedures.GetCharacter(myMembershipId);
@@ -211,7 +211,7 @@ namespace tfgame.Controllers
 
         public JsonResult LookAtScene()
         {
-            int myMembershipId = User.Identity.GetCurrentUserId();
+            string myMembershipId = User.Identity.GetUserId();
             Scene here = Procedures.Procedures.GetScene(myMembershipId);
             SceneImgDescription output = new SceneImgDescription();
             output.Img = here.Img;

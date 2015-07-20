@@ -24,7 +24,7 @@ namespace tfgame.Chat
 
         public override Task OnConnected()
         {
-            var me = PlayerProcedures.GetPlayerFormViewModel_FromMembership(Context.User.Identity.GetCurrentUserId()).Player;
+            var me = PlayerProcedures.GetPlayerFormViewModel_FromMembership(Context.User.Identity.GetUserId()).Player;
             chatService.OnUserConnected(me, Context.ConnectionId);
 
             return base.OnConnected();
@@ -34,7 +34,7 @@ namespace tfgame.Chat
         {
             var connectionId = Context.ConnectionId;
             var room = string.Empty;
-            var me = PlayerProcedures.GetPlayerFormViewModel_FromMembership(Context.User.Identity.GetCurrentUserId()).Player;
+            var me = PlayerProcedures.GetPlayerFormViewModel_FromMembership(Context.User.Identity.GetUserId()).Player;
             
             if (ChatService.ChatPersistance.ContainsKey(me.MembershipId))
             {
@@ -65,7 +65,7 @@ namespace tfgame.Chat
         public void Send(string name, string message)
         {
             string room = Clients.Caller.toRoom;
-            var me = PlayerProcedures.GetPlayerFormViewModel_FromMembership(Context.User.Identity.GetCurrentUserId());
+            var me = PlayerProcedures.GetPlayerFormViewModel_FromMembership(Context.User.Identity.GetUserId());
             
             chatService.MarkOnlineActivityTimestamp(me.Player);
 
@@ -98,7 +98,7 @@ namespace tfgame.Chat
 
         public Task JoinRoom(string roomName)
         {
-            var me = PlayerProcedures.GetPlayerFormViewModel_FromMembership(Context.User.Identity.GetCurrentUserId());
+            var me = PlayerProcedures.GetPlayerFormViewModel_FromMembership(Context.User.Identity.GetUserId());
 
             if (!ChatService.ChatPersistance[me.Player.MembershipId].InRooms.Contains(roomName))
                 SendNoticeToRoom(roomName, me.Player, "has joined the room.");
@@ -113,7 +113,7 @@ namespace tfgame.Chat
         {
             try
             {
-                if (me.MembershipId <= 0) 
+                if (me.BotId < 0)
                     return;
 
                 var message = string.Format("[-[{0} {1}]-]", me.GetFullName(), text);

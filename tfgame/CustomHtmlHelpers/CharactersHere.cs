@@ -636,7 +636,7 @@ namespace tfgame.CustomHtmlHelpers
 
         public static MvcHtmlString PrintStatDescriptionPopup(string statName)
         {
-            string output = statName + " <span class='statPopupBubble' onclick='alert(\"";
+            string output = BuffMap.BuffDetailsMap[statName].DisplayName + " <span class='statPopupBubble' onclick='alert(\"";
             output += BuffMap.BuffDetailsMap[statName].Description;
             output += "\");'>[?]</span>";
             return new MvcHtmlString(output);

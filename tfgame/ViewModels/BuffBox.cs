@@ -44,6 +44,7 @@ namespace tfgame.ViewModels
 
     public class BuffDetail
     {
+        public string DisplayName { get; set; }
         public string Description { get; set; }
         public List<string> PlusIcons { get; set; }
         public List<string> MinusIcons { get; set; }
@@ -588,7 +589,8 @@ namespace tfgame.ViewModels
             { 
                 "Discipline", 
                 new BuffDetail {
-                    Description = "Discipline affects the strength of your mental defenses; resistance to willpower attacks and ability to recover lost willpower. Improving your defense against willpower attacks reduces the power of your own willpower attacks by a small amount.", 
+                    DisplayName = "Discipline",
+                    Description = "Discipline affects the strength of your mental defenses, reducing the effectiveness of all spells cast against you.  Unfortunately you'll lose a bit of your own offensive power, being a bit more stable and predictable.", 
                     PlusIcons = new List<string> { DefenseIconClass, WPUpIconClass }, 
                     MinusIcons =  new  List<string> { AttackIconClass }
                 }
@@ -596,23 +598,26 @@ namespace tfgame.ViewModels
             { 
                 "Perception", 
                 new BuffDetail {
-                    Description = "Perception affects the accuracy of your spell-casting and your ability to detect hidden things. The price that you pay for taking the time to observe and analyze your surroundings is slower movement speed and a reduction to the amount of mana you glean from meditation.", 
+                    DisplayName = "Perception",
+                    Description = "Perception affects the accuracy of your spell-casting and your ability to detect hidden things.  It's also quite useful to have so you know when a spell cast is starting off poorly, reducing the chance of it exploding in your own face.", 
                     PlusIcons = new List<string> { AttackIconClass }, 
-                    MinusIcons =  new  List<string> { RestorationIconCLass }
+                    MinusIcons =  new  List<string> {  }
                 }
             },
             { 
                 "Charisma", 
                 new BuffDetail {
-                    Description = "Charisma affects the strength of your willpower and transformation attacks; it represents your ability to influence people and bend them to your design. However, the desire to persuade others leaves you vulnerable to their desires in turn, reducing your willpower defenses slightly.", 
+                    DisplayName = "Charisma",
+                    Description = "Charisma affects the strength of your willpower and transformation attacks; it represents your ability to influence people and bend them to your design. However, the desire to persuade others leaves you vulnerable to their desires in turn, reducing your defenses slightly.", 
                     PlusIcons = new List<string> { AttackIconClass }, 
-                    MinusIcons =  new  List<string> { DefenseIconClass }
+                    MinusIcons =  new  List<string> { DefenseIconClass, WPUpIconClass }
                 }
             },
             { 
                 "Fortitude", 
                 new BuffDetail {
-                    Description = "Fortitude affects the strength of your physical defenses; resistance to transformation attacks and the ability to carry more gear. Toughening your body reduces its limberness, inhibiting your ability to move stealthily and dodge incoming attacks.", 
+                    DisplayName = "Fortitude",
+                    Description = "Although brute force is generally looked down on in the wizarding world, having some extra strength allows you to carry more posessions at a time, plus the extra bulk of your body will make your opponent expend a little more effort to transform.", 
                     PlusIcons = new List<string> { DefenseIconClass }, 
                     MinusIcons =  new  List<string> { "" }
                 }
@@ -620,7 +625,8 @@ namespace tfgame.ViewModels
             { 
                 "Agility", 
                 new BuffDetail {
-                    Description = "Agility affects your ability to move quickly, which helps you dodge attacks and avoid detection. Quickness requires a light build that is not able to take a lot of physical abuse; thus your resistance to transformation damage is inhibited and you are not able to carry as much gear.", 
+                    DisplayName = "Agility",
+                    Description = "Agility affects your ability to move quickly, which helps you dodge attacks and move more quickly while leaving less noise.  Unfortunately moving so quickly isn't the best when trying to shoot a spell straight, so these casters can expect a few more spells to go awry and damage themselves instead of their target.", 
                     PlusIcons = new List<string> { DefenseIconClass }, 
                     MinusIcons =  new  List<string> { DefenseIconClass }
                 }
@@ -628,33 +634,37 @@ namespace tfgame.ViewModels
             { 
                 "Allure", 
                 new BuffDetail {
-                    Description = "Allure affects your innate sex appeal or animal magnetism. The more attractive you are, the more susceptible your opponents are to your willpower attacks and the less likely they are to dodge. Yet physical beauty makes one susceptible to vanity, which increases your vulnerability to willpower damage. Your attractiveness also makes it hard to go unnoticed.", 
-                    PlusIcons = new List<string> { AttackIconClass }, 
-                    MinusIcons =  new  List<string> { DefenseIconClass, }
+                    DisplayName = "Restoration",
+                    Description = "Restoration increases the amount of willpower and mana you recover when cleansing or meditating, as well as purge a bit of extra transformation energies from your body.", 
+                    PlusIcons = new List<string> { RestorationIconCLass }, 
+                    MinusIcons =  new  List<string> {  }
                 }
             },
             { 
                 "Magicka", 
                 new BuffDetail {
-                    Description = "Magicka reflects you raw magic potential; the stronger your connection to the ambient magical fields around you, the more mana you have at your disposal and the more transformation energy you can focus on your opponents. Yet having so much magic flowing through you makes it harder to purge transformation energy, and interferes with your ability to focus on your targets.", 
+                    DisplayName = "Magicka",
+                    Description = "Magicka reflects you raw magic potential; the stronger your connection to the ambient magical fields around you, the more mana you have at your disposal.", 
                     PlusIcons = new List<string> { ManaUpIconClass }, 
-                    MinusIcons =  new  List<string> { AttackIconClass, RestorationIconCLass  }
+                    MinusIcons =  new  List<string> {  }
                 }
             },
             { 
                 "Succour", 
                 new BuffDetail {
-                    Description = "Succour affects your ability to tap into ambient magical energies and manipulate them to recover mana and willpower. Some of your mana is constantly diverted into the recovery of mana and willpower, reducing your maximum pool. Focusing on the healing powers of magic invokes a natural aversion toward harming others.", 
+                    DisplayName = "Regeneration",
+                    Description = "Regeneration affects your ability to tap into ambient magical energies and manipulate them to recover mana and willpower without even having to think about it, leaving your time and energy better spent on other matters like how best to avoid being turned into panties.", 
                     PlusIcons = new List<string> { RestorationIconCLass }, 
-                    MinusIcons =  new  List<string> { ManaUpIconClass, AttackIconClass }
+                    MinusIcons =  new  List<string> { }
                 }
             },
             { 
                 "Luck", 
                 new BuffDetail {
-                    Description = "Luck is a random chance that seems to operate in your favor. Or maybe the gods look kindly upon you. However you choose to rationalize it, luck affects your chance to score amazingly successful blows against your opponents. Luck also helps you shrug off accumulated transformation energy. Yet relying on luck can leave you exposed if the dice roll goes against you.", 
+                    DisplayName = "Luck",
+                    Description = "Luck is a random chance that seems to operate in your favor. Or maybe the gods look kindly upon you. However you choose to rationalize it, luck affects your chance to score amazingly successful blows against your opponents and helps to slightly reduce bad luck of your own in the form of reduced misfires.", 
                     PlusIcons = new List<string> { AttackIconClass }, 
-                    MinusIcons =  new  List<string> { DefenseIconClass }
+                    MinusIcons =  new  List<string> {  }
                 }
             },
         };
@@ -668,12 +678,12 @@ namespace tfgame.ViewModels
             {
                 "HealthBonusPercent",
                 new Dictionary<string,float> {
-                      	{"Discipline", .5F},
+                      	{"Discipline", .75F},
 	                    {"Perception", 0},
-	                    {"Charisma", 0},
-	                    {"Fortitude", 0},
+	                    {"Charisma", -.375F},
+	                    {"Fortitude", .25F},
 	                    {"Agility", 0},
-	                    {"Allure", -.25F},
+	                    {"Allure", 0},
 	                    {"Magicka", 0},
 	                    {"Succour", 0},
 	                    {"Luck", 0},
@@ -689,15 +699,15 @@ namespace tfgame.ViewModels
 	                    {"Fortitude", 0},
 	                    {"Agility", 0},
 	                    {"Allure", 0},
-	                    {"Magicka", 1.0F},
-	                    {"Succour", -.25F},
+	                    {"Magicka", 1.5F},
+	                    {"Succour", 0},
 	                    {"Luck", 0},
                     }
                 },
                 {
                 "ExtraSkillCriticalPercent",
                 new Dictionary<string,float> {
-                      	{"Discipline", -.25F},
+                      	{"Discipline", 0},
 	                    {"Perception", 0},
 	                    {"Charisma", 0},
 	                    {"Fortitude", 0},
@@ -705,7 +715,7 @@ namespace tfgame.ViewModels
 	                    {"Allure", 0},
 	                    {"Magicka", 0},
 	                    {"Succour", 0},
-	                    {"Luck", .3F},
+	                    {"Luck", .35F},
                     }
                 },
                 {
@@ -718,7 +728,7 @@ namespace tfgame.ViewModels
 	                    {"Agility", 0},
 	                    {"Allure", 0},
 	                    {"Magicka", 0},
-	                    {"Succour", .2F},
+	                    {"Succour", .2F}, // regeneration
 	                    {"Luck", 0},
                     }
                 },
@@ -732,7 +742,7 @@ namespace tfgame.ViewModels
 	                    {"Agility", 0},
 	                    {"Allure", 0},
 	                    {"Magicka", 0},
-	                    {"Succour", .2F},
+	                    {"Succour", .2F}, // regeneration
 	                    {"Luck", 0},
                     }
                 },
@@ -742,9 +752,9 @@ namespace tfgame.ViewModels
                       	{"Discipline", 0},
 	                    {"Perception", 0},
 	                    {"Charisma", 0},
-	                    {"Fortitude", -1.0F},
-	                    {"Agility", 1.25F},
-	                    {"Allure", -.5F},
+	                    {"Fortitude", 0},
+	                    {"Agility", .75F},
+	                    {"Allure", 0},
 	                    {"Magicka", 0},
 	                    {"Succour", 0},
 	                    {"Luck", 0},
@@ -756,8 +766,8 @@ namespace tfgame.ViewModels
                       	{"Discipline", 0},
 	                    {"Perception", 0},
 	                    {"Charisma", 0},
-	                    {"Fortitude", -.5F},
-	                    {"Agility", 0.7F},
+	                    {"Fortitude", 0},
+	                    {"Agility", .75F},
 	                    {"Allure", 0},
 	                    {"Magicka", 0},
 	                    {"Succour", 0},
@@ -768,37 +778,9 @@ namespace tfgame.ViewModels
                 "EvasionNegationPercent",
                 new Dictionary<string,float> {
                       	{"Discipline", 0},
-	                    {"Perception", 1.5F},
+	                    {"Perception", 1},
 	                    {"Charisma", 0},
 	                    {"Fortitude", 0},
-	                    {"Agility", 0},
-	                    {"Allure", 1.0F},
-	                    {"Magicka", -.5F},
-	                    {"Succour", 0},
-	                    {"Luck", 0},
-                    }
-                },
-                {
-                "MeditationExtraMana",
-                new Dictionary<string,float> {
-                      	{"Discipline", 0},
-	                    {"Perception", -.25F},
-	                    {"Charisma", 0},
-	                    {"Fortitude", 0},
-	                    {"Agility", 0},
-	                    {"Allure", 0},
-	                    {"Magicka", 0.5F},
-	                    {"Succour", 0},
-	                    {"Luck", 0},
-                    }
-                },
-                {
-                "CleanseExtraHealth",
-                new Dictionary<string,float> {
-                      	{"Discipline", .25F},
-	                    {"Perception", 0},
-	                    {"Charisma", 0},
-	                    {"Fortitude", -.125F},
 	                    {"Agility", 0},
 	                    {"Allure", 0},
 	                    {"Magicka", 0},
@@ -807,13 +789,41 @@ namespace tfgame.ViewModels
                     }
                 },
                 {
+                "MeditationExtraMana",
+                new Dictionary<string,float> {
+                      	{"Discipline", 0},
+	                    {"Perception", 0},
+	                    {"Charisma", 0},
+	                    {"Fortitude", 0},
+	                    {"Agility", 0},
+	                    {"Allure", .1F}, // restoration
+	                    {"Magicka", 0},
+	                    {"Succour", 0}, 
+                        {"Luck", 0},
+                    }
+                },
+                {
+                "CleanseExtraHealth",
+                new Dictionary<string,float> {
+                      	{"Discipline", 0},
+	                    {"Perception", 0},
+	                    {"Charisma", 0},
+	                    {"Fortitude", 0},
+	                    {"Agility", 0},
+	                    {"Allure", .1F}, // restoration
+	                    {"Magicka", 0},
+	                    {"Succour", 0}, 
+	                    {"Luck", 0},
+                    }
+                },
+                {
                 "MoveActionPointDiscount",
                 new Dictionary<string,float> {
                       	{"Discipline", 0},
-	                    {"Perception", -.0125F},
+	                    {"Perception", 0},
 	                    {"Charisma", 0},
 	                    {"Fortitude", 0},
-	                    {"Agility", .04F},
+	                    {"Agility", .005F},
 	                    {"Allure", 0},
 	                    {"Magicka", 0},
 	                    {"Succour", 0},
@@ -823,26 +833,26 @@ namespace tfgame.ViewModels
                 {
                 "SpellExtraTFEnergyPercent",
                 new Dictionary<string,float> {
-                      	{"Discipline", 0},
+                      	{"Discipline",-.5F},
 	                    {"Perception", 0},
 	                    {"Charisma", 1.0F},
 	                    {"Fortitude", 0},
 	                    {"Agility", 0},
 	                    {"Allure", 0},
-	                    {"Magicka", 1.0F},
-	                    {"Succour", -.25F},
+	                    {"Magicka", 0},
+	                    {"Succour", 0},
 	                    {"Luck", 0},
                     }
                 },
                 {
                 "SpellExtraHealthDamagePercent",
                 new Dictionary<string,float> {
-                      	{"Discipline", -.25F},
+                      	{"Discipline",-.5F},
 	                    {"Perception", 0},
-	                    {"Charisma", 0.7F},
+	                    {"Charisma", 1F},
 	                    {"Fortitude", 0},
 	                    {"Agility", 0},
-	                    {"Allure", 1.1F},
+	                    {"Allure", 0},
 	                    {"Magicka", 0},
 	                    {"Succour", 0},
 	                    {"Luck", 0},
@@ -856,18 +866,32 @@ namespace tfgame.ViewModels
 	                    {"Charisma", 0},
 	                    {"Fortitude", 0},
 	                    {"Agility", 0},
-	                    {"Allure", 0},
-	                    {"Magicka", -.125F},
+	                    {"Allure", .02F}, // restoration
+	                    {"Magicka", 0},
 	                    {"Succour", 0},
-	                    {"Luck", .375F},
+	                    {"Luck", 0},
                     }
                 },
                 {
                 "SpellMisfireChanceReduction",
                 new Dictionary<string,float> {
                       	{"Discipline", 0},
-	                    {"Perception", .75F},
-	                    {"Charisma", -.125F},
+	                    {"Perception", .1F},
+	                    {"Charisma", 0},
+	                    {"Fortitude", 0},
+	                    {"Agility", -.1F},
+	                    {"Allure", 0}, // restoration
+	                    {"Magicka", 0},
+	                    {"Succour", 0},
+	                    {"Luck", .0F},
+                    }
+                },
+                {
+                "SpellHealthDamageResistance",
+                new Dictionary<string,float> {
+                      	{"Discipline", 1.0F},
+	                    {"Perception", 0},
+	                    {"Charisma", -.5F},
 	                    {"Fortitude", 0},
 	                    {"Agility", 0},
 	                    {"Allure", 0},
@@ -877,31 +901,17 @@ namespace tfgame.ViewModels
                     }
                 },
                 {
-                "SpellHealthDamageResistance",
+                "SpellTFEnergyDamageResistance",
                 new Dictionary<string,float> {
                       	{"Discipline", 1.0F},
 	                    {"Perception", 0},
-	                    {"Charisma", -.25F},
+	                    {"Charisma", -.5F},
 	                    {"Fortitude", 0},
 	                    {"Agility", 0},
 	                    {"Allure", 0},
 	                    {"Magicka", 0},
 	                    {"Succour", 0},
-	                    {"Luck", -.25F},
-                    }
-                },
-                {
-                "SpellTFEnergyDamageResistance",
-                new Dictionary<string,float> {
-                      	{"Discipline", 0},
-	                    {"Perception", 0},
-	                    {"Charisma", 0},
-	                    {"Fortitude", 1.0F},
-	                    {"Agility", -.25F},
-	                    {"Allure", 0},
-	                    {"Magicka", 0},
-	                    {"Succour", 0},
-	                    {"Luck", -.1875F},
+	                    {"Luck", 0},
                     }
                 },
                 {
@@ -910,8 +920,8 @@ namespace tfgame.ViewModels
                       	{"Discipline", 0},
 	                    {"Perception", 0},
 	                    {"Charisma", 0},
-	                    {"Fortitude", .10F},
-	                    {"Agility", -.025F},
+	                    {"Fortitude", .065F},
+	                    {"Agility", 0},
 	                    {"Allure", 0},
 	                    {"Magicka", 0},
 	                    {"Succour", 0},

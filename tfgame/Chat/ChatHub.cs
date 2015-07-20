@@ -9,6 +9,7 @@ using tfgame.Services;
 using tfgame.Statics;
 using System.Threading.Tasks;
 using tfgame.CustomHtmlHelpers;
+using Microsoft.AspNet.Identity;
 
 namespace tfgame.Chat
 {
@@ -24,7 +25,7 @@ namespace tfgame.Chat
 
         public override Task OnConnected()
         {
-            var me = new GetPlayerFromUserName { UserName = Context.User.Identity.Name }.Find();
+            var me = PlayerProcedures.GetPlayerFormViewModel_FromMembership((Context.User.Identity.GetUserId() != null) ? Convert.ToInt32(Context.User.Identity.GetUserId()) : -1).Player;
             chatService.OnUserConnected(me, Context.ConnectionId);
 
             return base.OnConnected();
@@ -34,7 +35,7 @@ namespace tfgame.Chat
         {
             var connectionId = Context.ConnectionId;
             var room = string.Empty;
-            var me = new GetPlayerFromUserName { UserName = Context.User.Identity.Name }.Find();
+            var me = PlayerProcedures.GetPlayerFormViewModel_FromMembership((Context.User.Identity.GetUserId() != null) ? Convert.ToInt32(Context.User.Identity.GetUserId()) : -1).Player;
             
             if (ChatService.ChatPersistance.ContainsKey(me.MembershipId))
             {
@@ -65,7 +66,7 @@ namespace tfgame.Chat
         public void Send(string name, string message)
         {
             string room = Clients.Caller.toRoom;
-            var me = PlayerProcedures.GetPlayerFormViewModel_FromMembership(Convert.ToInt32(Context.User.Identity.Name));
+            var me = PlayerProcedures.GetPlayerFormViewModel_FromMembership((Context.User.Identity.GetUserId() != null) ? Convert.ToInt32(Context.User.Identity.GetUserId()) : -1);
             
             chatService.MarkOnlineActivityTimestamp(me.Player);
 
@@ -98,7 +99,7 @@ namespace tfgame.Chat
 
         public Task JoinRoom(string roomName)
         {
-            var me = PlayerProcedures.GetPlayerFormViewModel_FromMembership(Convert.ToInt32(Context.User.Identity.Name));
+            var me = PlayerProcedures.GetPlayerFormViewModel_FromMembership((Context.User.Identity.GetUserId() != null) ? Convert.ToInt32(Context.User.Identity.GetUserId()) : -1);
 
             if (!ChatService.ChatPersistance[me.Player.MembershipId].InRooms.Contains(roomName))
                 SendNoticeToRoom(roomName, me.Player, "has joined the room.");

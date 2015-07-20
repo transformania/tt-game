@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using tfgame.ViewModels;
 using System.Timers;
 using Newtonsoft.Json;
+using Microsoft.AspNet.Identity;
 
 namespace tfgame.Chat
 {
@@ -19,7 +20,7 @@ namespace tfgame.Chat
 
         public Task Connect()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(Convert.ToInt32(Context.User.Identity.Name));
+            Player me = PlayerProcedures.GetPlayerFromMembership(Convert.ToInt32(Context.User.Identity.GetUserId()));
 
             int minimumDonatorLevelForNotifications = 0;
 

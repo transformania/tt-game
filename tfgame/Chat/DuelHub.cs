@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using tfgame.ViewModels;
 using System.Timers;
 using Newtonsoft.Json;
-
+using Microsoft.AspNet.Identity;
 
 
 
@@ -23,13 +23,13 @@ namespace tfgame.Chat
         public void Send(string input)
         {
             string room = Clients.Caller.toRoom;
-            Player me = PlayerProcedures.GetPlayerFromMembership(Convert.ToInt32(Context.User.Identity.Name));
+            Player me = PlayerProcedures.GetPlayerFromMembership(Convert.ToInt32(Context.User.Identity.GetUserId()));
            // Clients.Group(room).addNewMessageToPage(input);
         }
 
         public Task JoinRoom(string roomName)
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(Convert.ToInt32(Context.User.Identity.Name));
+            Player me = PlayerProcedures.GetPlayerFromMembership(Convert.ToInt32(Context.User.Identity.GetUserId()));
             string message = "[-[" + me.FirstName + " " + me.LastName + " has joined the room.]-]";
             Clients.Group(roomName).addNewMessageToPage(message);
             return Groups.Add(Context.ConnectionId, roomName);

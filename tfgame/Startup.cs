@@ -36,6 +36,7 @@ namespace tfgame
                         regenerateIdentity: (manager, user) => user.GenerateUserIdentityAsync(manager))
                 }
             });  
+            app.MapSignalR();
         }
     }
 }

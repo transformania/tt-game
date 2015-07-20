@@ -128,6 +128,13 @@ namespace tfgame.Controllers
         public ActionResult AcceptChallenge(int id)
         {
 
+            if (PvPStatics.AnimateUpdateInProgress == true)
+            {
+                TempData["Error"] = "Player update portion of the world update is still in progress.";
+                TempData["SubError"] = "Try again a bit later when the update has progressed farther along.";
+                return RedirectToAction("Play");
+            }
+
             Duel duel = DuelProcedures.GetDuel(id);
             Player me = PlayerProcedures.GetPlayerFromMembership();
 

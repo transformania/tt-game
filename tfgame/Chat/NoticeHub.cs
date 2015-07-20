@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using tfgame.dbModels.Abstract;
 using tfgame.dbModels.Concrete;
+using tfgame.Extensions;
 using System.Collections.Generic;
 using tfgame.ViewModels;
 using System.Timers;
@@ -20,7 +21,7 @@ namespace tfgame.Chat
 
         public Task Connect()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(Convert.ToInt32(Context.User.Identity.GetUserId()));
+            Player me = PlayerProcedures.GetPlayerFromMembership(Context.User.Identity.GetCurrentUserId());
 
             int minimumDonatorLevelForNotifications = 0;
 

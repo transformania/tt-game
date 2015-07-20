@@ -7,6 +7,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using tfgame.dbModels.Abstract;
 using tfgame.dbModels.Concrete;
+using tfgame.Extensions;
 using tfgame.Models;
 using tfgame.Procedures;
 using Microsoft.AspNet.Identity;
@@ -25,8 +26,9 @@ namespace tfgame.Controllers
 
             if (System.Web.HttpContext.Current.Application["main"] == null)
             {
+                int myMembershipId = User.Identity.GetCurrentUserId();
                 Procedures.Procedures.LoadGameIntoMemory();
-                Procedures.Procedures.LoadCharacterIntoMemory(((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
+                Procedures.Procedures.LoadCharacterIntoMemory(myMembershipId);
 
             }
 
@@ -35,7 +37,7 @@ namespace tfgame.Controllers
 
         public string GetLog()
         {
-            int myMembershipId = ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1);
+            int myMembershipId = User.Identity.GetCurrentUserId();
             if (System.Web.HttpContext.Current.Application["main"] == null)
             {
                 //Procedures.Procedures.LoadGameIntoMemory();
@@ -62,7 +64,7 @@ namespace tfgame.Controllers
 
         public string AjaxTestChat(string statement)
         {
-            int myMembershipId = ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1);
+            int myMembershipId = User.Identity.GetCurrentUserId();
             int LogMaxSize = 20;
 
             Game chatlog = System.Web.HttpContext.Current.Application["main"] as Game;
@@ -94,7 +96,7 @@ namespace tfgame.Controllers
 
         public void SaveUserToDatabase()
         {
-            int myMembershipId = ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1);
+            int myMembershipId = User.Identity.GetCurrentUserId();
             Character me = Procedures.Procedures.GetCharacter(myMembershipId);
             ICharacterRepository characterRepo = new EFCharacterRepository();
             
@@ -122,7 +124,7 @@ namespace tfgame.Controllers
 
         public JsonResult GetSceneInfo()
         {
-            int myMembershipId = ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1);
+            int myMembershipId = User.Identity.GetCurrentUserId();
             Game game = System.Web.HttpContext.Current.Application["main"] as Game;
 
             Scene thisScene = Procedures.Procedures.GetScene(myMembershipId);
@@ -139,7 +141,7 @@ namespace tfgame.Controllers
 
         public JsonResult Move(string direction)
         {
-            int myMembershipId = ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1);
+            int myMembershipId = User.Identity.GetCurrentUserId();
             Game game = System.Web.HttpContext.Current.Application["main"] as Game;
             Character me = Procedures.Procedures.GetCharacter(myMembershipId);
             Scene here = Procedures.Procedures.GetScene(myMembershipId);
@@ -175,7 +177,7 @@ namespace tfgame.Controllers
 
         public JsonResult RefreshCharactersItems()
         {
-            int myMembershipId = ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1);
+            int myMembershipId = User.Identity.GetCurrentUserId();
             List<Character> output = Procedures.Procedures.GetCharactersHere(myMembershipId);
             return Json(output, JsonRequestBehavior.AllowGet);
         }
@@ -189,7 +191,7 @@ namespace tfgame.Controllers
 
         public JsonResult SelfQuery()
         {
-            int myMembershipId = ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1);
+            int myMembershipId = User.Identity.GetCurrentUserId();
             SelfQuery output = new SelfQuery();
 
             Character me = Procedures.Procedures.GetCharacter(myMembershipId);
@@ -209,7 +211,7 @@ namespace tfgame.Controllers
 
         public JsonResult LookAtScene()
         {
-            int myMembershipId = ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1);
+            int myMembershipId = User.Identity.GetCurrentUserId();
             Scene here = Procedures.Procedures.GetScene(myMembershipId);
             SceneImgDescription output = new SceneImgDescription();
             output.Img = here.Img;

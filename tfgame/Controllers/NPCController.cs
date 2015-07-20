@@ -5,6 +5,7 @@ using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using tfgame.dbModels.Models;
+using tfgame.Extensions;
 using tfgame.Procedures;
 using tfgame.Procedures.BossProcedures;
 using tfgame.Statics;
@@ -36,7 +37,7 @@ namespace tfgame.Controllers
             }
 
             // assert that player is logged in
-            Player me = PlayerProcedures.GetPlayerFromMembership(((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
+            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetCurrentUserId());
 
             ViewBag.MyMoney = Math.Floor(me.Money);
 
@@ -139,7 +140,7 @@ namespace tfgame.Controllers
         public ActionResult Purchase(int id)
         {
             // assert that player is logged in
-            Player me = PlayerProcedures.GetPlayerFromMembership(((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
+            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetCurrentUserId());
 
             if (me.Mobility != "full")
             {
@@ -223,7 +224,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult SellList()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
+            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetCurrentUserId());
 
             // assert player is animate
             if (me.Mobility != "full")
@@ -257,7 +258,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult Sell(int id)
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
+            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetCurrentUserId());
 
             // assert player is animate
             if (me.Mobility != "full")
@@ -331,7 +332,7 @@ namespace tfgame.Controllers
         public ActionResult TradeWithPetMerchant()
         {
 
-            Player me = PlayerProcedures.GetPlayerFromMembership(((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
+            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetCurrentUserId());
             ViewBag.MyMoney = Math.Floor(me.Money);
 
             // assert player is animate
@@ -385,7 +386,7 @@ namespace tfgame.Controllers
         public ActionResult PurchasePet(int id)
         {
             // assert that player is logged in
-            Player me = PlayerProcedures.GetPlayerFromMembership(((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
+            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetCurrentUserId());
 
             if (me.Mobility != "full")
             {
@@ -472,7 +473,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult SellPetList()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
+            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetCurrentUserId());
 
             // assert player is animate
             if (me.Mobility != "full")
@@ -510,7 +511,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult SellPet(int id)
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
+            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetCurrentUserId());
 
             // assert player is animate
             if (me.Mobility != "full")
@@ -581,7 +582,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult MindControlList()
         {
-            int myMembershipId = ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1);
+            int myMembershipId = User.Identity.GetCurrentUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             MindControlProcedures.ClearPlayerMindControlFlagIfOn(me);
@@ -600,7 +601,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult MoveVictim(int id)
         {
-            int myMembershipId = ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1);
+            int myMembershipId = User.Identity.GetCurrentUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             Player victim = PlayerProcedures.GetPlayer(id);
 
@@ -632,7 +633,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult StripVictim(int id)
         {
-            int myMembershipId = ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1);
+            int myMembershipId = User.Identity.GetCurrentUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             Player victim = PlayerProcedures.GetPlayer(id);
 
@@ -701,7 +702,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult DeMeditateVictim(int id)
         {
-            int myMembershipId = ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1);
+            int myMembershipId = User.Identity.GetCurrentUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             Player victim = PlayerProcedures.GetPlayer(id);
 
@@ -727,7 +728,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult MoveVictimSend(int id, string to)
         {
-            int myMembershipId = ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1);
+            int myMembershipId = User.Identity.GetCurrentUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             Player victim = PlayerProcedures.GetPlayer(id);
 
@@ -804,7 +805,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult TalkToBartender(string question)
         {
-            int myMembershipId = ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1);
+            int myMembershipId = User.Identity.GetCurrentUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             Player bartender = PlayerProcedures.GetPlayerFromMembership(AIProcedures.BartenderMembershipId);
 
@@ -921,7 +922,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult TalkWithJewdewfae()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
+            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetCurrentUserId());
             Player fae = PlayerProcedures.GetPlayerFromMembership(-6);
 
             // assert player is mobile
@@ -971,7 +972,7 @@ namespace tfgame.Controllers
         public ActionResult PlayWithJewdewfae()
         {
 
-            Player me = PlayerProcedures.GetPlayerFromMembership(((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
+            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetCurrentUserId());
             Player fae = PlayerProcedures.GetPlayerFromMembership(-6);
 
             // assert player is mobile
@@ -1042,7 +1043,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult TalkToCandice()
         {
-            int myMembershipId = ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1);
+            int myMembershipId = User.Identity.GetCurrentUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             Player bimbo = PlayerProcedures.GetPlayerFromMembership(AIProcedures.MouseBimboMembershipId);
 
@@ -1074,7 +1075,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult TalkToAdrianna()
         {
-            int myMembershipId = ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1);
+            int myMembershipId = User.Identity.GetCurrentUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             Player nerd = PlayerProcedures.GetPlayerFromMembership(AIProcedures.MouseNerdMembershipId);
 
@@ -1106,7 +1107,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult TalkToLorekeeper()
         {
-            int myMembershipId = ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1);
+            int myMembershipId = User.Identity.GetCurrentUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             Player loremaster = PlayerProcedures.GetPlayerFromMembership(AIProcedures.LoremasterMembershipId);
 
@@ -1138,7 +1139,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult LorekeeperPurchaseBook()
         {
-            int myMembershipId = ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1);
+            int myMembershipId = User.Identity.GetCurrentUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             Player loremaster = PlayerProcedures.GetPlayerFromMembership(AIProcedures.LoremasterMembershipId);
 
@@ -1168,7 +1169,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult LorekeeperPurchaseBookSend(int id)
         {
-            int myMembershipId = ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1);
+            int myMembershipId = User.Identity.GetCurrentUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             Player loremaster = PlayerProcedures.GetPlayerFromMembership(AIProcedures.LoremasterMembershipId);
 
@@ -1222,7 +1223,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult LorekeeperLearnSpell(string filter)
         {
-            int myMembershipId = ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1);
+            int myMembershipId = User.Identity.GetCurrentUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             Player loremaster = PlayerProcedures.GetPlayerFromMembership(AIProcedures.LoremasterMembershipId);
 
@@ -1287,7 +1288,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult LorekeeperLearnSpellSend(string spell)
         {
-            int myMembershipId = ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1);
+            int myMembershipId = User.Identity.GetCurrentUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             Player loremaster = PlayerProcedures.GetPlayerFromMembership(AIProcedures.LoremasterMembershipId);
 

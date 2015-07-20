@@ -9,6 +9,7 @@ using System.Xml.Serialization;
 using tfgame.dbModels.Abstract;
 using tfgame.dbModels.Concrete;
 using tfgame.dbModels.Models;
+using tfgame.Extensions;
 using tfgame.Procedures;
 using tfgame.Procedures.BossProcedures;
 using tfgame.Statics;
@@ -2765,7 +2766,7 @@ namespace tfgame.Controllers
             IPlayerRepository playerRepo = new EFPlayerRepository();
             IItemRepository itemRepo = new EFItemRepository();
 
-            Player me = playerRepo.Players.FirstOrDefault(p => p.MembershipId == ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
+            Player me = playerRepo.Players.FirstOrDefault(p => p.MembershipId == User.Identity.GetCurrentUserId());
             me.Mobility = "inanimate";
             me.Form = "form_Flirty_Three-Tiered_Skirt_Martiandawn";
             playerRepo.SavePlayer(me);
@@ -2812,7 +2813,7 @@ namespace tfgame.Controllers
             IPlayerRepository playerRepo = new EFPlayerRepository();
             IItemRepository itemRepo = new EFItemRepository();
 
-            Player me = playerRepo.Players.FirstOrDefault(p => p.MembershipId == ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
+            Player me = playerRepo.Players.FirstOrDefault(p => p.MembershipId == User.Identity.GetCurrentUserId());
             me.Mobility = "animal";
             me.Form = "form_Cuddly_Pocket_Goo_Girl_GooGirl";
             playerRepo.SavePlayer(me);
@@ -2846,6 +2847,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult FastAnimateMe()
         {
+            int myMembershipId = User.Identity.GetCurrentUserId();
             if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
             {
                 return RedirectToAction("Play", "PvP");
@@ -2861,7 +2863,7 @@ namespace tfgame.Controllers
             IPlayerRepository playerRepo = new EFPlayerRepository();
             IItemRepository itemRepo = new EFItemRepository();
 
-            Player me = playerRepo.Players.FirstOrDefault(p => p.MembershipId == ((User.Identity.GetUserId() != null) ? Convert.ToInt32(User.Identity.GetUserId()) : -1));
+            Player me = playerRepo.Players.FirstOrDefault(p => p.MembershipId == myMembershipId);
             me.Mobility = "full";
             me.Form = me.OriginalForm;
             playerRepo.SavePlayer(me);

@@ -25,7 +25,7 @@ namespace tfgame.Chat
 
         public override Task OnConnected()
         {
-            var me = PlayerProcedures.GetPlayerFormViewModel_FromMembership((Context.User.Identity.GetUserId() != null) ? Convert.ToInt32(Context.User.Identity.GetUserId()) : -1).Player;
+            var me = PlayerProcedures.GetPlayerFormViewModel_FromMembership(Context.User.Identity.GetCurrentUserId()).Player;
             chatService.OnUserConnected(me, Context.ConnectionId);
 
             return base.OnConnected();
@@ -35,7 +35,7 @@ namespace tfgame.Chat
         {
             var connectionId = Context.ConnectionId;
             var room = string.Empty;
-            var me = PlayerProcedures.GetPlayerFormViewModel_FromMembership((Context.User.Identity.GetUserId() != null) ? Convert.ToInt32(Context.User.Identity.GetUserId()) : -1).Player;
+            var me = PlayerProcedures.GetPlayerFormViewModel_FromMembership(Context.User.Identity.GetCurrentUserId()).Player;
             
             if (ChatService.ChatPersistance.ContainsKey(me.MembershipId))
             {
@@ -66,7 +66,7 @@ namespace tfgame.Chat
         public void Send(string name, string message)
         {
             string room = Clients.Caller.toRoom;
-            var me = PlayerProcedures.GetPlayerFormViewModel_FromMembership((Context.User.Identity.GetUserId() != null) ? Convert.ToInt32(Context.User.Identity.GetUserId()) : -1);
+            var me = PlayerProcedures.GetPlayerFormViewModel_FromMembership(Context.User.Identity.GetCurrentUserId());
             
             chatService.MarkOnlineActivityTimestamp(me.Player);
 
@@ -99,7 +99,7 @@ namespace tfgame.Chat
 
         public Task JoinRoom(string roomName)
         {
-            var me = PlayerProcedures.GetPlayerFormViewModel_FromMembership((Context.User.Identity.GetUserId() != null) ? Convert.ToInt32(Context.User.Identity.GetUserId()) : -1);
+            var me = PlayerProcedures.GetPlayerFormViewModel_FromMembership(Context.User.Identity.GetCurrentUserId());
 
             if (!ChatService.ChatPersistance[me.Player.MembershipId].InRooms.Contains(roomName))
                 SendNoticeToRoom(roomName, me.Player, "has joined the room.");

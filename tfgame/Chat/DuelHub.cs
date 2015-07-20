@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using tfgame.dbModels.Abstract;
 using tfgame.dbModels.Concrete;
 using System.Collections.Generic;
+using tfgame.Extensions;
 using tfgame.ViewModels;
 using System.Timers;
 using Newtonsoft.Json;
@@ -23,13 +24,13 @@ namespace tfgame.Chat
         public void Send(string input)
         {
             string room = Clients.Caller.toRoom;
-            Player me = PlayerProcedures.GetPlayerFromMembership(Convert.ToInt32(Context.User.Identity.GetUserId()));
+            Player me = PlayerProcedures.GetPlayerFromMembership(Context.User.Identity.GetCurrentUserId());
            // Clients.Group(room).addNewMessageToPage(input);
         }
 
         public Task JoinRoom(string roomName)
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(Convert.ToInt32(Context.User.Identity.GetUserId()));
+            Player me = PlayerProcedures.GetPlayerFromMembership(Context.User.Identity.GetCurrentUserId());
             string message = "[-[" + me.FirstName + " " + me.LastName + " has joined the room.]-]";
             Clients.Group(roomName).addNewMessageToPage(message);
             return Groups.Add(Context.ConnectionId, roomName);

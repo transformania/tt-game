@@ -626,7 +626,7 @@ namespace tfgame.ViewModels
                 "Agility", 
                 new BuffDetail {
                     DisplayName = "Agility",
-                    Description = "Agility affects your ability to move quickly, which helps you dodge attacks and move more quickly while leaving less noise.", 
+                    Description = "Agility affects your ability to move quickly, which helps you dodge attacks and move more quickly while leaving less noise.  Unfortunately moving so quickly isn't the best when trying to shoot a spell straight, so these casters can expect a few more spells to go awry and damage themselves instead of their target.", 
                     PlusIcons = new List<string> { DefenseIconClass }, 
                     MinusIcons =  new  List<string> { DefenseIconClass }
                 }
@@ -662,7 +662,7 @@ namespace tfgame.ViewModels
                 "Luck", 
                 new BuffDetail {
                     DisplayName = "Luck",
-                    Description = "Luck is a random chance that seems to operate in your favor. Or maybe the gods look kindly upon you. However you choose to rationalize it, luck affects your chance to score amazingly successful blows against your opponents.", 
+                    Description = "Luck is a random chance that seems to operate in your favor. Or maybe the gods look kindly upon you. However you choose to rationalize it, luck affects your chance to score amazingly successful blows against your opponents and helps to slightly reduce bad luck of your own in the form of reduced misfires.", 
                     PlusIcons = new List<string> { AttackIconClass }, 
                     MinusIcons =  new  List<string> {  }
                 }
@@ -833,9 +833,9 @@ namespace tfgame.ViewModels
                 {
                 "SpellExtraTFEnergyPercent",
                 new Dictionary<string,float> {
-                      	{"Discipline",-.375F},
+                      	{"Discipline",-.5F},
 	                    {"Perception", 0},
-	                    {"Charisma", .75F},
+	                    {"Charisma", 1.0F},
 	                    {"Fortitude", 0},
 	                    {"Agility", 0},
 	                    {"Allure", 0},
@@ -847,9 +847,9 @@ namespace tfgame.ViewModels
                 {
                 "SpellExtraHealthDamagePercent",
                 new Dictionary<string,float> {
-                      	{"Discipline",-.375F},
+                      	{"Discipline",-.5F},
 	                    {"Perception", 0},
-	                    {"Charisma", .75F},
+	                    {"Charisma", 1F},
 	                    {"Fortitude", 0},
 	                    {"Agility", 0},
 	                    {"Allure", 0},
@@ -879,11 +879,11 @@ namespace tfgame.ViewModels
 	                    {"Perception", .1F},
 	                    {"Charisma", 0},
 	                    {"Fortitude", 0},
-	                    {"Agility", 0},
+	                    {"Agility", -.1F},
 	                    {"Allure", 0}, // restoration
 	                    {"Magicka", 0},
 	                    {"Succour", 0},
-	                    {"Luck", 0},
+	                    {"Luck", .0F},
                     }
                 },
                 {
@@ -920,7 +920,7 @@ namespace tfgame.ViewModels
                       	{"Discipline", 0},
 	                    {"Perception", 0},
 	                    {"Charisma", 0},
-	                    {"Fortitude", .75F},
+	                    {"Fortitude", .065F},
 	                    {"Agility", 0},
 	                    {"Allure", 0},
 	                    {"Magicka", 0},

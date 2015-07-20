@@ -103,7 +103,7 @@ namespace tfgame.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Play", "PvP");
 
         }
 
@@ -131,7 +131,7 @@ namespace tfgame.Controllers
                 if (result.Succeeded)
                 {
                     SignInManager.SignIn(user, isPersistent: false, rememberBrowser:false);
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Play", "PvP");
                 }
                 else
                 {
@@ -370,7 +370,7 @@ namespace tfgame.Controllers
             }
             else
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Play", "PvP");
             }
         }
 

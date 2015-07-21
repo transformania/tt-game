@@ -506,6 +506,7 @@
     <Content Include="Characters\Morgan Faye.txt" />
     <Content Include="Characters\Nigel Whitfeld.txt" />
     <Content Include="Characters\Portia Mason.txt" />
+    <Content Include="ConnectionStrings.sample.config" />
     <Content Include="Content\AdminStyle.css" />
     <Content Include="Content\Bios.css" />
     <Content Include="Content\bootstrap.min.css" />
@@ -1889,6 +1890,9 @@
     <Content Include="Content\fashion.css.map" />
     <Content Include="Content\fashion.scss" />
     <Content Include="Content\custom.css.map" />
+    <Content Include="MachineKey.sample.config" />
+    <Content Include="ConnectionStrings.config" />
+    <Content Include="MachineKey.config" />
     <None Include="Properties\PublishProfiles\transformania-time.com - Web Deploy.pubxml">
       <SubType>Designer</SubType>
     </None>

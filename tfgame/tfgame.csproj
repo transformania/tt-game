@@ -1439,6 +1439,8 @@
     <Content Include="Images\PvP\portraits\zombie_aid_babblingfaces.png" />
     <Content Include="Images\PvP\Smilies\smile.png" />
     <Content Include="Schema\GetPlayerBuffs.sql" />
+    <Content Include="Schema\PopulateBotId.sql" />
+    <Content Include="Schema\RemoveOldIndexes.sql" />
     <Content Include="Schema\SimpleMembershipToIdentityMigration.sql" />
     <Content Include="Scripts\bombieGame.js" />
     <Content Include="Scripts\boxesResize.js" />

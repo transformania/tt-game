@@ -5,12 +5,16 @@ using System.Web;
 using tfgame.Statics;
 using tfgame.ViewModels;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace tfgame.dbModels.Models
 {
     public class Player
     {
         public int Id {get; set;}
+        [Index("IX_MembershipIdAndCovenant", 1)]
+        [Index("IX_MembershipIdAndInPvP", 1)]
+        [Index]
         [StringLength(128)]
         public string MembershipId { get; set; }
         public string FirstName { get; set; }
@@ -41,6 +45,7 @@ namespace tfgame.dbModels.Models
         public DateTime LastCombatAttackedTimestamp { get; set; }
         public bool FlaggedForAbuse { get; set; }
         public int UnusedLevelUpPerks { get; set; }
+        [Index("IX_MembershipIdAndInPvP", 2)]
         public bool InPvP { get; set; }
         public int GameMode { get; set; }
         public bool NonPvP_GameoverSpellsAllowed { get; set; }
@@ -48,6 +53,7 @@ namespace tfgame.dbModels.Models
         public bool InRP { get; set; }
         public int CleansesMeditatesThisRound { get; set; }
         public decimal Money { get; set; }
+        [Index("IX_MembershipIdAndCovenant", 2)]
         public int Covenant { get; set; }
         public string OriginalForm { get; set; }
         public decimal PvPScore { get; set; }

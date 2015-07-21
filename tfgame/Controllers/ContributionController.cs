@@ -6,16 +6,15 @@ using System.Web.Mvc;
 using tfgame.dbModels.Abstract;
 using tfgame.dbModels.Concrete;
 using tfgame.dbModels.Models;
-using tfgame.Filters;
+using tfgame.Extensions;
 using tfgame.Procedures;
 using tfgame.Statics;
 using tfgame.ViewModels;
-using WebMatrix.WebData;
+using Microsoft.AspNet.Identity;
 
 namespace tfgame.Controllers
 {
 
-     [InitializeSimpleMembership]
     public class ContributionController : Controller
     {
         //
@@ -32,7 +31,7 @@ namespace tfgame.Controllers
 
             IContributionRepository contributionRepo = new EFContributionRepository();
 
-            int currentUserId = WebSecurity.CurrentUserId;
+            string currentUserId = User.Identity.GetUserId();
 
             IEnumerable<Contribution> myContributions = contributionRepo.Contributions.Where(c => c.OwnerMembershipId == currentUserId);
             IEnumerable<Contribution> proofreading = null;
@@ -80,7 +79,7 @@ namespace tfgame.Controllers
                     if (contribution.ProofreadingCopy == true)
                     {
                         contribution.ProofreadingLockIsOn = true;
-                        contribution.CheckedOutBy = WebSecurity.CurrentUserName;
+                        contribution.CheckedOutBy = User.Identity.Name;
                         contribution.CreationTimestamp = DateTime.UtcNow;
                         contributionRepo.SaveContribution(contribution);
                     }
@@ -89,7 +88,7 @@ namespace tfgame.Controllers
                 catch
                 {
                     contribution = new Contribution();
-                    contribution.OwnerMembershipId = WebSecurity.CurrentUserId;
+                    contribution.OwnerMembershipId = User.Identity.GetUserId();
                 }
             }
             else
@@ -199,7 +198,7 @@ namespace tfgame.Controllers
             IEffectContributionRepository contributionRepo = new EFEffectContributionRepository();
             EffectContribution contribution = contributionRepo.EffectContributions.FirstOrDefault(c => c.Id == id);
 
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             bool iAmProofreader = User.IsInRole(PvPStatics.Permissions_Proofreader);
 
             if (iAmProofreader == false && contribution.OwnerMemberhipId != me.MembershipId)
@@ -221,7 +220,7 @@ namespace tfgame.Controllers
             IContributionRepository contributionRepo = new EFContributionRepository();
             Contribution contribution = contributionRepo.Contributions.FirstOrDefault(c => c.Id == id);
 
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             bool iAmProofreader = User.IsInRole(PvPStatics.Permissions_Proofreader);
 
             if (iAmProofreader == false && contribution.OwnerMembershipId != me.MembershipId)
@@ -243,7 +242,7 @@ namespace tfgame.Controllers
             IContributionRepository contributionRepo = new EFContributionRepository();
             Contribution SaveMe = contributionRepo.Contributions.FirstOrDefault(c => c.Id == input.Id);
 
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             bool iAmProofreader = User.IsInRole(PvPStatics.Permissions_Proofreader);
 
             if (iAmProofreader == false && SaveMe.OwnerMembershipId != me.MembershipId)
@@ -289,7 +288,7 @@ namespace tfgame.Controllers
                 SaveMe.Chaos_Order = input.Chaos_Order;
 
 
-                SaveMe.History += "Bonus values edited by " + WebSecurity.CurrentUserName + " on " + DateTime.UtcNow + ".<br>";
+                SaveMe.History += "Bonus values edited by " + User.Identity.Name + " on " + DateTime.UtcNow + ".<br>";
 
                 contributionRepo.SaveContribution(SaveMe);
 
@@ -305,7 +304,7 @@ namespace tfgame.Controllers
             IEffectContributionRepository contributionRepo = new EFEffectContributionRepository();
             EffectContribution SaveMe = contributionRepo.EffectContributions.FirstOrDefault(c => c.Id == input.Id);
 
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             bool iAmProofreader = User.IsInRole(PvPStatics.Permissions_Proofreader);
 
             if (iAmProofreader == false && SaveMe.OwnerMemberhipId != me.MembershipId)
@@ -416,7 +415,7 @@ namespace tfgame.Controllers
             Contribution cont = contributionRepo.Contributions.FirstOrDefault(c => c.Id == input.ContributionId);
 
             cont.AssignedToArtist = input.Status;
-            cont.History += "Assigned artist changed by " + WebSecurity.CurrentUserName + " on " + DateTime.UtcNow + ".<br>";
+            cont.History += "Assigned artist changed by " + User.Identity.Name + " on " + DateTime.UtcNow + ".<br>";
 
             contributionRepo.SaveContribution(cont);
 
@@ -441,7 +440,7 @@ namespace tfgame.Controllers
             if (SaveMe == null)
             {
                 SaveMe = new Contribution();
-                SaveMe.OwnerMembershipId = WebSecurity.CurrentUserId;
+                SaveMe.OwnerMembershipId = User.Identity.GetUserId();
             }
 
 
@@ -449,13 +448,13 @@ namespace tfgame.Controllers
             {
 
                 // submitter is original author, ID stays the same and do NOT mark as proofreading version
-                if (SaveMe != null && SaveMe.OwnerMembershipId == WebSecurity.CurrentUserId)
+                if (SaveMe != null && SaveMe.OwnerMembershipId == User.Identity.GetUserId())
                 {
                     SaveMe.Id = input.Id;
                 }
 
                 // submitter is not original author.  Do more logic...
-                else if (SaveMe != null && SaveMe.OwnerMembershipId != WebSecurity.CurrentUserId)
+                else if (SaveMe != null && SaveMe.OwnerMembershipId != User.Identity.GetUserId())
                 {
                     // this is a poorfreading copy.  Keep Id the same and keep it marked as a proofreading copy IF the editor is a proofreader
                     if (SaveMe.ProofreadingCopy == true && iAmProofreader == true)
@@ -600,7 +599,7 @@ namespace tfgame.Controllers
 
             if (SaveMe.ProofreadingCopy == true)
             {
-                SaveMe.History += "Edited by " + WebSecurity.CurrentUserName + " on " + DateTime.UtcNow + ".<br>";
+                SaveMe.History += "Edited by " + User.Identity.Name + " on " + DateTime.UtcNow + ".<br>";
             }
 
             contributionRepo.SaveContribution(SaveMe);
@@ -652,7 +651,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult SendContributionUndoLock(int id)
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             bool iAmProofreader = User.IsInRole(PvPStatics.Permissions_Proofreader);
 
             if (iAmProofreader == false)
@@ -682,7 +681,7 @@ namespace tfgame.Controllers
             // get all of this players effect contributions
             IEffectContributionRepository effectContRepo = new EFEffectContributionRepository();
 
-            IEnumerable<EffectContribution> myEffectContributions = effectContRepo.EffectContributions.Where(c => c.OwnerMemberhipId == WebSecurity.CurrentUserId);
+            IEnumerable<EffectContribution> myEffectContributions = effectContRepo.EffectContributions.Where(c => c.OwnerMemberhipId == User.Identity.GetUserId());
             ViewBag.OtherEffectContributions = myEffectContributions;
 
             EffectContribution output = effectContRepo.EffectContributions.FirstOrDefault(e => e.Id == id);
@@ -705,7 +704,7 @@ namespace tfgame.Controllers
             {
                 output = new EffectContribution
                 {
-                    OwnerMemberhipId = WebSecurity.CurrentUserId,
+                    OwnerMemberhipId = User.Identity.GetUserId(),
                     History = "",
                 };
             }
@@ -713,7 +712,7 @@ namespace tfgame.Controllers
             // not new... check for proofreading permissions
             else
             {
-                if (output.OwnerMemberhipId != WebSecurity.CurrentUserId && (iAmProofreader == false || (output.ProofreadingCopy == false && iAmAdmin == false)))
+                if (output.OwnerMemberhipId != User.Identity.GetUserId() && (iAmProofreader == false || (output.ProofreadingCopy == false && iAmAdmin == false)))
                 {
                     TempData["Error"] = TempData["You do not have permission to view this."];
                     return RedirectToAction("Play", "PvP");
@@ -725,7 +724,7 @@ namespace tfgame.Controllers
             if (output.ProofreadingCopy)
             {
                 output.ProofreadingLockIsOn = true;
-                output.CheckedOutBy = WebSecurity.CurrentUserName;
+                output.CheckedOutBy = User.Identity.Name;
                 output.Timestamp = DateTime.UtcNow;
                 effectContRepo.SaveEffectContribution(output);
             }
@@ -800,7 +799,7 @@ namespace tfgame.Controllers
             {
                 saveme = new EffectContribution
                 {
-                    OwnerMemberhipId = WebSecurity.CurrentUserId,
+                    OwnerMemberhipId = User.Identity.GetUserId(),
                     ReadyForReview = false,
                     ApprovedByAdmin = false,
                     IsLive = false,
@@ -809,7 +808,7 @@ namespace tfgame.Controllers
 
                 // make sure this actually is the player's own contribution
             }
-            else if (saveme.OwnerMemberhipId != WebSecurity.CurrentUserId && iAmProofreader == false)
+            else if (saveme.OwnerMemberhipId != User.Identity.GetUserId() && iAmProofreader == false)
             {
                 TempData["Error"] = "This contribution does not belong to you and you are not a proofreader.";
                 TempData["SubError"] = "You may have been logged out; check that you are logged in the the game still in another tab.";
@@ -854,7 +853,7 @@ namespace tfgame.Controllers
             {
                 saveme.ProofreadingLockIsOn = false;
                 saveme.CheckedOutBy = "";
-                saveme.History += "Edited by " + WebSecurity.CurrentUserName + " on " + DateTime.UtcNow + ".<br>";
+                saveme.History += "Edited by " + User.Identity.Name + " on " + DateTime.UtcNow + ".<br>";
             }
  
 
@@ -1604,7 +1603,7 @@ namespace tfgame.Controllers
         public ActionResult MyDMRolls()
         {
             IDMRollRepository repo = new EFDMRollRepository();
-            return View(repo.DMRolls.Where(r => r.MembershipOwnerId == WebSecurity.CurrentUserId));
+            return View(repo.DMRolls.Where(r => r.MembershipOwnerId == User.Identity.GetUserId()));
         }
 
           [Authorize]
@@ -1618,7 +1617,7 @@ namespace tfgame.Controllers
             }
             else
             {
-                if (output.MembershipOwnerId != WebSecurity.CurrentUserId && User.IsInRole(PvPStatics.Permissions_Admin) == false)
+                if (output.MembershipOwnerId != User.Identity.GetUserId() && User.IsInRole(PvPStatics.Permissions_Admin) == false)
                 {
                     TempData["Error"] = "This does not belong to you.";
                     return RedirectToAction("Play", "PvP");
@@ -1640,7 +1639,7 @@ namespace tfgame.Controllers
             }
             else
             {
-                if (roll.MembershipOwnerId != WebSecurity.CurrentUserId && User.IsInRole(PvPStatics.Permissions_Admin) == false)
+                if (roll.MembershipOwnerId != User.Identity.GetUserId() && User.IsInRole(PvPStatics.Permissions_Admin) == false)
                 {
                     TempData["Error"] = "This does not belong to you.";
                     return RedirectToAction("Play", "PvP");
@@ -1652,9 +1651,9 @@ namespace tfgame.Controllers
                 } 
             }
 
-            if (roll.MembershipOwnerId > 0 && User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            if (roll.MembershipOwnerId != "0" && roll.MembershipOwnerId != "-1" && roll.MembershipOwnerId != "-2" && User.IsInRole(PvPStatics.Permissions_Admin) == false)
             {
-                roll.MembershipOwnerId = WebSecurity.CurrentUserId;
+                roll.MembershipOwnerId = User.Identity.GetUserId();
             }
 
             roll.Tags = input.Tags.ToLower();
@@ -1707,10 +1706,10 @@ namespace tfgame.Controllers
              IEffectContributionRepository effectContributionRepo = new EFEffectContributionRepository();
 
              List<ContributionCredit> output = new List<ContributionCredit>();
-             List<int> uniqueOwnerIds = contributionRepo.Contributions.Where(c => c.ProofreadingCopy == true && c.IsLive == true && c.OwnerMembershipId > 0 && c.SubmitterName != null && c.SubmitterName != "").Select(c => c.OwnerMembershipId).Distinct().ToList();
+             List<string> uniqueOwnerIds = contributionRepo.Contributions.Where(c => c.ProofreadingCopy == true && c.IsLive == true && c.OwnerMembershipId !=  "0" && c.OwnerMembershipId != "-1" && c.OwnerMembershipId != "-2" && c.SubmitterName != null && c.SubmitterName != "").Select(c => c.OwnerMembershipId).Distinct().ToList();
              
 
-             foreach (int ownerId in uniqueOwnerIds)
+             foreach (string ownerId in uniqueOwnerIds)
              {
                  ContributionCredit addme = new ContributionCredit
                  {

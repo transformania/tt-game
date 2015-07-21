@@ -17,12 +17,13 @@ namespace tfgame.Procedures.BossProcedures
         public static void SpawnLoremaster()
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player loremaster = playerRepo.Players.FirstOrDefault(f => f.MembershipId == AIProcedures.LoremasterMembershipId);
+            Player loremaster = playerRepo.Players.FirstOrDefault(f => f.BotId == AIProcedures.LoremasterMembershipId);
 
             if (loremaster == null)
             {
                 loremaster = new Player();
-                loremaster.MembershipId = AIProcedures.LoremasterMembershipId;
+                loremaster.MembershipId = AIProcedures.LoremasterMembershipId.ToString();
+                loremaster.BotId = AIProcedures.LoremasterMembershipId;
                 loremaster.Level = 5;
                 loremaster.FirstName = FirstName;
                 loremaster.LastName = LastName;
@@ -52,7 +53,7 @@ namespace tfgame.Procedures.BossProcedures
 
         public static void TransferBooksFromLindellaToLorekeeper(Player lorekeeper)
         {
-            Player lindella = PlayerProcedures.GetPlayerFromMembership(AIProcedures.LindellaMembershipId);
+            Player lindella = PlayerProcedures.GetPlayerFromBotId(AIProcedures.LindellaMembershipId);
             IItemRepository itemRepo = new EFItemRepository();
 
             List<Item> LindellasBooks = itemRepo.Items.Where(i => i.OwnerId == lindella.Id && (i.dbName.Contains("item_consumable_spellbook_") || i.dbName.Contains("item_consumable_tome-"))).ToList();

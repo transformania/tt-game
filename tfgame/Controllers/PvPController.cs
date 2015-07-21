@@ -14,16 +14,15 @@ using tfgame.CustomHtmlHelpers;
 using tfgame.dbModels.Abstract;
 using tfgame.dbModels.Concrete;
 using tfgame.dbModels.Models;
-using tfgame.Filters;
+using tfgame.Extensions;
 using tfgame.Procedures;
 using tfgame.Procedures.BossProcedures;
 using tfgame.Statics;
 using tfgame.ViewModels;
-using WebMatrix.WebData;
+using Microsoft.AspNet.Identity;
 
 namespace tfgame.Controllers
 {
-    [InitializeSimpleMembership]
     public class PvPController : Controller
     {
         //
@@ -43,13 +42,13 @@ namespace tfgame.Controllers
                 CovenantProcedures.LoadCovenantDictionary();
             }
 
-            int myMembershipId = WebSecurity.CurrentUserId;
+            string myMembershipId = User.Identity.GetUserId();
 
             ViewBag.MyMembershipId = myMembershipId;
             ViewBag.MaxLogSize = PvPStatics.MaxLogMessagesPerLocation;
 
             // assert that the player is logged in; otherwise ask them to do so
-            if (myMembershipId == -1)
+            if (myMembershipId == null)
             {
                 return View("~/Views/PvP/LoginRequired.cshtml");
             }
@@ -163,13 +162,13 @@ namespace tfgame.Controllers
                         }
                     }
                     inanimateOutput.LocationLog = validActionsHere;
-                    inanimateOutput.PlayersHere = PlayerProcedures.GetPlayerFormViewModelsAtLocation(inanimateOutput.WornBy.Player.dbLocationName);
+                    inanimateOutput.PlayersHere = PlayerProcedures.GetPlayerFormViewModelsAtLocation(inanimateOutput.WornBy.Player.dbLocationName, myMembershipId);
                     
                 }
                 else
                 {
                     inanimateOutput.LocationLog = LocationLogProcedures.GetLocationLogsAtLocation(me.dbLocationName);
-                    inanimateOutput.PlayersHere = PlayerProcedures.GetPlayerFormViewModelsAtLocation(me.dbLocationName);
+                    inanimateOutput.PlayersHere = PlayerProcedures.GetPlayerFormViewModelsAtLocation(me.dbLocationName, myMembershipId);
                 }
 
                 List<PlayerFormViewModel> playersHere = new List<PlayerFormViewModel>();
@@ -230,7 +229,7 @@ namespace tfgame.Controllers
 
                 animalOutput.LocationItems = ItemProcedures.GetAllItemsAtLocation(animalOutput.Location.dbName, me);
 
-                animalOutput.PlayersHere = PlayerProcedures.GetPlayerFormViewModelsAtLocation(animalOutput.Location.dbName).Where(p => p.Form.MobilityType == "full");
+                animalOutput.PlayersHere = PlayerProcedures.GetPlayerFormViewModelsAtLocation(animalOutput.Location.dbName, myMembershipId).Where(p => p.Form.MobilityType == "full");
 
                 animalOutput.LastUpdateTimestamp = WorldStat.LastUpdateTimestamp;
 
@@ -272,7 +271,7 @@ namespace tfgame.Controllers
             output.LastUpdateTimestamp = PvPWorldStatProcedures.GetLastWorldUpdate();
 
             loadtime += "Start get players here:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
-            output.PlayersHere = PlayerProcedures.GetPlayerFormViewModelsAtLocation(me.dbLocationName).Where(p => p.Form.MobilityType == "full");
+            output.PlayersHere = PlayerProcedures.GetPlayerFormViewModelsAtLocation(me.dbLocationName, myMembershipId).Where(p => p.Form.MobilityType == "full");
             loadtime += "End get players here:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
 
             // output.Location = Locations.GetLocation()
@@ -356,7 +355,7 @@ namespace tfgame.Controllers
          [Authorize]
         public ActionResult NewCharacter(NewCharacterViewModel player)
         {
-
+            string myMembershipId = User.Identity.GetUserId();
             if (!ModelState.IsValid)
             {
                 ViewBag.ErrorMessage = "Your character was not created.  You can only use letters and your first and last names must be between 2 and 30 letters long." ;
@@ -395,7 +394,7 @@ namespace tfgame.Controllers
             }
             
             // assert player does not currently have an animate player
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             if (me != null && me.Mobility == "full")
             {
                 ViewBag.ErrorMessage = "You cannot create a new character right now.  You already have a fully animate character already, " + me.FirstName + " " + me.LastName + ".";
@@ -413,7 +412,7 @@ namespace tfgame.Controllers
                 return View("~/Views/PvP/MakeNewCharacter.cshtml");
             }
 
-            string result = PlayerProcedures.SaveNewPlayer(player);
+            string result = PlayerProcedures.SaveNewPlayer(player, myMembershipId);
 
             if (result != "saved")
             {
@@ -421,7 +420,7 @@ namespace tfgame.Controllers
                 return View("~/Views/PvP/MakeNewCharacter.cshtml");
             }
 
-            PlayerProcedures.LogIP(Request.UserHostAddress);
+            PlayerProcedures.LogIP(Request.UserHostAddress, myMembershipId);
 
             return RedirectToAction("Play");
         }
@@ -429,7 +428,8 @@ namespace tfgame.Controllers
          [Authorize]
         public ActionResult Restart()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             ViewBag.IsRerolling = false;
             ViewBag.OldFirstName = "";
             ViewBag.OldLastName = "";
@@ -449,7 +449,7 @@ namespace tfgame.Controllers
          [Authorize]
         public ActionResult MoveTo(string locname)
         {
-
+            string myMembershipId = User.Identity.GetUserId();
             if (PvPStatics.AnimateUpdateInProgress == true)
             {
                 TempData["Error"] = "Player update portion of the world update is still in progress.";
@@ -457,9 +457,9 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play");
             }
 
-            PlayerProcedures.LogIP(Request.UserHostAddress);
+            PlayerProcedures.LogIP(Request.UserHostAddress, myMembershipId);
 
-            Player me = PlayerProcedures.GetPlayerFromMembership();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert that this player is mobile
             if (PlayerCanPerformAction(me, "move") == false)
@@ -592,7 +592,7 @@ namespace tfgame.Controllers
                 LocationLogProcedures.AddLocationLog(locname, enteringMessage);
             }
 
-            PlayerProcedures.MovePlayer(locname, moveAPdiscount);
+            PlayerProcedures.MovePlayer(me.Id, locname, moveAPdiscount);
 
          
 
@@ -619,6 +619,7 @@ namespace tfgame.Controllers
         [Authorize]
          public ActionResult EnterDungeon(string entering)
          {
+             string myMembershipId = User.Identity.GetUserId();
              if (PvPStatics.AnimateUpdateInProgress == true)
              {
                  TempData["Error"] = "Player update portion of the world update is still in progress.";
@@ -626,9 +627,9 @@ namespace tfgame.Controllers
                  return RedirectToAction("Play");
              }
 
-             PlayerProcedures.LogIP(Request.UserHostAddress);
+             PlayerProcedures.LogIP(Request.UserHostAddress, myMembershipId);
 
-             Player me = PlayerProcedures.GetPlayerFromMembership();
+             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
 
             // assert player is animate
@@ -708,12 +709,13 @@ namespace tfgame.Controllers
         [Authorize]
          public ActionResult AttackModal(int targetId)
          {
-             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+             string myMembershipId = User.Identity.GetUserId();
+             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
              Player target = PlayerProcedures.GetPlayer(targetId);
             IEnumerable<SkillViewModel2> output = SkillProcedures.GetSkillViewModelsOwnedByPlayer(me.Id).Where(s => s.dbSkill.IsArchived == false);
 
             // filter out spells that you can't use on your target
-            if (FriendProcedures.PlayerIsMyFriend(me, target) || target.MembershipId < 0)
+            if (FriendProcedures.PlayerIsMyFriend(me, target) || target.BotId < 0)
             {
                 // do nothing, all spells are okay
             }
@@ -725,59 +727,60 @@ namespace tfgame.Controllers
             }
 
             // attack or the target is in superprotection and not a friend or bot; no spells work
-            else if (target.GameMode == 0 || (me.GameMode == 0 && target.MembershipId > 0))
+            else if (target.GameMode == 0 || (me.GameMode == 0 && target.BotId == 0))
             {
                 output = output.Where(s => s.MobilityType == "NONEXISTANT");
             }
 
             // filter out MC spells for bots
-            if (target.MembershipId < 0)
+            if (target.BotId < 0)
             {
                 output = output.Where(s => s.MobilityType != "mindcontrol");
             }
 
             // only show inanimates for rat thieves
-            if (target.MembershipId == -8 || target.MembershipId == -9)
+            if (target.BotId == -8 || target.BotId == -9)
             {
                 output = output.Where(s => s.MobilityType == "inanimate");
             }
 
             // only bimbo spell works on nerd mouse boss
-            if (target.MembershipId == -11)
+            if (target.BotId == -11)
             {
                 output = output.Where(s => s.Skill.dbName == BossProcedures_Sisters.BimboSpell);
             }
 
             // only nerd spell works on nerd bimbo boss
-            if (target.MembershipId == -12)
+            if (target.BotId == -12)
             {
                 output = output.Where(s => s.Skill.dbName == BossProcedures_Sisters.NerdSpell);
             }
 
             // Vanquish only works against dungeon demons
-            if (target.MembershipId == -13)
+            if (target.BotId == -13)
             {
                 output = output.Where(s => s.Skill.dbName == PvPStatics.Dungeon_VanquishSpell || s.Skill.dbName == "lowerHealth");
             }
 
             // Vanquish only works against dungeon demons
-            if (target.MembershipId != -13)
+            if (target.BotId != -13)
             {
                 output = output.Where(s => s.Skill.dbName != PvPStatics.Dungeon_VanquishSpell);
             }
 
             ViewBag.TargetId = targetId;
             ViewBag.TargetName = target.FirstName + " " + target.LastName;
+            ViewBag.BotId = target.BotId;
              return PartialView("partial/AjaxAttackModal", output);
          }
 
          [Authorize]
         public ActionResult Attack(int targetId, string attackName)
         {
+            string myMembershipId = User.Identity.GetUserId();
+            PlayerProcedures.LogIP(Request.UserHostAddress, myMembershipId);
 
-            PlayerProcedures.LogIP(Request.UserHostAddress);
-
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             LogBox logs = new LogBox();
 
             #region validation checks
@@ -933,7 +936,7 @@ namespace tfgame.Controllers
             }
 
              // if the spell is a form of mind control, check that the target is not a bot
-            if (skillBeingUsed.MobilityType == "mindcontrol" && targeted.MembershipId < 0)
+            if (skillBeingUsed.MobilityType == "mindcontrol" && targeted.BotId < 0)
             {
                 TempData["Error"] = "This target is immune to mind control.";
                 TempData["SubError"] = "Mind control currently only works against human opponents.";
@@ -984,15 +987,15 @@ namespace tfgame.Controllers
 
             #region bot attack type checks
             // prevent low level players from taking on high level bots
-            if (targeted.MembershipId <= -3)
+            if (targeted.BotId <= -3)
             {
 
                 // disable attacks on "friendly" NPCs
-                if (targeted.MembershipId == AIProcedures.LindellaMembershipId ||
-                    targeted.MembershipId == AIProcedures.WuffieMembershipId ||
-                    targeted.MembershipId == AIProcedures.JewdewfaeMembershipId ||
-                    targeted.MembershipId == AIProcedures.BartenderMembershipId ||
-                    targeted.MembershipId == AIProcedures.LoremasterMembershipId)
+                if (targeted.BotId == AIProcedures.LindellaMembershipId ||
+                    targeted.BotId == AIProcedures.WuffieMembershipId ||
+                    targeted.BotId == AIProcedures.JewdewfaeMembershipId ||
+                    targeted.BotId == AIProcedures.BartenderMembershipId ||
+                    targeted.BotId == AIProcedures.LoremasterMembershipId)
                 {
                     TempData["Error"] = "A little smile tells you it might just be a bad idea to try and attack this person...";
                     return RedirectToAction("Play");
@@ -1006,7 +1009,7 @@ namespace tfgame.Controllers
                 }
 
                 // Donna
-                if (targeted.MembershipId == -4)
+                if (targeted.BotId == -4)
                 {
                     if (futureForm == null || futureForm.MobilityType == "full")
                     {
@@ -1017,7 +1020,7 @@ namespace tfgame.Controllers
                 }
 
                 // Valentine
-                if (targeted.MembershipId == -5)
+                if (targeted.BotId == -5)
                 {
                     // only allow weakens against Valentine for now (replace with Duel spell later?)
                     if (futureForm != null)
@@ -1029,7 +1032,7 @@ namespace tfgame.Controllers
                 }
 
                 // Bimbo Boss
-                if (targeted.MembershipId == -7)
+                if (targeted.BotId == -7)
                 {
 
                     // disallow animate spells
@@ -1043,7 +1046,7 @@ namespace tfgame.Controllers
                 }
 
                 // Thieves Boss
-                if (targeted.MembershipId == -8 || targeted.MembershipId == -9)
+                if (targeted.BotId == -8 || targeted.BotId == -9)
                 {
 
                     // only allow inanimate spells
@@ -1057,7 +1060,7 @@ namespace tfgame.Controllers
                 }
 
                 // Mouse Sisters Boss
-                if (targeted.MembershipId == -11 || targeted.MembershipId == -12)
+                if (targeted.BotId == -11 || targeted.BotId == -12)
                 {
                     string result = BossProcedures_Sisters.SpellIsValid(me, targeted, attackName);
                     if (result != "") {
@@ -1067,7 +1070,7 @@ namespace tfgame.Controllers
                 }
 
                 // TODO:  Dungeon Demons can only be vanquished
-                if (targeted.MembershipId == -13 && skill.dbName != PvPStatics.Dungeon_VanquishSpell && skill.dbName != "lowerHealth")
+                if (targeted.BotId == -13 && skill.dbName != PvPStatics.Dungeon_VanquishSpell && skill.dbName != "lowerHealth")
                 {
                     TempData["Error"] = "Only the 'Vanquish' spell and Weaken have any effect on the Dark Demonic Guardians.";
                     return RedirectToAction("Play");
@@ -1078,7 +1081,7 @@ namespace tfgame.Controllers
 
 
             // don't worry about bots
-            if (targeted.MembershipId > 0)
+            if (targeted.BotId == 0)
             {
 
                 if (me.GameMode < 2 || targeted.GameMode < 2)
@@ -1096,7 +1099,7 @@ namespace tfgame.Controllers
                     }
 
                     // no casting spells on non-friend Protection mode players unless the target is a bot
-                    else if (targeted.GameMode == 0 || (me.GameMode == 0 && targeted.MembershipId > 0))
+                    else if (targeted.GameMode == 0 || (me.GameMode == 0 && targeted.BotId == 0))
                     {
                         TempData["Error"] = "Either you and your target is in SuperProtection mode and are not friends or bots.";
                         return RedirectToAction("Play");
@@ -1153,7 +1156,8 @@ namespace tfgame.Controllers
          [Authorize]
          public ActionResult EnchantLocation()
          {
-             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+             string myMembershipId = User.Identity.GetUserId();
+             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
              // assert player is in an okay form to do this
              if (me.Mobility != "full")
@@ -1295,7 +1299,7 @@ namespace tfgame.Controllers
          [Authorize]
         public ActionResult Meditate()
         {
-
+            string myMembershipId = User.Identity.GetUserId();
             if (PvPStatics.AnimateUpdateInProgress == true)
             {
                 TempData["Error"] = "Player update portion of the world update is still in progress.";
@@ -1303,7 +1307,7 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play");
             }
 
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert that the player is not mind controlled and cannot pick up anything on their own
             if (me.MindControlIsActive == true)
@@ -1363,7 +1367,7 @@ namespace tfgame.Controllers
          [Authorize]
         public ActionResult Cleanse()
         {
-
+            string myMembershipId = User.Identity.GetUserId();
             if (PvPStatics.AnimateUpdateInProgress == true)
             {
                 TempData["Error"] = "Player update portion of the world update is still in progress.";
@@ -1371,7 +1375,7 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play");
             }
 
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert player has sufficient action points to meditate
             if (me.ActionPoints < PvPStatics.CleanseCost)
@@ -1418,7 +1422,8 @@ namespace tfgame.Controllers
          [Authorize]
         public ActionResult MySkills()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             ViewBag.TotalLearnableSkills = SkillProcedures.GetCountOfLearnableSpells();
 
@@ -1428,7 +1433,7 @@ namespace tfgame.Controllers
          [Authorize]
         public ActionResult Search()
         {
-
+            string myMembershipId = User.Identity.GetUserId();
             if (PvPStatics.AnimateUpdateInProgress == true)
             {
                 TempData["Error"] = "Player update portion of the world update is still in progress.";
@@ -1436,7 +1441,7 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play");
             }
 
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert player is in an okay form to do this
             if (PlayerCanPerformAction(me, "search") == false)
@@ -1504,7 +1509,8 @@ namespace tfgame.Controllers
          [Authorize]
         public ActionResult ClearLog()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             PlayerLogProcedures.ClearPlayerLog(me.Id);
             return RedirectToAction("Play");
         }
@@ -1512,7 +1518,8 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult DismissNotifications_Ajax()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             PlayerLogProcedures.DismissImportantLogs(me.Id);
             return new HttpStatusCodeResult(HttpStatusCode.OK); 
         }
@@ -1520,16 +1527,18 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult ViewLog()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             return View("ViewLog", PlayerLogProcedures.GetAllPlayerLogs(me.Id).Reverse());
         }
 
          [Authorize]
         public ActionResult MyInventory()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
-            if (me.MembershipId == WebSecurity.CurrentUserId)
+            if (me.MembershipId == myMembershipId)
             {
                 ViewBag.BelongsToPlayer = "block";
             }
@@ -1566,14 +1575,14 @@ namespace tfgame.Controllers
          [Authorize]
         public ActionResult Take(int id)
         {
-
+            string myMembershipId = User.Identity.GetUserId();
             // assert player is logged in
-            if (WebSecurity.CurrentUserId == -1)
+            if (myMembershipId == null)
             {
                 return View("~/Views/PvP/LoginRequired.cshtml");
             }
 
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             BuffBox myBuffs = ItemProcedures.GetPlayerBuffsSQL(me);
 
@@ -1698,14 +1707,14 @@ namespace tfgame.Controllers
 
         public ActionResult Drop(int itemId)
         {
-
+            string myMembershipId = User.Identity.GetUserId();
             // assert player is logged in
-            if (WebSecurity.CurrentUserId == -1)
+            if (myMembershipId == null)
             {
                 return View("~/Views/PvP/LoginRequired.cshtml");
             }
 
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert player is in an okay form to do this
             if (PlayerCanPerformAction(me, "drop") == false)
@@ -1788,13 +1797,14 @@ namespace tfgame.Controllers
          [Authorize]
         public ActionResult Equip(int itemId, bool putOn)
         {
+            string myMembershipId = User.Identity.GetUserId();
             // assert player is logged in
-            if (WebSecurity.CurrentUserId == -1)
+            if (myMembershipId == null)
             {
                 return View("~/Views/PvP/LoginRequired.cshtml");
             }
 
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert player is in an okay form to do this
             if (PlayerCanPerformAction(me, "equip") == false)
@@ -1869,7 +1879,7 @@ namespace tfgame.Controllers
          [Authorize]
         public ActionResult Use(int itemId)
         {
-
+            string myMembershipId = User.Identity.GetUserId();
             if (PvPStatics.AnimateUpdateInProgress == true)
             {
                 TempData["Error"] = "Player update portion of the world update is still in progress.";
@@ -1877,7 +1887,7 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play");
             }
 
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             Location here = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName);
 
             // assert player is in an okay form to do this
@@ -1961,7 +1971,7 @@ namespace tfgame.Controllers
                 return RedirectToAction("RemoveCurse", "Item");
             }
          
-            string result = ItemProcedures.UseItem(itemId);
+            string result = ItemProcedures.UseItem(itemId, myMembershipId);
 
             PlayerProcedures.AddMinutesToTimestamp(me, 15, true);
 
@@ -1977,7 +1987,7 @@ namespace tfgame.Controllers
 
         }
 
-         public ActionResult LookAtPlayer_FromMembershipId(int id)
+         public ActionResult LookAtPlayer_FromMembershipId(string id)
          {
              Player player = PlayerProcedures.GetPlayerFromMembership(id);
 
@@ -2077,13 +2087,13 @@ namespace tfgame.Controllers
         public ActionResult MyMessages()
         {
             // this might fix some odd log-off message interception oddities... maybe?
-            int myMembershipId = WebSecurity.CurrentUserId;
-            if (myMembershipId == -1)
+            string myMembershipId = User.Identity.GetUserId();
+            if (myMembershipId == null)
             {
                 return View("~/Views/PvP/LoginRequired.cshtml");
             }
 
-           Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+           Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
            MessageBag output = MessageProcedures.GetPlayerMessages(me);
 
             // if you are inanimate and are being worn, grab the data on who is wearing you
@@ -2112,9 +2122,9 @@ namespace tfgame.Controllers
          [Authorize]
         public ActionResult DeleteMessage(int messageId)
         {
-
+            string myMembershipId = User.Identity.GetUserId();
             // assert player owns message
-            if (MessageProcedures.PlayerOwnsMessage(messageId) == false)
+            if (MessageProcedures.PlayerOwnsMessage(messageId, myMembershipId) == false)
             {
                 TempData["Error"] = "You can't delete this message.";
                 TempData["SubError"] = "It wasn't sent to you.";
@@ -2122,7 +2132,7 @@ namespace tfgame.Controllers
             }
 
             MessageProcedures.DeleteMessage(messageId);
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             MessageBag output = MessageProcedures.GetPlayerMessages(me);
             return RedirectToAction("MyMessages");
         }
@@ -2130,22 +2140,23 @@ namespace tfgame.Controllers
          [Authorize]
         public ActionResult DeleteAllMessages()
         {
-
+            string myMembershipId = User.Identity.GetUserId();
             // assert player is logged in
-            if (WebSecurity.CurrentUserId == -1)
+            if (myMembershipId == null)
             {
                 return View("~/Views/PvP/LoginRequired.cshtml");
             }
 
-            MessageProcedures.DeleteAllMessages();
+            MessageProcedures.DeleteAllMessages(myMembershipId);
             return RedirectToAction("MyMessages");
         }
 
          [Authorize]
         public ActionResult ReadMessage(int messageId)
         {
+            string myMembershipId = User.Identity.GetUserId();
             // assert player owns message
-            if (MessageProcedures.PlayerOwnsMessage(messageId) == false)
+            if (MessageProcedures.PlayerOwnsMessage(messageId, myMembershipId) == false)
             {
                 TempData["Error"] = "You can't read this message.";
                 TempData["SubError"] = "It wasn't sent to you.";
@@ -2182,7 +2193,8 @@ namespace tfgame.Controllers
          [Authorize]
         public ActionResult Write(int playerId, int responseTo)
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             Message output = new Message();
             output.SenderId = me.Id;
             output.ReceiverId = playerId;
@@ -2213,7 +2225,8 @@ namespace tfgame.Controllers
          [Authorize]
          public ActionResult SendMessage(Message input)
          {
-             Player me = PlayerProcedures.GetPlayerFromMembership();
+             string myMembershipId = User.Identity.GetUserId();
+             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
              Player receiver = PlayerProcedures.GetPlayer(input.ReceiverId);
 
              // assert no blacklist exists
@@ -2236,7 +2249,7 @@ namespace tfgame.Controllers
                  return RedirectToAction("Write", input);
              }
 
-             MessageProcedures.AddMessage(input);
+             MessageProcedures.AddMessage(input, myMembershipId);
              NoticeProcedures.PushNotice(receiver, "<b>" + me.GetFullName() + " has sent you a new message.</b>", NoticeProcedures.PushType__PlayerMessage);
              TempData["Result"] = "Your message has been sent.";
              return RedirectToAction("MyMessages");
@@ -2245,8 +2258,8 @@ namespace tfgame.Controllers
          [Authorize]
         public ActionResult InanimateAction(string actionName)
         {
-
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             PlayerFormViewModel mePlus = PlayerProcedures.GetPlayerFormViewModel(me.Id);
             PlayerFormViewModel wearer = ItemProcedures.BeingWornBy(me);
             Item meDbItem = ItemProcedures.GetItemByVictimName(me.FirstName, me.LastName);
@@ -2307,8 +2320,8 @@ namespace tfgame.Controllers
                 firstP = "You agitatedly zap a patch of your current owner, " + wearer.Player.FirstName + " " + wearer.Player.LastName + "'s skin.  " + pronoun + " loses a tiny amount of mana from your subtle but pesky gesture.";
             }
 
-            PlayerProcedures.LogIP(Request.UserHostAddress);
-            string leveluptext = InanimateXPProcedures.GiveInanimateXP(me.Id);
+            PlayerProcedures.LogIP(Request.UserHostAddress, myMembershipId);
+            string leveluptext = InanimateXPProcedures.GiveInanimateXP(me.MembershipId);
 
             TempData["Result"] = firstP + leveluptext;
             PlayerProcedures.AddAttackCount(me);
@@ -2321,8 +2334,8 @@ namespace tfgame.Controllers
          [Authorize]
         public ActionResult AnimalAction(string actionName, int targetId)
         {
-
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert player is in an okay form to do this
             if (PlayerCanPerformAction(me, "animalAction") == false)
@@ -2401,10 +2414,10 @@ namespace tfgame.Controllers
             }
 
             // all of our checks have passed, so now let's actually do the action
-            PlayerProcedures.LogIP(Request.UserHostAddress);
+            PlayerProcedures.LogIP(Request.UserHostAddress, myMembershipId);
 
             string result = AnimalProcedures.DoAnimalAction(actionName, me.Id, targeted.Id);
-            string leveluptext = InanimateXPProcedures.GiveInanimateXP(me.Id);
+            string leveluptext = InanimateXPProcedures.GiveInanimateXP(me.MembershipId);
 
             TempData["Result"] = result + leveluptext;
 
@@ -2423,20 +2436,20 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult MyFriends()
         {
-
+            string myMembershipId = User.Identity.GetUserId();
             ViewBag.ErrorMessage = TempData["Error"];
             ViewBag.SubErrorMessage = TempData["SubError"];
             ViewBag.Result = TempData["Result"];
 
             FriendPageViewModel output = new FriendPageViewModel();
 
-            IEnumerable<FriendPlayerViewModel> friends = FriendProcedures.GetMyFriends();
+            IEnumerable<FriendPlayerViewModel> friends = FriendProcedures.GetMyFriends(myMembershipId);
 
             output.ConfirmedFriends = friends.Where(f => f.dbFriend.IsAccepted == true);
 
-            output.RequestsForMe = friends.Where(f => f.dbFriend.IsAccepted == false && (f.dbFriend.FriendMembershipId == WebSecurity.CurrentUserId));
+            output.RequestsForMe = friends.Where(f => f.dbFriend.IsAccepted == false && (f.dbFriend.FriendMembershipId == myMembershipId));
 
-            output.MyOutgoingRequests = friends.Where(f => f.dbFriend.IsAccepted == false && (f.dbFriend.OwnerMembershipId == WebSecurity.CurrentUserId));
+            output.MyOutgoingRequests = friends.Where(f => f.dbFriend.IsAccepted == false && (f.dbFriend.OwnerMembershipId == myMembershipId));
 
             return View("MyFriends", output);
         }
@@ -2444,7 +2457,8 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult AddFriend(int playerId)
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership();
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             Player friend = PlayerProcedures.GetPlayer(playerId);
 
             // assert no blacklist exists if player is in protection mode
@@ -2455,7 +2469,7 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play");
             }
 
-            FriendProcedures.AddFriend(friend);
+            FriendProcedures.AddFriend(friend, myMembershipId);
 
             string message = me.GetFullName() + " has sent you a friend request.";
 
@@ -2471,22 +2485,22 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult RespondToFriendRequest(int id, string response)
         {
-
+            string myMembershipId = User.Identity.GetUserId();
             if (response == "cancel")
             {
-                FriendProcedures.CancelFriendRequest(id);
+                FriendProcedures.CancelFriendRequest(id, myMembershipId);
             }
             else if (response == "deny")
             {
-                FriendProcedures.CancelFriendRequest(id);
+                FriendProcedures.CancelFriendRequest(id, myMembershipId);
             }
             else if (response == "defriend")
             {
-                FriendProcedures.CancelFriendRequest(id);
+                FriendProcedures.CancelFriendRequest(id, myMembershipId);
             }
             else if (response == "accept")
             {
-                FriendProcedures.AcceptFriendRequest(id);
+                FriendProcedures.AcceptFriendRequest(id, myMembershipId);
             }
 
             
@@ -2659,7 +2673,8 @@ namespace tfgame.Controllers
          [Authorize]
         public ActionResult WorldMap(string showEnchant)
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             Location here = null;
 
             IEnumerable<LocationInfo> ownerInfo = null;
@@ -2701,7 +2716,8 @@ namespace tfgame.Controllers
          [Authorize]
         public ActionResult Leaderboard()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             ViewBag.MyName = me.FirstName + " " + me.LastName;
             return View("Leaderboard", PlayerProcedures.GetLeadingPlayers__XP(100));
         }
@@ -2711,14 +2727,15 @@ namespace tfgame.Controllers
 
              return RedirectToAction("Leaderboard");
 
-             //Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+             //Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
              //ViewBag.MyName = me.FirstName + " " + me.LastName;
              //return View(PlayerProcedures.GetLeadingPlayers__PvP(100));
          }
 
          public ActionResult ItemLeaderboard()
          {
-             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+             string myMembershipId = User.Identity.GetUserId();
+             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
              ViewBag.MyName = me.FirstName + " " + me.LastName;
              IEnumerable<SimpleItemLeaderboardViewModel> output = ItemProcedures.GetLeadingItemsSimple(100).OrderByDescending(p => p.Item.Level).ThenByDescending(p => p.ItemXP);
              return View(output);
@@ -2728,8 +2745,9 @@ namespace tfgame.Controllers
          [Authorize]
         public ActionResult Chat(string room)
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
-            if (me == null || me.MembershipId == -1 || me.FirstName=="" || me.LastName=="")
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            if (me == null || me.BotId == -1 || me.FirstName=="" || me.LastName=="")
             {
                 return View("~/Views/PvP/LoginRequired.cshtml");
             }
@@ -2753,17 +2771,17 @@ namespace tfgame.Controllers
             TempData["MyName"] = me.GetFullName();
             TempData["YourNameColor"] = me.ChatColor;
 
-            if (me.MembershipId == 69)
+            if (me.MembershipId == "69")
             {
                 TempData["MyName"] = "Judoo (admin)";
             }
 
-            else if (me.MembershipId == 3490)
+            else if (me.MembershipId == "3490")
             {
                 TempData["MyName"] = "Mizuho (dev)";
             }
 
-            else if (me.MembershipId == 251)
+            else if (me.MembershipId == "251")
             {
                 TempData["MyName"] = "Arrhae (dev)";
             }
@@ -2799,8 +2817,9 @@ namespace tfgame.Controllers
         [Authorize]
          public ActionResult PrivateChat()
          {
-             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
-             if (me == null || me.MembershipId == -1 || me.FirstName == "" || me.LastName == "")
+             string myMembershipId = User.Identity.GetUserId();
+             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+             if (me == null || me.BotId == -1 || me.FirstName == "" || me.LastName == "")
              {
                  return View("~/Views/PvP/LoginRequired.cshtml");
              }
@@ -2822,7 +2841,8 @@ namespace tfgame.Controllers
          [Authorize]
         public ActionResult LevelupPerk()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             ViewBag.PerksRemaining = me.UnusedLevelUpPerks;
 
             if (me.UnusedLevelUpPerks == 0)
@@ -2842,7 +2862,8 @@ namespace tfgame.Controllers
          [Authorize]
         public ActionResult ChoosePerk(string perk)
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert player does have unused perks
             if (me.UnusedLevelUpPerks < 1)
@@ -2861,7 +2882,8 @@ namespace tfgame.Controllers
          [Authorize]
         public ActionResult MyPerks()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             IEnumerable<EffectViewModel2> output = EffectProcedures.GetPlayerEffects2(me.Id);
 
@@ -2880,7 +2902,8 @@ namespace tfgame.Controllers
          [Authorize]
         public ActionResult Teleport(string to)
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // no need to assert player is mobile; inanimates and items have no inventory
             // assert that this player is not in a duel
@@ -2922,8 +2945,8 @@ namespace tfgame.Controllers
          [Authorize]
         public ActionResult FightTheTransformation()
         {
-
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert player is not in PvP mode
             //if (me.InPvP == true)
@@ -2979,7 +3002,8 @@ namespace tfgame.Controllers
         [Authorize]
          public ActionResult CurseTransformOwner()
          {
-             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+             string myMembershipId = User.Identity.GetUserId();
+             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
              // assert player is inanimate or an animal
              if (me.Mobility != "inanimate" && me.Mobility != "animal")
@@ -3018,7 +3042,7 @@ namespace tfgame.Controllers
              }
 
             // assert owner is not an invalid bot
-             if (owner.MembershipId < -2)
+             if (owner.BotId < -2)
              {
                  TempData["Error"] = "Unfortunately it seems your owner is immune to your transformation curse!";
                  TempData["SubError"] = "Only Psychopathic spellslingers and other players are susceptible to transformation curses.";
@@ -3051,7 +3075,8 @@ namespace tfgame.Controllers
          [Authorize]
          public ActionResult EscapeFromOwner()
          {
-             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+             string myMembershipId = User.Identity.GetUserId();
+             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
              // assert player is inanimate or an animal
              if (me.Mobility == "full")
@@ -3103,7 +3128,8 @@ namespace tfgame.Controllers
          [Authorize]
          public ActionResult ReserveName()
          {
-             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+             string myMembershipId = User.Identity.GetUserId();
+             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             
 
@@ -3171,7 +3197,8 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult Shout()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership();
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert player is mobile
             if (me.Mobility != "full")
@@ -3193,7 +3220,8 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult ShoutSend(PublicBroadcastViewModel input)
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership();
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert player is mobile
             if (me.Mobility != "full")
@@ -3264,7 +3292,7 @@ namespace tfgame.Controllers
             DateTime lastupdate = PvPWorldStatProcedures.GetLastWorldUpdate();
             double secondsAgo = -Math.Floor(lastupdate.Subtract(DateTime.UtcNow).TotalSeconds);
 
-          //  if (minutesAgo < 10 && WebSecurity.CurrentUserId != 69)
+          //  if (minutesAgo < 10 && User.Identity.GetUserId() != 69)
             if (secondsAgo < PvPStatics.TurnSecondLength)
             {
                 TempData["Result"] = "You can't update the world again yet--it is too soon.";
@@ -3281,7 +3309,8 @@ namespace tfgame.Controllers
         public ActionResult FlagForSuspiciousActivity(int playerId)
         {
             // assert the person flagging has mod permissions
-            if (PlayerProcedures.AccountIsTrusted(WebSecurity.CurrentUserId) == false)
+            string myMembershipId = User.Identity.GetUserId();
+            if (PlayerProcedures.AccountIsTrusted(myMembershipId) == false)
             {
                 TempData["Result"] = "You don't have permissions to do that.";
                 return RedirectToAction("Play");

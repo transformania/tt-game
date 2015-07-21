@@ -48,7 +48,8 @@ namespace tfgame.Procedures.BossProcedures
                     Money = 0,
                     Mobility = "full",
                     Level = 5,
-                    MembershipId = -8,
+                    MembershipId = "-8",
+                    BotId = -8,
                     ActionPoints_Refill = 360,
                 };
 
@@ -94,7 +95,8 @@ namespace tfgame.Procedures.BossProcedures
                     Money = 0,
                     Mobility = "full",
                     Level = 7,
-                    MembershipId = -9,
+                    MembershipId = "-9",
+                    BotId = -9,
                     ActionPoints_Refill = 360,
                 };
 
@@ -243,7 +245,7 @@ namespace tfgame.Procedures.BossProcedures
                 if (victimThiefItem.OwnerId > 0) {
                     Player target = playerRepo.Players.FirstOrDefault(p => p.Id == victimThiefItem.OwnerId);
 
-                    if (target.MembershipId == -8 || target.MembershipId == -8)
+                    if (target.BotId == -8 || target.BotId == -8)
                     {
                         // do nothing, the thief already has the item... equip it if not
                         if (victimThiefItem.IsEquipped == false)
@@ -261,7 +263,7 @@ namespace tfgame.Procedures.BossProcedures
                     }
 
                     // Lindella, steal from her right away
-                    else if (target.MembershipId == -3)
+                    else if (target.BotId == -3)
                     {
                         ItemProcedures.GiveItemToPlayer(victimThiefItem.Id, attackingThief.Id);
                         LocationLogProcedures.AddLocationLog(target.dbLocationName, "<b>" + attackingThief.GetFullName() + " stole " + victimThiefItem.GetFullName() + " the " + victimThiefItemPlus.Item.FriendlyName + " from Lindella.</b>");
@@ -277,7 +279,7 @@ namespace tfgame.Procedures.BossProcedures
                         AttackProcedures.Attack(attackingThief, target, "skill_Seekshadow's_Triumph_Judoo");
                         AttackProcedures.Attack(attackingThief, target, "skill_Seekshadow's_Triumph_Judoo");
                         AIProcedures.DealBossDamage(attackingThief, target, false, 4);
-                        target = playerRepo.Players.FirstOrDefault(p => p.Id == victimThiefItem.OwnerId && p.MembershipId != -8 && p.MembershipId != -9);
+                        target = playerRepo.Players.FirstOrDefault(p => p.Id == victimThiefItem.OwnerId && p.BotId != -8 && p.BotId != -9);
 
                         // if we have managed to turn the target, take back the victim-item
                         if (target.Mobility != "full")
@@ -313,7 +315,7 @@ namespace tfgame.Procedures.BossProcedures
             IPlayerRepository playerRepo = new EFPlayerRepository();
             DateTime cutoff = DateTime.UtcNow.AddHours(-1);
             IEnumerable<int> ids = playerRepo.Players.Where(p => p.Mobility == "full" &&
-                p.MembershipId >= -2 &&
+                p.BotId >= -2 &&
                 p.OnlineActivityTimestamp >= cutoff &&
                 p.dbLocationName.Contains("dungeon_") == false &&
                 p.InDuel <= 0).OrderByDescending(p => p.Money).Take(20).Select(p => p.Id);
@@ -410,8 +412,8 @@ namespace tfgame.Procedures.BossProcedures
             AIDirectiveProcedures.DeleteAIDirectiveByPlayerId(femalethief.Id);
 
             // find the players who dealt the most damage and award them with money
-            List<BossDamage> damages_male = AIProcedures.GetTopAttackers(malethief.MembershipId, 10);
-            List<BossDamage> damages_female = AIProcedures.GetTopAttackers(femalethief.MembershipId, 10);
+            List<BossDamage> damages_male = AIProcedures.GetTopAttackers(malethief.BotId, 10);
+            List<BossDamage> damages_female = AIProcedures.GetTopAttackers(femalethief.BotId, 10);
 
             // top player gets 500 XP, each player down the line receives 25 fewer
             decimal maxReward_Female = 1000 + Math.Floor(femalethief.Money);

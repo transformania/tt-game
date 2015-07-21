@@ -6,15 +6,14 @@ using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using tfgame.dbModels.Models;
-using tfgame.Filters;
+using tfgame.Extensions;
 using tfgame.Procedures;
 using tfgame.Statics;
 using tfgame.ViewModels;
-using WebMatrix.WebData;
+using Microsoft.AspNet.Identity;
 
 namespace tfgame.Controllers
 {
-    [InitializeSimpleMembership]
     public class CovenantController : Controller
     {
         //
@@ -23,7 +22,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult MyCovenant()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             ViewBag.Player = me;
 
             CovenantViewModel output;
@@ -63,7 +62,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult ApplyToCovenant(int id)
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
             // assert that the covenant actually exists...
             Covenant cov = CovenantProcedures.GetDbCovenant(id);
@@ -104,7 +103,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult ReviewMyCovenantApplications()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             // assert that player is in a covenant
             if (me.Covenant <= 0)
             {
@@ -130,7 +129,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult ApplicationResponse(int id, string response)
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             // assert that player is in a covenant
             if (me.Covenant <= 0)
             {
@@ -197,7 +196,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult LeaveCovenant()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
             // assert player is indeed in a covenant
             if (me.Covenant <= 0)
@@ -221,7 +220,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult ChangeCovenantDescription()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             // assert that player is in a covenant
             if (me.Covenant <= 0)
             {
@@ -266,7 +265,7 @@ namespace tfgame.Controllers
                 return View("ChangeCovenantDescription");
             }
 
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             // assert that player is in a covenant
             if (me.Covenant <= 0)
             {
@@ -309,7 +308,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult StartNewCovenant()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
             // assert that this player is not currently in a covenant
             if (me.Covenant > 0)
@@ -332,7 +331,7 @@ namespace tfgame.Controllers
                 return View("StartNewCovenant");
             }
 
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
             // assert that a covenant of this name does not already exists
             if (CovenantProcedures.CovenantOfNameExists(input.Name) == true)
@@ -350,7 +349,7 @@ namespace tfgame.Controllers
 
             //input.FlagUrl = input.FlagUrl;
             input.FlagUrl = "generic.jpg";
-            input.FounderMembershipId = WebSecurity.CurrentUserId;
+            input.FounderMembershipId = User.Identity.GetUserId();
             input.LeaderId = me.Id;
             //input.IsPvP = me.InPvP;
             CovenantProcedures.StartNewCovenant(input);
@@ -374,7 +373,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult WithdrawApplication()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             TempData["Result"] = CovenantProcedures.RevokeApplication(me);
             return RedirectToAction("MyCovenant");
         }
@@ -382,7 +381,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult CovenantLeaderAdmin()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             // assert that player is in a covenant
             if (me.Covenant <= 0)
             {
@@ -415,7 +414,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult KickList()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             // assert that player is in a covenant
             if (me.Covenant <= 0)
             {
@@ -443,7 +442,7 @@ namespace tfgame.Controllers
         public ActionResult KickMember(int id)
         {
 
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             // assert that player is in a covenant
             if (me.Covenant <= 0)
             {
@@ -488,7 +487,7 @@ namespace tfgame.Controllers
          [Authorize]
         public ActionResult CovenantWideMessage()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             // assert that player is in a covenant
             if (me.Covenant <= 0)
             {
@@ -522,7 +521,7 @@ namespace tfgame.Controllers
                 TempData["Error"] = "Your message is too long.  There is a 1000 character limit.";
                 return RedirectToAction("MyCovenant");
             }
-             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             // assert that player is in a covenant
             if (me.Covenant <= 0)
             {
@@ -549,7 +548,7 @@ namespace tfgame.Controllers
          [Authorize]
         public ActionResult AddToCovenantChest(int amount)
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             // assert that player is in a covenant
             if (me.Covenant <= 0)
             {
@@ -593,7 +592,7 @@ namespace tfgame.Controllers
          [Authorize]
          public ActionResult GiveMoneyFromCovenantChest(int id, decimal amount)
          {
-             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
              
              // assert that player is in a covenant
              if (me.Covenant <= 0)
@@ -656,7 +655,7 @@ namespace tfgame.Controllers
         [Authorize]
          public ActionResult ClaimLocation()
          {
-             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             
 
              // assert that player is in a covenant
@@ -692,7 +691,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult ClaimLocationSend()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
             // assert that the player is animate
             if (me.Mobility != "full")
@@ -781,7 +780,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult UpgradeSafeground()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
             // assert that the player is animate
             if (me.Mobility != "full")
@@ -846,7 +845,7 @@ namespace tfgame.Controllers
         public ActionResult ViewAvailableFurniture()
         {
            
-             Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
              // assert that player is in a covenant
              if (me.Covenant <= 0)
@@ -873,7 +872,8 @@ namespace tfgame.Controllers
         [Authorize]
          public ActionResult PurchaseFurniture(int id)
          {
-             Player me = PlayerProcedures.GetPlayerFromMembership();
+             string myMembershipId = User.Identity.GetUserId();
+             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
              // assert that player is in a covenant
              if (me.Covenant <= 0)
@@ -940,7 +940,7 @@ namespace tfgame.Controllers
         public ActionResult MyCovenantFurniture()
         {
             
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             Covenant myCov = CovenantProcedures.GetDbCovenant(me.Covenant);
 
             // assert that player is in a covenant
@@ -981,7 +981,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult UseFurniture(int id)
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             Covenant myCov = CovenantProcedures.GetDbCovenant(me.Covenant);
             Furniture furniture = FurnitureProcedures.GetdbFurniture(id);
 
@@ -1044,7 +1044,8 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult MyCovenantLog()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership();
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert that player is in a covenant
             if (me.Covenant <= 0)
@@ -1061,7 +1062,8 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult InviteCaptainList()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership();
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert that player is in a covenant
             if (me.Covenant <= 0)
@@ -1088,7 +1090,8 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult InviteCaptainSend(int id)
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership();
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert that player is in a covenant
             if (me.Covenant <= 0)
@@ -1131,7 +1134,8 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult InviteLeaderList()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership();
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert that player is in a covenant
             if (me.Covenant <= 0)
@@ -1156,7 +1160,8 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult InviteLeaderSend(int id)
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership();
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert that player is in a covenant
             if (me.Covenant <= 0)

@@ -5,16 +5,15 @@ using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using tfgame.dbModels.Models;
-using tfgame.Filters;
+using tfgame.Extensions;
 using tfgame.Procedures;
 using tfgame.Procedures.BossProcedures;
 using tfgame.Statics;
 using tfgame.ViewModels;
-using WebMatrix.WebData;
+using Microsoft.AspNet.Identity;
 
 namespace tfgame.Controllers
 {
-    [InitializeSimpleMembership]
     public class NPCController : Controller
     {
 
@@ -38,7 +37,7 @@ namespace tfgame.Controllers
             }
 
             // assert that player is logged in
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
             ViewBag.MyMoney = Math.Floor(me.Money);
 
@@ -57,7 +56,7 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
-            Player merchant = PlayerProcedures.GetPlayerFromMembership(-3);
+            Player merchant = PlayerProcedures.GetPlayerFromBotId(-3);
 
             // assert the merchant is animate
             if (merchant.Mobility != "full")
@@ -141,7 +140,7 @@ namespace tfgame.Controllers
         public ActionResult Purchase(int id)
         {
             // assert that player is logged in
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
             if (me.Mobility != "full")
             {
@@ -156,7 +155,7 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
-            Player merchant = PlayerProcedures.GetPlayerFromMembership(-3);
+            Player merchant = PlayerProcedures.GetPlayerFromBotId(-3);
 
             // assert the merchant is animate
             if (merchant.Mobility != "full")
@@ -225,7 +224,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult SellList()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
             // assert player is animate
             if (me.Mobility != "full")
@@ -234,7 +233,7 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
-            Player merchant = PlayerProcedures.GetPlayerFromMembership(-3);
+            Player merchant = PlayerProcedures.GetPlayerFromBotId(-3);
 
             // assert the merchant is animate
             if (merchant.Mobility != "full")
@@ -259,7 +258,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult Sell(int id)
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
             // assert player is animate
             if (me.Mobility != "full")
@@ -276,7 +275,7 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
-            Player merchant = PlayerProcedures.GetPlayerFromMembership(-3);
+            Player merchant = PlayerProcedures.GetPlayerFromBotId(-3);
 
             // assert the merchant is animate
             if (merchant.Mobility != "full")
@@ -333,7 +332,7 @@ namespace tfgame.Controllers
         public ActionResult TradeWithPetMerchant()
         {
 
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             ViewBag.MyMoney = Math.Floor(me.Money);
 
             // assert player is animate
@@ -343,7 +342,7 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
-            Player merchant = PlayerProcedures.GetPlayerFromMembership(-10);
+            Player merchant = PlayerProcedures.GetPlayerFromBotId(-10);
 
             // assert the merchant is animate
             if (merchant.Mobility != "full")
@@ -387,7 +386,7 @@ namespace tfgame.Controllers
         public ActionResult PurchasePet(int id)
         {
             // assert that player is logged in
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
             if (me.Mobility != "full")
             {
@@ -409,7 +408,7 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
-            Player merchant = PlayerProcedures.GetPlayerFromMembership(-10);
+            Player merchant = PlayerProcedures.GetPlayerFromBotId(-10);
 
             // assert the merchant is animate
             if (merchant.Mobility != "full")
@@ -474,7 +473,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult SellPetList()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
             // assert player is animate
             if (me.Mobility != "full")
@@ -483,7 +482,7 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
-            Player merchant = PlayerProcedures.GetPlayerFromMembership(-10);
+            Player merchant = PlayerProcedures.GetPlayerFromBotId(-10);
 
             // assert the merchant is animate
             if (merchant.Mobility != "full")
@@ -512,7 +511,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult SellPet(int id)
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
             // assert player is animate
             if (me.Mobility != "full")
@@ -528,7 +527,7 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
-            Player merchant = PlayerProcedures.GetPlayerFromMembership(-10);
+            Player merchant = PlayerProcedures.GetPlayerFromBotId(-10);
 
             // assert the merchant is animate
             if (merchant.Mobility != "full")
@@ -583,7 +582,8 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult MindControlList()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership();
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             MindControlProcedures.ClearPlayerMindControlFlagIfOn(me);
 
@@ -601,8 +601,8 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult MoveVictim(int id)
         {
-
-            Player me = PlayerProcedures.GetPlayerFromMembership();
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             Player victim = PlayerProcedures.GetPlayer(id);
 
             // run generic MC checks
@@ -633,8 +633,8 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult StripVictim(int id)
         {
-
-            Player me = PlayerProcedures.GetPlayerFromMembership();
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             Player victim = PlayerProcedures.GetPlayer(id);
 
             // run generic MC checks
@@ -702,7 +702,8 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult DeMeditateVictim(int id)
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership();
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             Player victim = PlayerProcedures.GetPlayer(id);
 
             // run generic MC checks
@@ -727,8 +728,8 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult MoveVictimSend(int id, string to)
         {
-
-            Player me = PlayerProcedures.GetPlayerFromMembership();
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             Player victim = PlayerProcedures.GetPlayer(id);
 
             // run generic MC checks
@@ -804,8 +805,9 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult TalkToBartender(string question)
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership();
-            Player bartender = PlayerProcedures.GetPlayerFromMembership();
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            Player bartender = PlayerProcedures.GetPlayerFromBotId(AIProcedures.BartenderMembershipId);
 
             // update timestamp (so that he can heal naturally)
             PlayerProcedures.SetTimestampToNow(bartender);
@@ -843,7 +845,7 @@ namespace tfgame.Controllers
             }
             else if (question == "lindella")
             {
-                Player lindella = PlayerProcedures.GetPlayerFromMembership(AIProcedures.LindellaMembershipId);
+                Player lindella = PlayerProcedures.GetPlayerFromBotId(AIProcedures.LindellaMembershipId);
                 if (lindella != null)
                 {
                     Location temp = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == lindella.dbLocationName);
@@ -857,7 +859,7 @@ namespace tfgame.Controllers
 
             else if (question == "wuffie")
             {
-                Player wuffie = PlayerProcedures.GetPlayerFromMembership(AIProcedures.WuffieMembershipId);
+                Player wuffie = PlayerProcedures.GetPlayerFromBotId(AIProcedures.WuffieMembershipId);
                 if (wuffie != null)
                 {
                     Location temp = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == wuffie.dbLocationName);
@@ -870,7 +872,7 @@ namespace tfgame.Controllers
             }
             else if (question == "jewdewfae")
             {
-                Player jewdewfae = PlayerProcedures.GetPlayerFromMembership(AIProcedures.JewdewfaeMembershipId);
+                Player jewdewfae = PlayerProcedures.GetPlayerFromBotId(AIProcedures.JewdewfaeMembershipId);
                 if (jewdewfae != null)
                 {
                     Location temp = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == jewdewfae.dbLocationName);
@@ -920,8 +922,8 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult TalkWithJewdewfae()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
-            Player fae = PlayerProcedures.GetPlayerFromMembership(-6);
+            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            Player fae = PlayerProcedures.GetPlayerFromBotId(-6);
 
             // assert player is mobile
             if (me.Mobility != "full")
@@ -970,8 +972,8 @@ namespace tfgame.Controllers
         public ActionResult PlayWithJewdewfae()
         {
 
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
-            Player fae = PlayerProcedures.GetPlayerFromMembership(-6);
+            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            Player fae = PlayerProcedures.GetPlayerFromBotId(-6);
 
             // assert player is mobile
             if (me.Mobility != "full")
@@ -1041,8 +1043,9 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult TalkToCandice()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership();
-            Player bimbo = PlayerProcedures.GetPlayerFromMembership(AIProcedures.MouseBimboMembershipId);
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            Player bimbo = PlayerProcedures.GetPlayerFromBotId(AIProcedures.MouseBimboMembershipId);
 
             // assert player is mobile
             if (me.Mobility != "full")
@@ -1072,8 +1075,9 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult TalkToAdrianna()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership();
-            Player nerd = PlayerProcedures.GetPlayerFromMembership(AIProcedures.MouseNerdMembershipId);
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            Player nerd = PlayerProcedures.GetPlayerFromBotId(AIProcedures.MouseNerdMembershipId);
 
             // assert player is mobile
             if (me.Mobility != "full")
@@ -1103,8 +1107,9 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult TalkToLorekeeper()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership();
-            Player loremaster = PlayerProcedures.GetPlayerFromMembership(AIProcedures.LoremasterMembershipId);
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            Player loremaster = PlayerProcedures.GetPlayerFromBotId(AIProcedures.LoremasterMembershipId);
 
             // assert player is mobile
             if (me.Mobility != "full")
@@ -1134,8 +1139,9 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult LorekeeperPurchaseBook()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership();
-            Player loremaster = PlayerProcedures.GetPlayerFromMembership(AIProcedures.LoremasterMembershipId);
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            Player loremaster = PlayerProcedures.GetPlayerFromBotId(AIProcedures.LoremasterMembershipId);
 
             // assert player is mobile
             if (me.Mobility != "full")
@@ -1163,8 +1169,9 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult LorekeeperPurchaseBookSend(int id)
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership();
-            Player loremaster = PlayerProcedures.GetPlayerFromMembership(AIProcedures.LoremasterMembershipId);
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            Player loremaster = PlayerProcedures.GetPlayerFromBotId(AIProcedures.LoremasterMembershipId);
 
             // assert player is mobile
             if (me.Mobility != "full")
@@ -1216,8 +1223,9 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult LorekeeperLearnSpell(string filter)
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership();
-            Player loremaster = PlayerProcedures.GetPlayerFromMembership(AIProcedures.LoremasterMembershipId);
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            Player loremaster = PlayerProcedures.GetPlayerFromBotId(AIProcedures.LoremasterMembershipId);
 
             // assert player is mobile
             if (me.Mobility != "full")
@@ -1280,8 +1288,9 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult LorekeeperLearnSpellSend(string spell)
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership();
-            Player loremaster = PlayerProcedures.GetPlayerFromMembership(AIProcedures.LoremasterMembershipId);
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            Player loremaster = PlayerProcedures.GetPlayerFromBotId(AIProcedures.LoremasterMembershipId);
 
             // assert player is animate
             if (me.Mobility != "full")

@@ -71,7 +71,7 @@ namespace tfgame.Tests.Services
         public void Should_get_blank_descriptor_for_negative_membership_id()
         {
             var chatService = new ChatService();
-            var player = new Player_VM { MembershipId = -1 };
+            var player = new Player_VM { MembershipId = "-1" };
 
             var descriptor = chatService.GetPlayerDescriptorFor(player);
 
@@ -119,8 +119,8 @@ namespace tfgame.Tests.Services
         public void Should_keep_track_of_multiple_connections_for_same_user()
         {
             var chatService = new ChatService();
-            var player1 = CreateRegularPlayer(100, "Test1", "User1");
-            var player2 = CreateRegularPlayer(200, "Test2", "User2", false);
+            var player1 = CreateRegularPlayer("100", "Test1", "User1");
+            var player2 = CreateRegularPlayer("200", "Test2", "User2", false);
 
             chatService.OnUserConnected(player1, Guid.NewGuid().ToString());
             chatService.OnUserConnected(player1, Guid.NewGuid().ToString());
@@ -266,7 +266,7 @@ namespace tfgame.Tests.Services
             ChatService.ChatPersistance[player.MembershipId].Name.Should().Be("Re 'Wibble' Roll");
         }
         
-        private Player_VM CreateRegularPlayer(int membershipId = 100, string firstName = "Test", string lastName = "User", bool donator = true)
+        private Player_VM CreateRegularPlayer(string membershipId = "100", string firstName = "Test", string lastName = "User", bool donator = true)
         {
             return new Player_VM
             {
@@ -280,7 +280,7 @@ namespace tfgame.Tests.Services
 
         private Player_VM CreateStaffPlayer()
         {
-            return new Player_VM { MembershipId = 69, FirstName = "Test", LastName = "User" };
+            return new Player_VM { MembershipId = "69", FirstName = "Test", LastName = "User" };
         }
     }
 }

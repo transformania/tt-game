@@ -2526,19 +2526,19 @@ namespace tfgame.Statics
 
     public static class ChatStatics
     {
-        public static IDictionary<int, Tuple<string, string>> Staff = new Dictionary<int, Tuple<string, string>>
+        public static IDictionary<string, Tuple<string, string>> Staff = new Dictionary<string, Tuple<string, string>>
         {
-            { 69, new Tuple<string, string>("Judoo (admin)", "/Images/PvP/portraits/Thumbnails/100/Judoo.jpg") },
-            { 3490, new Tuple<string, string>("Mizuho (dev)", "/Images/PvP/portraits/Thumbnails/100/Mizuho.jpg") },
-            { 251, new Tuple<string, string>("Arrhae (dev)", string.Empty) }, // Arrhae wants to keep regular portrait for now, not admin/dev custom one
-            { 12865, new Tuple<string, string>("Mezaron (dev)", "/Images/PvP/portraits/Thumbnails/100/mezaron_portrait.jpg") },
-            { 14039, new Tuple<string, string>("Tempest (dev)", string.Empty) }, // no custom portrait yet
+            { "69", new Tuple<string, string>("Judoo (admin)", "/Images/PvP/portraits/Thumbnails/100/Judoo.jpg") },
+            { "3490", new Tuple<string, string>("Mizuho (dev)", "/Images/PvP/portraits/Thumbnails/100/Mizuho.jpg") },
+            { "251", new Tuple<string, string>("Arrhae (dev)", string.Empty) }, // Arrhae wants to keep regular portrait for now, not admin/dev custom one
+            { "12865", new Tuple<string, string>("Mezaron (dev)", "/Images/PvP/portraits/Thumbnails/100/mezaron_portrait.jpg") },
+            { "14039", new Tuple<string, string>("Tempest (dev)", string.Empty) }, // no custom portrait yet
         };
 
-        public static IEnumerable<int> HideOnJoinChat = new List<int>
+        public static IEnumerable<string> HideOnJoinChat = new List<string>
         {
-            69,
-            3490,
+            "69",
+            "3490",
         };
 
         public static IEnumerable<string> ReservedText = new List<string>

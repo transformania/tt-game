@@ -9,16 +9,15 @@ using System.Xml.Serialization;
 using tfgame.dbModels.Abstract;
 using tfgame.dbModels.Concrete;
 using tfgame.dbModels.Models;
-using tfgame.Filters;
+using tfgame.Extensions;
 using tfgame.Procedures;
 using tfgame.Procedures.BossProcedures;
 using tfgame.Statics;
 using tfgame.ViewModels;
-using WebMatrix.WebData;
+using Microsoft.AspNet.Identity;
 
 namespace tfgame.Controllers
 {
-    [InitializeSimpleMembership]
     public class PvPAdminController : Controller
     {
         //
@@ -204,7 +203,7 @@ namespace tfgame.Controllers
             IPlayerRepository playerRepo = new EFPlayerRepository();
 
             // automatically spawn in more bots when they go down
-            int botCount = playerRepo.Players.Where(b => b.MembershipId == -2 && b.Mobility == "full").Count();
+            int botCount = playerRepo.Players.Where(b => b.BotId == -2 && b.Mobility == "full").Count();
             if (botCount < 15)
             {
                 AIProcedures.SpawnAIPsychopaths(15 - botCount, 0);
@@ -975,7 +974,7 @@ namespace tfgame.Controllers
 
                 string msg = "<span class='bad'>PUBLIC SERVER NOTE:  " + input.Message + "</span>";
 
-                List<Player> players = playerRepo.Players.Where(p => p.MembershipId > 0).ToList();
+                List<Player> players = playerRepo.Players.Where(p => p.BotId == 0).ToList();
 
                 string errors = "";
 
@@ -2566,11 +2565,11 @@ namespace tfgame.Controllers
                 repo.SavePvPWorldStat(stats);
 
                 IPlayerLogRepository logRepo = new EFPlayerLogRepository();
-                Player me = PlayerProcedures.GetPlayerFromMembership(69);
+                Player me = PlayerProcedures.GetPlayerFromMembership("69");
                 PlayerLog newlog = new PlayerLog
                 {
                     IsImportant = true,
-                    Message = "<span class='bad'><b>" + WebSecurity.CurrentUserName + " activated the game pause killswitch.</b></span>",
+                    Message = "<span class='bad'><b>" + User.Identity.Name + " activated the game pause killswitch.</b></span>",
                     PlayerId = me.Id,
                     Timestamp = DateTime.UtcNow,
                 };
@@ -2767,7 +2766,7 @@ namespace tfgame.Controllers
             IPlayerRepository playerRepo = new EFPlayerRepository();
             IItemRepository itemRepo = new EFItemRepository();
 
-            Player me = playerRepo.Players.FirstOrDefault(p => p.MembershipId == WebSecurity.CurrentUserId);
+            Player me = playerRepo.Players.FirstOrDefault(p => p.MembershipId == User.Identity.GetUserId());
             me.Mobility = "inanimate";
             me.Form = "form_Flirty_Three-Tiered_Skirt_Martiandawn";
             playerRepo.SavePlayer(me);
@@ -2814,7 +2813,7 @@ namespace tfgame.Controllers
             IPlayerRepository playerRepo = new EFPlayerRepository();
             IItemRepository itemRepo = new EFItemRepository();
 
-            Player me = playerRepo.Players.FirstOrDefault(p => p.MembershipId == WebSecurity.CurrentUserId);
+            Player me = playerRepo.Players.FirstOrDefault(p => p.MembershipId == User.Identity.GetUserId());
             me.Mobility = "animal";
             me.Form = "form_Cuddly_Pocket_Goo_Girl_GooGirl";
             playerRepo.SavePlayer(me);
@@ -2848,6 +2847,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult FastAnimateMe()
         {
+            string myMembershipId = User.Identity.GetUserId();
             if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
             {
                 return RedirectToAction("Play", "PvP");
@@ -2863,7 +2863,7 @@ namespace tfgame.Controllers
             IPlayerRepository playerRepo = new EFPlayerRepository();
             IItemRepository itemRepo = new EFItemRepository();
 
-            Player me = playerRepo.Players.FirstOrDefault(p => p.MembershipId == WebSecurity.CurrentUserId);
+            Player me = playerRepo.Players.FirstOrDefault(p => p.MembershipId == myMembershipId);
             me.Mobility = "full";
             me.Form = me.OriginalForm;
             playerRepo.SavePlayer(me);

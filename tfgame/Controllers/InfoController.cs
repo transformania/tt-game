@@ -4,13 +4,11 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using tfgame.dbModels.Models;
-using tfgame.Filters;
 using tfgame.Procedures;
 
 namespace tfgame.Controllers
 {
 
-     [InitializeSimpleMembership]
     public class InfoController : Controller
     {
          public ActionResult FAQ()

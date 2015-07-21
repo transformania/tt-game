@@ -52,7 +52,8 @@ namespace tfgame.Procedures.BossProcedures
                     Money = 2000,
                     Mobility = "full",
                     Level = 25,
-                    MembershipId = -11,
+                    MembershipId = "-11",
+                    BotId = -11,
                     ActionPoints_Refill = 360,
                 };
 
@@ -84,7 +85,8 @@ namespace tfgame.Procedures.BossProcedures
                     Money = 6000,
                     Mobility = "full",
                     Level = 25,
-                    MembershipId = -12,
+                    MembershipId = "-12",
+                    BotId = -12,
                     ActionPoints_Refill = 360,
                 };
 
@@ -163,8 +165,8 @@ namespace tfgame.Procedures.BossProcedures
             
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player nerdBoss = playerRepo.Players.FirstOrDefault(p => p.MembershipId == -11);
-            Player bimboBoss = playerRepo.Players.FirstOrDefault(p => p.MembershipId == -12);
+            Player nerdBoss = playerRepo.Players.FirstOrDefault(p => p.BotId == -11);
+            Player bimboBoss = playerRepo.Players.FirstOrDefault(p => p.BotId == -12);
 
             // check to see if a sister has been TFed and the event should end
             if (nerdBoss.Form != NerdBossForm || bimboBoss.Form != BimboBossForm)
@@ -177,7 +179,7 @@ namespace tfgame.Procedures.BossProcedures
                 List<Player> playersByNerd = PlayerProcedures.GetPlayersAtLocation(nerdBoss.dbLocationName).ToList();
                 playersByNerd = playersByNerd.Where(p => p.Mobility == "full" &&
                     PlayerProcedures.PlayerIsOffline(p) == false &&
-                    p.MembershipId > 0 &&
+                    p.BotId == 0 &&
                     p.Id != nerdBoss.Id &&
                     p.Form != NerdSpellForm &&
                     p.InDuel <= 0).ToList();
@@ -187,7 +189,7 @@ namespace tfgame.Procedures.BossProcedures
                 List<Player> playersByBimbo = PlayerProcedures.GetPlayersAtLocation(bimboBoss.dbLocationName).ToList();
                 playersByBimbo = playersByBimbo.Where(p => p.Mobility == "full" &&
                     PlayerProcedures.PlayerIsOffline(p) == false &&
-                    p.MembershipId > 0 &&
+                    p.BotId == 0 &&
                     p.Id != bimboBoss.Id &&
                     p.Form != BimboSpellForm &&
                     p.InDuel <= 0).ToList();
@@ -219,8 +221,8 @@ namespace tfgame.Procedures.BossProcedures
             PvPWorldStatProcedures.Boss_EndSisters();
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player nerdBoss = playerRepo.Players.FirstOrDefault(p => p.MembershipId == AIProcedures.MouseNerdMembershipId);
-            Player bimboBoss = playerRepo.Players.FirstOrDefault(p => p.MembershipId == AIProcedures.MouseBimboMembershipId);
+            Player nerdBoss = playerRepo.Players.FirstOrDefault(p => p.BotId == AIProcedures.MouseNerdMembershipId);
+            Player bimboBoss = playerRepo.Players.FirstOrDefault(p => p.BotId == AIProcedures.MouseBimboMembershipId);
 
             string winner = "";
 
@@ -236,9 +238,9 @@ namespace tfgame.Procedures.BossProcedures
             List<BossDamage> damages = null;
             
             if (winner == "bimbo") {
-                damages = AIProcedures.GetTopAttackers(nerdBoss.MembershipId, 10);
+                damages = AIProcedures.GetTopAttackers(nerdBoss.BotId, 10);
             } else if (winner == "nerd") {
-                damages  = AIProcedures.GetTopAttackers(bimboBoss.MembershipId, 10);
+                damages  = AIProcedures.GetTopAttackers(bimboBoss.BotId, 10);
             }
 
             // top player gets 500 XP, each player down the line receives 25 fewer

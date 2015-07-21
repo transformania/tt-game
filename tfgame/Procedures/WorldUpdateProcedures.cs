@@ -313,7 +313,7 @@ namespace tfgame.Procedures
                 {
                     try
                     {
-                        context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Players] SET TimesAttackingThisUpdate = 0 WHERE (Mobility = 'inanimate' OR Mobility = 'animal') AND MembershipId > 0");
+                        context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Players] SET TimesAttackingThisUpdate = 0 WHERE (Mobility = 'inanimate' OR Mobility = 'animal') AND BotId = 0");
                         log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished updating inanimate/animal players");
                     }
                     catch (Exception e)

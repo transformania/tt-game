@@ -12,7 +12,6 @@ using tfgame.Models;
 using tfgame.Procedures.BossProcedures;
 using tfgame.Statics;
 using tfgame.ViewModels;
-using WebMatrix.WebData;
 
 namespace tfgame.Procedures
 {
@@ -44,6 +43,7 @@ namespace tfgame.Procedures
                                                               ResistanceModifier = p.ResistanceModifier,
                                                               Gender = p.Gender,
                                                               Mobility = p.Mobility,
+                                                              BotId = p.BotId,
                                                               MindControlIsActive = p.MindControlIsActive,
                                                               XP = p.XP,
                                                               Level = p.Level,
@@ -127,7 +127,7 @@ namespace tfgame.Procedures
             return output.First();
         }
 
-        public static PlayerFormViewModel GetPlayerFormViewModel_FromMembership(int membershipId)
+        public static PlayerFormViewModel GetPlayerFormViewModel_FromMembership(string membershipId)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
             IEnumerable<PlayerFormViewModel> output = from p in playerRepo.Players
@@ -152,6 +152,7 @@ namespace tfgame.Procedures
                                                               ResistanceModifier = p.ResistanceModifier,
                                                               Gender = p.Gender,
                                                               Mobility = p.Mobility,
+                                                              BotId = p.BotId,
                                                               MindControlIsActive = p.MindControlIsActive,
                                                               XP = p.XP,
                                                               Level = p.Level,
@@ -233,11 +234,11 @@ namespace tfgame.Procedures
             return output.First();
         }
 
-        public static IEnumerable<PlayerFormViewModel> GetPlayerFormViewModelsAtLocation(string destinationDbName)
+        public static IEnumerable<PlayerFormViewModel> GetPlayerFormViewModelsAtLocation(string destinationDbName, string membershipId)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
             IEnumerable<PlayerFormViewModel> output = from p in playerRepo.Players
-                                                      where p.dbLocationName == destinationDbName && p.MembershipId != WebSecurity.CurrentUserId
+                                                      where p.dbLocationName == destinationDbName && p.MembershipId != membershipId
                                                       join f in playerRepo.DbStaticForms on p.Form equals f.dbName
                                                       select new PlayerFormViewModel
                                                       {
@@ -258,7 +259,7 @@ namespace tfgame.Procedures
                                                               ResistanceModifier = p.ResistanceModifier,
                                                               Gender = p.Gender,
                                                               Mobility = p.Mobility,
-
+                                                              BotId = p.BotId,
                                                               MindControlIsActive = p.MindControlIsActive,
 
                                                               XP = p.XP,
@@ -367,7 +368,7 @@ namespace tfgame.Procedures
                                                               ResistanceModifier = p.ResistanceModifier,
                                                               Gender = p.Gender,
                                                               Mobility = p.Mobility,
-
+                                                              BotId = p.BotId,
                                                               MindControlIsActive = p.MindControlIsActive,
 
                                                               XP = p.XP,
@@ -450,7 +451,7 @@ namespace tfgame.Procedures
             return output;
         }
 
-        public static Player GetPlayerFromMembership(int id)
+        public static Player GetPlayerFromMembership(string id)
         {
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
@@ -460,10 +461,12 @@ namespace tfgame.Procedures
 
         }
 
-        public static Player GetPlayerFromMembership()
+        public static Player GetPlayerFromBotId(int id)
         {
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            Player player = playerRepo.Players.FirstOrDefault(p => p.BotId == id);
 
-            return GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            return player;
 
         }
 
@@ -474,7 +477,7 @@ namespace tfgame.Procedures
             return player;
         }
 
-        public static string SaveNewPlayer(NewCharacterViewModel player)
+        public static string SaveNewPlayer(NewCharacterViewModel player, string membershipId)
         {
 
              IPlayerRepository playerRepo = new EFPlayerRepository();
@@ -483,14 +486,14 @@ namespace tfgame.Procedures
 
             Player ghost = playerRepo.Players.FirstOrDefault(p => p.FirstName == player.FirstName && p.LastName == noGenerationLastName);
            
-             if (ghost != null && ghost.MembershipId != WebSecurity.CurrentUserId && ghost.MembershipId != -1)
+             if (ghost != null && ghost.MembershipId != membershipId && ghost.MembershipId != "-1")
              {
                  return "A character of this name already exists.";
              }
 
              string generationTitle = "";
 
-             if (ghost != null && (ghost.MembershipId == WebSecurity.CurrentUserId || ghost.MembershipId == -1) && ghost.FirstName == player.FirstName && ghost.LastName == player.LastName)
+             if (ghost != null && (ghost.MembershipId == membershipId || ghost.MembershipId == "-1") && ghost.FirstName == player.FirstName && ghost.LastName == player.LastName)
              {
 
                  List<Player> possibleOldGens = playerRepo.Players.Where(p => p.FirstName == player.FirstName && p.LastName.Contains(player.LastName)).ToList();
@@ -550,7 +553,7 @@ namespace tfgame.Procedures
             IReservedNameRepository resNameRepo = new EFReservedNameRepository();
             ReservedName resNameGhost = resNameRepo.ReservedNames.FirstOrDefault(r => r.FullName == player.FirstName + " " + player.LastName);
 
-            if (resNameGhost != null && resNameGhost.MembershipId != WebSecurity.CurrentUserId)
+            if (resNameGhost != null && resNameGhost.MembershipId != membershipId)
             {
                 return "This name has been reserved by a different player.  Choose another.";
             }
@@ -568,7 +571,7 @@ namespace tfgame.Procedures
             {
                 if (player.InanimateForm.ToString() == "pet" || player.InanimateForm.ToString() == "random")
                 {
-                    vendor = PlayerProcedures.GetPlayerFromMembership(AIProcedures.WuffieMembershipId);
+                    vendor = PlayerProcedures.GetPlayerFromBotId(AIProcedures.WuffieMembershipId);
                     if (vendor == null)
                     {
                         return "Wüffie is not currently available to accept new pets. Please try again later.";
@@ -576,7 +579,7 @@ namespace tfgame.Procedures
                 }
                 if (player.InanimateForm.ToString() != "pet")
                 {
-                    vendor = PlayerProcedures.GetPlayerFromMembership(AIProcedures.LindellaMembershipId);
+                    vendor = PlayerProcedures.GetPlayerFromBotId(AIProcedures.LindellaMembershipId);
                     if (vendor == null)
                     {
                         return "Lindella is not currently available to accept new items. Please try again later.";
@@ -584,7 +587,7 @@ namespace tfgame.Procedures
                 }
             }
             // remove the old Player--Membership binding
-             Player oldplayer = playerRepo.Players.FirstOrDefault(p => p.MembershipId == WebSecurity.CurrentUserId);
+             Player oldplayer = playerRepo.Players.FirstOrDefault(p => p.MembershipId == membershipId);
 
              int oldCovId = 0;
 
@@ -603,7 +606,8 @@ namespace tfgame.Procedures
 
                  // remove all of the old player's TF energies
                  TFEnergyProcedures.DeleteAllPlayerTFEnergies(oldplayer.Id);
-                 oldplayer.MembershipId = -1;
+                 oldplayer.MembershipId = "-1";
+                 oldplayer.BotId = -1;
                  playerRepo.SavePlayer(oldplayer);
 
                  // remove the old player's effects
@@ -637,7 +641,7 @@ namespace tfgame.Procedures
             newplayer.ResistanceModifier = 0;
             newplayer.ActionPoints = PvPStatics.MaximumStoreableActionPoints;
             newplayer.dbLocationName = "coffee_shop";
-            newplayer.MembershipId = WebSecurity.CurrentUserId;
+            newplayer.MembershipId = membershipId;
             newplayer.Form = player.FormName;
             newplayer.OriginalForm = player.FormName;
             newplayer.Level = 1;
@@ -651,6 +655,7 @@ namespace tfgame.Procedures
             newplayer.CleansesMeditatesThisRound = 0;
             newplayer.NonPvP_GameOverSpellsAllowedLastChange = DateTime.UtcNow;
             newplayer.Mobility = Statics.PvPStatics.MobilityFull;
+            newplayer.BotId = 0;
             newplayer.ChatColor = "black";
           
             
@@ -748,7 +753,7 @@ namespace tfgame.Procedures
             if (player.InanimateForm != null)
             {
                 DbStaticForm startform = ItemProcedures.GetFormFromItem(ItemProcedures.GetRandomItemOfType(player.InanimateForm.ToString()));
-                if (player.InanimateForm.ToString() == "random" && startform.MobilityType == "animal") vendor = PlayerProcedures.GetPlayerFromMembership(AIProcedures.WuffieMembershipId);
+                if (player.InanimateForm.ToString() == "random" && startform.MobilityType == "animal") vendor = PlayerProcedures.GetPlayerFromBotId(AIProcedures.WuffieMembershipId);
 
                 newplayer.Form = startform.dbName;
                 newplayer.Gender = startform.Gender;
@@ -874,9 +879,9 @@ namespace tfgame.Procedures
             playerRepo.SavePlayer(player);
         }
 
-        public static string MovePlayer(string destinationDbName, decimal actionPointDiscount)
+        public static string MovePlayer(string destinationDbName, decimal actionPointDiscount, string membershipId)
         {
-            return MovePlayer(GetPlayerFromMembership().Id, destinationDbName, actionPointDiscount);
+            return MovePlayer(GetPlayerFromMembership(membershipId).Id, destinationDbName, actionPointDiscount);
         }
 
         public static void MovePlayerMultipleLocations(Player player, string destinationDbName, decimal actionPointCost)
@@ -1256,8 +1261,8 @@ namespace tfgame.Procedures
 
             WorldStats output = new WorldStats
             {
-                TotalPlayers = players.Where(p => p.MembershipId > 0).Count(),
-                CurrentOnlinePlayers = players.Where(p => p.MembershipId > 0 && p.OnlineActivityTimestamp >= cutoff).Count(),
+                TotalPlayers = players.Where(p => p.BotId == 0).Count(),
+                CurrentOnlinePlayers = players.Where(p => p.BotId == 0 && p.OnlineActivityTimestamp >= cutoff).Count(),
                 //TotalAnimalPlayers = players.Where(p => p.Mobility == "animal").Count(),
                 //TotalInanimatePlayers = players.Where(p => p.Mobility == "inanimate").Count(),
                 //TotalLivingPlayers = players.Where(p => p.Mobility == "full").Count(),
@@ -1276,7 +1281,7 @@ namespace tfgame.Procedures
             Player player = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);
 
             // decrease XP gain by 40% for psychos
-            if (player.MembershipId == -2)
+            if (player.BotId == -2)
             {
                 amount = amount * .6M;
             }
@@ -1640,10 +1645,10 @@ namespace tfgame.Procedures
             return "  <b><i>Congratulations, you have gained an experience level!</i></b>";
         }
 
-        public static void LogIP(string ip)
+        public static void LogIP(string ip, string membershipId)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.MembershipId == WebSecurity.CurrentUserId);
+            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.MembershipId == membershipId);
             dbPlayer.IpAddress = ip;
             playerRepo.SavePlayer(dbPlayer);
         }
@@ -1669,7 +1674,7 @@ namespace tfgame.Procedures
         {
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            decimal num = playerRepo.Players.Where(p => p.MembershipId > 0 && p.IpAddress == ip && p.Mobility == "full" && p.GameMode == player.GameMode).Count();
+            decimal num = playerRepo.Players.Where(p => p.BotId == 0 && p.IpAddress == ip && p.Mobility == "full" && p.GameMode == player.GameMode).Count();
             if (num > 1)
             {
                 return true;
@@ -1684,7 +1689,7 @@ namespace tfgame.Procedures
         {
                 try
                 {
-                    if (player.MembershipId <-1)
+                    if (player.BotId < -1)
                     {
                         return false;
                     }
@@ -1710,7 +1715,7 @@ namespace tfgame.Procedures
         {
             try
             {
-                if (player.MembershipId < -1)
+                if (player.BotId < -1)
                 {
                     return false;
                 }
@@ -1766,12 +1771,12 @@ namespace tfgame.Procedures
             playerRepo.SavePlayer(player);
         }
 
-        public static bool AccountIsTrusted(int membershipId)
+        public static bool AccountIsTrusted(string membershipId)
         {
             // 69 = me
             // 224 = Lexam (REMOVED)
             // 272 = Wrenzephyr2
-            if ((membershipId == 69) || (membershipId == 272))
+            if ((membershipId == "69") || (membershipId == "272"))
             {
                 return true;
             }
@@ -1785,7 +1790,7 @@ namespace tfgame.Procedures
         public static IEnumerable<Player> GetLeadingPlayers__XP(int number)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            return playerRepo.Players.Where(p => p.MembershipId > 0).OrderByDescending(p => p.Level).ThenByDescending(p => p.XP).Take(number);
+            return playerRepo.Players.Where(p => p.BotId == 0).OrderByDescending(p => p.Level).ThenByDescending(p => p.XP).Take(number);
         }
 
         public static IEnumerable<Player> GetLeadingPlayers__PvP(int number)
@@ -1793,7 +1798,7 @@ namespace tfgame.Procedures
             IPlayerRepository playerRepo = new EFPlayerRepository();
 
 
-            return playerRepo.Players.Where(p => p.MembershipId > 0).OrderByDescending(p => p.PvPScore).ThenByDescending(p => p.Level).ThenByDescending(p => p.XP).Take(number);
+            return playerRepo.Players.Where(p => p.BotId == 0).OrderByDescending(p => p.PvPScore).ThenByDescending(p => p.Level).ThenByDescending(p => p.XP).Take(number);
 
         }
 
@@ -2076,10 +2081,10 @@ namespace tfgame.Procedures
             return scoreFromSteal;
         }
 
-        public static void SetNickname(string nickname)
+        public static void SetNickname(string nickname, string membershipId)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player player = playerRepo.Players.FirstOrDefault(p => p.MembershipId == WebSecurity.CurrentUserId);
+            Player player = playerRepo.Players.FirstOrDefault(p => p.MembershipId == membershipId);
 
             if (nickname != null && nickname.Length > 0)
             {

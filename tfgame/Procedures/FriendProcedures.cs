@@ -6,23 +6,22 @@ using tfgame.dbModels.Abstract;
 using tfgame.dbModels.Concrete;
 using tfgame.dbModels.Models;
 using tfgame.ViewModels;
-using WebMatrix.WebData;
 
 namespace tfgame.Procedures
 {
     public static class FriendProcedures
     {
-        public static void AddFriend(Player player)
+        public static void AddFriend(Player player, string membershipId)
         {
             IFriendRepository friendRepo = new EFFriendRepository();
 
-            Friend friend = friendRepo.Friends.FirstOrDefault(f => (f.OwnerMembershipId == WebSecurity.CurrentUserId && f.FriendMembershipId == player.MembershipId) || (f.FriendMembershipId == WebSecurity.CurrentUserId && f.OwnerMembershipId == player.MembershipId));
+            Friend friend = friendRepo.Friends.FirstOrDefault(f => (f.OwnerMembershipId == membershipId && f.FriendMembershipId == player.MembershipId) || (f.FriendMembershipId == membershipId && f.OwnerMembershipId == player.MembershipId));
 
             // if friend is null, add a new unnaccepted friend binding
             if (friend == null)
             {
                 friend = new Friend();
-                friend.OwnerMembershipId = WebSecurity.CurrentUserId;
+                friend.OwnerMembershipId = membershipId;
                 friend.FriendMembershipId = player.MembershipId;
                 friend.IsAccepted = false;
                 friend.FriendsSince = DateTime.UtcNow;
@@ -40,7 +39,7 @@ namespace tfgame.Procedures
             return friendRepo.Friends.FirstOrDefault(f => f.Id == friendId);
         }
 
-        public static string DeleteFriend(int friendId)
+        public static string DeleteFriend(int friendId, string membershipId)
         {
             IFriendRepository friendRepo = new EFFriendRepository();
 
@@ -53,7 +52,7 @@ namespace tfgame.Procedures
             }
 
             //assert friend is yours
-            if (deleteMe.OwnerMembershipId != WebSecurity.CurrentUserId)
+            if (deleteMe.OwnerMembershipId != membershipId)
             {
                 return "This is not your friend listing.";
             }
@@ -79,12 +78,12 @@ namespace tfgame.Procedures
             }
         }
 
-        public static IEnumerable<FriendPlayerViewModel> GetMyFriends()
+        public static IEnumerable<FriendPlayerViewModel> GetMyFriends(string membershipId)
         {
             IFriendRepository friendRepo = new EFFriendRepository();
             IPlayerRepository playerRepo = new EFPlayerRepository();
 
-            IEnumerable<Friend> mydbfriends = friendRepo.Friends.Where(f => f.OwnerMembershipId == WebSecurity.CurrentUserId || f.FriendMembershipId == WebSecurity.CurrentUserId);
+            IEnumerable<Friend> mydbfriends = friendRepo.Friends.Where(f => f.OwnerMembershipId == membershipId || f.FriendMembershipId == membershipId);
 
             List<FriendPlayerViewModel> output = new List<FriendPlayerViewModel>();
 
@@ -93,7 +92,7 @@ namespace tfgame.Procedures
                 FriendPlayerViewModel friendPlayer = new FriendPlayerViewModel();
 
                 // this was a request sent BY me.  Grab the player who it was sent to
-                if (friend.OwnerMembershipId == WebSecurity.CurrentUserId)
+                if (friend.OwnerMembershipId == membershipId)
                 {
                     try
                     {
@@ -115,7 +114,7 @@ namespace tfgame.Procedures
                 }
 
                     // this was a request sent TO me.  Grab the player who sent it
-                else if (friend.FriendMembershipId == WebSecurity.CurrentUserId)
+                else if (friend.FriendMembershipId == membershipId)
                 {
                     try
                     {
@@ -134,7 +133,7 @@ namespace tfgame.Procedures
             return output;
         }
 
-        public static string CancelFriendRequest(int id)
+        public static string CancelFriendRequest(int id, string membershipId)
         {
             IFriendRepository friendRepo = new EFFriendRepository();
             Friend friend = friendRepo.Friends.FirstOrDefault(f => f.Id == id);
@@ -147,7 +146,7 @@ namespace tfgame.Procedures
             }
 
             // assert you've sent this, or else it was sent to you
-            else if (friend.OwnerMembershipId == WebSecurity.CurrentUserId || friend.FriendMembershipId == WebSecurity.CurrentUserId)
+            else if (friend.OwnerMembershipId == membershipId || friend.FriendMembershipId == membershipId)
             {
                 friendRepo.DeleteFriend(friend.Id);
                 return "";
@@ -160,7 +159,7 @@ namespace tfgame.Procedures
 
         }
 
-        public static string AcceptFriendRequest(int id)
+        public static string AcceptFriendRequest(int id, string membershipId)
         {
             IFriendRepository friendRepo = new EFFriendRepository();
             Friend friend = friendRepo.Friends.FirstOrDefault(f => f.Id == id);
@@ -173,7 +172,7 @@ namespace tfgame.Procedures
             }
 
             // assert this was sent to you
-            else if (friend.FriendMembershipId == WebSecurity.CurrentUserId)
+            else if (friend.FriendMembershipId == membershipId)
             {
                 friend.IsAccepted = true;
                 friendRepo.SaveFriend(friend);

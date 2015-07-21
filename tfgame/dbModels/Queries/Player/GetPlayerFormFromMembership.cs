@@ -5,7 +5,7 @@ namespace tfgame.dbModels.Queries.Player
 {
     public class GetPlayerFormFromMembership : QuerySingle<PlayerFormViewModel>
     {
-        public int MembershipId { get; set; }
+        public string MembershipId { get; set; }
         
         internal override PlayerFormViewModel FindSingle()
         {           

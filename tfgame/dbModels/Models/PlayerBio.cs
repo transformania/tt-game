@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.ComponentModel.DataAnnotations;
 
 namespace tfgame.dbModels.Models
 {
     public class PlayerBio
     {
         public int Id { get; set; }
-        public int OwnerMembershipId { get; set; }
+        [StringLength(128)]
+        public string OwnerMembershipId { get; set; }
         public string Text { get; set; }
         public string WebsiteURL { get; set; }
         public int PublicVisibility { get; set; }

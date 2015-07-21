@@ -5,14 +5,14 @@ using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using tfgame.dbModels.Models;
-using tfgame.Filters;
+using tfgame.Extensions;
 using tfgame.Procedures;
 using tfgame.Statics;
 using tfgame.ViewModels;
+using Microsoft.AspNet.Identity;
 
 namespace tfgame.Controllers
 {
-     [InitializeSimpleMembership]
     public class ItemController : Controller
     {
         //
@@ -20,7 +20,8 @@ namespace tfgame.Controllers
          [Authorize]
         public ActionResult SelfCast()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership();
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert player owns at least one of the type of item needed
             ItemViewModel itemToUse = ItemProcedures.GetAllPlayerItems(me.Id).FirstOrDefault(i => i.dbItem.dbName == "item_consumable_selfcaster");
@@ -44,7 +45,8 @@ namespace tfgame.Controllers
          [Authorize]
         public ActionResult SelfCastSend(string spell)
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership();
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             
             // assert player is animate
             if (me.Mobility != "full")
@@ -102,7 +104,8 @@ namespace tfgame.Controllers
          [Authorize]
         public ActionResult RemoveCurse()
         {
-            Player me = PlayerProcedures.GetPlayerFromMembership();
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             // assert player is animate
             if (me.Mobility != "full")
             {
@@ -127,8 +130,8 @@ namespace tfgame.Controllers
          [Authorize]
         public ActionResult RemoveCurseSend(string curse, int id)
         {
-
-            Player me = PlayerProcedures.GetPlayerFromMembership();
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             // assert player is animate
             if (me.Mobility != "full")
             {
@@ -182,7 +185,8 @@ namespace tfgame.Controllers
          //[Authorize]
          public ActionResult ReadSkillBook(int id)
          {
-             Player me = PlayerProcedures.GetPlayerFromMembership();
+             string myMembershipId = User.Identity.GetUserId();
+             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
              // assert player is animate
              if (me.Mobility != "full")

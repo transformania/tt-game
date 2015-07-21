@@ -7,7 +7,7 @@ namespace tfgame.ViewModels
 {
     public class CustomFormViewModel
     {
-        public int MembershipId { get; set; }
+        public string MembershipId { get; set; }
         public string Form { get; set; }
     }
 }

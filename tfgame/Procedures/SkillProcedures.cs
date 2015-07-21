@@ -356,7 +356,7 @@ namespace tfgame.Procedures
         public static void UpdateFormSpecificSkillsToPlayer(Player player, string oldFormDbName, string newFormDbName)
         {
             // don't care about bots
-            if (player.MembershipId < 0)
+            if (player.BotId < 0)
             {
                 return;
             }

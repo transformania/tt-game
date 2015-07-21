@@ -8,7 +8,6 @@ using tfgame.dbModels.Concrete;
 using tfgame.dbModels.Models;
 using tfgame.Statics;
 using tfgame.ViewModels;
-using WebMatrix.WebData;
 
 namespace tfgame.Procedures
 {
@@ -49,13 +48,13 @@ namespace tfgame.Procedures
             }
         }
 
-        public static string GiveInanimateXP(int playerId)
+        public static string GiveInanimateXP(string membershipId)
         {
             IInanimateXPRepository inanimXpRepo = new EFInanimateXPRepository();
             IItemRepository itemRep = new EFItemRepository();
 
             // get the current level of this player based on what item they are
-            Player me = PlayerProcedures.GetPlayerFromMembership(WebSecurity.CurrentUserId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(membershipId);
             Item inanimateMe = itemRep.Items.FirstOrDefault(i => i.VictimName == me.FirstName + " " + me.LastName);
 
             int currentGameTurn = PvPWorldStatProcedures.GetWorldTurnNumber();
@@ -64,7 +63,7 @@ namespace tfgame.Procedures
 
             // get the number of inanimate accounts under this IP
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            decimal playerCount = playerRepo.Players.Where(p => p.IpAddress == me.IpAddress && (p.Mobility == "inanimate" || p.Mobility == "animal") && p.MembershipId > 0).Count();
+            decimal playerCount = playerRepo.Players.Where(p => p.IpAddress == me.IpAddress && (p.Mobility == "inanimate" || p.Mobility == "animal") && p.BotId == 0).Count();
 
             if (playerCount == 0 || HttpContext.Current.User.IsInRole(PvPStatics.Permissions_MultiAccountWhitelist))
             {
@@ -72,13 +71,13 @@ namespace tfgame.Procedures
             }
             xpGain = xpGain / playerCount;
 
-            InanimateXP xp = inanimXpRepo.InanimateXPs.FirstOrDefault(i => i.OwnerId == playerId);
+            InanimateXP xp = inanimXpRepo.InanimateXPs.FirstOrDefault(i => i.OwnerId == me.Id);
 
             if (xp == null)
             {
                 xp = new InanimateXP
                 {
-                    OwnerId = playerId,
+                    OwnerId = me.Id,
                     Amount = xpGain / playerCount,
                     TimesStruggled = -6 * me.Level,
                     LastActionTimestamp = DateTime.UtcNow,

@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.ComponentModel.DataAnnotations;
 
 namespace tfgame.dbModels.Models
 {
     public class EffectContribution
     {
         public int Id { get; set; }
-        public int OwnerMemberhipId { get; set; }
+        [StringLength(128)]
+        public string OwnerMemberhipId { get; set; }
         public string SubmitterName { get; set; }
 
         public string AdditionalSubmitterNames { get; set; }

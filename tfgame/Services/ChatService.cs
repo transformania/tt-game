@@ -11,13 +11,13 @@ namespace tfgame.Services
     {
         private const int OnlineActivityCutoffMinutes = -2;
 
-        public static IDictionary<int, ChatUser> ChatPersistance { get; private set; }
+        public static IDictionary<string, ChatUser> ChatPersistance { get; private set; }
         
         public event EventHandler<NameChangedEventArgs> NameChanged = delegate {};
 
         static ChatService()
         {
-            ChatPersistance = new Dictionary<int, ChatUser>();
+            ChatPersistance = new Dictionary<string, ChatUser>();
         }
         
         public void MarkOnlineActivityTimestamp(Player_VM player)
@@ -37,7 +37,7 @@ namespace tfgame.Services
             var name = string.Empty;
             var pic = string.Empty;
 
-            if (player.MembershipId == -1)
+            if (player.MembershipId == "-1")
                 return new Tuple<string, string>(name, pic);
 
             if (ChatStatics.Staff.ContainsKey(player.MembershipId))
@@ -116,9 +116,9 @@ namespace tfgame.Services
 
         public class NameChangedEventArgs : EventArgs
         {
-            public int MembershipId { get; private set; }
+            public string MembershipId { get; private set; }
 
-            public NameChangedEventArgs(int membershipId)
+            public NameChangedEventArgs(string membershipId)
             {
                 MembershipId = membershipId;
             }

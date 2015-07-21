@@ -42,7 +42,8 @@ namespace tfgame.Procedures.BossProcedures
                     Money = 1000,
                     Mobility = "full",
                     Level = 10,
-                    MembershipId = -5,
+                    MembershipId = "-5",
+                    BotId = -5,
                     ActionPoints_Refill = 360,
                 };
 
@@ -142,7 +143,7 @@ namespace tfgame.Procedures.BossProcedures
                     SkillViewModel2 danceOfBlades = SkillProcedures.GetSkillViewModel("skill_The_Dance_of_Blades_Ashley_Valentine", valentine.Id);
                     List<Player> playersHere = PlayerProcedures.GetPlayersAtLocation(valentine.dbLocationName).ToList();
 
-                    playersHere = playersHere.Where(p => p.Mobility == "full" && PlayerProcedures.PlayerIsOffline(p) == false && p.Level >= 3 && p.MembershipId > 0 && p.Id != valentine.Id).ToList();
+                    playersHere = playersHere.Where(p => p.Mobility == "full" && PlayerProcedures.PlayerIsOffline(p) == false && p.Level >= 3 && p.BotId == 0 && p.Id != valentine.Id).ToList();
 
                     foreach (Player p in playersHere.Where(p => p.Mobility == "full" && PlayerProcedures.PlayerIsOffline(p) == false && p.Level >= 3))
                     {
@@ -166,7 +167,7 @@ namespace tfgame.Procedures.BossProcedures
             playersHere = playersHere.Where(p => p.Mobility == "full" &&
                 PlayerProcedures.PlayerIsOffline(p) == false &&
                 p.Level >= 3 &&
-                p.MembershipId > 0 &&
+                p.BotId == 0 &&
                 p.Id != valentine.Id &&
                 p.InDuel <= 0).ToList();
 
@@ -278,7 +279,7 @@ namespace tfgame.Procedures.BossProcedures
             PvPWorldStatProcedures.Boss_EndValentine();
 
             // find the players who dealt the most damage and award them with XP
-            List<BossDamage> damages = AIProcedures.GetTopAttackers(valentine.MembershipId, 15);
+            List<BossDamage> damages = AIProcedures.GetTopAttackers(valentine.BotId, 15);
 
             // top player gets 500 XP, each player down the line receives 25 fewer
             int l = 0;

@@ -40,7 +40,8 @@ namespace tfgame.Procedures.BossProcedures
                     Money = 1000,
                     Mobility = "full",
                     Level = 7,
-                    MembershipId = -6,
+                    MembershipId = "-6",
+                    BotId = -6,
                     ActionPoints_Refill = 360,
                 };
 
@@ -75,7 +76,7 @@ namespace tfgame.Procedures.BossProcedures
         {
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player fae = playerRepo.Players.FirstOrDefault(f => f.MembershipId == AIProcedures.JewdewfaeMembershipId);
+            Player fae = playerRepo.Players.FirstOrDefault(f => f.BotId == AIProcedures.JewdewfaeMembershipId);
 
             IJewdewfaeEncounterRepository faeRepo = new EFJewdewfaeEncounterRepository();
 
@@ -126,7 +127,7 @@ namespace tfgame.Procedures.BossProcedures
 
         public static decimal AddInteraction(Player player) {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player fae = playerRepo.Players.FirstOrDefault(f => f.MembershipId == AIProcedures.JewdewfaeMembershipId);
+            Player fae = playerRepo.Players.FirstOrDefault(f => f.BotId == AIProcedures.JewdewfaeMembershipId);
 
             IAIDirectiveRepository aiRepo = new EFAIDirectiveRepository();
             AIDirective directive = aiRepo.AIDirectives.FirstOrDefault(i => i.OwnerId == fae.Id);

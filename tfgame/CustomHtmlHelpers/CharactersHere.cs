@@ -72,7 +72,7 @@ namespace tfgame.CustomHtmlHelpers
         public static MvcHtmlString PrintPvPIcon(Player player)
         {
 
-            if (player.MembershipId < 0)
+            if (player.BotId < 0)
             {
                 return new MvcHtmlString("");
             }
@@ -85,7 +85,7 @@ namespace tfgame.CustomHtmlHelpers
             {
                 return new MvcHtmlString("<span class='icon icon-protection' title='This player is in Protection mode.'></span>");
             }
-            else if (player.MembershipId > 0)
+            else if (player.BotId == 0)
             {
                 return new MvcHtmlString("<span class='icon icon-pvp' title='This player is in PvP mode.'></span>");
             }
@@ -397,7 +397,7 @@ namespace tfgame.CustomHtmlHelpers
 
         public static MvcHtmlString StyleIfBot(Player player)
         {
-            if (player.MembershipId <= -2)
+            if (player.BotId <= -2)
             {
                 return new MvcHtmlString("bot");
             }

@@ -38,7 +38,7 @@ namespace tfgame.Models
 
     public class Character
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; }
         public Form Form { get; set; }
         public decimal Health { get; set; }

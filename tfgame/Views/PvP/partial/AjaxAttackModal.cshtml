@@ -3,7 +3,7 @@
 
     <span id="youAreAttacking">You are attacking @ViewBag.TargetName.</span>
     <span id="attackClose" onclick="closeAttackModal()">Cancel</span>
-@Html.ActionLink("Challenge to Duel", "IssueChallenge", "Duel", new {id = ViewBag.TargetId}, null)
+@Html.ActionLink("Challenge to Duel", "IssueChallenge", "Duel", new { id = ViewBag.TargetId }, new { @id = "duel_challenge" })
     <span id="expand" onclick="expandModal()">Expand</span>
     <span id="toggle_all" onclick="toggleAll()">All</span>
     <span id="toggle_animates" onclick="toggleAnimates()">Animate</span>

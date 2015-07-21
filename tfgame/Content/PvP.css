@@ -568,6 +568,18 @@ a.curse {
         background-color: white;
     }
 
+#duel_challenge {
+    cursor: pointer;
+    font-weight: 600;
+    border: 1px solid black;
+    background-color: orangered;
+    border-radius: 5px;
+}
+
+    #duel_challenge:hover {
+        background-color: white;
+    }
+
 #youAreAttacking {
     color: black;
     font-size: 15px;

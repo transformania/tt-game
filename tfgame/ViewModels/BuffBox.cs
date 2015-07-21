@@ -678,10 +678,10 @@ namespace tfgame.ViewModels
             {
                 "HealthBonusPercent",
                 new Dictionary<string,float> {
-                      	{"Discipline", .75F},
+                      	{"Discipline", .5F},
 	                    {"Perception", 0},
-	                    {"Charisma", -.375F},
-	                    {"Fortitude", .25F},
+	                    {"Charisma", -.25F},
+	                    {"Fortitude", .20F},
 	                    {"Agility", 0},
 	                    {"Allure", 0},
 	                    {"Magicka", 0},
@@ -883,7 +883,7 @@ namespace tfgame.ViewModels
 	                    {"Allure", 0}, // restoration
 	                    {"Magicka", 0},
 	                    {"Succour", 0},
-	                    {"Luck", .0F},
+	                    {"Luck", .05F},
                     }
                 },
                 {

@@ -770,6 +770,7 @@ namespace tfgame.Controllers
 
             ViewBag.TargetId = targetId;
             ViewBag.TargetName = target.FirstName + " " + target.LastName;
+            ViewBag.BotId = target.BotId;
              return PartialView("partial/AjaxAttackModal", output);
          }
 

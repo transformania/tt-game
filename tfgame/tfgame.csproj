@@ -1891,6 +1891,8 @@
     <Content Include="Content\fashion.scss" />
     <Content Include="Content\custom.css.map" />
     <Content Include="MachineKey.sample.config" />
+    <Content Include="ConnectionStrings.config" />
+    <Content Include="MachineKey.config" />
     <None Include="Properties\PublishProfiles\transformania-time.com - Web Deploy.pubxml">
       <SubType>Designer</SubType>
     </None>

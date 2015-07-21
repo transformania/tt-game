@@ -10,6 +10,7 @@ namespace tfgame.dbModels.Models
     {
         
         public int Id { get; set; }
+        [StringLength(128)]
         public string OwnerMembershipId { get; set; }
         public int PollId { get; set; }
         public int Num1 { get; set; }

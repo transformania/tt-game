@@ -4,12 +4,14 @@ using System.Linq;
 using System.Web;
 using tfgame.Statics;
 using tfgame.ViewModels;
+using System.ComponentModel.DataAnnotations;
 
 namespace tfgame.dbModels.Models
 {
     public class Player
     {
         public int Id {get; set;}
+        [StringLength(128)]
         public string MembershipId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

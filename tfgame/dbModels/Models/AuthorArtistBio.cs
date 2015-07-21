@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -8,6 +9,7 @@ namespace tfgame.dbModels.Models
     public class AuthorArtistBio
     {
         public int Id { get; set; }
+        [StringLength(128)]
         public string OwnerMembershipId { get; set; }
         public int PlayerNamePrivacyLevel { get; set; }
         public string OtherNames { get; set; }

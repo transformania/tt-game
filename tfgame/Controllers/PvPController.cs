@@ -44,6 +44,7 @@ namespace tfgame.Controllers
             }
 
             string myMembershipId = User.Identity.GetUserId();
+
             // assert that the player is logged in; otherwise ask them to do so
             if (myMembershipId == null)
             {

@@ -2305,6 +2305,7 @@
     <Content Include="Views\PvP\RoundLeaderboards\Statistics\Alpha_22.cshtml" />
     <Content Include="Views\NPC\LorekeeperLearnSpell.cshtml" />
     <Content Include="Views\Duel\DuelDetail.cshtml" />
+    <Content Include="Views\Account\ChangeEmail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

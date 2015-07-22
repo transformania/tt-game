@@ -11,6 +11,8 @@
 
 <p>You're logged in as <strong>@User.Identity.Name</strong>.</p>
 
+@Html.ActionLink("Change e-mail address", "ChangeEmail", "Account")
+
 @if (ViewBag.HasLocalPassword)
 {
     @Html.Partial("_ChangePasswordPartial")

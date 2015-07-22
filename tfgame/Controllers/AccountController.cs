@@ -176,10 +176,60 @@ namespace tfgame.Controllers
                 message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
                 : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
                 : message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
+                : message == ManageMessageId.ChangeEmailSuccess ? "Your e-mail address has been changed."
                 : "";
             ViewBag.HasLocalPassword = HasPassword();
             ViewBag.ReturnUrl = Url.Action("Manage");
             return View();
+        }
+
+        //
+        // GET: /Account/ChangeEmail
+
+        public ActionResult ChangeEmail()
+        {
+            LocalEmailModel Email = new LocalEmailModel
+            {
+                Email = GetUser().Email
+            };
+            return View(Email);
+        }
+
+        //
+        // GET: /Account/ChangeEmail
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ChangeEmail(LocalEmailModel model)
+        {
+            var user = GetUser();
+            if (ModelState.IsValid)
+            {
+                if (UserManager.CheckPassword(user, model.OldPassword))
+                {
+                    IdentityResult result = UserManager.SetEmail(User.Identity.GetUserId(), model.Email);
+                    if (result.Succeeded)
+                    {
+                        user = UserManager.FindById(User.Identity.GetUserId());
+                        if (user != null)
+                        {
+                            SignInManager.SignIn(user, isPersistent: false, rememberBrowser: false);
+                        }
+
+                        return RedirectToAction("Manage", new { Message = ManageMessageId.ChangeEmailSuccess });
+                    }
+                    else
+                    {
+                        AddErrors(result);
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Bad password");
+                }
+            }
+            // If we got this far, something failed, redisplay form
+            return View(model);
         }
 
         //
@@ -379,6 +429,7 @@ namespace tfgame.Controllers
             ChangePasswordSuccess,
             SetPasswordSuccess,
             RemoveLoginSuccess,
+            ChangeEmailSuccess,
             Error
         }
 

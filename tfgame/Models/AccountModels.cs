@@ -56,6 +56,18 @@ namespace tfgame.Models
         public string ConfirmPassword { get; set; }
     }
 
+    public class LocalEmailModel
+    {
+        [Required]
+        [Display(Name = "E-mail")]
+        public string Email { get; set; }
+
+        [Required]
+        [DataType(DataType.Password)]
+        [Display(Name = "Current password")]
+        public string OldPassword { get; set; }
+    }
+
     public class LoginModel
     {
         [Required]

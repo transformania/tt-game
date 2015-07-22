@@ -89,7 +89,7 @@ namespace tfgame.Models
         [Display(Name = "User name")]
         public string UserName { get; set; }
 
-        [Display(Name = "E-mail address")]
+        [Display(Name = "Email address")]
         public string Email { get; set; }
 
         [Required]

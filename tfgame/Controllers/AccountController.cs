@@ -207,8 +207,7 @@ namespace tfgame.Controllers
             {
                 if (UserManager.CheckPassword(user, model.OldPassword))
                 {
-                    user.Email = model.Email;
-                    IdentityResult result = UserManager.Update(user);
+                    IdentityResult result = UserManager.SetEmail(User.Identity.GetUserId(), model.Email);
                     if (result.Succeeded)
                     {
                         user = UserManager.FindById(User.Identity.GetUserId());

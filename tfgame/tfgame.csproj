@@ -20,6 +20,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -2111,7 +2112,6 @@
     <Content Include="Views\TFWorld\SceneLog.cshtml" />
     <Content Include="Views\PvP\Game.cshtml" />
     <Content Include="Views\PvP\Play.cshtml" />
-    <Content Include="Views\PvP\LoginRequired.cshtml" />
     <Content Include="Views\PvP\MakeNewCharacter.cshtml" />
     <Content Include="Views\PvP\Player_Partial.cshtml" />
     <Content Include="Views\PvP\MySkills.cshtml" />

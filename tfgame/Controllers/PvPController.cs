@@ -2697,11 +2697,11 @@ namespace tfgame.Controllers
          public ActionResult PvPLeaderboard()
          {
 
-             return RedirectToAction("Leaderboard");
+            // return RedirectToAction("Leaderboard");
 
-             //Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
-             //ViewBag.MyName = me.FirstName + " " + me.LastName;
-             //return View(PlayerProcedures.GetLeadingPlayers__PvP(100));
+             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+             ViewBag.MyName = me.FirstName + " " + me.LastName;
+             return View(PlayerProcedures.GetLeadingPlayers__PvP(100));
          }
 
          public ActionResult ItemLeaderboard()

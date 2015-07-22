@@ -27,6 +27,7 @@ namespace tfgame.Controllers
     {
         //
         // GET: /PvP/
+
         [Authorize]
         public ActionResult Play()
         {

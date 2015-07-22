@@ -28,6 +28,7 @@ namespace tfgame.Controllers
         //
         // GET: /PvP/
 
+        [Authorize]
         public ActionResult Play()
         {
 
@@ -46,12 +47,6 @@ namespace tfgame.Controllers
 
             ViewBag.MyMembershipId = myMembershipId;
             ViewBag.MaxLogSize = PvPStatics.MaxLogMessagesPerLocation;
-
-            // assert that the player is logged in; otherwise ask them to do so
-            if (myMembershipId == null)
-            {
-                return View("~/Views/PvP/LoginRequired.cshtml");
-            }
 
             // if the player is logged in but has no character, go to a setup screen
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -1576,11 +1571,6 @@ namespace tfgame.Controllers
         public ActionResult Take(int id)
         {
             string myMembershipId = User.Identity.GetUserId();
-            // assert player is logged in
-            if (myMembershipId == null)
-            {
-                return View("~/Views/PvP/LoginRequired.cshtml");
-            }
 
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
@@ -1705,14 +1695,10 @@ namespace tfgame.Controllers
 
         }
 
+        [Authorize]
         public ActionResult Drop(int itemId)
         {
             string myMembershipId = User.Identity.GetUserId();
-            // assert player is logged in
-            if (myMembershipId == null)
-            {
-                return View("~/Views/PvP/LoginRequired.cshtml");
-            }
 
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
@@ -1798,11 +1784,6 @@ namespace tfgame.Controllers
         public ActionResult Equip(int itemId, bool putOn)
         {
             string myMembershipId = User.Identity.GetUserId();
-            // assert player is logged in
-            if (myMembershipId == null)
-            {
-                return View("~/Views/PvP/LoginRequired.cshtml");
-            }
 
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
@@ -2088,10 +2069,6 @@ namespace tfgame.Controllers
         {
             // this might fix some odd log-off message interception oddities... maybe?
             string myMembershipId = User.Identity.GetUserId();
-            if (myMembershipId == null)
-            {
-                return View("~/Views/PvP/LoginRequired.cshtml");
-            }
 
            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
            MessageBag output = MessageProcedures.GetPlayerMessages(me);
@@ -2141,11 +2118,6 @@ namespace tfgame.Controllers
         public ActionResult DeleteAllMessages()
         {
             string myMembershipId = User.Identity.GetUserId();
-            // assert player is logged in
-            if (myMembershipId == null)
-            {
-                return View("~/Views/PvP/LoginRequired.cshtml");
-            }
 
             MessageProcedures.DeleteAllMessages(myMembershipId);
             return RedirectToAction("MyMessages");
@@ -2749,7 +2721,7 @@ namespace tfgame.Controllers
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             if (me == null || me.BotId == -1 || me.FirstName=="" || me.LastName=="")
             {
-                return View("~/Views/PvP/LoginRequired.cshtml");
+                return View("~/Views/PvP/MakeNewCharacter.cshtml");
             }
 
              // assert player is not banned from global chat
@@ -2821,7 +2793,7 @@ namespace tfgame.Controllers
              Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
              if (me == null || me.BotId == -1 || me.FirstName == "" || me.LastName == "")
              {
-                 return View("~/Views/PvP/LoginRequired.cshtml");
+                return View("~/Views/PvP/MakeNewCharacter.cshtml");
              }
              return View("Chats/PrivateBegin");
          }

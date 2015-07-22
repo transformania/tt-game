@@ -40,14 +40,15 @@
                     @Html.ActionLink("Register", "Register") <br />if you don't have an account.
                 </p>
             }
-
+            @if (ViewBag.ReturnUrl == "/")
+            {
             <br /><br />
 
             <p>
                 Or did you want to play single player javascript game -
                 @Html.ActionLink("Transformania Gameshow", "Play", "TransformaniaTime") ?
             </p>
-
+            }
         </div>
         
 

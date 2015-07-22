@@ -31,6 +31,9 @@
                     @Html.LabelFor(m => m.UserName)
                     @Html.TextBoxFor(m => m.UserName, new { disabled = "disabled", @class = "form-control frontForm", placeholder = "Username" })
 
+                    @Html.LabelFor(m => m.Email)
+                    @Html.TextBoxFor(m => m.Email, new { disabled = "disabled", @class = "form-control frontForm", placeholder = "Email" })
+
                     @Html.LabelFor(m => m.Password)
                     @Html.PasswordFor(m => m.Password, new { disabled = "disabled", @class = "form-control frontForm", placeholder = "Password" })
 
@@ -67,9 +70,7 @@
     });
 
     function toggleForms(value) {
-        $("#UserName").prop("disabled", value);
-        $("#Password").prop("disabled", value);
-        $("#ConfirmPassword").prop("disabled", value);
+        $(".frontForm").prop("disabled", value);
         $("#registerBtn").prop("disabled", value);
     }
 

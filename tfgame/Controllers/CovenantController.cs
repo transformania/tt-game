@@ -324,14 +324,14 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult StartNewCovenantSubmit(Covenant input)
         {
-
+            string myMembershipId = User.Identity.GetUserId();
             if (!ModelState.IsValid)
             {
                 ViewBag.ValidationMessage = "Your covenant was not created.  Covenant name must be between 8 and 50 characters long and description must be between 25 and 200 characters long.";
                 return View("StartNewCovenant");
             }
 
-            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert that a covenant of this name does not already exists
             if (CovenantProcedures.CovenantOfNameExists(input.Name) == true)
@@ -349,7 +349,7 @@ namespace tfgame.Controllers
 
             //input.FlagUrl = input.FlagUrl;
             input.FlagUrl = "generic.jpg";
-            input.FounderMembershipId = User.Identity.GetUserId();
+            input.FounderMembershipId = myMembershipId;
             input.LeaderId = me.Id;
             //input.IsPvP = me.InPvP;
             CovenantProcedures.StartNewCovenant(input);

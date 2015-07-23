@@ -2751,6 +2751,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult FastInanimateMe()
         {
+            string myMembershipId = User.Identity.GetUserId();
             if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
             {
                 return RedirectToAction("Play", "PvP");
@@ -2766,7 +2767,7 @@ namespace tfgame.Controllers
             IPlayerRepository playerRepo = new EFPlayerRepository();
             IItemRepository itemRepo = new EFItemRepository();
 
-            Player me = playerRepo.Players.FirstOrDefault(p => p.MembershipId == User.Identity.GetUserId());
+            Player me = playerRepo.Players.FirstOrDefault(p => p.MembershipId == myMembershipId);
             me.Mobility = "inanimate";
             me.Form = "form_Flirty_Three-Tiered_Skirt_Martiandawn";
             playerRepo.SavePlayer(me);
@@ -2798,6 +2799,7 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult FastPetMe()
         {
+            string myMembershipId = User.Identity.GetUserId();
             if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
             {
                 return RedirectToAction("Play", "PvP");
@@ -2813,7 +2815,7 @@ namespace tfgame.Controllers
             IPlayerRepository playerRepo = new EFPlayerRepository();
             IItemRepository itemRepo = new EFItemRepository();
 
-            Player me = playerRepo.Players.FirstOrDefault(p => p.MembershipId == User.Identity.GetUserId());
+            Player me = playerRepo.Players.FirstOrDefault(p => p.MembershipId == myMembershipId);
             me.Mobility = "animal";
             me.Form = "form_Cuddly_Pocket_Goo_Girl_GooGirl";
             playerRepo.SavePlayer(me);

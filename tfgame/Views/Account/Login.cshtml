@@ -40,7 +40,7 @@
                     @Html.ActionLink("Register", "Register") <br />if you don't have an account.
                 </p>
             }
-            @if (ViewBag.ReturnUrl == "/")
+            @if (ViewBag.ReturnUrl == "/" || String.IsNullOrEmpty(ViewBag.ReturnUrl))
             {
             <br /><br />
 

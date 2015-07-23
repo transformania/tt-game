@@ -28,6 +28,7 @@ namespace tfgame.Controllers
         //
         // GET: /PvP/
 
+        [Authorize]
         public ActionResult Play()
         {
 
@@ -47,7 +48,7 @@ namespace tfgame.Controllers
             // assert that the player is logged in; otherwise ask them to do so
             if (myMembershipId == null)
             {
-                return View("~/Views/PvP/LoginRequired.cshtml");
+                return RedirectToAction("Login", "Account");
             }
 
             ViewBag.MyMembershipId = myMembershipId;

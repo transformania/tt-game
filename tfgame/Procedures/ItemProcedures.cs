@@ -1105,6 +1105,7 @@ namespace tfgame.Procedures
                 VictimName = victim.FirstName + " " + victim.LastName,
                 dbName = targetForm.BecomesItemDbName,
                 Level = victim.Level,
+                Nickname = victim.Nickname,
                 TimeDropped = DateTime.UtcNow,
             };
 

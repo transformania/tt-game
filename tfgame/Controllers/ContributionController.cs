@@ -88,7 +88,7 @@ namespace tfgame.Controllers
                 catch
                 {
                     contribution = new Contribution();
-                    contribution.OwnerMembershipId = User.Identity.GetUserId();
+                    contribution.OwnerMembershipId = currentUserId;
                 }
             }
             else
@@ -428,7 +428,7 @@ namespace tfgame.Controllers
         [HttpPost]
         public ActionResult SendContribution(Contribution input)
         {
-
+            string myMembershipId = User.Identity.GetUserId();
             IContributionRepository contributionRepo = new EFContributionRepository();
             Contribution SaveMe;
 
@@ -440,7 +440,7 @@ namespace tfgame.Controllers
             if (SaveMe == null)
             {
                 SaveMe = new Contribution();
-                SaveMe.OwnerMembershipId = User.Identity.GetUserId();
+                SaveMe.OwnerMembershipId = myMembershipId;
             }
 
 
@@ -448,13 +448,13 @@ namespace tfgame.Controllers
             {
 
                 // submitter is original author, ID stays the same and do NOT mark as proofreading version
-                if (SaveMe != null && SaveMe.OwnerMembershipId == User.Identity.GetUserId())
+                if (SaveMe != null && SaveMe.OwnerMembershipId == myMembershipId)
                 {
                     SaveMe.Id = input.Id;
                 }
 
                 // submitter is not original author.  Do more logic...
-                else if (SaveMe != null && SaveMe.OwnerMembershipId != User.Identity.GetUserId())
+                else if (SaveMe != null && SaveMe.OwnerMembershipId != myMembershipId)
                 {
                     // this is a poorfreading copy.  Keep Id the same and keep it marked as a proofreading copy IF the editor is a proofreader
                     if (SaveMe.ProofreadingCopy == true && iAmProofreader == true)
@@ -678,10 +678,11 @@ namespace tfgame.Controllers
 
         public ActionResult ContributeEffect(int id)
         {
+            string myMembershipId = User.Identity.GetUserId();
             // get all of this players effect contributions
             IEffectContributionRepository effectContRepo = new EFEffectContributionRepository();
 
-            IEnumerable<EffectContribution> myEffectContributions = effectContRepo.EffectContributions.Where(c => c.OwnerMemberhipId == User.Identity.GetUserId());
+            IEnumerable<EffectContribution> myEffectContributions = effectContRepo.EffectContributions.Where(c => c.OwnerMemberhipId == myMembershipId);
             ViewBag.OtherEffectContributions = myEffectContributions;
 
             EffectContribution output = effectContRepo.EffectContributions.FirstOrDefault(e => e.Id == id);
@@ -704,7 +705,7 @@ namespace tfgame.Controllers
             {
                 output = new EffectContribution
                 {
-                    OwnerMemberhipId = User.Identity.GetUserId(),
+                    OwnerMemberhipId = myMembershipId,
                     History = "",
                 };
             }
@@ -712,7 +713,7 @@ namespace tfgame.Controllers
             // not new... check for proofreading permissions
             else
             {
-                if (output.OwnerMemberhipId != User.Identity.GetUserId() && (iAmProofreader == false || (output.ProofreadingCopy == false && iAmAdmin == false)))
+                if (output.OwnerMemberhipId != myMembershipId && (iAmProofreader == false || (output.ProofreadingCopy == false && iAmAdmin == false)))
                 {
                     TempData["Error"] = TempData["You do not have permission to view this."];
                     return RedirectToAction("Play", "PvP");
@@ -787,7 +788,7 @@ namespace tfgame.Controllers
 
         public ActionResult SendEffectContribution(EffectContribution input)
         {
-
+            string myMembershipId = User.Identity.GetUserId();
             IEffectContributionRepository effectContRepo = new EFEffectContributionRepository();
             EffectContribution saveme = effectContRepo.EffectContributions.FirstOrDefault(e => e.Id == input.Id);
 
@@ -799,7 +800,7 @@ namespace tfgame.Controllers
             {
                 saveme = new EffectContribution
                 {
-                    OwnerMemberhipId = User.Identity.GetUserId(),
+                    OwnerMemberhipId = myMembershipId,
                     ReadyForReview = false,
                     ApprovedByAdmin = false,
                     IsLive = false,
@@ -808,7 +809,7 @@ namespace tfgame.Controllers
 
                 // make sure this actually is the player's own contribution
             }
-            else if (saveme.OwnerMemberhipId != User.Identity.GetUserId() && iAmProofreader == false)
+            else if (saveme.OwnerMemberhipId != myM && iAmProofreader == false)
             {
                 TempData["Error"] = "This contribution does not belong to you and you are not a proofreader.";
                 TempData["SubError"] = "You may have been logged out; check that you are logged in the the game still in another tab.";
@@ -1603,7 +1604,8 @@ namespace tfgame.Controllers
         public ActionResult MyDMRolls()
         {
             IDMRollRepository repo = new EFDMRollRepository();
-            return View(repo.DMRolls.Where(r => r.MembershipOwnerId == User.Identity.GetUserId()));
+            string myMembershipId = User.Identity.GetUserId();
+            return View(repo.DMRolls.Where(r => r.MembershipOwnerId == myMembershipId));
         }
 
           [Authorize]
@@ -1632,6 +1634,7 @@ namespace tfgame.Controllers
         {
             IDMRollRepository repo = new EFDMRollRepository();
             DMRoll roll = repo.DMRolls.FirstOrDefault(i => i.Id == input.Id);
+            string myMembershipId = User.Identity.GetUserId();
 
             if (roll == null)
             {
@@ -1639,7 +1642,7 @@ namespace tfgame.Controllers
             }
             else
             {
-                if (roll.MembershipOwnerId != User.Identity.GetUserId() && User.IsInRole(PvPStatics.Permissions_Admin) == false)
+                if (roll.MembershipOwnerId != myMembershipId && User.IsInRole(PvPStatics.Permissions_Admin) == false)
                 {
                     TempData["Error"] = "This does not belong to you.";
                     return RedirectToAction("Play", "PvP");
@@ -1653,7 +1656,7 @@ namespace tfgame.Controllers
 
             if (roll.MembershipOwnerId != "0" && roll.MembershipOwnerId != "-1" && roll.MembershipOwnerId != "-2" && User.IsInRole(PvPStatics.Permissions_Admin) == false)
             {
-                roll.MembershipOwnerId = User.Identity.GetUserId();
+                roll.MembershipOwnerId = myMembershipId;
             }
 
             roll.Tags = input.Tags.ToLower();

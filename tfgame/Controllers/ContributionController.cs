@@ -809,7 +809,7 @@ namespace tfgame.Controllers
 
                 // make sure this actually is the player's own contribution
             }
-            else if (saveme.OwnerMemberhipId != myM && iAmProofreader == false)
+            else if (saveme.OwnerMemberhipId != myMembershipId && iAmProofreader == false)
             {
                 TempData["Error"] = "This contribution does not belong to you and you are not a proofreader.";
                 TempData["SubError"] = "You may have been logged out; check that you are logged in the the game still in another tab.";

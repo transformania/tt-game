@@ -681,7 +681,7 @@ namespace tfgame.Procedures
                     output.FromItems_MeditationExtraMana = q.MeditationExtraMana;
                     output.FromItems_CleanseExtraHealth = q.CleanseExtraHealth;
                     output.FromItems_ExtraSkillCriticalPercent = q.ExtraSkillCriticalPercent;
-                    output.FromItems_HealthBonusPercent = q.HealthBonusPercent;
+                    output.FromItems_HealthRecoveryPerUpdate = q.HealthRecoveryPerUpdate;
                     output.FromItems_ManaRecoveryPerUpdate = q.ManaRecoveryPerUpdate;
                     output.FromItems_SneakPercent = q.SneakPercent;
                     output.FromItems_EvasionPercent = q.EvasionPercent;
@@ -717,7 +717,7 @@ namespace tfgame.Procedures
                     output.FromForm_MeditationExtraMana = q.MeditationExtraMana;
                     output.FromForm_CleanseExtraHealth = q.CleanseExtraHealth;
                     output.FromForm_ExtraSkillCriticalPercent = q.ExtraSkillCriticalPercent;
-                    output.FromForm_HealthBonusPercent = q.HealthBonusPercent;
+                    output.FromForm_HealthRecoveryPerUpdate = q.HealthRecoveryPerUpdate;
                     output.FromForm_ManaRecoveryPerUpdate = q.ManaRecoveryPerUpdate;
                     output.FromForm_SneakPercent = q.SneakPercent;
                     output.FromForm_EvasionPercent = q.EvasionPercent;
@@ -753,7 +753,7 @@ namespace tfgame.Procedures
                     output.FromEffects_MeditationExtraMana = q.MeditationExtraMana;
                     output.FromEffects_CleanseExtraHealth = q.CleanseExtraHealth;
                     output.FromEffects_ExtraSkillCriticalPercent = q.ExtraSkillCriticalPercent;
-                    output.FromEffects_HealthBonusPercent = q.HealthBonusPercent;
+                    output.FromEffects_HealthRecoveryPerUpdate = q.HealthRecoveryPerUpdate;
                     output.FromEffects_ManaRecoveryPerUpdate = q.ManaRecoveryPerUpdate;
                     output.FromEffects_SneakPercent = q.SneakPercent;
                     output.FromEffects_EvasionPercent = q.EvasionPercent;

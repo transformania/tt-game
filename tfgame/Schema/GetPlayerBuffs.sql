@@ -36,6 +36,7 @@ BEGIN
 		,ISNULL(SUM(si.MeditationExtraMana + si.MeditationExtraMana * ([Items].Level - 1)*@Item_LevelBonusModifier), 0) AS MeditationExtraMana
 		,ISNULL(SUM(si.CleanseExtraHealth + si.CleanseExtraHealth * ([Items].Level - 1)*@Item_LevelBonusModifier), 0) AS CleanseExtraHealth
 		,ISNULL(SUM(si.ExtraSkillCriticalPercent + si.ExtraSkillCriticalPercent * ([Items].Level - 1)*@Item_LevelBonusModifier), 0) AS ExtraSkillCriticalPercent
+		,ISNULL(SUM(si.HealthRecoveryPerUpdate + si.HealthRecoveryPerUpdate * ([Items].Level - 1)*@Item_LevelBonusModifier), 0) AS HealthRecoveryPerUpdate
 		,ISNULL(SUM(si.ManaRecoveryPerUpdate + si.ManaRecoveryPerUpdate * ([Items].Level - 1)*@Item_LevelBonusModifier), 0) AS ManaRecoveryPerUpdate
 		,ISNULL(SUM(si.SneakPercent + si.SneakPercent * ([Items].Level - 1)*@Item_LevelBonusModifier), 0) AS SneakPercent
 		,ISNULL(SUM(si.EvasionPercent + si.EvasionPercent * ([Items].Level - 1)*@Item_LevelBonusModifier), 0) AS EvasionPercent
@@ -78,6 +79,7 @@ BEGIN
 		,ISNULL(sf.MeditationExtraMana, 0)
 		,ISNULL(sf.CleanseExtraHealth, 0)
 		,ISNULL(sf.ExtraSkillCriticalPercent, 0)
+		,ISNULL(sf.HealthRecoveryPerUpdate, 0)
 		,ISNULL(sf.ManaRecoveryPerUpdate, 0)
 		,ISNULL(sf.SneakPercent, 0)
 		,ISNULL(sf.EvasionPercent, 0)
@@ -119,6 +121,7 @@ BEGIN
 		,ISNULL(SUM(se.MeditationExtraMana), 0)
 		,ISNULL(SUM(se.CleanseExtraHealth), 0)
 		,ISNULL(SUM(se.ExtraSkillCriticalPercent), 0)
+		,ISNULL(SUM(se.HealthRecoveryPerUpdate), 0)
 		,ISNULL(SUM(se.ManaRecoveryPerUpdate), 0)
 		,ISNULL(SUM(se.SneakPercent), 0)
 		,ISNULL(SUM(se.EvasionPercent), 0)

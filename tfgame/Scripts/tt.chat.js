@@ -55,6 +55,11 @@
         }, 10000);
     }
 
+    function onNewMessage(model) {
+        var output = ChatMessageModule.formatMessage(model);
+        $('#discussion').append($(output));
+    }
+
     /* Public methods */
 
     pub.initialize = function (options) {
@@ -62,6 +67,8 @@
 
         $.connection.hub.start().done(onChatHubStarted);
         $.connection.hub.disconnected(onChatDisconnected);
+        ;
+        pub.chat.client.addNewMessageToPage = onNewMessage;
     }
 
     pub.onUserDoubleTapped = function (name, e) {

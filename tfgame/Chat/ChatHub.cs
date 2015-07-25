@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Net;
 using Microsoft.AspNet.SignalR;
 using tfgame.dbModels.Models;
 using tfgame.dbModels.Queries.Player;
@@ -7,6 +9,7 @@ using tfgame.Procedures;
 using tfgame.Services;
 using tfgame.Statics;
 using System.Threading.Tasks;
+using System.Web;
 using tfgame.CustomHtmlHelpers;
 using Microsoft.AspNet.Identity;
 
@@ -87,8 +90,19 @@ namespace tfgame.Chat
             {
                 var nameOut = output.SendNameToClient ? name : "";
                 var colorOut = output.SendPlayerChatColor ? me.Player.ChatColor : "";
-                
-                Clients.Group(room).addNewMessageToPage(pic, nameOut , output.Text, colorOut);
+
+                var model = new
+                {
+                    User = nameOut,
+                    IsStaff = ChatStatics.Staff.ContainsKey(me.Player.MembershipId),
+                    Color = colorOut,
+                    Pic = pic,
+                    Message = WebUtility.HtmlEncode(output.Text),
+                    MessageType = output.MessageType.ToString(),
+                    Timestamp = DateTime.UtcNow.ToUnixTime(),
+                };
+
+                Clients.Group(room).addNewMessageToPage(model);
                 ChatLogProcedures.WriteLogToDatabase(room, name, output.Text);
             }
 

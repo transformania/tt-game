@@ -2312,6 +2312,8 @@
     <Content Include="Views\PvP\LoginRequired.cshtml" />
     <Content Include="Views\Chat\ChatIndex.cshtml" />
     <Content Include="Views\Chat\_ChatMenu.cshtml" />
+    <Content Include="Scripts\tt.chat.userList.js" />
+    <Content Include="Scripts\tt.chat.messages.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

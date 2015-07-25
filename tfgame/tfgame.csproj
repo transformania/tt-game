@@ -231,6 +231,7 @@
     <Compile Include="Chat\ChatHub.cs" />
     <Compile Include="Chat\DuelHub.cs" />
     <Compile Include="Chat\NoticeHub.cs" />
+    <Compile Include="Controllers\ChatController.cs" />
     <Compile Include="Controllers\ContributionController.cs" />
     <Compile Include="Controllers\CovenantController.cs" />
     <Compile Include="Controllers\DuelController.cs" />
@@ -451,6 +452,7 @@
     <Compile Include="ViewModels\BlacklistEntryViewModel.cs" />
     <Compile Include="ViewModels\BossSummon.cs" />
     <Compile Include="ViewModels\BuffBox.cs" />
+    <Compile Include="ViewModels\ChatViewModel.cs" />
     <Compile Include="ViewModels\ContributionCredit.cs" />
     <Compile Include="ViewModels\ContributionStatusViewModel.cs" />
     <Compile Include="ViewModels\CovenantViewModel.cs" />
@@ -1466,6 +1468,7 @@
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\notices.js" />
+    <Content Include="Scripts\tt.chat.js" />
     <Content Include="Scripts\ttchat.js" />
     <Content Include="Sounds\turnUpdate1.wav" />
     <Content Include="XMLs\BossSummonText\BimboBoss.txt" />
@@ -2307,6 +2310,8 @@
     <Content Include="Views\Duel\DuelDetail.cshtml" />
     <Content Include="Views\Account\ChangeEmail.cshtml" />
     <Content Include="Views\PvP\LoginRequired.cshtml" />
+    <Content Include="Views\Chat\ChatIndex.cshtml" />
+    <Content Include="Views\Chat\_ChatMenu.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using tfgame.dbModels.Models;
+﻿using tfgame.dbModels.Models;
 
 namespace tfgame.ViewModels
 {
@@ -10,11 +6,10 @@ namespace tfgame.ViewModels
     {
         public Player_VM Player { get; set; }
         public Form Form { get; set; }
-    }
 
-    //public class PlayerFormViewModel2
-    //{
-    //    public Player_VM Player { get; set; }
-    //    public Form Form { get; set; }
-    //}
+        public bool CanAccessChat()
+        {
+            return Player != null && Player.BotId == 0 && !string.IsNullOrWhiteSpace(Player.FirstName) && !string.IsNullOrWhiteSpace(Player.LastName);
+        }
+    }
 }

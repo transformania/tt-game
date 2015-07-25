@@ -1,0 +1,26 @@
+﻿
+<!-- Collect the nav links, forms, and other content for toggling -->
+<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+    <ul class="nav navbar-nav">
+        <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+        <li>
+            @Html.ActionLink("Global", "Chat", "PvP", new { room = "global" }, null)
+        </li>
+        <li>
+            @Html.ActionLink("RP Room 1", "Chat", "PvP", new { room = "rp1" }, null)
+        </li>
+        <li>
+            @Html.ActionLink("RP Room 2", "Chat", "PvP", new { room = "rp2" }, null)
+        </li>
+        <li>@Html.ActionLink("RP Room 3", "Chat", "PvP", new { room = "rp3" }, null)</li>
+        <li>
+            @Html.ActionLink("Create/Join Private Room", "PrivateChat", "PvP")
+        </li>
+        <li>
+            @Html.ActionLink("Chat Log", "ChatLog", "PvP", new { room = "global", filter = "lasth" }, new { target = "_blank" })
+        </li>
+        <li>@Html.ActionLink("Commands", "ChatCommands", "PvP", null, new { target = "_blank" })</li>
+        <li><a href="#" id="showIgnore">Ignore</a></li>
+        <li><a href="#" id="toggleImages" style="color: #734752 !important; font-weight:bold;">Toggle Images</a></li>
+    </ul>
+</div><!-- /.navbar-collapse -->

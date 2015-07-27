@@ -339,6 +339,10 @@ namespace tfgame.Procedures
                 }
 
                 dbPlayer.Mobility = "full";
+                dbPlayer.ActionPoints = PvPStatics.MaximumStoreableActionPoints;
+                dbPlayer.ActionPoints_Refill = PvPStatics.MaximumStoreableActionPoints_Refill;
+                dbPlayer.CleansesMeditatesThisRound = PvPStatics.MaxCleansesMeditatesPerUpdate;
+                dbPlayer.TimesAttackingThisUpdate = PvPStatics.MaxAttacksPerUpdate;
 
                 // don't let the player spawn in the dungeon if they are not in PvP mode
                 if (dbPlayer.GameMode < 2 && dbPlayer.IsInDungeon() == true)

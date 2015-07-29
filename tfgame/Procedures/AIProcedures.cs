@@ -504,11 +504,11 @@ namespace tfgame.Procedures
                 if (turnNumber % 16 == 1)
                 {
 
-                    Player lorekeeper = PlayerProcedures.GetPlayerFromBotId(AIProcedures.LoremasterMembershipId);
+                    //Player lorekeeper = PlayerProcedures.GetPlayerFromBotId(AIProcedures.LoremasterMembershipId);
 
                     IItemRepository itemRepo = new EFItemRepository();
                     List<Item> lindellasItems = itemRepo.Items.Where(i => i.OwnerId == merchant.Id && i.Level == 0).ToList();
-                    List<Item> lorekeeperItems = itemRepo.Items.Where(i => i.OwnerId == lorekeeper.Id && i.Level == 0).ToList();
+                  //  List<Item> lorekeeperItems = itemRepo.Items.Where(i => i.OwnerId == lorekeeper.Id && i.Level == 0).ToList();
 
                     string path = HttpContext.Current.Server.MapPath("~/XMLs/RestockList.xml");
                     List<RestockListItem> restockItems = new List<RestockListItem>();
@@ -549,32 +549,33 @@ namespace tfgame.Procedures
                             }
                         }
 
-                        else if (item.Merchant == "Lorekeeper")
-                        {
-                            int currentCount = lorekeeperItems.Where(i => i.dbName == item.dbName).Count();
-                            if (currentCount < item.AmountBeforeRestock)
-                            {
-                                for (int x = 0; x < item.AmountToRestockTo - currentCount; x++)
-                                {
-                                    Item newItem = new Item
-                                    {
-                                        dbName = item.dbName,
-                                        dbLocationName = "",
-                                        OwnerId = lorekeeper.Id,
-                                        IsEquipped = false,
-                                        IsPermanent = true,
-                                        Level = 0,
-                                        PvPEnabled = -1,
-                                        TimeDropped = DateTime.UtcNow,
-                                        TurnsUntilUse = 0,
-                                        VictimName = "",
-                                        EquippedThisTurn = false
-                                    };
-                                    itemRepo.SaveItem(newItem);
-                                }
+                        // TODO:  Uncomment this out when lorekeeper goes live
+                        //else if (item.Merchant == "Lorekeeper")
+                        //{
+                        //    int currentCount = lorekeeperItems.Where(i => i.dbName == item.dbName).Count();
+                        //    if (currentCount < item.AmountBeforeRestock)
+                        //    {
+                        //        for (int x = 0; x < item.AmountToRestockTo - currentCount; x++)
+                        //        {
+                        //            Item newItem = new Item
+                        //            {
+                        //                dbName = item.dbName,
+                        //                dbLocationName = "",
+                        //                OwnerId = lorekeeper.Id,
+                        //                IsEquipped = false,
+                        //                IsPermanent = true,
+                        //                Level = 0,
+                        //                PvPEnabled = -1,
+                        //                TimeDropped = DateTime.UtcNow,
+                        //                TurnsUntilUse = 0,
+                        //                VictimName = "",
+                        //                EquippedThisTurn = false
+                        //            };
+                        //            itemRepo.SaveItem(newItem);
+                        //        }
 
-                            }
-                        }
+                        //    }
+                        //}
 
 
                     }

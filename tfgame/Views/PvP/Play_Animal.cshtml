@@ -366,28 +366,11 @@
     var secondsToUpdate = @ViewBag.SecondsUntilUpdate;
     var donatorTier = @Model.You.DonatorLevel;
             var playUpdateSound = false;
+            var playAttackSound = false;
+            var playMessageSound = false;
             var notificationsEnabled = false;
 
             $(document).ready(function () {
-
-        setInterval(function(){
-            secondsToUpdate--;
-            timer_minutes = Math.floor(secondsToUpdate/60);
-            timer_seconds = String(secondsToUpdate % 60);
-
-            if (timer_seconds.length == 1) {
-                timer_seconds = "0" + timer_seconds;
-            }
-
-            if (timer_minutes < 0) {
-                timer_minutes = "0";
-                timer_seconds = "00";
-                $("#turn_countdown").addClass("good");
-                blinkEnabled = 1;
-            }
-
-            $("#turn_countdown").html(timer_minutes + ":" + timer_seconds);
-        }, 1000);
 
         $("#offlinePlayersWrapper").hide();
 
@@ -412,10 +395,6 @@
                 $( this ).addClass("disabled");
             }
         });
-
-
-        var myVar=setInterval(function(){pingForUpdate()},30000);
-        var myVa2r=setInterval(function(){titleToggle()},1000);
 
     });
 

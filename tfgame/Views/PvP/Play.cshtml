@@ -378,6 +378,8 @@
     var donatorTier = @Model.You.Player.DonatorLevel;
 
     var playUpdateSound = false;
+    var playAttackSound = false;
+    var playMessageSound = false;
     var notificationsEnabled = false;
     var name = "@Model.You.Player.FirstName" + " @Model.You.Player.LastName";
     var playerMana = @Model.You.Player.Mana;
@@ -385,24 +387,9 @@
 
     $(document).ready(function () {
 
-        setInterval(function(){
-            secondsToUpdate--;
-            timer_minutes = Math.floor(secondsToUpdate/60);
-            timer_seconds = String(secondsToUpdate % 60);
+   
 
-            if (timer_seconds.length == 1) {
-                timer_seconds = "0" + timer_seconds;
-            }
-
-            if (timer_minutes < 0) {
-                timer_minutes = "0";
-                timer_seconds = "00";
-                $("#turn_countdown").addClass("good");
-                blinkEnabled = 1;
-            }
-
-            $("#turn_countdown").html(timer_minutes + ":" + timer_seconds);
-        }, 1000);
+       
 
         // var msgToReplace = name + " has"
         var text = $("#RecentActivityLog").html();
@@ -453,7 +440,7 @@
 
         });
 
-        var myVa2r=setInterval(function(){titleToggle()},1000);
+        
 
     }); // end document.ready
 

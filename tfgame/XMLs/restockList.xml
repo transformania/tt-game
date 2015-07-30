@@ -58,6 +58,20 @@
   </RestockListItem>
 
   <RestockListItem>
+    <dbName>item_consumeable_perception_puff</dbName>
+    <AmountBeforeRestock>2</AmountBeforeRestock>
+    <AmountToRestockTo>4</AmountToRestockTo>
+    <Merchant>Lindella</Merchant>
+  </RestockListItem>
+
+  <RestockListItem>
+    <dbName>item_consumeable_lucky_lemoncake</dbName>
+    <AmountBeforeRestock>2</AmountBeforeRestock>
+    <AmountToRestockTo>4</AmountToRestockTo>
+    <Merchant>Lindella</Merchant>
+  </RestockListItem>
+
+  <RestockListItem>
     <dbName>item_consumable_selfcaster</dbName>
     <AmountBeforeRestock>3</AmountBeforeRestock>
     <AmountToRestockTo>5</AmountToRestockTo>

@@ -249,29 +249,30 @@ namespace tfgame.Procedures
 
                     BuffBox botbuffs = ItemProcedures.GetPlayerBuffsSQL(bot);
 
+                    int meditates = 0;
+
                     // meditate if needed
-                    if (bot.Mana < bot.MaxMana * .75M)
+                    if (bot.Mana < bot.MaxMana * .5M)
                     {
                         Random manarand = new Random(DateTime.Now.Millisecond);
                         int manaroll = (int)Math.Floor(manarand.NextDouble() * 4.0D);
                         for (int i = 0; i < manaroll; i++)
                         {
                             PlayerProcedures.Meditate(bot, botbuffs);
+                            meditates++;
                         }
                     }
 
-                    // cleanse if needed
+                    // cleanse if needed, less if psycho has cleansed lately
                     if (bot.Health < bot.MaxHealth * .5M)
                     {
                         Random healthrand = new Random(DateTime.Now.Millisecond);
                         int healthroll = (int)Math.Floor(healthrand.NextDouble() * 4.0D);
-                        for (int i = 0; i < healthroll; i++)
+                        for (int i = meditates; i < healthroll; i++)
                         {
                             PlayerProcedures.Cleanse(bot, botbuffs);
                         }
                     }
-
-                   
 
 
                     AIDirective directive = AIDirectiveProcedures.GetAIDirective(bot.Id);

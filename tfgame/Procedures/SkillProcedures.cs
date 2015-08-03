@@ -485,7 +485,7 @@ namespace tfgame.Procedures
             {
                 try
                 {
-                    context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Skills] SET IsArchived = " + archiveBool + " WHERE OwnerId = " + playerId);
+                    context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Skills] SET IsArchived = " + archiveBool + " WHERE OwnerId = " + playerId + " AND Name != 'lowerHealth'");
                 }
                 catch (Exception)
                 {

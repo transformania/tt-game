@@ -397,14 +397,7 @@ namespace tfgame.Controllers
             // assert that this player is not in a duel
             if (me.InDuel > 0)
             {
-                TempData["Error"] = "You must finish your duel before you can interact with Wuffie.";
-                return RedirectToAction("Play", "PvP");
-            }
-
-            // assert player is animate
-            if (me.InDuel > 0)
-            {
-                TempData["Error"] = "You must conclude your duel before you can interact with Wuffie.";
+                TempData["Error"] = "You must finish your duel before you can interact with Wüffie.";
                 return RedirectToAction("Play", "PvP");
             }
 

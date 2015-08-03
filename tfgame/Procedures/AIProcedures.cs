@@ -316,10 +316,20 @@ namespace tfgame.Procedures
                             if (bot.dbLocationName == myTarget.dbLocationName && !PlayerProcedures.PlayerIsOffline(myTarget) && myTarget.Mobility == "full")
                             {
                                 playerRepo.SavePlayer(bot);
-                                AttackProcedures.Attack(bot, myTarget, skill);
-                                AttackProcedures.Attack(bot, myTarget, skill);
-                                AttackProcedures.Attack(bot, myTarget, skill);
-                                log.AddLog(bot.FirstName + " " + bot.LastName + ":  attacked target " + myTarget.FirstName + " " + myTarget.LastName);
+                                if (bot.Mana >= 7)
+                                {
+                                    AttackProcedures.Attack(bot, myTarget, skill);
+                                }
+                                if (bot.Mana >= 14)
+                                {
+                                    AttackProcedures.Attack(bot, myTarget, skill);
+                                }
+                                if (bot.Mana >= 21)
+                                {
+                                    AttackProcedures.Attack(bot, myTarget, skill);
+                                }
+
+                                log.AddLog(bot.GetFullName() + ":  attacked target " + myTarget.GetFullName());
                             }
                         }
 

@@ -1487,6 +1487,8 @@
     <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\notices.js" />
     <Content Include="Scripts\ttchat.js" />
+    <Content Include="Sounds\attack.wav" />
+    <Content Include="Sounds\paper.wav" />
     <Content Include="Sounds\turnUpdate1.wav" />
     <Content Include="XMLs\BossSummonText\BimboBoss.txt" />
     <Content Include="XMLs\BossSummonText\Sisters.txt" />

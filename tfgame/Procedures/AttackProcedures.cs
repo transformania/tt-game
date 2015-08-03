@@ -281,12 +281,12 @@ namespace tfgame.Procedures
                     p.Mobility == "full" &&
                     p.InDuel <= 0).ToList();
             }
-            else if (attacker.GameMode == 1)
+            else if (attacker.GameMode == 1 || attacker.GameMode == 0)
             {
                 playersHere = playerREpo.Players.Where(p => p.dbLocationName == attacker.dbLocationName &&
-                    (p.GameMode == 1 || p.BotId < -1) &&
+                    p.BotId < -1 &&
                     p.Mobility == "full" &&
-                    p.InDuel <- 0).ToList();
+                    p.InDuel <= 0).ToList();
             }
 
             // filter out offline players as well as the attacker
@@ -314,7 +314,7 @@ namespace tfgame.Procedures
             string logMessage = attacker.FirstName + " " + attacker.LastName + " threw a Submissiveness Splash Orb here.";
             LocationLogProcedures.AddLocationLog(attacker.dbLocationName, logMessage);
 
-            string attackerMessage = "<span class='playerAttackNotification'>You threw a " + orbStrengthName + " Submissiveness Splash Orb at " + here.Name + ", lowering " + playersHereOnline.Count() + " people's willpower by " + damage + " each.</span>";
+            string attackerMessage = "You threw a " + orbStrengthName + " Submissiveness Splash Orb at " + here.Name + ", lowering " + playersHereOnline.Count() + " people's willpower by " + damage + " each.";
             PlayerLogProcedures.AddPlayerLog(attacker.Id, attackerMessage, false);
 
             // set the player's last action flag

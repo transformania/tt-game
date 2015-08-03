@@ -1019,6 +1019,9 @@ namespace tfgame.Controllers
                 ViewBag.ShowSuccess = true;
                 ViewBag.HadRecentInteraction = false;
 
+                string spellsLearned = "Jewdewfae's magic also teaches you the following spells:  " + SkillProcedures.GiveRandomFindableSkillsToPlayer(me, 3);
+                ViewBag.SpellsLearned = spellsLearned;
+
                 new Thread(() =>
                      StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__JewdewfaeEncountersCompleted, 1)
                  ).Start();

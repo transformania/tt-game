@@ -282,7 +282,7 @@ namespace tfgame.Procedures
         public static string GiveRandomFindableSkillsToPlayer(Player player, int amount)
         {
             ISkillRepository skillRepo = new EFSkillRepository();
-            string output = "You learned the spells:  ";
+            string output = "";
 
             IEnumerable<string> playerSkills = skillRepo.Skills.Where(s => s.OwnerId == player.Id).Select(s => s.Name).ToList();
             IEnumerable<string> learnableSkills = skillRepo.DbStaticSkills.Where(s => (s.LearnedAtLocation != null && s.LearnedAtLocation != "") || (s.LearnedAtRegion != null && s.LearnedAtRegion != "")).Select(s => s.dbName).ToList();
@@ -297,7 +297,7 @@ namespace tfgame.Procedures
 
             if (eligibleSkills.Count() == 0)
             {
-                return "Unfortunately as you flip through the spellbook you don't learn any new spells that you didn't already know and it crumbles to dust in your hands.";
+                return "(Unfortunately you don't learn any new spells that you don't already know.)";
             }
 
             Random rand = new Random(DateTime.UtcNow.Millisecond);
@@ -320,7 +320,7 @@ namespace tfgame.Procedures
                 }
             }
 
-            output += " from reading your spellbook before it crumbles and vanishes into dust.";
+            output += "";
             return output;
         }
 

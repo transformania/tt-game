@@ -696,13 +696,13 @@ namespace tfgame.Controllers
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             if (archive == "True")
             {
-                TempData["Result"] = "You have archived all of your known spells.  They will not appear on the attack modal until you unarchive them.";
                 SkillProcedures.ArchiveAllSpells(me.Id, true);
+                TempData["Result"] = "You have archived all of your known spells.  They will not appear on the attack modal until you unarchive them.";
             }
             else
             {
-                TempData["Result"] = "You have archived all of your known spells.  They will all now appear on the attack modal again.";
                 SkillProcedures.ArchiveAllSpells(me.Id, false);
+                TempData["Result"] = "You have unarchived all of your known spells.  They will all now appear on the attack modal again.";
             }
             
            

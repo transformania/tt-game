@@ -2230,6 +2230,12 @@ namespace tfgame.Controllers
              MessageProcedures.AddMessage(input, myMembershipId);
              NoticeProcedures.PushNotice(receiver, "<b>" + me.GetFullName() + " has sent you a new message.</b>", NoticeProcedures.PushType__PlayerMessage);
              TempData["Result"] = "Your message has been sent.";
+
+             if (me.Mobility != "full")
+             {
+                 ItemProcedures.UpdateSouledItem(me.FirstName, me.LastName);
+             }
+
              return RedirectToAction("MyMessages");
          }
 
@@ -2305,6 +2311,8 @@ namespace tfgame.Controllers
             PlayerProcedures.AddAttackCount(me);
             PlayerLogProcedures.AddPlayerLog(wearer.Player.Id, thirdP, true);
             PlayerLogProcedures.AddPlayerLog(me.Id, firstP, true);
+
+            ItemProcedures.UpdateSouledItem(meDbItem.Id);
 
             return RedirectToAction("Play");
         }
@@ -2399,17 +2407,11 @@ namespace tfgame.Controllers
 
             TempData["Result"] = result + leveluptext;
 
+            ItemProcedures.UpdateSouledItem(me.FirstName, me.LastName);
+
             return RedirectToAction("Play");
         }
 
-       
-     
-
-       
-
-       
-
-        
 
         [Authorize]
         public ActionResult MyFriends()

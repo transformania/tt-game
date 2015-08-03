@@ -38,6 +38,7 @@ namespace tfgame.Procedures
                                                              TurnsUntilUse = i.TurnsUntilUse,
                                                              VictimName = i.VictimName,
                                                              Nickname = i.Nickname,
+                                                             LastSouledTimestamp = i.LastSouledTimestamp,
                                                           },
 
 
@@ -137,6 +138,7 @@ namespace tfgame.Procedures
                                                          TurnsUntilUse = i.TurnsUntilUse,
                                                          VictimName = i.VictimName,
                                                          Nickname = i.Nickname,
+                                                         LastSouledTimestamp = i.LastSouledTimestamp,
                                                      },
 
 
@@ -245,6 +247,7 @@ namespace tfgame.Procedures
                                                          TurnsUntilUse = i.TurnsUntilUse,
                                                          VictimName = i.VictimName,
                                                          Nickname = i.Nickname,
+                                                         LastSouledTimestamp = i.LastSouledTimestamp,
                                                      },
 
 
@@ -335,6 +338,7 @@ namespace tfgame.Procedures
                                                         TurnsUntilUse = i.TurnsUntilUse,
                                                         VictimName = i.VictimName,
                                                         Nickname = i.Nickname,
+                                                        LastSouledTimestamp = i.LastSouledTimestamp,
                                                     },
 
 
@@ -507,7 +511,7 @@ namespace tfgame.Procedures
                 VictimName = "",
                 dbLocationName = "",
                 TimeDropped = DateTime.UtcNow,
-               // PvPEnabled = player.InPvP,
+                LastSouledTimestamp = DateTime.UtcNow.AddYears(-1),
             };
 
             if (player.BotId < 0)
@@ -1107,6 +1111,7 @@ namespace tfgame.Procedures
                 Level = victim.Level,
                 Nickname = victim.Nickname,
                 TimeDropped = DateTime.UtcNow,
+                LastSouledTimestamp = DateTime.UtcNow.AddYears(-1),
             };
 
             if (attacker.BotId < 0)
@@ -1965,6 +1970,22 @@ namespace tfgame.Procedures
             Item playerItem = itemRepo.Items.FirstOrDefault(i => i.VictimName == player.FirstName + " " + player.LastName);
             playerItem.Nickname = nickname;
             itemRepo.SaveItem(playerItem);
+        }
+
+        public static void UpdateSouledItem(int id)
+        {
+            IItemRepository itemRepo = new EFItemRepository();
+            Item item = itemRepo.Items.FirstOrDefault(i => i.Id == id);
+            item.LastSouledTimestamp = DateTime.UtcNow;
+            itemRepo.SaveItem(item);
+        }
+
+        public static void UpdateSouledItem(string firstName, string lastName)
+        {
+            IItemRepository itemRepo = new EFItemRepository();
+            Item item = itemRepo.Items.FirstOrDefault(i => i.VictimName == firstName + " " + lastName);
+            item.LastSouledTimestamp = DateTime.UtcNow;
+            itemRepo.SaveItem(item);
         }
 
         

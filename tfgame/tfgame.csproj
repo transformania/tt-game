@@ -688,6 +688,9 @@
     <Content Include="Images\PvP\Icons\icon-mana_recovery.png" />
     <Content Include="Images\PvP\Icons\icon-permanent.png" />
     <Content Include="Images\PvP\Icons\icon-protection.png" />
+    <Content Include="Images\PvP\Icons\icon-souled0.png" />
+    <Content Include="Images\PvP\Icons\icon-souled1.png" />
+    <Content Include="Images\PvP\Icons\icon-souled2.png" />
     <Content Include="Images\PvP\Icons\icon-superprotection.png" />
     <Content Include="Images\PvP\Icons\inventory.jpg" />
     <Content Include="Images\PvP\Icons\mc_swirl.gif" />

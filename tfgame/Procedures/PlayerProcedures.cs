@@ -619,6 +619,7 @@ namespace tfgame.Procedures
                  IItemRepository itemRepo = new EFItemRepository();
                  Item oldItemMe = itemRepo.Items.FirstOrDefault(i => i.VictimName == oldplayer.FirstName + " " + oldplayer.LastName);
                  oldItemMe.IsPermanent = true;
+                 oldItemMe.LastSouledTimestamp = DateTime.UtcNow.AddYears(1);
                  itemRepo.SaveItem(oldItemMe);
              }
             

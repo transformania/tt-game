@@ -541,7 +541,8 @@ namespace tfgame.Procedures
                                     TimeDropped = DateTime.UtcNow,
                                     TurnsUntilUse = 0,
                                     VictimName = "",
-                                    EquippedThisTurn = false
+                                    EquippedThisTurn = false,
+                                    LastSouledTimestamp = DateTime.UtcNow.AddYears(-1),
                                 };
                                     itemRepo.SaveItem(newItem);
                                 }
@@ -569,7 +570,8 @@ namespace tfgame.Procedures
                         //                TimeDropped = DateTime.UtcNow,
                         //                TurnsUntilUse = 0,
                         //                VictimName = "",
-                        //                EquippedThisTurn = false
+                        //                EquippedThisTurn = false,
+                        //                 LastSouledTimestamp = DateTime.UtcNow.AddYears(-1),
                         //            };
                         //            itemRepo.SaveItem(newItem);
                         //        }

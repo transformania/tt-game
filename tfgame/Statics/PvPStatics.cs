@@ -93,6 +93,12 @@ namespace tfgame.Statics
         public const string Permissions_Previewer = "previewer";
         public const string Permissions_Killswitcher = "killswitch";
 
+        public static int[] Item_SoulActivityLevels_Minutes = {
+                                                                 240,
+                                                                 1440,
+                                                                 4320,
+                                                             };
+
 
         public static int[] XP__LevelupRequirementByLevel = {
            5, // 0 (nobody should ever be at 0!)

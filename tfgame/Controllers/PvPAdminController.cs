@@ -2787,6 +2787,7 @@ namespace tfgame.Controllers
                 OwnerId = -1,
                 IsEquipped = false,
                 Level = me.Level,
+                LastSouledTimestamp = DateTime.UtcNow.AddYears(-1),
             };
 
             itemRepo.SaveItem(newMeItem);
@@ -2837,6 +2838,7 @@ namespace tfgame.Controllers
                 OwnerId = -1,
                 IsEquipped = false,
                 Level = me.Level,
+                LastSouledTimestamp = DateTime.UtcNow.AddYears(-1),
             };
 
             itemRepo.SaveItem(newMeItem);

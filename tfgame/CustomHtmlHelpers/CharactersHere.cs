@@ -531,6 +531,64 @@ namespace tfgame.CustomHtmlHelpers
             }
         }
 
+        public static MvcHtmlString PrintSouledIcon(Item item)
+        {
+            if (item.VictimName != null && item.VictimName != "")
+            {
+                double timeAgo = Math.Abs(Math.Floor(item.LastSouledTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
+
+                if (timeAgo < PvPStatics.Item_SoulActivityLevels_Minutes[0])
+                {
+                    return new MvcHtmlString("<span class='icon icon-souled0'></span>");
+                }
+                else if (timeAgo < PvPStatics.Item_SoulActivityLevels_Minutes[1])
+                {
+                    return new MvcHtmlString("<span class='icon icon-souled1'></span>");
+                }
+                else if (timeAgo < PvPStatics.Item_SoulActivityLevels_Minutes[2])
+                {
+                    return new MvcHtmlString("<span class='icon icon-souled2'></span>");
+                }
+                else
+                {
+                    return new MvcHtmlString("");
+                }
+            }
+            else
+            {
+                return new MvcHtmlString("");
+            }
+        }
+
+        public static MvcHtmlString PrintSouledIcon(ItemViewModel item)
+        {
+            if (item.dbItem.VictimName != null && item.dbItem.VictimName != "")
+            {
+                double timeAgo = Math.Abs(Math.Floor(item.dbItem.LastSouledTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
+
+                if (timeAgo < PvPStatics.Item_SoulActivityLevels_Minutes[0])
+                {
+                    return new MvcHtmlString("<span class='icon icon-souled0'></span>");
+                }
+                else if (timeAgo < PvPStatics.Item_SoulActivityLevels_Minutes[1])
+                {
+                    return new MvcHtmlString("<span class='icon icon-souled1'></span>");
+                }
+                else if (timeAgo < PvPStatics.Item_SoulActivityLevels_Minutes[2])
+                {
+                    return new MvcHtmlString("<span class='icon icon-souled2'></span>");
+                }
+                else
+                {
+                    return new MvcHtmlString("");
+                }
+            }
+            else
+            {
+                return new MvcHtmlString("");
+            }
+        }
+
         public static MvcHtmlString StringToWebsite(string url)
         {
             if (url == null || url == "")

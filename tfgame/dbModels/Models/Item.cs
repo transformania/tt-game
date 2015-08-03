@@ -20,7 +20,7 @@ namespace tfgame.dbModels.Models
         public int PvPEnabled { get; set; }
         public bool IsPermanent { get; set; }
         public string Nickname { get; set; }
-
+        public DateTime LastSouledTimestamp { get; set; }
 
         public string GetFullName()
         {
@@ -52,7 +52,7 @@ namespace tfgame.dbModels.Models
         public int PvPEnabled { get; set; }
         public bool IsPermanent { get; set; }
         public string Nickname { get; set; }
-
+        public DateTime LastSouledTimestamp { get; set; }
 
         public string GetFullName()
         {

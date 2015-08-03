@@ -1473,23 +1473,23 @@ namespace tfgame.Procedures
                 // spellbooks; these give the reader some spells they do not know.
                 if (itemPlus.Item.dbName.Contains("item_consumable_spellbook_"))
                 {
-                    int amount = 3;
+                    int amount = 4;
                     if (itemPlus.Item.dbName.Contains("small"))
                     {
-                        amount = 3;
+                        amount = 4;
                     }
                     else if (itemPlus.Item.dbName.Contains("medium"))
                     {
-                        amount = 6;
+                        amount = 8;
                     } if (itemPlus.Item.dbName.Contains("large"))
-                    {
-                        amount = 9;
-                    }
-                    if (itemPlus.Item.dbName.Contains("giant"))
                     {
                         amount = 12;
                     }
-                    string output = SkillProcedures.GiveRandomFindableSkillsToPlayer(owner, amount);
+                    if (itemPlus.Item.dbName.Contains("giant"))
+                    {
+                        amount = 16;
+                    }
+                    string output = "You learned the spells: " + SkillProcedures.GiveRandomFindableSkillsToPlayer(owner, amount) + " from reading your spellbook before it crumbles and vanishes into dust.";
                     itemRepo.DeleteItem(itemPlus.dbItem.Id);
                     return output;
                 }

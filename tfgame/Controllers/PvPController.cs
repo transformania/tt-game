@@ -2098,7 +2098,10 @@ namespace tfgame.Controllers
 
            ViewBag.IsDonator = DonatorProcedures.DonatorGetsMessagesRewards(me);
 
+           ViewBag.ErrorMessage = TempData["Error"];
+           ViewBag.SubErrorMessage = TempData["SubError"];
            ViewBag.Result = TempData["Result"];
+
             return View("MyMessages", output);
         }
 
@@ -2145,6 +2148,23 @@ namespace tfgame.Controllers
 
             return View("ReadMessage", output);
         }
+
+        [Authorize]
+         public ActionResult MarkAsUnread(int messageId)
+         {
+             string myMembershipId = User.Identity.GetUserId();
+             // assert player owns message
+             if (MessageProcedures.PlayerOwnsMessage(messageId, myMembershipId) == false)
+             {
+                 TempData["Error"] = "You can't mark this message as unread.";
+                 TempData["SubError"] = "It wasn't sent to you.";
+                 return RedirectToAction("Play");
+             }
+              MessageProcedures.MarkMessageAsUnread(messageId);
+
+              TempData["Result"] = "Message marked as unread.";
+             return RedirectToAction("MyMessages", "PvP");
+         }
 
 
         public ActionResult PlayerLookup(string name)

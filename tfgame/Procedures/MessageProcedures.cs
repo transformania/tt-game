@@ -85,6 +85,14 @@ namespace tfgame.Procedures
             return output;
         }
 
+        public static void MarkMessageAsUnread(int messageId)
+        {
+            IMessageRepository messageRepo = new EFMessageRepository();
+            Message dbMessage = messageRepo.Messages.FirstOrDefault(m => m.Id == messageId);
+            dbMessage.IsRead = false;
+            messageRepo.SaveMessage(dbMessage);
+        }
+
         public static MessageBag GetPlayerMessages(Player player)
         {
             IMessageRepository messageRepo = new EFMessageRepository();

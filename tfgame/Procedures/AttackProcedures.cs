@@ -255,6 +255,16 @@ namespace tfgame.Procedures
             PlayerLogProcedures.AddPlayerLog(targeted.Id, logs.VictimLog, true);
             NoticeProcedures.PushAttackNotice(targeted, logs.VictimLog);
 
+            // if this is a psycho-on-psycho battle, have a chance for the victim bot to switch targets to the attacker bot
+            if (attacker.BotId == -2 && victim.BotId == -2)
+            {
+                Random rand = new Random(Guid.NewGuid().GetHashCode());
+                double botAggroRoll = rand.NextDouble();
+                if (botAggroRoll < .08)
+                {
+                    AIDirectiveProcedures.SetAIDirective_Attack(victim.Id, attacker.Id);
+                }
+            }
 
             return result;
         }

@@ -245,7 +245,7 @@ namespace tfgame.Procedures.BossProcedures
                 if (victimThiefItem.OwnerId > 0) {
                     Player target = playerRepo.Players.FirstOrDefault(p => p.Id == victimThiefItem.OwnerId);
 
-                    if (target.BotId == AIStatics.MaleRatBotId || target.BotId == AIStatics.MaleRatBotId)
+                    if (target.BotId == AIStatics.MaleRatBotId || target.BotId == AIStatics.FemaleRatBotId)
                     {
                         // do nothing, the thief already has the item... equip it if not
                         if (victimThiefItem.IsEquipped == false)

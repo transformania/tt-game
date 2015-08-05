@@ -1,6 +1,10 @@
 ﻿@model tfgame.ViewModels.PlayerNameViewModel
 
-<h1>Public broadcast</h1>
+<script src="~/Scripts/jquery-ui-1.10.4.js"></script>
+
+<h1>Rename Player / Change Form</h1>
+
+@Ajax.ActionLink("Help", "AllForms", "Info", null, new AjaxOptions { UpdateTargetId = "modal", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "launchModal", OnFailure = "launchLocationListModalFail" }, new { @class = "attackLink" })
 
 @using (Html.BeginForm("RenamePlayerSend", "PvPAdmin", FormMethod.Post))
 {
@@ -19,3 +23,11 @@
 
     <input type="submit" value="Send" />
 }
+
+<div id="modal" style="display: none;" class="ui-widget-content ui-draggable helpModal">LOCATIONS:  </div>
+
+<script>
+    function launchModal() {
+        $("#modal").show();
+    }
+</script>

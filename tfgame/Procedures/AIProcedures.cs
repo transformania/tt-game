@@ -15,34 +15,6 @@ namespace tfgame.Procedures
 {
     public static class AIProcedures
     {
-        public const int PsychopathMembershipId = -2;
-        public const int LindellaMembershipId = -3;
-        public const int WuffieMembershipId = -10;
-        public const int JewdewfaeMembershipId = -6;
-        public const int BartenderMembershipId = -14;
-
-        public const int MouseNerdMembershipId = -11;
-        public const int MouseBimboMembershipId = -12;
-
-        public const int LoremasterMembershipId = -15;
-
-        // Bot ID code:
-        //  0 (active player)
-        // -1 (player has rerolled, player is abandoned)
-        // -2 (psychopath spellslinger)
-        // -3 item merchant
-        // -4 Donna Milton
-        // -5 Lord Valentine
-        // -6 Jewdewfae
-        // -7 Bimbo Boss
-        // -8 Male rat thief
-        // -9 Female rat thief
-        // -10 pet merchant
-        // -11 Nerd mouse sister
-        // -12 bimbo mouse sister
-        // -13 dungeon demon
-        // -14 bartender
-        // -15 loremaster
 
         public static void SpawnAIPsychopaths(int count, int offset)
         {
@@ -515,7 +487,7 @@ namespace tfgame.Procedures
                 if (turnNumber % 16 == 1)
                 {
 
-                    //Player lorekeeper = PlayerProcedures.GetPlayerFromBotId(AIProcedures.LoremasterMembershipId);
+                    //Player lorekeeper = PlayerProcedures.GetPlayerFromBotId(AIProcedures.LoremasterBotId);
 
                     IItemRepository itemRepo = new EFItemRepository();
                     List<Item> lindellasItems = itemRepo.Items.Where(i => i.OwnerId == merchant.Id && i.Level == 0).ToList();
@@ -912,7 +884,7 @@ namespace tfgame.Procedures
         public static void SpawnBartender()
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player bartender = playerRepo.Players.FirstOrDefault(f => f.BotId == AIProcedures.BartenderMembershipId);
+            Player bartender = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.BartenderBotId);
 
             if (bartender == null)
             {

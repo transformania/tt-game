@@ -491,7 +491,7 @@ namespace tfgame.Procedures
                     TFEnergyProcedures.DeleteAllPlayerTFEnergiesOfType(target.Id, targetForm.dbName);
 
                     // if the attacker is a psycho, have them change to a new spell and equip whatever they just earned
-                    if (attacker.BotId == AIProcedures.PsychopathMembershipId)
+                    if (attacker.BotId == AIStatics.PsychopathBotId)
                     {
                        SkillProcedures.DeleteAllPlayerSkills(attacker.Id);
 

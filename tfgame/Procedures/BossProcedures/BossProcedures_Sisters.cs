@@ -5,6 +5,7 @@ using System.Web;
 using tfgame.dbModels.Abstract;
 using tfgame.dbModels.Concrete;
 using tfgame.dbModels.Models;
+using tfgame.Statics;
 
 namespace tfgame.Procedures.BossProcedures
 {
@@ -221,8 +222,8 @@ namespace tfgame.Procedures.BossProcedures
             PvPWorldStatProcedures.Boss_EndSisters();
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player nerdBoss = playerRepo.Players.FirstOrDefault(p => p.BotId == AIProcedures.MouseNerdMembershipId);
-            Player bimboBoss = playerRepo.Players.FirstOrDefault(p => p.BotId == AIProcedures.MouseBimboMembershipId);
+            Player nerdBoss = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.MouseNerdBotId);
+            Player bimboBoss = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.MouseBimboBotId);
 
             string winner = "";
 

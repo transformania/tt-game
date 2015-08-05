@@ -18,13 +18,13 @@ namespace tfgame.Procedures.BossProcedures
         public static void SpawnPetMerchant()
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player petMerchant = playerRepo.Players.FirstOrDefault(f => f.BotId == -10);
+            Player petMerchant = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.WuffieBotId);
 
             if (petMerchant == null)
             {
                 petMerchant = new Player();
-                petMerchant.MembershipId = "-10";
-                petMerchant.BotId = -10;
+                petMerchant.MembershipId = AIStatics.WuffieBotId.ToString();
+                petMerchant.BotId = AIStatics.WuffieBotId;
                 petMerchant.Level = 5;
                 petMerchant.FirstName = "Wüffie";
                 petMerchant.LastName = "the Soul Pet Vendor";
@@ -48,7 +48,7 @@ namespace tfgame.Procedures.BossProcedures
 
                 playerRepo.SavePlayer(petMerchant);
 
-                petMerchant = playerRepo.Players.FirstOrDefault(f => f.BotId == -10);
+                petMerchant = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.WuffieBotId);
 
                 IAIDirectiveRepository aiRepo = new EFAIDirectiveRepository();
 
@@ -69,7 +69,7 @@ namespace tfgame.Procedures.BossProcedures
         public static void CounterAttack(Player attacker)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player petMerchant = playerRepo.Players.FirstOrDefault(f => f.BotId == -10);
+            Player petMerchant = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.WuffieBotId);
 
             if (petMerchant.Mobility == "full" && attacker.Mobility == "full") {
                 AttackProcedures.Attack(petMerchant, attacker, "skill_Sarmoti_Zatur");
@@ -80,7 +80,7 @@ namespace tfgame.Procedures.BossProcedures
         public static void RunPetMerchantActions(int turnNumber)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player petMerchant = playerRepo.Players.FirstOrDefault(f => f.BotId == -10);
+            Player petMerchant = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.WuffieBotId);
             
 
             if (petMerchant.Mobility == "full")

@@ -73,7 +73,7 @@ namespace tfgame.Procedures.BossProcedures
             int worldTurnNumber = PvPWorldStatProcedures.GetWorldTurnNumber() - 1;
             ServerLog log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == worldTurnNumber);
 
-            Player donna = playerRepo.Players.FirstOrDefault(p => p.BotId == -4);
+            Player donna = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.DonnaBotId);
 
             if (donna.Mobility != "full")
             {
@@ -210,7 +210,7 @@ namespace tfgame.Procedures.BossProcedures
 
                 foreach (Player p in PlayersHere)
                 {
-                    if (p.BotId == 0 &&
+                    if (p.BotId == AIStatics.ActivePlayerBotId &&
                         p.Level > 3 && 
                         p.Mobility == "full" && 
                         !PlayerProcedures.PlayerIsOffline(p) &&

@@ -1,6 +1,7 @@
 ﻿@model tfgame.ViewModels.PlayerFormItemsSkillsViewModel
 @using tfgame.ViewModels
 @using tfgame.Procedures
+@using tfgame.Statics
 
 <nav class="navbar navbar-default outsideContainer navbarTT2">
     <div class="container-fluid">
@@ -19,7 +20,7 @@
             <ul class="nav navbar-nav" style="width:100%;">
                 <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
                 @{
-                    if (Model.PlayerForm.Player.BotId == 0)
+                    if (Model.PlayerForm.Player.BotId == AIStatics.ActivePlayerBotId)
                     {
                         <p>
                             @{
@@ -36,7 +37,7 @@
                             }
 
                             @{
-                        if (Model.PlayerForm.Player.BotId == 0)
+                        if (Model.PlayerForm.Player.BotId == AIStatics.ActivePlayerBotId)
                         {
 
                             <li>@Html.ActionLink("Send a Message", "Write", "PvP", new { playerId = Model.PlayerForm.Player.Id, responseTo = -1 }, null)</li>
@@ -55,7 +56,7 @@
 </nav>
 
 @{
-    if (Model.PlayerForm.Player.BotId == -1)
+    if (Model.PlayerForm.Player.BotId == AIStatics.RerolledPlayerBotId)
     {
         <div>
             <p class="infoMessage error">This player has chosen to create a new character and cannot be messaged or have a friend request sent to them.</p>

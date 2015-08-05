@@ -76,7 +76,7 @@ namespace tfgame.Procedures.BossProcedures
         {
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player fae = playerRepo.Players.FirstOrDefault(f => f.BotId == AIProcedures.JewdewfaeMembershipId);
+            Player fae = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.JewdewfaeBotId);
 
             IJewdewfaeEncounterRepository faeRepo = new EFJewdewfaeEncounterRepository();
 
@@ -127,7 +127,7 @@ namespace tfgame.Procedures.BossProcedures
 
         public static decimal AddInteraction(Player player) {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player fae = playerRepo.Players.FirstOrDefault(f => f.BotId == AIProcedures.JewdewfaeMembershipId);
+            Player fae = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.JewdewfaeBotId);
 
             IAIDirectiveRepository aiRepo = new EFAIDirectiveRepository();
             AIDirective directive = aiRepo.AIDirectives.FirstOrDefault(i => i.OwnerId == fae.Id);

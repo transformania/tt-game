@@ -416,7 +416,7 @@ namespace tfgame.Controllers
             Player target = PlayerProcedures.GetPlayer(id);
 
             // assert that this player is not a bot
-            if (target.BotId < 0)
+            if (target.BotId < AIStatics.ActivePlayerBotId)
             {
                 TempData["Error"] = "You cannot blacklist an AI character.";
                 return RedirectToAction("Play", "PvP");
@@ -456,7 +456,7 @@ namespace tfgame.Controllers
 
 
             // assert that this player is not a bot
-            if (target.BotId < 0)
+            if (target.BotId < AIStatics.ActivePlayerBotId)
             {
                 TempData["Error"] = "You cannot blacklist an AI character.";
                 return RedirectToAction("Play", "PvP");

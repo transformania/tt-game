@@ -189,7 +189,7 @@ namespace tfgame.Procedures
                         }
 
                         // cap the modifier at at 200 % IF the target is a human
-                        if (willpowerDamageModifierFromBonuses > 2 && victim.BotId == 0)
+                        if (willpowerDamageModifierFromBonuses > 2 && victim.BotId == AIStatics.ActivePlayerBotId)
                         {
                             willpowerDamageModifierFromBonuses = 2;
                         }
@@ -229,7 +229,7 @@ namespace tfgame.Procedures
                         }
 
                         // cap the modifier at at 200 % IF the target is a human
-                        if (tfEnergyDamageModifierFromBonuses > 2 && victim.BotId == 0)
+                        if (tfEnergyDamageModifierFromBonuses > 2 && victim.BotId == AIStatics.ActivePlayerBotId)
                         {
                             tfEnergyDamageModifierFromBonuses = 2;
                         }
@@ -256,7 +256,7 @@ namespace tfgame.Procedures
             NoticeProcedures.PushAttackNotice(targeted, logs.VictimLog);
 
             // if this is a psycho-on-psycho battle, have a chance for the victim bot to switch targets to the attacker bot
-            if (attacker.BotId == -2 && victim.BotId == -2)
+            if (attacker.BotId == AIStatics.PsychopathBotId && victim.BotId == AIStatics.PsychopathBotId)
             {
                 Random rand = new Random(Guid.NewGuid().GetHashCode());
                 double botAggroRoll = rand.NextDouble();
@@ -287,14 +287,14 @@ namespace tfgame.Procedures
             if (attacker.GameMode == 2)
             {
                 playersHere = playerREpo.Players.Where(p => p.dbLocationName == attacker.dbLocationName &&
-                    (p.GameMode == 2 || p.BotId < -1) &&
+                    (p.GameMode == 2 || p.BotId < AIStatics.RerolledPlayerBotId) &&
                     p.Mobility == "full" &&
                     p.InDuel <= 0).ToList();
             }
             else if (attacker.GameMode == 1 || attacker.GameMode == 0)
             {
                 playersHere = playerREpo.Players.Where(p => p.dbLocationName == attacker.dbLocationName &&
-                    p.BotId < -1 &&
+                    p.BotId < AIStatics.RerolledPlayerBotId &&
                     p.Mobility == "full" &&
                     p.InDuel <= 0).ToList();
             }

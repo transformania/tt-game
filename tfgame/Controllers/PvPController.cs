@@ -716,7 +716,7 @@ namespace tfgame.Controllers
             IEnumerable<SkillViewModel2> output = SkillProcedures.GetSkillViewModelsOwnedByPlayer(me.Id).Where(s => s.dbSkill.IsArchived == false);
 
             // filter out spells that you can't use on your target
-            if (FriendProcedures.PlayerIsMyFriend(me, target) || target.BotId < 0)
+            if (FriendProcedures.PlayerIsMyFriend(me, target) || target.BotId < AIStatics.ActivePlayerBotId)
             {
                 // do nothing, all spells are okay
             }
@@ -728,43 +728,43 @@ namespace tfgame.Controllers
             }
 
             // attack or the target is in superprotection and not a friend or bot; no spells work
-            else if (target.GameMode == 0 || (me.GameMode == 0 && target.BotId == 0))
+            else if (target.GameMode == 0 || (me.GameMode == 0 && target.BotId == AIStatics.ActivePlayerBotId))
             {
                 output = output.Where(s => s.MobilityType == "NONEXISTANT");
             }
 
             // filter out MC spells for bots
-            if (target.BotId < 0)
+            if (target.BotId < AIStatics.ActivePlayerBotId)
             {
                 output = output.Where(s => s.MobilityType != "mindcontrol");
             }
 
             // only show inanimates for rat thieves
-            if (target.BotId == -8 || target.BotId == -9)
+            if (target.BotId == AIStatics.MaleRatBotId || target.BotId == AIStatics.FemaleRatBotId)
             {
                 output = output.Where(s => s.MobilityType == "inanimate");
             }
 
             // only bimbo spell works on nerd mouse boss
-            if (target.BotId == -11)
+            if (target.BotId == AIStatics.MouseNerdBotId)
             {
                 output = output.Where(s => s.Skill.dbName == BossProcedures_Sisters.BimboSpell);
             }
 
             // only nerd spell works on nerd bimbo boss
-            if (target.BotId == -12)
+            if (target.BotId == AIStatics.MouseBimboBotId)
             {
                 output = output.Where(s => s.Skill.dbName == BossProcedures_Sisters.NerdSpell);
             }
 
             // Vanquish only works against dungeon demons
-            if (target.BotId == -13)
+            if (target.BotId == AIStatics.DemonBotId)
             {
                 output = output.Where(s => s.Skill.dbName == PvPStatics.Dungeon_VanquishSpell || s.Skill.dbName == "lowerHealth");
             }
 
             // Vanquish only works against dungeon demons
-            if (target.BotId != -13)
+            if (target.BotId != AIStatics.DemonBotId)
             {
                 output = output.Where(s => s.Skill.dbName != PvPStatics.Dungeon_VanquishSpell);
             }
@@ -937,7 +937,7 @@ namespace tfgame.Controllers
             }
 
              // if the spell is a form of mind control, check that the target is not a bot
-            if (skillBeingUsed.MobilityType == "mindcontrol" && targeted.BotId < 0)
+            if (skillBeingUsed.MobilityType == "mindcontrol" && targeted.BotId < AIStatics.ActivePlayerBotId)
             {
                 TempData["Error"] = "This target is immune to mind control.";
                 TempData["SubError"] = "Mind control currently only works against human opponents.";
@@ -988,15 +988,15 @@ namespace tfgame.Controllers
 
             #region bot attack type checks
             // prevent low level players from taking on high level bots
-            if (targeted.BotId <= -3)
+            if (targeted.BotId < AIStatics.PsychopathBotId)
             {
 
                 // disable attacks on "friendly" NPCs
-                if (targeted.BotId == AIProcedures.LindellaMembershipId ||
-                    targeted.BotId == AIProcedures.WuffieMembershipId ||
-                    targeted.BotId == AIProcedures.JewdewfaeMembershipId ||
-                    targeted.BotId == AIProcedures.BartenderMembershipId ||
-                    targeted.BotId == AIProcedures.LoremasterMembershipId)
+                if (targeted.BotId == AIStatics.LindellaBotId ||
+                    targeted.BotId == AIStatics.WuffieBotId ||
+                    targeted.BotId == AIStatics.JewdewfaeBotId ||
+                    targeted.BotId == AIStatics.BartenderBotId ||
+                    targeted.BotId == AIStatics.LoremasterBotId)
                 {
                     TempData["Error"] = "A little smile tells you it might just be a bad idea to try and attack this person...";
                     return RedirectToAction("Play");
@@ -1010,7 +1010,7 @@ namespace tfgame.Controllers
                 }
 
                 // Donna
-                if (targeted.BotId == -4)
+                if (targeted.BotId == AIStatics.DonnaBotId)
                 {
                     if (futureForm == null || futureForm.MobilityType == "full")
                     {
@@ -1021,7 +1021,7 @@ namespace tfgame.Controllers
                 }
 
                 // Valentine
-                if (targeted.BotId == -5)
+                if (targeted.BotId == AIStatics.ValentineBotId)
                 {
                     // only allow weakens against Valentine for now (replace with Duel spell later?)
                     if (futureForm != null)
@@ -1033,7 +1033,7 @@ namespace tfgame.Controllers
                 }
 
                 // Bimbo Boss
-                if (targeted.BotId == -7)
+                if (targeted.BotId == AIStatics.BimboBossBotId)
                 {
 
                     // disallow animate spells
@@ -1047,7 +1047,7 @@ namespace tfgame.Controllers
                 }
 
                 // Thieves Boss
-                if (targeted.BotId == -8 || targeted.BotId == -9)
+                if (targeted.BotId == AIStatics.MaleRatBotId || targeted.BotId == AIStatics.FemaleRatBotId)
                 {
 
                     // only allow inanimate spells
@@ -1061,7 +1061,7 @@ namespace tfgame.Controllers
                 }
 
                 // Mouse Sisters Boss
-                if (targeted.BotId == -11 || targeted.BotId == -12)
+                if (targeted.BotId == AIStatics.MouseNerdBotId || targeted.BotId == AIStatics.MouseBimboBotId)
                 {
                     string result = BossProcedures_Sisters.SpellIsValid(me, targeted, attackName);
                     if (result != "") {
@@ -1071,7 +1071,7 @@ namespace tfgame.Controllers
                 }
 
                 // TODO:  Dungeon Demons can only be vanquished
-                if (targeted.BotId == -13 && skill.dbName != PvPStatics.Dungeon_VanquishSpell && skill.dbName != "lowerHealth")
+                if (targeted.BotId == AIStatics.DemonBotId && skill.dbName != PvPStatics.Dungeon_VanquishSpell && skill.dbName != "lowerHealth")
                 {
                     TempData["Error"] = "Only the 'Vanquish' spell and Weaken have any effect on the Dark Demonic Guardians.";
                     return RedirectToAction("Play");
@@ -1082,7 +1082,7 @@ namespace tfgame.Controllers
 
 
             // don't worry about bots
-            if (targeted.BotId == 0)
+            if (targeted.BotId == AIStatics.ActivePlayerBotId)
             {
 
                 if (me.GameMode < 2 || targeted.GameMode < 2)
@@ -1100,7 +1100,7 @@ namespace tfgame.Controllers
                     }
 
                     // no casting spells on non-friend Protection mode players unless the target is a bot
-                    else if (targeted.GameMode == 0 || (me.GameMode == 0 && targeted.BotId == 0))
+                    else if (targeted.GameMode == 0 || (me.GameMode == 0 && targeted.BotId == AIStatics.ActivePlayerBotId))
                     {
                         TempData["Error"] = "Either you and your target is in SuperProtection mode and are not friends or bots.";
                         return RedirectToAction("Play");
@@ -2747,7 +2747,7 @@ namespace tfgame.Controllers
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            if (me == null || me.BotId == -1 || me.FirstName=="" || me.LastName=="")
+            if (me == null || me.BotId == AIStatics.RerolledPlayerBotId || me.FirstName=="" || me.LastName=="")
             {
                 return View("~/Views/PvP/MakeNewCharacter.cshtml");
             }
@@ -2819,7 +2819,7 @@ namespace tfgame.Controllers
          {
              string myMembershipId = User.Identity.GetUserId();
              Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-             if (me == null || me.BotId == -1 || me.FirstName == "" || me.LastName == "")
+             if (me == null || me.BotId == AIStatics.RerolledPlayerBotId || me.FirstName == "" || me.LastName == "")
              {
                 return View("~/Views/PvP/MakeNewCharacter.cshtml");
              }
@@ -3042,7 +3042,7 @@ namespace tfgame.Controllers
              }
 
             // assert owner is not an invalid bot
-             if (owner.BotId < -2)
+             if (owner.BotId < AIStatics.PsychopathBotId)
              {
                  TempData["Error"] = "Unfortunately it seems your owner is immune to your transformation curse!";
                  TempData["SubError"] = "Only Psychopathic spellslingers and other players are susceptible to transformation curses.";

@@ -15,34 +15,6 @@ namespace tfgame.Procedures
 {
     public static class AIProcedures
     {
-        public const int PsychopathMembershipId = -2;
-        public const int LindellaMembershipId = -3;
-        public const int WuffieMembershipId = -10;
-        public const int JewdewfaeMembershipId = -6;
-        public const int BartenderMembershipId = -14;
-
-        public const int MouseNerdMembershipId = -11;
-        public const int MouseBimboMembershipId = -12;
-
-        public const int LoremasterMembershipId = -15;
-
-        // Bot ID code:
-        //  0 (active player)
-        // -1 (player has rerolled, player is abandoned)
-        // -2 (psychopath spellslinger)
-        // -3 item merchant
-        // -4 Donna Milton
-        // -5 Lord Valentine
-        // -6 Jewdewfae
-        // -7 Bimbo Boss
-        // -8 Male rat thief
-        // -9 Female rat thief
-        // -10 pet merchant
-        // -11 Nerd mouse sister
-        // -12 bimbo mouse sister
-        // -13 dungeon demon
-        // -14 bartender
-        // -15 loremaster
 
         public static void SpawnAIPsychopaths(int count, int offset)
         {
@@ -64,7 +36,7 @@ namespace tfgame.Procedures
 
             int turnNumber = PvPWorldStatProcedures.GetWorldTurnNumber();
 
-            int botCount = playerRepo.Players.Where(b => b.BotId == -2).Count();
+            int botCount = playerRepo.Players.Where(b => b.BotId == AIStatics.PsychopathBotId).Count();
 
             for (int i = (0 + botCount); i < (count + botCount); i++)
             {
@@ -87,8 +59,8 @@ namespace tfgame.Procedures
                 bot.MaxHealth = 200;
                 bot.Mana = 200;
                 bot.MaxMana = 200;
-                bot.MembershipId = "-2";
-                bot.BotId = -2;
+                bot.MembershipId = AIStatics.PsychopathBotId.ToString();
+                bot.BotId = AIStatics.PsychopathBotId;
                 bot.Mobility = "full";
                 //bot.IsPetToId = -1;
                 bot.UnusedLevelUpPerks = 0;
@@ -195,14 +167,14 @@ namespace tfgame.Procedures
             ServerLog log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == worldTurnNumber);
 
             //spawn in more bots if there are less than the default
-            int botCount = playerRepo.Players.Where(b => b.BotId == -2 && b.Mobility == "full").Count();
+            int botCount = playerRepo.Players.Where(b => b.BotId == AIStatics.PsychopathBotId && b.Mobility == "full").Count();
             if (botCount < PvPStatics.PsychopathDefaultAmount)
             {
                 AIProcedures.SpawnAIPsychopaths(PvPStatics.PsychopathDefaultAmount - botCount, 0);
                 log.AddLog("Spawned a new psychopath.");
             }
 
-            List<int> botIds = playerRepo.Players.Where(p => p.BotId == -2).Where(b => b.Mobility == "full").Select(b => b.Id).ToList();
+            List<int> botIds = playerRepo.Players.Where(p => p.BotId == AIStatics.PsychopathBotId).Where(b => b.Mobility == "full").Select(b => b.Id).ToList();
 
             foreach (int botId in botIds)
             {
@@ -355,7 +327,7 @@ namespace tfgame.Procedures
 
                         foreach (Player p in playersHere)
                         {
-                            if (!PlayerProcedures.PlayerIsOffline(p) && p.Id != bot.Id && p.Mobility == "full" && p.BotId == -2 && p.Level >= bot.Level)
+                            if (!PlayerProcedures.PlayerIsOffline(p) && p.Id != bot.Id && p.Mobility == "full" && p.BotId == AIStatics.PsychopathBotId && p.Level >= bot.Level)
                             {
                                 onlinePlayersHere.Add(p);
                             }
@@ -402,8 +374,8 @@ namespace tfgame.Procedures
             if (merchant == null)
             {
                 merchant = new Player();
-                merchant.MembershipId = "-3";
-                merchant.BotId = -3;
+                merchant.MembershipId = AIStatics.LindellaBotId.ToString();
+                merchant.BotId = AIStatics.LindellaBotId;
                 merchant.Level = 5;
                 merchant.FirstName = "Lindella";
                 merchant.LastName = "the Soul Vendor";
@@ -431,7 +403,7 @@ namespace tfgame.Procedures
 
                 merchant = playerRepo.Players.FirstOrDefault(f => f.FirstName == "Lindella" && f.LastName == "the Soul Vendor" && f.Mobility == "full");
 
-                Player Lindella = playerRepo.Players.FirstOrDefault(f => f.BotId == -3);
+                Player Lindella = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.LindellaBotId);
 
                 AIDirectiveProcedures.GetAIDirective(Lindella.Id);
                 AIDirectiveProcedures.SetAIDirective_MoveTo(Lindella.Id, "street_15th_south");
@@ -515,7 +487,7 @@ namespace tfgame.Procedures
                 if (turnNumber % 16 == 1)
                 {
 
-                    //Player lorekeeper = PlayerProcedures.GetPlayerFromBotId(AIProcedures.LoremasterMembershipId);
+                    //Player lorekeeper = PlayerProcedures.GetPlayerFromBotId(AIProcedures.LoremasterBotId);
 
                     IItemRepository itemRepo = new EFItemRepository();
                     List<Item> lindellasItems = itemRepo.Items.Where(i => i.OwnerId == merchant.Id && i.Level == 0).ToList();
@@ -612,7 +584,7 @@ namespace tfgame.Procedures
 
             SkillViewModel2 selectedSkill = myskills.ElementAt((int)roll);
 
-            if (personAttackin.BotId == 0) {
+            if (personAttackin.BotId == AIStatics.ActivePlayerBotId) {
                 AttackProcedures.Attack(bot, personAttackin, selectedSkill);
             }
         }
@@ -620,13 +592,13 @@ namespace tfgame.Procedures
         public static void CheckAICounterattackRoutine(Player personAttacking, Player bot)
         {
             // person attacking is a boss and not a psychopath, so do nothing
-            if (personAttacking.BotId < -2)
+            if (personAttacking.BotId < AIStatics.PsychopathBotId)
             {
                 return;
             }
 
             // attacking the psychopath.  Random chance the psychopath will set the attacker as their target.
-            if (bot.BotId == -2)
+            if (bot.BotId == AIStatics.PsychopathBotId)
             {
 
                 if (bot.FirstName.Contains("Loathful "))
@@ -661,50 +633,50 @@ namespace tfgame.Procedures
             }
 
             // if the target is the merchant, run the counterattack procedure
-            if (bot.BotId == -3)
+            if (bot.BotId == AIStatics.LindellaBotId)
             {
                 AIProcedures.CounterAttack(personAttacking, bot);
             }
 
             // if the target is Donna, counterattack and set that player as her target immediately
-            if (bot.BotId == -4)
+            if (bot.BotId == AIStatics.DonnaBotId)
             {
                 BossProcedures_Donna.DonnaCounterattack(personAttacking, bot);
             }
 
             // Valentine counterattack
-            if (bot.BotId == -5)
+            if (bot.BotId == AIStatics.ValentineBotId)
             {
                 BossProcedures_Valentine.CounterAttack(personAttacking, bot);
             }
 
             // Bimbo boss counterattack
-            else if (bot.BotId == -7)
+            else if (bot.BotId == AIStatics.BimboBossBotId)
             {
                 BossProcedures_BimboBoss.CounterAttack(personAttacking, bot);
             }
 
             // rat thieves counterattack
-            else if (bot.BotId == -8 || bot.BotId == -9)
+            else if (bot.BotId == AIStatics.MaleRatBotId || bot.BotId == AIStatics.FemaleRatBotId)
             {
                 AIProcedures.DealBossDamage(bot, personAttacking, true, 1);
                 BossProcedures_Thieves.CounterAttack(personAttacking);
             }
 
             // Wuffie counterattack
-            else if (bot.BotId == -10)
+            else if (bot.BotId == AIStatics.WuffieBotId)
             {
                 BossProcedures_PetMerchant.CounterAttack(personAttacking);
             }
 
             // mouse sisters counterattack
-            else if (bot.BotId == -11 || bot.BotId == -12)
+            else if (bot.BotId == AIStatics.MouseNerdBotId || bot.BotId == AIStatics.MouseBimboBotId)
             {
                 BossProcedures_Sisters.CounterAttack(personAttacking, bot);
             }
 
             // demon counterattack
-            else if (bot.BotId == -13)
+            else if (bot.BotId == AIStatics.DemonBotId)
             {
                 BossProcedures_DungeonDemon.CounterAttack(bot, personAttacking);
             }
@@ -786,7 +758,7 @@ namespace tfgame.Procedures
         public static bool IsAntiBossSkill(string skillName, Player target)
         {
             bool isBoss = false;
-            if (target.BotId == -5) // Fighting Valentine
+            if (target.BotId == AIStatics.ValentineBotId) // Fighting Valentine
             {
                 isBoss = true;
             }
@@ -912,7 +884,7 @@ namespace tfgame.Procedures
         public static void SpawnBartender()
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player bartender = playerRepo.Players.FirstOrDefault(f => f.BotId == AIProcedures.BartenderMembershipId);
+            Player bartender = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.BartenderBotId);
 
             if (bartender == null)
             {

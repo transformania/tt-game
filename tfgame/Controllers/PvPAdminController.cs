@@ -203,7 +203,7 @@ namespace tfgame.Controllers
             IPlayerRepository playerRepo = new EFPlayerRepository();
 
             // automatically spawn in more bots when they go down
-            int botCount = playerRepo.Players.Where(b => b.BotId == -2 && b.Mobility == "full").Count();
+            int botCount = playerRepo.Players.Where(b => b.BotId == AIStatics.PsychopathBotId && b.Mobility == "full").Count();
             if (botCount < 15)
             {
                 AIProcedures.SpawnAIPsychopaths(15 - botCount, 0);
@@ -974,7 +974,7 @@ namespace tfgame.Controllers
 
                 string msg = "<span class='bad'>PUBLIC SERVER NOTE:  " + input.Message + "</span>";
 
-                List<Player> players = playerRepo.Players.Where(p => p.BotId == 0).ToList();
+                List<Player> players = playerRepo.Players.Where(p => p.BotId == AIStatics.ActivePlayerBotId).ToList();
 
                 string errors = "";
 

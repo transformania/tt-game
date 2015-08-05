@@ -190,7 +190,7 @@ namespace tfgame.Procedures.BossProcedures
                 Player infectee = playerRepo.Players.FirstOrDefault(p => p.Id == effectId);
 
                 // if the infectee is no longer animate or is another boss, skip them
-                if (infectee.Mobility != "full" || infectee.BotId < -2)
+                if (infectee.Mobility != "full" || infectee.BotId < AIStatics.PsychopathBotId)
                 {
                     continue;
                 }
@@ -321,7 +321,7 @@ namespace tfgame.Procedures.BossProcedures
             foreach (Player p in infected)
             {
                 PlayerProcedures.InstantRestoreToBase(p);
-                if (p.BotId == 0)
+                if (p.BotId == AIStatics.ActivePlayerBotId)
                 {
                     PlayerLogProcedures.AddPlayerLog(p.Id, message, true);
                 }
@@ -351,7 +351,7 @@ namespace tfgame.Procedures.BossProcedures
         private static List<Player> GetEligibleTargetsInLocation(string location, Player attacker)
         {
             DateTime cutoff = DateTime.UtcNow.AddHours(-1);
-            List<Player> playersHere = PlayerProcedures.GetPlayersAtLocation(location).Where(m => m.Mobility == "full" && m.Id != attacker.Id && m.Form != RegularBimboFormDbName && m.BotId >= -2 && m.LastActionTimestamp > cutoff && m.BotId != -7 && m.InDuel <= 0).ToList();
+            List<Player> playersHere = PlayerProcedures.GetPlayersAtLocation(location).Where(m => m.Mobility == "full" && m.Id != attacker.Id && m.Form != RegularBimboFormDbName && m.BotId >= AIStatics.PsychopathBotId && m.LastActionTimestamp > cutoff && m.BotId != AIStatics.BimboBossBotId && m.InDuel <= 0).ToList();
 
             return playersHere;
         }

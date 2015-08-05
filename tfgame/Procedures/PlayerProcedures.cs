@@ -1690,7 +1690,7 @@ namespace tfgame.Procedures
         {
                 try
                 {
-                    if (player.BotId < -1)
+                    if (player.BotId < AIStatics.RerolledPlayerBotId)
                     {
                         return false;
                     }
@@ -1716,7 +1716,7 @@ namespace tfgame.Procedures
         {
             try
             {
-                if (player.BotId < -1)
+                if (player.BotId < AIStatics.RerolledPlayerBotId)
                 {
                     return false;
                 }

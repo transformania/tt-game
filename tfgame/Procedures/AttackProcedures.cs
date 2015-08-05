@@ -287,14 +287,14 @@ namespace tfgame.Procedures
             if (attacker.GameMode == 2)
             {
                 playersHere = playerREpo.Players.Where(p => p.dbLocationName == attacker.dbLocationName &&
-                    (p.GameMode == 2 || p.BotId < -1) &&
+                    (p.GameMode == 2 || p.BotId < AIStatics.RerolledPlayerBotId) &&
                     p.Mobility == "full" &&
                     p.InDuel <= 0).ToList();
             }
             else if (attacker.GameMode == 1 || attacker.GameMode == 0)
             {
                 playersHere = playerREpo.Players.Where(p => p.dbLocationName == attacker.dbLocationName &&
-                    p.BotId < -1 &&
+                    p.BotId < AIStatics.RerolledPlayerBotId &&
                     p.Mobility == "full" &&
                     p.InDuel <= 0).ToList();
             }

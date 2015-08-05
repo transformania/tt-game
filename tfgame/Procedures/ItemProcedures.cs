@@ -1190,7 +1190,7 @@ namespace tfgame.Procedures
                 {
 
                     // bots can keep everything
-                    if (attacker.BotId < -1)
+                    if (attacker.BotId < AIStatics.RerolledPlayerBotId)
                     {
                         newItem.OwnerId = attacker.Id;
                         newItem.IsEquipped = true;

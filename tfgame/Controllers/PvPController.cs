@@ -2747,7 +2747,7 @@ namespace tfgame.Controllers
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            if (me == null || me.BotId == -1 || me.FirstName=="" || me.LastName=="")
+            if (me == null || me.BotId == AIStatics.RerolledPlayerBotId || me.FirstName=="" || me.LastName=="")
             {
                 return View("~/Views/PvP/MakeNewCharacter.cshtml");
             }
@@ -2819,7 +2819,7 @@ namespace tfgame.Controllers
          {
              string myMembershipId = User.Identity.GetUserId();
              Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-             if (me == null || me.BotId == -1 || me.FirstName == "" || me.LastName == "")
+             if (me == null || me.BotId == AIStatics.RerolledPlayerBotId || me.FirstName == "" || me.LastName == "")
              {
                 return View("~/Views/PvP/MakeNewCharacter.cshtml");
              }

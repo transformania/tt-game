@@ -2150,5 +2150,11 @@ namespace tfgame.Procedures
 
         }
 
+        public static IEnumerable<DbStaticForm> GetAllDbStaticForms()
+        {
+            IDbStaticFormRepository repo = new EFDbStaticFormRepository();
+            return repo.DbStaticForms.Where(f => f.dbName != "");
+        }
+
     }
 }

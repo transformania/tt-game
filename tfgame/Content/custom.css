@@ -1071,4 +1071,21 @@ strong {
 .userlistRow:hover {
   color: black !important; }
 
+.helpModal {
+        background-color: #FFC0CB;
+        display: none;
+        position: fixed;
+        left: 25%;
+        width: 50%;
+        height: 800px;
+        top: 25px;
+        z-index: 1000;
+        border: 3px solid #F00;
+        padding: 10px;
+        overflow: scroll;
+        overflow: scroll;
+    }
+
+#
+
 /*# sourceMappingURL=custom.css.map */

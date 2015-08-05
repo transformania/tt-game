@@ -3,8 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using tfgame.dbModels.Abstract;
+using tfgame.dbModels.Concrete;
 using tfgame.dbModels.Models;
 using tfgame.Procedures;
+using tfgame.Statics;
+using tfgame.ViewModels;
 
 namespace tfgame.Controllers
 {
@@ -45,6 +49,18 @@ namespace tfgame.Controllers
          {
             IEnumerable<RPClassifiedAd> output =  RPClassifiedAdsProcedures.GetClassifiedAds();
             return View(output);
+         }
+
+         public ActionResult AllLocations()
+         {
+             List<Location> output = LocationsStatics.LocationList.GetLocation.Where(s => s.dbName.Contains("_dungeon") == false).ToList();
+             return PartialView(output);
+         }
+
+         public ActionResult AllForms()
+         {
+             List<DbStaticForm> output = PlayerProcedures.GetAllDbStaticForms().ToList();
+             return PartialView(output);
          }
     }
 }

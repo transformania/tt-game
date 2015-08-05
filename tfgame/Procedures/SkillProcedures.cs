@@ -99,6 +99,7 @@ namespace tfgame.Procedures
                                                          ExclusiveToForm = ss.ExclusiveToForm,
                                                          ExclusiveToItem = ss.ExclusiveToItem,
                                                          GivesEffect = ss.GivesEffect,
+                                                         IsPlayerLearnable = ss.IsPlayerLearnable,
                                                      }
 
                                                  };
@@ -147,6 +148,7 @@ namespace tfgame.Procedures
                                                           ExclusiveToForm = ss.ExclusiveToForm,
                                                           ExclusiveToItem = ss.ExclusiveToItem,
                                                           GivesEffect = ss.GivesEffect,
+                                                          IsPlayerLearnable = ss.IsPlayerLearnable,
                                                       }
 
                                                   };
@@ -192,6 +194,7 @@ namespace tfgame.Procedures
                                                           ExclusiveToForm = ss.ExclusiveToForm,
                                                           ExclusiveToItem = ss.ExclusiveToItem,
                                                           GivesEffect = ss.GivesEffect,
+                                                          IsPlayerLearnable = ss.IsPlayerLearnable,
                                                       }
 
                                                   };
@@ -285,7 +288,7 @@ namespace tfgame.Procedures
             string output = "";
 
             IEnumerable<string> playerSkills = skillRepo.Skills.Where(s => s.OwnerId == player.Id).Select(s => s.Name).ToList();
-            IEnumerable<string> learnableSkills = skillRepo.DbStaticSkills.Where(s => (s.LearnedAtLocation != null && s.LearnedAtLocation != "") || (s.LearnedAtRegion != null && s.LearnedAtRegion != "")).Select(s => s.dbName).ToList();
+            IEnumerable<string> learnableSkills = skillRepo.DbStaticSkills.Where(s => s.IsPlayerLearnable == true).Select(s => s.dbName).ToList();
 
 
             IEnumerable<string> eligibleSkills = from s in learnableSkills
@@ -457,7 +460,7 @@ namespace tfgame.Procedures
         public static int GetCountOfLearnableSpells()
         {
             IDbStaticSkillRepository skillRepo = new EFDbStaticSkillRepository();
-            int spellCount = skillRepo.DbStaticSkills.Where(s => ((s.LearnedAtLocation != "" && s.LearnedAtLocation != null) || (s.LearnedAtRegion != "" && s.LearnedAtRegion != null)) && (s.MobilityType == "full" || s.MobilityType == "inanimate" || s.MobilityType == "animal" || s.MobilityType == "mindcontrol")).Count();
+            int spellCount = skillRepo.DbStaticSkills.Where(s => s.IsPlayerLearnable == true).Count();
             return spellCount;
 
         }

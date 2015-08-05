@@ -98,6 +98,7 @@ namespace tfgame.Controllers
                 contribution.Form_TFEnergyRequired = 100;
                 contribution.Skill_TFPointsAmount = 10;
                 contribution.Skill_HealthDamageAmount = 4.5M;
+                contribution.Skill_IsPlayerLearnable = true;
             }
 
             ViewBag.Result = TempData["Result"];
@@ -490,6 +491,7 @@ namespace tfgame.Controllers
             SaveMe.Skill_LearnedAtRegion = input.Skill_LearnedAtRegion;
             SaveMe.Skill_LearnedAtLocationOrRegion = input.Skill_LearnedAtLocationOrRegion;
             SaveMe.Skill_DiscoveryMessage = input.Skill_DiscoveryMessage;
+            SaveMe.Skill_IsPlayerLearnable = input.Skill_IsPlayerLearnable;
 
             SaveMe.Form_FriendlyName = input.Form_FriendlyName;
             SaveMe.Form_Description = input.Form_Description;
@@ -924,6 +926,7 @@ namespace tfgame.Controllers
             spell.FriendlyName = contribution.Skill_FriendlyName;
             spell.HealthDamageAmount = contribution.Skill_HealthDamageAmount;
             spell.TFPointsAmount = contribution.Skill_TFPointsAmount;
+            spell.IsPlayerLearnable = contribution.Skill_IsPlayerLearnable;
 
             //  TODO: THIS ASSUMES LEARNED AT SPECIFIC LOCATION; THIS NEEDS TO BE CHANGED
             spell.LearnedAtLocation = "";
@@ -936,6 +939,8 @@ namespace tfgame.Controllers
             {
                 spell.LearnedAtLocation = contribution.Skill_LearnedAtRegion;
             }
+
+            
 
             spell.ManaCost = contribution.Skill_ManaCost;
             spell.MobilityType = contribution.Form_MobilityType;

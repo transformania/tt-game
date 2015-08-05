@@ -1237,6 +1237,7 @@ namespace tfgame.Controllers
             ProofreadCopy.Skill_LearnedAtLocationOrRegion = OldCopy.Skill_LearnedAtLocationOrRegion;
             ProofreadCopy.Skill_LearnedAtRegion = OldCopy.Skill_LearnedAtRegion;
             ProofreadCopy.Skill_DiscoveryMessage = OldCopy.Skill_DiscoveryMessage;
+            ProofreadCopy.Skill_IsPlayerLearnable = OldCopy.Skill_IsPlayerLearnable;
 
             ProofreadCopy.Form_FriendlyName = OldCopy.Form_FriendlyName;
             ProofreadCopy.Form_Description = OldCopy.Form_Description;

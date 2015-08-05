@@ -24,6 +24,9 @@ namespace tfgame.dbModels.Models
 
         public bool IsRemovable { get; set; }
 
+        // 0 == neutral, 1 == curse, 2 == blessing
+        public int BlessingCurseStatus { get; set; }
+
         public string MessageWhenHit { get; set; }
         public string MessageWhenHit_M { get; set; }
         public string MessageWhenHit_F { get; set; }
@@ -79,6 +82,7 @@ namespace tfgame.dbModels.Models
                 Duration = this.Duration,
                 Cooldown = this.Cooldown,
                 ObtainedAtLocation = this.ObtainedAtLocation,
+
                 MessageWhenHit = this.MessageWhenHit,
                 MessageWhenHit_M = this.MessageWhenHit_M,
                 MessageWhenHit_F = this.MessageWhenHit_F,

@@ -22,6 +22,8 @@ namespace tfgame.ViewModels
         public string LearnedAtLocation { get; set; }
         public string DiscoveryMessage { get; set; }
 
+        public bool IsPlayerLearnable { get; set; }
+
         public string GivesEffect { get; set; }
 
         public string ExclusiveToForm { get; set; }

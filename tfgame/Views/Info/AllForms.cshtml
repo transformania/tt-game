@@ -1,0 +1,74 @@
+﻿@model List<tfgame.dbModels.Models.DbStaticForm>
+
+<div>
+
+    <h1>Forms</h1>
+
+    <button id="closeModal" onclick="hideModal()">Close</button>
+
+
+
+    <table id="modalTable" style="width: 100%;">
+        <thead>
+            <tr>
+                <td><b>Name as seen ingame</b></td>
+                <td>
+                    <b>Paste this text to contribution form</b>
+                </td>
+                <td><b>Unique?</b></td>
+            </tr>
+
+
+        </thead>
+        <tbody>
+
+            @foreach (tfgame.dbModels.Models.DbStaticForm f in Model.Where(m => m.MobilityType == "full").OrderBy(f => f.FriendlyName))
+            {
+                <tr>
+                    <td>@f.FriendlyName</td>
+                    <td>@f.dbName</td>
+
+                    @{
+                if (f.IsUnique)
+                {
+                    <td>Y</td>
+                }
+                else
+                {
+                    <td></td>
+                }
+                    }
+
+                </tr>
+            }
+
+
+        </tbody>
+
+
+
+    </table>
+
+    <button id="closeModal" onclick="hideModal()">Close</button>
+
+</div>
+
+
+
+<style>
+ 
+
+    tr {
+        border: 1px solid black;
+    }
+</style>
+
+<script>
+    try {
+        $('#modalTable').dataTable({
+            "lengthMenu": [[50, 100, 200, -1], [50, 100, 200, "All"]]
+        });
+    } catch (e) {
+
+    }
+</script>

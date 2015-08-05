@@ -2332,6 +2332,8 @@
     <Content Include="Views\Duel\DuelDetail.cshtml" />
     <Content Include="Views\Account\ChangeEmail.cshtml" />
     <Content Include="Views\PvP\LoginRequired.cshtml" />
+    <Content Include="Views\Info\AllLocations.cshtml" />
+    <Content Include="Views\Info\AllForms.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

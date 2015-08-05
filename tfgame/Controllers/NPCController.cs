@@ -800,7 +800,7 @@ namespace tfgame.Controllers
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            Player bartender = PlayerProcedures.GetPlayerFromBotId(AIProcedures.BartenderMembershipId);
+            Player bartender = PlayerProcedures.GetPlayerFromBotId(AIStatics.BartenderBotId);
 
             // update timestamp (so that he can heal naturally)
             PlayerProcedures.SetTimestampToNow(bartender);
@@ -838,7 +838,7 @@ namespace tfgame.Controllers
             }
             else if (question == "lindella")
             {
-                Player lindella = PlayerProcedures.GetPlayerFromBotId(AIProcedures.LindellaMembershipId);
+                Player lindella = PlayerProcedures.GetPlayerFromBotId(AIStatics.LindellaBotId);
                 if (lindella != null)
                 {
                     Location temp = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == lindella.dbLocationName);
@@ -852,7 +852,7 @@ namespace tfgame.Controllers
 
             else if (question == "wuffie")
             {
-                Player wuffie = PlayerProcedures.GetPlayerFromBotId(AIProcedures.WuffieMembershipId);
+                Player wuffie = PlayerProcedures.GetPlayerFromBotId(AIStatics.WuffieBotId);
                 if (wuffie != null)
                 {
                     Location temp = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == wuffie.dbLocationName);
@@ -865,7 +865,7 @@ namespace tfgame.Controllers
             }
             else if (question == "jewdewfae")
             {
-                Player jewdewfae = PlayerProcedures.GetPlayerFromBotId(AIProcedures.JewdewfaeMembershipId);
+                Player jewdewfae = PlayerProcedures.GetPlayerFromBotId(AIStatics.JewdewfaeBotId);
                 if (jewdewfae != null)
                 {
                     Location temp = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == jewdewfae.dbLocationName);
@@ -1041,7 +1041,7 @@ namespace tfgame.Controllers
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            Player bimbo = PlayerProcedures.GetPlayerFromBotId(AIProcedures.MouseBimboMembershipId);
+            Player bimbo = PlayerProcedures.GetPlayerFromBotId(AIStatics.MouseBimboBotId);
 
             // assert player is mobile
             if (me.Mobility != "full")
@@ -1073,7 +1073,7 @@ namespace tfgame.Controllers
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            Player nerd = PlayerProcedures.GetPlayerFromBotId(AIProcedures.MouseNerdMembershipId);
+            Player nerd = PlayerProcedures.GetPlayerFromBotId(AIStatics.MouseNerdBotId);
 
             // assert player is mobile
             if (me.Mobility != "full")
@@ -1105,7 +1105,7 @@ namespace tfgame.Controllers
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            Player loremaster = PlayerProcedures.GetPlayerFromBotId(AIProcedures.LoremasterMembershipId);
+            Player loremaster = PlayerProcedures.GetPlayerFromBotId(AIStatics.LoremasterBotId);
 
             // assert player is mobile
             if (me.Mobility != "full")
@@ -1137,7 +1137,7 @@ namespace tfgame.Controllers
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            Player loremaster = PlayerProcedures.GetPlayerFromBotId(AIProcedures.LoremasterMembershipId);
+            Player loremaster = PlayerProcedures.GetPlayerFromBotId(AIStatics.LoremasterBotId);
 
             // assert player is mobile
             if (me.Mobility != "full")
@@ -1167,7 +1167,7 @@ namespace tfgame.Controllers
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            Player loremaster = PlayerProcedures.GetPlayerFromBotId(AIProcedures.LoremasterMembershipId);
+            Player loremaster = PlayerProcedures.GetPlayerFromBotId(AIStatics.LoremasterBotId);
 
             // assert player is mobile
             if (me.Mobility != "full")
@@ -1221,7 +1221,7 @@ namespace tfgame.Controllers
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            Player loremaster = PlayerProcedures.GetPlayerFromBotId(AIProcedures.LoremasterMembershipId);
+            Player loremaster = PlayerProcedures.GetPlayerFromBotId(AIStatics.LoremasterBotId);
 
             // assert player is mobile
             if (me.Mobility != "full")
@@ -1286,7 +1286,7 @@ namespace tfgame.Controllers
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            Player loremaster = PlayerProcedures.GetPlayerFromBotId(AIProcedures.LoremasterMembershipId);
+            Player loremaster = PlayerProcedures.GetPlayerFromBotId(AIStatics.LoremasterBotId);
 
             // assert player is animate
             if (me.Mobility != "full")

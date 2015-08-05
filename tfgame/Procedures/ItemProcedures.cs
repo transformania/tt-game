@@ -435,7 +435,7 @@ namespace tfgame.Procedures
 
             if (item.dbLocationName != "")
             {
-                if (owner.BotId == 0 && item.PvPEnabled == -1)
+                if (owner.BotId == AIStatics.ActivePlayerBotId && item.PvPEnabled == -1)
                 {
                     if (owner.GameMode == 2)
                     {
@@ -475,7 +475,7 @@ namespace tfgame.Procedures
             item.OwnerId = newOwnerId;
             Player owner = PlayerProcedures.GetPlayer(newOwnerId);
 
-            if (owner.BotId == 0 && item.PvPEnabled == -1)
+            if (owner.BotId == AIStatics.ActivePlayerBotId && item.PvPEnabled == -1)
             {
                 if (owner.GameMode == 2)
                 {
@@ -514,7 +514,7 @@ namespace tfgame.Procedures
                 LastSouledTimestamp = DateTime.UtcNow.AddYears(-1),
             };
 
-            if (player.BotId < 0)
+            if (player.BotId < AIStatics.ActivePlayerBotId)
             {
                 newitem.PvPEnabled = -1;
             }
@@ -1114,7 +1114,7 @@ namespace tfgame.Procedures
                 LastSouledTimestamp = DateTime.UtcNow.AddYears(-1),
             };
 
-            if (attacker.BotId < 0)
+            if (attacker.BotId < AIStatics.ActivePlayerBotId)
             {
                 newItem.PvPEnabled = -1;
             }
@@ -1127,7 +1127,7 @@ namespace tfgame.Procedures
                 newItem.PvPEnabled = 1;
             }
 
-            if (victim.BotId < 0)
+            if (victim.BotId < AIStatics.ActivePlayerBotId)
             {
                 newItem.IsPermanent = true;
 
@@ -1154,7 +1154,7 @@ namespace tfgame.Procedures
                     newItem.dbLocationName = "";
 
                     // UNLESS the attacker is a boss, then give it to them for free
-                } else if (attacker.BotId <= -3) {
+                } else if (attacker.BotId < AIStatics.PsychopathBotId) {
                     newItem.OwnerId = attacker.Id;
                     newItem.dbLocationName = "";
                 }
@@ -1177,7 +1177,7 @@ namespace tfgame.Procedures
 
 
                 // this player currently has no tamed pets, so give it to them auto equipped
-                if (AttackerExistingItems.Where(e => e.Item.ItemType == PvPStatics.ItemType_Pet).Count() == 0 && attacker.BotId >= -2)
+                if (AttackerExistingItems.Where(e => e.Item.ItemType == PvPStatics.ItemType_Pet).Count() == 0 && attacker.BotId >= AIStatics.PsychopathBotId)
                 {
                     newItem.OwnerId = attacker.Id;
                     newItem.IsEquipped = true;
@@ -1190,7 +1190,7 @@ namespace tfgame.Procedures
                 {
 
                     // bots can keep everything
-                    if (attacker.BotId < -1)
+                    if (attacker.BotId < AIStatics.RerolledPlayerBotId)
                     {
                         newItem.OwnerId = attacker.Id;
                         newItem.IsEquipped = true;

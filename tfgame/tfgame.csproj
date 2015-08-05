@@ -437,6 +437,7 @@
     <Compile Include="Services\ChatMessageProcessor.cs" />
     <Compile Include="Services\ChatService.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Statics\AIStatics.cs" />
     <Compile Include="Statics\CovenantDictionary.cs" />
     <Compile Include="Statics\EffectStatics.cs" />
     <Compile Include="Statics\Forms.cs" />

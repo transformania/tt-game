@@ -62,7 +62,7 @@ namespace tfgame.Procedures
             // don't keep stats for an AI characters
 
           //  if (membershipId > 0 && PvPStatics.ChaosMode == false) 
-            if (PlayerProcedures.GetPlayerFromMembership(membershipId).BotId == 0)
+            if (PlayerProcedures.GetPlayerFromMembership(membershipId).BotId == AIStatics.ActivePlayerBotId)
             {
                 IAchievementRepository repo = new EFAchievementRepository();
                 Achievement x = repo.Achievements.FirstOrDefault(a => a.OwnerMembershipId == membershipId && a.AchievementType == type);

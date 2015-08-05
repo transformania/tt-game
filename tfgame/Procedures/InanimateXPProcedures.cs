@@ -63,7 +63,7 @@ namespace tfgame.Procedures
 
             // get the number of inanimate accounts under this IP
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            decimal playerCount = playerRepo.Players.Where(p => p.IpAddress == me.IpAddress && (p.Mobility == "inanimate" || p.Mobility == "animal") && p.BotId == 0).Count();
+            decimal playerCount = playerRepo.Players.Where(p => p.IpAddress == me.IpAddress && (p.Mobility == "inanimate" || p.Mobility == "animal") && p.BotId == AIStatics.ActivePlayerBotId).Count();
 
             if (playerCount == 0 || HttpContext.Current.User.IsInRole(PvPStatics.Permissions_MultiAccountWhitelist))
             {

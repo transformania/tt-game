@@ -53,7 +53,7 @@ namespace tfgame.Controllers
             Player duelTarget = PlayerProcedures.GetPlayer(id);
 
             // assert target is not a bot
-            if (duelTarget.BotId < 0)
+            if (duelTarget.BotId < AIStatics.ActivePlayerBotId)
             {
                 TempData["Error"] = "You cannot challenge an NPC to a bot.";
             }
@@ -163,7 +163,7 @@ namespace tfgame.Controllers
             {
 
                 // assert player is not a bot... somehow
-                if (p.Player.BotId < 0)
+                if (p.Player.BotId < AIStatics.ActivePlayerBotId)
                 {
                     TempData["Error"] =  p.Player.GetFullName() + " is an NPC and thus cannot engage in a duel.";
                     return RedirectToAction("Play", "PvP");

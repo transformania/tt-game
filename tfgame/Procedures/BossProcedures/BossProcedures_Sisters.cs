@@ -5,6 +5,7 @@ using System.Web;
 using tfgame.dbModels.Abstract;
 using tfgame.dbModels.Concrete;
 using tfgame.dbModels.Models;
+using tfgame.Statics;
 
 namespace tfgame.Procedures.BossProcedures
 {
@@ -165,8 +166,8 @@ namespace tfgame.Procedures.BossProcedures
             
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player nerdBoss = playerRepo.Players.FirstOrDefault(p => p.BotId == -11);
-            Player bimboBoss = playerRepo.Players.FirstOrDefault(p => p.BotId == -12);
+            Player nerdBoss = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.MouseNerdBotId);
+            Player bimboBoss = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.MouseBimboBotId);
 
             // check to see if a sister has been TFed and the event should end
             if (nerdBoss.Form != NerdBossForm || bimboBoss.Form != BimboBossForm)
@@ -179,7 +180,7 @@ namespace tfgame.Procedures.BossProcedures
                 List<Player> playersByNerd = PlayerProcedures.GetPlayersAtLocation(nerdBoss.dbLocationName).ToList();
                 playersByNerd = playersByNerd.Where(p => p.Mobility == "full" &&
                     PlayerProcedures.PlayerIsOffline(p) == false &&
-                    p.BotId == 0 &&
+                    p.BotId == AIStatics.ActivePlayerBotId &&
                     p.Id != nerdBoss.Id &&
                     p.Form != NerdSpellForm &&
                     p.InDuel <= 0).ToList();
@@ -189,7 +190,7 @@ namespace tfgame.Procedures.BossProcedures
                 List<Player> playersByBimbo = PlayerProcedures.GetPlayersAtLocation(bimboBoss.dbLocationName).ToList();
                 playersByBimbo = playersByBimbo.Where(p => p.Mobility == "full" &&
                     PlayerProcedures.PlayerIsOffline(p) == false &&
-                    p.BotId == 0 &&
+                    p.BotId == AIStatics.ActivePlayerBotId &&
                     p.Id != bimboBoss.Id &&
                     p.Form != BimboSpellForm &&
                     p.InDuel <= 0).ToList();
@@ -221,8 +222,8 @@ namespace tfgame.Procedures.BossProcedures
             PvPWorldStatProcedures.Boss_EndSisters();
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player nerdBoss = playerRepo.Players.FirstOrDefault(p => p.BotId == AIProcedures.MouseNerdMembershipId);
-            Player bimboBoss = playerRepo.Players.FirstOrDefault(p => p.BotId == AIProcedures.MouseBimboMembershipId);
+            Player nerdBoss = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.MouseNerdBotId);
+            Player bimboBoss = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.MouseBimboBotId);
 
             string winner = "";
 

@@ -571,7 +571,7 @@ namespace tfgame.Procedures
             {
                 if (player.InanimateForm.ToString() == "pet" || player.InanimateForm.ToString() == "random")
                 {
-                    vendor = PlayerProcedures.GetPlayerFromBotId(AIProcedures.WuffieMembershipId);
+                    vendor = PlayerProcedures.GetPlayerFromBotId(AIStatics.WuffieBotId);
                     if (vendor == null)
                     {
                         return "Wüffie is not currently available to accept new pets. Please try again later.";
@@ -579,7 +579,7 @@ namespace tfgame.Procedures
                 }
                 if (player.InanimateForm.ToString() != "pet")
                 {
-                    vendor = PlayerProcedures.GetPlayerFromBotId(AIProcedures.LindellaMembershipId);
+                    vendor = PlayerProcedures.GetPlayerFromBotId(AIStatics.LindellaBotId);
                     if (vendor == null)
                     {
                         return "Lindella is not currently available to accept new items. Please try again later.";
@@ -606,8 +606,8 @@ namespace tfgame.Procedures
 
                  // remove all of the old player's TF energies
                  TFEnergyProcedures.DeleteAllPlayerTFEnergies(oldplayer.Id);
-                 oldplayer.MembershipId = "-1";
-                 oldplayer.BotId = -1;
+                 oldplayer.MembershipId = AIStatics.RerolledPlayerBotId.ToString();
+                 oldplayer.BotId = AIStatics.RerolledPlayerBotId;
                  playerRepo.SavePlayer(oldplayer);
 
                  // remove the old player's effects
@@ -656,7 +656,7 @@ namespace tfgame.Procedures
             newplayer.CleansesMeditatesThisRound = 0;
             newplayer.NonPvP_GameOverSpellsAllowedLastChange = DateTime.UtcNow;
             newplayer.Mobility = Statics.PvPStatics.MobilityFull;
-            newplayer.BotId = 0;
+            newplayer.BotId = AIStatics.ActivePlayerBotId;
             newplayer.ChatColor = "black";
           
             
@@ -754,7 +754,7 @@ namespace tfgame.Procedures
             if (player.InanimateForm != null)
             {
                 DbStaticForm startform = ItemProcedures.GetFormFromItem(ItemProcedures.GetRandomItemOfType(player.InanimateForm.ToString()));
-                if (player.InanimateForm.ToString() == "random" && startform.MobilityType == "animal") vendor = PlayerProcedures.GetPlayerFromBotId(AIProcedures.WuffieMembershipId);
+                if (player.InanimateForm.ToString() == "random" && startform.MobilityType == "animal") vendor = PlayerProcedures.GetPlayerFromBotId(AIStatics.WuffieBotId);
 
                 newplayer.Form = startform.dbName;
                 newplayer.Gender = startform.Gender;
@@ -1262,8 +1262,8 @@ namespace tfgame.Procedures
 
             WorldStats output = new WorldStats
             {
-                TotalPlayers = players.Where(p => p.BotId == 0).Count(),
-                CurrentOnlinePlayers = players.Where(p => p.BotId == 0 && p.OnlineActivityTimestamp >= cutoff).Count(),
+                TotalPlayers = players.Where(p => p.BotId == AIStatics.ActivePlayerBotId).Count(),
+                CurrentOnlinePlayers = players.Where(p => p.BotId == AIStatics.ActivePlayerBotId && p.OnlineActivityTimestamp >= cutoff).Count(),
                 //TotalAnimalPlayers = players.Where(p => p.Mobility == "animal").Count(),
                 //TotalInanimatePlayers = players.Where(p => p.Mobility == "inanimate").Count(),
                 //TotalLivingPlayers = players.Where(p => p.Mobility == "full").Count(),
@@ -1282,7 +1282,7 @@ namespace tfgame.Procedures
             Player player = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);
 
             // decrease XP gain by 40% for psychos
-            if (player.BotId == -2)
+            if (player.BotId == AIStatics.PsychopathBotId)
             {
                 amount = amount * .6M;
             }
@@ -1675,7 +1675,7 @@ namespace tfgame.Procedures
         {
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            decimal num = playerRepo.Players.Where(p => p.BotId == 0 && p.IpAddress == ip && p.Mobility == "full" && p.GameMode == player.GameMode).Count();
+            decimal num = playerRepo.Players.Where(p => p.BotId == AIStatics.ActivePlayerBotId && p.IpAddress == ip && p.Mobility == "full" && p.GameMode == player.GameMode).Count();
             if (num > 1)
             {
                 return true;
@@ -1690,7 +1690,7 @@ namespace tfgame.Procedures
         {
                 try
                 {
-                    if (player.BotId < -1)
+                    if (player.BotId < AIStatics.RerolledPlayerBotId)
                     {
                         return false;
                     }
@@ -1716,7 +1716,7 @@ namespace tfgame.Procedures
         {
             try
             {
-                if (player.BotId < -1)
+                if (player.BotId < AIStatics.RerolledPlayerBotId)
                 {
                     return false;
                 }
@@ -1791,7 +1791,7 @@ namespace tfgame.Procedures
         public static IEnumerable<Player> GetLeadingPlayers__XP(int number)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            return playerRepo.Players.Where(p => p.BotId == 0).OrderByDescending(p => p.Level).ThenByDescending(p => p.XP).Take(number);
+            return playerRepo.Players.Where(p => p.BotId == AIStatics.ActivePlayerBotId).OrderByDescending(p => p.Level).ThenByDescending(p => p.XP).Take(number);
         }
 
         public static IEnumerable<Player> GetLeadingPlayers__PvP(int number)
@@ -1799,7 +1799,7 @@ namespace tfgame.Procedures
             IPlayerRepository playerRepo = new EFPlayerRepository();
 
 
-            return playerRepo.Players.Where(p => p.BotId == 0).OrderByDescending(p => p.PvPScore).ThenByDescending(p => p.Level).ThenByDescending(p => p.XP).Take(number);
+            return playerRepo.Players.Where(p => p.BotId == AIStatics.ActivePlayerBotId).OrderByDescending(p => p.PvPScore).ThenByDescending(p => p.Level).ThenByDescending(p => p.XP).Take(number);
 
         }
 

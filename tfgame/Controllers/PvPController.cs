@@ -740,31 +740,31 @@ namespace tfgame.Controllers
             }
 
             // only show inanimates for rat thieves
-            if (target.BotId == -8 || target.BotId == -9)
+            if (target.BotId == AIStatics.MaleRatBotId || target.BotId == AIStatics.FemaleRatBotId)
             {
                 output = output.Where(s => s.MobilityType == "inanimate");
             }
 
             // only bimbo spell works on nerd mouse boss
-            if (target.BotId == -11)
+            if (target.BotId == AIStatics.MouseNerdBotId)
             {
                 output = output.Where(s => s.Skill.dbName == BossProcedures_Sisters.BimboSpell);
             }
 
             // only nerd spell works on nerd bimbo boss
-            if (target.BotId == -12)
+            if (target.BotId == AIStatics.MouseBimboBotId)
             {
                 output = output.Where(s => s.Skill.dbName == BossProcedures_Sisters.NerdSpell);
             }
 
             // Vanquish only works against dungeon demons
-            if (target.BotId == -13)
+            if (target.BotId == AIStatics.DemonBotId)
             {
                 output = output.Where(s => s.Skill.dbName == PvPStatics.Dungeon_VanquishSpell || s.Skill.dbName == "lowerHealth");
             }
 
             // Vanquish only works against dungeon demons
-            if (target.BotId != -13)
+            if (target.BotId != AIStatics.DemonBotId)
             {
                 output = output.Where(s => s.Skill.dbName != PvPStatics.Dungeon_VanquishSpell);
             }
@@ -988,7 +988,7 @@ namespace tfgame.Controllers
 
             #region bot attack type checks
             // prevent low level players from taking on high level bots
-            if (targeted.BotId <= -3)
+            if (targeted.BotId < AIStatics.PsychopathBotId)
             {
 
                 // disable attacks on "friendly" NPCs
@@ -1010,7 +1010,7 @@ namespace tfgame.Controllers
                 }
 
                 // Donna
-                if (targeted.BotId == -4)
+                if (targeted.BotId == AIStatics.DonnaBotId)
                 {
                     if (futureForm == null || futureForm.MobilityType == "full")
                     {
@@ -1021,7 +1021,7 @@ namespace tfgame.Controllers
                 }
 
                 // Valentine
-                if (targeted.BotId == -5)
+                if (targeted.BotId == AIStatics.ValentineBotId)
                 {
                     // only allow weakens against Valentine for now (replace with Duel spell later?)
                     if (futureForm != null)
@@ -1033,7 +1033,7 @@ namespace tfgame.Controllers
                 }
 
                 // Bimbo Boss
-                if (targeted.BotId == -7)
+                if (targeted.BotId == AIStatics.BimboBossBotId)
                 {
 
                     // disallow animate spells
@@ -1047,7 +1047,7 @@ namespace tfgame.Controllers
                 }
 
                 // Thieves Boss
-                if (targeted.BotId == -8 || targeted.BotId == -9)
+                if (targeted.BotId == AIStatics.MaleRatBotId || targeted.BotId == AIStatics.FemaleRatBotId)
                 {
 
                     // only allow inanimate spells
@@ -1061,7 +1061,7 @@ namespace tfgame.Controllers
                 }
 
                 // Mouse Sisters Boss
-                if (targeted.BotId == -11 || targeted.BotId == -12)
+                if (targeted.BotId == AIStatics.MouseNerdBotId || targeted.BotId == AIStatics.MouseBimboBotId)
                 {
                     string result = BossProcedures_Sisters.SpellIsValid(me, targeted, attackName);
                     if (result != "") {
@@ -1071,7 +1071,7 @@ namespace tfgame.Controllers
                 }
 
                 // TODO:  Dungeon Demons can only be vanquished
-                if (targeted.BotId == -13 && skill.dbName != PvPStatics.Dungeon_VanquishSpell && skill.dbName != "lowerHealth")
+                if (targeted.BotId == AIStatics.DemonBotId && skill.dbName != PvPStatics.Dungeon_VanquishSpell && skill.dbName != "lowerHealth")
                 {
                     TempData["Error"] = "Only the 'Vanquish' spell and Weaken have any effect on the Dark Demonic Guardians.";
                     return RedirectToAction("Play");

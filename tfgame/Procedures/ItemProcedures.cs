@@ -1154,7 +1154,7 @@ namespace tfgame.Procedures
                     newItem.dbLocationName = "";
 
                     // UNLESS the attacker is a boss, then give it to them for free
-                } else if (attacker.BotId <= -3) {
+                } else if (attacker.BotId < AIStatics.PsychopathBotId) {
                     newItem.OwnerId = attacker.Id;
                     newItem.dbLocationName = "";
                 }

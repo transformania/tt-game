@@ -606,8 +606,8 @@ namespace tfgame.Procedures
 
                  // remove all of the old player's TF energies
                  TFEnergyProcedures.DeleteAllPlayerTFEnergies(oldplayer.Id);
-                 oldplayer.MembershipId = "-1";
-                 oldplayer.BotId = -1;
+                 oldplayer.MembershipId = AIStatics.RerolledPlayerBotId.ToString();
+                 oldplayer.BotId = AIStatics.RerolledPlayerBotId;
                  playerRepo.SavePlayer(oldplayer);
 
                  // remove the old player's effects

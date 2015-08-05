@@ -166,8 +166,8 @@ namespace tfgame.Procedures.BossProcedures
             
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player nerdBoss = playerRepo.Players.FirstOrDefault(p => p.BotId == -11);
-            Player bimboBoss = playerRepo.Players.FirstOrDefault(p => p.BotId == -12);
+            Player nerdBoss = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.MouseNerdBotId);
+            Player bimboBoss = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.MouseBimboBotId);
 
             // check to see if a sister has been TFed and the event should end
             if (nerdBoss.Form != NerdBossForm || bimboBoss.Form != BimboBossForm)

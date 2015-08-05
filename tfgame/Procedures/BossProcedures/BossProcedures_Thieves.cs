@@ -245,7 +245,7 @@ namespace tfgame.Procedures.BossProcedures
                 if (victimThiefItem.OwnerId > 0) {
                     Player target = playerRepo.Players.FirstOrDefault(p => p.Id == victimThiefItem.OwnerId);
 
-                    if (target.BotId == -8 || target.BotId == -8)
+                    if (target.BotId == AIStatics.MaleRatBotId || target.BotId == AIStatics.MaleRatBotId)
                     {
                         // do nothing, the thief already has the item... equip it if not
                         if (victimThiefItem.IsEquipped == false)
@@ -263,7 +263,7 @@ namespace tfgame.Procedures.BossProcedures
                     }
 
                     // Lindella, steal from her right away
-                    else if (target.BotId == -3)
+                    else if (target.BotId == AIStatics.LindellaBotId)
                     {
                         ItemProcedures.GiveItemToPlayer(victimThiefItem.Id, attackingThief.Id);
                         LocationLogProcedures.AddLocationLog(target.dbLocationName, "<b>" + attackingThief.GetFullName() + " stole " + victimThiefItem.GetFullName() + " the " + victimThiefItemPlus.Item.FriendlyName + " from Lindella.</b>");
@@ -279,7 +279,7 @@ namespace tfgame.Procedures.BossProcedures
                         AttackProcedures.Attack(attackingThief, target, "skill_Seekshadow's_Triumph_Judoo");
                         AttackProcedures.Attack(attackingThief, target, "skill_Seekshadow's_Triumph_Judoo");
                         AIProcedures.DealBossDamage(attackingThief, target, false, 4);
-                        target = playerRepo.Players.FirstOrDefault(p => p.Id == victimThiefItem.OwnerId && p.BotId != -8 && p.BotId != -9);
+                        target = playerRepo.Players.FirstOrDefault(p => p.Id == victimThiefItem.OwnerId && p.BotId != AIStatics.MaleRatBotId && p.BotId != AIStatics.FemaleRatBotId);
 
                         // if we have managed to turn the target, take back the victim-item
                         if (target.Mobility != "full")

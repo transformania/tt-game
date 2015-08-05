@@ -351,7 +351,7 @@ namespace tfgame.Procedures.BossProcedures
         private static List<Player> GetEligibleTargetsInLocation(string location, Player attacker)
         {
             DateTime cutoff = DateTime.UtcNow.AddHours(-1);
-            List<Player> playersHere = PlayerProcedures.GetPlayersAtLocation(location).Where(m => m.Mobility == "full" && m.Id != attacker.Id && m.Form != RegularBimboFormDbName && m.BotId >= AIStatics.PsychopathBotId && m.LastActionTimestamp > cutoff && m.BotId != -7 && m.InDuel <= 0).ToList();
+            List<Player> playersHere = PlayerProcedures.GetPlayersAtLocation(location).Where(m => m.Mobility == "full" && m.Id != attacker.Id && m.Form != RegularBimboFormDbName && m.BotId >= AIStatics.PsychopathBotId && m.LastActionTimestamp > cutoff && m.BotId != AIStatics.BimboBossBotId && m.InDuel <= 0).ToList();
 
             return playersHere;
         }

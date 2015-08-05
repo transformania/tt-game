@@ -22,7 +22,7 @@
                 <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
                 
                 @{
-    if (Model.PlayerForm.Player.BotId != -1)
+    if (Model.PlayerForm.Player.BotId != AIStatics.RerolledPlayerBotId)
     {
         <p>
             @{
@@ -62,7 +62,7 @@
 
 
 @{
-    if (Model.PlayerForm.Player.BotId != -1)
+    if (Model.PlayerForm.Player.BotId != AIStatics.RerolledPlayerBotId)
     {
         <p>
             &nbsp; 

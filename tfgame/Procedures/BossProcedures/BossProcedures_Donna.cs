@@ -73,7 +73,7 @@ namespace tfgame.Procedures.BossProcedures
             int worldTurnNumber = PvPWorldStatProcedures.GetWorldTurnNumber() - 1;
             ServerLog log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == worldTurnNumber);
 
-            Player donna = playerRepo.Players.FirstOrDefault(p => p.BotId == -4);
+            Player donna = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.DonnaBotId);
 
             if (donna.Mobility != "full")
             {

@@ -59,7 +59,7 @@ namespace tfgame.Procedures
                 bot.MaxHealth = 200;
                 bot.Mana = 200;
                 bot.MaxMana = 200;
-                bot.MembershipId = "-2";
+                bot.MembershipId = AIStatics.PsychopathBotId.ToString();
                 bot.BotId = AIStatics.PsychopathBotId;
                 bot.Mobility = "full";
                 //bot.IsPetToId = -1;
@@ -374,8 +374,8 @@ namespace tfgame.Procedures
             if (merchant == null)
             {
                 merchant = new Player();
-                merchant.MembershipId = "-3";
-                merchant.BotId = -3;
+                merchant.MembershipId = AIStatics.LindellaBotId.ToString();
+                merchant.BotId = AIStatics.LindellaBotId;
                 merchant.Level = 5;
                 merchant.FirstName = "Lindella";
                 merchant.LastName = "the Soul Vendor";
@@ -403,7 +403,7 @@ namespace tfgame.Procedures
 
                 merchant = playerRepo.Players.FirstOrDefault(f => f.FirstName == "Lindella" && f.LastName == "the Soul Vendor" && f.Mobility == "full");
 
-                Player Lindella = playerRepo.Players.FirstOrDefault(f => f.BotId == -3);
+                Player Lindella = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.LindellaBotId);
 
                 AIDirectiveProcedures.GetAIDirective(Lindella.Id);
                 AIDirectiveProcedures.SetAIDirective_MoveTo(Lindella.Id, "street_15th_south");
@@ -633,50 +633,50 @@ namespace tfgame.Procedures
             }
 
             // if the target is the merchant, run the counterattack procedure
-            if (bot.BotId == -3)
+            if (bot.BotId == AIStatics.LindellaBotId)
             {
                 AIProcedures.CounterAttack(personAttacking, bot);
             }
 
             // if the target is Donna, counterattack and set that player as her target immediately
-            if (bot.BotId == -4)
+            if (bot.BotId == AIStatics.DonnaBotId)
             {
                 BossProcedures_Donna.DonnaCounterattack(personAttacking, bot);
             }
 
             // Valentine counterattack
-            if (bot.BotId == -5)
+            if (bot.BotId == AIStatics.ValentineBotId)
             {
                 BossProcedures_Valentine.CounterAttack(personAttacking, bot);
             }
 
             // Bimbo boss counterattack
-            else if (bot.BotId == -7)
+            else if (bot.BotId == AIStatics.BimboBossBotId)
             {
                 BossProcedures_BimboBoss.CounterAttack(personAttacking, bot);
             }
 
             // rat thieves counterattack
-            else if (bot.BotId == -8 || bot.BotId == -9)
+            else if (bot.BotId == AIStatics.MaleRatBotId || bot.BotId == AIStatics.FemaleRatBotId)
             {
                 AIProcedures.DealBossDamage(bot, personAttacking, true, 1);
                 BossProcedures_Thieves.CounterAttack(personAttacking);
             }
 
             // Wuffie counterattack
-            else if (bot.BotId == -10)
+            else if (bot.BotId == AIStatics.WuffieBotId)
             {
                 BossProcedures_PetMerchant.CounterAttack(personAttacking);
             }
 
             // mouse sisters counterattack
-            else if (bot.BotId == -11 || bot.BotId == -12)
+            else if (bot.BotId == AIStatics.MouseNerdBotId || bot.BotId == AIStatics.MouseBimboBotId)
             {
                 BossProcedures_Sisters.CounterAttack(personAttacking, bot);
             }
 
             // demon counterattack
-            else if (bot.BotId == -13)
+            else if (bot.BotId == AIStatics.DemonBotId)
             {
                 BossProcedures_DungeonDemon.CounterAttack(bot, personAttacking);
             }
@@ -758,7 +758,7 @@ namespace tfgame.Procedures
         public static bool IsAntiBossSkill(string skillName, Player target)
         {
             bool isBoss = false;
-            if (target.BotId == -5) // Fighting Valentine
+            if (target.BotId == AIStatics.ValentineBotId) // Fighting Valentine
             {
                 isBoss = true;
             }

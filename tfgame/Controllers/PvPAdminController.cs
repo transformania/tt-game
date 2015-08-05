@@ -203,7 +203,7 @@ namespace tfgame.Controllers
             IPlayerRepository playerRepo = new EFPlayerRepository();
 
             // automatically spawn in more bots when they go down
-            int botCount = playerRepo.Players.Where(b => b.BotId == -2 && b.Mobility == "full").Count();
+            int botCount = playerRepo.Players.Where(b => b.BotId == AIStatics.PsychopathBotId && b.Mobility == "full").Count();
             if (botCount < 15)
             {
                 AIProcedures.SpawnAIPsychopaths(15 - botCount, 0);

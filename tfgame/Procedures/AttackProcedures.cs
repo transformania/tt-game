@@ -256,7 +256,7 @@ namespace tfgame.Procedures
             NoticeProcedures.PushAttackNotice(targeted, logs.VictimLog);
 
             // if this is a psycho-on-psycho battle, have a chance for the victim bot to switch targets to the attacker bot
-            if (attacker.BotId == -2 && victim.BotId == -2)
+            if (attacker.BotId == AIStatics.PsychopathBotId && victim.BotId == AIStatics.PsychopathBotId)
             {
                 Random rand = new Random(Guid.NewGuid().GetHashCode());
                 double botAggroRoll = rand.NextDouble();

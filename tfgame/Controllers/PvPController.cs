@@ -3042,7 +3042,7 @@ namespace tfgame.Controllers
              }
 
             // assert owner is not an invalid bot
-             if (owner.BotId < -2)
+             if (owner.BotId < AIStatics.PsychopathBotId)
              {
                  TempData["Error"] = "Unfortunately it seems your owner is immune to your transformation curse!";
                  TempData["SubError"] = "Only Psychopathic spellslingers and other players are susceptible to transformation curses.";

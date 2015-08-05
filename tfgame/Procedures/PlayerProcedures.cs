@@ -1282,7 +1282,7 @@ namespace tfgame.Procedures
             Player player = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);
 
             // decrease XP gain by 40% for psychos
-            if (player.BotId == -2)
+            if (player.BotId == AIStatics.PsychopathBotId)
             {
                 amount = amount * .6M;
             }

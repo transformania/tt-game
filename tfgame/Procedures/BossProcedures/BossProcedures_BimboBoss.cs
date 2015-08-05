@@ -190,7 +190,7 @@ namespace tfgame.Procedures.BossProcedures
                 Player infectee = playerRepo.Players.FirstOrDefault(p => p.Id == effectId);
 
                 // if the infectee is no longer animate or is another boss, skip them
-                if (infectee.Mobility != "full" || infectee.BotId < -2)
+                if (infectee.Mobility != "full" || infectee.BotId < AIStatics.PsychopathBotId)
                 {
                     continue;
                 }

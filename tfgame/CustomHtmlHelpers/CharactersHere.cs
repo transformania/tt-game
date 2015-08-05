@@ -397,7 +397,7 @@ namespace tfgame.CustomHtmlHelpers
 
         public static MvcHtmlString StyleIfBot(Player player)
         {
-            if (player.BotId <= -2)
+            if (player.BotId <= AIStatics.PsychopathBotId)
             {
                 return new MvcHtmlString("bot");
             }

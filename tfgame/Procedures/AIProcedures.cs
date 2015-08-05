@@ -36,7 +36,7 @@ namespace tfgame.Procedures
 
             int turnNumber = PvPWorldStatProcedures.GetWorldTurnNumber();
 
-            int botCount = playerRepo.Players.Where(b => b.BotId == -2).Count();
+            int botCount = playerRepo.Players.Where(b => b.BotId == AIStatics.PsychopathBotId).Count();
 
             for (int i = (0 + botCount); i < (count + botCount); i++)
             {
@@ -60,7 +60,7 @@ namespace tfgame.Procedures
                 bot.Mana = 200;
                 bot.MaxMana = 200;
                 bot.MembershipId = "-2";
-                bot.BotId = -2;
+                bot.BotId = AIStatics.PsychopathBotId;
                 bot.Mobility = "full";
                 //bot.IsPetToId = -1;
                 bot.UnusedLevelUpPerks = 0;
@@ -167,14 +167,14 @@ namespace tfgame.Procedures
             ServerLog log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == worldTurnNumber);
 
             //spawn in more bots if there are less than the default
-            int botCount = playerRepo.Players.Where(b => b.BotId == -2 && b.Mobility == "full").Count();
+            int botCount = playerRepo.Players.Where(b => b.BotId == AIStatics.PsychopathBotId && b.Mobility == "full").Count();
             if (botCount < PvPStatics.PsychopathDefaultAmount)
             {
                 AIProcedures.SpawnAIPsychopaths(PvPStatics.PsychopathDefaultAmount - botCount, 0);
                 log.AddLog("Spawned a new psychopath.");
             }
 
-            List<int> botIds = playerRepo.Players.Where(p => p.BotId == -2).Where(b => b.Mobility == "full").Select(b => b.Id).ToList();
+            List<int> botIds = playerRepo.Players.Where(p => p.BotId == AIStatics.PsychopathBotId).Where(b => b.Mobility == "full").Select(b => b.Id).ToList();
 
             foreach (int botId in botIds)
             {
@@ -327,7 +327,7 @@ namespace tfgame.Procedures
 
                         foreach (Player p in playersHere)
                         {
-                            if (!PlayerProcedures.PlayerIsOffline(p) && p.Id != bot.Id && p.Mobility == "full" && p.BotId == -2 && p.Level >= bot.Level)
+                            if (!PlayerProcedures.PlayerIsOffline(p) && p.Id != bot.Id && p.Mobility == "full" && p.BotId == AIStatics.PsychopathBotId && p.Level >= bot.Level)
                             {
                                 onlinePlayersHere.Add(p);
                             }
@@ -592,13 +592,13 @@ namespace tfgame.Procedures
         public static void CheckAICounterattackRoutine(Player personAttacking, Player bot)
         {
             // person attacking is a boss and not a psychopath, so do nothing
-            if (personAttacking.BotId < -2)
+            if (personAttacking.BotId < AIStatics.PsychopathBotId)
             {
                 return;
             }
 
             // attacking the psychopath.  Random chance the psychopath will set the attacker as their target.
-            if (bot.BotId == -2)
+            if (bot.BotId == AIStatics.PsychopathBotId)
             {
 
                 if (bot.FirstName.Contains("Loathful "))

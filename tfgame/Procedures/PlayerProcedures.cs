@@ -656,7 +656,7 @@ namespace tfgame.Procedures
             newplayer.CleansesMeditatesThisRound = 0;
             newplayer.NonPvP_GameOverSpellsAllowedLastChange = DateTime.UtcNow;
             newplayer.Mobility = Statics.PvPStatics.MobilityFull;
-            newplayer.BotId = 0;
+            newplayer.BotId = AIStatics.ActivePlayerBotId;
             newplayer.ChatColor = "black";
           
             
@@ -1262,8 +1262,8 @@ namespace tfgame.Procedures
 
             WorldStats output = new WorldStats
             {
-                TotalPlayers = players.Where(p => p.BotId == 0).Count(),
-                CurrentOnlinePlayers = players.Where(p => p.BotId == 0 && p.OnlineActivityTimestamp >= cutoff).Count(),
+                TotalPlayers = players.Where(p => p.BotId == AIStatics.ActivePlayerBotId).Count(),
+                CurrentOnlinePlayers = players.Where(p => p.BotId == AIStatics.ActivePlayerBotId && p.OnlineActivityTimestamp >= cutoff).Count(),
                 //TotalAnimalPlayers = players.Where(p => p.Mobility == "animal").Count(),
                 //TotalInanimatePlayers = players.Where(p => p.Mobility == "inanimate").Count(),
                 //TotalLivingPlayers = players.Where(p => p.Mobility == "full").Count(),
@@ -1675,7 +1675,7 @@ namespace tfgame.Procedures
         {
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            decimal num = playerRepo.Players.Where(p => p.BotId == 0 && p.IpAddress == ip && p.Mobility == "full" && p.GameMode == player.GameMode).Count();
+            decimal num = playerRepo.Players.Where(p => p.BotId == AIStatics.ActivePlayerBotId && p.IpAddress == ip && p.Mobility == "full" && p.GameMode == player.GameMode).Count();
             if (num > 1)
             {
                 return true;
@@ -1791,7 +1791,7 @@ namespace tfgame.Procedures
         public static IEnumerable<Player> GetLeadingPlayers__XP(int number)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            return playerRepo.Players.Where(p => p.BotId == 0).OrderByDescending(p => p.Level).ThenByDescending(p => p.XP).Take(number);
+            return playerRepo.Players.Where(p => p.BotId == AIStatics.ActivePlayerBotId).OrderByDescending(p => p.Level).ThenByDescending(p => p.XP).Take(number);
         }
 
         public static IEnumerable<Player> GetLeadingPlayers__PvP(int number)
@@ -1799,7 +1799,7 @@ namespace tfgame.Procedures
             IPlayerRepository playerRepo = new EFPlayerRepository();
 
 
-            return playerRepo.Players.Where(p => p.BotId == 0).OrderByDescending(p => p.PvPScore).ThenByDescending(p => p.Level).ThenByDescending(p => p.XP).Take(number);
+            return playerRepo.Players.Where(p => p.BotId == AIStatics.ActivePlayerBotId).OrderByDescending(p => p.PvPScore).ThenByDescending(p => p.Level).ThenByDescending(p => p.XP).Take(number);
 
         }
 

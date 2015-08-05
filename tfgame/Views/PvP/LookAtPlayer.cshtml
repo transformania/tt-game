@@ -37,7 +37,7 @@
      }
 
             @{
-        if (Model.PlayerForm.Player.BotId == 0)
+        if (Model.PlayerForm.Player.BotId == AIStatics.ActivePlayerBotId)
         {
             <li>@Html.ActionLink("View Statistics", "PlayerStats", "Settings", new { id = Model.PlayerForm.Player.MembershipId }, null)</li>
             <li>@Html.ActionLink("Send a Message", "Write", "PvP", new { playerId = Model.PlayerForm.Player.Id, responseTo = -1 }, null)</li>
@@ -93,9 +93,9 @@
             <center>
                 @CharactersHere.GetCovenantInfo(Model.PlayerForm.Player.ToDbPlayer())
                 @{
-                    if (ViewBag.TimeUntilLogout > 0 && Model.PlayerForm.Player.BotId == 0)
+                    if (ViewBag.TimeUntilLogout > 0 && Model.PlayerForm.Player.BotId == AIStatics.ActivePlayerBotId)
                     {<p class="good">Online for @ViewBag.TimeUntilLogout more minutes</p>}
-                    else if (Model.PlayerForm.Player.BotId == 0)
+                    else if (Model.PlayerForm.Player.BotId == AIStatics.ActivePlayerBotId)
                     {<p class="bad">Offline</p>}
                 }
                 <span class="health">Willpower:  @Model.PlayerForm.Player.Health / @Model.PlayerForm.Player.MaxHealth</span><br />

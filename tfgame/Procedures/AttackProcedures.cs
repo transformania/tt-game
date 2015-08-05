@@ -189,7 +189,7 @@ namespace tfgame.Procedures
                         }
 
                         // cap the modifier at at 200 % IF the target is a human
-                        if (willpowerDamageModifierFromBonuses > 2 && victim.BotId == 0)
+                        if (willpowerDamageModifierFromBonuses > 2 && victim.BotId == AIStatics.ActivePlayerBotId)
                         {
                             willpowerDamageModifierFromBonuses = 2;
                         }
@@ -229,7 +229,7 @@ namespace tfgame.Procedures
                         }
 
                         // cap the modifier at at 200 % IF the target is a human
-                        if (tfEnergyDamageModifierFromBonuses > 2 && victim.BotId == 0)
+                        if (tfEnergyDamageModifierFromBonuses > 2 && victim.BotId == AIStatics.ActivePlayerBotId)
                         {
                             tfEnergyDamageModifierFromBonuses = 2;
                         }

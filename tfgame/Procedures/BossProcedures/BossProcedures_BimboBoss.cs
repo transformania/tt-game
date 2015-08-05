@@ -321,7 +321,7 @@ namespace tfgame.Procedures.BossProcedures
             foreach (Player p in infected)
             {
                 PlayerProcedures.InstantRestoreToBase(p);
-                if (p.BotId == 0)
+                if (p.BotId == AIStatics.ActivePlayerBotId)
                 {
                     PlayerLogProcedures.AddPlayerLog(p.Id, message, true);
                 }

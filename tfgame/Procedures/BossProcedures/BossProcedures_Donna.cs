@@ -210,7 +210,7 @@ namespace tfgame.Procedures.BossProcedures
 
                 foreach (Player p in PlayersHere)
                 {
-                    if (p.BotId == 0 &&
+                    if (p.BotId == AIStatics.ActivePlayerBotId &&
                         p.Level > 3 && 
                         p.Mobility == "full" && 
                         !PlayerProcedures.PlayerIsOffline(p) &&

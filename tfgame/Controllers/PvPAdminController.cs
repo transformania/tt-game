@@ -974,7 +974,7 @@ namespace tfgame.Controllers
 
                 string msg = "<span class='bad'>PUBLIC SERVER NOTE:  " + input.Message + "</span>";
 
-                List<Player> players = playerRepo.Players.Where(p => p.BotId == 0).ToList();
+                List<Player> players = playerRepo.Players.Where(p => p.BotId == AIStatics.ActivePlayerBotId).ToList();
 
                 string errors = "";
 

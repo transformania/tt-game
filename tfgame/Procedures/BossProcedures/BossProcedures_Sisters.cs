@@ -180,7 +180,7 @@ namespace tfgame.Procedures.BossProcedures
                 List<Player> playersByNerd = PlayerProcedures.GetPlayersAtLocation(nerdBoss.dbLocationName).ToList();
                 playersByNerd = playersByNerd.Where(p => p.Mobility == "full" &&
                     PlayerProcedures.PlayerIsOffline(p) == false &&
-                    p.BotId == 0 &&
+                    p.BotId == AIStatics.ActivePlayerBotId &&
                     p.Id != nerdBoss.Id &&
                     p.Form != NerdSpellForm &&
                     p.InDuel <= 0).ToList();
@@ -190,7 +190,7 @@ namespace tfgame.Procedures.BossProcedures
                 List<Player> playersByBimbo = PlayerProcedures.GetPlayersAtLocation(bimboBoss.dbLocationName).ToList();
                 playersByBimbo = playersByBimbo.Where(p => p.Mobility == "full" &&
                     PlayerProcedures.PlayerIsOffline(p) == false &&
-                    p.BotId == 0 &&
+                    p.BotId == AIStatics.ActivePlayerBotId &&
                     p.Id != bimboBoss.Id &&
                     p.Form != BimboSpellForm &&
                     p.InDuel <= 0).ToList();

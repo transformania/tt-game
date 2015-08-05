@@ -58,7 +58,7 @@ namespace tfgame.Procedures
             output.dbCovenant = covRepo.Covenants.FirstOrDefault(c => c.Id == id);
 
             // get all players in this covenant
-            List<Player> dbplayersInCov = playerRepo.Players.Where(p => p.Covenant == id && p.BotId == 0).ToList();
+            List<Player> dbplayersInCov = playerRepo.Players.Where(p => p.Covenant == id && p.BotId == AIStatics.ActivePlayerBotId).ToList();
 
             IEnumerable<PlayerFormViewModel> playerFormList = PlayerProcedures.GetPlayerFormViewModelsInCovenant(id);
 
@@ -240,7 +240,7 @@ namespace tfgame.Procedures
                 CovenantListItemViewModel addme = new CovenantListItemViewModel
                 {
                     dbCovenant = c,
-                    MemberCount = playerRepo.Players.Where(p => p.Covenant == c.Id && p.BotId == 0).Count(),
+                    MemberCount = playerRepo.Players.Where(p => p.Covenant == c.Id && p.BotId == AIStatics.ActivePlayerBotId).Count(),
                     Leader = playerRepo.Players.FirstOrDefault(p => p.Id == c.LeaderId)
                 };
                 output.Add(addme);

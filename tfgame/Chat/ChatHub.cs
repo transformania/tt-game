@@ -113,7 +113,7 @@ namespace tfgame.Chat
         {
             try
             {
-                if (me.BotId < 0)
+                if (me.BotId < AIStatics.ActivePlayerBotId)
                     return;
 
                 var message = string.Format("[-[{0} {1}]-]", me.GetFullName(), text);

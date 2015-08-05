@@ -453,7 +453,7 @@ namespace tfgame.Procedures
                         }
 
                         // exclude PvP score for bots
-                        if (victim.BotId == 0)
+                        if (victim.BotId == AIStatics.ActivePlayerBotId)
                         {
                             decimal score = PlayerProcedures.GetPvPScoreFromWin(attacker, victim);
 
@@ -482,7 +482,7 @@ namespace tfgame.Procedures
                     InanimateXPProcedures.GetStruggleChance(victim);
 
                     // if this victim is a bot, clear out some old stuff that is not needed anymore
-                    if (victim.BotId < 0)
+                    if (victim.BotId < AIStatics.ActivePlayerBotId)
                     {
                         AIDirectiveProcedures.DeleteAIDirectiveByPlayerId(victim.Id);
                         PlayerLogProcedures.ClearPlayerLog(victim.Id);

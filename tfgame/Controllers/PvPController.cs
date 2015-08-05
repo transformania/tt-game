@@ -716,7 +716,7 @@ namespace tfgame.Controllers
             IEnumerable<SkillViewModel2> output = SkillProcedures.GetSkillViewModelsOwnedByPlayer(me.Id).Where(s => s.dbSkill.IsArchived == false);
 
             // filter out spells that you can't use on your target
-            if (FriendProcedures.PlayerIsMyFriend(me, target) || target.BotId < 0)
+            if (FriendProcedures.PlayerIsMyFriend(me, target) || target.BotId < AIStatics.ActivePlayerBotId)
             {
                 // do nothing, all spells are okay
             }
@@ -728,13 +728,13 @@ namespace tfgame.Controllers
             }
 
             // attack or the target is in superprotection and not a friend or bot; no spells work
-            else if (target.GameMode == 0 || (me.GameMode == 0 && target.BotId == 0))
+            else if (target.GameMode == 0 || (me.GameMode == 0 && target.BotId == AIStatics.ActivePlayerBotId))
             {
                 output = output.Where(s => s.MobilityType == "NONEXISTANT");
             }
 
             // filter out MC spells for bots
-            if (target.BotId < 0)
+            if (target.BotId < AIStatics.ActivePlayerBotId)
             {
                 output = output.Where(s => s.MobilityType != "mindcontrol");
             }
@@ -937,7 +937,7 @@ namespace tfgame.Controllers
             }
 
              // if the spell is a form of mind control, check that the target is not a bot
-            if (skillBeingUsed.MobilityType == "mindcontrol" && targeted.BotId < 0)
+            if (skillBeingUsed.MobilityType == "mindcontrol" && targeted.BotId < AIStatics.ActivePlayerBotId)
             {
                 TempData["Error"] = "This target is immune to mind control.";
                 TempData["SubError"] = "Mind control currently only works against human opponents.";
@@ -1082,7 +1082,7 @@ namespace tfgame.Controllers
 
 
             // don't worry about bots
-            if (targeted.BotId == 0)
+            if (targeted.BotId == AIStatics.ActivePlayerBotId)
             {
 
                 if (me.GameMode < 2 || targeted.GameMode < 2)
@@ -1100,7 +1100,7 @@ namespace tfgame.Controllers
                     }
 
                     // no casting spells on non-friend Protection mode players unless the target is a bot
-                    else if (targeted.GameMode == 0 || (me.GameMode == 0 && targeted.BotId == 0))
+                    else if (targeted.GameMode == 0 || (me.GameMode == 0 && targeted.BotId == AIStatics.ActivePlayerBotId))
                     {
                         TempData["Error"] = "Either you and your target is in SuperProtection mode and are not friends or bots.";
                         return RedirectToAction("Play");

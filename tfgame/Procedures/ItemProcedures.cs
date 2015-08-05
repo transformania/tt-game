@@ -435,7 +435,7 @@ namespace tfgame.Procedures
 
             if (item.dbLocationName != "")
             {
-                if (owner.BotId == 0 && item.PvPEnabled == -1)
+                if (owner.BotId == AIStatics.ActivePlayerBotId && item.PvPEnabled == -1)
                 {
                     if (owner.GameMode == 2)
                     {
@@ -475,7 +475,7 @@ namespace tfgame.Procedures
             item.OwnerId = newOwnerId;
             Player owner = PlayerProcedures.GetPlayer(newOwnerId);
 
-            if (owner.BotId == 0 && item.PvPEnabled == -1)
+            if (owner.BotId == AIStatics.ActivePlayerBotId && item.PvPEnabled == -1)
             {
                 if (owner.GameMode == 2)
                 {
@@ -514,7 +514,7 @@ namespace tfgame.Procedures
                 LastSouledTimestamp = DateTime.UtcNow.AddYears(-1),
             };
 
-            if (player.BotId < 0)
+            if (player.BotId < AIStatics.ActivePlayerBotId)
             {
                 newitem.PvPEnabled = -1;
             }
@@ -1114,7 +1114,7 @@ namespace tfgame.Procedures
                 LastSouledTimestamp = DateTime.UtcNow.AddYears(-1),
             };
 
-            if (attacker.BotId < 0)
+            if (attacker.BotId < AIStatics.ActivePlayerBotId)
             {
                 newItem.PvPEnabled = -1;
             }
@@ -1127,7 +1127,7 @@ namespace tfgame.Procedures
                 newItem.PvPEnabled = 1;
             }
 
-            if (victim.BotId < 0)
+            if (victim.BotId < AIStatics.ActivePlayerBotId)
             {
                 newItem.IsPermanent = true;
 

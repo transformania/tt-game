@@ -584,7 +584,7 @@ namespace tfgame.Procedures
 
             SkillViewModel2 selectedSkill = myskills.ElementAt((int)roll);
 
-            if (personAttackin.BotId == 0) {
+            if (personAttackin.BotId == AIStatics.ActivePlayerBotId) {
                 AttackProcedures.Attack(bot, personAttackin, selectedSkill);
             }
         }

@@ -30,7 +30,7 @@
         foreach (CovenantApplicationViewModel app in Model)
         {
             <p>
-                @app.dbPlayer.FirstName @app.dbPlayer.LastName applied @CharactersHere.DatetimeToTimeago(app.dbCovenantApplication.Timestamp)
+                @app.dbPlayer.GetFullName() applied @CharactersHere.DatetimeToTimeago(app.dbCovenantApplication.Timestamp)
                 @Html.ActionLink("Accept", "ApplicationResponse", "Covenant", new { id = app.dbCovenantApplication.Id, response = "yes" }, null)
                 @Html.ActionLink("Deny", "ApplicationResponse", "Covenant", new { id = app.dbCovenantApplication.Id, response = "no" }, null)
             </p>

@@ -103,15 +103,15 @@
                 @{
                     if (Model.Bonuses.SneakPercent() <= PvPStatics.SneakAmountBeforeLocationIsPublic * 3)
                     {
-                        <p class="bad">Due to this player's very poor ability to sneak, you sense that @Model.PlayerForm.Player.FirstName is currently at @ViewBag.AtLocation and has attacked @Model.PlayerForm.Player.TimesAttackingThisUpdate times this update and has @Model.PlayerForm.Player.ActionPoints action points remaining.</p>
+                        <p class="bad">Due to this player's very poor ability to sneak, you sense that @Model.PlayerForm.Player.GetFullName() is currently at @ViewBag.AtLocation and has attacked @Model.PlayerForm.Player.TimesAttackingThisUpdate times this update and has @Model.PlayerForm.Player.ActionPoints action points remaining.</p>
                     }
                     else if (Model.Bonuses.SneakPercent() <= PvPStatics.SneakAmountBeforeLocationIsPublic * 2)
                     {
-                        <p class="bad">Due to this player's very poor ability to sneak, you sense that @Model.PlayerForm.Player.FirstName is currently at @ViewBag.AtLocation and has attacked @Model.PlayerForm.Player.TimesAttackingThisUpdate times this update.</p>
+                        <p class="bad">Due to this player's very poor ability to sneak, you sense that @Model.PlayerForm.Player.GetFullName() is currently at @ViewBag.AtLocation and has attacked @Model.PlayerForm.Player.TimesAttackingThisUpdate times this update.</p>
                     }
                     else if (Model.Bonuses.SneakPercent() <= PvPStatics.SneakAmountBeforeLocationIsPublic)
                     {
-                        <p class="bad">Due to this player's poor ability to sneak, you sense that @Model.PlayerForm.Player.FirstName is currently at @ViewBag.AtLocation.</p>
+                        <p class="bad">Due to this player's poor ability to sneak, you sense that @Model.PlayerForm.Player.GetFullName() is currently at @ViewBag.AtLocation.</p>
                     }
                 }
                 <h3>@Model.PlayerForm.Form.FriendlyName</h3>

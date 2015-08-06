@@ -398,7 +398,7 @@ namespace tfgame.Controllers
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             if (me != null && me.Mobility == "full")
             {
-                ViewBag.ErrorMessage = "You cannot create a new character right now.  You already have a fully animate character already, " + me.FirstName + " " + me.LastName + ".";
+                ViewBag.ErrorMessage = "You cannot create a new character right now.  You already have a fully animate character already, " + me.GetFullName() + ".";
                 return View("~/Views/PvP/MakeNewCharacter.cshtml");
             }
 
@@ -545,8 +545,8 @@ namespace tfgame.Controllers
                 ItemProcedures.MoveAnimalItem(me, nextLocation.dbName);
 
                 TempData["Result"] = "You move to " + nextLocation.Name + ".";
-                string leavingMessage = me.FirstName + " " + me.LastName + " (feral) left toward " + nextLocation.Name;
-                string enteringMessage = me.FirstName + " " + me.LastName + " (feral) entered from " + currentLocation.Name;
+                string leavingMessage = me.GetFullName() + " (feral) left toward " + nextLocation.Name;
+                string enteringMessage = me.GetFullName() + " (feral) entered from " + currentLocation.Name;
                 LocationLogProcedures.AddLocationLog(me.dbLocationName, leavingMessage);
                 LocationLogProcedures.AddLocationLog(locname, enteringMessage);
                 return RedirectToAction("Play");
@@ -587,8 +587,8 @@ namespace tfgame.Controllers
                 }
 
                 TempData["Result"] = msg + "You move to " + nextLocation.Name + ".";
-                string leavingMessage = me.FirstName + " " + me.LastName + " left toward " + nextLocation.Name;
-                string enteringMessage = me.FirstName + " " + me.LastName + " entered from " + currentLocation.Name;
+                string leavingMessage = me.GetFullName() + " left toward " + nextLocation.Name;
+                string enteringMessage = me.GetFullName() + " entered from " + currentLocation.Name;
                 LocationLogProcedures.AddLocationLog(me.dbLocationName, leavingMessage);
                 LocationLogProcedures.AddLocationLog(locname, enteringMessage);
             }
@@ -770,7 +770,7 @@ namespace tfgame.Controllers
             }
 
             ViewBag.TargetId = targetId;
-            ViewBag.TargetName = target.FirstName + " " + target.LastName;
+            ViewBag.TargetName = target.GetFullName();
             ViewBag.BotId = target.BotId;
              return PartialView("partial/AjaxAttackModal", output);
          }
@@ -1493,7 +1493,7 @@ namespace tfgame.Controllers
             TempData["Result"] = PlayerProcedures.SearchLocation(me, me.dbLocationName);
 
             // write to logs
-            string locationLogMessage = "<span class='playerSearchingNotification'>" + me.FirstName + " " + me.LastName + " searched here.</span>";
+            string locationLogMessage = "<span class='playerSearchingNotification'>" + me.GetFullName() + " searched here.</span>";
             LocationLogProcedures.AddLocationLog(me.dbLocationName, locationLogMessage);
             Location here = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName);
             string playerLogMessage = "You searched at " + here.Name + ".";
@@ -1658,7 +1658,7 @@ namespace tfgame.Controllers
                 ItemProcedures.DeleteItem(pickup.dbItem.Id);
                 TempData["Result"] = "You pick up the artifact.  As soon as it touches your hands, it fades away, leaving you with its dark power.";
                 playerLogMessage = "You picked up a <b>" + pickup.Item.FriendlyName + "</b> at " + here.Name + " and absorbed its dark power into your soul.";
-                locationLogMessage = me.FirstName + " " + me.LastName + " picked up a <b>" + pickup.Item.FriendlyName + "</b> here and immediately absorbed its dark powers.";
+                locationLogMessage = me.GetFullName() + " picked up a <b>" + pickup.Item.FriendlyName + "</b> here and immediately absorbed its dark powers.";
 
                 new Thread(() =>
                      StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__DungeonArtifactsFound, 1)
@@ -1672,7 +1672,7 @@ namespace tfgame.Controllers
             else if (pickup.Item.ItemType!=PvPStatics.ItemType_Pet) {
                 TempData["Result"] = ItemProcedures.GiveItemToPlayer(pickup.dbItem.Id, me.Id);
                 playerLogMessage = "You picked up a <b>" + pickup.Item.FriendlyName + "</b> at " + here.Name + " and put it into your inventory.";
-                locationLogMessage = me.FirstName + " " + me.LastName + " picked up a <b>" + pickup.Item.FriendlyName + CharactersHere.PrintPvPIcon(pickup.dbItem) + "</b> here.";
+                locationLogMessage = me.GetFullName() + " picked up a <b>" + pickup.Item.FriendlyName + CharactersHere.PrintPvPIcon(pickup.dbItem) + "</b> here.";
             }
                 // item is an animal, equip it automatically
             else if (pickup.Item.ItemType == PvPStatics.ItemType_Pet)
@@ -1680,7 +1680,7 @@ namespace tfgame.Controllers
                 TempData["Result"] = ItemProcedures.GiveItemToPlayer(pickup.dbItem.Id, me.Id);
                 ItemProcedures.EquipItem(pickup.dbItem.Id, true);
                 playerLogMessage = "You tamed <b>" + pickup.dbItem.GetFullName() + " the " + pickup.Item.FriendlyName + "</b> at " + here.Name + " and put it into your inventory.";
-                locationLogMessage = me.FirstName + " " + me.LastName + " tamed <b>" + pickup.dbItem.GetFullName() + " the " + pickup.Item.FriendlyName + CharactersHere.PrintPvPIcon(pickup.dbItem) + "</b> here.";
+                locationLogMessage = me.GetFullName() + " tamed <b>" + pickup.dbItem.GetFullName() + " the " + pickup.Item.FriendlyName + CharactersHere.PrintPvPIcon(pickup.dbItem) + "</b> here.";
 
                 Player personAnimal = PlayerProcedures.GetPlayerWithExactName(pickup.dbItem.VictimName);
 
@@ -1760,7 +1760,7 @@ namespace tfgame.Controllers
             if (dropme.Item.ItemType == PvPStatics.ItemType_Pet)
             {
                 playerLogMessage = "You released your " + dropme.Item.FriendlyName + " at " + here.Name + ".";
-                locationLogMessage = me.FirstName + " " + me.LastName + " released a <b>" + dropme.Item.FriendlyName + CharactersHere.PrintPvPIcon(dropme.dbItem) + "</b> here.";
+                locationLogMessage = me.GetFullName() + " released a <b>" + dropme.Item.FriendlyName + CharactersHere.PrintPvPIcon(dropme.dbItem) + "</b> here.";
 
                 Player personAnimal = PlayerProcedures.GetPlayerWithExactName(dropme.dbItem.VictimName);
 
@@ -2087,7 +2087,7 @@ namespace tfgame.Controllers
                {
                    PlayerFormViewModel personWearingMe = ItemProcedures.BeingWornBy(me);
                    output.WearerId = personWearingMe.Player.Id;
-                   output.WearerName = personWearingMe.Player.FirstName + " " + personWearingMe.Player.LastName;
+                   output.WearerName = personWearingMe.Player.GetFullName();
                }
                catch
                {
@@ -2299,29 +2299,29 @@ namespace tfgame.Controllers
             if (actionName == "rub")
             {
                 PlayerProcedures.ChangePlayerActionManaNoTimestamp(0, .25M, 0, wearer.Player.Id);
-                thirdP = "<span class='petActionGood'>You feel " + me.FirstName + " " + me.LastName + ", currently your " + meItem.FriendlyName + ", ever so slightly rubbing against your skin affectionately.  You gain a tiny amount of willpower from your inanimate belonging's subtle but kind gesture.</span>";
-                firstP = "You affectionately rub against your current owner, " + wearer.Player.FirstName + " " + wearer.Player.LastName + ".  " + pronoun + " gains a tiny amount of willpower from your subtle but kind gesture.";
+                thirdP = "<span class='petActionGood'>You feel " + me.GetFullName() + ", currently your " + meItem.FriendlyName + ", ever so slightly rubbing against your skin affectionately.  You gain a tiny amount of willpower from your inanimate belonging's subtle but kind gesture.</span>";
+                firstP = "You affectionately rub against your current owner, " + wearer.Player.GetFullName() + ".  " + pronoun + " gains a tiny amount of willpower from your subtle but kind gesture.";
             }
 
             if (actionName == "pinch")
             {
                 PlayerProcedures.ChangePlayerActionManaNoTimestamp(0, -.15M, 0, wearer.Player.Id);
-                thirdP = "<span class='petActionBad'>You feel " + me.FirstName + " " + me.LastName + ", currently your " + meItem.FriendlyName + ", ever so slightly pinch your skin agitatedly.  You lose a tiny amount of willpower from your inanimate belonging's subtle but pesky gesture.</span>";
-                firstP = "You agitatedly pinch against your current owner, " + wearer.Player.FirstName + " " + wearer.Player.LastName + ".  " + pronoun + " loses a tiny amount of willpower from your subtle but pesky gesture.";
+                thirdP = "<span class='petActionBad'>You feel " + me.GetFullName() + ", currently your " + meItem.FriendlyName + ", ever so slightly pinch your skin agitatedly.  You lose a tiny amount of willpower from your inanimate belonging's subtle but pesky gesture.</span>";
+                firstP = "You agitatedly pinch against your current owner, " + wearer.Player.GetFullName() + ".  " + pronoun + " loses a tiny amount of willpower from your subtle but pesky gesture.";
             }
 
             if (actionName == "soothe")
             {
                 PlayerProcedures.ChangePlayerActionManaNoTimestamp(0, 0, .25M, wearer.Player.Id);
-                thirdP = "<span class='petActionGood'>You feel " + me.FirstName + " " + me.LastName + ", currently your " + meItem.FriendlyName + ", ever so slightly peacefully soothe your skin.  You gain a tiny amount of mana from your inanimate belonging's subtle but kind gesture.</span>";
-                firstP = "You kindly soothe a patch of your current owner, " + wearer.Player.FirstName + " " + wearer.Player.LastName + "'s skin.  " + pronoun + " gains a tiny amount of mana from your subtle but kind gesture.";
+                thirdP = "<span class='petActionGood'>You feel " + me.GetFullName() + ", currently your " + meItem.FriendlyName + ", ever so slightly peacefully soothe your skin.  You gain a tiny amount of mana from your inanimate belonging's subtle but kind gesture.</span>";
+                firstP = "You kindly soothe a patch of your current owner, " + wearer.Player.GetFullName() + "'s skin.  " + pronoun + " gains a tiny amount of mana from your subtle but kind gesture.";
             }
 
             if (actionName == "zap")
             {
                 PlayerProcedures.ChangePlayerActionManaNoTimestamp(0, 0, -.15M, wearer.Player.Id);
-                thirdP = "<span class='petActionBad'>You feel " + me.FirstName + " " + me.LastName + ", currently your " + meItem.FriendlyName + ", ever so slightly zap your skin.  You lose a tiny amount of mana from your inanimate belonging's subtle but pesky gesture.</span>";
-                firstP = "You agitatedly zap a patch of your current owner, " + wearer.Player.FirstName + " " + wearer.Player.LastName + "'s skin.  " + pronoun + " loses a tiny amount of mana from your subtle but pesky gesture.";
+                thirdP = "<span class='petActionBad'>You feel " + me.GetFullName() + ", currently your " + meItem.FriendlyName + ", ever so slightly zap your skin.  You lose a tiny amount of mana from your inanimate belonging's subtle but pesky gesture.</span>";
+                firstP = "You agitatedly zap a patch of your current owner, " + wearer.Player.GetFullName() + "'s skin.  " + pronoun + " loses a tiny amount of mana from your subtle but pesky gesture.";
             }
 
             PlayerProcedures.LogIP(Request.UserHostAddress, myMembershipId);
@@ -2718,7 +2718,7 @@ namespace tfgame.Controllers
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            ViewBag.MyName = me.FirstName + " " + me.LastName;
+            ViewBag.MyName = me.GetFullName();
             return View("Leaderboard", PlayerProcedures.GetLeadingPlayers__XP(100));
         }
 
@@ -2728,7 +2728,7 @@ namespace tfgame.Controllers
             // return RedirectToAction("Leaderboard");
 
              Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
-             ViewBag.MyName = me.FirstName + " " + me.LastName;
+             ViewBag.MyName = me.GetFullName();
              return View(PlayerProcedures.GetLeadingPlayers__PvP(100));
          }
 
@@ -2736,7 +2736,7 @@ namespace tfgame.Controllers
          {
              string myMembershipId = User.Identity.GetUserId();
              Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-             ViewBag.MyName = me.FirstName + " " + me.LastName;
+             ViewBag.MyName = me.GetFullName();
              IEnumerable<SimpleItemLeaderboardViewModel> output = ItemProcedures.GetLeadingItemsSimple(100).OrderByDescending(p => p.Item.Level).ThenByDescending(p => p.ItemXP);
              return View(output);
          }
@@ -2765,8 +2765,6 @@ namespace tfgame.Controllers
                 TempData["Result"] = "A chat room must have a name and not begin with an underscore";
                 return RedirectToAction("Play");
             }
-
-            //if (me.FirstName)
 
             TempData["MyName"] = me.GetFullName();
             TempData["YourNameColor"] = me.ChatColor;
@@ -3159,7 +3157,7 @@ namespace tfgame.Controllers
              {
                  ReservedName newReservedName = new ReservedName
                  {
-                     FullName = me.FirstName + " " + me.LastName,
+                     FullName = me.FirstName + " " + me.LastName, // don't use GetFullName() so nickname is left out
                      MembershipId = me.MembershipId,
                      Timestamp = DateTime.UtcNow,
                  };

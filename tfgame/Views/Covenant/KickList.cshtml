@@ -35,7 +35,7 @@
         {
             <hr />
             <p>
-                @Html.ActionLink(p.Player.FirstName + " " + p.Player.LastName, "KickMember", "Covenant", new { id = p.Player.Id }, null)
+                @Html.ActionLink(p.Player.GetFullName(), "KickMember", "Covenant", new { id = p.Player.Id }, null)
             </p>
             <hr />
         }

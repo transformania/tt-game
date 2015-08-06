@@ -97,7 +97,7 @@
             </div>
         </div>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-justify">
-            <p>Your name is <b>@Model.Player.FirstName @Model.Player.LastName</b>, or at least it used to be.  Should you regain a human form you will find yourself at level <b>@Model.Player.Level</b> with @Model.Player.XP experience points toward the next.  But now it's time to embrace your new existence as a <b>@Model.Form.FriendlyName</b>.</p>
+            <p>Your name is <b>@Model.Player.GetFullName()</b>, or at least it used to be.  Should you regain a human form you will find yourself at level <b>@Model.Player.Level</b> with @Model.Player.XP experience points toward the next.  But now it's time to embrace your new existence as a <b>@Model.Form.FriendlyName</b>.</p>
 
             <p>@Model.Form.Description</p>
             @{
@@ -107,10 +107,10 @@
                 }
                 else if (Model.WornBy != null)
                 {
-                    <p>You are currently being worn by <b>@Html.ActionLink(Model.WornBy.Player.FirstName + " " + Model.WornBy.Player.LastName, "LookAtPlayer", "PvP", new { id = Model.WornBy.Player.Id }, null)</b>, a @Model.WornBy.Player.Gender @Model.WornBy.Form.FriendlyName.  You hope they will take good care of you, or should they too find themselves as an object, whoever picks you up next.</p>
+                    <p>You are currently being worn by <b>@Html.ActionLink(Model.WornBy.Player.GetFullName(), "LookAtPlayer", "PvP", new { id = Model.WornBy.Player.Id }, null)</b>, a @Model.WornBy.Player.Gender @Model.WornBy.Form.FriendlyName.  You hope they will take good care of you, or should they too find themselves as an object, whoever picks you up next.</p>
 
                     <p>
-                        @Html.ActionLink("Telepathically communicate with " + Model.WornBy.Player.FirstName + " " + Model.WornBy.Player.LastName, "Write", "PvP", new { playerId = Model.WornBy.Player.Id, responseTo = -1, }, new { @class = "inanimateAction" })
+                        @Html.ActionLink("Telepathically communicate with " + Model.WornBy.Player.GetFullName(), "Write", "PvP", new { playerId = Model.WornBy.Player.Id, responseTo = -1, }, new { @class = "inanimateAction" })
                     </p>
 
                     <p>

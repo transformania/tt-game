@@ -101,7 +101,7 @@
             </div>
         </div>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-justify">
-            <p>Your name is <b>@Model.You.FirstName @Model.You.LastName</b>, or at least it used to be.  At the height of your humanity you achieved level <b>@Model.You.Level</b> with @Model.You.XP experience points toward the next.  But now it's time to embrace your new existence as a <b>@Model.Form.FriendlyName</b>.</p>
+            <p>Your name is <b>@Model.You.GetFullName()</b>, or at least it used to be.  At the height of your humanity you achieved level <b>@Model.You.Level</b> with @Model.You.XP experience points toward the next.  But now it's time to embrace your new existence as a <b>@Model.Form.FriendlyName</b>.</p>
             <p>
     @Model.Form.Description
                 @{
@@ -112,7 +112,7 @@
                     else
                     {
                         <span>
-                            <br><br>You have been tamed by @Html.ActionLink(Model.OwnedBy.Player.FirstName + " " + Model.OwnedBy.Player.LastName, "LookAtPlayer", "PvP", new { id = Model.OwnedBy.Player.Id }, null) and will follow your master wherever they go.
+                            <br><br>You have been tamed by @Html.ActionLink(Model.OwnedBy.Player.GetFullName(), "LookAtPlayer", "PvP", new { id = Model.OwnedBy.Player.Id }, null) and will follow your master wherever they go.
 
                             @{
                         if (Model.YouItem.Item.CurseTFFormdbName != null && Model.YouItem.Item.CurseTFFormdbName != "")

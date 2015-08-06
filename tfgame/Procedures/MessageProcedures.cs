@@ -43,7 +43,7 @@ namespace tfgame.Procedures
             }
             else
             {
-                output.SenderName = sender.FirstName + " " + sender.LastName;
+                output.SenderName = sender.GetFullName();
             }
 
             if (receiver == null)

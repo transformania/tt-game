@@ -242,7 +242,7 @@ namespace tfgame.Controllers
          public ActionResult ViewBio(string id)
          {
              Player player = PlayerProcedures.GetPlayerFromMembership(id);
-             ViewBag.Name = player.FirstName + " " + player.LastName;
+             ViewBag.Name = player.GetFullName();
              PlayerBio output = SettingsProcedures.GetPlayerBioFromMembershipId(id);
 
              if (output == null)

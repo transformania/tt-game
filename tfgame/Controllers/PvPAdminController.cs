@@ -986,7 +986,7 @@ namespace tfgame.Controllers
                     }
                     catch (Exception e)
                     {
-                        errors += "<p>" + p.FirstName + " " + p.LastName + "encountered:  " + e.ToString() + "</p><br/>";
+                        errors += "<p>" + p.GetFullName() + "encountered:  " + e.ToString() + "</p><br/>";
                     }
                 }
 
@@ -2774,7 +2774,7 @@ namespace tfgame.Controllers
             playerRepo.SavePlayer(me);
 
             // delete old item you are if you are one
-            Item possibleMeItem = itemRepo.Items.FirstOrDefault(i => i.VictimName == me.FirstName + " " + me.LastName);
+            Item possibleMeItem = itemRepo.Items.FirstOrDefault(i => i.VictimName == me.FirstName + " " + me.LastName); // DO NOT use GetFullName.  It will break things here.
             if (possibleMeItem != null) { 
                 itemRepo.DeleteItem(possibleMeItem.Id);
             }
@@ -2782,7 +2782,7 @@ namespace tfgame.Controllers
             Item newMeItem = new Item{
                 dbLocationName = me.dbLocationName,
                 dbName = "item_Flirty_Three-Tiered_Skirt_Martiandawn",
-                VictimName = me.FirstName + " " + me.LastName,
+                VictimName = me.FirstName + " " + me.LastName, // DO NOT use GetFullName.  It will break things here.
                 Nickname = me.Nickname,
                 TimeDropped = DateTime.UtcNow,
                 OwnerId = -1,

@@ -69,7 +69,7 @@
             }
             else
             {
-                @Html.ActionLink("Led by " + Model.Leader.FirstName + " " + Model.Leader.LastName, "LookAtPlayer", "PvP", new { id = Model.Leader.Id }, null)
+                @Html.ActionLink("Led by " + Model.Leader.GetFullName(), "LookAtPlayer", "PvP", new { id = Model.Leader.Id }, null)
             }
 
             if (Model.dbCovenant.HomeLocation != null && Model.dbCovenant.HomeLocation != "")
@@ -114,12 +114,9 @@
                             @Html.Partial("~/Views/PvP/Player_Partial.cshtml", p)
                             @if (ViewBag.Player.Id == Model.dbCovenant.LeaderId || ViewBag.IAmCaptain == true)
                             {
-                                @*<div class="commandWrapper">*@
-                                @*Send Arp to @p.Player.FirstName?*@
                                 @Html.ActionLink("20", "GiveMoneyFromCovenantChest", "Covenant", new { id = p.Player.Id, amount = 20 }, null)
                                 @Html.ActionLink("100", "GiveMoneyFromCovenantChest", "Covenant", new { id = p.Player.Id, amount = 100 }, null)
                                 @Html.ActionLink("500", "GiveMoneyFromCovenantChest", "Covenant", new { id = p.Player.Id, amount = 500 }, null)
-                                @*</div>*@
                             }
                         </p>
                     </div>

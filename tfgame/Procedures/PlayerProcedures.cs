@@ -916,13 +916,13 @@ namespace tfgame.Procedures
 
             if (showDestinationInLocationLog == true)
             {
-                locationMessageOld = player.FirstName + " " + player.LastName + " used a Covenant Call Crystal, teleporting to their safeground at " + newLocation.Name + ".";
-                locationMessageNew = player.FirstName + " " + player.LastName + " teleported home using a Covenant Call Crystal.";
+                locationMessageOld = player.GetFullName() + " used a Covenant Call Crystal, teleporting to their safeground at " + newLocation.Name + ".";
+                locationMessageNew = player.GetFullName() + " teleported home using a Covenant Call Crystal.";
                 playerLogMessage = "You used a Covenant Call Crystal, teleporting you from " + oldLocation.Name + " to your safeground at " + newLocation.Name + ".";
             }
             else { 
-                locationMessageOld = player.FirstName + " " + player.LastName + " used a scroll of teleportation.";
-                locationMessageNew = player.FirstName + " " + player.LastName + " teleported to here.";
+                locationMessageOld = player.GetFullName() + " used a scroll of teleportation.";
+                locationMessageNew = player.GetFullName() + " teleported to here.";
                 playerLogMessage = "You teleported from " + oldLocation.Name + " to " + newLocation.Name + ".";
             }
             
@@ -1833,7 +1833,7 @@ namespace tfgame.Procedures
 
 
 
-            string logmessage = "<span class='playerCleansingNotification'>" + player.FirstName + " " + player.LastName + " cleansed here.</span>";
+            string logmessage = "<span class='playerCleansingNotification'>" + player.GetFullName() + " cleansed here.</span>";
             LocationLogProcedures.AddLocationLog(player.dbLocationName, logmessage);
 
 
@@ -1869,7 +1869,7 @@ namespace tfgame.Procedures
                 result = "You quickly meditate, restoring " + meditateManaRestore + " mana.";
             }
 
-            string logmessage = "<span class='playerMediatingNotification'>" + player.FirstName + " " + player.LastName + " meditated here.</span>";
+            string logmessage = "<span class='playerMediatingNotification'>" + player.GetFullName() + " meditated here.</span>";
             LocationLogProcedures.AddLocationLog(player.dbLocationName, logmessage);
 
 

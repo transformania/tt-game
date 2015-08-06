@@ -39,7 +39,7 @@
             }
         }
     </p>
-    @Html.ActionLink("Led by " + Model.Leader.FirstName + " " + Model.Leader.LastName, "LookAtPlayer", "PvP", new { id = Model.Leader.Id }, null)
+    @Html.ActionLink("Led by " + Model.Leader.GetFullName(), "LookAtPlayer", "PvP", new { id = Model.Leader.Id }, null)
 </div>
 
 <div class="onlinePlayersWrapperBG">

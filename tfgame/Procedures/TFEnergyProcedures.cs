@@ -111,8 +111,8 @@ namespace tfgame.Procedures
 
             if (victim.Form == eventualForm.dbName)
             {
-                output.AttackerLog += "Since " + victim.FirstName + " is already in this form, the spell has no transforming effect.";
-                output.VictimLog += "Since " + victim.FirstName + " is already in this form, the spell has no transforming effect.";
+                output.AttackerLog += "Since " + victim.GetFullName() + " is already in this form, the spell has no transforming effect.";
+                output.VictimLog += "Since " + victim.GetFullName() + " is already in this form, the spell has no transforming effect.";
                 return output;
             }
 
@@ -354,8 +354,8 @@ namespace tfgame.Procedures
 
                     playerRepo.SavePlayer(target);
 
-                    output.LocationLog = "<br><b>" + target.FirstName + " " + target.LastName + " was completely transformed into a " + targetForm.FriendlyName + " here.</b>";
-                    output.AttackerLog = "<br><b>You fully transformed " + target.FirstName + " " + target.LastName + " into a " + targetForm.FriendlyName + "</b>!";
+                    output.LocationLog = "<br><b>" + target.GetFullName() + " was completely transformed into a " + targetForm.FriendlyName + " here.</b>";
+                    output.AttackerLog = "<br><b>You fully transformed " + target.GetFullName() + " into a " + targetForm.FriendlyName + "</b>!";
                     output.VictimLog = "<br><b>You have been fully transformed into a " + targetForm.FriendlyName + "!</b>";
 
                     TFEnergyProcedures.DeleteAllPlayerTFEnergiesOfType(target.Id, targetForm.dbName);

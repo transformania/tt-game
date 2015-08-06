@@ -381,7 +381,7 @@
     var playAttackSound = false;
     var playMessageSound = false;
     var notificationsEnabled = false;
-    var name = "@Model.You.Player.FirstName" + " @Model.You.Player.LastName";
+    var name = "@Model.You.Player.GetFullName()";
     var playerMana = @Model.You.Player.Mana;
     var maxLogSize = @ViewBag.MaxLogSize;
 

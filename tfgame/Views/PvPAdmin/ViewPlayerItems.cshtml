@@ -23,7 +23,7 @@
     </div><!-- /.container-fluid -->
 </nav>
 
-<h1>Items held by @player.Player.FirstName @player.Player.LastName</h1>
+<h1>Items held by @player.Player.GetFullName()</h1>
 <ul>
     @{
         foreach (ItemViewModel item in ViewBag.playeritems)

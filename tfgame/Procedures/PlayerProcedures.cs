@@ -648,8 +648,8 @@ namespace tfgame.Procedures
             newplayer.Level = 1;
             newplayer.XP = 0;
             newplayer.LastActionTimestamp = DateTime.UtcNow;
-            newplayer.LastCombatTimestamp = DateTime.UtcNow;
-            newplayer.LastCombatAttackedTimestamp = DateTime.UtcNow;
+            newplayer.LastCombatTimestamp = DateTime.UtcNow.AddDays(-1); // new spawns shouldn't get hit by no combat timer limitations
+            newplayer.LastCombatAttackedTimestamp = DateTime.UtcNow.AddDays(-1); // new spawns shouldn't get hit by no combat timer limitations
             newplayer.OnlineActivityTimestamp = DateTime.UtcNow;
             newplayer.Money = 0;
             newplayer.ActionPoints_Refill = 360;
@@ -659,7 +659,6 @@ namespace tfgame.Procedures
             newplayer.BotId = AIStatics.ActivePlayerBotId;
             newplayer.ChatColor = "black";
           
-            
 
             if (oldplayer != null)
             {

@@ -45,12 +45,42 @@ namespace tfgame.Procedures
                 Stopwatch updateTimer = new Stopwatch();
                 updateTimer.Start();
 
+                IPlayerRepository playerRepo = new EFPlayerRepository();
 
+                #region spawn NPCS
+                // make sure the NPCs have been spawned early turn
+                if (turnNo <= 3)
+                {
+                    Player lindella = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.LindellaBotId);
+                    if (lindella == null)
+                    {
+                        AIProcedures.SpawnLindella();
+                    }
+
+                    Player wuffie = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.WuffieBotId);
+                    if (wuffie == null)
+                    {
+                        BossProcedures_PetMerchant.SpawnPetMerchant();
+                    }
+
+                    Player fae = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.JewdewfaeBotId);
+                    if (fae == null)
+                    {
+                        BossProcedures_Fae.SpawnFae();
+                    }
+
+                    Player bartender = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.BartenderBotId);
+                    if (bartender == null)
+                    {
+                        AIProcedures.SpawnBartender();
+                    }
+                }
+                #endregion
 
                 PvPWorldStatProcedures.UpdateWorldTurnCounter();
 
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started loading animate players");
-                IPlayerRepository playerRepo = new EFPlayerRepository();
+                
                 //List<Player> players_Animate = playerRepo.Players.Where(p => p.Mobility != "inanimate").ToList();
                 //List<Player> players_Animate_to_Save = new List<Player>();
 

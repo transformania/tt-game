@@ -1167,6 +1167,34 @@ namespace tfgame.Controllers
             return Json(effectRepo.DbStaticFurnitures, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult LocationJSON()
+        {
+            // assert only admins can view this
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false && User.IsInRole(PvPStatics.Permissions_JSON) == false)
+            {
+                return View("Play", "PvP");
+            }
+
+            List<Location> locations = LocationsStatics.LocationList.GetLocation.Where(l => l.dbName.Contains("_dungeon") == false).ToList();
+
+
+            // conceal some data about dungeon location in case whoever pulls this JSON is trying to make a map
+            foreach (Location l in locations)
+            {
+                if (l.dbName.Contains("_dungeon"))
+                {
+                    l.X = 0;
+                    l.Y = 0;
+                    l.Name_East = "";
+                    l.Name_North = "";
+                    l.Name_South = "";
+                    l.Name_West = "";
+                }
+            }
+
+            return Json(locations, JsonRequestBehavior.AllowGet);
+        }
+
         public ActionResult ApproveContributionList()
         {
             // assert only admins can view this

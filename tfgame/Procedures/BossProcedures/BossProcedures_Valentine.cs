@@ -15,6 +15,13 @@ namespace tfgame.Procedures.BossProcedures
 
         // -5 Lord Valentine
 
+        public const string ValentineFormDbName = "form_First_Lord_of_the_Valentine_Castle_Valentine's_Family";
+        public const string SwordSpell = "skill_The_Dance_of_Blades_Ashley_Valentine";
+        public const string FemaleVampSpell = "skill_Mistress_of_the_night_Foxpower93";
+        public const string MaleVampSpell = "skill_Dark_Baptism_Blood_Knight";
+        public const string BloodyCurseSpell = "skill_A_Bloody_Curse";
+        public const string ValentinesPresenceSpell = "skill_Valentine's_Presence_Lilith";
+
         public static void SpawnValentine()
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
@@ -38,12 +45,12 @@ namespace tfgame.Procedures.BossProcedures
                     Mana = 9999,
                     MaxHealth = 9999,
                     MaxMana = 9999,
-                    Form = "form_First_Lord_of_the_Valentine_Castle_Valentine's_Family",
+                    Form = ValentineFormDbName,
                     Money = 1000,
                     Mobility = "full",
                     Level = 10,
                     MembershipId = "-5",
-                    BotId = -5,
+                    BotId = AIStatics.ValentineBotId,
                     ActionPoints_Refill = 360,
                 };
 
@@ -54,17 +61,12 @@ namespace tfgame.Procedures.BossProcedures
                 playerRepo.SavePlayer(valentine);
 
                 // give Valentine his skills
-                valentine = playerRepo.Players.FirstOrDefault(f => f.FirstName == "Lord 'Teaserael'" && f.LastName == "Valentine");
-                DbStaticSkill skillToAdd = SkillStatics.GetStaticSkill("skill_The_Dance_of_Blades_Ashley_Valentine");
-                DbStaticSkill skillToAdd2 = SkillStatics.GetStaticSkill("skill_Mistress_of_the_night_Foxpower93");
-                DbStaticSkill skillToAdd3 = SkillStatics.GetStaticSkill("skill_Dark_Baptism_Blood_Knight");
-                DbStaticSkill skillToAdd4 = SkillStatics.GetStaticSkill("skill_A_Bloody_Curse");
-                DbStaticSkill skillToAdd5 = SkillStatics.GetStaticSkill("skill_Valentine's_Presence_Lilith");
-                SkillProcedures.GiveSkillToPlayer(valentine.Id, skillToAdd);
-                SkillProcedures.GiveSkillToPlayer(valentine.Id, skillToAdd2);
-                SkillProcedures.GiveSkillToPlayer(valentine.Id, skillToAdd3);
-                SkillProcedures.GiveSkillToPlayer(valentine.Id, skillToAdd4);
-                SkillProcedures.GiveSkillToPlayer(valentine.Id, skillToAdd5);
+                valentine = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.ValentineBotId);
+                SkillProcedures.GiveSkillToPlayer(valentine.Id, SwordSpell);
+                SkillProcedures.GiveSkillToPlayer(valentine.Id, FemaleVampSpell);
+                SkillProcedures.GiveSkillToPlayer(valentine.Id, MaleVampSpell);
+                SkillProcedures.GiveSkillToPlayer(valentine.Id, BloodyCurseSpell);
+                SkillProcedures.GiveSkillToPlayer(valentine.Id, ValentinesPresenceSpell);
 
                 // give Valentine the underwear that he drops
                 IItemRepository itemRepo = new EFItemRepository();

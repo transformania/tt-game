@@ -14,6 +14,7 @@ namespace tfgame.Procedures.BossProcedures
 
         public const string FirstName = "Skaldrlyr";
         public const string LastName = "the Forbidden";
+        public const string FormDbName = "form_Exiled_Lorekeeper_Judoo";
 
         public static void SpawnLoremaster()
         {
@@ -40,7 +41,7 @@ namespace tfgame.Procedures.BossProcedures
                 loremaster.LastCombatTimestamp = DateTime.UtcNow;
                 loremaster.LastCombatAttackedTimestamp = DateTime.UtcNow;
                 loremaster.OnlineActivityTimestamp = DateTime.UtcNow;
-                loremaster.Form = "form_Exiled_Lorekeeper_Judoo";
+                loremaster.Form = FormDbName;
                 loremaster.NonPvP_GameOverSpellsAllowedLastChange = DateTime.UtcNow;
                 loremaster.dbLocationName = "bookstore_back";
                 loremaster.Gender = "male";

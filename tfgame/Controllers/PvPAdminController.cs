@@ -2727,6 +2727,7 @@ namespace tfgame.Controllers
                     {
                         player.Form = form.dbName;
                         player.Health = 99999;
+                        player.MaxHealth = 99999;
                     }
 
                     if (form.MobilityType == "full" && player.Mobility != "full")
@@ -2747,10 +2748,41 @@ namespace tfgame.Controllers
                     Item item = itemRepo.Items.FirstOrDefault(i => i.VictimName == origFirstName + " " + origLastName);
                     item.VictimName = input.NewFirstName + " " + input.NewLastName;
                     itemRepo.SaveItem(item);
-
-
                 }
 
+                // if Donna, give player her spells
+                if (player.Form == BossProcedures_Donna.DonnaDbForm)
+                {
+                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Donna.Spell1);
+                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Donna.Spell2);
+                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Donna.Spell3);
+                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Donna.Spell4);
+                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Donna.Spell5);
+                }
+
+                // if Valentine, give player his spells
+                else if (player.Form == BossProcedures_Valentine.ValentineFormDbName)
+                {
+                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Valentine.BloodyCurseSpell);
+                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Valentine.ValentinesPresenceSpell);
+                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Valentine.MaleVampSpell);
+                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Valentine.FemaleVampSpell);
+                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Valentine.SwordSpell);
+                }
+
+                // if plague mother, give player her spells
+                else if (player.Form == BossProcedures_BimboBoss.BossFormDbName)
+                {
+                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_BimboBoss.RegularTFSpellDbName);
+                }
+
+                // if master rat thief, give player her spells
+                else if (player.Form == BossProcedures_Thieves.FemaleBossFormDbName)
+                {
+                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Thieves.GoldenTrophySpellDbName);
+                }
+
+                // mouse sisters have no unique spells yet.
 
 
             }

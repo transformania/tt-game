@@ -49,12 +49,11 @@ namespace tfgame.Procedures.BossProcedures
                     MaxHealth = 10000,
                     MaxMana = 10000,
                     Form = NerdBossForm,
-                    //IsPetToId = -1,
                     Money = 2000,
                     Mobility = "full",
                     Level = 25,
                     MembershipId = "-11",
-                    BotId = -11,
+                    BotId = AIStatics.MouseNerdBotId,
                     ActionPoints_Refill = 360,
                 };
 
@@ -87,7 +86,7 @@ namespace tfgame.Procedures.BossProcedures
                     Mobility = "full",
                     Level = 25,
                     MembershipId = "-12",
-                    BotId = -12,
+                    BotId = AIStatics.MouseBimboBotId,
                     ActionPoints_Refill = 360,
                 };
 

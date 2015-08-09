@@ -15,10 +15,11 @@ namespace tfgame.Procedures.BossProcedures
 
         private const string BossFirstName = "Lady";
         private const string BossLastName = "Lovebringer, PHD";
+        public const string BossFormDbName = "form_Bimbonic_Plague_Mother_Judoo";
         public const string KissEffectdbName = "curse_bimboboss_kiss";
         public const string KissSkilldbName = "skill_bimboboss_kiss";
         public const string CureEffectdbName = "blessing_bimboboss_cure";
-        private const string RegularTFSpellDbName = "skill_Bringer_of_the_Bimbocalypse_Judoo";
+        public const string RegularTFSpellDbName = "skill_Bringer_of_the_Bimbocalypse_Judoo";
         private const string RegularBimboFormDbName = "form_Bimbocalypse_Plague_Victim_Judoo";
         public const string CureItemDbName = "item_consumeable_bimbo_cure";
 
@@ -45,7 +46,7 @@ namespace tfgame.Procedures.BossProcedures
                     Mana = 9999,
                     MaxHealth = 9999,
                     MaxMana = 9999,
-                    Form = "form_Bimbonic_Plague_Mother_Judoo",
+                    Form = BossFormDbName,
                     Money = 2500,
                     Mobility = "full",
                     Level = 15,

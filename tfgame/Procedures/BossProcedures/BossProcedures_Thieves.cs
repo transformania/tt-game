@@ -15,8 +15,10 @@ namespace tfgame.Procedures.BossProcedures
 
         private const string MaleBossFirstName = "Brother Lujako";
         private const string MaleBossLastName = "Seekshadow";
+        public const string MaleBossFormDbName = "form_Apprentice_Seekshadow_Thief_Judoo";
         private const string FemaleBossFirstName = "Sister Lujienne";
         private const string FemaleBossLastName = "Seekshadow";
+        public const string FemaleBossFormDbName = "form_Master_Seekshadow_Thief_Judoo";
         public const string GoldenTrophySpellDbName = "skill_Seekshadow's_Triumph_Judoo";
 
         public static void SpawnThieves()
@@ -43,13 +45,13 @@ namespace tfgame.Procedures.BossProcedures
                     Mana = 10000,
                     MaxHealth = 10000,
                     MaxMana = 10000,
-                    Form = "form_Apprentice_Seekshadow_Thief_Judoo",
+                    Form = MaleBossFormDbName,
                     //IsPetToId = -1,
                     Money = 0,
                     Mobility = "full",
                     Level = 5,
                     MembershipId = "-8",
-                    BotId = -8,
+                    BotId = AIStatics.MaleRatBotId,
                     ActionPoints_Refill = 360,
                 };
 
@@ -91,12 +93,12 @@ namespace tfgame.Procedures.BossProcedures
                     Mana = 10000,
                     MaxHealth = 10000,
                     MaxMana = 10000,
-                    Form = "form_Master_Seekshadow_Thief_Judoo",
+                    Form = FemaleBossFormDbName,
                     Money = 0,
                     Mobility = "full",
                     Level = 7,
                     MembershipId = "-9",
-                    BotId = -9,
+                    BotId = AIStatics.FemaleRatBotId,
                     ActionPoints_Refill = 360,
                 };
 

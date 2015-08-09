@@ -2335,6 +2335,10 @@
     <Content Include="Views\PvP\LoginRequired.cshtml" />
     <Content Include="Views\Info\AllLocations.cshtml" />
     <Content Include="Views\Info\AllForms.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\Alpha_23.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\XP\Alpha_23.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_23.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\Statistics\Alpha_23.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

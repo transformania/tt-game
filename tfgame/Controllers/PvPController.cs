@@ -533,10 +533,10 @@ namespace tfgame.Controllers
 
              // assert that the player has not attacked too recently to move
             double lastAttackTimeAgo = Math.Abs(Math.Floor(me.LastCombatTimestamp.Subtract(DateTime.UtcNow).TotalSeconds));
-            if (lastAttackTimeAgo < 45)
+            if (lastAttackTimeAgo < PvPStatics.NoMovingAfterAttackSeconds)
             {
                 TempData["Error"] = "You are resting from a recent attack.";
-                TempData["SubError"] = "You must wait " + (45-lastAttackTimeAgo) + " more seconds before moving.";
+                TempData["SubError"] = "You must wait " + (PvPStatics.NoMovingAfterAttackSeconds - lastAttackTimeAgo) + " more seconds before moving.";
                 return RedirectToAction("Play");
             }
 

@@ -211,6 +211,7 @@ namespace tfgame.Statics
         public const int ItemTurnBuildupMaximum = 48;
 
         public const int MaxAttacksPerUpdate = 3;
+        public const int NoMovingAfterAttackSeconds = 45;
         public const decimal LocationMoveCost = 1.0M;
         public const decimal AttackCost = 3.0M;
         public const decimal MeditateCost = 4.0M;

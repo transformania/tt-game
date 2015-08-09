@@ -14,7 +14,7 @@ namespace tfgame.Procedures
     {
 
         
-
+        // return all location logs regardless of concealment level
         public static IEnumerable<LocationLog> GetLocationLogsAtLocation(string dbLocationName)
         {
             ILocationLogRepository LocationLogRepo = new EFLocationLogRepository();
@@ -23,37 +23,29 @@ namespace tfgame.Procedures
             return output;
         }
 
+        // return all location logs where concealment level is below a given amount
+        public static IEnumerable<LocationLog> GetLocationLogsAtLocation(string dbLocationName, int highestConcealmentLevel)
+        {
+            ILocationLogRepository LocationLogRepo = new EFLocationLogRepository();
+            IEnumerable<LocationLog> output = LocationLogRepo.LocationLogs.Where(p => p.dbLocationName == dbLocationName && p.ConcealmentLevel <= highestConcealmentLevel).OrderBy(l => l.Timestamp).ToList();
+
+            return output;
+        }
+
         public static void AddLocationLog(string dbLocationName, string message)
+        {
+            // -999 is a low enough concealment that anyone should see it
+            AddLocationLog(dbLocationName, message, -999);
+        }
+
+        public static void AddLocationLog(string dbLocationName, string message, int concealmentLevel)
         {
             ILocationLogRepository LocationLogRepo = new EFLocationLogRepository();
             LocationLog newlog = new LocationLog();
             newlog.dbLocationName = dbLocationName;
             newlog.Message = message;
             newlog.Timestamp = DateTime.UtcNow;
-
-            //IEnumerable<LocationLog> ExistingLogs = LocationLogRepo.LocationLogs.Where(l => l.dbLocationName == dbLocationName);
-
-            //bool DO_NOT_RECYCLE = true;
-
-
-            //// delete oldest entry to keep log size from growing too large
-            //if (ExistingLogs.Count() >= PvPStatics.MaxLogMessagesPerLocation && DO_NOT_RECYCLE==false)
-            //{
-            //    IEnumerable<LocationLog> reordered = ExistingLogs.OrderByDescending(l => l.Timestamp).Skip(PvPStatics.MaxLogMessagesPerLocation).ToList();
-
-            //    foreach (LocationLog l in reordered)
-            //    {
-            //        try
-            //        {
-            //            LocationLogRepo.DeleteLocationLog(l.Id);
-            //        }
-            //        catch
-            //        {
-            //            // catch errors in case of concurrency problems... players moving during updates.
-            //        }
-            //    }
-            //}
-           
+            newlog.ConcealmentLevel = concealmentLevel;
             LocationLogRepo.SaveLocationLog(newlog);
         }
 

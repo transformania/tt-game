@@ -152,12 +152,12 @@ namespace tfgame.Controllers
 
                 inanimateOutput.StruggleChance = InanimateXPProcedures.GetStruggleChance(me);
 
-                if (inanimateOutput.WornBy != null)
+                if (inanimateOutput.WornBy != null) // being worn
                 {
-                    List<LocationLog> actionsHere = LocationLogProcedures.GetLocationLogsAtLocation(inanimateOutput.WornBy.Player.dbLocationName).ToList();
+                    List<LocationLog> actionsHere = LocationLogProcedures.GetLocationLogsAtLocation(inanimateOutput.WornBy.Player.dbLocationName, 0).ToList();
                     List<LocationLog> validActionsHere = new List<LocationLog>();
                     foreach (LocationLog log in actionsHere) {
-                        if (!log.Message.Contains("entered from") && !log.Message.Contains("left toward"))
+                        if (log.ConcealmentLevel <= 0 && !log.Message.Contains("entered from") && !log.Message.Contains("left toward"))
                         {
                             validActionsHere.Add(log);
                         }
@@ -168,7 +168,7 @@ namespace tfgame.Controllers
                 }
                 else
                 {
-                    inanimateOutput.LocationLog = LocationLogProcedures.GetLocationLogsAtLocation(me.dbLocationName);
+                    inanimateOutput.LocationLog = LocationLogProcedures.GetLocationLogsAtLocation(me.dbLocationName, 0);
                     inanimateOutput.PlayersHere = PlayerProcedures.GetPlayerFormViewModelsAtLocation(me.dbLocationName, myMembershipId);
                 }
 
@@ -226,7 +226,7 @@ namespace tfgame.Controllers
                 animalOutput.PlayerLog = PlayerLogProcedures.GetAllPlayerLogs(me.Id).Reverse();
                 animalOutput.PlayerLogImportant = animalOutput.PlayerLog.Where(l => l.IsImportant == true);
 
-                animalOutput.LocationLog = LocationLogProcedures.GetLocationLogsAtLocation(animalOutput.Location.dbName);
+                animalOutput.LocationLog = LocationLogProcedures.GetLocationLogsAtLocation(animalOutput.Location.dbName, 0);
 
                 animalOutput.LocationItems = ItemProcedures.GetAllItemsAtLocation(animalOutput.Location.dbName, me);
 
@@ -293,7 +293,7 @@ namespace tfgame.Controllers
             output.Location.FriendlyName_West = LocationsStatics.GetConnectionName(output.Location.Name_West);
 
             loadtime += "Start get location logs:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
-            output.LocationLog = LocationLogProcedures.GetLocationLogsAtLocation(me.dbLocationName);
+            output.LocationLog = LocationLogProcedures.GetLocationLogsAtLocation(me.dbLocationName, (int)myBuffs.Perception());
             loadtime += "End get players here:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
 
             loadtime += "Start get player logs:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
@@ -559,44 +559,54 @@ namespace tfgame.Controllers
                 sneakChance = 75;
             }
 
-            decimal stumbleChance = -1*buffs.EvasionPercent();
-             decimal moveAPdiscount = buffs.MoveActionPointDiscount();
+            decimal stumbleChance = -1 * buffs.EvasionPercent();
+            decimal moveAPdiscount = buffs.MoveActionPointDiscount();
 
-             Random die = new Random();
+            Random die = new Random();
             double sneakroll = die.NextDouble() * 100;
-            if (sneakroll < (double)sneakChance)
+
+
+            string msg = "";
+
+            // if the attacker's evasion negation is too low, add in a chance of the spell totally missing.
+            if (stumbleChance > 0)
             {
-                TempData["Result"] = "You silently move to " + nextLocation.Name + ".";
+                Random rand = new Random();
+                double roll = rand.NextDouble() * 200;
+                if (roll < (double)stumbleChance)
+                {
+                    msg = "Due to your poor evasion and clumsiness you trip and fall, wasting some energy.  ";
+                    PlayerProcedures.ChangePlayerActionMana(1, 0, 0, me.Id);
+                }
+
+            }
+
+             // calculate concealment level
+            int sneakLevel = (int)buffs.SneakPercent();
+
+            if (sneakLevel < 0)
+            {
+                sneakLevel = -999;
             }
             else
             {
-
-                string msg = "";
-
-                // if the attacker's evasion negation is too low, add in a chance of the spell totally missing.
-                if (stumbleChance > 0)
-                {
-                    Random rand = new Random();
-                    double roll = rand.NextDouble() * 200;
-                    if (roll < (double)stumbleChance)
-                    {
-                        msg = "Due to your poor evasion and clumsiness you trip and fall, wasting some energy.  ";
-                        PlayerProcedures.ChangePlayerActionMana(1, 0, 0, me.Id);
-                    }
-
-                }
-
-                TempData["Result"] = msg + "You move to " + nextLocation.Name + ".";
-                string leavingMessage = me.GetFullName() + " left toward " + nextLocation.Name;
-                string enteringMessage = me.GetFullName() + " entered from " + currentLocation.Name;
-                LocationLogProcedures.AddLocationLog(me.dbLocationName, leavingMessage);
-                LocationLogProcedures.AddLocationLog(locname, enteringMessage);
+                // decrease by random amount up to 75
+                sneakLevel -= (int)(die.NextDouble() * 75);
             }
 
+            string resultMsg = msg + "You move to " + nextLocation.Name + ".";
+            if (sneakLevel > 0)
+            {
+                resultMsg += "  (Concealment lvl " + sneakLevel + ")";
+            }
+            TempData["Result"] = msg + "You move to " + nextLocation.Name + ".";
+            string leavingMessageAnimate = me.GetFullName() + " left toward " + nextLocation.Name;
+            string enteringMessageAnimate = me.GetFullName() + " entered from " + currentLocation.Name;
+            LocationLogProcedures.AddLocationLog(me.dbLocationName, leavingMessageAnimate, sneakLevel);
+            LocationLogProcedures.AddLocationLog(locname, enteringMessageAnimate, sneakLevel);
+
+
             PlayerProcedures.MovePlayer(me.Id, locname, moveAPdiscount);
-
-         
-
 
 
             string playerLogMessage = "You moved from <b>" + currentLocation.Name + "</b> to <b>" + nextLocation.Name + "</b>.";

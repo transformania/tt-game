@@ -368,10 +368,12 @@ namespace tfgame.Procedures
                 if (temp == null)
                 {
                     LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == loc.dbName).CovenantController = -1;
+                    LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == loc.dbName).TakeoverAmount = 0;
                 }
                 else
                 {
                     LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == loc.dbName).CovenantController = temp.CovenantId;
+                    LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == loc.dbName).TakeoverAmount = temp.TakeoverAmount;
                 }
             }
         }

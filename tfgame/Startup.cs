@@ -6,6 +6,7 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using tfgame.Models;
+using tfgame.Procedures;
 
 [assembly: OwinStartup(typeof(tfgame.Startup))]
 
@@ -37,6 +38,9 @@ namespace tfgame
                 }
             });  
             app.MapSignalR();
+
+            AttackProcedures.LoadCovenantOwnersIntoRAM();
+
         }
     }
 }

@@ -22,6 +22,7 @@ namespace tfgame.ViewModels
         public string Name_West { get; set; }
         public string Region { get; set; }
         public int CovenantController { get; set; }
+        public float TakeoverAmount { get; set; }
 
         public string FriendlyName_North { get; set; }
         public string FriendlyName_East { get; set; }

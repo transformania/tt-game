@@ -205,51 +205,6 @@ namespace tfgame.Procedures
                         continue;
                     }
 
-                    //// if the player is already sitting at max AP, throw it in their reserves instead
-                    //if (player.ActionPoints == PvPStatics.MaximumStoreableActionPoints)
-                    //{
-                    //    player.ActionPoints_Refill += PvPStatics.APRestoredPerUpdate/2;
-
-                    //    if (player.ActionPoints_Refill > PvPStatics.MaximumStoreableActionPoints_Refill)
-                    //    {
-                    //        player.ActionPoints_Refill = PvPStatics.MaximumStoreableActionPoints_Refill;
-                    //    }
-
-                    //}
-                    //else
-                    //{
-                    //    // give the usual base 10
-                    //    player.ActionPoints += PvPStatics.APRestoredPerUpdate;
-
-                    //    if (player.ActionPoints > PvPStatics.MaximumStoreableActionPoints)
-                    //    {
-                    //        player.ActionPoints = PvPStatics.MaximumStoreableActionPoints;
-                    //    }
-
-                    //    // Now consider the bonus.
-                    //    // the limiting factor is the difference between current AP and max AP
-                    //    decimal possibleBonus = PvPStatics.MaximumStoreableActionPoints - player.ActionPoints;
-
-                    //    // the limiting factor may be ALL of the reserved AP
-                    //    if (player.ActionPoints_Refill < possibleBonus)
-                    //    {
-                    //        possibleBonus = player.ActionPoints_Refill;
-                    //    }
-
-                    //    // the limiting factor may be the maximum bonus
-                    //    if (possibleBonus > 20)
-                    //    {
-                    //        possibleBonus = 20;
-                    //    }
-
-                    //    player.ActionPoints += possibleBonus;
-                    //    player.ActionPoints_Refill -= possibleBonus;
-                    //}
-
-
-                    //player.TimesAttackingThisUpdate = 0;
-                    //player.CleansesMeditatesThisRound = 0;
-
                     BuffBox buffs = ItemProcedures.GetPlayerBuffsSQL(player);
                     //BuffBox buffs = ItemProcedures.GetPlayerBuffsRAM(player);
                     player.Health += buffs.HealthRecoveryPerUpdate();
@@ -258,27 +213,56 @@ namespace tfgame.Procedures
 
                     player.ReadjustMaxes(buffs);
 
-                    // give the player some extra AP refill if they are at their safeground
+                    // extra AP condition checks
                     if (player.Covenant > 0)
                     {
                         CovenantNameFlag playerCov = CovenantDictionary.IdNameFlagLookup.FirstOrDefault(c => c.Key == player.Covenant).Value;
 
+                        // give this player an extra AP refill if they are at their safeground, scaled up by level
                         if (playerCov != null && playerCov.HomeLocation != null && playerCov.HomeLocation != "" && player.dbLocationName == playerCov.HomeLocation)
                         {
                             player.ActionPoints_Refill += .25M * playerCov.CovLevel;
-                            if (player.ActionPoints_Refill > PvPStatics.MaximumStoreableActionPoints_Refill)
-                            {
-                                player.ActionPoints_Refill = PvPStatics.MaximumStoreableActionPoints_Refill;
-                            }
+                           
                         }
+
+                        // give this player an extra AP refill if they are on a location that their covenane has enchanted
+                        Location currentLocation = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == player.dbLocationName);
+
+                        if (currentLocation != null && currentLocation.CovenantController == player.Covenant)
+                        {
+                            if (currentLocation.TakeoverAmount < 25)
+                            {
+                                player.ActionPoints_Refill += .05M;
+                            }
+                            else if (currentLocation.TakeoverAmount <= 50)
+                            {
+                                player.ActionPoints_Refill += .10M;
+                            }
+                            else if (currentLocation.TakeoverAmount <= 75)
+                            {
+                                player.ActionPoints_Refill += .15M;
+                            }
+                            else if (currentLocation.TakeoverAmount < 100)
+                            {
+                                player.ActionPoints_Refill += .20M;
+                            }
+                            else if (currentLocation.TakeoverAmount >= 100)
+                            {
+                                player.ActionPoints_Refill += .25M;
+                            }
+                            
+                        }
+
+                        // make sure AP reserve stays within maximum amount
+                        if (player.ActionPoints_Refill > PvPStatics.MaximumStoreableActionPoints_Refill)
+                        {
+                            player.ActionPoints_Refill = PvPStatics.MaximumStoreableActionPoints_Refill;
+                        }
+
 
                     }
 
-                    // give the player their PvP score trickle if they are in it
-                    // if (player.InPvP == false)
-                    // {
-                    //  player.PvPScore += PvPStatics.PvPScoreTricklePerUpdate;
-                    // }
+                    // give the player some extra AP reserve if they are 
 
 
                     if (player.MaxHealth < 1)

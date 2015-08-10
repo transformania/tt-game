@@ -579,11 +579,6 @@ namespace tfgame.Procedures
             if (info.TakeoverAmount <= 0)
             {
 
-
-
-            //    int oldCovId = info.CovenantId;
-
-
                 info.CovenantId = player.Covenant;
                 info.TakeoverAmount = takeoverAmount;
 
@@ -595,7 +590,8 @@ namespace tfgame.Procedures
 
                 info.LastTakeoverTurn = PvPWorldStatProcedures.GetWorldTurnNumber();
                 output = "<b>Your enchantment settles in this location, converting its energies from the previous controlling covenant to your own!  (+" + XPGain + " XP)</b>";
-                LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == player.dbLocationName).CovenantController = player.Covenant;
+                location.CovenantController = player.Covenant;
+                location.TakeoverAmount = info.TakeoverAmount;
                 Covenant myCov = covRepo.Covenants.First(c => c.Id == player.Covenant);
 
                 string locationLogMessage = "<b class='playerAttackNotification'>" + player.GetFullName() + " enchanted this location and claimed it for " + myCov.Name + "!</b>";
@@ -616,6 +612,7 @@ namespace tfgame.Procedures
                 if (info.CovenantId == player.Covenant)
                 {
                     info.TakeoverAmount += takeoverAmount;
+                    location.TakeoverAmount = info.TakeoverAmount;
                     Covenant cov = covRepo.Covenants.FirstOrDefault(c => c.Id == player.Covenant);
                     output = "Your enchantment reinforces this location by " + (takeoverAmount) + ".  New influence level is " + info.TakeoverAmount + " for your covenant, " + cov.Name + ".  (+" + XPGain + " XP)</b>";
                    
@@ -623,6 +620,7 @@ namespace tfgame.Procedures
                 else
                 {
                     info.TakeoverAmount -= takeoverAmount;
+                    location.TakeoverAmount = info.TakeoverAmount;
                     Covenant cov = covRepo.Covenants.FirstOrDefault(c => c.Id == info.CovenantId);
 
                     if (info.TakeoverAmount <= 0)

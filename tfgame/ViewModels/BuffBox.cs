@@ -703,7 +703,7 @@ namespace tfgame.ViewModels
             {
                 "HealthBonusPercent",
                 new Dictionary<string,float> {
-                      	{"Discipline", .5F},
+                      	{"Discipline", .25F},
 	                    {"Perception", 0},
 	                    {"Charisma", -.25F},
 	                    {"Fortitude", .20F},
@@ -753,7 +753,7 @@ namespace tfgame.ViewModels
 	                    {"Agility", 0},
 	                    {"Allure", 0},
 	                    {"Magicka", 0},
-	                    {"Succour", .2F}, // regeneration
+	                    {"Succour", .3F}, // regeneration
 	                    {"Luck", 0},
                     }
                 },
@@ -767,7 +767,7 @@ namespace tfgame.ViewModels
 	                    {"Agility", 0},
 	                    {"Allure", 0},
 	                    {"Magicka", 0},
-	                    {"Succour", .2F}, // regeneration
+	                    {"Succour", .3F}, // regeneration
 	                    {"Luck", 0},
                     }
                 },
@@ -928,7 +928,7 @@ namespace tfgame.ViewModels
                 {
                 "SpellHealthDamageResistance",
                 new Dictionary<string,float> {
-                      	{"Discipline", 1.0F},
+                      	{"Discipline", 0.75F},
 	                    {"Perception", 0},
 	                    {"Charisma", -.5F},
 	                    {"Fortitude", 0},
@@ -942,7 +942,7 @@ namespace tfgame.ViewModels
                 {
                 "SpellTFEnergyDamageResistance",
                 new Dictionary<string,float> {
-                      	{"Discipline", 1.0F},
+                      	{"Discipline", 0.75F},
 	                    {"Perception", 0},
 	                    {"Charisma", -.5F},
 	                    {"Fortitude", 0},

@@ -705,7 +705,7 @@ namespace tfgame.ViewModels
                 new Dictionary<string,float> {
                       	{"Discipline", .25F},
 	                    {"Perception", 0},
-	                    {"Charisma", -.25F},
+	                    {"Charisma", -.125F},
 	                    {"Fortitude", .20F},
 	                    {"Agility", 0},
 	                    {"Allure", 0},

@@ -148,4 +148,11 @@
     <Merchant>Lindella</Merchant>
   </RestockListItem>
 
+  <RestockListItem>
+    <dbName>item_consumable_tome-seekshadows_Judoo</dbName>
+    <AmountBeforeRestock>1</AmountBeforeRestock>
+    <AmountToRestockTo>3</AmountToRestockTo>
+    <Merchant>Lindella</Merchant>
+  </RestockListItem>
+
 </ArrayOfRestockListItem>

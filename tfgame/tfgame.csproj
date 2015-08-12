@@ -745,6 +745,7 @@
     <Content Include="Images\PvP\itemsPortraits\dungeon_artifact_Luxianne.jpg" />
     <Content Include="Images\PvP\itemsPortraits\electronic_toy_jbovinne.png" />
     <Content Include="Images\PvP\itemsPortraits\elegant_gothic_stockings_Luxianne.jpg" />
+    <Content Include="Images\PvP\itemsPortraits\erotic_figurine_Martiandawn.jpg" />
     <Content Include="Images\PvP\itemsPortraits\evening_gown_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\excaliber_Martiandawn.jpg" />
     <Content Include="Images\PvP\itemsPortraits\Feather_Duster_Meddle.png" />
@@ -810,6 +811,7 @@
     <Content Include="Images\PvP\itemsPortraits\pink_latex_hood_babblingfaces.jpg" />
     <Content Include="Images\PvP\itemsPortraits\pink_latex_thong_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\platform_heels_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\popsicle_Kevin_Portalz.jpg" />
     <Content Include="Images\PvP\itemsPortraits\posessed_doll_foxpower93.png" />
     <Content Include="Images\PvP\itemsPortraits\Queens_Panties_Luxianne.png" />
     <Content Include="Images\PvP\itemsPortraits\red_laceup_boots_Jbovinne.jpg" />
@@ -1032,6 +1034,7 @@
     <Content Include="Images\PvP\itemsPortraits\witchling_Plushie_katie_frill.jpg" />
     <Content Include="Images\PvP\portraits\adorable_ferret_girl_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\adorable_kitty_boy_Luxianne.png" />
+    <Content Include="Images\PvP\portraits\Adreamia_Martiandawn.jpg" />
     <Content Include="Images\PvP\portraits\alien_love_slave_Babblingfaces.png" />
     <Content Include="Images\PvP\portraits\alraune_Luxianne.png" />
     <Content Include="Images\PvP\portraits\Amazonian_Futa_Meddle.png" />
@@ -1064,6 +1067,7 @@
     <Content Include="Images\PvP\portraits\councilorman_babblingfaces.jpg" />
     <Content Include="Images\PvP\portraits\dapper_Luxianne.png" />
     <Content Include="Images\PvP\portraits\decorative_marble_statue_LastChance12.jpg" />
+    <Content Include="Images\PvP\portraits\deep_sea_naga_LastChance12 .jpg" />
     <Content Include="Images\PvP\portraits\demonic_broker_Martiandawn.jpg" />
     <Content Include="Images\PvP\portraits\deranged_cultist_spacedande.jpg" />
     <Content Include="Images\PvP\portraits\dollmistress_babblingfaces.png" />
@@ -1698,6 +1702,7 @@
     </Content>
     <Content Include="XMLs\LocationDescriptions\tavern_private_room.xml" />
     <Content Include="XMLs\SkillBooks\donna1_Lexam.txt" />
+    <Content Include="XMLs\SkillBooks\seekshadows_Judoo.txt" />
     <Content Include="XMLs\SkillBooks\founding.txt" />
     <Content Include="XMLs\SkillBooks\founding_tree.txt" />
     <Content Include="XMLs\SkillBooks\ironic_tfs_1.txt" />

@@ -463,7 +463,7 @@ namespace tfgame.Procedures
 
                         if (moneyGain > 0)
                         {
-                            CovenantProcedures.WriteCovenantLog("Your covenant collected " + moneyGain + " Arpeyis from the locations you have enchanted.", c.Id, false);
+                            CovenantProcedures.WriteCovenantLog("Your covenant collected " + moneyGain + " Arpeyjis from the locations you have enchanted.", c.Id, false);
                         }
                         covRepo.SaveCovenant(c);
                     }

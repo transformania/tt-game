@@ -254,12 +254,17 @@ namespace tfgame.Procedures.BossProcedures
                         {
                             ItemProcedures.EquipItem(victimThiefItem.Id, true);
                         }
-                        string locationMessage = "<b>" + attackingThief.GetFullName() + " ran off in an unknown direction.";
                         string newlocation = LocationsStatics.GetRandomLocation_NoStreets();
+                        AIProcedures.MoveTo(attackingThief, newlocation, 99999);
                         attackingThief.dbLocationName = newlocation;
                         playerRepo.SavePlayer(attackingThief);
                         BuffBox buffs = ItemProcedures.GetPlayerBuffsSQL(attackingThief);
-                        PlayerProcedures.Cleanse(attackingThief, buffs);
+
+                        if (attackingThief.Health < attackingThief.Health / 10)
+                        {
+                            PlayerProcedures.Cleanse(attackingThief, buffs);
+                        }
+                        
                         PlayerProcedures.Meditate(attackingThief, buffs);
 
                     }

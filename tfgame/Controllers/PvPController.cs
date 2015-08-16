@@ -2537,7 +2537,7 @@ namespace tfgame.Controllers
                     return false;
                 }
                 // animal
-                if (myform.MobilityType == "inanimate")
+                if (myform.MobilityType == "animal")
                 {
                     Item meAnimal = ItemProcedures.GetItemByVictimName(me.FirstName, me.LastName);
                     if (meAnimal.OwnerId > 0)

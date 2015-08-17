@@ -83,6 +83,7 @@ namespace tfgame.Procedures.BossProcedures
                     TimeDropped = DateTime.UtcNow,
                     PvPEnabled = -1,
                     VictimName = "",
+                    LastSouledTimestamp = DateTime.UtcNow.AddYears(-1),
                 };
 
                 itemRepo.SaveItem(panties);

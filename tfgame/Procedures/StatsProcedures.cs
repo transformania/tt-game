@@ -221,7 +221,7 @@ namespace tfgame.Procedures
                 Stat__LoreBooksRead,
                     new StatsDetailsMap{
                         FriendlyName="Nerrrrrd!",
-                        Description="Tomes ready.",
+                        Description="Tomes read",
                         ImageUrl="trophy.jpg",
                         }
                 },

@@ -10,6 +10,15 @@ using tfgame.ViewModels;
 
 namespace tfgame.Procedures
 {
+
+    public class StatsDetailsMap
+    {
+        public string FriendlyName { get; set; }
+        public string Description { get; set; }
+        public string ImageUrl { get; set; }
+
+    }
+
     public static class StatsProcedures
     {
 
@@ -51,17 +60,271 @@ namespace tfgame.Procedures
         public const string Stat__DungeonDemonsDefeated = "dungeon_demons_defeated";
         public const string Stat__DungeonPointsStolen = "dungeon_points_stolen";
         public const string Stat__DungeonMovements = "dungeon_movements";
-        
 
-           //new Thread(() =>
-           //     StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__TimesMoved, 1)
-           // ).Start();
+        public static Dictionary<string, StatsDetailsMap> StatTypesMap = new Dictionary<string, StatsDetailsMap> {
+           
+        {
+                Stat__SearchCount,
+                    new StatsDetailsMap{
+                        FriendlyName = "Hawkeye",
+                        Description="Times searched",
+                        ImageUrl="trophy.jpg",
+                        }
+                    
+                    },
+
+                {
+                Stat__SpellsCast,
+                    new StatsDetailsMap{
+                        FriendlyName = "Quantity not Quality!",
+                        Description="Spells cast",
+                        ImageUrl="trophy.jpg",
+                        }
+                },
+                
+                {
+                Stat__TimesMoved,
+                    new StatsDetailsMap{
+                        FriendlyName = "The Restless One",
+                        Description="Times moved",
+                        ImageUrl="trophy.jpg",
+                        }
+                },
+
+                 {
+                Stat__TimesCleansed,
+                    new StatsDetailsMap{
+                        FriendlyName = "Hypochondriac",
+                        Description="Times cleansed",
+                        ImageUrl="trophy.jpg",
+                        }
+                },
+
+                  {
+                Stat__TimesMeditated,
+                    new StatsDetailsMap{
+                        FriendlyName="Lost in Thought",
+                        Description="Times meditated",
+                        ImageUrl="trophy.jpg",
+                        }
+                },
+
+                 {
+                Stat__TimesEnchanted,
+                    new StatsDetailsMap{
+                        FriendlyName="____ the Enchanter",
+                        Description="Times enchanting",
+                        ImageUrl="trophy.jpg",
+                        }
+                },
+
+                 {
+                Stat__CovenantDonationTotal,
+                    new StatsDetailsMap{
+                        FriendlyName = "Fundraiser Fanatic",
+                        Description="Arpyjis donated to covenant",
+                        ImageUrl="trophy.jpg",
+                        }
+                },
+
+                 {
+                Stat__CovenantGiftsReceived,
+                    new StatsDetailsMap{
+                        FriendlyName="The Embezzler",
+                        Description="Arpeyhis received from covenant",
+                        ImageUrl="trophy.jpg",
+                        }
+                },
+
+                 {
+                Stat__TimesAnimateTFed,
+                    new StatsDetailsMap{
+                        FriendlyName="What's My Form Again?",
+                        Description="Times transformed into an animate form",
+                        ImageUrl="trophy.jpg",
+                        }
+                },
+
+                 {
+                Stat__TimesInanimateTFed,
+                    new StatsDetailsMap{
+                        FriendlyName="The Inanimated",
+                        Description="Timed transformed into an inanimate form",
+                        ImageUrl="trophy.jpg",
+                        }
+                },
+
+                 {
+                Stat__TimesAnimalTFed,
+                    new StatsDetailsMap{
+                        FriendlyName="Nothin' But a Hound Dog",
+                        Description="Times transformed into a pet form",
+                        ImageUrl="trophy.jpg",
+                        }
+                },
+
+                 {
+                Stat__TimesAnimateTFing,
+                    new StatsDetailsMap{
+                        FriendlyName="The Animator",
+                        Description="Targets transformed into an animate form",
+                        ImageUrl="trophy.jpg",
+                        }
+                },
+
+                 {
+                Stat__TimesInanimateTFing,
+                    new StatsDetailsMap{
+                        FriendlyName="The Inanimator",
+                        Description="Targets transformed into an inanimate form",
+                        ImageUrl="trophy.jpg",
+                        }
+                },
+
+                 {
+                Stat__TimesAnimalTFing,
+                    new StatsDetailsMap{
+                        FriendlyName="Petmaker",
+                        Description="Targets transformed into a pet form",
+                        ImageUrl="trophy.jpg",
+                        }
+                },
+
+                 {
+                Stat__PsychopathsDefeated,
+                    new StatsDetailsMap{
+                        FriendlyName="Psycho Hunter",
+                        Description="Psychopathic Spellslingers defeated",
+                        ImageUrl="trophy.jpg",
+                        }
+                },
+
+                 {
+                Stat__TimesTeleported_Scroll,
+                    new StatsDetailsMap{
+                        FriendlyName="Fast Commute",
+                        Description="Teleport scrolls used",
+                        ImageUrl="trophy.jpg",
+                        }
+                },
+
+                 {
+                Stat__JewdewfaeEncountersCompleted,
+                    new StatsDetailsMap{
+                        FriendlyName="Friend of the Fae",
+                        Description="Times played with Jewdewfae",
+                        ImageUrl="trophy.jpg",
+                        }
+                },
+
+                 {
+                Stat__LoreBooksRead,
+                    new StatsDetailsMap{
+                        FriendlyName="Nerrrrrd!",
+                        Description="Tomes ready.",
+                        ImageUrl="trophy.jpg",
+                        }
+                },
+
+                  {
+                Stat__InanimateXPEarned,
+                    new StatsDetailsMap{
+                        FriendlyName="Rub Rub Rub",
+                        Description="XP gained as an inanimate item",
+                        ImageUrl="trophy.jpg",
+                        }
+                },
+
+                   {
+                Stat__PetXPEarned,
+                    new StatsDetailsMap{
+                        FriendlyName="Petter off this Way",
+                        Description="XP gained as an pet.",
+                        ImageUrl="trophy.jpg",
+                        }
+                },
+
+                   {
+                Stat__LindellaCostsAmount,
+                    new StatsDetailsMap{
+                        FriendlyName="Shop 'Til You Drop",
+                        Description="Arpeyjis spent buying from Lindella",
+                        ImageUrl="trophy.jpg",
+                        }
+                },
+
+                   {
+                Stat__LindellaProfitsAmount,
+                    new StatsDetailsMap{
+                        FriendlyName="Soul Item Business Sense",
+                        Description="Arpeyjis earned selling to Lindella",
+                        ImageUrl="trophy.jpg",
+                        }
+                },
+
+                   {
+                Stat__WuffieCostsAmount,
+                    new StatsDetailsMap{
+                        FriendlyName="Puppy Miller",
+                        Description="Arpeyjis spent buying from Wuffie",
+                        ImageUrl="trophy.jpg",
+                        }
+                },
+
+                   {
+                Stat__WuffieProfitsAmount,
+                    new StatsDetailsMap{
+                        FriendlyName="Puppy Power!",
+                        Description="Most Arpeyjis earned selling to Lindella",
+                        ImageUrl="trophy.jpg",
+                        }
+                },
+
+                   {
+                Stat__DungeonArtifactsFound,
+                    new StatsDetailsMap{
+                        FriendlyName="Dungeon Looter",
+                        Description="Dungeon artifacts found",
+                        ImageUrl="trophy.jpg",
+                        }
+                },
+
+                   {
+                Stat__DungeonDemonsDefeated,
+                    new StatsDetailsMap{
+                        FriendlyName="Demonslayer",
+                        Description="Dungeon demons defeated",
+                        ImageUrl="trophy.jpg",
+                        }
+                },
+
+                   {
+                Stat__DungeonPointsStolen,
+                    new StatsDetailsMap{
+                        FriendlyName="Dungeon Assassin",
+                        Description="Dungeon points stolen from victims",
+                        ImageUrl="trophy.jpg",
+                        }
+                },
+
+                   {
+                Stat__DungeonMovements,
+                    new StatsDetailsMap{
+                        FriendlyName="Dungeon Crawler",
+                        Description="Times moved in the dungeon.",
+                        ImageUrl="trophy.jpg",
+                        }
+                },
+               
+
+            };
+
 
         public static void AddStat(string membershipId, string type, float amount)
         {
             // don't keep stats for an AI characters
 
-          //  if (membershipId > 0 && PvPStatics.ChaosMode == false) 
+            //  if (membershipId > 0 && PvPStatics.ChaosMode == false) 
             if (PlayerProcedures.GetPlayerFromMembership(membershipId).BotId == AIStatics.ActivePlayerBotId)
             {
                 IAchievementRepository repo = new EFAchievementRepository();
@@ -99,8 +362,8 @@ namespace tfgame.Procedures
             IAchievementRepository repo = new EFAchievementRepository();
             IPlayerRepository playerRepo = new EFPlayerRepository();
 
-         // return repo.Achievements.GroupBy(a => a.AchievementType).OrderByDescending(a => a.Amount).First();
-          //  IEnumerable<Achievement> output = repo.Achievements.OrderByDescending(t => t.Amount).GroupBy(t => t.AchievementType).First();
+            // return repo.Achievements.GroupBy(a => a.AchievementType).OrderByDescending(a => a.Amount).First();
+            //  IEnumerable<Achievement> output = repo.Achievements.OrderByDescending(t => t.Amount).GroupBy(t => t.AchievementType).First();
 
             //IEnumerable<Achievement> output = from a in repo.Achievements
             //                                  group a by a.AchievementType into dptgrp
@@ -116,14 +379,15 @@ namespace tfgame.Procedures
 
             List<PlayerAchievementViewModel> output = new List<PlayerAchievementViewModel>();
 
-            foreach (Achievement t in types) {
+            foreach (Achievement t in types)
+            {
                 Achievement a = repo.Achievements.Where(b => b.AchievementType == t.AchievementType).OrderByDescending(b => b.Amount).FirstOrDefault();
 
                 if (a != null)
                 {
                     PlayerAchievementViewModel addMe = new PlayerAchievementViewModel
                     {
-                        Player = playerRepo.Players.FirstOrDefault(p => p.MembershipId == a.OwnerMembershipId),
+                        Player = PlayerProcedures.GetPlayerFormViewModel_FromMembership(a.OwnerMembershipId),
                         Achivement = a,
                     };
                     output.Add(addMe);

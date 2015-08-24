@@ -710,6 +710,7 @@
     <Content Include="Images\PvP\Icons\pvp.png" />
     <Content Include="Images\PvP\Icons\rp.png" />
     <Content Include="Images\PvP\Icons\target.png" />
+    <Content Include="Images\PvP\Icons\trophy.jpg" />
     <Content Include="Images\PvP\Icons\tt_logo.ico" />
     <Content Include="Images\PvP\itemsPortraits\3tiered_skirt_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\5_inch_heels_Meddle.png" />

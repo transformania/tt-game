@@ -1071,21 +1071,13 @@ strong {
 .userlistRow:hover {
   color: black !important; }
 
-.helpModal {
-        background-color: #FFC0CB;
-        display: none;
-        position: fixed;
-        left: 25%;
-        width: 50%;
-        height: 800px;
-        top: 25px;
-        z-index: 1000;
-        border: 3px solid #F00;
-        padding: 10px;
-        overflow: scroll;
-        overflow: scroll;
-    }
-
-#
+.stats-leader {
+  text-align: center;
+  height: 210px;
+  padding: 15px;
+  border: 2px #734752 dashed;
+  border-top: 2px #734752 solid;
+  background: #DFCBBF;
+  overflow: hidden; }
 
 /*# sourceMappingURL=custom.css.map */

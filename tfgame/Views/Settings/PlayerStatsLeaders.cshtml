@@ -27,21 +27,22 @@
 <div class="containerInner">
 
     <h1>Statistics Leaders</h1>
-
-    @{
-        foreach (string f in tfgame.Procedures.StatsProcedures.StatTypesMap.Keys)
-        {
-            PlayerAchievementViewModel ach = Model.FirstOrDefault(a => a.Achivement.AchievementType == f);
-            <img src="~/Images/PvP/Icons/@StatsProcedures.StatTypesMap[f].ImageUrl" height="100px" width="100px" />
-            <h3>@StatsProcedures.StatTypesMap[f].FriendlyName</h3>
-            <p><i>@StatsProcedures.StatTypesMap[f].Description</i></p>
-            <p>@Html.ActionLink(ach.Player.Player.GetFullName(), "LookAtPlayer", "PvP", new { id = ach.Player.Player.Id }, null)</p>
-        @tfgame.CustomHtmlHelpers.CharactersHere.PrintOwnerSubPortrait(ach.Player)
-
-        <hr />
+    <div class="row">
+        @{
+            foreach (string f in tfgame.Procedures.StatsProcedures.StatTypesMap.Keys)
+            {
+                PlayerAchievementViewModel ach = Model.FirstOrDefault(a => a.Achivement.AchievementType == f);
+                <div class="col-md-4 stats-leader">
+                    <img src="~/Images/PvP/Icons/@StatsProcedures.StatTypesMap[f].ImageUrl" style="height:100px; width: 100px; margin: 3px; float:right;" /> @tfgame.CustomHtmlHelpers.CharactersHere.PrintOwnerSubPortrait(ach.Player)
+                    <h3 style="margin-top:110px !important;">@StatsProcedures.StatTypesMap[f].FriendlyName</h3>
+                    <p><i>@StatsProcedures.StatTypesMap[f].Description</i></p>
+                    <p>@Html.ActionLink(ach.Player.Player.GetFullName(), "LookAtPlayer", "PvP", new { id = ach.Player.Player.Id }, null)</p>
+                    
+                </div>
+                                
+            }
         }
-    }
-
+    </div>
 
 
 

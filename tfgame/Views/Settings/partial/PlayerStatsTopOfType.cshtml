@@ -10,7 +10,7 @@
         foreach (PlayerAchievementViewModel p in Model)
         {
             <h4>
-                @i.  @p.Player.Player.GetFullName() (@Math.Floor(p.Achivement.Amount))
+                @i.  @p.Player.Player.GetFullName() (@String.Format("{0:n0}",p.Achivement.Amount))
             </h4>
             i++;
         }

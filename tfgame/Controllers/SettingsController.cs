@@ -724,6 +724,12 @@ namespace tfgame.Controllers
             return View(output);
         }
 
+        public ActionResult PlayerStatsTopOfType(string type)
+        {
+            IEnumerable<PlayerAchievementViewModel> output = StatsProcedures.GetLeaderPlayersInStat(type);
+            return PartialView("partial/PlayerStatsTopOfType", output);
+        }
+
         [Authorize]
         public ActionResult SetFriendNickname(int id)
         {

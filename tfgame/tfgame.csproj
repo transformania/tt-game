@@ -2388,6 +2388,7 @@
     <Content Include="Views\PvP\RoundLeaderboards\XP\Alpha_23.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_23.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Statistics\Alpha_23.cshtml" />
+    <Content Include="Views\Settings\partial\PlayerStatsTopOfType.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

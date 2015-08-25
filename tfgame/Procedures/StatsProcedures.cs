@@ -357,6 +357,30 @@ namespace tfgame.Procedures
             return repo.Achievements.Where(a => a.OwnerMembershipId == membershipId);
         }
 
+        public static IEnumerable<PlayerAchievementViewModel> GetLeaderPlayersInStat(string type)
+        {
+            IAchievementRepository repo = new EFAchievementRepository();
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+
+            List<Achievement> x = repo.Achievements.Where(a => a.AchievementType == type).OrderByDescending(s => s.Amount).ThenByDescending(a => a.Timestamp).Take(10).ToList();
+            List<PlayerAchievementViewModel> output = new List<PlayerAchievementViewModel>();
+
+            foreach (Achievement a in x)
+            {
+                if (a != null)
+                {
+                    PlayerAchievementViewModel addMe = new PlayerAchievementViewModel
+                    {
+                        Player = PlayerProcedures.GetPlayerFormViewModel_FromMembership(a.OwnerMembershipId),
+                        Achivement = a,
+                    };
+                    output.Add(addMe);
+                }
+            }
+            return output;
+
+        }
+
         public static IEnumerable<PlayerAchievementViewModel> GetPlayerMaxStats()
         {
             IAchievementRepository repo = new EFAchievementRepository();

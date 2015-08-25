@@ -39,7 +39,7 @@
                     <p><i>@StatsProcedures.StatTypesMap[f].Description:</i> <b>@ach.Achivement.Amount</b></p>
                     <p>@Html.ActionLink(ach.Player.Player.GetFullName(), "LookAtPlayer", "PvP", new { id = ach.Player.Player.Id }, null)
                     
-                        @Ajax.ActionLink("[+]", "PlayerStatsTopOfType", "Settings", new { type = ach.Achivement.AchievementType }, new AjaxOptions { UpdateTargetId = "more_" + f, InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "failure", OnBegin = "waiting" }, new { @class = "" })
+                        @Ajax.ActionLink("[+]", "PlayerStatsTopOfType", "Settings", new { type = ach.Achivement.AchievementType }, new AjaxOptions { UpdateTargetId = "more_" + f, InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "failure", OnBegin = "waiting" }, new { @class = "attackLink" })
 
                     </p>
 

@@ -65,11 +65,12 @@
     function success(panel) {
         //alert(panel);
         var button = $("#" + panel);
+        button.parent().parent().css("height", "484px");
         button.replaceWith("<p>------------------</p>");
     }
 
     function failure() {
-      
+        alert("Juderp!  Failed to contact server!");
     }
 
     function waiting() {

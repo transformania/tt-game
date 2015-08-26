@@ -2946,6 +2946,34 @@ namespace tfgame.Controllers
 
         }
 
+        [Authorize]
+        public ActionResult AssignLeadersBadges()
+        {
+
+            string myMembershipId = User.Identity.GetUserId();
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            {
+                return RedirectToAction("Play", "PvP");
+            }
+
+            if (PvPStatics.ChaosMode==true)
+            {
+                TempData["Error"] = "Can't do this in chaos mode.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            if (PvPWorldStatProcedures.GetWorldTurnNumber() != PvPStatics.RoundDuration)
+            {
+                TempData["Error"] = "Turn must be the final turn of the round for this to work.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            string output = StatsProcedures.AssignLeadersBadges();
+
+            TempData["Result"] = output;
+            return RedirectToAction("Play", "PvP");
+        }
+
 
 
     }

@@ -422,5 +422,46 @@ namespace tfgame.Procedures
             return output;
 
         }
+
+        public static string AssignLeadersBadges()
+        {
+            IAchievementBadgeRepository badgeRepo = new EFAchievementBadgeRepository();
+
+            List<PlayerAchievementViewModel> winners = GetPlayerMaxStats().ToList();
+            string output = "";
+
+            string round = PvPStatics.AlphaRound;
+
+            foreach (PlayerAchievementViewModel a in winners)
+            {
+                AchievementBadge badge = badgeRepo.AchievementBadges.FirstOrDefault(b => b.AchievementType == a.Achivement.AchievementType && b.OwnerMembershipId == a.Player.Player.MembershipId && b.Round == round);
+
+                string nextline = "<b>" + a.Achivement.AchievementType + "</b> for round <b>" + round + "</b> being assigned to <b>" + a.Player.Player.GetFullName() + "</b> of ID " + a.Player.Player.MembershipId + ".  ";
+
+                if (badge == null)
+                {
+                    badge = new AchievementBadge
+                    {
+                        OwnerMembershipId = a.Player.Player.MembershipId,
+                        Round = round,
+                    };
+                    nextline += "No existing badge found.  Making new one.";
+                }
+                else
+                {
+                    nextline += "EXISTING BADGE FOUND.  Updating.";
+                }
+
+                badge.Amount = a.Achivement.Amount;
+                badge.AchievementType = a.Achivement.AchievementType;
+
+                badgeRepo.SaveAchievementBadge(badge);
+                output += nextline + "<br><br>";
+
+            }
+
+            return output;
+
+        }
     }
 }

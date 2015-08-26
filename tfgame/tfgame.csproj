@@ -241,6 +241,7 @@
     <Compile Include="Controllers\PvPController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="CustomHtmlHelpers\CharactersHere.cs" />
+    <Compile Include="dbModels\Abstract\IAchievementBadgeRepository.cs" />
     <Compile Include="dbModels\Abstract\IAchievementRepository.cs" />
     <Compile Include="dbModels\Abstract\IAIDirective.cs" />
     <Compile Include="dbModels\Abstract\IAuthorArtistBioRepository.cs" />
@@ -291,6 +292,7 @@
     <Compile Include="dbModels\Command.cs" />
     <Compile Include="dbModels\Commands\ChatLog\WriteLogToDatabase.cs" />
     <Compile Include="dbModels\Commands\Player\MarkOnlineActivityTimestamp.cs" />
+    <Compile Include="dbModels\Concrete\EFAchievementBadgeRepository.cs" />
     <Compile Include="dbModels\Concrete\EFAchievementRepository.cs" />
     <Compile Include="dbModels\Concrete\EFAuthorArtistBioRepository.cs" />
     <Compile Include="dbModels\Concrete\EFBlacklistEntryRepository.cs" />
@@ -317,6 +319,7 @@
     <Compile Include="dbModels\Concrete\EFRPPointRespository.cs" />
     <Compile Include="dbModels\Concrete\EFTFMessageRepository.cs" />
     <Compile Include="dbModels\DomainRegistry.cs" />
+    <Compile Include="dbModels\Models\AchevementBadge.cs" />
     <Compile Include="dbModels\Models\Achievement.cs" />
     <Compile Include="dbModels\Models\AuthorArtistBio.cs" />
     <Compile Include="dbModels\Models\BlacklistEntry.cs" />
@@ -1965,7 +1968,9 @@
     <Content Include="Content\fashion.css.map" />
     <Content Include="Content\fashion.scss" />
     <Content Include="Content\custom.css.map" />
-    <Content Include="ConnectionStrings.config" />
+    <Content Include="ConnectionStrings.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="MachineKey.config" />
     <None Include="Properties\PublishProfiles\transformania-time.com - Web Deploy.pubxml">
       <SubType>Designer</SubType>
@@ -2389,6 +2394,10 @@
     <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_23.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Statistics\Alpha_23.cshtml" />
     <Content Include="Views\Settings\partial\PlayerStatsTopOfType.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\Statistics\Alpha_24.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\Alpha_24.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\XP\Alpha_24.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_24.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

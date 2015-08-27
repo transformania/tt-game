@@ -452,6 +452,7 @@
     <Compile Include="Statics\TrustStatics.cs" />
     <Compile Include="ViewModels\BalancePageViewModel.cs" />
     <Compile Include="ViewModels\BioPageContributionViewModel.cs" />
+    <Compile Include="ViewModels\BioPageViewModel.cs" />
     <Compile Include="ViewModels\BlacklistEntryViewModel.cs" />
     <Compile Include="ViewModels\BossSummon.cs" />
     <Compile Include="ViewModels\BuffBox.cs" />

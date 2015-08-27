@@ -463,5 +463,12 @@ namespace tfgame.Procedures
             return output;
 
         }
+
+        public static IEnumerable<AchievementBadge> GetPlayerBadges(string membershipId)
+        {
+            IAchievementBadgeRepository repo = new EFAchievementBadgeRepository();
+
+            return repo.AchievementBadges.Where(b => b.OwnerMembershipId == membershipId);
+        }
     }
 }

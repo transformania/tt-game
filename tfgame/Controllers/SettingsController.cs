@@ -243,13 +243,20 @@ namespace tfgame.Controllers
          {
              Player player = PlayerProcedures.GetPlayerFromMembership(id);
              ViewBag.Name = player.GetFullName();
-             PlayerBio output = SettingsProcedures.GetPlayerBioFromMembershipId(id);
 
-             if (output == null)
+             BioPageViewModel output = new BioPageViewModel();
+             try
+             {
+                 output.PlayerBio = SettingsProcedures.GetPlayerBioFromMembershipId(id);
+             }
+             catch
              {
                  TempData["Error"] = "It seems that this player has not written a player biography yet.";
                  return RedirectToAction("Play", "PvP");
              }
+
+             output.Badges = StatsProcedures.GetPlayerBadges(player.MembershipId);
+
 
             IContributionRepository contributionRepo = new EFContributionRepository();
 

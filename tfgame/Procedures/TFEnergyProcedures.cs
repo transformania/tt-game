@@ -162,33 +162,33 @@ namespace tfgame.Procedures
 
             if (percentTransformed < 0.20m || percentTransformedByHealth < 0.20m)
             {
-                output.AttackerLog += GetTFMessage(eventualForm, victim, "20", "third") + " (" + percentPrintedOutput + "%)";
-                output.VictimLog += GetTFMessage(eventualForm, victim, "20", "first") + " (" + percentPrintedOutput + "%)";
+                output.AttackerLog += GetTFMessage(eventualForm, victim, attacker, "20", "third") + " (" + percentPrintedOutput + "%)";
+                output.VictimLog += GetTFMessage(eventualForm, victim, attacker, "20", "first") + " (" + percentPrintedOutput + "%)";
             }
             else if (percentTransformed < 0.40m || percentTransformedByHealth < 0.40m)
             {
-                output.AttackerLog += GetTFMessage(eventualForm, victim, "40", "third") + " (" + percentPrintedOutput + "%)";
-                output.VictimLog += GetTFMessage(eventualForm, victim, "40", "first") + " (" + percentPrintedOutput + "%)";
+                output.AttackerLog += GetTFMessage(eventualForm, victim, attacker, "40", "third") + " (" + percentPrintedOutput + "%)";
+                output.VictimLog += GetTFMessage(eventualForm, victim, attacker, "40", "first") + " (" + percentPrintedOutput + "%)";
             }
             else if (percentTransformed < 0.60m || percentTransformedByHealth < 0.60m)
             {
-                output.AttackerLog += GetTFMessage(eventualForm, victim, "60", "third") + " (" + percentPrintedOutput + "%)";
-                output.VictimLog += GetTFMessage(eventualForm, victim, "60", "first") + " (" + percentPrintedOutput + "%)";
+                output.AttackerLog += GetTFMessage(eventualForm, victim, attacker, "60", "third") + " (" + percentPrintedOutput + "%)";
+                output.VictimLog += GetTFMessage(eventualForm, victim, attacker, "60", "first") + " (" + percentPrintedOutput + "%)";
             }
             else if (percentTransformed < 0.80m || percentTransformedByHealth < 0.80m)
             {
-                output.AttackerLog += GetTFMessage(eventualForm, victim, "80", "third") + " (" + percentPrintedOutput + "%)";
-                output.VictimLog += GetTFMessage(eventualForm, victim, "80", "first") + " (" + percentPrintedOutput + "%)";
+                output.AttackerLog += GetTFMessage(eventualForm, victim, attacker, "80", "third") + " (" + percentPrintedOutput + "%)";
+                output.VictimLog += GetTFMessage(eventualForm, victim, attacker, "80", "first") + " (" + percentPrintedOutput + "%)";
             }
             else if (percentTransformed < 1 || percentTransformedByHealth < 1)
             {
-                output.AttackerLog += GetTFMessage(eventualForm, victim, "100", "third") + " (" + percentPrintedOutput + "%)";
-                output.VictimLog += GetTFMessage(eventualForm, victim, "100", "first") + " (" + percentPrintedOutput + "%)";
+                output.AttackerLog += GetTFMessage(eventualForm, victim, attacker, "100", "third") + " (" + percentPrintedOutput + "%)";
+                output.VictimLog += GetTFMessage(eventualForm, victim, attacker, "100", "first") + " (" + percentPrintedOutput + "%)";
             }
             else if (percentTransformed >= 1)
             {
-                output.AttackerLog += GetTFMessage(eventualForm, victim, "complete", "third") + " (" + percentPrintedOutput + "%)";
-                output.VictimLog += GetTFMessage(eventualForm, victim, "complete", "first") + " (" + percentPrintedOutput + "%)";
+                output.AttackerLog += GetTFMessage(eventualForm, victim, attacker, "complete", "third") + " (" + percentPrintedOutput + "%)";
+                output.VictimLog += GetTFMessage(eventualForm, victim, attacker, "complete", "first") + " (" + percentPrintedOutput + "%)";
             }
 
             // calculate the xp earned for this transformation
@@ -630,7 +630,19 @@ namespace tfgame.Procedures
             }
         }
 
-        private static string GetTFMessage(DbStaticForm form, Player player, string percent, string PoV)
+        private static string CleanString(string input, Player victim, Player attacker)
+        {
+            if (input == null)
+            {
+                return null;
+            }
+            else
+            {
+                return input.Trim().Replace("$VICTIM_NAME$", victim.GetFullName()).Replace("$ATTACKER_NAME$", attacker.GetFullName());
+            }
+        }
+
+        private static string GetTFMessage(DbStaticForm form, Player player, Player attacker, string percent, string PoV)
         {
 
             ITFMessageRepository tfMessageRepo = new EFTFMessageRepository();
@@ -650,11 +662,11 @@ namespace tfgame.Procedures
                     {
                         if (tfMessage.TFMessage_20_Percent_1st_M != null && tfMessage.TFMessage_20_Percent_1st_M != "")
                         {
-                            return tfMessage.TFMessage_20_Percent_1st_M;
+                            return CleanString(tfMessage.TFMessage_20_Percent_1st_M, player, attacker);
                         }
                         else
                         {
-                            return tfMessage.TFMessage_20_Percent_1st;
+                            return CleanString(tfMessage.TFMessage_20_Percent_1st, player, attacker);
                         }
 
                     }
@@ -662,11 +674,11 @@ namespace tfgame.Procedures
                     {
                         if (tfMessage.TFMessage_20_Percent_3rd_M != null && tfMessage.TFMessage_20_Percent_3rd_M != "")
                         {
-                            return tfMessage.TFMessage_20_Percent_3rd_M;
+                            return CleanString(tfMessage.TFMessage_20_Percent_3rd_M, player, attacker);
                         }
                         else
                         {
-                            return tfMessage.TFMessage_20_Percent_3rd;
+                            return CleanString(tfMessage.TFMessage_20_Percent_1st_M, player, attacker);
                         }
                     }
                 } 
@@ -676,11 +688,11 @@ namespace tfgame.Procedures
                     {
                         if (tfMessage.TFMessage_20_Percent_1st_F != null && tfMessage.TFMessage_20_Percent_1st_F != "")
                         {
-                            return tfMessage.TFMessage_20_Percent_1st_F;
+                            return CleanString(tfMessage.TFMessage_20_Percent_1st_F, player, attacker);
                         }
                         else
                         {
-                            return tfMessage.TFMessage_20_Percent_1st;
+                            return CleanString(tfMessage.TFMessage_20_Percent_1st, player, attacker);
                         }
 
                     }
@@ -688,11 +700,11 @@ namespace tfgame.Procedures
                     {
                         if (tfMessage.TFMessage_20_Percent_3rd_F != null && tfMessage.TFMessage_20_Percent_3rd_F != "")
                         {
-                            return tfMessage.TFMessage_20_Percent_3rd_F;
+                            return CleanString(tfMessage.TFMessage_20_Percent_3rd_F, player, attacker);
                         }
                         else
                         {
-                            return tfMessage.TFMessage_20_Percent_3rd;
+                            return CleanString(tfMessage.TFMessage_20_Percent_3rd, player, attacker);
                         }
                     }
                 }
@@ -708,11 +720,11 @@ namespace tfgame.Procedures
                     {
                         if (tfMessage.TFMessage_40_Percent_1st_M != null && tfMessage.TFMessage_40_Percent_1st_M != "")
                         {
-                            return tfMessage.TFMessage_40_Percent_1st_M;
+                            return CleanString(tfMessage.TFMessage_40_Percent_1st_M, player, attacker);
                         }
                         else
                         {
-                            return tfMessage.TFMessage_40_Percent_1st;
+                            return CleanString(tfMessage.TFMessage_40_Percent_1st, player, attacker);
                         }
 
                     }
@@ -720,11 +732,11 @@ namespace tfgame.Procedures
                     {
                         if (tfMessage.TFMessage_40_Percent_3rd_M != null && tfMessage.TFMessage_40_Percent_3rd_M != "")
                         {
-                            return tfMessage.TFMessage_40_Percent_3rd_M;
+                            return CleanString(tfMessage.TFMessage_40_Percent_3rd_M, player, attacker);
                         }
                         else
                         {
-                            return tfMessage.TFMessage_40_Percent_3rd;
+                            return CleanString(tfMessage.TFMessage_40_Percent_3rd, player, attacker);
                         }
                     }
                 }
@@ -734,11 +746,11 @@ namespace tfgame.Procedures
                     {
                         if (tfMessage.TFMessage_40_Percent_1st_F != null && tfMessage.TFMessage_40_Percent_1st_F != "")
                         {
-                            return tfMessage.TFMessage_40_Percent_1st_F;
+                            return CleanString(tfMessage.TFMessage_40_Percent_1st_F, player, attacker);
                         }
                         else
                         {
-                            return tfMessage.TFMessage_40_Percent_1st;
+                            return CleanString(tfMessage.TFMessage_40_Percent_1st, player, attacker);
                         }
 
                     }
@@ -746,11 +758,11 @@ namespace tfgame.Procedures
                     {
                         if (tfMessage.TFMessage_40_Percent_3rd_F != null && tfMessage.TFMessage_40_Percent_3rd_F != "")
                         {
-                            return tfMessage.TFMessage_40_Percent_3rd_F;
+                            return CleanString(tfMessage.TFMessage_40_Percent_3rd_F, player, attacker);
                         }
                         else
                         {
-                            return tfMessage.TFMessage_40_Percent_3rd;
+                            return CleanString(tfMessage.TFMessage_40_Percent_3rd, player, attacker);
                         }
                     }
                 }
@@ -766,11 +778,11 @@ namespace tfgame.Procedures
                     {
                         if (tfMessage.TFMessage_60_Percent_1st_M != null && tfMessage.TFMessage_60_Percent_1st_M != "")
                         {
-                            return tfMessage.TFMessage_60_Percent_1st_M;
+                            return CleanString(tfMessage.TFMessage_60_Percent_1st_M, player, attacker);
                         }
                         else
                         {
-                            return tfMessage.TFMessage_60_Percent_1st;
+                            return CleanString(tfMessage.TFMessage_60_Percent_1st, player, attacker);
                         }
 
                     }
@@ -778,11 +790,11 @@ namespace tfgame.Procedures
                     {
                         if (tfMessage.TFMessage_60_Percent_3rd_M != null && tfMessage.TFMessage_60_Percent_3rd_M != "")
                         {
-                            return tfMessage.TFMessage_60_Percent_3rd_M;
+                            return CleanString(tfMessage.TFMessage_60_Percent_3rd_M, player, attacker);
                         }
                         else
                         {
-                            return tfMessage.TFMessage_60_Percent_3rd;
+                            return CleanString(tfMessage.TFMessage_60_Percent_3rd, player, attacker);
                         }
                     }
                 }
@@ -792,11 +804,11 @@ namespace tfgame.Procedures
                     {
                         if (tfMessage.TFMessage_60_Percent_1st_F != null && tfMessage.TFMessage_60_Percent_1st_F != "")
                         {
-                            return tfMessage.TFMessage_60_Percent_1st_F;
+                            return CleanString(tfMessage.TFMessage_60_Percent_1st_F, player, attacker);
                         }
                         else
                         {
-                            return tfMessage.TFMessage_60_Percent_1st;
+                            return CleanString(tfMessage.TFMessage_60_Percent_1st, player, attacker);
                         }
 
                     }
@@ -804,11 +816,11 @@ namespace tfgame.Procedures
                     {
                         if (tfMessage.TFMessage_60_Percent_3rd_F != null && tfMessage.TFMessage_60_Percent_3rd_F != "")
                         {
-                            return tfMessage.TFMessage_60_Percent_3rd_F;
+                            return CleanString(tfMessage.TFMessage_60_Percent_3rd_F, player, attacker);
                         }
                         else
                         {
-                            return tfMessage.TFMessage_60_Percent_3rd;
+                            return CleanString(tfMessage.TFMessage_60_Percent_3rd, player, attacker);
                         }
                     }
                 }
@@ -824,11 +836,11 @@ namespace tfgame.Procedures
                     {
                         if (tfMessage.TFMessage_80_Percent_1st_M != null && tfMessage.TFMessage_80_Percent_1st_M != "")
                         {
-                            return tfMessage.TFMessage_80_Percent_1st_M;
+                            return CleanString(tfMessage.TFMessage_80_Percent_1st_M, player, attacker);
                         }
                         else
                         {
-                            return tfMessage.TFMessage_80_Percent_1st;
+                            return CleanString(tfMessage.TFMessage_80_Percent_1st, player, attacker);
                         }
 
                     }
@@ -836,11 +848,11 @@ namespace tfgame.Procedures
                     {
                         if (tfMessage.TFMessage_80_Percent_3rd_M != null && tfMessage.TFMessage_80_Percent_3rd_M != "")
                         {
-                            return tfMessage.TFMessage_80_Percent_3rd_M;
+                            return CleanString(tfMessage.TFMessage_80_Percent_3rd_M, player, attacker);
                         }
                         else
                         {
-                            return tfMessage.TFMessage_80_Percent_3rd;
+                            return CleanString(tfMessage.TFMessage_80_Percent_3rd, player, attacker);
                         }
                     }
                 }
@@ -850,11 +862,11 @@ namespace tfgame.Procedures
                     {
                         if (tfMessage.TFMessage_80_Percent_1st_F != null && tfMessage.TFMessage_80_Percent_1st_F != "")
                         {
-                            return tfMessage.TFMessage_80_Percent_1st_F;
+                            return CleanString(tfMessage.TFMessage_80_Percent_1st_F, player, attacker);
                         }
                         else
                         {
-                            return tfMessage.TFMessage_80_Percent_1st;
+                            return CleanString(tfMessage.TFMessage_80_Percent_1st, player, attacker);
                         }
 
                     }
@@ -862,11 +874,11 @@ namespace tfgame.Procedures
                     {
                         if (tfMessage.TFMessage_80_Percent_3rd_F != null && tfMessage.TFMessage_80_Percent_3rd_F != "")
                         {
-                            return tfMessage.TFMessage_80_Percent_3rd_F;
+                            return CleanString(tfMessage.TFMessage_80_Percent_3rd_F, player, attacker);
                         }
                         else
                         {
-                            return tfMessage.TFMessage_80_Percent_3rd;
+                            return CleanString(tfMessage.TFMessage_80_Percent_3rd, player, attacker);
                         }
                     }
                 }
@@ -882,11 +894,11 @@ namespace tfgame.Procedures
                     {
                         if (tfMessage.TFMessage_100_Percent_1st_M != null && tfMessage.TFMessage_100_Percent_1st_M != "")
                         {
-                            return tfMessage.TFMessage_100_Percent_1st_M;
+                            return CleanString(tfMessage.TFMessage_100_Percent_1st_M, player, attacker);
                         }
                         else
                         {
-                            return tfMessage.TFMessage_100_Percent_1st;
+                            return CleanString(tfMessage.TFMessage_100_Percent_1st, player, attacker);
                         }
 
                     }
@@ -894,11 +906,11 @@ namespace tfgame.Procedures
                     {
                         if (tfMessage.TFMessage_100_Percent_3rd_M != null && tfMessage.TFMessage_100_Percent_3rd_M != "")
                         {
-                            return tfMessage.TFMessage_100_Percent_3rd_M;
+                            return CleanString(tfMessage.TFMessage_100_Percent_3rd_M, player, attacker);
                         }
                         else
                         {
-                            return tfMessage.TFMessage_100_Percent_3rd;
+                            return CleanString(tfMessage.TFMessage_100_Percent_3rd, player, attacker);
                         }
                     }
                 }
@@ -908,11 +920,11 @@ namespace tfgame.Procedures
                     {
                         if (tfMessage.TFMessage_100_Percent_1st_F != null && tfMessage.TFMessage_100_Percent_1st_F != "")
                         {
-                            return tfMessage.TFMessage_100_Percent_1st_F;
+                            return CleanString(tfMessage.TFMessage_100_Percent_1st_F, player, attacker);
                         }
                         else
                         {
-                            return tfMessage.TFMessage_100_Percent_1st;
+                            return CleanString(tfMessage.TFMessage_100_Percent_1st, player, attacker);
                         }
 
                     }
@@ -920,11 +932,11 @@ namespace tfgame.Procedures
                     {
                         if (tfMessage.TFMessage_100_Percent_3rd_F != null && tfMessage.TFMessage_100_Percent_3rd_F != "")
                         {
-                            return tfMessage.TFMessage_100_Percent_3rd_F;
+                            return CleanString(tfMessage.TFMessage_100_Percent_3rd_F, player, attacker);
                         }
                         else
                         {
-                            return tfMessage.TFMessage_100_Percent_3rd;
+                            return CleanString(tfMessage.TFMessage_100_Percent_3rd, player, attacker);
                         }
                     }
                 }
@@ -940,11 +952,11 @@ namespace tfgame.Procedures
                     {
                         if (tfMessage.TFMessage_Completed_1st_M != null && tfMessage.TFMessage_Completed_1st_M != "")
                         {
-                            return tfMessage.TFMessage_Completed_1st_M;
+                            return CleanString(tfMessage.TFMessage_Completed_1st_M, player, attacker);
                         }
                         else
                         {
-                            return tfMessage.TFMessage_Completed_1st;
+                            return CleanString(tfMessage.TFMessage_Completed_1st, player, attacker);
                         }
 
                     }
@@ -952,11 +964,11 @@ namespace tfgame.Procedures
                     {
                         if (tfMessage.TFMessage_Completed_3rd_M != null && tfMessage.TFMessage_Completed_3rd_M != "")
                         {
-                            return tfMessage.TFMessage_Completed_3rd_M;
+                            return CleanString(tfMessage.TFMessage_Completed_3rd_M, player, attacker);
                         }
                         else
                         {
-                            return tfMessage.TFMessage_Completed_3rd;
+                            return CleanString(tfMessage.TFMessage_Completed_3rd, player, attacker);
                         }
                     }
                 }
@@ -966,11 +978,11 @@ namespace tfgame.Procedures
                     {
                         if (tfMessage.TFMessage_Completed_1st_F != null && tfMessage.TFMessage_Completed_1st_F != "")
                         {
-                            return tfMessage.TFMessage_Completed_1st_F;
+                            return CleanString(tfMessage.TFMessage_Completed_1st_F, player, attacker);
                         }
                         else
                         {
-                            return tfMessage.TFMessage_Completed_1st;
+                            return CleanString(tfMessage.TFMessage_Completed_1st, player, attacker);
                         }
 
                     }
@@ -978,11 +990,11 @@ namespace tfgame.Procedures
                     {
                         if (tfMessage.TFMessage_Completed_3rd_F != null && tfMessage.TFMessage_Completed_3rd_F != "")
                         {
-                            return tfMessage.TFMessage_Completed_3rd_F;
+                            return CleanString(tfMessage.TFMessage_Completed_3rd_F, player, attacker);
                         }
                         else
                         {
-                            return tfMessage.TFMessage_Completed_3rd;
+                            return CleanString(tfMessage.TFMessage_Completed_3rd, player, attacker);
                         }
                     }
                 }

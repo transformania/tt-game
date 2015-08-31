@@ -41,6 +41,7 @@
                         <li>@Html.ActionLink("My Effects", "MyPerks", "PvP")</li>
                         <li>@Html.ActionLink("Mind Control", "MindControlList", "NPC")</li>
                         <li>@Html.ActionLink("Look at Yourself", "LookAtPlayer", "PvP", new { id = Model.You.Player.Id }, null)</li>
+                        <li>@Html.ActionLink("My Statistics", "PlayerStats", "Settings", new { id = Model.You.Player.MembershipId }, null)</li>
                     </ul>
                 </li>
                 <li>@Html.ActionLink("Friends", "MyFriends", "PvP")</li>

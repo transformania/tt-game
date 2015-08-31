@@ -1037,6 +1037,10 @@ namespace tfgame.Controllers
 
             TempData["Result"] = FurnitureProcedures.UseFurniture(id, me);
 
+            new Thread(() =>
+                 StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__CovenantFurnitureUsed, 1)
+             ).Start();
+
             return RedirectToAction("MyCovenant");
 
         }

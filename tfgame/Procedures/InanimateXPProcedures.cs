@@ -372,6 +372,11 @@ namespace tfgame.Procedures
                 }
 
                 PlayerLogProcedures.AddPlayerLog(dbPlayer.Id, msg, false);
+
+                new Thread(() =>
+                        StatsProcedures.AddStat(dbPlayer.MembershipId, StatsProcedures.Stat__SuccessfulStruggles, 1)
+                    ).Start();
+
                 return msg;
 
             }

@@ -9,6 +9,7 @@ using tfgame.dbModels.Concrete;
 using tfgame.dbModels.Models;
 using tfgame.Statics;
 using tfgame.ViewModels;
+using System.Threading;
 
 namespace tfgame.Procedures
 {
@@ -1465,6 +1466,10 @@ namespace tfgame.Procedures
                         return "You are a member of your covenant, but unfortunately your covenant has not yet established a safeground to call home so you are unable to use this item.";
                     }
 
+                    new Thread(() =>
+                        StatsProcedures.AddStat(owner.MembershipId, StatsProcedures.Stat__CovenantCallbackCrystalsUsed, 1)
+                    ).Start();
+
                     string output = PlayerProcedures.TeleportPlayer(owner, myCov.HomeLocation, true);
                     itemRepo.DeleteItem(itemPlus.dbItem.Id);
                     return output;
@@ -1556,6 +1561,14 @@ namespace tfgame.Procedures
 
                         itemRepo.SaveItem(thisdbItem);
                         playerRepo.SavePlayer(owner);
+
+                        if (itemPlus.Item.dbName == "item_Inflatable_Sex_Doll_LexamTheGemFox")
+                        {
+                            new Thread(() =>
+                                StatsProcedures.AddStat(owner.MembershipId, StatsProcedures.Stat__DollsWPRestored, (float)(itemPlus.Item.ReuseableHealthRestore + bonusFromLevelHealth))
+                            ).Start();
+                        }
+                        
 
                         return name + " used a " + itemPlus.Item.FriendlyName + ", immediately restoring " + (itemPlus.Item.ReuseableHealthRestore + bonusFromLevelHealth) + " willpower and " + (itemPlus.Item.ReuseableManaRestore + bonusFromLevelMana) + " mana.  " + owner.Health + "/" + owner.MaxHealth + " WP, " + owner.Mana + "/" + owner.MaxMana + " Mana";
 

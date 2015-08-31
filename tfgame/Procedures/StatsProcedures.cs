@@ -32,6 +32,7 @@ namespace tfgame.Procedures
 
         public const string Stat__CovenantDonationTotal = "covenant_donations";
         public const string Stat__CovenantGiftsReceived = "covenant_gif_receieved";
+        public const string Stat__CovenantFurnitureUsed = "covenant_furniture_used";
 
         public const string Stat__TimesAnimateTFed = "times_self_animated";
         public const string Stat__TimesInanimateTFed = "times_self_inanimated";
@@ -60,6 +61,13 @@ namespace tfgame.Procedures
         public const string Stat__DungeonDemonsDefeated = "dungeon_demons_defeated";
         public const string Stat__DungeonPointsStolen = "dungeon_points_stolen";
         public const string Stat__DungeonMovements = "dungeon_movements";
+
+        public const string Stat__SuccessfulStruggles = "times_struggled_free";
+
+        // items
+        public const string Stat__TransmogsUsed = "transmogs_used";
+        public const string Stat__CovenantCallbackCrystalsUsed = "callback_crystals_used";
+        public const string Stat__DollsWPRestored = "dolls_used";
 
         public static Dictionary<string, StatsDetailsMap> StatTypesMap = new Dictionary<string, StatsDetailsMap> {
            
@@ -118,11 +126,21 @@ namespace tfgame.Procedures
                         }
                 },
 
+                 // -------- COVENANT STUFF -------------
+
                  {
                 Stat__CovenantDonationTotal,
                     new StatsDetailsMap{
                         FriendlyName = "Fundraiser Fanatic",
                         Description="Arpyjis donated to covenant",
+                        ImageUrl="trophy.jpg",
+                        }
+                },
+                  {
+                Stat__CovenantFurnitureUsed,
+                    new StatsDetailsMap{
+                        FriendlyName = "Couch Potato",
+                        Description="Times using covenant furniture",
                         ImageUrl="trophy.jpg",
                         }
                 },
@@ -226,7 +244,7 @@ namespace tfgame.Procedures
                         }
                 },
 
-                  {
+                {
                 Stat__InanimateXPEarned,
                     new StatsDetailsMap{
                         FriendlyName="Rub Rub Rub",
@@ -235,7 +253,7 @@ namespace tfgame.Procedures
                         }
                 },
 
-                   {
+                {
                 Stat__PetXPEarned,
                     new StatsDetailsMap{
                         FriendlyName="Petter off this Way",
@@ -244,7 +262,7 @@ namespace tfgame.Procedures
                         }
                 },
 
-                   {
+                {
                 Stat__LindellaCostsAmount,
                     new StatsDetailsMap{
                         FriendlyName="Shop 'Til You Drop",
@@ -307,7 +325,7 @@ namespace tfgame.Procedures
                         }
                 },
 
-                   {
+                {
                 Stat__DungeonMovements,
                     new StatsDetailsMap{
                         FriendlyName="Dungeon Crawler",
@@ -315,7 +333,41 @@ namespace tfgame.Procedures
                         ImageUrl="trophy.jpg",
                         }
                 },
-               
+                {
+                Stat__SuccessfulStruggles,
+                    new StatsDetailsMap{
+                        FriendlyName="Freeeeedom!",
+                        Description="Times struggled back to an animate form",
+                        ImageUrl="trophy.jpg",
+                        }
+                },
+                {
+                Stat__TransmogsUsed,
+                    new StatsDetailsMap{
+                        FriendlyName="Maximally Transmogrified",
+                        Description="Autoselftransmogrification Deflector Devices used",
+                        ImageUrl="trophy.jpg",
+                        }
+                },
+                {
+                Stat__CovenantCallbackCrystalsUsed,
+                    new StatsDetailsMap{
+                        FriendlyName="Call of the Covenant",
+                        Description="Covenant Callback Crystals used",
+                        ImageUrl="trophy.jpg",
+                        }
+                },
+                {
+                Stat__DollsWPRestored,
+                    new StatsDetailsMap{
+                        FriendlyName="Dollyamory",
+                        Description="Willpower restored from using Inflatable Sex Dolls",
+                        ImageUrl="trophy.jpg",
+                        }
+                },
+
+
+
 
             };
 

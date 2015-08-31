@@ -98,6 +98,10 @@ namespace tfgame.Controllers
             DbStaticForm form = FormStatics.GetForm(skill.Skill.FormdbName);
             TempData["Result"] = "You use a " + itemToUse.Item.FriendlyName + ", your spell bouncing through the device for a second before getting flung back at you and hitting you square in the chest, instantly transforming you into a " + form.FriendlyName + "!";
 
+            new Thread(() =>
+                  StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__TransmogsUsed, 1)
+            ).Start();
+
             return RedirectToAction("Play", "PvP");
         }
 

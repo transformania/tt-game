@@ -1562,12 +1562,7 @@ namespace tfgame.Procedures
                         itemRepo.SaveItem(thisdbItem);
                         playerRepo.SavePlayer(owner);
 
-                        if (itemPlus.Item.dbName == "item_Inflatable_Sex_Doll_LexamTheGemFox")
-                        {
-                            new Thread(() =>
-                                StatsProcedures.AddStat(owner.MembershipId, StatsProcedures.Stat__DollsWPRestored, (float)(itemPlus.Item.ReuseableHealthRestore + bonusFromLevelHealth))
-                            ).Start();
-                        }
+                        
                         
 
                         return name + " used a " + itemPlus.Item.FriendlyName + ", immediately restoring " + (itemPlus.Item.ReuseableHealthRestore + bonusFromLevelHealth) + " willpower and " + (itemPlus.Item.ReuseableManaRestore + bonusFromLevelMana) + " mana.  " + owner.Health + "/" + owner.MaxHealth + " WP, " + owner.Mana + "/" + owner.MaxMana + " Mana";
@@ -1589,6 +1584,13 @@ namespace tfgame.Procedures
 
                         itemRepo.SaveItem(thisdbItem);
                         playerRepo.SavePlayer(owner);
+
+                        if (itemPlus.Item.dbName == "item_Inflatable_Sex_Doll_LexamTheGemFox")
+                        {
+                            new Thread(() =>
+                                StatsProcedures.AddStat(owner.MembershipId, StatsProcedures.Stat__DollsWPRestored, (float)(itemPlus.Item.ReuseableHealthRestore + bonusFromLevel))
+                            ).Start();
+                        }
 
                         return name + " consumed from a " + itemPlus.Item.FriendlyName + ", immediately restoring " + (itemPlus.Item.ReuseableHealthRestore + bonusFromLevel) + " willpower.  " + owner.Health + "/" + owner.MaxHealth + " WP";
                     }

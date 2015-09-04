@@ -159,52 +159,45 @@ namespace tfgame.Controllers
             string duelLocation = participants.First().Player.dbLocationName;
             int challengerGameMode = participants.First().Player.GameMode;
 
+            List<string> errorMessages = new List<string>();
+
             foreach (PlayerFormViewModel p in participants)
             {
 
                 // assert player is not a bot... somehow
                 if (p.Player.BotId < AIStatics.ActivePlayerBotId)
                 {
-                    TempData["Error"] =  p.Player.GetFullName() + " is an NPC and thus cannot engage in a duel.";
-                    return RedirectToAction("Play", "PvP");
+                    errorMessages.Add(p.Player.GetFullName() + " is an NPC and thus cannot engage in a duel.");
                 }
 
                 // assert player is animate
                 if (p.Player.Mobility != "full")
                 {
-                    TempData["Error"] = "Duel cannot start yet.  " + p.Player.GetFullName() + " must be animate in order to challenge someone to a duel.";
-                    return RedirectToAction("Play", "PvP");
+                    errorMessages.Add("Duel cannot start yet.  " + p.Player.GetFullName() + " must be animate in order to challenge someone to a duel.");
                 }
 
                 // assert player is not already in a duel
                 if (p.Player.InDuel > 0)
                 {
-                    TempData["Error"] = "Duel cannot start yet.  " + p.Player.GetFullName() + " is already participating in a duel.";
-                    TempData["SubError"] = "Each player must not be in an active duel in order to start a new one.";
-                    return RedirectToAction("Play", "PvP");
+                    errorMessages.Add("Duel cannot start yet.  " + p.Player.GetFullName() + " is already participating in a duel.  Each player must not be in an active duel in order to start a new one.");
                 }
 
                 // assert player is at the duel location
                 if (p.Player.dbLocationName != duelLocation)
                 {
-                    TempData["Error"] = "Duel cannot start yet.  All players must be in the same location to begin a duel.";
-                    return RedirectToAction("Play", "PvP");
+                    errorMessages.Add("Duel cannot start yet.  All players must be in the same location to begin a duel.");
                 }
 
-                // assert player has sufficient WP  to start
+                // assert player has sufficient WP to start
                 if (p.Player.Health < p.Player.MaxHealth * .8M)
                 {
-                    TempData["Error"] = "Duel cannot start yet.  " + p.Player.GetFullName() + " has too low willpower.";
-                    TempData["SubError"] = "Each player must be at least 80% willpower in order to begin dueling.";
-                    return RedirectToAction("Play", "PvP");
+                    errorMessages.Add("Duel cannot start yet.  " + p.Player.GetFullName() + " has too low willpower.  Each player must be at least 80% willpower in order to begin dueling.");
                 }
 
                 // assert player has sufficient Mana to start
                 if (p.Player.Mana < p.Player.MaxMana * .8M)
                 {
-                    TempData["Error"] = "Duel cannot start yet.  " + p.Player.GetFullName() + " has too low mana.";
-                    TempData["SubError"] = "Each player must be at least 80% mana in order to begin dueling.";
-                    return RedirectToAction("Play", "PvP");
+                    errorMessages.Add("Duel cannot start yet.  " + p.Player.GetFullName() + " has too low mana.  Each player must be at least 80% mana in order to begin dueling.");
                 }
 
                 // assert all players are in an okay game mode
@@ -214,15 +207,13 @@ namespace tfgame.Controllers
                     // player is in PvP; target is not
                     if (me.GameMode == 2 && p.Player.GameMode < 2)
                     {
-                        TempData["Error"] = "You must either be friends with " + p.Player.GetFullName() + " or in the same game mode to challenge them to a duel.";
-                        return RedirectToAction("Play", "PvP");
+                        errorMessages.Add("You must either be friends with " + p.Player.GetFullName() + " or in the same game mode to challenge them to a duel.");
                     }
 
                     // player is not in PvP; target is
                     else if (me.GameMode < 2 && p.Player.GameMode == 2)
                     {
-                        TempData["Error"] = "You must either be friends with " + p.Player.GetFullName() + " or in the same game mode to challenge them to a duel.";
-                        return RedirectToAction("Play", "PvP");
+                        errorMessages.Add("You must either be friends with " + p.Player.GetFullName() + " or in the same game mode to challenge them to a duel.");
                     }
                 }
 
@@ -230,10 +221,27 @@ namespace tfgame.Controllers
                 double minutesAgo = Math.Abs(Math.Floor(p.Player.GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalMinutes));
                 if (minutesAgo < PvPStatics.DuelNoCombatMinutes)
                 {
-                    TempData["Error"] =  "Duel cannot start yet.  " + p.Player.GetFullName() + " must wait another " + (PvPStatics.DuelNoCombatMinutes - minutesAgo) + " minutes without being in combat in order accept this challenge to a duel.";
-                    return RedirectToAction("Play", "PvP");
+                    errorMessages.Add("Duel cannot start yet.  " + p.Player.GetFullName() + " must wait another " + (PvPStatics.DuelNoCombatMinutes - minutesAgo) + " minutes without being in combat in order accept this challenge to a duel.");
                 }
 
+                // assert that both players are still online 
+                minutesAgo = Math.Abs(Math.Floor(p.Player.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
+                if (minutesAgo > PvPStatics.DuelNoCombatMinutes)
+                {
+                    errorMessages.Add("Duel cannot start yet.  " + p.Player.GetFullName() + " has been inactive for " + (PvPStatics.DuelNoCombatMinutes - minutesAgo) + " minutes.  " + p.Player.GetFullName() + " can become active again and eligible for the duel performing any action which takes AP.  Do not attack as this will reset their no combat timer.");
+                }
+
+            }
+
+            if (errorMessages.Count() > 0)
+            {
+                string errors = "";
+                foreach (string s in errorMessages)
+                {
+                    errors += s + "<br>";
+                }
+                TempData["Error"] = errors;
+                return RedirectToAction("Play", "PvP");
             }
 
             TempData["Result"] = "Your duel has started!";

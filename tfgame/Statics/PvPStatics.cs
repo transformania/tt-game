@@ -52,7 +52,7 @@ namespace tfgame.Statics
         public const decimal ExtraHealthDamagePerLevel = 1.25M;
 
         public const double OfflineAfterXMinutes = 30;
-        public const int DuelNoCombatMinutes = 30;
+        public const int DuelNoCombatMinutes = 15;
         public const int MaximumDuelTurnLength = 10;
 
         public const decimal XP__Level_2 = 100;

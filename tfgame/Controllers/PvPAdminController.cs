@@ -1049,6 +1049,8 @@ namespace tfgame.Controllers
                 return View("Play", "PvP");
             }
 
+            BossProcedures_Loremaster.SpawnLoremaster();
+
 
             return RedirectToAction("Index");
         }
@@ -1096,7 +1098,7 @@ namespace tfgame.Controllers
             BossProcedures_PetMerchant.SpawnPetMerchant();
             BossProcedures_Fae.SpawnFae();
             AIProcedures.SpawnBartender();
-            //BossProcedures_Loremaster.SpawnLoremaster();
+            BossProcedures_Loremaster.SpawnLoremaster();
 
             return RedirectToAction("Index");
         }

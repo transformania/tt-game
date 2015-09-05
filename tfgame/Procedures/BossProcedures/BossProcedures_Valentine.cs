@@ -37,6 +37,27 @@ namespace tfgame.Procedures.BossProcedures
 
         public const string QueensPanties = "item_Queen_Valentine’s_Panties_Ashley_Valentine";
 
+        private const int DayNightInterval = 2;
+
+        public const string DayStance = "daystance";
+        public const string NightStance = "nightstance";
+
+        // NIGHT -- male
+        public const string NightVampireMaleSpell = "skill_Wisdom_of_the_Nightkin._Leia_Valentine";
+        public const string NightVampireMaleForm = "form_Child_of_the_Night_Leia_Valentine";
+
+        // NIGHT -- female
+        public const string NightVampireFemaleSpell = "skill_Elegance_of_the_Nightkin_Leia_Valentine";
+        public const string NightVampireFemaleForm = "form_Disciple_of_the_night_Leia_Valentine";
+
+        // DAY -- male
+        public const string DayVampireMaleSpell = "skill_Strength_of_the_Nightkin_Leia_Valentine";
+        public const string DayVampireMaleForm = "form_Vampire_Fighter_Leia_Valentine";
+
+        // DAY -- female
+        public const string DayVampireFemaleSpell = "skill_Prowess_of_the_Nightkin_Leia_Valentine";
+        public const string DayVampireFemaleForm = "form_Vampire_Duelist_Leia_Valentine";
+
         public static void SpawnValentine()
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
@@ -49,7 +70,7 @@ namespace tfgame.Procedures.BossProcedures
                     FirstName = ValentineFirstName,
                     LastName = ValentineLastName,
                     ActionPoints = 120,
-                    dbLocationName = "castle_armory",
+                    dbLocationName = GetStanceLocation(),
                     LastActionTimestamp = DateTime.UtcNow,
                     LastCombatTimestamp = DateTime.UtcNow,
                     LastCombatAttackedTimestamp = DateTime.UtcNow,
@@ -122,7 +143,7 @@ namespace tfgame.Procedures.BossProcedures
             // if Valentine's willpower is down to zero, have him hand over the panties and vanish.
             if (valentine.Health <= 0)
             {
-               
+
                 string victoryMessage = "'It's over!' - you yell in a thrill, already feeling the excitement of your victory over this sly, old fox as you lunge at him at point blank range, your palm tightly clenching a spell to finish it off. However, something is wrong. Grin, that paints itself on his lips, states about anything but an imminent defeat. His movements change, becoming more fuid, unreadable, as he steps to the side - or teleports? you don't even notice - and sticks his leg out, providing you with wonderful opportunity to trip over it. Opportunity that you, of course, took, falling over onto the floor, barely managing to not smash your face on it. Immediately after two blades tickle your neck, and the his voice agrees with your previous statement: - 'Indeed, it's over.' - suddenly the sharp steel by your throat vanishes into thin air as the man laughs heartily: - 'I admire your passion, young one.' - as you get up, you look at him and see a sincere smile on his face, as he continues: - 'Mind calling it a draw for today? It won't work good for my reputation if other's would know how you've beaten me.' - he winks. - 'And here's a little prize for your effort. Something very special, That I most certainly do not just trying to get rid of before i got caught...' - he reaches into his pocket, and gives you... a pair of panties. Before you can object or question this 'gift', he explains: - 'Thise are not just any panties. They belong to the Queen herself... so if i were you I'd keep them hidden to avoid being tuurned into a matching bra...' - before he could finish, a loud, furious woman's voice echoes through the room: - 'Israel Victis Valentine!!!.. Care to explain yourself?!!' - the mans face goes noticeably paler than it was before as he whispers to you: - 'Run! Run, I'll distract her!' - as you are snraking out through the other door, you can hear his voice, growing distant: - 'Oh, dear, i did expect you to wake up so soon...'";
 
                 PlayerLogProcedures.AddPlayerLog(human.Id, victoryMessage, true);
@@ -131,7 +152,8 @@ namespace tfgame.Procedures.BossProcedures
             }
 
             // Valentine is fine, do counterattack
-            else {
+            else
+            {
 
                 // regular counterattacks, not berserk
                 if (valentine.Health > valentine.MaxHealth / 4)
@@ -168,6 +190,15 @@ namespace tfgame.Procedures.BossProcedures
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
             Player valentine = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.ValentineBotId);
+
+            // if valentine is not in the right place have him move to the other location
+            string locationToBe = GetStanceLocation();
+            if (valentine.dbLocationName != locationToBe)
+            {
+                AIProcedures.MoveTo(valentine, locationToBe, 99999);
+                valentine.dbLocationName = locationToBe;
+                playerRepo.SavePlayer(valentine);
+            }
 
             // get all of the players in the room
             List<Player> playersHere = PlayerProcedures.GetPlayersAtLocation(valentine.dbLocationName).ToList();
@@ -227,7 +258,7 @@ namespace tfgame.Procedures.BossProcedures
 
                 if (turnNo % 3 == 0 && EffectProcedures.PlayerHasEffect(p, ValentinesPresenceEffect) == false)
                 {
-                   AttackProcedures.Attack(valentine, p, ValentinesPresenceSpell);
+                    AttackProcedures.Attack(valentine, p, ValentinesPresenceSpell);
                 }
 
 
@@ -297,6 +328,65 @@ namespace tfgame.Procedures.BossProcedures
 
             }
 
+        }
+
+        public static string GetStance()
+        {
+            int turnNum = PvPWorldStatProcedures.GetWorldTurnNumber();
+
+            if (turnNum % (DayNightInterval*2) < DayNightInterval)
+            {
+                return DayStance;
+            }
+            else
+            {
+                return NightStance;
+            }
+
+        }
+
+        public static string GetStanceLocation()
+        {
+            string stance = GetStance();
+            if (stance == DayStance)
+            {
+                return "castle_training";
+            }
+            else
+            {
+                return "castle_tower";
+            }
+        }
+
+        public static bool IsAttackableInForm(Player attacker, Player valentine)
+        {
+            string stance = GetStance();
+
+            // Day stance:  Only night vampires can attack Valentine
+            if (stance == DayStance)
+            {
+                if (attacker.Form == NightVampireMaleForm || attacker.Form == NightVampireFemaleForm)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            // Night stance:  Only day vampires can attack Valentine
+            else
+            {
+                if (attacker.Form == DayVampireMaleForm || attacker.Form == DayVampireFemaleForm)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
         }
 
     }

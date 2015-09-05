@@ -74,6 +74,12 @@ namespace tfgame.Procedures
                     {
                         AIProcedures.SpawnBartender();
                     }
+
+                    Player lorekeeper = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.LoremasterBotId);
+                    if (lorekeeper == null)
+                    {
+                        BossProcedures_Loremaster.SpawnLoremaster();
+                    }
                 }
                 #endregion
 

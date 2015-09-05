@@ -235,6 +235,10 @@
                                         {
                     @Html.ActionLink("Trade", "TradeWithPetMerchant", "NPC", null, new { @class = "attackLink" })
                                         }
+                                        if (p.Player.BotId == AIStatics.ValentineBotId)
+                                        {
+                    @Html.ActionLink("Talk", "TalkToValentine", "NPC", null, new { @class = "attackLink" })
+                                        }
                                         if (p.Player.BotId == AIStatics.BartenderBotId)
                                         {
                     @Html.ActionLink("Talk", "TalkToBartender", "NPC", new { question = "none" }, new { @class = "attackLink" })

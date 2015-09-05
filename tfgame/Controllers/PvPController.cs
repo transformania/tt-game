@@ -1039,6 +1039,13 @@ namespace tfgame.Controllers
                 // Valentine
                 if (targeted.BotId == AIStatics.ValentineBotId)
                 {
+
+                    if (BossProcedures_Valentine.IsAttackableInForm(me, targeted) == false) {
+                        TempData["Error"] = "Your magic fails to muster enough power to fight Valentine.";
+                        TempData["SubError"] = "Maybe a different one would do...";
+                        return RedirectToAction("Play");
+                    }
+
                     // only allow weakens against Valentine for now (replace with Duel spell later?)
                     if (futureForm != null)
                     {

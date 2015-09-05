@@ -1336,5 +1336,30 @@ namespace tfgame.Controllers
             return RedirectToAction("LorekeeperLearnSpell", "NPC");
 
         }
-	}
+
+        [Authorize]
+        public ActionResult TalkToValentine()
+        {
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            Player valentine = PlayerProcedures.GetPlayerFromBotId(AIStatics.ValentineBotId);
+
+            // assert player is mobile
+            if (me.Mobility != "full")
+            {
+                TempData["Error"] = "You must be animate in order to chat with " + valentine.GetFullName() + ".";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            // assert player is in the same place as Candice
+            if (me.dbLocationName != valentine.dbLocationName)
+            {
+                TempData["Error"] = "You must be in the same location as " + valentine.GetFullName() + " in order to talk with him.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            return View();
+
+        }
+    }
 }

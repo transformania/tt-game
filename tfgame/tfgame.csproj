@@ -1113,6 +1113,7 @@
     <Content Include="Images\PvP\portraits\elvish_bard_BabblingFaces.png" />
     <Content Include="Images\PvP\portraits\emo_koala_babblingfaces.jpg" />
     <Content Include="Images\PvP\portraits\enchanted_tree_Luxianne.jpg" />
+    <Content Include="Images\PvP\portraits\exiled_lorekeeper_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\Feisty_Firebrand_Luxianne.png" />
     <Content Include="Images\PvP\portraits\female_armor_Meddle.png" />
     <Content Include="Images\PvP\portraits\female_ogre_babblingfaces.jpg" />
@@ -1194,6 +1195,8 @@
     <Content Include="Images\PvP\portraits\neurotic_author_Babblingfaces.jpg" />
     <Content Include="Images\PvP\portraits\new_age_retro_hippy_Meddle.png" />
     <Content Include="Images\PvP\portraits\nighthuntress_Martiandawn.png" />
+    <Content Include="Images\PvP\portraits\night_vampire_female_Luxianne.jpg" />
+    <Content Include="Images\PvP\portraits\night_vampire_male_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\ninja_girl_spacedande.jpg" />
     <Content Include="Images\PvP\portraits\nyx_custom_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\ogre_babblingfaces.jpg" />
@@ -2399,6 +2402,7 @@
     <Content Include="Views\PvP\RoundLeaderboards\Alpha_24.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\XP\Alpha_24.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_24.cshtml" />
+    <Content Include="Views\NPC\TalkToValentine.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

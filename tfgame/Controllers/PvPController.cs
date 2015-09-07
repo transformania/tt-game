@@ -1041,8 +1041,8 @@ namespace tfgame.Controllers
                 {
 
                     if (BossProcedures_Valentine.IsAttackableInForm(me, targeted) == false) {
-                        TempData["Error"] = "Your magic fails to muster enough power to fight Valentine.";
-                        TempData["SubError"] = "Maybe a different one would do...";
+                        TempData["Error"] = BossProcedures_Valentine.GetWrongFormText();
+                        TempData["SubError"] = "You will need to attack while in a different form.";
                         return RedirectToAction("Play");
                     }
 

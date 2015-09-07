@@ -589,6 +589,7 @@
     <Content Include="Images\PvP\animalPortraits\puppy_girl_pet_Martiandawn.jpg" />
     <Content Include="Images\PvP\animalPortraits\rubber_love_doll_babblingfaces.jpg" />
     <Content Include="Images\PvP\animalPortraits\skunk_lux.png" />
+    <Content Include="Images\PvP\animalPortraits\snow_cabbit_Aurora_Ryall.jpg" />
     <Content Include="Images\PvP\animalPortraits\spellbound_cat_boy_Luxianne.png" />
     <Content Include="Images\PvP\animalPortraits\spoiled_kitsune_princess_babblingfaces.jpg" />
     <Content Include="Images\PvP\animalPortraits\stallion_Danaume.jpg" />
@@ -736,6 +737,7 @@
     <Content Include="Images\PvP\itemsPortraits\bplug_Martiandawn.jpg" />
     <Content Include="Images\PvP\itemsPortraits\breeny_skirt_babblingfaces.jpg" />
     <Content Include="Images\PvP\itemsPortraits\callback_crystal_MIzuho.gif" />
+    <Content Include="Images\PvP\itemsPortraits\captivating_gothic_necklace_Luxianne.jpg" />
     <Content Include="Images\PvP\itemsPortraits\cargo_pants_babblingfaces.jpg" />
     <Content Include="Images\PvP\itemsPortraits\checkered_cotten_panties_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\checkered_cotton_apron_Meddle.png" />
@@ -767,6 +769,7 @@
     <Content Include="Images\PvP\itemsPortraits\fishnet_tights_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\flirty_two_toned_bow_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\french_maid_petticoat_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\fuzzy_green_handcuffs_Aurora.jpg" />
     <Content Include="Images\PvP\itemsPortraits\gemstone_Lux.gif" />
     <Content Include="Images\PvP\itemsPortraits\gentlemans_suit_and_vest_JBovinne.jpg" />
     <Content Include="Images\PvP\itemsPortraits\glorious_butt_stompers_Martiandawn.jpg" />
@@ -828,6 +831,7 @@
     <Content Include="Images\PvP\itemsPortraits\popsicle_Kevin_Portalz.jpg" />
     <Content Include="Images\PvP\itemsPortraits\posessed_doll_foxpower93.png" />
     <Content Include="Images\PvP\itemsPortraits\Queens_Panties_Luxianne.png" />
+    <Content Include="Images\PvP\itemsPortraits\red_fox_plushy_Aurora_Ryall.jpg" />
     <Content Include="Images\PvP\itemsPortraits\red_laceup_boots_Jbovinne.jpg" />
     <Content Include="Images\PvP\itemsPortraits\red_leather_boots_Jbovinne.png" />
     <Content Include="Images\PvP\itemsPortraits\red_wavy_wig_Meddle.png" />
@@ -1089,6 +1093,7 @@
     <Content Include="Images\PvP\portraits\chinese_lizard_warrior.jpg" />
     <Content Include="Images\PvP\portraits\chubby_tanuki_lady_marx50.jpg" />
     <Content Include="Images\PvP\portraits\CircineMilton_Wrenzephyr.png" />
+    <Content Include="Images\PvP\portraits\cocky_cabbit_boy_Aurora_Ryall.jpg" />
     <Content Include="Images\PvP\portraits\corrupted_nun_babblingfaces.jpg" />
     <Content Include="Images\PvP\portraits\councilorman_babblingfaces.jpg" />
     <Content Include="Images\PvP\portraits\dapper_Luxianne.png" />
@@ -1151,6 +1156,7 @@
     <Content Include="Images\PvP\portraits\hulking_hellspawn_Meddle.jpg" />
     <Content Include="Images\PvP\portraits\hyperactive_ferret_girl_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\Ice_Queen_Meddle.png" />
+    <Content Include="Images\PvP\portraits\ice_sculpture_Martiandawn.jpg" />
     <Content Include="Images\PvP\portraits\incubus_servant_boy_spacedande.png" />
     <Content Include="Images\PvP\portraits\insectoid_alien_Dandelion.jpg" />
     <Content Include="Images\PvP\portraits\irritable_grizzly_bear_maid_Daniel_Kay.jpg" />
@@ -1222,6 +1228,7 @@
     <Content Include="Images\PvP\portraits\razing_ruin_Mai_Omega.jpg" />
     <Content Include="Images\PvP\portraits\red_panda_boi_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\red_panda_girl_Cyberkaku.jpg" />
+    <Content Include="Images\PvP\portraits\robobimbo_Martiandawn.jpg" />
     <Content Include="Images\PvP\portraits\robotgirl_thurosis.png" />
     <Content Include="Images\PvP\portraits\robot_Meddle.png" />
     <Content Include="Images\PvP\portraits\sailor_seal_girl_Dandelion.jpg" />

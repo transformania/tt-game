@@ -3215,6 +3215,11 @@ namespace tfgame.Controllers
             return View("~/Views/PvP/RoundLeaderboards/Alpha_" + round + ".cshtml");
         }
 
+        public ActionResult OldLeadboards_Achievements(string round)
+        {
+            return View("~/Views/PvP/RoundLeaderboards/Statistics/Alpha_" + round + ".cshtml");
+        }
+
         [Authorize]
         public ActionResult Shout()
         {

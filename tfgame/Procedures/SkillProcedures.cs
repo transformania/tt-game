@@ -28,7 +28,7 @@ namespace tfgame.Procedures
         public static IEnumerable<DbStaticSkill> GetAllLearnableSpells()
         {
             IDbStaticSkillRepository skillRepo = new EFDbStaticSkillRepository();
-            return skillRepo.DbStaticSkills.Where(s => s.LearnedAtLocation != null && s.LearnedAtLocation != "" || s.LearnedAtRegion != null && s.LearnedAtRegion != "");
+            return skillRepo.DbStaticSkills.Where(s => s.IsPlayerLearnable == true && s.IsLive == "live" && s.LearnedAtLocation != null && s.LearnedAtLocation != "" || s.LearnedAtRegion != null && s.LearnedAtRegion != "");
         }
 
         public static IEnumerable<MySkillsViewModel> GetMySkillsViewModel(int playerId)

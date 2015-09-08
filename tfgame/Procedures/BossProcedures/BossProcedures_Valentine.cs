@@ -389,5 +389,10 @@ namespace tfgame.Procedures.BossProcedures
             }
         }
 
+        public static string GetWrongFormText()
+        {
+            return "Lord Valentine takes in your form with a studious and suggestive look. \"I'm afraid you are not yet ready for this hour’s training, child. Perhaps a few adjustments here...\" He caresses your cheek with a finger. \"...and here.\" His next touch leads down your neck with a chilling tingle that stops at your cleavage. In his trail there is marble white flesh, chilled yet so sensitive you can feel the Lords breath washing down upon it. When did he get so close...?";
+        }
+
     }
 }

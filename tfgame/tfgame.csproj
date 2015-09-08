@@ -557,6 +557,7 @@
     <Content Include="Images\PvP\animalPortraits\circine_sow_Martiandawn.png" />
     <Content Include="Images\PvP\animalPortraits\collared_lap_girl_Martiandawn.png" />
     <Content Include="Images\PvP\animalPortraits\cow_sampleguy.jpg" />
+    <Content Include="Images\PvP\animalPortraits\cute_puppy_Tez-Taylor.jpg" />
     <Content Include="Images\PvP\animalPortraits\decorative_gargoyle_spacedande.png" />
     <Content Include="Images\PvP\animalPortraits\dicktick_Martiandawn.jpg" />
     <Content Include="Images\PvP\animalPortraits\djinn_slave_Dauname.png" />
@@ -835,6 +836,7 @@
     <Content Include="Images\PvP\itemsPortraits\red_laceup_boots_Jbovinne.jpg" />
     <Content Include="Images\PvP\itemsPortraits\red_leather_boots_Jbovinne.png" />
     <Content Include="Images\PvP\itemsPortraits\red_wavy_wig_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\regal_bronze_bikini_top_Martiandawn.jpg" />
     <Content Include="Images\PvP\itemsPortraits\riding_crop_Martiandawn.jpg" />
     <Content Include="Images\PvP\itemsPortraits\runic_dildo_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\running_shoes_Luxianne.jpg" />
@@ -1063,6 +1065,7 @@
     <Content Include="Images\PvP\portraits\adorable_ferret_girl_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\adorable_kitty_boy_Luxianne.png" />
     <Content Include="Images\PvP\portraits\Adreamia_Martiandawn.jpg" />
+    <Content Include="Images\PvP\portraits\air_elemental_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\alien_love_slave_Babblingfaces.png" />
     <Content Include="Images\PvP\portraits\alraune_Luxianne.png" />
     <Content Include="Images\PvP\portraits\Amazonian_Futa_Meddle.png" />
@@ -1111,6 +1114,7 @@
     <Content Include="Images\PvP\portraits\duhad_beach_babe_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\dungeon_demon_babblingfaces.jpg" />
     <Content Include="Images\PvP\portraits\d_loving_girl_Meddle.png" />
+    <Content Include="Images\PvP\portraits\earth_elemental_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\egyptian_priestess_Lux.png" />
     <Content Include="Images\PvP\portraits\elf_hero_babblingfaces.jpg" />
     <Content Include="Images\PvP\portraits\elf_princess_jbovinne.png" />
@@ -1128,6 +1132,8 @@
     <Content Include="Images\PvP\portraits\femboy_Meddle.png" />
     <Content Include="Images\PvP\portraits\fembunni_Luxianne.png" />
     <Content Include="Images\PvP\portraits\fierce_she_wolf_Luxianne.jpg" />
+    <Content Include="Images\PvP\portraits\fire_elemental_Luxianne.jpg" />
+    <Content Include="Images\PvP\portraits\four_tailed_twinsune_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\foxtheif_Luxianne.png" />
     <Content Include="Images\PvP\portraits\frog_girl_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\fuzzy_moth_girl_Luxianne.png" />
@@ -1511,6 +1517,7 @@
     <Content Include="Images\PvP\portraits\vicious_gorgon_babblingfaces.jpg" />
     <Content Include="Images\PvP\portraits\vine_girl_CyberKaku.jpg" />
     <Content Include="Images\PvP\portraits\warrior_queen_Martiandawn.png" />
+    <Content Include="Images\PvP\portraits\water_elemental_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\werewolf_Luxianne.png" />
     <Content Include="Images\PvP\portraits\white_cat_girl_JBovinne.jpg" />
     <Content Include="Images\PvP\portraits\wild_tiger_tribal_girl_Luxianne.jpg" />
@@ -2411,6 +2418,7 @@
     <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_24.cshtml" />
     <Content Include="Views\NPC\TalkToValentine.cshtml" />
     <Content Include="Views\Settings\Polls\Open\poll4.cshtml" />
+    <Content Include="Views\Settings\Polls\Read\poll4.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -37,7 +37,7 @@ namespace tfgame.Procedures.BossProcedures
 
         public const string QueensPanties = "item_Queen_Valentine’s_Panties_Ashley_Valentine";
 
-        private const int DayNightInterval = 2;
+        private const int DayNightInterval = 12;
 
         public const string DayStance = "daystance";
         public const string NightStance = "nightstance";
@@ -292,6 +292,41 @@ namespace tfgame.Procedures.BossProcedures
 
         }
 
+        public static void TalkToAndCastSpell(Player player, Player valentine)
+        {
+            string stance = GetStance();
+
+            if (stance == BossProcedures_Valentine.DayStance)
+            {
+
+                if (player.Form != NightVampireFemaleForm && player.Form != NightVampireMaleForm)
+                {
+                    if (player.Gender == PvPStatics.GenderMale)
+                    {
+                        AttackProcedures.Attack(valentine, player, NightVampireFemaleSpell);
+                    }
+                    else
+                    {
+                        AttackProcedures.Attack(valentine, player, NightVampireMaleSpell);
+                    }
+                }
+            }
+            else if (stance == BossProcedures_Valentine.NightStance)
+            {
+                if (player.Form != DayVampireFemaleForm && player.Form != DayVampireMaleForm)
+                {
+                    if (player.Gender == PvPStatics.GenderMale)
+                    {
+                        AttackProcedures.Attack(valentine, player, DayVampireFemaleSpell);
+                    }
+                    else
+                    {
+                        AttackProcedures.Attack(valentine, player, DayVampireMaleSpell);
+                    }
+                }
+            }
+        }
+
         public static void EndEvent(int newOwnerId)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
@@ -388,6 +423,8 @@ namespace tfgame.Procedures.BossProcedures
                 }
             }
         }
+
+
 
         public static string GetWrongFormText()
         {

@@ -1,4 +1,5 @@
 ﻿@model tfgame.dbModels.Models.JewdewfaeEncounter
+@using tfgame.Procedures.BossProcedures
 
 
 <nav class="navbar navbar-default outsideContainer navbarTT2">
@@ -22,13 +23,35 @@
     </div><!-- /.container-fluid -->
 </nav>
 
+<div>
+    <p class="infoMessage result">@Html.Raw(ViewBag.Result)</p>
+    <p class="infoMessage error">@ViewBag.ErrorMessage</p>
+    <p class="infoMessage suberror">@ViewBag.SubErrorMessage</p>
+</div>
+
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-6 col-sm-6 col-xs-12" style="padding: 20px">
             <img class="img-responsive center-block" src="../Images/PvP/portraits/vampireboss.png">
         </div>
         <div class="col-md-6 col-sm-6 col-xs-12 textSpaced" style="padding: 20px; text-align: justify;">
-            <p>"I'm Valentine and I'm a pervert."</p>
+
+            @{
+                if (ViewBag.stance == BossProcedures_Valentine.DayStance)
+                {
+                    <p>You approach the vampire standing next to the tall window. He seems not to notice you, his gaze focused on the moon behind the glass. You could swear he is wordlessly talking with the night.</p>
+                    <p>@Html.ActionLink("Ask for advice", "TalkToValentine", "NPC", new { question = "ask_advice" }, null)</p>
+                }
+                else if (ViewBag.stance == BossProcedures_Valentine.NightStance)
+                {
+                    <p>While stepping into Training Halls your ears are suddenly filled with sound of metal clashing against metal and ocassional talk that accompanies the fight. Curiously you step closer - after all you came here with only one purpose...</p>
+                    <p>@Html.ActionLink("Take a challenge", "TalkToValentine", "NPC", new { question = "take_challenge" }, null)</p>
+                }
+                else
+                {
+                    <p>"I'm Valentine and I'm a pervert."</p>
+                }
+            }
         </div>
     </div>
 </div>

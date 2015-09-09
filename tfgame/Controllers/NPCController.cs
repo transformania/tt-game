@@ -1338,7 +1338,7 @@ namespace tfgame.Controllers
         }
 
         [Authorize]
-        public ActionResult TalkToValentine()
+        public ActionResult TalkToValentine(string question)
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -1351,14 +1351,34 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
-            // assert player is in the same place as Candice
+            // assert player is in the same place as Valenti8ne
             if (me.dbLocationName != valentine.dbLocationName)
             {
                 TempData["Error"] = "You must be in the same location as " + valentine.GetFullName() + " in order to talk with him.";
                 return RedirectToAction("Play", "PvP");
             }
 
-            return View();
+            string responseText = "";
+
+            // assert that the question is valid depending on Valentine's stance
+            string stance = BossProcedures_Valentine.GetStance();
+            if (question != "none")
+            {
+                BossProcedures_Valentine.TalkToAndCastSpell(me, valentine);
+                List<PlayerLog> tftext = PlayerLogProcedures.GetAllPlayerLogs(me.Id).Reverse().ToList();
+                responseText = tftext.FirstOrDefault(f => f.IsImportant == true).Message;
+            }
+
+            
+            
+            ViewBag.stance = stance;
+
+            ViewBag.ErrorMessage = TempData["Error"];
+            ViewBag.SubErrorMessage = TempData["SubError"];
+
+            ViewBag.Result = responseText;
+
+            return View("TalkToValentine");
 
         }
     }

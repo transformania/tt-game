@@ -132,6 +132,15 @@
         }
     }
 
+    <p><b>Leave any other thoughts you think might be relevant to this poll.</b></p>
+
+    @{
+        foreach (tfgame.dbModels.Models.PollEntry e in Model.Where(p => p.String4 != null && p.String4 != ""))
+        {
+            <p>"@e.String4"</p><br />
+        }
+    }
+
 
 
 </div>

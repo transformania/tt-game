@@ -161,26 +161,26 @@ namespace tfgame.Procedures.BossProcedures
                     AttackProcedures.Attack(valentine, human, SwordSpell);
                     AttackProcedures.Attack(valentine, human, SwordSpell);
                     AIProcedures.DealBossDamage(valentine, human, false, 2);
-                    if (EffectProcedures.PlayerHasEffect(human, ValentinesPresenceEffect) == false)
-                    {
-                        AttackProcedures.Attack(valentine, human, ValentinesPresenceSpell);
-                    }
                 }
 
                 // berserk mode counterattack
                 else
                 {
 
+                    // counterattack twice against original attacker
+                    AttackProcedures.Attack(valentine, human, SwordSpell);
+                    AttackProcedures.Attack(valentine, human, SwordSpell);
+                    AIProcedures.DealBossDamage(valentine, human, false, 1);
+
+                    // attack everyone else with 1 cast
                     List<Player> playersHere = PlayerProcedures.GetPlayersAtLocation(valentine.dbLocationName).ToList();
 
-                    playersHere = playersHere.Where(p => p.Mobility == "full" && PlayerProcedures.PlayerIsOffline(p) == false && p.Level >= 3 && p.BotId == AIStatics.ActivePlayerBotId && p.Id != valentine.Id).ToList();
+                    playersHere = playersHere.Where(p => p.Mobility == "full" && PlayerProcedures.PlayerIsOffline(p) == false && p.Level >= 3 && p.BotId == AIStatics.ActivePlayerBotId && p.Id != valentine.Id && p.InDuel <= 0).ToList();
 
-                    foreach (Player p in playersHere.Where(p => p.Mobility == "full" && PlayerProcedures.PlayerIsOffline(p) == false && p.Level >= 3))
+                    foreach (Player p in playersHere)
                     {
                         AttackProcedures.Attack(valentine, p, SwordSpell);
-                        AttackProcedures.Attack(valentine, p, SwordSpell);
-                        AttackProcedures.Attack(valentine, p, SwordSpell);
-                        AIProcedures.DealBossDamage(valentine, p, false, 3);
+                        AIProcedures.DealBossDamage(valentine, p, false, 1);
                     }
                 }
             }
@@ -214,38 +214,7 @@ namespace tfgame.Procedures.BossProcedures
 
             foreach (Player p in playersHere)
             {
-                // turn male nonvamps into male vamps, and male vamps into sword
-                if (p.Gender == "male" && p.Form != MaleVampFormDbName)
-                {
-                    AttackProcedures.Attack(valentine, p, MaleVampSpell);
-                    AttackProcedures.Attack(valentine, p, MaleVampSpell);
-                    AttackProcedures.Attack(valentine, p, MaleVampSpell);
-                    AIProcedures.DealBossDamage(valentine, p, false, 3);
-                }
-                else if (p.Gender == "male" && p.Form == MaleVampFormDbName)
-                {
-                    AttackProcedures.Attack(valentine, p, SwordSpell);
-                    AttackProcedures.Attack(valentine, p, SwordSpell);
-                    AIProcedures.DealBossDamage(valentine, p, false, 2);
-                }
-
-
-                // turn female nonvamps into female vamps, and female vamps into sword
-                else if (p.Gender == "female" && p.Form != FemaleVampSpell)
-                {
-                    AttackProcedures.Attack(valentine, p, FemaleVampSpell);
-                    AttackProcedures.Attack(valentine, p, FemaleVampSpell);
-                    AttackProcedures.Attack(valentine, p, FemaleVampSpell);
-                    AIProcedures.DealBossDamage(valentine, p, false, 3);
-                }
-                else if (p.Gender == "female" && p.Form == FemaleVampSpell)
-                {
-                    AttackProcedures.Attack(valentine, p, SwordSpell);
-                    AttackProcedures.Attack(valentine, p, SwordSpell);
-                    AttackProcedures.Attack(valentine, p, SwordSpell);
-                    AIProcedures.DealBossDamage(valentine, p, false, 3);
-                }
-
+                
                 // give this player the vampire curse if they do not yet have it
                 if (EffectProcedures.PlayerHasEffect(p, BloodyKissEffect) == false)
                 {
@@ -253,14 +222,11 @@ namespace tfgame.Procedures.BossProcedures
                     AIProcedures.DealBossDamage(valentine, p, false, 1);
                 }
 
-                Random rand = new Random();
-                double roll = rand.NextDouble();
-
-                if (turnNo % 3 == 0 && EffectProcedures.PlayerHasEffect(p, ValentinesPresenceEffect) == false)
+                // give this player the immobility curse if they do not yet have it
+                if (EffectProcedures.PlayerHasEffect(p, ValentinesPresenceEffect) == false)
                 {
                     AttackProcedures.Attack(valentine, p, ValentinesPresenceSpell);
                 }
-
 
             }
 
@@ -296,22 +262,8 @@ namespace tfgame.Procedures.BossProcedures
         {
             string stance = GetStance();
 
-            if (stance == BossProcedures_Valentine.DayStance)
-            {
 
-                if (player.Form != NightVampireFemaleForm && player.Form != NightVampireMaleForm)
-                {
-                    if (player.Gender == PvPStatics.GenderMale)
-                    {
-                        AttackProcedures.Attack(valentine, player, NightVampireFemaleSpell);
-                    }
-                    else
-                    {
-                        AttackProcedures.Attack(valentine, player, NightVampireMaleSpell);
-                    }
-                }
-            }
-            else if (stance == BossProcedures_Valentine.NightStance)
+            if (stance == BossProcedures_Valentine.DayStance)
             {
                 if (player.Form != DayVampireFemaleForm && player.Form != DayVampireMaleForm)
                 {
@@ -322,6 +274,20 @@ namespace tfgame.Procedures.BossProcedures
                     else
                     {
                         AttackProcedures.Attack(valentine, player, DayVampireMaleSpell);
+                    }
+                }
+            }
+            else if (stance == BossProcedures_Valentine.NightStance)
+            {
+                if (player.Form != NightVampireFemaleForm && player.Form != NightVampireMaleForm)
+                {
+                    if (player.Gender == PvPStatics.GenderMale)
+                    {
+                        AttackProcedures.Attack(valentine, player, NightVampireFemaleSpell);
+                    }
+                    else
+                    {
+                        AttackProcedures.Attack(valentine, player, NightVampireMaleSpell);
                     }
                 }
             }
@@ -369,7 +335,7 @@ namespace tfgame.Procedures.BossProcedures
         {
             int turnNum = PvPWorldStatProcedures.GetWorldTurnNumber();
 
-            if (turnNum % (DayNightInterval*2) < DayNightInterval)
+            if (turnNum % (DayNightInterval * 2) < DayNightInterval)
             {
                 return DayStance;
             }

@@ -1351,6 +1351,13 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
+            // assert player is not dueling
+            if (me.Mobility != "full")
+            {
+                TempData["Error"] = "You should conclude your current duel before talking to " + valentine.GetFullName() + ".";
+                return RedirectToAction("Play", "PvP");
+            }
+
             // assert player is in the same place as Valenti8ne
             if (me.dbLocationName != valentine.dbLocationName)
             {

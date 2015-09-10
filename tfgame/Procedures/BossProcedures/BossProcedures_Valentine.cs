@@ -28,7 +28,7 @@ namespace tfgame.Procedures.BossProcedures
         private const string MaleVampFormDbName = "form_Vampire_Lord_Blood_Knight";
         private const string FemaleVampFormDbName = "form_Vampire_Lord_Blood_Knight";
 
-        public const string BloodyCurseSpell = "skill_A_Bloody_Curse";
+        public const string BloodyCurseSpell = "skill_A_Bloody_Kiss_Lilith";
         private const string BloodyKissEffect = "effect_A_Bloody_Kiss_Lilith";
 
         public const string ValentinesPresenceSpell = "skill_Valentine's_Presence_Lilith";
@@ -363,10 +363,10 @@ namespace tfgame.Procedures.BossProcedures
         {
             string stance = GetStance();
 
-            // Day stance:  Only night vampires can attack Valentine
+            // Day stance:  Only day vampires can attack Valentine
             if (stance == DayStance)
             {
-                if (attacker.Form == NightVampireMaleForm || attacker.Form == NightVampireFemaleForm)
+                if (attacker.Form == DayVampireMaleForm || attacker.Form == DayVampireFemaleForm)
                 {
                     return true;
                 }
@@ -376,10 +376,10 @@ namespace tfgame.Procedures.BossProcedures
                 }
             }
 
-            // Night stance:  Only day vampires can attack Valentine
+            // Night stance:  Only night vampires can attack Valentine
             else
             {
-                if (attacker.Form == DayVampireMaleForm || attacker.Form == DayVampireFemaleForm)
+                if (attacker.Form == NightVampireMaleForm || attacker.Form == NightVampireFemaleForm)
                 {
                     return true;
                 }

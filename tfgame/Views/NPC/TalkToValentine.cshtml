@@ -39,13 +39,13 @@
             @{
                 if (ViewBag.stance == BossProcedures_Valentine.DayStance)
                 {
-                    <p>You approach the vampire standing next to the tall window. He seems not to notice you, his gaze focused on the moon behind the glass. You could swear he is wordlessly talking with the night.</p>
-                    <p>@Html.ActionLink("Ask for advice", "TalkToValentine", "NPC", new { question = "ask_advice" }, null)</p>
+                    <p>While stepping into Training Halls your ears are suddenly filled with sound of metal clashing against metal and ocassional talk that accompanies the fight. Curiously you step closer - after all you came here with only one purpose...</p>
+                    <p>@Html.ActionLink("Take a challenge", "TalkToValentine", "NPC", new { question = "take_challenge" }, null)</p>
                 }
                 else if (ViewBag.stance == BossProcedures_Valentine.NightStance)
                 {
-                    <p>While stepping into Training Halls your ears are suddenly filled with sound of metal clashing against metal and ocassional talk that accompanies the fight. Curiously you step closer - after all you came here with only one purpose...</p>
-                    <p>@Html.ActionLink("Take a challenge", "TalkToValentine", "NPC", new { question = "take_challenge" }, null)</p>
+                    <p>You approach the vampire standing next to the tall window. He seems not to notice you, his gaze focused on the moon behind the glass. You could swear he is wordlessly talking with the night.</p>
+                    <p>@Html.ActionLink("Ask for advice", "TalkToValentine", "NPC", new { question = "ask_advice" }, null)</p>
                 }
                 else
                 {

@@ -190,7 +190,7 @@ namespace tfgame.Services
             var die = Convert.ToInt32(match.Groups[1].Value);
             var output = $" rolled a {PlayerProcedures.RollDie(die)} (d{die})";
 
-            data.Output = new MessageOutput(output, MessageType.DieRoll, false, false);
+            data.Output = new MessageOutput(output, MessageType.DieRoll, true, false);
             data.MarkAsProcessed();
         }
     }

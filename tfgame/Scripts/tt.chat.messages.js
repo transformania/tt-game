@@ -137,6 +137,19 @@
 	    return $('<li></li>').append(message).append(renderTimestamp(model.Timestamp));
 	}
 
+    formatters['DieRoll'] = function(model) {
+        var rollText = $('<span class="enterMsg"></span>')
+            .text(model.Message + ' ')
+            .doubleTap(function (e) { ChatModule.onUserDoubleTapped(model.User, e); })
+            .prepend(model.IsStaff ? $('<span class="adminFont"></span>').text(model.User) : model.User);
+
+        var message = $('<strong></strong>')
+            .prepend(renderImage(model.Pic))
+            .append(rollText);
+
+        return $('<li></li>').append(message).append(renderTimestamp(model.Timestamp));
+    }
+
 	pub.formatMessage = function (model) {
 		return formatters[model.MessageType](model);
 	}

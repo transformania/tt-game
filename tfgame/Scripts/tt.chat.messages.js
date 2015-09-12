@@ -77,12 +77,17 @@
 	    if (model.IsStaff)
 	    	userName.addClass('adminFont');
 	    else
-		    userName.css('color', model.Color);    
+	    	userName.css('color', model.Color);
+
+	    var image = '';
+	    if (ChatModule.config.imagesEnabled) {
+	        image = $('<img />').attr('src', model.Pic);
+	    }
 
 	    return $('<li></li>')
 	        .html(linkify(model.Message) + ' ')
             .prepend(userName)
-            .prepend($('<img />').attr('src', model.Pic))
+            .prepend(image)
             .append($('<span></span>').text(moment(model.TimeStamp).format('h:mm:ss A')).addClass('timeago'));
     }
 

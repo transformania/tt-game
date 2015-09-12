@@ -98,7 +98,7 @@ namespace tfgame.Chat
                     Color = colorOut,
                     Pic = pic,
                     Message = WebUtility.HtmlEncode(output.Text),
-                    MessageType = output.MessageType.ToString(),
+                    MessageType = Enum.GetName(output.MessageType.GetType(), output.MessageType),
                     Timestamp = DateTime.UtcNow.ToUnixTime(),
                 };
 

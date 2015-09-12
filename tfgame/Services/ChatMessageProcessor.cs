@@ -206,7 +206,7 @@ namespace tfgame.Services
         {
             var output = data.Message.Replace("/me", "");
 
-            data.Output = new MessageOutput(output, MessageType.Action, false);
+            data.Output = new MessageOutput(output, MessageType.Action);
             data.MarkAsProcessed();
         }
     }

@@ -31,6 +31,18 @@
 		return output;
 	}
 
+	function renderImage(pic) {
+	    var image = '';
+	    if (ChatModule.config.imagesEnabled)
+	        image = $('<img />').attr('src', pic);
+
+	    return image;
+	}
+
+    function renderTimestamp(timestamp) {
+        return $('<span></span>').text(moment(timestamp).format('h:mm:ss A')).addClass('timeago');
+    }
+
     reservedText['[luxa]'] = {
         link: {
             url: 'https://www.picarto.tv/live/channel.php?watch=Luxianne',
@@ -79,43 +91,50 @@
 	    else
 	    	userName.css('color', model.Color);
 
-	    var image = '';
-	    if (ChatModule.config.imagesEnabled) {
-	        image = $('<img />').attr('src', model.Pic);
-	    }
-
 	    return $('<li></li>')
 	        .html(linkify(model.Message) + ' ')
             .prepend(userName)
-            .prepend(image)
-            .append($('<span></span>').text(moment(model.TimeStamp).format('h:mm:ss A')).addClass('timeago'));
+            .prepend(renderImage(model.Pic))
+            .append(renderTimestamp(model.Timestamp));
     }
 
 	formatters['ReservedText'] = function(model) {
 	    var options = reservedText[model.Message];
 		
-	    if (options.link !== undefined) {
-	        var link = $('<a>').bind('click', options.link, openLink);
+	    if (options.link === undefined)
+	        return $('<li></li>').append($('<pre></pre>').text(options.message));
 
-	        if (options.link.text !== undefined)
-	            link.text(options.link.text);
+	    var link = $('<a>').bind('click', options.link, openLink);
 
-	        if (options.image !== undefined) {
-	            var img = $('<img />')
-	                .css('width', options.image.width)
-	                .css('height', options.image.height)
-	                .attr('src', options.image.src);
+	    if (options.link.text !== undefined)
+	        link.text(options.link.text);
 
-	            link.append(img);
-	        }
+	    if (options.image !== undefined) {
+	        var img = $('<img />')
+                .css('width', options.image.width)
+                .css('height', options.image.height)
+                .attr('src', options.image.src);
 
-	        return $('<li></li>')
-	        .text(options.message !== undefined ? options.message : '')
-	        .append(link);
-
+	        link.append(img);
 	    }
 
-	    return $('<li></li>').append($('<pre></pre>').text(options.message));
+	    return $('<li></li>')
+        .text(options.message !== undefined ? options.message : '')
+        .append(link);
+	}
+
+	formatters['Action'] = function(model) {
+        var actionText = $('<span class="me"></span>')
+	        .text(model.Message + ' ')
+	        .css('color', model.Color)
+	        .doubleTap(function(e) { ChatModule.onUserDoubleTapped(model.User, e); })
+	        .prepend(model.IsStaff ? $('<span class="adminFont"></span>').text(model.User) : model.User);
+
+	    var message = $('<strong></strong>')
+	        .prepend(renderImage(model.Pic))
+	        .append(actionText);
+
+	    return $('<li></li>').append(message).append(renderTimestamp(model.Timestamp));
 	}
 
 	pub.formatMessage = function (model) {

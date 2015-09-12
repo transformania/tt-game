@@ -407,16 +407,17 @@
     if ((User.IsInRole(tfgame.Statics.PvPStatics.Permissions_Proofreader) == true) == true)
         {
             @Html.ActionLink("Unlock but DO NOT Save", "UnlockEffectContribution", "Contribution", new { id = Model.Id }, null)
-        }
+    }
 
 
     if (User.IsInRole(tfgame.Statics.PvPStatics.Permissions_Admin) == true && Model.ProofreadingCopy == true)
     {
         <p>
             @Html.ActionLink("Publish Skill", "PublishSpell_Effect", "Contribution", new { id = Model.Id }, null)<br />
-        @Html.ActionLink("Publish Effect", "PublishEffect", "Contribution", new { id = Model.Id }, null)<br />
-        @Html.ActionLink("Mark as Live", "MarkEffectAsLive", "Contribution", new { id = Model.Id }, null)<br />
-    </p>
+            @Html.ActionLink("Publish Effect", "PublishEffect", "Contribution", new { id = Model.Id }, null)<br />
+            @Html.ActionLink("Mark Effect as Live", "MarkEffectAsLive", "Contribution", new { id = Model.Id }, null)<br />
+            @Html.ActionLink("Mark Spell as live", "SetSpellAsLive", "Contribution", new { id = Model.Id }, null)<br />
+        </p>
 
     <p>@Html.Raw(ViewBag.StaticEffectExists)</p>
     <p>@Html.Raw(ViewBag.StaticSpellExists)</p>

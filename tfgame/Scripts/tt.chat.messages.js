@@ -43,6 +43,21 @@
         return $('<span></span>').text(moment(timestamp).format('h:mm:ss A')).addClass('timeago');
     }
 
+    function renderActionText(message, messageClass, model, useUserColour) {
+        var text = $('<span></span>')
+            .addClass(messageClass)
+            .text(message)
+            .doubleTap(function (e) { ChatModule.onUserDoubleTapped(model.User, e); })
+            .prepend(model.IsStaff ? $('<span class="adminFont"></span>').text(model.User) : model.User);
+
+        if (useUserColour)
+            text.css('color', model.Color);
+
+        return $('<li></li>').append(
+            $('<strong></strong>').prepend(renderImage(model.Pic)).append(text)
+        ).append(renderTimestamp(model.Timestamp));
+    }
+
     reservedText['[luxa]'] = {
         link: {
             url: 'https://www.picarto.tv/live/channel.php?watch=Luxianne',
@@ -123,34 +138,23 @@
         .append(link);
 	}
 
-	formatters['Action'] = function(model) {
-        var actionText = $('<span class="me"></span>')
-	        .text(model.Message + ' ')
-	        .css('color', model.Color)
-	        .doubleTap(function(e) { ChatModule.onUserDoubleTapped(model.User, e); })
-	        .prepend(model.IsStaff ? $('<span class="adminFont"></span>').text(model.User) : model.User);
-
-	    var message = $('<strong></strong>')
-	        .prepend(renderImage(model.Pic))
-	        .append(actionText);
-
-	    return $('<li></li>').append(message).append(renderTimestamp(model.Timestamp));
+	formatters['DmMessage'] = function(model) {
+	    return renderActionText(' [DM]:' + model.Message + ' ', 'dm', model, false);
 	}
 
-    formatters['DieRoll'] = function(model) {
-        var rollText = $('<span class="enterMsg"></span>')
-            .text(model.Message + ' ')
-            .doubleTap(function (e) { ChatModule.onUserDoubleTapped(model.User, e); })
-            .prepend(model.IsStaff ? $('<span class="adminFont"></span>').text(model.User) : model.User);
+	formatters['DmAction'] = function (model) {
+	    return renderActionText(' ' + model.Message + ' ', 'dm', model, false);
+	}
 
-        var message = $('<strong></strong>')
-            .prepend(renderImage(model.Pic))
-            .append(rollText);
+	formatters['DieRoll'] = function (model) {
+	    return renderActionText(model.Message + ' ', 'enterMsg', model, false);
+	}
 
-        return $('<li></li>').append(message).append(renderTimestamp(model.Timestamp));
-    }
+	formatters['Action'] = function(model) {
+        return renderActionText(model.Message + ' ', "me", model, true);
+	}
 
-	pub.formatMessage = function (model) {
+    pub.formatMessage = function (model) {
 		return formatters[model.MessageType](model);
 	}
 

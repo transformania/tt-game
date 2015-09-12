@@ -145,7 +145,7 @@ namespace tfgame.Services
         {
             var output = data.Message.Replace("/dm message", "");
 
-            data.Output = new MessageOutput(output, MessageType.DmMessage, false);
+            data.Output = new MessageOutput(output, MessageType.DmMessage);
             data.MarkAsProcessed();
         }
     }

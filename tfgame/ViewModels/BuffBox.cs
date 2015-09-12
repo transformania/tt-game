@@ -15,6 +15,7 @@ namespace tfgame.ViewModels
         public decimal HealthRecoveryPerUpdate { get; set; }
         public decimal ManaRecoveryPerUpdate { get; set; }
         public decimal SneakPercent { get; set; }
+        public decimal AntiSneakPercent { get; set; }
         public decimal EvasionPercent { get; set; }
         public decimal EvasionNegationPercent { get; set; }
         public decimal MeditationExtraMana { get; set; }
@@ -60,6 +61,7 @@ namespace tfgame.ViewModels
         public decimal FromItems_HealthRecoveryPerUpdate { get; set; }
         public decimal FromItems_ManaRecoveryPerUpdate { get; set; }
         public decimal FromItems_SneakPercent { get; set; }
+        public decimal FromItems_AntiSneakPercent { get; set; }
         public decimal FromItems_EvasionPercent { get; set; }
         public decimal FromItems_EvasionNegationPercent { get; set; }
         public decimal FromItems_MeditationExtraMana { get; set; }
@@ -92,6 +94,7 @@ namespace tfgame.ViewModels
         public decimal FromForm_HealthRecoveryPerUpdate { get; set; }
         public decimal FromForm_ManaRecoveryPerUpdate { get; set; }
         public decimal FromForm_SneakPercent { get; set; }
+        public decimal FromForm_AntiSneakPercent { get; set; }
         public decimal FromForm_EvasionPercent { get; set; }
         public decimal FromForm_EvasionNegationPercent { get; set; }
         public decimal FromForm_MeditationExtraMana { get; set; }
@@ -124,6 +127,7 @@ namespace tfgame.ViewModels
         public decimal FromEffects_HealthRecoveryPerUpdate { get; set; }
         public decimal FromEffects_ManaRecoveryPerUpdate { get; set; }
         public decimal FromEffects_SneakPercent { get; set; }
+        public decimal FromEffects_AntiSneakPercent { get; set; }
         public decimal FromEffects_EvasionPercent { get; set; }
         public decimal FromEffects_EvasionNegationPercent { get; set; }
         public decimal FromEffects_MeditationExtraMana { get; set; }
@@ -292,6 +296,27 @@ namespace tfgame.ViewModels
 
             output += (float)FromForm_SneakPercent;
             output += (float)FromEffects_SneakPercent;
+
+            return Convert.ToDecimal(output);
+        }
+
+        public decimal AntiSneakPercent()
+        {
+            float output = 0;
+            string substat = "AntiSneakPercent"; ;
+
+            output += Discipline() * BuffMap.BuffsMap[substat]["Discipline"];
+            output += Perception() * BuffMap.BuffsMap[substat]["Perception"];
+            output += Charisma() * BuffMap.BuffsMap[substat]["Charisma"];
+            output += Fortitude() * BuffMap.BuffsMap[substat]["Fortitude"];
+            output += Agility() * BuffMap.BuffsMap[substat]["Agility"];
+            output += Allure() * BuffMap.BuffsMap[substat]["Allure"];
+            output += Magicka() * BuffMap.BuffsMap[substat]["Magicka"];
+            output += Succour() * BuffMap.BuffsMap[substat]["Succour"];
+            output += Luck() * BuffMap.BuffsMap[substat]["Luck"];
+
+            output += (float)FromForm_AntiSneakPercent;
+            output += (float)FromEffects_AntiSneakPercent;
 
             return Convert.ToDecimal(output);
         }
@@ -678,9 +703,9 @@ namespace tfgame.ViewModels
             {
                 "HealthBonusPercent",
                 new Dictionary<string,float> {
-                      	{"Discipline", .5F},
+                      	{"Discipline", .25F},
 	                    {"Perception", 0},
-	                    {"Charisma", -.25F},
+	                    {"Charisma", -.125F},
 	                    {"Fortitude", .20F},
 	                    {"Agility", 0},
 	                    {"Allure", 0},
@@ -728,7 +753,7 @@ namespace tfgame.ViewModels
 	                    {"Agility", 0},
 	                    {"Allure", 0},
 	                    {"Magicka", 0},
-	                    {"Succour", .2F}, // regeneration
+	                    {"Succour", .3F}, // regeneration
 	                    {"Luck", 0},
                     }
                 },
@@ -742,7 +767,7 @@ namespace tfgame.ViewModels
 	                    {"Agility", 0},
 	                    {"Allure", 0},
 	                    {"Magicka", 0},
-	                    {"Succour", .2F}, // regeneration
+	                    {"Succour", .3F}, // regeneration
 	                    {"Luck", 0},
                     }
                 },
@@ -754,6 +779,20 @@ namespace tfgame.ViewModels
 	                    {"Charisma", 0},
 	                    {"Fortitude", 0},
 	                    {"Agility", .75F},
+	                    {"Allure", 0},
+	                    {"Magicka", 0},
+	                    {"Succour", 0},
+	                    {"Luck", 0},
+                    }
+                },
+                {
+                "AntiSneakPercent",
+                new Dictionary<string,float> {
+                      	{"Discipline", 0},
+	                    {"Perception", 1.0F},
+	                    {"Charisma", 0},
+	                    {"Fortitude", 0},
+	                    {"Agility", 0},
 	                    {"Allure", 0},
 	                    {"Magicka", 0},
 	                    {"Succour", 0},
@@ -889,7 +928,7 @@ namespace tfgame.ViewModels
                 {
                 "SpellHealthDamageResistance",
                 new Dictionary<string,float> {
-                      	{"Discipline", 1.0F},
+                      	{"Discipline", 0.75F},
 	                    {"Perception", 0},
 	                    {"Charisma", -.5F},
 	                    {"Fortitude", 0},
@@ -903,7 +942,7 @@ namespace tfgame.ViewModels
                 {
                 "SpellTFEnergyDamageResistance",
                 new Dictionary<string,float> {
-                      	{"Discipline", 1.0F},
+                      	{"Discipline", 0.75F},
 	                    {"Perception", 0},
 	                    {"Charisma", -.5F},
 	                    {"Fortitude", 0},

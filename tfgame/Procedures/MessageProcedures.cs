@@ -43,7 +43,7 @@ namespace tfgame.Procedures
             }
             else
             {
-                output.SenderName = sender.FirstName + " " + sender.LastName;
+                output.SenderName = sender.GetFullName();
             }
 
             if (receiver == null)
@@ -65,6 +65,7 @@ namespace tfgame.Procedures
             Message dbMessage = messageRepo.Messages.FirstOrDefault(m => m.Id == messageId);
 
             dbMessage.IsRead = true;
+            dbMessage.ReadStatus = 1;
             messageRepo.SaveMessage(dbMessage);
 
 
@@ -83,6 +84,14 @@ namespace tfgame.Procedures
             }
 
             return output;
+        }
+
+        public static void MarkMessageAsUnread(int messageId)
+        {
+            IMessageRepository messageRepo = new EFMessageRepository();
+            Message dbMessage = messageRepo.Messages.FirstOrDefault(m => m.Id == messageId);
+            dbMessage.ReadStatus = 2;
+            messageRepo.SaveMessage(dbMessage);
         }
 
         public static MessageBag GetPlayerMessages(Player player)
@@ -180,6 +189,7 @@ namespace tfgame.Procedures
             message.Timestamp = DateTime.UtcNow;
             message.SenderId = sender.Id;
             message.IsRead = false;
+            message.ReadStatus = 0;
 
             if (DonatorProcedures.EitherPlayersAreDonatorsOfTier(sender, receiver, 3) == true)
             {
@@ -209,6 +219,7 @@ namespace tfgame.Procedures
                         ReceiverId = p.Id,
                         SenderId = covLeader.Id,
                         IsRead = false,
+                        ReadStatus = 0,
                         MessageText = input.Message,
                         Timestamp = DateTime.UtcNow,
                     };

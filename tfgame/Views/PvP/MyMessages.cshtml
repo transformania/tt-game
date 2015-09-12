@@ -24,7 +24,11 @@
     </div><!-- /.container-fluid -->
 </nav>
 
-<p class="infoMessage result">@Html.Raw(ViewBag.Result)</p>
+<div>
+    <p class="infoMessage result">@Html.Raw(ViewBag.Result)</p>
+    <p class="infoMessage error">@ViewBag.ErrorMessage</p>
+    <p class="infoMessage suberror">@ViewBag.SubErrorMessage</p>
+</div>
 
 <script>
 
@@ -94,7 +98,7 @@
 
 
                         @{
-                    if (msg.dbMessage.IsRead == false)
+                    if (msg.dbMessage.ReadStatus == 0 || msg.dbMessage.ReadStatus == 2)
                     {
                         <td class="newlink">@Html.ActionLink(messageTeaser, "ReadMessage", "PvP", new { messageId = msg.dbMessage.Id }, null)</td>
                     }
@@ -105,7 +109,7 @@
                         }
 
                         <td class="timeSent"><span style="font-size: 10px">@CharactersHere.DatetimeToTimeago(msg.dbMessage.Timestamp)</span></td>
-                        <td>@Html.ActionLink("[ x ]", "DeleteMessage", "PvP", new { messageId = msg.dbMessage.Id }, null)</td>
+                        <td>@Html.ActionLink("[ x ]", "DeleteMessage", "PvP", new { messageId = msg.dbMessage.Id }, null) @Html.ActionLink("[mark new]", "MarkAsUnread", "PvP", new { messageId = msg.dbMessage.Id }, null)</td>
                     </tr>
                 }
             }

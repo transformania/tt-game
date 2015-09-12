@@ -27,13 +27,14 @@
                 <li>
                     @Html.ActionLink("Global", "Chat", "PvP", new { room = "global" }, null)
                 </li>
-                <li>
-                    @Html.ActionLink("RP Room 1", "Chat", "PvP", new { room = "rp1" }, null)
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">RP Rooms <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li>@Html.ActionLink("RP Room 1", "Chat", "PvP", new { room = "rp1" }, null)</li>
+                        <li>@Html.ActionLink("RP Room 2", "Chat", "PvP", new { room = "rp2" }, null)</li>
+                        <li>@Html.ActionLink("RP Room 3", "Chat", "PvP", new { room = "rp3" }, null)</li>
+                    </ul>
                 </li>
-                <li>
-                    @Html.ActionLink("RP Room 2", "Chat", "PvP", new { room = "rp2" }, null)
-                </li>
-                <li>@Html.ActionLink("RP Room 3", "Chat", "PvP", new { room = "rp3" }, null)</li>
                 <li>
                     @Html.ActionLink("Create/Join Private Room", "PrivateChat", "PvP")
                 </li>
@@ -43,6 +44,14 @@
                 <li>@Html.ActionLink("Commands", "ChatCommands", "PvP", null, new { target = "_blank" })</li>
                 <li><a href="#" id="showIgnore">Ignore</a></li>
                 <li><a href="#" id="toggleImages" style="color: #734752 !important; font-weight:bold;">Toggle Images</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Audio Settings <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li id="sounds_all"><a>All Sounds</a></li>
+                        <li id="sounds_justme"><a>Some Sounds</a></li>
+                        <li id="sounds_none"><a>No Sounds</a></li>
+                    </ul>
+                </li>
 </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -87,12 +96,16 @@
 
         var myname = "@Html.Raw(TempData["MyName"])";
         var mynameColor = "@Html.Raw(TempData["YourNameColor"])";
+        var chatName = "@ViewBag.ChatName";
 
         var myVar = setInterval(function () { myTimer() }, 3000);
         var autoScrollEnabled = true;
 
         var ignored = [];
         var imagesOn = true;
+
+        var allSounds = false;
+        var mySound = false;
 
         $("#autoScrollToggle").click(function () {
             if (autoScrollEnabled == true) {
@@ -193,8 +206,8 @@
             $('#displayname').val("");
             $('#message').focus();
             $.connection.hub.start().done(function () {
-                chat.server.joinRoom("@ViewBag.ChatName");
-                chat.state.toRoom = "@ViewBag.ChatName";
+                chat.server.joinRoom(chatName);
+                chat.state.toRoom = chatName;
                 $("#disconnected").hide();
                 $(window).focus(function () {
                     $(document).attr('title', chatTitle);
@@ -268,6 +281,17 @@
             encodedValue = encodedValue.replace("[sd]", "<pre>  ------\n,'   SERVER PUBLISH HAPPENING SOON.       `.\n|     (Brace for derp.)        \\\n");
             encodedValue = fixLinks(encodedValue);
 
+            // play sound(s)
+            if (encodedValue.indexOf(myname) > 0 && mySound == true) {
+                var popaudio = new Audio('../Sounds/pop2.ogg');
+                popaudio.play();
+            } else if (allSounds == true){
+                var popaudio = new Audio('../Sounds/pop.ogg');
+                popaudio.play();
+            }
+
+               
+           // }
 
 
             return encodedValue;
@@ -363,6 +387,29 @@
             }
         });
 
+
+        $("#sounds_all").click(function () {
+            allSounds = true;
+            mySound = true;
+            localStorage.setItem("chat_sound_" + chatName, 2);
+            alert("All sounds enabled for this room.");
+        });
+
+        $("#sounds_justme").click(function () {
+            allSounds = false;
+            mySound = true;
+            localStorage.setItem("chat_sound_" + chatName, 1);
+            alert("Some sounds enabled for this room.  You will only hear a sound if somone addresses you in particular.");
+        });
+
+        $("#sounds_none").click(function () {
+            allSounds = false;
+            mySound = false;
+            localStorage.setItem("chat_sound_" + chatName, 0);
+            alert("All sounds disabled for this room.");
+        });
+
+
         //This section has to go somewhere, when someone clicks something with the "chatlink" class, it will run the popup.
         $("#discussion").on('click', '.chatlink', function () {
             console.log("xyz");
@@ -389,6 +436,29 @@
             ignored = JSON.parse(localStorage.getItem("chat_IgnoreList"));
             if (ignored == null) {
                 ignored = [];
+            }
+
+            // load up sound preferences for this room
+            var soundSettings = localStorage.getItem("chat_sound_" + chatName);
+            if (soundSettings == undefined) {
+                localStorage.setItem("chat_sound_" + chatName, 0);
+                soundSettings = 0;
+            }
+
+            // none
+            if (soundSettings == 0) {
+                allSounds = false;
+                mySound = false;
+
+            // some
+            } else if (soundSettings == 1) {
+                allSounds = false;
+                mySound = true;
+
+            // all
+            } else if (soundSettings == 2) {
+                allSounds = true;
+                mySound = true;
             }
 
         });

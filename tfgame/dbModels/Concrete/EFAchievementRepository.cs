@@ -7,42 +7,42 @@ using tfgame.dbModels.Models;
 
 namespace tfgame.dbModels.Concrete
 {
-    public class EFAchievementRepository : IAchievementRepository
+    public class EFAchievementBadgeRepository : IAchievementBadgeRepository
     {
         private StatsContext context = new StatsContext();
 
-        public IQueryable<Achievement> Achievements
+        public IQueryable<AchievementBadge> AchievementBadges
         {
-            get { return context.Achievements; }
+            get { return context.AchievementBadges; }
         }
 
-        public void SaveAchievement(Achievement Achievement)
+        public void SaveAchievementBadge(AchievementBadge AchievementBadge)
         {
-            if (Achievement.Id == 0)
+            if (AchievementBadge.Id == 0)
             {
-                context.Achievements.Add(Achievement);
+                context.AchievementBadges.Add(AchievementBadge);
             }
             else
             {
-                Achievement editMe = context.Achievements.Find(Achievement.Id);
+                AchievementBadge editMe = context.AchievementBadges.Find(AchievementBadge.Id);
                 if (editMe != null)
                 {
-                    // dbEntry.Name = Achievement.Name;
-                    // dbEntry.Message = Achievement.Message;
-                    // dbEntry.TimeStamp = Achievement.TimeStamp;
+                    // dbEntry.Name = AchievementBadge.Name;
+                    // dbEntry.Message = AchievementBadge.Message;
+                    // dbEntry.TimeStamp = AchievementBadge.TimeStamp;
 
                 }
             }
             context.SaveChanges();
         }
 
-        public void DeleteAchievement(int id)
+        public void DeleteAchievementBadge(int id)
         {
 
-            Achievement dbEntry = context.Achievements.Find(id);
+            AchievementBadge dbEntry = context.AchievementBadges.Find(id);
             if (dbEntry != null)
             {
-                context.Achievements.Remove(dbEntry);
+                context.AchievementBadges.Remove(dbEntry);
                 context.SaveChanges();
             }
         }

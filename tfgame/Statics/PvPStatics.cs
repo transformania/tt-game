@@ -19,20 +19,20 @@ namespace tfgame.Statics
         public const int StartTurnNoAttackSeconds = 30;
         public const int EndTurnNoAttackSeconds = 30;
 
-        public const string AlphaRound = "Alpha Round 23";
+        public const string AlphaRound = "Alpha Round 25";
 
         public const bool ChaosMode = false;
 
-        public static String GenderMale = "male";
-        public static String GenderFemale = "female";
+        public const String GenderMale = "male";
+        public const String GenderFemale = "female";
 
-        public static String MobilityFull = "full";
-        public static String MobilityNoCast = "nocast";
-        public static String MobilityNone = "inanimate";
+        public const String MobilityFull = "full";
+        public const String MobilityNoCast = "nocast";
+        public const String MobilityNone = "inanimate";
 
+        // These three are publicly modified statics, not constants
         public static string LastGameUpdate = "";
         public static int LastGameTurn = 0;
-
         public static bool AnimateUpdateInProgress = false;
 
         public const int MinutesToDroppedItemDelete = 20;
@@ -40,48 +40,48 @@ namespace tfgame.Statics
 
         public const decimal SneakAmountBeforeLocationIsPublic = -25;
 
-        public static int MaxLogMessagesPerLocation = 20;
-        public static int MaxLogMessagesPerPlayer = 50;
+        public const int MaxLogMessagesPerLocation = 20;
+        public const int MaxLogMessagesPerPlayer = 50;
 
         public const decimal PvPScoreTricklePerUpdate = .2M;
 
-        public static decimal XP__GainPerAttackBase = 5;
-        public static decimal XP__AnimateTFXPBonusModifier = 1.5M;
-        public static decimal XP__LevelDifferenceXPGainModifier = 1.5M;
-        public static decimal XP__EndgameTFCompletionLevelBase = 15;
-        public static decimal ExtraHealthDamagePerLevel = 1.25M;
+        public const decimal XP__GainPerAttackBase = 5;
+        public const decimal XP__AnimateTFXPBonusModifier = 1.5M;
+        public const decimal XP__LevelDifferenceXPGainModifier = 1.5M;
+        public const decimal XP__EndgameTFCompletionLevelBase = 15;
+        public const decimal ExtraHealthDamagePerLevel = 1.25M;
 
-        public static double OfflineAfterXMinutes = 30;
-        public const int DuelNoCombatMinutes = 30;
+        public const double OfflineAfterXMinutes = 30;
+        public const int DuelNoCombatMinutes = 15;
         public const int MaximumDuelTurnLength = 10;
 
-        public static decimal XP__Level_2 = 100;
-        public static decimal XP__Level_3 = 150; //+50
-        public static decimal XP__Level_4 = 220; //+70
-        public static decimal XP__Level_5 = 310; //+90
-        public static decimal XP__Level_6 = 420; //+110
-        public static decimal XP__Level_7 = 550; //+130
-        public static decimal XP__Level_8 = 700; //+150
-        public static decimal XP__Level_9 = 870; //+170
-        public static decimal XP__Level_10 = 1060; //+190
-        public static decimal XP__Level_11 = 1270; //+210
-        public static decimal XP__Level_12 = 1500; //+230
-        public static decimal XP__Level_13 = 1750; //+250
-        public static decimal XP__Level_14 = 2020; //+270
-        public static decimal XP__Level_15 = 2310; //+290
-        public static decimal XP__Level_16 = 2600; //+310
-        public static decimal XP__Level_17 = 2910; //+330
-        public static decimal XP__Level_18 = 3240; //+350
-        public static decimal XP__Level_19 = 3600; //+370
-        public static decimal XP__Level_20 = 3970; //+390
-        public static decimal XP__Level_21 = 4360; //+410
-        public static decimal XP__Level_22 = 4790; //+430
-        public static decimal XP__Level_23 = 5240; //+450
-        public static decimal XP__Level_24 = 5710; //+470
-        public static decimal XP__Level_25 = 6200; //+490
-        public static decimal XP__Level_26 = 6710; //+510
-        public static decimal XP__Level_27 = 7240; //+530
-        public static decimal XP__Level_28 = 7790; //+550
+        public const decimal XP__Level_2 = 100;
+        public const decimal XP__Level_3 = 150; //+50
+        public const decimal XP__Level_4 = 220; //+70
+        public const decimal XP__Level_5 = 310; //+90
+        public const decimal XP__Level_6 = 420; //+110
+        public const decimal XP__Level_7 = 550; //+130
+        public const decimal XP__Level_8 = 700; //+150
+        public const decimal XP__Level_9 = 870; //+170
+        public const decimal XP__Level_10 = 1060; //+190
+        public const decimal XP__Level_11 = 1270; //+210
+        public const decimal XP__Level_12 = 1500; //+230
+        public const decimal XP__Level_13 = 1750; //+250
+        public const decimal XP__Level_14 = 2020; //+270
+        public const decimal XP__Level_15 = 2310; //+290
+        public const decimal XP__Level_16 = 2600; //+310
+        public const decimal XP__Level_17 = 2910; //+330
+        public const decimal XP__Level_18 = 3240; //+350
+        public const decimal XP__Level_19 = 3600; //+370
+        public const decimal XP__Level_20 = 3970; //+390
+        public const decimal XP__Level_21 = 4360; //+410
+        public const decimal XP__Level_22 = 4790; //+430
+        public const decimal XP__Level_23 = 5240; //+450
+        public const decimal XP__Level_24 = 5710; //+470
+        public const decimal XP__Level_25 = 6200; //+490
+        public const decimal XP__Level_26 = 6710; //+510
+        public const decimal XP__Level_27 = 7240; //+530
+        public const decimal XP__Level_28 = 7790; //+550
 
         public const string Permissions_Admin = "admin";
         public const string Permissions_Moderator = "moderator";
@@ -93,8 +93,14 @@ namespace tfgame.Statics
         public const string Permissions_Previewer = "previewer";
         public const string Permissions_Killswitcher = "killswitch";
 
+        public static readonly int[] Item_SoulActivityLevels_Minutes = {
+                                                                 240,
+                                                                 1440,
+                                                                 4320,
+                                                             };
 
-        public static int[] XP__LevelupRequirementByLevel = {
+
+        public static readonly int[] XP__LevelupRequirementByLevel = {
            5, // 0 (nobody should ever be at 0!)
            100, // 1 (nobody should be able to level up to 1 since that means they were at 0!)
            150, // 1 to 2
@@ -125,7 +131,7 @@ namespace tfgame.Statics
            7790, // 26 to 27
        };
 
-        public static int[] XP__ManaBaseByLevel = {
+        public static readonly int[] XP__ManaBaseByLevel = {
            5, // 0 (nobody should ever be at 0!)
            50, // 1
            60, // 2
@@ -157,7 +163,7 @@ namespace tfgame.Statics
            310, // 28
        };
 
-        public static int[] XP__HealthBaseByLevel = {
+        public static readonly int[] XP__HealthBaseByLevel = {
            5, // 0 (nobody should ever be at 0!)
            100, // 1
            115, // 2
@@ -189,63 +195,64 @@ namespace tfgame.Statics
            505, // 28
        };
 
-        public static int[] RerollTimer = {
+        public static readonly int[] RerollTimer = {
             30,     // 30 minutes
             60,     // 1 hour
             240,    // 4 hours
             1440    // 24 hours
         };
 
-        public static decimal LevelUpHealthMaxIncreaseBase = 10;
-        public static decimal LevelUpManaMaxIncreaseBase = 10;
-        public static decimal LevelUpHealthMaxIncreasePerLevel = 5;
-        public static decimal LevelUpManaMaxIncreasePerLevel = 5;
+        public const decimal LevelUpHealthMaxIncreaseBase = 10;
+        public const decimal LevelUpManaMaxIncreaseBase = 10;
+        public const decimal LevelUpHealthMaxIncreasePerLevel = 5;
+        public const decimal LevelUpManaMaxIncreasePerLevel = 5;
 
-        public static decimal Item_LevelBonusModifier = .1M;
+        public const decimal Item_LevelBonusModifier = .1M;
         public const int ItemTurnBuildupMaximum = 48;
 
-        public static int MaxAttacksPerUpdate = 3;
-        public static decimal LocationMoveCost = 1.0M;
-        public static decimal AttackCost = 3.0M;
-        public static decimal MeditateCost = 4.0M;
-        public static decimal CleanseCost = 4.0M;
-        public static decimal CleanseManaCost = 3M;
-        public static decimal CleanseTFEnergyPercentDecrease = 2.0M;
-        public static decimal MeditateManaRestoreBase = 10.0M;
-        public static decimal CleanseHealthRestoreBase = 7.0M;
-        public static decimal SearchAPCost = 4.0M;
+        public const int MaxAttacksPerUpdate = 3;
+        public const int NoMovingAfterAttackSeconds = 45;
+        public const decimal LocationMoveCost = 1.0M;
+        public const decimal AttackCost = 3.0M;
+        public const decimal MeditateCost = 4.0M;
+        public const decimal CleanseCost = 4.0M;
+        public const decimal CleanseManaCost = 3M;
+        public const decimal CleanseTFEnergyPercentDecrease = 2.0M;
+        public const decimal MeditateManaRestoreBase = 10.0M;
+        public const decimal CleanseHealthRestoreBase = 7.0M;
+        public const decimal SearchAPCost = 4.0M;
 
-        public static int MaxCarryableItemCountBase = 6;
-        public static int MaxCleansesMeditatesPerUpdate = 3;
+        public const int MaxCarryableItemCountBase = 6;
+        public const int MaxCleansesMeditatesPerUpdate = 3;
 
-        public static decimal MaximumStoreableActionPoints = 120;
+        public const decimal MaximumStoreableActionPoints = 120;
         public const decimal MaximumStoreableActionPoints_Refill = 360;
-        public static decimal APRestoredPerUpdate = 10;
-        public static decimal APRestoredPerUpdateRefillBonus = 20;
+        public const decimal APRestoredPerUpdate = 10;
+        public const decimal APRestoredPerUpdateRefillBonus = 20;
 
-        public static decimal CriticalMissPercentChance = 8;
-        public static decimal CriticalHitPercentChance = 8;
+        public const decimal CriticalMissPercentChance = 8;
+        public const decimal CriticalHitPercentChance = 8;
 
-        public static string NoActionPointsErrorMessage = "Wait a while; you will receive more action points every half hour.";
+        public const string NoActionPointsErrorMessage = "Wait a while; you will receive more action points every half hour.";
 
 
-        public static decimal PercentHealthToAllowFullMobilityFormTF = 0.50m;
-        public static decimal PercentHealthToAllowMindControlTF = 0.25m;
-        public static decimal PercentHealthToAllowAnimalFormTF = 0;
-        public static decimal PercentHealthToAllowInanimateFormTF = 0;
+        public const decimal PercentHealthToAllowFullMobilityFormTF = 0.50m;
+        public const decimal PercentHealthToAllowMindControlTF = 0.25m;
+        public const decimal PercentHealthToAllowAnimalFormTF = 0;
+        public const decimal PercentHealthToAllowInanimateFormTF = 0;
 
-        public static decimal NonPvPXPGainModifier = .5M;
+        public const decimal NonPvPXPGainModifier = .5M;
 
-        public static string ItemType_Accessory = "accessory";
-        public static string ItemType_Consumeable = "consumeable";
-        public static string ItemType_Consumable_Reuseable = "consumable_reuseable";
-        public static string ItemType_Shirt = "shirt";
-        public static string ItemType_Undershirt = "undershirt";
-        public static string ItemType_Pants = "pants";
-        public static string ItemType_Underpants = "underpants";
-        public static string ItemType_Hat = "hat";
-        public static string ItemType_Shoes = "shoes";
-        public static string ItemType_Pet = "pet";
+        public const string ItemType_Accessory = "accessory";
+        public const string ItemType_Consumeable = "consumeable";
+        public const string ItemType_Consumable_Reuseable = "consumable_reuseable";
+        public const string ItemType_Shirt = "shirt";
+        public const string ItemType_Undershirt = "undershirt";
+        public const string ItemType_Pants = "pants";
+        public const string ItemType_Underpants = "underpants";
+        public const string ItemType_Hat = "hat";
+        public const string ItemType_Shoes = "shoes";
+        public const string ItemType_Pet = "pet";
 
         public const string ItemType_DungeonArtifact = "item_consumeable_dungeon_artifact";
         public const string Dungeon_ArtifactCurse = "effect_Dark_Transfixation_Judoo";
@@ -308,10 +315,10 @@ namespace tfgame.Statics
 
     public static class InanimateXPStatics
     {
-        public static decimal XPGainPerInanimateAction = 5M;
+        public const decimal XPGainPerInanimateAction = 5M;
         public const int ItemMaxTurnsBuildup = 48;
 
-        public static decimal[] XP__LevelupRequirements = new decimal[22] { 0, 100, 150, 220, 310, 420, 550, 700, 870, 1060, 1270, 1500, 1750, 2020, 2310, 2620, 2950, 3300, 3670, 4060, 4470, 4900 }; // +450
+        public static readonly decimal[] XP__LevelupRequirements = new decimal[22] { 0, 100, 150, 220, 310, 420, 550, 700, 870, 1060, 1270, 1500, 1750, 2020, 2310, 2620, 2950, 3300, 3670, 4060, 4470, 4900 }; // +450
 
     }
 
@@ -2526,7 +2533,7 @@ namespace tfgame.Statics
 
     public static class ChatStatics
     {
-        public static IDictionary<string, Tuple<string, string>> Staff = new Dictionary<string, Tuple<string, string>>
+        public static readonly IDictionary<string, Tuple<string, string>> Staff = new Dictionary<string, Tuple<string, string>>
         {
             { "69", new Tuple<string, string>("Judoo (admin)", "/Images/PvP/portraits/Thumbnails/100/Judoo.jpg") },
             { "3490", new Tuple<string, string>("Mizuho (dev)", "/Images/PvP/portraits/Thumbnails/100/Mizuho.jpg") },
@@ -2536,13 +2543,13 @@ namespace tfgame.Statics
             { "dd2decee-8375-4a56-8941-ab0f4f847dc4", new Tuple<string, string>("Wibble (dev)", string.Empty) },
         };
 
-        public static IEnumerable<string> HideOnJoinChat = new List<string>
+        public static readonly IEnumerable<string> HideOnJoinChat = new List<string>
         {
             "69",
             "3490",
         };
 
-        public static IEnumerable<string> ReservedText = new List<string>
+        public static readonly IEnumerable<string> ReservedText = new List<string>
         {
             "[luxa]",
             "[blanca]",
@@ -2551,7 +2558,7 @@ namespace tfgame.Statics
             "[sd]",
         };
 
-        public static IEnumerable<string> ActionTypes = new List<string>
+        public static readonly IEnumerable<string> ActionTypes = new List<string>
         {
             "creature",
             "item",
@@ -2563,7 +2570,7 @@ namespace tfgame.Statics
             "tf.partial",
         };
 
-        public static IEnumerable<string> Tags = new List<string>
+        public static readonly IEnumerable<string> Tags = new List<string>
         {
             "forest",
             "highschool",

@@ -3,6 +3,8 @@
 @using tfgame.dbModels.Models
 @using tfgame.CustomHtmlHelpers
 
+<script src="~/Scripts/jquery-ui-1.10.4.js"></script>
+
 <nav class="navbar navbar-default outsideContainer navbarTT2">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -294,7 +296,8 @@
                 </div>
 
                 <div class="form__panel">
-                    @Html.LabelFor(m => m.Skill_LearnedAtRegion)
+                    @Html.LabelFor(m => m.Skill_LearnedAtRegion) 
+                    @Ajax.ActionLink("Help", "AllLocations", "Info", null, new AjaxOptions { UpdateTargetId = "modal", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "launchModal", OnFailure = "launchLocationListModalFail" }, new { @class = "attackLink" })
                     @Html.TextBoxFor(m => m.Skill_LearnedAtRegion)
                 </div>
 
@@ -603,7 +606,7 @@
                 </div>
 
                 <div class="form__panel">
-                    @Html.LabelFor(m => m.CursedTF_FormdbName)
+                    @Html.LabelFor(m => m.CursedTF_FormdbName) @Ajax.ActionLink("Help", "AllForms", "Info", null, new AjaxOptions { UpdateTargetId = "modal", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "launchModal", OnFailure = "launchLocationListModalFail" }, new { @class = "attackLink" })
                     @Html.TextBoxFor(m => m.CursedTF_FormdbName, new {  })
                 </div>
 
@@ -722,7 +725,10 @@
                         <label>Is Nonstandard:</label>
                         @Html.CheckBoxFor(m => m.IsNonstandard)
                     </div>
-
+                    <div class="form__panel">
+                        <label>Is Player Learnable:</label>
+                        @Html.CheckBoxFor(m => m.Skill_IsPlayerLearnable)
+                    </div>
                 </div>
 
             }
@@ -768,6 +774,8 @@
 
     <input type="button" id="disableReadonly" value="Click to enable readonly fields (this is only for updating older contributions and admins/proofreaders.  Do not use this for any new forms except with permission.)" />
 
+    <div id="modal" style="display: none;" class="ui-widget-content ui-draggable helpModal">LOCATIONS:  </div>
+
     </div>
     <script>
 
@@ -795,6 +803,8 @@
                     }
                 }]
             });
+
+          
 
 
             if ($("#Form_MobilityType").val() == "full") {
@@ -878,13 +888,9 @@
 
         }
 
-        //function showBonusesPopup() {
-        //    $("#bonusesList").show();
-        //}
-
-        //$(window).bind('beforeunload', function () {
-        //    return 'Are you sure you want to leave?';
-        //});
+        function launchModal() {
+            $("#modal").show();
+        }
 
     </script>
 
@@ -948,5 +954,8 @@
 
     textarea:read-only {
         background-color: lightgray;
-    } 
+    }
+
+       
+
     </style>

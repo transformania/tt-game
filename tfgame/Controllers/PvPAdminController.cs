@@ -203,7 +203,7 @@ namespace tfgame.Controllers
             IPlayerRepository playerRepo = new EFPlayerRepository();
 
             // automatically spawn in more bots when they go down
-            int botCount = playerRepo.Players.Where(b => b.BotId == -2 && b.Mobility == "full").Count();
+            int botCount = playerRepo.Players.Where(b => b.BotId == AIStatics.PsychopathBotId && b.Mobility == "full").Count();
             if (botCount < 15)
             {
                 AIProcedures.SpawnAIPsychopaths(15 - botCount, 0);
@@ -974,7 +974,7 @@ namespace tfgame.Controllers
 
                 string msg = "<span class='bad'>PUBLIC SERVER NOTE:  " + input.Message + "</span>";
 
-                List<Player> players = playerRepo.Players.Where(p => p.BotId == 0).ToList();
+                List<Player> players = playerRepo.Players.Where(p => p.BotId == AIStatics.ActivePlayerBotId).ToList();
 
                 string errors = "";
 
@@ -986,7 +986,7 @@ namespace tfgame.Controllers
                     }
                     catch (Exception e)
                     {
-                        errors += "<p>" + p.FirstName + " " + p.LastName + "encountered:  " + e.ToString() + "</p><br/>";
+                        errors += "<p>" + p.GetFullName() + "encountered:  " + e.ToString() + "</p><br/>";
                     }
                 }
 
@@ -1049,6 +1049,8 @@ namespace tfgame.Controllers
                 return View("Play", "PvP");
             }
 
+            BossProcedures_Loremaster.SpawnLoremaster();
+
 
             return RedirectToAction("Index");
         }
@@ -1096,7 +1098,7 @@ namespace tfgame.Controllers
             BossProcedures_PetMerchant.SpawnPetMerchant();
             BossProcedures_Fae.SpawnFae();
             AIProcedures.SpawnBartender();
-            //BossProcedures_Loremaster.SpawnLoremaster();
+            BossProcedures_Loremaster.SpawnLoremaster();
 
             return RedirectToAction("Index");
         }
@@ -1165,6 +1167,34 @@ namespace tfgame.Controllers
 
             IDbStaticFurnitureRepository effectRepo = new EFDbStaticFurnitureRepository();
             return Json(effectRepo.DbStaticFurnitures, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult LocationJSON()
+        {
+            // assert only admins can view this
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false && User.IsInRole(PvPStatics.Permissions_JSON) == false)
+            {
+                return View("Play", "PvP");
+            }
+
+            List<Location> locations = LocationsStatics.LocationList.GetLocation.Where(l => l.dbName.Contains("_dungeon") == false).ToList();
+
+
+            // conceal some data about dungeon location in case whoever pulls this JSON is trying to make a map
+            foreach (Location l in locations)
+            {
+                if (l.dbName.Contains("_dungeon"))
+                {
+                    l.X = 0;
+                    l.Y = 0;
+                    l.Name_East = "";
+                    l.Name_North = "";
+                    l.Name_South = "";
+                    l.Name_West = "";
+                }
+            }
+
+            return Json(locations, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult ApproveContributionList()
@@ -1237,6 +1267,7 @@ namespace tfgame.Controllers
             ProofreadCopy.Skill_LearnedAtLocationOrRegion = OldCopy.Skill_LearnedAtLocationOrRegion;
             ProofreadCopy.Skill_LearnedAtRegion = OldCopy.Skill_LearnedAtRegion;
             ProofreadCopy.Skill_DiscoveryMessage = OldCopy.Skill_DiscoveryMessage;
+            ProofreadCopy.Skill_IsPlayerLearnable = OldCopy.Skill_IsPlayerLearnable;
 
             ProofreadCopy.Form_FriendlyName = OldCopy.Form_FriendlyName;
             ProofreadCopy.Form_Description = OldCopy.Form_Description;
@@ -2698,6 +2729,7 @@ namespace tfgame.Controllers
                     {
                         player.Form = form.dbName;
                         player.Health = 99999;
+                        player.MaxHealth = 99999;
                     }
 
                     if (form.MobilityType == "full" && player.Mobility != "full")
@@ -2718,10 +2750,41 @@ namespace tfgame.Controllers
                     Item item = itemRepo.Items.FirstOrDefault(i => i.VictimName == origFirstName + " " + origLastName);
                     item.VictimName = input.NewFirstName + " " + input.NewLastName;
                     itemRepo.SaveItem(item);
-
-
                 }
 
+                // if Donna, give player her spells
+                if (player.Form == BossProcedures_Donna.DonnaDbForm)
+                {
+                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Donna.Spell1);
+                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Donna.Spell2);
+                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Donna.Spell3);
+                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Donna.Spell4);
+                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Donna.Spell5);
+                }
+
+                // if Valentine, give player his spells
+                else if (player.Form == BossProcedures_Valentine.ValentineFormDbName)
+                {
+                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Valentine.BloodyCurseSpell);
+                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Valentine.ValentinesPresenceSpell);
+                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Valentine.MaleVampSpell);
+                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Valentine.FemaleVampSpell);
+                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Valentine.SwordSpell);
+                }
+
+                // if plague mother, give player her spells
+                else if (player.Form == BossProcedures_BimboBoss.BossFormDbName)
+                {
+                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_BimboBoss.RegularTFSpellDbName);
+                }
+
+                // if master rat thief, give player her spells
+                else if (player.Form == BossProcedures_Thieves.FemaleBossFormDbName)
+                {
+                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Thieves.GoldenTrophySpellDbName);
+                }
+
+                // mouse sisters have no unique spells yet.
 
 
             }
@@ -2773,7 +2836,7 @@ namespace tfgame.Controllers
             playerRepo.SavePlayer(me);
 
             // delete old item you are if you are one
-            Item possibleMeItem = itemRepo.Items.FirstOrDefault(i => i.VictimName == me.FirstName + " " + me.LastName);
+            Item possibleMeItem = itemRepo.Items.FirstOrDefault(i => i.VictimName == me.FirstName + " " + me.LastName); // DO NOT use GetFullName.  It will break things here.
             if (possibleMeItem != null) { 
                 itemRepo.DeleteItem(possibleMeItem.Id);
             }
@@ -2781,12 +2844,13 @@ namespace tfgame.Controllers
             Item newMeItem = new Item{
                 dbLocationName = me.dbLocationName,
                 dbName = "item_Flirty_Three-Tiered_Skirt_Martiandawn",
-                VictimName = me.FirstName + " " + me.LastName,
+                VictimName = me.FirstName + " " + me.LastName, // DO NOT use GetFullName.  It will break things here.
                 Nickname = me.Nickname,
                 TimeDropped = DateTime.UtcNow,
                 OwnerId = -1,
                 IsEquipped = false,
                 Level = me.Level,
+                LastSouledTimestamp = DateTime.UtcNow.AddYears(-1),
             };
 
             itemRepo.SaveItem(newMeItem);
@@ -2837,6 +2901,7 @@ namespace tfgame.Controllers
                 OwnerId = -1,
                 IsEquipped = false,
                 Level = me.Level,
+                LastSouledTimestamp = DateTime.UtcNow.AddYears(-1),
             };
 
             itemRepo.SaveItem(newMeItem);
@@ -2881,6 +2946,34 @@ namespace tfgame.Controllers
             TempData["Result"] = "You are now fully animate.";
             return RedirectToAction("Play", "PvP");
 
+        }
+
+        [Authorize]
+        public ActionResult AssignLeadersBadges()
+        {
+
+            string myMembershipId = User.Identity.GetUserId();
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            {
+                return RedirectToAction("Play", "PvP");
+            }
+
+            if (PvPStatics.ChaosMode==true)
+            {
+                TempData["Error"] = "Can't do this in chaos mode.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            if (PvPWorldStatProcedures.GetWorldTurnNumber() != PvPStatics.RoundDuration)
+            {
+                TempData["Error"] = "Turn must be the final turn of the round for this to work.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            string output = StatsProcedures.AssignLeadersBadges();
+
+            TempData["Result"] = output;
+            return RedirectToAction("Play", "PvP");
         }
 
 

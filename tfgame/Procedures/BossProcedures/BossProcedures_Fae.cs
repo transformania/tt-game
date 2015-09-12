@@ -13,17 +13,22 @@ namespace tfgame.Procedures.BossProcedures
 {
     public static class BossProcedures_Fae
     {
+
+        public const string FaeFormDbName = "form_Perverted_Fairy_Judoo";
+        public const string FirstName = "Jewdewfae";
+        public const string LastName = "the Pervfae";
+
         public static void SpawnFae()
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player fae = playerRepo.Players.FirstOrDefault(f => f.FirstName == "Jewdewfae" && f.LastName == "the Pervfae");
+            Player fae = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.JewdewfaeBotId);
 
             if (fae == null)
             {
                 fae = new Player()
                 {
-                    FirstName = "Jewdewfae",
-                    LastName = "the Pervfae",
+                    FirstName = FirstName,
+                    LastName = LastName,
                     ActionPoints = 120,
                     dbLocationName = "apartment_dog_park",
                     LastActionTimestamp = DateTime.UtcNow,
@@ -36,12 +41,12 @@ namespace tfgame.Procedures.BossProcedures
                     Mana = 9999,
                     MaxHealth = 9999,
                     MaxMana = 9999,
-                    Form = "form_Perverted_Fairy_Judoo",
+                    Form = FaeFormDbName,
                     Money = 1000,
                     Mobility = "full",
                     Level = 7,
                     MembershipId = "-6",
-                    BotId = -6,
+                    BotId = AIStatics.JewdewfaeBotId,
                     ActionPoints_Refill = 360,
                 };
 
@@ -51,7 +56,7 @@ namespace tfgame.Procedures.BossProcedures
 
                 playerRepo.SavePlayer(fae);
 
-                fae = playerRepo.Players.FirstOrDefault(f => f.FirstName == "Jewdewfae" && f.LastName == "the Pervfae");
+                fae = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.JewdewfaeBotId);
 
                 // set up her AI directive so it is not deleted
                 IAIDirectiveRepository aiRepo = new EFAIDirectiveRepository();
@@ -76,7 +81,7 @@ namespace tfgame.Procedures.BossProcedures
         {
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player fae = playerRepo.Players.FirstOrDefault(f => f.BotId == AIProcedures.JewdewfaeMembershipId);
+            Player fae = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.JewdewfaeBotId);
 
             IJewdewfaeEncounterRepository faeRepo = new EFJewdewfaeEncounterRepository();
 
@@ -127,7 +132,7 @@ namespace tfgame.Procedures.BossProcedures
 
         public static decimal AddInteraction(Player player) {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player fae = playerRepo.Players.FirstOrDefault(f => f.BotId == AIProcedures.JewdewfaeMembershipId);
+            Player fae = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.JewdewfaeBotId);
 
             IAIDirectiveRepository aiRepo = new EFAIDirectiveRepository();
             AIDirective directive = aiRepo.AIDirectives.FirstOrDefault(i => i.OwnerId == fae.Id);

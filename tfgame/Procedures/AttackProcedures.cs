@@ -189,7 +189,7 @@ namespace tfgame.Procedures
                         }
 
                         // cap the modifier at at 200 % IF the target is a human
-                        if (willpowerDamageModifierFromBonuses > 2 && victim.BotId == 0)
+                        if (willpowerDamageModifierFromBonuses > 2 && victim.BotId == AIStatics.ActivePlayerBotId)
                         {
                             willpowerDamageModifierFromBonuses = 2;
                         }
@@ -229,7 +229,7 @@ namespace tfgame.Procedures
                         }
 
                         // cap the modifier at at 200 % IF the target is a human
-                        if (tfEnergyDamageModifierFromBonuses > 2 && victim.BotId == 0)
+                        if (tfEnergyDamageModifierFromBonuses > 2 && victim.BotId == AIStatics.ActivePlayerBotId)
                         {
                             tfEnergyDamageModifierFromBonuses = 2;
                         }
@@ -255,6 +255,16 @@ namespace tfgame.Procedures
             PlayerLogProcedures.AddPlayerLog(targeted.Id, logs.VictimLog, true);
             NoticeProcedures.PushAttackNotice(targeted, logs.VictimLog);
 
+            // if this is a psycho-on-psycho battle, have a chance for the victim bot to switch targets to the attacker bot
+            if (attacker.BotId == AIStatics.PsychopathBotId && victim.BotId == AIStatics.PsychopathBotId)
+            {
+                Random rand = new Random(Guid.NewGuid().GetHashCode());
+                double botAggroRoll = rand.NextDouble();
+                if (botAggroRoll < .08)
+                {
+                    AIDirectiveProcedures.SetAIDirective_Attack(victim.Id, attacker.Id);
+                }
+            }
 
             return result;
         }
@@ -277,16 +287,16 @@ namespace tfgame.Procedures
             if (attacker.GameMode == 2)
             {
                 playersHere = playerREpo.Players.Where(p => p.dbLocationName == attacker.dbLocationName &&
-                    (p.GameMode == 2 || p.BotId < -1) &&
+                    (p.GameMode == 2 || p.BotId < AIStatics.RerolledPlayerBotId) &&
                     p.Mobility == "full" &&
                     p.InDuel <= 0).ToList();
             }
-            else if (attacker.GameMode == 1)
+            else if (attacker.GameMode == 1 || attacker.GameMode == 0)
             {
                 playersHere = playerREpo.Players.Where(p => p.dbLocationName == attacker.dbLocationName &&
-                    (p.GameMode == 1 || p.BotId < -1) &&
+                    p.BotId < AIStatics.RerolledPlayerBotId &&
                     p.Mobility == "full" &&
-                    p.InDuel <- 0).ToList();
+                    p.InDuel <= 0).ToList();
             }
 
             // filter out offline players as well as the attacker
@@ -314,7 +324,7 @@ namespace tfgame.Procedures
             string logMessage = attacker.FirstName + " " + attacker.LastName + " threw a Submissiveness Splash Orb here.";
             LocationLogProcedures.AddLocationLog(attacker.dbLocationName, logMessage);
 
-            string attackerMessage = "<span class='playerAttackNotification'>You threw a " + orbStrengthName + " Submissiveness Splash Orb at " + here.Name + ", lowering " + playersHereOnline.Count() + " people's willpower by " + damage + " each.</span>";
+            string attackerMessage = "You threw a " + orbStrengthName + " Submissiveness Splash Orb at " + here.Name + ", lowering " + playersHereOnline.Count() + " people's willpower by " + damage + " each.";
             PlayerLogProcedures.AddPlayerLog(attacker.Id, attackerMessage, false);
 
             // set the player's last action flag
@@ -358,10 +368,12 @@ namespace tfgame.Procedures
                 if (temp == null)
                 {
                     LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == loc.dbName).CovenantController = -1;
+                    LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == loc.dbName).TakeoverAmount = 0;
                 }
                 else
                 {
                     LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == loc.dbName).CovenantController = temp.CovenantId;
+                    LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == loc.dbName).TakeoverAmount = temp.TakeoverAmount;
                 }
             }
         }

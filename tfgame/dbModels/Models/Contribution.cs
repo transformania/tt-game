@@ -49,11 +49,11 @@ namespace tfgame.dbModels.Models
         [Display(Name = "Where is this spell learned, discovered, or invented?  (If the  desired location does not currently exist, I will probably be able to add it in to the game.)")]
         public string Skill_LearnedAtRegion { get; set; }
 
-
-        
-
         [Display(Name = "Short description of how a character learns, discovers, or invents this spell.")]
         public string Skill_DiscoveryMessage { get; set; }
+
+        [Display(Name = "Is this a spell that a player or bot can learn (from spellbooks, random searches, etc?)")]
+        public bool Skill_IsPlayerLearnable { get; set; }
 
         #endregion
 

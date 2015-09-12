@@ -397,14 +397,7 @@ namespace tfgame.Controllers
             // assert that this player is not in a duel
             if (me.InDuel > 0)
             {
-                TempData["Error"] = "You must finish your duel before you can interact with Wuffie.";
-                return RedirectToAction("Play", "PvP");
-            }
-
-            // assert player is animate
-            if (me.InDuel > 0)
-            {
-                TempData["Error"] = "You must conclude your duel before you can interact with Wuffie.";
+                TempData["Error"] = "You must finish your duel before you can interact with Wüffie.";
                 return RedirectToAction("Play", "PvP");
             }
 
@@ -807,7 +800,7 @@ namespace tfgame.Controllers
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            Player bartender = PlayerProcedures.GetPlayerFromBotId(AIProcedures.BartenderMembershipId);
+            Player bartender = PlayerProcedures.GetPlayerFromBotId(AIStatics.BartenderBotId);
 
             // update timestamp (so that he can heal naturally)
             PlayerProcedures.SetTimestampToNow(bartender);
@@ -845,7 +838,7 @@ namespace tfgame.Controllers
             }
             else if (question == "lindella")
             {
-                Player lindella = PlayerProcedures.GetPlayerFromBotId(AIProcedures.LindellaMembershipId);
+                Player lindella = PlayerProcedures.GetPlayerFromBotId(AIStatics.LindellaBotId);
                 if (lindella != null)
                 {
                     Location temp = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == lindella.dbLocationName);
@@ -859,7 +852,7 @@ namespace tfgame.Controllers
 
             else if (question == "wuffie")
             {
-                Player wuffie = PlayerProcedures.GetPlayerFromBotId(AIProcedures.WuffieMembershipId);
+                Player wuffie = PlayerProcedures.GetPlayerFromBotId(AIStatics.WuffieBotId);
                 if (wuffie != null)
                 {
                     Location temp = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == wuffie.dbLocationName);
@@ -872,7 +865,7 @@ namespace tfgame.Controllers
             }
             else if (question == "jewdewfae")
             {
-                Player jewdewfae = PlayerProcedures.GetPlayerFromBotId(AIProcedures.JewdewfaeMembershipId);
+                Player jewdewfae = PlayerProcedures.GetPlayerFromBotId(AIStatics.JewdewfaeBotId);
                 if (jewdewfae != null)
                 {
                     Location temp = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == jewdewfae.dbLocationName);
@@ -1026,6 +1019,9 @@ namespace tfgame.Controllers
                 ViewBag.ShowSuccess = true;
                 ViewBag.HadRecentInteraction = false;
 
+                string spellsLearned = "Jewdewfae's magic also teaches you the following spells:  " + SkillProcedures.GiveRandomFindableSkillsToPlayer(me, 3);
+                ViewBag.SpellsLearned = spellsLearned;
+
                 new Thread(() =>
                      StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__JewdewfaeEncountersCompleted, 1)
                  ).Start();
@@ -1045,7 +1041,7 @@ namespace tfgame.Controllers
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            Player bimbo = PlayerProcedures.GetPlayerFromBotId(AIProcedures.MouseBimboMembershipId);
+            Player bimbo = PlayerProcedures.GetPlayerFromBotId(AIStatics.MouseBimboBotId);
 
             // assert player is mobile
             if (me.Mobility != "full")
@@ -1077,7 +1073,7 @@ namespace tfgame.Controllers
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            Player nerd = PlayerProcedures.GetPlayerFromBotId(AIProcedures.MouseNerdMembershipId);
+            Player nerd = PlayerProcedures.GetPlayerFromBotId(AIStatics.MouseNerdBotId);
 
             // assert player is mobile
             if (me.Mobility != "full")
@@ -1109,7 +1105,7 @@ namespace tfgame.Controllers
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            Player loremaster = PlayerProcedures.GetPlayerFromBotId(AIProcedures.LoremasterMembershipId);
+            Player loremaster = PlayerProcedures.GetPlayerFromBotId(AIStatics.LoremasterBotId);
 
             // assert player is mobile
             if (me.Mobility != "full")
@@ -1141,7 +1137,7 @@ namespace tfgame.Controllers
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            Player loremaster = PlayerProcedures.GetPlayerFromBotId(AIProcedures.LoremasterMembershipId);
+            Player loremaster = PlayerProcedures.GetPlayerFromBotId(AIStatics.LoremasterBotId);
 
             // assert player is mobile
             if (me.Mobility != "full")
@@ -1171,7 +1167,7 @@ namespace tfgame.Controllers
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            Player loremaster = PlayerProcedures.GetPlayerFromBotId(AIProcedures.LoremasterMembershipId);
+            Player loremaster = PlayerProcedures.GetPlayerFromBotId(AIStatics.LoremasterBotId);
 
             // assert player is mobile
             if (me.Mobility != "full")
@@ -1225,7 +1221,7 @@ namespace tfgame.Controllers
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            Player loremaster = PlayerProcedures.GetPlayerFromBotId(AIProcedures.LoremasterMembershipId);
+            Player loremaster = PlayerProcedures.GetPlayerFromBotId(AIStatics.LoremasterBotId);
 
             // assert player is mobile
             if (me.Mobility != "full")
@@ -1290,7 +1286,7 @@ namespace tfgame.Controllers
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            Player loremaster = PlayerProcedures.GetPlayerFromBotId(AIProcedures.LoremasterMembershipId);
+            Player loremaster = PlayerProcedures.GetPlayerFromBotId(AIStatics.LoremasterBotId);
 
             // assert player is animate
             if (me.Mobility != "full")
@@ -1340,5 +1336,30 @@ namespace tfgame.Controllers
             return RedirectToAction("LorekeeperLearnSpell", "NPC");
 
         }
-	}
+
+        [Authorize]
+        public ActionResult TalkToValentine()
+        {
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            Player valentine = PlayerProcedures.GetPlayerFromBotId(AIStatics.ValentineBotId);
+
+            // assert player is mobile
+            if (me.Mobility != "full")
+            {
+                TempData["Error"] = "You must be animate in order to chat with " + valentine.GetFullName() + ".";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            // assert player is in the same place as Candice
+            if (me.dbLocationName != valentine.dbLocationName)
+            {
+                TempData["Error"] = "You must be in the same location as " + valentine.GetFullName() + " in order to talk with him.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            return View();
+
+        }
+    }
 }

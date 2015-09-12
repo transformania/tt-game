@@ -72,7 +72,7 @@ namespace tfgame.CustomHtmlHelpers
         public static MvcHtmlString PrintPvPIcon(Player player)
         {
 
-            if (player.BotId < 0)
+            if (player.BotId < AIStatics.ActivePlayerBotId)
             {
                 return new MvcHtmlString("");
             }
@@ -85,7 +85,7 @@ namespace tfgame.CustomHtmlHelpers
             {
                 return new MvcHtmlString("<span class='icon icon-protection' title='This player is in Protection mode.'></span>");
             }
-            else if (player.BotId == 0)
+            else if (player.BotId == AIStatics.ActivePlayerBotId)
             {
                 return new MvcHtmlString("<span class='icon icon-pvp' title='This player is in PvP mode.'></span>");
             }
@@ -397,7 +397,7 @@ namespace tfgame.CustomHtmlHelpers
 
         public static MvcHtmlString StyleIfBot(Player player)
         {
-            if (player.BotId <= -2)
+            if (player.BotId <= AIStatics.PsychopathBotId)
             {
                 return new MvcHtmlString("bot");
             }
@@ -524,6 +524,64 @@ namespace tfgame.CustomHtmlHelpers
             if (item.IsPermanent == true)
             {
                 return new MvcHtmlString("<span class='icon icon-permanent' title=\"This player\'s soul is permanently sealed into this item.\"></span>");
+            }
+            else
+            {
+                return new MvcHtmlString("");
+            }
+        }
+
+        public static MvcHtmlString PrintSouledIcon(Item item)
+        {
+            if (item.VictimName != null && item.VictimName != "")
+            {
+                double timeAgo = Math.Abs(Math.Floor(item.LastSouledTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
+
+                if (timeAgo < PvPStatics.Item_SoulActivityLevels_Minutes[0])
+                {
+                    return new MvcHtmlString("<span class='icon icon-souled0'></span>");
+                }
+                else if (timeAgo < PvPStatics.Item_SoulActivityLevels_Minutes[1])
+                {
+                    return new MvcHtmlString("<span class='icon icon-souled1'></span>");
+                }
+                else if (timeAgo < PvPStatics.Item_SoulActivityLevels_Minutes[2])
+                {
+                    return new MvcHtmlString("<span class='icon icon-souled2'></span>");
+                }
+                else
+                {
+                    return new MvcHtmlString("");
+                }
+            }
+            else
+            {
+                return new MvcHtmlString("");
+            }
+        }
+
+        public static MvcHtmlString PrintSouledIcon(ItemViewModel item)
+        {
+            if (item.dbItem.VictimName != null && item.dbItem.VictimName != "")
+            {
+                double timeAgo = Math.Abs(Math.Floor(item.dbItem.LastSouledTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
+
+                if (timeAgo < PvPStatics.Item_SoulActivityLevels_Minutes[0])
+                {
+                    return new MvcHtmlString("<span class='icon icon-souled0'></span>");
+                }
+                else if (timeAgo < PvPStatics.Item_SoulActivityLevels_Minutes[1])
+                {
+                    return new MvcHtmlString("<span class='icon icon-souled1'></span>");
+                }
+                else if (timeAgo < PvPStatics.Item_SoulActivityLevels_Minutes[2])
+                {
+                    return new MvcHtmlString("<span class='icon icon-souled2'></span>");
+                }
+                else
+                {
+                    return new MvcHtmlString("");
+                }
             }
             else
             {

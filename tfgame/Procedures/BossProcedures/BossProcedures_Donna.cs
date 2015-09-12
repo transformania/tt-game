@@ -15,11 +15,12 @@ namespace tfgame.Procedures.BossProcedures
     {
 
         private const int DonnaSpellCount = 5;
-        private const string Spell1 = "skill_Donna's_Bitch_LexamTheGemFox";
-        private const string Spell2 = "skill_Donna's_Cow_LexamtheGemFox";
-        private const string Spell3 = "skill_Donna's_Pig_LexamtheGemFox";
-        private const string Spell4 = "skill_Donna's_Mare_LexamtheGemFox";
-        private const string Spell5 = "skill_Donna's_Chicken_LexamtheGemFox";
+        public const string DonnaDbForm = "form_Mythical_Sorceress_LexamTheGemFox";
+        public const string Spell1 = "skill_Donna's_Bitch_LexamTheGemFox";
+        public const string Spell2 = "skill_Donna's_Cow_LexamtheGemFox";
+        public const string Spell3 = "skill_Donna's_Pig_LexamtheGemFox";
+        public const string Spell4 = "skill_Donna's_Mare_LexamtheGemFox";
+        public const string Spell5 = "skill_Donna's_Chicken_LexamtheGemFox";
 
         public static void SpawnDonna()
         {
@@ -44,7 +45,7 @@ namespace tfgame.Procedures.BossProcedures
                     Mana = 9999,
                     MaxHealth = 9999,
                     MaxMana = 9999,
-                    Form = "form_Mythical_Sorceress_LexamTheGemFox",
+                    Form = DonnaDbForm,
                     Money = 1000,
                     Mobility = "full",
                     Level = 20,
@@ -73,7 +74,7 @@ namespace tfgame.Procedures.BossProcedures
             int worldTurnNumber = PvPWorldStatProcedures.GetWorldTurnNumber() - 1;
             ServerLog log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == worldTurnNumber);
 
-            Player donna = playerRepo.Players.FirstOrDefault(p => p.BotId == -4);
+            Player donna = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.DonnaBotId);
 
             if (donna.Mobility != "full")
             {
@@ -210,7 +211,7 @@ namespace tfgame.Procedures.BossProcedures
 
                 foreach (Player p in PlayersHere)
                 {
-                    if (p.BotId == 0 &&
+                    if (p.BotId == AIStatics.ActivePlayerBotId &&
                         p.Level > 3 && 
                         p.Mobility == "full" && 
                         !PlayerProcedures.PlayerIsOffline(p) &&

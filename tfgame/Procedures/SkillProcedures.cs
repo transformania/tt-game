@@ -28,7 +28,7 @@ namespace tfgame.Procedures
         public static IEnumerable<DbStaticSkill> GetAllLearnableSpells()
         {
             IDbStaticSkillRepository skillRepo = new EFDbStaticSkillRepository();
-            return skillRepo.DbStaticSkills.Where(s => s.LearnedAtLocation != null && s.LearnedAtLocation != "" || s.LearnedAtRegion != null && s.LearnedAtRegion != "");
+            return skillRepo.DbStaticSkills.Where(s => s.IsPlayerLearnable == true && s.IsLive == "live" && s.LearnedAtLocation != null && s.LearnedAtLocation != "" || s.LearnedAtRegion != null && s.LearnedAtRegion != "");
         }
 
         public static IEnumerable<MySkillsViewModel> GetMySkillsViewModel(int playerId)
@@ -99,6 +99,7 @@ namespace tfgame.Procedures
                                                          ExclusiveToForm = ss.ExclusiveToForm,
                                                          ExclusiveToItem = ss.ExclusiveToItem,
                                                          GivesEffect = ss.GivesEffect,
+                                                         IsPlayerLearnable = ss.IsPlayerLearnable,
                                                      }
 
                                                  };
@@ -147,6 +148,7 @@ namespace tfgame.Procedures
                                                           ExclusiveToForm = ss.ExclusiveToForm,
                                                           ExclusiveToItem = ss.ExclusiveToItem,
                                                           GivesEffect = ss.GivesEffect,
+                                                          IsPlayerLearnable = ss.IsPlayerLearnable,
                                                       }
 
                                                   };
@@ -192,6 +194,7 @@ namespace tfgame.Procedures
                                                           ExclusiveToForm = ss.ExclusiveToForm,
                                                           ExclusiveToItem = ss.ExclusiveToItem,
                                                           GivesEffect = ss.GivesEffect,
+                                                          IsPlayerLearnable = ss.IsPlayerLearnable,
                                                       }
 
                                                   };
@@ -282,10 +285,10 @@ namespace tfgame.Procedures
         public static string GiveRandomFindableSkillsToPlayer(Player player, int amount)
         {
             ISkillRepository skillRepo = new EFSkillRepository();
-            string output = "You learned the spells:  ";
+            string output = "";
 
             IEnumerable<string> playerSkills = skillRepo.Skills.Where(s => s.OwnerId == player.Id).Select(s => s.Name).ToList();
-            IEnumerable<string> learnableSkills = skillRepo.DbStaticSkills.Where(s => (s.LearnedAtLocation != null && s.LearnedAtLocation != "") || (s.LearnedAtRegion != null && s.LearnedAtRegion != "")).Select(s => s.dbName).ToList();
+            IEnumerable<string> learnableSkills = skillRepo.DbStaticSkills.Where(s => s.IsPlayerLearnable == true).Select(s => s.dbName).ToList();
 
 
             IEnumerable<string> eligibleSkills = from s in learnableSkills
@@ -297,7 +300,7 @@ namespace tfgame.Procedures
 
             if (eligibleSkills.Count() == 0)
             {
-                return "Unfortunately as you flip through the spellbook you don't learn any new spells that you didn't already know and it crumbles to dust in your hands.";
+                return "(Unfortunately you don't learn any new spells that you don't already know.)";
             }
 
             Random rand = new Random(DateTime.UtcNow.Millisecond);
@@ -320,7 +323,7 @@ namespace tfgame.Procedures
                 }
             }
 
-            output += " from reading your spellbook before it crumbles and vanishes into dust.";
+            output += "";
             return output;
         }
 
@@ -356,7 +359,7 @@ namespace tfgame.Procedures
         public static void UpdateFormSpecificSkillsToPlayer(Player player, string oldFormDbName, string newFormDbName)
         {
             // don't care about bots
-            if (player.BotId < 0)
+            if (player.BotId < AIStatics.ActivePlayerBotId)
             {
                 return;
             }
@@ -457,7 +460,7 @@ namespace tfgame.Procedures
         public static int GetCountOfLearnableSpells()
         {
             IDbStaticSkillRepository skillRepo = new EFDbStaticSkillRepository();
-            int spellCount = skillRepo.DbStaticSkills.Where(s => ((s.LearnedAtLocation != "" && s.LearnedAtLocation != null) || (s.LearnedAtRegion != "" && s.LearnedAtRegion != null)) && (s.MobilityType == "full" || s.MobilityType == "inanimate" || s.MobilityType == "animal" || s.MobilityType == "mindcontrol")).Count();
+            int spellCount = skillRepo.DbStaticSkills.Where(s => s.IsPlayerLearnable == true).Count();
             return spellCount;
 
         }
@@ -485,7 +488,7 @@ namespace tfgame.Procedures
             {
                 try
                 {
-                    context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Skills] SET IsArchived = " + archiveBool + " WHERE OwnerId = " + playerId);
+                    context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Skills] SET IsArchived = " + archiveBool + " WHERE OwnerId = " + playerId + " AND Name != 'lowerHealth'");
                 }
                 catch (Exception)
                 {

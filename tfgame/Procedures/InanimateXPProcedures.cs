@@ -63,7 +63,7 @@ namespace tfgame.Procedures
 
             // get the number of inanimate accounts under this IP
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            decimal playerCount = playerRepo.Players.Where(p => p.IpAddress == me.IpAddress && (p.Mobility == "inanimate" || p.Mobility == "animal") && p.BotId == 0).Count();
+            decimal playerCount = playerRepo.Players.Where(p => p.IpAddress == me.IpAddress && (p.Mobility == "inanimate" || p.Mobility == "animal") && p.BotId == AIStatics.ActivePlayerBotId).Count();
 
             if (playerCount == 0 || HttpContext.Current.User.IsInRole(PvPStatics.Permissions_MultiAccountWhitelist))
             {
@@ -339,6 +339,10 @@ namespace tfgame.Procedures
                 }
 
                 dbPlayer.Mobility = "full";
+                dbPlayer.ActionPoints = PvPStatics.MaximumStoreableActionPoints;
+                dbPlayer.ActionPoints_Refill = PvPStatics.MaximumStoreableActionPoints_Refill;
+                dbPlayer.CleansesMeditatesThisRound = PvPStatics.MaxCleansesMeditatesPerUpdate;
+                dbPlayer.TimesAttackingThisUpdate = PvPStatics.MaxAttacksPerUpdate;
 
                 // don't let the player spawn in the dungeon if they are not in PvP mode
                 if (dbPlayer.GameMode < 2 && dbPlayer.IsInDungeon() == true)
@@ -368,6 +372,11 @@ namespace tfgame.Procedures
                 }
 
                 PlayerLogProcedures.AddPlayerLog(dbPlayer.Id, msg, false);
+
+                new Thread(() =>
+                        StatsProcedures.AddStat(dbPlayer.MembershipId, StatsProcedures.Stat__SuccessfulStruggles, 1)
+                    ).Start();
+
                 return msg;
 
             }

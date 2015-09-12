@@ -10,7 +10,18 @@
     @{
         foreach (tfgame.dbModels.Models.LocationLog log in Model.Reverse())
         {
-            <li>@Html.Raw(log.Message)  <span class="timeago">@CharactersHere.DatetimeToTimeago(log.Timestamp)</span></li>
+            <li>
+                @Html.Raw(log.Message)
+
+            @{
+            if (log.ConcealmentLevel > 0)
+            {
+                <span class="playerMediatingNotification">[@log.ConcealmentLevel]</span>
+            }
+            }
+
+            <span class="timeago">@CharactersHere.DatetimeToTimeago(log.Timestamp)</span>
+        </li>
         }
     }
 </ul>

@@ -15,19 +15,62 @@ namespace tfgame.Procedures.BossProcedures
 
         // -5 Lord Valentine
 
+        private const string ValentineFirstName = "Lord 'Teaserael'";
+        private const string ValentineLastName = "Valentine";
+
+        public const string ValentineFormDbName = "form_First_Lord_of_the_Valentine_Castle_Valentine's_Family";
+        public const string SwordSpell = "skill_The_Dance_of_Blades_Ashley_Valentine";
+
+        public const string FemaleVampSpell = "skill_Mistress_of_the_night_Foxpower93";
+        public const string MaleVampSpell = "skill_Dark_Baptism_Blood_Knight";
+
+
+        private const string MaleVampFormDbName = "form_Vampire_Lord_Blood_Knight";
+        private const string FemaleVampFormDbName = "form_Vampire_Lord_Blood_Knight";
+
+        public const string BloodyCurseSpell = "skill_A_Bloody_Curse";
+        private const string BloodyKissEffect = "effect_A_Bloody_Kiss_Lilith";
+
+        public const string ValentinesPresenceSpell = "skill_Valentine's_Presence_Lilith";
+        private const string ValentinesPresenceEffect = "effect_Valentine’s_Presence_Lilith";
+
+
+        public const string QueensPanties = "item_Queen_Valentine’s_Panties_Ashley_Valentine";
+
+        private const int DayNightInterval = 2;
+
+        public const string DayStance = "daystance";
+        public const string NightStance = "nightstance";
+
+        // NIGHT -- male
+        public const string NightVampireMaleSpell = "skill_Wisdom_of_the_Nightkin._Leia_Valentine";
+        public const string NightVampireMaleForm = "form_Child_of_the_Night_Leia_Valentine";
+
+        // NIGHT -- female
+        public const string NightVampireFemaleSpell = "skill_Elegance_of_the_Nightkin_Leia_Valentine";
+        public const string NightVampireFemaleForm = "form_Disciple_of_the_night_Leia_Valentine";
+
+        // DAY -- male
+        public const string DayVampireMaleSpell = "skill_Strength_of_the_Nightkin_Leia_Valentine";
+        public const string DayVampireMaleForm = "form_Vampire_Fighter_Leia_Valentine";
+
+        // DAY -- female
+        public const string DayVampireFemaleSpell = "skill_Prowess_of_the_Nightkin_Leia_Valentine";
+        public const string DayVampireFemaleForm = "form_Vampire_Duelist_Leia_Valentine";
+
         public static void SpawnValentine()
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player valentine = playerRepo.Players.FirstOrDefault(f => f.FirstName == "Lord 'Teaserael'" && f.LastName == "Valentine");
+            Player valentine = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.ValentineBotId);
 
             if (valentine == null)
             {
                 valentine = new Player()
                 {
-                    FirstName = "Lord 'Teaserael'",
-                    LastName = "Valentine",
+                    FirstName = ValentineFirstName,
+                    LastName = ValentineLastName,
                     ActionPoints = 120,
-                    dbLocationName = "castle_armory",
+                    dbLocationName = GetStanceLocation(),
                     LastActionTimestamp = DateTime.UtcNow,
                     LastCombatTimestamp = DateTime.UtcNow,
                     LastCombatAttackedTimestamp = DateTime.UtcNow,
@@ -38,12 +81,12 @@ namespace tfgame.Procedures.BossProcedures
                     Mana = 9999,
                     MaxHealth = 9999,
                     MaxMana = 9999,
-                    Form = "form_First_Lord_of_the_Valentine_Castle_Valentine's_Family",
+                    Form = ValentineFormDbName,
                     Money = 1000,
                     Mobility = "full",
                     Level = 10,
-                    MembershipId = "-5",
-                    BotId = -5,
+                    MembershipId = AIStatics.ValentineBotId.ToString(),
+                    BotId = AIStatics.ValentineBotId,
                     ActionPoints_Refill = 360,
                 };
 
@@ -54,17 +97,7 @@ namespace tfgame.Procedures.BossProcedures
                 playerRepo.SavePlayer(valentine);
 
                 // give Valentine his skills
-                valentine = playerRepo.Players.FirstOrDefault(f => f.FirstName == "Lord 'Teaserael'" && f.LastName == "Valentine");
-                DbStaticSkill skillToAdd = SkillStatics.GetStaticSkill("skill_The_Dance_of_Blades_Ashley_Valentine");
-                DbStaticSkill skillToAdd2 = SkillStatics.GetStaticSkill("skill_Mistress_of_the_night_Foxpower93");
-                DbStaticSkill skillToAdd3 = SkillStatics.GetStaticSkill("skill_Dark_Baptism_Blood_Knight");
-                DbStaticSkill skillToAdd4 = SkillStatics.GetStaticSkill("skill_A_Bloody_Curse");
-                DbStaticSkill skillToAdd5 = SkillStatics.GetStaticSkill("skill_Valentine's_Presence_Lilith");
-                SkillProcedures.GiveSkillToPlayer(valentine.Id, skillToAdd);
-                SkillProcedures.GiveSkillToPlayer(valentine.Id, skillToAdd2);
-                SkillProcedures.GiveSkillToPlayer(valentine.Id, skillToAdd3);
-                SkillProcedures.GiveSkillToPlayer(valentine.Id, skillToAdd4);
-                SkillProcedures.GiveSkillToPlayer(valentine.Id, skillToAdd5);
+                valentine = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.ValentineBotId);
 
                 // give Valentine the underwear that he drops
                 IItemRepository itemRepo = new EFItemRepository();
@@ -72,7 +105,7 @@ namespace tfgame.Procedures.BossProcedures
                 Item panties = new Item
                 {
                     dbLocationName = "",
-                    dbName = "item_Queen_Valentine’s_Panties_Ashley_Valentine",
+                    dbName = QueensPanties,
                     EquippedThisTurn = false,
                     IsEquipped = false,
                     IsPermanent = false,
@@ -81,6 +114,7 @@ namespace tfgame.Procedures.BossProcedures
                     TimeDropped = DateTime.UtcNow,
                     PvPEnabled = -1,
                     VictimName = "",
+                    LastSouledTimestamp = DateTime.UtcNow.AddYears(-1),
                 };
 
                 itemRepo.SaveItem(panties);
@@ -109,30 +143,27 @@ namespace tfgame.Procedures.BossProcedures
             // if Valentine's willpower is down to zero, have him hand over the panties and vanish.
             if (valentine.Health <= 0)
             {
-               
+
                 string victoryMessage = "'It's over!' - you yell in a thrill, already feeling the excitement of your victory over this sly, old fox as you lunge at him at point blank range, your palm tightly clenching a spell to finish it off. However, something is wrong. Grin, that paints itself on his lips, states about anything but an imminent defeat. His movements change, becoming more fuid, unreadable, as he steps to the side - or teleports? you don't even notice - and sticks his leg out, providing you with wonderful opportunity to trip over it. Opportunity that you, of course, took, falling over onto the floor, barely managing to not smash your face on it. Immediately after two blades tickle your neck, and the his voice agrees with your previous statement: - 'Indeed, it's over.' - suddenly the sharp steel by your throat vanishes into thin air as the man laughs heartily: - 'I admire your passion, young one.' - as you get up, you look at him and see a sincere smile on his face, as he continues: - 'Mind calling it a draw for today? It won't work good for my reputation if other's would know how you've beaten me.' - he winks. - 'And here's a little prize for your effort. Something very special, That I most certainly do not just trying to get rid of before i got caught...' - he reaches into his pocket, and gives you... a pair of panties. Before you can object or question this 'gift', he explains: - 'Thise are not just any panties. They belong to the Queen herself... so if i were you I'd keep them hidden to avoid being tuurned into a matching bra...' - before he could finish, a loud, furious woman's voice echoes through the room: - 'Israel Victis Valentine!!!.. Care to explain yourself?!!' - the mans face goes noticeably paler than it was before as he whispers to you: - 'Run! Run, I'll distract her!' - as you are snraking out through the other door, you can hear his voice, growing distant: - 'Oh, dear, i did expect you to wake up so soon...'";
 
                 PlayerLogProcedures.AddPlayerLog(human.Id, victoryMessage, true);
-
-
 
                 EndEvent(human.Id);
             }
 
             // Valentine is fine, do counterattack
-            else {
+            else
+            {
 
                 // regular counterattacks, not berserk
                 if (valentine.Health > valentine.MaxHealth / 4)
                 {
-                    SkillViewModel2 danceOfBlades = SkillProcedures.GetSkillViewModel("skill_The_Dance_of_Blades_Ashley_Valentine", valentine.Id);
-                    AttackProcedures.Attack(valentine, human, danceOfBlades);
-                    AttackProcedures.Attack(valentine, human, danceOfBlades);
+                    AttackProcedures.Attack(valentine, human, SwordSpell);
+                    AttackProcedures.Attack(valentine, human, SwordSpell);
                     AIProcedures.DealBossDamage(valentine, human, false, 2);
-                    if (EffectProcedures.PlayerHasEffect(human, "Valentine's_Presence_Lilith") == false)
+                    if (EffectProcedures.PlayerHasEffect(human, ValentinesPresenceEffect) == false)
                     {
-                        SkillViewModel2 valentinesPresence = SkillProcedures.GetSkillViewModel("skill_Valentine's_Presence_Lilith", valentine.Id);
-                        AttackProcedures.Attack(valentine, human, valentinesPresence);
+                        AttackProcedures.Attack(valentine, human, ValentinesPresenceSpell);
                     }
                 }
 
@@ -140,16 +171,15 @@ namespace tfgame.Procedures.BossProcedures
                 else
                 {
 
-                    SkillViewModel2 danceOfBlades = SkillProcedures.GetSkillViewModel("skill_The_Dance_of_Blades_Ashley_Valentine", valentine.Id);
                     List<Player> playersHere = PlayerProcedures.GetPlayersAtLocation(valentine.dbLocationName).ToList();
 
-                    playersHere = playersHere.Where(p => p.Mobility == "full" && PlayerProcedures.PlayerIsOffline(p) == false && p.Level >= 3 && p.BotId == 0 && p.Id != valentine.Id).ToList();
+                    playersHere = playersHere.Where(p => p.Mobility == "full" && PlayerProcedures.PlayerIsOffline(p) == false && p.Level >= 3 && p.BotId == AIStatics.ActivePlayerBotId && p.Id != valentine.Id).ToList();
 
                     foreach (Player p in playersHere.Where(p => p.Mobility == "full" && PlayerProcedures.PlayerIsOffline(p) == false && p.Level >= 3))
                     {
-                        AttackProcedures.Attack(valentine, p, danceOfBlades);
-                        AttackProcedures.Attack(valentine, p, danceOfBlades);
-                        AttackProcedures.Attack(valentine, p, danceOfBlades);
+                        AttackProcedures.Attack(valentine, p, SwordSpell);
+                        AttackProcedures.Attack(valentine, p, SwordSpell);
+                        AttackProcedures.Attack(valentine, p, SwordSpell);
                         AIProcedures.DealBossDamage(valentine, p, false, 3);
                     }
                 }
@@ -159,7 +189,16 @@ namespace tfgame.Procedures.BossProcedures
         public static void RunValentineActions()
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player valentine = playerRepo.Players.FirstOrDefault(f => f.FirstName == "Lord 'Teaserael'" && f.LastName == "Valentine");
+            Player valentine = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.ValentineBotId);
+
+            // if valentine is not in the right place have him move to the other location
+            string locationToBe = GetStanceLocation();
+            if (valentine.dbLocationName != locationToBe)
+            {
+                AIProcedures.MoveTo(valentine, locationToBe, 99999);
+                valentine.dbLocationName = locationToBe;
+                playerRepo.SavePlayer(valentine);
+            }
 
             // get all of the players in the room
             List<Player> playersHere = PlayerProcedures.GetPlayersAtLocation(valentine.dbLocationName).ToList();
@@ -167,7 +206,7 @@ namespace tfgame.Procedures.BossProcedures
             playersHere = playersHere.Where(p => p.Mobility == "full" &&
                 PlayerProcedures.PlayerIsOffline(p) == false &&
                 p.Level >= 3 &&
-                p.BotId == 0 &&
+                p.BotId == AIStatics.ActivePlayerBotId &&
                 p.Id != valentine.Id &&
                 p.InDuel <= 0).ToList();
 
@@ -176,58 +215,50 @@ namespace tfgame.Procedures.BossProcedures
             foreach (Player p in playersHere)
             {
                 // turn male nonvamps into male vamps, and male vamps into sword
-                if (p.Gender == "male" && p.Form != "form_Vampire_Lord_Blood_Knight")
+                if (p.Gender == "male" && p.Form != MaleVampFormDbName)
                 {
-                    SkillViewModel2 maleVampSpell = SkillProcedures.GetSkillViewModel("skill_Dark_Baptism_Blood_Knight", valentine.Id);
-                    AttackProcedures.Attack(valentine, p, maleVampSpell);
-                    AttackProcedures.Attack(valentine, p, maleVampSpell);
-                    AttackProcedures.Attack(valentine, p, maleVampSpell);
+                    AttackProcedures.Attack(valentine, p, MaleVampSpell);
+                    AttackProcedures.Attack(valentine, p, MaleVampSpell);
+                    AttackProcedures.Attack(valentine, p, MaleVampSpell);
                     AIProcedures.DealBossDamage(valentine, p, false, 3);
                 }
-                else if (p.Gender == "male" && p.Form == "form_Vampire_Lord_Blood_Knight")
+                else if (p.Gender == "male" && p.Form == MaleVampFormDbName)
                 {
-                    SkillViewModel2 danceOfBlades = SkillProcedures.GetSkillViewModel("skill_The_Dance_of_Blades_Ashley_Valentine", valentine.Id);
-                    AttackProcedures.Attack(valentine, p, danceOfBlades);
-                    AttackProcedures.Attack(valentine, p, danceOfBlades);
+                    AttackProcedures.Attack(valentine, p, SwordSpell);
+                    AttackProcedures.Attack(valentine, p, SwordSpell);
                     AIProcedures.DealBossDamage(valentine, p, false, 2);
                 }
 
 
                 // turn female nonvamps into female vamps, and female vamps into sword
-                else if (p.Gender == "female" && p.Form != "form_Seductive_vampire_Foxpower93")
+                else if (p.Gender == "female" && p.Form != FemaleVampSpell)
                 {
-                    SkillViewModel2 femaleVampSpell = SkillProcedures.GetSkillViewModel("skill_Mistress_of_the_night_Foxpower93", valentine.Id);
-                    AttackProcedures.Attack(valentine, p, femaleVampSpell);
-                    AttackProcedures.Attack(valentine, p, femaleVampSpell);
-                    AttackProcedures.Attack(valentine, p, femaleVampSpell);
+                    AttackProcedures.Attack(valentine, p, FemaleVampSpell);
+                    AttackProcedures.Attack(valentine, p, FemaleVampSpell);
+                    AttackProcedures.Attack(valentine, p, FemaleVampSpell);
                     AIProcedures.DealBossDamage(valentine, p, false, 3);
                 }
-                else if (p.Gender == "female" && p.Form == "form_Seductive_vampire_Foxpower93")
+                else if (p.Gender == "female" && p.Form == FemaleVampSpell)
                 {
-                    SkillViewModel2 danceOfBlades = SkillProcedures.GetSkillViewModel("skill_The_Dance_of_Blades_Ashley_Valentine", valentine.Id);
-                    AttackProcedures.Attack(valentine, p, danceOfBlades);
-                    AttackProcedures.Attack(valentine, p, danceOfBlades);
-                    AttackProcedures.Attack(valentine, p, danceOfBlades);
+                    AttackProcedures.Attack(valentine, p, SwordSpell);
+                    AttackProcedures.Attack(valentine, p, SwordSpell);
+                    AttackProcedures.Attack(valentine, p, SwordSpell);
                     AIProcedures.DealBossDamage(valentine, p, false, 3);
                 }
 
                 // give this player the vampire curse if they do not yet have it
-                if (EffectProcedures.PlayerHasEffect(p, "skill_a_bloody_kiss_Lilith") == false)
+                if (EffectProcedures.PlayerHasEffect(p, BloodyKissEffect) == false)
                 {
-                    // TODO:  HAVE VALENTINE ACTUALLY CAST THIS AS A SPELL
-                    //EffectProcedures.GivePerkToPlayer("skill_a_bloody_kiss_Lilith", p);
-                    SkillViewModel2 bloodyKiss = SkillProcedures.GetSkillViewModel("skill_A_Bloody_Curse", valentine.Id);
-                    AttackProcedures.Attack(valentine, p, bloodyKiss);
+                    AttackProcedures.Attack(valentine, p, BloodyCurseSpell);
                     AIProcedures.DealBossDamage(valentine, p, false, 1);
                 }
 
                 Random rand = new Random();
                 double roll = rand.NextDouble();
 
-                if (turnNo % 3 == 0 && EffectProcedures.PlayerHasEffect(p, "Valentine's_Presence_Lilith") == false)
+                if (turnNo % 3 == 0 && EffectProcedures.PlayerHasEffect(p, ValentinesPresenceEffect) == false)
                 {
-                   SkillViewModel2 valentinesPresence = SkillProcedures.GetSkillViewModel("skill_Valentine's_Presence_Lilith", valentine.Id);
-                   AttackProcedures.Attack(valentine, p, valentinesPresence);
+                    AttackProcedures.Attack(valentine, p, ValentinesPresenceSpell);
                 }
 
 
@@ -235,7 +266,7 @@ namespace tfgame.Procedures.BossProcedures
 
             // have Valentine equip his two strongest swords
             IItemRepository itemRepo = new EFItemRepository();
-            IEnumerable<Item> valentineSwords = itemRepo.Items.Where(i => i.OwnerId == valentine.Id && i.dbName != "item_Queen_Valentine’s_Panties_Ashley_Valentine").OrderByDescending(i => i.Level);
+            IEnumerable<Item> valentineSwords = itemRepo.Items.Where(i => i.OwnerId == valentine.Id && i.dbName != QueensPanties).OrderByDescending(i => i.Level);
             List<Item> swordsToSave = new List<Item>();
 
             int counter = 1;
@@ -266,16 +297,15 @@ namespace tfgame.Procedures.BossProcedures
             IPlayerRepository playerRepo = new EFPlayerRepository();
             IItemRepository itemRepo = new EFItemRepository();
 
-            Player valentine = playerRepo.Players.FirstOrDefault(f => f.FirstName == "Lord 'Teaserael'" && f.LastName == "Valentine");
+            Player valentine = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.ValentineBotId);
             playerRepo.DeletePlayer(valentine.Id);
 
-            Item panties = itemRepo.Items.FirstOrDefault(i => i.dbName == "item_Queen_Valentine’s_Panties_Ashley_Valentine");
+            Item panties = itemRepo.Items.FirstOrDefault(i => i.dbName == QueensPanties);
             panties.OwnerId = newOwnerId;
             itemRepo.SaveItem(panties);
 
             ItemProcedures.DropAllItems(valentine);
 
-            
             PvPWorldStatProcedures.Boss_EndValentine();
 
             // find the players who dealt the most damage and award them with XP
@@ -292,12 +322,76 @@ namespace tfgame.Procedures.BossProcedures
                 victor.XP += reward;
                 l++;
 
-                PlayerLogProcedures.AddPlayerLog(victor.Id, "<b>For your valiant (maybe foolish?) efforts in challenging Lord 'Teaserael' Valentine you receieve " + reward + " XP from your risky struggle!</b>", true);
+                PlayerLogProcedures.AddPlayerLog(victor.Id, "<b>For your valiant (maybe foolish?) efforts in challenging " + valentine.GetFullName() + " you receieve " + reward + " XP from your risky struggle!</b>", true);
 
                 playerRepo.SavePlayer(victor);
 
             }
 
+        }
+
+        public static string GetStance()
+        {
+            int turnNum = PvPWorldStatProcedures.GetWorldTurnNumber();
+
+            if (turnNum % (DayNightInterval*2) < DayNightInterval)
+            {
+                return DayStance;
+            }
+            else
+            {
+                return NightStance;
+            }
+
+        }
+
+        public static string GetStanceLocation()
+        {
+            string stance = GetStance();
+            if (stance == DayStance)
+            {
+                return "castle_training";
+            }
+            else
+            {
+                return "castle_tower";
+            }
+        }
+
+        public static bool IsAttackableInForm(Player attacker, Player valentine)
+        {
+            string stance = GetStance();
+
+            // Day stance:  Only night vampires can attack Valentine
+            if (stance == DayStance)
+            {
+                if (attacker.Form == NightVampireMaleForm || attacker.Form == NightVampireFemaleForm)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            // Night stance:  Only day vampires can attack Valentine
+            else
+            {
+                if (attacker.Form == DayVampireMaleForm || attacker.Form == DayVampireFemaleForm)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        public static string GetWrongFormText()
+        {
+            return "Lord Valentine takes in your form with a studious and suggestive look. \"I'm afraid you are not yet ready for this hour’s training, child. Perhaps a few adjustments here...\" He caresses your cheek with a finger. \"...and here.\" His next touch leads down your neck with a chilling tingle that stops at your cleavage. In his trail there is marble white flesh, chilled yet so sensitive you can feel the Lords breath washing down upon it. When did he get so close...?";
         }
 
     }

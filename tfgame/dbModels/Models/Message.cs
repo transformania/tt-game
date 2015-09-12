@@ -12,6 +12,7 @@ namespace tfgame.dbModels.Models
         public int SenderId { get; set; }
         public int ReceiverId { get; set; }
         public bool IsRead { get; set; }
+        public int ReadStatus { get; set; }
 
         //[StringLength(30, MinimumLength = 15, ErrorMessage = "Your message must be at least 15 letters long.")]
         //[Required(ErrorMessage = "You must include a message.")]

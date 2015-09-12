@@ -208,6 +208,21 @@
         }
 
         @{
+            if (Model.AntiSneakPercent() != 0.0M)
+            {
+                <tr>
+                    <td>Sneak level detection:</td>
+                    <td>
+                        @Model.AntiSneakPercent()
+                    </td>
+                    <td class="mobile">@Model.FromForm_AntiSneakPercent</td>
+                    <td class="mobile">@Model.FromItems_AntiSneakPercent</td>
+                    <td class="mobile">@Model.FromEffects_AntiSneakPercent</td>
+                </tr>
+            }
+        }
+
+        @{
             if (Model.MeditationExtraMana() != 0.0M)
             {
                 <tr>

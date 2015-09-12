@@ -1,5 +1,6 @@
 ﻿@model tfgame.ViewModels.PlayPageViewModel
 @using tfgame.CustomHtmlHelpers
+@using tfgame.Statics
 
 <div id="modalBackdrop"></div>
 <div id="attackModal" class="ui-widget-content ui-draggable">
@@ -9,7 +10,7 @@
     <span id="expand" onclick="expandModal()">Expand</span>
     <br /><br />
 
-    @{ if (ViewBag.BotId == -5)
+    @{ if (ViewBag.BotId == AIStatics.ValentineBotId)
      {
          foreach (tfgame.ViewModels.SkillViewModel s in Model.Skills.OrderBy(s => s.Skill.FriendlyName))
          {
@@ -18,7 +19,7 @@
             </span>
          }
      }
-       else if (ViewBag.BotId != -5)
+       else if (ViewBag.BotId != AIStatics.ValentineBotId)
        {
            <span>
                 @Html.ActionLink("Challenge to a Duel", "Attack", "PvP", new { targetId = "XXX", attackName = "duel_valentine" }, new { @class = "attack_boss", @manacost = 10 })

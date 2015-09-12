@@ -15,8 +15,10 @@ namespace tfgame.Procedures.BossProcedures
 
         private const string MaleBossFirstName = "Brother Lujako";
         private const string MaleBossLastName = "Seekshadow";
+        public const string MaleBossFormDbName = "form_Apprentice_Seekshadow_Thief_Judoo";
         private const string FemaleBossFirstName = "Sister Lujienne";
         private const string FemaleBossLastName = "Seekshadow";
+        public const string FemaleBossFormDbName = "form_Master_Seekshadow_Thief_Judoo";
         public const string GoldenTrophySpellDbName = "skill_Seekshadow's_Triumph_Judoo";
 
         public static void SpawnThieves()
@@ -43,13 +45,13 @@ namespace tfgame.Procedures.BossProcedures
                     Mana = 10000,
                     MaxHealth = 10000,
                     MaxMana = 10000,
-                    Form = "form_Apprentice_Seekshadow_Thief_Judoo",
+                    Form = MaleBossFormDbName,
                     //IsPetToId = -1,
                     Money = 0,
                     Mobility = "full",
                     Level = 5,
                     MembershipId = "-8",
-                    BotId = -8,
+                    BotId = AIStatics.MaleRatBotId,
                     ActionPoints_Refill = 360,
                 };
 
@@ -91,12 +93,12 @@ namespace tfgame.Procedures.BossProcedures
                     Mana = 10000,
                     MaxHealth = 10000,
                     MaxMana = 10000,
-                    Form = "form_Master_Seekshadow_Thief_Judoo",
+                    Form = FemaleBossFormDbName,
                     Money = 0,
                     Mobility = "full",
                     Level = 7,
                     MembershipId = "-9",
-                    BotId = -9,
+                    BotId = AIStatics.FemaleRatBotId,
                     ActionPoints_Refill = 360,
                 };
 
@@ -245,25 +247,30 @@ namespace tfgame.Procedures.BossProcedures
                 if (victimThiefItem.OwnerId > 0) {
                     Player target = playerRepo.Players.FirstOrDefault(p => p.Id == victimThiefItem.OwnerId);
 
-                    if (target.BotId == -8 || target.BotId == -8)
+                    if (target.BotId == AIStatics.MaleRatBotId || target.BotId == AIStatics.FemaleRatBotId)
                     {
                         // do nothing, the thief already has the item... equip it if not
                         if (victimThiefItem.IsEquipped == false)
                         {
                             ItemProcedures.EquipItem(victimThiefItem.Id, true);
                         }
-                        string locationMessage = "<b>" + attackingThief.GetFullName() + " ran off in an unknown direction.";
                         string newlocation = LocationsStatics.GetRandomLocation_NoStreets();
+                        AIProcedures.MoveTo(attackingThief, newlocation, 99999);
                         attackingThief.dbLocationName = newlocation;
                         playerRepo.SavePlayer(attackingThief);
                         BuffBox buffs = ItemProcedures.GetPlayerBuffsSQL(attackingThief);
-                        PlayerProcedures.Cleanse(attackingThief, buffs);
+
+                        if (attackingThief.Health < attackingThief.Health / 10)
+                        {
+                            PlayerProcedures.Cleanse(attackingThief, buffs);
+                        }
+                        
                         PlayerProcedures.Meditate(attackingThief, buffs);
 
                     }
 
                     // Lindella, steal from her right away
-                    else if (target.BotId == -3)
+                    else if (target.BotId == AIStatics.LindellaBotId)
                     {
                         ItemProcedures.GiveItemToPlayer(victimThiefItem.Id, attackingThief.Id);
                         LocationLogProcedures.AddLocationLog(target.dbLocationName, "<b>" + attackingThief.GetFullName() + " stole " + victimThiefItem.GetFullName() + " the " + victimThiefItemPlus.Item.FriendlyName + " from Lindella.</b>");
@@ -279,7 +286,7 @@ namespace tfgame.Procedures.BossProcedures
                         AttackProcedures.Attack(attackingThief, target, "skill_Seekshadow's_Triumph_Judoo");
                         AttackProcedures.Attack(attackingThief, target, "skill_Seekshadow's_Triumph_Judoo");
                         AIProcedures.DealBossDamage(attackingThief, target, false, 4);
-                        target = playerRepo.Players.FirstOrDefault(p => p.Id == victimThiefItem.OwnerId && p.BotId != -8 && p.BotId != -9);
+                        target = playerRepo.Players.FirstOrDefault(p => p.Id == victimThiefItem.OwnerId && p.BotId != AIStatics.MaleRatBotId && p.BotId != AIStatics.FemaleRatBotId);
 
                         // if we have managed to turn the target, take back the victim-item
                         if (target.Mobility != "full")
@@ -315,7 +322,7 @@ namespace tfgame.Procedures.BossProcedures
             IPlayerRepository playerRepo = new EFPlayerRepository();
             DateTime cutoff = DateTime.UtcNow.AddHours(-1);
             IEnumerable<int> ids = playerRepo.Players.Where(p => p.Mobility == "full" &&
-                p.BotId >= -2 &&
+                p.BotId >= AIStatics.PsychopathBotId &&
                 p.OnlineActivityTimestamp >= cutoff &&
                 p.dbLocationName.Contains("dungeon_") == false &&
                 p.InDuel <= 0).OrderByDescending(p => p.Money).Take(20).Select(p => p.Id);

@@ -5,6 +5,7 @@ using System.Web;
 using tfgame.dbModels.Abstract;
 using tfgame.dbModels.Concrete;
 using tfgame.dbModels.Models;
+using tfgame.Statics;
 
 namespace tfgame.Procedures.BossProcedures
 {
@@ -13,17 +14,18 @@ namespace tfgame.Procedures.BossProcedures
 
         public const string FirstName = "Skaldrlyr";
         public const string LastName = "the Forbidden";
+        public const string FormDbName = "form_Exiled_Lorekeeper_Judoo";
 
         public static void SpawnLoremaster()
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player loremaster = playerRepo.Players.FirstOrDefault(f => f.BotId == AIProcedures.LoremasterMembershipId);
+            Player loremaster = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.LoremasterBotId);
 
             if (loremaster == null)
             {
                 loremaster = new Player();
-                loremaster.MembershipId = AIProcedures.LoremasterMembershipId.ToString();
-                loremaster.BotId = AIProcedures.LoremasterMembershipId;
+                loremaster.MembershipId = AIStatics.LoremasterBotId.ToString();
+                loremaster.BotId = AIStatics.LoremasterBotId;
                 loremaster.Level = 5;
                 loremaster.FirstName = FirstName;
                 loremaster.LastName = LastName;
@@ -39,7 +41,7 @@ namespace tfgame.Procedures.BossProcedures
                 loremaster.LastCombatTimestamp = DateTime.UtcNow;
                 loremaster.LastCombatAttackedTimestamp = DateTime.UtcNow;
                 loremaster.OnlineActivityTimestamp = DateTime.UtcNow;
-                loremaster.Form = "form_Exiled_Lorekeeper_Judoo";
+                loremaster.Form = FormDbName;
                 loremaster.NonPvP_GameOverSpellsAllowedLastChange = DateTime.UtcNow;
                 loremaster.dbLocationName = "bookstore_back";
                 loremaster.Gender = "male";
@@ -53,7 +55,7 @@ namespace tfgame.Procedures.BossProcedures
 
         public static void TransferBooksFromLindellaToLorekeeper(Player lorekeeper)
         {
-            Player lindella = PlayerProcedures.GetPlayerFromBotId(AIProcedures.LindellaMembershipId);
+            Player lindella = PlayerProcedures.GetPlayerFromBotId(AIStatics.LindellaBotId);
             IItemRepository itemRepo = new EFItemRepository();
 
             List<Item> LindellasBooks = itemRepo.Items.Where(i => i.OwnerId == lindella.Id && (i.dbName.Contains("item_consumable_spellbook_") || i.dbName.Contains("item_consumable_tome-"))).ToList();

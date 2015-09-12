@@ -53,7 +53,7 @@
                 else
                 {
                     <p>@Html.Raw(Model.CorrectFormText)</p>
-                    <p style="text-align: center !important"><b><i>You earned @Math.Floor(ViewBag.XPGain) XP from Jewdewfae's magic.</i></b></p>
+                    <p style="text-align: center !important"><b><i>You earned @Math.Floor(ViewBag.XPGain) XP from Jewdewfae's magic.  @Html.Raw(ViewBag.SpellsLearned)</i></b></p>
                 }
             }
         </div>

@@ -8,7 +8,7 @@ namespace tfgame.ViewModels
 {
     public class PlayerAchievementViewModel
     {
-        public Player Player { get; set; }
+        public PlayerFormViewModel Player { get; set; }
         public Achievement Achivement { get; set; }
     }
 }

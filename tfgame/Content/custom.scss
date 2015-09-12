@@ -356,6 +356,9 @@ li {
 .icon-online {background-image: url("../Images/PvP/Icons/online.png");}
 .icon-offline {background-image: url("../Images/PvP/Icons/offline.png");}
 .icon-permanent {background-image: url("../Images/PvP/Icons/icon-permanent.png");}
+.icon-souled0 {background-image: url("../Images/PvP/Icons/icon-souled0.png"); }
+.icon-souled1 {background-image: url("../Images/PvP/Icons/icon-souled1.png"); }
+.icon-souled2 {background-image: url("../Images/PvP/Icons/icon-souled2.png"); }
 .icon-turn {width: auto;height: 17px;background-color: yellow;border: 1px solid red;}
 .icon-consumable {background-image: url("../Images/PvP/Icons/consumeable.png");}
 .icon-shirt {background-image: url("../Images/PvP/Icons/shirt.png");}
@@ -1220,4 +1223,14 @@ line-height: 18px;
 
 .userlistRow:hover {
     color: black !important;
+}
+
+.stats-leader {
+    text-align: center;
+    height: 210px;
+    padding: 15px;
+    border: 2px $navbarDark dashed;
+    border-top: 2px $navbarDark solid;
+    background: #DFCBBF;
+    overflow: hidden;
 }

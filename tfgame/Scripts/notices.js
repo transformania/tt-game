@@ -3,6 +3,8 @@
 
 $(document).ready(function () {
 
+    var tabTitle = $('title');
+
     if ($("#notificationBox").html().length > 10) {
         $("#notificationBox").show();
         $("#dismissNotficationBox").show();
@@ -47,14 +49,14 @@ $(document).ready(function () {
                     attackPulse = 1;
                     backgroundPulse();
 
-                    if (playUpdateSound == true) {
+                    if (playAttackSound == true) {
                         var attackedAudio = new Audio('../Sounds/attack.wav');
                         attackedAudio.play();
                     }
                     
 
                 } else if (notice.type == "message") {
-                    if (playUpdateSound == true) {
+                    if (playMessageSound == true) {
                         var attackedAudio = new Audio('../Sounds/paper.wav');
                         attackedAudio.play();
                     }
@@ -77,12 +79,28 @@ $(document).ready(function () {
                 $("#liveConnectionNotice").removeClass("noticeOn");
             });
 
-            // load whether or not to play audio notifications
+            // load whether or not to play audio notifications for updates
             var playUpdateSoundLoad = localStorage.getItem("play_updateSoundEnabled");
             if (playUpdateSoundLoad == undefined) {
-                localStorage.setItem("chat_IgnoreList", "false");
+                localStorage.setItem("play_updateSoundEnabled", "false");
             } else if (localStorage.getItem("play_updateSoundEnabled") == "true") {
                 playUpdateSound = true;
+            }
+
+            // load whether or not to play audio notifications for updates
+            var playAttackSoundLoad = localStorage.getItem("play_AttackSoundEnabled");
+            if (playAttackSoundLoad == undefined) {
+                localStorage.setItem("play_AttackSoundEnabled", "false");
+            } else if (localStorage.getItem("play_AttackSoundEnabled") == "true") {
+                playAttackSound = true;
+            }
+
+            // load whether or not to play message notifications 
+            var playMessageSoundLoad = localStorage.getItem("play_MessageSoundEnabled");
+            if (playMessageSoundLoad == undefined) {
+                localStorage.setItem("play_MessageSoundEnabled", "false");
+            } else if (localStorage.getItem("play_MessageSoundEnabled") == "true") {
+                playMessageSound = true;
             }
 
             // load whether or not to use html5 notifications
@@ -97,6 +115,32 @@ $(document).ready(function () {
 
         });
     }
+
+    // javascript for ticking down clocks
+    setInterval(function () {
+        secondsToUpdate--;
+        timer_minutes = Math.floor(secondsToUpdate / 60);
+        timer_seconds = String(secondsToUpdate % 60);
+
+        if (timer_seconds.length == 1) {
+            timer_seconds = "0" + timer_seconds;
+        }
+
+        if (timer_minutes < 0) {
+            timer_minutes = "0";
+            timer_seconds = "00";
+            $("#turn_countdown").addClass("good");
+            blinkEnabled = 1;
+        } else {
+            tabTitle.text('Transformania Time [' + timer_minutes + ":" + timer_seconds + "]");
+        }
+
+        $("#turn_countdown").html(timer_minutes + ":" + timer_seconds);
+
+    }, 1000);
+
+    var myVa2r = setInterval(function () { titleToggle() }, 1000);
+
 
 });
 

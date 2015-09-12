@@ -9,6 +9,7 @@ using tfgame.dbModels.Concrete;
 using tfgame.dbModels.Models;
 using tfgame.Statics;
 using tfgame.ViewModels;
+using System.Threading;
 
 namespace tfgame.Procedures
 {
@@ -38,6 +39,7 @@ namespace tfgame.Procedures
                                                              TurnsUntilUse = i.TurnsUntilUse,
                                                              VictimName = i.VictimName,
                                                              Nickname = i.Nickname,
+                                                             LastSouledTimestamp = i.LastSouledTimestamp,
                                                           },
 
 
@@ -137,6 +139,7 @@ namespace tfgame.Procedures
                                                          TurnsUntilUse = i.TurnsUntilUse,
                                                          VictimName = i.VictimName,
                                                          Nickname = i.Nickname,
+                                                         LastSouledTimestamp = i.LastSouledTimestamp,
                                                      },
 
 
@@ -245,6 +248,7 @@ namespace tfgame.Procedures
                                                          TurnsUntilUse = i.TurnsUntilUse,
                                                          VictimName = i.VictimName,
                                                          Nickname = i.Nickname,
+                                                         LastSouledTimestamp = i.LastSouledTimestamp,
                                                      },
 
 
@@ -335,6 +339,7 @@ namespace tfgame.Procedures
                                                         TurnsUntilUse = i.TurnsUntilUse,
                                                         VictimName = i.VictimName,
                                                         Nickname = i.Nickname,
+                                                        LastSouledTimestamp = i.LastSouledTimestamp,
                                                     },
 
 
@@ -431,7 +436,7 @@ namespace tfgame.Procedures
 
             if (item.dbLocationName != "")
             {
-                if (owner.BotId == 0 && item.PvPEnabled == -1)
+                if (owner.BotId == AIStatics.ActivePlayerBotId && item.PvPEnabled == -1)
                 {
                     if (owner.GameMode == 2)
                     {
@@ -471,7 +476,7 @@ namespace tfgame.Procedures
             item.OwnerId = newOwnerId;
             Player owner = PlayerProcedures.GetPlayer(newOwnerId);
 
-            if (owner.BotId == 0 && item.PvPEnabled == -1)
+            if (owner.BotId == AIStatics.ActivePlayerBotId && item.PvPEnabled == -1)
             {
                 if (owner.GameMode == 2)
                 {
@@ -507,10 +512,10 @@ namespace tfgame.Procedures
                 VictimName = "",
                 dbLocationName = "",
                 TimeDropped = DateTime.UtcNow,
-               // PvPEnabled = player.InPvP,
+                LastSouledTimestamp = DateTime.UtcNow.AddYears(-1),
             };
 
-            if (player.BotId < 0)
+            if (player.BotId < AIStatics.ActivePlayerBotId)
             {
                 newitem.PvPEnabled = -1;
             }
@@ -1107,9 +1112,10 @@ namespace tfgame.Procedures
                 Level = victim.Level,
                 Nickname = victim.Nickname,
                 TimeDropped = DateTime.UtcNow,
+                LastSouledTimestamp = DateTime.UtcNow.AddYears(-1),
             };
 
-            if (attacker.BotId < 0)
+            if (attacker.BotId < AIStatics.ActivePlayerBotId)
             {
                 newItem.PvPEnabled = -1;
             }
@@ -1122,7 +1128,7 @@ namespace tfgame.Procedures
                 newItem.PvPEnabled = 1;
             }
 
-            if (victim.BotId < 0)
+            if (victim.BotId < AIStatics.ActivePlayerBotId)
             {
                 newItem.IsPermanent = true;
 
@@ -1149,7 +1155,7 @@ namespace tfgame.Procedures
                     newItem.dbLocationName = "";
 
                     // UNLESS the attacker is a boss, then give it to them for free
-                } else if (attacker.BotId <= -3) {
+                } else if (attacker.BotId < AIStatics.PsychopathBotId) {
                     newItem.OwnerId = attacker.Id;
                     newItem.dbLocationName = "";
                 }
@@ -1172,7 +1178,7 @@ namespace tfgame.Procedures
 
 
                 // this player currently has no tamed pets, so give it to them auto equipped
-                if (AttackerExistingItems.Where(e => e.Item.ItemType == PvPStatics.ItemType_Pet).Count() == 0 && attacker.BotId >= -2)
+                if (AttackerExistingItems.Where(e => e.Item.ItemType == PvPStatics.ItemType_Pet).Count() == 0 && attacker.BotId >= AIStatics.PsychopathBotId)
                 {
                     newItem.OwnerId = attacker.Id;
                     newItem.IsEquipped = true;
@@ -1185,7 +1191,7 @@ namespace tfgame.Procedures
                 {
 
                     // bots can keep everything
-                    if (attacker.BotId < -1)
+                    if (attacker.BotId < AIStatics.RerolledPlayerBotId)
                     {
                         newItem.OwnerId = attacker.Id;
                         newItem.IsEquipped = true;
@@ -1460,6 +1466,10 @@ namespace tfgame.Procedures
                         return "You are a member of your covenant, but unfortunately your covenant has not yet established a safeground to call home so you are unable to use this item.";
                     }
 
+                    new Thread(() =>
+                        StatsProcedures.AddStat(owner.MembershipId, StatsProcedures.Stat__CovenantCallbackCrystalsUsed, 1)
+                    ).Start();
+
                     string output = PlayerProcedures.TeleportPlayer(owner, myCov.HomeLocation, true);
                     itemRepo.DeleteItem(itemPlus.dbItem.Id);
                     return output;
@@ -1468,23 +1478,23 @@ namespace tfgame.Procedures
                 // spellbooks; these give the reader some spells they do not know.
                 if (itemPlus.Item.dbName.Contains("item_consumable_spellbook_"))
                 {
-                    int amount = 3;
+                    int amount = 4;
                     if (itemPlus.Item.dbName.Contains("small"))
                     {
-                        amount = 3;
+                        amount = 4;
                     }
                     else if (itemPlus.Item.dbName.Contains("medium"))
                     {
-                        amount = 6;
+                        amount = 8;
                     } if (itemPlus.Item.dbName.Contains("large"))
-                    {
-                        amount = 9;
-                    }
-                    if (itemPlus.Item.dbName.Contains("giant"))
                     {
                         amount = 12;
                     }
-                    string output = SkillProcedures.GiveRandomFindableSkillsToPlayer(owner, amount);
+                    if (itemPlus.Item.dbName.Contains("giant"))
+                    {
+                        amount = 16;
+                    }
+                    string output = "You learned the spells: " + SkillProcedures.GiveRandomFindableSkillsToPlayer(owner, amount) + " from reading your spellbook before it crumbles and vanishes into dust.";
                     itemRepo.DeleteItem(itemPlus.dbItem.Id);
                     return output;
                 }
@@ -1552,6 +1562,9 @@ namespace tfgame.Procedures
                         itemRepo.SaveItem(thisdbItem);
                         playerRepo.SavePlayer(owner);
 
+                        
+                        
+
                         return name + " used a " + itemPlus.Item.FriendlyName + ", immediately restoring " + (itemPlus.Item.ReuseableHealthRestore + bonusFromLevelHealth) + " willpower and " + (itemPlus.Item.ReuseableManaRestore + bonusFromLevelMana) + " mana.  " + owner.Health + "/" + owner.MaxHealth + " WP, " + owner.Mana + "/" + owner.MaxMana + " Mana";
 
                     }
@@ -1571,6 +1584,13 @@ namespace tfgame.Procedures
 
                         itemRepo.SaveItem(thisdbItem);
                         playerRepo.SavePlayer(owner);
+
+                        if (itemPlus.Item.dbName == "item_Inflatable_Sex_Doll_LexamTheGemFox")
+                        {
+                            new Thread(() =>
+                                StatsProcedures.AddStat(owner.MembershipId, StatsProcedures.Stat__DollsWPRestored, (float)(itemPlus.Item.ReuseableHealthRestore + bonusFromLevel))
+                            ).Start();
+                        }
 
                         return name + " consumed from a " + itemPlus.Item.FriendlyName + ", immediately restoring " + (itemPlus.Item.ReuseableHealthRestore + bonusFromLevel) + " willpower.  " + owner.Health + "/" + owner.MaxHealth + " WP";
                     }
@@ -1965,6 +1985,22 @@ namespace tfgame.Procedures
             Item playerItem = itemRepo.Items.FirstOrDefault(i => i.VictimName == player.FirstName + " " + player.LastName);
             playerItem.Nickname = nickname;
             itemRepo.SaveItem(playerItem);
+        }
+
+        public static void UpdateSouledItem(int id)
+        {
+            IItemRepository itemRepo = new EFItemRepository();
+            Item item = itemRepo.Items.FirstOrDefault(i => i.Id == id);
+            item.LastSouledTimestamp = DateTime.UtcNow;
+            itemRepo.SaveItem(item);
+        }
+
+        public static void UpdateSouledItem(string firstName, string lastName)
+        {
+            IItemRepository itemRepo = new EFItemRepository();
+            Item item = itemRepo.Items.FirstOrDefault(i => i.VictimName == firstName + " " + lastName);
+            item.LastSouledTimestamp = DateTime.UtcNow;
+            itemRepo.SaveItem(item);
         }
 
         

@@ -152,12 +152,12 @@ namespace tfgame.Controllers
 
                 inanimateOutput.StruggleChance = InanimateXPProcedures.GetStruggleChance(me);
 
-                if (inanimateOutput.WornBy != null)
+                if (inanimateOutput.WornBy != null) // being worn
                 {
-                    List<LocationLog> actionsHere = LocationLogProcedures.GetLocationLogsAtLocation(inanimateOutput.WornBy.Player.dbLocationName).ToList();
+                    List<LocationLog> actionsHere = LocationLogProcedures.GetLocationLogsAtLocation(inanimateOutput.WornBy.Player.dbLocationName, 0).ToList();
                     List<LocationLog> validActionsHere = new List<LocationLog>();
                     foreach (LocationLog log in actionsHere) {
-                        if (!log.Message.Contains("entered from") && !log.Message.Contains("left toward"))
+                        if (log.ConcealmentLevel <= 0 && !log.Message.Contains("entered from") && !log.Message.Contains("left toward"))
                         {
                             validActionsHere.Add(log);
                         }
@@ -168,7 +168,7 @@ namespace tfgame.Controllers
                 }
                 else
                 {
-                    inanimateOutput.LocationLog = LocationLogProcedures.GetLocationLogsAtLocation(me.dbLocationName);
+                    inanimateOutput.LocationLog = LocationLogProcedures.GetLocationLogsAtLocation(me.dbLocationName, 0);
                     inanimateOutput.PlayersHere = PlayerProcedures.GetPlayerFormViewModelsAtLocation(me.dbLocationName, myMembershipId);
                 }
 
@@ -226,7 +226,7 @@ namespace tfgame.Controllers
                 animalOutput.PlayerLog = PlayerLogProcedures.GetAllPlayerLogs(me.Id).Reverse();
                 animalOutput.PlayerLogImportant = animalOutput.PlayerLog.Where(l => l.IsImportant == true);
 
-                animalOutput.LocationLog = LocationLogProcedures.GetLocationLogsAtLocation(animalOutput.Location.dbName);
+                animalOutput.LocationLog = LocationLogProcedures.GetLocationLogsAtLocation(animalOutput.Location.dbName, 0);
 
                 animalOutput.LocationItems = ItemProcedures.GetAllItemsAtLocation(animalOutput.Location.dbName, me);
 
@@ -293,7 +293,7 @@ namespace tfgame.Controllers
             output.Location.FriendlyName_West = LocationsStatics.GetConnectionName(output.Location.Name_West);
 
             loadtime += "Start get location logs:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
-            output.LocationLog = LocationLogProcedures.GetLocationLogsAtLocation(me.dbLocationName);
+            output.LocationLog = LocationLogProcedures.GetLocationLogsAtLocation(me.dbLocationName, (int)myBuffs.Perception());
             loadtime += "End get players here:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
 
             loadtime += "Start get player logs:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
@@ -398,7 +398,7 @@ namespace tfgame.Controllers
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             if (me != null && me.Mobility == "full")
             {
-                ViewBag.ErrorMessage = "You cannot create a new character right now.  You already have a fully animate character already, " + me.FirstName + " " + me.LastName + ".";
+                ViewBag.ErrorMessage = "You cannot create a new character right now.  You already have a fully animate character already, " + me.GetFullName() + ".";
                 return View("~/Views/PvP/MakeNewCharacter.cshtml");
             }
 
@@ -533,10 +533,10 @@ namespace tfgame.Controllers
 
              // assert that the player has not attacked too recently to move
             double lastAttackTimeAgo = Math.Abs(Math.Floor(me.LastCombatTimestamp.Subtract(DateTime.UtcNow).TotalSeconds));
-            if (lastAttackTimeAgo < 45)
+            if (lastAttackTimeAgo < PvPStatics.NoMovingAfterAttackSeconds)
             {
                 TempData["Error"] = "You are resting from a recent attack.";
-                TempData["SubError"] = "You must wait " + (45-lastAttackTimeAgo) + " more seconds before moving.";
+                TempData["SubError"] = "You must wait " + (PvPStatics.NoMovingAfterAttackSeconds - lastAttackTimeAgo) + " more seconds before moving.";
                 return RedirectToAction("Play");
             }
 
@@ -545,8 +545,8 @@ namespace tfgame.Controllers
                 ItemProcedures.MoveAnimalItem(me, nextLocation.dbName);
 
                 TempData["Result"] = "You move to " + nextLocation.Name + ".";
-                string leavingMessage = me.FirstName + " " + me.LastName + " (feral) left toward " + nextLocation.Name;
-                string enteringMessage = me.FirstName + " " + me.LastName + " (feral) entered from " + currentLocation.Name;
+                string leavingMessage = me.GetFullName() + " (feral) left toward " + nextLocation.Name;
+                string enteringMessage = me.GetFullName() + " (feral) entered from " + currentLocation.Name;
                 LocationLogProcedures.AddLocationLog(me.dbLocationName, leavingMessage);
                 LocationLogProcedures.AddLocationLog(locname, enteringMessage);
                 return RedirectToAction("Play");
@@ -559,44 +559,54 @@ namespace tfgame.Controllers
                 sneakChance = 75;
             }
 
-            decimal stumbleChance = -1*buffs.EvasionPercent();
-             decimal moveAPdiscount = buffs.MoveActionPointDiscount();
+            decimal stumbleChance = -1 * buffs.EvasionPercent();
+            decimal moveAPdiscount = buffs.MoveActionPointDiscount();
 
-             Random die = new Random();
+            Random die = new Random();
             double sneakroll = die.NextDouble() * 100;
-            if (sneakroll < (double)sneakChance)
+
+
+            string msg = "";
+
+            // if the attacker's evasion negation is too low, add in a chance of the spell totally missing.
+            if (stumbleChance > 0)
             {
-                TempData["Result"] = "You silently move to " + nextLocation.Name + ".";
+                Random rand = new Random();
+                double roll = rand.NextDouble() * 200;
+                if (roll < (double)stumbleChance)
+                {
+                    msg = "Due to your poor evasion and clumsiness you trip and fall, wasting some energy.  ";
+                    PlayerProcedures.ChangePlayerActionMana(1, 0, 0, me.Id);
+                }
+
+            }
+
+             // calculate concealment level
+            int sneakLevel = (int)buffs.SneakPercent();
+
+            if (sneakLevel < 0)
+            {
+                sneakLevel = -999;
             }
             else
             {
-
-                string msg = "";
-
-                // if the attacker's evasion negation is too low, add in a chance of the spell totally missing.
-                if (stumbleChance > 0)
-                {
-                    Random rand = new Random();
-                    double roll = rand.NextDouble() * 200;
-                    if (roll < (double)stumbleChance)
-                    {
-                        msg = "Due to your poor evasion and clumsiness you trip and fall, wasting some energy.  ";
-                        PlayerProcedures.ChangePlayerActionMana(1, 0, 0, me.Id);
-                    }
-
-                }
-
-                TempData["Result"] = msg + "You move to " + nextLocation.Name + ".";
-                string leavingMessage = me.FirstName + " " + me.LastName + " left toward " + nextLocation.Name;
-                string enteringMessage = me.FirstName + " " + me.LastName + " entered from " + currentLocation.Name;
-                LocationLogProcedures.AddLocationLog(me.dbLocationName, leavingMessage);
-                LocationLogProcedures.AddLocationLog(locname, enteringMessage);
+                // decrease by random amount up to 75
+                sneakLevel -= (int)(die.NextDouble() * 75);
             }
 
+            string resultMsg = msg + "You move to " + nextLocation.Name + ".";
+            if (sneakLevel > 0)
+            {
+                resultMsg += "  (Concealment lvl " + sneakLevel + ")";
+            }
+            TempData["Result"] = msg + "You move to " + nextLocation.Name + ".";
+            string leavingMessageAnimate = me.GetFullName() + " left toward " + nextLocation.Name;
+            string enteringMessageAnimate = me.GetFullName() + " entered from " + currentLocation.Name;
+            LocationLogProcedures.AddLocationLog(me.dbLocationName, leavingMessageAnimate, sneakLevel);
+            LocationLogProcedures.AddLocationLog(locname, enteringMessageAnimate, sneakLevel);
+
+
             PlayerProcedures.MovePlayer(me.Id, locname, moveAPdiscount);
-
-         
-
 
 
             string playerLogMessage = "You moved from <b>" + currentLocation.Name + "</b> to <b>" + nextLocation.Name + "</b>.";
@@ -716,7 +726,7 @@ namespace tfgame.Controllers
             IEnumerable<SkillViewModel2> output = SkillProcedures.GetSkillViewModelsOwnedByPlayer(me.Id).Where(s => s.dbSkill.IsArchived == false);
 
             // filter out spells that you can't use on your target
-            if (FriendProcedures.PlayerIsMyFriend(me, target) || target.BotId < 0)
+            if (FriendProcedures.PlayerIsMyFriend(me, target) || target.BotId < AIStatics.ActivePlayerBotId)
             {
                 // do nothing, all spells are okay
             }
@@ -728,49 +738,55 @@ namespace tfgame.Controllers
             }
 
             // attack or the target is in superprotection and not a friend or bot; no spells work
-            else if (target.GameMode == 0 || (me.GameMode == 0 && target.BotId == 0))
+            else if (target.GameMode == 0 || (me.GameMode == 0 && target.BotId == AIStatics.ActivePlayerBotId))
             {
                 output = output.Where(s => s.MobilityType == "NONEXISTANT");
             }
 
             // filter out MC spells for bots
-            if (target.BotId < 0)
+            if (target.BotId < AIStatics.ActivePlayerBotId)
             {
                 output = output.Where(s => s.MobilityType != "mindcontrol");
             }
 
             // only show inanimates for rat thieves
-            if (target.BotId == -8 || target.BotId == -9)
+            if (target.BotId == AIStatics.MaleRatBotId || target.BotId == AIStatics.FemaleRatBotId)
             {
                 output = output.Where(s => s.MobilityType == "inanimate");
             }
 
+            // only show Weaken for valentine
+            if (target.BotId == AIStatics.ValentineBotId)
+            {
+                output = output.Where(s => s.MobilityType == "lowerHealth");
+            }
+
             // only bimbo spell works on nerd mouse boss
-            if (target.BotId == -11)
+            if (target.BotId == AIStatics.MouseNerdBotId)
             {
                 output = output.Where(s => s.Skill.dbName == BossProcedures_Sisters.BimboSpell);
             }
 
             // only nerd spell works on nerd bimbo boss
-            if (target.BotId == -12)
+            if (target.BotId == AIStatics.MouseBimboBotId)
             {
                 output = output.Where(s => s.Skill.dbName == BossProcedures_Sisters.NerdSpell);
             }
 
             // Vanquish only works against dungeon demons
-            if (target.BotId == -13)
+            if (target.BotId == AIStatics.DemonBotId)
             {
                 output = output.Where(s => s.Skill.dbName == PvPStatics.Dungeon_VanquishSpell || s.Skill.dbName == "lowerHealth");
             }
 
             // Vanquish only works against dungeon demons
-            if (target.BotId != -13)
+            if (target.BotId != AIStatics.DemonBotId)
             {
                 output = output.Where(s => s.Skill.dbName != PvPStatics.Dungeon_VanquishSpell);
             }
 
             ViewBag.TargetId = targetId;
-            ViewBag.TargetName = target.FirstName + " " + target.LastName;
+            ViewBag.TargetName = target.GetFullName();
             ViewBag.BotId = target.BotId;
              return PartialView("partial/AjaxAttackModal", output);
          }
@@ -937,7 +953,7 @@ namespace tfgame.Controllers
             }
 
              // if the spell is a form of mind control, check that the target is not a bot
-            if (skillBeingUsed.MobilityType == "mindcontrol" && targeted.BotId < 0)
+            if (skillBeingUsed.MobilityType == "mindcontrol" && targeted.BotId < AIStatics.ActivePlayerBotId)
             {
                 TempData["Error"] = "This target is immune to mind control.";
                 TempData["SubError"] = "Mind control currently only works against human opponents.";
@@ -988,15 +1004,15 @@ namespace tfgame.Controllers
 
             #region bot attack type checks
             // prevent low level players from taking on high level bots
-            if (targeted.BotId <= -3)
+            if (targeted.BotId < AIStatics.PsychopathBotId)
             {
 
                 // disable attacks on "friendly" NPCs
-                if (targeted.BotId == AIProcedures.LindellaMembershipId ||
-                    targeted.BotId == AIProcedures.WuffieMembershipId ||
-                    targeted.BotId == AIProcedures.JewdewfaeMembershipId ||
-                    targeted.BotId == AIProcedures.BartenderMembershipId ||
-                    targeted.BotId == AIProcedures.LoremasterMembershipId)
+                if (targeted.BotId == AIStatics.LindellaBotId ||
+                    targeted.BotId == AIStatics.WuffieBotId ||
+                    targeted.BotId == AIStatics.JewdewfaeBotId ||
+                    targeted.BotId == AIStatics.BartenderBotId ||
+                    targeted.BotId == AIStatics.LoremasterBotId)
                 {
                     TempData["Error"] = "A little smile tells you it might just be a bad idea to try and attack this person...";
                     return RedirectToAction("Play");
@@ -1010,7 +1026,7 @@ namespace tfgame.Controllers
                 }
 
                 // Donna
-                if (targeted.BotId == -4)
+                if (targeted.BotId == AIStatics.DonnaBotId)
                 {
                     if (futureForm == null || futureForm.MobilityType == "full")
                     {
@@ -1021,8 +1037,15 @@ namespace tfgame.Controllers
                 }
 
                 // Valentine
-                if (targeted.BotId == -5)
+                if (targeted.BotId == AIStatics.ValentineBotId)
                 {
+
+                    if (BossProcedures_Valentine.IsAttackableInForm(me, targeted) == false) {
+                        TempData["Error"] = BossProcedures_Valentine.GetWrongFormText();
+                        TempData["SubError"] = "You will need to attack while in a different form.";
+                        return RedirectToAction("Play");
+                    }
+
                     // only allow weakens against Valentine for now (replace with Duel spell later?)
                     if (futureForm != null)
                     {
@@ -1033,7 +1056,7 @@ namespace tfgame.Controllers
                 }
 
                 // Bimbo Boss
-                if (targeted.BotId == -7)
+                if (targeted.BotId == AIStatics.BimboBossBotId)
                 {
 
                     // disallow animate spells
@@ -1047,7 +1070,7 @@ namespace tfgame.Controllers
                 }
 
                 // Thieves Boss
-                if (targeted.BotId == -8 || targeted.BotId == -9)
+                if (targeted.BotId == AIStatics.MaleRatBotId || targeted.BotId == AIStatics.FemaleRatBotId)
                 {
 
                     // only allow inanimate spells
@@ -1061,7 +1084,7 @@ namespace tfgame.Controllers
                 }
 
                 // Mouse Sisters Boss
-                if (targeted.BotId == -11 || targeted.BotId == -12)
+                if (targeted.BotId == AIStatics.MouseNerdBotId || targeted.BotId == AIStatics.MouseBimboBotId)
                 {
                     string result = BossProcedures_Sisters.SpellIsValid(me, targeted, attackName);
                     if (result != "") {
@@ -1071,7 +1094,7 @@ namespace tfgame.Controllers
                 }
 
                 // TODO:  Dungeon Demons can only be vanquished
-                if (targeted.BotId == -13 && skill.dbName != PvPStatics.Dungeon_VanquishSpell && skill.dbName != "lowerHealth")
+                if (targeted.BotId == AIStatics.DemonBotId && skill.dbName != PvPStatics.Dungeon_VanquishSpell && skill.dbName != "lowerHealth")
                 {
                     TempData["Error"] = "Only the 'Vanquish' spell and Weaken have any effect on the Dark Demonic Guardians.";
                     return RedirectToAction("Play");
@@ -1082,7 +1105,7 @@ namespace tfgame.Controllers
 
 
             // don't worry about bots
-            if (targeted.BotId == 0)
+            if (targeted.BotId == AIStatics.ActivePlayerBotId)
             {
 
                 if (me.GameMode < 2 || targeted.GameMode < 2)
@@ -1100,7 +1123,7 @@ namespace tfgame.Controllers
                     }
 
                     // no casting spells on non-friend Protection mode players unless the target is a bot
-                    else if (targeted.GameMode == 0 || (me.GameMode == 0 && targeted.BotId == 0))
+                    else if (targeted.GameMode == 0 || (me.GameMode == 0 && targeted.BotId == AIStatics.ActivePlayerBotId))
                     {
                         TempData["Error"] = "Either you and your target is in SuperProtection mode and are not friends or bots.";
                         return RedirectToAction("Play");
@@ -1493,7 +1516,7 @@ namespace tfgame.Controllers
             TempData["Result"] = PlayerProcedures.SearchLocation(me, me.dbLocationName);
 
             // write to logs
-            string locationLogMessage = "<span class='playerSearchingNotification'>" + me.FirstName + " " + me.LastName + " searched here.</span>";
+            string locationLogMessage = "<span class='playerSearchingNotification'>" + me.GetFullName() + " searched here.</span>";
             LocationLogProcedures.AddLocationLog(me.dbLocationName, locationLogMessage);
             Location here = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName);
             string playerLogMessage = "You searched at " + here.Name + ".";
@@ -1658,7 +1681,7 @@ namespace tfgame.Controllers
                 ItemProcedures.DeleteItem(pickup.dbItem.Id);
                 TempData["Result"] = "You pick up the artifact.  As soon as it touches your hands, it fades away, leaving you with its dark power.";
                 playerLogMessage = "You picked up a <b>" + pickup.Item.FriendlyName + "</b> at " + here.Name + " and absorbed its dark power into your soul.";
-                locationLogMessage = me.FirstName + " " + me.LastName + " picked up a <b>" + pickup.Item.FriendlyName + "</b> here and immediately absorbed its dark powers.";
+                locationLogMessage = me.GetFullName() + " picked up a <b>" + pickup.Item.FriendlyName + "</b> here and immediately absorbed its dark powers.";
 
                 new Thread(() =>
                      StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__DungeonArtifactsFound, 1)
@@ -1672,7 +1695,7 @@ namespace tfgame.Controllers
             else if (pickup.Item.ItemType!=PvPStatics.ItemType_Pet) {
                 TempData["Result"] = ItemProcedures.GiveItemToPlayer(pickup.dbItem.Id, me.Id);
                 playerLogMessage = "You picked up a <b>" + pickup.Item.FriendlyName + "</b> at " + here.Name + " and put it into your inventory.";
-                locationLogMessage = me.FirstName + " " + me.LastName + " picked up a <b>" + pickup.Item.FriendlyName + CharactersHere.PrintPvPIcon(pickup.dbItem) + "</b> here.";
+                locationLogMessage = me.GetFullName() + " picked up a <b>" + pickup.Item.FriendlyName + CharactersHere.PrintPvPIcon(pickup.dbItem) + "</b> here.";
             }
                 // item is an animal, equip it automatically
             else if (pickup.Item.ItemType == PvPStatics.ItemType_Pet)
@@ -1680,7 +1703,7 @@ namespace tfgame.Controllers
                 TempData["Result"] = ItemProcedures.GiveItemToPlayer(pickup.dbItem.Id, me.Id);
                 ItemProcedures.EquipItem(pickup.dbItem.Id, true);
                 playerLogMessage = "You tamed <b>" + pickup.dbItem.GetFullName() + " the " + pickup.Item.FriendlyName + "</b> at " + here.Name + " and put it into your inventory.";
-                locationLogMessage = me.FirstName + " " + me.LastName + " tamed <b>" + pickup.dbItem.GetFullName() + " the " + pickup.Item.FriendlyName + CharactersHere.PrintPvPIcon(pickup.dbItem) + "</b> here.";
+                locationLogMessage = me.GetFullName() + " tamed <b>" + pickup.dbItem.GetFullName() + " the " + pickup.Item.FriendlyName + CharactersHere.PrintPvPIcon(pickup.dbItem) + "</b> here.";
 
                 Player personAnimal = PlayerProcedures.GetPlayerWithExactName(pickup.dbItem.VictimName);
 
@@ -1760,7 +1783,7 @@ namespace tfgame.Controllers
             if (dropme.Item.ItemType == PvPStatics.ItemType_Pet)
             {
                 playerLogMessage = "You released your " + dropme.Item.FriendlyName + " at " + here.Name + ".";
-                locationLogMessage = me.FirstName + " " + me.LastName + " released a <b>" + dropme.Item.FriendlyName + CharactersHere.PrintPvPIcon(dropme.dbItem) + "</b> here.";
+                locationLogMessage = me.GetFullName() + " released a <b>" + dropme.Item.FriendlyName + CharactersHere.PrintPvPIcon(dropme.dbItem) + "</b> here.";
 
                 Player personAnimal = PlayerProcedures.GetPlayerWithExactName(dropme.dbItem.VictimName);
 
@@ -2087,7 +2110,7 @@ namespace tfgame.Controllers
                {
                    PlayerFormViewModel personWearingMe = ItemProcedures.BeingWornBy(me);
                    output.WearerId = personWearingMe.Player.Id;
-                   output.WearerName = personWearingMe.Player.FirstName + " " + personWearingMe.Player.LastName;
+                   output.WearerName = personWearingMe.Player.GetFullName();
                }
                catch
                {
@@ -2098,7 +2121,10 @@ namespace tfgame.Controllers
 
            ViewBag.IsDonator = DonatorProcedures.DonatorGetsMessagesRewards(me);
 
+           ViewBag.ErrorMessage = TempData["Error"];
+           ViewBag.SubErrorMessage = TempData["SubError"];
            ViewBag.Result = TempData["Result"];
+
             return View("MyMessages", output);
         }
 
@@ -2145,6 +2171,23 @@ namespace tfgame.Controllers
 
             return View("ReadMessage", output);
         }
+
+        [Authorize]
+         public ActionResult MarkAsUnread(int messageId)
+         {
+             string myMembershipId = User.Identity.GetUserId();
+             // assert player owns message
+             if (MessageProcedures.PlayerOwnsMessage(messageId, myMembershipId) == false)
+             {
+                 TempData["Error"] = "You can't mark this message as unread.";
+                 TempData["SubError"] = "It wasn't sent to you.";
+                 return RedirectToAction("Play");
+             }
+              MessageProcedures.MarkMessageAsUnread(messageId);
+
+              TempData["Result"] = "Message marked as unread.";
+             return RedirectToAction("MyMessages", "PvP");
+         }
 
 
         public ActionResult PlayerLookup(string name)
@@ -2230,6 +2273,12 @@ namespace tfgame.Controllers
              MessageProcedures.AddMessage(input, myMembershipId);
              NoticeProcedures.PushNotice(receiver, "<b>" + me.GetFullName() + " has sent you a new message.</b>", NoticeProcedures.PushType__PlayerMessage);
              TempData["Result"] = "Your message has been sent.";
+
+             if (me.Mobility != "full")
+             {
+                 ItemProcedures.UpdateSouledItem(me.FirstName, me.LastName);
+             }
+
              return RedirectToAction("MyMessages");
          }
 
@@ -2273,29 +2322,29 @@ namespace tfgame.Controllers
             if (actionName == "rub")
             {
                 PlayerProcedures.ChangePlayerActionManaNoTimestamp(0, .25M, 0, wearer.Player.Id);
-                thirdP = "<span class='petActionGood'>You feel " + me.FirstName + " " + me.LastName + ", currently your " + meItem.FriendlyName + ", ever so slightly rubbing against your skin affectionately.  You gain a tiny amount of willpower from your inanimate belonging's subtle but kind gesture.</span>";
-                firstP = "You affectionately rub against your current owner, " + wearer.Player.FirstName + " " + wearer.Player.LastName + ".  " + pronoun + " gains a tiny amount of willpower from your subtle but kind gesture.";
+                thirdP = "<span class='petActionGood'>You feel " + me.GetFullName() + ", currently your " + meItem.FriendlyName + ", ever so slightly rubbing against your skin affectionately.  You gain a tiny amount of willpower from your inanimate belonging's subtle but kind gesture.</span>";
+                firstP = "You affectionately rub against your current owner, " + wearer.Player.GetFullName() + ".  " + pronoun + " gains a tiny amount of willpower from your subtle but kind gesture.";
             }
 
             if (actionName == "pinch")
             {
                 PlayerProcedures.ChangePlayerActionManaNoTimestamp(0, -.15M, 0, wearer.Player.Id);
-                thirdP = "<span class='petActionBad'>You feel " + me.FirstName + " " + me.LastName + ", currently your " + meItem.FriendlyName + ", ever so slightly pinch your skin agitatedly.  You lose a tiny amount of willpower from your inanimate belonging's subtle but pesky gesture.</span>";
-                firstP = "You agitatedly pinch against your current owner, " + wearer.Player.FirstName + " " + wearer.Player.LastName + ".  " + pronoun + " loses a tiny amount of willpower from your subtle but pesky gesture.";
+                thirdP = "<span class='petActionBad'>You feel " + me.GetFullName() + ", currently your " + meItem.FriendlyName + ", ever so slightly pinch your skin agitatedly.  You lose a tiny amount of willpower from your inanimate belonging's subtle but pesky gesture.</span>";
+                firstP = "You agitatedly pinch against your current owner, " + wearer.Player.GetFullName() + ".  " + pronoun + " loses a tiny amount of willpower from your subtle but pesky gesture.";
             }
 
             if (actionName == "soothe")
             {
                 PlayerProcedures.ChangePlayerActionManaNoTimestamp(0, 0, .25M, wearer.Player.Id);
-                thirdP = "<span class='petActionGood'>You feel " + me.FirstName + " " + me.LastName + ", currently your " + meItem.FriendlyName + ", ever so slightly peacefully soothe your skin.  You gain a tiny amount of mana from your inanimate belonging's subtle but kind gesture.</span>";
-                firstP = "You kindly soothe a patch of your current owner, " + wearer.Player.FirstName + " " + wearer.Player.LastName + "'s skin.  " + pronoun + " gains a tiny amount of mana from your subtle but kind gesture.";
+                thirdP = "<span class='petActionGood'>You feel " + me.GetFullName() + ", currently your " + meItem.FriendlyName + ", ever so slightly peacefully soothe your skin.  You gain a tiny amount of mana from your inanimate belonging's subtle but kind gesture.</span>";
+                firstP = "You kindly soothe a patch of your current owner, " + wearer.Player.GetFullName() + "'s skin.  " + pronoun + " gains a tiny amount of mana from your subtle but kind gesture.";
             }
 
             if (actionName == "zap")
             {
                 PlayerProcedures.ChangePlayerActionManaNoTimestamp(0, 0, -.15M, wearer.Player.Id);
-                thirdP = "<span class='petActionBad'>You feel " + me.FirstName + " " + me.LastName + ", currently your " + meItem.FriendlyName + ", ever so slightly zap your skin.  You lose a tiny amount of mana from your inanimate belonging's subtle but pesky gesture.</span>";
-                firstP = "You agitatedly zap a patch of your current owner, " + wearer.Player.FirstName + " " + wearer.Player.LastName + "'s skin.  " + pronoun + " loses a tiny amount of mana from your subtle but pesky gesture.";
+                thirdP = "<span class='petActionBad'>You feel " + me.GetFullName() + ", currently your " + meItem.FriendlyName + ", ever so slightly zap your skin.  You lose a tiny amount of mana from your inanimate belonging's subtle but pesky gesture.</span>";
+                firstP = "You agitatedly zap a patch of your current owner, " + wearer.Player.GetFullName() + "'s skin.  " + pronoun + " loses a tiny amount of mana from your subtle but pesky gesture.";
             }
 
             PlayerProcedures.LogIP(Request.UserHostAddress, myMembershipId);
@@ -2305,6 +2354,8 @@ namespace tfgame.Controllers
             PlayerProcedures.AddAttackCount(me);
             PlayerLogProcedures.AddPlayerLog(wearer.Player.Id, thirdP, true);
             PlayerLogProcedures.AddPlayerLog(me.Id, firstP, true);
+
+            ItemProcedures.UpdateSouledItem(meDbItem.Id);
 
             return RedirectToAction("Play");
         }
@@ -2399,17 +2450,11 @@ namespace tfgame.Controllers
 
             TempData["Result"] = result + leveluptext;
 
+            ItemProcedures.UpdateSouledItem(me.FirstName, me.LastName);
+
             return RedirectToAction("Play");
         }
 
-       
-     
-
-       
-
-       
-
-        
 
         [Authorize]
         public ActionResult MyFriends()
@@ -2505,7 +2550,7 @@ namespace tfgame.Controllers
                     return false;
                 }
                 // animal
-                if (myform.MobilityType == "inanimate")
+                if (myform.MobilityType == "animal")
                 {
                     Item meAnimal = ItemProcedures.GetItemByVictimName(me.FirstName, me.LastName);
                     if (meAnimal.OwnerId > 0)
@@ -2696,7 +2741,7 @@ namespace tfgame.Controllers
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            ViewBag.MyName = me.FirstName + " " + me.LastName;
+            ViewBag.MyName = me.GetFullName();
             return View("Leaderboard", PlayerProcedures.GetLeadingPlayers__XP(100));
         }
 
@@ -2706,7 +2751,7 @@ namespace tfgame.Controllers
             // return RedirectToAction("Leaderboard");
 
              Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
-             ViewBag.MyName = me.FirstName + " " + me.LastName;
+             ViewBag.MyName = me.GetFullName();
              return View(PlayerProcedures.GetLeadingPlayers__PvP(100));
          }
 
@@ -2714,7 +2759,7 @@ namespace tfgame.Controllers
          {
              string myMembershipId = User.Identity.GetUserId();
              Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-             ViewBag.MyName = me.FirstName + " " + me.LastName;
+             ViewBag.MyName = me.GetFullName();
              IEnumerable<SimpleItemLeaderboardViewModel> output = ItemProcedures.GetLeadingItemsSimple(100).OrderByDescending(p => p.Item.Level).ThenByDescending(p => p.ItemXP);
              return View(output);
          }
@@ -2725,7 +2770,7 @@ namespace tfgame.Controllers
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            if (me == null || me.BotId == -1 || me.FirstName=="" || me.LastName=="")
+            if (me == null || me.BotId == AIStatics.RerolledPlayerBotId || me.FirstName=="" || me.LastName=="")
             {
                 return View("~/Views/PvP/MakeNewCharacter.cshtml");
             }
@@ -2743,8 +2788,6 @@ namespace tfgame.Controllers
                 TempData["Result"] = "A chat room must have a name and not begin with an underscore";
                 return RedirectToAction("Play");
             }
-
-            //if (me.FirstName)
 
             TempData["MyName"] = me.GetFullName();
             TempData["YourNameColor"] = me.ChatColor;
@@ -2797,7 +2840,7 @@ namespace tfgame.Controllers
          {
              string myMembershipId = User.Identity.GetUserId();
              Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-             if (me == null || me.BotId == -1 || me.FirstName == "" || me.LastName == "")
+             if (me == null || me.BotId == AIStatics.RerolledPlayerBotId || me.FirstName == "" || me.LastName == "")
              {
                 return View("~/Views/PvP/MakeNewCharacter.cshtml");
              }
@@ -3020,7 +3063,7 @@ namespace tfgame.Controllers
              }
 
             // assert owner is not an invalid bot
-             if (owner.BotId < -2)
+             if (owner.BotId < AIStatics.PsychopathBotId)
              {
                  TempData["Error"] = "Unfortunately it seems your owner is immune to your transformation curse!";
                  TempData["SubError"] = "Only Psychopathic spellslingers and other players are susceptible to transformation curses.";
@@ -3137,7 +3180,7 @@ namespace tfgame.Controllers
              {
                  ReservedName newReservedName = new ReservedName
                  {
-                     FullName = me.FirstName + " " + me.LastName,
+                     FullName = me.FirstName + " " + me.LastName, // don't use GetFullName() so nickname is left out
                      MembershipId = me.MembershipId,
                      Timestamp = DateTime.UtcNow,
                  };
@@ -3170,6 +3213,11 @@ namespace tfgame.Controllers
         public ActionResult OldLeadboards(string round)
         {
             return View("~/Views/PvP/RoundLeaderboards/Alpha_" + round + ".cshtml");
+        }
+
+        public ActionResult OldLeadboards_Achievements(string round)
+        {
+            return View("~/Views/PvP/RoundLeaderboards/Statistics/Alpha_" + round + ".cshtml");
         }
 
         [Authorize]

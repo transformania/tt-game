@@ -15,10 +15,11 @@ namespace tfgame.Procedures.BossProcedures
 
         private const string BossFirstName = "Lady";
         private const string BossLastName = "Lovebringer, PHD";
+        public const string BossFormDbName = "form_Bimbonic_Plague_Mother_Judoo";
         public const string KissEffectdbName = "curse_bimboboss_kiss";
         public const string KissSkilldbName = "skill_bimboboss_kiss";
         public const string CureEffectdbName = "blessing_bimboboss_cure";
-        private const string RegularTFSpellDbName = "skill_Bringer_of_the_Bimbocalypse_Judoo";
+        public const string RegularTFSpellDbName = "skill_Bringer_of_the_Bimbocalypse_Judoo";
         private const string RegularBimboFormDbName = "form_Bimbocalypse_Plague_Victim_Judoo";
         public const string CureItemDbName = "item_consumeable_bimbo_cure";
 
@@ -45,7 +46,7 @@ namespace tfgame.Procedures.BossProcedures
                     Mana = 9999,
                     MaxHealth = 9999,
                     MaxMana = 9999,
-                    Form = "form_Bimbonic_Plague_Mother_Judoo",
+                    Form = BossFormDbName,
                     Money = 2500,
                     Mobility = "full",
                     Level = 15,
@@ -190,7 +191,7 @@ namespace tfgame.Procedures.BossProcedures
                 Player infectee = playerRepo.Players.FirstOrDefault(p => p.Id == effectId);
 
                 // if the infectee is no longer animate or is another boss, skip them
-                if (infectee.Mobility != "full" || infectee.BotId < -2)
+                if (infectee.Mobility != "full" || infectee.BotId < AIStatics.PsychopathBotId)
                 {
                     continue;
                 }
@@ -321,7 +322,7 @@ namespace tfgame.Procedures.BossProcedures
             foreach (Player p in infected)
             {
                 PlayerProcedures.InstantRestoreToBase(p);
-                if (p.BotId == 0)
+                if (p.BotId == AIStatics.ActivePlayerBotId)
                 {
                     PlayerLogProcedures.AddPlayerLog(p.Id, message, true);
                 }
@@ -351,7 +352,7 @@ namespace tfgame.Procedures.BossProcedures
         private static List<Player> GetEligibleTargetsInLocation(string location, Player attacker)
         {
             DateTime cutoff = DateTime.UtcNow.AddHours(-1);
-            List<Player> playersHere = PlayerProcedures.GetPlayersAtLocation(location).Where(m => m.Mobility == "full" && m.Id != attacker.Id && m.Form != RegularBimboFormDbName && m.BotId >= -2 && m.LastActionTimestamp > cutoff && m.BotId != -7 && m.InDuel <= 0).ToList();
+            List<Player> playersHere = PlayerProcedures.GetPlayersAtLocation(location).Where(m => m.Mobility == "full" && m.Id != attacker.Id && m.Form != RegularBimboFormDbName && m.BotId >= AIStatics.PsychopathBotId && m.LastActionTimestamp > cutoff && m.BotId != AIStatics.BimboBossBotId && m.InDuel <= 0).ToList();
 
             return playersHere;
         }
@@ -377,6 +378,7 @@ namespace tfgame.Procedures.BossProcedures
                     TimeDropped = DateTime.UtcNow,
                     TurnsUntilUse = 0,
                     EquippedThisTurn = false,
+                    LastSouledTimestamp = DateTime.UtcNow.AddYears(-1),
                 };
 
                 if (turnNumber % 3 == 0)

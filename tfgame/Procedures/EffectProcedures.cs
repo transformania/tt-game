@@ -47,6 +47,7 @@ namespace tfgame.Procedures
                                                            Cooldown = si.Cooldown,
                                                            ObtainedAtLocation = si.ObtainedAtLocation,
                                                            IsRemovable = si.IsRemovable,
+                                                           BlessingCurseStatus = si.BlessingCurseStatus,
                                                           
                                                            MessageWhenHit = si.MessageWhenHit,
                                                            MessageWhenHit_M = si.MessageWhenHit_M,

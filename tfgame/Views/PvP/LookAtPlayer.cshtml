@@ -22,7 +22,7 @@
                 <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
                 
                 @{
-    if (Model.PlayerForm.Player.BotId != -1)
+    if (Model.PlayerForm.Player.BotId != AIStatics.RerolledPlayerBotId)
     {
         <p>
             @{
@@ -37,7 +37,7 @@
      }
 
             @{
-        if (Model.PlayerForm.Player.BotId == 0)
+        if (Model.PlayerForm.Player.BotId == AIStatics.ActivePlayerBotId)
         {
             <li>@Html.ActionLink("View Statistics", "PlayerStats", "Settings", new { id = Model.PlayerForm.Player.MembershipId }, null)</li>
             <li>@Html.ActionLink("Send a Message", "Write", "PvP", new { playerId = Model.PlayerForm.Player.Id, responseTo = -1 }, null)</li>
@@ -62,7 +62,7 @@
 
 
 @{
-    if (Model.PlayerForm.Player.BotId != -1)
+    if (Model.PlayerForm.Player.BotId != AIStatics.RerolledPlayerBotId)
     {
         <p>
             &nbsp; 
@@ -93,9 +93,9 @@
             <center>
                 @CharactersHere.GetCovenantInfo(Model.PlayerForm.Player.ToDbPlayer())
                 @{
-                    if (ViewBag.TimeUntilLogout > 0 && Model.PlayerForm.Player.BotId == 0)
+                    if (ViewBag.TimeUntilLogout > 0 && Model.PlayerForm.Player.BotId == AIStatics.ActivePlayerBotId)
                     {<p class="good">Online for @ViewBag.TimeUntilLogout more minutes</p>}
-                    else if (Model.PlayerForm.Player.BotId == 0)
+                    else if (Model.PlayerForm.Player.BotId == AIStatics.ActivePlayerBotId)
                     {<p class="bad">Offline</p>}
                 }
                 <span class="health">Willpower:  @Model.PlayerForm.Player.Health / @Model.PlayerForm.Player.MaxHealth</span><br />
@@ -103,15 +103,15 @@
                 @{
                     if (Model.Bonuses.SneakPercent() <= PvPStatics.SneakAmountBeforeLocationIsPublic * 3)
                     {
-                        <p class="bad">Due to this player's very poor ability to sneak, you sense that @Model.PlayerForm.Player.FirstName is currently at @ViewBag.AtLocation and has attacked @Model.PlayerForm.Player.TimesAttackingThisUpdate times this update and has @Model.PlayerForm.Player.ActionPoints action points remaining.</p>
+                        <p class="bad">Due to this player's very poor ability to sneak, you sense that @Model.PlayerForm.Player.GetFullName() is currently at @ViewBag.AtLocation and has attacked @Model.PlayerForm.Player.TimesAttackingThisUpdate times this update and has @Model.PlayerForm.Player.ActionPoints action points remaining.</p>
                     }
                     else if (Model.Bonuses.SneakPercent() <= PvPStatics.SneakAmountBeforeLocationIsPublic * 2)
                     {
-                        <p class="bad">Due to this player's very poor ability to sneak, you sense that @Model.PlayerForm.Player.FirstName is currently at @ViewBag.AtLocation and has attacked @Model.PlayerForm.Player.TimesAttackingThisUpdate times this update.</p>
+                        <p class="bad">Due to this player's very poor ability to sneak, you sense that @Model.PlayerForm.Player.GetFullName() is currently at @ViewBag.AtLocation and has attacked @Model.PlayerForm.Player.TimesAttackingThisUpdate times this update.</p>
                     }
                     else if (Model.Bonuses.SneakPercent() <= PvPStatics.SneakAmountBeforeLocationIsPublic)
                     {
-                        <p class="bad">Due to this player's poor ability to sneak, you sense that @Model.PlayerForm.Player.FirstName is currently at @ViewBag.AtLocation.</p>
+                        <p class="bad">Due to this player's poor ability to sneak, you sense that @Model.PlayerForm.Player.GetFullName() is currently at @ViewBag.AtLocation.</p>
                     }
                 }
                 <h3>@Model.PlayerForm.Form.FriendlyName</h3>

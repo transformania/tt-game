@@ -41,6 +41,7 @@
                         <li>@Html.ActionLink("My Effects", "MyPerks", "PvP")</li>
                         <li>@Html.ActionLink("Mind Control", "MindControlList", "NPC")</li>
                         <li>@Html.ActionLink("Look at Yourself", "LookAtPlayer", "PvP", new { id = Model.You.Player.Id }, null)</li>
+                        <li>@Html.ActionLink("My Statistics", "PlayerStats", "Settings", new { id = Model.You.Player.MembershipId }, null)</li>
                     </ul>
                 </li>
                 <li>@Html.ActionLink("Friends", "MyFriends", "PvP")</li>
@@ -184,7 +185,7 @@
 
                     if (temp2 != null)
                     {
-                        <span class="covController">Enchanted by the <b>@temp2.Name</b> Covenant</span>
+                        <span class="covController">Enchanted by the <b>@temp2.Name</b> Covenant <b><span class="playerMediatingNotification">[@Model.Location.TakeoverAmount]</span></b></span>
                     }
                 }
                 catch
@@ -222,32 +223,36 @@
                                 <div style="text-align:center; margin-top:2px;">
                                     @Ajax.ActionLink("Attack", "AttackModal", "PvP", new { targetId = p.Player.Id }, new AjaxOptions { UpdateTargetId = "attackModal", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "attack_Success", OnFailure = "attack_Failure", OnBegin = "attack_Wait" }, new { @class = "attackLink" })
                                     @{
-                if (p.Player.BotId == AIProcedures.LindellaMembershipId)
-                {
+                                        if (p.Player.BotId == AIStatics.LindellaBotId)
+                                        {
                     @Html.ActionLink("Trade", "TradeWithMerchant", "NPC", new { filter = "shirt" }, new { @class = "attackLink" })
-                }
-                if (p.Player.BotId == AIProcedures.JewdewfaeMembershipId)
-                {
+                                        }
+                                        if (p.Player.BotId == AIStatics.JewdewfaeBotId)
+                                        {
                     @Html.ActionLink("Talk", "TalkWithJewdewfae", "NPC", null, new { @class = "attackLink" })
-                }
-                if (p.Player.BotId == AIProcedures.WuffieMembershipId)
-                {
+                                        }
+                                        if (p.Player.BotId == AIStatics.WuffieBotId)
+                                        {
                     @Html.ActionLink("Trade", "TradeWithPetMerchant", "NPC", null, new { @class = "attackLink" })
-                }
-                if (p.Player.BotId == AIProcedures.BartenderMembershipId)
-                {
+                                        }
+                                        if (p.Player.BotId == AIStatics.ValentineBotId)
+                                        {
+                    @Html.ActionLink("Talk", "TalkToValentine", "NPC", null, new { @class = "attackLink" })
+                                        }
+                                        if (p.Player.BotId == AIStatics.BartenderBotId)
+                                        {
                     @Html.ActionLink("Talk", "TalkToBartender", "NPC", new { question = "none" }, new { @class = "attackLink" })
-                }
-                if (p.Player.BotId == AIProcedures.MouseBimboMembershipId)
-                {
+                                        }
+                                        if (p.Player.BotId == AIStatics.MouseBimboBotId)
+                                        {
                     @Html.ActionLink("Talk", "TalkToCandice", "NPC", null, new { @class = "attackLink" })
-                }
-                if (p.Player.BotId == AIProcedures.MouseNerdMembershipId)
-                {
+                                        }
+                                        if (p.Player.BotId == AIStatics.MouseNerdBotId)
+                                        {
                     @Html.ActionLink("Talk", "TalkToAdrianna", "NPC", null, new { @class = "attackLink" })
-                }
-                if (p.Player.BotId == AIProcedures.LoremasterMembershipId)
-                {
+                                        }
+                                        if (p.Player.BotId == AIStatics.LoremasterBotId)
+                                        {
                     @Html.ActionLink("Talk", "TalkToLorekeeper", "NPC", null, new { @class = "attackLink" })
                 }
 }
@@ -378,31 +383,18 @@
     var donatorTier = @Model.You.Player.DonatorLevel;
 
     var playUpdateSound = false;
+    var playAttackSound = false;
+    var playMessageSound = false;
     var notificationsEnabled = false;
-    var name = "@Model.You.Player.FirstName" + " @Model.You.Player.LastName";
+    var name = "@Model.You.Player.GetFullName()";
     var playerMana = @Model.You.Player.Mana;
     var maxLogSize = @ViewBag.MaxLogSize;
 
     $(document).ready(function () {
 
-        setInterval(function(){
-            secondsToUpdate--;
-            timer_minutes = Math.floor(secondsToUpdate/60);
-            timer_seconds = String(secondsToUpdate % 60);
+   
 
-            if (timer_seconds.length == 1) {
-                timer_seconds = "0" + timer_seconds;
-            }
-
-            if (timer_minutes < 0) {
-                timer_minutes = "0";
-                timer_seconds = "00";
-                $("#turn_countdown").addClass("good");
-                blinkEnabled = 1;
-            }
-
-            $("#turn_countdown").html(timer_minutes + ":" + timer_seconds);
-        }, 1000);
+       
 
         // var msgToReplace = name + " has"
         var text = $("#RecentActivityLog").html();
@@ -453,7 +445,7 @@
 
         });
 
-        var myVa2r=setInterval(function(){titleToggle()},1000);
+        
 
     }); // end document.ready
 

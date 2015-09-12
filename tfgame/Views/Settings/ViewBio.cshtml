@@ -1,6 +1,8 @@
-﻿@model tfgame.dbModels.Models.PlayerBio
+﻿@model tfgame.ViewModels.BioPageViewModel
 @using tfgame.CustomHtmlHelpers
 @using tfgame.ViewModels
+@using tfgame.dbModels.Models
+@using tfgame.Procedures
 
 <nav class="navbar navbar-default outsideContainer navbarTT2">
     <div class="container-fluid">
@@ -27,13 +29,13 @@
     <h1>Player Bio for @ViewBag.Name</h1>
 
     @{
-        if (Model.WebsiteURL != "")
+        if (Model.PlayerBio.WebsiteURL != "")
         {
             <h3>Website</h3>
 
             @*<p>@CharactersHere.StringToWebsite(Model.WebsiteURL)</p>*@
 
-            <p>@Model.WebsiteURL</p>
+            <p>@Model.PlayerBio.WebsiteURL</p>
         }
     }
 
@@ -41,20 +43,20 @@
     <h3>Bio</h3>
 
     @{
-        if (Model.Text != null && Model.Text != "")
+        if (Model.PlayerBio.Text != null && Model.PlayerBio.Text != "")
         {
-            <p>@Html.Raw(Model.Text.Replace("[br]", "<br/>"))</p>
+            <p>@Html.Raw(Model.PlayerBio.Text.Replace("[br]", "<br/>"))</p>
         }
     }
 
 
     <h3>RP Tags</h3>
 
-    @Html.HiddenFor(m => m.Tags)
+    @Html.HiddenFor(m => m.PlayerBio.Tags)
 
     @Html.Partial("partial/rptags")
 
-    <p class="timeago">Last updated @Model.Timestamp</p><br />
+    <p class="timeago">Last updated @Model.PlayerBio.Timestamp</p><br />
 
     @{
         if (ViewBag.MyContributions.Count > 0)
@@ -82,14 +84,36 @@
         }
 
     }
+
+    <h3>Achievement Badges Earned (@Model.Badges.Count())</h3>
+
+    <div class="row">
+        @{
+            foreach (AchievementBadge a in Model.Badges)
+            {
+                <div class="col-md-4 stats-leader" style="height: auto;">
+                    <img src="~/Images/PvP/Icons/@StatsProcedures.StatTypesMap[a.AchievementType].ImageUrl" style="height:100px; width: 100px; margin: 3px; float:left;" />
+                    <h3 style="margin-top:110px !important;">@StatsProcedures.StatTypesMap[a.AchievementType].FriendlyName</h3><h4> <i>@a.Round</i></h4>
+                    <p><i>@StatsProcedures.StatTypesMap[a.AchievementType].Description:</i> <b>@String.Format("{0:n0}", a.Amount)</b></p>
+                </div>
+            }
+        }
+    </div>
+
 </div>
+
+
+
+
+
+
 
     <script>
 
 
         $(document).ready(function () {
 
-            var tagstring = $("#Tags").val();
+            var tagstring = $("#PlayerBio_Tags").val();
             console.log("Raw string:  " + tagstring);
 
             // assign the proper styling onload

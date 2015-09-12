@@ -477,10 +477,10 @@ namespace tfgame.Controllers
             }
 
             CovenantProcedures.RemovePlayerFromCovenant(beingKicked);
-            string message = "<b>" + me.FirstName + " " + me.LastName + " has kicked you out of " + myCov.Name + ".</b>";
+            string message = "<b>" + me.GetFullName() + " has kicked you out of " + myCov.Name + ".</b>";
             PlayerLogProcedures.AddPlayerLog(beingKicked.Id, message, true);
 
-            TempData["Result"] = "You have kicked " + beingKicked.FirstName + " " + beingKicked.LastName + " out of your covenant.";
+            TempData["Result"] = "You have kicked " + beingKicked.GetFullName() + " out of your covenant.";
             return RedirectToAction("MyCovenant");
         }
 
@@ -1036,6 +1036,10 @@ namespace tfgame.Controllers
             }
 
             TempData["Result"] = FurnitureProcedures.UseFurniture(id, me);
+
+            new Thread(() =>
+                 StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__CovenantFurnitureUsed, 1)
+             ).Start();
 
             return RedirectToAction("MyCovenant");
 

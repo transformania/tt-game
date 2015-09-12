@@ -242,14 +242,21 @@ namespace tfgame.Controllers
          public ActionResult ViewBio(string id)
          {
              Player player = PlayerProcedures.GetPlayerFromMembership(id);
-             ViewBag.Name = player.FirstName + " " + player.LastName;
-             PlayerBio output = SettingsProcedures.GetPlayerBioFromMembershipId(id);
+             ViewBag.Name = player.GetFullName();
 
-             if (output == null)
+             BioPageViewModel output = new BioPageViewModel();
+             try
+             {
+                 output.PlayerBio = SettingsProcedures.GetPlayerBioFromMembershipId(id);
+             }
+             catch
              {
                  TempData["Error"] = "It seems that this player has not written a player biography yet.";
                  return RedirectToAction("Play", "PvP");
              }
+
+             output.Badges = StatsProcedures.GetPlayerBadges(player.MembershipId);
+
 
             IContributionRepository contributionRepo = new EFContributionRepository();
 
@@ -416,7 +423,7 @@ namespace tfgame.Controllers
             Player target = PlayerProcedures.GetPlayer(id);
 
             // assert that this player is not a bot
-            if (target.BotId < 0)
+            if (target.BotId < AIStatics.ActivePlayerBotId)
             {
                 TempData["Error"] = "You cannot blacklist an AI character.";
                 return RedirectToAction("Play", "PvP");
@@ -456,7 +463,7 @@ namespace tfgame.Controllers
 
 
             // assert that this player is not a bot
-            if (target.BotId < 0)
+            if (target.BotId < AIStatics.ActivePlayerBotId)
             {
                 TempData["Error"] = "You cannot blacklist an AI character.";
                 return RedirectToAction("Play", "PvP");
@@ -696,13 +703,13 @@ namespace tfgame.Controllers
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             if (archive == "True")
             {
-                TempData["Result"] = "You have archived all of your known spells.  They will not appear on the attack modal until you unarchive them.";
                 SkillProcedures.ArchiveAllSpells(me.Id, true);
+                TempData["Result"] = "You have archived all of your known spells.  They will not appear on the attack modal until you unarchive them.";
             }
             else
             {
-                TempData["Result"] = "You have archived all of your known spells.  They will all now appear on the attack modal again.";
                 SkillProcedures.ArchiveAllSpells(me.Id, false);
+                TempData["Result"] = "You have unarchived all of your known spells.  They will all now appear on the attack modal again.";
             }
             
            
@@ -722,6 +729,12 @@ namespace tfgame.Controllers
         {
             List<PlayerAchievementViewModel> output = StatsProcedures.GetPlayerMaxStats().ToList();
             return View(output);
+        }
+
+        public ActionResult PlayerStatsTopOfType(string type)
+        {
+            IEnumerable<PlayerAchievementViewModel> output = StatsProcedures.GetLeaderPlayersInStat(type);
+            return PartialView("partial/PlayerStatsTopOfType", output);
         }
 
         [Authorize]

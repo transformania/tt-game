@@ -571,7 +571,7 @@ namespace tfgame.Procedures
             {
                 if (player.InanimateForm.ToString() == "pet" || player.InanimateForm.ToString() == "random")
                 {
-                    vendor = PlayerProcedures.GetPlayerFromBotId(AIProcedures.WuffieMembershipId);
+                    vendor = PlayerProcedures.GetPlayerFromBotId(AIStatics.WuffieBotId);
                     if (vendor == null)
                     {
                         return "Wüffie is not currently available to accept new pets. Please try again later.";
@@ -579,7 +579,7 @@ namespace tfgame.Procedures
                 }
                 if (player.InanimateForm.ToString() != "pet")
                 {
-                    vendor = PlayerProcedures.GetPlayerFromBotId(AIProcedures.LindellaMembershipId);
+                    vendor = PlayerProcedures.GetPlayerFromBotId(AIStatics.LindellaBotId);
                     if (vendor == null)
                     {
                         return "Lindella is not currently available to accept new items. Please try again later.";
@@ -606,8 +606,8 @@ namespace tfgame.Procedures
 
                  // remove all of the old player's TF energies
                  TFEnergyProcedures.DeleteAllPlayerTFEnergies(oldplayer.Id);
-                 oldplayer.MembershipId = "-1";
-                 oldplayer.BotId = -1;
+                 oldplayer.MembershipId = AIStatics.RerolledPlayerBotId.ToString();
+                 oldplayer.BotId = AIStatics.RerolledPlayerBotId;
                  playerRepo.SavePlayer(oldplayer);
 
                  // remove the old player's effects
@@ -619,6 +619,7 @@ namespace tfgame.Procedures
                  IItemRepository itemRepo = new EFItemRepository();
                  Item oldItemMe = itemRepo.Items.FirstOrDefault(i => i.VictimName == oldplayer.FirstName + " " + oldplayer.LastName);
                  oldItemMe.IsPermanent = true;
+                 oldItemMe.LastSouledTimestamp = DateTime.UtcNow.AddYears(1);
                  itemRepo.SaveItem(oldItemMe);
              }
             
@@ -647,18 +648,17 @@ namespace tfgame.Procedures
             newplayer.Level = 1;
             newplayer.XP = 0;
             newplayer.LastActionTimestamp = DateTime.UtcNow;
-            newplayer.LastCombatTimestamp = DateTime.UtcNow;
-            newplayer.LastCombatAttackedTimestamp = DateTime.UtcNow;
+            newplayer.LastCombatTimestamp = DateTime.UtcNow.AddDays(-1); // new spawns shouldn't get hit by no combat timer limitations
+            newplayer.LastCombatAttackedTimestamp = DateTime.UtcNow.AddDays(-1); // new spawns shouldn't get hit by no combat timer limitations
             newplayer.OnlineActivityTimestamp = DateTime.UtcNow;
             newplayer.Money = 0;
             newplayer.ActionPoints_Refill = 360;
             newplayer.CleansesMeditatesThisRound = 0;
             newplayer.NonPvP_GameOverSpellsAllowedLastChange = DateTime.UtcNow;
             newplayer.Mobility = Statics.PvPStatics.MobilityFull;
-            newplayer.BotId = 0;
+            newplayer.BotId = AIStatics.ActivePlayerBotId;
             newplayer.ChatColor = "black";
           
-            
 
             if (oldplayer != null)
             {
@@ -753,7 +753,7 @@ namespace tfgame.Procedures
             if (player.InanimateForm != null)
             {
                 DbStaticForm startform = ItemProcedures.GetFormFromItem(ItemProcedures.GetRandomItemOfType(player.InanimateForm.ToString()));
-                if (player.InanimateForm.ToString() == "random" && startform.MobilityType == "animal") vendor = PlayerProcedures.GetPlayerFromBotId(AIProcedures.WuffieMembershipId);
+                if (player.InanimateForm.ToString() == "random" && startform.MobilityType == "animal") vendor = PlayerProcedures.GetPlayerFromBotId(AIStatics.WuffieBotId);
 
                 newplayer.Form = startform.dbName;
                 newplayer.Gender = startform.Gender;
@@ -915,13 +915,13 @@ namespace tfgame.Procedures
 
             if (showDestinationInLocationLog == true)
             {
-                locationMessageOld = player.FirstName + " " + player.LastName + " used a Covenant Call Crystal, teleporting to their safeground at " + newLocation.Name + ".";
-                locationMessageNew = player.FirstName + " " + player.LastName + " teleported home using a Covenant Call Crystal.";
+                locationMessageOld = player.GetFullName() + " used a Covenant Call Crystal, teleporting to their safeground at " + newLocation.Name + ".";
+                locationMessageNew = player.GetFullName() + " teleported home using a Covenant Call Crystal.";
                 playerLogMessage = "You used a Covenant Call Crystal, teleporting you from " + oldLocation.Name + " to your safeground at " + newLocation.Name + ".";
             }
             else { 
-                locationMessageOld = player.FirstName + " " + player.LastName + " used a scroll of teleportation.";
-                locationMessageNew = player.FirstName + " " + player.LastName + " teleported to here.";
+                locationMessageOld = player.GetFullName() + " used a scroll of teleportation.";
+                locationMessageNew = player.GetFullName() + " teleported to here.";
                 playerLogMessage = "You teleported from " + oldLocation.Name + " to " + newLocation.Name + ".";
             }
             
@@ -1261,8 +1261,8 @@ namespace tfgame.Procedures
 
             WorldStats output = new WorldStats
             {
-                TotalPlayers = players.Where(p => p.BotId == 0).Count(),
-                CurrentOnlinePlayers = players.Where(p => p.BotId == 0 && p.OnlineActivityTimestamp >= cutoff).Count(),
+                TotalPlayers = players.Where(p => p.BotId == AIStatics.ActivePlayerBotId).Count(),
+                CurrentOnlinePlayers = players.Where(p => p.BotId == AIStatics.ActivePlayerBotId && p.OnlineActivityTimestamp >= cutoff).Count(),
                 //TotalAnimalPlayers = players.Where(p => p.Mobility == "animal").Count(),
                 //TotalInanimatePlayers = players.Where(p => p.Mobility == "inanimate").Count(),
                 //TotalLivingPlayers = players.Where(p => p.Mobility == "full").Count(),
@@ -1281,7 +1281,7 @@ namespace tfgame.Procedures
             Player player = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);
 
             // decrease XP gain by 40% for psychos
-            if (player.BotId == -2)
+            if (player.BotId == AIStatics.PsychopathBotId)
             {
                 amount = amount * .6M;
             }
@@ -1674,7 +1674,7 @@ namespace tfgame.Procedures
         {
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            decimal num = playerRepo.Players.Where(p => p.BotId == 0 && p.IpAddress == ip && p.Mobility == "full" && p.GameMode == player.GameMode).Count();
+            decimal num = playerRepo.Players.Where(p => p.BotId == AIStatics.ActivePlayerBotId && p.IpAddress == ip && p.Mobility == "full" && p.GameMode == player.GameMode).Count();
             if (num > 1)
             {
                 return true;
@@ -1689,7 +1689,7 @@ namespace tfgame.Procedures
         {
                 try
                 {
-                    if (player.BotId < -1)
+                    if (player.BotId < AIStatics.RerolledPlayerBotId)
                     {
                         return false;
                     }
@@ -1715,7 +1715,7 @@ namespace tfgame.Procedures
         {
             try
             {
-                if (player.BotId < -1)
+                if (player.BotId < AIStatics.RerolledPlayerBotId)
                 {
                     return false;
                 }
@@ -1790,7 +1790,7 @@ namespace tfgame.Procedures
         public static IEnumerable<Player> GetLeadingPlayers__XP(int number)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            return playerRepo.Players.Where(p => p.BotId == 0).OrderByDescending(p => p.Level).ThenByDescending(p => p.XP).Take(number);
+            return playerRepo.Players.Where(p => p.BotId == AIStatics.ActivePlayerBotId).OrderByDescending(p => p.Level).ThenByDescending(p => p.XP).Take(number);
         }
 
         public static IEnumerable<Player> GetLeadingPlayers__PvP(int number)
@@ -1798,7 +1798,7 @@ namespace tfgame.Procedures
             IPlayerRepository playerRepo = new EFPlayerRepository();
 
 
-            return playerRepo.Players.Where(p => p.BotId == 0).OrderByDescending(p => p.PvPScore).ThenByDescending(p => p.Level).ThenByDescending(p => p.XP).Take(number);
+            return playerRepo.Players.Where(p => p.BotId == AIStatics.ActivePlayerBotId).OrderByDescending(p => p.PvPScore).ThenByDescending(p => p.Level).ThenByDescending(p => p.XP).Take(number);
 
         }
 
@@ -1832,7 +1832,7 @@ namespace tfgame.Procedures
 
 
 
-            string logmessage = "<span class='playerCleansingNotification'>" + player.FirstName + " " + player.LastName + " cleansed here.</span>";
+            string logmessage = "<span class='playerCleansingNotification'>" + player.GetFullName() + " cleansed here.</span>";
             LocationLogProcedures.AddLocationLog(player.dbLocationName, logmessage);
 
 
@@ -1868,7 +1868,7 @@ namespace tfgame.Procedures
                 result = "You quickly meditate, restoring " + meditateManaRestore + " mana.";
             }
 
-            string logmessage = "<span class='playerMediatingNotification'>" + player.FirstName + " " + player.LastName + " meditated here.</span>";
+            string logmessage = "<span class='playerMediatingNotification'>" + player.GetFullName() + " meditated here.</span>";
             LocationLogProcedures.AddLocationLog(player.dbLocationName, logmessage);
 
 
@@ -2147,6 +2147,12 @@ namespace tfgame.Procedures
             dbPlayer.LastCombatTimestamp = DateTime.UtcNow;
             playerRepo.SavePlayer(dbPlayer);
 
+        }
+
+        public static IEnumerable<DbStaticForm> GetAllDbStaticForms()
+        {
+            IDbStaticFormRepository repo = new EFDbStaticFormRepository();
+            return repo.DbStaticForms.Where(f => f.dbName != "");
         }
 
     }

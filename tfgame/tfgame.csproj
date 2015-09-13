@@ -804,6 +804,7 @@
     <Content Include="Images\PvP\itemsPortraits\love_cups_heart_bra_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\love_potion_number_9_Meddle.jpg" />
     <Content Include="Images\PvP\itemsPortraits\lullaby_whistle_Judoo.jpg" />
+    <Content Include="Images\PvP\itemsPortraits\magical_marionette_Luxianne.jpg" />
     <Content Include="Images\PvP\itemsPortraits\magic_chocker_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\magic_wand_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\MagnifyingGlass_Meddle.png" />
@@ -813,6 +814,7 @@
     <Content Include="Images\PvP\itemsPortraits\maternity_babydoll_Meddle.jpg" />
     <Content Include="Images\PvP\itemsPortraits\maternity_panties_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\mermaid_amulet_LastChance12.jpg" />
+    <Content Include="Images\PvP\itemsPortraits\mystical_blindfold_Aurora_Ryall.jpg" />
     <Content Include="Images\PvP\itemsPortraits\Nightdust_Luxianne.png" />
     <Content Include="Images\PvP\itemsPortraits\nipple_ring_lastchance12.jpg" />
     <Content Include="Images\PvP\itemsPortraits\nipple_tassels_Judoo.jpg" />
@@ -836,7 +838,9 @@
     <Content Include="Images\PvP\itemsPortraits\red_laceup_boots_Jbovinne.jpg" />
     <Content Include="Images\PvP\itemsPortraits\red_leather_boots_Jbovinne.png" />
     <Content Include="Images\PvP\itemsPortraits\red_wavy_wig_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\regal_bronze_bikini_bottom_Martiandawn.jpg" />
     <Content Include="Images\PvP\itemsPortraits\regal_bronze_bikini_top_Martiandawn.jpg" />
+    <Content Include="Images\PvP\itemsPortraits\regal_bronze_slouch_boots_Martiandawn.jpg" />
     <Content Include="Images\PvP\itemsPortraits\riding_crop_Martiandawn.jpg" />
     <Content Include="Images\PvP\itemsPortraits\runic_dildo_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\running_shoes_Luxianne.jpg" />
@@ -1512,7 +1516,9 @@
     <Content Include="Images\PvP\portraits\Usagi_Yobimbo_Dandelion.jpg" />
     <Content Include="Images\PvP\portraits\Valiant_Valkyrie_Meddle.png" />
     <Content Include="Images\PvP\portraits\vampireboss.png" />
+    <Content Include="Images\PvP\portraits\vampire_duellist_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\vampire_female_Lux.png" />
+    <Content Include="Images\PvP\portraits\vampire_fighter_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\vampire_Lux.png" />
     <Content Include="Images\PvP\portraits\vicious_gorgon_babblingfaces.jpg" />
     <Content Include="Images\PvP\portraits\vine_girl_CyberKaku.jpg" />

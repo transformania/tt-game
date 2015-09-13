@@ -876,6 +876,19 @@ namespace tfgame.Controllers
                     ViewBag.Speech = "Unfortunately I do not have any information on Jewdewfae at this time.  Is there anything else I can assist you with?";
                 }
             }
+            else if (question == "lorekeeper")
+            {
+                Player lorekeeper = PlayerProcedures.GetPlayerFromBotId(AIStatics.LoremasterBotId);
+                if (lorekeeper != null)
+                {
+                    Location temp = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == lorekeeper.dbLocationName);
+                    ViewBag.Speech = "\"The last I have heard, " + lorekeeper.GetFullName() + " is at <b>" + temp.Name + "</b>.  Poor chap, how far he's fallen from his glory days.  Why don't you go and talk to him?  He'll be willing to teach you a spell or two or sell you some books if you're looking to increase your knowledge.";
+                }
+                else
+                {
+                    ViewBag.Speech = "Unfortunately I do not have any information on " + lorekeeper.GetFullName() + " at this time.  Is there anything else I can assist you with?";
+                }
+            }
             else if (question == "boss")
             {
                 PvPWorldStat stats = PvPWorldStatProcedures.GetWorldStats();

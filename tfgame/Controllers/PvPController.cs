@@ -758,7 +758,7 @@ namespace tfgame.Controllers
             // only show Weaken for valentine
             if (target.BotId == AIStatics.ValentineBotId)
             {
-                output = output.Where(s => s.MobilityType == "lowerHealth");
+                output = output.Where(s => s.dbSkill.Name == "lowerHealth");
             }
 
             // only bimbo spell works on nerd mouse boss

@@ -1338,7 +1338,7 @@ namespace tfgame.Controllers
         }
 
         [Authorize]
-        public ActionResult TalkToValentine()
+        public ActionResult TalkToValentine(string question)
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -1351,14 +1351,58 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
-            // assert player is in the same place as Candice
+            // assert player is not dueling
+            if (me.Mobility != "full")
+            {
+                TempData["Error"] = "You should conclude your current duel before talking to " + valentine.GetFullName() + ".";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            // assert player is in the same place as Valenti8ne
             if (me.dbLocationName != valentine.dbLocationName)
             {
                 TempData["Error"] = "You must be in the same location as " + valentine.GetFullName() + " in order to talk with him.";
                 return RedirectToAction("Play", "PvP");
             }
 
-            return View();
+            string responseText = "";
+
+            // assert that the question is valid depending on Valentine's stance
+            string stance = BossProcedures_Valentine.GetStance();
+            if (question != "none")
+            {
+                BossProcedures_Valentine.TalkToAndCastSpell(me, valentine);
+                List<PlayerLog> tftext = PlayerLogProcedures.GetAllPlayerLogs(me.Id).Reverse().ToList();
+                PlayerLog lastlog = tftext.FirstOrDefault(f => f.IsImportant == true);
+
+                if (lastlog != null)
+                {
+                    // if the log is too old, presumably the player already got transformed, so don't show that text again.  Yeah, this is so hacky...
+                    double secDiff = Math.Abs(Math.Floor(lastlog.Timestamp.Subtract(DateTime.UtcNow).TotalSeconds));
+                    if (secDiff < 3)
+                    {
+                        responseText = lastlog.Message;
+                    }
+                    else
+                    {
+                        responseText = valentine.GetFullName() + " ignores you.";
+                    }
+                }
+                else
+                {
+                    responseText = valentine.GetFullName() + " ignores you.";
+                }
+
+            }
+
+            ViewBag.stance = stance;
+
+            ViewBag.ErrorMessage = TempData["Error"];
+            ViewBag.SubErrorMessage = TempData["SubError"];
+
+            ViewBag.Result = responseText;
+
+            return View("TalkToValentine");
 
         }
     }

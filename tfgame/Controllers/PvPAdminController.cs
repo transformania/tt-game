@@ -1134,11 +1134,6 @@ namespace tfgame.Controllers
 
             IDbStaticSkillRepository skillRepo = new EFDbStaticSkillRepository();
             IEnumerable<DbStaticSkill> output = skillRepo.DbStaticSkills.ToList();
-            foreach (DbStaticSkill s in output)
-            {
-                s.LearnedAtLocation = "";
-                s.LearnedAtRegion = "";
-            }
             return Json(output, JsonRequestBehavior.AllowGet);
         }
 

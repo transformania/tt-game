@@ -1375,16 +1375,24 @@ namespace tfgame.Controllers
                 List<PlayerLog> tftext = PlayerLogProcedures.GetAllPlayerLogs(me.Id).Reverse().ToList();
                 PlayerLog lastlog = tftext.FirstOrDefault(f => f.IsImportant == true);
 
-                // if the log is too old, presumably the player already got transformed, so don't show that text again.  Yeah, this is so hacky...
-                double secDiff = Math.Abs(Math.Floor(lastlog.Timestamp.Subtract(DateTime.UtcNow).TotalSeconds));
-                if (secDiff < 3)
+                if (lastlog != null)
                 {
-                    responseText = lastlog.Message;
-                } else
+                    // if the log is too old, presumably the player already got transformed, so don't show that text again.  Yeah, this is so hacky...
+                    double secDiff = Math.Abs(Math.Floor(lastlog.Timestamp.Subtract(DateTime.UtcNow).TotalSeconds));
+                    if (secDiff < 3)
+                    {
+                        responseText = lastlog.Message;
+                    }
+                    else
+                    {
+                        responseText = valentine.GetFullName() + " ignores you.";
+                    }
+                }
+                else
                 {
                     responseText = valentine.GetFullName() + " ignores you.";
                 }
-                
+
             }
 
             ViewBag.stance = stance;

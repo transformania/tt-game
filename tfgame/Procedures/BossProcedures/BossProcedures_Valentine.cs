@@ -21,8 +21,8 @@ namespace tfgame.Procedures.BossProcedures
         public const string ValentineFormDbName = "form_First_Lord_of_the_Valentine_Castle_Valentine's_Family";
         public const string SwordSpell = "skill_The_Dance_of_Blades_Ashley_Valentine";
 
-        public const string FemaleVampSpell = "skill_Mistress_of_the_night_Foxpower93";
-        public const string MaleVampSpell = "skill_Dark_Baptism_Blood_Knight";
+      //  public const string FemaleVampSpell = "skill_Mistress_of_the_night_Foxpower93";
+      //  public const string MaleVampSpell = "skill_Dark_Baptism_Blood_Knight";
 
 
         private const string MaleVampFormDbName = "form_Vampire_Lord_Blood_Knight";
@@ -48,7 +48,7 @@ namespace tfgame.Procedures.BossProcedures
 
         // NIGHT -- female
         public const string NightVampireFemaleSpell = "skill_Elegance_of_the_Nightkin_Leia_Valentine";
-        public const string NightVampireFemaleForm = "form_Disciple_of_the_night_Leia_Valentine";
+        public const string NightVampireFemaleForm = "form_Disciple_of_the_Night_Leia_Valentine";
 
         // DAY -- male
         public const string DayVampireMaleSpell = "skill_Strength_of_the_Nightkin_Leia_Valentine";

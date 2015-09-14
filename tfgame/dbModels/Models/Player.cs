@@ -64,6 +64,8 @@ namespace tfgame.dbModels.Models
         public string ChatColor { get; set; }
         public int ShoutsRemaining { get; set; }
         public int InDuel { get; set; }
+        public int InQuest { get; set; }
+        public int InQuestState { get; set; }
 
         public string GetFullName()
         {
@@ -210,6 +212,8 @@ namespace tfgame.dbModels.Models
         public string ChatColor { get; set; }
         public int ShoutsRemaining { get; set; }
         public int InDuel { get; set; }
+        public int InQuest { get; set; }
+        public int InQuestState { get; set; }
 
         public string GetFullName()
         {
@@ -283,6 +287,8 @@ namespace tfgame.dbModels.Models
                 OnlineActivityTimestamp = this.OnlineActivityTimestamp,
 
                 IsBannedFromGlobalChat = this.IsBannedFromGlobalChat,
+                InQuest = this.InQuest,
+                InQuestState = this.InQuestState
 
             };
             return output;

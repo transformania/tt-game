@@ -71,5 +71,7 @@ namespace tfgame.dbModels.Concrete
         public DbSet<AchievementBadge> AchievementBadges { get; set; }
         public DbSet<Duel> Duels { get; set; }
 
+        public DbSet<QuestStart> QuestStarts { get; set; }
+
     }
 }

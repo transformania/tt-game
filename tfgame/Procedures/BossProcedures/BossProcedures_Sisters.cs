@@ -182,7 +182,8 @@ namespace tfgame.Procedures.BossProcedures
                     p.BotId == AIStatics.ActivePlayerBotId &&
                     p.Id != nerdBoss.Id &&
                     p.Form != NerdSpellForm &&
-                    p.InDuel <= 0).ToList();
+                    p.InDuel <= 0  &&
+                    p.InQuest <= 0).ToList();
 
 
                 // get all of the players in the room by bimbo
@@ -192,7 +193,8 @@ namespace tfgame.Procedures.BossProcedures
                     p.BotId == AIStatics.ActivePlayerBotId &&
                     p.Id != bimboBoss.Id &&
                     p.Form != BimboSpellForm &&
-                    p.InDuel <= 0).ToList();
+                    p.InDuel <= 0 &&
+                    p.InQuest <= 0).ToList();
 
                 foreach (Player p in playersByNerd)
                 {

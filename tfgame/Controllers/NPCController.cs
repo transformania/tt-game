@@ -56,6 +56,13 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
+            // assert that this player is not in a quest
+            if (me.InQuest > 0)
+            {
+                TempData["Error"] = "You must finish your quest before you can purchase or sell anything to Lindella.";
+                return RedirectToAction("Play", "PvP");
+            }
+
             Player merchant = PlayerProcedures.GetPlayerFromBotId(-3);
 
             // assert the merchant is animate
@@ -152,6 +159,13 @@ namespace tfgame.Controllers
             if (me.InDuel > 0)
             {
                 TempData["Error"] = "You must finish your duel before you can purchase or sell anything to Lindella.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            // assert that this player is not in a duel
+            if (me.InQuest > 0)
+            {
+                TempData["Error"] = "You must finish your quest before you can purchase or sell anything to Lindella.";
                 return RedirectToAction("Play", "PvP");
             }
 
@@ -272,6 +286,13 @@ namespace tfgame.Controllers
             if (me.InDuel > 0)
             {
                 TempData["Error"] = "You must finish your duel before you can purchase or sell anything to Lindella.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            // assert that this player is not in a duel
+            if (me.InQuest > 0)
+            {
+                TempData["Error"] = "You must finish your quest before you can purchase or sell anything to Lindella.";
                 return RedirectToAction("Play", "PvP");
             }
 
@@ -401,6 +422,13 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
+            // assert that this player is not in a quest
+            if (me.InQuest > 0)
+            {
+                TempData["Error"] = "You must finish your quest before you can interact with Wüffie.";
+                return RedirectToAction("Play", "PvP");
+            }
+
             Player merchant = PlayerProcedures.GetPlayerFromBotId(-10);
 
             // assert the merchant is animate
@@ -517,6 +545,13 @@ namespace tfgame.Controllers
             if (me.InDuel > 0)
             {
                 TempData["Error"] = "You must conclude your duel before you can interact with Wuffie.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            // assert player is not in a quest
+            if (me.InQuest > 0)
+            {
+                TempData["Error"] = "You must conclude your quest before you can interact with Wuffie.";
                 return RedirectToAction("Play", "PvP");
             }
 
@@ -992,6 +1027,13 @@ namespace tfgame.Controllers
             if (me.InDuel > 0)
             {
                 TempData["Error"] = "You must finish your duel before you can play with Jewdewfae.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            // assert that this player is not in a quest
+            if (me.InQuest > 0)
+            {
+                TempData["Error"] = "You must finish your quest before you can play with Jewdewfae.";
                 return RedirectToAction("Play", "PvP");
             }
 

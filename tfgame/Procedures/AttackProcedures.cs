@@ -289,14 +289,16 @@ namespace tfgame.Procedures
                 playersHere = playerREpo.Players.Where(p => p.dbLocationName == attacker.dbLocationName &&
                     (p.GameMode == 2 || p.BotId < AIStatics.RerolledPlayerBotId) &&
                     p.Mobility == "full" &&
-                    p.InDuel <= 0).ToList();
+                     p.InDuel <= 0 &&
+                    p.InQuest <= 0).ToList();
             }
             else if (attacker.GameMode == 1 || attacker.GameMode == 0)
             {
                 playersHere = playerREpo.Players.Where(p => p.dbLocationName == attacker.dbLocationName &&
                     p.BotId < AIStatics.RerolledPlayerBotId &&
                     p.Mobility == "full" &&
-                    p.InDuel <= 0).ToList();
+                    p.InDuel <= 0 &&
+                    p.InQuest <= 0).ToList();
             }
 
             // filter out offline players as well as the attacker

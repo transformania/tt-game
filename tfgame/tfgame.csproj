@@ -421,6 +421,7 @@
     <Compile Include="Procedures\DuelProcedures.cs" />
     <Compile Include="Procedures\DungeonProcedures.cs" />
     <Compile Include="Procedures\FurnitureProcedures.cs" />
+    <Compile Include="Procedures\QuestProcedures.cs" />
     <Compile Include="Procedures\RerollProcedures.cs" />
     <Compile Include="Procedures\ItemTransferLogProcedures.cs" />
     <Compile Include="Procedures\MindControlProcedures.cs" />

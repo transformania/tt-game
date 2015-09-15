@@ -16,8 +16,8 @@ namespace tfgame.dbModels.Models
         public int MinStartLevel { get; set; }
         public int MaxStartLevel { get; set; }
         public int PrerequisiteQuest { get; set; }
+        public int RequiredGender { get; set; }
         public int StartState { get; set; }
-
 
         //[Id] -- int
         //[dbName] - string.  Database name of the quest

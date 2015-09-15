@@ -42,6 +42,13 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
+            // assert that this player is not in a quest
+            if (me.InQuest > 0)
+            {
+                TempData["Error"] = "You must finish your quest before you can participate in a duel.";
+                return RedirectToAction("Play", "PvP");
+            }
+
             // assert that the player has not been in recent combat
             double minutesAgo = Math.Abs(Math.Floor(me.GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalMinutes));
             if (minutesAgo < PvPStatics.DuelNoCombatMinutes)
@@ -78,6 +85,13 @@ namespace tfgame.Controllers
             {
                 TempData["Error"] = "Your target is already actively participating in a duel.";
                 TempData["SubError"] = "Your target must finish their currently active duel before they can start a new one.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            // assert that this player is not in a quest
+            if (duelTarget.InQuest > 0)
+            {
+                TempData["Error"] = "Your target must finish their quest before you can duel them.";
                 return RedirectToAction("Play", "PvP");
             }
 

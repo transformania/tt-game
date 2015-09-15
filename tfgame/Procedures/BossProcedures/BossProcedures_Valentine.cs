@@ -175,7 +175,13 @@ namespace tfgame.Procedures.BossProcedures
                     // attack everyone else with 1 cast
                     List<Player> playersHere = PlayerProcedures.GetPlayersAtLocation(valentine.dbLocationName).ToList();
 
-                    playersHere = playersHere.Where(p => p.Mobility == "full" && PlayerProcedures.PlayerIsOffline(p) == false && p.Level >= 3 && p.BotId == AIStatics.ActivePlayerBotId && p.Id != valentine.Id && p.InDuel <= 0).ToList();
+                    playersHere = playersHere.Where(p => p.Mobility == "full" && 
+                    PlayerProcedures.PlayerIsOffline(p) == false && 
+                    p.Level >= 3 && 
+                    p.BotId == AIStatics.ActivePlayerBotId && 
+                    p.Id != valentine.Id && 
+                    p.InDuel <= 0 &&
+                    p.InQuest <= 0).ToList();
 
                     foreach (Player p in playersHere)
                     {
@@ -208,7 +214,8 @@ namespace tfgame.Procedures.BossProcedures
                 p.Level >= 3 &&
                 p.BotId == AIStatics.ActivePlayerBotId &&
                 p.Id != valentine.Id &&
-                p.InDuel <= 0).ToList();
+                p.InDuel <= 0 &&
+                p.InQuest <= 0).ToList();
 
             int turnNo = PvPWorldStatProcedures.GetWorldTurnNumber();
 

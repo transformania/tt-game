@@ -1402,6 +1402,12 @@ namespace tfgame.Procedures
                         return "You must finish your duel before you can use this item.";
                     }
 
+                    // assert that this player is not in a duel
+                    if (owner.InQuest > 0)
+                    {
+                        return "You must finish your quest before you can use this item.";
+                    }
+
                     PlayerProcedures.InstantRestoreToBase(owner);
                     TFEnergyProcedures.CleanseTFEnergies(owner, 25);
                     itemRepo.DeleteItem(itemPlus.dbItem.Id);
@@ -1446,6 +1452,11 @@ namespace tfgame.Procedures
                         return "You must finish your duel before you can use this item.";
                     }
 
+                    // assert that this player is not in a quest
+                    if (owner.InQuest > 0)
+                    {
+                        return "You must finish your quest before you can use this item.";
+                    }
                     // assert owner has not been in combat recently
                     double minutesSinceCombat = Math.Abs(Math.Floor(owner.GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalMinutes));
                     if (minutesSinceCombat < 30)

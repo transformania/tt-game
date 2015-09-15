@@ -8,5 +8,7 @@ namespace tfgame.Statics
     public static class QuestStatics
     {
         public enum QuestOutcomes { Failed = 0, Completed = 1 };
+
+        public enum Gender { Male = 0, Female = 1 };
     }
 }

@@ -267,6 +267,7 @@
     <Compile Include="dbModels\Abstract\IInanimateXPRepository.cs" />
     <Compile Include="dbModels\Abstract\IItemRepository.cs" />
     <Compile Include="dbModels\Abstract\IDuelRepository.cs" />
+    <Compile Include="dbModels\Abstract\IPlayerQuestRepository.cs" />
     <Compile Include="dbModels\Abstract\IQuestRepository.cs" />
     <Compile Include="dbModels\Abstract\IRerollRepository.cs" />
     <Compile Include="dbModels\Abstract\IItemTransferLogRepository.cs" />
@@ -309,6 +310,7 @@
     <Compile Include="dbModels\Concrete\EFDonatorRepository.cs" />
     <Compile Include="dbModels\Concrete\EFDuelRepository.cs" />
     <Compile Include="dbModels\Concrete\EFFurnitureRepository.cs" />
+    <Compile Include="dbModels\Concrete\EFPlayerQuestRepository.cs" />
     <Compile Include="dbModels\Concrete\EFQuestRepository.cs" />
     <Compile Include="dbModels\Concrete\EFRerollRepository.cs" />
     <Compile Include="dbModels\Concrete\EFItemTransferLogRepository.cs" />
@@ -370,7 +372,7 @@
     <Compile Include="dbModels\Models\InanimateXP.cs" />
     <Compile Include="dbModels\Models\Item.cs" />
     <Compile Include="dbModels\Models\PlayerQuests.cs" />
-    <Compile Include="dbModels\Models\QuestStart.cs" />
+    <Compile Include="dbModels\Models\Quest.cs" />
     <Compile Include="dbModels\Models\Reroll.cs" />
     <Compile Include="dbModels\Models\ItemTransferLog.cs" />
     <Compile Include="dbModels\Models\JewdewfaeEncounter.cs" />

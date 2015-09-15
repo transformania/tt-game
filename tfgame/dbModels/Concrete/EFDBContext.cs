@@ -70,8 +70,12 @@ namespace tfgame.dbModels.Concrete
         public DbSet<Achievement> Achievements { get; set; }
         public DbSet<AchievementBadge> AchievementBadges { get; set; }
         public DbSet<Duel> Duels { get; set; }
+        public DbSet<PlayerQuest> PlayerQuests { get; set; }
 
         public DbSet<QuestStart> QuestStarts { get; set; }
+        public DbSet<QuestState> QuestStates { get; set; }
+        public DbSet<QuestStateRequirement> QuestStateRequirements { get; set; }
+        public DbSet<QuestEnd> QuestEnds { get; set; }
 
     }
 }

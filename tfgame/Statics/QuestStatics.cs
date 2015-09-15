@@ -7,6 +7,6 @@ namespace tfgame.Statics
 {
     public static class QuestStatics
     {
-        public enum QuestStates { Failed = 0, Completed = 1 };
+        public enum QuestOutcomes { Failed = 0, Completed = 1 };
     }
 }

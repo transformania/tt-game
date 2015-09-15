@@ -15,5 +15,26 @@ namespace tfgame.dbModels.Abstract
 
         void DeleteQuestStart(int QuestStartId);
 
+
+        IQueryable<QuestState> QuestStates { get; }
+
+        void SaveQuestState(QuestState quest);
+
+        void DeleteQuestState(int QuestStateId);
+
+
+        IQueryable<QuestStateRequirement> QuestStateRequirements { get; }
+
+        void SaveQuestStateRequirement(QuestStateRequirement quest);
+
+        void DeleteQuestStateRequirement(int QuestStateRequirementId);
+
+
+        IQueryable<QuestEnd> QuestEnds { get; }
+
+        void SaveQuestEnd(QuestEnd quest);
+
+        void DeleteQuestEnd(int QuestEndId);
+
     }
 }

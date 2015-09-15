@@ -5,7 +5,7 @@ using System.Web;
 
 namespace tfgame.dbModels.Models
 {
-    public class PlayerQuests
+    public class PlayerQuest
     {
         public int Id { get; set; }
         public int PlayerId { get; set; }

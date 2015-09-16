@@ -81,6 +81,10 @@
                     {
                         <li>@Html.ActionLink("Admin", "Index", "PvPAdmin")</li>
                     }
+                    if (User.IsInRole(PvPStatics.Permissions_QuestWriter) == true)
+                    {
+                        <li>@Html.ActionLink("Quests", "QuestStart", "QuestWriter", new { Id = -1 }, null)</li>
+                    }
                 }
             </ul>
         </div><!-- /.navbar-collapse -->

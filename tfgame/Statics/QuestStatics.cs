@@ -9,6 +9,6 @@ namespace tfgame.Statics
     {
         public enum QuestOutcomes { Failed = 0, Completed = 1 };
 
-        public enum Gender { Male = 0, Female = 1 };
+        public enum Gender { Male = 0, Female = 1, Any = 2 };
     }
 }

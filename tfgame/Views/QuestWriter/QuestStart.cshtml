@@ -1,0 +1,95 @@
+﻿@model tfgame.dbModels.Models.QuestStart
+@using tfgame.Statics
+
+
+
+<h4>Other Quests:</h4>
+@{ 
+    foreach (tfgame.dbModels.Models.QuestStart q in ViewBag.OtherQuests)
+    {
+        <p>@Html.ActionLink(q.Name, "QuestStart", "QuestWriter", new { Id = q.Id }, null)</p>
+    }
+}
+
+<br />
+
+@using (Html.BeginForm("QuestStartSend", "QuestWriter", FormMethod.Post))
+{
+
+    <label>Is live:</label>
+    <p><b>@Model.IsLive</b></p>
+
+    <br /><br />
+
+    <label>Quest Friendly Name:</label>
+    @Html.TextBoxFor(m => m.Name)
+
+    <br /><br />
+
+    <label>Quest Database Name:</label>
+    @Html.TextBoxFor(m => m.dbName)
+
+    <br /><br />
+
+    <label>Location:</label>
+    @Html.TextBoxFor(m => m.Location)
+
+    <br /><br />
+
+        <label>Minimum Start Turn:</label>
+        @Html.TextBoxFor(m => m.MinStartTurn)
+
+        <br /><br />
+
+        <label>Maximum Start Turn:</label>
+        @Html.TextBoxFor(m => m.MaxStartTurn)
+
+        <br /><br />
+
+        <label>Minimum Start Level:</label>
+        @Html.TextBoxFor(m => m.MinStartLevel)
+
+        <br /><br />
+
+        <label>Maximum Start Level:</label>
+        @Html.TextBoxFor(m => m.MaxStartTurn)
+
+        <br /><br />
+
+        <label>Required Gender to start:</label>
+        @Html.DropDownListFor(m => m.PrerequisiteQuest, new SelectList(
+                  new List<Object>{
+                      new { value = QuestStatics.Gender.Any  , text = "Any"  },
+                       new { value = QuestStatics.Gender.Male  , text = "Male"  },
+                        new { value = QuestStatics.Gender.Female  , text = "Female"  },
+                    },
+                  "value",
+                  "text",
+                   2))
+
+    <br /><br />
+
+    <label>Prerequisite Quest Id:</label>
+        @Html.TextBoxFor(m => m.PrerequisiteQuest)
+
+        <br /><br />
+
+        <label>Starting State Id:</label>
+        @Html.TextBoxFor(m => m.StartState)
+
+        <br /><br />
+
+
+        @Html.HiddenFor(m => m.Id)
+
+        <br />
+        <input type="submit" class="btn btn-chat" value="Send" />
+
+}
+
+
+<style>
+    input, textarea {
+        width: 100%;
+    }
+</style>

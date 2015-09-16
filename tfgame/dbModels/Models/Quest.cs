@@ -18,6 +18,7 @@ namespace tfgame.dbModels.Models
         public int PrerequisiteQuest { get; set; }
         public int RequiredGender { get; set; }
         public int StartState { get; set; }
+        public bool IsLive { get; set; }
 
         //[Id] -- int
         //[dbName] - string.  Database name of the quest
@@ -36,6 +37,7 @@ namespace tfgame.dbModels.Models
     {
         public int Id { get; set; }
         public int ParentQuestStateId { get; set; }
+        public string QuestStateName { get; set; }
         public int QuestId { get; set; }
         public string Text { get; set; }
         public List<QuestStateRequirement> QuestStateRequirements { get; set; }

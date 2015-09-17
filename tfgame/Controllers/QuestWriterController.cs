@@ -17,8 +17,13 @@ namespace tfgame.Controllers
         // GET: QuestWriter
         public ActionResult Index()
         {
+            List<QuestStart> output = QuestProcedures.GetAllQuestStarts().ToList();
 
-            return View();
+            ViewBag.ErrorMessage = TempData["Error"];
+            ViewBag.SubErrorMessage = TempData["SubError"];
+            ViewBag.Result = TempData["Result"];
+
+            return View(output);
         }
 
         public ActionResult QuestStart(int Id)
@@ -47,7 +52,7 @@ namespace tfgame.Controllers
             QuestState firstState = repo.QuestStates.FirstOrDefault(f => f.Id == questStart.StartState);
             ViewBag.firstState = firstState;
 
-            return View(questStart);
+            return PartialView(questStart);
         }
 
         public ActionResult QuestStartSend(QuestStart input)
@@ -56,7 +61,7 @@ namespace tfgame.Controllers
             QuestWriterProcedures.SaveQuestStart(input);
 
             TempData["Result"] = "Save succeeded.";
-            return RedirectToAction("Play", "PvP");
+            return RedirectToAction("Index", "QuestWriter");
         }
 
         public ActionResult QuestState(int Id, int QuestId, int ParentStateId)
@@ -87,7 +92,7 @@ namespace tfgame.Controllers
             IEnumerable<QuestState> childQuestStates = repo.QuestStates.Where(q => q.ParentQuestStateId == QuestId);
             ViewBag.childQuestStates = childQuestStates;
 
-            return View(questState);
+            return PartialView(questState);
         }
 
         public ActionResult QuestStateSend(QuestState input)
@@ -96,7 +101,7 @@ namespace tfgame.Controllers
             QuestWriterProcedures.SaveQuestState(input);
 
             TempData["Result"] = "Save succeeded.";
-            return RedirectToAction("Play", "PvP");
+            return RedirectToAction("Index", "QuestWriter");
         }
 
     }

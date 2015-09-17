@@ -17,6 +17,7 @@ namespace tfgame.Procedures
             IQuestRepository repo = new EFQuestRepository();
 
             QuestStart questStart = repo.QuestStarts.FirstOrDefault(q => q.Id == input.Id);
+            QuestState questState = repo.QuestStates.FirstOrDefault(q => q.QuestId == input.Id);
 
             bool newStart = false;
 
@@ -40,9 +41,9 @@ namespace tfgame.Procedures
             repo.SaveQuestStart(questStart);
 
             // save an additional quest state to start this off
-            if (newStart == true)
+            if (newStart == true || questState == null)
             {
-                QuestState questState = new QuestState
+                questState = new QuestState
                 {
                     QuestId = questStart.Id,
                     ParentQuestStateId = -1,

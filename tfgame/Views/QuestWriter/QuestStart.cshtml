@@ -3,16 +3,6 @@
 
 
 
-<h4>Other Quests:</h4>
-@{
-    foreach (tfgame.dbModels.Models.QuestStart q in ViewBag.OtherQuests)
-    {
-        <p>@Html.ActionLink(q.Name, "QuestStart", "QuestWriter", new { Id = q.Id }, null)</p>
-    }
-}
-
-<br />
-
 @using (Html.BeginForm("QuestStartSend", "QuestWriter", FormMethod.Post))
 {
 
@@ -78,7 +68,10 @@
 
     if (Model.Id > 0 && ViewBag.firstState != null)
     {
-        <p>@Html.ActionLink("GO TO STARTING STATE", "QuestState", "QuestWriter", new { Id = ViewBag.firstState.Id, QuestId = Model.Id, ParentStateId = -1 }, null)</p>
+        @*<p>@Html.ActionLink("GO TO STARTING STATE", "QuestState", "QuestWriter", new { Id = ViewBag.firstState.Id, QuestId = Model.Id, ParentStateId = -1 }, null)</p>*@
+
+        <p>@Ajax.ActionLink("GO TO STARTING STATE", "QuestState", "QuestWriter", new { Id = ViewBag.firstState.Id, QuestId = Model.Id, ParentStateId = -1 }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
+
     }
     else
     {

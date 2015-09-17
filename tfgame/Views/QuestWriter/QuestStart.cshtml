@@ -42,9 +42,9 @@
     <br /><br />
 
     <label>Maximum Start Turn:</label>
-        @Html.TextBoxFor(m => m.MaxStartTurn)
+    @Html.TextBoxFor(m => m.MaxStartTurn)
 
-        <br /><br />
+    <br /><br />
 
         <label>Minimum Start Level:</label>
         @Html.TextBoxFor(m => m.MinStartLevel)
@@ -78,14 +78,15 @@
 
     if (Model.Id > 0 && ViewBag.firstState != null)
     {
-        <p>@Html.ActionLink("STARTING STATE EXISTS", "QuestState", "QuestWriter", new { Id = ViewBag.firstState.Id, QuestId = Model.Id, ParentStateId = -1 }, null)</p>
-    } else
+        <p>@Html.ActionLink("GO TO STARTING STATE", "QuestState", "QuestWriter", new { Id = ViewBag.firstState.Id, QuestId = Model.Id, ParentStateId = -1 }, null)</p>
+    }
+    else
     {
         <p class="bad">No starting state created yet</p>
     }
 
 
-        <br /><br />
+    <br /><br />
 
 
         @Html.HiddenFor(m => m.Id)
@@ -93,16 +94,11 @@
         <br />
         <input type="submit" class="btn btn-chat" value="Send" />
 
-        }
+}
 
 <br /><br />
 
-@{
-    if (Model.Id > 0)
-    {
-        <p>@Html.ActionLink("Add State", "QuestState", "QuestWriter", new { Id = -1, QuestId = Model.Id, ParentStateId = -1 }, null)</p>
-    }
-}
+
 
 
 

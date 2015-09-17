@@ -18,6 +18,8 @@
 
 @using (Html.BeginForm("QuestStateSend", "QuestWriter", FormMethod.Post))
 {
+    @Html.HiddenFor(m => m.Id)
+    @Html.HiddenFor(m => m.QuestId)
 
     <label>Text:</label>
     @Html.TextBoxFor(m => m.Text)
@@ -49,6 +51,13 @@
     foreach (QuestState q in ViewBag.childQuestStates)
     {
         <p>@Html.ActionLink(q.Id + ":  " + q.QuestStateName, "QuestState", "QuestWriter", new { Id = -1, QuestId = Model.QuestId, ParentStateId = Model.Id }, null)</p>
+    }
+}
+
+@{
+    if (Model.Id > 0)
+    {
+        <p>@Html.ActionLink("Add Child QuestState", "QuestState", "QuestWriter", new { Id = -1, QuestId = Model.QuestId, ParentStateId = Model.Id}, null)</p>
     }
 }
 

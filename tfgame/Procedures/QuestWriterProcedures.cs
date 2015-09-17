@@ -18,9 +18,12 @@ namespace tfgame.Procedures
 
             QuestStart questStart = repo.QuestStarts.FirstOrDefault(q => q.Id == input.Id);
 
+            bool newStart = false;
+
             if (questStart == null)
             {
                 questStart = new QuestStart();
+                newStart = true;
             }
             questStart.dbName = input.dbName;
             questStart.IsLive = false;
@@ -35,6 +38,23 @@ namespace tfgame.Procedures
             questStart.StartState = input.StartState;
 
             repo.SaveQuestStart(questStart);
+
+            // save an additional quest state to start this off
+            if (newStart == true)
+            {
+                QuestState questState = new QuestState
+                {
+                    QuestId = questStart.Id,
+                    ParentQuestStateId = -1,
+                    QuestStateName = "[ STARTING QUEST STATE ]",
+                };
+                repo.SaveQuestState(questState);
+
+                questStart.StartState = questState.Id;
+                repo.SaveQuestStart(questStart);
+            }
+
+           
 
             return questStart.Id;
         }

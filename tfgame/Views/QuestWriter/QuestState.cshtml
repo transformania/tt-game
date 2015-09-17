@@ -1,0 +1,60 @@
+﻿@model tfgame.dbModels.Models.QuestState
+
+@using tfgame.Statics
+@using tfgame.dbModels.Models
+
+
+
+<h4>Parent Quest States:</h4>
+
+@{
+    if (ViewBag.parentQuestState != null)
+    {
+        <p>@Html.ActionLink("PARENT", "QuestState", "QuestWriter", new { Id = -1, QuestId = Model.QuestId, ParentStateId = Model.Id }, null)</p>
+    }
+}
+
+<hr />
+
+@using (Html.BeginForm("QuestStateSend", "QuestWriter", FormMethod.Post))
+{
+
+    <label>Text:</label>
+    @Html.TextBoxFor(m => m.Text)
+
+    <br /><br />
+
+    <label>Choice Text:</label>
+    @Html.TextBoxFor(m => m.ChoiceText)
+
+    <br /><br />
+
+    <label>Quest state name (this is only used in the quest editor to help improve the readability of the quest flow):</label>
+    @Html.TextBoxFor(m => m.QuestStateName)
+
+    <br /><br />
+
+    @*<label>Choice Text:</label>
+    @Html.TextBoxFor(m => m.)
+
+    <br /><br />*@
+
+    <input type="submit" class="btn btn-chat" value="Send" />
+
+}
+
+<h4>Children Quest States:</h4>
+
+@{
+    foreach (QuestState q in ViewBag.childQuestStates)
+    {
+        <p>@Html.ActionLink(q.Id + ":  " + q.QuestStateName, "QuestState", "QuestWriter", new { Id = -1, QuestId = Model.QuestId, ParentStateId = Model.Id }, null)</p>
+    }
+}
+
+
+<style>
+    input, textarea {
+        width: 100%;
+    }
+</style>

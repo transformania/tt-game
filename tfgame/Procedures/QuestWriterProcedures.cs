@@ -39,5 +39,29 @@ namespace tfgame.Procedures
             return questStart.Id;
         }
 
+        public static int SaveQuestState(QuestState input)
+        {
+            IQuestRepository repo = new EFQuestRepository();
+
+            QuestState questState = repo.QuestStates.FirstOrDefault(q => q.Id == input.Id);
+
+            if (questState == null)
+            {
+                questState = new QuestState();
+            }
+
+            questState.Id = input.Id;
+            questState.ChoiceText = input.ChoiceText;
+            questState.ParentQuestStateId = input.ParentQuestStateId;
+            questState.QuestEndId = input.QuestEndId;
+            questState.QuestStateName = input.QuestStateName;
+            questState.Text = input.Text;
+            questState.QuestId = input.QuestId;
+
+            repo.SaveQuestState(questState);
+
+            return -1;
+        }
+
     }
 }

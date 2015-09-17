@@ -44,6 +44,8 @@ namespace tfgame.Controllers
             IEnumerable<QuestStart> allStarts = repo.QuestStarts;
             ViewBag.OtherQuests = allStarts;
 
+            QuestState firstState = repo.QuestStates.FirstOrDefault(f => f.Id == questStart.StartState);
+            ViewBag.firstState = firstState;
 
             return View(questStart);
         }
@@ -52,6 +54,46 @@ namespace tfgame.Controllers
         {
 
             QuestWriterProcedures.SaveQuestStart(input);
+
+            TempData["Result"] = "Save succeeded.";
+            return RedirectToAction("Play", "PvP");
+        }
+
+        public ActionResult QuestState(int Id, int QuestId, int ParentStateId)
+        {
+            IQuestRepository repo = new EFQuestRepository();
+
+            QuestState questState = repo.QuestStates.FirstOrDefault(q => q.Id == Id);
+
+            if (questState == null)
+            {
+                questState = new QuestState
+                {
+                    ChoiceText = "[ CHOICE TEXT ]",
+                    QuestEndId = -1,
+                    ParentQuestStateId = ParentStateId,
+                    Text = "",
+                    QuestId = QuestId,
+                    QuestStateName = "[ state name ]",
+                };
+            } else
+            {
+
+            }
+
+            QuestState parentQuestState = repo.QuestStates.FirstOrDefault(q => q.QuestId == ParentStateId);
+            ViewBag.parentQuestState = parentQuestState;
+
+            IEnumerable<QuestState> childQuestStates = repo.QuestStates.Where(q => q.ParentQuestStateId == QuestId);
+            ViewBag.childQuestStates = childQuestStates;
+
+            return View(questState);
+        }
+
+        public ActionResult QuestStateSend(QuestState input)
+        {
+
+            QuestWriterProcedures.SaveQuestState(input);
 
             TempData["Result"] = "Save succeeded.";
             return RedirectToAction("Play", "PvP");

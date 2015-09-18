@@ -20,7 +20,7 @@
 
 <hr />
 
-@using (Html.BeginForm("QuestStateSend", "QuestWriter", FormMethod.Post))
+@using (Ajax.BeginForm("QuestStateSend", "QuestWriter", new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" }))
 {
 
     @Html.HiddenFor(m => m.QuestState.Id)

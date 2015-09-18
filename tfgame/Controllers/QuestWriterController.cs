@@ -61,8 +61,7 @@ namespace tfgame.Controllers
 
             QuestWriterProcedures.SaveQuestStart(input);
 
-            TempData["Result"] = "Save succeeded.";
-            return RedirectToAction("Index", "QuestWriter");
+            return RedirectToAction("QuestStart", "QuestWriter", new { input.Id });
         }
 
         public ActionResult QuestState(int Id, int QuestId, int ParentStateId)
@@ -100,8 +99,7 @@ namespace tfgame.Controllers
 
             QuestWriterProcedures.SaveQuestState(input.QuestState);
 
-            TempData["Result"] = "Save succeeded.";
-            return RedirectToAction("Index", "QuestWriter");
+            return RedirectToAction("QuestStart", "QuestWriter", new { Id = input.QuestState.Id, QuestId = input.QuestState.QuestId, ParentStateId = input.QuestState.ParentQuestStateId });
         }
 
     }

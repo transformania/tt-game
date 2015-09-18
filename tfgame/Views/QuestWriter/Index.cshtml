@@ -54,12 +54,19 @@
 
 <script>
     function success() {
-        $("#loading").html("Load success!");
+        $("#loading").show();
+        var date = new Date();
+        var timestamp = date.toString();
+        $("#loading").html("Load success!  " + timestamp);
         $("#loading").addClass("good");
         $("#loading").removeClass("bad");
+
+        setTimeout(function () { $("#loading").hide(); }, 3500);
+
     }
 
     function fail() {
+        $("#loading").show();
         $("#loading").html("INTERNAL SERVER ERROR");
 
         $("#loading").addClass("bad");
@@ -68,9 +75,10 @@
     }
 
     function waiting() {
+        $("#loading").show();
         $("#loading").removeClass("bad");
         $("#loading").removeClass("good");
-        $("#loading").html("loading...");
+        $("#loading").html("processing...");
     }
 
 </script>

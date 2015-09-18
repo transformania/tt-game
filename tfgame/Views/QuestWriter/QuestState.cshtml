@@ -27,7 +27,7 @@
     @Html.HiddenFor(m => m.QuestState.QuestId)
     @Html.HiddenFor(m => m.QuestState.ParentQuestStateId)
 
-    <label>Text (the text the player sees when having first entered this state):</label>
+    <label>Text (the text the player sees when having first entered this state):</label>    <br />
     @Html.TextAreaFor(m => m.QuestState.Text)
 
     <br /><br />
@@ -61,10 +61,3 @@
         <p>@Ajax.ActionLink("--Add Child QuestState--", "QuestState", "QuestWriter", new { Id = -1, QuestId = Model.QuestState.QuestId, ParentStateId = Model.QuestState.Id }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
     }
 }
-
-
-<style>
-    input, textarea {
-        width: 100%;
-    }
-</style>

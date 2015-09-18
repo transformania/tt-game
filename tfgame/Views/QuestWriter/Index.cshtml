@@ -38,18 +38,13 @@
 
     foreach (tfgame.dbModels.Models.QuestStart q in Model)
     {
-        @*<p>@Html.ActionLink(q.Name, "QuestStart", "QuestWriter", new { Id = q.Id }, null)</p>*@
-
         <p> @Ajax.ActionLink(q.Name, "QuestStart", "QuestWriter", new { Id = q.Id }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
-
     }
 
 }
 
-<h4>New Quest:</h4>
-
 <p>
-    @Ajax.ActionLink("New Quest", "QuestStart", "QuestWriter", new { Id = -1 }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })
+    @Ajax.ActionLink("-- New Quest --", "QuestStart", "QuestWriter", new { Id = -1 }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })
 </p>
 
 <hr />
@@ -86,4 +81,14 @@
         text-align: center;
         border: 1px solid darkred;
     }
+
+    input {
+        width: 100%;
+    }
+
+    textarea {
+        height: 300px;
+        width: 100%;
+    }
+
 </style>

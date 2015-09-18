@@ -79,6 +79,12 @@ namespace tfgame.Procedures
             questState.Text = input.Text;
             questState.QuestId = input.QuestId;
 
+            // always set this to something, even if it's just empty string
+            if (questState.QuestStateName == null)
+            {
+                questState.QuestStateName = "-- QUEST STATE NOT NAMED --";
+            }
+
             repo.SaveQuestState(questState);
 
             return -1;

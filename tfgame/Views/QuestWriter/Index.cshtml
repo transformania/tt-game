@@ -28,7 +28,9 @@
 </div>
 
 <br />
-<div id="loading" class="good"></div>
+<div class="loadNotice">
+    <div id="loading" class="good"></div>
+</div>
 <br />
 
 @{
@@ -53,7 +55,7 @@
 <hr />
 
 
-<div id="swapMe"></div>
+<div id="swapMe" ></div>
 
 <script>
     function success() {
@@ -77,3 +79,11 @@
     }
 
 </script>
+
+<style>
+    .loadNotice {
+        background-color: #ffd76a;
+        text-align: center;
+        border: 1px solid darkred;
+    }
+</style>

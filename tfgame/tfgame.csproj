@@ -498,6 +498,7 @@
     <Compile Include="ViewModels\PlayerSearchViewModel.cs" />
     <Compile Include="ViewModels\PlayPageViewModel.cs" />
     <Compile Include="ViewModels\PublicBroadcastViewModel.cs" />
+    <Compile Include="ViewModels\Quest\QuestStateFormViewModel.cs" />
     <Compile Include="ViewModels\RestockList.cs" />
     <Compile Include="ViewModels\SelectListItem.cs" />
     <Compile Include="ViewModels\ServerBalance.cs" />

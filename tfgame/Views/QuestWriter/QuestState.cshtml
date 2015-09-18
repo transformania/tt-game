@@ -1,4 +1,4 @@
-﻿@model tfgame.dbModels.Models.QuestState
+﻿@model tfgame.ViewModels.Quest.QuestStateFormViewModel
 
 @using tfgame.Statics
 @using tfgame.dbModels.Models
@@ -8,9 +8,13 @@
 <h4>Parent Quest State:</h4>
 
 @{
-    if (ViewBag.parentQuestState != null)
+    if (Model.ParentQuestState != null)
     {
-        <p>@Html.ActionLink("PARENT", "QuestState", "QuestWriter", new { Id = -1, QuestId = Model.QuestId, ParentStateId = Model.Id }, null)</p>
+      
+        <p>@Ajax.ActionLink("[" + Model.ParentQuestState.QuestStateName + "]", "QuestState", "QuestWriter", new { Id = Model.ParentQuestState.Id, QuestId = Model.QuestState.Id, ParentStateId = -1 }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
+    } else
+    {
+        <span class="bad">No parent quest state found.</span>
     }
 }
 
@@ -18,46 +22,43 @@
 
 @using (Html.BeginForm("QuestStateSend", "QuestWriter", FormMethod.Post))
 {
-    @Html.HiddenFor(m => m.Id)
-    @Html.HiddenFor(m => m.QuestId)
 
-    <label>Text:</label>
-    @Html.TextBoxFor(m => m.Text)
+    @Html.HiddenFor(m => m.QuestState.Id)
+    @Html.HiddenFor(m => m.QuestState.QuestId)
+    @Html.HiddenFor(m => m.QuestState.ParentQuestStateId)
+
+    <label>Text (the text the player sees when having first entered this state):</label>
+    @Html.TextAreaFor(m => m.QuestState.Text)
 
     <br /><br />
 
-    <label>Choice Text:</label>
-    @Html.TextBoxFor(m => m.ChoiceText)
+    <label>Choice Text (the text seen when a player has the opportunity to enter this state):</label>
+    @Html.TextBoxFor(m => m.QuestState.ChoiceText)
 
     <br /><br />
 
     <label>Quest state name (this is only used in the quest editor to help improve the readability of the quest flow):</label>
-    @Html.TextBoxFor(m => m.QuestStateName)
+    @Html.TextBoxFor(m => m.QuestState.QuestStateName)
 
     <br /><br />
-
-    @*<label>Choice Text:</label>
-    @Html.TextBoxFor(m => m.)
-
-    <br /><br />*@
 
     <input type="submit" class="btn btn-chat" value="Send" />
 
 }
 
-<h4>Children Quest States:</h4>
+<h4>Children Quest States (@Model.ChildQuestStates.Count()):</h4>
 
 @{
-    foreach (QuestState q in ViewBag.childQuestStates)
+    foreach (QuestState q in Model.ChildQuestStates)
     {
-        <p>@Html.ActionLink(q.Id + ":  " + q.QuestStateName, "QuestState", "QuestWriter", new { Id = -1, QuestId = Model.QuestId, ParentStateId = Model.Id }, null)</p>
+        <p>@Ajax.ActionLink("[" + q.QuestStateName + "]", "QuestState", "QuestWriter", new { Id = q.Id, QuestId = Model.QuestState.QuestId, ParentStateId = Model.QuestState.Id }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
     }
 }
 
 @{
-    if (Model.Id > 0)
+    if (Model.QuestState.Id > 0)
     {
-        <p>@Html.ActionLink("Add Child QuestState", "QuestState", "QuestWriter", new { Id = -1, QuestId = Model.QuestId, ParentStateId = Model.Id}, null)</p>
+        <p>@Ajax.ActionLink("--Add Child QuestState--", "QuestState", "QuestWriter", new { Id = -1, QuestId = Model.QuestState.QuestId, ParentStateId = Model.QuestState.Id }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
     }
 }
 

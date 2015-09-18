@@ -8,6 +8,7 @@ using tfgame.dbModels.Concrete;
 using tfgame.dbModels.Models;
 using tfgame.Procedures;
 using tfgame.Statics;
+using tfgame.ViewModels.Quest;
 
 namespace tfgame.Controllers
 {
@@ -86,19 +87,18 @@ namespace tfgame.Controllers
 
             }
 
-            QuestState parentQuestState = repo.QuestStates.FirstOrDefault(q => q.QuestId == ParentStateId);
-            ViewBag.parentQuestState = parentQuestState;
+            QuestStateFormViewModel output = new QuestStateFormViewModel();
+            output.QuestState = questState;
+            output.ParentQuestState = repo.QuestStates.FirstOrDefault(q => q.Id == questState.ParentQuestStateId);
+            output.ChildQuestStates = repo.QuestStates.Where(q => q.ParentQuestStateId == questState.Id);
 
-            IEnumerable<QuestState> childQuestStates = repo.QuestStates.Where(q => q.ParentQuestStateId == QuestId);
-            ViewBag.childQuestStates = childQuestStates;
-
-            return PartialView(questState);
+            return PartialView(output);
         }
 
-        public ActionResult QuestStateSend(QuestState input)
+        public ActionResult QuestStateSend(QuestStateFormViewModel input)
         {
 
-            QuestWriterProcedures.SaveQuestState(input);
+            QuestWriterProcedures.SaveQuestState(input.QuestState);
 
             TempData["Result"] = "Save succeeded.";
             return RedirectToAction("Index", "QuestWriter");

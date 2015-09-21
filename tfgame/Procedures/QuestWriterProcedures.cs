@@ -114,5 +114,28 @@ namespace tfgame.Procedures
             return;
         }
 
+        public static void SaveQuestEnd(QuestEnd input, QuestState state)
+        {
+            IQuestRepository repo = new EFQuestRepository();
+
+            QuestEnd questEnd = repo.QuestEnds.FirstOrDefault(q => q.Id == input.Id);
+
+            if (questEnd == null)
+            {
+                questEnd = new QuestEnd();
+            }
+
+            questEnd.QuestId = input.QuestId;
+            questEnd.QuestEndName = input.QuestEndName;
+            questEnd.RewardAmount = input.RewardAmount;
+            questEnd.RewardType = input.RewardType;
+            questEnd.EndType = input.EndType;
+            questEnd.QuestStateId = input.QuestStateId;
+
+            repo.SaveQuestEnd(questEnd);
+
+            return;
+        }
+
     }
 }

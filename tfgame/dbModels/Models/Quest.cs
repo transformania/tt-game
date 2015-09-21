@@ -90,6 +90,8 @@ namespace tfgame.dbModels.Models
         public int EndType { get; set; }
         public string RewardType { get; set; }
         public string RewardAmount { get; set; }
+        public string QuestEndName { get; set; }
+        public int QuestId { get; set; }
 
         //[QuestEnd]
         //A possible ending for a quest, whether good or bad.If the ending is good then the reward can be one of several items.

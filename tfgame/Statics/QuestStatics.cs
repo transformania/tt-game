@@ -33,6 +33,16 @@ namespace tfgame.Statics
             Variable = 9
         }
 
+        public enum RewardType
+        {
+            Experience = 0,
+            Item = 1,
+            Effect = 2,
+            
+        }
+
+
+
 
     }
 }

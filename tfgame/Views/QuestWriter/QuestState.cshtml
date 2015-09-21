@@ -49,6 +49,20 @@
         <p>@Ajax.ActionLink(r.QuestStateRequirementName, "QuestStateRequirement", "QuestWriter", new { Id = r.Id, QuestStateId = r.QuestStateId.Id, QuestId = Model.QuestState.QuestId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
     }
 
+    <p>@Ajax.ActionLink("--New Quest State Requirement--", "QuestStateRequirement", "QuestWriter", new { Id = -1, QuestStateId = Model.QuestState.Id, QuestId = Model.QuestState.QuestId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
+
+    <h4>Quest End</h4>
+
+    if (Model.QuestState.QuestEndId > 0)
+    {
+
+    }
+    else
+    {
+
+    }
+
+
     <input type="submit" class="btn btn-chat" value="Send" />
 
 }

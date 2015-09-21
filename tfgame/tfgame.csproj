@@ -2441,6 +2441,8 @@
     <Content Include="Views\QuestWriter\Index.cshtml" />
     <Content Include="Views\QuestWriter\QuestStart.cshtml" />
     <Content Include="Views\QuestWriter\QuestState.cshtml" />
+    <Content Include="Views\QuestWriter\QuestStateRequirement.cshtml" />
+    <Content Include="Views\QuestWriter\QuestEnd.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -143,6 +143,47 @@ namespace tfgame.Controllers
             return RedirectToAction("QuestStateRequirement", "QuestWriter", new { Id = input.QuestStateRequirement.Id, QuestStateId = state.Id, QuestId = input.QuestStateRequirement.QuestId });
         }
 
+        public ActionResult QuestEnd(int Id, int QuestStateId, int QuestId)
+        {
+            IQuestRepository repo = new EFQuestRepository();
+
+            QuestEnd questEnd = repo.QuestEnds.FirstOrDefault(q => q.Id == Id);
+            QuestState state = repo.QuestStates.FirstOrDefault(q => q.Id == QuestStateId);
+
+            if (questEnd == null)
+            {
+                questEnd = new QuestEnd
+                {
+                    QuestEndName = "[NAME NOT SET]",
+                    QuestId = QuestId,
+                    QuestStateId = state,
+                };
+
+
+            }
+            else
+            {
+
+            }
+
+            QuestEndFormViewModel output = new QuestEndFormViewModel();
+            output.QuestEnd = questEnd;
+            output.ParentQuestState = repo.QuestStates.FirstOrDefault(q => q.Id == QuestStateId);
+
+            return PartialView(output);
+        }
+
+        public ActionResult QuestEndtSend(QuestEndFormViewModel input)
+        {
+
+            IQuestRepository repo = new EFQuestRepository();
+            QuestState state = repo.QuestStates.FirstOrDefault(q => q.Id == input.ParentQuestState.Id);
+
+            QuestWriterProcedures.SaveQuestEnd(input.QuestEnd, state);
+
+            return RedirectToAction("QuestStateRequirement", "QuestWriter", new { Id = input.QuestEnd.Id, QuestStateId = state.Id, QuestId = input.QuestEnd.QuestId });
+        }
+
 
     }
 }

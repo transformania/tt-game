@@ -102,5 +102,47 @@ namespace tfgame.Controllers
             return RedirectToAction("QuestStart", "QuestWriter", new { Id = input.QuestState.Id, QuestId = input.QuestState.QuestId, ParentStateId = input.QuestState.ParentQuestStateId });
         }
 
+        public ActionResult QuestStateRequirement(int Id, int QuestStateId, int QuestId)
+        {
+            IQuestRepository repo = new EFQuestRepository();
+
+            QuestStateRequirement questStateRequirement = repo.QuestStateRequirements.FirstOrDefault(q => q.Id == Id);
+            QuestState state = repo.QuestStates.FirstOrDefault(q => q.Id == QuestStateId);
+
+            if (questStateRequirement == null)
+            {
+                questStateRequirement = new QuestStateRequirement
+                {
+                   QuestId = QuestId,
+                   QuestStateRequirementName = "",
+                };
+                
+
+                questStateRequirement.QuestStateId = state;
+            }
+            else
+            {
+
+            }
+
+            QuestStateRequirementFormViewModel output = new QuestStateRequirementFormViewModel();
+            output.QuestStateRequirement = questStateRequirement;
+            output.ParentQuestState = state;
+
+            return PartialView(output);
+        }
+
+        public ActionResult QuestStateRequirementSend(QuestStateRequirementFormViewModel input)
+        {
+
+            IQuestRepository repo = new EFQuestRepository();
+            QuestState state = repo.QuestStates.FirstOrDefault(q => q.Id == input.ParentQuestState.Id);
+
+            QuestWriterProcedures.SaveQuestStateRequirement(input.QuestStateRequirement, state);
+
+            return RedirectToAction("QuestStateRequirement", "QuestWriter", new { Id = input.QuestStateRequirement.Id, QuestStateId = state.Id, QuestId = input.QuestStateRequirement.QuestId });
+        }
+
+
     }
 }

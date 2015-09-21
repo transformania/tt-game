@@ -12,4 +12,10 @@ namespace tfgame.ViewModels.Quest
         public QuestState ParentQuestState { get; set; }
         public IEnumerable<QuestState> ChildQuestStates { get; set; }
     }
+
+    public class QuestStateRequirementFormViewModel
+    {
+        public QuestStateRequirement QuestStateRequirement { get; set; }
+        public QuestState ParentQuestState { get; set; }
+    }
 }

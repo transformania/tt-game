@@ -42,6 +42,13 @@
 
     <br /><br />
 
+
+    <h4>Quest State Requirements:  (@Model.QuestState.QuestStateRequirements.Count())</h4>
+    foreach (QuestStateRequirement r in Model.QuestState.QuestStateRequirements)
+    {
+        <p>@Ajax.ActionLink(r.QuestStateRequirementName, "QuestStateRequirement", "QuestWriter", new { Id = r.Id, QuestStateId = r.QuestStateId.Id, QuestId = Model.QuestState.QuestId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
+    }
+
     <input type="submit" class="btn btn-chat" value="Send" />
 
 }

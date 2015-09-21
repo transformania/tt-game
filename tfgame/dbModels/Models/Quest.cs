@@ -40,7 +40,7 @@ namespace tfgame.dbModels.Models
         public string QuestStateName { get; set; }
         public int QuestId { get; set; }
         public string Text { get; set; }
-        public List<QuestStateRequirement> QuestStateRequirements { get; set; }
+        public virtual List<QuestStateRequirement> QuestStateRequirements { get; set; }
         //public List<QuestStateRollRequirement> QuestStateRollRequirements { get; set; }
         public int SuccessQuestStateId { get; set; }
         public string ChoiceText { get; set; }
@@ -65,11 +65,13 @@ namespace tfgame.dbModels.Models
     public class QuestStateRequirement
     {
         public int Id { get; set; }
-        public QuestState QuestStateId { get; set; }
+        public virtual QuestState QuestStateId { get; set; }
         public int RequirementType { get; set; }
         public string VariabledbName { get; set; }
         public int Operator { get; set; }
         public string RequirementValue { get; set; }
+        public int QuestId { get; set; }
+        public string QuestStateRequirementName { get; set; }
 
         //    [QuestStateRequirement]
         //    Keeps track of all the requirements in order for a player to see an option to take after reading a quest state’s text.

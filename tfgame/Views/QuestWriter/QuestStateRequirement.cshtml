@@ -1,0 +1,43 @@
+﻿@model tfgame.ViewModels.Quest.QuestStateRequirementFormViewModel
+
+@using tfgame.Statics
+@using tfgame.dbModels.Models
+
+
+
+<h4>Parent Quest State:</h4>
+
+@{
+    if (Model.ParentQuestState != null)
+    {
+
+        <p>@Ajax.ActionLink("[" + Model.ParentQuestState.QuestStateName + "]", "QuestState", "QuestWriter", new { Id = Model.ParentQuestState.Id, QuestId = Model.QuestStateRequirement.QuestId, ParentStateId = -1 }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
+    }
+}
+
+<hr />
+
+@using (Ajax.BeginForm("QuestStateRequirementSend", "QuestWriter", new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" }))
+{
+
+    @Html.HiddenFor(m => m.ParentQuestState.Id)
+
+    @Html.HiddenFor(m => m.QuestStateRequirement.Id)
+    @Html.HiddenFor(m => m.QuestStateRequirement.QuestId)
+
+    <label>Name (used for interla purposes):</label>    <br /><br />
+        @Html.TextBoxFor(m => m.QuestStateRequirement.QuestStateRequirementName)
+
+    <label>Requirement Type:</label>    <br /><br />
+    @Html.TextBoxFor(m => m.QuestStateRequirement.RequirementType)
+
+    <label>Operator:</label>    <br /><br />
+    @Html.TextBoxFor(m => m.QuestStateRequirement.Operator)
+
+    <label>Requirement Value:</label>    <br /><br />
+    @Html.TextBoxFor(m => m.QuestStateRequirement.RequirementValue)
+
+    <input type="submit" class="btn btn-chat" value="Send" />
+
+}
+

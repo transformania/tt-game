@@ -90,5 +90,29 @@ namespace tfgame.Procedures
             return -1;
         }
 
+        public static void SaveQuestStateRequirement(QuestStateRequirement input, QuestState state)
+        {
+            IQuestRepository repo = new EFQuestRepository();
+
+            QuestStateRequirement questStateRequirement = repo.QuestStateRequirements.FirstOrDefault(q => q.Id == input.Id);
+
+            if (questStateRequirement == null)
+            {
+                questStateRequirement = new QuestStateRequirement();
+            }
+
+            questStateRequirement.Id = input.Id;
+            questStateRequirement.Operator = input.Operator;
+            questStateRequirement.RequirementType = input.RequirementType;
+            questStateRequirement.RequirementValue = input.RequirementValue;
+            questStateRequirement.VariabledbName = input.VariabledbName;
+            questStateRequirement.QuestStateId = input.QuestStateId;
+            questStateRequirement.QuestStateRequirementName = input.QuestStateRequirementName;
+
+            repo.SaveQuestStateRequirement(questStateRequirement);
+
+            return;
+        }
+
     }
 }

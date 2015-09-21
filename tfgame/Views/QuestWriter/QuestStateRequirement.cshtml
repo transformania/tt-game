@@ -28,14 +28,48 @@
     <label>Name (used for interla purposes):</label>    <br /><br />
         @Html.TextBoxFor(m => m.QuestStateRequirement.QuestStateRequirementName)
 
-    <label>Requirement Type:</label>    <br /><br />
-    @Html.TextBoxFor(m => m.QuestStateRequirement.RequirementType)
+    <label>Requirement Type:</label>    <br />
+    @Html.DropDownListFor(m => m.QuestStateRequirement.RequirementType, new SelectList(
+                  new List<Object>{
+                      new { value = QuestStatics.RequirementType.Agility, text = "Agility"  },
+                      new { value = QuestStatics.RequirementType.Allure, text = "Allure"  },
+                      new { value = QuestStatics.RequirementType.Charisma, text = "Charisma",  },
+                      new { value = QuestStatics.RequirementType.Discipline, text = "Discipline",  },
+                      new { value = QuestStatics.RequirementType.Fortitude, text = "Fortitude",  },
+                      new { value = QuestStatics.RequirementType.Luck, text = "Luck",  },
+                      new { value = QuestStatics.RequirementType.Magicka, text = "Magicka",  },
+                      new { value = QuestStatics.RequirementType.Perception, text = "Perception",  },
+                      new { value = QuestStatics.RequirementType.Succour, text = "Succour",  },
+                      new { value = QuestStatics.RequirementType.Variable, text = "[Variable]",  },
+                    },
+                  "value",
+                  "text",
+                   2))
 
-    <label>Operator:</label>    <br /><br />
-    @Html.TextBoxFor(m => m.QuestStateRequirement.Operator)
+    <br /><br />
+
+    <label>Operator:</label>    <br />
+    @Html.DropDownListFor(m => m.QuestStateRequirement.Operator, new SelectList(
+                  new List<Object>{
+                      new { value = QuestStatics.Operator.Less_Than, text = "< (less than)"  },
+                      new { value = QuestStatics.Operator.Less_Than_Or_Equal, text = "<= (less than or equal to)"  },
+                      new { value = QuestStatics.Operator.Equal_To, text = "== (equal to)"  },
+                      new { value = QuestStatics.Operator.Greater_Than_Or_Equal, text = ">= (greater than or equal to)"  },
+                      new { value = QuestStatics.Operator.Greater_Than, text = "> (greater than)"  },
+                      new { value = QuestStatics.Operator.Not_Equal_To, text = "!= (not equal to)"  },
+
+                    },
+                  "value",
+                  "text",
+                   2))
+
+    <br /><br />
 
     <label>Requirement Value:</label>    <br /><br />
     @Html.TextBoxFor(m => m.QuestStateRequirement.RequirementValue)
+
+    <label>Variable used:</label>    <br /><br />
+        @Html.TextBoxFor(m => m.QuestStateRequirement.VariabledbName)
 
     <input type="submit" class="btn btn-chat" value="Send" />
 

@@ -78,6 +78,7 @@ namespace tfgame.Services
         DmAction,
         Action,
         DieRoll,
+        Notification,
     }
 
     public abstract class MessageProcessingTask

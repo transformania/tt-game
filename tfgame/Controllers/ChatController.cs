@@ -32,13 +32,10 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
-            var chatService = new ChatService();
-            var chatDescriptor = chatService.GetPlayerDescriptorFor(me.Player);
-
             var model = new ChatViewModel
             {
                 RoomName = roomName,
-                ChatUser = chatDescriptor.Item1,
+                ChatUser = me.Player.GetDescriptor().Item1,
                 ChatColor = me.Player.ChatColor,
             };
 

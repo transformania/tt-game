@@ -33,7 +33,8 @@
 
 	function renderImage(pic) {
 	    var image = '';
-	    if (ChatModule.config.imagesEnabled)
+
+	    if (ChatModule.config.imagesEnabled  && pic !== undefined)
 	        image = $('<img />').attr('src', pic);
 
 	    return image;
@@ -152,6 +153,10 @@
 
 	formatters['Action'] = function(model) {
         return renderActionText(model.Message + ' ', "me", model, true);
+	}
+
+	formatters['Notification'] = function (model) {
+	    return renderActionText(model.Message + ' ', "enterMsg", model, false);
 	}
 
     pub.formatMessage = function (model) {

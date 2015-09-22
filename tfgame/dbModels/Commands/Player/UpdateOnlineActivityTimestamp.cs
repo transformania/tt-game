@@ -3,7 +3,7 @@ using tfgame.Procedures;
 
 namespace tfgame.dbModels.Commands.Player
 {
-    public class MarkOnlineActivityTimestamp : Command
+    public class UpdateOnlineActivityTimestamp : Command
     {
         public Player_VM Player { get; set; }
         

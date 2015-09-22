@@ -2533,6 +2533,8 @@ namespace tfgame.Statics
 
     public static class ChatStatics
     {
+        public const int OnlineActivityCutoffMinutes = -2;
+
         public static readonly IDictionary<string, Tuple<string, string>> Staff = new Dictionary<string, Tuple<string, string>>
         {
             { "69", new Tuple<string, string>("Judoo (admin)", "/Images/PvP/portraits/Thumbnails/100/Judoo.jpg") },
@@ -2540,7 +2542,7 @@ namespace tfgame.Statics
             { "251", new Tuple<string, string>("Arrhae (dev)", string.Empty) }, // Arrhae wants to keep regular portrait for now, not admin/dev custom one
             { "12865", new Tuple<string, string>("Mezaron (dev)", "/Images/PvP/portraits/Thumbnails/100/mezaron_portrait.jpg") },
             { "14039", new Tuple<string, string>("Tempest (dev)", string.Empty) }, // no custom portrait yet
-            { "dd2decee-8375-4a56-8941-ab0f4f847dc4", new Tuple<string, string>("Wibble (dev)", string.Empty) },
+            //{ "dd2decee-8375-4a56-8941-ab0f4f847dc4", new Tuple<string, string>("Wibble (dev)", string.Empty) },
         };
 
         public static readonly IEnumerable<string> HideOnJoinChat = new List<string>

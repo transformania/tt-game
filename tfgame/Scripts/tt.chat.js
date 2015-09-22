@@ -43,7 +43,7 @@
 
     function onSendMessage() {
         if (cooldownActive === false) {
-            pub.chat.server.send($('#displayname').val(), $('#message').val());
+            pub.chat.server.send($('#message').val());
             $('#message').val('').focus();
         }
 

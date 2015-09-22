@@ -12,9 +12,9 @@ namespace tfgame.dbModels.Models
 
         public string MembershipId { get; private set; }
         public string Name { get; private set; }
-
-        public IEnumerable<string> InRooms { get { return connections.Select(x => x.Room).Distinct(); } }
         public bool IsDonator { get; private set; }
+
+        public IEnumerable<string> InRooms { get { return connections.Where(x => x.Room != null).Select(x => x.Room).Distinct(); } }
 
         public ChatUser(string membershipId, string name, bool isDonator = false)
         {

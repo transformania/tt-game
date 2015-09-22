@@ -292,7 +292,7 @@
     <Compile Include="dbModels\Abstract\ITFMessageRepository.cs" />
     <Compile Include="dbModels\Command.cs" />
     <Compile Include="dbModels\Commands\ChatLog\WriteLogToDatabase.cs" />
-    <Compile Include="dbModels\Commands\Player\MarkOnlineActivityTimestamp.cs" />
+    <Compile Include="dbModels\Commands\Player\UpdateOnlineActivityTimestamp.cs" />
     <Compile Include="dbModels\Concrete\EFAchievementBadgeRepository.cs" />
     <Compile Include="dbModels\Concrete\EFAchievementRepository.cs" />
     <Compile Include="dbModels\Concrete\EFAuthorArtistBioRepository.cs" />
@@ -439,7 +439,8 @@
     <Compile Include="Procedures\TFEnergyProcedures.cs" />
     <Compile Include="Procedures\WorldUpdateProcedures.cs" />
     <Compile Include="Services\ChatMessageProcessor.cs" />
-    <Compile Include="Services\ChatService.cs" />
+    <Compile Include="Services\ChatPersistenceService.cs" />
+    <Compile Include="Services\IChatPersistanceService.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Statics\AIStatics.cs" />
     <Compile Include="Statics\CovenantDictionary.cs" />

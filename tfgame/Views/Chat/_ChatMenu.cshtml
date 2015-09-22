@@ -6,13 +6,14 @@
         <li>
             @Html.ActionLink("Global", "Chat", "PvP", new { room = "global" }, null)
         </li>
-        <li>
-            @Html.ActionLink("RP Room 1", "Chat", "PvP", new { room = "rp1" }, null)
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">RP Rooms <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                <li>@Html.ActionLink("RP Room 1", "Chat", "PvP", new { room = "rp1" }, null)</li>
+                <li>@Html.ActionLink("RP Room 2", "Chat", "PvP", new { room = "rp2" }, null)</li>
+                <li>@Html.ActionLink("RP Room 3", "Chat", "PvP", new { room = "rp3" }, null)</li>
+            </ul>
         </li>
-        <li>
-            @Html.ActionLink("RP Room 2", "Chat", "PvP", new { room = "rp2" }, null)
-        </li>
-        <li>@Html.ActionLink("RP Room 3", "Chat", "PvP", new { room = "rp3" }, null)</li>
         <li>
             @Html.ActionLink("Create/Join Private Room", "PrivateChat", "PvP")
         </li>
@@ -21,6 +22,14 @@
         </li>
         <li>@Html.ActionLink("Commands", "ChatCommands", "PvP", null, new { target = "_blank" })</li>
         <li><a href="#" id="showIgnore">Ignore</a></li>
-        <li><a href="#" id="toggleImages" style="color: #734752 !important; font-weight:bold;">Toggle Images</a></li>
+        <li><a href="#" id="toggleImages" style="color: #734752 !important; font-weight: bold;">Toggle Images</a></li>
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Audio Settings <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                <li id="sounds_all"><a>All Sounds</a></li>
+                <li id="sounds_justme"><a>Some Sounds</a></li>
+                <li id="sounds_none"><a>No Sounds</a></li>
+            </ul>
+        </li>
     </ul>
 </div><!-- /.navbar-collapse -->

@@ -34,7 +34,7 @@
     @Html.DropDownListFor(m => m.QuestEnd.EndType, new SelectList(
                   new List<Object>{
                       new { value = (int)QuestStatics.QuestOutcomes.Completed, text = "PASS"  },
-                       new { value = (int)QuestStatics.QuestOutcomes.Completed, text = "FAIL"  },
+                       new { value = (int)QuestStatics.QuestOutcomes.Failed, text = "FAIL"  },
                     },
                   "value",
                   "text",

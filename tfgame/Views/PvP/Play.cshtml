@@ -237,7 +237,7 @@
                                         }
                                         if (p.Player.BotId == AIStatics.ValentineBotId)
                                         {
-                    @Html.ActionLink("Talk", "TalkToValentine", "NPC", null, new { @class = "attackLink" })
+                    @Html.ActionLink("Talk", "TalkToValentine", "NPC", new { question = "none" }, new { @class = "attackLink" })
                                         }
                                         if (p.Player.BotId == AIStatics.BartenderBotId)
                                         {

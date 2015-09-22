@@ -1049,9 +1049,6 @@ namespace tfgame.Controllers
                 return View("Play", "PvP");
             }
 
-            BossProcedures_Loremaster.SpawnLoremaster();
-
-
             return RedirectToAction("Index");
         }
 
@@ -1137,11 +1134,6 @@ namespace tfgame.Controllers
 
             IDbStaticSkillRepository skillRepo = new EFDbStaticSkillRepository();
             IEnumerable<DbStaticSkill> output = skillRepo.DbStaticSkills.ToList();
-            foreach (DbStaticSkill s in output)
-            {
-                s.LearnedAtLocation = "";
-                s.LearnedAtRegion = "";
-            }
             return Json(output, JsonRequestBehavior.AllowGet);
         }
 
@@ -2767,9 +2759,11 @@ namespace tfgame.Controllers
                 {
                     SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Valentine.BloodyCurseSpell);
                     SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Valentine.ValentinesPresenceSpell);
-                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Valentine.MaleVampSpell);
-                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Valentine.FemaleVampSpell);
                     SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Valentine.SwordSpell);
+                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Valentine.DayVampireFemaleSpell);
+                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Valentine.NightVampireFemaleSpell);
+                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Valentine.DayVampireMaleSpell);
+                    SkillProcedures.GiveSkillToPlayer(player.Id, BossProcedures_Valentine.NightVampireMaleSpell);
                 }
 
                 // if plague mother, give player her spells

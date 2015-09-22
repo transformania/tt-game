@@ -876,6 +876,19 @@ namespace tfgame.Controllers
                     ViewBag.Speech = "Unfortunately I do not have any information on Jewdewfae at this time.  Is there anything else I can assist you with?";
                 }
             }
+            else if (question == "lorekeeper")
+            {
+                Player lorekeeper = PlayerProcedures.GetPlayerFromBotId(AIStatics.LoremasterBotId);
+                if (lorekeeper != null)
+                {
+                    Location temp = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == lorekeeper.dbLocationName);
+                    ViewBag.Speech = "\"The last I have heard, " + lorekeeper.GetFullName() + " is at <b>" + temp.Name + "</b>.  Poor chap, how far he's fallen from his glory days.  Why don't you go and talk to him?  He'll be willing to teach you a spell or two or sell you some books if you're looking to increase your knowledge.";
+                }
+                else
+                {
+                    ViewBag.Speech = "Unfortunately I do not have any information on " + lorekeeper.GetFullName() + " at this time.  Is there anything else I can assist you with?";
+                }
+            }
             else if (question == "boss")
             {
                 PvPWorldStat stats = PvPWorldStatProcedures.GetWorldStats();
@@ -1338,7 +1351,7 @@ namespace tfgame.Controllers
         }
 
         [Authorize]
-        public ActionResult TalkToValentine()
+        public ActionResult TalkToValentine(string question)
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -1351,14 +1364,58 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
-            // assert player is in the same place as Candice
+            // assert player is not dueling
+            if (me.Mobility != "full")
+            {
+                TempData["Error"] = "You should conclude your current duel before talking to " + valentine.GetFullName() + ".";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            // assert player is in the same place as Valenti8ne
             if (me.dbLocationName != valentine.dbLocationName)
             {
                 TempData["Error"] = "You must be in the same location as " + valentine.GetFullName() + " in order to talk with him.";
                 return RedirectToAction("Play", "PvP");
             }
 
-            return View();
+            string responseText = "";
+
+            // assert that the question is valid depending on Valentine's stance
+            string stance = BossProcedures_Valentine.GetStance();
+            if (question != "none")
+            {
+                BossProcedures_Valentine.TalkToAndCastSpell(me, valentine);
+                List<PlayerLog> tftext = PlayerLogProcedures.GetAllPlayerLogs(me.Id).Reverse().ToList();
+                PlayerLog lastlog = tftext.FirstOrDefault(f => f.IsImportant == true);
+
+                if (lastlog != null)
+                {
+                    // if the log is too old, presumably the player already got transformed, so don't show that text again.  Yeah, this is so hacky...
+                    double secDiff = Math.Abs(Math.Floor(lastlog.Timestamp.Subtract(DateTime.UtcNow).TotalSeconds));
+                    if (secDiff < 3)
+                    {
+                        responseText = lastlog.Message;
+                    }
+                    else
+                    {
+                        responseText = valentine.GetFullName() + " ignores you.";
+                    }
+                }
+                else
+                {
+                    responseText = valentine.GetFullName() + " ignores you.";
+                }
+
+            }
+
+            ViewBag.stance = stance;
+
+            ViewBag.ErrorMessage = TempData["Error"];
+            ViewBag.SubErrorMessage = TempData["SubError"];
+
+            ViewBag.Result = responseText;
+
+            return View("TalkToValentine");
 
         }
     }

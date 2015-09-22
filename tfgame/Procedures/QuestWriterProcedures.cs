@@ -90,11 +90,12 @@ namespace tfgame.Procedures
             return -1;
         }
 
-        public static void SaveQuestStateRequirement(QuestStateRequirement input, QuestState state)
+        public static int SaveQuestStateRequirement(QuestStateRequirement input, QuestState state)
         {
             IQuestRepository repo = new EFQuestRepository();
 
             QuestStateRequirement questStateRequirement = repo.QuestStateRequirements.FirstOrDefault(q => q.Id == input.Id);
+            QuestState dbState = repo.QuestStates.FirstOrDefault(s => s.Id == state.Id);
 
             if (questStateRequirement == null)
             {
@@ -106,19 +107,20 @@ namespace tfgame.Procedures
             questStateRequirement.RequirementType = input.RequirementType;
             questStateRequirement.RequirementValue = input.RequirementValue;
             questStateRequirement.VariabledbName = input.VariabledbName;
-            questStateRequirement.QuestStateId = input.QuestStateId;
+            questStateRequirement.QuestStateId = dbState;
             questStateRequirement.QuestStateRequirementName = input.QuestStateRequirementName;
 
             repo.SaveQuestStateRequirement(questStateRequirement);
 
-            return;
+            return questStateRequirement.Id;
         }
 
-        public static void SaveQuestEnd(QuestEnd input, QuestState state)
+        public static int SaveQuestEnd(QuestEnd input, QuestState state)
         {
             IQuestRepository repo = new EFQuestRepository();
 
             QuestEnd questEnd = repo.QuestEnds.FirstOrDefault(q => q.Id == input.Id);
+            QuestState dbState = repo.QuestStates.FirstOrDefault(s => s.Id == state.Id);
 
             if (questEnd == null)
             {
@@ -130,11 +132,11 @@ namespace tfgame.Procedures
             questEnd.RewardAmount = input.RewardAmount;
             questEnd.RewardType = input.RewardType;
             questEnd.EndType = input.EndType;
-            questEnd.QuestStateId = input.QuestStateId;
+            questEnd.QuestStateId = dbState;
 
             repo.SaveQuestEnd(questEnd);
 
-            return;
+            return questEnd.Id;
         }
 
     }

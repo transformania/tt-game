@@ -21,6 +21,7 @@
 {
 
     @Html.HiddenFor(m => m.ParentQuestState.Id)
+    @Html.HiddenFor(m => m.QuestStateRequirement.QuestStateId.Id)
 
     @Html.HiddenFor(m => m.QuestStateRequirement.Id)
     @Html.HiddenFor(m => m.QuestStateRequirement.QuestId)
@@ -31,16 +32,16 @@
     <label>Requirement Type:</label>    <br />
     @Html.DropDownListFor(m => m.QuestStateRequirement.RequirementType, new SelectList(
                   new List<Object>{
-                      new { value = QuestStatics.RequirementType.Agility, text = "Agility"  },
-                      new { value = QuestStatics.RequirementType.Allure, text = "Allure"  },
-                      new { value = QuestStatics.RequirementType.Charisma, text = "Charisma",  },
-                      new { value = QuestStatics.RequirementType.Discipline, text = "Discipline",  },
-                      new { value = QuestStatics.RequirementType.Fortitude, text = "Fortitude",  },
-                      new { value = QuestStatics.RequirementType.Luck, text = "Luck",  },
-                      new { value = QuestStatics.RequirementType.Magicka, text = "Magicka",  },
-                      new { value = QuestStatics.RequirementType.Perception, text = "Perception",  },
-                      new { value = QuestStatics.RequirementType.Succour, text = "Succour",  },
-                      new { value = QuestStatics.RequirementType.Variable, text = "[Variable]",  },
+                      new { value = (int)QuestStatics.RequirementType.Agility, text = "Agility"  },
+                      new { value = (int)QuestStatics.RequirementType.Allure, text = "Allure"  },
+                      new { value = (int)QuestStatics.RequirementType.Charisma, text = "Charisma",  },
+                      new { value = (int)QuestStatics.RequirementType.Discipline, text = "Discipline",  },
+                      new { value = (int)QuestStatics.RequirementType.Fortitude, text = "Fortitude",  },
+                      new { value = (int)QuestStatics.RequirementType.Luck, text = "Luck",  },
+                      new { value = (int)QuestStatics.RequirementType.Magicka, text = "Magicka",  },
+                      new { value = (int)QuestStatics.RequirementType.Perception, text = "Perception",  },
+                      new { value = (int)QuestStatics.RequirementType.Succour, text = "Succour",  },
+                      new { value = (int)QuestStatics.RequirementType.Variable, text = "[Variable]",  },
                     },
                   "value",
                   "text",
@@ -51,12 +52,12 @@
     <label>Operator:</label>    <br />
     @Html.DropDownListFor(m => m.QuestStateRequirement.Operator, new SelectList(
                   new List<Object>{
-                      new { value = QuestStatics.Operator.Less_Than, text = "< (less than)"  },
-                      new { value = QuestStatics.Operator.Less_Than_Or_Equal, text = "<= (less than or equal to)"  },
-                      new { value = QuestStatics.Operator.Equal_To, text = "== (equal to)"  },
-                      new { value = QuestStatics.Operator.Greater_Than_Or_Equal, text = ">= (greater than or equal to)"  },
-                      new { value = QuestStatics.Operator.Greater_Than, text = "> (greater than)"  },
-                      new { value = QuestStatics.Operator.Not_Equal_To, text = "!= (not equal to)"  },
+                      new { value = (int)QuestStatics.Operator.Less_Than, text = "< (less than)"  },
+                      new { value = (int)QuestStatics.Operator.Less_Than_Or_Equal, text = "<= (less than or equal to)"  },
+                      new { value = (int)QuestStatics.Operator.Equal_To, text = "== (equal to)"  },
+                      new { value = (int)QuestStatics.Operator.Greater_Than_Or_Equal, text = ">= (greater than or equal to)"  },
+                      new { value = (int)QuestStatics.Operator.Greater_Than, text = "> (greater than)"  },
+                      new { value = (int)QuestStatics.Operator.Not_Equal_To, text = "!= (not equal to)"  },
 
                     },
                   "value",
@@ -69,7 +70,7 @@
     @Html.TextBoxFor(m => m.QuestStateRequirement.RequirementValue)
 
     <label>Variable used:</label>    <br /><br />
-        @Html.TextBoxFor(m => m.QuestStateRequirement.VariabledbName)
+    @Html.TextBoxFor(m => m.QuestStateRequirement.VariabledbName)
 
     <input type="submit" class="btn btn-chat" value="Send" />
 

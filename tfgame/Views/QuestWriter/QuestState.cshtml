@@ -10,9 +10,10 @@
 @{
     if (Model.ParentQuestState != null)
     {
-      
+
         <p>@Ajax.ActionLink("[" + Model.ParentQuestState.QuestStateName + "]", "QuestState", "QuestWriter", new { Id = Model.ParentQuestState.Id, QuestId = Model.QuestState.Id, ParentStateId = -1 }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
-    } else
+    }
+    else
     {
         <span class="bad">No parent quest state found.</span>
     }
@@ -51,16 +52,14 @@
 
     <p>@Ajax.ActionLink("--New Quest State Requirement--", "QuestStateRequirement", "QuestWriter", new { Id = -1, QuestStateId = Model.QuestState.Id, QuestId = Model.QuestState.QuestId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
 
-    <h4>Quest End</h4>
+    <h4>Quest End (@Model.QuestState.QuestEnds.Count())</h4>
 
-    if (Model.QuestState.QuestEndId > 0)
+    foreach (QuestEnd qe in Model.QuestState.QuestEnds)
     {
-
+        <p>@Ajax.ActionLink(qe.QuestEndName, "QuestEnd", "QuestWriter", new { Id = qe.Id, QuestStateId = Model.QuestState.Id, QuestId = Model.QuestState.QuestId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
     }
-    else
-    {
 
-    }
+    <p>@Ajax.ActionLink("Add Quest End", "QuestEnd", "QuestWriter", new { Id = -1, QuestStateId = Model.QuestState.Id, QuestId = Model.QuestState.QuestId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
 
 
     <input type="submit" class="btn btn-chat" value="Send" />

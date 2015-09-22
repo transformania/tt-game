@@ -115,8 +115,8 @@ namespace tfgame.Controllers
                 {
                    QuestId = QuestId,
                    QuestStateRequirementName = "",
+                   
                 };
-                
 
                 questStateRequirement.QuestStateId = state;
             }
@@ -138,9 +138,9 @@ namespace tfgame.Controllers
             IQuestRepository repo = new EFQuestRepository();
             QuestState state = repo.QuestStates.FirstOrDefault(q => q.Id == input.ParentQuestState.Id);
 
-            QuestWriterProcedures.SaveQuestStateRequirement(input.QuestStateRequirement, state);
+            int savedId = QuestWriterProcedures.SaveQuestStateRequirement(input.QuestStateRequirement, state);
 
-            return RedirectToAction("QuestStateRequirement", "QuestWriter", new { Id = input.QuestStateRequirement.Id, QuestStateId = state.Id, QuestId = input.QuestStateRequirement.QuestId });
+            return RedirectToAction("QuestStateRequirement", "QuestWriter", new { Id = savedId, QuestStateId = state.Id, QuestId = input.QuestStateRequirement.QuestId });
         }
 
         public ActionResult QuestEnd(int Id, int QuestStateId, int QuestId)
@@ -173,15 +173,15 @@ namespace tfgame.Controllers
             return PartialView(output);
         }
 
-        public ActionResult QuestEndtSend(QuestEndFormViewModel input)
+        public ActionResult QuestEndSend(QuestEndFormViewModel input)
         {
 
             IQuestRepository repo = new EFQuestRepository();
             QuestState state = repo.QuestStates.FirstOrDefault(q => q.Id == input.ParentQuestState.Id);
 
-            QuestWriterProcedures.SaveQuestEnd(input.QuestEnd, state);
+            int savedId = QuestWriterProcedures.SaveQuestEnd(input.QuestEnd, state);
 
-            return RedirectToAction("QuestStateRequirement", "QuestWriter", new { Id = input.QuestEnd.Id, QuestStateId = state.Id, QuestId = input.QuestEnd.QuestId });
+            return RedirectToAction("QuestStateRequirement", "QuestWriter", new { Id = savedId, QuestStateId = state.Id, QuestId = input.QuestEnd.QuestId });
         }
 
 

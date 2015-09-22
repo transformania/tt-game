@@ -49,9 +49,9 @@
         <label>Required Gender to start:</label>
         @Html.DropDownListFor(m => m.PrerequisiteQuest, new SelectList(
                   new List<Object>{
-                      new { value = QuestStatics.Gender.Any  , text = "Any"  },
-                       new { value = QuestStatics.Gender.Male  , text = "Male"  },
-                        new { value = QuestStatics.Gender.Female  , text = "Female"  },
+                      new { value = (int)QuestStatics.Gender.Any  , text = "Any"  },
+                       new { value = (int)QuestStatics.Gender.Male  , text = "Male"  },
+                        new { value = (int)QuestStatics.Gender.Female  , text = "Female"  },
                     },
                   "value",
                   "text",

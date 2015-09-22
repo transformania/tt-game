@@ -27,46 +27,52 @@
     <p class="infoMessage suberror">@ViewBag.SubErrorMessage</p>
 </div>
 
-<br />
-<div class="loadNotice">
-    <div id="loading" class="good"></div>
-</div>
-<br />
+<div class="containerInner">
 
-@{
-    <h4>Other Quests:</h4>
+    <br />
+    <div id="loadNotice" >
+        <div id="loading" class="good"></div>
+    </div>
+    <br />
 
-    foreach (tfgame.dbModels.Models.QuestStart q in Model)
-    {
-        <p> @Ajax.ActionLink(q.Name, "QuestStart", "QuestWriter", new { Id = q.Id }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
+    @{
+        <h4>Other Quests:</h4>
+
+        foreach (tfgame.dbModels.Models.QuestStart q in Model)
+        {
+            <p> @Ajax.ActionLink(q.Name, "QuestStart", "QuestWriter", new { Id = q.Id }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
+        }
+
     }
 
-}
-
-<p>
-    @Ajax.ActionLink("-- New Quest --", "QuestStart", "QuestWriter", new { Id = -1 }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })
-</p>
-
-<hr />
+    <p>
+        @Ajax.ActionLink("-- New Quest --", "QuestStart", "QuestWriter", new { Id = -1 }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })
+    </p>
 
 
-<div id="swapMe" ></div>
+    <div id="swapMe"></div>
+</div>
 
 <script>
+
+    $(document).ready(function () {
+        $("#loadNotice").hide();
+    });
+
     function success() {
-        $("#loading").show();
+        $("#loadNotice").show();
         var date = new Date();
         var timestamp = date.toString();
         $("#loading").html("Load success!  " + timestamp);
         $("#loading").addClass("good");
         $("#loading").removeClass("bad");
 
-        setTimeout(function () { $("#loading").hide(); }, 3500);
+        setTimeout(function () { $("#loadNotice").hide(); }, 3500);
 
     }
 
     function fail() {
-        $("#loading").show();
+        $("#loadNotice").show();
         $("#loading").html("INTERNAL SERVER ERROR");
 
         $("#loading").addClass("bad");
@@ -75,7 +81,7 @@
     }
 
     function waiting() {
-        $("#loading").show();
+        $("#loadNotice").show();
         $("#loading").removeClass("bad");
         $("#loading").removeClass("good");
         $("#loading").html("processing...");
@@ -84,7 +90,7 @@
 </script>
 
 <style>
-    .loadNotice {
+    #loadNotice {
         background-color: #ffd76a;
         text-align: center;
         border: 1px solid darkred;
@@ -98,5 +104,4 @@
         height: 300px;
         width: 100%;
     }
-
 </style>

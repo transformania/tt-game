@@ -120,6 +120,32 @@
         playAudio(model.Message.indexOf(currentPlayer) > 0);
     }
 
+    function onNewIgnoreAdded(newIgnore) {
+        ConfigModule.chat.ignoreList.push(newIgnore);
+        ConfigModule.save();
+
+        $("#ignore").val("");
+        alert("Now ignoring:  " + newIgnore);
+    }
+
+    function onIgnoreReset() {
+        ConfigModule.chat.ignoreList = [];
+        ConfigModule.save();
+
+        alert("No longer ignoring anyone.");
+    }
+
+    function onIgnoreViewed() {
+        $('#discussion ').append('<li><b>You will not see any chat messages that contain the following substrings:</b></li>');
+        if (ConfigModule.chat.ignoreList.length > 0) {
+            for (var x = 0; x < ConfigModule.chat.ignoreList.length; x++) {
+                $('#discussion ').append('<li>' + ConfigModule.chat.ignoreList[x] + ' </li>');
+            }
+        } else {
+            $('#discussion ').append('<li><i>You do not have anyone or anything on your ignore list.</i></li>');
+        }
+    }
+
     /* Public methods */
 
     pub.initialize = function (options) {
@@ -180,6 +206,26 @@
         };
 
         alert(alertText[newMode]);
+    });
+
+    $("#showIgnore").click(function () {
+        if ($("#ignoreDiv").is(":visible") === false) {
+            $("#ignoreDiv").show();
+        } else {
+            $("#ignoreDiv").hide();
+        }
+    });
+
+    $("#ignoreAdd").click(function () {
+        onNewIgnoreAdded($("#ignore").val());
+    });
+
+    $('#ignoreReset').click(function() {
+        onIgnoreReset();
+    });
+
+    $("#ignoreView").click(function () {
+        onIgnoreViewed();
     });
 
     return pub;

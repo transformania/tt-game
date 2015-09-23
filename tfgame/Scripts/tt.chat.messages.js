@@ -3,6 +3,17 @@
 	var reservedText = [];
 	var pub = {};
 
+	function canRender(model) {
+	    var ignoreList = ConfigModule.chat.ignoreList.slice(0);
+
+	    if (ignoreList.length === 0)
+	        return true;
+
+        var regex = new RegExp('\\b' + ignoreList.join("\\b|\\b") + '\\b', 'i');
+
+        return !regex.test(model.Message) && !regex.test(model.User);
+    }
+
 	function openLink(event) {
 		var message = event.data.message;
 
@@ -159,7 +170,10 @@
 	    return renderActionText(model.Message + ' ', "enterMsg", model, false);
 	}
 
-    pub.formatMessage = function (model) {
+	pub.formatMessage = function (model) {
+	    if (!canRender(model))
+	        return '';
+
 		return formatters[model.MessageType](model);
 	}
 

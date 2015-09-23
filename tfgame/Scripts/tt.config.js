@@ -5,7 +5,7 @@
         chat: {
             imagesEnabled: localStorage['chat_ImagesOn'] !== undefined || localStorage['chat_ImagesOn'] === 'false' ? false : true,
             autoScrollEnabled: true,
-            ignoreList: {},
+            ignoreList: localStorage['chat_IgnoreList'] !== undefined ? JSON.parse(localStorage['chat_IgnoreList']) : [],
             roomConfig: {}
         }
     }

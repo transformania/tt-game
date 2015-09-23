@@ -92,6 +92,7 @@ namespace tfgame.Statics
         public const string Permissions_JSON = "json";
         public const string Permissions_Previewer = "previewer";
         public const string Permissions_Killswitcher = "killswitch";
+        public const string Permissions_QuestWriter = "questwriter";
 
         public static readonly int[] Item_SoulActivityLevels_Minutes = {
                                                                  240,

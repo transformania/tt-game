@@ -325,7 +325,8 @@ namespace tfgame.Procedures.BossProcedures
                 p.BotId >= AIStatics.PsychopathBotId &&
                 p.OnlineActivityTimestamp >= cutoff &&
                 p.dbLocationName.Contains("dungeon_") == false &&
-                p.InDuel <= 0).OrderByDescending(p => p.Money).Take(20).Select(p => p.Id);
+                p.InDuel <= 0 &&
+                p.InQuest <= 0).OrderByDescending(p => p.Money).Take(20).Select(p => p.Id);
 
             string output = "";
             foreach (int s in ids)

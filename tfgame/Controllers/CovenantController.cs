@@ -999,6 +999,13 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
+            // assert that this player is not in a quest
+            if (me.InQuest > 0)
+            {
+                TempData["Error"] = "You must finish your quest before you use covenant furniture.";
+                return RedirectToAction("Play", "PvP");
+            }
+
             // assert that player is in a covenant
             if (me.Covenant <= 0)
             {

@@ -1,0 +1,107 @@
+﻿@model IEnumerable<tfgame.dbModels.Models.QuestStart>
+
+<nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+<div>
+    <p class="infoMessage result">@Html.Raw(ViewBag.Result)</p>
+    <p class="infoMessage error">@ViewBag.ErrorMessage</p>
+    <p class="infoMessage suberror">@ViewBag.SubErrorMessage</p>
+</div>
+
+<div class="containerInner">
+
+    <br />
+    <div id="loadNotice" >
+        <div id="loading" class="good"></div>
+    </div>
+    <br />
+
+    @{
+        <h4>Other Quests:</h4>
+
+        foreach (tfgame.dbModels.Models.QuestStart q in Model)
+        {
+            <p> @Ajax.ActionLink(q.Name, "QuestStart", "QuestWriter", new { Id = q.Id }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
+        }
+
+    }
+
+    <p>
+        @Ajax.ActionLink("-- New Quest --", "QuestStart", "QuestWriter", new { Id = -1 }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })
+    </p>
+
+
+    <div id="swapMe"></div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        $("#loadNotice").hide();
+    });
+
+    function success() {
+        $("#loadNotice").show();
+        var date = new Date();
+        var timestamp = date.toString();
+        $("#loading").html("Load success!  " + timestamp);
+        $("#loading").addClass("good");
+        $("#loading").removeClass("bad");
+
+        setTimeout(function () { $("#loadNotice").hide(); }, 3500);
+
+    }
+
+    function fail() {
+        $("#loadNotice").show();
+        $("#loading").html("INTERNAL SERVER ERROR");
+
+        $("#loading").addClass("bad");
+        $("#loading").removeClass("good");
+        alert("Juderp!  Internal server error, unable to do this.");
+    }
+
+    function waiting() {
+        $("#loadNotice").show();
+        $("#loading").removeClass("bad");
+        $("#loading").removeClass("good");
+        $("#loading").html("processing...");
+    }
+
+</script>
+
+<style>
+    #loadNotice {
+        background-color: #ffd76a;
+        text-align: center;
+        border: 1px solid darkred;
+    }
+
+    input {
+        width: 100%;
+    }
+
+    textarea {
+        height: 300px;
+        width: 100%;
+    }
+</style>

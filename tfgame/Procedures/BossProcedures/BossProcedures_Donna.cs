@@ -110,7 +110,8 @@ namespace tfgame.Procedures.BossProcedures
                         target.Mobility != "full" ||
                         PlayerProcedures.PlayerIsOffline(target) || 
                         target.IsInDungeon() == true ||
-                        target.InDuel > 0)
+                        target.InDuel > 0 ||
+                        target.InQuest > 0)
                     {
 
                         if (donna.dbLocationName != "ranch_bedroom")
@@ -216,7 +217,8 @@ namespace tfgame.Procedures.BossProcedures
                         p.Mobility == "full" && 
                         !PlayerProcedures.PlayerIsOffline(p) &&
                         p.Id != personAttacking.Id &&
-                        p.InDuel <= 0)
+                        p.InDuel <= 0 &&
+                        p.InQuest <= 0)
                     {
                         AttackProcedures.Attack(donna, p, ChooseSpell(PvPStatics.LastGameTurn));
                         AIProcedures.DealBossDamage(donna, p, false, 1);

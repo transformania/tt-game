@@ -70,6 +70,8 @@ namespace tfgame.Procedures
                                                               ChatColor = p.ChatColor,
                                                               IsBannedFromGlobalChat = p.IsBannedFromGlobalChat,
                                                               InDuel = p.InDuel,
+                                                              InQuest = p.InQuest,
+                                                              InQuestState = p.InQuestState,
                                                               
                                                               
                                                           },
@@ -179,6 +181,8 @@ namespace tfgame.Procedures
                                                               ChatColor = p.ChatColor,
                                                               IsBannedFromGlobalChat = p.IsBannedFromGlobalChat,
                                                               InDuel = p.InDuel,
+                                                              InQuest = p.InQuest,
+                                                              InQuestState = p.InQuestState,
                                                           },
 
                                                           Form = new tfgame.ViewModels.Form
@@ -287,6 +291,8 @@ namespace tfgame.Procedures
                                                               ChatColor = p.ChatColor,
                                                               IsBannedFromGlobalChat = p.IsBannedFromGlobalChat,
                                                               InDuel = p.InDuel,
+                                                              InQuest = p.InQuest,
+                                                              InQuestState = p.InQuestState,
                                                           },
 
                                                           Form = new tfgame.ViewModels.Form
@@ -396,6 +402,8 @@ namespace tfgame.Procedures
                                                               ChatColor = p.ChatColor,
                                                               IsBannedFromGlobalChat = p.IsBannedFromGlobalChat,
                                                               InDuel = p.InDuel,
+                                                              InQuest = p.InQuest,
+                                                              InQuestState = p.InQuestState,
                                                           },
 
                                                           Form = new tfgame.ViewModels.Form

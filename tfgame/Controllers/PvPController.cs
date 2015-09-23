@@ -475,6 +475,13 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play","PvP");
             }
 
+              // assert that this player is not in a quest
+            if (me.InQuest > 0)
+            {
+                TempData["Error"] = "You must finish your quest before you can move again.";
+                return RedirectToAction("Play", "PvP");
+            }
+
             // assert that the player is not mind controlled and cannot move on their own
             if (me.MindControlIsActive == true)
             {
@@ -657,8 +664,15 @@ namespace tfgame.Controllers
                  return RedirectToAction("Play", "PvP");
              }
 
+            // assert that this player is not in a quest
+            if (me.InQuest > 0)
+            {
+                TempData["Error"] = "You must finish your quest before you can enter or leave the dungeon.";
+                return RedirectToAction("Play", "PvP");
+            }
+
             // assert player has enough action points
-             if (me.ActionPoints < 30)
+            if (me.ActionPoints < 30)
              {
                  TempData["Error"] = "You need 30 action points to enter or exit the dungeon.";
                  return RedirectToAction("Play");
@@ -1197,8 +1211,15 @@ namespace tfgame.Controllers
                  return RedirectToAction("Play", "PvP");
              }
 
-             // assert player is a high enough level
-             if (me.Level < 3)
+            // assert that this player is not in a quest
+            if (me.InQuest > 0)
+            {
+                TempData["Error"] = "You must finish your quest before you can drop any items or release your pet.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            // assert player is a high enough level
+            if (me.Level < 3)
              {
                  TempData["Error"] = "You must be at least level 3 in order to try and enchant a location.";
                  return RedirectToAction("Play");
@@ -1480,6 +1501,13 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
+            // assert that this player is not in a quest
+            if (me.InQuest > 0)
+            {
+                TempData["Error"] = "You must finish your quest before you can drop any items or release your pet.";
+                return RedirectToAction("Play", "PvP");
+            }
+
             BuffBox mybuffs = ItemProcedures.GetPlayerBuffsSQL(me);
 
             decimal searchCostAfterbuffs = PvPStatics.SearchAPCost;
@@ -1618,6 +1646,13 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
+            // assert that this player is not in a quest
+            if (me.InQuest > 0)
+            {
+                TempData["Error"] = "You must finish your quest before you can drop any items or release your pet.";
+                return RedirectToAction("Play", "PvP");
+            }
+
             // assert that the player is not mind controlled and cannot pick up anything on their own
             if (me.MindControlIsActive == true)
             {
@@ -1744,6 +1779,13 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
+            // assert that this player is not in a quest
+            if (me.InQuest > 0)
+            {
+                TempData["Error"] = "You must finish your quest before you can drop any items or release your pet.";
+                return RedirectToAction("Play", "PvP");
+            }
+
             ItemViewModel dropme = ItemProcedures.GetItemViewModel(itemId);
 
             // assert player does own this
@@ -1826,6 +1868,13 @@ namespace tfgame.Controllers
             if (me.InDuel > 0)
             {
                 TempData["Error"] = "You must finish your duel before you equip or unequip any equipment.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            // assert that this player is not in a quest
+            if (me.InQuest > 0)
+            {
+                TempData["Error"] = "You must finish your quest before you equip or unequip any equipment.";
                 return RedirectToAction("Play", "PvP");
             }
 
@@ -1937,6 +1986,13 @@ namespace tfgame.Controllers
                 if (me.InDuel > 0)
                 {
                     TempData["Error"] = "You must finish your duel before you use this item.";
+                    return RedirectToAction("Play", "PvP");
+                }
+
+                // assert that this player is not in a quest
+                if (me.InQuest > 0)
+                {
+                    TempData["Error"] = "You must finish your quest before you use this item.";
                     return RedirectToAction("Play", "PvP");
                 }
 
@@ -2931,6 +2987,13 @@ namespace tfgame.Controllers
             if (me.InDuel > 0)
             {
                 TempData["Error"] = "You must finish your duel before you can purchase or sell anything to Lindella.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            // assert that this player is not in a duel
+            if (me.InQuest > 0)
+            {
+                TempData["Error"] = "You must finish your quest before you can purchase or sell anything to Lindella.";
                 return RedirectToAction("Play", "PvP");
             }
 

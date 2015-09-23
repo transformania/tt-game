@@ -239,6 +239,7 @@
     <Compile Include="Controllers\NPCController.cs" />
     <Compile Include="Controllers\PvPAdminController.cs" />
     <Compile Include="Controllers\PvPController.cs" />
+    <Compile Include="Controllers\QuestWriterController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="CustomHtmlHelpers\CharactersHere.cs" />
     <Compile Include="dbModels\Abstract\IAchievementBadgeRepository.cs" />
@@ -267,6 +268,8 @@
     <Compile Include="dbModels\Abstract\IInanimateXPRepository.cs" />
     <Compile Include="dbModels\Abstract\IItemRepository.cs" />
     <Compile Include="dbModels\Abstract\IDuelRepository.cs" />
+    <Compile Include="dbModels\Abstract\IPlayerQuestRepository.cs" />
+    <Compile Include="dbModels\Abstract\IQuestRepository.cs" />
     <Compile Include="dbModels\Abstract\IRerollRepository.cs" />
     <Compile Include="dbModels\Abstract\IItemTransferLogRepository.cs" />
     <Compile Include="dbModels\Abstract\IJewdewfaeEncounterRepository.cs" />
@@ -308,6 +311,8 @@
     <Compile Include="dbModels\Concrete\EFDonatorRepository.cs" />
     <Compile Include="dbModels\Concrete\EFDuelRepository.cs" />
     <Compile Include="dbModels\Concrete\EFFurnitureRepository.cs" />
+    <Compile Include="dbModels\Concrete\EFPlayerQuestRepository.cs" />
+    <Compile Include="dbModels\Concrete\EFQuestRepository.cs" />
     <Compile Include="dbModels\Concrete\EFRerollRepository.cs" />
     <Compile Include="dbModels\Concrete\EFItemTransferLogRepository.cs" />
     <Compile Include="dbModels\Concrete\EFJewdewfaeEncounterRepository.cs" />
@@ -367,6 +372,8 @@
     <Compile Include="dbModels\Models\Furniture.cs" />
     <Compile Include="dbModels\Models\InanimateXP.cs" />
     <Compile Include="dbModels\Models\Item.cs" />
+    <Compile Include="dbModels\Models\PlayerQuests.cs" />
+    <Compile Include="dbModels\Models\Quest.cs" />
     <Compile Include="dbModels\Models\Reroll.cs" />
     <Compile Include="dbModels\Models\ItemTransferLog.cs" />
     <Compile Include="dbModels\Models\JewdewfaeEncounter.cs" />
@@ -415,6 +422,8 @@
     <Compile Include="Procedures\DuelProcedures.cs" />
     <Compile Include="Procedures\DungeonProcedures.cs" />
     <Compile Include="Procedures\FurnitureProcedures.cs" />
+    <Compile Include="Procedures\QuestProcedures.cs" />
+    <Compile Include="Procedures\QuestWriterProcedures.cs" />
     <Compile Include="Procedures\RerollProcedures.cs" />
     <Compile Include="Procedures\ItemTransferLogProcedures.cs" />
     <Compile Include="Procedures\MindControlProcedures.cs" />
@@ -448,6 +457,7 @@
     <Compile Include="Statics\FurnitureTypeStatics.cs" />
     <Compile Include="Statics\ItemStatics.cs" />
     <Compile Include="Statics\PvPStatics.cs" />
+    <Compile Include="Statics\QuestStatics.cs" />
     <Compile Include="Statics\SkillStatics.cs" />
     <Compile Include="Statics\TrustStatics.cs" />
     <Compile Include="ViewModels\BalancePageViewModel.cs" />
@@ -488,6 +498,7 @@
     <Compile Include="ViewModels\PlayerSearchViewModel.cs" />
     <Compile Include="ViewModels\PlayPageViewModel.cs" />
     <Compile Include="ViewModels\PublicBroadcastViewModel.cs" />
+    <Compile Include="ViewModels\Quest\QuestStateFormViewModel.cs" />
     <Compile Include="ViewModels\RestockList.cs" />
     <Compile Include="ViewModels\SelectListItem.cs" />
     <Compile Include="ViewModels\ServerBalance.cs" />
@@ -2427,6 +2438,11 @@
     <Content Include="Views\NPC\TalkToValentine.cshtml" />
     <Content Include="Views\Settings\Polls\Open\poll4.cshtml" />
     <Content Include="Views\Settings\Polls\Read\poll4.cshtml" />
+    <Content Include="Views\QuestWriter\Index.cshtml" />
+    <Content Include="Views\QuestWriter\QuestStart.cshtml" />
+    <Content Include="Views\QuestWriter\QuestState.cshtml" />
+    <Content Include="Views\QuestWriter\QuestStateRequirement.cshtml" />
+    <Content Include="Views\QuestWriter\QuestEnd.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Alpha_25.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\XP\Alpha_25.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_25.cshtml" />

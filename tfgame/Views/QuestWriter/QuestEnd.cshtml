@@ -1,0 +1,64 @@
+﻿
+@model tfgame.ViewModels.Quest.QuestEndFormViewModel
+
+@using tfgame.Statics
+@using tfgame.dbModels.Models
+
+
+
+<h4>Parent Quest State:</h4>
+
+@{
+    if (Model.ParentQuestState != null)
+    {
+
+        <p>@Ajax.ActionLink("[" + Model.ParentQuestState.QuestStateName + "]", "QuestState", "QuestWriter", new { Id = Model.ParentQuestState.Id, QuestId = Model.QuestEnd.QuestId, ParentStateId = -1 }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
+    }
+}
+
+<hr />
+
+@using (Ajax.BeginForm("QuestStateSend", "QuestWriter", new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" }))
+{
+
+    @Html.HiddenFor(m => m.QuestEnd.Id)
+    @Html.HiddenFor(m => m.ParentQuestState.Id)
+    @Html.HiddenFor(m => m.QuestEnd.QuestId)
+
+    <label>Quest End name:</label>    <br />
+    @Html.TextAreaFor(m => m.QuestEnd.QuestEndName)
+
+    <br /><br />
+
+    <label>Quest End Type:</label>    <br />
+    @Html.DropDownListFor(m => m.QuestEnd.EndType, new SelectList(
+                  new List<Object>{
+                      new { value = (int)QuestStatics.QuestOutcomes.Completed, text = "PASS"  },
+                       new { value = (int)QuestStatics.QuestOutcomes.Failed, text = "FAIL"  },
+                    },
+                  "value",
+                  "text",
+                   2))
+
+    <br /><br />
+
+    <label>Quest Reward Type:</label>    <br />
+    @Html.DropDownListFor(m => m.QuestEnd.RewardType, new SelectList(
+                  new List<Object>{
+                      new { value = (int)QuestStatics.RewardType.Experience, text = "XP"  },
+                    },
+                  "value",
+                  "text",
+                   2))
+
+    <br /><br />
+
+    <label>Quest Reward Amount:</label>    <br />
+    @Html.TextBoxFor(m => m.QuestEnd.RewardAmount)
+
+    <br /><br />
+
+    <input type="submit" class="btn btn-chat" value="Send" />
+
+}
+

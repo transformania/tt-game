@@ -264,7 +264,8 @@ namespace tfgame.Procedures
                             myTarget.Mobility != "full" ||
                             myTarget.Form == skill.Skill.FormdbName || 
                             myTarget.IsInDungeon() == true ||
-                            myTarget.InDuel > 0)
+                            myTarget.InDuel > 0 ||
+                            myTarget.InQuest > 0)
                         {
                             AIDirectiveProcedures.SetAIDirective_Idle(bot.Id);
                             log.AddLog(bot.FirstName + " " + bot.LastName + ":  target is invalid.  Idling.");

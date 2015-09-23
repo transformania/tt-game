@@ -170,6 +170,13 @@ namespace tfgame.Procedures
                 return output;
             }
 
+            // assert that the victim is not mind controlled
+            if (victim.InQuest > 0)
+            {
+                output.Error = "Your victim is in a quest and cannot obey this command.";
+                return output;
+            }
+
             output.HasError = false;
             return output;
 

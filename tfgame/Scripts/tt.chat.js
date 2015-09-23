@@ -165,7 +165,7 @@
     }
 
     pub.onUserDoubleTapped = function (name, e) {
-        $('#message').val("@" + name + "  " + $('#message').val());
+        $('#message').val($('#message').val() + "@" + name);
         $('#message').focus();
 
         e.preventDefault();

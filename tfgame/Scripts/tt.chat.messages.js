@@ -140,7 +140,7 @@
 	    if (options.link === undefined)
 	        return $('<li></li>').append($('<pre></pre>').text(options.message));
 
-	    var link = $('<a>').bind('click', options.link, openLink);
+	    var link = $('<a>').on('click', options.link, openLink);
 
 	    if (options.link.text !== undefined)
 	        link.text(options.link.text);

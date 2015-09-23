@@ -131,6 +131,19 @@
         }
     </p>
 
+    @{
+        if (PvPStatics.ChaosMode == true)
+        {
+            <p>
+                <h4 class="bad">CHAOS MODE OPTIONS ONLY:</h4>
+                @Html.ActionLink("Enter SuperProtection mode", "ChaosChangeGameMode", "Settings", new { Id = 0 }, null)<br />
+                @Html.ActionLink("Enter Protection mode", "ChaosChangeGameMode", "Settings", new { Id = 1 }, null)<br />
+                @Html.ActionLink("Enter PvP mode", "ChaosChangeGameMode", "Settings", new { Id = 2 }, null)<br />
+                @Html.ActionLink("Change back into base form", "ChaosRestoreBase", "Settings")<br />
+            </p>
+        }
+    }
+
 
     <h2>Protection Mode</h2>
 

@@ -1026,5 +1026,59 @@ namespace tfgame.Controllers
 
         }
 
-	}
+        [Authorize]
+        public ActionResult ChaosChangeGameMode(int id)
+        {
+
+            if (PvPStatics.ChaosMode == false)
+            {
+                TempData["Error"] = "You can only do this in chaos mode.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+
+
+            if (id < 0 || id > 2)
+            {
+                TempData["Error"] = "That is not a valid game mode.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+       
+            PlayerProcedures.SetPvPFlag(me, id);
+
+            TempData["Result"] = "Set to game mode " + id;
+            return RedirectToAction("Play", "PvP");
+
+        }
+
+        [Authorize]
+        public ActionResult ChaosRestoreBase()
+        {
+
+            if (PvPStatics.ChaosMode == false)
+            {
+                TempData["Error"] = "You can only do this in chaos mode.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+
+            if (me.Form == me.OriginalForm)
+            {
+                TempData["Error"] = "You are already in your original form.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            PlayerProcedures.InstantRestoreToBase(me);
+
+            TempData["Result"] = "You have been restored to your base form.";
+            return RedirectToAction("Play", "PvP");
+
+        }
+
+    }
 }

@@ -793,6 +793,15 @@ namespace tfgame.Procedures
             Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
             string oldForm = dbPlayer.Form;
             dbPlayer.Form = dbPlayer.OriginalForm;
+            
+            if (dbPlayer.Mobility != PvPStatics.MobilityFull)
+            {
+                IItemRepository itemRepo = new EFItemRepository();
+                Item itemMe = itemRepo.Items.FirstOrDefault(i => i.VictimName == player.FirstName + " " + player.LastName);
+                itemRepo.DeleteItem(itemMe.Id);
+                dbPlayer.Mobility = PvPStatics.MobilityFull;
+            }
+
             DbStaticForm baseForm = FormStatics.GetForm(dbPlayer.OriginalForm);
 
             dbPlayer.Gender = baseForm.Gender;

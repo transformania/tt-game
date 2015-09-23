@@ -21,6 +21,7 @@
         if (localStorage[configStore] === undefined) {
             update(defaultConfig);
             localStorage.removeItem('chat_ImagesOn');
+            localStorage.removeItem('chat_IgnoreList');
         } else
             update(JSON.parse(localStorage[configStore]));
     }

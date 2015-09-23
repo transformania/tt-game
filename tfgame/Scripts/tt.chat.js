@@ -3,6 +3,7 @@
     var cooldownActive = false;
     var roomName = '';
     var currentPlayer = '';
+    var currentPlayerChatColor = '';
     
     var pub = {};
 
@@ -111,7 +112,7 @@
     }
 
     function onNewMessage(model) {
-        var output = ChatMessageModule.formatMessage(model);
+        var output = ChatMessageModule.formatMessage(model, currentPlayer, currentPlayerChatColor);
         $('#discussion').append($(output));
 
         if (ConfigModule.chat.autoScrollEnabled)
@@ -151,8 +152,11 @@
     pub.initialize = function (options) {
         roomName = options.roomName;
         currentPlayer = options.currentPlayer;
+        currentPlayerChatColor = options.currentPlayerChatColor;
 
         doConfig();
+
+        ChatMessageModule.initialize(options);
 
         $.connection.hub.start().done(onChatHubStarted);
         $.connection.hub.disconnected(onChatDisconnected);

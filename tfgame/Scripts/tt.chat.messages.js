@@ -1,5 +1,7 @@
 ﻿ChatMessageModule = (function() {
-	var formatters = [];
+    var currentPlayer = '';
+    var currentPlayerChatColor = '';
+    var formatters = [];
 	var reservedText = [];
 	var pub = {};
 
@@ -42,6 +44,11 @@
 		return output;
 	}
 
+	function applyHighlightToMessage(message) {
+        var replacement = "<span style='background: #FFE9D5; color: " + currentPlayerChatColor + ";'><strong> " + currentPlayer + "</strong></span>";
+        return message.replace(currentPlayer, replacement);
+	}
+
 	function renderImage(pic) {
 	    var image = '';
 
@@ -58,7 +65,7 @@
     function renderActionText(message, messageClass, model, useUserColour) {
         var text = $('<span></span>')
             .addClass(messageClass)
-            .text(message)
+            .append(applyHighlightToMessage(message))
             .doubleTap(function (e) { ChatModule.onUserDoubleTapped(model.User, e); })
             .prepend(model.IsStaff ? $('<span class="adminFont"></span>').text(model.User) : model.User);
 
@@ -118,10 +125,12 @@
 	    else
 	    	userName.css('color', model.Color);
 
+	    var message = linkify(model.Message);
+
 	    return $('<li></li>')
-	        .html(linkify(model.Message) + ' ')
-            .prepend(userName)
+	        .prepend(userName)
             .prepend(renderImage(model.Pic))
+            .append(applyHighlightToMessage(message) + ' ')
             .append(renderTimestamp(model.Timestamp));
     }
 
@@ -177,7 +186,12 @@
 		return formatters[model.MessageType](model);
 	}
 
-	$("#discussion").on('click', '.chatlink', function () {
+    pub.initialize = function(options) {
+        currentPlayer = options.currentPlayer;
+        currentPlayerChatColor = options.currentPlayerChatColor;
+    };
+
+    $("#discussion").on('click', '.chatlink', function () {
 	    openLink({ data: { url: $(this).data('url') } });
 	});
 

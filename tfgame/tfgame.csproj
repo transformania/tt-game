@@ -1571,6 +1571,7 @@
     <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\notices.js" />
     <Content Include="Scripts\tt.chat.js" />
+    <Content Include="Scripts\tt.config.js" />
     <Content Include="Scripts\ttchat.js" />
     <Content Include="Sounds\attack.wav" />
     <Content Include="Sounds\paper.wav" />

@@ -34,7 +34,7 @@
 	function renderImage(pic) {
 	    var image = '';
 
-	    if (ChatModule.config.imagesEnabled  && pic !== undefined)
+	    if (ConfigModule.chat.imagesEnabled  && pic !== undefined)
 	        image = $('<img />').attr('src', pic);
 
 	    return image;

@@ -2,11 +2,23 @@
     var unreadCount = 0;
     var cooldownActive = false;
     var roomName = '';
+    var currentPlayer = '';
     
-    var pub= {};
+    var pub = {};
+
+    var audioModes = {
+        all: 'all',
+        some: 'some',
+        none: 'none'
+    };
+
+    var oldAudioModes = {
+        0: 'none',
+        1: 'some',
+        2: 'all'
+    };
 
     pub.chat = $.connection.chatHub;
-    pub.config = {};
 
     /* Private methods */
 
@@ -14,24 +26,46 @@
         $(document).attr('title', title);
     }
 
-    function doConfig()
-    {
-        var savedConfig = localStorage['tt.chatConfig'];
+    function doConfig() {
+        if (ConfigModule.chat.roomConfig[roomName] === undefined) {
+            var audioMode = audioModes.none;
 
-        if (savedConfig !== undefined)
-            pub.config = JSON.parse(savedConfig);
-        else {
-            pub.config = {
-                imagesEnabled: localStorage['chat_ImagesOn'] !== undefined ? localStorage['chat_ImagesOn'] : true,
-                autoScrollEnabled: true,
-                ignoreList: {}
+            if (localStorage['chat_sound_' + roomName] !== undefined) {
+                audioMode = audioModes[oldAudioModes[localStorage['chat_sound_' + roomName]]];
+                localStorage.removeItem(['chat_sound_' + roomName]);
             }
+
+            ConfigModule.chat.roomConfig[roomName] = {
+                audioMode: audioMode
+            }
+
+            ConfigModule.save();
         }
 
-        if (pub.config.autoScrollEnabled)
+        if (ConfigModule.chat.autoScrollEnabled)
             $('#autoScrollToggle').text('Autoscroll ON');
         else
             $('#autoScrollToggle').text('Autoscroll OFF');
+    }
+
+    function playAudio(isAlert) {
+
+        var audioMode = ConfigModule.chat.roomConfig[roomName].audioMode;
+
+        if (audioMode === audioModes.none)
+            return;
+
+        if (audioMode === audioModes.some && isAlert === false)
+            return;
+
+        var popAudio;
+
+        if (isAlert === true)
+            popAudio = new Audio('../../Sounds/pop2.ogg');
+        else
+            popAudio = new Audio('../../Sounds/pop.ogg');
+
+        popAudio.play();
     }
     
     /* Event handlers */
@@ -80,19 +114,17 @@
         var output = ChatMessageModule.formatMessage(model);
         $('#discussion').append($(output));
 
-        if (pub.config.autoScrollEnabled)
+        if (ConfigModule.chat.autoScrollEnabled)
             $('#discussion ').animate({ scrollTop: $('#discussion').prop("scrollHeight") }, 500);
-    }
 
-    function onConfigChanged() {
-        localStorage.removeItem('chat_ImagesOn');
-        localStorage['tt.chatConfig'] = JSON.stringify(pub.config);
+        playAudio(model.Message.indexOf(currentPlayer) > 0);
     }
 
     /* Public methods */
 
     pub.initialize = function (options) {
         roomName = options.roomName;
+        currentPlayer = options.currentPlayer;
 
         doConfig();
 
@@ -112,27 +144,42 @@
     /* Events */
 
     $("#autoScrollToggle").click(function () {
-        if (pub.config.autoScrollEnabled === false) {
-            pub.config.autoScrollEnabled = true;
+        if (ConfigModule.chat.autoScrollEnabled === false) {
+            ConfigModule.chat.autoScrollEnabled = true;
             $(this).text("Autoscroll ON");
         } else {
-            pub.config.autoScrollEnabled = false;
+            ConfigModule.chat.autoScrollEnabled = false;
             $(this).text("Autoscroll OFF");
         }
 
-        onConfigChanged();
+        ConfigModule.save();
     });
 
     $("#toggleImages").click(function () {
-        if (pub.config.imagesEnabled === false) {
+        if (ConfigModule.chat.imagesEnabled === false) {
             alert('Images enabled');
-            pub.config.imagesEnabled = true;
+            ConfigModule.chat.imagesEnabled = true;
         } else {
             alert('Images disabled');
-            pub.config.imagesEnabled = false;
+            ConfigModule.chat.imagesEnabled = false;
         }
 
-        onConfigChanged();
+        ConfigModule.save();
+    });
+
+    $('li.audioConfig').click(function() {
+        var newMode = $(this).attr('data-audio-mode');
+
+        ConfigModule.chat.roomConfig[roomName].audioMode = newMode;
+        ConfigModule.save();
+
+        var alertText = {
+            'all': 'All sounds enabled for this room.',
+            'some': 'Some sounds enabled for this room.  You will only hear a sound if somone addresses you in particular.',
+            'none': 'All sounds disabled for this room'
+        };
+
+        alert(alertText[newMode]);
     });
 
     return pub;

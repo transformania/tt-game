@@ -53,13 +53,14 @@
     <script src="~/signalr/hubs" type="text/javascript"></script>
     <script src="~/Scripts/jquery.mobile.custom.min.js"></script>
     <script src="~/Scripts/jquery.mobile.doubletap.js"></script>
+    <script src="~/Scripts/tt.config.js"></script>
     <script src="~/Scripts/tt.chat.js"></script>
     <script src="~/Scripts/tt.chat.userlist.js"></script>
     <script src="~/Scripts/tt.chat.messages.js"></script>
     
     <script type="text/javascript">
         $(function () {
-            ChatModule.initialize({ roomName : '@Model.RoomName' });
+            ChatModule.initialize({ roomName : '@Model.RoomName', currentPlayer : '@Model.ChatUser' });
         });
     </script>
 }

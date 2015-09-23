@@ -1,7 +1,6 @@
 ﻿using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using tfgame.dbModels.Queries.Player;
-using tfgame.Services;
 using tfgame.ViewModels;
 
 namespace tfgame.Controllers

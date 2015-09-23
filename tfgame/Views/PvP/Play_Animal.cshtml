@@ -38,7 +38,7 @@
                 <li>@Html.ActionLink("Map", "WorldMap", "PvP", new { showEnchant = "false" }, null)</li>
                 <li>@Html.ActionLink("Last Actions", "ViewLog", "PvP")</li>
                 <li>@Html.ActionLink("Friends", "MyFriends", "PvP")</li>
-                <li>@Html.ActionLink("Chat", "Chat", "PvP", new { room = "global" }, new { target = "_blank" })</li>
+                <li>@Html.ActionLink("Chat", "Index", "Chat", new { room = "global" }, new { target = "_blank" })</li>
                 <li>@Html.ActionLink("Covenant", "MyCovenant", "Covenant")</li>
                 <li>@Html.ActionLink("Settings", "Settings", "Settings")</li>
                 @{if (Model.NewMessageCount > 0)

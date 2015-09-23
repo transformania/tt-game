@@ -1572,7 +1572,6 @@
     <Content Include="Scripts\notices.js" />
     <Content Include="Scripts\tt.chat.js" />
     <Content Include="Scripts\tt.config.js" />
-    <Content Include="Scripts\ttchat.js" />
     <Content Include="Sounds\attack.wav" />
     <Content Include="Sounds\paper.wav" />
     <Content Include="Sounds\turnUpdate1.wav" />
@@ -2250,7 +2249,6 @@
     <Content Include="Views\PvP\MyFriends.cshtml" />
     <Content Include="Views\PvP\Leaderboard.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Alpha_1.cshtml" />
-    <Content Include="Views\PvP\Chats\Chat_Global.cshtml" />
     <Content Include="Views\PvP\LookAtPlayerInanimate.cshtml" />
     <Content Include="Views\PvP\partial\movementTable.cshtml" />
     <Content Include="Views\PvP\partial\spellsList.cshtml" />

@@ -4,14 +4,14 @@
     <ul class="nav navbar-nav">
         <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
         <li>
-            @Html.ActionLink("Global", "Chat", "PvP", new { room = "global" }, null)
+            @Html.ActionLink("Global", "Index", "Chat", new { room = "global" }, null)
         </li>
         <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">RP Rooms <span class="caret"></span></a>
             <ul class="dropdown-menu">
-                <li>@Html.ActionLink("RP Room 1", "Chat", "PvP", new { room = "rp1" }, null)</li>
-                <li>@Html.ActionLink("RP Room 2", "Chat", "PvP", new { room = "rp2" }, null)</li>
-                <li>@Html.ActionLink("RP Room 3", "Chat", "PvP", new { room = "rp3" }, null)</li>
+                <li>@Html.ActionLink("RP Room 1", "Index", "Chat", new { room = "rp1" }, null)</li>
+                <li>@Html.ActionLink("RP Room 2", "Index", "Chat", new { room = "rp2" }, null)</li>
+                <li>@Html.ActionLink("RP Room 3", "Index", "Chat", new { room = "rp3" }, null)</li>
             </ul>
         </li>
         <li>

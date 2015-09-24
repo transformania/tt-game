@@ -231,6 +231,7 @@
     <Compile Include="Chat\ChatHub.cs" />
     <Compile Include="Chat\DuelHub.cs" />
     <Compile Include="Chat\NoticeHub.cs" />
+    <Compile Include="Controllers\ChatController.cs" />
     <Compile Include="Controllers\ContributionController.cs" />
     <Compile Include="Controllers\CovenantController.cs" />
     <Compile Include="Controllers\DuelController.cs" />
@@ -294,7 +295,7 @@
     <Compile Include="dbModels\Abstract\ITFMessageRepository.cs" />
     <Compile Include="dbModels\Command.cs" />
     <Compile Include="dbModels\Commands\ChatLog\WriteLogToDatabase.cs" />
-    <Compile Include="dbModels\Commands\Player\MarkOnlineActivityTimestamp.cs" />
+    <Compile Include="dbModels\Commands\Player\UpdateOnlineActivityTimestamp.cs" />
     <Compile Include="dbModels\Concrete\EFAchievementBadgeRepository.cs" />
     <Compile Include="dbModels\Concrete\EFAchievementRepository.cs" />
     <Compile Include="dbModels\Concrete\EFAuthorArtistBioRepository.cs" />
@@ -447,7 +448,8 @@
     <Compile Include="Procedures\TFEnergyProcedures.cs" />
     <Compile Include="Procedures\WorldUpdateProcedures.cs" />
     <Compile Include="Services\ChatMessageProcessor.cs" />
-    <Compile Include="Services\ChatService.cs" />
+    <Compile Include="Services\ChatPersistenceService.cs" />
+    <Compile Include="Services\IChatPersistanceService.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Statics\AIStatics.cs" />
     <Compile Include="Statics\CovenantDictionary.cs" />
@@ -466,6 +468,7 @@
     <Compile Include="ViewModels\BlacklistEntryViewModel.cs" />
     <Compile Include="ViewModels\BossSummon.cs" />
     <Compile Include="ViewModels\BuffBox.cs" />
+    <Compile Include="ViewModels\ChatViewModel.cs" />
     <Compile Include="ViewModels\ContributionCredit.cs" />
     <Compile Include="ViewModels\ContributionStatusViewModel.cs" />
     <Compile Include="ViewModels\CovenantViewModel.cs" />
@@ -1578,7 +1581,8 @@
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\notices.js" />
-    <Content Include="Scripts\ttchat.js" />
+    <Content Include="Scripts\tt.chat.js" />
+    <Content Include="Scripts\tt.config.js" />
     <Content Include="Sounds\attack.wav" />
     <Content Include="Sounds\paper.wav" />
     <Content Include="Sounds\turnUpdate1.wav" />
@@ -2196,6 +2200,8 @@
     <Content Include="Scripts\MicrosoftMvcValidation.js" />
     <Content Include="Scripts\modernizr-2.7.1.js" />
     <Content Include="Scripts\script.js" />
+    <Content Include="Scripts\tt.chat.userList.js" />
+    <Content Include="Scripts\tt.chat.messages.js" />
     <Content Include="Views\HtmlPage1.html" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -2254,7 +2260,6 @@
     <Content Include="Views\PvP\MyFriends.cshtml" />
     <Content Include="Views\PvP\Leaderboard.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Alpha_1.cshtml" />
-    <Content Include="Views\PvP\Chats\Chat_Global.cshtml" />
     <Content Include="Views\PvP\LookAtPlayerInanimate.cshtml" />
     <Content Include="Views\PvP\partial\movementTable.cshtml" />
     <Content Include="Views\PvP\partial\spellsList.cshtml" />
@@ -2424,6 +2429,8 @@
     <Content Include="Views\Duel\DuelDetail.cshtml" />
     <Content Include="Views\Account\ChangeEmail.cshtml" />
     <Content Include="Views\PvP\LoginRequired.cshtml" />
+    <Content Include="Views\Chat\ChatIndex.cshtml" />
+    <Content Include="Views\Chat\_ChatMenu.cshtml" />
     <Content Include="Views\Info\AllLocations.cshtml" />
     <Content Include="Views\Info\AllForms.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Alpha_23.cshtml" />

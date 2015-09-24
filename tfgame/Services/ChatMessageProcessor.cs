@@ -30,14 +30,14 @@ namespace tfgame.Services
                     return data.Output;
             }
 
-            return new MessageOutput(string.Empty);
+            return new MessageOutput(string.Empty, MessageType.RegularText);
         }
     }
 
     public class MessageData
     {
-        public string Name { get; private set; }
-        public string Message { get; private set; }
+        public string Name { get; }
+        public string Message { get; }
         public bool Processed { get; private set; }
 
         public MessageOutput Output { get; set; }
@@ -57,15 +57,28 @@ namespace tfgame.Services
     public class MessageOutput
     {
         public string Text { get; private set; }
+        public MessageType MessageType { get; private set; }
         public bool SendNameToClient { get; private set; }
         public bool SendPlayerChatColor { get; private set; }
 
-        public MessageOutput(string text, bool sendNameToClient = true, bool sendPlayerChatColor = true)
+        public MessageOutput(string text, MessageType messageType, bool sendNameToClient = true, bool sendPlayerChatColor = true)
         {
             Text = text;
+            MessageType = messageType;
             SendNameToClient = sendNameToClient;
             SendPlayerChatColor = sendPlayerChatColor;
         }
+    }
+
+    public enum MessageType
+    {
+        RegularText,
+        ReservedText,
+        DmMessage,
+        DmAction,
+        Action,
+        DieRoll,
+        Notification,
     }
 
     public abstract class MessageProcessingTask
@@ -89,7 +102,7 @@ namespace tfgame.Services
 
         protected override void ProcessInternal(MessageData data)
         {
-            data.Output = new MessageOutput(string.Format("{0}   [.[{1}].]", data.Message, DateTime.UtcNow.ToShortTimeString()));
+            data.Output = new MessageOutput(data.Message, MessageType.RegularText);
             data.MarkAsProcessed();
         }
     }
@@ -104,20 +117,20 @@ namespace tfgame.Services
         
         protected override bool CanHandle(MessageData data)
         {
-            return ChatStatics.ReservedText.Any(reservedText => data.Message.Contains(reservedText));
+            return ChatStatics.ReservedText.Any(reservedText => data.Message.StartsWith(reservedText));
         }
 
         protected override void ProcessInternal(MessageData data)
         {
             if (allowedRoles.Any(allowedRole => HttpContext.Current.User.IsInRole(allowedRole)))
             {
-                data.Output = new MessageOutput(string.Format("{0}   [.[{1}].]", data.Message, DateTime.UtcNow.ToShortTimeString()));
+                data.Output = new MessageOutput(data.Message, MessageType.ReservedText);
                 data.MarkAsProcessed();
                 return;
             }
 
             var output = ChatStatics.ReservedText.Aggregate(data.Message, (current, reservedText) => current.Replace(reservedText, " "));
-            data.Output = new MessageOutput(string.Format("{0}   [.[{1}].]", output, DateTime.UtcNow.ToShortTimeString()));
+            data.Output = new MessageOutput(output, MessageType.RegularText);
             data.MarkAsProcessed();
         }
     }
@@ -133,7 +146,7 @@ namespace tfgame.Services
         {
             var output = data.Message.Replace("/dm message", "");
 
-            data.Output = new MessageOutput(string.Format("[=[{0} [DM]:  {1}]=]", data.Name, output), false);
+            data.Output = new MessageOutput(output, MessageType.DmMessage);
             data.MarkAsProcessed();
         }
     }
@@ -157,7 +170,7 @@ namespace tfgame.Services
             var match = new Regex(regex).Match(data.Message);
 
             var cmd = new GetRollText { ActionType = match.Groups[1].Value, Tag = match.Groups[2].Value };
-            data.Output = new MessageOutput(string.Format("[=[{0}]=]", cmd.Find()));
+            data.Output = new MessageOutput(cmd.Find(), MessageType.DmAction);
             data.MarkAsProcessed();
         }
     }
@@ -176,9 +189,9 @@ namespace tfgame.Services
         {
             var match = Regex.Match(data.Message, regex);
             var die = Convert.ToInt32(match.Groups[1].Value);
-            var output = string.Format("[-[{0} rolled a {1} (d{2}).]-]", data.Name, PlayerProcedures.RollDie(die), die);
+            var output = $" rolled a {PlayerProcedures.RollDie(die)} (d{die})";
 
-            data.Output = new MessageOutput(output, false, false);
+            data.Output = new MessageOutput(output, MessageType.DieRoll, true, false);
             data.MarkAsProcessed();
         }
     }
@@ -194,7 +207,7 @@ namespace tfgame.Services
         {
             var output = data.Message.Replace("/me", "");
 
-            data.Output = new MessageOutput(string.Format("[+[{0}{1}]+]", data.Name, output), false);
+            data.Output = new MessageOutput(output, MessageType.Action);
             data.MarkAsProcessed();
         }
     }

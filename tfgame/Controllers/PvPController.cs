@@ -2822,74 +2822,10 @@ namespace tfgame.Controllers
 
 
          [Authorize]
-        public ActionResult Chat(string room)
-        {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            if (me == null || me.BotId == AIStatics.RerolledPlayerBotId || me.FirstName=="" || me.LastName=="")
-            {
-                return View("~/Views/PvP/MakeNewCharacter.cshtml");
-            }
-
-             // assert player is not banned from global chat
-            if (me.IsBannedFromGlobalChat == true && room == "global")
-            {
-                TempData["Error"] = "A moderator has temporarily banned you from global chat.";
-                TempData["SubError"] = "To restore your chat priveliges please make an appeal on the forums.";
-                return RedirectToAction("Play");
-            }
-
-            if (room == "" || room[0]=='_')
-            {
-                TempData["Result"] = "A chat room must have a name and not begin with an underscore";
-                return RedirectToAction("Play");
-            }
-
-            TempData["MyName"] = me.GetFullName();
-            TempData["YourNameColor"] = me.ChatColor;
-
-            if (me.MembershipId == "69")
-            {
-                TempData["MyName"] = "Judoo (admin)";
-            }
-
-            else if (me.MembershipId == "3490")
-            {
-                TempData["MyName"] = "Mizuho (dev)";
-            }
-
-            else if (me.MembershipId == "251")
-            {
-                TempData["MyName"] = "Arrhae (dev)";
-            }
-
-            ViewBag.ChatName = room;
-
-            //if (room == "global")
-            //{
-                return View("Chats/CHat_Global");
-            //}
-            //else if (room == "rp1")
-            //{
-            //    return View("Chats/Chat_RP1");
-            //}
-            //else if (room == "rp2")
-            //{
-            //    return View("Chats/Chat_RP2");
-            //}
-            //else if (room == "rp3")
-            //{
-            //    return View("Chats/Chat_RP3");
-            //}
-            //else
-            //{
-                
-            //    ViewBag.YourNameColor = me.ChatColor;
-            //    return View("Chats/Chat_Generic");
-            //}
-
-         //   return View();
-        }
+         public ActionResult Chat(string room)
+         {
+             return RedirectToAction("Index", "Chat", new RouteValueDictionary {{"room", room}});
+         }
 
         [Authorize]
          public ActionResult PrivateChat()

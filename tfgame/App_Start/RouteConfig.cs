@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using System.Web.Routing;
 
 namespace tfgame
@@ -12,6 +8,8 @@ namespace tfgame
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+
+            routes.MapRoute("ChatRoom", "Chat/Rooms/{room}", new {controller = "Chat", action = "Index", room = UrlParameter.Optional });
 
             routes.MapRoute(
                name: "Default",

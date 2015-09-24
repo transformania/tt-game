@@ -6,6 +6,7 @@ using tfgame.Statics;
 using tfgame.ViewModels;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using tfgame.dbModels.Commands.Player;
 
 namespace tfgame.dbModels.Models
 {
@@ -228,6 +229,28 @@ namespace tfgame.dbModels.Models
 
         }
 
+        public Tuple<string, string> GetDescriptor()
+        {
+            var name = string.Empty;
+            var pic = string.Empty;
+
+            if (MembershipId == "-1")
+                return new Tuple<string, string>(name, pic);
+
+            if (ChatStatics.Staff.ContainsKey(MembershipId))
+            {
+                var descriptor = ChatStatics.Staff[MembershipId];
+                name = descriptor.Item1;
+                pic = descriptor.Item2;
+
+                return new Tuple<string, string>(name, pic);
+            }
+
+            name = GetFullName();
+
+            return new Tuple<string, string>(name, pic);
+        }
+
         public DateTime GetLastCombatTimestamp()
         {
             if (this.LastCombatTimestamp > this.LastCombatAttackedTimestamp)
@@ -305,6 +328,18 @@ namespace tfgame.dbModels.Models
             {
                 return false;
             }
+        }
+
+        public void UpdateOnlineActivityTimestamp()
+        {
+            var markOnlineCutoff = DateTime.UtcNow.AddMinutes(ChatStatics.OnlineActivityCutoffMinutes);
+
+            // update the player's "last online" attribute if it's been long enough
+            if (OnlineActivityTimestamp >= markOnlineCutoff || PvPStatics.AnimateUpdateInProgress)
+                return;
+
+            var cmd = new UpdateOnlineActivityTimestamp { Player = this };
+            DomainRegistry.Root.Execute(cmd);
         }
     }
 }

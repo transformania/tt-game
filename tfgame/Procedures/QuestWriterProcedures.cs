@@ -139,5 +139,10 @@ namespace tfgame.Procedures
             return questEnd.Id;
         }
 
+        public static void DeleteQuestStateRequirement(int id)
+        {
+            IQuestRepository repo = new EFQuestRepository();
+            repo.DeleteQuestStateRequirement(id);
+        }
     }
 }

@@ -143,6 +143,19 @@ namespace tfgame.Controllers
             return RedirectToAction("QuestStateRequirement", "QuestWriter", new { Id = savedId, QuestStateId = state.Id, QuestId = input.QuestStateRequirement.QuestId });
         }
 
+        public ActionResult QuestStateRequirementDelete(int Id) //, int QuestStateId, int QuestId, int ParentStateId)
+        {
+
+            IQuestRepository repo = new EFQuestRepository();
+
+            QuestStateRequirement questStateRequirement = repo.QuestStateRequirements.FirstOrDefault(q => q.Id == Id);
+            QuestState state = repo.QuestStates.FirstOrDefault(q => q.Id == questStateRequirement.QuestStateId.Id);
+
+            QuestWriterProcedures.DeleteQuestStateRequirement(Id);
+
+            return RedirectToAction("QuestState", "QuestWriter", new { Id = questStateRequirement.QuestStateId.Id, QuestId = questStateRequirement.QuestId, ParentStateId = state.ParentQuestStateId });
+        }
+
         public ActionResult QuestEnd(int Id, int QuestStateId, int QuestId)
         {
             IQuestRepository repo = new EFQuestRepository();

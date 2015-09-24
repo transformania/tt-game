@@ -40,13 +40,15 @@
 
         foreach (tfgame.dbModels.Models.QuestStart q in Model)
         {
-            <p> @Ajax.ActionLink(q.Name, "QuestStart", "QuestWriter", new { Id = q.Id }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
+            <p> @Ajax.ActionLink(q.Name, "QuestStart", "QuestWriter", new { Id = q.Id }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "editButton" })</p>
         }
 
     }
 
+    <br />
+
     <p>
-        @Ajax.ActionLink("-- New Quest --", "QuestStart", "QuestWriter", new { Id = -1 }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })
+        @Ajax.ActionLink("-- New Quest --", "QuestStart", "QuestWriter", new { Id = -1 }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "newButton" })
     </p>
 
 
@@ -103,5 +105,41 @@
     textarea {
         height: 300px;
         width: 100%;
+    }
+
+    td {
+        padding: 3px;
+        border:1px solid black;
+    }
+
+    .newButton {
+        background-color: lightgreen;
+        border:2px solid darkgreen;
+        border-radius: 5px;
+        padding-left: 3px;
+         padding-right: 3px;
+         margin: 3px;
+
+         position: relative;
+    }
+
+     .editButton {
+        background-color: #ffd76a;
+        border:2px solid darkorange;
+        border-radius: 5px;
+        padding-left: 3px;
+         padding-right: 3px;
+          margin: 3px;
+             position: relative;
+    }
+
+      .parentButton {
+        background-color: #eb99ff;
+        border:2px solid violet;
+        border-radius: 5px;
+        padding-left: 3px;
+         padding-right: 3px;
+          margin: 3px;
+             position: relative;
     }
 </style>

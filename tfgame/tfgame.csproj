@@ -501,6 +501,7 @@
     <Compile Include="ViewModels\PlayerFormViewModel.cs" />
     <Compile Include="ViewModels\PlayerSearchViewModel.cs" />
     <Compile Include="ViewModels\PlayPageViewModel.cs" />
+    <Compile Include="ViewModels\PopulationTurnTuple.cs" />
     <Compile Include="ViewModels\PublicBroadcastViewModel.cs" />
     <Compile Include="ViewModels\Quest\QuestStateFormViewModel.cs" />
     <Compile Include="ViewModels\RestockList.cs" />
@@ -2455,6 +2456,7 @@
     <Content Include="Views\PvP\RoundLeaderboards\XP\Alpha_25.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_25.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Statistics\Alpha_25.cshtml" />
+    <Content Include="Views\Info\ServerPopulation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

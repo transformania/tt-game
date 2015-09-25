@@ -13,6 +13,7 @@ namespace tfgame.dbModels.Models
         public string FullLog { get; set; }
         public DateTime StartTimestamp { get; set; }
         public DateTime FinishTimestamp { get; set; }
+        public int Population { get; set; }
 
         public void AddLog(string input)
         {

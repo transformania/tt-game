@@ -87,7 +87,7 @@ namespace tfgame.Procedures
 
             repo.SaveQuestState(questState);
 
-            return -1;
+            return questState.Id;
         }
 
         public static int SaveQuestStateRequirement(QuestStateRequirement input, QuestState state)

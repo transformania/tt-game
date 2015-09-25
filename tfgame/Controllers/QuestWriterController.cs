@@ -81,6 +81,9 @@ namespace tfgame.Controllers
                     Text = "",
                     QuestId = QuestId,
                     QuestStateName = "[ state name ]",
+
+                    QuestEnds = new List<QuestEnd>(),
+                    QuestStateRequirements = new List<QuestStateRequirement>()
                 };
             } else
             {
@@ -98,9 +101,9 @@ namespace tfgame.Controllers
         public ActionResult QuestStateSend(QuestStateFormViewModel input)
         {
 
-            QuestWriterProcedures.SaveQuestState(input.QuestState);
+            int id = QuestWriterProcedures.SaveQuestState(input.QuestState);
 
-            return RedirectToAction("QuestStart", "QuestWriter", new { Id = input.QuestState.Id, QuestId = input.QuestState.QuestId, ParentStateId = input.QuestState.ParentQuestStateId });
+            return RedirectToAction("QuestState", "QuestWriter", new { Id = id, QuestId = input.QuestState.QuestId, ParentStateId = input.QuestState.ParentQuestStateId });
         }
 
         public ActionResult QuestStateRequirement(int Id, int QuestStateId, int QuestId)
@@ -195,7 +198,7 @@ namespace tfgame.Controllers
 
             int savedId = QuestWriterProcedures.SaveQuestEnd(input.QuestEnd, state);
 
-            return RedirectToAction("QuestStateRequirement", "QuestWriter", new { Id = savedId, QuestStateId = state.Id, QuestId = input.QuestEnd.QuestId });
+            return RedirectToAction("QuestEnd", "QuestWriter", new { Id = savedId, QuestStateId = state.ParentQuestStateId, QuestId = input.QuestEnd.QuestId });
         }
 
 

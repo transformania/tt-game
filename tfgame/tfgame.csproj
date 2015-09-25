@@ -240,6 +240,7 @@
     <Compile Include="Controllers\NPCController.cs" />
     <Compile Include="Controllers\PvPAdminController.cs" />
     <Compile Include="Controllers\PvPController.cs" />
+    <Compile Include="Controllers\QuestController.cs" />
     <Compile Include="Controllers\QuestWriterController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="CustomHtmlHelpers\CharactersHere.cs" />

@@ -32,6 +32,11 @@
         <p class="infoMessage specialBox2 specialNoticeBox">You are currently engaged in a duel with @ViewBag.Duel!  Click @Html.ActionLink("here", "DuelDetail","Duel", new { id = ViewBag.DuelId}, null) to see details.  <b class="bad">@ViewBag.TurnsLeft</b> turns remaining.</p>
     }
 
+    if (ViewBag.QuestName != null && ViewBag.QuestName != "")
+    {
+        <p class="infoMessage specialBox2 specialNoticeBox">You are currently engaged in the quest @ViewBag.QuestName!  Click @Html.ActionLink("here", "Quest", "Quest") to resume questing.</p>
+    }
+
     if (Model.Boss_Donna == "active")
     {
         <div class="specialBox"> <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Rumor has it a powerful sorceress known as Donna Milton is wandering the streets turning those she meets into animals... <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> </div>

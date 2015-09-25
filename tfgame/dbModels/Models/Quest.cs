@@ -101,5 +101,15 @@ namespace tfgame.dbModels.Models
         //[RewardType] - string.  What type of reward this quest completion ends (if completed.)  Options include XP, Item, Spell, or GiveEffect.
         //[RewardAmount] - string/int? How much XP / how many items / which spell or effect to give
     }
+
+
+    public class QuestWriterLog
+    {
+        public int Id { get; set; }
+        public string User { get; set; }
+        public string Text { get; set; }
+        public DateTime Timestamp { get; set; }
+
+    }
 }
 

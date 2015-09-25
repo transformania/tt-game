@@ -213,5 +213,55 @@ namespace tfgame.dbModels.Concrete
 
         #endregion
 
+        #region QuestEnd
+        public IQueryable<QuestWriterLog> QuestWriterLogs
+        {
+            get { return context.QuestWriterLogs; }
+        }
+
+        public void SaveQuestWriterLog(QuestWriterLog QuestWriterLog)
+        {
+            if (QuestWriterLog.Id == 0)
+            {
+                context.QuestWriterLogs.Add(QuestWriterLog);
+            }
+            else
+            {
+                QuestWriterLog editMe = context.QuestWriterLogs.Find(QuestWriterLog.Id);
+                if (editMe != null)
+                {
+                    // dbEntry.Name = QuestWriterLog.Name;
+                    // dbEntry.Message = QuestWriterLog.Message;
+                    // dbEntry.TimeStamp = QuestWriterLog.TimeStamp;
+
+                }
+            }
+
+            try
+            {
+                context.SaveChanges();
+            }
+            catch (OptimisticConcurrencyException)
+            {
+                //context.(RefreshMode.ClientWins, dbModels.Models.QuestWriterLog);
+                //context.SaveChanges();
+            }
+
+            // context.SaveChanges();
+        }
+
+        public void DeleteQuestWriterLog(int id)
+        {
+
+            QuestWriterLog dbEntry = context.QuestWriterLogs.Find(id);
+            if (dbEntry != null)
+            {
+                context.QuestWriterLogs.Remove(dbEntry);
+                context.SaveChanges();
+            }
+        }
+
+        #endregion
+
     }
 }

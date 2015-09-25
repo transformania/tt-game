@@ -144,5 +144,18 @@ namespace tfgame.Procedures
             IQuestRepository repo = new EFQuestRepository();
             repo.DeleteQuestStateRequirement(id);
         }
+
+        public static void AddQuestWriterLog(string writer, string message)
+        {
+            IQuestRepository repo = new EFQuestRepository();
+            QuestWriterLog log = new QuestWriterLog
+            {
+                Timestamp = DateTime.UtcNow,
+                Text = message,
+                User = writer
+
+            };
+            repo.SaveQuestWriterLog(log);
+        }
     }
 }

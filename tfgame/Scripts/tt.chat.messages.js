@@ -6,6 +6,9 @@
 	var pub = {};
 
 	function canRender(model) {
+	    if (ConfigModule.chat.ignoreList === undefined)
+	        return true;
+
 	    var ignoreList = ConfigModule.chat.ignoreList.slice(0);
 
 	    if (ignoreList.length === 0)

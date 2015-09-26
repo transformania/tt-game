@@ -65,6 +65,19 @@ namespace tfgame.Controllers
             return RedirectToAction("QuestStart", "QuestWriter", new { input.Id });
         }
 
+        public ActionResult MarkQuestAsLive (int Id, bool live)
+        {
+            // assert only admins can view this
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            {
+                return RedirectToAction("QuestStart", "QuestWriter", new { Id = Id });
+            }
+
+            QuestWriterProcedures.MarkQuestAsLive(Id, live);
+            return RedirectToAction("QuestStart", "QuestWriter", new { Id = Id });
+
+        }
+
         public ActionResult QuestState(int Id, int QuestId, int ParentStateId)
         {
             IQuestRepository repo = new EFQuestRepository();

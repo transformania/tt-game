@@ -157,5 +157,13 @@ namespace tfgame.Procedures
             };
             repo.SaveQuestWriterLog(log);
         }
+
+        public static void MarkQuestAsLive(int Id, bool live)
+        {
+            IQuestRepository repo = new EFQuestRepository();
+            QuestStart dbQuestStart = repo.QuestStarts.FirstOrDefault(q => q.Id == Id);
+            dbQuestStart.IsLive = live;
+            repo.SaveQuestStart(dbQuestStart);
+        }
     }
 }

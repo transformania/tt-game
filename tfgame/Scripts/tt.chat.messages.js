@@ -12,10 +12,14 @@
 	    if (ignoreList.length === 0)
 	        return true;
 
-        var regex = new RegExp('\\b' + ignoreList.join("\\b|\\b") + '\\b', 'i');
+	    var ignores = ignoreList.length;
 
-        return !regex.test(model.Message) && !regex.test(model.User);
-    }
+	    for (var i = 0; i < ignores; i++)
+	        if (name.indexOf(ignoreList[i]) >= 0 || message.indexOf(ignoreList[i]) >= 0)
+	            return false;
+
+	    return true;
+	}
 
 	function openLink(event) {
 		var message = event.data.message;

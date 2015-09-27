@@ -2,8 +2,6 @@
     var unreadCount = 0;
     var cooldownActive = false;
     var roomName = '';
-    var currentPlayer = '';
-    var currentPlayerChatColor = '';
     
     var pub = {};
 
@@ -112,13 +110,13 @@
     }
 
     function onNewMessage(model) {
-        var output = ChatMessageModule.formatMessage(model, currentPlayer, currentPlayerChatColor);
+        var output = ChatMessageModule.formatMessage(model);
         $('#discussion').append($(output));
 
         if (ConfigModule.chat.autoScrollEnabled)
             $('#discussion ').animate({ scrollTop: $('#discussion').prop("scrollHeight") }, 500);
 
-        playAudio(model.Message.indexOf(currentPlayer) > 0);
+        playAudio(model.Message.indexOf(pub.currentPlayer) > 0);
     }
 
     function onNewIgnoreAdded(newIgnore) {
@@ -147,21 +145,24 @@
         }
     }
 
+    function onNameChanged(newName) {
+        pub.currentPlayer = newName;
+    }
+
     /* Public methods */
 
     pub.initialize = function (options) {
         roomName = options.roomName;
-        currentPlayer = options.currentPlayer;
-        currentPlayerChatColor = options.currentPlayerChatColor;
+        pub.currentPlayer = options.currentPlayer;
+        pub.currentPlayerChatColor = options.currentPlayerChatColor;
 
         doConfig();
-
-        ChatMessageModule.initialize(options);
 
         $.connection.hub.start().done(onChatHubStarted);
         $.connection.hub.disconnected(onChatDisconnected);
 
         pub.chat.client.addNewMessageToPage = onNewMessage;
+        pub.chat.client.nameChanged = onNameChanged;
     }
 
     pub.onUserDoubleTapped = function (name, e) {

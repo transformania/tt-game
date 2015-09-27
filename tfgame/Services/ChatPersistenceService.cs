@@ -68,6 +68,14 @@ namespace tfgame.Services
             user.ActiveOn(connectionId);
         }
 
+        public void TrackPlayerNameChange(string membershipId, string newPlayerName)
+        {
+            if (!Persistence.ContainsKey(membershipId))
+                return;
+
+            Persistence[membershipId].ChangedNameTo(newPlayerName);
+        }
+
         public bool HasNameChanged(string membershipId, string name)
         {
             if (!Persistence.ContainsKey(membershipId))

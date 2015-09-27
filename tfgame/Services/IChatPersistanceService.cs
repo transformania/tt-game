@@ -9,6 +9,7 @@ namespace tfgame.Services
         void TrackDisconnect(string membershipId, string connectionId);
         void TrackRoomJoin(string membershipId, string connectionId, string room);
         void TrackMessageSend(string membershipId, string connectionId);
+        void TrackPlayerNameChange(string membershipId, string newPlayerName);
         bool HasNameChanged(string membershipId, string name);
         IEnumerable<string> GetRoomsPlayerIsIn(string membershipId);
         string GetRoom(string membershipId, string connectionId);

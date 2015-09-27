@@ -73,6 +73,8 @@ namespace tfgame.Chat
                 var nameOut = output.SendNameToClient ? name : "";
                 var colorOut = output.SendPlayerChatColor ? me.Player.ChatColor : "";
 
+                _chatPersistenceService.TrackMessageSend(me.Player.MembershipId, Context.ConnectionId);
+
                 var model = new
                 {
                     User = nameOut,
@@ -84,11 +86,13 @@ namespace tfgame.Chat
                     Timestamp = DateTime.UtcNow.ToUnixTime(),
                 };
 
+                if (_chatPersistenceService.HasNameChanged(me.Player.MembershipId, name))
+                    _chatPersistenceService.TrackPlayerNameChange(me.Player.MembershipId, name);
+
                 Clients.Group(room).addNewMessageToPage(model);
                 ChatLogProcedures.WriteLogToDatabase(room, name, output.Text);
             }
 
-            _chatPersistenceService.TrackMessageSend(me.Player.MembershipId, Context.ConnectionId);
             UpdateUserList(room);
         }
 

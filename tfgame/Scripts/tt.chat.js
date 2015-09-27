@@ -117,6 +117,11 @@
             $('#discussion ').animate({ scrollTop: $('#discussion').prop("scrollHeight") }, 500);
 
         playAudio(model.Message.indexOf(pub.currentPlayer) > 0);
+
+        if (!document.hasFocus()) {
+            unreadCount++;
+            updateTitle('(' + unreadCount + ') ' + roomName);
+        }
     }
 
     function onNewIgnoreAdded(newIgnore) {

@@ -41,7 +41,7 @@ namespace tfgame.Chat
             if (string.IsNullOrWhiteSpace(room) || _chatPersistenceService.GetRoomsPlayerIsIn(me.MembershipId).Contains(room))
                 return base.OnDisconnected();
 
-            SendNoticeToRoom(room, me, "has left the room.");
+            SendNoticeToRoom(room, me, " has left the room.");
             UpdateUserList(room, false);
 
             return base.OnDisconnected();

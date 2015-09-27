@@ -1,6 +1,4 @@
 ﻿ChatMessageModule = (function() {
-    var currentPlayer = '';
-    var currentPlayerChatColor = '';
     var formatters = [];
 	var reservedText = [];
 	var pub = {};
@@ -48,8 +46,8 @@
 	}
 
 	function applyHighlightToMessage(message) {
-        var replacement = "<span style='background: #FFE9D5; color: " + currentPlayerChatColor + ";'><strong> " + currentPlayer + "</strong></span>";
-        return message.replace(currentPlayer, replacement);
+        var replacement = "<span style='background: #FFE9D5; color: " + ChatModule.currentPlayerChatColor + ";'><strong>" + ChatModule.currentPlayer + "</strong></span>";
+        return message.replace(ChatModule.currentPlayer, replacement);
 	}
 
 	function renderImage(pic) {
@@ -188,11 +186,6 @@
 
 		return formatters[model.MessageType](model);
 	}
-
-    pub.initialize = function(options) {
-        currentPlayer = options.currentPlayer;
-        currentPlayerChatColor = options.currentPlayerChatColor;
-    };
 
     $("#discussion").on('click', '.chatlink', function () {
 	    openLink({ data: { url: $(this).data('url') } });

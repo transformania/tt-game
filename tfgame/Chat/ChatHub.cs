@@ -87,7 +87,10 @@ namespace tfgame.Chat
                 };
 
                 if (_chatPersistenceService.HasNameChanged(me.Player.MembershipId, name))
+                {
                     _chatPersistenceService.TrackPlayerNameChange(me.Player.MembershipId, name);
+                    Clients.Caller.nameChanged(name);
+                }
 
                 Clients.Group(room).addNewMessageToPage(model);
                 ChatLogProcedures.WriteLogToDatabase(room, name, output.Text);
@@ -101,7 +104,7 @@ namespace tfgame.Chat
             var me = PlayerProcedures.GetPlayerFormViewModel_FromMembership(Context.User.Identity.GetUserId());
 
             if (!_chatPersistenceService.GetRoomsPlayerIsIn(me.Player.MembershipId).Contains(roomName))
-                SendNoticeToRoom(roomName, me.Player, "has joined the room.");
+                SendNoticeToRoom(roomName, me.Player, " has joined the room.");
 
             _chatPersistenceService.TrackRoomJoin(me.Player.MembershipId, Context.ConnectionId, roomName);
             UpdateUserList(roomName);

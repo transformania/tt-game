@@ -12,6 +12,12 @@ namespace tfgame.Tests.Services
     [TestFixture]
     public class TestChatPersistenceService
     {
+        [SetUp]
+        public void SetUp()
+        {
+            ChatPersistenceServiceWrapper.Reset();
+        }
+
         [Test]
         public void Should_register_connection()
         {
@@ -212,7 +218,6 @@ namespace tfgame.Tests.Services
             var rooms = persistenceService.GetRoomsPlayerIsIn(player.MembershipId);
 
             rooms.Should().BeEmpty();
-
         }
 
         [Test]
@@ -282,9 +287,32 @@ namespace tfgame.Tests.Services
             users.Should().NotContain(x => x.MembershipId == player2.MembershipId);
         }
 
+        [Test]
+        public void Should_update_player_name()
+        {
+            const string room = "global";
+            const string newName = "New Player Name";
+
+            var persistenceService = new ChatPersistenceServiceWrapper();
+            var player = TestData.CreateRegularPlayer();
+            var connectionId = Guid.NewGuid().ToString();
+
+            persistenceService.TrackConnection(player, connectionId);
+            persistenceService.TrackRoomJoin(player.MembershipId, connectionId, room);
+
+            persistenceService.TrackPlayerNameChange(player.MembershipId, newName);
+
+            persistenceService.GetUsersInRoom(room).Should().Contain(x => x.Name == newName);
+        }
+
         public class ChatPersistenceServiceWrapper : ChatPersistenceService
         {
             public IDictionary<string, ChatUser> InternalPersistence => Persistence;
+
+            public static void Reset()
+            {
+                Persistence.Clear();
+            }
         }
     }
 }

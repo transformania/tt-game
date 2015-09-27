@@ -26,8 +26,10 @@
     @Html.HiddenFor(m => m.QuestStateRequirement.Id)
     @Html.HiddenFor(m => m.QuestStateRequirement.QuestId)
 
-    <label>Name (used for interla purposes):</label>    <br /><br />
+    <label>Name (used for interla purposes):</label>    <br />
         @Html.TextBoxFor(m => m.QuestStateRequirement.QuestStateRequirementName)
+
+    <br /><br />
 
     <label>Requirement Type:</label>    <br />
     @Html.DropDownListFor(m => m.QuestStateRequirement.RequirementType, new SelectList(
@@ -66,10 +68,12 @@
 
     <br /><br />
 
-    <label>Requirement Value:</label>    <br /><br />
+    <label>Requirement Value:</label>    <br />
     @Html.TextBoxFor(m => m.QuestStateRequirement.RequirementValue)
 
-    <label>Variable used:</label>    <br /><br />
+    <br /><br />
+
+    <label>Variable used:</label>    <br />
     @Html.TextBoxFor(m => m.QuestStateRequirement.VariabledbName)
 
     <input type="submit" class="btn btn-chat" value="Send" />

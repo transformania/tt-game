@@ -214,6 +214,18 @@ namespace tfgame.Controllers
             return RedirectToAction("QuestEnd", "QuestWriter", new { Id = savedId, QuestStateId = state.ParentQuestStateId, QuestId = input.QuestEnd.QuestId });
         }
 
+        public ActionResult QuestEndDelete(int Id)
+        {
+            IQuestRepository repo = new EFQuestRepository();
+
+            QuestEnd questEnd = repo.QuestEnds.FirstOrDefault(q => q.Id == Id);
+            QuestState state = repo.QuestStates.FirstOrDefault(s => s.Id == questEnd.QuestStateId.Id);
+
+            QuestWriterProcedures.DeleteQuestEnd(Id);
+
+            return RedirectToAction("QuestState", "QuestWriter", new { Id = questEnd.QuestStateId.Id, QuestId = state.Id, ParentStateId = state.ParentQuestStateId  });
+        }
+
 
     }
 }

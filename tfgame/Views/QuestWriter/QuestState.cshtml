@@ -73,24 +73,35 @@
 
     <h4>Quest End (@Model.QuestState.QuestEnds.Count())</h4>
 
-    foreach (QuestEnd qe in Model.QuestState.QuestEnds)
-    {
-        <p>@Ajax.ActionLink(qe.QuestEndName, "QuestEnd", "QuestWriter", new { Id = qe.Id, QuestStateId = Model.QuestState.Id, QuestId = Model.QuestState.QuestId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "editButton" })</p>
-    }
+    <table>
 
-    <p>@Ajax.ActionLink("--New Quest End--", "QuestEnd", "QuestWriter", new { Id = -1, QuestStateId = Model.QuestState.Id, QuestId = Model.QuestState.QuestId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "newButton" })</p>
+        @{
+            foreach (QuestEnd qe in Model.QuestState.QuestEnds)
+            {
+                <tr>
+                    <td>
+                        @Ajax.ActionLink(qe.QuestEndName, "QuestEnd", "QuestWriter", new { Id = qe.Id, QuestStateId = Model.QuestState.Id, QuestId = Model.QuestState.QuestId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "editButton" })
+                    </td>
+                    <td>
+                        @Ajax.ActionLink("[DELETE]", "QuestEndDelete", "QuestWriter", new { Id = qe.Id }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "bad" })
+                    </td>
+                </tr>
+            }
+        }
+    </table>
 
 
     <input type="submit" class="btn btn-chat" value="Send" />
 
-}
+            }
 
 <h4>Children Quest States (@Model.ChildQuestStates.Count()):</h4>
 
 @{
-    foreach (QuestState q in Model.ChildQuestStates)
-    {
-        <p>@Ajax.ActionLink("[" + q.QuestStateName + "]", "QuestState", "QuestWriter", new { Id = q.Id, QuestId = Model.QuestState.QuestId, ParentStateId = Model.QuestState.Id }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "editButton" })</p><br />
+            foreach (QuestState q in Model.ChildQuestStates)
+            {
+        <p>@Ajax.ActionLink("[" + q.QuestStateName + "]", "QuestState", "QuestWriter", new { Id = q.Id, QuestId = Model.QuestState.QuestId, ParentStateId = Model.QuestState.Id }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "editButton" })</p>
+                <br />
     }
 }
 

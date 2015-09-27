@@ -55,6 +55,14 @@ namespace tfgame.Procedures
             {
                 return false;
             }
+            else if (questStart.RequiredGender == (int)QuestStatics.Gender.Male && player.Gender != PvPStatics.GenderMale)
+            {
+                return false;
+            }
+            else if (questStart.RequiredGender == (int)QuestStatics.Gender.Female && player.Gender != PvPStatics.GenderFemale)
+            {
+                return false;
+            }
 
             foreach (QuestPlayerStatus q in questPlayerStatuses)
             {

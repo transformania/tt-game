@@ -15,8 +15,8 @@
     function update(newConfig) {
         config = newConfig;
 
-        if (config.ignoreList === undefined)
-            config.ignoreList = [];
+        if (config.chat.ignoreList === undefined)
+            config.chat.ignoreList = [];
 
         pub.chat = config.chat;
     }

@@ -66,7 +66,7 @@
     function renderActionText(message, messageClass, model, useUserColour) {
         var text = $('<span></span>')
             .addClass(messageClass)
-            .append(applyHighlightToMessage(message))
+            .append(applyHighlightToMessage(linkify(message)))
             .doubleTap(function (e) { ChatModule.onUserDoubleTapped(model.User, e); })
             .prepend(model.IsStaff ? $('<span class="adminFont"></span>').text(model.User) : model.User);
 

@@ -40,7 +40,8 @@ namespace tfgame.Procedures
                     FinishTimestamp = DateTime.UtcNow,
                     Errors = 0,
                     FullLog = "",
-                };
+                    Population = PlayerProcedures.GetWorldPlayerStats().CurrentOnlinePlayers,
+            };
                 log.AddLog("Started new log for turn " + turnNo + ".");
                 Stopwatch updateTimer = new Stopwatch();
                 updateTimer.Start();

@@ -1,0 +1,54 @@
+﻿<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.js"></script>
+</head>
+
+<div class="containerInner" style="overflow: scroll;">
+
+    <h1>Server Population By Turn</h1>
+
+    <canvas id="myChart" width="4000" height="400"></canvas>
+</div>
+
+<script>
+
+    var labelsRaw = [];
+    var dataRaw = [];
+    var populationInfo = "";
+
+    $.getJSON("/Info/ServerPopulationJson", function (data) {
+        populationInfo = data;
+
+    }).then(function() {
+        
+        for (var i = 0; i < populationInfo.length; i++) {
+            var infoItem = populationInfo[i];
+            labelsRaw.push(infoItem.Turn);
+            dataRaw.push(infoItem.Population);
+        }
+
+        var data = {
+            labels: labelsRaw,
+            datasets: [
+                {
+                    label: "Round",
+                    fillColor: "white",
+                    strokeColor: "darkblue",
+                    pointColor: "black",
+                    pointStrokeColor: "#fff",
+                    pointHighlightFill: "#fff",
+                    pointHighlightStroke: "rgba(220,220,220,1)",
+                    data: dataRaw
+                }
+            ]
+        };
+
+        var options = {
+            scaleBeginAtZero: true,
+        };
+
+        var ctx = document.getElementById("myChart").getContext("2d");
+        var myLineChart = new Chart(ctx).Line(data, options);
+
+    });
+
+</script>

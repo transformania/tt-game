@@ -87,7 +87,7 @@ namespace tfgame.Procedures
 
             repo.SaveQuestState(questState);
 
-            return -1;
+            return questState.Id;
         }
 
         public static int SaveQuestStateRequirement(QuestStateRequirement input, QuestState state)
@@ -139,5 +139,37 @@ namespace tfgame.Procedures
             return questEnd.Id;
         }
 
+        public static void DeleteQuestEnd(int Id)
+        {
+            IQuestRepository repo = new EFQuestRepository();
+            repo.DeleteQuestEnd(Id);
+        }
+
+        public static void DeleteQuestStateRequirement(int id)
+        {
+            IQuestRepository repo = new EFQuestRepository();
+            repo.DeleteQuestStateRequirement(id);
+        }
+
+        public static void AddQuestWriterLog(string writer, string message)
+        {
+            IQuestRepository repo = new EFQuestRepository();
+            QuestWriterLog log = new QuestWriterLog
+            {
+                Timestamp = DateTime.UtcNow,
+                Text = message,
+                User = writer
+
+            };
+            repo.SaveQuestWriterLog(log);
+        }
+
+        public static void MarkQuestAsLive(int Id, bool live)
+        {
+            IQuestRepository repo = new EFQuestRepository();
+            QuestStart dbQuestStart = repo.QuestStarts.FirstOrDefault(q => q.Id == Id);
+            dbQuestStart.IsLive = live;
+            repo.SaveQuestStart(dbQuestStart);
+        }
     }
 }

@@ -101,5 +101,34 @@ namespace tfgame.dbModels.Models
         //[RewardType] - string.  What type of reward this quest completion ends (if completed.)  Options include XP, Item, Spell, or GiveEffect.
         //[RewardAmount] - string/int? How much XP / how many items / which spell or effect to give
     }
+
+
+    public class QuestWriterLog
+    {
+        public int Id { get; set; }
+        public string User { get; set; }
+        public string Text { get; set; }
+        public DateTime Timestamp { get; set; }
+
+    }
+
+    public class QuestPlayerStatus
+    {
+        public int Id { get; set; }
+        public int PlayerId { get; set; }
+        public int QuestId { get; set; }
+        public int Outcome { get; set; }
+        public int StartedTurn { get; set; }
+        public int LastEndedTurn { get; set; }
+    }
+
+//    [PlayerQuests]
+//    This table is used to keep track of which players have done which quests and their outcomes.
+//    [Id] -- int
+//    [PlayerId] - int.  Database name of the quest
+//    [QuestId] -- int.  The quest that this refers to
+//    [Outcome] - string.  Either “completed” or “failed.”
+//[StartedTurn] - int.  The game turn that the player began this quest.
+//    [CompletedOrFailedTurn] - int.  The game turn that the player either last failed or completed this quest.
 }
 

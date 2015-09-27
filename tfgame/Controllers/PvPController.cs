@@ -343,6 +343,12 @@ namespace tfgame.Controllers
                 ViewBag.TurnsLeft = PvPStatics.MaximumDuelTurnLength - (PvPWorldStatProcedures.GetWorldTurnNumber() - duel.StartTurn);
             }
 
+            if (me.InQuest > 0)
+            {
+                QuestStart quest = QuestProcedures.GetQuest(me.InQuest);
+                ViewBag.QuestName = quest.Name;
+            }
+
             return View(output);
         }
 

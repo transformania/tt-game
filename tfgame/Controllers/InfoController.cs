@@ -62,5 +62,24 @@ namespace tfgame.Controllers
              List<DbStaticForm> output = PlayerProcedures.GetAllDbStaticForms().ToList();
              return PartialView(output);
          }
+
+        public ActionResult ServerPopulation()
+        {
+            IServerLogRepository repo = new EFServerLogRepository();
+
+            //  IEnumerable<PopulationTurnTuple> output = repo.ServerLogs.Select(
+
+
+            IEnumerable<PopulationTurnTuple> output = from q in repo.ServerLogs  select new PopulationTurnTuple { Turn = q.TurnNumber, Population = q.Population };
+
+            return View(output);
+        }
+
+        public JsonResult ServerPopulationJson()
+        {
+            IServerLogRepository repo = new EFServerLogRepository();
+            IEnumerable<PopulationTurnTuple> output = from q in repo.ServerLogs select new PopulationTurnTuple { Turn = q.TurnNumber, Population = q.Population };
+            return Json(output, JsonRequestBehavior.AllowGet);
+        }
     }
 }

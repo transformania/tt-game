@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -64,6 +65,19 @@ namespace tfgame.Controllers
             return RedirectToAction("QuestStart", "QuestWriter", new { input.Id });
         }
 
+        public ActionResult MarkQuestAsLive (int Id, bool live)
+        {
+            // assert only admins can view this
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            {
+                return RedirectToAction("QuestStart", "QuestWriter", new { Id = Id });
+            }
+
+            QuestWriterProcedures.MarkQuestAsLive(Id, live);
+            return RedirectToAction("QuestStart", "QuestWriter", new { Id = Id });
+
+        }
+
         public ActionResult QuestState(int Id, int QuestId, int ParentStateId)
         {
             IQuestRepository repo = new EFQuestRepository();
@@ -80,6 +94,9 @@ namespace tfgame.Controllers
                     Text = "",
                     QuestId = QuestId,
                     QuestStateName = "[ state name ]",
+
+                    QuestEnds = new List<QuestEnd>(),
+                    QuestStateRequirements = new List<QuestStateRequirement>()
                 };
             } else
             {
@@ -97,9 +114,9 @@ namespace tfgame.Controllers
         public ActionResult QuestStateSend(QuestStateFormViewModel input)
         {
 
-            QuestWriterProcedures.SaveQuestState(input.QuestState);
+            int id = QuestWriterProcedures.SaveQuestState(input.QuestState);
 
-            return RedirectToAction("QuestStart", "QuestWriter", new { Id = input.QuestState.Id, QuestId = input.QuestState.QuestId, ParentStateId = input.QuestState.ParentQuestStateId });
+            return RedirectToAction("QuestState", "QuestWriter", new { Id = id, QuestId = input.QuestState.QuestId, ParentStateId = input.QuestState.ParentQuestStateId });
         }
 
         public ActionResult QuestStateRequirement(int Id, int QuestStateId, int QuestId)
@@ -143,6 +160,19 @@ namespace tfgame.Controllers
             return RedirectToAction("QuestStateRequirement", "QuestWriter", new { Id = savedId, QuestStateId = state.Id, QuestId = input.QuestStateRequirement.QuestId });
         }
 
+        public ActionResult QuestStateRequirementDelete(int Id) //, int QuestStateId, int QuestId, int ParentStateId)
+        {
+
+            IQuestRepository repo = new EFQuestRepository();
+
+            QuestStateRequirement questStateRequirement = repo.QuestStateRequirements.FirstOrDefault(q => q.Id == Id);
+            QuestState state = repo.QuestStates.FirstOrDefault(q => q.Id == questStateRequirement.QuestStateId.Id);
+
+            QuestWriterProcedures.DeleteQuestStateRequirement(Id);
+
+            return RedirectToAction("QuestState", "QuestWriter", new { Id = questStateRequirement.QuestStateId.Id, QuestId = questStateRequirement.QuestId, ParentStateId = state.ParentQuestStateId });
+        }
+
         public ActionResult QuestEnd(int Id, int QuestStateId, int QuestId)
         {
             IQuestRepository repo = new EFQuestRepository();
@@ -181,7 +211,19 @@ namespace tfgame.Controllers
 
             int savedId = QuestWriterProcedures.SaveQuestEnd(input.QuestEnd, state);
 
-            return RedirectToAction("QuestStateRequirement", "QuestWriter", new { Id = savedId, QuestStateId = state.Id, QuestId = input.QuestEnd.QuestId });
+            return RedirectToAction("QuestEnd", "QuestWriter", new { Id = savedId, QuestStateId = state.ParentQuestStateId, QuestId = input.QuestEnd.QuestId });
+        }
+
+        public ActionResult QuestEndDelete(int Id)
+        {
+            IQuestRepository repo = new EFQuestRepository();
+
+            QuestEnd questEnd = repo.QuestEnds.FirstOrDefault(q => q.Id == Id);
+            QuestState state = repo.QuestStates.FirstOrDefault(s => s.Id == questEnd.QuestStateId.Id);
+
+            QuestWriterProcedures.DeleteQuestEnd(Id);
+
+            return RedirectToAction("QuestState", "QuestWriter", new { Id = questEnd.QuestStateId.Id, QuestId = state.Id, ParentStateId = state.ParentQuestStateId  });
         }
 
 

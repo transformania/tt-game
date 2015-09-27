@@ -36,5 +36,19 @@ namespace tfgame.dbModels.Abstract
 
         void DeleteQuestEnd(int QuestEndId);
 
+
+        IQueryable<QuestWriterLog> QuestWriterLogs { get; }
+
+        void SaveQuestWriterLog(QuestWriterLog quest);
+
+        void DeleteQuestWriterLog(int QuestWriterLogId);
+
+
+        IQueryable<QuestPlayerStatus> QuestPlayerStatuses { get; }
+
+        void SaveQuestPlayerStatus(QuestPlayerStatus quest);
+
+        void DeleteQuestPlayerStatus(int QuestPlayerStatusId);
+
     }
 }

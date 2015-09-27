@@ -240,6 +240,7 @@
     <Compile Include="Controllers\NPCController.cs" />
     <Compile Include="Controllers\PvPAdminController.cs" />
     <Compile Include="Controllers\PvPController.cs" />
+    <Compile Include="Controllers\QuestController.cs" />
     <Compile Include="Controllers\QuestWriterController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="CustomHtmlHelpers\CharactersHere.cs" />
@@ -500,6 +501,7 @@
     <Compile Include="ViewModels\PlayerFormViewModel.cs" />
     <Compile Include="ViewModels\PlayerSearchViewModel.cs" />
     <Compile Include="ViewModels\PlayPageViewModel.cs" />
+    <Compile Include="ViewModels\PopulationTurnTuple.cs" />
     <Compile Include="ViewModels\PublicBroadcastViewModel.cs" />
     <Compile Include="ViewModels\Quest\QuestStateFormViewModel.cs" />
     <Compile Include="ViewModels\RestockList.cs" />
@@ -2454,6 +2456,8 @@
     <Content Include="Views\PvP\RoundLeaderboards\XP\Alpha_25.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_25.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Statistics\Alpha_25.cshtml" />
+    <Content Include="Views\Info\ServerPopulation.cshtml" />
+    <Content Include="Views\Quest\QuestsAvailableHere.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

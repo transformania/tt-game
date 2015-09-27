@@ -6,8 +6,31 @@
 @using (Ajax.BeginForm("QuestStartSend", "QuestWriter", new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" }))
 {
 
-    <label>Is live:</label>
-    <p><b>@Model.IsLive</b></p>
+    if (Model.IsLive == true)
+    {
+        <h4 class="good">This quest is live and can be started by any eligible player.</h4>
+    }
+    else
+    {
+        <h4 class="bad">This quest is not live and cannot be started by any player.</h4>
+    }
+
+
+    <br /><br />
+
+    if (User.IsInRole(PvPStatics.Permissions_Admin) == true)
+    {
+        <p>
+            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+            @Ajax.ActionLink("Mark as Live", "MarkQuestAsLive", "QuestWriter", new { Id = Model.Id, live = true }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "good" })
+        </p>
+
+
+        <p>
+            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+            @Ajax.ActionLink("Mark as Not Live", "MarkQuestAsLive", "QuestWriter", new { Id = Model.Id, live = false }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "bad" })
+        </p>
+    }
 
     <br /><br />
 
@@ -36,7 +59,7 @@
 
     <br /><br />
 
-        <label>Minimum Start Level:</label>
+    <label>Minimum Start Level:</label>
         @Html.TextBoxFor(m => m.MinStartLevel)
 
         <br /><br />
@@ -70,7 +93,7 @@
     {
         @*<p>@Html.ActionLink("GO TO STARTING STATE", "QuestState", "QuestWriter", new { Id = ViewBag.firstState.Id, QuestId = Model.Id, ParentStateId = -1 }, null)</p>*@
 
-        <p>@Ajax.ActionLink("STARTING QUEST STATE -- " + ((tfgame.dbModels.Models.QuestState)ViewBag.firstState).QuestStateName, "QuestState", "QuestWriter", new { Id = ViewBag.firstState.Id, QuestId = Model.Id, ParentStateId = -1 }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
+        <p>@Ajax.ActionLink("STARTING QUEST STATE -- " + ((tfgame.dbModels.Models.QuestState)ViewBag.firstState).QuestStateName, "QuestState", "QuestWriter", new { Id = ViewBag.firstState.Id, QuestId = Model.Id, ParentStateId = -1 }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "editButton" })</p>
 
     }
     else
@@ -82,9 +105,9 @@
     <br /><br />
 
 
-        @Html.HiddenFor(m => m.Id)
+    @Html.HiddenFor(m => m.Id)
 
-        <br />
+    <br />
         <input type="submit" class="btn btn-chat" value="Send" />
 
 }

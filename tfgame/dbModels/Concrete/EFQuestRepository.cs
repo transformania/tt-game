@@ -213,5 +213,105 @@ namespace tfgame.dbModels.Concrete
 
         #endregion
 
+        #region QuestWriterLog
+        public IQueryable<QuestWriterLog> QuestWriterLogs
+        {
+            get { return context.QuestWriterLogs; }
+        }
+
+        public void SaveQuestWriterLog(QuestWriterLog QuestWriterLog)
+        {
+            if (QuestWriterLog.Id == 0)
+            {
+                context.QuestWriterLogs.Add(QuestWriterLog);
+            }
+            else
+            {
+                QuestWriterLog editMe = context.QuestWriterLogs.Find(QuestWriterLog.Id);
+                if (editMe != null)
+                {
+                    // dbEntry.Name = QuestWriterLog.Name;
+                    // dbEntry.Message = QuestWriterLog.Message;
+                    // dbEntry.TimeStamp = QuestWriterLog.TimeStamp;
+
+                }
+            }
+
+            try
+            {
+                context.SaveChanges();
+            }
+            catch (OptimisticConcurrencyException)
+            {
+                //context.(RefreshMode.ClientWins, dbModels.Models.QuestWriterLog);
+                //context.SaveChanges();
+            }
+
+            // context.SaveChanges();
+        }
+
+        public void DeleteQuestWriterLog(int id)
+        {
+
+            QuestWriterLog dbEntry = context.QuestWriterLogs.Find(id);
+            if (dbEntry != null)
+            {
+                context.QuestWriterLogs.Remove(dbEntry);
+                context.SaveChanges();
+            }
+        }
+
+        #endregion
+
+        #region QuestPlayerStatus
+        public IQueryable<QuestPlayerStatus> QuestPlayerStatuses
+        {
+            get { return context.QuestPlayerStatuses; }
+        }
+
+        public void SaveQuestPlayerStatus(QuestPlayerStatus QuestPlayerStatus)
+        {
+            if (QuestPlayerStatus.Id == 0)
+            {
+                context.QuestPlayerStatuses.Add(QuestPlayerStatus);
+            }
+            else
+            {
+                QuestPlayerStatus editMe = context.QuestPlayerStatuses.Find(QuestPlayerStatus.Id);
+                if (editMe != null)
+                {
+                    // dbEntry.Name = QuestPlayerStatus.Name;
+                    // dbEntry.Message = QuestPlayerStatus.Message;
+                    // dbEntry.TimeStamp = QuestPlayerStatus.TimeStamp;
+
+                }
+            }
+
+            try
+            {
+                context.SaveChanges();
+            }
+            catch (OptimisticConcurrencyException)
+            {
+                //context.(RefreshMode.ClientWins, dbModels.Models.QuestPlayerStatus);
+                //context.SaveChanges();
+            }
+
+            // context.SaveChanges();
+        }
+
+        public void DeleteQuestPlayerStatus(int id)
+        {
+
+            QuestPlayerStatus dbEntry = context.QuestPlayerStatuses.Find(id);
+            if (dbEntry != null)
+            {
+                context.QuestPlayerStatuses.Remove(dbEntry);
+                context.SaveChanges();
+            }
+        }
+
+        #endregion
+
     }
 }

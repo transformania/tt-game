@@ -12,13 +12,13 @@
     if (Model.ParentQuestState != null)
     {
 
-        <p>@Ajax.ActionLink("[" + Model.ParentQuestState.QuestStateName + "]", "QuestState", "QuestWriter", new { Id = Model.ParentQuestState.Id, QuestId = Model.QuestEnd.QuestId, ParentStateId = -1 }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
+        <p>@Ajax.ActionLink("[" + Model.ParentQuestState.QuestStateName + "]", "QuestState", "QuestWriter", new { Id = Model.ParentQuestState.Id, QuestId = Model.QuestEnd.QuestId, ParentStateId = -1 }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "parentButton" })</p>
     }
 }
 
 <hr />
 
-@using (Ajax.BeginForm("QuestStateSend", "QuestWriter", new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" }))
+@using (Ajax.BeginForm("QuestEndSend", "QuestWriter", new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" }))
 {
 
     @Html.HiddenFor(m => m.QuestEnd.Id)
@@ -26,7 +26,7 @@
     @Html.HiddenFor(m => m.QuestEnd.QuestId)
 
     <label>Quest End name:</label>    <br />
-    @Html.TextAreaFor(m => m.QuestEnd.QuestEndName)
+    @Html.TextBoxFor(m => m.QuestEnd.QuestEndName)
 
     <br /><br />
 

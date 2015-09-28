@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Security.Principal;
 using System.Web;
 using FluentAssertions;
@@ -23,7 +22,6 @@ namespace tfgame.Tests.Services
             new RegularTextProcessor().Process(data);
 
             data.Output.Text.Should().Be("Testing");
-            data.Output.SendNameToClient.Should().BeTrue();
             data.Output.SendPlayerChatColor.Should().BeTrue();
             data.Output.MessageType.Should().Be(MessageType.RegularText);
         }
@@ -74,7 +72,6 @@ namespace tfgame.Tests.Services
             {
                 new ReservedTextProcessor().Process(data);
                 data.Output.Text.Should().Be(data.Message);
-                data.Output.SendNameToClient.Should().BeTrue();
                 data.Output.SendPlayerChatColor.Should().BeTrue();
                 data.Output.MessageType.Should().Be(MessageType.ReservedText);
             }
@@ -89,7 +86,6 @@ namespace tfgame.Tests.Services
             {
                 new ReservedTextProcessor().Process(data);
                 data.Output.Text.Should().Be(" ");
-                data.Output.SendNameToClient.Should().BeTrue();
                 data.Output.SendPlayerChatColor.Should().BeTrue();
                 data.Output.MessageType.Should().Be(MessageType.RegularText);
             }
@@ -115,7 +111,6 @@ namespace tfgame.Tests.Services
             new DmMessageTextProcessor().Process(data);
 
             data.Output.Text.Should().Be(" something happens");
-            data.Output.SendNameToClient.Should().BeFalse();
             data.Output.SendPlayerChatColor.Should().BeTrue();
             data.Output.MessageType.Should().Be(MessageType.DmMessage);
         }
@@ -153,7 +148,6 @@ namespace tfgame.Tests.Services
             new DmActionTextProcessor().Process(data);
 
             data.Output.Text.Should().Be(rollOutput);
-            data.Output.SendNameToClient.Should().BeTrue();
             data.Output.SendPlayerChatColor.Should().BeTrue();
             data.Output.MessageType.Should().Be(MessageType.DmAction);
 
@@ -197,8 +191,7 @@ namespace tfgame.Tests.Services
             var data = new MessageData("Tester", "/roll d1");
             new RollTextProcessor().Process(data);
 
-            data.Output.Text.Should().Be(" rolled a 1 (d1)");
-            data.Output.SendNameToClient.Should().BeFalse();
+            data.Output.Text.Should().Be(" rolled 1d1: 1 (1)");
             data.Output.SendPlayerChatColor.Should().BeFalse();
             data.Output.MessageType.Should().Be(MessageType.DieRoll);
         }
@@ -221,6 +214,42 @@ namespace tfgame.Tests.Services
             new RollTextProcessor().Process(data);
             data.Processed.Should().BeFalse();
         }
+
+        [Test]
+        public void Should_handle_multiple_dice()
+        {
+            var data = new MessageData("Tester", "/roll 2d1");
+            new RollTextProcessor().Process(data);
+
+            data.Output.Text.Should().Be(" rolled 2d1: 1+1 (2)");
+        }
+
+        [Test]
+        public void Should_not_allow_more_than_ten_dice_rolls_in_a_single_message()
+        {
+            var data = new MessageData("Tester", "/roll 11d1");
+            new RollTextProcessor().Process(data);
+
+            data.Processed.Should().BeFalse();
+        }
+
+        [Test]
+        public void Should_allow_adding_additional_numbers_to_sum()
+        {
+            var data = new MessageData("Tester", "/roll 2d1+1000");
+            new RollTextProcessor().Process(data);
+
+            data.Output.Text.Should().Be(" rolled 2d1+1000: 1+1 (1002)");
+        }
+
+        [Test]
+        public void Should_allow_adding_subtracting_numbers_from_sum()
+        {
+            var data = new MessageData("Tester", "/roll 2d1-1000");
+            new RollTextProcessor().Process(data);
+
+            data.Output.Text.Should().Be(" rolled 2d1-1000: 1+1 (-998)");
+        }
     }
 
     [TestFixture]
@@ -234,7 +263,6 @@ namespace tfgame.Tests.Services
             new PlayerActionTextProcessor().Process(data);
 
             data.Output.Text.Should().Be(" does something");
-            data.Output.SendNameToClient.Should().BeFalse();
             data.Output.SendPlayerChatColor.Should().BeTrue();
             data.Output.MessageType.Should().Be(MessageType.Action);
         }

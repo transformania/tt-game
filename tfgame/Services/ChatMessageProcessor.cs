@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using tfgame.dbModels.Queries.DMRoll;
@@ -58,14 +59,12 @@ namespace tfgame.Services
     {
         public string Text { get; private set; }
         public MessageType MessageType { get; private set; }
-        public bool SendNameToClient { get; private set; }
         public bool SendPlayerChatColor { get; private set; }
 
-        public MessageOutput(string text, MessageType messageType, bool sendNameToClient = true, bool sendPlayerChatColor = true)
+        public MessageOutput(string text, MessageType messageType, bool sendPlayerChatColor = true)
         {
             Text = text;
             MessageType = messageType;
-            SendNameToClient = sendNameToClient;
             SendPlayerChatColor = sendPlayerChatColor;
         }
     }
@@ -177,22 +176,57 @@ namespace tfgame.Services
 
     public class RollTextProcessor : MessageProcessingTask
     {
-        private const string regex = @"/roll d([0-9]*)";
+        private const string regex = @"/roll (\d?\d?)d([0-9]*)(\+|\-?)(\d*)";
         
         protected override bool CanHandle(MessageData data)
         {
             var match = Regex.Match(data.Message, regex);
-            return match.Success && !string.IsNullOrWhiteSpace(match.Groups[1].Value);
+            var diceNumber = match.Groups[1].Length > 0 ? Convert.ToInt32(match.Groups[1].Value) : 1;
+
+            return match.Success && !string.IsNullOrWhiteSpace(match.Groups[2].Value) && (diceNumber >= 1 && diceNumber <= 10);
         }
 
         protected override void ProcessInternal(MessageData data)
         {
             var match = Regex.Match(data.Message, regex);
-            var die = Convert.ToInt32(match.Groups[1].Value);
-            var output = $" rolled a {PlayerProcedures.RollDie(die)} (d{die})";
+            var sides = Convert.ToInt32(match.Groups[2].Value);
+            var diceNumber = match.Groups[1].Length > 0 ? Convert.ToInt32(match.Groups[1].Value) : 1;
+            var modifierOperand = match.Groups[3].Value;
+            var modifier = match.Groups[4].Value;
 
-            data.Output = new MessageOutput(output, MessageType.DieRoll, true, false);
+            var results = GetDiceRolls(sides, diceNumber).ToList();
+
+            var sb = new StringBuilder();
+            foreach (var roll in results)
+                sb.AppendFormat("{0}+", roll);
+
+            var combined = sb.ToString().TrimEnd('+');
+            var sumResult = SumResult(results, modifierOperand, modifier);
+            var output = string.Format(" rolled {0}d{1}{2}{3}: {4} ({5})", diceNumber, sides, modifierOperand, modifier, combined, sumResult);
+
+            data.Output = new MessageOutput(output, MessageType.DieRoll, false);
             data.MarkAsProcessed();
+        }
+
+        private static int SumResult(IEnumerable<int> results, string modifierOperand, string modifier)
+        {
+            var sum = results.Sum();
+
+            if (modifierOperand.Length != 1 || modifier.Length <= 0)
+                return sum;
+
+            if (modifierOperand == "+")
+                sum += Convert.ToInt32(Convert.ToInt32(modifier));
+            else if (modifierOperand == "-")
+                sum -= Convert.ToInt32(Convert.ToInt32(modifier));
+
+            return sum;
+        }
+
+        private IEnumerable<int> GetDiceRolls(int sides, int dice)
+        {
+            for (var i = 0; i < dice; i++)
+                yield return PlayerProcedures.RollDie(sides);
         }
     }
 

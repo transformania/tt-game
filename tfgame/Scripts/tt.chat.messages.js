@@ -173,7 +173,7 @@
 	}
 
 	formatters['DieRoll'] = function (model) {
-	    return renderActionText(model.Message + ' ', 'enterMsg', model, false);
+	    return renderActionText(model.Message + ' ', 'roll', model, false);
 	}
 
 	formatters['Action'] = function(model) {

@@ -87,9 +87,14 @@
         {
             <p class="good">You are on the update killswitch list.   <span class="bad">Activate this link when and ONLY when you and a number of animate players are receiving error screens and are unable to play.  Clicking this link will temporarily disable turn updates so bots do not attacker players who are incapable of responding.  @Html.ActionLink("CLICK HERE TO ACTIVATE.", "Killswitch", "PvPAdmin")</span></p>
         }
-        
-       
-        
+
+        if (User.IsInRole(PvPStatics.Permissions_QuestWriter) == true)
+        {
+            <p class="good">You are on the questwriters list.  @Html.ActionLink("Write Quests", "Index", "QuestWriter")</p>
+        }
+
+
+
     }
 
     <h2>View Statistics</h2>

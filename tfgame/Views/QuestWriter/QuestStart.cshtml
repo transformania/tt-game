@@ -6,6 +6,8 @@
 @using (Ajax.BeginForm("QuestStartSend", "QuestWriter", new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" }))
 {
 
+    @Html.HiddenFor(m => m.StartState)
+
     if (Model.IsLive == true)
     {
         <h4 class="good">This quest is live and can be started by any eligible player.</h4>
@@ -34,13 +36,13 @@
 
     <br /><br />
 
-    <label>Quest Friendly Name:</label>
+    <label>Quest Name:</label>
     @Html.TextBoxFor(m => m.Name)
 
     <br /><br />
 
-    <label>Quest Database Name:</label>
-    @Html.TextBoxFor(m => m.dbName)
+    @*<label>Quest Database Name:</label>
+    @Html.TextBoxFor(m => m.dbName)*@
 
     <br /><br />
 
@@ -65,7 +67,7 @@
         <br /><br />
 
         <label>Maximum Start Level:</label>
-        @Html.TextBoxFor(m => m.MaxStartTurn)
+        @Html.TextBoxFor(m => m.MaxStartLevel)
 
         <br /><br />
 

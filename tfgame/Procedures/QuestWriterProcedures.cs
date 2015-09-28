@@ -27,7 +27,6 @@ namespace tfgame.Procedures
                 newStart = true;
             }
             questStart.dbName = input.dbName;
-            questStart.IsLive = false;
             questStart.Location = input.Location;
             questStart.MaxStartLevel = input.MaxStartLevel;
             questStart.MaxStartTurn = input.MaxStartTurn;

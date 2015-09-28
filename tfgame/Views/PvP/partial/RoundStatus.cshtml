@@ -34,7 +34,7 @@
 
     if (ViewBag.QuestName != null && ViewBag.QuestName != "")
     {
-        <p class="infoMessage specialBox2 specialNoticeBox">You are currently engaged in the quest @ViewBag.QuestName!  Click @Html.ActionLink("here", "Quest", "Quest") to resume questing.</p>
+        <p class="specialBox specialBox2">You are currently engaged in the quest <b>@ViewBag.QuestName!</b>  Click @Html.ActionLink("here", "Quest", "Quest") to resume questing.</p>
     }
 
     if (Model.Boss_Donna == "active")

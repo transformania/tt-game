@@ -81,6 +81,12 @@ namespace tfgame.Procedures
             return true;
         }
 
+        public static IEnumerable<QuestPlayerStatus> GetQuestPlayerStatuses(Player me)
+        {
+            IQuestRepository repo = new EFQuestRepository();
+            return repo.QuestPlayerStatuses.Where(p => p.PlayerId == me.Id);
+        }
+
         public static IEnumerable<QuestStart> GetAvailableQuestsAtLocation(Player player, int turn)
         {
             IQuestRepository repo = new EFQuestRepository();

@@ -2459,6 +2459,8 @@
     <Content Include="Views\PvP\RoundLeaderboards\Statistics\Alpha_25.cshtml" />
     <Content Include="Views\Info\ServerPopulation.cshtml" />
     <Content Include="Views\Quest\QuestsAvailableHere.cshtml" />
+    <Content Include="Views\Quest\Questing.cshtml" />
+    <Content Include="Views\Quest\Quest.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

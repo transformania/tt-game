@@ -26,6 +26,20 @@ namespace tfgame.Procedures
             return repo.QuestStarts.FirstOrDefault(q => q.Id == id);
         }
 
+        public static QuestState GetQuestState(int Id)
+        {
+            IQuestRepository repo = new EFQuestRepository();
+
+            return repo.QuestStates.FirstOrDefault(q => q.Id == Id);
+        }
+
+        public static IEnumerable<QuestState> GetChildQuestStates(int Id)
+        {
+            IQuestRepository repo = new EFQuestRepository();
+
+            return repo.QuestStates.Where(q => q.ParentQuestStateId == Id);
+        }
+
         public static bool PlayerCanBeginQuest(Player player, QuestStart questStart, int gameWorldTurn)
         {
             IQuestRepository repo = new EFQuestRepository();

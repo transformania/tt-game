@@ -83,7 +83,7 @@ namespace tfgame.Controllers
             QuestProcedures.PlayerBeginQuest(me, questStart);
 
             TempData["Result"] = "You started the quest " + questStart.Name + ".";
-            return RedirectToAction("Play", "PvP");
+            return RedirectToAction("Questing", "Quest");
         }
 
         public ActionResult QuestsAvailableHere()
@@ -95,6 +95,15 @@ namespace tfgame.Controllers
             return View(quests);
         }
 
+        public ActionResult Questing()
+        {
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+
+            QuestStart questStart = QuestProcedures.GetQuest(me.InQuest);
+            return View();
+        }
+
         public ActionResult Quest()
         {
             IQuestRepository repo = new EFQuestRepository();
@@ -102,7 +111,14 @@ namespace tfgame.Controllers
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
-            return View();
+            QuestPlayPageViewModel output = new QuestPlayPageViewModel();
+            output.Player = PlayerProcedures.GetPlayerFormViewModel(me.Id);
+            output.QuestStart = QuestProcedures.GetQuest(me.InQuest);
+            output.QuestState = QuestProcedures.GetQuestState(me.InQuestState);
+            output.ChildQuestStates = QuestProcedures.GetChildQuestStates(me.InQuestState);
+            output.BuffBox = ItemProcedures.GetPlayerBuffsSQL(me);
+
+            return PartialView(output);
         }
 
         public ActionResult Choice(int Id)

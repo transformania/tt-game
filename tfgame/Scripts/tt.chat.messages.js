@@ -15,7 +15,7 @@
 	    var ignores = ignoreList.length;
 
 	    for (var i = 0; i < ignores; i++)
-	        if (name.indexOf(ignoreList[i]) >= 0 || message.indexOf(ignoreList[i]) >= 0)
+	        if (name.indexOf(ignoreList[i]) >= 0 || model.Message.indexOf(ignoreList[i]) >= 0)
 	            return false;
 
 	    return true;

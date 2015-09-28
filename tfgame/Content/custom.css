@@ -784,6 +784,9 @@ strong {
   color: black;
   font-weight: 800; }
 
+.roll {
+  color: #BF6132; }
+
 .roomName {
   background: none repeat scroll 0% 0% #A16969;
   font-size: 13px;

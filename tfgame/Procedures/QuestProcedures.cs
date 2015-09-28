@@ -6,6 +6,7 @@ using tfgame.dbModels.Abstract;
 using tfgame.dbModels.Concrete;
 using tfgame.dbModels.Models;
 using tfgame.Statics;
+using tfgame.ViewModels;
 
 namespace tfgame.Procedures
 {
@@ -159,6 +160,122 @@ namespace tfgame.Procedures
             }
 
 
+        }
+
+        public static bool QuestStateIsAvailable(QuestState questState, Player player, BuffBox buffs)
+        {
+
+            bool isAvailable = false;
+
+            foreach (QuestStateRequirement q in questState.QuestStateRequirements)
+            {
+                float playerValue = GetValueFromType(q, buffs);
+                isAvailable = ExpressionIsTrue(playerValue, q);
+                if (isAvailable==false)
+                {
+                    return false;
+                }
+
+            }
+
+            return isAvailable;
+        }
+
+        private static float GetValueFromType(QuestStateRequirement q, BuffBox buffs)
+        {
+            float playerValue = 0;
+
+            // get correct ability type requirement
+            if (q.RequirementType == (int)QuestStatics.RequirementType.Discipline)
+            {
+                playerValue = buffs.Discipline();
+            }
+            else if (q.RequirementType == (int)QuestStatics.RequirementType.Perception)
+            {
+                playerValue = buffs.Perception();
+            }
+            else if (q.RequirementType == (int)QuestStatics.RequirementType.Charisma)
+            {
+                playerValue = buffs.Charisma();
+            }
+            else if (q.RequirementType == (int)QuestStatics.RequirementType.Fortitude)
+            {
+                playerValue = buffs.Fortitude();
+            }
+            else if (q.RequirementType == (int)QuestStatics.RequirementType.Agility)
+            {
+                playerValue = buffs.Agility();
+            }
+            else if (q.RequirementType == (int)QuestStatics.RequirementType.Allure)
+            {
+                playerValue = buffs.Allure();
+            }
+            else if (q.RequirementType == (int)QuestStatics.RequirementType.Magicka)
+            {
+                playerValue = buffs.Magicka();
+            }
+            else if (q.RequirementType == (int)QuestStatics.RequirementType.Succour)
+            {
+                playerValue = buffs.Succour();
+            }
+            else if (q.RequirementType == (int)QuestStatics.RequirementType.Luck)
+            {
+                playerValue = buffs.Luck();
+            }
+
+            return playerValue;
+        }
+
+        private static bool ExpressionIsTrue(float playerValue, QuestStateRequirement q)
+        {
+            
+            float requirementValue = Convert.ToSingle(q.RequirementValue);
+
+            bool isAvailable = false;
+
+            if (q.Operator == (int)QuestStatics.Operator.Less_Than)
+            {
+                if (playerValue < requirementValue)
+                {
+                    isAvailable = true;
+                }
+            }
+            else if (q.Operator == (int)QuestStatics.Operator.Less_Than_Or_Equal)
+            {
+                if (playerValue <= requirementValue)
+                {
+                    isAvailable = true;
+                }
+            }
+            else if (q.Operator == (int)QuestStatics.Operator.Equal_To)
+            {
+                if (playerValue == requirementValue)
+                {
+                    isAvailable = true;
+                }
+            }
+            else if (q.Operator == (int)QuestStatics.Operator.Greater_Than_Or_Equal)
+            {
+                if (playerValue >= requirementValue)
+                {
+                    isAvailable = true;
+                }
+            }
+            else if (q.Operator == (int)QuestStatics.Operator.Greater_Than)
+            {
+                if (playerValue > requirementValue)
+                {
+                    isAvailable = true;
+                }
+            }
+            else if (q.Operator == (int)QuestStatics.Operator.Not_Equal_To)
+            {
+                if (playerValue != requirementValue)
+                {
+                    isAvailable = true;
+                }
+            }
+            return isAvailable;
         }
     }
 }

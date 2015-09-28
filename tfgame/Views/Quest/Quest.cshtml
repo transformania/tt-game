@@ -1,8 +1,23 @@
 ﻿@model tfgame.ViewModels.Quest.QuestPlayPageViewModel
     @using tfgame.dbModels.Models
 @using tfgame.CustomHtmlHelpers
+@using tfgame.Statics
 
 <h1>Quest:  <b>@Model.QuestStart.Name</b></h1>
+
+ 
+
+<div id="statsBox">
+    Discipline:  <b>@Model.BuffBox.Discipline()</b> | 
+    Perception:  <b>@Model.BuffBox.Perception()</b> | 
+    Charisma:  <b>@Model.BuffBox.Charisma()</b> | 
+    Fortitude:  <b>@Model.BuffBox.Fortitude()</b> | 
+    Agility:  <b>@Model.BuffBox.Agility()</b> | 
+    Allure:  <b>@Model.BuffBox.Allure()</b> | 
+    Magicka:  <b>@Model.BuffBox.Magicka()</b> | 
+    Succour:  <b>@Model.BuffBox.Succour()</b> | 
+    Luck:  <b>@Model.BuffBox.Luck()</b> | 
+</div>
 
 <div id="playerBox">
     <h3>@Model.Player.Player.GetFullName()</h3>

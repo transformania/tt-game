@@ -101,7 +101,7 @@ namespace tfgame.Controllers
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             QuestStart questStart = QuestProcedures.GetQuest(me.InQuest);
-            return View();
+            return View(questStart);
         }
 
         public ActionResult Quest()

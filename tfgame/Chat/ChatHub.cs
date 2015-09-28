@@ -41,7 +41,7 @@ namespace tfgame.Chat
             if (string.IsNullOrWhiteSpace(room) || _chatPersistenceService.GetRoomsPlayerIsIn(me.MembershipId).Contains(room))
                 return base.OnDisconnected();
 
-            SendNoticeToRoom(room, me, "has left the room.");
+            SendNoticeToRoom(room, me, " has left the room.");
             UpdateUserList(room, false);
 
             return base.OnDisconnected();
@@ -70,14 +70,13 @@ namespace tfgame.Chat
 
             if (!string.IsNullOrWhiteSpace(output.Text))
             {
-                var nameOut = output.SendNameToClient ? name : "";
                 var colorOut = output.SendPlayerChatColor ? me.Player.ChatColor : "";
 
                 _chatPersistenceService.TrackMessageSend(me.Player.MembershipId, Context.ConnectionId);
 
                 var model = new
                 {
-                    User = nameOut,
+                    User = name,
                     IsStaff = ChatStatics.Staff.ContainsKey(me.Player.MembershipId),
                     Color = colorOut,
                     Pic = pic,

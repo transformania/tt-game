@@ -311,5 +311,14 @@ namespace tfgame.Procedures
 
             return output;
         }
+
+        public static string Textify(string input)
+        {
+            input = input.Replace(Environment.NewLine, "</br>")
+                .Replace("[b]", "<b>").Replace("[/b]", "</b>")
+                .Replace("[i]", "<i>").Replace("[/i]", "</i>");
+
+            return input;
+        }
     }
 }

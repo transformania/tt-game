@@ -4,6 +4,12 @@
 @using tfgame.Statics
 @using tfgame.Procedures
 
+<div>
+    <p class="infoMessage result">@Html.Raw(ViewBag.Result)</p>
+    <p class="infoMessage error">@ViewBag.ErrorMessage</p>
+    <p class="infoMessage suberror">@ViewBag.SubErrorMessage</p>
+</div>
+
 <h1>Quest:  <b>@Model.QuestStart.Name</b></h1>
 
  
@@ -39,7 +45,7 @@
 <hr />
 
 <div id="textBody">
-    @Model.QuestState.Text
+    @Html.Raw(QuestProcedures.Textify(Model.QuestState.Text))
 </div>
 
 <hr />

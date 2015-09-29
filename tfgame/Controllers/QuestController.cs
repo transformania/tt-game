@@ -10,6 +10,7 @@ using tfgame.dbModels.Models;
 using tfgame.Models;
 using tfgame.Procedures;
 using tfgame.Statics;
+using tfgame.ViewModels;
 using tfgame.ViewModels.Quest;
 
 namespace tfgame.Controllers
@@ -118,6 +119,10 @@ namespace tfgame.Controllers
             output.ChildQuestStates = QuestProcedures.GetChildQuestStates(me.InQuestState);
             output.BuffBox = ItemProcedures.GetPlayerBuffsSQL(me);
 
+            ViewBag.ErrorMessage = TempData["Error"];
+            ViewBag.SubErrorMessage = TempData["SubError"];
+            ViewBag.Result = TempData["Result"];
+
             return PartialView(output);
         }
 
@@ -127,6 +132,38 @@ namespace tfgame.Controllers
 
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+
+            // assert player is animate
+            if (me.Mobility != PvPStatics.MobilityFull)
+            {
+                TempData["Error"] = "You are not animate.";
+                return RedirectToAction("Quest");
+            }
+
+            QuestState currentState = QuestProcedures.GetQuestState(me.InQuestState);
+            QuestState desiredState = QuestProcedures.GetQuestState(Id);
+
+            // assert desired state is in same quest
+            if (desiredState.QuestId != me.InQuest)
+            {
+                TempData["Error"] = "Unavailable";
+                return RedirectToAction("Quest");
+            }
+
+            QuestPlayPageViewModel output = new QuestPlayPageViewModel();
+            output.Player = PlayerProcedures.GetPlayerFormViewModel(me.Id);
+            output.QuestStart = QuestProcedures.GetQuest(me.InQuest);
+            BuffBox buffs = ItemProcedures.GetPlayerBuffsSQL(me);
+
+            // assert player has the right requirements for this
+            if (QuestProcedures.QuestStateIsAvailable(desiredState, me, buffs) == false)
+            {
+                TempData["Error"] = "You're not able to do that.";
+                return RedirectToAction("Quest");
+            }
+
+            PlayerProcedures.ChangePlayerActionManaNoTimestamp(1, 0, 0, me.Id);
+            PlayerProcedures.SetTimestampToNow(me);
 
             return RedirectToAction("Quest");
         }

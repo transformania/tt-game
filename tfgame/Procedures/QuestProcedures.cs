@@ -131,6 +131,16 @@ namespace tfgame.Procedures
 
         }
 
+        public static void PlayerSetQuestState(Player player, QuestState questState)
+        {
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            dbPlayer.LastActionTimestamp = DateTime.UtcNow;
+            dbPlayer.OnlineActivityTimestamp = DateTime.UtcNow;
+            dbPlayer.InQuestState = questState.Id;
+            playerRepo.SavePlayer(dbPlayer);
+        }
+
         public static void PlayerEndQuest(Player player, int endType)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
@@ -165,7 +175,7 @@ namespace tfgame.Procedures
         public static bool QuestStateIsAvailable(QuestState questState, Player player, BuffBox buffs)
         {
 
-            bool isAvailable = false;
+            bool isAvailable = true;
 
             foreach (QuestStateRequirement q in questState.QuestStateRequirements)
             {
@@ -178,7 +188,7 @@ namespace tfgame.Procedures
 
             }
 
-            return isAvailable;
+            return true;
         }
 
         private static float GetValueFromType(QuestStateRequirement q, BuffBox buffs)

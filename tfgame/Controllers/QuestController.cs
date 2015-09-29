@@ -162,8 +162,8 @@ namespace tfgame.Controllers
                 return RedirectToAction("Quest");
             }
 
+            QuestProcedures.PlayerSetQuestState(me, desiredState);
             PlayerProcedures.ChangePlayerActionManaNoTimestamp(1, 0, 0, me.Id);
-            PlayerProcedures.SetTimestampToNow(me);
 
             return RedirectToAction("Quest");
         }

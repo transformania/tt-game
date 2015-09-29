@@ -1,0 +1,46 @@
+﻿<h1>Help</h1>
+
+<p>Welcome, quest writer, to the quest editor!  Here is the basics on how to use this (admittedly confusing) quest editor to create your own quest.</p>
+
+
+<h3>Quest Start</h3>
+
+<p>A <b>Quest Start</b> holds some information about the quest and what it takes for a player to be eligible to begin it.  Quests must all begin in a specific location.  Players can only complete a quest one time per player but are allowed to fail it any number of times and restart.  Additionally, players are allowed to abandon a quest at any time unless they have reach an end state, in which case they must accept the consequences of failure or success.</p>
+
+<p>Quest Starts begin with a certain Quest State.  </p>
+
+<h3>Quest State</h3>
+
+<p>A <b>Quest State</b> makes up the bulk of a quest.  A quest state is a certain stage of a quest that a player can be in that contains a text description of what is currently happening as well as a number of choices (children quests) that the player is eligible to attempt.  As such the way to think about questing is a Directed Graph in which each state is capable to leading to one or more other states.  You can read more about directed graphs <a target="_blank" href="https://en.wikipedia.org/wiki/Directed_graph">here</a> if you want.</p>
+
+
+<img src="http://t3.gstatic.com/images?q=tbn:ANd9GcQmBioc4ukr2bBmAV-HdL3210fBq3zCKOMzr_skIVrgz5Z2hty5" />
+
+
+<p>Some terminology you may want to know for this:</p>
+
+<p>
+    <ul>
+        <li><b>Parent Quest State</b>:  A parent quest state is the quest state that a player passesd through to get to the active one.  The very beginning quest state, the one that the player enters directly when starting a quest, does not have a parent quest state.</li>
+        <li><b>Children Quest States</b>:  Children quests states are all of the possible quest states that are possible to get to from the active one.</li>
+    </ul>
+</p>
+
+<p><span class="bad">Currently only parent-child relationships are available which means that technically the quest system is mathematically a tree instead of a directed graph.  In the future it will also be possible for a quest state to jump to a state that is not a child, allowing traversal between quest states such as those between grandparents, grandchildren, siblings, nephew/nieces, aunts/uncles, etc.</span></p>
+
+
+<h3>Quest State Requirement</h3>
+
+<p>A <b>Quest State Requirement</b> is some condition that must hold true for a player to be eligible for an option that leads to a child quest state.  More than one quest state requirement can exist for a quest state; <b>ALL</b> conditions must be true for a player to enter it (a logical AND operator).  Quest State Requirements can be based off of a player's stats to allow unique options for certain builds or restrict others.</p>
+
+<p><span class="bad">Quest variables are not yet implemented.  Ignore this for now.</span></p>
+
+<h3>Quest End</h3>
+
+<p>A <b>Quest End</b> means that the current quest state indicates that the player has come to a place in the quest where they either pass or fail.  More than one quest end can be added to a quest state; when this is the case the player will recieve the reward from each quest end.</p>
+
+<p>Each quest end can be marked as a pass or fail individually.  When there are multiple quest ends, the FIRST quest end's completion status will be used. </p>
+
+<p></p>
+
+<p><span class="bad">Quest variables are not yet implemented.  Ignore this for now.</span></p>

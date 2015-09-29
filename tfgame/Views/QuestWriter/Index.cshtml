@@ -16,6 +16,7 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
                 <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+                <li>@Ajax.ActionLink("Help", "Help", "QuestWriter", null, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -151,5 +152,12 @@
          padding-right: 3px;
           margin: 3px;
              position: relative;
+      }
+
+      .helpButton {
+          border: 1px solid black;
+          background-color: lightblue;
+          color: white;
+          padding: 2px;
       }
 </style>

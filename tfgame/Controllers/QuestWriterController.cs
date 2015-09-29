@@ -226,6 +226,10 @@ namespace tfgame.Controllers
             return RedirectToAction("QuestState", "QuestWriter", new { Id = questEnd.QuestStateId.Id, QuestId = state.Id, ParentStateId = state.ParentQuestStateId  });
         }
 
+        public ActionResult Help()
+        {
+            return PartialView();
+        }
 
     }
 }

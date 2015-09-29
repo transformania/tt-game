@@ -248,7 +248,7 @@ namespace tfgame.Controllers
 
             // pass!
             QuestProcedures.PlayerEndQuest(me, (int)QuestStatics.QuestOutcomes.Completed);
-            TempData["Result"] = "Congratulations, you completed the quest " + quest.Name + "!";
+            TempData["Result"] = "Congratulations, you completed the quest <b>" + quest.Name + "</b>!";
             return RedirectToAction("Play", "PvP");
 
         }

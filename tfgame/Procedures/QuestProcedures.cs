@@ -31,7 +31,14 @@ namespace tfgame.Procedures
         {
             IQuestRepository repo = new EFQuestRepository();
 
-            return repo.QuestStates.FirstOrDefault(q => q.Id == Id);
+            QuestState dbQuestState = repo.QuestStates.FirstOrDefault(q => q.Id == Id);
+
+            if (dbQuestState.QuestEnds==null)
+            {
+                dbQuestState.QuestEnds = new List<QuestEnd>();
+            }
+
+            return dbQuestState;
         }
 
         public static IEnumerable<QuestState> GetChildQuestStates(int Id)
@@ -164,11 +171,12 @@ namespace tfgame.Procedures
             questPlayerStatus.LastEndedTurn = PvPWorldStatProcedures.GetWorldTurnNumber();
             questPlayerStatus.Outcome = endType;
 
+            questRepo.SaveQuestPlayerStatus(questPlayerStatus);
+
             if (endType == (int)QuestStatics.QuestOutcomes.Completed)
             {
                 // TODO:  assign rewards if quest passed
             }
-
 
         }
 
@@ -329,6 +337,24 @@ namespace tfgame.Procedures
                 .Replace("[i]", "<i>").Replace("[/i]", "</i>");
 
             return input;
+        }
+
+        public static void PlayerClearAllQuestStatuses(Player player)
+        {
+            IQuestRepository repo = new EFQuestRepository();
+            List<QuestPlayerStatus> statuses = repo.QuestPlayerStatuses.Where(q => q.PlayerId == player.Id).ToList();
+
+            foreach (QuestPlayerStatus s in statuses)
+            {
+                repo.DeleteQuestPlayerStatus(s.Id);
+            }
+
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            dbPlayer.InQuest = 0;
+            dbPlayer.InQuestState = 0;
+            playerRepo.SavePlayer(dbPlayer);
+
         }
     }
 }

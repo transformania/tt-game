@@ -54,5 +54,13 @@
 
 @foreach (QuestState child in Model.ChildQuestStates.ToList())
 {
-    <p> @Ajax.ActionLink(child.ChoiceText + " " + tfgame.Procedures.QuestProcedures.GetRequirementsAsString(child), "Choice", "Quest", new { Id = child.Id }, new AjaxOptions { UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "attackLink" })</p>
+    <p> @Ajax.ActionLink(child.ChoiceText + " " + tfgame.Procedures.QuestProcedures.GetRequirementsAsString(child), "Choice", "Quest", new { Id = child.Id }, new AjaxOptions { UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p><br />
+}
+
+
+@{ 
+    if (Model.QuestState.QuestEnds!= null && Model.QuestState.QuestEnds.Count() > 0)
+    {
+        @Html.ActionLink("End Quest", "EndQuest", "Quest", null, new { @class = "" })
+    }
 }

@@ -167,5 +167,108 @@ namespace tfgame.Controllers
 
             return RedirectToAction("Quest");
         }
+
+        public ActionResult Abandon()
+        {
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+
+            // assert that this player is in a quest
+            if (me.InQuest <= 0)
+            {
+                TempData["Error"] = "You are not in a quest.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            return PartialView();
+        }
+
+        public ActionResult AbandonConfirm()
+        {
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+
+            // assert that this player is in a quest
+            if (me.InQuest <= 0)
+            {
+                TempData["Error"] = "You are not in a quest.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+
+            // assert player is not currently in a quest with an end state
+            QuestState state = QuestProcedures.GetQuestState(me.InQuestState);
+
+            if (state.QuestEnds != null && state.QuestEnds.Count() > 0)
+            {
+                TempData["Error"] = "It is too late to abandon this quest.";
+                TempData["SubError"] = "You must accept the consequences of your actions, be they for good or ill!";
+                return RedirectToAction("Quest", "Quest");
+            }
+
+            QuestProcedures.PlayerEndQuest(me, (int)QuestStatics.QuestOutcomes.Failed);
+
+            TempData["Result"] = "You abandoned your quest.";
+            return RedirectToAction("Play", "PvP");
+
+        }
+
+        public ActionResult EndQuest()
+        {
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+
+            // assert that this player is in a quest
+            if (me.InQuest <= 0)
+            {
+                TempData["Error"] = "You are not in a quest.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            QuestStart quest = QuestProcedures.GetQuest(me.InQuest);
+            QuestState state = QuestProcedures.GetQuestState(me.InQuestState);
+
+            // assert that there is an end state to this quest state
+            if (state.QuestEnds.Count()==0)
+            {
+                TempData["Error"] = "You are not yet at the end of your quest!";
+                TempData["SubError"] = "If it is impossible for you to continue with this quest, you may abandon it.";
+                return RedirectToAction("Quest", "Quest");
+            }
+
+            int endType = state.QuestEnds.First().EndType;
+
+            // fail!
+            if (endType == (int)QuestStatics.QuestOutcomes.Failed)
+            {
+                QuestProcedures.PlayerEndQuest(me, (int)QuestStatics.QuestOutcomes.Failed);
+                TempData["Result"] = "You unfortunately failed the quest <b>" + quest.Name + "</b>.  Better luck next time!  If there is one...";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            // pass!
+            QuestProcedures.PlayerEndQuest(me, (int)QuestStatics.QuestOutcomes.Completed);
+            TempData["Result"] = "Congratulations, you completed the quest " + quest.Name + "!";
+            return RedirectToAction("Play", "PvP");
+
+        }
+
+        public ActionResult ResetQuests()
+        {
+
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+
+            if (PvPStatics.ChaosMode == false)
+            {
+                TempData["Error"] = "You can only do this in chaos mode.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            QuestProcedures.PlayerClearAllQuestStatuses(me);
+            
+            return RedirectToAction("Play", "PvP");
+
+        }
     }
 }

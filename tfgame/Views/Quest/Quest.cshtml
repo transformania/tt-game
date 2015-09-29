@@ -2,6 +2,7 @@
     @using tfgame.dbModels.Models
 @using tfgame.CustomHtmlHelpers
 @using tfgame.Statics
+@using tfgame.Procedures
 
 <h1>Quest:  <b>@Model.QuestStart.Name</b></h1>
 
@@ -43,7 +44,7 @@
 
 <hr />
 
-@foreach (QuestState child in Model.ChildQuestStates)
+@foreach (QuestState child in Model.ChildQuestStates.ToList())
 {
-    <p> @Ajax.ActionLink(child.ChoiceText, "Choice", "Quest", new { Id = child.Id }, new AjaxOptions { UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
+    <p> @Ajax.ActionLink(child.ChoiceText + " " + tfgame.Procedures.QuestProcedures.GetRequirementsAsString(child), "Choice", "Quest", new { Id = child.Id }, new AjaxOptions { UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "attackLink" })</p>
 }

@@ -277,5 +277,39 @@ namespace tfgame.Procedures
             }
             return isAvailable;
         }
+
+        public static string GetRequirementsAsString(QuestState q)
+        {
+
+            string output = "";
+
+            if (q.QuestStateRequirements.Count()==0)
+            {
+                return output;
+            }
+
+            int len = q.QuestStateRequirements.Count();
+            int i = 0;
+
+            output += "[";
+
+            foreach (QuestStateRequirement qs in q.QuestStateRequirements.ToList())
+            {
+                output += qs.RequirementValue + " " + Enum.GetName(typeof(QuestStatics.RequirementType), qs.RequirementType);
+
+                if (i < len-1)
+                {
+                    output += ", ";
+                }
+
+                i++;
+
+            }
+
+            output += "]";
+
+
+            return output;
+        }
     }
 }

@@ -42,7 +42,7 @@ namespace tfgame.dbModels.Models
         public string Text { get; set; }
         public virtual List<QuestStateRequirement> QuestStateRequirements { get; set; }
         public virtual List<QuestEnd> QuestEnds { get; set; }
-        public int SuccessQuestStateId { get; set; }
+        public int JumpToQuestStateId { get; set; }
         public string ChoiceText { get; set; }
         public int QuestEndId { get; set; }
     }
@@ -88,7 +88,7 @@ namespace tfgame.dbModels.Models
         public int Id { get; set; }
         public virtual QuestState QuestStateId { get; set; }
         public int EndType { get; set; }
-        public string RewardType { get; set; }
+        public int RewardType { get; set; }
         public string RewardAmount { get; set; }
         public string QuestEndName { get; set; }
         public int QuestId { get; set; }

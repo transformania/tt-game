@@ -28,6 +28,11 @@
     @Html.HiddenFor(m => m.QuestState.QuestId)
     @Html.HiddenFor(m => m.QuestState.ParentQuestStateId)
 
+    <label>Quest state name (this is only used in the quest editor to help improve the readability of the quest flow):</label>
+    @Html.TextBoxFor(m => m.QuestState.QuestStateName)
+
+    <br /><br />
+
     <label>Text (the text the player sees when having first entered this state):</label>    <br />
     @Html.TextAreaFor(m => m.QuestState.Text)
 
@@ -38,14 +43,28 @@
 
     <br /><br />
 
-    <label>Quest state name (this is only used in the quest editor to help improve the readability of the quest flow):</label>
-    @Html.TextBoxFor(m => m.QuestState.QuestStateName)
+    <label>Jumps to State (instead of having children options, leaving this state immediately brings the player to another one):</label>    <br />
+    @Html.DropDownListFor(m => m.QuestState.JumpToQuestStateId, new SelectList(
+                  new List<Object>{
+                      new { value = 0, text = "--none--"  },
+                    },
+                  "value",
+                  "text",
+                   2))
+
+    if (Model.JumpToQuestState != null)
+    {
+        @Ajax.ActionLink(Model.JumpToQuestState.QuestStateName, "QuestState", "QuestWriter", new { Id = Model.JumpToQuestState.Id, QuestId = Model.QuestState.QuestId, ParentStateId = Model.QuestState.Id }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "editButton" })
+    }
+
+    @Ajax.ActionLink("Create new Unconnected Quest State", "QuestState", "QuestWriter", new { Id = -1, QuestId = Model.QuestState.QuestId, ParentStateId = -1 }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "newButton" })
+
+    if (Model.JumpToQuestState != null && Model.ChildQuestStates.Count() > 0)
+    {
+        <p class="bad">!!!! WARNING:  Because this quest state jumps to another one, the children quest states below are not reachable !!!!</p>
+    }
 
     <br /><br />
-
-
-   
-
 
     <input type="submit" class="btn btn-chat" value="Send" />
 
@@ -114,3 +133,42 @@
         <div>@Ajax.ActionLink("--Add Child QuestState--", "QuestState", "QuestWriter", new { Id = -1, QuestId = Model.QuestState.QuestId, ParentStateId = Model.QuestState.Id }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "newButton" })</div>
     }
 }
+
+<script>
+
+    var allStates;
+    var questId = @Model.QuestState.QuestId;
+    var jumpToDropdown = $("#QuestState_JumpToQuestStateId");
+    var jumpToLoadValue = @Model.QuestState.JumpToQuestStateId;
+
+    function loadJumpToDropdownWithValues() {
+        $.getJSON("/QuestWriter/QuestStatesInQuestJSON/" + questId, function (data) {
+            allStates = data;
+        }).then(function () {
+            populateJumpToDropdown();
+            setDropdownToValue(jumpToLoadValue);
+        });
+    }
+
+    // load the values for the jump to state dropdown
+    function populateJumpToDropdown() {
+
+        for (var i = 0; i < allStates.length; i++) {
+            var opt = allStates[i];
+
+            jumpToDropdown.append($('<option>', {
+                value: opt.Id,
+                text: opt.StateName
+            }));
+        }
+    }
+
+    // set value of jump to quest state dropdown
+    function setDropdownToValue(value) {
+        jumpToDropdown.val(value);
+    }
+
+    // onload
+    loadJumpToDropdownWithValues();
+
+</script>

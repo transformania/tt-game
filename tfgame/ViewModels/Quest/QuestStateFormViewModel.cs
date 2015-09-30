@@ -10,6 +10,7 @@ namespace tfgame.ViewModels.Quest
     {
         public QuestState QuestState { get; set; }
         public QuestState ParentQuestState { get; set; }
+        public QuestState JumpToQuestState { get; set; }
         public IEnumerable<QuestState> ChildQuestStates { get; set; }
         public IEnumerable<QuestEnd> QuestEnds { get; set; }
     }

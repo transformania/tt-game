@@ -77,6 +77,7 @@ namespace tfgame.Procedures
             questState.QuestStateName = input.QuestStateName;
             questState.Text = input.Text;
             questState.QuestId = input.QuestId;
+            questState.JumpToQuestStateId = input.JumpToQuestStateId;
 
             // always set this to something, even if it's just empty string
             if (questState.QuestStateName == null)
@@ -169,6 +170,12 @@ namespace tfgame.Procedures
             QuestStart dbQuestStart = repo.QuestStarts.FirstOrDefault(q => q.Id == Id);
             dbQuestStart.IsLive = live;
             repo.SaveQuestStart(dbQuestStart);
+        }
+
+        public static IEnumerable<QuestState> GetAllQuestsStates(int questId)
+        {
+            IQuestRepository repo = new EFQuestRepository();
+            return repo.QuestStates.Where(q => q.QuestId == questId);
         }
     }
 }

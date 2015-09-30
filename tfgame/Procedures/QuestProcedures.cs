@@ -148,8 +148,9 @@ namespace tfgame.Procedures
             playerRepo.SavePlayer(dbPlayer);
         }
 
-        public static void PlayerEndQuest(Player player, int endType)
+        public static string PlayerEndQuest(Player player, int endType)
         {
+            string message = "";
             IPlayerRepository playerRepo = new EFPlayerRepository();
             Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
             dbPlayer.InQuest = 0;
@@ -173,10 +174,48 @@ namespace tfgame.Procedures
 
             questRepo.SaveQuestPlayerStatus(questPlayerStatus);
 
+            // assing completion bonuses
             if (endType == (int)QuestStatics.QuestOutcomes.Completed)
             {
-                // TODO:  assign rewards if quest passed
+
+                QuestState questState = GetQuestState(player.InQuestState);
+
+                decimal xpGain = 0;
+
+                foreach (QuestEnd q in questState.QuestEnds)
+                {
+                    // experience gain
+                    if (q.RewardType==(int)QuestStatics.RewardType.Experience)
+                    {
+                        xpGain += Int32.Parse(q.RewardAmount);
+                    }
+
+                    // item gain
+                    else if (q.RewardType==(int)QuestStatics.RewardType.Item)
+                    {
+                        DbStaticItem item = ItemStatics.GetStaticItem(q.RewardAmount);
+                        ItemProcedures.GiveNewItemToPlayer(player, item);
+                        message += "<br/>You received a <b>" + item.FriendlyName + "</b>.";
+                    }
+
+                    // effect gain
+                    else if (q.RewardType == (int)QuestStatics.RewardType.Effect)
+                    {
+                        DbStaticEffect effect = EffectStatics.GetEffect(q.RewardAmount);
+                        EffectProcedures.GivePerkToPlayer(effect.dbName, player.Id);
+                        message += "<br/>You received the effect <b>" + effect.FriendlyName + "</b>.";
+                    }
+                }
+
+                if (xpGain > 0)
+                {
+                    message += "<br/>You earned <b>" + xpGain + "</b> XP.";
+                }
+
+                PlayerProcedures.GiveXP(player.Id, xpGain);
             }
+
+            return message;
 
         }
 

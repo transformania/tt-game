@@ -106,6 +106,7 @@ namespace tfgame.Controllers
             QuestStateFormViewModel output = new QuestStateFormViewModel();
             output.QuestState = questState;
             output.ParentQuestState = repo.QuestStates.FirstOrDefault(q => q.Id == questState.ParentQuestStateId);
+            output.JumpToQuestState = repo.QuestStates.FirstOrDefault(q => q.Id == output.QuestState.JumpToQuestStateId);
             output.ChildQuestStates = repo.QuestStates.Where(q => q.ParentQuestStateId == questState.Id);
 
             return PartialView(output);
@@ -229,6 +230,19 @@ namespace tfgame.Controllers
         public ActionResult Help()
         {
             return PartialView();
+        }
+
+        public JsonResult QuestStatesInQuestJSON(int Id)
+        {
+            IEnumerable<QuestState> states = QuestWriterProcedures.GetAllQuestsStates(Id);
+            var output = from s in states
+                         select new
+                         {
+                             Id = s.Id,
+                             StateName = s.QuestStateName
+                         };
+
+            return Json(output, JsonRequestBehavior.AllowGet);
         }
 
     }

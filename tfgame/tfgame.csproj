@@ -2463,6 +2463,8 @@
     <Content Include="Views\Quest\Quest.cshtml" />
     <Content Include="Views\Quest\Abandon.cshtml" />
     <Content Include="Views\QuestWriter\Help.cshtml" />
+    <Content Include="Views\QuestWriter\ShowAllQuestStarts.cshtml" />
+    <Content Include="Views\QuestWriter\ShowAllQuestStates.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

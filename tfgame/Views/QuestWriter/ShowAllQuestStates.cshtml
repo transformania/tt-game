@@ -1,0 +1,11 @@
+﻿@model IEnumerable<tfgame.dbModels.Models.QuestState>
+
+@{
+            foreach (tfgame.dbModels.Models.QuestState q in Model)
+            {
+
+        <p>@Ajax.ActionLink(q.QuestStateName, "QuestState", "QuestWriter", new { Id = q.Id, QuestId = q.QuestId, ParentStateId = q.ParentQuestStateId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "editButton" })</p>
+
+        }
+}
+

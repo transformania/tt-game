@@ -369,12 +369,14 @@ namespace tfgame.Procedures
             return output;
         }
 
-        public static string Textify(string input)
+        public static string Textify(string input, Player player)
         {
             input = input.Replace(Environment.NewLine, "</br>")
                 .Replace("[b]", "<b>").Replace("[/b]", "</b>")
-                .Replace("[i]", "<i>").Replace("[/i]", "</i>");
-
+                .Replace("[i]", "<i>").Replace("[/i]", "</i>")
+                .Replace("$PLAYER_NAME_FIRST$", player.FirstName)
+                .Replace("$PLAYER_NAME_LAST$", player.LastName)
+                .Replace("$PLAYER_NAME$", player.GetFullName());
             return input;
         }
 

@@ -82,6 +82,7 @@ namespace tfgame.Controllers
 
             // all checks have passed; start the player on this quest
             QuestProcedures.PlayerBeginQuest(me, questStart);
+            LocationLogProcedures.AddLocationLog(me.dbLocationName, "<span class='playerMediatingNotification'><b>" + me.GetFullName() + "</b> began the quest <b>" + questStart.Name + "</b> here.</span>");
 
             TempData["Result"] = "You started the quest " + questStart.Name + ".";
             return RedirectToAction("Questing", "Quest");
@@ -164,6 +165,28 @@ namespace tfgame.Controllers
 
             QuestProcedures.PlayerSetQuestState(me, desiredState);
             PlayerProcedures.ChangePlayerActionManaNoTimestamp(1, 0, 0, me.Id);
+
+            return RedirectToAction("Quest");
+        }
+
+        public ActionResult Jump()
+        {
+            IQuestRepository repo = new EFQuestRepository();
+
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+
+            QuestState state = QuestProcedures.GetQuestState(me.InQuestState);
+
+            // assert state actually does jump somewhere
+            if (state.JumpToQuestStateId<=0)
+            {
+                return RedirectToAction("Quest");
+            }
+
+            QuestState jumpedTostate = QuestProcedures.GetQuestState(state.JumpToQuestStateId);
+
+            QuestProcedures.PlayerSetQuestState(me, jumpedTostate);
 
             return RedirectToAction("Quest");
         }

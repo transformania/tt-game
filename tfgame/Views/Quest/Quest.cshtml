@@ -47,19 +47,31 @@
 <hr />
 
 <div id="textBody">
-    @Html.Raw(QuestProcedures.Textify(Model.QuestState.Text))
+    @Html.Raw(QuestProcedures.Textify(Model.QuestState.Text, Model.Player.Player.ToDbPlayer()))
 </div>
 
 <hr />
 
-@foreach (QuestState child in Model.ChildQuestStates.ToList())
-{
-    <p> @Ajax.ActionLink(child.ChoiceText + " " + tfgame.Procedures.QuestProcedures.GetRequirementsAsString(child), "Choice", "Quest", new { Id = child.Id }, new AjaxOptions { UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p><br />
+@{
+    if (Model.ShowChildrenStates() == true)
+    {
+        foreach (QuestState child in Model.ChildQuestStates.ToList())
+        {
+            <p> @Ajax.ActionLink(child.ChoiceText + " " + tfgame.Procedures.QuestProcedures.GetRequirementsAsString(child), "Choice", "Quest", new { Id = child.Id }, new AjaxOptions { UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" }) </p><br />
+        }
+    }
 }
 
 
+@{
+    if (Model.ShowJump() == true)
+    {
+        <p> @Ajax.ActionLink("Continue", "Jump", "Quest", null, new AjaxOptions { UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" }) </p>
+    }
+}
+
 @{ 
-    if (Model.QuestState.QuestEnds!= null && Model.QuestState.QuestEnds.Count() > 0)
+    if (Model.ShowEnd()==true)
     {
         @Html.ActionLink("End Quest", "EndQuest", "Quest", null, new { @class = "" })
     }

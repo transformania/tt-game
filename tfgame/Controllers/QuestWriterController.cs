@@ -245,5 +245,17 @@ namespace tfgame.Controllers
             return Json(output, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult ShowAllQuestStarts()
+        {
+            IEnumerable<QuestStart> output = QuestProcedures.GetAllQuestStarts();
+            return PartialView(output);
+        }
+
+        public ActionResult ShowAllQuestStates(int Id)
+        {
+            IEnumerable<QuestState> output = QuestWriterProcedures.GetAllQuestsStates(Id);
+            return PartialView(output);
+        }
+
     }
 }

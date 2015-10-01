@@ -41,6 +41,7 @@ namespace tfgame.dbModels.Models
         public int QuestId { get; set; }
         public string Text { get; set; }
         public virtual List<QuestStateRequirement> QuestStateRequirements { get; set; }
+        public virtual List<QuestStatePreaction> QuestStatePreactions { get; set; }
         public virtual List<QuestEnd> QuestEnds { get; set; }
         public int JumpToQuestStateId { get; set; }
         public string ChoiceText { get; set; }

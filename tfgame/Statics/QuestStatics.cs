@@ -42,12 +42,19 @@ namespace tfgame.Statics
             Effect = 2,
         }
 
-        public enum QuestStatePreactionType
+        public enum PreactionType
         {
             Variable = 0,
             Form = 1,
-            Willpwer = 2,
+            Willpower = 2,
             Mana = 3,
+        }
+
+        public enum AddOrSet
+        {
+            Add = 0,
+            Remove = 1,
+            Set = 2,
         }
 
 

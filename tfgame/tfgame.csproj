@@ -2465,6 +2465,7 @@
     <Content Include="Views\QuestWriter\Help.cshtml" />
     <Content Include="Views\QuestWriter\ShowAllQuestStarts.cshtml" />
     <Content Include="Views\QuestWriter\ShowAllQuestStates.cshtml" />
+    <Content Include="Views\QuestWriter\QuestStatePreaction.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

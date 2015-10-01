@@ -21,6 +21,12 @@ namespace tfgame.ViewModels.Quest
         public QuestState ParentQuestState { get; set; }
     }
 
+    public class QuestStatePreactionFormViewModel
+    {
+        public QuestStatePreaction QuestStatePreaction { get; set; }
+        public QuestState ParentQuestState { get; set; }
+    }
+
     public class QuestEndFormViewModel
     {
         public QuestEnd QuestEnd { get; set; }

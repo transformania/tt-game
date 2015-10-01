@@ -96,7 +96,8 @@ namespace tfgame.Controllers
                     QuestStateName = "[ state name ]",
 
                     QuestEnds = new List<QuestEnd>(),
-                    QuestStateRequirements = new List<QuestStateRequirement>()
+                    QuestStateRequirements = new List<QuestStateRequirement>(),
+                    QuestStatePreactions = new List<QuestStatePreaction>()
                 };
             } else
             {
@@ -186,6 +187,59 @@ namespace tfgame.Controllers
             return RedirectToAction("QuestState", "QuestWriter", new { Id = questStateRequirement.QuestStateId.Id, QuestId = questStateRequirement.QuestId, ParentStateId = state.ParentQuestStateId });
         }
 
+        public ActionResult QuestStatePreaction(int Id, int QuestStateId, int QuestId)
+        {
+            IQuestRepository repo = new EFQuestRepository();
+
+            QuestStatePreaction questStatePreaction = repo.QuestStatePreactions.FirstOrDefault(q => q.Id == Id);
+            QuestState state = repo.QuestStates.FirstOrDefault(q => q.Id == QuestStateId);
+
+            if (questStatePreaction == null)
+            {
+                questStatePreaction = new QuestStatePreaction
+                {
+                    QuestId = QuestId,
+                    QuestStatePreactionName = "[UNNAMED PREACTION]",
+
+                };
+
+                questStatePreaction.QuestStateId = state;
+            }
+            else
+            {
+
+            }
+
+            QuestStatePreactionFormViewModel output = new QuestStatePreactionFormViewModel();
+            output.QuestStatePreaction = questStatePreaction;
+            output.ParentQuestState = state;
+
+            return PartialView(output);
+        }
+
+        public ActionResult QuestStatePreactionSend(QuestStatePreactionFormViewModel input)
+        {
+            IQuestRepository repo = new EFQuestRepository();
+            QuestState state = repo.QuestStates.FirstOrDefault(q => q.Id == input.ParentQuestState.Id);
+
+            int savedId = QuestWriterProcedures.SaveQuestStatePreaction(input.QuestStatePreaction, state);
+
+            return RedirectToAction("QuestStatePreaction", "QuestWriter", new { Id = savedId, QuestStateId = state.Id, QuestId = input.QuestStatePreaction.QuestId });
+        }
+
+        public ActionResult QuestStatePreactionDelete(int Id) //, int QuestStateId, int QuestId, int ParentStateId)
+        {
+
+            IQuestRepository repo = new EFQuestRepository();
+
+            QuestStatePreaction questStatePreaction = repo.QuestStatePreactions.FirstOrDefault(q => q.Id == Id);
+            QuestState state = repo.QuestStates.FirstOrDefault(q => q.Id == questStatePreaction.QuestStateId.Id);
+
+            QuestWriterProcedures.DeleteQuestStatePreaction(Id);
+
+            return RedirectToAction("QuestState", "QuestWriter", new { Id = questStatePreaction.QuestStateId.Id, QuestId = questStatePreaction.QuestId, ParentStateId = state.ParentQuestStateId });
+        }
+
         public ActionResult QuestEnd(int Id, int QuestStateId, int QuestId)
         {
             IQuestRepository repo = new EFQuestRepository();
@@ -246,7 +300,7 @@ namespace tfgame.Controllers
 
         public JsonResult QuestStatesInQuestJSON(int Id)
         {
-            IEnumerable<QuestState> states = QuestWriterProcedures.GetAllQuestsStates(Id);
+            IEnumerable<QuestState> states = QuestWriterProcedures.GetAllQuestsStatesInQuest(Id);
             var output = from s in states
                          select new
                          {
@@ -265,8 +319,7 @@ namespace tfgame.Controllers
 
         public ActionResult ShowAllQuestStates(int Id)
         {
-
-            IEnumerable<QuestState> output = QuestWriterProcedures.GetAllQuestsStates(Id);
+            IEnumerable<QuestState> output = QuestWriterProcedures.GetAllQuestsStatesInQuest(Id);
             return PartialView(output);
         }
 

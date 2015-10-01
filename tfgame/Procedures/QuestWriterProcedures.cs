@@ -110,6 +110,13 @@ namespace tfgame.Procedures
                 repo.DeleteQuestEnd(q.Id);
             }
 
+            // delete any quest state preactions on this quest state
+            List<QuestStatePreaction> preactions = repo.QuestStatePreactions.Where(q => q.QuestStateId.Id == questState.Id).ToList();
+            foreach (QuestStatePreaction q in preactions)
+            {
+                repo.DeleteQuestStatePreaction(q.Id);
+            }
+
             // set parent of any children quest states to 0
             List<QuestState> children = repo.QuestStates.Where(q => q.ParentQuestStateId == questState.Id).ToList();
             foreach (QuestState q in children)
@@ -172,6 +179,38 @@ namespace tfgame.Procedures
             return questEnd.Id;
         }
 
+        public static int SaveQuestStatePreaction(QuestStatePreaction input, QuestState state)
+        {
+            IQuestRepository repo = new EFQuestRepository();
+
+            QuestStatePreaction questStatePreaction = repo.QuestStatePreactions.FirstOrDefault(q => q.Id == input.Id);
+            QuestState dbState = repo.QuestStates.FirstOrDefault(s => s.Id == state.Id);
+
+            if (questStatePreaction == null)
+            {
+                questStatePreaction = new QuestStatePreaction();
+            }
+
+            questStatePreaction.Id = input.Id;
+            questStatePreaction.QuestId = input.QuestId;
+            questStatePreaction.QuestStateId = dbState;
+            questStatePreaction.QuestStatePreactionName = input.QuestStatePreactionName;
+            questStatePreaction.VariableName = input.VariableName;
+            questStatePreaction.AddOrSet = input.AddOrSet;
+            questStatePreaction.ActionType = input.ActionType;
+            questStatePreaction.ActionValue = input.ActionValue;
+
+            repo.SaveQuestStatePreaction(questStatePreaction);
+
+            return questStatePreaction.Id;
+        }
+
+        public static void DeleteQuestStatePreaction(int id)
+        {
+            IQuestRepository repo = new EFQuestRepository();
+            repo.DeleteQuestStatePreaction(id);
+        }
+
         public static void DeleteQuestEnd(int Id)
         {
             IQuestRepository repo = new EFQuestRepository();
@@ -205,7 +244,7 @@ namespace tfgame.Procedures
             repo.SaveQuestStart(dbQuestStart);
         }
 
-        public static IEnumerable<QuestState> GetAllQuestsStates(int questId)
+        public static IEnumerable<QuestState> GetAllQuestsStatesInQuest(int questId)
         {
             IQuestRepository repo = new EFQuestRepository();
             return repo.QuestStates.Where(q => q.QuestId == questId);

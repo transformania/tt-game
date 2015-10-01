@@ -1,0 +1,81 @@
+﻿@model tfgame.ViewModels.Quest.QuestStatePreactionFormViewModel
+@using tfgame.Statics
+@using tfgame.dbModels.Models
+
+<h1>Quest State Preaction</h1>
+
+<h4>Parent Quest State:</h4>
+
+@{
+    if (Model.ParentQuestState != null)
+    {
+
+        <p>@Ajax.ActionLink("[" + Model.ParentQuestState.QuestStateName + "]", "QuestState", "QuestWriter", new { Id = Model.ParentQuestState.Id, QuestId = Model.QuestStatePreaction.QuestId, ParentStateId = -1 }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "parentButton" })</p>
+    }
+}
+
+<hr />
+
+@using (Ajax.BeginForm("QuestStatePreactionSend", "QuestWriter", new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" }))
+{
+
+    @Html.HiddenFor(m => m.ParentQuestState.Id)
+    @Html.HiddenFor(m => m.QuestStatePreaction.QuestStateId.Id)
+    @Html.HiddenFor(m => m.QuestStatePreaction.QuestId)
+
+
+    <label>Name (used for internal purposes):</label>    <br />
+    @Html.TextBoxFor(m => m.QuestStatePreaction.QuestStatePreactionName)
+
+    //public int Id { get; set; }
+    //public virtual QuestState QuestStateId { get; set; }
+    //public int QuestId { get; set; }
+    //public string QuestStatePreactionName { get; set; }
+    //public int ActionType { get; set; }
+    //public string ActionValue { get; set; }
+    //public int AddOrSet { get; set; }
+    //public string VariableName { get; set; }
+
+    <br /><br />
+
+    <label>Action Type:</label>    <br />
+    @Html.DropDownListFor(m => m.QuestStatePreaction.ActionType, new SelectList(
+                  new List<Object>{
+                      new { value = (int)QuestStatics.PreactionType.Variable, text = "Variable"  },
+                      new { value = (int)QuestStatics.PreactionType.Form, text = "Change Form"  },
+                      new { value = (int)QuestStatics.PreactionType.Willpower, text = "Change Willpower"  },
+                      new { value = (int)QuestStatics.PreactionType.Mana, text = "Change Mana"  },
+                    },
+                  "value",
+                  "text",
+                   2))
+
+    <br /><br />
+
+    <label>Value:</label>    <br />
+    @Html.TextBoxFor(m => m.QuestStatePreaction.ActionValue)
+
+    <br /><br />
+
+    <label>Variable name:</label>    <br />
+    @Html.TextBoxFor(m => m.QuestStatePreaction.VariableName)
+
+    <br /><br />
+
+    <label>Add or Set?</label>    <br />
+    @Html.DropDownListFor(m => m.QuestStatePreaction.AddOrSet, new SelectList(
+                  new List<Object>{
+                      new { value = (int)QuestStatics.AddOrSet.Add, text = "Add this value"  },
+                      new { value = (int)QuestStatics.AddOrSet.Remove, text = "Remove this value"  },
+                       new { value = (int)QuestStatics.AddOrSet.Set, text = "Set value to this"  },
+                    },
+                  "value",
+                  "text",
+                   2))
+
+    <br /><br />
+
+    <input type="submit" class="btn btn-chat" value="Send" />
+
+}
+

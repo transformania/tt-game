@@ -75,6 +75,29 @@
 
             }
 
+<h4>Quest State Preactions:  (@Model.QuestState.QuestStatePreactions.Count())</h4>
+
+<table>
+
+    @{
+        foreach (QuestStatePreaction r in Model.QuestState.QuestStatePreactions)
+        {
+            <tr>
+                <td>
+                    @Ajax.ActionLink(r.QuestStatePreactionName, "QuestStatePreaction", "QuestWriter", new { Id = r.Id, QuestStateId = r.QuestStateId.Id, QuestId = Model.QuestState.QuestId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "editButton" })
+                </td>
+                <td>
+                    @Ajax.ActionLink("[DELETE]", "QuestStatePreactionDelete", "QuestWriter", new { Id = r.Id }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting", Confirm = "Are you sure you want to delete this quest state requirement?" }, new { @class = "deleteButton" })
+                </td>
+            </tr>
+        }
+
+    }
+
+</table>
+
+<p>@Ajax.ActionLink("--New Quest State Preaction--", "QuestStatePreaction", "QuestWriter", new { Id = -1, QuestStateId = Model.QuestState.Id, QuestId = Model.QuestState.QuestId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "newButton" })</p>
+
 <h4>Quest State Requirements:  (@Model.QuestState.QuestStateRequirements.Count())</h4>
 
 <table>
@@ -83,7 +106,6 @@
         foreach (QuestStateRequirement r in Model.QuestState.QuestStateRequirements)
         {
             <tr>
-                <td>Id: <b>@r.Id</b></td>
                 <td>
                     @Ajax.ActionLink(r.QuestStateRequirementName, "QuestStateRequirement", "QuestWriter", new { Id = r.Id, QuestStateId = r.QuestStateId.Id, QuestId = Model.QuestState.QuestId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "editButton" })
                 </td>

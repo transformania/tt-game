@@ -78,6 +78,7 @@ namespace tfgame.Procedures
             questState.Text = input.Text;
             questState.QuestId = input.QuestId;
             questState.JumpToQuestStateId = input.JumpToQuestStateId;
+            questState.HideIfRequirementsNotMet = input.HideIfRequirementsNotMet;
 
             // always set this to something, even if it's just empty string
             if (questState.QuestStateName == null)

@@ -397,5 +397,71 @@ namespace tfgame.Procedures
             playerRepo.SavePlayer(dbPlayer);
 
         }
+
+        public static Player ProcessQuestStatePreactions(Player player, QuestState questState)
+        {
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+
+            foreach (QuestStatePreaction p in questState.QuestStatePreactions.ToList())
+            {
+
+                // try to parse the value from string into number, if it fails skip this preaction entirely
+                decimal valueAsNumber = 0;
+                try
+                {
+                    valueAsNumber = Decimal.Parse(p.ActionValue);
+                }
+                catch
+                {
+                    continue;
+                }
+
+                // change form
+                if (p.ActionType==(int)QuestStatics.PreactionType.Form)
+                {
+                    DbStaticForm newForm = FormStatics.GetForm(p.ActionValue);
+                    dbPlayer.Form = newForm.dbName;
+                    dbPlayer.Gender = newForm.Gender;
+                }
+
+                // change willpower
+                else if (p.ActionType == (int)QuestStatics.PreactionType.Willpower)
+                {
+                    if (p.AddOrSet == (int)QuestStatics.AddOrSet.Set)
+                    {
+                        dbPlayer.Health = valueAsNumber;
+                    }
+                    else if (p.AddOrSet == (int)QuestStatics.AddOrSet.Add_Number)
+                    {
+                        dbPlayer.Health += valueAsNumber;
+                    }
+                }
+
+                // change mana
+                else if (p.ActionType == (int)QuestStatics.PreactionType.Mana)
+                {
+                    if (p.AddOrSet == (int)QuestStatics.AddOrSet.Set)
+                    {
+                        dbPlayer.Mana = valueAsNumber;
+                    }
+                    else if (p.AddOrSet == (int)QuestStatics.AddOrSet.Add_Number)
+                    {
+                        dbPlayer.Mana += valueAsNumber;
+                    }
+                }
+
+                else if (p.ActionType==(int)QuestStatics.PreactionType.Variable)
+                {
+
+                }
+            }
+
+            dbPlayer.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(dbPlayer));
+            playerRepo.SavePlayer(dbPlayer);
+
+            return dbPlayer;
+
+        }
     }
 }

@@ -52,9 +52,9 @@ namespace tfgame.Statics
 
         public enum AddOrSet
         {
-            Add = 0,
-            Remove = 1,
-            Set = 2,
+            Set = 0,
+            Add_Number = 1,
+            Add_Percent = 2,
         }
 
 

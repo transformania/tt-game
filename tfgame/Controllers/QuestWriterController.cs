@@ -174,7 +174,7 @@ namespace tfgame.Controllers
             return RedirectToAction("QuestStateRequirement", "QuestWriter", new { Id = savedId, QuestStateId = state.Id, QuestId = input.QuestStateRequirement.QuestId });
         }
 
-        public ActionResult QuestStateRequirementDelete(int Id) //, int QuestStateId, int QuestId, int ParentStateId)
+        public ActionResult QuestStateRequirementDelete(int Id)
         {
 
             IQuestRepository repo = new EFQuestRepository();
@@ -227,7 +227,7 @@ namespace tfgame.Controllers
             return RedirectToAction("QuestStatePreaction", "QuestWriter", new { Id = savedId, QuestStateId = state.Id, QuestId = input.QuestStatePreaction.QuestId });
         }
 
-        public ActionResult QuestStatePreactionDelete(int Id) //, int QuestStateId, int QuestId, int ParentStateId)
+        public ActionResult QuestStatePreactionDelete(int Id)
         {
 
             IQuestRepository repo = new EFQuestRepository();

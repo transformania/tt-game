@@ -164,6 +164,8 @@ namespace tfgame.Controllers
             }
 
             QuestProcedures.PlayerSetQuestState(me, desiredState);
+            QuestProcedures.ProcessQuestStatePreactions(me, desiredState);
+
             PlayerProcedures.ChangePlayerActionManaNoTimestamp(1, 0, 0, me.Id);
 
             return RedirectToAction("Quest");
@@ -187,6 +189,7 @@ namespace tfgame.Controllers
             QuestState jumpedTostate = QuestProcedures.GetQuestState(state.JumpToQuestStateId);
 
             QuestProcedures.PlayerSetQuestState(me, jumpedTostate);
+            QuestProcedures.ProcessQuestStatePreactions(me, jumpedTostate);
 
             return RedirectToAction("Quest");
         }

@@ -22,26 +22,18 @@
     @Html.HiddenFor(m => m.ParentQuestState.Id)
     @Html.HiddenFor(m => m.QuestStatePreaction.QuestStateId.Id)
     @Html.HiddenFor(m => m.QuestStatePreaction.QuestId)
+    @Html.HiddenFor(m => m.QuestStatePreaction.Id)
 
 
     <label>Name (used for internal purposes):</label>    <br />
     @Html.TextBoxFor(m => m.QuestStatePreaction.QuestStatePreactionName)
-
-    //public int Id { get; set; }
-    //public virtual QuestState QuestStateId { get; set; }
-    //public int QuestId { get; set; }
-    //public string QuestStatePreactionName { get; set; }
-    //public int ActionType { get; set; }
-    //public string ActionValue { get; set; }
-    //public int AddOrSet { get; set; }
-    //public string VariableName { get; set; }
 
     <br /><br />
 
     <label>Action Type:</label>    <br />
     @Html.DropDownListFor(m => m.QuestStatePreaction.ActionType, new SelectList(
                   new List<Object>{
-                      new { value = (int)QuestStatics.PreactionType.Variable, text = "Variable"  },
+                      new { value = (int)QuestStatics.PreactionType.Variable, text = "Set/Update Variable"  },
                       new { value = (int)QuestStatics.PreactionType.Form, text = "Change Form"  },
                       new { value = (int)QuestStatics.PreactionType.Willpower, text = "Change Willpower"  },
                       new { value = (int)QuestStatics.PreactionType.Mana, text = "Change Mana"  },
@@ -51,6 +43,12 @@
                    2))
 
     <br /><br />
+
+    <btn class="glyphicon glyphicon-question-sign helpButton">
+        @Ajax.ActionLink("Click here to show list of all forms", "AllForms", "Info", null, new AjaxOptions { UpdateTargetId = "locationsBox", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail" }, new { @class = "" })
+    </btn>
+
+    <div id="locationsBox" style="background-color: #cdcdff"></div>
 
     <label>Value:</label>    <br />
     @Html.TextBoxFor(m => m.QuestStatePreaction.ActionValue)
@@ -62,12 +60,12 @@
 
     <br /><br />
 
-    <label>Add or Set?</label>    <br />
+    <label>Add/Subtract or Set?</label>    <br />
     @Html.DropDownListFor(m => m.QuestStatePreaction.AddOrSet, new SelectList(
                   new List<Object>{
-                      new { value = (int)QuestStatics.AddOrSet.Add, text = "Add this value"  },
-                      new { value = (int)QuestStatics.AddOrSet.Remove, text = "Remove this value"  },
-                       new { value = (int)QuestStatics.AddOrSet.Set, text = "Set value to this"  },
+                      new { value = (int)QuestStatics.AddOrSet.Set, text = "Set value to this"  },
+                      new { value = (int)QuestStatics.AddOrSet.Add_Number, text = "Add/Subtract this value (number) (not yet implemented)"  },
+                      new { value = (int)QuestStatics.AddOrSet.Add_Percent, text = "Add/Subtract this value (percent) (not yet implemented)"  },
                     },
                   "value",
                   "text",

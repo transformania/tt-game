@@ -1,7 +1,11 @@
 ﻿var ChatModule = (function () {
     var unreadCount = 0;
     var cooldownActive = false;
+    var connected = false;
     var roomName = '';
+    var reconnectTimer;
+    var connectAttempts = 0;
+    var maxConnectAttempts = 20;
     
     var pub = {};
 
@@ -15,6 +19,12 @@
         0: 'none',
         1: 'some',
         2: 'all'
+    };
+
+    var connectionStatus = {
+        connectionSlow: "We are currently experiencing difficulties with your connection, chat messages may be delayed",
+        reconnecting: "Chat has been disconnected, trying to reconnect...",
+        disconnected: "Chat has been disconnected and failed to reconnect, please re-load the page"
     };
 
     pub.chat = $.connection.chatHub;
@@ -66,11 +76,29 @@
 
         popAudio.play();
     }
+
+    function showConnectionStatus(status) {
+        $('#connectionStatus').text(status).show();
+    }
+
+    function hideConnectionStatus() {
+        $('#connectionStatus').hide();
+    }
+
+    function connect() {
+        $.connection.hub.start().done(onChatHubStarted);
+        $.connection.hub.connectionSlow(function () { showConnectionStatus(connectionStatus.connectionSlow); });
+        $.connection.hub.reconnecting(onReconnecting);
+        $.connection.hub.disconnected(onChatDisconnected);
+        $.connection.hub.reconnected(hideConnectionStatus);
+    }
     
     /* Event handlers */
 
     function onGainFocus() {
-        updateTitle(roomName);
+        if (connected)
+            updateTitle(roomName);
+
         unreadCount = 0;
     }
 
@@ -89,8 +117,6 @@
         pub.chat.server.joinRoom(roomName);
         pub.chat.state.toRoom = roomName;
 
-        $("#disconnected").hide();
-
         $(window).focus(onGainFocus);
         $('#sendmessage').click(onSendMessage);
 
@@ -99,14 +125,38 @@
                 onSendMessage();
             }
         });
+
+        connectAttempts = 0;
+        hideConnectionStatus();
+        updateTitle(roomName);
+        window.clearInterval(reconnectTimer);
+        connected = true;
+    }
+
+    function onReconnecting() {
+        showConnectionStatus(connectionStatus.reconnecting);
+        updateTitle('(Reconnecting) ' + roomName);
     }
 
     function onChatDisconnected() {
-        $('#connectionStatus').text('Your chat is currently disconnected from the server.  It will attempt to automatically reconnect.').show();
+        if (connected === false)
+            return;
 
-        setTimeout(function () {
-            $.connection.hub.start();
-        }, 10000);
+        connected = false;
+
+        reconnectTimer = setInterval(function () {
+            if (connected === false && connectAttempts < maxConnectAttempts) {
+                connectAttempts++;
+                showConnectionStatus(connectionStatus.reconnecting + ' (attempt ' + connectAttempts + '/' + maxConnectAttempts + ')');
+                updateTitle('(Reconnecting) ' + roomName);
+
+                connect();
+            } else {
+                showConnectionStatus(connectionStatus.disconnected);
+                updateTitle('(Disconnected) ' + roomName);
+                window.clearInterval(reconnectTimer);
+            }
+        }, 30000);
     }
 
     function onNewMessage(model) {
@@ -163,8 +213,7 @@
 
         doConfig();
 
-        $.connection.hub.start().done(onChatHubStarted);
-        $.connection.hub.disconnected(onChatDisconnected);
+        connect();
 
         pub.chat.client.addNewMessageToPage = onNewMessage;
         pub.chat.client.nameChanged = onNameChanged;

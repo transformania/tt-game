@@ -1,11 +1,37 @@
 ﻿@model IEnumerable<tfgame.dbModels.Models.QuestState>
 
 @{
-            foreach (tfgame.dbModels.Models.QuestState q in Model)
-            {
+    <table>
+        @foreach (tfgame.dbModels.Models.QuestState q in Model.ToList())
+        {
 
-        <p>@Ajax.ActionLink(q.QuestStateName, "QuestState", "QuestWriter", new { Id = q.Id, QuestId = q.QuestId, ParentStateId = q.ParentQuestStateId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "editButton" })</p>
+            <tr>
+                <td>
+                    @Ajax.ActionLink(q.QuestStateName, "QuestState", "QuestWriter", new { Id = q.Id, QuestId = q.QuestId, ParentStateId = q.ParentQuestStateId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "editButton" })
 
-        }
+                    @{
+                        if (q.QuestStateRequirements.Count() > 0)
+                        {
+                            <span>@q.QuestStateRequirements.Count() requirements |</span>
+                        }
+                        if (q.QuestEnds.Count() > 0)
+                        {
+                            <span>@q.QuestEnds.Count() ends</span>
+                        }
+                    }
+
+
+
+                </td>
+
+                <td>
+                    @Ajax.ActionLink("[DELETE]", "QuestStateDelete", "QuestWriter", new { Id = q.Id }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting", Confirm = "Are you sure you want to delete this quest state?" }, new { @class = "deleteButton" })
+                </td>
+
+            </tr>
+                        }
+    </table>
+
+
 }
 

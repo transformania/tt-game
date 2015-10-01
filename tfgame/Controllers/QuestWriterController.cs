@@ -120,6 +120,18 @@ namespace tfgame.Controllers
             return RedirectToAction("QuestState", "QuestWriter", new { Id = id, QuestId = input.QuestState.QuestId, ParentStateId = input.QuestState.ParentQuestStateId });
         }
 
+        public ActionResult QuestStateDelete(int Id)
+        {
+            IQuestRepository repo = new EFQuestRepository();
+
+            QuestState questState = repo.QuestStates.FirstOrDefault(q => q.Id == Id);
+
+            QuestWriterProcedures.DeleteQuestState(Id);
+
+
+            return RedirectToAction("ShowAllQuestStates", "QuestWriter", new { Id = questState.QuestId });
+        }
+
         public ActionResult QuestStateRequirement(int Id, int QuestStateId, int QuestId)
         {
             IQuestRepository repo = new EFQuestRepository();
@@ -253,6 +265,7 @@ namespace tfgame.Controllers
 
         public ActionResult ShowAllQuestStates(int Id)
         {
+
             IEnumerable<QuestState> output = QuestWriterProcedures.GetAllQuestsStates(Id);
             return PartialView(output);
         }

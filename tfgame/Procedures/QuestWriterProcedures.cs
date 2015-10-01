@@ -90,6 +90,38 @@ namespace tfgame.Procedures
             return questState.Id;
         }
 
+        public static void DeleteQuestState(int Id)
+        {
+            IQuestRepository repo = new EFQuestRepository();
+            QuestState questState = repo.QuestStates.FirstOrDefault(q => q.Id == Id);
+
+            // delete any requirements on this quest state
+            List<QuestStateRequirement> requirements = repo.QuestStateRequirements.Where(q => q.QuestStateId.Id == questState.Id).ToList();
+            foreach(QuestStateRequirement q in requirements)
+            {
+                repo.DeleteQuestStateRequirement(q.Id);
+            }
+
+            // delete any requirements on this quest state
+            List<QuestEnd> ends = repo.QuestEnds.Where(q => q.QuestStateId.Id == questState.Id).ToList();
+            foreach (QuestEnd q in ends)
+            {
+                repo.DeleteQuestEnd(q.Id);
+            }
+
+            // set parent of any children quest states to 0
+            List<QuestState> children = repo.QuestStates.Where(q => q.ParentQuestStateId == questState.Id).ToList();
+            foreach (QuestState q in children)
+            {
+                q.ParentQuestStateId = 0;
+                repo.SaveQuestState(q);
+            }
+
+            // finally actually delete this state
+            repo.DeleteQuestState(Id);
+
+        }
+
         public static int SaveQuestStateRequirement(QuestStateRequirement input, QuestState state)
         {
             IQuestRepository repo = new EFQuestRepository();

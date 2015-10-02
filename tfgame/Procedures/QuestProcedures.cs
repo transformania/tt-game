@@ -414,7 +414,7 @@ namespace tfgame.Procedures
                 }
                 catch
                 {
-                    continue;
+                    valueAsNumber = 0;
                 }
 
                 // change form

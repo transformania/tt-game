@@ -64,7 +64,7 @@
     @Html.DropDownListFor(m => m.QuestStatePreaction.AddOrSet, new SelectList(
                   new List<Object>{
                       new { value = (int)QuestStatics.AddOrSet.Set, text = "Set value to this"  },
-                      new { value = (int)QuestStatics.AddOrSet.Add_Number, text = "Add/Subtract this value (number) (not yet implemented)"  },
+                      new { value = (int)QuestStatics.AddOrSet.Add_Number, text = "Add/Subtract this value (number)"  },
                       new { value = (int)QuestStatics.AddOrSet.Add_Percent, text = "Add/Subtract this value (percent) (not yet implemented)"  },
                     },
                   "value",

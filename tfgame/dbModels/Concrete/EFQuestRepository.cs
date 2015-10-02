@@ -213,6 +213,56 @@ namespace tfgame.dbModels.Concrete
 
         #endregion
 
+        #region QuestStatePreactions
+        public IQueryable<QuestStatePreaction> QuestStatePreactions
+        {
+            get { return context.QuestStatePreactions; }
+        }
+
+        public void SaveQuestStatePreaction(QuestStatePreaction QuestStatePreaction)
+        {
+            if (QuestStatePreaction.Id == 0)
+            {
+                context.QuestStatePreactions.Add(QuestStatePreaction);
+            }
+            else
+            {
+                QuestStatePreaction editMe = context.QuestStatePreactions.Find(QuestStatePreaction.Id);
+                if (editMe != null)
+                {
+                    // dbEntry.Name = QuestStatePreaction.Name;
+                    // dbEntry.Message = QuestStatePreaction.Message;
+                    // dbEntry.TimeStamp = QuestStatePreaction.TimeStamp;
+
+                }
+            }
+
+            try
+            {
+                context.SaveChanges();
+            }
+            catch (OptimisticConcurrencyException)
+            {
+                //context.(RefreshMode.ClientWins, dbModels.Models.QuestStatePreaction);
+                //context.SaveChanges();
+            }
+
+            // context.SaveChanges();
+        }
+
+        public void DeleteQuestStatePreaction(int id)
+        {
+
+            QuestStatePreaction dbEntry = context.QuestStatePreactions.Find(id);
+            if (dbEntry != null)
+            {
+                context.QuestStatePreactions.Remove(dbEntry);
+                context.SaveChanges();
+            }
+        }
+
+        #endregion
+
         #region QuestWriterLog
         public IQueryable<QuestWriterLog> QuestWriterLogs
         {

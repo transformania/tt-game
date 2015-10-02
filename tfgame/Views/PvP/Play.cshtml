@@ -83,7 +83,7 @@
                     }
                     if (User.IsInRole(PvPStatics.Permissions_QuestWriter) == true)
                     {
-                        <li>@Html.ActionLink("Quests", "Index", "QuestWriter", null, null)</li>
+                        <li>@Html.ActionLink("QuestWriter", "Index", "QuestWriter", null, null)</li>
                     }
                 }
             </ul>
@@ -142,9 +142,10 @@
 
 
     <div id="playerActionBox">
-        @Html.ActionLink("Cleanse (4 AP, 3 Mana)", "Cleanse", "PvP", new { id = "actionCleanse", @class = "actionButton" })
-        @Html.ActionLink("Meditate (4 AP)", "Meditate", "PvP", new { id = "actionMeditate", @class = "actionButton" })
-        @Html.ActionLink("Search this Area (" + (int)Model.APSearchCost + " AP)", "Search", "PvP", new { id = "actionSearch", @class = "actionButton" })
+        @Html.ActionLink("Cleanse (4 AP, 3 Mana)", "Cleanse", "PvP", null, new { id = "actionCleanse", @class = "actionButton" })
+        @Html.ActionLink("Meditate (4 AP)", "Meditate", "PvP", null, new { id = "actionMeditate", @class = "actionButton" })
+        @Html.ActionLink("Search this Area (" + (int)Model.APSearchCost + " AP)", "Search", "PvP", null, new { id = "actionSearch", @class = "actionButton" })
+        @Html.ActionLink("Quest", "QuestsAvailableHere", "Quest", null, new { id = "actionQuest", @class = "actionButton" })
     </div>
 
     <div class="row">

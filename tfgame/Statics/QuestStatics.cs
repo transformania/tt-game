@@ -30,7 +30,9 @@ namespace tfgame.Statics
             Magicka = 6,
             Succour = 7,
             Luck = 8, 
-            Variable = 9
+            Variable = 9,
+            Gender = 10,
+            Form = 11,
         }
 
         public enum RewardType
@@ -38,7 +40,21 @@ namespace tfgame.Statics
             Experience = 0,
             Item = 1,
             Effect = 2,
-            
+        }
+
+        public enum PreactionType
+        {
+            Variable = 0,
+            Form = 1,
+            Willpower = 2,
+            Mana = 3,
+        }
+
+        public enum AddOrSet
+        {
+            Set = 0,
+            Add_Number = 1,
+            Add_Percent = 2,
         }
 
 

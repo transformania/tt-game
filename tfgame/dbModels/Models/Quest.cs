@@ -41,10 +41,12 @@ namespace tfgame.dbModels.Models
         public int QuestId { get; set; }
         public string Text { get; set; }
         public virtual List<QuestStateRequirement> QuestStateRequirements { get; set; }
+        public virtual List<QuestStatePreaction> QuestStatePreactions { get; set; }
         public virtual List<QuestEnd> QuestEnds { get; set; }
-        public int SuccessQuestStateId { get; set; }
+        public int JumpToQuestStateId { get; set; }
         public string ChoiceText { get; set; }
         public int QuestEndId { get; set; }
+        public bool HideIfRequirementsNotMet { get; set; }
     }
 
     //[QuestState]
@@ -88,7 +90,7 @@ namespace tfgame.dbModels.Models
         public int Id { get; set; }
         public virtual QuestState QuestStateId { get; set; }
         public int EndType { get; set; }
-        public string RewardType { get; set; }
+        public int RewardType { get; set; }
         public string RewardAmount { get; set; }
         public string QuestEndName { get; set; }
         public int QuestId { get; set; }
@@ -102,6 +104,27 @@ namespace tfgame.dbModels.Models
         //[RewardAmount] - string/int? How much XP / how many items / which spell or effect to give
     }
 
+    public class QuestStatePreaction
+    {
+        public int Id { get; set; }
+        public virtual QuestState QuestStateId { get; set; }
+        public int QuestId { get; set; }
+        public string QuestStatePreactionName { get; set; }
+        public int ActionType { get; set; }
+        public string ActionValue { get; set; }
+        public int AddOrSet { get; set; }
+        public string VariableName { get; set; }
+    }
+
+    //[QuestStatePreAction]
+    //Something to do before the start of a state, such as setting a variable, giving an item, etc.
+    //[Id] -- int
+    //[QuestId] -- int.  The Id of the quest this belongs to
+    //[QuestStateId]  - int.  Id of the quest state this is a variable for
+    //[ActionType] - string.  What action type to take, ie “setVariable”
+    //[VariabledbName] - string.  What variable name to alter (if altering a variable)
+    //[ActionSetValue] -string  Sets the value of a variable
+    //[ActionAlterValue] - int.  Amount to alter (raise or lower) the value of a variable
 
     public class QuestWriterLog
     {

@@ -32,7 +32,13 @@
     @{
         foreach (QuestStart s in Model)
         {
-            <p>@s.Name</p>
+            <div style="border: 1px solid black">
+                <p>@Html.ActionLink("Begin Quest:  " + s.Name, "StartQuest", "Quest", new { Id = s.Id }, null)</p>
+                <p>Minimum player level:  @s.MinStartLevel</p>
+                <p>Maximum player level:  @s.MaxStartTurn</p>
+                <p>Minimum game turn:  @s.MinStartTurn</p>
+                <p>Maximum game turn:  @s.MaxStartTurn</p>
+            </div>
         }
     }
 </div>

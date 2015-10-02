@@ -503,6 +503,7 @@
     <Compile Include="ViewModels\PlayPageViewModel.cs" />
     <Compile Include="ViewModels\PopulationTurnTuple.cs" />
     <Compile Include="ViewModels\PublicBroadcastViewModel.cs" />
+    <Compile Include="ViewModels\Quest\QuestPlayPageViewModdel.cs" />
     <Compile Include="ViewModels\Quest\QuestStateFormViewModel.cs" />
     <Compile Include="ViewModels\RestockList.cs" />
     <Compile Include="ViewModels\SelectListItem.cs" />
@@ -2458,6 +2459,13 @@
     <Content Include="Views\PvP\RoundLeaderboards\Statistics\Alpha_25.cshtml" />
     <Content Include="Views\Info\ServerPopulation.cshtml" />
     <Content Include="Views\Quest\QuestsAvailableHere.cshtml" />
+    <Content Include="Views\Quest\Questing.cshtml" />
+    <Content Include="Views\Quest\Quest.cshtml" />
+    <Content Include="Views\Quest\Abandon.cshtml" />
+    <Content Include="Views\QuestWriter\Help.cshtml" />
+    <Content Include="Views\QuestWriter\ShowAllQuestStarts.cshtml" />
+    <Content Include="Views\QuestWriter\ShowAllQuestStates.cshtml" />
+    <Content Include="Views\QuestWriter\QuestStatePreaction.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

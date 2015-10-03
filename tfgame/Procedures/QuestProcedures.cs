@@ -219,13 +219,46 @@ namespace tfgame.Procedures
 
         }
 
-        public static bool QuestStateIsAvailable(QuestState questState, Player player, BuffBox buffs)
+        public static bool QuestStateIsAvailable(QuestState questState, Player player, BuffBox buffs, IEnumerable<QuestPlayerVariable> variables)
         {
 
             bool isAvailable = true;
 
             foreach (QuestStateRequirement q in questState.QuestStateRequirements)
             {
+                // evaluate variable
+                if (q.RequirementType == (int)QuestStatics.RequirementType.Variable) {
+
+                    QuestPlayerVariable var = variables.FirstOrDefault(v => v.VariableName == q.VariabledbName);
+
+                    // variable has never been set, so fail
+                    if (var==null)
+                    {
+                        return false;
+                    }
+
+                    isAvailable = ExpressionIsTrue(float.Parse(var.VariableValue), q);
+                    return isAvailable;
+                }
+
+                else if (q.RequirementType == (int)QuestStatics.RequirementType.Gender)
+                {
+                    if (q.RequirementValue == PvPStatics.GenderMale && player.Gender != PvPStatics.GenderMale)
+                    {
+                        return false;
+                    }
+                    else if (q.RequirementValue == PvPStatics.GenderFemale && player.Gender != PvPStatics.GenderFemale)
+                    {
+                        return false;
+                    }
+
+                    else
+                    {
+                        return true;
+                    }
+                }
+
+                // evaluate player buff/ability
                 float playerValue = GetValueFromType(q, buffs);
                 isAvailable = ExpressionIsTrue(playerValue, q);
                 if (isAvailable==false)
@@ -352,7 +385,15 @@ namespace tfgame.Procedures
 
             foreach (QuestStateRequirement qs in q.QuestStateRequirements.ToList())
             {
+                // don't print anything for variables or gender requirements
+                if (qs.RequirementType == (int)QuestStatics.RequirementType.Variable || qs.RequirementType == (int)QuestStatics.RequirementType.Gender)
+                {
+                    continue;
+                }
+
                 output += qs.RequirementValue + " " + Enum.GetName(typeof(QuestStatics.RequirementType), qs.RequirementType);
+
+
 
                 if (i < len-1)
                 {
@@ -451,9 +492,18 @@ namespace tfgame.Procedures
                     }
                 }
 
+                // update or set a variable
                 else if (p.ActionType==(int)QuestStatics.PreactionType.Variable)
                 {
-
+                    if (p.AddOrSet == (int)QuestStatics.AddOrSet.Set)
+                    {
+                        QuestProcedures.SetQuestPlayerVariable(p.QuestId, dbPlayer.Id, p.VariableName, p.ActionValue);
+                    }
+                    else if (p.AddOrSet == (int)QuestStatics.AddOrSet.Add_Number)
+                    {
+                        QuestProcedures.EditQuestPlayerVariable(p.QuestId, dbPlayer.Id, p.VariableName, p.ActionValue);
+                    }
+                    
                 }
             }
 
@@ -483,10 +533,48 @@ namespace tfgame.Procedures
             repo.SaveQuestPlayerVariable(variable);
         }
 
+        public static void EditQuestPlayerVariable(int questId, int playerId, string variableName, string variableValue)
+        {
+            IQuestRepository repo = new EFQuestRepository();
+            QuestPlayerVariable variable = repo.QuestPlayerVariablees.FirstOrDefault(v => v.PlayerId == playerId && v.QuestId == questId && v.VariableName == variableName);
+
+            if (variable == null)
+            {
+                variable = new QuestPlayerVariable
+                {
+                    QuestId = questId,
+                    PlayerId = playerId,
+                    VariableName = variableName,
+                    VariableValue = "0",
+                };
+            }
+
+            float oldValueAsFloat = float.Parse(variable.VariableValue);
+            float updateValueAsFloat =  float.Parse(variableValue);
+            float endValueAsFloat = oldValueAsFloat + updateValueAsFloat;
+
+            variable.VariableValue = endValueAsFloat.ToString();
+
+            repo.SaveQuestPlayerVariable(variable);
+        }
+
         public static QuestPlayerVariable GetQuestPlayerVariable(int questId, int playerId, string variableName)
         {
             IQuestRepository repo = new EFQuestRepository();
             return repo.QuestPlayerVariablees.FirstOrDefault(v => v.PlayerId == playerId && v.QuestId == questId && v.VariableName == variableName);
+        }
+
+        public static IEnumerable<QuestPlayerVariable> GetAllQuestPlayerVariablesFromQuest(int questId, int playerId)
+        {
+            IQuestRepository repo = new EFQuestRepository();
+            IEnumerable<QuestPlayerVariable> output = repo.QuestPlayerVariablees.Where(v => v.PlayerId == playerId && v.QuestId == questId);
+
+            if (output == null)
+            {
+                output = new List<QuestPlayerVariable>();
+            }
+
+            return output;
         }
 
         public static void ClearQuestPlayerVariables(int playerId, int questId)

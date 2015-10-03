@@ -153,5 +153,14 @@ namespace tfgame.dbModels.Models
 //    [Outcome] - string.  Either “completed” or “failed.”
 //[StartedTurn] - int.  The game turn that the player began this quest.
 //    [CompletedOrFailedTurn] - int.  The game turn that the player either last failed or completed this quest.
+
+    public class QuestPlayerVariable
+    {
+        public int Id { get; set; }
+        public int PlayerId { get; set; }
+        public int QuestId { get; set; }
+        public string VariableName { get; set; }
+        public string VariableValue { get; set; }
+    }
 }
 

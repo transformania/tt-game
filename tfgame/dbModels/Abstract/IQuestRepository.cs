@@ -57,5 +57,12 @@ namespace tfgame.dbModels.Abstract
 
         void DeleteQuestPlayerStatus(int QuestPlayerStatusId);
 
+
+        IQueryable<QuestPlayerVariable> QuestPlayerVariablees { get; }
+
+        void SaveQuestPlayerVariable(QuestPlayerVariable quest);
+
+        void DeleteQuestPlayerVariable(int QuestPlayerVariableId);
+
     }
 }

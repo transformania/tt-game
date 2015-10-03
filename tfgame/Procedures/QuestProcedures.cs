@@ -463,5 +463,41 @@ namespace tfgame.Procedures
             return dbPlayer;
 
         }
+
+        public static void SetQuestPlayerVariable(int questId, int playerId, string variableName, string variableValue)
+        {
+            IQuestRepository repo = new EFQuestRepository();
+            QuestPlayerVariable variable = repo.QuestPlayerVariablees.FirstOrDefault(v => v.PlayerId == playerId && v.QuestId == questId && v.VariableName == variableName);
+
+            if (variable==null)
+            {
+                variable = new QuestPlayerVariable
+                {
+                    QuestId  = questId,
+                    PlayerId = playerId,
+                    VariableName = variableName
+                };
+            }
+
+            variable.VariableValue = variableValue;
+            repo.SaveQuestPlayerVariable(variable);
+        }
+
+        public static QuestPlayerVariable GetQuestPlayerVariable(int questId, int playerId, string variableName)
+        {
+            IQuestRepository repo = new EFQuestRepository();
+            return repo.QuestPlayerVariablees.FirstOrDefault(v => v.PlayerId == playerId && v.QuestId == questId && v.VariableName == variableName);
+        }
+
+        public static void ClearQuestPlayerVariables(int playerId, int questId)
+        {
+            IQuestRepository repo = new EFQuestRepository();
+
+            foreach (QuestPlayerVariable q in repo.QuestPlayerVariablees.Where(v => v.PlayerId == playerId && v.QuestId == questId).ToList())
+            {
+                repo.DeleteQuestPlayerVariable(q.Id);
+            }
+
+        }
     }
 }

@@ -363,5 +363,55 @@ namespace tfgame.dbModels.Concrete
 
         #endregion
 
+        #region QuestPlayerVariable
+        public IQueryable<QuestPlayerVariable> QuestPlayerVariablees
+        {
+            get { return context.QuestPlayerVariables; }
+        }
+
+        public void SaveQuestPlayerVariable(QuestPlayerVariable QuestPlayerVariable)
+        {
+            if (QuestPlayerVariable.Id == 0)
+            {
+                context.QuestPlayerVariables.Add(QuestPlayerVariable);
+            }
+            else
+            {
+                QuestPlayerVariable editMe = context.QuestPlayerVariables.Find(QuestPlayerVariable.Id);
+                if (editMe != null)
+                {
+                    // dbEntry.Name = QuestPlayerVariable.Name;
+                    // dbEntry.Message = QuestPlayerVariable.Message;
+                    // dbEntry.TimeStamp = QuestPlayerVariable.TimeStamp;
+
+                }
+            }
+
+            try
+            {
+                context.SaveChanges();
+            }
+            catch (OptimisticConcurrencyException)
+            {
+                //context.(RefreshMode.ClientWins, dbModels.Models.QuestPlayerVariable);
+                //context.SaveChanges();
+            }
+
+            // context.SaveChanges();
+        }
+
+        public void DeleteQuestPlayerVariable(int id)
+        {
+
+            QuestPlayerVariable dbEntry = context.QuestPlayerVariables.Find(id);
+            if (dbEntry != null)
+            {
+                context.QuestPlayerVariables.Remove(dbEntry);
+                context.SaveChanges();
+            }
+        }
+
+        #endregion
+
     }
 }

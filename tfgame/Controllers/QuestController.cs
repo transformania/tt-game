@@ -268,12 +268,15 @@ namespace tfgame.Controllers
             if (endType == (int)QuestStatics.QuestOutcomes.Failed)
             {
                 QuestProcedures.PlayerEndQuest(me, (int)QuestStatics.QuestOutcomes.Failed);
+                QuestProcedures.ClearQuestPlayerVariables(me.Id, me.InQuest);
                 TempData["Result"] = "You unfortunately failed the quest <b>" + quest.Name + "</b>.  Better luck next time!  If there is one...";
+                
                 return RedirectToAction("Play", "PvP");
             }
 
             // pass!
             string victoryMessage = QuestProcedures.PlayerEndQuest(me, (int)QuestStatics.QuestOutcomes.Completed);
+            QuestProcedures.ClearQuestPlayerVariables(me.Id, me.InQuest);
             TempData["Result"] = "Congratulations, you completed the quest <b>" + quest.Name + "</b>!" + victoryMessage;
             return RedirectToAction("Play", "PvP");
 

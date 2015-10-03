@@ -50,12 +50,12 @@
 
     <label>Jumps to State (instead of having children options, leaving this state immediately brings the player to another one):</label>    <br />
     @Html.DropDownListFor(m => m.QuestState.JumpToQuestStateId, new SelectList(
-                  new List<Object>{
+                              new List<Object>{
                       new { value = 0, text = "--none--"  },
-                    },
-                  "value",
-                  "text",
-                   2))
+                                },
+                              "value",
+                              "text",
+                               2))
 
     if (Model.JumpToQuestState != null)
     {
@@ -73,7 +73,8 @@
 
     <input type="submit" class="btn btn-chat" value="Send" />
 
-            }
+}
+
 
 <h4>Quest State Preactions:  (@Model.QuestState.QuestStatePreactions.Count())</h4>
 
@@ -96,7 +97,12 @@
 
 </table>
 
-<p>@Ajax.ActionLink("--New Quest State Preaction--", "QuestStatePreaction", "QuestWriter", new { Id = -1, QuestStateId = Model.QuestState.Id, QuestId = Model.QuestState.QuestId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "newButton" })</p>
+@{
+    if (Model.QuestState.Id > 0)
+    {
+        <p>@Ajax.ActionLink("--New Quest State Preaction--", "QuestStatePreaction", "QuestWriter", new { Id = -1, QuestStateId = Model.QuestState.Id, QuestId = Model.QuestState.QuestId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "newButton" })</p>
+    }
+}
 
 <h4>Quest State Requirements:  (@Model.QuestState.QuestStateRequirements.Count())</h4>
 
@@ -119,9 +125,12 @@
 
 </table>
 
-
-
-<p>@Ajax.ActionLink("--New Quest State Requirement--", "QuestStateRequirement", "QuestWriter", new { Id = -1, QuestStateId = Model.QuestState.Id, QuestId = Model.QuestState.QuestId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "newButton" })</p>
+@{
+    if (Model.QuestState.Id > 0)
+    {
+        <p>@Ajax.ActionLink("--New Quest State Requirement--", "QuestStateRequirement", "QuestWriter", new { Id = -1, QuestStateId = Model.QuestState.Id, QuestId = Model.QuestState.QuestId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "newButton" })</p>
+    }
+}
 
 <h4>Quest End (@Model.QuestState.QuestEnds.Count())</h4>
 
@@ -142,26 +151,32 @@
     }
 </table>
 
-<p>@Ajax.ActionLink("--New Quest End--", "QuestEnd", "QuestWriter", new { Id = -1, QuestStateId = Model.QuestState.Id, QuestId = Model.QuestState.QuestId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "newButton" })</p>
+@{
+    if (Model.QuestState.Id > 0)
+    {
+        <p>@Ajax.ActionLink("--New Quest End--", "QuestEnd", "QuestWriter", new { Id = -1, QuestStateId = Model.QuestState.Id, QuestId = Model.QuestState.QuestId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "newButton" })</p>
+    }
+}
+
 
 <h4>Children Quest States (@Model.ChildQuestStates.Count()):</h4>
 
 @{
     foreach (QuestState q in Model.ChildQuestStates)
     {
-       @Ajax.ActionLink("[" + q.QuestStateName + "]", "QuestState", "QuestWriter", new { Id = q.Id, QuestId = Model.QuestState.QuestId, ParentStateId = Model.QuestState.Id }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting",  }, new { @class = "editButton" })
+        @Ajax.ActionLink("[" + q.QuestStateName + "]", "QuestState", "QuestWriter", new { Id = q.Id, QuestId = Model.QuestState.QuestId, ParentStateId = Model.QuestState.Id }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting", }, new { @class = "editButton" })
 
-        @Ajax.ActionLink("[DELETE]", "QuestStateDelete", "QuestWriter", new { Id = q.Id }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting", Confirm="Are you sure you want to delete this quest state?" }, new { @class = "deleteButton" })
+        @Ajax.ActionLink("[DELETE]", "QuestStateDelete", "QuestWriter", new { Id = q.Id }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting", Confirm = "Are you sure you want to delete this quest state?" }, new { @class = "deleteButton" })
         <br /><br />
     }
-}
 
-@{
     if (Model.QuestState.Id > 0)
     {
         <div>@Ajax.ActionLink("--Add Child QuestState--", "QuestState", "QuestWriter", new { Id = -1, QuestId = Model.QuestState.QuestId, ParentStateId = Model.QuestState.Id }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "newButton" })</div>
     }
 }
+
+
 
 <script>
 
@@ -169,6 +184,7 @@
     var questId = @Model.QuestState.QuestId;
     var jumpToDropdown = $("#QuestState_JumpToQuestStateId");
     var jumpToLoadValue = @Model.QuestState.JumpToQuestStateId;
+
 
     function loadJumpToDropdownWithValues() {
         $.getJSON("/QuestWriter/QuestStatesInQuestJSON/" + questId, function (data) {
@@ -199,5 +215,4 @@
 
     // onload
     loadJumpToDropdownWithValues();
-
 </script>

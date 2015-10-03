@@ -60,9 +60,9 @@ namespace tfgame.Controllers
         public ActionResult QuestStartSend(QuestStart input)
         {
 
-            QuestWriterProcedures.SaveQuestStart(input);
+            int newId = QuestWriterProcedures.SaveQuestStart(input);
 
-            return RedirectToAction("QuestStart", "QuestWriter", new { input.Id });
+            return RedirectToAction("QuestStart", "QuestWriter", new { Id = newId});
         }
 
         public ActionResult MarkQuestAsLive (int Id, bool live)

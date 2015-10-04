@@ -60,9 +60,9 @@ namespace tfgame.Controllers
         public ActionResult QuestStartSend(QuestStart input)
         {
 
-            QuestWriterProcedures.SaveQuestStart(input);
+            int newId = QuestWriterProcedures.SaveQuestStart(input);
 
-            return RedirectToAction("QuestStart", "QuestWriter", new { input.Id });
+            return RedirectToAction("QuestStart", "QuestWriter", new { Id = newId});
         }
 
         public ActionResult MarkQuestAsLive (int Id, bool live)
@@ -321,6 +321,14 @@ namespace tfgame.Controllers
         {
             IEnumerable<QuestState> output = QuestWriterProcedures.GetAllQuestsStatesInQuest(Id);
             return PartialView(output);
+        }
+
+        public JsonResult ShowAllUsedQuestVariables(int Id)
+        {
+            IQuestRepository repo = new EFQuestRepository();
+
+            List<string> output = QuestProcedures.GetAllPossibleVariablesNamesInQuest(Id);
+            return Json(output, JsonRequestBehavior.AllowGet);
         }
 
     }

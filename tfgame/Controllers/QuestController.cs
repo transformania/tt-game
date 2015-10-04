@@ -119,6 +119,7 @@ namespace tfgame.Controllers
             output.QuestState = QuestProcedures.GetQuestState(me.InQuestState);
             output.ChildQuestStates = QuestProcedures.GetChildQuestStates(me.InQuestState);
             output.BuffBox = ItemProcedures.GetPlayerBuffsSQL(me);
+            output.QuestPlayerVariables = QuestProcedures.GetAllQuestPlayerVariablesFromQuest(output.QuestStart.Id, me.Id);
 
             ViewBag.ErrorMessage = TempData["Error"];
             ViewBag.SubErrorMessage = TempData["SubError"];
@@ -154,10 +155,11 @@ namespace tfgame.Controllers
             QuestPlayPageViewModel output = new QuestPlayPageViewModel();
             output.Player = PlayerProcedures.GetPlayerFormViewModel(me.Id);
             output.QuestStart = QuestProcedures.GetQuest(me.InQuest);
+            output.QuestPlayerVariables = QuestProcedures.GetAllQuestPlayerVariablesFromQuest(output.QuestStart.Id, me.Id); 
             BuffBox buffs = ItemProcedures.GetPlayerBuffsSQL(me);
 
             // assert player has the right requirements for this
-            if (QuestProcedures.QuestStateIsAvailable(desiredState, me, buffs) == false)
+            if (QuestProcedures.QuestStateIsAvailable(desiredState, me, buffs, output.QuestPlayerVariables) == false)
             {
                 TempData["Error"] = "You're not able to do that.";
                 return RedirectToAction("Quest");
@@ -268,12 +270,15 @@ namespace tfgame.Controllers
             if (endType == (int)QuestStatics.QuestOutcomes.Failed)
             {
                 QuestProcedures.PlayerEndQuest(me, (int)QuestStatics.QuestOutcomes.Failed);
+                QuestProcedures.ClearQuestPlayerVariables(me.Id, me.InQuest);
                 TempData["Result"] = "You unfortunately failed the quest <b>" + quest.Name + "</b>.  Better luck next time!  If there is one...";
+                
                 return RedirectToAction("Play", "PvP");
             }
 
             // pass!
             string victoryMessage = QuestProcedures.PlayerEndQuest(me, (int)QuestStatics.QuestOutcomes.Completed);
+            QuestProcedures.ClearQuestPlayerVariables(me.Id, me.InQuest);
             TempData["Result"] = "Congratulations, you completed the quest <b>" + quest.Name + "</b>!" + victoryMessage;
             return RedirectToAction("Play", "PvP");
 

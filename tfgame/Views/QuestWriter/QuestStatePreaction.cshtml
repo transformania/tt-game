@@ -55,8 +55,16 @@
 
     <br /><br />
 
-    <label>Variable name:</label>    <br />
+    <label>Variable name (will be converted to all caps):</label>    <br />
     @Html.TextBoxFor(m => m.QuestStatePreaction.VariableName)
+
+    <br /><br />
+
+    <div id="allVariables">
+        <btn class="glyphicon glyphicon-question-sign helpButton">
+            Click to view all variables referenced in this quest
+        </btn>
+    </div>
 
     <br /><br />
 
@@ -77,3 +85,11 @@
 
 }
 
+<script>
+    var questId = @Model.ParentQuestState.QuestId;
+    var allVariablesList = [];
+
+    $("#allVariables").click(function () {
+        loadUsedVariablesFromServer();
+    });
+</script>

@@ -8,4 +8,8 @@
         <p> @Ajax.ActionLink(q.Name, "QuestStart", "QuestWriter", new { Id = q.Id }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "editButton" })</p>
     }
 
+    <p>
+        @Ajax.ActionLink("-- New Quest --", "QuestStart", "QuestWriter", new { Id = -1 }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "newButton" })
+    </p>
+
 }

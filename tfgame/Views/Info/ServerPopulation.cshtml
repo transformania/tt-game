@@ -7,26 +7,52 @@
     <h1>Server Population By Turn</h1>
 
     <canvas id="myChart" width="4000" height="400"></canvas>
+    <button onclick="changeReductionFactorAndDraw(1)">1</button>
+    <button onclick="changeReductionFactorAndDraw(2)">2</button>
+    <button onclick="changeReductionFactorAndDraw(6)">6</button>
+    <button onclick="changeReductionFactorAndDraw(12)">12</button>
+    <button onclick="changeReductionFactorAndDraw(24)">24</button>
 </div>
 
 <script>
 
     var labelsRaw = [];
     var dataRaw = [];
+    //var labelsFiltered = [];
+    //var dataFiltered = [];
     var populationInfo = "";
+    var reductionFactor = 6;
+
+    var ctx = document.getElementById("myChart").getContext("2d");
 
     $.getJSON("/Info/ServerPopulationJson", function (data) {
         populationInfo = data;
 
     }).then(function() {
-        
+        renderChart();
+    });
+
+    function changeReductionFactorAndDraw(compression) {
+        reductionFactor = compression;
+        renderChart();
+    }
+
+    function renderChart() {
+
+        labelsRaw = [];
+        dataRaw = [];
+
         for (var i = 0; i < populationInfo.length; i++) {
-            var infoItem = populationInfo[i];
-            labelsRaw.push(infoItem.Turn);
-            dataRaw.push(infoItem.Population);
+            if (i % reductionFactor == 0) {
+                var infoItem = populationInfo[i];
+                labelsRaw.push(infoItem.Turn);
+                dataRaw.push(infoItem.Population);
+            }
         }
 
-        var data = {
+        ctx.canvas.width = 15 * labelsRaw.length;
+
+        var chartData = {
             labels: labelsRaw,
             datasets: [
                 {
@@ -42,13 +68,12 @@
             ]
         };
 
-        var options = {
+        var chartOptions = {
             scaleBeginAtZero: true,
         };
 
-        var ctx = document.getElementById("myChart").getContext("2d");
-        var myLineChart = new Chart(ctx).Line(data, options);
-
-    });
+      
+        var myLineChart = new Chart(ctx).Line(chartData, chartOptions);
+    }
 
 </script>

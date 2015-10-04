@@ -128,6 +128,24 @@ namespace tfgame.Procedures
             return eligibleQuests;
         }
 
+        public static IEnumerable<QuestStart> GetAllAvailableQuestsForPlayer(Player player, int turn)
+        {
+            IQuestRepository repo = new EFQuestRepository();
+            List<QuestStart> quests = repo.QuestStarts.Where(q => q.IsLive == true).ToList();
+            List<QuestPlayerStatus> playerQuestsRaw = repo.QuestPlayerStatuses.Where(s => s.PlayerId == player.Id).ToList();
+            List<QuestStart> eligibleQuests = new List<QuestStart>();
+
+            foreach (QuestStart q in quests)
+            {
+                if (PlayerCanBeginQuest(player, q, playerQuestsRaw, turn) == true)
+                {
+                    eligibleQuests.Add(q);
+                }
+            }
+
+            return eligibleQuests;
+        }
+
         public static void PlayerBeginQuest(Player player, QuestStart questStart)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();

@@ -297,7 +297,8 @@ namespace tfgame.Controllers
             }
 
             QuestProcedures.PlayerClearAllQuestStatuses(me);
-            
+            QuestProcedures.ClearQuestPlayerVariables(me.Id, me.InQuest);
+
             return RedirectToAction("Play", "PvP");
 
         }

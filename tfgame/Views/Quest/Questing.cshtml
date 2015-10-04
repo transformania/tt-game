@@ -42,6 +42,8 @@
 
 <script>
 
+    var questId = @Model.Id;
+
     function success() {
         $("#loadingBox").hide();
     }
@@ -54,5 +56,22 @@
     function waiting() {
         $("#loadingBox").show();
     }
+
+    function loadShowVariables() {
+
+        var variables = [];
+
+        $.getJSON("/QuestWriter/ShowAllActivePlayerVariables/" + questId, function (data) {
+            variables = data;
+        }).then(function () {
+            $("#listVariables").html("<br>All variables active in this quest:<br>");
+            for (var i = 0; i < variables.length; i++) {
+                var variable = variables[i];
+                $("#listVariables").append("<b>" + variable.Name + "</b> : <b>" + variable.Value + "</b><br>");
+            }
+        });
+    }
+
+    
 
 </script>

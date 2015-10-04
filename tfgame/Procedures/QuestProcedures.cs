@@ -525,7 +525,7 @@ namespace tfgame.Procedures
                 {
                     QuestId  = questId,
                     PlayerId = playerId,
-                    VariableName = variableName
+                    VariableName = variableName.ToUpper()
                 };
             }
 
@@ -544,7 +544,7 @@ namespace tfgame.Procedures
                 {
                     QuestId = questId,
                     PlayerId = playerId,
-                    VariableName = variableName,
+                    VariableName = variableName.ToUpper(),
                     VariableValue = "0",
                 };
             }
@@ -577,6 +577,48 @@ namespace tfgame.Procedures
             return output;
         }
 
+        /// <summary>
+        /// Get a list of all of the unique names of variables referenced anywhere in this quest so far to help reduce user error
+        /// when entering variable names in to quest state preactions or requirements.
+        /// </summary>
+        /// <param name="questId"></param>
+        /// <returns></returns>
+        public static List<string> GetAllPossibleVariablesNamesInQuest(int questId)
+        {
+
+            List<string> output = new List<string>();
+
+            IQuestRepository repo = new EFQuestRepository();
+            IEnumerable<QuestStatePreaction> allPreactions = repo.QuestStatePreactions.Where(q => q.QuestId == questId);
+
+            foreach(QuestStatePreaction p in allPreactions)
+            {
+                if (p.ActionType == (int)QuestStatics.PreactionType.Variable)
+                {
+                    output.Add(p.VariableName);
+                }
+            }
+
+            IEnumerable<QuestStateRequirement> allRequirements = repo.QuestStateRequirements.Where(q => q.QuestId == questId);
+
+            foreach (QuestStateRequirement p in allRequirements)
+            {
+                if (p.RequirementType == (int)QuestStatics.RequirementType.Variable)
+                {
+                    output.Add(p.VariabledbName);
+                }
+            }
+
+            output = output.Distinct().ToList();
+            return output;
+        }
+
+        /// <summary>
+        /// Delete all of a player's quest variables for a certain quest so that it is a fresh start when they attempt to do the quest
+        /// again, or else the quest is complete and there's no more point storing this data in the database
+        /// </summary>
+        /// <param name="playerId">Id of player</param>
+        /// <param name="questId">Id of the quest</param>
         public static void ClearQuestPlayerVariables(int playerId, int questId)
         {
             IQuestRepository repo = new EFQuestRepository();

@@ -44,8 +44,8 @@
                       new { value = (int)QuestStatics.RequirementType.Perception, text = "Perception",  },
                       new { value = (int)QuestStatics.RequirementType.Succour, text = "Succour",  },
                       new { value = (int)QuestStatics.RequirementType.Variable, text = "[Variable]",  },
-                      new { value = (int)QuestStatics.RequirementType.Gender, text = "Gender",  },
-                      new { value = (int)QuestStatics.RequirementType.Form, text = "Form",  },
+                      new { value = (int)QuestStatics.RequirementType.Gender, text = "[Gender]",  },
+                      new { value = (int)QuestStatics.RequirementType.Form, text = "[Form] (not implemented yet)",  },
                     },
                   "value",
                   "text",
@@ -75,10 +75,32 @@
 
     <br /><br />
 
-    <label>Variable used:</label>    <br />
+    <label>Variable used (will be converted to all caps):</label>    <br />
     @Html.TextBoxFor(m => m.QuestStateRequirement.VariabledbName)
+
+    <br /><br />
+
+    <div id="allVariables">
+        <btn class="glyphicon glyphicon-question-sign helpButton">
+            Click to view all variables referenced in this quest
+        </btn>
+    </div>
+
+    <br /><br />
 
     <input type="submit" class="btn btn-chat" value="Send" />
 
 }
 
+<script>
+
+    var questId = @Model.ParentQuestState.QuestId;
+    var allVariablesList = [];
+
+    $("#allVariables").click(function () {
+        loadUsedVariablesFromServer();
+    });
+
+    
+
+</script>

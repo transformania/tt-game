@@ -323,5 +323,13 @@ namespace tfgame.Controllers
             return PartialView(output);
         }
 
+        public JsonResult ShowAllUsedQuestVariables(int Id)
+        {
+            IQuestRepository repo = new EFQuestRepository();
+
+            List<string> output = QuestProcedures.GetAllPossibleVariablesNamesInQuest(Id);
+            return Json(output, JsonRequestBehavior.AllowGet);
+        }
+
     }
 }

@@ -43,7 +43,8 @@
 
     <br /><br />
 
-    <label>Hide this choice if entry requirements are not met?  Check if yes.  (Not yet implented):</label>
+    
+    <label>Hide this choice if entry requirements are not met?  Check if yes.</label>
     @Html.CheckBoxFor(m => m.QuestState.HideIfRequirementsNotMet)
 
     <br /><br />
@@ -186,32 +187,7 @@
     var jumpToLoadValue = @Model.QuestState.JumpToQuestStateId;
 
 
-    function loadJumpToDropdownWithValues() {
-        $.getJSON("/QuestWriter/QuestStatesInQuestJSON/" + questId, function (data) {
-            allStates = data;
-        }).then(function () {
-            populateJumpToDropdown();
-            setDropdownToValue(jumpToLoadValue);
-        });
-    }
-
-    // load the values for the jump to state dropdown
-    function populateJumpToDropdown() {
-
-        for (var i = 0; i < allStates.length; i++) {
-            var opt = allStates[i];
-
-            jumpToDropdown.append($('<option>', {
-                value: opt.Id,
-                text: opt.StateName
-            }));
-        }
-    }
-
-    // set value of jump to quest state dropdown
-    function setDropdownToValue(value) {
-        jumpToDropdown.val(value);
-    }
+   
 
     // onload
     loadJumpToDropdownWithValues();

@@ -54,12 +54,19 @@
     {
         foreach (QuestState child in Model.ChildQuestStates.ToList())
         {
-            if (child.HideIfRequirementsNotMet == true && QuestProcedures.QuestStateIsAvailable(child, Model.Player.Player.ToDbPlayer(), Model.BuffBox, Model.QuestPlayerVariables) == false)
+            bool isAvailable = QuestProcedures.QuestStateIsAvailable(child, Model.Player.Player.ToDbPlayer(), Model.BuffBox, Model.QuestPlayerVariables);
+            if (isAvailable == false && child.HideIfRequirementsNotMet == true)
             {
-                // do nothing
+                // do nothing, option is unavailable and should be hidden
+            }
+            else if (isAvailable == false && child.HideIfRequirementsNotMet == false)
+            {
+                // show the option but give it disabled style indicating it is not open currently
+                <p style="background-color:#ff8585"> @Ajax.ActionLink(child.ChoiceText + " " + tfgame.Procedures.QuestProcedures.GetRequirementsAsString(child), "Choice", "Quest", new { Id = child.Id }, new AjaxOptions { UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" }) </p><br />
             }
             else
             {
+                // show the option bas usual
                 <p> @Ajax.ActionLink(child.ChoiceText + " " + tfgame.Procedures.QuestProcedures.GetRequirementsAsString(child), "Choice", "Quest", new { Id = child.Id }, new AjaxOptions { UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" }) </p><br />
             }
 

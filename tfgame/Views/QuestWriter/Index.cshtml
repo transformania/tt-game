@@ -93,6 +93,47 @@
         $("#loading").html("processing...");
     }
 
+    function loadUsedVariablesFromServer() {
+        $.getJSON("/QuestWriter/ShowAllUsedQuestVariables/" + questId, function (data) {
+            allVariablesList = data;
+        }).then(function () {
+            $("#allVariables").html("<br>All variables referenced in this quest:<br>");
+
+            for (var i = 0; i < allVariablesList.length; i++) {
+                $("#allVariables").append("<b>" + allVariablesList[i] + "</b><br>");
+            }
+
+        });
+    }
+
+    // populate the the jump to dropdown with all states found for the current quest
+    function loadJumpToDropdownWithValues() {
+        $.getJSON("/QuestWriter/QuestStatesInQuestJSON/" + questId, function (data) {
+            allStates = data;
+        }).then(function () {
+            populateJumpToDropdown();
+            setDropdownToValue(jumpToLoadValue);
+        });
+    }
+
+    // load the values for the jump to state dropdown
+    function populateJumpToDropdown() {
+
+        for (var i = 0; i < allStates.length; i++) {
+            var opt = allStates[i];
+
+            jumpToDropdown.append($('<option>', {
+                value: opt.Id,
+                text: opt.StateName
+            }));
+        }
+    }
+
+    // set value of jump to quest state dropdown
+    function setDropdownToValue(value) {
+        jumpToDropdown.val(value);
+    }
+
 </script>
 
 <style>
@@ -157,9 +198,10 @@
     }
 
     .helpButton {
-        border: 1px solid black;
+        border: 3px solid blue;
+        border-radius: 4px;
         background-color: lightblue;
-        color: white;
         padding: 2px;
+        cursor: pointer;
     }
 </style>

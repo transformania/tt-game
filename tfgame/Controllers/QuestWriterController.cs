@@ -331,5 +331,22 @@ namespace tfgame.Controllers
             return Json(output, JsonRequestBehavior.AllowGet);
         }
 
+        public JsonResult ShowAllActivePlayerVariables(int Id)
+        {
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+
+            IEnumerable<QuestPlayerVariable> variables = QuestProcedures.GetAllQuestPlayerVariablesFromQuest(Id, me.Id);
+
+            var output = from v in variables
+                         select new
+                         {
+                             Name = v.VariableName,
+                             Value = v.VariableValue
+                         };
+
+            return Json(output, JsonRequestBehavior.AllowGet);
+        }
+
     }
 }

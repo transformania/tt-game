@@ -83,4 +83,11 @@
     {
         @Html.ActionLink("End Quest", "EndQuest", "Quest", null, new { @class = "" })
     }
+
+    if ((User.IsInRole(PvPStatics.Permissions_QuestWriter) == true))
+    {
+        <div id="listVariables" onclick="loadShowVariables()">
+            <p><b class="bad"></b>QUEST WRITER ONLY:  Click here to view all variables and their values in this playthrough of this quest.</p>
+        </div>
+    }
 }

@@ -956,6 +956,33 @@ namespace tfgame.Controllers
                 ViewBag.Speech = output;
 
             }
+            else if (question == "quests")
+            {
+                string output = "\"Looking for an adventure, eh?  You may want to go take a look at these locations...\"<br><br>";
+                IEnumerable<QuestStart> quests = QuestProcedures.GetAllAvailableQuestsForPlayer(me, PvPWorldStatProcedures.GetWorldTurnNumber());
+
+                foreach (QuestStart q in quests)
+                {
+                    try
+                    {
+                        output += "\"<b>" +  q.Name + "</b> is available for you at <b>" + LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == q.Location).Name + "</b>.\"<br><br>";
+                    }
+                    catch
+                    {
+                        // just in case a location is misnamed, skip over it
+                    }
+                }
+
+                if (quests.Count() == 0)
+                {
+                    output += "\"Oh, it seems there's nothing available for you right now.\"<br><br>";
+                }
+
+                output += "\"Is there anything else I can assist you with?\"";
+
+                ViewBag.Speech = output;
+
+            }
 
             return View();
         }

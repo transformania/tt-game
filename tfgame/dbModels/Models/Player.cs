@@ -67,6 +67,7 @@ namespace tfgame.dbModels.Models
         public int InDuel { get; set; }
         public int InQuest { get; set; }
         public int InQuestState { get; set; }
+        public int ItemsUsedThisTurn { get; set; }
 
         public string GetFullName()
         {
@@ -216,6 +217,8 @@ namespace tfgame.dbModels.Models
         public int InQuest { get; set; }
         public int InQuestState { get; set; }
 
+        public int ItemsUsedThisTurn { get; set; }
+
         public string GetFullName()
         {
             if (this.DonatorLevel >= 2 && this.Nickname != null && this.Nickname != "")
@@ -311,7 +314,8 @@ namespace tfgame.dbModels.Models
 
                 IsBannedFromGlobalChat = this.IsBannedFromGlobalChat,
                 InQuest = this.InQuest,
-                InQuestState = this.InQuestState
+                InQuestState = this.InQuestState,
+                ItemsUsedThisTurn = this.ItemsUsedThisTurn,
 
             };
             return output;

@@ -753,7 +753,7 @@ namespace tfgame.ViewModels
 	                    {"Agility", 0},
 	                    {"Allure", 0},
 	                    {"Magicka", 0},
-	                    {"Succour", .3F}, // regeneration
+	                    {"Succour", .2F}, // regeneration
 	                    {"Luck", 0},
                     }
                 },
@@ -767,7 +767,7 @@ namespace tfgame.ViewModels
 	                    {"Agility", 0},
 	                    {"Allure", 0},
 	                    {"Magicka", 0},
-	                    {"Succour", .3F}, // regeneration
+	                    {"Succour", .2F}, // regeneration
 	                    {"Luck", 0},
                     }
                 },
@@ -806,7 +806,7 @@ namespace tfgame.ViewModels
 	                    {"Perception", 0},
 	                    {"Charisma", 0},
 	                    {"Fortitude", 0},
-	                    {"Agility", .75F},
+	                    {"Agility", .5F},
 	                    {"Allure", 0},
 	                    {"Magicka", 0},
 	                    {"Succour", 0},
@@ -817,7 +817,7 @@ namespace tfgame.ViewModels
                 "EvasionNegationPercent",
                 new Dictionary<string,float> {
                       	{"Discipline", 0},
-	                    {"Perception", 1},
+	                    {"Perception", .8F},
 	                    {"Charisma", 0},
 	                    {"Fortitude", 0},
 	                    {"Agility", 0},
@@ -862,7 +862,7 @@ namespace tfgame.ViewModels
 	                    {"Perception", 0},
 	                    {"Charisma", 0},
 	                    {"Fortitude", 0},
-	                    {"Agility", .005F},
+	                    {"Agility", .0025F},
 	                    {"Allure", 0},
 	                    {"Magicka", 0},
 	                    {"Succour", 0},
@@ -872,9 +872,9 @@ namespace tfgame.ViewModels
                 {
                 "SpellExtraTFEnergyPercent",
                 new Dictionary<string,float> {
-                      	{"Discipline",-.5F},
+                      	{"Discipline",-.3F},
 	                    {"Perception", 0},
-	                    {"Charisma", 1.0F},
+	                    {"Charisma", 0.5F},
 	                    {"Fortitude", 0},
 	                    {"Agility", 0},
 	                    {"Allure", 0},
@@ -918,7 +918,7 @@ namespace tfgame.ViewModels
 	                    {"Perception", .1F},
 	                    {"Charisma", 0},
 	                    {"Fortitude", 0},
-	                    {"Agility", -.1F},
+	                    {"Agility", -.15F},
 	                    {"Allure", 0}, // restoration
 	                    {"Magicka", 0},
 	                    {"Succour", 0},

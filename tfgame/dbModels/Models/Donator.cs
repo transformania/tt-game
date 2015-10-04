@@ -14,8 +14,9 @@ namespace tfgame.dbModels.Models
         public string PatreonName { get; set; }
         public int Tier { get; set; }
         public decimal ActualDonationAmount { get; set; }
-        public DateTime Timestamp { get; set; }
-        public bool HasBoughtCustomFormPortrait { get; set; }
-        public bool EarnedFromContributions { get; set; }
+        //public DateTime Timestamp { get; set; }
+        //public bool HasBoughtCustomFormPortrait { get; set; }
+        //public bool EarnedFromContributions { get; set; }
+        public string SpecialNotes { get; set; }
     }
 }

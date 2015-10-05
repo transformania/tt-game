@@ -1970,7 +1970,7 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play");
             }
 
-            // assert that this item is of a consumeable type
+            // assert that this item is of a consumeable type (consumable or consumable-reusable)
             if (item.Item.ItemType.Contains("consumeable"))
             {
                 TempData["Error"] = "You can't use that type of item.";

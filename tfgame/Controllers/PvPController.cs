@@ -2974,14 +2974,6 @@ namespace tfgame.Controllers
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
-            // assert player is not in PvP mode
-            //if (me.InPvP == true)
-            //{
-            //    TempData["Error"] = "You cannot return to an animate form in PvP mode.";
-            //    TempData["SubError"] = "You fought in this magical battle for keeps.  And now you're being kept.  Maybe in a few years when all this blows over your owner will change you back...";
-            //    return RedirectToAction("Play");
-            //}
-
             // assert player is inanimate or an animal
             if (me.Mobility == "full")
             {

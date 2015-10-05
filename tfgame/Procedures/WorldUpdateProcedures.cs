@@ -173,7 +173,7 @@ namespace tfgame.Procedures
                 {
                     try
                     {
-                        context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Players] SET TimesAttackingThisUpdate = 0, CleansesMeditatesThisRound = 0, ShoutsRemaining = 1, ActionPoints = ActionPoints + 10 WHERE Mobility='full'" +
+                        context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Players] SET TimesAttackingThisUpdate = 0, CleansesMeditatesThisRound = 0, ShoutsRemaining = 1, ActionPoints = ActionPoints + 10, ItemsUsedThisTurn = 0 WHERE Mobility='full'" +
 
                         "UPDATE [Stats].[dbo].[Players] SET ActionPoints_Refill = ActionPoints_Refill + (ActionPoints % 120 / 2) WHERE ActionPoints >= 120 AND Mobility='full'" +
 

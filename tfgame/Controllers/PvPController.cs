@@ -1970,6 +1970,14 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play");
             }
 
+            // assert player has not already used an item this turn
+            if (me.ItemsUsedThisTurn>0)
+            {
+                TempData["Error"] = "You've already used an item this turn.";
+                TempData["SubError"] = "You will be able to use another consumable type items next turn.";
+                return RedirectToAction("Play");
+            }
+
             // assert that this item is of a consumeable type (consumable or consumable-reusable)
             if (item.Item.ItemType.Contains("consumeable"))
             {

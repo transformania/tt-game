@@ -568,11 +568,20 @@ namespace tfgame.Procedures
 
             takeoverAmount += buffs.EnchantmentBoost;
 
-            decimal XPGain = Convert.ToDecimal(takeoverAmount);
+            decimal XPGain = 0;
 
-            if (XPGain > 5)
+            try
             {
-                XPGain = 5;
+                XPGain = 30 / Math.Round(Convert.ToDecimal(100 - Math.Abs(info.TakeoverAmount)), 1);
+            }
+            catch (Exception e)
+            {
+                XPGain = 0;
+            }
+
+            if (XPGain > PvPStatics.XP__EnchantmentMaxXP)
+            {
+                XPGain = PvPStatics.XP__EnchantmentMaxXP;
             }
 
             // location is not controlled; give it to whichever covenant is attacking it

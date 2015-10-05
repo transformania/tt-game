@@ -15,6 +15,13 @@
 
     <br /><br />
 
+@{ 
+    if (ViewBag.Recovered == true)
+    {
+        <p class="bad">@Html.Raw(ViewBag.RecoveredMsg)</p>
+    }
+}
+
 <span id="lastAttack"></span>
 
     @foreach (tfgame.ViewModels.SkillViewModel2 s in Model.OrderBy(s => s.Skill.FriendlyName))

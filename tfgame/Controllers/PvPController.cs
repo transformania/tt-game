@@ -743,7 +743,27 @@ namespace tfgame.Controllers
              string myMembershipId = User.Identity.GetUserId();
              Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
              Player target = PlayerProcedures.GetPlayer(targetId);
-            IEnumerable<SkillViewModel2> output = SkillProcedures.GetSkillViewModelsOwnedByPlayer(me.Id).Where(s => s.dbSkill.IsArchived == false);
+            IEnumerable<SkillViewModel2> output = new List<SkillViewModel2>();
+
+            ViewBag.Recovered = false;
+            ViewBag.RecoveredMsg = "";
+
+            // make sure a no-attack exists due to the Back On Your Feet perk
+
+            if (EffectProcedures.PlayerHasEffect(me, PvPStatics.Effect_Back_On_Your_Feet) == true && target.BotId==AIStatics.ActivePlayerBotId)
+            {
+                ViewBag.Recovered = true;
+                ViewBag.RecoveredMsg = "You can't attack as you have the <b>Back On Your Feet</b> effect, preventing you from attacking another human-controlled player.";
+            }
+            else if (EffectProcedures.PlayerHasEffect(target, PvPStatics.Effect_Back_On_Your_Feet) == true)
+            {
+                ViewBag.Recovered = true;
+                ViewBag.RecoveredMsg = "You can't attack <b>" + target.GetFullName() + "</b> since they have the <b>Back On Your Feet</b> effect, preventing human-controlled players from attacking them until the effect expires.";
+            }
+            else
+            {
+                output = SkillProcedures.GetSkillViewModelsOwnedByPlayer(me.Id).Where(s => s.dbSkill.IsArchived == false);
+            }
 
             // filter out spells that you can't use on your target
             if (FriendProcedures.PlayerIsMyFriend(me, target) || target.BotId < AIStatics.ActivePlayerBotId)
@@ -905,9 +925,25 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play");
             }
 
-            // assert that the target is still in the same room
+            
             Player targeted = PlayerProcedures.GetPlayer(targetId);
 
+            // assert the player does not have the Back On Your Feet perk
+            if (EffectProcedures.PlayerHasEffect(me, PvPStatics.Effect_Back_On_Your_Feet) == true && targeted.BotId == AIStatics.ActivePlayerBotId)
+            {
+                TempData["Error"] = "The protective aura from your Back On Your Feet effect prevents this spell from working.";
+                TempData["SubError"] = "You can remove this effect with a Hex-B-Gone moisturizer if you want to resume attacks on player-controlled targets.";
+                return RedirectToAction("Play");
+            }
+
+            // assert the target does not have the Back On Your Feet perk
+            if (EffectProcedures.PlayerHasEffect(targeted, PvPStatics.Effect_Back_On_Your_Feet) == true)
+            {
+                TempData["Error"] = "The protective aura from your target's Back On Your Feet effect prevents you from casting this spell.";
+                return RedirectToAction("Play");
+            }
+
+            // assert that the target is still in the same room
             if (me.dbLocationName != targeted.dbLocationName)
             {
                 TempData["Error"] = "Your target no longer seems to be here.";
@@ -1286,8 +1322,16 @@ namespace tfgame.Controllers
                  return RedirectToAction("Play");
              }
 
-             // assert player is not in the dungeon
-             Location myLocation = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName);
+            // assert the player does not have the Back On Your Feet perk
+            if (EffectProcedures.PlayerHasEffect(me, PvPStatics.Effect_Back_On_Your_Feet) == true)
+            {
+                TempData["Error"] = "The protective aura from your Back On Your Feet effect prevents this spell from working.";
+                TempData["SubError"] = "You can remove this effect with a Hex-B-Gone moisturizer if you want to resume attacks on player-controlled targets.";
+                return RedirectToAction("Play");
+            }
+
+            // assert player is not in the dungeon
+            Location myLocation = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName);
              if (myLocation.Region == "dungeon")
              {
                  TempData["Error"] = "You can't enchant in the dungeon.";

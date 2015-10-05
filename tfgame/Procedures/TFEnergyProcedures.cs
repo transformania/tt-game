@@ -194,11 +194,6 @@ namespace tfgame.Procedures
             // calculate the xp earned for this transformation
             decimal xpEarned = PvPStatics.XP__GainPerAttackBase - (attacker.Level - victim.Level) * PvPStatics.XP__LevelDifferenceXPGainModifier;
 
-            //if (attacker.InPvP == false)
-            //{
-            //    xpEarned *= PvPStatics.NonPvPXPGainModifier;
-            //}
-
             if (xpEarned < 0)
             {
                 xpEarned = 0;
@@ -208,11 +203,12 @@ namespace tfgame.Procedures
                 xpEarned = 15;
             }
 
+            // ALPHA ROUND 26:  Removing animate spell XP bonus
             // animate TFs recieve an XP bonus
-            if (eventualForm.MobilityType == "full")
-            {
-                xpEarned *= PvPStatics.XP__AnimateTFXPBonusModifier;
-            }
+            //if (eventualForm.MobilityType == "full")
+            //{
+            //    xpEarned *= PvPStatics.XP__AnimateTFXPBonusModifier;
+            //}
 
             // decrease the XP earned if the player is high leveled and TFing an animate spell AND the xp isn't already negative
             if (eventualForm.MobilityType == "full" && xpEarned > 0)
@@ -438,45 +434,55 @@ namespace tfgame.Procedures
 
                     // give some of the victim's money to the attacker, the amount depending on what mode the victim is in
                     decimal moneygain = victim.Money * .35M;
-                    PlayerProcedures.GiveMoneyToPlayer(attacker, moneygain);
-                    PlayerProcedures.GiveMoneyToPlayer(victim, -moneygain/2);
+                PlayerProcedures.GiveMoneyToPlayer(attacker, moneygain);
+                PlayerProcedures.GiveMoneyToPlayer(victim, -moneygain / 2);
 
-                    // ONLY GIVE XP LUMP SUM AND PVP SCORE IF BOTH PLAYERS ARE IN PLAYER VERSUS PLAYER MODE NOW
-                    if (attacker.GameMode == 2 && victim.GameMode == 2)
+                int levelDifference = attacker.Level - target.Level;
+
+                // only give the lump sum XP if the target is within 3 levels of the attacker AND the attack is in PvP mode AND the victim is not in the same covenant
+                if (levelDifference <= 5)
+                {
+
+                    decimal xpGain = 50 - (PvPStatics.XP__EndgameTFCompletionLevelBase * levelDifference);
+
+                    if (xpGain < 5)
                     {
-                        // only give the lump sum XP if the target is within 3 levels of the attacker AND the attack is in PvP mode AND the victim is not in the same covenant
-                        if ((attacker.Level - target.Level <= 3) && ((attacker.Covenant != victim.Covenant) || attacker.Covenant == 0))
-                        {
-                            // give the attacker a nice lump sum for having completed the transformation
-                            output.AttackerLog += "  For having sealed your opponent into their new form for at least a while, you gain an extra " + target.Level * PvPStatics.XP__EndgameTFCompletionLevelBase + " bonus experience.";
-                            output.AttackerLog += PlayerProcedures.GiveXP(attacker.Id, PvPStatics.XP__EndgameTFCompletionLevelBase * target.Level);
-                        }
-
-                        // exclude PvP score for bots
-                        if (victim.BotId == AIStatics.ActivePlayerBotId)
-                        {
-                            decimal score = PlayerProcedures.GetPvPScoreFromWin(attacker, victim);
-
-                            if (score > 0)
-                            {
-
-                                output.AttackerLog += PlayerProcedures.GivePlayerPvPScore(attacker, victim, score);
-                                output.VictimLog += PlayerProcedures.RemovePlayerPvPScore(victim, attacker, score);
-
-                                new Thread(() =>
-                                    StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__DungeonPointsStolen, (float)score)
-                                ).Start();
-
-                            }
-                            else
-                            {
-                                output.AttackerLog += "  " + victim.GetFullName() + " unfortunately did not have any dungeon points for you to steal for yourself.";
-                            }
-                        }
-
+                        xpGain = 5;
+                    } else if (xpGain > 75)
+                    {
+                        xpGain = 75;
                     }
 
-                    output.AttackerLog += "  You collect " + Math.Round(moneygain,0) + " Arpeyjis your victim dropped during the transformation.";
+                    // give the attacker a nice lump sum for having completed the transformation
+                    output.AttackerLog += "  <br>For having sealed your opponent into their new form, you gain an extra <b>" + xpGain + "</b> XP.";
+                    output.AttackerLog += PlayerProcedures.GiveXP(attacker.Id, xpGain);
+                }
+
+                // exclude PvP score for bots
+                if (victim.BotId == AIStatics.ActivePlayerBotId)
+                {
+                    decimal score = PlayerProcedures.GetPvPScoreFromWin(attacker, victim);
+
+                    if (score > 0)
+                    {
+
+                        output.AttackerLog += PlayerProcedures.GivePlayerPvPScore(attacker, victim, score);
+                        output.VictimLog += PlayerProcedures.RemovePlayerPvPScore(victim, attacker, score);
+
+                        new Thread(() =>
+                            StatsProcedures.AddStat(attacker.MembershipId, StatsProcedures.Stat__DungeonPointsStolen, (float)score)
+                        ).Start();
+
+                    }
+                    else
+                    {
+                        output.AttackerLog += "  " + victim.GetFullName() + " unfortunately did not have any dungeon points for you to steal for yourself.";
+                    }
+                }
+
+
+
+                output.AttackerLog += "  You collect " + Math.Round(moneygain,0) + " Arpeyjis your victim dropped during the transformation.";
 
                     // create inanimate XP for the victim
                     InanimateXPProcedures.GetStruggleChance(victim);

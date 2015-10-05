@@ -142,6 +142,14 @@ namespace tfgame.Controllers
                 return RedirectToAction("Quest");
             }
 
+            // assert player has enough AP
+            if (me.ActionPoints < QuestStatics.ActionAPCost)
+            {
+                TempData["Error"] = "You don't have enough action points for this.";
+                TempData["SubError"] = "Wait a while; you will get more action points soon.";
+                return RedirectToAction("Quest");
+            }
+
             QuestState currentState = QuestProcedures.GetQuestState(me.InQuestState);
             QuestState desiredState = QuestProcedures.GetQuestState(Id);
 

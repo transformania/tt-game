@@ -2172,5 +2172,13 @@ namespace tfgame.Procedures
             return repo.DbStaticForms.Where(f => f.dbName != "");
         }
 
+        public static void AddItemUses(int playerId, int amount)
+        {
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);
+            dbPlayer.ItemsUsedThisTurn += amount;
+            playerRepo.SavePlayer(dbPlayer);
+        }
+
     }
 }

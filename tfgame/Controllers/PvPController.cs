@@ -1624,7 +1624,7 @@ namespace tfgame.Controllers
             ViewBag.Result = TempData["Result"];
 
             ViewBag.ShowDetailLinks = true;
-
+            ViewBag.ItemsUsedThisTurn = me.ItemsUsedThisTurn;
           
 
             return View("Inventory", output);
@@ -1975,7 +1975,7 @@ namespace tfgame.Controllers
             {
                 TempData["Error"] = "You've already used an item this turn.";
                 TempData["SubError"] = "You will be able to use another consumable type items next turn.";
-                return RedirectToAction("Play");
+                return RedirectToAction("MyInventory","PvP");
             }
 
             // assert that this item is of a consumeable type (consumable or consumable-reusable)
@@ -2054,6 +2054,7 @@ namespace tfgame.Controllers
             string result = ItemProcedures.UseItem(itemId, myMembershipId);
 
             PlayerProcedures.AddMinutesToTimestamp(me, 15, true);
+            PlayerProcedures.AddItemUses(me.Id, 1);
 
             TempData["Result"] = result;
 

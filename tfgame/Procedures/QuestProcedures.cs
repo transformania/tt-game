@@ -176,7 +176,7 @@ namespace tfgame.Procedures
             playerRepo.SavePlayer(dbPlayer);
 
             IQuestRepository questRepo = new EFQuestRepository();
-            QuestPlayerStatus questPlayerStatus = questRepo.QuestPlayerStatuses.FirstOrDefault(q => q.PlayerId == player.Id);
+            QuestPlayerStatus questPlayerStatus = questRepo.QuestPlayerStatuses.FirstOrDefault(q => q.PlayerId == player.Id && q.QuestId == player.InQuest);
 
             if (questPlayerStatus == null)
             {

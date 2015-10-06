@@ -2016,6 +2016,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="MachineKey.config" />
+    <Content Include="Content\JSON\items.json" />
     <None Include="Properties\PublishProfiles\transformania-time.com - Web Deploy.pubxml">
       <SubType>Designer</SubType>
     </None>
@@ -2466,6 +2467,7 @@
     <Content Include="Views\QuestWriter\ShowAllQuestStarts.cshtml" />
     <Content Include="Views\QuestWriter\ShowAllQuestStates.cshtml" />
     <Content Include="Views\QuestWriter\QuestStatePreaction.cshtml" />
+    <Content Include="Views\Info\GearTool.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

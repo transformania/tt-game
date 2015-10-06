@@ -81,5 +81,11 @@ namespace tfgame.Controllers
             IEnumerable<PopulationTurnTuple> output = from q in repo.ServerLogs select new PopulationTurnTuple { Turn = q.TurnNumber, Population = q.Population };
             return Json(output, JsonRequestBehavior.AllowGet);
         }
+
+        public ActionResult GearTool()
+        {
+            return View();
+        }
+
     }
 }

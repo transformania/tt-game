@@ -1,7 +1,8 @@
 ﻿@model IEnumerable<tfgame.ViewModels.SkillViewModel2>
 @using tfgame.CustomHtmlHelpers
 
-    <span id="youAreAttacking">You are attacking @ViewBag.TargetName.</span>
+    <p id="youAreAttacking">You are attacking @ViewBag.TargetName.</p>  
+    <p>This spell will cost you <b>@ViewBag.ManaCost</b> mana to cast against this opponent.</p>
     <span id="attackClose" onclick="closeAttackModal()">Cancel</span>
 @Html.ActionLink("Challenge to Duel", "IssueChallenge", "Duel", new { id = ViewBag.TargetId }, new { @id = "duel_challenge" })
     <span id="expand" onclick="expandModal()">Expand</span>
@@ -22,6 +23,7 @@
     }
 }
 
+
 <span id="lastAttack"></span>
 
     @foreach (tfgame.ViewModels.SkillViewModel2 s in Model.OrderBy(s => s.Skill.FriendlyName))
@@ -29,7 +31,7 @@
 
 
         <span>
-            @Html.ActionLink(s.Skill.FriendlyName + " (" + s.Skill.ManaCost + ")", "Attack", "PvP", new { targetId = ViewBag.TargetId, attackName = s.dbSkill.Name }, new { @class = CharactersHere.GetSpellTypeClass(s), @manacost = s.Skill.ManaCost })
+            @Html.ActionLink(s.Skill.FriendlyName, "Attack", "PvP", new { targetId = ViewBag.TargetId, attackName = s.dbSkill.Name }, new { @class = CharactersHere.GetSpellTypeClass(s), @manacost = s.Skill.ManaCost })
         </span>
 
     }

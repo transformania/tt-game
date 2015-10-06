@@ -747,6 +747,7 @@ namespace tfgame.Controllers
 
             ViewBag.Recovered = false;
             ViewBag.RecoveredMsg = "";
+            ViewBag.ManaCost = AttackProcedures.GetSpellManaCost(me, target);
 
             // make sure a no-attack exists due to the Back On Your Feet perk
 
@@ -917,16 +918,15 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play");
             }
 
+            Player targeted = PlayerProcedures.GetPlayer(targetId);
+
             // assert player has enough mana to cast
-            if (me.Mana < skillBeingUsed.Skill.ManaCost)
+            if ((float)me.Mana < AttackProcedures.GetSpellManaCost(me, targeted))
             {
                 TempData["Error"] = "You don't have enough mana to cast this.";
-                TempData["SubError"] = "You can recover mana using potions, meditating, or simply waiting for it to replenish over time.";
+                TempData["SubError"] = "You can recover mana using consumable items, meditating, or waiting for it to replenish over time.";
                 return RedirectToAction("Play");
             }
-
-            
-            Player targeted = PlayerProcedures.GetPlayer(targetId);
 
             // assert the player does not have the Back On Your Feet perk
             if (EffectProcedures.PlayerHasEffect(me, PvPStatics.Effect_Back_On_Your_Feet) == true && targeted.BotId == AIStatics.ActivePlayerBotId)

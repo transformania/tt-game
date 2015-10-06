@@ -30,10 +30,10 @@ namespace tfgame.Procedures
 
             LogBox logs = new LogBox();
 
-
+            decimal manaCost = (decimal)AttackProcedures.GetSpellManaCost(me, targeted);
 
             // all of our checks seem to be okay.  So let's lower the player's mana and action points
-            PlayerProcedures.ChangePlayerActionMana(PvPStatics.AttackCost, 0, -skillBeingUsed.Skill.ManaCost, me.Id);
+            PlayerProcedures.ChangePlayerActionMana(PvPStatics.AttackCost, 0, -manaCost, me.Id);
 
             PlayerProcedures.LogCombatTimestampsAndAddAttackCount(targeted, me);
 
@@ -380,7 +380,26 @@ namespace tfgame.Procedures
             }
         }
 
-        
+
+        /// <summary>
+        /// Get the mana cost of a spell which cast between two players
+        /// </summary>
+        /// <param name="attacker">Attacking player</param>
+        /// <param name="victim">Target of the spell</param>
+        /// <returns></returns>
+        public static float GetSpellManaCost(Player attacker, Player victim)
+        {
+            float baseManaCost = 4;
+
+            float extra = (.75F * victim.Level) + (.25F * attacker.Level);
+
+            float cost = (float)Math.Round((baseManaCost + extra),1);
+
+            return cost;
+
+        }
+
+
 
     }
 }

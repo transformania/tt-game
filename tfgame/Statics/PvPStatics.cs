@@ -43,13 +43,12 @@ namespace tfgame.Statics
         public const int MaxLogMessagesPerLocation = 20;
         public const int MaxLogMessagesPerPlayer = 50;
 
-        public const decimal PvPScoreTricklePerUpdate = .2M;
-
         public const decimal XP__GainPerAttackBase = 5;
         public const decimal XP__AnimateTFXPBonusModifier = 1.5M;
         public const decimal XP__LevelDifferenceXPGainModifier = 1.5M;
-        public const decimal XP__EndgameTFCompletionLevelBase = 15;
+        public const decimal XP__EndgameTFCompletionLevelBase = 8;
         public const decimal ExtraHealthDamagePerLevel = 1.25M;
+        public const decimal XP__EnchantmentMaxXP = 3;
 
         public const double OfflineAfterXMinutes = 30;
         public const int DuelNoCombatMinutes = 15;
@@ -135,33 +134,33 @@ namespace tfgame.Statics
         public static readonly int[] XP__ManaBaseByLevel = {
            5, // 0 (nobody should ever be at 0!)
            50, // 1
-           60, // 2
-           70, // 3
-           80, // 4
-           90, // 5
-           100, // 6
-           110, // 7
-           110, // 8
-           120, // 9
-           130, //10
-           140, // 11
-           150, // 12
-           160, // 13
-           170, // 14
-           180, // 15
-           190, // 16
-           200, // 17
-           210, // 18
-           220, // 19
-           230, // 20
-           240, // 21
-           250, // 22
-           260, // 23
-           270, // 24
-           280, // 25
-           290, // 26
-           300, // 27
-           310, // 28
+           55, // 2
+           60, // 3
+           65, // 4
+           70, // 5
+           75, // 6
+           80, // 7
+           85, // 8
+           90, // 9
+           95, //10
+           100, // 11
+           105, // 12
+           110, // 13
+           115, // 14
+           120, // 15
+           125, // 16
+           130, // 17
+           135, // 18
+           140, // 19
+           145, // 20
+           150, // 21
+           155, // 22
+           160, // 23
+           165, // 24
+           170, // 25
+           175, // 26
+           180, // 27
+           185, // 28
        };
 
         public static readonly int[] XP__HealthBaseByLevel = {
@@ -274,6 +273,8 @@ namespace tfgame.Statics
         public const int Covenant_MinimumUpgradeAnimateLvl3PlayerCount = 5;
 
         public const int LorekeeperSpellPrice = 50;
+
+        public const string Effect_Back_On_Your_Feet = "help_animate_recovery";
 
     }
 

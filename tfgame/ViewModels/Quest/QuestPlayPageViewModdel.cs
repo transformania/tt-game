@@ -14,6 +14,7 @@ namespace tfgame.ViewModels.Quest
         public PlayerFormViewModel Player { get; set; }
         public BuffBox BuffBox { get; set; }
         public IEnumerable<QuestPlayerVariable> QuestPlayerVariables { get; set; }
+        public int NewMessages { get; set; }
 
         public bool ShowChildrenStates()
         {

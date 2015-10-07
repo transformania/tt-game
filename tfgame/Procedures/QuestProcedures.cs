@@ -96,6 +96,15 @@ namespace tfgame.Procedures
                     {
                         return false;
                     }
+
+                    // TODO?  Filter out quests whose cooldowns are not yet expired
+                    //else if (q.Outcome==(int)QuestStatics.QuestOutcomes.Failed)
+                    //{
+                    //    if (gameWorldTurn - q.Outcome < QuestStatics.QuestFailCooldownTurnLength)
+                    //    {
+                    //        return false;
+                    //    }
+                    //}
                 }
             }
 
@@ -484,6 +493,16 @@ namespace tfgame.Procedures
                     dbPlayer.Gender = newForm.Gender;
                 }
 
+                // move player
+                else if (p.ActionType == (int)QuestStatics.PreactionType.MoveToLocation)
+                {
+                    Location loc = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == p.ActionValue);
+                    if (loc != null)
+                    {
+                        dbPlayer.dbLocationName = p.ActionValue;
+                    }
+                }
+
                 // change willpower
                 else if (p.ActionType == (int)QuestStatics.PreactionType.Willpower)
                 {
@@ -646,6 +665,13 @@ namespace tfgame.Procedures
                 repo.DeleteQuestPlayerVariable(q.Id);
             }
 
+        }
+
+        public static int GetLastTurnQuestEnded(Player player, int questId)
+        {
+            IQuestRepository repo = new EFQuestRepository();
+            IEnumerable<int> turns = repo.QuestPlayerStatuses.Where(p => p.PlayerId == player.Id && p.QuestId == questId).Select(s => s.LastEndedTurn);
+            return turns.Max();
         }
     }
 }

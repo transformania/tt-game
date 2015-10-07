@@ -9,6 +9,7 @@ namespace tfgame.Statics
     {
 
         public const int ActionAPCost = 1;
+        public const int QuestFailCooldownTurnLength = 12;
 
         public enum QuestOutcomes { Failed = 0, Completed = 1 };
 
@@ -51,6 +52,7 @@ namespace tfgame.Statics
             Form = 1,
             Willpower = 2,
             Mana = 3,
+            MoveToLocation = 4,
         }
 
         public enum AddOrSet

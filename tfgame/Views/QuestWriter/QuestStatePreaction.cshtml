@@ -37,6 +37,7 @@
                       new { value = (int)QuestStatics.PreactionType.Form, text = "Change Form"  },
                       new { value = (int)QuestStatics.PreactionType.Willpower, text = "Change Willpower"  },
                       new { value = (int)QuestStatics.PreactionType.Mana, text = "Change Mana"  },
+                      new { value = (int)QuestStatics.PreactionType.MoveToLocation, text = "Move Player to Location"  },
                     },
                   "value",
                   "text",
@@ -46,6 +47,7 @@
 
     <btn class="glyphicon glyphicon-question-sign helpButton">
         @Ajax.ActionLink("Click here to show list of all forms", "AllForms", "Info", null, new AjaxOptions { UpdateTargetId = "locationsBox", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail" }, new { @class = "" })
+        @Ajax.ActionLink("Click here to show list of all locations", "AllLocations", "Info", null, new AjaxOptions { UpdateTargetId = "locationsBox", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail" }, new { @class = "" })
     </btn>
 
     <div id="locationsBox" style="background-color: #cdcdff"></div>

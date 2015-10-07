@@ -70,8 +70,20 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
+            int gameTurnNum = PvPWorldStatProcedures.GetWorldTurnNumber();
+
+            // assert player did not fail or abandon this quest too soon ago
+            int lastTurnAttempted = QuestProcedures.GetLastTurnQuestEnded(me, questStart.Id);
+            if (PvPWorldStatProcedures.GetWorldTurnNumber() - lastTurnAttempted < QuestStatics.QuestFailCooldownTurnLength)
+            {
+                TempData["Error"] = "You recently failed or abandoned this quest.";
+                TempData["SubError"] = "You must wait another " + (QuestStatics.QuestFailCooldownTurnLength - (gameTurnNum - lastTurnAttempted)) + " turns before you can attempt this quest again.";
+                return RedirectToAction("Play", "PvP");
+            }
+
             IEnumerable<QuestPlayerStatus> questPlayerStatuses = QuestProcedures.GetQuestPlayerStatuses(me);
-            bool canStartQuest = QuestProcedures.PlayerCanBeginQuest(me, questStart, questPlayerStatuses, PvPWorldStatProcedures.GetWorldTurnNumber());
+
+            bool canStartQuest = QuestProcedures.PlayerCanBeginQuest(me, questStart, questPlayerStatuses, gameTurnNum);
 
             // assert player meets level / game turn requirements for this quest
             if (canStartQuest==false)

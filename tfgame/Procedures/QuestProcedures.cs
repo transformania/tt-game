@@ -20,6 +20,13 @@ namespace tfgame.Procedures
             return repo.QuestStarts;
         }
 
+        public static IEnumerable<QuestStart> GetAllQuestStartsAtLocation(string location)
+        {
+            IQuestRepository repo = new EFQuestRepository();
+
+            return repo.QuestStarts.Where(q => q.Location == location);
+        }
+
         public static QuestStart GetQuest(int id)
         {
             IQuestRepository repo = new EFQuestRepository();

@@ -105,8 +105,13 @@ namespace tfgame.Controllers
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
-            IEnumerable<QuestStart> quests = QuestProcedures.GetAvailableQuestsAtLocation(me, PvPWorldStatProcedures.GetWorldTurnNumber());
-            return View(quests);
+            QuestsAtLocationViewModel output = new QuestsAtLocationViewModel
+            {
+                AllQuests = QuestProcedures.GetAllQuestStartsAtLocation(me.dbLocationName),
+                AvailableQuests = QuestProcedures.GetAvailableQuestsAtLocation(me, PvPWorldStatProcedures.GetWorldTurnNumber()),
+            };
+
+            return View(output);
         }
 
         public ActionResult Questing()

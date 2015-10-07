@@ -17,6 +17,7 @@
             <ul class="nav navbar-nav">
                 <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
                 <li>@Ajax.ActionLink("Abandon Quest", "Abandon", "Quest", null, new AjaxOptions { UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</li>
+                <li>@Html.ActionLink("Inbox", "MyMessages", "PvP", null, new { @id = "newMessagesLink" })</li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -34,15 +35,16 @@
 
     <h1>Questing</h1>
 
-    <p>You are beginning or are currently in the quest <b>@Model.Name!</b></p><br />
+    <p>You are in the quest <b>@Model.Name!</b>  Loading...</p><br />
 
-    @Ajax.ActionLink("Resume Quest", "Quest", "Quest", null, new AjaxOptions { UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "attackLink" })
+    @Ajax.ActionLink("Resume Quest", "Quest", "Quest", null, new AjaxOptions { UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "attackLink", @id = "continueQuest" })
 </div>
 
 
 <script>
 
     var questId = @Model.Id;
+   // var newMsgCount = 0;
 
     function success() {
         $("#loadingBox").hide();
@@ -72,6 +74,15 @@
         });
     }
 
-    
 
+
+    setTimeout(function(){ $("#continueQuest").click() }, 50);
+
+    
 </script>
+
+<style>
+    #continueQuest {
+        display:none;
+    }
+</style>

@@ -120,6 +120,7 @@ namespace tfgame.Controllers
             output.ChildQuestStates = QuestProcedures.GetChildQuestStates(me.InQuestState);
             output.BuffBox = ItemProcedures.GetPlayerBuffsSQL(me);
             output.QuestPlayerVariables = QuestProcedures.GetAllQuestPlayerVariablesFromQuest(output.QuestStart.Id, me.Id);
+            output.NewMessages = MessageProcedures.GetPlayerUnreadMessageCount(me);
 
             ViewBag.ErrorMessage = TempData["Error"];
             ViewBag.SubErrorMessage = TempData["SubError"];
@@ -165,6 +166,7 @@ namespace tfgame.Controllers
             output.QuestStart = QuestProcedures.GetQuest(me.InQuest);
             output.QuestPlayerVariables = QuestProcedures.GetAllQuestPlayerVariablesFromQuest(output.QuestStart.Id, me.Id); 
             BuffBox buffs = ItemProcedures.GetPlayerBuffsSQL(me);
+            
 
             // assert player has the right requirements for this
             if (QuestProcedures.QuestStateIsAvailable(desiredState, me, buffs, output.QuestPlayerVariables) == false)

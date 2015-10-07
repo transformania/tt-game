@@ -26,6 +26,12 @@ namespace tfgame.Procedures
 
         }
 
+        public static int GetPlayerUnreadMessageCount(Player player)
+        {
+            IMessageRepository messageRepo = new EFMessageRepository();
+            return messageRepo.Messages.Where(m => m.ReceiverId == player.Id && m.IsRead == false).Count();
+        }
+
         public static MessageViewModel GetMessage(int messageId)
         {
             IMessageRepository messageRepo = new EFMessageRepository();

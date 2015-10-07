@@ -145,8 +145,7 @@ namespace tfgame.Controllers
                 questStateRequirement = new QuestStateRequirement
                 {
                    QuestId = QuestId,
-                   QuestStateRequirementName = "",
-                   
+                   QuestStateRequirementName = "[UNNAMED REQUIREMENT]",
                 };
 
                 questStateRequirement.QuestStateId = state;

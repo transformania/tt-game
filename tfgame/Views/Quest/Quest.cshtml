@@ -95,8 +95,6 @@
 <script>
     newMsgCount = @Model.NewMessages;
 
-    alert(newMsgCount);
-
     if (newMsgCount > 0) {
         $("#newMessagesLink").html("(" + newMsgCount + " unread)").addClass("inboxNew");
     }

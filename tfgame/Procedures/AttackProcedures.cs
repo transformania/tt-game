@@ -67,7 +67,7 @@ namespace tfgame.Procedures
                 logs.AttackerLog += "  (+1 XP)  ";
                 logs.AttackerLog += PlayerProcedures.GiveXP(attacker.Id, 1);
                 logs.VictimLog = effectBeingGiven.MessageWhenHit;
-                logs.VictimLog += "  <span class='playerAttackNotification'><b>" + attackerFullName + " cursed you with " + skillBeingUsed.Skill.FriendlyName + ".</b></span>  ";
+                logs.VictimLog += "  <span class='playerAttackNotification'>" + attackerFullName + " cursed you with <b>" + skillBeingUsed.Skill.FriendlyName + "</b>.</b></span>  ";
                 result = logs.AttackerLog;
                 
             }
@@ -172,11 +172,11 @@ namespace tfgame.Procedures
                     {
 
                         // get the lowest level involved in this combat
-                        int lowestLevel = (me.Level > targeted.Level) ? targeted.Level : me.Level;
-                        decimal extraDamageFromLevels = PvPStatics.ExtraHealthDamagePerLevel * (decimal)(lowestLevel - 1);
+                        decimal midLevel = AttackProcedures.GetMiddleLevel(me, targeted);
+                        decimal extraDamageFromLevels = PvPStatics.ExtraHealthDamagePerLevel * (midLevel - 1);
 
                         // add even more damage if the spell is "weaken"
-                        extraDamageFromLevels = (skillBeingUsed.Skill.TFPointsAmount == 0) ? extraDamageFromLevels + (1.15M * (decimal)lowestLevel) : extraDamageFromLevels;
+                        extraDamageFromLevels = (skillBeingUsed.Skill.TFPointsAmount == 0) ? extraDamageFromLevels + (1.15M * midLevel) : extraDamageFromLevels;
 
 
                         // calculator the modifier as extra attack - defense.      15 - 20 = -5 modifier
@@ -397,6 +397,25 @@ namespace tfgame.Procedures
 
             return cost;
 
+        }
+
+        public static decimal GetMiddleLevel(Player attacker, Player victim)
+        {
+            int lvlDiff = attacker.Level - victim.Level;
+
+            int lowerLevel = 0;
+
+            if (attacker.Level <= victim.Level)
+            {
+                lowerLevel = attacker.Level;
+            } else
+            {
+                lowerLevel = victim.Level;
+            }
+
+            decimal mid = (decimal)(Math.Round(lowerLevel + (lvlDiff * .5),1));
+
+            return mid;
         }
 
 

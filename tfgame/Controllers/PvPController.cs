@@ -71,6 +71,11 @@ namespace tfgame.Controllers
             ViewBag.SubErrorMessage = TempData["SubError"];
             ViewBag.Result = TempData["Result"];
 
+            // redirect to Quest page if player is currently in a quest
+            if (me.InQuest > 0)
+            {
+                return RedirectToAction("Questing", "Quest");
+            }
  
             DateTime markOnlineCutoff = DateTime.UtcNow.AddMinutes(-2);
 

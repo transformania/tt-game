@@ -148,7 +148,7 @@ namespace tfgame.Procedures
             questStateRequirement.Operator = input.Operator;
             questStateRequirement.RequirementType = input.RequirementType;
             questStateRequirement.RequirementValue = input.RequirementValue;
-            if (questStateRequirement.VariabledbName != null)
+            if (input.VariabledbName != null)
             {
                 questStateRequirement.VariabledbName = input.VariabledbName.ToUpper();
             }
@@ -200,7 +200,7 @@ namespace tfgame.Procedures
             questStatePreaction.QuestId = input.QuestId;
             questStatePreaction.QuestStateId = dbState;
             questStatePreaction.QuestStatePreactionName = input.QuestStatePreactionName;
-            if (questStatePreaction.VariableName != null)
+            if (input.VariableName != null)
             {
                 questStatePreaction.VariableName = input.VariableName.ToUpper();
             }

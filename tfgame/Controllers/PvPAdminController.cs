@@ -2943,6 +2943,49 @@ namespace tfgame.Controllers
         }
 
         [Authorize]
+        public ActionResult FastGiveTPScroll()
+        {
+            string myMembershipId = User.Identity.GetUserId();
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            {
+                return RedirectToAction("Play", "PvP");
+            }
+
+            IPvPWorldStatRepository repo = new EFPvPWorldStatRepository();
+            PvPWorldStat stat = repo.PvPWorldStats.First();
+
+            bool test = stat.TestServer;
+
+            if (PvPStatics.ChaosMode==false && test == false)
+            {
+                return RedirectToAction("Play", "PvP");
+            }
+
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+           
+            IItemRepository itemRepo = new EFItemRepository();
+
+
+            Item scroll = new Item
+            {
+                dbName = "item_consumeable_teleportation_scroll",
+                OwnerId = me.Id,
+                dbLocationName = "",
+                EquippedThisTurn = false,
+                LastSouledTimestamp = DateTime.UtcNow,
+                VictimName = "",
+                Level = 0,
+                TimeDropped = DateTime.UtcNow,
+            };
+            itemRepo.SaveItem(scroll);
+
+
+            TempData["Result"] = "You are now fully animate.";
+            return RedirectToAction("Play", "PvP");
+
+        }
+
+        [Authorize]
         public ActionResult AssignLeadersBadges()
         {
 

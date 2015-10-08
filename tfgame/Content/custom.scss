@@ -1236,3 +1236,28 @@ line-height: 18px;
     background: #DFCBBF;
     overflow: hidden;
 }
+
+#statsBox, #playerBox {
+    text-align: center;
+}
+
+#playerBox .portrait{ 
+    margin-bottom: 10px;
+}
+
+#quest hr {
+    border-top: 3px dotted #A16969;
+}
+
+#quest p {
+    text-align: center;
+}
+
+#textBody {
+    text-align: justify;
+    font-size: 14px;
+}
+
+#quest .infoMessage, #quest .specialBox  {
+    border: 4px solid rgb(161, 105, 105);
+    }

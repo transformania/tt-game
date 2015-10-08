@@ -787,9 +787,6 @@ strong {
   color: black;
   font-weight: 800; }
 
-.roll {
-  color: #BF6132; }
-
 .roomName {
   background: none repeat scroll 0% 0% #A16969;
   font-size: 13px;
@@ -1085,5 +1082,24 @@ strong {
   border-top: 2px #734752 solid;
   background: #DFCBBF;
   overflow: hidden; }
+
+#statsBox, #playerBox {
+  text-align: center; }
+
+#playerBox .portrait {
+  margin-bottom: 10px; }
+
+#quest hr {
+  border-top: 3px dotted #A16969; }
+
+#quest p {
+  text-align: center; }
+
+#textBody {
+  text-align: justify;
+  font-size: 14px; }
+
+#quest .infoMessage, #quest .specialBox {
+  border: 4px solid #a16969; }
 
 /*# sourceMappingURL=custom.css.map */

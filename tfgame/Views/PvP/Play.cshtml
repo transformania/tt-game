@@ -47,25 +47,9 @@
                 <li>@Html.ActionLink("Friends", "MyFriends", "PvP")</li>
                 <li>@Html.ActionLink("Chat", "Index", "Chat", new { room = "global" }, new { target = "_blank" })</li>
                 <li>@Html.ActionLink("Covenant", "MyCovenant", "Covenant")</li>
-                <li>@Html.ActionLink("Settings", "Settings", "Settings")</li>
+                
 
-                <li class="visible-xs-inline"><a href="http://transformaniatime.com/PvP/MyInventory">Inventory @Model.PlayerItems.Where(i => i.dbItem.IsEquipped == false).Count()/@Model.InventoryMaxSize </a></li>
-                @{
-                    if (Model.You.Player.UnusedLevelUpPerks > 0)
-                    {
-                        <li>@Html.ActionLink("Level Up!", "LevelupPerk", "PvP", null, new { @class = "levelUp" })</li> }
-                }
-
-                @{
-                    if (Model.MessageCounts.NewMessagesCount > 0)
-                    {
-                        <li>@Html.ActionLink("(" + Model.MessageCounts.NewMessagesCount + " unread)", "MyMessages", "PvP", null, new { @class = "inboxNew" })</li>
-                    }
-                    else
-                    {
-                        <li>@Html.ActionLink("Inbox", "MyMessages", "PvP")</li>
-                    }
-                }
+                 <li>@Html.ActionLink("Quest", "QuestsAvailableHere", "Quest", new { id = "actionQuest" }, null)</li>
                 
 
                 <li class="dropdown">
@@ -86,6 +70,28 @@
                         <li>@Html.ActionLink("QuestWriter", "Index", "QuestWriter", null, null)</li>
                     }
                 }
+
+                
+
+                <li class="visible-xs-inline"><a href="http://transformaniatime.com/PvP/MyInventory">Inventory @Model.PlayerItems.Where(i => i.dbItem.IsEquipped == false).Count()/@Model.InventoryMaxSize </a></li>
+                @{
+                    if (Model.You.Player.UnusedLevelUpPerks > 0)
+                    {
+                        <li>@Html.ActionLink("Level Up!", "LevelupPerk", "PvP", null, new { @class = "levelUp" })</li> }
+                }
+
+                @{
+                    if (Model.MessageCounts.NewMessagesCount > 0)
+                    {
+                        <li>@Html.ActionLink("(" + Model.MessageCounts.NewMessagesCount + ")", "MyMessages", "PvP", null, new { @class = "glyphicon glyphicon-envelope inboxNew" })</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink("(0)", "MyMessages", "PvP", null, new { @class = "glyphicon glyphicon-envelope" })</li>
+                    }
+                }
+
+                <li>@Html.ActionLink(" ", "Settings", "Settings", null, new { @class = "glyphicon glyphicon-wrench" })</li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -145,7 +151,6 @@
         @Html.ActionLink("Cleanse (4 AP, 3 Mana)", "Cleanse", "PvP", null, new { id = "actionCleanse", @class = "actionButton" })
         @Html.ActionLink("Meditate (4 AP)", "Meditate", "PvP", null, new { id = "actionMeditate", @class = "actionButton" })
         @Html.ActionLink("Search this Area (" + (int)Model.APSearchCost + " AP)", "Search", "PvP", null, new { id = "actionSearch", @class = "actionButton" })
-        @Html.ActionLink("Quest", "QuestsAvailableHere", "Quest", null, new { id = "actionQuest", @class = "actionButton" })
     </div>
 
     <div class="row">

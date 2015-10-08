@@ -678,7 +678,15 @@ namespace tfgame.Procedures
         {
             IQuestRepository repo = new EFQuestRepository();
             IEnumerable<int> turns = repo.QuestPlayerStatuses.Where(p => p.PlayerId == player.Id && p.QuestId == questId).Select(s => s.LastEndedTurn);
-            return turns.Max();
+
+            if (turns.Count()==0)
+            {
+                return -9999;
+            } else
+            {
+                return turns.Max();
+            }
+           
         }
     }
 }

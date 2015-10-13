@@ -45,7 +45,7 @@
     <h1>All Quests (@Model.AllQuests.Count())</h1>
 
     @{
-        foreach (QuestStart s in Model.AvailableQuests)
+        foreach (QuestStart s in Model.AllQuests)
         {
             <div style="border: 1px solid black">
                 <p><b>@s.Name</b></p>

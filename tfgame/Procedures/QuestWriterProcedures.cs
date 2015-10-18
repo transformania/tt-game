@@ -45,7 +45,6 @@ namespace tfgame.Procedures
                 questState = new QuestState
                 {
                     QuestId = questStart.Id,
-                    ParentQuestStateId = -1,
                     QuestStateName = "[ STARTING QUEST STATE ]",
                 };
                 repo.SaveQuestState(questState);
@@ -71,13 +70,10 @@ namespace tfgame.Procedures
             }
 
             questState.Id = input.Id;
-            questState.ChoiceText = input.ChoiceText;
-            questState.ParentQuestStateId = input.ParentQuestStateId;
             questState.QuestEndId = input.QuestEndId;
             questState.QuestStateName = input.QuestStateName;
             questState.Text = input.Text;
             questState.QuestId = input.QuestId;
-            questState.JumpToQuestStateId = input.JumpToQuestStateId;
             questState.HideIfRequirementsNotMet = input.HideIfRequirementsNotMet;
 
             // always set this to something, even if it's just empty string
@@ -96,14 +92,23 @@ namespace tfgame.Procedures
             IQuestRepository repo = new EFQuestRepository();
             QuestState questState = repo.QuestStates.FirstOrDefault(q => q.Id == Id);
 
-            // delete any requirements on this quest state
-            List<QuestStateRequirement> requirements = repo.QuestStateRequirements.Where(q => q.QuestStateId.Id == questState.Id).ToList();
-            foreach(QuestStateRequirement q in requirements)
+            // dangle any from connections connecting TO this state
+            List<QuestConnection> connections = repo.QuestConnections.Where(q => q.QuestStateToId == questState.Id).ToList();
+            foreach(QuestConnection q in connections)
             {
-                repo.DeleteQuestStateRequirement(q.Id);
+                q.QuestStateToId = -1;
+                repo.SaveQuestConnection(q);
             }
 
-            // delete any requirements on this quest state
+            // dangle any from connections connecting TO this state
+            connections = repo.QuestConnections.Where(q => q.QuestStateFromId == questState.Id).ToList();
+            foreach (QuestConnection q in connections)
+            {
+                q.QuestStateFromId = -1;
+                repo.SaveQuestConnection(q);
+            }
+
+            // delete any ends on this quest state
             List<QuestEnd> ends = repo.QuestEnds.Where(q => q.QuestStateId.Id == questState.Id).ToList();
             foreach (QuestEnd q in ends)
             {
@@ -117,47 +122,69 @@ namespace tfgame.Procedures
                 repo.DeleteQuestStatePreaction(q.Id);
             }
 
-            // set parent of any children quest states to 0
-            List<QuestState> children = repo.QuestStates.Where(q => q.ParentQuestStateId == questState.Id).ToList();
-            foreach (QuestState q in children)
-            {
-                q.ParentQuestStateId = 0;
-                repo.SaveQuestState(q);
-            }
-
             // finally actually delete this state
             repo.DeleteQuestState(Id);
 
         }
 
-        public static int SaveQuestStateRequirement(QuestStateRequirement input, QuestState state)
+
+        public static int SaveQuestConnection(QuestConnection input)
         {
             IQuestRepository repo = new EFQuestRepository();
 
-            QuestStateRequirement questStateRequirement = repo.QuestStateRequirements.FirstOrDefault(q => q.Id == input.Id);
-            QuestState dbState = repo.QuestStates.FirstOrDefault(s => s.Id == state.Id);
+            QuestConnection questConnection = repo.QuestConnections.FirstOrDefault(q => q.Id == input.Id);
 
-            if (questStateRequirement == null)
+            if (questConnection == null)
             {
-                questStateRequirement = new QuestStateRequirement
+                questConnection = new QuestConnection();
+            }
+
+            questConnection.ActionName = input.ActionName;
+            questConnection.ConnectionName = input.ConnectionName;
+            questConnection.HideIfRequirementsNotMet = input.HideIfRequirementsNotMet;
+            questConnection.QuestId = input.QuestId;
+            questConnection.QuestStateFromId = input.QuestStateFromId;
+            questConnection.QuestStateToId = input.QuestStateToId;
+
+            // always set this to something, even if it's just empty string
+            if (questConnection.ConnectionName == null)
+            {
+                questConnection.ConnectionName = "-- QUEST CON NECTION NOT NAMED --";
+            }
+
+            repo.SaveQuestConnection(questConnection);
+
+            return questConnection.Id;
+        }
+
+        public static int SaveQuestConnectionRequirement(QuestConnectionRequirement input, QuestConnection connection)
+        {
+            IQuestRepository repo = new EFQuestRepository();
+
+            QuestConnectionRequirement QuestConnectionRequirement = repo.QuestConnectionRequirements.FirstOrDefault(q => q.Id == input.Id);
+           // QuestState dbState = repo.QuestStates.FirstOrDefault(s => s.Id == state.Id);
+
+            if (QuestConnectionRequirement == null)
+            {
+                QuestConnectionRequirement = new QuestConnectionRequirement
                 {
-                    QuestId = state.QuestId,
+                    QuestId = connection.QuestId,
                 };
             }
-            questStateRequirement.Id = input.Id;
-            questStateRequirement.Operator = input.Operator;
-            questStateRequirement.RequirementType = input.RequirementType;
-            questStateRequirement.RequirementValue = input.RequirementValue;
+            QuestConnectionRequirement.Id = input.Id;
+            QuestConnectionRequirement.Operator = input.Operator;
+            QuestConnectionRequirement.RequirementType = input.RequirementType;
+            QuestConnectionRequirement.RequirementValue = input.RequirementValue;
             if (input.VariabledbName != null)
             {
-                questStateRequirement.VariabledbName = input.VariabledbName.ToUpper();
+                QuestConnectionRequirement.VariabledbName = input.VariabledbName.ToUpper();
             }
-            questStateRequirement.QuestStateId = dbState;
-            questStateRequirement.QuestStateRequirementName = input.QuestStateRequirementName;
+            QuestConnectionRequirement.QuestConnectionId = repo.QuestConnections.FirstOrDefault(q => q.Id == connection.Id);
+            QuestConnectionRequirement.QuestConnectionRequirementName = input.QuestConnectionRequirementName;
 
-            repo.SaveQuestStateRequirement(questStateRequirement);
+            repo.SaveQuestConnectionRequirement(QuestConnectionRequirement);
 
-            return questStateRequirement.Id;
+            return QuestConnectionRequirement.Id;
         }
 
         public static int SaveQuestEnd(QuestEnd input, QuestState state)
@@ -225,10 +252,10 @@ namespace tfgame.Procedures
             repo.DeleteQuestEnd(Id);
         }
 
-        public static void DeleteQuestStateRequirement(int id)
+        public static void DeleteQuestConnectionRequirement(int id)
         {
             IQuestRepository repo = new EFQuestRepository();
-            repo.DeleteQuestStateRequirement(id);
+            repo.DeleteQuestConnectionRequirement(id);
         }
 
         public static void AddQuestWriterLog(string writer, string message)

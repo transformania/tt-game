@@ -1,5 +1,5 @@
 ﻿@model tfgame.ViewModels.Quest.QuestPlayPageViewModel
-    @using tfgame.dbModels.Models
+@using tfgame.dbModels.Models
 @using tfgame.CustomHtmlHelpers
 @using tfgame.Statics
 @using tfgame.Procedures
@@ -14,18 +14,18 @@
 
 <h1>Quest:  <b>@Model.QuestStart.Name</b></h1>
 
- 
+
 
 <div id="statsBox">
-    Discipline:  <b>@Model.BuffBox.Discipline()</b> | 
-    Perception:  <b>@Model.BuffBox.Perception()</b> | 
-    Charisma:  <b>@Model.BuffBox.Charisma()</b> | 
-    Fortitude:  <b>@Model.BuffBox.Fortitude()</b> | 
-    Agility:  <b>@Model.BuffBox.Agility()</b> | 
-    Allure:  <b>@Model.BuffBox.Allure()</b> | 
-    Magicka:  <b>@Model.BuffBox.Magicka()</b> | 
-    Succour:  <b>@Model.BuffBox.Succour()</b> | 
-    Luck:  <b>@Model.BuffBox.Luck()</b> | 
+    Discipline:  <b>@Model.BuffBox.Discipline()</b> |
+    Perception:  <b>@Model.BuffBox.Perception()</b> |
+    Charisma:  <b>@Model.BuffBox.Charisma()</b> |
+    Fortitude:  <b>@Model.BuffBox.Fortitude()</b> |
+    Agility:  <b>@Model.BuffBox.Agility()</b> |
+    Allure:  <b>@Model.BuffBox.Allure()</b> |
+    Magicka:  <b>@Model.BuffBox.Magicka()</b> |
+    Succour:  <b>@Model.BuffBox.Succour()</b> |
+    Luck:  <b>@Model.BuffBox.Luck()</b> |
 </div>
 
 <div id="playerBox">
@@ -35,7 +35,7 @@
         <span class="icon icon-@Model.Player.Player.Gender" style="float:right;"></span>
         <span class="icon icon-level"><b>@Model.Player.Player.Level</b></span>
         <span class="portraitIconRP">@CharactersHere.PrintRPIcon(Model.Player.Player.ToDbPlayer()) @CharactersHere.PrintPvPIcon(Model.Player.Player.ToDbPlayer()) @CharactersHere.PrintMCIcon(Model.Player.Player.ToDbPlayer()) @CharactersHere.PrintDonatorIcon(Model.Player.Player.ToDbPlayer())</span>
-       
+
     </div>
 
     <div>@Model.Player.Player.Health/@Model.Player.Player.MaxHealth Willpower, @Model.Player.Player.Mana/@Model.Player.Player.MaxMana Mana, @Model.Player.Player.ActionPoints/@PvPStatics.MaximumStoreableActionPoints AP</div>
@@ -50,34 +50,30 @@
 <hr />
 
 @{
-    if (Model.ShowChildrenStates() == true)
+
+    foreach (QuestConnection connection in Model.QuestConnections.ToList())
     {
-        foreach (QuestState child in Model.ChildQuestStates.ToList())
+        bool isAvailable = QuestProcedures.QuestConnectionIsAvailable(connection, Model.Player.Player.ToDbPlayer(), Model.BuffBox, Model.QuestPlayerVariables);
+        if (isAvailable == false && connection.HideIfRequirementsNotMet == true)
         {
-            bool isAvailable = QuestProcedures.QuestStateIsAvailable(child, Model.Player.Player.ToDbPlayer(), Model.BuffBox, Model.QuestPlayerVariables);
-            if (isAvailable == false && child.HideIfRequirementsNotMet == true)
-            {
-                // do nothing, option is unavailable and should be hidden
-            }
-            else if (isAvailable == false && child.HideIfRequirementsNotMet == false)
-            {
-                // show the option but give it disabled style indicating it is not open currently
-                <p style="background-color:#ff8585"> @Ajax.ActionLink(child.ChoiceText + " " + tfgame.Procedures.QuestProcedures.GetRequirementsAsString(child), "Choice", "Quest", new { Id = child.Id }, new AjaxOptions { UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" }) </p><br />
-            }
-            else
-            {
-                // show the option bas usual
-                <p> @Ajax.ActionLink(child.ChoiceText + " " + tfgame.Procedures.QuestProcedures.GetRequirementsAsString(child), "Choice", "Quest", new { Id = child.Id }, new AjaxOptions { UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" }) </p><br />
-            }
-
+            // do nothing, option is unavailable and should be hidden
         }
+        else if (isAvailable == false && connection.HideIfRequirementsNotMet == false)
+        {
+            // show the option but give it disabled style indicating it is not open currently
+            <p style="background-color:#ff8585"> @Ajax.ActionLink(connection.ActionName + " " + tfgame.Procedures.QuestProcedures.GetRequirementsAsString(connection), "Choice", "Quest", new { Id = connection.Id }, new AjaxOptions { UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" }) </p><br />
+        }
+        else
+        {
+            // show the option as usual
+            <p> @Ajax.ActionLink(connection.ActionName + " " + tfgame.Procedures.QuestProcedures.GetRequirementsAsString(connection), "Choice", "Quest", new { Id = connection.Id }, new AjaxOptions { UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" }) </p><br />
+        }
+
     }
 
 
-    if (Model.ShowJump() == true)
-    {
-        <p> @Ajax.ActionLink("Continue", "Jump", "Quest", null, new AjaxOptions { UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" }) </p>
-    }
+
+
 
     if (Model.ShowEnd() == true)
     {

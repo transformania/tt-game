@@ -74,12 +74,14 @@ namespace tfgame.dbModels.Concrete
 
         public DbSet<QuestStart> QuestStarts { get; set; }
         public DbSet<QuestState> QuestStates { get; set; }
-        public DbSet<QuestStateRequirement> QuestStateRequirements { get; set; }
+        public DbSet<QuestConnection> QuestConnections { get; set; }
+        public DbSet<QuestConnectionRequirement> QuestConnectionRequirements { get; set; }
         public DbSet<QuestEnd> QuestEnds { get; set; }
         public DbSet<QuestStatePreaction> QuestStatePreactions { get; set; }
         public DbSet<QuestWriterLog> QuestWriterLogs { get; set; }
         public DbSet<QuestPlayerStatus> QuestPlayerStatuses { get; set; }
         public DbSet<QuestPlayerVariable> QuestPlayerVariables { get; set; }
+        public DbSet<QuestWriterPermission> QuestWriterPermissions { get; set; }
 
     }
 }

@@ -7,12 +7,12 @@
 
             <tr>
                 <td>
-                    @Ajax.ActionLink(q.QuestStateName, "QuestState", "QuestWriter", new { Id = q.Id, QuestId = q.QuestId, ParentStateId = q.ParentQuestStateId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "editButton" })
+                    @Ajax.ActionLink(q.QuestStateName, "QuestState", "QuestWriter", new { Id = q.Id, QuestId = q.QuestId, ParentStateId = -1 }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "editButton" })
 
                     @{
-                        if (q.QuestStateRequirements.Count() > 0)
+                        if (q.QuestConnectionRequirements.Count() > 0)
                         {
-                            <span>@q.QuestStateRequirements.Count() requirements |</span>
+                            <span>@q.QuestConnectionRequirements.Count() requirements |</span>
                         }
                         if (q.QuestEnds.Count() > 0)
                         {

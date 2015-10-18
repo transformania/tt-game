@@ -23,11 +23,18 @@ namespace tfgame.dbModels.Abstract
         void DeleteQuestState(int QuestStateId);
 
 
-        IQueryable<QuestStateRequirement> QuestStateRequirements { get; }
+        IQueryable<QuestConnection> QuestConnections { get; }
 
-        void SaveQuestStateRequirement(QuestStateRequirement quest);
+        void SaveQuestConnection(QuestConnection quest);
 
-        void DeleteQuestStateRequirement(int QuestStateRequirementId);
+        void DeleteQuestConnection(int QuestConnectionId);
+
+
+        IQueryable<QuestConnectionRequirement> QuestConnectionRequirements { get; }
+
+        void SaveQuestConnectionRequirement(QuestConnectionRequirement quest);
+
+        void DeleteQuestConnectionRequirement(int QuestConnectionRequirementId);
 
 
         IQueryable<QuestEnd> QuestEnds { get; }
@@ -63,6 +70,13 @@ namespace tfgame.dbModels.Abstract
         void SaveQuestPlayerVariable(QuestPlayerVariable quest);
 
         void DeleteQuestPlayerVariable(int QuestPlayerVariableId);
+
+
+        IQueryable<QuestWriterPermission> QuestWriterPermissions { get; }
+
+        void SaveQuestWriterPermission(QuestWriterPermission permission);
+
+        void DeleteQuestWriterPermission(int QuestWriterPermissionId);
 
     }
 }

@@ -36,15 +36,15 @@ namespace tfgame.dbModels.Models
     public class QuestState
     {
         public int Id { get; set; }
-        public int ParentQuestStateId { get; set; }
+        //public int ParentQuestStateId { get; set; }
         public string QuestStateName { get; set; }
         public int QuestId { get; set; }
         public string Text { get; set; }
-        public virtual List<QuestStateRequirement> QuestStateRequirements { get; set; }
+        public virtual List<QuestConnectionRequirement> QuestConnectionRequirements { get; set; }
         public virtual List<QuestStatePreaction> QuestStatePreactions { get; set; }
         public virtual List<QuestEnd> QuestEnds { get; set; }
-        public int JumpToQuestStateId { get; set; }
-        public string ChoiceText { get; set; }
+        //public int JumpToQuestStateId { get; set; }
+        //public string ChoiceText { get; set; }
         public int QuestEndId { get; set; }
         public bool HideIfRequirementsNotMet { get; set; }
     }
@@ -62,20 +62,33 @@ namespace tfgame.dbModels.Models
     //[ChoiceText] - string.The text to be displayed when given the option to enter this quest state, ie “Open the door” or “Run back outside.”
     //[QuestEndId] - int.  The quest end to run when this state is reached (when this quest state is a possible completion state.)
 
-
-
-    public class QuestStateRequirement
+    public class QuestConnection
     {
         public int Id { get; set; }
-        public virtual QuestState QuestStateId { get; set; }
+        public int QuestStateFromId { get; set; }
+        public int QuestStateToId { get; set; }
+        public string ActionName { get; set; }
+        public string ConnectionName { get; set; }
+        public int QuestId { get; set; }
+        public virtual List<QuestConnectionRequirement> QuestConnectionRequirements { get; set; }
+        public bool HideIfRequirementsNotMet { get; set; }
+    }
+
+
+
+    public class QuestConnectionRequirement
+    {
+        public int Id { get; set; }
+      //  public virtual QuestState QuestStateId { get; set; }
+        public virtual QuestConnection QuestConnectionId { get; set; }
         public int RequirementType { get; set; }
         public string VariabledbName { get; set; }
         public int Operator { get; set; }
         public string RequirementValue { get; set; }
         public int QuestId { get; set; }
-        public string QuestStateRequirementName { get; set; }
+        public string QuestConnectionRequirementName { get; set; }
 
-        //    [QuestStateRequirement]
+        //    [QuestConnectionRequirement]
         //    Keeps track of all the requirements in order for a player to see an option to take after reading a quest state’s text.
         //    [Id] -- int
         //    [QuestStateId]  - int.  Id of the quest state this is a requirement for
@@ -161,6 +174,14 @@ namespace tfgame.dbModels.Models
         public int QuestId { get; set; }
         public string VariableName { get; set; }
         public string VariableValue { get; set; }
+    }
+
+    public class QuestWriterPermission
+    {
+        public int Id { get; set; }
+        public int QuestId { get; set; }
+        public string PlayerMembershipId { get; set; }
+        public int PermissionType { get; set; }
     }
 }
 

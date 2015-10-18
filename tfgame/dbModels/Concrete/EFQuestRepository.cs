@@ -113,26 +113,26 @@ namespace tfgame.dbModels.Concrete
 
         #endregion
 
-        #region QuestStateRequirements
-        public IQueryable<QuestStateRequirement> QuestStateRequirements
+        #region QuestConnections
+        public IQueryable<QuestConnection> QuestConnections
         {
-            get { return context.QuestStateRequirements; }
+            get { return context.QuestConnections; }
         }
 
-        public void SaveQuestStateRequirement(QuestStateRequirement QuestStateRequirement)
+        public void SaveQuestConnection(QuestConnection QuestConnection)
         {
-            if (QuestStateRequirement.Id == 0)
+            if (QuestConnection.Id == 0)
             {
-                context.QuestStateRequirements.Add(QuestStateRequirement);
+                context.QuestConnections.Add(QuestConnection);
             }
             else
             {
-                QuestStateRequirement editMe = context.QuestStateRequirements.Find(QuestStateRequirement.Id);
+                QuestConnection editMe = context.QuestConnections.Find(QuestConnection.Id);
                 if (editMe != null)
                 {
-                    // dbEntry.Name = QuestStateRequirement.Name;
-                    // dbEntry.Message = QuestStateRequirement.Message;
-                    // dbEntry.TimeStamp = QuestStateRequirement.TimeStamp;
+                    // dbEntry.Name = QuestConnection.Name;
+                    // dbEntry.Message = QuestConnection.Message;
+                    // dbEntry.TimeStamp = QuestConnection.TimeStamp;
 
                 }
             }
@@ -143,20 +143,70 @@ namespace tfgame.dbModels.Concrete
             }
             catch (OptimisticConcurrencyException)
             {
-                //context.(RefreshMode.ClientWins, dbModels.Models.QuestStateRequirement);
+                //context.(RefreshMode.ClientWins, dbModels.Models.QuestConnection);
                 //context.SaveChanges();
             }
 
             // context.SaveChanges();
         }
 
-        public void DeleteQuestStateRequirement(int id)
+        public void DeleteQuestConnection(int id)
         {
 
-            QuestStateRequirement dbEntry = context.QuestStateRequirements.Find(id);
+            QuestConnection dbEntry = context.QuestConnections.Find(id);
             if (dbEntry != null)
             {
-                context.QuestStateRequirements.Remove(dbEntry);
+                context.QuestConnections.Remove(dbEntry);
+                context.SaveChanges();
+            }
+        }
+
+        #endregion
+
+        #region QuestConnectionRequirements
+        public IQueryable<QuestConnectionRequirement> QuestConnectionRequirements
+        {
+            get { return context.QuestConnectionRequirements; }
+        }
+
+        public void SaveQuestConnectionRequirement(QuestConnectionRequirement QuestConnectionRequirement)
+        {
+            if (QuestConnectionRequirement.Id == 0)
+            {
+                context.QuestConnectionRequirements.Add(QuestConnectionRequirement);
+            }
+            else
+            {
+                QuestConnectionRequirement editMe = context.QuestConnectionRequirements.Find(QuestConnectionRequirement.Id);
+                if (editMe != null)
+                {
+                    // dbEntry.Name = QuestConnectionRequirement.Name;
+                    // dbEntry.Message = QuestConnectionRequirement.Message;
+                    // dbEntry.TimeStamp = QuestConnectionRequirement.TimeStamp;
+
+                }
+            }
+
+            try
+            {
+                context.SaveChanges();
+            }
+            catch (OptimisticConcurrencyException)
+            {
+                //context.(RefreshMode.ClientWins, dbModels.Models.QuestConnectionRequirement);
+                //context.SaveChanges();
+            }
+
+            // context.SaveChanges();
+        }
+
+        public void DeleteQuestConnectionRequirement(int id)
+        {
+
+            QuestConnectionRequirement dbEntry = context.QuestConnectionRequirements.Find(id);
+            if (dbEntry != null)
+            {
+                context.QuestConnectionRequirements.Remove(dbEntry);
                 context.SaveChanges();
             }
         }
@@ -407,6 +457,56 @@ namespace tfgame.dbModels.Concrete
             if (dbEntry != null)
             {
                 context.QuestPlayerVariables.Remove(dbEntry);
+                context.SaveChanges();
+            }
+        }
+
+        #endregion
+
+         #region QuestWriterPermission
+        public IQueryable<QuestWriterPermission> QuestWriterPermissions
+        {
+            get { return context.QuestWriterPermissions; }
+        }
+
+        public void SaveQuestWriterPermission(QuestWriterPermission QuestWriterPermission)
+        {
+            if (QuestWriterPermission.Id == 0)
+            {
+                context.QuestWriterPermissions.Add(QuestWriterPermission);
+            }
+            else
+            {
+                QuestWriterPermission editMe = context.QuestWriterPermissions.Find(QuestWriterPermission.Id);
+                if (editMe != null)
+                {
+                    // dbEntry.Name = QuestWriterPermission.Name;
+                    // dbEntry.Message = QuestWriterPermission.Message;
+                    // dbEntry.TimeStamp = QuestWriterPermission.TimeStamp;
+
+                }
+            }
+
+            try
+            {
+                context.SaveChanges();
+            }
+            catch (OptimisticConcurrencyException)
+            {
+                //context.(RefreshMode.ClientWins, dbModels.Models.QuestWriterPermission);
+                //context.SaveChanges();
+            }
+
+            // context.SaveChanges();
+        }
+
+        public void DeleteQuestWriterPermission(int id)
+        {
+
+            QuestWriterPermission dbEntry = context.QuestWriterPermissions.Find(id);
+            if (dbEntry != null)
+            {
+                context.QuestWriterPermissions.Remove(dbEntry);
                 context.SaveChanges();
             }
         }

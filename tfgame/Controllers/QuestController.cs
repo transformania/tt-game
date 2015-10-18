@@ -134,7 +134,7 @@ namespace tfgame.Controllers
             output.Player = PlayerProcedures.GetPlayerFormViewModel(me.Id);
             output.QuestStart = QuestProcedures.GetQuest(me.InQuest);
             output.QuestState = QuestProcedures.GetQuestState(me.InQuestState);
-            output.ChildQuestStates = QuestProcedures.GetChildQuestStates(me.InQuestState);
+            output.QuestConnections = QuestProcedures.GetChildQuestConnections(me.InQuestState);
             output.BuffBox = ItemProcedures.GetPlayerBuffsSQL(me);
             output.QuestPlayerVariables = QuestProcedures.GetAllQuestPlayerVariablesFromQuest(output.QuestStart.Id, me.Id);
             output.NewMessages = MessageProcedures.GetPlayerUnreadMessageCount(me);
@@ -169,10 +169,11 @@ namespace tfgame.Controllers
             }
 
             QuestState currentState = QuestProcedures.GetQuestState(me.InQuestState);
-            QuestState desiredState = QuestProcedures.GetQuestState(Id);
+            QuestConnection desiredConnection = QuestProcedures.GetQuestConnection(Id);
+            QuestState nextState = QuestProcedures.GetQuestState(desiredConnection.QuestStateToId);
 
             // assert desired state is in same quest
-            if (desiredState.QuestId != me.InQuest)
+            if (nextState.QuestId != me.InQuest || desiredConnection.QuestId != me.InQuest)
             {
                 TempData["Error"] = "Unavailable";
                 return RedirectToAction("Quest");
@@ -186,39 +187,16 @@ namespace tfgame.Controllers
             
 
             // assert player has the right requirements for this
-            if (QuestProcedures.QuestStateIsAvailable(desiredState, me, buffs, output.QuestPlayerVariables) == false)
+            if (QuestProcedures.QuestConnectionIsAvailable(desiredConnection, me, buffs, output.QuestPlayerVariables) == false)
             {
                 TempData["Error"] = "You're not able to do that.";
                 return RedirectToAction("Quest");
             }
 
-            QuestProcedures.PlayerSetQuestState(me, desiredState);
-            QuestProcedures.ProcessQuestStatePreactions(me, desiredState);
+            QuestProcedures.PlayerSetQuestState(me, nextState);
+            QuestProcedures.ProcessQuestStatePreactions(me, nextState);
 
             PlayerProcedures.ChangePlayerActionManaNoTimestamp(1, 0, 0, me.Id);
-
-            return RedirectToAction("Quest");
-        }
-
-        public ActionResult Jump()
-        {
-            IQuestRepository repo = new EFQuestRepository();
-
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-
-            QuestState state = QuestProcedures.GetQuestState(me.InQuestState);
-
-            // assert state actually does jump somewhere
-            if (state.JumpToQuestStateId<=0)
-            {
-                return RedirectToAction("Quest");
-            }
-
-            QuestState jumpedTostate = QuestProcedures.GetQuestState(state.JumpToQuestStateId);
-
-            QuestProcedures.PlayerSetQuestState(me, jumpedTostate);
-            QuestProcedures.ProcessQuestStatePreactions(me, jumpedTostate);
 
             return RedirectToAction("Quest");
         }

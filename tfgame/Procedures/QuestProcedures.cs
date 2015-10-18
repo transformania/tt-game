@@ -48,11 +48,34 @@ namespace tfgame.Procedures
             return dbQuestState;
         }
 
-        public static IEnumerable<QuestState> GetChildQuestStates(int Id)
+        public static QuestConnection GetQuestConnection(int Id)
         {
             IQuestRepository repo = new EFQuestRepository();
 
-            return repo.QuestStates.Where(q => q.ParentQuestStateId == Id);
+            QuestConnection dbQuestConnection = repo.QuestConnections.FirstOrDefault(q => q.Id == Id);
+
+            return dbQuestConnection;
+        }
+
+        public static IEnumerable<QuestConnection> GetConnectionsFromQuestState(int questStateId)
+        {
+            IQuestRepository repo = new EFQuestRepository();
+
+            return repo.QuestConnections.Where(q => q.QuestStateFromId == questStateId);
+        }
+
+        public static IEnumerable<QuestConnection> GetConnectionsToQuestState(int questStateId)
+        {
+            IQuestRepository repo = new EFQuestRepository();
+
+            return repo.QuestConnections.Where(q => q.QuestStateToId == questStateId);
+        }
+
+        public static IEnumerable<QuestConnection> GetChildQuestConnections(int Id)
+        {
+            IQuestRepository repo = new EFQuestRepository();
+
+            return repo.QuestConnections.Where(q => q.QuestStateFromId == Id);
         }
 
         public static bool PlayerCanBeginQuest(Player player, QuestStart questStart, int gameWorldTurn)
@@ -253,12 +276,12 @@ namespace tfgame.Procedures
 
         }
 
-        public static bool QuestStateIsAvailable(QuestState questState, Player player, BuffBox buffs, IEnumerable<QuestPlayerVariable> variables)
+        public static bool QuestConnectionIsAvailable(QuestConnection questConnection, Player player, BuffBox buffs, IEnumerable<QuestPlayerVariable> variables)
         {
 
             bool isAvailable = true;
 
-            foreach (QuestStateRequirement q in questState.QuestStateRequirements)
+            foreach (QuestConnectionRequirement q in questConnection.QuestConnectionRequirements)
             {
                 // evaluate variable
                 if (q.RequirementType == (int)QuestStatics.RequirementType.Variable) {
@@ -305,7 +328,7 @@ namespace tfgame.Procedures
             return true;
         }
 
-        private static float GetValueFromType(QuestStateRequirement q, BuffBox buffs)
+        private static float GetValueFromType(QuestConnectionRequirement q, BuffBox buffs)
         {
             float playerValue = 0;
 
@@ -350,7 +373,7 @@ namespace tfgame.Procedures
             return playerValue;
         }
 
-        private static bool ExpressionIsTrue(float playerValue, QuestStateRequirement q)
+        private static bool ExpressionIsTrue(float playerValue, QuestConnectionRequirement q)
         {
             
             float requirementValue = Convert.ToSingle(q.RequirementValue);
@@ -402,22 +425,22 @@ namespace tfgame.Procedures
             return isAvailable;
         }
 
-        public static string GetRequirementsAsString(QuestState q)
+        public static string GetRequirementsAsString(QuestConnection q)
         {
 
             string output = "";
 
-            if (q.QuestStateRequirements.Count()==0)
+            if (q.QuestConnectionRequirements.Count()==0)
             {
                 return output;
             }
 
-            int len = q.QuestStateRequirements.Count();
+            int len = q.QuestConnectionRequirements.Count();
             int i = 0;
 
             output += "[";
 
-            foreach (QuestStateRequirement qs in q.QuestStateRequirements.ToList())
+            foreach (QuestConnectionRequirement qs in q.QuestConnectionRequirements.ToList())
             {
                 // don't print anything for variables or gender requirements
                 if (qs.RequirementType == (int)QuestStatics.RequirementType.Variable || qs.RequirementType == (int)QuestStatics.RequirementType.Gender)
@@ -643,9 +666,9 @@ namespace tfgame.Procedures
                 }
             }
 
-            IEnumerable<QuestStateRequirement> allRequirements = repo.QuestStateRequirements.Where(q => q.QuestId == questId);
+            IEnumerable<QuestConnectionRequirement> allRequirements = repo.QuestConnectionRequirements.Where(q => q.QuestId == questId);
 
-            foreach (QuestStateRequirement p in allRequirements)
+            foreach (QuestConnectionRequirement p in allRequirements)
             {
                 if (p.RequirementType == (int)QuestStatics.RequirementType.Variable)
                 {

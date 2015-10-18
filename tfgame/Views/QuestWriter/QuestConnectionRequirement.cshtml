@@ -1,38 +1,35 @@
-﻿@model tfgame.ViewModels.Quest.QuestStateRequirementFormViewModel
+﻿@model tfgame.ViewModels.Quest.QuestConnectionRequirementFormViewModel
 
 @using tfgame.Statics
 @using tfgame.dbModels.Models
 
 
 
-<h4>Parent Quest State:</h4>
+<h4>Quest Connection</h4>
 
-@{
-    if (Model.ParentQuestState != null)
-    {
 
-        <p>@Ajax.ActionLink("[" + Model.ParentQuestState.QuestStateName + "]", "QuestState", "QuestWriter", new { Id = Model.ParentQuestState.Id, QuestId = Model.QuestStateRequirement.QuestId, ParentStateId = -1 }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "parentButton" })</p>
-    }
-}
+<p>@Ajax.ActionLink("[" + Model.QuestConnection.ConnectionName + "]", "QuestConnection", "QuestWriter", new { Id = Model.QuestConnection.Id, QuestId = Model.QuestConnection.QuestId, FromQuestId = Model.QuestConnection.QuestStateFromId, ToQuestId = Model.QuestConnection.QuestStateToId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "parentButton" })</p>
+
+
 
 <hr />
 
-@using (Ajax.BeginForm("QuestStateRequirementSend", "QuestWriter", new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" }))
+@using (Ajax.BeginForm("QuestConnectionRequirementSend", "QuestWriter", new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" }))
 {
 
-    @Html.HiddenFor(m => m.ParentQuestState.Id)
-    @Html.HiddenFor(m => m.QuestStateRequirement.QuestStateId.Id)
 
-    @Html.HiddenFor(m => m.QuestStateRequirement.Id)
-    @Html.HiddenFor(m => m.QuestStateRequirement.QuestId)
+    @Html.HiddenFor(m => m.QuestConnectionRequirement.Id)
+    @Html.HiddenFor(m => m.QuestConnectionRequirement.QuestConnectionId)
+    @Html.HiddenFor(m => m.QuestConnectionRequirement.QuestId)
+    @Html.HiddenFor(m => m.QuestConnection.Id)
 
     <label>Name (used for internal purposes):</label>    <br />
-        @Html.TextBoxFor(m => m.QuestStateRequirement.QuestStateRequirementName)
+        @Html.TextBoxFor(m => m.QuestConnectionRequirement.QuestConnectionRequirementName)
 
     <br /><br />
 
     <label>Requirement Type:</label>    <br />
-    @Html.DropDownListFor(m => m.QuestStateRequirement.RequirementType, new SelectList(
+    @Html.DropDownListFor(m => m.QuestConnectionRequirement.RequirementType, new SelectList(
                   new List<Object>{
                       new { value = (int)QuestStatics.RequirementType.Agility, text = "Agility"  },
                       new { value = (int)QuestStatics.RequirementType.Allure, text = "Allure"  },
@@ -54,7 +51,7 @@
     <br /><br />
 
     <label>Operator:</label>    <br />
-    @Html.DropDownListFor(m => m.QuestStateRequirement.Operator, new SelectList(
+    @Html.DropDownListFor(m => m.QuestConnectionRequirement.Operator, new SelectList(
                   new List<Object>{
                       new { value = (int)QuestStatics.Operator.Less_Than, text = "< (less than)"  },
                       new { value = (int)QuestStatics.Operator.Less_Than_Or_Equal, text = "<= (less than or equal to)"  },
@@ -71,12 +68,12 @@
     <br /><br />
 
     <label>Requirement Value:</label>    <br />
-    @Html.TextBoxFor(m => m.QuestStateRequirement.RequirementValue)
+    @Html.TextBoxFor(m => m.QuestConnectionRequirement.RequirementValue)
 
     <br /><br />
 
     <label>Variable used (will be converted to all caps):</label>    <br />
-    @Html.TextBoxFor(m => m.QuestStateRequirement.VariabledbName)
+    @Html.TextBoxFor(m => m.QuestConnectionRequirement.VariabledbName)
 
     <br /><br />
 
@@ -94,7 +91,7 @@
 
 <script>
 
-    var questId = @Model.ParentQuestState.QuestId;
+    var questId = @Model.QuestConnection.QuestId;
     var allVariablesList = [];
 
     $("#allVariables").click(function () {

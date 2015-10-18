@@ -9,16 +9,22 @@ namespace tfgame.ViewModels.Quest
     public class QuestStateFormViewModel
     {
         public QuestState QuestState { get; set; }
-        public QuestState ParentQuestState { get; set; }
-        public QuestState JumpToQuestState { get; set; }
-        public IEnumerable<QuestState> ChildQuestStates { get; set; }
         public IEnumerable<QuestEnd> QuestEnds { get; set; }
+        public IEnumerable<QuestConnection> QuestConnectionsFrom { get; set; }
+        public IEnumerable<QuestConnection> QuestConnectionsTo { get; set; }
     }
 
-    public class QuestStateRequirementFormViewModel
+    public class QuestConnectionFormViewModel
     {
-        public QuestStateRequirement QuestStateRequirement { get; set; }
-        public QuestState ParentQuestState { get; set; }
+        public QuestConnection QuestConnection { get; set; }
+        public QuestState FromQuestState { get; set; }
+        public QuestState ToQuestState { get; set; }
+    }
+
+    public class QuestConnectionRequirementFormViewModel
+    {
+        public QuestConnectionRequirement QuestConnectionRequirement { get; set; }
+        public QuestConnection QuestConnection { get; set; }
     }
 
     public class QuestStatePreactionFormViewModel

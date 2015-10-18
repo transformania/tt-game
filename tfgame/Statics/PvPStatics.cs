@@ -19,7 +19,7 @@ namespace tfgame.Statics
         public const int StartTurnNoAttackSeconds = 30;
         public const int EndTurnNoAttackSeconds = 30;
 
-        public const string AlphaRound = "Alpha Round 25";
+        public const string AlphaRound = "Alpha Round 26";
 
         public const bool ChaosMode = false;
 

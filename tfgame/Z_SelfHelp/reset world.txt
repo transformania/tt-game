@@ -27,7 +27,7 @@ DELETE FROM [Stats].[dbo].[Duels]
 DELETE FROM [Stats].[dbo].[DuelCombatants]
 DELETE FROM [Stats].[dbo].[DuelRules]
 DELETE FROM [Stats].[dbo].[PlayerQuests]
-DELETE FROM [Stats].[dbo].[QuestPlayerStatuses]
+DELETE FROM [Stats].[dbo].[QuestPlayerStatus]
 DELETE FROM [Stats].[dbo].[QuestPlayerVariables]
 
 UPDATE [Stats].[dbo].[PvPWorldStats] SET Boss_Donna = 'unstarted', [Boss_Valentine] = 'unstarted', [Boss_Bimbo] = 'unstarted', [Boss_Thief] = 'unstarted', [Boss_Sisters] = 'unstarted', [TurnNumber] = 0

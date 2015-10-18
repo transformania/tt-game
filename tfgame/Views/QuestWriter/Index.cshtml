@@ -107,31 +107,41 @@
     }
 
     // populate the the jump to dropdown with all states found for the current quest
-    function loadJumpToDropdownWithValues() {
+    function loadConnectionDropdownValues() {
         $.getJSON("/QuestWriter/QuestStatesInQuestJSON/" + questId, function (data) {
             allStates = data;
         }).then(function () {
-            populateJumpToDropdown();
-            setDropdownToValue(jumpToLoadValue);
+            populateConnectionDropdown();
+            setDropdownsToValues(fromValue, toValue);
         });
     }
 
     // load the values for the jump to state dropdown
-    function populateJumpToDropdown() {
+    function populateConnectionDropdown() {
 
         for (var i = 0; i < allStates.length; i++) {
             var opt = allStates[i];
 
-            jumpToDropdown.append($('<option>', {
+
+            fromStatesDropdown.append($('<option>', {
                 value: opt.Id,
                 text: opt.StateName
             }));
+
+
+            toStatesDropdown.append($('<option>', {
+                value: opt.Id,
+                text: opt.StateName
+            }));
+
+     
         }
     }
 
     // set value of jump to quest state dropdown
-    function setDropdownToValue(value) {
-        jumpToDropdown.val(value);
+    function setDropdownsToValues(from, to) {
+        fromStatesDropdown.val(from);
+        toStatesDropdown.val(to);
     }
 
 </script>

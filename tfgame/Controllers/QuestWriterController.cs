@@ -368,6 +368,13 @@ namespace tfgame.Controllers
             return PartialView(output);
         }
 
+
+        public ActionResult ShowAllQuestConnections(int Id)
+        {
+            IEnumerable<QuestConnection> output = QuestWriterProcedures.GetAllQuestsConnectionsInQuest(Id);
+            return PartialView(output);
+        }
+
         public JsonResult ShowAllUsedQuestVariables(int Id)
         {
             IQuestRepository repo = new EFQuestRepository();

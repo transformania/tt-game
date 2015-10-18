@@ -4,6 +4,7 @@
 @using tfgame.dbModels.Models
 
 <p>@Ajax.ActionLink("Click to view all quest states in this quest", "ShowAllQuestStates", "QuestWriter", new { Id = Model.QuestState.QuestId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
+<p>@Ajax.ActionLink("Click to view all quest connections in this quest", "ShowAllQuestConnections", "QuestWriter", new { Id = Model.QuestState.QuestId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
 
 <h4>Connections TO this Quest State (@Model.QuestConnectionsFrom.Count()):</h4>
 

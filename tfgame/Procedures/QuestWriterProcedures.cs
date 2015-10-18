@@ -284,5 +284,11 @@ namespace tfgame.Procedures
             IQuestRepository repo = new EFQuestRepository();
             return repo.QuestStates.Where(q => q.QuestId == questId);
         }
+
+        public static IEnumerable<QuestConnection> GetAllQuestsConnectionsInQuest(int questId)
+        {
+            IQuestRepository repo = new EFQuestRepository();
+            return repo.QuestConnections.Where(q => q.QuestId == questId);
+        }
     }
 }

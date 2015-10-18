@@ -2502,6 +2502,7 @@
     <Content Include="Views\QuestWriter\QuestStatePreaction.cshtml" />
     <Content Include="Views\Info\GearTool.cshtml" />
     <Content Include="Views\QuestWriter\QuestConnection.cshtml" />
+    <Content Include="Views\QuestWriter\ShowAllQuestConnections.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -343,6 +343,45 @@ namespace tfgame.Controllers
             return PartialView();
         }
 
+        public ActionResult Diagram(int Id)
+        {
+
+            ViewBag.QuestId = Id;
+
+            return PartialView();
+        }
+
+        public JsonResult DiagramStatesJSON(int Id)
+        {
+            IQuestRepository repo = new EFQuestRepository();
+
+
+            var output = from s in repo.QuestStates.Where(q => q.QuestId == Id)
+                         select new
+                         {
+                             Id = s.Id,
+                             StateName = s.QuestStateName
+                         };
+
+            return Json(output, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult DiagramConnectionsJSON(int Id)
+        {
+            IQuestRepository repo = new EFQuestRepository();
+            var output = from c in repo.QuestConnections.Where(q => q.QuestId == Id)
+                              select new
+                              {
+                                  Id = c.Id,
+                                  Name = c.ConnectionName,
+                                  From = c.QuestStateFromId,
+                                  To = c.QuestStateToId
+                              };
+
+
+            return Json(output, JsonRequestBehavior.AllowGet);
+        }
+
         public JsonResult QuestStatesInQuestJSON(int Id)
         {
             IEnumerable<QuestState> states = QuestWriterProcedures.GetAllQuestsStatesInQuest(Id);

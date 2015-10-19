@@ -1,7 +1,9 @@
 ﻿@model tfgame.dbModels.Models.QuestStart
 @using tfgame.Statics
 
-
+<p>@Ajax.ActionLink("Click to view all quest states in this quest", "ShowAllQuestStates", "QuestWriter", new { Id = Model.Id }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
+<p>@Ajax.ActionLink("Click to view all quest connections in this quest", "ShowAllQuestConnections", "QuestWriter", new { Id = Model.Id }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
+<p>@Ajax.ActionLink("View Diagram", "Diagram", "QuestWriter", new { Id = Model.Id }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
 
 @using (Ajax.BeginForm("QuestStartSend", "QuestWriter", new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" }))
 {

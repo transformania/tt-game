@@ -469,6 +469,11 @@ namespace tfgame.Procedures
 
         public static string Textify(string input, Player player)
         {
+            if (input == null)
+            {
+                input = "";
+            }
+           
             input = input.Replace(Environment.NewLine, "</br>")
                 .Replace("[b]", "<b>").Replace("[/b]", "</b>")
                 .Replace("[i]", "<i>").Replace("[/i]", "</i>")

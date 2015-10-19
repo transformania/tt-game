@@ -52,20 +52,6 @@
 
     <br /><br />
 
-    <label>Hide this choice if entry requirements are not met?  Check if yes.</label>
-    @Html.CheckBoxFor(m => m.QuestState.HideIfRequirementsNotMet)
-
-    <br /><br />
-
-    @*<label>Jumps to State (instead of having children options, leaving this state immediately brings the player to another one):</label>    <br />
-        @Html.DropDownListFor(m => m.QuestState.JumpToQuestStateId, new SelectList(
-                                      new List<Object>{
-                          new { value = 0, text = "--none--"  },
-                                        },
-                                      "value",
-                                      "text",
-                                       2))*@
-
     <input type="submit" class="btn btn-chat" value="Send" />
 
 }
@@ -89,6 +75,13 @@
 
     }
 </table>
+
+@{
+    if (Model.QuestState.Id > 0)
+    {
+        <p>@Ajax.ActionLink("--New Quest State Preaction--", "QuestStatePreaction", "QuestWriter", new { Id = -1, QuestStateId = Model.QuestState.Id, QuestId = Model.QuestState.QuestId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "newButton" })</p>
+    }
+}
 
 <h4>Quest Ends (@Model.QuestState.QuestEnds.Count())</h4>
 

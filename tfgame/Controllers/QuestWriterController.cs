@@ -217,7 +217,7 @@ namespace tfgame.Controllers
 
             int savedId = QuestWriterProcedures.SaveQuestConnectionRequirement(input.QuestConnectionRequirement, connection);
 
-            return RedirectToAction("QuestConnectionRequirement", "QuestWriter", new { Id = savedId, QuestId = input.QuestConnectionRequirement.QuestId, ConnectionId = input.QuestConnection.Id });
+            return RedirectToAction("QuestConnectionRequirement", "QuestWriter", new { Id = savedId, QuestId = input.QuestConnectionRequirement.QuestId, QuestConnectionId = connection.Id });
         }
 
         public ActionResult QuestConnectionRequirementDelete(int Id)

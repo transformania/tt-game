@@ -62,6 +62,8 @@ namespace tfgame.Controllers
 
             int newId = QuestWriterProcedures.SaveQuestStart(input);
 
+            QuestWriterProcedures.LogQuestWriterAction(User.Identity.Name, newId, " began new quest with Id <b>" + newId + "</b>.");
+
             return RedirectToAction("QuestStart", "QuestWriter", new { Id = newId});
         }
 
@@ -74,6 +76,9 @@ namespace tfgame.Controllers
             }
 
             QuestWriterProcedures.MarkQuestAsLive(Id, live);
+
+            QuestWriterProcedures.LogQuestWriterAction(User.Identity.Name, Id, " marked quest Id <b>" + Id + "</b> as live.");
+
             return RedirectToAction("QuestStart", "QuestWriter", new { Id = Id });
 
         }
@@ -115,6 +120,8 @@ namespace tfgame.Controllers
 
             int id = QuestWriterProcedures.SaveQuestState(input.QuestState);
 
+            QuestWriterProcedures.LogQuestWriterAction(User.Identity.Name, input.QuestState.QuestId, " saved quest state Id <b>" + input.QuestState.Id + "</b>.");
+
             return RedirectToAction("QuestState", "QuestWriter", new { Id = id, QuestId = input.QuestState.QuestId, ParentStateId = -1});
         }
 
@@ -126,6 +133,7 @@ namespace tfgame.Controllers
 
             QuestWriterProcedures.DeleteQuestState(Id);
 
+            QuestWriterProcedures.LogQuestWriterAction(User.Identity.Name, questState.QuestId, " deleted quest state Id <b>" + questState.Id + "</b>.");
 
             return RedirectToAction("ShowAllQuestStates", "QuestWriter", new { Id = questState.QuestId });
         }
@@ -171,11 +179,16 @@ namespace tfgame.Controllers
 
             int id = QuestWriterProcedures.SaveQuestConnection(input.QuestConnection);
 
+            QuestWriterProcedures.LogQuestWriterAction(User.Identity.Name, input.QuestConnection.QuestId, " saved connection Id <b>" + id + "</b>.");
+
             return RedirectToAction("QuestConnection", "QuestWriter", new { Id = id, QuestId = input.QuestConnection.QuestId, FromQuestId = input.QuestConnection.QuestStateFromId, ToQuestId = input.QuestConnection.QuestStateToId });
         }
 
         public ActionResult DeleteQuestConnection(int Id, int QuestId)
         {
+
+            QuestWriterProcedures.DeleteQuestConnection(Id);
+            QuestWriterProcedures.LogQuestWriterAction(User.Identity.Name, QuestId, " deleted connection Id <b>" + Id + "</b>.");
 
             return RedirectToAction("ShowAllQuestStates", "QuestWriter", new { Id = -1 });
         }
@@ -217,6 +230,8 @@ namespace tfgame.Controllers
 
             int savedId = QuestWriterProcedures.SaveQuestConnectionRequirement(input.QuestConnectionRequirement, connection);
 
+            QuestWriterProcedures.LogQuestWriterAction(User.Identity.Name, connection.QuestId, " saved connection requirement Id <b>" + savedId + "</b>.");
+
             return RedirectToAction("QuestConnectionRequirement", "QuestWriter", new { Id = savedId, QuestId = input.QuestConnectionRequirement.QuestId, QuestConnectionId = connection.Id });
         }
 
@@ -228,6 +243,8 @@ namespace tfgame.Controllers
             QuestConnectionRequirement questConnectionRequirement = repo.QuestConnectionRequirements.FirstOrDefault(q => q.Id == Id);
             QuestConnection connection = repo.QuestConnections.FirstOrDefault(q => q.Id == questConnectionRequirement.QuestConnectionId.Id);
             QuestWriterProcedures.DeleteQuestConnectionRequirement(Id);
+
+            QuestWriterProcedures.LogQuestWriterAction(User.Identity.Name, connection.QuestId, " deleted connection requirement Id <b>" + Id + "</b>.");
 
             return RedirectToAction("QuestConnection", "QuestWriter", new { Id = connection.Id, QuestId = connection.QuestId, FromQuestId = connection.QuestStateFromId, ToQuestId = connection.QuestStateToId });
         }
@@ -269,6 +286,8 @@ namespace tfgame.Controllers
 
             int savedId = QuestWriterProcedures.SaveQuestStatePreaction(input.QuestStatePreaction, state);
 
+            QuestWriterProcedures.LogQuestWriterAction(User.Identity.Name, state.QuestId, " saved quest state preaction Id <b>" + savedId + "</b>.");
+
             return RedirectToAction("QuestStatePreaction", "QuestWriter", new { Id = savedId, QuestStateId = state.Id, QuestId = input.QuestStatePreaction.QuestId });
         }
 
@@ -281,6 +300,8 @@ namespace tfgame.Controllers
             QuestState state = repo.QuestStates.FirstOrDefault(q => q.Id == questStatePreaction.QuestStateId.Id);
 
             QuestWriterProcedures.DeleteQuestStatePreaction(Id);
+
+            QuestWriterProcedures.LogQuestWriterAction(User.Identity.Name, state.QuestId, " deleted quest state preaction Id <b>" + Id + "</b>.");
 
             return RedirectToAction("QuestState", "QuestWriter", new { Id = questStatePreaction.QuestStateId.Id, QuestId = questStatePreaction.QuestId, ParentStateId = -1 });
         }
@@ -323,6 +344,8 @@ namespace tfgame.Controllers
 
             int savedId = QuestWriterProcedures.SaveQuestEnd(input.QuestEnd, state);
 
+            QuestWriterProcedures.LogQuestWriterAction(User.Identity.Name, state.QuestId, " saved quest end Id <b>" + savedId + "</b>.");
+
             return RedirectToAction("QuestEnd", "QuestWriter", new { Id = savedId, QuestStateId = state.Id, QuestId = input.QuestEnd.QuestId });
         }
 
@@ -332,6 +355,8 @@ namespace tfgame.Controllers
 
             QuestEnd questEnd = repo.QuestEnds.FirstOrDefault(q => q.Id == Id);
             QuestState state = repo.QuestStates.FirstOrDefault(s => s.Id == questEnd.QuestStateId.Id);
+
+            QuestWriterProcedures.LogQuestWriterAction(User.Identity.Name, state.QuestId, " deleted quest state preaction Id <b>" + Id + "</b>.");
 
             QuestWriterProcedures.DeleteQuestEnd(Id);
 
@@ -421,7 +446,6 @@ namespace tfgame.Controllers
             return PartialView(output);
         }
 
-
         public ActionResult ShowAllQuestConnections(int Id)
         {
             IEnumerable<QuestConnection> output = QuestWriterProcedures.GetAllQuestsConnectionsInQuest(Id);
@@ -451,6 +475,12 @@ namespace tfgame.Controllers
                          };
 
             return Json(output, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult ShowQuestWriterLogs(int Id)
+        {
+            IEnumerable<QuestWriterLog> output = QuestWriterProcedures.GetAllQuestWriterLogs(Id);
+            return PartialView(output);
         }
 
     }

@@ -258,6 +258,12 @@ namespace tfgame.Procedures
             repo.DeleteQuestConnectionRequirement(id);
         }
 
+        public static void DeleteQuestConnection(int id)
+        {
+            IQuestRepository repo = new EFQuestRepository();
+            repo.DeleteQuestConnection(id);
+        }
+
         public static void AddQuestWriterLog(string writer, string message)
         {
             IQuestRepository repo = new EFQuestRepository();
@@ -289,6 +295,31 @@ namespace tfgame.Procedures
         {
             IQuestRepository repo = new EFQuestRepository();
             return repo.QuestConnections.Where(q => q.QuestId == questId);
+        }
+
+        /// <summary>
+        /// Saves a little bit of information about people who have saved / deleted anything to do with quests
+        /// </summary>
+        /// <param name="username">Account username who performed this action</param>
+        /// <param name="questId">Quest Id the change was made in</param>
+        /// <param name="logText">Log text to save</param>
+        public static void LogQuestWriterAction(string username, int questId, string logText)
+        {
+            IQuestRepository repo = new EFQuestRepository();
+            QuestWriterLog log = new QuestWriterLog
+            {
+                User = username,
+                Text = logText,
+                Timestamp = DateTime.UtcNow,
+                QuestId = questId
+            };
+            repo.SaveQuestWriterLog(log);
+        }
+
+        public static IEnumerable<QuestWriterLog> GetAllQuestWriterLogs(int questId)
+        {
+            IQuestRepository repo = new EFQuestRepository();
+            return repo.QuestWriterLogs.Where(q => q.QuestId == questId);
         }
     }
 }

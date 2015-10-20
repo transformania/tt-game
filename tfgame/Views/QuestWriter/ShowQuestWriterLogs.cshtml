@@ -1,0 +1,11 @@
+﻿@model IEnumerable<tfgame.dbModels.Models.QuestWriterLog>
+    @using tfgame.dbModels.Models
+
+<h1>Quest Writer Logs for </h1>
+
+@{ 
+    foreach (QuestWriterLog l in Model)
+    {
+        <p><b>@l.User</b> at <b>@l.Timestamp</b>:  @Html.Raw(l.Text)</p>
+    }
+}

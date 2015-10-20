@@ -2504,6 +2504,7 @@
     <Content Include="Views\QuestWriter\QuestConnection.cshtml" />
     <Content Include="Views\QuestWriter\ShowAllQuestConnections.cshtml" />
     <Content Include="Views\QuestWriter\Diagram.cshtml" />
+    <Content Include="Views\QuestWriter\ShowQuestWriterLogs.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

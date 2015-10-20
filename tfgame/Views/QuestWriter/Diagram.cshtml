@@ -16,6 +16,10 @@
 <p>@Ajax.ActionLink("View Diagram", "Diagram", "QuestWriter", new { Id = ViewBag.QuestId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
 <h1>Diagram</h1>
 
+<p>This page can be used to help visualize the quest states and connections in a quest.</p><p id="loadingMsg" class="bad">Loading...</p>
+<p><input id="springChange" type="text" value="300">Spring size</p>
+<p>Animate<input id="animate" type="checkbox" checked></p>
+
 <div id="mynetwork"></div>
 
 
@@ -23,7 +27,29 @@
 <script>
     var questId = @ViewBag.QuestId;
 
+    // configuration options for the diagram
+    var options = {
+        autoResize: true,
+        height: '100%',
+        width: '100%',
+        locale: 'en',
+        layout:{
+            hierarchical: false
+        },
+        edges:{
+            arrows: 'to',
+        },
+        physics: {
+            enabled: true,
+            barnesHut: {
+                springLength: 400,
+                "avoidOverlap": .04,
+            },
+            minVelocity: 0.75
+        }
+    };
 
+    var network = "";
     var states = [];
     var connections = [];
 
@@ -56,7 +82,8 @@
     loadConnections();
 
     function renderDiagram() {
-       // console.log(states);
+       
+        $("#loadingMsg").hide();
        
         var nodesRaw = [];
         for (var i = 0; i < states.length; i++) {
@@ -64,7 +91,30 @@
             var node = {
                 id: state.Id,
                 label: state.StateName,
+
             }
+
+            // assign color based on end state or not
+            if (state.EndCount > 0) {
+                node.color = {
+                    background: 'pink',
+                    border: 'darkred'
+                };
+            } else {
+                node.color = {
+                    background: 'lightblue',
+                    border: 'darkblue'
+                };
+            }
+
+            // assign color based on whether this is start state
+            if (state.IsStart==true) {
+                node.color = {
+                    background: 'yellow',
+                    border: 'darkviolet'
+                };
+            }
+
             nodesRaw.push(node);
         }
 
@@ -77,7 +127,13 @@
                 from: connection.From,
                 to: connection.To,
                 label: connection.Name,
+                font: {align: 'middle'}
             }
+
+            if (connection.Reqs > 0) {
+                edge.label += " [" + connection.Reqs + " reqs]";
+            }
+
             edgesRaw.push(edge);
         }
 
@@ -92,27 +148,18 @@
             edges: edges
         };
 
-        var options = {
-            autoResize: true,
-            height: '100%',
-            width: '100%',
-            locale: 'en',
-            layout:{
-                hierarchical: false
-            },
-            edges:{
-                arrows: 'to',
-            }
-
-
-        };
-
-        // initialize your network!
-        var network = new vis.Network(container, data, options);
-
+        network = new vis.Network(container, data, options);
 
     }
 
+    $("#springChange").change(function() {
+        options.physics.barnesHut.springLength = parseInt($("#springChange").val());
+        network.setOptions(options);
+    });
 
+    $("#animate").change(function() {
+        options.physics.enabled = !options.physics.enabled;
+        network.setOptions(options);
+    });
 
 </script>

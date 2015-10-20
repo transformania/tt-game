@@ -354,14 +354,27 @@ namespace tfgame.Controllers
         public JsonResult DiagramStatesJSON(int Id)
         {
             IQuestRepository repo = new EFQuestRepository();
+            QuestStart start = repo.QuestStarts.FirstOrDefault(q => q.Id == Id);
 
+            //  IEnumerable<PopulationTurnTuple> output = from q in repo.ServerLogs select new PopulationTurnTuple { Turn = q.TurnNumber, Population = q.Population };
 
-            var output = from s in repo.QuestStates.Where(q => q.QuestId == Id)
-                         select new
+            IEnumerable<QuestStateJSONObject> output = from s in repo.QuestStates.Where(q => q.QuestId == Id)
+                         select new QuestStateJSONObject
                          {
                              Id = s.Id,
-                             StateName = s.QuestStateName
+                             StateName = s.QuestStateName,
+                             EndCount = s.QuestEnds.Count(),
                          };
+
+            output = output.ToList();
+
+            foreach (QuestStateJSONObject q in output)
+            {
+                if (q.Id == start.StartState)
+                {
+                    q.IsStart = true;
+                }
+            }
 
             return Json(output, JsonRequestBehavior.AllowGet);
         }
@@ -375,7 +388,8 @@ namespace tfgame.Controllers
                                   Id = c.Id,
                                   Name = c.ConnectionName,
                                   From = c.QuestStateFromId,
-                                  To = c.QuestStateToId
+                                  To = c.QuestStateToId,
+                                  Reqs = c.QuestConnectionRequirements.Count()
                               };
 
 

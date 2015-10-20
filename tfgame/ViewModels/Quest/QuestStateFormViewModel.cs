@@ -38,4 +38,12 @@ namespace tfgame.ViewModels.Quest
         public QuestEnd QuestEnd { get; set; }
         public QuestState ParentQuestState { get; set; }
     }
+
+    public class QuestStateJSONObject
+    {
+        public int Id { get; set; }
+        public string StateName { get; set; }
+        public int EndCount { get; set; }
+        public bool IsStart { get; set; }
+    }
 }

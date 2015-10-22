@@ -43,6 +43,7 @@ namespace tfgame.Procedures
                     Population = PlayerProcedures.GetWorldPlayerStats().CurrentOnlinePlayers,
             };
                 log.AddLog("Started new log for turn " + turnNo + ".");
+                serverLogRepo.SaveServerLog(log);
                 Stopwatch updateTimer = new Stopwatch();
                 updateTimer.Start();
 
@@ -119,6 +120,7 @@ namespace tfgame.Procedures
                     }
                 }
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished updating effects");
+                serverLogRepo.SaveServerLog(log);
 
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started deleting expired effects");
                 foreach (Effect e in effectsToDelete)
@@ -126,6 +128,7 @@ namespace tfgame.Procedures
                     effectRepo.DeleteEffect(e.Id);
                 }
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished deleting expired effects");
+                serverLogRepo.SaveServerLog(log);
 
                 #region playerExtra / protection cooldown loop
                 IPlayerExtraRepository playerExtraRepo = new EFPlayerExtraRepository();
@@ -165,7 +168,6 @@ namespace tfgame.Procedures
 
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished updating protection change cooldown.");
 
-                //log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started updating animate players (" + players_Animate.Count + ")");
 
                 #region main player loop
 
@@ -189,10 +191,12 @@ namespace tfgame.Procedures
                         }
 
                         log.AddLog(updateTimer.ElapsedMilliseconds + ":  ANIMATE SQL UPDATE SUCCEEDED!");
+                        serverLogRepo.SaveServerLog(log);
                     }
                     catch (Exception e)
                     {
                         log.AddLog(updateTimer.ElapsedMilliseconds + "ANIMATE SQL UPDATE FAILED.  Reason:  " + e.ToString());
+                        serverLogRepo.SaveServerLog(log);
                     }
                 }
 
@@ -213,7 +217,6 @@ namespace tfgame.Procedures
                     }
 
                     BuffBox buffs = ItemProcedures.GetPlayerBuffsSQL(player);
-                    //BuffBox buffs = ItemProcedures.GetPlayerBuffsRAM(player);
                     player.Health += buffs.HealthRecoveryPerUpdate();
                     player.Mana += buffs.ManaRecoveryPerUpdate();
 
@@ -269,9 +272,6 @@ namespace tfgame.Procedures
 
                     }
 
-                    // give the player some extra AP reserve if they are 
-
-
                     if (player.MaxHealth < 1)
                     {
                         player.MaxHealth = 1;
@@ -281,7 +281,6 @@ namespace tfgame.Procedures
                     {
                         player.MaxMana = 1;
                     }
-
 
                     if (player.Health > player.MaxHealth)
                     {
@@ -302,33 +301,15 @@ namespace tfgame.Procedures
 
                     playerRepo.SavePlayer(player);
 
-                    // for inbetween round testing
-                    //if (PvPStatics.ChaosMode == true)
-                    //{
-                    //    player.Mana = player.MaxMana;
-                    //    player.ActionPoints = 120;
-                    //    player.TimesAttackingThisUpdate = -999;
-                    //    player.ActionPoints_Refill = 360;
-                    //}
-
-                    // players_Animate_to_Save.Add(player);
-
                 }
 
-                //foreach (Player player in players_Animate_to_Save)
-                //{
-                //    playerRepo.SavePlayer(player);
-                //}
-
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished updating animate players (" + playerIdsToSave.Count + ")");
+                serverLogRepo.SaveServerLog(log);
 
                 #endregion main player loop
 
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started updating inanimate/animal players");
 
-                // List<Player> players_Inanimate_Animal = playerRepo.Players.Where(p => (p.Mobility == "inanimate" || p.Mobility == "animal") && p.MembershipId > 0).ToList();
-
-                //////////////////////////
 
                 using (var context = new StatsContext())
                 {
@@ -342,6 +323,8 @@ namespace tfgame.Procedures
                         log.AddLog(updateTimer.ElapsedMilliseconds + "ERROR UPDATING INANIMATE/ANIMAL PLAYERS:  " + e.ToString());
                     }
                 }
+
+                serverLogRepo.SaveServerLog(log);
 
                 #region decrement mind control timers
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started mind control cooldown.");
@@ -363,6 +346,8 @@ namespace tfgame.Procedures
                 }
                 #endregion
 
+                serverLogRepo.SaveServerLog(log);
+
                 PvPStatics.AnimateUpdateInProgress = false;
 
                 // bump down the timer on all items that are reuseable consumables
@@ -380,6 +365,7 @@ namespace tfgame.Procedures
                     itemsRepo.SaveItem(item);
                 }
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished updating items on cooldown");
+                serverLogRepo.SaveServerLog(log);
 
                 // we need to find the merchant to get her ID
 
@@ -417,6 +403,8 @@ namespace tfgame.Procedures
                 List<Item> possibleToDelete = itemsRepo.Items.Where(i => (i.dbLocationName != "" && i.OwnerId == -1) || (i.OwnerId == merchantId) && i.dbName != PvPStatics.ItemType_DungeonArtifact).ToList();
                 List<Item> deleteItems = new List<Item>();
 
+                serverLogRepo.SaveServerLog(log);
+
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started deleting expired consumables");
                 foreach (Item item in possibleToDelete)
                 {
@@ -442,6 +430,7 @@ namespace tfgame.Procedures
                     itemsRepo.DeleteItem(item.Id);
                 }
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished deleting expired consumables");
+                serverLogRepo.SaveServerLog(log);
 
                 // allow all items that have been recently equipped to be taken back off
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started resetting items that have been recently equipped");
@@ -478,6 +467,8 @@ namespace tfgame.Procedures
 
                 }
                 #endregion
+
+                serverLogRepo.SaveServerLog(log);
 
                 #region drop dungeon artifacts and spawn demons if needed
 
@@ -711,11 +702,13 @@ namespace tfgame.Procedures
                         BossProcedures_Donna.RunDonnaActions();
                         log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == turnNo);
                         log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished Donna actions");
+                        serverLogRepo.SaveServerLog(log);
                     }
                 }
                 catch (Exception e)
                 {
                     log.AddLog(updateTimer.ElapsedMilliseconds + ":  DONNA ERROR:  " + e.InnerException.ToString());
+                    serverLogRepo.SaveServerLog(log);
                 }
 
 

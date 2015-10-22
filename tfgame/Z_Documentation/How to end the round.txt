@@ -20,4 +20,6 @@ c) XP leaderboard, http://transformaniatime.com/PvP/Leaderboard .  The files for
 
 5.  Everything should be saved now.  If you have access to the FTP live server, drop this files in the appropriate locations and check that everything is saved correctly.
 
-6.  Time for chaos!  Go to this link:  http://transformaniatime.com/PvPAdmin/ChangeWorldStats and check Chaos Mode.  Roll back the turn number back to 0.  The server should instantly register this change and begin chaos mode.
+6.  Write in game news that the round has ended and that the game is entering chaos mode.  Congratulate the winner of the era.
+
+7.  Time for chaos!  Go to this link:  http://transformaniatime.com/PvPAdmin/ChangeWorldStats and check Chaos Mode.  Roll back the turn number back to 0.  The server should instantly register this change and begin chaos mode.

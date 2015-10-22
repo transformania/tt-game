@@ -2505,6 +2505,7 @@
     <Content Include="Views\QuestWriter\ShowAllQuestConnections.cshtml" />
     <Content Include="Views\QuestWriter\Diagram.cshtml" />
     <Content Include="Views\QuestWriter\ShowQuestWriterLogs.cshtml" />
+    <Content Include="Views\PvPAdmin\ChangeWorldStats.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

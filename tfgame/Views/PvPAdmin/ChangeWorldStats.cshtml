@@ -1,0 +1,38 @@
+﻿@model tfgame.dbModels.Models.PvPWorldStat
+
+
+<h1>Admin</h1>
+
+
+<p>This is important information.  Do not meddle with this data lightly.</p>
+
+@using (Html.BeginForm("ChangeWorldStatsSend", "PvPAdmin", FormMethod.Post))
+{
+    @Html.HiddenFor(m => m.Id);
+
+
+
+    <label>Test server?</label>
+        @Html.CheckBoxFor(m => m.TestServer)
+
+        <br /><br />
+
+        <label>Turn Number</label>
+        @Html.TextBoxFor(m => m.TurnNumber)
+
+        <br /><br />
+
+        <label>Round turn duration</label>
+        @Html.TextBoxFor(m => m.RoundDuration)
+
+        <br /><br />
+
+        <label>Chaos Mode?</label>
+        @Html.CheckBoxFor(m => m.ChaosMode)
+
+        <br /><br />
+
+
+        <input type="submit" value="Save" />
+
+}

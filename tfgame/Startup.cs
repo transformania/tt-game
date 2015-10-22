@@ -7,6 +7,11 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using tfgame.Models;
 using tfgame.Procedures;
+using tfgame.dbModels.Abstract;
+using tfgame.dbModels.Concrete;
+using tfgame.dbModels.Models;
+using tfgame.Statics;
+using System.Linq;
 
 [assembly: OwinStartup(typeof(tfgame.Startup))]
 
@@ -40,6 +45,11 @@ namespace tfgame
             app.MapSignalR();
 
             AttackProcedures.LoadCovenantOwnersIntoRAM();
+
+            // set chaos mode 
+            IPvPWorldStatRepository repo = new EFPvPWorldStatRepository();
+            PvPWorldStat data = repo.PvPWorldStats.First();
+            PvPStatics.ChaosMode = data.ChaosMode;
 
         }
     }

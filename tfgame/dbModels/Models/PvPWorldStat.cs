@@ -21,6 +21,8 @@ namespace tfgame.dbModels.Models
         public string Boss_Sisters { get; set; }
         public string GameNewsDate { get; set; }
         public bool TestServer { get; set; }
+        public bool ChaosMode { get; set; }
+        public int RoundDuration { get; set; }
         public bool InbetweenRoundsNonChaos { get; set; }
 
         public bool IsDonnaAvailable()

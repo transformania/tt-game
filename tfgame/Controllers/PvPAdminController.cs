@@ -183,6 +183,48 @@ namespace tfgame.Controllers
             return View();
         }
 
+        public ActionResult ChangeWorldStats()
+        {
+            // assert only admins can view this
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            {
+                return View("Play", "PvP");
+            }
+
+            IPvPWorldStatRepository repo = new EFPvPWorldStatRepository();
+
+            PvPWorldStat output = repo.PvPWorldStats.First();
+
+            return View(output);
+
+        }
+
+        public ActionResult ChangeWorldStatsSend(PvPWorldStat input)
+        {
+            // assert only admins can view this
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            {
+                return View("Play", "PvP");
+            }
+
+            IPvPWorldStatRepository repo = new EFPvPWorldStatRepository();
+
+            PvPWorldStat data = repo.PvPWorldStats.FirstOrDefault(i => i.Id == input.Id);
+
+            data.TurnNumber = input.TurnNumber;
+            data.RoundDuration = input.RoundDuration;
+            data.ChaosMode = input.ChaosMode;
+
+            repo.SavePvPWorldStat(data);
+
+            PvPStatics.ChaosMode = data.ChaosMode;
+
+
+            TempData["Result"] = "World Data Saved!";
+            return RedirectToAction("Play", "PvP");
+
+        }
+
         public ActionResult SpawnAI(int number, int offset)
         {
             AIProcedures.SpawnAIPsychopaths(number, offset);

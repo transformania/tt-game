@@ -1826,6 +1826,7 @@
     </Content>
     <Content Include="XMLs\LocationDescriptions\tavern_private_room.xml" />
     <Content Include="XMLs\SkillBooks\donna1_Lexam.txt" />
+    <Content Include="XMLs\SkillBooks\founding_recovery.txt" />
     <Content Include="XMLs\SkillBooks\seekshadows_Judoo.txt" />
     <Content Include="XMLs\SkillBooks\founding.txt" />
     <Content Include="XMLs\SkillBooks\founding_tree.txt" />
@@ -2509,6 +2510,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Z_Documentation\" />
     <Folder Include="Z_SelfHelp\" />
   </ItemGroup>
   <ItemGroup>

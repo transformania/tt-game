@@ -4,6 +4,21 @@
 
 <h1>Updated Oct 5, 2015</h1>
 
+<div id="toggles">
+    @*<input type="checkbox" id="nonstandard" value="nonstandard"> Nonstandard 	&nbsp;*@
+    <input type="checkbox" id="accessory" value="accessory" checked> Accessory 	&nbsp;
+    <input type="checkbox" id="consumable" value="consumable" checked> Consumable 	&nbsp;
+    <input type="checkbox" id="consumable_reuseable" value="consumable_reuseable" checked> Reusable Consumable 	&nbsp;
+    <input type="checkbox" id="hat" value="hat" checked> Hat 	&nbsp;
+    <input type="checkbox" id="pants" value="pants" checked> Pants 	&nbsp;
+    <input type="checkbox" id="pet" value="pet" checked> Pet 	&nbsp;
+    <input type="checkbox" id="shirt" value="shirt" checked> Shirt 	&nbsp;
+    <input type="checkbox" id="shoes" value="shoes" checked> Shoes 	&nbsp;
+    <input type="checkbox" id="underpants" value="underpants" checked> Underpants 	&nbsp;
+    <input type="checkbox" id="undershirt" value="undershirt" checked> Undershirt 	&nbsp;
+</div>
+<input type="checkbox" id="deselectAll" value="deselectAll"> [Unselect All] 	&nbsp;
+
 
 <div style="overflow-x: scroll;">
     <table id="itemTable">
@@ -25,7 +40,7 @@
                 <th>Luck</th>
             </tr>
         </thead>
-        <tbody></tbody>
+        <tbody id="tbody"></tbody>
 
 
 
@@ -35,33 +50,47 @@
 
 <script>
 
-    var items = "";
+    var itemsUnfiltered = [];
+    var items = [];
+    var datatableObj = "";
 
     // populate the the jump to dropdown with all states found for the current quest
     function loadJson() {
-
         $.getJSON("/Content/JSON/items.json", function (data) {
-            items = data;
+            itemsUnfiltered = data;
         }).then(function () {
-            renderTable();
+            filterData();
+            
         }).fail(function () {
             alert("Failed to load json");
         });
     }
 
-    //public float Discipline { get; set; }
-    //public float Perception { get; set; }
-    //public float Charisma { get; set; }
-    //public float Fortitude { get; set; }
-    //public float Agility { get; set; }
-    //public float Allure { get; set; } -- Restoration
-    //public float Magicka { get; set; }
-    //public float Succour { get; set; } -- Regeneration
-    //public float Luck { get; set; }
+    function filterData() {
+
+        items = [];
+
+        for (var i = 0; i < itemsUnfiltered.length; i++) {
+
+            var item = itemsUnfiltered[i];
+
+            var id = "#" + item.ItemType;
+            var isSelected = $(id).is(':checked');
+
+            if (isSelected == true) {
+                items.push(item);
+            }
+
+        }
+
+        renderTable();
+
+    }
 
     function renderTable() {
 
         var table = $('#itemTable');
+        $("#tbody").empty();
 
         for (var i = 0; i < items.length; i++) {
 
@@ -101,8 +130,9 @@
                 '</tr>');
         }
 
-        $('#itemTable').dataTable({
-            "lengthMenu": [[10, 25, 50, 100, 200, -1], [10, 25, 50, 100, 200, "All"]]
+        datatableObj = $('#itemTable').dataTable({
+            "lengthMenu": [[10, 25, 50, 100, 200, -1], [10, 25, 50, 100, 200, "All"]],
+            "bDestroy": true,
         });
 
     }
@@ -126,6 +156,28 @@
             return "<img src='/Images/PvP/itemsPortraits/Thumbnails/100/" + dat.PortraitUrl + "' width=50; height=50;>";
         }
     }
+
+    function refreshTable() {
+        $('#itemTable').DataTable().destroy();
+        filterData();
+    }
+
+    $("#toggles :input").each(function () {
+
+        $(this).click(function () {
+            refreshTable();
+        });
+
+    });
+
+    $("#deselectAll").click(function () {
+        $("#toggles :input").each(function () {
+            $(this).attr('checked', false);
+        });
+        $(this).attr('checked', false);
+        refreshTable();
+
+    });
 
     loadJson();
 

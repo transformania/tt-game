@@ -13,7 +13,7 @@ namespace tfgame.Statics
     public static class PvPStatics
     {
 
-        public const int RoundDuration = 4000;
+        public static int RoundDuration = 4000;
 
         public const int TurnSecondLength = 300;
         public const int StartTurnNoAttackSeconds = 30;

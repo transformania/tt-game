@@ -14,7 +14,7 @@ namespace tfgame.Procedures.BossProcedures
         public const string NerdBossFirstName = "Headmistress Adrianna";
         public const string NerdBossForm = "form_Headmistress_of_SCCC_Elyn_and_Judoo";
 
-        public const string BimboBossFirstName = "Beautrician Candice";
+        public const string BimboBossFirstName = "Beautician Candice";
         public const string BimboBossForm = "form_Head_Beautician_of_Blazes_and_Glamour_Judoo_and_Elyn";
         
         public const string BossesLastName = "Brisby";

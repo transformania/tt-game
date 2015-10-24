@@ -218,6 +218,7 @@ namespace tfgame.Controllers
             repo.SavePvPWorldStat(data);
 
             PvPStatics.ChaosMode = data.ChaosMode;
+            PvPStatics.RoundDuration = data.RoundDuration;
 
 
             TempData["Result"] = "World Data Saved!";

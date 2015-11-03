@@ -272,6 +272,13 @@ namespace tfgame.Procedures
                 PlayerProcedures.GiveXP(player.Id, xpGain);
             }
 
+            // delete all of the player's quest variables
+            List<QuestPlayerVariable> vars = QuestProcedures.GetAllQuestPlayerVariablesFromQuest(player.InQuest, player.Id).ToList();
+            foreach (QuestPlayerVariable v in vars)
+            {
+                questRepo.DeleteQuestPlayerVariable(v.Id);
+            }
+
             return message;
 
         }
@@ -641,6 +648,14 @@ namespace tfgame.Procedures
             return repo.QuestPlayerVariablees.FirstOrDefault(v => v.PlayerId == playerId && v.QuestId == questId && v.VariableName == variableName);
         }
 
+        /// <summary>
+        /// 
+        /// Returns all of the player quest variables for a given player and quest
+        /// 
+        /// </summary>
+        /// <param name="questId">Id of the quest whose variables should be deleted</param>
+        /// <param name="playerId">Id of the player who owns the variables that should be deleted</param>
+        /// <returns></returns>
         public static IEnumerable<QuestPlayerVariable> GetAllQuestPlayerVariablesFromQuest(int questId, int playerId)
         {
             IQuestRepository repo = new EFQuestRepository();

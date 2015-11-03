@@ -181,8 +181,17 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
-            // success; remove the curse
-            EffectProcedures.SetPerkDurationToZero(curseToRemove.dbName, me);
+            // back on your feet curse/buff -- just delete outright
+            if (curseToRemove.dbName == EffectProcedures.BackOnYourFeetEffect)
+            {
+                EffectProcedures.RemovePerkFromPlayer(curseToRemove.dbName, me);
+            }
+
+            // regular curse; set duration to 0 but keep cooldown
+            else
+            {
+                EffectProcedures.SetPerkDurationToZero(curseToRemove.dbName, me);
+            }
 
             // if the item is a consumable type, delete it.  Otherwise reset its cooldown
             if (itemToUse.Item.ItemType == "consumable")

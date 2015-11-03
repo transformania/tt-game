@@ -13,6 +13,8 @@ namespace tfgame.Procedures
     public static class EffectProcedures
     {
 
+        public const string BackOnYourFeetEffect = "help_animate_recovery";
+
         public static IEnumerable<EffectViewModel2> GetPlayerEffects2(int playerId)
         {
 

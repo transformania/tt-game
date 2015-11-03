@@ -190,7 +190,7 @@ namespace tfgame.Controllers
             QuestWriterProcedures.DeleteQuestConnection(Id);
             QuestWriterProcedures.LogQuestWriterAction(User.Identity.Name, QuestId, " deleted connection Id <b>" + Id + "</b>.");
 
-            return RedirectToAction("ShowAllQuestStates", "QuestWriter", new { Id = -1 });
+            return RedirectToAction("ShowAllQuestConnections", "QuestWriter", new { Id = QuestId });
         }
 
         public ActionResult QuestConnectionRequirement(int Id, int QuestId, int QuestConnectionId)

@@ -50,7 +50,7 @@
                 </td>
 
                 <td>
-                    @Ajax.ActionLink("[DELETE]", "QuestConnectionDelete", "QuestWriter", new { Id = q.Id }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting", Confirm = "Are you sure you want to delete this quest connection?" }, new { @class = "deleteButton" })
+                    @Ajax.ActionLink("[DELETE]", "DeleteQuestConnection", "QuestWriter", new { Id = q.Id, QuestId = q.QuestId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting", Confirm = "Are you sure you want to delete this quest connection?" }, new { @class = "deleteButton" })
                 </td>
 
             </tr>

@@ -261,6 +261,14 @@ namespace tfgame.Procedures
         public static void DeleteQuestConnection(int id)
         {
             IQuestRepository repo = new EFQuestRepository();
+
+            List<QuestConnectionRequirement> reqs = repo.QuestConnectionRequirements.Where(q => q.QuestConnectionId.Id == id).ToList();
+
+            foreach(QuestConnectionRequirement q in reqs)
+            {
+                repo.DeleteQuestConnectionRequirement(q.Id);
+            }
+
             repo.DeleteQuestConnection(id);
         }
 

@@ -281,6 +281,11 @@ namespace tfgame.Procedures
 
             bool isAvailable = true;
 
+            if (questConnection.QuestStateFromId < 0 || questConnection.QuestStateToId < 0)
+            {
+                return false;
+            }
+
             foreach (QuestConnectionRequirement q in questConnection.QuestConnectionRequirements)
             {
                 // evaluate variable

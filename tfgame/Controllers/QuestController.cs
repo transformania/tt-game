@@ -179,6 +179,13 @@ namespace tfgame.Controllers
                 return RedirectToAction("Quest");
             }
 
+            // assert a connection does exist between current state and chosen one
+            if (desiredConnection.QuestStateFromId != me.InQuestState)
+            {
+                TempData["Error"] = "Unavailable";
+                return RedirectToAction("Quest");
+            }
+
             QuestPlayPageViewModel output = new QuestPlayPageViewModel();
             output.Player = PlayerProcedures.GetPlayerFormViewModel(me.Id);
             output.QuestStart = QuestProcedures.GetQuest(me.InQuest);

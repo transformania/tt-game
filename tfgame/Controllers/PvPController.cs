@@ -2363,28 +2363,36 @@ namespace tfgame.Controllers
             return View("Write", output);
         }
 
-         [Authorize]
-         public ActionResult SendMessage(Message input)
-         {
-             string myMembershipId = User.Identity.GetUserId();
-             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-             Player receiver = PlayerProcedures.GetPlayer(input.ReceiverId);
+        [Authorize]
+        public ActionResult SendMessage(Message input)
+        {
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            Player receiver = PlayerProcedures.GetPlayer(input.ReceiverId);
 
-             // assert no blacklist exists
-             if (BlacklistProcedures.PlayersHaveBlacklistedEachOther(me, receiver, "message") == true)
-             {
-                 TempData["Error"] = "This player has blacklisted you or is on your own blacklist.";
-                 TempData["SubError"] = "You cannot send messages to players who have blacklisted you.  Remove them from your blacklist or ask them to remove you from theirs.";
-                 return RedirectToAction("Play");
-             }
+            // assert player is not banned from chat
+            if (me.IsBannedFromGlobalChat == true)
+            {
+                TempData["Error"] = "You have been banned and cannot send any messages.";
+                TempData["SubError"] = "If you feel this is in error or wish to make an appeal you may do so on the forums.";
+                return RedirectToAction("Play", "PvP");
+            }
 
-             if (input.MessageText == null || input.MessageText == "")
-             {
-                 ViewBag.ErrorMessage = "You need to write something to send to this person.";
-                 return View("Write", input);
+            // assert no blacklist exists
+            if (BlacklistProcedures.PlayersHaveBlacklistedEachOther(me, receiver, "message") == true)
+            {
+                TempData["Error"] = "This player has blacklisted you or is on your own blacklist.";
+                TempData["SubError"] = "You cannot send messages to players who have blacklisted you.  Remove them from your blacklist or ask them to remove you from theirs.";
+                return RedirectToAction("Play", "PvP");
+            }
 
-             }
-             if (input.MessageText.Length > 1000)
+            if (input.MessageText == null || input.MessageText == "")
+            {
+                ViewBag.ErrorMessage = "You need to write something to send to this person.";
+                return View("Write", input);
+
+            }
+            if (input.MessageText.Length > 1000)
              {
                  ViewBag.ErrorMessage = "Your message is too long.";
                  return RedirectToAction("Write", input);

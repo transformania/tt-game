@@ -3235,6 +3235,13 @@ namespace tfgame.Controllers
                  }
              }
 
+            // strip out the roman numeral at the end of the last name if there is one
+            string[] chunks = me.LastName.Split(' ');
+            if (chunks.Count() > 0)
+            {
+                me.LastName = chunks[0];
+            }
+
              IReservedNameRepository resNameRepo = new EFReservedNameRepository();
 
              ReservedName ghost = resNameRepo.ReservedNames.FirstOrDefault(rn => rn.MembershipId == me.MembershipId);

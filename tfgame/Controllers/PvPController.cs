@@ -3390,36 +3390,18 @@ namespace tfgame.Controllers
         public ActionResult FlagForSuspiciousActivity(int playerId)
         {
             // assert the person flagging has mod permissions
-            string myMembershipId = User.Identity.GetUserId();
-            if (PlayerProcedures.AccountIsTrusted(myMembershipId) == false)
+            // assert only admins can view this
+            if (User.IsInRole(PvPStatics.Permissions_Moderator) == false && User.IsInRole(PvPStatics.Permissions_Admin) == false)
             {
-                TempData["Result"] = "You don't have permissions to do that.";
-                return RedirectToAction("Play");
+                return View("Play", "PvP");
             }
 
-          
+
             TempData["Result"] = "Player suspicious lock toggled.";
             PlayerProcedures.FlagPlayerForSuspicousActivity(playerId);
 
             return RedirectToAction("Play");
 
-        }
-
-        public ActionResult ClientUpdateCheck()
-        {
-            int num = PvPWorldStatProcedures.GetWorldTurnNumber();
-            return Content(num.ToString(), "text/html");
-        }
-
-        private string GetIP()
-        {
-            string ip = Request.ServerVariables.Get("HTTP_REMOTE_USER");
-            if (ip != "")
-            {
-                ip = Request.ServerVariables.Get("REMOTE_ADDR");
-            }
-
-            return ip;
         }
 
         public ActionResult Duel()

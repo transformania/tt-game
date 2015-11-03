@@ -1788,22 +1788,6 @@ namespace tfgame.Procedures
             playerRepo.SavePlayer(player);
         }
 
-        public static bool AccountIsTrusted(string membershipId)
-        {
-            // 69 = me
-            // 224 = Lexam (REMOVED)
-            // 272 = Wrenzephyr2
-            if ((membershipId == "69") || (membershipId == "272"))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-            
-        }
-
         public static IEnumerable<Player> GetLeadingPlayers__XP(int number)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();

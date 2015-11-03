@@ -2,6 +2,14 @@
 <ArrayOfCustomFormViewModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <CustomFormViewModel>
     <MembershipId>4481</MembershipId>
+    <Form>form_Queen_of_the_Vampires_Luxianne</Form>
+  </CustomFormViewModel>
+  <CustomFormViewModel>
+    <MembershipId>4481</MembershipId>
+    <Form>form_Bewitching_Vampire_Count_Lilith</Form>
+  </CustomFormViewModel>
+  <CustomFormViewModel>
+    <MembershipId>4481</MembershipId>
     <Form>form_Mistress_of_the_Maids_Lilith</Form>
   </CustomFormViewModel>
   <CustomFormViewModel>
@@ -56,8 +64,4 @@
     <MembershipId>ab70dcb2-884e-4f45-9523-d037d6b6872b</MembershipId>
     <Form>form_One-Tailed_Nogitsune_Aurora_Ryall</Form>
   </CustomFormViewModel>
-
-  
-
-
 </ArrayOfCustomFormViewModel>

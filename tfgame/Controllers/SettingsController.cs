@@ -649,16 +649,37 @@ namespace tfgame.Controllers
             System.IO.StreamReader file = new System.IO.StreamReader(filename);
             List<CustomFormViewModel> output = (List<CustomFormViewModel>)reader.Deserialize(file);
 
-            CustomFormViewModel newForm = output.FirstOrDefault(p => p.MembershipId == myMembershipId);
+            List<CustomFormViewModel> customForms = output.Where(p => p.MembershipId == myMembershipId).ToList();
 
-            if (newForm == null)
+            if (customForms.Count() == 0)
             {
-                TempData["Error"] = "You do not have a custom base form.";
+                TempData["Error"] = "You do not have any custom base forms.";
                 TempData["SubError"] = "Read more about how to get one here:  http://luxianne.com/forum/viewtopic.php?f=9&t=400";
                 return RedirectToAction("Play", "PvP");
             }
 
-            
+            //Random rand = new Random();
+            //int roll = (int)Math.Floor(rand.NextDouble() * customForms.Count());
+
+            CustomFormViewModel newForm = customForms.First();
+
+            int index = 0;
+            foreach (CustomFormViewModel c in customForms)
+            {
+                if (me.OriginalForm == c.Form && index < customForms.Count())
+                {
+                    try
+                    {
+                        newForm = customForms.ElementAt(index + 1);
+                    } catch (Exception e)
+                    {
+                        newForm = customForms.ElementAt(0);
+                    }
+                    
+                    break;
+                }
+                index++;
+            }
 
             // player is already in their original form so change them instantly.  Otherwise they'll have to find a way to be restored themselves
             if (me.Form == me.OriginalForm)

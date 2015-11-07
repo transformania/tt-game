@@ -457,7 +457,7 @@ namespace tfgame.Procedures
 
             foreach (Achievement t in types)
             {
-                Achievement a = repo.Achievements.Where(b => b.AchievementType == t.AchievementType).OrderByDescending(b => b.Amount).FirstOrDefault();
+                Achievement a = repo.Achievements.Where(b => b.AchievementType == t.AchievementType).OrderByDescending(b => b.Amount).ThenBy(b => b.Timestamp).FirstOrDefault();
 
                 if (a != null)
                 {

@@ -208,6 +208,7 @@ namespace tfgame.Procedures
                     }
                     catch (Exception e)
                     {
+                        log.Errors++;
                         log.AddLog(updateTimer.ElapsedMilliseconds + "ANIMATE SQL UPDATE FAILED.  Reason:  " + e.ToString());
                         serverLogRepo.SaveServerLog(log);
                     }
@@ -333,6 +334,7 @@ namespace tfgame.Procedures
                     }
                     catch (Exception e)
                     {
+                        log.Errors++;
                         log.AddLog(updateTimer.ElapsedMilliseconds + "ERROR UPDATING INANIMATE/ANIMAL PLAYERS:  " + e.ToString());
                     }
                 }
@@ -354,6 +356,7 @@ namespace tfgame.Procedures
                     }
                     catch (Exception e)
                     {
+                        log.Errors++;
                         log.AddLog(updateTimer.ElapsedMilliseconds + "MIND CONTROLL COOLDOWN UPDATE FAILED.  Reason:  " + e.ToString());
                     }
                 }
@@ -404,6 +407,7 @@ namespace tfgame.Procedures
                         }
                         catch (Exception e)
                         {
+                            log.Errors++;
                             log.AddLog(updateTimer.ElapsedMilliseconds + ":  ERROR collecting all abandoned items for Lindella:  " + e.ToString());
                         }
                     }
@@ -603,6 +607,7 @@ namespace tfgame.Procedures
                 }
                 catch (Exception e)
                 {
+                    log.Errors++;
                     log.AddLog(updateTimer.ElapsedMilliseconds + ":  ERROR running dungeon actions:  " + e.ToString());
                 }
 
@@ -632,6 +637,7 @@ namespace tfgame.Procedures
                 }
                 catch (Exception e)
                 {
+                    log.Errors++;
                     log.AddLog(updateTimer.ElapsedMilliseconds + ":  Failed to complete duel updates.  Reason:  " + e.ToString());
                 }
                 #endregion duel updates
@@ -648,6 +654,7 @@ namespace tfgame.Procedures
                 }
                 catch (Exception e)
                 {
+                    log.Errors++;
                     log.AddLog(updateTimer.ElapsedMilliseconds + ":  FAILED Lindella actions.  Reason:  " + e.ToString());
                 }
 
@@ -659,11 +666,12 @@ namespace tfgame.Procedures
                 serverLogRepo.SaveServerLog(log);
                 try
                 {
-                    tfgame.Procedures.BossProcedures.BossProcedures_PetMerchant.RunPetMerchantActions(turnNo);
+                    BossProcedures_PetMerchant.RunPetMerchantActions(turnNo);
                     log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished Wuffie actions");
                 }
                 catch (Exception e)
                 {
+                    log.Errors++;
                     log.AddLog(updateTimer.ElapsedMilliseconds + ":  ERROR running Wuffie actions:  " + e.ToString());
                 }
 
@@ -679,6 +687,7 @@ namespace tfgame.Procedures
                     }
                     catch (Exception e)
                     {
+                        log.Errors++;
                         log.AddLog(updateTimer.ElapsedMilliseconds + "ERROR MOVING FURNITURE ON MARKET:  " + e.ToString());
                     }
 
@@ -697,6 +706,7 @@ namespace tfgame.Procedures
                     }
                     catch (Exception e)
                     {
+                        log.Errors++;
                         log.AddLog(updateTimer.ElapsedMilliseconds + "ERROR TRYING TO MOVE JEWDEWFAE:  " + e.ToString());
                     }
                 }
@@ -720,6 +730,7 @@ namespace tfgame.Procedures
                 }
                 catch (Exception e)
                 {
+                    log.Errors++;
                     log.AddLog(updateTimer.ElapsedMilliseconds + ":  DONNA ERROR:  " + e.InnerException.ToString());
                     serverLogRepo.SaveServerLog(log);
                 }
@@ -740,6 +751,7 @@ namespace tfgame.Procedures
                 }
                 catch (Exception e)
                 {
+                    log.Errors++;
                     log.AddLog(updateTimer.ElapsedMilliseconds + ":  Valentine ERROR:  " + e.InnerException.ToString());
                 }
 
@@ -758,6 +770,7 @@ namespace tfgame.Procedures
                 }
                 catch (Exception e)
                 {
+                    log.Errors++;
                     log.AddLog(updateTimer.ElapsedMilliseconds + ":  Bimbo ERROR:  " + e.InnerException.ToString());
                 }
 
@@ -776,6 +789,7 @@ namespace tfgame.Procedures
                 }
                 catch (Exception e)
                 {
+                    log.Errors++;
                     log.AddLog(updateTimer.ElapsedMilliseconds + ":  Bimbo ERROR:  " + e.InnerException.ToString());
                 }
 
@@ -811,6 +825,7 @@ namespace tfgame.Procedures
                 }
                 catch (Exception e)
                 {
+                    log.Errors++;
                     log.AddLog(updateTimer.ElapsedMilliseconds + ":  PSYCHOPATH RUNTIME ERROR:  " + e);
                 }
 
@@ -842,6 +857,7 @@ namespace tfgame.Procedures
                     }
                     catch (Exception e)
                     {
+                        log.Errors++;
                         log.AddLog(updateTimer.ElapsedMilliseconds + ":  Dungeon generation FAILED.  Reason:  " + e.ToString());
                     }
                 }

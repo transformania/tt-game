@@ -29,7 +29,7 @@
 </div>
 
 <div id="playerBox">
-    <h3>@Model.Player.Player.GetFullName()</h3>
+    @*<h3>@Model.Player.Player.GetFullName()</h3>
     <div class="portrait" style="background-image: url(@CharactersHere.GetImageURL(Model.Player, true));">
 
         <span class="icon icon-@Model.Player.Player.Gender" style="float:right;"></span>
@@ -38,7 +38,10 @@
 
     </div>
 
-    <div>@Model.Player.Player.Health/@Model.Player.Player.MaxHealth Willpower, @Model.Player.Player.Mana/@Model.Player.Player.MaxMana Mana, @Model.Player.Player.ActionPoints/@PvPStatics.MaximumStoreableActionPoints AP</div>
+    <div>@Model.Player.Player.Health/@Model.Player.Player.MaxHealth Willpower, @Model.Player.Player.Mana/@Model.Player.Player.MaxMana Mana, @Model.Player.Player.ActionPoints/@PvPStatics.MaximumStoreableActionPoints AP</div>*@
+
+    @Html.Partial("~/Views/PvP/partial_FrontPageAvatar.cshtml", Model.Player)
+
 </div>
 
 <hr />

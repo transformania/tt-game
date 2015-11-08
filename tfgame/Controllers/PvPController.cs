@@ -96,7 +96,7 @@ namespace tfgame.Controllers
             // if it has been long enough since last update, force an update to occur
             if (secondsSinceUpdate > PvPStatics.TurnSecondLength && WorldStat.WorldIsUpdating == false && PvPStatics.AnimateUpdateInProgress == false)
             {
-                UpdateWorld("oogabooga99");
+                UpdateWorld();
             }
 
             // turn off world update toggle if it's simply been too long
@@ -3382,23 +3382,21 @@ namespace tfgame.Controllers
             public string Desc { get; set; }
         }
 
-        public ActionResult UpdateWorld(string password)
+        public ActionResult UpdateWorld()
         {
 
             DateTime lastupdate = PvPWorldStatProcedures.GetLastWorldUpdate();
             double secondsAgo = -Math.Floor(lastupdate.Subtract(DateTime.UtcNow).TotalSeconds);
 
-          //  if (minutesAgo < 10 && User.Identity.GetUserId() != 69)
             if (secondsAgo < PvPStatics.TurnSecondLength)
             {
-                TempData["Result"] = "You can't update the world again yet--it is too soon.";
+               // TempData["Result"] = "You can't update the world again yet--it is too soon.";
                 return RedirectToAction("Play");
             }
 
             WorldUpdateProcedures.UpdateWorld();
 
             return RedirectToAction("Play");
-            // return View("UpdateWorld.cshtml","PvPAdmin", output);
 
         }
 

@@ -17,7 +17,20 @@ namespace tfgame.Procedures
 {
     public static  class WorldUpdateProcedures
     {
+        /// <summary>
+        /// Call the update world method only if enough time has elapsed, otherwise do nothing
+        /// </summary>
+        public static void UpdateWorldIfReady()
+        {
+            PvPWorldStat worldStats = PvPWorldStatProcedures.GetWorldStats();
+            double secondsSinceUpdate = Math.Abs(Math.Floor(worldStats.LastUpdateTimestamp.Subtract(DateTime.UtcNow).TotalSeconds));
 
+            // if it has been long enough since last update, force an update to occur
+            if (secondsSinceUpdate > PvPStatics.TurnSecondLength && worldStats.WorldIsUpdating == false && PvPStatics.AnimateUpdateInProgress == false)
+            {
+                WorldUpdateProcedures.UpdateWorld();
+            }
+        }
 
         public static void UpdateWorld()
         {

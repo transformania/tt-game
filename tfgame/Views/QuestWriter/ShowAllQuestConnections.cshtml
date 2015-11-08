@@ -1,7 +1,11 @@
 ﻿
 @model IEnumerable<tfgame.dbModels.Models.QuestConnection>
 
+<p>@Ajax.ActionLink("View Logs", "ShowQuestWriterLogs", "QuestWriter", new { Id = Model.First().QuestId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
 
+<p>@Ajax.ActionLink("Click to view all quest states in this quest", "ShowAllQuestStates", "QuestWriter", new { Id = Model.First().QuestId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
+
+<p>@Ajax.ActionLink("View Diagram", "Diagram", "QuestWriter", new { Id = Model.First().QuestId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
 
 <h1>Quest Connections</h1>
 

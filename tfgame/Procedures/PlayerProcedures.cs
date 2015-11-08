@@ -798,7 +798,12 @@ namespace tfgame.Procedures
             {
                 IItemRepository itemRepo = new EFItemRepository();
                 Item itemMe = itemRepo.Items.FirstOrDefault(i => i.VictimName == player.FirstName + " " + player.LastName);
-                itemRepo.DeleteItem(itemMe.Id);
+
+                if (itemMe!=null)
+                {
+                    itemRepo.DeleteItem(itemMe.Id);
+                }
+
                 dbPlayer.Mobility = PvPStatics.MobilityFull;
             }
 

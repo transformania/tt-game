@@ -1115,23 +1115,44 @@ namespace tfgame.Procedures
                 LastSouledTimestamp = DateTime.UtcNow.AddYears(-1),
             };
 
+            // no attacker, just drop at player's location and return immediately
+            if (attacker==null)
+            {
+                newItem.dbLocationName = victim.dbLocationName;
+                newItem.OwnerId = -1;
+                newItem.PvPEnabled = -1;
+                newItem.IsEquipped = false;
+                newItem.IsPermanent = false;
+                newItem.LastSouledTimestamp = DateTime.UtcNow;
+                itemRepo.SaveItem(newItem);
+
+                DropAllItems(victim);
+                
+                return output;
+            }
+
+            // all bots turn into either game mode
             if (attacker.BotId < AIStatics.ActivePlayerBotId)
             {
                 newItem.PvPEnabled = -1;
             }
+
+            // turn victim into attacker's game mode, PvP
             else if (attacker.GameMode == 2)
             {
                 newItem.PvPEnabled = 2;
             }
+
+            // turn victim into attacker's game mode, Protection
             else
             {
                 newItem.PvPEnabled = 1;
             }
 
+            // victim is a bot; make them permanent immediately
             if (victim.BotId < AIStatics.ActivePlayerBotId)
             {
                 newItem.IsPermanent = true;
-
             }
             else
             {

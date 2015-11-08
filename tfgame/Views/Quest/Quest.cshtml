@@ -75,12 +75,17 @@
     }
 
 
-
-
-
     if (Model.ShowEnd() == true)
     {
-        @Html.ActionLink("End Quest", "EndQuest", "Quest", null, new { @class = "" })
+        if (Model.Player.Player.Mobility == PvPStatics.MobilityFull)
+        {
+            <p>@Html.ActionLink("End Quest", "EndQuest", "Quest", new { restore = false }, new { @class = "" })</p>
+        }
+        else
+        {
+            <p>@Html.ActionLink("End Quest (return to animate form)", "EndQuest", "Quest", new { restore = true }, new { @class = "" })</p>
+            <p>@Html.ActionLink("End Quest (accept the changes)", "EndQuest", "Quest", new { restore = false }, new { onclick= "return confirm('Are you sure you want to accept your transformation and remain in your current inanimate or pet form?  You will lose your inventory and need to struggle back on your own.')", @class = "" })</p>
+        }
     }
 
     if ((User.IsInRole(PvPStatics.Permissions_QuestWriter) == true))

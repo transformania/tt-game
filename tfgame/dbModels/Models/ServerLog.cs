@@ -20,6 +20,26 @@ namespace tfgame.dbModels.Models
             FullLog += "<p>" + input + "</p>";
         }
 
+        public string GetErrorColor()
+        {
+            if (this.Errors == 1)
+            {
+                return "lightyellow";
+            }
+            else if (this.Errors == 2)
+            {
+                return "pink";
+            }
+            else if (this.Errors >= 3)
+            {
+                return "red";
+            }
+            else
+            {
+                return "";
+            }
+        }
+
     }
 
    

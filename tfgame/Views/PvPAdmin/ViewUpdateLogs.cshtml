@@ -3,7 +3,7 @@
 @{
     foreach (tfgame.dbModels.Models.ServerLog sl in Model)
     {
-        <div style="border: 1px solid black; padding: 2px; height: 18px; position: relative; float: left;">
+        <div style="border: 1px solid black; padding: 2px; height: 18px; position: relative; float: left; background-color:@sl.GetErrorColor()">
             @Html.ActionLink("Turn " + sl.TurnNumber, "ViewServerLog", "PvPAdmin", new { turn = sl.TurnNumber }, null)
         </div>
     }

@@ -1659,7 +1659,6 @@
     <Content Include="Images\PvP\portraits\wonder_girl_babblingfaces.png" />
     <Content Include="Images\PvP\portraits\wood_mannequin_Lux.png" />
     <Content Include="Images\PvP\portraits\zombie_aid_babblingfaces.png" />
-    <Content Include="Images\PvP\quests\birdie_luxianne.png" />
     <Content Include="Images\PvP\quests\void.jpg" />
     <Content Include="Images\PvP\Smilies\smile.png" />
     <Content Include="Schema\GetPlayerBuffs.sql" />

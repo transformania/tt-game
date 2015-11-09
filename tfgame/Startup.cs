@@ -12,7 +12,6 @@ using tfgame.dbModels.Concrete;
 using tfgame.dbModels.Models;
 using tfgame.Statics;
 using System.Linq;
-using System.Threading;
 
 [assembly: OwinStartup(typeof(tfgame.Startup))]
 
@@ -52,14 +51,6 @@ namespace tfgame
             PvPWorldStat data = repo.PvPWorldStats.First();
             PvPStatics.ChaosMode = data.ChaosMode;
 
-            Timer updateWorldRepeatingTimer = new Timer(new TimerCallback(updateWorldRepeatingTimerCallback));
-            updateWorldRepeatingTimer.Change(0, 30000);
         }
-
-        private void updateWorldRepeatingTimerCallback(object state)
-        {
-            WorldUpdateProcedures.UpdateWorldIfReady();
-        }
-
     }
 }

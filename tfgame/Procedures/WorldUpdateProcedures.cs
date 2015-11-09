@@ -23,10 +23,10 @@ namespace tfgame.Procedures
         public static void UpdateWorldIfReady()
         {
             PvPWorldStat worldStats = PvPWorldStatProcedures.GetWorldStats();
-            double millisecondsSinceUpdate = Math.Abs(Math.Floor(worldStats.LastUpdateTimestamp.Subtract(DateTime.UtcNow).TotalMilliseconds));
+            double secondsSinceUpdate = Math.Abs(Math.Floor(worldStats.LastUpdateTimestamp.Subtract(DateTime.UtcNow).TotalSeconds));
 
             // if it has been long enough since last update, force an update to occur
-            if (millisecondsSinceUpdate > (PvPStatics.TurnSecondLength*1000) && worldStats.WorldIsUpdating == false && PvPStatics.AnimateUpdateInProgress == false)
+            if (secondsSinceUpdate > PvPStatics.TurnSecondLength && worldStats.WorldIsUpdating == false && PvPStatics.AnimateUpdateInProgress == false)
             {
                 WorldUpdateProcedures.UpdateWorld();
             }

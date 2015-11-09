@@ -666,7 +666,9 @@ namespace tfgame.Procedures
             newplayer.Mobility = Statics.PvPStatics.MobilityFull;
             newplayer.BotId = AIStatics.ActivePlayerBotId;
             newplayer.ChatColor = "black";
-          
+            newplayer.InQuest = 6; // start out in Welcome to Sunnyglade quest
+            newplayer.InQuestState = 93; // first stage of Wecome to Sunnyglade
+
 
             if (oldplayer != null)
             {

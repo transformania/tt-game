@@ -18,6 +18,7 @@
                 <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
                 <li>@Ajax.ActionLink("Abandon Quest", "Abandon", "Quest", null, new AjaxOptions { UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</li>
                 <li>@Html.ActionLink("Inbox", "MyMessages", "PvP", null, new { @id = "newMessagesLink" })</li>
+                <li>@Html.ActionLink("Chat", "Index", "Chat", new { room = "global" }, new { target = "_blank" })</li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->

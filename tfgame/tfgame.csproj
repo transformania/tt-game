@@ -753,6 +753,7 @@
     <Content Include="Images\PvP\itemsPortraits\alien_screwdriver_Zeke_Manning.jpg" />
     <Content Include="Images\PvP\itemsPortraits\amathyst_tieara_jbovinne.png" />
     <Content Include="Images\PvP\itemsPortraits\artificial_plug_tail_Martiandawn.jpg" />
+    <Content Include="Images\PvP\itemsPortraits\attachable_cat_tail_Aurora_Ryall.jpg" />
     <Content Include="Images\PvP\itemsPortraits\badass_leather_braces_Martiandawn.jpg" />
     <Content Include="Images\PvP\itemsPortraits\ballgag_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\balloon_girl_babblingfaces.png" />
@@ -791,6 +792,7 @@
     <Content Include="Images\PvP\itemsPortraits\disembodied_chest_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\doggy_dick_Luxianne.png" />
     <Content Include="Images\PvP\itemsPortraits\dog_collar_Meddle.png" />
+    <Content Include="Images\PvP\itemsPortraits\double_ended_dildo_Aurora_Ryalls.jpg" />
     <Content Include="Images\PvP\itemsPortraits\dungeon_artifact_Luxianne.jpg" />
     <Content Include="Images\PvP\itemsPortraits\electronic_toy_jbovinne.png" />
     <Content Include="Images\PvP\itemsPortraits\elegant_gothic_stockings_Luxianne.jpg" />
@@ -798,6 +800,7 @@
     <Content Include="Images\PvP\itemsPortraits\eterna_condom_Aurora_Ryall.jpg" />
     <Content Include="Images\PvP\itemsPortraits\evening_gown_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\excaliber_Martiandawn.jpg" />
+    <Content Include="Images\PvP\itemsPortraits\eye_of_artemis_Martiandawn.jpg" />
     <Content Include="Images\PvP\itemsPortraits\Feather_Duster_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\fetish_staff_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\fire_fritter_Luxianne.png" />
@@ -818,6 +821,7 @@
     <Content Include="Images\PvP\itemsPortraits\hex_be_gone_Judoo.jpg" />
     <Content Include="Images\PvP\itemsPortraits\Honeypot_Luxianne.png" />
     <Content Include="Images\PvP\itemsPortraits\hot_coffee_mug_Martiandawn.png" />
+    <Content Include="Images\PvP\itemsPortraits\idly_flicking_tail_Aurora_Ryall.jpg" />
     <Content Include="Images\PvP\itemsPortraits\intimidating_leather_boots_JBovinne.png" />
     <Content Include="Images\PvP\itemsPortraits\kneehigh_socks_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\knitted_bra_Meddle.png" />
@@ -879,6 +883,7 @@
     <Content Include="Images\PvP\itemsPortraits\regal_bronze_bikini_bottom_Martiandawn.jpg" />
     <Content Include="Images\PvP\itemsPortraits\regal_bronze_bikini_top_Martiandawn.jpg" />
     <Content Include="Images\PvP\itemsPortraits\regal_bronze_slouch_boots_Martiandawn.jpg" />
+    <Content Include="Images\PvP\itemsPortraits\regenerating_chocolate_bunny_Aurora_Ryall.jpg" />
     <Content Include="Images\PvP\itemsPortraits\riding_crop_Martiandawn.jpg" />
     <Content Include="Images\PvP\itemsPortraits\runic_dildo_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\running_shoes_Luxianne.jpg" />
@@ -1174,6 +1179,7 @@
     <Content Include="Images\PvP\portraits\decorative_marble_statue_LastChance12.jpg" />
     <Content Include="Images\PvP\portraits\deep_sea_naga_LastChance12.jpg" />
     <Content Include="Images\PvP\portraits\demonic_broker_Martiandawn.jpg" />
+    <Content Include="Images\PvP\portraits\demonic_cow_Powderpuff.jpg" />
     <Content Include="Images\PvP\portraits\demure_rose_maiden_Melina_Mercer.jpg" />
     <Content Include="Images\PvP\portraits\deranged_cultist_spacedande.jpg" />
     <Content Include="Images\PvP\portraits\dollmistress_babblingfaces.png" />
@@ -1259,6 +1265,7 @@
     <Content Include="Images\PvP\portraits\LilithValentine_Luxianne.png" />
     <Content Include="Images\PvP\portraits\lilith_maidentine_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\Lindella_Luxianne.png" />
+    <Content Include="Images\PvP\portraits\living_hair_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\living_latex_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\lost_prophet_Jbovinne.jpg" />
     <Content Include="Images\PvP\portraits\lovely_dragon_boy_spacedande.png" />
@@ -1311,8 +1318,10 @@
     <Content Include="Images\PvP\portraits\possessed_doll_Foxpower93.png" />
     <Content Include="Images\PvP\portraits\psycho_female.png" />
     <Content Include="Images\PvP\portraits\psycho_male.png" />
+    <Content Include="Images\PvP\portraits\pumpkin_girl_cyberkaku.jpg" />
     <Content Include="Images\PvP\portraits\punk_girl_babblingfaces.jpg" />
     <Content Include="Images\PvP\portraits\queen_of_the_toombah_goombahs_Alessandro_Stamegna.jpg" />
+    <Content Include="Images\PvP\portraits\quetzacoatl_girl_cyberkaku.jpg" />
     <Content Include="Images\PvP\portraits\quoxotic_ranger_Babblingfaces.gif" />
     <Content Include="Images\PvP\portraits\rat_thief_m_Thrax.png" />
     <Content Include="Images\PvP\portraits\ravening_hunter_Dandelion.jpg" />

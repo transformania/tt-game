@@ -93,13 +93,7 @@ namespace tfgame.Controllers
             double secondsSinceUpdate = Math.Abs(Math.Floor(WorldStat.LastUpdateTimestamp.Subtract(DateTime.UtcNow).TotalSeconds));
             ViewBag.SecondsUntilUpdate = PvPStatics.TurnSecondLength-(int)secondsSinceUpdate;
 
-            //// if it has been long enough since last update, force an update to occur
-            //if (secondsSinceUpdate > PvPStatics.TurnSecondLength && WorldStat.WorldIsUpdating == false && PvPStatics.AnimateUpdateInProgress == false)
-            //{
-            //    UpdateWorld();
-            //}
-
-            // turn off world update toggle if it's simply been too long
+            // turn off world update message if it's simply been too long
             if (secondsSinceUpdate > 90 && (PvPStatics.AnimateUpdateInProgress == true || WorldStat.WorldIsUpdating == true))
             {
                 PvPStatics.AnimateUpdateInProgress = false;
@@ -110,8 +104,6 @@ namespace tfgame.Controllers
             {
                 ViewBag.UpdateInProgress = true;
             }
-
-
 
             // load the update date into memory
             PvPStatics.LastGameUpdate = WorldStat.GameNewsDate;

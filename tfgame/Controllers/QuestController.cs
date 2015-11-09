@@ -253,7 +253,7 @@ namespace tfgame.Controllers
 
         }
 
-        public ActionResult EndQuest()
+        public ActionResult EndQuest(bool restore)
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -278,13 +278,26 @@ namespace tfgame.Controllers
 
             int endType = state.QuestEnds.First().EndType;
 
+            // if the player is not animate, either restore them or create a new item for them to exist as
+            if (me.Mobility != PvPStatics.MobilityFull)
+            {
+                if (restore == true && me.Mobility != PvPStatics.MobilityFull)
+                {
+                    PlayerProcedures.InstantRestoreToBase(me);
+                }
+                else if (restore == false)
+                {
+                    DbStaticForm newform = FormStatics.GetForm(me.Form);
+                    ItemProcedures.PlayerBecomesItem(me, newform, null);
+                }
+            }
+
             // fail!
             if (endType == (int)QuestStatics.QuestOutcomes.Failed)
             {
                 QuestProcedures.PlayerEndQuest(me, (int)QuestStatics.QuestOutcomes.Failed);
                 QuestProcedures.ClearQuestPlayerVariables(me.Id, me.InQuest);
                 TempData["Result"] = "You unfortunately failed the quest <b>" + quest.Name + "</b>.  Better luck next time!  If there is one...";
-                
                 return RedirectToAction("Play", "PvP");
             }
 
@@ -292,6 +305,7 @@ namespace tfgame.Controllers
             string victoryMessage = QuestProcedures.PlayerEndQuest(me, (int)QuestStatics.QuestOutcomes.Completed);
             QuestProcedures.ClearQuestPlayerVariables(me.Id, me.InQuest);
             TempData["Result"] = "Congratulations, you completed the quest <b>" + quest.Name + "</b>!" + victoryMessage;
+
             return RedirectToAction("Play", "PvP");
 
         }

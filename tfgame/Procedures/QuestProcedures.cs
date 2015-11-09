@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using tfgame.dbModels.Abstract;
 using tfgame.dbModels.Concrete;
@@ -12,6 +13,8 @@ namespace tfgame.Procedures
 {
     public static class QuestProcedures
     {
+
+        public const string ImageRegexPattern = @"\[img\](.*)\[/img\]";
 
         public static IEnumerable<QuestStart> GetAllQuestStarts()
         {
@@ -252,7 +255,7 @@ namespace tfgame.Procedures
                     {
                         DbStaticItem item = ItemStatics.GetStaticItem(q.RewardAmount);
                         ItemProcedures.GiveNewItemToPlayer(player, item);
-                        message += "<br/>You received a <b>" + item.FriendlyName + "</b>.";
+                        message += " < br/>You received a <b>" + item.FriendlyName + "</b>.";
                     }
 
                     // effect gain
@@ -485,13 +488,22 @@ namespace tfgame.Procedures
             {
                 input = "";
             }
-           
+
             input = input.Replace(Environment.NewLine, "</br>")
                 .Replace("[b]", "<b>").Replace("[/b]", "</b>")
                 .Replace("[i]", "<i>").Replace("[/i]", "</i>")
                 .Replace("$PLAYER_NAME_FIRST$", player.FirstName)
                 .Replace("$PLAYER_NAME_LAST$", player.LastName)
                 .Replace("$PLAYER_NAME$", player.GetFullName());
+
+
+            // replace [img]filename[/img] with proper html image links
+            Match match = Regex.Match(input, ImageRegexPattern);
+            string imgName = match.Groups[1].Value;
+
+            Regex rgx = new Regex(ImageRegexPattern);
+            input = Regex.Replace(input, ImageRegexPattern, "<img src='/Images/PvP/quests/" + imgName + "' />");
+
             return input;
         }
 
@@ -538,6 +550,7 @@ namespace tfgame.Procedures
                     DbStaticForm newForm = FormStatics.GetForm(p.ActionValue);
                     dbPlayer.Form = newForm.dbName;
                     dbPlayer.Gender = newForm.Gender;
+                    dbPlayer.Mobility = newForm.MobilityType;
                 }
 
                 // move player

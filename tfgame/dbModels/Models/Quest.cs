@@ -62,24 +62,60 @@ namespace tfgame.dbModels.Models
     //[ChoiceText] - string.The text to be displayed when given the option to enter this quest state, ie “Open the door” or “Run back outside.”
     //[QuestEndId] - int.  The quest end to run when this state is reached (when this quest state is a possible completion state.)
 
+    /// <summary>
+    ///  A connection between two quest states.
+    /// HideIfRequirementsNotMet --  
+    /// RankInList -- 
+    /// </summary>
     public class QuestConnection
     {
         public int Id { get; set; }
+
+        /// <summary>
+        /// Id of the quest state this connection comes from
+        /// </summary>
         public int QuestStateFromId { get; set; }
+
+        /// <summary>
+        /// Id of the quest state this connection goes to
+        /// </summary>
         public int QuestStateToId { get; set; }
+
+        /// <summary>
+        /// The text shown to the player when given the choice to go down this quest connection, ie "Open the mailbox".
+        /// </summary>
         public string ActionName { get; set; }
+
+        /// <summary>
+        /// A name given to this quest connection for the author's development and organizational purposes.
+        /// </summary>
         public string ConnectionName { get; set; }
+
+        /// <summary>
+        ///  Id of the quest this connection belongs to
+        /// </summary>
         public int QuestId { get; set; }
         public virtual List<QuestConnectionRequirement> QuestConnectionRequirements { get; set; }
+
+        /// <summary>
+        /// Do not show this option to the player if the requirements for this connection have not been met.
+        /// </summary>
         public bool HideIfRequirementsNotMet { get; set; }
+
+        /// <summary>
+        /// A number to sort  this option from others.  Ie, a connection with rank 10 will appear above rank 8.
+        /// </summary>
+        public int RankInList { get; set; }
+
     }
 
 
-
+    /// <summary>
+    /// A condition that must be fulfilled for a quest connection to be available for a player.
+    /// </summary>
     public class QuestConnectionRequirement
     {
         public int Id { get; set; }
-      //  public virtual QuestState QuestStateId { get; set; }
         public virtual QuestConnection QuestConnectionId { get; set; }
         public int RequirementType { get; set; }
         public string VariabledbName { get; set; }
@@ -117,6 +153,9 @@ namespace tfgame.dbModels.Models
         //[RewardAmount] - string/int? How much XP / how many items / which spell or effect to give
     }
 
+    /// <summary>
+    /// Something that is done immediately when a player enters a quest state, ie change their form, alter their willpower or mana, set a variable, etc.
+    /// </summary>
     public class QuestStatePreaction
     {
         public int Id { get; set; }

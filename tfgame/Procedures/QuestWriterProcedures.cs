@@ -145,6 +145,7 @@ namespace tfgame.Procedures
             questConnection.QuestId = input.QuestId;
             questConnection.QuestStateFromId = input.QuestStateFromId;
             questConnection.QuestStateToId = input.QuestStateToId;
+            questConnection.RankInList = input.RankInList;
 
             // always set this to something, even if it's just empty string
             if (questConnection.ConnectionName == null)

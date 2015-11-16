@@ -208,7 +208,10 @@
        if (Model.ProofreadingCopy == true)
         {
             <h1 class="good">THIS IS A PROOFREADING COPY.</h1>
-        }
+    }
+
+    <br /><br />
+    <p>@Html.ActionLink("Look at this author's player profile", "LookAtPlayer_FromMembershipId", "PvP", new { id = Model.OwnerMemberhipId }, null)</p>
 
     @Html.HiddenFor(e => e.Id)
 

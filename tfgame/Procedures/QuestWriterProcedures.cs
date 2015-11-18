@@ -150,7 +150,7 @@ namespace tfgame.Procedures
             // always set this to something, even if it's just empty string
             if (questConnection.ConnectionName == null)
             {
-                questConnection.ConnectionName = "-- QUEST CON NECTION NOT NAMED --";
+                questConnection.ConnectionName = "-- QUEST CONNECTION NOT NAMED --";
             }
 
             repo.SaveQuestConnection(questConnection);

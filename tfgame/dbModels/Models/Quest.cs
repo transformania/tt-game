@@ -82,6 +82,11 @@ namespace tfgame.dbModels.Models
         public int QuestStateToId { get; set; }
 
         /// <summary>
+        /// Id of the quest state this connection goes to if a roll is failed
+        /// </summary>
+        public int QuestStateFailToId { get; set; }
+
+        /// <summary>
         /// The text shown to the player when given the choice to go down this quest connection, ie "Open the mailbox".
         /// </summary>
         public string ActionName { get; set; }
@@ -110,6 +115,28 @@ namespace tfgame.dbModels.Models
         /// A number to sort  this option from others.  Ie, a connection with rank 10 will appear above rank 8.
         /// </summary>
         public int RankInList { get; set; }
+
+        /// <summary>
+        /// Returns true if at least one of the connection requirements is a random roll
+        /// </summary>
+        /// <returns></returns>
+        public bool RequiresRolls()
+        {
+            if (this.QuestConnectionRequirements == null)
+            {
+                return false;
+            } 
+
+            foreach (QuestConnectionRequirement q in this.QuestConnectionRequirements)
+            {
+                if (q.IsRandomRoll==true)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
 
     }
 

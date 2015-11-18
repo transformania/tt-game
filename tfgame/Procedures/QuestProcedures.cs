@@ -286,6 +286,14 @@ namespace tfgame.Procedures
 
         }
 
+        /// <summary>
+        /// Returns true if a connection is available to the player to take.  
+        /// </summary>
+        /// <param name="questConnection"></param>
+        /// <param name="player">Player attempting to go down this connection</param>
+        /// <param name="buffs">Player's statistics from effects and equipment</param>
+        /// <param name="variables">All quest variables created by this player previously in the quest</param>
+        /// <returns></returns>
         public static bool QuestConnectionIsAvailable(QuestConnection questConnection, Player player, BuffBox buffs, IEnumerable<QuestPlayerVariable> variables)
         {
 
@@ -298,6 +306,13 @@ namespace tfgame.Procedures
 
             foreach (QuestConnectionRequirement q in questConnection.QuestConnectionRequirements)
             {
+
+                // skip all roll-based requirements; a player can always attempt a roll
+                if (q.IsRandomRoll == true)
+                {
+                    continue;
+                }
+
                 // evaluate variable
                 if (q.RequirementType == (int)QuestStatics.RequirementType.Variable) {
 
@@ -609,6 +624,20 @@ namespace tfgame.Procedures
 
             return dbPlayer;
 
+        }
+
+        /// <summary>
+        /// Returns true if a player passes all rolls for a quest connection.
+        /// </summary>
+        /// <param name="questConnection"></param>
+        /// <param name="player">Player attempting to go down this connection</param>
+        /// <param name="buffs">Player's statistics from effects and equipment</param>
+        /// <param name="variables">All quest variables created by this player previously in the quest</param>
+        /// <returns></returns>
+        public static bool RollForQuestConnection(QuestConnection connection, Player player, BuffBox buffs, IEnumerable<QuestPlayerVariable> variables)
+        {
+            //TODO:  Implement logic
+            return false;
         }
 
         public static void SetQuestPlayerVariable(int questId, int playerId, string variableName, string variableValue)

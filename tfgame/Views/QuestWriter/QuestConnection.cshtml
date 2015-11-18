@@ -58,6 +58,23 @@
         <p class="bad">NOT SET</p>
     }
 
+    if (Model.QuestConnection.RequiresRolls() == true)
+    {
+        <br /><br />
+        <label>TO Quest State <span class="bad">(when rolls failed)</span>:</label>    <br />
+        @Html.DropDownListFor(m => m.QuestConnection.QuestStateFailToId, new SelectList(
+                              new List<Object>{
+                      new { value = 0, text = "--none--"  },
+                                },
+                              "value",
+                              "text",
+                               2))
+    }
+    else
+    {
+        @Html.HiddenFor(m => m.QuestConnection.QuestStateFailToId)
+    }
+
     <br />    <br />
 
 
@@ -78,7 +95,7 @@
             <br />    <br />
 
 
-            <label>Rank in list.  When there are multiple connection listed available to the player, they will be ordered by this number.  Highest numbers are listed first.</label>    <br />
+            <label>Rank in list.</label>    <br />
             @Html.TextBoxFor(m => m.QuestConnection.RankInList)
 
 
@@ -122,9 +139,13 @@
 
     var fromStatesDropdown = $("#QuestConnection_QuestStateFromId");
     var toStatesDropdown = $("#QuestConnection_QuestStateToId");
+    var toStatesDropdownFail = $("#QuestConnection_QuestStateFailToId");
 
     var fromValue = @Model.QuestConnection.QuestStateFromId;
     var toValue = @Model.QuestConnection.QuestStateToId;
+    var toValueFail = @Model.QuestConnection.QuestStateFailToId;
+
+    console.log(toValueFail);
 
     loadConnectionDropdownValues();
 

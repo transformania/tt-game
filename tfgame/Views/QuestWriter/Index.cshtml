@@ -112,7 +112,7 @@
             allStates = data;
         }).then(function () {
             populateConnectionDropdown();
-            setDropdownsToValues(fromValue, toValue);
+            setDropdownsToValues(fromValue, toValue, toValueFail);
         });
     }
 
@@ -134,14 +134,23 @@
                 text: opt.StateName
             }));
 
+            toStatesDropdownFail.append($('<option>', {
+                value: opt.Id,
+                text: opt.StateName
+            }));
+
      
         }
     }
 
     // set value of jump to quest state dropdown
-    function setDropdownsToValues(from, to) {
+    function setDropdownsToValues(from, to, failTo) {
         fromStatesDropdown.val(from);
         toStatesDropdown.val(to);
+
+        if (failTo) {
+            toStatesDropdownFail.val(failTo);
+        }
     }
 
 </script>

@@ -54,7 +54,7 @@
 
 @{
 
-    foreach (QuestConnection connection in Model.QuestConnections.ToList())
+    foreach (QuestConnection connection in Model.QuestConnections.OrderByDescending(q => q.RankInList).ToList())
     {
         bool isAvailable = QuestProcedures.QuestConnectionIsAvailable(connection, Model.Player.Player.ToDbPlayer(), Model.BuffBox, Model.QuestPlayerVariables);
         if (isAvailable == false && connection.HideIfRequirementsNotMet == true)

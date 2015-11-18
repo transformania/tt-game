@@ -75,6 +75,12 @@
             <label>Hide option of requirement is not met?  Check if yes.</label>    <br />
             @Html.CheckBoxFor(m => m.QuestConnection.HideIfRequirementsNotMet)
 
+            <br />    <br />
+
+
+            <label>Rank in list.  When there are multiple connection listed available to the player, they will be ordered by this number.  Highest numbers are listed first.</label>    <br />
+            @Html.TextBoxFor(m => m.QuestConnection.RankInList)
+
 
             <br />    <br />
 

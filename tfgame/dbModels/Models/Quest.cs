@@ -95,6 +95,10 @@ namespace tfgame.dbModels.Models
         ///  Id of the quest this connection belongs to
         /// </summary>
         public int QuestId { get; set; }
+
+        /// <summary>
+        /// A list of all the requirements a player must pass or roll for to be eligible for going down this quest connection
+        /// </summary>
         public virtual List<QuestConnectionRequirement> QuestConnectionRequirements { get; set; }
 
         /// <summary>
@@ -116,22 +120,61 @@ namespace tfgame.dbModels.Models
     public class QuestConnectionRequirement
     {
         public int Id { get; set; }
+
+        /// <summary>
+        /// Quest Connection this requirement is for
+        /// </summary>
         public virtual QuestConnection QuestConnectionId { get; set; }
         public int RequirementType { get; set; }
+
+        /// <summary>
+        /// Name of the variable to use when variable is selected
+        /// </summary>
         public string VariabledbName { get; set; }
+
+        /// <summary>
+        /// Mathematical comparison for the RequirementValue to check against, ie greater than, less than, equal
+        /// </summary>
         public int Operator { get; set; }
+
+        /// <summary>
+        /// Value the operator is comparing against.
+        /// </summary>
         public string RequirementValue { get; set; }
+
+        /// <summary>
+        /// Id of the Quest this connection requirement belongs to
+        /// </summary>
         public int QuestId { get; set; }
+
+        /// <summary>
+        /// Name given to this requirement by the quest author for internal organizational purposes
+        /// </summary>
         public string QuestConnectionRequirementName { get; set; }
 
-        //    [QuestConnectionRequirement]
-        //    Keeps track of all the requirements in order for a player to see an option to take after reading a quest state’s text.
-        //    [Id] -- int
-        //    [QuestStateId]  - int.  Id of the quest state this is a requirement for
-        //[RequirementType] -- string.  Type of requirement, ie Luck, Charisma, hasItem, variable, etc
-        //    [VariabledbName] -- string.  Name of the variable (if used.)
-        //[Operator] -- int.  Choices are<. >, ==,  !=, IS, IS NOT
-        //[RequirementValue] -- string/int?.  The value to check against.Can be a number (100 Luck) or equality(true)
+        /// <summary>
+        /// This boolean determines if this requirement is a strict requirement or a chance-based dice roll.
+        /// </summary>
+        public bool IsRandomRoll { get; set; }
+
+        /// <summary>
+        /// A numerical value that is used to weight against a given requirement type (such as Luck).  Ie, .75 * Luck = % chance of success
+        /// </summary>
+        public float RollModifier { get; set; }
+
+        /// <summary>
+        /// A numerical offset when making a requirement roll to make the base chance easier or harder.  Ie, an offset of 10 gives a 10% boost to any roll the player makes.
+        /// </summary>
+        public float RollOffset { get; set; }
+
+        /// <summary>
+        /// Constructor; initialized a few defaults
+        /// </summary>
+        public QuestConnectionRequirement()
+        {
+            this.RollModifier = 1;
+            this.RollOffset = 0;
+        }
     }
 
     public class QuestEnd

@@ -182,6 +182,9 @@ namespace tfgame.Procedures
             }
             QuestConnectionRequirement.QuestConnectionId = repo.QuestConnections.FirstOrDefault(q => q.Id == connection.Id);
             QuestConnectionRequirement.QuestConnectionRequirementName = input.QuestConnectionRequirementName;
+            QuestConnectionRequirement.RollModifier = input.RollModifier;
+            QuestConnectionRequirement.RollOffset = input.RollOffset;
+            QuestConnectionRequirement.IsRandomRoll = input.IsRandomRoll;
 
             repo.SaveQuestConnectionRequirement(QuestConnectionRequirement);
 

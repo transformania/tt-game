@@ -72,6 +72,25 @@
 
     <br /><br />
 
+    <p>The random roll modifier and offset are used if the player is making a probability-based dice roll to see if the action is successful or fails.  Random roll modifier multiples the given requirement value by itself to give a weighted probability.  For example, a roll with a player's Luck (50) times the modifier (.5) creates a 50*.5 = 25% chance of success.  The offset adds a base percent chance for a pass or fail, so an offset of 10 creates the formula 10 + 50 * .5 = 35% chance of success.</p>
+
+    <br /><br />
+
+     <label>Is this requirement a chance-based roll?</label>    <br />
+    @Html.CheckBoxFor(m => m.QuestConnectionRequirement.IsRandomRoll)
+
+    <br /><br />
+
+    <label>Roll modifier:</label>    <br />
+    @Html.TextBoxFor(m => m.QuestConnectionRequirement.RollModifier)
+
+    <br /><br />
+
+    <label>Roll offset:</label>    <br />
+    @Html.TextBoxFor(m => m.QuestConnectionRequirement.RollOffset)
+
+    <br /><br />
+
     <label>Variable used (will be converted to all caps):</label>    <br />
     @Html.TextBoxFor(m => m.QuestConnectionRequirement.VariabledbName)
 

@@ -71,6 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DBModels\Models\TestPlayer_VM.cs" />
+    <Compile Include="Services\QuestTests.cs" />
     <Compile Include="Services\TestChatMessageProcessors.cs" />
     <Compile Include="Services\TestChatPersistanceService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -265,6 +265,15 @@ namespace tfgame.Procedures
                         EffectProcedures.GivePerkToPlayer(effect.dbName, player.Id);
                         message += "<br/>You received the effect <b>" + effect.FriendlyName + "</b>.";
                     }
+
+                    // spell gain
+                    else if (q.RewardType == (int)QuestStatics.RewardType.Effect)
+                    {
+                        DbStaticSkill spell = SkillStatics.GetStaticSkill(q.RewardAmount);
+                        SkillProcedures.GiveSkillToPlayer(player.Id, q.RewardAmount);
+                        message += "<br/>You learned the spell <b>" + spell.FriendlyName + "</b>.";
+                    }
+
                 }
 
                 if (xpGain > 0)

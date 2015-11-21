@@ -46,6 +46,9 @@
     @Html.DropDownListFor(m => m.QuestEnd.RewardType, new SelectList(
                   new List<Object>{
                       new { value = (int)QuestStatics.RewardType.Experience, text = "XP"  },
+                      new { value = (int)QuestStatics.RewardType.Effect, text = "Effect"  },
+                      new { value = (int)QuestStatics.RewardType.Item, text = "Item/Pet"  },
+                      new { value = (int)QuestStatics.RewardType.Spell, text = "Spell"  },
                     },
                   "value",
                   "text",

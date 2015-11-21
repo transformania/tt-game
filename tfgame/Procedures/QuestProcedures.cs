@@ -470,7 +470,7 @@ namespace tfgame.Procedures
             return isAvailable;
         }
 
-        public static string GetRequirementsAsString(QuestConnection q)
+        public static string GetRequirementsAsString(QuestConnection q, BuffBox buffs)
         {
 
             string output = "";
@@ -493,9 +493,31 @@ namespace tfgame.Procedures
                     continue;
                 }
 
-                output += qs.RequirementValue + " " + Enum.GetName(typeof(QuestStatics.RequirementType), qs.RequirementType);
+                // random roll, calculate % chance and display that
+                if (qs.IsRandomRoll == true)
+                {
+                    float playerValue = GetValueFromType(qs, buffs);
 
+                    double chance = Math.Round(qs.RollModifier * playerValue + qs.RollOffset,1);
 
+                    if (chance < 0)
+                    {
+                        chance = 0;
+                    }
+                    else if (chance > 100)
+                    {
+                        chance = 100;
+                    }
+
+                    output += Enum.GetName(typeof(QuestStatics.RequirementType), qs.RequirementType) + " - " + chance + "%";
+
+                }
+
+                // strict requirement
+                else
+                {
+                    output += qs.RequirementValue + " " + Enum.GetName(typeof(QuestStatics.RequirementType), qs.RequirementType);
+                }
 
                 if (i < len-1)
                 {

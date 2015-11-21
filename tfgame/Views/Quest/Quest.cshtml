@@ -69,14 +69,14 @@
         else if (isAvailable == false && connection.HideIfRequirementsNotMet == false)
         {
             // show the option but give it disabled style indicating it is not open currently
-            <p style="background-color:#ff8585"> @Ajax.ActionLink(connection.ActionName + " " + tfgame.Procedures.QuestProcedures.GetRequirementsAsString(connection), "Choice", "Quest", new { Id = connection.Id }, new AjaxOptions { UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" }) </p><br />
+            <p style="background-color:#ff8585"> @Ajax.ActionLink(connection.ActionName + " " + tfgame.Procedures.QuestProcedures.GetRequirementsAsString(connection,Model.BuffBox), "Choice", "Quest", new { Id = connection.Id }, new AjaxOptions { UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" }) </p><br />
         }
         else
         {
             // show the option as usual
             <p> @CharactersHere.PrintDiceIcon(connection)
     
-    @Ajax.ActionLink(connection.ActionName + " " + tfgame.Procedures.QuestProcedures.GetRequirementsAsString(connection), "Choice", "Quest", new { Id = connection.Id }, new AjaxOptions { UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" }) </p><br />
+    @Ajax.ActionLink(connection.ActionName + " " + tfgame.Procedures.QuestProcedures.GetRequirementsAsString(connection, Model.BuffBox), "Choice", "Quest", new { Id = connection.Id }, new AjaxOptions { UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" }) </p><br />
         }
 
     }

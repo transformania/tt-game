@@ -208,19 +208,32 @@ namespace tfgame.dbModels.Models
     {
         public int Id { get; set; }
         public virtual QuestState QuestStateId { get; set; }
+
+        /// <summary>
+        /// End Type; currently only Passed or Failed
+        /// </summary>
         public int EndType { get; set; }
+
+        /// <summary>
+        /// Type of the reward this QuestEnd gives:  XP, an effect, item, or spell
+        /// </summary>
         public int RewardType { get; set; }
+
+        /// <summary>
+        /// The amount of XP to be given, or else the name of the item/effect/spell
+        /// </summary>
         public string RewardAmount { get; set; }
+
+        /// <summary>
+        /// Name of the Quest End, used only for internal author purposes
+        /// </summary>
         public string QuestEndName { get; set; }
+
+        /// <summary>
+        /// Id of the Quest this end belongs to
+        /// </summary>
         public int QuestId { get; set; }
 
-        //[QuestEnd]
-        //A possible ending for a quest, whether good or bad.If the ending is good then the reward can be one of several items.
-        //[Id] -- int.
-        //[QuestStateId]  - int.  Id of the quest state this is a requirement for
-        //[EndType] - int.  How the quest ends.  Choices are “completed ” or “failed”.
-        //[RewardType] - string.  What type of reward this quest completion ends (if completed.)  Options include XP, Item, Spell, or GiveEffect.
-        //[RewardAmount] - string/int? How much XP / how many items / which spell or effect to give
     }
 
     /// <summary>

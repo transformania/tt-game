@@ -666,9 +666,13 @@ namespace tfgame.Procedures
             newplayer.Mobility = Statics.PvPStatics.MobilityFull;
             newplayer.BotId = AIStatics.ActivePlayerBotId;
             newplayer.ChatColor = "black";
-            newplayer.InQuest = 6; // start out in Welcome to Sunnyglade quest
-            newplayer.InQuestState = 93; // first stage of Wecome to Sunnyglade
 
+            // if player is not choosing to start in an inanimate/pet form, start them off in Welcome to Sunnyglade quest
+            if (player.InanimateForm == null)
+            {
+                newplayer.InQuest = 6; // Welcome to Sunnyglade quest
+                newplayer.InQuestState = 93; // first stage of Welcome to Sunnyglade
+            }
 
             if (oldplayer != null)
             {

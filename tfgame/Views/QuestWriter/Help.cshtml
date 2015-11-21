@@ -50,6 +50,16 @@
 
 <p>A <b>Quest Connection Requirement</b> is some condition that must hold true for a player to be eligible for an option that leads to another quest state.  More than one quest connection requirement can exist for a connection.  Currently <b>ALL</b> conditions must be true for a player to enter it (a logical AND operator).  Quest Connection Requirements can be based off of a player's stats to allow unique options for certain builds or restrict others, require a certain form or gender, or be compared against a previously set variable.</p>
 
+<h4>Dice rolls</h4>
+
+<p>If you want a quest connection to be a probability of success or failure, you can use dice rolls instead.  Any connection with a requirement that is a dice roll has a new quest state it can point to, a failure route for the player to be redirected to.  This option will not appear until one quest connection requirement is marked as such.</p>
+
+<p>Dice rolls have two extra components, a modifier and offset.  A modifier is multiplied by the player's target skill and becomes the percent chance of success.  The offset can be added on to provide a base chance on to that number.  For example, suppose the roll is against a player's Luck, of which they have 50.  If the modifier is set to 1.5, then the percent chance of success becomes 75%.  If there is a modifier of 10, that chance goes up to 85%.</p>
+
+<p>Essentially the formula is this:  <b>statistic value * modifier + offset = % chance of success</b></p>
+
+<p>Quest connections can have more than one dice roll requirement.  In this case, a dice is rolled for EACH requirement marked as such.  It is also possible to mix and match strict requirements with roll based ones.  In this scenario, the player must satisfy all of the strict requirements first before being permitted to make a roll.</p>
+
 
 <h3>Quest State Preaction</h3>
 
@@ -59,9 +69,9 @@
 
 <h3>Quest End</h3>
 
-<p>A <b>Quest End</b> means that the current quest state indicates that the player has come to a place in the quest where they either pass or fail.  More than one quest end can be added to a quest state; when this is the case the player will recieve the reward from each quest end.</p>
+<p>A <b>Quest End</b> means that the current quest state indicates that the player has come to a place in the quest where they either pass or fail the quest as a whole.  More than one quest end can be added to a quest state; when this is the case the player will recieve the reward from each quest end.</p>
 
-<p>Each quest end can be marked as a pass or fail individually.  When there are multiple quest ends, the FIRST quest end's completion status will be used.</p>
+<p>Each quest end can be marked as a pass or fail individually.  When there are multiple quest ends, the FIRST quest end's completion status will be used.  There is no reason to mix or match, so don't do it.</p>
 
 <h3>Variables</h3>
 

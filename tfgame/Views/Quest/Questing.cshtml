@@ -1,4 +1,5 @@
 ﻿@model tfgame.dbModels.Models.QuestStart
+@using tfgame.Statics
 
 <nav class="navbar navbar-default outsideContainer navbarTT2">
     <div class="container-fluid">
@@ -19,6 +20,12 @@
                 <li>@Ajax.ActionLink("Abandon Quest", "Abandon", "Quest", null, new AjaxOptions { UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</li>
                 <li>@Html.ActionLink("Inbox", "MyMessages", "PvP", null, new { @id = "newMessagesLink" })</li>
                 <li>@Html.ActionLink("Chat", "Index", "Chat", new { room = "global" }, new { target = "_blank" })</li>
+
+                @if (User.IsInRole(PvPStatics.Permissions_QuestWriter) == true)
+                {
+                <li>@Html.ActionLink("QuestWriter", "Index", "QuestWriter", null, null)</li>
+                }
+
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->

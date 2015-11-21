@@ -367,6 +367,12 @@ namespace tfgame.Procedures
             return true;
         }
 
+        /// <summary>
+        /// Return the player's stat of a given QuestConnectionRequirement.  Ex:  player has 50 luck
+        /// </summary>
+        /// <param name="q">QuestConnectionRequirement to be evaluated</param>
+        /// <param name="buffs">The player's stats</param>
+        /// <returns></returns>
         private static float GetValueFromType(QuestConnectionRequirement q, BuffBox buffs)
         {
             float playerValue = 0;
@@ -645,8 +651,29 @@ namespace tfgame.Procedures
         /// <returns></returns>
         public static bool RollForQuestConnection(QuestConnection connection, Player player, BuffBox buffs, IEnumerable<QuestPlayerVariable> variables)
         {
-            //TODO:  Implement logic
-            return false;
+           
+            foreach(QuestConnectionRequirement q in connection.QuestConnectionRequirements)
+            {
+                if (q.IsRandomRoll==false)
+                {
+                    continue;
+                }
+
+                float playerValue = GetValueFromType(q, buffs);
+
+                float chance = q.RollModifier * playerValue + q.RollOffset;
+
+                Random r = new Random();
+                double roll = 100 - r.NextDouble()*100;
+
+                if (roll < chance)
+                {
+                    return false;
+                }
+
+            }
+
+            return true;
         }
 
         public static void SetQuestPlayerVariable(int questId, int playerId, string variableName, string variableValue)

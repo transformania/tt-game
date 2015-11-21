@@ -200,7 +200,7 @@ namespace tfgame.Controllers
             }
 
             // make rolls for pass / fail
-            if (desiredConnection.RequiresRolls()==true)
+            if (desiredConnection.RequiresRolls() == true)
             {
                 bool passes = QuestProcedures.RollForQuestConnection(desiredConnection, me, buffs, output.QuestPlayerVariables);
 
@@ -208,7 +208,14 @@ namespace tfgame.Controllers
                 if (passes == false)
                 {
                     nextState = QuestProcedures.GetQuestState(desiredConnection.QuestStateFailToId);
+                    TempData["RollResult"] = "fail";
+                } else
+                {
+                    TempData["RollResult"] = "pass";
                 }
+            } else
+            {
+                TempData["RollResult"] = "none";
             }
 
             QuestProcedures.PlayerSetQuestState(me, nextState);

@@ -35,6 +35,23 @@
 <hr />
 
 <div id="textBody">
+
+    @{
+        string rollResult = (string)TempData["RollResult"];
+        if (rollResult != null)
+        {
+            <img src='../Images/PvP/Icons/dice.png' style='width: 24px; height: 24px; '>
+            if ((string)TempData["RollResult"] == "fail")
+            {
+                <p class="bad">Roll failed!</p>
+            }
+            else if ((string)TempData["RollResult"] == "pass")
+            {
+                <p class="good">Roll passed!</p>
+            }
+        }
+    }
+
     @Html.Raw(QuestProcedures.Textify(Model.QuestState.Text, Model.Player.Player.ToDbPlayer()))
 </div>
 
@@ -57,7 +74,7 @@
         else
         {
             // show the option as usual
-            <p> @CharactersHere.PrintDiceIcon(connection);
+            <p> @CharactersHere.PrintDiceIcon(connection)
     
     @Ajax.ActionLink(connection.ActionName + " " + tfgame.Procedures.QuestProcedures.GetRequirementsAsString(connection), "Choice", "Quest", new { Id = connection.Id }, new AjaxOptions { UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" }) </p><br />
         }

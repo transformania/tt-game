@@ -214,12 +214,12 @@ namespace tfgame.Controllers
             data.TurnNumber = input.TurnNumber;
             data.RoundDuration = input.RoundDuration;
             data.ChaosMode = input.ChaosMode;
+            data.TestServer = input.TestServer;
 
             repo.SavePvPWorldStat(data);
 
             PvPStatics.ChaosMode = data.ChaosMode;
             PvPStatics.RoundDuration = data.RoundDuration;
-
 
             TempData["Result"] = "World Data Saved!";
             return RedirectToAction("Play", "PvP");

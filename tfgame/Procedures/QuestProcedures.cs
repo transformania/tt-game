@@ -686,9 +686,9 @@ namespace tfgame.Procedures
                 float chance = q.RollModifier * playerValue + q.RollOffset;
 
                 Random r = new Random();
-                double roll = 100 - r.NextDouble()*100;
+                double roll = r.NextDouble()*100;
 
-                if (roll < chance)
+                if (roll > chance)
                 {
                     return false;
                 }

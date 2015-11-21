@@ -158,5 +158,68 @@ namespace tfgame.Tests.Services
             message.Should().Be("[10 Fortitude, Magicka - 10%]");
         }
 
+        [Test]
+        [Ignore("TODO")]
+        public void Should_not_print_details_for_required_gender()
+        {
+            b.AddStrictRequirement((int)QuestStatics.RequirementType.Gender, "male", 0);
+            QuestConnection q = b.GetQuestConnection();
+
+            string message = QuestProcedures.GetRequirementsAsString(q, buffs);
+
+            message.Should().Be("");
+        }
+
+        [Test]
+        [Ignore("TODO")]
+        public void Should_not_print_details_for_required_form()
+        {
+            b.AddStrictRequirement((int)QuestStatics.RequirementType.Form, "derpform", 0);
+            QuestConnection q = b.GetQuestConnection();
+
+            string message = QuestProcedures.GetRequirementsAsString(q, buffs);
+
+            message.Should().Be("");
+        }
+
+        [Test]
+        [Ignore("TODO")]
+        public void Should_not_print_details_for_required_variable()
+        {
+            b.AddStrictRequirement((int)QuestStatics.RequirementType.Variable, "variable", 0);
+            QuestConnection q = b.GetQuestConnection();
+
+            string message = QuestProcedures.GetRequirementsAsString(q, buffs);
+
+            message.Should().Be("");
+        }
+
+        [Test]
+        [Ignore("TODO")]
+        public void Should_not_print_details_for_mixed_hidden_requirements()
+        {
+            b.AddStrictRequirement((int)QuestStatics.RequirementType.Variable, "variable", 0);
+            b.AddStrictRequirement((int)QuestStatics.RequirementType.Gender, "male", 0);
+            QuestConnection q = b.GetQuestConnection();
+
+            string message = QuestProcedures.GetRequirementsAsString(q, buffs);
+
+            message.Should().Be("");
+        }
+
+        [Test]
+        [Ignore("TODO")]
+        public void Should_hide_only_hidden_requirements_when_mixed()
+        {
+            b.AddStrictRequirement((int)QuestStatics.RequirementType.Variable, "variable", 0);
+            b.AddStrictRequirement((int)QuestStatics.RequirementType.Succour, "25", (int)QuestStatics.Operator.Greater_Than_Or_Equal);
+            QuestConnection q = b.GetQuestConnection();
+
+            string message = QuestProcedures.GetRequirementsAsString(q, buffs);
+
+            message.Should().Be("[25 Succour]");
+        }
+
+
     }
 }

@@ -722,6 +722,18 @@ namespace tfgame.CustomHtmlHelpers
             return new MvcHtmlString(output);
         }
 
+        public static MvcHtmlString PrintDiceIcon(QuestConnection connection)
+        {
+            string output = "";
+
+            if (connection.RequiresRolls()==true)
+            {
+                output = "<img src='../Images/PvP/Icons/dice.png' style='width: 24px; height: 24px; '>";
+            }
+
+            return new MvcHtmlString(output);
+        }
+
 
         //public static MvcHtmlString PrintCovenantColorCode(LocationInfo info)
         //{

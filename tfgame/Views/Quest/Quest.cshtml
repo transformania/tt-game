@@ -40,14 +40,14 @@
         string rollResult = (string)TempData["RollResult"];
         if (rollResult != null)
         {
-            <img src='../Images/PvP/Icons/dice.png' style='width: 24px; height: 24px; '>
+            
             if ((string)TempData["RollResult"] == "fail")
             {
-                <p class="bad">Roll failed!</p>
+                <p class="bad"><img src='../Images/PvP/Icons/dice.png' style='width: 24px; height: 24px; '>Roll failed!</p>
             }
             else if ((string)TempData["RollResult"] == "pass")
             {
-                <p class="good">Roll passed!</p>
+                <p class="good"><img src='../Images/PvP/Icons/dice.png' style='width: 24px; height: 24px; '>Roll passed!</p>
             }
         }
     }

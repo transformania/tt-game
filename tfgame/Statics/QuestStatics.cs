@@ -44,6 +44,7 @@ namespace tfgame.Statics
             Experience = 0,
             Item = 1,
             Effect = 2,
+            Spell = 3,
         }
 
         public enum PreactionType

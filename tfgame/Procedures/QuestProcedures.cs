@@ -265,6 +265,15 @@ namespace tfgame.Procedures
                         EffectProcedures.GivePerkToPlayer(effect.dbName, player.Id);
                         message += "<br/>You received the effect <b>" + effect.FriendlyName + "</b>.";
                     }
+
+                    // spell gain
+                    else if (q.RewardType == (int)QuestStatics.RewardType.Effect)
+                    {
+                        DbStaticSkill spell = SkillStatics.GetStaticSkill(q.RewardAmount);
+                        SkillProcedures.GiveSkillToPlayer(player.Id, q.RewardAmount);
+                        message += "<br/>You learned the spell <b>" + spell.FriendlyName + "</b>.";
+                    }
+
                 }
 
                 if (xpGain > 0)
@@ -286,6 +295,14 @@ namespace tfgame.Procedures
 
         }
 
+        /// <summary>
+        /// Returns true if a connection is available to the player to take.  
+        /// </summary>
+        /// <param name="questConnection"></param>
+        /// <param name="player">Player attempting to go down this connection</param>
+        /// <param name="buffs">Player's statistics from effects and equipment</param>
+        /// <param name="variables">All quest variables created by this player previously in the quest</param>
+        /// <returns></returns>
         public static bool QuestConnectionIsAvailable(QuestConnection questConnection, Player player, BuffBox buffs, IEnumerable<QuestPlayerVariable> variables)
         {
 
@@ -298,6 +315,13 @@ namespace tfgame.Procedures
 
             foreach (QuestConnectionRequirement q in questConnection.QuestConnectionRequirements)
             {
+
+                // skip all roll-based requirements; a player can always attempt a roll
+                if (q.IsRandomRoll == true)
+                {
+                    continue;
+                }
+
                 // evaluate variable
                 if (q.RequirementType == (int)QuestStatics.RequirementType.Variable) {
 
@@ -343,6 +367,12 @@ namespace tfgame.Procedures
             return true;
         }
 
+        /// <summary>
+        /// Return the player's stat of a given QuestConnectionRequirement.  Ex:  player has 50 luck
+        /// </summary>
+        /// <param name="q">QuestConnectionRequirement to be evaluated</param>
+        /// <param name="buffs">The player's stats</param>
+        /// <returns></returns>
         private static float GetValueFromType(QuestConnectionRequirement q, BuffBox buffs)
         {
             float playerValue = 0;
@@ -440,7 +470,7 @@ namespace tfgame.Procedures
             return isAvailable;
         }
 
-        public static string GetRequirementsAsString(QuestConnection q)
+        public static string GetRequirementsAsString(QuestConnection q, BuffBox buffs)
         {
 
             string output = "";
@@ -463,9 +493,31 @@ namespace tfgame.Procedures
                     continue;
                 }
 
-                output += qs.RequirementValue + " " + Enum.GetName(typeof(QuestStatics.RequirementType), qs.RequirementType);
+                // random roll, calculate % chance and display that
+                if (qs.IsRandomRoll == true)
+                {
+                    float playerValue = GetValueFromType(qs, buffs);
 
+                    double chance = Math.Round(qs.RollModifier * playerValue + qs.RollOffset,1);
 
+                    if (chance < 0)
+                    {
+                        chance = 0;
+                    }
+                    else if (chance > 100)
+                    {
+                        chance = 100;
+                    }
+
+                    output += Enum.GetName(typeof(QuestStatics.RequirementType), qs.RequirementType) + " - " + chance + "%";
+
+                }
+
+                // strict requirement
+                else
+                {
+                    output += qs.RequirementValue + " " + Enum.GetName(typeof(QuestStatics.RequirementType), qs.RequirementType);
+                }
 
                 if (i < len-1)
                 {
@@ -609,6 +661,41 @@ namespace tfgame.Procedures
 
             return dbPlayer;
 
+        }
+
+        /// <summary>
+        /// Returns true if a player passes all rolls for a quest connection.
+        /// </summary>
+        /// <param name="questConnection"></param>
+        /// <param name="player">Player attempting to go down this connection</param>
+        /// <param name="buffs">Player's statistics from effects and equipment</param>
+        /// <param name="variables">All quest variables created by this player previously in the quest</param>
+        /// <returns></returns>
+        public static bool RollForQuestConnection(QuestConnection connection, Player player, BuffBox buffs, IEnumerable<QuestPlayerVariable> variables)
+        {
+           
+            foreach(QuestConnectionRequirement q in connection.QuestConnectionRequirements)
+            {
+                if (q.IsRandomRoll==false)
+                {
+                    continue;
+                }
+
+                float playerValue = GetValueFromType(q, buffs);
+
+                float chance = q.RollModifier * playerValue + q.RollOffset;
+
+                Random r = new Random();
+                double roll = r.NextDouble()*100;
+
+                if (roll > chance)
+                {
+                    return false;
+                }
+
+            }
+
+            return true;
         }
 
         public static void SetQuestPlayerVariable(int questId, int playerId, string variableName, string variableValue)

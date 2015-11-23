@@ -62,61 +62,183 @@ namespace tfgame.dbModels.Models
     //[ChoiceText] - string.The text to be displayed when given the option to enter this quest state, ie “Open the door” or “Run back outside.”
     //[QuestEndId] - int.  The quest end to run when this state is reached (when this quest state is a possible completion state.)
 
+    /// <summary>
+    ///  A connection between two quest states.
+    /// HideIfRequirementsNotMet --  
+    /// RankInList -- 
+    /// </summary>
     public class QuestConnection
     {
         public int Id { get; set; }
+
+        /// <summary>
+        /// Id of the quest state this connection comes from
+        /// </summary>
         public int QuestStateFromId { get; set; }
+
+        /// <summary>
+        /// Id of the quest state this connection goes to
+        /// </summary>
         public int QuestStateToId { get; set; }
+
+        /// <summary>
+        /// Id of the quest state this connection goes to if a roll is failed
+        /// </summary>
+        public int QuestStateFailToId { get; set; }
+
+        /// <summary>
+        /// The text shown to the player when given the choice to go down this quest connection, ie "Open the mailbox".
+        /// </summary>
         public string ActionName { get; set; }
+
+        /// <summary>
+        /// A name given to this quest connection for the author's development and organizational purposes.
+        /// </summary>
         public string ConnectionName { get; set; }
+
+        /// <summary>
+        ///  Id of the quest this connection belongs to
+        /// </summary>
         public int QuestId { get; set; }
+
+        /// <summary>
+        /// A list of all the requirements a player must pass or roll for to be eligible for going down this quest connection
+        /// </summary>
         public virtual List<QuestConnectionRequirement> QuestConnectionRequirements { get; set; }
+
+        /// <summary>
+        /// Do not show this option to the player if the requirements for this connection have not been met.
+        /// </summary>
         public bool HideIfRequirementsNotMet { get; set; }
+
+        /// <summary>
+        /// A number to sort  this option from others.  Ie, a connection with rank 10 will appear above rank 8.
+        /// </summary>
+        public int RankInList { get; set; }
+
+        /// <summary>
+        /// Returns true if at least one of the connection requirements is a random roll
+        /// </summary>
+        /// <returns></returns>
+        public bool RequiresRolls()
+        {
+            if (this.QuestConnectionRequirements == null)
+            {
+                return false;
+            } 
+
+            foreach (QuestConnectionRequirement q in this.QuestConnectionRequirements)
+            {
+                if (q.IsRandomRoll==true)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
     }
 
 
-
+    /// <summary>
+    /// A condition that must be fulfilled for a quest connection to be available for a player.
+    /// </summary>
     public class QuestConnectionRequirement
     {
         public int Id { get; set; }
-      //  public virtual QuestState QuestStateId { get; set; }
+
+        /// <summary>
+        /// Quest Connection this requirement is for
+        /// </summary>
         public virtual QuestConnection QuestConnectionId { get; set; }
         public int RequirementType { get; set; }
+
+        /// <summary>
+        /// Name of the variable to use when variable is selected
+        /// </summary>
         public string VariabledbName { get; set; }
+
+        /// <summary>
+        /// Mathematical comparison for the RequirementValue to check against, ie greater than, less than, equal
+        /// </summary>
         public int Operator { get; set; }
+
+        /// <summary>
+        /// Value the operator is comparing against.
+        /// </summary>
         public string RequirementValue { get; set; }
+
+        /// <summary>
+        /// Id of the Quest this connection requirement belongs to
+        /// </summary>
         public int QuestId { get; set; }
+
+        /// <summary>
+        /// Name given to this requirement by the quest author for internal organizational purposes
+        /// </summary>
         public string QuestConnectionRequirementName { get; set; }
 
-        //    [QuestConnectionRequirement]
-        //    Keeps track of all the requirements in order for a player to see an option to take after reading a quest state’s text.
-        //    [Id] -- int
-        //    [QuestStateId]  - int.  Id of the quest state this is a requirement for
-        //[RequirementType] -- string.  Type of requirement, ie Luck, Charisma, hasItem, variable, etc
-        //    [VariabledbName] -- string.  Name of the variable (if used.)
-        //[Operator] -- int.  Choices are<. >, ==,  !=, IS, IS NOT
-        //[RequirementValue] -- string/int?.  The value to check against.Can be a number (100 Luck) or equality(true)
+        /// <summary>
+        /// This boolean determines if this requirement is a strict requirement or a chance-based dice roll.
+        /// </summary>
+        public bool IsRandomRoll { get; set; }
+
+        /// <summary>
+        /// A numerical value that is used to weight against a given requirement type (such as Luck).  Ie, .75 * Luck = % chance of success
+        /// </summary>
+        public float RollModifier { get; set; }
+
+        /// <summary>
+        /// A numerical offset when making a requirement roll to make the base chance easier or harder.  Ie, an offset of 10 gives a 10% boost to any roll the player makes.
+        /// </summary>
+        public float RollOffset { get; set; }
+
+        /// <summary>
+        /// Constructor; initialized a few defaults
+        /// </summary>
+        public QuestConnectionRequirement()
+        {
+            this.RollModifier = 1;
+            this.RollOffset = 0;
+        }
     }
 
     public class QuestEnd
     {
         public int Id { get; set; }
         public virtual QuestState QuestStateId { get; set; }
+
+        /// <summary>
+        /// End Type; currently only Passed or Failed
+        /// </summary>
         public int EndType { get; set; }
+
+        /// <summary>
+        /// Type of the reward this QuestEnd gives:  XP, an effect, item, or spell
+        /// </summary>
         public int RewardType { get; set; }
+
+        /// <summary>
+        /// The amount of XP to be given, or else the name of the item/effect/spell
+        /// </summary>
         public string RewardAmount { get; set; }
+
+        /// <summary>
+        /// Name of the Quest End, used only for internal author purposes
+        /// </summary>
         public string QuestEndName { get; set; }
+
+        /// <summary>
+        /// Id of the Quest this end belongs to
+        /// </summary>
         public int QuestId { get; set; }
 
-        //[QuestEnd]
-        //A possible ending for a quest, whether good or bad.If the ending is good then the reward can be one of several items.
-        //[Id] -- int.
-        //[QuestStateId]  - int.  Id of the quest state this is a requirement for
-        //[EndType] - int.  How the quest ends.  Choices are “completed ” or “failed”.
-        //[RewardType] - string.  What type of reward this quest completion ends (if completed.)  Options include XP, Item, Spell, or GiveEffect.
-        //[RewardAmount] - string/int? How much XP / how many items / which spell or effect to give
     }
 
+    /// <summary>
+    /// Something that is done immediately when a player enters a quest state, ie change their form, alter their willpower or mana, set a variable, etc.
+    /// </summary>
     public class QuestStatePreaction
     {
         public int Id { get; set; }

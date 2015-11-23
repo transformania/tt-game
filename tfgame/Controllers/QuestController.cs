@@ -192,12 +192,30 @@ namespace tfgame.Controllers
             output.QuestPlayerVariables = QuestProcedures.GetAllQuestPlayerVariablesFromQuest(output.QuestStart.Id, me.Id); 
             BuffBox buffs = ItemProcedures.GetPlayerBuffsSQL(me);
             
-
             // assert player has the right requirements for this
             if (QuestProcedures.QuestConnectionIsAvailable(desiredConnection, me, buffs, output.QuestPlayerVariables) == false)
             {
                 TempData["Error"] = "You're not able to do that.";
                 return RedirectToAction("Quest");
+            }
+
+            // make rolls for pass / fail
+            if (desiredConnection.RequiresRolls() == true)
+            {
+                bool passes = QuestProcedures.RollForQuestConnection(desiredConnection, me, buffs, output.QuestPlayerVariables);
+
+                // player fails; reroute to the failure quest state
+                if (passes == false)
+                {
+                    nextState = QuestProcedures.GetQuestState(desiredConnection.QuestStateFailToId);
+                    TempData["RollResult"] = "fail";
+                } else
+                {
+                    TempData["RollResult"] = "pass";
+                }
+            } else
+            {
+                TempData["RollResult"] = "none";
             }
 
             QuestProcedures.PlayerSetQuestState(me, nextState);

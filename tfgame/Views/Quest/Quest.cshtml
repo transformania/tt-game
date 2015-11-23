@@ -29,24 +29,29 @@
 </div>
 
 <div id="playerBox">
-    @*<h3>@Model.Player.Player.GetFullName()</h3>
-    <div class="portrait" style="background-image: url(@CharactersHere.GetImageURL(Model.Player, true));">
-
-        <span class="icon icon-@Model.Player.Player.Gender" style="float:right;"></span>
-        <span class="icon icon-level"><b>@Model.Player.Player.Level</b></span>
-        <span class="portraitIconRP">@CharactersHere.PrintRPIcon(Model.Player.Player.ToDbPlayer()) @CharactersHere.PrintPvPIcon(Model.Player.Player.ToDbPlayer()) @CharactersHere.PrintMCIcon(Model.Player.Player.ToDbPlayer()) @CharactersHere.PrintDonatorIcon(Model.Player.Player.ToDbPlayer())</span>
-
-    </div>
-
-    <div>@Model.Player.Player.Health/@Model.Player.Player.MaxHealth Willpower, @Model.Player.Player.Mana/@Model.Player.Player.MaxMana Mana, @Model.Player.Player.ActionPoints/@PvPStatics.MaximumStoreableActionPoints AP</div>*@
-
     @Html.Partial("~/Views/PvP/partial_FrontPageAvatar.cshtml", Model.Player)
-
 </div>
 
 <hr />
 
 <div id="textBody">
+
+    @{
+        string rollResult = (string)TempData["RollResult"];
+        if (rollResult != null)
+        {
+            
+            if ((string)TempData["RollResult"] == "fail")
+            {
+                <p class="bad"><img src='../Images/PvP/Icons/dice.png' style='width: 24px; height: 24px; '>Roll failed!</p>
+            }
+            else if ((string)TempData["RollResult"] == "pass")
+            {
+                <p class="good"><img src='../Images/PvP/Icons/dice.png' style='width: 24px; height: 24px; '>Roll passed!</p>
+            }
+        }
+    }
+
     @Html.Raw(QuestProcedures.Textify(Model.QuestState.Text, Model.Player.Player.ToDbPlayer()))
 </div>
 
@@ -54,7 +59,7 @@
 
 @{
 
-    foreach (QuestConnection connection in Model.QuestConnections.ToList())
+    foreach (QuestConnection connection in Model.QuestConnections.OrderByDescending(q => q.RankInList).ToList())
     {
         bool isAvailable = QuestProcedures.QuestConnectionIsAvailable(connection, Model.Player.Player.ToDbPlayer(), Model.BuffBox, Model.QuestPlayerVariables);
         if (isAvailable == false && connection.HideIfRequirementsNotMet == true)
@@ -64,12 +69,14 @@
         else if (isAvailable == false && connection.HideIfRequirementsNotMet == false)
         {
             // show the option but give it disabled style indicating it is not open currently
-            <p style="background-color:#ff8585"> @Ajax.ActionLink(connection.ActionName + " " + tfgame.Procedures.QuestProcedures.GetRequirementsAsString(connection), "Choice", "Quest", new { Id = connection.Id }, new AjaxOptions { UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" }) </p><br />
+            <p style="background-color:#ff8585"> @Ajax.ActionLink(connection.ActionName + " " + tfgame.Procedures.QuestProcedures.GetRequirementsAsString(connection,Model.BuffBox), "Choice", "Quest", new { Id = connection.Id }, new AjaxOptions { UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" }) </p><br />
         }
         else
         {
             // show the option as usual
-            <p> @Ajax.ActionLink(connection.ActionName + " " + tfgame.Procedures.QuestProcedures.GetRequirementsAsString(connection), "Choice", "Quest", new { Id = connection.Id }, new AjaxOptions { UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" }) </p><br />
+            <p> @CharactersHere.PrintDiceIcon(connection)
+    
+    @Ajax.ActionLink(connection.ActionName + " " + tfgame.Procedures.QuestProcedures.GetRequirementsAsString(connection, Model.BuffBox), "Choice", "Quest", new { Id = connection.Id }, new AjaxOptions { UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" }) </p><br />
         }
 
     }

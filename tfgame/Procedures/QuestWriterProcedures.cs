@@ -145,11 +145,13 @@ namespace tfgame.Procedures
             questConnection.QuestId = input.QuestId;
             questConnection.QuestStateFromId = input.QuestStateFromId;
             questConnection.QuestStateToId = input.QuestStateToId;
+            questConnection.QuestStateFailToId = input.QuestStateFailToId;
+            questConnection.RankInList = input.RankInList;
 
             // always set this to something, even if it's just empty string
             if (questConnection.ConnectionName == null)
             {
-                questConnection.ConnectionName = "-- QUEST CON NECTION NOT NAMED --";
+                questConnection.ConnectionName = "-- QUEST CONNECTION NOT NAMED --";
             }
 
             repo.SaveQuestConnection(questConnection);
@@ -181,6 +183,9 @@ namespace tfgame.Procedures
             }
             QuestConnectionRequirement.QuestConnectionId = repo.QuestConnections.FirstOrDefault(q => q.Id == connection.Id);
             QuestConnectionRequirement.QuestConnectionRequirementName = input.QuestConnectionRequirementName;
+            QuestConnectionRequirement.RollModifier = input.RollModifier;
+            QuestConnectionRequirement.RollOffset = input.RollOffset;
+            QuestConnectionRequirement.IsRandomRoll = input.IsRandomRoll;
 
             repo.SaveQuestConnectionRequirement(QuestConnectionRequirement);
 

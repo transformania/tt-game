@@ -62,6 +62,7 @@ dlldata.c
 *.pidb
 *.svclog
 *.scc
+*.xcf 	# Gimp project files
 
 # Chutzpah Test files
 _Chutzpah*

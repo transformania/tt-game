@@ -110,6 +110,8 @@ namespace tfgame.Controllers
             QuestStateFormViewModel output = new QuestStateFormViewModel();
             output.QuestState = questState;
             output.QuestConnectionsTo = repo.QuestConnections.Where(q => q.QuestStateToId == output.QuestState.Id);
+            output.QuestConnectionsFailTo = repo.QuestConnections.Where(q => q.QuestStateFailToId == output.QuestState.Id);
+
             output.QuestConnectionsFrom = repo.QuestConnections.Where(q => q.QuestStateFromId == output.QuestState.Id);
 
             return PartialView(output);
@@ -152,7 +154,8 @@ namespace tfgame.Controllers
                     QuestId = QuestId,
                     QuestConnectionRequirements = new List<QuestConnectionRequirement>(),
                     QuestStateFromId = FromQuestId,
-                    QuestStateToId = ToQuestId
+                    QuestStateToId = ToQuestId,
+                    QuestStateFailToId = 0,
                 };
             }
 
@@ -169,6 +172,11 @@ namespace tfgame.Controllers
             if (ToQuestId > 0)
             {
                 output.ToQuestState = QuestProcedures.GetQuestState(ToQuestId);
+            }
+
+            if (questConnection.QuestStateFailToId > 0)
+            {
+                output.FailToQuestState = QuestProcedures.GetQuestState(questConnection.QuestStateFailToId);
             }
 
             return PartialView(output);

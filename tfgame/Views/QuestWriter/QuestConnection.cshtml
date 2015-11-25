@@ -69,6 +69,17 @@
                               "value",
                               "text",
                                2))
+
+        if (Model.FailToQuestState != null)
+        {
+            @Ajax.ActionLink("[" + Model.FailToQuestState.QuestStateName + "]", "QuestState", "QuestWriter", new { Id = Model.FailToQuestState.Id, QuestId = Model.QuestConnection.QuestId, ParentStateId = -1 }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "parentButton" })
+        }
+        else
+        {
+            <p class="bad">NOT SET</p>
+        }
+
+
     }
     else
     {

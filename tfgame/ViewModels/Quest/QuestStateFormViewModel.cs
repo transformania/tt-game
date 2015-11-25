@@ -12,6 +12,7 @@ namespace tfgame.ViewModels.Quest
         public IEnumerable<QuestEnd> QuestEnds { get; set; }
         public IEnumerable<QuestConnection> QuestConnectionsFrom { get; set; }
         public IEnumerable<QuestConnection> QuestConnectionsTo { get; set; }
+        public IEnumerable<QuestConnection> QuestConnectionsFailTo { get; set; }
     }
 
     public class QuestConnectionFormViewModel
@@ -19,6 +20,7 @@ namespace tfgame.ViewModels.Quest
         public QuestConnection QuestConnection { get; set; }
         public QuestState FromQuestState { get; set; }
         public QuestState ToQuestState { get; set; }
+        public QuestState FailToQuestState { get; set; }
     }
 
     public class QuestConnectionRequirementFormViewModel

@@ -2,11 +2,12 @@
 
 @using tfgame.Statics
 @using tfgame.dbModels.Models
+@using tfgame.CustomHtmlHelpers
 
 <p>@Ajax.ActionLink("View Logs", "ShowQuestWriterLogs", "QuestWriter", new { Id = Model.QuestState.QuestId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
 <p>@Ajax.ActionLink("Click to view all quest states in this quest", "ShowAllQuestStates", "QuestWriter", new { Id = Model.QuestState.QuestId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
 <p>@Ajax.ActionLink("Click to view all quest connections in this quest", "ShowAllQuestConnections", "QuestWriter", new { Id = Model.QuestState.QuestId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
-<p>@Ajax.ActionLink("View Diagram", "Diagram", "QuestWriter", new { Id=Model.QuestState.QuestId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
+<p>@Ajax.ActionLink("View Diagram", "Diagram", "QuestWriter", new { Id = Model.QuestState.QuestId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
 
 
 <h4>Connections TO this Quest State (@Model.QuestConnectionsFrom.Count()):</h4>
@@ -19,6 +20,25 @@
        @Ajax.ActionLink("Jump to State", "QuestState", "QuestWriter", new { Id = q.QuestStateFromId, QuestId = Model.QuestState.QuestId, ParentStateId = -1 }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "editButton" })</p>
     }
     <p>@Ajax.ActionLink("Add New", "QuestConnection", "QuestWriter", new { Id = -1, QuestId = Model.QuestState.QuestId, FromQuestId = -1, ToQuestId = Model.QuestState.Id }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "newButton" })</p>
+}
+
+
+@{ if (Model.QuestConnectionsFailTo.Count() > 0)
+    {
+       
+        <h4><img src='../Images/PvP/Icons/dice.png' style='width: 24px; height: 24px; '> Connections TO this Quest State <span class="bad"> from failed Rolls</span> (@Model.QuestConnectionsFailTo.Count()):</h4>
+    }
+}
+
+@{
+    foreach (QuestConnection q in Model.QuestConnectionsFailTo)
+    {
+        <p>
+            @Ajax.ActionLink("[" + q.ConnectionName + "]", "QuestConnection", "QuestWriter", new { Id = q.Id, QuestId = Model.QuestState.QuestId, FromQuestId = q.QuestStateFromId, ToQuestId = q.QuestStateToId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "parentButton" })
+
+        @Ajax.ActionLink("Jump to State", "QuestState", "QuestWriter", new { Id = q.QuestStateFromId, QuestId = Model.QuestState.QuestId, ParentStateId = -1 }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "editButton" })
+    </p>
+    }
 }
 
 <h4>Connections FROM this Quest State (@Model.QuestConnectionsTo.Count()):</h4>

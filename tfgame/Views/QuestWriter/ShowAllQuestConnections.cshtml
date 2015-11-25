@@ -54,6 +54,15 @@
                 </td>
 
                 <td>
+                    @{
+                        if (q.QuestStateFailToId > 0)
+                        {
+                            @Ajax.ActionLink("Jump to FAIL State", "QuestState", "QuestWriter", new { Id = q.QuestStateToId, QuestId = q.QuestId, ParentStateId = -1 }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "editButton" })
+                        }
+                    }
+                </td>
+
+                <td>
                     @Ajax.ActionLink("[DELETE]", "DeleteQuestConnection", "QuestWriter", new { Id = q.Id, QuestId = q.QuestId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting", Confirm = "Are you sure you want to delete this quest connection?" }, new { @class = "deleteButton" })
                 </td>
 

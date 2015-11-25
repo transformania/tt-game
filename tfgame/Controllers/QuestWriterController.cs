@@ -414,6 +414,7 @@ namespace tfgame.Controllers
                                   Name = c.ConnectionName,
                                   From = c.QuestStateFromId,
                                   To = c.QuestStateToId,
+                                  FailTo = c.QuestStateFailToId,
                                   Reqs = c.QuestConnectionRequirements.Count()
                               };
 

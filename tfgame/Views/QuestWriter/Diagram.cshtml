@@ -140,6 +140,18 @@
                 edge.label += " [" + connection.Reqs + " reqs]";
             }
 
+            // if the connection has a fail state, add that as well
+            if (connection.FailTo > 0) {
+                var failEdge = {
+                    from: connection.From,
+                    to: connection.FailTo,
+                    label: "FAIL: " + connection.Name,
+                    font: {align: 'middle'},
+                    color: "red"
+                }
+                edgesRaw.push(failEdge);
+            }
+
             edgesRaw.push(edge);
         }
 

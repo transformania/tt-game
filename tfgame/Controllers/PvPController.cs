@@ -407,7 +407,7 @@ namespace tfgame.Controllers
             
             // assert player does not currently have an animate player
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            if (me != null && me.Mobility == "full")
+            if (me != null && me.Mobility == PvPStatics.MobilityFull)
             {
                 ViewBag.ErrorMessage = "You cannot create a new character right now.  You already have a fully animate character already, " + me.GetFullName() + ".";
                 return View("~/Views/PvP/MakeNewCharacter.cshtml");
@@ -442,6 +442,13 @@ namespace tfgame.Controllers
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+
+            if (me != null && me.Mobility == PvPStatics.MobilityFull)
+            {
+                TempData["Error"] = "You are still animate.";
+                return RedirectToAction("Play");
+            }
+
             ViewBag.IsRerolling = false;
             ViewBag.OldFirstName = "";
             ViewBag.OldLastName = "";

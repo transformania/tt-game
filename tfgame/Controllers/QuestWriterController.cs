@@ -109,10 +109,10 @@ namespace tfgame.Controllers
 
             QuestStateFormViewModel output = new QuestStateFormViewModel();
             output.QuestState = questState;
-            output.QuestConnectionsTo = repo.QuestConnections.Where(q => q.QuestStateToId == output.QuestState.Id);
-            output.QuestConnectionsFailTo = repo.QuestConnections.Where(q => q.QuestStateFailToId == output.QuestState.Id);
+            output.QuestConnectionsTo = repo.QuestConnections.Where(q => q.QuestStateToId == output.QuestState.Id && q.QuestStateToId > 0);
+            output.QuestConnectionsFailTo = repo.QuestConnections.Where(q => q.QuestStateFailToId == output.QuestState.Id && q.QuestStateFailToId > 0);
 
-            output.QuestConnectionsFrom = repo.QuestConnections.Where(q => q.QuestStateFromId == output.QuestState.Id);
+            output.QuestConnectionsFrom = repo.QuestConnections.Where(q => q.QuestStateFromId == output.QuestState.Id && q.QuestStateFromId > 0);
 
             return PartialView(output);
         }

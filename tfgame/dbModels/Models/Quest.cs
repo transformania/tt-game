@@ -47,6 +47,26 @@ namespace tfgame.dbModels.Models
         //public string ChoiceText { get; set; }
         public int QuestEndId { get; set; }
         public bool HideIfRequirementsNotMet { get; set; }
+
+        /// <summary>
+        /// Short area the quest writers can use to keep track of elements of this quest state.  Questing players do not see this.
+        /// </summary>
+        public string Notes { get; set; }
+
+        /// <summary>
+        /// Set whether or not the diagram should pin this quest state for easier viewing on the state/connection  diagram
+        /// </summary>
+        public bool PinToDiagram { get; set; }
+
+        /// <summary>
+        /// X position on the diagram this state is pinned to, if set
+        /// </summary>
+        public float X { get; set; }
+
+        /// <summary>
+        /// Y position on the diagram this state is pinned to, if set
+        /// </summary>
+        public float Y { get; set; }
     }
 
     //[QuestState]
@@ -115,6 +135,11 @@ namespace tfgame.dbModels.Models
         /// A number to sort  this option from others.  Ie, a connection with rank 10 will appear above rank 8.
         /// </summary>
         public int RankInList { get; set; }
+
+        /// <summary>
+        /// Short area the quest writers can use to keep track of elements of this quest connection.  Questing players do not see this.
+        /// </summary>
+        public string Notes { get; set; }
 
         /// <summary>
         /// Returns true if at least one of the connection requirements is a random roll

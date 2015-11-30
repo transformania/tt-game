@@ -397,6 +397,9 @@ namespace tfgame.Controllers
                              Id = s.Id,
                              StateName = s.QuestStateName,
                              EndCount = s.QuestEnds.Count(),
+                             Pin = s.PinToDiagram,
+                             X = s.X,
+                             Y = s.Y
                          };
 
             output = output.ToList();
@@ -423,7 +426,7 @@ namespace tfgame.Controllers
                                   From = c.QuestStateFromId,
                                   To = c.QuestStateToId,
                                   FailTo = c.QuestStateFailToId,
-                                  Reqs = c.QuestConnectionRequirements.Count()
+                                  Reqs = c.QuestConnectionRequirements.Count(),
                               };
 
 

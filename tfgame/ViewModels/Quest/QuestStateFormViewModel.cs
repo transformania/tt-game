@@ -47,5 +47,8 @@ namespace tfgame.ViewModels.Quest
         public string StateName { get; set; }
         public int EndCount { get; set; }
         public bool IsStart { get; set; }
+        public bool Pin { get; set; }
+        public float X { get; set; }
+        public float Y { get; set; }
     }
 }

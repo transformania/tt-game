@@ -75,6 +75,10 @@ namespace tfgame.Procedures
             questState.Text = input.Text;
             questState.QuestId = input.QuestId;
             questState.HideIfRequirementsNotMet = input.HideIfRequirementsNotMet;
+            questState.Notes = input.Notes;
+            questState.PinToDiagram = input.PinToDiagram;
+            questState.X = input.X;
+            questState.Y = input.Y;
 
             // always set this to something, even if it's just empty string
             if (questState.QuestStateName == null)
@@ -147,6 +151,7 @@ namespace tfgame.Procedures
             questConnection.QuestStateToId = input.QuestStateToId;
             questConnection.QuestStateFailToId = input.QuestStateFailToId;
             questConnection.RankInList = input.RankInList;
+            questConnection.Notes = input.Notes;
 
             // always set this to something, even if it's just empty string
             if (questConnection.ConnectionName == null)

@@ -293,7 +293,7 @@ namespace tfgame.Procedures
                 Stat__WuffieProfitsAmount,
                     new StatsDetailsMap{
                         FriendlyName="Puppy Power!",
-                        Description="Most Arpeyjis earned selling to Lindella",
+                        Description="Most Arpeyjis earned selling to Wuffie",
                         ImageUrl="trophy.jpg",
                         }
                 },

@@ -1714,7 +1714,7 @@ namespace tfgame.Controllers
              IEffectContributionRepository effectContributionRepo = new EFEffectContributionRepository();
 
              List<ContributionCredit> output = new List<ContributionCredit>();
-             List<string> uniqueOwnerIds = contributionRepo.Contributions.Where(c => c.ProofreadingCopy == true && c.IsLive == true && c.OwnerMembershipId !=  "0" && c.OwnerMembershipId != "-1" && c.OwnerMembershipId != "-2" && c.SubmitterName != null && c.SubmitterName != "").Select(c => c.OwnerMembershipId).Distinct().ToList();
+             List<string> uniqueOwnerIds = contributionRepo.Contributions.Where(c => c.ProofreadingCopy == true && c.IsLive == true && c.OwnerMembershipId !=  "0" && c.OwnerMembershipId != "-1" && c.OwnerMembershipId != "-2" && c.SubmitterName != null && c.SubmitterName != "" && c.IsNonstandard==false).Select(c => c.OwnerMembershipId).Distinct().ToList();
              
 
              foreach (string ownerId in uniqueOwnerIds)
@@ -1722,15 +1722,29 @@ namespace tfgame.Controllers
                  ContributionCredit addme = new ContributionCredit
                  {
                      OwnerMembershipId = ownerId,
-                     AuthorName = contributionRepo.Contributions.Where(c => c.OwnerMembershipId == ownerId && c.IsNonstandard == false && c.IsLive == true && c.ProofreadingCopy == true).OrderByDescending(c => c.OwnerMembershipId).First().SubmitterName,
-                     AnimateFormCount = contributionRepo.Contributions.Where(c => c.OwnerMembershipId == ownerId && c.IsNonstandard == false && c.Form_MobilityType == "full" && c.IsLive == true && c.ProofreadingCopy == true).Count(),
-                     InanimateFormCount = contributionRepo.Contributions.Where(c => c.OwnerMembershipId == ownerId && c.IsNonstandard == false && c.Form_MobilityType == "inanimate" && c.IsLive == true && c.ProofreadingCopy == true).Count(),
-                     AnimalFormCount = contributionRepo.Contributions.Where(c => c.OwnerMembershipId == ownerId && c.IsNonstandard == false && c.Form_MobilityType == "animal" && c.IsLive == true && c.ProofreadingCopy == true).Count(),
-                     Website = contributionRepo.Contributions.Where(c => c.OwnerMembershipId == ownerId && c.IsNonstandard == false && c.IsLive == true && c.ProofreadingCopy == true).OrderByDescending(c => c.OwnerMembershipId).First().SubmitterUrl,
-                     EffectCount = effectContributionRepo.EffectContributions.Where(c => c.OwnerMemberhipId == ownerId && c.IsLive == true && c.ProofreadingCopy == true).Count(),
-                    
                  };
+
+                addme.AuthorName = contributionRepo.Contributions.Where(c => c.OwnerMembershipId == ownerId && c.IsNonstandard == false && c.IsLive == true && c.ProofreadingCopy == true).OrderByDescending(c => c.OwnerMembershipId).First().SubmitterName;
+
+                addme.AnimateFormCount = contributionRepo.Contributions.Where(c => c.OwnerMembershipId == ownerId && c.IsNonstandard == false && c.Form_MobilityType == "full" && c.IsLive == true && c.ProofreadingCopy == true).Count();
+
+                addme.InanimateFormCount = contributionRepo.Contributions.Where(c => c.OwnerMembershipId == ownerId && c.IsNonstandard == false && c.Form_MobilityType == "inanimate" && c.IsLive == true && c.ProofreadingCopy == true).Count();
+
+                addme.AnimalFormCount = contributionRepo.Contributions.Where(c => c.OwnerMembershipId == ownerId && c.IsNonstandard == false && c.Form_MobilityType == "animal" && c.IsLive == true && c.ProofreadingCopy == true).Count();
+
+                try
+                {
+                    addme.Website = contributionRepo.Contributions.Where(c => c.OwnerMembershipId == ownerId && c.IsNonstandard == false && c.IsLive == true && c.ProofreadingCopy == true).OrderByDescending(c => c.OwnerMembershipId).First().SubmitterUrl;
+                }
+                catch
+                {
+                    addme.Website = "";
+                }
+
+                addme.EffectCount = effectContributionRepo.EffectContributions.Where(c => c.OwnerMemberhipId == ownerId && c.IsLive == true && c.ProofreadingCopy == true).Count();
+
                  addme.SpellCount = addme.AnimateFormCount + addme.InanimateFormCount + addme.AnimalFormCount;
+
                  output.Add(addme);
              }
 

@@ -59,20 +59,20 @@
             if (fp.dbPlayer.Mobility == "full")
             {
                 <td>
-                    @Html.ActionLink(fp.dbPlayer.GetFullName() + "  (#" + fp.dbPlayer.MembershipId + ")", "LookAtPlayer", "PvP", new { id = fp.dbPlayer.Id }, null)
+                    @Html.ActionLink(fp.dbPlayer.GetFullName(), "LookAtPlayer", "PvP", new { id = fp.dbPlayer.Id }, null)
                 </td>
             }
             else if (fp.dbPlayer.Mobility == "inanimate")
             {
                 <td>
-                    @Html.ActionLink(fp.dbPlayer.GetFullName() + " (inanimate)" + "  (#" + fp.dbPlayer.MembershipId + ")", "LookAtPlayer", "PvP", new { id = fp.dbPlayer.Id }, null)
+                    @Html.ActionLink(fp.dbPlayer.GetFullName() + " (inanimate)", "LookAtPlayer", "PvP", new { id = fp.dbPlayer.Id }, null)
                 </td>
             }
 
             else if (fp.dbPlayer.Mobility == "animal")
             {
                 <td>
-                    @Html.ActionLink(fp.dbPlayer.GetFullName() + " (animal)" + "  (#" + fp.dbPlayer.MembershipId + ")", "LookAtPlayer", "PvP", new { id = fp.dbPlayer.Id }, null)
+                    @Html.ActionLink(fp.dbPlayer.GetFullName() + " (animal)", "LookAtPlayer", "PvP", new { id = fp.dbPlayer.Id }, null)
                 </td>
             }
             <td class="timeago" style="line-height: 17px;">@fp.dbPlayer.OnlineActivityTimestamp.ToString("u")</td>

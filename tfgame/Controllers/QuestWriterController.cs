@@ -100,7 +100,10 @@ namespace tfgame.Controllers
 
                     QuestEnds = new List<QuestEnd>(),
                     QuestConnectionRequirements = new List<QuestConnectionRequirement>(),
-                    QuestStatePreactions = new List<QuestStatePreaction>()
+                    QuestStatePreactions = new List<QuestStatePreaction>(),
+                    X = 0,
+                    Y = 0,
+                    PinToDiagram = true
                 };
             } else
             {
@@ -429,6 +432,22 @@ namespace tfgame.Controllers
                                   Reqs = c.QuestConnectionRequirements.Count(),
                               };
 
+
+            return Json(output, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult DiagramSaveNodePosition(int Id, string X, string Y)
+        {
+
+            IQuestRepository repo = new EFQuestRepository();
+
+            QuestState state = repo.QuestStates.FirstOrDefault(q => q.Id == Id);
+            state.PinToDiagram = true;
+            state.X = float.Parse(X);
+            state.Y = float.Parse(Y);
+            repo.SaveQuestState(state);
+
+            var output = "Pinned state " + Id;
 
             return Json(output, JsonRequestBehavior.AllowGet);
         }

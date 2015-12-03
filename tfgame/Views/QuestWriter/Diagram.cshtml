@@ -29,6 +29,7 @@
 <p>Id:  <input id="Id" class="short" type="text" /></p>
 <p>X:  <input id="X" class="short" type="text" /></p>
 <p>Y:  <input id="Y" class="short" type="text" /></p>
+<button type="button" onclick="saveNode()">Pin and Save</button> 
 <div id="mynetwork"></div>
 
 
@@ -91,9 +92,9 @@
     loadConnections();
 
     function renderDiagram() {
-       
+
         $("#loadingMsg").hide();
-       
+
         var nodesRaw = [];
         for (var i = 0; i < states.length; i++) {
             var state = states[i];
@@ -178,6 +179,15 @@
 
         network = new vis.Network(container, data, options);
 
+        var firstStateId = states[0].Id;
+
+        console.log(firstStateId);
+
+        console.log(network.getPositions([firstStateId])[firstStateId].x);
+        console.log(network.getPositions([firstStateId])[firstStateId].y);
+
+        var offsetX = network.getPositions([firstStateId])[firstStateId].x - states[0].X;
+        var offsetY = network.getPositions([firstStateId])[firstStateId].y - states[0].Y;
 
         // bind click event to read X, Y of a node
         network.on("click", function (params) {
@@ -186,11 +196,17 @@
 
             if (params.nodes.length>0) {
 
-                var lnode;
+                var selectedNodeId = params.nodes[0];
+                console.log(selectedNodeId);
 
-                console.log(params);
+                var position = network.getPositions([selectedNodeId])[selectedNodeId];
 
-                // find node
+                console.log(position);
+
+                $('#X').val(position.x - offsetX);
+                $('#Y').val(position.y - offsetY);
+
+                //    // find node
                 for (var i = 0; i < states.length; i++) {
                     if (states[i].Id == params.nodes[0]) {
                         lnode = states[i];
@@ -198,21 +214,26 @@
                 }
 
                 $('#Id').val(lnode.Id);
-                if (lnode.Pin==true) {
-                    $('#X').val(lnode.X);
-                    $('#Y').val(lnode.Y);
-                } else {
-                    $('#X').val("Not set");
-                    $('#Y').val("Not set");
-                }
-                
+
+
 
             }
-            
-
 
         });
 
+    }
+
+    function saveNode() {
+        jQuery.ajax({
+            type: "POST",
+            url: "@Url.Action("AddUser")",
+            dataType: "json",
+            data: { model: JSON.stringify(usersRoles) },
+            success: function (data) { alert(data); },
+            failure: function (errMsg) {
+                alert(errMsg);
+            }
+        });
     }
 
     $("#springChange").change(function() {

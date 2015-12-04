@@ -920,15 +920,19 @@ namespace tfgame.Controllers
         [Authorize]
         public ActionResult EditRPClassifiedAdSend(RPClassifiedAd input)
         {
+
+            input.SetNullsToEmptyStrings();
+
             string myMembershipId = User.Identity.GetUserId();
-            // assert the text fields are not too long
+
+            // assert the title field is not too long
             if (input.Title.Length > 35)
             {
                 ViewBag.ErrorMessage = "The ad title is too long.";
                 return View("EditRPClassifiedAd", input);
             }
 
-            // assert the text fields are not too long
+            // assert the title field is  not too long
             if (input.Title.Length < 5)
             {
                 ViewBag.ErrorMessage = "The ad title is too short.";
@@ -941,7 +945,6 @@ namespace tfgame.Controllers
                 ViewBag.ErrorMessage = "The ad description is too long.";
                 return View("EditRPClassifiedAd", input);
             }
-
 
             // assert the text fields are not too short
             if (input.Text == null || input.Text.Length < 50)
@@ -970,7 +973,6 @@ namespace tfgame.Controllers
                 ViewBag.ErrorMessage = "The ad title is too long.";
                 return View("EditRPClassifiedAd", input);
             }
-
 
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             RPClassifiedAd ad = RPClassifiedAdsProcedures.GetClassifiedAd(input.Id);

@@ -11,6 +11,11 @@ namespace tfgame.Procedures
     public static class RPClassifiedAdsProcedures
     {
 
+        /// <summary>
+        /// Given an RPClassified ad input, commit these changes to the database
+        /// </summary>
+        /// <param name="input">RP ad to be committed to the database</param>
+        /// <param name="player">Player to own this RP ad</param>
         public static void SaveAd(RPClassifiedAd input, Player player)
         {
             IRPClassifiedAdRepository repo = new EFRPClassifiedAdsRepository();

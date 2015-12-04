@@ -77,22 +77,7 @@
 
 
     <label>Internal Notes (for quest writer's internal note-keeping uses only; questers never see this):</label>    <br />
-    @Html.TextAreaFor(m => m.QuestState.Notes)
-
-    <br /><br />
-
-    <label>Pin this state on the diagram?:</label>    <br />
-    @Html.CheckBoxFor(m => m.QuestState.PinToDiagram)
-
-    <br /><br />
-
-    <label>X position on diagram:</label>    <br />
-    @Html.TextBoxFor(m => m.QuestState.X)
-
-    <br /><br />
-
-    <label>Y position on diagram:</label>    <br />
-    @Html.TextBoxFor(m => m.QuestState.Y)
+    @Html.TextAreaFor(m => m.QuestState.Notes, new { @class = "short" })
 
     <br /><br />
 

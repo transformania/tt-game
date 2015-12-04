@@ -45,6 +45,7 @@ namespace tfgame.Controllers
                     MinStartLevel = 0,
                     MaxStartTurn = 99999,
                     MaxStartLevel = 99999,
+                    PrerequisiteQuest = 0,
                 };
             }
 

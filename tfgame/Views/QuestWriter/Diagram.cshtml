@@ -23,13 +23,14 @@
 <h1>Diagram</h1>
 
 <p>This page can be used to help visualize the quest states and connections in a quest.</p><p id="loadingMsg" class="bad">Loading...</p>
-<p><input id="springChange" type ="text" value="300">Spring size</p>
-<p>Animate<input id="animate" type="checkbox"></p>
+<p><input id="springChange" type="text" value="300">Spring size</p>
+<br />
+<p>Animate<input id="animate" type="checkbox" checked></p>
 
-<p>Id:  <input id="Id" class="short" type="text" readonly/></p>
-<p>X:  <input id="X" class="short" type="text" readonly /></p>
-<p>Y:  <input id="Y" class="short" type="text" readonly/></p>
-<button type="button" onclick="saveNode()">Pin and Save</button> <span class="good" id="pinMeSuccess"></span>
+<span>Id:  <input id="Id" class="short" type="text" readonly /></span>
+<span>X:  <input id="X" class="short" type="text" readonly /></span>
+<span>Y:  <input id="Y" class="short" type="text" readonly /></span>
+<span class="good" id="pinMeSuccess"></span>
 <div id="mynetwork"></div>
 
 
@@ -50,7 +51,7 @@
             arrows: 'to',
         },
         physics: {
-            enabled: false,
+            enabled: true,
             barnesHut: {
                 springLength: 400,
                 "avoidOverlap": .04,
@@ -101,7 +102,7 @@
             var node = {
                 id: state.Id,
                 label: state.StateName,
-
+                physics: false
             }
 
             // assign color based on end state or not
@@ -125,11 +126,12 @@
                 };
             }
 
-            // if pinned, set initial X and Y and disable physics for that node
+            // if pinned, set initial X and Y and disable physics for that node and make it square
             if (state.Pin==true) {
                 node.x = state.X;
                 node.y = state.Y;
-                node.physics = false;
+
+                node.shape = "box";
             }
 
             nodesRaw.push(node);
@@ -193,6 +195,9 @@
         network.on("release", function (params) {
             updateNodeXY(params);
             saveNode();
+
+
+
         });
 
         // bind click event to read X, Y of a node
@@ -201,7 +206,7 @@
         });
 
         function updateNodeXY(params) {
-            params.event = "[original event]";
+            //params.event = "[original event]";
             if (params.nodes.length>0) {
 
                 var selectedNodeId = params.nodes[0];
@@ -230,20 +235,24 @@
     }
 
     function saveNode() {
-       
+
+        var nodeId = $('#Id').val();
+
         if ($('#Id').val() != "-") {
-            var url = "/QuestWriter/DiagramSaveNodePosition/" +  $('#Id').val() + "?X=" +  $('#X').val() + "&Y=" + $('#Y').val();
+            var url = "/QuestWriter/DiagramSaveNodePosition/" + nodeId + "?X=" +  $('#X').val() + "&Y=" + $('#Y').val();
 
             $.post( url, function( data ) {
-           
                 $("#pinMeSuccess").show();
                 $("#pinMeSuccess").html(data);
-
                 setTimeout(function(){ $("#pinMeSuccess").hide() }, 1500);
+
+                // TODO:   Get this working
+                // network.body.nodes[nodeId].shape.options.shape = "box";
 
             });
         }
-        
+        network.unselectAll();
+
     }
 
     $("#springChange").change(function() {

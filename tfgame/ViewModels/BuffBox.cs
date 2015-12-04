@@ -740,7 +740,7 @@ namespace tfgame.ViewModels
 	                    {"Allure", 0},
 	                    {"Magicka", 0},
 	                    {"Succour", 0},
-	                    {"Luck", .35F},
+	                    {"Luck", .21F},
                     }
                 },
                 {

@@ -731,10 +731,12 @@
     <Content Include="Images\PvP\Icons\dice.png" />
     <Content Include="Images\PvP\Icons\donator_1.gif" />
     <Content Include="Images\PvP\Icons\icon-defense.png" />
+    <Content Include="Images\PvP\Icons\icon-duel.png" />
     <Content Include="Images\PvP\Icons\icon-health_recovery.png" />
     <Content Include="Images\PvP\Icons\icon-mana_recovery.png" />
     <Content Include="Images\PvP\Icons\icon-permanent.png" />
     <Content Include="Images\PvP\Icons\icon-protection.png" />
+    <Content Include="Images\PvP\Icons\icon-quest.png" />
     <Content Include="Images\PvP\Icons\icon-souled0.png" />
     <Content Include="Images\PvP\Icons\icon-souled1.png" />
     <Content Include="Images\PvP\Icons\icon-souled2.png" />

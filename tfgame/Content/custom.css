@@ -280,6 +280,12 @@ li {
 .icon-permanent {
   background-image: url("../Images/PvP/Icons/icon-permanent.png"); }
 
+.icon-duel {
+  background-image: url("../Images/PvP/Icons/icon-duel.png"); }
+
+.icon-quest {
+  background-image: url("../Images/PvP/Icons/icon-quest.png"); }
+
 .icon-souled0 {
   background-image: url("../Images/PvP/Icons/icon-souled0.png"); }
 

@@ -734,6 +734,30 @@ namespace tfgame.CustomHtmlHelpers
             return new MvcHtmlString(output);
         }
 
+        public static MvcHtmlString PrintDuelIcon(Player player)
+        {
+            if (player.InDuel > 0)
+            {
+                return new MvcHtmlString("<span class='icon icon-duel' title='This player is actively in a duel.'></span>");
+            }
+            else
+            {
+                return new MvcHtmlString("");
+            }
+        }
+
+        public static MvcHtmlString PrintQuestIcon(Player player)
+        {
+            if (player.InQuest > 0)
+            {
+                return new MvcHtmlString("<span class='icon icon-quest' title='This player is in a quest.'></span>");
+            }
+            else
+            {
+                return new MvcHtmlString("");
+            }
+        }
+
 
         //public static MvcHtmlString PrintCovenantColorCode(LocationInfo info)
         //{

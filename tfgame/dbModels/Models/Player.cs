@@ -312,6 +312,8 @@ namespace tfgame.dbModels.Models
                 Nickname = this.Nickname,
                 OnlineActivityTimestamp = this.OnlineActivityTimestamp,
 
+                InDuel = this.InDuel,
+
                 IsBannedFromGlobalChat = this.IsBannedFromGlobalChat,
                 InQuest = this.InQuest,
                 InQuestState = this.InQuestState,

@@ -23,12 +23,14 @@
 <h1>Diagram</h1>
 
 <p>This page can be used to help visualize the quest states and connections in a quest.</p><p id="loadingMsg" class="bad">Loading...</p>
-<p><input id="springChange" type ="text" value="300">Spring size</p>
-<p>Animate<input id="animate" type="checkbox"></p>
+<p><input id="springChange" type="text" value="300">Spring size</p>
+<br />
+<p>Animate<input id="animate" type="checkbox" checked></p>
 
-<p>Id:  <input id="Id" class="short" type="text" /></p>
-<p>X:  <input id="X" class="short" type="text" /></p>
-<p>Y:  <input id="Y" class="short" type="text" /></p>
+<span>Id:  <input id="Id" class="tiny" type="text" readonly /></span>
+<span>X:  <input id="X" class="tiny" type="text" readonly /></span>
+<span>Y:  <input id="Y" class="tiny" type="text" readonly /></span>
+<span class="good" id="pinMeSuccess"></span>
 <div id="mynetwork"></div>
 
 
@@ -49,7 +51,7 @@
             arrows: 'to',
         },
         physics: {
-            enabled: false,
+            enabled: true,
             barnesHut: {
                 springLength: 400,
                 "avoidOverlap": .04,
@@ -91,16 +93,16 @@
     loadConnections();
 
     function renderDiagram() {
-       
+
         $("#loadingMsg").hide();
-       
+
         var nodesRaw = [];
         for (var i = 0; i < states.length; i++) {
             var state = states[i];
             var node = {
                 id: state.Id,
                 label: state.StateName,
-
+                physics: false
             }
 
             // assign color based on end state or not
@@ -124,11 +126,12 @@
                 };
             }
 
-            // if pinned, set initial X and Y and disable physics for that node
+            // if pinned, set initial X and Y and disable physics for that node and make it square
             if (state.Pin==true) {
                 node.x = state.X;
                 node.y = state.Y;
-                node.physics = false;
+
+                node.shape = "box";
             }
 
             nodesRaw.push(node);
@@ -178,19 +181,42 @@
 
         network = new vis.Network(container, data, options);
 
+        var firstStateId = states[0].Id;
+        var offsetX = network.getPositions([firstStateId])[firstStateId].x - states[0].X;
+        var offsetY = network.getPositions([firstStateId])[firstStateId].y - states[0].Y;
 
         // bind click event to read X, Y of a node
         network.on("click", function (params) {
-            params.event = "[original event]";
+            updateNodeXY(params);
+            saveNode();
+        });
+
+        // bind click event to read X, Y of a node
+        network.on("release", function (params) {
+            updateNodeXY(params);
+            saveNode();
 
 
+
+        });
+
+        // bind click event to read X, Y of a node
+        network.on("dragging", function (params) {
+            updateNodeXY(params);
+        });
+
+        function updateNodeXY(params) {
+            //params.event = "[original event]";
             if (params.nodes.length>0) {
 
-                var lnode;
+                var selectedNodeId = params.nodes[0];
 
-                console.log(params);
+                var position = network.getPositions([selectedNodeId])[selectedNodeId];
 
-                // find node
+                $('#X').val(position.x - offsetX);
+                $('#Y').val(position.y - offsetY);
+
+                // find the node ID
                 for (var i = 0; i < states.length; i++) {
                     if (states[i].Id == params.nodes[0]) {
                         lnode = states[i];
@@ -198,20 +224,34 @@
                 }
 
                 $('#Id').val(lnode.Id);
-                if (lnode.Pin==true) {
-                    $('#X').val(lnode.X);
-                    $('#Y').val(lnode.Y);
-                } else {
-                    $('#X').val("Not set");
-                    $('#Y').val("Not set");
-                }
-                
 
+            } else {
+                $('#Id').val("-");
+                $('#X').val("-");
+                $('#Y').val("-");
             }
-            
+        }
 
+    }
 
-        });
+    function saveNode() {
+
+        var nodeId = $('#Id').val();
+
+        if ($('#Id').val() != "-") {
+            var url = "/QuestWriter/DiagramSaveNodePosition/" + nodeId + "?X=" +  $('#X').val() + "&Y=" + $('#Y').val();
+
+            $.post( url, function( data ) {
+                $("#pinMeSuccess").show();
+                $("#pinMeSuccess").html(data);
+                setTimeout(function(){ $("#pinMeSuccess").hide() }, 1500);
+
+                // TODO:   Get this working
+                // network.body.nodes[nodeId].shape.options.shape = "box";
+
+            });
+        }
+        network.unselectAll();
 
     }
 
@@ -226,9 +266,3 @@
     });
 
 </script>
-
-<style>
-    .short {
-        width: 80px;
-    }
-</style>

@@ -567,6 +567,7 @@
     <Content Include="Images\PvP\animalPortraits\arctic_fox_Dandelion.jpg" />
     <Content Include="Images\PvP\animalPortraits\assgirl_sigmax.jpg" />
     <Content Include="Images\PvP\animalPortraits\bdsm_pony_girl_Meddle.png" />
+    <Content Include="Images\PvP\animalPortraits\bewitching_bunny_Martiandawn.jpg" />
     <Content Include="Images\PvP\animalPortraits\bimboSphere_Meddle.png" />
     <Content Include="Images\PvP\animalPortraits\bound_demonic_concubine_Babblingfaces.jpg" />
     <Content Include="Images\PvP\animalPortraits\cat_familiar_lux.png" />
@@ -574,7 +575,9 @@
     <Content Include="Images\PvP\animalPortraits\charmed_snake_jbovinne.jpg" />
     <Content Include="Images\PvP\animalPortraits\cheetah_Martiandawn.png" />
     <Content Include="Images\PvP\animalPortraits\circine_sow_Martiandawn.png" />
+    <Content Include="Images\PvP\animalPortraits\cocoa_companion_Melina_Mercy.jpg" />
     <Content Include="Images\PvP\animalPortraits\collared_lap_girl_Martiandawn.png" />
+    <Content Include="Images\PvP\animalPortraits\cowslime_Aurora_Ryall.jpg" />
     <Content Include="Images\PvP\animalPortraits\cow_sampleguy.jpg" />
     <Content Include="Images\PvP\animalPortraits\cute_puppy_Tez-Taylor.jpg" />
     <Content Include="Images\PvP\animalPortraits\decorative_gargoyle_spacedande.png" />
@@ -1172,6 +1175,7 @@
     <Content Include="Images\PvP\portraits\blue_chaffinch_Lux.png" />
     <Content Include="Images\PvP\portraits\blue_goo_boy_powderpuff.jpg" />
     <Content Include="Images\PvP\portraits\boyish_girl_Babblingfaces.jpg" />
+    <Content Include="Images\PvP\portraits\breenafae_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\bunnygirl_nymictf_fixed.png" />
     <Content Include="Images\PvP\portraits\cake_dragon_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\captivating_siren_babblingfaces.png" />
@@ -1184,6 +1188,7 @@
     <Content Include="Images\PvP\portraits\cocky_cabbit_boy_Aurora_Ryall.jpg" />
     <Content Include="Images\PvP\portraits\corrupted_nun_babblingfaces.jpg" />
     <Content Include="Images\PvP\portraits\councilorman_babblingfaces.jpg" />
+    <Content Include="Images\PvP\portraits\cupcake_demon_luxianne.jpg" />
     <Content Include="Images\PvP\portraits\dapper_Luxianne.png" />
     <Content Include="Images\PvP\portraits\dark_fay_Ninian_Fay.jpg" />
     <Content Include="Images\PvP\portraits\decorative_marble_statue_LastChance12.jpg" />
@@ -1260,6 +1265,7 @@
     <Content Include="Images\PvP\portraits\ice_sculpture_Martiandawn.jpg" />
     <Content Include="Images\PvP\portraits\incubus_servant_boy_spacedande.png" />
     <Content Include="Images\PvP\portraits\insectoid_alien_Dandelion.jpg" />
+    <Content Include="Images\PvP\portraits\intersteller_fugitive_jbovinne.jpg" />
     <Content Include="Images\PvP\portraits\irritable_grizzly_bear_maid_Daniel_Kay.jpg" />
     <Content Include="Images\PvP\portraits\jester_Meddle.png" />
     <Content Include="Images\PvP\portraits\jewdewfae_Luxianne.png" />
@@ -1368,6 +1374,7 @@
     <Content Include="Images\PvP\portraits\squirrel_maid_Luxianne.png" />
     <Content Include="Images\PvP\portraits\stone_lion_jbovinne.jpg" />
     <Content Include="Images\PvP\portraits\stripper_Meddle.png" />
+    <Content Include="Images\PvP\portraits\sunken_ship_girl_cyberkaku.jpg" />
     <Content Include="Images\PvP\portraits\sunnyglade_brigade_magic_fighter_Meddle.png" />
     <Content Include="Images\PvP\portraits\tasmanian_tigress_Geki.jpg" />
     <Content Include="Images\PvP\portraits\teacher_Meddle.png" />
@@ -1674,6 +1681,7 @@
     <Content Include="Images\PvP\portraits\wild_tiger_tribal_girl_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\Willing_wish_granter_Meddle.png" />
     <Content Include="Images\PvP\portraits\Wind_spirit_Sylph_dj-neko.jpg" />
+    <Content Include="Images\PvP\portraits\winged_elf_cyberkaku.jpg" />
     <Content Include="Images\PvP\portraits\Woman_01_Meddle.png" />
     <Content Include="Images\PvP\portraits\Woman_02_Meddle.png" />
     <Content Include="Images\PvP\portraits\Woman_03_Meddle.png" />

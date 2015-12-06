@@ -65,7 +65,7 @@ namespace tfgame.Procedures
                 logs.LocationLog = "<span class='playerAttackNotification'>" + attackerFullName + " cursed " + victimFullName + " with " + skillBeingUsed.Skill.FriendlyName + ".</span>";
                 logs.AttackerLog += "You cursed " + victimFullName + " with " + skillBeingUsed.Skill.FriendlyName +".";
                 logs.AttackerLog += "  (+1 XP)  ";
-                logs.AttackerLog += PlayerProcedures.GiveXP(attacker.Id, 1);
+                logs.AttackerLog += PlayerProcedures.GiveXP(attacker, 1);
                 logs.VictimLog = effectBeingGiven.MessageWhenHit;
                 logs.VictimLog += "  <span class='playerAttackNotification'>" + attackerFullName + " cursed you with <b>" + skillBeingUsed.Skill.FriendlyName + "</b>.</b></span>  ";
                 result = logs.AttackerLog;

@@ -4,72 +4,8 @@
 
 
 @{
-    
-    decimal XPtoLevel = 99999;
-
-    if (@Model.Player.Level == 1)
-    {
-        XPtoLevel = PvPStatics.XP__Level_2;
-    }
-    else if (@Model.Player.Level == 2)
-    {
-        XPtoLevel = PvPStatics.XP__Level_3;
-    }
-    else if (@Model.Player.Level == 3)
-    {
-        XPtoLevel = PvPStatics.XP__Level_4;
-    }
-    else if (@Model.Player.Level == 4)
-    {
-        XPtoLevel = PvPStatics.XP__Level_5;
-    }
-    else if (@Model.Player.Level == 5)
-    {
-        XPtoLevel = PvPStatics.XP__Level_6;
-    }
-    else if (@Model.Player.Level == 6)
-    {
-        XPtoLevel = PvPStatics.XP__Level_7;
-    }
-    else if (@Model.Player.Level == 7)
-    {
-        XPtoLevel = PvPStatics.XP__Level_8;
-    }
-    else if (@Model.Player.Level == 8)
-    {
-        XPtoLevel = PvPStatics.XP__Level_9;
-    }
-    else if (@Model.Player.Level == 9)
-    {
-        XPtoLevel = PvPStatics.XP__Level_10;
-    }
-    else if (@Model.Player.Level == 10)
-    {
-        XPtoLevel = PvPStatics.XP__Level_11;
-    }
-    else if (@Model.Player.Level == 11)
-    {
-        XPtoLevel = PvPStatics.XP__Level_12;
-    }
-    else if (@Model.Player.Level == 12)
-    {
-        XPtoLevel = PvPStatics.XP__Level_13;
-    }
-    else if (@Model.Player.Level == 4)
-    {
-        XPtoLevel = PvPStatics.XP__Level_14;
-    }
-    else if (@Model.Player.Level == 14)
-    {
-        XPtoLevel = PvPStatics.XP__Level_15;
-    }
-    else if (@Model.Player.Level == 15)
-    {
-        XPtoLevel = 99999;
-    }
-
-    decimal XpWidth = Math.Floor(Model.Player.XP / XPtoLevel * 100);
-    
+    float XPtoLevel = tfgame.Procedures.PlayerProcedures.GetXPNeededForLevelUp(Model.Player.Level);
+    decimal XpWidth = Math.Floor(Model.Player.XP / Convert.ToDecimal(XPtoLevel) * 100);
 }
 
 <div class="avatarXPWrapper" title="@Model.Player.XP / @XPtoLevel.00 XP to next level">

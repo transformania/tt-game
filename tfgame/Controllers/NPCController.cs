@@ -1095,7 +1095,7 @@ namespace tfgame.Controllers
             if (me.Form == output.RequiredForm)
             {
                 decimal xpGained = tfgame.Procedures.BossProcedures.BossProcedures_Fae.AddInteraction(me);
-                PlayerProcedures.GiveXP(me.Id, xpGained);
+                PlayerProcedures.GiveXP(me, xpGained);
                 PlayerProcedures.ChangePlayerActionMana(5, 0, 0, me.Id);
                 ViewBag.XPGain = xpGained;
                 ViewBag.ShowSuccess = true;

@@ -229,7 +229,7 @@ namespace tfgame.Procedures
                 output.AttackerLog += " (+" + xpEarned + " XP)";
                 output.ResultMessage += " (+" + xpEarned + " XP)";
 
-                string lvlMessage = PlayerProcedures.GiveXP(attacker.Id, xpEarned);
+                string lvlMessage = PlayerProcedures.GiveXP(attacker, xpEarned);
                 output.AttackerLog += lvlMessage;
                 output.ResultMessage += lvlMessage;
 
@@ -455,7 +455,7 @@ namespace tfgame.Procedures
 
                     // give the attacker a nice lump sum for having completed the transformation
                     output.AttackerLog += "  <br>For having sealed your opponent into their new form, you gain an extra <b>" + xpGain + "</b> XP.";
-                    output.AttackerLog += PlayerProcedures.GiveXP(attacker.Id, xpGain);
+                    output.AttackerLog += PlayerProcedures.GiveXP(attacker, xpGain);
                 }
 
                 // exclude PvP score for bots

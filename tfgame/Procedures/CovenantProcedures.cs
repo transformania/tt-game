@@ -681,7 +681,7 @@ namespace tfgame.Procedures
             
 
             repo.SaveLocationInfo(info);
-            PlayerProcedures.GiveXP(player.Id, XPGain);
+            PlayerProcedures.GiveXP(player, XPGain);
             PlayerLogProcedures.AddPlayerLog(player.Id, output, false);
 
             return output;

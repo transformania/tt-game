@@ -281,7 +281,7 @@ namespace tfgame.Procedures
                     message += "<br/>You earned <b>" + xpGain + "</b> XP.";
                 }
 
-                PlayerProcedures.GiveXP(player.Id, xpGain);
+                PlayerProcedures.GiveXP(player, xpGain);
             }
 
             // delete all of the player's quest variables

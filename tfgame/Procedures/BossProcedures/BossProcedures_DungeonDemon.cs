@@ -24,7 +24,7 @@ namespace tfgame.Procedures.BossProcedures
                 PlayerProcedures.GivePlayerPvPScore_NoLoser(attacker, pointsGain);
                 string playerLog = "You absorb dark magic from your vanquished opponent, earning " + pointsGain + " points and " + xpGain + " XP.  Unfortunately the demon's new form fades into mist, denying you any other trophies of your conquest.";
                 PlayerLogProcedures.AddPlayerLog(attacker.Id, playerLog, true);
-                PlayerProcedures.GiveXP(attacker.Id, xpGain);
+                PlayerProcedures.GiveXP(attacker, xpGain);
 
                 Item item = ItemProcedures.GetItemByVictimName(dbDemon.FirstName, dbDemon.LastName);
                 ItemProcedures.DeleteItem(item.Id);

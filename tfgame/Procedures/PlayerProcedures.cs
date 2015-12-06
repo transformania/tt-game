@@ -72,8 +72,8 @@ namespace tfgame.Procedures
                                                               InDuel = p.InDuel,
                                                               InQuest = p.InQuest,
                                                               InQuestState = p.InQuestState,
-                                                              
-                                                              
+
+
                                                           },
 
                                                           Form = new tfgame.ViewModels.Form
@@ -488,73 +488,73 @@ namespace tfgame.Procedures
         public static string SaveNewPlayer(NewCharacterViewModel player, string membershipId)
         {
 
-             IPlayerRepository playerRepo = new EFPlayerRepository();
+            IPlayerRepository playerRepo = new EFPlayerRepository();
 
             string noGenerationLastName = player.LastName.Split(' ')[0];
 
             Player ghost = playerRepo.Players.FirstOrDefault(p => p.FirstName == player.FirstName && p.LastName == noGenerationLastName);
-           
-             if (ghost != null && ghost.MembershipId != membershipId && ghost.MembershipId != "-1")
-             {
-                 return "A character of this name already exists.";
-             }
 
-             string generationTitle = "";
+            if (ghost != null && ghost.MembershipId != membershipId && ghost.MembershipId != "-1")
+            {
+                return "A character of this name already exists.";
+            }
 
-             if (ghost != null && (ghost.MembershipId == membershipId || ghost.MembershipId == "-1") && ghost.FirstName == player.FirstName && ghost.LastName == player.LastName)
-             {
+            string generationTitle = "";
 
-                 List<Player> possibleOldGens = playerRepo.Players.Where(p => p.FirstName == player.FirstName && p.LastName.Contains(player.LastName)).ToList();
+            if (ghost != null && (ghost.MembershipId == membershipId || ghost.MembershipId == "-1") && ghost.FirstName == player.FirstName && ghost.LastName == player.LastName)
+            {
 
-                 if (possibleOldGens.FirstOrDefault(p => p.FirstName == player.FirstName && p.LastName == player.LastName) == null)
-                 {
-                     generationTitle = " II";
-                 }
-                 else if (possibleOldGens.FirstOrDefault(p => p.FirstName == player.FirstName && p.LastName == player.LastName + " II") == null) {
-                     generationTitle = " II";
-                 }
-                 else if (possibleOldGens.FirstOrDefault(p => p.FirstName == player.FirstName && p.LastName == player.LastName + " III") == null)
-                 {
-                     generationTitle = " III";
-                 }
-                 else if (possibleOldGens.FirstOrDefault(p => p.FirstName == player.FirstName && p.LastName == player.LastName + " IV") == null)
-                 {
-                     generationTitle = " IV";
-                 }
-                 else if (possibleOldGens.FirstOrDefault(p => p.FirstName == player.FirstName && p.LastName == player.LastName + " V") == null)
-                 {
-                     generationTitle = " V";
-                 }
-                 else if (possibleOldGens.FirstOrDefault(p => p.FirstName == player.FirstName && p.LastName == player.LastName + " VI") == null)
-                 {
-                     generationTitle = " VI";
-                 }
-                 else if (possibleOldGens.FirstOrDefault(p => p.FirstName == player.FirstName && p.LastName == player.LastName + " VII") == null)
-                 {
-                     generationTitle = " VII";
-                 }
-                 else if (possibleOldGens.FirstOrDefault(p => p.FirstName == player.FirstName && p.LastName == player.LastName + " VIII") == null)
-                 {
-                     generationTitle = " VIII";
-                 }
-                 else if (possibleOldGens.FirstOrDefault(p => p.FirstName == player.FirstName && p.LastName == player.LastName + " IX") == null)
-                 {
-                     generationTitle = " IX";
-                 }
-                 else if (possibleOldGens.FirstOrDefault(p => p.FirstName == player.FirstName && p.LastName == player.LastName + " X") == null)
-                 {
-                     generationTitle = " X";
-                 }
-                 else
-                 {
-                     return "This name has gone through too many generations.  Choose another one.";
-                 }
-                
-               
-                 
-                     
-             
-             }
+                List<Player> possibleOldGens = playerRepo.Players.Where(p => p.FirstName == player.FirstName && p.LastName.Contains(player.LastName)).ToList();
+
+                if (possibleOldGens.FirstOrDefault(p => p.FirstName == player.FirstName && p.LastName == player.LastName) == null)
+                {
+                    generationTitle = " II";
+                }
+                else if (possibleOldGens.FirstOrDefault(p => p.FirstName == player.FirstName && p.LastName == player.LastName + " II") == null) {
+                    generationTitle = " II";
+                }
+                else if (possibleOldGens.FirstOrDefault(p => p.FirstName == player.FirstName && p.LastName == player.LastName + " III") == null)
+                {
+                    generationTitle = " III";
+                }
+                else if (possibleOldGens.FirstOrDefault(p => p.FirstName == player.FirstName && p.LastName == player.LastName + " IV") == null)
+                {
+                    generationTitle = " IV";
+                }
+                else if (possibleOldGens.FirstOrDefault(p => p.FirstName == player.FirstName && p.LastName == player.LastName + " V") == null)
+                {
+                    generationTitle = " V";
+                }
+                else if (possibleOldGens.FirstOrDefault(p => p.FirstName == player.FirstName && p.LastName == player.LastName + " VI") == null)
+                {
+                    generationTitle = " VI";
+                }
+                else if (possibleOldGens.FirstOrDefault(p => p.FirstName == player.FirstName && p.LastName == player.LastName + " VII") == null)
+                {
+                    generationTitle = " VII";
+                }
+                else if (possibleOldGens.FirstOrDefault(p => p.FirstName == player.FirstName && p.LastName == player.LastName + " VIII") == null)
+                {
+                    generationTitle = " VIII";
+                }
+                else if (possibleOldGens.FirstOrDefault(p => p.FirstName == player.FirstName && p.LastName == player.LastName + " IX") == null)
+                {
+                    generationTitle = " IX";
+                }
+                else if (possibleOldGens.FirstOrDefault(p => p.FirstName == player.FirstName && p.LastName == player.LastName + " X") == null)
+                {
+                    generationTitle = " X";
+                }
+                else
+                {
+                    return "This name has gone through too many generations.  Choose another one.";
+                }
+
+
+
+
+
+            }
 
             // check that the name has not been reserved by someone else with a different Membership Id
 
@@ -567,12 +567,12 @@ namespace tfgame.Procedures
             }
 
             // assert that the form is a valid staring form
-             string x = player.FormName;
+            string x = player.FormName;
 
-             if (x != "man_01" && x != "man_02" && x != "man_03" && x != "man_04" && x != "man_05" && x != "woman_01" && x != "woman_02" && x != "woman_03" && x != "woman_04" && x != "woman_05")
-             {
-                 return "That is not a valid starting form.";
-             }
+            if (x != "man_01" && x != "man_02" && x != "man_03" && x != "man_04" && x != "man_05" && x != "woman_01" && x != "woman_02" && x != "woman_03" && x != "woman_04" && x != "woman_05")
+            {
+                return "That is not a valid starting form.";
+            }
 
             Player vendor = null;
             if (player.InanimateForm != null)
@@ -595,50 +595,50 @@ namespace tfgame.Procedures
                 }
             }
             // remove the old Player--Membership binding
-             Player oldplayer = playerRepo.Players.FirstOrDefault(p => p.MembershipId == membershipId);
+            Player oldplayer = playerRepo.Players.FirstOrDefault(p => p.MembershipId == membershipId);
 
-             int oldCovId = 0;
+            int oldCovId = 0;
 
-             if (oldplayer != null)
-             {
-                 TimeSpan rerollTime = RerollProcedures.GetTimeUntilReroll(oldplayer);
-                 if (rerollTime.TotalSeconds > 0)
-                 {
-                     return "It is too soon for you to start again. Please try again in " + rerollTime.ToString(@"hh\:mm\:ss") + ".";
-                 }
+            if (oldplayer != null)
+            {
+                TimeSpan rerollTime = RerollProcedures.GetTimeUntilReroll(oldplayer);
+                if (rerollTime.TotalSeconds > 0)
+                {
+                    return "It is too soon for you to start again. Please try again in " + rerollTime.ToString(@"hh\:mm\:ss") + ".";
+                }
 
-                 // remove all of the old player's player logs
-                 PlayerLogProcedures.ClearPlayerLog(oldplayer.Id);
+                // remove all of the old player's player logs
+                PlayerLogProcedures.ClearPlayerLog(oldplayer.Id);
 
 
 
-                 // remove all of the old player's TF energies
-                 TFEnergyProcedures.DeleteAllPlayerTFEnergies(oldplayer.Id);
-                 oldplayer.MembershipId = AIStatics.RerolledPlayerBotId.ToString();
-                 oldplayer.BotId = AIStatics.RerolledPlayerBotId;
-                 playerRepo.SavePlayer(oldplayer);
+                // remove all of the old player's TF energies
+                TFEnergyProcedures.DeleteAllPlayerTFEnergies(oldplayer.Id);
+                oldplayer.MembershipId = AIStatics.RerolledPlayerBotId.ToString();
+                oldplayer.BotId = AIStatics.RerolledPlayerBotId;
+                playerRepo.SavePlayer(oldplayer);
 
-                 // remove the old player's effects
-                 EffectProcedures.DeleteAllPlayerEffects(oldplayer.Id);
+                // remove the old player's effects
+                EffectProcedures.DeleteAllPlayerEffects(oldplayer.Id);
 
-                 oldCovId = oldplayer.Covenant;
+                oldCovId = oldplayer.Covenant;
 
-                 // turn the item they player became permanent
-                 IItemRepository itemRepo = new EFItemRepository();
-                 Item oldItemMe = itemRepo.Items.FirstOrDefault(i => i.VictimName == oldplayer.FirstName + " " + oldplayer.LastName);
-                 oldItemMe.IsPermanent = true;
-                 oldItemMe.LastSouledTimestamp = DateTime.UtcNow.AddYears(1);
-                 itemRepo.SaveItem(oldItemMe);
-             }
-            
+                // turn the item they player became permanent
+                IItemRepository itemRepo = new EFItemRepository();
+                Item oldItemMe = itemRepo.Items.FirstOrDefault(i => i.VictimName == oldplayer.FirstName + " " + oldplayer.LastName);
+                oldItemMe.IsPermanent = true;
+                oldItemMe.LastSouledTimestamp = DateTime.UtcNow.AddYears(1);
+                itemRepo.SaveItem(oldItemMe);
+            }
+
 
             // clean the name entered by the player, capitalize first letter and downcase the rest
-             string cleanFirstName = char.ToUpper(player.FirstName[0]) + player.FirstName.Substring(1).ToLower();
-             string cleanLastName = char.ToUpper(player.LastName[0]) + player.LastName.Substring(1).ToLower();
+            string cleanFirstName = char.ToUpper(player.FirstName[0]) + player.FirstName.Substring(1).ToLower();
+            string cleanLastName = char.ToUpper(player.LastName[0]) + player.LastName.Substring(1).ToLower();
 
-             player.FirstName = cleanFirstName;
-             player.LastName = cleanLastName + generationTitle;
-           
+            player.FirstName = cleanFirstName;
+            player.LastName = cleanLastName + generationTitle;
+
             Player newplayer = new Player();
             newplayer.FirstName = player.FirstName;
             newplayer.LastName = player.LastName;
@@ -752,7 +752,7 @@ namespace tfgame.Procedures
 
             }
 
-          
+
 
             ISkillRepository skillRepo = new EFSkillRepository();
             Skill baseskill = new Skill
@@ -799,13 +799,13 @@ namespace tfgame.Procedures
             Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
             string oldForm = dbPlayer.Form;
             dbPlayer.Form = dbPlayer.OriginalForm;
-            
+
             if (dbPlayer.Mobility != PvPStatics.MobilityFull)
             {
                 IItemRepository itemRepo = new EFItemRepository();
                 Item itemMe = itemRepo.Items.FirstOrDefault(i => i.VictimName == player.FirstName + " " + player.LastName);
 
-                if (itemMe!=null)
+                if (itemMe != null)
                 {
                     itemRepo.DeleteItem(itemMe.Id);
                 }
@@ -816,7 +816,7 @@ namespace tfgame.Procedures
             DbStaticForm baseForm = FormStatics.GetForm(dbPlayer.OriginalForm);
 
             dbPlayer.Gender = baseForm.Gender;
-            
+
             dbPlayer.NormalizeHealthMana();
 
             playerRepo.SavePlayer(dbPlayer);
@@ -833,7 +833,7 @@ namespace tfgame.Procedures
             string oldForm = dbPlayer.Form;
             dbPlayer.Form = formName;
 
-            
+
             dbPlayer.Gender = form.Gender;
 
             dbPlayer.NormalizeHealthMana();
@@ -947,12 +947,12 @@ namespace tfgame.Procedures
                 locationMessageNew = player.GetFullName() + " teleported home using a Covenant Call Crystal.";
                 playerLogMessage = "You used a Covenant Call Crystal, teleporting you from " + oldLocation.Name + " to your safeground at " + newLocation.Name + ".";
             }
-            else { 
+            else {
                 locationMessageOld = player.GetFullName() + " used a scroll of teleportation.";
                 locationMessageNew = player.GetFullName() + " teleported to here.";
                 playerLogMessage = "You teleported from " + oldLocation.Name + " to " + newLocation.Name + ".";
             }
-            
+
 
             LocationLogProcedures.AddLocationLog(oldLocation.dbName, locationMessageOld);
             LocationLogProcedures.AddLocationLog(destination, locationMessageNew);
@@ -969,7 +969,7 @@ namespace tfgame.Procedures
             return output;
         }
 
-        public static void ChangePlayerActionMana(decimal actionPoints, decimal health, decimal mana,  int playerId)
+        public static void ChangePlayerActionMana(decimal actionPoints, decimal health, decimal mana, int playerId)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
             Player player = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);
@@ -1007,7 +1007,7 @@ namespace tfgame.Procedures
             player.Mana += mana;
             player.Health += health;
 
-           // player.LastActionTimestamp = DateTime.UtcNow;
+            // player.LastActionTimestamp = DateTime.UtcNow;
 
             if (player.Mana > player.MaxMana)
             {
@@ -1035,7 +1035,7 @@ namespace tfgame.Procedures
 
             playerRepo.SavePlayer(player);
 
-            return "You lower " + player.FirstName + "'s willpower by " + amount +".  ";
+            return "You lower " + player.FirstName + "'s willpower by " + amount + ".  ";
 
         }
 
@@ -1063,7 +1063,7 @@ namespace tfgame.Procedures
                             PlayerLogProcedures.AddPlayerLog(player.Id, summontext, true);
                             return summontext;
                         }
-                        
+
                     }
                     else if (roll < 1 && dbLocationName == "castle_armory")
                     {
@@ -1113,7 +1113,7 @@ namespace tfgame.Procedures
             }
 
             Location here = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == dbLocationName);
-            
+
 
             // learn a new skill
             if (roll < 30)
@@ -1147,7 +1147,7 @@ namespace tfgame.Procedures
                 {
                     return "You get the feeling there are no new spells for you to discover around here.";
                 }
-             
+
 
                 double max = eligibleSkills.Count();
                 int randIndex = Convert.ToInt32(Math.Floor(rand.NextDouble() * max));
@@ -1167,7 +1167,7 @@ namespace tfgame.Procedures
                 GiveMoneyToPlayer(player, moneyamount);
                 return "You collected " + (int)moneyamount + " Arpeyjis that were scattered on the ground.";
 
-                
+
             }
 
             // find a findable item (48-60)
@@ -1199,7 +1199,7 @@ namespace tfgame.Procedures
             // give some xp (60-80)
             else if (roll < 80)
             {
-                PlayerProcedures.GiveXP(player.Id, 3);
+                PlayerProcedures.GiveXP(player, 3);
                 return "Although you didn't find anything or learn any new spells, you note down a few things about your surroundings, which may come in useful in the future.  (+3 XP)";
             }
 
@@ -1211,7 +1211,7 @@ namespace tfgame.Procedures
 
                 if (effectsHere.Count() <= 0)
                 {
-                    PlayerProcedures.GiveXP(player.Id, 1.5M);
+                    PlayerProcedures.GiveXP(player, 1.5M);
                     return "Although you didn't find anything or learn any new spells, you feel as though you know this town a little better, which may come in useful in the future.  (+1.5 XP)";
                 }
                 else
@@ -1227,7 +1227,7 @@ namespace tfgame.Procedures
                     // assert that the player doesn't already have this effect.  IF they do, break out
                     if (EffectProcedures.PlayerHasEffect(player, effectToGet.dbName) == true)
                     {
-                        PlayerProcedures.GiveXP(player.Id, 1.5M);
+                        PlayerProcedures.GiveXP(player, 1.5M);
                         return "Although you didn't find anything or learn any new spells, you feel as though you know this town a little better, which may come in useful in the future.  (+1.5 XP)";
                     }
 
@@ -1239,7 +1239,7 @@ namespace tfgame.Procedures
 
             return "Unfortunately, you did not find anything useful.";
 
-            
+
         }
 
         public static void ChangeMaxHealthMana(int playerId, decimal extraHealthMax, decimal extraManaMax) {
@@ -1303,296 +1303,62 @@ namespace tfgame.Procedures
 
         }
 
-        public static string GiveXP(int playerId, decimal amount)
+        /// <summary>
+        /// Calculate how much XP is needed for the player to reach the next level given their current level, based off a hyperbolic formula currently set to 11x^2+x*0+89 .  The number is rounded up to the nearest 10.
+        /// 
+        /// </summary>
+        /// <param name="level">The player's current level</param>
+        /// <returns></returns>
+        public static float GetXPNeededForLevelUp(int level)
+        {
+            float xp = 11 * level * level + 0 + 89;
+            float leftover = xp % 10;
+
+            xp = (float)Math.Round(xp / 10) * 10;
+
+            if (leftover != 0)
+            {
+                xp += 10;
+            }
+
+            return xp;
+        }
+
+
+        /// <summary>
+        /// Assign a player XP and calculate whether or not they should level up
+        /// </summary>
+        /// <param name="player">Player earning XP</param>
+        /// <param name="amount">Amount of XP the player is earning</param>
+        /// <returns></returns>
+        public static string GiveXP(Player player, decimal amount)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player player = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);
+            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
 
             // decrease XP gain by 40% for psychos
-            if (player.BotId == AIStatics.PsychopathBotId)
+            if (dbPlayer.BotId == AIStatics.PsychopathBotId)
             {
                 amount = amount * .6M;
             }
 
-            player.XP += amount;
+            dbPlayer.XP += amount;
 
             string output = "";
 
             if (amount > 0)
             {
+                float xpNeeded = GetXPNeededForLevelUp(dbPlayer.Level);
 
-
-                #region xp level checks positive
-                if (player.Level == 1)
+                if ((float)dbPlayer.XP > xpNeeded)
                 {
-                    if (player.XP > PvPStatics.XP__Level_2)
-                    {
-                        player.Level++;
-                        player.XP -= PvPStatics.XP__Level_2;
-                        output += GiveLevelingBonus(player, 2);
-                    }
-                }
-                else if (player.Level == 2)
-                {
-                    if (player.XP > PvPStatics.XP__Level_3)
-                    {
-                        player.Level++;
-                        player.XP -= PvPStatics.XP__Level_3;
-                        output += GiveLevelingBonus(player, 3);
-                    }
-                }
-                else if (player.Level == 3)
-                {
-                    if (player.XP > PvPStatics.XP__Level_4)
-                    {
-                        player.Level++;
-                        player.XP -= PvPStatics.XP__Level_4;
-                        output += GiveLevelingBonus(player, 4);
-                    }
-                }
-                else if (player.Level == 4)
-                {
-                    if (player.XP > PvPStatics.XP__Level_5)
-                    {
-                        player.Level++;
-                        player.XP -= PvPStatics.XP__Level_5;
-                        output += GiveLevelingBonus(player, 5);
-                    }
-                }
-                else if (player.Level == 5)
-                {
-                    if (player.XP > PvPStatics.XP__Level_6)
-                    {
-                        player.Level++;
-                        player.XP -= PvPStatics.XP__Level_6;
-                        output += GiveLevelingBonus(player, 6);
-                    }
-                }
-                else if (player.Level == 6)
-                {
-                    if (player.XP > PvPStatics.XP__Level_7)
-                    {
-                        player.Level++;
-                        player.XP -= PvPStatics.XP__Level_7;
-                        output += GiveLevelingBonus(player, 7);
-                    }
-                }
-                else if (player.Level == 7)
-                {
-                    if (player.XP > PvPStatics.XP__Level_8)
-                    {
-                        player.Level++;
-                        player.XP -= PvPStatics.XP__Level_8;
-                        output += GiveLevelingBonus(player, 8);
-                    }
-                }
-                else if (player.Level == 8)
-                {
-                    if (player.XP > PvPStatics.XP__Level_9)
-                    {
-                        player.Level++;
-                        player.XP -= PvPStatics.XP__Level_9;
-                        output += GiveLevelingBonus(player, 9);
-                    }
-                }
-                else if (player.Level == 9)
-                {
-                    if (player.XP > PvPStatics.XP__Level_10)
-                    {
-                        player.Level++;
-                        player.XP -= PvPStatics.XP__Level_10;
-                        output += GiveLevelingBonus(player, 10);
-                    }
-                }
-                else if (player.Level == 10)
-                {
-                    if (player.XP > PvPStatics.XP__Level_11)
-                    {
-                        player.Level++;
-                        player.XP -= PvPStatics.XP__Level_11;
-                        output += GiveLevelingBonus(player, 11);
-                    }
-                }
-                else if (player.Level == 11)
-                {
-                    if (player.XP > PvPStatics.XP__Level_12)
-                    {
-                        player.Level++;
-                        player.XP -= PvPStatics.XP__Level_12;
-                        output += GiveLevelingBonus(player, 12);
-                    }
-                }
-                else if (player.Level == 12)
-                {
-                    if (player.XP > PvPStatics.XP__Level_13)
-                    {
-                        player.Level++;
-                        player.XP -= PvPStatics.XP__Level_13;
-                        output += GiveLevelingBonus(player, 13);
-                    }
-                }
-                else if (player.Level == 13)
-                {
-                    if (player.XP > PvPStatics.XP__Level_14)
-                    {
-                        player.Level++;
-                        player.XP -= PvPStatics.XP__Level_14;
-                        output += GiveLevelingBonus(player, 14);
-                    }
-                }
-                else if (player.Level == 14)
-                {
-                    if (player.XP > PvPStatics.XP__Level_15)
-                    {
-                        player.Level++;
-                        player.XP -= PvPStatics.XP__Level_15;
-                        output += GiveLevelingBonus(player, 15);
-                    }
-                }
-                else if (player.Level == 15)
-                {
-                    if (player.XP > PvPStatics.XP__Level_16)
-                    {
-                        player.Level++;
-                        player.XP -= PvPStatics.XP__Level_16;
-                        output += GiveLevelingBonus(player, 16);
-                    }
-                }
-                else if (player.Level == 16)
-                {
-                    if (player.XP > PvPStatics.XP__Level_17)
-                    {
-                        player.Level++;
-                        player.XP -= PvPStatics.XP__Level_17;
-                        output += GiveLevelingBonus(player, 17);
-                    }
-                }
-                else if (player.Level == 17)
-                {
-                    if (player.XP > PvPStatics.XP__Level_18)
-                    {
-                        player.Level++;
-                        player.XP -= PvPStatics.XP__Level_18;
-                        output += GiveLevelingBonus(player, 18);
-                    }
-                }
-                else if (player.Level == 18)
-                {
-                    if (player.XP > PvPStatics.XP__Level_19)
-                    {
-                        player.Level++;
-                        player.XP -= PvPStatics.XP__Level_19;
-                        output += GiveLevelingBonus(player, 19);
-                    }
-                }
-                else if (player.Level == 19)
-                {
-                    if (player.XP > PvPStatics.XP__Level_20)
-                    {
-                        player.Level++;
-                        player.XP -= PvPStatics.XP__Level_20;
-                        output += GiveLevelingBonus(player, 20);
-                    }
-                }
-                else if (player.Level == 20)
-                {
-                    if (player.XP > PvPStatics.XP__Level_21)
-                    {
-                        player.Level++;
-                        player.XP -= PvPStatics.XP__Level_21;
-                        output += GiveLevelingBonus(player, 21);
-                    }
-                }
-                else if (player.Level == 21)
-                {
-                    if (player.XP > PvPStatics.XP__Level_22)
-                    {
-                        player.Level++;
-                        player.XP -= PvPStatics.XP__Level_22;
-                        output += GiveLevelingBonus(player, 22);
-                    }
-                }
-                else if (player.Level == 22)
-                {
-                    if (player.XP > PvPStatics.XP__Level_23)
-                    {
-                        player.Level++;
-                        player.XP -= PvPStatics.XP__Level_23;
-                        output += GiveLevelingBonus(player, 23);
-                    }
-                }
-                else if (player.Level == 23)
-                {
-                    if (player.XP > PvPStatics.XP__Level_24)
-                    {
-                        player.Level++;
-                        player.XP -= PvPStatics.XP__Level_24;
-                        output += GiveLevelingBonus(player, 24);
-                    }
-                }
-                else if (player.Level == 24)
-                {
-                    if (player.XP > PvPStatics.XP__Level_25)
-                    {
-                        player.Level++;
-                        player.XP -= PvPStatics.XP__Level_25;
-                        output += GiveLevelingBonus(player, 25);
-                    }
-                }
-                else if (player.Level == 25)
-                {
-                    if (player.XP > PvPStatics.XP__Level_26)
-                    {
-                        player.Level++;
-                        player.XP -= PvPStatics.XP__Level_26;
-                        output += GiveLevelingBonus(player, 26);
-                    }
-                }
-                else if (player.Level == 26)
-                {
-                    if (player.XP > PvPStatics.XP__Level_27)
-                    {
-                        player.Level++;
-                        player.XP -= PvPStatics.XP__Level_27;
-                        output += GiveLevelingBonus(player, 27);
-                    }
-                }
-                else if (player.Level == 27)
-                {
-                    if (player.XP > PvPStatics.XP__Level_28)
-                    {
-                        player.Level++;
-                        player.XP -= PvPStatics.XP__Level_28;
-                        output += GiveLevelingBonus(player, 28);
-                    }
-                }
-
-            }
-                #endregion
-
-            #region xp level checks negative
-            else
-            {
-                if (player.XP < 0 && player.Level > 1)
-                {
-                    player.Level--;
-                    player.UnusedLevelUpPerks--;
-                    if (player.Mobility != "full")
-                    {
-                        output = "  Unfortunately, as your last animate form becomes a more distant memory, you lose an experience level, which will set you back when or if you do regain an animate body.";
-                    }
-                    else
-                    {
-                        output = "  Unfortunately, due to your recent transformation into a strange new body you lose an experience level for the time being.";
-                    }
-                    
-                    player.XP = PvPStatics.XP__LevelupRequirementByLevel[player.Level] - 1;
+                    dbPlayer.Level++;
+                    dbPlayer.XP -= Convert.ToDecimal(xpNeeded);
+                    output += GiveLevelingBonus(dbPlayer, 2);
                 }
             }
-            #endregion
 
-
-            playerRepo.SavePlayer(player);
+            playerRepo.SavePlayer(dbPlayer);
 
             return output;
         }

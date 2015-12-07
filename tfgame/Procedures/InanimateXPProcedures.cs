@@ -145,9 +145,9 @@ namespace tfgame.Procedures
 
 
 
-            if (xp.Amount >= InanimateXPStatics.XP__LevelupRequirements[inanimateMe.Level])
+            if (xp.Amount >= Convert.ToDecimal(ItemProcedures.GetXPRequiredForItemPetLevelup(inanimateMe.Level)))
             {
-                xp.Amount -= InanimateXPStatics.XP__LevelupRequirements[inanimateMe.Level];
+                xp.Amount -= Convert.ToDecimal(ItemProcedures.GetXPRequiredForItemPetLevelup(inanimateMe.Level));
                 inanimateMe.Level++;
                 itemRep.SaveItem(inanimateMe);
 
@@ -203,7 +203,7 @@ namespace tfgame.Procedures
             }
             else
             {
-                resultMessage = "  You have gained " + xpGain + " xp.  (" + xp.Amount + "/" + InanimateXPStatics.XP__LevelupRequirements[inanimateMe.Level] + ") to next level.";
+                resultMessage = "  You have gained " + xpGain + " xp.  (" + xp.Amount + "/" + ItemProcedures.GetXPRequiredForItemPetLevelup(inanimateMe.Level) + ") to next level.";
             }
 
             inanimXpRepo.SaveInanimateXP(xp);

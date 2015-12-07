@@ -2035,7 +2035,30 @@ namespace tfgame.Procedures
             itemRepo.SaveItem(item);
         }
 
-        
+        /// <summary>
+        /// Get the amount of XP required for an item or pet to reach the next level
+        /// </summary>
+        /// <param name="level">Current level of the item or pet</param>
+        /// <returns></returns>
+        public  static float GetXPRequiredForItemPetLevelup(int level)
+        {
+
+            float a = 11;
+            float b = 0;
+            float c = 89;
+
+            float xp = a * level * level + b * level + c;
+            float leftover = xp % 10;
+
+            xp = (float)Math.Round(xp / 10) * 10;
+
+            if (leftover != 0)
+            {
+                xp += 10;
+            }
+
+            return xp;
+        }
 
     }
 

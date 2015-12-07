@@ -13,14 +13,17 @@ namespace tfgame.Statics
         // also banned names
         public static string[] ReservedNames = {
            "Judoo",
+           "Juderp",
            "Testbot",
            "Psychopath",
            "Admin",
            "Administrator",
+           "Moderator",
            "Lindella",
            "Hitler",
            "Jewdewfae",
            "Wuffie",
+           "Lovebringer",
            };
 
 

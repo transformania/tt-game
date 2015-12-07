@@ -274,19 +274,6 @@ namespace tfgame.Procedures
             Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
             dbPlayer.TimesAttackingThisUpdate++;
 
-            // ALPHA ROUND 26:  Trying out remove XP loss when struggling
-
-            //decimal xploss = Convert.ToDecimal(strugglebonus) * dbPlayer.Level;
-
-            //dbPlayer.XP -= xploss;
-
-            //if (dbPlayer.XP < 0 && dbPlayer.Level > 1)
-            //{
-            //    dbPlayer.Level--;
-            //    dbPlayer.UnusedLevelUpPerks--;
-            //    dbPlayer.XP = PvPStatics.XP__LevelupRequirementByLevel[player.Level - 1] - 1;
-            //}
-
             double strugglesMade = Convert.ToDouble(inanimXP.TimesStruggled);
 
             Random rand = new Random();

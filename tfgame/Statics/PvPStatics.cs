@@ -196,8 +196,6 @@ namespace tfgame.Statics
         public const decimal XPGainPerInanimateAction = 5M;
         public const int ItemMaxTurnsBuildup = 48;
 
-        public static readonly decimal[] XP__LevelupRequirements = new decimal[22] { 0, 100, 150, 220, 310, 420, 550, 700, 870, 1060, 1270, 1500, 1750, 2020, 2310, 2620, 2950, 3300, 3670, 4060, 4470, 4900 }; // +450
-
     }
 
     public static class LocationsStatics

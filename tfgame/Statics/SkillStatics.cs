@@ -54,7 +54,5 @@ namespace tfgame.Statics
             return statSkillRepo.DbStaticSkills.Where(s => s.LearnedAtRegion == regionName && s.GivesEffect == null && s.IsLive == "live").ToList();
         }
 
-       // public static StaticSkills
-
     }
 }

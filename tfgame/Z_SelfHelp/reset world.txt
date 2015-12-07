@@ -30,7 +30,7 @@ DELETE FROM [Stats].[dbo].[PlayerQuests]
 DELETE FROM [Stats].[dbo].[QuestPlayerStatus]
 DELETE FROM [Stats].[dbo].[QuestPlayerVariables]
 
-UPDATE [Stats].[dbo].[PvPWorldStats] SET Boss_Donna = 'unstarted', [Boss_Valentine] = 'unstarted', [Boss_Bimbo] = 'unstarted', [Boss_Thief] = 'unstarted', [Boss_Sisters] = 'unstarted', [TurnNumber] = 0
+UPDATE [Stats].[dbo].[PvPWorldStats] SET Boss_Donna = 'unstarted', [Boss_Valentine] = 'unstarted', [Boss_Bimbo] = 'unstarted', [Boss_Thief] = 'unstarted', [Boss_Sisters] = 'unstarted', [TurnNumber] = 0, [ChaosMode] = 0
 
 
 reset PvPWorldStatistics

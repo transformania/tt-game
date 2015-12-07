@@ -1324,6 +1324,18 @@ namespace tfgame.Procedures
             return xp;
         }
 
+        public static float GetManaBaseByLevel(int level)
+        {
+            float manaBase = 5 * (level - 1) + 50;
+            return manaBase;
+        }
+
+        public static float GetWillpowerBaseByLevel(int level)
+        {
+            float willpowerBase = 15 * (level - 1) + 100;
+            return willpowerBase;
+        }
+
 
         /// <summary>
         /// Assign a player XP and calculate whether or not they should level up
@@ -1734,10 +1746,9 @@ namespace tfgame.Procedures
 
         public static Player ReadjustMaxes(Player player, BuffBox buffs)
         {
-            // readjust player health/mana by grabbing base amount plus effects from buffs
-            player.MaxHealth = PvPStatics.XP__HealthBaseByLevel[player.Level] * (1.0M + (buffs.HealthBonusPercent() / 100.0M));
-            player.MaxMana = PvPStatics.XP__ManaBaseByLevel[player.Level] * (1.0M + (buffs.ManaBonusPercent() / 100.0M));
-
+            // readjust player health/mana by grabbing base amount plus effe cts from buffs
+            player.MaxHealth = Convert.ToDecimal(PlayerProcedures.GetWillpowerBaseByLevel(player.Level)) * (1.0M + (buffs.HealthBonusPercent() / 100.0M));
+            player.MaxMana = Convert.ToDecimal(PlayerProcedures.GetManaBaseByLevel(player.Level)) * (1.0M + (buffs.ManaBonusPercent() / 100.0M));
 
             // keep player's health within proper bounds
             if (player.MaxHealth < 1)

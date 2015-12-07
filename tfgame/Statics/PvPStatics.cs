@@ -54,34 +54,6 @@ namespace tfgame.Statics
         public const int DuelNoCombatMinutes = 15;
         public const int MaximumDuelTurnLength = 10;
 
-        //public const decimal XP__Level_2 = 100;
-        //public const decimal XP__Level_3 = 150; //+50
-        //public const decimal XP__Level_4 = 220; //+70
-        //public const decimal XP__Level_5 = 310; //+90
-        //public const decimal XP__Level_6 = 420; //+110
-        //public const decimal XP__Level_7 = 550; //+130
-        //public const decimal XP__Level_8 = 700; //+150
-        //public const decimal XP__Level_9 = 870; //+170
-        //public const decimal XP__Level_10 = 1060; //+190
-        //public const decimal XP__Level_11 = 1270; //+210
-        //public const decimal XP__Level_12 = 1500; //+230
-        //public const decimal XP__Level_13 = 1750; //+250
-        //public const decimal XP__Level_14 = 2020; //+270
-        //public const decimal XP__Level_15 = 2310; //+290
-        //public const decimal XP__Level_16 = 2600; //+310
-        //public const decimal XP__Level_17 = 2910; //+330
-        //public const decimal XP__Level_18 = 3240; //+350
-        //public const decimal XP__Level_19 = 3600; //+370
-        //public const decimal XP__Level_20 = 3970; //+390
-        //public const decimal XP__Level_21 = 4360; //+410
-        //public const decimal XP__Level_22 = 4790; //+430
-        //public const decimal XP__Level_23 = 5240; //+450
-        //public const decimal XP__Level_24 = 5710; //+470
-        //public const decimal XP__Level_25 = 6200; //+490
-        //public const decimal XP__Level_26 = 6710; //+510
-        //public const decimal XP__Level_27 = 7240; //+530
-        //public const decimal XP__Level_28 = 7790; //+550
-
         public const string Permissions_Admin = "admin";
         public const string Permissions_Moderator = "moderator";
         public const string Permissions_MultiAccountWhitelist = "whitelisted";
@@ -98,102 +70,6 @@ namespace tfgame.Statics
                                                                  1440,
                                                                  4320,
                                                              };
-
-
-        public static readonly int[] XP__LevelupRequirementByLevel = {
-           5, // 0 (nobody should ever be at 0!)
-           100, // 1 (nobody should be able to level up to 1 since that means they were at 0!)
-           150, // 1 to 2
-           220, // 2 to 3
-           310, // 3 to 4
-           420, // 5
-           550, // 6
-           700, // 7
-           870, // 8
-           1060, // 9
-           1270, //10
-           1500, // 11
-           1750, // 12
-           2020, // 13
-           2310, // 13 to 14
-           2600, // 14 to 15
-           2910, // 15 to 16
-           3240, // 16 to 17
-           3600, // 17 to 18
-           3970, // 18 to 19
-           4360, // 19 to 20
-           4790, // 20 to 21
-           5240, // 21 to 22
-           5710, // 22 to 23
-           6200, // 23 to 24
-           6710, // 24 to 25
-           7240, // 25 to 26
-           7790, // 26 to 27
-       };
-
-        public static readonly int[] XP__ManaBaseByLevel = {
-           5, // 0 (nobody should ever be at 0!)
-           50, // 1
-           55, // 2
-           60, // 3
-           65, // 4
-           70, // 5
-           75, // 6
-           80, // 7
-           85, // 8
-           90, // 9
-           95, //10
-           100, // 11
-           105, // 12
-           110, // 13
-           115, // 14
-           120, // 15
-           125, // 16
-           130, // 17
-           135, // 18
-           140, // 19
-           145, // 20
-           150, // 21
-           155, // 22
-           160, // 23
-           165, // 24
-           170, // 25
-           175, // 26
-           180, // 27
-           185, // 28
-       };
-
-        public static readonly int[] XP__HealthBaseByLevel = {
-           5, // 0 (nobody should ever be at 0!)
-           100, // 1
-           115, // 2
-           130, // 3
-           145, // 4
-           160, // 5
-           175, // 6
-           190, // 7
-           205, // 8
-           220, // 9
-           235, //10
-           250, // 11
-           265, // 12
-           280, // 13
-           295, // 14
-           310, // 15
-           325, // 16
-           340, // 17
-           355, // 18
-           370, // 19
-           385, // 20
-           400, // 21
-           415, // 22
-           430, // 23
-           445, // 24
-           460, // 25
-           475, // 26
-           490, // 27
-           505, // 28
-       };
 
         public static readonly int[] RerollTimer = {
             30,     // 30 minutes

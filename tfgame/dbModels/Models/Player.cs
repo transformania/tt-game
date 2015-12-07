@@ -7,6 +7,7 @@ using tfgame.ViewModels;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using tfgame.dbModels.Commands.Player;
+using tfgame.Procedures;
 
 namespace tfgame.dbModels.Models
 {
@@ -105,8 +106,8 @@ namespace tfgame.dbModels.Models
         public void ReadjustMaxes(BuffBox buffs)
         {
             // readjust this health/mana by grabbing base amount plus effects from buffs
-            this.MaxHealth = PvPStatics.XP__HealthBaseByLevel[this.Level] * (1.0M + (buffs.HealthBonusPercent() / 100.0M));
-            this.MaxMana = PvPStatics.XP__ManaBaseByLevel[this.Level] * (1.0M + (buffs.ManaBonusPercent() / 100.0M));
+            this.MaxHealth = Convert.ToDecimal(PlayerProcedures.GetWillpowerBaseByLevel(this.Level)) * (1.0M + (buffs.HealthBonusPercent() / 100.0M));
+            this.MaxMana = Convert.ToDecimal(PlayerProcedures.GetManaBaseByLevel(this.Level)) * (1.0M + (buffs.ManaBonusPercent() / 100.0M));
 
 
             // keep this's health within proper bounds

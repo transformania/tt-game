@@ -844,7 +844,6 @@
     <Content Include="Images\PvP\itemsPortraits\leather_skirt_Martiandawn.jpg" />
     <Content Include="Images\PvP\itemsPortraits\lewd_leather_thong_Martiandawn.jpg" />
     <Content Include="Images\PvP\itemsPortraits\licking_tongue_babblingfaces.png" />
-    <Content Include="Images\PvP\itemsPortraits\lipstick.png" />
     <Content Include="Images\PvP\itemsPortraits\Lipstick_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\lovers_gift_heart_thong_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\love_cups_heart_bra_Meddle.png" />
@@ -912,7 +911,6 @@
     <Content Include="Images\PvP\itemsPortraits\spankmes_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\spellbook_Judoo.jpg" />
     <Content Include="Images\PvP\itemsPortraits\spellweaver_jawbreaker_Meddle.png" />
-    <Content Include="Images\PvP\itemsPortraits\spellweaver_jawbreaker_small.jpg" />
     <Content Include="Images\PvP\itemsPortraits\spellweaver_jawbreaker__Large_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\spellweaver_root_meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\spirit_shard_Luxianne.jpg" />
@@ -1141,7 +1139,6 @@
     <Content Include="Images\PvP\itemsPortraits\willbomb_weak.jpg" />
     <Content Include="Images\PvP\itemsPortraits\willflower_jawbreaker_Large_Meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\willflower_jawbreaker_Meddle.png" />
-    <Content Include="Images\PvP\itemsPortraits\willflower_jawbreaker_small.jpg" />
     <Content Include="Images\PvP\itemsPortraits\willflower_root_meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\witchling_Plushie_katie_frill.jpg" />
     <Content Include="Images\PvP\itemsPortraits\wobbling_ears_Aurora_Ryall.jpg" />
@@ -2224,11 +2221,9 @@
     <Content Include="Images\PvP\itemsPortraits\purple_vibrating_panties_by_nymic-tf.jpg" />
     <Content Include="Images\PvP\itemsPortraits\silk_tube_top_by_nymic-tf.jpg" />
     <Content Include="Images\PvP\itemsPortraits\SmartLookingTie.png" />
-    <Content Include="Images\PvP\itemsPortraits\spellweaver_petal.png" />
     <Content Include="Images\PvP\itemsPortraits\spellweaver_petal_meddle.png" />
     <Content Include="Images\PvP\itemsPortraits\statuette_tfnymic.jpg" />
     <Content Include="Images\PvP\itemsPortraits\Vibrator_meddle.png" />
-    <Content Include="Images\PvP\itemsPortraits\willflower_petal.png" />
     <Content Include="Images\PvP\itemsPortraits\willflower_petal_meddle.png" />
     <Content Include="Images\PvP\map.jpg" />
     <Content Include="Images\PvP\portraits\boozebaroness_by_nymic_tf-d7ekv5d.jpg" />

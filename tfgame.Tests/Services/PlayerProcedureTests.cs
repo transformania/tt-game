@@ -12,7 +12,7 @@ namespace tfgame.Tests.Services
     {
 
         [TestFixture]
-        public class QuestTests
+        public class Tests_for_base_willpower_mana_and_xp_to_next_level
         {
 
             // privates

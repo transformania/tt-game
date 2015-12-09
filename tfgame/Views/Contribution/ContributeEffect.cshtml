@@ -229,8 +229,11 @@
 
             <div class="form__panel" id="Skill_UniqueToForm_Panel" style="display: none;">
                 <label for="Skill_FriendlyName">What is the name of the form that grants this spell?</label>
+                @Ajax.ActionLink("Help", "AllForms", "Info", null, new AjaxOptions { UpdateTargetId = "modal", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "launchModal", OnFailure = "launchLocationListModalFail" }, new { @class = "attackLink" })
                 @Html.TextBoxFor(e => e.Skill_UniqueToForm)
             </div>
+
+            <div id="modal"></div>
 
             <div class="form__panel" id="Skill_UniqueToItem_Panel" style="display: none;">
                 <label for="Skill_UniqueToItem">What is the name of the item this spell grants when equipped?</label>

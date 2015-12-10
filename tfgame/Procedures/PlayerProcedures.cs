@@ -1952,10 +1952,14 @@ namespace tfgame.Procedures
             playerRepo.SavePlayer(dbPlayer);
         }
 
+        /// <summary>
+        /// Return a player's reserved name from the database if they have one.
+        /// </summary>
+        /// <param name="membershipId">Membership Id of the player whose reserved name is retrieved</param>
+        /// <returns>ReservedName object if found, null if not</returns>
         public static ReservedName GetPlayerReservedName(string membershipId)
         {
             IReservedNameRepository resNameRepo = new EFReservedNameRepository();
-
             return resNameRepo.ReservedNames.FirstOrDefault(rn => rn.MembershipId == membershipId);
         }
 

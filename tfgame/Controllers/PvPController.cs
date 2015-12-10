@@ -54,28 +54,11 @@ namespace tfgame.Controllers
             ViewBag.MyMembershipId = myMembershipId;
             ViewBag.MaxLogSize = PvPStatics.MaxLogMessagesPerLocation;
 
-            // if the player is logged in but has no character, go to a setup screen
+            // if the player is logged in but has no character, go to a player creation screen
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-
-            // TODO:  Just reroute to the Restart method... don't bother with this junk here.
             if (me == null)
             {
-                NewCharacterViewModel newCharModel = new NewCharacterViewModel();
-                ViewBag.IsRerolling = true;
-                ReservedName reservedName = PlayerProcedures.GetPlayerReservedName(myMembershipId);
-                if (reservedName != null)
-                {
-                    newCharModel.FirstName = reservedName.FullName.Split(' ')[0];
-                    newCharModel.LastName = reservedName.FullName.Split(' ')[1];
-                    newCharModel.StartGameMode = 1;
-                    newCharModel.Gender = "female";
-
-                    ViewBag.OldFirstName = newCharModel.FirstName;
-                    ViewBag.OldLastName = newCharModel.LastName;
-                    ViewBag.OldForm = "woman_01";
-                }
-                    
-                return View("~/Views/PvP/MakeNewCharacter.cshtml", newCharModel);
+                return RedirectToAction("Restart");
             }
 
             if (Session["ContributionId"] == null)
@@ -487,6 +470,7 @@ namespace tfgame.Controllers
                 {
                     ViewBag.OldFirstName = reservedName.FullName.Split(' ')[0];
                     ViewBag.OldLastName = reservedName.FullName.Split(' ')[1];
+                    ViewBag.OldForm = "woman_01";
                 }
             }
 

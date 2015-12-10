@@ -938,7 +938,7 @@ namespace tfgame.Controllers
 
             Player targeted = PlayerProcedures.GetPlayer(targetId);
 
-            // assert that the attacker player is not in a quest
+            // assert that the targeted player is not in a quest
             if (targeted.InQuest > 0)
             {
                 TempData["Error"] = "Your target must finish their quest before you can attack them.";

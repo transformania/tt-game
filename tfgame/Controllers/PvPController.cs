@@ -879,6 +879,12 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play");
             }
 
+            // assert that the attacker player is not in a quest
+            if (me.InQuest > 0)
+            {
+                TempData["Error"] = "You must finish your quest before you can attack someone.";
+                return RedirectToAction("Play", "PvP");
+            }
 
             // assert player hasn't attacked in past second
             double secondsSinceLastAttack = Math.Abs(Math.Floor(me.LastCombatTimestamp.Subtract(DateTime.UtcNow).TotalSeconds));
@@ -931,6 +937,13 @@ namespace tfgame.Controllers
             }
 
             Player targeted = PlayerProcedures.GetPlayer(targetId);
+
+            // assert that the attacker player is not in a quest
+            if (targeted.InQuest > 0)
+            {
+                TempData["Error"] = "Your target must finish their quest before you can attack them.";
+                return RedirectToAction("Play", "PvP");
+            }
 
             // assert player has enough mana to cast
             if ((float)me.Mana < AttackProcedures.GetSpellManaCost(me, targeted))

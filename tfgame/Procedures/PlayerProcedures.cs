@@ -1952,5 +1952,12 @@ namespace tfgame.Procedures
             playerRepo.SavePlayer(dbPlayer);
         }
 
+        public static ReservedName GetPlayerReservedName(string membershipId)
+        {
+            IReservedNameRepository resNameRepo = new EFReservedNameRepository();
+
+            return resNameRepo.ReservedNames.FirstOrDefault(rn => rn.MembershipId == membershipId);
+        }
+
     }
 }

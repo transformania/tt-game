@@ -57,9 +57,25 @@ namespace tfgame.Controllers
             // if the player is logged in but has no character, go to a setup screen
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
+            // TODO:  Just reroute to the Restart method... don't bother with this junk here.
             if (me == null)
             {
-                return View("~/Views/PvP/MakeNewCharacter.cshtml");
+                NewCharacterViewModel newCharModel = new NewCharacterViewModel();
+                ViewBag.IsRerolling = true;
+                ReservedName reservedName = PlayerProcedures.GetPlayerReservedName(myMembershipId);
+                if (reservedName != null)
+                {
+                    newCharModel.FirstName = reservedName.FullName.Split(' ')[0];
+                    newCharModel.LastName = reservedName.FullName.Split(' ')[1];
+                    newCharModel.StartGameMode = 1;
+                    newCharModel.Gender = "female";
+
+                    ViewBag.OldFirstName = newCharModel.FirstName;
+                    ViewBag.OldLastName = newCharModel.LastName;
+                    ViewBag.OldForm = "woman_01";
+                }
+                    
+                return View("~/Views/PvP/MakeNewCharacter.cshtml", newCharModel);
             }
 
             if (Session["ContributionId"] == null)
@@ -460,6 +476,18 @@ namespace tfgame.Controllers
                 ViewBag.OldFirstName = me.FirstName;
                 ViewBag.OldLastName = me.LastName.Split(' ')[0];
                 ViewBag.OldForm = me.OriginalForm;
+            }
+
+            // find the reserved name if there is one
+            if (me == null)
+            {
+
+                ReservedName reservedName = PlayerProcedures.GetPlayerReservedName(myMembershipId);
+                if (reservedName != null)
+                {
+                    ViewBag.OldFirstName = reservedName.FullName.Split(' ')[0];
+                    ViewBag.OldLastName = reservedName.FullName.Split(' ')[1];
+                }
             }
 
             return View("~/Views/PvP/MakeNewCharacter.cshtml");

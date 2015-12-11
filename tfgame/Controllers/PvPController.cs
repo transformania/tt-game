@@ -54,12 +54,11 @@ namespace tfgame.Controllers
             ViewBag.MyMembershipId = myMembershipId;
             ViewBag.MaxLogSize = PvPStatics.MaxLogMessagesPerLocation;
 
-            // if the player is logged in but has no character, go to a setup screen
+            // if the player is logged in but has no character, go to a player creation screen
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-
             if (me == null)
             {
-                return View("~/Views/PvP/MakeNewCharacter.cshtml");
+                return RedirectToAction("Restart");
             }
 
             if (Session["ContributionId"] == null)
@@ -460,6 +459,19 @@ namespace tfgame.Controllers
                 ViewBag.OldFirstName = me.FirstName;
                 ViewBag.OldLastName = me.LastName.Split(' ')[0];
                 ViewBag.OldForm = me.OriginalForm;
+            }
+
+            // find the reserved name if there is one
+            if (me == null)
+            {
+
+                ReservedName reservedName = PlayerProcedures.GetPlayerReservedName(myMembershipId);
+                if (reservedName != null)
+                {
+                    ViewBag.OldFirstName = reservedName.FullName.Split(' ')[0];
+                    ViewBag.OldLastName = reservedName.FullName.Split(' ')[1];
+                    ViewBag.OldForm = "woman_01";
+                }
             }
 
             return View("~/Views/PvP/MakeNewCharacter.cshtml");

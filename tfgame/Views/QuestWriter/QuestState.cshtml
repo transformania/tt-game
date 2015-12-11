@@ -64,6 +64,9 @@
 
     @Html.HiddenFor(m => m.QuestState.Id)
     @Html.HiddenFor(m => m.QuestState.QuestId)
+    @Html.HiddenFor(m => m.QuestState.X)
+    @Html.HiddenFor(m => m.QuestState.Y)
+    @Html.HiddenFor(m => m.QuestState.PinToDiagram)
 
     <label>Quest state name (this is only used in the quest editor to help improve the readability of the quest flow):</label>
     @Html.TextBoxFor(m => m.QuestState.QuestStateName)

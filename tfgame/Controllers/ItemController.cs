@@ -77,6 +77,14 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
+            // assert player has not already used an item this turn
+            if (me.ItemsUsedThisTurn > 0)
+            {
+                TempData["Error"] = "You've already used an item this turn.";
+                TempData["SubError"] = "You will be able to use another consumable type item next turn.";
+                return RedirectToAction("MyInventory", "PvP");
+            }
+
             // assert player owns at least one of the type of item needed
             ItemViewModel itemToUse = ItemProcedures.GetAllPlayerItems(me.Id).FirstOrDefault(i => i.dbItem.dbName == "item_consumable_selfcaster");
             if (itemToUse == null)
@@ -108,6 +116,9 @@ namespace tfgame.Controllers
 
             PlayerProcedures.InstantChangeToForm(me, skill.Skill.FormdbName);
             ItemProcedures.DeleteItemOfName(me, itemToUse.dbItem.dbName);
+
+            PlayerProcedures.AddMinutesToTimestamp(me, 15, true);
+            PlayerProcedures.AddItemUses(me.Id, 1);
 
             DbStaticForm form = FormStatics.GetForm(skill.Skill.FormdbName);
             TempData["Result"] = "You use a " + itemToUse.Item.FriendlyName + ", your spell bouncing through the device for a second before getting flung back at you and hitting you square in the chest, instantly transforming you into a " + form.FriendlyName + "!";

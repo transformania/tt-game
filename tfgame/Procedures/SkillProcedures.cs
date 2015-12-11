@@ -54,7 +54,7 @@ namespace tfgame.Procedures
                                                       Skill_ManaCost = ss.ManaCost,
                                                       Skill_HealthDamageAmount = ss.HealthDamageAmount,
                                                       Skill_GivesEffect = ss.GivesEffect,
-
+                                                      Skill_TFPointsAmount = ss.TFPointsAmount,
                                                       Form_FriendlyName = sf.FriendlyName
                                                   };
             return output;

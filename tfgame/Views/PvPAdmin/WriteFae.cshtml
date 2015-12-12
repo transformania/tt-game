@@ -9,6 +9,12 @@
         <span class="charCounter" id="textRemaining"></span>
     </div>
 
+    @Ajax.ActionLink("Show Locations", "AllLocations", "Info", null, new AjaxOptions { UpdateTargetId = "help", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "", OnFailure = "" }, new { @class = "attackLink" })
+    @Ajax.ActionLink("Show Forms", "AllForms", "Info", null, new AjaxOptions { UpdateTargetId = "help", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "launchModal", OnFailure = "launchLocationListModalFail" }, new { @class = "attackLink" })
+
+
+    <div id="help"></div>
+
     @Html.Raw(ViewBag.LocationExists)<br />
     @Html.Raw(ViewBag.FormExists)<br />
 

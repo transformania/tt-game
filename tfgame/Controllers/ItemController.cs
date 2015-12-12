@@ -117,7 +117,7 @@ namespace tfgame.Controllers
             PlayerProcedures.InstantChangeToForm(me, skill.Skill.FormdbName);
             ItemProcedures.DeleteItemOfName(me, itemToUse.dbItem.dbName);
 
-            PlayerProcedures.AddMinutesToTimestamp(me, 15, true);
+            PlayerProcedures.SetTimestampToNow(me);
             PlayerProcedures.AddItemUses(me.Id, 1);
 
             DbStaticForm form = FormStatics.GetForm(skill.Skill.FormdbName);

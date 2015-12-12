@@ -3044,6 +3044,14 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play");
             }
 
+            // assert player has not already used an item this turn
+            if (me.ItemsUsedThisTurn > 0)
+            {
+                TempData["Error"] = "You've already used an item this turn.";
+                TempData["SubError"] = "You will be able to use another consumable type item next turn.";
+                return RedirectToAction("MyInventory", "PvP");
+            }
+
              // assert player is not TPing into the dungeon from out in or vice versa
              bool destinationIsInDungeon = false;
              if (to.Contains("dungeon_")) {
@@ -3058,6 +3066,9 @@ namespace tfgame.Controllers
             TempData["Result"] = PlayerProcedures.TeleportPlayer(me, to, false);
 
             ItemProcedures.DeleteItemOfName(me, "item_consumeable_teleportation_scroll");
+
+            PlayerProcedures.SetTimestampToNow(me);
+            PlayerProcedures.AddItemUses(me.Id, 1);
 
             new Thread(() =>
                  StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__TimesTeleported_Scroll, 1)

@@ -13,6 +13,7 @@ using tfgame.dbModels.Models;
 using tfgame.ViewModels;
 using System.Collections.Generic;
 using tfgame.Statics;
+using System;
 
 namespace tfgame.Tests.Services
 {
@@ -219,7 +220,168 @@ namespace tfgame.Tests.Services
 
             message.Should().Be("[25 Succour]");
         }
+    }
 
+    [TestFixture]
+    public class QuestTests_PlayerCanStartQuest
+    {
+        private Player player;
+        private QuestStart questStart;
+        private int turnNumber;
+        private List<QuestPlayerStatus> questPlayerStatuses;
+
+        private int fakeTestId = 1;
+
+        [SetUp]
+        public void SetUp()
+        {
+            player = new Player
+            {
+                dbLocationName = "location",
+                Mobility = PvPStatics.MobilityFull,
+                Gender = PvPStatics.GenderMale,
+                LastCombatTimestamp = DateTime.UtcNow.AddYears(-1),
+                LastCombatAttackedTimestamp = DateTime.UtcNow.AddYears(-1),
+                BotId = AIStatics.ActivePlayerBotId,
+                FirstName = "FirstName",
+                LastName = "Lastname",
+                Form = "fakeForm",
+                Level = 1,
+                ActionPoints = PvPStatics.MaximumStoreableActionPoints,
+                Id = 1,
+                LastActionTimestamp = DateTime.UtcNow.AddYears(-1),
+                GameMode  = 0,
+                Health = 100,
+                MaxHealth = 100,
+                Mana = 100,
+                MaxMana = 100,
+            };
+            questStart = new QuestStart
+            {
+                RequiredGender = (int)QuestStatics.Gender.Any,
+                PrerequisiteQuest = 0,
+                IsLive = true,
+                Location = "location",
+                Id = fakeTestId,
+                MinStartLevel = 0,
+                MaxStartLevel = 99999,
+                MinStartTurn = 0,
+                MaxStartTurn = 99999,
+                Name = "TestQuest",
+                StartState = 1
+            };
+            turnNumber = 2000;
+            questPlayerStatuses = new List<QuestPlayerStatus>();
+        }
+
+        [Test]
+        public void Cant_start_quests_that_are_not_live()
+        {
+            questStart.IsLive = false;
+            bool ok = QuestProcedures.PlayerCanBeginQuest(player, questStart, questPlayerStatuses, turnNumber);
+            Assert.IsFalse(ok);
+        }
+
+        [Test]
+        public void Cant_start_quests_if_level_too_low()
+        {
+            questStart.MinStartLevel = 3;
+            player.Level = 2;
+            bool ok = QuestProcedures.PlayerCanBeginQuest(player, questStart, questPlayerStatuses, turnNumber);
+            Assert.IsFalse(ok);
+        }
+
+        [Test]
+        public void Cant_start_quests_if_level_too_high()
+        {
+            questStart.MinStartLevel = 3;
+            player.Level = 2;
+            bool ok = QuestProcedures.PlayerCanBeginQuest(player, questStart, questPlayerStatuses, turnNumber);
+            Assert.IsFalse(ok);
+        }
+
+        [Test]
+        public void Cant_start_quests_if_not_male_and_needs_male()
+        {
+            questStart.RequiredGender = (int)QuestStatics.Gender.Male;
+            player.Gender = PvPStatics.GenderFemale;
+            bool ok = QuestProcedures.PlayerCanBeginQuest(player, questStart, questPlayerStatuses, turnNumber);
+            Assert.IsFalse(ok);
+        }
+
+        [Test]
+        public void Cant_start_quests_if_not_female_and_needs_female()
+        {
+            questStart.RequiredGender = (int)QuestStatics.Gender.Female;
+            player.Gender = PvPStatics.GenderMale;
+            bool ok = QuestProcedures.PlayerCanBeginQuest(player, questStart, questPlayerStatuses, turnNumber);
+            Assert.IsFalse(ok);
+        }
+
+        [Test]
+        public void Cant_start_quests_if_quest_already_completed()
+        {
+            questPlayerStatuses.Add(new QuestPlayerStatus
+            {
+                QuestId = fakeTestId,
+                Outcome = (int)QuestStatics.QuestOutcomes.Completed
+            });
+            bool ok = QuestProcedures.PlayerCanBeginQuest(player, questStart, questPlayerStatuses, turnNumber);
+            Assert.IsFalse(ok);
+        }
+
+        [Test]
+        [Ignore("TODO -- method doesn't actually have this coded in yet.")]
+        public void Cant_start_quests_if_quest_recently_failed()
+        {
+            questPlayerStatuses.Add(new QuestPlayerStatus
+            {
+                QuestId = fakeTestId,
+                Outcome = (int)QuestStatics.QuestOutcomes.Failed,
+                LastEndedTurn = turnNumber - 1,
+                StartedTurn = turnNumber - 1
+            });
+            bool ok = QuestProcedures.PlayerCanBeginQuest(player, questStart, questPlayerStatuses, turnNumber);
+            Assert.IsFalse(ok);
+        }
+
+        [Test]
+        public void Can_start_quests_if_quest_not_recently_failed()
+        {
+            questPlayerStatuses.Add(new QuestPlayerStatus
+            {
+                QuestId = fakeTestId,
+                Outcome = (int)QuestStatics.QuestOutcomes.Failed,
+                LastEndedTurn = turnNumber - QuestStatics.QuestFailCooldownTurnLength - 1
+            });
+            bool ok = QuestProcedures.PlayerCanBeginQuest(player, questStart, questPlayerStatuses, turnNumber);
+            Assert.IsTrue(ok);
+        }
+
+        [Test]
+        [Ignore("TODO -- method doesn't actually have this coded in yet.")]
+        public void Cant_start_quest_if_prerequisite_test_not_completed()
+        {
+            questStart.PrerequisiteQuest = 2;
+            bool ok = QuestProcedures.PlayerCanBeginQuest(player, questStart, questPlayerStatuses, turnNumber);
+            Assert.IsFalse(ok);
+        }
+
+        [Test]
+        public void Cant_start_quest_if_prerequisite_test_is_completed()
+        {
+            questStart.PrerequisiteQuest = 2;
+
+            questPlayerStatuses.Add(new QuestPlayerStatus
+            {
+                QuestId = 2,
+                Outcome = (int)QuestStatics.QuestOutcomes.Completed
+            });
+
+            bool ok = QuestProcedures.PlayerCanBeginQuest(player, questStart, questPlayerStatuses, turnNumber);
+            Assert.IsTrue(ok);
+        }
 
     }
+
 }

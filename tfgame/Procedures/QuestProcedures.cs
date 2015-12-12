@@ -138,6 +138,8 @@ namespace tfgame.Procedures
                     //        return false;
                     //    }
                     //}
+
+                    // TODO:  Filter out quests that have a prerequisite not yet fulfilled
                 }
             }
 

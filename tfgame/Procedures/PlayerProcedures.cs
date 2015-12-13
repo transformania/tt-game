@@ -1109,6 +1109,17 @@ namespace tfgame.Procedures
                             return summontext;
                         }
                     }
+                    else if (roll < 1 && dbLocationName == BossProcedures_FaeBoss.SpawnLocation)
+                    {
+                        if (worldStats.IsFaeBossAvailable())
+                        {
+                            BossProcedures_FaeBoss.SpawnFaeBoss();
+                            PvPWorldStatProcedures.Boss_StartSisters();
+                            string summontext = BossSummonDictionary.GetActivationText("Sisters");
+                            PlayerLogProcedures.AddPlayerLog(player.Id, summontext, true);
+                            return summontext;
+                        }
+                    }
                 }
             }
 

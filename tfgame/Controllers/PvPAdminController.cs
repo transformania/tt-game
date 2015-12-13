@@ -1141,7 +1141,7 @@ namespace tfgame.Controllers
 
             AIProcedures.SpawnLindella();
             BossProcedures_PetMerchant.SpawnPetMerchant();
-            BossProcedures_Fae.SpawnFae();
+            BossProcedures_Jewdewfae.SpawnFae();
             AIProcedures.SpawnBartender();
             BossProcedures_Loremaster.SpawnLoremaster();
 

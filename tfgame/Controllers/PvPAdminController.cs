@@ -1092,12 +1092,7 @@ namespace tfgame.Controllers
                 return View("Play", "PvP");
             }
 
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-
-            decimal xpToGive = 500;
-
-            PlayerProcedures.GiveXP(me, xpToGive);
+            BossProcedures_FaeBoss.SpawnFaeBoss();
 
             return RedirectToAction("Index");
         }

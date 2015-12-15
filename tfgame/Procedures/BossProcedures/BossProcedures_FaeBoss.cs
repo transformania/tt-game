@@ -19,6 +19,9 @@ namespace tfgame.Procedures.BossProcedures
         public const string Form = "form_Corrupted_Lunar_Fae_Roxanne246810(Rachael_Victor/Yuki_Kitsu)";
         public const string SpawnLocation = "forest_pinecove";
 
+        public const string FreatFaeSpell = "skill_Midsummer's_Eve_Vivien_Gemai";
+        public const string GreatFaeForm = "form_Great_Fairy_Vivien_Gemai";
+
         public static Player SpawnFaeBoss()
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
@@ -37,7 +40,7 @@ namespace tfgame.Procedures.BossProcedures
                     LastCombatAttackedTimestamp = DateTime.UtcNow,
                     OnlineActivityTimestamp = DateTime.UtcNow,
                     NonPvP_GameOverSpellsAllowedLastChange = DateTime.UtcNow,
-                    Gender = "female",
+                    Gender =  PvPStatics.GenderFemale,
                     Health = 9999,
                     Mana = 9999,
                     MaxHealth = 9999,
@@ -47,7 +50,7 @@ namespace tfgame.Procedures.BossProcedures
                     Mobility = PvPStatics.MobilityFull,
                     Level = 25,
                     MembershipId = AIStatics.FaebossId.ToString(),
-                    BotId = AIStatics.JewdewfaeBotId,
+                    BotId = AIStatics.FaebossId,
                     ActionPoints_Refill = 360,
                 };
 
@@ -67,12 +70,51 @@ namespace tfgame.Procedures.BossProcedures
 
         public static void RunTurnLogic()
         {
-             
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            Player faeboss = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.FaebossId);
+            List<Player> playersHere = GetEligibleTargetsInLocation(faeboss.dbLocationName, faeboss);
+
+            foreach (Player p in playersHere)
+            {
+                string spell = ChooseSpell(p);
+                AttackProcedures.Attack(faeboss, p, spell);
+            }
+
         }
 
-        public static void CounterAttack()
+        public static void CounterAttack(Player attacker)
         {
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            Player faeboss = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.FaebossId);
+            string spell = ChooseSpell(attacker);
+            AttackProcedures.Attack(faeboss, attacker, spell);
+        }
 
+        public static string ChooseSpell(Player attacker)
+        {
+            if (attacker.Form != GreatFaeForm)
+            {
+                return FreatFaeSpell;
+            }
+            else if (attacker.Form == GreatFaeForm)
+            {
+                return "skill_Floral_Underlining_Passerby";
+            }
+
+            return "skill_Floral_Underlining_Passerby";
+        }
+
+        private static List<Player> GetEligibleTargetsInLocation(string location, Player player)
+        {
+            DateTime cutoff = DateTime.UtcNow.AddHours(-.5);
+            List<Player> playersHere = PlayerProcedures.GetPlayersAtLocation(location).Where(m => m.Mobility == PvPStatics.MobilityFull &&
+            m.Id != player.Id &&
+            m.BotId >= AIStatics.PsychopathBotId &&
+            m.LastActionTimestamp > cutoff &&
+            m.InDuel <= 0 &&
+            m.InQuest <= 0).ToList();
+
+            return playersHere;
         }
     }
 }

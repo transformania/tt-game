@@ -1092,7 +1092,7 @@ namespace tfgame.Controllers
                 return View("Play", "PvP");
             }
 
-            BossProcedures_FaeBoss.SpawnFaeBoss();
+            BossProcedures_FaeBoss.RunTurnLogic();
 
             return RedirectToAction("Index");
         }

@@ -106,7 +106,7 @@ namespace tfgame.Procedures.BossProcedures
 
         private static List<Player> GetEligibleTargetsInLocation(string location, Player player)
         {
-            DateTime cutoff = DateTime.UtcNow.AddHours(-.5);
+            DateTime cutoff = DateTime.UtcNow.AddMinutes(-30);
             List<Player> playersHere = PlayerProcedures.GetPlayersAtLocation(location).Where(m => m.Mobility == PvPStatics.MobilityFull &&
             m.Id != player.Id &&
             m.BotId >= AIStatics.PsychopathBotId &&

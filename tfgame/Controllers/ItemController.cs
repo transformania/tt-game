@@ -242,6 +242,14 @@ namespace tfgame.Controllers
                  return RedirectToAction("Play", "PvP");
              }
 
+             // make sure that this is actually a book
+             if (book.dbItem.dbName.Contains("item_consumable_tome-") != true)
+             {
+                TempData["Error"] = "You can't read that item!";
+                TempData["SubError"] = "It's not a book.";
+                return RedirectToAction("Play", "PvP");
+             }
+
              // assert player hasn't already read this book
              if (ItemProcedures.PlayerHasReadBook(me, book.dbItem.dbName) == true)
              {

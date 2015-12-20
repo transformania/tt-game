@@ -10,6 +10,12 @@ namespace tfgame.Procedures
 {
     public static class AIDirectiveProcedures
     {
+
+        /// <summary>
+        /// Retrieves the AI directive.  If no directive is found, a new one is automatically created with default settings
+        /// </summary>
+        /// <param name="botId">Id of the Player with this AI directive</param>
+        /// <returns>the AI directive belonging to the passed in player ID</returns>
         public static AIDirective GetAIDirective(int botId)
         {
             IAIDirectiveRepository directiveRepo = new EFAIDirectiveRepository();

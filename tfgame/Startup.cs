@@ -48,8 +48,8 @@ namespace tfgame
 
             // set chaos mode 
             IPvPWorldStatRepository repo = new EFPvPWorldStatRepository();
-            PvPWorldStat data = repo.PvPWorldStats.First();
-            PvPStatics.ChaosMode = data.ChaosMode;
+            PvPWorldStat data = repo.PvPWorldStats.FirstOrDefault();
+            PvPStatics.ChaosMode = data != null ? data.ChaosMode : false;
 
         }
     }

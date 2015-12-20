@@ -17,9 +17,9 @@ namespace tfgame.Procedures.BossProcedures
         public const string FirstName = "Narcissa";
         public const string LastName = "the Exiled";
         public const string Form = "form_Corrupted_Lunar_Fae_Roxanne246810(Rachael_Victor/Yuki_Kitsu)";
-        public const string SpawnLocation = "forest_pinecove";
+        public const string SpawnLocation = "fairygrove_greathall";
 
-        public const string FreatFaeSpell = "skill_Midsummer's_Eve_Vivien_Gemai";
+        public const string GreatFaeSpell = "skill_Midsummer's_Eve_Vivien_Gemai";
         public const string GreatFaeForm = "form_Great_Fairy_Vivien_Gemai";
 
         public static Player SpawnFaeBoss()
@@ -57,6 +57,9 @@ namespace tfgame.Procedures.BossProcedures
             }
 
             playerRepo.SavePlayer(faeboss);
+
+            AIDirective directive = AIDirectiveProcedures.GetAIDirective(faeboss.Id);
+
             return faeboss;
         }
 
@@ -72,6 +75,12 @@ namespace tfgame.Procedures.BossProcedures
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
             Player faeboss = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.FaebossId);
+
+            string newTargetLocation = GetLocationWithMostEligibleTargets();
+            string newActualLocation = AIProcedures.MoveTo(faeboss, newTargetLocation, 10);
+            faeboss.dbLocationName = newActualLocation;
+            playerRepo.SavePlayer(faeboss);
+
             List<Player> playersHere = GetEligibleTargetsInLocation(faeboss.dbLocationName, faeboss);
 
             foreach (Player p in playersHere)
@@ -94,7 +103,7 @@ namespace tfgame.Procedures.BossProcedures
         {
             if (attacker.Form != GreatFaeForm)
             {
-                return FreatFaeSpell;
+                return GreatFaeSpell;
             }
             else if (attacker.Form == GreatFaeForm)
             {
@@ -116,5 +125,19 @@ namespace tfgame.Procedures.BossProcedures
 
             return playersHere;
         }
+
+        private static string GetLocationWithMostEligibleTargets()
+        {
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            DateTime cutoff = DateTime.UtcNow.AddMinutes(-30);
+            IEnumerable<string> locs = playerRepo.Players.Where(p => p.Mobility == PvPStatics.MobilityFull &&
+            p.LastActionTimestamp > cutoff &&
+            p.Form != GreatFaeForm &&
+            p.dbLocationName.Contains("dungeon_") == false &&
+            p.InDuel <= 0 &&
+            p.InQuest <= 0).GroupBy(p => p.dbLocationName).OrderByDescending(p => p.Count()).Select(p => p.Key);
+            return locs.First();
+        }
+
     }
 }

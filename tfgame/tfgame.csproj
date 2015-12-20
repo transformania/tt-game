@@ -1735,6 +1735,10 @@
     <Content Include="XMLs\DungeonDemonNames.xml" />
     <Content Include="XMLs\DungeonNouns.xml" />
     <Content Include="XMLs\DungeonAdjectives.xml" />
+    <Content Include="XMLs\LocationDescriptions\fairygrove_springs.xml" />
+    <Content Include="XMLs\LocationDescriptions\fairygrove_flowerhomes.xml" />
+    <Content Include="XMLs\LocationDescriptions\fairygrove_greathall.xml" />
+    <Content Include="XMLs\LocationDescriptions\fairygrove_entrance.xml" />
     <Content Include="XMLs\restockList.xml" />
     <Content Include="XMLs\custom_bases.xml">
       <SubType>Designer</SubType>

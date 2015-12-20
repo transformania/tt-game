@@ -22,8 +22,8 @@ Below are some tools I keep in my developer environment used daily:
 
 # Files you'll want #
 
-https://www.dropbox.com/sh/iifq0ht8z7ucu00/AAC-mCl8Ce_5Kj2gXyLt9vnma?dl=0 
-The link above takes you to a Dropbox folder that contains files that can be downloaded and used by any TT dev.  It contains information such as as .SQL backup of the database which will allow you to seed your local database with some saved live data, populating your local database with forms / spells / item information that will be useful in development or to get an idea of how the database is arranged.
+[This link takes you to a Dropbox folder that contains files that can be downloaded and used by any TT dev.](https://www.dropbox.com/sh/iifq0ht8z7ucu00/AAC-mCl8Ce_5Kj2gXyLt9vnma?dl=0)
+ It contains information such as as .SQL backup of the database which will allow you to seed your local database with some saved live data, populating your local database with forms / spells / item information that will be useful in development or to get an idea of how the database is arranged.
 
 # Creating a blank local test database #
 Being able to build the project and run it on your local machine isn't very useful if you don't have a test database to work with, so you'll probably want to import the .SQL backup of the database. Here's how to get started!
@@ -32,8 +32,8 @@ Being able to build the project and run it on your local machine isn't very usef
   1. Copy tfgame\MachineKey.sample.config to tfgame\MachineKey.config
   1. Copy tfgame\ConnectionStrings.config to tfgame\ConnectionStrings.config and modify as needed to suit your SQL Server version.
   1. Start up SQL Server Management Studio. Connect to your LocalDB.
-      * If SQL Server 2012 LocalDB, use (localdb)\v11.0 with Windows Authentication
-      * If SQL Server 2014 LocalDB, use (localdb)\MSSQLLocalDB with Windows Authentication
+      * If SQL Server 2012 LocalDB, use `(localdb)\v11.0` with Windows Authentication
+      * If SQL Server 2014 LocalDB, use `(localdb)\MSSQLLocalDB` with Windows Authentication
   1. If you already have Databases\Stats in your LocalDB instance, delete it.
       * Note: This can also be done from Visual Studio, but I have found it to be less reliable than doing from SSMS.
   1. Verify that tfgame\App_Data has no .mdf or .ldf files.
@@ -46,7 +46,7 @@ Being able to build the project and run it on your local machine isn't very usef
 
  TT uses (mostly) Entity Framework Code First to interact with an SQL database.  Entity Framework is meant to be a tool to help abstract away some SQL by writing queries in C#, automatically converting them to SQL queries and executing them behind the scenes.  Unfortunately Entity Framework has some drawbacks, such as:
 
-  - If the database schema changes, you will have to update it by executing 'Update-Database' in the Package Manager Cosole window.  Otherwise you'll get a 'context has changed' exception when trying to launch the application
+  - If the database schema changes, you will have to update it by executing `Update-Database` in the Package Manager Cosole window.  Otherwise you'll get a 'context has changed' exception when trying to launch the application
   - If you drop a property in a table, you'll have to do some funky stuff in SQL Server to permit this to happen (Arrhae can fill in details here...)
   - A stored procedure is used to retrieve the Buffs (bonuses from form / gear / effects) for a player.  The script to alter this is found in the Schema folder.
   - If you want to do a join between two tables (such as the GetPlayerFormViewModel() method under PlayerProcedures) you have to have them in the same contex

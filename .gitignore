@@ -199,3 +199,6 @@ FakesAssemblies/
 # TransformaniaTime specific files
 MachineKey.config
 ConnectionStrings.config
+tfgame/Images/PvP/animalPortraits/
+tfgame/Images/PvP/itemsPortraits/
+tfgame/Images/PvP/portraits/

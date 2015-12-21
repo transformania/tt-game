@@ -203,3 +203,7 @@ ConnectionStrings.config
 Images/PvP/animalPortraits/
 Images/PvP/itemsPortraits/
 Images/PvP/portraits/
+
+# Tools
+tools
+!tools/packages.config

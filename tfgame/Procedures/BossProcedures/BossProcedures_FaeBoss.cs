@@ -22,6 +22,14 @@ namespace tfgame.Procedures.BossProcedures
         public const string GreatFaeSpell = "skill_Midsummer's_Eve_Vivien_Gemai";
         public const string GreatFaeForm = "form_Great_Fairy_Vivien_Gemai";
 
+        public const string DarkFaeSpell = "skill_Darkness_My_Old_Friend_Larissa_Fay";
+        public const string DarkFaeForm = "form_Dark_Fae_Larissa_Fay";
+
+        public const string EnchantedTreeSpell = "skill_Take_Root_Sherry_Gray";
+        public const string EnchantedTreeForm = "form_Enchanted_Tree_Sherry_Gray";
+
+        public static readonly string[] animateSpellsToCast = { GreatFaeSpell, DarkFaeSpell, EnchantedTreeSpell };
+
         public static Player SpawnFaeBoss()
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
@@ -85,7 +93,7 @@ namespace tfgame.Procedures.BossProcedures
 
             foreach (Player p in playersHere)
             {
-                string spell = ChooseSpell(p);
+                string spell = ChooseSpell(p, PvPWorldStatProcedures.GetWorldTurnNumber(), PvPStatics.MobilityFull);
                 AttackProcedures.Attack(faeboss, p, spell);
             }
 
@@ -95,22 +103,21 @@ namespace tfgame.Procedures.BossProcedures
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
             Player faeboss = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.FaebossId);
-            string spell = ChooseSpell(attacker);
+            string spell = ChooseSpell(attacker, PvPWorldStatProcedures.GetWorldTurnNumber(),PvPStatics.MobilityFull);
             AttackProcedures.Attack(faeboss, attacker, spell);
         }
 
-        public static string ChooseSpell(Player attacker)
+        public static string ChooseSpell(Player attacker, int turnNumber, string spellMobilityType)
         {
-            if (attacker.Form != GreatFaeForm)
+
+            if (spellMobilityType==PvPStatics.MobilityFull)
             {
-                return GreatFaeSpell;
-            }
-            else if (attacker.Form == GreatFaeForm)
-            {
-                return "skill_Floral_Underlining_Passerby";
+                int mod = turnNumber % animateSpellsToCast.Count();
+                return animateSpellsToCast[mod];
             }
 
-            return "skill_Floral_Underlining_Passerby";
+            return GreatFaeSpell;
+
         }
 
         private static List<Player> GetEligibleTargetsInLocation(string location, Player player)

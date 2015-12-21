@@ -2623,6 +2623,10 @@
     <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_27.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\XP\Alpha_27.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Statistics\Alpha_27.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\Alpha_28.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\XP\Alpha_28.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_28.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\Statistics\Alpha_28.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

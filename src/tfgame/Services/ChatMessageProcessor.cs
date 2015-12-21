@@ -37,8 +37,8 @@ namespace tfgame.Services
 
     public class MessageData
     {
-        public string Name { get; }
-        public string Message { get; }
+        public string Name { get; private set; }
+        public string Message { get; private set; }
         public bool Processed { get; private set; }
 
         public MessageOutput Output { get; set; }

@@ -8,7 +8,7 @@ namespace tfgame.Services
     {
         private static readonly object SyncRoot = new object();
 
-        protected static IDictionary<string, ChatUser> Persistence { get; }
+        protected static IDictionary<string, ChatUser> Persistence { get; private set; }
 
         static ChatPersistenceService()
         {

@@ -307,7 +307,7 @@ namespace tfgame.Tests.Services
 
         public class ChatPersistenceServiceWrapper : ChatPersistenceService
         {
-            public IDictionary<string, ChatUser> InternalPersistence => Persistence;
+            public IDictionary<string, ChatUser> InternalPersistence { get { return Persistence; } }
 
             public static void Reset()
             {

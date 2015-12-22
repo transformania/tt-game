@@ -21,6 +21,7 @@ using tfgame.Statics;
 using tfgame.ViewModels;
 using Microsoft.AspNet.Identity;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 
 namespace tfgame.Controllers
 {
@@ -3440,11 +3441,11 @@ namespace tfgame.Controllers
             }
 
             HttpContext ctx = System.Web.HttpContext.Current;
-            new Thread(new ThreadStart(() =>
+            Task.Run(() => 
             {
                 System.Web.HttpContext.Current = ctx;
                 WorldUpdateProcedures.UpdateWorld();
-            })).Start();
+            });
 
             ViewBag.UpdateInProgress = true;
             PvPStatics.AnimateUpdateInProgress = true;

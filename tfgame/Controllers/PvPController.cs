@@ -20,6 +20,7 @@ using tfgame.Procedures.BossProcedures;
 using tfgame.Statics;
 using tfgame.ViewModels;
 using Microsoft.AspNet.Identity;
+using System.Runtime.CompilerServices;
 
 namespace tfgame.Controllers
 {
@@ -3425,6 +3426,7 @@ namespace tfgame.Controllers
             public string Desc { get; set; }
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public ActionResult UpdateWorld()
         {
 
@@ -3437,7 +3439,15 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play");
             }
 
-            WorldUpdateProcedures.UpdateWorld();
+            HttpContext ctx = System.Web.HttpContext.Current;
+            new Thread(new ThreadStart(() =>
+            {
+                System.Web.HttpContext.Current = ctx;
+                WorldUpdateProcedures.UpdateWorld();
+            })).Start();
+
+            ViewBag.UpdateInProgress = true;
+            PvPStatics.AnimateUpdateInProgress = true;
 
             return RedirectToAction("Play");
 

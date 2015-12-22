@@ -79,5 +79,5 @@ Task("Migrate")
         }
     });
 
-Information("dbType: {0}", dbType);
+Information("Build settings: Target={0}, Configuration={1}, dbType={2}", target, configuration, dbType);
 RunTarget(target);

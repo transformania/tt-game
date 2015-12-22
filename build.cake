@@ -1,10 +1,16 @@
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Debug");
+var dbType = Argument("dbType", "localdb_v1").ToLower();
 
 Task("Default")
     .IsDependentOn("Run-Unit-Tests")
     .Does(() => {}
 );
+
+Task("Clean")
+    .Does(() => {
+        CleanDirectories(new DirectoryPath[] { Directory("./src/tfgame/bin"), Directory("./src/tfgame.tests/bin/") + Directory(configuration) });   
+});
 
 Task("Restore-NuGet-Packages")
     .Does(() =>
@@ -18,11 +24,11 @@ Task("Restore-NuGet-Packages")
 });
 
 Task("Build")
+    .IsDependentOn("Clean")
     .IsDependentOn("Restore-NuGet-Packages")
     .Does(() => {
     MSBuild("./src/tfgame.sln", new MSBuildSettings()
         .SetConfiguration(configuration)
-        .WithProperty("TreatWarningsAsErrors", "False")
         .UseToolVersion(MSBuildToolVersion.NET45)
         .SetVerbosity(Verbosity.Minimal)
         .SetNodeReuse(false));
@@ -34,4 +40,39 @@ Task("Run-Unit-Tests")
     NUnit3("./src/**/bin/" + configuration + "/*.Tests.dll");
 });
 
+Task("Migrate")
+    .IsDependentOn("Build")
+    .Does(() => {
+        var instances = new Dictionary<string,Tuple<string,string>>()
+        {
+            { "localdb_v2", new Tuple<string,string>(@"(localdb)\MSSQLLocalDB", @"Data Source=(LocalDb)\MSSQLLocalDB; Initial Catalog=Stats; Integrated Security=SSPI; AttachDBFilename=|DataDirectory|\StatsLocal.mdf") },
+            { "localdb_v1", new Tuple<string,string>(@"(localdb)\v11.0", @"Data Source=(LocalDb)\v11.0; Initial Catalog=Stats; Integrated Security=SSPI; AttachDBFilename=|DataDirectory|\StatsLocal.mdf") },
+            { "server", new Tuple<string, string>("localhost", "Data Source=localhost; Initial Catalog=Stats; Integrated Security=true;") } 
+        };
+    
+        CopyFile("src/packages/EntityFramework.6.1.0/tools/Migrate.exe","src/tfgame/bin/Migrate.exe");
+        
+        Information("Running migrations using {0}", instances[dbType].Item2);
+        
+        using(var process = StartAndReturnProcess("src/tfgame/bin/Migrate.exe", new ProcessSettings 
+        { 
+            Arguments = "tfgame.dll /connectionProviderName=\"System.Data.SqlClient\" /connectionString=\"" + instances[dbType].Item2 + "\"" 
+        }))
+        {
+            process.WaitForExit();
+            // This should output 0 as valid arguments supplied
+            Information("Exit code: {0}", process.GetExitCode());
+        }
+        
+        Information("Applying stored procedures against {0}", instances[dbType].Item1);
+              
+        using(var process = StartAndReturnProcess("sqlcmd", new ProcessSettings { Arguments = @"-i src\tfgame\Schema\GetPlayerBuffs.sql -S " + instances[dbType].Item1 }))
+        {
+            process.WaitForExit();
+            // This should output 0 as valid arguments supplied
+            Information("Exit code: {0}", process.GetExitCode());
+        }
+    });
+
+Information("dbType: {0}", dbType);
 RunTarget(target);

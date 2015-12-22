@@ -46,8 +46,8 @@ Task("Migrate")
     .Does(() => {
         var instances = new Dictionary<string,Tuple<string,string>>()
         {
-            { "localdb_v2", new Tuple<string,string>(@"(localdb)\MSSQLLocalDB", @"Data Source=(LocalDb)\MSSQLLocalDB; Initial Catalog=Stats; Integrated Security=SSPI; AttachDBFilename=|DataDirectory|\StatsLocal.mdf") },
-            { "localdb_v1", new Tuple<string,string>(@"(localdb)\v11.0", @"Data Source=(LocalDb)\v11.0; Initial Catalog=Stats; Integrated Security=SSPI; AttachDBFilename=|DataDirectory|\StatsLocal.mdf") },
+            { "localdb_v2", new Tuple<string,string>(@"(localdb)\MSSQLLocalDB", @"Data Source=(LocalDb)\MSSQLLocalDB; Initial Catalog=Stats; Integrated Security=SSPI") },
+            { "localdb_v1", new Tuple<string,string>(@"(localdb)\v11.0", @"Data Source=(LocalDb)\v11.0; Initial Catalog=Stats; Integrated Security=SSPI;") },
             { "server", new Tuple<string, string>("localhost", "Data Source=localhost; Initial Catalog=Stats; Integrated Security=true;") } 
         };
     
@@ -61,8 +61,10 @@ Task("Migrate")
         }))
         {
             process.WaitForExit();
-            // This should output 0 as valid arguments supplied
-            Information("Exit code: {0}", process.GetExitCode());
+
+            var exitCode = process.GetExitCode();
+            if (exitCode > 0)
+                throw new Exception("Migration failed");
         }
         
         Information("Applying stored procedures against {0}", instances[dbType].Item1);
@@ -70,8 +72,10 @@ Task("Migrate")
         using(var process = StartAndReturnProcess("sqlcmd", new ProcessSettings { Arguments = @"-i src\tfgame\Schema\GetPlayerBuffs.sql -S " + instances[dbType].Item1 }))
         {
             process.WaitForExit();
-            // This should output 0 as valid arguments supplied
-            Information("Exit code: {0}", process.GetExitCode());
+            
+            var exitCode = process.GetExitCode();
+            if (exitCode > 0)
+                throw new Exception("Stored procedure scripts failed");
         }
     });
 

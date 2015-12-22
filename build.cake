@@ -3,6 +3,7 @@ var configuration = Argument("configuration", "Debug");
 var dbType = Argument("dbType", "localdb_v1").ToLower();
 
 Task("Default")
+    .IsDependentOn("Migrate")
     .IsDependentOn("Run-Unit-Tests")
     .Does(() => {}
 );

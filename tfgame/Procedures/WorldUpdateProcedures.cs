@@ -15,7 +15,7 @@ using tfgame.ViewModels;
 
 namespace tfgame.Procedures
 {
-    public static  class WorldUpdateProcedures
+    public static class WorldUpdateProcedures
     {
         /// <summary>
         /// Call the update world method only if enough time has elapsed, otherwise do nothing
@@ -25,8 +25,8 @@ namespace tfgame.Procedures
             PvPWorldStat worldStats = PvPWorldStatProcedures.GetWorldStats();
             double secondsSinceUpdate = Math.Abs(Math.Floor(worldStats.LastUpdateTimestamp.Subtract(DateTime.UtcNow).TotalSeconds));
 
-            // if it has been long enough since last update, force an update to occur
-            if (secondsSinceUpdate > PvPStatics.TurnSecondLength && worldStats.WorldIsUpdating == false && PvPStatics.AnimateUpdateInProgress == false)
+            // if it has been long enough since last update, force an update to occur0
+            if (secondsSinceUpdate > PvPStatics.TurnSecondLength && !(worldStats.WorldIsUpdating || PvPStatics.AnimateUpdateInProgress))
             {
                 WorldUpdateProcedures.UpdateWorld();
             }
@@ -42,6 +42,9 @@ namespace tfgame.Procedures
 
             if (turnNo < PvPStatics.RoundDuration)
             {
+
+                PvPStatics.AnimateUpdateInProgress = true;
+
                 IServerLogRepository serverLogRepo = new EFServerLogRepository();
                 ServerLog log = new ServerLog
                 {
@@ -51,7 +54,7 @@ namespace tfgame.Procedures
                     Errors = 0,
                     FullLog = "",
                     Population = PlayerProcedures.GetWorldPlayerStats().CurrentOnlinePlayers,
-            };
+                };
                 log.AddLog("Started new log for turn " + turnNo + ".");
                 serverLogRepo.SaveServerLog(log);
                 Stopwatch updateTimer = new Stopwatch();
@@ -94,8 +97,6 @@ namespace tfgame.Procedures
                     }
                 }
                 #endregion
-
-                PvPWorldStatProcedures.UpdateWorldTurnCounter();
 
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started loading animate players");
                 

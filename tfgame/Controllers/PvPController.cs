@@ -77,7 +77,7 @@ namespace tfgame.Controllers
             {
                 return RedirectToAction("Questing", "Quest");
             }
- 
+
             DateTime markOnlineCutoff = DateTime.UtcNow.AddMinutes(-2);
 
             // update the player's "last online" attribute if it's been long enough
@@ -92,16 +92,18 @@ namespace tfgame.Controllers
             ViewBag.UpdateInProgress = false;
 
             double secondsSinceUpdate = Math.Abs(Math.Floor(WorldStat.LastUpdateTimestamp.Subtract(DateTime.UtcNow).TotalSeconds));
-            ViewBag.SecondsUntilUpdate = PvPStatics.TurnSecondLength-(int)secondsSinceUpdate;
+            ViewBag.SecondsUntilUpdate = PvPStatics.TurnSecondLength - (int)secondsSinceUpdate;
 
             // if it has been long enough since last update, force an update to occur
-            if (secondsSinceUpdate > PvPStatics.TurnSecondLength && WorldStat.WorldIsUpdating == false && PvPStatics.AnimateUpdateInProgress == false)
+            if (WorldStat.TurnNumber < PvPStatics.RoundDuration
+                && secondsSinceUpdate > PvPStatics.TurnSecondLength 
+                && !(WorldStat.WorldIsUpdating || PvPStatics.AnimateUpdateInProgress))
             {
-                UpdateWorld();
+                Parallel.Invoke(() => UpdateWorld(), () => UpdateWorld());
             }
 
             // turn off world update toggle if it's simply been too long
-            if (secondsSinceUpdate > 90 && (PvPStatics.AnimateUpdateInProgress == true || WorldStat.WorldIsUpdating == true))
+            if (secondsSinceUpdate > 90 && (PvPStatics.AnimateUpdateInProgress || WorldStat.WorldIsUpdating))
             {
                 PvPStatics.AnimateUpdateInProgress = false;
                 PvPWorldStatProcedures.StopUpdatingWorld();
@@ -170,7 +172,7 @@ namespace tfgame.Controllers
                     }
                     inanimateOutput.LocationLog = validActionsHere;
                     inanimateOutput.PlayersHere = PlayerProcedures.GetPlayerFormViewModelsAtLocation(inanimateOutput.WornBy.Player.dbLocationName, myMembershipId);
-                    
+
                 }
                 else
                 {
@@ -186,7 +188,7 @@ namespace tfgame.Controllers
                 }
 
                 inanimateOutput.PlayersHere = playersHere.OrderByDescending(p => p.Player.Level);
-                
+
                 return View("Play_Inanimate", inanimateOutput);
             }
 
@@ -212,7 +214,7 @@ namespace tfgame.Controllers
 
                 }
 
-              
+
                 animalOutput.WorldStats = PlayerProcedures.GetWorldPlayerStats();
 
                 if (animalOutput.OwnedBy != null)
@@ -223,7 +225,7 @@ namespace tfgame.Controllers
                 {
                     animalOutput.Location = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName);
                 }
-                
+
                 animalOutput.Location.FriendlyName_North = LocationsStatics.GetConnectionName(animalOutput.Location.Name_North);
                 animalOutput.Location.FriendlyName_East = LocationsStatics.GetConnectionName(animalOutput.Location.Name_East);
                 animalOutput.Location.FriendlyName_South = LocationsStatics.GetConnectionName(animalOutput.Location.Name_South);
@@ -365,13 +367,13 @@ namespace tfgame.Controllers
             return RedirectToAction("Play");
         }
 
-         [Authorize]
+        [Authorize]
         public ActionResult NewCharacter(NewCharacterViewModel player)
         {
             string myMembershipId = User.Identity.GetUserId();
             if (!ModelState.IsValid)
             {
-                ViewBag.ErrorMessage = "Your character was not created.  You can only use letters and your first and last names must be between 2 and 30 letters long." ;
+                ViewBag.ErrorMessage = "Your character was not created.  You can only use letters and your first and last names must be between 2 and 30 letters long.";
                 return View("~/Views/PvP/MakeNewCharacter.cshtml");
             }
 
@@ -405,7 +407,7 @@ namespace tfgame.Controllers
                 ViewBag.ErrorMessage = "You can't use the last name '" + player.LastName + "'.  It is reserved or else not allowed.";
                 return View("~/Views/PvP/MakeNewCharacter.cshtml");
             }
-            
+
             // assert player does not currently have an animate player
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             if (me != null && me.Mobility == PvPStatics.MobilityFull)
@@ -438,7 +440,7 @@ namespace tfgame.Controllers
             return RedirectToAction("Play");
         }
 
-         [Authorize]
+        [Authorize]
         public ActionResult Restart()
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -479,7 +481,7 @@ namespace tfgame.Controllers
             return View("~/Views/PvP/MakeNewCharacter.cshtml");
         }
 
-         [Authorize]
+        [Authorize]
         public ActionResult MoveTo(string locname)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -504,10 +506,10 @@ namespace tfgame.Controllers
             if (me.InDuel > 0)
             {
                 TempData["Error"] = "You must finish your duel before you can move again.";
-                return RedirectToAction("Play","PvP");
+                return RedirectToAction("Play", "PvP");
             }
 
-              // assert that this player is not in a quest
+            // assert that this player is not in a quest
             if (me.InQuest > 0)
             {
                 TempData["Error"] = "You must finish your quest before you can move again.";
@@ -570,7 +572,7 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play");
             }
 
-             // assert that the player has not attacked too recently to move
+            // assert that the player has not attacked too recently to move
             double lastAttackTimeAgo = Math.Abs(Math.Floor(me.LastCombatTimestamp.Subtract(DateTime.UtcNow).TotalSeconds));
             if (lastAttackTimeAgo < PvPStatics.NoMovingAfterAttackSeconds)
             {
@@ -620,7 +622,7 @@ namespace tfgame.Controllers
 
             }
 
-             // calculate concealment level
+            // calculate concealment level
             int sneakLevel = (int)buffs.SneakPercent();
 
             if (sneakLevel < 0)
@@ -667,34 +669,34 @@ namespace tfgame.Controllers
         }
 
         [Authorize]
-         public ActionResult EnterDungeon(string entering)
-         {
-             string myMembershipId = User.Identity.GetUserId();
-             if (PvPStatics.AnimateUpdateInProgress == true)
-             {
-                 TempData["Error"] = "Player update portion of the world update is still in progress.";
-                 TempData["SubError"] = "Try again a bit later when the update has progressed farther along.";
-                 return RedirectToAction("Play");
-             }
+        public ActionResult EnterDungeon(string entering)
+        {
+            string myMembershipId = User.Identity.GetUserId();
+            if (PvPStatics.AnimateUpdateInProgress == true)
+            {
+                TempData["Error"] = "Player update portion of the world update is still in progress.";
+                TempData["SubError"] = "Try again a bit later when the update has progressed farther along.";
+                return RedirectToAction("Play");
+            }
 
-             PlayerProcedures.LogIP(Request.UserHostAddress, myMembershipId);
+            PlayerProcedures.LogIP(Request.UserHostAddress, myMembershipId);
 
-             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
 
             // assert player is animate
-             if (me.Mobility != "full")
-             {
-                 TempData["Error"] = "You must be animate in order to enter or exit the dungeon.";
-                 return RedirectToAction("Play");
-             }
+            if (me.Mobility != "full")
+            {
+                TempData["Error"] = "You must be animate in order to enter or exit the dungeon.";
+                return RedirectToAction("Play");
+            }
 
-             // assert that this player is not in a duel
-             if (me.InDuel > 0)
-             {
-                 TempData["Error"] = "You must finish your duel before you enter or leave the dungeon.";
-                 return RedirectToAction("Play", "PvP");
-             }
+            // assert that this player is not in a duel
+            if (me.InDuel > 0)
+            {
+                TempData["Error"] = "You must finish your duel before you enter or leave the dungeon.";
+                return RedirectToAction("Play", "PvP");
+            }
 
             // assert that this player is not in a quest
             if (me.InQuest > 0)
@@ -705,70 +707,70 @@ namespace tfgame.Controllers
 
             // assert player has enough action points
             if (me.ActionPoints < 30)
-             {
-                 TempData["Error"] = "You need 30 action points to enter or exit the dungeon.";
-                 return RedirectToAction("Play");
-             }
+            {
+                TempData["Error"] = "You need 30 action points to enter or exit the dungeon.";
+                return RedirectToAction("Play");
+            }
 
             // assert player is in PvP mode
-             if (me.GameMode < 2)
-             {
-                 TempData["Error"] = "You must be in PvP mode in order to enter the dungeon.  It is not a safe place...";
-                 return RedirectToAction("Play");
-             }
+            if (me.GameMode < 2)
+            {
+                TempData["Error"] = "You must be in PvP mode in order to enter the dungeon.  It is not a safe place...";
+                return RedirectToAction("Play");
+            }
 
             // assert player is in a correct location to do this if in overworld
-             if (me.IsInDungeon() == false && (me.dbLocationName != "street_9th" && me.dbLocationName != "street_14th_north"))
-             {
-                 TempData["Error"] = "You cannot enter the dungeon here.";
-                 TempData["SubError"] = "You must be at Street: Main Street and Sunnyglade Drive Intersection or Street: Main Street and E. 9th Avenue Intersection in order to enter the dungeon.";
-                 return RedirectToAction("Play");
-             }
+            if (me.IsInDungeon() == false && (me.dbLocationName != "street_9th" && me.dbLocationName != "street_14th_north"))
+            {
+                TempData["Error"] = "You cannot enter the dungeon here.";
+                TempData["SubError"] = "You must be at Street: Main Street and Sunnyglade Drive Intersection or Street: Main Street and E. 9th Avenue Intersection in order to enter the dungeon.";
+                return RedirectToAction("Play");
+            }
 
-             // assert player has not been in combat recently if trying to enter OR leave the dungeon
-             double lastAttackTimeAgo = Math.Abs(Math.Floor(me.GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalMinutes));
-             if (lastAttackTimeAgo < 30)
-             {
-                 TempData["Error"] = "You have been in combat too recently in order to enter or leave the dungeon right now.";
-                 TempData["SubError"] = "You must stay out of combat for another " + (30 - lastAttackTimeAgo) + " minutes.";
-                 return RedirectToAction("Play");
-             }
+            // assert player has not been in combat recently if trying to enter OR leave the dungeon
+            double lastAttackTimeAgo = Math.Abs(Math.Floor(me.GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalMinutes));
+            if (lastAttackTimeAgo < 30)
+            {
+                TempData["Error"] = "You have been in combat too recently in order to enter or leave the dungeon right now.";
+                TempData["SubError"] = "You must stay out of combat for another " + (30 - lastAttackTimeAgo) + " minutes.";
+                return RedirectToAction("Play");
+            }
 
-             if (entering == "true")
-             {
+            if (entering == "true")
+            {
 
-                 // give player the Vanquish spell if they don't already know it
-                 SkillProcedures.GiveSkillToPlayer(me.Id, PvPStatics.Dungeon_VanquishSpell);
+                // give player the Vanquish spell if they don't already know it
+                SkillProcedures.GiveSkillToPlayer(me.Id, PvPStatics.Dungeon_VanquishSpell);
 
-                 string dungeonLocation = LocationsStatics.GetRandomLocation_InDungeon();
-                 PlayerProcedures.TeleportPlayer(me, dungeonLocation, false);
-                 TempData["Result"] = "You slipped down a manhole, tumbling through a dark tunnel and ending up down in the otherworldly dungeon deep below Sunnyglade, both physically and dimensionally.  Be careful where you tread... danger could come from anywhere and the magic down here is likely to keep you imprisoned much longer of permanently should you find yourself defeated...";
-                 PlayerLogProcedures.AddPlayerLog(me.Id, "You entered the dungeon.", false);
-                 LocationLogProcedures.AddLocationLog(me.dbLocationName, me.GetFullName() + " slid down a manhole to the dungeon deep below.");
-                 LocationLogProcedures.AddLocationLog(dungeonLocation, me.GetFullName() + " fell through the a portal in the ceiling from the town above.");
-             }
-             else if (entering == "false")
-             {
-                 string overworldLocation = LocationsStatics.GetRandomLocation();
-                 PlayerProcedures.TeleportPlayer(me, overworldLocation, false);
-                 TempData["Result"] = "Gasping for fresh air, you use your magic to tunnel your way up and out of the hellish labrynth of the dungeon.  ";
-                 PlayerLogProcedures.AddPlayerLog(me.Id, "You left the dungeon.", false);
-                 LocationLogProcedures.AddLocationLog(me.dbLocationName, me.GetFullName() + " cast an earthmoving spell, tunneling back up to the town.");
-                 LocationLogProcedures.AddLocationLog(overworldLocation, me.GetFullName() + " slides out from a portal out from the dungeon.");
-             }
+                string dungeonLocation = LocationsStatics.GetRandomLocation_InDungeon();
+                PlayerProcedures.TeleportPlayer(me, dungeonLocation, false);
+                TempData["Result"] = "You slipped down a manhole, tumbling through a dark tunnel and ending up down in the otherworldly dungeon deep below Sunnyglade, both physically and dimensionally.  Be careful where you tread... danger could come from anywhere and the magic down here is likely to keep you imprisoned much longer of permanently should you find yourself defeated...";
+                PlayerLogProcedures.AddPlayerLog(me.Id, "You entered the dungeon.", false);
+                LocationLogProcedures.AddLocationLog(me.dbLocationName, me.GetFullName() + " slid down a manhole to the dungeon deep below.");
+                LocationLogProcedures.AddLocationLog(dungeonLocation, me.GetFullName() + " fell through the a portal in the ceiling from the town above.");
+            }
+            else if (entering == "false")
+            {
+                string overworldLocation = LocationsStatics.GetRandomLocation();
+                PlayerProcedures.TeleportPlayer(me, overworldLocation, false);
+                TempData["Result"] = "Gasping for fresh air, you use your magic to tunnel your way up and out of the hellish labrynth of the dungeon.  ";
+                PlayerLogProcedures.AddPlayerLog(me.Id, "You left the dungeon.", false);
+                LocationLogProcedures.AddLocationLog(me.dbLocationName, me.GetFullName() + " cast an earthmoving spell, tunneling back up to the town.");
+                LocationLogProcedures.AddLocationLog(overworldLocation, me.GetFullName() + " slides out from a portal out from the dungeon.");
+            }
 
-             PlayerProcedures.ChangePlayerActionMana(30, 0, 0, me.Id);
-          
+            PlayerProcedures.ChangePlayerActionMana(30, 0, 0, me.Id);
 
-             return RedirectToAction("Play");
-         }
+
+            return RedirectToAction("Play");
+        }
 
         [Authorize]
-         public ActionResult AttackModal(int targetId)
-         {
-             string myMembershipId = User.Identity.GetUserId();
-             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-             Player target = PlayerProcedures.GetPlayer(targetId);
+        public ActionResult AttackModal(int targetId)
+        {
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            Player target = PlayerProcedures.GetPlayer(targetId);
             IEnumerable<SkillViewModel2> output = new List<SkillViewModel2>();
 
             ViewBag.Recovered = false;
@@ -777,7 +779,7 @@ namespace tfgame.Controllers
 
             // make sure a no-attack exists due to the Back On Your Feet perk
 
-            if (EffectProcedures.PlayerHasEffect(me, PvPStatics.Effect_Back_On_Your_Feet) == true && target.BotId==AIStatics.ActivePlayerBotId)
+            if (EffectProcedures.PlayerHasEffect(me, PvPStatics.Effect_Back_On_Your_Feet) == true && target.BotId == AIStatics.ActivePlayerBotId)
             {
                 ViewBag.Recovered = true;
                 ViewBag.RecoveredMsg = "You can't attack as you have the <b>Back On Your Feet</b> effect, preventing you from attacking another human-controlled player.";
@@ -855,10 +857,10 @@ namespace tfgame.Controllers
             ViewBag.TargetId = targetId;
             ViewBag.TargetName = target.GetFullName();
             ViewBag.BotId = target.BotId;
-             return PartialView("partial/AjaxAttackModal", output);
-         }
+            return PartialView("partial/AjaxAttackModal", output);
+        }
 
-         [Authorize]
+        [Authorize]
         public ActionResult Attack(int targetId, string attackName)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -1014,8 +1016,8 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play");
             }
 
-             // assert that the target is not offline
-            if (PlayerProcedures.PlayerIsOffline(targeted)==true)
+            // assert that the target is not offline
+            if (PlayerProcedures.PlayerIsOffline(targeted) == true)
             {
                 TempData["Error"] = "This player is offline.";
                 TempData["SubError"] = "Offline players can no longer be attacked.";
@@ -1047,7 +1049,7 @@ namespace tfgame.Controllers
                 }
             }
 
-             // if the spell is a form of mind control, check that the target is not a bot
+            // if the spell is a form of mind control, check that the target is not a bot
             if (skillBeingUsed.MobilityType == "mindcontrol" && targeted.BotId < AIStatics.ActivePlayerBotId)
             {
                 TempData["Error"] = "This target is immune to mind control.";
@@ -1055,7 +1057,7 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play");
             }
 
-             // if anyone is dueling, make sure they are in the combatants list
+            // if anyone is dueling, make sure they are in the combatants list
             if (me.InDuel > 0 || targeted.InDuel > 0)
             {
                 if (DuelProcedures.PlayerIsNotInDuel(me, targeted) == true)
@@ -1090,7 +1092,7 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play");
             }
 
-             // if the spell is Vanquish, only have it work against demons
+            // if the spell is Vanquish, only have it work against demons
             if (skill.dbName == PvPStatics.Dungeon_VanquishSpell && targeted.Form != PvPStatics.DungeonDemon)
             {
                 TempData["Error"] = "Vanquish can only be cast against the Dark Demonic Guardians in the dungoen.";
@@ -1211,7 +1213,7 @@ namespace tfgame.Controllers
                     }
 
                     // no inter protection/non spell casting
-                    else if ((me.GameMode == 2 && targeted.GameMode < 2)  || (me.GameMode < 2 && targeted.GameMode == 2) )
+                    else if ((me.GameMode == 2 && targeted.GameMode < 2) || (me.GameMode < 2 && targeted.GameMode == 2))
                     {
                         TempData["Error"] = "You must be in the same Protection/non-Protection mode as your target in order to cast spells at them.";
                         return RedirectToAction("Play");
@@ -1241,12 +1243,12 @@ namespace tfgame.Controllers
 
             }
 
-          
-           
+
+
 
             #endregion
 
-            try { 
+            try {
                 TempData["Result"] = AttackProcedures.Attack(me, targeted, skillBeingUsed);
 
                 // record into statistics
@@ -1259,38 +1261,38 @@ namespace tfgame.Controllers
             {
                 TempData["Error"] = "There was a server error while carrying out your attack.  Reason:  <br><br>" + e.ToString() + ".<br><br>If this error persists please report this bug at on the game forums, found at http://luxianne.com/forum/viewforum.php?f=5&sid=3eeb3207fe885b88851edcb7d964eb94.  When posting this bug please including information on which spell you were casting, whether you or your target was in protection mode, and if possible how close to a turn update this attack was made.";
 
-              //  PlayerProcedures.AddAttackCount(me, -1);
-               // PlayerProcedures.ChangePlayerActionMana(4, 0, skillBeingUsed.Skill.ManaCost, me.Id);
+                //  PlayerProcedures.AddAttackCount(me, -1);
+                // PlayerProcedures.ChangePlayerActionMana(4, 0, skillBeingUsed.Skill.ManaCost, me.Id);
             }
 
-            
+
 
             AIProcedures.CheckAICounterattackRoutine(me, targeted);
 
-           
+
 
             return RedirectToAction("Play");
         }
 
-         [Authorize]
-         public ActionResult EnchantLocation()
-         {
-             string myMembershipId = User.Identity.GetUserId();
-             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+        [Authorize]
+        public ActionResult EnchantLocation()
+        {
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
-             // assert player is in an okay form to do this
-             if (me.Mobility != "full")
-             {
-                 TempData["Error"] = "You must be animate in order to attempt to enchant a location.";
-                 return RedirectToAction("Play");
-             }
+            // assert player is in an okay form to do this
+            if (me.Mobility != "full")
+            {
+                TempData["Error"] = "You must be animate in order to attempt to enchant a location.";
+                return RedirectToAction("Play");
+            }
 
-             // assert that this player is not in a duel
-             if (me.InDuel > 0)
-             {
-                 TempData["Error"] = "You must finish your duel before you can enchant any locations.";
-                 return RedirectToAction("Play", "PvP");
-             }
+            // assert that this player is not in a duel
+            if (me.InDuel > 0)
+            {
+                TempData["Error"] = "You must finish your duel before you can enchant any locations.";
+                return RedirectToAction("Play", "PvP");
+            }
 
             // assert that this player is not in a quest
             if (me.InQuest > 0)
@@ -1301,65 +1303,65 @@ namespace tfgame.Controllers
 
             // assert player is a high enough level
             if (me.Level < 3)
-             {
-                 TempData["Error"] = "You must be at least level 3 in order to try and enchant a location.";
-                 return RedirectToAction("Play");
-             }
+            {
+                TempData["Error"] = "You must be at least level 3 in order to try and enchant a location.";
+                return RedirectToAction("Play");
+            }
 
 
-             // assert player has enough mana
-             if (me.Mana < 10)
-             {
-                 TempData["Error"] = "Not enough mana.";
-                 TempData["SubError"] = "You need at least 10 mana to enchant a location.";
-                 return RedirectToAction("Play");
-             }
+            // assert player has enough mana
+            if (me.Mana < 10)
+            {
+                TempData["Error"] = "Not enough mana.";
+                TempData["SubError"] = "You need at least 10 mana to enchant a location.";
+                return RedirectToAction("Play");
+            }
 
-             // assert player has enough AP
-             if (me.ActionPoints < 3)
-             {
-                 TempData["Error"] = "Not enough AP.";
-                 TempData["SubError"] = "You need at least 3 action points to enchant a location.";
-                 return RedirectToAction("Play");
-             }
+            // assert player has enough AP
+            if (me.ActionPoints < 3)
+            {
+                TempData["Error"] = "Not enough AP.";
+                TempData["SubError"] = "You need at least 3 action points to enchant a location.";
+                return RedirectToAction("Play");
+            }
 
-             // assert player is in PvP mode
-             if (me.GameMode != 2)
-             {
-                 TempData["Error"] = "You must be in PvP mode in order to enchant a location.";
-                 return RedirectToAction("Play");
-             }
+            // assert player is in PvP mode
+            if (me.GameMode != 2)
+            {
+                TempData["Error"] = "You must be in PvP mode in order to enchant a location.";
+                return RedirectToAction("Play");
+            }
 
-             // assert player is in a covenant
-             if (me.Covenant <= 0)
-             {
-                 TempData["Error"] = "You must be in a covenant in order to attempt to enchant a location.";
-                 return RedirectToAction("Play");
-             }
+            // assert player is in a covenant
+            if (me.Covenant <= 0)
+            {
+                TempData["Error"] = "You must be in a covenant in order to attempt to enchant a location.";
+                return RedirectToAction("Play");
+            }
 
-             // assert player hasn't made too many attacks this update
-             if (me.TimesAttackingThisUpdate >= PvPStatics.MaxAttacksPerUpdate)
-             {
-                 TempData["Error"] = "You have attacked too much this update.";
-                 TempData["SubError"] = "You can only attack " + PvPStatics.MaxAttacksPerUpdate + " times per update.  Wait a bit.";
-                 return RedirectToAction("Play");
-             }
+            // assert player hasn't made too many attacks this update
+            if (me.TimesAttackingThisUpdate >= PvPStatics.MaxAttacksPerUpdate)
+            {
+                TempData["Error"] = "You have attacked too much this update.";
+                TempData["SubError"] = "You can only attack " + PvPStatics.MaxAttacksPerUpdate + " times per update.  Wait a bit.";
+                return RedirectToAction("Play");
+            }
 
-             // assert that player has enough action points to attack
-             if (me.ActionPoints < PvPStatics.AttackCost)
-             {
-                 TempData["Error"] = "You don't have enough action points to attack.";
-                 TempData["SubError"] = "You will receive more action points next turn.";
-                 return RedirectToAction("Play");
-             }
+            // assert that player has enough action points to attack
+            if (me.ActionPoints < PvPStatics.AttackCost)
+            {
+                TempData["Error"] = "You don't have enough action points to attack.";
+                TempData["SubError"] = "You will receive more action points next turn.";
+                return RedirectToAction("Play");
+            }
 
-             // assert player update is in not in progress
-             if (PvPStatics.AnimateUpdateInProgress == true)
-             {
-                 TempData["Error"] = "Player update portion of the world update is still in progress.";
-                 TempData["SubError"] = "Try again a bit later when the update has progressed farther along.";
-                 return RedirectToAction("Play");
-             }
+            // assert player update is in not in progress
+            if (PvPStatics.AnimateUpdateInProgress == true)
+            {
+                TempData["Error"] = "Player update portion of the world update is still in progress.";
+                TempData["SubError"] = "Try again a bit later when the update has progressed farther along.";
+                return RedirectToAction("Play");
+            }
 
             // assert the player does not have the Back On Your Feet perk
             if (EffectProcedures.PlayerHasEffect(me, PvPStatics.Effect_Back_On_Your_Feet) == true)
@@ -1371,66 +1373,66 @@ namespace tfgame.Controllers
 
             // assert player is not in the dungeon
             Location myLocation = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName);
-             if (myLocation.Region == "dungeon")
-             {
-                 TempData["Error"] = "You can't enchant in the dungeon.";
-                 TempData["SubError"] = "You can only enchant locations in the overworld.  The magic down here is too strong.";
-                 return RedirectToAction("Play");
-             }
+            if (myLocation.Region == "dungeon")
+            {
+                TempData["Error"] = "You can't enchant in the dungeon.";
+                TempData["SubError"] = "You can only enchant locations in the overworld.  The magic down here is too strong.";
+                return RedirectToAction("Play");
+            }
 
-             // assert that it is not too late in the round for this attack to happen
-             DateTime lastupdate = PvPWorldStatProcedures.GetLastWorldUpdate();
-             double secondsAgo = Math.Abs(Math.Floor(lastupdate.Subtract(DateTime.UtcNow).TotalSeconds));
+            // assert that it is not too late in the round for this attack to happen
+            DateTime lastupdate = PvPWorldStatProcedures.GetLastWorldUpdate();
+            double secondsAgo = Math.Abs(Math.Floor(lastupdate.Subtract(DateTime.UtcNow).TotalSeconds));
 
-             if (secondsAgo > (PvPStatics.TurnSecondLength - PvPStatics.EndTurnNoAttackSeconds) && PvPStatics.ChaosMode == false)
-             {
-                 TempData["Error"] = "It is too late into this turn to enchant.";
-                 TempData["SubError"] = "You can't enchant in the last " + PvPStatics.EndTurnNoAttackSeconds + " seconds of a turn.";
-                 return RedirectToAction("Play");
-             }
+            if (secondsAgo > (PvPStatics.TurnSecondLength - PvPStatics.EndTurnNoAttackSeconds) && PvPStatics.ChaosMode == false)
+            {
+                TempData["Error"] = "It is too late into this turn to enchant.";
+                TempData["SubError"] = "You can't enchant in the last " + PvPStatics.EndTurnNoAttackSeconds + " seconds of a turn.";
+                return RedirectToAction("Play");
+            }
 
-             // assert that it is not too EARLY in the round for this attack to happen
-             double secondsFrom = Math.Abs(Math.Floor(lastupdate.Subtract(DateTime.UtcNow).TotalSeconds));
+            // assert that it is not too EARLY in the round for this attack to happen
+            double secondsFrom = Math.Abs(Math.Floor(lastupdate.Subtract(DateTime.UtcNow).TotalSeconds));
 
-             if (secondsAgo < PvPStatics.StartTurnNoAttackSeconds)
-             {
-                 TempData["Error"] = "It is too early into this turn to enchant.";
-                 TempData["SubError"] = "You can't enchant in the first " + PvPStatics.StartTurnNoAttackSeconds + " seconds of a turn.";
-                 return RedirectToAction("Play");
-             }
+            if (secondsAgo < PvPStatics.StartTurnNoAttackSeconds)
+            {
+                TempData["Error"] = "It is too early into this turn to enchant.";
+                TempData["SubError"] = "You can't enchant in the first " + PvPStatics.StartTurnNoAttackSeconds + " seconds of a turn.";
+                return RedirectToAction("Play");
+            }
 
-             // assert that the location is not a covenant's safeground
-             if (CovenantProcedures.ACovenantHasASafegroundHere(me.dbLocationName))
-             {
-                 TempData["Error"] = "This location is the safeground of another covenant.";
-                 TempData["SubError"] = "You cannot take over a location with a safeground established there.";
-                 return RedirectToAction("Play");
-             }
+            // assert that the location is not a covenant's safeground
+            if (CovenantProcedures.ACovenantHasASafegroundHere(me.dbLocationName))
+            {
+                TempData["Error"] = "This location is the safeground of another covenant.";
+                TempData["SubError"] = "You cannot take over a location with a safeground established there.";
+                return RedirectToAction("Play");
+            }
 
-             // assert that this player's covenant does have a safeground
-             if (CovenantProcedures.CovenantHasSafeground(me.Covenant) == false)
-             {
-                 TempData["Error"] = "Your covenant must have established a safeground before it can enchant locations.";
-                 return RedirectToAction("Play");
-             }
+            // assert that this player's covenant does have a safeground
+            if (CovenantProcedures.CovenantHasSafeground(me.Covenant) == false)
+            {
+                TempData["Error"] = "Your covenant must have established a safeground before it can enchant locations.";
+                return RedirectToAction("Play");
+            }
 
-             BuffBox myBuffs = ItemProcedures.GetPlayerBuffsSQL(me);
+            BuffBox myBuffs = ItemProcedures.GetPlayerBuffsSQL(me);
 
-             string output = CovenantProcedures.AttackLocation(me, myBuffs);
+            string output = CovenantProcedures.AttackLocation(me, myBuffs);
 
-             PlayerProcedures.AddAttackCount(me);
-             PlayerProcedures.ChangePlayerActionMana(3, 0, -10, me.Id);
+            PlayerProcedures.AddAttackCount(me);
+            PlayerProcedures.ChangePlayerActionMana(3, 0, -10, me.Id);
 
-             // record into statistics
-             new Thread(() =>
-                 StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__TimesEnchanted, 1)
-             ).Start();
+            // record into statistics
+            new Thread(() =>
+                StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__TimesEnchanted, 1)
+            ).Start();
 
-             TempData["Result"] = output;
-             return RedirectToAction("Play");
-         }
+            TempData["Result"] = output;
+            return RedirectToAction("Play");
+        }
 
-         [Authorize]
+        [Authorize]
         public ActionResult Meditate()
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -1498,7 +1500,7 @@ namespace tfgame.Controllers
             return RedirectToAction("Play");
         }
 
-         [Authorize]
+        [Authorize]
         public ActionResult Cleanse()
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -1553,7 +1555,7 @@ namespace tfgame.Controllers
             return RedirectToAction("Play");
         }
 
-         [Authorize]
+        [Authorize]
         public ActionResult MySkills()
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -1564,7 +1566,7 @@ namespace tfgame.Controllers
             return View("MySkills", SkillProcedures.GetMySkillsViewModel(me.Id));
         }
 
-         [Authorize]
+        [Authorize]
         public ActionResult Search()
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -1605,7 +1607,7 @@ namespace tfgame.Controllers
                 searchCostAfterbuffs = 3;
             }
 
-             // assert player is not in the dungeon
+            // assert player is not in the dungeon
             if (me.IsInDungeon() == true)
             {
                 TempData["Error"] = "The constantly shifting chambers and corridors of the dungeon make searching unlikely to find anything down here.";
@@ -1622,14 +1624,14 @@ namespace tfgame.Controllers
 
             if (mybuffs.HasSearchDiscount == true)
             {
-                PlayerProcedures.ChangePlayerActionMana(PvPStatics.SearchAPCost-1, 0, 0, me.Id);
+                PlayerProcedures.ChangePlayerActionMana(PvPStatics.SearchAPCost - 1, 0, 0, me.Id);
             }
             else
             {
                 PlayerProcedures.ChangePlayerActionMana(PvPStatics.SearchAPCost, 0, 0, me.Id);
             }
 
-            
+
             TempData["Result"] = PlayerProcedures.SearchLocation(me, me.dbLocationName);
 
             // write to logs
@@ -1647,7 +1649,7 @@ namespace tfgame.Controllers
             return RedirectToAction("Play");
         }
 
-         [Authorize]
+        [Authorize]
         public ActionResult ClearLog()
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -1662,7 +1664,7 @@ namespace tfgame.Controllers
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             PlayerLogProcedures.DismissImportantLogs(me.Id);
-            return new HttpStatusCodeResult(HttpStatusCode.OK); 
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
         [Authorize]
@@ -1673,7 +1675,7 @@ namespace tfgame.Controllers
             return View("ViewLog", PlayerLogProcedures.GetAllPlayerLogs(me.Id).Reverse());
         }
 
-         [Authorize]
+        [Authorize]
         public ActionResult MyInventory()
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -1708,12 +1710,12 @@ namespace tfgame.Controllers
 
             ViewBag.ShowDetailLinks = true;
             ViewBag.ItemsUsedThisTurn = me.ItemsUsedThisTurn;
-          
+
 
             return View("Inventory", output);
         }
 
-         [Authorize]
+        [Authorize]
         public ActionResult Take(int id)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -1772,7 +1774,7 @@ namespace tfgame.Controllers
             }
 
             // assert that the player is not carrying too much already UNLESS the item is a pet OR dungeon token
-            if (ItemProcedures.PlayerIsCarryingTooMuch(me.Id, 0, myBuffs)==true && pickup.Item.ItemType!=PvPStatics.ItemType_Pet && pickup.Item.dbName!=PvPStatics.ItemType_DungeonArtifact) {
+            if (ItemProcedures.PlayerIsCarryingTooMuch(me.Id, 0, myBuffs) == true && pickup.Item.ItemType != PvPStatics.ItemType_Pet && pickup.Item.dbName != PvPStatics.ItemType_DungeonArtifact) {
                 TempData["Error"] = "You are carrying too many items to pick this up.";
                 TempData["SubError"] = "Use, drop, or wear/equip something you are carrying to make more room.  Some accessories may also allow you to carry more.";
                 return RedirectToAction("Play");
@@ -1798,7 +1800,7 @@ namespace tfgame.Controllers
             string locationLogMessage = "";
             Location here = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName);
 
-             // item is a dungeon artifact; immediately give the points to the player and delete it
+            // item is a dungeon artifact; immediately give the points to the player and delete it
             if (pickup.Item.dbName == PvPStatics.ItemType_DungeonArtifact)
             {
                 PlayerProcedures.GivePlayerPvPScore_NoLoser(me, PvPStatics.DungeonArtifact_Value);
@@ -1816,12 +1818,12 @@ namespace tfgame.Controllers
             }
 
             // if the item is inanimate, give the item to the player's inventory
-            else if (pickup.Item.ItemType!=PvPStatics.ItemType_Pet) {
+            else if (pickup.Item.ItemType != PvPStatics.ItemType_Pet) {
                 TempData["Result"] = ItemProcedures.GiveItemToPlayer(pickup.dbItem.Id, me.Id);
                 playerLogMessage = "You picked up a <b>" + pickup.Item.FriendlyName + "</b> at " + here.Name + " and put it into your inventory.";
                 locationLogMessage = me.GetFullName() + " picked up a <b>" + pickup.Item.FriendlyName + CharactersHere.PrintPvPIcon(pickup.dbItem) + "</b> here.";
             }
-                // item is an animal, equip it automatically
+            // item is an animal, equip it automatically
             else if (pickup.Item.ItemType == PvPStatics.ItemType_Pet)
             {
                 TempData["Result"] = ItemProcedures.GiveItemToPlayer(pickup.dbItem.Id, me.Id);
@@ -1886,7 +1888,7 @@ namespace tfgame.Controllers
             }
 
             // assert player is not currently wearing this UNLESS it is an animal type, since pets are always "equipped"
-            if (dropme.dbItem.IsEquipped == true && dropme.Item.ItemType!=PvPStatics.ItemType_Pet)
+            if (dropme.dbItem.IsEquipped == true && dropme.Item.ItemType != PvPStatics.ItemType_Pet)
             {
                 TempData["Error"] = "You can't drop this item.";
                 TempData["SubError"] = "Unequip this item first if you are wearing it.";
@@ -1895,7 +1897,7 @@ namespace tfgame.Controllers
 
             Location here = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName);
 
-            if (here.Region != "dungeon") { 
+            if (here.Region != "dungeon") {
                 // in overworld, drop at player's feet
                 TempData["Result"] = ItemProcedures.DropItem(itemId, me.dbLocationName);
             }
@@ -1921,7 +1923,7 @@ namespace tfgame.Controllers
                 string notificationMsg = me.GetFullName() + " has released you.  You are now feral and may now wander the town at will until another master tames you.";
                 PlayerLogProcedures.AddPlayerLog(personAnimal.Id, notificationMsg, true);
 
-               
+
             }
             // everything else is dropped
             else
@@ -1940,7 +1942,7 @@ namespace tfgame.Controllers
 
         }
 
-         [Authorize]
+        [Authorize]
         public ActionResult Equip(int itemId, bool putOn)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -2024,7 +2026,7 @@ namespace tfgame.Controllers
 
         }
 
-         [Authorize]
+        [Authorize]
         public ActionResult Use(int itemId)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -2054,11 +2056,11 @@ namespace tfgame.Controllers
             }
 
             // assert player has not already used an item this turn
-            if (me.ItemsUsedThisTurn>0)
+            if (me.ItemsUsedThisTurn > 0)
             {
                 TempData["Error"] = "You've already used an item this turn.";
                 TempData["SubError"] = "You will be able to use another consumable type items next turn.";
-                return RedirectToAction("MyInventory","PvP");
+                return RedirectToAction("MyInventory", "PvP");
             }
 
             // assert that this item is of a consumeable type (consumable or consumable-reusable)
@@ -2068,7 +2070,7 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play");
             }
 
-             // assert that if this item is of a reusable type that it's not on cooldown
+            // assert that if this item is of a reusable type that it's not on cooldown
             if (item.Item.ItemType == PvPStatics.ItemType_Consumable_Reuseable && item.dbItem.TurnsUntilUse > 0)
             {
                 TempData["Error"] = "This item is still on cooldown and cannot be used again yet.";
@@ -2095,13 +2097,13 @@ namespace tfgame.Controllers
 
                 if (me.IsInDungeon() == true)
                 {
-                     IEnumerable<Location> output = LocationsStatics.LocationList.GetLocation.Where(l => l.dbName != "" && l.Region == "dungeon");
-                      return View("TeleportMap", output);
+                    IEnumerable<Location> output = LocationsStatics.LocationList.GetLocation.Where(l => l.dbName != "" && l.Region == "dungeon");
+                    return View("TeleportMap", output);
 
                 } else {
-                     IEnumerable<Location>  output = LocationsStatics.LocationList.GetLocation.Where(l => l.dbName != "" && l.Region != "dungeon");
-                      return View("TeleportMap", output);
-                }              
+                    IEnumerable<Location> output = LocationsStatics.LocationList.GetLocation.Where(l => l.dbName != "" && l.Region != "dungeon");
+                    return View("TeleportMap", output);
+                }
             }
 
             // if this item is the self recaster, redirect to the animate spell listing page
@@ -2110,7 +2112,7 @@ namespace tfgame.Controllers
                 return RedirectToAction("SelfCast", "Item");
             }
 
-             // if this item is a skill book, aka a tome, redirect to that page with the appropriate text
+            // if this item is a skill book, aka a tome, redirect to that page with the appropriate text
             if (item.dbItem.dbName.Contains("item_consumable_tome-") == true)
             {
 
@@ -2125,7 +2127,7 @@ namespace tfgame.Controllers
                     AlreadyRead = ItemProcedures.PlayerHasReadBook(me, item.dbItem.dbName),
                     BookId = item.dbItem.Id,
                 };
-                
+
                 return View("~/Views/Item/SkillBook.cshtml", output);
             }
 
@@ -2133,7 +2135,7 @@ namespace tfgame.Controllers
             {
                 return RedirectToAction("RemoveCurse", "Item");
             }
-         
+
             string result = ItemProcedures.UseItem(itemId, myMembershipId);
 
             PlayerProcedures.AddMinutesToTimestamp(me, 15, true);
@@ -2151,18 +2153,18 @@ namespace tfgame.Controllers
 
         }
 
-         public ActionResult LookAtPlayer_FromMembershipId(string id)
-         {
-             Player player = PlayerProcedures.GetPlayerFromMembership(id);
+        public ActionResult LookAtPlayer_FromMembershipId(string id)
+        {
+            Player player = PlayerProcedures.GetPlayerFromMembership(id);
 
-             if (player == null)
-             {
-                 TempData["Error"] = "Unfortunately it seems this player does have have a character this round.";
-                 return RedirectToAction("Play");
-             }
+            if (player == null)
+            {
+                TempData["Error"] = "Unfortunately it seems this player does have have a character this round.";
+                return RedirectToAction("Play");
+            }
 
-             return RedirectToAction("LookAtPlayer", new { id = player.Id });
-         }
+            return RedirectToAction("LookAtPlayer", new { id = player.Id });
+        }
 
         public ActionResult LookAtPlayer(int id)
         {
@@ -2185,7 +2187,7 @@ namespace tfgame.Controllers
 
             if (playerLookedAt.Form.MobilityType == "inanimate" || playerLookedAt.Form.MobilityType == "animal")
             {
-                
+
 
                 Item playerItem = ItemProcedures.GetItemByVictimName(playerLookedAt.Player.FirstName, playerLookedAt.Player.LastName);
                 DbStaticItem playerItemStatic = ItemStatics.GetStaticItem(playerItem.dbName);
@@ -2198,7 +2200,7 @@ namespace tfgame.Controllers
                 {
                     ViewBag.ImgUrl = "animalPortraits/" + playerItemStatic.PortraitUrl;
                 }
-                
+
 
                 ViewBag.ItemLevel = playerItem.Level;
                 ViewBag.FormDescriptionItem = playerItemStatic.Description;
@@ -2227,9 +2229,9 @@ namespace tfgame.Controllers
                     }
                 }
 
-            
-              
-                
+
+
+
                 return View("LookAtPlayerInanimate", output);
             }
             else {
@@ -2247,42 +2249,42 @@ namespace tfgame.Controllers
     new { controller = "PvP", action = "LookAtPlayer", id = victim.Id }));
         }
 
-         [Authorize]
+        [Authorize]
         public ActionResult MyMessages()
         {
             // this might fix some odd log-off message interception oddities... maybe?
             string myMembershipId = User.Identity.GetUserId();
 
-           Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-           MessageBag output = MessageProcedures.GetPlayerMessages(me);
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            MessageBag output = MessageProcedures.GetPlayerMessages(me);
 
             // if you are inanimate and are being worn, grab the data on who is wearing you
 
-           if (me.Mobility == "inanimate")
-           {
-               try
-               {
-                   PlayerFormViewModel personWearingMe = ItemProcedures.BeingWornBy(me);
-                   output.WearerId = personWearingMe.Player.Id;
-                   output.WearerName = personWearingMe.Player.GetFullName();
-               }
-               catch
-               {
+            if (me.Mobility == "inanimate")
+            {
+                try
+                {
+                    PlayerFormViewModel personWearingMe = ItemProcedures.BeingWornBy(me);
+                    output.WearerId = personWearingMe.Player.Id;
+                    output.WearerName = personWearingMe.Player.GetFullName();
+                }
+                catch
+                {
 
-               }
-           
-           }
+                }
 
-           ViewBag.IsDonator = DonatorProcedures.DonatorGetsMessagesRewards(me);
+            }
 
-           ViewBag.ErrorMessage = TempData["Error"];
-           ViewBag.SubErrorMessage = TempData["SubError"];
-           ViewBag.Result = TempData["Result"];
+            ViewBag.IsDonator = DonatorProcedures.DonatorGetsMessagesRewards(me);
+
+            ViewBag.ErrorMessage = TempData["Error"];
+            ViewBag.SubErrorMessage = TempData["SubError"];
+            ViewBag.Result = TempData["Result"];
 
             return View("MyMessages", output);
         }
 
-         [Authorize]
+        [Authorize]
         public ActionResult DeleteMessage(int messageId)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -2300,7 +2302,7 @@ namespace tfgame.Controllers
             return RedirectToAction("MyMessages");
         }
 
-         [Authorize]
+        [Authorize]
         public ActionResult DeleteAllMessages()
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -2309,7 +2311,7 @@ namespace tfgame.Controllers
             return RedirectToAction("MyMessages");
         }
 
-         [Authorize]
+        [Authorize]
         public ActionResult ReadMessage(int messageId)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -2321,27 +2323,27 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play");
             }
             MessageViewModel output = MessageProcedures.GetMessageAndMarkAsRead(messageId);
-           // ViewBag.IsReplyable = PlayerProcedures.GetPlayer(output)
+            // ViewBag.IsReplyable = PlayerProcedures.GetPlayer(output)
 
             return View("ReadMessage", output);
         }
 
         [Authorize]
-         public ActionResult MarkAsUnread(int messageId)
-         {
-             string myMembershipId = User.Identity.GetUserId();
-             // assert player owns message
-             if (MessageProcedures.PlayerOwnsMessage(messageId, myMembershipId) == false)
-             {
-                 TempData["Error"] = "You can't mark this message as unread.";
-                 TempData["SubError"] = "It wasn't sent to you.";
-                 return RedirectToAction("Play");
-             }
-              MessageProcedures.MarkMessageAsUnread(messageId);
+        public ActionResult MarkAsUnread(int messageId)
+        {
+            string myMembershipId = User.Identity.GetUserId();
+            // assert player owns message
+            if (MessageProcedures.PlayerOwnsMessage(messageId, myMembershipId) == false)
+            {
+                TempData["Error"] = "You can't mark this message as unread.";
+                TempData["SubError"] = "It wasn't sent to you.";
+                return RedirectToAction("Play");
+            }
+            MessageProcedures.MarkMessageAsUnread(messageId);
 
-              TempData["Result"] = "Message marked as unread.";
-             return RedirectToAction("MyMessages", "PvP");
-         }
+            TempData["Result"] = "Message marked as unread.";
+            return RedirectToAction("MyMessages", "PvP");
+        }
 
 
         public ActionResult PlayerLookup(string name)
@@ -2365,7 +2367,7 @@ namespace tfgame.Controllers
             return View("PlayerLookup", results);
         }
 
-         [Authorize]
+        [Authorize]
         public ActionResult Write(int playerId, int responseTo)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -2427,24 +2429,24 @@ namespace tfgame.Controllers
 
             }
             if (input.MessageText.Length > 1000)
-             {
-                 ViewBag.ErrorMessage = "Your message is too long.";
-                 return RedirectToAction("Write", input);
-             }
+            {
+                ViewBag.ErrorMessage = "Your message is too long.";
+                return RedirectToAction("Write", input);
+            }
 
-             MessageProcedures.AddMessage(input, myMembershipId);
-             NoticeProcedures.PushNotice(receiver, "<b>" + me.GetFullName() + " has sent you a new message.</b>", NoticeProcedures.PushType__PlayerMessage);
-             TempData["Result"] = "Your message has been sent.";
+            MessageProcedures.AddMessage(input, myMembershipId);
+            NoticeProcedures.PushNotice(receiver, "<b>" + me.GetFullName() + " has sent you a new message.</b>", NoticeProcedures.PushType__PlayerMessage);
+            TempData["Result"] = "Your message has been sent.";
 
-             if (me.Mobility != "full")
-             {
-                 ItemProcedures.UpdateSouledItem(me.FirstName, me.LastName);
-             }
+            if (me.Mobility != "full")
+            {
+                ItemProcedures.UpdateSouledItem(me.FirstName, me.LastName);
+            }
 
-             return RedirectToAction("MyMessages");
-         }
+            return RedirectToAction("MyMessages");
+        }
 
-         [Authorize]
+        [Authorize]
         public ActionResult InanimateAction(string actionName)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -2468,7 +2470,7 @@ namespace tfgame.Controllers
                 TempData["SubError"] = "Your former owner must have dropped you or was transformed themself.";
                 return RedirectToAction("Play");
             }
-          
+
             // assert player has not acted too many times already
             if (me.TimesAttackingThisUpdate >= 1)
             {
@@ -2522,7 +2524,7 @@ namespace tfgame.Controllers
             return RedirectToAction("Play");
         }
 
-         [Authorize]
+        [Authorize]
         public ActionResult AnimalAction(string actionName, int targetId)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -2549,7 +2551,7 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play");
             }
 
-             
+
 
             // assert that the target is still in the same room
             Player targeted = PlayerProcedures.GetPlayer(targetId);
@@ -2662,7 +2664,7 @@ namespace tfgame.Controllers
             {
                 PlayerLogProcedures.AddPlayerLog(friend.Id, message, true);
             }
-            
+
 
             return RedirectToAction("Play");
         }
@@ -2688,7 +2690,7 @@ namespace tfgame.Controllers
                 FriendProcedures.AcceptFriendRequest(id, myMembershipId);
             }
 
-            
+
             return RedirectToAction("MyFriends");
         }
 
@@ -2721,7 +2723,7 @@ namespace tfgame.Controllers
                         TempData["SubError"] = "You are an animal and are currently tamed as a pet.";
                         return false;
                     }
-                    
+
                 }
             }
             else if (actionType == "attack")
@@ -2736,7 +2738,7 @@ namespace tfgame.Controllers
 
                 }
                 // animal
-                if (myform.MobilityType=="animal")
+                if (myform.MobilityType == "animal")
                 {
                     TempData["Error"] = "You can't cast any spells.";
                     TempData["SubError"] = "You are an animal.";
@@ -2853,9 +2855,9 @@ namespace tfgame.Controllers
             return true;
         }
 
-   
 
-         [Authorize]
+
+        [Authorize]
         public ActionResult WorldMap(string showEnchant)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -2874,7 +2876,7 @@ namespace tfgame.Controllers
             MapViewModel output = new MapViewModel
             {
                 LocationInfo = ownerInfo,
-               
+
             };
 
             if (me.IsInDungeon() == true && showEnchant == "false")
@@ -2885,12 +2887,12 @@ namespace tfgame.Controllers
             else if (me.IsInDungeon() == true && showEnchant == "true")
             {
                 output.Locations = LocationsStatics.LocationList.GetLocation.Where(l => l.Region != "dungeon");
-                ViewBag.IsInDungeon = false;    
+                ViewBag.IsInDungeon = false;
             }
             else
             {
                 output.Locations = LocationsStatics.LocationList.GetLocation.Where(l => l.Region != "dungeon");
-                ViewBag.IsInDungeon = false;            
+                ViewBag.IsInDungeon = false;
             }
 
             ViewBag.MapX = here.X;
@@ -2898,7 +2900,7 @@ namespace tfgame.Controllers
             return View(output);
         }
 
-         [Authorize]
+        [Authorize]
         public ActionResult Leaderboard()
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -2907,57 +2909,57 @@ namespace tfgame.Controllers
             return View("Leaderboard", PlayerProcedures.GetLeadingPlayers__XP(100));
         }
 
-         public ActionResult PvPLeaderboard()
-         {
+        public ActionResult PvPLeaderboard()
+        {
 
             // return RedirectToAction("Leaderboard");
 
-             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
-             ViewBag.MyName = me.GetFullName();
-             return View(PlayerProcedures.GetLeadingPlayers__PvP(100));
-         }
+            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+            ViewBag.MyName = me.GetFullName();
+            return View(PlayerProcedures.GetLeadingPlayers__PvP(100));
+        }
 
-         public ActionResult ItemLeaderboard()
-         {
-             string myMembershipId = User.Identity.GetUserId();
-             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-             ViewBag.MyName = me.GetFullName();
-             IEnumerable<SimpleItemLeaderboardViewModel> output = ItemProcedures.GetLeadingItemsSimple(100).OrderByDescending(p => p.Item.Level).ThenByDescending(p => p.ItemXP);
-             return View(output);
-         }
+        public ActionResult ItemLeaderboard()
+        {
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            ViewBag.MyName = me.GetFullName();
+            IEnumerable<SimpleItemLeaderboardViewModel> output = ItemProcedures.GetLeadingItemsSimple(100).OrderByDescending(p => p.Item.Level).ThenByDescending(p => p.ItemXP);
+            return View(output);
+        }
 
-
-         [Authorize]
-         public ActionResult Chat(string room)
-         {
-             return RedirectToAction("Index", "Chat", new RouteValueDictionary {{"room", room}});
-         }
 
         [Authorize]
-         public ActionResult PrivateChat()
-         {
-             string myMembershipId = User.Identity.GetUserId();
-             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-             if (me == null || me.BotId == AIStatics.RerolledPlayerBotId || me.FirstName == "" || me.LastName == "")
-             {
+        public ActionResult Chat(string room)
+        {
+            return RedirectToAction("Index", "Chat", new RouteValueDictionary { { "room", room } });
+        }
+
+        [Authorize]
+        public ActionResult PrivateChat()
+        {
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            if (me == null || me.BotId == AIStatics.RerolledPlayerBotId || me.FirstName == "" || me.LastName == "")
+            {
                 return View("~/Views/PvP/MakeNewCharacter.cshtml");
-             }
-             return View("Chats/PrivateBegin");
-         }
+            }
+            return View("Chats/PrivateBegin");
+        }
 
         [Authorize]
-         public ActionResult ChatLog(string room, string filter)
-         {
-             ViewBag.Room = room;
-             return View("Chats/ChatLog", ChatLogProcedures.GetChatLogs(room, filter));
-         }
+        public ActionResult ChatLog(string room, string filter)
+        {
+            ViewBag.Room = room;
+            return View("Chats/ChatLog", ChatLogProcedures.GetChatLogs(room, filter));
+        }
 
-         public ActionResult ChatCommands()
-         {
-             return View("Chats/ChatCommands");
-         }
+        public ActionResult ChatCommands()
+        {
+            return View("Chats/ChatCommands");
+        }
 
-         [Authorize]
+        [Authorize]
         public ActionResult LevelupPerk()
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -2975,10 +2977,10 @@ namespace tfgame.Controllers
                 return View(output);
             }
 
-           
+
         }
 
-         [Authorize]
+        [Authorize]
         public ActionResult ChoosePerk(string perk)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -2993,12 +2995,12 @@ namespace tfgame.Controllers
 
             //give perk to player
             TempData["Result"] = EffectProcedures.GivePerkToPlayer(perk, me);
-            
+
 
             return RedirectToAction("Play");
         }
 
-         [Authorize]
+        [Authorize]
         public ActionResult MyPerks()
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -3009,16 +3011,16 @@ namespace tfgame.Controllers
             return View(output);
         }
 
-         public ActionResult ViewEffects(int id)
-         {
-             Player player = PlayerProcedures.GetPlayer(id);
-             IEnumerable<EffectViewModel2> output = EffectProcedures.GetPlayerEffects2(player.Id);
-             ViewBag.PlayerName = player.GetFullName();
+        public ActionResult ViewEffects(int id)
+        {
+            Player player = PlayerProcedures.GetPlayer(id);
+            IEnumerable<EffectViewModel2> output = EffectProcedures.GetPlayerEffects2(player.Id);
+            ViewBag.PlayerName = player.GetFullName();
 
-             return View(output);
-         }
+            return View(output);
+        }
 
-         [Authorize]
+        [Authorize]
         public ActionResult Teleport(string to)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -3054,16 +3056,16 @@ namespace tfgame.Controllers
                 return RedirectToAction("MyInventory", "PvP");
             }
 
-             // assert player is not TPing into the dungeon from out in or vice versa
-             bool destinationIsInDungeon = false;
-             if (to.Contains("dungeon_")) {
-                 destinationIsInDungeon = true;
-             }
-             if (me.IsInDungeon() != destinationIsInDungeon)
-             {
-                 TempData["Error"] = "You can't teleport inside the dungeon from outside of it, nor can you teleport out of it from inside.";
-                 return RedirectToAction("Play");
-             }
+            // assert player is not TPing into the dungeon from out in or vice versa
+            bool destinationIsInDungeon = false;
+            if (to.Contains("dungeon_")) {
+                destinationIsInDungeon = true;
+            }
+            if (me.IsInDungeon() != destinationIsInDungeon)
+            {
+                TempData["Error"] = "You can't teleport inside the dungeon from outside of it, nor can you teleport out of it from inside.";
+                return RedirectToAction("Play");
+            }
 
             TempData["Result"] = PlayerProcedures.TeleportPlayer(me, to, false);
 
@@ -3079,7 +3081,7 @@ namespace tfgame.Controllers
             return RedirectToAction("Play");
         }
 
-         [Authorize]
+        [Authorize]
         public ActionResult FightTheTransformation()
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -3101,7 +3103,7 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play");
             }
 
-             // assert player is not already locked into their current form
+            // assert player is not already locked into their current form
             Item itemMe = ItemProcedures.GetItemByVictimName(me.FirstName, me.LastName);
             if (itemMe.IsPermanent == true)
             {
@@ -3129,156 +3131,156 @@ namespace tfgame.Controllers
         }
 
         [Authorize]
-         public ActionResult CurseTransformOwner()
-         {
-             string myMembershipId = User.Identity.GetUserId();
-             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+        public ActionResult CurseTransformOwner()
+        {
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
-             // assert player is inanimate or an animal
-             if (me.Mobility != "inanimate" && me.Mobility != "animal")
-             {
-                 TempData["Error"] = "You can't do this.";
-                 TempData["SubError"] = "You are still in an animate form.  You must be inanimate or an animal.";
-                 return RedirectToAction("Play","PvP");
-             }
+            // assert player is inanimate or an animal
+            if (me.Mobility != "inanimate" && me.Mobility != "animal")
+            {
+                TempData["Error"] = "You can't do this.";
+                TempData["SubError"] = "You are still in an animate form.  You must be inanimate or an animal.";
+                return RedirectToAction("Play", "PvP");
+            }
 
 
-             // assert player has not acted too many times already
-             if (me.TimesAttackingThisUpdate >= 1)
-             {
-                 TempData["Error"] = "You don't have enough energy to try and transform your owner.";
-                 TempData["SubError"] = "Wait a bit.";
-                 return RedirectToAction("Play", "PvP");
-             }
+            // assert player has not acted too many times already
+            if (me.TimesAttackingThisUpdate >= 1)
+            {
+                TempData["Error"] = "You don't have enough energy to try and transform your owner.";
+                TempData["SubError"] = "Wait a bit.";
+                return RedirectToAction("Play", "PvP");
+            }
 
-             Item itemMe = ItemProcedures.GetItemByVictimName(me.FirstName, me.LastName);
-             DbStaticItem itemMePlus = ItemStatics.GetStaticItem(itemMe.dbName);
+            Item itemMe = ItemProcedures.GetItemByVictimName(me.FirstName, me.LastName);
+            DbStaticItem itemMePlus = ItemStatics.GetStaticItem(itemMe.dbName);
 
             // assert item does have the ability to curse transform
-             if (itemMePlus.CurseTFFormdbName == null || itemMePlus.CurseTFFormdbName == "")
-             {
-                 TempData["Error"] = "Unfortunately your new form does not have a transformation curse that it can use.";
-                 return RedirectToAction("Play", "PvP");
-             }
+            if (itemMePlus.CurseTFFormdbName == null || itemMePlus.CurseTFFormdbName == "")
+            {
+                TempData["Error"] = "Unfortunately your new form does not have a transformation curse that it can use.";
+                return RedirectToAction("Play", "PvP");
+            }
 
-             Player owner = PlayerProcedures.GetPlayer(itemMe.OwnerId);
+            Player owner = PlayerProcedures.GetPlayer(itemMe.OwnerId);
             // assert player is owned
-             if (owner == null)
-             {
-                 TempData["Error"] = "You aren't owned by anyone.";
-                 TempData["SubError"] = "You don't currently belong to an owner and as such have nobody to curse.";
-                 return RedirectToAction("Play", "PvP");
-             }
+            if (owner == null)
+            {
+                TempData["Error"] = "You aren't owned by anyone.";
+                TempData["SubError"] = "You don't currently belong to an owner and as such have nobody to curse.";
+                return RedirectToAction("Play", "PvP");
+            }
 
             // assert owner is not an invalid bot
-             if (owner.BotId < AIStatics.PsychopathBotId)
-             {
-                 TempData["Error"] = "Unfortunately it seems your owner is immune to your transformation curse!";
-                 TempData["SubError"] = "Only Psychopathic spellslingers and other players are susceptible to transformation curses.";
-                 return RedirectToAction("Play", "PvP");
-             }
+            if (owner.BotId < AIStatics.PsychopathBotId)
+            {
+                TempData["Error"] = "Unfortunately it seems your owner is immune to your transformation curse!";
+                TempData["SubError"] = "Only Psychopathic spellslingers and other players are susceptible to transformation curses.";
+                return RedirectToAction("Play", "PvP");
+            }
 
             // assert owner is animate (they always should be, but just in case...)
-             if (owner.Mobility != "full")
-             {
-                 TempData["Error"] = "Your owner must be animate in order for you to curse transform them.";
-                 return RedirectToAction("Play", "PvP");
-             }
+            if (owner.Mobility != "full")
+            {
+                TempData["Error"] = "Your owner must be animate in order for you to curse transform them.";
+                return RedirectToAction("Play", "PvP");
+            }
 
             // assert that the form does exist
-             DbStaticForm form = FormStatics.GetForm(itemMePlus.CurseTFFormdbName);
-             if (form == null || form.IsUnique == true)
-             {
-                 TempData["Error"] = "Unfortunately it seems that the animate form has either not yet been added to the game or is ineligible.";
-                 return RedirectToAction("Play", "PvP");
-             }
+            DbStaticForm form = FormStatics.GetForm(itemMePlus.CurseTFFormdbName);
+            if (form == null || form.IsUnique == true)
+            {
+                TempData["Error"] = "Unfortunately it seems that the animate form has either not yet been added to the game or is ineligible.";
+                return RedirectToAction("Play", "PvP");
+            }
 
             // all checks pass
-             TempData["Result"] = InanimateXPProcedures.CurseTransformOwner(me, owner, itemMe, itemMePlus);
+            TempData["Result"] = InanimateXPProcedures.CurseTransformOwner(me, owner, itemMe, itemMePlus);
 
 
-             return RedirectToAction("Play", "PvP");
+            return RedirectToAction("Play", "PvP");
 
-         }
+        }
 
-         [Authorize]
-         public ActionResult EscapeFromOwner()
-         {
-             string myMembershipId = User.Identity.GetUserId();
-             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+        [Authorize]
+        public ActionResult EscapeFromOwner()
+        {
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
-             // assert player is inanimate or an animal
-             if (me.Mobility == "full")
-             {
-                 TempData["Error"] = "You can't do this.";
-                 TempData["SubError"] = "You are still in an animate form.  You must be inanimate or an animal.";
-                 return RedirectToAction("Play");
-             }
+            // assert player is inanimate or an animal
+            if (me.Mobility == "full")
+            {
+                TempData["Error"] = "You can't do this.";
+                TempData["SubError"] = "You are still in an animate form.  You must be inanimate or an animal.";
+                return RedirectToAction("Play");
+            }
 
-             Item inanimateMe = ItemProcedures.GetItemByVictimName(me.FirstName, me.LastName);
-             
-             // assert that the player is owned
-             if (inanimateMe.OwnerId <= 0)
-             {
-                 TempData["Error"] = "You are not owned by anyone.";
-                 return RedirectToAction("Play");
-             }
+            Item inanimateMe = ItemProcedures.GetItemByVictimName(me.FirstName, me.LastName);
 
-             // assert that the owner has been sufficiently inactive
-             Player owner = PlayerProcedures.GetPlayer(inanimateMe.OwnerId);
+            // assert that the player is owned
+            if (inanimateMe.OwnerId <= 0)
+            {
+                TempData["Error"] = "You are not owned by anyone.";
+                return RedirectToAction("Play");
+            }
 
-             int hoursSinceLastActivity = -1*(int)Math.Floor(owner.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalHours);
-             if (hoursSinceLastActivity < PvPStatics.HoursBeforeInanimatesCanSlipFree)
-             {
-                 TempData["Error"] = "You cannot escape from your owner right now.";
-                 TempData["SubError"] = "Your owner must remain inactive for " + (PvPStatics.HoursBeforeInanimatesCanSlipFree - hoursSinceLastActivity) + " more hours before you can slip free.";
-                 return RedirectToAction("Play");
-             }
+            // assert that the owner has been sufficiently inactive
+            Player owner = PlayerProcedures.GetPlayer(inanimateMe.OwnerId);
 
-             // don't allow items or pets to struggle while their owner is online in the dungeon
-             if (owner.IsInDungeon() == true && PlayerProcedures.PlayerIsOffline(owner) == false)
-             {
-                 TempData["Error"] = "The dark powers of the dungeon prevent you from being able to slip free while your owner is in the dungeon and online.";
-                 return RedirectToAction("Play");
-             }
-             
-             // all checks pass; drop item and notify owner
-             ItemProcedures.DropItem(inanimateMe.Id, owner.dbLocationName);
-             ItemViewModel inaniamteMePlus = ItemProcedures.GetItemViewModel(inanimateMe.Id);
-             string message = me.GetFullName() + ", your " + inaniamteMePlus.Item.FriendlyName + ", slipped free due to your inactivity and can be claimed by a new owner.";
-             PlayerLogProcedures.AddPlayerLog(owner.Id, message, true);
+            int hoursSinceLastActivity = -1 * (int)Math.Floor(owner.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalHours);
+            if (hoursSinceLastActivity < PvPStatics.HoursBeforeInanimatesCanSlipFree)
+            {
+                TempData["Error"] = "You cannot escape from your owner right now.";
+                TempData["SubError"] = "Your owner must remain inactive for " + (PvPStatics.HoursBeforeInanimatesCanSlipFree - hoursSinceLastActivity) + " more hours before you can slip free.";
+                return RedirectToAction("Play");
+            }
 
-             TempData["Result"] = "You have slipped free from your owner.";
-             return RedirectToAction("Play");
-         }
+            // don't allow items or pets to struggle while their owner is online in the dungeon
+            if (owner.IsInDungeon() == true && PlayerProcedures.PlayerIsOffline(owner) == false)
+            {
+                TempData["Error"] = "The dark powers of the dungeon prevent you from being able to slip free while your owner is in the dungeon and online.";
+                return RedirectToAction("Play");
+            }
+
+            // all checks pass; drop item and notify owner
+            ItemProcedures.DropItem(inanimateMe.Id, owner.dbLocationName);
+            ItemViewModel inaniamteMePlus = ItemProcedures.GetItemViewModel(inanimateMe.Id);
+            string message = me.GetFullName() + ", your " + inaniamteMePlus.Item.FriendlyName + ", slipped free due to your inactivity and can be claimed by a new owner.";
+            PlayerLogProcedures.AddPlayerLog(owner.Id, message, true);
+
+            TempData["Result"] = "You have slipped free from your owner.";
+            return RedirectToAction("Play");
+        }
 
 
 
-         [Authorize]
-         public ActionResult ReserveName()
-         {
-             string myMembershipId = User.Identity.GetUserId();
-             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+        [Authorize]
+        public ActionResult ReserveName()
+        {
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
-            
 
-             // assert player is greater than level 3 if they are mobile
-             if (me.Level < 3 && me.Mobility == "full")
-             {
-                 TempData["Error"] = "You must be level 3 or greater in order to reserve a name.";
-                 return RedirectToAction("Play");
-             }
 
-             // if player is not mobile, see if the item they have become is at least level 3
-             if (me.Mobility != "full")
-             {
-                 Item itemMe = ItemProcedures.GetItemByVictimName(me.FirstName, me.LastName);
-                 if (itemMe.Level < 3)
-                 {
-                     TempData["Error"] = "You must be level 3 or greater in order to reserve a name.";
-                     return RedirectToAction("Play");
-                 }
-             }
+            // assert player is greater than level 3 if they are mobile
+            if (me.Level < 3 && me.Mobility == "full")
+            {
+                TempData["Error"] = "You must be level 3 or greater in order to reserve a name.";
+                return RedirectToAction("Play");
+            }
+
+            // if player is not mobile, see if the item they have become is at least level 3
+            if (me.Mobility != "full")
+            {
+                Item itemMe = ItemProcedures.GetItemByVictimName(me.FirstName, me.LastName);
+                if (itemMe.Level < 3)
+                {
+                    TempData["Error"] = "You must be level 3 or greater in order to reserve a name.";
+                    return RedirectToAction("Play");
+                }
+            }
 
             // strip out the roman numeral at the end of the last name if there is one
             string[] chunks = me.LastName.Split(' ');
@@ -3287,43 +3289,43 @@ namespace tfgame.Controllers
                 me.LastName = chunks[0];
             }
 
-             IReservedNameRepository resNameRepo = new EFReservedNameRepository();
+            IReservedNameRepository resNameRepo = new EFReservedNameRepository();
 
-             ReservedName ghost = resNameRepo.ReservedNames.FirstOrDefault(rn => rn.MembershipId == me.MembershipId);
+            ReservedName ghost = resNameRepo.ReservedNames.FirstOrDefault(rn => rn.MembershipId == me.MembershipId);
 
-             if (ghost == null)
-             {
-                 ReservedName newReservedName = new ReservedName
-                 {
-                     FullName = me.FirstName + " " + me.LastName, // don't use GetFullName() so nickname is left out
-                     MembershipId = me.MembershipId,
-                     Timestamp = DateTime.UtcNow,
-                 };
-                 resNameRepo.SaveReservedName(newReservedName);
-             }
-             else
-             {
-                 // check to make sure the name doesn't belong to someone else
-                 if (ghost.MembershipId != me.MembershipId)
-                 {
-                     TempData["Error"] = "Unfortunately that name has already been reserved by someone else.";
-                     return RedirectToAction("Play");
-                 }
+            if (ghost == null)
+            {
+                ReservedName newReservedName = new ReservedName
+                {
+                    FullName = me.FirstName + " " + me.LastName, // don't use GetFullName() so nickname is left out
+                    MembershipId = me.MembershipId,
+                    Timestamp = DateTime.UtcNow,
+                };
+                resNameRepo.SaveReservedName(newReservedName);
+            }
+            else
+            {
+                // check to make sure the name doesn't belong to someone else
+                if (ghost.MembershipId != me.MembershipId)
+                {
+                    TempData["Error"] = "Unfortunately that name has already been reserved by someone else.";
+                    return RedirectToAction("Play");
+                }
 
-                 if (ghost.FullName == me.FirstName + " " + me.LastName)
-                 {
-                     TempData["Result"] = "Your name has already been reserved.";
-                     return RedirectToAction("Play");
-                 }
+                if (ghost.FullName == me.FirstName + " " + me.LastName)
+                {
+                    TempData["Result"] = "Your name has already been reserved.";
+                    return RedirectToAction("Play");
+                }
 
-                 ghost.FullName = me.FirstName + " " + me.LastName;
-                 resNameRepo.SaveReservedName(ghost);
-             }
+                ghost.FullName = me.FirstName + " " + me.LastName;
+                resNameRepo.SaveReservedName(ghost);
+            }
 
-             TempData["Result"] = "Your name has been reserved.";
-             return RedirectToAction("Play");
+            TempData["Result"] = "Your name has been reserved.";
+            return RedirectToAction("Play");
 
-         }
+        }
 
         public ActionResult OldLeadboards(string round)
         {
@@ -3387,11 +3389,11 @@ namespace tfgame.Controllers
             }
 
             // strip out some possible malicious tags
-            input.Message = input.Message.Replace('<',' ').Replace('>',' ');
+            input.Message = input.Message.Replace('<', ' ').Replace('>', ' ');
 
             LocationLogProcedures.Shout(me, input.Message);
 
-            
+
             Location temp = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName);
             string message = "You shouted '" + input.Message + "' at " + temp.Name;
             PlayerLogProcedures.AddPlayerLog(me.Id, message, false);
@@ -3427,17 +3429,24 @@ namespace tfgame.Controllers
             public string Desc { get; set; }
         }
 
-        [MethodImpl(MethodImplOptions.Synchronized)]
+        private readonly Object syncRoot = new Object();
         public ActionResult UpdateWorld()
         {
+            ViewBag.UpdateInProgress = true;
 
-            DateTime lastupdate = PvPWorldStatProcedures.GetLastWorldUpdate();
-            double secondsAgo = -Math.Floor(lastupdate.Subtract(DateTime.UtcNow).TotalSeconds);
-
-            if (secondsAgo < PvPStatics.TurnSecondLength)
+            lock (syncRoot)
             {
-               // TempData["Result"] = "You can't update the world again yet--it is too soon.";
-                return RedirectToAction("Play");
+                PvPWorldStat worldStats = PvPWorldStatProcedures.GetWorldStats();
+                // DateTime lastupdate = PvPWorldStatProcedures.GetLastWorldUpdate();
+                // double secondsAgo = -Math.Floor(lastupdate.Subtract(DateTime.UtcNow).TotalSeconds);
+
+                if (worldStats.WorldIsUpdating)
+                {
+                    // TempData["Result"] = "You can't update the world again yet--it is too soon.";
+                    return RedirectToAction("Play");
+                }
+
+                PvPWorldStatProcedures.UpdateWorldTurnCounter();
             }
 
             HttpContext ctx = System.Web.HttpContext.Current;
@@ -3446,9 +3455,6 @@ namespace tfgame.Controllers
                 System.Web.HttpContext.Current = ctx;
                 WorldUpdateProcedures.UpdateWorld();
             });
-
-            ViewBag.UpdateInProgress = true;
-            PvPStatics.AnimateUpdateInProgress = true;
 
             return RedirectToAction("Play");
 

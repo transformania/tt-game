@@ -42,6 +42,9 @@ namespace tfgame.Procedures
 
             if (turnNo < PvPStatics.RoundDuration)
             {
+
+                PvPStatics.AnimateUpdateInProgress = true;
+
                 IServerLogRepository serverLogRepo = new EFServerLogRepository();
                 ServerLog log = new ServerLog
                 {

@@ -27,8 +27,8 @@ namespace tfgame.Statics
         public const String GenderFemale = "female";
 
         public const String MobilityFull = "full";
-        public const String MobilityNoCast = "nocast";
-        public const String MobilityNone = "inanimate";
+        public const String MobilityInanimate = "inanimate";
+        public const String MobilityPet = "animal";
 
         // These three are publicly modified statics, not constants
         public static string LastGameUpdate = "";

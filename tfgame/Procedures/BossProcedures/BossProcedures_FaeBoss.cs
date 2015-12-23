@@ -30,6 +30,14 @@ namespace tfgame.Procedures.BossProcedures
 
         public static readonly string[] animateSpellsToCast = { GreatFaeSpell, DarkFaeSpell, EnchantedTreeSpell };
 
+        public const string FairyPetSpell = "skill_HEY!_LISTEN!_Varn";
+        public const string FlowerSpell = ""; // SPELL PENDING
+        public const string DarkFaePetSpell = ""; // SPELL PENDING
+
+        public static readonly string[] inanimateSpellsToCast = { FairyPetSpell };
+
+        private const double AggroChance = .2D;
+
         public static Player SpawnFaeBoss()
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
@@ -83,18 +91,41 @@ namespace tfgame.Procedures.BossProcedures
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
             Player faeboss = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.FaebossId);
+            AIDirective directive = AIDirectiveProcedures.GetAIDirective(faeboss.Id);
 
-            string newTargetLocation = GetLocationWithMostEligibleTargets();
-            string newActualLocation = AIProcedures.MoveTo(faeboss, newTargetLocation, 10);
-            faeboss.dbLocationName = newActualLocation;
-            playerRepo.SavePlayer(faeboss);
-
-            List<Player> playersHere = GetEligibleTargetsInLocation(faeboss.dbLocationName, faeboss);
-
-            foreach (Player p in playersHere)
+            // no target, go out and hit some random people with animate spells
+            if (HasValidTarget(directive) ==false)
             {
-                string spell = ChooseSpell(p, PvPWorldStatProcedures.GetWorldTurnNumber(), PvPStatics.MobilityFull);
-                AttackProcedures.Attack(faeboss, p, spell);
+                ResetTarget(directive);
+                string newTargetLocation = GetLocationWithMostEligibleTargets();
+                string newActualLocation = AIProcedures.MoveTo(faeboss, newTargetLocation, GetRandomChaseDistance());
+                faeboss.dbLocationName = newActualLocation;
+                playerRepo.SavePlayer(faeboss);
+
+                CastAnimateSpellsAtLocation(faeboss);
+            }
+
+            // Narcissa has a valid target, go for them
+            else
+            {
+                Player target = PlayerProcedures.GetPlayer((int)directive.Var1);
+                string newTargetLocation = target.dbLocationName;
+                string newActualLocation = AIProcedures.MoveTo(faeboss, newTargetLocation, GetRandomChaseDistance());
+                faeboss.dbLocationName = newActualLocation;
+                playerRepo.SavePlayer(faeboss);
+
+                if (faeboss.dbLocationName == target.dbLocationName)
+                {
+                    string spell = ChooseSpell(target, PvPWorldStatProcedures.GetWorldTurnNumber(), PvPStatics.MobilityPet);
+
+                    for (int i = 0; i < 4; i++)
+                    {
+                        AttackProcedures.Attack(faeboss, target, spell);
+                    }
+                }
+                else {
+                    CastAnimateSpellsAtLocation(faeboss);
+                }
             }
 
         }
@@ -105,6 +136,22 @@ namespace tfgame.Procedures.BossProcedures
             Player faeboss = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.FaebossId);
             string spell = ChooseSpell(attacker, PvPWorldStatProcedures.GetWorldTurnNumber(),PvPStatics.MobilityFull);
             AttackProcedures.Attack(faeboss, attacker, spell);
+
+            AIDirective directive = AIDirectiveProcedures.GetAIDirective(faeboss.Id);
+
+            // random chance to aggro faeboss
+
+            Random rand = new Random(Guid.NewGuid().GetHashCode());
+            double num = rand.NextDouble();
+
+            if (num < AggroChance || directive.Var1==0)
+            {
+                IAIDirectiveRepository aiRepo = new EFAIDirectiveRepository();
+                AIDirective dbDirective = aiRepo.AIDirectives.FirstOrDefault(a => a.Id == directive.Id);
+
+                dbDirective.Var1 = attacker.Id;
+                aiRepo.SaveAIDirective(dbDirective);
+            }
         }
 
         public static string ChooseSpell(Player attacker, int turnNumber, string spellMobilityType)
@@ -116,7 +163,7 @@ namespace tfgame.Procedures.BossProcedures
                 return animateSpellsToCast[mod];
             }
 
-            return GreatFaeSpell;
+            return inanimateSpellsToCast[0];
 
         }
 
@@ -133,6 +180,10 @@ namespace tfgame.Procedures.BossProcedures
             return playersHere;
         }
 
+        /// <summary>
+        /// Return the tile of the map which has the most targets that Narcissa is allowed to transform
+        /// </summary>
+        /// <returns>dbName of location found</returns>
         private static string GetLocationWithMostEligibleTargets()
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
@@ -144,6 +195,69 @@ namespace tfgame.Procedures.BossProcedures
             p.InDuel <= 0 &&
             p.InQuest <= 0).GroupBy(p => p.dbLocationName).OrderByDescending(p => p.Count()).Select(p => p.Key);
             return locs.First();
+        }
+
+        /// <summary>
+        /// Determines whether Narcissa is currently chasing someone who is valid to be transformed still
+        /// </summary>
+        /// <param name="directive"></param>
+        /// <returns>True if target is valid, false if not</returns>
+        private static bool HasValidTarget(AIDirective directive)
+        {
+            if (directive == null || directive.Var1 == 0)
+            {
+                return false;
+            }
+
+            Player target = PlayerProcedures.GetPlayer((int)directive.Var1);
+
+            // TODO:  This can probably be swapped out with Arrhae's "CanBeAttacked" method in the future.  But for now...
+            if (target == null ||
+                        target.Mobility != PvPStatics.MobilityFull ||
+                        PlayerProcedures.PlayerIsOffline(target) ||
+                        target.IsInDungeon() == true ||
+                        target.InDuel > 0 ||
+                        target.InQuest > 0)
+            {
+                return false;
+            }
+
+            return true;
+            
+        }
+
+        private static void ResetTarget(AIDirective directive)
+        {
+            IAIDirectiveRepository aiRepo = new EFAIDirectiveRepository();
+            AIDirective ai = aiRepo.AIDirectives.FirstOrDefault(a => a.Id == directive.Id);
+            ai.Var1 = 0;
+            aiRepo.SaveAIDirective(ai);
+        }
+
+        /// <summary>
+        ///  Returns a number between 7 and 12 to give Narcissa some randomness on how far she is willing to chase a target in one turn.
+        /// </summary>
+        /// <returns>Random int between 7 and 12</returns>
+        private static int GetRandomChaseDistance()
+        {
+            Random rand = new Random(Guid.NewGuid().GetHashCode());
+            double num = rand.NextDouble()*6;
+            return 7 + (int)num;
+        }
+
+        /// <summary>
+        /// Cast 1 animate spell on each player in Narcissa's current location.  She will not change her aggro for this.
+        /// </summary>
+        /// <param name="faeboss"></param>
+        private static void CastAnimateSpellsAtLocation(Player faeboss)
+        {
+            List<Player> playersHere = GetEligibleTargetsInLocation(faeboss.dbLocationName, faeboss);
+
+            foreach (Player p in playersHere)
+            {
+                string spell = ChooseSpell(p, PvPWorldStatProcedures.GetWorldTurnNumber(), PvPStatics.MobilityFull);
+                AttackProcedures.Attack(faeboss, p, spell);
+            }
         }
 
     }

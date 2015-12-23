@@ -12,8 +12,6 @@ namespace tfgame.Procedures.BossProcedures
     public class BossProcedures_FaeBoss
     {
 
-        // If you're a dark fae then you're corrupted. Then you can't attack her. If you're a great fairy then she'd be pissier with you I'd say because in her eyes, you're a traitor
-
         public const string FirstName = "Narcissa";
         public const string LastName = "the Exiled";
         public const string Form = "form_Corrupted_Lunar_Fae_Roxanne246810(Rachael_Victor/Yuki_Kitsu)";
@@ -28,16 +26,39 @@ namespace tfgame.Procedures.BossProcedures
         public const string EnchantedTreeSpell = "skill_Take_Root_Sherry_Gray";
         public const string EnchantedTreeForm = "form_Enchanted_Tree_Sherry_Gray";
 
+        /// <summary>
+        /// A list of all the animate spells Narcissa can cast
+        /// </summary>
         public static readonly string[] animateSpellsToCast = { GreatFaeSpell, DarkFaeSpell, EnchantedTreeSpell };
 
         public const string FairyPetSpell = "skill_HEY!_LISTEN!_Varn";
         public const string FlowerSpell = ""; // SPELL PENDING
         public const string DarkFaePetSpell = ""; // SPELL PENDING
 
+        /// <summary>
+        /// A list of the inanimate and pet spells Narcissa can cast
+        /// </summary>
         public static readonly string[] inanimateSpellsToCast = { FairyPetSpell };
 
+        /// <summary>
+        /// Probability of drawing Narcissa's aggro when she already has a target set
+        /// </summary>
         private const double AggroChance = .2D;
 
+        /// <summary>
+        /// The base number of tiles Narcissa will move to catch up to her target or seek out new ones
+        /// </summary>
+        private const int MovementBaseDistance = 7;
+
+        /// <summary>
+        /// The random number of additional tiles Narcissa will move to catch up to her target or seek out new ones
+        /// </summary>
+        private const int MovementRandomExtraDistance = 6;
+
+        /// <summary>
+        /// Spawns Narcissa into the world and sets her initial blank AI Directive
+        /// </summary>
+        /// <returns></returns>
         public static Player SpawnFaeBoss()
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
@@ -79,14 +100,23 @@ namespace tfgame.Procedures.BossProcedures
             return faeboss;
         }
 
+        /// <summary>
+        /// Returns whether the spell is valid against Narcissa.  TODO.
+        /// </summary>
+        /// <param name="spellName">db name of the spell whose cast is being attempted</param>
+        /// <param name="caster">Player attempting to cast the spell</param>
+        /// <returns></returns>
         public static bool SpellIsValid(string spellName, Player caster)
         {
-
-
 
             return false;
         }
 
+        /// <summary>
+        /// Perform Narcissa's regular actions when a new turn has started.  If Narcissa has no aggroed target, she seeks to transform random people into
+        /// certain animate forms.  If she has aggro, she will attempt to chase them and cast a pet spell on them.  If she can't catch up, she'll cast the animate
+        /// spells in the area instead and resume pursuit next turn.
+        /// </summary>
         public static void RunTurnLogic()
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
@@ -130,6 +160,11 @@ namespace tfgame.Procedures.BossProcedures
 
         }
 
+        /// <summary>
+        /// Attack an attacking player back.  There is a random chance to draw Narcissa's aggro from doing this if she has a target.  If she has no active target,
+        /// the attacker instantly becomes her new target.
+        /// </summary>
+        /// <param name="attacker"></param>
         public static void CounterAttack(Player attacker)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
@@ -154,6 +189,14 @@ namespace tfgame.Procedures.BossProcedures
             }
         }
 
+        /// <summary>
+        /// Calculate which spell for Narcissa to cast depending on the attacking player.  Narcissa will change spells every now and then based on the world turn
+        /// number.
+        /// </summary>
+        /// <param name="attacker">The attacking player</param>
+        /// <param name="turnNumber">World turn number</param>
+        /// <param name="spellMobilityType">The spell type to cast with.  Narcissa targets neutral players with animate spells and her targets with inanimate/pet spells</param>
+        /// <returns></returns>
         public static string ChooseSpell(Player attacker, int turnNumber, string spellMobilityType)
         {
 
@@ -167,10 +210,15 @@ namespace tfgame.Procedures.BossProcedures
 
         }
 
-        private static List<Player> GetEligibleTargetsInLocation(string location, Player player)
+        /// <summary>
+        /// Return a list of all the eligible players in a location for Narcissa to attack
+        /// </summary>
+        /// <param name="player">Narciss</param>
+        /// <returns></returns>
+        private static List<Player> GetEligibleTargetsInLocation(Player player)
         {
             DateTime cutoff = DateTime.UtcNow.AddMinutes(-30);
-            List<Player> playersHere = PlayerProcedures.GetPlayersAtLocation(location).Where(m => m.Mobility == PvPStatics.MobilityFull &&
+            List<Player> playersHere = PlayerProcedures.GetPlayersAtLocation(player.dbLocationName).Where(m => m.Mobility == PvPStatics.MobilityFull &&
             m.Id != player.Id &&
             m.BotId >= AIStatics.PsychopathBotId &&
             m.LastActionTimestamp > cutoff &&
@@ -200,7 +248,7 @@ namespace tfgame.Procedures.BossProcedures
         /// <summary>
         /// Determines whether Narcissa is currently chasing someone who is valid to be transformed still
         /// </summary>
-        /// <param name="directive"></param>
+        /// <param name="directive">AI Directive containing target Id</param>
         /// <returns>True if target is valid, false if not</returns>
         private static bool HasValidTarget(AIDirective directive)
         {
@@ -226,6 +274,10 @@ namespace tfgame.Procedures.BossProcedures
             
         }
 
+        /// <summary>
+        /// Clears Narciss'a target
+        /// </summary>
+        /// <param name="directive"></param>
         private static void ResetTarget(AIDirective directive)
         {
             IAIDirectiveRepository aiRepo = new EFAIDirectiveRepository();
@@ -242,16 +294,16 @@ namespace tfgame.Procedures.BossProcedures
         {
             Random rand = new Random(Guid.NewGuid().GetHashCode());
             double num = rand.NextDouble()*6;
-            return 7 + (int)num;
+            return MovementBaseDistance + (int)MovementRandomExtraDistance;
         }
 
         /// <summary>
         /// Cast 1 animate spell on each player in Narcissa's current location.  She will not change her aggro for this.
         /// </summary>
-        /// <param name="faeboss"></param>
+        /// <param name="faeboss">Player casting the spells.  In this case, always Narcissa.</param>
         private static void CastAnimateSpellsAtLocation(Player faeboss)
         {
-            List<Player> playersHere = GetEligibleTargetsInLocation(faeboss.dbLocationName, faeboss);
+            List<Player> playersHere = GetEligibleTargetsInLocation(faeboss);
 
             foreach (Player p in playersHere)
             {

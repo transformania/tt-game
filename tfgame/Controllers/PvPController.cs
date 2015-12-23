@@ -99,7 +99,7 @@ namespace tfgame.Controllers
                 && secondsSinceUpdate > PvPStatics.TurnSecondLength 
                 && !(WorldStat.WorldIsUpdating || PvPStatics.AnimateUpdateInProgress))
             {
-                Parallel.Invoke(() => UpdateWorld(), () => UpdateWorld());
+                UpdateWorld();
             }
 
             // turn off world update toggle if it's simply been too long

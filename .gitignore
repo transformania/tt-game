@@ -207,3 +207,4 @@ src/tfgame/Images/PvP/portraits/
 # Tools
 tools
 !tools/packages.config
+*.flg

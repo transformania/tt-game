@@ -1,3 +1,4 @@
+SET NOCOUNT ON;
 USE [Stats]
 GO
 SET IDENTITY_INSERT [dbo].[DbStaticEffects] ON 
@@ -3414,3 +3415,5 @@ INSERT [dbo].[DbStaticSkills] ([Id], [dbName], [FriendlyName], [FormdbName], [De
 GO
 SET IDENTITY_INSERT [dbo].[DbStaticSkills] OFF
 GO
+
+PRINT "Statics seeded";

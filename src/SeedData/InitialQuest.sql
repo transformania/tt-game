@@ -1,3 +1,4 @@
+SET NOCOUNT ON;
 USE [Stats]
 GO
 SET IDENTITY_INSERT [dbo].[QuestStates] ON 
@@ -71,3 +72,5 @@ INSERT [dbo].[QuestStarts] ([Id], [dbName], [Name], [Location], [MinStartTurn], 
 GO
 SET IDENTITY_INSERT [dbo].[QuestStarts] OFF
 GO
+
+PRINT "Default quest seeded";

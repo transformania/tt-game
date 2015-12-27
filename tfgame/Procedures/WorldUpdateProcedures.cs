@@ -54,7 +54,7 @@ namespace tfgame.Procedures
                     Errors = 0,
                     FullLog = "",
                     Population = PlayerProcedures.GetWorldPlayerStats().CurrentOnlinePlayers,
-            };
+                };
                 log.AddLog("Started new log for turn " + turnNo + ".");
                 serverLogRepo.SaveServerLog(log);
                 Stopwatch updateTimer = new Stopwatch();
@@ -97,8 +97,6 @@ namespace tfgame.Procedures
                     }
                 }
                 #endregion
-
-                PvPWorldStatProcedures.UpdateWorldTurnCounter();
 
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started loading animate players");
                 

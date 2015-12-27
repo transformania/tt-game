@@ -20,6 +20,8 @@ using tfgame.Procedures.BossProcedures;
 using tfgame.Statics;
 using tfgame.ViewModels;
 using Microsoft.AspNet.Identity;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 
 namespace tfgame.Controllers
 {
@@ -93,7 +95,9 @@ namespace tfgame.Controllers
             ViewBag.SecondsUntilUpdate = PvPStatics.TurnSecondLength-(int)secondsSinceUpdate;
 
             // if it has been long enough since last update, force an update to occur
-            if (secondsSinceUpdate > PvPStatics.TurnSecondLength && WorldStat.WorldIsUpdating == false && PvPStatics.AnimateUpdateInProgress == false)
+            if (WorldStat.TurnNumber < PvPStatics.RoundDuration
+                && secondsSinceUpdate > PvPStatics.TurnSecondLength 
+                && !(WorldStat.WorldIsUpdating || PvPStatics.AnimateUpdateInProgress))
             {
                 UpdateWorld();
             }
@@ -3425,19 +3429,30 @@ namespace tfgame.Controllers
             public string Desc { get; set; }
         }
 
+        private readonly Object syncRoot = new Object();
         public ActionResult UpdateWorld()
         {
-
-            DateTime lastupdate = PvPWorldStatProcedures.GetLastWorldUpdate();
-            double secondsAgo = -Math.Floor(lastupdate.Subtract(DateTime.UtcNow).TotalSeconds);
-
-            if (secondsAgo < PvPStatics.TurnSecondLength)
+            lock (syncRoot)
             {
-               // TempData["Result"] = "You can't update the world again yet--it is too soon.";
-                return RedirectToAction("Play");
+                PvPWorldStat worldStats = PvPWorldStatProcedures.GetWorldStats();
+                // DateTime lastupdate = PvPWorldStatProcedures.GetLastWorldUpdate();
+                // double secondsAgo = -Math.Floor(lastupdate.Subtract(DateTime.UtcNow).TotalSeconds);
+
+                if (worldStats.WorldIsUpdating)
+                {
+                   // TempData["Result"] = "You can't update the world again yet--it is too soon.";
+                    return RedirectToAction("Play");
+                }
+
+                PvPWorldStatProcedures.UpdateWorldTurnCounter();
             }
 
-            WorldUpdateProcedures.UpdateWorld();
+            HttpContext ctx = System.Web.HttpContext.Current;
+            Task.Run(() => 
+            {
+                System.Web.HttpContext.Current = ctx;
+                WorldUpdateProcedures.UpdateWorld();
+            });
 
             return RedirectToAction("Play");
 

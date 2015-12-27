@@ -961,6 +961,11 @@ namespace tfgame.Procedures
             return playerLogMessage;
         }
 
+        /// <summary>
+        /// Return all players in a location, whether or not they are online or animate.
+        /// </summary>
+        /// <param name="destinationDbName"></param>
+        /// <returns></returns>
         public static IEnumerable<Player> GetPlayersAtLocation(string destinationDbName)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
@@ -1104,6 +1109,17 @@ namespace tfgame.Procedures
                         {
                             BossProcedures_Sisters.SpawnSisters();
                             PvPWorldStatProcedures.Boss_StartSisters();
+                            string summontext = BossSummonDictionary.GetActivationText("Sisters");
+                            PlayerLogProcedures.AddPlayerLog(player.Id, summontext, true);
+                            return summontext;
+                        }
+                    }
+                    else if (roll < 1 && dbLocationName == BossProcedures_FaeBoss.SpawnLocation)
+                    {
+                        if (worldStats.IsFaeBossAvailable())
+                        {
+                            BossProcedures_FaeBoss.SpawnFaeBoss();
+                            PvPWorldStatProcedures.Boss_StartFaeBoss();
                             string summontext = BossSummonDictionary.GetActivationText("Sisters");
                             PlayerLogProcedures.AddPlayerLog(player.Id, summontext, true);
                             return summontext;

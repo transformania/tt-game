@@ -663,6 +663,13 @@ namespace tfgame.Procedures
                 BossProcedures_Thieves.CounterAttack(personAttacking);
             }
 
+            // fae boss counterattack
+            else if (bot.BotId == AIStatics.FaebossId)
+            {
+                AIProcedures.DealBossDamage(bot, personAttacking, true, 1);
+                BossProcedures_FaeBoss.CounterAttack(personAttacking);
+            }
+
             // Wuffie counterattack
             else if (bot.BotId == AIStatics.WuffieBotId)
             {

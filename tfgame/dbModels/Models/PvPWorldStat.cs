@@ -19,11 +19,42 @@ namespace tfgame.dbModels.Models
         public string Boss_Bimbo { get; set; }
         public string Boss_Thief { get; set; }
         public string Boss_Sisters { get; set; }
+        public string Boss_Faeboss { get; set; }
         public string GameNewsDate { get; set; }
         public bool TestServer { get; set; }
         public bool ChaosMode { get; set; }
         public int RoundDuration { get; set; }
         public bool InbetweenRoundsNonChaos { get; set; }
+
+        /// <summary>
+        /// Returns true if any of the NPC bosses are currently active
+        /// </summary>
+        /// <returns></returns>
+        public bool AnyBossIsActive()
+        { 
+           
+            if (this.Boss_Thief == "active")
+            {
+                return true;
+            } else if (this.Boss_Valentine == "active")
+            {
+                return true;
+            }
+            else if (this.Boss_Bimbo == "active")
+            {
+                return true;
+            }
+            else if (this.Boss_Donna == "active")
+            {
+                return true;
+            }
+            else if (this.Boss_Sisters == "active")
+            {
+                return true;
+            }
+
+            return false;
+        }
 
         public bool IsDonnaAvailable()
         {
@@ -83,5 +114,21 @@ namespace tfgame.dbModels.Models
                 return false;
             }
         }
+
+        /// <summary>
+        /// Returns true if the fae boss has not yet been started, no other bosses are active, and the minimum turn number has passed
+        /// </summary>
+        /// <returns></returns>
+        public bool IsFaeBossAvailable()
+        {
+            if (this.Boss_Faeboss == "unstarted" && 
+                this.AnyBossIsActive() == false && 
+                this.TurnNumber >= BossSummonDictionary.GlobalBossSummonDictionary.Values.FirstOrDefault(p => p.BossName == "FaeBoss").MinimumTurn) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
     }
 }

@@ -412,7 +412,8 @@
     <Compile Include="Procedures\BossProcedures\BossProcedures_BimboBoss.cs" />
     <Compile Include="Procedures\BossProcedures\BossProcedures_Donna.cs" />
     <Compile Include="Procedures\BossProcedures\BossProcedures_DungeonDemon.cs" />
-    <Compile Include="Procedures\BossProcedures\BossProcedures_Fae.cs" />
+    <Compile Include="Procedures\BossProcedures\BossProcedures_FaeBoss.cs" />
+    <Compile Include="Procedures\BossProcedures\BossProcedures_Jewdewfae.cs" />
     <Compile Include="Procedures\BossProcedures\BossProcedures_Loremaster.cs" />
     <Compile Include="Procedures\BossProcedures\BossProcedures_PetMerchant.cs" />
     <Compile Include="Procedures\BossProcedures\BossProcedures_Sisters.cs" />
@@ -1177,6 +1178,7 @@
     <Content Include="Images\PvP\portraits\captivating_siren_babblingfaces.png" />
     <Content Include="Images\PvP\portraits\catchcum_spacedande.jpg" />
     <Content Include="Images\PvP\portraits\centaur_mare_babblingfaces.jpg" />
+    <Content Include="Images\PvP\portraits\cerberus_gatekeeper_sigma_x.jpg" />
     <Content Include="Images\PvP\portraits\Chic_Shopgirl_Martiandawn.jpg" />
     <Content Include="Images\PvP\portraits\chinese_lizard_warrior.jpg" />
     <Content Include="Images\PvP\portraits\chubby_tanuki_lady_marx50.jpg" />
@@ -1205,6 +1207,7 @@
     <Content Include="Images\PvP\portraits\dungeon_demon_babblingfaces.jpg" />
     <Content Include="Images\PvP\portraits\d_loving_girl_Meddle.png" />
     <Content Include="Images\PvP\portraits\earth_elemental_Luxianne.jpg" />
+    <Content Include="Images\PvP\portraits\egg_laying_dragoness_Luxianne.png" />
     <Content Include="Images\PvP\portraits\egyptian_priestess_Lux.png" />
     <Content Include="Images\PvP\portraits\elevator_girl_Martiandawn.jpg" />
     <Content Include="Images\PvP\portraits\elf_hero_babblingfaces.jpg" />
@@ -1226,6 +1229,7 @@
     <Content Include="Images\PvP\portraits\fembunni_Luxianne.png" />
     <Content Include="Images\PvP\portraits\fierce_she_wolf_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\fire_elemental_Luxianne.jpg" />
+    <Content Include="Images\PvP\portraits\flexible_florist_Melina_Mercy.jpg" />
     <Content Include="Images\PvP\portraits\four_tailed_twinsune_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\foxtheif_Luxianne.png" />
     <Content Include="Images\PvP\portraits\fox_maid_Luxianne.jpg" />
@@ -1269,6 +1273,7 @@
     <Content Include="Images\PvP\portraits\jungle_girl_Meddle.png" />
     <Content Include="Images\PvP\portraits\kitsune_shrine_maiden_lux.png" />
     <Content Include="Images\PvP\portraits\korps_recruiter_babblingfaces.jpg" />
+    <Content Include="Images\PvP\portraits\kraken_girl_cyberkaku.jpg" />
     <Content Include="Images\PvP\portraits\lady_jianshi_spacedande.png" />
     <Content Include="Images\PvP\portraits\latex_dominatrix_Babblingfaces.png" />
     <Content Include="Images\PvP\portraits\latex_witch_Martiandawn.jpg" />
@@ -1349,6 +1354,7 @@
     <Content Include="Images\PvP\portraits\satyr_martiandawn.jpg" />
     <Content Include="Images\PvP\portraits\scholarly_schoolgirl_Babblingfaces.jpg" />
     <Content Include="Images\PvP\portraits\scorpiotaur_jbovinne.jpg" />
+    <Content Include="Images\PvP\portraits\scylla_cyberkaku.jpg" />
     <Content Include="Images\PvP\portraits\seductive_skunk_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\seekshadow_apprentice_thief_Luxianne.jpg" />
     <Content Include="Images\PvP\portraits\seekshadow_master_thief_Luxianne.jpg" />
@@ -1720,6 +1726,7 @@
     <Content Include="Sounds\attack.wav" />
     <Content Include="Sounds\paper.wav" />
     <Content Include="Sounds\turnUpdate1.wav" />
+    <Content Include="XMLs\BossSummonText\FaeBoss.txt" />
     <Content Include="XMLs\BossSummonText\BimboBoss.txt" />
     <Content Include="XMLs\BossSummonText\Sisters.txt" />
     <Content Include="XMLs\BossSummonText\Donna.txt" />
@@ -1728,6 +1735,10 @@
     <Content Include="XMLs\DungeonDemonNames.xml" />
     <Content Include="XMLs\DungeonNouns.xml" />
     <Content Include="XMLs\DungeonAdjectives.xml" />
+    <Content Include="XMLs\LocationDescriptions\fairygrove_springs.xml" />
+    <Content Include="XMLs\LocationDescriptions\fairygrove_flowerhomes.xml" />
+    <Content Include="XMLs\LocationDescriptions\fairygrove_greathall.xml" />
+    <Content Include="XMLs\LocationDescriptions\fairygrove_entrance.xml" />
     <Content Include="XMLs\restockList.xml" />
     <Content Include="XMLs\custom_bases.xml">
       <SubType>Designer</SubType>
@@ -2612,6 +2623,10 @@
     <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_27.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\XP\Alpha_27.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Statistics\Alpha_27.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\Alpha_28.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\XP\Alpha_28.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_28.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\Statistics\Alpha_28.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

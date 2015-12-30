@@ -27,8 +27,8 @@ namespace tfgame.Statics
         public const String GenderFemale = "female";
 
         public const String MobilityFull = "full";
-        public const String MobilityNoCast = "nocast";
-        public const String MobilityNone = "inanimate";
+        public const String MobilityInanimate = "inanimate";
+        public const String MobilityPet = "animal";
 
         // These three are publicly modified statics, not constants
         public static string LastGameUpdate = "";
@@ -2314,6 +2314,7 @@ namespace tfgame.Statics
                 Y = 7,
                 IsSafe = false,
                 ImageUrl = "",
+                Name_North="fairygrove_entrance",
                 Name_East="cave_mouth",
                 Name_South="forest_ancestor_tree",
 
@@ -2381,6 +2382,59 @@ namespace tfgame.Statics
                 IsSafe = false,
                 ImageUrl = "",
                 Name_West="forest_pinecove",
+
+           },
+
+           new Location {
+                dbName = "fairygrove_entrance",
+                Name = "Fairy Grove (Entrance)",
+                Region = "fairygrove",
+                X = 6,
+                Y = 8,
+                IsSafe = false,
+                ImageUrl = "",
+                Name_North="fairygrove_flowerhomes",
+                Name_East="fairygrove_springs",
+                Name_South="forest_hotspring",
+
+           },
+
+           new Location {
+                dbName = "fairygrove_flowerhomes",
+                Name = "Fairy Grove (Flower Homes)",
+                Region = "fairygrove",
+                X = 6,
+                Y = 9,
+                IsSafe = false,
+                ImageUrl = "",
+                Name_East="fairygrove_greathall",
+                Name_South="fairygrove_entrance",
+
+           },
+
+           new Location {
+                dbName = "fairygrove_greathall",
+                Name = "Fairy Grove (Great Hall)",
+                Region = "fairygrove",
+                X = 7,
+                Y = 9,
+                IsSafe = false,
+                ImageUrl = "",
+                Name_South="fairygrove_springs",
+                Name_West="fairygrove_flowerhomes",
+
+           },
+
+           new Location {
+                dbName = "fairygrove_springs",
+                Name = "Fairy Grove (Springs)",
+                Region = "fairygrove",
+                X = 7,
+                Y = 8,
+                IsSafe = false,
+                ImageUrl = "",
+                Name_North="fairygrove_greathall",
+                Name_West="fairygrove_entrance",
 
            },
 

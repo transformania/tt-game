@@ -1007,7 +1007,7 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
-            JewdewfaeEncounter output = tfgame.Procedures.BossProcedures.BossProcedures_Fae.GetFairyChallengeInfoAtLocation(fae.dbLocationName);
+            JewdewfaeEncounter output = tfgame.Procedures.BossProcedures.BossProcedures_Jewdewfae.GetFairyChallengeInfoAtLocation(fae.dbLocationName);
 
             output.IntroText = output.IntroText.Replace("[", "<").Replace("]", ">");
             output.CorrectFormText = output.CorrectFormText.Replace("[", "<").Replace("]", ">");
@@ -1028,7 +1028,7 @@ namespace tfgame.Controllers
             ViewBag.ShowSuccess = false;
 
             ViewBag.HadRecentInteraction = false;
-            if (tfgame.Procedures.BossProcedures.BossProcedures_Fae.PlayerHasHadRecentInteraction(me, fae))
+            if (tfgame.Procedures.BossProcedures.BossProcedures_Jewdewfae.PlayerHasHadRecentInteraction(me, fae))
             {
                 ViewBag.HadRecentInteraction = true;
             }
@@ -1079,14 +1079,14 @@ namespace tfgame.Controllers
             }
 
             // assert player has not already interacted this location
-            if (tfgame.Procedures.BossProcedures.BossProcedures_Fae.PlayerHasHadRecentInteraction(me, fae))
+            if (tfgame.Procedures.BossProcedures.BossProcedures_Jewdewfae.PlayerHasHadRecentInteraction(me, fae))
             {
                 TempData["Error"] = "You have already interacted with Jewdewfae here.";
                 TempData["SubError"] = "Wait for her to move somewhere else.";
                 return RedirectToAction("Play", "PvP");
             }
 
-            JewdewfaeEncounter output = tfgame.Procedures.BossProcedures.BossProcedures_Fae.GetFairyChallengeInfoAtLocation(fae.dbLocationName);
+            JewdewfaeEncounter output = tfgame.Procedures.BossProcedures.BossProcedures_Jewdewfae.GetFairyChallengeInfoAtLocation(fae.dbLocationName);
 
             output.IntroText = output.IntroText.Replace("[", "<").Replace("]", ">");
             output.CorrectFormText = output.CorrectFormText.Replace("[", "<").Replace("]", ">");
@@ -1094,7 +1094,7 @@ namespace tfgame.Controllers
 
             if (me.Form == output.RequiredForm)
             {
-                decimal xpGained = tfgame.Procedures.BossProcedures.BossProcedures_Fae.AddInteraction(me);
+                decimal xpGained = tfgame.Procedures.BossProcedures.BossProcedures_Jewdewfae.AddInteraction(me);
                 PlayerProcedures.GiveXP(me, xpGained);
                 PlayerProcedures.ChangePlayerActionMana(5, 0, 0, me.Id);
                 ViewBag.XPGain = xpGained;

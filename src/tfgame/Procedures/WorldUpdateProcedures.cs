@@ -32,7 +32,7 @@ namespace tfgame.Procedures
             }
         }
 
-        public static void UpdateWorld()
+        public static void UpdateWorld() 
         {
 
             PvPWorldStat worldStats = PvPWorldStatProcedures.GetWorldStats();
@@ -54,7 +54,7 @@ namespace tfgame.Procedures
                     Errors = 0,
                     FullLog = "",
                     Population = PlayerProcedures.GetWorldPlayerStats().CurrentOnlinePlayers,
-            };
+                };
                 log.AddLog("Started new log for turn " + turnNo + ".");
                 serverLogRepo.SaveServerLog(log);
                 Stopwatch updateTimer = new Stopwatch();
@@ -81,7 +81,7 @@ namespace tfgame.Procedures
                     Player fae = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.JewdewfaeBotId);
                     if (fae == null)
                     {
-                        BossProcedures_Fae.SpawnFae();
+                        BossProcedures_Jewdewfae.SpawnFae();
                     }
 
                     Player bartender = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.BartenderBotId);
@@ -97,8 +97,6 @@ namespace tfgame.Procedures
                     }
                 }
                 #endregion
-
-                PvPWorldStatProcedures.UpdateWorldTurnCounter();
 
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started loading animate players");
                 
@@ -701,7 +699,7 @@ namespace tfgame.Procedures
                         if (turnNo - (int)faeAI.Var2 > 48)
                         {
                             log.AddLog(updateTimer.ElapsedMilliseconds + ":  FORCED JEWDEWFAE TO MOVE.");
-                            BossProcedures_Fae.MoveToNewLocation();
+                            BossProcedures_Jewdewfae.MoveToNewLocation();
                         }
                     }
                     catch (Exception e)
@@ -809,6 +807,24 @@ namespace tfgame.Procedures
                 catch (Exception e)
                 {
                     log.AddLog(updateTimer.ElapsedMilliseconds + ":  Sisters ERROR:  " + e.InnerException.ToString());
+                }
+
+                // FAEBOSS
+                try
+                {
+                    // run boss logic if one is active
+                    if (worldStats.Boss_Faeboss == "active")
+                    {
+                        log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started Narcissa actions");
+                        serverLogRepo.SaveServerLog(log);
+                        tfgame.Procedures.BossProcedures.BossProcedures_FaeBoss.RunTurnLogic();
+                        log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == turnNo);
+                        log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished Narcissa actions");
+                    }
+                }
+                catch (Exception e)
+                {
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Narcissa ERROR:  " + e.InnerException.ToString());
                 }
 
                 #endregion bosses

@@ -11,7 +11,7 @@ using tfgame.ViewModels;
 
 namespace tfgame.Procedures.BossProcedures
 {
-    public static class BossProcedures_Fae
+    public static class BossProcedures_Jewdewfae
     {
 
         public const string FaeFormDbName = "form_Perverted_Fairy_Judoo";

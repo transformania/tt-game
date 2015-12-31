@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using tfgame.Procedures.BossProcedures;
 
 namespace tfgame.ViewModels
 {
@@ -18,6 +19,7 @@ namespace tfgame.ViewModels
 
      { "college_foyer", new BossSummon { BossName="Sisters", MinimumTurn = 3200, ActivationText = "" }},
 
+      { BossProcedures_FaeBoss.SpawnLocation, new BossSummon { BossName="FaeBoss", MinimumTurn = 0, ActivationText = "" }},
 
     };
 

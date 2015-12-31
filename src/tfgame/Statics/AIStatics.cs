@@ -18,6 +18,7 @@
         public const int DemonBotId = -13;
         public const int BartenderBotId = -14;
         public const int LoremasterBotId = -15;
+        public const int FaebossId = -16;
 
         // Bot ID code:
         //  0 (active player)

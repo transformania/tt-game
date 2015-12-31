@@ -29,6 +29,12 @@ Thanks to Tempest, TT now has an automated build system which uses Cake, a Make/
 * Seed your DB with initial data
 * Run unit tests
 
+You will need to relax the default PowerShell scripting policy slightly to run the build script. From a PowerShell prompt, execute the following (you only need to do this once)
+
+```
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned
+```
+
 To run the default build, kick off the following from a command prompt within the TT directory
 
 ```

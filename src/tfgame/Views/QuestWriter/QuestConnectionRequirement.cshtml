@@ -1,0 +1,122 @@
+﻿@model tfgame.ViewModels.Quest.QuestConnectionRequirementFormViewModel
+
+@using tfgame.Statics
+@using tfgame.dbModels.Models
+
+
+
+<h4>Quest Connection</h4>
+
+
+<p>@Ajax.ActionLink("[" + Model.QuestConnection.ConnectionName + "]", "QuestConnection", "QuestWriter", new { Id = Model.QuestConnection.Id, QuestId = Model.QuestConnection.QuestId, FromQuestId = Model.QuestConnection.QuestStateFromId, ToQuestId = Model.QuestConnection.QuestStateToId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "parentButton" })</p>
+
+
+
+<hr />
+
+@using (Ajax.BeginForm("QuestConnectionRequirementSend", "QuestWriter", new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" }))
+{
+
+
+    @Html.HiddenFor(m => m.QuestConnectionRequirement.Id)
+    @Html.HiddenFor(m => m.QuestConnectionRequirement.QuestConnectionId)
+    @Html.HiddenFor(m => m.QuestConnectionRequirement.QuestId)
+    @Html.HiddenFor(m => m.QuestConnection.Id)
+
+    <label>Name (used for internal purposes):</label>    <br />
+        @Html.TextBoxFor(m => m.QuestConnectionRequirement.QuestConnectionRequirementName)
+
+    <br /><br />
+
+    <label>Requirement Type:</label>    <br />
+    @Html.DropDownListFor(m => m.QuestConnectionRequirement.RequirementType, new SelectList(
+                  new List<Object>{
+                      new { value = (int)QuestStatics.RequirementType.Agility, text = "Agility"  },
+                      new { value = (int)QuestStatics.RequirementType.Allure, text = "Allure"  },
+                      new { value = (int)QuestStatics.RequirementType.Charisma, text = "Charisma",  },
+                      new { value = (int)QuestStatics.RequirementType.Discipline, text = "Discipline",  },
+                      new { value = (int)QuestStatics.RequirementType.Fortitude, text = "Fortitude",  },
+                      new { value = (int)QuestStatics.RequirementType.Luck, text = "Luck",  },
+                      new { value = (int)QuestStatics.RequirementType.Magicka, text = "Magicka",  },
+                      new { value = (int)QuestStatics.RequirementType.Perception, text = "Perception",  },
+                      new { value = (int)QuestStatics.RequirementType.Succour, text = "Succour",  },
+                      new { value = (int)QuestStatics.RequirementType.Variable, text = "[Variable]",  },
+                      new { value = (int)QuestStatics.RequirementType.Gender, text = "[Gender]",  },
+                      new { value = (int)QuestStatics.RequirementType.Form, text = "[Form] (not implemented yet)",  },
+                    },
+                  "value",
+                  "text",
+                   2))
+
+    <br /><br />
+
+    <label>Operator:</label>    <br />
+    @Html.DropDownListFor(m => m.QuestConnectionRequirement.Operator, new SelectList(
+                  new List<Object>{
+                      new { value = (int)QuestStatics.Operator.Less_Than, text = "< (less than)"  },
+                      new { value = (int)QuestStatics.Operator.Less_Than_Or_Equal, text = "<= (less than or equal to)"  },
+                      new { value = (int)QuestStatics.Operator.Equal_To, text = "== (equal to)"  },
+                      new { value = (int)QuestStatics.Operator.Greater_Than_Or_Equal, text = ">= (greater than or equal to)"  },
+                      new { value = (int)QuestStatics.Operator.Greater_Than, text = "> (greater than)"  },
+                      new { value = (int)QuestStatics.Operator.Not_Equal_To, text = "!= (not equal to)"  },
+
+                    },
+                  "value",
+                  "text",
+                   2))
+
+    <br /><br />
+
+    <label>Requirement Value:</label>    <br />
+    @Html.TextBoxFor(m => m.QuestConnectionRequirement.RequirementValue)
+
+    <br /><br />
+
+    <p>The random roll modifier and offset are used if the player is making a probability-based dice roll to see if the action is successful or fails.  Random roll modifier multiples the given requirement value by itself to give a weighted probability.  For example, a roll with a player's Luck (50) times the modifier (.5) creates a 50*.5 = 25% chance of success.  The offset adds a base percent chance for a pass or fail, so an offset of 10 creates the formula 10 + 50 * .5 = 35% chance of success.</p>
+
+    <br /><br />
+
+     <label>Is this requirement a chance-based roll?</label>    <br />
+    @Html.CheckBoxFor(m => m.QuestConnectionRequirement.IsRandomRoll)
+
+    <br /><br />
+
+    <label>Roll modifier:</label>    <br />
+    @Html.TextBoxFor(m => m.QuestConnectionRequirement.RollModifier)
+
+    <br /><br />
+
+    <label>Roll offset:</label>    <br />
+    @Html.TextBoxFor(m => m.QuestConnectionRequirement.RollOffset)
+
+    <br /><br />
+
+    <label>Variable used (will be converted to all caps):</label>    <br />
+    @Html.TextBoxFor(m => m.QuestConnectionRequirement.VariabledbName)
+
+    <br /><br />
+
+    <div id="allVariables">
+        <btn class="glyphicon glyphicon-question-sign helpButton">
+            Click to view all variables referenced in this quest
+        </btn>
+    </div>
+
+    <br /><br />
+
+    <input type="submit" class="btn btn-chat" value="Send" />
+
+}
+
+<script>
+
+    var questId = @Model.QuestConnection.QuestId;
+    var allVariablesList = [];
+
+    $("#allVariables").click(function () {
+        loadUsedVariablesFromServer();
+    });
+
+    
+
+</script>

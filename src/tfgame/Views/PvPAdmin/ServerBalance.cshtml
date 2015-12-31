@@ -1,0 +1,80 @@
+﻿@model IEnumerable<tfgame.ViewModels.BalancePageViewModel>
+    @using tfgame.CustomHtmlHelpers
+
+    <head>
+        <link href="~/Content/PvP.css" rel="stylesheet" />
+    </head>
+
+    <p>
+        @Html.ActionLink("Forms", "ServerBalance_Forms", "PvPAdmin")
+        @Html.ActionLink("Items", "ServerBalance_Items", "PvPAdmin")
+        @Html.ActionLink("Pets", "ServerBalance_Pets", "PvPAdmin")
+    </p>
+
+    <h1>@ViewBag.Text</h1>
+
+    @*<h2>@Model.Count</h2>*@
+
+    <p>This tool shows the current balance of forms, items, or pets (and soon to be effects) using the most up to date balance values.</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>database Name</th>
+                <th>Name</th>
+                <th>Balance</th>
+                <th>Absolute points used</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (tfgame.ViewModels.BalancePageViewModel entry in Model)
+            {
+                <tr>
+                    <td>@Html.Raw(entry.dbName)</td>
+                    <td><b>@Html.Raw(entry.FriendlyName)</b></td>
+                    <td>@CharactersHere.WithinBalanceTarget(entry.Balance, ViewBag.Text)</td>
+                    <td>@Html.Raw(entry.AbsolutePoints)</td>
+                    
+                </tr>
+            }
+        </tbody>
+
+
+
+    </table>
+
+    <style>
+        table {
+            padding: 3px;
+            border: 1px solid black;
+        }
+
+        th {
+            background-color: black;
+            color: white;
+            text-align: center;
+        }
+
+        tr {
+            padding: 3px;
+            border: 1px solid black;
+        }
+
+            tr:nth-child(odd) {
+                background-color: lightgray;
+            }
+
+        td {
+            text-align: center;
+        }
+
+
+        #desired {
+            font-size: 15px;
+        }
+
+        red {
+            color: red;
+            font-weight: 900;
+        }
+    </style>

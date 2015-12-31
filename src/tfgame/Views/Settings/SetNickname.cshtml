@@ -1,0 +1,14 @@
+﻿@model tfgame.dbModels.Models.Message
+
+@using (Html.BeginForm("SetNicknameSend", "Settings", Model))
+{
+
+    <h3>What do you want your nickname to be?</h3>
+    
+    <p>Nicknames must be 20 characters or less.  A nickname will appear in single quotes between your first name and last name.  Example:  Bob 'Baldie' Merles.  If you want to remove your nickname, submit this form without entering any text.</p>
+    
+    @Html.TextBoxFor(m => m.MessageText)
+    
+    <input type="submit" value="Save" />
+
+}

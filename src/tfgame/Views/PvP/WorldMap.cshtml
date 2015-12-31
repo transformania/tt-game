@@ -1,0 +1,130 @@
+﻿@model tfgame.ViewModels.MapViewModel
+
+@using tfgame.ViewModels
+@using tfgame.Statics
+
+<nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+                <li>@Html.ActionLink("Map", "WorldMap", "PvP", new { showEnchant = "false" }, null)</li>
+                <li>@Html.ActionLink("Show Enchantments", "WorldMap", "PvP", new { showEnchant = "true" }, null)</li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+<div class="mapWrapper">
+            @{
+        string posX;
+        string posY;
+
+        decimal minX = LocationsStatics.LocationList.GetLocation.Select(l => l.X).Min();
+        decimal maxY = LocationsStatics.LocationList.GetLocation.Select(l => l.Y).Max();
+
+        foreach (Location loc in Model.Locations)
+        {
+
+            posX = ((loc.X - minX) * 100 + 10).ToString() + "px";
+            posY = (-(loc.Y - maxY) * 100 + 10).ToString() + "px";
+
+            <div class="mapcell" style="left: @posX; top: @posY;
+                 @{ if (loc.Name_East == null) { <text> border-right: 1px solid black; </text>       } }
+                 @{ if (loc.Name_North == null) { <text> border-top: 1px solid black; </text>       } }
+                 @{ if (loc.Name_West == null) { <text> border-left: 1px solid black; </text>      } }
+                 @{ if (loc.Name_South == null) { <text> border-bottom: 1px solid black; </text>     } }
+
+
+                 @{ 
+                     if (loc.Region == "streets" && Model == null) { 
+                         <text> background-color: lightgray; </text>  
+                 }
+
+                     @*else if (Model != null)
+                     {
+                        
+                     }*@
+                 
+                  }
+
+
+                 @{ if (Model.LocationInfo == null && loc.X == ViewBag.MapX && loc.Y == ViewBag.MapY) { <text> background-color: lightpink; </text>     } }
+                 ">
+
+            @{
+            if (Model.LocationInfo == null)
+            {
+                <div class="mapcelltext">@loc.Name</div>
+            }
+            else if (Model.LocationInfo != null)
+            {
+                tfgame.dbModels.Models.LocationInfo temp = Model.LocationInfo.FirstOrDefault(c => c.dbName == loc.dbName);
+                if (temp != null)
+                {
+                    try
+                    {
+                        CovenantNameFlag temp2 = CovenantDictionary.IdNameFlagLookup[temp.CovenantId];
+
+                        if (temp2 != null)
+                        {
+                            <div class="mapcelltext" style="background-image: url(/Images/PvP/CovenantFlags/@temp2.FlagUrl); background-size: 100% 100%; height:100%;">@temp2.Name (@temp.TakeoverAmount)</div>
+                        }
+                    }
+                    catch
+                    {
+
+                    }
+                }
+            }
+}
+
+            
+  
+        </div>
+
+    }
+}
+
+@{
+    
+    if (ViewBag.IsInDungeon == true)
+    {
+        <span class="bad">The shifting labrynth that makes up the dungeon makes keeping a map impossible!</span>
+    }
+}
+<style>
+    .mapcell {
+        height: 93px;
+        width: 93px;
+        position: absolute;
+        padding: 3px;
+    }
+
+    .mapWrapper {
+        width: 100%;
+        min-height: 800px;
+        position: relative;
+        resize: vertical;
+        overflow: scroll;
+    }
+
+    .mapcelltext {
+        vertical-align: middle;
+        display: inline-block;
+        position: relative;
+        font-size: 12px;
+        text-align: center;
+    }
+</style>

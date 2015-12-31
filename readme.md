@@ -6,41 +6,64 @@ First off, here is the stack of technologies being used:
 * ASP.Net MVC5
 * C# as backend code
 * Entity Framework 6
+* SQL Server / LocalDB
 * Javascript for frontend code (as if there's any alternative)
 * Git for source control
 * SignalR for chat / realtime notifications
-* Simple Membership for authentication
 
 # Good tools to have #
 
 Below are some tools I keep in my developer environment used daily:
 
-* Visual Studio 2013 Express (free download.  I might consider moving to a newer version in the future, possibly Visual Studio Community)
+* Visual Studio 2015 Community
 * SQL Server Management Studio 2012 (provides a nice way to access the database in greater detail.  Visual Studio also has some limited built in tools for this)
 * 7-Zip or another similar file archiving program (to extract the SQL backups)
 * Sourcetree (GUI for Git; command line via Bash also works fine if you are comfortable with it)
 
-# Files you'll want #
+# Setting up your development environment #
 
-[This link takes you to a Dropbox folder that contains files that can be downloaded and used by any TT dev.](https://www.dropbox.com/sh/iifq0ht8z7ucu00/AAC-mCl8Ce_5Kj2gXyLt9vnma?dl=0)
- It contains information such as as .SQL backup of the database which will allow you to seed your local database with some saved live data, populating your local database with forms / spells / item information that will be useful in development or to get an idea of how the database is arranged.
+Thanks to Tempest, TT now has an automated build system which uses Cake, a Make/Rake like build system built on the Roslyn compiler. To set up your development environment you will need to run the build script which will 
 
-# Creating a blank local test database #
-Being able to build the project and run it on your local machine isn't very useful if you don't have a test database to work with, so you'll probably want to import the .SQL backup of the database. Here's how to get started!
+* Build TT
+* Create your DB
+* Seed your DB with initial data
+* Run unit tests
 
-  1. Download a copy of a database dump from dropbox and unzip the .7z file, creating a .SQL file.
-  1. Copy tfgame\MachineKey.sample.config to tfgame\MachineKey.config
-  1. Copy tfgame\ConnectionStrings.config to tfgame\ConnectionStrings.config and modify as needed to suit your SQL Server version.
-  1. Start up SQL Server Management Studio. Connect to your LocalDB.
-      * If SQL Server 2012 LocalDB, use `(localdb)\v11.0` with Windows Authentication
-      * If SQL Server 2014 LocalDB, use `(localdb)\MSSQLLocalDB` with Windows Authentication
-  1. If you already have Databases\Stats in your LocalDB instance, delete it.
-      * Note: This can also be done from Visual Studio, but I have found it to be less reliable than doing from SSMS.
-  1. Verify that tfgame\App_Data has no .mdf or .ldf files.
-  1. In Visual Studio, build and run the project. Register a new user, and then stop debugging.
-  1. Back in SSMS, open the extracted .SQL file. This will take some period of time, because this is a large file.
-  1. Click on Execute on the toolbar, and the .SQL file will get imported into your local database. This will probably take a few minutes.
-  1. You should now be able to go back to Visual Studio, start the game, and log in!
+To run the default build, kick off the following from a command prompt within the TT directory
+
+```
+Powershell .\build.ps1
+```
+
+By default, the build will attempt to use SQL Server 2012 LocalDB however if you are using SQL Server 2014 you will want to use
+
+```
+Powershell .\build.ps1 -dbType "localdb_v2"
+```
+
+If you are running SQL Express (any version) and have localhost set as an alias you can use 
+
+```
+Powershell .\build.ps1 -dbType "server"
+```
+
+## Migrating Database ##
+
+When schema changes have been made, you can use the build system to update your development database simply by running the default build. If you only specifically want to run migrations and nothing else, use 
+
+```
+Powershell .\build.ps1 -target "Migrate"
+```
+
+Again, you can use the `-dbType` arguement suitable for your environment.
+
+## Re-creating Database ##
+
+To re-create your DB from scratch you can do the following
+
+`Powershell .\build.ps1 -target "Recreate-DB"`
+
+This will drop your existing database, recreate from migrations and apply the seed data.
 
 # Random things to know #
 
@@ -52,8 +75,6 @@ Being able to build the project and run it on your local machine isn't very usef
   - If you want to do a join between two tables (such as the GetPlayerFormViewModel() method under PlayerProcedures) you have to have them in the same contex
 
   This repo has a few different projects in it, having evolved from a simple server that hosted the singleplayer Transformania Time game (the gameshow one) to also including some experiments with AngularJS (Fashion Wars) and HTML5 canvas (Bombie).  These have nothing to do with the core multiplayer TT game so they should be left alone for the time being unless you're just curious.  (As June 24, a different repo was created and all future code in those projects will go there.  TT gameshow code will stay here.)
-
-
 
 # Guts / Project Organization  #
 

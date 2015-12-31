@@ -1,0 +1,112 @@
+﻿@model IEnumerable<tfgame.ViewModels.ItemViewModel>
+@using tfgame.ViewModels
+@using tfgame.CustomHtmlHelpers
+
+
+    <nav class="navbar navbar-default outsideContainer navbarTT2">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+
+    <div>
+        <p class="infoMessage result">@Html.Raw(ViewBag.Result)</p>
+        <p class="infoMessage error">@ViewBag.ErrorMessage</p>
+        <p class="infoMessage suberror">@ViewBag.SubErrorMessage</p>
+    </div>
+<div class="containerInner">
+    <p>You can purchase clothing and items that were once fellow mages like you from Lindella, as well as a variety of non-human magical consumable items that will help you from ending up in a similar fate from your enemies.  Please keep in mind that some of Lindella's formerly-human merchandise may not be fond of their new inanimate lifestyle or their owners and change back after struggling against the magic trapping them long enough.  No refunds!</p>
+
+    <h3>You currently have @ViewBag.MyMoney <span title="Arpeyjis" class="icon icon-money"></span> Arpeyjis to spend.</h3>
+
+    <p>@Html.ActionLink("Sell Something", "SellList", "NPC", new { @class = "attackLink" })</p>
+
+    @{
+        if (ViewBag.NoRoom == true)
+        {
+            <p class="playerCleansingNotification">You will not be able to purchase anything from Lindella since you do not have room to carry anything else in your inventory.</p>
+        }
+    }
+
+    <p style="text-align: center;"><br />
+        Show by type:<br />
+        <table style="width: 100%; text-align: center;">
+            <tr style="width: 40%;">
+                <td>@Html.ActionLink("Hats / Headwear", "TradeWithMerchant", "NPC", new { filter = "hat" }, null)</td>
+                <td>@Html.ActionLink("Shirts and Dresses", "TradeWithMerchant", "NPC", new { filter = "shirt" }, null)</td>
+                <td> @Html.ActionLink("Bras and Undershirts", "TradeWithMerchant", "NPC", new { filter = "undershirt" }, null)</td>
+            </tr>
+            <tr style="width: 30%;">
+                <td>@Html.ActionLink("Skirts and Pants", "TradeWithMerchant", "NPC", new { filter = "pants" }, null)</td>
+                <td>@Html.ActionLink("Underwear", "TradeWithMerchant", "NPC", new { filter = "underpants" }, null)</td>
+                <td> @Html.ActionLink("Shoes", "TradeWithMerchant", "NPC", new { filter = "shoes" }, null)</td>
+            </tr>
+            <tr style="width: 30%;">
+                <td>@Html.ActionLink("Accessories", "TradeWithMerchant", "NPC", new { filter = "accessory" }, null)</td>
+                <td>@Html.ActionLink("Reusable Consumables", "TradeWithMerchant", "NPC", new { filter = "consumable_reusable" }, null)</td>
+                <td> @Html.ActionLink("Consumables", "TradeWithMerchant", "NPC", new { filter = "consumables" }, null)</td>
+            </tr>
+
+        </table>
+
+
+    </p>
+    <div id="fullDetails">
+
+    </div>
+    <div id="row">
+
+        @{
+            foreach (ItemViewModel i in Model.OrderBy(i => i.dbItem.dbName).ThenByDescending(i => i.dbItem.Level))
+            {
+                @Html.Partial("~/Views/PvP/partial_ShopkeeperItem.cshtml", i)
+            }
+        }
+    </div>
+    </div>
+
+<script>
+
+    function detail_success() {
+        //$('#itemDetailModal').modal('show');
+    }
+
+    function detail_failure() {
+        $("#fullDetails").html("Failed to load details");
+    }
+
+    function detail_wait() {
+        $("#fullDetails").html("Loading details...");
+    }
+
+</script>
+
+<style>
+    .price {
+        margin-bottom: 15px;
+        color: darkblue;
+        font-weight: 700;
+    }
+
+    
+        #fullDetails{
+            height: 200px;
+            resize:vertical;
+            overflow-y: scroll;
+        }
+</style>

@@ -1,0 +1,186 @@
+﻿@model IEnumerable<tfgame.dbModels.Models.PollEntry>
+
+<nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+                <li>@Html.ActionLink("View All Polls", "ViewPolls", "Settings")</li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+<div class="containerInner text-center">
+    @{
+        decimal totalCount = Model.Count();
+
+        decimal Num1_Choice1 = Model.Where(m => m.Num1 == 1).Count() / totalCount * 100;
+        decimal Num1_Choice2 = Model.Where(m => m.Num1 == 2).Count() / totalCount * 100;
+        decimal Num1_Choice3 = Model.Where(m => m.Num1 == 3).Count() / totalCount * 100;
+        decimal Num1_Choice4 = Model.Where(m => m.Num1 == 4).Count() / totalCount * 100;
+        decimal Num1_Choice5 = Model.Where(m => m.Num1 == 5).Count() / totalCount * 100;
+        decimal Num1_Choice6 = Model.Where(m => m.Num1 == 6).Count() / totalCount * 100;
+        decimal Num1_Choice7 = Model.Where(m => m.Num1 == 7).Count() / totalCount * 100;
+
+        decimal Num2_Choice1 = Model.Where(m => m.Num2 == 1).Count() / totalCount * 100;
+        decimal Num2_Choice2 = Model.Where(m => m.Num2 == 2).Count() / totalCount * 100;
+        decimal Num2_Choice3 = Model.Where(m => m.Num2 == 3).Count() / totalCount * 100;
+        decimal Num2_Choice4 = Model.Where(m => m.Num2 == 4).Count() / totalCount * 100;
+        decimal Num2_Choice5 = Model.Where(m => m.Num2 == 5).Count() / totalCount * 100;
+        decimal Num2_Choice6 = Model.Where(m => m.Num2 == 6).Count() / totalCount * 100;
+        decimal Num2_Choice7 = Model.Where(m => m.Num2 == 7).Count() / totalCount * 100;
+
+        decimal Num3_Choice1 = Model.Where(m => m.Num3 == 1).Count() / totalCount * 100;
+        decimal Num3_Choice2 = Model.Where(m => m.Num3 == 2).Count() / totalCount * 100;
+        decimal Num3_Choice3 = Model.Where(m => m.Num3 == 3).Count() / totalCount * 100;
+        decimal Num3_Choice4 = Model.Where(m => m.Num3 == 4).Count() / totalCount * 100;
+        decimal Num3_Choice5 = Model.Where(m => m.Num3 == 5).Count() / totalCount * 100;
+        decimal Num3_Choice6 = Model.Where(m => m.Num3 == 6).Count() / totalCount * 100;
+        decimal Num3_Choice7 = Model.Where(m => m.Num3 == 7).Count() / totalCount * 100;
+
+        decimal Num4_Choice1 = Model.Where(m => m.Num4 == 1).Count() / totalCount * 100;
+        decimal Num4_Choice2 = Model.Where(m => m.Num4 == 2).Count() / totalCount * 100;
+        decimal Num4_Choice3 = Model.Where(m => m.Num4 == 3).Count() / totalCount * 100;
+        decimal Num4_Choice4 = Model.Where(m => m.Num4 == 4).Count() / totalCount * 100;
+        decimal Num4_Choice5 = Model.Where(m => m.Num4 == 5).Count() / totalCount * 100;
+        decimal Num4_Choice6 = Model.Where(m => m.Num4 == 6).Count() / totalCount * 100;
+        decimal Num4_Choice7 = Model.Where(m => m.Num4 == 7).Count() / totalCount * 100;
+
+        decimal Num5_Choice1 = Model.Where(m => m.Num5 == 1).Count() / totalCount * 100;
+        decimal Num5_Choice2 = Model.Where(m => m.Num5 == 2).Count() / totalCount * 100;
+        decimal Num5_Choice3 = Model.Where(m => m.Num5 == 3).Count() / totalCount * 100;
+
+    }
+    <h1>Tell us a little about yourself.</h1>
+
+    <hr />
+    <h3>This poll received @Model.Count() responses.</h3>
+
+    <i>Percentages may not add up to 100% as all fields are optional; any remaining percent can be attributed to 'no response' entries.</i>
+
+    <hr />
+
+    <p><b>What is your biological sex?  (Defined as the biological makeup of an individual's reproductive anatomy or secondary sex characteristics.)</b></p>
+
+    <p>Male:  <b>@Math.Round(Num1_Choice1, 1) %</b></p>
+
+    <p>Female:  <b>@Math.Round(Num1_Choice2, 1) %</b></p>
+
+    <p>Transsexual (male to female):  <b>@Math.Round(Num1_Choice3, 1) %</b></p>
+
+    <p>Transsexual (female to male):  <b>@Math.Round(Num1_Choice4, 1) %</b></p>
+
+    <p>Intersex / Other:  <b>@Math.Round(Num1_Choice5, 1) %</b></p>
+
+
+
+    <hr />
+
+    <p><b>What is your self-identified gender?  (Defined as culturally learned or personal identification of one's own gender based on an internal awareness.)</b></p>
+
+    <p>Male:  <b>@Math.Round(Num2_Choice1, 1) %</b></p>
+
+    <p>Female:  <b>@Math.Round(Num2_Choice2, 1) %</b></p>
+
+    <p>Bigender:  <b>@Math.Round(Num2_Choice3, 1) %</b></p>
+
+    <p>Genderless:  <b>@Math.Round(Num2_Choice4, 1) %</b></p>
+
+    <p>Questioning:  <b>@Math.Round(Num2_Choice5, 1) %</b></p>
+
+
+    <hr />
+
+
+
+    <p><b>What is your sexual orientation?</b></p>
+
+    <p>Heterosexual:  <b>@Math.Round(Num3_Choice1, 1) %</b></p>
+
+    <p>Gay:  <b>@Math.Round(Num3_Choice2, 1) %</b></p>
+
+    <p>Lesbian:  <b>@Math.Round(Num3_Choice6, 1) %</b></p>
+
+    <p>Bisexual:  <b>@Math.Round(Num3_Choice3, 1) %</b></p>
+
+    <p>Asexual:  <b>@Math.Round(Num3_Choice4, 1) %</b></p>
+
+    <p>Questioning:  <b>@Math.Round(Num3_Choice5, 1) %</b></p>
+
+
+    <hr />
+
+
+
+    <p><b>What range does your age fall under?</b></p>
+
+    <p>18 to 22:  <b>@Math.Round(Num4_Choice1, 1) %</b></p>
+
+    <p>23 to 27:  <b>@Math.Round(Num4_Choice2, 1) %</b></p>
+
+    <p>28 to 33:  <b>@Math.Round(Num4_Choice3, 1) %</b></p>
+
+    <p>34 to 40:  <b>@Math.Round(Num4_Choice4, 1) %</b></p>
+
+    <p>41 to 48:  <b>@Math.Round(Num4_Choice5, 1) %</b></p>
+
+    <p>49 to 64:  <b>@Math.Round(Num4_Choice6, 1) %</b></p>
+
+    <p>65+:  <b>@Math.Round(Num4_Choice7, 1) %</b></p>
+
+    <hr />
+
+    <p><b>What is your relationship status?</b></p>
+
+    <p>Single:  <b>@Math.Round(Num5_Choice1, 1) %</b></p>
+
+    <p>In a relationship but not married or in a legal union:  <b>@Math.Round(Num5_Choice2, 1) %</b></p>
+
+    <p>Married or in a legal union:  <b>@Math.Round(Num5_Choice3, 1) %</b></p>
+
+
+
+    <hr />
+
+    <p><b>How and when did you first discover that you had an interest in transformation?</b></p>
+
+    @{
+        foreach (tfgame.dbModels.Models.PollEntry e in Model.Where(p => p.String1 != null && p.String1 != ""))
+        {
+            <p>"@e.String1"</p><br />
+        }
+    }
+
+    <hr />
+
+    <p><b>What's a fun or random fact about yourself?</b></p>
+
+    @{
+        foreach (tfgame.dbModels.Models.PollEntry e in Model.Where(p => p.String2 != null && p.String2 != ""))
+        {
+            <p>"@e.String2"</p><br />
+        }
+    }
+
+    <hr />
+
+    <p><b>How did you learn about Transformania Time?</b></p>
+
+    @{
+        foreach (tfgame.dbModels.Models.PollEntry e in Model.Where(p => p.String3 != null && p.String3 != ""))
+        {
+            <p>"@e.String3"</p><br />
+        }
+    }
+</div>

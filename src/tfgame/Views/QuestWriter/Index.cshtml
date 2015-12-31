@@ -1,0 +1,235 @@
+﻿@model IEnumerable<tfgame.dbModels.Models.QuestStart>
+
+<nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+                <li>@Ajax.ActionLink("All Quests", "ShowAllQuestStarts", "QuestWriter", null, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</li>
+                <li>@Ajax.ActionLink("Help", "Help", "QuestWriter", null, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+<div>
+    <p class="infoMessage result">@Html.Raw(ViewBag.Result)</p>
+    <p class="infoMessage error">@ViewBag.ErrorMessage</p>
+    <p class="infoMessage suberror">@ViewBag.SubErrorMessage</p>
+</div>
+
+<div class="containerInner">
+
+    <br />
+    <div id="loadNotice">
+        <div id="loading" class="good"></div>
+    </div>
+    <br />
+
+    <div id="swapMe">
+
+        @{
+            <h4>Other Quests:</h4>
+
+            foreach (tfgame.dbModels.Models.QuestStart q in Model)
+            {
+                <p> @Ajax.ActionLink(q.Name, "QuestStart", "QuestWriter", new { Id = q.Id }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "editButton" })</p>
+            }
+
+        }
+
+        <br />
+
+        <p>
+            @Ajax.ActionLink("-- New Quest --", "QuestStart", "QuestWriter", new { Id = -1 }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "newButton" })
+        </p>
+
+    </div>
+
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        $("#loadNotice").hide();
+    });
+
+    function success() {
+        $("#loadNotice").show();
+        var date = new Date();
+        var timestamp = date.toString();
+        $("#loading").html("Success!  " + timestamp);
+        $("#loading").addClass("good");
+        $("#loading").removeClass("bad");
+
+        setTimeout(function () { $("#loadNotice").hide(); }, 3500);
+
+    }
+
+    function fail() {
+        $("#loadNotice").show();
+        $("#loading").html("INTERNAL SERVER ERROR");
+
+        $("#loading").addClass("bad");
+        $("#loading").removeClass("good");
+        alert("Juderp!  Internal server error, unable to do this.");
+    }
+
+    function waiting() {
+        $("#loadNotice").show();
+        $("#loading").removeClass("bad");
+        $("#loading").removeClass("good");
+        $("#loading").html("processing...");
+    }
+
+    function loadUsedVariablesFromServer() {
+        $.getJSON("/QuestWriter/ShowAllUsedQuestVariables/" + questId, function (data) {
+            allVariablesList = data;
+        }).then(function () {
+            $("#allVariables").html("<br>All variables referenced in this quest:<br>");
+
+            for (var i = 0; i < allVariablesList.length; i++) {
+                $("#allVariables").append("<b>" + allVariablesList[i] + "</b><br>");
+            }
+
+        });
+    }
+
+    // populate the the jump to dropdown with all states found for the current quest
+    function loadConnectionDropdownValues() {
+        $.getJSON("/QuestWriter/QuestStatesInQuestJSON/" + questId, function (data) {
+            allStates = data;
+        }).then(function () {
+            populateConnectionDropdown();
+            setDropdownsToValues(fromValue, toValue, toValueFail);
+        });
+    }
+
+    // load the values for the jump to state dropdown
+    function populateConnectionDropdown() {
+
+        for (var i = 0; i < allStates.length; i++) {
+            var opt = allStates[i];
+
+
+            fromStatesDropdown.append($('<option>', {
+                value: opt.Id,
+                text: opt.StateName
+            }));
+
+
+            toStatesDropdown.append($('<option>', {
+                value: opt.Id,
+                text: opt.StateName
+            }));
+
+            toStatesDropdownFail.append($('<option>', {
+                value: opt.Id,
+                text: opt.StateName
+            }));
+
+     
+        }
+    }
+
+    // set value of jump to quest state dropdown
+    function setDropdownsToValues(from, to, failTo) {
+        fromStatesDropdown.val(from);
+        toStatesDropdown.val(to);
+
+        if (failTo) {
+            toStatesDropdownFail.val(failTo);
+        }
+    }
+
+</script>
+
+<style>
+    #loadNotice {
+        background-color: #ffd76a;
+        text-align: center;
+        border: 1px solid darkred;
+    }
+
+    input {
+        width: 100%;
+    }
+
+    textarea {
+        height: 300px;
+        width: 100%;
+    }
+
+    .short {
+        height: 60px;
+        width: 100%;
+    }
+
+    .tiny {
+        width: 40px;
+    }
+
+    td {
+        padding: 3px;
+        border: 1px solid black;
+    }
+
+    .newButton {
+        background-color: lightgreen;
+        border: 2px solid darkgreen;
+        border-radius: 5px;
+        padding-left: 3px;
+        padding-right: 3px;
+        margin: 3px;
+        position: relative;
+    }
+
+    .editButton {
+        background-color: #ffd76a;
+        border: 2px solid darkorange;
+        border-radius: 5px;
+        padding-left: 3px;
+        padding-right: 3px;
+        margin: 3px;
+        position: relative;
+    }
+
+    .parentButton {
+        background-color: #eb99ff;
+        border: 2px solid darkviolet;
+        border-radius: 5px;
+        padding-left: 3px;
+        padding-right: 3px;
+        margin: 3px;
+        position: relative;
+    }
+
+    .deleteButton {
+        background-color: orangered;
+        border: 2px solid darkviolet;
+        border-radius: 5px;
+        padding-left: 3px;
+        padding-right: 3px;
+        margin: 3px;
+        position: relative;
+    }
+
+    .helpButton {
+        border: 3px solid blue;
+        border-radius: 4px;
+        background-color: lightblue;
+        padding: 2px;
+        cursor: pointer;
+    }
+</style>

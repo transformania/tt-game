@@ -1,0 +1,41 @@
+﻿<head>
+    <link href="~/Content/PvP.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-2.1.0.min.js"></script>
+</head>
+
+<p>@Html.ActionLink("Back to game", "Play", "PvP")</p>
+
+<h1>Private Chat</h1>
+
+<p>In order to begin a private chat, enter a room name into the field below and click "Begin".  The name of this chat room doubles as its password so if you wish for privacy, make it long and hard to guess and careful about who you give it to.</p>
+
+<form>
+    Room name:<br>
+    <input type="text" id="roomName">
+    <button name="subject" type="button" id="beginButton" disabled="disabled">Begin</button>
+</form> 
+
+<p>@Html.ActionLink("Back to game", "Play", "PvP")</p>
+
+<script>
+    $("#beginButton").click(function () {
+        window.location = "/PvP/Chat?room=" + $("#roomName").val();
+    });
+
+    $("#roomName").keypress(function () {
+        if ($("#roomName").val().length == 0) {
+            $("#beginButton").prop('disabled', true);
+        } else if ($("#roomName").val()=="global") {
+            $("#beginButton").prop('disabled', true);
+        } else if ($("#roomName").val() == "rp1") {
+            $("#beginButton").prop('disabled', true);
+        } else if ($("#roomName").val() == "rp2") {
+            $("#beginButton").prop('disabled', true);
+        } else if ($("#roomName").val() == "rp3") {
+            $("#beginButton").prop('disabled', true);
+        } else {
+            $("#beginButton").prop('disabled', false);
+        }
+    });
+
+</script>

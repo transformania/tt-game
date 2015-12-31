@@ -1,0 +1,706 @@
+﻿@{
+    Layout = null;
+}
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="~/scripts/jquery.js"></script>
+    <script src="~/scripts/jquery.unobtrusive-ajax.min.js"></script>
+ 
+    <script src="~/scripts/jquery.animate-color.min.js"></script>
+    <script src="~/scripts/jQueryRotate.js"></script>
+    <script src="~/scripts/Character.js"></script>
+    <script src="~/scripts/CharacterLoader.js"></script>
+    <script src="~/scripts/GenericCharData.js"></script>
+    <script src="~/scripts/GenericPlayerData.js"></script>
+    <script src="~/scripts/game_sequence.js"></script>
+    <script src="~/scripts/game_reflex.js"></script>
+    <script src="~/scripts/game_memory.js"></script>
+    <script src="~/scripts/game_popup.js"></script>
+    <script src="~/scripts/game_roulette.js"></script>
+    <script src="~/scripts/game_discus.js"></script>
+    <script src="~/scripts/game_dpong.js"></script>
+    <script src="~/scripts/script.js"></script>
+
+
+    <link rel="stylesheet" type="text/css" href="~/Content/mystyle.css">
+
+    <script>
+        function listFileProperties(event) {
+
+        }
+
+        function handleDragOver(event) {
+            event.stopPropagation();
+            event.preventDefault();
+            event.dataTransfer.dropEffect = 'copy';
+        }
+
+        function readFile() {
+            document.getElementById("loadingInfo").innerHTML = "Loading...";
+
+            /* Get the reference of the inpout element. */
+            var files = document.getElementById('files').files;
+
+            if (!files.length) {
+                alert('Please select a file!');
+                return;
+            }
+
+            /* Reading the first file selected. You can process other files similarly in loop. */
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+
+                /* Instantiate the File Reader object. */
+                var reader = new FileReader();
+
+                /* onLoad event is fired when the load completes. */
+                reader.onload = function (event) {
+                    document.getElementById('allCharSubmitField').value += event.target.result;
+                };
+
+                reader.readAsText(file);
+            }
+
+            setTimeout("listLoadedCharacters()", 500);
+        }
+    </script>
+
+</head>
+
+<body>
+
+    <div id="helpButton" onclick="showHelpAlert()"></div>
+
+
+    <body onload="firstPageLoad()">
+
+        <div id="grayBackground">
+        </div>
+
+        <p></p>
+
+
+
+        <!-- ##################### NEW SEQUENCE WINDOW ############################ -->
+
+        <div id="sequenceGameMainWindow">
+            <div id="sequenceOpponentScore">
+                <div id="sequenceOpponentScoreProgressBar"></div>
+            </div>
+            <div id="sequencePlayerScore">
+                <div id="sequencePlayerScoreProgressBar"></div>
+            </div>
+            <div id="sequenceActionWindow">
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <div id="seqImgWrapper">
+                    <div class="seqImg"></div>
+                    <div class="seqImg"></div>
+                    <div class="seqImg"></div>
+                    <div class="seqImg"></div>
+                    <div class="seqImg"></div>
+                    <div class="seqImg"></div>
+                    <div class="seqImg"></div>
+                    <div class="seqImg"></div>
+                </div>
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <div id="seqImgBtnsWrapper">
+                    <div class="seqImgBtn"></div>
+                    <div class="seqImgBtn"></div>
+                    <div class="seqImgBtn"></div>
+                    <div class="seqImgBtn"></div>
+                    <div class="seqImgBtn"></div>
+                    <div class="seqImgBtn"></div>
+                    <div class="seqImgBtn"></div>
+                    <div class="seqImgBtn"></div>
+                    <div class="seqImgBtn"></div>
+                    <div class="seqImgBtn"></div>
+                    <div class="seqImgBtn"></div>
+                    <div class="seqImgBtn"></div>
+                    <div class="seqImgBtn"></div>
+                    <div class="seqImgBtn"></div>
+                    <div class="seqImgBtn"></div>
+                    <div class="seqImgBtn"></div>
+                </div>
+            </div>
+            <div id="sequenceTest1"></div>
+            <div id="sequenceTest2"></div>
+        </div>
+
+        <!-- ##################### REFLEX MINIGAME WINDOW ######################## -->
+
+        <div id="reflexGameMainWindow">
+
+
+            <div id="reflexOpponentScore">
+                <div id="reflexOpponentScoreProgressBar"></div>
+            </div>
+            <div id="reflexPlayerScore">
+                <div id="reflexPlayerScoreProgressBar"></div>
+            </div>
+            <div id="opponentScore"></div>
+
+            <div id="reflexActionWindow">
+
+                <div class="reflexTarget"></div>
+
+            </div>
+
+            <div id="reflexTimer"></div>
+
+        </div>
+
+
+
+        <!-- ################## MEMORY GAME WINDOW ########################## -->
+
+
+        <div id="memoryGameMainWindow">
+
+            <div id="memoryOpponentScore">
+                <div id="memoryOpponentScoreProgressBar"></div>
+            </div>
+            <div id="memoryPlayerScore">
+                <div id="memoryPlayerScoreProgressBar"></div>
+            </div>
+
+            <div id="memoryActionWindow">
+                <div id="memImgWrapper">
+                    <div class="memImgBtn"></div>
+                    <div class="memImgBtn"></div>
+                    <div class="memImgBtn"></div>
+                    <div class="memImgBtn"></div>
+                    <div class="memImgBtn"></div>
+                    <div class="memImgBtn"></div>
+                    <div class="memImgBtn"></div>
+                    <div class="memImgBtn"></div>
+                    <div class="memImgBtn"></div>
+                    <div class="memImgBtn"></div>
+                    <div class="memImgBtn"></div>
+                    <div class="memImgBtn"></div>
+                    <div class="memImgBtn"></div>
+                    <div class="memImgBtn"></div>
+                    <div class="memImgBtn"></div>
+                    <div class="memImgBtn"></div>
+
+                </div>
+
+            </div>
+
+            <div id="debugMemory"></div>
+        </div>
+
+        <!-- ######################## POPUP GAME WINDOW ############################3 -->
+
+
+        <div id="popupGameMainWindow">
+
+
+            <div id="popupOpponentScore">
+                <div id="popupOpponentScoreProgressBar"></div>
+            </div>
+            <div id="popupPlayerScore">
+                <div id="popupPlayerScoreProgressBar"></div>
+            </div>
+
+            <div id="popupActionWindow">
+
+                <div class="popupTargetLarge"></div>
+                <div class="popupTargetLarge"></div>
+                <div class="popupTargetLarge"></div>
+                <div class="popupTargetLarge"></div>
+                <div class="popupTargetLarge"></div>
+                <div class="popupTargetLarge"></div>
+                <div class="popupTargetLarge"></div>
+                <div class="popupTargetLarge"></div>
+                <div class="popupTargetMedium"></div>
+                <div class="popupTargetMedium"></div>
+                <div class="popupTargetMedium"></div>
+                <div class="popupTargetMedium"></div>
+                <div class="popupTargetSmall"></div>
+                <div class="popupTargetSmall"></div>
+                <div class="popupTargetSuperSmall"></div>
+
+            </div>
+
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <div id="popupMissPenalty">Miss penalty:  1</div>
+            <div id="popupDebug1"></div>
+            <div id="popupDebug2"></div>
+
+        </div>
+
+        <!-- ################## HELP WINDOW ########################## -->
+
+        <!-- ######################## ROULETTE GAME WINDOW ############################3 -->
+
+
+        <div id="roulGameMainWindow">
+            <div id="roulActionWindow">
+                <div id="roulHideMe">
+
+                    <div id="roulSpinnerWheel">
+                    </div>
+                    <div id="roulSpinnerFrame"></div>
+
+                    <div id="roulBtnsWrapper">
+                        <div id="roulBtnRed"></div>
+                        <div id="roulBtnGreen"></div>
+                        <div id="roulBtnBlue"></div>
+                        <div id="roulBtnYellow"></div>
+                    </div>
+                    <div id="roulInfo"></div>
+                    <div id="roulOpponentScore"></div>
+                </div>
+            </div>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <div id="roulDebug1"></div>
+            <div id="roulDebug2"></div>
+        </div>
+
+        <!-- ######################## DISCUS GAME WINDOW ############################3 -->
+
+
+        <div id="discusGameMainWindow">
+
+            <div id="discusOpponentScore">
+                <div id="discusOpponentScoreProgressBar"></div>
+            </div>
+            <div id="discusPlayerScore">
+                <div id="discusPlayerScoreProgressBar"></div>
+            </div>
+
+            <div id="discusActionWindow">
+                <div id="discusHideMe">
+
+                    <div class="discusTarget"></div>
+                    <div class="discusTarget"></div>
+                    <div class="discusTarget"></div>
+                    <div class="discusTarget"></div>
+                    <div class="discusTarget"></div>
+                    <div class="discusTarget"></div>
+
+                    <div class="discusBullet"></div>
+
+
+
+                </div>
+
+            </div>
+
+
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <div id="discusMissPenalty"></div>
+            <div id="discusDebug1"></div>
+            <div id="discusDebug2"></div>
+
+        </div>
+
+        <!-- ######################## PONG GAME WINDOW ############################3 -->
+
+
+        <div id="dpongGameMainWindow">
+
+            <div id="dpongOpponentScore">
+                <div id="dpongOpponentScoreProgressBar"></div>
+            </div>
+            <div id="dpongPlayerScore">
+                <div id="dpongPlayerScoreProgressBar"></div>
+            </div>
+
+
+
+            <div id="dpongActionWindow">
+
+                <div id="dpongHideMe">
+
+                    <div class="dpongBall"></div>
+                    <div class="dpongBall"></div>
+                    <div class="dpongBall"></div>
+                    <div class="dpongBall"></div>
+                    <div class="dpongBall"></div>
+                    <div class="dpongBall"></div>
+                    <div class="dpongBall"></div>
+                    <div class="dpongBall"></div>
+
+                    <div id="dpongPaddle"></div>
+
+                </div>
+
+            </div>
+
+
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <div id="dpongPaddleLeft"></div>
+            <div id="dpongPaddleAcross"></div>
+            <div id="dpongPaddleRight"></div>
+            <div id="dpongDebug1"></div>
+            <div id="dpongDebug2"></div>
+
+
+
+        </div>
+
+
+
+        <!-- ################## HELP WINDOW ########################## -->
+
+        <div id="helpWindow">
+
+            <input type="image" class="returnButton" src="~/images/returnButton.png" width="75" height="75" id="returnButton" onclick="showHelp()">
+            <br>
+            <img src="~/images/help.jpg" style="width: 100%; height: 2000px;">
+            This game is brought to you by Judoo and was last updated on April 2, 2013.  Thanks to all character contributors!
+	
+        </div>
+
+        <!-- ################## NEW GAME WINDOW ########################## -->
+
+        <div id="minigameNameplate"></div>
+
+        <div id="newGameWindow">
+
+            <div id="loadPlayerDifficultyWrapper">
+
+                <div id="characterLoadDiv">
+
+                    <input type="image" class="returnButton" src="~/images/returnButton.png" width="75" height="75" id="returnButton" onclick="closeNewGameMenu()">
+
+                    <br>
+
+                    <newchar>Select Characters</newchar>
+
+                    <p class="bold">Load Character Files</p>
+                    <input type="file" id="files" name="files[]" multiple>
+
+                    <p>
+                        <button id="readFile" onclick="">Submit</button>
+
+                        <div id="loadingInfo">Wait for load to complete...</div>
+
+                    </p>
+
+                    <p>
+                        <button id="unloadButton" onclick="unloadCharacters()">Unload Characters</button></p>
+
+                    <div id="hideMe">
+
+                        <form name="submitCharDataForm">
+                            CharData:
+                            <input type="text" id="charSubmitField">
+                        </form>
+
+                        <form name="submitAllCharsForm">
+                            CharData:
+                            <input type="text" id="allCharSubmitField">
+                        </form>
+
+                        <form name="submitPlayerForm">
+                            PlayerData:
+                            <input type="text" id="playerSubmitField">
+                        </form>
+
+                    </div>
+                    <!--close hide me-->
+
+                </div>
+
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+
+                <div id="difficultyChoice">
+                    Difficulty:<br>
+                    <form>
+                        <input type="radio" name="radio" value="default" checked="checked">Default<br>
+                        <input type="radio" name="radio" value="easy">Easy<br>
+                        <input type="radio" name="radio" value="medium">Medium<br>
+                        <input type="radio" name="radio" value="hard">Hard<br>
+                        <input type="radio" name="radio" value="insane">Insane<br>
+                        <!--<input type="radio" name="radio" value="incremental">Incremental<br>-->
+                    </form>
+                </div>
+                <!-- closes difficultyChoice -->
+
+                <div id="gameSpeedChoice">
+                    Game speed:<br>
+                    <form>
+                        <input type="radio" name="radio" value="slow">Slow<br>
+                        <input type="radio" name="radio" value="normal" checked="checked">Normal<br>
+                        <input type="radio" name="radio" value="fast">Fast<br>
+                    </form>
+                </div>
+                <!-- closes difficultyChoice -->
+
+
+
+            </div>
+            Select a player character:
+            <select id="loadedPlayersList" onchange="showCharacterDescriptions()">
+            </select>
+
+            <br>
+            Select an opponent character:
+            <select id="loadedOpponentsList" onchange="showCharacterDescriptions()">
+            </select>
+
+            <br>
+            <br>
+
+            <img src="~/images/playerTab.png" alt="some_text">
+            <div id="selectedPlayerInfo"></div>
+            <div id="selectedPlayerDesc"></div>
+            <div id="selectedPlayerAuthor"></div>
+
+            <br>
+
+            <img src="~/images/opponent1Tab.png" alt="some_text">
+            <div id="selectedOpponentInfo"></div>
+            <div id="selectedOpponentDesc"></div>
+            <div id="selectedOpponentAuthor"></div>
+
+
+            <br>
+
+
+
+
+            <input type="image" class="newGameButton" src="~/images/beginNewGameButton.png" width="300" height="150" id="newRound" onclick="resetAll()">
+        </div>
+        <!-- close new gameWindow div -->
+
+        <div id="everythingWrapper">
+
+            <div id="innerPadding">
+
+                <!--################################################# LEFT COLUMN BOX ###########################################################-->
+
+                <div id="leftColumnDiv">
+
+                    <div id="buttons">
+                        <input type="image" class="nextRoundButton" src="~/images/mainNewGameButton.png" width="225" height="75" onclick="openNewGameMenu()">
+
+                        <p></p>
+                        <input type="image" class="nextRoundButton" src="~/images/lookAtOpponentButton.png" width="225" height="75" onclick="lookAtAI()">
+                        <p></p>
+                        <input type="image" class="nextRoundButton" src="~/images/lookAtSelfButton.png" width="225" height="75" onclick="lookAtHuman()">
+
+                        <p></p>
+                        <input type="image" class="nextRoundButton" src="~/images/nextRoundButton.png" width="225" height="75" onclick="setupNextRound()">
+                    </div>
+                    <!-- closes buttons -->
+
+                    Transformation target:<br>
+                    <select id="tfablePartsSelect">
+                        <option value="random">Random</option>
+                    </select>
+
+                    <p>
+                        <button onclick="debugAI()" style="height: 40px; width: 225px; font-size: 20px" id="debugCharacterButton">Debug Opponent</button></p>
+                    <p>
+                        <button onclick="debugHuman()" style="height: 40px; width: 225px; font-size: 20px" id="debugHumanButton">Debug Player</button></p>
+
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <!--<input type="image" class="nextRoundButton" src="~/images/helpButton.png" width="225" height="75"  onclick="showHelp()">-->
+
+                </div>
+                <!-- closes innerPadding -->
+
+
+
+            </div>
+            <!-- closes leftColumnDiv -->
+
+
+
+
+            <!-- ################## GAMEPLAY BOX ########################## -->
+
+            <div id="gameplayBox">
+
+                <div id="nameBox"></div>
+                <!-- closes nameBox -->
+
+                <div id="clearTextButton">
+                    <input type="image" class="a20x20Button" src="~/images/clearButton.png" width="20px" height="20px" onclick="clearOutput()">
+                </div>
+
+                <div id="console"></div>
+
+
+
+
+
+            </div>
+            <!-- closes gamePlayBox-->
+
+            <!-- ################## RIGHT COLUMN BOX ########################## -->
+
+
+            <div id="rightColumnDiv">
+
+                <div id="totalOpponentTF">
+                    <div id="totalOpponentTFProgressBar"></div>
+                </div>
+                <div id="totalPlayerTF">
+                    <div id="totalPlayerTFProgressBar"></div>
+                </div>
+                <p></p>
+
+
+
+
+            </div>
+            <!-- closes rightColumnDiv -->
+
+        </div>
+        <!-- closes everythingWrapper -->
+
+        <script>
+            if (window.File && window.FileList && window.FileReader) {
+                /************************************ 
+			     * All the File APIs are supported. * 
+			     * Entire code goes here.           *
+			     ************************************/
+
+                /* Listener for single file input element. */
+                //document.getElementById('file').addEventListener('change', listFileProperties, false);
+
+                /* Listener for multiple files input element. */
+                document.getElementById('files').addEventListener('change', listFileProperties, false);
+
+                /* Setup the Drag-n-Drop listeners. */
+                // var dropZone = document.getElementById('drop_zone');
+                //dropZone.addEventListener('dragover', handleDragOver, false);
+                //dropZone.addEventListener('drop', handleDnDFileSelect, false);
+
+                /* Listener for read file. */
+                document.getElementById('readFile').addEventListener('click', function (event) {
+                    readFile();
+                }, false);
+            }
+            else {
+                alert('Sorry! this browser does not support HTML5 File APIs.');
+            }
+        </script>
+
+    </body>
+</html>

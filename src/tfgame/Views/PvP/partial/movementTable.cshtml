@@ -1,0 +1,100 @@
+﻿@model tfgame.ViewModels.PlayPageViewModel
+@using tfgame.CustomHtmlHelpers
+@using tfgame.ViewModels
+@using tfgame.Statics
+@using tfgame.Procedures
+
+<table class="tableLines">
+    <tr>
+        <td></td>
+        <td>@{
+                if (Model.Location.Name_North != null)
+                {
+                    if (Model.You.Player.Mobility == "full")
+                    {
+                        @Html.ActionLink(Model.Location.FriendlyName_North, "MoveTo", "PvP", new { locname = Model.Location.Name_North }, null)
+                    }
+                    else if (Model.You.Player.Mobility == "animal" && Model.You.Player.IsPetToId == -1)
+                    {
+                        @Html.ActionLink(Model.Location.FriendlyName_North, "MoveTo", "PvP", new { locname = Model.Location.Name_North }, null)
+                    }
+                    else if (Model.You.Player.Mobility == "animal" && Model.You.Player.IsPetToId != -1)
+                    {
+                        <span>@Model.Location.FriendlyName_North</span>
+                    }
+                }
+            }</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>@{
+                if (Model.Location.Name_West != null)
+                {
+                    if (Model.You.Player.Mobility == "full")
+                    {
+                        @Html.ActionLink(Model.Location.FriendlyName_West, "MoveTo", "PvP", new { locname = Model.Location.Name_West }, null)
+                    }
+                    else if (Model.You.Player.Mobility == "animal" && Model.You.Player.IsPetToId == -1)
+                    {
+                        @Html.ActionLink(Model.Location.FriendlyName_West, "MoveTo", "PvP", new { locname = Model.Location.Name_West }, null)
+                    }
+                    else if (Model.You.Player.Mobility == "animal" && Model.You.Player.IsPetToId != -1)
+                    {
+                        <span>@Model.Location.FriendlyName_West</span>
+                    }
+                }
+            }</td>
+        <td>@Model.Location.Name</td>
+        <td>@{
+                if (Model.Location.Name_East != null)
+                {
+                    if (Model.You.Player.Mobility == "full")
+                    {
+                        @Html.ActionLink(Model.Location.FriendlyName_East, "MoveTo", "PvP", new { locname = Model.Location.Name_East }, null)
+                    }
+                    else if (Model.You.Player.Mobility == "animal" && Model.You.Player.IsPetToId == -1)
+                    {
+                        @Html.ActionLink(Model.Location.FriendlyName_East, "MoveTo", "PvP", new { locname = Model.Location.Name_East }, null)
+                    }
+                    else if (Model.You.Player.Mobility == "animal" && Model.You.Player.IsPetToId != -1)
+                    {
+                        <span>@Model.Location.FriendlyName_East</span>
+                    }
+                }
+            }</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td>@{
+                if (Model.Location.Name_South != null)
+                {
+
+                    if (Model.You.Player.Mobility == "full")
+                    {
+                        @Html.ActionLink(Model.Location.FriendlyName_South, "MoveTo", "PvP", new { locname = Model.Location.Name_South }, null)
+                    }
+                    else if (Model.You.Player.Mobility == "animal" && Model.You.Player.IsPetToId == -1)
+                    {
+                        @Html.ActionLink(Model.Location.FriendlyName_South, "MoveTo", "PvP", new { locname = Model.Location.Name_South }, null)
+                    }
+                    else if (Model.You.Player.Mobility == "animal" && Model.You.Player.IsPetToId != -1)
+                    {
+                        <span>@Model.Location.FriendlyName_South</span>
+                    }
+                }
+
+            }</td>
+        <td></td>
+    </tr>
+</table>
+
+<style>
+    td{
+        width:75px;
+        height:75px;
+        font-size:10px;
+    }
+    td:empty{
+        background-color:gainsboro;
+    }
+</style>

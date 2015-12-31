@@ -1,0 +1,166 @@
+﻿
+@model tfgame.ViewModels.Quest.QuestConnectionFormViewModel
+
+@using tfgame.Statics
+@using tfgame.dbModels.Models
+
+<p>@Ajax.ActionLink("Click to view all quest states in this quest", "ShowAllQuestStates", "QuestWriter", new { Id = Model.QuestConnection.QuestId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
+<p>@Ajax.ActionLink("Click to view all quest connections in this quest", "ShowAllQuestConnections", "QuestWriter", new { Id = Model.QuestConnection.QuestId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
+<p>@Ajax.ActionLink("View Diagram", "Diagram", "QuestWriter", new { Id = Model.QuestConnection.QuestId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
+
+
+
+<br />
+
+@using (Ajax.BeginForm("QuestConnectionSend", "QuestWriter", new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" }))
+{
+    @Html.HiddenFor(m => m.QuestConnection.Id)
+    @Html.HiddenFor(m => m.QuestConnection.QuestId)
+
+    <h1>Quest Connection</h1>
+
+    <label>FROM Quest State:</label>    <br />
+    @Html.DropDownListFor(m => m.QuestConnection.QuestStateFromId, new SelectList(
+                              new List<Object>{
+                      new { value = 0, text = "--none--"  },
+                                },
+                              "value",
+                              "text",
+                               2))
+
+    if (Model.FromQuestState != null)
+    {
+        @Ajax.ActionLink("[" + Model.FromQuestState.QuestStateName + "]", "QuestState", "QuestWriter", new { Id = Model.FromQuestState.Id, QuestId = Model.QuestConnection.QuestId, ParentStateId = -1 }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "parentButton" })
+    }
+    else
+    {
+        <p class="bad">NOT SET</p>
+    }
+
+    <br /><br />
+
+    <label>TO Quest State:</label>    <br />
+        @Html.DropDownListFor(m => m.QuestConnection.QuestStateToId, new SelectList(
+                              new List<Object>{
+                      new { value = 0, text = "--none--"  },
+                                },
+                              "value",
+                              "text",
+                               2))
+
+
+    if (Model.ToQuestState != null)
+    {
+       @Ajax.ActionLink("[" + Model.ToQuestState.QuestStateName + "]", "QuestState", "QuestWriter", new { Id = Model.ToQuestState.Id, QuestId = Model.QuestConnection.QuestId, ParentStateId = -1 }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "parentButton" })
+    }
+    else
+    {
+        <p class="bad">NOT SET</p>
+    }
+
+    if (Model.QuestConnection.RequiresRolls() == true)
+    {
+        <br /><br />
+        <label>TO Quest State <span class="bad">(when rolls failed)</span>:</label>    <br />
+        @Html.DropDownListFor(m => m.QuestConnection.QuestStateFailToId, new SelectList(
+                              new List<Object>{
+                      new { value = 0, text = "--none--"  },
+                                },
+                              "value",
+                              "text",
+                               2))
+
+        if (Model.FailToQuestState != null)
+        {
+            @Ajax.ActionLink("[" + Model.FailToQuestState.QuestStateName + "]", "QuestState", "QuestWriter", new { Id = Model.FailToQuestState.Id, QuestId = Model.QuestConnection.QuestId, ParentStateId = -1 }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "parentButton" })
+        }
+        else
+        {
+            <p class="bad">NOT SET</p>
+        }
+
+
+    }
+    else
+    {
+        @Html.HiddenFor(m => m.QuestConnection.QuestStateFailToId)
+    }
+
+    <br />    <br />
+
+
+    <label>Name of this connection (for internal purposes only):</label>    <br />
+            @Html.TextBoxFor(m => m.QuestConnection.ConnectionName)
+
+            <br />    <br />
+
+            <label>Choice text:</label>    <br />
+            @Html.TextBoxFor(m => m.QuestConnection.ActionName)
+
+
+            <br />    <br />
+
+            <label>Hide option of requirement is not met?  Check if yes.</label>    <br />
+            @Html.CheckBoxFor(m => m.QuestConnection.HideIfRequirementsNotMet)
+
+            <br />    <br />
+
+
+            <label>Rank in list.</label>    <br />
+            @Html.TextBoxFor(m => m.QuestConnection.RankInList)
+
+
+            <br />    <br />
+
+            <label>Internal Notes (for quest writer's internal note-keeping uses only; questers never see this):</label>    <br />
+            @Html.TextAreaFor(m => m.QuestConnection.Notes, new { @class = "short" })
+
+    <br /><br />
+
+            <input type="submit" class="btn btn-chat" value="Send" />
+
+}
+
+<h4>Quest Connection Requirements:  (@Model.QuestConnection.QuestConnectionRequirements.Count())</h4>
+
+<table>
+
+    @{
+        foreach (QuestConnectionRequirement r in Model.QuestConnection.QuestConnectionRequirements)
+        {
+            <tr>
+                <td>
+                    @Ajax.ActionLink(r.QuestConnectionRequirementName, "QuestConnectionRequirement", "QuestWriter", new { Id = r.Id, QuestId = Model.QuestConnection.QuestId, QuestConnectionId = Model.QuestConnection.Id }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "editButton" })
+                </td>
+                <td>
+                    @Ajax.ActionLink("[DELETE]", "QuestConnectionRequirementDelete", "QuestWriter", new { Id = r.Id }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting", Confirm = "Are you sure you want to delete this quest state requirement?" }, new { @class = "deleteButton" })
+                </td>
+            </tr>
+        }
+    }
+
+</table>
+
+@{
+    if (Model.QuestConnection.Id > 0)
+    {
+        <p>@Ajax.ActionLink("--New Quest Connection Requirement--", "QuestConnectionRequirement", "QuestWriter", new { Id = -1, QuestId = Model.QuestConnection.QuestId, QuestConnectionId = Model.QuestConnection.Id }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "newButton" })</p>
+    }
+}
+
+<script>
+
+    var allStates;
+    var questId = @Model.QuestConnection.QuestId;
+
+    var fromStatesDropdown = $("#QuestConnection_QuestStateFromId");
+    var toStatesDropdown = $("#QuestConnection_QuestStateToId");
+    var toStatesDropdownFail = $("#QuestConnection_QuestStateFailToId");
+
+    var fromValue = @Model.QuestConnection.QuestStateFromId;
+    var toValue = @Model.QuestConnection.QuestStateToId;
+    var toValueFail = @Model.QuestConnection.QuestStateFailToId;
+
+    loadConnectionDropdownValues();
+
+</script>

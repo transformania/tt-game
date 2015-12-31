@@ -1,0 +1,22 @@
+﻿@model IEnumerable<tfgame.dbModels.Models.QuestWriterLog>
+@using tfgame.dbModels.Models
+
+@{
+    if (Model.Count() > 0)
+    {
+
+        <h1>Quest Writer Logs for Quest Id: @Model.First().QuestId</h1>
+
+
+        foreach (QuestWriterLog l in Model)
+        {
+            <p><b>@l.User</b> at <b>@l.Timestamp</b>:  @Html.Raw(l.Text)</p>
+        }
+
+    }
+
+    else
+    {
+
+    }
+}

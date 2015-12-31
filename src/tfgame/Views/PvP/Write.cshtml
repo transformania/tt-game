@@ -1,0 +1,60 @@
+﻿@model tfgame.dbModels.Models.Message
+<nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav" style="width:100%;">
+                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+                <li>@Html.ActionLink("Back to Messages", "MyMessages", "PvP")</li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+<div class="containerInner">
+    @{
+        if (ViewBag.RespondingToMsg != null && ViewBag.RespondingToMsg != "")
+        {
+            <p class="messageTextContainer messageResponse">
+                @ViewBag.RespondingToMsg
+            </p>
+        }
+    }
+
+    @using (Html.BeginForm("SendMessage", "PvP", Model))
+    {
+        <div class="messageInfoContainer clearfix">
+            Writing to <span class="messageNicknameContainer">@ViewBag.SendingToName</span>:
+            <span class="charCounter" id="textRemaining"></span>
+        </div>
+        @Html.TextAreaFor(m => m.MessageText)<br />
+
+
+        @Html.HiddenFor(m => m.ReceiverId)
+        @Html.HiddenFor(m => m.SenderId)
+
+        <br />
+        <input type="submit" class="btn btn-chat" value="Send" />
+
+    }
+
+    <div class="error">
+        @ViewBag.ErrorMessage
+    </div>
+</div>
+
+<script>
+    $("#MessageText").keydown(function () {
+        var remaining = 1000 - $("#MessageText").val().length;
+        $("#textRemaining").html(remaining + " characters remaining");
+    });
+</script>

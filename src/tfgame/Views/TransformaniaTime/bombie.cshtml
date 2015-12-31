@@ -1,0 +1,201 @@
+﻿@{
+    Layout = "";
+}
+
+<head>
+    <script src="~/Scripts/bombieGame.js"></script>
+    <script src="~/Scripts/jquery-2.1.0.js"></script>
+</head>
+
+<body>
+    <canvas id="fullmap" class="canvas" width="1000" height="1000" style="border:1px solid black; display:none;"></canvas>
+    <canvas id="backmap" class="canvas" width="500" height="500" style="border:1px solid black;"></canvas>
+    <canvas id="game" class="canvas"  width="500" height="500" style="border:1px solid black;"></canvas>
+    <span id="timer"></span>
+    <span id="instructions">Use the arrow keys to pan around the map.  Avoid the pink dots!  Click on the map to move you (the blue dot) around.</span>
+
+    <img id="map1" src="~/Images/bombie/map1_large.jpg" style="display:none;" />
+</body>
+
+<script>
+    var gameCanvas = document.getElementById("map");
+    var ctx = game.getContext("2d");
+
+    var mapCanvas = document.getElementById("map");
+    var ctx_map = backmap.getContext("2d");
+
+    var fullMapCanvas = document.getElementById("fullmap");
+    var ctx_fullmap = fullmap.getContext("2d");
+
+    var globalSpawnId = 0;
+    var gameOver = false;
+
+    var WORLD_WIDTH = 1000;
+    var WORLD_HEIGHT = 1000;
+    var MAP_WIDTH = 500;
+    var MAP_HEIGHT = 500;
+
+    var mapOffsetX = 0;
+    var mapOffsetY = 0;
+
+    var COLLISION_DISTANCE = 10;
+    var AGGRO_DISTANCE = 50;
+    var ACCELERATION = 1;
+
+    var clickMoveTo = "";
+    clickMoveToX = -500;
+    clickMoveToY = -500;
+
+    var time = 0;
+
+    var player = new Entity(125, 125, "human", "player");
+
+  
+
+    var allEntities = [player];
+    //var allEntities = [player, enemy1];
+   var enemies = [];
+    //var enemies = [enemy1];
+
+  
+
+    setInterval(function () { loop(); }, 50);
+
+    setInterval(function () { updateTimer(); }, 1000);
+
+    setInterval(function () { setRandTarget(); }, 250);
+
+    var img = document.getElementById("map1");
+    // ctx_map.drawImage(img, 0, 0);
+
+     ctx_fullmap.drawImage(img, 0, 0);
+     ctx_map.drawImage(img, mapOffsetX, mapOffsetY, MAP_WIDTH, MAP_HEIGHT, 0, 0, 500, 500);
+
+     spawnEntities(27, "human");
+     spawnEntities(1, "bimbo");
+
+    function loop() {
+
+        //ctx.clearRect(0, 0, MAP_WIDTH, MAP_HEIGHT);
+
+        
+        // ctx.drawImage(img, 0, 0);
+        ctx.drawImage(img, mapOffsetX, mapOffsetY, MAP_WIDTH, MAP_HEIGHT, 0, 0, 500, 500);
+
+        
+
+        if (player.type == "human") {
+            player.moveTo(allEntities, ctx_map);
+            player.draw(ctx);
+        }
+
+        
+
+        for (var i = 0; i < enemies.length; i++) {
+            enemies[i].moveTo(allEntities, ctx_map);
+        }
+
+        for (var i = 0; i < enemies.length; i++) {
+            enemies[i].draw(ctx);
+        }
+
+
+
+        if (gameOver == true) {
+            ctx.fillStyle = "red";
+            ctx.font = "bold 16px Arial";
+            ctx.fillText("DEFEATED!  YOU HAVE BEEN TURNED!", 25, 100);
+        }
+
+        // draw move destination cursor
+        ctx.beginPath();
+        ctx.arc(clickMoveToX, clickMoveToY, 3, 0, Math.PI * 2, true);
+        ctx.closePath();
+        ctx.fillStyle = "orange";
+        ctx.fill();
+
+
+    }
+
+    function setRandTarget() {
+
+        for (var i = 0; i < enemies.length; i++) {
+            if (Math.random() < .1) {
+                sx = Math.random() * WORLD_WIDTH;
+                sy = Math.random() * WORLD_HEIGHT;
+                enemies[i].setTarget(sx, sy);
+            }
+        }
+    }
+
+    function updateTimer() {
+        time++;
+        $("#timer").html(time);
+    }
+
+    $("#game").click(function (e) {
+
+        if (player.type == "human" && player.control=="player") {
+            var newX = e.pageX - $(this).position().left + mapOffsetX;
+            var newY = e.pageY - $(this).position().top + mapOffsetY;
+            player.setTarget(parseInt(newX), parseInt(newY));
+            clickMoveToX = newX - mapOffsetX;
+            clickMoveToY = newY - mapOffsetY;
+        }
+
+         var nx = ctx_map.getImageData(parseInt(newX), parseInt(newY), 1, 1);
+          console.log(newX + "," + newY + ":" + nx.data[0]);
+    });
+
+
+    document.body.onkeyup = function(e){
+        if (e.keyCode == 39) {
+            if (mapOffsetX < 1000) {
+                mapOffsetX += 100;
+                clickMoveToX -= 100;
+            }
+            
+        }
+        if (e.keyCode == 37) {
+            if (mapOffsetX > 0) {
+                mapOffsetX -= 100;
+                clickMoveToX += 100;
+            }
+        }
+        if (e.keyCode == 40) {
+            if (mapOffsetY < 1000) {
+                mapOffsetY += 100;
+                clickMoveToY -= 100;
+            }
+        }
+        if (e.keyCode == 38) {
+            if (mapOffsetY > 0) {
+                mapOffsetY -= 100;
+                clickMoveToY += 100;
+            }
+        }
+    }
+
+</script>
+
+<style>
+    #container {
+        position: relative;
+    }
+
+    #timer {
+        position: absolute;
+        top: 525px;
+    }
+
+     #instructions {
+        position: absolute;
+        top: 535px;
+    }
+
+    .canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+</style>

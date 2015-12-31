@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfForm xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Form>
+    <Img>man01.jpg</Img>
+	<FormName>plainguy_01</FormName>
+	<FormNameCasual>Regular guy</FormNameCasual>
+	<Description1st>You are a pretty average looking guy.</Description1st>
+	<Description3rd> is a pretty average looking guy.</Description3rd>
+  </Form>
+  
+  <Form>
+    <Img>woman01.jpg</Img>
+	<FormName>woman_01</FormName>
+	<FormNameCasual>Beautiful Woman</FormNameCasual>
+	<Description1st>You are a woman.</Description1st>
+	<Description3rd> is a woman.</Description3rd>
+	<Traits>sexy</Traits>
+  </Form>
+
+  
+  <Form>
+    <Img>jogger.png</Img>
+	<FormName>jogger</FormName>
+	<FormNameCasual>Beautiful Woman</FormNameCasual>
+	<Description1st>You are a beautiful young woman.</Description1st>
+	<Description3rd> is a pretty beautiful woman.</Description3rd>
+	<Traits>sexy;blonde;fit</Traits>
+  </Form>
+  
+</ArrayOfForm>

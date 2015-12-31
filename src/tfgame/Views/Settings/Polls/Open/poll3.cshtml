@@ -1,0 +1,89 @@
+﻿@model tfgame.dbModels.Models.PollEntry
+
+<nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+                <li>@Html.ActionLink("View All Polls", "ViewPolls", "Settings")</li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+<p class="infoMessage error">@ViewBag.Error</p>
+<div class="containerInner text-center">
+    <h1>How do you feel about the new stats system and the double turn speed?</h1>
+
+    <p>All questions are optional and all responses are anonymous.  There are many more possibilities for some of the dropdown questions here; if you feel one is missing please post in the forums and we will add it in.You can return to edit your answers later.  Text inputs have a maximum of 500 characters.</p>
+
+    <hr />
+
+    @using (Html.BeginForm("ReplyToPoll", "Settings", Model))
+    {
+
+        <p>How do you feel about the new stats system (commonly known as the Holistic system) that recently went into effect?</p>
+        @Html.DropDownListFor(i => i.Num1, new SelectList(
+                  new List<Object>{
+                      new { value = "0"  , text = "---please select a choice---"  },
+                      new { value = "1"  , text = "I have no opinion."  },
+                       new { value = "2"  , text = "Way too complicated"  },
+                       new { value = "3"  , text = "A little too complicated"  },
+                       new { value = "4"  , text = "Just right"  },
+                       new { value = "5"  , text = "A little too simple"  },
+                       new { value = "6"  , text = "Way too simple"  },
+
+                    },
+                  "value",
+                  "text",
+                   2))
+
+        <hr />
+
+        <p>How do you feel about turns taking 5 minutes to update instead of 10 minutes?</p>
+        @Html.DropDownListFor(i => i.Num2, new SelectList(
+                  new List<Object>{
+                      new { value = "0"  , text = "---please select a choice---"  },
+                      new { value = "1"  , text = "I have no opinion."  },
+                       new { value = "2"  , text = "I strongly prefer 5 minute turns"  },
+                       new { value = "3"  , text = "I somewhat prefer 5 minute turns"   },
+                       new { value = "4"  , text = "I somewhat dislike 5 minute turns"  },
+                       new { value = "5"  , text = "I strongly dislike 5 minute turns"   },
+
+                    },
+                  "value",
+                  "text",
+                   2))
+
+        <hr />
+
+       
+
+        <hr />
+
+        <p>Leave any comments on the new stats system here.</p>
+        @Html.ValidationMessageFor(m => m.String1)
+        @Html.TextAreaFor(m => m.String1, new { @class = "pollTextArea" })
+
+        <hr />
+
+        <p>Leave any comments on the 5 minute turns here.</p>
+        @Html.ValidationMessageFor(m => m.String2)
+        @Html.TextAreaFor(m => m.String2, new { @class = "pollTextArea" })
+
+        <hr />
+
+        <input type="submit" value="Submit" />
+    }
+
+</div>

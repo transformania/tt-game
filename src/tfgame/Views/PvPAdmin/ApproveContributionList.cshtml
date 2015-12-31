@@ -1,0 +1,78 @@
+﻿@model IEnumerable<tfgame.dbModels.Models.Contribution>
+
+<div class="containerInner">
+
+    <table>
+        <thead>
+            <tr>
+                <th>Submitter</th>
+                <th>Spell Name</th>
+                <th>Form Name</th>
+                <th>Item Name</th>
+                <th>Approve?</th>
+                <th>Reject?</th>
+                <th>Snoop</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @{
+                foreach (tfgame.dbModels.Models.Contribution c in Model)
+                {
+                    <tr>
+                        <td>@c.SubmitterName</td>
+                        <td>@c.Skill_FriendlyName</td>
+                        <td>@c.Form_FriendlyName</td>
+                        <td>@c.Item_FriendlyName</td>
+
+
+
+                        @{
+                            if (User.IsInRole(tfgame.Statics.PvPStatics.Permissions_Admin) == true)
+                            {
+                                <td>@Html.ActionLink("Approve", "ApproveContribution", "PvPAdmin", new { id = c.Id }, null)</td>
+                                <td>@Html.ActionLink("Reject", "RejectContribution", "PvPAdmin", new { id = c.Id }, null)</td>
+                            }
+                            else
+                            {
+                                <td></td>
+                                <td></td>
+                            }
+                        }
+
+
+
+                        <td>@Html.ActionLink("Snoop", "ContributePreview", "Contribution", new { Id = c.Id }, null)</td>
+                    </tr>
+                            }
+            }
+        </tbody>
+    </table>
+</div>
+<style>
+    table {
+        padding: 3px;
+        border: 1px solid black;
+        width: 100%;
+    }
+
+    th {
+        background-color: black;
+        color: white;
+        text-align: center;
+    }
+
+    tr {
+        padding: 3px;
+        border: 1px solid black;
+    }
+
+        tr:nth-child(odd) {
+            background-color: lightgray;
+        }
+
+    td {
+        text-align: center;
+    }
+</style>

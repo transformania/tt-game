@@ -1,0 +1,268 @@
+﻿<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.9.0/vis.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.9.0/vis.min.css">
+
+    <style type="text/css">
+        #mynetwork {
+            width: 1000px;
+            height: 1000px;
+            border: 1px solid lightgray;
+            background-color: white;
+        }
+    </style>
+
+
+</head>
+
+<p>@Ajax.ActionLink("View Logs", "ShowQuestWriterLogs", "QuestWriter", new { Id = ViewBag.QuestId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
+<p>@Ajax.ActionLink("Click to view all quest states in this quest", "ShowAllQuestStates", "QuestWriter", new { Id = ViewBag.QuestId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
+<p>@Ajax.ActionLink("Click to view all quest connections in this quest", "ShowAllQuestConnections", "QuestWriter", new { Id = ViewBag.QuestId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
+
+<p>@Ajax.ActionLink("Reload Diagram", "Diagram", "QuestWriter", new { Id = ViewBag.QuestId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
+
+<h1>Diagram</h1>
+
+<p>This page can be used to help visualize the quest states and connections in a quest.</p><p id="loadingMsg" class="bad">Loading...</p>
+<p><input id="springChange" type="text" value="300">Spring size</p>
+<br />
+<p>Animate<input id="animate" type="checkbox" checked></p>
+
+<span>Id:  <input id="Id" class="tiny" type="text" readonly /></span>
+<span>X:  <input id="X" class="tiny" type="text" readonly /></span>
+<span>Y:  <input id="Y" class="tiny" type="text" readonly /></span>
+<span class="good" id="pinMeSuccess"></span>
+<div id="mynetwork"></div>
+
+
+
+<script>
+    var questId = @ViewBag.QuestId;
+
+    // configuration options for the diagram
+    var options = {
+        autoResize: true,
+        height: '100%',
+        width: '100%',
+        locale: 'en',
+        layout:{
+            hierarchical: false
+        },
+        edges:{
+            arrows: 'to',
+        },
+        physics: {
+            enabled: true,
+            barnesHut: {
+                springLength: 400,
+                "avoidOverlap": .04,
+            },
+            minVelocity: 0.75
+        }
+    };
+
+    var network = "";
+    var states = [];
+    var connections = [];
+
+    var done = 0;
+
+    function loadStates() {
+        $.getJSON("/QuestWriter/DiagramStatesJSON/" + questId, function (data) {
+            states = data;
+        }).then(function () {
+            done++;
+
+            if (done == 2) {
+                renderDiagram();
+            }
+        });
+    }
+
+    function loadConnections() {
+        $.getJSON("/QuestWriter/DiagramConnectionsJSON/" + questId, function (data) {
+            connections = data;
+        }).then(function () {
+            done++;
+            if (done == 2) {
+                renderDiagram();
+            }
+        });
+    }
+
+    loadStates();
+    loadConnections();
+
+    function renderDiagram() {
+
+        $("#loadingMsg").hide();
+
+        var nodesRaw = [];
+        for (var i = 0; i < states.length; i++) {
+            var state = states[i];
+            var node = {
+                id: state.Id,
+                label: state.StateName,
+                physics: false
+            }
+
+            // assign color based on end state or not
+            if (state.EndCount > 0) {
+                node.color = {
+                    background: 'pink',
+                    border: 'darkred'
+                };
+            } else {
+                node.color = {
+                    background: 'lightblue',
+                    border: 'darkblue'
+                };
+            }
+
+            // assign color based on whether this is start state
+            if (state.IsStart==true) {
+                node.color = {
+                    background: 'yellow',
+                    border: 'darkviolet'
+                };
+            }
+
+            // if pinned, set initial X and Y and disable physics for that node and make it square
+            if (state.Pin==true) {
+                node.x = state.X;
+                node.y = state.Y;
+
+                node.shape = "box";
+            }
+
+            nodesRaw.push(node);
+        }
+
+        var nodes = new vis.DataSet(nodesRaw);
+
+        var edgesRaw = [];
+        for (var i = 0; i < connections.length; i++) {
+            var connection = connections[i];
+            var edge = {
+                from: connection.From,
+                to: connection.To,
+                label: connection.Name,
+                font: {align: 'middle'}
+            }
+
+            if (connection.Reqs > 0) {
+                edge.label += " [" + connection.Reqs + " reqs]";
+            }
+
+            // if the connection has a fail state, add that as well
+            if (connection.FailTo > 0) {
+                var failEdge = {
+                    from: connection.From,
+                    to: connection.FailTo,
+                    label: "FAIL: " + connection.Name,
+                    font: {align: 'middle'},
+                    color: "red"
+                }
+                edgesRaw.push(failEdge);
+            }
+
+            edgesRaw.push(edge);
+        }
+
+        var edges = new vis.DataSet(edgesRaw);
+
+        // create a network
+        var container = document.getElementById('mynetwork');
+
+        // provide the data in the vis format
+        var data = {
+            nodes: nodes,
+            edges: edges
+        };
+
+        network = new vis.Network(container, data, options);
+
+        var firstStateId = states[0].Id;
+        var offsetX = network.getPositions([firstStateId])[firstStateId].x - states[0].X;
+        var offsetY = network.getPositions([firstStateId])[firstStateId].y - states[0].Y;
+
+        // bind click event to read X, Y of a node
+        network.on("click", function (params) {
+            updateNodeXY(params);
+            saveNode();
+        });
+
+        // bind click event to read X, Y of a node
+        network.on("release", function (params) {
+            updateNodeXY(params);
+            saveNode();
+
+
+
+        });
+
+        // bind click event to read X, Y of a node
+        network.on("dragging", function (params) {
+            updateNodeXY(params);
+        });
+
+        function updateNodeXY(params) {
+            //params.event = "[original event]";
+            if (params.nodes.length>0) {
+
+                var selectedNodeId = params.nodes[0];
+
+                var position = network.getPositions([selectedNodeId])[selectedNodeId];
+
+                $('#X').val(position.x - offsetX);
+                $('#Y').val(position.y - offsetY);
+
+                // find the node ID
+                for (var i = 0; i < states.length; i++) {
+                    if (states[i].Id == params.nodes[0]) {
+                        lnode = states[i];
+                    }
+                }
+
+                $('#Id').val(lnode.Id);
+
+            } else {
+                $('#Id').val("-");
+                $('#X').val("-");
+                $('#Y').val("-");
+            }
+        }
+
+    }
+
+    function saveNode() {
+
+        var nodeId = $('#Id').val();
+
+        if ($('#Id').val() != "-") {
+            var url = "/QuestWriter/DiagramSaveNodePosition/" + nodeId + "?X=" +  $('#X').val() + "&Y=" + $('#Y').val();
+
+            $.post( url, function( data ) {
+                $("#pinMeSuccess").show();
+                $("#pinMeSuccess").html(data);
+                setTimeout(function(){ $("#pinMeSuccess").hide() }, 1500);
+
+                // TODO:   Get this working
+                // network.body.nodes[nodeId].shape.options.shape = "box";
+
+            });
+        }
+        network.unselectAll();
+
+    }
+
+    $("#springChange").change(function() {
+        options.physics.barnesHut.springLength = parseInt($("#springChange").val());
+        network.setOptions(options);
+    });
+
+    $("#animate").change(function() {
+        options.physics.enabled = !options.physics.enabled;
+        network.setOptions(options);
+    });
+
+</script>

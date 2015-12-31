@@ -1,0 +1,61 @@
+﻿@model tfgame.ViewModels.CovenantViewModel
+@using tfgame.ViewModels
+@using tfgame.Statics
+
+<nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+                <li>@Html.ActionLink("View All Covenants", "CovenantList", "Covenant")</li>
+                <li>@Html.ActionLink("Back to My Covenant", "MyCovenant", "Covenant")</li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+
+<div class="containerInner text-center">
+    <p class="covHeader"><span class="covName">@Model.dbCovenant.Name</span></p>
+    <p>
+        <b>@Model.dbCovenant.SelfDescription</b>
+    </p>
+    <p>
+                @{
+            if (Model.dbCovenant.HomeLocation != null && Model.dbCovenant.HomeLocation != "")
+            {
+                <i>This covenant has a safeground at <b>@LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == Model.dbCovenant.HomeLocation).Name</b> and has enchanted <b>@ViewBag.LocationsControlled</b> locations.</i>
+            }
+        }
+    </p>
+    @Html.ActionLink("Led by " + Model.Leader.GetFullName(), "LookAtPlayer", "PvP", new { id = Model.Leader.Id }, null)
+</div>
+
+<div class="onlinePlayersWrapperBG">
+    <div class="row">
+@foreach (PlayerFormViewModel p in Model.Members.OrderByDescending(c => c.Player.Level).ThenByDescending(c => c.Player.XP))
+    {
+                <div class="col-md-2 col-sm-4 col-xs-12 charaBox">
+                    <div class="charaBoxInner">
+                        <div>
+                            <p>
+
+                          @Html.Partial("~/Views/PvP/Player_Partial.cshtml", p)     
+                            </p>
+                        </div>
+                    </div>
+                </div>
+    }
+    </div>
+</div>

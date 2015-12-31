@@ -1,0 +1,31 @@
+﻿@model List<tfgame.dbModels.Models.JewdewfaeEncounter>
+
+<h1>Jewdewfae encounter list (@Model.Where(e => e.IsLive == true).Count() live)</h1>
+
+@{
+    foreach (tfgame.dbModels.Models.JewdewfaeEncounter e in Model)
+    {
+        <p>
+
+            @if (e.IsLive == true)
+            {
+                <span class="good">LIVE</span>
+            }
+            else
+            {
+                <span class="bad">NOT LIVE</span>
+            }
+
+            Needing <b>@e.RequiredForm</b> --- AT --- <b>@e.dbLocationName</b> ----- @Html.ActionLink("[Edit]", "WriteFae", "PvPAdmin", new { id = e.Id }, null)
+
+           
+
+        </p>
+    <br />
+    }
+    
+    <hr />
+    
+    @Html.ActionLink("NEW ENCOUNTER", "WriteFae", "PvPAdmin", new { id = -1 }, null)
+
+}

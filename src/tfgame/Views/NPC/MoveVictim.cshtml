@@ -1,0 +1,36 @@
+﻿@model IEnumerable<tfgame.ViewModels.Location>
+
+<nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+            </button>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+                <li>@Html.ActionLink("Back to Mind Control List", "MindControlList", "NPC")</li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+<div class="containerInner">
+
+    <p>Where would you like to command your victim, @ViewBag.Victim.GetFullName(), to move to?  Your victim has @ViewBag.Victim.ActionPoints AP available.</p><br />
+
+    @{
+
+        foreach (tfgame.ViewModels.Location loc in Model)
+        {
+            @Html.ActionLink(loc.Name, "MoveVictimSend", "NPC", new { id = ViewBag.Victim.Id, to = loc.dbName }, null)
+            <span>(@tfgame.Procedures.MindControlProcedures.GetAPCostToMove(ViewBag.Buffs, ViewBag.Victim.dbLocationName, loc.dbName) AP)</span><br />
+        }
+
+    }
+
+</div>

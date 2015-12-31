@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfScene xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Scene>
+    <dbName>EastRoom</dbName>
+    <CasualName>East Room</CasualName>
+    <SceneLog>
+      <TimeMessage>
+        <Timestamp>2013-10-01T23:30:28.8780794-04:00</Timestamp>
+        <Message> &lt;tiny&gt;23:30:28&lt;/tiny&gt; Testman&lt;tiny&gt; has entered from West Room.&lt;/tiny&gt;&lt;br&gt;</Message>
+      </TimeMessage>
+    </SceneLog>
+    <Img>EastRoom.jpg</Img>
+    <Description>This is the east room of the hotel.</Description>
+  </Scene>
+  <Scene>
+    <dbName>WestRoom</dbName>
+    <CasualName>West Room</CasualName>
+    <SceneLog>
+      <TimeMessage>
+        <Timestamp>2013-10-01T23:30:28.8780794-04:00</Timestamp>
+        <Message> &lt;tiny&gt;23:30:28&lt;/tiny&gt; Testman&lt;tiny&gt; has left for East Room.&lt;/tiny&gt;&lt;br&gt;</Message>
+      </TimeMessage>
+    </SceneLog>
+    <Img>WestRoom.jpg</Img>
+    <Description>This is the west room of the hotel.</Description>
+  </Scene>
+  <Scene>
+    <dbName>Bathroom</dbName>
+    <CasualName>Bathroom</CasualName>
+    <SceneLog />
+    <Img>Bathroom.jpg</Img>
+    <Description>This is a very nice-looking bathroom.</Description>
+  </Scene>
+  <Scene>
+    <dbName>OutsideHotel</dbName>
+    <CasualName>Outside Hotel</CasualName>
+    <SceneLog />
+    <Img>Hotel.jpg</Img>
+    <Description>You are standing outside your hotel.  The building is a bit run down, but rent is at least cheap.</Description>
+  </Scene>
+</ArrayOfScene>

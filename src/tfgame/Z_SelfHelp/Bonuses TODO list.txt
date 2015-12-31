@@ -1,0 +1,11 @@
+1.  Add bonus to StaticItem.cs
+2.  Add the bonus to BuffBox viewmodel, as well as the method to get it all
+3.  Add the output.FromItems_X in ItemProcedures to get sum of leveled item effects
+4.  Update partial_AllBuffsTable
+5.  Update partial_PerkBonus
+6.  Update partial_InventoryItem
+7.  Update the contributions page popup
+8.  Finally, add logic to attack method, cleanse methods, etc
+
+/authserv auth Judoo ***REMOVED***
+/mode Judoo +x

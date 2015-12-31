@@ -1,0 +1,62 @@
+﻿<span>Old skill name:</span><input id="oldSkillName" />
+<span>New skill name:</span><input id="newSkillName" />
+
+<input type="button" id="skillGo" value="Submit"/>
+
+<hr />
+
+
+<span>Old form name:</span><input id="oldFormName" />
+<span>New form name:</span><input id="newFormName" />
+
+<input type="button" id="formGo" value="Submit" />
+
+<hr />
+
+
+<span>Old item name:</span><input id="oldItemName" />
+<span>New item name:</span><input id="newItemName" />
+
+<input type="button" id="itemGo" value="Submit" />
+
+<hr />
+
+<input type="checkbox" id="practiceMode" checked="checked"/> <span>Practice mode (does not commit changes to database)</span>
+
+<script>
+
+    var practice = "true";
+
+    $("#skillGo").click(function () {
+        var oldskill = $("#oldSkillName").val();
+        var newskill = $("#newSkillName").val();
+
+        if (!$("#practiceMode").is(":checked")) {
+            practice = "false";
+        }
+
+        var newUrl = "RenameSkill?oldSkillName=" + oldskill + "&newSkillName=" + newskill + "&practice=" + practice;
+        window.location.href = newUrl;
+    });
+
+    $("#formGo").click(function () {
+        var oldform = $("#oldFormName").val();
+        var newform = $("#newFormName").val();
+        if (!$("#practiceMode").is(":checked")) {
+            practice = "false";
+        }
+        var newUrl = "RenameForm?oldFormName=" + oldform + "&newFormName=" + newform + "&practice=" + practice;
+        window.location.href = newUrl;
+    });
+
+    $("#itemGo").click(function () {
+        var olditem = $("#oldItemName").val();
+        var newitem = $("#newItemName").val();
+        if (!$("#practiceMode").is(":checked")) {
+            practice = "false";
+        }
+        var newUrl = "RenameItem?oldItemName=" + olditem + "&newItemName=" + newitem + "&practice=" + practice;
+        window.location.href = newUrl;
+    });
+
+</script>

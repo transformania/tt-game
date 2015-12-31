@@ -1,0 +1,28 @@
+﻿@model tfgame.ViewModels.FurnitureViewModel
+           @using tfgame.CustomHtmlHelpers
+
+<h3>@Model.dbFurniture.HumanName</h3>
+<p>Price:  <span title="Arpeyjis" class="icon icon-money"></span><span class="avatarCount"><b>@Convert.ToInt32(Model.dbFurniture.Price)</b></span> </p>
+<p><i>@Model.FurnitureType.Description</i></p>
+@*<p>Contract Duration:  <b>@Model.dbFurniture.ContractTurnDuration</b></p>
+<p>Contract began on turn <b>@Model.dbFurniture.ContractStartTurn</b> and will end on turn <b>@Model.dbFurniture.ContractEndTurn</b>.</p>*@
+<p>Availability:  @CharactersHere.PrintFurnitureAvailability(Model) (Recharge time is @Model.FurnitureType.MinutesUntilReuse minutes)</p>
+<p>Advantages:</p>
+
+
+<ul>
+    @{
+        if (Model.FurnitureType.APReserveRefillAmount != null && Model.FurnitureType.APReserveRefillAmount != 0)
+        {
+            <li>Refills action point reserve by:  @Model.FurnitureType.APReserveRefillAmount</li>
+        }
+        if (Model.FurnitureType.GivesEffect != null && Model.FurnitureType.GivesEffect != "")
+        {
+            <li>Gives effect:  @tfgame.Statics.EffectStatics.GetEffect(Model.FurnitureType.GivesEffect).FriendlyName</li>
+        }
+        if (Model.FurnitureType.GivesItem != null && Model.FurnitureType.GivesItem != "")
+        {
+            <li>Gives item:  @tfgame.Statics.ItemStatics.GetStaticItem(Model.FurnitureType.GivesItem).FriendlyName</li>
+        }
+    }
+</ul>

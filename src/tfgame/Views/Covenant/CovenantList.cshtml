@@ -1,0 +1,45 @@
+﻿@model IEnumerable<tfgame.ViewModels.CovenantListItemViewModel>
+           @using tfgame.ViewModels
+            @using tfgame.dbModels.Models
+@using tfgame.CustomHtmlHelpers
+
+<nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+                <li>@Html.ActionLink("Back to My Covenant", "MyCovenant", "Covenant")</li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+<div class="containerInner">
+    @{
+        foreach (CovenantListItemViewModel c in Model.OrderByDescending(c => c.MemberCount))
+        {
+            <div class="covListing">
+                <div class="covFlag" style="background-image: url(/Images/PvP/CovenantFlags/@c.dbCovenant.FlagUrl)"></div>
+                <span class="covBigName">@Html.ActionLink(c.dbCovenant.Name, "LookAtCovenant", "Covenant", new { id = c.dbCovenant.Id }, null)</span>
+                <span>(lvl @c.dbCovenant.Level)</span>
+                <span class="covMemberCount">(@c.MemberCount members)</span>
+                <span class="covLeader">@Html.ActionLink("Led by " + c.Leader.GetFullName(), "LookAtPlayer", "PvP", new { id = c.Leader.Id }, null)</span>
+
+                <p>@c.dbCovenant.SelfDescription.  @CharactersHere.PrintCovenantSafeground(c.dbCovenant)</p>
+
+                @Html.ActionLink("Apply", "ApplyToCovenant", "Covenant", new { id = c.dbCovenant.Id }, null)
+            </div>
+        }
+    }
+</div>

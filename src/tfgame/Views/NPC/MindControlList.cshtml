@@ -1,0 +1,101 @@
+﻿@model IEnumerable<tfgame.ViewModels.MindControlViewModel>
+
+<nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+<div>
+    <p class="infoMessage result">@ViewBag.Result</p>
+    <p class="infoMessage error">@ViewBag.ErrorMessage</p>
+    <p class="infoMessage suberror">@ViewBag.SubErrorMessage</p>
+</div>
+
+@*<div class="specialBox specialBox2">
+        <p>...</p>
+    </div>*@
+
+<div class="containerInner">
+    <h1>Mind Control</h1>
+    <p>Certain spells allow you to possess portions of the minds of other mages, forcing them into actions whether they wish to or not!</p>
+
+</div>
+
+    @{
+        if (Model.Count() == 0)
+        {
+            <p class="bad">You are not mind controlling anyone, nor is anyone mind controlling you.</p>
+        }
+        else
+        {
+            <div class="onlinePlayersWrapperBG">
+                <div class="row">
+                    <h3>You are mind controlling:</h3>
+                    @{
+            foreach (tfgame.ViewModels.MindControlViewModel m in Model.Where(m => m.MindControl.MasterId == ViewBag.MyId))
+            {
+                <div class="col-md-2 col-sm-4 col-xs-12 charaBox">
+                    <div class="charaBoxInner">
+                        <div>
+                            <p>
+                                @Html.Partial("~/Views/PvP/Player_Partial.cshtml", m.Victim)
+                                <span><b>@m.TypeFriendlyName</b> ( @m.MindControl.TurnsRemaining turns remaining.  Used @m.MindControl.TimesUsedThisTurn/@tfgame.Procedures.MindControlProcedures.GetCommandLimitOfType(m.MindControl.Type) this turn.)</span>
+                                <span>@Html.Partial("partial/CommandLinks", m)</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            }
+                    }
+
+                </div>
+            </div>
+
+    <div class="onlinePlayersWrapperBG">
+        <div class="row">
+            <h3>You are being mind controlled by:</h3>
+            @{
+            foreach (tfgame.ViewModels.MindControlViewModel m in Model.Where(m => m.MindControl.VictimId == ViewBag.MyId))
+            {
+                <div class="col-md-2 col-sm-4 col-xs-12 charaBox">
+                    <div class="charaBoxInner">
+                        <div>
+                            <p>
+                                @Html.Partial("~/Views/PvP/Player_Partial.cshtml", m.Master)
+                                <span><b>@m.TypeFriendlyName</b> ( @m.MindControl.TurnsRemaining turns remaining.  Used @m.MindControl.TimesUsedThisTurn/@tfgame.Procedures.MindControlProcedures.GetCommandLimitOfType(m.MindControl.Type) this turn.)</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            }
+            }
+
+        </div>
+    </div>
+
+        }
+
+}
+
+
+
+
+
+
+

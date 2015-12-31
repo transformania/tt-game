@@ -1,0 +1,84 @@
+﻿<h1>Help</h1>
+
+<p>Welcome, quest writer, to the quest editor!  Here is the basics on how to use this (admittedly confusing) quest editor to create your own quest.  The model for the questing system in Transformania Timeis a simple directed graph / flowchart.  As such the way to think about questing is a Directed Graph in which each state is capable to leading to one or more other states by passing through a connection.  You can read more about directed graphs <a target="_blank" href="https://en.wikipedia.org/wiki/Directed_graph">here</a> if you want.</p>
+
+
+<h3>Quest Start</h3>
+
+<p>A <b>Quest Start</b> holds some information about the quest and what it takes for a player to be eligible to begin it.  Quests must all begin in a specific location.  Players can only complete a quest one time per player but are allowed to fail it any number of times and restart.  Additionally, players are allowed to abandon a quest at any time unless they have reach an end state, in which case they must accept the consequences of failure or success.</p>
+
+<p>Quest Starts must begin with a certain Quest State.</p>
+
+<h3>Quest State</h3>
+
+<p>A <b>Quest State</b> makes up the bulk of a quest.  A quest state is simply some state that the player is in; they may be in a room, walking down a road, talking to someone, etc.  Quest States is where the majority of written text for a quest will be. </p>
+
+<p>You can use the following tags in the body text of a quest state to customize it.  Note that ... indicates any amount of text, ie [b]Hello[/b].</p>
+
+<table>
+    <tr>
+        <td>
+            <b>[b]...[/b]</b>
+        </td>
+        <td>
+            Text appears <b>in bold</b>.
+        </td>
+    </tr>
+    <tr>
+        <td><b>[i]...[/i]</b></td>
+        <td>Text appears <i>in italic</i></td>
+    </tr>
+    <tr>
+        <td><b>$PLAYER_NAME_FIRST$</b></td>
+        <td>Replaced with the player's first name</td>
+    </tr>
+    <tr>
+        <td><b>$PLAYER_NAME_LAST$</b></td>
+        <td>Replaced with the player's last name</td>
+    </tr>
+    <tr>
+        <td><b>$PLAYER_NAME$</b></td>
+        <td>Replaced with the player's first name, nickname (when available), and last name</td>
+    </tr>
+</table>
+
+<h3>Quest Connection</h3>
+
+<p>A <b>Quest Connection</b> is the binding between two quests states.  A connection is typically an action, such as "walk to the door" or "pick up the key".  A connection has a FROM quest state which is where the option appears for the player.  It also has a TO quest state which is the quest state that the player is delivered to after performing that action.</p>
+
+<h3>Quest Connection Requirement</h3>
+
+<p>A <b>Quest Connection Requirement</b> is some condition that must hold true for a player to be eligible for an option that leads to another quest state.  More than one quest connection requirement can exist for a connection.  Currently <b>ALL</b> conditions must be true for a player to enter it (a logical AND operator).  Quest Connection Requirements can be based off of a player's stats to allow unique options for certain builds or restrict others, require a certain form or gender, or be compared against a previously set variable.</p>
+
+<h4>Dice rolls</h4>
+
+<p>If you want a quest connection to be a probability of success or failure, you can use dice rolls instead.  Any connection with a requirement that is a dice roll has a new quest state it can point to, a failure route for the player to be redirected to.  This option will not appear until one quest connection requirement is marked as such.</p>
+
+<p>Dice rolls have two extra components, a modifier and offset.  A modifier is multiplied by the player's target skill and becomes the percent chance of success.  The offset can be added on to provide a base chance on to that number.  For example, suppose the roll is against a player's Luck, of which they have 50.  If the modifier is set to 1.5, then the percent chance of success becomes 75%.  If there is a modifier of 10, that chance goes up to 85%.</p>
+
+<p>Essentially the formula is this:  <b>statistic value * modifier + offset = % chance of success</b></p>
+
+<p>Quest connections can have more than one dice roll requirement.  In this case, a dice is rolled for EACH requirement marked as such.  It is also possible to mix and match strict requirements with roll based ones.  In this scenario, the player must satisfy all of the strict requirements first before being permitted to make a roll.</p>
+
+
+<h3>Quest State Preaction</h3>
+
+<p>A <b>Quest State Preaction</b> is something that is triggered <b>immediately</b> when a player enters a state, either by having chosen a choice or jumping to a quest state.  These preactions include setting a variable, changing the player's form, willpower, or mana.  Because this happens before the player even sees the state's text, </p>
+
+<p><span class="bad">Quest variables are not yet implemented.  Ignore this for now.</span></p>
+
+<h3>Quest End</h3>
+
+<p>A <b>Quest End</b> means that the current quest state indicates that the player has come to a place in the quest where they either pass or fail the quest as a whole.  More than one quest end can be added to a quest state; when this is the case the player will recieve the reward from each quest end.</p>
+
+<p>Each quest end can be marked as a pass or fail individually.  When there are multiple quest ends, the FIRST quest end's completion status will be used.  There is no reason to mix or match, so don't do it.</p>
+
+<h3>Variables</h3>
+
+<p><b>Quest Variables</b> are simple number values that can be stored as a way for the quest to remember certain actions or choices a player has made.  Variables can be set and altered with Quest State Preactions and can be used to restrict Connections.  Variables will automatically be saved in all caps and have a default value of 0.</p>
+
+<p>An example of a variable in use is if a player picks up a key.  A variable named HAS_KEY could be set to 1.  Then a Connection that requires that the player has HAS_KEY set equal to (==) 1 can be unlocked, allowing further progression or an alternative action.</p>
+
+<h3>Duhad's Video Turial</h3>
+
+<p>Duhad was kind enough to create a video tutorial on the quest editor and does a good job of explaining it at a steady pace.  <a href="https://www.youtube.com/watch?v=LV9_GhPc2yc" target="_blank">Click here to watch the video on his Youtube channel in a new tab.</a>  Unfortunately the resolution is very low but the commentary is thorough.</p>

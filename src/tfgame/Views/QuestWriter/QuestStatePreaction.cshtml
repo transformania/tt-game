@@ -1,0 +1,100 @@
+﻿@model tfgame.ViewModels.Quest.QuestStatePreactionFormViewModel
+@using tfgame.Statics
+@using tfgame.dbModels.Models
+
+<h1>Quest State Preaction</h1>
+
+<h4>Parent Quest State:</h4>
+
+@{
+    if (Model.ParentQuestState != null)
+    {
+
+        <p>@Ajax.ActionLink("[" + Model.ParentQuestState.QuestStateName + "]", "QuestState", "QuestWriter", new { Id = Model.ParentQuestState.Id, QuestId = Model.QuestStatePreaction.QuestId, ParentStateId = -1 }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "parentButton" })</p>
+    }
+}
+
+<hr />
+
+@using (Ajax.BeginForm("QuestStatePreactionSend", "QuestWriter", new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" }))
+{
+
+    @Html.HiddenFor(m => m.ParentQuestState.Id)
+    @Html.HiddenFor(m => m.QuestStatePreaction.QuestStateId.Id)
+    @Html.HiddenFor(m => m.QuestStatePreaction.QuestId)
+    @Html.HiddenFor(m => m.QuestStatePreaction.Id)
+
+
+    <label>Name (used for internal purposes):</label>    <br />
+    @Html.TextBoxFor(m => m.QuestStatePreaction.QuestStatePreactionName)
+
+    <br /><br />
+
+    <label>Action Type:</label>    <br />
+    @Html.DropDownListFor(m => m.QuestStatePreaction.ActionType, new SelectList(
+                  new List<Object>{
+                      new { value = (int)QuestStatics.PreactionType.Variable, text = "Set/Update Variable"  },
+                      new { value = (int)QuestStatics.PreactionType.Form, text = "Change Form"  },
+                      new { value = (int)QuestStatics.PreactionType.Willpower, text = "Change Willpower"  },
+                      new { value = (int)QuestStatics.PreactionType.Mana, text = "Change Mana"  },
+                      new { value = (int)QuestStatics.PreactionType.MoveToLocation, text = "Move Player to Location"  },
+                    },
+                  "value",
+                  "text",
+                   2))
+
+    <br /><br />
+
+    <btn class="glyphicon glyphicon-question-sign helpButton">
+        @Ajax.ActionLink("Click here to show list of all forms", "AllForms", "Info", null, new AjaxOptions { UpdateTargetId = "locationsBox", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail" }, new { @class = "" })
+    </btn>
+
+        <btn class="glyphicon glyphicon-question-sign helpButton">
+            @Ajax.ActionLink("Click here to show list of all locations", "AllLocations", "Info", null, new AjaxOptions { UpdateTargetId = "locationsBox", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail" }, new { @class = "" })
+        </btn>
+
+        <div id="locationsBox" style="background-color: #cdcdff"></div>
+
+    <label>Value:</label>    <br />
+    @Html.TextBoxFor(m => m.QuestStatePreaction.ActionValue)
+
+    <br /><br />
+
+    <label>Variable name (will be converted to all caps):</label>    <br />
+    @Html.TextBoxFor(m => m.QuestStatePreaction.VariableName)
+
+    <br /><br />
+
+    <div id="allVariables">
+        <btn class="glyphicon glyphicon-question-sign helpButton">
+            Click to view all variables referenced in this quest
+        </btn>
+    </div>
+
+    <br /><br />
+
+    <label>Add/Subtract or Set?</label>    <br />
+    @Html.DropDownListFor(m => m.QuestStatePreaction.AddOrSet, new SelectList(
+                  new List<Object>{
+                      new { value = (int)QuestStatics.AddOrSet.Set, text = "Set value to this"  },
+                      new { value = (int)QuestStatics.AddOrSet.Add_Number, text = "Add/Subtract this value (number)"  },
+                      new { value = (int)QuestStatics.AddOrSet.Add_Percent, text = "Add/Subtract this value (percent) (not yet implemented)"  },
+                    },
+                  "value",
+                  "text",
+                   2))
+
+    <br /><br />
+
+    <input type="submit" class="btn btn-chat" value="Send" />
+
+}
+
+<script>
+    var questId = @Model.ParentQuestState.QuestId;
+    var allVariablesList = [];
+
+    $("#allVariables").click(function () {
+        loadUsedVariablesFromServer();
+    });
+</script>

@@ -1,0 +1,1111 @@
+body {
+  background: #A16969;
+  font-size: 13px;
+  font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif; }
+
+h1, h2, h3 {
+  margin-top: 10px !important; }
+
+h1 {
+  text-align: center;
+  border-bottom: 1px #734752 dashed;
+  width: 50%;
+  margin: 10px auto 10px auto;
+  font-size: 26px;
+  padding-bottom: 4px; }
+
+@media (max-width: 768px) {
+  h1 {
+    width: 80%;
+    font-size: 20px; } }
+@media (max-width: 480px) {
+  h1 {
+    width: 100%; } }
+p {
+  margin: 0px;
+  padding: 0px; }
+
+a {
+  color: black !important;
+  font-weight: bold; }
+
+a, a:hover, a:active, a:focus {
+  outline: 0;
+  text-decoration: none; }
+
+a:hover {
+  color: #4E0404 !important; }
+
+li {
+  list-style: none; }
+
+.inboxNew {
+  background: #865863 !important; }
+
+.levelUp {
+  background: #C2A9AF !important; }
+
+.outsideContainer a {
+  color: white !important;
+  font-weight: normal; }
+
+.outsideContainer a:hover {
+  color: #E4E0D4 !important;
+  font-weight: normal; }
+
+.outsideContainer {
+  border-radius: 0px;
+  border: none;
+  margin-bottom: 0px;
+  text-align: center;
+  background: #734752; }
+
+.navbarTT1 {
+  background: #734752;
+  border-bottom: 4px solid #A16969 !important;
+  font-size: 15px;
+  margin-bottom: 0px; }
+
+.navbarTT2 {
+  background: #CF8C81 !important;
+  border-bottom: 4px solid #A16969 !important;
+  font-size: 13px;
+  margin-bottom: 0px; }
+
+.footerTT {
+  font-size: 13px;
+  line-height: 36px;
+  border-top: 4px solid #A16969 !important;
+  color: white; }
+
+.container {
+  padding: 0px;
+  border-left: 4px solid #A16969;
+  border-right: 4px solid #A16969;
+  background: #E4E0D4; }
+
+.containerInner {
+  padding: 20px; }
+
+.outsideContainer a {
+  background: none; }
+
+.nav > li > a:hover, .nav > li > a:focus, .nav > li > a:active, .navbar-default .navbar-nav > .active > a {
+  background: none; }
+
+.center-block {
+  text-align: center; }
+
+.specialBox {
+  background: #78BAB5;
+  border-bottom: 4px solid #A16969;
+  font-size: 15px;
+  text-align: center;
+  margin-bottom: 0px;
+  padding: 10px;
+  color: black; }
+
+.specialBox2 {
+  background: #C6E6E4; }
+
+.turnNumber {
+  float: left;
+  margin-right: 0px;
+  font-weight: bold; }
+
+.logout {
+  position: absolute;
+  top: 5px;
+  right: 5px; }
+
+@media (max-width: 752px) {
+  .logout {
+    position: relative;
+    top: 0px;
+    right: 0px; } }
+#notificationBox {
+  background: #C2A9AF;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  height: 100px;
+  resize: vertical;
+  padding: 10px;
+  list-style: none;
+  text-align: justify;
+  margin-bottom: 0px; }
+
+#dismissNotficationBox a {
+  margin-left: 10px;
+  margin-right: 10px; }
+
+#dismissNotficationBox {
+  background: #865863;
+  font-size: 13px;
+  text-align: center;
+  border-bottom: 4px solid #A16969; }
+
+#dismissNotficationBox a, #offlinePlayersButton a {
+  color: #E4E0D4 !important;
+  font-weight: normal !important; }
+
+#dismissNotficationBox a:hover, #offlinePlayersButton a:hover {
+  color: white !important;
+  font-weight: normal !important; }
+
+.infoMessage {
+  font-size: 15px;
+  border-bottom: 4px solid #A16969;
+  padding: 4px 10px;
+  text-align: center;
+  background: #475374; }
+
+.infoMessage:empty {
+  display: none; }
+
+.result {
+  color: #51D269; }
+
+.error {
+  color: #EA4987; }
+
+.suberror {
+  color: white;
+  font-size: 13px; }
+
+.covenDescription {
+  padding-left: 40px;
+  padding-right: 40px;
+  text-align: justify; }
+
+#RecentActivityLog {
+  clear: both;
+  background: #C2A9AF;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  height: 200px;
+  resize: vertical;
+  padding: 10px;
+  list-style: none;
+  text-align: justify;
+  margin-bottom: 0px; }
+
+.charaBox {
+  margin-bottom: 10px; }
+
+.itemBox {
+  margin-bottom: 10px;
+  text-align: center; }
+
+.charaBoxInner {
+  padding: 10px; }
+
+.charaBoxCommand {
+  text-align: center; }
+
+.portrait {
+  height: 100px;
+  width: 100px;
+  background-size: 100% 100%;
+  margin-left: auto;
+  margin-right: auto; }
+
+.charInfoWrapper {
+  text-align: center;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto; }
+
+.offlinePlayersWrapperBG {
+  background: gainsboro;
+  border-bottom: 4px solid #A16969; }
+
+.floorItemsWrapperBG {
+  background: #E4E0D4;
+  border-bottom: 4px solid #A16969;
+  clear: both; }
+
+.floorItemsWrapperBG:empty {
+  display: none; }
+
+.onlinePlayersWrapperBG {
+  background: #D7BEBA;
+  border-top: 4px solid #A16969; }
+
+#offlinePlayersButton {
+  background: #7B6461;
+  font-size: 13px;
+  text-align: center;
+  border-bottom: 4px solid #A16969; }
+
+.icon {
+  width: 15px;
+  height: 15px;
+  background-size: 100% 100%;
+  display: inline-block;
+  position: relative; }
+
+.icon-level {
+  width: 25px;
+  height: 16px;
+  text-align: center;
+  /* text-shadow: 1px 1px #FFF;*/
+  padding-bottom: 5px;
+  background: rgba(255, 255, 255, 0.7);
+  border-right: 1px solid #D3D3D3;
+  border-bottom: 1px solid #D3D3D3;
+  border-bottom-right-radius: 10px;
+  top: -2px;
+  left: 0px; }
+
+.icon-female {
+  background-image: url("../Images/PvP/Icons/female.png"); }
+
+.icon-male {
+  background-image: url("../Images/PvP/Icons/male.png"); }
+
+.icon-detail {
+  background-image: url("../Images/PvP/Icons/details.png"); }
+
+.icon-mc {
+  width: 25px;
+  height: 25px;
+  background-image: url("../Images/PvP/Icons/mc_swirl.gif"); }
+
+.icon-online {
+  background-image: url("../Images/PvP/Icons/online.png"); }
+
+.icon-offline {
+  background-image: url("../Images/PvP/Icons/offline.png"); }
+
+.icon-permanent {
+  background-image: url("../Images/PvP/Icons/icon-permanent.png"); }
+
+.icon-duel {
+  background-image: url("../Images/PvP/Icons/icon-duel.png"); }
+
+.icon-quest {
+  background-image: url("../Images/PvP/Icons/icon-quest.png"); }
+
+.icon-souled0 {
+  background-image: url("../Images/PvP/Icons/icon-souled0.png"); }
+
+.icon-souled1 {
+  background-image: url("../Images/PvP/Icons/icon-souled1.png"); }
+
+.icon-souled2 {
+  background-image: url("../Images/PvP/Icons/icon-souled2.png"); }
+
+.icon-turn {
+  width: auto;
+  height: 17px;
+  background-color: yellow;
+  border: 1px solid red; }
+
+.icon-consumable {
+  background-image: url("../Images/PvP/Icons/consumeable.png"); }
+
+.icon-shirt {
+  background-image: url("../Images/PvP/Icons/shirt.png"); }
+
+.icon-undershirt {
+  background-image: url("../Images/PvP/Icons/undershirt.png"); }
+
+.icon-pants {
+  background-image: url("../Images/PvP/Icons/pants.png"); }
+
+.icon-underpants {
+  background-image: url("../Images/PvP/Icons/underpants.png"); }
+
+.icon-shoes {
+  background-image: url("../Images/PvP/Icons/shoes.png"); }
+
+.icon-pet {
+  background-image: url("../Images/PvP/Icons/pet.png"); }
+
+.icon-accessory {
+  background-image: url("../Images/PvP/Icons/accessory.png"); }
+
+.icon-hat {
+  background-image: url("../Images/PvP/Icons/hat.png"); }
+
+.icon-pvp {
+  width: 16px;
+  height: 16px;
+  background-image: url("../Images/PvP/Icons/PVP.png"); }
+
+.icon-protection {
+  width: 16px;
+  height: 16px;
+  background-image: url("../Images/PvP/Icons/icon-protection.png"); }
+
+.icon-superprotection {
+  width: 16px;
+  height: 16px;
+  background-image: url("../Images/PvP/Icons/icon-superprotection.png"); }
+
+.icon-rp {
+  width: 16px;
+  height: 16px;
+  background-image: url("../Images/PvP/Icons/RP.png"); }
+
+.icon-donate {
+  width: 16px;
+  height: 16px;
+  background-image: url("../Images/PvP/Icons/donator_1.gif"); }
+
+.portraitIconRP {
+  position: relative;
+  left: 10px;
+  top: 80px;
+  text-align: right;
+  float: right; }
+
+.icon-timesattacking {
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  text-shadow: 1px 1px #ffffff;
+  background-image: url("../Images/PvP/Icons/target.png"); }
+
+.icon-cleansemeditate {
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  text-shadow: 1px 1px #ffffff;
+  background-image: url("../Images/PvP/Icons/cleansemeditate.png"); }
+
+.icon-health_recovery {
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  text-shadow: 1px 1px #ffffff;
+  background-image: url("../Images/PvP/Icons/icon-health_recovery.png"); }
+
+.icon-mana_recovery {
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  text-shadow: 1px 1px #ffffff;
+  background-image: url("../Images/PvP/Icons/icon-mana_recovery.png"); }
+
+.icon-defense {
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  text-shadow: 1px 1px #ffffff;
+  background-image: url("../Images/PvP/Icons/icon-defense.png"); }
+
+.icon-money {
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  text-shadow: 1px 1px #ffffff;
+  background-image: url("../Images/PvP/Icons/money.png"); }
+
+.icon-sleep {
+  background-image: url("../Images/PvP/Icons/icon-sleep.png"); }
+
+.covBox:empty {
+  display: none; }
+
+.floorItemWrapper {
+  width: 150px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  text-align: center; }
+
+.actionButton {
+  border: none;
+  padding: 10px;
+  margin: 10px;
+  font-size: 15px;
+  display: inline-block;
+  font-weight: normal;
+  color: white !important; }
+
+@media (max-width: 768px) {
+  .actionButton {
+    padding: 5px;
+    margin: 5px; } }
+.actionButton:hover {
+  color: #E4E0D4 !important; }
+
+#actionMeditate {
+  background: #00008B; }
+
+#actionCleanse {
+  background: #8B0000; }
+
+#actionSearch {
+  background: #FF8C00; }
+
+#actionQuest {
+  background: #00c8ff; }
+
+.formerly a {
+  font-weight: bold; }
+
+.formerly {
+  font-size: 13px;
+  color: darkred;
+  background-color: #FFCCFF; }
+
+.action_attack {
+  font-size: 15px;
+  line-height: 30px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  padding: 5px;
+  display: inline-block;
+  border: 4px solid #A16969; }
+
+.col-md-1 {
+  min-height: 0px !important; }
+
+#MessageText, #Message, #WebsiteURL, #Text, .text-container {
+  width: 100%;
+  resize: vertical;
+  border: 1px solid #808080;
+  padding: 10px; }
+
+.petActionBad {
+  color: #9E0E0E; }
+
+.petActionGood {
+  color: #19199F; }
+
+.playerAttackNotification {
+  color: #9E0E0E; }
+
+.playerSearchingNotification {
+  color: #A7641A; }
+
+.playerCleansingNotification {
+  color: #9822BC; }
+
+.playerMediatingNotification {
+  color: #2234BC; }
+
+.frontPageNotification {
+  padding-bottom: 7px; }
+
+.frontPageNotification:last-child {
+  padding-bottom: 7px; }
+
+.timeago {
+  color: #6F5151 !important; }
+
+.place {
+  font-size: 20px;
+  color: #475374;
+  text-align: center;
+  clear: both;
+  display: block; }
+
+.covSafeground {
+  font-size: 15px;
+  color: #865863;
+  text-align: center;
+  clear: both;
+  display: block; }
+
+.tableLines {
+  margin-left: auto;
+  margin-right: auto; }
+
+.tableLines td {
+  border: 1px solid #865863;
+  text-align: center;
+  padding: 3px;
+  background: #865863;
+  color: white; }
+
+.tableLines td a {
+  color: #D7BEBA !important;
+  font-weight: normal; }
+
+.tableLines td a:hover {
+  color: white !important; }
+
+.tableLines td:empty {
+  background: #A16969; }
+
+.attackLink {
+  border: 1px solid #7B6461;
+  margin-top: 4px;
+  display: block;
+  width: 100px;
+  margin-left: auto;
+  margin-right: auto;
+  background: #E4E0D4; }
+
+.petActionLink {
+  border: 1px solid #7B6461;
+  margin-top: 4px;
+  display: block;
+  width: 150px;
+  margin-left: auto;
+  margin-right: auto;
+  background: #E4E0D4; }
+
+.petActionLink:hover, .attackLink:hover {
+  color: #734752 !important;
+  border: 1px solid #475374 !important;
+  background: gainsboro !important; }
+
+.inanimateAction {
+  border: 1px solid #7B6461;
+  margin: 4px auto 8px auto;
+  display: block;
+  max-width: 300px;
+  background: #E4E0D4;
+  text-align: center; }
+
+.inanimateActionList {
+  list-style: none;
+  padding-left: 0px; }
+
+.disabled {
+  background-color: #D7BEBA;
+  text-decoration: line-through; }
+
+.onlinePlayersButton {
+  border: none !important; }
+
+.avatarText, .avatarBars {
+  text-align: center;
+  display: table-cell;
+  vertical-align: middle; }
+
+.avatarName {
+  font-size: 26px; }
+
+.avatarFormName {
+  font-size: 15px; }
+
+.avatarCoven {
+  font-size: 13px;
+  color: purple; }
+
+.portraitFront {
+  width: 200px;
+  height: 200px;
+  margin-left: auto;
+  margin-right: auto;
+  background-size: contain;
+  border: 4px solid #A16969;
+  position: relative; }
+
+.barWrapper {
+  height: 30px;
+  width: 280px;
+  background-color: #C2A9AF;
+  margin-bottom: 10px;
+  margin-left: auto;
+  margin-right: auto; }
+
+.avatarXPWrapper {
+  height: 15px !important;
+  width: 280px !important;
+  margin-bottom: 10px !important;
+  margin-left: auto !important;
+  margin-right: auto !important; }
+
+.barData {
+  height: 30px;
+  overflow: hidden; }
+
+.barWP {
+  background-color: darkred; }
+
+.barMP {
+  background-color: darkblue; }
+
+.barAP {
+  background-color: darkorange; }
+
+.barEXP, .avatarXPAmt {
+  background-color: purple; }
+
+.barText {
+  text-align: center;
+  color: white;
+  font-size: 15px;
+  line-height: 30px;
+  width: 280px;
+  position: absolute; }
+
+.frontOuter {
+  height: 200px;
+  width: 100%;
+  max-width: 350px;
+  border: 4px solid #A16969;
+  display: table;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10px; }
+
+#frontOuterAvatar {
+  border: none !important; }
+
+.tldr {
+  text-transform: uppercase;
+  color: #9822BC; }
+
+.covListing {
+  width: 100%;
+  height: auto;
+  float: left;
+  position: relative;
+  border: 1px solid lightgray;
+  padding: 10px; }
+
+.covBigName {
+  font-size: 20px;
+  font-weight: 700;
+  color: darkviolet; }
+
+.covMemberCount {
+  font-size: 12px;
+  color: darkblue;
+  margin-left: 10px;
+  font-style: italic; }
+
+.covFlag {
+  width: 100px;
+  height: 100px;
+  float: left;
+  position: relative;
+  margin-right: 10px;
+  background-size: 100% 100%; }
+
+.contributionsBox {
+  height: 250px;
+  resize: vertical;
+  overflow-y: scroll;
+  border: 4px solid #A16969;
+  padding: 5px; }
+
+.playPageInventoryItem {
+  width: 50px;
+  height: 50px;
+  background-size: contain;
+  position: relative;
+  float: left;
+  border: 1px solid black;
+  color: black;
+  font-weight: 900;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 50px;
+  margin: 5px; }
+
+.openInventory {
+  letter-spacing: 1px;
+  transition: all 0.5s ease; }
+
+.openInventory:hover {
+  border: 1px solid red;
+  cursor: pointer; }
+
+.frontHeader {
+  font-size: 26px;
+  font-weight: bold; }
+
+.frontForm {
+  width: 200px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10px; }
+
+.chatInput {
+  border: 1px solid black;
+  margin: 5px 0px 0px 0px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  padding: 6px;
+  resize: both;
+  margin-bottom: 10px; }
+
+#discussion {
+  max-width: 100%;
+  height: 300px;
+  overflow-y: scroll;
+  text-wrap: normal;
+  padding: 0px;
+  background-color: #E1E1E1;
+  margin-top: 5px;
+  resize: vertical;
+  border: 4px solid #A16969;
+  word-break: break-all;
+  margin-bottom: 0px; }
+
+.btn-chat {
+  color: white;
+  background-color: #A16969;
+  border: #734752 1px solid;
+  width: 100%;
+  border-radius: 0px !important; }
+
+.btn-chat:hover {
+  color: white;
+  background-color: #734752;
+  border: #A16969 1px solid; }
+
+#ignoreDiv {
+  border: 4px solid #A16969;
+  width: 100%;
+  padding: 15px; }
+
+#ignore {
+  margin-bottom: 5px; }
+
+#discussion li {
+  padding: 4px; }
+
+#discussion li:nth-child(odd) {
+  background-color: #D2CFCE; }
+
+#discussion li:nth-child(even) {
+  background-color: #E1E1E1; }
+
+.adminFont {
+  color: darkred; }
+
+.youFont {
+  color: darkblue; }
+
+.dm {
+  color: darkgreen;
+  font-weight: 800; }
+
+.me {
+  font-style: italic;
+  font-weight: 900; }
+
+strong {
+  cursor: pointer; }
+
+.enterMsg {
+  color: black;
+  font-weight: 800; }
+
+.roomName {
+  background: none repeat scroll 0% 0% #A16969;
+  font-size: 13px;
+  text-align: center;
+  border: 4px solid #A16969;
+  border-top: none !important;
+  color: white; }
+
+#autoScrollToggle {
+  width: 100px;
+  float: right;
+  cursor: pointer; }
+
+.pollTextArea {
+  width: 100%;
+  height: 100px;
+  resize: vertical;
+  overflow-y: scroll; }
+
+.bad {
+  color: #9E0E0E !important; }
+
+.modal-content {
+  border: 4px solid #A16969 !important;
+  box-shadow: none !important;
+  border-radius: 0px !important;
+  background: #E4E0D4; }
+
+.textSpaced p {
+  margin-bottom: 10px; }
+
+.detailLink {
+  background-color: rgba(255, 255, 255, 0.5);
+  position: absolute;
+  top: 70px;
+  left: 50px;
+  padding: 4px; }
+
+#fullDetails {
+  height: 200px;
+  resize: vertical;
+  overflow-y: scroll; }
+
+.petItemPortrait {
+  width: 450px;
+  height: 450px;
+  background-size: cover;
+  background-position: center center;
+  margin-left: auto;
+  margin-right: auto; }
+
+.rpTag {
+  border: 1px black solid;
+  cursor: pointer;
+  padding: 4px;
+  line-height: 2.5em; }
+
+.buttonSetBio {
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  line-height: 30px;
+  margin-top: 10px;
+  margin-bottom: 10px; }
+
+.on {
+  background-color: lightgreen; }
+
+.on:hover {
+  background-color: #FF6B6B; }
+
+.off {
+  background-color: pink; }
+
+.off:hover {
+  background-color: #25C325; }
+
+.neg2 {
+  background-color: #FF6B6B; }
+
+.neg1 {
+  background-color: pink; }
+
+.pos1 {
+  background-color: lightgreen; }
+
+.pos2 {
+  background-color: #25C325; }
+
+.donateButton {
+  background-color: white;
+  border: 4px solid #A16969;
+  padding: 15px; }
+
+.portraitMobile {
+  height: 140px;
+  width: 140px;
+  background-size: 100%;
+  border: 4px solid #A16969;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10px; }
+
+.messageTextContainer {
+  border: 1px solid gray;
+  height: auto;
+  margin-top: auto;
+  margin-bottom: 10px;
+  padding: 10px;
+  text-align: justify;
+  word-wrap: break-word; }
+
+.messageInfoContainer {
+  background-color: #734752;
+  color: white;
+  padding-left: 10px;
+  padding-right: 10px; }
+
+.messageNicknameContainer {
+  font-weight: bold;
+  text-align: left; }
+
+.messageTimeContainer {
+  text-align: right;
+  float: right; }
+
+.messageTable {
+  text-align: center;
+  border: 1px solid #808080;
+  margin-bottom: 0px !important; }
+
+.messageTable td {
+  border-top: 1px solid #808080;
+  border-bottom: 1px solid #808080; }
+
+.messageTable th {
+  text-align: center;
+  border-bottom: 1px solid #808080 !important;
+  color: white;
+  background-color: #734752; }
+
+.messageTable tr:nth-child(2n) {
+  background-color: gainsboro; }
+
+.messageTable td.newlink {
+  background-color: rgba(120, 186, 181, 0.5) !important; }
+
+.newlink a {
+  background-color: rgba(120, 186, 181, 0.5) !important; }
+
+.charCounter {
+  font-size: 10px;
+  color: white;
+  float: right;
+  text-align: right;
+  line-height: 18px; }
+
+.contributionsBox a {
+  line-height: 25px; }
+
+.specialHeader {
+  background-color: #EDAF6B !important; }
+
+.noticeOn {
+  color: green; }
+
+.noticeOff {
+  color: red; }
+
+.topBorder {
+  border-top: 4px solid #A16969; }
+
+.warningText {
+  color: #734752;
+  text-align: center;
+  margin-top: 20px; }
+
+.rp-ad {
+  text-align: center;
+  margin: 0px 48px 20px;
+  padding: 15px;
+  border: 2px #734752 dashed;
+  border-top: 2px #734752 solid;
+  background: #DFCBBF;
+  overflow: hidden; }
+
+@media (max-width: 1199px) {
+  .rp-ad {
+    margin: 0px 39px 20px; } }
+@media (max-width: 991px) {
+  .rp-ad {
+    margin: 0px 0px 20px; } }
+.pvpAdmin {
+  text-align: center;
+  font-size: 20px;
+  line-height: 50px; }
+
+.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus, .dropdown-menu {
+  background-color: #A16969; }
+
+.dropdown-menu {
+  text-align: center; }
+
+.dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {
+  background-color: #CF8C81; }
+
+.shout {
+  display: block;
+  width: 60px;
+  margin: 5px auto;
+  position: relative;
+  top: -203px;
+  left: 75px;
+  color: white !important; }
+
+.checkbox {
+  display: inline !important;
+  line-height: 50px !important; }
+
+#RememberMe {
+  position: relative;
+  top: 1px;
+  left: 7px; }
+
+#lastAttack {
+  background-color: #734752 !important;
+  border: 1px solid #000;
+  display: block;
+  margin-left: 1px;
+  color: white;
+  padding-left: 2px;
+  margin-bottom: 2px;
+  text-align: center; }
+
+.userlist-chat {
+  max-width: 100%;
+  height: 300px;
+  overflow-y: scroll;
+  padding: 0px;
+  background-color: #E1E1E1;
+  margin-top: 5px;
+  resize: vertical;
+  border: 4px solid #A16969;
+  word-break: break-all;
+  margin-bottom: 0px;
+  border-left: none; }
+
+.userlistRow {
+  cursor: pointer; }
+
+.chat-container .good {
+  color: #734752 !important; }
+
+.chat-container .bad {
+  color: #CF8C81 !important; }
+
+#discussion .chatlink {
+  text-decoration: underline;
+  color: blue;
+  cursor: pointer; }
+
+#discussion li img {
+  width: 32px;
+  height: 32px;
+  transition: 0.1s all linear;
+  margin-right: 5px; }
+
+#discussion li img:hover {
+  width: 64px;
+  height: 64px; }
+
+.chat-container .col-md-10 {
+  padding-right: 0px !important; }
+
+.chat-container .col-md-2 {
+  padding-left: 0px !important; }
+
+.userlistRow {
+  background: #D2CFCE !important;
+  width: 100%;
+  display: inline-block;
+  border-bottom: 1px solid #A16969;
+  padding-left: 3px; }
+
+.userlistRow:hover {
+  color: black !important; }
+
+.stats-leader {
+  text-align: center;
+  height: 210px;
+  padding: 15px;
+  border: 2px #734752 dashed;
+  border-top: 2px #734752 solid;
+  background: #DFCBBF;
+  overflow: hidden; }
+
+#statsBox, #playerBox {
+  text-align: center; }
+
+#playerBox .portrait {
+  margin-bottom: 10px; }
+
+#quest hr {
+  border-top: 3px dotted #A16969; }
+
+#quest p {
+  text-align: center; }
+
+#textBody {
+  text-align: justify;
+  font-size: 14px; }
+
+#quest .infoMessage, #quest .specialBox {
+  border: 4px solid #a16969; }
+
+/*# sourceMappingURL=custom.css.map */

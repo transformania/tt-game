@@ -1,0 +1,115 @@
+﻿@model tfgame.ViewModels.Quest.QuestPlayPageViewModel
+@using tfgame.dbModels.Models
+@using tfgame.CustomHtmlHelpers
+@using tfgame.Statics
+@using tfgame.Procedures
+
+<div id="loadingBox" class="specialBox specialBox2" style="display:none;">Contacting server...</div>
+
+<div>
+    <p class="infoMessage result">@Html.Raw(ViewBag.Result)</p>
+    <p class="infoMessage error">@ViewBag.ErrorMessage</p>
+    <p class="infoMessage suberror">@ViewBag.SubErrorMessage</p>
+</div>
+
+<h1>Quest:  <b>@Model.QuestStart.Name</b></h1>
+
+
+
+<div id="statsBox">
+    Discipline:  <b>@Model.BuffBox.Discipline()</b> |
+    Perception:  <b>@Model.BuffBox.Perception()</b> |
+    Charisma:  <b>@Model.BuffBox.Charisma()</b> |
+    Fortitude:  <b>@Model.BuffBox.Fortitude()</b> |
+    Agility:  <b>@Model.BuffBox.Agility()</b> |
+    Allure:  <b>@Model.BuffBox.Allure()</b> |
+    Magicka:  <b>@Model.BuffBox.Magicka()</b> |
+    Succour:  <b>@Model.BuffBox.Succour()</b> |
+    Luck:  <b>@Model.BuffBox.Luck()</b> |
+</div>
+
+<div id="playerBox">
+    @Html.Partial("~/Views/PvP/partial_FrontPageAvatar.cshtml", Model.Player)
+</div>
+
+<hr />
+
+<div id="textBody">
+
+    @{
+        string rollResult = (string)TempData["RollResult"];
+        if (rollResult != null)
+        {
+            
+            if ((string)TempData["RollResult"] == "fail")
+            {
+                <p class="bad"><img src='../Images/PvP/Icons/dice.png' style='width: 24px; height: 24px; '>Roll failed!</p>
+            }
+            else if ((string)TempData["RollResult"] == "pass")
+            {
+                <p class="good"><img src='../Images/PvP/Icons/dice.png' style='width: 24px; height: 24px; '>Roll passed!</p>
+            }
+        }
+    }
+
+    @Html.Raw(QuestProcedures.Textify(Model.QuestState.Text, Model.Player.Player.ToDbPlayer()))
+</div>
+
+<hr />
+
+@{
+
+    foreach (QuestConnection connection in Model.QuestConnections.OrderByDescending(q => q.RankInList).ToList())
+    {
+        bool isAvailable = QuestProcedures.QuestConnectionIsAvailable(connection, Model.Player.Player.ToDbPlayer(), Model.BuffBox, Model.QuestPlayerVariables);
+        if (isAvailable == false && connection.HideIfRequirementsNotMet == true)
+        {
+            // do nothing, option is unavailable and should be hidden
+        }
+        else if (isAvailable == false && connection.HideIfRequirementsNotMet == false)
+        {
+            // show the option but give it disabled style indicating it is not open currently
+            <p style="background-color:#ff8585"> @Ajax.ActionLink(connection.ActionName + " " + tfgame.Procedures.QuestProcedures.GetRequirementsAsString(connection,Model.BuffBox), "Choice", "Quest", new { Id = connection.Id }, new AjaxOptions { UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" }) </p><br />
+        }
+        else
+        {
+            // show the option as usual
+            <p> @CharactersHere.PrintDiceIcon(connection)
+    
+    @Ajax.ActionLink(connection.ActionName + " " + tfgame.Procedures.QuestProcedures.GetRequirementsAsString(connection, Model.BuffBox), "Choice", "Quest", new { Id = connection.Id }, new AjaxOptions { UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" }) </p><br />
+        }
+
+    }
+
+
+    if (Model.ShowEnd() == true)
+    {
+        if (Model.Player.Player.Mobility == PvPStatics.MobilityFull)
+        {
+            <p>@Html.ActionLink("End Quest", "EndQuest", "Quest", new { restore = false }, new { @class = "" })</p>
+        }
+        else
+        {
+            <p>@Html.ActionLink("End Quest (return to animate form)", "EndQuest", "Quest", new { restore = true }, new { @class = "" })</p>
+            <p>@Html.ActionLink("End Quest (accept the changes)", "EndQuest", "Quest", new { restore = false }, new { onclick= "return confirm('Are you sure you want to accept your transformation and remain in your current inanimate or pet form?  You will lose your inventory and need to struggle back on your own.')", @class = "" })</p>
+        }
+    }
+
+    if ((User.IsInRole(PvPStatics.Permissions_QuestWriter) == true))
+    {
+
+        <br /><br /><br />
+        <div id="listVariables" style="background-color: lightgreen" onclick="loadShowVariables()">
+            <p><b class="bad">QUEST WRITER ONLY:  Click here to view all variables and their values in this playthrough of this quest.</b></p>
+        </div>
+    }
+}
+
+<script>
+    newMsgCount = @Model.NewMessages;
+
+    if (newMsgCount > 0) {
+        $("#newMessagesLink").html("(" + newMsgCount + " unread)").addClass("inboxNew");
+    }
+
+</script>

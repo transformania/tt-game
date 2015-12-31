@@ -6,7 +6,6 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using DotNetOpenAuth.AspNet;
-using Microsoft.Web.WebPages.OAuth;
 using tfgame.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -291,125 +290,6 @@ namespace tfgame.Controllers
             return View(model);
         }
 
-        //
-        // POST: /Account/ExternalLogin
-
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public ActionResult ExternalLogin(string provider, string returnUrl)
-        {
-            return new ExternalLoginResult(provider, Url.Action("ExternalLoginCallback", new { ReturnUrl = returnUrl }));
-        }
-
-        //
-        // GET: /Account/ExternalLoginCallback
-
-        [AllowAnonymous]
-        public ActionResult ExternalLoginCallback(string returnUrl)
-        {
-            AuthenticationResult result = OAuthWebSecurity.VerifyAuthentication(Url.Action("ExternalLoginCallback", new { ReturnUrl = returnUrl }));
-            if (!result.IsSuccessful)
-            {
-                return RedirectToAction("ExternalLoginFailure");
-            }
-
-            // Sign in the user with this external login provider if the user already has a login
-            var login = new UserLoginInfo(result.Provider, result.ProviderUserId);
-            var user = UserManager.Find(login);
-            if (user != null)
-            {
-                SignInManager.SignIn(user, false, false);
-                return RedirectToLocal(returnUrl);
-            }
-            else if (User.Identity.IsAuthenticated)
-            {
-                user = GetUser();
-                var identityResult = UserManager.AddLogin(user.Id, login);
-                if (identityResult.Succeeded)
-                {
-                    return RedirectToAction("Manage");
-                }
-                return RedirectToAction("Manage", new { Message = ManageMessageId.Error });
-            }
-            else
-            {
-                // If the user does not have an account, then prompt the user to create an account
-                string loginData = OAuthWebSecurity.SerializeProviderUserId(result.Provider, result.ProviderUserId);
-                ViewBag.ReturnUrl = returnUrl;
-                ViewBag.ProviderDisplayName = result.Provider;
-                return View("ExternalLoginConfirmation", new RegisterExternalLoginModel { UserName = result.UserName, ExternalLoginData = loginData });
-            }
-        }
-
-        //
-        // POST: /Account/ExternalLoginConfirmation
-
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public ActionResult ExternalLoginConfirmation(RegisterExternalLoginModel model, string returnUrl)
-        {
-            string provider = null;
-            string providerUserId = null;
-
-            if (User.Identity.IsAuthenticated || !OAuthWebSecurity.TryDeserializeProviderUserId(model.ExternalLoginData, out provider, out providerUserId))
-            {
-                return RedirectToAction("Manage");
-            }
-
-            if (ModelState.IsValid)
-            {
-                var user = new User() { UserName = model.UserName };
-                var result = UserManager.Create(user);
-                if (result.Succeeded)
-                {
-                    result = UserManager.AddLogin(user.Id, new UserLoginInfo(provider, providerUserId));
-                    if (result.Succeeded)
-                    {
-                        SignInManager.SignIn(user, false, false);
-                        return RedirectToLocal(returnUrl);
-                    }
-                }
-                AddErrors(result);
-            }
-
-            ViewBag.ProviderDisplayName = OAuthWebSecurity.GetOAuthClientData(provider).DisplayName;
-            ViewBag.ReturnUrl = returnUrl;
-            return View(model);
-        }
-
-        //
-        // GET: /Account/ExternalLoginFailure
-
-        [AllowAnonymous]
-        public ActionResult ExternalLoginFailure()
-        {
-            return View();
-        }
-
-        [AllowAnonymous]
-        [ChildActionOnly]
-        public ActionResult ExternalLoginsList(string returnUrl)
-        {
-            ViewBag.ReturnUrl = returnUrl;
-            return PartialView("_ExternalLoginsListPartial", OAuthWebSecurity.RegisteredClientData);
-        }
-
-        [ChildActionOnly]
-        public ActionResult RemoveExternalLogins()
-        {
-            var user = GetUser();
-            var linkedAccounts = UserManager.GetLogins(user.Id).Select(login =>
-                new ExternalLogin
-                {
-                    Provider = login.LoginProvider,
-                    ProviderDisplayName = OAuthWebSecurity.GetOAuthClientData(login.LoginProvider).DisplayName,
-                    ProviderUserId = login.ProviderKey
-                }).ToList();
-            ViewBag.ShowRemoveButton = HasPassword() || linkedAccounts.Count > 1;
-            return (ActionResult)PartialView("_RemoveExternalLoginsPartial", linkedAccounts);
-        }
 
         #region Helpers
         private ActionResult RedirectToLocal(string returnUrl)
@@ -431,23 +311,6 @@ namespace tfgame.Controllers
             RemoveLoginSuccess,
             ChangeEmailSuccess,
             Error
-        }
-
-        internal class ExternalLoginResult : ActionResult
-        {
-            public ExternalLoginResult(string provider, string returnUrl)
-            {
-                Provider = provider;
-                ReturnUrl = returnUrl;
-            }
-
-            public string Provider { get; private set; }
-            public string ReturnUrl { get; private set; }
-
-            public override void ExecuteResult(ControllerContext context)
-            {
-                OAuthWebSecurity.RequestAuthentication(Provider, ReturnUrl);
-            }
         }
 
         private static string ErrorCodeToString(MembershipCreateStatus createStatus)

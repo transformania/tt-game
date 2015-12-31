@@ -126,7 +126,7 @@ namespace tfgame.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new User() { UserName = model.UserName, Email=model.Email };
+                var user = new User() { UserName = model.UserName, Email=model.Email, CreateDate=DateTime.Now };
                 var result = UserManager.Create(user, model.Password);
                 if (result.Succeeded)
                 {

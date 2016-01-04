@@ -2,7 +2,9 @@
     <script src="~/Scripts/jquery-ui-1.10.4.js"></script>
 </head>
 
-<h1>Updated Oct 5, 2015</h1>
+<h1>Equipment Helper Tool</h1>
+
+<p>You can help plan your desired equipment and pets using the table below.</p>
 
 <div id="toggles">
     @*<input type="checkbox" id="nonstandard" value="nonstandard"> Nonstandard 	&nbsp;*@
@@ -56,7 +58,7 @@
 
     // populate the the jump to dropdown with all states found for the current quest
     function loadJson() {
-        $.getJSON("/Content/JSON/items.json", function (data) {
+        $.getJSON("/Info/GearToolJSON", function (data) {
             itemsUnfiltered = data;
         }).then(function () {
             filterData();

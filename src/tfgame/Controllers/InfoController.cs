@@ -87,5 +87,29 @@ namespace tfgame.Controllers
             return View();
         }
 
+        public ActionResult GearToolJSON()
+        {
+            IDbStaticItemRepository repo = new EFDbStaticItemRepository();
+
+            var output = from c in repo.DbStaticItems
+                         select new
+                         {
+                             FriendlyName = c.FriendlyName,
+                             ItemType = c.ItemType,
+                             PortraitUrl = c.PortraitUrl,
+                             Discipline = c.Discipline,
+                             Perception = c.Perception,
+                             Charisma = c.Charisma,
+                             Fortitude = c.Fortitude,
+                             Agility = c.Agility,
+                             Allure = c.Allure,
+                             Magicka = c.Magicka,
+                             Succour = c.Succour,
+                             Luck = c.Luck
+                         };
+
+            return Json(output, JsonRequestBehavior.AllowGet);
+        }
+
     }
 }

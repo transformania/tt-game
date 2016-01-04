@@ -2132,7 +2132,6 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="MachineKey.config" />
-    <Content Include="Content\JSON\items.json" />
     <None Include="Properties\PublishProfiles\transformania-time.com - Web Deploy.pubxml">
       <SubType>Designer</SubType>
     </None>

@@ -15,6 +15,7 @@ namespace tfgame.Procedures
         public string FriendlyName { get; set; }
         public string Description { get; set; }
         public string ImageUrl { get; set; }
+        public bool Active { get; set; }
 
     }
 
@@ -76,6 +77,7 @@ namespace tfgame.Procedures
                         FriendlyName = "Hawkeye",
                         Description="Times searched",
                         ImageUrl="trophy.jpg",
+                        Active = true
                         }
                     
                     },
@@ -86,6 +88,7 @@ namespace tfgame.Procedures
                         FriendlyName = "Quantity not Quality!",
                         Description="Spells cast",
                         ImageUrl="trophy.jpg",
+                        Active = true
                         }
                 },
                 
@@ -95,6 +98,7 @@ namespace tfgame.Procedures
                         FriendlyName = "The Restless One",
                         Description="Times moved",
                         ImageUrl="trophy.jpg",
+                        Active = true
                         }
                 },
 
@@ -104,6 +108,7 @@ namespace tfgame.Procedures
                         FriendlyName = "Hypochondriac",
                         Description="Times cleansed",
                         ImageUrl="trophy.jpg",
+                        Active = true
                         }
                 },
 
@@ -113,6 +118,7 @@ namespace tfgame.Procedures
                         FriendlyName="Lost in Thought",
                         Description="Times meditated",
                         ImageUrl="trophy.jpg",
+                        Active = true
                         }
                 },
 
@@ -122,6 +128,7 @@ namespace tfgame.Procedures
                         FriendlyName="____ the Enchanter",
                         Description="Times enchanting",
                         ImageUrl="trophy.jpg",
+                        Active = true
                         }
                 },
 
@@ -133,6 +140,7 @@ namespace tfgame.Procedures
                         FriendlyName = "Fundraiser Fanatic",
                         Description="Arpyjis donated to covenant",
                         ImageUrl="trophy.jpg",
+                        Active = true
                         }
                 },
                   {
@@ -141,6 +149,7 @@ namespace tfgame.Procedures
                         FriendlyName = "Couch Potato",
                         Description="Times using covenant furniture",
                         ImageUrl="trophy.jpg",
+                        Active = true
                         }
                 },
 
@@ -150,6 +159,7 @@ namespace tfgame.Procedures
                         FriendlyName="The Embezzler",
                         Description="Arpeyhis received from covenant",
                         ImageUrl="trophy.jpg",
+                        Active = true
                         }
                 },
 
@@ -159,6 +169,7 @@ namespace tfgame.Procedures
                         FriendlyName="What's My Form Again?",
                         Description="Times transformed into an animate form",
                         ImageUrl="trophy.jpg",
+                        Active = true
                         }
                 },
 
@@ -168,6 +179,7 @@ namespace tfgame.Procedures
                         FriendlyName="The Inanimated",
                         Description="Timed transformed into an inanimate form",
                         ImageUrl="trophy.jpg",
+                        Active = true
                         }
                 },
 
@@ -177,6 +189,7 @@ namespace tfgame.Procedures
                         FriendlyName="Nothin' But a Hound Dog",
                         Description="Times transformed into a pet form",
                         ImageUrl="trophy.jpg",
+                        Active = true
                         }
                 },
 
@@ -186,6 +199,7 @@ namespace tfgame.Procedures
                         FriendlyName="The Animator",
                         Description="Targets transformed into an animate form",
                         ImageUrl="trophy.jpg",
+                        Active = true
                         }
                 },
 
@@ -195,6 +209,7 @@ namespace tfgame.Procedures
                         FriendlyName="The Inanimator",
                         Description="Targets transformed into an inanimate form",
                         ImageUrl="trophy.jpg",
+                        Active = true
                         }
                 },
 
@@ -204,6 +219,7 @@ namespace tfgame.Procedures
                         FriendlyName="Petmaker",
                         Description="Targets transformed into a pet form",
                         ImageUrl="trophy.jpg",
+                        Active = true
                         }
                 },
 
@@ -213,6 +229,7 @@ namespace tfgame.Procedures
                         FriendlyName="Psycho Hunter",
                         Description="Psychopathic Spellslingers defeated",
                         ImageUrl="trophy.jpg",
+                        Active = true
                         }
                 },
 
@@ -222,6 +239,7 @@ namespace tfgame.Procedures
                         FriendlyName="Fast Commute",
                         Description="Teleport scrolls used",
                         ImageUrl="trophy.jpg",
+                        Active = true
                         }
                 },
 
@@ -231,6 +249,7 @@ namespace tfgame.Procedures
                         FriendlyName="Friend of the Fae",
                         Description="Times played with Jewdewfae",
                         ImageUrl="trophy.jpg",
+                        Active = true
                         }
                 },
 
@@ -240,6 +259,7 @@ namespace tfgame.Procedures
                         FriendlyName="Nerrrrrd!",
                         Description="Tomes read",
                         ImageUrl="trophy.jpg",
+                        Active = true
                         }
                 },
 
@@ -249,6 +269,7 @@ namespace tfgame.Procedures
                         FriendlyName="Rub Rub Rub",
                         Description="XP gained as an inanimate item",
                         ImageUrl="trophy.jpg",
+                        Active = true
                         }
                 },
 
@@ -258,6 +279,7 @@ namespace tfgame.Procedures
                         FriendlyName="Petter off this Way",
                         Description="XP gained as an pet.",
                         ImageUrl="trophy.jpg",
+                        Active = true
                         }
                 },
 
@@ -267,6 +289,7 @@ namespace tfgame.Procedures
                         FriendlyName="Shop 'Til You Drop",
                         Description="Arpeyjis spent buying from Lindella",
                         ImageUrl="trophy.jpg",
+                        Active = true
                         }
                 },
 
@@ -276,6 +299,7 @@ namespace tfgame.Procedures
                         FriendlyName="Soul Item Business Sense",
                         Description="Arpeyjis earned selling to Lindella",
                         ImageUrl="trophy.jpg",
+                        Active = true
                         }
                 },
 
@@ -285,6 +309,7 @@ namespace tfgame.Procedures
                         FriendlyName="Puppy Miller",
                         Description="Arpeyjis spent buying from Wuffie",
                         ImageUrl="trophy.jpg",
+                        Active = true
                         }
                 },
 
@@ -294,6 +319,7 @@ namespace tfgame.Procedures
                         FriendlyName="Puppy Power!",
                         Description="Most Arpeyjis earned selling to Wuffie",
                         ImageUrl="trophy.jpg",
+                        Active = true
                         }
                 },
 
@@ -303,6 +329,7 @@ namespace tfgame.Procedures
                         FriendlyName="Dungeon Looter",
                         Description="Dungeon artifacts found",
                         ImageUrl="trophy.jpg",
+                        Active = true
                         }
                 },
 
@@ -312,6 +339,7 @@ namespace tfgame.Procedures
                         FriendlyName="Demonslayer",
                         Description="Dungeon demons defeated",
                         ImageUrl="trophy.jpg",
+                        Active = true
                         }
                 },
 
@@ -321,6 +349,7 @@ namespace tfgame.Procedures
                         FriendlyName="Dungeon Assassin",
                         Description="Dungeon points stolen from victims",
                         ImageUrl="trophy.jpg",
+                        Active = true
                         }
                 },
 
@@ -330,6 +359,7 @@ namespace tfgame.Procedures
                         FriendlyName="Dungeon Crawler",
                         Description="Times moved in the dungeon.",
                         ImageUrl="trophy.jpg",
+                        Active = true
                         }
                 },
                 {
@@ -338,6 +368,7 @@ namespace tfgame.Procedures
                         FriendlyName="Freeeeedom!",
                         Description="Times struggled back to an animate form",
                         ImageUrl="trophy.jpg",
+                        Active = true
                         }
                 },
                 {
@@ -346,6 +377,7 @@ namespace tfgame.Procedures
                         FriendlyName="Maximally Transmogrified",
                         Description="Autoselftransmogrification Deflector Devices used",
                         ImageUrl="trophy.jpg",
+                        Active = true
                         }
                 },
                 {
@@ -354,6 +386,7 @@ namespace tfgame.Procedures
                         FriendlyName="Call of the Covenant",
                         Description="Covenant Callback Crystals used",
                         ImageUrl="trophy.jpg",
+                        Active = true
                         }
                 },
                 {
@@ -362,6 +395,7 @@ namespace tfgame.Procedures
                         FriendlyName="Dollyamory",
                         Description="Willpower restored from using Inflatable Sex Dolls",
                         ImageUrl="trophy.jpg",
+                        Active = true
                         }
                 },
 
@@ -373,9 +407,14 @@ namespace tfgame.Procedures
 
         public static void AddStat(string membershipId, string type, float amount)
         {
-            // don't keep stats for an AI characters
 
-            //  if (membershipId > 0 && PvPStatics.ChaosMode == false) 
+            // don't do anything if the achivement is marked as inactive
+            if (StatsProcedures.StatTypesMap[type].Active == false)
+            {
+                return;
+            }
+
+            // don't keep stats for an AI characters
             if (PlayerProcedures.GetPlayerFromMembership(membershipId).BotId == AIStatics.ActivePlayerBotId)
             {
                 IAchievementRepository repo = new EFAchievementRepository();

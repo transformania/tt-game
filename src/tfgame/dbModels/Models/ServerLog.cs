@@ -24,20 +24,13 @@ namespace tfgame.dbModels.Models
         {
             if (this.Errors == 1)
             {
-                return "lightyellow";
-            }
-            else if (this.Errors == 2)
-            {
                 return "pink";
             }
-            else if (this.Errors >= 3)
+            else if (this.Errors > 1)
             {
                 return "red";
             }
-            else
-            {
-                return "";
-            }
+            return "";
         }
 
     }

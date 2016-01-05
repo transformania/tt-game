@@ -262,19 +262,22 @@ namespace tfgame.Statics
             return locationToSpawnIn;
         }
 
-            public static class LocationList
-            {
+        public static class LocationList
+        {
 
-                public static List<Location> GetLocation;
+            public static List<Location> GetLocation;
 
-                public static void AddLocation(Location location)
-                {
-                    GetLocation.Add(location);
-                }
+              public static void AddLocation(Location location) {
+                GetLocation.Add(location);
+            }
 
-                static LocationList()
-                {
-                    GetLocation = new List<Location>{
+            static LocationList() {
+                GetLocation = new List<Location>{
+
+
+          
+
+           
 
             new Location {
                 dbName = "coffee_shop",
@@ -425,7 +428,7 @@ namespace tfgame.Statics
                 ImageUrl = "",
                 Name_West = "park_fountain",
 
-
+            
              }, new Location {
                 dbName = "park_duck_pond",
                 Name = "Sunnyglade Park (Duck Pond)",
@@ -435,7 +438,7 @@ namespace tfgame.Statics
                 IsSafe = false,
                 ImageUrl = "",
                 Name_East="park_merrygoround"
-
+         
 
             }, new Location {
                 dbName = "park_shrine",
@@ -446,7 +449,7 @@ namespace tfgame.Statics
                 IsSafe = false,
                 ImageUrl = "",
                 Name_West= "park_merrygoround",
-
+         
 
            }, new Location {
                 dbName = "park_toolshed",
@@ -471,7 +474,7 @@ namespace tfgame.Statics
                 Name_East = "park_rose_garden",
 
             },
-
+            
             new Location {
                 dbName = "street_14th",
                 Name = "Street: 230 Main Street",
@@ -590,8 +593,8 @@ namespace tfgame.Statics
                 Name_East = "gas_station_parking",
                 Name_North =  "gas_station_counter"
 
-
-
+            
+            
             }, new Location {
                 dbName = "street_7th_main",
                 Name = "Street: 160 Main Street",
@@ -616,7 +619,7 @@ namespace tfgame.Statics
                 Name_North = "street_7th_main",
                 Name_East = "clothing_front",
                 Name_South = "street_140_main",
-
+            
             },  new Location {
                 dbName = "clothing_front",
                 Name = "Ophalia's Embroidery (Front Counter)",
@@ -628,7 +631,7 @@ namespace tfgame.Statics
                 Name_West="street_6th_main",
                 Name_North = "clothing_mens",
                 Name_East="clothing_womens",
-
+            
             },  new Location {
                 dbName = "clothing_womens",
                 Name = "Ophalia's Embroidery (Women's Section)",
@@ -639,7 +642,7 @@ namespace tfgame.Statics
                 ImageUrl = "",
                 Name_West="clothing_front",
                 Name_North="clothing_intimate"
-
+            
             },  new Location {
                 dbName = "clothing_intimate",
                 Name = "Ophalia's Embroidery (Intimates Section)",
@@ -650,7 +653,7 @@ namespace tfgame.Statics
                 ImageUrl = "",
                 Name_South="clothing_womens",
                 Name_West="clothing_mens",
-
+            
             },  new Location {
                 dbName = "clothing_mens",
                 Name = "Ophalia's Embroidery (Men's Section)",
@@ -661,7 +664,7 @@ namespace tfgame.Statics
                 ImageUrl = "",
                 Name_East="clothing_intimate",
                 Name_South="clothing_front",
-
+            
             }, new Location {
                 dbName = "street_14th_north",
                 Name = "Street: Main Street and Sunnyglade Drive Intersection",
@@ -674,7 +677,7 @@ namespace tfgame.Statics
                 Name_North="street_15th_south",
                 Name_East="street_14th_east",
                 Name_West = "street_140_sunnyglade_drive",
-
+            
             }, new Location {
                 dbName = "street_15th_south",
                 Name = "Street: 250 Main Street",
@@ -685,7 +688,7 @@ namespace tfgame.Statics
                 ImageUrl = "",
                 Name_South="street_14th_north",
                 Name_East="tavern_counter",
-            },
+            }, 
 
              new Location {
                 dbName = "street_14th_east",
@@ -713,7 +716,7 @@ namespace tfgame.Statics
                Name_West="street_15th_south",
                Name_East = "tavern_pool",
                Name_North = "tavern_private_room",
-
+                
                },  new Location {
                 dbName = "tavern_pool",
                 Name = "The Smelly Sorceress Tavern (Pool Room)",
@@ -747,7 +750,7 @@ namespace tfgame.Statics
                 Name_West = "tavern_private_room",
                 Name_South = "tavern_pool",
 
-            },
+            }, 
 
                   new Location {
                 dbName = "street_e9th_eastof_main",
@@ -760,7 +763,7 @@ namespace tfgame.Statics
                 Name_East = "street_e9th_eastof_valley",
                 Name_West= "street_9th",
 
-                 },
+                 }, 
 
                   new Location {
                 dbName = "street_e9th_eastof_valley",
@@ -773,7 +776,7 @@ namespace tfgame.Statics
                 Name_West="street_e9th_eastof_main",
                 Name_East="street_e9th_valley_crossing",
 
-                 },
+                 }, 
 
                   new Location {
                 dbName = "street_e9th_valley_crossing",
@@ -785,7 +788,7 @@ namespace tfgame.Statics
                 ImageUrl = "",
                 Name_West="street_e9th_eastof_valley",
                 Name_East="street_e9th_westof_valley",
-            },
+            }, 
                 new Location {
                 dbName = "street_e9th_westof_valley",
                 Name = "Street: 40 E. 9th Avenue",
@@ -798,7 +801,7 @@ namespace tfgame.Statics
                 Name_West="street_e9th_valley_crossing",
                 Name_South = "concert_hall_front_door",
                 Name_North = "lab_lobby",
-          },
+          }, 
                 new Location {
                 dbName = "apartment_rental_office",
                 Name = "Oldoak Apartments (Rental Office)",
@@ -810,7 +813,7 @@ namespace tfgame.Statics
                 Name_East="street_02",
                 Name_West="apartment_parking_lot",
                 Name_North = "apartment_complex_a",
-            },
+            }, 
                 new Location {
                 dbName = "apartment_parking_lot",
                 Name = "Oldoak Apartments (Parking Lot)",
@@ -821,8 +824,8 @@ namespace tfgame.Statics
                 ImageUrl = "",
                 Name_East = "apartment_rental_office",
                 Name_North = "apartment_dog_park",
-
-            },
+                
+            }, 
                 new Location {
                 dbName = "apartment_dog_park",
                 Name = "Oldoak Apartments (Dog Park)",
@@ -833,7 +836,7 @@ namespace tfgame.Statics
                 ImageUrl = "",
                 Name_South = "apartment_parking_lot",
                 Name_East = "apartment_complex_a",
-           },
+           }, 
                 new Location {
                 dbName = "apartment_complex_a",
                 Name = "Oldoak Apartments (Apartment Building)",
@@ -844,7 +847,7 @@ namespace tfgame.Statics
                 ImageUrl = "",
                 Name_West="apartment_dog_park",
                 Name_South="apartment_rental_office",
-               },
+               }, 
 
             new Location {
                 dbName = "concert_hall_front_door",
@@ -858,7 +861,7 @@ namespace tfgame.Statics
                 Name_South = "concert_hall_seats",
                 Name_East = "concert_hall_bar",
 
-                },
+                }, 
 
         new Location {
                 dbName = "concert_hall_seats",
@@ -870,7 +873,7 @@ namespace tfgame.Statics
                 ImageUrl = "",
                 Name_North="concert_hall_front_door",
                 Name_East="concert_hall_stage",
-                },
+                }, 
 
          new Location {
                 dbName = "concert_hall_stage",
@@ -884,7 +887,7 @@ namespace tfgame.Statics
                 Name_East="concert_hall_backstage",
                 Name_West="concert_hall_seats",
 
-                },
+                }, 
 
            new Location {
                 dbName = "concert_hall_bar",
@@ -898,7 +901,7 @@ namespace tfgame.Statics
                 Name_South="concert_hall_stage",
                 Name_West="concert_hall_front_door",
 
-                },
+                }, 
 
           new Location {
                 dbName = "concert_hall_dressingroom",
@@ -911,7 +914,7 @@ namespace tfgame.Statics
                 Name_South="concert_hall_backstage",
                 Name_West="concert_hall_bar",
 
-                },
+                }, 
 
           new Location {
                 dbName = "concert_hall_backstage",
@@ -1139,7 +1142,7 @@ namespace tfgame.Statics
                 ImageUrl = "",
                 Name_North="college_business",
                 Name_South="pathway_sccc",
-
+ 
           }, new Location {
                 dbName = "lab_lobby",
                 Name = "Dr. Hadkin's Research Clinic (Lobby)",
@@ -1674,7 +1677,7 @@ namespace tfgame.Statics
                 IsSafe = false,
                 ImageUrl = "",
                 Name_East="ranch_hallway",
-
+ 
 
         }, new Location {
                 dbName = "ranch_pens",
@@ -2310,6 +2313,7 @@ namespace tfgame.Statics
                 Y = 7,
                 IsSafe = false,
                 ImageUrl = "",
+                Name_North="fairygrove_entrance",
                 Name_East="cave_mouth",
                 Name_South="forest_ancestor_tree",
 
@@ -2377,6 +2381,59 @@ namespace tfgame.Statics
                 IsSafe = false,
                 ImageUrl = "",
                 Name_West="forest_pinecove",
+
+           },
+
+           new Location {
+                dbName = "fairygrove_entrance",
+                Name = "Fairy Grove (Entrance)",
+                Region = "fairygrove",
+                X = 6,
+                Y = 8,
+                IsSafe = false,
+                ImageUrl = "",
+                Name_North="fairygrove_flowerhomes",
+                Name_East="fairygrove_springs",
+                Name_South="forest_hotspring",
+
+           },
+
+           new Location {
+                dbName = "fairygrove_flowerhomes",
+                Name = "Fairy Grove (Flower Homes)",
+                Region = "fairygrove",
+                X = 6,
+                Y = 9,
+                IsSafe = false,
+                ImageUrl = "",
+                Name_East="fairygrove_greathall",
+                Name_South="fairygrove_entrance",
+
+           },
+
+           new Location {
+                dbName = "fairygrove_greathall",
+                Name = "Fairy Grove (Great Hall)",
+                Region = "fairygrove",
+                X = 7,
+                Y = 9,
+                IsSafe = false,
+                ImageUrl = "",
+                Name_South="fairygrove_springs",
+                Name_West="fairygrove_flowerhomes",
+
+           },
+
+           new Location {
+                dbName = "fairygrove_springs",
+                Name = "Fairy Grove (Springs)",
+                Region = "fairygrove",
+                X = 7,
+                Y = 8,
+                IsSafe = false,
+                ImageUrl = "",
+                Name_North="fairygrove_greathall",
+                Name_West="fairygrove_entrance",
 
            },
 

@@ -531,7 +531,6 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Images\bombie\map1.jpg" />
     <Content Include="Images\bombie\map1_large.jpg" />
-    <Content Include="Images\FashionWars\Forms\blurg.png" />
     <Content Include="Images\login-left.png" />
     <Content Include="Images\login-right.png" />
     <Content Include="Images\PvP\animalPortraits\adorable_donkey_dominque.png" />
@@ -2120,7 +2119,6 @@
     <Content Include="Content\themes\base\minified\jquery.ui.tooltip.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <Content Include="Images\PvP\Smilies\base.xcf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -2258,19 +2256,6 @@
     <Content Include="Images\wallpaperDefault.jpg" />
     <Content Include="Images\wallPaperDefault_2.jpg" />
     <Content Include="Content\mystyle.css" />
-    <Content Include="MMO_Images\People\jogger.png" />
-    <Content Include="MMO_Images\People\man01.jpg" />
-    <Content Include="MMO_Images\People\noPortrait.jpg" />
-    <Content Include="MMO_Images\People\woman01.jpg" />
-    <Content Include="MMO_Images\Portraits\jogger.png" />
-    <Content Include="MMO_Images\Portraits\man01.jpg" />
-    <Content Include="MMO_Images\Portraits\noPortrait.jpg" />
-    <Content Include="MMO_Images\Portraits\woman01.jpg" />
-    <Content Include="MMO_Images\Scenes\Bathroom.jpg" />
-    <Content Include="MMO_Images\Scenes\EastRoom.jpg" />
-    <Content Include="MMO_Images\Scenes\WestRoom.jpg" />
-    <Content Include="MMO_Scripts\helpers.js" />
-    <Content Include="MMO_Scripts\script.js" />
     <Content Include="Saved XMLS\scenes.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -2309,7 +2294,6 @@
     <Content Include="Scripts\jQueryRotate.js" />
     <Content Include="Scripts\knockout-3.0.0.debug.js" />
     <Content Include="Scripts\knockout-3.0.0.js" />
-    <Content Include="MMO_Scripts\onclick.js" />
     <Content Include="Scripts\MicrosoftAjax.debug.js" />
     <Content Include="Scripts\MicrosoftAjax.js" />
     <Content Include="Scripts\MicrosoftMvcAjax.debug.js" />

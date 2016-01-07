@@ -58,7 +58,7 @@
 
     // populate the the jump to dropdown with all states found for the current quest
     function loadJson() {
-        $.getJSON("/Info/GearToolJSON", function (data) {
+        $.getJSON("/Info/Gear", function (data) {
             itemsUnfiltered = data;
         }).then(function () {
             filterData();

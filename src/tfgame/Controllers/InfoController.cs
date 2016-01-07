@@ -91,7 +91,7 @@ namespace tfgame.Controllers
         /// Return basic information about all items and pet item type, name, graphic, and buffs in JSON format
         /// </summary>
         /// <returns></returns>
-        public ActionResult GearToolJSON()
+        public ActionResult Gear()
         {
             IDbStaticItemRepository repo = new EFDbStaticItemRepository();
 

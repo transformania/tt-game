@@ -84,7 +84,9 @@
         <br /><br />
         
         <p class="good">Start as an inanimate object or pet?</p>
-        @Html.EnumDropDownListFor(model => model.InanimateForm)
+        <p>This option immediately starts the character off as a locked object or pet.</p>
+        <p>Click on the checkbox only if you want this to happen @Html.CheckBoxFor(x => x.StartAsInanimate, new { id = "itemBox" })</p> 
+        @Html.EnumDropDownListFor(model => model.InanimateForm, new { id = "itemForm", disabled = "disabled", @class = "disabled" })
 
         <br /><br />
         
@@ -119,6 +121,16 @@
 
     <script>
         $(document).ready(function () {
+
+            $('#itemBox').change(function() {
+                if($(this).is(':checked')) {
+                    $('#itemForm').prop('disabled', false);
+                    $('#itemForm').prop('class', 'enable');
+                } else {
+                    $('#itemForm').prop('disabled', 'disabled');
+                    $('#itemForm').prop('class', 'disabled');
+                }
+            });
 
             $("#randomize").click(function () {
                 randomize();

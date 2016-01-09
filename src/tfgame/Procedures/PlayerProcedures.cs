@@ -575,7 +575,7 @@ namespace tfgame.Procedures
             }
 
             Player vendor = null;
-            if (player.InanimateForm != null)
+            if (player.InanimateForm != null && player.StartAsInanimate)
             {
                 if (player.InanimateForm.ToString() == "pet" || player.InanimateForm.ToString() == "random")
                 {

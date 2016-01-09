@@ -33,6 +33,8 @@ namespace tfgame.ViewModels
 
         public bool MigrateLetters { get; set; }
 
+        public bool StartAsInanimate { get; set; }
+
         public enum InanimateTypesEnum
         {
             [Display(Name = "Accessory")]

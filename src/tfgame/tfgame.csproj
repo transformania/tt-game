@@ -2037,7 +2037,6 @@
     <Content Include="XMLs\TFMessages\form_Wizard%27s_Wand_themorpher606.xml" />
     <Content Include="XMLs\TFMessages\form_wolf_cub_Alessandro.xml" />
     <Content Include="XMLs\validChatColors.txt" />
-    <Content Include="Z_DeveloperGuide.txt" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Characters\Caroline Plessica.txt" />

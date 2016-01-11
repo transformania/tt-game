@@ -21,6 +21,7 @@ namespace tfgame.dbModels.Models
         public bool IsPermanent { get; set; }
         public string Nickname { get; set; }
         public DateTime LastSouledTimestamp { get; set; }
+        public DateTime LastSold { get; set; }
 
         public string GetFullName()
         {

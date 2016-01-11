@@ -3226,15 +3226,28 @@ namespace tfgame.Controllers
                  return RedirectToAction("Play");
              }
 
-             // assert that the owner has been sufficiently inactive
              Player owner = PlayerProcedures.GetPlayer(inanimateMe.OwnerId);
 
-             int hoursSinceLastActivity = -1*(int)Math.Floor(owner.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalHours);
-             if (hoursSinceLastActivity < PvPStatics.HoursBeforeInanimatesCanSlipFree)
+             // if player is owned by a vendor, assert that the player has been in their inventory for sufficient amount of time
+             if (owner.BotId == AIStatics.LindellaBotId || owner.BotId == AIStatics.WuffieBotId)
              {
-                 TempData["Error"] = "You cannot escape from your owner right now.";
-                 TempData["SubError"] = "Your owner must remain inactive for " + (PvPStatics.HoursBeforeInanimatesCanSlipFree - hoursSinceLastActivity) + " more hours before you can slip free.";
-                 return RedirectToAction("Play");
+                int hoursSinceSold = (int)Math.Floor(DateTime.UtcNow.Subtract(inanimateMe.LastSold).TotalHours);
+
+                 if (hoursSinceSold < PvPStatics.HoursBeforeInanimatesCanSlipFree)
+                {
+                    TempData["Error"] = "You cannot escape from your owner right now.";
+                    TempData["SubError"] = "You must remain in the vendor's inventory for " + (PvPStatics.HoursBeforeInanimatesCanSlipFree - hoursSinceSold) + " more hours before you can slip free.";
+                    return RedirectToAction("Play");
+                }
+             } else {
+                 // assert that the owner has been sufficiently inactive only if player is not a vendor
+                int hoursSinceLastActivity = -1*(int)Math.Floor(owner.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalHours);
+                if (hoursSinceLastActivity < PvPStatics.HoursBeforeInanimatesCanSlipFree)
+                {
+                    TempData["Error"] = "You cannot escape from your owner right now.";
+                    TempData["SubError"] = "Your owner must remain inactive for " + (PvPStatics.HoursBeforeInanimatesCanSlipFree - hoursSinceLastActivity) + " more hours before you can slip free.";
+                    return RedirectToAction("Play");
+                }
              }
 
              // don't allow items or pets to struggle while their owner is online in the dungeon

@@ -391,6 +391,7 @@ namespace tfgame.Procedures.BossProcedures
                     TurnsUntilUse = 0,
                     EquippedThisTurn = false,
                     LastSouledTimestamp = DateTime.UtcNow.AddYears(-1),
+                    LastSold = DateTime.UtcNow,
                 };
 
                 if (turnNumber % 3 == 0)

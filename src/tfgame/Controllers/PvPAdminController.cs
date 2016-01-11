@@ -2888,6 +2888,7 @@ namespace tfgame.Controllers
                 IsEquipped = false,
                 Level = me.Level,
                 LastSouledTimestamp = DateTime.UtcNow.AddYears(-1),
+                LastSold = DateTime.UtcNow,
             };
 
             itemRepo.SaveItem(newMeItem);
@@ -2939,6 +2940,7 @@ namespace tfgame.Controllers
                 IsEquipped = false,
                 Level = me.Level,
                 LastSouledTimestamp = DateTime.UtcNow.AddYears(-1),
+                LastSold = DateTime.UtcNow,
             };
 
             itemRepo.SaveItem(newMeItem);
@@ -3019,6 +3021,7 @@ namespace tfgame.Controllers
                 VictimName = "",
                 Level = 0,
                 TimeDropped = DateTime.UtcNow,
+                LastSold = DateTime.UtcNow,
             };
             itemRepo.SaveItem(scroll);
 

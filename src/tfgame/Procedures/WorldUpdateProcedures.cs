@@ -511,6 +511,7 @@ namespace tfgame.Procedures
                                 VictimName = "",
                                 dbName = PvPStatics.ItemType_DungeonArtifact,
                                 LastSouledTimestamp = DateTime.UtcNow.AddYears(-1),
+                                LastSold = DateTime.UtcNow,
                             };
                             itemsRepo.SaveItem(newArtifact);
                         }

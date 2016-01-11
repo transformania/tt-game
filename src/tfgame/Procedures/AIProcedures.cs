@@ -527,6 +527,7 @@ namespace tfgame.Procedures
                                     VictimName = "",
                                     EquippedThisTurn = false,
                                     LastSouledTimestamp = DateTime.UtcNow.AddYears(-1),
+                                    LastSold = DateTime.UtcNow,
                                 };
                                     itemRepo.SaveItem(newItem);
                                 }
@@ -555,6 +556,7 @@ namespace tfgame.Procedures
                                         VictimName = "",
                                         EquippedThisTurn = false,
                                         LastSouledTimestamp = DateTime.UtcNow.AddYears(-1),
+                                        LastSold = DateTime.UtcNow,
                                     };
                                     itemRepo.SaveItem(newItem);
                                 }

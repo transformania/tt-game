@@ -1,13 +1,5 @@
-﻿using System.Linq;
-using System.Security.Principal;
-using System.Web;
-using FluentAssertions;
-using NSubstitute;
+﻿using FluentAssertions;
 using NUnit.Framework;
-using tfgame.dbModels;
-using tfgame.dbModels.Abstract;
-using tfgame.dbModels.Queries.DMRoll;
-using tfgame.Services;
 using tfgame.Procedures;
 using tfgame.dbModels.Models;
 using tfgame.ViewModels;

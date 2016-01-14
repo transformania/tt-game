@@ -1,15 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using System.Xml;
-using System.Xml.Serialization;
 using tfgame.dbModels.Abstract;
 using tfgame.dbModels.Concrete;
-using tfgame.Extensions;
 using tfgame.Models;
-using tfgame.Procedures;
 using Microsoft.AspNet.Identity;
 
 namespace tfgame.Controllers

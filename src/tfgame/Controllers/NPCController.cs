@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using System.Web;
 using System.Web.Mvc;
 using tfgame.dbModels.Models;
-using tfgame.Extensions;
 using tfgame.Procedures;
 using tfgame.Procedures.BossProcedures;
 using tfgame.Statics;

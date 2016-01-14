@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity.Core;
-using System.Data.Entity.Core.Objects;
+﻿using System.Data.Entity.Core;
 using System.Linq;
-using System.Web;
 using tfgame.dbModels.Abstract;
 using tfgame.dbModels.Models;
 

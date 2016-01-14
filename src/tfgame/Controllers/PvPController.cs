@@ -1,26 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using System.Xml;
-using System.Xml.Serialization;
 using tfgame.CustomHtmlHelpers;
 using tfgame.dbModels.Abstract;
 using tfgame.dbModels.Concrete;
 using tfgame.dbModels.Models;
-using tfgame.Extensions;
 using tfgame.Procedures;
 using tfgame.Procedures.BossProcedures;
 using tfgame.Statics;
 using tfgame.ViewModels;
 using Microsoft.AspNet.Identity;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace tfgame.Controllers

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using tfgame.Models;
-
-namespace tfgame.Statics
+﻿namespace tfgame.Statics
 {
     public static class RequirementTypes
     {

@@ -1,14 +1,7 @@
-﻿using System;
-using System.Web;
-using Microsoft.AspNet.SignalR;
+﻿using Microsoft.AspNet.SignalR;
 using tfgame.Procedures;
 using tfgame.dbModels.Models;
 using System.Threading.Tasks;
-using System.Text.RegularExpressions;
-using tfgame.dbModels.Abstract;
-using tfgame.dbModels.Concrete;
-using System.Collections.Generic;
-using tfgame.Extensions;
 using tfgame.ViewModels;
 using System.Timers;
 using Newtonsoft.Json;

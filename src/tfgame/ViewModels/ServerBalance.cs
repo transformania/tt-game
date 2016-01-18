@@ -1,27 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using tfgame.dbModels.Models;
 
-   //public decimal FromItems_HealthBonusPercent { get; set; }
-   //     public decimal FromItems_ManaBonusPercent { get; set; }
-   //     public decimal FromItems_ExtraSkillCriticalPercent { get; set; }
-   //     public decimal FromItems_HealthRecoveryPerUpdate { get; set; }
-   //     public decimal FromItems_ManaRecoveryPerUpdate { get; set; }
-   //     public decimal FromItems_SneakPercent { get; set; }
-   //     public decimal FromItems_EvasionPercent { get; set; }
-   //     public decimal FromItems_EvasionNegationPercent { get; set; }
-   //     public decimal FromItems_MeditationExtraMana { get; set; }
-   //     public decimal FromItems_CleanseExtraHealth { get; set; }
-   //     public decimal FromItems_MoveActionPointDiscount { get; set; }
-   //     public decimal FromItems_SpellExtraTFEnergyPercent { get; set; }
-   //     public decimal FromItems_SpellExtraHealthDamagePercent { get; set; }
-   //     public decimal FromItems_CleanseExtraTFEnergyRemovalPercent { get; set; }
-   //     public decimal FromItems_SpellMisfireChanceReduction { get; set; }
-   //     public decimal FromItems_SpellHealthDamageResistance { get; set; }
-   //     public decimal FromItems_SpellTFEnergyDamageResistance { get; set; }
-   //     public decimal FromItems_ExtraInventorySpace { get; set; }
+//public decimal FromItems_HealthBonusPercent { get; set; }
+//     public decimal FromItems_ManaBonusPercent { get; set; }
+//     public decimal FromItems_ExtraSkillCriticalPercent { get; set; }
+//     public decimal FromItems_HealthRecoveryPerUpdate { get; set; }
+//     public decimal FromItems_ManaRecoveryPerUpdate { get; set; }
+//     public decimal FromItems_SneakPercent { get; set; }
+//     public decimal FromItems_EvasionPercent { get; set; }
+//     public decimal FromItems_EvasionNegationPercent { get; set; }
+//     public decimal FromItems_MeditationExtraMana { get; set; }
+//     public decimal FromItems_CleanseExtraHealth { get; set; }
+//     public decimal FromItems_MoveActionPointDiscount { get; set; }
+//     public decimal FromItems_SpellExtraTFEnergyPercent { get; set; }
+//     public decimal FromItems_SpellExtraHealthDamagePercent { get; set; }
+//     public decimal FromItems_CleanseExtraTFEnergyRemovalPercent { get; set; }
+//     public decimal FromItems_SpellMisfireChanceReduction { get; set; }
+//     public decimal FromItems_SpellHealthDamageResistance { get; set; }
+//     public decimal FromItems_SpellTFEnergyDamageResistance { get; set; }
+//     public decimal FromItems_ExtraInventorySpace { get; set; }
 
 namespace tfgame.Statics
 {

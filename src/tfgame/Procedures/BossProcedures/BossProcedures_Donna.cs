@@ -88,11 +88,7 @@ namespace tfgame.Procedures.BossProcedures
 
                 BuffBox donnasBuffs = ItemProcedures.GetPlayerBuffsSQL(donna);
 
-                // have donna meditate and cleanse if needed
-                if (donna.Health < donna.MaxHealth / 6)
-                {
-                    PlayerProcedures.Cleanse(donna, donnasBuffs);
-                }
+                // have donna meditate
                 if (donna.Mana < donna.MaxMana)
                 {
                     PlayerProcedures.Meditate(donna, donnasBuffs);

@@ -2406,13 +2406,14 @@ namespace tfgame.Statics
     public static class ChatStatics
     {
         public const int OnlineActivityCutoffMinutes = -2;
+        private const string JudooThumbnail = "Images/PvP/portraits/Thumbnails/100/Judoo.jpg";
 
         public static readonly IDictionary<string, Tuple<string, string>> Staff = new Dictionary<string, Tuple<string, string>>
         {
-            { "69", new Tuple<string, string>("Judoo (admin)", "/Images/PvP/portraits/Thumbnails/100/Judoo.jpg") },
+            { "69", new Tuple<string, string>("Judoo (admin)", string.Empty) }, // turning off thumbnail for a while
             { "3490", new Tuple<string, string>("Mizuho (dev)", "/Images/PvP/portraits/Thumbnails/100/Mizuho.jpg") },
             { "251", new Tuple<string, string>("Arrhae (dev)", string.Empty) }, // Arrhae wants to keep regular portrait for now, not admin/dev custom one
-            { "12865", new Tuple<string, string>("Mezaron (dev)", "/Images/PvP/portraits/Thumbnails/100/mezaron_portrait.jpg") },
+            { "834", new Tuple<string, string>("Eric Force (dev)", string.Empty) },
             { "14039", new Tuple<string, string>("Tempest (dev)", string.Empty) }, // no custom portrait yet
         };
 

@@ -512,9 +512,6 @@ namespace tfgame.Procedures
                 IsEquipped = false,
                 VictimName = "",
                 dbLocationName = "",
-                TimeDropped = DateTime.UtcNow,
-                LastSouledTimestamp = DateTime.UtcNow.AddYears(-1),
-                LastSold = DateTime.UtcNow,
             };
 
             if (player.BotId < AIStatics.ActivePlayerBotId)
@@ -1113,9 +1110,6 @@ namespace tfgame.Procedures
                 dbName = targetForm.BecomesItemDbName,
                 Level = victim.Level,
                 Nickname = victim.Nickname,
-                TimeDropped = DateTime.UtcNow,
-                LastSouledTimestamp = DateTime.UtcNow.AddYears(-1),
-                LastSold = DateTime.UtcNow,
             };
 
             // no attacker, just drop at player's location and return immediately

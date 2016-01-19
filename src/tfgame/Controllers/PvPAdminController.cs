@@ -2883,12 +2883,9 @@ namespace tfgame.Controllers
                 dbName = "item_Flirty_Three-Tiered_Skirt_Martiandawn",
                 VictimName = me.FirstName + " " + me.LastName, // DO NOT use GetFullName.  It will break things here.
                 Nickname = me.Nickname,
-                TimeDropped = DateTime.UtcNow,
                 OwnerId = -1,
                 IsEquipped = false,
                 Level = me.Level,
-                LastSouledTimestamp = DateTime.UtcNow.AddYears(-1),
-                LastSold = DateTime.UtcNow,
             };
 
             itemRepo.SaveItem(newMeItem);
@@ -2935,12 +2932,9 @@ namespace tfgame.Controllers
                 dbName = "animal_Cuddly_Pocket_Goo_Girl_GooGirl",
                 VictimName = me.FirstName + " " + me.LastName,
                 Nickname = me.Nickname,
-                TimeDropped = DateTime.UtcNow,
                 OwnerId = -1,
                 IsEquipped = false,
                 Level = me.Level,
-                LastSouledTimestamp = DateTime.UtcNow.AddYears(-1),
-                LastSold = DateTime.UtcNow,
             };
 
             itemRepo.SaveItem(newMeItem);
@@ -3020,8 +3014,6 @@ namespace tfgame.Controllers
                 LastSouledTimestamp = DateTime.UtcNow,
                 VictimName = "",
                 Level = 0,
-                TimeDropped = DateTime.UtcNow,
-                LastSold = DateTime.UtcNow,
             };
             itemRepo.SaveItem(scroll);
 

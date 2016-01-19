@@ -27,7 +27,12 @@
   
   <CustomFormViewModel>
     <MembershipId>224</MembershipId>
-    <Form>form_Witchling_Judoo</Form>
+    <Form>form_Witchling_(Schoolgirl_Clothing)_Lexam</Form>
+  </CustomFormViewModel>
+
+  <CustomFormViewModel>
+    <MembershipId>224</MembershipId>
+    <Form>form_Witchling_(Farmgirl_Clothing)_Lexam</Form>
   </CustomFormViewModel>
   
   <CustomFormViewModel>

@@ -522,11 +522,9 @@ namespace tfgame.Procedures
                                     IsPermanent = true,
                                     Level = 0,
                                     PvPEnabled = -1,
-                                    TimeDropped = DateTime.UtcNow,
                                     TurnsUntilUse = 0,
                                     VictimName = "",
                                     EquippedThisTurn = false,
-                                    LastSouledTimestamp = DateTime.UtcNow.AddYears(-1),
                                 };
                                     itemRepo.SaveItem(newItem);
                                 }
@@ -550,11 +548,9 @@ namespace tfgame.Procedures
                                         IsPermanent = true,
                                         Level = 0,
                                         PvPEnabled = -1,
-                                        TimeDropped = DateTime.UtcNow,
                                         TurnsUntilUse = 0,
                                         VictimName = "",
                                         EquippedThisTurn = false,
-                                        LastSouledTimestamp = DateTime.UtcNow.AddYears(-1),
                                     };
                                     itemRepo.SaveItem(newItem);
                                 }

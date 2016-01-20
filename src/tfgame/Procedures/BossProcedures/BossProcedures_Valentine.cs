@@ -109,10 +109,8 @@ namespace tfgame.Procedures.BossProcedures
                     IsPermanent = false,
                     Level = 11,
                     OwnerId = valentine.Id,
-                    TimeDropped = DateTime.UtcNow,
                     PvPEnabled = -1,
                     VictimName = "",
-                    LastSouledTimestamp = DateTime.UtcNow.AddYears(-1),
                 };
 
                 itemRepo.SaveItem(panties);

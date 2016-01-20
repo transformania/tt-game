@@ -18,6 +18,14 @@ namespace tfgame.dbModels.Models
         public bool IsPermanent { get; set; }
         public string Nickname { get; set; }
         public DateTime LastSouledTimestamp { get; set; }
+        public DateTime LastSold { get; set; }
+
+        public Item()
+        {
+            TimeDropped = DateTime.Now;
+            LastSouledTimestamp = DateTime.UtcNow.AddYears(-1);
+            LastSold = DateTime.Now;
+        }
 
         public string GetFullName()
         {
@@ -50,6 +58,14 @@ namespace tfgame.dbModels.Models
         public bool IsPermanent { get; set; }
         public string Nickname { get; set; }
         public DateTime LastSouledTimestamp { get; set; }
+        public DateTime LastSold { get; set; }
+
+        public Item_VM()
+        {
+            TimeDropped = DateTime.Now;
+            LastSouledTimestamp = DateTime.UtcNow.AddYears(-1);
+            LastSold = DateTime.Now;
+        }
 
         public string GetFullName()
         {

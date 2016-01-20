@@ -496,6 +496,7 @@ namespace tfgame.Procedures
             }
            
             item.TimeDropped = DateTime.UtcNow;
+            item.LastSold = item.TimeDropped;
             ItemTransferLogProcedures.AddItemTransferLog(itemId, newOwnerId);
             itemRepo.SaveItem(item);
         }
@@ -510,8 +511,6 @@ namespace tfgame.Procedures
                 IsEquipped = false,
                 VictimName = "",
                 dbLocationName = "",
-                TimeDropped = DateTime.UtcNow,
-                LastSouledTimestamp = DateTime.UtcNow.AddYears(-1),
             };
 
             if (player.BotId < AIStatics.ActivePlayerBotId)
@@ -1110,8 +1109,6 @@ namespace tfgame.Procedures
                 dbName = targetForm.BecomesItemDbName,
                 Level = victim.Level,
                 Nickname = victim.Nickname,
-                TimeDropped = DateTime.UtcNow,
-                LastSouledTimestamp = DateTime.UtcNow.AddYears(-1),
             };
 
             // no attacker, just drop at player's location and return immediately

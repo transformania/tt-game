@@ -501,14 +501,12 @@ namespace tfgame.Procedures
                                 OwnerId = -1,
                                 EquippedThisTurn = false,
                                 IsPermanent = true,
-                                TimeDropped = DateTime.UtcNow,
                                 Level = 0,
                                 PvPEnabled = 2,
                                 IsEquipped = false,
                                 TurnsUntilUse = 0,
                                 VictimName = "",
                                 dbName = PvPStatics.ItemType_DungeonArtifact,
-                                LastSouledTimestamp = DateTime.UtcNow.AddYears(-1),
                             };
                             itemsRepo.SaveItem(newArtifact);
                         }

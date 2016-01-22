@@ -22,9 +22,9 @@ namespace tfgame.dbModels.Models
 
         public Item()
         {
-            TimeDropped = DateTime.Now;
+            TimeDropped = DateTime.UtcNow;
             LastSouledTimestamp = DateTime.UtcNow.AddYears(-1);
-            LastSold = DateTime.Now;
+            LastSold = DateTime.UtcNow;
         }
 
         public string GetFullName()
@@ -62,9 +62,9 @@ namespace tfgame.dbModels.Models
 
         public Item_VM()
         {
-            TimeDropped = DateTime.Now;
+            TimeDropped = DateTime.UtcNow;
             LastSouledTimestamp = DateTime.UtcNow.AddYears(-1);
-            LastSold = DateTime.Now;
+            LastSold = DateTime.UtcNow;
         }
 
         public string GetFullName()

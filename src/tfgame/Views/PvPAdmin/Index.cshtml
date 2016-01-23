@@ -1,5 +1,7 @@
 ﻿<div class="containerInner pvpAdmin">
 
+    @Html.Raw(TempData["Message"])
+
     @Html.ActionLink("Approve Effect Contributions", "ApproveEffectContributionList", "PvPAdmin")<br />
     @Html.ActionLink("Approve Contributions", "ApproveContributionList", "PvPAdmin")<br />
     @Html.ActionLink("Public Broadcast", "PublicBroadcast", "PvPAdmin")<br />
@@ -19,9 +21,12 @@
     @Html.ActionLink("ADMIN change game data", "ChangeWorldStats", "PvPAdmin")<br />
     </br>
 
+    @Html.ActionLink("Check location consistency", "CheckLocationConsistency", "PvPAdmin")<br />
+    </br>
+
     @Html.ActionLink("CLICK HERE TO ACTIVATE.", "Killswitch", "PvPAdmin")</br>
     @Html.ActionLink("CLICK HERE TO DEACTIVE KILLSWITCH.", "KillswitchRestore", "PvPAdmin")</br>
 
-    @Html.Raw(TempData["Message"])
+
 
 </div>

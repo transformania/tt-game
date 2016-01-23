@@ -383,7 +383,12 @@ namespace tfgame.Controllers
                 return View("Play", "PvP");
             }
 
-            BossProcedures_FaeBoss.RunTurnLogic();
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+
+            List<string> reset = StatsProcedures.GetAchivementNamesThatReset();
+
+            StatsProcedures.DeleteAchivemenstOfTypeForPlayer(me, reset);
 
             return RedirectToAction("Index");
         }

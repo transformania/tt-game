@@ -326,6 +326,11 @@ namespace tfgame.Controllers
             // pass!
             string victoryMessage = QuestProcedures.PlayerEndQuest(me, (int)QuestStatics.QuestOutcomes.Completed);
             QuestProcedures.ClearQuestPlayerVariables(me.Id, me.InQuest);
+
+            new Thread(() =>
+                   StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__QuestsPassed, 1)
+               ).Start();
+
             TempData["Result"] = "Congratulations, you completed the quest <b>" + quest.Name + "</b>!" + victoryMessage;
 
             return RedirectToAction("Play", "PvP");

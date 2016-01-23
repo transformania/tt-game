@@ -16,6 +16,7 @@ namespace tfgame.Procedures
         public string Description { get; set; }
         public string ImageUrl { get; set; }
         public bool Active { get; set; }
+        public bool ResetsOnReroll { get; set; }
 
     }
 
@@ -84,7 +85,7 @@ namespace tfgame.Procedures
 
         // Quests
         public const string Stat__QuestsFailed = "quests_failed";
-
+        public const string Stat__QuestsPassed = "quests_passed";
 
         public static Dictionary<string, StatsDetailsMap> StatTypesMap = new Dictionary<string, StatsDetailsMap> {
            
@@ -288,7 +289,8 @@ namespace tfgame.Procedures
                         FriendlyName="Nerrrrrd!",
                         Description="Tomes read",
                         ImageUrl="trophy.jpg",
-                        Active = true
+                        Active = true,
+                        ResetsOnReroll = true
                         }
                 },
 
@@ -486,10 +488,21 @@ namespace tfgame.Procedures
                         FriendlyName="Try Staying Home Today",
                         Description="Quests failed",
                         ImageUrl="trophy.jpg",
-                        Active = true
+                        Active = true,
+                        ResetsOnReroll = true
                         }
                 },
 
+                {
+                Stat__QuestsPassed,
+                    new StatsDetailsMap{
+                        FriendlyName="Adventure Time!",
+                        Description="Quests passed",
+                        ImageUrl="trophy.jpg",
+                        Active = true,
+                        ResetsOnReroll = true
+                        }
+                },
 
             };
 
@@ -648,6 +661,28 @@ namespace tfgame.Procedures
             IAchievementBadgeRepository repo = new EFAchievementBadgeRepository();
 
             return repo.AchievementBadges.Where(b => b.OwnerMembershipId == membershipId);
+        }
+
+        /// <summary>
+        /// Deletes all achivements for given types owned by a particular player
+        /// </summary>
+        /// <param name="player">Player whose achivements should be removed</param>
+        /// <param name="achivements">The names of the achivements owned by the player to be removed</param>
+        public static void DeleteAchivemenstOfTypeForPlayer(Player player, List<string> achivements)
+        {
+            IAchievementRepository repo = new EFAchievementRepository();
+            List<Achievement> dbAchivements = repo.Achievements.Where(a => a.OwnerMembershipId == player.MembershipId && achivements.Contains(a.AchievementType)).ToList();
+
+            foreach (Achievement a in dbAchivements)
+            {
+                repo.DeleteAchievement(a.Id);
+            }
+
+        }
+
+        public static List<string> GetAchivementNamesThatReset()
+        {
+            return StatTypesMap.Where(d => d.Value.ResetsOnReroll == true).Select(a => a.Key).ToList();
         }
     }
 }

@@ -589,6 +589,7 @@ namespace tfgame.Procedures
                     }
                 }
             }
+
             // remove the old Player--Membership binding
             Player oldplayer = playerRepo.Players.FirstOrDefault(p => p.MembershipId == membershipId);
 
@@ -605,7 +606,8 @@ namespace tfgame.Procedures
                 // remove all of the old player's player logs
                 PlayerLogProcedures.ClearPlayerLog(oldplayer.Id);
 
-
+                // delete the achivements for that player that get reset upon reroll, such as reading tomes or passing quests
+                StatsProcedures.DeleteAchivemenstOfTypeForPlayer(oldplayer, StatsProcedures.GetAchivementNamesThatReset());
 
                 // remove all of the old player's TF energies
                 TFEnergyProcedures.DeleteAllPlayerTFEnergies(oldplayer.Id);
@@ -624,6 +626,7 @@ namespace tfgame.Procedures
                 oldItemMe.IsPermanent = true;
                 oldItemMe.LastSouledTimestamp = DateTime.UtcNow.AddYears(1);
                 itemRepo.SaveItem(oldItemMe);
+
             }
 
 
@@ -680,7 +683,6 @@ namespace tfgame.Procedures
                 }
                 newplayer.UnusedLevelUpPerks = newplayer.Level - 1;
                 newplayer.ChatColor = oldplayer.ChatColor;
-
 
             }
 

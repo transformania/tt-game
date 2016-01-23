@@ -33,6 +33,7 @@ namespace tfgame.Procedures
         public const string Stat__CovenantDonationTotal = "covenant_donations";
         public const string Stat__CovenantGiftsReceived = "covenant_gif_receieved";
         public const string Stat__CovenantFurnitureUsed = "covenant_furniture_used";
+        public const string Stat__CovenantNetDonation = "covenant_net_donations";
 
         public const string Stat__TimesAnimateTFed = "times_self_animated";
         public const string Stat__TimesInanimateTFed = "times_self_inanimated";
@@ -51,11 +52,13 @@ namespace tfgame.Procedures
         public const string Stat__InanimateXPEarned = "inanimateXPEarned";
         public const string Stat__PetXPEarned = "petXPEarned";
 
-        public const string Stat__LindellaCostsAmount = "lindella_costs_amount";
-        public const string Stat__LindellaProfitsAmount = "lindella_profit_amount";
+        public const string Stat__LindellaCostsAmount = "lindella_costs_amount"; // RETIRED
+        public const string Stat__LindellaProfitsAmount = "lindella_profit_amount"; // RETIRED
+        public const string Stat__LindellaNetProfit = "lindella_net_profit";
 
-        public const string Stat__WuffieCostsAmount = "wuffie_costs_amount";
-        public const string Stat__WuffieProfitsAmount = "wuffie_profit_amount";
+        public const string Stat__WuffieCostsAmount = "wuffie_costs_amount"; // RETIRED
+        public const string Stat__WuffieProfitsAmount = "wuffie_profit_amount"; // RETIRED
+        public const string Stat__WuffieNetProfit = "wuffie_net_profit";
 
         public const string Stat__DungeonArtifactsFound = "dungeon_artifacts_found";
         public const string Stat__DungeonDemonsDefeated = "dungeon_demons_defeated";
@@ -134,13 +137,33 @@ namespace tfgame.Procedures
 
                  // -------- COVENANT STUFF -------------
 
+                  {
+                Stat__CovenantNetDonation,
+                    new StatsDetailsMap{
+                        FriendlyName = "Covenent Benefactor",
+                        Description="Net Arpyjis donated to covenant",
+                        ImageUrl="trophy.jpg",
+                        Active = true
+                        }
+                },
+
+                {
+                Stat__CovenantGiftsReceived,  // RETIRED
+                    new StatsDetailsMap{
+                        FriendlyName="The Embezzler",
+                        Description="Arpeyhis received from covenant",
+                        ImageUrl="trophy.jpg",
+                        Active = false
+                        }
+                },
+
                  {
-                Stat__CovenantDonationTotal,
+                Stat__CovenantDonationTotal, // RETIRED
                     new StatsDetailsMap{
                         FriendlyName = "Fundraiser Fanatic",
                         Description="Arpyjis donated to covenant",
                         ImageUrl="trophy.jpg",
-                        Active = true
+                        Active = false
                         }
                 },
                   {
@@ -153,15 +176,7 @@ namespace tfgame.Procedures
                         }
                 },
 
-                 {
-                Stat__CovenantGiftsReceived,
-                    new StatsDetailsMap{
-                        FriendlyName="The Embezzler",
-                        Description="Arpeyhis received from covenant",
-                        ImageUrl="trophy.jpg",
-                        Active = true
-                        }
-                },
+                
 
                  {
                 Stat__TimesAnimateTFed,
@@ -177,7 +192,7 @@ namespace tfgame.Procedures
                 Stat__TimesInanimateTFed,
                     new StatsDetailsMap{
                         FriendlyName="The Inanimated",
-                        Description="Timed transformed into an inanimate form",
+                        Description="Times transformed into an inanimate form",
                         ImageUrl="trophy.jpg",
                         Active = true
                         }
@@ -284,46 +299,66 @@ namespace tfgame.Procedures
                 },
 
                 {
-                Stat__LindellaCostsAmount,
+                Stat__LindellaNetProfit,
+                    new StatsDetailsMap{
+                        FriendlyName="Soul Seller",
+                        Description="Net profit from selling to Lindella",
+                        ImageUrl="trophy.jpg",
+                        Active = true
+                        }
+                },
+
+                {
+                Stat__LindellaCostsAmount, // RETIRED
                     new StatsDetailsMap{
                         FriendlyName="Shop 'Til You Drop",
                         Description="Arpeyjis spent buying from Lindella",
                         ImageUrl="trophy.jpg",
-                        Active = true
+                        Active = false
                         }
                 },
 
-                   {
-                Stat__LindellaProfitsAmount,
+                {
+                Stat__LindellaProfitsAmount, // RETIRED
                     new StatsDetailsMap{
                         FriendlyName="Soul Item Business Sense",
                         Description="Arpeyjis earned selling to Lindella",
                         ImageUrl="trophy.jpg",
+                        Active = false
+                        }
+                },
+
+                {
+                Stat__WuffieNetProfit,
+                    new StatsDetailsMap{
+                        FriendlyName="Puppy Profit!",
+                        Description="Profit from selling to Wuffie",
+                        ImageUrl="trophy.jpg",
                         Active = true
                         }
                 },
 
-                   {
-                Stat__WuffieCostsAmount,
+                {
+                Stat__WuffieCostsAmount, // RETIRED
                     new StatsDetailsMap{
                         FriendlyName="Puppy Miller",
                         Description="Arpeyjis spent buying from Wuffie",
                         ImageUrl="trophy.jpg",
-                        Active = true
+                        Active = false
                         }
                 },
 
-                   {
-                Stat__WuffieProfitsAmount,
+                {
+                Stat__WuffieProfitsAmount, // RETIRED
                     new StatsDetailsMap{
                         FriendlyName="Puppy Power!",
                         Description="Most Arpeyjis earned selling to Wuffie",
                         ImageUrl="trophy.jpg",
-                        Active = true
+                        Active = false
                         }
                 },
 
-                   {
+                {
                 Stat__DungeonArtifactsFound,
                     new StatsDetailsMap{
                         FriendlyName="Dungeon Looter",
@@ -333,7 +368,7 @@ namespace tfgame.Procedures
                         }
                 },
 
-                   {
+                {
                 Stat__DungeonDemonsDefeated,
                     new StatsDetailsMap{
                         FriendlyName="Demonslayer",
@@ -343,7 +378,7 @@ namespace tfgame.Procedures
                         }
                 },
 
-                   {
+                {
                 Stat__DungeonPointsStolen,
                     new StatsDetailsMap{
                         FriendlyName="Dungeon Assassin",
@@ -362,6 +397,7 @@ namespace tfgame.Procedures
                         Active = true
                         }
                 },
+
                 {
                 Stat__SuccessfulStruggles,
                     new StatsDetailsMap{

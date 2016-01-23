@@ -223,7 +223,7 @@ namespace tfgame.Controllers
             PlayerProcedures.GiveMoneyToPlayer(me, -cost);
 
             new Thread(() =>
-                 StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__LindellaCostsAmount, (float)cost)
+                 StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__LindellaNetProfit, -(float)cost)
              ).Start();
 
             ItemProcedures.GiveItemToPlayer_Nocheck(purchased.dbItem.Id, me.Id);
@@ -339,7 +339,7 @@ namespace tfgame.Controllers
             PlayerProcedures.GiveMoneyToPlayer(me, cost);
 
             new Thread(() =>
-                 StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__LindellaProfitsAmount, (float)cost)
+                 StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__LindellaNetProfit, (float)cost)
              ).Start();
 
 
@@ -476,7 +476,7 @@ namespace tfgame.Controllers
 
 
             new Thread(() =>
-                 StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__WuffieCostsAmount, (float)cost)
+                 StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__WuffieNetProfit, (float)-cost)
              ).Start();
 
             ItemProcedures.GiveItemToPlayer_Nocheck(purchased.dbItem.Id, me.Id);
@@ -598,7 +598,7 @@ namespace tfgame.Controllers
             PlayerProcedures.GiveMoneyToPlayer(me, cost);
 
             new Thread(() =>
-                 StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__WuffieProfitsAmount, (float)cost)
+                 StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__WuffieNetProfit, (float)cost)
              ).Start();
 
             TempData["Result"] = "You sold your " + itemBeingSold.Item.FriendlyName + " to Wüffie for " + (int)cost + " Arpeyjis.";

@@ -580,7 +580,7 @@ namespace tfgame.Controllers
             TempData["Result"] = "You have successfully sent " + amount + " Arpeyjis to your covenant.";
 
             new Thread(() =>
-                 StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__CovenantDonationTotal, amount)
+                 StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__CovenantNetDonation, amount)
              ).Start();
 
             return RedirectToAction("MyCovenant");
@@ -641,11 +641,11 @@ namespace tfgame.Controllers
              CovenantProcedures.SendCovenantMoneyToPlayer(me.Covenant, giftee, amount);
 
 
-             new Thread(() =>
-                  StatsProcedures.AddStat(giftee.MembershipId, StatsProcedures.Stat__CovenantGiftsReceived, (float)amount)
-              ).Start();
+            new Thread(() =>
+                StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__CovenantNetDonation, (float)-amount)
+            ).Start();
 
-             TempData["Result"] = "You have successfully sent " + amount + " Arpeyjis to " + giftee.GetFullName() + ".";
+            TempData["Result"] = "You have successfully sent " + amount + " Arpeyjis to " + giftee.GetFullName() + ".";
              return RedirectToAction("MyCovenant");
 
          }

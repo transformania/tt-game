@@ -32,7 +32,7 @@ namespace tfgame.Procedures
             questStart.MinStartLevel = input.MinStartLevel;
             questStart.MinStartTurn = input.MinStartTurn;
             questStart.Name = input.Name;
-            questStart.PrerequisiteQuest = input.RequiredGender;
+            questStart.PrerequisiteQuest = input.PrerequisiteQuest;
             questStart.RequiredGender = input.RequiredGender;
             questStart.StartState = input.StartState;
 

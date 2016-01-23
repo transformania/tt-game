@@ -33,26 +33,58 @@
         foreach (QuestStart s in Model.AvailableQuests)
         {
             <div style="border: 1px solid black">
-                <p>@Html.ActionLink("Begin Quest:  " + s.Name, "StartQuest", "Quest", new { Id = s.Id }, null)</p>
-                <p>Minimum player level:  @s.MinStartLevel</p>
-                <p>Maximum player level:  @s.MaxStartTurn</p>
-                <p>Minimum game turn:  @s.MinStartTurn</p>
-                <p>Maximum game turn:  @s.MaxStartTurn</p>
+                <p>@Html.ActionLink("Begin Quest:  " + s.Name, "StartQuest", "Quest", new { Id = s.Id }, new { @class = "inanimateAction"})</p>
+                
+                @{
+                    if (s.MinStartLevel > 0)
+                    {
+                        <p>Minimum player level:  @s.MinStartLevel</p>
+                    }
+                    if (s.MaxStartLevel < 99999)
+                    {
+                        <p>Maximum player level:  @s.MaxStartLevel</p>
+                    }
+                    if (s.MinStartTurn > 0)
+                    {
+                        <p>Minimum game turn:  @s.MinStartTurn</p>
+                    }
+                    if (s.MaxStartTurn < 99999)
+                    {
+                        <p>Maximum game turn:  @s.MaxStartTurn</p>
+                    }
+                }
+
             </div>
         }
     }
 
-    <h1>All Quests (@Model.AllQuests.Count())</h1>
+    <h1>All Quests (@Model.AllQuests.Where(q => q.IsLive).Count())</h1>
 
     @{
-        foreach (QuestStart s in Model.AllQuests)
+        foreach (QuestStart s in Model.AllQuests.Where(q => q.IsLive==true))
         {
             <div style="border: 1px solid black">
                 <p><b>@s.Name</b></p>
-                <p>Minimum player level:  @s.MinStartLevel</p>
-                <p>Maximum player level:  @s.MaxStartTurn</p>
-                <p>Minimum game turn:  @s.MinStartTurn</p>
-                <p>Maximum game turn:  @s.MaxStartTurn</p>
+
+                @{
+                    if (s.MinStartLevel > 0)
+                    {
+                        <p>Minimum player level:  @s.MinStartLevel</p>
+                    }
+                    if (s.MaxStartLevel < 99999)
+                    {
+                        <p>Maximum player level:  @s.MaxStartLevel</p>
+                    }
+                    if (s.MinStartTurn > 0)
+                    {
+                        <p>Minimum game turn:  @s.MinStartTurn</p>
+                    }
+                    if (s.MaxStartTurn < 99999)
+                    {
+                        <p>Maximum game turn:  @s.MaxStartTurn</p>
+                    }
+                }
+
             </div>
         }
     }

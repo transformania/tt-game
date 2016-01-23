@@ -29,12 +29,13 @@ namespace tfgame.Procedures
         public const string Stat__TimesMeditated = "times_meditated";
         public const string Stat__TimesEnchanted = "times_enchanted";
 
-
+        // Covenants
         public const string Stat__CovenantDonationTotal = "covenant_donations";
         public const string Stat__CovenantGiftsReceived = "covenant_gif_receieved";
         public const string Stat__CovenantFurnitureUsed = "covenant_furniture_used";
         public const string Stat__CovenantNetDonation = "covenant_net_donations";
 
+        // Combat
         public const string Stat__TimesAnimateTFed = "times_self_animated";
         public const string Stat__TimesInanimateTFed = "times_self_inanimated";
         public const string Stat__TimesAnimalTFed = "times_self_animal";
@@ -45,13 +46,18 @@ namespace tfgame.Procedures
 
         public const string Stat__PsychopathsDefeated = "psychos_defeated";
 
+        // Items Used
         public const string Stat__TimesTeleported_Scroll = "times_teleported_scroll";
-        public const string Stat__JewdewfaeEncountersCompleted = "jewdewfae_completions";
+        public const string Stat__TransmogsUsed = "transmogs_used";
+        public const string Stat__CovenantCallbackCrystalsUsed = "callback_crystals_used";
+        public const string Stat__DollsWPRestored = "dolls_used";
         public const string Stat__LoreBooksRead = "lore_books_read";
 
+        // Inanimate/Pet actions
         public const string Stat__InanimateXPEarned = "inanimateXPEarned";
         public const string Stat__PetXPEarned = "petXPEarned";
 
+        // NPCs
         public const string Stat__LindellaCostsAmount = "lindella_costs_amount"; // RETIRED
         public const string Stat__LindellaProfitsAmount = "lindella_profit_amount"; // RETIRED
         public const string Stat__LindellaNetProfit = "lindella_net_profit";
@@ -62,6 +68,13 @@ namespace tfgame.Procedures
         public const string Stat__WuffieNetProfit = "wuffie_net_profit";
         public const string Stat__WuffieNetLoss = "wuffie_net_loss";
 
+        public const string Stat__LorekeeperSpellsLearned = "lorekeeper_spells_learned";
+
+        public const string Stat__JewdewfaeEncountersCompleted = "jewdewfae_completions";
+
+
+
+        // Dungeon
         public const string Stat__DungeonArtifactsFound = "dungeon_artifacts_found";
         public const string Stat__DungeonDemonsDefeated = "dungeon_demons_defeated";
         public const string Stat__DungeonPointsStolen = "dungeon_points_stolen";
@@ -69,10 +82,9 @@ namespace tfgame.Procedures
 
         public const string Stat__SuccessfulStruggles = "times_struggled_free";
 
-        // items
-        public const string Stat__TransmogsUsed = "transmogs_used";
-        public const string Stat__CovenantCallbackCrystalsUsed = "callback_crystals_used";
-        public const string Stat__DollsWPRestored = "dolls_used";
+        // Quests
+        public const string Stat__QuestsFailed = "quests_failed";
+
 
         public static Dictionary<string, StatsDetailsMap> StatTypesMap = new Dictionary<string, StatsDetailsMap> {
            
@@ -381,6 +393,16 @@ namespace tfgame.Procedures
                 },
 
                 {
+                Stat__LorekeeperSpellsLearned, // RETIRED
+                    new StatsDetailsMap{
+                        FriendlyName="Exiled's Apprentice",
+                        Description="Most spells learned from Skaldrlyr the Forbidden",
+                        ImageUrl="trophy.jpg",
+                        Active = true
+                        }
+                },
+
+                {
                 Stat__DungeonArtifactsFound,
                     new StatsDetailsMap{
                         FriendlyName="Dungeon Looter",
@@ -457,7 +479,16 @@ namespace tfgame.Procedures
                         }
                 },
 
-
+                // Quests
+                {
+                Stat__QuestsFailed,
+                    new StatsDetailsMap{
+                        FriendlyName="Try Staying Home Today",
+                        Description="Quests failed",
+                        ImageUrl="trophy.jpg",
+                        Active = true
+                        }
+                },
 
 
             };

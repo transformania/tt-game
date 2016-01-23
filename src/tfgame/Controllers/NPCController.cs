@@ -1428,6 +1428,10 @@ namespace tfgame.Controllers
             SkillProcedures.GiveSkillToPlayer(me.Id, spellViewModel.Skill.dbName);
             PlayerProcedures.GiveMoneyToPlayer(me, -PvPStatics.LorekeeperSpellPrice);
 
+            new Thread(() =>
+                StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__LorekeeperSpellsLearned,1 )
+            ).Start();
+
             TempData["Result"] = loremaster.GetFullName() + " taught you " + spellViewModel.Skill.FriendlyName + " for " + PvPStatics.LorekeeperSpellPrice + " Arpeyjis.";
             return RedirectToAction("LorekeeperLearnSpell", "NPC");
 

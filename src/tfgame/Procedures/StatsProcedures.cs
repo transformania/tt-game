@@ -55,10 +55,12 @@ namespace tfgame.Procedures
         public const string Stat__LindellaCostsAmount = "lindella_costs_amount"; // RETIRED
         public const string Stat__LindellaProfitsAmount = "lindella_profit_amount"; // RETIRED
         public const string Stat__LindellaNetProfit = "lindella_net_profit";
+        public const string Stat__LindellaNetLoss = "lindella_net_loss";
 
         public const string Stat__WuffieCostsAmount = "wuffie_costs_amount"; // RETIRED
         public const string Stat__WuffieProfitsAmount = "wuffie_profit_amount"; // RETIRED
         public const string Stat__WuffieNetProfit = "wuffie_net_profit";
+        public const string Stat__WuffieNetLoss = "wuffie_net_loss";
 
         public const string Stat__DungeonArtifactsFound = "dungeon_artifacts_found";
         public const string Stat__DungeonDemonsDefeated = "dungeon_demons_defeated";
@@ -309,6 +311,16 @@ namespace tfgame.Procedures
                 },
 
                 {
+                Stat__LindellaNetLoss,
+                    new StatsDetailsMap{
+                        FriendlyName="Soul Consumer",
+                        Description="Net loss from buying from Lindella",
+                        ImageUrl="trophy.jpg",
+                        Active = true
+                        }
+                },
+
+                {
                 Stat__LindellaCostsAmount, // RETIRED
                     new StatsDetailsMap{
                         FriendlyName="Shop 'Til You Drop",
@@ -333,6 +345,16 @@ namespace tfgame.Procedures
                     new StatsDetailsMap{
                         FriendlyName="Puppy Profit!",
                         Description="Profit from selling to Wuffie",
+                        ImageUrl="trophy.jpg",
+                        Active = true
+                        }
+                },
+
+                {
+                Stat__WuffieNetLoss,
+                    new StatsDetailsMap{
+                        FriendlyName="Puppy Purchaser",
+                        Description="Loss from buying from Wuffie",
                         ImageUrl="trophy.jpg",
                         Active = true
                         }

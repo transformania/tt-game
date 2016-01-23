@@ -16,11 +16,25 @@ namespace tfgame.Controllers
 {
     public class PvPAdminController : Controller
     {
-        //
-        // GET: /PvPAdmin/
-        public ActionResult PvPAdmin()
-        {
 
+        public ActionResult Index()
+        {
+            // assert only admins can view this
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            {
+                return View("Play", "PvP");
+            }
+
+            ViewBag.Message = TempData["Message"];
+            return View();
+        }
+
+        /// <summary>
+        /// Iterates through all locations in the world and makes sure all connections hook up properly, ie a location that connections to the east does in fact have a location to the that connections back.
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult CheckLocationConsistency()
+        {
             #region location checks
 
             string output = "<h1>Location Errors: </h1><br>";
@@ -92,93 +106,14 @@ namespace tfgame.Controllers
 
             #endregion
 
-            //#region check skills to forms
-
-            //output += "<h1>Skill to Form Errors</h1><br>";
-            //List<DbStaticSkill> skills = SkillStatics.GetAllStaticSkills().ToList();
-
-            //foreach (DbStaticSkill skill in skills)
-            //{
-
-            //    // if this skill is learned in a region, make sure a region of that names does exist
-            //    if (skill.LearnedAtRegion != null && skill.LearnedAtRegion != "")
-            //    {
-            //        if (LocationsStatics.LocationList.GetLocation.Where(l => l.Region == skill.LearnedAtRegion).Count() == 0)
-            //        {
-            //            output += "Skill <b> " + skill.dbName + " is said to be found at region <b>" + skill.LearnedAtRegion + "</b>, but that region does not exist.<br>";
-            //        }
-            //    }
-
-            //    Form form = FormStatics.GetForm.FirstOrDefault(f => f.dbName == skill.FormdbName);
-
-            //    if (form == null && skill.FormdbName != "none" && skill.ExclusiveToForm == null)
-            //    {
-            //        output += "Skill <b>" + skill.dbName + "</b> refers to form <b>" + skill.FormdbName + "</b> but that form does not exist!<br><br>";
-            //    }
-
-
-            //    if (skill.ExclusiveToForm != null)
-            //    {
-            //        Form exclusiveToform = FormStatics.GetForm.FirstOrDefault(f => f.dbName == skill.ExclusiveToForm);
-            //        if (exclusiveToform == null)
-            //        {
-            //            output += "Curse <b>" + skill.dbName + "</b> is exclusive to form <b>" + skill.ExclusiveToForm + "</b> but that form does not exist!<br><br>";
-            //        }
-
-            //    }
-
-            //}
-
-            //#endregion
-
-            //#region check forms to items
-
-            //output += "<h1>Form to item Errors</h1><br>";
-            //List<Form> forms = FormStatics.GetForm.ToList();
-
-            //foreach (Form form in forms)
-            //{
-            //    StaticItem item = ItemStatics.GetStaticItem.FirstOrDefault(i => i.dbName == form.BecomesItemDbName);
-
-            //    if (item == null && (form.BecomesItemDbName != null))
-            //    {
-            //        output += "Form <b>" + form.dbName + "</b> refers to item <b>" + form.BecomesItemDbName + "</b> but that item does not exist!<br><br>";
-            //    }
-
-            //}
-
-            //#endregion
-
-            //List<StaticItem> itemsWithEffects = ItemStatics.GetStaticItem.Where(i => i.GivesEffect != null && i.GivesEffect != "").ToList();
-
-            //foreach (StaticItem item in itemsWithEffects)
-            //{
-            //    StaticEffect effect = EffectStatics.GetStaticEffect.FirstOrDefault(e => e.dbName == item.GivesEffect);
-
-            //    if (effect == null)
-            //    {
-            //        output += "Item <b>" + item.dbName + "  (" + item.FriendlyName + ")</b> refers to effect <b>" + item.GivesEffect + "</b> but that effect does not exist!<br><br>";
-            //    }
-            //}
-
-
-            @ViewBag.Message = output;
-            return View("~/Views/PvP/PvPAdmin.cshtml");
+            TempData["Message"] = output;
+            return RedirectToAction("Index");
         }
 
-        public ActionResult Index()
-        {
-
-            // assert only admins can view this
-            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
-            {
-                return View("Play", "PvP");
-            }
-
-            ViewBag.Message = TempData["Message"];
-            return View();
-        }
-
+        /// <summary>
+        /// Admin tool.  Updates some information about the status of the round, including turn number, overall round duration, whether it is chaos mode, or the test server.
+        /// </summary>
+        /// <returns></returns>
         public ActionResult ChangeWorldStats()
         {
             // assert only admins can view this
@@ -195,6 +130,9 @@ namespace tfgame.Controllers
 
         }
 
+        /// <summary>
+        /// Admin tool.  Updates some information about the status of the round, including turn number, overall round duration, whether it is chaos mode, or the test server.
+        /// </summary>
         public ActionResult ChangeWorldStatsSend(PvPWorldStat input)
         {
             // assert only admins can view this
@@ -220,617 +158,6 @@ namespace tfgame.Controllers
             TempData["Result"] = "World Data Saved!";
             return RedirectToAction("Play", "PvP");
 
-        }
-
-        public ActionResult SpawnAI(int number, int offset)
-        {
-            AIProcedures.SpawnAIPsychopaths(number, offset);
-            return View("Play");
-        }
-
-        public ActionResult RunAIActions(string password)
-        {
-
-            if (password == null || password != "oogabooga99")
-            {
-                TempData["Result"] = "WRONG PASSWORD";
-                return RedirectToAction("Play");
-            }
-
-            AIProcedures.RunPsychopathActions();
-
-            IPlayerRepository playerRepo = new EFPlayerRepository();
-
-            // automatically spawn in more bots when they go down
-            int botCount = playerRepo.Players.Where(b => b.BotId == AIStatics.PsychopathBotId && b.Mobility == "full").Count();
-            if (botCount < 15)
-            {
-                AIProcedures.SpawnAIPsychopaths(15 - botCount, 0);
-
-            }
-
-            return View("Play");
-        }
-
-        public ActionResult WriteContributionToFile(int contributionId)
-        {
-            //http://localhost:53130/PvPAdmin/WriteContributionToFile?contributionId=110
-
-            IContributionRepository contributionRepo = new EFContributionRepository();
-            Contribution con = contributionRepo.Contributions.FirstOrDefault(c => c.Id == contributionId);
-
-            string path = Server.MapPath("~/Z_selfHelp/");
-            string output = "";
-
-            //  }, new StaticSkill {
-            //                dbName = "",
-            //                FriendlyName = "",
-            //                FormdbName = "",
-            //                Description = "",
-            //                ManaCost = 0,
-            //                HealthDamageAmount = 0,
-            //                TFPointsAmount = 0,
-            //                DiscoveryMessage = "",
-            //                LearnedAtRegion = "",
-            //}
-
-            string nl = Environment.NewLine;
-
-            string skilldbname = "skill_" + con.Skill_FriendlyName.Replace(" ", "_") + "_" + con.SubmitterName.Replace(" ", "_");
-            string formdbname = "form_" + con.Form_FriendlyName.Replace(" ", "_") + "_" + con.SubmitterName.Replace(" ", "_");
-            string itemdbname = "";
-
-            if (con.Form_MobilityType == "inanimate")
-            {
-                itemdbname = "item_" + con.Form_FriendlyName.Replace(" ", "_") + "_" + con.SubmitterName.Replace(" ", "_");
-            }
-            else if (con.Form_MobilityType == "animal")
-            {
-                itemdbname = "animal_" + con.Form_FriendlyName.Replace(" ", "_") + "_" + con.SubmitterName.Replace(" ", "_");
-            }
-
-            #region write skill
-
-
-
-            output = "}, new StaticSkill {" + nl;
-            output += "\t\t dbName = \"" + skilldbname + "\"," + nl;
-            output += "\t\t FriendlyName = \"" + con.Skill_FriendlyName + "\"," + nl;
-            output += "\t\t FormdbName = \"" + formdbname + "\"," + nl;
-            output += "\t\t Description = \"" + con.Skill_Description + "\"," + nl;
-            output += "\t\t ManaCost = " + con.Skill_ManaCost + "M," + nl;
-            output += "\t\t HealthDamageAmount = " + con.Skill_HealthDamageAmount + "M," + nl;
-            output += "\t\t TFPointsAmount = " + con.Skill_TFPointsAmount + "M," + nl;
-
-            // new system for writing skill messages out?
-
-            string skillXMLPath = Server.MapPath("~/XMLs/SkillMessages/" + skilldbname + ".xml");
-
-            SkillProcedures.DeleteOldXML(skillXMLPath);
-            using (StreamWriter writer = new StreamWriter(skillXMLPath, false))
-            {
-                writer.WriteLine("<?xml version=\"1.0\" encoding=\"utf-8\"?><StaticSkill xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">" + nl);
-                writer.WriteLine("<DiscoveryMessage>" + con.Skill_DiscoveryMessage + "</DiscoveryMessage>" + nl);
-                writer.WriteLine("<Description>" + con.Skill_Description + "</Description>" + nl);
-                writer.WriteLine("</StaticSkill>" + nl);
-            }
-
-            //  output += "\t\t DiscoveryMessage = \"" + con.Skill_DiscoveryMessage + "\"," + nl;
-
-            if (con.Skill_LearnedAtRegion != null && con.Skill_LearnedAtRegion != "")
-            {
-                output += "// YOU MUST DO THIS YOURSELF" + nl;
-                output += "\t\t LearnedAtRegion = \"" + con.Skill_LearnedAtRegion + "\"," + nl;
-            }
-
-            output += "}" + nl + nl + nl;
-
-            #endregion
-
-            //new Form {
-            //    dbName = "",
-            //   FriendlyName = "",
-            //   Description = "",
-            //   Gender = "female",
-            //   TFEnergyRequired = 68,
-            //   MobilityType = "inanimate",
-            //   PortraitUrl = "",
-            //    BecomesItemDbName = "",
-            //    FormBuffs = new BuffBox{},
-
-            #region write form
-
-            output += "}, new Form {" + nl;
-            output += "\t\t dbName = \"" + formdbname + "\"," + nl;
-            output += "\t\t FriendlyName = \"" + con.Form_FriendlyName + "\"," + nl;
-            //output += "\t\t Description = \"" + con.Form_Description + "\"," + nl;
-            output += "\t\t Gender = \"" + con.Form_Gender + "\"," + nl;
-            output += "\t\t TFEnergyRequired = " + con.Form_TFEnergyRequired + "M," + nl;
-            output += "\t\t MobilityType = \"" + con.Form_MobilityType + "\"," + nl;
-            output += "\t\t PortraitUrl = \"\"," + nl;
-
-            if (con.Form_MobilityType == "inanimate" || con.Form_MobilityType == "animal")
-            {
-                output += "\t\t BecomesItemDbName = \"" + itemdbname + "\"," + nl;
-            }
-
-            output += "\t\t FormBuffs = new BuffBox{}" + nl;
-            output += "}" + nl + nl + nl;
-
-            if (con.Form_Bonuses != null && con.Form_Bonuses != "")
-            {
-                output += con.Form_Bonuses + nl + nl + nl;
-            }
-
-            #endregion
-
-            #region write to item
-
-            if (con.Form_MobilityType != "full")
-            {
-
-                //   new StaticItem {
-                //    dbName = "",
-                //    FriendlyName = "",
-                //    PortraitUrl = "",
-                //    Description = "",
-                //    ItemType = "",
-                //    Findable = false,
-                //    MoneyValue = 50,
-
-                output += "}, new StaticItem {" + nl;
-                output += "\t\t dbName = \"" + itemdbname + "\"," + nl;
-                output += "\t\t FriendlyName = \"" + con.Item_FriendlyName + "\"," + nl;
-                output += "\t\t PortraitUrl = \"\"," + nl;
-                output += "\t\t Description = \"" + con.Item_Description + "\"," + nl;
-                output += "\t\t ItemType = PvPStatics.ItemType_" + con.Item_ItemType + "," + nl;
-                output += "\t\t Findable = false," + nl;
-
-                output += "}" + nl + nl + nl;
-
-                if (con.Item_Bonuses != null && con.Item_Bonuses != "")
-                {
-                    output += con.Item_Bonuses + nl + nl + nl;
-                }
-
-
-            }
-
-            #endregion
-
-            output += "New spell, " + con.Skill_FriendlyName + ", submitted by ";
-
-            if (con.SubmitterUrl != null && con.SubmitterUrl != "")
-            {
-                output += "<a href=\"" + con.SubmitterUrl + "\">" + con.SubmitterName + "</a>!";
-            }
-            else
-            {
-                output += con.SubmitterName + "!";
-            }
-
-            if (con.AdditionalSubmitterNames != null && con.AdditionalSubmitterNames != "")
-            {
-                output += "  Additional credits go to " + con.AdditionalSubmitterNames + ".";
-            }
-
-            if (con.AssignedToArtist != null && con.AssignedToArtist != "")
-            {
-                output += "  .  Graphic is by " + con.AssignedToArtist + ".";
-            }
-
-            #region write to XML
-
-            // ---------- WRITE TF XML --------------
-
-            using (var stream = new FileStream(path + "spell.txt", FileMode.Truncate))
-            {
-                using (var writer = new StreamWriter(stream))
-                {
-                    writer.Write(output);
-                }
-            }
-
-
-            string xmlPath = Server.MapPath("~/XMLs/TFMessages/" + formdbname + ".xml");
-
-
-
-
-            string xmlout = "<?xml version=\"1.0\" encoding=\"utf-8\"?><Form xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">" + nl;
-
-            if (con.Form_Description != null)
-            {
-                xmlout += "<Description>" + con.Form_Description + "</Description>" + nl + nl;
-            }
-
-            // 1st generic 20
-            if (con.Form_TFMessage_20_Percent_1st != null && con.Form_TFMessage_20_Percent_1st != "")
-            {
-                xmlout += "<TFMessage_20_Percent_1st>" + con.Form_TFMessage_20_Percent_1st + "</TFMessage_20_Percent_1st>" + nl + nl;
-            }
-
-            // 1st generic 40
-            if (con.Form_TFMessage_40_Percent_1st != null && con.Form_TFMessage_40_Percent_1st != "")
-            {
-                xmlout += "<TFMessage_40_Percent_1st>" + con.Form_TFMessage_40_Percent_1st + "</TFMessage_40_Percent_1st>" + nl + nl;
-            }
-
-            // 1st generic 60
-            if (con.Form_TFMessage_60_Percent_1st != null && con.Form_TFMessage_60_Percent_1st != "")
-            {
-                xmlout += "<TFMessage_60_Percent_1st>" + con.Form_TFMessage_60_Percent_1st + "</TFMessage_60_Percent_1st>" + nl + nl;
-            }
-
-            // 1st generic 80
-            if (con.Form_TFMessage_80_Percent_1st != null && con.Form_TFMessage_80_Percent_1st != "")
-            {
-                xmlout += "<TFMessage_80_Percent_1st>" + con.Form_TFMessage_80_Percent_1st + "</TFMessage_80_Percent_1st>" + nl + nl;
-            }
-
-
-            // 1st generic 100
-            if (con.Form_TFMessage_100_Percent_1st != null && con.Form_TFMessage_100_Percent_1st != "")
-            {
-                xmlout += "<TFMessage_100_Percent_1st>" + con.Form_TFMessage_100_Percent_1st + "</TFMessage_100_Percent_1st>" + nl + nl;
-            }
-
-            // 1st generic completed
-            if (con.Form_TFMessage_Completed_1st != null && con.Form_TFMessage_Completed_1st != "")
-            {
-                xmlout += "<TFMessage_Completed_1st>" + con.Form_TFMessage_Completed_1st + "</TFMessage_Completed_1st>" + nl + nl;
-            }
-
-            /////////// 1st M
-
-            // 1st generic 20
-            if (con.Form_TFMessage_20_Percent_1st_M != null && con.Form_TFMessage_20_Percent_1st_M != "")
-            {
-                xmlout += "<TFMessage_20_Percent_1st_M>" + con.Form_TFMessage_20_Percent_1st_M + "</TFMessage_20_Percent_1st_M>" + nl + nl;
-            }
-
-            // 1st generic 40
-            if (con.Form_TFMessage_40_Percent_1st_M != null && con.Form_TFMessage_40_Percent_1st_M != "")
-            {
-                xmlout += "<TFMessage_40_Percent_1st_M>" + con.Form_TFMessage_40_Percent_1st_M + "</TFMessage_40_Percent_1st_M>" + nl + nl;
-            }
-
-            // 1st generic 60
-            if (con.Form_TFMessage_60_Percent_1st_M != null && con.Form_TFMessage_60_Percent_1st_M != "")
-            {
-                xmlout += "<TFMessage_60_Percent_1st_M>" + con.Form_TFMessage_60_Percent_1st_M + "</TFMessage_60_Percent_1st_M>" + nl + nl;
-            }
-
-            // 1st generic 80
-            if (con.Form_TFMessage_80_Percent_1st_M != null && con.Form_TFMessage_80_Percent_1st_M != "")
-            {
-                xmlout += "<TFMessage_80_Percent_1st_M>" + con.Form_TFMessage_80_Percent_1st_M + "</TFMessage_80_Percent_1st_M>" + nl + nl;
-            }
-
-
-            // 1st generic 100
-            if (con.Form_TFMessage_100_Percent_1st_M != null && con.Form_TFMessage_100_Percent_1st_M != "")
-            {
-                xmlout += "<TFMessage_100_Percent_1st_M>" + con.Form_TFMessage_100_Percent_1st_M + "</TFMessage_100_Percent_1st_M>" + nl + nl;
-            }
-
-            // 1st generic completed
-            if (con.Form_TFMessage_Completed_1st_M != null && con.Form_TFMessage_Completed_1st_M != "")
-            {
-                xmlout += "<TFMessage_Completed_1st_M>" + con.Form_TFMessage_Completed_1st_M + "</TFMessage_Completed_1st_M>" + nl + nl;
-            }
-
-            /////////// 1st M
-
-            // 1st generic 20
-            if (con.Form_TFMessage_20_Percent_1st_F != null && con.Form_TFMessage_20_Percent_1st_F != "")
-            {
-                xmlout += "<TFMessage_20_Percent_1st_F>" + con.Form_TFMessage_20_Percent_1st_F + "</TFMessage_20_Percent_1st_F>" + nl + nl;
-            }
-
-            // 1st generic 40
-            if (con.Form_TFMessage_40_Percent_1st_F != null && con.Form_TFMessage_40_Percent_1st_F != "")
-            {
-                xmlout += "<TFMessage_40_Percent_1st_F>" + con.Form_TFMessage_40_Percent_1st_F + "</TFMessage_40_Percent_1st_F>" + nl + nl;
-            }
-
-            // 1st generic 60
-            if (con.Form_TFMessage_60_Percent_1st_F != null && con.Form_TFMessage_60_Percent_1st_F != "")
-            {
-                xmlout += "<TFMessage_60_Percent_1st_F>" + con.Form_TFMessage_60_Percent_1st_F + "</TFMessage_60_Percent_1st_F>" + nl + nl;
-            }
-
-            // 1st generic 80
-            if (con.Form_TFMessage_80_Percent_1st_F != null && con.Form_TFMessage_80_Percent_1st_F != "")
-            {
-                xmlout += "<TFMessage_80_Percent_1st_F>" + con.Form_TFMessage_80_Percent_1st_F + "</TFMessage_80_Percent_1st_F>" + nl + nl;
-            }
-
-
-            // 1st generic 100
-            if (con.Form_TFMessage_100_Percent_1st_F != null && con.Form_TFMessage_100_Percent_1st_F != "")
-            {
-                xmlout += "<TFMessage_100_Percent_1st_F>" + con.Form_TFMessage_100_Percent_1st_F + "</TFMessage_100_Percent_1st_F>" + nl + nl;
-            }
-
-            // 1st generic completed
-            if (con.Form_TFMessage_Completed_1st_F != null && con.Form_TFMessage_Completed_1st_F != "")
-            {
-                xmlout += "<TFMessage_Completed_1st_F>" + con.Form_TFMessage_Completed_1st_F + "</TFMessage_Completed_1st_F>" + nl + nl;
-            }
-
-            //////////////////////////////
-
-            // 1st generic 20
-            if (con.Form_TFMessage_20_Percent_3rd != null && con.Form_TFMessage_20_Percent_3rd != "")
-            {
-                xmlout += "<TFMessage_20_Percent_3rd>" + con.Form_TFMessage_20_Percent_3rd + "</TFMessage_20_Percent_3rd>" + nl + nl;
-            }
-
-            // 1st generic 40
-            if (con.Form_TFMessage_40_Percent_3rd != null && con.Form_TFMessage_40_Percent_3rd != "")
-            {
-                xmlout += "<TFMessage_40_Percent_3rd>" + con.Form_TFMessage_40_Percent_3rd + "</TFMessage_40_Percent_3rd>" + nl + nl;
-            }
-
-            // 1st generic 60
-            if (con.Form_TFMessage_60_Percent_3rd != null && con.Form_TFMessage_60_Percent_3rd != "")
-            {
-                xmlout += "<TFMessage_60_Percent_3rd>" + con.Form_TFMessage_60_Percent_3rd + "</TFMessage_60_Percent_3rd>" + nl + nl;
-            }
-
-            // 1st generic 80
-            if (con.Form_TFMessage_80_Percent_3rd != null && con.Form_TFMessage_80_Percent_3rd != "")
-            {
-                xmlout += "<TFMessage_80_Percent_3rd>" + con.Form_TFMessage_80_Percent_3rd + "</TFMessage_80_Percent_3rd>" + nl + nl;
-            }
-
-
-            // 1st generic 100
-            if (con.Form_TFMessage_100_Percent_3rd != null && con.Form_TFMessage_100_Percent_3rd != "")
-            {
-                xmlout += "<TFMessage_100_Percent_3rd>" + con.Form_TFMessage_100_Percent_3rd + "</TFMessage_100_Percent_3rd>" + nl + nl;
-            }
-
-            // 1st generic completed
-            if (con.Form_TFMessage_Completed_3rd != null && con.Form_TFMessage_Completed_3rd != "")
-            {
-                xmlout += "<TFMessage_Completed_3rd>" + con.Form_TFMessage_Completed_3rd + "</TFMessage_Completed_3rd>" + nl + nl;
-            }
-
-            /////////// 1st M
-
-            // 1st generic 20
-            if (con.Form_TFMessage_20_Percent_3rd_M != null && con.Form_TFMessage_20_Percent_3rd_M != "")
-            {
-                xmlout += "<TFMessage_20_Percent_3rd_M>" + con.Form_TFMessage_20_Percent_3rd_M + "</TFMessage_20_Percent_3rd_M>" + nl + nl;
-            }
-
-            // 1st generic 40
-            if (con.Form_TFMessage_40_Percent_3rd_M != null && con.Form_TFMessage_40_Percent_3rd_M != "")
-            {
-                xmlout += "<TFMessage_40_Percent_3rd_M>" + con.Form_TFMessage_40_Percent_3rd_M + "</TFMessage_40_Percent_3rd_M>" + nl + nl;
-            }
-
-            // 1st generic 60
-            if (con.Form_TFMessage_60_Percent_3rd_M != null && con.Form_TFMessage_60_Percent_3rd_M != "")
-            {
-                xmlout += "<TFMessage_60_Percent_3rd_M>" + con.Form_TFMessage_60_Percent_3rd_M + "</TFMessage_60_Percent_3rd_M>" + nl + nl;
-            }
-
-            // 1st generic 80
-            if (con.Form_TFMessage_80_Percent_3rd_M != null && con.Form_TFMessage_80_Percent_3rd_M != "")
-            {
-                xmlout += "<TFMessage_80_Percent_3rd_M>" + con.Form_TFMessage_80_Percent_3rd_M + "</TFMessage_80_Percent_3rd_M>" + nl + nl;
-            }
-
-
-            // 1st generic 100
-            if (con.Form_TFMessage_100_Percent_3rd_M != null && con.Form_TFMessage_100_Percent_3rd_M != "")
-            {
-                xmlout += "<TFMessage_100_Percent_3rd_M>" + con.Form_TFMessage_100_Percent_3rd_M + "</TFMessage_100_Percent_3rd_M>" + nl + nl;
-            }
-
-            // 1st generic completed
-            if (con.Form_TFMessage_Completed_3rd_M != null && con.Form_TFMessage_Completed_3rd_M != "")
-            {
-                xmlout += "<TFMessage_Completed_3rd_M>" + con.Form_TFMessage_Completed_3rd_M + "</TFMessage_Completed_3rd_M>" + nl + nl;
-            }
-
-            /////////// 1st M
-
-            // 1st generic 20
-            if (con.Form_TFMessage_20_Percent_3rd_F != null && con.Form_TFMessage_20_Percent_3rd_F != "")
-            {
-                xmlout += "<TFMessage_20_Percent_3rd_F>" + con.Form_TFMessage_20_Percent_3rd_F + "</TFMessage_20_Percent_3rd_F>" + nl + nl;
-            }
-
-            // 1st generic 40
-            if (con.Form_TFMessage_40_Percent_3rd_F != null && con.Form_TFMessage_40_Percent_3rd_F != "")
-            {
-                xmlout += "<TFMessage_40_Percent_3rd_F>" + con.Form_TFMessage_40_Percent_3rd_F + "</TFMessage_40_Percent_3rd_F>" + nl + nl;
-            }
-
-            // 1st generic 60
-            if (con.Form_TFMessage_60_Percent_3rd_F != null && con.Form_TFMessage_60_Percent_3rd_F != "")
-            {
-                xmlout += "<TFMessage_60_Percent_3rd_F>" + con.Form_TFMessage_60_Percent_3rd_F + "</TFMessage_60_Percent_3rd_F>" + nl + nl;
-            }
-
-            // 1st generic 80
-            if (con.Form_TFMessage_80_Percent_3rd_F != null && con.Form_TFMessage_80_Percent_3rd_F != "")
-            {
-                xmlout += "<TFMessage_80_Percent_3rd_F>" + con.Form_TFMessage_80_Percent_3rd_F + "</TFMessage_80_Percent_3rd_F>" + nl + nl;
-            }
-
-
-            // 1st generic 100
-            if (con.Form_TFMessage_100_Percent_3rd_F != null && con.Form_TFMessage_100_Percent_3rd_F != "")
-            {
-                xmlout += "<TFMessage_100_Percent_3rd_F>" + con.Form_TFMessage_100_Percent_3rd_F + "</TFMessage_100_Percent_3rd_F>" + nl + nl;
-            }
-
-            // 1st generic completed
-            if (con.Form_TFMessage_Completed_3rd_F != null && con.Form_TFMessage_Completed_3rd_F != "")
-            {
-                xmlout += "<TFMessage_Completed_3rd_F>" + con.Form_TFMessage_Completed_3rd_F + "</TFMessage_Completed_3rd_F>" + nl + nl;
-            }
-
-
-
-
-            xmlout += "</Form>";
-
-            //using (var stream = new FileStream(xmlPath, FileMode.Truncate))
-            //{
-            //    using (var writer = new StreamWriter(stream))
-            //    {
-            //        writer.Write(xmlout);
-            //    }
-            //}
-
-            SkillProcedures.DeleteOldXML(xmlPath);
-
-            using (StreamWriter writer = new StreamWriter(xmlPath, false))
-            {
-
-                writer.WriteLine(xmlout);
-            }
-
-            #endregion
-
-            return View("Play");
-        }
-
-        public ActionResult WriteEffectContributionToFile(int contributionId)
-        {
-            IEffectContributionRepository contributionRepo = new EFEffectContributionRepository();
-
-            EffectContribution con = contributionRepo.EffectContributions.FirstOrDefault(c => c.Id == contributionId);
-
-            string path = Server.MapPath("~/Z_selfHelp/");
-            string nl = Environment.NewLine;
-            string output = "";
-
-
-            string effectdbName = "effect_" + con.Effect_FriendlyName.Replace(" ", "_") + "_" + con.SubmitterName.Replace(" ", "_");
-            string effectXMLPath = Server.MapPath("~/XMLs/Effects/" + effectdbName + ".xml");
-
-            // if there is any skill to be used, write that out to file as needed
-            if (con.Skill_FriendlyName != null)
-            {
-                string skilldbName = "skill_" + con.Skill_FriendlyName.Replace(" ", "_") + "_" + con.SubmitterName.Replace(" ", "_");
-
-                output = "}, new StaticSkill {" + nl;
-                output += "\t\t dbName = \"" + skilldbName + "\"," + nl;
-                output += "\t\t FriendlyName = \"" + con.Skill_FriendlyName + "\"," + nl;
-                output += "\t\t Description = \"" + con.Skill_Description + "\"," + nl;
-                output += "\t\t ManaCost = " + con.Skill_ManaCost + "M," + nl;
-
-                if (con.Skill_UniqueToForm != null && con.Skill_UniqueToForm != null)
-                {
-                    output += "\t\t ExclusiveToForm = \"" + con.Skill_UniqueToForm + "\"," + nl;
-                }
-
-                if (con.Skill_UniqueToItem != null && con.Skill_UniqueToItem != null)
-                {
-                    output += "\t\t ExclusiveToItem = \"" + con.Skill_UniqueToItem + "\"," + nl;
-                }
-
-                if (con.Skill_UniqueToLocation != null && con.Skill_UniqueToLocation != "")
-                {
-                    output += "\t\t UniqueToLocation = \"" + con.Skill_UniqueToLocation + "\"," + nl;
-                }
-
-                output += "\t\t GivesEffect = \"" + effectdbName + "\"," + nl;
-
-                output += "}," + nl + nl + nl;
-
-                // Is there any need to write a skill XML?  The text all happens with the StaticEffect object, so I think maybe not.
-
-                //string skillXMLPath = Server.MapPath("~/XMLs/SkillMessages/" + skilldbname + ".xml");
-                //SkillProcedures.DeleteOldXML(skillXMLPath);
-                //using (StreamWriter writer = new StreamWriter(skillXMLPath, false))
-                //{
-                //    writer.WriteLine("<?xml version=\"1.0\" encoding=\"utf-8\"?><StaticSkill xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">" + nl);
-                //    writer.WriteLine("<DiscoveryMessage>" + con.Effect_AttackHitText + "</DiscoveryMessage>" + nl);
-                //    writer.WriteLine("<Description>" + con.Skill_Description + "</Description>" + nl);
-                //    writer.WriteLine("</StaticSkill>" + nl);
-                //}
-            }
-
-            // write effect
-
-            output += "}, new StaticEffect {" + nl;
-            output += "\t\t dbName = \"" + effectdbName + "\"," + nl;
-            output += "\t\t FriendlyName = \"" + con.Effect_FriendlyName + "\"," + nl;
-            output += "\t\t Description = \"" + con.Effect_Description + "\"," + nl;
-            output += "\t\t Duration = " + con.Effect_Duration + "," + nl;
-            output += "\t\t Cooldown = " + con.Effect_Cooldown + "," + nl;
-            output += "\t\t AvailableAtLevel = 0," + nl;
-            output += "}," + nl + nl + nl;
-
-            output += con.Effect_Bonuses + nl + nl + nl;
-
-
-
-
-            SkillProcedures.DeleteOldXML(effectXMLPath);
-            using (StreamWriter writer = new StreamWriter(effectXMLPath, false))
-            {
-                writer.WriteLine("<?xml version=\"1.0\" encoding=\"utf-8\"?><StaticEffect xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">" + nl);
-
-                writer.WriteLine("<Description>" + con.Effect_Description + "</Description>" + nl);
-
-                if (con.Effect_AttackHitText != null)
-                {
-                    writer.WriteLine("<AttackerWhenHit>" + con.Effect_AttackHitText + "</AttackerWhenHit>" + nl);
-                }
-
-                if (con.Effect_AttackHitText != null)
-                {
-                    writer.WriteLine("<AttackerWhenHit_M>" + con.Effect_AttackHitText + "</AttackerWhenHit_M>" + nl);
-                }
-
-                if (con.Effect_AttackHitText != null)
-                {
-                    writer.WriteLine("<AttackerWhenHit_F>" + con.Effect_AttackHitText + "</AttackerWhenHit_F>" + nl);
-                }
-
-                //////////////
-
-                if (con.Effect_VictimHitText != null)
-                {
-                    writer.WriteLine("<MessageWhenHit>" + con.Effect_VictimHitText + "</MessageWhenHit>" + nl);
-                }
-
-                if (con.Effect_VictimHitText_M != null)
-                {
-                    writer.WriteLine("<MessageWhenHit_M>" + con.Effect_VictimHitText_M + "</MessageWhenHit_M>" + nl);
-                }
-
-                if (con.Effect_VictimHitText_F != null)
-                {
-                    writer.WriteLine("<MessageWhenHit_F>" + con.Effect_VictimHitText_F + "</MessageWhenHit_F>" + nl);
-                }
-
-                writer.WriteLine("</StaticEffect>" + nl);
-            }
-
-            output += "New curse, " + con.Skill_FriendlyName + ", submitted by " + con.SubmitterName + " with additional credits by " + con.AdditionalSubmitterNames + ".";
-
-
-            using (var stream = new FileStream(path + "spell.txt", FileMode.Truncate))
-            {
-                using (var writer = new StreamWriter(stream))
-                {
-                    writer.Write(output);
-                }
-            }
-
-            string effectdbname = "skill_" + con.Skill_FriendlyName.Replace(" ", "_") + "_" + con.SubmitterName.Replace(" ", "_");
-
-            return View("Play");
         }
 
         public ActionResult ApproveEffectContributionList()
@@ -943,46 +270,6 @@ namespace tfgame.Controllers
 
             return RedirectToAction("ApproveEffectContributionList");
 
-            // IEffectContributionRepository conRepo = new EFEffectContributionRepository();
-        }
-
-        public ActionResult DoesLocationHaveXML()
-        {
-
-            string nl = Environment.NewLine;
-            string output = "";
-            ViewBag.Message = "";
-
-            foreach (Location loc in LocationsStatics.LocationList.GetLocation.Where(l => l.dbName != ""))
-            {
-
-                if (loc.Description == null || loc.Description == "")
-                {
-
-                    string xmlpathLocation = Server.MapPath("~/XMLs/LocationDescriptions/" + loc.dbName + ".xml");
-
-                    if (!System.IO.File.Exists(xmlpathLocation))
-                    {
-                        output += xmlpathLocation + "</br>";
-                    }
-                    // SkillProcedures.DeleteOldXML(xmlpathLocation);
-
-                    //using (StreamWriter writer = new StreamWriter(xmlpathLocation, false))
-                    //{
-                    //    writer.WriteLine("<?xml version=\"1.0\" encoding=\"utf-8\"?><Location xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">" + nl);
-                    //    writer.WriteLine("<Description>" + loc.Description + "</Description>" + nl);
-                    //    writer.WriteLine("</Location>" + nl);
-                    //}
-
-                }
-
-
-
-            }
-
-            ViewBag.Text = output;
-
-            return View("Play");
         }
 
         public ActionResult PublicBroadcast()
@@ -1035,6 +322,10 @@ namespace tfgame.Controllers
             }
         }
 
+        /// <summary>
+        /// Admin tool.  Updates the last game update as shown in the header tab.
+        /// </summary>
+        /// <returns></returns>
         public ActionResult ChangeGameDate()
         {
             // assert only admins can view this
@@ -1058,6 +349,10 @@ namespace tfgame.Controllers
             }
         }
 
+        /// <summary>
+        /// Admin tool.  Updates the last game update as shown in the header tab.
+        /// </summary>
+        /// <returns></returns>
         public ActionResult ChangeGameDateSend(PublicBroadcastViewModel input)
         {
             // assert only admins can view this
@@ -1121,7 +416,10 @@ namespace tfgame.Controllers
         }
 
         
-
+        /// <summary>
+        /// In case the friendly NPCs don't spawn when round starts or for other reasons, spawn them manually.  NPCs that are already spawned are not spawned twice.
+        /// </summary>
+        /// <returns></returns>
         public ActionResult SpawnNPCs()
         {
             // assert only admins can view this
@@ -1141,7 +439,7 @@ namespace tfgame.Controllers
 
         public ActionResult ItemPetJSON()
         {
-            // assert only admins can view this
+            // assert only admins or players with JSON pulling can do this
             if (User.IsInRole(PvPStatics.Permissions_Admin) == false && User.IsInRole(PvPStatics.Permissions_JSON) == false)
             {
                 return View("Play", "PvP");
@@ -1153,7 +451,7 @@ namespace tfgame.Controllers
 
         public ActionResult FormJSON()
         {
-            // assert only admins can view this
+            // assert only admins or players with JSON pulling can do this
             if (User.IsInRole(PvPStatics.Permissions_Admin) == false && User.IsInRole(PvPStatics.Permissions_JSON) == false)
             {
                 return View("Play", "PvP");
@@ -1165,7 +463,7 @@ namespace tfgame.Controllers
 
         public ActionResult SpellJSON()
         {
-            // assert only admins can view this
+            // assert only admins or players with JSON pulling can do this
             if (User.IsInRole(PvPStatics.Permissions_Admin) == false && User.IsInRole(PvPStatics.Permissions_JSON) == false)
             {
                 return View("Play", "PvP");
@@ -1764,43 +1062,6 @@ namespace tfgame.Controllers
         public ActionResult SpawnLindella()
         {
             AIProcedures.SpawnLindella();
-            return View("Play");
-        }
-
-        public ActionResult SkillsFormsWithoutXMLs()
-        {
-            IContributionRepository contributionRepo = new EFContributionRepository();
-
-            string output = "";
-
-            List<Contribution> liveContributions = contributionRepo.Contributions.Where(i => i.IsLive == true && i.ProofreadingCopy == true).ToList();
-            List<Contribution> noXMLs = new List<Contribution>();
-
-            foreach (Contribution con in liveContributions)
-            {
-
-                string skilldbname = "skill_" + con.Skill_FriendlyName.Replace(" ", "_") + "_" + con.SubmitterName.Replace(" ", "_");
-                string formdbname = "form_" + con.Form_FriendlyName.Replace(" ", "_") + "_" + con.SubmitterName.Replace(" ", "_");
-
-                string skillXMLName = Server.MapPath("~/XMLs/SkillMessages/" + skilldbname + ".xml");
-                string formXMLName = Server.MapPath("~/XMLs/TFMessages/" + formdbname + ".xml");
-
-                if (!System.IO.File.Exists(skillXMLName))
-                {
-                    output += "No XML file found for <span class='skill'>Skill</span> <b>" + con.Skill_FriendlyName + "</b>.  (Expected <i>" + skilldbname + ".xml</i>)</br>";
-                }
-
-                if (!System.IO.File.Exists(formXMLName))
-                {
-                    output += "No XML file found for <span class='form'>Form</span> <b>" + con.Form_FriendlyName + "</b>. (Expected <i>" + formdbname + ".xml</i>)</br>";
-                }
-
-                output += "<hr>";
-
-            }
-
-
-            ViewBag.Text = output;
             return View("Play");
         }
 
@@ -2993,6 +2254,7 @@ namespace tfgame.Controllers
 
             if (PvPStatics.ChaosMode==false && test == false)
             {
+                TempData["Error"] = "Cannot be done on live server outside of chaos..";
                 return RedirectToAction("Play", "PvP");
             }
 
@@ -3014,7 +2276,7 @@ namespace tfgame.Controllers
             itemRepo.SaveItem(scroll);
 
 
-            TempData["Result"] = "You are now fully animate.";
+            TempData["Result"] = "You used your admin magic to give yourself a teleportation scroll.";
             return RedirectToAction("Play", "PvP");
 
         }

@@ -395,19 +395,24 @@ namespace tfgame.Procedures
             }
         }
 
-        public static void UpdateItemSpecificSkillsToPlayer(int ownerId)
+        public static void UpdateItemSpecificSkillsToPlayer(Player owner)
         {
-            UpdateItemSpecificSkillsToPlayer(ownerId, "X");
+            UpdateItemSpecificSkillsToPlayer(owner, "X");
         }
 
-        public static void UpdateItemSpecificSkillsToPlayer(int ownerId, string newItemName)
+        /// <summary>
+        /// Delete any curses/blessing gained by items/pets from a player that they no longer posses, then give them any curses unique to a new item/pet.  Psychopathic spellslingers make an exception and should never learn any new curses from items/pets they have gained.
+        /// </summary>
+        /// <param name="owner">The Player who owns/owned the item</param>
+        /// <param name="newItemName">The name of a new item that the player is gaining, if any.</param>
+        public static void UpdateItemSpecificSkillsToPlayer(Player owner, string newItemName)
         {
 
             ISkillRepository skillRepo = new EFSkillRepository();
 
             // delete all of the old item specific skills for the player
-            IEnumerable<SkillViewModel2> itemSpecificSkills = GetSkillViewModelsOwnedByPlayer__CursesOnly(ownerId).ToList();
-            IEnumerable<string> equippedItemsDbNames = ItemProcedures.GetAllPlayerItems_ItemOnly(ownerId).Where(i => i.IsEquipped == true && i.dbName != newItemName).Select(s => s.dbName).ToList();
+            IEnumerable<SkillViewModel2> itemSpecificSkills = GetSkillViewModelsOwnedByPlayer__CursesOnly(owner.Id).ToList();
+            IEnumerable<string> equippedItemsDbNames = ItemProcedures.GetAllPlayerItems_ItemOnly(owner.Id).Where(i => i.IsEquipped == true && i.dbName != newItemName).Select(s => s.dbName).ToList();
             List<int> itemSpecificSkillsIds = new List<int>();
 
             foreach (SkillViewModel2 s in itemSpecificSkills)
@@ -423,7 +428,11 @@ namespace tfgame.Procedures
                 skillRepo.DeleteSkill(id);
             }
 
-
+            // don't give psychos any curses.  Quit automatically
+            if (owner.BotId == AIStatics.PsychopathBotId)
+            {
+                return;
+            }
 
             // now give the player any skills they are missing
             List<DbStaticSkill> itemSpecificSkillsToGive = SkillStatics.GetItemSpecificSkills(newItemName).ToList();
@@ -431,13 +440,13 @@ namespace tfgame.Procedures
             {
 
                 // make sure player does not already have this skill due to some bug or othher
-                Skill possibledbSkill = skillRepo.Skills.FirstOrDefault(s => s.OwnerId == ownerId && s.Name == skill.dbName);
+                Skill possibledbSkill = skillRepo.Skills.FirstOrDefault(s => s.OwnerId == owner.Id && s.Name == skill.dbName);
 
                 if (possibledbSkill == null)
                 {
                     Skill dbSkill = new Skill
                     {
-                        OwnerId = ownerId,
+                        OwnerId = owner.Id,
                         Charge = -1,
                         Duration = -1,
                         Name = skill.dbName,

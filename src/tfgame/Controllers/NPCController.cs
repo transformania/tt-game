@@ -227,7 +227,7 @@ namespace tfgame.Controllers
              ).Start();
 
             ItemProcedures.GiveItemToPlayer_Nocheck(purchased.dbItem.Id, me.Id);
-            SkillProcedures.UpdateItemSpecificSkillsToPlayer(me.Id);
+            SkillProcedures.UpdateItemSpecificSkillsToPlayer(me);
 
             TempData["Result"] = "You have purchased a " + purchased.Item.FriendlyName + " from Lindella.";
             return RedirectToAction("TradeWithMerchant", new { filter = PvPStatics.ItemType_Shirt });
@@ -480,7 +480,7 @@ namespace tfgame.Controllers
              ).Start();
 
             ItemProcedures.GiveItemToPlayer_Nocheck(purchased.dbItem.Id, me.Id);
-            SkillProcedures.UpdateItemSpecificSkillsToPlayer(me.Id);
+            SkillProcedures.UpdateItemSpecificSkillsToPlayer(me);
 
 
 

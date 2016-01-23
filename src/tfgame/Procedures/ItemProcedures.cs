@@ -564,7 +564,7 @@ namespace tfgame.Procedures
             itemRepo.SaveItem(item);
             ItemTransferLogProcedures.AddItemTransferLog(itemId, -1);
 
-            SkillProcedures.UpdateItemSpecificSkillsToPlayer(oldOwnerId);
+            SkillProcedures.UpdateItemSpecificSkillsToPlayer(PlayerProcedures.GetPlayer(oldOwnerId));
 
             
 
@@ -604,7 +604,7 @@ namespace tfgame.Procedures
                 dbOwner = PlayerProcedures.ReadjustMaxes(dbOwner, targetbuffs);
                 playerRepo.SavePlayer(dbOwner);
 
-                SkillProcedures.UpdateItemSpecificSkillsToPlayer(dbOwner.Id, item.dbName);
+                SkillProcedures.UpdateItemSpecificSkillsToPlayer(dbOwner, item.dbName);
 
                 return "You put on your " + itemPlus.FriendlyName + ".";
          
@@ -619,7 +619,7 @@ namespace tfgame.Procedures
                 dbOwner = PlayerProcedures.ReadjustMaxes(dbOwner, targetbuffs);
                 playerRepo.SavePlayer(dbOwner);
 
-                SkillProcedures.UpdateItemSpecificSkillsToPlayer(dbOwner.Id);
+                SkillProcedures.UpdateItemSpecificSkillsToPlayer(dbOwner);
 
                 return "You took off your " + itemPlus.FriendlyName + ".";
               
@@ -1171,7 +1171,7 @@ namespace tfgame.Procedures
                     newItem.OwnerId = attacker.Id;
                     newItem.dbLocationName = "";
 
-                    // UNLESS the attacker is a boss, then give it to them for free
+                // UNLESS the attacker is a boss, then give it to them for free
                 } else if (attacker.BotId < AIStatics.PsychopathBotId) {
                     newItem.OwnerId = attacker.Id;
                     newItem.dbLocationName = "";
@@ -1200,7 +1200,7 @@ namespace tfgame.Procedures
                     newItem.OwnerId = attacker.Id;
                     newItem.IsEquipped = true;
                     newItem.dbLocationName = "";
-                    SkillProcedures.UpdateItemSpecificSkillsToPlayer(attacker.Id, newItem.dbName);
+                    SkillProcedures.UpdateItemSpecificSkillsToPlayer(attacker, newItem.dbName);
                 }
 
                 // otherwise the animal runs free
@@ -1264,7 +1264,7 @@ namespace tfgame.Procedures
 
             }
 
-            SkillProcedures.UpdateItemSpecificSkillsToPlayer(player.Id);
+            SkillProcedures.UpdateItemSpecificSkillsToPlayer(player);
 
         }
 

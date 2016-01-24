@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Web.Mvc;
 using tfgame.dbModels.Abstract;
 using tfgame.dbModels.Concrete;
@@ -313,6 +314,11 @@ namespace tfgame.Controllers
             {
                 QuestProcedures.PlayerEndQuest(me, (int)QuestStatics.QuestOutcomes.Failed);
                 QuestProcedures.ClearQuestPlayerVariables(me.Id, me.InQuest);
+
+                new Thread(() =>
+                    StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__QuestsFailed, 1)
+                ).Start();
+
                 TempData["Result"] = "You unfortunately failed the quest <b>" + quest.Name + "</b>.  Better luck next time!  If there is one...";
                 return RedirectToAction("Play", "PvP");
             }
@@ -320,6 +326,11 @@ namespace tfgame.Controllers
             // pass!
             string victoryMessage = QuestProcedures.PlayerEndQuest(me, (int)QuestStatics.QuestOutcomes.Completed);
             QuestProcedures.ClearQuestPlayerVariables(me.Id, me.InQuest);
+
+            new Thread(() =>
+                   StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__QuestsPassed, 1)
+               ).Start();
+
             TempData["Result"] = "Congratulations, you completed the quest <b>" + quest.Name + "</b>!" + victoryMessage;
 
             return RedirectToAction("Play", "PvP");

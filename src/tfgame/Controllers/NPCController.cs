@@ -223,8 +223,12 @@ namespace tfgame.Controllers
             PlayerProcedures.GiveMoneyToPlayer(me, -cost);
 
             new Thread(() =>
-                 StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__LindellaCostsAmount, (float)cost)
+                 StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__LindellaNetProfit, -(float)cost)
              ).Start();
+
+            new Thread(() =>
+                StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__LindellaNetLoss, (float)cost)
+            ).Start();
 
             ItemProcedures.GiveItemToPlayer_Nocheck(purchased.dbItem.Id, me.Id);
             SkillProcedures.UpdateItemSpecificSkillsToPlayer(me);
@@ -339,7 +343,11 @@ namespace tfgame.Controllers
             PlayerProcedures.GiveMoneyToPlayer(me, cost);
 
             new Thread(() =>
-                 StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__LindellaProfitsAmount, (float)cost)
+                 StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__LindellaNetProfit, (float)cost)
+             ).Start();
+
+            new Thread(() =>
+                 StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__LindellaNetLoss, -(float)cost)
              ).Start();
 
 
@@ -476,8 +484,12 @@ namespace tfgame.Controllers
 
 
             new Thread(() =>
-                 StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__WuffieCostsAmount, (float)cost)
+                 StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__WuffieNetProfit, (float)-cost)
              ).Start();
+
+            new Thread(() =>
+                StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__WuffieNetLoss, (float)cost)
+            ).Start();
 
             ItemProcedures.GiveItemToPlayer_Nocheck(purchased.dbItem.Id, me.Id);
             SkillProcedures.UpdateItemSpecificSkillsToPlayer(me);
@@ -598,8 +610,12 @@ namespace tfgame.Controllers
             PlayerProcedures.GiveMoneyToPlayer(me, cost);
 
             new Thread(() =>
-                 StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__WuffieProfitsAmount, (float)cost)
+                 StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__WuffieNetProfit, (float)cost)
              ).Start();
+
+            new Thread(() =>
+                StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__WuffieNetLoss, (float)-cost)
+            ).Start();
 
             TempData["Result"] = "You sold your " + itemBeingSold.Item.FriendlyName + " to Wüffie for " + (int)cost + " Arpeyjis.";
             return RedirectToAction("TradeWithPetMerchant");
@@ -1411,6 +1427,10 @@ namespace tfgame.Controllers
             // all checks passed; give the player the spell
             SkillProcedures.GiveSkillToPlayer(me.Id, spellViewModel.Skill.dbName);
             PlayerProcedures.GiveMoneyToPlayer(me, -PvPStatics.LorekeeperSpellPrice);
+
+            new Thread(() =>
+                StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__LorekeeperSpellsLearned,1 )
+            ).Start();
 
             TempData["Result"] = loremaster.GetFullName() + " taught you " + spellViewModel.Skill.FriendlyName + " for " + PvPStatics.LorekeeperSpellPrice + " Arpeyjis.";
             return RedirectToAction("LorekeeperLearnSpell", "NPC");

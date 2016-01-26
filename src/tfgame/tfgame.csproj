@@ -1908,6 +1908,8 @@
     <Content Include="XMLs\SkillBooks\donna1_Lexam.txt" />
     <Content Include="XMLs\SkillBooks\founding_after_recovery.txt" />
     <Content Include="XMLs\SkillBooks\founding_recovery.txt" />
+    <Content Include="XMLs\SkillBooks\narcissa_elders.txt" />
+    <Content Include="XMLs\SkillBooks\narcissa_winston.txt" />
     <Content Include="XMLs\SkillBooks\seekshadows_Judoo.txt" />
     <Content Include="XMLs\SkillBooks\founding.txt" />
     <Content Include="XMLs\SkillBooks\founding_tree.txt" />

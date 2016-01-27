@@ -33,10 +33,10 @@ namespace tfgame.ViewModels
         public float Submission_Dominance { get; set; }
         public float Fortitude { get; set; }
         public float Agility { get; set; }
-        public float Allure { get; set; }
+        public float Allure { get; set; } // Renamed to Restoration
         public float Corruption_Purity { get; set; }
         public float Magicka { get; set; }
-        public float Succour { get; set; }
+        public float Succour { get; set; } // Renamed to Regeneration
         public float Luck { get; set; }
         public float Chaos_Order { get; set; }
     }

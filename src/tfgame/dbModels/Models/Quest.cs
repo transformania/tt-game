@@ -216,6 +216,7 @@ namespace tfgame.dbModels.Models
         /// A numerical offset when making a requirement roll to make the base chance easier or harder.  Ie, an offset of 10 gives a 10% boost to any roll the player makes.
         /// </summary>
         public float RollOffset { get; set; }
+        public object QuestStatics { get; private set; }
 
         /// <summary>
         /// Constructor; initialized a few defaults
@@ -225,6 +226,92 @@ namespace tfgame.dbModels.Models
             this.RollModifier = 1;
             this.RollOffset = 0;
         }
+
+        /// <summary>
+        /// Return the operator this requirement uses as a string
+        /// </summary>
+        /// <returns></returns>
+        public string PrintOperatorAsString()
+        {
+
+            switch (this.Operator)
+            {
+                case (int)tfgame.Statics.QuestStatics.Operator.Less_Than:
+                    {
+                        return "<";
+                    }
+                case (int)tfgame.Statics.QuestStatics.Operator.Less_Than_Or_Equal:
+                    {
+                        return "<=";
+                    }
+                case (int)tfgame.Statics.QuestStatics.Operator.Equal_To:
+                    {
+                        return "=";
+                    }
+                case (int)tfgame.Statics.QuestStatics.Operator.Greater_Than:
+                    {
+                        return ">";
+                    }
+                case (int)tfgame.Statics.QuestStatics.Operator.Greater_Than_Or_Equal:
+                    {
+                        return ">=";
+                    }
+                case (int)tfgame.Statics.QuestStatics.Operator.Not_Equal_To:
+                    {
+                        return "!=";
+                    }
+            }
+            return "";
+        }
+
+        /// <summary>
+        /// Print the name of the requirement as a string
+        /// </summary>
+        /// <returns></returns>
+        public string PrintRequirementStatAsString()
+        {
+            switch (this.RequirementType)
+            {
+                case (int)tfgame.Statics.QuestStatics.RequirementType.Agility:
+                    {
+                        return "Agility";
+                    }
+                case (int)tfgame.Statics.QuestStatics.RequirementType.Allure:
+                    {
+                        return "Restoration";
+                    }
+                case (int)tfgame.Statics.QuestStatics.RequirementType.Charisma:
+                    {
+                        return "Charisma";
+                    }
+                case (int)tfgame.Statics.QuestStatics.RequirementType.Discipline:
+                    {
+                        return "Discipline";
+                    }
+                case (int)tfgame.Statics.QuestStatics.RequirementType.Fortitude:
+                    {
+                        return "Fortitude";
+                    }
+                case (int)tfgame.Statics.QuestStatics.RequirementType.Luck:
+                    {
+                        return "Luck";
+                    }
+                case (int)tfgame.Statics.QuestStatics.RequirementType.Magicka:
+                    {
+                        return "Magicka";
+                    }
+                case (int)tfgame.Statics.QuestStatics.RequirementType.Perception:
+                    {
+                        return "Perception";
+                    }
+                case (int)tfgame.Statics.QuestStatics.RequirementType.Succour:
+                    {
+                        return "Regeneration";
+                    }
+            }
+            return "";
+        }
+
     }
 
     public class QuestEnd

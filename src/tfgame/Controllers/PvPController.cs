@@ -849,6 +849,12 @@ namespace tfgame.Controllers
                 output = output.Where(s => s.Skill.dbName != PvPStatics.Dungeon_VanquishSpell);
             }
 
+            // Vanquish only works against dungeon demons
+            if (target.BotId == AIStatics.FaebossId)
+            {
+                output = output.Where(s => s.Skill.dbName == BossProcedures_FaeBoss.SpellUsedAgainstNarcissa);
+            }
+
             ViewBag.TargetId = targetId;
             ViewBag.TargetName = target.GetFullName();
             ViewBag.BotId = target.BotId;

@@ -966,7 +966,7 @@ namespace tfgame.Controllers
                 }
                 if (stats.Boss_Faeboss == "active")
                 {
-                    output += "\"A disgruntled fae from the Winston grove is going about the town, transforming those she meets into what she believes to be more suitable forms.  If you don't play along, she may well try to turn you into a flower or keep you as her own personal pet.\"<br><br>";
+                    output += "\"A disgruntled fae from the Winston grove is going about the town, transforming those she meets into what she believes to be more suitable forms.  If you don't play along, she may well try to turn you into a flower or keep you as her own personal pet.  I've been told the only way to fight is to capture her and imprison her in a jar.  Perhaps questing in the back of Words of Wisdom will help you.  Best of luck, friend!\"<br><br>";
                 }
                 if (output == "")
                 {

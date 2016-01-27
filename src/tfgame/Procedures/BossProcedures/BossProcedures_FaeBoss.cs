@@ -123,7 +123,7 @@ namespace tfgame.Procedures.BossProcedures
 
             if (spellName == SpellUsedAgainstNarcissa)
             {
-                return new Tuple<bool, string>(false, "You try to cast upon " + FirstName + ", " + "but the fae's mastery over your current form is overwhelming and you find that you cannot!");
+                return new Tuple<bool, string>(false, "This spell has no effect on " + FirstName + "!  Maybe you should talk to Rusty at the bar and get some advice...");
             }
             return new Tuple<bool, string>(true, "");
         }

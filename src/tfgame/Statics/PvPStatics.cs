@@ -91,6 +91,12 @@ namespace tfgame.Statics
         public const decimal AttackCost = 3.0M;
         public const decimal MeditateCost = 4.0M;
         public const decimal CleanseCost = 4.0M;
+
+        public const float SelfRestoreAPCost = 3;
+        public const float SelfRestoreManaCost = 10;
+        public const float SelfRestoreTFnergyRequirement = 100;
+        public const float SelfRestoreBaseTFEnergyPerCast = 10;
+
         public const decimal CleanseManaCost = 3M;
         public const decimal CleanseTFEnergyPercentDecrease = 2.0M;
         public const decimal MeditateManaRestoreBase = 10.0M;

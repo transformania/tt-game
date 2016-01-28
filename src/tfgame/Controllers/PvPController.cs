@@ -1427,7 +1427,84 @@ namespace tfgame.Controllers
              return RedirectToAction("Play");
          }
 
-         [Authorize]
+        /// <summary>
+        /// Allow a player to use up AP, mana, and cleanse/meditate in order to attempt to restore themself to their base form.
+        /// </summary>
+        /// <returns></returns>
+        [Authorize]
+        public ActionResult SelfRestore()
+        {
+
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+
+            // assert update stage is not currently in player update
+            if (PvPStatics.AnimateUpdateInProgress == true)
+            {
+                TempData["Error"] = "Player update portion of the world update is still in progress.";
+                TempData["SubError"] = "Try again a bit later when the update has progressed farther along.";
+                return RedirectToAction("Play");
+            }
+
+            // assert player is in an okay form to do this
+            if (me.Mobility != PvPStatics.MobilityFull)
+            {
+                TempData["Error"] = "You must be animate in order to attempt to attempt to restore yourself to your base form.";
+                return RedirectToAction("Play");
+            }
+
+            // assert that this player is not in a duel
+            if (me.InDuel > 0)
+            {
+                TempData["Error"] = "You must finish your duel before you can attempt to attempt to restore yourself to your base form.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            // assert that this player is not in a quest
+            if (me.InQuest > 0)
+            {
+                TempData["Error"] = "You must finish your quest before you cattempt to attempt to restore yourself to your base form";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            // assert player has enough AP
+            if ((float)me.ActionPoints < PvPStatics.SelfRestoreAPCost)
+            {
+                TempData["Error"] = "You don't have enough action points in order to attempt to restore yourself to your base form.";
+                TempData["SubError"] = "You need <b>" + (PvPStatics.SelfRestoreAPCost - (float)me.ActionPoints) + "</b>more AP in order to do this.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            // assert player has enough mana
+            if ((float)me.ActionPoints < PvPStatics.SelfRestoreAPCost)
+            {
+                TempData["Error"] = "You don't have enough mana points in order to attempt to restore yourself to your base form.";
+                TempData["SubError"] = "You need <b>" + (PvPStatics.SelfRestoreManaCost - (float)me.Mana) + "</b>more mana in order to do this.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            // assert player has remaining cleanses/meditates
+            if ((float)me.CleansesMeditatesThisRound >= PvPStatics.MaxCleansesMeditatesPerUpdate)
+            {
+                TempData["Error"] = "You have already cleansed or meditated too many times this turn.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            // assert player is not already in their base form
+            if (me.Form == me.OriginalForm)
+            {
+                TempData["Error"] = "You are already in your base form!";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            BuffBox buffs = ItemProcedures.GetPlayerBuffsSQL(me);
+            string output = PlayerProcedures.SelfRestoreToBase(me, buffs);
+
+            TempData["Result"] = output;
+            return RedirectToAction("Play");
+        }
+
+        [Authorize]
         public ActionResult Meditate()
         {
             string myMembershipId = User.Identity.GetUserId();

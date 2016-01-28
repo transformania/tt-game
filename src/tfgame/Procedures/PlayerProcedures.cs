@@ -1643,13 +1643,13 @@ namespace tfgame.Procedures
             float restoreBonus = (float)Math.Floor(buffs.Allure() / 10 );
             restoreAmount += restoreBonus;
 
-            restoreEnergy.Amount += 10;
+            restoreEnergy.Amount += (decimal)restoreAmount;
             if (restoreEnergy.Amount > (decimal)PvPStatics.SelfRestoreTFnergyRequirement)
             {
                 restoreEnergy.Amount = (decimal)PvPStatics.SelfRestoreTFnergyRequirement;
             }
 
-            output += "You rest and attempt to restore yourself to your base form.  [+" + restoreAmount + ", " + restoreEnergy.Amount + "/" + PvPStatics.SelfRestoreTFnergyRequirement + "]";
+            output += "You rest and attempt to restore yourself to your base form.  [+" + (int)restoreAmount + ", " + (int)restoreEnergy.Amount + "/" + PvPStatics.SelfRestoreTFnergyRequirement + "]";
 
             // enough energy built up for restore to be successful
             if (restoreEnergy.Amount >= (decimal)PvPStatics.SelfRestoreTFnergyRequirement)

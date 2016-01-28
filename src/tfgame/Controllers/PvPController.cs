@@ -2537,7 +2537,7 @@ namespace tfgame.Controllers
              }
 
              MessageProcedures.AddMessage(input, myMembershipId);
-             NoticeProcedures.PushNotice(receiver, "<b>" + me.GetFullName() + " has sent you a new message.</b>", NoticeProcedures.PushType__PlayerMessage);
+             NoticeService.PushNotice(receiver, "<b>" + me.GetFullName() + " has sent you a new message.</b>", NoticeService.PushType__PlayerMessage);
              TempData["Result"] = "Your message has been sent.";
 
              if (me.Mobility != "full")

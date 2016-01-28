@@ -320,7 +320,7 @@ namespace tfgame.Controllers
                  PlayerProcedures.SetCleanseMeditateCount(p.Player.ToDbPlayer(), 0);
                  string message = "<b>" + me.GetFullName() + " has advanced the duel turn.  Attacks and cleanse/meditate limits have been reset.  Attacks may resume in 20 seconds.</b>";
                  PlayerLogProcedures.AddPlayerLog(p.Player.Id, message, true);
-                 NoticeProcedures.PushNotice(p.Player.Id, message, NoticeProcedures.PushType__PlayerLog);
+                 NoticeService.PushNotice(p.Player.Id, message, NoticeService.PushType__PlayerLog);
              }
 
              DuelProcedures.SetLastDuelAttackTimestamp(duel.Id);

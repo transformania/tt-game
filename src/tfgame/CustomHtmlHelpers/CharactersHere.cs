@@ -323,7 +323,7 @@ namespace tfgame.CustomHtmlHelpers
             }
             else
             {
-                strPortraitUrl = new GetStaticItem { DbName = player.Form.BecomesItemDbName }.FindSingle().PortraitUrl;
+                strPortraitUrl = new GetStaticItem { DbName = player.Form.BecomesItemDbName }.Find().PortraitUrl;
                 if (player.Player.Mobility == "animal")
                 {
                     output = "/Images/PvP/animalPortraits/";

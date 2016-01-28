@@ -11,7 +11,7 @@ namespace tfgame.Controllers
         public ActionResult Index(string room)
         {
             var userId = User.Identity.GetUserId();
-            var me = new GetPlayerFormFromMembership { MembershipId = userId }.FindSingle();
+            var me = new GetPlayerFormFromMembership { MembershipId = userId }.Find();
 
             if (!me.CanAccessChat())
                 return View("~/Views/PvP/MakeNewCharacter.cshtml");

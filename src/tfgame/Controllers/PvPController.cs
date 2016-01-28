@@ -849,6 +849,12 @@ namespace tfgame.Controllers
                 output = output.Where(s => s.Skill.dbName != PvPStatics.Dungeon_VanquishSpell);
             }
 
+            // Vanquish only works against dungeon demons
+            if (target.BotId == AIStatics.FaebossId)
+            {
+                output = output.Where(s => s.Skill.dbName == BossProcedures_FaeBoss.SpellUsedAgainstNarcissa);
+            }
+
             ViewBag.TargetId = targetId;
             ViewBag.TargetName = target.GetFullName();
             ViewBag.BotId = target.BotId;
@@ -1185,11 +1191,22 @@ namespace tfgame.Controllers
                     }
                 }
 
-                // TODO:  Dungeon Demons can only be vanquished
+                // Dungeon Demons can only be vanquished
                 if (targeted.BotId == AIStatics.DemonBotId && skill.dbName != PvPStatics.Dungeon_VanquishSpell && skill.dbName != "lowerHealth")
                 {
                     TempData["Error"] = "Only the 'Vanquish' spell and Weaken have any effect on the Dark Demonic Guardians.";
                     return RedirectToAction("Play");
+                }
+
+                // Narcissa
+                if (targeted.BotId == AIStatics.FaebossId)
+                {
+                    Tuple<bool, string> isValid = BossProcedures_FaeBoss.SpellIsValid(attackName, me);
+                    if (isValid.Item1==false)
+                    {
+                        TempData["Error"] = isValid.Item2;
+                        return RedirectToAction("Play");
+                    }
                 }
 
             }

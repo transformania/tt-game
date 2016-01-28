@@ -169,4 +169,18 @@
     <Merchant>Lorekeeper</Merchant>
   </RestockListItem>
 
+  <RestockListItem>
+    <dbName>item_consumable_tome-narcissa_winston</dbName>
+    <AmountBeforeRestock>1</AmountBeforeRestock>
+    <AmountToRestockTo>3</AmountToRestockTo>
+    <Merchant>Lorekeeper</Merchant>
+  </RestockListItem>
+
+  <RestockListItem>
+    <dbName>item_consumable_tome-narcissa_elders</dbName>
+    <AmountBeforeRestock>1</AmountBeforeRestock>
+    <AmountToRestockTo>3</AmountToRestockTo>
+    <Merchant>Lorekeeper</Merchant>
+  </RestockListItem>
+
 </ArrayOfRestockListItem>

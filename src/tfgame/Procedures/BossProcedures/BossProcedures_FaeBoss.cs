@@ -5,6 +5,7 @@ using tfgame.dbModels.Abstract;
 using tfgame.dbModels.Concrete;
 using tfgame.dbModels.Models;
 using tfgame.Statics;
+using tfgame.ViewModels;
 
 namespace tfgame.Procedures.BossProcedures
 {
@@ -31,13 +32,18 @@ namespace tfgame.Procedures.BossProcedures
         public static readonly string[] animateSpellsToCast = { GreatFaeSpell, DarkFaeSpell, EnchantedTreeSpell };
 
         public const string FairyPetSpell = "skill_HEY!_LISTEN!_Varn";
-        public const string FlowerSpell = ""; // SPELL PENDING
-        public const string DarkFaePetSpell = ""; // SPELL PENDING
+        public const string FlowerSpell = "skill_Tainted_Flower_Roxanne246810(Rachael_Victor/Yuki_Kitsu)";
+        public const string ServantOfLunarFaeSpell = "skill_Touch_of_the_Moon_Roxanne246810(Rachael_Victor/Yuki_Kitsu)";
+
+        /// <summary>
+        /// This is the only spell players can cast against Narcissa.
+        /// </summary>
+        public const string SpellUsedAgainstNarcissa = "skill_The_Cheekiest_of_Counterspells_Roxanne246810(Rachael_Victor/Yuki_Kitsu)";
 
         /// <summary>
         /// A list of the inanimate and pet spells Narcissa can cast
         /// </summary>
-        public static readonly string[] inanimateSpellsToCast = { FairyPetSpell };
+        public static readonly string[] inanimateSpellsToCast = { FairyPetSpell, FlowerSpell, ServantOfLunarFaeSpell };
 
         /// <summary>
         /// Probability of drawing Narcissa's aggro when she already has a target set
@@ -53,6 +59,8 @@ namespace tfgame.Procedures.BossProcedures
         /// The random number of additional tiles Narcissa will move to catch up to her target or seek out new ones
         /// </summary>
         private const int MovementRandomExtraDistance = 6;
+
+        private const int SpellChangeTurnFrequency = 5;
 
         /// <summary>
         /// Spawns Narcissa into the world and sets her initial blank AI Directive
@@ -100,15 +108,24 @@ namespace tfgame.Procedures.BossProcedures
         }
 
         /// <summary>
-        /// Returns whether the spell is valid against Narcissa.  TODO.
+        /// Returns whether the spell is valid against Narcissa.
         /// </summary>
         /// <param name="spellName">db name of the spell whose cast is being attempted</param>
         /// <param name="caster">Player attempting to cast the spell</param>
         /// <returns></returns>
-        public static bool SpellIsValid(string spellName, Player caster)
+        public static Tuple<bool, string> SpellIsValid(string spellName, Player caster)
         {
 
-            return false;
+            if (caster.Form== GreatFaeForm || caster.Form == DarkFaeForm || caster.Form == EnchantedTreeForm)
+            {
+                return new Tuple<bool, string>(false, "You try to cast upon " + FirstName + ", " + "but the fae's mastery over your current form is overwhelming and you find that you cannot!");
+            }
+
+            if (spellName == SpellUsedAgainstNarcissa)
+            {
+                return new Tuple<bool, string>(false, "This spell has no effect on " + FirstName + "!  Maybe you should talk to Rusty at the bar and get some advice...");
+            }
+            return new Tuple<bool, string>(true, "");
         }
 
         /// <summary>
@@ -120,6 +137,34 @@ namespace tfgame.Procedures.BossProcedures
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
             Player faeboss = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.FaebossId);
+
+            // fae boss is no longer animate; end the event
+            if (faeboss.Mobility!=PvPStatics.MobilityFull)
+            {
+                EndEvent();
+                return;
+            }
+
+            BuffBox faeBuffs = ItemProcedures.GetPlayerBuffsSQL(faeboss);
+
+            // have Narcissa meditate to get her mana back up
+            if (faeboss.Mana < faeboss.MaxMana / 2)
+            {
+                PlayerProcedures.Meditate(faeboss, faeBuffs);
+            }
+            else if (faeboss.Mana < faeboss.MaxMana / 3)
+            {
+                PlayerProcedures.Meditate(faeboss, faeBuffs);
+                PlayerProcedures.Meditate(faeboss, faeBuffs);
+            }
+            else if (faeboss.Mana < faeboss.MaxMana / 4)
+            {
+                PlayerProcedures.Meditate(faeboss, faeBuffs);
+                PlayerProcedures.Meditate(faeboss, faeBuffs);
+                PlayerProcedures.Meditate(faeboss, faeBuffs);
+            }
+
+
             AIDirective directive = AIDirectiveProcedures.GetAIDirective(faeboss.Id);
 
             // no target, go out and hit some random people with animate spells
@@ -168,8 +213,12 @@ namespace tfgame.Procedures.BossProcedures
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
             Player faeboss = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.FaebossId);
+
+            AIProcedures.DealBossDamage(faeboss,attacker, true, 1); // log attack for human on boss
+
             string spell = ChooseSpell(attacker, PvPWorldStatProcedures.GetWorldTurnNumber(),PvPStatics.MobilityFull);
             AttackProcedures.Attack(faeboss, attacker, spell);
+            AIProcedures.DealBossDamage(faeboss, attacker, false, 1); // log attack for boss on human
 
             AIDirective directive = AIDirectiveProcedures.GetAIDirective(faeboss.Id);
 
@@ -199,13 +248,43 @@ namespace tfgame.Procedures.BossProcedures
         public static string ChooseSpell(Player attacker, int turnNumber, string spellMobilityType)
         {
 
+            // index = Math.Floor(turn_number / spell_swap_frequeny) % spell_counts
+
             if (spellMobilityType==PvPStatics.MobilityFull)
             {
-                int mod = turnNumber % animateSpellsToCast.Count();
-                return animateSpellsToCast[mod];
+                int index = (int)Math.Floor((double)turnNumber / SpellChangeTurnFrequency) % animateSpellsToCast.Count();
+                return animateSpellsToCast[index];
+            } else
+            {
+                int index = (int)Math.Floor((double)turnNumber / SpellChangeTurnFrequency) % animateSpellsToCast.Count();
+                return animateSpellsToCast[index];
             }
+        }
 
-            return inanimateSpellsToCast[0];
+        /// <summary>
+        /// End the faeboss boss event and distribute XP to players who fought her
+        /// </summary>
+        public static void EndEvent()
+        {
+            PvPWorldStatProcedures.Boss_EndFaeBoss();
+
+            List<BossDamage> damages = AIProcedures.GetTopAttackers(AIStatics.FaebossId, 25);
+
+            // top player gets 1000 XP, each player down the line receives 35 fewer
+            int l = 0;
+            int maxReward = 1000;
+
+            foreach (BossDamage damage in damages)
+            {
+
+                Player victor = PlayerProcedures.GetPlayer(damage.PlayerId);
+                int reward = maxReward - (l * 35);
+                victor.XP += reward;
+                l++;
+
+                PlayerProcedures.GiveXP(victor, reward);
+                PlayerLogProcedures.AddPlayerLog(victor.Id, "<b>For your contribution in defeating " + FirstName + " " + LastName + ", you earn " + reward + " XP from your spells cast against traitorous fae.</b>", true);
+            }
 
         }
 
@@ -308,6 +387,7 @@ namespace tfgame.Procedures.BossProcedures
             {
                 string spell = ChooseSpell(p, PvPWorldStatProcedures.GetWorldTurnNumber(), PvPStatics.MobilityFull);
                 AttackProcedures.Attack(faeboss, p, spell);
+                AIProcedures.DealBossDamage(faeboss, p, false, 1); // log attack for human on boss
             }
         }
 

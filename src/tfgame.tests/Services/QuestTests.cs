@@ -119,7 +119,7 @@ namespace tfgame.Tests.Services
 
             string message = QuestProcedures.GetRequirementsAsString(q, buffs);
 
-            message.Should().Be("[150 Luck]");
+            message.Should().Be("[> 150 Luck]");
         }
 
         [Test]
@@ -134,7 +134,7 @@ namespace tfgame.Tests.Services
 
             string message = QuestProcedures.GetRequirementsAsString(q, buffs);
 
-            message.Should().Be("[150 Luck, 35 Perception]");
+            message.Should().Be("[> 150 Luck, = 35 Perception]");
         }
 
         [Test]
@@ -148,11 +148,10 @@ namespace tfgame.Tests.Services
 
             string message = QuestProcedures.GetRequirementsAsString(q, buffs);
 
-            message.Should().Be("[10 Fortitude, Magicka - 10%]");
+            message.Should().Be("[>= 10 Fortitude, Magicka - 10%]");
         }
 
         [Test]
-        [Ignore("TODO")]
         public void Should_not_print_details_for_required_gender()
         {
             b.AddStrictRequirement((int)QuestStatics.RequirementType.Gender, "male", 0);
@@ -164,7 +163,6 @@ namespace tfgame.Tests.Services
         }
 
         [Test]
-        [Ignore("TODO")]
         public void Should_not_print_details_for_required_form()
         {
             b.AddStrictRequirement((int)QuestStatics.RequirementType.Form, "derpform", 0);
@@ -176,7 +174,6 @@ namespace tfgame.Tests.Services
         }
 
         [Test]
-        [Ignore("TODO")]
         public void Should_not_print_details_for_required_variable()
         {
             b.AddStrictRequirement((int)QuestStatics.RequirementType.Variable, "variable", 0);
@@ -188,7 +185,6 @@ namespace tfgame.Tests.Services
         }
 
         [Test]
-        [Ignore("TODO")]
         public void Should_not_print_details_for_mixed_hidden_requirements()
         {
             b.AddStrictRequirement((int)QuestStatics.RequirementType.Variable, "variable", 0);
@@ -210,7 +206,7 @@ namespace tfgame.Tests.Services
 
             string message = QuestProcedures.GetRequirementsAsString(q, buffs);
 
-            message.Should().Be("[25 Succour]");
+            message.Should().Be("[>= 25 Succour]");
         }
     }
 
@@ -351,7 +347,6 @@ namespace tfgame.Tests.Services
         }
 
         [Test]
-        [Ignore("TODO -- method doesn't actually have this coded in yet.")]
         public void Cant_start_quest_if_prerequisite_test_not_completed()
         {
             questStart.PrerequisiteQuest = 2;
@@ -360,7 +355,7 @@ namespace tfgame.Tests.Services
         }
 
         [Test]
-        public void Cant_start_quest_if_prerequisite_test_is_completed()
+        public void Can_start_quest_if_prerequisite_test_is_completed()
         {
             questStart.PrerequisiteQuest = 2;
 

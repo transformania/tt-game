@@ -138,8 +138,29 @@ namespace tfgame.Procedures
                     //    }
                     //}
 
-                    // TODO:  Filter out quests that have a prerequisite not yet fulfilled
+                    
                 }
+            }
+
+            // TODO:  Filter out quests that have a prerequisite not yet fulfilled
+            if (questStart.PrerequisiteQuest > 0)
+            {
+                bool preReqMet = false;
+
+                foreach (QuestPlayerStatus q in questPlayerStatuses)
+                {
+                    if (q.QuestId == questStart.PrerequisiteQuest && q.Outcome==(int)QuestStatics.QuestOutcomes.Completed)
+                    {
+                        preReqMet = true;
+                        break;
+                    }
+                }
+
+                if (preReqMet == false)
+                {
+                    return false;
+                }
+
             }
 
             // all checks passed, return true
@@ -489,7 +510,9 @@ namespace tfgame.Procedures
             foreach (QuestConnectionRequirement qs in q.QuestConnectionRequirements.ToList())
             {
                 // don't print anything for variables or gender requirements
-                if (qs.RequirementType == (int)QuestStatics.RequirementType.Variable || qs.RequirementType == (int)QuestStatics.RequirementType.Gender)
+                if (qs.RequirementType == (int)QuestStatics.RequirementType.Variable || 
+                    qs.RequirementType == (int)QuestStatics.RequirementType.Gender || 
+                    qs.RequirementType == (int)QuestStatics.RequirementType.Form)
                 {
                     continue;
                 }
@@ -510,14 +533,14 @@ namespace tfgame.Procedures
                         chance = 100;
                     }
 
-                    output += Enum.GetName(typeof(QuestStatics.RequirementType), qs.RequirementType) + " - " + chance + "%";
+                    output += qs.PrintRequirementStatAsString() + " - " + chance + "%";
 
                 }
 
                 // strict requirement
                 else
                 {
-                    output += qs.RequirementValue + " " + Enum.GetName(typeof(QuestStatics.RequirementType), qs.RequirementType);
+                    output += qs.PrintOperatorAsString() + " " + qs.RequirementValue + " " + qs.PrintRequirementStatAsString();
                 }
 
                 if (i < len-1)
@@ -530,6 +553,12 @@ namespace tfgame.Procedures
             }
 
             output += "]";
+
+            // no requirements were found, so clear up
+            if (output == "[]")
+            {
+                output = "";
+            }
 
 
             return output;

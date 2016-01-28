@@ -1438,6 +1438,14 @@ namespace tfgame.Controllers
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
+            // assert update stage is not currently in player update
+            if (PvPStatics.AnimateUpdateInProgress == true)
+            {
+                TempData["Error"] = "Player update portion of the world update is still in progress.";
+                TempData["SubError"] = "Try again a bit later when the update has progressed farther along.";
+                return RedirectToAction("Play");
+            }
+
             // assert player is in an okay form to do this
             if (me.Mobility != PvPStatics.MobilityFull)
             {

@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using tfgame.Procedures;
 
-namespace tfgame.Tests.Services
+namespace TT.Tests.Services
 {
     class ItemProcedureTests
     {

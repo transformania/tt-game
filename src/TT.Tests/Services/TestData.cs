@@ -1,6 +1,6 @@
 using tfgame.dbModels.Models;
 
-namespace tfgame.Tests.Services
+namespace TT.Tests.Services
 {
     public class TestData
     {

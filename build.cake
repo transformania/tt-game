@@ -13,7 +13,7 @@ var instances = new Dictionary<string,Tuple<string,string>>()
 
 Task("Clean")
     .Does(() => {
-        CleanDirectories(new DirectoryPath[] { Directory("./src/tfgame/bin"), Directory("./src/tfgame.tests/bin/") + Directory(configuration) });   
+        CleanDirectories(new DirectoryPath[] { Directory("./src/tfgame/bin"), Directory("./src/TT.Tests/bin/"), Directory("./src/TT.Domain/bin/") + Directory(configuration) });   
     }
 );
 

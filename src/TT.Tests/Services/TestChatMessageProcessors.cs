@@ -10,7 +10,7 @@ using tfgame.dbModels.Queries.DMRoll;
 using tfgame.Services;
 using tfgame.Statics;
 
-namespace tfgame.Tests.Services
+namespace TT.Tests.Services
 {
     [TestFixture]
     public class TestRegularTextProcessor

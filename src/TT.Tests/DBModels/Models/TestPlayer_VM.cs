@@ -7,9 +7,9 @@ using tfgame.dbModels.Abstract;
 using tfgame.dbModels.Commands.Player;
 using tfgame.dbModels.Models;
 using tfgame.Statics;
-using tfgame.Tests.Services;
+using TT.Tests.Services;
 
-namespace tfgame.Tests.DBModels.Models
+namespace TT.Tests.DBModels.Models
 {
     [TestFixture]
     public class TestPlayer_VM

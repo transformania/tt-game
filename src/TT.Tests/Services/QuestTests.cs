@@ -1,13 +1,13 @@
-﻿using FluentAssertions;
-using NUnit.Framework;
-using tfgame.Procedures;
-using tfgame.dbModels.Models;
-using tfgame.ViewModels;
+﻿using System;
 using System.Collections.Generic;
+using FluentAssertions;
+using NUnit.Framework;
+using tfgame.dbModels.Models;
+using tfgame.Procedures;
 using tfgame.Statics;
-using System;
+using tfgame.ViewModels;
 
-namespace tfgame.Tests.Services
+namespace TT.Tests.Services
 {
 
     /// <summary>

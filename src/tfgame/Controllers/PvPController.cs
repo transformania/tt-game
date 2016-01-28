@@ -1482,6 +1482,13 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
+            // assert player is not already in their base form
+            if (me.Form == me.OriginalForm)
+            {
+                TempData["Error"] = "You are already in your base form!";
+                return RedirectToAction("Play", "PvP");
+            }
+
             BuffBox buffs = ItemProcedures.GetPlayerBuffsSQL(me);
             string output = PlayerProcedures.SelfRestoreToBase(me, buffs);
 

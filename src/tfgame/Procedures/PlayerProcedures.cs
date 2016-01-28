@@ -1605,6 +1605,75 @@ namespace tfgame.Procedures
 
         }
 
+        /// <summary>
+        /// Allow a player to attempt to restore themself back to their own base form
+        /// </summary>
+        /// <param name="player"></param>
+        /// <returns></returns>
+        public static string SelfRestoreToBase(Player player, BuffBox buffs)
+        {
+
+            IPlayerRepository playerRepo = new EFPlayerRepository();
+            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            dbPlayer.ActionPoints -= (decimal)PvPStatics.SelfRestoreAPCost;
+            dbPlayer.Mana -= (decimal)PvPStatics.SelfRestoreManaCost;
+            dbPlayer.CleansesMeditatesThisRound++;
+            playerRepo.SavePlayer(dbPlayer);
+
+            ITFEnergyRepository energyRepo = new EFTFEnergyRepository();
+            TFEnergy restoreEnergy = energyRepo.TFEnergies.FirstOrDefault(e => e.PlayerId == player.Id && e.FormName == "selfrestore");
+
+            if (restoreEnergy==null)
+            {
+                restoreEnergy = new TFEnergy
+                {
+                    Amount = 0,
+                    CasterId = -1,
+                    Timestamp = DateTime.UtcNow,
+                    FormName = "selfrestore",
+                    PlayerId = player.Id
+                };
+            }
+
+            string output = "";
+
+            // build up some restoration energy
+
+            float restoreAmount = PvPStatics.SelfRestoreBaseTFEnergyPerCast;
+            float restoreBonus = (float)Math.Floor(buffs.Allure() / 10 );
+            restoreAmount += restoreBonus;
+
+            restoreEnergy.Amount += 10;
+            if (restoreEnergy.Amount > (decimal)PvPStatics.SelfRestoreTFnergyRequirement)
+            {
+                restoreEnergy.Amount = (decimal)PvPStatics.SelfRestoreTFnergyRequirement;
+            }
+
+            output += "You rest and attempt to restore yourself to your base form.  [+" + restoreAmount + ", " + restoreEnergy.Amount + "/" + PvPStatics.SelfRestoreTFnergyRequirement + "]";
+
+            // enough energy built up for restore to be successful
+            if (restoreEnergy.Amount >= (decimal)PvPStatics.SelfRestoreTFnergyRequirement)
+            {
+               
+                PlayerProcedures.InstantRestoreToBase(player);
+                energyRepo.DeleteTFEnergy(restoreEnergy.Id);
+                DbStaticForm newform = FormStatics.GetForm(dbPlayer.OriginalForm);
+
+                output += "<span class='meditate'>With this final cast, you manage to restore yourself back to your base form as a <b>" + newform.FriendlyName + "</b>!<span>";
+
+                PlayerLogProcedures.AddPlayerLog(player.Id, output, true);
+            }
+
+            // player does not have enough energy built up.
+            else
+            {
+                output += "  Keep trying and you'll find yourself in a familiar form in no time...";
+                energyRepo.SaveTFEnergy(restoreEnergy);
+            }
+
+            return output;
+        }
+
         public static string Cleanse(Player player, BuffBox buffs)
         {
             string result = "";

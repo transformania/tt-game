@@ -837,22 +837,28 @@ namespace tfgame.Controllers
                 output = output.Where(s => s.Skill.dbName == BossProcedures_Sisters.NerdSpell);
             }
 
-            // Vanquish only works against dungeon demons
+            // Vanquish and weaken only works against dungeon demons
             if (target.BotId == AIStatics.DemonBotId)
             {
                 output = output.Where(s => s.Skill.dbName == PvPStatics.Dungeon_VanquishSpell || s.Skill.dbName == "lowerHealth");
             }
 
-            // Vanquish only works against dungeon demons
+            // Filter out Vanquish when attacking non-Dungeon Demon player
             if (target.BotId != AIStatics.DemonBotId)
             {
                 output = output.Where(s => s.Skill.dbName != PvPStatics.Dungeon_VanquishSpell);
             }
 
-            // Vanquish only works against dungeon demons
+            // Fae-In-A-Bottle only works against Narcissa
             if (target.BotId == AIStatics.FaebossId)
             {
                 output = output.Where(s => s.Skill.dbName == BossProcedures_FaeBoss.SpellUsedAgainstNarcissa);
+            }
+
+            // Filter out Fae-In-A-Bottle when attacking non-Narcissa player
+            if (target.BotId != AIStatics.FaebossId)
+            {
+                output = output.Where(s => s.Skill.dbName != BossProcedures_FaeBoss.SpellUsedAgainstNarcissa);
             }
 
             ViewBag.TargetId = targetId;

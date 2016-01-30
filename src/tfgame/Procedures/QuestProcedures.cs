@@ -289,7 +289,7 @@ namespace tfgame.Procedures
                     }
 
                     // spell gain
-                    else if (q.RewardType == (int)QuestStatics.RewardType.Effect)
+                    else if (q.RewardType == (int)QuestStatics.RewardType.Spell)
                     {
                         DbStaticSkill spell = SkillStatics.GetStaticSkill(q.RewardAmount);
                         SkillProcedures.GiveSkillToPlayer(player.Id, q.RewardAmount);

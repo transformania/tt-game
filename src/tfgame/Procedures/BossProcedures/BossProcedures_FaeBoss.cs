@@ -116,12 +116,12 @@ namespace tfgame.Procedures.BossProcedures
         public static Tuple<bool, string> SpellIsValid(string spellName, Player caster)
         {
 
-            if (caster.Form== GreatFaeForm || caster.Form == DarkFaeForm || caster.Form == EnchantedTreeForm)
+            if (caster.Form == GreatFaeForm || caster.Form == DarkFaeForm || caster.Form == EnchantedTreeForm)
             {
                 return new Tuple<bool, string>(false, "You try to cast upon " + FirstName + ", " + "but the fae's mastery over your current form is overwhelming and you find that you cannot!");
             }
 
-            if (spellName == SpellUsedAgainstNarcissa)
+            if (spellName != SpellUsedAgainstNarcissa)
             {
                 return new Tuple<bool, string>(false, "This spell has no effect on " + FirstName + "!  Maybe you should talk to Rusty at the bar and get some advice...");
             }

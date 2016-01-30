@@ -21,6 +21,7 @@ namespace tfgame.Statics
            "Jewdewfae",
            "Wuffie",
            "Lovebringer",
+           "Narcissa"
            };
 
 

@@ -1100,6 +1100,13 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play");
             }
 
+            // if the spell is Fae-in-a-Bottle, only have it work against Narcissa
+            if (skill.dbName == BossProcedures_FaeBoss.SpellUsedAgainstNarcissa && targeted.BotId != AIStatics.FaebossId)
+            {
+                TempData["Error"] = "This spell can only be cast against " + BossProcedures_FaeBoss.FirstName;
+                return RedirectToAction("Play");
+            }
+
             #region bot attack type checks
             // prevent low level players from taking on high level bots
             if (targeted.BotId < AIStatics.PsychopathBotId)

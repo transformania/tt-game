@@ -16,7 +16,7 @@ namespace tfgame.ViewModels
 
      { "college_foyer", new BossSummon { BossName="Sisters", MinimumTurn = 3200, ActivationText = "" }},
 
-      { BossProcedures_FaeBoss.SpawnLocation, new BossSummon { BossName="FaeBoss", MinimumTurn = 0, ActivationText = "" }},
+      { BossProcedures_FaeBoss.SpawnLocation, new BossSummon { BossName="FaeBoss", MinimumTurn = 3800, ActivationText = "" }},
 
     };
 

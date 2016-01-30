@@ -186,7 +186,7 @@ namespace tfgame.Procedures
                     new StatsDetailsMap{
                         FriendlyName = "Couch Potato",
                         Description="Times using covenant furniture",
-                        ImageUrl="trophy.jpg",
+                        ImageUrl="couch_potato_Ninian_Fae.jpg",
                         Active = true
                         }
                 },

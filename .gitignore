@@ -203,6 +203,7 @@ ConnectionStrings.config
 src/tfgame/Images/PvP/animalPortraits/
 src/tfgame/Images/PvP/itemsPortraits/
 src/tfgame/Images/PvP/portraits/
+src/tfgame/Images/PvP/achievements/
 
 # Tools
 tools

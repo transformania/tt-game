@@ -9,6 +9,7 @@ using TT.Domain.Concrete;
 using TT.Domain.Models;
 using TT.Domain.Procedures.BossProcedures;
 using TT.Domain.Statics;
+using TT.Domain.Utilities;
 using TT.Domain.ViewModels;
 
 namespace TT.Domain.Procedures
@@ -517,14 +518,7 @@ namespace TT.Domain.Procedures
 
                         Random randLevel = new Random(Guid.NewGuid().GetHashCode());
 
-                        List<string> demonNames = new List<string>();
-
-                        var serializer = new XmlSerializer(typeof(List<string>));
-                        string path = "~/XMLs/DungeonDemonNames.xml";
-                        using (var reader = XmlReader.Create(path))
-                        {
-                            demonNames = (List<string>)serializer.Deserialize(reader);
-                        }
+                        var demonNames = XmlResourceLoader.Load<List<string>>("TT.Domain.XMLs.DungeonDemonNames.xml");
 
                         for (int x = 0; x < PvPStatics.DungeonDemon_Limit - dungeonDemonCount; x++)
                         {

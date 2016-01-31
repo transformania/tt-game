@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Xml;
 using System.Xml.Serialization;
 using TT.Domain.Abstract;
@@ -9,6 +8,7 @@ using TT.Domain.Concrete;
 using TT.Domain.Models;
 using TT.Domain.Procedures.BossProcedures;
 using TT.Domain.Statics;
+using TT.Domain.Utilities;
 using TT.Domain.ViewModels;
 
 namespace TT.Domain.Procedures
@@ -20,14 +20,7 @@ namespace TT.Domain.Procedures
         {
 
             // load up the random names XML
-            string path = "XMLs/LastNames.xml";
-            List<string> names = new List<string>();
-
-            var serializer = new XmlSerializer(typeof(List<string>));
-            using (var reader = XmlReader.Create(path))
-            {
-                names = (List<string>)serializer.Deserialize(reader);
-            }
+            var lastNames = XmlResourceLoader.Load<List<string>>("TT.Domain.XMLs.LastNames.xml");
 
             Random rand = new Random();
 
@@ -46,10 +39,10 @@ namespace TT.Domain.Procedures
 
                 bot.FirstName = "Psychopath";
 
-                double lastNameMax = names.Count();
+                double lastNameMax = lastNames.Count();
                 int randLastNameIndex = Convert.ToInt32(Math.Floor(rand.NextDouble() * lastNameMax));
 
-                bot.LastName = names.ElementAt(randLastNameIndex);
+                bot.LastName = lastNames.ElementAt(randLastNameIndex);
 
                 bot.ActionPoints = 120;
                 bot.dbLocationName = LocationsStatics.GetRandomLocation();

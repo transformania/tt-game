@@ -487,14 +487,7 @@ namespace TT.Domain.Procedures
                     List<Item> lindellasItems = itemRepo.Items.Where(i => i.OwnerId == merchant.Id && i.Level == 0).ToList();
                     List<Item> lorekeeperItems = itemRepo.Items.Where(i => i.OwnerId == lorekeeper.Id && i.Level == 0).ToList();
 
-                    string path = "~/XMLs/RestockList.xml";
-                    List<RestockListItem> restockItems = new List<RestockListItem>();
-
-                    var serializer = new XmlSerializer(typeof(List<RestockListItem>));
-                    using (var reader = XmlReader.Create(path))
-                    {
-                        restockItems = (List<RestockListItem>)serializer.Deserialize(reader);
-                    }
+                    var restockItems = XmlResourceLoader.Load<List<RestockListItem>>("TT.Domain.XMLs.RestockList.xml");
 
                     foreach (RestockListItem item in restockItems)
                     {

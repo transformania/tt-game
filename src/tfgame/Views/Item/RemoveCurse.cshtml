@@ -41,7 +41,7 @@
         {
             <h3>@effect.Effect.FriendlyName (@effect.dbEffect.Duration turns of effect remaining)</h3>
             @Html.ActionLink("Remove this curse", "RemoveCurseSend", "Item", new { curse = effect.dbEffect.dbName, id = ViewBag.itemToUseId }, null)
-        <hr />
+            <hr />
         }
     }
 

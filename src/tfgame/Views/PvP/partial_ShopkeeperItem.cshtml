@@ -1,5 +1,5 @@
 ﻿@model TT.Domain.ViewModels.ItemViewModel
-           @using tfgame.CustomHtmlHelpers
+           @using TT.Web.CustomHtmlHelpers
 @using TT.Domain.Statics
 
 <div class="col-md-2 col-sm-3 col-xs-6 charaBox">
@@ -11,9 +11,8 @@
          
             }
 
-           
-                   @Ajax.ActionLink("[+]", "ShowItemDetails", "Item", new { id = Model.dbItem.Id }, new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
-            
+
+            @Ajax.ActionLink("[+]", "ShowItemDetails", "Item", new { id = Model.dbItem.Id }, new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
         }
         @CharactersHere.PrintItemTypeIcon(Model.Item)
         @CharactersHere.PrintSouledIcon(Model)
@@ -29,7 +28,7 @@
                 @{
                     if (ViewBag.Wuffie != null && ViewBag.Wuffie == true)
                     {
-                         @Html.ActionLink("Purchase", "PurchasePet", "NPC", new { id = Model.dbItem.Id }, new { @class = "attackLink" })
+                        @Html.ActionLink("Purchase", "PurchasePet", "NPC", new { id = Model.dbItem.Id }, new { @class = "attackLink" })
                     }
                     else if (ViewBag.Lorekeeper != null && ViewBag.Lorekeeper == true)
                     {

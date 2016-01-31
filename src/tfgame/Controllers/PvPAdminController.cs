@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
 using TT.Domain.Models;
@@ -10,9 +10,8 @@ using TT.Domain.Procedures;
 using TT.Domain.Procedures.BossProcedures;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
-using Microsoft.AspNet.Identity;
 
-namespace tfgame.Controllers
+namespace TT.Web.Controllers
 {
     public class PvPAdminController : Controller
     {

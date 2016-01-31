@@ -107,7 +107,7 @@
         }
         @Html.ActionLink("Reset IP Address", "ResetAllPlayersWithIPAddress", "PvPAdmin", new { address = Model.PlayerForm.Player.IpAddress }, null)<br />
         @Html.ActionLink("Toggle ban on global chat", "ToggleBanOnGlobalChat", "PvPAdmin", new { id = Model.PlayerForm.Player.Id }, null)
-         @Html.ActionLink("Rename", "RenamePlayer", "PvPAdmin", new { id = Model.PlayerForm.Player.Id }, null)
+        @Html.ActionLink("Rename", "RenamePlayer", "PvPAdmin", new { id = Model.PlayerForm.Player.Id }, null)
     }
 }
 

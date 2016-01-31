@@ -1,11 +1,11 @@
 ﻿@model IEnumerable<TT.Domain.ViewModels.SkillViewModel2>
-@using tfgame.CustomHtmlHelpers
+@using TT.Web.CustomHtmlHelpers
 
     <p id="youAreAttacking">You are attacking @ViewBag.TargetName.</p>  
     <p>This spell will cost you <b>@ViewBag.ManaCost</b> mana to cast against this opponent.</p>
     <span id="attackClose" onclick="closeAttackModal()">Cancel</span>
 @Html.ActionLink("Challenge to Duel", "IssueChallenge", "Duel", new { id = ViewBag.TargetId }, new { @id = "duel_challenge" })
-    <span id="expand" onclick="expandModal()">Expand</span>
+<span id="expand" onclick="expandModal()">Expand</span>
     <span id="toggle_all" onclick="toggleAll()">All</span>
     <span id="toggle_animates" onclick="toggleAnimates()">Animate</span>
     <span id="toggle_inanimates" onclick="toggleInanimates()">Inanimate</span>

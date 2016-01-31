@@ -36,15 +36,15 @@
                 {
                     <div class="col-md-4 stats-leader" style="height: auto;">
                         <img src="~/Images/PvP/achievements/@StatsProcedures.StatTypesMap[f].ImageUrl" style="height:100px; width: 100px; margin: 3px; float:right;" />
-                        <img src="@tfgame.CustomHtmlHelpers.CharactersHere.GetImageURL(ach.Player, true)" style="height:100px; width: 100px; margin: 3px; float:left;" />
+                        <img src="@TT.Web.CustomHtmlHelpers.CharactersHere.GetImageURL(ach.Player, true)" style="height:100px; width: 100px; margin: 3px; float:left;" />
                         <h3 style="margin-top:110px !important;">@StatsProcedures.StatTypesMap[f].FriendlyName</h3>
                         <p><i>@StatsProcedures.StatTypesMap[f].Description:</i> <b>@String.Format("{0:n0}", ach.Achivement.Amount)</b></p>
                         <p>
                             @Html.ActionLink(ach.Player.Player.GetFullName(), "LookAtPlayer", "PvP", new { id = ach.Player.Player.Id }, null)
 
-                        @Ajax.ActionLink("[+]", "PlayerStatsTopOfType", "Settings", new { type = ach.Achivement.AchievementType }, new AjaxOptions { UpdateTargetId = "more_" + f, InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success('" + f + "')", OnFailure = "failure", OnBegin = "waiting" }, new { @class = "attackLink", @id = f })
+                            @Ajax.ActionLink("[+]", "PlayerStatsTopOfType", "Settings", new { type = ach.Achivement.AchievementType }, new AjaxOptions { UpdateTargetId = "more_" + f, InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success('" + f + "')", OnFailure = "failure", OnBegin = "waiting" }, new { @class = "attackLink", @id = f })
 
-                    </p>
+                        </p>
 
                     <div id="more_@f">
 

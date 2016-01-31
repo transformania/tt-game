@@ -1,4 +1,4 @@
-﻿namespace tfgame
+﻿namespace TT.Web
 {
     public static class AuthConfig
     {

@@ -2,7 +2,7 @@
 
 @using TT.Domain.Statics
 @using TT.Domain.Models
-@using tfgame.CustomHtmlHelpers
+@using TT.Web.CustomHtmlHelpers
 
 <p>@Ajax.ActionLink("View Logs", "ShowQuestWriterLogs", "QuestWriter", new { Id = Model.QuestState.QuestId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
 <p>@Ajax.ActionLink("Click to view all quest states in this quest", "ShowAllQuestStates", "QuestWriter", new { Id = Model.QuestState.QuestId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
@@ -15,9 +15,10 @@
 @{
     foreach (QuestConnection q in Model.QuestConnectionsTo)
     {
-        <p>@Ajax.ActionLink("[" + q.ConnectionName + "]", "QuestConnection", "QuestWriter", new { Id = q.Id, QuestId = Model.QuestState.QuestId, FromQuestId = q.QuestStateFromId, ToQuestId = q.QuestStateToId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "parentButton" })
+        <p>
+            @Ajax.ActionLink("[" + q.ConnectionName + "]", "QuestConnection", "QuestWriter", new { Id = q.Id, QuestId = Model.QuestState.QuestId, FromQuestId = q.QuestStateFromId, ToQuestId = q.QuestStateToId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "parentButton" })
 
-       @Ajax.ActionLink("Jump to State", "QuestState", "QuestWriter", new { Id = q.QuestStateFromId, QuestId = Model.QuestState.QuestId, ParentStateId = -1 }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "editButton" })</p>
+            @Ajax.ActionLink("Jump to State", "QuestState", "QuestWriter", new { Id = q.QuestStateFromId, QuestId = Model.QuestState.QuestId, ParentStateId = -1 }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "editButton" })</p>
     }
     <p>@Ajax.ActionLink("Add New", "QuestConnection", "QuestWriter", new { Id = -1, QuestId = Model.QuestState.QuestId, FromQuestId = -1, ToQuestId = Model.QuestState.Id }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "newButton" })</p>
 }
@@ -36,8 +37,8 @@
         <p>
             @Ajax.ActionLink("[" + q.ConnectionName + "]", "QuestConnection", "QuestWriter", new { Id = q.Id, QuestId = Model.QuestState.QuestId, FromQuestId = q.QuestStateFromId, ToQuestId = q.QuestStateToId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "parentButton" })
 
-        @Ajax.ActionLink("Jump to State", "QuestState", "QuestWriter", new { Id = q.QuestStateFromId, QuestId = Model.QuestState.QuestId, ParentStateId = -1 }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "editButton" })
-    </p>
+            @Ajax.ActionLink("Jump to State", "QuestState", "QuestWriter", new { Id = q.QuestStateFromId, QuestId = Model.QuestState.QuestId, ParentStateId = -1 }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "editButton" })
+        </p>
     }
 }
 
@@ -49,8 +50,8 @@
         <p>
             @Ajax.ActionLink("[" + q.ConnectionName + "]", "QuestConnection", "QuestWriter", new { Id = q.Id, QuestId = Model.QuestState.QuestId, FromQuestId = q.QuestStateFromId, ToQuestId = q.QuestStateToId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "parentButton" })
 
-        @Ajax.ActionLink("Jump to State", "QuestState", "QuestWriter", new { Id = q.QuestStateToId, QuestId = Model.QuestState.QuestId, ParentStateId = -1 }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "editButton" })
-    </p>
+            @Ajax.ActionLink("Jump to State", "QuestState", "QuestWriter", new { Id = q.QuestStateToId, QuestId = Model.QuestState.QuestId, ParentStateId = -1 }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "editButton" })
+        </p>
 
    
     }

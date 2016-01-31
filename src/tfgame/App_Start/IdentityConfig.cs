@@ -1,14 +1,14 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using System;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
-using tfgame.Models;
-using System;
-using System.Security.Claims;
-using System.Threading.Tasks;
+using TT.Web.Models;
 
-namespace tfgame
+namespace TT.Web
 {
     public class ApplicationUserManager : UserManager<User>
     {

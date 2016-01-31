@@ -1,6 +1,6 @@
 ﻿using System.Web.Optimization;
 
-namespace tfgame
+namespace TT.Web
 {
     public class BundleConfig
     {

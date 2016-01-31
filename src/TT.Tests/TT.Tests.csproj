@@ -97,9 +97,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\tfgame\tfgame.csproj">
+    <ProjectReference Include="..\tfgame\TT.Web.csproj">
       <Project>{99C61F7F-C8C3-48D6-A03A-ADEFFC36DE39}</Project>
-      <Name>tfgame</Name>
+      <Name>TT.Web</Name>
     </ProjectReference>
     <ProjectReference Include="..\TT.Domain\TT.Domain.csproj">
       <Project>{6a6da43c-7502-4656-a5fd-83a0a7561246}</Project>

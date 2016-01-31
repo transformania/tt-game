@@ -4,10 +4,11 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using tfgame.CustomHtmlHelpers;
+using Microsoft.AspNet.Identity;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
 using TT.Domain.Models;
@@ -15,10 +16,10 @@ using TT.Domain.Procedures;
 using TT.Domain.Procedures.BossProcedures;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
-using Microsoft.AspNet.Identity;
-using System.Threading.Tasks;
+using TT.Web.CustomHtmlHelpers;
+using TT.Web.Services;
 
-namespace tfgame.Controllers
+namespace TT.Web.Controllers
 {
     public class PvPController : Controller
     {

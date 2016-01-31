@@ -51,7 +51,7 @@
 
     if (Model.ToQuestState != null)
     {
-       @Ajax.ActionLink("[" + Model.ToQuestState.QuestStateName + "]", "QuestState", "QuestWriter", new { Id = Model.ToQuestState.Id, QuestId = Model.QuestConnection.QuestId, ParentStateId = -1 }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "parentButton" })
+        @Ajax.ActionLink("[" + Model.ToQuestState.QuestStateName + "]", "QuestState", "QuestWriter", new { Id = Model.ToQuestState.Id, QuestId = Model.QuestConnection.QuestId, ParentStateId = -1 }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "parentButton" })
     }
     else
     {

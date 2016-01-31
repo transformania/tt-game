@@ -1,6 +1,6 @@
 ﻿@model TT.Domain.ViewModels.Quest.QuestPlayPageViewModel
 @using TT.Domain.Models
-@using tfgame.CustomHtmlHelpers
+@using TT.Web.CustomHtmlHelpers
 @using TT.Domain.Statics
 @using TT.Domain.Procedures
 
@@ -75,8 +75,9 @@
         {
             // show the option as usual
             <p> @CharactersHere.PrintDiceIcon(connection)
-    
-    @Ajax.ActionLink(connection.ActionName + " " + TT.Domain.Procedures.QuestProcedures.GetRequirementsAsString(connection, Model.BuffBox), "Choice", "Quest", new { Id = connection.Id }, new AjaxOptions { UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" }) </p><br />
+
+                @Ajax.ActionLink(connection.ActionName + " " + TT.Domain.Procedures.QuestProcedures.GetRequirementsAsString(connection, Model.BuffBox), "Choice", "Quest", new { Id = connection.Id }, new AjaxOptions { UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })
+            </p><br />
         }
 
     }

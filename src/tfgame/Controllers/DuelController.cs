@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using TT.Domain.Models;
 using TT.Domain.Procedures;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
-using Microsoft.AspNet.Identity;
+using TT.Web.Services;
 
-namespace tfgame.Controllers
+namespace TT.Web.Controllers
 {
     public class DuelController : Controller
     {

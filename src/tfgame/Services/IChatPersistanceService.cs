@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using TT.Domain.Models;
 
-namespace tfgame.Services
+namespace TT.Web.Services
 {
     public interface IChatPersistanceService
     {

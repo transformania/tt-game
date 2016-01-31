@@ -1,7 +1,7 @@
 ﻿@model TT.Domain.Models.EffectContribution
 @using TT.Domain.Statics
 @using TT.Domain.Models
-@using tfgame.CustomHtmlHelpers
+@using TT.Web.CustomHtmlHelpers
 
 <nav class="navbar navbar-default outsideContainer navbarTT2">
     <div class="container-fluid">
@@ -358,7 +358,8 @@
 
         <div class="form__panel externalMessage">The current balance score is:  <b>@ViewBag.BalanceScore</b>.  Animate forms should have a balance score close to 0.  Items should have a balance score close to 25, and pets should have a balance score close to 50.  Curses can have a score of -400 or more.</div>
 
-        <p>@Html.ActionLink("Use calculator (save contribution before doing this!)", "ContributeBalanceCalculatorEffect", "Contribution", new { id = Model.Id }, null)<br /></p>
+        <p>
+            @Html.ActionLink("Use calculator (save contribution before doing this!)", "ContributeBalanceCalculatorEffect", "Contribution", new { id = Model.Id }, null)<br /></p>
     </div>
 
     <h2>Finishing up</h2>
@@ -413,7 +414,7 @@
     if ((User.IsInRole(TT.Domain.Statics.PvPStatics.Permissions_Proofreader) == true) == true)
         {
             @Html.ActionLink("Unlock but DO NOT Save", "UnlockEffectContribution", "Contribution", new { id = Model.Id }, null)
-    }
+        }
 
 
     if (User.IsInRole(TT.Domain.Statics.PvPStatics.Permissions_Admin) == true && Model.ProofreadingCopy == true)
@@ -430,6 +431,7 @@
     }
 
 }
+
 
 @Html.ActionLink("Back to game (Don't forget to save!)", "Play", "PvP")
 

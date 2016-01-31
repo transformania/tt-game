@@ -4,14 +4,14 @@ using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.SignalR;
-using tfgame.CustomHtmlHelpers;
 using TT.Domain.Models;
-using tfgame.Extensions;
 using TT.Domain.Procedures;
-using tfgame.Services;
 using TT.Domain.Statics;
+using TT.Web.CustomHtmlHelpers;
+using TT.Web.Extensions;
+using TT.Web.Services;
 
-namespace tfgame.Chat
+namespace TT.Web.Chat
 {
     public class ChatHub : Hub
     {

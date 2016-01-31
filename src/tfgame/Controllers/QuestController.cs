@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNet.Identity;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
 using TT.Domain.Models;
@@ -12,7 +12,7 @@ using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 using TT.Domain.ViewModels.Quest;
 
-namespace tfgame.Controllers
+namespace TT.Web.Controllers
 {
     [Authorize]
     public class QuestController : Controller

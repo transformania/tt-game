@@ -2,7 +2,7 @@
 using System.Linq;
 using TT.Domain.Models;
 
-namespace tfgame.Services
+namespace TT.Web.Services
 {
     public class ChatPersistenceService : IChatPersistanceService
     {

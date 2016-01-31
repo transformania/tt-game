@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace tfgame.Extensions
+namespace TT.Web.Extensions
 {
     public static class DateTimeExtensions
     {

@@ -1,5 +1,5 @@
 ﻿@model TT.Domain.ViewModels.PlayPageViewModel
-@using tfgame.CustomHtmlHelpers
+@using TT.Web.CustomHtmlHelpers
 @using TT.Domain.ViewModels
 @using TT.Domain.Statics
 @using TT.Domain.Procedures
@@ -183,7 +183,7 @@
                 
                      if (Model.You.Player.GameMode >= 2 && Model.You.Player.IsInDungeon() == false && (Model.You.Player.dbLocationName == "street_9th" || Model.You.Player.dbLocationName == "street_14th_north"))
                 {
-                     @Html.ActionLink("Enter the PvP Dungeon (30 AP)", "EnterDungeon", "PvP", new { entering = "true" }, null)
+                    @Html.ActionLink("Enter the PvP Dungeon (30 AP)", "EnterDungeon", "PvP", new { entering = "true" }, null)
                 }
                else if (Model.You.Player.IsInDungeon() == true)
                {
@@ -207,7 +207,7 @@
 
                 if (Model.You.Player.GameMode == 2 && Model.You.Player.IsInDungeon() == false)
                 {
-                     @Html.ActionLink("Enchant (3 AP, 10 Mana)", "EnchantLocation", "PvP")
+                    @Html.ActionLink("Enchant (3 AP, 10 Mana)", "EnchantLocation", "PvP")
                 }
             }
 
@@ -236,36 +236,36 @@
                                     @{
                                         if (p.Player.BotId == AIStatics.LindellaBotId)
                                         {
-                    @Html.ActionLink("Trade", "TradeWithMerchant", "NPC", new { filter = "shirt" }, new { @class = "attackLink" })
+                                            @Html.ActionLink("Trade", "TradeWithMerchant", "NPC", new { filter = "shirt" }, new { @class = "attackLink" })
                                         }
                                         if (p.Player.BotId == AIStatics.JewdewfaeBotId)
                                         {
-                    @Html.ActionLink("Talk", "TalkWithJewdewfae", "NPC", null, new { @class = "attackLink" })
+                                            @Html.ActionLink("Talk", "TalkWithJewdewfae", "NPC", null, new { @class = "attackLink" })
                                         }
                                         if (p.Player.BotId == AIStatics.WuffieBotId)
                                         {
-                    @Html.ActionLink("Trade", "TradeWithPetMerchant", "NPC", null, new { @class = "attackLink" })
+                                            @Html.ActionLink("Trade", "TradeWithPetMerchant", "NPC", null, new { @class = "attackLink" })
                                         }
                                         if (p.Player.BotId == AIStatics.ValentineBotId)
                                         {
-                    @Html.ActionLink("Talk", "TalkToValentine", "NPC", new { question = "none" }, new { @class = "attackLink" })
+                                            @Html.ActionLink("Talk", "TalkToValentine", "NPC", new { question = "none" }, new { @class = "attackLink" })
                                         }
                                         if (p.Player.BotId == AIStatics.BartenderBotId)
                                         {
-                    @Html.ActionLink("Talk", "TalkToBartender", "NPC", new { question = "none" }, new { @class = "attackLink" })
+                                            @Html.ActionLink("Talk", "TalkToBartender", "NPC", new { question = "none" }, new { @class = "attackLink" })
                                         }
                                         if (p.Player.BotId == AIStatics.MouseBimboBotId)
                                         {
-                    @Html.ActionLink("Talk", "TalkToCandice", "NPC", null, new { @class = "attackLink" })
+                                            @Html.ActionLink("Talk", "TalkToCandice", "NPC", null, new { @class = "attackLink" })
                                         }
                                         if (p.Player.BotId == AIStatics.MouseNerdBotId)
                                         {
-                    @Html.ActionLink("Talk", "TalkToAdrianna", "NPC", null, new { @class = "attackLink" })
+                                            @Html.ActionLink("Talk", "TalkToAdrianna", "NPC", null, new { @class = "attackLink" })
                                         }
                                         if (p.Player.BotId == AIStatics.LoremasterBotId)
                                         {
-                    @Html.ActionLink("Talk", "TalkToLorekeeper", "NPC", null, new { @class = "attackLink" })
-                }
+                                            @Html.ActionLink("Talk", "TalkToLorekeeper", "NPC", null, new { @class = "attackLink" })
+                                        }
 }
                                 </div>
                             </p>

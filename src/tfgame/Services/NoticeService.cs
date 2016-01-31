@@ -1,7 +1,8 @@
 ﻿using System.Web.Script.Serialization;
 using TT.Domain.Models;
+using TT.Web.Chat;
 
-namespace TT.Domain.Procedures
+namespace TT.Web.Services
 {
     public static class NoticeService
     {
@@ -16,7 +17,7 @@ namespace TT.Domain.Procedures
 
         public static void PushNotice(int playerId, string message, string type)
         {
-            var context = Microsoft.AspNet.SignalR.GlobalHost.ConnectionManager.GetHubContext<tfgame.Chat.NoticeHub>();
+            var context = Microsoft.AspNet.SignalR.GlobalHost.ConnectionManager.GetHubContext<NoticeHub>();
             string group = "_" + playerId;
 
             // message type
@@ -55,7 +56,7 @@ namespace TT.Domain.Procedures
 
         public static void PushAttackNotice(Player player, string message)
         {
-            var context = Microsoft.AspNet.SignalR.GlobalHost.ConnectionManager.GetHubContext<tfgame.Chat.NoticeHub>();
+            var context = Microsoft.AspNet.SignalR.GlobalHost.ConnectionManager.GetHubContext<NoticeHub>();
             string group = "_" + player.Id;
             var obj = new
             {

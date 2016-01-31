@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace tfgame.Models
+namespace TT.Web.Models
 {
 
     #region a

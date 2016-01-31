@@ -1,5 +1,5 @@
 ﻿@model TT.Domain.ViewModels.ItemViewModel
-           @using tfgame.CustomHtmlHelpers
+           @using TT.Web.CustomHtmlHelpers
 @using TT.Domain.Statics
 
 <div class="col-md-2 col-sm-3 col-xs-6 charaBox">
@@ -13,7 +13,7 @@
 
             if (ViewBag.ShowDetailLinks != null && ViewBag.ShowDetailLinks == true)
             {
-                   @Ajax.ActionLink("[+]", "ShowItemDetails", "Item", new { id = Model.dbItem.Id }, new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
+                @Ajax.ActionLink("[+]", "ShowItemDetails", "Item", new { id = Model.dbItem.Id }, new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
             }
             
         }
@@ -56,8 +56,7 @@
             else if (Model.Item.ItemType == "consumable")
             {
                 @Html.ActionLink("Use", "Use", "PvP", new { itemId = Model.dbItem.Id }, new { @class = "attackLink" })
-                    @Html.ActionLink("Drop", "Drop", "PvP", new { itemId = Model.dbItem.Id }, new { @class = "attackLink" })
-                    
+                @Html.ActionLink("Drop", "Drop", "PvP", new { itemId = Model.dbItem.Id }, new { @class = "attackLink" })
             }
             else if (Model.Item.ItemType == "consumable_reuseable")
             {

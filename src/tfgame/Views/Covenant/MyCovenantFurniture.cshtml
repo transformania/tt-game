@@ -43,11 +43,10 @@
         {
             @Html.Partial("partial/CovenantFurnitureViewModel", f);
 
-        @Html.ActionLink("Use", "UseFurniture", "Covenant", new { id = f.dbFurniture.Id }, null)
+            @Html.ActionLink("Use", "UseFurniture", "Covenant", new { id = f.dbFurniture.Id }, null)
 
 
-
-        <hr />
+            <hr />
         }
 
     }

@@ -2,11 +2,11 @@
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
-using tfgame.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using TT.Web.Models;
 
-namespace tfgame.Controllers
+namespace TT.Web.Controllers
 {
     [Authorize]
     public class AccountController : Controller

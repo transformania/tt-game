@@ -1,16 +1,16 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using TT.Domain.Models;
-using TT.Domain.Queries.Statics;
 using TT.Domain.Procedures;
+using TT.Domain.Queries.Statics;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 
-namespace tfgame.CustomHtmlHelpers
+namespace TT.Web.CustomHtmlHelpers
 {
     public static class CharactersHere
     {

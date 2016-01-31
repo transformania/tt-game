@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tfgame", "tfgame\tfgame.csproj", "{99C61F7F-C8C3-48D6-A03A-ADEFFC36DE39}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TT.Web", "tfgame\TT.Web.csproj", "{99C61F7F-C8C3-48D6-A03A-ADEFFC36DE39}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TT.Domain", "TT.Domain\TT.Domain.csproj", "{6A6DA43C-7502-4656-A5FD-83A0A7561246}"
 EndProject

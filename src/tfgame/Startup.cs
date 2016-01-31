@@ -1,20 +1,21 @@
 ﻿using System;
-using Microsoft.Owin;
-using Owin;
-using Microsoft.Owin.Security.Cookies;
+using System.Linq;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
-using tfgame.Models;
-using TT.Domain.Procedures;
+using Microsoft.Owin;
+using Microsoft.Owin.Security.Cookies;
+using Owin;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
 using TT.Domain.Models;
+using TT.Domain.Procedures;
 using TT.Domain.Statics;
-using System.Linq;
+using TT.Web;
+using TT.Web.Models;
 
-[assembly: OwinStartup(typeof(tfgame.Startup))]
+[assembly: OwinStartup(typeof(Startup))]
 
-namespace tfgame
+namespace TT.Web
 {
     public class Startup
     {

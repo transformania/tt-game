@@ -3,7 +3,7 @@ using System.Web.Mvc;
 using TT.Domain.Concrete;
 using TT.Domain.Models;
 
-namespace tfgame.Controllers
+namespace TT.Web.Controllers
 {
     public class TransformaniaTimeController : Controller
     {

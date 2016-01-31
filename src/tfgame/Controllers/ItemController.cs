@@ -2,13 +2,13 @@
 using System.Linq;
 using System.Threading;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using TT.Domain.Models;
 using TT.Domain.Procedures;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
-using Microsoft.AspNet.Identity;
 
-namespace tfgame.Controllers
+namespace TT.Web.Controllers
 {
     public class ItemController : Controller
     {

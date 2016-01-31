@@ -1,7 +1,7 @@
-namespace tfgame.Migrations
-{
-    using System.Data.Entity.Migrations;
+using System.Data.Entity.Migrations;
 
+namespace TT.Web.Migrations
+{
     internal sealed class Configuration : DbMigrationsConfiguration<TT.Domain.Concrete.StatsContext>
     {
         public Configuration()

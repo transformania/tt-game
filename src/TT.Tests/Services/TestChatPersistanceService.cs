@@ -4,8 +4,8 @@ using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain.Models;
-using tfgame.Services;
 using TT.Domain.Statics;
+using TT.Web.Services;
 
 namespace TT.Tests.Services
 {

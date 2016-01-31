@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNet.SignalR;
-using TT.Domain.Procedures;
-using TT.Domain.Models;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.SignalR;
+using TT.Domain.Models;
+using TT.Domain.Procedures;
 
-namespace tfgame.Chat
+namespace TT.Web.Chat
 {
     public class NoticeHub : Hub
     {

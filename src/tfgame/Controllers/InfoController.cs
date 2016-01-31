@@ -8,7 +8,7 @@ using TT.Domain.Procedures;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 
-namespace tfgame.Controllers
+namespace TT.Web.Controllers
 {
 
     public class InfoController : Controller

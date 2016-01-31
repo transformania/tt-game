@@ -1,15 +1,13 @@
-﻿using Microsoft.AspNet.SignalR;
-using TT.Domain.Procedures;
-using TT.Domain.Models;
-using System.Threading.Tasks;
-using TT.Domain.ViewModels;
+﻿using System.Threading.Tasks;
 using System.Timers;
-using Newtonsoft.Json;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.SignalR;
+using Newtonsoft.Json;
+using TT.Domain.Models;
+using TT.Domain.Procedures;
+using TT.Domain.ViewModels;
 
-
-
-namespace tfgame.Chat
+namespace TT.Web.Chat
 {
     public class DuelHub : Hub
     {

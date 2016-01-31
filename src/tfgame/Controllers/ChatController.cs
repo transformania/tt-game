@@ -3,7 +3,7 @@ using Microsoft.AspNet.Identity;
 using TT.Domain.Queries.Player;
 using TT.Domain.ViewModels;
 
-namespace tfgame.Controllers
+namespace TT.Web.Controllers
 {
     [Authorize]
     public class ChatController : Controller

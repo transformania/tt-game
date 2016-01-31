@@ -1,6 +1,6 @@
 ﻿using System.Web.Http;
 
-namespace tfgame
+namespace TT.Web
 {
     public static class WebApiConfig
     {

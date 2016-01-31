@@ -21,7 +21,7 @@
                     @Ajax.ActionLink(q.ConnectionName, "QuestConnection", "QuestWriter", new { Id = q.Id, QuestId = q.QuestId, FromQuestId = q.QuestStateFromId, ToQuestId = q.QuestStateToId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "editButton" })
 
 
-                        @if (q.QuestConnectionRequirements.Count() > 0)
+                    @if (q.QuestConnectionRequirements.Count() > 0)
                         {
                             <span>@q.QuestConnectionRequirements.Count() requirements |</span>
                         }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using TT.Domain.Procedures.BossProcedures;
 
 namespace TT.Domain.ViewModels
@@ -22,9 +23,10 @@ namespace TT.Domain.ViewModels
 
         public static string GetActivationText(string bossName)
         {
-            string filename = string.Format("~/XMLs/BossSummonText/{0}.txt", bossName);
-            string text = System.IO.File.ReadAllText(filename);
-            return text;
+            var resource = string.Format("TT.Domain.XMLs.BossSummonText.{0}.txt", bossName);
+            var stream = typeof (BossSummon).Assembly.GetManifestResourceStream(resource);
+
+            return new StreamReader(stream).ReadToEnd();
         }
 
     }

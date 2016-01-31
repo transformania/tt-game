@@ -220,16 +220,19 @@ namespace TT.Domain.Procedures.BossProcedures
             IPlayerRepository playerRepo = new EFPlayerRepository();
             Player faeboss = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.FaebossId);
 
-            AIProcedures.DealBossDamage(faeboss,attacker, true, 1); // log attack for human on boss
+            AIProcedures.DealBossDamage(faeboss, attacker, true, 1); // log attack for human on boss
 
-            string spell = ChooseSpell(attacker, PvPWorldStatProcedures.GetWorldTurnNumber(),PvPStatics.MobilityFull);
-            AttackProcedures.Attack(faeboss, attacker, spell);
-            AIProcedures.DealBossDamage(faeboss, attacker, false, 1); // log attack for boss on human
+            string spell = ChooseSpell(attacker, PvPWorldStatProcedures.GetWorldTurnNumber(), PvPStatics.MobilityInanimate);
+
+            for (var i = 0; i < 3; i++)
+            {
+                AttackProcedures.Attack(faeboss, attacker, spell);
+                AIProcedures.DealBossDamage(faeboss, attacker, false, 1); // log attack for boss on human
+            }
 
             AIDirective directive = AIDirectiveProcedures.GetAIDirective(faeboss.Id);
 
             // random chance to aggro faeboss
-
             Random rand = new Random(Guid.NewGuid().GetHashCode());
             double num = rand.NextDouble();
 
@@ -262,8 +265,8 @@ namespace TT.Domain.Procedures.BossProcedures
                 return animateSpellsToCast[index];
             } else
             {
-                int index = (int)Math.Floor((double)turnNumber / SpellChangeTurnFrequency) % animateSpellsToCast.Count();
-                return animateSpellsToCast[index];
+                int index = (int)Math.Floor((double)turnNumber / SpellChangeTurnFrequency) % inanimateSpellsToCast.Count();
+                return inanimateSpellsToCast[index];
             }
         }
 

@@ -2,6 +2,7 @@
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Debug");
 var dbType = Argument("dbType", "localdb_v1").ToLower();
+var imageUrl = Argument("imageUrl", "http://www.transformaniatime.com/Images/PvP.zip");
 
 // Dictionary of DB instances and connection strings
 var instances = new Dictionary<string,Tuple<string,string>>()
@@ -120,13 +121,36 @@ Task("Seed-DB")
     }
 );
 
+Task("Seed-Images")
+    .WithCriteria(() => !FileExists("images.flg"))
+    .Does(() => {
+        var seedImages = DownloadFile(imageUrl);
+        Unzip(seedImages, "./src/TT.Web/Images/PvP");
+        DeleteFile(seedImages);
+        System.IO.File.Create("images.flg");
+     }
+);
+
+Task("Drop-Images")
+    .Does(() => {
+        if (FileExists("images.flg"))
+            System.IO.File.Delete("images.flg");
+        CleanDirectory("./src/TT.Web/Images/PvP");
+    }
+);
+
 Task("Default")
     .IsDependentOn("Migrate")
     .IsDependentOn("Seed-DB")
+    .IsDependentOn("Seed-Images")
     .IsDependentOn("Run-Unit-Tests");
     
 Task("Recreate-DB")
     .IsDependentOn("Drop-DB")
+    .IsDependentOn("Default");
+
+Task("Recreate-Images")
+    .IsDependentOn("Drop-Images")
     .IsDependentOn("Default");
 
 Information("Build settings: Target={0}, Configuration={1}, dbType={2}", target, configuration, dbType);

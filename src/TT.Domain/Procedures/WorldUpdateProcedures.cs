@@ -380,11 +380,11 @@ namespace TT.Domain.Procedures
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished updating items on cooldown");
                 serverLogRepo.SaveServerLog(log);
 
-                // we need to find the merchant to get her ID
-
-                int merchantId = -999;
-                Player merchant = PlayerProcedures.GetPlayerFromBotId(-3);
-                merchantId = merchant.Id;
+                // find the ids for the merchants Lindella and Skaldyr
+                Player merchant = PlayerProcedures.GetPlayerFromBotId(AIStatics.LindellaBotId);
+                Player skaldyr = PlayerProcedures.GetPlayerFromBotId(AIStatics.LoremasterBotId);
+                int merchantId = merchant.Id;
+                int skaldyrId = skaldyr.Id;
 
                 // have abandoned items go to Lindella
                 if (turnNo % 11 == 3 && merchant.Mobility == "full")
@@ -414,7 +414,7 @@ namespace TT.Domain.Procedures
 
 
                 // delete all consumable type items that have been sitting around on the ground for too long
-                List<Item> possibleToDelete = itemsRepo.Items.Where(i => (i.dbLocationName != "" && i.OwnerId == -1) || (i.OwnerId == merchantId) && i.dbName != PvPStatics.ItemType_DungeonArtifact).ToList();
+                List<Item> possibleToDelete = itemsRepo.Items.Where(i => (i.dbLocationName != "" && i.OwnerId == -1) || (i.OwnerId == merchantId || i.OwnerId == skaldyrId) && i.dbName != PvPStatics.ItemType_DungeonArtifact).ToList();
                 List<Item> deleteItems = new List<Item>();
 
                 serverLogRepo.SaveServerLog(log);

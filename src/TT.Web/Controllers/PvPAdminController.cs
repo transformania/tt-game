@@ -382,13 +382,6 @@ namespace TT.Web.Controllers
                 return View("Play", "PvP");
             }
 
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-
-            List<string> reset = StatsProcedures.GetAchivementNamesThatReset();
-
-            StatsProcedures.DeleteAchivemenstOfTypeForPlayer(me, reset);
-
             return RedirectToAction("Index");
         }
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Xml;
 using System.Xml.Serialization;
 using TT.Domain.Statics;
+using TT.Domain.Utilities;
 using TT.Domain.ViewModels;
 
 namespace TT.Domain.Procedures
@@ -14,23 +15,9 @@ namespace TT.Domain.Procedures
         public static IEnumerable<Location> GenerateDungeon()
         {
             // get a random name
-            List<string> adjectives = new List<string>();
-            List<string> nouns = new List<string>();
-
-            var serializer = new XmlSerializer(typeof(List<string>));
-            string path = "~/XMLs/DungeonAdjectives.xml";
-            using (var reader = XmlReader.Create(path))
-            {
-                adjectives = (List<string>)serializer.Deserialize(reader);
-            }
-
-            string path2 = "~/XMLs/DungeonNouns.xml";
-            using (var reader = XmlReader.Create(path2))
-            {
-                nouns = (List<string>)serializer.Deserialize(reader);
-            }
-
-            List<Location> maze = new List<Location>();
+            var adjectives = XmlResourceLoader.Load<List<string>>("TT.Domain.XMLs.DungeonAdjectives.xml");
+            var nouns = XmlResourceLoader.Load<List<string>>("TT.Domain.XMLs.DungeonNouns.xml");
+            var maze = new List<Location>();
 
 
             // create base location
@@ -38,7 +25,7 @@ namespace TT.Domain.Procedures
             int breakout = 0;
             Location baseNode = new Location
             {
-                dbName = "dungeon_" + intname.ToString(),
+                dbName = "dungeon_" + intname,
                 CovenantController = -1,
                 Description = "",
                 Region = "dungeon",
@@ -111,7 +98,7 @@ namespace TT.Domain.Procedures
                 {
                     Location newblock = new Location
                     {
-                        dbName = "dungeon_" + intname.ToString(),
+                        dbName = "dungeon_" + intname,
                         X = newX,
                         Y = newY,
                         Name = intname.ToString(),

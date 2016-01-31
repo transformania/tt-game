@@ -97,13 +97,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\tfgame\TT.Web.csproj">
-      <Project>{99C61F7F-C8C3-48D6-A03A-ADEFFC36DE39}</Project>
-      <Name>TT.Web</Name>
-    </ProjectReference>
     <ProjectReference Include="..\TT.Domain\TT.Domain.csproj">
       <Project>{6a6da43c-7502-4656-a5fd-83a0a7561246}</Project>
       <Name>TT.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TT.Web\TT.Web.csproj">
+      <Project>{99c61f7f-c8c3-48d6-a03a-adeffc36de39}</Project>
+      <Name>TT.Web</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

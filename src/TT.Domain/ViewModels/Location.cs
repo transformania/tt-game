@@ -1,10 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Reflection;
-using System.Resources;
-using System.Xml;
-using System.Xml.Serialization;
-using TT.Domain.Utilities;
+﻿using TT.Domain.Utilities;
 
 namespace TT.Domain.ViewModels
 {

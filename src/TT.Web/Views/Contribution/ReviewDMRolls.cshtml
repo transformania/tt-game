@@ -1,0 +1,27 @@
+﻿@model IEnumerable<TT.Domain.Models.DMRoll>
+@using TT.Domain.Models
+
+<head>
+    <link href="~/Content/PvP.css" rel="stylesheet" />
+</head>
+
+<h1>Review DM Encounter Contributions</h1>
+
+<hr />
+
+
+@foreach (DMRoll roll in Model.OrderBy(r => r.Tags))
+{
+
+    <p><span style="color: darkblue;">@roll.Tags.ToUpper()</span>  <span style="color: darkred;">@roll.ActionType.ToUpper()</span></p>
+
+    <p>@roll.Message</p>
+    
+    
+    @Html.ActionLink("Approve", "ApproveDMRoll", "Contribution", new { id = roll.Id }, null)
+    @Html.ActionLink("Edit", "DMRoll", "Contribution", new { id = roll.Id }, null)
+
+    <hr />
+
+
+}

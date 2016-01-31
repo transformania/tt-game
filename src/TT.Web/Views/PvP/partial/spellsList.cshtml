@@ -1,0 +1,24 @@
+﻿@model TT.Domain.ViewModels.PlayPageViewModel
+@using TT.Web.CustomHtmlHelpers
+@using TT.Domain.ViewModels
+@using TT.Domain.Statics
+
+@{
+    if (Model.You.Player.Mobility == "full")
+    {
+        foreach (TT.Domain.ViewModels.SkillViewModel s in Model.Skills.OrderBy(s => s.Skill.FriendlyName))
+        {
+
+            <span title="@s.Skill.Description">
+                @Html.ActionLink(s.Skill.FriendlyName + " (" + s.Skill.ManaCost + ")", "Attack", "PvP", new { targetId = p.Player.Id, attackName = s.dbSkill.Name }, new { @class = "action_attack", @manacost = s.Skill.ManaCost })
+            </span>
+
+        }
+    }
+
+    else if (Model.You.Player.Mobility == "animal")
+    {
+        
+    }
+    
+}

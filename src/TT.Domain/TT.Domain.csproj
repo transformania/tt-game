@@ -1,0 +1,544 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{6A6DA43C-7502-4656-A5FD-83A0A7561246}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TT.Domain</RootNamespace>
+    <AssemblyName>TT.Domain</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Abstract\IAchievementBadgeRepository.cs" />
+    <Compile Include="Abstract\IAchievementRepository.cs" />
+    <Compile Include="Abstract\IAIDirective.cs" />
+    <Compile Include="Abstract\IAuthorArtistBioRepository.cs" />
+    <Compile Include="Abstract\IBlacklistEntryRepository.cs" />
+    <Compile Include="Abstract\IBookReadingRepository.cs" />
+    <Compile Include="Abstract\IBossDamageRepository.cs" />
+    <Compile Include="Abstract\IBuffRepository.cs" />
+    <Compile Include="Abstract\ICharacterRepository.cs" />
+    <Compile Include="Abstract\IChatLogRepository.cs" />
+    <Compile Include="Abstract\IContributionRepository.cs" />
+    <Compile Include="Abstract\ICovenantApplicationRepository.cs" />
+    <Compile Include="Abstract\ICovenantLogRepository.cs" />
+    <Compile Include="Abstract\ICovenantRepository.cs" />
+    <Compile Include="Abstract\IDbStaticEffectRepository.cs" />
+    <Compile Include="Abstract\IDbStaticFormRepository.cs" />
+    <Compile Include="Abstract\IDbStaticFurnitureRepository.cs" />
+    <Compile Include="Abstract\IDbStaticItemRepository.cs" />
+    <Compile Include="Abstract\IDbStaticSkillRepository.cs" />
+    <Compile Include="Abstract\IDMRollRepository.cs" />
+    <Compile Include="Abstract\IDonatorRepository.cs" />
+    <Compile Include="Abstract\IDuelRepository.cs" />
+    <Compile Include="Abstract\IEffectContributionRepository.cs" />
+    <Compile Include="Abstract\IEffectRepository.cs" />
+    <Compile Include="Abstract\IFriendRepository.cs" />
+    <Compile Include="Abstract\IFurnitureRepository.cs" />
+    <Compile Include="Abstract\IGameshowStatsRepository.cs" />
+    <Compile Include="Abstract\IInanimateXPRepository.cs" />
+    <Compile Include="Abstract\IItemRepository.cs" />
+    <Compile Include="Abstract\IItemTransferLogRepository.cs" />
+    <Compile Include="Abstract\IJewdewfaeEncounterRepository.cs" />
+    <Compile Include="Abstract\ILocationInfoRepository.cs" />
+    <Compile Include="Abstract\ILocationLogRepository.cs" />
+    <Compile Include="Abstract\IMessageRepository.cs" />
+    <Compile Include="Abstract\IMindControlRepository.cs" />
+    <Compile Include="Abstract\IPlayerBioRepository.cs" />
+    <Compile Include="Abstract\IPlayerExtraRepository.cs" />
+    <Compile Include="Abstract\IPlayerLogRepository.cs" />
+    <Compile Include="Abstract\IPlayerQuestRepository.cs" />
+    <Compile Include="Abstract\IPlayerRepository.cs" />
+    <Compile Include="Abstract\IPollEntryRepository.cs" />
+    <Compile Include="Abstract\IPvPWorldStatRepository.cs" />
+    <Compile Include="Abstract\IQuestRepository.cs" />
+    <Compile Include="Abstract\IRerollRepository.cs" />
+    <Compile Include="Abstract\IReservedNameRepository.cs" />
+    <Compile Include="Abstract\IRoot.cs" />
+    <Compile Include="Abstract\IRPClassifiedAdRepository.cs" />
+    <Compile Include="Abstract\IRPPointRepository.cs" />
+    <Compile Include="Abstract\IServerLogRepository.cs" />
+    <Compile Include="Abstract\ISkillRepository.cs" />
+    <Compile Include="Abstract\ITFEnergyRepository.cs" />
+    <Compile Include="Abstract\ITFMessageRepository.cs" />
+    <Compile Include="Command.cs" />
+    <Compile Include="Commands\ChatLog\WriteLogToDatabase.cs" />
+    <Compile Include="Commands\Player\UpdateOnlineActivityTimestamp.cs" />
+    <Compile Include="Concrete\EFAchievementBadgeRepository.cs" />
+    <Compile Include="Concrete\EFAchievementRepository.cs" />
+    <Compile Include="Concrete\EFAIDirectiveRepository.cs" />
+    <Compile Include="Concrete\EFAuthorArtistBioRepository.cs" />
+    <Compile Include="Concrete\EFBlacklistEntryRepository.cs" />
+    <Compile Include="Concrete\EFBookReadingRepository.cs" />
+    <Compile Include="Concrete\EFBossDamageRepository.cs" />
+    <Compile Include="Concrete\EFBuffRepository.cs" />
+    <Compile Include="Concrete\EFCharacterRepository.cs" />
+    <Compile Include="Concrete\EFChatLogRepository.cs" />
+    <Compile Include="Concrete\EFContributionContext.cs" />
+    <Compile Include="Concrete\EFCovenantApplicationRepository.cs" />
+    <Compile Include="Concrete\EFCovenantLogRepository.cs" />
+    <Compile Include="Concrete\EFCovenantRepository.cs" />
+    <Compile Include="Concrete\EFDBContext.cs" />
+    <Compile Include="Concrete\EFDbStaticEffectRepository.cs" />
+    <Compile Include="Concrete\EFDbStaticFormRepository.cs" />
+    <Compile Include="Concrete\EFDbStaticFurnitureRepository.cs" />
+    <Compile Include="Concrete\EFDbStaticItemRepository.cs" />
+    <Compile Include="Concrete\EFDbStaticSkillRepository.cs" />
+    <Compile Include="Concrete\EFDMRollRepository.cs" />
+    <Compile Include="Concrete\EFDonatorRepository.cs" />
+    <Compile Include="Concrete\EFDuelRepository.cs" />
+    <Compile Include="Concrete\EFEffectContributionRepository.cs" />
+    <Compile Include="Concrete\EFEffectRepository.cs" />
+    <Compile Include="Concrete\EFFriendRepository.cs" />
+    <Compile Include="Concrete\EFFurnitureRepository.cs" />
+    <Compile Include="Concrete\EFGameShowStatsRepository.cs" />
+    <Compile Include="Concrete\EFInanimateXPRepository.cs" />
+    <Compile Include="Concrete\EFItemRepository.cs" />
+    <Compile Include="Concrete\EFItemTransferLogRepository.cs" />
+    <Compile Include="Concrete\EFJewdewfaeEncounterRepository.cs" />
+    <Compile Include="Concrete\EFLocationInfoRepository.cs" />
+    <Compile Include="Concrete\EFLocationLogRepository.cs" />
+    <Compile Include="Concrete\EFMessageContext.cs" />
+    <Compile Include="Concrete\EFMindControlRepository.cs" />
+    <Compile Include="Concrete\EFPlayerBioRepository.cs" />
+    <Compile Include="Concrete\EFPlayerExtraRepository.cs" />
+    <Compile Include="Concrete\EFPlayerLogRepository.cs" />
+    <Compile Include="Concrete\EFPlayerQuestRepository.cs" />
+    <Compile Include="Concrete\EFPlayerRepository.cs" />
+    <Compile Include="Concrete\EFPollEntryRepository.cs" />
+    <Compile Include="Concrete\EFPvPWorldStatRepository.cs" />
+    <Compile Include="Concrete\EFQuestRepository.cs" />
+    <Compile Include="Concrete\EFRerollRepository.cs" />
+    <Compile Include="Concrete\EFReservedNameRepository.cs" />
+    <Compile Include="Concrete\EFRPClassifiedAdRepository.cs" />
+    <Compile Include="Concrete\EFRPPointRespository.cs" />
+    <Compile Include="Concrete\EFServerLogRepoisotry.cs" />
+    <Compile Include="Concrete\EFSkillRepository.cs" />
+    <Compile Include="Concrete\EFTFEnergyRepository.cs" />
+    <Compile Include="Concrete\EFTFMessageRepository.cs" />
+    <Compile Include="DomainRegistry.cs" />
+    <Compile Include="Models\AchevementBadge.cs" />
+    <Compile Include="Models\Achievement.cs" />
+    <Compile Include="Models\AIDirective.cs" />
+    <Compile Include="Models\AuthorArtistBio.cs" />
+    <Compile Include="Models\BlacklistEntry.cs" />
+    <Compile Include="Models\BookReading.cs" />
+    <Compile Include="Models\BossDamage.cs" />
+    <Compile Include="Models\Buff.cs" />
+    <Compile Include="Models\Character.cs" />
+    <Compile Include="Models\ChatLog.cs" />
+    <Compile Include="Models\ChatUser.cs" />
+    <Compile Include="Models\Contribution.cs" />
+    <Compile Include="Models\Covenant.cs" />
+    <Compile Include="Models\CovenantApplication.cs" />
+    <Compile Include="Models\CovenantLog.cs" />
+    <Compile Include="Models\DbStaticEffect.cs" />
+    <Compile Include="Models\DbStaticForm.cs" />
+    <Compile Include="Models\DbStaticFurniture.cs" />
+    <Compile Include="Models\DbStaticItem.cs" />
+    <Compile Include="Models\DbStaticSkill.cs" />
+    <Compile Include="Models\DMItem.cs" />
+    <Compile Include="Models\Donator.cs" />
+    <Compile Include="Models\Duel.cs" />
+    <Compile Include="Models\Effect.cs" />
+    <Compile Include="Models\EffectContribution.cs" />
+    <Compile Include="Models\Friend.cs" />
+    <Compile Include="Models\Furniture.cs" />
+    <Compile Include="Models\GameshowStats.cs" />
+    <Compile Include="Models\InanimateXP.cs" />
+    <Compile Include="Models\Item.cs" />
+    <Compile Include="Models\ItemTransferLog.cs" />
+    <Compile Include="Models\JewdewfaeEncounter.cs" />
+    <Compile Include="Models\LocationInfo.cs" />
+    <Compile Include="Models\LocationLog.cs" />
+    <Compile Include="Models\Message.cs" />
+    <Compile Include="Models\MindControl.cs" />
+    <Compile Include="Models\Player.cs" />
+    <Compile Include="Models\PlayerBio.cs" />
+    <Compile Include="Models\PlayerExtra.cs" />
+    <Compile Include="Models\PlayerLog.cs" />
+    <Compile Include="Models\PlayerQuests.cs" />
+    <Compile Include="Models\PollEntry.cs" />
+    <Compile Include="Models\PvPWorldStat.cs" />
+    <Compile Include="Models\Quest.cs" />
+    <Compile Include="Models\Reroll.cs" />
+    <Compile Include="Models\ReservedName.cs" />
+    <Compile Include="Models\RPClassifiedAd.cs" />
+    <Compile Include="Models\RPPoint.cs" />
+    <Compile Include="Models\ServerLog.cs" />
+    <Compile Include="Models\Skill.cs" />
+    <Compile Include="Models\TFEnergy.cs" />
+    <Compile Include="Models\TFMessage.cs" />
+    <Compile Include="Procedures\AIDirectiveProcedures.cs" />
+    <Compile Include="Procedures\AIProcedures.cs" />
+    <Compile Include="Procedures\AnimalProcedures.cs" />
+    <Compile Include="Procedures\AttackProcedures.cs" />
+    <Compile Include="Procedures\BlacklistProcedures.cs" />
+    <Compile Include="Procedures\BossProcedures\BossProcedures_BimboBoss.cs" />
+    <Compile Include="Procedures\BossProcedures\BossProcedures_Donna.cs" />
+    <Compile Include="Procedures\BossProcedures\BossProcedures_DungeonDemon.cs" />
+    <Compile Include="Procedures\BossProcedures\BossProcedures_FaeBoss.cs" />
+    <Compile Include="Procedures\BossProcedures\BossProcedures_Jewdewfae.cs" />
+    <Compile Include="Procedures\BossProcedures\BossProcedures_Loremaster.cs" />
+    <Compile Include="Procedures\BossProcedures\BossProcedures_PetMerchant.cs" />
+    <Compile Include="Procedures\BossProcedures\BossProcedures_Sisters.cs" />
+    <Compile Include="Procedures\BossProcedures\BossProcedures_Thieves.cs" />
+    <Compile Include="Procedures\BossProcedures\BossProcedures_Valentine.cs" />
+    <Compile Include="Procedures\ChatLogProcedures.cs" />
+    <Compile Include="Procedures\CovenantProcedures.cs" />
+    <Compile Include="Procedures\DMRollProcedures.cs" />
+    <Compile Include="Procedures\DonatorProcedures.cs" />
+    <Compile Include="Procedures\DuelProcedures.cs" />
+    <Compile Include="Procedures\DungeonProcedures.cs" />
+    <Compile Include="Procedures\EffectProcedures.cs" />
+    <Compile Include="Procedures\FriendProcedures.cs" />
+    <Compile Include="Procedures\FurnitureProcedures.cs" />
+    <Compile Include="Procedures\InanimateXPProcedures.cs" />
+    <Compile Include="Procedures\ItemProcedures.cs" />
+    <Compile Include="Procedures\ItemTransferLogProcedures.cs" />
+    <Compile Include="Procedures\LocationLogProcedures.cs" />
+    <Compile Include="Procedures\MessageProcedures.cs" />
+    <Compile Include="Procedures\MindControlProcedures.cs" />
+    <Compile Include="Procedures\Pathfinding.cs" />
+    <Compile Include="Procedures\PlayerExtraProcedures.cs" />
+    <Compile Include="Procedures\PlayerLogProcedures.cs" />
+    <Compile Include="Procedures\PlayerProcedures.cs" />
+    <Compile Include="Procedures\PvPWorldStatProcedures.cs" />
+    <Compile Include="Procedures\QuestProcedures.cs" />
+    <Compile Include="Procedures\QuestWriterProcedures.cs" />
+    <Compile Include="Procedures\RerollProcedures.cs" />
+    <Compile Include="Procedures\RPClassifiedAdsProcedures.cs" />
+    <Compile Include="Procedures\SettingsProcedures.cs" />
+    <Compile Include="Procedures\SkillProcedures.cs" />
+    <Compile Include="Procedures\StatsProcedures.cs" />
+    <Compile Include="Procedures\TFEnergyProcedures.cs" />
+    <Compile Include="Procedures\WorldUpdateProcedures.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Queries\DMRoll\GetRoll.cs" />
+    <Compile Include="Queries\Player\GetPlayerFormFromMembership.cs" />
+    <Compile Include="Queries\Statics\GetStaticItem.cs" />
+    <Compile Include="Query.cs" />
+    <Compile Include="Root.cs" />
+    <Compile Include="Statics\AIStatics.cs" />
+    <Compile Include="Statics\CovenantDictionary.cs" />
+    <Compile Include="Statics\EffectStatics.cs" />
+    <Compile Include="Statics\Forms.cs" />
+    <Compile Include="Statics\FormStatics.cs" />
+    <Compile Include="Statics\ItemStatics.cs" />
+    <Compile Include="Statics\PvPStatics.cs" />
+    <Compile Include="Statics\QuestStatics.cs" />
+    <Compile Include="Statics\SkillStatics.cs" />
+    <Compile Include="Statics\TrustStatics.cs" />
+    <Compile Include="Utilities\ResourceNotFoundException.cs" />
+    <Compile Include="Utilities\XmlExtensions.cs" />
+    <Compile Include="Utilities\XmlResourceLoader.cs" />
+    <Compile Include="ViewModels\BalancePageViewModel.cs" />
+    <Compile Include="ViewModels\BioPageContributionViewModel.cs" />
+    <Compile Include="ViewModels\BioPageViewModel.cs" />
+    <Compile Include="ViewModels\BlacklistEntryViewModel.cs" />
+    <Compile Include="ViewModels\BossSummon.cs" />
+    <Compile Include="ViewModels\BuffBox.cs" />
+    <Compile Include="ViewModels\ChatViewModel.cs" />
+    <Compile Include="ViewModels\ContributionCredit.cs" />
+    <Compile Include="ViewModels\ContributionStatusViewModel.cs" />
+    <Compile Include="ViewModels\CovenantViewModel.cs" />
+    <Compile Include="ViewModels\CustomFormViewModel.cs" />
+    <Compile Include="ViewModels\Die.cs" />
+    <Compile Include="ViewModels\DuelPlayersViewModel.cs" />
+    <Compile Include="ViewModels\EffectViewModel.cs" />
+    <Compile Include="ViewModels\FairyChallengeViewModel.cs" />
+    <Compile Include="ViewModels\Form.cs" />
+    <Compile Include="ViewModels\FriendPageViewModel.cs" />
+    <Compile Include="ViewModels\FriendPlayerViewModel.cs" />
+    <Compile Include="ViewModels\FurnitureTypeViewModel.cs" />
+    <Compile Include="ViewModels\GameOverViewModel.cs" />
+    <Compile Include="ViewModels\GameOverViewModelAnimal.cs" />
+    <Compile Include="ViewModels\InventoryBonusesViewModel.cs" />
+    <Compile Include="ViewModels\ItemLeaderboardViewModel.cs" />
+    <Compile Include="ViewModels\ItemTransferLogViewModel.cs" />
+    <Compile Include="ViewModels\ItemViewModel.cs" />
+    <Compile Include="ViewModels\Location.cs" />
+    <Compile Include="ViewModels\LocationDropdown.cs" />
+    <Compile Include="ViewModels\LogBox.cs" />
+    <Compile Include="ViewModels\MapViewModel.cs" />
+    <Compile Include="ViewModels\MessageBag.cs" />
+    <Compile Include="ViewModels\MessageCountDataViewModel.cs" />
+    <Compile Include="ViewModels\MindControlViewModel.cs" />
+    <Compile Include="ViewModels\NewCharacterViewModel.cs" />
+    <Compile Include="ViewModels\PlayerAchievementViewModel.cs" />
+    <Compile Include="ViewModels\PlayerFormItemsSkillsViewModel.cs" />
+    <Compile Include="ViewModels\PlayerFormViewModel.cs" />
+    <Compile Include="ViewModels\PlayerSearchViewModel.cs" />
+    <Compile Include="ViewModels\PlayPageViewModel.cs" />
+    <Compile Include="ViewModels\PopulationTurnTuple.cs" />
+    <Compile Include="ViewModels\PublicBroadcastViewModel.cs" />
+    <Compile Include="ViewModels\Quest\QuestPlayPageViewModdel.cs" />
+    <Compile Include="ViewModels\Quest\QuestsAtLocationViewModel.cs" />
+    <Compile Include="ViewModels\Quest\QuestStateFormViewModel.cs" />
+    <Compile Include="ViewModels\RestockList.cs" />
+    <Compile Include="ViewModels\SelectListItem.cs" />
+    <Compile Include="ViewModels\ServerBalance.cs" />
+    <Compile Include="ViewModels\SetFriendNicknameViewModel.cs" />
+    <Compile Include="ViewModels\SkillBookViewModel.cs" />
+    <Compile Include="ViewModels\SkillViewModel.cs" />
+    <Compile Include="ViewModels\StaticEffect.cs" />
+    <Compile Include="ViewModels\StaticFurniture.cs" />
+    <Compile Include="ViewModels\StaticItem.cs" />
+    <Compile Include="ViewModels\StaticSkill.cs" />
+    <Compile Include="ViewModels\WorldStats.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="XMLs\BossSummonText\BimboBoss.txt" />
+    <EmbeddedResource Include="XMLs\BossSummonText\Donna.txt" />
+    <EmbeddedResource Include="XMLs\BossSummonText\FaeBoss.txt" />
+    <EmbeddedResource Include="XMLs\BossSummonText\Sisters.txt" />
+    <EmbeddedResource Include="XMLs\BossSummonText\Thieves.txt" />
+    <EmbeddedResource Include="XMLs\BossSummonText\Valentine.txt" />
+    <EmbeddedResource Include="XMLs\DungeonAdjectives.xml" />
+    <EmbeddedResource Include="XMLs\DungeonDemonNames.xml" />
+    <EmbeddedResource Include="XMLs\DungeonNouns.xml" />
+    <EmbeddedResource Include="XMLs\FirstNames.xml" />
+    <EmbeddedResource Include="XMLs\LastNames.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\270_west_9th_ave.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\280_west_9th_ave.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\290_west_9th_ave.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\300_west_9th_ave.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\310_west_9th_ave.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\320_west_9th_ave.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\330_west_9th_ave.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\340_west_9th_ave.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\350_west_9th_ave.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\apartment_complex_a.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\apartment_dog_park.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\apartment_parking_lot.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\apartment_rental_office.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\bookstore_back.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\bookstore_front.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\campground_lake.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\campground_makeout.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\candystore_counter.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\candystore_kitchen.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\candystore_shelves.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\castle_armory.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\castle_baths.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\castle_beach.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\castle_cellar.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\castle_dungeon.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\castle_garden.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\castle_greathall.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\castle_kitchen.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\castle_lordroom.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\castle_servants.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\castle_solar.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\castle_throneroom.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\castle_tower.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\castle_training.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\castle_treasury.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\cave_antechamber.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\cave_burialchamber.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\cave_lake.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\cave_mouth.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\clothing_front.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\clothing_intimate.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\clothing_mens.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\clothing_womens.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\coffee_shop.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\coffee_shop_kitchen.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\coffee_shop_patio.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\college_arts.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\college_business.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\college_foyer.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\college_humanities.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\college_sciences.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\college_track.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\college_vet.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\comicstore_comics.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\comicstore_counter.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\comicstore_gaming_room.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\comicstore_videogames.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\concert_hall_backstage.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\concert_hall_bar.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\concert_hall_dressingroom.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\concert_hall_front_door.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\concert_hall_seats.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\concert_hall_stage.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\fairygrove_entrance.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\fairygrove_flowerhomes.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\fairygrove_greathall.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\fairygrove_springs.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\forest_ancestor_tree.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\forest_cabin.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\forest_hotspring.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\forest_parking.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\forest_pinecove.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\gas_station_carwash.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\gas_station_counter.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\gas_station_parking.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\gas_station_pumps.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\gym_aerobics.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\gym_cardio.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\gym_entrance.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\gym_laundry.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\gym_weights.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\lab_freezers.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\lab_laboratory.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\lab_lobby.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\lab_offices.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\lab_secret_laboratory.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\mansion_ballroom.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\mansion_baths.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\mansion_bedroom.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\mansion_chapel.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\mansion_courtyard.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\mansion_dining.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\mansion_eastgarden.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\mansion_foyer.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\mansion_gate.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\mansion_mausoleum.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\mansion_servant_quarters.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\mansion_study.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\mansion_westgarden.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\medclinic_lobby.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\medclinic_physician_a.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\medclinic_physician_b.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\medclinic_records.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\park_boardwalk.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\park_duck_pond.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\park_entrance.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\park_fountain.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\park_merrygoround.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\park_rose_garden.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\park_shrine.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\park_tennis.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\park_toolshed.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\pathway_campground.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\pathway_pool.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\pathway_sccc.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\pathway_sorority.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\pool_concessions.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\pool_deep.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\pool_entrance.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\pool_playground.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\pool_shallow.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\pool_slide.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\ranch_barn.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\ranch_bedroom.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\ranch_bedroom_teenager.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\ranch_entrance.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\ranch_hallway.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\ranch_livingroom.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\ranch_pasture.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\ranch_pens.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\ranch_porch.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\record_store_front.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\record_store_usedInstruments.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\salon_front_desk.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\salon_hairdressing.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\salon_massage.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\salon_storage.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\sorority_backyard.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\sorority_basement.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\sorority_bedrooms.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\sorority_common.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\sorority_dining.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\sorority_kitchen.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\sorority_motherbed.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\sorority_patio.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\sorority_rooftop.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\sorority_yard.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\street_01.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\street_02.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\street_03.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\street_120_sunnyglade_drive.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\street_130_main.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\street_130_sunnyglade_drive.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\street_13th.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\street_140_main.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\street_140_sunnyglade_drive.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\street_14th.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\street_14th_east.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\street_14th_north.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\street_15th_south.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\street_170_sunnyglade_drive.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\street_180_sunnyglade_drive.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\street_190_sunnyglade_drive.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\street_200_sunnyglade_drive.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\street_210_sunnyglade_drive.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\street_220_sunnyglade_drive.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\street_230_sunnyglade_drive.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\street_50e9th.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\street_60e9th.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\street_6th_main.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\street_70e9th.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\street_7th_main.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\street_8th.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\street_9th.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\street_e9th_eastof_main.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\street_e9th_eastof_valley.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\street_e9th_valley_crossing.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\street_e9th_westof_valley.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\stripclub_bar_seats.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\stripclub_booths.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\stripclub_office.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\stripclub_store.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\tavern_counter.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\tavern_dumpsters.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\tavern_pool.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\tavern_private_room.xml" />
+    <EmbeddedResource Include="XMLs\LocationDescriptions\z_template - Copy.xml" />
+    <EmbeddedResource Include="XMLs\restockList.xml" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

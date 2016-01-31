@@ -1,0 +1,58 @@
+﻿@model TT.Domain.Models.JewdewfaeEncounter
+@using TT.Domain.Procedures.BossProcedures
+
+
+<nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+<div>
+    <p class="infoMessage result">@Html.Raw(ViewBag.Result)</p>
+    <p class="infoMessage error">@ViewBag.ErrorMessage</p>
+    <p class="infoMessage suberror">@ViewBag.SubErrorMessage</p>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6 col-sm-6 col-xs-12" style="padding: 20px">
+            <img class="img-responsive center-block" src="../Images/PvP/portraits/vampireboss.png">
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-12 textSpaced" style="padding: 20px; text-align: justify;">
+
+            @{
+                if (ViewBag.stance == BossProcedures_Valentine.DayStance)
+                {
+                    <p>While stepping into Training Halls your ears are suddenly filled with sound of metal clashing against metal and ocassional talk that accompanies the fight. Curiously you step closer - after all you came here with only one purpose...</p>
+                    <p>@Html.ActionLink("Take a challenge", "TalkToValentine", "NPC", new { question = "take_challenge" }, null)</p>
+                }
+                else if (ViewBag.stance == BossProcedures_Valentine.NightStance)
+                {
+                    <p>You approach the vampire standing next to the tall window. He seems not to notice you, his gaze focused on the moon behind the glass. You could swear he is wordlessly talking with the night.</p>
+                    <p>@Html.ActionLink("Ask for advice", "TalkToValentine", "NPC", new { question = "ask_advice" }, null)</p>
+                }
+                else
+                {
+                    <p>"I'm Valentine and I'm a pervert."</p>
+                }
+            }
+        </div>
+    </div>
+</div>
+

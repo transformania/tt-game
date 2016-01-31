@@ -1,0 +1,168 @@
+﻿@model TT.Domain.ViewModels.PlayerFormItemsSkillsViewModel
+@using TT.Domain.ViewModels
+@using TT.Domain.Procedures
+@using TT.Domain.Statics
+
+<nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav" style="width:100%;">
+                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+                @{
+                    if (Model.PlayerForm.Player.BotId == AIStatics.ActivePlayerBotId)
+                    {
+                        <p>
+                            @{
+                        if (ViewBag.HasBio)
+                        {
+                        <li>@Html.ActionLink("View Bio", "ViewBio", "Settings", new { id = Model.PlayerForm.Player.MembershipId }, null)</li>
+                        }
+                        if (ViewBag.HasArtistAuthorBio)
+                        {
+                            <li>
+                                @Html.ActionLink("View Artist/Author Bio", "AuthorArtistBio", "Settings", new { id = Model.PlayerForm.Player.MembershipId }, null)
+                            </li>
+                        }
+                            }
+
+                            @{
+                        if (Model.PlayerForm.Player.BotId == AIStatics.ActivePlayerBotId)
+                        {
+
+                            <li>@Html.ActionLink("Send a Message", "Write", "PvP", new { playerId = Model.PlayerForm.Player.Id, responseTo = -1 }, null)</li>
+                                  <li>@Html.ActionLink("View Statistics", "PlayerStats", "Settings", new { id = Model.PlayerForm.Player.MembershipId }, null)</li>
+                                <li>@Html.ActionLink("Add Friend", "AddFriend", "PvP", new { playerId = Model.PlayerForm.Player.Id }, null)</li>
+                                <li>@Html.ActionLink("Blacklist player", "ToggleBlacklistOnPlayer", "Settings", new { id = Model.PlayerForm.Player.Id }, null)</li>
+                        }
+                            }
+                            </p>
+                    }
+
+                }
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+@{
+    if (Model.PlayerForm.Player.BotId == AIStatics.RerolledPlayerBotId)
+    {
+        <div>
+            <p class="infoMessage error">This player has chosen to create a new character and cannot be messaged or have a friend request sent to them.</p>
+        </div>
+    }
+}
+
+<div class="containerInner">
+    <center>
+        <div class="leftDisplay" style="background-image: url(../../Images/PvP/@ViewBag.ImgUrl);">
+            <span class="icon icon-level"><b>@ViewBag.ItemLevel</b></span>
+        </div>
+        <div class="rightDisplay">
+            <p class="avatarName center-block">@Model.PlayerForm.Player.GetFullName()</p>
+            @{if (Model.PlayerForm.Player.Mobility == "inanimate")
+            {
+                <span class="textMobility">
+                    Once human, this player has become inanimate and poses no threat to its enemies.  Far from being dead, however, @Model.PlayerForm.Player.FirstName's new form still retains consciousness and some of its old magic, which can enhance or hamper its owner's abilities.
+                </span>
+
+            }}
+
+            @{if (Model.PlayerForm.Player.Mobility == "animal")
+            {
+                <span class="textMobility">
+                    Once human, this player has become an animal or familiar and poses no threat to its enemies.  @Model.PlayerForm.Player.FirstName's new form still retains some of its old consciousness and magic, which can enhance or hamper their master's abilities when tamed and kept as a pet.
+                </span>
+
+            }}
+            <h4 style="font-size:14px;">@ViewBag.FormDescriptionItem </h4>
+        </div>
+    </center>
+</div>
+
+
+<div style="clear:both"><br /></div>
+
+@{
+    if (User.IsInRole(TT.Domain.Statics.PvPStatics.Permissions_Moderator) == true)
+    {
+        if (@Model.PlayerForm.Player.FlaggedForAbuse == false)
+        {
+            @Html.ActionLink("Lock this player for suspicious activity", "FlagForSuspiciousActivity", "PvP", new { playerId = Model.PlayerForm.Player.Id }, null)
+        }
+        else
+        {
+            @Html.ActionLink("Unlock this player for suspicious activity", "FlagForSuspiciousActivity", "PvP", new { playerId = Model.PlayerForm.Player.Id }, null)
+        }
+        @Html.ActionLink("Reset IP Address", "ResetAllPlayersWithIPAddress", "PvPAdmin", new { address = Model.PlayerForm.Player.IpAddress }, null)<br />
+        @Html.ActionLink("Toggle ban on global chat", "ToggleBanOnGlobalChat", "PvPAdmin", new { id = Model.PlayerForm.Player.Id }, null)
+        @Html.ActionLink("Rename", "RenamePlayer", "PvPAdmin", new { id = Model.PlayerForm.Player.Id }, null)
+    }
+}
+
+
+
+
+
+
+<style>
+    .leftDisplay {
+        background-size: 100% 100%;
+        position: relative;
+        text-align: left;
+        height: 400px;
+        width: 400px;
+        display: inline-table;
+        vertical-align: top;
+        margin: 0px;
+    }
+
+    .rightDisplay {
+        padding-left: 10px;
+        padding-right: 10px;
+        width: 480px;
+        display: inline-table;
+        vertical-align: top;
+        text-align: left;
+    }
+
+    .textName {
+        font-size: 25px;
+        text-align: center;
+    }
+
+    .textDescription {
+        font-size: 14px;
+    }
+
+    .textMobility {
+        font-size: 16px;
+        font-style: italic;
+    }
+
+    .Links {
+        display: none;
+    }
+
+    @@media screen and (max-width: 520px) {
+        .leftDisplay {
+            height: 300px;
+            width: 300px;
+        }
+
+        .rightDisplay {
+            width: 100%;
+        }
+    }
+</style>

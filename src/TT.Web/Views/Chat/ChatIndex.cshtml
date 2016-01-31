@@ -1,0 +1,66 @@
+﻿@model TT.Domain.ViewModels.ChatViewModel
+
+<!DOCTYPE html>
+
+<nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        
+        @Html.Partial("_ChatMenu")
+    </div>
+</nav>
+
+<p class="infoMessage error" id="connectionStatus" style="display: none;">
+    Your chat is currently disconnected from the server.  It will attempt to automatically reconnect.
+</p>
+
+<div class="containerInner">
+    <div id="ignoreDiv" style="display: none;" class="center-block">
+        <p>Adding in any text to the ignore list will stop you from seeing any chat posts containing your entry, even if you write it.  
+            Your entries will are now saved in local storage which means this setting should not be forgotten even if close your browser (unless your cache is cleared).</p>
+        <input type="text" id="ignore" /><br />
+        <button id="ignoreAdd" class="btn btn-danger btn-xs">Add to Ignore</button>
+        <button id="ignoreReset" class="btn btn-success btn-xs">Reset Ignore</button>
+        <button id="ignoreView" class="btn btn-alert btn-xs">View Ignored</button>
+    </div>
+
+    <div class="row chat-container">
+        <div class="col-md-10 col-sm-12">
+            <ul id="discussion"></ul>
+        </div>
+        <div class="col-md-2 hidden-sm hidden-xs">
+            <div class="userlist-chat"></div>
+        </div>
+    </div>
+
+    <div class="roomName">Room:  @Model.RoomName <span id="autoScrollToggle">Autoscroll ON</span></div>
+    <input type="text" id="message" maxlength="500" class="chatInput" />
+    <input class="btn btn-chat center-block" type="button" id="sendmessage" value="Send" />
+    <input type="hidden" id="displayname" />
+</div>
+
+@section scripts
+{
+    <script src="~/Scripts/jquery.signalR-2.0.3.min.js" type="text/javascript"></script>
+    <script src="~/signalr/hubs" type="text/javascript"></script>
+    <script src="~/Scripts/jquery.mobile.custom.min.js"></script>
+    <script src="~/Scripts/jquery.mobile.doubletap.js"></script>
+    <script src="~/Scripts/tt.config.js"></script>
+    <script src="~/Scripts/tt.chat.js"></script>
+    <script src="~/Scripts/tt.chat.userlist.js"></script>
+    <script src="~/Scripts/tt.chat.messages.js"></script>
+    
+    <script type="text/javascript">
+        $(function () {
+            ChatModule.initialize({ roomName : '@Model.RoomName', currentPlayer : '@Model.ChatUser', currentPlayerChatColor : '@Model.ChatColor' });
+        });
+    </script>
+}

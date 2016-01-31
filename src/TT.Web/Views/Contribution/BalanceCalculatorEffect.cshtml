@@ -1,0 +1,607 @@
+﻿@model TT.Domain.Models.EffectContribution
+@using TT.Domain.Statics
+@using TT.Web.CustomHtmlHelpers
+
+<head>
+    <link href="~/Content/PvP.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-2.1.0.min.js"></script>
+</head>
+
+<h1>Curse/Blessing balancing calculator</h1>
+
+<p>Use this calculator to try and balance effects.</p>
+
+
+<p>What type of spell is this?</p>
+<select id="mobilityType">
+    <option value="curse">Curse</option>
+</select>
+
+
+<p>Balancing rules:</p>
+
+<ul>
+    <li>-60 points maximum for curses and 60 for blessings. The cost of your selection is multiplied for each turn duration, so a curse costing 10 points will cost 60 if it lasts 6 turns.
+    <li>Curses must last in duration between 2 and 18 turns.</li>
+    <li>Curses must have all negative stats and blessings must have all positive stats. Unlike with form / items / pets, no mixing and matching positives and negatives.</li>
+    <li>All non-boss curses must be marked as removable via the Hex-B-Gone consumables.</li>
+    <li>All castable curses should cost 7 mana.</li>
+    <li>Cooldown should be set between 2 and 3 times the duration of the curse.</li>
+    <li>If the curse makes the target immobile, treat this as 20 points per turn even if the calculator ignores it.</li>
+</ul>
+
+<h2>Net balance:  <span id="total"></span>     Target:  <span id="desired">-60</span>  Total points used:  <span id="absolute_total"></span></h2>
+
+<p>
+    <button type="button" onclick="Clear()">Clear</button>
+</p>
+
+@using (Html.BeginForm("ContributeBalanceCalculatorSend_Effect", "Contribution", FormMethod.Post))
+{
+
+    <p id="curseDurationWrapper">
+        Turn duration of curse?  (This number is not saved from here; you must set the final number on the main ContributeEffect page!)
+        @Html.TextBoxFor(m => m.Effect_Duration)
+        @*<input type="text" id="Effect_Duration">*@
+    </p>
+
+    @Html.HiddenFor(m => m.Id)
+
+    <table id="balanceTable">
+        <thead>
+            <tr>
+                <th>Bonus/Penalty</th>
+                <th>Amount</th>
+                <th width="80px">Cost / Unit</th>
+                <th>Negative Modifier</th>
+                <th>Minimum Cap</th>
+                <th>Bonus total</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            <tr>
+                <td>@CharactersHere.PrintStatDescriptionPopup("Discipline") @CharactersHere.PrintStatIcons("Discipline")</td>
+                <td>
+                    @Html.TextBoxFor(m => m.Discipline, new
+       {
+           @id = "Discipline",
+       })
+                </td>
+                <td>1</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+
+            <tr>
+                <td>@CharactersHere.PrintStatDescriptionPopup("Perception") @CharactersHere.PrintStatIcons("Perception")</td>
+                <td>
+                    @Html.TextBoxFor(m => m.Perception, new
+       {
+           @id = "Perception",
+       })
+                </td>
+                <td>1</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td>@CharactersHere.PrintStatDescriptionPopup("Charisma") @CharactersHere.PrintStatIcons("Charisma")</td>
+                <td>
+                    @Html.TextBoxFor(m => m.Charisma, new
+       {
+           @id = "Charisma",
+       })
+                </td>
+                <td>1</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td>@CharactersHere.PrintStatDescriptionPopup("Fortitude") @CharactersHere.PrintStatIcons("Fortitude")</td>
+                <td>
+                    @Html.TextBoxFor(m => m.Fortitude, new
+       {
+           @id = "Fortitude",
+       })
+                </td>
+                <td>1</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td>@CharactersHere.PrintStatDescriptionPopup("Agility") @CharactersHere.PrintStatIcons("Agility")</td>
+                <td>
+                    @Html.TextBoxFor(m => m.Agility, new
+       {
+           @id = "Agility",
+       })
+                </td>
+                <td>1</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td>@CharactersHere.PrintStatDescriptionPopup("Allure") @CharactersHere.PrintStatIcons("Allure")</td>
+                <td>
+                    @Html.TextBoxFor(m => m.Allure, new
+       {
+           @id = "Allure",
+       })
+                </td>
+                <td>1</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td>@CharactersHere.PrintStatDescriptionPopup("Magicka") @CharactersHere.PrintStatIcons("Magicka")</td>
+                <td>
+                    @Html.TextBoxFor(m => m.Magicka, new
+       {
+           @id = "Magicka",
+       })
+                </td>
+                <td>1</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td>@CharactersHere.PrintStatDescriptionPopup("Succour") @CharactersHere.PrintStatIcons("Succour")</td>
+                <td>
+                    @Html.TextBoxFor(m => m.Succour, new
+       {
+           @id = "Succour",
+       })
+                </td>
+                <td>1</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td>@CharactersHere.PrintStatDescriptionPopup("Luck") @CharactersHere.PrintStatIcons("Luck")</td>
+                <td>
+                    @Html.TextBoxFor(m => m.Luck, new
+       {
+           @id = "Luck",
+       })
+                </td>
+                <td>1</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td>
+                    <span class='icon icon-health_recovery'></span>
+                    Maximum willpower increase (%)
+                </td>
+                <td>@Html.TextBoxFor(m => m.HealthBonusPercent, new { @id = "HealthBonusPercent", @negative_mod = TT.Domain.Statics.BalanceStatics.HealthBonusPercent__NegativeModifier, @negative_cap = TT.Domain.Statics.BalanceStatics.HealthBonusPercent__NegativeCap, @readonly = "readonly" })</td>
+                <td>@TT.Domain.Statics.BalanceStatics.HealthBonusPercent__Value</td>
+                <td>@TT.Domain.Statics.BalanceStatics.HealthBonusPercent__NegativeModifier</td>
+                <td>@TT.Domain.Statics.BalanceStatics.HealthBonusPercent__NegativeCap</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><span class='icon icon-mana_recovery'></span>Maximum mana increase (%)</td>
+                <td>@Html.TextBoxFor(m => m.ManaBonusPercent, new { @id = "ManaBonusPercent", @negative_mod = TT.Domain.Statics.BalanceStatics.ManaBonusPercent__NegativeModifier, @negative_cap = TT.Domain.Statics.BalanceStatics.ManaBonusPercent__NegativeCap, @readonly = "readonly" })</td>
+                <td>@TT.Domain.Statics.BalanceStatics.ManaBonusPercent__Value</td>
+                <td>@TT.Domain.Statics.BalanceStatics.ManaBonusPercent__NegativeModifier</td>
+                <td>@TT.Domain.Statics.BalanceStatics.ManaBonusPercent__NegativeCap</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    <span class='icon icon-health_recovery'></span>Willpower recovery per game update (Amt)
+                </td>
+                <td>@Html.TextBoxFor(m => m.HealthRecoveryPerUpdate, new { @id = "HealthRecoveryPerUpdate", @negative_mod = TT.Domain.Statics.BalanceStatics.HealthRecoveryPerUpdate__NegativeModifier, @negative_cap = TT.Domain.Statics.BalanceStatics.HealthRecoveryPerUpdate__NegativeCap, @readonly = "readonly" })</td>
+                <td>@TT.Domain.Statics.BalanceStatics.HealthRecoveryPerUpdate__Value</td>
+                <td>@TT.Domain.Statics.BalanceStatics.HealthRecoveryPerUpdate__NegativeModifier</td>
+                <td>@TT.Domain.Statics.BalanceStatics.HealthRecoveryPerUpdate__NegativeCap</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><span class='icon icon-mana_recovery'></span>Mana recovery per game update (Amt)</td>
+                <td>@Html.TextBoxFor(m => m.ManaRecoveryPerUpdate, new { @id = "ManaRecoveryPerUpdate", @negative_mod = TT.Domain.Statics.BalanceStatics.HealthRecoveryPerUpdate__NegativeModifier, @negative_cap = TT.Domain.Statics.BalanceStatics.ManaRecoveryPerUpdate__NegativeCap, @readonly = "readonly" })</td>
+                <td>@TT.Domain.Statics.BalanceStatics.ManaRecoveryPerUpdate__Value</td>
+                <td>@TT.Domain.Statics.BalanceStatics.HealthRecoveryPerUpdate__NegativeModifier</td>
+                <td>@TT.Domain.Statics.BalanceStatics.ManaRecoveryPerUpdate__NegativeCap</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Sneak chance (%) <red>*</red></td>
+                <td>@Html.TextBoxFor(m => m.SneakPercent, new { @id = "SneakPercent", @negative_mod = TT.Domain.Statics.BalanceStatics.SneakPercent__NegativeModifier, @negative_cap = TT.Domain.Statics.BalanceStatics.SneakPercent__NegativeCap, @readonly = "readonly" })</td>
+                <td>@TT.Domain.Statics.BalanceStatics.SneakPercent__Value</td>
+                <td>@TT.Domain.Statics.BalanceStatics.SneakPercent__NegativeModifier</td>
+                <td>@TT.Domain.Statics.BalanceStatics.SneakPercent__NegativeCap</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><span class='icon icon-defense'></span>Spell evasion (%) <red>*</red></td>
+                <td>@Html.TextBoxFor(m => m.EvasionPercent, new { @id = "EvasionPercent", @negative_mod = TT.Domain.Statics.BalanceStatics.EvasionPercent__NegativeModifier, @negative_cap = TT.Domain.Statics.BalanceStatics.EvasionPercent__NegativeCap, @readonly = "readonly" })</td>
+                <td>@TT.Domain.Statics.BalanceStatics.EvasionPercent__Value</td>
+                <td>@TT.Domain.Statics.BalanceStatics.EvasionPercent__NegativeModifier</td>
+                <td>@TT.Domain.Statics.BalanceStatics.EvasionPercent__NegativeCap</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><span class='icon icon-timesattacking'></span> evasion NEGATION (%) <red>*</red></td>
+                <td>@Html.TextBoxFor(m => m.EvasionNegationPercent, new { @id = "EvasionNegationPercent", @negative_mod = TT.Domain.Statics.BalanceStatics.EvasionNegationPercent__NegativeModifier, @negative_cap = TT.Domain.Statics.BalanceStatics.EvasionNegationPercent__NegativeCap, @readonly = "readonly" })</td>
+                <td>@TT.Domain.Statics.BalanceStatics.EvasionNegationPercent__Value</td>
+                <td>@TT.Domain.Statics.BalanceStatics.EvasionNegationPercent__NegativeModifier</td>
+                <td>@TT.Domain.Statics.BalanceStatics.EvasionNegationPercent__NegativeCap</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    <span class='icon icon-cleansemeditate'></span>Extra mana recovered from meditating (Amt)
+                </td>
+                <td>@Html.TextBoxFor(m => m.MeditationExtraMana, new { @id = "MeditationExtraMana", @negative_mod = TT.Domain.Statics.BalanceStatics.MeditationExtraMana__NegativeModifier, @negative_cap = TT.Domain.Statics.BalanceStatics.MeditationExtraMana__NegativeCap, @readonly = "readonly" })</td>
+                <td>@TT.Domain.Statics.BalanceStatics.MeditationExtraMana__Value</td>
+                <td>@TT.Domain.Statics.BalanceStatics.MeditationExtraMana__NegativeModifier</td>
+                <td>@TT.Domain.Statics.BalanceStatics.MeditationExtraMana__NegativeCap</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><span class='icon icon-cleansemeditate'></span>Extra willpower recovered from cleansing (Amt)</td>
+                <td>@Html.TextBoxFor(m => m.CleanseExtraHealth, new { @id = "CleanseExtraHealth", @negative_mod = TT.Domain.Statics.BalanceStatics.CleanseExtraHealth__NegativeModifier, @negative_cap = TT.Domain.Statics.BalanceStatics.CleanseExtraHealth__NegativeCap, @readonly = "readonly" })</td>
+                <td>@TT.Domain.Statics.BalanceStatics.CleanseExtraHealth__Value</td>
+                <td>@TT.Domain.Statics.BalanceStatics.CleanseExtraHealth__NegativeModifier</td>
+                <td>@TT.Domain.Statics.BalanceStatics.CleanseExtraHealth__NegativeCap</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><span class='icon icon-timesattacking'></span>Extra spell critical hit chance (%)</td>
+                <td>@Html.TextBoxFor(m => m.ExtraSkillCriticalPercent, new { @id = "ExtraSkillCriticalPercent", @negative_mod = TT.Domain.Statics.BalanceStatics.ExtraSkillCriticalPercent__NegativeModifier, @negative_cap = TT.Domain.Statics.BalanceStatics.ExtraSkillCriticalPercent__NegativeCap, @readonly = "readonly" })</td>
+                <td>@TT.Domain.Statics.BalanceStatics.ExtraSkillCriticalPercent__Value</td>
+                <td>@TT.Domain.Statics.BalanceStatics.ExtraSkillCriticalPercent__NegativeModifier</td>
+                <td>@TT.Domain.Statics.BalanceStatics.ExtraSkillCriticalPercent__NegativeCap</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Action point discount when moving (Amt)</td>
+                <td>@Html.TextBoxFor(m => m.MoveActionPointDiscount, new { @id = "MoveActionPointDiscount", @negative_mod = TT.Domain.Statics.BalanceStatics.MoveActionPointDiscount__NegativeModifier, @negative_cap = TT.Domain.Statics.BalanceStatics.MoveActionPointDiscount__NegativeCap })</td>
+                <td>@TT.Domain.Statics.BalanceStatics.MoveActionPointDiscount__Value</td>
+                <td>@TT.Domain.Statics.BalanceStatics.MoveActionPointDiscount__NegativeModifier</td>
+                <td>@TT.Domain.Statics.BalanceStatics.MoveActionPointDiscount__NegativeCap</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><span class='icon icon-timesattacking'></span>Extra transformation energy from spells (%)</td>
+                <td>@Html.TextBoxFor(m => m.SpellExtraTFEnergyPercent, new { @id = "SpellExtraTFEnergyPercent", @negative_mod = TT.Domain.Statics.BalanceStatics.SpellExtraTFEnergyPercent__NegativeModifier, @negative_cap = TT.Domain.Statics.BalanceStatics.SpellExtraTFEnergyPercent__NegativeCap, @readonly = "readonly" })</td>
+                <td>@TT.Domain.Statics.BalanceStatics.SpellExtraTFEnergyPercent__Value</td>
+                <td>@TT.Domain.Statics.BalanceStatics.SpellExtraTFEnergyPercent__NegativeModifier</td>
+                <td>@TT.Domain.Statics.BalanceStatics.SpellExtraTFEnergyPercent__NegativeCap</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><span class='icon icon-timesattacking'></span>Extra willpower damage from spells (%)</td>
+                <td>@Html.TextBoxFor(m => m.SpellExtraHealthDamagePercent, new { @id = "SpellExtraHealthDamagePercent", @negative_mod = TT.Domain.Statics.BalanceStatics.SpellExtraHealthDamagePercent__NegativeModifier, @negative_cap = TT.Domain.Statics.BalanceStatics.SpellExtraHealthDamagePercent__NegativeCap, @readonly = "readonly" })</td>
+                <td>@TT.Domain.Statics.BalanceStatics.SpellExtraHealthDamagePercent__Value</td>
+                <td>@TT.Domain.Statics.BalanceStatics.SpellExtraHealthDamagePercent__NegativeModifier</td>
+                <td>@TT.Domain.Statics.BalanceStatics.SpellExtraHealthDamagePercent__NegativeCap</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><span class='icon icon-cleansemeditate'></span>Extra transformation energy removal when cleansing (%)</td>
+                <td>@Html.TextBoxFor(m => m.CleanseExtraTFEnergyRemovalPercent, new { @id = "CleanseExtraTFEnergyRemovalPercent", @negative_mod = TT.Domain.Statics.BalanceStatics.CleanseExtraTFEnergyRemovalPercent__NegativeModifier, @negative_cap = TT.Domain.Statics.BalanceStatics.CleanseExtraTFEnergyRemovalPercent__NegativeCap, @readonly = "readonly" })</td>
+                <td>@TT.Domain.Statics.BalanceStatics.CleanseExtraTFEnergyRemovalPercent__Value</td>
+                <td>@TT.Domain.Statics.BalanceStatics.CleanseExtraTFEnergyRemovalPercent__NegativeModifier</td>
+                <td>@TT.Domain.Statics.BalanceStatics.CleanseExtraTFEnergyRemovalPercent__NegativeCap</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Misfire chance reduction (%)</td>
+                <td>
+                    @Html.TextBoxFor(m => m.SpellMisfireChanceReduction, new
+           {
+               @id = "SpellMisfireChanceReduction",
+               @negative_mod = TT.Domain.Statics.BalanceStatics.SpellMisfireChanceReduction__NegativeModifier,
+               @negative_cap = TT.Domain.Statics.BalanceStatics.SpellMisfireChanceReduction__NegativeCap,
+               @readonly = "readonly"
+           })
+                </td>
+                <td>@TT.Domain.Statics.BalanceStatics.SpellMisfireChanceReduction__Value</td>
+                <td>@TT.Domain.Statics.BalanceStatics.SpellMisfireChanceReduction__NegativeModifier</td>
+                <td>@TT.Domain.Statics.BalanceStatics.SpellMisfireChanceReduction__NegativeCap</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><span class='icon icon-defense'></span>Willpower damage reduction when hit by a spell (%)</td>
+                <td>
+                    @Html.TextBoxFor(m => m.SpellHealthDamageResistance, new
+           {
+               @id = "SpellHealthDamageResistance",
+               @negative_mod = TT.Domain.Statics.BalanceStatics.SpellHealthDamageResistance__NegativeModifier,
+               @negative_cap = TT.Domain.Statics.BalanceStatics.SpellHealthDamageResistance__NegativeCap,
+               @readonly = "readonly"
+           })
+                </td>
+                <td>@TT.Domain.Statics.BalanceStatics.SpellHealthDamageResistance__Value</td>
+                <td>@TT.Domain.Statics.BalanceStatics.SpellHealthDamageResistance__NegativeModifier</td>
+                <td>@TT.Domain.Statics.BalanceStatics.SpellHealthDamageResistance__NegativeCap</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><span class='icon icon-defense'></span>Transformation energy damage reduction when hit by a spell (%)</td>
+                <td>
+                    @Html.TextBoxFor(m => m.SpellTFEnergyDamageResistance, new
+       {
+           @id = "SpellTFEnergyDamageResistance",
+           @negative_mod = TT.Domain.Statics.BalanceStatics.SpellTFEnergyDamageResistance__NegativeModifier,
+           @negative_cap = TT.Domain.Statics.BalanceStatics.SpellTFEnergyDamageResistance__NegativeCap,
+           @readonly = "readonly"
+       })
+                </td>
+                <td>@TT.Domain.Statics.BalanceStatics.SpellTFEnergyDamageResistance__Value</td>
+                <td>@TT.Domain.Statics.BalanceStatics.SpellTFEnergyDamageResistance__NegativeModifier</td>
+                <td>@TT.Domain.Statics.BalanceStatics.SpellTFEnergyDamageResistance__NegativeCap</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Extra inventory spaces (Amt)</td>
+                <td>
+                    @Html.TextBoxFor(m => m.ExtraInventorySpace, new
+       {
+           @id = "ExtraInventorySpace",
+           @negative_mod = TT.Domain.Statics.BalanceStatics.ExtraInventorySpace__NegativeModifier,
+           @negative_cap = TT.Domain.Statics.BalanceStatics.ExtraInventorySpace__NegativeCap,
+           @readonly = "readonly"
+       })
+                </td>
+                <td>@TT.Domain.Statics.BalanceStatics.ExtraInventorySpace__Value</td>
+                <td>@TT.Domain.Statics.BalanceStatics.ExtraInventorySpace__NegativeModifier</td>
+                <td>@TT.Domain.Statics.BalanceStatics.ExtraInventorySpace__NegativeCap</td>
+                <td></td>
+            </tr>
+
+
+
+
+        </tbody>
+    </table>
+
+    <input type="submit" value="Send" />
+
+}
+
+<br />
+
+
+<input type="button" id="disableReadonly" value="Click to enable readonly fields (this is only for updating older contributions and admins/proofreaders.  Do not use this for any new forms except with permission.)" />
+
+
+
+<script>
+
+    var choice = "curse";
+
+    $(document).ready(function () {
+
+        recalculateCells();
+        recalculateValues();
+
+        // remove -99999 minimum cap
+        var minCapCells = $('table tbody td:nth-child(5)');
+        minCapCells.each(function () {
+            if ($(this).html() == "-99999") {
+                $(this).html("");
+            }
+        });
+
+        // remove negative modifier if 0
+        var minCapCells = $('table tbody td:nth-child(4)');
+        minCapCells.each(function () {
+            if ($(this).html() == "0") {
+                $(this).html("");
+            }
+        });
+
+        $('table input[type=text]').each(function () {
+
+            // remove text if value is unused
+            if ($(this).val() == "0.00" || $(this).val() == "0.0" || $(this).val() == "0") {
+                $(this).val("");
+            }
+
+
+            $(this).blur(function () {
+
+                //-----------------------------------
+
+                recalculateCells();
+                recalculateValues();
+            });
+        });
+
+        $("#mobilityType").change(function () {
+            choice = $("#mobilityType").val();
+
+            if (choice == "curse") {
+                $("#desired").html("-60");
+                $("#curseDurationWrapper").show();
+            }
+
+        });
+
+        $("#Effect_Duration").focusout(function () {
+            recalculateValues();
+        });
+
+        // default page load
+        $("#desired").html("0");
+
+        $("#disableReadonly").click(function () {
+            alert("This functionality should only be done by admins or proofreaders and is meant for the sake of updating older contributions.");
+            $("[readonly='readonly']").each(function () {
+                $(this).removeAttr("readonly");
+            });
+        });
+
+
+    });
+
+
+
+    function recalculateValues() {
+
+        var cells = $('table tbody td:nth-child(6)');
+
+        var total = 0;
+        var absolute_total = 0;
+
+        cells.each(function () {
+            //alert($(this).html());
+            if ($(this).html() != "") {
+                total += parseFloat($(this).html());
+                absolute_total += Math.abs(parseFloat($(this).html()));
+            }
+        });
+
+        if (choice == "curse") {
+            total *= $("#Effect_Duration").val();
+        }
+
+        $("#total").html(total);
+        $("#absolute_total").html(absolute_total);
+        var totalDesired = parseFloat($("#desired").html());
+
+
+
+        if (Math.abs(total - totalDesired) >= 10) {
+            $("#total").addClass("bad");
+            $("#total").removeClass("good");
+        } else {
+            $("#total").addClass("good");
+            $("#total").removeClass("bad");
+        }
+
+     //   total *= $("#Effect_Duration").html();
+
+    }
+
+    function recalculateCells() {
+
+        var cells = $('table tbody td:nth-child(5)');
+
+        cells.each(function () {
+            var localcost = $(this).parent().find("td").eq(2).html();
+
+            var myvalue = $(this).parent().find("input").val();
+
+
+            var calculated = localcost * myvalue;
+
+
+            var calculateCell = $(this).parent().find("td").eq(5);
+
+            if (calculated != "" && calculated != 0) {
+
+                var inputCell = $(this).parent().find("input");
+
+                // decrease if there's a negative modifier
+               // if ((inputCell.attr("negative-mod") != undefined) && (calculated < 0) && (parseFloat(inputCell.attr("negative-mod")) != 0)) {
+                //    calculated *= parseFloat(inputCell.attr("negative-mod"));
+               // }
+
+                // add negative clamp if it has one
+               // if ((inputCell.attr("negative-cap") != undefined) && (calculated < parseFloat(inputCell.attr("negative-cap")))) {
+                //    calculated = parseFloat(inputCell.attr("negative-cap"));
+               // }
+
+
+                calculateCell.html(calculated);
+                if (calculated > 0) {
+                    calculateCell.removeClass("bad");
+                    calculateCell.addClass("good");
+                } else {
+                    calculateCell.removeClass("good");
+                    calculateCell.addClass("bad");
+                }
+            } else {
+                calculateCell.html("");
+                $(this).removeClass("good");
+                $(this).removeClass("bad");
+            }
+        });
+    }
+
+
+    function Clear() {
+
+        var tablerow = $('table tr');
+        $("#balanceTable > tbody > tr").each(function () {
+            var cell = $(this).find('input[type=text]');
+
+            var rowtotal = $(this).find('td:nth-child(4)');
+            cell.val("");
+            rowtotal.html("");
+        });
+
+        recalculateValues();
+
+    }
+
+</script>
+
+<style>
+    table {
+        padding: 3px;
+        border: 1px solid black;
+    }
+
+    th {
+        background-color: black;
+        color: white;
+        text-align: center;
+    }
+
+    tr {
+        padding: 3px;
+        border: 1px solid black;
+    }
+
+        tr:nth-child(odd) {
+            background-color: lightgray;
+        }
+
+    td {
+        text-align: center;
+    }
+
+
+    #desired {
+        font-size: 15px;
+    }
+
+    red {
+        color: red;
+        font-weight: 900;
+    }
+
+    input:-moz-read-only { /* For Firefox */
+        background-color: lightgray;
+    }
+
+    input:read-only {
+        background-color: lightgray;
+    } 
+
+</style>

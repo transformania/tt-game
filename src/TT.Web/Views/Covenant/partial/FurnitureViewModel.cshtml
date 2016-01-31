@@ -1,0 +1,28 @@
+﻿@model TT.Domain.ViewModels.FurnitureViewModel
+
+<h3>@Model.dbFurniture.HumanName</h3>
+<p>Price:  <span title="Arpeyjis" class="icon icon-money"></span><span class="avatarCount"><b>@Convert.ToInt32(Model.dbFurniture.Price)</b></span> </p>
+<p><i>@Model.FurnitureType.Description</i></p>
+@*<p>Contract Duration:  <b>@Model.dbFurniture.ContractTurnDuration</b></p>
+<p>Recharge duration:  <b>@Model.FurnitureType.MinutesUntilReuse</b> minutes</p>*@
+<p>Advantages:</p>
+
+
+<ul>
+    @{
+        if (Model.FurnitureType.APReserveRefillAmount != null && Model.FurnitureType.APReserveRefillAmount != 0)
+        {
+            <li>Refills action point reserve by:  @Model.FurnitureType.APReserveRefillAmount</li>
+        }
+        if (Model.FurnitureType.GivesEffect != null && Model.FurnitureType.GivesEffect != "")
+        {
+            <li>Gives effect:  @TT.Domain.Statics.EffectStatics.GetEffect(Model.FurnitureType.GivesEffect).FriendlyName</li>
+        }
+        if (Model.FurnitureType.GivesItem!= null && Model.FurnitureType.GivesItem != "") {
+            <li>Gives item:  @TT.Domain.Statics.ItemStatics.GetStaticItem(Model.FurnitureType.GivesItem).FriendlyName</li>
+        } 
+    }
+</ul>
+
+@*<p>Last contract expired on turn @Model.dbFurniture.ContractEndTurn.</p>*@
+

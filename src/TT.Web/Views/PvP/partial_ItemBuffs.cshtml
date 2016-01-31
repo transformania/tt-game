@@ -1,0 +1,155 @@
+﻿@model TT.Domain.ViewModels.BuffBox
+
+
+
+<h3>Bonuses from items worn or equipped:</h3>
+<ul>
+    @{
+        if (@Model.FromItems_HealthBonusPercent != 0)
+        {
+            <li>Extra willpower % maximum:  @Model.FromItems_HealthBonusPercent</li>
+        }
+        if (@Model.FromItems_ManaBonusPercent != 0)
+        {
+            <li>Extra mana % maximum:  @Model.FromItems_ManaBonusPercent</li>
+        }
+        if (@Model.FromItems_HealthRecoveryPerUpdate != 0)
+        {
+            <li>Willpower recovery per update:  @Model.FromItems_HealthRecoveryPerUpdate</li>
+        }
+        if (@Model.FromItems_ManaRecoveryPerUpdate != 0)
+        {
+            <li>Mana recovery per update:  @Model.FromItems_ManaRecoveryPerUpdate</li>
+        }
+        if (@Model.FromItems_SneakPercent != 0)
+        {
+            <li>Sneak chance percent:  @Model.FromItems_SneakPercent</li>
+        }
+
+        if (@Model.FromItems_MeditationExtraMana != 0)
+        {
+            <li>Extra mana recovering from meditating:  @Model.FromItems_MeditationExtraMana</li>
+        }
+        if (@Model.FromItems_CleanseExtraHealth != 0)
+        {
+            <li>Extra willpower recovered from cleansing:  @Model.FromItems_CleanseExtraHealth</li>
+        }
+        if (@Model.FromItems_ExtraSkillCriticalPercent != 0)
+        {
+            <li>Extra critical hit percent chance:  @Model.FromItems_ExtraSkillCriticalPercent</li>
+        }
+        if (@Model.FromItems_MoveActionPointDiscount != 0.0M)
+        {
+            <li>Action point discount when moving:  @Model.FromItems_MoveActionPointDiscount</li>
+        }
+        if (@Model.FromItems_SpellExtraTFEnergyPercent != 0.0M)
+        {
+            <li>Extra transformation energy damage percent:  @Model.FromItems_SpellExtraTFEnergyPercent</li>
+        }
+        if (@Model.FromItems_EvasionPercent != 0.0M)
+        {
+            <li>Percent chance to evade an attack:  @Model.FromItems_EvasionPercent</li>
+        } 
+        if(@Model.FromItems_EvasionNegationPercent != 0.0M)
+        {
+            <li>Percent negation of opponent's ability to evade a spell:  @Model.FromItems_EvasionNegationPercent</li>
+        }
+         if (@Model.FromItems_SpellExtraHealthDamagePercent != 0.0M)
+        {
+            <li>Extra willpower damage dealt from spells:  @Model.FromItems_SpellExtraHealthDamagePercent</li>
+        }
+         if (@Model.FromItems_CleanseExtraTFEnergyRemovalPercent != 0.0M)
+        {
+            <li>Extra transformation energy percent removed when cleansing:  @Model.FromItems_CleanseExtraTFEnergyRemovalPercent</li>
+        }
+         if (@Model.FromItems_SpellMisfireChanceReduction != 0.0M)
+        {
+            <li>Misfire percent chance reduction:  @Model.FromItems_SpellMisfireChanceReduction</li>
+        }
+        
+        
+         if (@Model.FromItems_SpellHealthDamageResistance != 0.0M)
+        {
+            <li>Willpower damage percent reduction when hit by spells:  @Model.FromItems_SpellHealthDamageResistance</li>
+        }
+         if (@Model.FromItems_SpellTFEnergyDamageResistance != 0.0M)
+        {
+            <li>Transformation energy percent reduction when hit by spells:  @Model.FromItems_SpellTFEnergyDamageResistance</li>
+        }
+         if (@Model.FromItems_ExtraInventorySpace != 0.0M)
+        {
+            <li>Extra inventory space:  @Model.FromItems_ExtraInventorySpace</li>
+        }
+        
+        
+        
+        
+          if (@Model.FromItems_Discipline != 0.0F)
+        {
+            <li>Discipline:  @Model.FromItems_ExtraInventorySpace</li>
+        }
+
+          if (@Model.FromItems_Perception != 0.0F)
+        {
+            <li>Perception:  @Model.FromItems_Perception</li>
+        }
+
+          if (@Model.FromItems_Charisma != 0.0F)
+        {
+            <li>Charisma:  @Model.FromItems_Charisma</li>
+        }
+
+          if (@Model.FromItems_Submission_Dominance != 0.0F)
+        {
+            <li>Submission -- Dominance:  @Model.FromItems_Submission_Dominance</li>
+        }
+
+          if (@Model.FromItems_Fortitude != 0.0F)
+        {
+            <li>Fortitude:  @Model.FromItems_Fortitude</li>
+        }
+
+          if (@Model.FromItems_Agility != 0.0F)
+        {
+            <li>Agility:  @Model.FromItems_Agility</li>
+        }
+
+          if (@Model.FromItems_Allure != 0.0F)
+        {
+            <li>Allure:  @Model.FromItems_Allure</li>
+        }
+
+          if (@Model.FromItems_Corruption_Purity != 0.0F)
+        {
+            <li>Corruption -- Purity:  @Model.FromItems_Corruption_Purity</li>
+        }
+
+          if (@Model.FromItems_Magicka != 0.0F)
+        {
+            <li>Magicka:  @Model.FromItems_Magicka</li>
+        }
+
+          if (@Model.FromItems_Succour != 0.0F)
+        {
+            <li>Succour:  @Model.FromItems_Succour</li>
+        }
+
+          if (@Model.FromItems_Luck != 0.0F)
+        {
+            <li>Luck:  @Model.FromItems_Luck</li>
+        }
+
+          if (@Model.FromItems_Chaos_Order != 0.0F)
+        {
+            <li>Chaos -- Order:  @Model.FromItems_Chaos_Order</li>
+        }
+        
+        
+        
+        
+        
+        
+        
+    }
+
+</ul>

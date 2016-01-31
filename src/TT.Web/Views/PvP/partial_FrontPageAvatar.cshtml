@@ -1,0 +1,121 @@
+﻿@model TT.Domain.ViewModels.PlayerFormViewModel
+@using TT.Web.CustomHtmlHelpers
+@using TT.Domain.Statics
+@using TT.Domain.Procedures
+
+@{
+
+    int HealthWidth = Convert.ToInt32(Model.Player.Health / Model.Player.MaxHealth * 100);
+    if (HealthWidth > 100) { HealthWidth = 100; }
+    int ManaWidth = Convert.ToInt32(Model.Player.Mana / Model.Player.MaxMana * 100);
+    if (ManaWidth > 100) { ManaWidth = 100; }
+    int ActionWidth = Convert.ToInt32(Model.Player.ActionPoints / PvPStatics.MaximumStoreableActionPoints * 100);
+
+}
+<div class="row">
+    <div class="col-md-4 col-sm-6 hidden-xs">
+        <div class="frontOuter">
+            <div class="avatarText">
+                <p class="avatarName">@Model.Player.GetFullName()</p>
+                <p class="avatarFormName">@Model.Form.FriendlyName</p>
+                <p class="avatarCoven">@CharactersHere.GetCovenantInfo(Model.Player.ToDbPlayer())</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="visible-xs center-block">
+        <p class="avatarFormName">@Model.Player.GetFullName()</p>
+        <p><span style="font-size: 12px">Level: <b>@Model.Player.Level</b></span> - @Model.Form.FriendlyName <span class="icon icon-@Model.Player.Gender"></span></p>
+        <div class="portraitMobile" style="background-image: url(@CharactersHere.GetImageURL(Model, false));" title="@Model.Form.Description">
+            @{if (PlayerProcedures.PlayerIsOffline(Model.Player) == true)
+            {
+                <span class="icon icon-sleep" title="This player is offline and will be harder to attack."></span>
+            }
+            }
+            <span class="iconPortraitLarge">
+                @CharactersHere.PrintDonatorIcon(Model.Player.ToDbPlayer())
+                @CharactersHere.PrintRPIcon(Model.Player.ToDbPlayer())
+                @CharactersHere.PrintPvPIcon(Model.Player.ToDbPlayer())
+                @CharactersHere.PrintMCIcon(Model.Player.ToDbPlayer())
+            </span>
+        </div>
+
+        <div class="barWrapper">
+            <div class="barText" style="font-size: 12px;"><span id="wp_num1">@Model.Player.Health</span> / @Model.Player.MaxHealth WP</div>
+            <div id="wp_amt1" class="barData barWP" style="width: @HealthWidth%"></div>
+        </div>
+
+
+        <div class="barWrapper">
+            <div class="barText" style="font-size: 12px;">@Model.Player.Mana / @Model.Player.MaxMana MP</div>
+            <div id="mn_amt1" class="barData barMP" style="width: @ManaWidth%"></div>
+        </div>
+
+
+
+        <div class="barWrapper">
+            <div class="barText" style="font-size: 12px;">@Model.Player.ActionPoints / @PvPStatics.MaximumStoreableActionPoints AP (res: @Model.Player.ActionPoints_Refill) </div>
+            <div class="barData barAP" style="width: @ActionWidth%"></div>
+        </div>
+
+        @Html.Partial("~/Views/PvP/partial_XpBar.cshtml", Model)
+
+        <span title="Times attacking this update" class="icon icon-timesattacking"></span><span class="avatarCount">@Model.Player.TimesAttackingThisUpdate / 3</span>
+        <span title="Times cleansing and meditating this update" class="icon icon-cleansemeditate"></span><span class="avatarCount">@Model.Player.CleansesMeditatesThisRound / 3</span>
+        <span title="Arpeyjis" class="icon icon-money"></span><span class="avatarCount">@Convert.ToInt32(Model.Player.Money)</span>
+    </div>
+
+
+    <div class="col-md-4 col-sm-6 hidden-xs">
+        <div class="frontOuter" id="frontOuterAvatar">
+            <div class="portraitFront" style="background-image: url(@CharactersHere.GetImageURL(Model, false));" title="@Model.Form.Description">
+
+                <span class="icon icon-@Model.Player.Gender" style="float:right;"></span>
+                <span class="icon icon-level"><b>@Model.Player.Level</b></span>
+                @{if (PlayerProcedures.PlayerIsOffline(Model.Player) == true)
+                {
+                    <span class="icon icon-sleep" title="This player is offline and will be harder to attack."></span>
+                }
+                }
+                <span class="iconPortraitLarge">
+                    @CharactersHere.PrintDonatorIcon(Model.Player.ToDbPlayer())
+                    @CharactersHere.PrintRPIcon(Model.Player.ToDbPlayer())
+                    @CharactersHere.PrintPvPIcon(Model.Player.ToDbPlayer())
+                    @CharactersHere.PrintMCIcon(Model.Player.ToDbPlayer())
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 col-sm-12 hidden-xs">
+        <div class="frontOuter">
+            <div class="avatarBars">
+                <div class="barWrapper">
+                    <div class="barText"><span id="wp_num2">@Model.Player.Health</span> / @Model.Player.MaxHealth willpower</div>
+                    <div id="wp_amt2" class="barData barWP" style="width: @HealthWidth%"></div>
+                </div>
+
+
+                <div class="barWrapper">
+                    <div class="barText">@Model.Player.Mana / @Model.Player.MaxMana mana</div>
+                    <div id="mn_amt2" class="barData barMP" style="width: @ManaWidth%"></div>
+                </div>
+
+
+
+                <div class="barWrapper">
+                    <div class="barText">@Model.Player.ActionPoints / @PvPStatics.MaximumStoreableActionPoints AP (@Model.Player.ActionPoints_Refill in Reserve) </div>
+                    <div id="mn_amt" class="barData barAP" style="width: @ActionWidth%"></div>
+                </div>
+
+                @Html.Partial("~/Views/PvP/partial_XpBar.cshtml", Model)
+
+                <span title="Times attacking this update" class="icon icon-timesattacking"></span><span class="avatarCount">@Model.Player.TimesAttackingThisUpdate / 3</span>
+                <span title="Times cleansing and meditating this update" class="icon icon-cleansemeditate"></span><span class="avatarCount">@Model.Player.CleansesMeditatesThisRound / 3</span>
+                <span title="Arpeyjis" class="icon icon-money"></span><span class="avatarCount">@Convert.ToInt32(Model.Player.Money)</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+

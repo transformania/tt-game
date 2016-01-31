@@ -1,0 +1,499 @@
+﻿@model TT.Domain.ViewModels.BuffBox
+@using TT.Web.CustomHtmlHelpers
+
+
+<table id="bufftable">
+    <thead>
+        <tr>
+            <th style="min-width:50%;">Effect</th>
+            <th style="width:100px;">Total</th>
+            <th class="mobile">From Form</th>
+            <th class="mobile">From Items</th>
+            <th class="mobile">From Effects</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @{
+
+
+            <tr>
+                <td>@CharactersHere.PrintStatDescriptionPopup("Discipline") @CharactersHere.PrintStatIcons("Discipline")</td>
+                <td>
+                    @Model.Discipline()
+                </td>
+                <td class="mobile">@Model.FromForm_Discipline</td>
+                <td class="mobile">@Model.FromItems_Discipline</td>
+                <td class="mobile">@Model.FromEffects_Discipline</td>
+            </tr>
+
+
+
+
+            <tr>
+                <td>@CharactersHere.PrintStatDescriptionPopup("Perception") @CharactersHere.PrintStatIcons("Perception")</td>
+                <td>
+                    @Model.Perception()
+                </td>
+                <td class="mobile">@Model.FromForm_Perception</td>
+                <td class="mobile">@Model.FromItems_Perception</td>
+                <td class="mobile">@Model.FromEffects_Perception</td>
+            </tr>
+
+
+
+            <tr>
+                <td>@CharactersHere.PrintStatDescriptionPopup("Charisma") @CharactersHere.PrintStatIcons("Charisma")</td>
+                <td>
+                    @Model.Charisma()
+                </td>
+                <td class="mobile">@Model.FromForm_Charisma</td>
+                <td class="mobile">@Model.FromItems_Charisma</td>
+                <td class="mobile">@Model.FromEffects_Charisma</td>
+            </tr>
+
+
+
+            <tr>
+                <td>@CharactersHere.PrintStatDescriptionPopup("Fortitude") @CharactersHere.PrintStatIcons("Fortitude")</td>
+                <td>
+                    @Model.Fortitude()
+                </td>
+                <td class="mobile">@Model.FromForm_Fortitude</td>
+                <td class="mobile">@Model.FromItems_Fortitude</td>
+                <td class="mobile">@Model.FromEffects_Fortitude</td>
+            </tr>
+
+
+
+            <tr>
+                <td>@CharactersHere.PrintStatDescriptionPopup("Agility") @CharactersHere.PrintStatIcons("Agility")</td>
+                <td>
+                    @Model.Agility()
+                </td>
+                <td class="mobile">@Model.FromForm_Agility</td>
+                <td class="mobile">@Model.FromItems_Agility</td>
+                <td class="mobile">@Model.FromEffects_Agility</td>
+            </tr>
+
+
+
+            <tr>
+                <td>@CharactersHere.PrintStatDescriptionPopup("Allure") @CharactersHere.PrintStatIcons("Allure")</td>
+                <td>
+                    @Model.Allure()
+                </td>
+                <td class="mobile">@Model.FromForm_Allure</td>
+                <td class="mobile">@Model.FromItems_Allure</td>
+                <td class="mobile">@Model.FromEffects_Allure</td>
+            </tr>
+
+
+
+            <tr>
+                <td>@CharactersHere.PrintStatDescriptionPopup("Magicka") @CharactersHere.PrintStatIcons("Magicka")</td>
+                <td>
+                    @Model.Magicka()
+                </td>
+                <td class="mobile">@Model.FromForm_Magicka</td>
+                <td class="mobile">@Model.FromItems_Magicka</td>
+                <td class="mobile">@Model.FromEffects_Magicka</td>
+            </tr>
+
+
+
+
+            <tr>
+                <td>@CharactersHere.PrintStatDescriptionPopup("Succour") @CharactersHere.PrintStatIcons("Succour")</td>
+                <td>
+                    @Model.Succour()
+                </td>
+                <td class="mobile">@Model.FromForm_Succour</td>
+                <td class="mobile">@Model.FromItems_Succour</td>
+                <td class="mobile">@Model.FromEffects_Succour</td>
+            </tr>
+
+
+
+            <tr>
+                <td>@CharactersHere.PrintStatDescriptionPopup("Luck") @CharactersHere.PrintStatIcons("Luck")</td>
+                <td>
+                    @Model.Luck()
+                </td>
+                <td class="mobile">@Model.FromForm_Luck</td>
+                <td class="mobile">@Model.FromItems_Luck</td>
+                <td class="mobile">@Model.FromEffects_Luck</td>
+            </tr>
+
+    <tr class="rowDivider">
+        <td><b>Decomposite Stats:</b></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+
+    if (Model.HealthBonusPercent() != 0.0M)
+    {
+                <tr>
+                    <td>Extra willpower % maximum:</td>
+                    <td>
+                        @Model.HealthBonusPercent()
+                    </td>
+                    <td class="mobile">@Model.FromForm_HealthBonusPercent</td>
+                    <td class="mobile">@Model.FromItems_HealthBonusPercent</td>
+                    <td class="mobile">@Model.FromEffects_HealthBonusPercent</td>
+                </tr>
+            }
+        }
+
+        @{
+            if (Model.ManaBonusPercent() != 0.0M)
+            {
+                <tr>
+                    <td>Extra mana % maximum:</td>
+                    <td>
+                        @Model.ManaBonusPercent()
+                    </td>
+                    <td class="mobile">@Model.FromForm_ManaBonusPercent</td>
+                    <td class="mobile">@Model.FromItems_ManaBonusPercent</td>
+                    <td class="mobile">@Model.FromEffects_ManaBonusPercent</td>
+                </tr>
+            }
+        }
+
+        @{
+            if (Model.HealthRecoveryPerUpdate() != 0.0M)
+            {
+                <tr>
+                    <td>Willpower recovery per update:</td>
+                    <td>
+                        @Model.HealthRecoveryPerUpdate()
+                    </td>
+                    <td class="mobile">@Model.FromForm_HealthRecoveryPerUpdate</td>
+                    <td class="mobile">@Model.FromItems_HealthRecoveryPerUpdate</td>
+                    <td class="mobile">@Model.FromEffects_HealthRecoveryPerUpdate</td>
+                </tr>
+            }
+        }
+
+        @{
+            if (Model.ManaRecoveryPerUpdate() != 0.0M)
+            {
+                <tr>
+                    <td>Mana recovery per update:</td>
+                    <td>
+                        @Model.ManaRecoveryPerUpdate()
+                    </td>
+                    <td class="mobile">@Model.FromForm_ManaRecoveryPerUpdate</td>
+                    <td class="mobile">@Model.FromItems_ManaRecoveryPerUpdate</td>
+                    <td class="mobile">@Model.FromEffects_ManaRecoveryPerUpdate</td>
+                </tr>
+            }
+        }
+
+        @{
+            if (Model.SneakPercent() != 0.0M)
+            {
+                <tr>
+                    <td>Sneak chance percent:</td>
+                    <td>
+                        @Model.SneakPercent()
+                    </td>
+                    <td class="mobile">@Model.FromForm_SneakPercent</td>
+                    <td class="mobile">@Model.FromItems_SneakPercent</td>
+                    <td class="mobile">@Model.FromEffects_SneakPercent</td>
+                </tr>
+            }
+        }
+
+        @{
+            if (Model.AntiSneakPercent() != 0.0M)
+            {
+                <tr>
+                    <td>Sneak level detection:</td>
+                    <td>
+                        @Model.AntiSneakPercent()
+                    </td>
+                    <td class="mobile">@Model.FromForm_AntiSneakPercent</td>
+                    <td class="mobile">@Model.FromItems_AntiSneakPercent</td>
+                    <td class="mobile">@Model.FromEffects_AntiSneakPercent</td>
+                </tr>
+            }
+        }
+
+        @{
+            if (Model.MeditationExtraMana() != 0.0M)
+            {
+                <tr>
+                    <td>Extra mana recovered from meditating</td>
+                    <td>
+                        @Model.MeditationExtraMana()
+                    </td>
+                    <td class="mobile">@Model.FromForm_MeditationExtraMana</td>
+                    <td class="mobile">@Model.FromItems_MeditationExtraMana</td>
+                    <td class="mobile">@Model.FromEffects_MeditationExtraMana</td>
+                </tr>
+            }
+        }
+
+        @{
+            if (Model.CleanseExtraHealth() != 0.0M)
+            {
+                <tr>
+                    <td>Extra willpower recovered from cleansing:</td>
+                    <td>
+                        @Model.CleanseExtraHealth()
+                    </td>
+                    <td class="mobile">@Model.FromForm_CleanseExtraHealth</td>
+                    <td class="mobile">@Model.FromItems_CleanseExtraHealth</td>
+                    <td class="mobile">@Model.FromEffects_CleanseExtraHealth</td>
+                </tr>
+            }
+        }
+
+        @{
+            if (Model.MoveActionPointDiscount() != 0.0M)
+            {
+                <tr>
+                    <td>Action point discount when moving:</td>
+                    <td>
+                        @Model.MoveActionPointDiscount()
+                    </td>
+                    <td class="mobile">@Model.FromForm_MoveActionPointDiscount</td>
+                    <td class="mobile">@Model.FromItems_MoveActionPointDiscount</td>
+                    <td class="mobile">@Model.FromEffects_MoveActionPointDiscount</td>
+                </tr>
+            }
+        }
+
+        @{
+            if (Model.ExtraSkillCriticalPercent() != 0.0M)
+            {
+
+                <tr>
+                    <td>Extra chance of spell critical hits:</td>
+                    <td>
+                        @Model.ExtraSkillCriticalPercent()
+                    </td>
+                    <td class="mobile">@Model.FromForm_ExtraSkillCriticalPercent</td>
+                    <td class="mobile">@Model.FromItems_ExtraSkillCriticalPercent</td>
+                    <td class="mobile">@Model.FromEffects_ExtraSkillCriticalPercent</td>
+                </tr>
+            }
+        }
+
+        @{
+            if (Model.EvasionPercent() != 0.0M)
+            {
+
+                <tr>
+                    <td>Percent chance to evade an attack:</td>
+                    <td>
+                        @Model.EvasionPercent()
+                    </td>
+                    <td class="mobile">@Model.FromForm_EvasionPercent</td>
+                    <td class="mobile">@Model.FromItems_EvasionPercent</td>
+                    <td class="mobile">@Model.FromEffects_EvasionPercent</td>
+                </tr>
+            }
+        }
+
+        @{
+            if (Model.EvasionNegationPercent() != 0.0M)
+            {
+                <tr>
+                    <td>Percent negation of opponent's ability to evade a spell:</td>
+                    <td>
+                        @Model.EvasionNegationPercent()
+                    </td>
+                    <td class="mobile">@Model.FromForm_EvasionNegationPercent</td>
+                    <td class="mobile">@Model.FromItems_EvasionNegationPercent</td>
+                    <td class="mobile">@Model.FromEffects_EvasionNegationPercent</td>
+                </tr>
+            }
+        }
+
+        @{
+            if (Model.SpellExtraHealthDamagePercent() != 0.0M)
+            {
+                <tr>
+                    <td>Extra spell willpower damage percent:</td>
+                    <td>
+                        @Model.SpellExtraHealthDamagePercent()
+                    </td>
+                    <td class="mobile">@Model.FromForm_SpellExtraHealthDamagePercent</td>
+                    <td class="mobile">@Model.FromItems_SpellExtraHealthDamagePercent</td>
+                    <td class="mobile">@Model.FromEffects_SpellExtraHealthDamagePercent</td>
+                </tr>
+            }
+        }
+
+        @{
+            if (Model.SpellExtraTFEnergyPercent() != 0.0M)
+            {
+                <tr>
+                    <td>Extra transformation damage percent dealt from spells: </td>
+                    <td>
+                        @Model.SpellExtraTFEnergyPercent()
+                    </td>
+                    <td class="mobile">@Model.FromForm_SpellExtraTFEnergyPercent</td>
+                    <td class="mobile">@Model.FromItems_SpellExtraTFEnergyPercent</td>
+                    <td class="mobile">@Model.FromEffects_SpellExtraTFEnergyPercent</td>
+                </tr>
+            }
+        }
+
+        @{
+            if (Model.CleanseExtraTFEnergyRemovalPercent() != 0.0M)
+            {
+                <tr>
+                    <td>Extra transformation energy percent removed when cleansing:</td>
+                    <td>
+                        @Model.CleanseExtraTFEnergyRemovalPercent()
+                    </td>
+                    <td class="mobile">@Model.FromForm_CleanseExtraTFEnergyRemovalPercent</td>
+                    <td class="mobile">@Model.FromItems_CleanseExtraTFEnergyRemovalPercent</td>
+                    <td class="mobile">@Model.FromEffects_CleanseExtraTFEnergyRemovalPercent</td>
+                </tr>
+            }
+        }
+
+        @{
+            if (Model.SpellMisfireChanceReduction() != 0.0M)
+            {
+                <tr>
+                    <td>Misfire percent chance reduction: </td>
+                    <td>
+                        @Model.SpellMisfireChanceReduction()
+                    </td>
+                    <td class="mobile">@Model.FromForm_SpellMisfireChanceReduction</td>
+                    <td class="mobile">@Model.FromItems_SpellMisfireChanceReduction</td>
+                    <td class="mobile">@Model.FromEffects_SpellMisfireChanceReduction</td>
+                </tr>
+            }
+        }
+
+        @{
+            if (Model.SpellHealthDamageResistance() != 0.0M)
+            {
+                <tr>
+                    <td>Willpower damage reduction when hit by spells:</td>
+                    <td>
+                        @Model.SpellHealthDamageResistance()
+                    </td>
+                    <td class="mobile">@Model.FromForm_SpellHealthDamageResistance</td>
+                    <td class="mobile">@Model.FromItems_SpellHealthDamageResistance</td>
+                    <td class="mobile">@Model.FromEffects_SpellHealthDamageResistance</td>
+                </tr>
+            }
+        }
+
+        @{
+            if (Model.SpellTFEnergyDamageResistance() != 0.0M)
+            {
+                <tr>
+                    <td>Transformation energy reduction when hit by spells:</td>
+                    <td>
+                        @Model.SpellTFEnergyDamageResistance()
+                    </td>
+                    <td class="mobile">@Model.FromForm_SpellTFEnergyDamageResistance</td>
+                    <td class="mobile">@Model.FromItems_SpellTFEnergyDamageResistance</td>
+                    <td class="mobile">@Model.FromEffects_SpellTFEnergyDamageResistance</td>
+                </tr>
+            }
+        }
+
+        @{
+            if (Model.ExtraInventorySpace() != 0.0M)
+            {
+                <tr>
+                    <td>Extra inventory space:</td>
+                    <td>
+                        @Model.ExtraInventorySpace()
+                    </td>
+                    <td class="mobile">@Model.FromForm_ExtraInventorySpace</td>
+                    <td class="mobile">@Model.FromItems_ExtraInventorySpace</td>
+                    <td class="mobile">@Model.FromEffects_ExtraInventorySpace</td>
+                </tr>
+            }
+        }
+
+
+
+
+
+
+
+
+    </tbody>
+</table>
+
+<style>
+    table {
+        padding: 3px;
+        border: 1px solid black;
+        width: 100%;
+    }
+
+    th {
+        background-color: black;
+        color: white;
+        text-align: center;
+        padding: 2px 0px 2px 0px;
+        margin: 0;
+    }
+
+    tr {
+        padding: 3px;
+        border: 1px solid black;
+    }
+
+        tr:nth-child(odd) {
+            background-color: lightgray;
+        }
+
+    td {
+        text-align: center;
+        margin: 0;
+        padding: 2px 0px 2px 0px;
+    }
+
+    #bufftable {
+        margin-bottom: 20px;
+        float: left;
+        position: relative;
+    }
+
+    .rowDivider {
+         background-color: black;
+        color: white;
+    }
+
+    @@media screen and (max-width: 767px) {
+        .mobile {
+            display: none;
+        }
+    }
+</style>
+
+<script>
+    $(document).ready(function () {
+        $('#bufftable tr').each(function () {
+            $(this).find('td').each(function () {
+
+                if ($(this).index() > 0.0) {
+                    var num = parseFloat($(this).html());
+                    if (num > 0) {
+                        $(this).addClass("good");
+                    } else if (num < 0.0) {
+                        $(this).addClass("bad");
+                    } else {
+                        $(this).addClass("zero");
+                    }
+                }
+
+            })
+        })
+    });
+</script>

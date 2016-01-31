@@ -1,0 +1,12 @@
+﻿@model TT.Domain.ViewModels.PublicBroadcastViewModel
+
+<div class="containerInner">
+    <h1>Public broadcast</h1>
+
+    @using (Html.BeginForm("SendPublicBroadcast", "PvPAdmin", FormMethod.Post))
+    {
+        @Html.TextAreaFor(m => m.Message)
+        <br />
+        <input type="submit"  class="btn btn-chat" value="Send" />
+    }
+</div>

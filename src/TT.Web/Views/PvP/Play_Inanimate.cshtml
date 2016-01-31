@@ -1,0 +1,270 @@
+﻿@model TT.Domain.ViewModels.GameOverViewModel
+@using TT.Web.CustomHtmlHelpers
+@using TT.Domain.Statics
+
+<script src="~/Scripts/jquery-ui-1.10.4.js"></script>
+
+<script src="~/Scripts/jquery.signalR-2.0.3.min.js"></script>
+<script src="~/signalr/hubs"></script>
+<script src="~/Scripts/notices.js"></script>
+
+@{
+    if (@ViewBag.WorldTurnNumber >= @PvPStatics.RoundDuration)
+    {
+        <div class="inbetweenRoundNotice">The round has ended.  Check back soon to start again on a fresh round.</div>
+    }
+}
+
+<nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav">
+                <li>
+                    <span id="timerBox" class="glyphicon glyphicon-time" aria-hidden="true" title="Click to see how long ago the last update ran."></span>
+                    <span id="turn_countdown">-:--</span>
+                </li>
+                <li>@Html.ActionLink("Last Actions", "ViewLog", "PvP")</li>
+                <li>@Html.ActionLink("Friends", "MyFriends", "PvP")</li>
+                <li>@Html.ActionLink("Chat", "Index", "Chat", new { room = "global" }, new { target = "_blank" })</li>
+                <li>@Html.ActionLink("Covenant", "MyCovenant", "Covenant")</li>
+                <li>@Html.ActionLink("Settings", "Settings", "Settings")</li>
+                @{if (Model.NewMessageCount > 0)
+                {
+                    <li>@Html.ActionLink("(" + Model.NewMessageCount + " unread)", "MyMessages", "PvP", null, new { @class = "inboxNew" })</li>
+                }
+                else
+                {
+                    <li>@Html.ActionLink("Inbox", "MyMessages", "PvP")</li>
+                }
+                }
+                <li>@Html.ActionLink("Submit Content", "Contribute", "Contribution", new { Id = -1 }, null)</li>
+                <li>@Html.ActionLink("Start again as someone else", "Restart", "PvP")</li>
+                @{
+                    if (User.IsInRole(PvPStatics.Permissions_Admin) == true)
+                    {
+                        <li>@Html.ActionLink("Admin", "Index", "PvPAdmin")</li>
+                    }
+                    if (User.IsInRole(PvPStatics.Permissions_QuestWriter) == true)
+                    {
+                        <li>@Html.ActionLink("QuestWriter", "Index", "QuestWriter", null, null)</li>
+                    }
+                }
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+<div>
+    <p class="infoMessage result">@Html.Raw(ViewBag.Result)</p>
+    <p class="infoMessage error">@ViewBag.ErrorMessage</p>
+    <p class="infoMessage suberror">@ViewBag.SubErrorMessage</p>
+</div>
+
+@Html.Partial("partial/RoundStatus", Model.PvPWorldStat)
+
+<div class="specialBox specialBox2">
+    <span class="turnNumber">Turn #<b>@ViewBag.WorldTurnNumber/@PvPStatics.RoundDuration</b></span><span id="liveConnectionNotice" class="noticeOff" title="If this icon is green, you are connected to the server and will receive live notifications when attacked or messaged."><span class="glyphicon glyphicon-ok-circle"> </span></span>
+    Transformania Time has <b>@Model.WorldStats.TotalPlayers</b> players, <b>@Model.WorldStats.CurrentOnlinePlayers</b> of which are currently online.
+</div>
+
+<ul id="notificationBox" style="display:none;">
+    @{
+        foreach (TT.Domain.Models.PlayerLog log in Model.PlayerLogImportant)
+        {
+            <li class="frontPageNotification">
+                @Html.Raw(log.Message) <span class="timeago">@CharactersHere.DatetimeToTimeago(log.Timestamp)</span>
+            </li>
+        }
+    }
+</ul>
+
+<p id="dismissNotficationBox" style="display:none;"><a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '0px'">[ -- ]</a> <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '100px'">[ - ]</a> @Ajax.ActionLink("Dismiss Notifications", "DismissNotifications_Ajax", "PvP", null, new AjaxOptions { HttpMethod = "GET", OnSuccess = "dismissNotificationsSuccess", OnFailure = "dismissNotificationsFail" }, null) <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '250px'">[ + ]</a> <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '500px'">[ ++ ]</a></p>
+
+
+<div class="containerInner">
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="petItemPortrait img-responsive" style="background-image: url(../Images/PvP/itemsPortraits/@Model.Item.Item.PortraitUrl);">
+                @CharactersHere.PrintOwnerSubPortrait(Model.WornBy)
+                @CharactersHere.PrintItemTypeIcon(Model.Item.Item)
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-justify">
+            <p>Your name is <b>@Model.Player.GetFullName()</b>, or at least it used to be.  Should you regain a human form you will find yourself at level <b>@Model.Player.Level</b> with @Model.Player.XP experience points toward the next.  But now it's time to embrace your new existence as a <b>@Model.Form.FriendlyName</b>.</p>
+
+            <p>@Model.Form.Description</p>
+            @{
+                if (Model.AtLocation != null)
+                {
+                    <p>You are currently resting on the ground at <b>@Model.AtLocation.</b>  Maybe someone will come by soon and pick you up--since you're stuck this way, you might as well be appreciated...</p>
+                }
+                else if (Model.WornBy != null)
+                {
+                    <p>You are currently being worn by <b>@Html.ActionLink(Model.WornBy.Player.GetFullName(), "LookAtPlayer", "PvP", new { id = Model.WornBy.Player.Id }, null)</b>, a @Model.WornBy.Player.Gender @Model.WornBy.Form.FriendlyName.  You hope they will take good care of you, or should they too find themselves as an object, whoever picks you up next.</p>
+
+                    <p>
+                        @Html.ActionLink("Telepathically communicate with " + Model.WornBy.Player.GetFullName(), "Write", "PvP", new { playerId = Model.WornBy.Player.Id, responseTo = -1, }, new { @class = "inanimateAction" })
+                    </p>
+
+                    <p>
+                        Although inanimate, you can still move just the tiniest bit.  You can still...
+                        <ul class="inanimateActionList">
+                            <li>
+                                @Html.ActionLink("Affectionately rub against your owner", "InanimateAction", "PvP", new { actionName = "rub" }, new { @class = "check inanimateAction" })
+                            </li>
+                            <li>
+                                @Html.ActionLink("Peskily pinch your owner", "InanimateAction", "PvP", new { actionName = "pinch" }, new { @class = "check inanimateAction" })
+                            </li>
+                            <li>
+                                @Html.ActionLink("Kindly soothe your owner", "InanimateAction", "PvP", new { actionName = "soothe" }, new { @class = "check inanimateAction" })
+                            </li>
+                            <li>
+                                @Html.ActionLink("Agitatedly zap your owner", "InanimateAction", "PvP", new { actionName = "zap" }, new { @class = "check inanimateAction" })
+                            </li>
+                            
+
+    @{
+                    if (Model.Item.Item.CurseTFFormdbName != null && Model.Item.Item.CurseTFFormdbName != "")
+                    {
+                        <li>
+                            @Html.ActionLink("Attempt to transform your owner!", "CurseTransformOwner", "PvP", null, new { @class = "check inanimateAction" })
+                        </li>
+                    }
+   
+                            
+                            
+                            
+                    if (Model.WornBy != null)
+                    {
+                        <li>@Html.ActionLink("Attempt to slip free from your owner", "EscapeFromOwner", "PvP", null, new { @class = "inanimateAction" })</li>
+                    }
+
+                }
+                        </ul>
+                    </p>
+
+                }
+            }
+
+            @{
+                if (Model.IsPermanent == false)
+                {
+                    <p class="center-block">
+                        <span class="place">Chance to return human: @Model.StruggleChance %.</span>
+                        @Html.ActionLink("Fight your transformation and attempt to return to an animate form!", "FightTheTransformation", "PvP", new { @class = "check inanimateAction" })
+                    </p>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+<div class="onlinePlayersWrapperBG" style="clear:both; border-bottom:4px solid #A16969;">
+    <div class="row">
+        @{
+            foreach (TT.Domain.ViewModels.PlayerFormViewModel p in Model.PlayersHere.Where(p => TT.Domain.Procedures.PlayerProcedures.PlayerIsOffline(p.Player) == false))
+    {
+        <div class="col-md-2 col-sm-4 col-xs-12 charaBox">
+            <div class="charaBoxInner">
+                <div>
+                    <p>
+
+                        @Html.Partial("Player_Partial", p)
+
+                    </p>
+                </div>
+            </div>
+        </div>
+    }
+}
+    </div>
+</div>
+
+@{if (ViewBag.ShowOffline == null || ViewBag.ShowOffline == false)
+{
+
+    <div id="offlinePlayersButton">@Html.ActionLink("Show Offline Players Here (" + @Model.PlayersHere.Where(p => TT.Domain.Procedures.PlayerProcedures.PlayerIsOffline(p.Player) == true).Count() + ")", "ShowOffline", "PvP")</div>
+}
+}
+
+@{if (ViewBag.ShowOffline != null && ViewBag.ShowOffline == true)
+{
+    <div class="offlinePlayersWrapperBG">
+        <div class="row">
+
+            @{
+    foreach (TT.Domain.ViewModels.PlayerFormViewModel p in Model.PlayersHere.Where(p => TT.Domain.Procedures.PlayerProcedures.PlayerIsOffline(p.Player) == true).OrderByDescending(p => p.Player.Level))
+    {
+        <div class="col-md-2 col-sm-4 col-xs-12 charaBox">
+            <div class="charaBoxInner">
+                <div>
+                    <p>
+                        @Html.Partial("Player_Partial", p)
+                    </p>
+                </div>
+            </div>
+        </div>
+    }
+            }
+
+        </div>
+    </div>
+}
+}
+
+@Html.Partial("partial/partial_recentActivity", Model.LocationLog)
+
+<script>
+
+    var attacksMade = @Model.Player.TimesAttackingThisUpdate;
+    var turnNo = @ViewBag.WorldTurnNumber;
+    var togglestate = 0;
+    var blinkEnabled = 0;
+
+    var secondsToUpdate = @ViewBag.SecondsUntilUpdate;
+    var donatorTier = @Model.Player.DonatorLevel;
+    var playUpdateSound = false;
+    var playAttackSound = false;
+    var playMessageSound = false;
+    var notificationsEnabled = false;
+
+    $(document).ready(function() {
+
+        $(".check").each(function() {
+            if (attacksMade>=1) {
+                $( this ).attr("href", "#");
+                $( this ).addClass("disabled");
+            }
+        });
+
+    });
+
+
+
+    $( "#timerBox" ).click(function() {
+        alert("The last update was  @CharactersHere.DatetimeToTimeago_WithSeconds(Model.LastUpdateTimestamp) (based on when this page was loaded.)  Updates should happen every 5 minutes.");
+    });
+
+    function pingDone(data) {
+        if (data > turnNo) {
+            turnNo = data;
+            blinkEnabled = 1;
+        }
+    }
+
+    function fail() {
+        // alert("fail");
+    }
+
+</script>

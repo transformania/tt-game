@@ -13,14 +13,14 @@ var instances = new Dictionary<string,Tuple<string,string>>()
 
 Task("Clean")
     .Does(() => {
-        CleanDirectories(new DirectoryPath[] { Directory("./src/tfgame/bin"), Directory("./src/tfgame.tests/bin/") + Directory(configuration) });   
+        CleanDirectories(new DirectoryPath[] { Directory("./src/TT.Web/bin"), Directory("./src/TT.Tests/bin/"), Directory("./src/TT.Domain/bin/") + Directory(configuration) });   
     }
 );
 
 Task("Restore-NuGet-Packages")
     .Does(() =>
 {
-    NuGetRestore("./src/tfgame.sln", new NuGetRestoreSettings {
+    NuGetRestore("./src/TT.sln", new NuGetRestoreSettings {
         Source = new List<string> {
             "https://www.nuget.org/api/v2/",
             "https://www.myget.org/F/roslyn-nightly/"
@@ -32,7 +32,7 @@ Task("Build")
     .IsDependentOn("Clean")
     .IsDependentOn("Restore-NuGet-Packages")
     .Does(() => {
-    MSBuild("./src/tfgame.sln", new MSBuildSettings()
+    MSBuild("./src/TT.sln", new MSBuildSettings()
         .SetConfiguration(configuration)
         .UseToolVersion(MSBuildToolVersion.NET45)
         .SetVerbosity(Verbosity.Minimal)
@@ -50,13 +50,13 @@ Task("Run-Unit-Tests")
 Task("Migrate")
     .IsDependentOn("Build")
     .Does(() => {
-        CopyFile("src/packages/EntityFramework.6.1.0/tools/Migrate.exe","src/tfgame/bin/Migrate.exe");
+        CopyFile("src/packages/EntityFramework.6.1.0/tools/Migrate.exe","src/TT.Web/bin/Migrate.exe");
         
         Information("Running migrations using {0}", instances[dbType].Item2);
         
-        using(var process = StartAndReturnProcess("src/tfgame/bin/Migrate.exe", new ProcessSettings 
+        using(var process = StartAndReturnProcess("src/TT.Web/bin/Migrate.exe", new ProcessSettings 
         { 
-            Arguments = "tfgame.dll /connectionProviderName=\"System.Data.SqlClient\" /connectionString=\"" + instances[dbType].Item2 + "\"" 
+            Arguments = "TT.Web.dll /connectionProviderName=\"System.Data.SqlClient\" /connectionString=\"" + instances[dbType].Item2 + "\"" 
         }))
         {
             process.WaitForExit();
@@ -68,7 +68,7 @@ Task("Migrate")
         
         Information("Applying stored procedures against {0}", instances[dbType].Item1);
                 
-        using(var process = StartAndReturnProcess("sqlcmd", new ProcessSettings { Arguments = @"-i src\tfgame\Schema\GetPlayerBuffs.sql -S " + instances[dbType].Item1 }))
+        using(var process = StartAndReturnProcess("sqlcmd", new ProcessSettings { Arguments = @"-i src\TT.Web\Schema\GetPlayerBuffs.sql -S " + instances[dbType].Item1 }))
         {
             process.WaitForExit();
             

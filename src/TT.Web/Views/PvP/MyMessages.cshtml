@@ -1,0 +1,197 @@
+﻿@model TT.Domain.ViewModels.MessageBag
+@using TT.Web.CustomHtmlHelpers
+
+<nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav" style="width:100%;">
+                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+                <li>@Html.ActionLink("Search for player by name", "PlayerLookup", "PvP")</li>
+                <li><a href="#" id="deleteAll" style="color: #734752 !important; font-weight:bold;">Delete All Messages</a></li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+<div>
+    <p class="infoMessage result">@Html.Raw(ViewBag.Result)</p>
+    <p class="infoMessage error">@ViewBag.ErrorMessage</p>
+    <p class="infoMessage suberror">@ViewBag.SubErrorMessage</p>
+</div>
+
+<script>
+
+    $("#deleteAll").click(function () {
+        if ($("#realLink").is(":visible") == false) {
+            $("#realLink").show();
+        } else {
+            $("#realLink").hide();
+        }
+    });
+</script>
+
+<div id="realLink" class="specialBox specialBox2" style="display: none;">
+    <span style="color:red;">Do you really want to delete all the messages? If yes then please click link bellow:</span><br />
+    @Html.ActionLink("Yes, I want to delete", "DeleteAllMessages", "PvP")
+</div>
+
+<div class="specialBox specialHeader">
+    <b>Received Messages (@Model.Messages.Count()/150)</b>
+</div>
+
+<div class="containerInner">
+
+
+    <table class="table table-hover messageTable">
+        <thead>
+            <tr>
+                <th style="width: 25%;">Sender</th>
+                <th>Message</th>
+                <th style="width: 16%;">Time Sent</th>
+                <th style="width: 10%;">Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+
+                string messageTeaser;
+                int msgLength;
+
+                foreach (TT.Domain.ViewModels.MessageViewModel msg in Model.Messages)
+                {
+
+
+                    msgLength = msg.dbMessage.MessageText.Length;
+                    if (msgLength > 50)
+                    {
+                        messageTeaser = msg.dbMessage.MessageText.Substring(0, 50) + "...";
+
+                    }
+                    else
+                    {
+                        messageTeaser = msg.dbMessage.MessageText.Substring(0, msgLength);
+                    }
+
+                    <tr>
+                        @{if (msg.SenderName != "(inanimate)")
+                        {
+                            <td>@Html.ActionLink(msg.SenderName, "LookAtPlayer", "PvP", new { id = msg.dbMessage.SenderId }, null)</td>
+
+                        }
+                        else
+                        {
+                            <td>(inanimate)</td>
+
+                        }
+                        }
+
+
+                        @{
+                    if (msg.dbMessage.ReadStatus == 0 || msg.dbMessage.ReadStatus == 2)
+                    {
+                        <td class="newlink">@Html.ActionLink(messageTeaser, "ReadMessage", "PvP", new { messageId = msg.dbMessage.Id }, null)</td>
+                    }
+                    else
+                    {
+                        <td>@Html.ActionLink(messageTeaser, "ReadMessage", "PvP", new { messageId = msg.dbMessage.Id }, null)</td>
+                    }
+                        }
+
+                        <td class="timeSent"><span style="font-size: 10px">@CharactersHere.DatetimeToTimeago(msg.dbMessage.Timestamp)</span></td>
+                        <td>@Html.ActionLink("[ x ]", "DeleteMessage", "PvP", new { messageId = msg.dbMessage.Id }, null) @Html.ActionLink("[mark new]", "MarkAsUnread", "PvP", new { messageId = msg.dbMessage.Id }, null)</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+    @{
+
+        if (ViewBag.IsDonator == null || ViewBag.IsDonator == false)
+        {
+            <p class="warningText">
+                Only the 150 most recent messages you've recieved will be saved.  Older messages will be deleted automatically.
+            </p>
+        }
+
+        else if (ViewBag.IsDonator == true)
+        {
+            <p class="warningText">
+                <b>You are marked as having a Tier 3 donator level, which means you can keep up to 500 messages in your inbox and your older messages will NOT be deleted automatically by the turn update.</b>
+            </p>
+        }
+    }
+</div>
+
+<div class="specialBox specialHeader topBorder">
+    <b>Sent Messages</b>
+</div>
+
+<div class="containerInner">
+
+    <table class="table table-hover messageTable">
+        <thead>
+            <tr>
+                <th style="width: 25%;">Recipient</th>
+                <th>Message</th>
+                <th style="width: 16%;">Time Sent</th>
+                <th style="width: 10%;">Read</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @{foreach (TT.Domain.ViewModels.MessageViewModel msg in Model.SentMessages)
+            {
+                <tr>
+                    @{if (msg.SentToName != "(inanimate)")
+                    {
+                        <td>@Html.ActionLink(msg.SentToName, "LookAtPlayer", "PvP", new { id = msg.dbMessage.ReceiverId }, null)</td>
+
+                    }
+                    else
+                    {
+                        <td>(inanimate)</td>
+
+                    }
+                    }
+
+                    <td>@msg.dbMessage.MessageText</td>
+                    <td class="timeSent"><span style="font-size: 10px">@CharactersHere.DatetimeToTimeago(msg.dbMessage.Timestamp)</span></td>
+                    <td>@msg.dbMessage.IsRead</td>
+                </tr>
+            }
+            }
+
+
+        </tbody>
+
+    </table>
+
+    @{
+        if (Model.WearerId != null && Model.WearerName != null)
+        {
+
+            <p> @Html.ActionLink("Telepathically talk to the person wearing you, " + Model.WearerName, "Write", "PvP", new { playerId = Model.WearerId, responseTo = -1 }, null) </p>
+        }
+    }
+</div>
+
+<script>
+    $("#Text").keydown(function () {
+        var remaining = 1500 - $("#Text").val().length;
+        // console.log($("#Text").val().length);
+        $("#textRemaining").html(remaining + " characters remaining");
+    });
+</script>
+

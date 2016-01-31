@@ -1,0 +1,466 @@
+﻿@model TT.Domain.ViewModels.PlayPageViewModel
+@using TT.Web.CustomHtmlHelpers
+@using TT.Domain.ViewModels
+@using TT.Domain.Statics
+@using TT.Domain.Procedures
+
+<script src="~/Scripts/jquery-ui-1.10.4.js"></script>
+
+<script src="~/Scripts/jquery.signalR-2.0.3.min.js"></script>
+<script src="~/signalr/hubs"></script>
+<script src="~/Scripts/notices.js"></script>
+@{
+    ViewBag.Title = "Play";
+}
+
+<nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav">
+                <li>
+                    <span id="timerBox" class="glyphicon glyphicon-time" aria-hidden="true" title="Click to see how long ago the last update ran."></span>
+                    <span id="turn_countdown">-:--</span>
+                </li>
+                <li>@Html.ActionLink("Map", "WorldMap", "PvP", new { showEnchant = "false" }, null)</li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">My Player <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li>@Html.ActionLink("Last Actions (" + Model.PlayerLog.Count() + ")", "ViewLog", "PvP")</li>
+                        <li>@Html.ActionLink("Spells", "MySkills", "PvP")</li>
+                        <li>@Html.ActionLink("My Effects", "MyPerks", "PvP")</li>
+                        <li>@Html.ActionLink("Mind Control", "MindControlList", "NPC")</li>
+                        <li>@Html.ActionLink("Look at Yourself", "LookAtPlayer", "PvP", new { id = Model.You.Player.Id }, null)</li>
+                        <li>@Html.ActionLink("My Statistics", "PlayerStats", "Settings", new { id = Model.You.Player.MembershipId }, null)</li>
+                        <li>@Html.ActionLink("Self Restore (3 AP, 10 Mana)", "SelfRestore", "PvP")</li>
+                    </ul>
+                </li>
+                <li>@Html.ActionLink("Friends", "MyFriends", "PvP")</li>
+                <li>@Html.ActionLink("Chat", "Index", "Chat", new { room = "global" }, new { target = "_blank" })</li>
+                <li>@Html.ActionLink("Covenant", "MyCovenant", "Covenant")</li>
+                
+
+                 <li>@Html.ActionLink("Quest", "QuestsAvailableHere", "Quest", new { id = "actionQuest" }, null)</li>
+                
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Contribute <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li>@Html.ActionLink("Submit Spell/Form/Item/Pet", "Contribute", "Contribution", new { Id = -1 }, null)</li>
+                        <li>@Html.ActionLink("Submit Blessing/Curse", "ContributeEffect", "Contribution", new { Id = -1 }, null)</li>
+                    </ul>
+                </li>
+
+                @{
+                    if (User.IsInRole(PvPStatics.Permissions_Admin) == true)
+                    {
+                        <li>@Html.ActionLink("Admin", "Index", "PvPAdmin")</li>
+                    }
+                    if (User.IsInRole(PvPStatics.Permissions_QuestWriter) == true)
+                    {
+                        <li>@Html.ActionLink("QuestWriter", "Index", "QuestWriter", null, null)</li>
+                    }
+                }
+
+                
+
+                <li class="visible-xs-inline"><a href="http://transformaniatime.com/PvP/MyInventory">Inventory @Model.PlayerItems.Where(i => i.dbItem.IsEquipped == false).Count()/@Model.InventoryMaxSize </a></li>
+                @{
+                    if (Model.You.Player.UnusedLevelUpPerks > 0)
+                    {
+                        <li>@Html.ActionLink("Level Up!", "LevelupPerk", "PvP", null, new { @class = "levelUp" })</li> }
+                }
+
+                @{
+                    if (Model.MessageCounts.NewMessagesCount > 0)
+                    {
+                        <li>@Html.ActionLink("(" + Model.MessageCounts.NewMessagesCount + ")", "MyMessages", "PvP", null, new { @class = "glyphicon glyphicon-envelope inboxNew" })</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink("(0)", "MyMessages", "PvP", null, new { @class = "glyphicon glyphicon-envelope" })</li>
+                    }
+                }
+
+                <li>@Html.ActionLink(" ", "Settings", "Settings", null, new { @class = "glyphicon glyphicon-wrench" })</li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+<div>
+    <p class="infoMessage result">@Html.Raw(ViewBag.Result)</p>
+    <p class="infoMessage error">@ViewBag.ErrorMessage</p>
+    <p class="infoMessage suberror">@ViewBag.SubErrorMessage</p>
+</div>
+
+@Html.Partial("partial/RoundStatus", Model.PvPWorldStat)
+
+<div class="specialBox specialBox2">
+    <span class="turnNumber">Turn #<b>@ViewBag.WorldTurnNumber/@PvPStatics.RoundDuration</b></span><span id="liveConnectionNotice" class="noticeOff" title="If this icon is green, you are connected to the server and will receive live notifications when attacked or messaged."><span class="glyphicon glyphicon-ok-circle"> </span></span>
+    Transformania Time has <b>@Model.WorldStats.TotalPlayers</b> players, <b>@Model.WorldStats.CurrentOnlinePlayers</b> of which are currently online.
+</div>
+
+
+<ul id="notificationBox" style="display:none;">
+    @{
+        foreach (TT.Domain.Models.PlayerLog log in Model.PlayerLogImportant)
+        {
+            <li class="frontPageNotification">
+                @Html.Raw(log.Message) <span class="timeago">@CharactersHere.DatetimeToTimeago(log.Timestamp)</span>
+            </li>
+        }
+    }
+</ul>
+
+<p id="dismissNotficationBox" style="display:none;"><a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '0px'">[ -- ]</a> <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '100px'">[ - ]</a> @Ajax.ActionLink("Dismiss Notifications", "DismissNotifications_Ajax", "PvP", null, new AjaxOptions { HttpMethod = "GET", OnSuccess = "dismissNotificationsSuccess", OnFailure = "dismissNotificationsFail" }, null) <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '250px'">[ + ]</a> <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '500px'">[ ++ ]</a></p>
+
+
+<div class="offlinePlayersWrapperBG hidden-xs">
+    <div class="row">
+        <div class="col-md-1">
+            @Html.ActionLink(Model.PlayerItems.Where(i => i.dbItem.IsEquipped == false).Count() + "/" + Model.InventoryMaxSize, "MyInventory", "PvP", null, new { @class = "playPageInventoryItem openInventory", @style = "background-image: url(../Images/PvP/Icons/Backpack_Meddle.png)", @title = "View Inventory" })
+        </div>
+        @{
+            foreach (ItemViewModel item in Model.PlayerItems.Where(i => i.dbItem.IsEquipped == true))
+            {
+                <div class="col-md-1">
+                    <div class="playPageInventoryItem" style="background-image: url(..@CharactersHere.GetImageURL(item, true));" title='@item.Item.FriendlyName'></div>
+                </div>
+            }
+        }
+    </div>
+</div>
+
+<div class="containerInner">
+
+    @Html.Partial("partial_FrontPageAvatar", Model.You)
+
+
+
+    <div id="playerActionBox">
+        @Html.ActionLink("Cleanse (4 AP, 3 Mana)", "Cleanse", "PvP", null, new { id = "actionCleanse", @class = "actionButton" })
+        @Html.ActionLink("Meditate (4 AP)", "Meditate", "PvP", null, new { id = "actionMeditate", @class = "actionButton" })
+        @Html.ActionLink("Search this Area (" + (int)Model.APSearchCost + " AP)", "Search", "PvP", null, new { id = "actionSearch", @class = "actionButton" })
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 col-md-offset-1" style="text-align: center;">@Html.Partial("partial/movementTable", Model)
+            @{
+                if (Model.You.Player.ShoutsRemaining > 0)
+                {
+                    @Html.ActionLink("Shout", "Shout", "PvP", null, new { @class = "shout" })
+                }
+
+                KeyValuePair<int, CovenantNameFlag> temp = CovenantDictionary.IdNameFlagLookup.FirstOrDefault(c => c.Value.HomeLocation == Model.Location.dbName);
+
+                if (temp.Value != null)
+                {
+                    <span class="covSafeground">Safeground for the <b>@temp.Value.Name</b> Covenant</span>
+                }
+
+
+
+
+            }
+        </div>
+        <div class="col-md-6 covenDescription">
+            <span class="place">@Model.Location.Name [@Model.Location.X,@Model.Location.Y]  <br /> </span>
+
+
+            @Model.Location.GetDescription()
+            @{
+                
+                     if (Model.You.Player.GameMode >= 2 && Model.You.Player.IsInDungeon() == false && (Model.You.Player.dbLocationName == "street_9th" || Model.You.Player.dbLocationName == "street_14th_north"))
+                {
+                    @Html.ActionLink("Enter the PvP Dungeon (30 AP)", "EnterDungeon", "PvP", new { entering = "true" }, null)
+                }
+               else if (Model.You.Player.IsInDungeon() == true)
+               {
+                   @Html.ActionLink("Leave the PvP Dungeon (30 AP)", "EnterDungeon", "PvP", new { entering = "false" }, null)
+               }
+                
+                try
+                {
+                    CovenantNameFlag temp2 = CovenantDictionary.IdNameFlagLookup[Model.Location.CovenantController];
+
+                    if (temp2 != null)
+                    {
+                        <span class="covController">Enchanted by the <b>@temp2.Name</b> Covenant <b><span class="playerMediatingNotification">[@Model.Location.TakeoverAmount]</span></b></span>
+                    }
+                }
+                catch
+                {
+
+                }
+
+
+                if (Model.You.Player.GameMode == 2 && Model.You.Player.IsInDungeon() == false)
+                {
+                    @Html.ActionLink("Enchant (3 AP, 10 Mana)", "EnchantLocation", "PvP")
+                }
+            }
+
+ 
+        </div>
+    </div>
+
+</div>
+
+<div id="offlinePlayersButton" class="onlinePlayersButton"><a onclick="hidePlayers()">Hide online players</a></div>
+<div class="onlinePlayersWrapperBG">
+    <div class="row">
+        @*all players who are online*@
+        @{
+            foreach (TT.Domain.ViewModels.PlayerFormViewModel p in Model.PlayersHere.Where(p => PlayerProcedures.PlayerIsOffline(p.Player) == false).OrderByDescending(p => p.Player.Level))
+            {
+
+                <div class="col-md-2 col-sm-4 col-xs-12 charaBox">
+                    <div class="charaBoxInner">
+                        <div>
+                            <p>
+
+                                <div>@Html.Partial("Player_Partial", p)</div>
+                                <div style="text-align:center; margin-top:2px;">
+                                    @Ajax.ActionLink("Attack", "AttackModal", "PvP", new { targetId = p.Player.Id }, new AjaxOptions { UpdateTargetId = "attackModal", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "attack_Success", OnFailure = "attack_Failure", OnBegin = "attack_Wait" }, new { @class = "attackLink" })
+                                    @{
+                                        if (p.Player.BotId == AIStatics.LindellaBotId)
+                                        {
+                                            @Html.ActionLink("Trade", "TradeWithMerchant", "NPC", new { filter = "shirt" }, new { @class = "attackLink" })
+                                        }
+                                        if (p.Player.BotId == AIStatics.JewdewfaeBotId)
+                                        {
+                                            @Html.ActionLink("Talk", "TalkWithJewdewfae", "NPC", null, new { @class = "attackLink" })
+                                        }
+                                        if (p.Player.BotId == AIStatics.WuffieBotId)
+                                        {
+                                            @Html.ActionLink("Trade", "TradeWithPetMerchant", "NPC", null, new { @class = "attackLink" })
+                                        }
+                                        if (p.Player.BotId == AIStatics.ValentineBotId)
+                                        {
+                                            @Html.ActionLink("Talk", "TalkToValentine", "NPC", new { question = "none" }, new { @class = "attackLink" })
+                                        }
+                                        if (p.Player.BotId == AIStatics.BartenderBotId)
+                                        {
+                                            @Html.ActionLink("Talk", "TalkToBartender", "NPC", new { question = "none" }, new { @class = "attackLink" })
+                                        }
+                                        if (p.Player.BotId == AIStatics.MouseBimboBotId)
+                                        {
+                                            @Html.ActionLink("Talk", "TalkToCandice", "NPC", null, new { @class = "attackLink" })
+                                        }
+                                        if (p.Player.BotId == AIStatics.MouseNerdBotId)
+                                        {
+                                            @Html.ActionLink("Talk", "TalkToAdrianna", "NPC", null, new { @class = "attackLink" })
+                                        }
+                                        if (p.Player.BotId == AIStatics.LoremasterBotId)
+                                        {
+                                            @Html.ActionLink("Talk", "TalkToLorekeeper", "NPC", null, new { @class = "attackLink" })
+                                        }
+}
+                                </div>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        }
+    </div>
+</div>
+
+
+@*all players who are offline*@
+<div style="clear:both;"></div>
+@*<div id="showOfflinePlayersButton">Show Offline Players Here (@Model.PlayersHere.Where(p => PlayerProcedures.PlayerIsOffline(p.Player) == true).Count())</div>*@
+
+@{if (ViewBag.ShowOffline == null || ViewBag.ShowOffline == false)
+{
+
+    <div id="offlinePlayersButton">@Html.ActionLink("Show Offline Players Here (" + @Model.PlayersHere.Where(p => PlayerProcedures.PlayerIsOffline(p.Player) == true).Count() + ")", "ShowOffline", "PvP")</div>
+}
+}
+
+@{if (ViewBag.ShowOffline != null && ViewBag.ShowOffline == true)
+{
+    <div class="offlinePlayersWrapperBG">
+        <div class="row">
+
+            @{
+    foreach (TT.Domain.ViewModels.PlayerFormViewModel p in Model.PlayersHere.Where(p => PlayerProcedures.PlayerIsOffline(p.Player) == true).OrderByDescending(p => p.Player.Level))
+    {
+        <div class="col-md-2 col-sm-4 col-xs-12 charaBox">
+            <div class="charaBoxInner">
+                <div>
+                    <p>
+                        @Html.Partial("Player_Partial", p)
+                    </p>
+                </div>
+            </div>
+        </div>
+    }
+            }
+
+        </div>
+    </div>
+}
+
+
+}
+<div class="floorItemsWrapperBG">
+    <div class="row">
+        @{
+
+            foreach (TT.Domain.ViewModels.ItemViewModel item in Model.LocationItems)
+            {
+                <div class="col-md-2 col-sm-4 col-xs-12 itemBox itemBoxPP">
+                    <div class="charaBoxInner">
+                        <div>
+                            <div class="portrait_item_mainpage" style="background-image: url(..@CharactersHere.GetImageURL(item,true));">
+                                @{ if (item.Item.ItemType != PvPStatics.ItemType_Consumeable && item.dbItem.Level > 0)
+                                 {
+                                    <span class="floorItemLevel"><b>@item.dbItem.Level</b></span>
+                                 }
+                                }
+                                @CharactersHere.PrintItemTypeIcon(item.Item)
+                            </div>
+
+                            <div>
+                                @{if (item.Item.ItemType == PvPStatics.ItemType_Pet)
+                                {
+                                    @Html.ActionLink("Tame", "Take", "PvP", new { id = item.dbItem.Id }, null)<br />
+                                }
+                                else
+                                {
+                                    @Html.ActionLink("Take", "Take", "PvP", new { id = item.dbItem.Id }, null)<br />
+                                }
+
+                                }
+
+                                <span class="floorItemName">@CharactersHere.TruncateToLength(item.Item.FriendlyName, 75) <br /></span>
+                                @{
+                if (item.dbItem.VictimName != "")
+                {
+                    <span class="formerPlayer">(Formerly @item.dbItem.GetFullName())</span>
+                }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        }
+    </div>
+</div>
+
+@Html.Partial("partial/partial_recentActivity", Model.LocationLog)
+
+<div id="modalBackdrop"></div>
+<div id="attackModal" class="ui-widget-content ui-draggable" style="display:none;">
+    <span id="youAreAttacking"></span>
+    <span id="attackClose" onclick="closeAttackModal()">Cancel</span>
+    <span id="expand" onclick="expandModal()">Expand</span>
+</div>
+
+<script>
+
+    var turnNo = @ViewBag.WorldTurnNumber;
+    var togglestate = 0;
+    var blinkEnabled = 0;
+    var secondsToUpdate = @ViewBag.SecondsUntilUpdate;
+
+    var timer_minutes = "";
+    var timer_seconds = "";
+
+    var ap = @Model.You.Player.ActionPoints;
+    var attacksMade = @Model.You.Player.TimesAttackingThisUpdate;
+
+    var cleanseCost = @PvPStatics.CleanseCost;
+    var meditateCost = @PvPStatics.MeditateCost;
+    var searchCost = @Model.APSearchCost;
+    var attackCostAP = @PvPStatics.AttackCost;
+    var attackCap = @PvPStatics.MaxAttacksPerUpdate;
+
+    var donatorTier = @Model.You.Player.DonatorLevel;
+
+    var playUpdateSound = false;
+    var playAttackSound = false;
+    var playMessageSound = false;
+    var notificationsEnabled = false;
+    var name = "@Model.You.Player.GetFullName()";
+    var playerMana = @Model.You.Player.Mana;
+    var maxLogSize = @ViewBag.MaxLogSize;
+
+    $(document).ready(function () {
+
+   
+
+       
+
+        // var msgToReplace = name + " has"
+        var text = $("#RecentActivityLog").html();
+
+
+        for (var i = 0; i <= maxLogSize; i++) {
+            text = text.replace(name, "You");
+            text = text.replace("You was", "You were");
+        }
+
+        $( "#timerBox" ).click(function() {
+            alert("The last update was  @CharactersHere.DatetimeToTimeago_WithSeconds(Model.LastUpdateTimestamp) (based on when this page was loaded.)  Turns last 5 minutes.");
+        });
+
+
+        $("#RecentActivityLog").html(text);
+
+        if (ap < cleanseCost) {
+            $("#action_cleanse").attr("href", "#");
+            $("#action_cleanse").addClass("disabled");
+        }
+
+        if (ap < meditateCost) {
+            $("#action_meditate").attr("href", "#");
+            $("#action_meditate").addClass("disabled");
+        }
+
+        if (ap < searchCost) {
+            $("#action_search").attr("href", "#");
+            $("#action_search").addClass("disabled");
+        }
+
+        if (ap < attackCostAP) {
+            $(".action_attack").each(function() {
+                $( this ).attr("href", "#");
+                $( this ).addClass("disabled");
+            });
+        }
+
+
+        // show offline player section when player clicks on the proper div
+        $("#showOfflinePlayersButton").click(function() {
+            $("#offlinePlayersWrapper").show();
+        });
+
+        $("#timeReportClickMe").click(function() {
+            $("#timeReport").show();
+
+        });
+
+        
+
+    }); // end document.ready
+
+    $( "#attackModal" ).draggable();
+    $( "#attackModal" ).resizable();
+
+</script>

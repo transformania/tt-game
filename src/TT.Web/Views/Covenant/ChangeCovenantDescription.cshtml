@@ -1,0 +1,82 @@
+﻿@model TT.Domain.Models.Covenant
+
+<nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+                <li>@Html.ActionLink("Back to My Covenant", "MyCovenant", "Covenant")</li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+<div class="containerInner">
+    <h3>Change Covenant Description</h3>
+
+    <p>You can change the self-description of your covenant, @Model.Name, here.</p>
+
+    @using (Html.BeginForm("ChangeCovenantDescriptionSubmit", "Covenant", FormMethod.Post))
+    {
+        @Html.TextAreaFor(m => m.SelfDescription, new { @class="form__panel textarea"})
+        
+        <hr />
+        
+        <p>Choose a flag for your covenant from the options below.</p>
+        
+        @*<p>Set flag</p>
+         @Html.DropDownListFor(m => m.FlagUrl, new SelectList(
+                  new List<Object>{
+                       new { value = "region"  , text = "1"  },
+                       new { value = "location"  , text = "Location"  },
+                    },
+                  "value",
+                  "text",
+                   2))*@
+        
+        <img src="../Images/PvP/CovenantFlags/bars1.jpg" width="150px" width="150px" id="choice"/>
+        
+        foreach (string s in ViewBag.FlagURLS)
+        {
+            <img src="../Images/PvP/CovenantFlags/@s" height="50px" width="50px" class="selectable" filename="@s">
+        }
+        
+        <input type="submit" value="Save" />
+
+        @Html.HiddenFor(m => m.Name)
+        @Html.HiddenFor(m => m.Id)
+        @Html.TextBoxFor(m => m.FlagUrl)
+        @Html.HiddenFor(m => m.FounderMembershipId)
+        @Html.HiddenFor(m => m.LastMemberAcceptance)
+        @Html.HiddenFor(m => m.IsPvP)
+        @Html.HiddenFor(m => m.LeaderId)
+    }
+
+</div>
+
+
+<script>
+    $(".selectable").click(function () {
+        var img = $(this).attr("src");
+        var filename = $(this).attr("filename")
+       // alert(img);
+        $("#choice").attr("src", img);
+        $("#FlagUrl").val(filename);
+    });
+</script>
+
+<style>
+    .selectable:hover{
+        border:2px solid red;
+    }
+</style>

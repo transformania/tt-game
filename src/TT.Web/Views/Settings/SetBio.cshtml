@@ -1,0 +1,186 @@
+﻿@model TT.Domain.Models.PlayerBio
+
+
+<nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+                <li>@Html.ActionLink("Settings", "Settings", "Settings")</li>
+                <li><a href="javascript:confirmDeletion()" />Delete My Bio</a></li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+<div class="containerInner">
+    
+    <div id="realLink" class="deleteMessegeConfirm">
+        <span style="color:red; font-weight: bold;">Do you really want to delete your bio? If yes then please click link below:</span>
+        @Html.ActionLink("Yes, DELETE my bio", "SetBioDelete", "Settings")<br />
+    </div>
+
+    <h1>Update Your Bio</h1>
+
+    <p>You can write and update a short biography about yourself or your player character here.  Feel free to mention your RP preferences, if any.  You can also list a website for others to contact you externally by or view your stories, artwork, or anything else you care to share publicly.</p>
+
+    @using (Html.BeginForm("SetBioSend", "Settings", FormMethod.Post))
+    {
+
+
+
+        @Html.HiddenFor(m => m.OwnerMembershipId)
+
+        <p>Website URL.  Limit 250 characters.</p>
+        @Html.TextBoxFor(m => m.WebsiteURL)
+
+
+        <p>Main text of your bio.  Limit 1500 characters (more for Tier 3 donators.)  You can force linebreaks in this text by writing <b>[br].</b></p>
+        @Html.TextAreaFor(m => m.Text)<br />
+        <span class="charCounter" id="textRemaining"></span>
+
+        <p>RP interest tags:  Click on the buttons below to turn on or off the themes that interest you while roleplaying.</p>
+
+        @Html.Partial("partial/rptags");
+
+    <button id="resetTags" class="buttonSetBio"><b>Click here to reset tags</b></button>
+
+        @Html.HiddenFor(m => m.Tags)
+
+        <p>
+            <input type="submit" value="Send" class="buttonSetBio" />
+        </p>
+
+        <p>Last updated @Model.Timestamp</p>
+
+    }
+</div>
+
+    <script>
+        $("#Text").keydown(function () {
+            var remaining = 2500 - $("#Text").val().length;
+            // console.log($("#Text").val().length);
+            $("#textRemaining").html(remaining + " characters remaining");
+        });
+
+        $(document).ready(function () {
+
+            var tagstring = $("#Tags").val();
+            console.log("Raw string:  " + tagstring);
+
+            // assign the proper styling onload
+            $(".rpTag").each(function () {
+
+                var code = $(this).attr("tagcode");
+                var regexs = ";" + code + ".[0-9];";
+                var regex = new RegExp(regexs, "i")
+                var smatch = tagstring.match(regex);
+
+                // currently exists; increment its state
+                if (smatch !== null) {
+                    console.log("Match found:  " + smatch);
+                    var numberValue = smatch[0].match(/[0-9]/);
+                    console.log("Value of match:  " + numberValue);
+
+                    if (numberValue == 0) {
+                        $(this).addClass("neg2");
+                    } else if (numberValue == 1) {
+                        $(this).addClass("neg1");
+                    } else if (numberValue == 2) {
+                        $(this).addClass("pos1");
+                    } else if (numberValue == 3) {
+                        $(this).addClass("pos2");
+                    }
+                }
+            });
+
+            // assign onclick logic to buttons
+            $(".rpTag").each(function () {
+
+                $(this).click(function () {
+
+                    var code = $(this).attr("tagcode");
+
+                    var regexs = ";" + code + ".[0-9];";
+                    var regex = new RegExp(regexs, "i")
+
+                    var smatch = tagstring.match(regex);
+
+                    // currently exists; increment its state
+                    if (smatch !== null) {
+
+                        console.log("Click match found:  " + smatch);
+                        var numberValue = parseInt(smatch[0].match(/[0-9]/));
+                        console.log("Value of click match:  " + numberValue);
+
+                        var oldstring = ";" + code + "." + numberValue + ";";
+                        var newstring = ";" + code + "." + (numberValue + 1) + ";";
+
+                        console.log("replacing " + oldstring + " with " + newstring);
+
+                        cleanClasses($(this));
+
+                        if (numberValue == 0) {
+                            $(this).addClass("neg1");
+                            tagstring = tagstring.replace(oldstring, newstring);
+                        } else if (numberValue == 1) {
+                            $(this).addClass("pos1");
+                            tagstring = tagstring.replace(oldstring, newstring);
+                        } else if (numberValue == 2) {
+                            $(this).addClass("pos2");
+                            tagstring = tagstring.replace(oldstring, newstring);
+                        } else if (numberValue == 3) {
+                            tagstring = tagstring.replace(oldstring, "");
+                        }
+                    }
+
+                        // does not exist; add it with default (lowest) value
+                    else {
+                        tagstring += ";" + code + "." + 0 + ";";
+                        $(this).addClass("neg2");
+                    }
+
+                    $("#Tags").val(tagstring);
+
+                });
+
+
+
+            });
+
+            $("#resetTags").click(function () {
+                $("#Tags").val("");
+                tagstring = "";
+                $(".rpTag").each(function () {
+                    $(this).removeClass("neg2");
+                    $(this).removeClass("neg1");
+                    $(this).removeClass("pos1");
+                    $(this).removeClass("pos2");
+                });
+            });
+
+        });
+
+        function cleanClasses(tag) {
+            tag.removeClass("neg2");
+            tag.removeClass("neg1");
+            tag.removeClass("pos1");
+            tag.removeClass("pos2");
+        }
+
+        function confirmDeletion() {
+            document.getElementById('realLink').style.display = "block";
+        }
+
+    </script>

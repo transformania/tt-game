@@ -1,0 +1,154 @@
+﻿@using TT.Domain.ViewModels
+<nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+                <li>...</li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+@*<div class="specialBox specialBox2">
+        <p>...</p>
+    </div>*@
+
+<div class="containerInner">
+
+    <table id="bufftable">
+        <thead>
+
+
+
+            <tr>
+
+
+                <th> </th>
+
+
+                @{
+                    foreach (string f in TT.Domain.ViewModels.BuffMap.BuffsMap["HealthBonusPercent"].Keys)
+                    {
+
+
+
+                        <th>1x @TT.Domain.ViewModels.BuffMap.BuffDetailsMap[f].DisplayName</th>
+
+                    }
+                }
+            </tr>
+
+
+
+
+        </thead>
+
+        <tbody>
+
+            @{
+                foreach (string f in TT.Domain.ViewModels.BuffMap.BuffsMap.Keys)
+                {
+                    <tr>
+                        <td>
+                            @f
+
+
+                        </td>
+
+                        @{
+                    foreach (float ff in TT.Domain.ViewModels.BuffMap.BuffsMap[f].Values)
+                    {
+                        <td>@ff</td>
+                    }
+                        }
+
+                    </tr>
+                }
+            }
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<style>
+    table {
+        padding: 3px;
+        border: 1px solid black;
+        width: 100%;
+    }
+
+    th {
+        background-color: black;
+        color: white;
+        text-align: center;
+        padding: 2px 0px 2px 0px;
+        margin: 0;
+    }
+
+    tr {
+        padding: 3px;
+        border: 1px solid black;
+    }
+
+        tr:nth-child(odd) {
+            background-color: lightgray;
+        }
+
+    td {
+        text-align: center;
+        margin: 0;
+        padding: 2px 0px 2px 0px;
+    }
+
+    #bufftable {
+        margin-bottom: 20px;
+        float: left;
+        position: relative;
+    }
+
+    .rowDivider {
+        background-color: black;
+        color: white;
+    }
+
+    @@media screen and (max-width: 767px) {
+        .mobile {
+            display: none;
+        }
+    }
+</style>
+
+<script>
+    $(document).ready(function () {
+        $('#bufftable tr').each(function () {
+            $(this).find('td').each(function () {
+
+                if ($(this).index() > 0.0) {
+                    var num = parseFloat($(this).html());
+                    if (num > 0) {
+                        $(this).addClass("good");
+                    } else if (num < 0.0) {
+                        $(this).addClass("bad");
+                    } else {
+                        $(this).addClass("zero");
+                    }
+                }
+
+            })
+        })
+    });
+</script>

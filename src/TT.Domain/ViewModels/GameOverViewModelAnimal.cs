@@ -1,0 +1,36 @@
+﻿using System;
+using System.Collections.Generic;
+using TT.Domain.Models;
+
+namespace TT.Domain.ViewModels
+{
+    public class GameOverViewModelAnimal
+    {
+        public Player You { get; set; }
+        public DbStaticForm Form { get; set; }
+        public ItemViewModel YouItem { get; set; }
+        public PlayerFormViewModel OwnedBy { get; set; }
+        public Location Location { get; set; }
+
+
+        public PvPWorldStat PvPWorldStat { get; set; }
+        public WorldStats WorldStats { get; set; }
+        public IEnumerable<LocationLog> LocationLog { get; set; }
+        public IEnumerable<PlayerLog> PlayerLog { get; set; }
+        public IEnumerable<PlayerLog> PlayerLogImportant { get; set; }
+
+        public DateTime LastUpdateTimestamp { get; set; }
+
+        public int NewMessageCount { get; set; }
+
+        public IEnumerable<PlayerFormViewModel> PlayersHere { get; set; }
+        public IEnumerable<ItemViewModel> LocationItems { get; set; }
+
+        public bool IsPermanent { get; set; }
+
+        public decimal StruggleChance { get; set; }
+
+
+
+    }
+}

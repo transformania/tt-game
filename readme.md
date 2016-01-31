@@ -71,6 +71,10 @@ To re-create your DB from scratch you can do the following
 
 This will drop your existing database, recreate from migrations and apply the seed data.
 
+## Re-downloading Images ##
+To download up-to-date images from the server you can do the following
+`Powershell .\build.ps1 -target "Recreate-Images"`
+
 # Random things to know #
 
  TT uses (mostly) Entity Framework Code First to interact with an SQL database.  Entity Framework is meant to be a tool to help abstract away some SQL by writing queries in C#, automatically converting them to SQL queries and executing them behind the scenes.  Unfortunately Entity Framework has some drawbacks, such as:

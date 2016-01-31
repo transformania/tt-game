@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using tfgame.Statics;
-using tfgame.ViewModels;
+using TT.Domain.Statics;
+using TT.Domain.ViewModels;
 
-namespace tfgame.Procedures
+namespace TT.Domain.Procedures
 {
     public class Pathfinding
     {

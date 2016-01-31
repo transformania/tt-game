@@ -1,4 +1,4 @@
-﻿@model IEnumerable<tfgame.ViewModels.FurnitureViewModel>
+﻿@model IEnumerable<TT.Domain.ViewModels.FurnitureViewModel>
 
 <nav class="navbar navbar-default outsideContainer navbarTT2">
     <div class="container-fluid">
@@ -28,7 +28,7 @@
 
     <p>Your covenant has <span title="Arpeyjis" class="icon icon-money"></span><b>@ViewBag.CovenantMoney</b> Arpeyjis available to spend.  Your covenant is able to hold at most <b>@ViewBag.FurnitureLimit</b> pieces of furniture in your safeground.  Upgrade your safeground to be able to keep more at once.</p>
     @{
-        foreach (tfgame.ViewModels.FurnitureViewModel f in Model.OrderBy(l => l.dbFurniture.HumanName))
+        foreach (TT.Domain.ViewModels.FurnitureViewModel f in Model.OrderBy(l => l.dbFurniture.HumanName))
         {
             @Html.Partial("partial/FurnitureViewModel", f);
 

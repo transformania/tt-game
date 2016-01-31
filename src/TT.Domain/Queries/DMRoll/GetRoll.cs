@@ -1,6 +1,6 @@
-﻿using tfgame.Procedures;
+﻿using TT.Domain.Procedures;
 
-namespace tfgame.dbModels.Queries.DMRoll
+namespace TT.Domain.Queries.DMRoll
 {
     public class GetRollText : QuerySingle<string>
     {

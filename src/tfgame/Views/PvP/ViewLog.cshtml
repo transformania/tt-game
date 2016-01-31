@@ -1,4 +1,4 @@
-﻿@model IEnumerable<tfgame.dbModels.Models.PlayerLog>
+﻿@model IEnumerable<TT.Domain.Models.PlayerLog>
            @using tfgame.CustomHtmlHelpers
 
 <nav class="navbar navbar-default outsideContainer navbarTT2">
@@ -26,7 +26,7 @@
 <div class="containerInner">
     <ul>
         @{
-            foreach (tfgame.dbModels.Models.PlayerLog log in Model)
+            foreach (TT.Domain.Models.PlayerLog log in Model)
             {
                 <li>@Html.Raw(log.Message) <span class="timeago">@CharactersHere.DatetimeToTimeago(log.Timestamp)</span></li>
             }

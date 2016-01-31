@@ -1,7 +1,7 @@
 ﻿using System.Web.Script.Serialization;
-using tfgame.dbModels.Models;
+using TT.Domain.Models;
 
-namespace tfgame.Procedures
+namespace TT.Domain.Procedures
 {
     public static class NoticeService
     {

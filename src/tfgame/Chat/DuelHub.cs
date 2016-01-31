@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNet.SignalR;
-using tfgame.Procedures;
-using tfgame.dbModels.Models;
+using TT.Domain.Procedures;
+using TT.Domain.Models;
 using System.Threading.Tasks;
-using tfgame.ViewModels;
+using TT.Domain.ViewModels;
 using System.Timers;
 using Newtonsoft.Json;
 using Microsoft.AspNet.Identity;

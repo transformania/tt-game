@@ -1,8 +1,8 @@
-﻿@model tfgame.ViewModels.PlayPageViewModel
+﻿@model TT.Domain.ViewModels.PlayPageViewModel
 @using tfgame.CustomHtmlHelpers
-@using tfgame.ViewModels
-@using tfgame.Statics
-@using tfgame.Procedures
+@using TT.Domain.ViewModels
+@using TT.Domain.Statics
+@using TT.Domain.Procedures
 
 <script src="~/Scripts/jquery-ui-1.10.4.js"></script>
 
@@ -114,7 +114,7 @@
 
 <ul id="notificationBox" style="display:none;">
     @{
-        foreach (tfgame.dbModels.Models.PlayerLog log in Model.PlayerLogImportant)
+        foreach (TT.Domain.Models.PlayerLog log in Model.PlayerLogImportant)
         {
             <li class="frontPageNotification">
                 @Html.Raw(log.Message) <span class="timeago">@CharactersHere.DatetimeToTimeago(log.Timestamp)</span>
@@ -222,7 +222,7 @@
     <div class="row">
         @*all players who are online*@
         @{
-            foreach (tfgame.ViewModels.PlayerFormViewModel p in Model.PlayersHere.Where(p => PlayerProcedures.PlayerIsOffline(p.Player) == false).OrderByDescending(p => p.Player.Level))
+            foreach (TT.Domain.ViewModels.PlayerFormViewModel p in Model.PlayersHere.Where(p => PlayerProcedures.PlayerIsOffline(p.Player) == false).OrderByDescending(p => p.Player.Level))
             {
 
                 <div class="col-md-2 col-sm-4 col-xs-12 charaBox">
@@ -296,7 +296,7 @@
         <div class="row">
 
             @{
-    foreach (tfgame.ViewModels.PlayerFormViewModel p in Model.PlayersHere.Where(p => PlayerProcedures.PlayerIsOffline(p.Player) == true).OrderByDescending(p => p.Player.Level))
+    foreach (TT.Domain.ViewModels.PlayerFormViewModel p in Model.PlayersHere.Where(p => PlayerProcedures.PlayerIsOffline(p.Player) == true).OrderByDescending(p => p.Player.Level))
     {
         <div class="col-md-2 col-sm-4 col-xs-12 charaBox">
             <div class="charaBoxInner">
@@ -320,7 +320,7 @@
     <div class="row">
         @{
 
-            foreach (tfgame.ViewModels.ItemViewModel item in Model.LocationItems)
+            foreach (TT.Domain.ViewModels.ItemViewModel item in Model.LocationItems)
             {
                 <div class="col-md-2 col-sm-4 col-xs-12 itemBox itemBoxPP">
                     <div class="charaBoxInner">

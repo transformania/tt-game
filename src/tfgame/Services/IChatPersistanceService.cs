@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using tfgame.dbModels.Models;
+using TT.Domain.Models;
 
 namespace tfgame.Services
 {

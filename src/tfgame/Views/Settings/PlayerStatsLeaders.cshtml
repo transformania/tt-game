@@ -1,6 +1,6 @@
-﻿@model IEnumerable<tfgame.ViewModels.PlayerAchievementViewModel>
-@using tfgame.Procedures
-@using tfgame.ViewModels
+﻿@model IEnumerable<TT.Domain.ViewModels.PlayerAchievementViewModel>
+@using TT.Domain.Procedures
+@using TT.Domain.ViewModels
 
 <nav class="navbar navbar-default outsideContainer navbarTT2">
     <div class="container-fluid">
@@ -29,7 +29,7 @@
     <h1>Statistics Leaders</h1>
     <div class="row">
         @{
-            foreach (string f in tfgame.Procedures.StatsProcedures.StatTypesMap.Keys)
+            foreach (string f in TT.Domain.Procedures.StatsProcedures.StatTypesMap.Keys)
             {
                 PlayerAchievementViewModel ach = Model.FirstOrDefault(a => a.Achivement.AchievementType == f);
                 if (ach != null)

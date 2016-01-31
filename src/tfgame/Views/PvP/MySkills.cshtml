@@ -1,5 +1,5 @@
-﻿@model IEnumerable<tfgame.ViewModels.MySkillsViewModel>
-@using tfgame.ViewModels
+﻿@model IEnumerable<TT.Domain.ViewModels.MySkillsViewModel>
+@using TT.Domain.ViewModels
 @using tfgame.CustomHtmlHelpers
 
 
@@ -21,7 +21,7 @@
                 <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
                 <li>@Html.ActionLink("Archive All My Spells", "ArchiveAllMySpells", "Settings", new { archive = true }, null)</li>
                 <li>@Html.ActionLink("Restore All My Spells", "ArchiveAllMySpells", "Settings", new { archive = false }, null)</li>
-                <li><a href="#" style="color: white !important; cursor: default">Known Spells (@Model.Where(c => c.Skill_Name != tfgame.Statics.PvPStatics.Dungeon_VanquishSpell && (c.Skill_MobilityType == "full" || c.Skill_MobilityType == "inanimate" || c.Skill_MobilityType == "animal" || c.Skill_MobilityType == "mindcontrol")).Count() / @ViewBag.TotalLearnableSkills)</a></li>
+                <li><a href="#" style="color: white !important; cursor: default">Known Spells (@Model.Where(c => c.Skill_Name != TT.Domain.Statics.PvPStatics.Dungeon_VanquishSpell && (c.Skill_MobilityType == "full" || c.Skill_MobilityType == "inanimate" || c.Skill_MobilityType == "animal" || c.Skill_MobilityType == "mindcontrol")).Count() / @ViewBag.TotalLearnableSkills)</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->

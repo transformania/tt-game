@@ -1,5 +1,5 @@
-﻿@model tfgame.dbModels.Models.QuestStart
-@using tfgame.Statics
+﻿@model TT.Domain.Models.QuestStart
+@using TT.Domain.Statics
 
 <p>@Ajax.ActionLink("Click to view all quest states in this quest", "ShowAllQuestStates", "QuestWriter", new { Id = Model.Id }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
 <p>@Ajax.ActionLink("Click to view all quest connections in this quest", "ShowAllQuestConnections", "QuestWriter", new { Id = Model.Id }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
@@ -103,7 +103,7 @@
 
     if (Model.Id > 0 && ViewBag.firstState != null)
     {
-        <p>@Ajax.ActionLink("STARTING QUEST STATE -- " + ((tfgame.dbModels.Models.QuestState)ViewBag.firstState).QuestStateName, "QuestState", "QuestWriter", new { Id = ViewBag.firstState.Id, QuestId = Model.Id, ParentStateId = -1 }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "editButton" })</p>
+        <p>@Ajax.ActionLink("STARTING QUEST STATE -- " + ((TT.Domain.Models.QuestState)ViewBag.firstState).QuestStateName, "QuestState", "QuestWriter", new { Id = ViewBag.firstState.Id, QuestId = Model.Id, ParentStateId = -1 }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "editButton" })</p>
     }
     else
     {

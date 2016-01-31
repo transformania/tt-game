@@ -3,14 +3,14 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Collections.Generic;
 using System.Linq;
-using tfgame.dbModels.Abstract;
-using tfgame.dbModels.Concrete;
-using tfgame.dbModels.Models;
-using tfgame.Statics;
-using tfgame.ViewModels;
+using TT.Domain.Abstract;
+using TT.Domain.Concrete;
+using TT.Domain.Models;
+using TT.Domain.Statics;
+using TT.Domain.ViewModels;
 using System.Threading;
 
-namespace tfgame.Procedures
+namespace TT.Domain.Procedures
 {
     public class ItemProcedures
     {
@@ -43,7 +43,7 @@ namespace tfgame.Procedures
 
 
 
-                                                          Item = new tfgame.ViewModels.StaticItem
+                                                          Item = new TT.Domain.ViewModels.StaticItem
                                                           {
                                                             dbName = si.dbName,
                                                             FriendlyName = si.FriendlyName,
@@ -143,7 +143,7 @@ namespace tfgame.Procedures
 
 
 
-                                                     Item = new tfgame.ViewModels.StaticItem
+                                                     Item = new TT.Domain.ViewModels.StaticItem
                                                      {
                                                          dbName = si.dbName,
                                                          FriendlyName = si.FriendlyName,
@@ -252,7 +252,7 @@ namespace tfgame.Procedures
 
 
 
-                                                     Item = new tfgame.ViewModels.StaticItem
+                                                     Item = new TT.Domain.ViewModels.StaticItem
                                                      {
                                                          dbName = si.dbName,
                                                          FriendlyName = si.FriendlyName,
@@ -343,7 +343,7 @@ namespace tfgame.Procedures
 
 
 
-                                                    Item = new tfgame.ViewModels.StaticItem
+                                                    Item = new TT.Domain.ViewModels.StaticItem
                                                     {
                                                         dbName = si.dbName,
                                                         FriendlyName = si.FriendlyName,

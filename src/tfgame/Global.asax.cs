@@ -2,7 +2,7 @@
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-using tfgame.dbModels;
+using TT.Domain;
 
 namespace tfgame
 {

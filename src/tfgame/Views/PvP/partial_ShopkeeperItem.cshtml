@@ -1,6 +1,6 @@
-﻿@model tfgame.ViewModels.ItemViewModel
+﻿@model TT.Domain.ViewModels.ItemViewModel
            @using tfgame.CustomHtmlHelpers
-@using tfgame.Statics
+@using TT.Domain.Statics
 
 <div class="col-md-2 col-sm-3 col-xs-6 charaBox">
     <div class="portrait" style="background-image: url(@CharactersHere.GetImageURL(Model, true));">
@@ -24,7 +24,7 @@
                 <p>@Model.Item.FriendlyName</p>
 
                 @CharactersHere.PrintPvPIcon(Model.dbItem)
-                <span class="price">Price:  @tfgame.Procedures.ItemProcedures.GetCostOfItem(Model, "buy") Arpeyjis</span>
+                <span class="price">Price:  @TT.Domain.Procedures.ItemProcedures.GetCostOfItem(Model, "buy") Arpeyjis</span>
 
                 @{
                     if (ViewBag.Wuffie != null && ViewBag.Wuffie == true)

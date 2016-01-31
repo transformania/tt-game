@@ -1,11 +1,11 @@
-﻿@model IEnumerable<tfgame.ViewModels.SkillViewModel2>
+﻿@model IEnumerable<TT.Domain.ViewModels.SkillViewModel2>
 
 @Html.ActionLink("Back to game", "Play", "PvP")
 
 <p>As the owner of a Autoselftransmogrification Deflector Device you can cast any animate spell at the device and have it cast straight back at you with enough power to transform you instantly!  Which of your spells would you like to cast?</p>
 
 @{
-    foreach (tfgame.ViewModels.SkillViewModel2 s in Model)
+    foreach (TT.Domain.ViewModels.SkillViewModel2 s in Model)
     {
         <h3>@s.Skill.FriendlyName</h3>
         <p>@s.Skill.Description</p>

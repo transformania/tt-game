@@ -1,15 +1,15 @@
-﻿@model tfgame.ViewModels.MindControlViewModel
+﻿@model TT.Domain.ViewModels.MindControlViewModel
 
 @{
-    if (Model.MindControl.Type == tfgame.Statics.MindControlStatics.MindControl__Movement)
+    if (Model.MindControl.Type == TT.Domain.Statics.MindControlStatics.MindControl__Movement)
     {
         @Html.ActionLink("Command Movement","MoveVictim","NPC", new {id=Model.Victim.Player.Id}, null)
     }
-    if (Model.MindControl.Type == tfgame.Statics.MindControlStatics.MindControl__Strip)
+    if (Model.MindControl.Type == TT.Domain.Statics.MindControlStatics.MindControl__Strip)
     {
         @Html.ActionLink("Command Strip","StripVictim","NPC", new {id=Model.Victim.Player.Id}, null)
     }
-      if (Model.MindControl.Type == tfgame.Statics.MindControlStatics.MindControl__Meditate)
+      if (Model.MindControl.Type == TT.Domain.Statics.MindControlStatics.MindControl__Meditate)
     {
         @Html.ActionLink("Command Demeditation", "DeMeditateVictim", "NPC", new { id = Model.Victim.Player.Id }, null)
     }

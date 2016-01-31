@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
-using tfgame.dbModels.Models;
+using TT.Domain.Models;
 using tfgame.Services;
-using tfgame.Statics;
+using TT.Domain.Statics;
 
 namespace TT.Tests.Services
 {

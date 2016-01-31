@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using tfgame.dbModels.Models;
+using TT.Domain.Models;
 
-namespace tfgame.ViewModels.Quest
+namespace TT.Domain.ViewModels.Quest
 {
     public class QuestStateFormViewModel
     {

@@ -1,6 +1,6 @@
-using tfgame.dbModels.Abstract;
+using TT.Domain.Abstract;
 
-namespace tfgame.dbModels
+namespace TT.Domain
 {
     /// <summary>
     /// The DomainRegistry forms a top-level boundary for interacting with entities by 

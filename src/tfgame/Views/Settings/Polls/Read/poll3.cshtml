@@ -1,4 +1,4 @@
-﻿@model IEnumerable<tfgame.dbModels.Models.PollEntry>
+﻿@model IEnumerable<TT.Domain.Models.PollEntry>
 
 <nav class="navbar navbar-default outsideContainer navbarTT2">
     <div class="container-fluid">
@@ -108,7 +108,7 @@
     <p><b>Leave any comments on the new stats system here.</b></p>
 
     @{
-        foreach (tfgame.dbModels.Models.PollEntry e in Model.Where(p => p.String1 != null && p.String1 != ""))
+        foreach (TT.Domain.Models.PollEntry e in Model.Where(p => p.String1 != null && p.String1 != ""))
         {
             <p>"@e.String1"</p><br />
         }
@@ -119,7 +119,7 @@
     <p><b>Leave any comments on the 5 minute turns here.</b></p>
 
     @{
-        foreach (tfgame.dbModels.Models.PollEntry e in Model.Where(p => p.String2 != null && p.String2 != ""))
+        foreach (TT.Domain.Models.PollEntry e in Model.Where(p => p.String2 != null && p.String2 != ""))
         {
             <p>"@e.String2"</p><br />
         }

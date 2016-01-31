@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using System.Xml.Serialization;
-using tfgame.Statics;
-using tfgame.ViewModels;
+using TT.Domain.Statics;
+using TT.Domain.ViewModels;
 
-namespace tfgame.Procedures
+namespace TT.Domain.Procedures
 {
     public static class DungeonProcedures
     {

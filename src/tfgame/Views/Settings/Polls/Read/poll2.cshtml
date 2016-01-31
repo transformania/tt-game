@@ -1,4 +1,4 @@
-﻿@model IEnumerable<tfgame.dbModels.Models.PollEntry>
+﻿@model IEnumerable<TT.Domain.Models.PollEntry>
 
 <nav class="navbar navbar-default outsideContainer navbarTT2">
     <div class="container-fluid">
@@ -156,7 +156,7 @@
     <p><b>How and when did you first discover that you had an interest in transformation?</b></p>
 
     @{
-        foreach (tfgame.dbModels.Models.PollEntry e in Model.Where(p => p.String1 != null && p.String1 != ""))
+        foreach (TT.Domain.Models.PollEntry e in Model.Where(p => p.String1 != null && p.String1 != ""))
         {
             <p>"@e.String1"</p><br />
         }
@@ -167,7 +167,7 @@
     <p><b>What's a fun or random fact about yourself?</b></p>
 
     @{
-        foreach (tfgame.dbModels.Models.PollEntry e in Model.Where(p => p.String2 != null && p.String2 != ""))
+        foreach (TT.Domain.Models.PollEntry e in Model.Where(p => p.String2 != null && p.String2 != ""))
         {
             <p>"@e.String2"</p><br />
         }
@@ -178,7 +178,7 @@
     <p><b>How did you learn about Transformania Time?</b></p>
 
     @{
-        foreach (tfgame.dbModels.Models.PollEntry e in Model.Where(p => p.String3 != null && p.String3 != ""))
+        foreach (TT.Domain.Models.PollEntry e in Model.Where(p => p.String3 != null && p.String3 != ""))
         {
             <p>"@e.String3"</p><br />
         }

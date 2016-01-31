@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using tfgame.dbModels.Abstract;
-using tfgame.dbModels.Concrete;
-using tfgame.dbModels.Models;
-using tfgame.Procedures;
-using tfgame.Statics;
-using tfgame.ViewModels;
+using TT.Domain.Abstract;
+using TT.Domain.Concrete;
+using TT.Domain.Models;
+using TT.Domain.Procedures;
+using TT.Domain.Statics;
+using TT.Domain.ViewModels;
 using Microsoft.AspNet.Identity;
 
 namespace tfgame.Controllers

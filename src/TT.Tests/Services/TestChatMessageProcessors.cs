@@ -4,11 +4,11 @@ using System.Web;
 using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;
-using tfgame.dbModels;
-using tfgame.dbModels.Abstract;
-using tfgame.dbModels.Queries.DMRoll;
+using TT.Domain;
+using TT.Domain.Abstract;
+using TT.Domain.Queries.DMRoll;
 using tfgame.Services;
-using tfgame.Statics;
+using TT.Domain.Statics;
 
 namespace TT.Tests.Services
 {

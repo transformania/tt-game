@@ -1,4 +1,4 @@
-﻿@model IEnumerable<tfgame.ViewModels.BalancePageViewModel>
+﻿@model IEnumerable<TT.Domain.ViewModels.BalancePageViewModel>
     @using tfgame.CustomHtmlHelpers
 
     <head>
@@ -27,7 +27,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (tfgame.ViewModels.BalancePageViewModel entry in Model)
+            @foreach (TT.Domain.ViewModels.BalancePageViewModel entry in Model)
             {
                 <tr>
                     <td>@Html.Raw(entry.dbName)</td>

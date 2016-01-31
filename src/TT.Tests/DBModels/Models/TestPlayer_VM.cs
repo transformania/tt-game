@@ -2,11 +2,11 @@
 using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;
-using tfgame.dbModels;
-using tfgame.dbModels.Abstract;
-using tfgame.dbModels.Commands.Player;
-using tfgame.dbModels.Models;
-using tfgame.Statics;
+using TT.Domain;
+using TT.Domain.Abstract;
+using TT.Domain.Commands.Player;
+using TT.Domain.Models;
+using TT.Domain.Statics;
 using TT.Tests.Services;
 
 namespace TT.Tests.DBModels.Models

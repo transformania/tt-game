@@ -2,14 +2,14 @@ namespace tfgame.Migrations
 {
     using System.Data.Entity.Migrations;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<tfgame.dbModels.Concrete.StatsContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<TT.Domain.Concrete.StatsContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
         }
 
-        protected override void Seed(tfgame.dbModels.Concrete.StatsContext context)
+        protected override void Seed(TT.Domain.Concrete.StatsContext context)
         {
             //  This method will be called after migrating to the latest version.
 

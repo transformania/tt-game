@@ -15,7 +15,7 @@
         @{
             try
             {
-                if (User.IsInRole(tfgame.Statics.PvPStatics.Permissions_Killswitcher) == true)
+                if (User.IsInRole(TT.Domain.Statics.PvPStatics.Permissions_Killswitcher) == true)
                 {
                     <p class="bad">Activate this link when and ONLY when you and a number of animate players are receiving error screens and are unable to play.  Clicking this link will temporarily disable turn updates so bots do not attacker players who are incapable of responding.  @Html.ActionLink("CLICK HERE TO ACTIVATE KILLSWITCH.", "Killswitch", "PvPAdmin")</p>
                 }

@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using tfgame.dbModels.Abstract;
-using tfgame.dbModels.Concrete;
-using tfgame.dbModels.Models;
-using tfgame.ViewModels;
+using TT.Domain.Abstract;
+using TT.Domain.Concrete;
+using TT.Domain.Models;
+using TT.Domain.ViewModels;
 
-namespace tfgame.Statics
+namespace TT.Domain.Statics
 {
     public static class EffectStatics
     {

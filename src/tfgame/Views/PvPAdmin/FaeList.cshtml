@@ -1,9 +1,9 @@
-﻿@model List<tfgame.dbModels.Models.JewdewfaeEncounter>
+﻿@model List<TT.Domain.Models.JewdewfaeEncounter>
 
 <h1>Jewdewfae encounter list (@Model.Where(e => e.IsLive == true).Count() live)</h1>
 
 @{
-    foreach (tfgame.dbModels.Models.JewdewfaeEncounter e in Model)
+    foreach (TT.Domain.Models.JewdewfaeEncounter e in Model)
     {
         <p>
 

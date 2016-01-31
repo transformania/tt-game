@@ -1,4 +1,4 @@
-﻿@model IEnumerable<tfgame.ViewModels.MindControlViewModel>
+﻿@model IEnumerable<TT.Domain.ViewModels.MindControlViewModel>
 
 <nav class="navbar navbar-default outsideContainer navbarTT2">
     <div class="container-fluid">
@@ -48,14 +48,14 @@
                 <div class="row">
                     <h3>You are mind controlling:</h3>
                     @{
-            foreach (tfgame.ViewModels.MindControlViewModel m in Model.Where(m => m.MindControl.MasterId == ViewBag.MyId))
+            foreach (TT.Domain.ViewModels.MindControlViewModel m in Model.Where(m => m.MindControl.MasterId == ViewBag.MyId))
             {
                 <div class="col-md-2 col-sm-4 col-xs-12 charaBox">
                     <div class="charaBoxInner">
                         <div>
                             <p>
                                 @Html.Partial("~/Views/PvP/Player_Partial.cshtml", m.Victim)
-                                <span><b>@m.TypeFriendlyName</b> ( @m.MindControl.TurnsRemaining turns remaining.  Used @m.MindControl.TimesUsedThisTurn/@tfgame.Procedures.MindControlProcedures.GetCommandLimitOfType(m.MindControl.Type) this turn.)</span>
+                                <span><b>@m.TypeFriendlyName</b> ( @m.MindControl.TurnsRemaining turns remaining.  Used @m.MindControl.TimesUsedThisTurn/@TT.Domain.Procedures.MindControlProcedures.GetCommandLimitOfType(m.MindControl.Type) this turn.)</span>
                                 <span>@Html.Partial("partial/CommandLinks", m)</span>
                             </p>
                         </div>
@@ -71,14 +71,14 @@
         <div class="row">
             <h3>You are being mind controlled by:</h3>
             @{
-            foreach (tfgame.ViewModels.MindControlViewModel m in Model.Where(m => m.MindControl.VictimId == ViewBag.MyId))
+            foreach (TT.Domain.ViewModels.MindControlViewModel m in Model.Where(m => m.MindControl.VictimId == ViewBag.MyId))
             {
                 <div class="col-md-2 col-sm-4 col-xs-12 charaBox">
                     <div class="charaBoxInner">
                         <div>
                             <p>
                                 @Html.Partial("~/Views/PvP/Player_Partial.cshtml", m.Master)
-                                <span><b>@m.TypeFriendlyName</b> ( @m.MindControl.TurnsRemaining turns remaining.  Used @m.MindControl.TimesUsedThisTurn/@tfgame.Procedures.MindControlProcedures.GetCommandLimitOfType(m.MindControl.Type) this turn.)</span>
+                                <span><b>@m.TypeFriendlyName</b> ( @m.MindControl.TurnsRemaining turns remaining.  Used @m.MindControl.TimesUsedThisTurn/@TT.Domain.Procedures.MindControlProcedures.GetCommandLimitOfType(m.MindControl.Type) this turn.)</span>
                             </p>
                         </div>
                     </div>

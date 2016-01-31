@@ -1,4 +1,4 @@
-﻿@model IEnumerable<tfgame.dbModels.Models.Contribution>
+﻿@model IEnumerable<TT.Domain.Models.Contribution>
 
 <div class="containerInner">
 
@@ -18,7 +18,7 @@
         <tbody>
 
             @{
-                foreach (tfgame.dbModels.Models.Contribution c in Model)
+                foreach (TT.Domain.Models.Contribution c in Model)
                 {
                     <tr>
                         <td>@c.SubmitterName</td>
@@ -29,7 +29,7 @@
 
 
                         @{
-                            if (User.IsInRole(tfgame.Statics.PvPStatics.Permissions_Admin) == true)
+                            if (User.IsInRole(TT.Domain.Statics.PvPStatics.Permissions_Admin) == true)
                             {
                                 <td>@Html.ActionLink("Approve", "ApproveContribution", "PvPAdmin", new { id = c.Id }, null)</td>
                                 <td>@Html.ActionLink("Reject", "RejectContribution", "PvPAdmin", new { id = c.Id }, null)</td>

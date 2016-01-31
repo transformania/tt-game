@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
-using tfgame.dbModels.Abstract;
-using tfgame.dbModels.Concrete;
-using tfgame.dbModels.Models;
+using TT.Domain.Abstract;
+using TT.Domain.Concrete;
+using TT.Domain.Models;
 
-namespace tfgame.Procedures
+namespace TT.Domain.Procedures
 {
     public class PvPWorldStatProcedures
     {

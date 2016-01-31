@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace tfgame.dbModels.Models
+namespace TT.Domain.Models
 {
     public class DMRoll
     {

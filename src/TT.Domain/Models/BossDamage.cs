@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace tfgame.dbModels.Models
+namespace TT.Domain.Models
 {
     public class BossDamage
     {

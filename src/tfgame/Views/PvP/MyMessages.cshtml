@@ -1,4 +1,4 @@
-﻿@model tfgame.ViewModels.MessageBag
+﻿@model TT.Domain.ViewModels.MessageBag
 @using tfgame.CustomHtmlHelpers
 
 <nav class="navbar navbar-default outsideContainer navbarTT2">
@@ -68,7 +68,7 @@
                 string messageTeaser;
                 int msgLength;
 
-                foreach (tfgame.ViewModels.MessageViewModel msg in Model.Messages)
+                foreach (TT.Domain.ViewModels.MessageViewModel msg in Model.Messages)
                 {
 
 
@@ -151,7 +151,7 @@
         </thead>
         <tbody>
 
-            @{foreach (tfgame.ViewModels.MessageViewModel msg in Model.SentMessages)
+            @{foreach (TT.Domain.ViewModels.MessageViewModel msg in Model.SentMessages)
             {
                 <tr>
                     @{if (msg.SentToName != "(inanimate)")

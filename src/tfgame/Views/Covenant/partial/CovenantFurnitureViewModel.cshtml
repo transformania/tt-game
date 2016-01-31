@@ -1,4 +1,4 @@
-﻿@model tfgame.ViewModels.FurnitureViewModel
+﻿@model TT.Domain.ViewModels.FurnitureViewModel
            @using tfgame.CustomHtmlHelpers
 
 <h3>@Model.dbFurniture.HumanName</h3>
@@ -18,11 +18,11 @@
         }
         if (Model.FurnitureType.GivesEffect != null && Model.FurnitureType.GivesEffect != "")
         {
-            <li>Gives effect:  @tfgame.Statics.EffectStatics.GetEffect(Model.FurnitureType.GivesEffect).FriendlyName</li>
+            <li>Gives effect:  @TT.Domain.Statics.EffectStatics.GetEffect(Model.FurnitureType.GivesEffect).FriendlyName</li>
         }
         if (Model.FurnitureType.GivesItem != null && Model.FurnitureType.GivesItem != "")
         {
-            <li>Gives item:  @tfgame.Statics.ItemStatics.GetStaticItem(Model.FurnitureType.GivesItem).FriendlyName</li>
+            <li>Gives item:  @TT.Domain.Statics.ItemStatics.GetStaticItem(Model.FurnitureType.GivesItem).FriendlyName</li>
         }
     }
 </ul>

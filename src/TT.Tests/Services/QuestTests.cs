@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using FluentAssertions;
 using NUnit.Framework;
-using tfgame.dbModels.Models;
-using tfgame.Procedures;
-using tfgame.Statics;
-using tfgame.ViewModels;
+using TT.Domain.Models;
+using TT.Domain.Procedures;
+using TT.Domain.Statics;
+using TT.Domain.ViewModels;
 
 namespace TT.Tests.Services
 {

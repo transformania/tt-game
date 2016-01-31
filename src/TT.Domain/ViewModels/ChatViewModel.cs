@@ -1,4 +1,4 @@
-namespace tfgame.ViewModels
+namespace TT.Domain.ViewModels
 {
     public class ChatViewModel
     {

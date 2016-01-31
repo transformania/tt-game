@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using tfgame.dbModels.Abstract;
-using tfgame.dbModels.Concrete;
-using tfgame.dbModels.Models;
-using tfgame.Statics;
-using tfgame.ViewModels;
+using TT.Domain.Abstract;
+using TT.Domain.Concrete;
+using TT.Domain.Models;
+using TT.Domain.Statics;
+using TT.Domain.ViewModels;
 
-namespace tfgame.Procedures
+namespace TT.Domain.Procedures
 {
     public static class EffectProcedures
     {
@@ -35,7 +35,7 @@ namespace tfgame.Procedures
 
                                                        },
 
-                                                       Effect = new tfgame.ViewModels.StaticEffect
+                                                       Effect = new TT.Domain.ViewModels.StaticEffect
                                                        {
                                                            dbName = si.dbName,
                                                            FriendlyName = si.FriendlyName,

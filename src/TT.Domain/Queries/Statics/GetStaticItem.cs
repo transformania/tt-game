@@ -1,9 +1,9 @@
 ﻿using System.Linq;
-using tfgame.dbModels.Abstract;
-using tfgame.dbModels.Concrete;
-using tfgame.dbModels.Models;
+using TT.Domain.Abstract;
+using TT.Domain.Concrete;
+using TT.Domain.Models;
 
-namespace tfgame.dbModels.Queries.Statics
+namespace TT.Domain.Queries.Statics
 {
     public class GetStaticItem : QuerySingle<DbStaticItem>
     {

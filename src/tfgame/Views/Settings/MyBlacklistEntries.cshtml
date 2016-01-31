@@ -1,4 +1,4 @@
-﻿@model IEnumerable<tfgame.ViewModels.BlacklistEntryViewModel>
+﻿@model IEnumerable<TT.Domain.ViewModels.BlacklistEntryViewModel>
 
 <nav class="navbar navbar-default outsideContainer navbarTT2">
     <div class="container-fluid">
@@ -35,7 +35,7 @@
 
     <hr />
 
-    @foreach (tfgame.ViewModels.BlacklistEntryViewModel m in Model)
+    @foreach (TT.Domain.ViewModels.BlacklistEntryViewModel m in Model)
     {
 
         if (m.PlayerId > 0)

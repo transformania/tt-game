@@ -1,4 +1,4 @@
-﻿namespace tfgame.dbModels
+﻿namespace TT.Domain
 {
     /// <summary>
     /// Base class for executing updates to entities with no return type

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<tfgame.dbModels.Models.QuestState>
+﻿@model IEnumerable<TT.Domain.Models.QuestState>
 
 <p>@Ajax.ActionLink("View Logs", "ShowQuestWriterLogs", "QuestWriter", new { Id = Model.First().QuestId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
 
@@ -8,7 +8,7 @@
 
 
 <table>
-    @foreach (tfgame.dbModels.Models.QuestState q in Model.ToList())
+    @foreach (TT.Domain.Models.QuestState q in Model.ToList())
     {
 
         <tr>

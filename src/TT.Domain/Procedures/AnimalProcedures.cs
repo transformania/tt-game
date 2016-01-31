@@ -1,10 +1,10 @@
 ﻿using System.Linq;
-using tfgame.dbModels.Abstract;
-using tfgame.dbModels.Concrete;
-using tfgame.dbModels.Models;
-using tfgame.ViewModels;
+using TT.Domain.Abstract;
+using TT.Domain.Concrete;
+using TT.Domain.Models;
+using TT.Domain.ViewModels;
 
-namespace tfgame.Procedures
+namespace TT.Domain.Procedures
 {
     public static class AnimalProcedures
     {
@@ -18,7 +18,7 @@ namespace tfgame.Procedures
             Player victim = playerRepo.Players.FirstOrDefault(p => p.Id == victimId);
 
             Player attackerOwner = playerRepo.Players.FirstOrDefault(p => p.Id == animalItem.OwnerId);
-            Location here = tfgame.Statics.LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == animalPlayer.dbLocationName);
+            Location here = TT.Domain.Statics.LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == animalPlayer.dbLocationName);
 
 
             PlayerFormViewModel attackerPlus = PlayerProcedures.GetPlayerFormViewModel(animalPlayerId);

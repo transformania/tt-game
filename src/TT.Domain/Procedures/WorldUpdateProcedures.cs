@@ -4,14 +4,14 @@ using System.Diagnostics;
 using System.Linq;
 using System.Xml;
 using System.Xml.Serialization;
-using tfgame.dbModels.Abstract;
-using tfgame.dbModels.Concrete;
-using tfgame.dbModels.Models;
-using tfgame.Procedures.BossProcedures;
-using tfgame.Statics;
-using tfgame.ViewModels;
+using TT.Domain.Abstract;
+using TT.Domain.Concrete;
+using TT.Domain.Models;
+using TT.Domain.Procedures.BossProcedures;
+using TT.Domain.Statics;
+using TT.Domain.ViewModels;
 
-namespace tfgame.Procedures
+namespace TT.Domain.Procedures
 {
     public static  class WorldUpdateProcedures
     {
@@ -738,7 +738,7 @@ namespace tfgame.Procedures
                     {
                         log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started Valentine actions");
                         serverLogRepo.SaveServerLog(log);
-                        tfgame.Procedures.BossProcedures.BossProcedures_Valentine.RunValentineActions();
+                        TT.Domain.Procedures.BossProcedures.BossProcedures_Valentine.RunValentineActions();
                         log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == turnNo);
                         log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished Valentine actions");
                     }
@@ -757,7 +757,7 @@ namespace tfgame.Procedures
                     {
                         log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started Bimbo actions");
                         serverLogRepo.SaveServerLog(log);
-                        tfgame.Procedures.BossProcedures.BossProcedures_BimboBoss.RunActions(turnNo);
+                        TT.Domain.Procedures.BossProcedures.BossProcedures_BimboBoss.RunActions(turnNo);
                         log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == turnNo);
                         log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished Bimbo actions");
                     }
@@ -776,7 +776,7 @@ namespace tfgame.Procedures
                     {
                         log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started Thieves actions");
                         serverLogRepo.SaveServerLog(log);
-                        tfgame.Procedures.BossProcedures.BossProcedures_Thieves.RunThievesAction(turnNo);
+                        TT.Domain.Procedures.BossProcedures.BossProcedures_Thieves.RunThievesAction(turnNo);
                         log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == turnNo);
                         log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished Thieves actions");
                     }
@@ -795,7 +795,7 @@ namespace tfgame.Procedures
                     {
                         log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started Sisters actions");
                         serverLogRepo.SaveServerLog(log);
-                        tfgame.Procedures.BossProcedures.BossProcedures_Sisters.RunSistersAction();
+                        TT.Domain.Procedures.BossProcedures.BossProcedures_Sisters.RunSistersAction();
                         log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == turnNo);
                         log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished Sisters actions");
                     }
@@ -813,7 +813,7 @@ namespace tfgame.Procedures
                     {
                         log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started Narcissa actions");
                         serverLogRepo.SaveServerLog(log);
-                        tfgame.Procedures.BossProcedures.BossProcedures_FaeBoss.RunTurnLogic();
+                        TT.Domain.Procedures.BossProcedures.BossProcedures_FaeBoss.RunTurnLogic();
                         log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == turnNo);
                         log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished Narcissa actions");
                     }

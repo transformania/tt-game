@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace tfgame.ViewModels
+namespace TT.Domain.ViewModels
 {
     public class NewCharacterViewModel
     {

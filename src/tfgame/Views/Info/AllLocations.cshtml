@@ -1,4 +1,4 @@
-﻿@model List<tfgame.ViewModels.Location>
+﻿@model List<TT.Domain.ViewModels.Location>
 
 <div>
 
@@ -19,7 +19,7 @@
         </thead>
         <tbody>
 
-            @foreach (tfgame.ViewModels.Location l in Model.OrderBy(l => l.Name))
+            @foreach (TT.Domain.ViewModels.Location l in Model.OrderBy(l => l.Name))
             {
                 <tr>
                     <td>@l.Name</td>

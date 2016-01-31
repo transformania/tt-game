@@ -1,4 +1,4 @@
-﻿@model IEnumerable<tfgame.ViewModels.SkillViewModel2>
+﻿@model IEnumerable<TT.Domain.ViewModels.SkillViewModel2>
 @using tfgame.CustomHtmlHelpers
 
     <p id="youAreAttacking">You are attacking @ViewBag.TargetName.</p>  
@@ -26,7 +26,7 @@
 
 <span id="lastAttack"></span>
 
-    @foreach (tfgame.ViewModels.SkillViewModel2 s in Model.OrderBy(s => s.Skill.FriendlyName))
+    @foreach (TT.Domain.ViewModels.SkillViewModel2 s in Model.OrderBy(s => s.Skill.FriendlyName))
     {
 
 

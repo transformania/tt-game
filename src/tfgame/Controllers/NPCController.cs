@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Web.Mvc;
-using tfgame.dbModels.Models;
-using tfgame.Procedures;
-using tfgame.Procedures.BossProcedures;
-using tfgame.Statics;
-using tfgame.ViewModels;
+using TT.Domain.Models;
+using TT.Domain.Procedures;
+using TT.Domain.Procedures.BossProcedures;
+using TT.Domain.Statics;
+using TT.Domain.ViewModels;
 using Microsoft.AspNet.Identity;
 
 namespace tfgame.Controllers
@@ -1026,7 +1026,7 @@ namespace tfgame.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
-            JewdewfaeEncounter output = tfgame.Procedures.BossProcedures.BossProcedures_Jewdewfae.GetFairyChallengeInfoAtLocation(fae.dbLocationName);
+            JewdewfaeEncounter output = TT.Domain.Procedures.BossProcedures.BossProcedures_Jewdewfae.GetFairyChallengeInfoAtLocation(fae.dbLocationName);
 
             output.IntroText = output.IntroText.Replace("[", "<").Replace("]", ">");
             output.CorrectFormText = output.CorrectFormText.Replace("[", "<").Replace("]", ">");
@@ -1047,7 +1047,7 @@ namespace tfgame.Controllers
             ViewBag.ShowSuccess = false;
 
             ViewBag.HadRecentInteraction = false;
-            if (tfgame.Procedures.BossProcedures.BossProcedures_Jewdewfae.PlayerHasHadRecentInteraction(me, fae))
+            if (TT.Domain.Procedures.BossProcedures.BossProcedures_Jewdewfae.PlayerHasHadRecentInteraction(me, fae))
             {
                 ViewBag.HadRecentInteraction = true;
             }
@@ -1098,14 +1098,14 @@ namespace tfgame.Controllers
             }
 
             // assert player has not already interacted this location
-            if (tfgame.Procedures.BossProcedures.BossProcedures_Jewdewfae.PlayerHasHadRecentInteraction(me, fae))
+            if (TT.Domain.Procedures.BossProcedures.BossProcedures_Jewdewfae.PlayerHasHadRecentInteraction(me, fae))
             {
                 TempData["Error"] = "You have already interacted with Jewdewfae here.";
                 TempData["SubError"] = "Wait for her to move somewhere else.";
                 return RedirectToAction("Play", "PvP");
             }
 
-            JewdewfaeEncounter output = tfgame.Procedures.BossProcedures.BossProcedures_Jewdewfae.GetFairyChallengeInfoAtLocation(fae.dbLocationName);
+            JewdewfaeEncounter output = TT.Domain.Procedures.BossProcedures.BossProcedures_Jewdewfae.GetFairyChallengeInfoAtLocation(fae.dbLocationName);
 
             output.IntroText = output.IntroText.Replace("[", "<").Replace("]", ">");
             output.CorrectFormText = output.CorrectFormText.Replace("[", "<").Replace("]", ">");
@@ -1113,7 +1113,7 @@ namespace tfgame.Controllers
 
             if (me.Form == output.RequiredForm)
             {
-                decimal xpGained = tfgame.Procedures.BossProcedures.BossProcedures_Jewdewfae.AddInteraction(me);
+                decimal xpGained = TT.Domain.Procedures.BossProcedures.BossProcedures_Jewdewfae.AddInteraction(me);
                 PlayerProcedures.GiveXP(me, xpGained);
                 PlayerProcedures.ChangePlayerActionMana(5, 0, 0, me.Id);
                 ViewBag.XPGain = xpGained;

@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using tfgame.dbModels.Models;
-using tfgame.Procedures;
-using tfgame.Statics;
-using tfgame.ViewModels;
-using tfgame.dbModels.Abstract;
-using tfgame.dbModels.Concrete;
+using TT.Domain.Models;
+using TT.Domain.Procedures;
+using TT.Domain.Statics;
+using TT.Domain.ViewModels;
+using TT.Domain.Abstract;
+using TT.Domain.Concrete;
 using Microsoft.AspNet.Identity;
 
 namespace tfgame.Controllers
@@ -669,7 +669,7 @@ namespace tfgame.Controllers
                     try
                     {
                         newForm = customForms.ElementAt(index + 1);
-                    } catch (Exception e)
+                    } catch (Exception)
                     {
                         newForm = customForms.ElementAt(0);
                     }

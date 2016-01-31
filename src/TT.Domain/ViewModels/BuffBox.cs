@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace tfgame.ViewModels
+namespace TT.Domain.ViewModels
 {
     public class BuffStoredProc
     {

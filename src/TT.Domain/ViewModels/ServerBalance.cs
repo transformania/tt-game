@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using tfgame.dbModels.Models;
+using TT.Domain.Models;
 
 //public decimal FromItems_HealthBonusPercent { get; set; }
 //     public decimal FromItems_ManaBonusPercent { get; set; }
@@ -21,7 +21,7 @@ using tfgame.dbModels.Models;
 //     public decimal FromItems_SpellTFEnergyDamageResistance { get; set; }
 //     public decimal FromItems_ExtraInventorySpace { get; set; }
 
-namespace tfgame.Statics
+namespace TT.Domain.Statics
 {
     public static class BalanceStatics
     {
@@ -100,7 +100,7 @@ namespace tfgame.Statics
     }
 }
 
-namespace tfgame.ViewModels
+namespace TT.Domain.ViewModels
 {
     public class BalanceBox
     {

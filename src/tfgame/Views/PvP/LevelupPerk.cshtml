@@ -1,5 +1,5 @@
-﻿@model IEnumerable<tfgame.dbModels.Models.DbStaticEffect>
-@using tfgame.ViewModels
+﻿@model IEnumerable<TT.Domain.Models.DbStaticEffect>
+@using TT.Domain.ViewModels
 
 <nav class="navbar navbar-default outsideContainer navbarTT2">
     <div class="container-fluid">
@@ -29,7 +29,7 @@
     </p>
     <center>
         @{
-            foreach (tfgame.dbModels.Models.DbStaticEffect e in Model)
+            foreach (TT.Domain.Models.DbStaticEffect e in Model)
             {
                 <div class="perkBox">
                     <h3>@e.FriendlyName</h3>

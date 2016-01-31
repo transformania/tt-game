@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using tfgame.dbModels.Abstract;
-using tfgame.dbModels.Concrete;
-using tfgame.dbModels.Models;
-using tfgame.Procedures.BossProcedures;
-using tfgame.Statics;
-using tfgame.ViewModels;
+using TT.Domain.Abstract;
+using TT.Domain.Concrete;
+using TT.Domain.Models;
+using TT.Domain.Procedures.BossProcedures;
+using TT.Domain.Statics;
+using TT.Domain.ViewModels;
 
-namespace tfgame.Procedures
+namespace TT.Domain.Procedures
 {
     public class PlayerProcedures
     {
@@ -71,7 +71,7 @@ namespace tfgame.Procedures
 
                                                           },
 
-                                                          Form = new tfgame.ViewModels.Form
+                                                          Form = new TT.Domain.ViewModels.Form
                                                           {
                                                               dbName = f.dbName,
                                                               FriendlyName = f.FriendlyName,
@@ -180,7 +180,7 @@ namespace tfgame.Procedures
                                                               InQuestState = p.InQuestState,
                                                           },
 
-                                                          Form = new tfgame.ViewModels.Form
+                                                          Form = new TT.Domain.ViewModels.Form
                                                           {
                                                               dbName = f.dbName,
                                                               FriendlyName = f.FriendlyName,
@@ -290,7 +290,7 @@ namespace tfgame.Procedures
                                                               InQuestState = p.InQuestState,
                                                           },
 
-                                                          Form = new tfgame.ViewModels.Form
+                                                          Form = new TT.Domain.ViewModels.Form
                                                           {
                                                               dbName = f.dbName,
                                                               FriendlyName = f.FriendlyName,
@@ -401,7 +401,7 @@ namespace tfgame.Procedures
                                                               InQuestState = p.InQuestState,
                                                           },
 
-                                                          Form = new tfgame.ViewModels.Form
+                                                          Form = new TT.Domain.ViewModels.Form
                                                           {
                                                               dbName = f.dbName,
                                                               FriendlyName = f.FriendlyName,

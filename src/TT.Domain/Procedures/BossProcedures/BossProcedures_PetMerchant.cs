@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq;
-using tfgame.dbModels.Abstract;
-using tfgame.dbModels.Concrete;
-using tfgame.dbModels.Models;
-using tfgame.Statics;
-using tfgame.ViewModels;
+using TT.Domain.Abstract;
+using TT.Domain.Concrete;
+using TT.Domain.Models;
+using TT.Domain.Statics;
+using TT.Domain.ViewModels;
 
-namespace tfgame.Procedures.BossProcedures
+namespace TT.Domain.Procedures.BossProcedures
 {
     public static class BossProcedures_PetMerchant
     {

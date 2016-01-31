@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using tfgame.Procedures;
-using tfgame.ViewModels;
+using TT.Domain.Procedures;
+using TT.Domain.ViewModels;
 
-namespace tfgame.Statics
+namespace TT.Domain.Statics
 {
 
 

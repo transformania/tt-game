@@ -1,4 +1,4 @@
-﻿@model tfgame.ViewModels.FurnitureViewModel
+﻿@model TT.Domain.ViewModels.FurnitureViewModel
 
 <h3>@Model.dbFurniture.HumanName</h3>
 <p>Price:  <span title="Arpeyjis" class="icon icon-money"></span><span class="avatarCount"><b>@Convert.ToInt32(Model.dbFurniture.Price)</b></span> </p>
@@ -16,10 +16,10 @@
         }
         if (Model.FurnitureType.GivesEffect != null && Model.FurnitureType.GivesEffect != "")
         {
-            <li>Gives effect:  @tfgame.Statics.EffectStatics.GetEffect(Model.FurnitureType.GivesEffect).FriendlyName</li>
+            <li>Gives effect:  @TT.Domain.Statics.EffectStatics.GetEffect(Model.FurnitureType.GivesEffect).FriendlyName</li>
         }
         if (Model.FurnitureType.GivesItem!= null && Model.FurnitureType.GivesItem != "") {
-            <li>Gives item:  @tfgame.Statics.ItemStatics.GetStaticItem(Model.FurnitureType.GivesItem).FriendlyName</li>
+            <li>Gives item:  @TT.Domain.Statics.ItemStatics.GetStaticItem(Model.FurnitureType.GivesItem).FriendlyName</li>
         } 
     }
 </ul>

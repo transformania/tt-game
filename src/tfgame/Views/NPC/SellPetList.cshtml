@@ -1,5 +1,5 @@
-﻿@model IEnumerable<tfgame.ViewModels.ItemViewModel>
-@using tfgame.ViewModels
+﻿@model IEnumerable<TT.Domain.ViewModels.ItemViewModel>
+@using TT.Domain.ViewModels
 @using tfgame.CustomHtmlHelpers
 
 <nav class="navbar navbar-default outsideContainer navbarTT2">
@@ -60,7 +60,7 @@
                 @item.Item.FriendlyName <span> (@item.dbItem.GetFullName())</span>
             </h3>
             <p>
-                You will receive:  @tfgame.Procedures.ItemProcedures.GetCostOfItem(item, "sell") Arpeyjis
+                You will receive:  @TT.Domain.Procedures.ItemProcedures.GetCostOfItem(item, "sell") Arpeyjis
                 @Html.ActionLink("Sell", "SellPet", "NPC", new { id = item.dbItem.Id }, null)
             </p>
 

@@ -1,4 +1,4 @@
-﻿@model List<tfgame.dbModels.Models.DbStaticForm>
+﻿@model List<TT.Domain.Models.DbStaticForm>
 
 <div>
     <h1>Animate Forms</h1>
@@ -17,7 +17,7 @@
         </thead>
         <tbody>
 
-            @foreach (tfgame.dbModels.Models.DbStaticForm f in Model.Where(m => m.MobilityType == "full").OrderBy(f => f.FriendlyName))
+            @foreach (TT.Domain.Models.DbStaticForm f in Model.Where(m => m.MobilityType == "full").OrderBy(f => f.FriendlyName))
             {
                 <tr>
                     <td>@f.FriendlyName</td>
@@ -54,7 +54,7 @@
         </thead>
         <tbody>
 
-            @foreach (tfgame.dbModels.Models.DbStaticForm f in Model.Where(m => m.MobilityType != "full").OrderBy(f => f.FriendlyName))
+            @foreach (TT.Domain.Models.DbStaticForm f in Model.Where(m => m.MobilityType != "full").OrderBy(f => f.FriendlyName))
             {
                 <tr>
                     <td>@f.FriendlyName</td>

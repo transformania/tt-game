@@ -1,5 +1,5 @@
-﻿@model IEnumerable<tfgame.dbModels.Models.DbStaticSkill>
-@using tfgame.dbModels.Models
+﻿@model IEnumerable<TT.Domain.Models.DbStaticSkill>
+@using TT.Domain.Models
 
 <nav class="navbar navbar-default outsideContainer navbarTT2">
     <div class="container-fluid">
@@ -30,7 +30,7 @@
 </div>
 
 <div class="containerInner">
-    <p>Which spell would you like to learn?  There are currently @Model.Count() spells in this category that you can be taught, each at the price of @tfgame.Statics.PvPStatics.LorekeeperSpellPrice Arpeyjis <span title="Arpeyjis" class="icon icon-money"></span> each.</p>
+    <p>Which spell would you like to learn?  There are currently @Model.Count() spells in this category that you can be taught, each at the price of @TT.Domain.Statics.PvPStatics.LorekeeperSpellPrice Arpeyjis <span title="Arpeyjis" class="icon icon-money"></span> each.</p>
 
     <p>You have <b>@ViewBag.Money</b> Arpeyjis <span title="Arpeyjis" class="icon icon-money"></span> available for spending.</p>
 

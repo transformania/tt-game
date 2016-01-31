@@ -1,7 +1,7 @@
-﻿using tfgame.Procedures;
-using tfgame.ViewModels;
+﻿using TT.Domain.Procedures;
+using TT.Domain.ViewModels;
 
-namespace tfgame.dbModels.Queries.Player
+namespace TT.Domain.Queries.Player
 {
     public class GetPlayerFormFromMembership : QuerySingle<PlayerFormViewModel>
     {

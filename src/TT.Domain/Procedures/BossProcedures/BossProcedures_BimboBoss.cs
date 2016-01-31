@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using tfgame.dbModels.Abstract;
-using tfgame.dbModels.Concrete;
-using tfgame.dbModels.Models;
-using tfgame.Statics;
+using TT.Domain.Abstract;
+using TT.Domain.Concrete;
+using TT.Domain.Models;
+using TT.Domain.Statics;
 
-namespace tfgame.Procedures.BossProcedures
+namespace TT.Domain.Procedures.BossProcedures
 {
     public static class BossProcedures_BimboBoss
     {

@@ -1,12 +1,12 @@
-﻿@model tfgame.ViewModels.PlayPageViewModel
+﻿@model TT.Domain.ViewModels.PlayPageViewModel
 @using tfgame.CustomHtmlHelpers
-@using tfgame.ViewModels
-@using tfgame.Statics
+@using TT.Domain.ViewModels
+@using TT.Domain.Statics
 
 @{
     if (Model.You.Player.Mobility == "full")
     {
-        foreach (tfgame.ViewModels.SkillViewModel s in Model.Skills.OrderBy(s => s.Skill.FriendlyName))
+        foreach (TT.Domain.ViewModels.SkillViewModel s in Model.Skills.OrderBy(s => s.Skill.FriendlyName))
         {
 
             <span title="@s.Skill.Description">

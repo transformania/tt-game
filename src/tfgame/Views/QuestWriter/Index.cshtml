@@ -1,4 +1,4 @@
-﻿@model IEnumerable<tfgame.dbModels.Models.QuestStart>
+﻿@model IEnumerable<TT.Domain.Models.QuestStart>
 
 <nav class="navbar navbar-default outsideContainer navbarTT2">
     <div class="container-fluid">
@@ -42,7 +42,7 @@
         @{
             <h4>Other Quests:</h4>
 
-            foreach (tfgame.dbModels.Models.QuestStart q in Model)
+            foreach (TT.Domain.Models.QuestStart q in Model)
             {
                 <p> @Ajax.ActionLink(q.Name, "QuestStart", "QuestWriter", new { Id = q.Id }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "editButton" })</p>
             }

@@ -1,8 +1,8 @@
 ﻿using System.Linq;
-using tfgame.dbModels.Abstract;
-using tfgame.dbModels.Models;
+using TT.Domain.Abstract;
+using TT.Domain.Models;
 
-namespace tfgame.dbModels.Concrete
+namespace TT.Domain.Concrete
 {
     public class EFAuthorArtistBioRepository : IAuthorArtistBioRepository
     {

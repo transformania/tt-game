@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using tfgame.dbModels.Abstract;
-using tfgame.dbModels.Concrete;
-using tfgame.dbModels.Models;
-using tfgame.Statics;
-using tfgame.ViewModels;
+using TT.Domain.Abstract;
+using TT.Domain.Concrete;
+using TT.Domain.Models;
+using TT.Domain.Statics;
+using TT.Domain.ViewModels;
 
-namespace tfgame.Procedures
+namespace TT.Domain.Procedures
 {
 
 
@@ -572,7 +572,7 @@ namespace tfgame.Procedures
             {
                 XPGain = 30 / Math.Round(Convert.ToDecimal(100 - Math.Abs(info.TakeoverAmount)), 1);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 XPGain = 0;
             }

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<tfgame.dbModels.Models.RPClassifiedAd>
+﻿@model IEnumerable<TT.Domain.Models.RPClassifiedAd>
 
 <nav class="navbar navbar-default outsideContainer navbarTT2">
     <div class="container-fluid">
@@ -41,7 +41,7 @@
 
       <div class="row">
             @{
-                foreach (tfgame.dbModels.Models.RPClassifiedAd ad in Model.OrderByDescending(m => m.RefreshTimestamp))
+                foreach (TT.Domain.Models.RPClassifiedAd ad in Model.OrderByDescending(m => m.RefreshTimestamp))
                 {
                     <div class="col-xs-12 col-md-3 rp-ad textSpaced">
 

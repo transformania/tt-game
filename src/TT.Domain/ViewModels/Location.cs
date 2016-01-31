@@ -5,7 +5,7 @@ using System.Resources;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace tfgame.ViewModels
+namespace TT.Domain.ViewModels
 {
     public class Location
     {

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<tfgame.ViewModels.ContributionCredit>
+﻿@model IEnumerable<TT.Domain.ViewModels.ContributionCredit>
 
 <h1>Contributors</h1>
 
@@ -17,7 +17,7 @@
     <tbody>
 
         @{
-            foreach (tfgame.ViewModels.ContributionCredit c in Model.OrderByDescending(c => c.SpellCount))
+            foreach (TT.Domain.ViewModels.ContributionCredit c in Model.OrderByDescending(c => c.SpellCount))
             {
                 <tr>
                     @{if (c.Website != null && c.Website != "")

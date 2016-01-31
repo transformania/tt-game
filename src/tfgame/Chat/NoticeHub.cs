@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNet.SignalR;
-using tfgame.Procedures;
-using tfgame.dbModels.Models;
+using TT.Domain.Procedures;
+using TT.Domain.Models;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 

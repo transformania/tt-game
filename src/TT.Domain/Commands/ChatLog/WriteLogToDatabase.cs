@@ -1,6 +1,6 @@
-﻿using tfgame.Procedures;
+﻿using TT.Domain.Procedures;
 
-namespace tfgame.dbModels.Commands.ChatLog
+namespace TT.Domain.Commands.ChatLog
 {
     public class WriteLogToDatabase : Command
     {

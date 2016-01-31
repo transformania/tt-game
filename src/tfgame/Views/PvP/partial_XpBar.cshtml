@@ -1,10 +1,10 @@
-﻿@model tfgame.ViewModels.PlayerFormViewModel
-           @using tfgame.Statics
+﻿@model TT.Domain.ViewModels.PlayerFormViewModel
+           @using TT.Domain.Statics
 
 
 
 @{
-    float XPtoLevel = tfgame.Procedures.PlayerProcedures.GetXPNeededForLevelUp(Model.Player.Level);
+    float XPtoLevel = TT.Domain.Procedures.PlayerProcedures.GetXPNeededForLevelUp(Model.Player.Level);
     decimal XpWidth = Math.Floor(Model.Player.XP / Convert.ToDecimal(XPtoLevel) * 100);
 }
 

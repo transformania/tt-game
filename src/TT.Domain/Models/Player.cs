@@ -1,12 +1,12 @@
 ﻿using System;
-using tfgame.Statics;
-using tfgame.ViewModels;
+using TT.Domain.Statics;
+using TT.Domain.ViewModels;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using tfgame.dbModels.Commands.Player;
-using tfgame.Procedures;
+using TT.Domain.Commands.Player;
+using TT.Domain.Procedures;
 
-namespace tfgame.dbModels.Models
+namespace TT.Domain.Models
 {
     public class Player
     {

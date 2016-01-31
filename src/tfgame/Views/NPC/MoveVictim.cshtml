@@ -1,4 +1,4 @@
-﻿@model IEnumerable<tfgame.ViewModels.Location>
+﻿@model IEnumerable<TT.Domain.ViewModels.Location>
 
 <nav class="navbar navbar-default outsideContainer navbarTT2">
     <div class="container-fluid">
@@ -25,10 +25,10 @@
 
     @{
 
-        foreach (tfgame.ViewModels.Location loc in Model)
+        foreach (TT.Domain.ViewModels.Location loc in Model)
         {
             @Html.ActionLink(loc.Name, "MoveVictimSend", "NPC", new { id = ViewBag.Victim.Id, to = loc.dbName }, null)
-            <span>(@tfgame.Procedures.MindControlProcedures.GetAPCostToMove(ViewBag.Buffs, ViewBag.Victim.dbLocationName, loc.dbName) AP)</span><br />
+            <span>(@TT.Domain.Procedures.MindControlProcedures.GetAPCostToMove(ViewBag.Buffs, ViewBag.Victim.dbLocationName, loc.dbName) AP)</span><br />
         }
 
     }

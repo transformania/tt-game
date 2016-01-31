@@ -1,7 +1,7 @@
-﻿@model tfgame.ViewModels.GameOverViewModelAnimal
+﻿@model TT.Domain.ViewModels.GameOverViewModelAnimal
 @using tfgame.CustomHtmlHelpers
-@using tfgame.Procedures
-@using tfgame.Statics
+@using TT.Domain.Procedures
+@using TT.Domain.Statics
 
 <script src="~/Scripts/jquery-ui-1.10.4.js"></script>
 
@@ -84,7 +84,7 @@
 
 <ul id="notificationBox" style="display:none;">
     @{
-        foreach (tfgame.dbModels.Models.PlayerLog log in Model.PlayerLogImportant)
+        foreach (TT.Domain.Models.PlayerLog log in Model.PlayerLogImportant)
         {
             <li class="frontPageNotification">
                 @Html.Raw(log.Message) <span class="timeago">@CharactersHere.DatetimeToTimeago(log.Timestamp)</span>
@@ -282,7 +282,7 @@
             <div class="row">
                 @*all players who are online*@
                 @{
-                    foreach (tfgame.ViewModels.PlayerFormViewModel p in Model.PlayersHere.Where(p => PlayerProcedures.PlayerIsOffline(p.Player) == false).OrderByDescending(p => p.Player.Level))
+                    foreach (TT.Domain.ViewModels.PlayerFormViewModel p in Model.PlayersHere.Where(p => PlayerProcedures.PlayerIsOffline(p.Player) == false).OrderByDescending(p => p.Player.Level))
                     {
 
                         <div class="col-md-2 col-sm-4 col-xs-12 charaBox">
@@ -304,7 +304,7 @@
         @{if (ViewBag.ShowOffline == null || ViewBag.ShowOffline == false)
         {
 
-            <div id="offlinePlayersButton">@Html.ActionLink("Show Offline Players Here (" + @Model.PlayersHere.Where(p => tfgame.Procedures.PlayerProcedures.PlayerIsOffline(p.Player) == true).Count() + ")", "ShowOffline", "PvP")</div>
+            <div id="offlinePlayersButton">@Html.ActionLink("Show Offline Players Here (" + @Model.PlayersHere.Where(p => TT.Domain.Procedures.PlayerProcedures.PlayerIsOffline(p.Player) == true).Count() + ")", "ShowOffline", "PvP")</div>
         }
         }
 
@@ -314,7 +314,7 @@
                 <div class="row">
 
                     @{
-            foreach (tfgame.ViewModels.PlayerFormViewModel p in Model.PlayersHere.Where(p => tfgame.Procedures.PlayerProcedures.PlayerIsOffline(p.Player) == true).OrderByDescending(p => p.Player.Level))
+            foreach (TT.Domain.ViewModels.PlayerFormViewModel p in Model.PlayersHere.Where(p => TT.Domain.Procedures.PlayerProcedures.PlayerIsOffline(p.Player) == true).OrderByDescending(p => p.Player.Level))
             {
                 <div class="col-md-2 col-sm-4 col-xs-12 charaBox">
                     <div class="charaBoxInner">

@@ -1,7 +1,7 @@
-﻿using tfgame.dbModels.Models;
-using tfgame.Procedures;
+﻿using TT.Domain.Models;
+using TT.Domain.Procedures;
 
-namespace tfgame.dbModels.Commands.Player
+namespace TT.Domain.Commands.Player
 {
     public class UpdateOnlineActivityTimestamp : Command
     {

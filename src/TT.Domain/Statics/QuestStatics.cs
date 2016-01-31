@@ -1,4 +1,4 @@
-﻿namespace tfgame.Statics
+﻿namespace TT.Domain.Statics
 {
     public static class QuestStatics
     {

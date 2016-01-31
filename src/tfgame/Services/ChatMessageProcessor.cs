@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
-using tfgame.dbModels.Queries.DMRoll;
-using tfgame.Procedures;
-using tfgame.Statics;
+using TT.Domain.Queries.DMRoll;
+using TT.Domain.Procedures;
+using TT.Domain.Statics;
 
 namespace tfgame.Services
 {

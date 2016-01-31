@@ -1,6 +1,6 @@
-﻿@model tfgame.ViewModels.FriendPageViewModel
+﻿@model TT.Domain.ViewModels.FriendPageViewModel
 @using tfgame.CustomHtmlHelpers
-@using tfgame.Procedures
+@using TT.Domain.Procedures
 
 <nav class="navbar navbar-default outsideContainer navbarTT2">
     <div class="container-fluid">
@@ -51,7 +51,7 @@
                 <tbody>
 
                     @{
-        foreach (tfgame.ViewModels.FriendPlayerViewModel fp in Model.ConfirmedFriends.Where(m => m.dbPlayer != null))
+        foreach (TT.Domain.ViewModels.FriendPlayerViewModel fp in Model.ConfirmedFriends.Where(m => m.dbPlayer != null))
         {
             <tr>
 
@@ -140,7 +140,7 @@
                 </thead>
                 <tbody>
 
-                    @foreach (tfgame.ViewModels.FriendPlayerViewModel fp2 in Model.RequestsForMe.Where(m => m.dbPlayer != null))
+                    @foreach (TT.Domain.ViewModels.FriendPlayerViewModel fp2 in Model.RequestsForMe.Where(m => m.dbPlayer != null))
                     {
                         <tr>
                             <td>@Html.ActionLink(fp2.dbPlayer.GetFullName() + "  (#" + fp2.dbPlayer.MembershipId + ")", "LookAtPlayer", "PvP", new { id = fp2.dbPlayer.Id }, null)</td>
@@ -181,7 +181,7 @@
                 </thead>
                 <tbody>
 
-                    @foreach (tfgame.ViewModels.FriendPlayerViewModel fp3 in Model.MyOutgoingRequests.Where(m => m.dbPlayer != null))
+                    @foreach (TT.Domain.ViewModels.FriendPlayerViewModel fp3 in Model.MyOutgoingRequests.Where(m => m.dbPlayer != null))
                     {
                         <tr>
                             <td>

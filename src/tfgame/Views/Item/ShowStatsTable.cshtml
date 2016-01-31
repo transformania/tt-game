@@ -1,4 +1,4 @@
-﻿@using tfgame.ViewModels
+﻿@using TT.Domain.ViewModels
 <nav class="navbar navbar-default outsideContainer navbarTT2">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -39,12 +39,12 @@
 
 
                 @{
-                    foreach (string f in tfgame.ViewModels.BuffMap.BuffsMap["HealthBonusPercent"].Keys)
+                    foreach (string f in TT.Domain.ViewModels.BuffMap.BuffsMap["HealthBonusPercent"].Keys)
                     {
 
 
 
-                        <th>1x @tfgame.ViewModels.BuffMap.BuffDetailsMap[f].DisplayName</th>
+                        <th>1x @TT.Domain.ViewModels.BuffMap.BuffDetailsMap[f].DisplayName</th>
 
                     }
                 }
@@ -58,7 +58,7 @@
         <tbody>
 
             @{
-                foreach (string f in tfgame.ViewModels.BuffMap.BuffsMap.Keys)
+                foreach (string f in TT.Domain.ViewModels.BuffMap.BuffsMap.Keys)
                 {
                     <tr>
                         <td>
@@ -68,7 +68,7 @@
                         </td>
 
                         @{
-                    foreach (float ff in tfgame.ViewModels.BuffMap.BuffsMap[f].Values)
+                    foreach (float ff in TT.Domain.ViewModels.BuffMap.BuffsMap[f].Values)
                     {
                         <td>@ff</td>
                     }

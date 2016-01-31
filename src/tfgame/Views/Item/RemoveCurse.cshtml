@@ -1,4 +1,4 @@
-﻿@model IEnumerable<tfgame.ViewModels.EffectViewModel2>
+﻿@model IEnumerable<TT.Domain.ViewModels.EffectViewModel2>
 
 <nav class="navbar navbar-default outsideContainer navbarTT2">
     <div class="container-fluid">
@@ -37,7 +37,7 @@
     <p>You can use your Hex-B-Gone Moisturizer to remove one of the curses afflicting your body!  Which curse would you like to have removed?</p>
 
     @{
-        foreach (tfgame.ViewModels.EffectViewModel2 effect in Model.OrderBy(x => x.Effect.FriendlyName))
+        foreach (TT.Domain.ViewModels.EffectViewModel2 effect in Model.OrderBy(x => x.Effect.FriendlyName))
         {
             <h3>@effect.Effect.FriendlyName (@effect.dbEffect.Duration turns of effect remaining)</h3>
             @Html.ActionLink("Remove this curse", "RemoveCurseSend", "Item", new { curse = effect.dbEffect.dbName, id = ViewBag.itemToUseId }, null)

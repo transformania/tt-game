@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using tfgame.dbModels.Abstract;
+using TT.Domain.Abstract;
 
-namespace tfgame.dbModels
+namespace TT.Domain
 {
     /// <summary>
     /// The 'mother' of all the objects in the domain.  Acts as a point from which

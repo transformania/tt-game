@@ -1,7 +1,7 @@
-﻿@model tfgame.ViewModels.MapViewModel
+﻿@model TT.Domain.ViewModels.MapViewModel
 
-@using tfgame.ViewModels
-@using tfgame.Statics
+@using TT.Domain.ViewModels
+@using TT.Domain.Statics
 
 <nav class="navbar navbar-default outsideContainer navbarTT2">
     <div class="container-fluid">
@@ -70,7 +70,7 @@
             }
             else if (Model.LocationInfo != null)
             {
-                tfgame.dbModels.Models.LocationInfo temp = Model.LocationInfo.FirstOrDefault(c => c.dbName == loc.dbName);
+                TT.Domain.Models.LocationInfo temp = Model.LocationInfo.FirstOrDefault(c => c.dbName == loc.dbName);
                 if (temp != null)
                 {
                     try

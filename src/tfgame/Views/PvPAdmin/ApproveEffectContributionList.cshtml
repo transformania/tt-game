@@ -1,4 +1,4 @@
-﻿@model IEnumerable<tfgame.dbModels.Models.EffectContribution>
+﻿@model IEnumerable<TT.Domain.Models.EffectContribution>
 
 
 <div class="containerInner">
@@ -17,7 +17,7 @@
         <tbody>
 
             @{
-                foreach (tfgame.dbModels.Models.EffectContribution c in Model)
+                foreach (TT.Domain.Models.EffectContribution c in Model)
                 {
                     <tr>
                         <td>@c.SubmitterName</td>

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace tfgame.dbModels.Abstract
+namespace TT.Domain.Abstract
 {
     public interface IRoot
     {

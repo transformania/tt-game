@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace tfgame.dbModels.Models
+namespace TT.Domain.Models
 {
     public class Duel
     {

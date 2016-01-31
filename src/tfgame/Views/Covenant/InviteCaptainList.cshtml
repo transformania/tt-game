@@ -1,4 +1,4 @@
-﻿@model tfgame.ViewModels.CovenantViewModel
+﻿@model TT.Domain.ViewModels.CovenantViewModel
 
 <nav class="navbar navbar-default outsideContainer navbarTT2">
     <div class="container-fluid">
@@ -26,7 +26,7 @@
     <p>Click on one of the names below to add a member of the covenant as a captain.  If they are currently a captain, clicking on their name will remove that status.</p>
     <p>Covenant captains are special trusted members of the covenant and are permitted to purchase furniture and gift out covenant funds.</p>
     @{
-        foreach (tfgame.ViewModels.PlayerFormViewModel p in Model.Members)
+        foreach (TT.Domain.ViewModels.PlayerFormViewModel p in Model.Members)
         {
             <p>
                 @Html.ActionLink(p.Player.GetFullName(), "InviteCaptainSend", "Covenant", new { id = p.Player.Id }, null)

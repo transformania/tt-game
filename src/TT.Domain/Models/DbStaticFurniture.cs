@@ -1,4 +1,4 @@
-﻿namespace tfgame.dbModels.Models
+﻿namespace TT.Domain.Models
 {
     public class DbStaticFurniture
     {

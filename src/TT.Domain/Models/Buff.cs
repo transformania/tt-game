@@ -1,4 +1,4 @@
-﻿namespace tfgame.dbModels
+﻿namespace TT.Domain
 {
     public class Buff
     {

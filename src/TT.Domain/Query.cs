@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace tfgame.dbModels
+namespace TT.Domain
 {
     /// <summary>
     /// Base class for executing queries which return multiple items

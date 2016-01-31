@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using tfgame.dbModels.Models;
+using TT.Domain.Models;
 
-namespace tfgame.ViewModels.Quest
+namespace TT.Domain.ViewModels.Quest
 {
     public class QuestPlayPageViewModel
     {

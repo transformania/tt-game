@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using tfgame.Procedures;
+using TT.Domain.Procedures;
 
 namespace TT.Tests.Services
 {

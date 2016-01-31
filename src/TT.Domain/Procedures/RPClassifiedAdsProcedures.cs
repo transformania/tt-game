@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using tfgame.dbModels.Models;
-using tfgame.dbModels.Abstract;
-using tfgame.dbModels.Concrete;
+using TT.Domain.Models;
+using TT.Domain.Abstract;
+using TT.Domain.Concrete;
 
-namespace tfgame.Procedures
+namespace TT.Domain.Procedures
 {
     public static class RPClassifiedAdsProcedures
     {

@@ -1,4 +1,4 @@
-﻿@model tfgame.ViewModels.PlayerSearchViewModel
+﻿@model TT.Domain.ViewModels.PlayerSearchViewModel
 
 <nav class="navbar navbar-default outsideContainer navbarTT2">
     <div class="container-fluid">
@@ -43,7 +43,7 @@
             <p>
                 <b>Player(s) found!</b>
             </p>
-            foreach (tfgame.dbModels.Models.Player p in Model.PlayersFound)
+            foreach (TT.Domain.Models.Player p in Model.PlayersFound)
             {
                 <p>
                     @p.GetFullName()

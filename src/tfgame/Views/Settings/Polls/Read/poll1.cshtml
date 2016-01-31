@@ -1,4 +1,4 @@
-﻿@model IEnumerable<tfgame.dbModels.Models.PollEntry>
+﻿@model IEnumerable<TT.Domain.Models.PollEntry>
 
 <nav class="navbar navbar-default outsideContainer navbarTT2">
     <div class="container-fluid">
@@ -138,7 +138,7 @@
     <p><b>What other new features would you like to see in the game not listed above?</b></p>
 
     @{
-        foreach (tfgame.dbModels.Models.PollEntry e in Model.Where(p => p.String1 != null && p.String1 != ""))
+        foreach (TT.Domain.Models.PollEntry e in Model.Where(p => p.String1 != null && p.String1 != ""))
         {
             <p>"@e.String1"</p><br />
         }

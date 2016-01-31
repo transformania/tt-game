@@ -1,7 +1,7 @@
-﻿@model tfgame.ViewModels.PlayerFormItemsSkillsViewModel
-@using tfgame.ViewModels
-@using tfgame.Procedures
-@using tfgame.Statics
+﻿@model TT.Domain.ViewModels.PlayerFormItemsSkillsViewModel
+@using TT.Domain.ViewModels
+@using TT.Domain.Procedures
+@using TT.Domain.Statics
 
 <nav class="navbar navbar-default outsideContainer navbarTT2">
     <div class="container-fluid">
@@ -95,7 +95,7 @@
 <div style="clear:both"><br /></div>
 
 @{
-    if (User.IsInRole(tfgame.Statics.PvPStatics.Permissions_Moderator) == true)
+    if (User.IsInRole(TT.Domain.Statics.PvPStatics.Permissions_Moderator) == true)
     {
         if (@Model.PlayerForm.Player.FlaggedForAbuse == false)
         {

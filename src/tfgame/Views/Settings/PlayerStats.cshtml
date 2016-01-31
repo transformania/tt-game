@@ -1,5 +1,5 @@
-﻿@using tfgame.Procedures
-@using tfgame.dbModels.Models
+﻿@using TT.Domain.Procedures
+@using TT.Domain.Models
 
 @model IEnumerable<Achievement>
 
@@ -27,11 +27,11 @@
 </nav>
 
 <div class="containerInner">
-    <h1>@ViewBag.Name's @tfgame.Statics.PvPStatics.AlphaRound Statistics</h1>
+    <h1>@ViewBag.Name's @TT.Domain.Statics.PvPStatics.AlphaRound Statistics</h1>
     <p><i>Note:  Achievements marked with <span class="playerMediatingNotification">*</span> are reset upon character reroll.</i></p>
     <div class="row">
         @{
-            foreach (string f in tfgame.Procedures.StatsProcedures.StatTypesMap.Keys)
+            foreach (string f in TT.Domain.Procedures.StatsProcedures.StatTypesMap.Keys)
             {
                 Achievement ach = Model.FirstOrDefault(a => a.AchievementType == f);
                 if (ach != null)

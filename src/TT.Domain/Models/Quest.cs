@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace tfgame.dbModels.Models
+namespace TT.Domain.Models
 {
     public class QuestStart
     {
@@ -236,27 +236,27 @@ namespace tfgame.dbModels.Models
 
             switch (this.Operator)
             {
-                case (int)tfgame.Statics.QuestStatics.Operator.Less_Than:
+                case (int)TT.Domain.Statics.QuestStatics.Operator.Less_Than:
                     {
                         return "<";
                     }
-                case (int)tfgame.Statics.QuestStatics.Operator.Less_Than_Or_Equal:
+                case (int)TT.Domain.Statics.QuestStatics.Operator.Less_Than_Or_Equal:
                     {
                         return "<=";
                     }
-                case (int)tfgame.Statics.QuestStatics.Operator.Equal_To:
+                case (int)TT.Domain.Statics.QuestStatics.Operator.Equal_To:
                     {
                         return "=";
                     }
-                case (int)tfgame.Statics.QuestStatics.Operator.Greater_Than:
+                case (int)TT.Domain.Statics.QuestStatics.Operator.Greater_Than:
                     {
                         return ">";
                     }
-                case (int)tfgame.Statics.QuestStatics.Operator.Greater_Than_Or_Equal:
+                case (int)TT.Domain.Statics.QuestStatics.Operator.Greater_Than_Or_Equal:
                     {
                         return ">=";
                     }
-                case (int)tfgame.Statics.QuestStatics.Operator.Not_Equal_To:
+                case (int)TT.Domain.Statics.QuestStatics.Operator.Not_Equal_To:
                     {
                         return "!=";
                     }
@@ -272,39 +272,39 @@ namespace tfgame.dbModels.Models
         {
             switch (this.RequirementType)
             {
-                case (int)tfgame.Statics.QuestStatics.RequirementType.Agility:
+                case (int)TT.Domain.Statics.QuestStatics.RequirementType.Agility:
                     {
                         return "Agility";
                     }
-                case (int)tfgame.Statics.QuestStatics.RequirementType.Allure:
+                case (int)TT.Domain.Statics.QuestStatics.RequirementType.Allure:
                     {
                         return "Restoration";
                     }
-                case (int)tfgame.Statics.QuestStatics.RequirementType.Charisma:
+                case (int)TT.Domain.Statics.QuestStatics.RequirementType.Charisma:
                     {
                         return "Charisma";
                     }
-                case (int)tfgame.Statics.QuestStatics.RequirementType.Discipline:
+                case (int)TT.Domain.Statics.QuestStatics.RequirementType.Discipline:
                     {
                         return "Discipline";
                     }
-                case (int)tfgame.Statics.QuestStatics.RequirementType.Fortitude:
+                case (int)TT.Domain.Statics.QuestStatics.RequirementType.Fortitude:
                     {
                         return "Fortitude";
                     }
-                case (int)tfgame.Statics.QuestStatics.RequirementType.Luck:
+                case (int)TT.Domain.Statics.QuestStatics.RequirementType.Luck:
                     {
                         return "Luck";
                     }
-                case (int)tfgame.Statics.QuestStatics.RequirementType.Magicka:
+                case (int)TT.Domain.Statics.QuestStatics.RequirementType.Magicka:
                     {
                         return "Magicka";
                     }
-                case (int)tfgame.Statics.QuestStatics.RequirementType.Perception:
+                case (int)TT.Domain.Statics.QuestStatics.RequirementType.Perception:
                     {
                         return "Perception";
                     }
-                case (int)tfgame.Statics.QuestStatics.RequirementType.Succour:
+                case (int)TT.Domain.Statics.QuestStatics.RequirementType.Succour:
                     {
                         return "Regeneration";
                     }

@@ -1,4 +1,4 @@
-﻿@model tfgame.ViewModels.CovenantViewModel
+﻿@model TT.Domain.ViewModels.CovenantViewModel
 
 <nav class="navbar navbar-default outsideContainer navbarTT2">
     <div class="container-fluid">
@@ -28,7 +28,7 @@
     <p>Click on one of the names below to set a member of the covenant as the leader.</p>
     <p>Covenant leaders are the highest trusted member of the covenant and are permitted all covenant administrative access. Setting a new covenant leader will revoke your leadership status.</p>
     @{
-        foreach (tfgame.ViewModels.PlayerFormViewModel p in Model.Members)
+        foreach (TT.Domain.ViewModels.PlayerFormViewModel p in Model.Members)
         {
             <p>
                 @Html.ActionLink(p.Player.GetFullName(), "InviteLeaderSend", "Covenant", new { id = p.Player.Id }, null)

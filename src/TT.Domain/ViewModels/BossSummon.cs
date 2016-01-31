@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using tfgame.Procedures.BossProcedures;
+using TT.Domain.Procedures.BossProcedures;
 
-namespace tfgame.ViewModels
+namespace TT.Domain.ViewModels
 {
     public static class BossSummonDictionary
     {

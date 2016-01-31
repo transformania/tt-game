@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using tfgame.ViewModels;
+using TT.Domain.ViewModels;
 
-namespace tfgame.Statics
+namespace TT.Domain.Statics
 {
     public static class CovenantDictionary
     {

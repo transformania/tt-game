@@ -1,4 +1,4 @@
-using tfgame.dbModels.Models;
+using TT.Domain.Models;
 
 namespace TT.Tests.Services
 {

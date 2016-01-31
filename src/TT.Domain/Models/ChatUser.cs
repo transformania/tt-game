@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace tfgame.dbModels.Models
+namespace TT.Domain.Models
 {
     public class ChatUser
     {

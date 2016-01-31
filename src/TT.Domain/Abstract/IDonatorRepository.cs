@@ -1,7 +1,7 @@
 ﻿using System.Linq;
-using tfgame.dbModels.Models;
+using TT.Domain.Models;
 
-namespace tfgame.dbModels.Abstract
+namespace TT.Domain.Abstract
 {
     public interface IDonatorRepository
     {

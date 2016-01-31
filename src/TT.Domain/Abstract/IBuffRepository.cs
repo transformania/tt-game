@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace tfgame.dbModels.Abstract
+namespace TT.Domain.Abstract
 {
     public interface IBuffRepository
     {

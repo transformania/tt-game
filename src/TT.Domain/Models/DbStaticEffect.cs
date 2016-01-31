@@ -1,6 +1,6 @@
-﻿using tfgame.ViewModels;
+﻿using TT.Domain.ViewModels;
 
-namespace tfgame.dbModels.Models
+namespace TT.Domain.Models
 {
     public class DbStaticEffect
     {

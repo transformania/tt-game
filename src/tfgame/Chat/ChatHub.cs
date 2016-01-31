@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.SignalR;
 using tfgame.CustomHtmlHelpers;
-using tfgame.dbModels.Models;
+using TT.Domain.Models;
 using tfgame.Extensions;
-using tfgame.Procedures;
+using TT.Domain.Procedures;
 using tfgame.Services;
-using tfgame.Statics;
+using TT.Domain.Statics;
 
 namespace tfgame.Chat
 {

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using tfgame.dbModels.Models;
+using TT.Domain.Models;
 
-namespace tfgame.ViewModels
+namespace TT.Domain.ViewModels
 {
     public class PlayPageViewModel
     {

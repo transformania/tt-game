@@ -1,14 +1,14 @@
-﻿@model IEnumerable<tfgame.dbModels.Models.LocationLog>
+﻿@model IEnumerable<TT.Domain.Models.LocationLog>
 @using tfgame.CustomHtmlHelpers
-@using tfgame.ViewModels
-@using tfgame.Statics
-@using tfgame.Procedures
+@using TT.Domain.ViewModels
+@using TT.Domain.Statics
+@using TT.Domain.Procedures
 
 <div style="clear:both;"></div>
 
 <ul id="RecentActivityLog">
     @{
-        foreach (tfgame.dbModels.Models.LocationLog log in Model.Reverse())
+        foreach (TT.Domain.Models.LocationLog log in Model.Reverse())
         {
             <li>
                 @Html.Raw(log.Message)

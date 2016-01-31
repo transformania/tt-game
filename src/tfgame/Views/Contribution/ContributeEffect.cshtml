@@ -1,6 +1,6 @@
-﻿@model tfgame.dbModels.Models.EffectContribution
-@using tfgame.Statics
-@using tfgame.dbModels.Models
+﻿@model TT.Domain.Models.EffectContribution
+@using TT.Domain.Statics
+@using TT.Domain.Models
 @using tfgame.CustomHtmlHelpers
 
 <nav class="navbar navbar-default outsideContainer navbarTT2">
@@ -410,13 +410,13 @@
     <br /><br />
     <input type="submit" value="Save" />
     
-    if ((User.IsInRole(tfgame.Statics.PvPStatics.Permissions_Proofreader) == true) == true)
+    if ((User.IsInRole(TT.Domain.Statics.PvPStatics.Permissions_Proofreader) == true) == true)
         {
             @Html.ActionLink("Unlock but DO NOT Save", "UnlockEffectContribution", "Contribution", new { id = Model.Id }, null)
     }
 
 
-    if (User.IsInRole(tfgame.Statics.PvPStatics.Permissions_Admin) == true && Model.ProofreadingCopy == true)
+    if (User.IsInRole(TT.Domain.Statics.PvPStatics.Permissions_Admin) == true && Model.ProofreadingCopy == true)
     {
         <p>
             @Html.ActionLink("Publish Skill", "PublishSpell_Effect", "Contribution", new { id = Model.Id }, null)<br />

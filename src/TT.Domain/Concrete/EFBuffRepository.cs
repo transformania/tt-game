@@ -1,7 +1,7 @@
 ﻿using System.Linq;
-using tfgame.dbModels.Abstract;
+using TT.Domain.Abstract;
 
-namespace tfgame.dbModels.Concrete
+namespace TT.Domain.Concrete
 {
     public class EFBuffRepository : IBuffRepository
     {

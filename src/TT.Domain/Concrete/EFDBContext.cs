@@ -1,7 +1,7 @@
 ﻿using System.Data.Entity;
-using tfgame.dbModels.Models;
+using TT.Domain.Models;
 
-namespace tfgame.dbModels.Concrete
+namespace TT.Domain.Concrete
 {
     public class StatsContext : DbContext
     {

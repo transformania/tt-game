@@ -1,4 +1,4 @@
-﻿@model IEnumerable<tfgame.dbModels.Models.RPClassifiedAd>
+﻿@model IEnumerable<TT.Domain.Models.RPClassifiedAd>
 
 <nav class="navbar navbar-default outsideContainer navbarTT2">
     <div class="container-fluid">
@@ -35,7 +35,7 @@
 
     <div class="row">
         @{
-            foreach (tfgame.dbModels.Models.RPClassifiedAd ad in Model.OrderByDescending(m => m.RefreshTimestamp))
+            foreach (TT.Domain.Models.RPClassifiedAd ad in Model.OrderByDescending(m => m.RefreshTimestamp))
             {
                 <div class="col-xs-12 col-md-3 rp-ad textSpaced">
                     <p>
@@ -65,7 +65,7 @@
                     <p>@Html.ActionLink("Look at Ad Poster", "LookAtPlayer_FromMembershipId", "PvP", new { id = ad.OwnerMembershipId }, null)</p>
 
                     @{
-                if (User.IsInRole(tfgame.Statics.PvPStatics.Permissions_Admin) == true || User.IsInRole(tfgame.Statics.PvPStatics.Permissions_Moderator) == true)
+                if (User.IsInRole(TT.Domain.Statics.PvPStatics.Permissions_Admin) == true || User.IsInRole(TT.Domain.Statics.PvPStatics.Permissions_Moderator) == true)
                 {
                     <p>@Html.ActionLink("Delete for Violation", "ModDeleteClassified", "PvPAdmin", new { id = ad.Id }, null)</p>
                 }

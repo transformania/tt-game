@@ -1,6 +1,6 @@
-﻿@model tfgame.ViewModels.PlayPageViewModel
+﻿@model TT.Domain.ViewModels.PlayPageViewModel
 @using tfgame.CustomHtmlHelpers
-@using tfgame.Statics
+@using TT.Domain.Statics
 
 <div id="modalBackdrop"></div>
 <div id="attackModal" class="ui-widget-content ui-draggable">
@@ -12,7 +12,7 @@
 
     @{ if (ViewBag.BotId == AIStatics.ValentineBotId)
      {
-         foreach (tfgame.ViewModels.SkillViewModel s in Model.Skills.OrderBy(s => s.Skill.FriendlyName))
+         foreach (TT.Domain.ViewModels.SkillViewModel s in Model.Skills.OrderBy(s => s.Skill.FriendlyName))
          {
             <span>
                 @Html.ActionLink(s.Skill.FriendlyName + " (" + s.Skill.ManaCost + ")", "Attack", "PvP", new { targetId = "XXX", attackName = s.dbSkill.Name }, new { @class = CharactersHere.GetSpellTypeClass(s), @manacost = s.Skill.ManaCost })

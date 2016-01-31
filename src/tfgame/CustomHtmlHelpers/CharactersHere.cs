@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using tfgame.dbModels.Models;
-using tfgame.dbModels.Queries.Statics;
-using tfgame.Procedures;
-using tfgame.Statics;
-using tfgame.ViewModels;
+using TT.Domain.Models;
+using TT.Domain.Queries.Statics;
+using TT.Domain.Procedures;
+using TT.Domain.Statics;
+using TT.Domain.ViewModels;
 
 namespace tfgame.CustomHtmlHelpers
 {
@@ -651,7 +651,7 @@ namespace tfgame.CustomHtmlHelpers
         public static MvcHtmlString PrintFurnitureAvailability(FurnitureViewModel furniture)
         {
             string output = "";
-            double minutesUntilReuse = tfgame.Procedures.FurnitureProcedures.GetMinutesUntilReuse(furniture);
+            double minutesUntilReuse = TT.Domain.Procedures.FurnitureProcedures.GetMinutesUntilReuse(furniture);
 
             if (minutesUntilReuse <= 0)
             {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain.Utilities;
@@ -9,13 +10,13 @@ namespace TT.Tests.Domain.Utilities
     public class XmlResourceLoaderTests
     {
         [Test]
-        public void Load_GivenAnXmlResource_ShouldReturnXml()
+        public void Load_GivenAnXmlResource_ShouldReturnDeserialisedObject()
         {
             var resourcePath = "TT.Domain.XMLs.FirstNames.xml";
 
-            var xml = XmlResourceLoader.Load(resourcePath);
+            var resource = XmlResourceLoader.Load<List<string>>(resourcePath);
 
-            xml.Should().Contain("<string>Andy</string>");
+            resource.Should().Contain("Andy");
         }
 
         [Test]
@@ -23,7 +24,7 @@ namespace TT.Tests.Domain.Utilities
         {
             var resourcePath = "TT.Domain.DoesntExist.xml";
 
-            Action action = () => XmlResourceLoader.Load(resourcePath);
+            Action action = () => XmlResourceLoader.Load<List<string>>(resourcePath);
 
             action.ShouldThrow<ResourceNotFoundException>();
         }

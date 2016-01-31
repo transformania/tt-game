@@ -4,7 +4,7 @@ namespace TT.Domain.Utilities
 {
     public class XmlResourceLoader
     {
-        public static string Load(string resourcePath)
+        public static TOutput Load<TOutput>(string resourcePath)
         {
             var assembly = typeof (XmlResourceLoader).Assembly;
 
@@ -13,7 +13,7 @@ namespace TT.Domain.Utilities
             if (resource == null)
                 throw new ResourceNotFoundException(assembly, resourcePath);
 
-            return new StreamReader(resource).ReadToEnd();
+            return new StreamReader(resource).ReadToEnd().ToObject<TOutput>();
         }
     }
 }

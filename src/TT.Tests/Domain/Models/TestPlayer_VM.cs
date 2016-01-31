@@ -9,7 +9,7 @@ using TT.Domain.Models;
 using TT.Domain.Statics;
 using TT.Tests.Services;
 
-namespace TT.Tests.DBModels.Models
+namespace TT.Tests.Domain.Models
 {
     [TestFixture]
     public class TestPlayer_VM

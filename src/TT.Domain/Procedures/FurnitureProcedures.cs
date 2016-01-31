@@ -8,6 +8,7 @@ using TT.Domain.Abstract;
 using TT.Domain.Concrete;
 using TT.Domain.Models;
 using TT.Domain.Statics;
+using TT.Domain.Utilities;
 using TT.Domain.ViewModels;
 
 namespace TT.Domain.Procedures
@@ -80,56 +81,34 @@ namespace TT.Domain.Procedures
 
         public static void AddNewFurnitureToMarket(int count)
         {
-            IFurnitureRepository furnRepo = new EFFurnitureRepository();
+            var furnRepo = new EFFurnitureRepository();
 
-            Random rand = new Random();
+            var rand = new Random();
 
-            for (int i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
             {
+                var furnitureTypes = furnRepo.DbStaticFurniture.ToList();
+                var max = furnitureTypes.Count();
+                var num = rand.NextDouble();
 
-                // get a random furniture type
-                IEnumerable<DbStaticFurniture> furnitureTypes = furnRepo.DbStaticFurniture;
-                double max = furnitureTypes.Count();
+                var index = Convert.ToInt32(Math.Floor(num * max));
+                var furnitureType = furnitureTypes[index];
+
+                var contractTurnRandomOffset = (int)(furnitureType.BaseContractTurnLength * ((rand.NextDouble() - .5) * 2) * FurnitureContractVariation);
+                var basePriceRandomOffset = furnitureType.BaseCost * (decimal)((rand.NextDouble() - .5) * 2) * (decimal)FurnitureContractVariation;
+
+                var firstNames = XmlResourceLoader.Load<List<string>>("TT.Domain.XMLs.FirstNames.xml");
+                var lastNames = XmlResourceLoader.Load<List<string>>("TT.Domain.XMLs.LastNames.xml");
                 
-                double num = rand.NextDouble();
+                var firstName = firstNames.ElementAt((int)Math.Floor(rand.NextDouble() * firstNames.Count));
+                var lastName = lastNames.ElementAt((int)Math.Floor(rand.NextDouble() * lastNames.Count));
 
-                int index = Convert.ToInt32(Math.Floor(num * max));
-                DbStaticFurniture furnitureType = furnitureTypes.ElementAt(index);
-
-                int turn = PvPWorldStatProcedures.GetWorldTurnNumber();
-                int contractTurnRandomOffset = (int)(furnitureType.BaseContractTurnLength * ((rand.NextDouble() - .5) * 2) * FurnitureProcedures.FurnitureContractVariation);
-                decimal basePriceRandomOffset = furnitureType.BaseCost * (decimal)((rand.NextDouble() - .5) * 2) * (decimal)FurnitureProcedures.FurnitureContractVariation;
-                //string firstName = PlayerProcedures.R
-
-                // get a random name
-                List<string> names = new List<string>();
-                var serializer = new XmlSerializer(typeof(List<string>));
-                string path = "~/XMLs/FirstNames.xml";
-                using (var reader = XmlReader.Create(path))
-                {
-                    names = (List<string>)serializer.Deserialize(reader);
-                }
-
-                num = rand.NextDouble();
-
-                string firstname = names.ElementAt((int)Math.Floor(num * names.Count()));
-
-                string path2 = "~/XMLs/LastNames.xml";
-                using (var reader = XmlReader.Create(path))
-                {
-                    names = (List<string>)serializer.Deserialize(reader);
-                }
-
-                num = rand.NextDouble();
-
-                string lastname = names.ElementAt((int)Math.Floor(num * names.Count()));
-
-                Furniture newfurn = new Furniture
+                var newfurn = new Furniture
                 {
                     dbType = furnitureType.dbType,
                     ContractTurnDuration = furnitureType.BaseContractTurnLength + contractTurnRandomOffset,
                     CovenantId = -1,
-                    HumanName = firstname + " " + lastname + " the " + furnitureType.FriendlyName,
+                    HumanName = firstName + " " + lastName + " the " + furnitureType.FriendlyName,
                     Price = Math.Floor(furnitureType.BaseCost + basePriceRandomOffset),
                     LastUseTimestamp = DateTime.UtcNow,
                     ContractStartTurn = 0,
@@ -138,10 +117,7 @@ namespace TT.Domain.Procedures
                 };
 
                 furnRepo.SaveFurniture(newfurn);
-
             }
-
-
         }
 
         public static void GiveFurnitureToCovenant(Furniture furniture, Covenant covenant)

@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Resources;
 using System.Xml;
 using System.Xml.Serialization;
+using TT.Domain.Utilities;
 
 namespace TT.Domain.ViewModels
 {
@@ -32,28 +33,17 @@ namespace TT.Domain.ViewModels
         public string GetDescription()
         {
             if (Region == "dungeon")
-            {
                 return "You are wandering in the shifting corridors of the multidimensional dungeon beneath the town, lost amid an ocean of forgotten places and histories in this world and countless others.  Mortal minds must tread carefully down here... danger is around every corner, not just from the various demonic inhabitants of this twisted realm but of other mages eager to prove their superiority over you, possibly even wearing you as another trophy of their conquests.";
-            }
 
-            var assembly = GetType().Assembly;
-
-            //load up form XML
-            string path = string.Format("{0}.XMLs.LocationDescriptions.{1}.xml", assembly.GetName().Name, dbName);
-            
-            var xmlStream = assembly.GetManifestResourceStream(path);
-            if (xmlStream == null)
-                return "ERROR:  The description for this location was not able to be loaded.  Please report this bug at http://luxianne.com/forum/viewforum.php?f=5.";
-
-            Location xmlLocation;
-
-            var serializer = new XmlSerializer(typeof(Location));
-            using (var reader = XmlReader.Create(new StreamReader(xmlStream)))
+            try
             {
-                xmlLocation = (Location)serializer.Deserialize(reader);
+                var location = XmlResourceLoader.Load<Location>(string.Format("TT.Domain.XMLs.LocationDescriptions.{0}.xml", dbName));
+                return location.Description;
             }
-
-            return xmlLocation.Description;
+            catch (ResourceNotFoundException)
+            {
+                return "ERROR:  The description for this location was not able to be loaded.  Please report this bug at http://luxianne.com/forum/viewforum.php?f=5.";
+            }
         }
     }
 }

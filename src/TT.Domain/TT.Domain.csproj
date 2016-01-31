@@ -269,6 +269,8 @@
     <Compile Include="Statics\QuestStatics.cs" />
     <Compile Include="Statics\SkillStatics.cs" />
     <Compile Include="Statics\TrustStatics.cs" />
+    <Compile Include="Utilities\ResourceNotFoundException.cs" />
+    <Compile Include="Utilities\XmlResourceLoader.cs" />
     <Compile Include="ViewModels\BalancePageViewModel.cs" />
     <Compile Include="ViewModels\BioPageContributionViewModel.cs" />
     <Compile Include="ViewModels\BioPageViewModel.cs" />

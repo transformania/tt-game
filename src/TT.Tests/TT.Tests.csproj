@@ -82,7 +82,8 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DBModels\Models\TestPlayer_VM.cs" />
+    <Compile Include="Domain\Models\TestPlayer_VM.cs" />
+    <Compile Include="Domain\Utilities\XmlResourceLoaderTests.cs" />
     <Compile Include="Services\ItemProcedureTests.cs" />
     <Compile Include="Services\PlayerProcedureTests.cs" />
     <Compile Include="Services\QuestTests.cs" />

@@ -254,8 +254,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="Content\ng-animation.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="Images\bombie\map1.jpg" />
-    <Content Include="Images\bombie\map1_large.jpg" />
     <Content Include="Images\login-left.png" />
     <Content Include="Images\login-right.png" />
     <Content Include="Images\PvP\achievements\trophy.jpg" />
@@ -1396,18 +1394,6 @@
     <Content Include="Schema\SimpleMembershipToIdentityMigration.sql" />
     <Content Include="Scripts\bombieGame.js" />
     <Content Include="Scripts\boxesResize.js" />
-    <Content Include="Scripts\fwars\app.js" />
-    <Content Include="Scripts\fwars\controllers\personsController.js" />
-    <Content Include="Scripts\fwars\fwars.js" />
-    <Content Include="Scripts\fwars\models\encounter.js" />
-    <Content Include="Scripts\fwars\models\formStatics.js" />
-    <Content Include="Scripts\fwars\models\item.js" />
-    <Content Include="Scripts\fwars\models\itemStatics.js" />
-    <Content Include="Scripts\fwars\models\locations.js" />
-    <Content Include="Scripts\fwars\models\log.js" />
-    <Content Include="Scripts\fwars\models\person.js" />
-    <Content Include="Scripts\fwars\models\tfDefeatText.js" />
-    <Content Include="Scripts\fwars\models\fightText.js" />
     <Content Include="Scripts\jquery.mobile.custom.js" />
     <Content Include="Scripts\jquery.mobile.custom.min.js" />
     <Content Include="Scripts\jquery.rotate.js" />
@@ -1653,9 +1639,6 @@
     <Content Include="Images\wallpaperDefault.jpg" />
     <Content Include="Images\wallPaperDefault_2.jpg" />
     <Content Include="Content\mystyle.css" />
-    <Content Include="Saved XMLS\scenes.xml">
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="Scripts\Character.js" />
     <Content Include="Scripts\CharacterLoader.js" />
     <Content Include="Scripts\game_discus.js" />
@@ -1983,7 +1966,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="dbModels\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

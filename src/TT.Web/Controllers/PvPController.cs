@@ -1507,7 +1507,7 @@ namespace TT.Web.Controllers
             }
 
             // assert player has enough mana
-            if ((float)me.ActionPoints < PvPStatics.SelfRestoreAPCost)
+            if ((float)me.Mana < PvPStatics.SelfRestoreManaCost)
             {
                 TempData["Error"] = "You don't have enough mana points in order to attempt to restore yourself to your base form.";
                 TempData["SubError"] = "You need <b>" + (PvPStatics.SelfRestoreManaCost - (float)me.Mana) + "</b>more mana in order to do this.";

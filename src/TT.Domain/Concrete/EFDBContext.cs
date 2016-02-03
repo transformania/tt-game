@@ -47,6 +47,7 @@ namespace TT.Domain.Concrete
         public DbSet<PlayerExtra> PlayerExtras { get; set; }
         public DbSet<RPPoint> RPPoints { get; set; }
         public DbSet<Donator> Donators { get; set; }
+        public DbSet<ContributorCustomForm> ContributorCustomForms { get; set; }
         public DbSet<Furniture> Furnitures { get; set; }
         public DbSet<MindControl> MindControls { get; set; }
         public DbSet<BookReading> BookReadings { get; set; }

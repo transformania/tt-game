@@ -69,6 +69,7 @@
     <Compile Include="Abstract\IDbStaticItemRepository.cs" />
     <Compile Include="Abstract\IDbStaticSkillRepository.cs" />
     <Compile Include="Abstract\IDMRollRepository.cs" />
+    <Compile Include="Abstract\IContributorCustomFormRepository.cs" />
     <Compile Include="Abstract\IDonatorRepository.cs" />
     <Compile Include="Abstract\IDuelRepository.cs" />
     <Compile Include="Abstract\IEffectContributionRepository.cs" />
@@ -125,6 +126,7 @@
     <Compile Include="Concrete\EFDbStaticItemRepository.cs" />
     <Compile Include="Concrete\EFDbStaticSkillRepository.cs" />
     <Compile Include="Concrete\EFDMRollRepository.cs" />
+    <Compile Include="Concrete\EFContributorCustomFormRepository.cs" />
     <Compile Include="Concrete\EFDonatorRepository.cs" />
     <Compile Include="Concrete\EFDuelRepository.cs" />
     <Compile Include="Concrete\EFEffectContributionRepository.cs" />
@@ -178,6 +180,7 @@
     <Compile Include="Models\DbStaticItem.cs" />
     <Compile Include="Models\DbStaticSkill.cs" />
     <Compile Include="Models\DMItem.cs" />
+    <Compile Include="Models\ContributorCustomForm.cs" />
     <Compile Include="Models\Donator.cs" />
     <Compile Include="Models\Duel.cs" />
     <Compile Include="Models\Effect.cs" />

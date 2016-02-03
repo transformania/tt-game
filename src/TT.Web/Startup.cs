@@ -50,7 +50,7 @@ namespace TT.Web
             IPvPWorldStatRepository repo = new EFPvPWorldStatRepository();
             PvPWorldStat data = repo.PvPWorldStats.FirstOrDefault();
             PvPStatics.ChaosMode = data != null ? data.ChaosMode : false;
-
+            PvPStatics.RoundDuration = data != null ? data.RoundDuration : 5000;
         }
     }
 }

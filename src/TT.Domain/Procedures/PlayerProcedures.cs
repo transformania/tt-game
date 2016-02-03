@@ -1429,6 +1429,10 @@ namespace TT.Domain.Procedures
 
         }
 
+        /// <summary>
+        /// Updates the last activity timestamp for a player to be current server time
+        /// </summary>
+        /// <param name="player">Player to be updated</param>
         public static void SetTimestampToNow(Player player)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
@@ -1656,6 +1660,7 @@ namespace TT.Domain.Procedures
             {
                
                 PlayerProcedures.InstantRestoreToBase(player);
+                PlayerProcedures.SetTimestampToNow(player);
                 energyRepo.DeleteTFEnergy(restoreEnergy.Id);
                 DbStaticForm newform = FormStatics.GetForm(dbPlayer.OriginalForm);
 

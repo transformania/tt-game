@@ -636,21 +636,18 @@ namespace TT.Web.Controllers
             return View(output);
         }
 
+        /// <summary>
+        /// Allows a player to claim a new base form if they have earned one through being a contributor or artist.  Multiple custom forms can be toggled through by clicking the link mulitple times; each click will advance to the next available form and upon reaching the final form loop back to the first one.
+        /// </summary>
+        /// <returns></returns>
         [Authorize]
         public ActionResult UseMyCustomForm()
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
-            //string filename = System.Web.HttpContext.Current.Server.MapPath("~/XMLs/custom_bases.xml");
-            //System.Xml.Serialization.XmlSerializer reader = new System.Xml.Serialization.XmlSerializer(typeof(List<CustomFormViewModel>));
-            //System.IO.StreamReader file = new System.IO.StreamReader(filename);
-            //List<CustomFormViewModel> output = (List<CustomFormViewModel>)reader.Deserialize(file);
-
             IContributorCustomFormRepository repo = new EFContributorCustomFormRepository();
             var customForms = repo.ContributorCustomForms.Where(c => c.OwnerMembershipId == myMembershipId).ToList();
-
-            //List<CustomFormViewModel> customForms = output.Where(p => p.MembershipId == myMembershipId).ToList();
 
             if (customForms.Count() == 0)
             {
@@ -658,9 +655,6 @@ namespace TT.Web.Controllers
                 TempData["SubError"] = "Read more about how to get one here:  http://luxianne.com/forum/viewtopic.php?f=9&t=400";
                 return RedirectToAction("Play", "PvP");
             }
-
-            //Random rand = new Random();
-            //int roll = (int)Math.Floor(rand.NextDouble() * customForms.Count());
 
             ContributorCustomForm newForm = customForms.First();
 

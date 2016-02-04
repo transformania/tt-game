@@ -1,0 +1,35 @@
+﻿@model TT.Domain.Models.ContributorCustomForm
+
+<h2>EditCustomFormSend</h2>
+
+@using (Html.BeginForm("EditCustomFormSend", "PvPAdmin", FormMethod.Post))
+
+   
+{
+    <table>
+        <thead>
+            <tr>
+                <td>Id</td>
+                <td>OwnerMembershipId</td>
+                <td>Form</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><b>@Model.Id</b>@Html.HiddenFor(c => c.Id)</td>
+                <td>@Html.TextBoxFor(c => c.OwnerMembershipId)</td>
+                <td>@Html.TextBoxFor(c => c.CustomForm.Id)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <input type="submit" value="Save" />
+
+}
+
+<style>
+    table, td {
+        padding: 5px;
+        border: 1px solid black;
+    }
+</style>

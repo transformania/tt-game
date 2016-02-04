@@ -733,6 +733,7 @@
     <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_29.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Statistics\Alpha_29.cshtml" />
     <Content Include="Views\PvPAdmin\ListCustomForms.cshtml" />
+    <Content Include="Views\PvPAdmin\EditCustomForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

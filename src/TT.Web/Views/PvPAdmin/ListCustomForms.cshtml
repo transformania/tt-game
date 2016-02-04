@@ -1,15 +1,15 @@
 ﻿@model IEnumerable<TT.Domain.Models.ContributorCustomForm>
     @using TT.Domain.Models
 
-<h2>List Custom Forms</h2>
-
-<td>@Html.ActionLink("Back", "Index", "PvPAdmin")</td>
-
 <div>
     <p class="infoMessage result">@Html.Raw(ViewBag.Result)</p>
     <p class="infoMessage error">@ViewBag.ErrorMessage</p>
     <p class="infoMessage suberror">@ViewBag.SubErrorMessage</p>
 </div>
+
+<h2>List Custom Forms</h2>
+
+<td>@Html.ActionLink("Back", "Index", "PvPAdmin")</td>
 
 <table>
     <thead>
@@ -29,7 +29,7 @@
             {
                 <tr>
                     <td>@c.Id</td>
-                    <td>@c.OwnerMembershipId</td>
+                    <td>@Html.ActionLink(c.OwnerMembershipId, "LookAtPlayer_FromMembershipId", "PvP", new { id = c.OwnerMembershipId }, new { target = "_blank" })</td>
                     <td><b>@c.CustomForm.FriendlyName</b> (@c.CustomForm.dbName)</td>
                     <td>@Html.ActionLink("Edit", "EditCustomForm", "PvPAdmin", new { Id = c.Id }, null)</td>
                     <td>@Html.ActionLink("[X]", "DeleteCustomForm", "PvPAdmin", new { Id = c.Id }, new { onclick = "return confirm('Are you sure you want to delete this?)", @class = "" })</td>

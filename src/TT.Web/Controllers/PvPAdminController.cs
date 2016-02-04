@@ -1912,7 +1912,21 @@ namespace TT.Web.Controllers
             return RedirectToAction("Play", "PvP");
         }
 
+        [Authorize]
+        public ActionResult ListCustomForms()
+        { 
+            string myMembershipId = User.Identity.GetUserId();
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            {
+                return RedirectToAction("Play", "PvP");
+            }
 
+            IContributorCustomFormRepository customFormRepo = new EFContributorCustomFormRepository();
+            var output = customFormRepo.ContributorCustomForms;
+
+
+            return View(output);
+        }
 
     }
 

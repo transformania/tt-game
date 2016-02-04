@@ -1,0 +1,38 @@
+﻿@model IEnumerable<TT.Domain.Models.ContributorCustomForm>
+    @using TT.Domain.Models
+
+<h2>ListCustomForms</h2>
+
+<table>
+    <thead>
+        <tr>
+            <td>Id</td>
+            <td>OwnerMembershipId</td>
+            <td>Form</td>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @{
+            foreach (ContributorCustomForm c in Model.ToList())
+            {
+                <tr>
+                    <td>@c.Id</td>
+                    <td>@c.OwnerMembershipId</td>
+                    <td><b>@c.CustomForm.FriendlyName</b> (@c.CustomForm.dbName)</td>
+                </tr>
+
+            }
+        }
+
+    </tbody>
+
+</table>
+
+<style>
+    table, td {
+        padding: 5px;
+        border: 1px solid black;
+    }
+</style>

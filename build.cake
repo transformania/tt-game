@@ -51,7 +51,7 @@ Task("Run-Unit-Tests")
 Task("Migrate")
     .IsDependentOn("Build")
     .Does(() => {
-        CopyFile("src/packages/EntityFramework.6.1.0/tools/Migrate.exe","src/TT.Web/bin/Migrate.exe");
+        CopyFile("src/packages/EntityFramework.6.1.3/tools/Migrate.exe","src/TT.Web/bin/Migrate.exe");
         
         Information("Running migrations using {0}", instances[dbType].Item2);
         

@@ -1915,6 +1915,10 @@ namespace TT.Web.Controllers
             return RedirectToAction("Play", "PvP");
         }
 
+        /// <summary>
+        /// List all of the News posts available for admins to edit
+        /// </summary>
+        /// <returns></returns>
         [Authorize]
         public ActionResult ListCustomForms()
         { 
@@ -2029,9 +2033,18 @@ namespace TT.Web.Controllers
             ViewBag.SubErrorMessage = TempData["SubError"];
             ViewBag.Result = TempData["Result"];
 
+            ViewBag.ErrorMessage = TempData["Error"];
+            ViewBag.SubErrorMessage = TempData["SubError"];
+            ViewBag.Result = TempData["Result"];
+
             return View(output);
         }
 
+        /// <summary>
+        /// Make changes to an existing or new NewsPost
+        /// </summary>
+        /// <param name="Id">Id of the news post to make changes to.  -1 indicates a new post.</param>
+        /// <returns></returns>
         [Authorize]
         public ActionResult EditNewsPost(int Id)
         {
@@ -2053,6 +2066,11 @@ namespace TT.Web.Controllers
 
         }
 
+        /// <summary>
+        /// Submit a NewsPost for revisions.
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         [Authorize]
         [ValidateInput(false)]
         public ActionResult EditNewsPostSend(NewsPost input)
@@ -2070,10 +2088,16 @@ namespace TT.Web.Controllers
             saveMe.ViewState = input.ViewState;
             repo.SaveNewsPost(saveMe);
 
+            TempData["Result"] = "News Post " + input.Id + " saved successfully!";
             return RedirectToAction("ListNewsPosts", "PvPAdmin");
 
         }
 
+        /// <summary>
+        /// Deletes a news post
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
         public ActionResult DeleteNewsPost(int Id)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -2085,6 +2109,7 @@ namespace TT.Web.Controllers
             INewsPostRepository repo = new EFNewsPostRepository();
             repo.DeleteNewsPost(Id);
 
+            TempData["Result"] = "News Post " + Id + " deleted successfully!";
             return RedirectToAction("ListNewsPosts", "PvPAdmin");
         }
 

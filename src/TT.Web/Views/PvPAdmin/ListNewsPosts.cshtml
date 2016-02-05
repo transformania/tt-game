@@ -1,6 +1,12 @@
 ﻿@model IEnumerable<TT.Domain.Models.NewsPost>
     @using TT.Domain.Models
 
+<div>
+    <p class="infoMessage result">@Html.Raw(ViewBag.Result)</p>
+    <p class="infoMessage error">@ViewBag.ErrorMessage</p>
+    <p class="infoMessage suberror">@ViewBag.SubErrorMessage</p>
+</div>
+
 
 @Html.ActionLink("Back","Index","PvPAdmin")
 

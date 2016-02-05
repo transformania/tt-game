@@ -1,5 +1,7 @@
 ﻿@model TT.Domain.Models.NewsPost
 
+@Html.ActionLink("Back", "ListNewsPosts", "PvPAdmin")
+
 <nav class="navbar navbar-default outsideContainer navbarTT2">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -52,7 +54,7 @@
     }
 
     <hr />
-
+    <div id="date"></div>
     <div id="display"></div>
 </div>
 

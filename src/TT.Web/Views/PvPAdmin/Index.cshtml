@@ -2,6 +2,7 @@
 
     @Html.Raw(TempData["Message"])
 
+    @Html.ActionLink("List News", "ListNewsPosts", "PvPAdmin")<br />
     @Html.ActionLink("Approve Effect Contributions", "ApproveEffectContributionList", "PvPAdmin")<br />
     @Html.ActionLink("Approve Contributions", "ApproveContributionList", "PvPAdmin")<br />
     @Html.ActionLink("Public Broadcast", "PublicBroadcast", "PvPAdmin")<br />

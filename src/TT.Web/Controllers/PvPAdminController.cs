@@ -398,7 +398,8 @@ namespace TT.Web.Controllers
 
             List<DbStaticForm> forms = formRepo.DbStaticForms.Where(f => f.MobilityType == "inanimate" || f.MobilityType == "animal").ToList();
             
-            foreach (DbStaticForm form in forms) {
+            foreach (DbStaticForm form in forms)
+            {
 
                 DbStaticItem item = itemRepo.DbStaticItems.FirstOrDefault(i => i.dbName == form.BecomesItemDbName);
 
@@ -1734,11 +1735,13 @@ namespace TT.Web.Controllers
 
             // delete old item you are if you are one
             Item possibleMeItem = itemRepo.Items.FirstOrDefault(i => i.VictimName == me.FirstName + " " + me.LastName); // DO NOT use GetFullName.  It will break things here.
-            if (possibleMeItem != null) { 
+            if (possibleMeItem != null)
+            {
                 itemRepo.DeleteItem(possibleMeItem.Id);
             }
 
-            Item newMeItem = new Item{
+            Item newMeItem = new Item
+            {
                 dbLocationName = me.dbLocationName,
                 dbName = "item_Flirty_Three-Tiered_Skirt_Martiandawn",
                 VictimName = me.FirstName + " " + me.LastName, // DO NOT use GetFullName.  It will break things here.
@@ -1855,7 +1858,7 @@ namespace TT.Web.Controllers
 
             bool test = stat.TestServer;
 
-            if (PvPStatics.ChaosMode==false && test == false)
+            if (PvPStatics.ChaosMode == false && test == false)
             {
                 TempData["Error"] = "Cannot be done on live server outside of chaos..";
                 return RedirectToAction("Play", "PvP");
@@ -1894,7 +1897,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
-            if (PvPStatics.ChaosMode==true)
+            if (PvPStatics.ChaosMode == true)
             {
                 TempData["Error"] = "Can't do this in chaos mode.";
                 return RedirectToAction("Play", "PvP");
@@ -2007,7 +2010,83 @@ namespace TT.Web.Controllers
             return RedirectToAction("ListCustomForms", "PvPAdmin");
         }
 
+        /// <summary>
+        /// List all of the News posts available for admins to edit
+        /// </summary>
+        /// <returns></returns>
+        [Authorize]
+        public ActionResult ListNewsPosts()
+        {
+            if (!User.IsInRole(PvPStatics.Permissions_Admin))
+            {
+                return RedirectToAction("Play", "PvP");
+            }
+
+            INewsPostRepository repo = new EFNewsPostRepository();
+            var output = repo.NewsPosts.OrderByDescending(a => a.Timestamp);
+
+            ViewBag.ErrorMessage = TempData["Error"];
+            ViewBag.SubErrorMessage = TempData["SubError"];
+            ViewBag.Result = TempData["Result"];
+
+            return View(output);
+        }
+
+        [Authorize]
+        public ActionResult EditNewsPost(int Id)
+        {
+            string myMembershipId = User.Identity.GetUserId();
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            {
+                return RedirectToAction("Play", "PvP");
+            }
+
+            INewsPostRepository repo = new EFNewsPostRepository();
+            var output = repo.NewsPosts.FirstOrDefault(f => f.Id == Id);
+
+            if (output == null)
+            {
+                output = new NewsPost();
+            }
+
+            return View(output);
+
+        }
+
+        [Authorize]
+        [ValidateInput(false)]
+        public ActionResult EditNewsPostSend(NewsPost input)
+        {
+            string myMembershipId = User.Identity.GetUserId();
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            {
+                return RedirectToAction("Play", "PvP");
+            }
+
+            INewsPostRepository repo = new EFNewsPostRepository();
+            var saveMe = repo.NewsPosts.FirstOrDefault(f => f.Id == input.Id);
+            saveMe.Timestamp = input.Timestamp;
+            saveMe.Text = input.Text;
+            saveMe.ViewState = input.ViewState;
+            repo.SaveNewsPost(saveMe);
+
+            return RedirectToAction("ListNewsPosts", "PvPAdmin");
+
+        }
+
+        public ActionResult DeleteNewsPost(int Id)
+        {
+            string myMembershipId = User.Identity.GetUserId();
+            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            {
+                return RedirectToAction("Play", "PvP");
+            }
+
+            INewsPostRepository repo = new EFNewsPostRepository();
+            repo.DeleteNewsPost(Id);
+
+            return RedirectToAction("ListNewsPosts", "PvPAdmin");
+        }
+
     }
-
-
 }

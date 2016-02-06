@@ -1915,7 +1915,6 @@ namespace TT.Web.Controllers
         [Authorize]
         public ActionResult ListCustomForms()
         { 
-            string myMembershipId = User.Identity.GetUserId();
             if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
             {
                 return RedirectToAction("Play", "PvP");
@@ -1934,7 +1933,6 @@ namespace TT.Web.Controllers
         [Authorize]
         public ActionResult EditCustomForm(int Id)
         {
-            string myMembershipId = User.Identity.GetUserId();
             if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
             {
                 return RedirectToAction("Play", "PvP");
@@ -1954,7 +1952,6 @@ namespace TT.Web.Controllers
         [Authorize]
         public ActionResult EditCustomFormSend(ContributorCustomForm input)
         {
-            string myMembershipId = User.Identity.GetUserId();
             if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
             {
                 return RedirectToAction("Play", "PvP");
@@ -1998,7 +1995,6 @@ namespace TT.Web.Controllers
         [Authorize]
         public ActionResult DeleteCustomForm(int Id)
         {
-            string myMembershipId = User.Identity.GetUserId();
             if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
             {
                 return RedirectToAction("Play", "PvP");

@@ -145,6 +145,11 @@ Task("Default")
     .IsDependentOn("Seed-Images")
     .IsDependentOn("Run-Unit-Tests");
     
+Task("CI-Build")
+    .IsDependentOn("Migrate")
+    .IsDependentOn("Seed-DB")
+    .IsDependentOn("Run-Unit-Tests");
+    
 Task("Recreate-DB")
     .IsDependentOn("Drop-DB")
     .IsDependentOn("Default");

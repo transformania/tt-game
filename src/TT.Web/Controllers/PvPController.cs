@@ -2503,6 +2503,7 @@ namespace TT.Web.Controllers
         }
 
         [Authorize]
+        [HttpPost]
         public ActionResult SendMessage(Message input)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -2532,24 +2533,24 @@ namespace TT.Web.Controllers
 
             }
             if (input.MessageText.Length > 1000)
-             {
-                 ViewBag.ErrorMessage = "Your message is too long.";
-                 return RedirectToAction("Write", input);
-             }
+            {
+                ViewBag.ErrorMessage = "Your message is too long.";
+                return View("Write", input);
+            }
 
-             MessageProcedures.AddMessage(input, myMembershipId);
-             NoticeService.PushNotice(receiver, "<b>" + me.GetFullName() + " has sent you a new message.</b>", NoticeService.PushType__PlayerMessage);
-             TempData["Result"] = "Your message has been sent.";
+            MessageProcedures.AddMessage(input, myMembershipId);
+            NoticeService.PushNotice(receiver, "<b>" + me.GetFullName() + " has sent you a new message.</b>", NoticeService.PushType__PlayerMessage);
+            TempData["Result"] = "Your message has been sent.";
 
-             if (me.Mobility != "full")
-             {
-                 ItemProcedures.UpdateSouledItem(me.FirstName, me.LastName);
-             }
+            if (me.Mobility != "full")
+            {
+                ItemProcedures.UpdateSouledItem(me.FirstName, me.LastName);
+            }
 
-             return RedirectToAction("MyMessages");
-         }
+            return RedirectToAction("MyMessages");
+        }
 
-         [Authorize]
+        [Authorize]
         public ActionResult InanimateAction(string actionName)
         {
             string myMembershipId = User.Identity.GetUserId();

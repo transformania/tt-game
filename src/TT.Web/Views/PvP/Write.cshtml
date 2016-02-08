@@ -30,21 +30,21 @@
         }
     }
 
-    @using (Html.BeginForm("SendMessage", "PvP", Model))
+    @using (Html.BeginForm("SendMessage", "PvP", Model, FormMethod.Post))
     {
+        @Html.AntiForgeryToken()
+
         <div class="messageInfoContainer clearfix">
             Writing to <span class="messageNicknameContainer">@ViewBag.SendingToName</span>:
             <span class="charCounter" id="textRemaining"></span>
         </div>
-        @Html.TextAreaFor(m => m.MessageText)<br />
-
+        @Html.TextAreaFor(m => m.MessageText, new { maxlength = "1000" })<br />
 
         @Html.HiddenFor(m => m.ReceiverId)
         @Html.HiddenFor(m => m.SenderId)
 
         <br />
         <input type="submit" class="btn btn-chat" value="Send" />
-
     }
 
     <div class="error">
@@ -52,9 +52,18 @@
     </div>
 </div>
 
-<script>
-    $("#MessageText").keydown(function () {
-        var remaining = 1000 - $("#MessageText").val().length;
-        $("#textRemaining").html(remaining + " characters remaining");
-    });
-</script>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            var max = 1000;
+            $('#textRemaining').html(max + ' characters remaining');
+
+            $('#MessageText').on('input', function () {
+                var length = $(this).val().length;
+                var remaining = max - length;
+
+                $('#textRemaining').html(remaining + ' characters remaining');
+            });
+        });
+    </script>
+}

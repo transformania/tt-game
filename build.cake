@@ -140,22 +140,26 @@ Task("Drop-Images")
     }
 );
 
+// Default build, if required Migrates DB, Seeds DB and Seeds images. Skips steps if nothing to do
 Task("Default")
     .IsDependentOn("Migrate")
     .IsDependentOn("Seed-DB")
     .IsDependentOn("Seed-Images")
     .IsDependentOn("Run-Unit-Tests");
-    
+
+// Resets to a blank DB, runs full DB migration and DB seed but doesn't seed images
 Task("CI-Build")
     .IsDependentOn("Drop-DB")
     .IsDependentOn("Migrate")
     .IsDependentOn("Seed-DB")
     .IsDependentOn("Run-Unit-Tests");
-    
+
+// Drops, re-migrates and re-seeds the DB
 Task("Recreate-DB")
     .IsDependentOn("Drop-DB")
     .IsDependentOn("Default");
 
+// Drops images and re-seeds them
 Task("Recreate-Images")
     .IsDependentOn("Drop-Images")
     .IsDependentOn("Default");

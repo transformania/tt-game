@@ -81,6 +81,7 @@ Task("Migrate")
 );
 
 Task("Drop-DB")
+    .ContinueOnError()
     .Does(() => {
         Information("Dropping database using {0}", instances[dbType].Item1);
         
@@ -95,7 +96,7 @@ Task("Drop-DB")
             
             var exitCode = process.GetExitCode();
             if (exitCode > 0)
-                throw new Exception(string.Format("Faled to drop Stats database using {0}", instances[dbType].Item1));
+                Warning(string.Format("Faled to drop Stats database using {0}", instances[dbType].Item1));
         } 
     }
 );

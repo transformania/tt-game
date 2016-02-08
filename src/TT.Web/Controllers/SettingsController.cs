@@ -636,18 +636,18 @@ namespace TT.Web.Controllers
             return View(output);
         }
 
+        /// <summary>
+        /// Allows a player to claim a new base form if they have earned one through being a contributor or artist.  Multiple custom forms can be toggled through by clicking the link mulitple times; each click will advance to the next available form and upon reaching the final form loop back to the first one.
+        /// </summary>
+        /// <returns></returns>
         [Authorize]
         public ActionResult UseMyCustomForm()
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
-            string filename = System.Web.HttpContext.Current.Server.MapPath("~/XMLs/custom_bases.xml");
-            System.Xml.Serialization.XmlSerializer reader = new System.Xml.Serialization.XmlSerializer(typeof(List<CustomFormViewModel>));
-            System.IO.StreamReader file = new System.IO.StreamReader(filename);
-            List<CustomFormViewModel> output = (List<CustomFormViewModel>)reader.Deserialize(file);
-
-            List<CustomFormViewModel> customForms = output.Where(p => p.MembershipId == myMembershipId).ToList();
+            IContributorCustomFormRepository repo = new EFContributorCustomFormRepository();
+            var customForms = repo.ContributorCustomForms.Where(c => c.OwnerMembershipId == myMembershipId).ToList();
 
             if (customForms.Count() == 0)
             {
@@ -656,15 +656,12 @@ namespace TT.Web.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
-            //Random rand = new Random();
-            //int roll = (int)Math.Floor(rand.NextDouble() * customForms.Count());
-
-            CustomFormViewModel newForm = customForms.First();
+            ContributorCustomForm newForm = customForms.First();
 
             int index = 0;
-            foreach (CustomFormViewModel c in customForms)
+            foreach (ContributorCustomForm c in customForms)
             {
-                if (me.OriginalForm == c.Form && index < customForms.Count())
+                if (me.OriginalForm == c.CustomForm.dbName && index < customForms.Count())
                 {
                     try
                     {
@@ -682,12 +679,12 @@ namespace TT.Web.Controllers
             // player is already in their original form so change them instantly.  Otherwise they'll have to find a way to be restored themselves
             if (me.Form == me.OriginalForm)
             {
-                PlayerProcedures.SetCustomBase(me, newForm.Form);
+                PlayerProcedures.SetCustomBase(me, newForm.CustomForm.dbName);
                 PlayerProcedures.InstantRestoreToBase(me);
             }
             else
             {
-                PlayerProcedures.SetCustomBase(me, newForm.Form);
+                PlayerProcedures.SetCustomBase(me, newForm.CustomForm.dbName);
             }
 
             

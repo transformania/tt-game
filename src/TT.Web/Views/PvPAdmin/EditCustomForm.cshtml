@@ -1,0 +1,41 @@
+﻿@model TT.Domain.Models.ContributorCustomForm
+
+<h2>EditCustomFormSend</h2>
+
+@using (Html.BeginForm("EditCustomFormSend", "PvPAdmin", FormMethod.Post))
+
+   
+{
+    <table>
+        <thead>
+            <tr>
+                <td>Id</td>
+                <td>OwnerMembershipId</td>
+                <td>Form</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><b>@Model.Id</b>@Html.HiddenFor(c => c.Id)</td>
+                <td>@Html.TextBoxFor(c => c.OwnerMembershipId)</td>
+                <td>@Html.TextBoxFor(c => c.CustomForm.Id)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <input type="submit" value="Save" />
+
+}
+
+<div id="formsBox"></div>
+
+<btn class="glyphicon glyphicon-question-sign helpButton">
+    @Ajax.ActionLink("Click here to show list of all forms", "AllForms", "Info", null, new AjaxOptions { UpdateTargetId = "formsBox", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail" }, new { @class = "" })
+</btn>
+
+<style>
+    table, td {
+        padding: 5px;
+        border: 1px solid black;
+    }
+</style>

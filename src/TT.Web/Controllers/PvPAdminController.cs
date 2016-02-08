@@ -1912,7 +1912,100 @@ namespace TT.Web.Controllers
             return RedirectToAction("Play", "PvP");
         }
 
+        [Authorize]
+        public ActionResult ListCustomForms()
+        { 
+            if (!User.IsInRole(PvPStatics.Permissions_Admin))
+            {
+                return RedirectToAction("Play", "PvP");
+            }
 
+            IContributorCustomFormRepository customFormRepo = new EFContributorCustomFormRepository();
+            var output = customFormRepo.ContributorCustomForms;
+
+            ViewBag.ErrorMessage = TempData["Error"];
+            ViewBag.SubErrorMessage = TempData["SubError"];
+            ViewBag.Result = TempData["Result"];
+
+            return View(output);
+        }
+
+        [Authorize]
+        public ActionResult EditCustomForm(int Id)
+        {
+            if (!User.IsInRole(PvPStatics.Permissions_Admin))
+            {
+                return RedirectToAction("Play", "PvP");
+            }
+
+            IContributorCustomFormRepository customFormRepo = new EFContributorCustomFormRepository();
+            var output = customFormRepo.ContributorCustomForms.FirstOrDefault(c => c.Id == Id);
+
+            if (output == null)
+            {
+                output = new ContributorCustomForm { Id = 0, OwnerMembershipId = "" };
+            }
+
+            return View(output);
+        }
+
+        [Authorize]
+        public ActionResult EditCustomFormSend(ContributorCustomForm input)
+        {
+            if (!User.IsInRole(PvPStatics.Permissions_Admin))
+            {
+                return RedirectToAction("Play", "PvP");
+            }
+
+            IContributorCustomFormRepository customFormRepo = new EFContributorCustomFormRepository();
+            IDbStaticFormRepository formRepo = new EFDbStaticFormRepository();
+
+            DbStaticForm form = formRepo.DbStaticForms.FirstOrDefault(f => f.Id == input.CustomForm.Id);
+
+            // assert form actually does exist
+            if (form == null)
+            {
+                TempData["Error"] = "No form found for Form Id: " + input.CustomForm.Id;
+                return RedirectToAction("ListCustomForms", "PvPAdmin");
+            }
+
+            // assert form is not null
+            if (form.MobilityType != PvPStatics.MobilityFull)
+            {
+                TempData["Error"] = "Form " + form.FriendlyName + " is not animate.";
+                return RedirectToAction("ListCustomForms", "PvPAdmin");
+            }
+
+            var editMe = customFormRepo.ContributorCustomForms.FirstOrDefault(c => c.Id == input.Id);
+
+            if (editMe == null)
+            {
+                editMe = new ContributorCustomForm();
+            }
+
+            editMe.OwnerMembershipId = input.OwnerMembershipId;
+            editMe.CustomForm = form;
+
+            customFormRepo.SaveContributorCustomForm(editMe);
+
+            TempData["Result"] = "Custom form successfully saved!";
+            return RedirectToAction("ListCustomForms", "PvPAdmin");
+        }
+
+        [Authorize]
+        public ActionResult DeleteCustomForm(int Id)
+        {
+            if (!User.IsInRole(PvPStatics.Permissions_Admin))
+            {
+                return RedirectToAction("Play", "PvP");
+            }
+
+            IContributorCustomFormRepository customFormRepo = new EFContributorCustomFormRepository();
+            customFormRepo.DeleteContributorCustomForm(Id);
+
+            TempData["Result"] = "Deleted custom form Id " + Id;
+            return RedirectToAction("ListCustomForms", "PvPAdmin");
+        }
 
     }
 

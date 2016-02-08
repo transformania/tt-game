@@ -1,0 +1,52 @@
+﻿@model IEnumerable<TT.Domain.Models.ContributorCustomForm>
+    @using TT.Domain.Models
+
+<div>
+    <p class="infoMessage result">@Html.Raw(ViewBag.Result)</p>
+    <p class="infoMessage error">@ViewBag.ErrorMessage</p>
+    <p class="infoMessage suberror">@ViewBag.SubErrorMessage</p>
+</div>
+
+<h2>List Custom Forms</h2>
+
+<td>@Html.ActionLink("Back", "Index", "PvPAdmin")</td>
+
+<table>
+    <thead>
+        <tr>
+            <td>Id</td>
+            <td>OwnerMembershipId</td>
+            <td>Form</td>
+            <td>Edit</td>
+            <td>Delete?</td>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @{
+            foreach (ContributorCustomForm c in Model.ToList())
+            {
+                <tr>
+                    <td>@c.Id</td>
+                    <td>@Html.ActionLink(c.OwnerMembershipId, "LookAtPlayer_FromMembershipId", "PvP", new { id = c.OwnerMembershipId }, new { target = "_blank" })</td>
+                    <td><b>@c.CustomForm.FriendlyName</b> (@c.CustomForm.dbName)</td>
+                    <td>@Html.ActionLink("Edit", "EditCustomForm", "PvPAdmin", new { Id = c.Id }, null)</td>
+                    <td>@Html.ActionLink("[X]", "DeleteCustomForm", "PvPAdmin", new { Id = c.Id }, new { onclick = "return confirm('Are you sure you want to delete this?)", @class = "" })</td>
+                </tr>
+
+            }
+        }
+
+    </tbody>
+
+</table>
+
+<td>@Html.ActionLink("New", "EditCustomForm", "PvPAdmin", new { Id = -1 }, null)</td>
+
+<style>
+    table, td {
+        padding: 5px;
+        border: 1px solid black;
+    }
+</style>

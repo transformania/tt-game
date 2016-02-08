@@ -397,8 +397,9 @@ namespace TT.Web.Controllers
             IDbStaticFormRepository formRepo = new EFDbStaticFormRepository();
 
             List<DbStaticForm> forms = formRepo.DbStaticForms.Where(f => f.MobilityType == "inanimate" || f.MobilityType == "animal").ToList();
-            
-            foreach (DbStaticForm form in forms) {
+
+            foreach (DbStaticForm form in forms)
+            {
 
                 DbStaticItem item = itemRepo.DbStaticItems.FirstOrDefault(i => i.dbName == form.BecomesItemDbName);
 
@@ -412,7 +413,7 @@ namespace TT.Web.Controllers
             return RedirectToAction("Index");
         }
 
-        
+
         /// <summary>
         /// In case the friendly NPCs don't spawn when round starts or for other reasons, spawn them manually.  NPCs that are already spawned are not spawned twice.
         /// </summary>
@@ -1734,11 +1735,13 @@ namespace TT.Web.Controllers
 
             // delete old item you are if you are one
             Item possibleMeItem = itemRepo.Items.FirstOrDefault(i => i.VictimName == me.FirstName + " " + me.LastName); // DO NOT use GetFullName.  It will break things here.
-            if (possibleMeItem != null) { 
+            if (possibleMeItem != null)
+            {
                 itemRepo.DeleteItem(possibleMeItem.Id);
             }
 
-            Item newMeItem = new Item{
+            Item newMeItem = new Item
+            {
                 dbLocationName = me.dbLocationName,
                 dbName = "item_Flirty_Three-Tiered_Skirt_Martiandawn",
                 VictimName = me.FirstName + " " + me.LastName, // DO NOT use GetFullName.  It will break things here.
@@ -1855,14 +1858,14 @@ namespace TT.Web.Controllers
 
             bool test = stat.TestServer;
 
-            if (PvPStatics.ChaosMode==false && test == false)
+            if (PvPStatics.ChaosMode == false && test == false)
             {
                 TempData["Error"] = "Cannot be done on live server outside of chaos..";
                 return RedirectToAction("Play", "PvP");
             }
 
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-           
+
             IItemRepository itemRepo = new EFItemRepository();
 
 
@@ -1894,7 +1897,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
-            if (PvPStatics.ChaosMode==true)
+            if (PvPStatics.ChaosMode == true)
             {
                 TempData["Error"] = "Can't do this in chaos mode.";
                 return RedirectToAction("Play", "PvP");
@@ -1912,6 +1915,10 @@ namespace TT.Web.Controllers
             return RedirectToAction("Play", "PvP");
         }
 
+        /// <summary>
+        /// List all of the custom forms earned from players' contributions available for admins to edit
+        /// </summary>
+        /// <returns></returns>
         [Authorize]
         public ActionResult ListCustomForms()
         { 
@@ -2007,7 +2014,104 @@ namespace TT.Web.Controllers
             return RedirectToAction("ListCustomForms", "PvPAdmin");
         }
 
+        /// <summary>
+        /// List all of the News posts available for admins to edit
+        /// </summary>
+        /// <returns></returns>
+        [Authorize]
+        public ActionResult ListNewsPosts()
+        {
+            if (!User.IsInRole(PvPStatics.Permissions_Admin))
+            {
+                return RedirectToAction("Play", "PvP");
+            }
+
+            INewsPostRepository repo = new EFNewsPostRepository();
+            var output = repo.NewsPosts.OrderByDescending(a => a.Timestamp);
+
+            ViewBag.ErrorMessage = TempData["Error"];
+            ViewBag.SubErrorMessage = TempData["SubError"];
+            ViewBag.Result = TempData["Result"];
+
+            return View(output);
+        }
+
+        /// <summary>
+        /// Make changes to an existing or new NewsPost
+        /// </summary>
+        /// <param name="Id">Id of the news post to make changes to.  -1 indicates a new post.</param>
+        /// <returns></returns>
+        [Authorize]
+        public ActionResult EditNewsPost(int Id)
+        {
+            if (!User.IsInRole(PvPStatics.Permissions_Admin))
+            {
+                return RedirectToAction("Play", "PvP");
+            }
+
+            INewsPostRepository repo = new EFNewsPostRepository();
+            var output = repo.NewsPosts.FirstOrDefault(f => f.Id == Id);
+
+            if (output == null)
+            {
+                output = new NewsPost();
+            }
+
+            return View(output);
+
+        }
+
+        /// <summary>
+        /// Submit a NewsPost for revisions.
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        [Authorize]
+        [ValidateInput(false)]
+        public ActionResult EditNewsPostSend(NewsPost input)
+        {
+            if (!User.IsInRole(PvPStatics.Permissions_Admin))
+            {
+                return RedirectToAction("Play", "PvP");
+            }
+
+            INewsPostRepository repo = new EFNewsPostRepository();
+            var saveMe = repo.NewsPosts.FirstOrDefault(f => f.Id == input.Id);
+
+            if (saveMe == null)
+            {
+                saveMe = new NewsPost();
+            }
+
+            saveMe.Timestamp = input.Timestamp;
+            saveMe.Text = input.Text;
+            saveMe.ViewState = input.ViewState;
+            repo.SaveNewsPost(saveMe);
+
+            TempData["Result"] = "News Post " + input.Id + " saved successfully!";
+            return RedirectToAction("ListNewsPosts", "PvPAdmin");
+
+        }
+
+        /// <summary>
+        /// Deletes a news post
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ActionResult DeleteNewsPost(int Id)
+        {
+            string myMembershipId = User.Identity.GetUserId();
+            if (!User.IsInRole(PvPStatics.Permissions_Admin))
+            {
+                return RedirectToAction("Play", "PvP");
+            }
+
+            INewsPostRepository repo = new EFNewsPostRepository();
+            repo.DeleteNewsPost(Id);
+
+            TempData["Result"] = "News Post " + Id + " deleted successfully!";
+            return RedirectToAction("ListNewsPosts", "PvPAdmin");
+        }
+
     }
-
-
 }

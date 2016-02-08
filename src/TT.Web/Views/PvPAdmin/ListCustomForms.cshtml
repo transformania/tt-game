@@ -11,7 +11,7 @@
 
 <td>@Html.ActionLink("Back", "Index", "PvPAdmin")</td>
 
-<table>
+<table id="customForms">
     <thead>
         <tr>
             <td>Id</td>
@@ -50,3 +50,9 @@
         border: 1px solid black;
     }
 </style>
+
+<script>
+    $(document).ready(function () {
+        $('#customForms').dataTable();
+    });
+</script>

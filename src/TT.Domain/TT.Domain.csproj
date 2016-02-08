@@ -98,6 +98,7 @@
     <Compile Include="Abstract\IRoot.cs" />
     <Compile Include="Abstract\IRPClassifiedAdRepository.cs" />
     <Compile Include="Abstract\IRPPointRepository.cs" />
+    <Compile Include="Abstract\INewsPostRepository.cs" />
     <Compile Include="Abstract\IServerLogRepository.cs" />
     <Compile Include="Abstract\ISkillRepository.cs" />
     <Compile Include="Abstract\ITFEnergyRepository.cs" />
@@ -154,6 +155,7 @@
     <Compile Include="Concrete\EFReservedNameRepository.cs" />
     <Compile Include="Concrete\EFRPClassifiedAdRepository.cs" />
     <Compile Include="Concrete\EFRPPointRespository.cs" />
+    <Compile Include="Concrete\EFNewsPostRepository.cs" />
     <Compile Include="Concrete\EFServerLogRepoisotry.cs" />
     <Compile Include="Concrete\EFSkillRepository.cs" />
     <Compile Include="Concrete\EFTFEnergyRepository.cs" />
@@ -182,6 +184,7 @@
     <Compile Include="Models\DMItem.cs" />
     <Compile Include="Models\ContributorCustomForm.cs" />
     <Compile Include="Models\Donator.cs" />
+    <Compile Include="Models\NewsPost.cs" />
     <Compile Include="Models\Duel.cs" />
     <Compile Include="Models\Effect.cs" />
     <Compile Include="Models\EffectContribution.cs" />

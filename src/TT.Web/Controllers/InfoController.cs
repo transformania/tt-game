@@ -38,12 +38,14 @@ namespace TT.Web.Controllers
              return View();
          }
 
-         public ActionResult GameNews()
-         {
-             return View();
-         }
+        public ActionResult GameNews()
+        {
+            INewsPostRepository repo = new EFNewsPostRepository();
+            var output = repo.NewsPosts.Where(n => n.ViewState == 1); // 1 == Live
+            return View(output);
+        }
 
-         public ActionResult RecentRPClassifieds()
+        public ActionResult RecentRPClassifieds()
          {
             IEnumerable<RPClassifiedAd> output =  RPClassifiedAdsProcedures.GetClassifiedAds();
             return View(output);

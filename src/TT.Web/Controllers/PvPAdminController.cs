@@ -397,7 +397,7 @@ namespace TT.Web.Controllers
             IDbStaticFormRepository formRepo = new EFDbStaticFormRepository();
 
             List<DbStaticForm> forms = formRepo.DbStaticForms.Where(f => f.MobilityType == "inanimate" || f.MobilityType == "animal").ToList();
-            
+
             foreach (DbStaticForm form in forms)
             {
 
@@ -413,7 +413,7 @@ namespace TT.Web.Controllers
             return RedirectToAction("Index");
         }
 
-        
+
         /// <summary>
         /// In case the friendly NPCs don't spawn when round starts or for other reasons, spawn them manually.  NPCs that are already spawned are not spawned twice.
         /// </summary>
@@ -1865,7 +1865,7 @@ namespace TT.Web.Controllers
             }
 
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-           
+
             IItemRepository itemRepo = new EFItemRepository();
 
 
@@ -2033,10 +2033,6 @@ namespace TT.Web.Controllers
             ViewBag.SubErrorMessage = TempData["SubError"];
             ViewBag.Result = TempData["Result"];
 
-            ViewBag.ErrorMessage = TempData["Error"];
-            ViewBag.SubErrorMessage = TempData["SubError"];
-            ViewBag.Result = TempData["Result"];
-
             return View(output);
         }
 
@@ -2048,8 +2044,7 @@ namespace TT.Web.Controllers
         [Authorize]
         public ActionResult EditNewsPost(int Id)
         {
-            string myMembershipId = User.Identity.GetUserId();
-            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
                 return RedirectToAction("Play", "PvP");
             }
@@ -2075,8 +2070,7 @@ namespace TT.Web.Controllers
         [ValidateInput(false)]
         public ActionResult EditNewsPostSend(NewsPost input)
         {
-            string myMembershipId = User.Identity.GetUserId();
-            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
                 return RedirectToAction("Play", "PvP");
             }
@@ -2101,7 +2095,7 @@ namespace TT.Web.Controllers
         public ActionResult DeleteNewsPost(int Id)
         {
             string myMembershipId = User.Identity.GetUserId();
-            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
                 return RedirectToAction("Play", "PvP");
             }

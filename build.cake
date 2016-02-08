@@ -146,6 +146,7 @@ Task("Default")
     .IsDependentOn("Run-Unit-Tests");
     
 Task("CI-Build")
+    .IsDependentOn("Drop-DB")
     .IsDependentOn("Migrate")
     .IsDependentOn("Seed-DB")
     .IsDependentOn("Run-Unit-Tests");

@@ -2077,6 +2077,12 @@ namespace TT.Web.Controllers
 
             INewsPostRepository repo = new EFNewsPostRepository();
             var saveMe = repo.NewsPosts.FirstOrDefault(f => f.Id == input.Id);
+
+            if (saveMe == null)
+            {
+                saveMe = new NewsPost();
+            }
+
             saveMe.Timestamp = input.Timestamp;
             saveMe.Text = input.Text;
             saveMe.ViewState = input.ViewState;

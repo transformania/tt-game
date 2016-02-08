@@ -1916,7 +1916,7 @@ namespace TT.Web.Controllers
         }
 
         /// <summary>
-        /// List all of the News posts available for admins to edit
+        /// List all of the custom forms earned from players' contributions available for admins to edit
         /// </summary>
         /// <returns></returns>
         [Authorize]

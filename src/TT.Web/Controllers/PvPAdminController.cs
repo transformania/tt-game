@@ -1915,7 +1915,7 @@ namespace TT.Web.Controllers
         [Authorize]
         public ActionResult ListCustomForms()
         { 
-            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
                 return RedirectToAction("Play", "PvP");
             }
@@ -1933,7 +1933,7 @@ namespace TT.Web.Controllers
         [Authorize]
         public ActionResult EditCustomForm(int Id)
         {
-            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
                 return RedirectToAction("Play", "PvP");
             }
@@ -1952,7 +1952,7 @@ namespace TT.Web.Controllers
         [Authorize]
         public ActionResult EditCustomFormSend(ContributorCustomForm input)
         {
-            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
                 return RedirectToAction("Play", "PvP");
             }
@@ -1963,7 +1963,7 @@ namespace TT.Web.Controllers
             DbStaticForm form = formRepo.DbStaticForms.FirstOrDefault(f => f.Id == input.CustomForm.Id);
 
             // assert form actually does exist
-            if (form==null)
+            if (form == null)
             {
                 TempData["Error"] = "No form found for Form Id: " + input.CustomForm.Id;
                 return RedirectToAction("ListCustomForms", "PvPAdmin");
@@ -1995,7 +1995,7 @@ namespace TT.Web.Controllers
         [Authorize]
         public ActionResult DeleteCustomForm(int Id)
         {
-            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
                 return RedirectToAction("Play", "PvP");
             }

@@ -59,26 +59,26 @@
                             }
                         </td>
                         <td class="formname">@skill.Form_FriendlyName</td>
-                        <td>
+                        <td class="mobilityClass">
                             @if (skill.Skill_MobilityType != null && skill.Skill_MobilityType == "inanimate")
                             {
-                                <span class="mobilityClass">Inanimate</span>
+                                <text>Inanimate</text>
                             }
                             else if (skill.Skill_MobilityType != null && skill.Skill_MobilityType == "animal")
                             {
-                                <span class="mobilityClass">Animal/Familiar</span>
+                                <text>Animal/Familiar</text>
                             }
                             else if (skill.Skill_MobilityType != null && skill.Skill_MobilityType == "curse")
                             {
-                                <span class="mobilityClass">Temporary curse</span>
+                                <text>Temporary curse</text>
                             }
                             else if (skill.Skill_MobilityType != null && skill.Skill_MobilityType == "mindcontrol")
                             {
-                                <span class="mobilityClass">Temporary mind control</span>
+                                <text>Temporary mind control</text>
                             }
                             else
                             {
-                                <span class="mobilityClass">Animate</span>
+                                <text>Animate</text>
                             }
                         </td>
                         <td class="description">@skill.Skill_Description</td>

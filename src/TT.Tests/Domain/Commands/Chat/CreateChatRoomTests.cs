@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Linq;
 using FluentAssertions;
-using Highway.Data;
-using Highway.Data.Contexts;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Commands.Chat;
@@ -12,22 +10,19 @@ using TT.Tests.Builders.Chat;
 namespace TT.Tests.Domain.Commands.Chat
 {
     [TestFixture]
-    public class CreateChatRoomTests
+    public class CreateChatRoomTests : DomainTestBase
     {
         [Test]
         public void Should_create_new_chat_room()
         {
-            var ctx = new InMemoryDataContext();
-            DomainRegistry.Repository = new Repository(ctx);
-
             var creatorId = Guid.NewGuid().ToString();
             
-            var cmd = new CreateChatRoom("Test Room", creatorId);
+            var cmd = new CreateChatRoom("Test_Room", creatorId);
 
-            DomainRegistry.Repository.Execute(cmd);
+            Repository.Execute(cmd);
 
-            ctx.AsQueryable<ChatRoom>().Count(
-                cr => cr.Name == "Test Room" && 
+            DataContext.AsQueryable<ChatRoom>().Count(
+                cr => cr.Name == "Test_Room" && 
                 cr.Creator == creatorId && 
                 cr.CreatedAt.Value.Date == DateTime.UtcNow.Date)
             .Should().Be(1);
@@ -36,16 +31,14 @@ namespace TT.Tests.Domain.Commands.Chat
         [Test]
         public void Should_not_allow_rooms_of_the_same_name_to_exist()
         {
-            var ctx = new InMemoryDataContext();
-            DomainRegistry.Repository = new Repository(ctx);
-
-            var existingName = "Test Room";
+            var existingName = "Test_Room";
 
             new ChatRoomBuilder().With(cr => cr.Name, existingName).BuildAndSave();
 
             var cmd = new CreateChatRoom(existingName, Guid.NewGuid().ToString());
 
-            var action = new Action(() => { DomainRegistry.Repository.Execute(cmd); });
+            var action = new Action(() => { Repository.Execute(cmd); });
+
             action.ShouldThrowExactly<DomainException>().WithMessage(string.Format("Chat room '{0}' already exists", existingName));
         }
 
@@ -58,12 +51,10 @@ namespace TT.Tests.Domain.Commands.Chat
         [TestCase("Test%")]
         public void Should_not_allow_special_characters_in_room_name(string roomName)
         {
-            var ctx = new InMemoryDataContext();
-            DomainRegistry.Repository = new Repository(ctx);
-
             var cmd = new CreateChatRoom(roomName, Guid.NewGuid().ToString());
 
-            var action = new Action(() => { DomainRegistry.Repository.Execute(cmd); });
+            var action = new Action(() => { Repository.Execute(cmd); });
+
             action.ShouldThrowExactly<DomainException>().WithMessage(
                 string.Format("Chat room '{0}' contains unsupported characters, only alphanumeric names with _ or - are allowed", roomName));
         }
@@ -79,14 +70,9 @@ namespace TT.Tests.Domain.Commands.Chat
         [TestCase("0-0")]
         public void Should_allow_underscores_or_hypens_in_room_names(string roomName)
         {
-            var ctx = new InMemoryDataContext();
-            DomainRegistry.Repository = new Repository(ctx);
+            Repository.Execute(new CreateChatRoom(roomName, Guid.NewGuid().ToString()));
 
-            var cmd = new CreateChatRoom(roomName, Guid.NewGuid().ToString());
-
-            DomainRegistry.Repository.Execute(cmd);
-
-            ctx.AsQueryable<ChatRoom>().Any(cr => cr.Name == roomName).Should().BeTrue();
+            DataContext.AsQueryable<ChatRoom>().Any(cr => cr.Name == roomName).Should().BeTrue();
         }
     }
 }

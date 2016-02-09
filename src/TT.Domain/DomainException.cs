@@ -14,6 +14,10 @@ namespace TT.Domain
         {
         }
 
+        public DomainException(string format, params string[] args) : base(string.Format(format, args))
+        {
+        }
+
         public DomainException(string message, Exception inner) : base(message, inner)
         {
         }

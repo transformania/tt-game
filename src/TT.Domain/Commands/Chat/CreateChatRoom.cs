@@ -18,21 +18,25 @@ namespace TT.Domain.Commands.Chat
 
         public override void Execute(IDataContext context)
         {
-            var regex = new Regex("^[a-zA-Z0-9_-]*$");
-            if (!regex.IsMatch(RoomName))
-                throw new DomainException(string.Format("Chat room '{0}' contains unsupported characters, only alphanumeric names with _ or - are allowed", RoomName));
-
+            Validate();
 
             ContextQuery = ctx =>
             {
                 if (ctx.AsQueryable<ChatRoom>().Any(cr => cr.Name == RoomName))
-                    throw new DomainException(string.Format("Chat room '{0}' already exists", RoomName));
+                    throw new DomainException("Chat room '{0}' already exists", RoomName);
 
                 ctx.Add(ChatRoom.Create(this));
                 ctx.Commit();
             };
 
             base.Execute(context);
+        }
+
+        private void Validate()
+        {
+            var regex = new Regex("^[a-zA-Z0-9_-]*$");
+            if (!regex.IsMatch(RoomName))
+                throw new DomainException("Chat room '{0}' contains unsupported characters, only alphanumeric names with _ or - are allowed",RoomName);
         }
     }
 }

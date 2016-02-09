@@ -41,6 +41,10 @@
                 <th>Effect</th>
                 <th>Archive</th>
             </tr>
+            <tr>
+                <th colspan="3"><select id="filtermobility" class="form-control"><option value="">Filter...</option></select></th>
+                <th colspan="5">&nbsp;</th>
+            </tr>
         </thead>
         <tbody>
             @{
@@ -179,7 +183,27 @@
  
     <script>
     $(document).ready(function () {
-        $('#MySkills').dataTable();
+        $('#MySkills').dataTable({
+            "orderCellsTop": true,
+            "initComplete": function () {
+                this.api().column(2).every(function () {
+                    var column = this;
+                    $("#filtermobility").on('change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+
+                            column
+                                .search(val ? '^' + val + '$' : '', true, false)
+                                .draw();
+                        });
+
+                    column.data().unique().sort().each(function (d, j) {
+                        $("#filtermobility").append('<option value="' + d + '">' + d + '</option>')
+                    });
+                });
+            }
+        });
     });
 
     function prompt_success() {

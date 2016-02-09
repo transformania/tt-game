@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Text.RegularExpressions;
 using Highway.Data;
 using TT.Domain.Entities.Chat;
 
@@ -17,6 +18,11 @@ namespace TT.Domain.Commands.Chat
 
         public override void Execute(IDataContext context)
         {
+            var regex = new Regex("^[a-zA-Z0-9_-]*$");
+            if (!regex.IsMatch(RoomName))
+                throw new DomainException(string.Format("Chat room '{0}' contains unsupported characters, only alphanumeric names with _ or - are allowed", RoomName));
+
+
             ContextQuery = ctx =>
             {
                 if (ctx.AsQueryable<ChatRoom>().Any(cr => cr.Name == RoomName))

@@ -48,5 +48,45 @@ namespace TT.Tests.Domain.Commands.Chat
             var action = new Action(() => { DomainRegistry.Repository.Execute(cmd); });
             action.ShouldThrowExactly<DomainException>().WithMessage(string.Format("Chat room '{0}' already exists", existingName));
         }
+
+        [TestCase("Test!")]
+        [TestCase("Test'")]
+        [TestCase("Test<")]
+        [TestCase("Test*")]
+        [TestCase("Test?")]
+        [TestCase("Test|")]
+        [TestCase("Test%")]
+        public void Should_not_allow_special_characters_in_room_name(string roomName)
+        {
+            var ctx = new InMemoryDataContext();
+            DomainRegistry.Repository = new Repository(ctx);
+
+            var cmd = new CreateChatRoom(roomName, Guid.NewGuid().ToString());
+
+            var action = new Action(() => { DomainRegistry.Repository.Execute(cmd); });
+            action.ShouldThrowExactly<DomainException>().WithMessage(
+                string.Format("Chat room '{0}' contains unsupported characters, only alphanumeric names with _ or - are allowed", roomName));
+        }
+
+        [TestCase("Test_")]
+        [TestCase("_Test")]
+        [TestCase("_")]
+        [TestCase("Test_Test")]
+        [TestCase("_test_")]
+        [TestCase("_0_")]
+        [TestCase("-Test-")]
+        [TestCase("-_-")]
+        [TestCase("0-0")]
+        public void Should_allow_underscores_or_hypens_in_room_names(string roomName)
+        {
+            var ctx = new InMemoryDataContext();
+            DomainRegistry.Repository = new Repository(ctx);
+
+            var cmd = new CreateChatRoom(roomName, Guid.NewGuid().ToString());
+
+            DomainRegistry.Repository.Execute(cmd);
+
+            ctx.AsQueryable<ChatRoom>().Any(cr => cr.Name == roomName).Should().BeTrue();
+        }
     }
 }

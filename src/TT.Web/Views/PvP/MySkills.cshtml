@@ -29,55 +29,30 @@
 
 <div class="containerInner">
     <div id="resultPrompt"></div>
-    <table>
-        <tr style="font-weight: bold;">
-            <td>Spell Name</td>
-            <td>Form Name</td>
-            <td>Description</td>
-            <td>MP</td>
-            <td>WP</td>
-            <td>TFE</td>
-            <td>Archive</td>
-        </tr>
-        @{
-            string chargeVisible = "none";
-            string timeVisible = "none";
-
-
-            foreach (MySkillsViewModel skill in Model.OrderBy(s => s.Skill_FriendlyName))
-            {
-                if (skill.Skill_Charge != -1.0M)
+    <table id="MySkills" class="table table-hover messageTable dt-responsive">
+        <thead>
+            <tr>
+                <th>Spell Name</th>
+                <th>Form Name</th>
+                <th>Form Type</th>
+                <th>Description</th>
+                <th style="width:50px;">MP</th>
+                <th style="width:50px;">WP</th>
+                <th style="width:50px;">TFE</th>
+                <th>Charges</th>
+                <th>Duration (Turns)</th>
+                <th>Effect</th>
+                <th>Archive</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                foreach (MySkillsViewModel skill in Model.OrderBy(s => s.Skill_FriendlyName))
                 {
-                    chargeVisible = "block";
-                }
-
-                if (skill.Skill_Duration != -1.0M)
-                {
-                    timeVisible = "block";
-                }
-
-                <tr>
-                    <td class="skillname">
-                        @skill.Skill_FriendlyName
-
-                        @{
-                            if (skill.Skill_MobilityType != null && skill.Skill_MobilityType == "inanimate")
-                            {
-                                <span class="mobilityClass">(inanimate)</span>
-                            }
-                            else if (skill.Skill_MobilityType != null && skill.Skill_MobilityType == "animal")
-                            {
-                                <span class="mobilityClass">(animal/familiar)</span>
-                            }
-                            else if (skill.Skill_MobilityType != null && skill.Skill_MobilityType == "curse")
-                            {
-                                <span class="mobilityClass">(temporary curse)</span>
-                            }
-                            else if (skill.Skill_MobilityType != null && skill.Skill_MobilityType == "mindcontrol")
-                            {
-                                <span class="mobilityClass">(temporary mind control)</span>
-                            }
-                            if (skill.Skill_IsArchived == true)
+                    <tr>
+                        <td class="skillname">
+                            @skill.Skill_FriendlyName
+                            @if (skill.Skill_IsArchived == true)
                             {
                                 <b id="@skill.Skill_Id">(ARCHIVED)</b>
                             }
@@ -85,49 +60,85 @@
                             {
                                 <b id="@skill.Skill_Id"></b>
                             }
-                        }
-
-                    </td>
-
-                    <td class="formname">@skill.Form_FriendlyName</td>
-
-                    <td class="description">@skill.Skill_Description</td>
-                    <td class="manacost" style="width:50px;">@skill.Skill_ManaCost</td>
-
-                    @{
-                        if (@skill.Skill_HealthDamageAmount > 0)
-                        {
-                            <td class="damage" style="width:50px;">@skill.Skill_HealthDamageAmount</td>
-                        }
-                        if (@skill.Skill_TFPointsAmount > 0)
-                        {
-                            <td class="tfpoints" style="width:50px;">@skill.Skill_TFPointsAmount</td>
-                        }
+                        </td>
+                        <td class="formname">@skill.Form_FriendlyName</td>
+                        <td>
+                            @if (skill.Skill_MobilityType != null && skill.Skill_MobilityType == "inanimate")
+                            {
+                                <span class="mobilityClass">Inanimate</span>
+                            }
+                            else if (skill.Skill_MobilityType != null && skill.Skill_MobilityType == "animal")
+                            {
+                                <span class="mobilityClass">Animal/Familiar</span>
+                            }
+                            else if (skill.Skill_MobilityType != null && skill.Skill_MobilityType == "curse")
+                            {
+                                <span class="mobilityClass">Temporary curse</span>
+                            }
+                            else if (skill.Skill_MobilityType != null && skill.Skill_MobilityType == "mindcontrol")
+                            {
+                                <span class="mobilityClass">Temporary mind control</span>
+                            }
+                            else
+                            {
+                                <span class="mobilityClass">Animate</span>
+                            }
+                        </td>
+                        <td class="description">@skill.Skill_Description</td>
+                        <td class="manacost">@skill.Skill_ManaCost</td>
+                        @{
+                    if (@skill.Skill_HealthDamageAmount > 0)
+                    {
+                        <td class="damage">@skill.Skill_HealthDamageAmount</td>
                     }
-
-
-
-
-
-
-
-                    <td class="charges" style="display:  @chargeVisible">Casts remaining:  @skill.Skill_Charge</td>
-                    <td class="time" style="display:  @timeVisible">Time remaining:  @skill.Skill_Duration</td>
-
-                    @{
-                        if (@skill.Skill_GivesEffect != null)
-                        {
-                            <td class="effect"><b>Gives the @CharactersHere.GetEffectFriendlyName(skill.Skill_GivesEffect) effect</b></td>
-                        }
+                    else
+                    {
+                        <td>N/A</td>
                     }
-
-                    @*@Html.ActionLink("Toggle Archive", "ArchiveSpell", "Settings", new { name = @skill.dbSkill.Name }, null)*@
-
+                    if (@skill.Skill_TFPointsAmount > 0)
+                    {
+                        <td class="tfpoints">@skill.Skill_TFPointsAmount</td>
+                    }
+                    else
+                    {
+                        <td>N/A</td>
+                    }
+                        }
+                        <td class="charges">
+                            @if (skill.Skill_Charge != -1.0M)
+                            {
+                                @skill.Skill_Charge
+                            }
+                            else
+                            {
+                                <text>N/A</text>
+                            }
+                        </td>
+                        <td class="time">
+                            @if (skill.Skill_Duration != -1.0M)
+                            {
+                                @skill.Skill_Duration
+                            }
+                            else
+                            {
+                                <text>N/A</text>
+                            }
+                        </td>
+                        @{
+                    if (@skill.Skill_GivesEffect != null)
+                    {
+                        <td class="effect">@CharactersHere.GetEffectFriendlyName(skill.Skill_GivesEffect)</td>
+                    }
+                    else
+                    {
+                        <td>N/A</td>
+                    }
+                }
                     <td>@Ajax.ActionLink("[x]", "ArchiveSpell", "Settings", new { name = @skill.Skill_Name }, new AjaxOptions { UpdateTargetId = "resultPrompt", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "prompt_success", OnFailure = "prompt_failure", OnBegin = "prompt_wait" }, null)</td>
-
                 </tr>
                         }
         }
+        </tbody>
     </table>
 </div>
 
@@ -189,6 +200,10 @@
 
  
     <script>
+    $(document).ready(function () {
+        $('#MySkills').dataTable();
+    });
+
     function prompt_success() {
       //  alert($("#changeMessage").text());
         var changeNumber = $("#changeNumber").text();

@@ -36,9 +36,6 @@
                 <th>Form Name</th>
                 <th>Form Type</th>
                 <th>Description</th>
-                <th style="width:50px;">MP</th>
-                <th style="width:50px;">WP</th>
-                <th style="width:50px;">TFE</th>
                 <th>Charges</th>
                 <th>Duration (Turns)</th>
                 <th>Effect</th>
@@ -85,25 +82,6 @@
                             }
                         </td>
                         <td class="description">@skill.Skill_Description</td>
-                        <td class="manacost">@skill.Skill_ManaCost</td>
-                        @{
-                    if (@skill.Skill_HealthDamageAmount > 0)
-                    {
-                        <td class="damage">@skill.Skill_HealthDamageAmount</td>
-                    }
-                    else
-                    {
-                        <td>N/A</td>
-                    }
-                    if (@skill.Skill_TFPointsAmount > 0)
-                    {
-                        <td class="tfpoints">@skill.Skill_TFPointsAmount</td>
-                    }
-                    else
-                    {
-                        <td>N/A</td>
-                    }
-                        }
                         <td class="charges">
                             @if (skill.Skill_Charge != -1.0M)
                             {

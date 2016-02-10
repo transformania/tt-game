@@ -1994,7 +1994,7 @@ namespace TT.Web.Controllers
             }
 
             editMe.OwnerMembershipId = input.OwnerMembershipId;
-            editMe.CustomForm = form;
+            editMe.CustomForm_Id = form.Id;
 
             customFormRepo.SaveContributorCustomForm(editMe);
 

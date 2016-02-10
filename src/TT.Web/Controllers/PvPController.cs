@@ -2512,7 +2512,6 @@ namespace TT.Web.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("PvP/SendMessage")]
         public ActionResult SendMessage(MessageSubmitViewModel input)
         {
             string myMembershipId = User.Identity.GetUserId();

@@ -22,15 +22,13 @@
     </div><!-- /.container-fluid -->
 </nav>
 <div class="containerInner">
-    <p class="infoMessage error">@ViewBag.ErrorMessage</p>
+    @if (ViewBag.ErrorMessage != null && ViewBag.ErrorMessage != "") { <p class="infoMessage error">@ViewBag.ErrorMessage</p> }
 
-    @{
-        if (ViewBag.RespondingToMsg != null && ViewBag.RespondingToMsg != "")
-        {
-            <p class="messageTextContainer messageResponse">
-                @Model.RespondingToMsg
-            </p>
-        }
+    @if (Model.RespondingToMsg != null && Model.RespondingToMsg != "")
+    {
+        <p class="messageTextContainer messageResponse">
+            @Model.RespondingToMsg
+        </p>
     }
 
     @using (Html.BeginForm("SendMessage", "PvP", FormMethod.Post))

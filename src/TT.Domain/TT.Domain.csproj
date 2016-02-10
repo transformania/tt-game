@@ -309,6 +309,7 @@
     <Compile Include="ViewModels\MapViewModel.cs" />
     <Compile Include="ViewModels\MessageBag.cs" />
     <Compile Include="ViewModels\MessageCountDataViewModel.cs" />
+    <Compile Include="ViewModels\MessageSubmitViewModel.cs" />
     <Compile Include="ViewModels\MindControlViewModel.cs" />
     <Compile Include="ViewModels\NewCharacterViewModel.cs" />
     <Compile Include="ViewModels\PlayerAchievementViewModel.cs" />

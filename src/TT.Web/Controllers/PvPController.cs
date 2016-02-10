@@ -2475,11 +2475,18 @@ namespace TT.Web.Controllers
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            Message output = new Message();
+            Player sendingTo = PlayerProcedures.GetPlayer(playerId);
+            MessageSubmitViewModel output = new MessageSubmitViewModel();
+            if (TempData["MessageText"] != null)
+            {
+                // preserves what the user typed if coming from SendMessage
+                output.MessageText = TempData["MessageText"] as string;
+                ViewBag.ErrorMessage = TempData["ErrorMessage"];
+            }
             output.SenderId = me.Id;
             output.ReceiverId = playerId;
-            Player sendingTo = PlayerProcedures.GetPlayer(output.ReceiverId);
-            ViewBag.SendingToName = sendingTo.GetFullName();
+            output.responseToId = responseTo;
+            output.SendingToName = sendingTo.GetFullName();
 
             if (responseTo != -1)
             {
@@ -2494,7 +2501,7 @@ namespace TT.Web.Controllers
                 }
                 else
                 {
-                    ViewBag.RespondingToMsg = msgRepliedTo.dbMessage.MessageText;
+                    output.RespondingToMsg = msgRepliedTo.dbMessage.MessageText;
                 }
 
             }
@@ -2503,7 +2510,9 @@ namespace TT.Web.Controllers
         }
 
         [Authorize]
-        public ActionResult SendMessage(Message input)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult SendMessage(MessageSubmitViewModel input)
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -2527,29 +2536,31 @@ namespace TT.Web.Controllers
 
             if (input.MessageText == null || input.MessageText == "")
             {
-                ViewBag.ErrorMessage = "You need to write something to send to this person.";
-                return View("Write", input);
+                TempData["ErrorMessage"] = "You need to write something to send to this person.";
+                TempData["MessageText"] = input.MessageText;
+                return RedirectToAction("Write", new { playerId = input.ReceiverId, responseTo = input.responseToId });
 
             }
             if (input.MessageText.Length > 1000)
-             {
-                 ViewBag.ErrorMessage = "Your message is too long.";
-                 return RedirectToAction("Write", input);
-             }
+            {
+                TempData["ErrorMessage"] = "Your message is too long.";
+                TempData["MessageText"] = input.MessageText;
+                return RedirectToAction("Write", new { playerId = input.ReceiverId, responseTo = input.responseToId });
+            }
 
-             MessageProcedures.AddMessage(input, myMembershipId);
-             NoticeService.PushNotice(receiver, "<b>" + me.GetFullName() + " has sent you a new message.</b>", NoticeService.PushType__PlayerMessage);
-             TempData["Result"] = "Your message has been sent.";
+            MessageProcedures.AddMessage(input, myMembershipId);
+            NoticeService.PushNotice(receiver, "<b>" + me.GetFullName() + " has sent you a new message.</b>", NoticeService.PushType__PlayerMessage);
+            TempData["Result"] = "Your message has been sent.";
 
-             if (me.Mobility != "full")
-             {
-                 ItemProcedures.UpdateSouledItem(me.FirstName, me.LastName);
-             }
+            if (me.Mobility != "full")
+            {
+                ItemProcedures.UpdateSouledItem(me.FirstName, me.LastName);
+            }
 
-             return RedirectToAction("MyMessages");
-         }
+            return RedirectToAction("MyMessages");
+        }
 
-         [Authorize]
+        [Authorize]
         public ActionResult InanimateAction(string actionName)
         {
             string myMembershipId = User.Identity.GetUserId();

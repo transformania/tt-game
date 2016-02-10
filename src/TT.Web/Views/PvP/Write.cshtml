@@ -1,4 +1,5 @@
-﻿@model TT.Domain.Models.Message
+﻿@model TT.Domain.ViewModels.MessageSubmitViewModel
+
 <nav class="navbar navbar-default outsideContainer navbarTT2">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -21,40 +22,46 @@
     </div><!-- /.container-fluid -->
 </nav>
 <div class="containerInner">
-    @{
-        if (ViewBag.RespondingToMsg != null && ViewBag.RespondingToMsg != "")
-        {
-            <p class="messageTextContainer messageResponse">
-                @ViewBag.RespondingToMsg
-            </p>
-        }
+    @if (ViewBag.ErrorMessage != null && ViewBag.ErrorMessage != "") { <p class="infoMessage error">@ViewBag.ErrorMessage</p> }
+
+    @if (Model.RespondingToMsg != null && Model.RespondingToMsg != "")
+    {
+        <p class="messageTextContainer messageResponse">
+            @Model.RespondingToMsg
+        </p>
     }
 
-    @using (Html.BeginForm("SendMessage", "PvP", Model))
+    @using (Html.BeginForm("SendMessage", "PvP", FormMethod.Post))
     {
+        @Html.AntiForgeryToken()
+
         <div class="messageInfoContainer clearfix">
-            Writing to <span class="messageNicknameContainer">@ViewBag.SendingToName</span>:
+            Writing to <span class="messageNicknameContainer">@Model.SendingToName</span>:
             <span class="charCounter" id="textRemaining"></span>
         </div>
-        @Html.TextAreaFor(m => m.MessageText)<br />
-
+        @Html.TextAreaFor(m => m.MessageText, new { maxlength = "1000" })<br />
 
         @Html.HiddenFor(m => m.ReceiverId)
         @Html.HiddenFor(m => m.SenderId)
+        @Html.HiddenFor(m => m.responseToId)
 
         <br />
         <input type="submit" class="btn btn-chat" value="Send" />
-
     }
-
-    <div class="error">
-        @ViewBag.ErrorMessage
-    </div>
 </div>
 
-<script>
-    $("#MessageText").keydown(function () {
-        var remaining = 1000 - $("#MessageText").val().length;
-        $("#textRemaining").html(remaining + " characters remaining");
-    });
-</script>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            var max = 1000;
+            $('#textRemaining').html(max + ' characters remaining');
+
+            $('#MessageText').on('input', function () {
+                var length = $(this).val().length;
+                var remaining = max - length;
+
+                $('#textRemaining').html(remaining + ' characters remaining');
+            });
+        });
+    </script>
+}

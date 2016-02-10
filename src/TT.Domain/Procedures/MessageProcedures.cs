@@ -185,6 +185,17 @@ namespace TT.Domain.Procedures
            
         }
 
+        public static void AddMessage(MessageSubmitViewModel messageVM, string membershipId)
+        {
+            Message message = new Message();
+
+            message.MessageText = messageVM.MessageText;
+            message.SenderId = messageVM.SenderId;
+            message.ReceiverId = messageVM.SenderId;
+
+            AddMessage(message, membershipId);
+        }
+
         public static void AddMessage(Message message, string membershipId)
         {
             Player sender = PlayerProcedures.GetPlayerFromMembership(membershipId);

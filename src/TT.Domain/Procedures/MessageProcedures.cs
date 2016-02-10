@@ -191,7 +191,7 @@ namespace TT.Domain.Procedures
 
             message.MessageText = messageVM.MessageText;
             message.SenderId = messageVM.SenderId;
-            message.ReceiverId = messageVM.SenderId;
+            message.ReceiverId = messageVM.ReceiverId;
 
             AddMessage(message, membershipId);
         }

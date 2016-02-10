@@ -31,9 +31,9 @@
 
     <hr />
 
-    @using (Html.BeginForm("ReplyToPoll", "Settings", Model))
+    @using (Html.BeginForm("ReplyToPoll", "Settings", FormMethod.Post))
     {
-
+        @Html.AntiForgeryToken()
         <p>How open are you about your transformation or general fetish interests to friends and family?</p>
         @Html.DropDownListFor(i => i.Num1, new SelectList(
                   new List<Object>{

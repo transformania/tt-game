@@ -363,7 +363,9 @@ namespace TT.Web.Controllers
             return RedirectToAction("Play");
         }
 
-         [Authorize]
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult NewCharacter(NewCharacterViewModel player)
         {
             string myMembershipId = User.Identity.GetUserId();

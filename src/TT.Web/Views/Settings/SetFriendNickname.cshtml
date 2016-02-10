@@ -34,9 +34,9 @@
 
     <p></p>
 
-    @using (Html.BeginForm("SetFriendNicknameSend", "Settings", Model))
+    @using (Html.BeginForm("SetFriendNicknameSend", "Settings", FormMethod.Post))
     {
-       
+        @Html.AntiForgeryToken()
         @Html.TextBoxFor(m => m.Nickname)<br />
 
 

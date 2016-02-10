@@ -11,9 +11,9 @@
 
 
 
-@using (Html.BeginForm("WriteAuthorArtistSend", "Settings", Model))
+@using (Html.BeginForm("WriteAuthorArtistSend", "Settings", FormMethod.Post))
 {
-
+    @Html.AntiForgeryToken()
     <p>Email Address.  Know that bots routintely scrape websites so you may want to spell it out using (at), though bots have probably wised up to that eons ago too...</p>
     @Html.TextBoxFor(m => m.Email)<br /><br />
 

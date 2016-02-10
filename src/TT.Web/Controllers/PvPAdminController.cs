@@ -1258,6 +1258,9 @@ namespace TT.Web.Controllers
             return View(encounter);
         }
 
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult WriteFaeSend(JewdewfaeEncounter input)
         {
             // assert only admins can do this

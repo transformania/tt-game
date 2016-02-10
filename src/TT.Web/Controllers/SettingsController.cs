@@ -390,6 +390,8 @@ namespace TT.Web.Controllers
         }
 
         [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult SetNicknameSend(Message input)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -504,6 +506,8 @@ namespace TT.Web.Controllers
         }
 
         [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult ReplyToPoll(PollEntry input)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -575,6 +579,7 @@ namespace TT.Web.Controllers
 
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [Authorize]
         public ActionResult WriteAuthorArtistSend(AuthorArtistBio input)
         {
@@ -798,6 +803,8 @@ namespace TT.Web.Controllers
         }
 
         [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult SetFriendNicknameSend(SetFriendNicknameViewModel input)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -913,6 +920,8 @@ namespace TT.Web.Controllers
         }
 
         [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult EditRPClassifiedAdSend(RPClassifiedAd input)
         {
 

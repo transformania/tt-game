@@ -32,8 +32,9 @@
 <div class="containerInner">
     <h1>Edit/Create RP Classified Ad</h1>
 
-    @using (Html.BeginForm("EditRPClassifiedAdSend", "Settings", Model))
+    @using (Html.BeginForm("EditRPClassifiedAdSend", "Settings", FormMethod.Post))
     {
+        @Html.AntiForgeryToken()
         <div class="messageInfoContainer clearfix">
 
             <span class="charCounter" id="textRemaining"></span>

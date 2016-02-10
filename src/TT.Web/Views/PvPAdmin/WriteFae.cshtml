@@ -2,8 +2,9 @@
 
 
 
-@using (Html.BeginForm("WriteFaeSend", "PvPAdmin", Model))
+@using (Html.BeginForm("WriteFaeSend", "PvPAdmin", FormMethod.Post))
 {
+    @Html.AntiForgeryToken()
     <div class="messageInfoContainer clearfix">
         Writing to <span class="messageNicknameContainer">@ViewBag.SendingToName</span>:
         <span class="charCounter" id="textRemaining"></span>

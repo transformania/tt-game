@@ -13,16 +13,6 @@ namespace TT.Domain.Concrete
 
         }
 
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-
-            //modelBuilder.Entity<Message>()
-            //    .HasOptional(m => m.responseTo)
-            //    .WithMany()
-            //    .HasForeignKey(m => m.responseToId);
-        }
-
         public DbSet<GameshowStats> GameshowStats { get; set; }
         public DbSet<Character> Characters { get; set; }
 

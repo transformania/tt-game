@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity;
+using System.Data.Entity.ModelConfiguration.Conventions;
 using TT.Domain.Models;
 
 namespace TT.Domain.Concrete
@@ -11,6 +12,11 @@ namespace TT.Domain.Concrete
            : base("StatsWebConnection")
         {
 
+        }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
         }
 
         public DbSet<GameshowStats> GameshowStats { get; set; }

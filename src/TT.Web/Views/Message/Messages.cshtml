@@ -18,7 +18,7 @@
             <ul class="nav navbar-nav" style="width:100%;">
                 <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
                 <li>@Html.ActionLink("Search for player by name", "PlayerLookup", "PvP")</li>
-                <li><a href="#" id="deleteAll" style="color: #734752 !important; font-weight:bold;">Delete All Messages</a></li>
+                <li><a href="javascript:void(0)" id="deleteAll" style="color: #734752 !important; font-weight:bold;">Delete All Messages</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -31,8 +31,7 @@
 </div>
 
 <script>
-
-    $("#deleteAll").click(function () {
+    $("#deleteAll").on('click', function () {
         if ($("#realLink").is(":visible") == false) {
             $("#realLink").show();
         } else {
@@ -43,7 +42,14 @@
 
 <div id="realLink" class="specialBox specialBox2" style="display: none;">
     <span style="color:red;">Do you really want to delete all the messages? If yes then please click link bellow:</span><br />
-    @Html.ActionLink("Yes, I want to delete", "DeleteAllMessages", "PvP")
+    @using (Html.BeginForm("DeleteMessage", "Message", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.Hidden("deleteAll", true)
+        @Html.Hidden("messageId", -1)
+
+        <a id="FormDeleteLink" href="javascript:void(0)">Yes, I want to delete all my messages</a>
+    }
 </div>
 
 <div class="specialBox specialHeader">
@@ -100,16 +106,16 @@
                         @{
                     if (msg.dbMessage.ReadStatus == 0 || msg.dbMessage.ReadStatus == 2)
                     {
-                        <td class="newlink">@Html.ActionLink(messageTeaser, "ReadMessage", "PvP", new { messageId = msg.dbMessage.Id }, null)</td>
+                        <td class="newlink">@Html.ActionLink(messageTeaser, "ReadMessage", "Messages", new { messageId = msg.dbMessage.Id }, null)</td>
                     }
                     else
                     {
-                        <td>@Html.ActionLink(messageTeaser, "ReadMessage", "PvP", new { messageId = msg.dbMessage.Id }, null)</td>
+                        <td>@Html.ActionLink(messageTeaser, "ReadMessage", "Messages", new { messageId = msg.dbMessage.Id }, null)</td>
                     }
                         }
 
                         <td class="timeSent"><span style="font-size: 10px">@CharactersHere.DatetimeToTimeago(msg.dbMessage.Timestamp)</span></td>
-                        <td>@Html.ActionLink("[ x ]", "DeleteMessage", "PvP", new { messageId = msg.dbMessage.Id }, null) @Html.ActionLink("[mark new]", "MarkAsUnread", "PvP", new { messageId = msg.dbMessage.Id }, null)</td>
+                        <td>@Html.ActionLink("[ x ]", "DeleteMessage", "Messages", new { messageId = msg.dbMessage.Id }, null) @Html.ActionLink("[mark new]", "MarkAsUnread", "Messages", new { messageId = msg.dbMessage.Id }, null)</td>
                     </tr>
                 }
             }
@@ -179,19 +185,26 @@
     </table>
 
     @{
-        if (Model.WearerId != null && Model.WearerName != null)
+        if (Model.WearerName != null && Model.WearerName != null)
         {
 
-            <p> @Html.ActionLink("Telepathically talk to the person wearing you, " + Model.WearerName, "Write", "PvP", new { playerId = Model.WearerId, responseTo = -1 }, null) </p>
+            <p> @Html.ActionLink("Telepathically talk to the person wearing you, " + Model.WearerName, "Write", "Messages", new { playerId = Model.WearerId, responseTo = -1 }, null) </p>
         }
     }
 </div>
 
-<script>
-    $("#Text").keydown(function () {
-        var remaining = 1500 - $("#Text").val().length;
-        // console.log($("#Text").val().length);
-        $("#textRemaining").html(remaining + " characters remaining");
-    });
-</script>
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            $('#DeleteLink').on('click', function () {
+                document.getElementById('realLink').style.display = "block";
+            });
+
+            $('#FormDeleteLink').on('click', function () {
+                $(this).closest('form')[0].submit();
+            });
+        });
+    </script>
+}
 

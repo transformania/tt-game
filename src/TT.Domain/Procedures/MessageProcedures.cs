@@ -115,8 +115,6 @@ namespace TT.Domain.Procedures
 
             List<Message> mydbMessages = mydbMessagesALL.Take(inboxLimit).ToList();
 
-            
-
             List<Message> mydbMessagesTODELETE = mydbMessagesALL.Skip(inboxLimit).ToList();
 
             List<Message> mydbSentMessages = messageRepo.Messages.Where(m => m.SenderId == player.Id).OrderByDescending(m => m.Timestamp).Take(20).ToList();
@@ -124,7 +122,8 @@ namespace TT.Domain.Procedures
             List<MessageViewModel> messageViewModelList = new List<MessageViewModel>();
             List<MessageViewModel> messageSentViewModelList = new List<MessageViewModel>();
 
-            foreach (Message message in mydbMessages) {
+            foreach (Message message in mydbMessages)
+            {
                 messageViewModelList.Add(GetMessage(message.Id));
             }
 
@@ -182,7 +181,7 @@ namespace TT.Domain.Procedures
                 messageRepo.DeleteMessage(message.Id);
             }
 
-           
+
         }
 
         public static void AddMessage(MessageSubmitViewModel messageVM, string membershipId)
@@ -220,27 +219,25 @@ namespace TT.Domain.Procedures
 
         }
 
-        public static void SendCovenantWideMessage(Player covLeader, PublicBroadcastViewModel input)
+        public static void SendCovenantWideMessage(Player covLeader, string input)
         {
             // get the players in the leader's covenant
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            List<Player> players = playerRepo.Players.Where(p => p.Covenant == covLeader.Covenant).ToList();
+            var query = from p in playerRepo.Players
+                        where p.Covenant == covLeader.Covenant && p.Id != covLeader.Id
+                        select p;
 
-            foreach (Player p in players)
+            foreach (var p in query)
             {
-                if (p.Id != covLeader.Id)
+                AddMessage(new Message
                 {
-                    Message message = new Message
-                    {
-                        ReceiverId = p.Id,
-                        SenderId = covLeader.Id,
-                        IsRead = false,
-                        ReadStatus = 0,
-                        MessageText = input.Message,
-                        Timestamp = DateTime.UtcNow,
-                    };
-                    AddMessage(message, covLeader.MembershipId);
-                }
+                    ReceiverId = p.Id,
+                    SenderId = covLeader.Id,
+                    IsRead = false,
+                    ReadStatus = 0,
+                    MessageText = input,
+                    Timestamp = DateTime.UtcNow,
+                }, covLeader.MembershipId);
             }
         }
 

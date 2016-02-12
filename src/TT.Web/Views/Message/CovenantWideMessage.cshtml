@@ -27,7 +27,7 @@
 
     <p>You can send a message to all members of your covenant here.</p>
 
-    @using (Html.BeginForm("SendCovenantWideMessage", "Covenant", FormMethod.Post))
+    @using (Html.BeginForm("SendCovenantWideMessage", "Message", FormMethod.Post))
     {
         @Html.TextAreaFor(m => m.Message)
         <br />

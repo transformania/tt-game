@@ -2221,14 +2221,17 @@ namespace TT.Web.Controllers
             if (item.dbItem.dbName.Contains("item_consumable_tome-") == true)
             {
 
-                string tomeName = item.dbItem.dbName.Split('-')[1];
+                //ITomeRepository tomeRepo = new EFTomeRepository();
+                //Tome tome = tomeRepo.Tomes.FirstOrDefault(t => t.BaseItem.dbName == item.Item.dbName);
 
-                string filename = AppDomain.CurrentDomain.BaseDirectory + "XMLs/SkillBooks/" + tomeName + ".txt";
-                string text = System.IO.File.ReadAllText(filename);
+                var tome = new
+                {
+                    Text = "hi"
+                };
 
                 SkillBookViewModel output = new SkillBookViewModel
                 {
-                    Text = text,
+                    Text = tome.Text,
                     AlreadyRead = ItemProcedures.PlayerHasReadBook(me, item.dbItem.dbName),
                     BookId = item.dbItem.Id,
                 };

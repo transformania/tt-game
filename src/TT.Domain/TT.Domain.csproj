@@ -125,7 +125,6 @@
     <Compile Include="Abstract\IPollEntryRepository.cs" />
     <Compile Include="Abstract\IPvPWorldStatRepository.cs" />
     <Compile Include="Abstract\IQuestRepository.cs" />
-    <Compile Include="Abstract\ITomeRepository.cs" />
     <Compile Include="Abstract\IRerollRepository.cs" />
     <Compile Include="Abstract\IReservedNameRepository.cs" />
     <Compile Include="Abstract\IRoot.cs" />
@@ -137,6 +136,9 @@
     <Compile Include="Abstract\ITFEnergyRepository.cs" />
     <Compile Include="Abstract\ITFMessageRepository.cs" />
     <Compile Include="Command.cs" />
+    <Compile Include="Commands\Assets\DeleteTome.cs" />
+    <Compile Include="Commands\Assets\UpdateTome.cs" />
+    <Compile Include="Commands\Assets\CreateTome.cs" />
     <Compile Include="Commands\ChatLog\WriteLogToDatabase.cs" />
     <Compile Include="Commands\Chat\CreateChatRoom.cs" />
     <Compile Include="Commands\Player\UpdateOnlineActivityTimestamp.cs" />
@@ -185,7 +187,6 @@
     <Compile Include="Concrete\EFPollEntryRepository.cs" />
     <Compile Include="Concrete\EFPvPWorldStatRepository.cs" />
     <Compile Include="Concrete\EFQuestRepository.cs" />
-    <Compile Include="Concrete\EFTomeRepository.cs" />
     <Compile Include="Concrete\EFRerollRepository.cs" />
     <Compile Include="Concrete\EFReservedNameRepository.cs" />
     <Compile Include="Concrete\EFRPClassifiedAdRepository.cs" />
@@ -201,14 +202,19 @@
     <Compile Include="DomainRegistry.cs" />
     <Compile Include="DomainRepository.cs" />
     <Compile Include="DTOs\ChatRoomDetail.cs" />
+    <Compile Include="DTOs\TomeDetail.cs" />
+    <Compile Include="Entities\Assets\Tome.cs" />
     <Compile Include="Entities\Chat\ChatRoom.cs" />
+    <Compile Include="Entities\Item\ItemSource.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\Identity\User.cs" />
     <Compile Include="IDomainCommand.cs" />
     <Compile Include="IDomainRepository.cs" />
+    <Compile Include="Mappings\AssetsMapping.cs" />
     <Compile Include="Mappings\ChatMappings.cs" />
     <Compile Include="Mappings\EntityMappings.cs" />
     <Compile Include="Mappings\IdentityMappings.cs" />
+    <Compile Include="Mappings\ItemMappings.cs" />
     <Compile Include="Models\AchevementBadge.cs" />
     <Compile Include="Models\Achievement.cs" />
     <Compile Include="Models\AIDirective.cs" />
@@ -263,7 +269,6 @@
     <Compile Include="Models\Skill.cs" />
     <Compile Include="Models\TFEnergy.cs" />
     <Compile Include="Models\TFMessage.cs" />
-    <Compile Include="Models\Tome.cs" />
     <Compile Include="Procedures\AIDirectiveProcedures.cs" />
     <Compile Include="Procedures\AIProcedures.cs" />
     <Compile Include="Procedures\AnimalProcedures.cs" />
@@ -309,7 +314,9 @@
     <Compile Include="Procedures\TFEnergyProcedures.cs" />
     <Compile Include="Procedures\WorldUpdateProcedures.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Queries\Assets\GetTome.cs" />
     <Compile Include="Queries\Chat\GetChatRooms.cs" />
+    <Compile Include="Queries\Assets\GetTomes.cs" />
     <Compile Include="Queries\DMRoll\GetRoll.cs" />
     <Compile Include="Queries\Player\GetPlayerFormFromMembership.cs" />
     <Compile Include="Queries\Statics\GetStaticItem.cs" />

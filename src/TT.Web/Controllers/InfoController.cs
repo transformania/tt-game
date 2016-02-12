@@ -63,6 +63,12 @@ namespace TT.Web.Controllers
              return PartialView(output);
          }
 
+        public ActionResult AllItems()
+        {
+            List<DbStaticItem> output = ItemProcedures.GetAllDbStaticItems().ToList();
+            return PartialView(output);
+        }
+
         public ActionResult ServerPopulation()
         {
             IServerLogRepository repo = new EFServerLogRepository();

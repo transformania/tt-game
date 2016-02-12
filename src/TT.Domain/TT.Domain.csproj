@@ -125,6 +125,7 @@
     <Compile Include="Abstract\IPollEntryRepository.cs" />
     <Compile Include="Abstract\IPvPWorldStatRepository.cs" />
     <Compile Include="Abstract\IQuestRepository.cs" />
+    <Compile Include="Abstract\ITomeRepository.cs" />
     <Compile Include="Abstract\IRerollRepository.cs" />
     <Compile Include="Abstract\IReservedNameRepository.cs" />
     <Compile Include="Abstract\IRoot.cs" />
@@ -184,6 +185,7 @@
     <Compile Include="Concrete\EFPollEntryRepository.cs" />
     <Compile Include="Concrete\EFPvPWorldStatRepository.cs" />
     <Compile Include="Concrete\EFQuestRepository.cs" />
+    <Compile Include="Concrete\EFTomeRepository.cs" />
     <Compile Include="Concrete\EFRerollRepository.cs" />
     <Compile Include="Concrete\EFReservedNameRepository.cs" />
     <Compile Include="Concrete\EFRPClassifiedAdRepository.cs" />
@@ -261,6 +263,7 @@
     <Compile Include="Models\Skill.cs" />
     <Compile Include="Models\TFEnergy.cs" />
     <Compile Include="Models\TFMessage.cs" />
+    <Compile Include="Models\Tome.cs" />
     <Compile Include="Procedures\AIDirectiveProcedures.cs" />
     <Compile Include="Procedures\AIProcedures.cs" />
     <Compile Include="Procedures\AnimalProcedures.cs" />

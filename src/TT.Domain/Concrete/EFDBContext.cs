@@ -61,6 +61,7 @@ namespace TT.Domain.Concrete
         public DbSet<BossDamage> BossDamages { get; set; }
         public DbSet<RPClassifiedAd> RPClassifiedAds { get; set; }
         public DbSet<NewsPost> NewsPosts { get; set; }
+        public DbSet<Tome> Tomes { get; set; }
 
         public DbSet<DbStaticFurniture> DbStaticFurniture { get; set; }
         public DbSet<CovenantLog> CovenantLogs { get; set; }

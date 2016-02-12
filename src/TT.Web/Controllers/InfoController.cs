@@ -41,7 +41,7 @@ namespace TT.Web.Controllers
         public ActionResult GameNews()
         {
             INewsPostRepository repo = new EFNewsPostRepository();
-            var output = repo.NewsPosts.Where(n => n.ViewState == 1); // 1 == Live
+            var output = repo.NewsPosts.Where(n => n.ViewState == 1).OrderByDescending(n => n.Timestamp); ; // 1 == Live
             return View(output);
         }
 

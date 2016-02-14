@@ -2,6 +2,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Highway.Data;
 using TT.Domain.Entities.Chat;
+using TT.Domain.Entities.Identity;
 
 namespace TT.Domain.Commands.Chat
 {
@@ -25,7 +26,9 @@ namespace TT.Domain.Commands.Chat
                 if (ctx.AsQueryable<ChatRoom>().Any(cr => cr.Name == RoomName))
                     throw new DomainException("Chat room '{0}' already exists", RoomName);
 
-                ctx.Add(ChatRoom.Create(this));
+                var creator = ctx.AsQueryable<User>().Single(u => u.Id == CreatorId);
+
+                ctx.Add(ChatRoom.Create(creator, RoomName));
                 ctx.Commit();
             };
 

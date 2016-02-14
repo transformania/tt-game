@@ -1,5 +1,6 @@
 ﻿using System;
 using TT.Domain.Entities.Chat;
+using TT.Tests.Builders.Identity;
 
 namespace TT.Tests.Builders.Chat
 {
@@ -9,7 +10,7 @@ namespace TT.Tests.Builders.Chat
         {
             Instance = Create();
             With(x => x.Name, "Test Room");
-            With(x => x.Creator, Guid.NewGuid().ToString());
+            With(x => x.Creator, new UserBuilder().BuildAndSave());
             With(x => x.CreatedAt, DateTime.UtcNow);
         }
     }

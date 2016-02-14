@@ -6,6 +6,7 @@ using TT.Domain;
 using TT.Domain.Commands.Chat;
 using TT.Domain.Entities.Chat;
 using TT.Tests.Builders.Chat;
+using TT.Tests.Builders.Identity;
 
 namespace TT.Tests.Domain.Commands.Chat
 {
@@ -15,15 +16,15 @@ namespace TT.Tests.Domain.Commands.Chat
         [Test]
         public void Should_create_new_chat_room()
         {
-            var creatorId = Guid.NewGuid().ToString();
+            var creator = new UserBuilder().BuildAndSave();
             
-            var cmd = new CreateChatRoom("Test_Room", creatorId);
+            var cmd = new CreateChatRoom("Test_Room", creator.Id);
 
             Repository.Execute(cmd);
 
             DataContext.AsQueryable<ChatRoom>().Count(
                 cr => cr.Name == "Test_Room" && 
-                cr.Creator == creatorId && 
+                cr.Creator.Id == creator.Id && 
                 cr.CreatedAt.Value.Date == DateTime.UtcNow.Date)
             .Should().Be(1);
         }
@@ -70,9 +71,11 @@ namespace TT.Tests.Domain.Commands.Chat
         [TestCase("0-0")]
         public void Should_allow_underscores_or_hypens_in_room_names(string roomName)
         {
-            Repository.Execute(new CreateChatRoom(roomName, Guid.NewGuid().ToString()));
+            var creator = new UserBuilder().BuildAndSave();
 
-            DataContext.AsQueryable<ChatRoom>().Any(cr => cr.Name == roomName).Should().BeTrue();
+            Repository.Execute(new CreateChatRoom(roomName, creator.Id));
+
+            DataContext.AsQueryable<ChatRoom>().Any(cr => cr.Name == roomName && cr.Creator.Id == creator.Id).Should().BeTrue();
         }
     }
 }

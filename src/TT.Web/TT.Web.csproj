@@ -52,6 +52,14 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="FeatureSwitcher, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FeatureSwitcher.1.1.0\lib\4.0\FeatureSwitcher.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FeatureSwitcher.Configuration, Version=1.0.1.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FeatureSwitcher.Configuration.1.0.1\lib\4.0\FeatureSwitcher.Configuration.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
       <Private>True</Private>
@@ -197,6 +205,7 @@
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="CustomHtmlHelpers\CharactersHere.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
+    <Compile Include="Features.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Services\ChatMessageProcessor.cs" />
     <Compile Include="Services\ChatPersistenceService.cs" />
@@ -364,6 +373,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="MachineKey.config" />
+    <Content Include="features.config" />
     <None Include="Properties\PublishProfiles\transformania-time.com - Web Deploy.pubxml">
       <SubType>Designer</SubType>
     </None>

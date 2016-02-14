@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using FeatureSwitcher.Configuration;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
@@ -21,6 +22,8 @@ namespace TT.Web
     {
         public void Configuration(IAppBuilder app)
         {
+            Features.Are.ConfiguredBy.AppConfig();
+            
             // Configure the db context, user manager and role manager to use a single instance per request
             app.CreatePerOwinContext(ApplicationDbContext.Create);
             app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);

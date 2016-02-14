@@ -1,6 +1,8 @@
-﻿using FeatureSwitcher;
+﻿using FeatureSwitch;
+using FeatureSwitch.Strategies;
 
 namespace TT.Web
 {
-    public class ChatOverhaul : IFeature {}
+    [AppSettings(Key = "Features.Chat.V2")]
+    public class ChatOverhaul : BaseFeature {}
 }

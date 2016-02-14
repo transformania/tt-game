@@ -2,6 +2,7 @@
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using FeatureSwitch;
 using TT.Domain;
 
 namespace TT.Web
@@ -13,6 +14,8 @@ namespace TT.Web
     {
         protected void Application_Start()
         {
+            new FeatureSetBuilder().Build();
+
             AreaRegistration.RegisterAllAreas();
 
             GlobalConfiguration.Configure(WebApiConfig.Register);

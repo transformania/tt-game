@@ -1,5 +1,6 @@
 ﻿using System.Web.Mvc;
 using System.Web.Routing;
+using FeatureSwitch;
 
 namespace TT.Web
 {
@@ -8,6 +9,9 @@ namespace TT.Web
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+
+            if (FeatureContext.IsEnabled<ChatV2>())
+                routes.MapRoute("Chat", "Chat", new { controller = "Chat", action = "Index" });
 
             routes.MapRoute("ChatRoom", "Chat/Rooms/{room}", new { controller = "Chat", action = "Index", room = UrlParameter.Optional });
 

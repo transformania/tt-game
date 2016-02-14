@@ -7,7 +7,7 @@ using TT.Domain.Models;
 using TT.Domain.Procedures;
 using TT.Domain.ViewModels;
 
-namespace TT.Web.Chat
+namespace TT.Web.Hubs
 {
     public class DuelHub : Hub
     {

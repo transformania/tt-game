@@ -187,9 +187,6 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Chat\ChatHub.cs" />
-    <Compile Include="Chat\DuelHub.cs" />
-    <Compile Include="Chat\NoticeHub.cs" />
     <Compile Include="Controllers\ChatController.cs" />
     <Compile Include="Controllers\ContributionController.cs" />
     <Compile Include="Controllers\CovenantController.cs" />
@@ -206,6 +203,9 @@
     <Compile Include="CustomHtmlHelpers\CharactersHere.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Features.cs" />
+    <Compile Include="Hubs\ChatHub.cs" />
+    <Compile Include="Hubs\DuelHub.cs" />
+    <Compile Include="Hubs\NoticeHub.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Services\ChatMessageProcessor.cs" />
     <Compile Include="Services\ChatPersistenceService.cs" />

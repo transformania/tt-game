@@ -20,10 +20,11 @@ namespace TT.Tests.Domain.Commands.Chat
             
             var cmd = new CreateChatRoom("Test_Room", creator.Id);
 
-            Repository.Execute(cmd);
+            var room = Repository.Execute(cmd);
 
-            DataContext.AsQueryable<ChatRoom>().Count(
-                cr => cr.Name == "Test_Room" && 
+            DataContext.AsQueryable<ChatRoom>().Count(cr => 
+                cr.Id == room.Id &&
+                cr.Name == "Test_Room" && 
                 cr.Creator.Id == creator.Id && 
                 cr.CreatedAt.Value.Date == DateTime.UtcNow.Date)
             .Should().Be(1);

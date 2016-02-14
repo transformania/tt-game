@@ -6,7 +6,7 @@ using TT.Domain.Entities.Identity;
 
 namespace TT.Domain.Commands.Chat
 {
-    public class CreateChatRoom : Highway.Data.Command
+    public class CreateChatRoom : DomainCommand<ChatRoom>
     {
         public string RoomName { get; private set; }
         public string CreatorId { get; private set; }
@@ -17,9 +17,11 @@ namespace TT.Domain.Commands.Chat
             CreatorId = creatorId;
         }
 
-        public override void Execute(IDataContext context)
+        public override ChatRoom Execute(IDataContext context)
         {
             Validate();
+
+            ChatRoom room = null;
 
             ContextQuery = ctx =>
             {
@@ -28,11 +30,15 @@ namespace TT.Domain.Commands.Chat
 
                 var creator = ctx.AsQueryable<User>().Single(u => u.Id == CreatorId);
 
-                ctx.Add(ChatRoom.Create(creator, RoomName));
+                room = ChatRoom.Create(creator, RoomName);
+
+                ctx.Add(room);
                 ctx.Commit();
             };
 
-            base.Execute(context);
+            ExecuteInternal(context);
+
+            return room;
         }
 
         private void Validate()

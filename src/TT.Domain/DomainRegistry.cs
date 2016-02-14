@@ -1,4 +1,3 @@
-using Highway.Data;
 using TT.Domain.Abstract;
 
 namespace TT.Domain
@@ -10,6 +9,6 @@ namespace TT.Domain
     public static class DomainRegistry
     {
         public static IRoot Root { get; set; }
-        public static IRepository Repository { get; set; }
+        public static IDomainRepository Repository { get; set; }
     }
 }

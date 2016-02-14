@@ -2,5 +2,5 @@
 
 namespace TT.Web
 {
-    public class ChatOverhal : IFeature {}
+    public class ChatOverhaul : IFeature {}
 }

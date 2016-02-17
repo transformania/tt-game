@@ -356,7 +356,7 @@ namespace TT.Web.Controllers
         }
 
         [Authorize]
-        public ActionResult TradeWithPetMerchant()
+        public ActionResult TradeWithPetMerchant(int offset)
         {
 
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
@@ -401,6 +401,11 @@ namespace TT.Web.Controllers
 
             ViewBag.DisableReleaseLink = true;
             IEnumerable<ItemViewModel> output = ItemProcedures.GetAllPlayerItems(merchant.Id).Where(i => i.Item.ItemType == PvPStatics.ItemType_Pet);
+            int petCount = output.Count();
+            ViewBag.PetCount = output.Count();
+            ViewBag.MaxPageSize = (int)Math.Floor((double)petCount / (double)PvPStatics.PaginationPageSize)+1;
+            ViewBag.CurrentPage = offset + 1;
+            output = output.Skip(PvPStatics.PaginationPageSize * offset).Take(PvPStatics.PaginationPageSize);
 
             ViewBag.ErrorMessage = TempData["Error"];
             ViewBag.SubErrorMessage = TempData["SubError"];

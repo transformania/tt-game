@@ -38,14 +38,25 @@
 <div class="containerInner">
     <p>You can purchase pets and familiars from Wüffie, poor creatures who have been left behind by their owners and would otherwise roam the streets as feral creatures.  Having spent many years as a pet herself, Wüffie will gladly buy and sell all manners of animals and creatures and make sure they're well cared for.</p>
 
-   @{
-       if (ViewBag.PlayerHasPet == true)
-    {
-        <p class="playerCleansingNotification">You will not be able to purchase anything from Wüffie since you do not have room to carry anything else in your inventory.</p>
+    @{
+        if (ViewBag.PlayerHasPet == true)
+        {
+            <p class="playerCleansingNotification">You will not be able to purchase anything from Wüffie since you do not have room to carry anything else in your inventory.</p>
+        }
     }
-}
 
-    <h3>You currently have @ViewBag.MyMoney <span title="Arpeyjis" class="icon icon-money"></span> Arpeyjis to spend.</h3>
+  <h3>You currently have @ViewBag.MyMoney <span title="Arpeyjis" class="icon icon-money"></span> Arpeyjis to spend.</h3>
+
+    <span>Page <b>@ViewBag.CurrentPage</b>.  Jump to page:</span>
+
+    @{
+        for (int i = 0; i < ViewBag.MaxPageSize; i++)
+        {
+            @Html.ActionLink((i+1).ToString() + " | ", "TradeWithPetMerchant", "NPC", new { offset = i }, null)
+        }
+    }
+
+    <span><i>@ViewBag.PetCount total pets</i></span>
 
 
     <div id="fullDetails">

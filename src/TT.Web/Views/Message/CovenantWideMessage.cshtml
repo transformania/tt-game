@@ -29,7 +29,8 @@
 
     @using (Html.BeginForm("SendCovenantWideMessage", "Message", FormMethod.Post))
     {
-        @Html.TextAreaFor(m => m.Message)
+        @Html.AntiForgeryToken()
+        @Html.TextArea("Message")
         <br />
         <input type="submit" value="Send" />
     }

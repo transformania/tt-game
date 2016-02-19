@@ -11,6 +11,8 @@ namespace TT.Web
 
             routes.MapRoute("ChatRoom", "Chat/Rooms/{room}", new {controller = "Chat", action = "Index", room = UrlParameter.Optional });
 
+            routes.MapMvcAttributeRoutes();
+
             routes.MapRoute(
                name: "Default",
                url: "{controller}/{action}/{id}",

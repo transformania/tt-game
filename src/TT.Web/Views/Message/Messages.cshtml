@@ -65,7 +65,7 @@
                 <th style="width: 25%;">Sender</th>
                 <th>Message</th>
                 <th style="width: 16%;">Time Sent</th>
-                <th style="width: 10%;">Delete</th>
+                <th style="width: 20%;">Action</th>
             </tr>
         </thead>
         <tbody>
@@ -115,7 +115,24 @@
                         }
 
                         <td class="timeSent"><span style="font-size: 10px">@CharactersHere.DatetimeToTimeago(msg.dbMessage.Timestamp)</span></td>
-                        <td>@Html.ActionLink("[ x ]", "DeleteMessage", "Message", new { messageId = msg.dbMessage.Id }, null) @Html.ActionLink("[mark new]", "MarkAsUnread", "Message", new { messageId = msg.dbMessage.Id }, null)</td>
+                        <td>
+                            @using (Html.BeginForm("DeleteMessage", "Message", FormMethod.Post))
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.Hidden("deleteAll", false)
+                                @Html.Hidden("messageId", msg.dbMessage.Id)
+
+                                <button id="FormDeleteLink">delete message</button>
+                            }
+
+                            @using (Html.BeginForm("MarkAsUnread", "Message", FormMethod.Post))
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.Hidden("messageId", msg.dbMessage.Id)
+
+                                <button id="FormMarkLink">mark as unread</button>
+                            }
+                        </td>
                     </tr>
                 }
             }
@@ -202,6 +219,10 @@
             });
 
             $('#FormDeleteLink').on('click', function () {
+                $(this).closest('form')[0].submit();
+            });
+
+            $('#FormMarkLink').on('click', function () {
                 $(this).closest('form')[0].submit();
             });
         });

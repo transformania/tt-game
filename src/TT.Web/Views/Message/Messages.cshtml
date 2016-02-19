@@ -106,16 +106,16 @@
                         @{
                     if (msg.dbMessage.ReadStatus == 0 || msg.dbMessage.ReadStatus == 2)
                     {
-                        <td class="newlink">@Html.ActionLink(messageTeaser, "ReadMessage", "Messages", new { messageId = msg.dbMessage.Id }, null)</td>
+                        <td class="newlink">@Html.ActionLink(messageTeaser, "ReadMessage", "Message", new { messageId = msg.dbMessage.Id }, null)</td>
                     }
                     else
                     {
-                        <td>@Html.ActionLink(messageTeaser, "ReadMessage", "Messages", new { messageId = msg.dbMessage.Id }, null)</td>
+                        <td>@Html.ActionLink(messageTeaser, "ReadMessage", "Message", new { messageId = msg.dbMessage.Id }, null)</td>
                     }
                         }
 
                         <td class="timeSent"><span style="font-size: 10px">@CharactersHere.DatetimeToTimeago(msg.dbMessage.Timestamp)</span></td>
-                        <td>@Html.ActionLink("[ x ]", "DeleteMessage", "Messages", new { messageId = msg.dbMessage.Id }, null) @Html.ActionLink("[mark new]", "MarkAsUnread", "Messages", new { messageId = msg.dbMessage.Id }, null)</td>
+                        <td>@Html.ActionLink("[ x ]", "DeleteMessage", "Message", new { messageId = msg.dbMessage.Id }, null) @Html.ActionLink("[mark new]", "MarkAsUnread", "Message", new { messageId = msg.dbMessage.Id }, null)</td>
                     </tr>
                 }
             }
@@ -188,7 +188,7 @@
         if (Model.WearerName != null && Model.WearerName != null)
         {
 
-            <p> @Html.ActionLink("Telepathically talk to the person wearing you, " + Model.WearerName, "Write", "Messages", new { playerId = Model.WearerId, responseTo = -1 }, null) </p>
+            <p> @Html.ActionLink("Telepathically talk to the person wearing you, " + Model.WearerName, "Write", "Message", new { playerId = Model.WearerId, responseTo = -1 }, null) </p>
         }
     }
 </div>

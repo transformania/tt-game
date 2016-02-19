@@ -20,8 +20,8 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav" style="width:100%;">
                 <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
-                <li>@Html.ActionLink("Back to Messages", "Index", "Messages")</li>
-                <li>@Html.ActionLink("Reply", "Write", "Messages", new { playerId = Model.dbMessage.SenderId, responseTo = Model.dbMessage.Id }, null)</li>
+                <li>@Html.ActionLink("Back to Messages", "Index", "Message")</li>
+                <li>@Html.ActionLink("Reply", "Write", "Message", new { playerId = Model.dbMessage.SenderId, responseTo = Model.dbMessage.Id }, null)</li>
                 <li><a id="DeleteLink" href="javascript:void(0)">Delete</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->

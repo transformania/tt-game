@@ -31,7 +31,6 @@ namespace TT.Domain.Procedures.BossProcedures
         /// </summary>
         public static readonly string[] animateSpellsToCast = { GreatFaeSpell, DarkFaeSpell, EnchantedTreeSpell };
 
-        public const string FairyPetSpell = "skill_HEY!_LISTEN!_Varn";
         public const string FlowerSpell = "skill_Tainted_Flower_Roxanne246810(Rachael_Victor/Yuki_Kitsu)";
         public const string ServantOfLunarFaeSpell = "skill_Touch_of_the_Moon_Roxanne246810(Rachael_Victor/Yuki_Kitsu)"; // NOT YET READY FOR RELEASE
 
@@ -43,7 +42,7 @@ namespace TT.Domain.Procedures.BossProcedures
         /// <summary>
         /// A list of the inanimate and pet spells Narcissa can cast
         /// </summary>
-        public static readonly string[] inanimateSpellsToCast = { FairyPetSpell, FlowerSpell }; // TODO:  Add in ServantOfLunarFaeSpell when it is ready
+        public static readonly string[] inanimateSpellsToCast = { FlowerSpell }; // TODO:  Add in ServantOfLunarFaeSpell when it is ready
 
         /// <summary>
         /// Probability of drawing Narcissa's aggro when she already has a target set
@@ -92,7 +91,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     Form = Form,
                     Money = 1000,
                     Mobility = PvPStatics.MobilityFull,
-                    Level = 23,
+                    Level = 25,
                     MembershipId = AIStatics.FaebossId.ToString(),
                     BotId = AIStatics.FaebossId,
                     ActionPoints_Refill = 360,

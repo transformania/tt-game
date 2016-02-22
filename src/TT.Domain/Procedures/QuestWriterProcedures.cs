@@ -35,6 +35,8 @@ namespace TT.Domain.Procedures
             questStart.PrerequisiteQuest = input.PrerequisiteQuest;
             questStart.RequiredGender = input.RequiredGender;
             questStart.StartState = input.StartState;
+            questStart.Tags = input.Tags;
+            questStart.Description = input.Description;
 
             repo.SaveQuestStart(questStart);
 
@@ -151,6 +153,7 @@ namespace TT.Domain.Procedures
             questConnection.QuestStateFailToId = input.QuestStateFailToId;
             questConnection.RankInList = input.RankInList;
             questConnection.Notes = input.Notes;
+            questConnection.Text = input.Text;
 
             // always set this to something, even if it's just empty string
             if (questConnection.ConnectionName == null)

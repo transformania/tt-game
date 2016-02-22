@@ -3,46 +3,90 @@ using System.Collections.Generic;
 
 namespace TT.Domain.Models
 {
+
+    /// <summary>
+    /// A QuestStart holds the information about the origin of a quest including where the quest can be found, player level / round turn elapsement requirements, and which QuestState to launch into.
+    /// </summary>
     public class QuestStart
     {
         public int Id { get; set; }
+
+        /// <summary>
+        /// The dbName of this quest
+        /// </summary>
         public string dbName { get; set; }
+
+        /// <summary>
+        /// The human-readable name of this quest
+        /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// The location in which this quest is started
+        /// </summary>
         public string Location { get; set; }
+
+        /// <summary>
+        /// The earliest round turn number that must be elapsed for players to be able to begin this quest
+        /// </summary>
         public int MinStartTurn { get; set; }
+
+        /// <summary>
+        /// The highest round turn number that can be elapsed for players to able to begin this quest
+        /// </summary>
         public int MaxStartTurn { get; set; }
+
+        /// <summary>
+        /// The lowest level the player can be before this quest becomes unavailable to them.
+        /// </summary>
         public int MinStartLevel { get; set; }
+
+        /// <summary>
+        /// The highest level the player can be before this quest becomes unavailable to them.
+        /// </summary>
         public int MaxStartLevel { get; set; }
+
+        /// <summary>
+        /// The Id of the QuestStart of the quest that must be completed before this quest can be started.  Set to 0 if there is no prerequisite.
+        /// </summary>
         public int PrerequisiteQuest { get; set; }
+
+        /// <summary>
+        /// The sex the player must be in order to begin this quest
+        /// </summary>
         public int RequiredGender { get; set; }
+
+        /// <summary>
+        /// Id of the first QuestState that the player starts in when beginning this quest
+        /// </summary>
         public int StartState { get; set; }
+
+        /// <summary>
+        /// Determines whether or not players can begin the quest or not
+        /// </summary>
         public bool IsLive { get; set; }
 
-        //[Id] -- int
-        //[dbName] - string.  Database name of the quest
-        //[Name] - string.  Friendly(human-readable) name of the quest
-        //[Location] - string.  Where the quest is launched from.
-        //[MinStartTurn] - int.  Minimum turn a player can embark on the quest
-        //[MaxStartTurn] - int Maximum turn a player can embark on the quest
-        //[RequiredGender] - string, “male”, “female”, or “neutral”.  Gender required to start the quest.  If quests must be started at custom form there will need to be some way to do a gender swap.
-        //[MinStartLevel] - int.  Minimum level the player must be to start this quest
-        //[MaxStartLevel] - int.  Maximum level the player can be to start the quest.
-        //[PrerequisiteQuest] - string.  A previous quest that must be completed before this one can be attempted
-        //[StartState] - string.  The first state that the quest immediately launches into
+        /// <summary>
+        /// Words to describe the themes involved in the quest, ie 'TG', 'inanimate', 'farm', 'vore', etc
+        /// </summary>
+        public string Tags { get; set; }
+
+        /// <summary>
+        /// A short description/introduction of the quest that players can see before engaging on the quest itself
+        /// </summary>
+        public string Description { get; set; }
+
     }
 
     public class QuestState
     {
         public int Id { get; set; }
-        //public int ParentQuestStateId { get; set; }
         public string QuestStateName { get; set; }
         public int QuestId { get; set; }
         public string Text { get; set; }
         public virtual List<QuestConnectionRequirement> QuestConnectionRequirements { get; set; }
         public virtual List<QuestStatePreaction> QuestStatePreactions { get; set; }
         public virtual List<QuestEnd> QuestEnds { get; set; }
-        //public int JumpToQuestStateId { get; set; }
-        //public string ChoiceText { get; set; }
         public int QuestEndId { get; set; }
         public bool HideIfRequirementsNotMet { get; set; }
 
@@ -67,18 +111,6 @@ namespace TT.Domain.Models
         public float Y { get; set; }
     }
 
-    //[QuestState]
-    //This table has all of the nodes that a quest can contain in addition to the requirements to getting for it.Each state has a block of text and further states to pursue, some of which can be conditional.
-    //[Id] -- int
-    //[QuestId] -- int.  The Id of the quest this belongs to (FK)
-    //[Text] - string.  The text that is displayed when a player is at this state of the quest
-    //[Image] - string.  URL of an image to accompany this state if there is one
-    //[NextStates] - All of the possible actions that a player can make in this state of the quest.
-    //[MandatoryRequirements] - All of the requirements (ie, minimum Luck of 100 and minimum Charisma of 100) necessary to choose this quest state
-    //[RollRequirements] - Roll-based requirements for entering this quest state.  This means a requirement is not a hard requirement but can be rolled against.  For example a player with 50 luck
-    //[FailStateId] - string.  QuestState to go to instead if the attempt to get to this one failed via a not - met requirement
-    //[ChoiceText] - string.The text to be displayed when given the option to enter this quest state, ie “Open the door” or “Run back outside.”
-    //[QuestEndId] - int.  The quest end to run when this state is reached (when this quest state is a possible completion state.)
 
     /// <summary>
     ///  A connection between two quest states.
@@ -138,6 +170,11 @@ namespace TT.Domain.Models
         /// Short area the quest writers can use to keep track of elements of this quest connection.  Questing players do not see this.
         /// </summary>
         public string Notes { get; set; }
+
+        /// <summary>
+        /// Optional text to display to the user when traversing down this connection.  This text will print out above the QuestState text immediately after and only immediately after performing the previous choice; consecutive reloads will no longer display it.
+        /// </summary>
+        public string Text { get; set; }
 
         /// <summary>
         /// Returns true if at least one of the connection requirements is a random roll

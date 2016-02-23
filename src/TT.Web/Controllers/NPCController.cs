@@ -356,7 +356,7 @@ namespace TT.Web.Controllers
         }
 
         [Authorize]
-        public ActionResult TradeWithPetMerchant(int offset)
+        public ActionResult TradeWithPetMerchant(int offset = 0)
         {
 
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());

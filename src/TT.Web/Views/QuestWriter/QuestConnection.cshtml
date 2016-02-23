@@ -88,8 +88,13 @@
 
     <br />    <br />
 
+    <label>Optional text displayed when the player passes through this quest connection</label>    <br />
+    @Html.TextAreaFor(m => m.QuestConnection.Text, new { @placeholder = "Example:  You raise your torch and walk down the narrow passageway." })
 
-    <label>Name of this connection (for internal purposes only):</label>    <br />
+    <br/>    <br/>
+
+
+    <label> Name of this connection(for internal purposes only):</label>    <br />
             @Html.TextBoxFor(m => m.QuestConnection.ConnectionName)
 
             <br />    <br />

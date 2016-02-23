@@ -43,8 +43,13 @@
 
     <br /><br />
 
-    @*<label>Quest Database Name:</label>
-    @Html.TextBoxFor(m => m.dbName)*@
+    <label>Description:</label><br />
+    @Html.TextAreaFor(m => m.Description, new { @placeholder = "Example:  You see a wanted poster on the wall with a high bounty asking people to risk their animacy to track down a notorious spellslinger with over a hundred inanimated victims to her name.  Do you sign up to take part in the manhunt?" })
+
+    <br /><br />
+
+    <label>Quest Tags:</label><br />
+    @Html.TextBoxFor(m => m.Tags, new { @placeholder = "Example:  transgender, farm, picnic, vore, mind control" })
 
     <br /><br />
 
@@ -94,7 +99,7 @@
 
         <br /><br />
 
-        <label>Prerequisite Quest Id (not yet implemented):</label>
+        <label>Prerequisite Quest Id:</label>
         @Html.TextBoxFor(m => m.PrerequisiteQuest)
 
         <br /><br />

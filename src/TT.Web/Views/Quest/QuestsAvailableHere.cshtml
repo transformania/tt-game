@@ -33,7 +33,10 @@
         foreach (QuestStart s in Model.AvailableQuests)
         {
             <div style="border: 1px solid black">
-                <p>@Html.ActionLink("Begin Quest:  " + s.Name, "StartQuest", "Quest", new { Id = s.Id }, new { @class = "inanimateAction"})</p>
+                <p>@Html.ActionLink("Begin", "StartQuest", "Quest", new { Id = s.Id }, new { @class = "inanimateAction"})</p>
+                <h4>@s.Name</h4>
+                <p><i>@s.Description</i></p><br />
+                <p><b>Themes:  @s.Tags</b></p>
                 
                 @{
                     if (s.MinStartLevel > 0)
@@ -64,7 +67,9 @@
         foreach (QuestStart s in Model.AllQuests.Where(q => q.IsLive==true))
         {
             <div style="border: 1px solid black">
-                <p><b>@s.Name</b></p>
+                <h4>@s.Name</h4>
+                <p><i>@s.Description</i></p><br />
+                <p><b>Themes:  @s.Tags</b></p>
 
                 @{
                     if (s.MinStartLevel > 0)

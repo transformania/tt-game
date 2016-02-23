@@ -11,12 +11,12 @@ using TT.Web.Services;
 
 namespace TT.Web.Controllers
 {
-    public class MessagesController : BaseController
+    public class MessagesController : Controller
     {
         // GET: /Messages
         [HttpGet]
         [Authorize]
-        public override ActionResult Index()
+        public ActionResult Index()
         {
             // this might fix some odd log-off message interception oddities... maybe?
             string myMembershipId = User.Identity.GetUserId();

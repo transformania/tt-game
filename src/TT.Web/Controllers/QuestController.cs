@@ -142,6 +142,8 @@ namespace TT.Web.Controllers
             ViewBag.SubErrorMessage = TempData["SubError"];
             ViewBag.Result = TempData["Result"];
 
+            output.SetConnectionText((string)TempData["ConnectionText"]);
+
             return PartialView(output);
         }
 
@@ -221,6 +223,8 @@ namespace TT.Web.Controllers
             QuestProcedures.ProcessQuestStatePreactions(me, nextState);
 
             PlayerProcedures.ChangePlayerActionManaNoTimestamp(1, 0, 0, me.Id);
+
+            TempData["ConnectionText"] = desiredConnection.Text;
 
             return RedirectToAction("Quest");
         }

@@ -52,6 +52,7 @@
         }
     }
 
+    @Html.Raw(QuestProcedures.Textify(Model.ConnectionText, Model.Player.Player.ToDbPlayer()))
     @Html.Raw(QuestProcedures.Textify(Model.QuestState.Text, Model.Player.Player.ToDbPlayer()))
 </div>
 

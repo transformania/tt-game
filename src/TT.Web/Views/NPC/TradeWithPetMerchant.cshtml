@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TT.Domain.ViewModels.ItemViewModel>
+﻿@model TT.Domain.ViewModels.WuffieTradeViewModel
 @using TT.Domain.ViewModels
 @using TT.Web.CustomHtmlHelpers
 
@@ -38,14 +38,25 @@
 <div class="containerInner">
     <p>You can purchase pets and familiars from Wüffie, poor creatures who have been left behind by their owners and would otherwise roam the streets as feral creatures.  Having spent many years as a pet herself, Wüffie will gladly buy and sell all manners of animals and creatures and make sure they're well cared for.</p>
 
-   @{
-       if (ViewBag.PlayerHasPet == true)
-    {
-        <p class="playerCleansingNotification">You will not be able to purchase anything from Wüffie since you do not have room to carry anything else in your inventory.</p>
+    @{
+        if (Model.PlayerHasPet == true)
+        {
+            <p class="playerCleansingNotification">You will not be able to purchase anything from Wüffie since you do not have room to carry anything else in your inventory.</p>
+        }
     }
-}
 
-    <h3>You currently have @ViewBag.MyMoney <span title="Arpeyjis" class="icon icon-money"></span> Arpeyjis to spend.</h3>
+  <h3>You currently have @Model.Money <span title="Arpeyjis" class="icon icon-money"></span> Arpeyjis to spend.</h3>
+
+    <span>Page <b>@Model.CurrentPage</b>.  Jump to page:</span>
+
+    @{
+        for (int i = 0; i < Model.MaxPageSize; i++)
+        {
+            @Html.ActionLink((i+1).ToString() + " | ", "TradeWithPetMerchant", "NPC")
+        }
+    }
+
+    <span><i>@Model.PetCount total pets</i></span>
 
 
     <div id="fullDetails">
@@ -53,7 +64,7 @@
     </div> 
     <div id="row">
         @{
-            foreach (ItemViewModel i in Model.OrderBy(i => i.dbItem.dbName).ThenByDescending(i => i.dbItem.Level))
+            foreach (ItemViewModel i in Model.Pets.OrderBy(i => i.dbItem.dbName).ThenByDescending(i => i.dbItem.Level))
             {
                 @Html.Partial("~/Views/PvP/partial_ShopkeeperItem.cshtml", i)
             }

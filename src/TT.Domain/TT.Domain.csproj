@@ -333,6 +333,7 @@
     <Compile Include="ViewModels\StaticItem.cs" />
     <Compile Include="ViewModels\StaticSkill.cs" />
     <Compile Include="ViewModels\WorldStats.cs" />
+    <Compile Include="ViewModels\WuffieTradeViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

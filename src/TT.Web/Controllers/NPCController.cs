@@ -356,11 +356,11 @@ namespace TT.Web.Controllers
         }
 
         [Authorize]
-        public ActionResult TradeWithPetMerchant()
+        public ActionResult TradeWithPetMerchant(int offset = 0)
         {
 
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
-            ViewBag.MyMoney = Math.Floor(me.Money);
+            
 
             // assert player is animate
             if (me.Mobility != "full")
@@ -386,21 +386,34 @@ namespace TT.Web.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
+            
+
+            ViewBag.Wuffie = true;
+            ViewBag.DisableReleaseLink = true;
+
+            IEnumerable<ItemViewModel> pets = ItemProcedures.GetAllPlayerItems(merchant.Id).Where(i => i.Item.ItemType == PvPStatics.ItemType_Pet);
+
+            WuffieTradeViewModel output = new WuffieTradeViewModel
+            {
+                Pets = pets.Skip(PvPStatics.PaginationPageSize * offset).Take(PvPStatics.PaginationPageSize),
+                PetCount = pets.Count(),
+                MaxPageSize = (int)Math.Floor((double)pets.Count() / (double)PvPStatics.PaginationPageSize) + 1,
+                CurrentPage = offset + 1,
+                Money = (int)Math.Floor(me.Money),
+
+            };
+
             int petAmount = ItemProcedures.PlayerIsWearingNumberOfThisType(me.Id, PvPStatics.ItemType_Pet);
 
-            if (petAmount == 0) 
-            { 
-                ViewBag.PlayerHasPet = false;
+            if (petAmount == 0)
+            {
+                output.PlayerHasPet = false;
             }
             else
             {
-                ViewBag.PlayerHasPet = true;
+                output.PlayerHasPet = true;
             }
 
-            ViewBag.Wuffie = true;
-
-            ViewBag.DisableReleaseLink = true;
-            IEnumerable<ItemViewModel> output = ItemProcedures.GetAllPlayerItems(merchant.Id).Where(i => i.Item.ItemType == PvPStatics.ItemType_Pet);
 
             ViewBag.ErrorMessage = TempData["Error"];
             ViewBag.SubErrorMessage = TempData["SubError"];

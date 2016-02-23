@@ -157,6 +157,8 @@ namespace TT.Domain.Statics
 
         public const string Effect_Back_On_Your_Feet = "help_animate_recovery";
 
+        public const int PaginationPageSize = 100;
+
     }
 
     public static class BonusStatics

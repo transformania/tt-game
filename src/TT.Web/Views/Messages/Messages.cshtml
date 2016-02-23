@@ -202,7 +202,7 @@
     </table>
 
     @{
-        if (Model.WearerName != null && Model.WearerName != null)
+        if (Model.WearerId != -1 && Model.WearerName != null)
         {
 
             <p> @Html.ActionLink("Telepathically talk to the person wearing you, " + Model.WearerName, "Write", "Messages", new { playerId = Model.WearerId, responseTo = -1 }, null) </p>

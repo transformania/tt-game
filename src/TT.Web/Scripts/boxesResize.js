@@ -18,3 +18,14 @@ Math, boxes3.map(function () {
     return $(this).height();
 }).get());
 boxes3.height(maxHeight3);
+
+
+$("#fullDetails").hide();
+
+$("#fullDetails").on('click', function () {
+    $("#fullDetails").hide();
+});
+
+$(".detailLink").on('click', function () {
+    $("#fullDetails").show();
+});

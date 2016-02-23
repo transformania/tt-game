@@ -945,9 +945,45 @@ strong {
 }
 
 #fullDetails{ 
-    height: 200px;
-    resize:vertical;
-    overflow-y: scroll;
+    height: auto !important;
+    resize: vertical;
+    background: $containerColor;
+    z-index: 999;
+    width: 1120px;
+    overflow-y: hidden;
+    border: $border;
+    position: fixed;
+	overflow-y: scroll;
+    top: 20px;
+    padding: 10px;
+}
+
+#fullDetails .portrait {
+    margin-right: 10px;
+    padding-left: 0px;
+}
+
+#fullDetails .bonuses {
+    margin-top: 10px;
+    color: $navbarDark;
+}
+
+@media (max-width: 1199px) {
+    #fullDetails{
+    width: 922px;
+    }
+}
+
+@media (max-width: 991px) {
+    #fullDetails{
+    width: 702px;
+    }
+}
+
+@media (max-width: 752px) {
+    #fullDetails{
+    width: 90%;
+    }
 }
 
 .petItemPortrait {

@@ -84,11 +84,11 @@
                 @{
                     if (Model.MessageCounts.NewMessagesCount > 0)
                     {
-                        <li>@Html.ActionLink("(" + Model.MessageCounts.NewMessagesCount + ")", "Index", "Message", null, new { @class = "glyphicon glyphicon-envelope inboxNew" })</li>
+                        <li>@Html.ActionLink("(" + Model.MessageCounts.NewMessagesCount + ")", "Index", "Messages", null, new { @class = "glyphicon glyphicon-envelope inboxNew" })</li>
                     }
                     else
                     {
-                        <li>@Html.ActionLink("(0)", "Index", "Message", null, new { @class = "glyphicon glyphicon-envelope" })</li>
+                        <li>@Html.ActionLink("(0)", "Index", "Messages", null, new { @class = "glyphicon glyphicon-envelope" })</li>
                     }
                 }
 

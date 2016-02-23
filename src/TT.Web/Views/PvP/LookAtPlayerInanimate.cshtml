@@ -40,7 +40,7 @@
                         if (Model.PlayerForm.Player.BotId == AIStatics.ActivePlayerBotId)
                         {
 
-                            <li>@Html.ActionLink("Send a Message", "Write", "Message", new { playerId = Model.PlayerForm.Player.Id, responseTo = -1 }, null)</li>
+                            <li>@Html.ActionLink("Send a Message", "Write", "Messages", new { playerId = Model.PlayerForm.Player.Id, responseTo = -1 }, null)</li>
                                   <li>@Html.ActionLink("View Statistics", "PlayerStats", "Settings", new { id = Model.PlayerForm.Player.MembershipId }, null)</li>
                                 <li>@Html.ActionLink("Add Friend", "AddFriend", "PvP", new { playerId = Model.PlayerForm.Player.Id }, null)</li>
                                 <li>@Html.ActionLink("Blacklist player", "ToggleBlacklistOnPlayer", "Settings", new { id = Model.PlayerForm.Player.Id }, null)</li>

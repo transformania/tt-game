@@ -11,14 +11,12 @@ using TT.Web.Services;
 
 namespace TT.Web.Controllers
 {
-    [RoutePrefix("Messages")]
-    [Route("{action=Index}")]
-    public class MessageController : Controller
+    public class MessagesController : BaseController
     {
-        // GET: /Message
+        // GET: /Messages
         [HttpGet]
         [Authorize]
-        public ActionResult Index()
+        public override ActionResult Index()
         {
             // this might fix some odd log-off message interception oddities... maybe?
             string myMembershipId = User.Identity.GetUserId();
@@ -119,7 +117,7 @@ namespace TT.Web.Controllers
         // GET: /Messages/Write
         [HttpGet]
         [Authorize]
-        public ActionResult Write(int playerId, int responseTo)
+        public ActionResult Write(int playerId, int responseTo = -1)
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);

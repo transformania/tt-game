@@ -42,7 +42,7 @@
 
 <div id="realLink" class="specialBox specialBox2" style="display: none;">
     <span style="color:red;">Do you really want to delete all the messages? If yes then please click link bellow:</span><br />
-    @using (Html.BeginForm("DeleteMessage", "Message", FormMethod.Post))
+    @using (Html.BeginForm("DeleteMessage", "Messages", FormMethod.Post))
     {
         @Html.AntiForgeryToken()
         @Html.Hidden("deleteAll", true)
@@ -106,17 +106,17 @@
                         @{
                     if (msg.dbMessage.ReadStatus == 0 || msg.dbMessage.ReadStatus == 2)
                     {
-                        <td class="newlink">@Html.ActionLink(messageTeaser, "ReadMessage", "Message", new { messageId = msg.dbMessage.Id }, null)</td>
+                        <td class="newlink">@Html.ActionLink(messageTeaser, "ReadMessage", "Messages", new { messageId = msg.dbMessage.Id }, null)</td>
                     }
                     else
                     {
-                        <td>@Html.ActionLink(messageTeaser, "ReadMessage", "Message", new { messageId = msg.dbMessage.Id }, null)</td>
+                        <td>@Html.ActionLink(messageTeaser, "ReadMessage", "Messages", new { messageId = msg.dbMessage.Id }, null)</td>
                     }
                         }
 
                         <td class="timeSent"><span style="font-size: 10px">@CharactersHere.DatetimeToTimeago(msg.dbMessage.Timestamp)</span></td>
                         <td>
-                            @using (Html.BeginForm("DeleteMessage", "Message", FormMethod.Post))
+                            @using (Html.BeginForm("DeleteMessage", "Messages", FormMethod.Post))
                             {
                                 @Html.AntiForgeryToken()
                                 @Html.Hidden("deleteAll", false)
@@ -125,7 +125,7 @@
                                 <button id="FormDeleteLink">delete message</button>
                             }
 
-                            @using (Html.BeginForm("MarkAsUnread", "Message", FormMethod.Post))
+                            @using (Html.BeginForm("MarkAsUnread", "Messages", FormMethod.Post))
                             {
                                 @Html.AntiForgeryToken()
                                 @Html.Hidden("messageId", msg.dbMessage.Id)
@@ -205,7 +205,7 @@
         if (Model.WearerName != null && Model.WearerName != null)
         {
 
-            <p> @Html.ActionLink("Telepathically talk to the person wearing you, " + Model.WearerName, "Write", "Message", new { playerId = Model.WearerId, responseTo = -1 }, null) </p>
+            <p> @Html.ActionLink("Telepathically talk to the person wearing you, " + Model.WearerName, "Write", "Messages", new { playerId = Model.WearerId, responseTo = -1 }, null) </p>
         }
     }
 </div>

@@ -179,16 +179,18 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Attributes\InheritedRouteAttribute.cs" />
     <Compile Include="Chat\ChatHub.cs" />
     <Compile Include="Chat\DuelHub.cs" />
     <Compile Include="Chat\NoticeHub.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ChatController.cs" />
     <Compile Include="Controllers\ContributionController.cs" />
     <Compile Include="Controllers\CovenantController.cs" />
     <Compile Include="Controllers\DuelController.cs" />
     <Compile Include="Controllers\InfoController.cs" />
     <Compile Include="Controllers\ItemController.cs" />
-    <Compile Include="Controllers\MessageController.cs" />
+    <Compile Include="Controllers\MessagesController.cs" />
     <Compile Include="Controllers\NPCController.cs" />
     <Compile Include="Controllers\PvPAdminController.cs" />
     <Compile Include="Controllers\PvPController.cs" />
@@ -497,9 +499,9 @@
     <Content Include="Views\Info\GameNews.cshtml" />
     <Content Include="Views\PvP\partial_XpBar.cshtml" />
     <Content Include="Views\PvP\partial_FormBuffs.cshtml" />
-    <Content Include="Views\Message\Messages.cshtml" />
-    <Content Include="Views\Message\ReadMessage.cshtml" />
-    <Content Include="Views\Message\Write.cshtml" />
+    <Content Include="Views\Messages\Messages.cshtml" />
+    <Content Include="Views\Messages\ReadMessage.cshtml" />
+    <Content Include="Views\Messages\Write.cshtml" />
     <Content Include="Views\PvP\partial_FrontPageAvatar.cshtml" />
     <Content Include="Views\Contribution\Contribute.cshtml" />
     <Content Include="Views\PvP\partial_InventoryEquipped.cshtml" />
@@ -543,7 +545,7 @@
     <Content Include="Views\PvP\RoundLeaderboards\Alpha_6.cshtml" />
     <Content Include="Views\PvPAdmin\Index.cshtml" />
     <Content Include="Views\PvPAdmin\ApproveEffectContributionList.cshtml" />
-    <Content Include="Views\Message\CovenantWideMessage.cshtml" />
+    <Content Include="Views\Messages\CovenantWideMessage.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Alpha_7.cshtml" />
     <Content Include="Views\Settings\SetBio.cshtml" />
     <Content Include="Views\Settings\ViewBio.cshtml" />
@@ -744,6 +746,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Base\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

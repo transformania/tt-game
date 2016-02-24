@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Web.Http;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
@@ -43,6 +44,11 @@ namespace TT.Web
                 }
             });  
             app.MapSignalR();
+
+            var httpConfig = new HttpConfiguration();
+            httpConfig.Routes.MapHttpRoute("DefaultApi", "api/{controller}/{id}", new {id = RouteParameter.Optional});
+
+            app.UseWebApi(httpConfig);
 
             AttackProcedures.LoadCovenantOwnersIntoRAM();
 

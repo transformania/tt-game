@@ -194,6 +194,7 @@
     <Compile Include="Concrete\EFTFEnergyRepository.cs" />
     <Compile Include="Concrete\EFTFMessageRepository.cs" />
     <Compile Include="DomainCommand.cs" />
+    <Compile Include="DomainContext.cs" />
     <Compile Include="DomainException.cs" />
     <Compile Include="DomainRegistry.cs" />
     <Compile Include="DomainRepository.cs" />
@@ -202,6 +203,7 @@
     <Compile Include="Entities\Identity\User.cs" />
     <Compile Include="IDomainCommand.cs" />
     <Compile Include="IDomainRepository.cs" />
+    <Compile Include="Mappings\ChatMappings.cs" />
     <Compile Include="Mappings\EntityMappings.cs" />
     <Compile Include="Mappings\IdentityMappings.cs" />
     <Compile Include="Models\AchevementBadge.cs" />

@@ -12,8 +12,8 @@ namespace TT.Domain.Mappings
     {
         public void ConfigureModelBuilder(DbModelBuilder modelBuilder)
         {
-            var mcType = typeof (IMappingConfiguration);
-            var mappings = GetType().Assembly.GetTypes().Where(t => mcType.IsAssignableFrom(t));
+            var mcType = typeof(IMappingConfiguration);
+            var mappings = GetType().Assembly.GetTypes().Where(t => mcType.IsAssignableFrom(t) && t != GetType());
 
             foreach (var mapping in mappings)
                 ((IMappingConfiguration)Activator.CreateInstance(mapping)).ConfigureModelBuilder(modelBuilder);

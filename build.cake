@@ -14,7 +14,12 @@ var instances = new Dictionary<string,Tuple<string,string>>()
 
 Task("Clean")
     .Does(() => {
-        CleanDirectories(new DirectoryPath[] { Directory("./src/TT.Web/bin"), Directory("./src/TT.Tests/bin/"), Directory("./src/TT.Domain/bin/") + Directory(configuration) });   
+        CleanDirectories(new DirectoryPath[] { 
+            Directory("./src/TT.Web/bin"), 
+            Directory("./src/TT.Tests/bin/"), 
+            Directory("./src/TT.Domain/bin/"),
+            Directory("./src/TT.Migrations/bin/"),
+        });   
     }
 );
 
@@ -50,10 +55,31 @@ Task("Run-Unit-Tests")
 
 Task("Migrate")
     .IsDependentOn("Build")
+    .IsDependentOn("Migrate-EF")
+    .IsDependentOn("Seed-DB")
+    .Does(() => {    
+    
+        Information("Running TT.Migrations using {0}", instances[dbType].Item2);
+                  
+        using(var process = StartAndReturnProcess("tools/FluentMigrator.Tools/tools/AnyCPU/40/Migrate.exe", new ProcessSettings 
+        { 
+            Arguments = "/db sqlserver /connection=\"" + instances[dbType].Item2 + "\" /target=\"./src/TT.Migrations/bin/" + configuration + "/TT.Migrations.dll\"" 
+        }))
+        {
+            process.WaitForExit();
+
+            var exitCode = process.GetExitCode();
+            if (exitCode > 0)
+                throw new Exception("Migration failed");
+        }              
+    }
+);
+
+Task("Migrate-EF")
     .Does(() => {
         CopyFile("src/packages/EntityFramework.6.1.3/tools/Migrate.exe","src/TT.Web/bin/Migrate.exe");
         
-        Information("Running migrations using {0}", instances[dbType].Item2);
+        Information("Running TT.Web migrations using {0}", instances[dbType].Item2);
         
         using(var process = StartAndReturnProcess("src/TT.Web/bin/Migrate.exe", new ProcessSettings 
         { 
@@ -76,7 +102,15 @@ Task("Migrate")
             var exitCode = process.GetExitCode();
             if (exitCode > 0)
                 throw new Exception("Stored procedure scripts failed");
-        }
+        } 
+        
+        Information("Running TT.Migrations using {0}", instances[dbType].Item2);
+    }
+);
+
+Task("Migrate-FM")
+    .Does(() => {
+    
     }
 );
 

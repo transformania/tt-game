@@ -40,11 +40,5 @@ namespace TT.Web.Controllers
 
             return View("ChatIndex", model);
         }
-
-        [HttpGet]
-        public ActionResult Index()
-        {
-            return View("Chat");
-        }
     }
 }

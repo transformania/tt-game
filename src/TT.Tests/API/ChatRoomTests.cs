@@ -27,7 +27,7 @@ namespace TT.Tests.API
 
             createdResult.Should().NotBeNull();
             createdResult.RouteName.Should().Be("DefaultApi");
-            createdResult.RouteValues["name"].Should().Be("Test_Room");
+            createdResult.RouteValues["id"].Should().Be("Test_Room");
         }
     }
 }

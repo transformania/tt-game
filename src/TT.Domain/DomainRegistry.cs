@@ -1,3 +1,4 @@
+using System;
 using TT.Domain.Abstract;
 
 namespace TT.Domain
@@ -8,6 +9,22 @@ namespace TT.Domain
     /// </summary>
     public static class DomainRegistry
     {
-        public static IRoot Root { get; set; }
+        [ThreadStatic]
+        private static IRoot _root;
+
+        [ThreadStatic]
+        private static IDomainRepository _repository;
+
+        public static IRoot Root
+        {
+            get { return _root ?? (_root = new Root()); }
+            set { _root = value; }
+        }
+        
+        public static IDomainRepository Repository
+        {
+            get { return _repository ?? (_repository = new DomainRepository(new DomainContext())); }
+            set { _repository = value; }
+        }
     }
 }

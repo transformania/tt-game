@@ -4,7 +4,7 @@ using Microsoft.AspNet.SignalR;
 using TT.Domain.Models;
 using TT.Domain.Procedures;
 
-namespace TT.Web.Chat
+namespace TT.Web.Hubs
 {
     public class NoticeHub : Hub
     {

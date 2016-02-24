@@ -1,6 +1,6 @@
 ﻿using System.Web.Script.Serialization;
 using TT.Domain.Models;
-using TT.Web.Chat;
+using TT.Web.Hubs;
 
 namespace TT.Web.Services
 {

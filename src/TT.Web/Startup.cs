@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Web.Http;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
@@ -20,7 +21,7 @@ namespace TT.Web
     public class Startup
     {
         public void Configuration(IAppBuilder app)
-        {
+        {           
             // Configure the db context, user manager and role manager to use a single instance per request
             app.CreatePerOwinContext(ApplicationDbContext.Create);
             app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
@@ -43,6 +44,11 @@ namespace TT.Web
                 }
             });  
             app.MapSignalR();
+
+            var httpConfig = new HttpConfiguration();
+            httpConfig.Routes.MapHttpRoute("DefaultApi", "api/{controller}/{id}", new {id = RouteParameter.Optional});
+
+            app.UseWebApi(httpConfig);
 
             AttackProcedures.LoadCovenantOwnersIntoRAM();
 

@@ -2,7 +2,7 @@
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-using TT.Domain;
+using FeatureSwitch;
 
 namespace TT.Web
 {
@@ -13,6 +13,8 @@ namespace TT.Web
     {
         protected void Application_Start()
         {
+            new FeatureSetBuilder().Build();
+
             AreaRegistration.RegisterAllAreas();
 
             GlobalConfiguration.Configure(WebApiConfig.Register);
@@ -20,8 +22,6 @@ namespace TT.Web
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AuthConfig.RegisterAuth();
-
-            DomainRegistry.Root = new Root();
 
             // start duel loop
             //var duelUpdateTic = new System.Timers.Timer(5000);

@@ -11,7 +11,7 @@ using TT.Web.CustomHtmlHelpers;
 using TT.Web.Extensions;
 using TT.Web.Services;
 
-namespace TT.Web.Chat
+namespace TT.Web.Hubs
 {
     public class ChatHub : Hub
     {

@@ -23,6 +23,9 @@ namespace TT.Web
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AuthConfig.RegisterAuth();
 
+            ViewEngines.Engines.Clear();
+            ViewEngines.Engines.Add(new RazorViewEngine());
+
             // start duel loop
             //var duelUpdateTic = new System.Timers.Timer(5000);
             //duelUpdateTic.Enabled = true;

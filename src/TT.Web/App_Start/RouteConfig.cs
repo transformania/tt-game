@@ -9,14 +9,15 @@ namespace TT.Web
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            routes.MapRoute("ChatRoom", "Chat/Rooms/{room}", new {controller = "Chat", action = "Index", room = UrlParameter.Optional });
+            routes.MapRoute("ChatRoom", "Chat/Rooms/{room}", new { controller = "Chat", action = "Index", room = UrlParameter.Optional });
+
+            routes.MapRoute("Home", "", new { controller = "PvP", action = "Play", id = UrlParameter.Optional });
 
             routes.MapRoute(
                name: "Default",
                url: "{controller}/{action}/{id}",
-               defaults: new { controller = "PvP", action = "Play", id = UrlParameter.Optional }
-           );
-
+               defaults: new { controller = "PvP", action = "Index", id = UrlParameter.Optional }
+            );
         }
-    }
+    } 
 }

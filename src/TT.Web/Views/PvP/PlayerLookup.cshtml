@@ -48,7 +48,7 @@
                 <p>
                     @p.GetFullName()
                     @Html.ActionLink("Look At", "LookAtPlayer", "PvP", new { id = p.Id }, new { @class = "btn btn-default btn-xs" })
-                    @Html.ActionLink("Message", "Write", "PvP", new { playerId = p.Id, responseTo = -1 }, new { @class = "btn btn-default btn-xs" })
+                    @Html.ActionLink("Message", "Write", "Messages", new { playerId = p.Id, responseTo = -1 }, new { @class = "btn btn-default btn-xs" })
                 </p>
             }
         }

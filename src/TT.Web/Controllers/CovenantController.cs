@@ -483,67 +483,6 @@ namespace TT.Web.Controllers
         }
 
          [Authorize]
-        public ActionResult CovenantWideMessage()
-        {
-            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
-            // assert that player is in a covenant
-            if (me.Covenant <= 0)
-            {
-                TempData["Error"] = "You are not in a covenant and cannot send out mass messages to your members.";
-                return RedirectToAction("MyCovenant");
-            }
-
-            // assert that the player is a covenant leader
-            Covenant myCov = CovenantProcedures.GetDbCovenant(me.Covenant);
-            if (myCov.LeaderId != me.Id)
-            {
-                TempData["Error"] = "You are not the leader of your covenant.";
-                TempData["SubError"] = "Only covenant leaders can send out mass messages.";
-                return RedirectToAction("MyCovenant");
-            }
-
-            PublicBroadcastViewModel output = new PublicBroadcastViewModel
-            {
-                Message = "",
-            };
-            return View(output);
-
-        }
-
-         [Authorize]
-        public ActionResult SendCovenantWideMessage(PublicBroadcastViewModel input)
-        {
-
-            if (input.Message.Length > 1000)
-            {
-                TempData["Error"] = "Your message is too long.  There is a 1000 character limit.";
-                return RedirectToAction("MyCovenant");
-            }
-             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
-            // assert that player is in a covenant
-            if (me.Covenant <= 0)
-            {
-                TempData["Error"] = "You are not in a covenant and cannot send out mass messages to your members.";
-                return RedirectToAction("MyCovenant");
-            }
-
-            // assert that the player is a covenant leader
-            Covenant myCov = CovenantProcedures.GetDbCovenant(me.Covenant);
-            if (myCov.LeaderId != me.Id)
-            {
-                TempData["Error"] = "You are not the leader of your covenant.";
-                TempData["SubError"] = "Only covenant leaders can send out mass messages.";
-                return RedirectToAction("MyCovenant");
-            }
-
-            MessageProcedures.SendCovenantWideMessage(me, input);
-
-            TempData["Result"] = "Message sent out!";
-            return RedirectToAction("MyCovenant");
-            
-        }
-
-         [Authorize]
         public ActionResult AddToCovenantChest(int amount)
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());

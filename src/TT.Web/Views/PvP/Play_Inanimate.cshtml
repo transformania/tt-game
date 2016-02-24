@@ -41,11 +41,11 @@
                 <li>@Html.ActionLink("Settings", "Settings", "Settings")</li>
                 @{if (Model.NewMessageCount > 0)
                 {
-                    <li>@Html.ActionLink("(" + Model.NewMessageCount + " unread)", "MyMessages", "PvP", null, new { @class = "inboxNew" })</li>
+                    <li>@Html.ActionLink("(" + Model.NewMessageCount + " unread)", "Index", "Messages", null, new { @class = "inboxNew" })</li>
                 }
                 else
                 {
-                    <li>@Html.ActionLink("Inbox", "MyMessages", "PvP")</li>
+                    <li>@Html.ActionLink("Inbox", "Index", "Messages")</li>
                 }
                 }
                 <li>@Html.ActionLink("Submit Content", "Contribute", "Contribution", new { Id = -1 }, null)</li>
@@ -114,7 +114,7 @@
                     <p>You are currently being worn by <b>@Html.ActionLink(Model.WornBy.Player.GetFullName(), "LookAtPlayer", "PvP", new { id = Model.WornBy.Player.Id }, null)</b>, a @Model.WornBy.Player.Gender @Model.WornBy.Form.FriendlyName.  You hope they will take good care of you, or should they too find themselves as an object, whoever picks you up next.</p>
 
                     <p>
-                        @Html.ActionLink("Telepathically communicate with " + Model.WornBy.Player.GetFullName(), "Write", "PvP", new { playerId = Model.WornBy.Player.Id, responseTo = -1, }, new { @class = "inanimateAction" })
+                        @Html.ActionLink("Telepathically communicate with " + Model.WornBy.Player.GetFullName(), "Write", "Messages", new { playerId = Model.WornBy.Player.Id, responseTo = -1, }, new { @class = "inanimateAction" })
                     </p>
 
                     <p>

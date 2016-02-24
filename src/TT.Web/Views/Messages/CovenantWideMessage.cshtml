@@ -27,9 +27,10 @@
 
     <p>You can send a message to all members of your covenant here.</p>
 
-    @using (Html.BeginForm("SendCovenantWideMessage", "Covenant", FormMethod.Post))
+    @using (Html.BeginForm("SendCovenantWideMessage", "Messages", FormMethod.Post))
     {
-        @Html.TextAreaFor(m => m.Message)
+        @Html.AntiForgeryToken()
+        @Html.TextArea("Message")
         <br />
         <input type="submit" value="Send" />
     }

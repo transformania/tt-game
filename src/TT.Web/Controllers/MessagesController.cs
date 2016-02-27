@@ -12,13 +12,13 @@ namespace TT.Web.Controllers
         // GET: /Messages
         [HttpGet]
         [Authorize]
-        public ActionResult Index()
+        public ActionResult Index(int offset = 0)
         {
             // this might fix some odd log-off message interception oddities... maybe?
             string myMembershipId = User.Identity.GetUserId();
 
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            MessageBag output = MessageProcedures.GetPlayerMessages(me);
+            MessageBag output = MessageProcedures.GetPlayerMessages(me, offset);
 
             // if you are inanimate and are being worn, grab the data on who is wearing you
 

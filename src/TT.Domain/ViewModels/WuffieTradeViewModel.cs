@@ -18,19 +18,9 @@ namespace TT.Domain.ViewModels
         public IEnumerable<ItemViewModel> Pets { get; set; }
 
         /// <summary>
-        /// The count of pets Wuffie owns
+        /// Stores pagination data
         /// </summary>
-        public int PetCount { get; set; }
-
-        /// <summary>
-        /// The highest page number to be rendered when paginating
-        /// </summary>
-        public int MaxPageSize { get; set; }
-
-        /// <summary>
-        /// The current page number that the viewer is looking at
-        /// </summary>
-        public int CurrentPage { get; set; }
+        public Paginator Paginator { get; set; }
 
         /// <summary>
         /// Returns whether or not the player interacting with Wuffie already has a pet and is free to buy/sell another

@@ -395,13 +395,11 @@ namespace TT.Web.Controllers
 
             WuffieTradeViewModel output = new WuffieTradeViewModel
             {
-                Pets = pets.Skip(PvPStatics.PaginationPageSize * offset).Take(PvPStatics.PaginationPageSize),
-                PetCount = pets.Count(),
-                MaxPageSize = (int)Math.Floor((double)pets.Count() / (double)PvPStatics.PaginationPageSize) + 1,
-                CurrentPage = offset + 1,
+                Paginator = new Paginator(pets.Count(), PvPStatics.PaginationPageSize),
                 Money = (int)Math.Floor(me.Money),
-
             };
+            output.Paginator.CurrentPage = offset + 1;
+            output.Pets = pets.Skip(output.Paginator.GetSkipCount()).Take(output.Paginator.PageSize);
 
             int petAmount = ItemProcedures.PlayerIsWearingNumberOfThisType(me.Id, PvPStatics.ItemType_Pet);
 

@@ -357,6 +357,7 @@
     <Compile Include="ViewModels\MessageSubmitViewModel.cs" />
     <Compile Include="ViewModels\MindControlViewModel.cs" />
     <Compile Include="ViewModels\NewCharacterViewModel.cs" />
+    <Compile Include="ViewModels\Paginator.cs" />
     <Compile Include="ViewModels\PlayerAchievementViewModel.cs" />
     <Compile Include="ViewModels\PlayerFormItemsSkillsViewModel.cs" />
     <Compile Include="ViewModels\PlayerFormViewModel.cs" />

@@ -12,13 +12,14 @@ namespace TT.Web.Controllers
         // GET: /Messages
         [HttpGet]
         [Authorize]
-        public ActionResult Index()
+        public ActionResult Index(int offset = 0)
         {
             // this might fix some odd log-off message interception oddities... maybe?
             string myMembershipId = User.Identity.GetUserId();
 
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            MessageBag output = MessageProcedures.GetPlayerMessages(me);
+            MessageBag output = MessageProcedures.GetPlayerMessages(me, offset);
+            output.InboxSize = 150;
 
             // if you are inanimate and are being worn, grab the data on who is wearing you
 
@@ -36,7 +37,14 @@ namespace TT.Web.Controllers
                 }
             }
 
-            ViewBag.IsDonator = DonatorProcedures.DonatorGetsMessagesRewards(me);
+            bool isDonator = DonatorProcedures.DonatorGetsMessagesRewards(me);
+
+            ViewBag.IsDonator = isDonator;
+
+            if (isDonator)
+            {
+                output.InboxSize = 500;
+            }
 
             ViewBag.ErrorMessage = TempData["Error"];
             ViewBag.SubErrorMessage = TempData["SubError"];

@@ -53,10 +53,21 @@
 </div>
 
 <div class="specialBox specialHeader">
-    <b>Received Messages (@Model.Messages.Count()/150)</b>
+    <b>Received Messages (@Model.Paginator.TotalCount/@Model.InboxSize)</b>
 </div>
 
 <div class="containerInner">
+
+    <span>Jump to page:</span>
+
+    @{
+        for (int i = 0; i < Model.Paginator.MaxPageNumber; i++)
+        {
+            @Html.ActionLink((i + 1).ToString() + " | ", "Index", "Messages", new { offset = i }, new { @class = Model.Paginator.GetStylingClass(i) })
+        }
+    }
+
+    <span><i>@Model.Paginator.TotalCount total messages</i></span>
 
 
     <table class="table table-hover messageTable">
@@ -144,7 +155,7 @@
         if (ViewBag.IsDonator == null || ViewBag.IsDonator == false)
         {
             <p class="warningText">
-                Only the 150 most recent messages you've recieved will be saved.  Older messages will be deleted automatically.
+                Only the @Model.InboxSize most recent messages you've recieved will be saved.  Older messages will be deleted automatically.
             </p>
         }
 

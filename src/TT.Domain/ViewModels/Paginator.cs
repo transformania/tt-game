@@ -41,7 +41,7 @@ namespace TT.Domain.ViewModels
             this.CurrentPage = 0;
             this.TotalCount = totalCount;
             this.PageSize = pageSize;
-            this.MaxPageNumber = (int)Math.Floor((double)totalCount / (double)PageSize) + 1;
+            this.MaxPageNumber = (int)Math.Ceiling((double)totalCount / (double)PageSize);
         }
 
         /// <summary>

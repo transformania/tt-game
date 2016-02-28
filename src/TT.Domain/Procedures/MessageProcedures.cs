@@ -99,6 +99,15 @@ namespace TT.Domain.Procedures
             messageRepo.SaveMessage(dbMessage);
         }
 
+        public static void MarkMessageAsRead(int messageId)
+        {
+            IMessageRepository messageRepo = new EFMessageRepository();
+            Message dbMessage = messageRepo.Messages.FirstOrDefault(m => m.Id == messageId);
+            dbMessage.IsRead = true;
+            dbMessage.ReadStatus = 1;
+            messageRepo.SaveMessage(dbMessage);
+        }
+
         public static MessageBag GetPlayerMessages(Player player, int offset)
         {
             IMessageRepository messageRepo = new EFMessageRepository();

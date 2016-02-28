@@ -110,11 +110,32 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "You can't mark this message as unread.";
                 TempData["SubError"] = "It wasn't sent to you.";
-                return RedirectToAction("Play");
+                return RedirectToAction("Index");
             }
             MessageProcedures.MarkMessageAsUnread(messageId);
 
             TempData["Result"] = "Message marked as unread.";
+            return RedirectToAction("Index");
+        }
+
+        // POST: /Messages/MarkAsUnread
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public ActionResult MarkAsRead(int messageId)
+        {
+            string myMembershipId = User.Identity.GetUserId();
+            // assert player owns message
+            if (MessageProcedures.PlayerOwnsMessage(messageId, myMembershipId) == false)
+            {
+                TempData["Error"] = "You can't mark this message as read.";
+                TempData["SubError"] = "It wasn't sent to you.";
+                return RedirectToAction("Index");
+            }
+
+            MessageProcedures.MarkMessageAsRead(messageId);
+
+            TempData["Result"] = "Message marked as read.";
             return RedirectToAction("Index");
         }
 

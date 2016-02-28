@@ -133,15 +133,15 @@
                                 @Html.Hidden("deleteAll", false)
                                 @Html.Hidden("messageId", msg.dbMessage.Id)
 
-                                <button id="FormDeleteLink">delete message</button>
+                                <input type="submit" value="Delete Message">
                             }
 
-                            @using (Html.BeginForm("MarkAsUnread", "Messages", FormMethod.Post))
+                            @using (Html.BeginForm(msg.dbMessage.ReadStatus == 1? "MarkAsUnread" : "MarkAsRead", "Messages", FormMethod.Post, new { id = "markForm" }))
                             {
                                 @Html.AntiForgeryToken()
                                 @Html.Hidden("messageId", msg.dbMessage.Id)
 
-                                <button id="FormMarkLink">mark as unread</button>
+                                <input type="submit" value= "@(msg.dbMessage.ReadStatus == 1? "Mark As Unread" : "Mark As Read")">
                             }
                         </td>
                     </tr>
@@ -227,14 +227,6 @@
         $(document).ready(function () {
             $('#DeleteLink').on('click', function () {
                 document.getElementById('realLink').style.display = "block";
-            });
-
-            $('#FormDeleteLink').on('click', function () {
-                $(this).closest('form')[0].submit();
-            });
-
-            $('#FormMarkLink').on('click', function () {
-                $(this).closest('form')[0].submit();
             });
         });
     </script>

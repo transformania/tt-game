@@ -17,5 +17,6 @@ namespace TT.Domain.ViewModels
         public int WearerId { get; set; }
         public string WearerName { get; set; }
         public Paginator Paginator { get; set; }
+        public int InboxSize { get; set; }
     }
 }

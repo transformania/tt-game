@@ -19,6 +19,7 @@ namespace TT.Web.Controllers
 
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             MessageBag output = MessageProcedures.GetPlayerMessages(me, offset);
+            output.InboxSize = 150;
 
             // if you are inanimate and are being worn, grab the data on who is wearing you
 
@@ -36,7 +37,14 @@ namespace TT.Web.Controllers
                 }
             }
 
-            ViewBag.IsDonator = DonatorProcedures.DonatorGetsMessagesRewards(me);
+            bool isDonator = DonatorProcedures.DonatorGetsMessagesRewards(me);
+
+            ViewBag.IsDonator = isDonator;
+
+            if (isDonator)
+            {
+                output.InboxSize = 500;
+            }
 
             ViewBag.ErrorMessage = TempData["Error"];
             ViewBag.SubErrorMessage = TempData["SubError"];

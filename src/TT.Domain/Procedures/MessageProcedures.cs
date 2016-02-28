@@ -112,16 +112,14 @@ namespace TT.Domain.Procedures
             }
 
             List<Message> mydbMessagesALL = messageRepo.Messages.Where(m => m.ReceiverId == player.Id).OrderByDescending(m => m.Timestamp).ToList();
+            List<Message> mydbMessagesTODELETE = mydbMessagesALL.Skip(inboxLimit).ToList();
 
-            Paginator paginator = new Paginator(mydbMessagesALL.Count(), 50);
+            // paginate down to first N results
+            Paginator paginator = new Paginator(mydbMessagesALL.Count(), 25);
             paginator.CurrentPage = offset + 1;
-            
-
             mydbMessagesALL = mydbMessagesALL.Skip(paginator.GetSkipCount()).Take(paginator.PageSize).ToList();
 
             List < Message> mydbMessages = mydbMessagesALL.Take(inboxLimit).ToList();
-
-            List<Message> mydbMessagesTODELETE = mydbMessagesALL.Skip(inboxLimit).ToList();
 
             List<Message> mydbSentMessages = messageRepo.Messages.Where(m => m.SenderId == player.Id).OrderByDescending(m => m.Timestamp).Take(20).ToList();
 

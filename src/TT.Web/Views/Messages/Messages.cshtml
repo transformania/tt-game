@@ -133,7 +133,7 @@
                                 @Html.Hidden("deleteAll", false)
                                 @Html.Hidden("messageId", msg.dbMessage.Id)
 
-                                <input type="submit" value="delete message">
+                                <input type="submit" value="Delete Message">
                             }
 
                             @using (Html.BeginForm(msg.dbMessage.ReadStatus == 1? "MarkAsUnread" : "MarkAsRead", "Messages", FormMethod.Post, new { id = "markForm" }))
@@ -141,7 +141,7 @@
                                 @Html.AntiForgeryToken()
                                 @Html.Hidden("messageId", msg.dbMessage.Id)
 
-                                <input type="submit" value= "@(msg.dbMessage.ReadStatus == 1? "MarkAsUnread" : "MarkAsRead")">
+                                <input type="submit" value= "@(msg.dbMessage.ReadStatus == 1? "Mark As Unread" : "Mark As Read")">
                             }
                         </td>
                     </tr>

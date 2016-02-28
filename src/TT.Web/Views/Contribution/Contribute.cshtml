@@ -727,6 +727,20 @@
                         <label>Image URL:</label>
                         @Html.TextBoxFor(m => m.ImageURL)
                     </div>
+                    @{
+                        if (Model.Form_MobilityType == PvPStatics.MobilityFull)
+                        {
+                            <img src="~/Images/PvP/portraits/@Model.ImageURL" width="200px" height="200px" /><br><img src="~/Images/PvP/portraits/Thumbnails/100/@Model.ImageURL" />
+                        }
+                        else if (Model.Form_MobilityType == PvPStatics.MobilityInanimate)
+                        {
+                            <img src="~/Images/PvP/itemsPortraits/@Model.ImageURL" width="200px" height="200px" /><br><img src="~/Images/PvP/itemsPortraits/Thumbnails/100/@Model.ImageURL" />
+                        }
+                        else if (Model.Form_MobilityType == PvPStatics.MobilityPet)
+                        {
+                            <img src="~/Images/PvP/animalPortraits/@Model.ImageURL" width="200px" height="200px" /><br><img src="~/Images/PvP/animalPortraits/Thumbnails/100/@Model.ImageURL" />
+                        }
+                    }
                     <div class="form__panel">
                         <label>Is Nonstandard:</label>
                         @Html.CheckBoxFor(m => m.IsNonstandard)

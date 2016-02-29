@@ -2223,7 +2223,7 @@ namespace TT.Web.Controllers
 
                 string tomeName = item.dbItem.dbName.Split('-')[1];
 
-                string filename = AppDomain.CurrentDomain.BaseDirectory + "XMLs\\SkillBooks\\" + tomeName + ".txt";
+                string filename = AppDomain.CurrentDomain.BaseDirectory + "XMLs/SkillBooks/" + tomeName + ".txt";
                 string text = System.IO.File.ReadAllText(filename);
 
                 SkillBookViewModel output = new SkillBookViewModel

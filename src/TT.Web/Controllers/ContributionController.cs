@@ -9,6 +9,7 @@ using TT.Domain.Models;
 using TT.Domain.Procedures;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
+using Newtonsoft.Json;
 
 namespace TT.Web.Controllers
 {
@@ -22,6 +23,32 @@ namespace TT.Web.Controllers
             return View();
         }
 
+        public ActionResult ProofreadingContributions()
+        {
+            IContributionRepository contributionRepo = new EFContributionRepository();
+            var proofreading = contributionRepo.Contributions.Where(c => c.AdminApproved == true && c.ProofreadingCopy == true).Select(
+                i => new ProofreadingContributionsViewModel()
+                {
+                    Id = i.Id,
+                    CheckedOutBy = i.CheckedOutBy,
+                    CreationTimestamp = i.CreationTimestamp,
+                    IsLive = i.IsLive,
+                    NeedsToBeUpdated = i.NeedsToBeUpdated,
+                    ProofreadingCopy = i.ProofreadingCopy,
+                    ProofreadingLockIsOn = i.ProofreadingLockIsOn,
+                    Form_FriendlyName = i.Form_FriendlyName,
+                    Skill_FriendlyName = i.Skill_FriendlyName
+                }
+                );
+
+            // add the rest of the submitted contributions if the player is a proofread
+            if (!User.IsInRole(PvPStatics.Permissions_Proofreader))
+            {
+                return new JsonResult();
+            }
+
+            return Content(JsonConvert.SerializeObject(proofreading, Formatting.Indented), "application/json");
+        }
 
         [Authorize]
         public ActionResult Contribute(int Id = -1)
@@ -32,15 +59,8 @@ namespace TT.Web.Controllers
             string currentUserId = User.Identity.GetUserId();
 
             IEnumerable<Contribution> myContributions = contributionRepo.Contributions.Where(c => c.OwnerMembershipId == currentUserId);
-            IEnumerable<Contribution> proofreading = null;
 
             bool iAmProofreader = User.IsInRole(PvPStatics.Permissions_Proofreader);
-
-            // add the rest of the submitted contributions if the player is a proofread
-            if (iAmProofreader == true)
-            {
-                proofreading = contributionRepo.Contributions.Where(c => c.AdminApproved == true && c.ProofreadingCopy == true);
-            }
 
             Contribution contribution;
 
@@ -102,7 +122,6 @@ namespace TT.Web.Controllers
             ViewBag.Result = TempData["Result"];
 
             ViewBag.OtherContributions = myContributions;
-            ViewBag.Proofreading = proofreading;
 
             BalanceBox bbox = new BalanceBox();
             bbox.LoadBalanceBox(contribution);

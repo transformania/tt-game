@@ -1,5 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
+using TT.Domain.Statics;
 
 namespace TT.Domain.Models
 {
@@ -323,6 +325,45 @@ namespace TT.Domain.Models
         public string GetSkillDbName()
         {
             return "skill_" + this.Skill_FriendlyName.Replace(" ", "_") + "_" + this.SubmitterName.Replace(" ", "_");
+        }
+
+        /// <summary>
+        /// Returns the name of the folder after Images/PvP to look inside to find the appropriate graphic
+        /// </summary>
+        /// <returns></returns>
+        public string GetImageFolderName()
+        {
+            if (this.Form_MobilityType == PvPStatics.MobilityFull)
+            {
+                return "portraits";
+            }
+            else if (this.Form_MobilityType == PvPStatics.MobilityInanimate)
+            {
+                return "itemsPortraits";
+            }
+            else if (this.Form_MobilityType == PvPStatics.MobilityPet)
+            {
+                return "animalPortraits";
+            }
+            return "";
+        }
+
+        /// <summary>
+        /// Returns true if the server can locate the main, full sized graphic set for this contribution
+        /// </summary>
+        /// <returns></returns>
+        public bool MainImageExists()
+        {
+            return File.Exists(AppDomain.CurrentDomain.BaseDirectory + "Images/PvP/" + this.GetImageFolderName() + "/" + this.ImageURL);
+        }
+
+        /// <summary>
+        /// Returns true if the server can locate the main, full sized graphic set for this contribution
+        /// </summary>
+        /// <returns></returns>
+        public bool ThumbnailImageExists()
+        {
+            return File.Exists(AppDomain.CurrentDomain.BaseDirectory + "Images/PvP/" + this.GetImageFolderName() + "/Thumbnails/100/" + this.ImageURL);
         }
 
     }

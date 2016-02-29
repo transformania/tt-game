@@ -796,6 +796,7 @@
     <Content Include="Views\PvP\RoundLeaderboards\XP\Alpha_30.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Statistics\Alpha_30.cshtml" />
     <Content Include="Views\Chat\Chat.cshtml" />
+    <Content Include="Views\Contribution\partial\ContributionGraphic.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

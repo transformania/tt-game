@@ -726,7 +726,9 @@
                     <div class="form__panel">
                         <label>Image URL:</label>
                         @Html.TextBoxFor(m => m.ImageURL)
+                        @Html.Partial("partial/ContributionGraphic", Model)
                     </div>
+                   
                     <div class="form__panel">
                         <label>Is Nonstandard:</label>
                         @Html.CheckBoxFor(m => m.IsNonstandard)

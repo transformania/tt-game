@@ -118,7 +118,7 @@
             @{
 
 
-                if (ViewBag.Proofreading != null)
+                if (User.IsInRole(PvPStatics.Permissions_Proofreader))
                 {
 
                 <p>CONTRIBUTIONS AVAILABLE TO PROOFREAD</p>
@@ -134,61 +134,7 @@
                         <th style="width: 15%;">Lock time</th>
                     </tr>
                     </thead>
-                    <tbody>
-                    @foreach (Contribution contribution in ViewBag.Proofreading)
-                    {
-                        if (contribution.Form_FriendlyName == null)
-                        {
-                            contribution.Form_FriendlyName = "(Form name not set)";
-                        }
-                        if (contribution.Skill_FriendlyName == null)
-                        {
-                            contribution.Skill_FriendlyName = "(Skill name not set)";
-                        }
-                        <tr>
-                            <td>
-                                @if (contribution.NeedsToBeUpdated == true)
-                                {
-                                    <span class="icon icon-timesattacking"></span>
-                                }
-                            </td>
-                            @if (contribution.IsLive == true)
-                            {
-                                <td><span class="good">Y</span></td>
-                                <td><span class='newlink'>@Html.ActionLink(contribution.Skill_FriendlyName, "Contribute", "Contribution", new { Id = contribution.Id }, null)</span></td>
-                                <td><span class='newlink'>@Html.ActionLink(contribution.Form_FriendlyName, "Contribute", "Contribution", new { Id = contribution.Id }, null)</span></td>
-                            }
-                            else
-                            {
-                                <td><span class="bad">N</span></td>
-                                <td>@Html.ActionLink(contribution.Skill_FriendlyName, "Contribute", "Contribution", new { Id = contribution.Id }, null)</td>
-                                <td>@Html.ActionLink(contribution.Form_FriendlyName, "Contribute", "Contribution", new { Id = contribution.Id }, null)</td>
-                            }
-                            <td>
-                                @if (contribution.ProofreadingCopy == true)
-                                {
-                                    <span class="good">Y</span>
-                                }
-                                else
-                                {
-                                    <span class="bad">N</span>
-                                }
-                            </td>
-                            @if (contribution.ProofreadingLockIsOn == true)
-                            {
-                                <td><span class="bad">@contribution.CheckedOutBy</span></td>
-                                <td>@contribution.CreationTimestamp.ToString("u")</td>
-                            }
-                            else
-                            {
-                                <td></td>
-                                <td></td>
-                            }
-                        </tr>
-                    }
-                    </tbody>
                 </table>
-
                 }
             }
         
@@ -791,23 +737,93 @@
         var proofreadingCopy = @Model.ProofreadingCopy.ToString().ToLower();
 
         $(document).ready(function () {
-            $('#YourContributions').dataTable({
+            $('#YourContributions').DataTable({
                 "order": [[ 1, "asc" ], [2, "asc"]],
                 "columnDefs": [{
-                    "targets": 6,
+                    "targets": [6],
                     "render": function (data, type, full, meta) {
                         if (type == "display" && data != "") return moment(data).fromNow();
                         return data;
                     }
                 }]
             });
-            $('#ProofContributions').dataTable({
+            $('#ProofContributions').DataTable({
+                "ajax": {
+                    "url": '../ProofreadingContributions',
+                    "dataSrc": ""
+                },
                 "order": [[ 1, "asc" ], [2, "asc"]],
                 "lengthMenu": [ [ 10, 25, 50, 75, 100, -1 ], [ 10, 25, 50, 75, 100, "All" ] ],
+                "deferRender": true,
+                "columns": [
+            { "data": "NeedsToBeUpdated" },
+            { "data": "IsLive" },
+            { "data": "Skill_FriendlyName" },
+            { "data": "Form_FriendlyName" },
+            { "data": "ProofreadingCopy" },
+            { "data": "CheckedOutBy" },
+            { "data": "CreationTimestamp" }
+                ],
                 "columnDefs": [{
-                    "targets": 6,
+                    "targets": [0],
                     "render": function (data, type, full, meta) {
-                        if (type == "display" && data != "") return moment(data).fromNow();
+                        if (type == "display")
+                        {
+                            if(data)
+                            {
+                                return '<span class="icon icon-timesattacking"></span>';
+                            }
+                            else
+                            {
+                                return "";
+                            }
+                        }
+                        return data;
+                    }
+                },
+                {
+                    "targets": [1, 4],
+                    "render": function (data, type, full, meta) {
+                        if (type == "display")
+                        {
+                            if(data)
+                            {
+                                return '<span class="good">Y</span>';
+                            }
+                            else
+                            {
+                                return '<span class="bad">N</span>';
+                            }
+                        }
+                        return data;
+                    }
+                },
+                {
+                    "targets": [2, 3],
+                    "render": function (data, type, full, meta) {
+                        if(data == null)
+                        {
+                            data = "(name not set)";
+                        }
+                        if (type == "display")
+                        {
+                            if(full.IsLive)
+                            {
+                                return '<span class="newlink"><a href="'+full.Id+'">'+data+'</a></span>';
+                            }
+                            else
+                            {
+                                return '<a href="'+full.Id+'">'+data+'</a>';
+                            }
+                        }
+                        return data;
+                    }
+                },
+                {
+                    "targets": [6],
+                    "render": function (data, type, full, meta) {
+                        if (!full.ProofreadingLockIsOn) return "";
+                        if (type == "display" && data != "") return moment.utc(data).fromNow();
                         return data;
                     }
                 }]

@@ -1,0 +1,22 @@
+﻿@model TT.Domain.Models.Contribution
+@using TT.Domain.Statics
+
+@{
+    if (Model.MainImageExists())
+    {
+        <img src="~/Images/PvP/@Model.GetImageFolderName()/@Model.ImageURL" width="200px" height="200px" />
+    }
+    else
+    {
+        <span class="bad">MAIN GRAPHIC NOT FOUND</span><br />
+    }
+
+    if (Model.ThumbnailImageExists())
+    {
+        <img src="~/Images/PvP//@Model.GetImageFolderName()/Thumbnails/100/@Model.ImageURL" />
+    }
+    else
+    {
+        <span class="bad">THUMBNAIL NOT FOUND</span>
+    }
+}

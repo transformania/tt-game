@@ -2223,7 +2223,7 @@ namespace TT.Web.Controllers
 
                 string tomeName = item.dbItem.dbName.Split('-')[1];
 
-                string filename = System.Web.HttpContext.Current.Server.MapPath("~/XMLs/SkillBooks/" + tomeName + ".txt");
+                string filename = AppDomain.CurrentDomain.BaseDirectory + "XMLs\\SkillBooks\\" + tomeName + ".txt";
                 string text = System.IO.File.ReadAllText(filename);
 
                 SkillBookViewModel output = new SkillBookViewModel
@@ -3389,10 +3389,8 @@ namespace TT.Web.Controllers
                 PvPWorldStatProcedures.UpdateWorldTurnCounter();
             }
 
-            HttpContext ctx = System.Web.HttpContext.Current;
             Task.Run(() => 
             {
-                System.Web.HttpContext.Current = ctx;
                 WorldUpdateProcedures.UpdateWorld();
             });
 

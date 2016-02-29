@@ -1,6 +1,6 @@
 ﻿<h1>Missing thumbnails report</h1>
 @{
-    string strImagesPath = HttpContext.Current.Server.MapPath("/Images/PvP/");
+    string strImagesPath = AppDomain.CurrentDomain.BaseDirectory + "Images\\PvP\\";
     string strCurPath = "";
     int iNumMissing;
 }

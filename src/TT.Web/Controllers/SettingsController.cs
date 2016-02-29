@@ -547,7 +547,7 @@ namespace TT.Web.Controllers
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
-            string filename = System.Web.HttpContext.Current.Server.MapPath("~/XMLs/validChatColors.txt");
+            string filename = AppDomain.CurrentDomain.BaseDirectory + "XMLs/validChatColors.txt";
             string text = System.IO.File.ReadAllText(filename);
 
             if (text.Contains(color + ";") == false)

@@ -1,17 +1,17 @@
 ﻿<h1>Missing thumbnails report</h1>
 @{
-    string strImagesPath = HttpContext.Current.Server.MapPath("/Images/PvP/");
+    string strImagesPath = AppDomain.CurrentDomain.BaseDirectory + "Images/PvP/";
     string strCurPath = "";
     int iNumMissing;
 }
 <h2>Animates</h2>
     <ul>
 @{
-    strCurPath = strImagesPath + "portraits\\";
+    strCurPath = strImagesPath + "portraits/";
     iNumMissing = 0;
     IEnumerable<string> files = Directory.EnumerateFiles(strCurPath);
     foreach(string file in files) {
-        if (!File.Exists(strCurPath + "Thumbnails\\100\\" + file.Substring(strCurPath.Length)))
+        if (!File.Exists(strCurPath + "Thumbnails/100/" + file.Substring(strCurPath.Length)))
         {
             <li>@file.Substring(strCurPath.Length)</li>
             iNumMissing++;
@@ -26,12 +26,12 @@
 <h2>Pets</h2>
 <ul>
 @{
-    strCurPath = strImagesPath + "animalPortraits\\";
+    strCurPath = strImagesPath + "animalPortraits/";
     iNumMissing = 0;
     files = Directory.EnumerateFiles(strCurPath);
     foreach (string file in files)
     {
-        if (!File.Exists(strCurPath + "Thumbnails\\100\\" + file.Substring(strCurPath.Length)))
+        if (!File.Exists(strCurPath + "Thumbnails/100/" + file.Substring(strCurPath.Length)))
         {
             <li>@file.Substring(strCurPath.Length)</li>
             iNumMissing++;
@@ -47,12 +47,12 @@
 <h2>Inanimates</h2>
 <ul>
 @{
-    strCurPath = strImagesPath + "itemsPortraits\\";
+    strCurPath = strImagesPath + "itemsPortraits/";
     iNumMissing = 0;
     files = Directory.EnumerateFiles(strCurPath);
     foreach (string file in files)
     {
-        if (!File.Exists(strCurPath + "Thumbnails\\100\\" + file.Substring(strCurPath.Length)))
+        if (!File.Exists(strCurPath + "Thumbnails/100/" + file.Substring(strCurPath.Length)))
         {
             <li>@file.Substring(strCurPath.Length)</li>
             iNumMissing++;

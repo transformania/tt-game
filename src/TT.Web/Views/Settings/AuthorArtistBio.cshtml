@@ -87,7 +87,7 @@
                         foreach (string s in animateGraphics.Where(s => s.Length > 0))
                         {
                             string strThumb = "";
-                            if (File.Exists(HttpContext.Current.Server.MapPath("/Images/PvP/portraits/Thumbnails/100/"+s)))
+                            if (File.Exists(AppDomain.CurrentDomain.BaseDirectory + "Images/PvP/portraits/Thumbnails/100/"+s))
                             {
                                 strThumb = "Thumbnails/100/";
                             }
@@ -108,7 +108,7 @@
                         foreach (string s in inanimateGraphics.Where(s => s.Length > 0))
                         {
                             string strThumb = "";
-                            if (File.Exists(HttpContext.Current.Server.MapPath("/Images/PvP/itemsPortraits/Thumbnails/100/" + s)))
+                            if (File.Exists(AppDomain.CurrentDomain.BaseDirectory + "Images/PvP/itemsPortraits/Thumbnails/100/" + s))
                             {
                                 strThumb = "Thumbnails/100/";
                             }
@@ -128,7 +128,7 @@
                         foreach (string s in animalGraphics.Where(s => s.Length > 0))
                         {
                             string strThumb = "";
-                            if (File.Exists(HttpContext.Current.Server.MapPath("/Images/PvP/animalPortraits/Thumbnails/100/" + s)))
+                            if (File.Exists(AppDomain.CurrentDomain.BaseDirectory + "Images/PvP/animalPortraits/Thumbnails/100/" + s))
                             {
                                 strThumb = "Thumbnails/100/";
                             }

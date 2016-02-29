@@ -1311,7 +1311,7 @@ namespace TT.Web.Controllers
             try
             {
                 // load data from the xml
-                string filename = System.Web.HttpContext.Current.Server.MapPath("~/XMLs/FairyChallengeText/fae_temp.xml");
+                string filename = AppDomain.CurrentDomain.BaseDirectory + "XMLs/FairyChallengeText/fae_temp.xml";
                 System.Xml.Serialization.XmlSerializer reader = new System.Xml.Serialization.XmlSerializer(typeof(FairyChallengeBag));
                 System.IO.StreamReader file = new System.IO.StreamReader(filename);
                 output = (FairyChallengeBag)reader.Deserialize(file);

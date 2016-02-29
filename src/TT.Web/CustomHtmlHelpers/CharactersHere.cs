@@ -338,7 +338,7 @@ namespace TT.Web.CustomHtmlHelpers
             if (thumb)
             {
                 strThumb = "Thumbnails/100/";
-                if (!File.Exists(HttpContext.Current.Server.MapPath(output + strThumb + strPortraitUrl))) strThumb = "";
+                if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + output + strThumb + strPortraitUrl)) strThumb = "";
             }
 
             output += strThumb + strPortraitUrl;
@@ -363,7 +363,7 @@ namespace TT.Web.CustomHtmlHelpers
             if (thumb)
             {
                 strThumb = "Thumbnails/100/";
-                if (!File.Exists(HttpContext.Current.Server.MapPath("/Images/PvP/" + strItemType + strThumb + item.Item.PortraitUrl))) strThumb = "";
+                if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + "Images/PvP/" + strItemType + strThumb + item.Item.PortraitUrl)) strThumb = "";
             }
 
             output = "/Images/PvP/" + strItemType + strThumb + item.Item.PortraitUrl;
@@ -388,7 +388,7 @@ namespace TT.Web.CustomHtmlHelpers
             if (thumb)
             {
                 strThumb = "Thumbnails/100/";
-                if (!File.Exists(HttpContext.Current.Server.MapPath("/Images/PvP/" + strItemType + strThumb + item.PortraitUrl))) strThumb = "";
+                if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + "Images/PvP/" + strItemType + strThumb + item.PortraitUrl)) strThumb = "";
             }
 
             output = "/Images/PvP/" + strItemType + strThumb + item.PortraitUrl;
@@ -459,7 +459,7 @@ namespace TT.Web.CustomHtmlHelpers
             else
             {
                 string strThumb = "Thumbnails/100/";
-                if (!File.Exists(HttpContext.Current.Server.MapPath("/Images/PvP/portraits/" + strThumb + owner.Form.PortraitUrl))) strThumb = "";
+                if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + "Images/PvP/portraits/" + strThumb + owner.Form.PortraitUrl)) strThumb = "";
                 output = "<div class='subportrait' style='background-image: url(../Images/PvP/portraits/" + strThumb + owner.Form.PortraitUrl + ");' title = 'You are owned by " + owner.Player.FirstName + " " + owner.Player.LastName + ", a " + owner.Form.FriendlyName + ".'></div>";
                 return new MvcHtmlString(output);
             }

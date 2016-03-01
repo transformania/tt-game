@@ -1434,7 +1434,7 @@ namespace TT.Web.Controllers
             }
 
             // assert spells is learnable
-            if ((spellViewModel.Skill.LearnedAtLocation == null || spellViewModel.Skill.LearnedAtLocation == "") && (spellViewModel.Skill.LearnedAtRegion == null && spellViewModel.Skill.LearnedAtRegion == ""))
+            if ((spellViewModel.Skill.LearnedAtLocation == null || spellViewModel.Skill.LearnedAtLocation == "") && (spellViewModel.Skill.LearnedAtRegion == null && spellViewModel.Skill.LearnedAtRegion == "") || !spellViewModel.Skill.IsPlayerLearnable)
             {
                 TempData["Error"] = "You cannot learn that spell.";
                      return RedirectToAction("TalkToLorekeeper", "NPC");

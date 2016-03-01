@@ -226,12 +226,14 @@ namespace TT.Domain.Procedures
                 ExclusiveToItem = dbstatic.ExclusiveToItem,
                 LearnedAtLocation = dbstatic.LearnedAtLocation,
                 LearnedAtRegion = dbstatic.LearnedAtRegion,
+                IsPlayerLearnable = dbstatic.IsPlayerLearnable
             };
 
             SkillViewModel2 output = new SkillViewModel2
             {
                 dbSkill = tempskill,
                 Skill = tempstatic,
+                
             };
 
             return output;

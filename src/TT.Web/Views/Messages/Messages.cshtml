@@ -45,10 +45,10 @@
     @using (Html.BeginForm("DeleteMessage", "Messages", FormMethod.Post))
     {
         @Html.AntiForgeryToken()
-        @Html.Hidden("deleteAll", true)
-        @Html.Hidden("messageId", -1)
+        <input name="deleteAll" type="hidden" value="True">
+        <input name="messageId" type="hidden" value="-1">
 
-        <a id="FormDeleteLink" href="javascript:void(0)">Yes, I want to delete all my messages</a>
+        <input type="submit" value="Yes, I want to delete all my messages">
     }
 </div>
 
@@ -130,8 +130,8 @@
                             @using (Html.BeginForm("DeleteMessage", "Messages", FormMethod.Post))
                             {
                                 @Html.AntiForgeryToken()
-                                @Html.Hidden("deleteAll", false)
-                                @Html.Hidden("messageId", msg.dbMessage.Id)
+                                <input name="deleteAll" type="hidden" value="False">
+                                <input name="messageId" type="hidden" value="@msg.dbMessage.Id">
 
                                 <input type="submit" value="Delete Message">
                             }
@@ -139,7 +139,7 @@
                             @using (Html.BeginForm(msg.dbMessage.ReadStatus == 1? "MarkAsUnread" : "MarkAsRead", "Messages", FormMethod.Post, new { id = "markForm" }))
                             {
                                 @Html.AntiForgeryToken()
-                                @Html.Hidden("messageId", msg.dbMessage.Id)
+                                <input name="messageId" type="hidden" value="@msg.dbMessage.Id">
 
                                 <input type="submit" value= "@(msg.dbMessage.ReadStatus == 1? "Mark As Unread" : "Mark As Read")">
                             }

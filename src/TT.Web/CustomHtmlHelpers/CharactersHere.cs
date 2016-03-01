@@ -696,7 +696,7 @@ namespace TT.Web.CustomHtmlHelpers
         {
             string output = BuffMap.BuffDetailsMap[statName].DisplayName + " <span class='statPopupBubble' onclick='alert(\"";
             output += BuffMap.BuffDetailsMap[statName].Description;
-            output += "\");'>[?]</span>";
+            output += "\");'><b style='cursor: pointer'>[?]</b></span>";
             return new MvcHtmlString(output);
         }
 

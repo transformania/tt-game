@@ -613,7 +613,7 @@ namespace TT.Domain.ViewModels
                 "Discipline", 
                 new BuffDetail {
                     DisplayName = "Discipline",
-                    Description = "Discipline affects the strength of your mental defenses, reducing the effectiveness of all spells cast against you.  Unfortunately you'll lose a bit of your own offensive power, being a bit more stable and predictable.", 
+                    Description = "Discipline affects the strength of your mental defenses, reducing the effectiveness of all spells cast against you.  Unfortunately you will lose a bit of your own offensive power, being a bit more stable and predictable.", 
                     PlusIcons = new List<string> { DefenseIconClass, WPUpIconClass }, 
                     MinusIcons =  new  List<string> { AttackIconClass }
                 }
@@ -622,7 +622,7 @@ namespace TT.Domain.ViewModels
                 "Perception", 
                 new BuffDetail {
                     DisplayName = "Perception",
-                    Description = "Perception affects the accuracy of your spell-casting and your ability to detect hidden things.  It's also quite useful to have so you know when a spell cast is starting off poorly, reducing the chance of it exploding in your own face.", 
+                    Description = "Perception affects the accuracy of your spell-casting and your ability to detect hidden things.  It is also quite useful to have so you know when a spell cast is starting off poorly, reducing the chance of it exploding in your own face.", 
                     PlusIcons = new List<string> { AttackIconClass }, 
                     MinusIcons =  new  List<string> {  }
                 }
@@ -649,7 +649,7 @@ namespace TT.Domain.ViewModels
                 "Agility", 
                 new BuffDetail {
                     DisplayName = "Agility",
-                    Description = "Agility affects your ability to move quickly, which helps you dodge attacks and move more quickly while leaving less noise.  Unfortunately moving so quickly isn't the best when trying to shoot a spell straight, so these casters can expect a few more spells to go awry and damage themselves instead of their target.", 
+                    Description = "Agility affects your ability to move quickly, which helps you dodge attacks and move more quickly while leaving less noise.  Unfortunately moving so quickly is not the best when trying to shoot a spell straight, so these casters can expect a few more spells to go awry and damage themselves instead of their target.", 
                     PlusIcons = new List<string> { DefenseIconClass }, 
                     MinusIcons =  new  List<string> { DefenseIconClass }
                 }

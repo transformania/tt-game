@@ -12,21 +12,21 @@
 
 <h2>ListNewsPosts</h2>
 
-<table id="newsPosts">
+<table id="newsPosts" class="table table-hover messageTable">
     <thead>
         <tr>
-            <td>Id</td>
-            <td>Timestamp</td>
-            <td>Text</td>
-            <td>Visibility</td>
-            <td>Edit</td>
-            <td>Delete</td>
+            <th>Id</th>
+            <th>Timestamp</th>
+            <th>Text</th>
+            <th>Visibility</th>
+            <th>Edit</th>
+            <th>Delete</th>
         </tr>
     </thead>
     <tbody>
 
         @{
-            foreach (NewsPost n in Model.OrderByDescending(m => m.Timestamp))
+            foreach (NewsPost n in Model)
             {
                 <tr>
                     <td>@n.Id</td>
@@ -43,18 +43,12 @@
 
 </table>
 
-<td>@Html.ActionLink("New", "EditNewsPost", "PvPAdmin", new { Id = -1 }, null)</td>
-
-<style>
-    table, td {
-        padding: 5px;
-        border: 1px solid black;
-    }
-</style>
+@Html.ActionLink("New", "EditNewsPost", "PvPAdmin", new { Id = -1 }, null)
 
 <script>
     $(document).ready(function () {
         $('#newsPosts').dataTable({
+            "order": [[1, "desc"]],
             "columnDefs": [{
                 "targets": 1,
                 "render": function (data, type, full, meta) {

@@ -22,7 +22,7 @@
             <tr>
                 <th>Graphic</th>
                 <th>Name</th>
-                <th>Item Type</th>
+                <th>Type</th>
                 <th>Discipline</th>
                 <th>Perception</th>
                 <th>Charisma</th>
@@ -69,6 +69,15 @@
                         } else {
                             return "<img src='/Images/PvP/itemsPortraits/Thumbnails/100/" + data + "' width=50; height=50;>";
                         }
+                    }
+                    return data;
+                }
+            },
+            {
+                "targets": [2],
+                "render": function (data, type, full, meta) {
+                    if (type == "display") {
+                        return "<img src='/Images/PvP/Icons/" + data + ".png' alt='" + data + "'>";
                     }
                     return data;
                 }

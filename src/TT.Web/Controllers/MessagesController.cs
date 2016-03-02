@@ -262,10 +262,10 @@ namespace TT.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public ActionResult SendCovenantWideMessage(string input)
+        public ActionResult SendCovenantWideMessage(string Message)
         {
 
-            if (input.Length > 1000)
+            if (Message.Length > 1000)
             {
                 TempData["Error"] = "Your message is too long.  There is a 1000 character limit.";
                 return RedirectToAction("MyCovenant", "Covenant");
@@ -287,7 +287,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction("MyCovenant", "Covenant");
             }
 
-            MessageProcedures.SendCovenantWideMessage(me, input);
+            MessageProcedures.SendCovenantWideMessage(me, Message);
 
             TempData["Result"] = "Message sent out!";
             return RedirectToAction("MyCovenant", "Covenant");

@@ -6,26 +6,22 @@
 
 <p>You can help plan your desired equipment and pets using the table below.</p>
 
-<div id="toggles">
-    @*<input type="checkbox" id="nonstandard" value="nonstandard"> Nonstandard 	&nbsp;*@
-    <input type="checkbox" id="accessory" value="accessory" checked> Accessory 	&nbsp;
-    <input type="checkbox" id="consumable" value="consumable" checked> Consumable 	&nbsp;
-    <input type="checkbox" id="consumable_reuseable" value="consumable_reuseable" checked> Reusable Consumable 	&nbsp;
-    <input type="checkbox" id="hat" value="hat" checked> Hat 	&nbsp;
-    <input type="checkbox" id="pants" value="pants" checked> Pants 	&nbsp;
-    <input type="checkbox" id="pet" value="pet" checked> Pet 	&nbsp;
-    <input type="checkbox" id="shirt" value="shirt" checked> Shirt 	&nbsp;
-    <input type="checkbox" id="shoes" value="shoes" checked> Shoes 	&nbsp;
-    <input type="checkbox" id="underpants" value="underpants" checked> Underpants 	&nbsp;
-    <input type="checkbox" id="undershirt" value="undershirt" checked> Undershirt 	&nbsp;
-</div>
-<input type="checkbox" id="deselectAll" value="deselectAll"> [Unselect All] 	&nbsp;
-
+<form id="filtertype" action="">
+    <input type="radio" name="filter" value="" checked> All &nbsp;
+    <input type="radio" name="filter" value="accessory"> Accessory 	&nbsp;
+    <input type="radio" name="filter" value="consumable"> Consumable 	&nbsp;
+    <input type="radio" name="filter" value="consumable_reuseable"> Reusable Consumable 	&nbsp;
+    <input type="radio" name="filter" value="hat"> Hat 	&nbsp;
+    <input type="radio" name="filter" value="pants"> Pants 	&nbsp;
+    <input type="radio" name="filter" value="pet"> Pet 	&nbsp;
+    <input type="radio" name="filter" value="shirt"> Shirt 	&nbsp;
+    <input type="radio" name="filter" value="shoes"> Shoes 	&nbsp;
+    <input type="radio" name="filter" value="underpants"> Underpants 	&nbsp;
+    <input type="radio" name="filter" value="undershirt"> Undershirt 	&nbsp;
+</form>
 
 <div style="overflow-x: scroll;">
     <table id="itemTable">
-
-
         <thead>
             <tr>
                 <th>Graphic</th>
@@ -42,102 +38,72 @@
                 <th>Luck</th>
             </tr>
         </thead>
-        <tbody id="tbody"></tbody>
-
-
-
-
     </table>
 </div>
 
 <script>
-
-    var itemsUnfiltered = [];
-    var items = [];
-    var datatableObj = "";
-
-    // populate the the jump to dropdown with all states found for the current quest
-    function loadJson() {
-        $.getJSON("/Info/Gear", function (data) {
-            itemsUnfiltered = data;
-        }).then(function () {
-            filterData();
-            
-        }).fail(function () {
-            alert("Failed to load json");
-        });
-    }
-
-    function filterData() {
-
-        items = [];
-
-        for (var i = 0; i < itemsUnfiltered.length; i++) {
-
-            var item = itemsUnfiltered[i];
-
-            var id = "#" + item.ItemType;
-            var isSelected = $(id).is(':checked');
-
-            if (isSelected == true) {
-                items.push(item);
-            }
-
-        }
-
-        renderTable();
-
-    }
-
-    function renderTable() {
-
-        var table = $('#itemTable');
-        $("#tbody").empty();
-
-        for (var i = 0; i < items.length; i++) {
-
-            var dat = items[i];
-   
-            var img = "<td>" + printPortrait(dat) + "</td>";
-            var friendlyName = "<td>" + dat.FriendlyName + "</td>";
-            var type = "<td>" + dat.ItemType + "</td>";
-
-            var disc = "<td>" + styleMe(dat.Discipline) + "</td>";
-            var perc = "<td>" + styleMe(dat.Perception) + "</td>";
-            var char = "<td>" + styleMe(dat.Charisma) + "</td>";
-            var fort = "<td>" + styleMe(dat.Fortitude) + "</td>";
-            var agil = "<td>" + styleMe(dat.Agility) + "</td>";
-            var rest = "<td>" + styleMe(dat.Allure) + "</td>";
-            var mag = "<td>" + styleMe(dat.Magicka) + "</td>";
-            var regen = "<td>" + styleMe(dat.Succour) + "</td>";
-            var luck = "<td>" + styleMe(dat.Luck) + "</td>";
-
-
-            table.append('<tr>' +
-
-                img +
-                friendlyName +
-                type +
-
-                disc +
-                perc +
-                char +
-                fort +
-                agil +
-                rest +
-                mag +
-                regen +
-                luck +
-
-                '</tr>');
-        }
-
-        datatableObj = $('#itemTable').dataTable({
+    $(document).ready(function () {
+        $('#itemTable').DataTable({
+            "ajax": {
+                "url": './Gear',
+                "dataSrc": ""
+            },
             "lengthMenu": [[10, 25, 50, 100, 200, -1], [10, 25, 50, 100, 200, "All"]],
-            "bDestroy": true,
+            "deferRender": true,
+            "columns": [
+        { "data": "PortraitUrl" },
+        { "data": "FriendlyName" },
+        { "data": "ItemType" },
+        { "data": "Discipline" },
+        { "data": "Perception" },
+        { "data": "Charisma" },
+        { "data": "Fortitude" },
+        { "data": "Agility" },
+        { "data": "Allure" },
+        { "data": "Magicka" },
+        { "data": "Succour" },
+        { "data": "Luck" }
+            ],
+            "columnDefs": [{
+                "targets": [0],
+                "render": function (data, type, full, meta) {
+                    if (type == "display") {
+                        if (full.ItemType == 'pet') {
+                            return "<img src='/Images/PvP/animalPortraits/Thumbnails/100/" + data + "' width=50; height=50;>";
+                        } else {
+                            return "<img src='/Images/PvP/itemsPortraits/Thumbnails/100/" + data + "' width=50; height=50;>";
+                        }
+                    }
+                    return data;
+                }
+            },
+            {
+                "targets": [3, 4, 5, 6, 7, 8, 9],
+                "render": function (data, type, full, meta) {
+                    if (type == "display") {
+                        return styleMe(data);
+                    }
+                    return data;
+                }
+            }],
+            "order": [[ 1, "asc" ]],
+            "initComplete": function () {
+                this.api().column(2).every(function () {
+                    var column = this;
+                    $("#filtertype input").on('change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $('input[name=filter]:checked', '#filtertype').val()
+                        );
+
+                        column
+                            .search(val ? '^' + val + '$' : '', true, false)
+                            .draw();
+                    });
+                });
+            }
         });
 
-    }
+    });
 
     function styleMe(value) {
         if (value == 0) {
@@ -148,41 +114,6 @@
             return "<span class='bad'>" + value + "</span>";
         }
     }
-
-
-
-    function printPortrait(dat) {
-        if (dat.ItemType == 'pet') {
-            return "<img src='/Images/PvP/animalPortraits/Thumbnails/100/" + dat.PortraitUrl + "' width=50; height=50;>";
-        } else {
-            return "<img src='/Images/PvP/itemsPortraits/Thumbnails/100/" + dat.PortraitUrl + "' width=50; height=50;>";
-        }
-    }
-
-    function refreshTable() {
-        $('#itemTable').DataTable().destroy();
-        filterData();
-    }
-
-    $("#toggles :input").each(function () {
-
-        $(this).click(function () {
-            refreshTable();
-        });
-
-    });
-
-    $("#deselectAll").click(function () {
-        $("#toggles :input").each(function () {
-            $(this).attr('checked', false);
-        });
-        $(this).attr('checked', false);
-        refreshTable();
-
-    });
-
-    loadJson();
-
 </script>
 
 <style>

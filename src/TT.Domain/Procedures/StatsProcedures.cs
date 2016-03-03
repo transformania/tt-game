@@ -554,7 +554,7 @@ namespace TT.Domain.Procedures
             IAchievementRepository repo = new EFAchievementRepository();
             IPlayerRepository playerRepo = new EFPlayerRepository();
 
-            List<Achievement> x = repo.Achievements.Where(a => a.AchievementType == type).OrderByDescending(s => s.Amount).ThenByDescending(a => a.Timestamp).Take(10).ToList();
+            List<Achievement> x = repo.Achievements.Where(a => a.AchievementType == type).OrderByDescending(s => s.Amount).ThenBy(a => a.Timestamp).Take(10).ToList();
             List<PlayerAchievementViewModel> output = new List<PlayerAchievementViewModel>();
 
             foreach (Achievement a in x)

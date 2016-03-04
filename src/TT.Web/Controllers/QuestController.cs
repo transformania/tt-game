@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Web.Mvc;
+using System.Web.UI;
 using Microsoft.AspNet.Identity;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
@@ -15,6 +16,7 @@ using TT.Domain.ViewModels.Quest;
 namespace TT.Web.Controllers
 {
     [Authorize]
+    [OutputCache(Location = OutputCacheLocation.None)]
     public class QuestController : Controller
     {
 

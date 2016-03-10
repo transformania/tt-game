@@ -5,7 +5,7 @@ using Highway.Data.Contexts;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Commands.Chat;
-using TT.Domain.Entities.Chat;
+using TT.Domain.DTOs;
 using TT.Tests.Builders.Identity;
 using TT.Web.Controllers.API;
 
@@ -23,7 +23,7 @@ namespace TT.Tests.API
             var creator = new UserBuilder().BuildAndSave();
 
             var actionResult = controller.Put(new CreateChatRoom { RoomName = "Test_Room", CreatorId = creator.Id });
-            var createdResult = actionResult as CreatedAtRouteNegotiatedContentResult<ChatRoom>;
+            var createdResult = actionResult as CreatedAtRouteNegotiatedContentResult<ChatRoomDetail>;
 
             createdResult.Should().NotBeNull();
             createdResult.RouteName.Should().Be("DefaultApi");

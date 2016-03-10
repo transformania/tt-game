@@ -1,21 +1,22 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using Highway.Data;
+using TT.Domain.DTOs;
 using TT.Domain.Entities.Chat;
 using TT.Domain.Entities.Identity;
 
 namespace TT.Domain.Commands.Chat
 {
-    public class CreateChatRoom : DomainCommand<ChatRoom>
+    public class CreateChatRoom : DomainCommand<ChatRoomDetail>
     {
         public string RoomName { get; set; }
         public string CreatorId { get; set; }
 
-        public override ChatRoom Execute(IDataContext context)
+        public override ChatRoomDetail Execute(IDataContext context)
         {
             Validate();
 
-            ChatRoom room = null;
+            ChatRoomDetail result = null;
 
             ContextQuery = ctx =>
             {
@@ -26,15 +27,17 @@ namespace TT.Domain.Commands.Chat
                 if (creator == null)
                     throw new DomainException("Room creator does not exist");
 
-                room = ChatRoom.Create(creator, RoomName);
+                var room = ChatRoom.Create(creator, RoomName);
 
                 ctx.Add(room);
                 ctx.Commit();
+
+                result = new ChatRoomDetail(room);
             };
 
             ExecuteInternal(context);
 
-            return room;
+            return result;
         }
 
         private void Validate()

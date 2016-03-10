@@ -9,7 +9,7 @@ namespace TT.Web.Controllers.API
         public IHttpActionResult Put(CreateChatRoom cmd)
         {
             var chatRoom = DomainRegistry.Repository.Execute(cmd);
-            return CreatedAtRoute("DefaultApi", new { id = chatRoom.Name }, chatRoom);
+            return CreatedAtRoute("DefaultApi", new { id = chatRoom.RoomName }, chatRoom);
         }
     }
 }

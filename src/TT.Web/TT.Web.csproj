@@ -231,6 +231,7 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\API\ApiControllerBase.cs" />
     <Compile Include="Controllers\API\ChatRoomController.cs" />
     <Compile Include="Controllers\ChatController.cs" />
     <Compile Include="Controllers\ContributionController.cs" />
@@ -307,6 +308,7 @@
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\notices.js" />
+    <Content Include="Scripts\tt.api.js" />
     <Content Include="Scripts\tt.chat.js" />
     <Content Include="Scripts\tt.config.js" />
     <Content Include="Sounds\attack.wav" />
@@ -797,6 +799,7 @@
     <Content Include="Views\PvP\RoundLeaderboards\Statistics\Alpha_30.cshtml" />
     <Content Include="Views\Chat\Chat.cshtml" />
     <Content Include="Views\Contribution\partial\ContributionGraphic.cshtml" />
+    <Content Include="Scripts\tt.chat.operations.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

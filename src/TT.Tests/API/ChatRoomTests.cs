@@ -1,5 +1,4 @@
-﻿using System;
-using System.Web.Http.Results;
+﻿using System.Web.Http.Results;
 using FluentAssertions;
 using Highway.Data.Contexts;
 using NUnit.Framework;
@@ -18,9 +17,9 @@ namespace TT.Tests.API
         public void Should_create_chat_room()
         {
             DomainRegistry.Repository = new DomainRepository(new InMemoryDataContext());
-            var controller = new ChatRoomController();
-
             var creator = new UserBuilder().BuildAndSave();
+            var controller = new ChatRoomController();
+            controller.OverrideGetUserId(() => creator.Id);
 
             var actionResult = controller.Put(new CreateChatRoom { RoomName = "Test_Room", CreatorId = creator.Id });
             var createdResult = actionResult as CreatedAtRouteNegotiatedContentResult<ChatRoomDetail>;

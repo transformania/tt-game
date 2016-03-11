@@ -198,6 +198,7 @@
     <Compile Include="DomainException.cs" />
     <Compile Include="DomainRegistry.cs" />
     <Compile Include="DomainRepository.cs" />
+    <Compile Include="DTOs\ChatRoomDetail.cs" />
     <Compile Include="Entities\Chat\ChatRoom.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\Identity\User.cs" />

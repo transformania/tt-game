@@ -45,7 +45,6 @@ namespace TT.Tests.Domain.Commands.Chat
         }
 
         [TestCase("Test!")]
-        [TestCase("Test'")]
         [TestCase("Test<")]
         [TestCase("Test*")]
         [TestCase("Test?")]

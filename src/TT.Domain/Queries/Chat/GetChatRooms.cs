@@ -1,0 +1,16 @@
+﻿using System.Linq;
+using TT.Domain.DTOs;
+using TT.Domain.Entities.Chat;
+
+namespace TT.Domain.Queries.Chat
+{
+    public class GetChatRooms : Highway.Data.Query<ChatRoomDetail>
+    {
+        public GetChatRooms()
+        {
+            ContextQuery = ctx => {
+                return ctx.AsQueryable<ChatRoom>().Select(cr => new ChatRoomDetail(cr));
+            };
+        }
+    }
+}

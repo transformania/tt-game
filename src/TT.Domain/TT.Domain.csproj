@@ -306,6 +306,7 @@
     <Compile Include="Procedures\TFEnergyProcedures.cs" />
     <Compile Include="Procedures\WorldUpdateProcedures.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Queries\Chat\GetChatRooms.cs" />
     <Compile Include="Queries\DMRoll\GetRoll.cs" />
     <Compile Include="Queries\Player\GetPlayerFormFromMembership.cs" />
     <Compile Include="Queries\Statics\GetStaticItem.cs" />

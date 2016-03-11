@@ -6,7 +6,7 @@
 		$("#createChatRoomForm").submit(function (event) {
 			event.preventDefault();
 
-			var payload = { RoomName:$('#newRoomName').val() }
+			var payload = { RoomName: $('#newRoomName').val().replace(/ /g, '_') }
 
 			ApiModule.apiPost('chatroom', payload, function (data) {
 			    showFlash('Chat room \'' + data.RoomName + '\' created successfully', 'result');

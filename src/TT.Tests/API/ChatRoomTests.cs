@@ -21,12 +21,26 @@ namespace TT.Tests.API
             var controller = new ChatRoomController();
             controller.OverrideGetUserId(() => creator.Id);
 
-            var actionResult = controller.Put(new CreateChatRoom { RoomName = "Test_Room", CreatorId = creator.Id });
+            var actionResult = controller.Put(new CreateChatRoom { RoomName = "Test_Room" });
             var createdResult = actionResult as CreatedAtRouteNegotiatedContentResult<ChatRoomDetail>;
 
             createdResult.Should().NotBeNull();
             createdResult.RouteName.Should().Be("DefaultApi");
             createdResult.RouteValues["id"].Should().Be("Test_Room");
+        }
+
+        [Test]
+        public void Should_return_bad_request_on_error()
+        {
+            DomainRegistry.Repository = new DomainRepository(new InMemoryDataContext());
+            var creator = new UserBuilder().BuildAndSave();
+            var controller = new ChatRoomController();
+            controller.OverrideGetUserId(() => creator.Id);
+
+            var actionResult = controller.Put(new CreateChatRoom());
+            var badRequestResult = actionResult as BadRequestErrorMessageResult;
+
+            badRequestResult.Message.Should().NotBeEmpty();
         }
     }
 }

@@ -11,8 +11,15 @@ namespace TT.Web.Controllers.API
             var userId = GetUserId();
             cmd.CreatorId = userId;
 
-            var chatRoom = DomainRegistry.Repository.Execute(cmd);
-            return CreatedAtRoute("DefaultApi", new { id = chatRoom.RoomName }, chatRoom);
+            try
+            {
+                var chatRoom = DomainRegistry.Repository.Execute(cmd);
+                return CreatedAtRoute("DefaultApi", new {id = chatRoom.RoomName}, chatRoom);
+            }
+            catch (DomainException ex)
+            {
+                return BadRequest(ex.Message);   
+            }
         }
     }
 }

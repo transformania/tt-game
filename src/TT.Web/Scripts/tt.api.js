@@ -7,10 +7,11 @@
         $.ajax({
             method: 'PUT',
             url: apiBasePath + resource,
+            dataType: "json",
             data: payload
         })
          .done(success)
-         .fail(failure);
+         .fail(function(data) { failure(JSON.parse(data.responseText)); });
     }
 
     return pub;

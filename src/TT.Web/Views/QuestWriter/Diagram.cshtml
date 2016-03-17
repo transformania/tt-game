@@ -30,8 +30,10 @@
 <span>Id:  <input id="Id" class="tiny" type="text" readonly /></span>
 <span>X:  <input id="X" class="tiny" type="text" readonly /></span>
 <span>Y:  <input id="Y" class="tiny" type="text" readonly /></span>
+<a id="editState" class="editButton" data-ajax="true" data-ajax-begin="waiting" data-ajax-failure="fail" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-success="success" data-ajax-update="#swapMe" href="/QuestWriter/QuestState/-1?QuestId=18&amp;ParentStateId=-1" style="display:none;">Load state</a>
 <span class="good" id="pinMeSuccess"></span>
-<div id="mynetwork"></div>
+<div id="mynetwork" data-ajax="true"></div>
+
 
 
 
@@ -210,6 +212,7 @@
             if (params.nodes.length>0) {
 
                 var selectedNodeId = params.nodes[0];
+                updateLoadStateLink(selectedNodeId);
 
                 var position = network.getPositions([selectedNodeId])[selectedNodeId];
 
@@ -253,6 +256,22 @@
         }
         network.unselectAll();
 
+    }
+
+    function updateLoadStateLink(id) {
+        var link = $("#editState");
+        link.show();
+
+        var text = "";
+        for (var i=0; i < states.length; i++) {
+            if (states[i].Id == id) {
+                text = states[i].StateName;
+                break;
+            }
+        }
+
+        link.html("Load state: " + text);
+        link.attr("href", "/QuestWriter/QuestState/" + id + "?QuestId=" + questId + "&ParentStateId=-1");
     }
 
     $("#springChange").change(function() {

@@ -7,7 +7,7 @@ using TT.Tests.Builders.Chat;
 namespace TT.Tests.Domain.Queries
 {
     [TestFixture]
-    public class GetChatRoomsTests : DomainTestBase
+    public class GetChatRoomsTests : TestBase
     {
         [Test]
         public void Should_fetch_all_available_rooms()

@@ -1,6 +1,7 @@
 ﻿using System.Web.Http;
 using TT.Domain;
 using TT.Domain.Commands.Chat;
+using TT.Domain.Queries.Chat;
 
 namespace TT.Web.Controllers.API
 {
@@ -20,6 +21,11 @@ namespace TT.Web.Controllers.API
             {
                 return BadRequest(ex.Message);   
             }
+        }
+
+        public IHttpActionResult Get()
+        {
+            return Ok(DomainRegistry.Repository.Find(new GetChatRooms()));
         }
     }
 }

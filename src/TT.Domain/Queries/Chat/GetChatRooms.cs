@@ -9,7 +9,12 @@ namespace TT.Domain.Queries.Chat
         public GetChatRooms()
         {
             ContextQuery = ctx => {
-                return ctx.AsQueryable<ChatRoom>().Select(cr => new ChatRoomDetail(cr));
+                return ctx.AsQueryable<ChatRoom>().Select(cr => new ChatRoomDetail
+                {
+                    Id = cr.Id,
+                    Name = cr.Name,
+                    Topic = cr.Topic ?? string.Empty
+                });
             };
         }
     }

@@ -5,12 +5,14 @@ namespace TT.Domain.DTOs
     public class ChatRoomDetail
     {
         public int      Id       { get; set; }
-        public string   RoomName { get; set; }
+        public string   Name     { get; set; }
+        public string   Topic    { get; set; }
 
         public ChatRoomDetail(ChatRoom room)
         {
             Id = room.Id;
-            RoomName = room.Name;
+            Name = room.Name;
+            Topic = room.Topic;
         }
     }
 }

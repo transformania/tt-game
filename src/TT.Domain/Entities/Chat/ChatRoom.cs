@@ -8,6 +8,7 @@ namespace TT.Domain.Entities.Chat
         public string Name { get; protected set; }
         public User Creator { get; protected set; }
         public DateTime? CreatedAt { get; protected set; }
+        public string Topic { get; protected set; }
 
         private ChatRoom() { }
 

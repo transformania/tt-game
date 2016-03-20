@@ -128,8 +128,9 @@
     <Compile Include="Builders\Chat\ChatRoomBuilder.cs" />
     <Compile Include="Builders\Identity\UserBuilder.cs" />
     <Compile Include="Domain\Commands\Chat\CreateChatRoomTests.cs" />
-    <Compile Include="Domain\DomainTestBase.cs" />
+    <Compile Include="TestBase.cs" />
     <Compile Include="Domain\Models\TestPlayer_VM.cs" />
+    <Compile Include="Domain\Queries\GetChatRoomsTests.cs" />
     <Compile Include="Domain\Utilities\XmlResourceLoaderTests.cs" />
     <Compile Include="Services\ItemProcedureTests.cs" />
     <Compile Include="Services\PlayerProcedureTests.cs" />

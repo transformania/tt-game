@@ -3,9 +3,9 @@ using Highway.Data.Contexts;
 using NUnit.Framework;
 using TT.Domain;
 
-namespace TT.Tests.Domain
+namespace TT.Tests
 {
-    public class DomainTestBase
+    public class TestBase
     {
         protected IDataContext DataContext { get; private set; }
         protected IDomainRepository Repository { get; private set; }

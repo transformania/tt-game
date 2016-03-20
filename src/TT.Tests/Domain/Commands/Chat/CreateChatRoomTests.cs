@@ -11,7 +11,7 @@ using TT.Tests.Builders.Identity;
 namespace TT.Tests.Domain.Commands.Chat
 {
     [TestFixture]
-    public class CreateChatRoomTests : DomainTestBase
+    public class CreateChatRoomTests : TestBase
     {
         [Test]
         public void Should_create_new_chat_room()

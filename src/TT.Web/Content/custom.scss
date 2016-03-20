@@ -1299,3 +1299,13 @@ line-height: 18px;
 #quest .infoMessage, #quest .specialBox  {
     border: 4px solid rgb(161, 105, 105);
     }
+
+#listChatRoomsModal .chatRoomList {
+  height: 300px;
+  overflow-y: scroll;
+  margin-bottom: 10px;
+}
+
+#listChatRoomsModal .chatRoomList li {
+  margin-bottom: 10px;
+}

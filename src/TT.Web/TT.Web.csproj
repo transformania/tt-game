@@ -800,6 +800,10 @@
     <Content Include="Views\Chat\Chat.cshtml" />
     <Content Include="Views\Contribution\partial\ContributionGraphic.cshtml" />
     <Content Include="Scripts\tt.chat.operations.js" />
+    <Content Include="Views\PvP\RoundLeaderboards\Alpha_31.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_31.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\XP\Alpha_31.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\Statistics\Alpha_31.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

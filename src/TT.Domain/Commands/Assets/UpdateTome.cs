@@ -17,7 +17,7 @@ namespace TT.Domain.Commands.Assets
 
         public override void Execute(IDataContext context)
         {
-            Validate();
+            
 
             ContextQuery = ctx =>
             {
@@ -28,9 +28,13 @@ namespace TT.Domain.Commands.Assets
                 if (baseItem == null)
                     throw new DomainException("Base item does not exist");
 
+                this.BaseItemId = baseItem.Id;
+
                 tome.Update(this, baseItem);
                 ctx.Commit();
             };
+
+            Validate();
 
             base.Execute(context);
 

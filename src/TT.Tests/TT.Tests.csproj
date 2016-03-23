@@ -129,6 +129,7 @@
     <Compile Include="Builders\Chat\ChatRoomBuilder.cs" />
     <Compile Include="Builders\Identity\UserBuilder.cs" />
     <Compile Include="Builders\Item\ItemBuilder.cs" />
+    <Compile Include="Domain\Commands\Assets\UpdateTomeTests.cs" />
     <Compile Include="Domain\Commands\Assets\CreateTomeTests.cs" />
     <Compile Include="Domain\Commands\Chat\CreateChatRoomTests.cs" />
     <Compile Include="Domain\Queries\Assets\GetTomesTests.cs" />

@@ -1,10 +1,7 @@
 ﻿using System.Linq;
-using System.Text.RegularExpressions;
 using Highway.Data;
 using TT.Domain.Entities.Assets;
-using TT.Domain.Entities.Items;
-using TT.Domain.Entities.Identity;
-using TT.Domain.DTOs;
+using TT.Domain.Entities.Item;
 
 namespace TT.Domain.Commands.Assets
 {
@@ -18,7 +15,6 @@ namespace TT.Domain.Commands.Assets
         public override void Execute(IDataContext context)
         {
             
-
             ContextQuery = ctx =>
             {
 

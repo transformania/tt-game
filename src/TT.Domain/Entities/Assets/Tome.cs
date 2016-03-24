@@ -1,7 +1,5 @@
-﻿using System;
-using TT.Domain.Commands.Assets;
-using TT.Domain.Entities.Identity;
-using TT.Domain.Entities.Items;
+﻿using TT.Domain.Commands.Assets;
+using TT.Domain.Entities.Item;
 
 namespace TT.Domain.Entities.Assets
 {
@@ -23,9 +21,9 @@ namespace TT.Domain.Entities.Assets
 
         public Tome Update(UpdateTome cmd, ItemSource baseItem)
         {
-            this.Id = cmd.Id;
-            this.Text = cmd.Text;
-            this.BaseItem = baseItem;
+            Id = cmd.Id;
+            Text = cmd.Text;
+            BaseItem = baseItem;
             return this;
         }
 

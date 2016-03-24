@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using TT.Domain.DTOs;
-using TT.Domain.Entities.Chat;
 using TT.Domain.Entities.Assets;
 
 namespace TT.Domain.Queries.Assets

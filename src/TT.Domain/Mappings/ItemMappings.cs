@@ -1,6 +1,6 @@
 ﻿using System.Data.Entity;
 using Highway.Data;
-using TT.Domain.Entities.Items;
+using TT.Domain.Entities.Item;
 
 namespace TT.Domain.Mappings
 {

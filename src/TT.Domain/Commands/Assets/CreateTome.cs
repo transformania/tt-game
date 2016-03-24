@@ -1,9 +1,7 @@
 ﻿using System.Linq;
-using System.Text.RegularExpressions;
 using Highway.Data;
 using TT.Domain.Entities.Assets;
-using TT.Domain.Entities.Items;
-using TT.Domain.Entities.Identity;
+using TT.Domain.Entities.Item;
 using TT.Domain.DTOs;
 
 namespace TT.Domain.Commands.Assets
@@ -43,7 +41,10 @@ namespace TT.Domain.Commands.Assets
 
         private void Validate()
         {
-            // assert Id is valid int
+            if (string.IsNullOrWhiteSpace(Text))
+                throw new DomainException("No text");
+            if (BaseItemId <= 0)
+                throw new DomainException("No base item was provided");
         }
 
     }

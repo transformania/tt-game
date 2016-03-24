@@ -1,17 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using TT.Domain;
-using TT.Domain.Abstract;
 using TT.Domain.Commands.Assets;
-using TT.Domain.Concrete;
-using TT.Domain.Models;
 using TT.Domain.Statics;
 using TT.Domain.Queries.Assets;
-using TT.Domain.Entities.Assets;
-using TT.Domain.Queries.Player;
 using TT.Domain.DTOs;
 
 namespace TT.Web.Controllers.Admin
@@ -33,7 +25,6 @@ namespace TT.Web.Controllers.Admin
             return View("~/Views/Admin/Tomes/List.cshtml", tomes);
         }
 
-        [ValidateInput(false)]
         public ActionResult Edit(int Id)
         {
             var cmd = new GetTome(Id);
@@ -62,7 +53,6 @@ namespace TT.Web.Controllers.Admin
             return RedirectToAction("List");
         }
 
-        [ValidateInput(false)]
         public ActionResult Create()
         {
             var output = new CreateTome();

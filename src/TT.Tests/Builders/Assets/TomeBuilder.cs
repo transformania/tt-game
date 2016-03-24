@@ -1,6 +1,4 @@
-﻿using System;
-using TT.Domain.Entities.Assets;
-using TT.Tests.Builders.Identity;
+﻿using TT.Domain.Entities.Assets;
 using TT.Tests.Builders.Item;
 
 namespace TT.Tests.Builders.Assets
@@ -15,6 +13,5 @@ namespace TT.Tests.Builders.Assets
             With(x => x.BaseItem, new ItemBuilder().BuildAndSave());
         }
 
-        //public SetText(string text)
     }
 }

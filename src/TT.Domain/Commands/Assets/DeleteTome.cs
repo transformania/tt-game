@@ -1,10 +1,6 @@
 ﻿using System.Linq;
-using System.Text.RegularExpressions;
 using Highway.Data;
 using TT.Domain.Entities.Assets;
-using TT.Domain.Entities.Items;
-using TT.Domain.Entities.Identity;
-using TT.Domain.DTOs;
 
 namespace TT.Domain.Commands.Assets
 {

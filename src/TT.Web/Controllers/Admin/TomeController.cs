@@ -5,6 +5,7 @@ using TT.Domain.Commands.Assets;
 using TT.Domain.Statics;
 using TT.Domain.Queries.Assets;
 using TT.Domain.DTOs.Assets;
+using TT.Domain.ViewModels.Assets;
 
 namespace TT.Web.Controllers.Admin
 {
@@ -18,10 +19,7 @@ namespace TT.Web.Controllers.Admin
             var cmd = new GetTomes();
             var tomes = DomainRegistry.Repository.Find(cmd);
 
-            ViewBag.ErrorMessage = TempData["Error"];
-            ViewBag.SubErrorMessage = TempData["SubError"];
-            ViewBag.Result = TempData["Result"];
-
+            SetMessages();
             return View("~/Views/Admin/Tomes/List.cshtml", tomes);
         }
 
@@ -36,10 +34,7 @@ namespace TT.Web.Controllers.Admin
                 Text = detail.Text
             };
 
-            ViewBag.ErrorMessage = TempData["Error"];
-            ViewBag.SubErrorMessage = TempData["SubError"];
-            ViewBag.Result = TempData["Result"];
-
+            SetMessages();
             return View("~/Views/Admin/Tomes/Edit.cshtml", output);
         }
 
@@ -55,15 +50,18 @@ namespace TT.Web.Controllers.Admin
 
         public ActionResult Create()
         {
-            var output = new CreateTome();
-            output.Text = "<span class='booktitle'>TITLE</span><br><br>" + Environment.NewLine + Environment.NewLine + "<span class='bookauthor'>By AUTHOR</span><br><br>";
-
+            var output = new CreateTomeViewModel();
             return View("~/Views/Admin/Tomes/Create.cshtml", output);
         }
 
         [ValidateInput(false)]
-        public ActionResult CreateSend(CreateTome cmd)
+        public ActionResult CreateSend(CreateTomeViewModel input)
         {
+            //var cmd = new CreateTome { Text = input.TomeDetail.Text, BaseItemId = input.TomeDetail.BaseItem.Id };
+            var cmd = new CreateTome();
+            cmd.Text = input.TomeDetail.Text;
+            cmd.BaseItemId = input.TomeDetail.BaseItem.Id;
+
             var tome = DomainRegistry.Repository.Execute(cmd);
             TempData["Result"] = "Tome for " + tome.BaseItem.FriendlyName + " created successfully.";
             return RedirectToAction("List");
@@ -77,6 +75,13 @@ namespace TT.Web.Controllers.Admin
 
             TempData["Result"] = "Tome Id " + Id + " deleted successfully.";
             return RedirectToAction("List");
+        }
+
+        private void SetMessages()
+        {
+            ViewBag.ErrorMessage = TempData["Error"];
+            ViewBag.SubErrorMessage = TempData["SubError"];
+            ViewBag.Result = TempData["Result"];
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using TT.Domain.DTOs.Assets;
+using TT.Domain.DTOs.Item;
 using TT.Domain.Entities.Assets;
 
 namespace TT.Domain.Queries.Assets
@@ -14,7 +15,7 @@ namespace TT.Domain.Queries.Assets
                 {
                     Id = cr.Id,
                     Text = cr.Text,
-                    BaseItem = cr.BaseItem
+                    BaseItem = new ItemSourceDetail(cr.BaseItem)
 
                 });
 

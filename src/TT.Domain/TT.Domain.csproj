@@ -338,6 +338,8 @@
     <Compile Include="Utilities\ResourceNotFoundException.cs" />
     <Compile Include="Utilities\XmlExtensions.cs" />
     <Compile Include="Utilities\XmlResourceLoader.cs" />
+    <Compile Include="ViewModels\Assets\EditTomeViewModel.cs" />
+    <Compile Include="ViewModels\Assets\CreateTomeViewModel.cs" />
     <Compile Include="ViewModels\BalancePageViewModel.cs" />
     <Compile Include="ViewModels\BioPageContributionViewModel.cs" />
     <Compile Include="ViewModels\BioPageViewModel.cs" />

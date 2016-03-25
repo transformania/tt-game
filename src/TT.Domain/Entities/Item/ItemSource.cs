@@ -61,5 +61,13 @@ namespace TT.Domain.Entities.Item
 
         private ItemSource() { }
 
+        public static ItemSource Create()
+        {
+            return new ItemSource
+            {
+                
+            };
+        }
+
     }
 }

@@ -1,5 +1,4 @@
-﻿@model TT.Domain.Commands.Assets.CreateTome
-@using TT.Domain.Commands.Assets
+﻿@model TT.Domain.ViewModels.Assets.CreateTomeViewModel
 
 <nav class="navbar navbar-default outsideContainer navbarTT2">
     <div class="container-fluid">
@@ -44,15 +43,14 @@
         <div id="formsBox"></div>
 
         <label>Item Id</label>
-        @Html.TextBoxFor(n => n.BaseItemId)
-
+        @Html.TextBoxFor(n => n.TomeDetail.BaseItem.Id)
 
         <div id="AllForms"></div>
 
         <br />
 
         <label>Text:</label>
-        @Html.TextAreaFor(n => n.Text)
+        @Html.TextAreaFor(n => n.TomeDetail.Text)
 
         <br />
 

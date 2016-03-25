@@ -1,4 +1,4 @@
-﻿@model List<TT.Domain.Models.DbStaticItem>
+﻿@model IEnumerable<TT.Domain.DTOs.Item.ItemSourceDetail>
 
 <div>
     <h1>Animate Forms</h1>
@@ -19,13 +19,13 @@
         </thead>
         <tbody>
 
-            @foreach (TT.Domain.Models.DbStaticItem f in Model.OrderBy(f => f.FriendlyName))
+            @foreach (TT.Domain.DTOs.Item.ItemSourceDetail f in Model)
             {
                 <tr>
                     <td>@f.Id</td>
                     <td>@f.FriendlyName</td>
                     
-                    <td>@f.dbName</td>
+                    <td>@f.DbName</td>
 
                     @{
                 if (f.IsUnique)

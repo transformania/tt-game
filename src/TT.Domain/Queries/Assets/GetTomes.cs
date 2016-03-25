@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using TT.Domain.DTOs;
+using TT.Domain.DTOs.Assets;
 using TT.Domain.Entities.Assets;
 
 namespace TT.Domain.Queries.Assets

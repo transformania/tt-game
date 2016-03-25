@@ -5,7 +5,7 @@ using Highway.Data.Contexts;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Commands.Chat;
-using TT.Domain.DTOs;
+using TT.Domain.DTOs.Chat;
 using TT.Tests.Builders.Chat;
 using TT.Tests.Builders.Identity;
 using TT.Web.Controllers.API;

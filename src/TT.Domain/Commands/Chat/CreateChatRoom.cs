@@ -1,7 +1,7 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using Highway.Data;
-using TT.Domain.DTOs;
+using TT.Domain.DTOs.Chat;
 using TT.Domain.Entities.Chat;
 using TT.Domain.Entities.Identity;
 

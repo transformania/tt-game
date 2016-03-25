@@ -201,8 +201,9 @@
     <Compile Include="DomainException.cs" />
     <Compile Include="DomainRegistry.cs" />
     <Compile Include="DomainRepository.cs" />
-    <Compile Include="DTOs\ChatRoomDetail.cs" />
-    <Compile Include="DTOs\TomeDetail.cs" />
+    <Compile Include="DTOs\Chat\ChatRoomDetail.cs" />
+    <Compile Include="DTOs\Item\ItemSourceDetail.cs" />
+    <Compile Include="DTOs\Assets\TomeDetail.cs" />
     <Compile Include="Entities\Assets\Tome.cs" />
     <Compile Include="Entities\Chat\ChatRoom.cs" />
     <Compile Include="Entities\Item\ItemSource.cs" />
@@ -318,6 +319,8 @@
     <Compile Include="Queries\Chat\GetChatRooms.cs" />
     <Compile Include="Queries\Assets\GetTomes.cs" />
     <Compile Include="Queries\DMRoll\GetRoll.cs" />
+    <Compile Include="Queries\Item\GetItemSource.cs" />
+    <Compile Include="Queries\Item\GetItemSources.cs" />
     <Compile Include="Queries\Player\GetPlayerFormFromMembership.cs" />
     <Compile Include="Queries\Statics\GetStaticItem.cs" />
     <Compile Include="Query.cs" />

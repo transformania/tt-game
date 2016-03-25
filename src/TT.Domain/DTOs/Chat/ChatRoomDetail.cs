@@ -1,6 +1,6 @@
 ﻿using TT.Domain.Entities.Chat;
 
-namespace TT.Domain.DTOs
+namespace TT.Domain.DTOs.Chat
 {
     public class ChatRoomDetail
     {

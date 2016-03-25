@@ -1,7 +1,7 @@
 ﻿using TT.Domain.Entities.Assets;
 using TT.Domain.Entities.Item;
 
-namespace TT.Domain.DTOs
+namespace TT.Domain.DTOs.Assets
 {
     public class TomeDetail
     {

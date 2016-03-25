@@ -135,9 +135,11 @@
     <Compile Include="Domain\Commands\Chat\CreateChatRoomTests.cs" />
     <Compile Include="Domain\Queries\Assets\GetTomeTest.cs" />
     <Compile Include="Domain\Queries\Assets\GetTomesTests.cs" />
+    <Compile Include="Domain\Queries\Item\GetItemSourcesTests.cs" />
+    <Compile Include="Domain\Queries\Item\GetItemSourceTest.cs" />
     <Compile Include="TestBase.cs" />
     <Compile Include="Domain\Models\TestPlayer_VM.cs" />
-    <Compile Include="Domain\Queries\GetChatRoomsTests.cs" />
+    <Compile Include="Domain\Queries\Chat\GetChatRoomsTests.cs" />
     <Compile Include="Domain\Utilities\XmlResourceLoaderTests.cs" />
     <Compile Include="Services\ItemProcedureTests.cs" />
     <Compile Include="Services\PlayerProcedureTests.cs" />

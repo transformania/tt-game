@@ -4,7 +4,7 @@ using TT.Domain;
 using TT.Domain.Commands.Assets;
 using TT.Domain.Statics;
 using TT.Domain.Queries.Assets;
-using TT.Domain.DTOs;
+using TT.Domain.DTOs.Assets;
 
 namespace TT.Web.Controllers.Admin
 {

@@ -2,7 +2,7 @@
 using Highway.Data;
 using TT.Domain.Entities.Assets;
 using TT.Domain.Entities.Item;
-using TT.Domain.DTOs;
+using TT.Domain.DTOs.Assets;
 
 namespace TT.Domain.Commands.Assets
 {

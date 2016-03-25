@@ -8,7 +8,7 @@ namespace TT.Tests.Builders.Item
         public ItemBuilder()
         {
             Instance = Create();
-            With(u => u.dbName, "test_item");
+            With(u => u.DbName, "test_item");
             With(u => u.FriendlyName, "Test Item Source");
         }
     }

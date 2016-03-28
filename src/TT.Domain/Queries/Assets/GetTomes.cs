@@ -1,6 +1,6 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using TT.Domain.DTOs.Assets;
-using TT.Domain.DTOs.Item;
 using TT.Domain.Entities.Assets;
 
 namespace TT.Domain.Queries.Assets
@@ -9,17 +9,7 @@ namespace TT.Domain.Queries.Assets
     {
         public GetTomes()
         {
-            ContextQuery = ctx =>
-            {
-                return ctx.AsQueryable<Tome>().Select(cr => new TomeDetail
-                {
-                    Id = cr.Id,
-                    Text = cr.Text,
-                    BaseItem = new ItemSourceDetail(cr.BaseItem)
-
-                });
-
-            };
+            ContextQuery = ctx => ctx.AsQueryable<Tome>().ProjectToQueryable<TomeDetail>();
         }
     }
 }

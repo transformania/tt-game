@@ -29,7 +29,7 @@ namespace TT.Domain.Commands.Assets
                 ctx.Add(tome);
                 ctx.Commit();
 
-                result = new TomeDetail(tome);
+                result = DomainRegistry.Mapper.Map<TomeDetail>(tome);
 
             };
 

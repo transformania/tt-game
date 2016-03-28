@@ -41,7 +41,6 @@ namespace TT.Web.Controllers.Admin
         [ValidateInput(false)]
         public ActionResult EditSend(UpdateTome cmd)
         {
-
             DomainRegistry.Repository.Execute(cmd);
 
             TempData["Result"] = "Tome Id " + cmd.Id + " saved successfully.";
@@ -55,19 +54,13 @@ namespace TT.Web.Controllers.Admin
         }
 
         [ValidateInput(false)]
-        public ActionResult CreateSend(CreateTomeViewModel input)
+        public ActionResult CreateSend(CreateTome cmd)
         {
-            //var cmd = new CreateTome { Text = input.TomeDetail.Text, BaseItemId = input.TomeDetail.BaseItem.Id };
-            var cmd = new CreateTome();
-            cmd.Text = input.TomeDetail.Text;
-            cmd.BaseItemId = input.TomeDetail.BaseItem.Id;
-
             var tome = DomainRegistry.Repository.Execute(cmd);
             TempData["Result"] = "Tome for " + tome.BaseItem.FriendlyName + " created successfully.";
             return RedirectToAction("List");
         }
 
-        [ValidateInput(false)]
         public ActionResult Delete(int Id)
         {
             var cmd = new DeleteTome(Id);

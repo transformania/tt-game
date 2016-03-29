@@ -1,6 +1,4 @@
-﻿using TT.Domain.Entities.Item;
-
-namespace TT.Domain.DTOs.Item
+﻿namespace TT.Domain.DTOs.Item
 {
     public class ItemSourceDetail
     {
@@ -59,13 +57,5 @@ namespace TT.Domain.DTOs.Item
         public decimal InstantManaRestore { get; set; }
         public decimal ReuseableHealthRestore { get; set; }
         public decimal ReuseableManaRestore { get; set; }
-
-        public ItemSourceDetail(ItemSource item)
-        {
-            Id = item.Id;
-        }
-
-        public ItemSourceDetail() { }
-
     }
 }

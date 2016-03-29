@@ -43,14 +43,14 @@
         <div id="formsBox"></div>
 
         <label>Item Id</label>
-        @Html.TextBoxFor(n => n.TomeDetail.BaseItem.Id)
+        @Html.TextBox("BaseItemId")
 
         <div id="AllForms"></div>
 
         <br />
 
         <label>Text:</label>
-        @Html.TextAreaFor(n => n.TomeDetail.Text)
+        @Html.TextArea("Text", Model.InitialText)
 
         <br />
 

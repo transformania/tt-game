@@ -1,4 +1,7 @@
 using System;
+using System.Linq;
+using AutoMapper;
+using Highway.Data;
 using TT.Domain.Abstract;
 
 namespace TT.Domain
@@ -15,6 +18,8 @@ namespace TT.Domain
         [ThreadStatic]
         private static IDomainRepository _repository;
 
+        private static IMapper _mapper;
+
         public static IRoot Root
         {
             get { return _root ?? (_root = new Root()); }
@@ -25,6 +30,31 @@ namespace TT.Domain
         {
             get { return _repository ?? (_repository = new DomainRepository(new DomainContext())); }
             set { _repository = value; }
+        }
+
+        public static IMapper Mapper
+        {
+            get
+            {
+                if (_mapper == null)
+                    ConfigureMapper();
+
+                return _mapper;
+            }
+        }
+
+        public static void ConfigureMapper()
+        {
+            var mapperConfiguration = new MapperConfiguration(cfg =>
+            {
+                var pType = typeof(Profile);
+                var mappings = typeof(DomainRegistry).Assembly.GetTypes().Where(t => pType.IsAssignableFrom(t));
+
+                foreach (var mapping in mappings)
+                    cfg.AddProfile((Profile)Activator.CreateInstance(mapping));
+            });
+
+            _mapper = mapperConfiguration.CreateMapper();
         }
     }
 }

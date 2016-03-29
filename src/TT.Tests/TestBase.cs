@@ -17,6 +17,7 @@ namespace TT.Tests
             Repository = new DomainRepository(DataContext);
 
             DomainRegistry.Repository = Repository;
+            DomainRegistry.ConfigureMapper();
         }
     }
 }

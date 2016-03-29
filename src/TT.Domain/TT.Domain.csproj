@@ -30,12 +30,24 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=4.2.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.4.2.1\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Common.Logging, Version=3.2.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
       <HintPath>..\packages\Common.Logging.3.2.0\lib\net40\Common.Logging.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Common.Logging.Core, Version=3.2.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
       <HintPath>..\packages\Common.Logging.Core.3.2.0\lib\net40\Common.Logging.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DelegateDecompiler, Version=1.0.0.0, Culture=neutral, PublicKeyToken=93b26a10a04705bd, processorArchitecture=MSIL">
+      <HintPath>..\packages\DelegateDecompiler.0.17.0\lib\net40-Client\DelegateDecompiler.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DelegateDecompiler.EntityFramework, Version=1.0.0.0, Culture=neutral, PublicKeyToken=93b26a10a04705bd, processorArchitecture=MSIL">
+      <HintPath>..\packages\DelegateDecompiler.EntityFramework.0.17.0\lib\net45\DelegateDecompiler.EntityFramework.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
@@ -60,6 +72,10 @@
     </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Mono.Reflection, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
+      <HintPath>..\packages\Mono.Reflection.1.0.0.0\lib\Mono.Reflection.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -136,6 +152,9 @@
     <Compile Include="Abstract\ITFEnergyRepository.cs" />
     <Compile Include="Abstract\ITFMessageRepository.cs" />
     <Compile Include="Command.cs" />
+    <Compile Include="Commands\Assets\DeleteTome.cs" />
+    <Compile Include="Commands\Assets\UpdateTome.cs" />
+    <Compile Include="Commands\Assets\CreateTome.cs" />
     <Compile Include="Commands\ChatLog\WriteLogToDatabase.cs" />
     <Compile Include="Commands\Chat\CreateChatRoom.cs" />
     <Compile Include="Commands\Player\UpdateOnlineActivityTimestamp.cs" />
@@ -198,15 +217,22 @@
     <Compile Include="DomainException.cs" />
     <Compile Include="DomainRegistry.cs" />
     <Compile Include="DomainRepository.cs" />
-    <Compile Include="DTOs\ChatRoomDetail.cs" />
+    <Compile Include="DTOs\Chat\ChatRoomDetail.cs" />
+    <Compile Include="DTOs\Item\ItemSourceDetail.cs" />
+    <Compile Include="DTOs\Assets\TomeDetail.cs" />
+    <Compile Include="Entities\Assets\Tome.cs" />
     <Compile Include="Entities\Chat\ChatRoom.cs" />
+    <Compile Include="Entities\Item\ItemSource.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\Identity\User.cs" />
+    <Compile Include="EntityFrameworkExtensions.cs" />
     <Compile Include="IDomainCommand.cs" />
     <Compile Include="IDomainRepository.cs" />
+    <Compile Include="Mappings\AssetsMapping.cs" />
     <Compile Include="Mappings\ChatMappings.cs" />
     <Compile Include="Mappings\EntityMappings.cs" />
     <Compile Include="Mappings\IdentityMappings.cs" />
+    <Compile Include="Mappings\ItemMappings.cs" />
     <Compile Include="Models\AchevementBadge.cs" />
     <Compile Include="Models\Achievement.cs" />
     <Compile Include="Models\AIDirective.cs" />
@@ -306,8 +332,12 @@
     <Compile Include="Procedures\TFEnergyProcedures.cs" />
     <Compile Include="Procedures\WorldUpdateProcedures.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Queries\Assets\GetTome.cs" />
     <Compile Include="Queries\Chat\GetChatRooms.cs" />
+    <Compile Include="Queries\Assets\GetTomes.cs" />
     <Compile Include="Queries\DMRoll\GetRoll.cs" />
+    <Compile Include="Queries\Item\GetItemSource.cs" />
+    <Compile Include="Queries\Item\GetItemSources.cs" />
     <Compile Include="Queries\Player\GetPlayerFormFromMembership.cs" />
     <Compile Include="Queries\Statics\GetStaticItem.cs" />
     <Compile Include="Query.cs" />
@@ -325,6 +355,8 @@
     <Compile Include="Utilities\ResourceNotFoundException.cs" />
     <Compile Include="Utilities\XmlExtensions.cs" />
     <Compile Include="Utilities\XmlResourceLoader.cs" />
+    <Compile Include="ViewModels\Assets\EditTomeViewModel.cs" />
+    <Compile Include="ViewModels\Assets\CreateTomeViewModel.cs" />
     <Compile Include="ViewModels\BalancePageViewModel.cs" />
     <Compile Include="ViewModels\BioPageContributionViewModel.cs" />
     <Compile Include="ViewModels\BioPageViewModel.cs" />

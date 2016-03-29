@@ -1,0 +1,94 @@
+﻿@model TT.Domain.Commands.Assets.UpdateTome
+@using TT.Domain.Commands.Assets
+
+<nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+                <li>@Html.ActionLink("Back", "List", "Tome")</li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+<div>
+    <p class="infoMessage result">@Html.Raw(ViewBag.Result)</p>
+    <p class="infoMessage error">@ViewBag.ErrorMessage</p>
+    <p class="infoMessage suberror">@ViewBag.SubErrorMessage</p>
+</div>
+
+
+<div class="containerInner">
+
+    <h1>Edit Tome</h1>
+
+    @using (Html.BeginForm("EditSend", "Tome", FormMethod.Post))
+    {
+        @Html.HiddenFor(n => n.Id)
+
+        <btn class="glyphicon glyphicon-question-sign helpButton">
+            @Ajax.ActionLink("Click here to show list of all items", "AllItems", "Info", null, new AjaxOptions { UpdateTargetId = "formsBox", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail" }, new { @class = "" })
+        </btn>
+
+        <div id="formsBox"></div>
+
+        <label>Item Id</label>
+        @Html.TextBoxFor(n => n.BaseItemId)
+
+
+        <div id="AllForms"></div>
+
+        <br />
+
+        <label>Text:</label>
+        @Html.TextAreaFor(n => n.Text)
+
+        <br />
+
+        <input type="submit" value="Save" />
+
+    }
+
+   
+
+    <hr />
+
+    <span>Sample:</span>
+    <div id="display" style="border: 1px solid black;"></div>
+
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        copyToDisplay();
+    });
+
+    $("#Text").keypress(function () {
+        copyToDisplay();
+    });
+
+    function copyToDisplay() {
+        var content = $("#Text").val();
+        $("#display").html(content);
+    }
+
+</script>
+
+<style>
+      textarea {
+        height: 800px;
+    }
+</style>

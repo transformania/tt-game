@@ -4,7 +4,7 @@ using TT.Domain;
 using TT.Domain.Queries.Chat;
 using TT.Tests.Builders.Chat;
 
-namespace TT.Tests.Domain.Queries
+namespace TT.Tests.Domain.Queries.Chat
 {
     [TestFixture]
     public class GetChatRoomsTests : TestBase

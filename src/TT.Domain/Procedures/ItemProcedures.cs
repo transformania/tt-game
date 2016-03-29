@@ -109,6 +109,12 @@ namespace TT.Domain.Procedures
             return output;
         }
 
+        public static IEnumerable<DbStaticItem> GetAllDbStaticItems()
+        {
+            IItemRepository repo = new EFItemRepository();
+            return repo.DbStaticItems;
+        }
+
         public static IEnumerable<Item> GetAllPlayerItems_ItemOnly(int playerId)
         {
             IItemRepository itemRepo = new EFItemRepository();

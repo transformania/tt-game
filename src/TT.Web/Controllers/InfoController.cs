@@ -7,6 +7,8 @@ using TT.Domain.Models;
 using TT.Domain.Procedures;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
+using TT.Domain.Queries.Item;
+using TT.Domain;
 
 namespace TT.Web.Controllers
 {
@@ -62,6 +64,13 @@ namespace TT.Web.Controllers
              List<DbStaticForm> output = PlayerProcedures.GetAllDbStaticForms().ToList();
              return PartialView(output);
          }
+
+        public ActionResult AllItems()
+        {
+            var cmd = new GetItemSources();
+            var output = DomainRegistry.Repository.Find(cmd);
+            return PartialView(output);
+        }
 
         public ActionResult ServerPopulation()
         {

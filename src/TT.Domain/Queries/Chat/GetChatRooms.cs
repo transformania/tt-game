@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using TT.Domain.DTOs;
+using TT.Domain.DTOs.Chat;
 using TT.Domain.Entities.Chat;
 
 namespace TT.Domain.Queries.Chat

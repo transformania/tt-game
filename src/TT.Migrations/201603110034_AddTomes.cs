@@ -9,7 +9,7 @@ namespace TT.Migrations
         {
             Create.Table("Tomes")
                 .WithColumn("Id").AsInt32().Identity().NotNullable().PrimaryKey()
-                .WithColumn("Text").AsString().NotNullable()
+                .WithColumn("Text").AsString(int.MaxValue).NotNullable()
                 .WithColumn("BaseItem_Id").AsInt32().NotNullable().ForeignKey("DbStaticItems", "Id").Unique();
         }
 

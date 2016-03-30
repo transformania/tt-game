@@ -61,6 +61,8 @@ When schema changes have been made, you can use the build system to update your 
 Powershell .\build.ps1 -target "Migrate"
 ```
 
+If you need to force a specific migration to retrigger, you can delete the row created by the migration you wish to rerun in the table dbo.VersionInfo .
+
 Again, you can use the `-dbType` arguement suitable for your environment.
 
 ## Re-creating Database ##

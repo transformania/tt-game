@@ -36,7 +36,6 @@ if(dbType == "remoteserver")
     Console.WriteLine();
     connectionString = string.Format("Data Source={0}; Initial Catalog=Stats; Integrated Security=false; User ID={1}; Password={2};",dbServer, dbUserID , dbPassword );
 }
-var reallyDropDb = Argument("reallyDropDb", "no");
 
 Task("Clean")
     .Does(() => {
@@ -139,7 +138,7 @@ Task("Migrate-FM")
 );
 
 Task("Drop-DB")
-    .WithCriteria(() => reallyDropDb.ToLower() == "yes" && !(dbType == "remoteserver"))
+    .WithCriteria(() => !(dbType == "remoteserver"))
     .ContinueOnError()
     .Does(() => {
         Information("Dropping database using {0}", dbServer);
@@ -216,17 +215,12 @@ Task("CI-Build")
 // Drops, re-migrates and re-seeds the DB
 Task("Recreate-DB")
     .IsDependentOn("Drop-DB")
-    .IsDependentOn("Default")
-    .Does(() => {
-        if (reallyDropDb != "yes")
-            Warning("Database was not dropped, 'reallyDropDb' was not set to 'yes'");  
-    }
-);
+    .IsDependentOn("Default");
 
 // Drops images and re-seeds them
 Task("Recreate-Images")
     .IsDependentOn("Drop-Images")
     .IsDependentOn("Default");
 
-Information("Build settings: Target={0}, Configuration={1}, dbType={2}, reallyDropDb={3}", target, configuration, dbType, reallyDropDb);
+Information("Build settings: Target={0}, Configuration={1}, dbType={2}", target, configuration, dbType);
 RunTarget(target);

@@ -34,7 +34,6 @@ Param(
     [string]$DbType = "localdb_v1",
     [string]$DbUserID = "newman",
     [string]$DbServer = "",
-	[string]$ReallyDropDb = "no",
     [ValidateSet("Quiet", "Minimal", "Normal", "Verbose", "Diagnostic")]
     [string]$Verbosity = "Verbose",
     [switch]$Experimental,
@@ -143,5 +142,5 @@ if(![string]::IsNullOrEmpty($DbServer))
 
 # Start Cake
 Write-Host "Running build script..."
-Invoke-Expression "$CAKE_EXE `"$Script`" -target=`"$Target`" -configuration=`"$Configuration`" $DbServer -dbType=`"$DbType`" -dbUserId=`"$DbUserID`" -verbosity=`"$Verbosity`" -reallyDropDb=`"$ReallyDropDb`" $UseMono $UseDryRun $UseExperimental"
+Invoke-Expression "$CAKE_EXE `"$Script`" -target=`"$Target`" -configuration=`"$Configuration`" $DbServer -dbType=`"$DbType`" -dbUserId=`"$DbUserID`" -verbosity=`"$Verbosity`" $UseMono $UseDryRun $UseExperimental"
 exit $LASTEXITCODE

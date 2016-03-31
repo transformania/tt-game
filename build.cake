@@ -118,16 +118,19 @@ Task("Migrate-EF")
                 throw new Exception("Migration failed");
         }
         
-        Information("Applying stored procedures against {0}", dbServer);
-                
-        using(var process = StartAndReturnProcess("sqlcmd", new ProcessSettings { Arguments = @"-i src\TT.Web\Schema\GetPlayerBuffs.sql -S " + dbServer }))
+        if (dbType != "remoteserver")
         {
-            process.WaitForExit();
-            
-            var exitCode = process.GetExitCode();
-            if (exitCode > 0)
-                throw new Exception("Stored procedure scripts failed");
-        } 
+            Information("Applying stored procedures against {0}", dbServer);
+
+            using(var process = StartAndReturnProcess("sqlcmd", new ProcessSettings { Arguments = @"-i src\TT.Web\Schema\GetPlayerBuffs.sql -S " + dbServer }))
+            {
+                process.WaitForExit();
+
+                var exitCode = process.GetExitCode();
+                if (exitCode > 0)
+                    throw new Exception("Stored procedure scripts failed");
+            }
+        }
     }
 );
 

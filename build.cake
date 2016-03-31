@@ -139,7 +139,7 @@ Task("Migrate-FM")
 );
 
 Task("Drop-DB")
-    .WithCriteria(() => reallyDropDb.ToLower() == "yes")
+    .WithCriteria(() => reallyDropDb.ToLower() == "yes" && !(dbType == "remoteserver"))
     .ContinueOnError()
     .Does(() => {
         Information("Dropping database using {0}", dbServer);

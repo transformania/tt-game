@@ -26,7 +26,7 @@ if(dbType == "remoteserver")
        key = Console.ReadKey(true);
 
        // Ignore any key out of range.
-       if (((int) key.Key) >= 65 && ((int) key.Key <= 90)) {
+       if (((int) key.Key) >= 32 && ((int) key.Key <= 126)) {
           // Append the character to the password.
           dbPassword.Append(key.KeyChar);
           Console.Write("*");

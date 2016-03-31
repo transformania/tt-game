@@ -9,11 +9,33 @@ var instances = new Dictionary<string,Tuple<string,string>>()
 {
     { "localdb_v2", new Tuple<string,string>(@"(localdb)\MSSQLLocalDB", @"Data Source=(LocalDb)\MSSQLLocalDB; Initial Catalog=Stats; Integrated Security=SSPI") },
     { "localdb_v1", new Tuple<string,string>(@"(localdb)\v11.0", @"Data Source=(LocalDb)\v11.0; Initial Catalog=Stats; Integrated Security=SSPI;") },
-    { "server", new Tuple<string, string>("localhost", "Data Source=localhost; Initial Catalog=Stats; Integrated Security=true;") } 
+    { "server", new Tuple<string, string>("localhost", "Data Source=localhost; Initial Catalog=Stats; Integrated Security=true;") },
+    { "remoteserver", new Tuple<string, string>("localhost", "") }
 };
 
 var dbServer = Argument("dbServer",instances[dbType].Item1);
 var connectionString = Argument("connectionString",instances[dbType].Item2);
+if(dbType == "remoteserver")
+{
+    var dbPassword = new System.Text.StringBuilder();
+    var dbUserID = Argument("dbUserID", "newman");
+
+    ConsoleKeyInfo key;
+    Console.Write(string.Format("Enter password for database on \"{0}\":", dbServer));
+    do {
+       key = Console.ReadKey(true);
+
+       // Ignore any key out of range.
+       if (((int) key.Key) >= 65 && ((int) key.Key <= 90)) {
+          // Append the character to the password.
+          dbPassword.Append(key.KeyChar);
+          Console.Write("*");
+       }
+    // Exit if Enter key is pressed.
+    } while (key.Key != ConsoleKey.Enter);
+    Console.WriteLine();
+    connectionString = string.Format("Data Source={0}; Initial Catalog=Stats; Integrated Security=false; User ID={1}; Password={2};",dbServer, dbUserID , dbPassword );
+}
 var reallyDropDb = Argument("reallyDropDb", "no");
 
 Task("Clean")
@@ -63,7 +85,7 @@ Task("Migrate")
     .IsDependentOn("Seed-DB")
     .Does(() => {    
     
-        Information("Running TT.Migrations using {0}", connectionString);
+        Information("Running TT.Migrations using {0}", dbType);
                   
         using(var process = StartAndReturnProcess("tools/FluentMigrator.Tools/tools/AnyCPU/40/Migrate.exe", new ProcessSettings 
         { 
@@ -83,7 +105,7 @@ Task("Migrate-EF")
     .Does(() => {
         CopyFile("src/packages/EntityFramework.6.1.3/tools/Migrate.exe","src/TT.Web/bin/Migrate.exe");
         
-        Information("Running TT.Web migrations using {0}", connectionString);
+        Information("Running TT.Web migrations using {0}", dbType);
         
         using(var process = StartAndReturnProcess("src/TT.Web/bin/Migrate.exe", new ProcessSettings 
         { 
@@ -139,7 +161,7 @@ Task("Drop-DB")
 );
 
 Task("Seed-DB")
-    .WithCriteria(() => !FileExists("seeded.flg"))
+    .WithCriteria(() => !FileExists("seeded.flg") && !(dbType == "remoteserver"))
     .Does(() => {
         var seedScripts = GetFiles("src/SeedData/*.sql");
         

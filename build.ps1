@@ -32,7 +32,8 @@ Param(
     [string]$Target = "Default",
     [string]$Configuration = "Release",
     [string]$DbType = "localdb_v1",
-	[string]$ReallyDropDb = "no",
+    [string]$DbUserID = "newman",
+    [string]$DbServer = "",
     [ValidateSet("Quiet", "Minimal", "Normal", "Verbose", "Diagnostic")]
     [string]$Verbosity = "Verbose",
     [switch]$Experimental,
@@ -134,7 +135,12 @@ if (!(Test-Path $CAKE_EXE)) {
     Throw "Could not find Cake.exe at $CAKE_EXE"
 }
 
+if(![string]::IsNullOrEmpty($DbServer))
+{
+    $DbServer = " -dbServer=`"$DbServer`""
+}
+
 # Start Cake
 Write-Host "Running build script..."
-Invoke-Expression "$CAKE_EXE `"$Script`" -target=`"$Target`" -configuration=`"$Configuration`" -dbType=`"$DbType`" -verbosity=`"$Verbosity`" -reallyDropDb=`"$ReallyDropDb`" $UseMono $UseDryRun $UseExperimental"
+Invoke-Expression "$CAKE_EXE `"$Script`" -target=`"$Target`" -configuration=`"$Configuration`" $DbServer -dbType=`"$DbType`" -dbUserId=`"$DbUserID`" -verbosity=`"$Verbosity`" $UseMono $UseDryRun $UseExperimental"
 exit $LASTEXITCODE

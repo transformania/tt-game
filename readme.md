@@ -53,6 +53,12 @@ If you are running SQL Express (any version) and have localhost set as an alias 
 Powershell .\build.ps1 -dbType "server"
 ```
 
+If you are running a remote SQL server (any version) you can use
+
+```
+Powershell .\build.ps1 -dbType "remoteserver" -dbServer "server.domain.com" -dbUserID "username"
+```
+
 ## Migrating Database ##
 
 When schema changes have been made, you can use the build system to update your development database simply by running the default build. If you only specifically want to run migrations and nothing else, use 

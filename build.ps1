@@ -33,7 +33,7 @@ Param(
     [string]$Configuration = "Release",
     [string]$DbType = "localdb_v1",
     [string]$DbUserID = "newman",
-    [string]$DbServer,
+    [string]$DbServer = "",
 	[string]$ReallyDropDb = "no",
     [ValidateSet("Quiet", "Minimal", "Normal", "Verbose", "Diagnostic")]
     [string]$Verbosity = "Verbose",
@@ -136,7 +136,7 @@ if (!(Test-Path $CAKE_EXE)) {
     Throw "Could not find Cake.exe at $CAKE_EXE"
 }
 
-if($DbServer)
+if(![string]::IsNullOrEmpty($DbServer))
 {
     $DbServer = " -dbServer=`"$DbServer`""
 }

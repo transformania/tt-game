@@ -29,10 +29,10 @@ http://cakebuild.net
 
 Param(
     [string]$Script = "build.cake",
-    [string]$Target = "Default",
-    [string]$Configuration = "Release",
-    [string]$DbType = "localdb_v1",
-    [string]$DbUserID = "newman",
+    [string]$Target = "",
+    [string]$Configuration = "",
+    [string]$DbType = "",
+    [string]$DbUserId = "",
     [string]$DbServer = "",
     [ValidateSet("Quiet", "Minimal", "Normal", "Verbose", "Diagnostic")]
     [string]$Verbosity = "Verbose",
@@ -135,12 +135,33 @@ if (!(Test-Path $CAKE_EXE)) {
     Throw "Could not find Cake.exe at $CAKE_EXE"
 }
 
+# Configure optional parameters
+if(![string]::IsNullOrEmpty($Target))
+{
+    $Target = "-target=`"$Target`""
+}
+
+if(![string]::IsNullOrEmpty($Configuration))
+{
+    $Configuration = "-configuration=`"$Configuration`""
+}
+
 if(![string]::IsNullOrEmpty($DbServer))
 {
-    $DbServer = " -dbServer=`"$DbServer`""
+    $DbServer = "-dbServer=`"$DbServer`""
+}
+
+if(![string]::IsNullOrEmpty($DbType))
+{
+    $DbType = "-dbType=`"$DbType`""
+}
+
+if(![string]::IsNullOrEmpty($DbUserID))
+{
+    $DbUserId = "-dbUserId=`"$DbUserId`""
 }
 
 # Start Cake
 Write-Host "Running build script..."
-Invoke-Expression "$CAKE_EXE `"$Script`" -target=`"$Target`" -configuration=`"$Configuration`" $DbServer -dbType=`"$DbType`" -dbUserId=`"$DbUserID`" -verbosity=`"$Verbosity`" $UseMono $UseDryRun $UseExperimental"
+Invoke-Expression "$CAKE_EXE `"$Script`" $Target $Configuration $DbServer $DbType $DbUserId -verbosity=`"$Verbosity`" $UseMono $UseDryRun $UseExperimental"
 exit $LASTEXITCODE

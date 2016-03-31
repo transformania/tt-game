@@ -1,6 +1,6 @@
 // Default settings
 var target = Argument("target", "Default");
-var configuration = Argument("configuration", "Debug");
+var configuration = Argument("configuration", "Release");
 var dbType = Argument("dbType", "localdb_v1").ToLower();
 var imageUrl = Argument("imageUrl", "http://www.transformaniatime.com/Images/PvP.zip");
 
@@ -18,7 +18,7 @@ var connectionString = Argument("connectionString",instances[dbType].Item2);
 if(dbType == "remoteserver")
 {
     var dbPassword = new System.Text.StringBuilder();
-    var dbUserID = Argument("dbUserID", "newman");
+    var dbUserId = Argument("dbUserId", "newman");
 
     ConsoleKeyInfo key;
     Console.Write(string.Format("Enter password for database on \"{0}\":", dbServer));
@@ -34,7 +34,7 @@ if(dbType == "remoteserver")
     // Exit if Enter key is pressed.
     } while (key.Key != ConsoleKey.Enter);
     Console.WriteLine();
-    connectionString = string.Format("Data Source={0}; Initial Catalog=Stats; Integrated Security=false; User ID={1}; Password={2};",dbServer, dbUserID , dbPassword );
+    connectionString = string.Format("Data Source={0}; Initial Catalog=Stats; Integrated Security=false; User ID={1}; Password={2};",dbServer, dbUserId , dbPassword );
 }
 
 Task("Clean")

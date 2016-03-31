@@ -56,7 +56,7 @@ Powershell .\build.ps1 -dbType "server"
 If you are running a remote SQL server (any version) you can use
 
 ```
-Powershell .\build.ps1 -dbType "remoteserver" -dbServer "server.domain.com" -dbUserID "username"
+Powershell .\build.ps1 -dbType "remoteserver" -dbServer "server.domain.com" -dbUserId "username"
 ```
 
 ## Migrating Database ##

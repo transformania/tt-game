@@ -137,6 +137,7 @@
     <Compile Include="Domain\Commands\Assets\UpdateTomeTests.cs" />
     <Compile Include="Domain\Commands\Assets\CreateTomeTests.cs" />
     <Compile Include="Domain\Commands\Chat\CreateChatRoomTests.cs" />
+    <Compile Include="Domain\Queries\Assets\GetTomeByItemTest.cs" />
     <Compile Include="Domain\Queries\Assets\GetTomeTest.cs" />
     <Compile Include="Domain\Queries\Assets\GetTomesTests.cs" />
     <Compile Include="Domain\Queries\Item\GetItemSourcesTests.cs" />

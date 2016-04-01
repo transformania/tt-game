@@ -82,7 +82,7 @@ namespace TT.Tests.Domain.Commands.Assets
         public void Should_throw_error_when_new_base_item_is_not_found()
         {
             const int tomeId = 1;
-            const int baseItemId = 1;
+            const int baseItemId = 2;
 
             new TomeBuilder().With(cr => cr.Id, tomeId)
                .With(cr => cr.Text, "First Tome")

@@ -2,18 +2,17 @@
 using Highway.Data;
 using TT.Domain.Entities.Assets;
 using TT.Domain.Entities.Item;
-using TT.Domain.DTOs.Assets;
 
 namespace TT.Domain.Commands.Assets
 {
-    public class CreateTome : DomainCommand<TomeDetail>
+    public class CreateTome : DomainCommand<int>
     {
         public string Text { get; set; }
         public int BaseItemId { get; set; }
 
-        public override TomeDetail Execute(IDataContext context)
+        public override int Execute(IDataContext context)
         {
-            TomeDetail result = null;
+            int result = 0;
 
             ContextQuery = ctx =>
             {
@@ -26,7 +25,7 @@ namespace TT.Domain.Commands.Assets
                 ctx.Add(tome);
                 ctx.Commit();
 
-                result = DomainRegistry.Mapper.Map<TomeDetail>(tome);
+                result = tome.Id;
             };
       
             ExecuteInternal(context);

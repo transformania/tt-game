@@ -56,7 +56,9 @@ namespace TT.Web.Controllers.Admin
         [ValidateInput(false)]
         public ActionResult CreateSend(CreateTome cmd)
         {
-            var tome = DomainRegistry.Repository.Execute(cmd);
+            var tomeId = DomainRegistry.Repository.Execute(cmd);
+            var tome = DomainRegistry.Repository.FindSingle(new GetTome {TomeId = tomeId});
+
             TempData["Result"] = "Tome for " + tome.BaseItem.FriendlyName + " created successfully.";
             return RedirectToAction("List");
         }

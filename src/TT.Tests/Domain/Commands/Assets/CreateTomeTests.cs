@@ -1,9 +1,7 @@
 ﻿using System;
 using NUnit.Framework;
 using FluentAssertions;
-using System.Linq;
 using TT.Domain.Commands.Assets;
-using TT.Domain.Entities.Assets;
 using TT.Tests.Builders.Item;
 using TT.Domain;
 
@@ -20,11 +18,7 @@ namespace TT.Tests.Domain.Commands.Assets
 
             var tome = Repository.Execute(cmd);
 
-            DataContext.AsQueryable<Tome>().Count(cr =>
-                cr.Id == tome.Id &&
-                cr.Text == "This is a tome." &&
-                cr.BaseItem.Id == item.Id)
-            .Should().Be(1);
+            tome.Should().BeGreaterThan(0);
         }
 
         [TestCase("")]

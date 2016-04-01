@@ -29,7 +29,7 @@ namespace TT.Web.Controllers.Admin
             TomeDetail detail = DomainRegistry.Repository.FindSingle(cmd);
             var output = new UpdateTome
             {
-                Id = detail.Id,
+                TomeId = detail.Id,
                 BaseItemId = detail.BaseItem.Id,
                 Text = detail.Text
             };
@@ -43,7 +43,7 @@ namespace TT.Web.Controllers.Admin
         {
             DomainRegistry.Repository.Execute(cmd);
 
-            TempData["Result"] = "Tome Id " + cmd.Id + " saved successfully.";
+            TempData["Result"] = "Tome Id " + cmd.TomeId + " saved successfully.";
             return RedirectToAction("List");
         }
 
@@ -61,12 +61,12 @@ namespace TT.Web.Controllers.Admin
             return RedirectToAction("List");
         }
 
-        public ActionResult Delete(int Id)
+        public ActionResult Delete(int id)
         {
-            var cmd = new DeleteTome(Id);
+            var cmd = new DeleteTome { TomeId = id };
             DomainRegistry.Repository.Execute(cmd);
 
-            TempData["Result"] = "Tome Id " + Id + " deleted successfully.";
+            TempData["Result"] = "Tome Id " + id + " deleted successfully.";
             return RedirectToAction("List");
         }
 

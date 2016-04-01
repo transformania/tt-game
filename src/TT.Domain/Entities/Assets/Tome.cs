@@ -21,13 +21,10 @@ namespace TT.Domain.Entities.Assets
 
         public Tome Update(UpdateTome cmd, ItemSource baseItem)
         {
-            Id = cmd.Id;
+            Id = cmd.TomeId;
             Text = cmd.Text;
             BaseItem = baseItem;
             return this;
         }
-
-        
-
     }
 }

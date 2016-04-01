@@ -16,56 +16,82 @@ namespace TT.Tests.Domain.Commands.Assets
         [Test]
         public void Should_update_existing_tome()
         {
-
-            var builder = new TomeBuilder().With(cr => cr.Id, 7)
+            new TomeBuilder().With(cr => cr.Id, 7)
                 .With(cr => cr.Text, "First Tome")
                 .With(cr => cr.BaseItem, new ItemBuilder().With(cr => cr.Id, 195).BuildAndSave())
                 .BuildAndSave();
 
-            var item2Builder = new ItemBuilder().With(cr => cr.Id, 200).BuildAndSave();
+            new ItemBuilder().With(cr => cr.Id, 200).BuildAndSave();
 
-            var cmdEdit = new UpdateTome { Id = 7, Text = "new text123", BaseItemId = 200 };
+            var cmdEdit = new UpdateTome { TomeId = 7, Text = "new text123", BaseItemId = 200 };
 
             Repository.Execute(cmdEdit);
 
-            var editedTome = DataContext.AsQueryable<Tome>().FirstOrDefault(cr =>
-                cr.Id == 7);
+            var editedTome = DataContext.AsQueryable<Tome>().FirstOrDefault(cr => cr.Id == 7);
             
             editedTome.Id.Should().Be(7);
             editedTome.Text.Should().Be("new text123");
             editedTome.BaseItem.Id.Should().Be(200);
-
         }
 
-        [Test]
-        public void Should_throw_error_when_text_is_empty()
+        [TestCase("")]
+        [TestCase(" ")]
+        [TestCase(null)]
+        public void Should_throw_error_when_text_is_invalid(string text)
         {
-            var builder = new TomeBuilder().With(cr => cr.Id, 7)
-               .With(cr => cr.Text, "First Tome")
-               .With(cr => cr.BaseItem, new ItemBuilder().With(cr => cr.Id, 195).BuildAndSave())
-               .BuildAndSave();
-
-            var cmd = new UpdateTome { Text = "", BaseItemId = 7 };
+            var cmd = new UpdateTome { Text = text, TomeId = 1, BaseItemId = 1 };
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage(string.Format("No text"));
+            action.ShouldThrowExactly<DomainException>().WithMessage("No text was provided for the tome");
         }
 
-        [Test]
-        public void Should_throw_error_when_base_item_id_is_0()
+        [TestCase(-1)]
+        [TestCase(0)]
+        public void Should_throw_error_when_tome_id_is_invalid(int id)
         {
-
-            var builder = new TomeBuilder().With(cr => cr.Id, 7)
-               .With(cr => cr.Text, "First Tome")
-               .With(cr => cr.BaseItem, new ItemBuilder().With(cr => cr.Id, 195).BuildAndSave())
-               .BuildAndSave();
-
-            var cmd = new UpdateTome { Text = "tome text", BaseItemId = 0 };
+            var cmd = new UpdateTome { Text = "tome text", TomeId = id, BaseItemId = 1 };
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage(string.Format("No base item was provided"));
+            action.ShouldThrowExactly<DomainException>().WithMessage("Tome Id must be greater than 0");
+        }
+
+        [TestCase(-1)]
+        [TestCase(0)]
+        public void Should_throw_error_when_base_item_id_is_invalid(int id)
+        {
+            var cmd = new UpdateTome { Text = "tome text", TomeId = 1, BaseItemId = id };
+
+            var action = new Action(() => { Repository.Execute(cmd); });
+
+            action.ShouldThrowExactly<DomainException>().WithMessage("Base item Id must be greater than 0");
+        }
+
+        [Test]
+        public void Should_throw_error_when_tome_is_not_found()
+        {
+            const int id = 1;
+            var cmd = new UpdateTome { Text = "tome text", TomeId = id, BaseItemId = 1 };
+
+            Action action = () => Repository.Execute(cmd);
+            action.ShouldThrowExactly<DomainException>().WithMessage(string.Format("Tome with ID {0} was not found", id));
+        }
+
+        [Test]
+        public void Should_throw_error_when_new_base_item_is_not_found()
+        {
+            const int tomeId = 1;
+            const int baseItemId = 1;
+
+            new TomeBuilder().With(cr => cr.Id, tomeId)
+               .With(cr => cr.Text, "First Tome")
+               .BuildAndSave();
+
+            var cmd = new UpdateTome { Text = "tome text", TomeId = tomeId, BaseItemId = baseItemId };
+
+            Action action = () => Repository.Execute(cmd);
+            action.ShouldThrowExactly<DomainException>().WithMessage(string.Format("Base item with ID {0} was not found", baseItemId));
         }
     }
 }

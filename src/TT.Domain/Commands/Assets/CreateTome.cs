@@ -19,7 +19,7 @@ namespace TT.Domain.Commands.Assets
             {
                 var baseItem = ctx.AsQueryable<ItemSource>().SingleOrDefault(t => t.Id == BaseItemId);
                 if (baseItem == null)
-                    throw new DomainException("Base item does not exist");
+                    throw new DomainException(string.Format("Base item with Id {0} could not be found", BaseItemId));
 
                 var tome = Tome.Create(baseItem, Text);
 
@@ -27,7 +27,6 @@ namespace TT.Domain.Commands.Assets
                 ctx.Commit();
 
                 result = DomainRegistry.Mapper.Map<TomeDetail>(tome);
-
             };
       
             ExecuteInternal(context);
@@ -38,10 +37,10 @@ namespace TT.Domain.Commands.Assets
         protected override void Validate()
         {
             if (string.IsNullOrWhiteSpace(Text))
-                throw new DomainException("No text");
+                throw new DomainException("No text was provided for the tome");
 
             if (BaseItemId <= 0)
-                throw new DomainException("No base item was provided");
+                throw new DomainException("Base item id must be greater than 0");
         }
 
     }

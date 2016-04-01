@@ -18,7 +18,7 @@ namespace TT.Domain.Statics
         public const int StartTurnNoAttackSeconds = 30;
         public const int EndTurnNoAttackSeconds = 30;
 
-        public const string AlphaRound = "Alpha Round 31";
+        public const string AlphaRound = "Alpha Round 32";
 
         public static bool ChaosMode = false;
 

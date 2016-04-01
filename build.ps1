@@ -139,26 +139,41 @@ if (!(Test-Path $CAKE_EXE)) {
 if(![string]::IsNullOrEmpty($Target))
 {
     $Target = "-target=`"$Target`""
+} elseif (![string]::IsNullOrEmpty($Env:TT_TARGET))
+{
+    $Target = "-target=`"$Env::TT_TARGET`""
 }
 
 if(![string]::IsNullOrEmpty($Configuration))
 {
     $Configuration = "-configuration=`"$Configuration`""
+} elseif (![string]::IsNullOrEmpty($Env:TT_CONFIGURATION))
+{
+    $Configuration = "-configuration=`"$Env:TT_CONFIGURATION`""
 }
 
 if(![string]::IsNullOrEmpty($DbServer))
 {
     $DbServer = "-dbServer=`"$DbServer`""
+} elseif (![string]::IsNullOrEmpty($Env:TT_DBSERVER))
+{
+    $DbServer = "-dbServer=`"$Env:TT_DBSERVER`""
 }
 
 if(![string]::IsNullOrEmpty($DbType))
 {
     $DbType = "-dbType=`"$DbType`""
+} elseif (![string]::IsNullOrEmpty($Env:TT_DBTYPE))
+{
+    $DbType = "-dbType=`"$Env:TT_DBTYPE`""
 }
 
 if(![string]::IsNullOrEmpty($DbUserID))
 {
     $DbUserId = "-dbUserId=`"$DbUserId`""
+} elseif (![string]::IsNullOrEmpty($Env:TT_DBUSERID))
+{
+   $DbUserId = "-dbUserId=`"$Env:TT_DBUSERID`""
 }
 
 # Start Cake

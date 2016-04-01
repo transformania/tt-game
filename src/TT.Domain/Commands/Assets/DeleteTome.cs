@@ -4,9 +4,8 @@ using TT.Domain.Entities.Assets;
 
 namespace TT.Domain.Commands.Assets
 {
-    public class DeleteTome : Highway.Data.Command
+    public class DeleteTome : DomainCommand
     {
-
         public int Id { get; set; }
 
         public DeleteTome(int Id)
@@ -16,26 +15,15 @@ namespace TT.Domain.Commands.Assets
 
         public override void Execute(IDataContext context)
         {
-
-            Validate();
-
             ContextQuery = ctx =>
             {
-
-                var deleteMe = ctx.AsQueryable<Tome>().First(cr => cr.Id == this.Id);
+                var deleteMe = ctx.AsQueryable<Tome>().First(cr => cr.Id == Id);
                 ctx.Remove(deleteMe);
 
                 ctx.Commit();
-
             };
 
             base.Execute(context);
-
-        }
-
-        private void Validate()
-        {
-            
         }
     }
 }

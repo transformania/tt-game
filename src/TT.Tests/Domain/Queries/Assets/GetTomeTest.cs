@@ -18,9 +18,9 @@ namespace TT.Tests.Domain.Queries.Assets
                 .With(cr => cr.BaseItem, new ItemBuilder().With(cr => cr.Id, 195).BuildAndSave())
                 .BuildAndSave();
 
-            var cmd = new GetTome(7);
+            var cmd = new GetTome { TomeId = 7};
 
-            var tome = DomainRegistry.Repository.Find(cmd);
+            var tome = DomainRegistry.Repository.FindSingle(cmd);
 
             tome.Id.Should().Equals(7);
             tome.Text.Should().BeEquivalentTo("First Tome");

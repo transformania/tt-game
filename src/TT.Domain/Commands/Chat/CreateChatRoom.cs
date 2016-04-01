@@ -14,8 +14,6 @@ namespace TT.Domain.Commands.Chat
 
         public override ChatRoomDetail Execute(IDataContext context)
         {
-            Validate();
-
             ChatRoomDetail result = null;
 
             ContextQuery = ctx =>
@@ -40,7 +38,7 @@ namespace TT.Domain.Commands.Chat
             return result;
         }
 
-        private void Validate()
+        protected override void Validate()
         {
             if (string.IsNullOrWhiteSpace(RoomName))
                 throw new DomainException("No room name was provided");

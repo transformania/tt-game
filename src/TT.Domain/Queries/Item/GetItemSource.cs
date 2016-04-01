@@ -1,12 +1,15 @@
 ﻿using System.Linq;
+using Highway.Data;
 using TT.Domain.DTOs.Item;
 using TT.Domain.Entities.Item;
 
 namespace TT.Domain.Queries.Item
 {
-    public class GetItemSource : Highway.Data.Scalar<ItemSourceDetail>
+    public class GetItemSource : DomainQuerySingle<ItemSourceDetail>
     {
-        public GetItemSource(int Id)
+        public int ItemSourceId { get; set; }
+
+        public override ItemSourceDetail Execute(IDataContext context)
         {
             ContextQuery = ctx =>
             {
@@ -16,8 +19,10 @@ namespace TT.Domain.Queries.Item
                     DbName = cr.DbName,
                     FriendlyName = cr.FriendlyName,
                     IsUnique = cr.IsUnique
-                }).FirstOrDefault(cr => cr.Id == Id);
+                }).FirstOrDefault(cr => cr.Id == ItemSourceId);
             };
+
+            return ExecuteInternal(context);
         }
     }
 }

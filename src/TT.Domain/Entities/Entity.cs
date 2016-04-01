@@ -1,6 +1,4 @@
-﻿using Highway.Data;
-
-namespace TT.Domain.Entities
+﻿namespace TT.Domain.Entities
 {
     public class Entity : Entity<int>
     { }
@@ -8,7 +6,7 @@ namespace TT.Domain.Entities
     public class Entity<TKey>
     {
         public virtual TKey Id { get; protected set; }
-        protected IRepository Repository { get; set; }
+        protected IDomainRepository Repository { get; set; }
 
         public Entity()
         {

@@ -13,9 +13,6 @@ namespace TT.Domain.Commands.Assets
 
         public override TomeDetail Execute(IDataContext context)
         {
-
-            Validate();
-
             TomeDetail result = null;
 
             ContextQuery = ctx =>
@@ -32,17 +29,17 @@ namespace TT.Domain.Commands.Assets
                 result = DomainRegistry.Mapper.Map<TomeDetail>(tome);
 
             };
-
       
             ExecuteInternal(context);
 
             return result;
         }
 
-        private void Validate()
+        protected override void Validate()
         {
             if (string.IsNullOrWhiteSpace(Text))
                 throw new DomainException("No text");
+
             if (BaseItemId <= 0)
                 throw new DomainException("No base item was provided");
         }

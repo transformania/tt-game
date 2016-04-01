@@ -2221,8 +2221,8 @@ namespace TT.Web.Controllers
             if (item.dbItem.dbName.Contains("item_consumable_tome-") == true)
             {
 
-                var cmd = new GetTomeByItem(item.Item.Id);
-                var tome = DomainRegistry.Repository.Find(cmd);
+                var cmd = new GetTomeByItem { ItemSourceId = item.Item.Id };
+                var tome = DomainRegistry.Repository.FindSingle(cmd);
 
                 SkillBookViewModel output = new SkillBookViewModel
                 {

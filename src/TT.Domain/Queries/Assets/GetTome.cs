@@ -1,19 +1,24 @@
 ﻿using System.Linq;
+using Highway.Data;
 using TT.Domain.DTOs.Assets;
 using TT.Domain.Entities.Assets;
 
 namespace TT.Domain.Queries.Assets
 {
-    public class GetTome : Highway.Data.Scalar<TomeDetail>
+    public class GetTome : DomainQuerySingle<TomeDetail>
     {
-        public GetTome(int id)
+        public int TomeId { get; set; }
+
+        public override TomeDetail Execute(IDataContext context)
         {
             ContextQuery = ctx =>
             {
                 return ctx.AsQueryable<Tome>()
-                            .Where(cr => cr.Id == id)
+                            .Where(cr => cr.Id == TomeId)
                             .ProjectToFirstOrDefault<TomeDetail>();
             };
+
+            return ExecuteInternal(context);
         }
     }
 }

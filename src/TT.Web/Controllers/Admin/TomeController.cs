@@ -25,8 +25,8 @@ namespace TT.Web.Controllers.Admin
 
         public ActionResult Edit(int Id)
         {
-            var cmd = new GetTome(Id);
-            TomeDetail detail = DomainRegistry.Repository.Find(cmd);
+            var cmd = new GetTome { TomeId = Id };
+            TomeDetail detail = DomainRegistry.Repository.FindSingle(cmd);
             var output = new UpdateTome
             {
                 Id = detail.Id,

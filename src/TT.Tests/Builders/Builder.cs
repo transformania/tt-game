@@ -38,8 +38,10 @@ namespace TT.Tests.Builders
             if (DomainRegistry.Repository == null)
                 return Instance;
 
-            DomainRegistry.Repository.Context.Add(Instance);
-            DomainRegistry.Repository.Context.Commit();
+            var context = ((DomainRepository)DomainRegistry.Repository).Context;
+
+            context.Add(Instance);
+            context.Commit();
 
             return Instance;
         }

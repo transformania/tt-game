@@ -20,5 +20,11 @@ namespace TT.Domain.Queries.Assets
 
             return ExecuteInternal(context);
         }
+
+        protected override void Validate()
+        {
+            if (TomeId <= 0)
+                throw new DomainException("Tome Id must be greater than 0");
+        }
     }
 }

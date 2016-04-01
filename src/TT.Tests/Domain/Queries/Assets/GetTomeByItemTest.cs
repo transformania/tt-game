@@ -2,7 +2,6 @@
 using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain;
-using TT.Domain.DTOs.Assets;
 using TT.Domain.Queries.Assets;
 using TT.Tests.Builders.Assets;
 using TT.Tests.Builders.Item;
@@ -27,6 +26,16 @@ namespace TT.Tests.Domain.Queries.Assets
             tome.Id.Should().Equals(7);
             tome.Text.Should().BeEquivalentTo("First Tome");
             tome.BaseItem.Id.Should().Equals(195);
+        }
+
+        [Test]
+        public void Should_return_null_if_tome_is_not_found()
+        {
+            var query = new GetTomeByItem { ItemSourceId = 1 };
+
+            var tome = Repository.FindSingle(query);
+
+            tome.Should().BeNull();
         }
 
         [TestCase(-1)]

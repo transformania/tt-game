@@ -21,15 +21,16 @@ if(dbType == "remoteserver")
     var dbUserId = Argument("dbUserId", "newman");
 
     ConsoleKeyInfo key;
-    Console.Write(string.Format("Enter password for database on \"{0}\":", dbServer));
+    Console.Write(string.Format("Enter password for database on \"{0}\": ", dbServer));
     do {
        key = Console.ReadKey(true);
 
        // Ignore any key out of range.
-       if (((int) key.Key) >= 32 && ((int) key.Key <= 126)) {
+       if (key.Key == ConsoleKey.Backspace) {
+           dbPassword.Length--;
+       } else if (key.Key != ConsoleKey.Enter) {
           // Append the character to the password.
           dbPassword.Append(key.KeyChar);
-          Console.Write("*");
        }
     // Exit if Enter key is pressed.
     } while (key.Key != ConsoleKey.Enter);

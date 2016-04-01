@@ -158,7 +158,7 @@ Task("Drop-DB")
 );
 
 Task("PreSeed-DB")
-    .WithCriteria(() => !FileExists("seeded.flg"))
+    .WithCriteria(() => !FileExists("seeded.flg") && !(dbType == "remoteserver"))
     .Does(() => {
         var seedScripts = GetFiles("src/SeedData/PreSeed/*.sql");
         

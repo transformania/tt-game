@@ -183,4 +183,25 @@
     <Merchant>Lorekeeper</Merchant>
   </RestockListItem>
 
+  <RestockListItem>
+    <dbName>item_consumable_tome-lovebringer_p1</dbName>
+    <AmountBeforeRestock>1</AmountBeforeRestock>
+    <AmountToRestockTo>3</AmountToRestockTo>
+    <Merchant>Lorekeeper</Merchant>
+  </RestockListItem>
+
+  <RestockListItem>
+    <dbName>item_consumable_tome-lovebringer_p2</dbName>
+    <AmountBeforeRestock>1</AmountBeforeRestock>
+    <AmountToRestockTo>3</AmountToRestockTo>
+    <Merchant>Lorekeeper</Merchant>
+  </RestockListItem>
+
+  <RestockListItem>
+    <dbName>item_consumable_tome-lovebringer_p3</dbName>
+    <AmountBeforeRestock>1</AmountBeforeRestock>
+    <AmountToRestockTo>3</AmountToRestockTo>
+    <Merchant>Lorekeeper</Merchant>
+  </RestockListItem>
+
 </ArrayOfRestockListItem>

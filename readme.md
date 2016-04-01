@@ -83,6 +83,16 @@ This will drop your existing database, recreate from migrations and apply the se
 To download up-to-date images from the server you can do the following
 `Powershell .\build.ps1 -target "Recreate-Images"`
 
+## Feature Toggles ##
+
+We are starting to use a concept known as Feature Toggles to allow us to work on new functionality but wrap it up behind boolen switches so we can publish code to production but not show any of 
+the new work. We use a library called `FeatureSwitch` to do this.
+
+All of the feature toggles should be defined in both `AppSettings.config` (if you add new toggles, please also add them to `AppSettings.sample.config` and notify the team!) and `TT.Domain\Features.cs`. 
+Toggles defined in the sample config should always default to disabled.
+
+The toggles can be tested using `FeatureContext.IsEnabled<ToggleClass>()`.
+
 # Random things to know #
 
  TT uses (mostly) Entity Framework Code First to interact with an SQL database.  Entity Framework is meant to be a tool to help abstract away some SQL by writing queries in C#, automatically converting them to SQL queries and executing them behind the scenes.  Unfortunately Entity Framework has some drawbacks, such as:

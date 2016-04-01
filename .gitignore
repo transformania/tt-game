@@ -200,6 +200,7 @@ FakesAssemblies/
 # TransformaniaTime specific files
 MachineKey.config
 ConnectionStrings.config
+AppSettings.config
 src/TT.Web/Images/PvP/
 
 # Tools

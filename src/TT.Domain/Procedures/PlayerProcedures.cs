@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using FeatureSwitch;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
 using TT.Domain.Models;
@@ -649,7 +650,12 @@ namespace TT.Domain.Procedures
             newplayer.ActionPoints = PvPStatics.MaximumStoreableActionPoints;
             newplayer.dbLocationName = "coffee_shop";
             newplayer.MembershipId = membershipId;
-            newplayer.Form = player.FormName;
+
+            if (!player.StartAsInanimate && FeatureContext.IsEnabled<AprilFools2016>())
+                newplayer.Form = "form_Animate_Juderp_Varn";
+            else
+                newplayer.Form = player.FormName;
+
             newplayer.OriginalForm = player.FormName;
             newplayer.Level = 1;
             newplayer.XP = 0;

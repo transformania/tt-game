@@ -1,6 +1,7 @@
 ﻿using System.Web.Mvc;
 using FeatureSwitch;
 using Microsoft.AspNet.Identity;
+using TT.Domain;
 using TT.Domain.Queries.Player;
 using TT.Domain.ViewModels;
 

@@ -82,7 +82,7 @@ Task("Run-Unit-Tests")
 Task("Migrate")
     .IsDependentOn("Build")
     .IsDependentOn("Migrate-EF")
-    .IsDependentOn("Seed-DB")
+    .IsDependentOn("PreSeed-DB")
     .Does(() => {    
     
         Information("Running TT.Migrations using {0}", dbType);
@@ -135,12 +135,6 @@ Task("Migrate-EF")
     }
 );
 
-Task("Migrate-FM")
-    .Does(() => {
-    
-    }
-);
-
 Task("Drop-DB")
     .WithCriteria(() => !(dbType == "remoteserver"))
     .ContinueOnError()
@@ -160,6 +154,25 @@ Task("Drop-DB")
             if (exitCode > 0)
                 Warning(string.Format("Faled to drop Stats database using {0}", dbServer));
         } 
+    }
+);
+
+Task("PreSeed-DB")
+    .WithCriteria(() => !FileExists("seeded.flg"))
+    .Does(() => {
+        var seedScripts = GetFiles("src/SeedData/PreSeed/*.sql");
+        
+        foreach(var script in seedScripts)
+        {
+            using(var process = StartAndReturnProcess("sqlcmd", new ProcessSettings { Arguments = "-i \""+script+"\" -S " + dbServer }))
+            {
+                process.WaitForExit();
+                
+                var exitCode = process.GetExitCode();
+                if (exitCode > 0)
+                    throw new Exception(string.Format("Faled to run {0}", script));
+            }
+        }
     }
 );
 

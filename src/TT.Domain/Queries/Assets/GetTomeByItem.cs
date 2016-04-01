@@ -5,16 +5,16 @@ using TT.Domain.Entities.Assets;
 
 namespace TT.Domain.Queries.Assets
 {
-    public class GetTome : DomainQuerySingle<TomeDetail>
+    public class GetTomeByItem : DomainQuerySingle<TomeDetail>
     {
-        public int TomeId { get; set; }
+        public int ItemSourceId { get; set; }
 
         public override TomeDetail Execute(IDataContext context)
         {
             ContextQuery = ctx =>
             {
                 return ctx.AsQueryable<Tome>()
-                            .Where(cr => cr.Id == TomeId)
+                            .Where(cr => cr.BaseItem.Id == ItemSourceId)
                             .ProjectToFirstOrDefault<TomeDetail>();
             };
 
@@ -23,8 +23,8 @@ namespace TT.Domain.Queries.Assets
 
         protected override void Validate()
         {
-            if (TomeId <= 0)
-                throw new DomainException("Tome Id must be greater than 0");
+            if (ItemSourceId <= 0)
+                throw new DomainException("ItemSourceID must be a number greater than 0");
         }
     }
 }

@@ -5,7 +5,6 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using Microsoft.AspNet.Identity;
@@ -17,7 +16,8 @@ using TT.Domain.Procedures.BossProcedures;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 using TT.Web.CustomHtmlHelpers;
-using TT.Web.Services;
+using TT.Domain.Queries.Assets;
+using TT.Domain;
 
 namespace TT.Web.Controllers
 {
@@ -2221,18 +2221,18 @@ namespace TT.Web.Controllers
             if (item.dbItem.dbName.Contains("item_consumable_tome-") == true)
             {
 
-                string tomeName = item.dbItem.dbName.Split('-')[1];
-
-                string filename = AppDomain.CurrentDomain.BaseDirectory + "XMLs/SkillBooks/" + tomeName + ".txt";
-                string text = System.IO.File.ReadAllText(filename);
+                var cmd = new GetTomeByItem { ItemSourceId = item.Item.Id };
+                var tome = DomainRegistry.Repository.FindSingle(cmd);
 
                 SkillBookViewModel output = new SkillBookViewModel
                 {
-                    Text = text,
+                    Text = tome.Text,
                     AlreadyRead = ItemProcedures.PlayerHasReadBook(me, item.dbItem.dbName),
                     BookId = item.dbItem.Id,
                 };
-                
+
+                output.Text = output.Text.Replace(Environment.NewLine, "<br>");
+
                 return View("~/Views/Item/SkillBook.cshtml", output);
             }
 

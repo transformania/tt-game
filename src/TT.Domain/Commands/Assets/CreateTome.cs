@@ -2,49 +2,44 @@
 using Highway.Data;
 using TT.Domain.Entities.Assets;
 using TT.Domain.Entities.Item;
-using TT.Domain.DTOs.Assets;
 
 namespace TT.Domain.Commands.Assets
 {
-    public class CreateTome : DomainCommand<TomeDetail>
+    public class CreateTome : DomainCommand<int>
     {
         public string Text { get; set; }
         public int BaseItemId { get; set; }
 
-        public override TomeDetail Execute(IDataContext context)
+        public override int Execute(IDataContext context)
         {
-
-            Validate();
-
-            TomeDetail result = null;
+            int result = 0;
 
             ContextQuery = ctx =>
             {
                 var baseItem = ctx.AsQueryable<ItemSource>().SingleOrDefault(t => t.Id == BaseItemId);
                 if (baseItem == null)
-                    throw new DomainException("Base item does not exist");
+                    throw new DomainException(string.Format("Base item with Id {0} could not be found", BaseItemId));
 
                 var tome = Tome.Create(baseItem, Text);
 
                 ctx.Add(tome);
                 ctx.Commit();
 
-                result = DomainRegistry.Mapper.Map<TomeDetail>(tome);
-
+                result = tome.Id;
             };
-
       
             ExecuteInternal(context);
 
             return result;
         }
 
-        private void Validate()
+        protected override void Validate()
         {
             if (string.IsNullOrWhiteSpace(Text))
-                throw new DomainException("No text");
+                throw new DomainException("No text was provided for the tome");
+
             if (BaseItemId <= 0)
-                throw new DomainException("No base item was provided");
+                throw new DomainException("Base item id must be greater than 0");
         }
 
     }

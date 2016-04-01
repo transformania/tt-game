@@ -18,9 +18,9 @@ namespace TT.Tests.Domain.Queries.Item
                 .With(cr => cr.IsUnique, true)
                 .BuildAndSave();
 
-            var cmd = new GetItemSource(23);
+            var cmd = new GetItemSource { ItemSourceId = 23};
 
-            var item = DomainRegistry.Repository.Find(cmd);
+            var item = DomainRegistry.Repository.FindSingle(cmd);
 
             item.Id.Should().Equals(23);
             item.DbName.Should().BeEquivalentTo("dbName");

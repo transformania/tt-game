@@ -215,6 +215,8 @@
     <Compile Include="DomainCommand.cs" />
     <Compile Include="DomainContext.cs" />
     <Compile Include="DomainException.cs" />
+    <Compile Include="DomainQuery.cs" />
+    <Compile Include="DomainQuerySingle.cs" />
     <Compile Include="DomainRegistry.cs" />
     <Compile Include="DomainRepository.cs" />
     <Compile Include="DTOs\Chat\ChatRoomDetail.cs" />
@@ -227,6 +229,8 @@
     <Compile Include="Entities\Identity\User.cs" />
     <Compile Include="EntityFrameworkExtensions.cs" />
     <Compile Include="IDomainCommand.cs" />
+    <Compile Include="IDomainQuery.cs" />
+    <Compile Include="IDomainQuerySingle.cs" />
     <Compile Include="IDomainRepository.cs" />
     <Compile Include="Mappings\AssetsMapping.cs" />
     <Compile Include="Mappings\ChatMappings.cs" />
@@ -332,6 +336,7 @@
     <Compile Include="Procedures\TFEnergyProcedures.cs" />
     <Compile Include="Procedures\WorldUpdateProcedures.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Queries\Assets\GetTomeByItem.cs" />
     <Compile Include="Queries\Assets\GetTome.cs" />
     <Compile Include="Queries\Chat\GetChatRooms.cs" />
     <Compile Include="Queries\Assets\GetTomes.cs" />

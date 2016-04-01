@@ -1,5 +1,4 @@
 ﻿using Highway.Data;
-using Highway.Data.Contexts;
 using NUnit.Framework;
 using TT.Domain;
 
@@ -13,7 +12,7 @@ namespace TT.Tests
         [SetUp]
         public void SetUp()
         {
-            DataContext = new InMemoryDataContext();
+            DataContext = new InMemoryDataContextWithGenerator();
             Repository = new DomainRepository(DataContext);
 
             DomainRegistry.Repository = Repository;

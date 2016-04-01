@@ -315,19 +315,6 @@
     <Content Include="Sounds\attack.wav" />
     <Content Include="Sounds\paper.wav" />
     <Content Include="Sounds\turnUpdate1.wav" />
-    <Content Include="XMLs\custom_bases.xml">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="XMLs\SkillBooks\donna1_Lexam.txt" />
-    <Content Include="XMLs\SkillBooks\founding_after_recovery.txt" />
-    <Content Include="XMLs\SkillBooks\founding_recovery.txt" />
-    <Content Include="XMLs\SkillBooks\narcissa_elders.txt" />
-    <Content Include="XMLs\SkillBooks\narcissa_winston.txt" />
-    <Content Include="XMLs\SkillBooks\seekshadows_Judoo.txt" />
-    <Content Include="XMLs\SkillBooks\founding.txt" />
-    <Content Include="XMLs\SkillBooks\founding_tree.txt" />
-    <Content Include="XMLs\SkillBooks\ironic_tfs_1.txt" />
-    <Content Include="XMLs\SkillBooks\psycho_Duhad.txt" />
     <Content Include="XMLs\validChatColors.txt" />
   </ItemGroup>
   <ItemGroup>

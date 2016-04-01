@@ -4,38 +4,31 @@ using TT.Domain.Entities.Assets;
 
 namespace TT.Domain.Commands.Assets
 {
-    public class DeleteTome : Highway.Data.Command
+    public class DeleteTome : DomainCommand
     {
-
-        public int Id { get; set; }
-
-        public DeleteTome(int Id)
-        {
-            this.Id = Id;
-        }
+        public int TomeId { get; set; }
 
         public override void Execute(IDataContext context)
         {
-
-            Validate();
-
             ContextQuery = ctx =>
             {
+                var deleteMe = ctx.AsQueryable<Tome>().FirstOrDefault(cr => cr.Id == TomeId);
 
-                var deleteMe = ctx.AsQueryable<Tome>().First(cr => cr.Id == this.Id);
+                if (deleteMe == null)
+                    throw new DomainException(string.Format("Tome with ID {0} was not found", TomeId));
+
                 ctx.Remove(deleteMe);
 
                 ctx.Commit();
-
             };
 
-            base.Execute(context);
-
+            ExecuteInternal(context);
         }
 
-        private void Validate()
+        protected override void Validate()
         {
-            
+            if (TomeId <= 0)
+                throw new DomainException("Tome Id must be greater than 0");
         }
     }
 }

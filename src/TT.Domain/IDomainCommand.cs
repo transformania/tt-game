@@ -2,8 +2,13 @@
 
 namespace TT.Domain
 {
-    public interface IDomainCommand<out T> : ICommand
+    public interface IDomainCommand
     {
-        new T Execute(IDataContext context);
+        void Execute(IDataContext context);
+    }
+
+    public interface IDomainCommand<out T>
+    {
+        T Execute(IDataContext context);
     }
 }

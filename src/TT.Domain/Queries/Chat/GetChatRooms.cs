@@ -1,12 +1,14 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Highway.Data;
 using TT.Domain.DTOs.Chat;
 using TT.Domain.Entities.Chat;
 
 namespace TT.Domain.Queries.Chat
 {
-    public class GetChatRooms : Highway.Data.Query<ChatRoomDetail>
+    public class GetChatRooms : DomainQuery<ChatRoomDetail>
     {
-        public GetChatRooms()
+        public override IEnumerable<ChatRoomDetail> Execute(IDataContext context)
         {
             ContextQuery = ctx => {
                 return ctx.AsQueryable<ChatRoom>().Select(cr => new ChatRoomDetail
@@ -16,6 +18,8 @@ namespace TT.Domain.Queries.Chat
                     Topic = cr.Topic ?? string.Empty
                 });
             };
+
+            return ExecuteInternal(context);
         }
     }
 }

@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using AutoMapper;
-using Highway.Data;
 using TT.Domain.Abstract;
 
 namespace TT.Domain

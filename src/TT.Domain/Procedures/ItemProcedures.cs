@@ -260,6 +260,7 @@ namespace TT.Domain.Procedures
 
                                                      Item = new TT.Domain.ViewModels.StaticItem
                                                      {
+                                                         Id = si.Id,
                                                          dbName = si.dbName,
                                                          FriendlyName = si.FriendlyName,
                                                          Description = si.Description,

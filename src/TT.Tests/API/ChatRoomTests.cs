@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Web.Http.Results;
 using FluentAssertions;
-using Highway.Data.Contexts;
 using NUnit.Framework;
-using TT.Domain;
 using TT.Domain.Commands.Chat;
 using TT.Domain.DTOs.Chat;
 using TT.Tests.Builders.Chat;

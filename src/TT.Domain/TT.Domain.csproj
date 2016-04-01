@@ -352,6 +352,8 @@
     <Compile Include="Queries\Statics\GetStaticItem.cs" />
     <Compile Include="Query.cs" />
     <Compile Include="Root.cs" />
+    <Compile Include="Services\AttackNotificationBroker.cs" />
+    <Compile Include="Services\NotificationRaisedEventArgs.cs" />
     <Compile Include="Statics\AIStatics.cs" />
     <Compile Include="Statics\CovenantDictionary.cs" />
     <Compile Include="Statics\EffectStatics.cs" />

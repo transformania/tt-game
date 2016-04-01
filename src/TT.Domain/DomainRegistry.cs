@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using AutoMapper;
 using TT.Domain.Abstract;
+using TT.Domain.Services;
 
 namespace TT.Domain
 {
@@ -17,6 +18,9 @@ namespace TT.Domain
         [ThreadStatic]
         private static IDomainRepository _repository;
 
+        [ThreadStatic]
+        private static IAttackNotificationBroker _attackNotificationBroker;
+
         private static IMapper _mapper;
 
         public static IRoot Root
@@ -29,6 +33,12 @@ namespace TT.Domain
         {
             get { return _repository ?? (_repository = new DomainRepository(new DomainContext())); }
             set { _repository = value; }
+        }
+
+        public static IAttackNotificationBroker AttackNotificationBroker
+        {
+            get { return _attackNotificationBroker ?? (_attackNotificationBroker = new AttackNotificationBroker()); }
+            set { _attackNotificationBroker = value; }
         }
 
         public static IMapper Mapper

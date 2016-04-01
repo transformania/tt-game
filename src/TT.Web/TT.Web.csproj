@@ -249,7 +249,6 @@
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="CustomHtmlHelpers\CharactersHere.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
-    <Compile Include="Features.cs" />
     <Compile Include="Hubs\ChatHub.cs" />
     <Compile Include="Hubs\DuelHub.cs" />
     <Compile Include="Hubs\NoticeHub.cs" />

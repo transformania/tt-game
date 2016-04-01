@@ -345,18 +345,28 @@ namespace TT.Domain.Procedures
                 }
 
                 // evaluate variable
-                if (q.RequirementType == (int)QuestStatics.RequirementType.Variable) {
+                if (q.RequirementType == (int)QuestStatics.RequirementType.Variable)
+                {
 
                     QuestPlayerVariable var = variables.FirstOrDefault(v => v.VariableName == q.VariabledbName);
 
                     // variable has never been set, so fail
-                    if (var==null)
+                    if (var == null)
                     {
                         return false;
                     }
 
                     isAvailable = ExpressionIsTrue(float.Parse(var.VariableValue), q);
-                    return isAvailable;
+
+                    if (isAvailable == false)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+
                 }
 
                 else if (q.RequirementType == (int)QuestStatics.RequirementType.Gender)
@@ -372,14 +382,14 @@ namespace TT.Domain.Procedures
 
                     else
                     {
-                        return true;
+                        continue;
                     }
                 }
 
                 // evaluate player buff/ability
                 float playerValue = GetValueFromType(q, buffs);
                 isAvailable = ExpressionIsTrue(playerValue, q);
-                if (isAvailable==false)
+                if (isAvailable == false)
                 {
                     return false;
                 }

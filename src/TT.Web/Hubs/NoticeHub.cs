@@ -1,16 +1,33 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.SignalR;
+using TT.Domain;
 using TT.Domain.Models;
 using TT.Domain.Procedures;
+using TT.Domain.Services;
+using TT.Web.Services;
 
 namespace TT.Web.Hubs
 {
     public class NoticeHub : Hub
     {
+        public override Task OnDisconnected()
+        {
+            DomainRegistry.AttackNotificationBroker.NotificationRaised -= NotificationRaised;
+
+            return base.OnDisconnected();
+        }
+
+        private void NotificationRaised(object sender, NotificationRaisedEventArgs args)
+        {
+            var player = PlayerProcedures.GetPlayer(args.PlayerId);
+            NoticeService.PushAttackNotice(player, args.Message);
+        }
 
         public Task Connect()
         {
+            DomainRegistry.AttackNotificationBroker.NotificationRaised += NotificationRaised;
+
             Player me = PlayerProcedures.GetPlayerFromMembership(Context.User.Identity.GetUserId());
 
             int minimumDonatorLevelForNotifications = 0;

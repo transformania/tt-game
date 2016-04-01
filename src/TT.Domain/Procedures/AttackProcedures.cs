@@ -252,8 +252,8 @@ namespace TT.Domain.Procedures
             LocationLogProcedures.AddLocationLog(me.dbLocationName, logs.LocationLog);
             PlayerLogProcedures.AddPlayerLog(me.Id, logs.AttackerLog, false);
             PlayerLogProcedures.AddPlayerLog(targeted.Id, logs.VictimLog, true);
-            //TODO: TEMPEST - FIX
-            //NoticeProcedures.PushAttackNotice(targeted, logs.VictimLog);
+            
+            DomainRegistry.AttackNotificationBroker.Notify(targeted.Id, logs.VictimLog);
 
             // if this is a psycho-on-psycho battle, have a chance for the victim bot to switch targets to the attacker bot
             if (attacker.BotId == AIStatics.PsychopathBotId && victim.BotId == AIStatics.PsychopathBotId)

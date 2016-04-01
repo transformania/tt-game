@@ -98,6 +98,22 @@ To download up-to-date images from the server you can do the following
 
 There are few conventions I've tried to follow to keep organized.  The big ones are:
 
+## Commands & Queries ##
+
+We're in the process of moving away from the Procedures detailed below and instead towards Domain Driven Design. As part of this, we are borrowing the concept of Commands and Queries to update and query 
+the domain. The general principle is that instead of lots of procedures that modify the underlying DB, we have a Domain which is responsible for managing all business rules inside it. That Domain can 
+be queried, which will return Data Transfer Objects. These DTOs are flattened objects that simply contain the data required to fulfil the query, nothing more. On the update side, we use Commands which 
+don't return any data from the Domain, but instead allow us to modify it but manipulating the entities inside. 
+
+Using this approach, there should be no direct manipulation of any Domain Entities except through a `DomainCommand` object. There should be no direct reading of the domain or database except through the use 
+of a `DomainQuery` or `DomainQuerySingle` object.
+
+`DomainCommand`, `DomainQuery` and `DomainQuerySingle` all follow a common convention. To use them, create an object which extends the `Dommain*` object you need and then override the `Execute(IDataContext context)` 
+method. Inside of that method, Use the setter on ContextQuery and pass it a lambda with your query inside. Examples can be found in `CreateChatRoom`, `UpdateTome`, `GetTomes` and `GetTomeFromItem`.
+
+Commands and Queries can have any input passed into them validated before executing the query to ensure the input is valid. Override the `Validate()` method and throw a `DomainException` for any validation 
+failures.
+
 ## Used Controllers: ##
 
 - PvPController has most of the core game methods such as moving, cleansing, attacking, etc.

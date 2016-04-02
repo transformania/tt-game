@@ -16,7 +16,7 @@ First off, here is the stack of technologies being used:
 Below are some tools I keep in my developer environment used daily:
 
 * Visual Studio 2015 Community
-* SQL Server Management Studio 2012 (provides a nice way to access the database in greater detail.  Visual Studio also has some limited built in tools for this)
+* SQL Server Management Studio 2014 (provides a nice way to access the database in greater detail.  Visual Studio also has some limited built in tools for this)
 * 7-Zip or another similar file archiving program (to extract the SQL backups)
 * Sourcetree (GUI for Git; command line via Bash also works fine if you are comfortable with it)
 
@@ -41,13 +41,13 @@ To run the default build, kick off the following from a command prompt within th
 Powershell .\build.ps1
 ```
 
-By default, the build will attempt to use SQL Server 2012 LocalDB however if you are using SQL Server 2014 you will want to use
+By default, the build will attempt to use SQL Server 2014 LocalDB (or newer) however if you are using SQL Server 2012 you will want to use
 
 ```
-Powershell .\build.ps1 -dbType "localdb_v2"
+Powershell .\build.ps1 -dbType "localdb_v1"
 ```
 
-If you are running SQL Express (any version) and have localhost set as an alias you can use 
+If you are running a full SQL Express instance (any version) and have localhost set as an alias you can use 
 
 ```
 Powershell .\build.ps1 -dbType "server"

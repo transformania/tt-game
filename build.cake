@@ -1,7 +1,7 @@
 // Default settings
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
-var dbType = Argument("dbType", "localdb_v1").ToLower();
+var dbType = Argument("dbType", "localdb_v2").ToLower();
 var imageUrl = Argument("imageUrl", "http://www.transformaniatime.com/Images/PvP.zip");
 
 // Dictionary of DB instances and connection strings

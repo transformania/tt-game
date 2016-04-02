@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 namespace TT.Domain.Services
 {
@@ -10,7 +11,19 @@ namespace TT.Domain.Services
 
     public class AttackNotificationBroker : IAttackNotificationBroker
     {
-        public event EventHandler<NotificationRaisedEventArgs> NotificationRaised;
+        private EventHandler<NotificationRaisedEventArgs> notificationRaised;
+        public event EventHandler<NotificationRaisedEventArgs> NotificationRaised
+        {
+            add
+            {
+                if (notificationRaised == null || !notificationRaised.GetInvocationList().Contains(value))
+                    notificationRaised += value;
+            }
+            remove
+            {
+                notificationRaised -= value;
+            }
+        }
 
         public void Notify(int playerId, string message)
         {
@@ -25,7 +38,7 @@ namespace TT.Domain.Services
 
         private void OnNotificationRaised(NotificationRaisedEventArgs e)
         {
-            var handler = NotificationRaised;
+            var handler = notificationRaised;
             if (handler != null) handler(this, e);
         }
     }

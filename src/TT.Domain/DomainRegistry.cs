@@ -1,8 +1,10 @@
 using System;
+using System.Collections;
 using System.Linq;
 using AutoMapper;
 using TT.Domain.Abstract;
 using TT.Domain.Services;
+using System.Collections.Generic;
 
 namespace TT.Domain
 {
@@ -20,6 +22,9 @@ namespace TT.Domain
 
         [ThreadStatic]
         private static IAttackNotificationBroker _attackNotificationBroker;
+
+        [ThreadStatic]
+        private static IList<Guid> _sentNotifications;
 
         private static IMapper _mapper;
 
@@ -39,6 +44,11 @@ namespace TT.Domain
         {
             get { return _attackNotificationBroker ?? (_attackNotificationBroker = new AttackNotificationBroker()); }
             set { _attackNotificationBroker = value; }
+        }
+
+        public static IList<Guid> SentNotifications
+        {
+            get { return _sentNotifications ?? (_sentNotifications = new List<Guid>()); }
         }
 
         public static IMapper Mapper

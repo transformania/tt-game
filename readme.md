@@ -32,7 +32,7 @@ Thanks to Tempest, TT now has an automated build system which uses Cake, a Make/
 You will need to relax the default PowerShell scripting policy slightly to run the build script. From a PowerShell prompt, execute the following (you only need to do this once)
 
 ```
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 ```
 
 To run the default build, kick off the following from a command prompt within the TT directory
@@ -58,6 +58,9 @@ If you are running a remote SQL server (any version) you can use
 ```
 Powershell .\build.ps1 -dbType "remoteserver" -dbServer "server.domain.com" -dbUserId "username"
 ```
+
+If you don't want to specify the database settings every time you run the build script, you may set environment variables which have the parameters preconfigured. The parameter names are TT_VARNAME.
+For example, if you want to change dbType, set a variable named TT_DBTYPE.
 
 ## Migrating Database ##
 
@@ -97,10 +100,8 @@ The toggles can be tested using `FeatureContext.IsEnabled<ToggleClass>()`.
 
  TT uses (mostly) Entity Framework Code First to interact with an SQL database.  Entity Framework is meant to be a tool to help abstract away some SQL by writing queries in C#, automatically converting them to SQL queries and executing them behind the scenes.  Unfortunately Entity Framework has some drawbacks, such as:
 
-  - If the database schema changes, you will have to update it by executing `Update-Database` in the Package Manager Cosole window.  Otherwise you'll get a 'context has changed' exception when trying to launch the application
+  - If the database schema changes, you will have to update it by running the build script.  Otherwise you'll get a 'context has changed' exception when trying to launch the application
   - If you drop a property in a table, you'll have to do some funky stuff in SQL Server to permit this to happen (Arrhae can fill in details here...)
-  - A stored procedure is used to retrieve the Buffs (bonuses from form / gear / effects) for a player.  The script to alter this is found in the Schema folder.
-  - If you want to do a join between two tables (such as the GetPlayerFormViewModel() method under PlayerProcedures) you have to have them in the same contex
 
   This repo has a few different projects in it, having evolved from a simple server that hosted the singleplayer Transformania Time game (the gameshow one) to also including some experiments with AngularJS (Fashion Wars) and HTML5 canvas (Bombie).  These have nothing to do with the core multiplayer TT game so they should be left alone for the time being unless you're just curious.  (As June 24, a different repo was created and all future code in those projects will go there.  TT gameshow code will stay here.)
 

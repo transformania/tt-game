@@ -20,8 +20,13 @@ namespace TT.Web.Hubs
 
         private void NotificationRaised(object sender, NotificationRaisedEventArgs args)
         {
+            if (DomainRegistry.SentNotifications.Contains(args.NotificationId))
+                return;
+            
             var player = PlayerProcedures.GetPlayer(args.PlayerId);
             NoticeService.PushAttackNotice(player, args.Message);
+
+            DomainRegistry.SentNotifications.Add(args.NotificationId);
         }
 
         public Task Connect()

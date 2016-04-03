@@ -1,0 +1,15 @@
+before_script:
+    - git --version
+
+cache:
+  paths:
+    - tools/
+    - src/packages/
+
+ps_build:
+  script:
+    - .\build.ps1 -target "CI-Build"
+  tags:
+    - powershell
+    - windows
+    - mssql

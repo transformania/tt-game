@@ -1022,12 +1022,8 @@ namespace TT.Domain.Procedures
             BuffBox output = new BuffBox();
 
             // form portion
-            RAMBuffBox temp_form = null;
-            try
-            {
-                temp_form = FormStatics.FormRAMBuffBoxes.First(x => x.dbName == player.Form.ToLower());
-            }
-            catch
+            RAMBuffBox temp_form = FormStatics.FormRAMBuffBoxes.FirstOrDefault(x => x.dbName == player.Form.ToLower());
+            if (temp_form == null)
             {
                 PlayerProcedures.LoadFormRAMBuffBox();
                 temp_form = FormStatics.FormRAMBuffBoxes.First(x => x.dbName == player.Form.ToLower());
@@ -1043,16 +1039,11 @@ namespace TT.Domain.Procedures
             IEnumerable<Item> wornItems = GetAllPlayerItems_ItemOnly(player.Id);
             foreach (Item i in wornItems)
             {
-                RAMBuffBox temp = null;
-                try
-                {
-                    temp = ItemStatics.ItemRAMBuffBoxes.First(x => x.dbName == i.dbName.ToLower());
-                   // if (temp == null)
-                }
-                catch
+                RAMBuffBox temp = ItemStatics.ItemRAMBuffBoxes.FirstOrDefault(x => x.dbName == i.dbName.ToLower());
+                if (temp == null)
                 {
                     LoadItemRAMBuffBox();
-                    temp = ItemStatics.ItemRAMBuffBoxes.FirstOrDefault(x => x.dbName == i.dbName.ToLower());
+                    temp = ItemStatics.ItemRAMBuffBoxes.First(x => x.dbName == i.dbName.ToLower());
                 }
 
                 output.FromItems_HealthBonusPercent += (decimal)temp.HealthBonusPercent + (decimal)temp.HealthBonusPercent * (((i.Level - 1) * (decimal)PvPStatics.Item_LevelBonusModifier));
@@ -1069,13 +1060,8 @@ namespace TT.Domain.Procedures
 
             foreach (Effect e in myEffects2)
             {
-                RAMBuffBox temp = null;
-                try
-                {
-                    temp = EffectStatics.EffectRAMBuffBoxes.First(x => x.dbName == e.dbName.ToLower());
-                    // if (temp == null)
-                }
-                catch
+                RAMBuffBox temp = EffectStatics.EffectRAMBuffBoxes.FirstOrDefault(x => x.dbName == e.dbName.ToLower());
+                if (temp == null)
                 {
                     EffectProcedures.LoadEffectRAMBuffBox();
                     temp = EffectStatics.EffectRAMBuffBoxes.First(x => x.dbName == e.dbName.ToLower());
@@ -1897,11 +1883,12 @@ namespace TT.Domain.Procedures
                 addme.PlayerId = player.Id;
                 addme.Gender = player.Gender;
 
-                try
+                var itemXP = xpRepo.InanimateXPs.FirstOrDefault(p => p.OwnerId == addme.PlayerId);
+                if (itemXP != null)
                 {
-                    addme.ItemXP = xpRepo.InanimateXPs.FirstOrDefault(p => p.OwnerId == addme.PlayerId).Amount;
+                    addme.ItemXP = itemXP.Amount;
                 }
-                catch
+                else
                 {
                     addme.ItemXP = 0;
                 }

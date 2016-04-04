@@ -25,14 +25,8 @@ namespace TT.Domain.Procedures
                 return "[No results found for this encounter type and tag.]";
             }
 
-            try { 
-                int index = Convert.ToInt32(Math.Floor(roll * max));
-                return "DM[" + actionType + ":" + tag + "]:  " + options.ElementAt(index).Message;
-            }
-            catch
-            {
-                return "";
-            }
+            int index = Convert.ToInt32(Math.Floor(roll * max));
+            return "DM[" + actionType + ":" + tag + "]:  " + options.ElementAt(index).Message;
 
            
 

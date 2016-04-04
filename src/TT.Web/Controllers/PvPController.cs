@@ -118,11 +118,11 @@ namespace TT.Web.Controllers
             ViewBag.WorldTurnNumber = WorldStat.TurnNumber;
 
             // set viewbag to show offline players is the link has been clicked
-            try
+            if (TempData["ShowOffline"] != null)
             {
                 ViewBag.ShowOffline = TempData["ShowOffline"];
             }
-            catch
+            else
             {
                 ViewBag.ShowOffline = false;
             }

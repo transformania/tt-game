@@ -93,7 +93,14 @@ namespace TT.Domain.Models
 
         public string GetSkillDbName()
         {
-            return "skill_" + this.Skill_FriendlyName.Replace(" ", "_") + "_" + this.SubmitterName.Replace(" ", "_");
+            if (!this.Skill_FriendlyName.IsNullOrEmpty())
+            {
+                return "skill_" + this.Skill_FriendlyName.Replace(" ", "_") + "_" + this.SubmitterName.Replace(" ", "_");
+            }
+            else
+            {
+                return "";
+            }
         }
 
 

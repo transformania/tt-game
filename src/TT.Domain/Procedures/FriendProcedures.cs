@@ -93,38 +93,29 @@ namespace TT.Domain.Procedures
                 // this was a request sent BY me.  Grab the player who it was sent to
                 if (friend.OwnerMembershipId == membershipId)
                 {
-                    try
+
+                    Player plyr = playerRepo.Players.FirstOrDefault(p => p.MembershipId == friend.FriendMembershipId);
+
+                    if (plyr != null)
                     {
-
-                        Player plyr = playerRepo.Players.FirstOrDefault(p => p.MembershipId == friend.FriendMembershipId);
-
-                        if (plyr != null)
-                        {
-                            friendPlayer.dbPlayer = plyr;
-                            friendPlayer.dbFriend = friend;
-                            friendPlayer.friendId = friend.Id;
-                            output.Add(friendPlayer);
-                        }
-                    }
-                    catch
-                    {
-
+                        friendPlayer.dbPlayer = plyr;
+                        friendPlayer.dbFriend = friend;
+                        friendPlayer.friendId = friend.Id;
+                        output.Add(friendPlayer);
                     }
                 }
 
                     // this was a request sent TO me.  Grab the player who sent it
                 else if (friend.FriendMembershipId == membershipId)
                 {
-                    try
+                    Player plyr = playerRepo.Players.FirstOrDefault(p => p.MembershipId == friend.OwnerMembershipId);
+
+                    if (plyr != null)
                     {
-                        friendPlayer.dbPlayer = playerRepo.Players.FirstOrDefault(p => p.MembershipId == friend.OwnerMembershipId);
+                        friendPlayer.dbPlayer = plyr;
                         friendPlayer.dbFriend = friend;
                         friendPlayer.friendId = friend.Id;
                         output.Add(friendPlayer);
-                    }
-                    catch
-                    {
-
                     }
                 }
             }

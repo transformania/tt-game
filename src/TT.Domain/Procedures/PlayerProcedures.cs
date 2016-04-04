@@ -730,7 +730,7 @@ namespace TT.Domain.Procedures
             }
 
             // assign the player their appropriate donation level
-            DonatorProcedures.SetNewPlayerDonationRank(newplayer.FirstName + " " + newplayer.LastName);
+            DonatorProcedures.SetNewPlayerDonationRank(newplayer.Id);
 
             // if the player was in a covenant, they might have been the leader.  Check this and make a new player the leader
             if (oldCovId > 0)

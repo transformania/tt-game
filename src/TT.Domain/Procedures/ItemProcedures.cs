@@ -1284,7 +1284,10 @@ namespace TT.Domain.Procedures
             Item item = itemRepo.Items.FirstOrDefault(i => i.VictimName == victimName);
             Player wearer = playerRepo.Players.FirstOrDefault(p => item.OwnerId == p.Id);
 
-
+            if (wearer == null)
+            {
+                return null;
+            }
 
             return PlayerProcedures.GetPlayerFormViewModel(wearer.Id); ;
 

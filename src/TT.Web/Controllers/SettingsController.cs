@@ -243,11 +243,8 @@ namespace TT.Web.Controllers
              ViewBag.Name = player.GetFullName();
 
              BioPageViewModel output = new BioPageViewModel();
-             try
-             {
-                 output.PlayerBio = SettingsProcedures.GetPlayerBioFromMembershipId(id);
-             }
-             catch
+             output.PlayerBio = SettingsProcedures.GetPlayerBioFromMembershipId(id);
+             if (output.PlayerBio == null)
              {
                  TempData["Error"] = "It seems that this player has not written a player biography yet.";
                  return RedirectToAction("Play", "PvP");
@@ -606,16 +603,8 @@ namespace TT.Web.Controllers
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             ViewBag.IngameCharacter = "This artist does not currently have a character ingame.";
 
-            bool friends = false;
-            try
-            {
-                friends = FriendProcedures.PlayerIsMyFriend(artistIngamePlayer, me);
-                ViewBag.IAmFriendsWithArtist = friends;
-            }
-            catch
-            {
-                ViewBag.IAmFriendsWithArtist = false;
-            }
+            bool friends = FriendProcedures.MemberIsMyFriend(id, myMembershipId);
+            ViewBag.IAmFriendsWithArtist = friends;
 
             if (artistIngamePlayer != null)
             {
@@ -666,16 +655,12 @@ namespace TT.Web.Controllers
             int index = 0;
             foreach (ContributorCustomForm c in customForms)
             {
-                if (me.OriginalForm == c.CustomForm.dbName && index < customForms.Count())
+                if (me.OriginalForm == c.CustomForm.dbName)
                 {
-                    try
+                    if (index + 1 < customForms.Count())
                     {
                         newForm = customForms.ElementAt(index + 1);
-                    } catch (Exception)
-                    {
-                        newForm = customForms.ElementAt(0);
                     }
-                    
                     break;
                 }
                 index++;

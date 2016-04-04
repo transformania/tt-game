@@ -63,9 +63,14 @@ namespace TT.Domain.Procedures
 
         public static bool PlayerIsMyFriend(Player me, Player them)
         {
+            return MemberIsMyFriend(me.MembershipId, them.MembershipId);
+        }
+
+        public static bool MemberIsMyFriend(string me, string them)
+        {
             IFriendRepository friendRepo = new EFFriendRepository();
-            Friend dbFriend = friendRepo.Friends.FirstOrDefault(f => f.OwnerMembershipId == me.MembershipId && f.FriendMembershipId == them.MembershipId && f.IsAccepted == true);
-            Friend dbFriend2 = friendRepo.Friends.FirstOrDefault(f => f.OwnerMembershipId == them.MembershipId && f.FriendMembershipId == me.MembershipId && f.IsAccepted == true);
+            Friend dbFriend = friendRepo.Friends.FirstOrDefault(f => f.OwnerMembershipId == me && f.FriendMembershipId == them && f.IsAccepted == true);
+            Friend dbFriend2 = friendRepo.Friends.FirstOrDefault(f => f.OwnerMembershipId == them && f.FriendMembershipId == me && f.IsAccepted == true);
 
             if (dbFriend != null || dbFriend2 != null)
             {

@@ -4,7 +4,7 @@ using Highway.Data;
 using TT.Domain.DTOs.Assets;
 using TT.Domain.Entities.Assets;
 
-namespace TT.Domain.Mappings
+namespace TT.Domain.Mappings.Assets
 {
     public class AssetsMappings : Profile, IMappingConfiguration
     {

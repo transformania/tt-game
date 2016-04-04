@@ -47,6 +47,8 @@
     <Compile Include="201602170247_AddChatRooms.cs" />
     <Compile Include="201603181738_AddTopicToChatRoom.cs" />
     <Compile Include="201603110034_AddTomes.cs" />
+    <Compile Include="201604042333_AddRestockItems.cs" />
+    <Compile Include="201604042151_AddNPCs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

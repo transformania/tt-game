@@ -101,8 +101,8 @@ namespace TT.Web.Controllers
                 }
                 else
                 {
-                    contribution = new Contribution();
-                    contribution.OwnerMembershipId = currentUserId;
+                    TempData["Error"] = "Contribution not found.";
+                    return RedirectToAction("Play", "PvP");
                 }
             }
             else

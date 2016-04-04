@@ -714,15 +714,8 @@ namespace TT.Domain.Procedures
                 {
                     using (var context = new StatsContext())
                     {
-                        try
-                        {
-                            context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Messages] SET ReceiverId = " + newplayer.Id + " WHERE ReceiverId = " + oldplayer.Id);
-                            context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Messages] SET SenderId = " + newplayer.Id + " WHERE SenderId = " + oldplayer.Id);
-                        }
-                        catch (Exception)
-                        {
-
-                        }
+                        context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Messages] SET ReceiverId = " + newplayer.Id + " WHERE ReceiverId = " + oldplayer.Id);
+                        context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Messages] SET SenderId = " + newplayer.Id + " WHERE SenderId = " + oldplayer.Id);
                     }
 
                 }
@@ -1510,51 +1503,37 @@ namespace TT.Domain.Procedures
 
         public static bool PlayerIsOffline(Player player)
         {
-                try
-                {
-                    if (player.BotId < AIStatics.RerolledPlayerBotId)
-                    {
-                        return false;
-                    }
+            if (player.BotId < AIStatics.RerolledPlayerBotId)
+            {
+                return false;
+            }
 
-                    double minutesAgo = Math.Abs(Math.Floor(player.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
+            double minutesAgo = Math.Abs(Math.Floor(player.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
 
-                    if (minutesAgo > PvPStatics.OfflineAfterXMinutes)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                catch
-                {
-                    return false;
-                }
+            if (minutesAgo > PvPStatics.OfflineAfterXMinutes)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public static bool PlayerIsOffline(Player_VM player)
         {
-            try
+            if (player.BotId < AIStatics.RerolledPlayerBotId)
             {
-                if (player.BotId < AIStatics.RerolledPlayerBotId)
-                {
-                    return false;
-                }
-
-                double minutesAgo = Math.Abs(Math.Floor(player.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
-
-                if (minutesAgo > PvPStatics.OfflineAfterXMinutes)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return false;
             }
-            catch
+
+            double minutesAgo = Math.Abs(Math.Floor(player.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
+
+            if (minutesAgo > PvPStatics.OfflineAfterXMinutes)
+            {
+                return true;
+            }
+            else
             {
                 return false;
             }

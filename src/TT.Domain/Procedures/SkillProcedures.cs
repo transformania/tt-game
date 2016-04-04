@@ -495,14 +495,7 @@ namespace TT.Domain.Procedures
             }
             using (var context = new StatsContext())
             {
-                try
-                {
-                    context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Skills] SET IsArchived = " + archiveBool + " WHERE OwnerId = " + playerId + " AND Name != 'lowerHealth'");
-                }
-                catch (Exception)
-                {
-
-                }
+                context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Skills] SET IsArchived = " + archiveBool + " WHERE OwnerId = " + playerId + " AND Name != 'lowerHealth'");
             }
         }
 

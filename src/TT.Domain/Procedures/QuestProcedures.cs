@@ -627,13 +627,9 @@ namespace TT.Domain.Procedures
 
                 // try to parse the value from string into number, if it fails skip this preaction entirely
                 decimal valueAsNumber = 0;
-                try
+                if (!Decimal.TryParse(p.ActionValue, out valueAsNumber))
                 {
-                    valueAsNumber = Decimal.Parse(p.ActionValue);
-                }
-                catch
-                {
-                    valueAsNumber = 0;
+                    continue;
                 }
 
                 // change form

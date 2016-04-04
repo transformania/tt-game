@@ -993,13 +993,12 @@ namespace TT.Web.Controllers
 
                 foreach (QuestStart q in quests)
                 {
-                    try
+                    var Loc = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == q.Location);
+
+                    // just in case a location is misnamed, skip over it
+                    if (Loc != null)
                     {
-                        output += "\"<b>" +  q.Name + "</b> is available for you at <b>" + LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == q.Location).Name + "</b>.\"<br><br>";
-                    }
-                    catch
-                    {
-                        // just in case a location is misnamed, skip over it
+                        output += "\"<b>" +  q.Name + "</b> is available for you at <b>" + Loc.Name + "</b>.\"<br><br>";
                     }
                 }
 

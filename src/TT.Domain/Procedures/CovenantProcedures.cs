@@ -42,8 +42,14 @@ namespace TT.Domain.Procedures
 
         public static CovenantViewModel GetCovenantViewModel(Player player)
         {
-
-            return GetCovenantViewModel(player.Covenant);
+            if (player.Covenant == 0 || player.Covenant == -1)
+            {
+                return null;
+            }
+            else
+            {
+                return GetCovenantViewModel(player.Covenant);
+            }
         }
 
         public static CovenantViewModel GetCovenantViewModel(int id)

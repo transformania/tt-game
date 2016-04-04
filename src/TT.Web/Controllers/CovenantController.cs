@@ -25,14 +25,15 @@ namespace TT.Web.Controllers
 
             CovenantViewModel output;
 
-            try { 
-                 output = CovenantProcedures.GetCovenantViewModel(me);
-                 ViewBag.LocationsControlled = CovenantProcedures.GetLocationControlCount(output.dbCovenant);
-            }
-            catch
+            output = CovenantProcedures.GetCovenantViewModel(me);
+            if (output == null)
             {
                 output = new CovenantViewModel();
                 ViewBag.LocationsControlled = 0;
+            }
+            else
+            {
+                ViewBag.LocationsControlled = CovenantProcedures.GetLocationControlCount(output.dbCovenant);
             }
 
             ViewBag.MyMoney = Math.Floor(me.Money);

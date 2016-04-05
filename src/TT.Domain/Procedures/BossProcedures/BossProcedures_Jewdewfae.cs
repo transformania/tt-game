@@ -49,7 +49,7 @@ namespace TT.Domain.Procedures.BossProcedures
 
                 playerRepo.SavePlayer(fae);
 
-                fae = PlayerProcedures.ReadjustMaxes(fae, ItemProcedures.GetPlayerBuffsSQL(fae));
+                fae = PlayerProcedures.ReadjustMaxes(fae, ItemProcedures.GetPlayerBuffs(fae));
 
                 playerRepo.SavePlayer(fae);
 

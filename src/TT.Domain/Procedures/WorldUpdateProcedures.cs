@@ -227,7 +227,7 @@ namespace TT.Domain.Procedures
                         continue;
                     }
 
-                    BuffBox buffs = ItemProcedures.GetPlayerBuffsSQL(player);
+                    BuffBox buffs = ItemProcedures.GetPlayerBuffs(player);
                     player.Health += buffs.HealthRecoveryPerUpdate();
                     player.Mana += buffs.ManaRecoveryPerUpdate();
 

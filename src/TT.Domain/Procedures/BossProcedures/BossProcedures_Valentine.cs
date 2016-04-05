@@ -90,7 +90,7 @@ namespace TT.Domain.Procedures.BossProcedures
 
                 playerRepo.SavePlayer(valentine);
 
-                valentine = PlayerProcedures.ReadjustMaxes(valentine, ItemProcedures.GetPlayerBuffsSQL(valentine));
+                valentine = PlayerProcedures.ReadjustMaxes(valentine, ItemProcedures.GetPlayerBuffs(valentine));
 
                 playerRepo.SavePlayer(valentine);
 

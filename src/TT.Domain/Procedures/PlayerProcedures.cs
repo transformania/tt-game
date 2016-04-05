@@ -872,7 +872,7 @@ namespace TT.Domain.Procedures
             decimal totalMoveCost = PvPStatics.LocationMoveCost - actionPointDiscount;
 
             // TEMP
-            BuffBox mybuffs = ItemProcedures.GetPlayerBuffsSQL(dbPlayer);
+            BuffBox mybuffs = ItemProcedures.GetPlayerBuffs(dbPlayer);
 
             dbPlayer = ReadjustMaxes(dbPlayer, mybuffs);
 
@@ -1188,7 +1188,7 @@ namespace TT.Domain.Procedures
                 string output = ItemProcedures.GiveNewItemToPlayer(player, justFound);
 
                 Player me = PlayerProcedures.GetPlayer(player.Id);
-                BuffBox myBuffs = ItemProcedures.GetPlayerBuffsSQL(me);
+                BuffBox myBuffs = ItemProcedures.GetPlayerBuffs(me);
 
                 // drop an item of the same type that you are carrying if you are over the limit
                 if (ItemProcedures.PlayerIsCarryingTooMuch(player.Id, 1, myBuffs) == true)

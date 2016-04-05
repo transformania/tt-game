@@ -150,7 +150,7 @@ namespace TT.Domain.Procedures.BossProcedures
                 ItemProcedures.DropAllItems(faeboss);
             }
 
-            BuffBox faeBuffs = ItemProcedures.GetPlayerBuffsSQL(faeboss);
+            BuffBox faeBuffs = ItemProcedures.GetPlayerBuffs(faeboss);
 
             // have Narcissa meditate to get her mana back up
             if (faeboss.Mana < faeboss.MaxMana / 2)

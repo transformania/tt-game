@@ -136,7 +136,7 @@ namespace TT.Web.Controllers
             output.QuestStart = QuestProcedures.GetQuest(me.InQuest);
             output.QuestState = QuestProcedures.GetQuestState(me.InQuestState);
             output.QuestConnections = QuestProcedures.GetChildQuestConnections(me.InQuestState);
-            output.BuffBox = ItemProcedures.GetPlayerBuffsSQL(me);
+            output.BuffBox = ItemProcedures.GetPlayerBuffs(me);
             output.QuestPlayerVariables = QuestProcedures.GetAllQuestPlayerVariablesFromQuest(output.QuestStart.Id, me.Id);
             output.NewMessages = MessageProcedures.GetPlayerUnreadMessageCount(me);
 
@@ -193,7 +193,7 @@ namespace TT.Web.Controllers
             output.Player = PlayerProcedures.GetPlayerFormViewModel(me.Id);
             output.QuestStart = QuestProcedures.GetQuest(me.InQuest);
             output.QuestPlayerVariables = QuestProcedures.GetAllQuestPlayerVariablesFromQuest(output.QuestStart.Id, me.Id); 
-            BuffBox buffs = ItemProcedures.GetPlayerBuffsSQL(me);
+            BuffBox buffs = ItemProcedures.GetPlayerBuffs(me);
             
             // assert player has the right requirements for this
             if (QuestProcedures.QuestConnectionIsAvailable(desiredConnection, me, buffs, output.QuestPlayerVariables) == false)

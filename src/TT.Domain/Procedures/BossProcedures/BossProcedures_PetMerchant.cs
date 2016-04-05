@@ -85,7 +85,7 @@ namespace TT.Domain.Procedures.BossProcedures
             {
                 if (petMerchant.Health < petMerchant.MaxHealth || petMerchant.Mana < petMerchant.MaxMana)
                 {
-                    BuffBox buffs = ItemProcedures.GetPlayerBuffsSQL(petMerchant);
+                    BuffBox buffs = ItemProcedures.GetPlayerBuffs(petMerchant);
                     if (petMerchant.Health < petMerchant.MaxHealth) {
                         petMerchant.Health += 200;
                         string logmessage = "<span class='playerCleansingNotification'>" + petMerchant.GetFullName() + " cleansed here.</span>";

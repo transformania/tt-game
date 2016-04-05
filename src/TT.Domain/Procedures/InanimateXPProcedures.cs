@@ -338,7 +338,7 @@ namespace TT.Domain.Procedures
                     dbPlayer.dbLocationName = LocationsStatics.GetRandomLocation();
                 }
 
-                dbPlayer = PlayerProcedures.ReadjustMaxes(dbPlayer, ItemProcedures.GetPlayerBuffsSQL(dbPlayer));
+                dbPlayer = PlayerProcedures.ReadjustMaxes(dbPlayer, ItemProcedures.GetPlayerBuffs(dbPlayer));
                 dbPlayer.Health = dbPlayer.MaxHealth / 3;
                 dbPlayer.Mana = dbPlayer.MaxHealth / 3;
                 playerRepo.SavePlayer(dbPlayer);
@@ -433,7 +433,7 @@ namespace TT.Domain.Procedures
                 {
                     dbOwner.Form = playerItemPlus.CurseTFFormdbName;
                     dbOwner.Gender = newForm.Gender;
-                    dbOwner.ReadjustMaxes(ItemProcedures.GetPlayerBuffsSQL(dbOwner));
+                    dbOwner.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(dbOwner));
                     dbOwner.Mana -= dbOwner.MaxMana * .5M;
                     dbOwner.NormalizeHealthMana();
                     playerRepo.SavePlayer(dbOwner);

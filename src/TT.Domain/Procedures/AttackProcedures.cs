@@ -107,8 +107,8 @@ namespace TT.Domain.Procedures
                     victimPronoun = "their";
                 }
 
-                BuffBox meBuffs = ItemProcedures.GetPlayerBuffsSQL(me);
-                BuffBox targetedBuffs = ItemProcedures.GetPlayerBuffsSQL(targeted);
+                BuffBox meBuffs = ItemProcedures.GetPlayerBuffs(me);
+                BuffBox targetedBuffs = ItemProcedures.GetPlayerBuffs(targeted);
 
                 Random rand = new Random(Guid.NewGuid().GetHashCode());
                 double basehitChance = rand.NextDouble() * 100;

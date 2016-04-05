@@ -331,7 +331,7 @@ namespace TT.Domain.Procedures
                         target.Mana = 0;
                     }
 
-                    BuffBox targetbuffs = ItemProcedures.GetPlayerBuffsSQL(target);
+                    BuffBox targetbuffs = ItemProcedures.GetPlayerBuffs(target);
                     target = PlayerProcedures.ReadjustMaxes(target, targetbuffs);
 
 

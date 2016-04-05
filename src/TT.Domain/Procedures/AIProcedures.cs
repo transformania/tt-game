@@ -212,7 +212,7 @@ namespace TT.Domain.Procedures
                     }
                     #endregion
 
-                    BuffBox botbuffs = ItemProcedures.GetPlayerBuffsSQL(bot);
+                    BuffBox botbuffs = ItemProcedures.GetPlayerBuffs(bot);
 
                     int meditates = 0;
 
@@ -456,7 +456,7 @@ namespace TT.Domain.Procedures
                 }
 
                 playerRepo.SavePlayer(merchant);
-                BuffBox box = ItemProcedures.GetPlayerBuffsSQL(merchant);
+                BuffBox box = ItemProcedures.GetPlayerBuffs(merchant);
 
                 if ((merchant.Health / merchant.MaxHealth) < .75M)
                 {

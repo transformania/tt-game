@@ -574,29 +574,6 @@ namespace TT.Domain.ViewModels
         }
     }
 
-    public class RAMBuffBox
-    {
-        public string dbName { get; set; }
-        public float HealthBonusPercent { get; set; }
-        public float ManaBonusPercent { get; set; }
-        //public float ExtraSkillCriticalPercent { get; set; }
-        public float HealthRecoveryPerUpdate { get; set; }
-        public float ManaRecoveryPerUpdate { get; set; }
-        //public float SneakPercent { get; set; }
-        //public float EvasionPercent { get; set; }
-        //public float EvasionNegationPercent { get; set; }
-        //public float MeditationExtraMana { get; set; }
-        //public float CleanseExtraHealth { get; set; }
-        //public float MoveActionPointDiscount { get; set; }
-        //public float SpellExtraTFEnergyPercent { get; set; }
-        //public float SpellExtraHealthDamagePercent { get; set; }
-        //public float CleanseExtraTFEnergyRemovalPercent { get; set; }
-        //public float SpellMisfireChanceReduction { get; set; }
-        //public float SpellHealthDamageResistance { get; set; }
-        //public float SpellTFEnergyDamageResistance { get; set; }
-        //public float ExtraInventorySpace { get; set; }
-    }
-
     public static class BuffMap
     {
 

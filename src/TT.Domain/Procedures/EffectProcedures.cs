@@ -338,29 +338,5 @@ namespace TT.Domain.Procedures
 
 
         }
-
-        public static void LoadEffectRAMBuffBox()
-        {
-            IDbStaticEffectRepository dbStaticEffectRepo = new EFDbStaticEffectRepository();
-
-            EffectStatics.EffectRAMBuffBoxes = new List<RAMBuffBox>();
-
-            foreach (DbStaticEffect e in dbStaticEffectRepo.DbStaticEffects.Where(c => c.dbName != null && c.dbName != ""))
-            {
-                RAMBuffBox temp = new RAMBuffBox
-                {
-                    dbName = e.dbName.ToLower(),
-
-                    HealthBonusPercent = (float)e.HealthBonusPercent,
-                    ManaBonusPercent = (float)e.ManaBonusPercent,
-                    HealthRecoveryPerUpdate = (float)e.HealthRecoveryPerUpdate,
-                    ManaRecoveryPerUpdate = (float)e.ManaRecoveryPerUpdate,
-                };
-                EffectStatics.EffectRAMBuffBoxes.Add(temp);
-            }
-        }
-
-
-
     }
 }

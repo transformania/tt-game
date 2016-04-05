@@ -1953,27 +1953,6 @@ namespace TT.Domain.Procedures
             playerRepo.SavePlayer(player);
         }
 
-        public static void LoadFormRAMBuffBox()
-        {
-            IDbStaticFormRepository dbStaticFormRepo = new EFDbStaticFormRepository();
-
-            FormStatics.FormRAMBuffBoxes = new List<RAMBuffBox>();
-
-            foreach (DbStaticForm f in dbStaticFormRepo.DbStaticForms.Where(c => c.dbName != null && c.dbName != ""))
-            {
-                RAMBuffBox temp = new RAMBuffBox
-                {
-                    dbName = f.dbName.ToLower(),
-
-                    HealthBonusPercent = (float)f.HealthBonusPercent,
-                    ManaBonusPercent = (float)f.ManaBonusPercent,
-                    HealthRecoveryPerUpdate = (float)f.HealthRecoveryPerUpdate,
-                    ManaRecoveryPerUpdate = (float)f.ManaRecoveryPerUpdate,
-                };
-                FormStatics.FormRAMBuffBoxes.Add(temp);
-            }
-        }
-
         public static void SetChatColor(Player player, string color)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();

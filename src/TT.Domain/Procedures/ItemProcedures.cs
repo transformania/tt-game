@@ -1658,30 +1658,6 @@ namespace TT.Domain.Procedures
             itemRepo.SaveItem(item);
         }
 
-        public static void LoadItemRAMBuffBox()
-        {
-            IDbStaticItemRepository dbStaticItemRepo = new EFDbStaticItemRepository();
-
-            ItemStatics.ItemRAMBuffBoxes = new List<RAMBuffBox>();
-
-            IEnumerable<DbStaticItem> statics = dbStaticItemRepo.DbStaticItems.Where(c => c.dbName != null && c.dbName != "").ToList();
-
-            foreach (DbStaticItem i in statics)
-            {
-                RAMBuffBox temp = new RAMBuffBox
-                {
-                    dbName = i.dbName.ToLower(),
-
-                    HealthBonusPercent = (float)i.HealthBonusPercent,
-                    ManaBonusPercent = (float)i.ManaBonusPercent,
-                    HealthRecoveryPerUpdate = (float)i.HealthRecoveryPerUpdate,
-                    ManaRecoveryPerUpdate = (float)i.ManaRecoveryPerUpdate,
-
-                };
-                ItemStatics.ItemRAMBuffBoxes.Add(temp);
-            }
-        }
-
         public static bool PlayerHasReadBook(Player player, string bookDbName)
         {
             IBookReadingRepository repo = new EFBookReadingRepository();

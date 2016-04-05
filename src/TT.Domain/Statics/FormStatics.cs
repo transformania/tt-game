@@ -21,9 +21,6 @@ namespace TT.Domain.Statics
             IPlayerRepository playerRepo = new EFPlayerRepository();
             return playerRepo.DbStaticForms.Where(s => s.MobilityType == "full");
         }
-
-        public static List<RAMBuffBox> FormRAMBuffBoxes;
-
     }
 
 }

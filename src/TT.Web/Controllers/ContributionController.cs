@@ -1154,8 +1154,6 @@ namespace TT.Web.Controllers
             contribution.History += "Form published on " + DateTime.UtcNow + "<br>";
             contributionRepo.SaveContribution(contribution);
 
-            PlayerProcedures.LoadFormRAMBuffBox();
-
             return View("Publish");
         }
 
@@ -1301,8 +1299,6 @@ namespace TT.Web.Controllers
             contribution.History += "Item published on " + DateTime.UtcNow + "<br>";
             contributionRepo.SaveContribution(contribution);
 
-            ItemProcedures.LoadItemRAMBuffBox();
-
             return View("Publish");
         }
 
@@ -1406,8 +1402,6 @@ namespace TT.Web.Controllers
             ViewBag.Message = message;
 
             ViewBag.Message += "<br>New effect, " + contribution.Effect_FriendlyName + ", by " + contribution.SubmitterName + ".";
-            EffectProcedures.LoadEffectRAMBuffBox();
-
 
             return View("Publish");
         }

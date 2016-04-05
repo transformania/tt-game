@@ -9,9 +9,6 @@ namespace TT.Domain.Statics
 {
     public static class EffectStatics
     {
-
-        public static List<RAMBuffBox> EffectRAMBuffBoxes;
-
         public static DbStaticEffect GetStaticEffect2(string dbEffectName)
         {
             IDbStaticEffectRepository effectRepo = new EFDbStaticEffectRepository();

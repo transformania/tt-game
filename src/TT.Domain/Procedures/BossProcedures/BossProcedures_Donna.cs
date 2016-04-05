@@ -55,7 +55,7 @@ namespace TT.Domain.Procedures.BossProcedures
 
                 playerRepo.SavePlayer(donna);
 
-                donna = PlayerProcedures.ReadjustMaxes(donna, ItemProcedures.GetPlayerBuffsSQL(donna));
+                donna = PlayerProcedures.ReadjustMaxes(donna, ItemProcedures.GetPlayerBuffs(donna));
 
                 playerRepo.SavePlayer(donna);
 
@@ -85,7 +85,7 @@ namespace TT.Domain.Procedures.BossProcedures
 
                 donna.Form = "form_Mythical_Sorceress_LexamTheGemFox";
 
-                BuffBox donnasBuffs = ItemProcedures.GetPlayerBuffsSQL(donna);
+                BuffBox donnasBuffs = ItemProcedures.GetPlayerBuffs(donna);
 
                 // have donna meditate
                 if (donna.Mana < donna.MaxMana)

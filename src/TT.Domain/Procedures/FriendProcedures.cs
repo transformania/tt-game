@@ -63,9 +63,14 @@ namespace TT.Domain.Procedures
 
         public static bool PlayerIsMyFriend(Player me, Player them)
         {
+            return MemberIsMyFriend(me.MembershipId, them.MembershipId);
+        }
+
+        public static bool MemberIsMyFriend(string me, string them)
+        {
             IFriendRepository friendRepo = new EFFriendRepository();
-            Friend dbFriend = friendRepo.Friends.FirstOrDefault(f => f.OwnerMembershipId == me.MembershipId && f.FriendMembershipId == them.MembershipId && f.IsAccepted == true);
-            Friend dbFriend2 = friendRepo.Friends.FirstOrDefault(f => f.OwnerMembershipId == them.MembershipId && f.FriendMembershipId == me.MembershipId && f.IsAccepted == true);
+            Friend dbFriend = friendRepo.Friends.FirstOrDefault(f => f.OwnerMembershipId == me && f.FriendMembershipId == them && f.IsAccepted == true);
+            Friend dbFriend2 = friendRepo.Friends.FirstOrDefault(f => f.OwnerMembershipId == them && f.FriendMembershipId == me && f.IsAccepted == true);
 
             if (dbFriend != null || dbFriend2 != null)
             {
@@ -93,38 +98,29 @@ namespace TT.Domain.Procedures
                 // this was a request sent BY me.  Grab the player who it was sent to
                 if (friend.OwnerMembershipId == membershipId)
                 {
-                    try
+
+                    Player plyr = playerRepo.Players.FirstOrDefault(p => p.MembershipId == friend.FriendMembershipId);
+
+                    if (plyr != null)
                     {
-
-                        Player plyr = playerRepo.Players.FirstOrDefault(p => p.MembershipId == friend.FriendMembershipId);
-
-                        if (plyr != null)
-                        {
-                            friendPlayer.dbPlayer = plyr;
-                            friendPlayer.dbFriend = friend;
-                            friendPlayer.friendId = friend.Id;
-                            output.Add(friendPlayer);
-                        }
-                    }
-                    catch
-                    {
-
+                        friendPlayer.dbPlayer = plyr;
+                        friendPlayer.dbFriend = friend;
+                        friendPlayer.friendId = friend.Id;
+                        output.Add(friendPlayer);
                     }
                 }
 
                     // this was a request sent TO me.  Grab the player who sent it
                 else if (friend.FriendMembershipId == membershipId)
                 {
-                    try
+                    Player plyr = playerRepo.Players.FirstOrDefault(p => p.MembershipId == friend.OwnerMembershipId);
+
+                    if (plyr != null)
                     {
-                        friendPlayer.dbPlayer = playerRepo.Players.FirstOrDefault(p => p.MembershipId == friend.OwnerMembershipId);
+                        friendPlayer.dbPlayer = plyr;
                         friendPlayer.dbFriend = friend;
                         friendPlayer.friendId = friend.Id;
                         output.Add(friendPlayer);
-                    }
-                    catch
-                    {
-
                     }
                 }
             }

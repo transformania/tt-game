@@ -118,11 +118,11 @@ namespace TT.Web.Controllers
             ViewBag.WorldTurnNumber = WorldStat.TurnNumber;
 
             // set viewbag to show offline players is the link has been clicked
-            try
+            if (TempData["ShowOffline"] != null)
             {
                 ViewBag.ShowOffline = TempData["ShowOffline"];
             }
-            catch
+            else
             {
                 ViewBag.ShowOffline = false;
             }
@@ -255,7 +255,7 @@ namespace TT.Web.Controllers
             output.PvPWorldStat = WorldStat;
 
             loadtime += "Before loading buffs:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
-            BuffBox myBuffs = ItemProcedures.GetPlayerBuffsSQL(me);
+            BuffBox myBuffs = ItemProcedures.GetPlayerBuffs(me);
             loadtime += "After loading buffs:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
 
             if (myBuffs.HasSearchDiscount == true)
@@ -544,7 +544,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction("Play");
             }
 
-            BuffBox buffs = ItemProcedures.GetPlayerBuffsSQL(me);
+            BuffBox buffs = ItemProcedures.GetPlayerBuffs(me);
 
             if (buffs.MoveActionPointDiscount() < -120)
             {
@@ -1444,7 +1444,7 @@ namespace TT.Web.Controllers
                  return RedirectToAction("Play");
              }
 
-             BuffBox myBuffs = ItemProcedures.GetPlayerBuffsSQL(me);
+             BuffBox myBuffs = ItemProcedures.GetPlayerBuffs(me);
 
              string output = CovenantProcedures.AttackLocation(me, myBuffs);
 
@@ -1530,7 +1530,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
-            BuffBox buffs = ItemProcedures.GetPlayerBuffsSQL(me);
+            BuffBox buffs = ItemProcedures.GetPlayerBuffs(me);
             string output = PlayerProcedures.SelfRestoreToBase(me, buffs);
 
             TempData["Result"] = output;
@@ -1592,7 +1592,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction("Play");
             }
 
-            BuffBox mybuffs = ItemProcedures.GetPlayerBuffsSQL(me);
+            BuffBox mybuffs = ItemProcedures.GetPlayerBuffs(me);
 
             TempData["Result"] = PlayerProcedures.Meditate(me, mybuffs);
 
@@ -1626,7 +1626,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction("Play");
             }
 
-            BuffBox mybuffs = ItemProcedures.GetPlayerBuffsSQL(me);
+            BuffBox mybuffs = ItemProcedures.GetPlayerBuffs(me);
 
             // assert player is in an okay form to do this
             if (PlayerCanPerformAction(me, "cleanse") == false)
@@ -1704,7 +1704,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
-            BuffBox mybuffs = ItemProcedures.GetPlayerBuffsSQL(me);
+            BuffBox mybuffs = ItemProcedures.GetPlayerBuffs(me);
 
             decimal searchCostAfterbuffs = PvPStatics.SearchAPCost;
             if (mybuffs.HasSearchDiscount)
@@ -1799,7 +1799,7 @@ namespace TT.Web.Controllers
             InventoryBonusesViewModel output = new InventoryBonusesViewModel
             {
                 Items = ItemProcedures.GetAllPlayerItems(me.Id),
-                Bonuses = ItemProcedures.GetPlayerBuffsSQL(me),
+                Bonuses = ItemProcedures.GetPlayerBuffs(me),
                 Health = me.Health,
                 MaxHealth = me.MaxHealth,
                 Mana = me.Mana,
@@ -1827,7 +1827,7 @@ namespace TT.Web.Controllers
 
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
-            BuffBox myBuffs = ItemProcedures.GetPlayerBuffsSQL(me);
+            BuffBox myBuffs = ItemProcedures.GetPlayerBuffs(me);
 
             // assert player is in an okay form to do this
             if (PlayerCanPerformAction(me, "pickup") == false)
@@ -2281,7 +2281,7 @@ namespace TT.Web.Controllers
                 PlayerForm = playerLookedAt,
                 Skills = SkillProcedures.GetSkillViewModelsOwnedByPlayer(id),
                 Items = ItemProcedures.GetAllPlayerItems(id).Where(i => i.dbItem.IsEquipped == true),
-                Bonuses = ItemProcedures.GetPlayerBuffsSQL(playerLookedAt.Player.ToDbPlayer())
+                Bonuses = ItemProcedures.GetPlayerBuffs(playerLookedAt.Player.ToDbPlayer())
             };
 
 

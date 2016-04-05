@@ -55,7 +55,7 @@ namespace TT.Domain.Procedures.BossProcedures
 
                 playerRepo.SavePlayer(bimboBoss);
 
-                bimboBoss = PlayerProcedures.ReadjustMaxes(bimboBoss, ItemProcedures.GetPlayerBuffsSQL(bimboBoss));
+                bimboBoss = PlayerProcedures.ReadjustMaxes(bimboBoss, ItemProcedures.GetPlayerBuffs(bimboBoss));
 
                 playerRepo.SavePlayer(bimboBoss);
 
@@ -203,7 +203,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     {
                         infectee.Form = RegularBimboFormDbName;
                         infectee.Gender = "female";
-                        infectee = PlayerProcedures.ReadjustMaxes(infectee,ItemProcedures.GetPlayerBuffsSQL(infectee));
+                        infectee = PlayerProcedures.ReadjustMaxes(infectee,ItemProcedures.GetPlayerBuffs(infectee));
                         playerRepo.SavePlayer(infectee);
 
                         string message = "You gasp, your body shifting as the virus infecting you overwhelms your biological and arcane defenses.  Before long you find that your body has been transformed into that of one of the many bimbonic plague victims and you can't help but succumb to the urges to spread your infection--no, your gift!--on to the rest of mankind.";

@@ -2455,15 +2455,12 @@ namespace TT.Domain.Statics
 
         public static string GetConnectionName(string locDbName)
         {
-            try
+            var Location = LocationList.GetLocation.FirstOrDefault(l => l.dbName == locDbName);
+            if (Location != null)
             {
-                return LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == locDbName).Name;
+                return Location.Name;
             }
-            catch
-            {
-                // no connection; return empty string
-                return "";
-            }
+            return "";
         }
 
     }

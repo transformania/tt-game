@@ -33,9 +33,6 @@ namespace TT.Domain.Statics
             IItemRepository itemRepo = new EFItemRepository();
             return itemRepo.DbStaticItems.Where(i => i.ItemType == PvPStatics.ItemType_Pet);
         }
-
-        public static List<RAMBuffBox> ItemRAMBuffBoxes;
-      
     }
 
 }

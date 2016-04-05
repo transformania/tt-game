@@ -325,21 +325,13 @@ namespace TT.Domain.Procedures
                     target.Mobility = "full";
 
                     // wipe out half of the target's mana
-                    try
+                    target.Mana -= target.MaxMana / 2;
+                    if (target.Mana < 0)
                     {
-                        target.Mana -= target.MaxMana / 2;
-                        if (target.Mana < 0)
-                        {
-                            target.Mana = 0;
-                        }
-                    }
-                    catch
-                    {
-                        // for any possible divide by zero errors
                         target.Mana = 0;
                     }
 
-                    BuffBox targetbuffs = ItemProcedures.GetPlayerBuffsSQL(target);
+                    BuffBox targetbuffs = ItemProcedures.GetPlayerBuffs(target);
                     target = PlayerProcedures.ReadjustMaxes(target, targetbuffs);
 
 

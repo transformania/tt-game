@@ -66,10 +66,10 @@ namespace TT.Web.Controllers
 
             if (Id != -1)
             {
-                try
+                // contribution = myContributions.FirstOrDefault(c => c.Id == Id);
+                contribution = contributionRepo.Contributions.FirstOrDefault(c => c.Id == Id);
+                if (contribution != null)
                 {
-                    // contribution = myContributions.FirstOrDefault(c => c.Id == Id);
-                    contribution = contributionRepo.Contributions.FirstOrDefault(c => c.Id == Id);
                     ViewBag.Result = "Load successful.";
 
                     // assert player owns this
@@ -88,9 +88,6 @@ namespace TT.Web.Controllers
                             TempData["Error"] = "There is already a proofreading version of this available.  Please load that instead.";
                             return RedirectToAction("Play", "PvP");
                         }
-
-
-
                     }
 
                     // save the proofreading lock on this contribution
@@ -101,12 +98,11 @@ namespace TT.Web.Controllers
                         contribution.CreationTimestamp = DateTime.UtcNow;
                         contributionRepo.SaveContribution(contribution);
                     }
-
                 }
-                catch
+                else
                 {
-                    contribution = new Contribution();
-                    contribution.OwnerMembershipId = currentUserId;
+                    TempData["Error"] = "Contribution not found.";
+                    return RedirectToAction("Play", "PvP");
                 }
             }
             else
@@ -756,14 +752,10 @@ namespace TT.Web.Controllers
             {
 
                 string effectDbName = output.GetEffectDbName();
-                string spellDbName = "NO SKILL NAME SET";
-
-                try {
-                    spellDbName = output.GetSkillDbName();
-                }
-                catch
+                string spellDbName = output.GetSkillDbName();
+                if (spellDbName.IsNullOrEmpty())
                 {
-
+                    spellDbName = "NO SKILL NAME SET";
                 }
 
                 ViewBag.StaticEffectExists = "<span class = 'bad'>Static effect for " + effectDbName + " not found!</span>";
@@ -789,13 +781,7 @@ namespace TT.Web.Controllers
             bbox.LoadBalanceBox(output);
             decimal balance = bbox.GetBalance__NoModifiersOrCaps();
 
-            try { 
-                ViewBag.BalanceScore = balance*output.Effect_Duration;
-            }
-            catch (DivideByZeroException)
-            {
-                ViewBag.BalanceScore = "NEEDS DURATION";
-            }
+            ViewBag.BalanceScore = balance*output.Effect_Duration;
 
             ViewBag.ErrorMessage = TempData["Error"];
             ViewBag.SubErrorMessage = TempData["SubError"];
@@ -1168,8 +1154,6 @@ namespace TT.Web.Controllers
             contribution.History += "Form published on " + DateTime.UtcNow + "<br>";
             contributionRepo.SaveContribution(contribution);
 
-            PlayerProcedures.LoadFormRAMBuffBox();
-
             return View("Publish");
         }
 
@@ -1315,8 +1299,6 @@ namespace TT.Web.Controllers
             contribution.History += "Item published on " + DateTime.UtcNow + "<br>";
             contributionRepo.SaveContribution(contribution);
 
-            ItemProcedures.LoadItemRAMBuffBox();
-
             return View("Publish");
         }
 
@@ -1420,8 +1402,6 @@ namespace TT.Web.Controllers
             ViewBag.Message = message;
 
             ViewBag.Message += "<br>New effect, " + contribution.Effect_FriendlyName + ", by " + contribution.SubmitterName + ".";
-            EffectProcedures.LoadEffectRAMBuffBox();
-
 
             return View("Publish");
         }
@@ -1741,7 +1721,10 @@ namespace TT.Web.Controllers
                      OwnerMembershipId = ownerId,
                  };
 
-                addme.AuthorName = contributionRepo.Contributions.Where(c => c.OwnerMembershipId == ownerId && c.IsNonstandard == false && c.IsLive == true && c.ProofreadingCopy == true).OrderByDescending(c => c.OwnerMembershipId).First().SubmitterName;
+                var AuthorContribs = contributionRepo.Contributions.Where(c => c.OwnerMembershipId == ownerId && c.IsNonstandard == false && c.IsLive == true && c.ProofreadingCopy == true).OrderByDescending(c => c.OwnerMembershipId).FirstOrDefault();
+                if (AuthorContribs == null) continue;
+
+                addme.AuthorName = AuthorContribs.SubmitterName;
 
                 addme.AnimateFormCount = contributionRepo.Contributions.Where(c => c.OwnerMembershipId == ownerId && c.IsNonstandard == false && c.Form_MobilityType == "full" && c.IsLive == true && c.ProofreadingCopy == true).Count();
 
@@ -1749,11 +1732,11 @@ namespace TT.Web.Controllers
 
                 addme.AnimalFormCount = contributionRepo.Contributions.Where(c => c.OwnerMembershipId == ownerId && c.IsNonstandard == false && c.Form_MobilityType == "animal" && c.IsLive == true && c.ProofreadingCopy == true).Count();
 
-                try
+                if (!AuthorContribs.SubmitterUrl.IsNullOrEmpty())
                 {
-                    addme.Website = contributionRepo.Contributions.Where(c => c.OwnerMembershipId == ownerId && c.IsNonstandard == false && c.IsLive == true && c.ProofreadingCopy == true).OrderByDescending(c => c.OwnerMembershipId).First().SubmitterUrl;
+                    addme.Website = AuthorContribs.SubmitterUrl;
                 }
-                catch
+                else
                 {
                     addme.Website = "";
                 }

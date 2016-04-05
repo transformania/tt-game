@@ -25,15 +25,11 @@ namespace TT.Web.Controllers
 
             if (me.Mobility == "inanimate")
             {
-                try
+                PlayerFormViewModel personWearingMe = ItemProcedures.BeingWornBy(me);
+                if (personWearingMe != null)
                 {
-                    PlayerFormViewModel personWearingMe = ItemProcedures.BeingWornBy(me);
                     output.WearerId = personWearingMe.Player.Id;
                     output.WearerName = personWearingMe.Player.GetFullName();
-                }
-                catch
-                {
-
                 }
             }
 

@@ -55,7 +55,7 @@ namespace TT.Domain.Procedures.BossProcedures
                 };
 
                 playerRepo.SavePlayer(malethief);
-                malethief = PlayerProcedures.ReadjustMaxes(malethief, ItemProcedures.GetPlayerBuffsSQL(malethief));
+                malethief = PlayerProcedures.ReadjustMaxes(malethief, ItemProcedures.GetPlayerBuffs(malethief));
                 playerRepo.SavePlayer(malethief);
 
                 EFAIDirectiveRepository aiRepo = new EFAIDirectiveRepository();
@@ -102,7 +102,7 @@ namespace TT.Domain.Procedures.BossProcedures
                 };
 
                 playerRepo.SavePlayer(femalethief);
-                femalethief = PlayerProcedures.ReadjustMaxes(malethief, ItemProcedures.GetPlayerBuffsSQL(malethief));
+                femalethief = PlayerProcedures.ReadjustMaxes(malethief, ItemProcedures.GetPlayerBuffs(malethief));
                 playerRepo.SavePlayer(femalethief);
 
                 EFAIDirectiveRepository aiRepo = new EFAIDirectiveRepository();
@@ -150,14 +150,14 @@ namespace TT.Domain.Procedures.BossProcedures
 
                 if (malethief.Health < malethief.MaxHealth / 6)
                 {
-                    BuffBox malebuffs = ItemProcedures.GetPlayerBuffsSQL(malethief);
+                    BuffBox malebuffs = ItemProcedures.GetPlayerBuffs(malethief);
                     PlayerProcedures.Cleanse(malethief, malebuffs);
                     malethief = playerRepo.Players.FirstOrDefault(f => f.FirstName == MaleBossFirstName && f.LastName == MaleBossLastName);
                 }
 
                 if (femalethief.Health < femalethief.MaxHealth / 4)
                 {
-                    BuffBox femalebuffs = ItemProcedures.GetPlayerBuffsSQL(femalethief);
+                    BuffBox femalebuffs = ItemProcedures.GetPlayerBuffs(femalethief);
                     PlayerProcedures.Cleanse(femalethief, femalebuffs);
                     femalethief = playerRepo.Players.FirstOrDefault(f => f.FirstName == FemaleBossFirstName && f.LastName == FemaleBossLastName);
                 }
@@ -257,7 +257,7 @@ namespace TT.Domain.Procedures.BossProcedures
                         AIProcedures.MoveTo(attackingThief, newlocation, 99999);
                         attackingThief.dbLocationName = newlocation;
                         playerRepo.SavePlayer(attackingThief);
-                        BuffBox buffs = ItemProcedures.GetPlayerBuffsSQL(attackingThief);
+                        BuffBox buffs = ItemProcedures.GetPlayerBuffs(attackingThief);
 
                         if (attackingThief.Health < attackingThief.Health / 10)
                         {

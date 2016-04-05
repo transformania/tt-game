@@ -79,13 +79,13 @@ namespace TT.Web.Controllers
             }
 
             // assert that the player has room in their inventory
-            //if (ItemProcedures.PlayerIsCarryingTooMuch(me.Id, 0, ItemProcedures.GetPlayerBuffsSQL(me))) {
+            //if (ItemProcedures.PlayerIsCarryingTooMuch(me.Id, 0, ItemProcedures.GetPlayerBuffs(me))) {
             //    TempData["Error"] = "You are carrying too many items to purchase a new one.";
             //    TempData["SubError"] = "You need to free up a space in your inventory before purchasing something from Lindella.";
             //    return RedirectToAction("Play", "PvP");
             //}
 
-            ViewBag.NoRoom = ItemProcedures.PlayerIsCarryingTooMuch(me.Id, 0, ItemProcedures.GetPlayerBuffsSQL(me));
+            ViewBag.NoRoom = ItemProcedures.PlayerIsCarryingTooMuch(me.Id, 0, ItemProcedures.GetPlayerBuffs(me));
 
             ViewBag.DisableLinks = "true";
 
@@ -204,7 +204,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the player has room in their inventory
-            if (ItemProcedures.PlayerIsCarryingTooMuch(me.Id, 0, ItemProcedures.GetPlayerBuffsSQL(me)))
+            if (ItemProcedures.PlayerIsCarryingTooMuch(me.Id, 0, ItemProcedures.GetPlayerBuffs(me)))
             {
                 TempData["Error"] = "You are carrying too many items to purchase a new one.";
                 TempData["SubError"] = "You need to free up a space in your inventory before purchasing something from Lindella.";
@@ -668,7 +668,7 @@ namespace TT.Web.Controllers
             }
 
             ViewBag.Victim = victim;
-            ViewBag.Buffs = ItemProcedures.GetPlayerBuffsSQL(victim);
+            ViewBag.Buffs = ItemProcedures.GetPlayerBuffs(victim);
 
             if (victim.IsInDungeon() == true)
             {
@@ -768,7 +768,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction("MindControlList");
             }
 
-            BuffBox buffs = ItemProcedures.GetPlayerBuffsSQL(victim);
+            BuffBox buffs = ItemProcedures.GetPlayerBuffs(victim);
             string result = PlayerProcedures.DeMeditate(victim, me, buffs);
 
             MindControlProcedures.AddCommandUsedToMindControl(me, victim, MindControlStatics.MindControl__Meditate);
@@ -794,7 +794,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction("MindControlList");
             }
 
-            BuffBox victimBuffs = ItemProcedures.GetPlayerBuffsSQL(victim);
+            BuffBox victimBuffs = ItemProcedures.GetPlayerBuffs(victim);
             // assert that the victim has enough AP for the journey
             decimal apCost = MindControlProcedures.GetAPCostToMove(victimBuffs, victim.dbLocationName, to);
             if (victim.ActionPoints < apCost)
@@ -993,13 +993,12 @@ namespace TT.Web.Controllers
 
                 foreach (QuestStart q in quests)
                 {
-                    try
+                    var Loc = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == q.Location);
+
+                    // just in case a location is misnamed, skip over it
+                    if (Loc != null)
                     {
-                        output += "\"<b>" +  q.Name + "</b> is available for you at <b>" + LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == q.Location).Name + "</b>.\"<br><br>";
-                    }
-                    catch
-                    {
-                        // just in case a location is misnamed, skip over it
+                        output += "\"<b>" +  q.Name + "</b> is available for you at <b>" + Loc.Name + "</b>.\"<br><br>";
                     }
                 }
 

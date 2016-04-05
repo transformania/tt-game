@@ -27,15 +27,9 @@ namespace TT.Domain.Procedures
         {
             IPvPWorldStatRepository worldStatRepo = new EFPvPWorldStatRepository();
 
-            PvPWorldStat stat;
-
-            try
-            {
-                stat = worldStatRepo.PvPWorldStats.First();
+            PvPWorldStat stat = worldStatRepo.PvPWorldStats.FirstOrDefault();
      
-            }
-            catch
-            {
+            if (stat == null) {
                 stat = new PvPWorldStat
                 {
                     TurnNumber = 0,

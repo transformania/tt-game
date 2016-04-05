@@ -714,15 +714,8 @@ namespace TT.Domain.Procedures
                 {
                     using (var context = new StatsContext())
                     {
-                        try
-                        {
-                            context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Messages] SET ReceiverId = " + newplayer.Id + " WHERE ReceiverId = " + oldplayer.Id);
-                            context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Messages] SET SenderId = " + newplayer.Id + " WHERE SenderId = " + oldplayer.Id);
-                        }
-                        catch (Exception)
-                        {
-
-                        }
+                        context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Messages] SET ReceiverId = " + newplayer.Id + " WHERE ReceiverId = " + oldplayer.Id);
+                        context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Messages] SET SenderId = " + newplayer.Id + " WHERE SenderId = " + oldplayer.Id);
                     }
 
                 }
@@ -730,7 +723,7 @@ namespace TT.Domain.Procedures
             }
 
             // assign the player their appropriate donation level
-            DonatorProcedures.SetNewPlayerDonationRank(newplayer.FirstName + " " + newplayer.LastName);
+            DonatorProcedures.SetNewPlayerDonationRank(newplayer.Id);
 
             // if the player was in a covenant, they might have been the leader.  Check this and make a new player the leader
             if (oldCovId > 0)
@@ -879,7 +872,7 @@ namespace TT.Domain.Procedures
             decimal totalMoveCost = PvPStatics.LocationMoveCost - actionPointDiscount;
 
             // TEMP
-            BuffBox mybuffs = ItemProcedures.GetPlayerBuffsSQL(dbPlayer);
+            BuffBox mybuffs = ItemProcedures.GetPlayerBuffs(dbPlayer);
 
             dbPlayer = ReadjustMaxes(dbPlayer, mybuffs);
 
@@ -1195,7 +1188,7 @@ namespace TT.Domain.Procedures
                 string output = ItemProcedures.GiveNewItemToPlayer(player, justFound);
 
                 Player me = PlayerProcedures.GetPlayer(player.Id);
-                BuffBox myBuffs = ItemProcedures.GetPlayerBuffsSQL(me);
+                BuffBox myBuffs = ItemProcedures.GetPlayerBuffs(me);
 
                 // drop an item of the same type that you are carrying if you are over the limit
                 if (ItemProcedures.PlayerIsCarryingTooMuch(player.Id, 1, myBuffs) == true)
@@ -1510,51 +1503,37 @@ namespace TT.Domain.Procedures
 
         public static bool PlayerIsOffline(Player player)
         {
-                try
-                {
-                    if (player.BotId < AIStatics.RerolledPlayerBotId)
-                    {
-                        return false;
-                    }
+            if (player.BotId < AIStatics.RerolledPlayerBotId)
+            {
+                return false;
+            }
 
-                    double minutesAgo = Math.Abs(Math.Floor(player.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
+            double minutesAgo = Math.Abs(Math.Floor(player.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
 
-                    if (minutesAgo > PvPStatics.OfflineAfterXMinutes)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                catch
-                {
-                    return false;
-                }
+            if (minutesAgo > PvPStatics.OfflineAfterXMinutes)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public static bool PlayerIsOffline(Player_VM player)
         {
-            try
+            if (player.BotId < AIStatics.RerolledPlayerBotId)
             {
-                if (player.BotId < AIStatics.RerolledPlayerBotId)
-                {
-                    return false;
-                }
-
-                double minutesAgo = Math.Abs(Math.Floor(player.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
-
-                if (minutesAgo > PvPStatics.OfflineAfterXMinutes)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return false;
             }
-            catch
+
+            double minutesAgo = Math.Abs(Math.Floor(player.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
+
+            if (minutesAgo > PvPStatics.OfflineAfterXMinutes)
+            {
+                return true;
+            }
+            else
             {
                 return false;
             }
@@ -1972,27 +1951,6 @@ namespace TT.Domain.Procedures
             }
             
             playerRepo.SavePlayer(player);
-        }
-
-        public static void LoadFormRAMBuffBox()
-        {
-            IDbStaticFormRepository dbStaticFormRepo = new EFDbStaticFormRepository();
-
-            FormStatics.FormRAMBuffBoxes = new List<RAMBuffBox>();
-
-            foreach (DbStaticForm f in dbStaticFormRepo.DbStaticForms.Where(c => c.dbName != null && c.dbName != ""))
-            {
-                RAMBuffBox temp = new RAMBuffBox
-                {
-                    dbName = f.dbName.ToLower(),
-
-                    HealthBonusPercent = (float)f.HealthBonusPercent,
-                    ManaBonusPercent = (float)f.ManaBonusPercent,
-                    HealthRecoveryPerUpdate = (float)f.HealthRecoveryPerUpdate,
-                    ManaRecoveryPerUpdate = (float)f.ManaRecoveryPerUpdate,
-                };
-                FormStatics.FormRAMBuffBoxes.Add(temp);
-            }
         }
 
         public static void SetChatColor(Player player, string color)

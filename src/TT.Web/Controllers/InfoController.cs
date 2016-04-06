@@ -30,11 +30,7 @@ namespace TT.Web.Controllers
              return View();
          }
 
-         public ActionResult GameNews_Archive()
-         {
-             return View();
-         }
-
+         
          public ActionResult GameNews_PlannedFeatures()
          {
              return View();
@@ -44,6 +40,13 @@ namespace TT.Web.Controllers
         {
             INewsPostRepository repo = new EFNewsPostRepository();
             var output = repo.NewsPosts.Where(n => n.ViewState == 1).OrderByDescending(n => n.Timestamp); ; // 1 == Live
+            return View(output);
+        }
+
+        public ActionResult GameNews_Archive()
+        {
+            INewsPostRepository repo = new EFNewsPostRepository();
+            var output = repo.NewsPosts.Where(n => n.ViewState == 2).OrderByDescending(n => n.Timestamp); ; // 2 == Archived
             return View(output);
         }
 

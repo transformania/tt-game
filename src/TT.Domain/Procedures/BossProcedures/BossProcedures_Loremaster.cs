@@ -41,7 +41,6 @@ namespace TT.Domain.Procedures.BossProcedures
                 loremaster.LastCombatAttackedTimestamp = DateTime.UtcNow;
                 loremaster.OnlineActivityTimestamp = DateTime.UtcNow;
                 loremaster.Form = FormDbName;
-                loremaster.NonPvP_GameOverSpellsAllowedLastChange = DateTime.UtcNow;
                 loremaster.dbLocationName = "bookstore_back";
                 loremaster.Gender = PvPStatics.GenderMale;
                 loremaster.ActionPoints = 120;

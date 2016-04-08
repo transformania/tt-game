@@ -26,13 +26,10 @@ namespace TT.Domain.Models
         public decimal MaxMana { get; set; }
         public decimal ActionPoints { get; set; }
         public decimal ActionPoints_Refill { get; set; }
-        public decimal ResistanceModifier { get; set; }
         public string Gender { get; set; }
         public string Mobility { get; set; }
 
         public int BotId { get; set; }
-        public int IsItemId { get; set; }
-        public int IsPetToId { get; set; }
         public bool MindControlIsActive { get; set; }
 
         public decimal XP { get; set; }
@@ -45,10 +42,7 @@ namespace TT.Domain.Models
         public bool FlaggedForAbuse { get; set; }
         public int UnusedLevelUpPerks { get; set; }
         [Index("IX_MembershipIdAndInPvP", 2)]
-        public bool InPvP { get; set; }
         public int GameMode { get; set; }
-        public bool NonPvP_GameoverSpellsAllowed { get; set; }
-        public DateTime NonPvP_GameOverSpellsAllowedLastChange { get; set; }
         public bool InRP { get; set; }
         public int CleansesMeditatesThisRound { get; set; }
         public decimal Money { get; set; }
@@ -279,12 +273,9 @@ namespace TT.Domain.Models
                 MaxMana = this.MaxMana,
                 ActionPoints = this.ActionPoints,
                 ActionPoints_Refill = this.ActionPoints_Refill,
-                ResistanceModifier = this.ResistanceModifier,
                 Gender = this.Gender,
                 Mobility = this.Mobility,
                 BotId = this.BotId,
-                IsItemId = this.IsItemId,
-                IsPetToId = this.IsPetToId,
 
                 MindControlIsActive = this.MindControlIsActive,
 
@@ -298,8 +289,6 @@ namespace TT.Domain.Models
                 FlaggedForAbuse = this.FlaggedForAbuse,
                 UnusedLevelUpPerks = this.UnusedLevelUpPerks,
                 GameMode = this.GameMode,
-                NonPvP_GameoverSpellsAllowed = this.NonPvP_GameoverSpellsAllowed,
-                NonPvP_GameOverSpellsAllowedLastChange = this.NonPvP_GameOverSpellsAllowedLastChange,
                 InRP = this.InRP,
                 CleansesMeditatesThisRound = this.CleansesMeditatesThisRound,
                 Money = this.Money,

@@ -32,7 +32,6 @@ namespace TT.Domain.Procedures.BossProcedures
                     LastCombatTimestamp = DateTime.UtcNow,
                     LastCombatAttackedTimestamp = DateTime.UtcNow,
                     OnlineActivityTimestamp = DateTime.UtcNow,
-                    NonPvP_GameOverSpellsAllowedLastChange = DateTime.UtcNow,
                     Gender = PvPStatics.GenderFemale,
                     Health = 9999,
                     Mana = 9999,

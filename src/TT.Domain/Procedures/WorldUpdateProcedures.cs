@@ -566,7 +566,6 @@ namespace TT.Domain.Procedures
                                 MaxHealth = 500,
                                 MaxMana = 500,
                                 OnlineActivityTimestamp = DateTime.UtcNow,
-                                NonPvP_GameOverSpellsAllowedLastChange = DateTime.UtcNow,
                             };
                             playerRepo.SavePlayer(newDemon);
 

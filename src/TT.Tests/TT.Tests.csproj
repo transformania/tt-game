@@ -149,6 +149,7 @@
     <Compile Include="Domain\Queries\AI\GetNPCTests.cs" />
     <Compile Include="Domain\Queries\Assets\GetRestockItemsTests.cs" />
     <Compile Include="Domain\Queries\Assets\GetRestockItemTests.cs" />
+    <Compile Include="Domain\Commands\Players\CreatePlayersTests.cs" />
     <Compile Include="Domain\Queries\Assets\GetTomeByItemTest.cs" />
     <Compile Include="Domain\Queries\Assets\GetTomeTest.cs" />
     <Compile Include="Domain\Queries\Assets\GetTomesTests.cs" />

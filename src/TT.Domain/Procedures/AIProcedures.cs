@@ -63,7 +63,6 @@ namespace TT.Domain.Procedures
                 bot.LastCombatTimestamp = DateTime.UtcNow;
                 bot.LastCombatAttackedTimestamp = DateTime.UtcNow;
                 bot.CleansesMeditatesThisRound = 0;
-                bot.NonPvP_GameOverSpellsAllowedLastChange = DateTime.UtcNow;
 
                 if (i % 2 == 1)
                 {
@@ -346,7 +345,6 @@ namespace TT.Domain.Procedures
                 merchant.LastCombatAttackedTimestamp = DateTime.UtcNow;
                 merchant.OnlineActivityTimestamp = DateTime.UtcNow;
                 merchant.Form = "form_Soul_Item_Vendor_Judoo";
-                merchant.NonPvP_GameOverSpellsAllowedLastChange = DateTime.UtcNow;
                 merchant.dbLocationName = "270_west_9th_ave"; // Lindella starts her rounds here
                 merchant.Gender = PvPStatics.GenderFemale;
                 merchant.ActionPoints = 120;
@@ -838,7 +836,6 @@ namespace TT.Domain.Procedures
                     LastCombatTimestamp = DateTime.UtcNow,
                     LastCombatAttackedTimestamp = DateTime.UtcNow,
                     OnlineActivityTimestamp = DateTime.UtcNow,
-                    NonPvP_GameOverSpellsAllowedLastChange = DateTime.UtcNow,
                     Gender = PvPStatics.GenderMale,
                     Health = 9999,
                     Mana = 9999,

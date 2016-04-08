@@ -27,13 +27,9 @@ namespace TT.Web.Controllers.Admin
         {
             var cmd = new GetTome { TomeId = Id };
             TomeDetail detail = DomainRegistry.Repository.FindSingle(cmd);
-            var output = new UpdateTome
-            {
-                TomeId = detail.Id,
-                BaseItemId = detail.BaseItem.Id,
-                Text = detail.Text
-            };
 
+            var output = new UpdateTomeViewModel(detail);
+           
             SetMessages();
             return View("~/Views/Admin/Tomes/Edit.cshtml", output);
         }

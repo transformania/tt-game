@@ -1,5 +1,4 @@
-﻿@model TT.Domain.Commands.Assets.UpdateTome
-@using TT.Domain.Commands.Assets
+﻿@model TT.Domain.ViewModels.Assets.UpdateTomeViewModel
 
 <nav class="navbar navbar-default outsideContainer navbarTT2">
     <div class="container-fluid">
@@ -36,7 +35,7 @@
 
     @using (Html.BeginForm("EditSend", "Tome", FormMethod.Post))
     {
-        @Html.HiddenFor(n => n.Id)
+        @Html.Hidden("TomeId", Model.Tome.Id)
 
         <btn class="glyphicon glyphicon-question-sign helpButton">
             @Ajax.ActionLink("Click here to show list of all items", "AllItems", "Info", null, new AjaxOptions { UpdateTargetId = "formsBox", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail" }, new { @class = "" })
@@ -45,17 +44,15 @@
         <div id="formsBox"></div>
 
         <label>Item Id</label>
-        @Html.TextBoxFor(n => n.BaseItemId)
+        @Html.TextBox("BaseItemId", Model.Tome.BaseItem.Id) <i>Current:  @Model.Tome.BaseItem.FriendlyName</i>
 
 
         <div id="AllForms"></div>
 
-        <br />
+       <br>
 
         <label>Text:</label>
-        @Html.TextAreaFor(n => n.Text)
-
-        <br />
+        @Html.TextArea("Text", Model.Tome.Text)
 
         <input type="submit" value="Save" />
 

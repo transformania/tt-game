@@ -28,7 +28,7 @@
                     {
                         <li><a href="javascript:confirmDeletion()">Leave Covenant</a></li>
                     }
-                    if (ViewBag.HasApplication == true)
+                    if (ViewBag.HasApplication)
                     {
                         <li>@Html.ActionLink("Withdraw Coven Application", "WithdrawApplication", "Covenant")</li>
                     }
@@ -112,7 +112,7 @@
                     <div>
                         <p>
                             @Html.Partial("~/Views/PvP/Player_Partial.cshtml", p)
-                            @if (ViewBag.Player.Id == Model.dbCovenant.LeaderId || ViewBag.IAmCaptain == true)
+                            @if (ViewBag.Player.Id == Model.dbCovenant.LeaderId || ViewBag.IAmCaptain)
                             {
                                 @Html.ActionLink("20", "GiveMoneyFromCovenantChest", "Covenant", new { id = p.Player.Id, amount = 20 }, null)
                                 @Html.ActionLink("100", "GiveMoneyFromCovenantChest", "Covenant", new { id = p.Player.Id, amount = 100 }, null)

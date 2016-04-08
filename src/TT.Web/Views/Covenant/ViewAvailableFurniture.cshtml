@@ -32,7 +32,7 @@
         {
             @Html.Partial("partial/FurnitureViewModel", f);
 
-                                                      if (ViewBag.playerIsCovenantLeader == true || ViewBag.IAmCaptain == true)
+                                                      if (ViewBag.playerIsCovenantLeader || ViewBag.IAmCaptain)
                                                       {
                                                           @Html.ActionLink("Purchase Contract", "PurchaseFurniture", "Covenant", new { id = f.dbFurniture.Id }, null)
                                                       }

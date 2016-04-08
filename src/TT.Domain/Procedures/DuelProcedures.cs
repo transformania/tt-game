@@ -134,7 +134,7 @@ namespace TT.Domain.Procedures
                 }
             }
 
-            if (notInDuel == true)
+            if (notInDuel)
             {
                 return true;
             }

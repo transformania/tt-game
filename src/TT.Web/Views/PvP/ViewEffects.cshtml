@@ -8,7 +8,7 @@
     <p>Through experience this player gained some unique traits that help them in their adventures.</p>
 
     @{
-        foreach (EffectViewModel2 e in Model.Where(e => e.dbEffect.IsPermanent == true))
+        foreach (EffectViewModel2 e in Model.Where(e => e.dbEffect.IsPermanent))
         {
             <div class="perkBox">
                 <h3>@e.Effect.FriendlyName</h3>
@@ -23,7 +23,7 @@
 
     @{
 
-        foreach (EffectViewModel2 e in Model.Where(e => e.dbEffect.IsPermanent == false))
+        foreach (EffectViewModel2 e in Model.Where(e => !e.dbEffect.IsPermanent))
         {
             <div class="perkBox">
                 <h3>@e.Effect.FriendlyName</h3>

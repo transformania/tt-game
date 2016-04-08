@@ -63,11 +63,11 @@
     foreach (QuestConnection connection in Model.QuestConnections.OrderByDescending(q => q.RankInList).ToList())
     {
         bool isAvailable = QuestProcedures.QuestConnectionIsAvailable(connection, Model.Player.Player.ToDbPlayer(), Model.BuffBox, Model.QuestPlayerVariables);
-        if (isAvailable == false && connection.HideIfRequirementsNotMet == true)
+        if (!isAvailable && connection.HideIfRequirementsNotMet)
         {
             // do nothing, option is unavailable and should be hidden
         }
-        else if (isAvailable == false && connection.HideIfRequirementsNotMet == false)
+        else if (!isAvailable && !connection.HideIfRequirementsNotMet)
         {
             // show the option but give it disabled style indicating it is not open currently
             <p style="background-color:#ff8585"> @Ajax.ActionLink(connection.ActionName + " " + TT.Domain.Procedures.QuestProcedures.GetRequirementsAsString(connection,Model.BuffBox), "Choice", "Quest", new { Id = connection.Id }, new AjaxOptions { UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" }) </p><br />
@@ -84,7 +84,7 @@
     }
 
 
-    if (Model.ShowEnd() == true)
+    if (Model.ShowEnd())
     {
         if (Model.Player.Player.Mobility == PvPStatics.MobilityFull)
         {
@@ -97,7 +97,7 @@
         }
     }
 
-    if ((User.IsInRole(PvPStatics.Permissions_QuestWriter) == true))
+    if (User.IsInRole(PvPStatics.Permissions_QuestWriter))
     {
 
         <br /><br /><br />

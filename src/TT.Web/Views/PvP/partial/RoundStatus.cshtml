@@ -2,7 +2,7 @@
 @using TT.Domain.Statics
 
 @{
-    if (Model.TestServer == true)
+    if (Model.TestServer)
     {
         <div class="specialBox specialBox2 specialNoticeBox">EFFECTIVE OCTOBER 10:  THIS SERVER IS NOW FOR TESTING ONLY.  The game's live server with regular inround gameplay can be found at <a href="http://transformaniatime.com/">transformaniatime.com</a>.  Please do NOT make a character here unless you are part of testing.</div>
     }
@@ -12,17 +12,17 @@
         <div class="specialBox specialBox2 specialNoticeBox"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> The round has ended.  Check back soon to start again on a fresh round. <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></div>
     }
 
-    if (Model.InbetweenRoundsNonChaos == true)
+    if (Model.InbetweenRoundsNonChaos)
     {
         <div class="specialBox specialBox2 specialNoticeBox"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> The round has ended but is NOT currently in chaos mode.  Check the news page for updates on when next round will start. <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></div>
     }
 
-    if (Model.TurnNumber < PvPStatics.RoundDuration && PvPStatics.ChaosMode == true)
+    if (Model.TurnNumber < PvPStatics.RoundDuration && PvPStatics.ChaosMode)
     {
         <div class="specialBox specialBox2"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> The game is currently in "chaos mode" in which attacks are unlimited.  This is an inbetween round rapid test mode and is not representative of regular in-round gameplay. <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></div>
     }
 
-    if (ViewBag.UpdateInProgress == true)
+    if (ViewBag.UpdateInProgress)
     {
         <p class="infoMessage error">TURN UPDATE IN PROGRESS</p>
     }

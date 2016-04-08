@@ -267,7 +267,7 @@ namespace TT.Web.Controllers
             }
 
             // show the permanent and consumable items the player is carrying
-            IEnumerable<ItemViewModel> output = ItemProcedures.GetAllPlayerItems(me.Id).Where(i => i.Item.ItemType != PvPStatics.ItemType_Pet && i.dbItem.IsEquipped == false && (i.dbItem.IsPermanent == true || i.Item.ItemType == "consumable"));
+            IEnumerable<ItemViewModel> output = ItemProcedures.GetAllPlayerItems(me.Id).Where(i => i.Item.ItemType != PvPStatics.ItemType_Pet && !i.dbItem.IsEquipped && (i.dbItem.IsPermanent || i.Item.ItemType == "consumable"));
             return View(output);
         }
 
@@ -332,7 +332,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the item is either permanent or consumable
-            if (itemBeingSold.dbItem.IsPermanent == false && itemBeingSold.Item.ItemType != "consumable")
+            if (!itemBeingSold.dbItem.IsPermanent && itemBeingSold.Item.ItemType != "consumable")
             {
                 TempData["Error"] = "Unfortunately Lindella will not purchase items that may later struggle free anymore.";
                 return RedirectToAction("Play", "PvP");
@@ -545,7 +545,7 @@ namespace TT.Web.Controllers
            
 
             // show the permanent and consumable items the player is carrying
-            IEnumerable<ItemViewModel> output = ItemProcedures.GetAllPlayerItems(me.Id).Where(i => i.Item.ItemType == PvPStatics.ItemType_Pet && i.dbItem.IsEquipped == true && i.dbItem.IsPermanent == true);
+            IEnumerable<ItemViewModel> output = ItemProcedures.GetAllPlayerItems(me.Id).Where(i => i.Item.ItemType == PvPStatics.ItemType_Pet && i.dbItem.IsEquipped && i.dbItem.IsPermanent);
             return View(output);
         }
 
@@ -610,7 +610,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the item is either permanent or consumable
-            if (itemBeingSold.dbItem.IsPermanent == false)
+            if (!itemBeingSold.dbItem.IsPermanent)
             {
                 TempData["Error"] = "Unfortunately Wüffie will not purchase pets that may later struggle free anymore.";
                 return RedirectToAction("Play", "PvP");
@@ -660,7 +660,7 @@ namespace TT.Web.Controllers
 
             // run generic MC checks
             ErrorBox errorsBox = MindControlProcedures.AssertBasicMindControlConditions(me, victim, MindControlStatics.MindControl__Movement);
-            if (errorsBox.HasError == true)
+            if (errorsBox.HasError)
             {
                 TempData["Error"] = errorsBox.Error;
                 TempData["SubError"] = errorsBox.SubError;
@@ -670,7 +670,7 @@ namespace TT.Web.Controllers
             ViewBag.Victim = victim;
             ViewBag.Buffs = ItemProcedures.GetPlayerBuffs(victim);
 
-            if (victim.IsInDungeon() == true)
+            if (victim.IsInDungeon())
             {
                 IEnumerable<Location> output = LocationsStatics.LocationList.GetLocation.Where(l => l.dbName != "" && l.Region == "dungeon");
                 return View(output);
@@ -692,7 +692,7 @@ namespace TT.Web.Controllers
 
             // run generic MC checks
             ErrorBox errorsBox = MindControlProcedures.AssertBasicMindControlConditions(me, victim, MindControlStatics.MindControl__Strip);
-            if (errorsBox.HasError == true)
+            if (errorsBox.HasError)
             {
                 TempData["Error"] = errorsBox.Error;
                 TempData["SubError"] = errorsBox.SubError;
@@ -761,7 +761,7 @@ namespace TT.Web.Controllers
 
             // run generic MC checks
             ErrorBox errorsBox = MindControlProcedures.AssertBasicMindControlConditions(me, victim, MindControlStatics.MindControl__Meditate);
-            if (errorsBox.HasError == true)
+            if (errorsBox.HasError)
             {
                 TempData["Error"] = errorsBox.Error;
                 TempData["SubError"] = errorsBox.SubError;
@@ -787,7 +787,7 @@ namespace TT.Web.Controllers
 
             // run generic MC checks
             ErrorBox errorsBox = MindControlProcedures.AssertBasicMindControlConditions(me, victim, MindControlStatics.MindControl__Movement);
-            if (errorsBox.HasError == true)
+            if (errorsBox.HasError)
             {
                 TempData["Error"] = errorsBox.Error;
                 TempData["SubError"] = errorsBox.SubError;
@@ -1376,7 +1376,7 @@ namespace TT.Web.Controllers
             // TODO:  this can probably done through LINQ or a better SQL query
             foreach (DbStaticSkill s in allSkills)
             {
-                if (knownSkillsStrings.Contains(s.dbName) == false)
+                if (!knownSkillsStrings.Contains(s.dbName))
                 {
                     output.Add(s);
                 }
@@ -1426,7 +1426,7 @@ namespace TT.Web.Controllers
 
             IEnumerable<Skill> playerExistingSpells = SkillProcedures.GetSkillsOwnedByPlayer(me.Id);
 
-            if (playerExistingSpells.Select(s => s.Name).Contains(spell) == true)
+            if (playerExistingSpells.Select(s => s.Name).Contains(spell))
             {
                 TempData["Error"] = "You already know that spell.";
                      return RedirectToAction("TalkToLorekeeper", "NPC");
@@ -1488,7 +1488,7 @@ namespace TT.Web.Controllers
             {
                 BossProcedures_Valentine.TalkToAndCastSpell(me, valentine);
                 List<PlayerLog> tftext = PlayerLogProcedures.GetAllPlayerLogs(me.Id).Reverse().ToList();
-                PlayerLog lastlog = tftext.FirstOrDefault(f => f.IsImportant == true);
+                PlayerLog lastlog = tftext.FirstOrDefault(f => f.IsImportant);
 
                 if (lastlog != null)
                 {

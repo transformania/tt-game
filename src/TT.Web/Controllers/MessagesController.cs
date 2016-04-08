@@ -64,7 +64,7 @@ namespace TT.Web.Controllers
             }
 
             // assert player owns message
-            if (MessageProcedures.PlayerOwnsMessage(messageId, myMembershipId) == false)
+            if (!MessageProcedures.PlayerOwnsMessage(messageId, myMembershipId))
             {
                 TempData["Error"] = "You can't delete this message.";
                 TempData["SubError"] = "It wasn't sent to you.";
@@ -82,7 +82,7 @@ namespace TT.Web.Controllers
         {
             string myMembershipId = User.Identity.GetUserId();
             // assert player owns message
-            if (MessageProcedures.PlayerOwnsMessage(messageId, myMembershipId) == false)
+            if (!MessageProcedures.PlayerOwnsMessage(messageId, myMembershipId))
             {
                 TempData["Error"] = "You can't read this message.";
                 TempData["SubError"] = "It wasn't sent to you.";
@@ -102,7 +102,7 @@ namespace TT.Web.Controllers
         {
             string myMembershipId = User.Identity.GetUserId();
             // assert player owns message
-            if (MessageProcedures.PlayerOwnsMessage(messageId, myMembershipId) == false)
+            if (!MessageProcedures.PlayerOwnsMessage(messageId, myMembershipId))
             {
                 TempData["Error"] = "You can't mark this message as unread.";
                 TempData["SubError"] = "It wasn't sent to you.";
@@ -122,7 +122,7 @@ namespace TT.Web.Controllers
         {
             string myMembershipId = User.Identity.GetUserId();
             // assert player owns message
-            if (MessageProcedures.PlayerOwnsMessage(messageId, myMembershipId) == false)
+            if (!MessageProcedures.PlayerOwnsMessage(messageId, myMembershipId))
             {
                 TempData["Error"] = "You can't mark this message as read.";
                 TempData["SubError"] = "It wasn't sent to you.";
@@ -187,7 +187,7 @@ namespace TT.Web.Controllers
             Player receiver = PlayerProcedures.GetPlayer(input.ReceiverId);
 
             // assert player is not banned from chat
-            if (me.IsBannedFromGlobalChat == true)
+            if (me.IsBannedFromGlobalChat)
             {
                 TempData["Error"] = "You have been banned and cannot send any messages.";
                 TempData["SubError"] = "If you feel this is in error or wish to make an appeal you may do so on the forums.";
@@ -195,7 +195,7 @@ namespace TT.Web.Controllers
             }
 
             // assert no blacklist exists
-            if (BlacklistProcedures.PlayersHaveBlacklistedEachOther(me, receiver, "message") == true)
+            if (BlacklistProcedures.PlayersHaveBlacklistedEachOther(me, receiver, "message"))
             {
                 TempData["Error"] = "This player has blacklisted you or is on your own blacklist.";
                 TempData["SubError"] = "You cannot send messages to players who have blacklisted you.  Remove them from your blacklist or ask them to remove you from theirs.";

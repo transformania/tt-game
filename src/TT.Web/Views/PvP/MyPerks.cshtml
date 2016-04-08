@@ -27,7 +27,7 @@
     <p>Through experience you have gained some unique traits that help you in your adventures.</p>
 
     @{
-        foreach (EffectViewModel2 e in Model.Where(e => e.dbEffect.IsPermanent == true))
+        foreach (EffectViewModel2 e in Model.Where(e => e.dbEffect.IsPermanent))
         {
             <div class="perkBox">
                 <div class="perkBoxTitle"><h3 style="margin-top:0px; color:white;">@e.Effect.FriendlyName</h3></div>
@@ -44,7 +44,7 @@
 
     @{
 
-        foreach (EffectViewModel2 e in Model.Where(e => e.dbEffect.IsPermanent == false))
+        foreach (EffectViewModel2 e in Model.Where(e => !e.dbEffect.IsPermanent))
         {
             <div class="perkBox">
                 <div class="perkBoxTitle"><h3 style="margin-top:0px; color:white;">@e.Effect.FriendlyName</h3></div>

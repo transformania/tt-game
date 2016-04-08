@@ -95,9 +95,9 @@
 <div style="clear:both"><br /></div>
 
 @{
-    if (User.IsInRole(TT.Domain.Statics.PvPStatics.Permissions_Moderator) == true)
+    if (User.IsInRole(TT.Domain.Statics.PvPStatics.Permissions_Moderator))
     {
-        if (@Model.PlayerForm.Player.FlaggedForAbuse == false)
+        if (!Model.PlayerForm.Player.FlaggedForAbuse)
         {
             @Html.ActionLink("Lock this player for suspicious activity", "FlagForSuspiciousActivity", "PvP", new { playerId = Model.PlayerForm.Player.Id }, null)
         }

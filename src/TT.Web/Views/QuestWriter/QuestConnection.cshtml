@@ -58,7 +58,7 @@
         @Ajax.ActionLink("[ NEW STATE ]", "QuestState", "QuestWriter", new { Id = -1, QuestId = Model.QuestConnection.QuestId, ParentStateId = -1 }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "newButton" })
     }
 
-    if (Model.QuestConnection.RequiresRolls() == true)
+    if (Model.QuestConnection.RequiresRolls())
     {
         <br /><br />
         <label>TO Quest State <span class="bad">(when rolls failed)</span>:</label>    <br />

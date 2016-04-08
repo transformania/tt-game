@@ -104,7 +104,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     if (target == null || 
                         target.Mobility != "full" ||
                         PlayerProcedures.PlayerIsOffline(target) || 
-                        target.IsInDungeon() == true ||
+                        target.IsInDungeon() ||
                         target.InDuel > 0 ||
                         target.InQuest > 0)
                     {
@@ -155,7 +155,7 @@ namespace TT.Domain.Procedures.BossProcedures
 
                 // have Donna equip all the pets she owns
                 IItemRepository itemRepo = new EFItemRepository();
-                IEnumerable<Item> donnasItems = itemRepo.Items.Where(i => i.OwnerId == donna.Id && i.IsEquipped == false && i.Level > 3);
+                IEnumerable<Item> donnasItems = itemRepo.Items.Where(i => i.OwnerId == donna.Id && !i.IsEquipped && i.Level > 3);
                 List<Item> itemsToEquip = new List<Item>();
                 foreach (Item i in donnasItems)
                 {

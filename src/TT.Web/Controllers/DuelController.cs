@@ -72,7 +72,7 @@ namespace TT.Web.Controllers
             }
 
             // assert no blacklist exists
-            if (BlacklistProcedures.PlayersHaveBlacklistedEachOther(me, duelTarget, "attack") == true)
+            if (BlacklistProcedures.PlayersHaveBlacklistedEachOther(me, duelTarget, "attack"))
             {
                 TempData["Error"] = "This player has blacklisted you or is on your own blacklist.";
                 TempData["SubError"] = "You cannot duel players who are on your blacklist.  Remove them from your blacklist first or ask them to remove you from theirs.";
@@ -111,7 +111,7 @@ namespace TT.Web.Controllers
 
             // assert both players are in an okay game mode
             bool weAreFriends = FriendProcedures.PlayerIsMyFriend(me, duelTarget);
-            if (weAreFriends == false)
+            if (!weAreFriends)
             {
                 // player is in PvP; target is not
                 if (me.GameMode == 2 && duelTarget.GameMode < 2)
@@ -143,7 +143,7 @@ namespace TT.Web.Controllers
         {
             string myMembershipId = User.Identity.GetUserId();
 
-            if (PvPStatics.AnimateUpdateInProgress == true)
+            if (PvPStatics.AnimateUpdateInProgress)
             {
                 TempData["Error"] = "Player update portion of the world update is still in progress.";
                 TempData["SubError"] = "Try again a bit later when the update has progressed farther along.";
@@ -215,7 +215,7 @@ namespace TT.Web.Controllers
 
                 // assert all players are in an okay game mode
                 bool weAreFriends = FriendProcedures.PlayerIsMyFriend(me, p.Player.ToDbPlayer());
-                if (weAreFriends == false)
+                if (!weAreFriends)
                 {
                     // player is in PvP; target is not
                     if (me.GameMode == 2 && p.Player.GameMode < 2)
@@ -303,7 +303,7 @@ namespace TT.Web.Controllers
 
              List<PlayerFormViewModel> combatants = DuelProcedures.GetPlayerViewModelsInDuel(duel.Id);
 
-             if (PvPStatics.ChaosMode == false)
+             if (!PvPStatics.ChaosMode)
              {
                  foreach (PlayerFormViewModel p in combatants)
                  {

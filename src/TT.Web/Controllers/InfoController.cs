@@ -58,7 +58,7 @@ namespace TT.Web.Controllers
 
          public ActionResult AllLocations()
          {
-             List<Location> output = LocationsStatics.LocationList.GetLocation.Where(s => s.dbName.Contains("_dungeon") == false).ToList();
+             List<Location> output = LocationsStatics.LocationList.GetLocation.Where(s => !s.dbName.Contains("_dungeon")).ToList();
              return PartialView(output);
          }
 

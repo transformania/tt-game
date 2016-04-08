@@ -1,13 +1,13 @@
 ﻿@model List<TT.Domain.Models.JewdewfaeEncounter>
 
-<h1>Jewdewfae encounter list (@Model.Where(e => e.IsLive == true).Count() live)</h1>
+<h1>Jewdewfae encounter list (@Model.Where(e => e.IsLive).Count() live)</h1>
 
 @{
     foreach (TT.Domain.Models.JewdewfaeEncounter e in Model)
     {
         <p>
 
-            @if (e.IsLive == true)
+            @if (e.IsLive)
             {
                 <span class="good">LIVE</span>
             }

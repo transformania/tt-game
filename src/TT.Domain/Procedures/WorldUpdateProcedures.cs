@@ -25,7 +25,7 @@ namespace TT.Domain.Procedures
             double secondsSinceUpdate = Math.Abs(Math.Floor(worldStats.LastUpdateTimestamp.Subtract(DateTime.UtcNow).TotalSeconds));
 
             // if it has been long enough since last update, force an update to occur
-            if (secondsSinceUpdate > PvPStatics.TurnSecondLength && worldStats.WorldIsUpdating == false && PvPStatics.AnimateUpdateInProgress == false)
+            if (secondsSinceUpdate > PvPStatics.TurnSecondLength && !worldStats.WorldIsUpdating && !PvPStatics.AnimateUpdateInProgress)
             {
                 WorldUpdateProcedures.UpdateWorld();
             }
@@ -105,7 +105,7 @@ namespace TT.Domain.Procedures
                 IEffectRepository effectRepo = new EFEffectRepository();
 
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started loading effects");
-                List<Effect> temporaryEffects = effectRepo.Effects.Where(e => e.IsPermanent == false).ToList();
+                List<Effect> temporaryEffects = effectRepo.Effects.Where(e => !e.IsPermanent).ToList();
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished loading effects");
                 List<Effect> effectsToDelete = new List<Effect>();
 
@@ -195,7 +195,7 @@ namespace TT.Domain.Procedures
 
                         "UPDATE [Stats].[dbo].[Players] SET ActionPoints = ActionPoints + 20, ActionPoints_Refill = ActionPoints_Refill - 20 WHERE ActionPoints <= 100 AND ActionPoints_Refill >= 20 AND Mobility='full'");
 
-                        if (PvPStatics.ChaosMode == true)
+                        if (PvPStatics.ChaosMode)
                         {
                             context.Database.ExecuteSqlCommand("Update [Stats].[dbo].[Players] SET ActionPoints = 120, ActionPoints_Refill = 360, TimesAttackingThisUpdate = -999, Mana = MaxMana");
                         }
@@ -448,7 +448,7 @@ namespace TT.Domain.Procedures
 
                 // allow all items that have been recently equipped to be taken back off
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started resetting items that have been recently equipped");
-                List<Item> recentlyEquipped = itemsRepo.Items.Where(i => i.EquippedThisTurn == true).ToList();
+                List<Item> recentlyEquipped = itemsRepo.Items.Where(i => i.EquippedThisTurn).ToList();
 
                 foreach (Item item in recentlyEquipped)
                 {

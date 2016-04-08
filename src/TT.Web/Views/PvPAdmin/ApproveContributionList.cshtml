@@ -29,7 +29,7 @@
 
 
                         @{
-                            if (User.IsInRole(TT.Domain.Statics.PvPStatics.Permissions_Admin) == true)
+                            if (User.IsInRole(TT.Domain.Statics.PvPStatics.Permissions_Admin))
                             {
                                 <td>@Html.ActionLink("Approve", "ApproveContribution", "PvPAdmin", new { id = c.Id }, null)</td>
                                 <td>@Html.ActionLink("Reject", "RejectContribution", "PvPAdmin", new { id = c.Id }, null)</td>

@@ -62,11 +62,11 @@
                 </li>
 
                 @{
-                    if (User.IsInRole(PvPStatics.Permissions_Admin) == true)
+                    if (User.IsInRole(PvPStatics.Permissions_Admin))
                     {
                         <li>@Html.ActionLink("Admin", "Index", "PvPAdmin")</li>
                     }
-                    if (User.IsInRole(PvPStatics.Permissions_QuestWriter) == true)
+                    if (User.IsInRole(PvPStatics.Permissions_QuestWriter))
                     {
                         <li>@Html.ActionLink("QuestWriter", "Index", "QuestWriter", null, null)</li>
                     }
@@ -74,7 +74,7 @@
 
                 
 
-                <li class="visible-xs-inline"><a href="http://transformaniatime.com/PvP/MyInventory">Inventory @Model.PlayerItems.Where(i => i.dbItem.IsEquipped == false).Count()/@Model.InventoryMaxSize </a></li>
+                <li class="visible-xs-inline"><a href="http://transformaniatime.com/PvP/MyInventory">Inventory @Model.PlayerItems.Where(i => !i.dbItem.IsEquipped).Count()/@Model.InventoryMaxSize </a></li>
                 @{
                     if (Model.You.Player.UnusedLevelUpPerks > 0)
                     {
@@ -129,10 +129,10 @@
 <div class="offlinePlayersWrapperBG hidden-xs">
     <div class="row">
         <div class="col-md-1">
-            @Html.ActionLink(Model.PlayerItems.Where(i => i.dbItem.IsEquipped == false).Count() + "/" + Model.InventoryMaxSize, "MyInventory", "PvP", null, new { @class = "playPageInventoryItem openInventory", @style = "background-image: url(../Images/PvP/Icons/Backpack_Meddle.png)", @title = "View Inventory" })
+            @Html.ActionLink(Model.PlayerItems.Where(i => !i.dbItem.IsEquipped).Count() + "/" + Model.InventoryMaxSize, "MyInventory", "PvP", null, new { @class = "playPageInventoryItem openInventory", @style = "background-image: url(../Images/PvP/Icons/Backpack_Meddle.png)", @title = "View Inventory" })
         </div>
         @{
-            foreach (ItemViewModel item in Model.PlayerItems.Where(i => i.dbItem.IsEquipped == true))
+            foreach (ItemViewModel item in Model.PlayerItems.Where(i => i.dbItem.IsEquipped))
             {
                 <div class="col-md-1">
                     <div class="playPageInventoryItem" style="background-image: url(..@CharactersHere.GetImageURL(item, true));" title='@item.Item.FriendlyName'></div>
@@ -181,11 +181,11 @@
             @Model.Location.GetDescription()
             @{
                 
-                     if (Model.You.Player.GameMode >= 2 && Model.You.Player.IsInDungeon() == false && (Model.You.Player.dbLocationName == "street_9th" || Model.You.Player.dbLocationName == "street_14th_north"))
+                     if (Model.You.Player.GameMode >= 2 && !Model.You.Player.IsInDungeon() && (Model.You.Player.dbLocationName == "street_9th" || Model.You.Player.dbLocationName == "street_14th_north"))
                 {
                     @Html.ActionLink("Enter the PvP Dungeon (30 AP)", "EnterDungeon", "PvP", new { entering = "true" }, null)
                 }
-               else if (Model.You.Player.IsInDungeon() == true)
+               else if (Model.You.Player.IsInDungeon())
                {
                    @Html.ActionLink("Leave the PvP Dungeon (30 AP)", "EnterDungeon", "PvP", new { entering = "false" }, null)
                }
@@ -205,7 +205,7 @@
                 }
 
 
-                if (Model.You.Player.GameMode == 2 && Model.You.Player.IsInDungeon() == false)
+                if (Model.You.Player.GameMode == 2 && !Model.You.Player.IsInDungeon())
                 {
                     @Html.ActionLink("Enchant (3 AP, 10 Mana)", "EnchantLocation", "PvP")
                 }
@@ -222,7 +222,7 @@
     <div class="row">
         @*all players who are online*@
         @{
-            foreach (TT.Domain.ViewModels.PlayerFormViewModel p in Model.PlayersHere.Where(p => PlayerProcedures.PlayerIsOffline(p.Player) == false).OrderByDescending(p => p.Player.Level))
+            foreach (TT.Domain.ViewModels.PlayerFormViewModel p in Model.PlayersHere.Where(p => !PlayerProcedures.PlayerIsOffline(p.Player)).OrderByDescending(p => p.Player.Level))
             {
 
                 <div class="col-md-2 col-sm-4 col-xs-12 charaBox">
@@ -281,22 +281,22 @@
 
 @*all players who are offline*@
 <div style="clear:both;"></div>
-@*<div id="showOfflinePlayersButton">Show Offline Players Here (@Model.PlayersHere.Where(p => PlayerProcedures.PlayerIsOffline(p.Player) == true).Count())</div>*@
+@*<div id="showOfflinePlayersButton">Show Offline Players Here (@Model.PlayersHere.Where(p => PlayerProcedures.PlayerIsOffline(p.Player)).Count())</div>*@
 
-@{if (ViewBag.ShowOffline == null || ViewBag.ShowOffline == false)
+@{if (ViewBag.ShowOffline == null || !ViewBag.ShowOffline)
 {
 
-    <div id="offlinePlayersButton">@Html.ActionLink("Show Offline Players Here (" + @Model.PlayersHere.Where(p => PlayerProcedures.PlayerIsOffline(p.Player) == true).Count() + ")", "ShowOffline", "PvP")</div>
+    <div id="offlinePlayersButton">@Html.ActionLink("Show Offline Players Here (" + @Model.PlayersHere.Where(p => PlayerProcedures.PlayerIsOffline(p.Player)).Count() + ")", "ShowOffline", "PvP")</div>
 }
 }
 
-@{if (ViewBag.ShowOffline != null && ViewBag.ShowOffline == true)
+@{if (ViewBag.ShowOffline != null && ViewBag.ShowOffline)
 {
     <div class="offlinePlayersWrapperBG">
         <div class="row">
 
             @{
-    foreach (TT.Domain.ViewModels.PlayerFormViewModel p in Model.PlayersHere.Where(p => PlayerProcedures.PlayerIsOffline(p.Player) == true).OrderByDescending(p => p.Player.Level))
+    foreach (TT.Domain.ViewModels.PlayerFormViewModel p in Model.PlayersHere.Where(p => PlayerProcedures.PlayerIsOffline(p.Player)).OrderByDescending(p => p.Player.Level))
     {
         <div class="col-md-2 col-sm-4 col-xs-12 charaBox">
             <div class="charaBoxInner">

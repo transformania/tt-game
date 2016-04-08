@@ -23,7 +23,7 @@ namespace TT.Web.Controllers
         public ActionResult StartQuest(int Id)
         {
             string myMembershipId = User.Identity.GetUserId();
-            if (PvPStatics.AnimateUpdateInProgress == true)
+            if (PvPStatics.AnimateUpdateInProgress)
             {
                 TempData["Error"] = "Player update portion of the world update is still in progress.";
                 TempData["SubError"] = "Try again a bit later when the update has progressed farther along.";
@@ -87,7 +87,7 @@ namespace TT.Web.Controllers
             bool canStartQuest = QuestProcedures.PlayerCanBeginQuest(me, questStart, questPlayerStatuses, gameTurnNum);
 
             // assert player meets level / game turn requirements for this quest
-            if (canStartQuest==false)
+            if (!canStartQuest)
             {
                 TempData["Error"] = "You do not meet all of the criteria to begin this quest.";
                 return RedirectToAction("Play", "PvP");
@@ -196,19 +196,19 @@ namespace TT.Web.Controllers
             BuffBox buffs = ItemProcedures.GetPlayerBuffs(me);
             
             // assert player has the right requirements for this
-            if (QuestProcedures.QuestConnectionIsAvailable(desiredConnection, me, buffs, output.QuestPlayerVariables) == false)
+            if (!QuestProcedures.QuestConnectionIsAvailable(desiredConnection, me, buffs, output.QuestPlayerVariables))
             {
                 TempData["Error"] = "You're not able to do that.";
                 return RedirectToAction("Quest");
             }
 
             // make rolls for pass / fail
-            if (desiredConnection.RequiresRolls() == true)
+            if (desiredConnection.RequiresRolls())
             {
                 bool passes = QuestProcedures.RollForQuestConnection(desiredConnection, me, buffs, output.QuestPlayerVariables);
 
                 // player fails; reroute to the failure quest state
-                if (passes == false)
+                if (!passes)
                 {
                     nextState = QuestProcedures.GetQuestState(desiredConnection.QuestStateFailToId);
                     TempData["RollResult"] = "fail";
@@ -304,11 +304,11 @@ namespace TT.Web.Controllers
             // if the player is not animate, either restore them or create a new item for them to exist as
             if (me.Mobility != PvPStatics.MobilityFull)
             {
-                if (restore == true && me.Mobility != PvPStatics.MobilityFull)
+                if (restore && me.Mobility != PvPStatics.MobilityFull)
                 {
                     PlayerProcedures.InstantRestoreToBase(me);
                 }
-                else if (restore == false)
+                else if (!restore)
                 {
                     DbStaticForm newform = FormStatics.GetForm(me.Form);
                     ItemProcedures.PlayerBecomesItem(me, newform, null);
@@ -349,7 +349,7 @@ namespace TT.Web.Controllers
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
-            if (PvPStatics.ChaosMode == false)
+            if (!PvPStatics.ChaosMode)
             {
                 TempData["Error"] = "You can only do this in chaos mode.";
                 return RedirectToAction("Play", "PvP");

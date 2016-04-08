@@ -15,7 +15,7 @@ namespace TT.Domain.Procedures
             Random rand = new Random();
             double roll = rand.NextDouble();
 
-            IEnumerable<DMRoll> options = repo.DMRolls.Where(r => r.IsLive == true && r.ActionType == actionType && r.Tags.Contains(tag));
+            IEnumerable<DMRoll> options = repo.DMRolls.Where(r => r.IsLive && r.ActionType == actionType && r.Tags.Contains(tag));
             List<DMRoll> test = options.ToList();
 
             double max = options.Count();

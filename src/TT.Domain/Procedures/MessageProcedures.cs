@@ -17,7 +17,7 @@ namespace TT.Domain.Procedures
             IEnumerable<Message> myMessages = messageRepo.Messages.Where(m => m.ReceiverId == player.Id);
             MessageCountDataViewModel output = new MessageCountDataViewModel
             {
-                NewMessagesCount = myMessages.Where(m => m.IsRead == false).Count(),
+                NewMessagesCount = myMessages.Where(m => !m.IsRead).Count(),
                 TotalMessagesCount = myMessages.Count()
             };
 
@@ -28,7 +28,7 @@ namespace TT.Domain.Procedures
         public static int GetPlayerUnreadMessageCount(Player player)
         {
             IMessageRepository messageRepo = new EFMessageRepository();
-            return messageRepo.Messages.Where(m => m.ReceiverId == player.Id && m.IsRead == false).Count();
+            return messageRepo.Messages.Where(m => m.ReceiverId == player.Id && !m.IsRead).Count();
         }
 
         public static MessageViewModel GetMessage(int messageId)
@@ -115,7 +115,7 @@ namespace TT.Domain.Procedures
 
             int inboxLimit = 150;
 
-            if (DonatorProcedures.DonatorGetsMessagesRewards(player) == true)
+            if (DonatorProcedures.DonatorGetsMessagesRewards(player))
             {
                 inboxLimit = 500;
             }
@@ -221,7 +221,7 @@ namespace TT.Domain.Procedures
             message.IsRead = false;
             message.ReadStatus = 0;
 
-            if (DonatorProcedures.EitherPlayersAreDonatorsOfTier(sender, receiver, 3) == true)
+            if (DonatorProcedures.EitherPlayersAreDonatorsOfTier(sender, receiver, 3))
             {
                 message.DoNotRecycleMe = true;
             }

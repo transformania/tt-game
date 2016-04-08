@@ -690,7 +690,7 @@ namespace TT.Domain.Procedures
             newplayer.GameMode = player.StartGameMode;
 
 
-            if (player.StartInRP == true)
+            if (player.StartInRP)
             {
                 newplayer.InRP = true;
             }
@@ -710,7 +710,7 @@ namespace TT.Domain.Procedures
                 SkillProcedures.TransferAllPlayerSkills(oldplayer.Id, newplayer.Id);
 
                 // transfer their old messages to new account
-                if (player.MigrateLetters == true)
+                if (player.MigrateLetters)
                 {
                     using (var context = new StatsContext())
                     {
@@ -931,7 +931,7 @@ namespace TT.Domain.Procedures
             string locationMessageOld = "";
             string locationMessageNew = "";
 
-            if (showDestinationInLocationLog == true)
+            if (showDestinationInLocationLog)
             {
                 locationMessageOld = player.GetFullName() + " used a Covenant Call Crystal, teleporting to their safeground at " + newLocation.Name + ".";
                 locationMessageNew = player.GetFullName() + " teleported home using a Covenant Call Crystal.";
@@ -1191,7 +1191,7 @@ namespace TT.Domain.Procedures
                 BuffBox myBuffs = ItemProcedures.GetPlayerBuffs(me);
 
                 // drop an item of the same type that you are carrying if you are over the limit
-                if (ItemProcedures.PlayerIsCarryingTooMuch(player.Id, 1, myBuffs) == true)
+                if (ItemProcedures.PlayerIsCarryingTooMuch(player.Id, 1, myBuffs))
                 {
                     ItemViewModel randomItem = ItemProcedures.GetAllPlayerItems(player.Id).Where(i => i.dbItem.dbName == justFound.dbName).Last();
                     ItemProcedures.DropItem(randomItem.dbItem.Id, here.dbName);
@@ -1231,7 +1231,7 @@ namespace TT.Domain.Procedures
                     DbStaticEffect effectToGet = effectsHere.ElementAt(randIndex);
 
                     // assert that the player doesn't already have this effect.  IF they do, break out
-                    if (EffectProcedures.PlayerHasEffect(player, effectToGet.dbName) == true)
+                    if (EffectProcedures.PlayerHasEffect(player, effectToGet.dbName))
                     {
                         PlayerProcedures.GiveXP(player, 1.5M);
                         return "Although you didn't find anything or learn any new spells, you feel as though you know this town a little better, which may come in useful in the future.  (+1.5 XP)";
@@ -1766,7 +1766,7 @@ namespace TT.Domain.Procedures
 
             string message = "";
 
-            if (turnOn == true)
+            if (turnOn)
             {
                 dbPlayer.InRP = true;
                 message = "You have turned on your RP flag.";

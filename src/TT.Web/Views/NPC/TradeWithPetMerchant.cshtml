@@ -39,7 +39,7 @@
     <p>You can purchase pets and familiars from Wüffie, poor creatures who have been left behind by their owners and would otherwise roam the streets as feral creatures.  Having spent many years as a pet herself, Wüffie will gladly buy and sell all manners of animals and creatures and make sure they're well cared for.</p>
 
     @{
-        if (Model.PlayerHasPet == true)
+        if (Model.PlayerHasPet)
         {
             <p class="playerCleansingNotification">You will not be able to purchase anything from Wüffie since you do not have room to carry anything else in your inventory.</p>
         }

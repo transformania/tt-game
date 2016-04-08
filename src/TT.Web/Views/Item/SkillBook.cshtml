@@ -33,7 +33,7 @@
 </div>
 
 @{
-    if (Model.AlreadyRead == false)
+    if (!Model.AlreadyRead)
     {
         @Html.ActionLink("Absorb Knowledge", "ReadSkillBook", "Item", new { id = Model.BookId }, null)
     }

@@ -69,8 +69,8 @@ namespace TT.Domain.Procedures
         public static bool MemberIsMyFriend(string me, string them)
         {
             IFriendRepository friendRepo = new EFFriendRepository();
-            Friend dbFriend = friendRepo.Friends.FirstOrDefault(f => f.OwnerMembershipId == me && f.FriendMembershipId == them && f.IsAccepted == true);
-            Friend dbFriend2 = friendRepo.Friends.FirstOrDefault(f => f.OwnerMembershipId == them && f.FriendMembershipId == me && f.IsAccepted == true);
+            Friend dbFriend = friendRepo.Friends.FirstOrDefault(f => f.OwnerMembershipId == me && f.FriendMembershipId == them && f.IsAccepted);
+            Friend dbFriend2 = friendRepo.Friends.FirstOrDefault(f => f.OwnerMembershipId == them && f.FriendMembershipId == me && f.IsAccepted);
 
             if (dbFriend != null || dbFriend2 != null)
             {

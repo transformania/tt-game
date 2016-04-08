@@ -176,7 +176,7 @@ namespace TT.Domain.Procedures
             int breakoutCurrent = 0;
             bool done = false;
 
-            while (done == false && breakoutCurrent < breakoutMax)
+            while (!done && breakoutCurrent < breakoutMax)
             {
                 
                 LocationNode nextNode;

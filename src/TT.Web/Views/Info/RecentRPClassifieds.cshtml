@@ -65,7 +65,7 @@
                     <p>@Html.ActionLink("Look at Ad Poster", "LookAtPlayer_FromMembershipId", "PvP", new { id = ad.OwnerMembershipId }, null)</p>
 
                     @{
-                if (User.IsInRole(TT.Domain.Statics.PvPStatics.Permissions_Admin) == true || User.IsInRole(TT.Domain.Statics.PvPStatics.Permissions_Moderator) == true)
+                if (User.IsInRole(TT.Domain.Statics.PvPStatics.Permissions_Admin) || User.IsInRole(TT.Domain.Statics.PvPStatics.Permissions_Moderator))
                 {
                     <p>@Html.ActionLink("Delete for Violation", "ModDeleteClassified", "PvPAdmin", new { id = ad.Id }, null)</p>
                 }

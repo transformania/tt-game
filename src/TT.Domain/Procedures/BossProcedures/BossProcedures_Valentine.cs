@@ -172,7 +172,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     List<Player> playersHere = PlayerProcedures.GetPlayersAtLocation(valentine.dbLocationName).ToList();
 
                     playersHere = playersHere.Where(p => p.Mobility == "full" && 
-                    PlayerProcedures.PlayerIsOffline(p) == false && 
+                    !PlayerProcedures.PlayerIsOffline(p) &&
                     p.Level >= 3 && 
                     p.BotId == AIStatics.ActivePlayerBotId && 
                     p.Id != valentine.Id && 
@@ -206,7 +206,7 @@ namespace TT.Domain.Procedures.BossProcedures
             List<Player> playersHere = PlayerProcedures.GetPlayersAtLocation(valentine.dbLocationName).ToList();
 
             playersHere = playersHere.Where(p => p.Mobility == "full" &&
-                PlayerProcedures.PlayerIsOffline(p) == false &&
+                !PlayerProcedures.PlayerIsOffline(p) &&
                 p.Level >= 3 &&
                 p.BotId == AIStatics.ActivePlayerBotId &&
                 p.Id != valentine.Id &&
@@ -219,14 +219,14 @@ namespace TT.Domain.Procedures.BossProcedures
             {
                 
                 // give this player the vampire curse if they do not yet have it
-                if (EffectProcedures.PlayerHasEffect(p, BloodyKissEffect) == false)
+                if (!EffectProcedures.PlayerHasEffect(p, BloodyKissEffect))
                 {
                     AttackProcedures.Attack(valentine, p, BloodyCurseSpell);
                     AIProcedures.DealBossDamage(valentine, p, false, 1);
                 }
 
                 // give this player the immobility curse if they do not yet have it
-                if (EffectProcedures.PlayerHasEffect(p, ValentinesPresenceEffect) == false)
+                if (!EffectProcedures.PlayerHasEffect(p, ValentinesPresenceEffect))
                 {
                     AttackProcedures.Attack(valentine, p, ValentinesPresenceSpell);
                 }
@@ -241,12 +241,12 @@ namespace TT.Domain.Procedures.BossProcedures
             int counter = 1;
             foreach (Item sword in valentineSwords)
             {
-                if (sword.IsEquipped == false && counter < 3)
+                if (!sword.IsEquipped && counter < 3)
                 {
                     sword.IsEquipped = true;
                     swordsToSave.Add(sword);
                 }
-                else if (sword.IsEquipped == true && counter >= 3)
+                else if (sword.IsEquipped && counter >= 3)
                 {
                     sword.IsEquipped = false;
                     swordsToSave.Add(sword);

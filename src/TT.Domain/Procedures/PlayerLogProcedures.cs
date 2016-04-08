@@ -39,7 +39,7 @@ namespace TT.Domain.Procedures
 
             playerLogRepo.SavePlayerLog(newlog);
 
-            //if (isImportant == true) { 
+            //if (isImportant) {
             //    NoticeProcedures.PushNotice(playerId, newlog.Message, NoticeProcedures.PushType__PlayerMessage);
             //}
 
@@ -59,7 +59,7 @@ namespace TT.Domain.Procedures
         public static void DismissImportantLogs(int playerId)
         {
             IPlayerLogRepository playerLogRepo = new EFPlayerLogRepository();
-            IEnumerable<PlayerLog> myLogs = playerLogRepo.PlayerLogs.Where(l => l.PlayerId == playerId && l.IsImportant == true).ToList();
+            IEnumerable<PlayerLog> myLogs = playerLogRepo.PlayerLogs.Where(l => l.PlayerId == playerId && l.IsImportant).ToList();
 
             foreach (PlayerLog log in myLogs)
             {

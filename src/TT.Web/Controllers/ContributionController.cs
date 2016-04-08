@@ -611,46 +611,6 @@ namespace TT.Web.Controllers
 
             contributionRepo.SaveContribution(SaveMe);
 
-            #region notify admins
-
-            // Idea here is to notify the admins that there is a new contribution if it is the first time it has been sent in review and the first time only.  (I don't
-            // want admins to get spammed if a user edits it 5 times while waiting for it to get approved.)
-
-            //// if contribution is set to ready for review and wasn't before, notify admins to take a look
-            //if (!SaveMe.IsReadyForReview && input.IsReadyForReview && !input.ProofreadingCopy)
-            //{
-            //    // Judoo
-            //    try {
-            //        Player derp = PlayerProcedures.GetPlayerFromMembership(69);
-            //        PlayerLogProcedures.AddPlayerLog(derp.Id, "<b>A new contribution has been sent in for review by " + input.SubmitterName + " on " + DateTime.UtcNow + ".</b>", true);
-            //    } catch {
-
-            //    }
-
-            //    // Mizuho
-            //    try
-            //    {
-            //        Player mizu = PlayerProcedures.GetPlayerFromMembership(3490);
-            //        PlayerLogProcedures.AddPlayerLog(mizu.Id, "<b>A new contribution has been sent in for review by " + input.SubmitterName + " on " + DateTime.UtcNow + ".</b>", true);
-            //    }
-            //    catch
-            //    {
-
-            //    }
-
-            //    // Arrhae
-            //    try
-            //    {
-            //        Player Arrhae = PlayerProcedures.GetPlayerFromMembership(251);
-            //        PlayerLogProcedures.AddPlayerLog(Arrhae.Id, "<b>A new contribution has been sent in for review by " + input.SubmitterName + " on " + DateTime.UtcNow + ".</b>", true);
-            //    }
-            //    catch
-            //    {
-
-            //    }
-            //}
-            #endregion
-
             TempData["Result"] = "Contribution Saved!";
             return RedirectToAction("Play", "PvP");
         }

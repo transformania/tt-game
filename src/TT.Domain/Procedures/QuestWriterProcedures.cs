@@ -41,7 +41,7 @@ namespace TT.Domain.Procedures
             repo.SaveQuestStart(questStart);
 
             // save an additional quest state to start this off
-            if (newStart == true || questState == null)
+            if (newStart || questState == null)
             {
                 questState = new QuestState
                 {

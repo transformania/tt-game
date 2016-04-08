@@ -88,7 +88,7 @@ namespace TT.Domain.Procedures.BossProcedures
             // add fae's current location to the list of places visited
             directive.sVar2 += fae.dbLocationName + ";";
 
-            List<string> fairyLocations = faeRepo.JewdewfaeEncounters.Where(f => f.IsLive == true).Select(f => f.dbLocationName).ToList();
+            List<string> fairyLocations = faeRepo.JewdewfaeEncounters.Where(f => f.IsLive).Select(f => f.dbLocationName).ToList();
 
             List<string> visitedFairyLocations = directive.sVar2.Split(';').Where(f => f.Length > 1).ToList();
 

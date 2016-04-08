@@ -89,7 +89,7 @@ namespace TT.Domain.Procedures
 
         public static bool PlayerCanBeginQuest(Player player, QuestStart questStart, IEnumerable<QuestPlayerStatus> questPlayerStatuses, int gameWorldTurn)
         {
-            if (questStart.IsLive == false)
+            if (!questStart.IsLive)
             {
                 return false;
             }
@@ -156,7 +156,7 @@ namespace TT.Domain.Procedures
                     }
                 }
 
-                if (preReqMet == false)
+                if (!preReqMet)
                 {
                     return false;
                 }
@@ -177,14 +177,14 @@ namespace TT.Domain.Procedures
         {
             IQuestRepository repo = new EFQuestRepository();
 
-            List<QuestStart> quests = repo.QuestStarts.Where(s => s.Location == player.dbLocationName && s.IsLive == true).ToList();
+            List<QuestStart> quests = repo.QuestStarts.Where(s => s.Location == player.dbLocationName && s.IsLive).ToList();
             List<QuestPlayerStatus> playerQuestsRaw = repo.QuestPlayerStatuses.Where(s => s.PlayerId == player.Id).ToList();
             List<QuestStart> eligibleQuests = new List<QuestStart>();
 
 
             foreach (QuestStart q in quests)
             {
-                if (PlayerCanBeginQuest(player, q, playerQuestsRaw, turn)== true) {
+                if (PlayerCanBeginQuest(player, q, playerQuestsRaw, turn)) {
                     eligibleQuests.Add(q);
                 }
             }
@@ -195,13 +195,13 @@ namespace TT.Domain.Procedures
         public static IEnumerable<QuestStart> GetAllAvailableQuestsForPlayer(Player player, int turn)
         {
             IQuestRepository repo = new EFQuestRepository();
-            List<QuestStart> quests = repo.QuestStarts.Where(q => q.IsLive == true).ToList();
+            List<QuestStart> quests = repo.QuestStarts.Where(q => q.IsLive).ToList();
             List<QuestPlayerStatus> playerQuestsRaw = repo.QuestPlayerStatuses.Where(s => s.PlayerId == player.Id).ToList();
             List<QuestStart> eligibleQuests = new List<QuestStart>();
 
             foreach (QuestStart q in quests)
             {
-                if (PlayerCanBeginQuest(player, q, playerQuestsRaw, turn) == true)
+                if (PlayerCanBeginQuest(player, q, playerQuestsRaw, turn))
                 {
                     eligibleQuests.Add(q);
                 }
@@ -339,7 +339,7 @@ namespace TT.Domain.Procedures
             {
 
                 // skip all roll-based requirements; a player can always attempt a roll
-                if (q.IsRandomRoll == true)
+                if (q.IsRandomRoll)
                 {
                     continue;
                 }
@@ -358,7 +358,7 @@ namespace TT.Domain.Procedures
 
                     isAvailable = ExpressionIsTrue(float.Parse(var.VariableValue), q);
 
-                    if (isAvailable == false)
+                    if (!isAvailable)
                     {
                         return false;
                     }
@@ -389,7 +389,7 @@ namespace TT.Domain.Procedures
                 // evaluate player buff/ability
                 float playerValue = GetValueFromType(q, buffs);
                 isAvailable = ExpressionIsTrue(playerValue, q);
-                if (isAvailable == false)
+                if (!isAvailable)
                 {
                     return false;
                 }
@@ -528,7 +528,7 @@ namespace TT.Domain.Procedures
                 }
 
                 // random roll, calculate % chance and display that
-                if (qs.IsRandomRoll == true)
+                if (qs.IsRandomRoll)
                 {
                     float playerValue = GetValueFromType(qs, buffs);
 
@@ -712,7 +712,7 @@ namespace TT.Domain.Procedures
            
             foreach(QuestConnectionRequirement q in connection.QuestConnectionRequirements)
             {
-                if (q.IsRandomRoll==false)
+                if (!q.IsRandomRoll)
                 {
                     continue;
                 }

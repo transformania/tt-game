@@ -173,7 +173,7 @@ namespace TT.Domain.Procedures.BossProcedures
             AIDirective directive = AIDirectiveProcedures.GetAIDirective(faeboss.Id);
 
             // no target, go out and hit some random people with animate spells
-            if (HasValidTarget(directive) ==false)
+            if (!HasValidTarget(directive))
             {
                 ResetTarget(directive);
                 string newTargetLocation = GetLocationWithMostEligibleTargets();
@@ -325,7 +325,7 @@ namespace TT.Domain.Procedures.BossProcedures
             IEnumerable<string> locs = playerRepo.Players.Where(p => p.Mobility == PvPStatics.MobilityFull &&
             p.LastActionTimestamp > cutoff &&
             p.Form != GreatFaeForm &&
-            p.dbLocationName.Contains("dungeon_") == false &&
+            !p.dbLocationName.Contains("dungeon_") &&
             p.InDuel <= 0 &&
             p.InQuest <= 0).GroupBy(p => p.dbLocationName).OrderByDescending(p => p.Count()).Select(p => p.Key);
             return locs.First();
@@ -349,7 +349,7 @@ namespace TT.Domain.Procedures.BossProcedures
             if (target == null ||
                         target.Mobility != PvPStatics.MobilityFull ||
                         PlayerProcedures.PlayerIsOffline(target) ||
-                        target.IsInDungeon() == true ||
+                        target.IsInDungeon() ||
                         target.InDuel > 0 ||
                         target.InQuest > 0)
             {

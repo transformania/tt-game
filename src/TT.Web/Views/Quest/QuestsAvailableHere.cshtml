@@ -64,7 +64,7 @@
     <h1>All Quests (@Model.AllQuests.Where(q => q.IsLive).Count())</h1>
 
     @{
-        foreach (QuestStart s in Model.AllQuests.Where(q => q.IsLive==true))
+        foreach (QuestStart s in Model.AllQuests.Where(q => q.IsLive))
         {
             <div style="border: 1px solid black">
                 <h4>@s.Name</h4>

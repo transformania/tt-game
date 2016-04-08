@@ -304,7 +304,7 @@ namespace TT.Domain.Procedures
             // filter out offline players as well as the attacker
             foreach (Player p in playersHere)
             {
-                if (PlayerProcedures.PlayerIsOffline(p) == false && p.Id != attacker.Id)
+                if (!PlayerProcedures.PlayerIsOffline(p) && p.Id != attacker.Id)
                 {
                     playersHereOnline.Add(p);
                 }

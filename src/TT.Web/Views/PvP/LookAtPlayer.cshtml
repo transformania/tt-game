@@ -136,7 +136,7 @@
 
 </div>
 @{
-        if (User.IsInRole(PvPStatics.Permissions_Moderator) == true)
+        if (User.IsInRole(PvPStatics.Permissions_Moderator))
         {
             <nav class="navbar navbar-default outsideContainer navbarTT2">
                 <div class="container-fluid">
@@ -156,7 +156,7 @@
 
                           @{
 
-                            if (@Model.PlayerForm.Player.FlaggedForAbuse == false)
+                            if (!Model.PlayerForm.Player.FlaggedForAbuse)
                            {
                            <li>@Html.ActionLink("Lock this player for suspicious activity", "FlagForSuspiciousActivity", "PvP", new { playerId = Model.PlayerForm.Player.Id }, null)</li>
                            }

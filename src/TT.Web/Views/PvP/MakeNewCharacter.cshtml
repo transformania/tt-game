@@ -13,7 +13,7 @@
             Welcome to Transformania Time!  Here you can choose a name for your brace mage who dares to enter the town of Sunnyglade in all its dangers and oddities.  If you are starting your first character for the round, you will begin at level 1.  If your previous character has been inanimated or turned into a pet, you can "reroll" yourself a new character immediately but will lose 3 levels and all of your Arpeyjis.  You may keep your same name as before, but your newer incarnation will have a roman numeral appended to the end, ie "Aelianus Marcellius II".
 
 
-            @if (ViewBag.IsRerolling == true)
+            @if (ViewBag.IsRerolling)
             {
                 <br /><br />
                 <span class="tldr">You currently have an character named @ViewBag.OldFirstName @ViewBag.OldLastName.  If you start over you will no longer be able to perform any actions with them anymore.</span>

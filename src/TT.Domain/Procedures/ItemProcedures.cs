@@ -118,7 +118,7 @@ namespace TT.Domain.Procedures
         public static IEnumerable<Item> GetAllPlayerItems_ItemOnly(int playerId)
         {
             IItemRepository itemRepo = new EFItemRepository();
-            return itemRepo.Items.Where(i => i.OwnerId == playerId && i.IsEquipped == true);
+            return itemRepo.Items.Where(i => i.OwnerId == playerId && i.IsEquipped);
         }
 
         public static IEnumerable<ItemViewModel> GetAllItemsAtLocation(string dbLocationName, Player player)
@@ -417,7 +417,7 @@ namespace TT.Domain.Procedures
         {
             IItemRepository itemRepo = new EFItemRepository();
             IEnumerable<ItemViewModel> currentlyOwnedItems = GetAllPlayerItems(newOwnerId);
-            int nonWornItemsCarried = currentlyOwnedItems.Where(i => i.dbItem.IsEquipped == false ).Count() - offset;
+            int nonWornItemsCarried = currentlyOwnedItems.Where(i => !i.dbItem.IsEquipped).Count() - offset;
 
             int max = GetInventoryMaxSize(buffs);
 
@@ -600,7 +600,7 @@ namespace TT.Domain.Procedures
             Player dbOwner = playerRepo.Players.FirstOrDefault(p => p.Id == item.OwnerId);
             
 
-            if (putOn == true)
+            if (putOn)
             {
                 item.IsEquipped = true;
                 item.EquippedThisTurn = true;
@@ -656,14 +656,14 @@ namespace TT.Domain.Procedures
         public static int PlayerIsWearingNumberOfThisType(int playerId, string itemType)
         {
             IItemRepository itemRepo = new EFItemRepository();
-            IEnumerable<ItemViewModel> itemsOfThisType = GetAllPlayerItems(playerId).Where(i => i.Item.ItemType == itemType && i.dbItem.IsEquipped == true);
+            IEnumerable<ItemViewModel> itemsOfThisType = GetAllPlayerItems(playerId).Where(i => i.Item.ItemType == itemType && i.dbItem.IsEquipped);
             return itemsOfThisType.Count();
         }
 
         public static int PlayerIsWearingNumberOfThisExactItem(int playerId, string itemDbName)
         {
             IItemRepository itemRepo = new EFItemRepository();
-            IEnumerable<ItemViewModel> itemsOfThisType = GetAllPlayerItems(playerId).Where(i => i.Item.dbName == itemDbName && i.dbItem.IsEquipped == true);
+            IEnumerable<ItemViewModel> itemsOfThisType = GetAllPlayerItems(playerId).Where(i => i.Item.dbName == itemDbName && i.dbItem.IsEquipped);
             return itemsOfThisType.Count();
         }
 
@@ -905,7 +905,7 @@ namespace TT.Domain.Procedures
             if (newItemPlus.ItemType != PvPStatics.ItemType_Pet)
             {
                 // if the attacking player still has room in their inventory, give it to them.
-                if (itemRepo.Items.Where(i => i.OwnerId == attacker.Id && i.IsEquipped == false).Count() < inventoryMax)
+                if (itemRepo.Items.Where(i => i.OwnerId == attacker.Id && !i.IsEquipped).Count() < inventoryMax)
                 {
                     newItem.OwnerId = attacker.Id;
                     newItem.dbLocationName = "";
@@ -1101,7 +1101,7 @@ namespace TT.Domain.Procedures
                 if (itemPlus.Item.GivesEffect != null && itemPlus.Item.GivesEffect != "")
                 {
                     // check if the player already has this effect or has it in cooldown.  If so, reject usage
-                    if (EffectProcedures.PlayerHasEffect(owner, itemPlus.Item.GivesEffect) == true)
+                    if (EffectProcedures.PlayerHasEffect(owner, itemPlus.Item.GivesEffect))
                     {
                         return "You can't use this yet as you already have its effects active on you, or else the effect's cooldown has not expired.";
                     }
@@ -1185,7 +1185,7 @@ namespace TT.Domain.Procedures
                 if (itemPlus.Item.dbName == BossProcedures.BossProcedures_BimboBoss.CureItemDbName)
                 {
 
-                    if (EffectProcedures.PlayerHasEffect(owner, BossProcedures.BossProcedures_BimboBoss.KissEffectdbName) == false) {
+                    if (!EffectProcedures.PlayerHasEffect(owner, BossProcedures.BossProcedures_BimboBoss.KissEffectdbName)) {
                         return "Since you are not infected with the bimbonic virus there's no need for you to use this right now.";
                     }
 
@@ -1200,7 +1200,7 @@ namespace TT.Domain.Procedures
                 {
 
                     // assert owner is not in the dungeon
-                    if (owner.IsInDungeon() == true)
+                    if (owner.IsInDungeon())
                     {
                         return "The dark magic seeping through the dungeon prevents your crystal from working.";
                     }
@@ -1287,7 +1287,7 @@ namespace TT.Domain.Procedures
                 {
                     return "You have to wait longer before you can use this item agin.";
                 }
-                else if (itemPlus.Item.ItemType == PvPStatics.ItemType_Consumable_Reuseable && EffectProcedures.PlayerHasEffect(owner, itemPlus.Item.GivesEffect) == true)
+                else if (itemPlus.Item.ItemType == PvPStatics.ItemType_Consumable_Reuseable && EffectProcedures.PlayerHasEffect(owner, itemPlus.Item.GivesEffect))
                 {
                     return "You can't use this yet as you already have the effect active or on cooldown.";
                 }
@@ -1471,7 +1471,7 @@ namespace TT.Domain.Procedures
             if (itemtype == "random") return GetRandomPlayableItem();
             Random rand = new Random();
             IDbStaticItemRepository itemRepo = new EFDbStaticItemRepository();
-            IEnumerable<DbStaticItem> item = itemRepo.DbStaticItems.Where(i => i.ItemType == itemtype && i.IsUnique == false);
+            IEnumerable<DbStaticItem> item = itemRepo.DbStaticItems.Where(i => i.ItemType == itemtype && !i.IsUnique);
             int iCount = item.Count();
             if (iCount > 0)
             {
@@ -1487,7 +1487,7 @@ namespace TT.Domain.Procedures
         {
             Random rand = new Random();
             IDbStaticItemRepository itemRepo = new EFDbStaticItemRepository();
-            IEnumerable<DbStaticItem> item = itemRepo.DbStaticItems.Where(i => i.ItemType != "consumable" && i.IsUnique == false);
+            IEnumerable<DbStaticItem> item = itemRepo.DbStaticItems.Where(i => i.ItemType != "consumable" && !i.IsUnique);
             return item.ElementAt(rand.Next(0, item.Count()));
         }
 
@@ -1549,7 +1549,7 @@ namespace TT.Domain.Procedures
                 decimal price = 50 + 50 * item.dbItem.Level;
 
                 // item is not permanent, charge less
-                if (item.dbItem.IsPermanent == false)
+                if (!item.dbItem.IsPermanent)
                 {
                     price *= .85M;
                 }
@@ -1564,7 +1564,7 @@ namespace TT.Domain.Procedures
                 decimal price = 50 + (30 * item.dbItem.Level * .75M);
 
                 // item is not permanent, charge less
-                if (item.dbItem.IsPermanent == false)
+                if (!item.dbItem.IsPermanent)
                 {
                     price *= .5M;
                 }

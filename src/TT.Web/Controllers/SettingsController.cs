@@ -191,13 +191,13 @@ namespace TT.Web.Controllers
              }
 
              Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-             if (input.Text.Length > 2500 && DonatorProcedures.DonatorGetsMessagesRewards(me) == false)
+             if (input.Text.Length > 2500 && !DonatorProcedures.DonatorGetsMessagesRewards(me))
              {
                  TempData["Error"] = "The text of your bio is too long (more than 2500 characters).";
                  return RedirectToAction("Play", "PvP");
              }
 
-             if (input.Text.Length > 10000 && DonatorProcedures.DonatorGetsMessagesRewards(me) == true)
+             if (input.Text.Length > 10000 && DonatorProcedures.DonatorGetsMessagesRewards(me))
              {
                  TempData["Error"] = "The text of your bio is too long (more than 10,000 characters).";
                  return RedirectToAction("Play", "PvP");
@@ -256,7 +256,7 @@ namespace TT.Web.Controllers
             IContributionRepository contributionRepo = new EFContributionRepository();
 
             IEnumerable<BioPageContributionViewModel> mySpells = from c in contributionRepo.Contributions
-                                                                 where c.OwnerMembershipId == player.MembershipId && c.ProofreadingCopy == true && c.IsLive == true
+                                                                 where c.OwnerMembershipId == player.MembershipId && c.ProofreadingCopy && c.IsLive
                                                                  select new BioPageContributionViewModel
                                                                  {
                                                                      SpellName = c.Skill_FriendlyName,
@@ -266,7 +266,7 @@ namespace TT.Web.Controllers
             IEffectContributionRepository effectContribtionRepo = new EFEffectContributionRepository();
 
             IEnumerable<BioPageEffectContributionViewModel> myEffects = from c in effectContribtionRepo.EffectContributions
-                                                                 where c.OwnerMemberhipId == player.MembershipId && c.ProofreadingCopy == true && c.IsLive == true
+                                                                 where c.OwnerMemberhipId == player.MembershipId && c.ProofreadingCopy && c.IsLive
                                                                  select new BioPageEffectContributionViewModel
                                                                  {
                                                                      EffectName = c.Effect_FriendlyName,
@@ -358,7 +358,7 @@ namespace TT.Web.Controllers
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
-            if (DonatorProcedures.DonatorGetsNickname(me) == false)
+            if (!DonatorProcedures.DonatorGetsNickname(me))
             {
                 TempData["Error"] = "You are not marked as being a donator.";
                 TempData["SubError"] = "This feature is reserved for players who pledge $7 monthly to support Transformania Time on Patreon.";
@@ -434,7 +434,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that this player has not been friended
-            if (FriendProcedures.PlayerIsMyFriend(me, target) == true)
+            if (FriendProcedures.PlayerIsMyFriend(me, target))
             {
                 TempData["Error"] = "You cannot blacklist one of your friends.";
                 TempData["SubError"] = "Cancel your friendship with this player first.";
@@ -477,7 +477,7 @@ namespace TT.Web.Controllers
 
 
             // assert that this player has not been friended
-            if (FriendProcedures.PlayerIsMyFriend(me, target) == true)
+            if (FriendProcedures.PlayerIsMyFriend(me, target))
             {
                 TempData["Error"] = "You cannot blacklist one of your friends.";
                 TempData["SubError"] = "Cancel your friendship with this player first.";
@@ -547,7 +547,7 @@ namespace TT.Web.Controllers
             string filename = AppDomain.CurrentDomain.BaseDirectory + "XMLs/validChatColors.txt";
             string text = System.IO.File.ReadAllText(filename);
 
-            if (text.Contains(color + ";") == false)
+            if (!text.Contains(color + ";"))
             {
                 TempData["Error"] = "That is not a valid chat color.";
                 return RedirectToAction("Play", "PvP");
@@ -564,7 +564,7 @@ namespace TT.Web.Controllers
         {
             string myMembershipId = User.Identity.GetUserId();
             // assert player has on the artist whitelist
-            if (User.IsInRole(PvPStatics.Permissions_Artist) == false)
+            if (!User.IsInRole(PvPStatics.Permissions_Artist))
             {
                 TempData["Error"] = "You are not eligible to do this at this time.";
                 return RedirectToAction("Play", "PvP");
@@ -582,7 +582,7 @@ namespace TT.Web.Controllers
         {
             string myMembershipId = User.Identity.GetUserId();
             // assert player has on the artist whitelist
-            if (User.IsInRole(PvPStatics.Permissions_Artist) == false)
+            if (!User.IsInRole(PvPStatics.Permissions_Artist))
             {
                 TempData["Error"] = "You are not eligible to do this at this time.";
                 return RedirectToAction("Play", "PvP");
@@ -611,7 +611,7 @@ namespace TT.Web.Controllers
                 ViewBag.IngameCharacter = "This artist current has a character under the name of " + artistIngamePlayer.GetFullName() + ".";
             }
             // assert visibility setting is okay
-            if (output.PlayerNamePrivacyLevel == 1 && friends == false)
+            if (output.PlayerNamePrivacyLevel == 1 && !friends)
             {
                 TempData["Error"] = "This artist bio is only visible to his or her friends.";
                 return RedirectToAction("Play", "PvP");
@@ -698,7 +698,7 @@ namespace TT.Web.Controllers
 
             SkillProcedures.ArchiveSpell(skill.dbSkill.Id);
 
-            if (skill.dbSkill.IsArchived == false) { 
+            if (!skill.dbSkill.IsArchived) {
                 ViewBag.Message = "You have successfully archived " + skill.Skill.FriendlyName + ".";
             }
             else
@@ -1042,7 +1042,7 @@ namespace TT.Web.Controllers
         public ActionResult ChaosChangeGameMode(int id)
         {
 
-            if (PvPStatics.ChaosMode == false)
+            if (!PvPStatics.ChaosMode)
             {
                 TempData["Error"] = "You can only do this in chaos mode.";
                 return RedirectToAction("Play", "PvP");
@@ -1070,7 +1070,7 @@ namespace TT.Web.Controllers
         public ActionResult ChaosRestoreBase()
         {
 
-            if (PvPStatics.ChaosMode == false)
+            if (!PvPStatics.ChaosMode)
             {
                 TempData["Error"] = "You can only do this in chaos mode.";
                 return RedirectToAction("Play", "PvP");

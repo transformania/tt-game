@@ -23,7 +23,7 @@
                 <li>@Html.ActionLink("Rules of Play", "Rules", "Info")</li>
                 <li>@Html.ActionLink("Equipment Helper", "GearTool", "Info")</li>
                 <li>@Html.ActionLink("Server Population By Turn", "ServerPopulation", "Info")</li>
-                @{if (User.IsInRole(PvPStatics.Permissions_Admin) == true)
+                @{if (User.IsInRole(PvPStatics.Permissions_Admin))
                     {
                         <li>@Html.ActionLink("Edit News", "ListNewsPosts", "PvPAdmin", null, null)</li>
                     }
@@ -45,7 +45,7 @@
         foreach (NewsPost n in Model)
         {
 
-            if (User.IsInRole(PvPStatics.Permissions_Admin) == true)
+            if (User.IsInRole(PvPStatics.Permissions_Admin))
             {
                 @Html.ActionLink("[Edit]", "EditNewsPost", "PvPAdmin", new { Id = n.Id }, new { @class= "bad" })
             }

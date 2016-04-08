@@ -17,7 +17,7 @@
     <br /><br />
 
 @{ 
-    if (ViewBag.Recovered == true)
+    if (ViewBag.Recovered)
     {
         <p class="bad">@Html.Raw(ViewBag.RecoveredMsg)</p>
     }

@@ -27,7 +27,7 @@ namespace TT.Web.CustomHtmlHelpers
         {
             string output = "";
 
-            if (player.MindControlIsActive == true)
+            if (player.MindControlIsActive)
             {
                 output = "<span class='icon icon-mc'></span>";
             }
@@ -139,7 +139,7 @@ namespace TT.Web.CustomHtmlHelpers
         public static MvcHtmlString PrintPvPIcon(Covenant covenant)
         {
 
-            if (covenant.IsPvP == true)
+            if (covenant.IsPvP)
             {
                 return new MvcHtmlString("<span class='icon icon-pvp' title='This covenant is in PvP mode.'></span>");
             }
@@ -152,7 +152,7 @@ namespace TT.Web.CustomHtmlHelpers
         public static MvcHtmlString PrintRPIcon(Player player)
         {
 
-            if (player.InRP == true)
+            if (player.InRP)
             {
                 return new MvcHtmlString("<span class='icon icon-rp' title='This player has indicated that they enjoy roleplaying.'></span>");
             }
@@ -509,7 +509,7 @@ namespace TT.Web.CustomHtmlHelpers
 
         public static MvcHtmlString PrintPermanencyIcon(ItemViewModel item)
         {
-            if (item.dbItem.IsPermanent == true)
+            if (item.dbItem.IsPermanent)
             {
                 return new MvcHtmlString("<span class='icon icon-permanent' title=\"This player\'s soul is permanently sealed into this item.\"></span>");
             }
@@ -521,7 +521,7 @@ namespace TT.Web.CustomHtmlHelpers
 
         public static MvcHtmlString PrintPermanencyIcon(Item item)
         {
-            if (item.IsPermanent == true)
+            if (item.IsPermanent)
             {
                 return new MvcHtmlString("<span class='icon icon-permanent' title=\"This player\'s soul is permanently sealed into this item.\"></span>");
             }
@@ -726,7 +726,7 @@ namespace TT.Web.CustomHtmlHelpers
         {
             string output = "";
 
-            if (connection.RequiresRolls()==true)
+            if (connection.RequiresRolls())
             {
                 output = "<img src='../Images/PvP/Icons/dice.png' style='width: 24px; height: 24px; '>";
             }

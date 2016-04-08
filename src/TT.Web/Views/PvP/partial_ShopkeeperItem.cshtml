@@ -26,11 +26,11 @@
                 <span class="price">Price:  @TT.Domain.Procedures.ItemProcedures.GetCostOfItem(Model, "buy") Arpeyjis</span>
 
                 @{
-                    if (ViewBag.Wuffie != null && ViewBag.Wuffie == true)
+                    if (ViewBag.Wuffie != null && ViewBag.Wuffie)
                     {
                         @Html.ActionLink("Purchase", "PurchasePet", "NPC", new { id = Model.dbItem.Id }, new { @class = "attackLink" })
                     }
-                    else if (ViewBag.Lorekeeper != null && ViewBag.Lorekeeper == true)
+                    else if (ViewBag.Lorekeeper != null && ViewBag.Lorekeeper)
                     {
                         @Html.ActionLink("Purchase", "LorekeeperPurchaseBookSend", "NPC", new { id = Model.dbItem.Id }, new { @class = "attackLink" })
                     } else

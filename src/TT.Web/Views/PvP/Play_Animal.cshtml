@@ -53,11 +53,11 @@
                 <li>@Html.ActionLink("Submit Content", "Contribute", "Contribution", new { Id = -1 }, null)</li>
                 <li>@Html.ActionLink("Start again as someone else", "Restart", "PvP")</li>
                 @{
-                    if (User.IsInRole(PvPStatics.Permissions_Admin) == true)
+                    if (User.IsInRole(PvPStatics.Permissions_Admin))
                     {
                         <li>@Html.ActionLink("Admin", "Index", "PvPAdmin")</li>
                     }
-                    if (User.IsInRole(PvPStatics.Permissions_QuestWriter) == true)
+                    if (User.IsInRole(PvPStatics.Permissions_QuestWriter))
                     {
                         <li>@Html.ActionLink("QuestWriter", "Index", "QuestWriter", null, null)</li>
                     }
@@ -132,7 +132,7 @@
                     }
                 }
     @{
-        if (Model.IsPermanent == false)
+        if (!Model.IsPermanent)
         {
         <p class="center-block">
             <span class="place">Chance to return human: @Model.StruggleChance %.</span>
@@ -282,7 +282,7 @@
             <div class="row">
                 @*all players who are online*@
                 @{
-                    foreach (TT.Domain.ViewModels.PlayerFormViewModel p in Model.PlayersHere.Where(p => PlayerProcedures.PlayerIsOffline(p.Player) == false).OrderByDescending(p => p.Player.Level))
+                    foreach (TT.Domain.ViewModels.PlayerFormViewModel p in Model.PlayersHere.Where(p => !PlayerProcedures.PlayerIsOffline(p.Player)).OrderByDescending(p => p.Player.Level))
                     {
 
                         <div class="col-md-2 col-sm-4 col-xs-12 charaBox">
@@ -301,20 +301,20 @@
             </div>
         </div>
 
-        @{if (ViewBag.ShowOffline == null || ViewBag.ShowOffline == false)
+        @{if (ViewBag.ShowOffline == null || !ViewBag.ShowOffline)
         {
 
-            <div id="offlinePlayersButton">@Html.ActionLink("Show Offline Players Here (" + @Model.PlayersHere.Where(p => TT.Domain.Procedures.PlayerProcedures.PlayerIsOffline(p.Player) == true).Count() + ")", "ShowOffline", "PvP")</div>
+            <div id="offlinePlayersButton">@Html.ActionLink("Show Offline Players Here (" + @Model.PlayersHere.Where(p => TT.Domain.Procedures.PlayerProcedures.PlayerIsOffline(p.Player)).Count() + ")", "ShowOffline", "PvP")</div>
         }
         }
 
-        @{if (ViewBag.ShowOffline != null && ViewBag.ShowOffline == true)
+        @{if (ViewBag.ShowOffline != null && ViewBag.ShowOffline)
         {
             <div class="offlinePlayersWrapperBG">
                 <div class="row">
 
                     @{
-            foreach (TT.Domain.ViewModels.PlayerFormViewModel p in Model.PlayersHere.Where(p => TT.Domain.Procedures.PlayerProcedures.PlayerIsOffline(p.Player) == true).OrderByDescending(p => p.Player.Level))
+            foreach (TT.Domain.ViewModels.PlayerFormViewModel p in Model.PlayersHere.Where(p => TT.Domain.Procedures.PlayerProcedures.PlayerIsOffline(p.Player)).OrderByDescending(p => p.Player.Level))
             {
                 <div class="col-md-2 col-sm-4 col-xs-12 charaBox">
                     <div class="charaBoxInner">

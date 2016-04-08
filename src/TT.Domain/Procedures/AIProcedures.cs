@@ -256,7 +256,7 @@ namespace TT.Domain.Procedures
                         if (PlayerProcedures.PlayerIsOffline(myTarget) || 
                             myTarget.Mobility != "full" ||
                             myTarget.Form == skill.Skill.FormdbName || 
-                            myTarget.IsInDungeon() == true ||
+                            myTarget.IsInDungeon() ||
                             myTarget.InDuel > 0 ||
                             myTarget.InQuest > 0)
                         {
@@ -766,7 +766,7 @@ namespace TT.Domain.Procedures
                 return false;
             }
 
-            if (isBoss == true && isBossSkill == true)
+            if (isBoss && isBossSkill)
             {
                 return true;
             }
@@ -924,7 +924,7 @@ namespace TT.Domain.Procedures
                 };
             }
 
-            if (humanAttacker == true)
+            if (humanAttacker)
             {
                 damage.PlayerAttacksOnBoss += attackCount;
                

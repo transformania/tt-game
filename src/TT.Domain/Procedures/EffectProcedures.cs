@@ -110,11 +110,11 @@ namespace TT.Domain.Procedures
             IEffectRepository effectRepo = new EFEffectRepository();
 
             // see what perks the player already has
-            IEnumerable<Effect> playerEffects = effectRepo.Effects.Where(e => e.OwnerId == player.Id && e.IsPermanent == true);
+            IEnumerable<Effect> playerEffects = effectRepo.Effects.Where(e => e.OwnerId == player.Id && e.IsPermanent);
             List<string> playerEffectsString = playerEffects.Select(e => e.dbName).ToList();
 
 
-             List<DbStaticEffect> availablePerks = effectRepo.DbStaticEffects.Where(e => e.AvailableAtLevel > 0 && e.AvailableAtLevel <= player.Level && e.isLevelUpPerk == true).ToList();
+             List<DbStaticEffect> availablePerks = effectRepo.DbStaticEffects.Where(e => e.AvailableAtLevel > 0 && e.AvailableAtLevel <= player.Level && e.isLevelUpPerk).ToList();
 
             List<DbStaticEffect> availablePerksFinal = new List<DbStaticEffect>();
 
@@ -130,12 +130,12 @@ namespace TT.Domain.Procedures
                 }
 
                 // filter out any effects that have a prerequisite that the player does not yet have
-                if (effect.PreRequesite != null && effect.PreRequesite != "" && playerEffectsString.Contains(effect.PreRequesite) == false)
+                if (effect.PreRequesite != null && effect.PreRequesite != "" && !playerEffectsString.Contains(effect.PreRequesite))
                 {
                     continue;
                 }
 
-                if (available == true)
+                if (available)
                 {
                     availablePerksFinal.Add(effect);
                 }
@@ -169,7 +169,7 @@ namespace TT.Domain.Procedures
             DbStaticEffect effectPlus = EffectStatics.GetStaticEffect2(perkName);
 
 
-            if (effectPlus.isLevelUpPerk == true)
+            if (effectPlus.isLevelUpPerk)
             {
                 // assert that the perk doesn't require a level higher than the player
                 if (effectPlus.AvailableAtLevel > player.Level)
@@ -224,7 +224,7 @@ namespace TT.Domain.Procedures
 
 
             // this is a level up perk so just return a simple message
-            if (addme.IsPermanent == true)
+            if (addme.IsPermanent)
             {
                 string logmessage = "You have gained the perk " + effectPlus.FriendlyName + ".";
                 PlayerLogProcedures.AddPlayerLog(player.Id, logmessage, false);

@@ -189,7 +189,7 @@ namespace TT.Domain.Models
 
             foreach (QuestConnectionRequirement q in this.QuestConnectionRequirements)
             {
-                if (q.IsRandomRoll==true)
+                if (q.IsRandomRoll)
                 {
                     return true;
                 }

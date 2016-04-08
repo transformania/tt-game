@@ -26,7 +26,7 @@ namespace TT.Web.Controllers
         public ActionResult ProofreadingContributions()
         {
             IContributionRepository contributionRepo = new EFContributionRepository();
-            var proofreading = contributionRepo.Contributions.Where(c => c.AdminApproved == true && c.ProofreadingCopy == true).Select(
+            var proofreading = contributionRepo.Contributions.Where(c => c.AdminApproved && c.ProofreadingCopy).Select(
                 i => new ProofreadingContributionsViewModel()
                 {
                     Id = i.Id,
@@ -73,16 +73,16 @@ namespace TT.Web.Controllers
                     ViewBag.Result = "Load successful.";
 
                     // assert player owns this
-                    if (contribution.OwnerMembershipId != currentUserId && iAmProofreader == false)
+                    if (contribution.OwnerMembershipId != currentUserId && !iAmProofreader)
                     {
                         TempData["Error"] = "This contribution does not belong to your account.";
                         return RedirectToAction("Play", "PvP");
                     }
 
                     // if this player is a proofreader and this contribution is not marked as ready for proofreading, tell the editor to go to the proofreading version instead.
-                    if (iAmProofreader == true && contribution.ProofreadingCopy == false)
+                    if (iAmProofreader && !contribution.ProofreadingCopy)
                     {
-                        Contribution contributionProofed = contributionRepo.Contributions.FirstOrDefault(c => c.OwnerMembershipId == contribution.OwnerMembershipId && c.ProofreadingCopy == true && c.Skill_FriendlyName == contribution.Skill_FriendlyName && c.Form_FriendlyName == contribution.Form_FriendlyName);
+                        Contribution contributionProofed = contributionRepo.Contributions.FirstOrDefault(c => c.OwnerMembershipId == contribution.OwnerMembershipId && c.ProofreadingCopy && c.Skill_FriendlyName == contribution.Skill_FriendlyName && c.Form_FriendlyName == contribution.Form_FriendlyName);
                         if (contributionProofed != null)
                         {
                             TempData["Error"] = "There is already a proofreading version of this available.  Please load that instead.";
@@ -91,7 +91,7 @@ namespace TT.Web.Controllers
                     }
 
                     // save the proofreading lock on this contribution
-                    if (contribution.ProofreadingCopy == true)
+                    if (contribution.ProofreadingCopy)
                     {
                         contribution.ProofreadingLockIsOn = true;
                         contribution.CheckedOutBy = User.Identity.Name;
@@ -126,7 +126,7 @@ namespace TT.Web.Controllers
 
 
             #region for admin use only, see if statics exist
-            if (User.IsInRole(PvPStatics.Permissions_Admin) == true && contribution.ProofreadingCopy == true)
+            if (User.IsInRole(PvPStatics.Permissions_Admin) && contribution.ProofreadingCopy)
             {
                 IDbStaticSkillRepository skillRepo = new EFDbStaticSkillRepository();
                 IDbStaticFormRepository formRepo = new EFDbStaticFormRepository();
@@ -188,13 +188,13 @@ namespace TT.Web.Controllers
         {
 
             // assert only previewers can view this
-            if (User.IsInRole(PvPStatics.Permissions_Previewer) == false)
+            if (!User.IsInRole(PvPStatics.Permissions_Previewer))
             {
                 return View("Play", "PvP");
             }
 
             IContributionRepository contributionRepo = new EFContributionRepository();
-            Contribution contribution = contributionRepo.Contributions.FirstOrDefault(c => c.Id == Id && c.IsReadyForReview == true && c.ProofreadingCopy == false);
+            Contribution contribution = contributionRepo.Contributions.FirstOrDefault(c => c.Id == Id && c.IsReadyForReview && !c.ProofreadingCopy);
             ViewBag.DisableLinks = true;
 
             BalanceBox bbox = new BalanceBox();
@@ -215,14 +215,10 @@ namespace TT.Web.Controllers
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             bool iAmProofreader = User.IsInRole(PvPStatics.Permissions_Proofreader);
 
-            if (iAmProofreader == false && contribution.OwnerMemberhipId != me.MembershipId)
+            if (!iAmProofreader && contribution.OwnerMemberhipId != me.MembershipId)
             {
                 TempData["Error"] = "That does not belong to you and you are not a proofreader.";
                 return RedirectToAction("Play", "PvP");
-            }
-            else
-            {
-
             }
 
             return View("~/Views/Contribution/BalanceCalculatorEffect.cshtml", contribution);
@@ -237,14 +233,10 @@ namespace TT.Web.Controllers
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             bool iAmProofreader = User.IsInRole(PvPStatics.Permissions_Proofreader);
 
-            if (iAmProofreader == false && contribution.OwnerMembershipId != me.MembershipId)
+            if (!iAmProofreader && contribution.OwnerMembershipId != me.MembershipId)
             {
                 TempData["Error"] = "That does not belong to you and you are not a proofreader.";
                 return RedirectToAction("Play", "PvP");
-            }
-            else
-            {
-
             }
 
             return View("~/Views/Contribution/BalanceCalculator2.cshtml", contribution);
@@ -259,7 +251,7 @@ namespace TT.Web.Controllers
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             bool iAmProofreader = User.IsInRole(PvPStatics.Permissions_Proofreader);
 
-            if (iAmProofreader == false && SaveMe.OwnerMembershipId != me.MembershipId)
+            if (!iAmProofreader && SaveMe.OwnerMembershipId != me.MembershipId)
             {
                 TempData["Error"] = "That does not belong to you and you are not a proofreader.";
                 return RedirectToAction("Play", "PvP");
@@ -321,7 +313,7 @@ namespace TT.Web.Controllers
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             bool iAmProofreader = User.IsInRole(PvPStatics.Permissions_Proofreader);
 
-            if (iAmProofreader == false && SaveMe.OwnerMemberhipId != me.MembershipId)
+            if (!iAmProofreader && SaveMe.OwnerMemberhipId != me.MembershipId)
             {
                 TempData["Error"] = "That does not belong to you and you are not a proofreader.";
                 return RedirectToAction("Play", "PvP");
@@ -379,7 +371,7 @@ namespace TT.Web.Controllers
         public ActionResult ContributeGraphicsNeeded()
         {
             IContributionRepository contributionRepo = new EFContributionRepository();
-            IEnumerable<Contribution> output = contributionRepo.Contributions.Where(c => c.IsReadyForReview == true && c.AdminApproved == true && c.IsLive == false && c.ProofreadingCopy == true);
+            IEnumerable<Contribution> output = contributionRepo.Contributions.Where(c => c.IsReadyForReview && c.AdminApproved && !c.IsLive && c.ProofreadingCopy);
 
             ViewBag.ErrorMessage = TempData["Error"];
             ViewBag.SubErrorMessage = TempData["SubError"];
@@ -394,7 +386,7 @@ namespace TT.Web.Controllers
 
             bool iAmArtist = User.IsInRole(PvPStatics.Permissions_Artist);
 
-            if (iAmArtist == false)
+            if (!iAmArtist)
             {
                 TempData["Result"] = "You don't have permissions to do that.  If you are an artist and are interested in contributing artwork, please contact the administrator, Judoo.";
                 return RedirectToAction("ContributeGraphicsNeeded");
@@ -419,7 +411,7 @@ namespace TT.Web.Controllers
 
             bool iAmArtist = User.IsInRole(PvPStatics.Permissions_Artist);
 
-            if (iAmArtist == false)
+            if (!iAmArtist)
             {
                 TempData["Result"] = "You don't have permissions to do that.  If you are an artist and are interested in contributing artwork, please contact the administrator, Judoo.";
                 return RedirectToAction("ContributeGraphicsNeeded");
@@ -471,7 +463,7 @@ namespace TT.Web.Controllers
                 else if (SaveMe != null && SaveMe.OwnerMembershipId != myMembershipId)
                 {
                     // this is a poorfreading copy.  Keep Id the same and keep it marked as a proofreading copy IF the editor is a proofreader
-                    if (SaveMe.ProofreadingCopy == true && iAmProofreader == true)
+                    if (SaveMe.ProofreadingCopy && iAmProofreader)
                     {
                         SaveMe.Id = input.Id;
                         //SaveMe.ProofreadingCopy = true;
@@ -605,59 +597,19 @@ namespace TT.Web.Controllers
 
             SaveMe.AssignedToArtist = input.AssignedToArtist;
 
-            if (input.ImageURL != null && input.ImageURL != "" && User.IsInRole(PvPStatics.Permissions_Admin) == true)
+            if (input.ImageURL != null && input.ImageURL != "" && User.IsInRole(PvPStatics.Permissions_Admin))
             {
                 SaveMe.ImageURL = input.ImageURL;
             }
 
             SaveMe.CreationTimestamp = DateTime.UtcNow;
 
-            if (SaveMe.ProofreadingCopy == true)
+            if (SaveMe.ProofreadingCopy)
             {
                 SaveMe.History += "Edited by " + User.Identity.Name + " on " + DateTime.UtcNow + ".<br>";
             }
 
             contributionRepo.SaveContribution(SaveMe);
-
-            #region notify admins
-
-            // Idea here is to notify the admins that there is a new contribution if it is the first time it has been sent in review and the first time only.  (I don't
-            // want admins to get spammed if a user edits it 5 times while waiting for it to get approved.)
-
-            //// if contribution is set to ready for review and wasn't before, notify admins to take a look
-            //if (SaveMe.IsReadyForReview == false && input.IsReadyForReview == true && input.ProofreadingCopy == false)
-            //{
-            //    // Judoo
-            //    try {
-            //        Player derp = PlayerProcedures.GetPlayerFromMembership(69);
-            //        PlayerLogProcedures.AddPlayerLog(derp.Id, "<b>A new contribution has been sent in for review by " + input.SubmitterName + " on " + DateTime.UtcNow + ".</b>", true);
-            //    } catch {
-
-            //    }
-
-            //    // Mizuho
-            //    try
-            //    {
-            //        Player mizu = PlayerProcedures.GetPlayerFromMembership(3490);
-            //        PlayerLogProcedures.AddPlayerLog(mizu.Id, "<b>A new contribution has been sent in for review by " + input.SubmitterName + " on " + DateTime.UtcNow + ".</b>", true);
-            //    }
-            //    catch
-            //    {
-
-            //    }
-
-            //    // Arrhae
-            //    try
-            //    {
-            //        Player Arrhae = PlayerProcedures.GetPlayerFromMembership(251);
-            //        PlayerLogProcedures.AddPlayerLog(Arrhae.Id, "<b>A new contribution has been sent in for review by " + input.SubmitterName + " on " + DateTime.UtcNow + ".</b>", true);
-            //    }
-            //    catch
-            //    {
-
-            //    }
-            //}
-            #endregion
 
             TempData["Result"] = "Contribution Saved!";
             return RedirectToAction("Play", "PvP");
@@ -669,7 +621,7 @@ namespace TT.Web.Controllers
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             bool iAmProofreader = User.IsInRole(PvPStatics.Permissions_Proofreader);
 
-            if (iAmProofreader == false)
+            if (!iAmProofreader)
             {
                 TempData["Error"] = "You must be a proofreader in order to do this.";
                 return RedirectToAction("Play", "PvP");
@@ -678,7 +630,7 @@ namespace TT.Web.Controllers
             IContributionRepository contributionRepo = new EFContributionRepository();
             Contribution contribution = contributionRepo.Contributions.FirstOrDefault(c => c.Id == id);
 
-            if (contribution.ProofreadingCopy == false)
+            if (!contribution.ProofreadingCopy)
             {
                 TempData["Error"] = "This is not a proofreading copy.";
                 return RedirectToAction("Play", "PvP");
@@ -708,9 +660,9 @@ namespace TT.Web.Controllers
             bool iAmAdmin = User.IsInRole(PvPStatics.Permissions_Admin);
 
             // add the rest of the submitted contributions if the player is a proofread
-            if (iAmProofreader == true)
+            if (iAmProofreader)
             {
-                proofreading = effectContRepo.EffectContributions.Where(c => c.ApprovedByAdmin == true && c.ProofreadingCopy == true).ToList();
+                proofreading = effectContRepo.EffectContributions.Where(c => c.ApprovedByAdmin && c.ProofreadingCopy).ToList();
                 ViewBag.Proofreading = proofreading;
             }
 
@@ -728,7 +680,7 @@ namespace TT.Web.Controllers
             // not new... check for proofreading permissions
             else
             {
-                if (output.OwnerMemberhipId != myMembershipId && (iAmProofreader == false || (output.ProofreadingCopy == false && iAmAdmin == false)))
+                if (output.OwnerMemberhipId != myMembershipId && (!iAmProofreader || (!output.ProofreadingCopy && !iAmAdmin)))
                 {
                     TempData["Error"] = TempData["You do not have permission to view this."];
                     return RedirectToAction("Play", "PvP");
@@ -748,7 +700,7 @@ namespace TT.Web.Controllers
 
 
 
-            if (User.IsInRole(PvPStatics.Permissions_Admin) == true && output.ProofreadingCopy == true)
+            if (User.IsInRole(PvPStatics.Permissions_Admin) && output.ProofreadingCopy)
             {
 
                 string effectDbName = output.GetEffectDbName();
@@ -814,7 +766,7 @@ namespace TT.Web.Controllers
 
                 // make sure this actually is the player's own contribution
             }
-            else if (saveme.OwnerMemberhipId != myMembershipId && iAmProofreader == false)
+            else if (saveme.OwnerMemberhipId != myMembershipId && !iAmProofreader)
             {
                 TempData["Error"] = "This contribution does not belong to you and you are not a proofreader.";
                 TempData["SubError"] = "You may have been logged out; check that you are logged in the the game still in another tab.";
@@ -896,7 +848,7 @@ namespace TT.Web.Controllers
         public ActionResult PublishSpell(int id)
         {
 
-            if (User.IsInRole(PvPStatics.Permissions_Admin) == false && User.IsInRole(PvPStatics.Permissions_Publisher) == false)
+            if (!User.IsInRole(PvPStatics.Permissions_Admin) && !User.IsInRole(PvPStatics.Permissions_Publisher))
             {
                 return View("ContributorBioList");
             }
@@ -1003,7 +955,7 @@ namespace TT.Web.Controllers
 
         public ActionResult PublishForm(int id)
         {
-            if (User.IsInRole(PvPStatics.Permissions_Admin) == false && User.IsInRole(PvPStatics.Permissions_Publisher) == false)
+            if (!User.IsInRole(PvPStatics.Permissions_Admin) && !User.IsInRole(PvPStatics.Permissions_Publisher))
             {
                 return View("ContributorBioList");
             }
@@ -1160,7 +1112,7 @@ namespace TT.Web.Controllers
         public ActionResult PublishItem(int id)
         {
 
-            if (User.IsInRole(PvPStatics.Permissions_Admin) == false && User.IsInRole(PvPStatics.Permissions_Publisher) == false)
+            if (!User.IsInRole(PvPStatics.Permissions_Admin) && !User.IsInRole(PvPStatics.Permissions_Publisher))
             {
                 return View("ContributorBioList");
             }
@@ -1304,7 +1256,7 @@ namespace TT.Web.Controllers
 
         public ActionResult PublishEffect(int id)
         {
-            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
                 return View("ContributorBioList");
             }
@@ -1408,7 +1360,7 @@ namespace TT.Web.Controllers
 
         public ActionResult PublishSpell_Effect(int id)
         {
-            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
                 return View("ContributorBioList");
             }
@@ -1454,7 +1406,7 @@ namespace TT.Web.Controllers
 
         public ActionResult MarkAsLive(int id)
         {
-            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
                 return View("ContributorBioList");
             }
@@ -1486,7 +1438,7 @@ namespace TT.Web.Controllers
 
         public ActionResult MarkEffectAsLive(int id)
         {
-            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
                 return View("ContributorBioList");
             }
@@ -1518,7 +1470,7 @@ namespace TT.Web.Controllers
 
         public ActionResult SetSpellAsLive(int id)
         {
-            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
                 return View("ContributorBioList");
             }
@@ -1541,7 +1493,7 @@ namespace TT.Web.Controllers
 
         public ActionResult StaticsExist(int id)
         {
-            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
                 return View("ContributorBioList");
             }
@@ -1621,7 +1573,7 @@ namespace TT.Web.Controllers
             }
             else
             {
-                if (output.MembershipOwnerId != User.Identity.GetUserId() && User.IsInRole(PvPStatics.Permissions_Admin) == false)
+                if (output.MembershipOwnerId != User.Identity.GetUserId() && !User.IsInRole(PvPStatics.Permissions_Admin))
                 {
                     TempData["Error"] = "This does not belong to you.";
                     return RedirectToAction("Play", "PvP");
@@ -1644,7 +1596,7 @@ namespace TT.Web.Controllers
             }
             else
             {
-                if (roll.MembershipOwnerId != myMembershipId && User.IsInRole(PvPStatics.Permissions_Admin) == false)
+                if (roll.MembershipOwnerId != myMembershipId && !User.IsInRole(PvPStatics.Permissions_Admin))
                 {
                     TempData["Error"] = "This does not belong to you.";
                     return RedirectToAction("Play", "PvP");
@@ -1656,7 +1608,7 @@ namespace TT.Web.Controllers
                 } 
             }
 
-            if (roll.MembershipOwnerId != "0" && roll.MembershipOwnerId != "-1" && roll.MembershipOwnerId != "-2" && User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            if (roll.MembershipOwnerId != "0" && roll.MembershipOwnerId != "-1" && roll.MembershipOwnerId != "-2" && !User.IsInRole(PvPStatics.Permissions_Admin))
             {
                 roll.MembershipOwnerId = myMembershipId;
             }
@@ -1665,7 +1617,7 @@ namespace TT.Web.Controllers
             roll.Message = input.Message;
             roll.ActionType = input.ActionType;
 
-            if (roll.IsLive == true)
+            if (roll.IsLive)
             {
                 roll.IsLive = false;
             }
@@ -1680,19 +1632,19 @@ namespace TT.Web.Controllers
           [Authorize]
           public ActionResult ReviewDMRolls()
           {
-              if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+              if (!User.IsInRole(PvPStatics.Permissions_Admin))
               {
                   return RedirectToAction("Play", "PvP");
               }
               IDMRollRepository repo = new EFDMRollRepository();
-              return View(repo.DMRolls.Where(r => r.IsLive == false));
+              return View(repo.DMRolls.Where(r => !r.IsLive));
           }
 
          [Authorize]
           public ActionResult ApproveDMRoll(int id)
           {
 
-              if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+              if (!User.IsInRole(PvPStatics.Permissions_Admin))
               {
                   return RedirectToAction("Play", "PvP");
               }
@@ -1711,7 +1663,7 @@ namespace TT.Web.Controllers
              IEffectContributionRepository effectContributionRepo = new EFEffectContributionRepository();
 
              List<ContributionCredit> output = new List<ContributionCredit>();
-             List<string> uniqueOwnerIds = contributionRepo.Contributions.Where(c => c.ProofreadingCopy == true && c.IsLive == true && c.OwnerMembershipId !=  "0" && c.OwnerMembershipId != "-1" && c.OwnerMembershipId != "-2" && c.SubmitterName != null && c.SubmitterName != "" && c.IsNonstandard==false).Select(c => c.OwnerMembershipId).Distinct().ToList();
+             List<string> uniqueOwnerIds = contributionRepo.Contributions.Where(c => c.ProofreadingCopy && c.IsLive && c.OwnerMembershipId !=  "0" && c.OwnerMembershipId != "-1" && c.OwnerMembershipId != "-2" && c.SubmitterName != null && c.SubmitterName != "" && !c.IsNonstandard).Select(c => c.OwnerMembershipId).Distinct().ToList();
              
 
              foreach (string ownerId in uniqueOwnerIds)
@@ -1721,16 +1673,16 @@ namespace TT.Web.Controllers
                      OwnerMembershipId = ownerId,
                  };
 
-                var AuthorContribs = contributionRepo.Contributions.Where(c => c.OwnerMembershipId == ownerId && c.IsNonstandard == false && c.IsLive == true && c.ProofreadingCopy == true).OrderByDescending(c => c.OwnerMembershipId).FirstOrDefault();
+                var AuthorContribs = contributionRepo.Contributions.Where(c => c.OwnerMembershipId == ownerId && !c.IsNonstandard && c.IsLive && c.ProofreadingCopy).OrderByDescending(c => c.OwnerMembershipId).FirstOrDefault();
                 if (AuthorContribs == null) continue;
 
                 addme.AuthorName = AuthorContribs.SubmitterName;
 
-                addme.AnimateFormCount = contributionRepo.Contributions.Where(c => c.OwnerMembershipId == ownerId && c.IsNonstandard == false && c.Form_MobilityType == "full" && c.IsLive == true && c.ProofreadingCopy == true).Count();
+                addme.AnimateFormCount = contributionRepo.Contributions.Where(c => c.OwnerMembershipId == ownerId && !c.IsNonstandard && c.Form_MobilityType == "full" && c.IsLive && c.ProofreadingCopy).Count();
 
-                addme.InanimateFormCount = contributionRepo.Contributions.Where(c => c.OwnerMembershipId == ownerId && c.IsNonstandard == false && c.Form_MobilityType == "inanimate" && c.IsLive == true && c.ProofreadingCopy == true).Count();
+                addme.InanimateFormCount = contributionRepo.Contributions.Where(c => c.OwnerMembershipId == ownerId && !c.IsNonstandard && c.Form_MobilityType == "inanimate" && c.IsLive && c.ProofreadingCopy).Count();
 
-                addme.AnimalFormCount = contributionRepo.Contributions.Where(c => c.OwnerMembershipId == ownerId && c.IsNonstandard == false && c.Form_MobilityType == "animal" && c.IsLive == true && c.ProofreadingCopy == true).Count();
+                addme.AnimalFormCount = contributionRepo.Contributions.Where(c => c.OwnerMembershipId == ownerId && !c.IsNonstandard && c.Form_MobilityType == "animal" && c.IsLive && c.ProofreadingCopy).Count();
 
                 if (!AuthorContribs.SubmitterUrl.IsNullOrEmpty())
                 {
@@ -1741,7 +1693,7 @@ namespace TT.Web.Controllers
                     addme.Website = "";
                 }
 
-                addme.EffectCount = effectContributionRepo.EffectContributions.Where(c => c.OwnerMemberhipId == ownerId && c.IsLive == true && c.ProofreadingCopy == true).Count();
+                addme.EffectCount = effectContributionRepo.EffectContributions.Where(c => c.OwnerMemberhipId == ownerId && c.IsLive && c.ProofreadingCopy).Count();
 
                  addme.SpellCount = addme.AnimateFormCount + addme.InanimateFormCount + addme.AnimalFormCount;
 

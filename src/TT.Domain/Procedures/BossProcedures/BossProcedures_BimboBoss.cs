@@ -87,7 +87,7 @@ namespace TT.Domain.Procedures.BossProcedures
             }
 
             // if the player doesn't currently have it, give them the infection kiss
-            if (EffectProcedures.PlayerHasEffect(human, KissEffectdbName) == false && EffectProcedures.PlayerHasEffect(human, CureEffectdbName) == false)
+            if (!EffectProcedures.PlayerHasEffect(human, KissEffectdbName) && !EffectProcedures.PlayerHasEffect(human, CureEffectdbName))
             {
                 AttackProcedures.Attack(bimboss, human, KissSkilldbName);
                 AIProcedures.DealBossDamage(bimboss, human, false, 1);
@@ -164,7 +164,7 @@ namespace TT.Domain.Procedures.BossProcedures
             foreach (Player p in playersHere)
             {
                 // if the player doesn't currently have it, give them the infection kiss
-                if (EffectProcedures.PlayerHasEffect(p, KissEffectdbName) == false && EffectProcedures.PlayerHasEffect(p, CureEffectdbName) == false)
+                if (!EffectProcedures.PlayerHasEffect(p, KissEffectdbName) && !EffectProcedures.PlayerHasEffect(p, CureEffectdbName))
                 {
                     AttackProcedures.Attack(bimboBoss, p, KissSkilldbName);
                     AIProcedures.DealBossDamage(bimboBoss, p, false, 1);
@@ -197,7 +197,7 @@ namespace TT.Domain.Procedures.BossProcedures
                 double roll = rand.NextDouble();
 
                 // random chance of spontaneously transforming
-                if (infectee.Form != RegularBimboFormDbName && PlayerProcedures.PlayerIsOffline(infectee) == false)
+                if (infectee.Form != RegularBimboFormDbName && !PlayerProcedures.PlayerIsOffline(infectee))
                 {
                     if (roll < .16 && infectee.InDuel <= 0 && infectee.InQuest <= 0)
                     {
@@ -215,7 +215,7 @@ namespace TT.Domain.Procedures.BossProcedures
                 }
 
                 // spread the kiss so long as the player is not offline
-                if (infectee.Form == RegularBimboFormDbName && PlayerProcedures.PlayerIsOffline(infectee) == false)
+                if (infectee.Form == RegularBimboFormDbName && !PlayerProcedures.PlayerIsOffline(infectee))
                 {
                     // back up the last action timestamp since we don't want these attacks to count against their offline timer
                     DateTime lastActionBackup = infectee.LastActionTimestamp;
@@ -225,7 +225,7 @@ namespace TT.Domain.Procedures.BossProcedures
 
                     foreach (Player p in eligibleTargets)
                     {
-                        if (EffectProcedures.PlayerHasEffect(p, KissEffectdbName) == false && EffectProcedures.PlayerHasEffect(p, CureEffectdbName) == false && attacksMadeCount < 3)
+                        if (!EffectProcedures.PlayerHasEffect(p, KissEffectdbName) && !EffectProcedures.PlayerHasEffect(p, CureEffectdbName) && attacksMadeCount < 3)
                         {
                             attacksMadeCount++;
                             AttackProcedures.Attack(infectee, p, KissSkilldbName);
@@ -287,7 +287,7 @@ namespace TT.Domain.Procedures.BossProcedures
             IEnumerable<string> locs = playerRepo.Players.Where(p => p.Mobility == "full" && 
             p.LastActionTimestamp > cutoff && 
             p.Form != RegularBimboFormDbName && 
-            p.dbLocationName.Contains("dungeon_") == false && 
+            !p.dbLocationName.Contains("dungeon_") &&
             p.InDuel <= 0 &&
             p.InQuest <= 0).GroupBy(p => p.dbLocationName).OrderByDescending(p => p.Count()).Select(p => p.Key);
             return locs.First();

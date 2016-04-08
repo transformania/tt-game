@@ -80,13 +80,13 @@ namespace TT.Web.Controllers
             }
 
             // assert that the covenant matches the player's PvP mode
-            //if ((me.InPvP==true && cov.IsPvP == false) || (me.InPvP==false && cov.IsPvP == true)) {
+            //if ((me.InPvP && !cov.IsPvP) || (!me.InPvP && cov.IsPvP)) {
             //    TempData["Error"] = "Only PvP players may join PvP covenants and only non-PvP players can join non-PvP covenants.";
             //    return RedirectToAction("MyCovenant");
             //}
 
             // assert that the player doesn't already have a pending application
-            if (CovenantProcedures.PlayerHasPendingApplication(me) == true)
+            if (CovenantProcedures.PlayerHasPendingApplication(me))
             {
                 TempData["Error"] = "You already have an application to a covenant.";
                 TempData["SubError"] = "In order to apply to a different covenant you must withdraw your old one first.";
@@ -290,7 +290,7 @@ namespace TT.Web.Controllers
             }
 
             string path = Server.MapPath("~/Images/PvP/CovenantFlags/" + input.FlagUrl);
-            if (System.IO.File.Exists(path) == false)
+            if (!System.IO.File.Exists(path))
             {
                 TempData["Error"] = "Flag not found.";
                 return RedirectToAction("MyCovenant");
@@ -333,7 +333,7 @@ namespace TT.Web.Controllers
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert that a covenant of this name does not already exists
-            if (CovenantProcedures.CovenantOfNameExists(input.Name) == true)
+            if (CovenantProcedures.CovenantOfNameExists(input.Name))
             {
                 TempData["Error"] = "A covenant of that name already exists.";
                 return RedirectToAction("MyCovenant");
@@ -402,7 +402,7 @@ namespace TT.Web.Controllers
 
             if (myCov.LeaderId == me.Id) {
                 ViewBag.LeaderOrCaptain = "leader";
-            } else if (CovenantProcedures.PlayerIsCaptain(myCov, me) == true) {
+            } else if (CovenantProcedures.PlayerIsCaptain(myCov, me)) {
                 ViewBag.LeaderOrCaptain = "captain";
             }
 
@@ -662,7 +662,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the covenant does not already have a safeground set
-            if (CovenantProcedures.CovenantHasSafeground(myCov) == true)
+            if (CovenantProcedures.CovenantHasSafeground(myCov))
             {
                 TempData["Error"] = "Your covenant already has a safeground at " + LocationsStatics.LocationList.GetLocation.FirstOrDefault(f => f.dbName == myCov.HomeLocation).Name + ".";
                 TempData["SubError"] = "Covenants can only establish a safeground once per round.";
@@ -679,14 +679,14 @@ namespace TT.Web.Controllers
             }
 
             // assert that this location is not in the streets
-            if (me.dbLocationName.Contains("street_") == true)
+            if (me.dbLocationName.Contains("street_"))
             {
                 TempData["Error"] = "You cannot establish a covenant safeground on a path or street.";
                 return RedirectToAction("MyCovenant");
             }
 
             // asset that this location is not already in use by another covenant
-            if (CovenantProcedures.ACovenantHasASafegroundHere(me.dbLocationName) == true)
+            if (CovenantProcedures.ACovenantHasASafegroundHere(me.dbLocationName))
             {
                 TempData["Error"] = "Your covenant cannot establish a safeground here.";
                 TempData["SubError"] = "Another covenant has already established a safeground at your current location.  You must find somewhere else.";
@@ -744,7 +744,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the covenant has a safeground set
-            if (CovenantProcedures.CovenantHasSafeground(myCov) == false)
+            if (!CovenantProcedures.CovenantHasSafeground(myCov))
             {
                 TempData["Error"] = "Your covenant must establish a safeground before it can upgrade it.";
                 return RedirectToAction("MyCovenant");

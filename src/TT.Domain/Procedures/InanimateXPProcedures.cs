@@ -208,12 +208,12 @@ namespace TT.Domain.Procedures
             inanimXpRepo.SaveInanimateXP(xp);
 
             // lock the player into their fate if their inanimate XP gets too high
-            if (xp.TimesStruggled <= -100 && xp.TimesStruggled > -160 && inanimateMe.IsPermanent == false)
+            if (xp.TimesStruggled <= -100 && xp.TimesStruggled > -160 && !inanimateMe.IsPermanent)
             {
                 resultMessage += "  Careful, if you keep doing this you may find yourself stuck in your current form forever...";
             }
 
-            if (xp.TimesStruggled <= -160 && inanimateMe.IsPermanent == false)
+            if (xp.TimesStruggled <= -160 && !inanimateMe.IsPermanent)
             {
                 inanimateMe.IsPermanent = true;
                 itemRep.SaveItem(inanimateMe);
@@ -263,7 +263,7 @@ namespace TT.Domain.Procedures
                 strugglebonus = 0;
             }
 
-            if (PvPStatics.ChaosMode == true)
+            if (PvPStatics.ChaosMode)
             {
                 strugglebonus = 100;
             }
@@ -279,7 +279,7 @@ namespace TT.Domain.Procedures
             double roll = rand.NextDouble() * 100;
 
             // if player is in dungeon, make struggling chance much lower
-            if (dungeonHalfPoints == true)
+            if (dungeonHalfPoints)
             {
                 roll = roll * 3;
             }
@@ -333,7 +333,7 @@ namespace TT.Domain.Procedures
                 dbPlayer.TimesAttackingThisUpdate = PvPStatics.MaxAttacksPerUpdate;
 
                 // don't let the player spawn in the dungeon if they are not in PvP mode
-                if (dbPlayer.GameMode < 2 && dbPlayer.IsInDungeon() == true)
+                if (dbPlayer.GameMode < 2 && dbPlayer.IsInDungeon())
                 {
                     dbPlayer.dbLocationName = LocationsStatics.GetRandomLocation();
                 }
@@ -354,7 +354,7 @@ namespace TT.Domain.Procedures
 
                 string msg = "You have managed to break free from your form as " + itemPlus.FriendlyName + " and occupy an animate body once again!";
 
-                if (PvPStatics.ChaosMode == true)
+                if (PvPStatics.ChaosMode)
                 {
                     msg += " [CHAOS MODE:  struggle value overriden to 5% per struggle.";
                 }
@@ -503,7 +503,7 @@ namespace TT.Domain.Procedures
                     playerMessage += "  Careful, if you keep doing this you may find yourself stuck in your current form forever...";
                 }
 
-                if (xp.TimesStruggled <= -160 && playerItem.IsPermanent == false)
+                if (xp.TimesStruggled <= -160 && !playerItem.IsPermanent)
                 {
 
                     IItemRepository itemRepo = new EFItemRepository();

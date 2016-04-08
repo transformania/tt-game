@@ -4,23 +4,23 @@
 @using TT.Web.CustomHtmlHelpers
 
 @{
-    ItemViewModel hat = Model.FirstOrDefault(i => i.Item.ItemType == PvPStatics.ItemType_Hat && i.dbItem.IsEquipped == true);
-    ItemViewModel shirt = Model.FirstOrDefault(i => i.Item.ItemType == PvPStatics.ItemType_Shirt && i.dbItem.IsEquipped == true);
+    ItemViewModel hat = Model.FirstOrDefault(i => i.Item.ItemType == PvPStatics.ItemType_Hat && i.dbItem.IsEquipped);
+    ItemViewModel shirt = Model.FirstOrDefault(i => i.Item.ItemType == PvPStatics.ItemType_Shirt && i.dbItem.IsEquipped);
 
-    ItemViewModel undershirt = Model.FirstOrDefault(i => i.Item.ItemType == PvPStatics.ItemType_Undershirt && i.dbItem.IsEquipped == true);
-    ItemViewModel pants = Model.FirstOrDefault(i => i.Item.ItemType == PvPStatics.ItemType_Pants && i.dbItem.IsEquipped == true);
-    ItemViewModel underpants = Model.FirstOrDefault(i => i.Item.ItemType == PvPStatics.ItemType_Underpants && i.dbItem.IsEquipped == true);
-    ItemViewModel shoes = Model.FirstOrDefault(i => i.Item.ItemType == PvPStatics.ItemType_Shoes && i.dbItem.IsEquipped == true);
+    ItemViewModel undershirt = Model.FirstOrDefault(i => i.Item.ItemType == PvPStatics.ItemType_Undershirt && i.dbItem.IsEquipped);
+    ItemViewModel pants = Model.FirstOrDefault(i => i.Item.ItemType == PvPStatics.ItemType_Pants && i.dbItem.IsEquipped);
+    ItemViewModel underpants = Model.FirstOrDefault(i => i.Item.ItemType == PvPStatics.ItemType_Underpants && i.dbItem.IsEquipped);
+    ItemViewModel shoes = Model.FirstOrDefault(i => i.Item.ItemType == PvPStatics.ItemType_Shoes && i.dbItem.IsEquipped);
 
-    ItemViewModel pet = Model.FirstOrDefault(i => i.Item.ItemType == PvPStatics.ItemType_Pet && i.dbItem.IsEquipped == true);
+    ItemViewModel pet = Model.FirstOrDefault(i => i.Item.ItemType == PvPStatics.ItemType_Pet && i.dbItem.IsEquipped);
 
 
-    ItemViewModel lhand = Model.FirstOrDefault(i => i.Item.ItemType == PvPStatics.ItemType_Accessory && i.dbItem.IsEquipped == true);
+    ItemViewModel lhand = Model.FirstOrDefault(i => i.Item.ItemType == PvPStatics.ItemType_Accessory && i.dbItem.IsEquipped);
 
     ItemViewModel rhand;
     try
     {
-        rhand = Model.Where(i => i.Item.ItemType == PvPStatics.ItemType_Accessory && i.dbItem.IsEquipped == true).Skip(1).Single();
+        rhand = Model.Where(i => i.Item.ItemType == PvPStatics.ItemType_Accessory && i.dbItem.IsEquipped).Skip(1).Single();
     }
     catch
     {

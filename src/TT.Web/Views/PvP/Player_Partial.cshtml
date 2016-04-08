@@ -31,7 +31,7 @@
         <span class="icon icon-level"><b>@Model.Player.Level</b></span>
         <span class="portraitIconRP">@CharactersHere.PrintRPIcon(Model.Player.ToDbPlayer()) @CharactersHere.PrintPvPIcon(Model.Player.ToDbPlayer()) @CharactersHere.PrintMCIcon(Model.Player.ToDbPlayer()) @CharactersHere.PrintDonatorIcon(Model.Player.ToDbPlayer())</span>
         @{
-            if (PlayerProcedures.PlayerIsOffline(Model.Player) == true)
+            if (PlayerProcedures.PlayerIsOffline(Model.Player))
             {
                 <span class="icon icon-sleep" title="This player is offline and cannot be attacked."></span>
             }

@@ -25,7 +25,7 @@
                 <li>@Html.ActionLink("Submit Curse", "ContributeEffect", "Contribution", new { Id = "-1" }, FormMethod.Post)</li>
                 <li>@Html.ActionLink("Submit DM Encounter", "MyDMRolls", "Contribution")</li>
                 <li>@Html.ActionLink("New Contribution", "Contribute", "Contribution", new { Id = "-1" }, FormMethod.Post)</li>
-                @{if (User.IsInRole(PvPStatics.Permissions_Proofreader) == true)
+                @{if (User.IsInRole(PvPStatics.Permissions_Proofreader))
                 {
                     <li>@Html.ActionLink("Unlock but DO NOT Save", "SendContributionUndoLock", "Contribution", new { id = Model.Id }, null)</li>
                 }}     
@@ -70,12 +70,12 @@
                             }
                             <tr>
                                 <td>
-                                    @if (contribution.NeedsToBeUpdated == true)
+                                    @if (contribution.NeedsToBeUpdated)
                                     {
                                         <span class="icon icon-timesattacking"></span>
                                     }
                                 </td>
-                                @if (contribution.IsLive == true)
+                                @if (contribution.IsLive)
                                 {
                                     <td><span class="good">Y</span></td>
                                     <td><span class='newlink'>@Html.ActionLink(contribution.Skill_FriendlyName, "Contribute", "Contribution", new { Id = contribution.Id }, null)</span></td>
@@ -88,7 +88,7 @@
                                     <td>@Html.ActionLink(contribution.Form_FriendlyName, "Contribute", "Contribution", new { Id = contribution.Id }, null)</td>
                                 }
                                 <td>
-                                    @if (contribution.ProofreadingCopy == true)
+                                    @if (contribution.ProofreadingCopy)
                                     {
                                         <span class="good">Y</span>
                                     }
@@ -97,7 +97,7 @@
                                         <span class="bad">N</span>
                                     }
                                 </td>
-                                @if (contribution.ProofreadingLockIsOn == true)
+                                @if (contribution.ProofreadingLockIsOn)
                                 {
                                     <td><span class="bad">@contribution.CheckedOutBy</span></td>
                                     <td>@contribution.CreationTimestamp.ToString("u")</td>
@@ -173,7 +173,7 @@
 
         <p><b>NOTE:  I would STRONGLY recommend saving your longer inputs somewhere on your computer, particularly item / form descriptions and transformation messages.  I do not know how reliable my hosting service is or if there are bugs that might erase some data.  I also recommend saving after every few text boxes you fill out.</b></p>
 
-        @{ if ((User.IsInRole(PvPStatics.Permissions_Proofreader) == true) == true)
+        @{ if (User.IsInRole(PvPStatics.Permissions_Proofreader))
          {
              @Html.ActionLink("Unlock but DO NOT Save", "SendContributionUndoLock", "Contribution", new { id = Model.Id }, null)
          }
@@ -190,7 +190,7 @@
             <h2>Spell</h2>
 
 
-            if (Model.ProofreadingCopy == true)
+            if (Model.ProofreadingCopy)
             {
                 <h1 class="good">THIS IS A PROOFREADING COPY.</h1>
             }
@@ -254,7 +254,7 @@
 
             </div>
 
-            if (Model.ProofreadingCopy == true)
+            if (Model.ProofreadingCopy)
             {
                 <h1 class="good">THIS IS A PROOFREADING COPY.</h1>
             }
@@ -599,7 +599,7 @@
                 </div>
             </div>
 
-            if (Model.ProofreadingCopy == true)
+            if (Model.ProofreadingCopy)
             {
                 <h1 class="good">THIS IS A PROOFREADING COPY.</h1>
             }
@@ -649,7 +649,7 @@
                 </div>
             </div>
 
-            if (Model.ProofreadingCopy == true)
+            if (Model.ProofreadingCopy)
             {
                 <h1 class="good">THIS IS A PROOFREADING COPY.</h1>
                 <div class="form__panel group" style="background-color: #ffc278; ">
@@ -665,7 +665,7 @@
 
             }
 
-            if (User.IsInRole(PvPStatics.Permissions_Admin) == true)
+            if (User.IsInRole(PvPStatics.Permissions_Admin))
             {
 
                 <div class="form__panel group" style="background-color: #ffc278; ">
@@ -693,7 +693,7 @@
                 <input type="submit" value="Save" />
             }
 
-            if ((User.IsInRole(PvPStatics.Permissions_Proofreader) == true) == true)
+            if (User.IsInRole(PvPStatics.Permissions_Proofreader))
             {
                 @Html.ActionLink("Unlock but DO NOT Save", "SendContributionUndoLock", "Contribution", new { id = Model.Id }, null)
             }
@@ -706,7 +706,7 @@
 @Html.ActionLink("Back to game (Don't forget to save!)", "Play", "PvP")
 
 @{
-            if (User.IsInRole(PvPStatics.Permissions_Admin) == true || User.IsInRole(PvPStatics.Permissions_Publisher) == true)
+            if (User.IsInRole(PvPStatics.Permissions_Admin) || User.IsInRole(PvPStatics.Permissions_Publisher))
             {
                 <br /><br />
                 <p>@Html.Raw(ViewBag.StaticSkillExists)</p>
@@ -718,7 +718,7 @@
 
             }
 
-            if (User.IsInRole(PvPStatics.Permissions_Admin) == true)
+            if (User.IsInRole(PvPStatics.Permissions_Admin))
             {
                 @Html.ActionLink("Mark as Live", "MarkAsLive", "Contribution", new { id = Model.Id }, null)<br />
                 @Html.ActionLink("Release Spell", "SetSpellAsLive", "Contribution", new { id = Model.Id }, null)<br />

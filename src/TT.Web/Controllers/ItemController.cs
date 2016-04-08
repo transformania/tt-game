@@ -147,7 +147,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
-            IEnumerable<EffectViewModel2> output = EffectProcedures.GetPlayerEffects2(me.Id).Where(e => e.Effect.IsRemovable == true && e.dbEffect.Duration > 0).ToList();
+            IEnumerable<EffectViewModel2> output = EffectProcedures.GetPlayerEffects2(me.Id).Where(e => e.Effect.IsRemovable && e.dbEffect.Duration > 0).ToList();
             ViewBag.itemToUseId = itemToUse.dbItem.Id;
 
             return View(output);
@@ -183,7 +183,7 @@ namespace TT.Web.Controllers
             DbStaticEffect curseToRemove = EffectStatics.GetEffect(curse);
 
             // assert this curse is removable
-            if (curseToRemove.IsRemovable == false)
+            if (!curseToRemove.IsRemovable)
             {
                 TempData["Error"] = "This curse is too strong to be lifted.";
                 return RedirectToAction("Play", "PvP");
@@ -240,7 +240,7 @@ namespace TT.Web.Controllers
              }
 
              // make sure that this is actually a book
-             if (book.dbItem.dbName.Contains("item_consumable_tome-") != true)
+             if (!book.dbItem.dbName.Contains("item_consumable_tome-"))
              {
                 TempData["Error"] = "You can't read that item!";
                 TempData["SubError"] = "It's not a book.";
@@ -248,7 +248,7 @@ namespace TT.Web.Controllers
              }
 
              // assert player hasn't already read this book
-             if (ItemProcedures.PlayerHasReadBook(me, book.dbItem.dbName) == true)
+             if (ItemProcedures.PlayerHasReadBook(me, book.dbItem.dbName))
              {
                  TempData["Error"] = "You have already absorbed the knowledge from this book and can learn nothing more from it.";
                  TempData["SubError"] = "Perhaps a friend could use this tome more than you right now.";

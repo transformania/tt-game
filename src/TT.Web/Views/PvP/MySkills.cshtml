@@ -53,7 +53,7 @@
                     <tr>
                         <td class="skillname">
                             @skill.Skill_FriendlyName
-                            @if (skill.Skill_IsArchived == true)
+                            @if (skill.Skill_IsArchived)
                             {
                                 <b id="@skill.Skill_Id">(ARCHIVED)</b>
                             }

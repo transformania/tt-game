@@ -120,7 +120,7 @@ namespace TT.Domain.Models
         public bool IsFaeBossAvailable()
         {
             if (this.Boss_Faeboss == "unstarted" && 
-                this.AnyBossIsActive() == false && 
+                !this.AnyBossIsActive() &&
                 this.TurnNumber >= BossSummonDictionary.GlobalBossSummonDictionary.Values.FirstOrDefault(p => p.BossName == "FaeBoss").MinimumTurn) {
                 return true;
             } else {

@@ -177,7 +177,7 @@ namespace TT.Domain.Procedures.BossProcedures
                 // get all of the players in the room by nerd
                 List<Player> playersByNerd = PlayerProcedures.GetPlayersAtLocation(nerdBoss.dbLocationName).ToList();
                 playersByNerd = playersByNerd.Where(p => p.Mobility == "full" &&
-                    PlayerProcedures.PlayerIsOffline(p) == false &&
+                    !PlayerProcedures.PlayerIsOffline(p) &&
                     p.BotId == AIStatics.ActivePlayerBotId &&
                     p.Id != nerdBoss.Id &&
                     p.Form != NerdSpellForm &&
@@ -188,7 +188,7 @@ namespace TT.Domain.Procedures.BossProcedures
                 // get all of the players in the room by bimbo
                 List<Player> playersByBimbo = PlayerProcedures.GetPlayersAtLocation(bimboBoss.dbLocationName).ToList();
                 playersByBimbo = playersByBimbo.Where(p => p.Mobility == "full" &&
-                    PlayerProcedures.PlayerIsOffline(p) == false &&
+                    !PlayerProcedures.PlayerIsOffline(p) &&
                     p.BotId == AIStatics.ActivePlayerBotId &&
                     p.Id != bimboBoss.Id &&
                     p.Form != BimboSpellForm &&

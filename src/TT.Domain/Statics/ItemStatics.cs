@@ -19,7 +19,7 @@ namespace TT.Domain.Statics
         public static IEnumerable<DbStaticItem> GetAllFindableItems()
         {
             IItemRepository itemRepo = new EFItemRepository();
-            return itemRepo.DbStaticItems.Where(i => i.Findable == true);
+            return itemRepo.DbStaticItems.Where(i => i.Findable);
         }
 
         public static IEnumerable<DbStaticItem> GetAllNonPetItems()

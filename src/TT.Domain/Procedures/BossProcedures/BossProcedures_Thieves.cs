@@ -249,7 +249,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     if (target.BotId == AIStatics.MaleRatBotId || target.BotId == AIStatics.FemaleRatBotId)
                     {
                         // do nothing, the thief already has the item... equip it if not
-                        if (victimThiefItem.IsEquipped == false)
+                        if (!victimThiefItem.IsEquipped)
                         {
                             ItemProcedures.EquipItem(victimThiefItem.Id, true);
                         }
@@ -276,7 +276,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     }
 
                     // target is a human and they are not offline
-                    else if (target != null && PlayerProcedures.PlayerIsOffline(target) == false)
+                    else if (target != null && !PlayerProcedures.PlayerIsOffline(target))
                     {
                         attackingThief.dbLocationName = target.dbLocationName;
                         playerRepo.SavePlayer(attackingThief);
@@ -296,7 +296,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     }
 
                     // target is a human and they are offline... just go and camp out there.
-                    else if (target != null && PlayerProcedures.PlayerIsOffline(target) == true)
+                    else if (target != null && PlayerProcedures.PlayerIsOffline(target))
                     {
                         attackingThief.dbLocationName = target.dbLocationName;
                         playerRepo.SavePlayer(attackingThief);
@@ -323,7 +323,7 @@ namespace TT.Domain.Procedures.BossProcedures
             IEnumerable<int> ids = playerRepo.Players.Where(p => p.Mobility == "full" &&
                 p.BotId >= AIStatics.PsychopathBotId &&
                 p.OnlineActivityTimestamp >= cutoff &&
-                p.dbLocationName.Contains("dungeon_") == false &&
+                !p.dbLocationName.Contains("dungeon_") &&
                 p.InDuel <= 0 &&
                 p.InQuest <= 0).OrderByDescending(p => p.Money).Take(20).Select(p => p.Id);
 

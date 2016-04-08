@@ -26,7 +26,7 @@ namespace TT.Domain.Procedures
         public static IEnumerable<DbStaticSkill> GetAllLearnableSpells()
         {
             IDbStaticSkillRepository skillRepo = new EFDbStaticSkillRepository();
-            return skillRepo.DbStaticSkills.Where(s => s.IsPlayerLearnable == true && s.IsLive == "live" && s.LearnedAtLocation != null && s.LearnedAtLocation != "" || s.LearnedAtRegion != null && s.LearnedAtRegion != "");
+            return skillRepo.DbStaticSkills.Where(s => s.IsPlayerLearnable && s.IsLive == "live" && s.LearnedAtLocation != null && s.LearnedAtLocation != "" || s.LearnedAtRegion != null && s.LearnedAtRegion != "");
         }
 
         public static IEnumerable<MySkillsViewModel> GetMySkillsViewModel(int playerId)
@@ -288,7 +288,7 @@ namespace TT.Domain.Procedures
             string output = "";
 
             IEnumerable<string> playerSkills = skillRepo.Skills.Where(s => s.OwnerId == player.Id).Select(s => s.Name).ToList();
-            IEnumerable<string> learnableSkills = skillRepo.DbStaticSkills.Where(s => s.IsPlayerLearnable == true).Select(s => s.dbName).ToList();
+            IEnumerable<string> learnableSkills = skillRepo.DbStaticSkills.Where(s => s.IsPlayerLearnable).Select(s => s.dbName).ToList();
 
 
             IEnumerable<string> eligibleSkills = from s in learnableSkills
@@ -414,12 +414,12 @@ namespace TT.Domain.Procedures
 
             // delete all of the old item specific skills for the player
             IEnumerable<SkillViewModel2> itemSpecificSkills = GetSkillViewModelsOwnedByPlayer__CursesOnly(owner.Id).ToList();
-            IEnumerable<string> equippedItemsDbNames = ItemProcedures.GetAllPlayerItems_ItemOnly(owner.Id).Where(i => i.IsEquipped == true && i.dbName != newItemName).Select(s => s.dbName).ToList();
+            IEnumerable<string> equippedItemsDbNames = ItemProcedures.GetAllPlayerItems_ItemOnly(owner.Id).Where(i => i.IsEquipped && i.dbName != newItemName).Select(s => s.dbName).ToList();
             List<int> itemSpecificSkillsIds = new List<int>();
 
             foreach (SkillViewModel2 s in itemSpecificSkills)
             {
-                if (s.Skill.ExclusiveToItem != null && s.Skill.ExclusiveToItem != "" && equippedItemsDbNames.Contains(s.Skill.ExclusiveToItem) == false)
+                if (s.Skill.ExclusiveToItem != null && s.Skill.ExclusiveToItem != "" && !equippedItemsDbNames.Contains(s.Skill.ExclusiveToItem))
                 {
                     itemSpecificSkillsIds.Add(s.dbSkill.Id);
                 }
@@ -469,7 +469,7 @@ namespace TT.Domain.Procedures
         public static int GetCountOfLearnableSpells()
         {
             IDbStaticSkillRepository skillRepo = new EFDbStaticSkillRepository();
-            int spellCount = skillRepo.DbStaticSkills.Where(s => s.IsPlayerLearnable == true).Count();
+            int spellCount = skillRepo.DbStaticSkills.Where(s => s.IsPlayerLearnable).Count();
             return spellCount;
 
         }
@@ -485,7 +485,7 @@ namespace TT.Domain.Procedures
         public static void ArchiveAllSpells(int playerId, bool archiveOrNot)
         {
             string archiveBool;
-            if (archiveOrNot == true)
+            if (archiveOrNot)
             {
                 archiveBool = "1";
             }

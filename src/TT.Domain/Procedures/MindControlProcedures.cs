@@ -107,7 +107,7 @@ namespace TT.Domain.Procedures
             output.HasError = true;
 
             // assert that world update is not in progress
-            if (PvPStatics.AnimateUpdateInProgress == true)
+            if (PvPStatics.AnimateUpdateInProgress)
             {
                 output.Error = "Animate portion of world update is in progress.";
                 output.SubError = "Try again in a few seconds.";
@@ -122,7 +122,7 @@ namespace TT.Domain.Procedures
             }
 
             // assert that the victim is not offline
-            if (PlayerProcedures.PlayerIsOffline(victim) == true)
+            if (PlayerProcedures.PlayerIsOffline(victim))
             {
                 output.Error = "Your victim has gone offline.";
                 output.SubError = "You can only issue commands to online players under your mind control.";

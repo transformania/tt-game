@@ -10,7 +10,7 @@
 
     @Html.HiddenFor(m => m.StartState)
 
-    if (Model.IsLive == true)
+    if (Model.IsLive)
     {
         <h4 class="good">This quest is live and can be started by any eligible player.</h4>
     }
@@ -22,7 +22,7 @@
 
     <br /><br />
 
-    if (User.IsInRole(PvPStatics.Permissions_Admin) == true)
+    if (User.IsInRole(PvPStatics.Permissions_Admin))
     {
         <p>
             <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>

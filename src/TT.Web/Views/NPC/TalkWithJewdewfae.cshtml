@@ -29,15 +29,15 @@
         </div>
         <div class="col-md-6 col-sm-6 col-xs-12 textSpaced" style="padding: 20px; text-align: justify;">
             @{
-                if (ViewBag.ShowSuccess == false && ViewBag.HadRecentInteraction == false)
+                if (!ViewBag.ShowSuccess && !ViewBag.HadRecentInteraction)
                 {
                     <p>@Html.Raw(Model.IntroText)</p>
 
-                    if (ViewBag.IsInWrongForm == true)
+                    if (ViewBag.IsInWrongForm)
                     {
                         <p>@Html.Raw(Model.FailureText)</p>
                     }
-                    else if (ViewBag.IsTired == true)
+                    else if (ViewBag.IsTired)
                     {
                         <p class="faevoice">"You look too tired to be any fun right now.  Come back later when you're a little more awake, mkay?"</p>
                     }
@@ -46,7 +46,7 @@
                         <p>@Html.ActionLink("Play with Jewfewfae (5 AP)", "PlayWithJewdewfae", "PvP", new { @class = "inanimateAction center-block" })</p>
                     }
                 }
-                else if (ViewBag.HadRecentInteraction == true)
+                else if (ViewBag.HadRecentInteraction)
                 {
                     <p class="faevoice">"Thanks for playing with me!  Maybe we can have some more fun somewhere else later..."</p>
                 }

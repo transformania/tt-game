@@ -53,7 +53,7 @@
         <div style="padding-right: 20px;"></div>
     </div>
 
-    <p>You are carrying <b>@Model.Items.Where(i => i.dbItem.IsEquipped == false).Count() / @TT.Domain.Procedures.ItemProcedures.GetInventoryMaxSize(Model.Bonuses)</b> items.</p>
+    <p>You are carrying <b>@Model.Items.Where(i => !i.dbItem.IsEquipped).Count() / @TT.Domain.Procedures.ItemProcedures.GetInventoryMaxSize(Model.Bonuses)</b> items.</p>
     
     <p>You have used <b>@ViewBag.ItemsUsedThisTurn/1</b> consumable type items this turn.</p>
 </div>

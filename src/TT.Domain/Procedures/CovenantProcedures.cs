@@ -212,7 +212,7 @@ namespace TT.Domain.Procedures
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
 
-            if (animateOnly == true)
+            if (animateOnly)
             {
                 return playerRepo.Players.Where(p => p.Covenant == covenant.Id && p.Mobility == "full").Count();
             }
@@ -507,13 +507,13 @@ namespace TT.Domain.Procedures
                 covRepo.SaveCovenant(dbCovenant);
             }
 
-            if (dbCovenant.Captains.Contains(playerIdString) == true || removeOnly == true)
+            if (dbCovenant.Captains.Contains(playerIdString) || removeOnly)
             {
                 dbCovenant.Captains = dbCovenant.Captains.Replace(playerIdString, "");
                 covRepo.SaveCovenant(dbCovenant);
                 WriteCovenantLog(player.GetFullName() + " is no longer a captain of the covenant.", covenant.Id, true);
                 return player.GetFullName() + " is no longer a captain of the covenant.";
-            } else if (removeOnly == false) {
+            } else if (!removeOnly) {
                 dbCovenant.Captains += playerIdString;
                 covRepo.SaveCovenant(dbCovenant);
                 WriteCovenantLog(player.GetFullName() + " is now a captain of the covenant.", covenant.Id, true);
@@ -745,7 +745,7 @@ namespace TT.Domain.Procedures
 
             foreach (string s in input)
             {
-                if (usedFlags.Contains(s) == false)
+                if (!usedFlags.Contains(s))
                 {
                     output.Add(s);
                 }

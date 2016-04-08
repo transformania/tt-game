@@ -511,7 +511,7 @@ namespace TT.Domain.Procedures
         {
 
             // don't do anything if the achivement is marked as inactive
-            if (StatsProcedures.StatTypesMap[type].Active == false)
+            if (!StatsProcedures.StatTypesMap[type].Active)
             {
                 return;
             }
@@ -682,7 +682,7 @@ namespace TT.Domain.Procedures
 
         public static List<string> GetAchivementNamesThatReset()
         {
-            return StatTypesMap.Where(d => d.Value.ResetsOnReroll == true).Select(a => a.Key).ToList();
+            return StatTypesMap.Where(d => d.Value.ResetsOnReroll).Select(a => a.Key).ToList();
         }
     }
 }

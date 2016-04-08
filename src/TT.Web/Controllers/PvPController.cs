@@ -77,7 +77,7 @@ namespace TT.Web.Controllers
             DateTime markOnlineCutoff = DateTime.UtcNow.AddMinutes(-2);
 
             // update the player's "last online" attribute if it's been long enough
-            if (me.OnlineActivityTimestamp < markOnlineCutoff && PvPStatics.AnimateUpdateInProgress == false)
+            if (me.OnlineActivityTimestamp < markOnlineCutoff && !PvPStatics.AnimateUpdateInProgress)
             {
                 PlayerProcedures.MarkOnlineActivityTimestamp(me);
             }
@@ -99,13 +99,13 @@ namespace TT.Web.Controllers
             }
 
             // turn off world update toggle if it's simply been too long
-            if (secondsSinceUpdate > 90 && (PvPStatics.AnimateUpdateInProgress == true || WorldStat.WorldIsUpdating == true))
+            if (secondsSinceUpdate > 90 && (PvPStatics.AnimateUpdateInProgress || WorldStat.WorldIsUpdating))
             {
                 PvPStatics.AnimateUpdateInProgress = false;
                 PvPWorldStatProcedures.StopUpdatingWorld();
             }
 
-            if (WorldStat.WorldIsUpdating == true && secondsSinceUpdate < 90)
+            if (WorldStat.WorldIsUpdating && secondsSinceUpdate < 90)
             {
                 ViewBag.UpdateInProgress = true;
             }
@@ -147,7 +147,7 @@ namespace TT.Web.Controllers
                 inanimateOutput.NewMessageCount = MessageProcedures.GetMessageCountData(me).NewMessagesCount;
 
                 inanimateOutput.PlayerLog = PlayerLogProcedures.GetAllPlayerLogs(me.Id).Reverse();
-                inanimateOutput.PlayerLogImportant = inanimateOutput.PlayerLog.Where(l => l.IsImportant == true);
+                inanimateOutput.PlayerLogImportant = inanimateOutput.PlayerLog.Where(l => l.IsImportant);
 
                 if (inanimateOutput.AtLocation == null)
                 {
@@ -228,7 +228,7 @@ namespace TT.Web.Controllers
                 animalOutput.Location.FriendlyName_West = LocationsStatics.GetConnectionName(animalOutput.Location.Name_West);
 
                 animalOutput.PlayerLog = PlayerLogProcedures.GetAllPlayerLogs(me.Id).Reverse();
-                animalOutput.PlayerLogImportant = animalOutput.PlayerLog.Where(l => l.IsImportant == true);
+                animalOutput.PlayerLogImportant = animalOutput.PlayerLog.Where(l => l.IsImportant);
 
                 animalOutput.LocationLog = LocationLogProcedures.GetLocationLogsAtLocation(animalOutput.Location.dbName, 0);
 
@@ -258,7 +258,7 @@ namespace TT.Web.Controllers
             BuffBox myBuffs = ItemProcedures.GetPlayerBuffs(me);
             loadtime += "After loading buffs:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
 
-            if (myBuffs.HasSearchDiscount == true)
+            if (myBuffs.HasSearchDiscount)
             {
                 output.APSearchCost = PvPStatics.SearchAPCost - 1;
             }
@@ -304,7 +304,7 @@ namespace TT.Web.Controllers
             output.PlayerLog = PlayerLogProcedures.GetAllPlayerLogs(me.Id).Reverse();
             loadtime += "End get player logs:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
 
-            output.PlayerLogImportant = output.PlayerLog.Where(l => l.IsImportant == true);
+            output.PlayerLogImportant = output.PlayerLog.Where(l => l.IsImportant);
 
             loadtime += "Start get player items:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
             output.PlayerItems = ItemProcedures.GetAllPlayerItems(me.Id);
@@ -418,7 +418,7 @@ namespace TT.Web.Controllers
 
             bool iAmWhitelisted = User.IsInRole(PvPStatics.Permissions_MultiAccountWhitelist);
 
-            if (iAmWhitelisted == false && player.InanimateForm == null && PlayerProcedures.IsMyIPInUseAndAnimate(Request.UserHostAddress) == true)
+            if (!iAmWhitelisted && player.InanimateForm == null && PlayerProcedures.IsMyIPInUseAndAnimate(Request.UserHostAddress))
             {
 
                 ViewBag.ErrorMessage = "Your character was not created.  It looks like your IP address, <b>" + Request.UserHostAddress + "</b> already has 1 animate character in this world, and the current limit is 1. ";
@@ -483,7 +483,7 @@ namespace TT.Web.Controllers
         public ActionResult MoveTo(string locname)
         {
             string myMembershipId = User.Identity.GetUserId();
-            if (PvPStatics.AnimateUpdateInProgress == true)
+            if (PvPStatics.AnimateUpdateInProgress)
             {
                 TempData["Error"] = "Player update portion of the world update is still in progress.";
                 TempData["SubError"] = "Try again a bit later when the update has progressed farther along.";
@@ -495,7 +495,7 @@ namespace TT.Web.Controllers
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert that this player is mobile
-            if (PlayerCanPerformAction(me, "move") == false)
+            if (!PlayerCanPerformAction(me, "move"))
             {
                 return RedirectToAction("Play");
             }
@@ -515,18 +515,18 @@ namespace TT.Web.Controllers
             }
 
             // assert that the player is not mind controlled and cannot move on their own
-            if (me.MindControlIsActive == true)
+            if (me.MindControlIsActive)
             {
 
                 IEnumerable<MindControl> myExistingMCs = MindControlProcedures.GetAllMindControlsWithPlayer(me);
 
-                if (MindControlProcedures.PlayerIsMindControlledWithType(me, myExistingMCs, MindControlStatics.MindControl__Movement) == true)
+                if (MindControlProcedures.PlayerIsMindControlledWithType(me, myExistingMCs, MindControlStatics.MindControl__Movement))
                 {
                     TempData["Error"] = "You try to move but discover you cannot!";
                     TempData["SubError"] = "Some other mage has partial control of your mind, disabling your ability to move on your own!";
                     return RedirectToAction("Play");
                 }
-                else if (MindControlProcedures.PlayerIsMindControlledWithSomeType(me, myExistingMCs) == false)
+                else if (!MindControlProcedures.PlayerIsMindControlledWithSomeType(me, myExistingMCs))
                 {
                     // turn off mind control is the player has no more MC effects on them
                     bool isNowFree = MindControlProcedures.ClearPlayerMindControlFlagIfOn(me);
@@ -563,7 +563,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that this player is not carrying too much
-            if (ItemProcedures.PlayerIsCarryingTooMuch(me.Id, 1, buffs) == true)
+            if (ItemProcedures.PlayerIsCarryingTooMuch(me.Id, 1, buffs))
             {
                 TempData["Error"] = "You are carrying too much to move.";
                 TempData["SubError"] = "Reduce the amount of items you are carrying to be able to move again.";
@@ -656,7 +656,7 @@ namespace TT.Web.Controllers
                 StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__TimesMoved, 1)
             ).Start();
 
-            if (me.IsInDungeon() == true)
+            if (me.IsInDungeon())
             {
                 new Thread(() =>
                StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__DungeonMovements, 1)
@@ -670,7 +670,7 @@ namespace TT.Web.Controllers
          public ActionResult EnterDungeon(string entering)
          {
              string myMembershipId = User.Identity.GetUserId();
-             if (PvPStatics.AnimateUpdateInProgress == true)
+             if (PvPStatics.AnimateUpdateInProgress)
              {
                  TempData["Error"] = "Player update portion of the world update is still in progress.";
                  TempData["SubError"] = "Try again a bit later when the update has progressed farther along.";
@@ -718,7 +718,7 @@ namespace TT.Web.Controllers
              }
 
             // assert player is in a correct location to do this if in overworld
-             if (me.IsInDungeon() == false && (me.dbLocationName != "street_9th" && me.dbLocationName != "street_14th_north"))
+             if (!me.IsInDungeon() && (me.dbLocationName != "street_9th" && me.dbLocationName != "street_14th_north"))
              {
                  TempData["Error"] = "You cannot enter the dungeon here.";
                  TempData["SubError"] = "You must be at Street: Main Street and Sunnyglade Drive Intersection or Street: Main Street and E. 9th Avenue Intersection in order to enter the dungeon.";
@@ -777,19 +777,19 @@ namespace TT.Web.Controllers
 
             // make sure a no-attack exists due to the Back On Your Feet perk
 
-            if (EffectProcedures.PlayerHasEffect(me, PvPStatics.Effect_Back_On_Your_Feet) == true && target.BotId==AIStatics.ActivePlayerBotId)
+            if (EffectProcedures.PlayerHasEffect(me, PvPStatics.Effect_Back_On_Your_Feet) && target.BotId==AIStatics.ActivePlayerBotId)
             {
                 ViewBag.Recovered = true;
                 ViewBag.RecoveredMsg = "You can't attack as you have the <b>Back On Your Feet</b> effect, preventing you from attacking another human-controlled player.";
             }
-            else if (EffectProcedures.PlayerHasEffect(target, PvPStatics.Effect_Back_On_Your_Feet) == true)
+            else if (EffectProcedures.PlayerHasEffect(target, PvPStatics.Effect_Back_On_Your_Feet))
             {
                 ViewBag.Recovered = true;
                 ViewBag.RecoveredMsg = "You can't attack <b>" + target.GetFullName() + "</b> since they have the <b>Back On Your Feet</b> effect, preventing human-controlled players from attacking them until the effect expires.";
             }
             else
             {
-                output = SkillProcedures.GetSkillViewModelsOwnedByPlayer(me.Id).Where(s => s.dbSkill.IsArchived == false);
+                output = SkillProcedures.GetSkillViewModelsOwnedByPlayer(me.Id).Where(s => !s.dbSkill.IsArchived);
             }
 
             // filter out spells that you can't use on your target
@@ -884,7 +884,7 @@ namespace TT.Web.Controllers
 
 
             // assert player is in an okay form to do this
-            if (PlayerCanPerformAction(me, "attack") == false)
+            if (!PlayerCanPerformAction(me, "attack"))
             {
                 return RedirectToAction("Play");
             }
@@ -925,7 +925,7 @@ namespace TT.Web.Controllers
             DateTime lastupdate = PvPWorldStatProcedures.GetLastWorldUpdate();
             double secondsAgo = Math.Abs(Math.Floor(lastupdate.Subtract(DateTime.UtcNow).TotalSeconds));
 
-            if (secondsAgo > (PvPStatics.TurnSecondLength - PvPStatics.EndTurnNoAttackSeconds) && PvPStatics.ChaosMode == false)
+            if (secondsAgo > (PvPStatics.TurnSecondLength - PvPStatics.EndTurnNoAttackSeconds) && !PvPStatics.ChaosMode)
             {
                 TempData["Error"] = "It is too late into this turn to attack.";
                 TempData["SubError"] = "You can't attack in the last " + PvPStatics.EndTurnNoAttackSeconds + " seconds of a turn.";
@@ -955,7 +955,7 @@ namespace TT.Web.Controllers
             bool iAmWhitelisted = User.IsInRole(PvPStatics.Permissions_MultiAccountWhitelist);
 
             // assert player does not have more than 1 accounts already
-            if (iAmWhitelisted == false && PlayerProcedures.IsMyIPInUseAndAnimate(Request.UserHostAddress, me) == true)
+            if (!iAmWhitelisted && PlayerProcedures.IsMyIPInUseAndAnimate(Request.UserHostAddress, me))
             {
                 TempData["Error"] = "This character looks like a multiple account, which is illegal.  This character will not be allowed to attack.";
                 TempData["SubError"] = "You can only have 1 animate character in PvP mode and 1 animate character in Protection mode at a time.  Read more about the rules regarding multiple accounts here:  http://luxianne.com/forum/viewtopic.php?f=5&t=449 .";
@@ -980,7 +980,7 @@ namespace TT.Web.Controllers
             }
 
             // assert the player does not have the Back On Your Feet perk
-            if (EffectProcedures.PlayerHasEffect(me, PvPStatics.Effect_Back_On_Your_Feet) == true && targeted.BotId == AIStatics.ActivePlayerBotId)
+            if (EffectProcedures.PlayerHasEffect(me, PvPStatics.Effect_Back_On_Your_Feet) && targeted.BotId == AIStatics.ActivePlayerBotId)
             {
                 TempData["Error"] = "The protective aura from your Back On Your Feet effect prevents this spell from working.";
                 TempData["SubError"] = "You can remove this effect with a Hex-B-Gone moisturizer if you want to resume attacks on player-controlled targets.";
@@ -988,7 +988,7 @@ namespace TT.Web.Controllers
             }
 
             // assert the target does not have the Back On Your Feet perk
-            if (EffectProcedures.PlayerHasEffect(targeted, PvPStatics.Effect_Back_On_Your_Feet) == true)
+            if (EffectProcedures.PlayerHasEffect(targeted, PvPStatics.Effect_Back_On_Your_Feet))
             {
                 TempData["Error"] = "The protective aura from your target's Back On Your Feet effect prevents you from casting this spell.";
                 return RedirectToAction("Play");
@@ -1003,7 +1003,7 @@ namespace TT.Web.Controllers
             }
 
             // assert no blacklist exists if player is in protection mode
-            if (me.GameMode < 2 && BlacklistProcedures.PlayersHaveBlacklistedEachOther(me, targeted, "attack") == true)
+            if (me.GameMode < 2 && BlacklistProcedures.PlayersHaveBlacklistedEachOther(me, targeted, "attack"))
             {
                 TempData["Error"] = "This player has blacklisted you or is on your own blacklist.";
                 TempData["SubError"] = "You cannot attack Protection mode players who have blacklisted you.  Remove them from your blacklist or ask them to remove you from theirs.";
@@ -1027,7 +1027,7 @@ namespace TT.Web.Controllers
             }
 
              // assert that the target is not offline
-            if (PlayerProcedures.PlayerIsOffline(targeted)==true)
+            if (PlayerProcedures.PlayerIsOffline(targeted))
             {
                 TempData["Error"] = "This player is offline.";
                 TempData["SubError"] = "Offline players can no longer be attacked.";
@@ -1035,7 +1035,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that this player does not currently have a lock on their account
-            if (me.FlaggedForAbuse == true)
+            if (me.FlaggedForAbuse)
             {
                 TempData["Error"] = "This player has been flagged by a moderator for suspicious actions and is not allowed to attack at this time.";
                 return RedirectToAction("Play");
@@ -1051,7 +1051,7 @@ namespace TT.Web.Controllers
             // if the spell is a curse, check that the target doesn't already have the effect
             if (skillBeingUsed.Skill.GivesEffect != null)
             {
-                if (EffectProcedures.PlayerHasEffect(targeted, skillBeingUsed.Skill.GivesEffect) == true)
+                if (EffectProcedures.PlayerHasEffect(targeted, skillBeingUsed.Skill.GivesEffect))
                 {
                     TempData["Error"] = "This target is already afflicted with this curse or else is still in the immune cooldown period of it.";
                     TempData["SubError"] = "You can always try again later...";
@@ -1070,7 +1070,7 @@ namespace TT.Web.Controllers
              // if anyone is dueling, make sure they are in the combatants list
             if (me.InDuel > 0 || targeted.InDuel > 0)
             {
-                if (DuelProcedures.PlayerIsNotInDuel(me, targeted) == true)
+                if (DuelProcedures.PlayerIsNotInDuel(me, targeted))
                 {
                     TempData["Error"] = "You or your target is in a duel that the other is not participating in.";
                     TempData["SubError"] = "Conclude all duels before attacks can resume.";
@@ -1095,7 +1095,7 @@ namespace TT.Web.Controllers
             DbStaticForm futureForm = FormStatics.GetForm(skill.FormdbName);
 
             // if the spell is a form of mind control, check that the target is not already afflicated with it
-            if (me.MindControlIsActive == true && MindControlProcedures.PlayerIsMindControlledWithType(targeted, futureForm.dbName) == true)
+            if (me.MindControlIsActive && MindControlProcedures.PlayerIsMindControlledWithType(targeted, futureForm.dbName))
             {
                 TempData["Error"] = "This player is already under the influence of this type of mind control.";
                 TempData["SubError"] = "You must wait for their current mind control of this kind to expire before attempting to seize control yourself.";
@@ -1154,7 +1154,7 @@ namespace TT.Web.Controllers
                 if (targeted.BotId == AIStatics.ValentineBotId)
                 {
 
-                    if (BossProcedures_Valentine.IsAttackableInForm(me, targeted) == false) {
+                    if (!BossProcedures_Valentine.IsAttackableInForm(me, targeted)) {
                         TempData["Error"] = BossProcedures_Valentine.GetWrongFormText();
                         TempData["SubError"] = "You will need to attack while in a different form.";
                         return RedirectToAction("Play");
@@ -1218,7 +1218,7 @@ namespace TT.Web.Controllers
                 if (targeted.BotId == AIStatics.FaebossId)
                 {
                     Tuple<bool, string> isValid = BossProcedures_FaeBoss.SpellIsValid(attackName, me);
-                    if (isValid.Item1==false)
+                    if (!isValid.Item1)
                     {
                         TempData["Error"] = isValid.Item2;
                         return RedirectToAction("Play");
@@ -1235,7 +1235,7 @@ namespace TT.Web.Controllers
 
                 if (me.GameMode < 2 || targeted.GameMode < 2)
                 {
-                    if (FriendProcedures.PlayerIsMyFriend(me, targeted) == true)
+                    if (FriendProcedures.PlayerIsMyFriend(me, targeted))
                     {
                         // do nothing; friends are okay to cast any spell types
                     }
@@ -1384,7 +1384,7 @@ namespace TT.Web.Controllers
              }
 
              // assert player update is in not in progress
-             if (PvPStatics.AnimateUpdateInProgress == true)
+             if (PvPStatics.AnimateUpdateInProgress)
              {
                  TempData["Error"] = "Player update portion of the world update is still in progress.";
                  TempData["SubError"] = "Try again a bit later when the update has progressed farther along.";
@@ -1392,7 +1392,7 @@ namespace TT.Web.Controllers
              }
 
             // assert the player does not have the Back On Your Feet perk
-            if (EffectProcedures.PlayerHasEffect(me, PvPStatics.Effect_Back_On_Your_Feet) == true)
+            if (EffectProcedures.PlayerHasEffect(me, PvPStatics.Effect_Back_On_Your_Feet))
             {
                 TempData["Error"] = "The protective aura from your Back On Your Feet effect prevents this spell from working.";
                 TempData["SubError"] = "You can remove this effect with a Hex-B-Gone moisturizer if you want to resume attacks on player-controlled targets.";
@@ -1412,7 +1412,7 @@ namespace TT.Web.Controllers
              DateTime lastupdate = PvPWorldStatProcedures.GetLastWorldUpdate();
              double secondsAgo = Math.Abs(Math.Floor(lastupdate.Subtract(DateTime.UtcNow).TotalSeconds));
 
-             if (secondsAgo > (PvPStatics.TurnSecondLength - PvPStatics.EndTurnNoAttackSeconds) && PvPStatics.ChaosMode == false)
+             if (secondsAgo > (PvPStatics.TurnSecondLength - PvPStatics.EndTurnNoAttackSeconds) && !PvPStatics.ChaosMode)
              {
                  TempData["Error"] = "It is too late into this turn to enchant.";
                  TempData["SubError"] = "You can't enchant in the last " + PvPStatics.EndTurnNoAttackSeconds + " seconds of a turn.";
@@ -1438,7 +1438,7 @@ namespace TT.Web.Controllers
              }
 
              // assert that this player's covenant does have a safeground
-             if (CovenantProcedures.CovenantHasSafeground(me.Covenant) == false)
+             if (!CovenantProcedures.CovenantHasSafeground(me.Covenant))
              {
                  TempData["Error"] = "Your covenant must have established a safeground before it can enchant locations.";
                  return RedirectToAction("Play");
@@ -1472,7 +1472,7 @@ namespace TT.Web.Controllers
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert update stage is not currently in player update
-            if (PvPStatics.AnimateUpdateInProgress == true)
+            if (PvPStatics.AnimateUpdateInProgress)
             {
                 TempData["Error"] = "Player update portion of the world update is still in progress.";
                 TempData["SubError"] = "Try again a bit later when the update has progressed farther along.";
@@ -1541,7 +1541,7 @@ namespace TT.Web.Controllers
         public ActionResult Meditate()
         {
             string myMembershipId = User.Identity.GetUserId();
-            if (PvPStatics.AnimateUpdateInProgress == true)
+            if (PvPStatics.AnimateUpdateInProgress)
             {
                 TempData["Error"] = "Player update portion of the world update is still in progress.";
                 TempData["SubError"] = "Try again a bit later when the update has progressed farther along.";
@@ -1551,18 +1551,18 @@ namespace TT.Web.Controllers
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert that the player is not mind controlled and cannot pick up anything on their own
-            if (me.MindControlIsActive == true)
+            if (me.MindControlIsActive)
             {
 
                 IEnumerable<MindControl> myExistingMCs = MindControlProcedures.GetAllMindControlsWithPlayer(me);
 
-                if (MindControlProcedures.PlayerIsMindControlledWithType(me, myExistingMCs, MindControlStatics.MindControl__Meditate) == true)
+                if (MindControlProcedures.PlayerIsMindControlledWithType(me, myExistingMCs, MindControlStatics.MindControl__Meditate))
                 {
                     TempData["Error"] = "You try to meditate but find you cannot!";
                     TempData["SubError"] = "The moment you try and focus, your head swims with nonsensical thoughts implanted by someone partially mind controlling you!";
                     return RedirectToAction("Play");
                 }
-                else if (MindControlProcedures.PlayerIsMindControlledWithSomeType(me, myExistingMCs) == false)
+                else if (!MindControlProcedures.PlayerIsMindControlledWithSomeType(me, myExistingMCs))
                 {
                     // turn off mind control is the player has no more MC effects on them
                     bool isNowFree = MindControlProcedures.ClearPlayerMindControlFlagIfOn(me);
@@ -1579,7 +1579,7 @@ namespace TT.Web.Controllers
             }
 
             // assert player is in an okay form to do this
-            if (PlayerCanPerformAction(me, "meditate") == false)
+            if (!PlayerCanPerformAction(me, "meditate"))
             {
                 return RedirectToAction("Play");
             }
@@ -1609,7 +1609,7 @@ namespace TT.Web.Controllers
         public ActionResult Cleanse()
         {
             string myMembershipId = User.Identity.GetUserId();
-            if (PvPStatics.AnimateUpdateInProgress == true)
+            if (PvPStatics.AnimateUpdateInProgress)
             {
                 TempData["Error"] = "Player update portion of the world update is still in progress.";
                 TempData["SubError"] = "Try again a bit later when the update has progressed farther along.";
@@ -1629,7 +1629,7 @@ namespace TT.Web.Controllers
             BuffBox mybuffs = ItemProcedures.GetPlayerBuffs(me);
 
             // assert player is in an okay form to do this
-            if (PlayerCanPerformAction(me, "cleanse") == false)
+            if (!PlayerCanPerformAction(me, "cleanse"))
             {
 
                 return RedirectToAction("Play");
@@ -1675,7 +1675,7 @@ namespace TT.Web.Controllers
         public ActionResult Search()
         {
             string myMembershipId = User.Identity.GetUserId();
-            if (PvPStatics.AnimateUpdateInProgress == true)
+            if (PvPStatics.AnimateUpdateInProgress)
             {
                 TempData["Error"] = "Player update portion of the world update is still in progress.";
                 TempData["SubError"] = "Try again a bit later when the update has progressed farther along.";
@@ -1685,7 +1685,7 @@ namespace TT.Web.Controllers
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert player is in an okay form to do this
-            if (PlayerCanPerformAction(me, "search") == false)
+            if (!PlayerCanPerformAction(me, "search"))
             {
                 return RedirectToAction("Play");
             }
@@ -1713,7 +1713,7 @@ namespace TT.Web.Controllers
             }
 
              // assert player is not in the dungeon
-            if (me.IsInDungeon() == true)
+            if (me.IsInDungeon())
             {
                 TempData["Error"] = "The constantly shifting chambers and corridors of the dungeon make searching unlikely to find anything down here.";
                 return RedirectToAction("Play");
@@ -1727,7 +1727,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction("Play");
             }
 
-            if (mybuffs.HasSearchDiscount == true)
+            if (mybuffs.HasSearchDiscount)
             {
                 PlayerProcedures.ChangePlayerActionMana(PvPStatics.SearchAPCost-1, 0, 0, me.Id);
             }
@@ -1830,7 +1830,7 @@ namespace TT.Web.Controllers
             BuffBox myBuffs = ItemProcedures.GetPlayerBuffs(me);
 
             // assert player is in an okay form to do this
-            if (PlayerCanPerformAction(me, "pickup") == false)
+            if (!PlayerCanPerformAction(me, "pickup"))
             {
                 return RedirectToAction("Play");
             }
@@ -1850,18 +1850,18 @@ namespace TT.Web.Controllers
             }
 
             // assert that the player is not mind controlled and cannot pick up anything on their own
-            if (me.MindControlIsActive == true)
+            if (me.MindControlIsActive)
             {
 
                 IEnumerable<MindControl> myExistingMCs = MindControlProcedures.GetAllMindControlsWithPlayer(me);
 
-                if (MindControlProcedures.PlayerIsMindControlledWithType(me, myExistingMCs, MindControlStatics.MindControl__Strip) == true)
+                if (MindControlProcedures.PlayerIsMindControlledWithType(me, myExistingMCs, MindControlStatics.MindControl__Strip))
                 {
                     TempData["Error"] = "You try to take it but find you cannot!";
                     TempData["SubError"] = "Some other mage has partial control of your mind, disabling your ability to pick anything up off the ground or tame any pets!";
                     return RedirectToAction("Play");
                 }
-                else if (MindControlProcedures.PlayerIsMindControlledWithSomeType(me, myExistingMCs) == false)
+                else if (!MindControlProcedures.PlayerIsMindControlledWithSomeType(me, myExistingMCs))
                 {
                     // turn off mind control is the player has no more MC effects on them
                     bool isNowFree = MindControlProcedures.ClearPlayerMindControlFlagIfOn(me);
@@ -1879,7 +1879,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the player is not carrying too much already UNLESS the item is a pet OR dungeon token
-            if (ItemProcedures.PlayerIsCarryingTooMuch(me.Id, 0, myBuffs)==true && pickup.Item.ItemType!=PvPStatics.ItemType_Pet && pickup.Item.dbName!=PvPStatics.ItemType_DungeonArtifact) {
+            if (ItemProcedures.PlayerIsCarryingTooMuch(me.Id, 0, myBuffs) && pickup.Item.ItemType!=PvPStatics.ItemType_Pet && pickup.Item.dbName!=PvPStatics.ItemType_DungeonArtifact) {
                 TempData["Error"] = "You are carrying too many items to pick this up.";
                 TempData["SubError"] = "Use, drop, or wear/equip something you are carrying to make more room.  Some accessories may also allow you to carry more.";
                 return RedirectToAction("Play");
@@ -1963,7 +1963,7 @@ namespace TT.Web.Controllers
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert player is in an okay form to do this
-            if (PlayerCanPerformAction(me, "drop") == false)
+            if (!PlayerCanPerformAction(me, "drop"))
             {
                 return RedirectToAction("Play");
             }
@@ -1993,7 +1993,7 @@ namespace TT.Web.Controllers
             }
 
             // assert player is not currently wearing this UNLESS it is an animal type, since pets are always "equipped"
-            if (dropme.dbItem.IsEquipped == true && dropme.Item.ItemType!=PvPStatics.ItemType_Pet)
+            if (dropme.dbItem.IsEquipped && dropme.Item.ItemType!=PvPStatics.ItemType_Pet)
             {
                 TempData["Error"] = "You can't drop this item.";
                 TempData["SubError"] = "Unequip this item first if you are wearing it.";
@@ -2055,7 +2055,7 @@ namespace TT.Web.Controllers
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert player is in an okay form to do this
-            if (PlayerCanPerformAction(me, "equip") == false)
+            if (!PlayerCanPerformAction(me, "equip"))
             {
                 return RedirectToAction("Play");
             }
@@ -2085,14 +2085,14 @@ namespace TT.Web.Controllers
             }
 
             // assert that this item doesn't have the put on this turn lock
-            if (item.dbItem.EquippedThisTurn == true)
+            if (item.dbItem.EquippedThisTurn)
             {
                 TempData["Error"] = "You just put this on.";
                 TempData["SubError"] = "You'll have to wait until next turn to take this off.";
                 return RedirectToAction("Play");
             }
 
-            if (putOn == true)
+            if (putOn)
             {
 
                 // if item is not accessory, you can only wear one
@@ -2135,7 +2135,7 @@ namespace TT.Web.Controllers
         public ActionResult Use(int itemId)
         {
             string myMembershipId = User.Identity.GetUserId();
-            if (PvPStatics.AnimateUpdateInProgress == true)
+            if (PvPStatics.AnimateUpdateInProgress)
             {
                 TempData["Error"] = "Player update portion of the world update is still in progress.";
                 TempData["SubError"] = "Try again a bit later when the update has progressed farther along.";
@@ -2146,7 +2146,7 @@ namespace TT.Web.Controllers
             Location here = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName);
 
             // assert player is in an okay form to do this
-            if (PlayerCanPerformAction(me, "equip") == false)
+            if (!PlayerCanPerformAction(me, "equip"))
             {
                 return RedirectToAction("Play");
             }
@@ -2200,7 +2200,7 @@ namespace TT.Web.Controllers
                     return RedirectToAction("Play", "PvP");
                 }
 
-                if (me.IsInDungeon() == true)
+                if (me.IsInDungeon())
                 {
                      IEnumerable<Location> output = LocationsStatics.LocationList.GetLocation.Where(l => l.dbName != "" && l.Region == "dungeon");
                       return View("TeleportMap", output);
@@ -2218,7 +2218,7 @@ namespace TT.Web.Controllers
             }
 
              // if this item is a skill book, aka a tome, redirect to that page with the appropriate text
-            if (item.dbItem.dbName.Contains("item_consumable_tome-") == true)
+            if (item.dbItem.dbName.Contains("item_consumable_tome-"))
             {
 
                 var cmd = new GetTomeByItem { ItemSourceId = item.Item.Id };
@@ -2280,7 +2280,7 @@ namespace TT.Web.Controllers
             {
                 PlayerForm = playerLookedAt,
                 Skills = SkillProcedures.GetSkillViewModelsOwnedByPlayer(id),
-                Items = ItemProcedures.GetAllPlayerItems(id).Where(i => i.dbItem.IsEquipped == true),
+                Items = ItemProcedures.GetAllPlayerItems(id).Where(i => i.dbItem.IsEquipped),
                 Bonuses = ItemProcedures.GetPlayerBuffs(playerLookedAt.Player.ToDbPlayer())
             };
 
@@ -2460,7 +2460,7 @@ namespace TT.Web.Controllers
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert player is in an okay form to do this
-            if (PlayerCanPerformAction(me, "animalAction") == false)
+            if (!PlayerCanPerformAction(me, "animalAction"))
             {
                 return RedirectToAction("Play");
             }
@@ -2522,7 +2522,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that this player does not currently have a lock on their account
-            if (me.FlaggedForAbuse == true)
+            if (me.FlaggedForAbuse)
             {
                 TempData["Error"] = "This player has been flagged by a moderator for suspicious actions and is not allowed to attack at this time.";
                 return RedirectToAction("Play");
@@ -2561,11 +2561,11 @@ namespace TT.Web.Controllers
 
             IEnumerable<FriendPlayerViewModel> friends = FriendProcedures.GetMyFriends(myMembershipId);
 
-            output.ConfirmedFriends = friends.Where(f => f.dbFriend.IsAccepted == true);
+            output.ConfirmedFriends = friends.Where(f => f.dbFriend.IsAccepted);
 
-            output.RequestsForMe = friends.Where(f => f.dbFriend.IsAccepted == false && (f.dbFriend.FriendMembershipId == myMembershipId));
+            output.RequestsForMe = friends.Where(f => !f.dbFriend.IsAccepted && (f.dbFriend.FriendMembershipId == myMembershipId));
 
-            output.MyOutgoingRequests = friends.Where(f => f.dbFriend.IsAccepted == false && (f.dbFriend.OwnerMembershipId == myMembershipId));
+            output.MyOutgoingRequests = friends.Where(f => !f.dbFriend.IsAccepted && (f.dbFriend.OwnerMembershipId == myMembershipId));
 
             return View("MyFriends", output);
         }
@@ -2578,7 +2578,7 @@ namespace TT.Web.Controllers
             Player friend = PlayerProcedures.GetPlayer(playerId);
 
             // assert no blacklist exists if player is in protection mode
-            if (BlacklistProcedures.PlayersHaveBlacklistedEachOther(me, friend, "any") == true)
+            if (BlacklistProcedures.PlayersHaveBlacklistedEachOther(me, friend, "any"))
             {
                 TempData["Error"] = "This player has blacklisted you or is on your own blacklist.";
                 TempData["SubError"] = "You cannot request friendship with players who have blacklisted you.  Remove them from your blacklist or ask them to remove you from theirs.";
@@ -2589,7 +2589,7 @@ namespace TT.Web.Controllers
 
             string message = me.GetFullName() + " has sent you a friend request.";
 
-            if (PlayerLogProcedures.PlayerAlreadyHasMessage(friend.Id, message) == false)
+            if (!PlayerLogProcedures.PlayerAlreadyHasMessage(friend.Id, message))
             {
                 PlayerLogProcedures.AddPlayerLog(friend.Id, message, true);
             }
@@ -2808,12 +2808,12 @@ namespace TT.Web.Controllers
                
             };
 
-            if (me.IsInDungeon() == true && showEnchant == "false")
+            if (me.IsInDungeon() && showEnchant == "false")
             {
                 output.Locations = LocationsStatics.LocationList.GetLocation.Where(l => l.Region == "");
                 ViewBag.IsInDungeon = true;
             }
-            else if (me.IsInDungeon() == true && showEnchant == "true")
+            else if (me.IsInDungeon() && showEnchant == "true")
             {
                 output.Locations = LocationsStatics.LocationList.GetLocation.Where(l => l.Region != "dungeon");
                 ViewBag.IsInDungeon = false;    
@@ -3034,7 +3034,7 @@ namespace TT.Web.Controllers
 
              // assert player is not already locked into their current form
             Item itemMe = ItemProcedures.GetItemByVictimName(me.FirstName, me.LastName);
-            if (itemMe.IsPermanent == true)
+            if (itemMe.IsPermanent)
             {
                 TempData["Error"] = "You cannot return to an animate form again.";
                 TempData["SubError"] = "You have spent too long and performed too many actions as an item or animal and have lost your desire and ability to be human gain.";
@@ -3118,7 +3118,7 @@ namespace TT.Web.Controllers
 
             // assert that the form does exist
              DbStaticForm form = FormStatics.GetForm(itemMePlus.CurseTFFormdbName);
-             if (form == null || form.IsUnique == true)
+             if (form == null || form.IsUnique)
              {
                  TempData["Error"] = "Unfortunately it seems that the animate form has either not yet been added to the game or is ineligible.";
                  return RedirectToAction("Play", "PvP");
@@ -3180,7 +3180,7 @@ namespace TT.Web.Controllers
              }
 
              // don't allow items or pets to struggle while their owner is online in the dungeon
-             if (owner.IsInDungeon() == true && PlayerProcedures.PlayerIsOffline(owner) == false)
+             if (owner.IsInDungeon() && !PlayerProcedures.PlayerIsOffline(owner))
              {
                  TempData["Error"] = "The dark powers of the dungeon prevent you from being able to slip free while your owner is in the dungeon and online.";
                  return RedirectToAction("Play");
@@ -3402,7 +3402,7 @@ namespace TT.Web.Controllers
         {
             // assert the person flagging has mod permissions
             // assert only admins can view this
-            if (User.IsInRole(PvPStatics.Permissions_Moderator) == false && User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            if (!User.IsInRole(PvPStatics.Permissions_Moderator) && !User.IsInRole(PvPStatics.Permissions_Admin))
             {
                 return View("Play", "PvP");
             }

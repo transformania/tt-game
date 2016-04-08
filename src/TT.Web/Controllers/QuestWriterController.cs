@@ -69,7 +69,7 @@ namespace TT.Web.Controllers
         public ActionResult MarkQuestAsLive (int Id, bool live)
         {
             // assert only admins can view this
-            if (User.IsInRole(PvPStatics.Permissions_Admin) == false)
+            if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
                 return RedirectToAction("QuestStart", "QuestWriter", new { Id = Id });
             }

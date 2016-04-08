@@ -32,7 +32,7 @@
         foreach (NewsPost n in Model)
         {
 
-            if (User.IsInRole(PvPStatics.Permissions_Admin) == true)
+            if (User.IsInRole(PvPStatics.Permissions_Admin))
             {
                 @Html.ActionLink("[Edit]", "EditNewsPost", "PvPAdmin", new { Id = n.Id }, new { @class = "bad" })
             }

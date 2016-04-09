@@ -203,7 +203,7 @@ namespace TT.Domain.Procedures
             }
 
             // furniture gives effect
-            else if (furnitureStatic.GivesEffect != null && furnitureStatic.GivesEffect != "")
+            else if (!furnitureStatic.GivesEffect.IsNullOrEmpty())
             {
                 EffectProcedures.GivePerkToPlayer(furnitureStatic.GivesEffect, user);
                 PlayerProcedures.SetTimestampToNow(user);
@@ -211,7 +211,7 @@ namespace TT.Domain.Procedures
             }
 
             //furniture gives item
-            else if (furnitureStatic.GivesItem != null && furnitureStatic.GivesItem != "")
+            else if (!furnitureStatic.GivesItem.IsNullOrEmpty())
             {
                 ItemProcedures.GiveNewItemToPlayer(user, furnitureStatic.GivesItem);
                 PlayerProcedures.SetTimestampToNow(user);

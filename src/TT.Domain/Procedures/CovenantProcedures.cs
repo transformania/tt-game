@@ -419,7 +419,7 @@ namespace TT.Domain.Procedures
 
         public static bool CovenantHasSafeground(Covenant covenant)
         {
-            if (covenant.HomeLocation != null && covenant.HomeLocation != "")
+            if (!covenant.HomeLocation.IsNullOrEmpty())
             {
                 return true;
             }

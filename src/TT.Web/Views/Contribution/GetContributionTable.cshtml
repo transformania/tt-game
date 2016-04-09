@@ -20,7 +20,7 @@
             foreach (TT.Domain.ViewModels.ContributionCredit c in Model.OrderByDescending(c => c.SpellCount))
             {
                 <tr>
-                    @{if (c.Website != null && c.Website != "")
+                    @{if (!c.Website.IsNullOrEmpty())
                     {
                         <td><a href='@c.Website'>@c.AuthorName</a></td>
                     }

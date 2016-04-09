@@ -22,9 +22,9 @@
     </div><!-- /.container-fluid -->
 </nav>
 <div class="containerInner">
-    @if (ViewBag.ErrorMessage != null && ViewBag.ErrorMessage != "") { <p class="infoMessage error">@ViewBag.ErrorMessage</p> }
+    @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage)) { <p class="infoMessage error">@ViewBag.ErrorMessage</p> }
 
-    @if (Model.RespondingToMsg != null && Model.RespondingToMsg != "")
+    @if (!Model.RespondingToMsg.IsNullOrEmpty())
     {
         <p class="messageTextContainer messageResponse">
             @Model.RespondingToMsg

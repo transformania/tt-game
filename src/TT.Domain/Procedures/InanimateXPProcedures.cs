@@ -438,15 +438,15 @@ namespace TT.Domain.Procedures
                     dbOwner.NormalizeHealthMana();
                     playerRepo.SavePlayer(dbOwner);
 
-                    if (owner.Gender == "male" && tf.CursedTF_Succeed_M != null && tf.CursedTF_Succeed_M != "")
+                    if (owner.Gender == "male" && !tf.CursedTF_Succeed_M.IsNullOrEmpty())
                     {
                         ownerMessage = tf.CursedTF_Succeed_M;
                     }
-                    else if (owner.Gender == "female" && tf.CursedTF_Succeed_F != null && tf.CursedTF_Succeed_F != "")
+                    else if (owner.Gender == "female" && !tf.CursedTF_Succeed_F.IsNullOrEmpty())
                     {
                         ownerMessage = tf.CursedTF_Succeed_F;
                     }
-                    else if (tf.CursedTF_Succeed != null && tf.CursedTF_Succeed != "")
+                    else if (!tf.CursedTF_Succeed.IsNullOrEmpty())
                     {
                         ownerMessage = tf.CursedTF_Succeed;
                     }
@@ -461,15 +461,15 @@ namespace TT.Domain.Procedures
             // fail; owner is not transformed
             else
             {
-                if (owner.Gender == "male" && tf.CursedTF_Fail_M != null && tf.CursedTF_Fail_M != "")
+                if (owner.Gender == "male" && !tf.CursedTF_Fail_M.IsNullOrEmpty())
                 {
                     ownerMessage = tf.CursedTF_Fail_M;
                 }
-                else if (owner.Gender == "female" && tf.CursedTF_Fail_F != null && tf.CursedTF_Fail_F != "")
+                else if (owner.Gender == "female" && !tf.CursedTF_Fail_F.IsNullOrEmpty())
                 {
                     ownerMessage = tf.CursedTF_Fail_F;
                 }
-                else if (tf.CursedTF_Fail != null && tf.CursedTF_Fail != "")
+                else if (!tf.CursedTF_Fail.IsNullOrEmpty())
                 {
                     ownerMessage = tf.CursedTF_Fail;
                 }

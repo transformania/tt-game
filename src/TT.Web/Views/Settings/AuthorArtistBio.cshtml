@@ -8,7 +8,7 @@
     </p>
     
     @{
-        if (@Model.OtherNames != null && @Model.OtherNames != "")
+        if (!Model.OtherNames.IsNullOrEmpty())
         {
             <p class="bioTitle">Common Names</p>
             <p class="bioDesc">@Model.OtherNames</p>
@@ -16,7 +16,7 @@
 }
 
     @{
-        if (@Model.Email != null && @Model.Email != "")
+        if (!Model.Email.IsNullOrEmpty())
         {
             <p class="bioTitle">Email</p>
     <p class="bioDesc">@Model.Email</p>
@@ -46,7 +46,7 @@
     }
     </p>
     @{
-        if (@Model.Url1 != null && @Model.Url1 != "")
+        if (!Model.Url1.IsNullOrEmpty())
         {
             <p class="bioTitle">Primary website</p>
     <p class="bioDesc"><a href="@Model.Url1">@Model.Url1</a></p>
@@ -54,7 +54,7 @@
 }
 
     @{
-        if (@Model.Url2 != null && @Model.Url2 != "")
+        if (!Model.Url2.IsNullOrEmpty())
         {
             <p class="bioTitle">Secondary website</p>
     <p class="bioDesc"><a href="@Model.Url2">@Model.Url2</a></p>
@@ -62,7 +62,7 @@
 }
 
     @{
-        if (@Model.Url3 != null && @Model.Url3 != "")
+        if (!Model.Url3.IsNullOrEmpty())
         {
             <p class="bioTitle">Other website</p>
     <p class="bioDesc"><a href="@Model.Url3">@Model.Url3</a></p>
@@ -71,7 +71,7 @@
 
 
     @{
-        if (@Model.Text != null && @Model.Text != "")
+        if (!Model.Text.IsNullOrEmpty())
         {
             <p class="bioTitle">More About this Artist!</p>
     <p class="bioDesc">@Html.Raw(Model.Text)</p>

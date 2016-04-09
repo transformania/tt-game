@@ -135,7 +135,7 @@
                             
 
     @{
-                    if (Model.Item.Item.CurseTFFormdbName != null && Model.Item.Item.CurseTFFormdbName != "")
+                    if (!Model.Item.Item.CurseTFFormdbName.IsNullOrEmpty())
                     {
                         <li>
                             @Html.ActionLink("Attempt to transform your owner!", "CurseTransformOwner", "PvP", null, new { @class = "check inanimateAction" })

@@ -392,7 +392,7 @@ namespace TT.Web.Controllers
 
             // assert that the first name is not reserved by the system
             string fnamecheck = TrustStatics.NameIsReserved(player.FirstName);
-            if (fnamecheck != "")
+            if (!fnamecheck.IsNullOrEmpty())
             {
                 ViewBag.ErrorMessage = "You can't use the first name '" + player.FirstName + "'.  It is reserved.";
                 return View("~/Views/PvP/MakeNewCharacter.cshtml");
@@ -400,7 +400,7 @@ namespace TT.Web.Controllers
 
             // assert that the last name is not reserved by the system
             string lnamecheck = TrustStatics.NameIsReserved(player.LastName);
-            if (lnamecheck != "")
+            if (!lnamecheck.IsNullOrEmpty())
             {
                 ViewBag.ErrorMessage = "You can't use the last name '" + player.LastName + "'.  It is reserved or else not allowed.";
                 return View("~/Views/PvP/MakeNewCharacter.cshtml");
@@ -1201,7 +1201,7 @@ namespace TT.Web.Controllers
                 if (targeted.BotId == AIStatics.MouseNerdBotId || targeted.BotId == AIStatics.MouseBimboBotId)
                 {
                     string result = BossProcedures_Sisters.SpellIsValid(me, targeted, attackName);
-                    if (result != "") {
+                    if (!result.IsNullOrEmpty()) {
                         TempData["Error"] = result;
                         return RedirectToAction("Play");
                     }
@@ -2869,7 +2869,7 @@ namespace TT.Web.Controllers
          {
              string myMembershipId = User.Identity.GetUserId();
              Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-             if (me == null || me.BotId == AIStatics.RerolledPlayerBotId || me.FirstName == "" || me.LastName == "")
+             if (me == null || me.BotId == AIStatics.RerolledPlayerBotId || me.FirstName.IsNullOrEmpty() || me.LastName.IsNullOrEmpty())
              {
                 return View("~/Views/PvP/MakeNewCharacter.cshtml");
              }
@@ -3086,7 +3086,7 @@ namespace TT.Web.Controllers
              DbStaticItem itemMePlus = ItemStatics.GetStaticItem(itemMe.dbName);
 
             // assert item does have the ability to curse transform
-             if (itemMePlus.CurseTFFormdbName == null || itemMePlus.CurseTFFormdbName == "")
+             if (itemMePlus.CurseTFFormdbName.IsNullOrEmpty())
              {
                  TempData["Error"] = "Unfortunately your new form does not have a transformation curse that it can use.";
                  return RedirectToAction("Play", "PvP");

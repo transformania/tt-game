@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
@@ -130,7 +131,7 @@ namespace TT.Domain.Procedures
                 }
 
                 // filter out any effects that have a prerequisite that the player does not yet have
-                if (effect.PreRequesite != null && effect.PreRequesite != "" && !playerEffectsString.Contains(effect.PreRequesite))
+                if (!effect.PreRequesite.IsNullOrEmpty() && !playerEffectsString.Contains(effect.PreRequesite))
                 {
                     continue;
                 }
@@ -178,7 +179,7 @@ namespace TT.Domain.Procedures
                 }
 
                 // assert that the perk doesn't require a prerequisite that the player does not yet have
-                if (effectPlus.PreRequesite != null && effectPlus.PreRequesite != "")
+                if (!effectPlus.PreRequesite.IsNullOrEmpty())
                 {
                     Effect requiredPrerequisite = effectRepo.Effects.FirstOrDefault(e => e.OwnerId == player.Id && e.dbName == effectPlus.PreRequesite);
                     if (requiredPrerequisite == null)
@@ -245,11 +246,11 @@ namespace TT.Domain.Procedures
 
                 string logmessage = "";
 
-                if (player.Gender == "male" && effectPlus.MessageWhenHit_M != null && effectPlus.MessageWhenHit_M != "")
+                if (player.Gender == "male" && !effectPlus.MessageWhenHit_M.IsNullOrEmpty())
                 {
                     logmessage = effectPlus.MessageWhenHit_M;
                 }
-                else if (player.Gender == "female" && effectPlus.MessageWhenHit_F != null && effectPlus.MessageWhenHit_F != "")
+                else if (player.Gender == "female" && !effectPlus.MessageWhenHit_F.IsNullOrEmpty())
                 {
                     logmessage = effectPlus.MessageWhenHit_F;
                 }

@@ -69,7 +69,7 @@ namespace TT.Domain.Models
 
         public string GetFullName()
         {
-            if (this.DonatorLevel >= 2 && this.Nickname != null && this.Nickname != "")
+            if (this.DonatorLevel >= 2 && !this.Nickname.IsNullOrEmpty())
             {
                 return this.FirstName + " '" + this.Nickname + "' " + this.LastName;
             }
@@ -219,7 +219,7 @@ namespace TT.Domain.Models
 
         public string GetFullName()
         {
-            if (this.DonatorLevel >= 2 && this.Nickname != null && this.Nickname != "")
+            if (this.DonatorLevel >= 2 && !this.Nickname.IsNullOrEmpty())
             {
                 return this.FirstName + " '" + this.Nickname + "' " + this.LastName;
             }

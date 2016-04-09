@@ -240,7 +240,7 @@ namespace TT.Domain.Procedures
                         CovenantNameFlag playerCov = CovenantDictionary.IdNameFlagLookup.FirstOrDefault(c => c.Key == player.Covenant).Value;
 
                         // give this player an extra AP refill if they are at their safeground, scaled up by level
-                        if (playerCov != null && playerCov.HomeLocation != null && playerCov.HomeLocation != "" && player.dbLocationName == playerCov.HomeLocation)
+                        if (playerCov != null && !playerCov.HomeLocation.IsNullOrEmpty() && player.dbLocationName == playerCov.HomeLocation)
                         {
                             player.ActionPoints_Refill += .25M * playerCov.CovLevel;
                            

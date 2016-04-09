@@ -29,7 +29,7 @@
     <h1>Player Bio for @ViewBag.Name</h1>
 
     @{
-        if (Model.PlayerBio.WebsiteURL != "")
+        if (!Model.PlayerBio.WebsiteURL.IsNullOrEmpty())
         {
             <h3>Website</h3>
 
@@ -43,7 +43,7 @@
     <h3>Bio</h3>
 
     @{
-        if (Model.PlayerBio.Text != null && Model.PlayerBio.Text != "")
+        if (!Model.PlayerBio.Text.IsNullOrEmpty())
         {
             <p>@Html.Raw(Model.PlayerBio.Text.Replace("[br]", "<br/>"))</p>
         }
@@ -71,7 +71,7 @@
         {
             foreach (BioPageEffectContributionViewModel s in ViewBag.MyEffectContributions)
             {
-                if (s.SpellName != null && s.EffectName != "")
+                if (!s.SpellName.IsNullOrEmpty() && !s.EffectName.IsNullOrEmpty())
                 {
                     <p>Author of the <b>@s.EffectName</b> effect cast which is gained by being struck with the <b>@s.SpellName</b> spell.</p>
                 }

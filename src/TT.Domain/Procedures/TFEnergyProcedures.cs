@@ -656,7 +656,7 @@ namespace TT.Domain.Procedures
                 {
                     if (PoV == "first")
                     {
-                        if (tfMessage.TFMessage_20_Percent_1st_M != null && tfMessage.TFMessage_20_Percent_1st_M != "")
+                        if (!tfMessage.TFMessage_20_Percent_1st_M.IsNullOrEmpty())
                         {
                             return CleanString(tfMessage.TFMessage_20_Percent_1st_M, player, attacker);
                         }
@@ -668,7 +668,7 @@ namespace TT.Domain.Procedures
                     }
                     else if (PoV == "third")
                     {
-                        if (tfMessage.TFMessage_20_Percent_3rd_M != null && tfMessage.TFMessage_20_Percent_3rd_M != "")
+                        if (!tfMessage.TFMessage_20_Percent_3rd_M.IsNullOrEmpty())
                         {
                             return CleanString(tfMessage.TFMessage_20_Percent_3rd_M, player, attacker);
                         }
@@ -682,7 +682,7 @@ namespace TT.Domain.Procedures
                 {
                     if (PoV == "first")
                     {
-                        if (tfMessage.TFMessage_20_Percent_1st_F != null && tfMessage.TFMessage_20_Percent_1st_F != "")
+                        if (!tfMessage.TFMessage_20_Percent_1st_F.IsNullOrEmpty())
                         {
                             return CleanString(tfMessage.TFMessage_20_Percent_1st_F, player, attacker);
                         }
@@ -694,7 +694,7 @@ namespace TT.Domain.Procedures
                     }
                     else if (PoV == "third")
                     {
-                        if (tfMessage.TFMessage_20_Percent_3rd_F != null && tfMessage.TFMessage_20_Percent_3rd_F != "")
+                        if (!tfMessage.TFMessage_20_Percent_3rd_F.IsNullOrEmpty())
                         {
                             return CleanString(tfMessage.TFMessage_20_Percent_3rd_F, player, attacker);
                         }
@@ -714,7 +714,7 @@ namespace TT.Domain.Procedures
                 {
                     if (PoV == "first")
                     {
-                        if (tfMessage.TFMessage_40_Percent_1st_M != null && tfMessage.TFMessage_40_Percent_1st_M != "")
+                        if (!tfMessage.TFMessage_40_Percent_1st_M.IsNullOrEmpty())
                         {
                             return CleanString(tfMessage.TFMessage_40_Percent_1st_M, player, attacker);
                         }
@@ -726,7 +726,7 @@ namespace TT.Domain.Procedures
                     }
                     else if (PoV == "third")
                     {
-                        if (tfMessage.TFMessage_40_Percent_3rd_M != null && tfMessage.TFMessage_40_Percent_3rd_M != "")
+                        if (!tfMessage.TFMessage_40_Percent_3rd_M.IsNullOrEmpty())
                         {
                             return CleanString(tfMessage.TFMessage_40_Percent_3rd_M, player, attacker);
                         }
@@ -740,7 +740,7 @@ namespace TT.Domain.Procedures
                 {
                     if (PoV == "first")
                     {
-                        if (tfMessage.TFMessage_40_Percent_1st_F != null && tfMessage.TFMessage_40_Percent_1st_F != "")
+                        if (!tfMessage.TFMessage_40_Percent_1st_F.IsNullOrEmpty())
                         {
                             return CleanString(tfMessage.TFMessage_40_Percent_1st_F, player, attacker);
                         }
@@ -752,7 +752,7 @@ namespace TT.Domain.Procedures
                     }
                     else if (PoV == "third")
                     {
-                        if (tfMessage.TFMessage_40_Percent_3rd_F != null && tfMessage.TFMessage_40_Percent_3rd_F != "")
+                        if (!tfMessage.TFMessage_40_Percent_3rd_F.IsNullOrEmpty())
                         {
                             return CleanString(tfMessage.TFMessage_40_Percent_3rd_F, player, attacker);
                         }
@@ -772,7 +772,7 @@ namespace TT.Domain.Procedures
                 {
                     if (PoV == "first")
                     {
-                        if (tfMessage.TFMessage_60_Percent_1st_M != null && tfMessage.TFMessage_60_Percent_1st_M != "")
+                        if (!tfMessage.TFMessage_60_Percent_1st_M.IsNullOrEmpty())
                         {
                             return CleanString(tfMessage.TFMessage_60_Percent_1st_M, player, attacker);
                         }
@@ -784,7 +784,7 @@ namespace TT.Domain.Procedures
                     }
                     else if (PoV == "third")
                     {
-                        if (tfMessage.TFMessage_60_Percent_3rd_M != null && tfMessage.TFMessage_60_Percent_3rd_M != "")
+                        if (!tfMessage.TFMessage_60_Percent_3rd_M.IsNullOrEmpty())
                         {
                             return CleanString(tfMessage.TFMessage_60_Percent_3rd_M, player, attacker);
                         }
@@ -798,7 +798,7 @@ namespace TT.Domain.Procedures
                 {
                     if (PoV == "first")
                     {
-                        if (tfMessage.TFMessage_60_Percent_1st_F != null && tfMessage.TFMessage_60_Percent_1st_F != "")
+                        if (!tfMessage.TFMessage_60_Percent_1st_F.IsNullOrEmpty())
                         {
                             return CleanString(tfMessage.TFMessage_60_Percent_1st_F, player, attacker);
                         }
@@ -810,7 +810,7 @@ namespace TT.Domain.Procedures
                     }
                     else if (PoV == "third")
                     {
-                        if (tfMessage.TFMessage_60_Percent_3rd_F != null && tfMessage.TFMessage_60_Percent_3rd_F != "")
+                        if (!tfMessage.TFMessage_60_Percent_3rd_F.IsNullOrEmpty())
                         {
                             return CleanString(tfMessage.TFMessage_60_Percent_3rd_F, player, attacker);
                         }
@@ -830,7 +830,7 @@ namespace TT.Domain.Procedures
                 {
                     if (PoV == "first")
                     {
-                        if (tfMessage.TFMessage_80_Percent_1st_M != null && tfMessage.TFMessage_80_Percent_1st_M != "")
+                        if (!tfMessage.TFMessage_80_Percent_1st_M.IsNullOrEmpty())
                         {
                             return CleanString(tfMessage.TFMessage_80_Percent_1st_M, player, attacker);
                         }
@@ -842,7 +842,7 @@ namespace TT.Domain.Procedures
                     }
                     else if (PoV == "third")
                     {
-                        if (tfMessage.TFMessage_80_Percent_3rd_M != null && tfMessage.TFMessage_80_Percent_3rd_M != "")
+                        if (!tfMessage.TFMessage_80_Percent_3rd_M.IsNullOrEmpty())
                         {
                             return CleanString(tfMessage.TFMessage_80_Percent_3rd_M, player, attacker);
                         }
@@ -856,7 +856,7 @@ namespace TT.Domain.Procedures
                 {
                     if (PoV == "first")
                     {
-                        if (tfMessage.TFMessage_80_Percent_1st_F != null && tfMessage.TFMessage_80_Percent_1st_F != "")
+                        if (!tfMessage.TFMessage_80_Percent_1st_F.IsNullOrEmpty())
                         {
                             return CleanString(tfMessage.TFMessage_80_Percent_1st_F, player, attacker);
                         }
@@ -868,7 +868,7 @@ namespace TT.Domain.Procedures
                     }
                     else if (PoV == "third")
                     {
-                        if (tfMessage.TFMessage_80_Percent_3rd_F != null && tfMessage.TFMessage_80_Percent_3rd_F != "")
+                        if (!tfMessage.TFMessage_80_Percent_3rd_F.IsNullOrEmpty())
                         {
                             return CleanString(tfMessage.TFMessage_80_Percent_3rd_F, player, attacker);
                         }
@@ -888,7 +888,7 @@ namespace TT.Domain.Procedures
                 {
                     if (PoV == "first")
                     {
-                        if (tfMessage.TFMessage_100_Percent_1st_M != null && tfMessage.TFMessage_100_Percent_1st_M != "")
+                        if (!tfMessage.TFMessage_100_Percent_1st_M.IsNullOrEmpty())
                         {
                             return CleanString(tfMessage.TFMessage_100_Percent_1st_M, player, attacker);
                         }
@@ -900,7 +900,7 @@ namespace TT.Domain.Procedures
                     }
                     else if (PoV == "third")
                     {
-                        if (tfMessage.TFMessage_100_Percent_3rd_M != null && tfMessage.TFMessage_100_Percent_3rd_M != "")
+                        if (!tfMessage.TFMessage_100_Percent_3rd_M.IsNullOrEmpty())
                         {
                             return CleanString(tfMessage.TFMessage_100_Percent_3rd_M, player, attacker);
                         }
@@ -914,7 +914,7 @@ namespace TT.Domain.Procedures
                 {
                     if (PoV == "first")
                     {
-                        if (tfMessage.TFMessage_100_Percent_1st_F != null && tfMessage.TFMessage_100_Percent_1st_F != "")
+                        if (!tfMessage.TFMessage_100_Percent_1st_F.IsNullOrEmpty())
                         {
                             return CleanString(tfMessage.TFMessage_100_Percent_1st_F, player, attacker);
                         }
@@ -926,7 +926,7 @@ namespace TT.Domain.Procedures
                     }
                     else if (PoV == "third")
                     {
-                        if (tfMessage.TFMessage_100_Percent_3rd_F != null && tfMessage.TFMessage_100_Percent_3rd_F != "")
+                        if (!tfMessage.TFMessage_100_Percent_3rd_F.IsNullOrEmpty())
                         {
                             return CleanString(tfMessage.TFMessage_100_Percent_3rd_F, player, attacker);
                         }
@@ -946,7 +946,7 @@ namespace TT.Domain.Procedures
                 {
                     if (PoV == "first")
                     {
-                        if (tfMessage.TFMessage_Completed_1st_M != null && tfMessage.TFMessage_Completed_1st_M != "")
+                        if (!tfMessage.TFMessage_Completed_1st_M.IsNullOrEmpty())
                         {
                             return CleanString(tfMessage.TFMessage_Completed_1st_M, player, attacker);
                         }
@@ -958,7 +958,7 @@ namespace TT.Domain.Procedures
                     }
                     else if (PoV == "third")
                     {
-                        if (tfMessage.TFMessage_Completed_3rd_M != null && tfMessage.TFMessage_Completed_3rd_M != "")
+                        if (!tfMessage.TFMessage_Completed_3rd_M.IsNullOrEmpty())
                         {
                             return CleanString(tfMessage.TFMessage_Completed_3rd_M, player, attacker);
                         }
@@ -972,7 +972,7 @@ namespace TT.Domain.Procedures
                 {
                     if (PoV == "first")
                     {
-                        if (tfMessage.TFMessage_Completed_1st_F != null && tfMessage.TFMessage_Completed_1st_F != "")
+                        if (!tfMessage.TFMessage_Completed_1st_F.IsNullOrEmpty())
                         {
                             return CleanString(tfMessage.TFMessage_Completed_1st_F, player, attacker);
                         }
@@ -984,7 +984,7 @@ namespace TT.Domain.Procedures
                     }
                     else if (PoV == "third")
                     {
-                        if (tfMessage.TFMessage_Completed_3rd_F != null && tfMessage.TFMessage_Completed_3rd_F != "")
+                        if (!tfMessage.TFMessage_Completed_3rd_F.IsNullOrEmpty())
                         {
                             return CleanString(tfMessage.TFMessage_Completed_3rd_F, player, attacker);
                         }

@@ -597,7 +597,7 @@ namespace TT.Web.Controllers
 
             SaveMe.AssignedToArtist = input.AssignedToArtist;
 
-            if (input.ImageURL != null && input.ImageURL != "" && User.IsInRole(PvPStatics.Permissions_Admin))
+            if (!input.ImageURL.IsNullOrEmpty() && User.IsInRole(PvPStatics.Permissions_Admin))
             {
                 SaveMe.ImageURL = input.ImageURL;
             }
@@ -903,7 +903,7 @@ namespace TT.Web.Controllers
             #region write credits
             string output = "New spell, " + contribution.Skill_FriendlyName + ", submitted by ";
 
-            if (contribution.SubmitterUrl != null && contribution.SubmitterUrl != "")
+            if (!contribution.SubmitterUrl.IsNullOrEmpty())
             {
                 output += "<a href=\"" + contribution.SubmitterUrl + "\">" + contribution.SubmitterName + "</a>!";
             }
@@ -912,12 +912,12 @@ namespace TT.Web.Controllers
                 output += contribution.SubmitterName + "!";
             }
 
-            if (contribution.AdditionalSubmitterNames != null && contribution.AdditionalSubmitterNames != "")
+            if (!contribution.AdditionalSubmitterNames.IsNullOrEmpty())
             {
                 output += "  Additional credits go to " + contribution.AdditionalSubmitterNames + ".";
             }
 
-            if (contribution.AssignedToArtist != null && contribution.AssignedToArtist != "")
+            if (!contribution.AssignedToArtist.IsNullOrEmpty())
             {
                 output += "  .  Graphic is by " + contribution.AssignedToArtist + ".";
             }
@@ -1338,13 +1338,6 @@ namespace TT.Web.Controllers
             effect.Succour = contribution.Succour;
             effect.Luck = contribution.Luck;
             effect.Chaos_Order = contribution.Chaos_Order;
-
-            // if this is a castable skill, we need to create or update the skill as well.
-            if ((contribution.Skill_UniqueToForm != null && contribution.Skill_UniqueToForm != "") || (contribution.Skill_UniqueToItem != null && contribution.Skill_UniqueToLocation != ""))
-            {
-                IDbStaticSkillRepository skillRepo = new EFDbStaticSkillRepository();
-
-            }
 
             effectRepo.SaveDbStaticEffect(effect);
 

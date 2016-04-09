@@ -117,7 +117,7 @@
                             <br><br>You have been tamed by @Html.ActionLink(Model.OwnedBy.Player.GetFullName(), "LookAtPlayer", "PvP", new { id = Model.OwnedBy.Player.Id }, null) and will follow your master wherever they go.
 
                             @{
-                        if (Model.YouItem.Item.CurseTFFormdbName != null && Model.YouItem.Item.CurseTFFormdbName != "")
+                        if (!Model.YouItem.Item.CurseTFFormdbName.IsNullOrEmpty())
                         {
                             @Html.ActionLink("Attempt to transform your owner!", "CurseTransformOwner", "PvP")
                         }

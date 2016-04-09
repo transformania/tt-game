@@ -36,7 +36,7 @@
 
             strItemName += item.Item.FriendlyName;
 
-            if (item.dbItem.VictimName != "")
+            if (!item.dbItem.VictimName.IsNullOrEmpty())
             {
                 strItemName += " (" + item.dbItem.GetFullName() + ")";
             }

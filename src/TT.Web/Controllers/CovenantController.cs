@@ -839,7 +839,7 @@ namespace TT.Web.Controllers
              }
 
             // assert that the covenant has a safeground
-             if (myCov.HomeLocation == null || myCov.HomeLocation == "")
+             if (myCov.HomeLocation.IsNullOrEmpty())
              {
                  TempData["Error"] = "Your covenant needs a safeground before it can purchase any furniture.";
                  return RedirectToAction("MyCovenant");
@@ -893,7 +893,7 @@ namespace TT.Web.Controllers
             ViewBag.MyLocation = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName).Name;
 
             string covSafegroundLocation = "";
-            if (myCov.HomeLocation != null && myCov.HomeLocation != "") {
+            if (!myCov.HomeLocation.IsNullOrEmpty()) {
                 covSafegroundLocation = "Your covenant's safeground is at " + LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == myCov.HomeLocation).Name;
             }
             else
@@ -904,7 +904,7 @@ namespace TT.Web.Controllers
 
             bool playerIsAtSafeground = false;
 
-            if (myCov.HomeLocation != null && myCov.HomeLocation != "" && me.dbLocationName == myCov.HomeLocation) {
+            if (!myCov.HomeLocation.IsNullOrEmpty() && me.dbLocationName == myCov.HomeLocation) {
                 playerIsAtSafeground = true;
             }
 

@@ -329,7 +329,7 @@ namespace TT.Domain.Procedures
 
                         playersHere = playersHere.Where(p => p.Health >= .75M * p.MaxHealth).ToList();
 
-                        if (onlinePlayersHere.Count() > 0)
+                        if (onlinePlayersHere.Any())
                         {
                             rand = new Random(DateTime.Now.Millisecond);
                             roll = Math.Floor(rand.NextDouble() * onlinePlayersHere.Count());

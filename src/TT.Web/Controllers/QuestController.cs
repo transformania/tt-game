@@ -262,7 +262,7 @@ namespace TT.Web.Controllers
             // assert player is not currently in a quest with an end state
             QuestState state = QuestProcedures.GetQuestState(me.InQuestState);
 
-            if (state.QuestEnds != null && state.QuestEnds.Count() > 0)
+            if (state.QuestEnds != null && state.QuestEnds.Any())
             {
                 TempData["Error"] = "It is too late to abandon this quest.";
                 TempData["SubError"] = "You must accept the consequences of your actions, be they for good or ill!";
@@ -292,7 +292,7 @@ namespace TT.Web.Controllers
             QuestState state = QuestProcedures.GetQuestState(me.InQuestState);
 
             // assert that there is an end state to this quest state
-            if (state.QuestEnds.Count()==0)
+            if (!state.QuestEnds.Any())
             {
                 TempData["Error"] = "You are not yet at the end of your quest!";
                 TempData["SubError"] = "If it is impossible for you to continue with this quest, you may abandon it.";

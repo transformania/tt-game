@@ -171,7 +171,7 @@ namespace TT.Domain.Procedures.BossProcedures
                 List<ItemViewModel> donnasPlayerPets = ItemProcedures.GetAllPlayerItems(donna.Id).ToList();
 
                 // have Donna release her weakest pet every so often
-                if (worldTurnNumber % 6 == 0 && donnasPlayerPets.Count() > 0)
+                if (worldTurnNumber % 6 == 0 && donnasPlayerPets.Any())
                 {
                     IEnumerable<Item> weakest = itemRepo.Items.Where(i => i.OwnerId == donna.Id).OrderBy(i => i.Level);
                     Item weakestItem = weakest.First();

@@ -36,7 +36,7 @@ namespace TT.Web.Controllers
             updateTimer.Start();
 
             // load up the covenant bindings into memory
-            if (CovenantDictionary.IdNameFlagLookup.Count() == 0)
+            if (!CovenantDictionary.IdNameFlagLookup.Any())
             {
                 CovenantProcedures.LoadCovenantDictionary();
             }
@@ -2363,7 +2363,7 @@ namespace TT.Web.Controllers
         public ActionResult PlayerLookupSend(PlayerSearchViewModel results)
         {
             IEnumerable<Player> result = PlayerProcedures.GetPlayersWithPartialName(results.FirstName);
-            if (result != null && result.Count() > 0)
+            if (result != null && result.Any())
             {
                 results.PlayersFound = result;
                 results.FoundThem = true;
@@ -3226,7 +3226,7 @@ namespace TT.Web.Controllers
 
             // strip out the roman numeral at the end of the last name if there is one
             string[] chunks = me.LastName.Split(' ');
-            if (chunks.Count() > 0)
+            if (chunks.Any())
             {
                 me.LastName = chunks[0];
             }

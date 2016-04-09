@@ -242,7 +242,7 @@ namespace TT.Domain.Statics
 
 
             // someone wants to enter the dungeon but it hasn't been generated yet; build it now
-            if (spawnableLocations.Count() == 0)
+            if (!spawnableLocations.Any())
             {
                 DungeonProcedures.GenerateDungeon();
                 spawnableLocations = LocationList.GetLocation.Where(l => l.Region == "dungeon").Select(l => l.dbName).ToList();

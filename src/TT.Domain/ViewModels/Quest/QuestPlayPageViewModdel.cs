@@ -21,7 +21,7 @@ namespace TT.Domain.ViewModels.Quest
         /// <returns></returns>
         public bool ShowEnd()
         {
-            if (this.QuestState.QuestEnds != null && this.QuestState.QuestEnds.Count() > 0)
+            if (this.QuestState.QuestEnds != null && this.QuestState.QuestEnds.Any())
             {
                 return true;
             }

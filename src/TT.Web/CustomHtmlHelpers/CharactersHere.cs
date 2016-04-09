@@ -533,7 +533,7 @@ namespace TT.Web.CustomHtmlHelpers
 
         public static MvcHtmlString PrintSouledIcon(Item item)
         {
-            if (item.VictimName != null && item.VictimName != "")
+            if (!item.VictimName.IsNullOrEmpty())
             {
                 double timeAgo = Math.Abs(Math.Floor(item.LastSouledTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
 
@@ -562,7 +562,7 @@ namespace TT.Web.CustomHtmlHelpers
 
         public static MvcHtmlString PrintSouledIcon(ItemViewModel item)
         {
-            if (item.dbItem.VictimName != null && item.dbItem.VictimName != "")
+            if (!item.dbItem.VictimName.IsNullOrEmpty())
             {
                 double timeAgo = Math.Abs(Math.Floor(item.dbItem.LastSouledTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
 
@@ -591,7 +591,7 @@ namespace TT.Web.CustomHtmlHelpers
 
         public static MvcHtmlString StringToWebsite(string url)
         {
-            if (url == null || url == "")
+            if (url.IsNullOrEmpty())
             {
                 return new MvcHtmlString("");
             }
@@ -669,7 +669,7 @@ namespace TT.Web.CustomHtmlHelpers
         {
             string output = "";
 
-            if (cov.HomeLocation != null && cov.HomeLocation != "")
+            if (!cov.HomeLocation.IsNullOrEmpty())
             {
                 string locName = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == cov.HomeLocation).Name;
                 output = "<span class = 'covMemberCount'>Safeground at <b>" + locName + "</b>.</span>";

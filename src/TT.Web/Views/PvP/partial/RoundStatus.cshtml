@@ -27,12 +27,12 @@
         <p class="infoMessage error">TURN UPDATE IN PROGRESS</p>
     }
 
-    if (ViewBag.Duel != null && ViewBag.Duel != "")
+    if (!string.IsNullOrEmpty(ViewBag.Duel))
     {
         <p class="infoMessage specialBox2 specialNoticeBox">You are currently engaged in a duel with @ViewBag.Duel!  Click @Html.ActionLink("here", "DuelDetail","Duel", new { id = ViewBag.DuelId}, null) to see details.  <b class="bad">@ViewBag.TurnsLeft</b> turns remaining.</p>
     }
 
-    if (ViewBag.QuestName != null && ViewBag.QuestName != "")
+    if (!string.IsNullOrEmpty(ViewBag.QuestName))
     {
         <p class="specialBox specialBox2">You are currently engaged in the quest <b>@ViewBag.QuestName!</b>  Click @Html.ActionLink("here", "Questing", "Quest") to resume questing.</p>
     }

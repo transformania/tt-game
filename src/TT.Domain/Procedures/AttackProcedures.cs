@@ -46,11 +46,11 @@ namespace TT.Domain.Procedures
 
                 EffectProcedures.GivePerkToPlayer(skillBeingUsed.Skill.GivesEffect, victim);
 
-                if (attacker.Gender == "male" && effectBeingGiven.AttackerWhenHit_M != null && effectBeingGiven.AttackerWhenHit_M != "")
+                if (attacker.Gender == "male" && !effectBeingGiven.AttackerWhenHit_M.IsNullOrEmpty())
                 {
                     logs.AttackerLog += effectBeingGiven.AttackerWhenHit_M;
                 }
-                else if (attacker.Gender == "female" && effectBeingGiven.AttackerWhenHit_F != null && effectBeingGiven.AttackerWhenHit_F != "")
+                else if (attacker.Gender == "female" && !effectBeingGiven.AttackerWhenHit_F.IsNullOrEmpty())
                 {
                     logs.AttackerLog += effectBeingGiven.AttackerWhenHit_F;
                 }

@@ -72,7 +72,7 @@
                 @Html.ActionLink("Led by " + Model.Leader.GetFullName(), "LookAtPlayer", "PvP", new { id = Model.Leader.Id }, null)
             }
 
-            if (Model.dbCovenant.HomeLocation != null && Model.dbCovenant.HomeLocation != "")
+            if (!Model.dbCovenant.HomeLocation.IsNullOrEmpty())
             {
                 <i>This covenant has a level <b>@Model.dbCovenant.Level</b> safeground at @LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == Model.dbCovenant.HomeLocation).Name and has enchanted <b>@ViewBag.LocationsControlled</b> locations.</i>
             }

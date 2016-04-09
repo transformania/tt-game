@@ -23,7 +23,7 @@
             <span> (Equipped)</span>
         }
 
-        if (@Model.dbItem.VictimName != "")
+        if (!Model.dbItem.VictimName.IsNullOrEmpty())
         {
             <span class="formerly">Formerly @Html.ActionLink(Model.dbItem.GetFullName(), "LookAtPlayerItem", "PvP", new { vicname = Model.dbItem.VictimName }, null)</span>
             @CharactersHere.PrintPermanencyIcon(Model)
@@ -42,7 +42,7 @@
     <ul>
         @{
 
-            if (@Model.Item.GivesEffect != null && @Model.Item.GivesEffect != "")
+            if (!Model.Item.GivesEffect.IsNullOrEmpty())
             {
                 <li>Gives the @CharactersHere.GetEffectFriendlyName(@Model.Item.GivesEffect) effect</li>
             }

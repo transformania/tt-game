@@ -440,7 +440,7 @@ namespace TT.Domain.Procedures
             //LogBox log = new LogBox();
 
 
-            if (item.dbLocationName != "")
+            if (!item.dbLocationName.IsNullOrEmpty())
             {
                 if (owner.BotId == AIStatics.ActivePlayerBotId && item.PvPEnabled == -1)
                 {
@@ -1098,7 +1098,7 @@ namespace TT.Domain.Procedures
                 }
 
                 // if this item has an effect it grants, give that effect to the player
-                if (itemPlus.Item.GivesEffect != null && itemPlus.Item.GivesEffect != "")
+                if (!itemPlus.Item.GivesEffect.IsNullOrEmpty())
                 {
                     // check if the player already has this effect or has it in cooldown.  If so, reject usage
                     if (EffectProcedures.PlayerHasEffect(owner, itemPlus.Item.GivesEffect))
@@ -1231,7 +1231,7 @@ namespace TT.Domain.Procedures
 
                     // assert covenant has a safeground
                     Covenant myCov = CovenantProcedures.GetDbCovenant(owner.Covenant);
-                    if (myCov.HomeLocation == null || myCov.HomeLocation == "")
+                    if (myCov.HomeLocation.IsNullOrEmpty())
                     {
                         return "You are a member of your covenant, but unfortunately your covenant has not yet established a safeground to call home so you are unable to use this item.";
                     }
@@ -1384,16 +1384,16 @@ namespace TT.Domain.Procedures
                         return name + " consumed from a " + itemPlus.Item.FriendlyName + ", immediately restoring " + (itemPlus.Item.ReuseableManaRestore + bonusFromLevel) + " mana.  " + owner.Mana + "/" + owner.MaxMana + " Mana";
                     }
 
-                    else if (itemPlus.Item.GivesEffect != null && itemPlus.Item.GivesEffect != "")
+                    else if (!itemPlus.Item.GivesEffect.IsNullOrEmpty())
                     {
                         itemRepo.SaveItem(thisdbItem);
                         EffectProcedures.GivePerkToPlayer(itemPlus.Item.GivesEffect, owner);
                         DbStaticEffect effectPlus = EffectStatics.GetStaticEffect2(itemPlus.Item.GivesEffect);
-                        if (owner.Gender == "male" && effectPlus.MessageWhenHit_M != null && effectPlus.MessageWhenHit_M != "")
+                        if (owner.Gender == "male" && !effectPlus.MessageWhenHit_M.IsNullOrEmpty())
                         {
                             return name + " used a " + itemPlus.Item.FriendlyName + ".  " + effectPlus.MessageWhenHit_M;
                         }
-                        else if (owner.Gender == "female" && effectPlus.MessageWhenHit_F != null && effectPlus.MessageWhenHit_F != "")
+                        else if (owner.Gender == "female" && !effectPlus.MessageWhenHit_F.IsNullOrEmpty())
                         {
                             return name + " used a " + itemPlus.Item.FriendlyName + ".  " + effectPlus.MessageWhenHit_F;
                         }

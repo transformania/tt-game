@@ -243,7 +243,7 @@ namespace TT.Domain.Procedures
             if (northNode != null && !northNode.IsOnClosedList(closedList))
             {
                 Neighbors.Add(northNode);
-                if (northNode.ParentNode == null || northNode.ParentNode == "")
+                if (northNode.ParentNode.IsNullOrEmpty())
                 {
                     northNode.ParentNode = currentNode.dbName;
                 }
@@ -251,7 +251,7 @@ namespace TT.Domain.Procedures
             if (eastNode != null && !eastNode.IsOnClosedList(closedList))
             {
                 Neighbors.Add(eastNode);
-                if (eastNode.ParentNode == null || eastNode.ParentNode == "")
+                if (eastNode.ParentNode.IsNullOrEmpty())
                 {
                     eastNode.ParentNode = currentNode.dbName;
                 }
@@ -259,7 +259,7 @@ namespace TT.Domain.Procedures
             if (southNode != null && !southNode.IsOnClosedList(closedList))
             {
                 Neighbors.Add(southNode);
-                if (southNode.ParentNode == null || southNode.ParentNode == "")
+                if (southNode.ParentNode.IsNullOrEmpty())
                 {
                     southNode.ParentNode = currentNode.dbName;
                 }
@@ -267,7 +267,7 @@ namespace TT.Domain.Procedures
             if (westNode != null && !westNode.IsOnClosedList(closedList))
             {
                 Neighbors.Add(westNode);
-                if (westNode.ParentNode == null || westNode.ParentNode == "")
+                if (westNode.ParentNode.IsNullOrEmpty())
                 {
                     westNode.ParentNode = currentNode.dbName;
                 }

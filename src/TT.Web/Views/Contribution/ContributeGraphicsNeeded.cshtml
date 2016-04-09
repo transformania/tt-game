@@ -56,7 +56,7 @@
                     <td>
 
                         @{
-                if (c.SubmitterUrl != null && c.SubmitterUrl != "")
+                if (!c.SubmitterUrl.IsNullOrEmpty())
                 {
                     <a href="@c.SubmitterUrl">@c.SubmitterName</a>
                 }

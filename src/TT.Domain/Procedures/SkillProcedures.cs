@@ -267,7 +267,7 @@ namespace TT.Domain.Procedures
                 DbStaticSkill skillPlus = SkillStatics.GetStaticSkill(newskill.Name);
                 string output = "";
 
-                //if (skillPlus.DiscoveryMessage != null && skillPlus.DiscoveryMessage != "")
+                //if (!skillPlus.DiscoveryMessage.IsNullOrEmpty())
                 //{
                 //    output += skillPlus.DiscoveryMessage + "  ";
                 //}
@@ -419,7 +419,7 @@ namespace TT.Domain.Procedures
 
             foreach (SkillViewModel2 s in itemSpecificSkills)
             {
-                if (s.Skill.ExclusiveToItem != null && s.Skill.ExclusiveToItem != "" && !equippedItemsDbNames.Contains(s.Skill.ExclusiveToItem))
+                if (!s.Skill.ExclusiveToItem.IsNullOrEmpty() && !equippedItemsDbNames.Contains(s.Skill.ExclusiveToItem))
                 {
                     itemSpecificSkillsIds.Add(s.dbSkill.Id);
                 }

@@ -29,7 +29,7 @@ namespace TT.Domain.Models
 
         public string GetFullName()
         {
-             if (this.Nickname == null || this.Nickname == "")
+             if (this.Nickname.IsNullOrEmpty())
             {
                 return VictimName;
             }
@@ -69,7 +69,7 @@ namespace TT.Domain.Models
 
         public string GetFullName()
         {
-            if (this.Nickname == null || this.Nickname == "")
+            if (this.Nickname.IsNullOrEmpty())
             {
                 return VictimName;
             }

@@ -14,11 +14,11 @@
         {
             <li>Refills action point reserve by:  @Model.FurnitureType.APReserveRefillAmount</li>
         }
-        if (Model.FurnitureType.GivesEffect != null && Model.FurnitureType.GivesEffect != "")
+        if (!Model.FurnitureType.GivesEffect.IsNullOrEmpty())
         {
             <li>Gives effect:  @TT.Domain.Statics.EffectStatics.GetEffect(Model.FurnitureType.GivesEffect).FriendlyName</li>
         }
-        if (Model.FurnitureType.GivesItem!= null && Model.FurnitureType.GivesItem != "") {
+        if (!Model.FurnitureType.GivesItem.IsNullOrEmpty()) {
             <li>Gives item:  @TT.Domain.Statics.ItemStatics.GetStaticItem(Model.FurnitureType.GivesItem).FriendlyName</li>
         } 
     }

@@ -29,7 +29,7 @@ namespace TT.Web.Controllers
         public ActionResult TradeWithMerchant(string filter)
         {
 
-            if (filter == null || filter == "")
+            if (filter.IsNullOrEmpty())
             {
                 filter = "clothes";
             }
@@ -979,7 +979,7 @@ namespace TT.Web.Controllers
                 {
                     output += "\"A disgruntled fae from the Winston grove is going about the town, transforming those she meets into what she believes to be more suitable forms.  If you don't play along, she may well try to turn you into a flower or keep you as her own personal pet.  I've been told the only way to fight is to capture her and imprison her in a jar.  Perhaps questing in the back of Words of Wisdom will help you.  Best of luck, friend!\"<br><br>";
                 }
-                if (output == "")
+                if (output.IsNullOrEmpty())
                 {
                     output += "\"I do not know of anything strange going about Sunnyglade right now.  Well, stranger than usual, anyway.  Is there anything else I can assist you with?\"";
                 }
@@ -1353,7 +1353,7 @@ namespace TT.Web.Controllers
             IEnumerable<DbStaticSkill> allSkills = SkillProcedures.GetAllLearnableSpells();
 
             // filter based on mobility type
-            if (filter == null || filter == "" || filter == "animate")
+            if (filter.IsNullOrEmpty() || filter == "animate")
             {
                 allSkills = allSkills.Where(s => s.MobilityType == "full");
             }
@@ -1433,7 +1433,7 @@ namespace TT.Web.Controllers
             }
 
             // assert spells is learnable
-            if ((spellViewModel.Skill.LearnedAtLocation == null || spellViewModel.Skill.LearnedAtLocation == "") && (spellViewModel.Skill.LearnedAtRegion == null && spellViewModel.Skill.LearnedAtRegion == "") || !spellViewModel.Skill.IsPlayerLearnable)
+            if ((spellViewModel.Skill.LearnedAtLocation.IsNullOrEmpty() && spellViewModel.Skill.LearnedAtRegion.IsNullOrEmpty()) || !spellViewModel.Skill.IsPlayerLearnable)
             {
                 TempData["Error"] = "You cannot learn that spell.";
                      return RedirectToAction("TalkToLorekeeper", "NPC");

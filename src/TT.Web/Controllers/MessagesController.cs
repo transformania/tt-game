@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Web.Mvc;
 using TT.Domain.Models;
 using TT.Domain.Procedures;
@@ -202,7 +203,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
-            if (input.MessageText == null || input.MessageText == "")
+            if (input.MessageText.IsNullOrEmpty())
             {
                 TempData["ErrorMessage"] = "You need to write something to send to this person.";
                 TempData["MessageText"] = input.MessageText;

@@ -1139,7 +1139,7 @@ namespace TT.Domain.Procedures
                                  select s;
 
                 // get all the skills that are found in the region this location is in
-                if (eligibleSkills.Count() == 0)
+                if (!eligibleSkills.Any())
                 {
                     IEnumerable<DbStaticSkill> skillsAtThisRegion = SkillStatics.GetSkillsLearnedAtRegion(here.Region);
                     eligibleSkills = from s in skillsAtThisRegion
@@ -1149,7 +1149,7 @@ namespace TT.Domain.Procedures
                 }
 
                 // there are no new spells to be learned that are not-region specific, so player is just out of luck.
-                if (eligibleSkills.Count() == 0)
+                if (!eligibleSkills.Any())
                 {
                     return "You get the feeling there are no new spells for you to discover around here.";
                 }
@@ -1215,7 +1215,7 @@ namespace TT.Domain.Procedures
                 // see if there is an effect that can be found in this area
                 List<DbStaticEffect> effectsHere = EffectStatics.GetEffectGainedAtLocation(dbLocationName).ToList();
 
-                if (effectsHere.Count() <= 0)
+                if (!effectsHere.Any())
                 {
                     PlayerProcedures.GiveXP(player, 1.5M);
                     return "Although you didn't find anything or learn any new spells, you feel as though you know this town a little better, which may come in useful in the future.  (+1.5 XP)";

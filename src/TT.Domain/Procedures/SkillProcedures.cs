@@ -298,7 +298,7 @@ namespace TT.Domain.Procedures
 
             eligibleSkills = eligibleSkills.ToList();
 
-            if (eligibleSkills.Count() == 0)
+            if (!eligibleSkills.Any())
             {
                 return "(Unfortunately you don't learn any new spells that you don't already know.)";
             }
@@ -307,7 +307,7 @@ namespace TT.Domain.Procedures
 
             for (int i = 0; i < amount; i++)
             {
-                if (eligibleSkills.Count() == 0)
+                if (!eligibleSkills.Any())
                 {
                     break;
                 }

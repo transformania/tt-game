@@ -701,7 +701,7 @@ namespace TT.Web.Controllers
 
             List<ItemViewModel> victimItems = ItemProcedures.GetAllPlayerItems(victim.Id).ToList();
 
-            if (victimItems.Count() > 0)
+            if (victimItems.Any())
             {
                 double max = victimItems.Count();
                 Random rand = new Random();
@@ -1002,7 +1002,7 @@ namespace TT.Web.Controllers
                     }
                 }
 
-                if (quests.Count() == 0)
+                if (!quests.Any())
                 {
                     output += "\"Oh, it seems there's nothing available for you right now.\"<br><br>";
                 }

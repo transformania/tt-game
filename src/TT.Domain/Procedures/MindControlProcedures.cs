@@ -214,7 +214,7 @@ namespace TT.Domain.Procedures
             IMindControlRepository mcRepo = new EFMindControlRepository();
             IPlayerRepository playerRepo = new EFPlayerRepository();
 
-            if (mcRepo.MindControls.Where(m => m.VictimId == player.Id).Count() == 0)
+            if (!mcRepo.MindControls.Where(m => m.VictimId == player.Id).Any())
             {
                 Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
                 dbPlayer.MindControlIsActive = false;
@@ -227,7 +227,7 @@ namespace TT.Domain.Procedures
         public static bool PlayerIsMindControlledWithType(Player player, string type)
         {
             IMindControlRepository mcRepo = new EFMindControlRepository();
-            if (mcRepo.MindControls.Where(p => p.VictimId == player.Id && p.Type == type).Count() > 0)
+            if (mcRepo.MindControls.Where(p => p.VictimId == player.Id && p.Type == type).Any())
             {
                 return true;
             }
@@ -239,7 +239,7 @@ namespace TT.Domain.Procedures
 
         public static bool PlayerIsMindControlledWithType(Player player, IEnumerable<MindControl> controls, string type)
         {
-            if (controls.Where(p => p.VictimId == player.Id && p.Type == type).Count() > 0)
+            if (controls.Where(p => p.VictimId == player.Id && p.Type == type).Any())
             {
                 return true;
             }
@@ -251,7 +251,7 @@ namespace TT.Domain.Procedures
 
         public static bool PlayerIsMindControlledWithSomeType(Player player, IEnumerable<MindControl> controls)
         {
-            if (controls.Where(p => p.VictimId == player.Id).Count() > 0)
+            if (controls.Where(p => p.VictimId == player.Id).Any())
             {
                 return true;
             }

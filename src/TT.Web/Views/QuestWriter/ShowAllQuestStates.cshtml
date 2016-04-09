@@ -16,11 +16,11 @@
                 @Ajax.ActionLink(q.QuestStateName, "QuestState", "QuestWriter", new { Id = q.Id, QuestId = q.QuestId, ParentStateId = -1 }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "editButton" })
 
                 @{
-                    if (q.QuestConnectionRequirements.Count() > 0)
+                    if (q.QuestConnectionRequirements.Any())
                     {
                         <span>@q.QuestConnectionRequirements.Count() requirements |</span>
                     }
-                    if (q.QuestEnds.Count() > 0)
+                    if (q.QuestEnds.Any())
                     {
                         <span>@q.QuestEnds.Count() ends</span>
                     }

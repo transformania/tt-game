@@ -95,7 +95,7 @@ namespace TT.Domain.Procedures.BossProcedures
             List<string> possibleLocations = fairyLocations.Except(visitedFairyLocations).ToList();
 
             // if there are no locations left to visit, reset
-            if (possibleLocations.Count() == 0)
+            if (!possibleLocations.Any())
             {
                 possibleLocations = fairyLocations;
                 directive.sVar2 = "";

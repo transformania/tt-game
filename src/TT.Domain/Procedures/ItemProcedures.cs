@@ -934,7 +934,7 @@ namespace TT.Domain.Procedures
 
 
                 // this player currently has no tamed pets, so give it to them auto equipped
-                if (AttackerExistingItems.Where(e => e.Item.ItemType == PvPStatics.ItemType_Pet).Count() == 0 && attacker.BotId >= AIStatics.PsychopathBotId)
+                if (!AttackerExistingItems.Where(e => e.Item.ItemType == PvPStatics.ItemType_Pet).Any() && attacker.BotId >= AIStatics.PsychopathBotId)
                 {
                     newItem.OwnerId = attacker.Id;
                     newItem.IsEquipped = true;

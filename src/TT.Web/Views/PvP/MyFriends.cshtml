@@ -32,7 +32,7 @@
 
 
 @{
-    if (Model.ConfirmedFriends.Where(m => m.dbPlayer != null).Count() > 0)
+    if (Model.ConfirmedFriends.Where(m => m.dbPlayer != null).Any())
     {
         <div class="specialBox specialHeader">
             <b>Active Friends (@Model.ConfirmedFriends.Where(m => m.dbPlayer != null).Count())</b>
@@ -119,7 +119,7 @@
 
 
 @{
-    if (Model.RequestsForMe.Where(m => m.dbPlayer != null).Count() > 0)
+    if (Model.RequestsForMe.Where(m => m.dbPlayer != null).Any())
     {
 
         <div class="specialBox specialHeader topBorder">
@@ -165,7 +165,7 @@
 
 
 @{
-    if (Model.MyOutgoingRequests.Where(m => m.dbPlayer != null).Count() > 0)
+    if (Model.MyOutgoingRequests.Where(m => m.dbPlayer != null).Any())
     {
         <div class="specialBox specialHeader topBorder">
             <b>Requests you've sent (@Model.MyOutgoingRequests.Count())</b>

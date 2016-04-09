@@ -474,7 +474,7 @@ namespace TT.Web.CustomHtmlHelpers
             else
             {
 
-                if (CovenantDictionary.IdNameFlagLookup.Count() == 0)
+                if (!CovenantDictionary.IdNameFlagLookup.Any())
                 {
                     CovenantProcedures.LoadCovenantDictionary();
                 }
@@ -495,7 +495,7 @@ namespace TT.Web.CustomHtmlHelpers
             else
             {
 
-                if (CovenantDictionary.IdNameFlagLookup.Count() == 0)
+                if (!CovenantDictionary.IdNameFlagLookup.Any())
                 {
                     CovenantProcedures.LoadCovenantDictionary();
                 }

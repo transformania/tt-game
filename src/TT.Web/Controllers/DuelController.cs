@@ -246,7 +246,7 @@ namespace TT.Web.Controllers
 
             }
 
-            if (errorMessages.Count() > 0)
+            if (errorMessages.Any())
             {
                 string errors = "";
                 foreach (string s in errorMessages)

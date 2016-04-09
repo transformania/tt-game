@@ -507,7 +507,7 @@ namespace TT.Domain.Procedures
 
             string output = "";
 
-            if (q.QuestConnectionRequirements.Count()==0)
+            if (!q.QuestConnectionRequirements.Any())
             {
                 return output;
             }
@@ -863,7 +863,7 @@ namespace TT.Domain.Procedures
             IQuestRepository repo = new EFQuestRepository();
             IEnumerable<int> turns = repo.QuestPlayerStatuses.Where(p => p.PlayerId == player.Id && p.QuestId == questId).Select(s => s.LastEndedTurn);
 
-            if (turns.Count()==0)
+            if (!turns.Any())
             {
                 return -9999;
             } else

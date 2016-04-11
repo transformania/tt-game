@@ -188,6 +188,10 @@ function sendAlertBox(noticemessage) {
     }
     if (window.Notification && Notification.permission === "granted") {
         var n = new Notification("Alert!", { body: noticemessage, icon: "/Images/PvP/Icons/tt_logo.ico" });
+        n.onclick = function () {
+            window.focus();
+            this.close();
+        };
     }
     else if (window.Notification && Notification.permission !== "denied") {
         Notification.requestPermission(function (status) {
@@ -196,6 +200,10 @@ function sendAlertBox(noticemessage) {
             }
             if (status === "granted") {
                 var n = new Notification("Alert!", { body: noticemessage, icon: "/Images/PvP/Icons/tt_logo.ico" });
+                n.onclick = function () {
+                    window.focus();
+                    this.close();
+                };
             }
         });
     }

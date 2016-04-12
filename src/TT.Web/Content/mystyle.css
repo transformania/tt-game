@@ -8,7 +8,7 @@
     margin-left: 20%;
     margin-right: 20%;
     background-image: url(../images/background1.jpg);
-    background-repeat: repeat-x,y;
+    background-repeat: repeat;
     z-index: 3;
     overflow-y: auto;
 }
@@ -34,7 +34,6 @@
 
     padding: 0px;
     padding-left: 20px;
-    paddig-right: 20px;
 
 
 	
@@ -63,7 +62,7 @@
 
 body {
     background-image: url(../images/wallpaperDefault.jpg);
-    background-repeat:  x,y;
+    background-repeat:  repeat;
 }
 
 select {
@@ -72,7 +71,7 @@ select {
     padding: 2px;
     font-size: 16px;
     line-height: 1;
-    border-style: solid black 1px;
+    border: solid black 1px;
     height: 28px;
     border-radius: 10px;
 }
@@ -167,7 +166,7 @@ debug {
 yourName {
     color: blue;
     font-size: 25px;
-    position: center;
+    text-align: center;
 }
 
 textarea {
@@ -186,7 +185,7 @@ textarea {
     float: none;
     position: fixed;
     background-image: url(../images/darkBackground.jpg);
-    background-repeat: repeat-x,y;
+    background-repeat: repeat;
     opacity: .8;
     z-index: 2;
     width: 100%;
@@ -199,7 +198,7 @@ textarea {
 #clearTextButton {
     position: relative;
     float: right;
-    float: top;
+    vertical-align: top;
 }
 
 #outputBox textarea {
@@ -212,13 +211,13 @@ textarea {
 }
 
 #nameBox {
-    float: top;
+    vertical-align: top;
     position: relative;
     font-size: 20px;
     width: 70%;
     margin-left: 14%;
     margin-right: 14%;
-    border-width: 1%;
+    border-width: medium;
     border-style: solid;
     border-color: black;
     border-radius: 10px;
@@ -242,7 +241,7 @@ textarea {
     margin-right: 20%;
     padding: 20px;
     background-image: url(../images/background1.jpg);
-    background-repeat: repeat-x,y;
+    background-repeat: repeat;
     z-index: 3;
     overflow-y: auto;
 }
@@ -282,7 +281,7 @@ textarea {
 }
 
 #gameplayBox {
-    border-width: 1%;
+    border-width: medium;
     border-style: solid;
     border-color: black;
     border-radius: 10px;
@@ -298,7 +297,7 @@ textarea {
 }
 
 #leftColumnDiv {
-    border-width: 1%;
+    border-width: medium;
     border-style: solid;
     border-color: black;
     border-radius: 10px;
@@ -311,7 +310,7 @@ textarea {
 }
 
 #rightColumnDiv {
-    border-width: 1%;
+    border-width: medium;
     border-radius: 10px;
     border-style: solid;
     border-color: black;
@@ -323,7 +322,7 @@ textarea {
 }
 
 #buttons {
-    float: top;
+    vertical-align: top;
     position: relative;
 }
 
@@ -331,7 +330,7 @@ textarea {
 
 #questionTimerWrapper {
     position: relative;
-    float: top;
+    vertical-align: top;
     width: 95%;
     margin-left: 2.5%;
     margin-left: 2.5%;
@@ -361,7 +360,6 @@ textarea {
     height: 100px;
     border-style: solid;
     border-color: black;
-    readOnly: true;
     resize: none;
 }
 
@@ -379,7 +377,7 @@ textarea {
 
 #choices {
     position: relative;
-    float: top;
+    vertical-align: top;
     width: 100%;
     border-style: solid;
     border-color: black;
@@ -444,7 +442,7 @@ textarea {
     position: relative;
     font-size: 20px;
     width: 95%;
-    border-width: 1%;
+    border-width: medium;
     border-style: solid;
     border-color: black;
     border-radius: 10px;
@@ -553,7 +551,7 @@ textarea {
 }
 
 #totalOpponentTF {
-    border-width: 3px;
+    border-width: medium;
     border-radius: 5px;
     border-style: solid;
     border-color: black;
@@ -567,7 +565,7 @@ textarea {
 }
 
 #totalPlayerTF {
-    border-width: 3px;
+    border-width: medium;
     border-radius: 5px;
     border-style: solid;
     border-color: black;
@@ -580,9 +578,8 @@ textarea {
 }
 
 #totalOpponentTFProgressBar {
-    border: solid 1% black;
     background-image: url(../images/oTotalTF.jpg);
-    background-repeat: repeat-x repeat-y;
+    background-repeat: repeat;
     height: 100%;
     width: 99%;
     position: absolute;
@@ -590,9 +587,8 @@ textarea {
 }
 
 #totalPlayerTFProgressBar {
-    border: solid 1% black;
     background-image: url(../images/pTotalTF.jpg);
-    background-repeat: repeat-x repeat-y;
+    background-repeat: repeat;
     height: 100%;
     width: 99%;
     position: absolute;
@@ -616,7 +612,7 @@ textarea {
     margin-right: 20%;
     padding: 20px;
     background-image: url(../images/background1.jpg);
-    background-repeat: repeat-x,y;
+    background-repeat: repeat;
     z-index: 4;
 }
 
@@ -627,7 +623,7 @@ textarea {
     border-color: black;
     border-radius: 10px;
     background-image: url(../images/background2.jpg);
-    background-repeat: repeat-x,y;
+    background-repeat: repeat;
     opacity: .8;
 }
 
@@ -651,7 +647,6 @@ textarea {
 
 timerTextStyle {
     font-size: 60px;
-    readOnly: true;
     resize: none;
 }
 
@@ -684,7 +679,7 @@ timerTextStyle {
 
 #reflexOpponentScoreProgressBar {
     background-image: url(../images/cBarBackground.jpg);
-    background-repeat: repeat-x repeat-y;
+    background-repeat: repeat;
     height: 96%;
     width: 1%;
     float: left;
@@ -692,7 +687,7 @@ timerTextStyle {
 
 #reflexPlayerScoreProgressBar {
     background-image: url(../images/pBarBackground.jpg);
-    background-repeat: repeat-x repeat-y;
+    background-repeat: repeat;
     height: 96%;
     width: 1%;
     float: left;
@@ -722,7 +717,7 @@ reflexLoseText {
     margin-right: 20%;
     padding: 20px;
     background-image: url(../images/background1.jpg);
-    background-repeat: repeat-x,y;
+    background-repeat: repeat;
     z-index: 4;
 }
 
@@ -733,7 +728,7 @@ reflexLoseText {
     border-color: black;
     border-radius: 10px;
     background-image: url(../images/background2.jpg);
-    background-repeat: repeat-x,y;
+    background-repeat: repeat;
     opacity: .8;
 }
 
@@ -747,7 +742,7 @@ reflexLoseText {
 
 #sequenceOpponentScoreProgressBar {
     background-image: url(../images/cBarBackground.jpg);
-    background-repeat: repeat-x repeat-y;
+    background-repeat: repeat;
     height: 96%;
     width: 1%;
     float: left;
@@ -763,7 +758,7 @@ reflexLoseText {
 
 #sequencePlayerScoreProgressBar {
     background-image: url(../images/pBarBackground.jpg);
-    background-repeat: repeat-x repeat-y;
+    background-repeat: repeat;
     height: 96%;
     width: 1%;
     float: left;
@@ -777,7 +772,7 @@ reflexLoseText {
 }
 
 #seqImgBtnsWrapper {
-    float: bottom;
+    vertical-align: bottom;
     width: 100%;
     height: 164px;
     background: rgba(255,255,255,1);
@@ -785,7 +780,7 @@ reflexLoseText {
 }
 
 #sequenceTest1 {
-    width: 50x;
+    width: 50px;
     height: 50px;
     background: rgba(255,200,200,0.6);
     border: 2px solid black;
@@ -793,7 +788,7 @@ reflexLoseText {
 }
 
 #sequenceTest2 {
-    width: 50x;
+    width: 50px;
     height: 50px;
     background: rgba(255,200,200,0.6);
     border: 2px solid black;
@@ -850,7 +845,7 @@ reflexLoseText {
     margin-right: 20%;
     padding: 20px;
     background-image: url(../images/background1.jpg);
-    background-repeat: repeat-x,y;
+    background-repeat: repeat;
     z-index: 4;
 }
 
@@ -861,7 +856,7 @@ reflexLoseText {
     border-color: black;
     border-radius: 10px;
     background-image: url(../images/background2.jpg);
-    background-repeat: repeat-x,y;
+    background-repeat: repeat;
     opacity: .8;
 }
 
@@ -883,7 +878,7 @@ reflexLoseText {
 
 #memoryOpponentScoreProgressBar {
     background-image: url(../images/cBarBackground.jpg);
-    background-repeat: repeat-x repeat-y;
+    background-repeat: repeat;
     height: 96%;
     width: 1%;
     float: left;
@@ -891,7 +886,7 @@ reflexLoseText {
 
 #memoryPlayerScoreProgressBar {
     background-image: url(../images/pBarBackground.jpg);
-    background-repeat: repeat-x repeat-y;
+    background-repeat: repeat;
     height: 96%;
     width: 1%;
     float: left;
@@ -937,7 +932,7 @@ reflexLoseText {
     margin-right: 20%;
     padding: 20px;
     background-image: url(../images/background1.jpg);
-    background-repeat: repeat-x,y;
+    background-repeat: repeat;
     z-index: 4;
 }
 
@@ -949,7 +944,7 @@ reflexLoseText {
     border-color: black;
     border-radius: 10px;
     background-image: url(../images/background2.jpg);
-    background-repeat: repeat-x,y;
+    background-repeat: repeat;
     opacity: .8;
 }
 
@@ -963,7 +958,7 @@ reflexLoseText {
 
 #popupOpponentScoreProgressBar {
     background-image: url(../images/cBarBackground.jpg);
-    background-repeat: repeat-x repeat-y;
+    background-repeat: repeat;
     height: 96%;
     width: 1%;
     float: left;
@@ -979,7 +974,7 @@ reflexLoseText {
 
 #popupPlayerScoreProgressBar {
     background-image: url(../images/pBarBackground.jpg);
-    background-repeat: repeat-x repeat-y;
+    background-repeat: repeat;
     height: 96%;
     width: 1%;
     float: left;
@@ -1061,7 +1056,7 @@ reflexLoseText {
     margin-right: 20%;
     padding: 20px;
     background-image: url(../images/background1.jpg);
-    background-repeat: repeat-x,y;
+    background-repeat: repeat;
     z-index: 4;
     display: none;
 }
@@ -1074,7 +1069,7 @@ reflexLoseText {
     border-color: black;
     border-radius: 10px;
     background-image: url(../images/background2.jpg);
-    background-repeat: repeat-x,y;
+    background-repeat: repeat;
     opacity: .8;
 }
 
@@ -1238,7 +1233,7 @@ reflexLoseText {
     margin-right: 20%;
     padding: 20px;
     background-image: url(../images/background1.jpg);
-    background-repeat: repeat-x,y;
+    background-repeat: repeat;
     z-index: 4;
     display: none;
 }
@@ -1251,7 +1246,7 @@ reflexLoseText {
     border-color: black;
     border-radius: 10px;
     background-image: url(../images/background2.jpg);
-    background-repeat: repeat-x,y;
+    background-repeat: repeat;
     opacity: .8;
 }
 
@@ -1265,7 +1260,7 @@ reflexLoseText {
 
 #discusOpponentScoreProgressBar {
     background-image: url(../images/cBarBackground.jpg);
-    background-repeat: repeat-x repeat-y;
+    background-repeat: repeat;
     height: 96%;
     width: 1%;
     float: left;
@@ -1281,7 +1276,7 @@ reflexLoseText {
 
 #discusPlayerScoreProgressBar {
     background-image: url(../images/pBarBackground.jpg);
-    background-repeat: repeat-x repeat-y;
+    background-repeat: repeat;
     height: 96%;
     width: 1%;
     float: left;
@@ -1297,7 +1292,7 @@ reflexLoseText {
 
 #discusOpponentScoreProgressBar {
     background-image: url(../images/cBarBackground.jpg);
-    background-repeat: repeat-x repeat-y;
+    background-repeat: repeat;
     height: 96%;
     width: 1%;
     float: left;
@@ -1313,7 +1308,7 @@ reflexLoseText {
 
 #discusPlayerScoreProgressBar {
     background-image: url(../images/pBarBackground.jpg);
-    background-repeat: repeat-x repeat-y;
+    background-repeat: repeat;
     height: 96%;
     width: 1%;
     float: left;
@@ -1383,7 +1378,7 @@ reflexLoseText {
     margin-right: 20%;
     padding: 20px;
     background-image: url(../images/background1.jpg);
-    background-repeat: repeat-x,y;
+    background-repeat: repeat;
     z-index: 4;
     display: none;
 }
@@ -1396,7 +1391,7 @@ reflexLoseText {
     border-color: black;
     border-radius: 10px;
     background-image: url(../images/background2.jpg);
-    background-repeat: repeat-x,y;
+    background-repeat: repeat;
     opacity: .8;
 }
 
@@ -1410,7 +1405,7 @@ reflexLoseText {
 
 #dpongOpponentScoreProgressBar {
     background-image: url(../images/cBarBackground.jpg);
-    background-repeat: repeat-x repeat-y;
+    background-repeat: repeat;
     height: 96%;
     width: 1%;
     float: left;
@@ -1426,7 +1421,7 @@ reflexLoseText {
 
 #dpongPlayerScoreProgressBar {
     background-image: url(../images/pBarBackground.jpg);
-    background-repeat: repeat-x repeat-y;
+    background-repeat: repeat;
     height: 96%;
     width: 1%;
     float: left;

@@ -19,12 +19,6 @@ namespace TT.Web.Controllers
 
         public const int MovementControlLimit = 2;
 
-        public ActionResult Index()
-        {
-            return View();
-        }
-
-
         [Authorize]
         public ActionResult TradeWithMerchant(string filter)
         {
@@ -817,14 +811,14 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "Your victim is resting from a recent attack.";
                 TempData["SubError"] = "You must wait " + (45 - lastAttackTimeAgo) + " more seconds your victim will be able to move.";
-                return RedirectToAction("Play");
+                return RedirectToAction("Play", "PvP");
             }
 
             // assert that the victim is not carrying too much to move
             if (ItemProcedures.PlayerIsCarryingTooMuch(victim.Id, 0, victimBuffs))
             {
                 TempData["Error"] = "Your victim is carrying too much to be able to move.";
-                return RedirectToAction("Play");
+                return RedirectToAction("Play", "PvP");
             }
 
 
@@ -837,7 +831,7 @@ namespace TT.Web.Controllers
             if (victim.IsInDungeon() != destinationIsInDungeon)
             {
                 TempData["Error"] = "You can't order your victim to move into the dungeon from outside of it or the other way around.";
-                return RedirectToAction("Play");
+                return RedirectToAction("Play", "PvP");
             }
 
 
@@ -1422,7 +1416,7 @@ namespace TT.Web.Controllers
             }
 
             // assert player does not already have that spell
-            SkillViewModel2 spellViewModel = SkillProcedures.GetSkillViewModel_NotOwned(spell);
+            SkillViewModel spellViewModel = SkillProcedures.GetSkillViewModel_NotOwned(spell);
 
             IEnumerable<Skill> playerExistingSpells = SkillProcedures.GetSkillsOwnedByPlayer(me.Id);
 

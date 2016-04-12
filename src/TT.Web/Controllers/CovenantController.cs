@@ -211,12 +211,6 @@ namespace TT.Web.Controllers
         }
 
         [Authorize]
-        public ActionResult DisbandCovenant()
-        {
-            return View();
-        }
-
-        [Authorize]
         public ActionResult ChangeCovenantDescription()
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());

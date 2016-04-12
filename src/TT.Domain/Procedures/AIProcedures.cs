@@ -242,7 +242,7 @@ namespace TT.Domain.Procedures
 
                     AIDirective directive = AIDirectiveProcedures.GetAIDirective(bot.Id);
                     log.AddLog(bot.FirstName + " " + bot.LastName + ":  Directive is to:  " + directive.State + " target ID: " + directive.TargetPlayerId);
-                    SkillViewModel2 skill = SkillProcedures.GetSkillViewModelsOwnedByPlayer(bot.Id).FirstOrDefault(s => s.dbSkill.Name != "lowerHealth" && s.Skill.ExclusiveToForm == null && s.Skill.ExclusiveToItem == null);
+                    SkillViewModel skill = SkillProcedures.GetSkillViewModelsOwnedByPlayer(bot.Id).FirstOrDefault(s => s.dbSkill.Name != "lowerHealth" && s.Skill.ExclusiveToForm == null && s.Skill.ExclusiveToItem == null);
 
                     Random rand = new Random(DateTime.Now.Millisecond);
                     double roll = 0;
@@ -558,13 +558,13 @@ namespace TT.Domain.Procedures
         public static void CounterAttack(Player personAttackin, Player bot)
         {
 
-            IEnumerable<SkillViewModel2> myskills = SkillProcedures.GetSkillViewModelsOwnedByPlayer(bot.Id);
+            IEnumerable<SkillViewModel> myskills = SkillProcedures.GetSkillViewModelsOwnedByPlayer(bot.Id);
 
             Random rand = new Random(personAttackin.LastName.GetHashCode());
             double roll = Math.Floor(rand.NextDouble() * (double)myskills.Count());
 
 
-            SkillViewModel2 selectedSkill = myskills.ElementAt((int)roll);
+            SkillViewModel selectedSkill = myskills.ElementAt((int)roll);
 
             if (personAttackin.BotId == AIStatics.ActivePlayerBotId) {
                 AttackProcedures.Attack(bot, personAttackin, selectedSkill);

@@ -58,16 +58,16 @@ namespace TT.Domain.Procedures
             return output;
         }
 
-        public static IEnumerable<SkillViewModel2> GetSkillViewModelsOwnedByPlayer(int playerId)
+        public static IEnumerable<SkillViewModel> GetSkillViewModelsOwnedByPlayer(int playerId)
         {
             ISkillRepository skillRepo = new EFSkillRepository();
 
-            IEnumerable<SkillViewModel2> output = from ds in skillRepo.Skills
+            IEnumerable<SkillViewModel> output = from ds in skillRepo.Skills
                                                   where ds.OwnerId == playerId
                                                   join ss in skillRepo.DbStaticSkills on ds.Name equals ss.dbName
 
 
-                                                  select new SkillViewModel2
+                                                  select new SkillViewModel
                                                  {
 
                                                      MobilityType = ss.MobilityType,
@@ -106,17 +106,17 @@ namespace TT.Domain.Procedures
             return output;
         }
 
-        public static IEnumerable<SkillViewModel2> GetSkillViewModelsOwnedByPlayer__CursesOnly(int playerId)
+        public static IEnumerable<SkillViewModel> GetSkillViewModelsOwnedByPlayer__CursesOnly(int playerId)
         {
             ISkillRepository skillRepo = new EFSkillRepository();
 
-            IEnumerable<SkillViewModel2> output = from ds in skillRepo.Skills
+            IEnumerable<SkillViewModel> output = from ds in skillRepo.Skills
                                                   
                                                   join ss in skillRepo.DbStaticSkills on ds.Name equals ss.dbName
                                                   where ds.OwnerId == playerId && ss.MobilityType == "curse"
 
 
-                                                  select new SkillViewModel2
+                                                  select new SkillViewModel
                                                   {
 
                                                       MobilityType = ss.MobilityType,
@@ -155,16 +155,16 @@ namespace TT.Domain.Procedures
             return output;
         }
 
-        public static SkillViewModel2 GetSkillViewModel(string skilldbName, int playerId)
+        public static SkillViewModel GetSkillViewModel(string skilldbName, int playerId)
         {
             ISkillRepository skillRepo = new EFSkillRepository();
 
-            IEnumerable<SkillViewModel2> output = from ds in skillRepo.Skills
+            IEnumerable<SkillViewModel> output = from ds in skillRepo.Skills
                                                   where ds.OwnerId == playerId && ds.Name == skilldbName
                                                   join ss in skillRepo.DbStaticSkills on ds.Name equals ss.dbName
 
 
-                                                  select new SkillViewModel2
+                                                  select new SkillViewModel
                                                   {
                                                       MobilityType = ss.MobilityType,
                                                       dbSkill = new Skill_VM
@@ -200,7 +200,7 @@ namespace TT.Domain.Procedures
             return output.FirstOrDefault();
         }
 
-        public static SkillViewModel2 GetSkillViewModel_NotOwned(string skilldbName)
+        public static SkillViewModel GetSkillViewModel_NotOwned(string skilldbName)
         {
 
             ISkillRepository skillRepo = new EFSkillRepository();
@@ -229,7 +229,7 @@ namespace TT.Domain.Procedures
                 IsPlayerLearnable = dbstatic.IsPlayerLearnable
             };
 
-            SkillViewModel2 output = new SkillViewModel2
+            SkillViewModel output = new SkillViewModel
             {
                 dbSkill = tempskill,
                 Skill = tempstatic,
@@ -367,7 +367,7 @@ namespace TT.Domain.Procedures
             ISkillRepository skillRepo = new EFSkillRepository();
 
             // delete all of the old form specific skills
-            IEnumerable<SkillViewModel2> formSpecificSkills = GetSkillViewModelsOwnedByPlayer__CursesOnly(player.Id).ToList();
+            IEnumerable<SkillViewModel> formSpecificSkills = GetSkillViewModelsOwnedByPlayer__CursesOnly(player.Id).ToList();
             IEnumerable<int> formSpecificSkillIds = formSpecificSkills.Where(s => s.MobilityType == "curse" && s.Skill.ExclusiveToForm != newFormDbName).Select(s => s.dbSkill.Id).ToList();
 
             foreach (int id in formSpecificSkillIds)
@@ -413,11 +413,11 @@ namespace TT.Domain.Procedures
             ISkillRepository skillRepo = new EFSkillRepository();
 
             // delete all of the old item specific skills for the player
-            IEnumerable<SkillViewModel2> itemSpecificSkills = GetSkillViewModelsOwnedByPlayer__CursesOnly(owner.Id).ToList();
+            IEnumerable<SkillViewModel> itemSpecificSkills = GetSkillViewModelsOwnedByPlayer__CursesOnly(owner.Id).ToList();
             IEnumerable<string> equippedItemsDbNames = ItemProcedures.GetAllPlayerItems_ItemOnly(owner.Id).Where(i => i.IsEquipped && i.dbName != newItemName).Select(s => s.dbName).ToList();
             List<int> itemSpecificSkillsIds = new List<int>();
 
-            foreach (SkillViewModel2 s in itemSpecificSkills)
+            foreach (SkillViewModel s in itemSpecificSkills)
             {
                 if (!s.Skill.ExclusiveToItem.IsNullOrEmpty() && !equippedItemsDbNames.Contains(s.Skill.ExclusiveToItem))
                 {

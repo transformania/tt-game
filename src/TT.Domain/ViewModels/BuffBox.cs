@@ -13,7 +13,6 @@ namespace TT.Domain.ViewModels
         public decimal HealthRecoveryPerUpdate { get; set; }
         public decimal ManaRecoveryPerUpdate { get; set; }
         public decimal SneakPercent { get; set; }
-        public decimal AntiSneakPercent { get; set; }
         public decimal EvasionPercent { get; set; }
         public decimal EvasionNegationPercent { get; set; }
         public decimal MeditationExtraMana { get; set; }
@@ -59,7 +58,6 @@ namespace TT.Domain.ViewModels
         public decimal FromItems_HealthRecoveryPerUpdate { get; set; }
         public decimal FromItems_ManaRecoveryPerUpdate { get; set; }
         public decimal FromItems_SneakPercent { get; set; }
-        public decimal FromItems_AntiSneakPercent { get; set; }
         public decimal FromItems_EvasionPercent { get; set; }
         public decimal FromItems_EvasionNegationPercent { get; set; }
         public decimal FromItems_MeditationExtraMana { get; set; }
@@ -92,7 +90,6 @@ namespace TT.Domain.ViewModels
         public decimal FromForm_HealthRecoveryPerUpdate { get; set; }
         public decimal FromForm_ManaRecoveryPerUpdate { get; set; }
         public decimal FromForm_SneakPercent { get; set; }
-        public decimal FromForm_AntiSneakPercent { get; set; }
         public decimal FromForm_EvasionPercent { get; set; }
         public decimal FromForm_EvasionNegationPercent { get; set; }
         public decimal FromForm_MeditationExtraMana { get; set; }
@@ -125,7 +122,6 @@ namespace TT.Domain.ViewModels
         public decimal FromEffects_HealthRecoveryPerUpdate { get; set; }
         public decimal FromEffects_ManaRecoveryPerUpdate { get; set; }
         public decimal FromEffects_SneakPercent { get; set; }
-        public decimal FromEffects_AntiSneakPercent { get; set; }
         public decimal FromEffects_EvasionPercent { get; set; }
         public decimal FromEffects_EvasionNegationPercent { get; set; }
         public decimal FromEffects_MeditationExtraMana { get; set; }
@@ -312,9 +308,6 @@ namespace TT.Domain.ViewModels
             output += Magicka() * BuffMap.BuffsMap[substat]["Magicka"];
             output += Succour() * BuffMap.BuffsMap[substat]["Succour"];
             output += Luck() * BuffMap.BuffsMap[substat]["Luck"];
-
-            output += (float)FromForm_AntiSneakPercent;
-            output += (float)FromEffects_AntiSneakPercent;
 
             return Convert.ToDecimal(output);
         }

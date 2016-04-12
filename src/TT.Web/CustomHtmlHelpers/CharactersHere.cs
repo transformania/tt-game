@@ -413,7 +413,7 @@ namespace TT.Web.CustomHtmlHelpers
             return new MvcHtmlString(friendlyName);
         }
 
-        public static MvcHtmlString GetSpellTypeClass(SkillViewModel2 skill)
+        public static MvcHtmlString GetSpellTypeClass(SkillViewModel skill)
         {
 
             if (skill.MobilityType == "full")

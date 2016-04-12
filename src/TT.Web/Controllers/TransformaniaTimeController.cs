@@ -7,11 +7,6 @@ namespace TT.Web.Controllers
 {
     public class TransformaniaTimeController : Controller
     {
-        public ActionResult Index()
-        {
-            return View();
-        }
-
         public ActionResult FashionWars()
         {
             return View();

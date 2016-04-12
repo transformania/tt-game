@@ -26,11 +26,11 @@
                  @{ if (loc.Name_North == null) { <text> border-top: 1px solid black; </text>        } }
                  @{ if (loc.Name_West == null) { <text> border-left: 1px solid black; </text>       } }
                  @{ if (loc.Name_South == null) { <text> border-bottom: 1px solid black; </text>      } }
-                 @{  if (loc.Region == "streets" && Model == null) {  <text> background-color lightgray; </text>    }  @*else if (Model != null)
+                 @{  if (loc.Region == "streets" && Model == null) {  <text> background-color: lightgray; </text>    }  @*else if (Model != null)
                      {
 
                      }*@   }
-                 @{ if (Model == null && loc.X == ViewBag.MapX && loc.Y == ViewBag.MapY) { <text> background-color lightpink; </text>      } }
+                 @{ if (Model == null && loc.X == ViewBag.MapX && loc.Y == ViewBag.MapY) { <text> background-color: lightpink; </text>      } }
                  ">
 
                 @{
@@ -50,7 +50,7 @@
 
         }
     }
-
+    </div>
     <style>
         .mapcell {
             height: 93px;

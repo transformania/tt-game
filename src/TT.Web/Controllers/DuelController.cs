@@ -76,7 +76,7 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "This player has blacklisted you or is on your own blacklist.";
                 TempData["SubError"] = "You cannot duel players who are on your blacklist.  Remove them from your blacklist first or ask them to remove you from theirs.";
-                return RedirectToAction("Play");
+                return RedirectToAction("Play", "PvP");
             }
 
             // assert target is not already in a duel
@@ -147,7 +147,7 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "Player update portion of the world update is still in progress.";
                 TempData["SubError"] = "Try again a bit later when the update has progressed farther along.";
-                return RedirectToAction("Play");
+                return RedirectToAction("Play", "PvP");
             }
 
             Duel duel = DuelProcedures.GetDuel(id);

@@ -16,13 +16,6 @@ namespace TT.Web.Controllers
 
     public class ContributionController : Controller
     {
-        //
-        // GET: /Contribution/
-        public ActionResult Index()
-        {
-            return View();
-        }
-
         public ActionResult ProofreadingContributions()
         {
             IContributionRepository contributionRepo = new EFContributionRepository();
@@ -190,7 +183,7 @@ namespace TT.Web.Controllers
             // assert only previewers can view this
             if (!User.IsInRole(PvPStatics.Permissions_Previewer))
             {
-                return View("Play", "PvP");
+                RedirectToAction("Play", "PvP");
             }
 
             IContributionRepository contributionRepo = new EFContributionRepository();
@@ -835,11 +828,6 @@ namespace TT.Web.Controllers
             return RedirectToAction("Play", "PvP");
         }
 
-        public ActionResult ContributorBioList()
-        {
-            return View("ContributorBioList");
-        }
-
         public ActionResult ContributorBio(string name)
         {
             return View("~/Views/Contribution/Bios/" + name + ".cshtml");
@@ -850,7 +838,7 @@ namespace TT.Web.Controllers
 
             if (!User.IsInRole(PvPStatics.Permissions_Admin) && !User.IsInRole(PvPStatics.Permissions_Publisher))
             {
-                return View("ContributorBioList");
+                return RedirectToAction("Play", "PvP");
             }
 
             string message = "started.<br>";
@@ -957,7 +945,7 @@ namespace TT.Web.Controllers
         {
             if (!User.IsInRole(PvPStatics.Permissions_Admin) && !User.IsInRole(PvPStatics.Permissions_Publisher))
             {
-                return View("ContributorBioList");
+                return RedirectToAction("Play", "PvP");
             }
 
 
@@ -1114,7 +1102,7 @@ namespace TT.Web.Controllers
 
             if (!User.IsInRole(PvPStatics.Permissions_Admin) && !User.IsInRole(PvPStatics.Permissions_Publisher))
             {
-                return View("ContributorBioList");
+                return RedirectToAction("Play", "PvP");
             }
 
             string message = "started.<br>";
@@ -1258,7 +1246,7 @@ namespace TT.Web.Controllers
         {
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return View("ContributorBioList");
+                return RedirectToAction("Play", "PvP");
             }
 
             string message = "";
@@ -1355,7 +1343,7 @@ namespace TT.Web.Controllers
         {
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return View("ContributorBioList");
+                return RedirectToAction("Play", "PvP");
             }
 
             IEffectContributionRepository contRepo = new EFEffectContributionRepository();
@@ -1401,7 +1389,7 @@ namespace TT.Web.Controllers
         {
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return View("ContributorBioList");
+                return RedirectToAction("Play", "PvP");
             }
 
             string message = "";
@@ -1433,7 +1421,7 @@ namespace TT.Web.Controllers
         {
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return View("ContributorBioList");
+                return RedirectToAction("Play", "PvP");
             }
 
             string message = "";
@@ -1465,7 +1453,7 @@ namespace TT.Web.Controllers
         {
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return View("ContributorBioList");
+                return RedirectToAction("Play", "PvP");
             }
 
             IContributionRepository contributionRepo = new EFContributionRepository();
@@ -1488,7 +1476,7 @@ namespace TT.Web.Controllers
         {
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return View("ContributorBioList");
+                return RedirectToAction("Play", "PvP");
             }
 
             IContributionRepository contributionRepo = new EFContributionRepository();

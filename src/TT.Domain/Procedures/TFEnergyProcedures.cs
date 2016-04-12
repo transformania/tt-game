@@ -13,7 +13,7 @@ namespace TT.Domain.Procedures
 {
     public static class TFEnergyProcedures
     {
-        public static LogBox AddTFEnergyToPlayer(Player victim, Player attacker, SkillViewModel2 skill, decimal modifier)
+        public static LogBox AddTFEnergyToPlayer(Player victim, Player attacker, SkillViewModel skill, decimal modifier)
         {
 
             // assert modifier is never negative (reduced TF damage instead of adding it)

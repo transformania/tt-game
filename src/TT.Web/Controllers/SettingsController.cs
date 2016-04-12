@@ -15,12 +15,6 @@ namespace TT.Web.Controllers
     public class SettingsController : Controller
     {
          [Authorize]
-        public ActionResult Index()
-        {
-            return View();
-        }
-
-         [Authorize]
          public ActionResult Settings()
          {
              string myMembershipId = User.Identity.GetUserId();
@@ -519,13 +513,6 @@ namespace TT.Web.Controllers
             return RedirectToAction("Play", "PvP");
         }
 
-        [Authorize]
-        public ActionResult PollResultsList()
-        {
-            return View();
-        }
-
-
         public ActionResult PollResults(int id)
         {
             IEnumerable<PollEntry> output = SettingsProcedures.GetAllPollResults(id);
@@ -688,7 +675,7 @@ namespace TT.Web.Controllers
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             // assert that player does own this skill
-            SkillViewModel2 skill = SkillProcedures.GetSkillViewModel(name, me.Id);
+            SkillViewModel skill = SkillProcedures.GetSkillViewModel(name, me.Id);
 
             if (skill == null)
             {
@@ -1005,37 +992,6 @@ namespace TT.Web.Controllers
             RPClassifiedAdsProcedures.DeleteAd(ad.Id);
             TempData["Result"] = "RP classified ad successfully deleted.";
             return RedirectToAction("MyRPClassifiedAds", "Settings");
-        }
-
-        [Authorize]
-        public ActionResult ReplyToAd(int id)
-        {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            RPClassifiedAd ad = RPClassifiedAdsProcedures.GetClassifiedAd(id);
-
-            // assert that the player does not own the ad
-            if (ad.OwnerMembershipId == me.MembershipId)
-            {
-                if (me.MembershipId != ad.OwnerMembershipId)
-                {
-                    TempData["Error"] = "You own this RP Classified Ad.";
-                    return RedirectToAction("MyRPClassifiedAds", "Settings");
-                }
-            }
-
-            Player target = PlayerProcedures.GetPlayerFromMembership(ad.OwnerMembershipId);
-
-            if (target == null) {
-                 if (me.MembershipId != ad.OwnerMembershipId)
-                {
-                    TempData["Error"] = "Unfortunately it seems the owner of this classified ad does not have a character this round and cannot reply.";
-                    return RedirectToAction("MyRPClassifiedAds", "Settings");
-                }
-            }
-
-            return View();
-
         }
 
         [Authorize]

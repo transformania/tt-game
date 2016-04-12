@@ -12,7 +12,7 @@ namespace TT.Domain.Procedures
     public static class AttackProcedures
     {
 
-        public static string Attack(Player attacker, Player victim, SkillViewModel2 skillBeingUsed)
+        public static string Attack(Player attacker, Player victim, SkillViewModel skillBeingUsed)
         {
 
             
@@ -271,7 +271,7 @@ namespace TT.Domain.Procedures
 
         public static string Attack(Player attacker, Player victim, string skillBeingUsed)
         {
-            SkillViewModel2 vm = SkillProcedures.GetSkillViewModel_NotOwned(skillBeingUsed);
+            SkillViewModel vm = SkillProcedures.GetSkillViewModel_NotOwned(skillBeingUsed);
             return Attack(attacker, victim, vm);
         }
 

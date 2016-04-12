@@ -21,7 +21,7 @@ namespace TT.Web.Controllers
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return View("Play", "PvP");
+                RedirectToAction("Play", "PvP");
             }
 
             ViewBag.Message = TempData["Message"];
@@ -118,7 +118,7 @@ namespace TT.Web.Controllers
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return View("Play", "PvP");
+                RedirectToAction("Play", "PvP");
             }
 
             IPvPWorldStatRepository repo = new EFPvPWorldStatRepository();
@@ -137,7 +137,7 @@ namespace TT.Web.Controllers
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return View("Play", "PvP");
+                RedirectToAction("Play", "PvP");
             }
 
             IPvPWorldStatRepository repo = new EFPvPWorldStatRepository();
@@ -165,7 +165,7 @@ namespace TT.Web.Controllers
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return View("Play", "PvP");
+                RedirectToAction("Play", "PvP");
             }
 
             IEffectContributionRepository effectConRepo = new EFEffectContributionRepository();
@@ -179,7 +179,7 @@ namespace TT.Web.Controllers
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return View("Play", "PvP");
+                RedirectToAction("Play", "PvP");
             }
 
             IEffectContributionRepository effectConRepo = new EFEffectContributionRepository();
@@ -191,7 +191,7 @@ namespace TT.Web.Controllers
             if (ProofreadCopy != null)
             {
                 ViewBag.Message = "There's already a proofreading copy for this.";
-                return View("~/Views/PvP/PvPAdmin.cshtml");
+                return View("Index");
             }
             else
             {
@@ -276,7 +276,7 @@ namespace TT.Web.Controllers
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return View("Play", "PvP");
+                return RedirectToAction("Play", "PvP");
             }
             else
             {
@@ -290,7 +290,7 @@ namespace TT.Web.Controllers
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return View("Play", "PvP");
+                return RedirectToAction("Play", "PvP");
             }
             else
             {
@@ -330,7 +330,7 @@ namespace TT.Web.Controllers
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return View("Play", "PvP");
+                return RedirectToAction("Play", "PvP");
             }
             else
             {
@@ -357,7 +357,7 @@ namespace TT.Web.Controllers
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return View("Play", "PvP");
+                return RedirectToAction("Play", "PvP");
             }
             else
             {
@@ -379,7 +379,7 @@ namespace TT.Web.Controllers
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return View("Play", "PvP");
+                return RedirectToAction("Play", "PvP");
             }
 
             return RedirectToAction("Index");
@@ -390,7 +390,7 @@ namespace TT.Web.Controllers
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return View("Play", "PvP");
+                return RedirectToAction("Play", "PvP");
             }
 
             IDbStaticItemRepository itemRepo = new EFDbStaticItemRepository();
@@ -423,7 +423,7 @@ namespace TT.Web.Controllers
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return View("Play", "PvP");
+                return RedirectToAction("Play", "PvP");
             }
 
             AIProcedures.SpawnLindella();
@@ -440,7 +440,7 @@ namespace TT.Web.Controllers
             // assert only admins or players with JSON pulling can do this
             if (!User.IsInRole(PvPStatics.Permissions_Admin) && !User.IsInRole(PvPStatics.Permissions_JSON))
             {
-                return View("Play", "PvP");
+                return RedirectToAction("Play", "PvP");
             }
 
             IDbStaticItemRepository itemRepo = new EFDbStaticItemRepository();
@@ -452,7 +452,7 @@ namespace TT.Web.Controllers
             // assert only admins or players with JSON pulling can do this
             if (!User.IsInRole(PvPStatics.Permissions_Admin) && !User.IsInRole(PvPStatics.Permissions_JSON))
             {
-                return View("Play", "PvP");
+                return RedirectToAction("Play", "PvP");
             }
 
             IDbStaticFormRepository formRepo = new EFDbStaticFormRepository();
@@ -464,7 +464,7 @@ namespace TT.Web.Controllers
             // assert only admins or players with JSON pulling can do this
             if (!User.IsInRole(PvPStatics.Permissions_Admin) && !User.IsInRole(PvPStatics.Permissions_JSON))
             {
-                return View("Play", "PvP");
+                return RedirectToAction("Play", "PvP");
             }
 
             IDbStaticSkillRepository skillRepo = new EFDbStaticSkillRepository();
@@ -477,7 +477,7 @@ namespace TT.Web.Controllers
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin) && !User.IsInRole(PvPStatics.Permissions_JSON))
             {
-                return View("Play", "PvP");
+                return RedirectToAction("Play", "PvP");
             }
 
             IDbStaticEffectRepository effectRepo = new EFDbStaticEffectRepository();
@@ -489,7 +489,7 @@ namespace TT.Web.Controllers
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin) && !User.IsInRole(PvPStatics.Permissions_JSON))
             {
-                return View("Play", "PvP");
+                return RedirectToAction("Play", "PvP");
             }
 
             IDbStaticFurnitureRepository effectRepo = new EFDbStaticFurnitureRepository();
@@ -501,7 +501,7 @@ namespace TT.Web.Controllers
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin) && !User.IsInRole(PvPStatics.Permissions_JSON))
             {
-                return View("Play", "PvP");
+                return RedirectToAction("Play", "PvP");
             }
 
             List<Location> locations = LocationsStatics.LocationList.GetLocation.Where(l => !l.dbName.Contains("_dungeon")).ToList();
@@ -529,7 +529,7 @@ namespace TT.Web.Controllers
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin) && !User.IsInRole(PvPStatics.Permissions_Previewer))
             {
-                return View("Play", "PvP");
+                return RedirectToAction("Play", "PvP");
             }
 
             IContributionRepository contRepo = new EFContributionRepository();
@@ -545,7 +545,7 @@ namespace TT.Web.Controllers
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return View("Play", "PvP");
+                return RedirectToAction("Play", "PvP");
             }
 
             IContributionRepository contributionRepo = new EFContributionRepository();
@@ -565,7 +565,7 @@ namespace TT.Web.Controllers
             if (ProofreadCopy != null)
             {
                 ViewBag.Message = "There's already a proofreading copy for this.";
-                return View("~/Views/PvP/PvPAdmin.cshtml");
+                return View("Index");
             }
             else
             {
@@ -727,7 +727,7 @@ namespace TT.Web.Controllers
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return View("Play", "PvP");
+                return RedirectToAction("Play", "PvP");
             }
 
             IContributionRepository contRepo = new EFContributionRepository();
@@ -752,7 +752,7 @@ namespace TT.Web.Controllers
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return View("Play", "PvP");
+                return RedirectToAction("Play", "PvP");
             }
 
             return View();
@@ -764,7 +764,7 @@ namespace TT.Web.Controllers
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return View("Play", "PvP");
+                return RedirectToAction("Play", "PvP");
             }
 
             string output = "<br><br>";
@@ -825,7 +825,7 @@ namespace TT.Web.Controllers
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return View("Play", "PvP");
+                return RedirectToAction("Play", "PvP");
             }
 
             string output = "<br><br>";
@@ -966,7 +966,7 @@ namespace TT.Web.Controllers
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return View("Play", "PvP");
+                return RedirectToAction("Play", "PvP");
             }
 
             string output = "<br><br>";
@@ -1181,11 +1181,11 @@ namespace TT.Web.Controllers
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return View("Play", "PvP");
+                return RedirectToAction("Play", "PvP");
             }
 
             IJewdewfaeEncounterRepository repo = new EFJewdewfaeEncounterRepository();
-            IEnumerable<JewdewfaeEncounter> encounters = repo.JewdewfaeEncounters.ToList();
+            var encounters = repo.JewdewfaeEncounters.ToList();
 
             return View(encounters);
 
@@ -1196,7 +1196,7 @@ namespace TT.Web.Controllers
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return View("Play", "PvP");
+                return RedirectToAction("Play", "PvP");
             }
 
             IJewdewfaeEncounterRepository repo = new EFJewdewfaeEncounterRepository();
@@ -1266,7 +1266,7 @@ namespace TT.Web.Controllers
             // assert only admins can do this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return View("Play", "PvP");
+                return RedirectToAction("Play", "PvP");
             }
 
             input.RequiredForm = input.RequiredForm.Trim();
@@ -1302,7 +1302,7 @@ namespace TT.Web.Controllers
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return View("Play", "PvP");
+                return RedirectToAction("Play", "PvP");
             }
 
 
@@ -1333,7 +1333,7 @@ namespace TT.Web.Controllers
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return View("Play", "PvP");
+                return RedirectToAction("Play", "PvP");
             }
 
             // TODO:  finish this!
@@ -1347,7 +1347,7 @@ namespace TT.Web.Controllers
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return View("Play", "PvP");
+                return RedirectToAction("Play", "PvP");
             }
 
             string path = Server.MapPath("~/XMLs/FairyChallengeText/");
@@ -1381,7 +1381,7 @@ namespace TT.Web.Controllers
             if (!iAmModerator)
             {
                 ViewBag.Message = "You aren't allowed to do this.";
-                return View("~/Views/PvP/PvPAdmin.cshtml");
+                return View("Index");
             }
 
 
@@ -1407,7 +1407,7 @@ namespace TT.Web.Controllers
             if (!iAmModerator)
             {
                 ViewBag.Message = "You aren't allowed to do this.";
-                return View("~/Views/PvP/PvPAdmin.cshtml");
+                return View("Index");
             }
 
 
@@ -1443,7 +1443,7 @@ namespace TT.Web.Controllers
             bool iAmAdmin = User.IsInRole(PvPStatics.Permissions_Admin);
             if (!iAmAdmin)
             {
-                return View("~/Views/PvP/PvPAdmin.cshtml");
+                return RedirectToAction("Play", "PvP");
             }
 
             string output = "";
@@ -1531,7 +1531,7 @@ namespace TT.Web.Controllers
             else
             {
                 ViewBag.Message = "You aren't allowed to do this.";
-                return View("~/Views/PvP/PvPAdmin.cshtml");
+                return View("Index");
             }
         }
 
@@ -1547,7 +1547,7 @@ namespace TT.Web.Controllers
             else
             {
                 ViewBag.Message = "You aren't allowed to do this.";
-                return View("~/Views/PvP/PvPAdmin.cshtml");
+                return View("Index");
             }
         }
 
@@ -1563,7 +1563,7 @@ namespace TT.Web.Controllers
             else
             {
                 ViewBag.Message = "You aren't allowed to do this.";
-                return View("~/Views/PvP/PvPAdmin.cshtml");
+                return View("Index");
             }
         }
 
@@ -1587,7 +1587,7 @@ namespace TT.Web.Controllers
             }
             else
             {
-                return View("Play", "PvP");
+                return RedirectToAction("Play", "PvP");
             }
         }
 
@@ -1703,7 +1703,7 @@ namespace TT.Web.Controllers
         {
             if (!User.IsInRole(PvPStatics.Permissions_Admin) && !User.IsInRole(PvPStatics.Permissions_Moderator))
             {
-                return View("Play", "PvP");
+                return RedirectToAction("Play", "PvP");
             }
 
             RPClassifiedAdsProcedures.DeleteAd(id);

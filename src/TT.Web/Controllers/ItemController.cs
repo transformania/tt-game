@@ -42,7 +42,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
-            IEnumerable<SkillViewModel2> output = SkillProcedures.GetSkillViewModelsOwnedByPlayer(me.Id).Where(m => m.MobilityType == "full");
+            IEnumerable<SkillViewModel> output = SkillProcedures.GetSkillViewModelsOwnedByPlayer(me.Id).Where(m => m.MobilityType == "full");
             return View(output);
         }
 
@@ -91,7 +91,7 @@ namespace TT.Web.Controllers
             }
 
             // assert player does own this skill
-            SkillViewModel2 skill = SkillProcedures.GetSkillViewModel(spell, me.Id);
+            SkillViewModel skill = SkillProcedures.GetSkillViewModel(spell, me.Id);
             if (skill == null)
             {
                 TempData["Error"] = "You do not own this spell.";

@@ -769,7 +769,7 @@ namespace TT.Web.Controllers
              string myMembershipId = User.Identity.GetUserId();
              Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
              Player target = PlayerProcedures.GetPlayer(targetId);
-            IEnumerable<SkillViewModel2> output = new List<SkillViewModel2>();
+            IEnumerable<SkillViewModel> output = new List<SkillViewModel>();
 
             ViewBag.Recovered = false;
             ViewBag.RecoveredMsg = "";
@@ -944,7 +944,7 @@ namespace TT.Web.Controllers
 
 
             // assert that this player does have this skill
-            SkillViewModel2 skillBeingUsed = SkillProcedures.GetSkillViewModel(attackName, me.Id);
+            SkillViewModel skillBeingUsed = SkillProcedures.GetSkillViewModel(attackName, me.Id);
             if (skillBeingUsed == null)
             {
                 TempData["Error"] = "You don't seem to have this spell.";
@@ -3404,7 +3404,7 @@ namespace TT.Web.Controllers
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Moderator) && !User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return View("Play", "PvP");
+                return RedirectToAction("Play");
             }
 
 
@@ -3417,7 +3417,7 @@ namespace TT.Web.Controllers
 
         public ActionResult Duel()
         {
-            return View("../Duel/Duel.cshtml");
+            return RedirectToAction("Duel", "Duel");
         }
 
       

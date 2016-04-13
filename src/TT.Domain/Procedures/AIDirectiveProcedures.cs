@@ -46,17 +46,36 @@ namespace TT.Domain.Procedures
         public static void SetAIDirective_MoveTo(int botId, string dblocationName)
         {
             IAIDirectiveRepository directiveRepo = new EFAIDirectiveRepository();
-            AIDirective directive = directiveRepo.AIDirectives.FirstOrDefault(i => i.OwnerId == botId);
+            var directive = directiveRepo.AIDirectives.FirstOrDefault(i => i.OwnerId == botId) ?? new AIDirective
+            {
+                OwnerId = botId,
+                State = "idle",
+                TargetPlayerId = -1,
+                Var1 = -1,
+                Var2 = -1,
+                Var3 = -1,
+                Var4 = -1,
+                Var5 = -1
+            };
             //directive.State = "move";
             directive.Timestamp = DateTime.UtcNow;
             directive.TargetLocation = dblocationName;
-            directiveRepo.SaveAIDirective(directive); 
+            directiveRepo.SaveAIDirective(directive);
         }
 
         public static void SetAIDirective_Attack(int botId, int targetId)
         {
             IAIDirectiveRepository directiveRepo = new EFAIDirectiveRepository();
-            AIDirective directive = directiveRepo.AIDirectives.FirstOrDefault(i => i.OwnerId == botId);
+            var directive = directiveRepo.AIDirectives.FirstOrDefault(i => i.OwnerId == botId) ?? new AIDirective
+            {
+                OwnerId = botId,
+                TargetLocation = "",
+                Var1 = -1,
+                Var2 = -1,
+                Var3 = -1,
+                Var4 = -1,
+                Var5 = -1
+            };
             directive.State = "attack";
             directive.Timestamp = DateTime.UtcNow;
             directive.TargetPlayerId = targetId;
@@ -66,7 +85,16 @@ namespace TT.Domain.Procedures
         public static void SetAIDirective_Idle(int botId)
         {
             IAIDirectiveRepository directiveRepo = new EFAIDirectiveRepository();
-            AIDirective directive = directiveRepo.AIDirectives.FirstOrDefault(i => i.OwnerId == botId);
+            var directive = directiveRepo.AIDirectives.FirstOrDefault(i => i.OwnerId == botId) ?? new AIDirective
+            {
+                OwnerId = botId,
+                TargetLocation = "",
+                Var1 = -1,
+                Var2 = -1,
+                Var3 = -1,
+                Var4 = -1,
+                Var5 = -1
+            };
             directive.State = "idle";
             directive.TargetPlayerId = 0;
             directive.Timestamp = DateTime.UtcNow;
@@ -76,7 +104,7 @@ namespace TT.Domain.Procedures
         public static void DeleteAIDirectiveByPlayerId(int ownerId)
         {
              IAIDirectiveRepository directiveRepo = new EFAIDirectiveRepository();
-             AIDirective directive = directiveRepo.AIDirectives.FirstOrDefault(d => d.OwnerId == ownerId);
+             var directive = directiveRepo.AIDirectives.FirstOrDefault(d => d.OwnerId == ownerId);
              if (directive != null)
              {
                  directiveRepo.DeleteAIDirective(directive.Id);

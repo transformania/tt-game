@@ -154,17 +154,13 @@ namespace TT.Domain.Procedures
         public static void RunPsychopathActions()
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            IServerLogRepository serverLogRepo = new EFServerLogRepository();
 
-            int worldTurnNumber = PvPWorldStatProcedures.GetWorldTurnNumber() - 1;
-            ServerLog log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == worldTurnNumber);
 
             //spawn in more bots if there are less than the default
-            int botCount = playerRepo.Players.Where(b => b.BotId == AIStatics.PsychopathBotId && b.Mobility == "full").Count();
+            int botCount = playerRepo.Players.Count(b => b.BotId == AIStatics.PsychopathBotId && b.Mobility == "full");
             if (botCount < PvPStatics.PsychopathDefaultAmount)
             {
-                AIProcedures.SpawnAIPsychopaths(PvPStatics.PsychopathDefaultAmount - botCount, 0);
-                log.AddLog("Spawned a new psychopath.");
+                SpawnAIPsychopaths(PvPStatics.PsychopathDefaultAmount - botCount, 0);
             }
 
             List<int> botIds = playerRepo.Players.Where(p => p.BotId == AIStatics.PsychopathBotId).Where(b => b.Mobility == "full").Select(b => b.Id).ToList();
@@ -241,7 +237,6 @@ namespace TT.Domain.Procedures
 
 
                     AIDirective directive = AIDirectiveProcedures.GetAIDirective(bot.Id);
-                    log.AddLog(bot.FirstName + " " + bot.LastName + ":  Directive is to:  " + directive.State + " target ID: " + directive.TargetPlayerId);
                     SkillViewModel skill = SkillProcedures.GetSkillViewModelsOwnedByPlayer(bot.Id).FirstOrDefault(s => s.dbSkill.Name != "lowerHealth" && s.Skill.ExclusiveToForm == null && s.Skill.ExclusiveToItem == null);
 
                     Random rand = new Random(DateTime.Now.Millisecond);
@@ -261,7 +256,6 @@ namespace TT.Domain.Procedures
                             myTarget.InQuest > 0)
                         {
                             AIDirectiveProcedures.SetAIDirective_Idle(bot.Id);
-                            log.AddLog(bot.FirstName + " " + bot.LastName + ":  target is invalid.  Idling.");
                         }
 
                        // the target is okay for attacking
@@ -274,7 +268,6 @@ namespace TT.Domain.Procedures
                                 {
                                     string newplace = MoveTo(bot, myTarget.dbLocationName, 4);
                                     bot.dbLocationName = newplace;
-                                    log.AddLog(bot.FirstName + " " + bot.LastName + ":  moved to " + newplace + " to chase target.");
                                 }
                             }
 
@@ -295,7 +288,6 @@ namespace TT.Domain.Procedures
                                     AttackProcedures.Attack(bot, myTarget, skill);
                                 }
 
-                                log.AddLog(bot.GetFullName() + ":  attacked target " + myTarget.GetFullName());
                             }
                         }
 
@@ -308,7 +300,6 @@ namespace TT.Domain.Procedures
                         {
                             string newplace = MoveTo(bot, LocationsStatics.GetRandomLocation(), 4);
                             bot.dbLocationName = newplace;
-                            log.AddLog(bot.FirstName + " " + bot.LastName + ":  moved to " + newplace + " to search for a target.");
                         }
 
 
@@ -336,7 +327,6 @@ namespace TT.Domain.Procedures
                             Player victim = onlinePlayersHere.ElementAt((int)roll);
                             AIDirectiveProcedures.SetAIDirective_Attack(bot.Id, victim.Id);
                             playerRepo.SavePlayer(bot);
-                            log.AddLog(bot.FirstName + " " + bot.LastName + ":  Picked target and began attacking " + victim.FirstName + " " + victim.LastName);
                             AttackProcedures.Attack(bot, victim, skill);
                             AttackProcedures.Attack(bot, victim, skill);
                             AttackProcedures.Attack(bot, victim, skill);
@@ -353,7 +343,6 @@ namespace TT.Domain.Procedures
 
                 }
 
-                serverLogRepo.SaveServerLog(log);
 
             }
 

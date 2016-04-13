@@ -124,7 +124,7 @@ namespace TT.Domain.Procedures
                 int randIndex = Convert.ToInt32(Math.Floor(rand.NextDouble() * max));
 
                 DbStaticSkill skillToLearn = eligibleSkills.ElementAt(randIndex);
-                string output = SkillProcedures.GiveSkillToPlayer(bot.Id, skillToLearn);
+                SkillProcedures.GiveSkillToPlayer(bot.Id, skillToLearn);
 
                 // give this bot the Psychpathic perk
                 if (strength == 1)
@@ -157,18 +157,16 @@ namespace TT.Domain.Procedures
 
 
             //spawn in more bots if there are less than the default
-            int botCount = playerRepo.Players.Count(b => b.BotId == AIStatics.PsychopathBotId && b.Mobility == "full");
+            var botCount = playerRepo.Players.Count(b => b.BotId == AIStatics.PsychopathBotId && b.Mobility == "full");
             if (botCount < PvPStatics.PsychopathDefaultAmount)
             {
                 SpawnAIPsychopaths(PvPStatics.PsychopathDefaultAmount - botCount, 0);
             }
 
-            List<int> botIds = playerRepo.Players.Where(p => p.BotId == AIStatics.PsychopathBotId).Where(b => b.Mobility == "full").Select(b => b.Id).ToList();
+            var bots = playerRepo.Players.Where(p => p.BotId == AIStatics.PsychopathBotId && p.Mobility == "full").ToList();
 
-            foreach (int botId in botIds)
+            foreach (var bot in bots)
             {
-                Player bot = playerRepo.Players.FirstOrDefault(p => p.Id == botId);
-
                 // if bot is no longer fully animate or is null, skip them
                 if (bot == null || bot.Mobility != "full")
                 {
@@ -234,9 +232,6 @@ namespace TT.Domain.Procedures
                 AIDirective directive = AIDirectiveProcedures.GetAIDirective(bot.Id);
                 SkillViewModel skill = SkillProcedures.GetSkillViewModelsOwnedByPlayer(bot.Id).FirstOrDefault(s => s.dbSkill.Name != "lowerHealth" && s.Skill.ExclusiveToForm == null && s.Skill.ExclusiveToItem == null);
 
-                Random rand = new Random(DateTime.Now.Millisecond);
-                double roll = 0;
-
                 // the bot has an attack target, so go chase it
                 if (directive.State == "attack")
                 {
@@ -245,6 +240,7 @@ namespace TT.Domain.Procedures
                     // if the target is offline, no longer animate, in the dungeon, or in the same form as the spells' target, go into idle mode
                     if (PlayerProcedures.PlayerIsOffline(myTarget) || 
                         myTarget.Mobility != "full" ||
+                        skill == null ||
                         myTarget.Form == skill.Skill.FormdbName || 
                         myTarget.IsInDungeon() ||
                         myTarget.InDuel > 0 ||
@@ -299,26 +295,15 @@ namespace TT.Domain.Procedures
 
 
                     // attack stage
-                    List<Player> playersHere = playerRepo.Players.Where(p => p.dbLocationName == bot.dbLocationName)
-                        .Where(p => p.Mobility == "full").ToList(); // don't attack the merchant
+                    var playersHere = playerRepo.Players.Where(p => p.dbLocationName == bot.dbLocationName && p.Mobility == "full" && p.Id != bot.Id && p.BotId == AIStatics.PsychopathBotId && p.Level >= bot.Level).ToList(); // don't attack the merchant
 
                     // filter out offline players and Lindella
-                    List<Player> onlinePlayersHere = new List<Player>();
-
-                    foreach (Player p in playersHere)
-                    {
-                        if (!PlayerProcedures.PlayerIsOffline(p) && p.Id != bot.Id && p.Mobility == "full" && p.BotId == AIStatics.PsychopathBotId && p.Level >= bot.Level)
-                        {
-                            onlinePlayersHere.Add(p);
-                        }
-                    }
-
-                    playersHere = playersHere.Where(p => p.Health >= .75M * p.MaxHealth).ToList();
+                    var onlinePlayersHere = playersHere.Where(p => !PlayerProcedures.PlayerIsOffline(p)).ToList();
 
                     if (onlinePlayersHere.Any())
                     {
-                        rand = new Random(DateTime.Now.Millisecond);
-                        roll = Math.Floor(rand.NextDouble() * onlinePlayersHere.Count());
+                        var rand = new Random(DateTime.Now.Millisecond);
+                        var roll = Math.Floor(rand.NextDouble() * onlinePlayersHere.Count());
                         Player victim = onlinePlayersHere.ElementAt((int)roll);
                         AIDirectiveProcedures.SetAIDirective_Attack(bot.Id, victim.Id);
                         playerRepo.SavePlayer(bot);
@@ -371,12 +356,8 @@ namespace TT.Domain.Procedures
 
                 playerRepo.SavePlayer(merchant);
 
-                merchant = playerRepo.Players.FirstOrDefault(f => f.FirstName == "Lindella" && f.LastName == "the Soul Vendor" && f.Mobility == "full");
-
-                Player Lindella = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.LindellaBotId);
-
-                AIDirectiveProcedures.GetAIDirective(Lindella.Id);
-                AIDirectiveProcedures.SetAIDirective_MoveTo(Lindella.Id, "street_15th_south");
+                AIDirectiveProcedures.GetAIDirective(merchant.Id);
+                AIDirectiveProcedures.SetAIDirective_MoveTo(merchant.Id, "street_15th_south");
 
 
 
@@ -392,9 +373,6 @@ namespace TT.Domain.Procedures
 
             if (merchant != null && merchant.Mobility == "full")
             {
-
-                string oldLocation = merchant.dbLocationName;
-
                 merchant.Form = "form_Soul_Item_Vendor_Judoo";
                 merchant.Level = 5;
 

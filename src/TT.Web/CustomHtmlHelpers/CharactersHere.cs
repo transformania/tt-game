@@ -436,7 +436,7 @@ namespace TT.Web.CustomHtmlHelpers
             {
                 return new MvcHtmlString("action_attack curse");
             }
-            else if (skill.MobilityType == "mindcontrol")
+            else if (skill.MobilityType == PvPStatics.MobilityMindControl)
             {
                 return new MvcHtmlString("action_attack mindcontrol");
             }

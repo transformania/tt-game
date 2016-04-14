@@ -124,11 +124,11 @@ namespace TT.Domain.Procedures
             {
                 PercentHealthToAllowTF = PvPStatics.PercentHealthToAllowInanimateFormTF;
             }
-            else if (eventualForm.MobilityType == "animal")
+            else if (eventualForm.MobilityType == PvPStatics.MobilityPet)
             {
                 PercentHealthToAllowTF = PvPStatics.PercentHealthToAllowAnimalFormTF;
             }
-            else if (eventualForm.MobilityType == "mindcontrol")
+            else if (eventualForm.MobilityType == PvPStatics.MobilityMindControl)
             {
                 PercentHealthToAllowTF = PvPStatics.PercentHealthToAllowMindControlTF;
             }
@@ -205,7 +205,7 @@ namespace TT.Domain.Procedures
             }
 
             // decrease the XP earned if the player is high leveled and TFing an inanimate / animal spell AND the xp isn't already negative
-            if (eventualForm.MobilityType == PvPStatics.MobilityInanimate || eventualForm.MobilityType == PvPStatics.MobilityPet || eventualForm.MobilityType == "mindcontrol")
+            if (eventualForm.MobilityType == PvPStatics.MobilityInanimate || eventualForm.MobilityType == PvPStatics.MobilityPet || eventualForm.MobilityType == PvPStatics.MobilityMindControl)
             {
                 xpEarned *= GetHigherLevelXPModifier(attacker.Level, 6);
             }
@@ -504,7 +504,7 @@ namespace TT.Domain.Procedures
                 #endregion
 
                 #region mind control
-                else if (targetForm.MobilityType == "mindcontrol" && (target.Health / target.MaxHealth) <= PvPStatics.PercentHealthToAllowMindControlTF)
+                else if (targetForm.MobilityType == PvPStatics.MobilityMindControl && (target.Health / target.MaxHealth) <= PvPStatics.PercentHealthToAllowMindControlTF)
                 {
                     //Player attacker = playerRepo.Players.FirstOrDefault(p => p.Id == attackerId);
                     MindControlProcedures.AddMindControl(attacker, victim, targetForm.dbName);

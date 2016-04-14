@@ -22,7 +22,7 @@
                 <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
                 <li>@Html.ActionLink("Archive All My Spells", "ArchiveAllMySpells", "Settings", new { archive = true }, null)</li>
                 <li>@Html.ActionLink("Restore All My Spells", "ArchiveAllMySpells", "Settings", new { archive = false }, null)</li>
-                <li><a href="#" style="color: white !important; cursor: default">Known Spells (@Model.Where(c => c.Skill_Name != TT.Domain.Statics.PvPStatics.Dungeon_VanquishSpell && (c.Skill_MobilityType == PvPStatics.MobilityFull || c.Skill_MobilityType == PvPStatics.MobilityInanimate || c.Skill_MobilityType == PvPStatics.MobilityPet || c.Skill_MobilityType == "mindcontrol")).Count() / @ViewBag.TotalLearnableSkills)</a></li>
+                <li><a href="#" style="color: white !important; cursor: default">Known Spells (@Model.Where(c => c.Skill_Name != TT.Domain.Statics.PvPStatics.Dungeon_VanquishSpell && (c.Skill_MobilityType == PvPStatics.MobilityFull || c.Skill_MobilityType == PvPStatics.MobilityInanimate || c.Skill_MobilityType == PvPStatics.MobilityPet || c.Skill_MobilityType == PvPStatics.MobilityMindControl)).Count() / @ViewBag.TotalLearnableSkills)</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -77,7 +77,7 @@
                             {
                                 <text>Temporary curse</text>
                             }
-                            else if (skill.Skill_MobilityType != null && skill.Skill_MobilityType == "mindcontrol")
+                            else if (skill.Skill_MobilityType != null && skill.Skill_MobilityType == PvPStatics.MobilityMindControl)
                             {
                                 <text>Temporary mind control</text>
                             }

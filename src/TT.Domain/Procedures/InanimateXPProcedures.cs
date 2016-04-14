@@ -62,7 +62,7 @@ namespace TT.Domain.Procedures
 
             // get the number of inanimate accounts under this IP
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            decimal playerCount = playerRepo.Players.Where(p => p.IpAddress == me.IpAddress && (p.Mobility == PvPStatics.MobilityInanimate || p.Mobility == "animal") && p.BotId == AIStatics.ActivePlayerBotId).Count();
+            decimal playerCount = playerRepo.Players.Count(p => p.IpAddress == me.IpAddress && (p.Mobility == PvPStatics.MobilityInanimate || p.Mobility == PvPStatics.MobilityPet) && p.BotId == AIStatics.ActivePlayerBotId);
             //TODO: TEMPEST - FIX
             if (playerCount == 0 )//|| HttpContext.Current.User.IsInRole(PvPStatics.Permissions_MultiAccountWhitelist))
             {

@@ -813,7 +813,7 @@ namespace TT.Web.Controllers
             // filter out MC spells for bots
             if (target.BotId < AIStatics.ActivePlayerBotId)
             {
-                output = output.Where(s => s.MobilityType != "mindcontrol");
+                output = output.Where(s => s.MobilityType != PvPStatics.MobilityMindControl);
             }
 
             // only show inanimates for rat thieves
@@ -1060,7 +1060,7 @@ namespace TT.Web.Controllers
             }
 
              // if the spell is a form of mind control, check that the target is not a bot
-            if (skillBeingUsed.MobilityType == "mindcontrol" && targeted.BotId < AIStatics.ActivePlayerBotId)
+            if (skillBeingUsed.MobilityType == PvPStatics.MobilityMindControl && targeted.BotId < AIStatics.ActivePlayerBotId)
             {
                 TempData["Error"] = "This target is immune to mind control.";
                 TempData["SubError"] = "Mind control currently only works against human opponents.";

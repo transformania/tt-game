@@ -1361,7 +1361,7 @@ namespace TT.Web.Controllers
             }
             else if (filter == "other")
             {
-                allSkills = allSkills.Where(s => s.MobilityType == "curse" || s.MobilityType == "mindcontrol");
+                allSkills = allSkills.Where(s => s.MobilityType == "curse" || s.MobilityType == PvPStatics.MobilityMindControl);
             } 
 
             List<DbStaticSkill> output = new List<DbStaticSkill>();

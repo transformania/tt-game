@@ -28,6 +28,7 @@ namespace TT.Domain.Statics
         public const string MobilityFull = "full";
         public const string MobilityInanimate = "inanimate";
         public const string MobilityPet = "animal";
+        public const string MobilityMindControl = "mindcontrol";
 
         // These three are publicly modified statics, not constants
         public static string LastGameUpdate = "";

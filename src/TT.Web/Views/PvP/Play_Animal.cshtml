@@ -173,7 +173,7 @@
                                 {
                                     @Html.ActionLink(Model.Location.FriendlyName_North, "MoveTo", "PvP", new { locname = Model.Location.Name_North }, null)
                                 }
-                                else if (Model.You.Mobility == PvPStatics.MobilityAnimal && Model.OwnedBy == null)
+                                else if (Model.You.Mobility == PvPStatics.MobilityPet && Model.OwnedBy == null)
                                 {
                                     @Html.ActionLink(Model.Location.FriendlyName_North, "MoveTo", "PvP", new { locname = Model.Location.Name_North }, null)
                                 }

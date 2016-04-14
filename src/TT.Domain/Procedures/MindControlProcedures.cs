@@ -115,7 +115,7 @@ namespace TT.Domain.Procedures
             }
 
             // assert both commander and victim is animate
-            if (master.Mobility != "full" || victim.Mobility != "full")
+            if (master.Mobility != PvPStatics.MobilityFull || victim.Mobility != PvPStatics.MobilityFull)
             {
                 output.Error = "Both you and your victim must be animate in order to invoke any mind control commands.";
                 return output;

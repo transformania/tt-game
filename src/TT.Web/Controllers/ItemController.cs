@@ -42,7 +42,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
-            IEnumerable<SkillViewModel> output = SkillProcedures.GetSkillViewModelsOwnedByPlayer(me.Id).Where(m => m.MobilityType == "full");
+            IEnumerable<SkillViewModel> output = SkillProcedures.GetSkillViewModelsOwnedByPlayer(me.Id).Where(m => m.MobilityType == PvPStatics.MobilityFull);
             return View(output);
         }
 
@@ -53,7 +53,7 @@ namespace TT.Web.Controllers
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             
             // assert player is animate
-            if (me.Mobility != "full")
+            if (me.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You must be animate in order to use this.";
                 return RedirectToAction("Play", "PvP");
@@ -99,7 +99,7 @@ namespace TT.Web.Controllers
             }
 
             // assert desired form is animate
-            if (skill.MobilityType != "full") {
+            if (skill.MobilityType != PvPStatics.MobilityFull) {
                 TempData["Error"] = "The target form must be an animate form.";
                 return RedirectToAction("Play", "PvP");
             }
@@ -133,7 +133,7 @@ namespace TT.Web.Controllers
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             // assert player is animate
-            if (me.Mobility != "full")
+            if (me.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You must be animate in order to use this.";
                 return RedirectToAction("Play", "PvP");
@@ -159,7 +159,7 @@ namespace TT.Web.Controllers
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             // assert player is animate
-            if (me.Mobility != "full")
+            if (me.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You must be animate in order to use this.";
                 return RedirectToAction("Play", "PvP");
@@ -224,7 +224,7 @@ namespace TT.Web.Controllers
              Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
              // assert player is animate
-             if (me.Mobility != "full")
+             if (me.Mobility != PvPStatics.MobilityFull)
              {
                  TempData["Error"] = "This curse is too strong to be lifted.";
                  return RedirectToAction("Play", "PvP");

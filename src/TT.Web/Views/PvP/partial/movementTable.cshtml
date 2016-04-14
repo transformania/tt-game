@@ -10,15 +10,15 @@
         <td>@{
                 if (Model.Location.Name_North != null)
                 {
-                    if (Model.You.Player.Mobility == "full")
+                    if (Model.You.Player.Mobility == PvPStatics.MobilityFull)
                     {
                         @Html.ActionLink(Model.Location.FriendlyName_North, "MoveTo", "PvP", new { locname = Model.Location.Name_North }, null)
                     }
-                    else if (Model.You.Player.Mobility == "animal" && Model.You.Player.IsPetToId == -1)
+                    else if (Model.You.Player.Mobility == PvPStatics.MobilityPet && Model.You.Player.IsPetToId == -1)
                     {
                         @Html.ActionLink(Model.Location.FriendlyName_North, "MoveTo", "PvP", new { locname = Model.Location.Name_North }, null)
                     }
-                    else if (Model.You.Player.Mobility == "animal" && Model.You.Player.IsPetToId != -1)
+                    else if (Model.You.Player.Mobility == PvPStatics.MobilityPet && Model.You.Player.IsPetToId != -1)
                     {
                         <span>@Model.Location.FriendlyName_North</span>
                     }
@@ -30,15 +30,15 @@
         <td>@{
                 if (Model.Location.Name_West != null)
                 {
-                    if (Model.You.Player.Mobility == "full")
+                    if (Model.You.Player.Mobility == PvPStatics.MobilityFull)
                     {
                         @Html.ActionLink(Model.Location.FriendlyName_West, "MoveTo", "PvP", new { locname = Model.Location.Name_West }, null)
                     }
-                    else if (Model.You.Player.Mobility == "animal" && Model.You.Player.IsPetToId == -1)
+                    else if (Model.You.Player.Mobility == PvPStatics.MobilityPet && Model.You.Player.IsPetToId == -1)
                     {
                         @Html.ActionLink(Model.Location.FriendlyName_West, "MoveTo", "PvP", new { locname = Model.Location.Name_West }, null)
                     }
-                    else if (Model.You.Player.Mobility == "animal" && Model.You.Player.IsPetToId != -1)
+                    else if (Model.You.Player.Mobility == PvPStatics.MobilityPet && Model.You.Player.IsPetToId != -1)
                     {
                         <span>@Model.Location.FriendlyName_West</span>
                     }
@@ -48,15 +48,15 @@
         <td>@{
                 if (Model.Location.Name_East != null)
                 {
-                    if (Model.You.Player.Mobility == "full")
+                    if (Model.You.Player.Mobility == PvPStatics.MobilityFull)
                     {
                         @Html.ActionLink(Model.Location.FriendlyName_East, "MoveTo", "PvP", new { locname = Model.Location.Name_East }, null)
                     }
-                    else if (Model.You.Player.Mobility == "animal" && Model.You.Player.IsPetToId == -1)
+                    else if (Model.You.Player.Mobility == PvPStatics.MobilityPet && Model.You.Player.IsPetToId == -1)
                     {
                         @Html.ActionLink(Model.Location.FriendlyName_East, "MoveTo", "PvP", new { locname = Model.Location.Name_East }, null)
                     }
-                    else if (Model.You.Player.Mobility == "animal" && Model.You.Player.IsPetToId != -1)
+                    else if (Model.You.Player.Mobility == PvPStatics.MobilityPet && Model.You.Player.IsPetToId != -1)
                     {
                         <span>@Model.Location.FriendlyName_East</span>
                     }
@@ -69,15 +69,15 @@
                 if (Model.Location.Name_South != null)
                 {
 
-                    if (Model.You.Player.Mobility == "full")
+                    if (Model.You.Player.Mobility == PvPStatics.MobilityFull)
                     {
                         @Html.ActionLink(Model.Location.FriendlyName_South, "MoveTo", "PvP", new { locname = Model.Location.Name_South }, null)
                     }
-                    else if (Model.You.Player.Mobility == "animal" && Model.You.Player.IsPetToId == -1)
+                    else if (Model.You.Player.Mobility == PvPStatics.MobilityPet && Model.You.Player.IsPetToId == -1)
                     {
                         @Html.ActionLink(Model.Location.FriendlyName_South, "MoveTo", "PvP", new { locname = Model.Location.Name_South }, null)
                     }
-                    else if (Model.You.Player.Mobility == "animal" && Model.You.Player.IsPetToId != -1)
+                    else if (Model.You.Player.Mobility == PvPStatics.MobilityPet && Model.You.Player.IsPetToId != -1)
                     {
                         <span>@Model.Location.FriendlyName_South</span>
                     }

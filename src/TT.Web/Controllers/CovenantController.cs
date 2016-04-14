@@ -607,7 +607,7 @@ namespace TT.Web.Controllers
              }
 
             // assert that the player is animate
-             if (me.Mobility != "full")
+             if (me.Mobility != PvPStatics.MobilityFull)
              {
                  TempData["Error"] = "You must be animate in order to do this.";
                  return RedirectToAction("MyCovenant");
@@ -626,7 +626,7 @@ namespace TT.Web.Controllers
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
             // assert that the player is animate
-            if (me.Mobility != "full")
+            if (me.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You must be animate in order to do this.";
                 return RedirectToAction("MyCovenant");
@@ -688,7 +688,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the player is animate
-            if (me.Mobility != "full")
+            if (me.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Result"] = "You have succesfully claimed this location for your covenant safeground!";
                 return RedirectToAction("MyCovenant");
@@ -715,7 +715,7 @@ namespace TT.Web.Controllers
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
             // assert that the player is animate
-            if (me.Mobility != "full")
+            if (me.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You must be animate in order to do this.";
                 return RedirectToAction("MyCovenant");
@@ -918,7 +918,7 @@ namespace TT.Web.Controllers
             Furniture furniture = FurnitureProcedures.GetdbFurniture(id);
 
             // assert that the player is animate
-            if (me.Mobility != "full")
+            if (me.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You must be animate in order to do this.";
                 return RedirectToAction("MyCovenant");

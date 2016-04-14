@@ -293,9 +293,9 @@
                     @Html.LabelFor(m => m.Form_MobilityType)
                     @Html.DropDownListFor(m => m.Form_MobilityType, new SelectList(
                   new List<Object>{
-                       new { value = "full"  , text = "Full (Animate)"  },
-                       new { value = "inanimate"  , text = "Inanimate"  },
-                        new { value = "animal"  , text = "Animal"  },
+                       new { value = PvPStatics.MobilityFull, text = "Full (Animate)"  },
+                       new { value = PvPStatics.MobilityInanimate, text = "Inanimate"  },
+                        new { value = PvPStatics.MobilityPet, text = "Animal"  },
                         new { value = "mindcontrol"  , text = "Mind Control (not open to public submissions)"  },
                     },
                   "value",

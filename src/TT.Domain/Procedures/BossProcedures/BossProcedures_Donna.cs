@@ -46,7 +46,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     MaxMana = 9999,
                     Form = DonnaDbForm,
                     Money = 1000,
-                    Mobility = "full",
+                    Mobility = PvPStatics.MobilityFull,
                     Level = 20,
                     MembershipId = "-4",
                     BotId = -4,
@@ -75,12 +75,12 @@ namespace TT.Domain.Procedures.BossProcedures
 
             Player donna = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.DonnaBotId);
 
-            if (donna.Mobility != "full")
+            if (donna.Mobility != PvPStatics.MobilityFull)
             {
                 EndEvent(donna);
             }
 
-            else if (donna.Mobility == "full")
+            else if (donna.Mobility == PvPStatics.MobilityFull)
             {
 
                 donna.Form = "form_Mythical_Sorceress_LexamTheGemFox";
@@ -102,7 +102,7 @@ namespace TT.Domain.Procedures.BossProcedures
 
                     // if Donna's target goes offline, is inanimate, or in the dungeon, have her teleport back to the ranch
                     if (target == null || 
-                        target.Mobility != "full" ||
+                        target.Mobility != PvPStatics.MobilityFull ||
                         PlayerProcedures.PlayerIsOffline(target) || 
                         target.IsInDungeon() ||
                         target.InDuel > 0 ||
@@ -209,7 +209,7 @@ namespace TT.Domain.Procedures.BossProcedures
                 {
                     if (p.BotId == AIStatics.ActivePlayerBotId &&
                         p.Level > 3 && 
-                        p.Mobility == "full" && 
+                        p.Mobility == PvPStatics.MobilityFull && 
                         !PlayerProcedures.PlayerIsOffline(p) &&
                         p.Id != personAttacking.Id &&
                         p.InDuel <= 0 &&

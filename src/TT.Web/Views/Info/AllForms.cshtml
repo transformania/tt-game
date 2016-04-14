@@ -1,4 +1,5 @@
 ﻿@model List<TT.Domain.Models.DbStaticForm>
+    @using TT.Domain.Statics
 
 <div>
     <h1>Animate Forms</h1>
@@ -18,7 +19,7 @@
         </thead>
         <tbody>
 
-            @foreach (TT.Domain.Models.DbStaticForm f in Model.Where(m => m.MobilityType == "full").OrderBy(f => f.FriendlyName))
+            @foreach (TT.Domain.Models.DbStaticForm f in Model.Where(m => m.MobilityType == PvPStatics.MobilityFull).OrderBy(f => f.FriendlyName))
             {
                 <tr>
                     <td>@f.FriendlyName</td>
@@ -56,7 +57,7 @@
         </thead>
         <tbody>
 
-            @foreach (TT.Domain.Models.DbStaticForm f in Model.Where(m => m.MobilityType != "full").OrderBy(f => f.FriendlyName))
+            @foreach (TT.Domain.Models.DbStaticForm f in Model.Where(m => m.MobilityType != PvPStatics.MobilityFull).OrderBy(f => f.FriendlyName))
             {
                 <tr>
                     <td>@f.FriendlyName</td>

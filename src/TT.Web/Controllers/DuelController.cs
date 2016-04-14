@@ -27,7 +27,7 @@ namespace TT.Web.Controllers
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert player is animate
-            if (me.Mobility != "full")
+            if (me.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You must be animate in order to challenge someone to a duel.";
                 return RedirectToAction("Play", "PvP");
@@ -65,7 +65,7 @@ namespace TT.Web.Controllers
             }
 
             // assert target is animate
-            if (duelTarget.Mobility != "full")
+            if (duelTarget.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "Your target must be animate in order to challenge someone to a duel.";
                 return RedirectToAction("Play", "PvP");
@@ -184,7 +184,7 @@ namespace TT.Web.Controllers
                 }
 
                 // assert player is animate
-                if (p.Player.Mobility != "full")
+                if (p.Player.Mobility != PvPStatics.MobilityFull)
                 {
                     errorMessages.Add("Duel cannot start yet.  " + p.Player.GetFullName() + " must be animate in order to challenge someone to a duel.");
                 }

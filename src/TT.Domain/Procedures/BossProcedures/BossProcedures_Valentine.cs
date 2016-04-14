@@ -81,7 +81,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     MaxMana = 9999,
                     Form = ValentineFormDbName,
                     Money = 1000,
-                    Mobility = "full",
+                    Mobility = PvPStatics.MobilityFull,
                     Level = 10,
                     MembershipId = AIStatics.ValentineBotId.ToString(),
                     BotId = AIStatics.ValentineBotId,
@@ -171,7 +171,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     // attack everyone else with 1 cast
                     List<Player> playersHere = PlayerProcedures.GetPlayersAtLocation(valentine.dbLocationName).ToList();
 
-                    playersHere = playersHere.Where(p => p.Mobility == "full" && 
+                    playersHere = playersHere.Where(p => p.Mobility == PvPStatics.MobilityFull && 
                     !PlayerProcedures.PlayerIsOffline(p) &&
                     p.Level >= 3 && 
                     p.BotId == AIStatics.ActivePlayerBotId && 
@@ -205,7 +205,7 @@ namespace TT.Domain.Procedures.BossProcedures
             // get all of the players in the room
             List<Player> playersHere = PlayerProcedures.GetPlayersAtLocation(valentine.dbLocationName).ToList();
 
-            playersHere = playersHere.Where(p => p.Mobility == "full" &&
+            playersHere = playersHere.Where(p => p.Mobility == PvPStatics.MobilityFull &&
                 !PlayerProcedures.PlayerIsOffline(p) &&
                 p.Level >= 3 &&
                 p.BotId == AIStatics.ActivePlayerBotId &&

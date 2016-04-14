@@ -35,7 +35,7 @@ namespace TT.Web.Controllers
 
 
             // assert player is animate
-            if (me.Mobility != "full")
+            if (me.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You must be animate in order to trade with Lindella.";
                 return RedirectToAction("Play", "PvP");
@@ -58,7 +58,7 @@ namespace TT.Web.Controllers
             Player merchant = PlayerProcedures.GetPlayerFromBotId(-3);
 
             // assert the merchant is animate
-            if (merchant.Mobility != "full")
+            if (merchant.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You cannot trade with Lindella.  She has been turned into an item or animal.";
                 return RedirectToAction("Play", "PvP");
@@ -141,7 +141,7 @@ namespace TT.Web.Controllers
             // assert that player is logged in
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
-            if (me.Mobility != "full")
+            if (me.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You must be animate in order to trade with Lindella.";
                 return RedirectToAction("Play", "PvP");
@@ -164,7 +164,7 @@ namespace TT.Web.Controllers
             Player merchant = PlayerProcedures.GetPlayerFromBotId(-3);
 
             // assert the merchant is animate
-            if (merchant.Mobility != "full")
+            if (merchant.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You cannot trade with Lindella.  She has been turned into an item or animal.";
                 return RedirectToAction("Play", "PvP");
@@ -237,7 +237,7 @@ namespace TT.Web.Controllers
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
             // assert player is animate
-            if (me.Mobility != "full")
+            if (me.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You must be animate in order to trade with Lindella.";
                 return RedirectToAction("Play", "PvP");
@@ -246,7 +246,7 @@ namespace TT.Web.Controllers
             Player merchant = PlayerProcedures.GetPlayerFromBotId(-3);
 
             // assert the merchant is animate
-            if (merchant.Mobility != "full")
+            if (merchant.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You cannot trade with Lindella.  She has been turned into an item or animal.";
                 return RedirectToAction("Play", "PvP");
@@ -271,7 +271,7 @@ namespace TT.Web.Controllers
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
             // assert player is animate
-            if (me.Mobility != "full")
+            if (me.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You must be animate in order to trade with Lindella.";
                 return RedirectToAction("Play", "PvP");
@@ -295,7 +295,7 @@ namespace TT.Web.Controllers
             Player merchant = PlayerProcedures.GetPlayerFromBotId(-3);
 
             // assert the merchant is animate
-            if (merchant.Mobility != "full")
+            if (merchant.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You cannot trade with Lindella.  She has been turned into an item or animal.";
                 return RedirectToAction("Play", "PvP");
@@ -357,7 +357,7 @@ namespace TT.Web.Controllers
             
 
             // assert player is animate
-            if (me.Mobility != "full")
+            if (me.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You must be animate in order to trade with Wüffie.";
                 return RedirectToAction("Play", "PvP");
@@ -366,7 +366,7 @@ namespace TT.Web.Controllers
             Player merchant = PlayerProcedures.GetPlayerFromBotId(-10);
 
             // assert the merchant is animate
-            if (merchant.Mobility != "full")
+            if (merchant.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You cannot trade with Wüffie.  She has been turned into an item or animal.";
                 return RedirectToAction("Play", "PvP");
@@ -420,7 +420,7 @@ namespace TT.Web.Controllers
             // assert that player is logged in
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
-            if (me.Mobility != "full")
+            if (me.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You must be animate in order to trade with Wüffie.";
                 return RedirectToAction("Play", "PvP");
@@ -443,7 +443,7 @@ namespace TT.Web.Controllers
             Player merchant = PlayerProcedures.GetPlayerFromBotId(-10);
 
             // assert the merchant is animate
-            if (merchant.Mobility != "full")
+            if (merchant.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You cannot trade with Wüffie.  She has been turned into an item or animal.";
                 return RedirectToAction("Play", "PvP");
@@ -512,7 +512,7 @@ namespace TT.Web.Controllers
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
             // assert player is animate
-            if (me.Mobility != "full")
+            if (me.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You must be animate in order to trade with Wüffie.";
                 return RedirectToAction("Play", "PvP");
@@ -521,7 +521,7 @@ namespace TT.Web.Controllers
             Player merchant = PlayerProcedures.GetPlayerFromBotId(-10);
 
             // assert the merchant is animate
-            if (merchant.Mobility != "full")
+            if (merchant.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You cannot trade with Wüffie.  She has been turned into an item or animal.";
                 return RedirectToAction("Play", "PvP");
@@ -550,7 +550,7 @@ namespace TT.Web.Controllers
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
             // assert player is animate
-            if (me.Mobility != "full")
+            if (me.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You must be animate in order to trade with Wüffie.";
                 return RedirectToAction("Play", "PvP");
@@ -573,7 +573,7 @@ namespace TT.Web.Controllers
             Player merchant = PlayerProcedures.GetPlayerFromBotId(-10);
 
             // assert the merchant is animate
-            if (merchant.Mobility != "full")
+            if (merchant.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You cannot trade with Wüffie.  She has been turned into an item or animal.";
                 return RedirectToAction("Play", "PvP");
@@ -860,14 +860,14 @@ namespace TT.Web.Controllers
             PlayerProcedures.SetTimestampToNow(bartender);
 
             // assert player is mobile
-            if (me.Mobility != "full")
+            if (me.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You must be animate in order to chat with Rusty.";
                 return RedirectToAction("Play", "PvP");
             }
 
             // assert bartender is mobile
-            if (bartender.Mobility != "full")
+            if (bartender.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "Rusty must be animate in order to chat with you.";
                 return RedirectToAction("Play", "PvP");
@@ -1017,7 +1017,7 @@ namespace TT.Web.Controllers
             Player fae = PlayerProcedures.GetPlayerFromBotId(-6);
 
             // assert player is mobile
-            if (me.Mobility != "full")
+            if (me.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You must be fully animate in order to talk with Jewdewfae.";
                 return RedirectToAction("Play", "PvP");
@@ -1067,7 +1067,7 @@ namespace TT.Web.Controllers
             Player fae = PlayerProcedures.GetPlayerFromBotId(-6);
 
             // assert player is mobile
-            if (me.Mobility != "full")
+            if (me.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You must be fully animate in order to talk with Jewdewfae.";
                 return RedirectToAction("Play","PvP");
@@ -1149,7 +1149,7 @@ namespace TT.Web.Controllers
             Player bimbo = PlayerProcedures.GetPlayerFromBotId(AIStatics.MouseBimboBotId);
 
             // assert player is mobile
-            if (me.Mobility != "full")
+            if (me.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You must be animate in order to chat with " + BossProcedures_Sisters.BimboBossFirstName + ".";
                 return RedirectToAction("Play", "PvP");
@@ -1181,7 +1181,7 @@ namespace TT.Web.Controllers
             Player nerd = PlayerProcedures.GetPlayerFromBotId(AIStatics.MouseNerdBotId);
 
             // assert player is mobile
-            if (me.Mobility != "full")
+            if (me.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You must be animate in order to chat with " + BossProcedures_Sisters.NerdBossFirstName + ".";
                 return RedirectToAction("Play", "PvP");
@@ -1213,7 +1213,7 @@ namespace TT.Web.Controllers
             Player loremaster = PlayerProcedures.GetPlayerFromBotId(AIStatics.LoremasterBotId);
 
             // assert player is mobile
-            if (me.Mobility != "full")
+            if (me.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You must be animate in order to chat with " + loremaster.GetFullName() + ".";
                 return RedirectToAction("Play", "PvP");
@@ -1245,7 +1245,7 @@ namespace TT.Web.Controllers
             Player loremaster = PlayerProcedures.GetPlayerFromBotId(AIStatics.LoremasterBotId);
 
             // assert player is mobile
-            if (me.Mobility != "full")
+            if (me.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You must be animate in order to chat with " + loremaster.GetFullName() + ".";
                 return RedirectToAction("Play", "PvP");
@@ -1275,7 +1275,7 @@ namespace TT.Web.Controllers
             Player loremaster = PlayerProcedures.GetPlayerFromBotId(AIStatics.LoremasterBotId);
 
             // assert player is mobile
-            if (me.Mobility != "full")
+            if (me.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You must be animate in order to chat with " + loremaster.GetFullName() + ".";
                 return RedirectToAction("Play", "PvP");
@@ -1329,7 +1329,7 @@ namespace TT.Web.Controllers
             Player loremaster = PlayerProcedures.GetPlayerFromBotId(AIStatics.LoremasterBotId);
 
             // assert player is mobile
-            if (me.Mobility != "full")
+            if (me.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You must be animate in order to chat with " + loremaster.GetFullName() + ".";
                 return RedirectToAction("Play", "PvP");
@@ -1349,15 +1349,15 @@ namespace TT.Web.Controllers
             // filter based on mobility type
             if (filter.IsNullOrEmpty() || filter == "animate")
             {
-                allSkills = allSkills.Where(s => s.MobilityType == "full");
+                allSkills = allSkills.Where(s => s.MobilityType == PvPStatics.MobilityFull);
             }
-            else if (filter == "inanimate")
+            else if (filter == PvPStatics.MobilityInanimate)
             {
-                allSkills = allSkills.Where(s => s.MobilityType == "inanimate");
+                allSkills = allSkills.Where(s => s.MobilityType == PvPStatics.MobilityInanimate);
             }
-            else if (filter == "animal")
+            else if (filter == PvPStatics.MobilityPet)
             {
-                allSkills = allSkills.Where(s => s.MobilityType == "animal");
+                allSkills = allSkills.Where(s => s.MobilityType == PvPStatics.MobilityPet);
             }
             else if (filter == "other")
             {
@@ -1394,7 +1394,7 @@ namespace TT.Web.Controllers
             Player loremaster = PlayerProcedures.GetPlayerFromBotId(AIStatics.LoremasterBotId);
 
             // assert player is animate
-            if (me.Mobility != "full")
+            if (me.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You must be animate in order to learn spells from " + loremaster.GetFullName() + ".";
                     return RedirectToAction("TalkToLorekeeper", "NPC");
@@ -1454,14 +1454,14 @@ namespace TT.Web.Controllers
             Player valentine = PlayerProcedures.GetPlayerFromBotId(AIStatics.ValentineBotId);
 
             // assert player is mobile
-            if (me.Mobility != "full")
+            if (me.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You must be animate in order to chat with " + valentine.GetFullName() + ".";
                 return RedirectToAction("Play", "PvP");
             }
 
             // assert player is not dueling
-            if (me.Mobility != "full")
+            if (me.InDuel > 0)
             {
                 TempData["Error"] = "You should conclude your current duel before talking to " + valentine.GetFullName() + ".";
                 return RedirectToAction("Play", "PvP");

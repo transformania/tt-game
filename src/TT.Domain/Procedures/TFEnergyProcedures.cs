@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using System.Web;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
 using TT.Domain.Models;
@@ -30,8 +29,6 @@ namespace TT.Domain.Procedures
 
             
             // crunch down any old TF Energies into one public energy
-
-           // List<TFEnergy> energiesOnPlayer = repo.TFEnergies.Where(e => e.PlayerId == victim.Id && e.FormName == skill.Skill.FormdbName && e.CasterId != attacker.Id).ToList();
             List<TFEnergy> energiesOnPlayer = repo.TFEnergies.Where(e => e.PlayerId == victim.Id && e.FormName == skill.Skill.FormdbName).ToList();
 
             List<TFEnergy> energiesEligibleForDelete = new List<TFEnergy>();
@@ -119,11 +116,11 @@ namespace TT.Domain.Procedures
 
             // animate forms only need half of health requirement, so double the amount completed
             decimal PercentHealthToAllowTF = 0;
-            if (eventualForm.MobilityType == "full")
+            if (eventualForm.MobilityType == PvPStatics.MobilityFull)
             {
                 PercentHealthToAllowTF = PvPStatics.PercentHealthToAllowFullMobilityFormTF;
             }
-            else if (eventualForm.MobilityType == "inanimate")
+            else if (eventualForm.MobilityType == PvPStatics.MobilityInanimate)
             {
                 PercentHealthToAllowTF = PvPStatics.PercentHealthToAllowInanimateFormTF;
             }
@@ -201,26 +198,16 @@ namespace TT.Domain.Procedures
                 xpEarned = 15;
             }
 
-            // ALPHA ROUND 26:  Removing animate spell XP bonus
-            // animate TFs recieve an XP bonus
-            //if (eventualForm.MobilityType == "full")
-            //{
-            //    xpEarned *= PvPStatics.XP__AnimateTFXPBonusModifier;
-            //}
-
             // decrease the XP earned if the player is high leveled and TFing an animate spell AND the xp isn't already negative
-            if (eventualForm.MobilityType == "full" && xpEarned > 0)
+            if (eventualForm.MobilityType == PvPStatics.MobilityFull && xpEarned > 0)
             {
                 xpEarned *= GetHigherLevelXPModifier(attacker.Level, 4);
             }
 
             // decrease the XP earned if the player is high leveled and TFing an inanimate / animal spell AND the xp isn't already negative
-            if (eventualForm.MobilityType == "inanimate" || eventualForm.MobilityType == "animal" || eventualForm.MobilityType == "mindcontrol")
+            if (eventualForm.MobilityType == PvPStatics.MobilityInanimate || eventualForm.MobilityType == PvPStatics.MobilityPet || eventualForm.MobilityType == "mindcontrol")
             {
-
                 xpEarned *= GetHigherLevelXPModifier(attacker.Level, 6);
-
-
             }
 
             // give XP to the attacker
@@ -249,7 +236,7 @@ namespace TT.Domain.Procedures
             LogBox output = new LogBox();
 
             // redundant check to make sure the victim is still in a transformable state
-            if (victim.Mobility != "full")
+            if (victim.Mobility != PvPStatics.MobilityFull)
             {
                 return output;
             }
@@ -315,14 +302,14 @@ namespace TT.Domain.Procedures
 
                 #region animate transformation
                 // target is turning into an animate form
-                if (targetForm.MobilityType == "full" && (target.Health / target.MaxHealth) <= PvPStatics.PercentHealthToAllowFullMobilityFormTF)
+                if (targetForm.MobilityType == PvPStatics.MobilityFull && (target.Health / target.MaxHealth) <= PvPStatics.PercentHealthToAllowFullMobilityFormTF)
                 {
 
                     SkillProcedures.UpdateFormSpecificSkillsToPlayer(target, oldForm.dbName, targetForm.dbName);
 
                     target.Form = targetForm.dbName;
                     target.Gender = targetForm.Gender;
-                    target.Mobility = "full";
+                    target.Mobility = PvPStatics.MobilityFull;
 
                     // wipe out half of the target's mana
                     target.Mana -= target.MaxMana / 2;
@@ -359,7 +346,7 @@ namespace TT.Domain.Procedures
 
                 #region inanimate and animal
                 // target is turning into an inanimate or animal form, both are endgame
-                else if ((targetForm.MobilityType == "inanimate" && (target.Health / target.MaxHealth) <= PvPStatics.PercentHealthToAllowInanimateFormTF) || (targetForm.MobilityType == "animal" && (target.Health / target.MaxHealth) <= PvPStatics.PercentHealthToAllowAnimalFormTF))
+                else if ((targetForm.MobilityType == PvPStatics.MobilityInanimate && (target.Health / target.MaxHealth) <= PvPStatics.PercentHealthToAllowInanimateFormTF) || (targetForm.MobilityType == "animal" && (target.Health / target.MaxHealth) <= PvPStatics.PercentHealthToAllowAnimalFormTF))
                 {
 
                     SkillProcedures.UpdateFormSpecificSkillsToPlayer(target, oldForm.dbName, targetForm.dbName);
@@ -367,9 +354,9 @@ namespace TT.Domain.Procedures
                     target.Form = targetForm.dbName;
                     target.Gender = targetForm.Gender;
 
-                    if (targetForm.MobilityType == "inanimate")
+                    if (targetForm.MobilityType == PvPStatics.MobilityInanimate)
                     {
-                        target.Mobility = "inanimate";
+                        target.Mobility = PvPStatics.MobilityInanimate;
 
                         new Thread(() =>
                              StatsProcedures.AddStat(target.MembershipId, StatsProcedures.Stat__TimesInanimateTFed, 1)

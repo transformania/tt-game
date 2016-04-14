@@ -316,7 +316,7 @@ namespace TT.Web.CustomHtmlHelpers
             string strThumb = "";
             string strPortraitUrl = "";
 
-            if (player.Player.Mobility == "full")
+            if (player.Player.Mobility == PvPStatics.MobilityFull)
             {
                 output = "/Images/PvP/portraits/";
                 strPortraitUrl = player.Form.PortraitUrl;
@@ -324,11 +324,11 @@ namespace TT.Web.CustomHtmlHelpers
             else
             {
                 strPortraitUrl = new GetStaticItem { DbName = player.Form.BecomesItemDbName }.Find().PortraitUrl;
-                if (player.Player.Mobility == "animal")
+                if (player.Player.Mobility == PvPStatics.MobilityPet)
                 {
                     output = "/Images/PvP/animalPortraits/";
                 }
-                if (player.Player.Mobility == "inanimate")
+                if (player.Player.Mobility == PvPStatics.MobilityInanimate)
                 {
                     output = "/Images/PvP/itemsPortraits/";
                 }
@@ -416,15 +416,15 @@ namespace TT.Web.CustomHtmlHelpers
         public static MvcHtmlString GetSpellTypeClass(SkillViewModel skill)
         {
 
-            if (skill.MobilityType == "full")
+            if (skill.MobilityType == PvPStatics.MobilityFull)
             {
                 return new MvcHtmlString("action_attack full");
             }
-            else if (skill.MobilityType == "inanimate")
+            else if (skill.MobilityType == PvPStatics.MobilityInanimate)
             {
                 return new MvcHtmlString("action_attack inanimate");
             }
-            else if (skill.MobilityType == "animal")
+            else if (skill.MobilityType == PvPStatics.MobilityPet)
             {
                 return new MvcHtmlString("action_attack animal");
             }

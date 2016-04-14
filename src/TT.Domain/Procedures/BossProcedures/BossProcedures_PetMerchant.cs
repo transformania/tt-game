@@ -30,7 +30,7 @@ namespace TT.Domain.Procedures.BossProcedures
                 petMerchant.Mana = 5000;
                 petMerchant.MaxHealth = 500;
                 petMerchant.MaxMana = 500;
-                petMerchant.Mobility = "full";
+                petMerchant.Mobility = PvPStatics.MobilityFull;
                 petMerchant.Money = 1000;
                 petMerchant.TimesAttackingThisUpdate = 0;
                 petMerchant.UnusedLevelUpPerks = 0;
@@ -69,7 +69,7 @@ namespace TT.Domain.Procedures.BossProcedures
             IPlayerRepository playerRepo = new EFPlayerRepository();
             Player petMerchant = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.WuffieBotId);
 
-            if (petMerchant.Mobility == "full" && attacker.Mobility == "full") {
+            if (petMerchant.Mobility == PvPStatics.MobilityFull && attacker.Mobility == PvPStatics.MobilityFull) {
                 AttackProcedures.Attack(petMerchant, attacker, "skill_Sarmoti_Zatur");
             }
             
@@ -81,7 +81,7 @@ namespace TT.Domain.Procedures.BossProcedures
             Player petMerchant = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.WuffieBotId);
             
 
-            if (petMerchant.Mobility == "full")
+            if (petMerchant.Mobility == PvPStatics.MobilityFull)
             {
                 if (petMerchant.Health < petMerchant.MaxHealth || petMerchant.Mana < petMerchant.MaxMana)
                 {

@@ -128,7 +128,7 @@ namespace TT.Web.Controllers
             }
 
             // player is inanimate, load up the inanimate endgame page
-            if (me.Mobility == "inanimate")
+            if (me.Mobility == PvPStatics.MobilityInanimate)
             {
                 GameOverViewModel inanimateOutput = new GameOverViewModel();
 
@@ -178,7 +178,7 @@ namespace TT.Web.Controllers
 
                 List<PlayerFormViewModel> playersHere = new List<PlayerFormViewModel>();
                 foreach (PlayerFormViewModel p in inanimateOutput.PlayersHere) {
-                    if (p.Player.Mobility == "full") {
+                    if (p.Player.Mobility == PvPStatics.MobilityFull) {
                         playersHere.Add(p);
                     }
                 }
@@ -189,7 +189,7 @@ namespace TT.Web.Controllers
             }
 
             // player is an animal, load up the inanimate endgame page
-            if (me.Mobility == "animal")
+            if (me.Mobility == PvPStatics.MobilityPet)
             {
                 GameOverViewModelAnimal animalOutput = new GameOverViewModelAnimal();
                 animalOutput.You = me;
@@ -234,7 +234,7 @@ namespace TT.Web.Controllers
 
                 animalOutput.LocationItems = ItemProcedures.GetAllItemsAtLocation(animalOutput.Location.dbName, me);
 
-                animalOutput.PlayersHere = PlayerProcedures.GetPlayerFormViewModelsAtLocation(animalOutput.Location.dbName, myMembershipId).Where(p => p.Form.MobilityType == "full");
+                animalOutput.PlayersHere = PlayerProcedures.GetPlayerFormViewModelsAtLocation(animalOutput.Location.dbName, myMembershipId).Where(p => p.Form.MobilityType == PvPStatics.MobilityFull);
 
                 animalOutput.LastUpdateTimestamp = WorldStat.LastUpdateTimestamp;
 
@@ -276,7 +276,7 @@ namespace TT.Web.Controllers
             output.LastUpdateTimestamp = PvPWorldStatProcedures.GetLastWorldUpdate();
 
             loadtime += "Start get players here:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
-            output.PlayersHere = PlayerProcedures.GetPlayerFormViewModelsAtLocation(me.dbLocationName, myMembershipId).Where(p => p.Form.MobilityType == "full");
+            output.PlayersHere = PlayerProcedures.GetPlayerFormViewModelsAtLocation(me.dbLocationName, myMembershipId).Where(p => p.Form.MobilityType == PvPStatics.MobilityFull);
             loadtime += "End get players here:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
 
             // output.Location = Locations.GetLocation()
@@ -579,7 +579,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction("Play");
             }
 
-            if (me.Mobility == "animal")
+            if (me.Mobility == PvPStatics.MobilityPet)
             {
                 ItemProcedures.MoveAnimalItem(me, nextLocation.dbName);
 
@@ -683,7 +683,7 @@ namespace TT.Web.Controllers
 
 
             // assert player is animate
-             if (me.Mobility != "full")
+             if (me.Mobility != PvPStatics.MobilityFull)
              {
                  TempData["Error"] = "You must be animate in order to enter or exit the dungeon.";
                  return RedirectToAction("Play");
@@ -801,7 +801,7 @@ namespace TT.Web.Controllers
             // both players are in protection; only allow animate spells
             else if (me.GameMode == 1 && target.GameMode == 1)
             {
-                output = output.Where(s => s.MobilityType == "full");
+                output = output.Where(s => s.MobilityType == PvPStatics.MobilityFull);
             }
 
             // attack or the target is in superprotection and not a friend or bot; no spells work
@@ -819,7 +819,7 @@ namespace TT.Web.Controllers
             // only show inanimates for rat thieves
             if (target.BotId == AIStatics.MaleRatBotId || target.BotId == AIStatics.FemaleRatBotId)
             {
-                output = output.Where(s => s.MobilityType == "inanimate");
+                output = output.Where(s => s.MobilityType == PvPStatics.MobilityInanimate);
             }
 
             // only show Weaken for valentine
@@ -1011,7 +1011,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the target is not inanimate
-            if (targeted.Mobility == "inanimate")
+            if (targeted.Mobility == PvPStatics.MobilityInanimate)
             {
                 TempData["Error"] = "Your target is already inanimate.";
                 TempData["SubError"] = "Transformation magic will have no effect on them anymore.  Someone else might have cast the final spell.";
@@ -1019,7 +1019,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the target is not an animal
-            if (targeted.Mobility == "animal")
+            if (targeted.Mobility == PvPStatics.MobilityPet)
             {
                 TempData["Error"] = "Your target is an animal.";
                 TempData["SubError"] = "Transformation magic will have no effect on them anymore.";
@@ -1142,7 +1142,7 @@ namespace TT.Web.Controllers
                 // Donna
                 if (targeted.BotId == AIStatics.DonnaBotId)
                 {
-                    if (futureForm == null || futureForm.MobilityType == "full")
+                    if (futureForm == null || futureForm.MobilityType == PvPStatics.MobilityFull)
                     {
                         TempData["Error"] = "You get the feeling this type of spell won't work against Donna.";
                         TempData["SubError"] = "Maybe a different one would do...";
@@ -1174,7 +1174,7 @@ namespace TT.Web.Controllers
                 {
 
                     // disallow animate spells
-                    if (futureForm.MobilityType == "full")
+                    if (futureForm.MobilityType == PvPStatics.MobilityFull)
                     {
                         TempData["Error"] = "Your target seems immune from this kind of spell.";
                         TempData["SubError"] = "Maybe a different one would do...";
@@ -1188,7 +1188,7 @@ namespace TT.Web.Controllers
                 {
 
                     // only allow inanimate spells
-                    if (futureForm.MobilityType != "inanimate")
+                    if (futureForm.MobilityType != PvPStatics.MobilityInanimate)
                     {
                         TempData["Error"] = "Your target seems immune from this kind of spell.";
                         TempData["SubError"] = "Maybe a different one would do...";
@@ -1262,7 +1262,7 @@ namespace TT.Web.Controllers
                     }
 
                     //  if the form is null (curse) or not fully animate, block it entirely
-                    else if (futureForm.MobilityType == null || futureForm.MobilityType != "full")
+                    else if (futureForm.MobilityType == null || futureForm.MobilityType != PvPStatics.MobilityFull)
                     {
                         TempData["Error"] = "This player is in protection and immune from inanimate and animal spells except by their friends.";
                         return RedirectToAction("Play");
@@ -1309,7 +1309,7 @@ namespace TT.Web.Controllers
              Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
              // assert player is in an okay form to do this
-             if (me.Mobility != "full")
+             if (me.Mobility != PvPStatics.MobilityFull)
              {
                  TempData["Error"] = "You must be animate in order to attempt to enchant a location.";
                  return RedirectToAction("Play");
@@ -2290,18 +2290,18 @@ namespace TT.Web.Controllers
 
             ViewBag.TimeUntilLogout = PvPStatics.OfflineAfterXMinutes - Math.Abs(Math.Floor(playerLookedAt.Player.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
 
-            if (playerLookedAt.Form.MobilityType == "inanimate" || playerLookedAt.Form.MobilityType == "animal")
+            if (playerLookedAt.Form.MobilityType == PvPStatics.MobilityInanimate || playerLookedAt.Form.MobilityType == PvPStatics.MobilityPet)
             {
                 
 
                 Item playerItem = ItemProcedures.GetItemByVictimName(playerLookedAt.Player.FirstName, playerLookedAt.Player.LastName);
                 DbStaticItem playerItemStatic = ItemStatics.GetStaticItem(playerItem.dbName);
 
-                if (playerLookedAt.Form.MobilityType == "inanimate")
+                if (playerLookedAt.Form.MobilityType == PvPStatics.MobilityInanimate)
                 {
                     ViewBag.ImgUrl = "itemsPortraits/" + playerItemStatic.PortraitUrl;
                 }
-                else if (playerLookedAt.Form.MobilityType == "animal")
+                else if (playerLookedAt.Form.MobilityType == PvPStatics.MobilityPet)
                 {
                     ViewBag.ImgUrl = "animalPortraits/" + playerItemStatic.PortraitUrl;
                 }
@@ -2386,7 +2386,7 @@ namespace TT.Web.Controllers
             DbStaticItem meItem = ItemStatics.GetStaticItem(meDbItem.dbName);
 
             // assert that player is inanimate
-            if (me.Mobility != "inanimate")
+            if (me.Mobility != PvPStatics.MobilityInanimate)
             {
                 TempData["Error"] = "You are not inanimate";
                 return RedirectToAction("Play");
@@ -2466,7 +2466,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that player is an animal
-            if (me.Mobility != "animal")
+            if (me.Mobility != PvPStatics.MobilityPet)
             {
                 TempData["Error"] = "You are not an animal or pet.";
                 return RedirectToAction("Play");
@@ -2485,7 +2485,7 @@ namespace TT.Web.Controllers
             // assert that the target is still in the same room
             Player targeted = PlayerProcedures.GetPlayer(targetId);
 
-            if (me.Mobility == "full")
+            if (me.Mobility == PvPStatics.MobilityFull)
             {
                 if (me.dbLocationName != targeted.dbLocationName)
                 {
@@ -2494,7 +2494,7 @@ namespace TT.Web.Controllers
                     return RedirectToAction("Play");
                 }
             }
-            else if (me.Mobility == "animal")
+            else if (me.Mobility == PvPStatics.MobilityPet)
             {
                 Location here = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName);
                 if (here.dbName != targeted.dbLocationName)
@@ -2506,7 +2506,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the target is not inanimate
-            if (targeted.Mobility == "inanimate")
+            if (targeted.Mobility == PvPStatics.MobilityInanimate)
             {
                 TempData["Error"] = "Your target is inanimate";
                 TempData["SubError"] = "You can't interact with inanimate players.";
@@ -2514,7 +2514,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the target is not an animal
-            if (targeted.Mobility == "animal")
+            if (targeted.Mobility == PvPStatics.MobilityPet)
             {
                 TempData["Error"] = "Your target is already an animal";
                 TempData["SubError"] = "You can't interact with players turned into other animals.";
@@ -2628,7 +2628,7 @@ namespace TT.Web.Controllers
 
             DbStaticForm myform = FormStatics.GetForm(me.Form);
 
-            if (myform.MobilityType == "full")
+            if (myform.MobilityType == PvPStatics.MobilityFull)
             {
                 return true;
             }
@@ -2636,14 +2636,14 @@ namespace TT.Web.Controllers
             if (actionType == "move")
             {
                 // inanimate
-                if (myform.MobilityType == "inanimate")
+                if (myform.MobilityType == PvPStatics.MobilityInanimate)
                 {
                     TempData["Error"] = "You can't move.";
                     TempData["SubError"] = "You are currently stuck as an inanimate object.";
                     return false;
                 }
                 // animal
-                if (myform.MobilityType == "animal")
+                if (myform.MobilityType == PvPStatics.MobilityPet)
                 {
                     Item meAnimal = ItemProcedures.GetItemByVictimName(me.FirstName, me.LastName);
                     if (meAnimal.OwnerId > 0)
@@ -2658,7 +2658,7 @@ namespace TT.Web.Controllers
             else if (actionType == "attack")
             {
                 // inanimate
-                if (myform.MobilityType == "inanimate")
+                if (myform.MobilityType == PvPStatics.MobilityInanimate)
                 {
 
                     TempData["Error"] = "You can't cast any spells.";
@@ -2667,7 +2667,7 @@ namespace TT.Web.Controllers
 
                 }
                 // animal
-                if (myform.MobilityType=="animal")
+                if (myform.MobilityType==PvPStatics.MobilityPet)
                 {
                     TempData["Error"] = "You can't cast any spells.";
                     TempData["SubError"] = "You are an animal.";
@@ -2677,14 +2677,14 @@ namespace TT.Web.Controllers
             else if (actionType == "meditate")
             {
                 //inaniamte
-                if (myform.MobilityType == "inanimate")
+                if (myform.MobilityType == PvPStatics.MobilityInanimate)
                 {
                     TempData["Error"] = "You can't meditate.";
                     TempData["SubError"] = "You are currently stuck as an inanimate object.  You're essentially already meditating... permanently..";
                     return false;
                 }
                 // animal
-                if (myform.MobilityType == "animal")
+                if (myform.MobilityType == PvPStatics.MobilityPet)
                 {
                     TempData["Error"] = "You can't meditate.";
                     TempData["SubError"] = "You are an animal.";
@@ -2695,14 +2695,14 @@ namespace TT.Web.Controllers
             else if (actionType == "cleanse")
             {
                 // inanimate
-                if (myform.MobilityType == "inanimate")
+                if (myform.MobilityType == PvPStatics.MobilityInanimate)
                 {
                     TempData["Error"] = "You can't cleanse.";
                     TempData["SubError"] = "You are currently stuck as an inanimate object.";
                     return false;
                 }
                 // animal
-                if (myform.MobilityType == "animal")
+                if (myform.MobilityType == PvPStatics.MobilityPet)
                 {
                     TempData["Error"] = "You can't cleanse.";
                     TempData["SubError"] = "You are an animal.";
@@ -2712,14 +2712,14 @@ namespace TT.Web.Controllers
             else if (actionType == "search")
             {
                 // inanimate
-                if (myform.MobilityType == "inanimate")
+                if (myform.MobilityType == PvPStatics.MobilityInanimate)
                 {
                     TempData["Error"] = "You can't search.";
                     TempData["SubError"] = "You are currently stuck as an inanimate object.";
                     return false;
                 }
                 // animal
-                if (myform.MobilityType == "animal")
+                if (myform.MobilityType == PvPStatics.MobilityPet)
                 {
                     TempData["Error"] = "You can't search.";
                     TempData["SubError"] = "You are an animal.";
@@ -2729,14 +2729,14 @@ namespace TT.Web.Controllers
             else if (actionType == "pickup")
             {
                 // inanimate
-                if (myform.MobilityType == "inanimate")
+                if (myform.MobilityType == PvPStatics.MobilityInanimate)
                 {
                     TempData["Error"] = "You can't pick any items up.";
                     TempData["SubError"] = "You are currently stuck as an inanimate object.";
                     return false;
                 }
                 // animal
-                if (myform.MobilityType == "animal")
+                if (myform.MobilityType == PvPStatics.MobilityPet)
                 {
                     TempData["Error"] = "You can't pick anything up.";
                     TempData["SubError"] = "You are an animal.";
@@ -2746,14 +2746,14 @@ namespace TT.Web.Controllers
             else if (actionType == "drop")
             {
                 // inanimate
-                if (myform.MobilityType == "inanimate")
+                if (myform.MobilityType == PvPStatics.MobilityInanimate)
                 {
                     TempData["Error"] = "You can't drop any items.";
                     TempData["SubError"] = "You are currently stuck as an inanimate object.";
                     return false;
                 }
                 // animal
-                if (myform.MobilityType == "animal")
+                if (myform.MobilityType == PvPStatics.MobilityPet)
                 {
                     TempData["Error"] = "You can't drop anything.";
                     TempData["SubError"] = "You are an animal.";
@@ -2762,7 +2762,7 @@ namespace TT.Web.Controllers
             }
             else if (actionType == "equip")
             {
-                if (myform.MobilityType == "inanimate")
+                if (myform.MobilityType == PvPStatics.MobilityInanimate)
                 {
                     TempData["Error"] = "You can't equip or unequip any items.";
                     TempData["SubError"] = "You are currently stuck as an inanimate object.";
@@ -2771,7 +2771,7 @@ namespace TT.Web.Controllers
             }
             else if (actionType == "animalAction")
             {
-                if (myform.MobilityType != "animal")
+                if (myform.MobilityType != PvPStatics.MobilityPet)
                 {
                     TempData["Error"] = "You can't do that.";
                     TempData["SubError"] = "You are not an animal.";
@@ -3017,7 +3017,7 @@ namespace TT.Web.Controllers
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert player is inanimate or an animal
-            if (me.Mobility == "full")
+            if (me.Mobility == PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You can't do this.";
                 TempData["SubError"] = "You are still in an animate form.  You must be inanimate or an animal.";
@@ -3066,7 +3066,7 @@ namespace TT.Web.Controllers
              Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
              // assert player is inanimate or an animal
-             if (me.Mobility != "inanimate" && me.Mobility != "animal")
+             if (me.Mobility != PvPStatics.MobilityInanimate && me.Mobility != PvPStatics.MobilityPet)
              {
                  TempData["Error"] = "You can't do this.";
                  TempData["SubError"] = "You are still in an animate form.  You must be inanimate or an animal.";
@@ -3110,7 +3110,7 @@ namespace TT.Web.Controllers
              }
 
             // assert owner is animate (they always should be, but just in case...)
-             if (owner.Mobility != "full")
+             if (owner.Mobility != PvPStatics.MobilityFull)
              {
                  TempData["Error"] = "Your owner must be animate in order for you to curse transform them.";
                  return RedirectToAction("Play", "PvP");
@@ -3139,7 +3139,7 @@ namespace TT.Web.Controllers
              Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
              // assert player is inanimate or an animal
-             if (me.Mobility == "full")
+             if (me.Mobility == PvPStatics.MobilityFull)
              {
                  TempData["Error"] = "You can't do this.";
                  TempData["SubError"] = "You are still in an animate form.  You must be inanimate or an animal.";
@@ -3207,14 +3207,14 @@ namespace TT.Web.Controllers
             
 
              // assert player is greater than level 3 if they are mobile
-             if (me.Level < 3 && me.Mobility == "full")
+             if (me.Level < 3 && me.Mobility == PvPStatics.MobilityFull)
              {
                  TempData["Error"] = "You must be level 3 or greater in order to reserve a name.";
                  return RedirectToAction("Play");
              }
 
              // if player is not mobile, see if the item they have become is at least level 3
-             if (me.Mobility != "full")
+             if (me.Mobility != PvPStatics.MobilityFull)
              {
                  Item itemMe = ItemProcedures.GetItemByVictimName(me.FirstName, me.LastName);
                  if (itemMe.Level < 3)
@@ -3286,7 +3286,7 @@ namespace TT.Web.Controllers
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert player is mobile
-            if (me.Mobility != "full")
+            if (me.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You must be fully animate in order to shout.";
                 return RedirectToAction("Play");
@@ -3309,7 +3309,7 @@ namespace TT.Web.Controllers
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             // assert player is mobile
-            if (me.Mobility != "full")
+            if (me.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You must be fully animate in order to shout.";
                 return RedirectToAction("Play");

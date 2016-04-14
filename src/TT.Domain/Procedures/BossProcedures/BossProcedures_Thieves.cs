@@ -47,7 +47,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     Form = MaleBossFormDbName,
                     //IsPetToId = -1,
                     Money = 0,
-                    Mobility = "full",
+                    Mobility = PvPStatics.MobilityFull,
                     Level = 5,
                     MembershipId = "-8",
                     BotId = AIStatics.MaleRatBotId,
@@ -94,7 +94,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     MaxMana = 10000,
                     Form = FemaleBossFormDbName,
                     Money = 0,
-                    Mobility = "full",
+                    Mobility = PvPStatics.MobilityFull,
                     Level = 7,
                     MembershipId = "-9",
                     BotId = AIStatics.FemaleRatBotId,
@@ -131,14 +131,14 @@ namespace TT.Domain.Procedures.BossProcedures
             AIDirective femaleAI = aiRepo.AIDirectives.FirstOrDefault(i => i.OwnerId == femalethief.Id);
 
             // both male and female are no longer animate, end boss event
-            if (malethief.Mobility != "full" && femalethief.Mobility != "full")
+            if (malethief.Mobility != PvPStatics.MobilityFull && femalethief.Mobility != PvPStatics.MobilityFull)
             {
                 EndEvent();
             }
 
             #region both animate
             // both male and female are animate, have them go to players and loot them!
-            if (malethief.Mobility == "full" && femalethief.Mobility == "full")
+            if (malethief.Mobility == PvPStatics.MobilityFull && femalethief.Mobility == PvPStatics.MobilityFull)
             {
 
                 // periodically refresh list of targets
@@ -175,7 +175,7 @@ namespace TT.Domain.Procedures.BossProcedures
 
                 Player target = playerRepo.Players.FirstOrDefault(p => p.Id == targetId);
 
-                while ((target == null || PlayerProcedures.PlayerIsOffline(target) || target.Mobility != "full" || target.Money < 20) && maleAI.Var1 < idArray.Length-1)
+                while ((target == null || PlayerProcedures.PlayerIsOffline(target) || target.Mobility != PvPStatics.MobilityFull || target.Money < 20) && maleAI.Var1 < idArray.Length-1)
                 {
                     maleAI.Var1++;
                     targetId = Convert.ToInt32(idArray[Convert.ToInt32(maleAI.Var1)]);
@@ -222,13 +222,13 @@ namespace TT.Domain.Procedures.BossProcedures
 
             #region veangance mode
             // one of the thieves has been taken down.  The other will try and steal their inanimate friend back!
-            if (malethief.Mobility != "full" || femalethief.Mobility != "full")
+            if (malethief.Mobility != PvPStatics.MobilityFull || femalethief.Mobility != PvPStatics.MobilityFull)
             {
 
                 Player attackingThief;
                 Player itemThief;
                
-                if (malethief.Mobility == "full" && femalethief.Mobility != "full")
+                if (malethief.Mobility == PvPStatics.MobilityFull && femalethief.Mobility != PvPStatics.MobilityFull)
                 {
                     attackingThief = malethief;
                     itemThief = femalethief;
@@ -288,7 +288,7 @@ namespace TT.Domain.Procedures.BossProcedures
                         target = playerRepo.Players.FirstOrDefault(p => p.Id == victimThiefItem.OwnerId && p.BotId != AIStatics.MaleRatBotId && p.BotId != AIStatics.FemaleRatBotId);
 
                         // if we have managed to turn the target, take back the victim-item
-                        if (target.Mobility != "full")
+                        if (target.Mobility != PvPStatics.MobilityFull)
                         {
                             ItemProcedures.GiveItemToPlayer(victimThiefItem.Id, attackingThief.Id);
                             LocationLogProcedures.AddLocationLog(target.dbLocationName, "<b>" + attackingThief.GetFullName() + " recovered " + victimThiefItem.GetFullName() + " the " + victimThiefItemPlus.Item.FriendlyName + ".</b>");
@@ -320,7 +320,7 @@ namespace TT.Domain.Procedures.BossProcedures
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
             DateTime cutoff = DateTime.UtcNow.AddHours(-1);
-            IEnumerable<int> ids = playerRepo.Players.Where(p => p.Mobility == "full" &&
+            IEnumerable<int> ids = playerRepo.Players.Where(p => p.Mobility == PvPStatics.MobilityFull &&
                 p.BotId >= AIStatics.PsychopathBotId &&
                 p.OnlineActivityTimestamp >= cutoff &&
                 !p.dbLocationName.Contains("dungeon_") &&
@@ -346,16 +346,16 @@ namespace TT.Domain.Procedures.BossProcedures
             Random rand = new Random(Guid.NewGuid().GetHashCode());
 
             // both thieves are full, dont' attack too hard
-            if (malethief.Mobility == "full" && femalethief.Mobility == "full")
+            if (malethief.Mobility == PvPStatics.MobilityFull && femalethief.Mobility == PvPStatics.MobilityFull)
             {
-                if (malethief.Mobility == "full")
+                if (malethief.Mobility == PvPStatics.MobilityFull)
                 {
                     AttackProcedures.Attack(malethief, attacker, "lowerHealth");
                     AIProcedures.DealBossDamage(malethief, attacker, true, 1);
                     malethief = playerRepo.Players.FirstOrDefault(f => f.FirstName == MaleBossFirstName && f.LastName == MaleBossLastName);
                 }
 
-                if (femalethief.Mobility == "full")
+                if (femalethief.Mobility == PvPStatics.MobilityFull)
                 {
                     AttackProcedures.Attack(femalethief, attacker, "skill_Seekshadow's_Triumph_Judoo");
                     AttackProcedures.Attack(femalethief, attacker, "skill_Seekshadow's_Triumph_Judoo");
@@ -385,7 +385,7 @@ namespace TT.Domain.Procedures.BossProcedures
             else 
             {
                 double roll = rand.NextDouble() * 3;
-                if (malethief.Mobility == "full")
+                if (malethief.Mobility == PvPStatics.MobilityFull)
                 {
                     for (int i = 0; i < roll; i++)
                     {
@@ -394,7 +394,7 @@ namespace TT.Domain.Procedures.BossProcedures
                         AIProcedures.DealBossDamage(malethief, attacker, false, 2);
                     }
                 }
-                else if (femalethief.Mobility == "full")
+                else if (femalethief.Mobility == PvPStatics.MobilityFull)
                 {
                     for (int i = 0; i < roll; i++)
                     {

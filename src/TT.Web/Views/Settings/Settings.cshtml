@@ -40,7 +40,7 @@
         
         <p>You were last in combat <b>@Math.Abs(Math.Floor(Model.GetLastCombatTimestamp().Subtract(DateTime.UtcNow).TotalMinutes))</b> minutes ago.</p>
 
-        if (@ViewBag.Mobility != "full")
+        if (@ViewBag.Mobility != PvPStatics.MobilityFull)
         {
             if (@ViewBag.TimeUntilReroll > 0)
             {

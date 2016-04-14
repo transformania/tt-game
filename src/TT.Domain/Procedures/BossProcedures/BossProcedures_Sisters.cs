@@ -49,7 +49,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     MaxMana = 10000,
                     Form = NerdBossForm,
                     Money = 2000,
-                    Mobility = "full",
+                    Mobility = PvPStatics.MobilityFull,
                     Level = 25,
                     MembershipId = "-11",
                     BotId = AIStatics.MouseNerdBotId,
@@ -82,7 +82,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     MaxMana = 10000,
                     Form = BimboBossForm,
                     Money = 6000,
-                    Mobility = "full",
+                    Mobility = PvPStatics.MobilityFull,
                     Level = 25,
                     MembershipId = "-12",
                     BotId = AIStatics.MouseBimboBotId,
@@ -160,9 +160,6 @@ namespace TT.Domain.Procedures.BossProcedures
 
         public static void RunSistersAction()
         {
-
-            
-
             IPlayerRepository playerRepo = new EFPlayerRepository();
             Player nerdBoss = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.MouseNerdBotId);
             Player bimboBoss = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.MouseBimboBotId);
@@ -176,7 +173,7 @@ namespace TT.Domain.Procedures.BossProcedures
             {
                 // get all of the players in the room by nerd
                 List<Player> playersByNerd = PlayerProcedures.GetPlayersAtLocation(nerdBoss.dbLocationName).ToList();
-                playersByNerd = playersByNerd.Where(p => p.Mobility == "full" &&
+                playersByNerd = playersByNerd.Where(p => p.Mobility == PvPStatics.MobilityFull &&
                     !PlayerProcedures.PlayerIsOffline(p) &&
                     p.BotId == AIStatics.ActivePlayerBotId &&
                     p.Id != nerdBoss.Id &&
@@ -187,7 +184,7 @@ namespace TT.Domain.Procedures.BossProcedures
 
                 // get all of the players in the room by bimbo
                 List<Player> playersByBimbo = PlayerProcedures.GetPlayersAtLocation(bimboBoss.dbLocationName).ToList();
-                playersByBimbo = playersByBimbo.Where(p => p.Mobility == "full" &&
+                playersByBimbo = playersByBimbo.Where(p => p.Mobility == PvPStatics.MobilityFull &&
                     !PlayerProcedures.PlayerIsOffline(p) &&
                     p.BotId == AIStatics.ActivePlayerBotId &&
                     p.Id != bimboBoss.Id &&

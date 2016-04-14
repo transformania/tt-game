@@ -396,7 +396,7 @@ namespace TT.Web.Controllers
             IDbStaticItemRepository itemRepo = new EFDbStaticItemRepository();
             IDbStaticFormRepository formRepo = new EFDbStaticFormRepository();
 
-            List<DbStaticForm> forms = formRepo.DbStaticForms.Where(f => f.MobilityType == "inanimate" || f.MobilityType == "animal").ToList();
+            List<DbStaticForm> forms = formRepo.DbStaticForms.Where(f => f.MobilityType == PvPStatics.MobilityInanimate || f.MobilityType == PvPStatics.MobilityPet).ToList();
 
             foreach (DbStaticForm form in forms)
             {
@@ -1624,18 +1624,18 @@ namespace TT.Web.Controllers
                     IDbStaticFormRepository staticFormRepo = new EFDbStaticFormRepository();
                     DbStaticForm form = staticFormRepo.DbStaticForms.FirstOrDefault(f => f.dbName == input.NewForm);
 
-                    if (form != null && form.MobilityType == "full")
+                    if (form != null && form.MobilityType == PvPStatics.MobilityFull)
                     {
                         player.Form = form.dbName;
                         player.Health = 99999;
                         player.MaxHealth = 99999;
                     }
 
-                    if (form.MobilityType == "full" && player.Mobility != "full")
+                    if (form.MobilityType == PvPStatics.MobilityFull && player.Mobility != PvPStatics.MobilityFull)
                     {
                         IItemRepository itemRepo = new EFItemRepository();
                         Item item = itemRepo.Items.FirstOrDefault(i => i.VictimName == origFirstName + " " + origLastName);
-                        player.Mobility = "full";
+                        player.Mobility = PvPStatics.MobilityFull;
                         itemRepo.DeleteItem(item.Id);
                     }
 
@@ -1643,7 +1643,7 @@ namespace TT.Web.Controllers
 
                 playerRepo.SavePlayer(player);
 
-                if (player.Mobility != "full")
+                if (player.Mobility != PvPStatics.MobilityFull)
                 {
                     IItemRepository itemRepo = new EFItemRepository();
                     Item item = itemRepo.Items.FirstOrDefault(i => i.VictimName == origFirstName + " " + origLastName);
@@ -1732,7 +1732,7 @@ namespace TT.Web.Controllers
             IItemRepository itemRepo = new EFItemRepository();
 
             Player me = playerRepo.Players.FirstOrDefault(p => p.MembershipId == myMembershipId);
-            me.Mobility = "inanimate";
+            me.Mobility = PvPStatics.MobilityInanimate;
             me.Form = "form_Flirty_Three-Tiered_Skirt_Martiandawn";
             playerRepo.SavePlayer(me);
 
@@ -1781,7 +1781,7 @@ namespace TT.Web.Controllers
             IItemRepository itemRepo = new EFItemRepository();
 
             Player me = playerRepo.Players.FirstOrDefault(p => p.MembershipId == myMembershipId);
-            me.Mobility = "animal";
+            me.Mobility = PvPStatics.MobilityPet;
             me.Form = "form_Cuddly_Pocket_Goo_Girl_GooGirl";
             playerRepo.SavePlayer(me);
 
@@ -1830,7 +1830,7 @@ namespace TT.Web.Controllers
             IItemRepository itemRepo = new EFItemRepository();
 
             Player me = playerRepo.Players.FirstOrDefault(p => p.MembershipId == myMembershipId);
-            me.Mobility = "full";
+            me.Mobility = PvPStatics.MobilityFull;
             me.Form = me.OriginalForm;
             playerRepo.SavePlayer(me);
 

@@ -14,7 +14,7 @@ namespace TT.Domain.Procedures.BossProcedures
             IPlayerRepository playerRepo = new EFPlayerRepository();
             Player dbDemon = playerRepo.Players.FirstOrDefault(f => f.Id == demon.Id);
 
-            if (dbDemon.Mobility != "full")
+            if (dbDemon.Mobility != PvPStatics.MobilityFull)
             {
                 decimal xpGain = 30+5*dbDemon.Level;
                 decimal pointsGain = dbDemon.Level * 2;
@@ -32,7 +32,7 @@ namespace TT.Domain.Procedures.BossProcedures
 
 
             }
-            else if (dbDemon != null && dbDemon.Mobility == "full" && attacker.Mobility == "full")
+            else if (dbDemon != null && dbDemon.Mobility == PvPStatics.MobilityFull && attacker.Mobility == PvPStatics.MobilityFull)
             {
                 AttackProcedures.Attack(dbDemon, attacker, PvPStatics.Dungeon_VanquishSpell);
                 AttackProcedures.Attack(dbDemon, attacker, PvPStatics.Dungeon_VanquishSpell);

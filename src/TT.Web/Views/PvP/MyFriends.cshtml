@@ -1,6 +1,7 @@
 ﻿@model TT.Domain.ViewModels.FriendPageViewModel
 @using TT.Web.CustomHtmlHelpers
 @using TT.Domain.Procedures
+@using TT.Domain.Statics
 
 <nav class="navbar navbar-default outsideContainer navbarTT2">
     <div class="container-fluid">
@@ -56,20 +57,20 @@
             <tr>
 
                 @{
-            if (fp.dbPlayer.Mobility == "full")
+            if (fp.dbPlayer.Mobility == PvPStatics.MobilityFull)
             {
                 <td>
                     @Html.ActionLink(fp.dbPlayer.GetFullName(), "LookAtPlayer", "PvP", new { id = fp.dbPlayer.Id }, null)
                 </td>
             }
-            else if (fp.dbPlayer.Mobility == "inanimate")
+            else if (fp.dbPlayer.Mobility == PvPStatics.MobilityInanimate)
             {
                 <td>
                     @Html.ActionLink(fp.dbPlayer.GetFullName() + " (inanimate)", "LookAtPlayer", "PvP", new { id = fp.dbPlayer.Id }, null)
                 </td>
             }
 
-            else if (fp.dbPlayer.Mobility == "animal")
+            else if (fp.dbPlayer.Mobility == PvPStatics.MobilityPet)
             {
                 <td>
                     @Html.ActionLink(fp.dbPlayer.GetFullName() + " (animal)", "LookAtPlayer", "PvP", new { id = fp.dbPlayer.Id }, null)

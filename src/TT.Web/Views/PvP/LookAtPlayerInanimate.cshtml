@@ -71,7 +71,7 @@
         </div>
         <div class="rightDisplay">
             <p class="avatarName center-block">@Model.PlayerForm.Player.GetFullName()</p>
-            @{if (Model.PlayerForm.Player.Mobility == "inanimate")
+            @{if (Model.PlayerForm.Player.Mobility == PvPStatics.MobilityFull)
             {
                 <span class="textMobility">
                     Once human, this player has become inanimate and poses no threat to its enemies.  Far from being dead, however, @Model.PlayerForm.Player.FirstName's new form still retains consciousness and some of its old magic, which can enhance or hamper its owner's abilities.
@@ -79,7 +79,7 @@
 
             }}
 
-            @{if (Model.PlayerForm.Player.Mobility == "animal")
+            @{if (Model.PlayerForm.Player.Mobility == PvPStatics.MobilityPet)
             {
                 <span class="textMobility">
                     Once human, this player has become an animal or familiar and poses no threat to its enemies.  @Model.PlayerForm.Player.FirstName's new form still retains some of its old consciousness and magic, which can enhance or hamper their master's abilities when tamed and kept as a pet.

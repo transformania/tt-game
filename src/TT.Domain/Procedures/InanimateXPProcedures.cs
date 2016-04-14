@@ -62,7 +62,7 @@ namespace TT.Domain.Procedures
 
             // get the number of inanimate accounts under this IP
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            decimal playerCount = playerRepo.Players.Where(p => p.IpAddress == me.IpAddress && (p.Mobility == "inanimate" || p.Mobility == "animal") && p.BotId == AIStatics.ActivePlayerBotId).Count();
+            decimal playerCount = playerRepo.Players.Count(p => p.IpAddress == me.IpAddress && (p.Mobility == PvPStatics.MobilityInanimate || p.Mobility == PvPStatics.MobilityPet) && p.BotId == AIStatics.ActivePlayerBotId);
             //TODO: TEMPEST - FIX
             if (playerCount == 0 )//|| HttpContext.Current.User.IsInRole(PvPStatics.Permissions_MultiAccountWhitelist))
             {
@@ -83,13 +83,13 @@ namespace TT.Domain.Procedures
                     LastActionTurnstamp = currentGameTurn - 1,
                 };
 
-                if (me.Mobility == "inanimate")
+                if (me.Mobility == PvPStatics.MobilityInanimate)
                 {
                     new Thread(() =>
                         StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__InanimateXPEarned, (float)xpGain)
                     ).Start();
                 }
-                else if (me.Mobility == "animal")
+                else if (me.Mobility == PvPStatics.MobilityPet)
                 {
                     new Thread(() =>
                         StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__PetXPEarned, (float)xpGain)
@@ -121,13 +121,13 @@ namespace TT.Domain.Procedures
 
                 xpGain = xpGain / playerCount;
 
-                if (me.Mobility == "inanimate")
+                if (me.Mobility == PvPStatics.MobilityInanimate)
                 {
                     new Thread(() =>
                         StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__InanimateXPEarned, (float)xpGain)
                     ).Start();
                 }
-                else if (me.Mobility == "animal")
+                else if (me.Mobility == PvPStatics.MobilityPet)
                 {
                     new Thread(() =>
                         StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__PetXPEarned, (float)xpGain)
@@ -326,7 +326,7 @@ namespace TT.Domain.Procedures
                     dbPlayer.Gender = PvPStatics.GenderFemale;
                 }
 
-                dbPlayer.Mobility = "full";
+                dbPlayer.Mobility = PvPStatics.MobilityFull;
                 dbPlayer.ActionPoints = PvPStatics.MaximumStoreableActionPoints;
                 dbPlayer.ActionPoints_Refill = PvPStatics.MaximumStoreableActionPoints_Refill;
                 dbPlayer.CleansesMeditatesThisRound = PvPStatics.MaxCleansesMeditatesPerUpdate;
@@ -429,7 +429,7 @@ namespace TT.Domain.Procedures
                 Player dbOwner = playerRepo.Players.FirstOrDefault(p => p.Id == owner.Id);
                 DbStaticForm newForm = FormStatics.GetForm(playerItemPlus.CurseTFFormdbName);
 
-                if (newForm.MobilityType == "full")
+                if (newForm.MobilityType == PvPStatics.MobilityFull)
                 {
                     dbOwner.Form = playerItemPlus.CurseTFFormdbName;
                     dbOwner.Gender = newForm.Gender;

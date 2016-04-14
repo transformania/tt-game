@@ -54,8 +54,7 @@ namespace TT.Domain.Procedures
                 bot.MaxMana = 200;
                 bot.MembershipId = AIStatics.PsychopathBotId.ToString();
                 bot.BotId = AIStatics.PsychopathBotId;
-                bot.Mobility = "full";
-                //bot.IsPetToId = -1;
+                bot.Mobility = PvPStatics.MobilityFull;
                 bot.UnusedLevelUpPerks = 0;
                 bot.XP = 0;
                 bot.LastActionTimestamp = DateTime.UtcNow;
@@ -157,18 +156,18 @@ namespace TT.Domain.Procedures
 
 
             //spawn in more bots if there are less than the default
-            var botCount = playerRepo.Players.Count(b => b.BotId == AIStatics.PsychopathBotId && b.Mobility == "full");
+            var botCount = playerRepo.Players.Count(b => b.BotId == AIStatics.PsychopathBotId && b.Mobility == PvPStatics.MobilityFull);
             if (botCount < PvPStatics.PsychopathDefaultAmount)
             {
                 SpawnAIPsychopaths(PvPStatics.PsychopathDefaultAmount - botCount, 0);
             }
 
-            var bots = playerRepo.Players.Where(p => p.BotId == AIStatics.PsychopathBotId && p.Mobility == "full").ToList();
+            var bots = playerRepo.Players.Where(p => p.BotId == AIStatics.PsychopathBotId && p.Mobility == PvPStatics.MobilityFull).ToList();
 
             foreach (var bot in bots)
             {
                 // if bot is no longer fully animate or is null, skip them
-                if (bot == null || bot.Mobility != "full")
+                if (bot == null || bot.Mobility != PvPStatics.MobilityFull)
                 {
                     continue;
                 }
@@ -239,7 +238,7 @@ namespace TT.Domain.Procedures
 
                     // if the target is offline, no longer animate, in the dungeon, or in the same form as the spells' target, go into idle mode
                     if (PlayerProcedures.PlayerIsOffline(myTarget) || 
-                        myTarget.Mobility != "full" ||
+                        myTarget.Mobility != PvPStatics.MobilityFull ||
                         skill == null ||
                         myTarget.Form == skill.Skill.FormdbName || 
                         myTarget.IsInDungeon() ||
@@ -263,7 +262,7 @@ namespace TT.Domain.Procedures
                         }
 
                         // if the bot is now in the same place as the target, attack away, so long as the target is online and animate
-                        if (bot.dbLocationName == myTarget.dbLocationName && !PlayerProcedures.PlayerIsOffline(myTarget) && myTarget.Mobility == "full")
+                        if (bot.dbLocationName == myTarget.dbLocationName && !PlayerProcedures.PlayerIsOffline(myTarget) && myTarget.Mobility == PvPStatics.MobilityFull)
                         {
                             playerRepo.SavePlayer(bot);
                             if (bot.Mana >= 7)
@@ -295,7 +294,7 @@ namespace TT.Domain.Procedures
 
 
                     // attack stage
-                    var playersHere = playerRepo.Players.Where(p => p.dbLocationName == bot.dbLocationName && p.Mobility == "full" && p.Id != bot.Id && p.BotId == AIStatics.PsychopathBotId && p.Level >= bot.Level).ToList(); // don't attack the merchant
+                    var playersHere = playerRepo.Players.Where(p => p.dbLocationName == bot.dbLocationName && p.Mobility == PvPStatics.MobilityFull && p.Id != bot.Id && p.BotId == AIStatics.PsychopathBotId && p.Level >= bot.Level).ToList(); // don't attack the merchant
 
                     // filter out offline players and Lindella
                     var onlinePlayersHere = playersHere.Where(p => !PlayerProcedures.PlayerIsOffline(p)).ToList();
@@ -324,7 +323,7 @@ namespace TT.Domain.Procedures
         public static void SpawnLindella()
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player merchant = playerRepo.Players.FirstOrDefault(f => f.FirstName == "Lindella" && f.LastName == "the Soul Vendor" && f.Mobility == "full");
+            Player merchant = playerRepo.Players.FirstOrDefault(f => f.FirstName == "Lindella" && f.LastName == "the Soul Vendor" && f.Mobility == PvPStatics.MobilityFull);
 
             if (merchant == null)
             {
@@ -338,7 +337,7 @@ namespace TT.Domain.Procedures
                 merchant.Mana = 5000;
                 merchant.MaxHealth = 500;
                 merchant.MaxMana = 500;
-                merchant.Mobility = "full";
+                merchant.Mobility = PvPStatics.MobilityFull;
                 merchant.Money = 1000;
                 merchant.TimesAttackingThisUpdate = 0;
                 merchant.UnusedLevelUpPerks = 0;
@@ -365,11 +364,11 @@ namespace TT.Domain.Procedures
         public static void RunAIMerchantActions(int turnNumber)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player merchant = playerRepo.Players.FirstOrDefault(f => f.FirstName == "Lindella" && f.LastName == "the Soul Vendor" && f.Mobility == "full");
+            Player merchant = playerRepo.Players.FirstOrDefault(f => f.FirstName == "Lindella" && f.LastName == "the Soul Vendor" && f.Mobility == PvPStatics.MobilityFull);
 
            
 
-            if (merchant != null && merchant.Mobility == "full")
+            if (merchant != null && merchant.Mobility == PvPStatics.MobilityFull)
             {
                 merchant.Form = "form_Soul_Item_Vendor_Judoo";
                 merchant.Level = 5;
@@ -848,7 +847,7 @@ namespace TT.Domain.Procedures
                     Form = "form_The_Perfect_Barman_Judoo",
                     //IsPetToId = -1,
                     Money = 0,
-                    Mobility = "full",
+                    Mobility = PvPStatics.MobilityFull,
                     Level = 15,
                     MembershipId = "-14",
                     BotId = -14,

@@ -214,7 +214,7 @@ namespace TT.Domain.Procedures
 
             if (animateOnly)
             {
-                return playerRepo.Players.Where(p => p.Covenant == covenant.Id && p.Mobility == "full").Count();
+                return playerRepo.Players.Where(p => p.Covenant == covenant.Id && p.Mobility == PvPStatics.MobilityFull).Count();
             }
             else
             {
@@ -227,7 +227,7 @@ namespace TT.Domain.Procedures
         public static int GetPlayerCountInCovenant_Animate_Lvl3(Covenant covenant)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            return playerRepo.Players.Where(p => p.Covenant == covenant.Id).Where(p => p.Mobility == "full" && p.Level >= 3).Count();
+            return playerRepo.Players.Where(p => p.Covenant == covenant.Id).Where(p => p.Mobility == PvPStatics.MobilityFull && p.Level >= 3).Count();
         }
 
         public static IEnumerable<CovenantListItemViewModel> GetCovenantsList()

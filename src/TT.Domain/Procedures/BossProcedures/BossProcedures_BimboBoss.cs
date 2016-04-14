@@ -46,7 +46,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     MaxMana = 9999,
                     Form = BossFormDbName,
                     Money = 2500,
-                    Mobility = "full",
+                    Mobility = PvPStatics.MobilityFull,
                     Level = 15,
                     MembershipId = "-7",
                     BotId = -7,
@@ -81,7 +81,7 @@ namespace TT.Domain.Procedures.BossProcedures
             AIProcedures.DealBossDamage(bimboss, human, true, 1);
 
             // if the bimboboss is inanimate, end this boss event
-            if (bimboss.Mobility != "full")
+            if (bimboss.Mobility != PvPStatics.MobilityFull)
             {
                 return;
             }
@@ -142,7 +142,7 @@ namespace TT.Domain.Procedures.BossProcedures
             Player bimboBoss = playerRepo.Players.FirstOrDefault(f => f.FirstName == BossFirstName && f.LastName == BossLastName);
 
             // move her toward the location with the most eligible targets
-            if (bimboBoss.Mobility != "full") {
+            if (bimboBoss.Mobility != PvPStatics.MobilityFull) {
                 EndEvent();
                 return;
             }
@@ -189,7 +189,7 @@ namespace TT.Domain.Procedures.BossProcedures
                 Player infectee = playerRepo.Players.FirstOrDefault(p => p.Id == effectId);
 
                 // if the infectee is no longer animate or is another boss, skip them
-                if (infectee.Mobility != "full" || infectee.BotId < AIStatics.PsychopathBotId)
+                if (infectee.Mobility != PvPStatics.MobilityFull || infectee.BotId < AIStatics.PsychopathBotId)
                 {
                     continue;
                 }
@@ -284,7 +284,7 @@ namespace TT.Domain.Procedures.BossProcedures
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
             DateTime cutoff = DateTime.UtcNow.AddHours(-1);
-            IEnumerable<string> locs = playerRepo.Players.Where(p => p.Mobility == "full" && 
+            IEnumerable<string> locs = playerRepo.Players.Where(p => p.Mobility == PvPStatics.MobilityFull && 
             p.LastActionTimestamp > cutoff && 
             p.Form != RegularBimboFormDbName && 
             !p.dbLocationName.Contains("dungeon_") &&
@@ -355,7 +355,7 @@ namespace TT.Domain.Procedures.BossProcedures
         private static List<Player> GetEligibleTargetsInLocation(string location, Player attacker)
         {
             DateTime cutoff = DateTime.UtcNow.AddHours(-1);
-            List<Player> playersHere = PlayerProcedures.GetPlayersAtLocation(location).Where(m => m.Mobility == "full" && 
+            List<Player> playersHere = PlayerProcedures.GetPlayersAtLocation(location).Where(m => m.Mobility == PvPStatics.MobilityFull && 
             m.Id != attacker.Id && 
             m.Form != RegularBimboFormDbName && 
             m.BotId >= AIStatics.PsychopathBotId && 

@@ -99,9 +99,6 @@ namespace TT.Domain.Procedures
 
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started loading animate players");
                 
-                //List<Player> players_Animate = playerRepo.Players.Where(p => p.Mobility != "inanimate").ToList();
-                //List<Player> players_Animate_to_Save = new List<Player>();
-
                 IEffectRepository effectRepo = new EFEffectRepository();
 
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started loading effects");
@@ -213,7 +210,7 @@ namespace TT.Domain.Procedures
 
                 DateTime timeCutoff = DateTime.UtcNow.AddHours(-8);
 
-                List<int> playerIdsToSave = playerRepo.Players.Where(p => p.Mobility == "full" && p.LastActionTimestamp > timeCutoff).Select(p => p.Id).ToList();
+                List<int> playerIdsToSave = playerRepo.Players.Where(p => p.Mobility == PvPStatics.MobilityFull && p.LastActionTimestamp > timeCutoff).Select(p => p.Id).ToList();
 
                 foreach (int i in playerIdsToSave)
                 {
@@ -387,7 +384,7 @@ namespace TT.Domain.Procedures
                 int skaldyrId = skaldyr.Id;
 
                 // have abandoned items go to Lindella
-                if (turnNo % 11 == 3 && merchant.Mobility == "full")
+                if (turnNo % 11 == 3 && merchant.Mobility == PvPStatics.MobilityFull)
                 {
                     log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started collecting all abandoned items for Lindella");
 
@@ -550,7 +547,7 @@ namespace TT.Domain.Procedures
                                 BotId = -13,
                                 FirstName = "Spirit of ",
                                 LastName = demonlastName,
-                                Mobility = "full",
+                                Mobility = PvPStatics.MobilityFull,
                                 ActionPoints = 120,
                                 ActionPoints_Refill = 360,
                                 Form = PvPStatics.DungeonDemon,

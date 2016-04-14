@@ -130,11 +130,11 @@ namespace TT.Web.Controllers
 
                 string itemdbname = "";
 
-                if (contribution.Form_MobilityType == "inanimate")
+                if (contribution.Form_MobilityType == PvPStatics.MobilityInanimate)
                 {
                     itemdbname = "item_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
                 }
-                else if (contribution.Form_MobilityType == "animal")
+                else if (contribution.Form_MobilityType == PvPStatics.MobilityPet)
                 {
                     itemdbname = "animal_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
                 }
@@ -161,11 +161,11 @@ namespace TT.Web.Controllers
                     ViewBag.StaticFormExists = "<p class='good'>Static form found:  " + formdbname + "</p>";
                 }
 
-                if (sitem == null && (contribution.Form_MobilityType == "inanimate" || contribution.Form_MobilityType == "animal"))
+                if (sitem == null && (contribution.Form_MobilityType == PvPStatics.MobilityInanimate || contribution.Form_MobilityType == PvPStatics.MobilityPet))
                 {
                     ViewBag.StaticItemExists += "<p class='bad'>No static item/pet found:  " + itemdbname + "</p>";
                 }
-                else if (contribution.Form_MobilityType == "inanimate" || contribution.Form_MobilityType == "animal")
+                else if (contribution.Form_MobilityType == PvPStatics.MobilityInanimate || contribution.Form_MobilityType == PvPStatics.MobilityPet)
                 {
                     ViewBag.StaticItemExists += "<p class='good'>Static item/pet found:  " + itemdbname + "</p>";
                 }
@@ -961,11 +961,11 @@ namespace TT.Web.Controllers
 
             string itemdbname = "";
 
-            if (contribution.Form_MobilityType == "inanimate")
+            if (contribution.Form_MobilityType == PvPStatics.MobilityInanimate)
             {
                 itemdbname = "item_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
             }
-            else if (contribution.Form_MobilityType == "animal")
+            else if (contribution.Form_MobilityType == PvPStatics.MobilityPet)
             {
                 itemdbname = "animal_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
             }
@@ -1040,7 +1040,7 @@ namespace TT.Web.Controllers
             form.Luck = contribution.Luck;
             form.Chaos_Order = contribution.Chaos_Order;
 
-            if (contribution.Form_MobilityType == "full")
+            if (contribution.Form_MobilityType == PvPStatics.MobilityFull)
             {
                 form.PortraitUrl = contribution.ImageURL;
             }
@@ -1113,11 +1113,11 @@ namespace TT.Web.Controllers
 
             string itemdbname = "";
 
-            if (contribution.Form_MobilityType == "inanimate")
+            if (contribution.Form_MobilityType == PvPStatics.MobilityInanimate)
             {
                 itemdbname = "item_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
             }
-            else if (contribution.Form_MobilityType == "animal")
+            else if (contribution.Form_MobilityType == PvPStatics.MobilityPet)
             {
                 itemdbname = "animal_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
             }
@@ -1146,7 +1146,7 @@ namespace TT.Web.Controllers
 
             item.Findable = false;
 
-            if (contribution.Form_MobilityType == "inanimate" || contribution.Form_MobilityType == "animal")
+            if (contribution.Form_MobilityType == PvPStatics.MobilityInanimate || contribution.Form_MobilityType == PvPStatics.MobilityPet)
             {
                 item.PortraitUrl = contribution.ImageURL;
 
@@ -1490,11 +1490,11 @@ namespace TT.Web.Controllers
 
             string itemdbname = "";
 
-            if (contribution.Form_MobilityType == "inanimate")
+            if (contribution.Form_MobilityType == PvPStatics.MobilityInanimate)
             {
                 itemdbname = "item_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
             }
-            else if (contribution.Form_MobilityType == "animal")
+            else if (contribution.Form_MobilityType == PvPStatics.MobilityPet)
             {
                 itemdbname = "animal_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
             }
@@ -1521,11 +1521,11 @@ namespace TT.Web.Controllers
                 message += "<p class='good'>Static form found.</p>";
             }
 
-            if (sitem == null && (contribution.Form_MobilityType == "inanimate" || contribution.Form_MobilityType == "animal"))
+            if (sitem == null && (contribution.Form_MobilityType == PvPStatics.MobilityInanimate || contribution.Form_MobilityType == PvPStatics.MobilityPet))
             {
                 message += "<p class='bad'>No static item/pet found:  " + itemdbname + "</p>";
             }
-            else if (contribution.Form_MobilityType == "inanimate" || contribution.Form_MobilityType == "animal")
+            else if (contribution.Form_MobilityType == PvPStatics.MobilityInanimate || contribution.Form_MobilityType == PvPStatics.MobilityPet)
             {
                 message += "<p class='good'>Static item/pet found.</p>";
             }
@@ -1659,11 +1659,11 @@ namespace TT.Web.Controllers
 
                 addme.AuthorName = AuthorContribs.SubmitterName;
 
-                addme.AnimateFormCount = contributionRepo.Contributions.Where(c => c.OwnerMembershipId == ownerId && !c.IsNonstandard && c.Form_MobilityType == "full" && c.IsLive && c.ProofreadingCopy).Count();
+                addme.AnimateFormCount = contributionRepo.Contributions.Where(c => c.OwnerMembershipId == ownerId && !c.IsNonstandard && c.Form_MobilityType == PvPStatics.MobilityFull && c.IsLive && c.ProofreadingCopy).Count();
 
-                addme.InanimateFormCount = contributionRepo.Contributions.Where(c => c.OwnerMembershipId == ownerId && !c.IsNonstandard && c.Form_MobilityType == "inanimate" && c.IsLive && c.ProofreadingCopy).Count();
+                addme.InanimateFormCount = contributionRepo.Contributions.Where(c => c.OwnerMembershipId == ownerId && !c.IsNonstandard && c.Form_MobilityType == PvPStatics.MobilityInanimate && c.IsLive && c.ProofreadingCopy).Count();
 
-                addme.AnimalFormCount = contributionRepo.Contributions.Where(c => c.OwnerMembershipId == ownerId && !c.IsNonstandard && c.Form_MobilityType == "animal" && c.IsLive && c.ProofreadingCopy).Count();
+                addme.AnimalFormCount = contributionRepo.Contributions.Where(c => c.OwnerMembershipId == ownerId && !c.IsNonstandard && c.Form_MobilityType == PvPStatics.MobilityPet && c.IsLive && c.ProofreadingCopy).Count();
 
                 if (!AuthorContribs.SubmitterUrl.IsNullOrEmpty())
                 {

@@ -40,7 +40,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     MaxMana = 9999,
                     Form = FaeFormDbName,
                     Money = 1000,
-                    Mobility = "full",
+                    Mobility = PvPStatics.MobilityFull,
                     Level = 7,
                     MembershipId = "-6",
                     BotId = AIStatics.JewdewfaeBotId,

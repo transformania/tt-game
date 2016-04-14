@@ -3,6 +3,7 @@ using System;
 using System.Web.Mvc;
 using TT.Domain.Models;
 using TT.Domain.Procedures;
+using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 using TT.Web.Services;
 
@@ -24,7 +25,7 @@ namespace TT.Web.Controllers
 
             // if you are inanimate and are being worn, grab the data on who is wearing you
 
-            if (me.Mobility == "inanimate")
+            if (me.Mobility == PvPStatics.MobilityInanimate)
             {
                 PlayerFormViewModel personWearingMe = ItemProcedures.BeingWornBy(me);
                 if (personWearingMe != null)
@@ -222,7 +223,7 @@ namespace TT.Web.Controllers
             NoticeService.PushNotice(receiver, "<b>" + me.GetFullName() + " has sent you a new message.</b>", NoticeService.PushType__PlayerMessage);
             TempData["Result"] = "Your message has been sent.";
 
-            if (me.Mobility != "full")
+            if (me.Mobility != PvPStatics.MobilityFull)
             {
                 ItemProcedures.UpdateSouledItem(me.FirstName, me.LastName);
             }

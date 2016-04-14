@@ -32,7 +32,7 @@ namespace TT.Domain.Procedures.BossProcedures
                 loremaster.Mana = 5000;
                 loremaster.MaxHealth = 500;
                 loremaster.MaxMana = 500;
-                loremaster.Mobility = "full";
+                loremaster.Mobility = PvPStatics.MobilityFull;
                 loremaster.Money = 1000;
                 loremaster.TimesAttackingThisUpdate = 0;
                 loremaster.UnusedLevelUpPerks = 0;

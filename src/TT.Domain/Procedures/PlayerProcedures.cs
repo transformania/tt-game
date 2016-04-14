@@ -1295,12 +1295,8 @@ namespace TT.Domain.Procedures
 
             WorldStats output = new WorldStats
             {
-                TotalPlayers = players.Where(p => p.BotId == AIStatics.ActivePlayerBotId).Count(),
-                CurrentOnlinePlayers = players.Where(p => p.BotId == AIStatics.ActivePlayerBotId && p.OnlineActivityTimestamp >= cutoff).Count(),
-                //TotalAnimalPlayers = players.Where(p => p.Mobility == "animal").Count(),
-                //TotalInanimatePlayers = players.Where(p => p.Mobility == "inanimate").Count(),
-                //TotalLivingPlayers = players.Where(p => p.Mobility == "full").Count(),
-
+                TotalPlayers = players.Count(p => p.BotId == AIStatics.ActivePlayerBotId),
+                CurrentOnlinePlayers = players.Count(p => p.BotId == AIStatics.ActivePlayerBotId && p.OnlineActivityTimestamp >= cutoff)
             };
 
 
@@ -1475,7 +1471,7 @@ namespace TT.Domain.Procedures
 
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
-           decimal num = playerRepo.Players.Where(p => p.IpAddress == ip && p.Mobility == "full").Count();
+           decimal num = playerRepo.Players.Where(p => p.IpAddress == ip && p.Mobility == PvPStatics.MobilityFull).Count();
            if (num > 1)
             {
                 return true;
@@ -1490,7 +1486,7 @@ namespace TT.Domain.Procedures
         {
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            decimal num = playerRepo.Players.Where(p => p.BotId == AIStatics.ActivePlayerBotId && p.IpAddress == ip && p.Mobility == "full" && p.GameMode == player.GameMode).Count();
+            decimal num = playerRepo.Players.Where(p => p.BotId == AIStatics.ActivePlayerBotId && p.IpAddress == ip && p.Mobility == PvPStatics.MobilityFull && p.GameMode == player.GameMode).Count();
             if (num > 1)
             {
                 return true;
@@ -1860,7 +1856,7 @@ namespace TT.Domain.Procedures
         public static int GetAnimatePlayerCountInCovenant(int covenantId)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            return playerRepo.Players.Where(p => p.Covenant == covenantId && p.Mobility == "full").Count();
+            return playerRepo.Players.Where(p => p.Covenant == covenantId && p.Mobility == PvPStatics.MobilityFull).Count();
         }
 
         public static int RollDie(int size)

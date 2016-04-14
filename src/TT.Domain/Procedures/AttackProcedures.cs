@@ -22,7 +22,7 @@ namespace TT.Domain.Procedures
             Player me = PlayerProcedures.GetPlayer(attacker.Id);
             Player targeted = PlayerProcedures.GetPlayer(victim.Id);
 
-            if (targeted.Mobility != "full" || me.Mobility != "full")
+            if (targeted.Mobility != PvPStatics.MobilityFull || me.Mobility != PvPStatics.MobilityFull)
             {
                 return "";
             }
@@ -288,7 +288,7 @@ namespace TT.Domain.Procedures
             {
                 playersHere = playerREpo.Players.Where(p => p.dbLocationName == attacker.dbLocationName &&
                     (p.GameMode == 2 || p.BotId < AIStatics.RerolledPlayerBotId) &&
-                    p.Mobility == "full" &&
+                    p.Mobility == PvPStatics.MobilityFull &&
                      p.InDuel <= 0 &&
                     p.InQuest <= 0).ToList();
             }
@@ -296,7 +296,7 @@ namespace TT.Domain.Procedures
             {
                 playersHere = playerREpo.Players.Where(p => p.dbLocationName == attacker.dbLocationName &&
                     p.BotId < AIStatics.RerolledPlayerBotId &&
-                    p.Mobility == "full" &&
+                    p.Mobility == PvPStatics.MobilityFull &&
                     p.InDuel <= 0 &&
                     p.InQuest <= 0).ToList();
             }

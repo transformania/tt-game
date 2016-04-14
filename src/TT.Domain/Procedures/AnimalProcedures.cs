@@ -2,6 +2,7 @@
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
 using TT.Domain.Models;
+using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 
 namespace TT.Domain.Procedures
@@ -29,7 +30,7 @@ namespace TT.Domain.Procedures
             string locationMessage = "";
 
             string victimPronoun;
-            if (victim.Gender == "male")
+            if (victim.Gender == PvPStatics.GenderMale)
             {
                 victimPronoun = "his";
             }

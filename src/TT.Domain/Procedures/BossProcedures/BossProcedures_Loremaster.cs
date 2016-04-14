@@ -43,7 +43,7 @@ namespace TT.Domain.Procedures.BossProcedures
                 loremaster.Form = FormDbName;
                 loremaster.NonPvP_GameOverSpellsAllowedLastChange = DateTime.UtcNow;
                 loremaster.dbLocationName = "bookstore_back";
-                loremaster.Gender = "male";
+                loremaster.Gender = PvPStatics.GenderMale;
                 loremaster.ActionPoints = 120;
 
                 playerRepo.SavePlayer(loremaster);

@@ -41,7 +41,7 @@ namespace TT.Domain.Procedures.BossProcedures
                 petMerchant.Form = "form_Soul_Pet_Vendor_Judoo";
                 petMerchant.NonPvP_GameOverSpellsAllowedLastChange = DateTime.UtcNow;
                 petMerchant.dbLocationName = "270_west_9th_ave"; // Lindella starts her rounds here
-                petMerchant.Gender = "female";
+                petMerchant.Gender = PvPStatics.GenderFemale;
                 petMerchant.ActionPoints = 120;
 
                 playerRepo.SavePlayer(petMerchant);

@@ -1,6 +1,7 @@
 ﻿@model TT.Domain.ViewModels.PlayerFormViewModel
 @using TT.Web.CustomHtmlHelpers
 @using TT.Domain.Procedures
+@using TT.Domain.Statics
 
 @{
     int HealthWidth = Convert.ToInt32(Model.Player.Health / Model.Player.MaxHealth * 100);
@@ -8,11 +9,11 @@
     int ManaWidth = Convert.ToInt32(Model.Player.Mana / Model.Player.MaxMana * 100);
     if (ManaWidth > 100) { ManaWidth = 100; }
     string gendercolor;
-    if (Model.Player.Gender == "male")
+    if (Model.Player.Gender == PvPStatics.GenderMale)
     {
         gendercolor = "blue";
     }
-    else if (Model.Player.Gender == "female")
+    else if (Model.Player.Gender == PvPStatics.GenderFemale)
     {
         gendercolor = "purple";
     }

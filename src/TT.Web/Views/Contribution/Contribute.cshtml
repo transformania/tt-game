@@ -282,8 +282,8 @@
                     @Html.LabelFor(m => m.Form_Gender)
                     @Html.DropDownListFor(m => m.Form_Gender, new SelectList(
                   new List<Object>{
-                       new { value = "male"  , text = "Male"  },
-                       new { value = "female"  , text = "Female"  },
+                       new { value = PvPStatics.GenderMale, text = "Male"  },
+                       new { value = PvPStatics.GenderFemale, text = "Female"  },
                     },
                   "value",
                   "text",

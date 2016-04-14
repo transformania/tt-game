@@ -1389,11 +1389,11 @@ namespace TT.Domain.Procedures
                         itemRepo.SaveItem(thisdbItem);
                         EffectProcedures.GivePerkToPlayer(itemPlus.Item.GivesEffect, owner);
                         DbStaticEffect effectPlus = EffectStatics.GetStaticEffect2(itemPlus.Item.GivesEffect);
-                        if (owner.Gender == "male" && !effectPlus.MessageWhenHit_M.IsNullOrEmpty())
+                        if (owner.Gender == PvPStatics.GenderMale && !effectPlus.MessageWhenHit_M.IsNullOrEmpty())
                         {
                             return name + " used a " + itemPlus.Item.FriendlyName + ".  " + effectPlus.MessageWhenHit_M;
                         }
-                        else if (owner.Gender == "female" && !effectPlus.MessageWhenHit_F.IsNullOrEmpty())
+                        else if (owner.Gender == PvPStatics.GenderFemale && !effectPlus.MessageWhenHit_F.IsNullOrEmpty())
                         {
                             return name + " used a " + itemPlus.Item.FriendlyName + ".  " + effectPlus.MessageWhenHit_F;
                         }

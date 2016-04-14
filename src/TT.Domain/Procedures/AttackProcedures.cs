@@ -46,11 +46,11 @@ namespace TT.Domain.Procedures
 
                 EffectProcedures.GivePerkToPlayer(skillBeingUsed.Skill.GivesEffect, victim);
 
-                if (attacker.Gender == "male" && !effectBeingGiven.AttackerWhenHit_M.IsNullOrEmpty())
+                if (attacker.Gender == PvPStatics.GenderMale && !effectBeingGiven.AttackerWhenHit_M.IsNullOrEmpty())
                 {
                     logs.AttackerLog += effectBeingGiven.AttackerWhenHit_M;
                 }
-                else if (attacker.Gender == "female" && !effectBeingGiven.AttackerWhenHit_F.IsNullOrEmpty())
+                else if (attacker.Gender == PvPStatics.GenderFemale && !effectBeingGiven.AttackerWhenHit_F.IsNullOrEmpty())
                 {
                     logs.AttackerLog += effectBeingGiven.AttackerWhenHit_F;
                 }
@@ -82,11 +82,11 @@ namespace TT.Domain.Procedures
                 string attackerPronoun = "";
                 string victimPronoun = "";
 
-                if (me.Gender == "male")
+                if (me.Gender == PvPStatics.GenderMale)
                 {
                     attackerPronoun = "his";
                 }
-                else if (me.Gender == "female")
+                else if (me.Gender == PvPStatics.GenderFemale)
                 {
                     attackerPronoun = "Her";
                 }
@@ -94,11 +94,11 @@ namespace TT.Domain.Procedures
                 {
                     attackerPronoun = "their";
                 }
-                if (targeted.Gender == "male")
+                if (targeted.Gender == PvPStatics.GenderMale)
                 {
                     victimPronoun = "his";
                 }
-                else if (targeted.Gender == "female")
+                else if (targeted.Gender == PvPStatics.GenderFemale)
                 {
                     victimPronoun = "her";
                 }

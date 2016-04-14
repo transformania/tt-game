@@ -22,8 +22,8 @@ namespace TT.Domain.Statics
 
         public static bool ChaosMode = false;
 
-        public const String GenderMale = "male";
-        public const String GenderFemale = "female";
+        public const string GenderMale = "male";
+        public const string GenderFemale = "female";
 
         public const String MobilityFull = "full";
         public const String MobilityInanimate = "inanimate";

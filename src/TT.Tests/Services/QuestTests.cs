@@ -154,7 +154,7 @@ namespace TT.Tests.Services
         [Test]
         public void Should_not_print_details_for_required_gender()
         {
-            b.AddStrictRequirement((int)QuestStatics.RequirementType.Gender, "male", 0);
+            b.AddStrictRequirement((int)QuestStatics.RequirementType.Gender, PvPStatics.GenderMale, 0);
             QuestConnection q = b.GetQuestConnection();
 
             string message = QuestProcedures.GetRequirementsAsString(q, buffs);
@@ -188,7 +188,7 @@ namespace TT.Tests.Services
         public void Should_not_print_details_for_mixed_hidden_requirements()
         {
             b.AddStrictRequirement((int)QuestStatics.RequirementType.Variable, "variable", 0);
-            b.AddStrictRequirement((int)QuestStatics.RequirementType.Gender, "male", 0);
+            b.AddStrictRequirement((int)QuestStatics.RequirementType.Gender, PvPStatics.GenderMale, 0);
             QuestConnection q = b.GetQuestConnection();
 
             string message = QuestProcedures.GetRequirementsAsString(q, buffs);

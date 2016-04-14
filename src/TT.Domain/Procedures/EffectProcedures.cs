@@ -246,11 +246,11 @@ namespace TT.Domain.Procedures
 
                 string logmessage = "";
 
-                if (player.Gender == "male" && !effectPlus.MessageWhenHit_M.IsNullOrEmpty())
+                if (player.Gender == PvPStatics.GenderMale && !effectPlus.MessageWhenHit_M.IsNullOrEmpty())
                 {
                     logmessage = effectPlus.MessageWhenHit_M;
                 }
-                else if (player.Gender == "female" && !effectPlus.MessageWhenHit_F.IsNullOrEmpty())
+                else if (player.Gender == PvPStatics.GenderFemale && !effectPlus.MessageWhenHit_F.IsNullOrEmpty())
                 {
                     logmessage = effectPlus.MessageWhenHit_F;
                 }

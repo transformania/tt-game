@@ -652,7 +652,7 @@ namespace TT.Domain.Procedures
             #region 20 percent TF
             if (percent == "20")
             {
-                if (player.Gender == "male")
+                if (player.Gender == PvPStatics.GenderMale)
                 {
                     if (PoV == "first")
                     {
@@ -678,7 +678,7 @@ namespace TT.Domain.Procedures
                         }
                     }
                 } 
-                else if (player.Gender == "female")
+                else if (player.Gender == PvPStatics.GenderFemale)
                 {
                     if (PoV == "first")
                     {
@@ -710,7 +710,7 @@ namespace TT.Domain.Procedures
             #region 40 percent TF
             if (percent == "40")
             {
-                if (player.Gender == "male")
+                if (player.Gender == PvPStatics.GenderMale)
                 {
                     if (PoV == "first")
                     {
@@ -736,7 +736,7 @@ namespace TT.Domain.Procedures
                         }
                     }
                 }
-                else if (player.Gender == "female")
+                else if (player.Gender == PvPStatics.GenderFemale)
                 {
                     if (PoV == "first")
                     {
@@ -768,7 +768,7 @@ namespace TT.Domain.Procedures
             #region 60 percent TF
             if (percent == "60")
             {
-                if (player.Gender == "male")
+                if (player.Gender == PvPStatics.GenderMale)
                 {
                     if (PoV == "first")
                     {
@@ -794,7 +794,7 @@ namespace TT.Domain.Procedures
                         }
                     }
                 }
-                else if (player.Gender == "female")
+                else if (player.Gender == PvPStatics.GenderFemale)
                 {
                     if (PoV == "first")
                     {
@@ -826,7 +826,7 @@ namespace TT.Domain.Procedures
             #region 80 percent TF
             if (percent == "80")
             {
-                if (player.Gender == "male")
+                if (player.Gender == PvPStatics.GenderMale)
                 {
                     if (PoV == "first")
                     {
@@ -852,7 +852,7 @@ namespace TT.Domain.Procedures
                         }
                     }
                 }
-                else if (player.Gender == "female")
+                else if (player.Gender == PvPStatics.GenderFemale)
                 {
                     if (PoV == "first")
                     {
@@ -884,7 +884,7 @@ namespace TT.Domain.Procedures
             #region 100 percent TF
             if (percent == "100")
             {
-                if (player.Gender == "male")
+                if (player.Gender == PvPStatics.GenderMale)
                 {
                     if (PoV == "first")
                     {
@@ -910,7 +910,7 @@ namespace TT.Domain.Procedures
                         }
                     }
                 }
-                else if (player.Gender == "female")
+                else if (player.Gender == PvPStatics.GenderFemale)
                 {
                     if (PoV == "first")
                     {
@@ -942,7 +942,7 @@ namespace TT.Domain.Procedures
             #region 100 percent TF
             if (percent == "complete")
             {
-                if (player.Gender == "male")
+                if (player.Gender == PvPStatics.GenderMale)
                 {
                     if (PoV == "first")
                     {
@@ -968,7 +968,7 @@ namespace TT.Domain.Procedures
                         }
                     }
                 }
-                else if (player.Gender == "female")
+                else if (player.Gender == PvPStatics.GenderFemale)
                 {
                     if (PoV == "first")
                     {

@@ -383,11 +383,11 @@ namespace TT.Web.Controllers
 
             if (player.FormName.Contains("woman_"))
             {
-                player.Gender = "female";
+                player.Gender = PvPStatics.GenderFemale;
             }
             else
             {
-                player.Gender = "male";
+                player.Gender = PvPStatics.GenderMale;
             }
 
             // assert that the first name is not reserved by the system
@@ -2410,7 +2410,7 @@ namespace TT.Web.Controllers
 
             string thirdP = "";
             string firstP = "";
-            string pronoun = wearer.Player.Gender == "female" ? "She" : "He";
+            string pronoun = wearer.Player.Gender == PvPStatics.GenderFemale ? "She" : "He";
 
             if (actionName == "rub")
             {
@@ -3343,26 +3343,6 @@ namespace TT.Web.Controllers
             TempData["Result"] = message;
 
             return RedirectToAction("Play");
-        }
-
-
-        private List<DropDownListItem> getGenderChoiceList()
-        {
-            List<DropDownListItem> genderChoiceList = new List<DropDownListItem>();
-            DropDownListItem male = new DropDownListItem
-            {
-                ID = "male",
-                Desc = "male"
-            };
-            DropDownListItem female = new DropDownListItem
-            {
-                ID = "female",
-                Desc = "female"
-            };
-
-            genderChoiceList.Add(male);
-            genderChoiceList.Add(female);
-            return genderChoiceList;
         }
 
         private class DropDownListItem

@@ -39,7 +39,7 @@ namespace TT.Web.CustomHtmlHelpers
         {
             string output = "<span class=";
 
-            if (player.Gender == "male")
+            if (player.Gender == PvPStatics.GenderMale)
             {
                 output += "'icon icon-male'>";
             } else {
@@ -55,7 +55,7 @@ namespace TT.Web.CustomHtmlHelpers
         {
             string output = "<span class=";
 
-            if (gender == "male")
+            if (gender == PvPStatics.GenderMale)
             {
                 output += "'icon icon-male'>";
             }

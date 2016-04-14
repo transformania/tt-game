@@ -554,7 +554,7 @@ namespace TT.Domain.Procedures
                                 ActionPoints = 120,
                                 ActionPoints_Refill = 360,
                                 Form = PvPStatics.DungeonDemon,
-                                Gender = "female",
+                                Gender = PvPStatics.GenderFemale,
                                 GameMode = 2,
                                 Health = 1000,
                                 Mana = 1000,

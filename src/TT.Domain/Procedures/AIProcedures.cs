@@ -69,12 +69,12 @@ namespace TT.Domain.Procedures
                 if (i % 2 == 1)
                 {
                     bot.Form = "botform_psychopathic_spellslinger_male";
-                    bot.Gender = "male";
+                    bot.Gender = PvPStatics.GenderMale;
                 }
                 else
                 {
                     bot.Form = "botform_psychopathic_spellslinger_female";
-                    bot.Gender = "female";
+                    bot.Gender = PvPStatics.GenderFemale;
                 }
 
                 bot.OriginalForm = bot.Form;
@@ -349,9 +349,7 @@ namespace TT.Domain.Procedures
                 merchant.Form = "form_Soul_Item_Vendor_Judoo";
                 merchant.NonPvP_GameOverSpellsAllowedLastChange = DateTime.UtcNow;
                 merchant.dbLocationName = "270_west_9th_ave"; // Lindella starts her rounds here
-                merchant.Gender = "female";
-               // merchant.IsItemId = -1;
-               // merchant.IsPetToId = -1;
+                merchant.Gender = PvPStatics.GenderFemale;
                 merchant.ActionPoints = 120;
 
                 playerRepo.SavePlayer(merchant);
@@ -842,7 +840,7 @@ namespace TT.Domain.Procedures
                     LastCombatAttackedTimestamp = DateTime.UtcNow,
                     OnlineActivityTimestamp = DateTime.UtcNow,
                     NonPvP_GameOverSpellsAllowedLastChange = DateTime.UtcNow,
-                    Gender = "male",
+                    Gender = PvPStatics.GenderMale,
                     Health = 9999,
                     Mana = 9999,
                     MaxHealth = 9999,

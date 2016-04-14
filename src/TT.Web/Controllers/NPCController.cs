@@ -883,9 +883,9 @@ namespace TT.Web.Controllers
             if (question == "none")
             {
 
-                if (me.Gender == "male") {
+                if (me.Gender == PvPStatics.GenderMale) {
                     ViewBag.Speech = "\"Greetings, sir " + me.GetFullName() + "!  How may I assist you today?\"";
-                } else if (me.Gender == "female") {
+                } else if (me.Gender == PvPStatics.GenderFemale) {
                     ViewBag.Speech = "\"Greetings, madam " + me.GetFullName() + "!  How may I assist you today?\"";
                 }
                 

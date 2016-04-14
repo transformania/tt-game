@@ -317,13 +317,13 @@ namespace TT.Domain.Procedures
 
                 // change the player's form and mobility
                 dbPlayer.Form = dbPlayer.OriginalForm;
-                if (FormStatics.GetForm(dbPlayer.OriginalForm).Gender == "male")
+                if (FormStatics.GetForm(dbPlayer.OriginalForm).Gender == PvPStatics.GenderMale)
                 {
-                    dbPlayer.Gender = "male";
+                    dbPlayer.Gender = PvPStatics.GenderMale;
                 }
                 else
                 {
-                    dbPlayer.Gender = "female";
+                    dbPlayer.Gender = PvPStatics.GenderFemale;
                 }
 
                 dbPlayer.Mobility = "full";
@@ -438,11 +438,11 @@ namespace TT.Domain.Procedures
                     dbOwner.NormalizeHealthMana();
                     playerRepo.SavePlayer(dbOwner);
 
-                    if (owner.Gender == "male" && !tf.CursedTF_Succeed_M.IsNullOrEmpty())
+                    if (owner.Gender == PvPStatics.GenderMale && !tf.CursedTF_Succeed_M.IsNullOrEmpty())
                     {
                         ownerMessage = tf.CursedTF_Succeed_M;
                     }
-                    else if (owner.Gender == "female" && !tf.CursedTF_Succeed_F.IsNullOrEmpty())
+                    else if (owner.Gender == PvPStatics.GenderFemale && !tf.CursedTF_Succeed_F.IsNullOrEmpty())
                     {
                         ownerMessage = tf.CursedTF_Succeed_F;
                     }
@@ -461,11 +461,11 @@ namespace TT.Domain.Procedures
             // fail; owner is not transformed
             else
             {
-                if (owner.Gender == "male" && !tf.CursedTF_Fail_M.IsNullOrEmpty())
+                if (owner.Gender == PvPStatics.GenderMale && !tf.CursedTF_Fail_M.IsNullOrEmpty())
                 {
                     ownerMessage = tf.CursedTF_Fail_M;
                 }
-                else if (owner.Gender == "female" && !tf.CursedTF_Fail_F.IsNullOrEmpty())
+                else if (owner.Gender == PvPStatics.GenderFemale && !tf.CursedTF_Fail_F.IsNullOrEmpty())
                 {
                     ownerMessage = tf.CursedTF_Fail_F;
                 }

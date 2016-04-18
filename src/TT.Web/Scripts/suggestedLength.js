@@ -35,8 +35,9 @@ function bindSuggestedLengths() {
         note.removeClass("bad");
         note.addClass(classToUse);
 
-        note.html(currentLength + "/" + desiredLength + " of minimum suggested character length");
-
+        if (currentLength>0) {
+            note.html(currentLength + "/" + desiredLength + " of minimum suggested length");
+        }
     }
 
 }

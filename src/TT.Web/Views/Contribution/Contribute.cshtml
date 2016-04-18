@@ -4,6 +4,7 @@
 @using TT.Web.CustomHtmlHelpers
 
 <script src="~/Scripts/jquery-ui-1.10.4.js"></script>
+<script src="~/Scripts/suggestedLength.js"></script>
 
 <nav class="navbar navbar-default outsideContainer navbarTT2">
     <div class="container-fluid">
@@ -829,9 +830,6 @@
                 }]
             });
 
-            bindSuggestedLengths();
-
-          
             if ($("#Form_MobilityType").val() == "full") {
                 displayForAnimate();
             } else if ($("#Form_MobilityType").val() == "animal" || $("#Form_MobilityType").val() == "inanimate") {
@@ -911,30 +909,6 @@
             $("#modal").show();
         }
 
-        function bindSuggestedLengths() {
-            var i = 0;
-            $("[suggestedlength]").each(function() {
-                var length = $(this).attr("suggestedlength");
-                var currentLength = $(this).val().length;
-
-                // assign the class for the page to use based on input length
-                var classToUse = "bad";
-                if (currentLength >= length) {
-                    classToUse = "good";
-                }
-
-                $(this).after("<div class='" + classToUse + "'>" + currentLength + "/" + length + " of minimum suggested character length</div>");
-
-                $(this).keydown(function() {
-                    var note = $(this).next();
-
-                    currentLength = $(this).val().length;
-
-                    note.html(currentLength + "/" + length + " of minimum suggested character length");
-                });
-
-            });
-        }
 
 
     </script>

@@ -265,7 +265,7 @@ namespace TT.Domain.Models
 
         public DateTime CreationTimestamp { get; set; }
 
-        [Display(Name = "Is there an artist with whom you have arranged to do this artwork?  If so, enter their name here, as well as any special notes to them.  Otherwise leave this field empty.")]
+        [Display(Name = "Is there an artist with whom you have arranged to do this artwork?  If so, enter their name here, as well as any special notes to them.  If the artwork is completed, LEAVE A LINK TO THE IMAGE HERE.  If no artwork has been created for this and no artist arranged to provide it, leave this box empty.")]
         public string AssignedToArtist { get; set; }
 
         public bool ProofreadingCopy { get; set; }

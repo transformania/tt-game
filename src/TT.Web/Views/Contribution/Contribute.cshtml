@@ -139,16 +139,13 @@
                 }
             }
         
-      
-
-
         <h1>Would you like to contribute to the Game?</h1>
 
         <p>If you would like to see a greater diversity in the game and would like to contribute new spells / forms / items / graphics, you can use this page to write up and submit new content.  You will receive credits for your work in the Contributions section of the Game News page.  And it will be greatly appreciated!</p>
 
         <p>
             Some basic rules and things to be aware of:
-            <ul>
+            <ul class="listdots">
                 <li>
                     No plagiarism.
                 </li>
@@ -157,18 +154,16 @@
                    With few exceptions, spells will not be released until they have accompanying graphics.  The sooner they have one the quicker they will get into the game.  However, graphics must be either a) Original work by yourself, b) commisioned work you own the rights to, or c) have explicit permission from the author to use here.
                 </li>
                 <li>
-                    Due to sexual content in this game, you cannot include underage characters (less than 18 years old.)
+                    Due to sexual content in this game, you <b>>cannot include underage characters</b> (less than 18 years old.)
                 </li>
                 <li>
-                    Do not write transformations for copyrighted characters.  Parodies or generic look and act-alikes of them, however, are acceptable.  If you have any questions, contact an admin.
+                    If your spell or form is a <b>parody</b> or <b>reference to copyrighted material</b>, please contact Judoo on the forums for an extended approval process first as it is far more likely the contribution will need heavier modieration to comply with legalities.
                 </li>
                 <li>The administrator or proofreaders may alter portions of the spell to adapt to new locations in the game, correct for grammer, or other needed tweaks to work within the game's theme or mechanics.   These are usually minimal and the original author will still retain credit for the contribution.</li>
                 <li>
-                    (Effective June 1, 2014)  When you post contributions and graphics, you retain your creator's rights.  This means the content cannot be resold or released for use on other websites or other electronic or printed mediums <b>by this site</b>--the contributor still has the rights to do so so long as it does not retroactively conflict with the game's use of the content.  However, you <b>are</b> agreeing to allow the game to use this content <b>indefinitely</b> so long as the game does not become a commercial project (no subscription fees, no pay-to-win item store, etc).
+                    (Effective June 1, 2014) When you post contributions and graphics, you retain your creator's rights. This means the content cannot be resold or released for use on other websites or other electronic or printed mediums <b>by this site</b>--the contributor still has the rights to do so so long as it does not retroactively conflict with the game's use of the content. However, you <b>are</b> agreeing to allow the game to use this content <b>indefinitely</b> so long as the game does not become a commercial project (no subscription fees, no pay-to-win item store, etc).
                 </li>
-                <li>
-                    <b>New February 22 2015:  If your spell or form is a parody or reference to copyrighted material, please contact Judoo on the forums for an extended approval process first as it is far more likely the contribution will need heavier modieration to comply with legalities.</b>
-                </li>
+                <li>To see what happens after you believe your spell is ready, <a href="/Info/FAQ#contributions" target="_blank">this on the FAQ page</a>.</li>
             </ul>
         </p>
 
@@ -207,7 +202,7 @@
 
                 <div class="form__panel">
                     @Html.LabelFor(m => m.Skill_Description)
-                    @Html.TextAreaFor(m => m.Skill_Description, new { @SuggestedLength = "250" })
+                    @Html.TextAreaFor(m => m.Skill_Description, new { @SuggestedLength = "125" })
                 </div>
 
                 <div class="form__panel">

@@ -66,7 +66,7 @@
     <p>A:  TT is written using C# ASP.Net and uses Entity Framework and SignalR.</p>
 
     <p><b><i>Q:  Is TT open source?  Can I help code it?</i></b></p>
-    <p>A:  No, TT is currently a private project with a small dev team.  If you are interesting in helping out, please let us know though slots are limited based on the private repository plan with Bitbucket.</p>
+    <p>A:  TT is currently a private project with a small dev team.  Since moving from BitBucket to GitLab, there is no longer a strict repository member limit which means it is easier for us to welcome new developers.  If you are interesting in helping out, please let us know.</p>
 
     <p><b><i>Q:  Are there other ways I can help TT?</i></b></p>
     <p>A:  If you are an author, you can use the Contribution system to write new spells for the game.  If you are an artist, you can send in artwork to be used for the graphics of the contributed spells.  We can also always use proofreaders to fix spelling and grammar mistakes for spells and various text throughout the game.  You can also help keep the server funded by pledging a monthly amount at <a href="https://www.patreon.com/TransformaniaTimeGame">TT's patreon page.</a>  All of these are much appreciated!</p>
@@ -83,6 +83,20 @@
     <p>A:  We can't make any promises about what will be added, but feel free to make suggestions in the Tavern section of the forum <a href="http://luxianne.com/forum/viewforum.php?f=9">here.</a></p>
 
     <p><b><i>Q:  I forgot my password.  How can I get it back again?</i></b></p>
-    <p>A:  Unfortunately there is no password recovery system implemented at this time.  The membership provider does not have the functionality built in but I plan to add it before leaving alpha.</p>
+    <p>A: Unfortunately there is no password recovery system implemented at this time. The membership provider does not have the functionality built in but I plan to add it before leaving alpha.</p>
+
+    <p id="contributions"><b><i>Q:  I just submitted a contribution.  What happens now?</i></b></p>
+    <p>A: Several things happen after a contribution is submitted:
+    <p>
+        <ul class="listdots">
+            <li>
+                An admin will review the spell and provide feedback about what is missing or what needs to be changed. If changes are required, the spell will be rejected until changes are made. If a spell looks ready, you will recieve a message notifing you that a spell you submitted was approved.
+            </li>
+            <li>After approving a spell, it will show up on the @Html.ActionLink("the Contribution Awaiting Rlease", "ContributeGraphicsNeeded", "Contribution") page. From here, artists can claim a graphic for the spell and provide a download link to the image.</li>
+            <li>Once artwork is finished, an admin will scan through this page for all spells that have a link to artwork prepared. <b>If there is no link provided, the spell might be glanced over even if art is finished and linked elsewhere.</b></li>
+            <li>If the artist is a first time contributor, an admin will need to verify the artist's ownership of the graphic. This is typically done by contacting that artist on their Deviant Art or Fur Affinity page. If the artist has neither, alternate means of proof can be arranged.</li>
+            <li>If a spell is all ready to go and has a graphic properly linked, it will be released near the start of the following round. <b>Not all spells will necessarily be released on launch or within the first day of the round.</b>  However, it is reasonable to expect that if your spell isn't released within the first batch, it is likely less than a day or two away from release.</li>
+        </ul>
+    </p>
 
 </div>

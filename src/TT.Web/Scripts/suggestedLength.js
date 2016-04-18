@@ -9,8 +9,8 @@ $(document).ready(function () {
 
 function bindSuggestedLengths() {
 
-    $("[data-suggestedlength]").each(function () {
-        var desiredLength = $(this).attr("data-suggestedlength");
+    $("[data-suggested-length]").each(function () {
+        var desiredLength = $(this).attr("data-suggested-length");
         var box = $(this);
         box.after("<div style='text-align: right;'></div>");
         setText(box, desiredLength);

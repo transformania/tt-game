@@ -1,131 +1,146 @@
 ﻿@model IEnumerable<TT.Domain.Models.Contribution>
 @using TT.Domain.Models
 
-<head>
+<nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
 
-    <link href="~/Content/PvP.css" rel="stylesheet" />
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+                <li>@Html.ActionLink("Back to My Contributions", "Contribute", "Contribution", new { Id = -1 }, null)</li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
 
-</head>
 
-@Html.ActionLink("Back to game", "Play", "PvP")
+<div class="containerInner">
+    <div class="result">
+        @Html.Raw(ViewBag.Result)
+    </div>
+    <div class="error">
+        @ViewBag.ErrorMessage
+    </div>
+    <div class="suberror">
+        @ViewBag.SubErrorMessage
+    </div>
 
-<div class="result">
-    @Html.Raw(ViewBag.Result)
-</div>
-<div class="error">
-    @ViewBag.ErrorMessage
-</div>
-<div class="suberror">
-    @ViewBag.SubErrorMessage
-</div>
+    <h1>Pending Approved Contributions</h1>
 
-<h1>Contributions Reviewed but Awaiting Implementation</h1>
+    <p>On this page are all of the contributions that have been <b>marked as ready and approved by an admin</b> but <b>have not yet been added into the game.</b></p><br>
 
-<h4>
-    <p>On this page are all of the contributions that have been <b>marked as ready and approved by an admin</b> but have not yet been added into the game.  Spells on this page will show a form and item/pet description as well as any miscellaneous notes left by the author and proofreaders.  People on the artist whitelist the chance to claim a graphic for a spell if they so desire by clicking on the links in the "Graphic by Artist" box.  Once a graphic is ready, please provide a link to the image source in the box on the Contribution page that says "Is there an artist with whom you have arranged to do this artwork?" near the bottom of the form.  When spells are reviewed for release, that is where admins look to see which listing have URLs.</p>
-    <p>Generally, spells are released within the first half of a live round in batches of several spells at once.  Spells approved later in the rounds or in chaos mode, or spells whose graphics are only recently available, </p>
-</h4>
+    <p>Spells on this page will show a form and item/pet description as well as any miscellaneous notes left by the author and proofreaders. People on the artist whitelist the chance to claim a graphic for a spell if they so desire by clicking on the links in the "Graphic by Artist" box. Once a graphic is ready, <b>please provide a link to the image</b> in the box on the Contribution page that says "Is there an artist with whom you have arranged to do this artwork?" near the bottom of the form.  When spells are reviewed for release, that is where admins look to see which listing have URLs.</p><br>
+    <p>Generally, spells are released within the first half of a live round in batches of several spells at once.  Spells approved later in the rounds or in chaos mode, or spells whose graphics are only recently available.  Read more about the spell release process here <a href="/Info/FAQ#contributions" target="_blank">on the FAQ page</a></p>
 
-<table>
+    <table>
 
-    <thead>
-        <tr>
-            <th width="10%">
-                Spell Author, Name, and Mobility Type
-            </th>
+        <thead>
+            <tr>
+                <th width="10%">
+                    Spell Author, Name, and Mobility Type
+                </th>
 
-            <th width ="30%">
-                Form Description
-            </th>
-            <th width="30%">
-                Animal/Item Description
-            </th>
-            <th width="20%">Notes</th>
-            <th width="10%">
-                Graphic by Artist
-            </th>
-        </tr>
-    </thead>
+                <th width="30%">
+                    Form Description
+                </th>
+                <th width="30%">
+                    Animal/Item Description
+                </th>
+                <th width="20%">Notes</th>
+                <th width="10%">
+                    Graphic by Artist
+                </th>
+            </tr>
+        </thead>
 
-    <tbody>
+        <tbody>
 
-        @{
-            foreach (Contribution c in Model)
-            {
-                <tr>
-                    <td>
-
-                        @{
-                if (!c.SubmitterUrl.IsNullOrEmpty())
+            @{
+                foreach (Contribution c in Model)
                 {
-                    <a href="@c.SubmitterUrl">@c.SubmitterName</a>
+                    <tr>
+                        <td>
+
+                            @{
+                                if (!c.SubmitterUrl.IsNullOrEmpty())
+                                {
+                                    <a href="@c.SubmitterUrl">@c.SubmitterName</a>
+                                }
+                                else
+                                {
+                                    @c.SubmitterName
+                                }
+
+                            }
+                            <p>
+                                <span style="color: darkgreen;">
+                                    @c.Skill_FriendlyName
+                                </span>
+                            </p>
+
+                            <p>
+                                <span style="color: blue;">@c.Form_MobilityType</span>
+                            </p>
+                            <p>
+                                Form/Item name:<br>
+                                <b>@c.Form_FriendlyName</b>
+                            </p>
+                        </td>
+                        <td>
+                            @c.Form_Description
+                        </td>
+                        <td>
+
+                            @c.Item_Description
+                        </td>
+
+                        <td>@c.Notes</td>
+
+                        <td>
+                            @{
+
+                                try
+                                {
+                                    @Html.ActionLink(c.AssignedToArtist, "ContributeSetGraphicStatus", "Contribution", new { id = c.Id }, null)
+                                }
+                                catch
+                                {
+                                    @Html.ActionLink("(none)", "ContributeSetGraphicStatus", "Contribution", new { id = c.Id }, null)
+                                }
+                            }
+
+                        </td>
+
+                    </tr>
                 }
-                else
-                {
-                    @c.SubmitterName
-                }
-
-                        }
-                        <p>
-                            <span style="color: darkgreen;">
-                                @c.Skill_FriendlyName
-                            </span>
-                        </p>
-
-                        <p>
-                            <span style="color: blue;">@c.Form_MobilityType</span>
-                        </p>
-                        <p>
-                            Form/Item name:<br>
-                           <b>@c.Form_FriendlyName</b>
-                        </p>
-                    </td>
-                    <td>
-                        @c.Form_Description
-                    </td>
-                    <td>
-                        
-                        @c.Item_Description
-                    </td>
-
-                    <td>@c.Notes</td>
-
-                    <td>
-                        @{
-
-                try
-                {
-                    @Html.ActionLink(c.AssignedToArtist, "ContributeSetGraphicStatus", "Contribution", new { id = c.Id }, null)
-                }
-                catch
-                {
-                    @Html.ActionLink("(none)", "ContributeSetGraphicStatus", "Contribution", new { id = c.Id }, null)
-                }
-                        }
-
-                    </td>
-
-                </tr>
             }
-        }
 
-    </tbody>
+        </tbody>
 
-</table>
-
-@Html.ActionLink("Back to game", "Play", "PvP")
+    </table>
+</div>
 
 <style>
     table {
         border: 1px solid black;
-        width:100%;
+        width: 100%;
     }
 
     th {
         background-color: black;
         color: white;
         text-align: center;
-        font-size:12px;
+        font-size: 12px;
     }
 
     tr {
@@ -133,9 +148,9 @@
         border: 1px solid black;
     }
 
-    tr:nth-child(odd) {
-        background-color: lightgray;
-    }
+        tr:nth-child(odd) {
+            background-color: lightgray;
+        }
 
     td:nth-child(4), td:nth-child(5) {
         word-break: break-all;
@@ -145,6 +160,6 @@
         padding: 3px;
         text-align: center;
         border: 1px solid darkblue;
-        font-size:11px;
+        font-size: 11px;
     }
 </style>

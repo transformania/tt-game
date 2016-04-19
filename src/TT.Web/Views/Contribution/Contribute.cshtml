@@ -4,6 +4,7 @@
 @using TT.Web.CustomHtmlHelpers
 
 <script src="~/Scripts/jquery-ui-1.10.4.js"></script>
+<script src="~/Scripts/suggestedLength.js"></script>
 
 <nav class="navbar navbar-default outsideContainer navbarTT2">
     <div class="container-fluid">
@@ -138,36 +139,31 @@
                 }
             }
         
-      
-
-
         <h1>Would you like to contribute to the Game?</h1>
 
         <p>If you would like to see a greater diversity in the game and would like to contribute new spells / forms / items / graphics, you can use this page to write up and submit new content.  You will receive credits for your work in the Contributions section of the Game News page.  And it will be greatly appreciated!</p>
 
         <p>
             Some basic rules and things to be aware of:
-            <ul>
+            <ul class="listdots">
                 <li>
                     No plagiarism.
                 </li>
 
                 <li>
-                    Graphics are strongly preferred for animate forms.  The sooner they have one the quicker they will get into the game.  However, graphics must be either a) Original work by yourself, b) commisioned work you own the rights to, or c) have explicit permission from the author to use here.
+                   With few exceptions, spells will not be released until they have accompanying graphics.  The sooner they have one the quicker they will get into the game.  However, graphics must be either a) Original work by yourself, b) commisioned work you own the rights to, or c) have explicit permission from the author to use here.
                 </li>
                 <li>
-                    Due to sexual content in this game, please don't include underage characters (less than 18 years old.)
+                    Due to sexual content in this game, you <b>>cannot include underage characters</b> (less than 18 years old.)
                 </li>
                 <li>
-                    Do not write transformations for copyrighted characters.  Parodies or generic look and act-alikes of them, however, are acceptable.
+                    If your spell or form is a <b>parody</b> or <b>reference to copyrighted material</b>, please contact Judoo on the forums for an extended approval process first as it is far more likely the contribution will need heavier modieration to comply with legalities.
                 </li>
                 <li>The administrator or proofreaders may alter portions of the spell to adapt to new locations in the game, correct for grammer, or other needed tweaks to work within the game's theme or mechanics.   These are usually minimal and the original author will still retain credit for the contribution.</li>
                 <li>
-                    (Effective June 1, 2014)  When you post contributions and graphics, you retain your creator's rights.  This means the content cannot be resold or released for use on other websites or other electronic or printed mediums <b>by this site</b>--the contributor still has the rights to do so so long as it does not retroactively conflict with the game's use of the content.  However, you <b>are</b> agreeing to allow the game to use this content <b>indefinitely</b> so long as the game does not become a commercial project (no subscription fees, no pay-to-win item store, etc).
+                    (Effective June 1, 2014) When you post contributions and graphics, you retain your creator's rights. This means the content cannot be resold or released for use on other websites or other electronic or printed mediums <b>by this site</b>--the contributor still has the rights to do so so long as it does not retroactively conflict with the game's use of the content. However, you <b>are</b> agreeing to allow the game to use this content <b>indefinitely</b> so long as the game does not become a commercial project (no subscription fees, no pay-to-win item store, etc).
                 </li>
-                <li>
-                    <b>New February 22 2015:  If your spell or form is a parody or reference to copyrighted material, please contact Judoo on the forums for an extended approval process first as it is far more likely the contribution will need heavier modieration to comply with legalities.</b>
-                </li>
+                <li>To see what happens after you believe your spell is ready, <a href="/Info/FAQ#contributions" target="_blank">this on the FAQ page</a>.</li>
             </ul>
         </p>
 
@@ -206,7 +202,7 @@
 
                 <div class="form__panel">
                     @Html.LabelFor(m => m.Skill_Description)
-                    @Html.TextAreaFor(m => m.Skill_Description)
+                    @Html.TextAreaFor(m => m.Skill_Description, new { @data_suggested_length = "125" })
                 </div>
 
                 <div class="form__panel">
@@ -249,7 +245,7 @@
 
                 <div class="form__panel">
                     @Html.LabelFor(m => m.Skill_DiscoveryMessage)
-                    @Html.TextAreaFor(m => m.Skill_DiscoveryMessage)
+                    @Html.TextAreaFor(m => m.Skill_DiscoveryMessage, new { @data_suggested_length = "250" })
                 </div>
 
             </div>
@@ -272,7 +268,7 @@
                 </div>
                 <div class="form__panel">
                     @Html.LabelFor(m => m.Form_Description)
-                    @Html.TextAreaFor(m => m.Form_Description, new { @placeholder = "Ex) This player is a _______.  He/she is very pretty and likes to sing and dance in the sun.  He/she can sometimes get distracted by pretty butterflies, but can still be very dangerous in a fight when riled up.  PLEASE NOTE:  This changes for inanimate items and pets." })
+                    @Html.TextAreaFor(m => m.Form_Description, new { @placeholder = "Ex) This player is a _______.  He/she is very pretty and likes to sing and dance in the sun.  He/she can sometimes get distracted by pretty butterflies, but can still be very dangerous in a fight when riled up.  PLEASE NOTE:  This changes for inanimate items and pets.", @data_suggested_length = "450" })
                 </div>
                 <div class="form__panel">
                     @Html.LabelFor(m => m.Form_TFEnergyRequired)
@@ -322,27 +318,27 @@
 
                 <div class="form__panel">
                     @Html.LabelFor(m => m.Form_TFMessage_20_Percent_1st)
-                    @Html.TextAreaFor(m => m.Form_TFMessage_20_Percent_1st, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change... (you are either male or female)" })
+                    @Html.TextAreaFor(m => m.Form_TFMessage_20_Percent_1st, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change... (you are either male or female)", @data_suggested_length="180" })
                 </div>
                 <div class="form__panel">
                     @Html.LabelFor(m => m.Form_TFMessage_40_Percent_1st)
-                    @Html.TextAreaFor(m => m.Form_TFMessage_40_Percent_1st, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change...  (you are either male or female)" })
+                    @Html.TextAreaFor(m => m.Form_TFMessage_40_Percent_1st, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change...  (you are either male or female)", @data_suggested_length = "275" })
                 </div>
                 <div class="form__panel">
                     @Html.LabelFor(m => m.Form_TFMessage_60_Percent_1st)
-                    @Html.TextAreaFor(m => m.Form_TFMessage_60_Percent_1st, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change...  (you are either male or female)" })
+                    @Html.TextAreaFor(m => m.Form_TFMessage_60_Percent_1st, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change...  (you are either male or female)", @data_suggested_length = "450" })
                 </div>
                 <div class="form__panel">
                     @Html.LabelFor(m => m.Form_TFMessage_80_Percent_1st)
-                    @Html.TextAreaFor(m => m.Form_TFMessage_80_Percent_1st, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change...  (you are either male or female)" })
+                    @Html.TextAreaFor(m => m.Form_TFMessage_80_Percent_1st, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change...  (you are either male or female)", @data_suggested_length = "600" })
                 </div>
                 <div class="form__panel">
                     @Html.LabelFor(m => m.Form_TFMessage_100_Percent_1st)
-                    @Html.TextAreaFor(m => m.Form_TFMessage_100_Percent_1st, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change...  (you are either male or female)" })
+                    @Html.TextAreaFor(m => m.Form_TFMessage_100_Percent_1st, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change...  (you are either male or female)", @data_suggested_length = "600" })
                 </div>
                 <div class="form__panel">
                     @Html.LabelFor(m => m.Form_TFMessage_Completed_1st)
-                    @Html.TextAreaFor(m => m.Form_TFMessage_Completed_1st, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change...  (you are either male or female)" })
+                    @Html.TextAreaFor(m => m.Form_TFMessage_Completed_1st, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change...  (you are either male or female)", @data_suggested_length = "600" })
                 </div>
 
                 <div class="form__panel externalMessage">
@@ -352,27 +348,27 @@
 
                 <div class="form__panel">
                     @Html.LabelFor(m => m.Form_TFMessage_20_Percent_1st_M) <span class="icon icon-male"></span>
-                    @Html.TextAreaFor(m => m.Form_TFMessage_20_Percent_1st_M, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change... (you are male)" })
+                    @Html.TextAreaFor(m => m.Form_TFMessage_20_Percent_1st_M, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change... (you are male)", @data_suggested_length = "180" })
                 </div>
                 <div class="form__panel">
                     @Html.LabelFor(m => m.Form_TFMessage_40_Percent_1st_M) <span class="icon icon-male"></span>
-                    @Html.TextAreaFor(m => m.Form_TFMessage_40_Percent_1st_M, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change... (you are male)" })
+                    @Html.TextAreaFor(m => m.Form_TFMessage_40_Percent_1st_M, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change... (you are male)", @data_suggested_length = "275" })
                 </div>
                 <div class="form__panel">
                     @Html.LabelFor(m => m.Form_TFMessage_60_Percent_1st_M) <span class="icon icon-male"></span>
-                    @Html.TextAreaFor(m => m.Form_TFMessage_60_Percent_1st_M, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change... (you are male)" })
+                    @Html.TextAreaFor(m => m.Form_TFMessage_60_Percent_1st_M, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change... (you are male)", @data_suggested_length = "450" })
                 </div>
                 <div class="form__panel">
                     @Html.LabelFor(m => m.Form_TFMessage_80_Percent_1st_M) <span class="icon icon-male"></span>
-                    @Html.TextAreaFor(m => m.Form_TFMessage_80_Percent_1st_M, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change... (you are male)" })
+                    @Html.TextAreaFor(m => m.Form_TFMessage_80_Percent_1st_M, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change... (you are male)", @data_suggested_length = "600" })
                 </div>
                 <div class="form__panel">
                     @Html.LabelFor(m => m.Form_TFMessage_100_Percent_1st_M) <span class="icon icon-male"></span>
-                    @Html.TextAreaFor(m => m.Form_TFMessage_100_Percent_1st_M, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change... (you are male)" })
+                    @Html.TextAreaFor(m => m.Form_TFMessage_100_Percent_1st_M, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change... (you are male)", @data_suggested_length = "600" })
                 </div>
                 <div class="form__panel">
                     @Html.LabelFor(m => m.Form_TFMessage_Completed_1st_M) <span class="icon icon-male"></span>
-                    @Html.TextAreaFor(m => m.Form_TFMessage_Completed_1st_M, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change.. (you are male)." })
+                    @Html.TextAreaFor(m => m.Form_TFMessage_Completed_1st_M, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change.. (you are male).", @data_suggested_length = "600" })
                 </div>
 
                 <div class="form__panel externalMessage">
@@ -382,27 +378,27 @@
 
                 <div class="form__panel">
                     @Html.LabelFor(m => m.Form_TFMessage_20_Percent_1st_F) <span class="icon icon-female"></span>
-                    @Html.TextAreaFor(m => m.Form_TFMessage_20_Percent_1st_F, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change... (you are female)" })
+                    @Html.TextAreaFor(m => m.Form_TFMessage_20_Percent_1st_F, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change... (you are female)", @data_suggested_length = "180" })
                 </div>
                 <div class="form__panel">
                     @Html.LabelFor(m => m.Form_TFMessage_40_Percent_1st_F) <span class="icon icon-female"></span>
-                    @Html.TextAreaFor(m => m.Form_TFMessage_40_Percent_1st_F, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change...  (you are female)" })
+                    @Html.TextAreaFor(m => m.Form_TFMessage_40_Percent_1st_F, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change...  (you are female)", @data_suggested_length = "275" })
                 </div>
                 <div class="form__panel">
                     @Html.LabelFor(m => m.Form_TFMessage_60_Percent_1st_F) <span class="icon icon-female"></span>
-                    @Html.TextAreaFor(m => m.Form_TFMessage_60_Percent_1st_F, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change...  (you are female)" })
+                    @Html.TextAreaFor(m => m.Form_TFMessage_60_Percent_1st_F, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change...  (you are female)", @data_suggested_length = "450" })
                 </div>
                 <div class="form__panel">
                     @Html.LabelFor(m => m.Form_TFMessage_80_Percent_1st_F) <span class="icon icon-female"></span>
-                    @Html.TextAreaFor(m => m.Form_TFMessage_80_Percent_1st_F, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change...  (you are female)" })
+                    @Html.TextAreaFor(m => m.Form_TFMessage_80_Percent_1st_F, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change...  (you are female)", @data_suggested_length = "600" })
                 </div>
                 <div class="form__panel">
                     @Html.LabelFor(m => m.Form_TFMessage_100_Percent_1st_F) <span class="icon icon-female"></span>
-                    @Html.TextAreaFor(m => m.Form_TFMessage_100_Percent_1st_F, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change...  (you are female)" })
+                    @Html.TextAreaFor(m => m.Form_TFMessage_100_Percent_1st_F, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change...  (you are female)", @data_suggested_length = "600" })
                 </div>
                 <div class="form__panel">
                     @Html.LabelFor(m => m.Form_TFMessage_Completed_1st_F) <span class="icon icon-female"></span>
-                    @Html.TextAreaFor(m => m.Form_TFMessage_Completed_1st_F, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change...  (you are female)" })
+                    @Html.TextAreaFor(m => m.Form_TFMessage_Completed_1st_F, new { @placeholder = "Your attacker's spell hits you.  You feel your body begin to change...  (you are female)", @data_suggested_length = "600" })
                 </div>
 
                 <div class="form__panel externalMessage">
@@ -411,27 +407,27 @@
 
                 <div class="form__panel">
                     @Html.LabelFor(m => m.Form_TFMessage_20_Percent_3rd)
-                    @Html.TextAreaFor(m => m.Form_TFMessage_20_Percent_3rd, new { @placeholder = "Your spell hits your target.  They gasp as their body begins to change... (your target is either male or female)" })
+                    @Html.TextAreaFor(m => m.Form_TFMessage_20_Percent_3rd, new { @placeholder = "Your spell hits your target.  They gasp as their body begins to change... (your target is either male or female)", @data_suggested_length = "180" })
                 </div>
                 <div class="form__panel">
                     @Html.LabelFor(m => m.Form_TFMessage_40_Percent_3rd)
-                    @Html.TextAreaFor(m => m.Form_TFMessage_40_Percent_3rd, new { @placeholder = "Your spell hits your target.  They gasp as their body begins to change... (your target is either male or female)" })
+                    @Html.TextAreaFor(m => m.Form_TFMessage_40_Percent_3rd, new { @placeholder = "Your spell hits your target.  They gasp as their body begins to change... (your target is either male or female)", @data_suggested_length = "275" })
                 </div>
                 <div class="form__panel">
                     @Html.LabelFor(m => m.Form_TFMessage_60_Percent_3rd)
-                    @Html.TextAreaFor(m => m.Form_TFMessage_60_Percent_3rd, new { @placeholder = "Your spell hits your target.  They gasp as their body begins to change... (your target is either male or female)" })
+                    @Html.TextAreaFor(m => m.Form_TFMessage_60_Percent_3rd, new { @placeholder = "Your spell hits your target.  They gasp as their body begins to change... (your target is either male or female)", @data_suggested_length = "450" })
                 </div>
                 <div class="form__panel">
                     @Html.LabelFor(m => m.Form_TFMessage_80_Percent_3rd)
-                    @Html.TextAreaFor(m => m.Form_TFMessage_80_Percent_3rd, new { @placeholder = "Your spell hits your target.  They gasp as their body begins to change... (your target is either male or female)" })
+                    @Html.TextAreaFor(m => m.Form_TFMessage_80_Percent_3rd, new { @placeholder = "Your spell hits your target.  They gasp as their body begins to change... (your target is either male or female)", @data_suggested_length = "600" })
                 </div>
                 <div class="form__panel">
                     @Html.LabelFor(m => m.Form_TFMessage_100_Percent_3rd)
-                    @Html.TextAreaFor(m => m.Form_TFMessage_100_Percent_3rd, new { @placeholder = "Your spell hits your target.  They gasp as their body begins to change... (your target is either male or female)" })
+                    @Html.TextAreaFor(m => m.Form_TFMessage_100_Percent_3rd, new { @placeholder = "Your spell hits your target.  They gasp as their body begins to change... (your target is either male or female)", @data_suggested_length = "600" })
                 </div>
                 <div class="form__panel">
                     @Html.LabelFor(m => m.Form_TFMessage_Completed_3rd)
-                    @Html.TextAreaFor(m => m.Form_TFMessage_Completed_3rd, new { @placeholder = "Your spell hits your target.  They gasp as their body begins to change... (your target is either male or female)" })
+                    @Html.TextAreaFor(m => m.Form_TFMessage_Completed_3rd, new { @placeholder = "Your spell hits your target.  They gasp as their body begins to change... (your target is either male or female)", @data_suggested_length = "600" })
                 </div>
 
 
@@ -443,27 +439,27 @@
 
                 <div class="form__panel">
                     @Html.LabelFor(m => m.Form_TFMessage_20_Percent_3rd_M) <span class="icon icon-male"></span>
-                    @Html.TextAreaFor(m => m.Form_TFMessage_20_Percent_3rd_M, new { @placeholder = "Your spell hits your target.  He gasps as his body begins to change... (your target is male)" })
+                    @Html.TextAreaFor(m => m.Form_TFMessage_20_Percent_3rd_M, new { @placeholder = "Your spell hits your target.  He gasps as his body begins to change... (your target is male)", @data_suggested_length = "180" })
                 </div>
                 <div class="form__panel">
                     @Html.LabelFor(m => m.Form_TFMessage_40_Percent_3rd_M) <span class="icon icon-male"></span>
-                    @Html.TextAreaFor(m => m.Form_TFMessage_40_Percent_3rd_M, new { @placeholder = "Your spell hits your target.  He gasps as his body begins to change... (your target is male)" })
+                    @Html.TextAreaFor(m => m.Form_TFMessage_40_Percent_3rd_M, new { @placeholder = "Your spell hits your target.  He gasps as his body begins to change... (your target is male)", @data_suggested_length = "275" })
                 </div>
                 <div class="form__panel">
                     @Html.LabelFor(m => m.Form_TFMessage_60_Percent_3rd_M) <span class="icon icon-male"></span>
-                    @Html.TextAreaFor(m => m.Form_TFMessage_60_Percent_3rd_M, new { @placeholder = "Your spell hits your target.  He gasps as his body begins to change... (your target is male)" })
+                    @Html.TextAreaFor(m => m.Form_TFMessage_60_Percent_3rd_M, new { @placeholder = "Your spell hits your target.  He gasps as his body begins to change... (your target is male)", @data_suggested_length = "450" })
                 </div>
                 <div class="form__panel">
                     @Html.LabelFor(m => m.Form_TFMessage_80_Percent_3rd_M) <span class="icon icon-male"></span>
-                    @Html.TextAreaFor(m => m.Form_TFMessage_80_Percent_3rd_M, new { @placeholder = "Your spell hits your target.  He gasps as his body begins to change... (your target is male)" })
+                    @Html.TextAreaFor(m => m.Form_TFMessage_80_Percent_3rd_M, new { @placeholder = "Your spell hits your target.  He gasps as his body begins to change... (your target is male)", @data_suggested_length = "600" })
                 </div>
                 <div class="form__panel">
                     @Html.LabelFor(m => m.Form_TFMessage_100_Percent_3rd_M) <span class="icon icon-male"></span>
-                    @Html.TextAreaFor(m => m.Form_TFMessage_100_Percent_3rd_M, new { @placeholder = "Your spell hits your target.  He gasps as his body begins to change... (your target is male)" })
+                    @Html.TextAreaFor(m => m.Form_TFMessage_100_Percent_3rd_M, new { @placeholder = "Your spell hits your target.  He gasps as his body begins to change... (your target is male)", @data_suggested_length = "600" })
                 </div>
                 <div class="form__panel">
                     @Html.LabelFor(m => m.Form_TFMessage_Completed_3rd_M) <span class="icon icon-male"></span>
-                    @Html.TextAreaFor(m => m.Form_TFMessage_Completed_3rd_M, new { @placeholder = "Your spell hits your target.  He gasps as his body begins to change... (your target is male)" })
+                    @Html.TextAreaFor(m => m.Form_TFMessage_Completed_3rd_M, new { @placeholder = "Your spell hits your target.  He gasps as his body begins to change... (your target is male)", @data_suggested_length = "600" })
                 </div>
 
                 <div class="form__panel externalMessage">
@@ -473,27 +469,27 @@
 
                 <div class="form__panel">
                     @Html.LabelFor(m => m.Form_TFMessage_20_Percent_3rd_F) <span class="icon icon-female"></span>
-                    @Html.TextAreaFor(m => m.Form_TFMessage_20_Percent_3rd_F, new { @placeholder = "Your spell hits your target.  She gasps as her body begins to change... (your target is female)" })
+                    @Html.TextAreaFor(m => m.Form_TFMessage_20_Percent_3rd_F, new { @placeholder = "Your spell hits your target.  She gasps as her body begins to change... (your target is female)", @data_suggested_length = "180" })
                 </div>
                 <div class="form__panel">
                     @Html.LabelFor(m => m.Form_TFMessage_40_Percent_3rd_F) <span class="icon icon-female"></span>
-                    @Html.TextAreaFor(m => m.Form_TFMessage_40_Percent_3rd_F, new { @placeholder = "Your spell hits your target.  She gasps as her body begins to change... (your target is female)" })
+                    @Html.TextAreaFor(m => m.Form_TFMessage_40_Percent_3rd_F, new { @placeholder = "Your spell hits your target.  She gasps as her body begins to change... (your target is female)", @data_suggested_length = "275" })
                 </div>
                 <div class="form__panel">
                     @Html.LabelFor(m => m.Form_TFMessage_60_Percent_3rd_F) <span class="icon icon-female"></span>
-                    @Html.TextAreaFor(m => m.Form_TFMessage_60_Percent_3rd_F, new { @placeholder = "Your spell hits your target.  She gasps as her body begins to change... (your target is female)" })
+                    @Html.TextAreaFor(m => m.Form_TFMessage_60_Percent_3rd_F, new { @placeholder = "Your spell hits your target.  She gasps as her body begins to change... (your target is female)", @data_suggested_length = "450" })
                 </div>
                 <div class="form__panel">
                     @Html.LabelFor(m => m.Form_TFMessage_80_Percent_3rd_F) <span class="icon icon-female"></span>
-                    @Html.TextAreaFor(m => m.Form_TFMessage_80_Percent_3rd_F, new { @placeholder = "Your spell hits your target.  She gasps as her body begins to change... (your target is female)" })
+                    @Html.TextAreaFor(m => m.Form_TFMessage_80_Percent_3rd_F, new { @placeholder = "Your spell hits your target.  She gasps as her body begins to change... (your target is female)", @data_suggested_length = "600" })
                 </div>
                 <div class="form__panel">
                     @Html.LabelFor(m => m.Form_TFMessage_100_Percent_3rd_F) <span class="icon icon-female"></span>
-                    @Html.TextAreaFor(m => m.Form_TFMessage_100_Percent_3rd_F, new { @placeholder = "Your spell hits your target.  She gasps as her body begins to change... (your target is female)" })
+                    @Html.TextAreaFor(m => m.Form_TFMessage_100_Percent_3rd_F, new { @placeholder = "Your spell hits your target.  She gasps as her body begins to change... (your target is female)", @data_suggested_length = "600" })
                 </div>
                 <div class="form__panel">
                     @Html.LabelFor(m => m.Form_TFMessage_Completed_3rd_F) <span class="icon icon-female"></span>
-                    @Html.TextAreaFor(m => m.Form_TFMessage_Completed_3rd_F, new { @placeholder = "Your spell hits your target.  She gasps as her body begins to change... (your target is female)" })
+                    @Html.TextAreaFor(m => m.Form_TFMessage_Completed_3rd_F, new { @placeholder = "Your spell hits your target.  She gasps as her body begins to change... (your target is female)", @data_suggested_length = "600" })
                 </div>
             </div>
               if (ViewBag.DisableLinks == null)
@@ -509,7 +505,7 @@
                 </div>
                 <div class="form__panel">
                     @Html.LabelFor(m => m.Item_Description)
-                    @Html.TextAreaFor(m => m.Item_Description, new { @placeholder = "Ex) This item is a _____.  When its owner holds it, they gain extra power.  Once human, this item likes to shake and rub against its owner affectionately and likes it when people compliment on how pretty it is.  (Refer to this item in third person in a generality--don't use words like 'You' or 'Your' here since this item may not be something that 'You' own." })
+                    @Html.TextAreaFor(m => m.Item_Description, new { @placeholder = "Ex) This item is a _____.  When its owner holds it, they gain extra power.  Once human, this item likes to shake and rub against its owner affectionately and likes it when people compliment on how pretty it is.  (Refer to this item in third person in a generality--don't use words like 'You' or 'Your' here since this item may not be something that 'You' own.", @data_suggested_length = "450" })
                 </div>
                 <div class="form__panel">
                     @Html.LabelFor(m => m.Item_ItemType)
@@ -829,9 +825,6 @@
                 }]
             });
 
-          
-
-
             if ($("#Form_MobilityType").val() == "full") {
                 displayForAnimate();
             } else if ($("#Form_MobilityType").val() == "animal" || $("#Form_MobilityType").val() == "inanimate") {
@@ -877,12 +870,6 @@
                 });
             });
 
-
-
-            //$("#closeBonusWindow").click(function () {
-            //    $("#bonusesList").hide();
-            //});
-
             if ($("#Id").val() == -1) {
 
             } else {
@@ -916,6 +903,8 @@
         function launchModal() {
             $("#modal").show();
         }
+
+
 
     </script>
 

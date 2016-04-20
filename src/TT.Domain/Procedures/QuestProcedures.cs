@@ -625,11 +625,11 @@ namespace TT.Domain.Procedures
             foreach (QuestStatePreaction p in questState.QuestStatePreactions.ToList())
             {
 
-                // try to parse the value from string into number, if it fails skip this preaction entirely
+                // try to parse the value from string into number, if it fails, default to 0
                 decimal valueAsNumber = 0;
                 if (!Decimal.TryParse(p.ActionValue, out valueAsNumber))
                 {
-                    continue;
+                    valueAsNumber = 0;
                 }
 
                 // change form

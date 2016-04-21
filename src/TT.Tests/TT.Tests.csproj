@@ -128,15 +128,27 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API\ChatRoomTests.cs" />
+    <Compile Include="Builders\AI\NPCBuilder.cs" />
+    <Compile Include="Builders\Assets\RestockItemBuilder.cs" />
     <Compile Include="Builders\Assets\TomeBuilder.cs" />
     <Compile Include="Builders\Builder.cs" />
     <Compile Include="Builders\Chat\ChatRoomBuilder.cs" />
     <Compile Include="Builders\Identity\UserBuilder.cs" />
     <Compile Include="Builders\Item\ItemBuilder.cs" />
+    <Compile Include="Domain\Commands\AI\CreateNPCTests.cs" />
+    <Compile Include="Domain\Commands\AI\DeleteNPCTests.cs" />
+    <Compile Include="Domain\Commands\AI\UpdateNPCTests.cs" />
+    <Compile Include="Domain\Commands\Assets\CreateRestockItemTests.cs" />
+    <Compile Include="Domain\Commands\Assets\DeleteRestockItemTests.cs" />
     <Compile Include="Domain\Commands\Assets\DeleteTomeTests.cs" />
+    <Compile Include="Domain\Commands\Assets\UpdateRestockItemTests.cs" />
     <Compile Include="Domain\Commands\Assets\UpdateTomeTests.cs" />
     <Compile Include="Domain\Commands\Assets\CreateTomeTests.cs" />
     <Compile Include="Domain\Commands\Chat\CreateChatRoomTests.cs" />
+    <Compile Include="Domain\Queries\AI\GetNPCsTests.cs" />
+    <Compile Include="Domain\Queries\AI\GetNPCTests.cs" />
+    <Compile Include="Domain\Queries\Assets\GetRestockItemsTests.cs" />
+    <Compile Include="Domain\Queries\Assets\GetRestockItemTests.cs" />
     <Compile Include="Domain\Queries\Assets\GetTomeByItemTest.cs" />
     <Compile Include="Domain\Queries\Assets\GetTomeTest.cs" />
     <Compile Include="Domain\Queries\Assets\GetTomesTests.cs" />

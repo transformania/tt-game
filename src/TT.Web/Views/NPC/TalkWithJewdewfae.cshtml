@@ -1,5 +1,4 @@
-﻿@model TT.Domain.Models.JewdewfaeEncounter
-
+﻿@model TT.Domain.ViewModels.NPCs.JewdewfaeEncounterViewModel
 
 <nav class="navbar navbar-default outsideContainer navbarTT2">
     <div class="container-fluid">
@@ -29,15 +28,15 @@
         </div>
         <div class="col-md-6 col-sm-6 col-xs-12 textSpaced" style="padding: 20px; text-align: justify;">
             @{
-                if (!ViewBag.ShowSuccess && !ViewBag.HadRecentInteraction)
+                if (!Model.ShowSuccess && !Model.HadRecentInteraction)
                 {
-                    <p>@Html.Raw(Model.IntroText)</p>
+                    <p>@Html.Raw(Model.JewdewfaeEncounter.IntroText)</p>
 
-                    if (ViewBag.IsInWrongForm)
+                    if (Model.IsInWrongForm)
                     {
-                        <p>@Html.Raw(Model.FailureText)</p>
+                        <p>@Html.Raw(Model.JewdewfaeEncounter.FailureText)</p>
                     }
-                    else if (ViewBag.IsTired)
+                    else if (Model.IsTired)
                     {
                         <p class="faevoice">"You look too tired to be any fun right now.  Come back later when you're a little more awake, mkay?"</p>
                     }
@@ -46,14 +45,14 @@
                         <p>@Html.ActionLink("Play with Jewfewfae (5 AP)", "PlayWithJewdewfae", "PvP", new { @class = "inanimateAction center-block" })</p>
                     }
                 }
-                else if (ViewBag.HadRecentInteraction)
+                else if (Model.HadRecentInteraction)
                 {
-                    <p class="faevoice">"Thanks for playing with me!  Maybe we can have some more fun somewhere else later..."</p>
+                    <p class="faevoice">"Thanks for playing with me!  Maybe we can have some more fun somewhere else later!"</p>
                 }
                 else
                 {
-                    <p>@Html.Raw(Model.CorrectFormText)</p>
-                    <p style="text-align: center !important"><b><i>You earned @Math.Floor(ViewBag.XPGain) XP from Jewdewfae's magic.  @Html.Raw(ViewBag.SpellsLearned)</i></b></p>
+                    <p>@Html.Raw(Model.JewdewfaeEncounter.CorrectFormText)</p>
+                    <p style="text-align: center !important"><b><i>You earned @Math.Floor(Model.XPGain) XP from Jewdewfae's magic.  @Html.Raw(Model.SpellsLearned)</i></b></p>
                 }
             }
         </div>

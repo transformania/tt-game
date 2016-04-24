@@ -395,6 +395,7 @@
     <Compile Include="ViewModels\BuffBox.cs" />
     <Compile Include="ViewModels\ChatViewModel.cs" />
     <Compile Include="ViewModels\ContributionCredit.cs" />
+    <Compile Include="ViewModels\NPCs\JewdewfaeEncounterViewModel.cs" />
     <Compile Include="ViewModels\ProofreadingContributionsViewModel.cs" />
     <Compile Include="ViewModels\ContributionStatusViewModel.cs" />
     <Compile Include="ViewModels\CovenantViewModel.cs" />

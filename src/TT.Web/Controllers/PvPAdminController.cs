@@ -1581,6 +1581,8 @@ namespace TT.Web.Controllers
                     output.NewFirstName = pm.Player.FirstName;
                     output.NewLastName = pm.Player.LastName;
                     output.NewForm = pm.Player.Form;
+                    output.Level = pm.Player.Level;
+                    output.Money = pm.Player.Money;
                 }
 
                 return View(output);
@@ -1617,6 +1619,16 @@ namespace TT.Web.Controllers
                 if (input.NewLastName != null && input.NewLastName.Length > 0)
                 {
                     player.LastName = input.NewLastName;
+                }
+
+                if (input.Level > 0)
+                {
+                    player.Level = input.Level;
+                }
+
+                if (input.Money > 0)
+                {
+                    player.Money = input.Money;
                 }
 
                 if (input.NewForm != null && input.NewForm.Length > 0)

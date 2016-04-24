@@ -73,15 +73,6 @@ namespace TT.Web.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
-            // assert that the player has room in their inventory
-            //if (ItemProcedures.PlayerIsCarryingTooMuch(me.Id, 0, ItemProcedures.GetPlayerBuffs(me))) {
-            //    TempData["Error"] = "You are carrying too many items to purchase a new one.";
-            //    TempData["SubError"] = "You need to free up a space in your inventory before purchasing something from Lindella.";
-            //    return RedirectToAction("Play", "PvP");
-            //}
-
-            ViewBag.NoRoom = ItemProcedures.PlayerIsCarryingTooMuch(me.Id, 0, ItemProcedures.GetPlayerBuffs(me));
-
             ViewBag.DisableLinks = "true";
 
             IEnumerable<ItemViewModel> output = null;
@@ -1261,12 +1252,13 @@ namespace TT.Web.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
-            IEnumerable<ItemViewModel> inventory = ItemProcedures.GetAllPlayerItems(loremaster.Id);
+            var output = new LorekeeperBookListViewModel();
+            output.Items = ItemProcedures.GetAllPlayerItems(loremaster.Id);
 
-            ViewBag.MyMoney = Math.Floor(me.Money);
-            ViewBag.Lorekeeper = true;
+            output.MyMoney = Math.Floor(me.Money);
+            ViewBag.Lorekeeper = true; // has to stay Viewbag to give access to partial view
 
-            return View(inventory);
+            return View(output);
 
         }
 
@@ -1312,10 +1304,6 @@ namespace TT.Web.Controllers
 
             // checks have passed.  Transfer the item
             PlayerProcedures.GiveMoneyToPlayer(me, -cost);
-
-            //new Thread(() =>
-            //     StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__WuffieCostsAmount, (float)cost)
-            // ).Start();
 
             ItemProcedures.GiveItemToPlayer_Nocheck(purchased.dbItem.Id, me.Id);
 

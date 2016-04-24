@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TT.Domain.ViewModels.ItemViewModel>
+﻿@model TT.Domain.ViewModels.NPCs.LorekeeperBookListViewModel
 @using TT.Domain.ViewModels
 @using TT.Web.CustomHtmlHelpers
 
@@ -33,16 +33,7 @@
 <div class="containerInner">
     <p>You can buy spellbooks and tomes here. No refunds!</p>
 
-    <h3>You currently have @ViewBag.MyMoney <span title="Arpeyjis" class="icon icon-money"></span> Arpeyjis to spend.</h3>
-
-    @*<p>@Html.ActionLink("Sell Something", "SellList", "NPC", new { @class = "attackLink" })</p>*@
-
-    @{
-        if (ViewBag.NoRoom)
-        {
-            <p class="playerCleansingNotification">You will not be able to purchase anything from Lindella since you do not have room to carry anything else in your inventory.</p>
-        }
-    }
+    <h3>You currently have @Model.MyMoney <span title="Arpeyjis" class="icon icon-money"></span> Arpeyjis to spend.</h3>
 
     <div id="fullDetails">
 
@@ -50,7 +41,7 @@
     <div id="row">
 
         @{
-            foreach (ItemViewModel i in Model.OrderBy(i => i.dbItem.dbName).ThenByDescending(i => i.dbItem.Level))
+            foreach (ItemViewModel i in Model.Items.OrderBy(i => i.dbItem.dbName).ThenByDescending(i => i.dbItem.Level))
             {
                 @Html.Partial("~/Views/PvP/partial_ShopkeeperItem.cshtml", i)
             }

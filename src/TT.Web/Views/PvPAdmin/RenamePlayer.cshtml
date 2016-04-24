@@ -9,17 +9,22 @@
 @using (Html.BeginForm("RenamePlayerSend", "PvPAdmin", FormMethod.Post))
 {
     <span>Id:</span>
-    @Html.TextAreaFor(m => m.Id)    <br />    <br />
+    @Html.TextAreaFor(m => m.Id)<br><br>
 
     <span>FirstName:</span>
-    @Html.TextAreaFor(m => m.NewFirstName)    <br />    <br />
+    @Html.TextAreaFor(m => m.NewFirstName)<br><br>
 
     <span>LastName:</span>
-    @Html.TextAreaFor(m => m.NewLastName)    <br />    <br />
-
+    @Html.TextAreaFor(m => m.NewLastName)<br><br>
 
     <span>Form:</span>
-    @Html.TextAreaFor(m => m.NewForm)    <br />    <br />
+    @Html.TextAreaFor(m => m.NewForm)<br><br>
+
+    <span>Level:</span>
+    @Html.TextAreaFor(m => m.Level)<br><br>
+
+    <span>Arpeyjis:</span>
+    @Html.TextAreaFor(m => m.Money)<br><br>
 
     <input type="submit" value="Send" />
 }

@@ -9,6 +9,7 @@ using TT.Domain.Procedures;
 using TT.Domain.Procedures.BossProcedures;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
+using TT.Domain.ViewModels.NPCs;
 
 namespace TT.Web.Controllers
 {
@@ -1014,7 +1015,7 @@ namespace TT.Web.Controllers
         public ActionResult TalkWithJewdewfae()
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
-            Player fae = PlayerProcedures.GetPlayerFromBotId(-6);
+            Player fae = PlayerProcedures.GetPlayerFromBotId(AIStatics.JewdewfaeBotId);
 
             // assert player is mobile
             if (me.Mobility != PvPStatics.MobilityFull)
@@ -1030,30 +1031,31 @@ namespace TT.Web.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
-            JewdewfaeEncounter output = TT.Domain.Procedures.BossProcedures.BossProcedures_Jewdewfae.GetFairyChallengeInfoAtLocation(fae.dbLocationName);
+            var output = new JewdewfaeEncounterViewModel();
+            output.JewdewfaeEncounter = BossProcedures_Jewdewfae.GetFairyChallengeInfoAtLocation(fae.dbLocationName);
 
-            output.IntroText = output.IntroText.Replace("[", "<").Replace("]", ">");
-            output.CorrectFormText = output.CorrectFormText.Replace("[", "<").Replace("]", ">");
-            output.FailureText = output.FailureText.Replace("[", "<").Replace("]", ">");
+            output.JewdewfaeEncounter.IntroText = output.JewdewfaeEncounter.IntroText.Replace("[", "<").Replace("]", ">");
+            output.JewdewfaeEncounter.CorrectFormText = output.JewdewfaeEncounter.CorrectFormText.Replace("[", "<").Replace("]", ">");
+            output.JewdewfaeEncounter.FailureText = output.JewdewfaeEncounter.FailureText.Replace("[", "<").Replace("]", ">");
 
-            ViewBag.IsInWrongForm = false;
+            output.IsInWrongForm = false;
 
-            if (me.Form != output.RequiredForm)
+            if (me.Form != output.JewdewfaeEncounter.RequiredForm)
             {
-                ViewBag.IsInWrongForm = true;
+                output.IsInWrongForm = true;
             }
 
             if (me.ActionPoints < 5)
             {
-                ViewBag.IsTired = true;
+                output.IsTired = true;
             }
 
-            ViewBag.ShowSuccess = false;
+            output.ShowSuccess = false;
 
-            ViewBag.HadRecentInteraction = false;
-            if (TT.Domain.Procedures.BossProcedures.BossProcedures_Jewdewfae.PlayerHasHadRecentInteraction(me, fae))
+            output.HadRecentInteraction = false;
+            if (BossProcedures_Jewdewfae.PlayerHasHadRecentInteraction(me, fae))
             {
-                ViewBag.HadRecentInteraction = true;
+                output.HadRecentInteraction = true;
             }
 
             return View(output);
@@ -1102,30 +1104,31 @@ namespace TT.Web.Controllers
             }
 
             // assert player has not already interacted this location
-            if (TT.Domain.Procedures.BossProcedures.BossProcedures_Jewdewfae.PlayerHasHadRecentInteraction(me, fae))
+            if (BossProcedures_Jewdewfae.PlayerHasHadRecentInteraction(me, fae))
             {
                 TempData["Error"] = "You have already interacted with Jewdewfae here.";
                 TempData["SubError"] = "Wait for her to move somewhere else.";
                 return RedirectToAction("Play", "PvP");
             }
 
-            JewdewfaeEncounter output = TT.Domain.Procedures.BossProcedures.BossProcedures_Jewdewfae.GetFairyChallengeInfoAtLocation(fae.dbLocationName);
+            var output = new JewdewfaeEncounterViewModel();
+            output.JewdewfaeEncounter = BossProcedures_Jewdewfae.GetFairyChallengeInfoAtLocation(fae.dbLocationName);
 
-            output.IntroText = output.IntroText.Replace("[", "<").Replace("]", ">");
-            output.CorrectFormText = output.CorrectFormText.Replace("[", "<").Replace("]", ">");
-            output.FailureText = output.FailureText.Replace("[", "<").Replace("]", ">");
+            output.JewdewfaeEncounter.IntroText = output.JewdewfaeEncounter.IntroText.Replace("[", "<").Replace("]", ">");
+            output.JewdewfaeEncounter.CorrectFormText = output.JewdewfaeEncounter.CorrectFormText.Replace("[", "<").Replace("]", ">");
+            output.JewdewfaeEncounter.FailureText = output.JewdewfaeEncounter.FailureText.Replace("[", "<").Replace("]", ">");
 
-            if (me.Form == output.RequiredForm)
+            if (me.Form == output.JewdewfaeEncounter.RequiredForm)
             {
-                decimal xpGained = TT.Domain.Procedures.BossProcedures.BossProcedures_Jewdewfae.AddInteraction(me);
+                decimal xpGained = BossProcedures_Jewdewfae.AddInteraction(me);
                 PlayerProcedures.GiveXP(me, xpGained);
                 PlayerProcedures.ChangePlayerActionMana(5, 0, 0, me.Id);
-                ViewBag.XPGain = xpGained;
-                ViewBag.ShowSuccess = true;
-                ViewBag.HadRecentInteraction = false;
+                output.XPGain = xpGained;
+                output.ShowSuccess = true;
+                output.HadRecentInteraction = false;
 
                 string spellsLearned = "Jewdewfae's magic also teaches you the following spells:  " + SkillProcedures.GiveRandomFindableSkillsToPlayer(me, 3);
-                ViewBag.SpellsLearned = spellsLearned;
+                output.SpellsLearned = spellsLearned;
 
                 new Thread(() =>
                      StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__JewdewfaeEncountersCompleted, 1)

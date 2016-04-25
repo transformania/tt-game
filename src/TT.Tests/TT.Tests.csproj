@@ -135,6 +135,7 @@
     <Compile Include="Builders\Chat\ChatRoomBuilder.cs" />
     <Compile Include="Builders\Identity\UserBuilder.cs" />
     <Compile Include="Builders\Item\ItemBuilder.cs" />
+    <Compile Include="Builders\Players\PlayerBuilder.cs" />
     <Compile Include="Domain\Commands\AI\CreateNPCTests.cs" />
     <Compile Include="Domain\Commands\AI\DeleteNPCTests.cs" />
     <Compile Include="Domain\Commands\AI\UpdateNPCTests.cs" />
@@ -155,6 +156,7 @@
     <Compile Include="Domain\Queries\Assets\GetTomesTests.cs" />
     <Compile Include="Domain\Queries\Item\GetItemSourcesTests.cs" />
     <Compile Include="Domain\Queries\Item\GetItemSourceTest.cs" />
+    <Compile Include="Domain\Queries\Players\GetPlayerTest.cs" />
     <Compile Include="Domain\Services\AttackNotificationBrokerTests.cs" />
     <Compile Include="InMemoryDataContextWithGenerator.cs" />
     <Compile Include="TestBase.cs" />

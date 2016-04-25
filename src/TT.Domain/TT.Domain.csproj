@@ -368,7 +368,8 @@
     <Compile Include="Queries\DMRoll\GetRoll.cs" />
     <Compile Include="Queries\Item\GetItemSource.cs" />
     <Compile Include="Queries\Item\GetItemSources.cs" />
-    <Compile Include="Queries\Player\GetPlayerFormFromMembership.cs" />
+    <Compile Include="Queries\Players\GetPlayer.cs" />
+    <Compile Include="Queries\Players\GetPlayerFormFromMembership.cs" />
     <Compile Include="Queries\Statics\GetStaticItem.cs" />
     <Compile Include="Query.cs" />
     <Compile Include="Root.cs" />

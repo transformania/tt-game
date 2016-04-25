@@ -169,11 +169,9 @@ namespace TT.Domain.Models
         public decimal MaxMana { get; set; }
         public decimal ActionPoints { get; set; }
         public decimal ActionPoints_Refill { get; set; }
-        public decimal ResistanceModifier { get; set; }
         public string Gender { get; set; }
         public string Mobility { get; set; }
         public int BotId { get; set; }
-        public int IsItemId { get; set; }
         public int IsPetToId { get; set; }
 
         public bool MindControlIsActive { get; set; }
@@ -187,10 +185,7 @@ namespace TT.Domain.Models
         public DateTime LastCombatAttackedTimestamp { get; set; }
         public bool FlaggedForAbuse { get; set; }
         public int UnusedLevelUpPerks { get; set; }
-        public bool InPvP { get; set; } // 0 == Superprotection, 1 == Protection, 2 == PvP
         public int GameMode { get; set; }
-        public bool NonPvP_GameoverSpellsAllowed { get; set; }
-        public DateTime NonPvP_GameOverSpellsAllowedLastChange { get; set; }
         public bool InRP { get; set; }
         public int CleansesMeditatesThisRound { get; set; }
         public decimal Money { get; set; }

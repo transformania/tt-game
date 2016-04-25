@@ -16,11 +16,8 @@ namespace TT.Migrations
                 .ToTable("AspNetUsers")
                 .PrimaryColumn("Id").OnDelete(Rule.None);
 
-            Create.ForeignKey()
-                .FromTable("Players")
-                .ForeignColumn("NPC")
-                .ToTable("NPCs")
-                .PrimaryColumn("Id").OnDelete(Rule.None);
+            Alter.Table("Players").AddColumn("NPC").AsInt32().Nullable().ForeignKey("NPCs", "Id");
+
         }
 
         public override void Down()

@@ -14,8 +14,6 @@ namespace TT.Domain.Mappings.Players
                 .ToTable("Players")
                 .HasKey(cr => cr.Id)
                 .HasRequired(cr => cr.User);
-
-
         }
 
         protected override void Configure()

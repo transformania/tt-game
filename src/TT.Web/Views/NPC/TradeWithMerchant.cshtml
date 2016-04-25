@@ -36,13 +36,6 @@
 
     <p>@Html.ActionLink("Sell Something", "SellList", "NPC", new { @class = "attackLink" })</p>
 
-    @{
-        if (ViewBag.NoRoom)
-        {
-            <p class="playerCleansingNotification">You will not be able to purchase anything from Lindella since you do not have room to carry anything else in your inventory.</p>
-        }
-    }
-
     <p style="text-align: center;"><br />
         Show by type:<br />
         <table style="width: 100%; text-align: center;">

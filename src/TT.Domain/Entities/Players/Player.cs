@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using TT.Domain.Commands.Players;
 using TT.Domain.Entities.Identity;
 using TT.Domain.Entities.NPCs;
@@ -10,6 +11,8 @@ namespace TT.Domain.Entities.Players
         public User User { get; protected set; }
         public string FirstName { get; protected set; }
         public string LastName { get; protected set; }
+
+        [Column("dbLocationName")]
         public string Location { get; protected set; }
         public string Form { get; protected set; } // TODO:  Convert to FK to FormSource (DbStaticForms)
         public decimal Health { get; protected set; }

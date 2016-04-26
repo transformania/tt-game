@@ -233,6 +233,7 @@
     <Compile Include="DTOs\AI\NPCDetail.cs" />
     <Compile Include="DTOs\Assets\RestockItemDetail.cs" />
     <Compile Include="DTOs\Chat\ChatRoomDetail.cs" />
+    <Compile Include="DTOs\Identity\UserDetail.cs" />
     <Compile Include="DTOs\Item\ItemSourceDetail.cs" />
     <Compile Include="DTOs\Assets\TomeDetail.cs" />
     <Compile Include="Entities\AI\NPC.cs" />

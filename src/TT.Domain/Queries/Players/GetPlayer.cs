@@ -13,16 +13,13 @@ namespace TT.Domain.Queries.Players
         {
             ContextQuery = ctx =>
             {
-                return ctx.AsQueryable<Entities.Players.Player>().Select(p => new PlayerDetail
-                {
-                    Id = p.Id,
-                    User = p.User,
-                    NPC = p.NPC
-                   
-                }).FirstOrDefault(p => p.Id == PlayerId);
+                return ctx.AsQueryable<Entities.Players.Player>()
+                            .Where(p => p.Id == PlayerId)
+                            .ProjectToFirstOrDefault<PlayerDetail>();
             };
 
             return ExecuteInternal(context);
         }
+
     }
 }

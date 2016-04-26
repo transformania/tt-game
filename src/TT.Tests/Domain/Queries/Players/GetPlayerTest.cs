@@ -12,7 +12,6 @@ namespace TT.Tests.Domain.Queries.Players
     {
 
         [Test]
-        [Ignore("Broken.  Fixit!")]
         public void Should_find_player_by_id()
         {
             var user = new UserBuilder().With(u => u.Id, "guid").BuildAndSave();

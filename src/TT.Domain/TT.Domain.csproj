@@ -255,7 +255,7 @@
     <Compile Include="Mappings\Assets\RestockItemMapping.cs" />
     <Compile Include="Mappings\ChatMappings.cs" />
     <Compile Include="Mappings\EntityMappings.cs" />
-    <Compile Include="Mappings\IdentityMappings.cs" />
+    <Compile Include="Mappings\Identity\IdentityMappings.cs" />
     <Compile Include="Mappings\Item\ItemMappings.cs" />
     <Compile Include="Mappings\AI\NPCMappings.cs" />
     <Compile Include="Mappings\Players\PlayerMapping.cs" />

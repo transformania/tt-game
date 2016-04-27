@@ -14,7 +14,7 @@ namespace TT.Domain.Mappings.Players
             modelBuilder.Entity<Player>()
                 .ToTable("Players")
                 .HasKey(cr => cr.Id)
-                .HasRequired(cr => cr.User)
+                .HasOptional(cr => cr.User)
                 .WithMany().Map(m => m.MapKey("MembershipId"));
 
             modelBuilder.Entity<Player>()

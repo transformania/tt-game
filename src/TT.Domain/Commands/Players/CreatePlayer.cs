@@ -91,8 +91,6 @@ namespace TT.Domain.Commands.Players
             ContextQuery = ctx =>
             {
                 var user = ctx.AsQueryable<User>().SingleOrDefault(t => t.Id == UserId);
-                if (user == null)
-                    throw new DomainException(string.Format("User with Id {0} could not be found", UserId));
 
                 var npc = ctx.AsQueryable<NPC>().SingleOrDefault(t => t.Id == NPCId);
 

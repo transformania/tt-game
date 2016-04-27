@@ -49,6 +49,19 @@ namespace TT.Tests.Domain.Commands.Players
         }
 
         [Test]
+        public void Can_create_new_player_with_no_user()
+        {
+            cmd.UserId = null;
+            Repository.Execute(cmd);
+
+            DataContext.AsQueryable<Player>().Count(p =>
+                p.FirstName == "Bob" &&
+                p.LastName == "McBobbinson" &&
+                p.User == null)
+            .Should().Be(1);
+        }
+
+        [Test]
         public void Should_not_allow_empty_first_name()
         {
             cmd.FirstName = "";

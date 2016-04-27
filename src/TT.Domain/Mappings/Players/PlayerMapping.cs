@@ -2,6 +2,7 @@
 using AutoMapper;
 using Highway.Data;
 using TT.Domain.DTOs.Players;
+using TT.Domain.Entities.NPCs;
 using TT.Domain.Entities.Players;
 
 namespace TT.Domain.Mappings.Players
@@ -13,7 +14,12 @@ namespace TT.Domain.Mappings.Players
             modelBuilder.Entity<Player>()
                 .ToTable("Players")
                 .HasKey(cr => cr.Id)
-                .HasRequired(cr => cr.User);
+                .HasRequired(cr => cr.User)
+                .WithMany().Map(m => m.MapKey("MembershipId"));
+
+            modelBuilder.Entity<Player>()
+                .HasOptional(cr => cr.NPC)
+                .WithMany().Map(m => m.MapKey("NPC"));
         }
 
         protected override void Configure()

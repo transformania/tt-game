@@ -29,10 +29,6 @@ namespace TT.Tests.Domain.Queries.Players
 
             foundPlayer.Id.Should().Equals(3);
             foundPlayer.NPC.Id.Should().Equals(7);
-           // foundPlayer.User.Id.Should().BeEquivalentTo("guid");
-            //item.DbName.Should().BeEquivalentTo("dbName");
-            //item.FriendlyName.Should().BeEquivalentTo("Hello!");
-            //item.IsUnique.Should().Be(true);
         }
 
     }

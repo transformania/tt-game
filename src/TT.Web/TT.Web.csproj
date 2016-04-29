@@ -798,6 +798,7 @@
     <Content Include="Views\Admin\RestockItems\List.cshtml" />
     <Content Include="Views\Admin\RestockItems\Create.cshtml" />
     <Content Include="Views\Admin\RestockItems\Edit.cshtml" />
+    <Content Include="test\web.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

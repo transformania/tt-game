@@ -35,7 +35,6 @@ namespace TT.Domain.Procedures
                                                               MaxMana = p.MaxMana,
                                                               ActionPoints = p.ActionPoints,
                                                               ActionPoints_Refill = p.ActionPoints_Refill,
-                                                              ResistanceModifier = p.ResistanceModifier,
                                                               Gender = p.Gender,
                                                               Mobility = p.Mobility,
                                                               BotId = p.BotId,
@@ -50,8 +49,6 @@ namespace TT.Domain.Procedures
                                                               FlaggedForAbuse = p.FlaggedForAbuse,
                                                               UnusedLevelUpPerks = p.UnusedLevelUpPerks,
                                                               GameMode = p.GameMode,
-                                                              NonPvP_GameoverSpellsAllowed = p.NonPvP_GameoverSpellsAllowed,
-                                                              NonPvP_GameOverSpellsAllowedLastChange = p.NonPvP_GameOverSpellsAllowedLastChange,
                                                               InRP = p.InRP,
                                                               CleansesMeditatesThisRound = p.CleansesMeditatesThisRound,
                                                               Money = p.Money,
@@ -146,7 +143,6 @@ namespace TT.Domain.Procedures
                                                               MaxMana = p.MaxMana,
                                                               ActionPoints = p.ActionPoints,
                                                               ActionPoints_Refill = p.ActionPoints_Refill,
-                                                              ResistanceModifier = p.ResistanceModifier,
                                                               Gender = p.Gender,
                                                               Mobility = p.Mobility,
                                                               BotId = p.BotId,
@@ -161,8 +157,6 @@ namespace TT.Domain.Procedures
                                                               FlaggedForAbuse = p.FlaggedForAbuse,
                                                               UnusedLevelUpPerks = p.UnusedLevelUpPerks,
                                                               GameMode = p.GameMode,
-                                                              NonPvP_GameoverSpellsAllowed = p.NonPvP_GameoverSpellsAllowed,
-                                                              NonPvP_GameOverSpellsAllowedLastChange = p.NonPvP_GameOverSpellsAllowedLastChange,
                                                               InRP = p.InRP,
                                                               CleansesMeditatesThisRound = p.CleansesMeditatesThisRound,
                                                               Money = p.Money,
@@ -255,7 +249,6 @@ namespace TT.Domain.Procedures
                                                               MaxMana = p.MaxMana,
                                                               ActionPoints = p.ActionPoints,
                                                               ActionPoints_Refill = p.ActionPoints_Refill,
-                                                              ResistanceModifier = p.ResistanceModifier,
                                                               Gender = p.Gender,
                                                               Mobility = p.Mobility,
                                                               BotId = p.BotId,
@@ -271,8 +264,6 @@ namespace TT.Domain.Procedures
                                                               FlaggedForAbuse = p.FlaggedForAbuse,
                                                               UnusedLevelUpPerks = p.UnusedLevelUpPerks,
                                                               GameMode = p.GameMode,
-                                                              NonPvP_GameoverSpellsAllowed = p.NonPvP_GameoverSpellsAllowed,
-                                                              NonPvP_GameOverSpellsAllowedLastChange = p.NonPvP_GameOverSpellsAllowedLastChange,
                                                               InRP = p.InRP,
                                                               CleansesMeditatesThisRound = p.CleansesMeditatesThisRound,
                                                               Money = p.Money,
@@ -366,7 +357,6 @@ namespace TT.Domain.Procedures
                                                               MaxMana = p.MaxMana,
                                                               ActionPoints = p.ActionPoints,
                                                               ActionPoints_Refill = p.ActionPoints_Refill,
-                                                              ResistanceModifier = p.ResistanceModifier,
                                                               Gender = p.Gender,
                                                               Mobility = p.Mobility,
                                                               BotId = p.BotId,
@@ -382,8 +372,6 @@ namespace TT.Domain.Procedures
                                                               FlaggedForAbuse = p.FlaggedForAbuse,
                                                               UnusedLevelUpPerks = p.UnusedLevelUpPerks,
                                                               GameMode = p.GameMode,
-                                                              NonPvP_GameoverSpellsAllowed = p.NonPvP_GameoverSpellsAllowed,
-                                                              NonPvP_GameOverSpellsAllowedLastChange = p.NonPvP_GameOverSpellsAllowedLastChange,
                                                               InRP = p.InRP,
                                                               CleansesMeditatesThisRound = p.CleansesMeditatesThisRound,
                                                               Money = p.Money,
@@ -645,7 +633,6 @@ namespace TT.Domain.Procedures
             newplayer.Mana = 100;
             newplayer.MaxHealth = 100;
             newplayer.MaxMana = 100;
-            newplayer.ResistanceModifier = 0;
             newplayer.ActionPoints = PvPStatics.MaximumStoreableActionPoints;
             newplayer.dbLocationName = "coffee_shop";
             newplayer.MembershipId = membershipId;
@@ -660,7 +647,6 @@ namespace TT.Domain.Procedures
             newplayer.Money = 0;
             newplayer.ActionPoints_Refill = 360;
             newplayer.CleansesMeditatesThisRound = 0;
-            newplayer.NonPvP_GameOverSpellsAllowedLastChange = DateTime.UtcNow;
             newplayer.Mobility = Statics.PvPStatics.MobilityFull;
             newplayer.BotId = AIStatics.ActivePlayerBotId;
             newplayer.ChatColor = "black";

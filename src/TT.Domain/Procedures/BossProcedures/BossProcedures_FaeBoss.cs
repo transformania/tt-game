@@ -91,7 +91,6 @@ namespace TT.Domain.Procedures.BossProcedures
                     Money = 1000,
                     Mobility = PvPStatics.MobilityFull,
                     Level = 25,
-                    MembershipId = AIStatics.FaebossId.ToString(),
                     BotId = AIStatics.FaebossId,
                     ActionPoints_Refill = 360,
                 };

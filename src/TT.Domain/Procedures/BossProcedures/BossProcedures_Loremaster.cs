@@ -23,7 +23,6 @@ namespace TT.Domain.Procedures.BossProcedures
             if (loremaster == null)
             {
                 loremaster = new Player();
-                loremaster.MembershipId = AIStatics.LoremasterBotId.ToString();
                 loremaster.BotId = AIStatics.LoremasterBotId;
                 loremaster.Level = 5;
                 loremaster.FirstName = FirstName;

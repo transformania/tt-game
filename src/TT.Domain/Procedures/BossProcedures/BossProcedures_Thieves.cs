@@ -48,7 +48,6 @@ namespace TT.Domain.Procedures.BossProcedures
                     Money = 0,
                     Mobility = PvPStatics.MobilityFull,
                     Level = 5,
-                    MembershipId = "-8",
                     BotId = AIStatics.MaleRatBotId,
                     ActionPoints_Refill = 360,
                 };
@@ -94,7 +93,6 @@ namespace TT.Domain.Procedures.BossProcedures
                     Money = 0,
                     Mobility = PvPStatics.MobilityFull,
                     Level = 7,
-                    MembershipId = "-9",
                     BotId = AIStatics.FemaleRatBotId,
                     ActionPoints_Refill = 360,
                 };

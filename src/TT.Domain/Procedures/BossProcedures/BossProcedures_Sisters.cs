@@ -50,7 +50,6 @@ namespace TT.Domain.Procedures.BossProcedures
                     Money = 2000,
                     Mobility = PvPStatics.MobilityFull,
                     Level = 25,
-                    MembershipId = "-11",
                     BotId = AIStatics.MouseNerdBotId,
                     ActionPoints_Refill = 360,
                 };
@@ -82,7 +81,6 @@ namespace TT.Domain.Procedures.BossProcedures
                     Money = 6000,
                     Mobility = PvPStatics.MobilityFull,
                     Level = 25,
-                    MembershipId = "-12",
                     BotId = AIStatics.MouseBimboBotId,
                     ActionPoints_Refill = 360,
                 };

@@ -21,7 +21,6 @@ namespace TT.Domain.Procedures.BossProcedures
             if (petMerchant == null)
             {
                 petMerchant = new Player();
-                petMerchant.MembershipId = AIStatics.WuffieBotId.ToString();
                 petMerchant.BotId = AIStatics.WuffieBotId;
                 petMerchant.Level = 5;
                 petMerchant.FirstName = "Wüffie";

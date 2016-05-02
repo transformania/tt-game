@@ -542,8 +542,6 @@ namespace TT.Domain.Procedures
 
                             Player newDemon = new Player
                             {
-
-                                MembershipId = "-13",
                                 BotId = -13,
                                 FirstName = "Spirit of ",
                                 LastName = demonlastName,

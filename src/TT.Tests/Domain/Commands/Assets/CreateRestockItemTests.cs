@@ -14,7 +14,7 @@ namespace TT.Tests.Domain.Commands.Assets
         [Test]
         public void Should_create_new_RestockItem()
         {
-            var item = new ItemBuilder().With(cr => cr.Id, 195).BuildAndSave();
+            var item = new ItemSourceBuilder().With(cr => cr.Id, 195).BuildAndSave();
             var npc = new NPCBuilder().With(ri => ri.Id, 4).BuildAndSave();
 
             var cmd = new CreateRestockItem { AmountBeforeRestock = 0, BaseItemId = item.Id, AmountToRestockTo = 5, NPCId = npc.Id };
@@ -61,7 +61,7 @@ namespace TT.Tests.Domain.Commands.Assets
         public void Should_throw_error_when_npc_is_not_found()
         {
             const int id = 1;
-            var item = new ItemBuilder().With(cr => cr.Id, 1).BuildAndSave();
+            var item = new ItemSourceBuilder().With(cr => cr.Id, 1).BuildAndSave();
             var cmd = new CreateRestockItem { AmountBeforeRestock = 0, BaseItemId = 1, AmountToRestockTo = 5, NPCId = id };
 
             var action = new Action(() => { Repository.Execute(cmd); });
@@ -74,7 +74,7 @@ namespace TT.Tests.Domain.Commands.Assets
         {
             var amount = -1;
 
-            var item = new ItemBuilder().With(cr => cr.Id, 1).BuildAndSave();
+            var item = new ItemSourceBuilder().With(cr => cr.Id, 1).BuildAndSave();
             var npc = new NPCBuilder().With(n => n.Id, 7).BuildAndSave();
 
             var cmd = new CreateRestockItem { AmountBeforeRestock = amount, BaseItemId = item.Id, AmountToRestockTo = 5, NPCId = npc.Id };
@@ -89,7 +89,7 @@ namespace TT.Tests.Domain.Commands.Assets
         {
             var amount = 0;
 
-            var item = new ItemBuilder().With(cr => cr.Id, 1).BuildAndSave();
+            var item = new ItemSourceBuilder().With(cr => cr.Id, 1).BuildAndSave();
             var npc = new NPCBuilder().With(n => n.Id, 7).BuildAndSave();
 
             var cmd = new CreateRestockItem { AmountBeforeRestock = amount, BaseItemId = item.Id, AmountToRestockTo = 5, NPCId = npc.Id };
@@ -104,7 +104,7 @@ namespace TT.Tests.Domain.Commands.Assets
         {
             var amount = 0;
 
-            var item = new ItemBuilder().With(cr => cr.Id, 1).BuildAndSave();
+            var item = new ItemSourceBuilder().With(cr => cr.Id, 1).BuildAndSave();
             var npc = new NPCBuilder().With(n => n.Id, 7).BuildAndSave();
 
             var cmd = new CreateRestockItem { AmountBeforeRestock = 1, BaseItemId = item.Id, AmountToRestockTo = amount, NPCId = npc.Id };

@@ -136,6 +136,7 @@
     <Compile Include="Builders\Identity\UserBuilder.cs" />
     <Compile Include="Builders\Item\ItemBuilder.cs" />
     <Compile Include="Builders\Messages\MessageBuilder.cs" />
+    <Compile Include="Builders\Item\ItemSourceBuilder.cs" />
     <Compile Include="Builders\Players\PlayerBuilder.cs" />
     <Compile Include="Domain\Commands\AI\CreateNPCTests.cs" />
     <Compile Include="Domain\Commands\AI\DeleteNPCTests.cs" />
@@ -149,6 +150,7 @@
     <Compile Include="Domain\Commands\Chat\CreateChatRoomTests.cs" />
     <Compile Include="Domain\Commands\Messages\CreateMessagesTests.cs" />
     <Compile Include="Domain\Commands\Messages\DeleteMessagesTests.cs" />
+    <Compile Include="Domain\Commands\Items\CreateItemsTests.cs" />
     <Compile Include="Domain\Queries\AI\GetNPCsTests.cs" />
     <Compile Include="Domain\Queries\AI\GetNPCTests.cs" />
     <Compile Include="Domain\Queries\Assets\GetRestockItemsTests.cs" />
@@ -160,6 +162,7 @@
     <Compile Include="Domain\Queries\Item\GetItemSourcesTests.cs" />
     <Compile Include="Domain\Queries\Item\GetItemSourceTest.cs" />
     <Compile Include="Domain\Queries\Messages\GetMessagesTests.cs" />
+    <Compile Include="Domain\Queries\Item\GetItemTests.cs" />
     <Compile Include="Domain\Queries\Players\GetPlayerTest.cs" />
     <Compile Include="Domain\Services\AttackNotificationBrokerTests.cs" />
     <Compile Include="InMemoryDataContextWithGenerator.cs" />

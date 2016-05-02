@@ -12,13 +12,13 @@ namespace TT.Tests.Domain.Queries.Item
         [Test]
         public void Should_fetch_all_available_items()
         {
-            new ItemBuilder().With(cr => cr.Id, 200)
+            new ItemSourceBuilder().With(cr => cr.Id, 200)
                 .With(cr => cr.DbName, "dbName")
                 .With(cr => cr.FriendlyName, "Friendly Name")
                 .With(cr => cr.IsUnique, true)
                 .BuildAndSave();
 
-            new ItemBuilder().With(cr => cr.Id, 200)
+            new ItemSourceBuilder().With(cr => cr.Id, 200)
                 .With(cr => cr.DbName, "dbName2")
                 .With(cr => cr.FriendlyName, "Unfriendly Name!")
                 .With(cr => cr.IsUnique, true)

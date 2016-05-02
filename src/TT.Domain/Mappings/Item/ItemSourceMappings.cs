@@ -2,22 +2,22 @@
 using AutoMapper;
 using Highway.Data;
 using TT.Domain.DTOs.Item;
-using TT.Domain.Entities.Items;
+using TT.Domain.Entities.Item;
 
 namespace TT.Domain.Mappings.Item
 {
-    public class ItemMappings : Profile, IMappingConfiguration
+    public class ItemSourceMappings : Profile, IMappingConfiguration
     {
         public void ConfigureModelBuilder(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Entities.Items.Item>()
-                .ToTable("Items")
+            modelBuilder.Entity<ItemSource>()
+                .ToTable("DbStaticItems")
                 .HasKey(cr => cr.Id);
         }
 
         protected override void Configure()
         {
-            CreateMap<Entities.Items.Item, ItemDetail>();
+            CreateMap<ItemSource, ItemSourceDetail>();
         }
     }
 }

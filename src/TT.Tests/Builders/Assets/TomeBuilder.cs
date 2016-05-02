@@ -10,7 +10,7 @@ namespace TT.Tests.Builders.Assets
             Instance = Create();
             With(x => x.Id, 7);
             With(x => x.Text, "tome!");
-            With(x => x.BaseItem, new ItemBuilder().BuildAndSave());
+            With(x => x.BaseItem, new ItemSourceBuilder().BuildAndSave());
         }
 
     }

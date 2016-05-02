@@ -12,7 +12,7 @@ namespace TT.Tests.Domain.Queries.Item
         [Test]
         public void Should_fetch_tome_by_id()
         {
-            new ItemBuilder().With(cr => cr.Id, 23)
+            new ItemSourceBuilder().With(cr => cr.Id, 23)
                 .With(cr => cr.DbName, "dbName")
                 .With(cr => cr.FriendlyName, "Hello!")
                 .With(cr => cr.IsUnique, true)

@@ -18,10 +18,10 @@ namespace TT.Tests.Domain.Commands.Assets
         {
             new TomeBuilder().With(cr => cr.Id, 7)
                 .With(cr => cr.Text, "First Tome")
-                .With(cr => cr.BaseItem, new ItemBuilder().With(cr => cr.Id, 195).BuildAndSave())
+                .With(cr => cr.BaseItem, new ItemSourceBuilder().With(cr => cr.Id, 195).BuildAndSave())
                 .BuildAndSave();
 
-            new ItemBuilder().With(cr => cr.Id, 200).BuildAndSave();
+            new ItemSourceBuilder().With(cr => cr.Id, 200).BuildAndSave();
 
             var cmdEdit = new UpdateTome { TomeId = 7, Text = "new text123", BaseItemId = 200 };
 

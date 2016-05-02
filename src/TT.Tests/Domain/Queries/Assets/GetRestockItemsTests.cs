@@ -17,14 +17,14 @@ namespace TT.Tests.Domain.Queries.Assets
             new RestockItemBuilder().With(cr => cr.Id, 7)
                 .With(cr => cr.AmountBeforeRestock, 5)
                 .With(cr => cr.AmountToRestockTo, 9)
-                .With(cr => cr.BaseItem, new ItemBuilder().With(cr => cr.Id, 35).BuildAndSave())
+                .With(cr => cr.BaseItem, new ItemSourceBuilder().With(cr => cr.Id, 35).BuildAndSave())
                 .With(cr => cr.NPC, new NPCBuilder().With(cr => cr.Id, 53).BuildAndSave())
                 .BuildAndSave();
 
             new RestockItemBuilder().With(cr => cr.Id, 99)
                 .With(cr => cr.AmountBeforeRestock, 1)
                  .With(cr => cr.AmountToRestockTo, 3)
-                .With(cr => cr.BaseItem, new ItemBuilder().With(cr => cr.Id, 49).BuildAndSave())
+                .With(cr => cr.BaseItem, new ItemSourceBuilder().With(cr => cr.Id, 49).BuildAndSave())
                 .With(cr => cr.NPC, new NPCBuilder().With(cr => cr.Id, 95).BuildAndSave())
                 .BuildAndSave();
 

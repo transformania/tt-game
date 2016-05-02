@@ -236,6 +236,7 @@
     <Compile Include="DTOs\Assets\RestockItemDetail.cs" />
     <Compile Include="DTOs\Chat\ChatRoomDetail.cs" />
     <Compile Include="DTOs\Identity\UserDetail.cs" />
+    <Compile Include="DTOs\Item\ItemDetail.cs" />
     <Compile Include="DTOs\Item\ItemSourceDetail.cs" />
     <Compile Include="DTOs\Assets\TomeDetail.cs" />
     <Compile Include="DTOs\Messages\MessageDetail.cs" />
@@ -245,7 +246,8 @@
     <Compile Include="DTOs\Players\PlayerDetail.cs" />
     <Compile Include="Entities\Assets\Tome.cs" />
     <Compile Include="Entities\Chat\ChatRoom.cs" />
-    <Compile Include="Entities\Item\ItemSource.cs" />
+    <Compile Include="Entities\Items\Item.cs" />
+    <Compile Include="Entities\Items\ItemSource.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\Identity\User.cs" />
     <Compile Include="Entities\Messages\Message.cs" />
@@ -262,6 +264,7 @@
     <Compile Include="Mappings\EntityMappings.cs" />
     <Compile Include="Mappings\Identity\IdentityMappings.cs" />
     <Compile Include="Mappings\Item\ItemMappings.cs" />
+    <Compile Include="Mappings\Item\ItemSourceMappings.cs" />
     <Compile Include="Mappings\AI\NPCMappings.cs" />
     <Compile Include="Mappings\Messages\MessageMapping.cs" />
     <Compile Include="Mappings\Players\PlayerMapping.cs" />
@@ -373,6 +376,7 @@
     <Compile Include="Queries\Chat\GetChatRooms.cs" />
     <Compile Include="Queries\Assets\GetTomes.cs" />
     <Compile Include="Queries\DMRoll\GetRoll.cs" />
+    <Compile Include="Queries\Item\GetItem.cs" />
     <Compile Include="Queries\Item\GetItemSource.cs" />
     <Compile Include="Queries\Item\GetItemSources.cs" />
     <Compile Include="Queries\Messages\GetMessage.cs" />

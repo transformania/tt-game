@@ -16,7 +16,7 @@ namespace TT.Tests.Domain.Queries.Assets
         {
             new TomeBuilder().With(cr => cr.Id, 7)
                 .With(cr => cr.Text, "First Tome")
-                .With(cr => cr.BaseItem, new ItemBuilder().With(cr => cr.Id, 195).BuildAndSave())
+                .With(cr => cr.BaseItem, new ItemSourceBuilder().With(cr => cr.Id, 195).BuildAndSave())
                 .BuildAndSave();
 
             var query = new GetTomeByItem { ItemSourceId = 195};

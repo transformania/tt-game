@@ -82,7 +82,6 @@ namespace TT.Domain.Procedures.BossProcedures
                     Money = 1000,
                     Mobility = PvPStatics.MobilityFull,
                     Level = 10,
-                    MembershipId = AIStatics.ValentineBotId.ToString(),
                     BotId = AIStatics.ValentineBotId,
                     ActionPoints_Refill = 360,
                 };

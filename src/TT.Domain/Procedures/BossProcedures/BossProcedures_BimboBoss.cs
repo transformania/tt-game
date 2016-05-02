@@ -47,7 +47,6 @@ namespace TT.Domain.Procedures.BossProcedures
                     Money = 2500,
                     Mobility = PvPStatics.MobilityFull,
                     Level = 15,
-                    MembershipId = "-7",
                     BotId = -7,
                     ActionPoints_Refill = 360,
                 };

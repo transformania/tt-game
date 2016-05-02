@@ -477,14 +477,14 @@ namespace TT.Domain.Procedures
 
             Player ghost = playerRepo.Players.FirstOrDefault(p => p.FirstName == player.FirstName && p.LastName == noGenerationLastName);
 
-            if (ghost != null && ghost.MembershipId != membershipId && ghost.MembershipId != "-1")
+            if (ghost != null && ghost.BotId != AIStatics.RerolledPlayerBotId && ghost.MembershipId != membershipId)
             {
                 return "A character of this name already exists.";
             }
 
             string generationTitle = "";
 
-            if (ghost != null && (ghost.MembershipId == membershipId || ghost.MembershipId == "-1") && ghost.FirstName == player.FirstName && ghost.LastName == player.LastName)
+            if (ghost != null && (ghost.BotId == AIStatics.RerolledPlayerBotId || ghost.MembershipId == membershipId) && ghost.FirstName == player.FirstName && ghost.LastName == player.LastName)
             {
 
                 List<Player> possibleOldGens = playerRepo.Players.Where(p => p.FirstName == player.FirstName && p.LastName.Contains(player.LastName)).ToList();
@@ -599,7 +599,7 @@ namespace TT.Domain.Procedures
 
                 // remove all of the old player's TF energies
                 TFEnergyProcedures.DeleteAllPlayerTFEnergies(oldplayer.Id);
-                oldplayer.MembershipId = AIStatics.RerolledPlayerBotId.ToString();
+                oldplayer.MembershipId = null;
                 oldplayer.BotId = AIStatics.RerolledPlayerBotId;
                 playerRepo.SavePlayer(oldplayer);
 

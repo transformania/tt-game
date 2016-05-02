@@ -52,7 +52,6 @@ namespace TT.Domain.Procedures
                 bot.MaxHealth = 200;
                 bot.Mana = 200;
                 bot.MaxMana = 200;
-                bot.MembershipId = AIStatics.PsychopathBotId.ToString();
                 bot.BotId = AIStatics.PsychopathBotId;
                 bot.Mobility = PvPStatics.MobilityFull;
                 bot.UnusedLevelUpPerks = 0;
@@ -327,7 +326,6 @@ namespace TT.Domain.Procedures
             if (merchant == null)
             {
                 merchant = new Player();
-                merchant.MembershipId = AIStatics.LindellaBotId.ToString();
                 merchant.BotId = AIStatics.LindellaBotId;
                 merchant.Level = 5;
                 merchant.FirstName = "Lindella";
@@ -846,7 +844,6 @@ namespace TT.Domain.Procedures
                     Money = 0,
                     Mobility = PvPStatics.MobilityFull,
                     Level = 15,
-                    MembershipId = "-14",
                     BotId = -14,
                     ActionPoints_Refill = 360,
                 };

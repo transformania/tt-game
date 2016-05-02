@@ -41,7 +41,6 @@ namespace TT.Domain.Procedures.BossProcedures
                     Money = 1000,
                     Mobility = PvPStatics.MobilityFull,
                     Level = 7,
-                    MembershipId = "-6",
                     BotId = AIStatics.JewdewfaeBotId,
                     ActionPoints_Refill = 360,
                 };

@@ -3,7 +3,7 @@ using System.Data;
 
 namespace TT.Migrations
 {
-    [Migration(201604071120)]
+    [Migration(201605011120)]
     public class AddItemFKs : Migration
     {
         

@@ -17,6 +17,6 @@ namespace TT.Domain.Models
         public DateTime Timestamp { get; set; }
 
         public bool DoNotRecycleMe { get; set; }
-        public bool ReceiverMarkedAsDeleted { get; set; }
+        public bool ReceiverMarkedAsDeleted { get; set; } // TODO:  delete unused column
     }
 }

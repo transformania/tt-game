@@ -167,6 +167,7 @@
     <Compile Include="Commands\Assets\CreateTome.cs" />
     <Compile Include="Commands\ChatLog\WriteLogToDatabase.cs" />
     <Compile Include="Commands\Chat\CreateChatRoom.cs" />
+    <Compile Include="Commands\Messages\CreateMessage.cs" />
     <Compile Include="Commands\Players\CreatePlayer.cs" />
     <Compile Include="Commands\Player\UpdateOnlineActivityTimestamp.cs" />
     <Compile Include="Concrete\EFAchievementBadgeRepository.cs" />
@@ -236,6 +237,7 @@
     <Compile Include="DTOs\Identity\UserDetail.cs" />
     <Compile Include="DTOs\Item\ItemSourceDetail.cs" />
     <Compile Include="DTOs\Assets\TomeDetail.cs" />
+    <Compile Include="DTOs\Messages\MessageDetail.cs" />
     <Compile Include="Entities\AI\NPC.cs" />
     <Compile Include="Entities\Assets\RestockItem.cs" />
     <Compile Include="DTOs\Players\PlayerDetail.cs" />
@@ -244,6 +246,7 @@
     <Compile Include="Entities\Item\ItemSource.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\Identity\User.cs" />
+    <Compile Include="Entities\Messages\Message.cs" />
     <Compile Include="Entities\Players\Player.cs" />
     <Compile Include="EntityFrameworkExtensions.cs" />
     <Compile Include="Features.cs" />
@@ -258,6 +261,7 @@
     <Compile Include="Mappings\Identity\IdentityMappings.cs" />
     <Compile Include="Mappings\Item\ItemMappings.cs" />
     <Compile Include="Mappings\AI\NPCMappings.cs" />
+    <Compile Include="Mappings\Messages\MessageMapping.cs" />
     <Compile Include="Mappings\Players\PlayerMapping.cs" />
     <Compile Include="Models\AchevementBadge.cs" />
     <Compile Include="Models\Achievement.cs" />
@@ -369,6 +373,7 @@
     <Compile Include="Queries\DMRoll\GetRoll.cs" />
     <Compile Include="Queries\Item\GetItemSource.cs" />
     <Compile Include="Queries\Item\GetItemSources.cs" />
+    <Compile Include="Queries\Messages\GetMessage.cs" />
     <Compile Include="Queries\Players\GetPlayer.cs" />
     <Compile Include="Queries\Players\GetPlayerFormFromMembership.cs" />
     <Compile Include="Queries\Statics\GetStaticItem.cs" />

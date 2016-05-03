@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using TT.Domain.Abstract;
+using TT.Domain.Commands.Items;
 using TT.Domain.Concrete;
 using TT.Domain.Models;
 using TT.Domain.Statics;
@@ -368,12 +369,10 @@ namespace TT.Domain.Procedures.BossProcedures
         private static void DropCure(int turnNumber)
         {
 
-            IItemRepository itemRepo = new EFItemRepository();
-
-            for (int i = 0; i < 2; i++)
+            for (var i = 0; i < 2; i++)
             {
 
-                Item newVial = new Item
+                var cmd = new CreateItem
                 {
                     dbLocationName = LocationsStatics.GetRandomLocation(),
                     dbName = CureItemDbName,
@@ -381,18 +380,20 @@ namespace TT.Domain.Procedures.BossProcedures
                     IsPermanent = false,
                     Level = 0,
                     PvPEnabled = 2,
-                    OwnerId = -1,
+                    OwnerId = null,
                     VictimName = "",
                     TurnsUntilUse = 0,
                     EquippedThisTurn = false,
+                    ItemSourceId =  ItemStatics.GetStaticItem(CureItemDbName).Id
+
                 };
 
                 if (turnNumber % 3 == 0)
                 {
-                    newVial.PvPEnabled = 1;
+                    cmd.PvPEnabled = 1;
                 }
 
-                itemRepo.SaveItem(newVial);
+                DomainRegistry.Repository.Execute(cmd);
 
             }
 

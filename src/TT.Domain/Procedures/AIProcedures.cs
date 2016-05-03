@@ -4,6 +4,7 @@ using System.Linq;
 using System.Xml;
 using System.Xml.Serialization;
 using TT.Domain.Abstract;
+using TT.Domain.Commands.Items;
 using TT.Domain.Concrete;
 using TT.Domain.Models;
 using TT.Domain.Procedures.BossProcedures;
@@ -446,20 +447,22 @@ namespace TT.Domain.Procedures
                             {
                                 for (int x = 0; x < item.AmountToRestockTo - currentCount; x++)
                                 {
-                                    Item newItem = new Item
-                                {
-                                    dbName = item.dbName,
-                                    dbLocationName = "",
-                                    OwnerId = merchant.Id,
-                                    IsEquipped = false,
-                                    IsPermanent = true,
-                                    Level = 0,
-                                    PvPEnabled = -1,
-                                    TurnsUntilUse = 0,
-                                    VictimName = "",
-                                    EquippedThisTurn = false,
-                                };
-                                    itemRepo.SaveItem(newItem);
+                                    
+                                    var cmd = new CreateItem
+                                    {
+                                        dbName = item.dbName,
+                                        dbLocationName = "",
+                                        OwnerId = merchant.Id,
+                                        IsEquipped = false,
+                                        IsPermanent = true,
+                                        Level = 0,
+                                        PvPEnabled = -1,
+                                        TurnsUntilUse = 0,
+                                        VictimName = "",
+                                        EquippedThisTurn = false,
+                                        ItemSourceId = ItemStatics.GetStaticItem(item.dbName).Id
+                                    };
+                                    DomainRegistry.Repository.Execute(cmd);
                                 }
 
                             }
@@ -472,7 +475,7 @@ namespace TT.Domain.Procedures
                             {
                                 for (int x = 0; x < item.AmountToRestockTo - currentCount; x++)
                                 {
-                                    Item newItem = new Item
+                                    var cmd = new CreateItem
                                     {
                                         dbName = item.dbName,
                                         dbLocationName = "",
@@ -484,8 +487,9 @@ namespace TT.Domain.Procedures
                                         TurnsUntilUse = 0,
                                         VictimName = "",
                                         EquippedThisTurn = false,
+                                        ItemSourceId = ItemStatics.GetStaticItem(item.dbName).Id
                                     };
-                                    itemRepo.SaveItem(newItem);
+                                    DomainRegistry.Repository.Execute(cmd);
                                 }
 
                             }

@@ -22,9 +22,29 @@ namespace TT.Tests.Domain.Queries.Item
             var item = DomainRegistry.Repository.FindSingle(cmd);
 
             item.Id.Should().Equals(77);
-            //item.DbName.Should().BeEquivalentTo("dbName");
-            //item.FriendlyName.Should().BeEquivalentTo("Hello!");
-            //item.IsUnique.Should().Be(true);
+            item.Owner.Should().Equals(null);
+            item.ItemSource.Id.Should().Equals(35);
+        }
+
+        [Test]
+        public void Should_fetch_item_by_id_with_player()
+        {
+
+           var player = new PlayerBuilder()
+               .With(p => p.Id, 99)
+               .With(p => p.FirstName, "Antony")
+                .BuildAndSave();
+
+            new ItemBuilder().With(i => i.Id, 77)
+                .With(cr => cr.Owner, player)
+                .With(cr => cr.ItemSource, new ItemSourceBuilder().With(i => i.Id, 35).BuildAndSave())
+                .BuildAndSave();
+
+            var cmd = new GetItem { ItemId = 77 };
+            var item = DomainRegistry.Repository.FindSingle(cmd);
+
+            item.Id.Should().Equals(77);
+            item.Owner.FirstName.Equals("Antony");
         }
 
     }

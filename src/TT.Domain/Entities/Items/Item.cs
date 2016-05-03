@@ -1,5 +1,6 @@
 ﻿
 using System;
+using TT.Domain.Commands.Items;
 using TT.Domain.Entities.Item;
 using TT.Domain.Entities.Players;
 
@@ -9,7 +10,6 @@ namespace TT.Domain.Entities.Items
     {
         public string dbName { get; protected set; }
         public ItemSource ItemSource { get; protected set; }
-        public int OwnerId { get; protected set; }
         public Player Owner { get; protected set; }
         public string dbLocationName { get; protected set; }
         public string VictimName { get; protected set; }
@@ -26,18 +26,39 @@ namespace TT.Domain.Entities.Items
 
         private Item()
         {
-            //TimeDropped = DateTime.UtcNow;
-            //LastSouledTimestamp = DateTime.UtcNow.AddYears(-1);
-            //LastSold = DateTime.UtcNow;
+
         }
 
-        public static Item Create(Player owner, ItemSource itemSource)
+        public static Item Create(Player owner, ItemSource itemSource, CreateItem cmd)
         {
             return new Item
             {
                 Owner = owner,
-                ItemSource = itemSource
+                ItemSource = itemSource,
+                dbName = cmd.dbName,
+                dbLocationName = cmd.dbLocationName,
+                VictimName = cmd.VictimName,
+                IsEquipped = cmd.IsEquipped,
+                TurnsUntilUse = cmd.TurnsUntilUse,
+                Level = cmd.Level,
+                TimeDropped = cmd.TimeDropped,
+                EquippedThisTurn = cmd.EquippedThisTurn,
+                PvPEnabled = cmd.PvPEnabled,
+                IsPermanent = cmd.IsPermanent,
+                Nickname = cmd.Nickname,
+                LastSouledTimestamp = cmd.LastSouledTimestamp,
+                LastSold = cmd.LastSold
             };
+        }
+
+        public Item Update(UpdateItem cmd, Player owner)
+        {
+            Owner = owner;
+            Id = cmd.ItemId;
+            dbLocationName = cmd.dbLocationName;
+            IsEquipped = cmd.IsEquipped;
+            TimeDropped = cmd.TimeDropped;
+            return this;
         }
 
     }

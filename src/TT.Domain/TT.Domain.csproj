@@ -169,6 +169,9 @@
     <Compile Include="Commands\Chat\CreateChatRoom.cs" />
     <Compile Include="Commands\Messages\CreateMessage.cs" />
     <Compile Include="Commands\Messages\DeleteMessage.cs" />
+    <Compile Include="Commands\Items\CreateItem.cs" />
+    <Compile Include="Commands\Items\DeleteItem.cs" />
+    <Compile Include="Commands\Items\UpdateItem.cs" />
     <Compile Include="Commands\Players\CreatePlayer.cs" />
     <Compile Include="Commands\Player\UpdateOnlineActivityTimestamp.cs" />
     <Compile Include="Concrete\EFAchievementBadgeRepository.cs" />

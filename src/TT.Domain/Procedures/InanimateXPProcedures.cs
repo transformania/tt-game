@@ -156,7 +156,7 @@ namespace TT.Domain.Procedures
 
 
                 // now we need to change the owner's max health or mana based on this leveling
-                if (inanimateMe.OwnerId != -1)
+                if (inanimateMe.OwnerId > 0)
                 {
                     ItemViewModel inanimateMePlus = ItemProcedures.GetItemViewModel(inanimateMe.Id);
 

@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using TT.Domain;
 using TT.Domain.Abstract;
+using TT.Domain.Commands.Items;
 using TT.Domain.Concrete;
 using TT.Domain.Models;
 using TT.Domain.Procedures;
@@ -1755,18 +1757,19 @@ namespace TT.Web.Controllers
                 itemRepo.DeleteItem(possibleMeItem.Id);
             }
 
-            Item newMeItem = new Item
+            var cmd = new CreateItem
             {
                 dbLocationName = me.dbLocationName,
                 dbName = "item_Flirty_Three-Tiered_Skirt_Martiandawn",
                 VictimName = me.FirstName + " " + me.LastName, // DO NOT use GetFullName.  It will break things here.
                 Nickname = me.Nickname,
-                OwnerId = -1,
+                OwnerId = null,
                 IsEquipped = false,
                 Level = me.Level,
+                ItemSourceId = ItemStatics.GetStaticItem("item_Flirty_Three-Tiered_Skirt_Martiandawn").Id
             };
 
-            itemRepo.SaveItem(newMeItem);
+            DomainRegistry.Repository.Execute(cmd);
 
             TempData["Result"] = "You are inanimate.";
             return RedirectToAction("Play", "PvP");
@@ -1804,18 +1807,18 @@ namespace TT.Web.Controllers
                 itemRepo.DeleteItem(possibleMeItem.Id);
             }
 
-            Item newMeItem = new Item
+            var cmd = new CreateItem
             {
                 dbLocationName = me.dbLocationName,
                 dbName = "animal_Cuddly_Pocket_Goo_Girl_GooGirl",
                 VictimName = me.FirstName + " " + me.LastName,
                 Nickname = me.Nickname,
-                OwnerId = -1,
+                OwnerId = null,
                 IsEquipped = false,
                 Level = me.Level,
+                ItemSourceId = ItemStatics.GetStaticItem("animal_Cuddly_Pocket_Goo_Girl_GooGirl").Id
             };
-
-            itemRepo.SaveItem(newMeItem);
+            DomainRegistry.Repository.Execute(cmd);
 
             TempData["Result"] = "You are now a pet.";
             return RedirectToAction("Play", "PvP");
@@ -1881,10 +1884,7 @@ namespace TT.Web.Controllers
 
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
-            IItemRepository itemRepo = new EFItemRepository();
-
-
-            Item scroll = new Item
+            var cmd = new CreateItem
             {
                 dbName = "item_consumeable_teleportation_scroll",
                 OwnerId = me.Id,
@@ -1893,9 +1893,10 @@ namespace TT.Web.Controllers
                 LastSouledTimestamp = DateTime.UtcNow,
                 VictimName = "",
                 Level = 0,
+                ItemSourceId = ItemStatics.GetStaticItem("item_consumeable_teleportation_scroll").Id
             };
-            itemRepo.SaveItem(scroll);
 
+            DomainRegistry.Repository.Execute(cmd);
 
             TempData["Result"] = "You used your admin magic to give yourself a teleportation scroll.";
             return RedirectToAction("Play", "PvP");

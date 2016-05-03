@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using Highway.Data;
 using TT.Domain.DTOs.Item;
-using TT.Domain.Entities.Item;
 
 namespace TT.Domain.Queries.Item
 {

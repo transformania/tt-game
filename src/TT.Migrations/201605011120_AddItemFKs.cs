@@ -4,7 +4,7 @@ using System.Data;
 namespace TT.Migrations
 {
     [Migration(201605011120)]
-    public class AddItemFKs : Migration
+    public class AddItemFKs : ForwardOnlyMigration
     {
         
         public override void Up()
@@ -17,11 +17,6 @@ namespace TT.Migrations
                 .PrimaryColumn("Id").OnDelete(Rule.None);
 
             Alter.Table("Items").AddColumn("ItemSourceId").AsInt32().ForeignKey("DbStaticItems", "Id");
-
-        }
-
-        public override void Down()
-        {
 
         }
 

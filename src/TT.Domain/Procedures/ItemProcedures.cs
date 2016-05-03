@@ -9,6 +9,7 @@ using TT.Domain.Models;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 using System.Threading;
+using TT.Domain.Commands.Items;
 
 namespace TT.Domain.Procedures
 {
@@ -510,33 +511,34 @@ namespace TT.Domain.Procedures
 
         public static string GiveNewItemToPlayer(Player player, DbStaticItem item)
         {
-            IItemRepository itemRepo = new EFItemRepository();
-            Item newitem = new Item
+
+            var cmd = new CreateItem
             {
                 OwnerId = player.Id,
                 dbName = item.dbName,
                 IsEquipped = false,
                 VictimName = "",
                 dbLocationName = "",
+                ItemSourceId = item.Id
             };
 
             if (player.BotId < AIStatics.ActivePlayerBotId)
             {
-                newitem.PvPEnabled = -1;
+                cmd.PvPEnabled = -1;
             }
             else
             {
                 if (player.GameMode == 2)
                 {
-                    newitem.PvPEnabled = 2;
+                    cmd.PvPEnabled = 2;
                 }
                 else
                 {
-                    newitem.PvPEnabled = 1;
+                    cmd.PvPEnabled = 1;
                 }
             }
-            itemRepo.SaveItem(newitem);
-            ItemTransferLogProcedures.AddItemTransferLog(newitem.Id, player.Id);
+            var newItemId = DomainRegistry.Repository.Execute(cmd);
+            ItemTransferLogProcedures.AddItemTransferLog(newItemId, player.Id);
             return "You found a " + item.FriendlyName + "!";
         }
 
@@ -549,26 +551,30 @@ namespace TT.Domain.Procedures
         public static string DropItem(int itemId, string locationDbName)
         {
 
-         
-           // EquipItem(itemId, false);
-
             IItemRepository itemRepo = new EFItemRepository();
             Item item = itemRepo.Items.FirstOrDefault(i => i.Id == itemId);
-
+            
             int oldOwnerId = item.OwnerId;
 
             DbStaticItem itemPlus = ItemStatics.GetStaticItem(item.dbName);
 
+            // dropped "item" is a pet so automatically unequip them
             if (itemPlus.ItemType == PvPStatics.ItemType_Pet)
             {
                 EquipItem(itemId, false);
             }
 
-            item.OwnerId = -1;
-            item.dbLocationName = locationDbName;
-            item.IsEquipped = false;
-            item.TimeDropped = DateTime.UtcNow;
-            itemRepo.SaveItem(item);
+            var cmd = new UpdateItem
+            {
+                ItemId = item.Id,
+                OwnerId = null,
+                dbLocationName = locationDbName,
+                IsEquipped = false,
+                TimeDropped = DateTime.UtcNow,
+            };
+            DomainRegistry.Repository.Execute(cmd);
+
+
             ItemTransferLogProcedures.AddItemTransferLog(itemId, -1);
 
             SkillProcedures.UpdateItemSpecificSkillsToPlayer(PlayerProcedures.GetPlayer(oldOwnerId));
@@ -841,25 +847,27 @@ namespace TT.Domain.Procedures
             LogBox output = new LogBox();
             IItemRepository itemRepo = new EFItemRepository();
 
-            Item newItem = new Item
+            var cmd = new CreateItem
             {
                 IsEquipped = false,
                 VictimName = victim.FirstName + " " + victim.LastName,
                 dbName = targetForm.BecomesItemDbName,
                 Level = victim.Level,
                 Nickname = victim.Nickname,
+                ItemSourceId = ItemStatics.GetStaticItem(targetForm.BecomesItemDbName).Id
             };
 
             // no attacker, just drop at player's location and return immediately
-            if (attacker==null)
+            if (attacker == null)
             {
-                newItem.dbLocationName = victim.dbLocationName;
-                newItem.OwnerId = -1;
-                newItem.PvPEnabled = -1;
-                newItem.IsEquipped = false;
-                newItem.IsPermanent = false;
-                newItem.LastSouledTimestamp = DateTime.UtcNow;
-                itemRepo.SaveItem(newItem);
+                cmd.dbLocationName = victim.dbLocationName;
+                cmd.OwnerId = null;
+                cmd.PvPEnabled = -1;
+                cmd.IsEquipped = false;
+                cmd.IsPermanent = false;
+                cmd.LastSouledTimestamp = DateTime.UtcNow;
+
+                DomainRegistry.Repository.Execute(cmd);
 
                 DropAllItems(victim);
                 
@@ -869,35 +877,34 @@ namespace TT.Domain.Procedures
             // all bots turn into either game mode
             if (attacker.BotId < AIStatics.ActivePlayerBotId)
             {
-                newItem.PvPEnabled = -1;
+                cmd.PvPEnabled = -1;
             }
 
             // turn victim into attacker's game mode, PvP
             else if (attacker.GameMode == 2)
             {
-                newItem.PvPEnabled = 2;
+                cmd.PvPEnabled = 2;
             }
 
             // turn victim into attacker's game mode, Protection
             else
             {
-                newItem.PvPEnabled = 1;
+                cmd.PvPEnabled = 1;
             }
 
             // victim is a bot; make them permanent immediately
             if (victim.BotId < AIStatics.ActivePlayerBotId)
             {
-                newItem.IsPermanent = true;
+                cmd.IsPermanent = true;
             }
             else
             {
-                newItem.IsPermanent = false;
+                cmd.IsPermanent = false;
             }
 
-            BuffBox attackerBuffs = ItemProcedures.GetPlayerBuffs(attacker);
-            decimal maxInventorySize = PvPStatics.MaxCarryableItemCountBase + attackerBuffs.ExtraInventorySpace();
+            BuffBox attackerBuffs = GetPlayerBuffs(attacker);
 
-            DbStaticItem newItemPlus = ItemStatics.GetStaticItem(newItem.dbName);
+            DbStaticItem newItemPlus = ItemStatics.GetStaticItem(cmd.dbName);
 
             int inventoryMax = GetInventoryMaxSize(attackerBuffs);
 
@@ -905,22 +912,22 @@ namespace TT.Domain.Procedures
             if (newItemPlus.ItemType != PvPStatics.ItemType_Pet)
             {
                 // if the attacking player still has room in their inventory, give it to them.
-                if (itemRepo.Items.Where(i => i.OwnerId == attacker.Id && !i.IsEquipped).Count() < inventoryMax)
+                if (itemRepo.Items.Count(i => i.OwnerId == attacker.Id && !i.IsEquipped) < inventoryMax)
                 {
-                    newItem.OwnerId = attacker.Id;
-                    newItem.dbLocationName = "";
+                    cmd.OwnerId = attacker.Id;
+                    cmd.dbLocationName = "";
 
                 // UNLESS the attacker is a boss, then give it to them for free
                 } else if (attacker.BotId < AIStatics.PsychopathBotId) {
-                    newItem.OwnerId = attacker.Id;
-                    newItem.dbLocationName = "";
+                    cmd.OwnerId = attacker.Id;
+                    cmd.dbLocationName = "";
                 }
+
                 // otherwise the item falls to the ground at that location
                 else
                 {
-                    newItem.dbLocationName = victim.dbLocationName;
-                    newItem.OwnerId = -1;
-
+                    cmd.dbLocationName = victim.dbLocationName;
+                    cmd.OwnerId = null;
                 }
             }
 
@@ -930,16 +937,16 @@ namespace TT.Domain.Procedures
                 IPlayerRepository playerRepo = new EFPlayerRepository();
                 Player dbVictim = playerRepo.Players.FirstOrDefault(p => p.Id == victim.Id);
 
-                IEnumerable<ItemViewModel> AttackerExistingItems = ItemProcedures.GetAllPlayerItems(attacker.Id);
+                IEnumerable<ItemViewModel> AttackerExistingItems = GetAllPlayerItems(attacker.Id);
 
 
                 // this player currently has no tamed pets, so give it to them auto equipped
                 if (!AttackerExistingItems.Where(e => e.Item.ItemType == PvPStatics.ItemType_Pet).Any() && attacker.BotId >= AIStatics.PsychopathBotId)
                 {
-                    newItem.OwnerId = attacker.Id;
-                    newItem.IsEquipped = true;
-                    newItem.dbLocationName = "";
-                    SkillProcedures.UpdateItemSpecificSkillsToPlayer(attacker, newItem.dbName);
+                    cmd.OwnerId = attacker.Id;
+                    cmd.IsEquipped = true;
+                    cmd.dbLocationName = "";
+                    SkillProcedures.UpdateItemSpecificSkillsToPlayer(attacker, cmd.dbName);
                 }
 
                 // otherwise the animal runs free
@@ -949,15 +956,14 @@ namespace TT.Domain.Procedures
                     // bots can keep everything
                     if (attacker.BotId < AIStatics.RerolledPlayerBotId)
                     {
-                        newItem.OwnerId = attacker.Id;
-                        newItem.IsEquipped = true;
-                        newItem.dbLocationName = "";
+                        cmd.OwnerId = attacker.Id;
+                        cmd.IsEquipped = true;
+                        cmd.dbLocationName = "";
                     }
                     else
                     {
-
-                        newItem.dbLocationName = victim.dbLocationName;
-                        newItem.OwnerId = -1;
+                        cmd.dbLocationName = victim.dbLocationName;
+                        cmd.OwnerId = null;
                     }
                 }
 
@@ -967,9 +973,16 @@ namespace TT.Domain.Procedures
 
 
             DbStaticItem item = ItemStatics.GetStaticItem(targetForm.BecomesItemDbName);
-            Location here = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == victim.dbLocationName);
-            itemRepo.SaveItem(newItem);
-            ItemTransferLogProcedures.AddItemTransferLog(newItem.Id, newItem.OwnerId);
+           
+            var newItemId = DomainRegistry.Repository.Execute(cmd);
+            var ownerId = cmd.OwnerId;
+
+            if (ownerId == null)
+            {
+                ownerId = -1;
+            }
+
+            ItemTransferLogProcedures.AddItemTransferLog(newItemId, (int)ownerId);
 
             output.LocationLog = "<br><b>" + victim.FirstName + " " + victim.LastName + " was completely transformed into a " + item.FriendlyName + " here.</b>";
             output.AttackerLog = "<br><b>You fully transformed " + victim.FirstName + " " + victim.LastName + " into a " + item.FriendlyName + "</b>!";
@@ -977,10 +990,7 @@ namespace TT.Domain.Procedures
 
             DropAllItems(victim);
 
-
             return output;
-
-
         }
 
         public static void DropAllItems(Player player)

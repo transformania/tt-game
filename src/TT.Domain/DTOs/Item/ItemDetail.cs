@@ -1,7 +1,5 @@
 ﻿using System;
 using TT.Domain.DTOs.Players;
-using TT.Domain.Entities.Item;
-using TT.Domain.Entities.Players;
 
 namespace TT.Domain.DTOs.Item
 {
@@ -9,8 +7,7 @@ namespace TT.Domain.DTOs.Item
     {
         public int Id { get;  set; }
         public string dbName { get;  set; }
-        public ItemSourceDetail ItemType { get;  set; }
-        public int OwnerId { get;  set; }
+        public ItemSourceDetail ItemSource { get;  set; }
         public PlayerDetail Owner { get;  set; }
         public string dbLocationName { get;  set; }
         public string VictimName { get;  set; }

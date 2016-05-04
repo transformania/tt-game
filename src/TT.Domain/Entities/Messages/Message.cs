@@ -1,4 +1,5 @@
 ﻿using System;
+using TT.Domain.Commands.Messages;
 using TT.Domain.Entities.Players;
 
 namespace TT.Domain.Entities.Messages
@@ -21,12 +22,20 @@ namespace TT.Domain.Entities.Messages
 
         private Message() { }
 
-        public static Message Create(Player Sender, Player Receiver)
+        public static Message Create(Player sender, Player receiver, CreateMessage cmd)
         {
             return new Message
             {
+                Sender = sender,
+                Receiver = receiver,
+                IsRead = cmd.IsRead,
+                ReadStatus = cmd.ReadStatus,
+                Timestamp = DateTime.UtcNow,
+                MessageText = cmd.Text,
+                DoNotRecycleMe = cmd.DoNotRecycleMe,
                 
-
+                ConversationId = cmd.ConversationId,
+                
             };
         }
 

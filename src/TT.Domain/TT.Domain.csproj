@@ -239,6 +239,7 @@
     <Compile Include="DTOs\Item\ItemSourceDetail.cs" />
     <Compile Include="DTOs\Assets\TomeDetail.cs" />
     <Compile Include="DTOs\Messages\MessageDetail.cs" />
+    <Compile Include="DTOs\Players\PlayeMessageDetail.cs" />
     <Compile Include="Entities\AI\NPC.cs" />
     <Compile Include="Entities\Assets\RestockItem.cs" />
     <Compile Include="DTOs\Players\PlayerDetail.cs" />

@@ -25,6 +25,7 @@ namespace TT.Domain.Mappings.Players
         protected override void Configure()
         {
             CreateMap<Player, PlayerDetail>();
+            CreateMap<Player, PlayerMessageDetail>();
         }
     }
 }

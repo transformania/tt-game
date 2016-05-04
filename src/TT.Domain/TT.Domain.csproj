@@ -374,6 +374,8 @@
     <Compile Include="Queries\Item\GetItemSource.cs" />
     <Compile Include="Queries\Item\GetItemSources.cs" />
     <Compile Include="Queries\Messages\GetMessage.cs" />
+    <Compile Include="Queries\Messages\GetPlayerReceivedtMessages.cs" />
+    <Compile Include="Queries\Messages\GetPlayerSentMessages.cs" />
     <Compile Include="Queries\Players\GetPlayer.cs" />
     <Compile Include="Queries\Players\GetPlayerFormFromMembership.cs" />
     <Compile Include="Queries\Statics\GetStaticItem.cs" />

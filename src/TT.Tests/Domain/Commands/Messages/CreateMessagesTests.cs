@@ -11,7 +11,7 @@ using TT.Tests.Builders.Item;
 
 namespace TT.Tests.Domain.Commands.Messages
 {
-
+    [TestFixture]
     public class CreateMessagesTests : TestBase
     {
         private Player playerBob;

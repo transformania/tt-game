@@ -42,7 +42,7 @@ namespace TT.Domain.Procedures.BossProcedures
         /// <summary>
         /// A list of the inanimate and pet spells Narcissa can cast
         /// </summary>
-        public static readonly string[] inanimateSpellsToCast = { FlowerSpell }; // TODO:  Add in ServantOfLunarFaeSpell when it is ready
+        public static readonly string[] inanimateSpellsToCast = { FlowerSpell, ServantOfLunarFaeSpell };
 
         /// <summary>
         /// Probability of drawing Narcissa's aggro when she already has a target set

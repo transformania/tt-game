@@ -564,13 +564,10 @@ namespace TT.Domain.Procedures
                 EquipItem(itemId, false);
             }
 
-            var cmd = new UpdateItem
+            var cmd = new DropItem
             {
-                ItemId = item.Id,
-                OwnerId = null,
-                dbLocationName = locationDbName,
-                IsEquipped = false,
-                TimeDropped = DateTime.UtcNow,
+                OwnerId = item.OwnerId,
+                ItemId = item.Id
             };
             DomainRegistry.Repository.Execute(cmd);
 

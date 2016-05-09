@@ -4,25 +4,33 @@ using TT.Domain.Entities.Items;
 using TT.Tests.Builders.Item;
 using System.Linq;
 using FluentAssertions;
+using TT.Domain.Entities.Players;
 
 namespace TT.Tests.Domain.Commands.Items
 {
     [TestFixture]
     public class DropItemsTests : TestBase
     {
+        private Player bob;
+        private Item item;
 
-        [Test]
-        public void player_can_drop_item()
+        [SetUp]
+        public void SetUp()
         {
-            var bob = new PlayerBuilder()
+            bob = new PlayerBuilder()
                 .With(p => p.Id, 59)
                 .With(p => p.Location, "hometown")
                 .BuildAndSave();
 
-            var item = new ItemBuilder()
+            item = new ItemBuilder()
                 .With(i => i.Owner, bob)
                 .With(i => i.Id, 87)
                 .BuildAndSave();
+        }
+
+        [Test]
+        public void player_can_drop_item()
+        {
 
             var cmd = new DropItem
             {
@@ -59,5 +67,48 @@ namespace TT.Tests.Domain.Commands.Items
         {
 
         }
+
+        [Test]
+        [Ignore("TODO")]
+        public void player_must_be_animate_to_drop_item()
+        {
+
+        }
+
+        [Test]
+        [Ignore("TODO")]
+        public void player_cannot_be_in_quest_and_drop_item()
+        {
+
+        }
+
+        [Test]
+        [Ignore("TODO")]
+        public void player_cannot_be_in_duel_and_drop_item()
+        {
+
+        }
+
+        [Test]
+        [Ignore("TODO")]
+        public void player_player_is_not_wearing_item_to_drop_unless_pet_type()
+        {
+
+        }
+
+        [Test]
+        [Ignore("TODO")]
+        public void player_must_not_be_mindcontrolled_to_drop_item()
+        {
+
+        }
+
+        [Test]
+        [Ignore("TODO")]
+        public void items_dropped_in_dungeon_appear_in_overworld()
+        {
+
+        }
+
     }
 }

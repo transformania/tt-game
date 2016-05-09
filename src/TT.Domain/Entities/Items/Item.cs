@@ -61,5 +61,14 @@ namespace TT.Domain.Entities.Items
             return this;
         }
 
+        public Item Drop(Player owner)
+        {
+            Owner = null;
+            dbLocationName = owner.Location;
+            IsEquipped = false;
+            TimeDropped = DateTime.UtcNow;
+            return this;
+        }
+
     }
 }

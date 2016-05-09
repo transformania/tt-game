@@ -167,6 +167,7 @@
     <Compile Include="Commands\Assets\CreateTome.cs" />
     <Compile Include="Commands\ChatLog\WriteLogToDatabase.cs" />
     <Compile Include="Commands\Chat\CreateChatRoom.cs" />
+    <Compile Include="Commands\Items\DropItem.cs" />
     <Compile Include="Commands\Messages\CreateMessage.cs" />
     <Compile Include="Commands\Messages\DeleteMessage.cs" />
     <Compile Include="Commands\Items\CreateItem.cs" />

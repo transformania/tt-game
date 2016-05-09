@@ -16,6 +16,8 @@ namespace TT.Migrations
                 .ToTable("Players")
                 .PrimaryColumn("Id").OnDelete(Rule.None);
 
+            Alter.Table("Items").AlterColumn("OwnerId").AsInt32().Nullable();
+
             Alter.Table("Items").AddColumn("ItemSourceId").AsInt32().ForeignKey("DbStaticItems", "Id");
 
         }

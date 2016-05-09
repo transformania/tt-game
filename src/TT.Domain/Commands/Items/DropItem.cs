@@ -22,12 +22,10 @@ namespace TT.Domain.Commands.Items
                 if (player == null)
                     throw new DomainException(string.Format("player with ID {0} could not be found", ItemId));
 
-                if (item.Owner.Id != OwnerId)
+                if (item.Owner != null && item.Owner.Id != OwnerId)
                 {
                     throw new DomainException(string.Format("player {0} does not own item {1}", OwnerId, ItemId));
                 }
-
-                var owner = ctx.AsQueryable<Entities.Players.Player>().SingleOrDefault(p => p.Id == OwnerId);
 
                 item.Drop(player);
                 ctx.Commit();

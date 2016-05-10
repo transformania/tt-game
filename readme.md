@@ -80,7 +80,7 @@ To re-create your DB from scratch you can do the following
 
 `Powershell .\build.ps1 -target "Recreate-DB"`
 
-This will drop your existing database, recreate from migrations and apply the seed data.
+This will drop your existing database, recreate from migrations and apply the seed data.  For convenience's sake, a default user with username "Developer" and password "password" is automatically seeded with full permissions.
 
 ## Re-downloading Images ##
 To download up-to-date images from the server you can do the following

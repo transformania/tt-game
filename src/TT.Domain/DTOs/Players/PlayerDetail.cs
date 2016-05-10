@@ -10,5 +10,7 @@ namespace TT.Domain.DTOs.Players
         public string LastName { get; set; }
         public UserDetail User { get; set; }
         public NPCDetail NPC { get; set; }
+
+        public int BotId { get; set; } // TODO:  convert this to a nullable FK referencing NPC table
     }
 }

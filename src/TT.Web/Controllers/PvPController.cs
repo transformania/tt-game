@@ -18,6 +18,7 @@ using TT.Domain.ViewModels;
 using TT.Web.CustomHtmlHelpers;
 using TT.Domain.Queries.Assets;
 using TT.Domain;
+using TT.Domain.Queries.Item;
 
 namespace TT.Web.Controllers
 {
@@ -311,7 +312,8 @@ namespace TT.Web.Controllers
             loadtime += "End get player items:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
 
             loadtime += "Start get location items:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
-            output.LocationItems = ItemProcedures.GetAllItemsAtLocation(output.Location.dbName, me);
+            var cmd = new GetItemsAtLocation { dbLocationName = me.dbLocationName };
+            output.LocationItems = DomainRegistry.Repository.Find(cmd);
             loadtime += "End get location items:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
 
             ViewBag.InventoryItemCount = output.PlayerItems.Count();
@@ -1869,24 +1871,26 @@ namespace TT.Web.Controllers
                 }
             }
 
-            ItemViewModel pickup = ItemProcedures.GetItemViewModel(id);
+            var cmd = new GetItem {ItemId = id};
+
+            var pickup = DomainRegistry.Repository.FindSingle(cmd);
 
             //assert that the item is indeed at this location and on the ground
-            if (pickup.dbItem.dbLocationName != me.dbLocationName)
+            if (pickup.dbLocationName != me.dbLocationName)
             {
                 TempData["Error"] = "That item isn't in this location or else it has already been picked up.";
                 return RedirectToAction("Play");
             }
 
             // assert that the player is not carrying too much already UNLESS the item is a pet OR dungeon token
-            if (ItemProcedures.PlayerIsCarryingTooMuch(me.Id, 0, myBuffs) && pickup.Item.ItemType!=PvPStatics.ItemType_Pet && pickup.Item.dbName!=PvPStatics.ItemType_DungeonArtifact) {
+            if (ItemProcedures.PlayerIsCarryingTooMuch(me.Id, 0, myBuffs) && pickup.ItemSource.ItemType!=PvPStatics.ItemType_Pet && pickup.ItemSource.Id != PvPStatics.ItemType_DungeonArtifact_Id) {
                 TempData["Error"] = "You are carrying too many items to pick this up.";
                 TempData["SubError"] = "Use, drop, or wear/equip something you are carrying to make more room.  Some accessories may also allow you to carry more.";
                 return RedirectToAction("Play");
             }
 
             // if the item is an animal, assert that the player does not already have one since pets must be automatically equipped
-            if (pickup.Item.ItemType == PvPStatics.ItemType_Pet && ItemProcedures.PlayerIsWearingNumberOfThisType(me.Id, PvPStatics.ItemType_Pet) > 0)
+            if (pickup.ItemSource.ItemType == PvPStatics.ItemType_Pet && ItemProcedures.PlayerIsWearingNumberOfThisType(me.Id, PvPStatics.ItemType_Pet) > 0)
             {
                 TempData["Error"] = "You already have an animal or familiar as your pet.";
                 TempData["SubError"] = "Release any existing pets you have before you can tame this one.";
@@ -1894,7 +1898,7 @@ namespace TT.Web.Controllers
             }
 
             // assert the item is not a consumeable type or else is AND is in the same mode as the player (GameMode 2 is PvP)
-            if ((pickup.dbItem.PvPEnabled == 2 && me.GameMode != 2) || (pickup.dbItem.PvPEnabled == 1 && me.GameMode == 2))
+            if ((pickup.PvPEnabled == 2 && me.GameMode != 2) || (pickup.PvPEnabled == 1 && me.GameMode == 2))
             {
                 TempData["Error"] = "This item is marked as being in a different PvP mode from you.";
                 TempData["SubError"] = "You are not allowed to pick up items that are not in PvP if you are not in PvP and the same for non-PvP.";
@@ -1906,13 +1910,13 @@ namespace TT.Web.Controllers
             Location here = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName);
 
              // item is a dungeon artifact; immediately give the points to the player and delete it
-            if (pickup.Item.dbName == PvPStatics.ItemType_DungeonArtifact)
+            if (pickup.ItemSource.Id == PvPStatics.ItemType_DungeonArtifact_Id)
             {
                 PlayerProcedures.GivePlayerPvPScore_NoLoser(me, PvPStatics.DungeonArtifact_Value);
-                ItemProcedures.DeleteItem(pickup.dbItem.Id);
+                ItemProcedures.DeleteItem(pickup.Id);
                 TempData["Result"] = "You pick up the artifact.  As soon as it touches your hands, it fades away, leaving you with its dark power.";
-                playerLogMessage = "You picked up a <b>" + pickup.Item.FriendlyName + "</b> at " + here.Name + " and absorbed its dark power into your soul.";
-                locationLogMessage = me.GetFullName() + " picked up a <b>" + pickup.Item.FriendlyName + "</b> here and immediately absorbed its dark powers.";
+                playerLogMessage = "You picked up a <b>" + pickup.ItemSource.FriendlyName + "</b> at " + here.Name + " and absorbed its dark power into your soul.";
+                locationLogMessage = me.GetFullName() + " picked up a <b>" + pickup.ItemSource.FriendlyName + "</b> here and immediately absorbed its dark powers.";
 
                 new Thread(() =>
                      StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__DungeonArtifactsFound, 1)
@@ -1923,20 +1927,20 @@ namespace TT.Web.Controllers
             }
 
             // if the item is inanimate, give the item to the player's inventory
-            else if (pickup.Item.ItemType!=PvPStatics.ItemType_Pet) {
-                TempData["Result"] = ItemProcedures.GiveItemToPlayer(pickup.dbItem.Id, me.Id);
-                playerLogMessage = "You picked up a <b>" + pickup.Item.FriendlyName + "</b> at " + here.Name + " and put it into your inventory.";
-                locationLogMessage = me.GetFullName() + " picked up a <b>" + pickup.Item.FriendlyName + CharactersHere.PrintPvPIcon(pickup.dbItem) + "</b> here.";
+            else if (pickup.ItemSource.ItemType!=PvPStatics.ItemType_Pet) {
+                TempData["Result"] = ItemProcedures.GiveItemToPlayer(pickup.Id, me.Id);
+                playerLogMessage = "You picked up a <b>" + pickup.ItemSource.FriendlyName + "</b> at " + here.Name + " and put it into your inventory.";
+                locationLogMessage = me.GetFullName() + " picked up a <b>" + pickup.ItemSource.FriendlyName + CharactersHere.PrintPvPIcon(pickup) + "</b> here.";
             }
                 // item is an animal, equip it automatically
-            else if (pickup.Item.ItemType == PvPStatics.ItemType_Pet)
+            else if (pickup.ItemSource.ItemType == PvPStatics.ItemType_Pet)
             {
-                TempData["Result"] = ItemProcedures.GiveItemToPlayer(pickup.dbItem.Id, me.Id);
-                ItemProcedures.EquipItem(pickup.dbItem.Id, true);
-                playerLogMessage = "You tamed <b>" + pickup.dbItem.GetFullName() + " the " + pickup.Item.FriendlyName + "</b> at " + here.Name + " and put it into your inventory.";
-                locationLogMessage = me.GetFullName() + " tamed <b>" + pickup.dbItem.GetFullName() + " the " + pickup.Item.FriendlyName + CharactersHere.PrintPvPIcon(pickup.dbItem) + "</b> here.";
+                TempData["Result"] = ItemProcedures.GiveItemToPlayer(pickup.Id, me.Id);
+                ItemProcedures.EquipItem(pickup.Id, true);
+                playerLogMessage = "You tamed <b>" + pickup.GetFullName() + " the " + pickup.ItemSource.FriendlyName + "</b> at " + here.Name + " and put it into your inventory.";
+                locationLogMessage = me.GetFullName() + " tamed <b>" + pickup.GetFullName() + " the " + pickup.ItemSource.FriendlyName + CharactersHere.PrintPvPIcon(pickup) + "</b> here.";
 
-                Player personAnimal = PlayerProcedures.GetPlayerWithExactName(pickup.dbItem.VictimName);
+                Player personAnimal = PlayerProcedures.GetPlayerWithExactName(pickup.VictimName);
 
                 string notificationMsg = me.GetFullName() + " has tamed you.  You will now follow them wherever they go and magically enhance their abilities by being their faithful companion.";
                 PlayerLogProcedures.AddPlayerLog(personAnimal.Id, notificationMsg, true);

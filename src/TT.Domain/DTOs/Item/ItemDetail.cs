@@ -22,5 +22,18 @@ namespace TT.Domain.DTOs.Item
         public DateTime LastSouledTimestamp { get;  set; }
         public DateTime LastSold { get;  set; }
 
+        public string GetFullName()
+        {
+            if (this.Nickname.IsNullOrEmpty())
+            {
+                return VictimName;
+            }
+            else
+            {
+                string[] nameArray = this.VictimName.Split(' ');
+                return nameArray[0] + " '" + this.Nickname + "' " + nameArray[1];
+            }
+        }
+
     }
 }

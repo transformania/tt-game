@@ -15,5 +15,18 @@ namespace TT.Domain.DTOs.Item
         public bool IsPermanent { get; set; }
         public string Nickname { get; set; }
         public DateTime LastSouledTimestamp { get; set; }
+
+        public string GetFullName()
+        {
+            if (this.Nickname.IsNullOrEmpty())
+            {
+                return VictimName;
+            }
+            else
+            {
+                string[] nameArray = this.VictimName.Split(' ');
+                return nameArray[0] + " '" + this.Nickname + "' " + nameArray[1];
+            }
+        }
     }
 }

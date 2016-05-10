@@ -137,6 +137,8 @@ namespace TT.Domain.Statics
         public const string ItemType_Pet = "pet";
 
         public const string ItemType_DungeonArtifact = "item_consumeable_dungeon_artifact";
+        public const int ItemType_DungeonArtifact_Id = 218;
+
         public const string Dungeon_ArtifactCurse = "effect_Dark_Transfixation_Judoo";
 
         public const decimal DungeonArtifact_Value = 2;

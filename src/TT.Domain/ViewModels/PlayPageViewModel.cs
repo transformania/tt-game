@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TT.Domain.DTOs.Item;
 using TT.Domain.Models;
 
 namespace TT.Domain.ViewModels
@@ -19,7 +20,7 @@ namespace TT.Domain.ViewModels
 
         public IEnumerable<SkillViewModel> Skills { get; set; }
         public IEnumerable<ItemViewModel> PlayerItems { get; set; }
-        public IEnumerable<ItemViewModel> LocationItems { get; set; }
+        public IEnumerable<ItemListingDetail> LocationItems { get; set; }
         public WorldStats WorldStats { get; set; }
         public int AttacksMade { get; set; }
         public decimal APSearchCost { get; set; }

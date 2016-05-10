@@ -22,7 +22,7 @@ namespace TT.Tests.Domain.Queries.Item
 
             var item = DomainRegistry.Repository.FindSingle(cmd);
 
-            item.Id.Should().Equals(23);
+            item.Id.Should().Be(23);
             item.DbName.Should().BeEquivalentTo("dbName");
             item.FriendlyName.Should().BeEquivalentTo("Hello!");
             item.IsUnique.Should().Be(true);

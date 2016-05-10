@@ -21,9 +21,9 @@ namespace TT.Tests.Domain.Queries.Item
 
             var item = DomainRegistry.Repository.FindSingle(cmd);
 
-            item.Id.Should().Equals(77);
-            item.Owner.Should().Equals(null);
-            item.ItemSource.Id.Should().Equals(35);
+            item.Id.Should().Be(77);
+            item.Owner.Should().Be(null);
+            item.ItemSource.Id.Should().Be(35);
         }
 
         [Test]
@@ -43,7 +43,7 @@ namespace TT.Tests.Domain.Queries.Item
             var cmd = new GetItem { ItemId = 77 };
             var item = DomainRegistry.Repository.FindSingle(cmd);
 
-            item.Id.Should().Equals(77);
+            item.Id.Should().Be(77);
             item.Owner.FirstName.Equals("Antony");
         }
 

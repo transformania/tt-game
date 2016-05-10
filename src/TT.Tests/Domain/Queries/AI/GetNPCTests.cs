@@ -20,7 +20,7 @@ namespace TT.Tests.Domain.Queries.AI
 
             var npc = DomainRegistry.Repository.FindSingle(cmd);
 
-            npc.Id.Should().Equals(5);
+            npc.Id.Should().Be(5);
             npc.SpawnText.Should().BeEquivalentTo("spawn text uno");
         }
     }

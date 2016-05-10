@@ -27,8 +27,8 @@ namespace TT.Tests.Domain.Queries.Players
 
             var foundPlayer = DomainRegistry.Repository.FindSingle(cmd);
 
-            foundPlayer.Id.Should().Equals(3);
-            foundPlayer.NPC.Id.Should().Equals(7);
+            foundPlayer.Id.Should().Be(23);
+            foundPlayer.NPC.Id.Should().Be(7);
         }
 
     }

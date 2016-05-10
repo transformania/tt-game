@@ -241,6 +241,8 @@
     <Compile Include="DTOs\Chat\ChatRoomDetail.cs" />
     <Compile Include="DTOs\Identity\UserDetail.cs" />
     <Compile Include="DTOs\Item\ItemDetail.cs" />
+    <Compile Include="DTOs\Item\ItemListingDetail.cs" />
+    <Compile Include="DTOs\Item\ItemSourceListingDetail.cs" />
     <Compile Include="DTOs\Item\ItemSourceDetail.cs" />
     <Compile Include="DTOs\Assets\TomeDetail.cs" />
     <Compile Include="DTOs\Messages\MessageDetail.cs" />
@@ -381,6 +383,7 @@
     <Compile Include="Queries\Assets\GetTomes.cs" />
     <Compile Include="Queries\DMRoll\GetRoll.cs" />
     <Compile Include="Queries\Item\GetItem.cs" />
+    <Compile Include="Queries\Item\GetItemsAtLocation.cs" />
     <Compile Include="Queries\Item\GetItemSource.cs" />
     <Compile Include="Queries\Item\GetItemSources.cs" />
     <Compile Include="Queries\Messages\GetMessage.cs" />

@@ -26,11 +26,11 @@ namespace TT.Tests.Domain.Queries.Assets
 
             var RestockItem = DomainRegistry.Repository.FindSingle(query);
 
-            RestockItem.Id.Should().Equals(7);
-            RestockItem.AmountBeforeRestock.Should().Equals(5);
-            RestockItem.AmountToRestockTo.Should().Equals(9);
-            RestockItem.BaseItem.Id.Should().Equals(35);
-            RestockItem.NPC.Id.Should().Equals(53);
+            RestockItem.Id.Should().Be(7);
+            RestockItem.AmountBeforeRestock.Should().Be(5);
+            RestockItem.AmountToRestockTo.Should().Be(9);
+            RestockItem.BaseItem.Id.Should().Be(35);
+            RestockItem.NPC.Id.Should().Be(53);
         }
 
         [TestCase(-1)]

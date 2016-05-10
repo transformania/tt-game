@@ -25,6 +25,7 @@ namespace TT.Domain.Mappings.Item
         protected override void Configure()
         {
             CreateMap<Entities.Items.Item, ItemDetail>();
+            CreateMap<Entities.Items.Item, ItemListingDetail>();
         }
     }
 }

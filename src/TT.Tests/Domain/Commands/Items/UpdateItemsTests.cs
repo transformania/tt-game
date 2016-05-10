@@ -36,7 +36,7 @@ namespace TT.Tests.Domain.Commands.Items
             var editedItem = DataContext.AsQueryable<Item>().FirstOrDefault(cr => cr.Id == 7);
 
             editedItem.Id.Should().Be(7);
-            editedItem.Owner.Id.Should().Equals(123);
+            editedItem.Owner.Id.Should().Be(123);
             editedItem.Owner.FirstName.Should().Be("Rupart");
         }
 

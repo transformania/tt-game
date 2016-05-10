@@ -18,6 +18,7 @@ namespace TT.Domain.Mappings.Item
         protected override void Configure()
         {
             CreateMap<ItemSource, ItemSourceDetail>();
+            CreateMap<ItemSource, ItemSourceListingDetail>();
         }
     }
 }

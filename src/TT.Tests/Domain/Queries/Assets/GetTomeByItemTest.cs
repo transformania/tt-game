@@ -23,9 +23,9 @@ namespace TT.Tests.Domain.Queries.Assets
 
             var tome = Repository.FindSingle(query);
 
-            tome.Id.Should().Equals(7);
+            tome.Id.Should().Be(7);
             tome.Text.Should().BeEquivalentTo("First Tome");
-            tome.BaseItem.Id.Should().Equals(195);
+            tome.BaseItem.Id.Should().Be(195);
         }
 
         [Test]

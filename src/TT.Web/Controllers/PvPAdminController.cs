@@ -384,6 +384,13 @@ namespace TT.Web.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
+            var cmd = new DropItem
+            {
+                OwnerId = 1,
+                ItemId = 9
+            };
+            DomainRegistry.Repository.Execute(cmd);
+
             return RedirectToAction("Index");
         }
 

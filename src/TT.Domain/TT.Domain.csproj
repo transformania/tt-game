@@ -382,6 +382,7 @@
     <Compile Include="Queries\Chat\GetChatRooms.cs" />
     <Compile Include="Queries\Assets\GetTomes.cs" />
     <Compile Include="Queries\DMRoll\GetRoll.cs" />
+    <Compile Include="Queries\Item\GetAllItemsOfType.cs" />
     <Compile Include="Queries\Item\GetItem.cs" />
     <Compile Include="Queries\Item\GetItemsAtLocation.cs" />
     <Compile Include="Queries\Item\GetItemSource.cs" />

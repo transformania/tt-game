@@ -5,14 +5,14 @@ using TT.Domain.DTOs.Item;
 
 namespace TT.Domain.Queries.Item
 {
-    public class GetItemsAtLocation : DomainQuery<ItemListingDetail>
+    public class GetAllItemsOfType : DomainQuery<ItemListingDetail>
     {
 
-        public string dbLocationName { get; set; }
+        public int ItemSourceId { get; set; }
 
         public override IEnumerable<ItemListingDetail> Execute(IDataContext context)
         {
-            ContextQuery = ctx => ctx.AsQueryable<Entities.Items.Item>().ProjectToQueryable<ItemListingDetail>().Where(i => i.dbLocationName == dbLocationName);
+            ContextQuery = ctx => ctx.AsQueryable<Entities.Items.Item>().ProjectToQueryable<ItemListingDetail>().Where(i => i.ItemSource.Id == ItemSourceId);
             return ExecuteInternal(context);
         }
     }

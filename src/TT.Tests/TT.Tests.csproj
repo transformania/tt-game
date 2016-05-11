@@ -162,6 +162,7 @@
     <Compile Include="Domain\Queries\Assets\GetTomeByItemTest.cs" />
     <Compile Include="Domain\Queries\Assets\GetTomeTest.cs" />
     <Compile Include="Domain\Queries\Assets\GetTomesTests.cs" />
+    <Compile Include="Domain\Queries\Item\GetAllItemsOfTypeTests.cs" />
     <Compile Include="Domain\Queries\Item\GetItemsAtLocationTests.cs" />
     <Compile Include="Domain\Queries\Item\GetItemSourcesTests.cs" />
     <Compile Include="Domain\Queries\Item\GetItemSourceTest.cs" />

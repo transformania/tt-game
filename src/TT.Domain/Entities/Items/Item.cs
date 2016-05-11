@@ -70,5 +70,11 @@ namespace TT.Domain.Entities.Items
             return this;
         }
 
+        public Item ChangeOwner(Player newOwner)
+        {
+            Owner = newOwner;
+            return this;
+        }
+
     }
 }

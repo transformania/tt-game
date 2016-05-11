@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using TT.Domain.Abstract;
+using TT.Domain.Commands.Items;
 using TT.Domain.Concrete;
 using TT.Domain.Models;
 using TT.Domain.Statics;
@@ -59,8 +60,8 @@ namespace TT.Domain.Procedures.BossProcedures
 
             foreach (Item i in LindellasBooks)
             {
-                i.OwnerId = lorekeeper.Id;
-                itemRepo.SaveItem(i);
+                var cmd = new ChangeItemOwner {ItemId = i.Id, OwnerId = lorekeeper.Id};
+                DomainRegistry.Repository.Execute(cmd);
             }
 
 

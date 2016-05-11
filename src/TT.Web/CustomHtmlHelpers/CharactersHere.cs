@@ -37,22 +37,6 @@ namespace TT.Web.CustomHtmlHelpers
             return new MvcHtmlString(output);
         }
 
-        public static MvcHtmlString PrintGenderIcon(Player player)
-        {
-            string output = "<span class=";
-
-            if (player.Gender == PvPStatics.GenderMale)
-            {
-                output += "'icon icon-male'>";
-            } else {
-                output += "'icon icon-female'>";
-            }
-
-            output += "</span>";
-
-            return new MvcHtmlString(output);
-        }
-
         public static MvcHtmlString PrintGenderIcon(string gender)
         {
             string output = "<span class=";
@@ -101,19 +85,6 @@ namespace TT.Web.CustomHtmlHelpers
             if (player.DonatorLevel >= 1)
             {
                 return new MvcHtmlString("<span class='icon icon-donate' title='This player supports this game on Patreon monthly.'></span>");
-            }
-            else
-            {
-                return new MvcHtmlString("");
-            }
-        }
-
-        public static MvcHtmlString PrintPvPIcon(Item item)
-        {
-
-            if (item.PvPEnabled == 2)
-            {
-                return new MvcHtmlString("<span class='icon icon-pvp' title='This item is in PvP mode.'></span>");
             }
             else
             {

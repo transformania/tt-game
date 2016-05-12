@@ -10,6 +10,7 @@ using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 using System.Threading;
 using TT.Domain.Commands.Items;
+using TT.Domain.Queries.Item;
 
 namespace TT.Domain.Procedures
 {
@@ -435,10 +436,10 @@ namespace TT.Domain.Procedures
         public static string DropItem(int itemId, string locationDbName)
         {
 
-            IItemRepository itemRepo = new EFItemRepository();
-            Item item = itemRepo.Items.FirstOrDefault(i => i.Id == itemId);
-            
-            int oldOwnerId = item.OwnerId;
+
+            var item = DomainRegistry.Repository.FindSingle( new GetItem { ItemId = itemId });
+
+            int oldOwnerId = item.Owner.Id;
 
             DbStaticItem itemPlus = ItemStatics.GetStaticItem(item.dbName);
 
@@ -450,7 +451,7 @@ namespace TT.Domain.Procedures
 
             var cmd = new DropItem
             {
-                OwnerId = item.OwnerId,
+                OwnerId = item.Owner.Id,
                 ItemId = item.Id
             };
             DomainRegistry.Repository.Execute(cmd);
@@ -1470,33 +1471,6 @@ namespace TT.Domain.Procedures
 
             }
             
-        }
-
-        public static IEnumerable<ItemLeaderboardViewModel> GetLeadingItems(int number)
-        {
-            IItemRepository itemRepo = new EFItemRepository();
-            IInanimateXPRepository xpRepo = new EFInanimateXPRepository();
-
-
-            IEnumerable<ItemLeaderboardViewModel> output = from i in itemRepo.Items
-                                                where i.VictimName != null && i.VictimName != ""
-                                                join ix in xpRepo.InanimateXPs on i.OwnerId equals ix.Amount
-                                                select new ItemLeaderboardViewModel
-                                                {
-                                                   dbName = i.dbName,
-                                                   VictimName = i.VictimName,
-                                                   Level = i.Level,
-                                                   XP = ix.Amount,
-                                                };
-
-            output = output.OrderByDescending(i => i.Level).ThenByDescending(i => i.XP).Take(number);
-
-            foreach (ItemLeaderboardViewModel i in output) {
-                i.StaticItem = ItemStatics.GetStaticItem(i.dbName);
-            }
-
-            return output;
-
         }
 
         public static IEnumerable<SimpleItemLeaderboardViewModel> GetLeadingItemsSimple(int number)

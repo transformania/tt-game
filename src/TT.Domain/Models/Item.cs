@@ -6,7 +6,7 @@ namespace TT.Domain.Models
     {
         public int Id { get; set; }
         public string dbName { get; set; }
-        public int OwnerId { get; set; }
+        public int? OwnerId { get; set; }
         public string dbLocationName { get; set; }
         public string VictimName { get; set; }
         public bool IsEquipped { get; set; }
@@ -46,7 +46,7 @@ namespace TT.Domain.Models
     {
         public int Id { get; set; }
         public string dbName { get; set; }
-        public int OwnerId { get; set; }
+        public int? OwnerId { get; set; }
         public string dbLocationName { get; set; }
         public string VictimName { get; set; }
         public bool IsEquipped { get; set; }

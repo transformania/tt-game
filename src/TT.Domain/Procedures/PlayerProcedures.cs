@@ -461,7 +461,7 @@ namespace TT.Domain.Procedures
 
         }
 
-        public static Player GetPlayer(int playerId)
+        public static Player GetPlayer(int? playerId)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
             Player player = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);

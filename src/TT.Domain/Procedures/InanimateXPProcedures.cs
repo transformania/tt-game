@@ -198,7 +198,7 @@ namespace TT.Domain.Procedures
                 }
 
 
-                PlayerLogProcedures.AddPlayerLog(inanimateMe.OwnerId, wearerMessage, true);
+                PlayerLogProcedures.AddPlayerLog((int)inanimateMe.OwnerId, wearerMessage, true);
             }
             else
             {
@@ -312,7 +312,7 @@ namespace TT.Domain.Procedures
                 if (dbPlayerItem.OwnerId != -1)
                 {
                     string message = player.FirstName + " " + player.LastName + ", your " + itemPlus.FriendlyName + ", successfully struggles against your magic and reverses their transformation.  You can no longer claim them as your property, not unless you manage to turn them back again...";
-                    PlayerLogProcedures.AddPlayerLog(dbPlayerItem.OwnerId, message, true);
+                    PlayerLogProcedures.AddPlayerLog((int)dbPlayerItem.OwnerId, message, true);
                 }
 
                 // change the player's form and mobility
@@ -381,7 +381,7 @@ namespace TT.Domain.Procedures
                 playerRepo.SavePlayer(dbPlayer);
 
                 string message = player.FirstName + " " + player.LastName + ", your " + itemPlus.FriendlyName + ", struggles but fails to return to an animate form.  [Recovery chance Recovery chance::  " + inanimXP.TimesStruggled + "%]";
-                PlayerLogProcedures.AddPlayerLog(dbPlayerItem.OwnerId, message, true);
+                PlayerLogProcedures.AddPlayerLog((int)dbPlayerItem.OwnerId, message, true);
 
                 PlayerLogProcedures.AddPlayerLog(dbPlayer.Id, "You struggled to return to a human form.", false);
 

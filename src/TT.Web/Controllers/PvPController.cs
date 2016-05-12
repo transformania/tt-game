@@ -18,6 +18,7 @@ using TT.Domain.ViewModels;
 using TT.Web.CustomHtmlHelpers;
 using TT.Domain.Queries.Assets;
 using TT.Domain;
+using TT.Domain.DTOs.Item;
 using TT.Domain.Queries.Item;
 
 namespace TT.Web.Controllers
@@ -140,7 +141,8 @@ namespace TT.Web.Controllers
 
                 inanimateOutput.Player = me;
                 inanimateOutput.Form = FormStatics.GetForm(me.Form);
-                inanimateOutput.Item = ItemProcedures.GetItemViewModel(me.FirstName, me.LastName);
+
+                inanimateOutput.Item = DomainRegistry.Repository.FindSingle(new GetItemByVictimName { FirstName = me.FirstName, LastName = me.LastName });
 
                 inanimateOutput.IsPermanent = ItemProcedures.GetItemByVictimName(me.FirstName, me.LastName).IsPermanent;
 
@@ -198,10 +200,10 @@ namespace TT.Web.Controllers
 
                 animalOutput.Form = FormStatics.GetForm(me.Form);
 
-                animalOutput.YouItem = ItemProcedures.GetItemViewModel(me.FirstName, me.LastName);
-                if (animalOutput.YouItem.dbItem.OwnerId > 0)
+                animalOutput.YouItem = DomainRegistry.Repository.FindSingle(new GetItemByVictimName { FirstName = me.FirstName, LastName = me.LastName });
+                if (animalOutput.YouItem.Owner != null)
                 {
-                    animalOutput.OwnedBy = PlayerProcedures.GetPlayerFormViewModel(animalOutput.YouItem.dbItem.OwnerId);
+                    animalOutput.OwnedBy = PlayerProcedures.GetPlayerFormViewModel(animalOutput.YouItem.Owner.Id);
 
                     // move player over to owner
                     if (me.dbLocationName != animalOutput.OwnedBy.Player.dbLocationName)
@@ -233,7 +235,8 @@ namespace TT.Web.Controllers
 
                 animalOutput.LocationLog = LocationLogProcedures.GetLocationLogsAtLocation(animalOutput.Location.dbName, 0);
 
-                animalOutput.LocationItems = ItemProcedures.GetAllItemsAtLocation(animalOutput.Location.dbName, me);
+                var animalLocationItemsCmd = new GetItemsAtLocation { dbLocationName = animalOutput.Location.dbName };
+                animalOutput.LocationItems = DomainRegistry.Repository.Find(animalLocationItemsCmd);
 
                 animalOutput.PlayersHere = PlayerProcedures.GetPlayerFormViewModelsAtLocation(animalOutput.Location.dbName, myMembershipId).Where(p => p.Form.MobilityType == PvPStatics.MobilityFull);
 
@@ -243,7 +246,7 @@ namespace TT.Web.Controllers
 
                 ViewBag.AnimalImgUrl = ItemStatics.GetStaticItem(animalOutput.Form.BecomesItemDbName).PortraitUrl;
 
-                animalOutput.IsPermanent = ItemProcedures.GetItemByVictimName(me.FirstName, me.LastName).IsPermanent;
+                animalOutput.IsPermanent = animalOutput.YouItem.IsPermanent;
 
                 animalOutput.StruggleChance = InanimateXPProcedures.GetStruggleChance(me);
 
@@ -312,8 +315,7 @@ namespace TT.Web.Controllers
             loadtime += "End get player items:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
 
             loadtime += "Start get location items:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
-            var cmd = new GetItemsAtLocation { dbLocationName = me.dbLocationName };
-            output.LocationItems = DomainRegistry.Repository.Find(cmd);
+            output.LocationItems = DomainRegistry.Repository.Find(new GetItemsAtLocation { dbLocationName = me.dbLocationName });
             loadtime += "End get location items:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
 
             ViewBag.InventoryItemCount = output.PlayerItems.Count();

@@ -10,6 +10,7 @@ using TT.Domain.Concrete;
 using TT.Domain.Models;
 using TT.Domain.Procedures;
 using TT.Domain.Procedures.BossProcedures;
+using TT.Domain.Queries.Item;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 
@@ -1857,12 +1858,11 @@ namespace TT.Web.Controllers
             playerRepo.SavePlayer(me);
 
             // delete old item you are if you are one
-            Item possibleMeItem = itemRepo.Items.FirstOrDefault(i => i.VictimName == me.FirstName + " " + me.LastName);
-            if (possibleMeItem != null)
+            var item = DomainRegistry.Repository.FindSingle(new GetItemByVictimName {FirstName = me.FirstName, LastName = me.LastName});
+            if (item != null)
             {
-                itemRepo.DeleteItem(possibleMeItem.Id);
+                DomainRegistry.Repository.Execute(new DeleteItem {ItemId = item.Id});
             }
-
 
             TempData["Result"] = "You are now fully animate.";
             return RedirectToAction("Play", "PvP");

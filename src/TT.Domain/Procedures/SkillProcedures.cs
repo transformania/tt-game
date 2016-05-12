@@ -458,14 +458,6 @@ namespace TT.Domain.Procedures
             }
         }
 
-        public static void DeleteOldXML(string xmlpath)
-        {
-            if (Directory.Exists(Path.GetDirectoryName(xmlpath)))
-            {
-                File.Delete(xmlpath);
-            }
-        }
-
         public static int GetCountOfLearnableSpells()
         {
             IDbStaticSkillRepository skillRepo = new EFDbStaticSkillRepository();

@@ -107,7 +107,7 @@
             <p>
     @Model.Form.Description
                 @{
-                    if (Model.YouItem.dbItem.OwnerId == -1)
+                    if (Model.YouItem.Owner == null)
                     {
                         <span>You are feral and can move freely about the world until a new master tames you.</span>
                     }
@@ -117,7 +117,7 @@
                             <br><br>You have been tamed by @Html.ActionLink(Model.OwnedBy.Player.GetFullName(), "LookAtPlayer", "PvP", new { id = Model.OwnedBy.Player.Id }, null) and will follow your master wherever they go.
 
                             @{
-                        if (!Model.YouItem.Item.CurseTFFormdbName.IsNullOrEmpty())
+                        if (!Model.YouItem.ItemSource.CurseTFFormdbName.IsNullOrEmpty())
                         {
                             @Html.ActionLink("Attempt to transform your owner!", "CurseTransformOwner", "PvP")
                         }

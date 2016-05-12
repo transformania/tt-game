@@ -167,6 +167,7 @@
     <Compile Include="Domain\Queries\Item\GetItemsAtLocationTests.cs" />
     <Compile Include="Domain\Queries\Item\GetItemSourcesTests.cs" />
     <Compile Include="Domain\Queries\Item\GetItemSourceTest.cs" />
+    <Compile Include="Domain\Queries\Item\GetItemByVictimNameTest.cs" />
     <Compile Include="Domain\Queries\Messages\GetMessagesTests.cs" />
     <Compile Include="Domain\Queries\Item\GetItemTests.cs" />
     <Compile Include="Domain\Queries\Players\GetPlayerTest.cs" />

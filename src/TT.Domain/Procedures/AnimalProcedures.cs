@@ -1,7 +1,9 @@
 ﻿using System.Linq;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
+using TT.Domain.DTOs.Item;
 using TT.Domain.Models;
+using TT.Domain.Queries.Item;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 
@@ -14,11 +16,12 @@ namespace TT.Domain.Procedures
             IPlayerRepository playerRepo = new EFPlayerRepository();
             IItemRepository itemRepo = new EFItemRepository();
             Player animalPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == animalPlayerId);
-            Item animalItem = itemRepo.Items.FirstOrDefault(a => a.VictimName == animalPlayer.FirstName + " " + animalPlayer.LastName);
+
+            ItemDetail animalItem = DomainRegistry.Repository.FindSingle(new GetItemByVictimName { FirstName = animalPlayer.FirstName, LastName = animalPlayer.LastName});
 
             Player victim = playerRepo.Players.FirstOrDefault(p => p.Id == victimId);
 
-            Player attackerOwner = playerRepo.Players.FirstOrDefault(p => p.Id == animalItem.OwnerId);
+            Player attackerOwner = playerRepo.Players.FirstOrDefault(p => p.Id == animalItem.Owner.Id);
             Location here = TT.Domain.Statics.LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == animalPlayer.dbLocationName);
 
 

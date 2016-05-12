@@ -434,10 +434,10 @@ namespace TT.Domain.Procedures
 
                     IItemRepository itemRepo = new EFItemRepository();
 
-                    var lindellaItemscmd = new GetItemsOwnedByPlayer() {PlayerId = merchant.Id};
+                    var lindellaItemscmd = new GetItemsOwnedByPlayer() { OwnerId = merchant.Id};
                     var lindellasItems = DomainRegistry.Repository.Find(lindellaItemscmd).Where(i => i.Level > 0);
 
-                    var lorekeeperItemscmd = new GetItemsOwnedByPlayer() { PlayerId = lorekeeper.Id };
+                    var lorekeeperItemscmd = new GetItemsOwnedByPlayer() { OwnerId = lorekeeper.Id };
                     var lorekeeperItems = DomainRegistry.Repository.Find(lorekeeperItemscmd).Where(i => i.Level > 0);
 
                     var restockItems = XmlResourceLoader.Load<List<RestockListItem>>("TT.Domain.XMLs.RestockList.xml");

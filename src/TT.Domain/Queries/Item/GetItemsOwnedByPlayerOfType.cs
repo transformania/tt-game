@@ -5,14 +5,15 @@ using TT.Domain.DTOs.Item;
 
 namespace TT.Domain.Queries.Item
 {
-    public class GetItemsOwnedByPlayer : DomainQuery<ItemDetail>
+    public class GetItemsOwnedByPlayerOfType : DomainQuery<ItemDetail>
     {
 
         public int OwnerId { get; set; }
+        public string ItemType { get; set; }
 
         public override IEnumerable<ItemDetail> Execute(IDataContext context)
         {
-            ContextQuery = ctx => ctx.AsQueryable<Entities.Items.Item>().ProjectToQueryable<ItemDetail>().Where(i => i.Owner.Id == OwnerId);
+            ContextQuery = ctx => ctx.AsQueryable<Entities.Items.Item>().ProjectToQueryable<ItemDetail>().Where(i => i.Owner.Id == OwnerId && i.ItemSource.ItemType == ItemType);
             return ExecuteInternal(context);
         }
     }

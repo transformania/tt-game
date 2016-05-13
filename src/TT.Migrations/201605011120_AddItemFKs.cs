@@ -18,8 +18,9 @@ namespace TT.Migrations
                 .ToTable("Players")
                 .PrimaryColumn("Id").OnDelete(Rule.None);
 
-            Alter.Table("Items").AddColumn("ItemSourceId").AsInt32().ForeignKey("DbStaticItems", "Id");
-
+            Alter.Table("Items").AddColumn("ItemSourceId").AsInt32().Nullable().ForeignKey("DbStaticItems", "Id");
+            Execute.Sql("UPDATE Items SET ItemSourceId = DbStaticItems.Id FROM DBStaticItems WHERE DbStaticItems.DbName = Items.DbName");
+            Alter.Table("Items").AlterColumn("ItemSourceId").AsInt32().NotNullable();
         }
 
     }

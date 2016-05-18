@@ -2,6 +2,8 @@
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
 var dbType = Argument("dbType", "localdb_v2").ToLower();
+var dbName = Argument("dbName", "Stats");
+
 var imageUrl = Argument("imageUrl", "http://www.transformaniatime.com/Images/PvP.zip");
 
 // Dictionary of DB instances and connection strings
@@ -35,7 +37,7 @@ if(dbType == "remoteserver")
     // Exit if Enter key is pressed.
     } while (key.Key != ConsoleKey.Enter);
     Console.WriteLine();
-    connectionString = string.Format("Data Source={0}; Initial Catalog=Stats; Integrated Security=false; User ID={1}; Password={2};",dbServer, dbUserId , dbPassword );
+    connectionString = string.Format("Data Source={0}; Initial Catalog={3}; Integrated Security=false; User ID={1}; Password={2};",dbServer, dbUserId , dbPassword, dbName );
 }
 
 Task("Clean")

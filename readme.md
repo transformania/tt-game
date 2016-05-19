@@ -56,7 +56,7 @@ Powershell .\build.ps1 -dbType "server"
 If you are running a remote SQL server (any version) you can use
 
 ```
-Powershell .\build.ps1 -dbType "remoteserver" -dbServer "server.domain.com" -dbUserId "username"
+Powershell .\build.ps1 -dbType "remoteserver" -dbServer "server.domain.com" -dbUserId "username" -dbName "Stats"
 ```
 
 If you don't want to specify the database settings every time you run the build script, you may set environment variables which have the parameters preconfigured. The parameter names are TT_VARNAME.

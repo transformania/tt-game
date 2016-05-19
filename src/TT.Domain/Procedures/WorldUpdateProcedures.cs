@@ -5,6 +5,7 @@ using System.Linq;
 using System.Xml;
 using System.Xml.Serialization;
 using TT.Domain.Abstract;
+using TT.Domain.Commands.Items;
 using TT.Domain.Concrete;
 using TT.Domain.Models;
 using TT.Domain.Procedures.BossProcedures;
@@ -493,10 +494,11 @@ namespace TT.Domain.Procedures
                         for (int x = 0; x < PvPStatics.DungeonArtifact_SpawnLimit - dungeonArtifactCount; x++)
                         {
                             string randDungeon = LocationsStatics.GetRandomLocation_InDungeon();
-                            Item newArtifact = new Item
+
+                            var cmd = new CreateItem
                             {
                                 dbLocationName = randDungeon,
-                                OwnerId = -1,
+                                OwnerId = null,
                                 EquippedThisTurn = false,
                                 IsPermanent = true,
                                 Level = 0,
@@ -505,8 +507,9 @@ namespace TT.Domain.Procedures
                                 TurnsUntilUse = 0,
                                 VictimName = "",
                                 dbName = PvPStatics.ItemType_DungeonArtifact,
+                                ItemSourceId = ItemStatics.GetStaticItem(PvPStatics.ItemType_DungeonArtifact).Id
                             };
-                            itemsRepo.SaveItem(newArtifact);
+                            DomainRegistry.Repository.Execute(cmd);
                         }
 
 

@@ -3,9 +3,9 @@ using TT.Domain.Entities.Item;
 
 namespace TT.Tests.Builders.Item
 {
-    public class ItemBuilder : Builder<ItemSource, int>
+    public class ItemSourceBuilder : Builder<ItemSource, int>
     {
-        public ItemBuilder()
+        public ItemSourceBuilder()
         {
             Instance = Create();
             With(u => u.DbName, "test_item");

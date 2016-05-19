@@ -26,7 +26,7 @@ namespace TT.Tests.Domain.Commands.Assets
         [Test]
         public void Should_update_RestockItem()
         {
-            var item = new ItemBuilder().With(cr => cr.Id, 222).BuildAndSave();
+            var item = new ItemSourceBuilder().With(cr => cr.Id, 222).BuildAndSave();
             var npc = new NPCBuilder().With(ri => ri.Id, 111).BuildAndSave();
 
             var cmdEdit = new UpdateRestockItem { RestockItemId = 13, AmountBeforeRestock = 25, BaseItemId = item.Id, AmountToRestockTo = 50, NPCId = npc.Id };
@@ -91,7 +91,7 @@ namespace TT.Tests.Domain.Commands.Assets
         {
             var amount = -1;
 
-            var item = new ItemBuilder().With(cr => cr.Id, 1).BuildAndSave();
+            var item = new ItemSourceBuilder().With(cr => cr.Id, 1).BuildAndSave();
             var npc = new NPCBuilder().With(n => n.Id, 7).BuildAndSave();
 
             var cmd = new UpdateRestockItem { AmountBeforeRestock = amount, BaseItemId = item.Id, AmountToRestockTo = 5, NPCId = npc.Id };
@@ -106,7 +106,7 @@ namespace TT.Tests.Domain.Commands.Assets
         {
             var amount = 0;
 
-            var item = new ItemBuilder().With(cr => cr.Id, 215).BuildAndSave();
+            var item = new ItemSourceBuilder().With(cr => cr.Id, 215).BuildAndSave();
             var npc = new NPCBuilder().With(ri => ri.Id, 7).BuildAndSave();
 
             var cmd = new UpdateRestockItem { AmountBeforeRestock = amount, BaseItemId = item.Id, AmountToRestockTo = 5, NPCId = npc.Id };
@@ -123,7 +123,7 @@ namespace TT.Tests.Domain.Commands.Assets
         {
             var amount = 0;
 
-            var item = new ItemBuilder().With(cr => cr.Id, 1).BuildAndSave();
+            var item = new ItemSourceBuilder().With(cr => cr.Id, 1).BuildAndSave();
             var npc = new NPCBuilder().With(n => n.Id, 7).BuildAndSave();
 
             var cmd = new UpdateRestockItem { AmountBeforeRestock = 1, BaseItemId = item.Id, AmountToRestockTo = amount, NPCId = npc.Id };

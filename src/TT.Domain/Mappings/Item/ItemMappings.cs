@@ -2,7 +2,6 @@
 using AutoMapper;
 using Highway.Data;
 using TT.Domain.DTOs.Item;
-using TT.Domain.Entities.Item;
 
 namespace TT.Domain.Mappings.Item
 {
@@ -10,14 +9,23 @@ namespace TT.Domain.Mappings.Item
     {
         public void ConfigureModelBuilder(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<ItemSource>()
-                .ToTable("DbStaticItems")
+            modelBuilder.Entity<Entities.Items.Item>()
+                .ToTable("Items")
                 .HasKey(cr => cr.Id);
+
+            modelBuilder.Entity<Entities.Items.Item>()
+                .HasRequired(cr => cr.ItemSource)
+                .WithMany().Map(m => m.MapKey("ItemSourceId"));
+
+            modelBuilder.Entity<Entities.Items.Item>()
+                .HasOptional(cr => cr.Owner)
+                .WithMany().Map(m => m.MapKey("OwnerId"));
         }
 
         protected override void Configure()
         {
-            CreateMap<ItemSource, ItemSourceDetail>();
+            CreateMap<Entities.Items.Item, ItemDetail>();
+            CreateMap<Entities.Items.Item, ItemListingDetail>();
         }
     }
 }

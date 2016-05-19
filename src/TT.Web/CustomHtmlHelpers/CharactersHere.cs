@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using TT.Domain.DTOs.Item;
+using TT.Domain.DTOs.Players;
 using TT.Domain.Models;
 using TT.Domain.Procedures;
 using TT.Domain.Queries.Statics;
@@ -31,22 +33,6 @@ namespace TT.Web.CustomHtmlHelpers
             {
                 output = "<span class='icon icon-mc'></span>";
             }
-
-            return new MvcHtmlString(output);
-        }
-
-        public static MvcHtmlString PrintGenderIcon(Player player)
-        {
-            string output = "<span class=";
-
-            if (player.Gender == PvPStatics.GenderMale)
-            {
-                output += "'icon icon-male'>";
-            } else {
-                output += "'icon icon-female'>";
-            }
-
-            output += "</span>";
 
             return new MvcHtmlString(output);
         }
@@ -106,12 +92,16 @@ namespace TT.Web.CustomHtmlHelpers
             }
         }
 
-        public static MvcHtmlString PrintPvPIcon(Item item)
+        public static MvcHtmlString PrintPvPIcon(Item_VM item)
         {
 
             if (item.PvPEnabled == 2)
             {
                 return new MvcHtmlString("<span class='icon icon-pvp' title='This item is in PvP mode.'></span>");
+            }
+            else if (item.PvPEnabled == 1)
+            {
+                return new MvcHtmlString("<span class='icon icon-protection' title='This item is in Protection mode.'></span>");
             }
             else
             {
@@ -119,7 +109,7 @@ namespace TT.Web.CustomHtmlHelpers
             }
         }
 
-        public static MvcHtmlString PrintPvPIcon(Item_VM item)
+        public static MvcHtmlString PrintPvPIcon(ItemDetail item)
         {
 
             if (item.PvPEnabled == 2)
@@ -166,6 +156,15 @@ namespace TT.Web.CustomHtmlHelpers
         {
             string output = "<span class=";
             output += "'icon icon-" + item.ItemType + "' title='" + item.ItemType + "'>";
+            output += "</span>";
+
+            return new MvcHtmlString(output);
+        }
+
+        public static MvcHtmlString PrintItemTypeIcon(ItemListingDetail item)
+        {
+            string output = "<span class=";
+            output += "'icon icon-" + item.ItemSource.ItemType + "' title='" + item.ItemSource.ItemType + "'>";
             output += "</span>";
 
             return new MvcHtmlString(output);
@@ -392,6 +391,31 @@ namespace TT.Web.CustomHtmlHelpers
             }
 
             output = "/Images/PvP/" + strItemType + strThumb + item.PortraitUrl;
+            return new MvcHtmlString(output);
+        }
+
+        public static MvcHtmlString GetImageURL(ItemListingDetail item, bool thumb = false)
+        {
+            string output = "";
+            string strThumb = "";
+            string strItemType;
+
+            if (item.ItemSource.ItemType == PvPStatics.ItemType_Pet)
+            {
+                strItemType = "animalPortraits/";
+            }
+            else
+            {
+                strItemType = "itemsPortraits/";
+            }
+
+            if (thumb)
+            {
+                strThumb = "Thumbnails/100/";
+                if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + "Images/PvP/" + strItemType + strThumb + item.ItemSource.PortraitUrl)) strThumb = "";
+            }
+
+            output = "/Images/PvP/" + strItemType + strThumb + item.ItemSource.PortraitUrl;
             return new MvcHtmlString(output);
         }
 

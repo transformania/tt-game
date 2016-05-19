@@ -12,7 +12,7 @@ namespace TT.Tests.Builders.Assets
             With(x => x.Id, 7);
             With(x => x.AmountBeforeRestock, 1);
             With(x => x.AmountToRestockTo, 3);
-            With(x => x.BaseItem, new ItemBuilder().BuildAndSave());
+            With(x => x.BaseItem, new ItemSourceBuilder().BuildAndSave());
             With(x => x.NPC, new NPCBuilder().BuildAndSave());
         }
 

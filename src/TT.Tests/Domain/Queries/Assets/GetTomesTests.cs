@@ -15,12 +15,12 @@ namespace TT.Tests.Domain.Queries.Assets
         {
             new TomeBuilder().With(cr => cr.Id, 7)
                 .With(cr => cr.Text, "First Tome")
-                .With(cr => cr.BaseItem, new ItemBuilder().With(cr => cr.Id, 195).BuildAndSave())
+                .With(cr => cr.BaseItem, new ItemSourceBuilder().With(cr => cr.Id, 195).BuildAndSave())
                 .BuildAndSave();
 
             new TomeBuilder().With(cr => cr.Id, 13)
                 .With(cr => cr.Text, "Second Tome")
-                .With(cr => cr.BaseItem, new ItemBuilder().With(cr => cr.Id, 196).BuildAndSave())
+                .With(cr => cr.BaseItem, new ItemSourceBuilder().With(cr => cr.Id, 196).BuildAndSave())
                 .BuildAndSave();
 
             var cmd = new GetTomes();

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using TT.Domain.Abstract;
+using TT.Domain.Commands.Items;
 using TT.Domain.Concrete;
 using TT.Domain.Models;
 using TT.Domain.Statics;
@@ -95,10 +96,7 @@ namespace TT.Domain.Procedures.BossProcedures
                 // give Valentine his skills
                 valentine = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.ValentineBotId);
 
-                // give Valentine the underwear that he drops
-                IItemRepository itemRepo = new EFItemRepository();
-
-                Item panties = new Item
+                var cmd = new CreateItem
                 {
                     dbLocationName = "",
                     dbName = QueensPanties,
@@ -109,9 +107,10 @@ namespace TT.Domain.Procedures.BossProcedures
                     OwnerId = valentine.Id,
                     PvPEnabled = -1,
                     VictimName = "",
+                    ItemSourceId = ItemStatics.GetStaticItem(QueensPanties).Id
                 };
 
-                itemRepo.SaveItem(panties);
+                DomainRegistry.Repository.Execute(cmd);
 
                 // save his aiDirective, just for the sake of knowing his spawn turn
                 IAIDirectiveRepository aiRepo = new EFAIDirectiveRepository();

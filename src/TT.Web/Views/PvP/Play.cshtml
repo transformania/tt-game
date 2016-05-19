@@ -320,37 +320,37 @@
     <div class="row">
         @{
 
-            foreach (TT.Domain.ViewModels.ItemViewModel item in Model.LocationItems)
+            foreach (TT.Domain.DTOs.Item.ItemListingDetail item in Model.LocationItems)
             {
                 <div class="col-md-2 col-sm-4 col-xs-12 itemBox itemBoxPP">
                     <div class="charaBoxInner">
                         <div>
                             <div class="portrait_item_mainpage" style="background-image: url(..@CharactersHere.GetImageURL(item,true));">
-                                @{ if (item.Item.ItemType != PvPStatics.ItemType_Consumeable && item.dbItem.Level > 0)
+                                @{ if (item.ItemSource.ItemType != PvPStatics.ItemType_Consumeable && item.Level > 0)
                                  {
-                                    <span class="floorItemLevel"><b>@item.dbItem.Level</b></span>
+                                    <span class="floorItemLevel"><b>@item.Level</b></span>
                                  }
                                 }
-                                @CharactersHere.PrintItemTypeIcon(item.Item)
+                                @CharactersHere.PrintItemTypeIcon(item)
                             </div>
 
                             <div>
-                                @{if (item.Item.ItemType == PvPStatics.ItemType_Pet)
+                                @{if (item.ItemSource.ItemType == PvPStatics.ItemType_Pet)
                                 {
-                                    @Html.ActionLink("Tame", "Take", "PvP", new { id = item.dbItem.Id }, null)<br />
+                                    @Html.ActionLink("Tame", "Take", "PvP", new { id = item.Id }, null)<br />
                                 }
                                 else
                                 {
-                                    @Html.ActionLink("Take", "Take", "PvP", new { id = item.dbItem.Id }, null)<br />
+                                    @Html.ActionLink("Take", "Take", "PvP", new { id = item.Id }, null)<br />
                                 }
 
                                 }
 
-                                <span class="floorItemName">@CharactersHere.TruncateToLength(item.Item.FriendlyName, 75) <br /></span>
+                                <span class="floorItemName">@CharactersHere.TruncateToLength(item.ItemSource.FriendlyName, 75) <br /></span>
                                 @{
-                if (!item.dbItem.VictimName.IsNullOrEmpty())
+                if (!item.VictimName.IsNullOrEmpty())
                 {
-                    <span class="formerPlayer">(Formerly @item.dbItem.GetFullName())</span>
+                    <span class="formerPlayer">(Formerly @item.GetFullName())</span>
                 }
                                 }
                             </div>

@@ -13,7 +13,7 @@ namespace TT.Tests.Domain.Commands.Assets
         [Test]
         public void Should_create_new_tome()
         {
-            var item = new ItemBuilder().With(cr => cr.Id, 195).BuildAndSave();
+            var item = new ItemSourceBuilder().With(cr => cr.Id, 195).BuildAndSave();
             var cmd = new CreateTome { Text = "This is a tome.", BaseItemId = item.Id };
 
             var tome = Repository.Execute(cmd);

@@ -18,7 +18,7 @@ namespace TT.Tests.Domain.Commands.Assets
         {
             new TomeBuilder().With(cr => cr.Id, 7)
                 .With(cr => cr.Text, "First Tome")
-                .With(cr => cr.BaseItem, new ItemBuilder().With(cr => cr.Id, 195).BuildAndSave())
+                .With(cr => cr.BaseItem, new ItemSourceBuilder().With(cr => cr.Id, 195).BuildAndSave())
                 .BuildAndSave();
 
             var cmd = new DeleteTome { TomeId = 7 };

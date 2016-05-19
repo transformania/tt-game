@@ -16,16 +16,16 @@ namespace TT.Tests.Domain.Queries.Assets
         {
             new TomeBuilder().With(cr => cr.Id, 7)
                 .With(cr => cr.Text, "First Tome")
-                .With(cr => cr.BaseItem, new ItemBuilder().With(cr => cr.Id, 195).BuildAndSave())
+                .With(cr => cr.BaseItem, new ItemSourceBuilder().With(cr => cr.Id, 195).BuildAndSave())
                 .BuildAndSave();
 
             var query = new GetTome { TomeId = 7};
 
             var tome = DomainRegistry.Repository.FindSingle(query);
 
-            tome.Id.Should().Equals(7);
+            tome.Id.Should().Be(7);
             tome.Text.Should().BeEquivalentTo("First Tome");
-            tome.BaseItem.Id.Should().Equals(195);
+            tome.BaseItem.Id.Should().Be(195);
         }
 
         [TestCase(-1)]

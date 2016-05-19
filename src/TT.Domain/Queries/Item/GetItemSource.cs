@@ -13,13 +13,9 @@ namespace TT.Domain.Queries.Item
         {
             ContextQuery = ctx =>
             {
-                return ctx.AsQueryable<ItemSource>().Select(cr => new ItemSourceDetail
-                {
-                    Id = cr.Id,
-                    DbName = cr.DbName,
-                    FriendlyName = cr.FriendlyName,
-                    IsUnique = cr.IsUnique
-                }).FirstOrDefault(cr => cr.Id == ItemSourceId);
+                return ctx.AsQueryable<ItemSource>()
+                           .Where(p => p.Id == ItemSourceId)
+                           .ProjectToFirstOrDefault<ItemSourceDetail>();
             };
 
             return ExecuteInternal(context);

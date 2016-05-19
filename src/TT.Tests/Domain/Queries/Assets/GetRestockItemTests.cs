@@ -18,7 +18,7 @@ namespace TT.Tests.Domain.Queries.Assets
             new RestockItemBuilder().With(cr => cr.Id, 7)
                 .With(cr => cr.AmountBeforeRestock, 5)
                 .With(cr => cr.AmountToRestockTo, 9)
-                .With(cr => cr.BaseItem, new ItemBuilder().With(cr => cr.Id, 35).BuildAndSave())
+                .With(cr => cr.BaseItem, new ItemSourceBuilder().With(cr => cr.Id, 35).BuildAndSave())
                 .With(cr => cr.NPC, new NPCBuilder().With(cr => cr.Id, 53).BuildAndSave())
                 .BuildAndSave();
 
@@ -26,11 +26,11 @@ namespace TT.Tests.Domain.Queries.Assets
 
             var RestockItem = DomainRegistry.Repository.FindSingle(query);
 
-            RestockItem.Id.Should().Equals(7);
-            RestockItem.AmountBeforeRestock.Should().Equals(5);
-            RestockItem.AmountToRestockTo.Should().Equals(9);
-            RestockItem.BaseItem.Id.Should().Equals(35);
-            RestockItem.NPC.Id.Should().Equals(53);
+            RestockItem.Id.Should().Be(7);
+            RestockItem.AmountBeforeRestock.Should().Be(5);
+            RestockItem.AmountToRestockTo.Should().Be(9);
+            RestockItem.BaseItem.Id.Should().Be(35);
+            RestockItem.NPC.Id.Should().Be(53);
         }
 
         [TestCase(-1)]

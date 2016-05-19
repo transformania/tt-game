@@ -4,9 +4,11 @@ using System.Linq;
 using System.Xml;
 using System.Xml.Serialization;
 using TT.Domain.Abstract;
+using TT.Domain.Commands.Items;
 using TT.Domain.Concrete;
 using TT.Domain.Models;
 using TT.Domain.Procedures.BossProcedures;
+using TT.Domain.Queries.Item;
 using TT.Domain.Statics;
 using TT.Domain.Utilities;
 using TT.Domain.ViewModels;
@@ -431,8 +433,12 @@ namespace TT.Domain.Procedures
                     Player lorekeeper = PlayerProcedures.GetPlayerFromBotId(AIStatics.LoremasterBotId);
 
                     IItemRepository itemRepo = new EFItemRepository();
-                    List<Item> lindellasItems = itemRepo.Items.Where(i => i.OwnerId == merchant.Id && i.Level == 0).ToList();
-                    List<Item> lorekeeperItems = itemRepo.Items.Where(i => i.OwnerId == lorekeeper.Id && i.Level == 0).ToList();
+
+                    var lindellaItemscmd = new GetItemsOwnedByPlayer() { OwnerId = merchant.Id};
+                    var lindellasItems = DomainRegistry.Repository.Find(lindellaItemscmd).Where(i => i.Level > 0);
+
+                    var lorekeeperItemscmd = new GetItemsOwnedByPlayer() { OwnerId = lorekeeper.Id };
+                    var lorekeeperItems = DomainRegistry.Repository.Find(lorekeeperItemscmd).Where(i => i.Level > 0);
 
                     var restockItems = XmlResourceLoader.Load<List<RestockListItem>>("TT.Domain.XMLs.RestockList.xml");
 
@@ -441,25 +447,27 @@ namespace TT.Domain.Procedures
 
                         if (item.Merchant == "Lindella")
                         {
-                            int currentCount = lindellasItems.Where(i => i.dbName == item.dbName).Count();
+                            int currentCount = lindellasItems.Count(i => i.dbName == item.dbName);
                             if (currentCount < item.AmountBeforeRestock)
                             {
                                 for (int x = 0; x < item.AmountToRestockTo - currentCount; x++)
                                 {
-                                    Item newItem = new Item
-                                {
-                                    dbName = item.dbName,
-                                    dbLocationName = "",
-                                    OwnerId = merchant.Id,
-                                    IsEquipped = false,
-                                    IsPermanent = true,
-                                    Level = 0,
-                                    PvPEnabled = -1,
-                                    TurnsUntilUse = 0,
-                                    VictimName = "",
-                                    EquippedThisTurn = false,
-                                };
-                                    itemRepo.SaveItem(newItem);
+                                    
+                                    var cmd = new CreateItem
+                                    {
+                                        dbName = item.dbName,
+                                        dbLocationName = "",
+                                        OwnerId = merchant.Id,
+                                        IsEquipped = false,
+                                        IsPermanent = true,
+                                        Level = 0,
+                                        PvPEnabled = -1,
+                                        TurnsUntilUse = 0,
+                                        VictimName = "",
+                                        EquippedThisTurn = false,
+                                        ItemSourceId = ItemStatics.GetStaticItem(item.dbName).Id
+                                    };
+                                    DomainRegistry.Repository.Execute(cmd);
                                 }
 
                             }
@@ -467,12 +475,12 @@ namespace TT.Domain.Procedures
 
                         else if (item.Merchant == "Lorekeeper")
                         {
-                            int currentCount = lorekeeperItems.Where(i => i.dbName == item.dbName).Count();
+                            int currentCount = lorekeeperItems.Count(i => i.dbName == item.dbName);
                             if (currentCount < item.AmountBeforeRestock)
                             {
                                 for (int x = 0; x < item.AmountToRestockTo - currentCount; x++)
                                 {
-                                    Item newItem = new Item
+                                    var cmd = new CreateItem
                                     {
                                         dbName = item.dbName,
                                         dbLocationName = "",
@@ -484,8 +492,9 @@ namespace TT.Domain.Procedures
                                         TurnsUntilUse = 0,
                                         VictimName = "",
                                         EquippedThisTurn = false,
+                                        ItemSourceId = ItemStatics.GetStaticItem(item.dbName).Id
                                     };
-                                    itemRepo.SaveItem(newItem);
+                                    DomainRegistry.Repository.Execute(cmd);
                                 }
 
                             }

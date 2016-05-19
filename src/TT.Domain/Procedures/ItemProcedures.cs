@@ -9,6 +9,8 @@ using TT.Domain.Models;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 using System.Threading;
+using TT.Domain.Commands.Items;
+using TT.Domain.Queries.Item;
 
 namespace TT.Domain.Procedures
 {
@@ -109,125 +111,10 @@ namespace TT.Domain.Procedures
             return output;
         }
 
-        public static IEnumerable<DbStaticItem> GetAllDbStaticItems()
-        {
-            IItemRepository repo = new EFItemRepository();
-            return repo.DbStaticItems;
-        }
-
         public static IEnumerable<Item> GetAllPlayerItems_ItemOnly(int playerId)
         {
             IItemRepository itemRepo = new EFItemRepository();
             return itemRepo.Items.Where(i => i.OwnerId == playerId && i.IsEquipped);
-        }
-
-        public static IEnumerable<ItemViewModel> GetAllItemsAtLocation(string dbLocationName, Player player)
-        {
-            IItemRepository itemRepo = new EFItemRepository();
-            IEnumerable<ItemViewModel> items  = from i in itemRepo.Items
-                                                 where i.dbLocationName == dbLocationName && ((i.PvPEnabled == 2 && player.GameMode == 2) || (i.PvPEnabled == 1 && player.GameMode != 2) || i.PvPEnabled == -1)
-                                                 join si in itemRepo.DbStaticItems on i.dbName equals si.dbName
-                                                 select new ItemViewModel
-                                                 {
-                                                     dbItem = new Item_VM
-                                                     {
-                                                         Id = i.Id,
-                                                         dbName = i.dbName,
-                                                         dbLocationName = i.dbLocationName,
-                                                         EquippedThisTurn = i.EquippedThisTurn,
-                                                         IsEquipped = i.IsEquipped,
-                                                         IsPermanent = i.IsPermanent,
-                                                         Level = i.Level,
-                                                         OwnerId = i.OwnerId,
-                                                         PvPEnabled = i.PvPEnabled,
-                                                         TimeDropped = i.TimeDropped,
-                                                         TurnsUntilUse = i.TurnsUntilUse,
-                                                         VictimName = i.VictimName,
-                                                         Nickname = i.Nickname,
-                                                         LastSouledTimestamp = i.LastSouledTimestamp,
-                                                     },
-
-
-
-                                                     Item = new TT.Domain.ViewModels.StaticItem
-                                                     {
-                                                         dbName = si.dbName,
-                                                         FriendlyName = si.FriendlyName,
-                                                         Description = si.Description,
-                                                         PortraitUrl = si.PortraitUrl,
-                                                         MoneyValue = si.MoneyValue,
-                                                         MoneyValueSell = si.MoneyValueSell,
-                                                         ItemType = si.ItemType,
-                                                         UseCooldown = si.UseCooldown,
-                                                         UsageMessage_Item = si.UsageMessage_Item,
-                                                         UsageMessage_Player = si.UsageMessage_Player,
-                                                         Findable = si.Findable,
-                                                         FindWeight = si.FindWeight,
-                                                         GivesEffect = si.GivesEffect,
-
-                                                         HealthBonusPercent = si.HealthBonusPercent,
-                                                         ManaBonusPercent = si.ManaBonusPercent,
-                                                         ExtraSkillCriticalPercent = si.ExtraSkillCriticalPercent,
-                                                         HealthRecoveryPerUpdate = si.HealthRecoveryPerUpdate,
-                                                         ManaRecoveryPerUpdate = si.ManaRecoveryPerUpdate,
-                                                         SneakPercent = si.SneakPercent,
-                                                         EvasionPercent = si.EvasionPercent,
-                                                         EvasionNegationPercent = si.EvasionNegationPercent,
-                                                         MeditationExtraMana = si.MeditationExtraMana,
-                                                         CleanseExtraHealth = si.CleanseExtraHealth,
-                                                         MoveActionPointDiscount = si.MoveActionPointDiscount,
-                                                         SpellExtraHealthDamagePercent = si.SpellExtraHealthDamagePercent,
-                                                         SpellExtraTFEnergyPercent = si.SpellExtraTFEnergyPercent,
-                                                         CleanseExtraTFEnergyRemovalPercent = si.CleanseExtraTFEnergyRemovalPercent,
-                                                         SpellMisfireChanceReduction = si.SpellMisfireChanceReduction,
-                                                         SpellHealthDamageResistance = si.SpellHealthDamageResistance,
-                                                         SpellTFEnergyDamageResistance = si.SpellTFEnergyDamageResistance,
-                                                         ExtraInventorySpace = si.ExtraInventorySpace,
-
-                                                         Discipline = si.Discipline,
-                                                         Perception = si.Perception,
-                                                         Charisma = si.Charisma,
-                                                         Submission_Dominance = si.Submission_Dominance,
-
-                                                         Fortitude = si.Fortitude,
-                                                         Agility = si.Agility,
-                                                         Allure = si.Allure,
-                                                         Corruption_Purity = si.Corruption_Purity,
-
-                                                         Magicka = si.Magicka,
-                                                         Succour = si.Succour,
-                                                         Luck = si.Luck,
-                                                         Chaos_Order = si.Chaos_Order,
-
-
-                                                         InstantHealthRestore = si.InstantHealthRestore,
-                                                         InstantManaRestore = si.InstantManaRestore,
-                                                         ReuseableHealthRestore = si.ReuseableHealthRestore,
-                                                         ReuseableManaRestore = si.ReuseableManaRestore,
-
-                                                         CurseTFFormdbName = si.CurseTFFormdbName,
-
-
-                                                     }
-
-                                                 };
-
-            List<ItemViewModel> output = new List<ItemViewModel>();
-
-            foreach (ItemViewModel m in items)
-            {
-                //  if the item is a mode locked and not in the same PvP-nonPvP mode, do not add it
-                if (((m.dbItem.PvPEnabled == 2 && player.GameMode < 2) || (m.dbItem.PvPEnabled == 1 && player.GameMode == 2)))
-                {
-                    // do nothing
-                }
-                else
-                {
-                    output.Add(m);
-                }
-            }
-
-            return output;
         }
 
         public static ItemViewModel GetItemViewModel(int id)
@@ -322,100 +209,99 @@ namespace TT.Domain.Procedures
             return output.First();
         }
 
-        public static ItemViewModel GetItemViewModel(string firstName, string lastName)
-        {
-            IItemRepository itemRepo = new EFItemRepository();
-            IEnumerable<ItemViewModel> output = from i in itemRepo.Items
-                                                where i.VictimName == firstName + " " + lastName
-                                                join si in itemRepo.DbStaticItems on i.dbName equals si.dbName
-                                                select new ItemViewModel
-                                                {
-                                                    dbItem = new Item_VM
-                                                    {
-                                                        Id = i.Id,
-                                                        dbName = i.dbName,
-                                                        dbLocationName = i.dbLocationName,
-                                                        EquippedThisTurn = i.EquippedThisTurn,
-                                                        IsEquipped = i.IsEquipped,
-                                                        IsPermanent = i.IsPermanent,
-                                                        Level = i.Level,
-                                                        OwnerId = i.OwnerId,
-                                                        PvPEnabled = i.PvPEnabled,
-                                                        TimeDropped = i.TimeDropped,
-                                                        TurnsUntilUse = i.TurnsUntilUse,
-                                                        VictimName = i.VictimName,
-                                                        Nickname = i.Nickname,
-                                                        LastSouledTimestamp = i.LastSouledTimestamp,
-                                                    },
+        //public static ItemViewModel GetItemViewModel(string firstName, string lastName)
+        //{
+        //    IItemRepository itemRepo = new EFItemRepository();
+        //    IEnumerable<ItemViewModel> output = from i in itemRepo.Items
+        //                                        where i.VictimName == firstName + " " + lastName
+        //                                        join si in itemRepo.DbStaticItems on i.dbName equals si.dbName
+        //                                        select new ItemViewModel
+        //                                        {
+        //                                            dbItem = new Item_VM
+        //                                            {
+        //                                                Id = i.Id,
+        //                                                dbName = i.dbName,
+        //                                                dbLocationName = i.dbLocationName,
+        //                                                EquippedThisTurn = i.EquippedThisTurn,
+        //                                                IsEquipped = i.IsEquipped,
+        //                                                IsPermanent = i.IsPermanent,
+        //                                                Level = i.Level,
+        //                                                OwnerId = i.OwnerId,
+        //                                                PvPEnabled = i.PvPEnabled,
+        //                                                TimeDropped = i.TimeDropped,
+        //                                                TurnsUntilUse = i.TurnsUntilUse,
+        //                                                VictimName = i.VictimName,
+        //                                                Nickname = i.Nickname,
+        //                                                LastSouledTimestamp = i.LastSouledTimestamp,
+        //                                            },
 
 
 
-                                                    Item = new TT.Domain.ViewModels.StaticItem
-                                                    {
-                                                        dbName = si.dbName,
-                                                        FriendlyName = si.FriendlyName,
-                                                        Description = si.Description,
-                                                        PortraitUrl = si.PortraitUrl,
-                                                        MoneyValue = si.MoneyValue,
-                                                        ItemType = si.ItemType,
-                                                        UseCooldown = si.UseCooldown,
-                                                        UsageMessage_Item = si.UsageMessage_Item,
-                                                        UsageMessage_Player = si.UsageMessage_Player,
-                                                        Findable = si.Findable,
-                                                        FindWeight = si.FindWeight,
-                                                        GivesEffect = si.GivesEffect,
+        //                                            Item = new TT.Domain.ViewModels.StaticItem
+        //                                            {
+        //                                                dbName = si.dbName,
+        //                                                FriendlyName = si.FriendlyName,
+        //                                                Description = si.Description,
+        //                                                PortraitUrl = si.PortraitUrl,
+        //                                                MoneyValue = si.MoneyValue,
+        //                                                ItemType = si.ItemType,
+        //                                                UseCooldown = si.UseCooldown,
+        //                                                UsageMessage_Item = si.UsageMessage_Item,
+        //                                                UsageMessage_Player = si.UsageMessage_Player,
+        //                                                Findable = si.Findable,
+        //                                                FindWeight = si.FindWeight,
+        //                                                GivesEffect = si.GivesEffect,
 
-                                                        HealthBonusPercent = si.HealthBonusPercent,
-                                                        ManaBonusPercent = si.ManaBonusPercent,
-                                                        ExtraSkillCriticalPercent = si.ExtraSkillCriticalPercent,
-                                                        HealthRecoveryPerUpdate = si.HealthRecoveryPerUpdate,
-                                                        ManaRecoveryPerUpdate = si.ManaRecoveryPerUpdate,
-                                                        SneakPercent = si.SneakPercent,
-                                                        EvasionPercent = si.EvasionPercent,
-                                                        EvasionNegationPercent = si.EvasionNegationPercent,
-                                                        MeditationExtraMana = si.MeditationExtraMana,
-                                                        CleanseExtraHealth = si.CleanseExtraHealth,
-                                                        MoveActionPointDiscount = si.MoveActionPointDiscount,
-                                                        SpellExtraHealthDamagePercent = si.SpellExtraHealthDamagePercent,
-                                                        SpellExtraTFEnergyPercent = si.SpellExtraTFEnergyPercent,
-                                                        CleanseExtraTFEnergyRemovalPercent = si.CleanseExtraTFEnergyRemovalPercent,
-                                                        SpellMisfireChanceReduction = si.SpellMisfireChanceReduction,
-                                                        SpellHealthDamageResistance = si.SpellHealthDamageResistance,
-                                                        SpellTFEnergyDamageResistance = si.SpellTFEnergyDamageResistance,
-                                                        ExtraInventorySpace = si.ExtraInventorySpace,
+        //                                                HealthBonusPercent = si.HealthBonusPercent,
+        //                                                ManaBonusPercent = si.ManaBonusPercent,
+        //                                                ExtraSkillCriticalPercent = si.ExtraSkillCriticalPercent,
+        //                                                HealthRecoveryPerUpdate = si.HealthRecoveryPerUpdate,
+        //                                                ManaRecoveryPerUpdate = si.ManaRecoveryPerUpdate,
+        //                                                SneakPercent = si.SneakPercent,
+        //                                                EvasionPercent = si.EvasionPercent,
+        //                                                EvasionNegationPercent = si.EvasionNegationPercent,
+        //                                                MeditationExtraMana = si.MeditationExtraMana,
+        //                                                CleanseExtraHealth = si.CleanseExtraHealth,
+        //                                                MoveActionPointDiscount = si.MoveActionPointDiscount,
+        //                                                SpellExtraHealthDamagePercent = si.SpellExtraHealthDamagePercent,
+        //                                                SpellExtraTFEnergyPercent = si.SpellExtraTFEnergyPercent,
+        //                                                CleanseExtraTFEnergyRemovalPercent = si.CleanseExtraTFEnergyRemovalPercent,
+        //                                                SpellMisfireChanceReduction = si.SpellMisfireChanceReduction,
+        //                                                SpellHealthDamageResistance = si.SpellHealthDamageResistance,
+        //                                                SpellTFEnergyDamageResistance = si.SpellTFEnergyDamageResistance,
+        //                                                ExtraInventorySpace = si.ExtraInventorySpace,
 
-                                                        Discipline = si.Discipline,
-                                                        Perception = si.Perception,
-                                                        Charisma = si.Charisma,
-                                                        Submission_Dominance = si.Submission_Dominance,
+        //                                                Discipline = si.Discipline,
+        //                                                Perception = si.Perception,
+        //                                                Charisma = si.Charisma,
+        //                                                Submission_Dominance = si.Submission_Dominance,
 
-                                                        Fortitude = si.Fortitude,
-                                                        Agility = si.Agility,
-                                                        Allure = si.Allure,
-                                                        Corruption_Purity = si.Corruption_Purity,
+        //                                                Fortitude = si.Fortitude,
+        //                                                Agility = si.Agility,
+        //                                                Allure = si.Allure,
+        //                                                Corruption_Purity = si.Corruption_Purity,
 
-                                                        Magicka = si.Magicka,
-                                                        Succour = si.Succour,
-                                                        Luck = si.Luck,
-                                                        Chaos_Order = si.Chaos_Order,
+        //                                                Magicka = si.Magicka,
+        //                                                Succour = si.Succour,
+        //                                                Luck = si.Luck,
+        //                                                Chaos_Order = si.Chaos_Order,
 
 
-                                                        InstantHealthRestore = si.InstantHealthRestore,
-                                                        InstantManaRestore = si.InstantManaRestore,
-                                                        ReuseableHealthRestore = si.ReuseableHealthRestore,
-                                                        ReuseableManaRestore = si.ReuseableManaRestore,
+        //                                                InstantHealthRestore = si.InstantHealthRestore,
+        //                                                InstantManaRestore = si.InstantManaRestore,
+        //                                                ReuseableHealthRestore = si.ReuseableHealthRestore,
+        //                                                ReuseableManaRestore = si.ReuseableManaRestore,
 
-                                                        CurseTFFormdbName = si.CurseTFFormdbName,
-                                                    }
+        //                                                CurseTFFormdbName = si.CurseTFFormdbName,
+        //                                            }
 
-                                                };
+        //                                        };
 
-            return output.First();
-        }
+        //    return output.First();
+        //}
 
         public static bool PlayerIsCarryingTooMuch(int newOwnerId, int offset, BuffBox buffs)
         {
-            IItemRepository itemRepo = new EFItemRepository();
             IEnumerable<ItemViewModel> currentlyOwnedItems = GetAllPlayerItems(newOwnerId);
             int nonWornItemsCarried = currentlyOwnedItems.Where(i => !i.dbItem.IsEquipped).Count() - offset;
 
@@ -510,33 +396,34 @@ namespace TT.Domain.Procedures
 
         public static string GiveNewItemToPlayer(Player player, DbStaticItem item)
         {
-            IItemRepository itemRepo = new EFItemRepository();
-            Item newitem = new Item
+
+            var cmd = new CreateItem
             {
                 OwnerId = player.Id,
                 dbName = item.dbName,
                 IsEquipped = false,
                 VictimName = "",
                 dbLocationName = "",
+                ItemSourceId = item.Id
             };
 
             if (player.BotId < AIStatics.ActivePlayerBotId)
             {
-                newitem.PvPEnabled = -1;
+                cmd.PvPEnabled = -1;
             }
             else
             {
                 if (player.GameMode == 2)
                 {
-                    newitem.PvPEnabled = 2;
+                    cmd.PvPEnabled = 2;
                 }
                 else
                 {
-                    newitem.PvPEnabled = 1;
+                    cmd.PvPEnabled = 1;
                 }
             }
-            itemRepo.SaveItem(newitem);
-            ItemTransferLogProcedures.AddItemTransferLog(newitem.Id, player.Id);
+            var newItemId = DomainRegistry.Repository.Execute(cmd);
+            ItemTransferLogProcedures.AddItemTransferLog(newItemId, player.Id);
             return "You found a " + item.FriendlyName + "!";
         }
 
@@ -549,26 +436,27 @@ namespace TT.Domain.Procedures
         public static string DropItem(int itemId, string locationDbName)
         {
 
-         
-           // EquipItem(itemId, false);
 
-            IItemRepository itemRepo = new EFItemRepository();
-            Item item = itemRepo.Items.FirstOrDefault(i => i.Id == itemId);
+            var item = DomainRegistry.Repository.FindSingle( new GetItem { ItemId = itemId });
 
-            int oldOwnerId = item.OwnerId;
+            int oldOwnerId = item.Owner.Id;
 
             DbStaticItem itemPlus = ItemStatics.GetStaticItem(item.dbName);
 
+            // dropped "item" is a pet so automatically unequip them
             if (itemPlus.ItemType == PvPStatics.ItemType_Pet)
             {
                 EquipItem(itemId, false);
             }
 
-            item.OwnerId = -1;
-            item.dbLocationName = locationDbName;
-            item.IsEquipped = false;
-            item.TimeDropped = DateTime.UtcNow;
-            itemRepo.SaveItem(item);
+            var cmd = new DropItem
+            {
+                OwnerId = item.Owner.Id,
+                ItemId = item.Id
+            };
+            DomainRegistry.Repository.Execute(cmd);
+
+
             ItemTransferLogProcedures.AddItemTransferLog(itemId, -1);
 
             SkillProcedures.UpdateItemSpecificSkillsToPlayer(PlayerProcedures.GetPlayer(oldOwnerId));
@@ -841,25 +729,27 @@ namespace TT.Domain.Procedures
             LogBox output = new LogBox();
             IItemRepository itemRepo = new EFItemRepository();
 
-            Item newItem = new Item
+            var cmd = new CreateItem
             {
                 IsEquipped = false,
                 VictimName = victim.FirstName + " " + victim.LastName,
                 dbName = targetForm.BecomesItemDbName,
                 Level = victim.Level,
                 Nickname = victim.Nickname,
+                ItemSourceId = ItemStatics.GetStaticItem(targetForm.BecomesItemDbName).Id
             };
 
             // no attacker, just drop at player's location and return immediately
-            if (attacker==null)
+            if (attacker == null)
             {
-                newItem.dbLocationName = victim.dbLocationName;
-                newItem.OwnerId = -1;
-                newItem.PvPEnabled = -1;
-                newItem.IsEquipped = false;
-                newItem.IsPermanent = false;
-                newItem.LastSouledTimestamp = DateTime.UtcNow;
-                itemRepo.SaveItem(newItem);
+                cmd.dbLocationName = victim.dbLocationName;
+                cmd.OwnerId = null;
+                cmd.PvPEnabled = -1;
+                cmd.IsEquipped = false;
+                cmd.IsPermanent = false;
+                cmd.LastSouledTimestamp = DateTime.UtcNow;
+
+                DomainRegistry.Repository.Execute(cmd);
 
                 DropAllItems(victim);
                 
@@ -869,35 +759,34 @@ namespace TT.Domain.Procedures
             // all bots turn into either game mode
             if (attacker.BotId < AIStatics.ActivePlayerBotId)
             {
-                newItem.PvPEnabled = -1;
+                cmd.PvPEnabled = -1;
             }
 
             // turn victim into attacker's game mode, PvP
             else if (attacker.GameMode == 2)
             {
-                newItem.PvPEnabled = 2;
+                cmd.PvPEnabled = 2;
             }
 
             // turn victim into attacker's game mode, Protection
             else
             {
-                newItem.PvPEnabled = 1;
+                cmd.PvPEnabled = 1;
             }
 
             // victim is a bot; make them permanent immediately
             if (victim.BotId < AIStatics.ActivePlayerBotId)
             {
-                newItem.IsPermanent = true;
+                cmd.IsPermanent = true;
             }
             else
             {
-                newItem.IsPermanent = false;
+                cmd.IsPermanent = false;
             }
 
-            BuffBox attackerBuffs = ItemProcedures.GetPlayerBuffs(attacker);
-            decimal maxInventorySize = PvPStatics.MaxCarryableItemCountBase + attackerBuffs.ExtraInventorySpace();
+            BuffBox attackerBuffs = GetPlayerBuffs(attacker);
 
-            DbStaticItem newItemPlus = ItemStatics.GetStaticItem(newItem.dbName);
+            DbStaticItem newItemPlus = ItemStatics.GetStaticItem(cmd.dbName);
 
             int inventoryMax = GetInventoryMaxSize(attackerBuffs);
 
@@ -905,22 +794,22 @@ namespace TT.Domain.Procedures
             if (newItemPlus.ItemType != PvPStatics.ItemType_Pet)
             {
                 // if the attacking player still has room in their inventory, give it to them.
-                if (itemRepo.Items.Where(i => i.OwnerId == attacker.Id && !i.IsEquipped).Count() < inventoryMax)
+                if (itemRepo.Items.Count(i => i.OwnerId == attacker.Id && !i.IsEquipped) < inventoryMax)
                 {
-                    newItem.OwnerId = attacker.Id;
-                    newItem.dbLocationName = "";
+                    cmd.OwnerId = attacker.Id;
+                    cmd.dbLocationName = "";
 
                 // UNLESS the attacker is a boss, then give it to them for free
                 } else if (attacker.BotId < AIStatics.PsychopathBotId) {
-                    newItem.OwnerId = attacker.Id;
-                    newItem.dbLocationName = "";
+                    cmd.OwnerId = attacker.Id;
+                    cmd.dbLocationName = "";
                 }
+
                 // otherwise the item falls to the ground at that location
                 else
                 {
-                    newItem.dbLocationName = victim.dbLocationName;
-                    newItem.OwnerId = -1;
-
+                    cmd.dbLocationName = victim.dbLocationName;
+                    cmd.OwnerId = null;
                 }
             }
 
@@ -930,16 +819,16 @@ namespace TT.Domain.Procedures
                 IPlayerRepository playerRepo = new EFPlayerRepository();
                 Player dbVictim = playerRepo.Players.FirstOrDefault(p => p.Id == victim.Id);
 
-                IEnumerable<ItemViewModel> AttackerExistingItems = ItemProcedures.GetAllPlayerItems(attacker.Id);
+                IEnumerable<ItemViewModel> AttackerExistingItems = GetAllPlayerItems(attacker.Id);
 
 
                 // this player currently has no tamed pets, so give it to them auto equipped
                 if (!AttackerExistingItems.Where(e => e.Item.ItemType == PvPStatics.ItemType_Pet).Any() && attacker.BotId >= AIStatics.PsychopathBotId)
                 {
-                    newItem.OwnerId = attacker.Id;
-                    newItem.IsEquipped = true;
-                    newItem.dbLocationName = "";
-                    SkillProcedures.UpdateItemSpecificSkillsToPlayer(attacker, newItem.dbName);
+                    cmd.OwnerId = attacker.Id;
+                    cmd.IsEquipped = true;
+                    cmd.dbLocationName = "";
+                    SkillProcedures.UpdateItemSpecificSkillsToPlayer(attacker, cmd.dbName);
                 }
 
                 // otherwise the animal runs free
@@ -949,15 +838,14 @@ namespace TT.Domain.Procedures
                     // bots can keep everything
                     if (attacker.BotId < AIStatics.RerolledPlayerBotId)
                     {
-                        newItem.OwnerId = attacker.Id;
-                        newItem.IsEquipped = true;
-                        newItem.dbLocationName = "";
+                        cmd.OwnerId = attacker.Id;
+                        cmd.IsEquipped = true;
+                        cmd.dbLocationName = "";
                     }
                     else
                     {
-
-                        newItem.dbLocationName = victim.dbLocationName;
-                        newItem.OwnerId = -1;
+                        cmd.dbLocationName = victim.dbLocationName;
+                        cmd.OwnerId = null;
                     }
                 }
 
@@ -967,9 +855,16 @@ namespace TT.Domain.Procedures
 
 
             DbStaticItem item = ItemStatics.GetStaticItem(targetForm.BecomesItemDbName);
-            Location here = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == victim.dbLocationName);
-            itemRepo.SaveItem(newItem);
-            ItemTransferLogProcedures.AddItemTransferLog(newItem.Id, newItem.OwnerId);
+           
+            var newItemId = DomainRegistry.Repository.Execute(cmd);
+            var ownerId = cmd.OwnerId;
+
+            if (ownerId == null)
+            {
+                ownerId = -1;
+            }
+
+            ItemTransferLogProcedures.AddItemTransferLog(newItemId, (int)ownerId);
 
             output.LocationLog = "<br><b>" + victim.FirstName + " " + victim.LastName + " was completely transformed into a " + item.FriendlyName + " here.</b>";
             output.AttackerLog = "<br><b>You fully transformed " + victim.FirstName + " " + victim.LastName + " into a " + item.FriendlyName + "</b>!";
@@ -977,10 +872,7 @@ namespace TT.Domain.Procedures
 
             DropAllItems(victim);
 
-
             return output;
-
-
         }
 
         public static void DropAllItems(Player player)
@@ -1579,33 +1471,6 @@ namespace TT.Domain.Procedures
 
             }
             
-        }
-
-        public static IEnumerable<ItemLeaderboardViewModel> GetLeadingItems(int number)
-        {
-            IItemRepository itemRepo = new EFItemRepository();
-            IInanimateXPRepository xpRepo = new EFInanimateXPRepository();
-
-
-            IEnumerable<ItemLeaderboardViewModel> output = from i in itemRepo.Items
-                                                where i.VictimName != null && i.VictimName != ""
-                                                join ix in xpRepo.InanimateXPs on i.OwnerId equals ix.Amount
-                                                select new ItemLeaderboardViewModel
-                                                {
-                                                   dbName = i.dbName,
-                                                   VictimName = i.VictimName,
-                                                   Level = i.Level,
-                                                   XP = ix.Amount,
-                                                };
-
-            output = output.OrderByDescending(i => i.Level).ThenByDescending(i => i.XP).Take(number);
-
-            foreach (ItemLeaderboardViewModel i in output) {
-                i.StaticItem = ItemStatics.GetStaticItem(i.dbName);
-            }
-
-            return output;
-
         }
 
         public static IEnumerable<SimpleItemLeaderboardViewModel> GetLeadingItemsSimple(int number)

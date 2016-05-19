@@ -23,7 +23,7 @@ namespace TT.Tests.Domain.Queries.Messages
 
             var message = DomainRegistry.Repository.FindSingle(cmd);
 
-            message.Id.Should().Equals(23);
+            message.Id.Should().Be(23);
             message.Sender.FirstName.Should().BeEquivalentTo("Sam");
             message.Sender.LastName.Should().BeEquivalentTo("Houston");
             message.Receiver.FirstName.Should().BeEquivalentTo("Lora");

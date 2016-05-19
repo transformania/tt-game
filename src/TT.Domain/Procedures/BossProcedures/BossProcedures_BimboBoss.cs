@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using TT.Domain.Abstract;
+using TT.Domain.Commands.Items;
 using TT.Domain.Concrete;
+using TT.Domain.DTOs.Item;
 using TT.Domain.Models;
+using TT.Domain.Queries.Item;
 using TT.Domain.Statics;
 
 namespace TT.Domain.Procedures.BossProcedures
@@ -20,6 +23,7 @@ namespace TT.Domain.Procedures.BossProcedures
         public const string RegularTFSpellDbName = "skill_Bringer_of_the_Bimbocalypse_Judoo";
         private const string RegularBimboFormDbName = "form_Bimbocalypse_Plague_Victim_Judoo";
         public const string CureItemDbName = "item_consumeable_bimbo_cure";
+        public const int CureItemSourceId = 143;
 
         public static void SpawnBimboBoss()
         {
@@ -305,12 +309,13 @@ namespace TT.Domain.Procedures.BossProcedures
             }
 
             // delete all the cure vials
-            IItemRepository itemRepo = new EFItemRepository();
-            List<Item> cureVials = itemRepo.Items.Where(i => i.dbName == CureItemDbName).ToList();
+            var cmd = new GetAllItemsOfType { ItemSourceId = CureItemSourceId};
+            var cures = DomainRegistry.Repository.Find(cmd);
 
-            foreach (Item vial in cureVials)
+            foreach (ItemListingDetail cure in cures)
             {
-                itemRepo.DeleteItem(vial.Id);
+                var deleteCmd = new DeleteItem {ItemId = cure.Id};
+                DomainRegistry.Repository.Execute(deleteCmd);
             }
 
             // restore any bimbos back to their base form and notify them
@@ -368,12 +373,10 @@ namespace TT.Domain.Procedures.BossProcedures
         private static void DropCure(int turnNumber)
         {
 
-            IItemRepository itemRepo = new EFItemRepository();
-
-            for (int i = 0; i < 2; i++)
+            for (var i = 0; i < 2; i++)
             {
 
-                Item newVial = new Item
+                var cmd = new CreateItem
                 {
                     dbLocationName = LocationsStatics.GetRandomLocation(),
                     dbName = CureItemDbName,
@@ -381,18 +384,20 @@ namespace TT.Domain.Procedures.BossProcedures
                     IsPermanent = false,
                     Level = 0,
                     PvPEnabled = 2,
-                    OwnerId = -1,
+                    OwnerId = null,
                     VictimName = "",
                     TurnsUntilUse = 0,
                     EquippedThisTurn = false,
+                    ItemSourceId =  ItemStatics.GetStaticItem(CureItemDbName).Id
+
                 };
 
                 if (turnNumber % 3 == 0)
                 {
-                    newVial.PvPEnabled = 1;
+                    cmd.PvPEnabled = 1;
                 }
 
-                itemRepo.SaveItem(newVial);
+                DomainRegistry.Repository.Execute(cmd);
 
             }
 

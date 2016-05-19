@@ -170,6 +170,15 @@ namespace TT.Web.CustomHtmlHelpers
             return new MvcHtmlString(output);
         }
 
+        public static MvcHtmlString PrintItemTypeIcon(ItemSourceDetail item)
+        {
+            string output = "<span class=";
+            output += "'icon icon-" + item.ItemType + "' title='" + item.ItemType + "'>";
+            output += "</span>";
+
+            return new MvcHtmlString(output);
+        }
+
         public static MvcHtmlString PrintItemTypeIcon(StaticItem item)
         {
             string output = "<span class=";

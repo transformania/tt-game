@@ -30,7 +30,7 @@ namespace TT.Domain.Models
         public string Mobility { get; set; }
 
         public int BotId { get; set; }
-        public int IsPetToId { get; set; }
+        public int? IsPetToId { get; set; }
         public bool MindControlIsActive { get; set; }
 
         public decimal XP { get; set; }
@@ -173,7 +173,7 @@ namespace TT.Domain.Models
         public string Gender { get; set; }
         public string Mobility { get; set; }
         public int BotId { get; set; }
-        public int IsPetToId { get; set; }
+        public int? IsPetToId { get; set; }
 
         public bool MindControlIsActive { get; set; }
 

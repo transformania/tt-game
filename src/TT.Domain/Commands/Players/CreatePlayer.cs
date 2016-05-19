@@ -73,8 +73,8 @@ namespace TT.Domain.Commands.Players
             Level = 1;
             XP = 0;
             TimesAttackingThisUpdate = 0;
-            ActionPoints = 120;
-            ActionPoints_Refill = 360;
+            ActionPoints = PvPStatics.MaximumStoreableActionPoints;
+            ActionPoints_Refill = PvPStatics.MaximumStoreableActionPoints_Refill;
             Gender = PvPStatics.GenderFemale;
             Mobility = PvPStatics.MobilityFull;
             LastActionTimestamp = DateTime.UtcNow.AddHours(-1);
@@ -82,6 +82,9 @@ namespace TT.Domain.Commands.Players
             LastCombatAttackedTimestamp = DateTime.UtcNow;
             GameMode = 1;
             OnlineActivityTimestamp = DateTime.UtcNow;
+            Money = 0;
+            CleansesMeditatesThisRound = 0;
+            ChatColor = "black";
         }
 
         public override int Execute(IDataContext context)

@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using TT.Domain.Abstract;
+using TT.Domain.Commands.Players;
 using TT.Domain.Concrete;
+using TT.Domain.DTOs.Players;
 using TT.Domain.Models;
+using TT.Domain.Queries.Players;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 
@@ -64,25 +67,18 @@ namespace TT.Domain.Procedures.BossProcedures
         /// <summary>
         /// Spawns Narcissa into the world and sets her initial blank AI Directive
         /// </summary>
-        /// <returns></returns>
-        public static Player SpawnFaeBoss()
+        public static void SpawnFaeBoss()
         {
-            IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player faeboss = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.FaebossId);
+            PlayerDetail faeboss = DomainRegistry.Repository.FindSingle(new GetPlayerByBotId { BotId = AIStatics.FaebossId });
 
             if (faeboss == null)
             {
-                faeboss = new Player()
+                var cmd = new CreatePlayer
                 {
                     FirstName = FirstName,
                     LastName = LastName,
-                    ActionPoints = 120,
-                    dbLocationName = SpawnLocation,
-                    LastActionTimestamp = DateTime.UtcNow,
-                    LastCombatTimestamp = DateTime.UtcNow,
-                    LastCombatAttackedTimestamp = DateTime.UtcNow,
-                    OnlineActivityTimestamp = DateTime.UtcNow,
-                    Gender =  PvPStatics.GenderFemale,
+                    Location = SpawnLocation,
+                    Gender = PvPStatics.GenderFemale,
                     Health = 9999,
                     Mana = 9999,
                     MaxHealth = 9999,
@@ -92,16 +88,17 @@ namespace TT.Domain.Procedures.BossProcedures
                     Mobility = PvPStatics.MobilityFull,
                     Level = 25,
                     BotId = AIStatics.FaebossId,
-                    ActionPoints_Refill = 360,
                 };
+                var id = DomainRegistry.Repository.Execute(cmd);
 
+                var playerRepo = new EFPlayerRepository();
+                Player faebossEF = playerRepo.Players.FirstOrDefault(p => p.Id == id);
+                faebossEF.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(faebossEF));
+                playerRepo.SavePlayer(faebossEF);
+
+                AIDirectiveProcedures.GetAIDirective(id);
             }
 
-            playerRepo.SavePlayer(faeboss);
-
-            AIDirective directive = AIDirectiveProcedures.GetAIDirective(faeboss.Id);
-
-            return faeboss;
         }
 
         /// <summary>

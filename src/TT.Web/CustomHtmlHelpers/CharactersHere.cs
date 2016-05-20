@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using TT.Domain.DTOs.Item;
-using TT.Domain.DTOs.Players;
 using TT.Domain.Models;
 using TT.Domain.Procedures;
 using TT.Domain.Queries.Statics;
@@ -19,15 +16,14 @@ namespace TT.Web.CustomHtmlHelpers
 
         public static MvcHtmlString PrintPlayerHTML(this HtmlHelper html, Player player)
         {
-            string output = "<div class='name'>" + player.FirstName + " " + player.LastName + "</div>";
+            var output = "<div class='name'>" + player.FirstName + " " + player.LastName + "</div>";
             
             return new MvcHtmlString(output);
         }
 
-
         public static MvcHtmlString PrintMCIcon(Player player)
         {
-            string output = "";
+            var output = "";
 
             if (player.MindControlIsActive)
             {
@@ -39,7 +35,7 @@ namespace TT.Web.CustomHtmlHelpers
 
         public static MvcHtmlString PrintGenderIcon(string gender)
         {
-            string output = "<span class=";
+            var output = "<span class=";
 
             if (gender == PvPStatics.GenderMale)
             {
@@ -71,25 +67,12 @@ namespace TT.Web.CustomHtmlHelpers
             {
                 return new MvcHtmlString("<span class='icon icon-protection' title='This player is in Protection mode.'></span>");
             }
-            else if (player.BotId == AIStatics.ActivePlayerBotId)
-            {
-                return new MvcHtmlString("<span class='icon icon-pvp' title='This player is in PvP mode.'></span>");
-            }
-
-            return new MvcHtmlString("");
-
+            return player.BotId == AIStatics.ActivePlayerBotId ? new MvcHtmlString("<span class='icon icon-pvp' title='This player is in PvP mode.'></span>") : new MvcHtmlString("");
         }
 
         public static MvcHtmlString PrintDonatorIcon(Player player)
         {
-            if (player.DonatorLevel >= 1)
-            {
-                return new MvcHtmlString("<span class='icon icon-donate' title='This player supports this game on Patreon monthly.'></span>");
-            }
-            else
-            {
-                return new MvcHtmlString("");
-            }
+            return player.DonatorLevel >= 1 ? new MvcHtmlString("<span class='icon icon-donate' title='This player supports this game on Patreon monthly.'></span>") : new MvcHtmlString("");
         }
 
         public static MvcHtmlString PrintPvPIcon(Item_VM item)
@@ -99,14 +82,7 @@ namespace TT.Web.CustomHtmlHelpers
             {
                 return new MvcHtmlString("<span class='icon icon-pvp' title='This item is in PvP mode.'></span>");
             }
-            else if (item.PvPEnabled == 1)
-            {
-                return new MvcHtmlString("<span class='icon icon-protection' title='This item is in Protection mode.'></span>");
-            }
-            else
-            {
-                return new MvcHtmlString("");
-            }
+            return item.PvPEnabled == 1 ? new MvcHtmlString("<span class='icon icon-protection' title='This item is in Protection mode.'></span>") : new MvcHtmlString("");
         }
 
         public static MvcHtmlString PrintPvPIcon(ItemDetail item)
@@ -116,76 +92,46 @@ namespace TT.Web.CustomHtmlHelpers
             {
                 return new MvcHtmlString("<span class='icon icon-pvp' title='This item is in PvP mode.'></span>");
             }
-            else if (item.PvPEnabled == 1)
-            {
-                return new MvcHtmlString("<span class='icon icon-protection' title='This item is in Protection mode.'></span>");
-            }
-            else
-            {
-                return new MvcHtmlString("");
-            }
+            return item.PvPEnabled == 1 ? new MvcHtmlString("<span class='icon icon-protection' title='This item is in Protection mode.'></span>") : new MvcHtmlString("");
         }
 
         public static MvcHtmlString PrintPvPIcon(Covenant covenant)
         {
-
-            if (covenant.IsPvP)
-            {
-                return new MvcHtmlString("<span class='icon icon-pvp' title='This covenant is in PvP mode.'></span>");
-            }
-            else
-            {
-                return new MvcHtmlString("");
-            }
+            return covenant.IsPvP ? new MvcHtmlString("<span class='icon icon-pvp' title='This covenant is in PvP mode.'></span>") : new MvcHtmlString("");
         }
 
         public static MvcHtmlString PrintRPIcon(Player player)
         {
+            return player.InRP ? new MvcHtmlString("<span class='icon icon-rp' title='This player has indicated that they enjoy roleplaying.'></span>") : new MvcHtmlString("");
+        }
 
-            if (player.InRP)
-            {
-                return new MvcHtmlString("<span class='icon icon-rp' title='This player has indicated that they enjoy roleplaying.'></span>");
-            }
-            else
-            {
-                return new MvcHtmlString("");
-            }
+        public static MvcHtmlString PrintItemTypeIcon(string itemType)
+        {
+            var output = "<span class=";
+            output += "'icon icon-" + itemType + "' title='" + itemType + "'>";
+            output += "</span>";
+
+            return new MvcHtmlString(output);
         }
 
         public static MvcHtmlString PrintItemTypeIcon(DbStaticItem item)
         {
-            string output = "<span class=";
-            output += "'icon icon-" + item.ItemType + "' title='" + item.ItemType + "'>";
-            output += "</span>";
-
-            return new MvcHtmlString(output);
+            return PrintItemTypeIcon(item.ItemType);
         }
 
         public static MvcHtmlString PrintItemTypeIcon(ItemListingDetail item)
         {
-            string output = "<span class=";
-            output += "'icon icon-" + item.ItemSource.ItemType + "' title='" + item.ItemSource.ItemType + "'>";
-            output += "</span>";
-
-            return new MvcHtmlString(output);
+            return PrintItemTypeIcon(item.ItemSource.ItemType);
         }
 
         public static MvcHtmlString PrintItemTypeIcon(ItemSourceDetail item)
         {
-            string output = "<span class=";
-            output += "'icon icon-" + item.ItemType + "' title='" + item.ItemType + "'>";
-            output += "</span>";
-
-            return new MvcHtmlString(output);
+            return PrintItemTypeIcon(item.ItemType);
         }
 
         public static MvcHtmlString PrintItemTypeIcon(StaticItem item)
         {
-            string output = "<span class=";
-            output += "'icon icon-" + item.ItemType + "' title='" + item.ItemType + "'>";
-            output += "</span>";
-
-            return new MvcHtmlString(output);
+            return PrintItemTypeIcon(item.ItemType);
         }
 
         public static MvcHtmlString TruncateToLength(string text, int maxLength)
@@ -194,32 +140,23 @@ namespace TT.Web.CustomHtmlHelpers
             {
                 return new MvcHtmlString(text);
             }
-            else
-            {
-                int actualLength = text.Length;
-                string output = text.Substring(0, maxLength);
+            var output = text.Substring(0, maxLength);
 
-                return new MvcHtmlString(output + "...");
-            }
+            return new MvcHtmlString(output + "...");
         }
 
-
-
-      //  public static MvcHtmlString
 
         public static MvcHtmlString DatetimeToTimeago(DateTime then)
         {
 
-            string output = "";
+            var output = "";
 
-         
+            var minutesAgo = Math.Abs(Math.Floor(then.Subtract(DateTime.UtcNow).TotalMinutes));
 
-            double minutesAgo = Math.Abs(Math.Floor(then.Subtract(DateTime.UtcNow).TotalMinutes));
-
-            double hoursAgo = Math.Floor(minutesAgo / 60); ;
+            var hoursAgo = (int)Math.Floor(minutesAgo / 60);
             minutesAgo = minutesAgo % 60;
 
-            if (hoursAgo == 0 && minutesAgo == 0)
+            if (hoursAgo == 0 && (int)minutesAgo == 0)
             {
                 output += "moments ago";
             }
@@ -235,10 +172,9 @@ namespace TT.Web.CustomHtmlHelpers
                     output += hoursAgo + " hours ";
                 }
 
-                output += minutesAgo + " minutes ago";
+                output += (int)minutesAgo + " minutes ago";
 
             }
-
 
             return new MvcHtmlString(output);
         }
@@ -246,45 +182,33 @@ namespace TT.Web.CustomHtmlHelpers
         public static MvcHtmlString DatetimeToTimeago_WithSeconds(DateTime then)
         {
 
-            string output = "";
+            var output = "";
 
+            var secondsAgo = Math.Abs(Math.Floor(then.Subtract(DateTime.UtcNow).TotalSeconds));
 
+            var minutesAgo = Math.Floor(secondsAgo / 60);
 
-            double secondsAgo = Math.Abs(Math.Floor(then.Subtract(DateTime.UtcNow).TotalSeconds));
-
-            double minutesAgo = Math.Floor(secondsAgo / 60);
-
-            double hoursAgo = Math.Floor(minutesAgo / 60);
+            var hoursAgo = (int)Math.Floor(minutesAgo / 60);
             minutesAgo = minutesAgo % 60;
             secondsAgo = secondsAgo % 60;
 
-            //if (hoursAgo == 0 && minutesAgo == 0)
-            //{
-            //    output += "moments ago";
-            //}
+            if (hoursAgo == 1)
+            {
+                output += hoursAgo + " hour ";
+            }
+            if (hoursAgo > 1)
+            {
+                output += hoursAgo + " hours ";
+            }
 
-            //else
-           // {
-                if (hoursAgo == 1)
-                {
-                    output += hoursAgo + " hour ";
-                }
-                if (hoursAgo > 1)
-                {
-                    output += hoursAgo + " hours ";
-                }
-
-                output += minutesAgo + " minutes and " + secondsAgo + " seconds ago";
-
-         //   }
-
+            output += (int)minutesAgo + " minutes and " + (int)secondsAgo + " seconds ago";
 
             return new MvcHtmlString(output);
         }
 
         public static MvcHtmlString GetBuffedStat(ItemViewModel item, decimal amount)
         {
-            string output = "";
+            string output;
 
             if (item.dbItem.Level > 1 && item.Item.ItemType != "consumable")
             {
@@ -299,7 +223,7 @@ namespace TT.Web.CustomHtmlHelpers
 
         public static MvcHtmlString GetBuffedStat(ItemViewModel item, float amount)
         {
-            string output = "";
+            string output;
 
             if (item.dbItem.Level > 1 && item.Item.ItemType != "consumable")
             {
@@ -316,13 +240,9 @@ namespace TT.Web.CustomHtmlHelpers
 
         public static MvcHtmlString GetImageURL(PlayerFormViewModel player, bool thumb = false)
         {
-
-            ///Images/PvP/itemsPortraits/@Model.Item.PortraitUrl
-            ///
-
-            string output = "";
-            string strThumb = "";
-            string strPortraitUrl = "";
+            var output = "";
+            var strThumb = "";
+            string strPortraitUrl;
 
             if (player.Player.Mobility == PvPStatics.MobilityFull)
             {
@@ -355,18 +275,9 @@ namespace TT.Web.CustomHtmlHelpers
 
         public static MvcHtmlString GetImageURL(ItemViewModel item, bool thumb = false)
         {
-            string output = "";
-            string strThumb = "";
-            string strItemType;
+            var strThumb = "";
 
-            if (item.Item.ItemType == PvPStatics.ItemType_Pet)
-            {
-                strItemType = "animalPortraits/";
-            }
-            else
-            {
-                strItemType = "itemsPortraits/";
-            }
+            var strItemType = item.Item.ItemType == PvPStatics.ItemType_Pet ? "animalPortraits/" : "itemsPortraits/";
 
             if (thumb)
             {
@@ -374,24 +285,15 @@ namespace TT.Web.CustomHtmlHelpers
                 if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + "Images/PvP/" + strItemType + strThumb + item.Item.PortraitUrl)) strThumb = "";
             }
 
-            output = "/Images/PvP/" + strItemType + strThumb + item.Item.PortraitUrl;
+            var output = "/Images/PvP/" + strItemType + strThumb + item.Item.PortraitUrl;
             return new MvcHtmlString(output);
         }
 
         public static MvcHtmlString GetImageURL(DbStaticItem item, bool thumb = false)
         {
-            string output = "";
-            string strThumb = "";
-            string strItemType;
+            var strThumb = "";
 
-            if (item.ItemType == PvPStatics.ItemType_Pet)
-            {
-                strItemType = "animalPortraits/";
-            }
-            else
-            {
-                strItemType = "itemsPortraits/";
-            }
+            var strItemType = item.ItemType == PvPStatics.ItemType_Pet ? "animalPortraits/" : "itemsPortraits/";
 
             if (thumb)
             {
@@ -399,24 +301,15 @@ namespace TT.Web.CustomHtmlHelpers
                 if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + "Images/PvP/" + strItemType + strThumb + item.PortraitUrl)) strThumb = "";
             }
 
-            output = "/Images/PvP/" + strItemType + strThumb + item.PortraitUrl;
+            var output = "/Images/PvP/" + strItemType + strThumb + item.PortraitUrl;
             return new MvcHtmlString(output);
         }
 
         public static MvcHtmlString GetImageURL(ItemListingDetail item, bool thumb = false)
         {
-            string output = "";
-            string strThumb = "";
-            string strItemType;
+            var strThumb = "";
 
-            if (item.ItemSource.ItemType == PvPStatics.ItemType_Pet)
-            {
-                strItemType = "animalPortraits/";
-            }
-            else
-            {
-                strItemType = "itemsPortraits/";
-            }
+            var strItemType = item.ItemSource.ItemType == PvPStatics.ItemType_Pet ? "animalPortraits/" : "itemsPortraits/";
 
             if (thumb)
             {
@@ -424,26 +317,18 @@ namespace TT.Web.CustomHtmlHelpers
                 if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + "Images/PvP/" + strItemType + strThumb + item.ItemSource.PortraitUrl)) strThumb = "";
             }
 
-            output = "/Images/PvP/" + strItemType + strThumb + item.ItemSource.PortraitUrl;
+            var output = "/Images/PvP/" + strItemType + strThumb + item.ItemSource.PortraitUrl;
             return new MvcHtmlString(output);
         }
 
         public static MvcHtmlString StyleIfBot(Player player)
         {
-            if (player.BotId <= AIStatics.PsychopathBotId)
-            {
-                return new MvcHtmlString("bot");
-            }
-            else
-            {
-                return new MvcHtmlString("");
-            }
+            return player.BotId <= AIStatics.PsychopathBotId ? new MvcHtmlString("bot") : new MvcHtmlString("");
         }
 
         public static MvcHtmlString GetEffectFriendlyName(string effect)
         {
-            string friendlyName = EffectStatics.GetStaticEffect2(effect).FriendlyName;
-            return new MvcHtmlString(friendlyName);
+            return new MvcHtmlString(EffectStatics.GetStaticEffect2(effect).FriendlyName);
         }
 
         public static MvcHtmlString GetSpellTypeClass(SkillViewModel skill)
@@ -453,49 +338,37 @@ namespace TT.Web.CustomHtmlHelpers
             {
                 return new MvcHtmlString("action_attack full");
             }
-            else if (skill.MobilityType == PvPStatics.MobilityInanimate)
+            if (skill.MobilityType == PvPStatics.MobilityInanimate)
             {
                 return new MvcHtmlString("action_attack inanimate");
             }
-            else if (skill.MobilityType == PvPStatics.MobilityPet)
+            if (skill.MobilityType == PvPStatics.MobilityPet)
             {
                 return new MvcHtmlString("action_attack animal");
             }
-            else if (skill.MobilityType == "weaken")
+            if (skill.MobilityType == "weaken")
             {
                 return new MvcHtmlString("action_attack weaken");
             }
-            else if (skill.MobilityType == "curse")
+            if (skill.MobilityType == "curse")
             {
                 return new MvcHtmlString("action_attack curse");
             }
-            else if (skill.MobilityType == PvPStatics.MobilityMindControl)
-            {
-                return new MvcHtmlString("action_attack mindcontrol");
-            }
-            else 
-
-            return new MvcHtmlString("");
+            return skill.MobilityType == PvPStatics.MobilityMindControl ? new MvcHtmlString("action_attack mindcontrol") : new MvcHtmlString("");
         }
 
         public static MvcHtmlString PrintOwnerSubPortrait(PlayerFormViewModel owner)
         {
-
-            // <div class='subportrait' style='background-image: url(../Images/PvP/portraits/@Model.WornBy.Form.PortraitUrl); '></div>
-
-            string output = "";
+            var output = "";
 
             if (owner == null)
             {
                 return new MvcHtmlString(output);
             }
-            else
-            {
-                string strThumb = "Thumbnails/100/";
-                if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + "Images/PvP/portraits/" + strThumb + owner.Form.PortraitUrl)) strThumb = "";
-                output = "<div class='subportrait' style='background-image: url(../Images/PvP/portraits/" + strThumb + owner.Form.PortraitUrl + ");' title = 'You are owned by " + owner.Player.FirstName + " " + owner.Player.LastName + ", a " + owner.Form.FriendlyName + ".'></div>";
-                return new MvcHtmlString(output);
-            }
+            var strThumb = "Thumbnails/100/";
+            if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + "Images/PvP/portraits/" + strThumb + owner.Form.PortraitUrl)) strThumb = "";
+            output = "<div class='subportrait' style='background-image: url(../Images/PvP/portraits/" + strThumb + owner.Form.PortraitUrl + ");' title = 'You are owned by " + owner.Player.FirstName + " " + owner.Player.LastName + ", a " + owner.Form.FriendlyName + ".'></div>";
+            return new MvcHtmlString(output);
         }
 
         public static MvcHtmlString GetCovenantInfo(Player player)
@@ -504,19 +377,15 @@ namespace TT.Web.CustomHtmlHelpers
             {
                 return new MvcHtmlString("");
             }
-            else
+            if (!CovenantDictionary.IdNameFlagLookup.Any())
             {
-
-                if (!CovenantDictionary.IdNameFlagLookup.Any())
-                {
-                    CovenantProcedures.LoadCovenantDictionary();
-                }
-
-                CovenantNameFlag temp = CovenantDictionary.IdNameFlagLookup.FirstOrDefault(c => c.Key == player.Covenant).Value;
-                string output = "<span class='covRptName'>Member of <b>" + temp.Name + "</b></span>";
-
-                return new MvcHtmlString(output);
+                CovenantProcedures.LoadCovenantDictionary();
             }
+
+            var temp = CovenantDictionary.IdNameFlagLookup.FirstOrDefault(c => c.Key == player.Covenant).Value;
+            var output = "<span class='covRptName'>Member of <b>" + temp.Name + "</b></span>";
+
+            return new MvcHtmlString(output);
         }
 
         public static MvcHtmlString GetCovenantInfoShort(Player player)
@@ -525,101 +394,57 @@ namespace TT.Web.CustomHtmlHelpers
             {
                 return new MvcHtmlString("");
             }
-            else
+            if (!CovenantDictionary.IdNameFlagLookup.Any())
             {
-
-                if (!CovenantDictionary.IdNameFlagLookup.Any())
-                {
-                    CovenantProcedures.LoadCovenantDictionary();
-                }
-
-                CovenantNameFlag temp = CovenantDictionary.IdNameFlagLookup.FirstOrDefault(c => c.Key == player.Covenant).Value;
-                string output = "<span class='covRptName'><b>" + temp.Name + "</b></span>";
-
-                return new MvcHtmlString(output);
+                CovenantProcedures.LoadCovenantDictionary();
             }
+
+            var temp = CovenantDictionary.IdNameFlagLookup.FirstOrDefault(c => c.Key == player.Covenant).Value;
+            var output = "<span class='covRptName'><b>" + temp.Name + "</b></span>";
+
+            return new MvcHtmlString(output);
         }
 
         public static MvcHtmlString PrintPermanencyIcon(ItemViewModel item)
         {
-            if (item.dbItem.IsPermanent)
-            {
-                return new MvcHtmlString("<span class='icon icon-permanent' title=\"This player\'s soul is permanently sealed into this item.\"></span>");
-            }
-            else
-            {
-                return new MvcHtmlString("");
-            }
+            return item.dbItem.IsPermanent ? new MvcHtmlString("<span class='icon icon-permanent' title=\"This player\'s soul is permanently sealed into this item.\"></span>") : new MvcHtmlString("");
         }
 
         public static MvcHtmlString PrintPermanencyIcon(Item item)
         {
-            if (item.IsPermanent)
-            {
-                return new MvcHtmlString("<span class='icon icon-permanent' title=\"This player\'s soul is permanently sealed into this item.\"></span>");
-            }
-            else
-            {
-                return new MvcHtmlString("");
-            }
+            return item.IsPermanent ? new MvcHtmlString("<span class='icon icon-permanent' title=\"This player\'s soul is permanently sealed into this item.\"></span>") : new MvcHtmlString("");
         }
 
         public static MvcHtmlString PrintSouledIcon(Item item)
         {
-            if (!item.VictimName.IsNullOrEmpty())
-            {
-                double timeAgo = Math.Abs(Math.Floor(item.LastSouledTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
+            if (item.VictimName.IsNullOrEmpty()) return new MvcHtmlString("");
+            var timeAgo = Math.Abs(Math.Floor(item.LastSouledTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
 
-                if (timeAgo < PvPStatics.Item_SoulActivityLevels_Minutes[0])
-                {
-                    return new MvcHtmlString("<span class='icon icon-souled0'></span>");
-                }
-                else if (timeAgo < PvPStatics.Item_SoulActivityLevels_Minutes[1])
-                {
-                    return new MvcHtmlString("<span class='icon icon-souled1'></span>");
-                }
-                else if (timeAgo < PvPStatics.Item_SoulActivityLevels_Minutes[2])
-                {
-                    return new MvcHtmlString("<span class='icon icon-souled2'></span>");
-                }
-                else
-                {
-                    return new MvcHtmlString("");
-                }
-            }
-            else
+            if (timeAgo < PvPStatics.Item_SoulActivityLevels_Minutes[0])
             {
-                return new MvcHtmlString("");
+                return new MvcHtmlString("<span class='icon icon-souled0'></span>");
             }
+            if (timeAgo < PvPStatics.Item_SoulActivityLevels_Minutes[1])
+            {
+                return new MvcHtmlString("<span class='icon icon-souled1'></span>");
+            }
+            return timeAgo < PvPStatics.Item_SoulActivityLevels_Minutes[2] ? new MvcHtmlString("<span class='icon icon-souled2'></span>") : new MvcHtmlString("");
         }
 
         public static MvcHtmlString PrintSouledIcon(ItemViewModel item)
         {
-            if (!item.dbItem.VictimName.IsNullOrEmpty())
-            {
-                double timeAgo = Math.Abs(Math.Floor(item.dbItem.LastSouledTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
+            if (item.dbItem.VictimName.IsNullOrEmpty()) return new MvcHtmlString("");
+            var timeAgo = Math.Abs(Math.Floor(item.dbItem.LastSouledTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
 
-                if (timeAgo < PvPStatics.Item_SoulActivityLevels_Minutes[0])
-                {
-                    return new MvcHtmlString("<span class='icon icon-souled0'></span>");
-                }
-                else if (timeAgo < PvPStatics.Item_SoulActivityLevels_Minutes[1])
-                {
-                    return new MvcHtmlString("<span class='icon icon-souled1'></span>");
-                }
-                else if (timeAgo < PvPStatics.Item_SoulActivityLevels_Minutes[2])
-                {
-                    return new MvcHtmlString("<span class='icon icon-souled2'></span>");
-                }
-                else
-                {
-                    return new MvcHtmlString("");
-                }
-            }
-            else
+            if (timeAgo < PvPStatics.Item_SoulActivityLevels_Minutes[0])
             {
-                return new MvcHtmlString("");
+                return new MvcHtmlString("<span class='icon icon-souled0'></span>");
             }
+            if (timeAgo < PvPStatics.Item_SoulActivityLevels_Minutes[1])
+            {
+                return new MvcHtmlString("<span class='icon icon-souled1'></span>");
+            }
+            return timeAgo < PvPStatics.Item_SoulActivityLevels_Minutes[2] ? new MvcHtmlString("<span class='icon icon-souled2'></span>") : new MvcHtmlString("");
         }
 
         public static MvcHtmlString StringToWebsite(string url)
@@ -629,14 +454,14 @@ namespace TT.Web.CustomHtmlHelpers
                 return new MvcHtmlString("");
             }
 
-            string prettyurl = url;
+            var prettyurl = url;
 
-            if (!url.Contains("http://"))
+            if (!url.StartsWith("http://") && !url.StartsWith("https://"))
             {
                 url = "http://" + url;
             }
 
-            string output = "<a href='" + url + "'>" + prettyurl + "</a>";
+            var output = "<a href='" + url + "'>" + prettyurl + "</a>";
 
             return new MvcHtmlString(output);
         }
@@ -649,21 +474,15 @@ namespace TT.Web.CustomHtmlHelpers
                 {
                     return new MvcHtmlString("<span class='bad'>" + amount + "</span>");
                 }
-                else
-                {
-                    return new MvcHtmlString("<span class='good'>" + amount + "</span>");
-                }
+                return new MvcHtmlString("<span class='good'>" + amount + "</span>");
             }
-            else if (type == "Items")
+            if (type == "Items")
             {
                 if (amount > 35 || amount < 15)
                 {
                     return new MvcHtmlString("<span class='bad'>" + amount + "</span>");
                 }
-                else
-                {
-                    return new MvcHtmlString("<span class='good'>" + amount + "</span>");
-                }
+                return new MvcHtmlString("<span class='good'>" + amount + "</span>");
             }
             if (type == "Pets")
             {
@@ -671,20 +490,15 @@ namespace TT.Web.CustomHtmlHelpers
                 {
                     return new MvcHtmlString("<span class='bad'>" + amount + "</span>");
                 }
-                else
-                {
-                    return new MvcHtmlString("<span class='good'>" + amount + "</span>");
-                }
+                return new MvcHtmlString("<span class='good'>" + amount + "</span>");
             }
-            else {
-                return new MvcHtmlString("");
-            }
+            return new MvcHtmlString("");
         }
 
         public static MvcHtmlString PrintFurnitureAvailability(FurnitureViewModel furniture)
         {
-            string output = "";
-            double minutesUntilReuse = TT.Domain.Procedures.FurnitureProcedures.GetMinutesUntilReuse(furniture);
+            string output;
+            var minutesUntilReuse = FurnitureProcedures.GetMinutesUntilReuse(furniture);
 
             if (minutesUntilReuse <= 0)
             {
@@ -700,29 +514,20 @@ namespace TT.Web.CustomHtmlHelpers
 
         public static MvcHtmlString PrintCovenantSafeground(Covenant cov)
         {
-            string output = "";
+            var output = "";
 
-            if (!cov.HomeLocation.IsNullOrEmpty())
-            {
-                string locName = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == cov.HomeLocation).Name;
-                output = "<span class = 'covMemberCount'>Safeground at <b>" + locName + "</b>.</span>";
-            }
+            if (cov.HomeLocation.IsNullOrEmpty()) return new MvcHtmlString(output);
+            var loc = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == cov.HomeLocation);
+            if (loc == null) return new MvcHtmlString(output);
+            var locName = loc.Name;
+            output = "<span class = 'covMemberCount'>Safeground at <b>" + locName + "</b>.</span>";
 
             return new MvcHtmlString(output);
         }
 
         public static MvcHtmlString PrintCovenantColorCode(LocationInfo info)
         {
-            string output = "red";
-
-            string hexValue = info.CovenantId.ToString("X");
-
-            Random rand = new Random();
-
-            // Convert the hex string back to the number
-           // int decAgain = int.Parse(hexValue, System.Globalization.NumberStyles.HexNumber);
-
-            return new MvcHtmlString(output);
+            return new MvcHtmlString("red");
         }
 
         public static MvcHtmlString PrintStatDescriptionPopup(string statName)
@@ -735,21 +540,14 @@ namespace TT.Web.CustomHtmlHelpers
 
         public static MvcHtmlString PrintStatIcons(string statName)
         {
-            string output = "<span class='goodEffectGroup'>";
-            List<string> iconsToPrint = BuffMap.BuffDetailsMap[statName].PlusIcons;
-            foreach (string s in iconsToPrint)
-            {
-                output += "<span class='" + s + "'></span>";
-            }
+            var iconsToPrint = BuffMap.BuffDetailsMap[statName].PlusIcons;
+            var output = iconsToPrint.Aggregate("<span class='goodEffectGroup'>", (current, s) => current + ("<span class='" + s + "'></span>"));
             output += "</span>";
 
 
             output += "<span class='badEffectGroup'>";
             iconsToPrint = BuffMap.BuffDetailsMap[statName].MinusIcons;
-            foreach (string s in iconsToPrint)
-            {
-                output += "<span class='" + s + "'></span>";
-            }
+            output = iconsToPrint.Aggregate(output, (current, s) => current + ("<span class='" + s + "'></span>"));
             output += "</span>";
 
             return new MvcHtmlString(output);
@@ -757,7 +555,7 @@ namespace TT.Web.CustomHtmlHelpers
 
         public static MvcHtmlString PrintDiceIcon(QuestConnection connection)
         {
-            string output = "";
+            var output = "";
 
             if (connection.RequiresRolls())
             {
@@ -769,42 +567,12 @@ namespace TT.Web.CustomHtmlHelpers
 
         public static MvcHtmlString PrintDuelIcon(Player player)
         {
-            if (player.InDuel > 0)
-            {
-                return new MvcHtmlString("<span class='icon icon-duel' title='This player is actively in a duel.'></span>");
-            }
-            else
-            {
-                return new MvcHtmlString("");
-            }
+            return player.InDuel > 0 ? new MvcHtmlString("<span class='icon icon-duel' title='This player is actively in a duel.'></span>") : new MvcHtmlString("");
         }
 
         public static MvcHtmlString PrintQuestIcon(Player player)
         {
-            if (player.InQuest > 0)
-            {
-                return new MvcHtmlString("<span class='icon icon-quest' title='This player is in a quest.'></span>");
-            }
-            else
-            {
-                return new MvcHtmlString("");
-            }
+            return player.InQuest > 0 ? new MvcHtmlString("<span class='icon icon-quest' title='This player is in a quest.'></span>") : new MvcHtmlString("");
         }
-
-
-        //public static MvcHtmlString PrintCovenantColorCode(LocationInfo info)
-        //{
-        //    string output = "red";
-
-        //    string hexValue = info.CovenantId.ToString("X");
-
-        //    Random rand = new Random();
-
-        //    // Convert the hex string back to the number
-        //    // int decAgain = int.Parse(hexValue, System.Globalization.NumberStyles.HexNumber);
-
-        //    return new MvcHtmlString(output);
-        //}
-
     }
 }

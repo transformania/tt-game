@@ -799,6 +799,8 @@
     <Content Include="Views\Admin\RestockItems\Create.cshtml" />
     <Content Include="Views\Admin\RestockItems\Edit.cshtml" />
     <Content Include="test\web.config" />
+    <Content Include="Sounds\pop.ogg" />
+    <Content Include="Sounds\pop2.ogg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

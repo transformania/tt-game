@@ -15,7 +15,7 @@ namespace TT.Domain.Procedures.BossProcedures
     public static class BossProcedures_PetMerchant
     {
 
-        // pet merchant, MembershipId = -10
+        private const int WuffieFormId = 286;
 
         public static void SpawnPetMerchant()
         {
@@ -37,6 +37,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     Mobility = PvPStatics.MobilityFull,
                     Money = 1000,
                     Form = "form_Soul_Pet_Vendor_Judoo",
+                    FormSourceId = WuffieFormId,
                     Location = "270_west_9th_ave", // Lindella starts her rounds here
                     Gender = PvPStatics.GenderFemale,
                 };

@@ -637,6 +637,7 @@ namespace TT.Domain.Procedures
                 {
                     DbStaticForm newForm = FormStatics.GetForm(p.ActionValue);
                     dbPlayer.Form = newForm.dbName;
+                    dbPlayer.FormSourceId = newForm.Id;
                     dbPlayer.Gender = newForm.Gender;
                     dbPlayer.Mobility = newForm.MobilityType;
                 }

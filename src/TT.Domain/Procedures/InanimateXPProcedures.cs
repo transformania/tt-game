@@ -317,6 +317,7 @@ namespace TT.Domain.Procedures
 
                 // change the player's form and mobility
                 dbPlayer.Form = dbPlayer.OriginalForm;
+                dbPlayer.FormSourceId = FormStatics.GetForm(dbPlayer.Form).Id;
                 if (FormStatics.GetForm(dbPlayer.OriginalForm).Gender == PvPStatics.GenderMale)
                 {
                     dbPlayer.Gender = PvPStatics.GenderMale;
@@ -432,6 +433,7 @@ namespace TT.Domain.Procedures
                 if (newForm.MobilityType == PvPStatics.MobilityFull)
                 {
                     dbOwner.Form = playerItemPlus.CurseTFFormdbName;
+                    dbOwner.FormSourceId = FormStatics.GetForm(dbOwner.Form).Id;
                     dbOwner.Gender = newForm.Gender;
                     dbOwner.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(dbOwner));
                     dbOwner.Mana -= dbOwner.MaxMana * .5M;

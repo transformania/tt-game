@@ -26,6 +26,8 @@ namespace TT.Domain.Procedures.BossProcedures
         public const string Spell4 = "skill_Donna's_Mare_LexamtheGemFox";
         public const string Spell5 = "skill_Donna's_Chicken_LexamtheGemFox";
 
+        private const int DonnaFormId = 287;
+
         public static void SpawnDonna()
         {
             PlayerDetail donna = DomainRegistry.Repository.FindSingle(new GetPlayerByBotId {BotId = AIStatics.DonnaBotId});
@@ -43,6 +45,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     MaxHealth = 9999,
                     MaxMana = 9999,
                     Form = DonnaDbForm,
+                    FormSourceId = DonnaFormId,
                     Money = 1000,
                     Level = 20,
                     BotId = AIStatics.DonnaBotId,
@@ -73,8 +76,6 @@ namespace TT.Domain.Procedures.BossProcedures
 
             else if (donna.Mobility == PvPStatics.MobilityFull)
             {
-
-                donna.Form = "form_Mythical_Sorceress_LexamTheGemFox";
 
                 BuffBox donnasBuffs = ItemProcedures.GetPlayerBuffs(donna);
 

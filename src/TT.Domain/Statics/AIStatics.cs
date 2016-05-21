@@ -20,22 +20,9 @@
         public const int LoremasterBotId = -15;
         public const int FaebossId = -16;
 
-        // Bot ID code:
-        //  0 (active player)
-        // -1 (player has rerolled, player is abandoned)
-        // -2 (psychopath spellslinger)
-        // -3 item merchant
-        // -4 Donna Milton
-        // -5 Lord Valentine
-        // -6 Jewdewfae
-        // -7 Bimbo Boss
-        // -8 Male rat thief
-        // -9 Female rat thief
-        // -10 pet merchant
-        // -11 Nerd mouse sister
-        // -12 bimbo mouse sister
-        // -13 dungeon demon
-        // -14 bartender
-        // -15 loremaster
+        public const int MalePsychoFormId = 13;
+        public const int FemalePsychoFormId = 14;
+
+        public const int DungeonDemonFormId = 371;
     }
 }

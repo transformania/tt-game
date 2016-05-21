@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Highway.Data;
+using TT.Domain.Entities.Forms;
 using TT.Domain.Entities.Identity;
 using TT.Domain.Entities.NPCs;
 using TT.Domain.Statics;
@@ -64,6 +65,8 @@ namespace TT.Domain.Commands.Players
         public int InQuestState { get; set; }
         public int ItemsUsedThisTurn { get; set; }
 
+        public int FormSourceId { get; set; }
+
         public CreatePlayer()
         {
             Health = 100;
@@ -97,7 +100,9 @@ namespace TT.Domain.Commands.Players
 
                 var npc = ctx.AsQueryable<NPC>().SingleOrDefault(t => t.Id == NPCId);
 
-                var player = TT.Domain.Entities.Players.Player.Create(user, npc, this);
+                var form = ctx.AsQueryable<FormSource>().SingleOrDefault(t => t.Id == FormSourceId);
+
+                var player = TT.Domain.Entities.Players.Player.Create(user, npc, form, this);
 
                 ctx.Add(player);
                 ctx.Commit();

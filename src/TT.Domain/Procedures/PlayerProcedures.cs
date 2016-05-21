@@ -635,6 +635,7 @@ namespace TT.Domain.Procedures
             cmd.Location = "coffee_shop";
             cmd.UserId = membershipId;
             cmd.Form = player.FormName;
+            cmd.FormSourceId = FormStatics.GetForm(cmd.Form).Id;
             cmd.OriginalForm = player.FormName;
             cmd.BotId = AIStatics.ActivePlayerBotId;
 
@@ -735,6 +736,7 @@ namespace TT.Domain.Procedures
 
                 Player newplayer = playerRepo.Players.FirstOrDefault(p => p.Id == newPlayerId);
                 newplayer.Form = startform.dbName;
+                newplayer.FormSourceId = FormStatics.GetForm(newplayer.Form).Id;
                 newplayer.Gender = startform.Gender;
                 newplayer.Mobility = startform.MobilityType;
 
@@ -764,6 +766,7 @@ namespace TT.Domain.Procedures
             Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
             string oldForm = dbPlayer.Form;
             dbPlayer.Form = dbPlayer.OriginalForm;
+            dbPlayer.FormSourceId = FormStatics.GetForm(dbPlayer.Form).Id;
 
             if (dbPlayer.Mobility != PvPStatics.MobilityFull)
             {
@@ -797,7 +800,7 @@ namespace TT.Domain.Procedures
             DbStaticForm form = FormStatics.GetForm(formName);
             string oldForm = dbPlayer.Form;
             dbPlayer.Form = formName;
-
+            dbPlayer.FormSourceId = form.Id;
 
             dbPlayer.Gender = form.Gender;
 

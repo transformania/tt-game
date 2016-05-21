@@ -308,6 +308,7 @@ namespace TT.Domain.Procedures
                     SkillProcedures.UpdateFormSpecificSkillsToPlayer(target, oldForm.dbName, targetForm.dbName);
 
                     target.Form = targetForm.dbName;
+                    target.FormSourceId = FormStatics.GetForm(target.Form).Id;
                     target.Gender = targetForm.Gender;
                     target.Mobility = PvPStatics.MobilityFull;
 
@@ -352,6 +353,7 @@ namespace TT.Domain.Procedures
                     SkillProcedures.UpdateFormSpecificSkillsToPlayer(target, oldForm.dbName, targetForm.dbName);
 
                     target.Form = targetForm.dbName;
+                    target.FormSourceId = FormStatics.GetForm(target.Form).Id;
                     target.Gender = targetForm.Gender;
 
                     if (targetForm.MobilityType == PvPStatics.MobilityInanimate)

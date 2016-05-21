@@ -59,11 +59,13 @@ namespace TT.Domain.Procedures
                 if (i % 2 == 1)
                 {
                     cmd.Form = "botform_psychopathic_spellslinger_male";
+                    cmd.FormSourceId = AIStatics.MalePsychoFormId;
                     cmd.Gender = PvPStatics.GenderMale;
                 }
                 else
                 {
                     cmd.Form = "botform_psychopathic_spellslinger_female";
+                    cmd.FormSourceId = AIStatics.FemalePsychoFormId;
                     cmd.Gender = PvPStatics.GenderFemale;
                 }
 

@@ -23,6 +23,9 @@ namespace TT.Domain.Procedures.BossProcedures
         public const string FemaleBossFormDbName = "form_Master_Seekshadow_Thief_Judoo";
         public const string GoldenTrophySpellDbName = "skill_Seekshadow's_Triumph_Judoo";
 
+        private const int MaleBossFormId = 278;
+        private const int FemaleBossFormId = 279;
+
         public static void SpawnThieves()
         {
             PlayerDetail malethief = DomainRegistry.Repository.FindSingle(new GetPlayerByBotId { BotId = AIStatics.MaleRatBotId });
@@ -41,6 +44,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     MaxHealth = 10000,
                     MaxMana = 10000,
                     Form = MaleBossFormDbName,
+                    FormSourceId = MaleBossFormId,
                     Money = 0,
                     Mobility = PvPStatics.MobilityFull,
                     Level = 5,
@@ -85,6 +89,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     MaxHealth = 10000,
                     MaxMana = 10000,
                     Form = FemaleBossFormDbName,
+                    FormSourceId = FemaleBossFormId,
                     Money = 0,
                     Mobility = PvPStatics.MobilityFull,
                     Level = 7,

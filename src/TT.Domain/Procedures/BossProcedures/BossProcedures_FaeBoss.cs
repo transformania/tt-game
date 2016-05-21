@@ -64,6 +64,8 @@ namespace TT.Domain.Procedures.BossProcedures
 
         private const int SpellChangeTurnFrequency = 5;
 
+        private const int FaeBossFormId = 582;
+
         /// <summary>
         /// Spawns Narcissa into the world and sets her initial blank AI Directive
         /// </summary>
@@ -84,6 +86,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     MaxHealth = 9999,
                     MaxMana = 9999,
                     Form = Form,
+                    FormSourceId = FaeBossFormId,
                     Money = 1000,
                     Mobility = PvPStatics.MobilityFull,
                     Level = 25,

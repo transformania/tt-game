@@ -523,6 +523,7 @@ namespace TT.Domain.Procedures
                                 LastName = demonlastName,
                                 Mobility = PvPStatics.MobilityFull,
                                 Form = PvPStatics.DungeonDemon,
+                                FormSourceId = AIStatics.DungeonDemonFormId,
                                 Gender = PvPStatics.GenderFemale,
                                 GameMode = 2,
                                 Health = 1000,

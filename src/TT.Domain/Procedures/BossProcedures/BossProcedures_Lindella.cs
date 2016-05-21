@@ -17,6 +17,8 @@ namespace TT.Domain.Procedures.BossProcedures
     public class BossProcedures_Lindella
     {
 
+        private const int LindellaFormId = 400;
+
         public static void SpawnLindella()
         {
             PlayerDetail merchant = DomainRegistry.Repository.FindSingle(new GetPlayerByBotId { BotId = AIStatics.LindellaBotId });
@@ -36,6 +38,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     Mobility = PvPStatics.MobilityFull,
                     Money = 1000,
                     Form = "form_Soul_Item_Vendor_Judoo",
+                    FormSourceId = LindellaFormId,
                     Location = "270_west_9th_ave", // Lindella starts her rounds here
                     Gender = PvPStatics.GenderFemale,
                 };
@@ -54,8 +57,6 @@ namespace TT.Domain.Procedures.BossProcedures
 
             if (merchant != null && merchant.Mobility == PvPStatics.MobilityFull)
             {
-                merchant.Form = "form_Soul_Item_Vendor_Judoo";
-                merchant.Level = 5;
 
                 AIDirective directive = AIDirectiveProcedures.GetAIDirective(merchant.Id);
 

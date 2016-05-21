@@ -95,9 +95,9 @@
 <div class="containerInner">
     <div class="row">
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-            <div class="petItemPortrait img-responsive" style="background-image: url(../Images/PvP/itemsPortraits/@Model.Item.Item.PortraitUrl);">
+            <div class="petItemPortrait img-responsive" style="background-image: url(../Images/PvP/itemsPortraits/@Model.Item.ItemSource.PortraitUrl);">
                 @CharactersHere.PrintOwnerSubPortrait(Model.WornBy)
-                @CharactersHere.PrintItemTypeIcon(Model.Item.Item)
+                @CharactersHere.PrintItemTypeIcon(Model.Item.ItemSource)
             </div>
         </div>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-justify">
@@ -135,7 +135,7 @@
                             
 
     @{
-                    if (!Model.Item.Item.CurseTFFormdbName.IsNullOrEmpty())
+                    if (!Model.Item.ItemSource.CurseTFFormdbName.IsNullOrEmpty())
                     {
                         <li>
                             @Html.ActionLink("Attempt to transform your owner!", "CurseTransformOwner", "PvP", null, new { @class = "check inanimateAction" })

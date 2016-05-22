@@ -10,6 +10,7 @@ using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 using System.Threading;
 using TT.Domain.Commands.Items;
+using TT.Domain.Commands.Players;
 using TT.Domain.Queries.Item;
 
 namespace TT.Domain.Procedures
@@ -751,8 +752,9 @@ namespace TT.Domain.Procedures
 
                 DomainRegistry.Repository.Execute(cmd);
 
-                DropAllItems(victim);
-                
+                DomainRegistry.Repository.Execute(new DropAllItems { PlayerId = victim.Id });
+                SkillProcedures.UpdateItemSpecificSkillsToPlayer(victim);
+
                 return output;
             }
 
@@ -866,38 +868,17 @@ namespace TT.Domain.Procedures
 
             ItemTransferLogProcedures.AddItemTransferLog(newItemId, (int)ownerId);
 
-            output.LocationLog = "<br><b>" + victim.FirstName + " " + victim.LastName + " was completely transformed into a " + item.FriendlyName + " here.</b>";
-            output.AttackerLog = "<br><b>You fully transformed " + victim.FirstName + " " + victim.LastName + " into a " + item.FriendlyName + "</b>!";
+            output.LocationLog = "<br><b>" + victim.GetFullName() + " was completely transformed into a " + item.FriendlyName + " here.</b>";
+            output.AttackerLog = "<br><b>You fully transformed " + victim.GetFullName() + " into a " + item.FriendlyName + "</b>!";
             output.VictimLog = "<br><b>You have been fully transformed into a " + item.FriendlyName + "!</b>";
 
-            DropAllItems(victim);
+            DomainRegistry.Repository.Execute(new DropAllItems { PlayerId = victim.Id });
+            SkillProcedures.UpdateItemSpecificSkillsToPlayer(victim);
 
             return output;
         }
 
-        public static void DropAllItems(Player player)
-        {
-            IItemRepository itemRepo = new EFItemRepository();
-            List<Item> itemsToDrop = itemRepo.Items.Where(i => i.OwnerId == player.Id).ToList();
-
-            foreach (Item item in itemsToDrop)
-            {
-                item.IsEquipped = false;
-                item.OwnerId = -1;
-                item.dbLocationName = player.dbLocationName;
-                item.TimeDropped = DateTime.UtcNow;
-                ItemTransferLogProcedures.AddItemTransferLog(item.Id, -1);
-            }
-
-            foreach (Item item in itemsToDrop)
-            {
-                itemRepo.SaveItem(item);
-
-            }
-
-            SkillProcedures.UpdateItemSpecificSkillsToPlayer(player);
-
-        }
+       
 
         public static PlayerFormViewModel BeingWornBy(Player player)
         {

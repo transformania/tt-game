@@ -19,7 +19,8 @@ namespace TT.Domain.Mappings.Item
 
             modelBuilder.Entity<Entities.Items.Item>()
                 .HasOptional(cr => cr.Owner)
-                .WithMany().Map(m => m.MapKey("OwnerId"));
+                .WithMany(cr => cr.Items).Map(m => m.MapKey("OwnerId"));
+
         }
 
         protected override void Configure()

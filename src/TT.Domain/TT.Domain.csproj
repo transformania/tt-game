@@ -176,6 +176,7 @@
     <Compile Include="Commands\Items\DeleteItem.cs" />
     <Compile Include="Commands\Items\UpdateItem.cs" />
     <Compile Include="Commands\Players\CreatePlayer.cs" />
+    <Compile Include="Commands\Players\DropAllItems.cs" />
     <Compile Include="Commands\Player\UpdateOnlineActivityTimestamp.cs" />
     <Compile Include="Concrete\EFAchievementBadgeRepository.cs" />
     <Compile Include="Concrete\EFAchievementRepository.cs" />

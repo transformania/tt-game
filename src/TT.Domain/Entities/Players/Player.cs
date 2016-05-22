@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using TT.Domain.Commands.Players;
 using TT.Domain.Entities.Identity;
@@ -15,6 +16,8 @@ namespace TT.Domain.Entities.Players
         [Column("dbLocationName")]
         public string Location { get; protected set; }
         public string Form { get; protected set; } // TODO:  Convert to FK to FormSource (DbStaticForms)
+        public ICollection<Items.Item> Items { get; protected set; } 
+
         public decimal Health { get; protected set; }
         public decimal MaxHealth { get; protected set; }
         public decimal Mana { get; protected set; }
@@ -64,7 +67,10 @@ namespace TT.Domain.Entities.Players
         public int InQuestState { get; protected set; } // TODO:  Convert to nullable FK to QuestStates
         public int ItemsUsedThisTurn { get; protected set; }
 
-        private Player() { }
+        private Player()
+        {
+
+        }
 
         public static Player Create(User user, NPC npc, CreatePlayer cmd)
         {
@@ -114,6 +120,14 @@ namespace TT.Domain.Entities.Players
                 ItemsUsedThisTurn = cmd.ItemsUsedThisTurn
 
             };
+        }
+
+        public void DropAllItems()
+        {
+            foreach (Items.Item i in this.Items)
+            {
+                i.Drop(this);
+            }
         }
     }
 }

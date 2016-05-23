@@ -801,6 +801,10 @@
     <Content Include="test\web.config" />
     <Content Include="Sounds\pop.ogg" />
     <Content Include="Sounds\pop2.ogg" />
+    <Content Include="Views\PvP\RoundLeaderboards\Alpha_33.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\XP\Alpha_33.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_33.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\Statistics\Alpha_33.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

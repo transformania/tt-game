@@ -2,7 +2,7 @@
 
 Here is what to do when ending the round:
 
-1.  Assign end-of-the-round badges.  Admins can go to this link to run this automatically:  http://transformania-time.com.plumeria.arvixe.com/PvPAdmin/AssignLeadersBadges .  Note that this will only work when the game is on the very last turn of the round (at the time of writing this, turn 4000/4000) and NOT in chaos mode.  Please make sure to only run this once.
+1.  Assign end-of-the-round badges.  Admins can go to this link to run this automatically:  http://transformania-time.com.plumeria.arvixe.com/PvPAdmin/AssignLeadersBadges .  Note that this will only work when the game is on the very last turn of the round (at the time of writing this, turn 5000/5000) and NOT in chaos mode.  Please make sure to only run this once.
 
 2.  Save the leaderboards.  To save the leaderboard I go into the page's source and copy all information between the opening and closing <table> tags on the page, run the text through an online HTML minifier, and save to a new .cshtml file under the Views/PvP/RoundLeaderboards area.  There are three leaderboards to save:
 

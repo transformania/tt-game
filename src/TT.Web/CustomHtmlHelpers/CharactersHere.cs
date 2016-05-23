@@ -367,7 +367,7 @@ namespace TT.Web.CustomHtmlHelpers
             }
             var strThumb = "Thumbnails/100/";
             if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + "Images/PvP/portraits/" + strThumb + owner.Form.PortraitUrl)) strThumb = "";
-            output = "<div class='subportrait' style='background-image: url(../Images/PvP/portraits/" + strThumb + owner.Form.PortraitUrl + ");' title = 'You are owned by " + owner.Player.FirstName + " " + owner.Player.LastName + ", a " + owner.Form.FriendlyName + ".'></div>";
+            output = "<div class='subportrait' style='background-image: url(../Images/PvP/portraits/" + strThumb + owner.Form.PortraitUrl + ");' title = 'You are owned by " + owner.Player.GetFullName() + ", a " + owner.Form.FriendlyName + ".'></div>";
             return new MvcHtmlString(output);
         }
 

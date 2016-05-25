@@ -134,9 +134,12 @@
         }
     </style>
 
-    @*<script>
-            $("tr td:contains('@ViewBag.MyName')").each(function () {
-                $(this).parent('tr').css("background-color", "pink");
-            });
-
-        </script>*@
+    <script>
+        var myName = "@ViewBag.MyName";
+        if (myName !== "") {
+            $("tr td:contains('" + myName + "')")
+                .each(function() {
+                    $(this).parent('tr').css("background-color", "pink");
+                });
+        }
+    </script>

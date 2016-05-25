@@ -2836,33 +2836,54 @@ namespace TT.Web.Controllers
             return View(output);
         }
 
-         [Authorize]
         public ActionResult Leaderboard()
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            ViewBag.MyName = me.GetFullName();
+            var myMembershipId = User.Identity.GetUserId();
+            if (myMembershipId.IsNullOrEmpty())
+            {
+                ViewBag.MyName = "";
+            }
+            else
+            {
+                var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+                ViewBag.MyName = me == null ? "" : me.GetFullName();
+            }
             return View("Leaderboard", PlayerProcedures.GetLeadingPlayers__XP(100));
         }
 
-         public ActionResult PvPLeaderboard()
-         {
+        public ActionResult PvPLeaderboard()
+        {
+            var myMembershipId = User.Identity.GetUserId();
+            if (myMembershipId.IsNullOrEmpty())
+            {
+                ViewBag.MyName = "";
+            }
+            else
+            {
+                var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+                ViewBag.MyName = me == null ? "" : me.GetFullName();
+            }
+            return View(PlayerProcedures.GetLeadingPlayers__PvP(100));
+        }
 
-            // return RedirectToAction("Leaderboard");
-
-             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
-             ViewBag.MyName = me.GetFullName();
-             return View(PlayerProcedures.GetLeadingPlayers__PvP(100));
-         }
-
-         public ActionResult ItemLeaderboard()
-         {
-             string myMembershipId = User.Identity.GetUserId();
-             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-             ViewBag.MyName = me.GetFullName();
-             IEnumerable<SimpleItemLeaderboardViewModel> output = ItemProcedures.GetLeadingItemsSimple(100).OrderByDescending(p => p.Item.Level).ThenByDescending(p => p.ItemXP);
-             return View(output);
-         }
+        public ActionResult ItemLeaderboard()
+        {
+            var myMembershipId = User.Identity.GetUserId();
+            if (myMembershipId.IsNullOrEmpty())
+            {
+                ViewBag.MyName = "";
+            }
+            else
+            {
+                var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+                ViewBag.MyName = me == null ? "" : me.GetFullName();
+            }
+            IEnumerable<SimpleItemLeaderboardViewModel> output =
+                ItemProcedures.GetLeadingItemsSimple(100)
+                    .OrderByDescending(p => p.Item.Level)
+                    .ThenByDescending(p => p.ItemXP);
+            return View(output);
+        }
 
 
          [Authorize]

@@ -10,7 +10,7 @@ namespace TT.Tests
         protected IDomainRepository Repository { get; private set; }
         
         [SetUp]
-        public void SetUp()
+        public virtual void SetUp()
         {
             DataContext = new InMemoryDataContextWithGenerator();
             Repository = new DomainRepository(DataContext);

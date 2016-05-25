@@ -203,9 +203,6 @@
 
         var myName = "@ViewBag.MyName";
         if (myName !== "") {
-            $("tr td:contains('" + myName + "')")
-                .each(function() {
-                    $(this).parent('tr').css("background-color", "pink");
-                });
+            $("tr td:contains('" + myName + "')").first().parent('tr').css("background-color", "pink");
         }
     </script>

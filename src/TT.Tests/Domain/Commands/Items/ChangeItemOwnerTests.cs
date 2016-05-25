@@ -16,8 +16,9 @@ namespace TT.Tests.Domain.Commands.Items
         private Item item;
 
         [SetUp]
-        public void SetUp()
+        public override void SetUp()
         {
+            base.SetUp();
             bob = new PlayerBuilder()
                 .With(p => p.Id, 59)
                 .With(p => p.FirstName, "Bob")

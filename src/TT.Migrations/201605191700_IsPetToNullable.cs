@@ -13,7 +13,7 @@ namespace TT.Migrations
 
             Alter.Table("Players").AlterColumn("IsPetToId").AsInt32().Nullable();
 
-            Execute.Sql("UPDATE Players SET IsPetToId = NULL FROM Players WHERE IsPetToId = 0");
+            Update.Table("Players").Set(new { IsPetToId = null as object }).Where(new { IsPetToId = 0 });
 
             Create.ForeignKey()
                 .FromTable("Players")

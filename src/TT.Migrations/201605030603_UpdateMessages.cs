@@ -4,12 +4,12 @@ using System.Data;
 namespace TT.Migrations
 {
     [Migration(201605030603)]
-    public class UpdateMessagesr : ForwardOnlyMigration
+    public class UpdateMessages : ForwardOnlyMigration
     {
         public override void Up()
         {
 
-            Alter.Table("Messages").AddColumn("ConversationId").AsInt32();
+            Alter.Table("Messages").AddColumn("ConversationId").AsInt32().Nullable();
 
             Create.ForeignKey()
                 .FromTable("Messages")

@@ -1,9 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using TT.Domain.Abstract;
+using TT.Domain.Commands.Players;
 using TT.Domain.Concrete;
+using TT.Domain.DTOs.Players;
 using TT.Domain.Models;
+using TT.Domain.Queries.Players;
 using TT.Domain.Statics;
 
 namespace TT.Domain.Procedures.BossProcedures
@@ -25,22 +27,16 @@ namespace TT.Domain.Procedures.BossProcedures
 
         public static void SpawnSisters()
         {
-            IPlayerRepository playerRepo = new EFPlayerRepository();
-
-            Player nerdBoss = playerRepo.Players.FirstOrDefault(f => f.FirstName == NerdBossFirstName && f.LastName == BossesLastName);
+            PlayerDetail nerdBoss = DomainRegistry.Repository.FindSingle(new GetPlayerByBotId { BotId = AIStatics.MouseNerdBotId });
 
             if (nerdBoss == null)
             {
-                nerdBoss = new Player()
+
+                var cmd = new CreatePlayer
                 {
                     FirstName = NerdBossFirstName,
                     LastName = BossesLastName,
-                    ActionPoints = 120,
-                    dbLocationName = "college_foyer",
-                    LastActionTimestamp = DateTime.UtcNow,
-                    LastCombatTimestamp = DateTime.UtcNow,
-                    LastCombatAttackedTimestamp = DateTime.UtcNow,
-                    OnlineActivityTimestamp = DateTime.UtcNow,
+                    Location = "college_foyer",
                     Gender = PvPStatics.GenderFemale,
                     Health = 10000,
                     Mana = 10000,
@@ -51,28 +47,25 @@ namespace TT.Domain.Procedures.BossProcedures
                     Mobility = PvPStatics.MobilityFull,
                     Level = 25,
                     BotId = AIStatics.MouseNerdBotId,
-                    ActionPoints_Refill = 360,
                 };
+                var id = DomainRegistry.Repository.Execute(cmd);
 
-                playerRepo.SavePlayer(nerdBoss);
+                var playerRepo = new EFPlayerRepository();
+                Player nerdBossEF = playerRepo.Players.FirstOrDefault(p => p.Id == id);
+                nerdBossEF.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(nerdBossEF));
+                playerRepo.SavePlayer(nerdBossEF);
             }
 
 
-            Player bimboboss = playerRepo.Players.FirstOrDefault(f => f.FirstName == BimboBossFirstName && f.LastName == BossesLastName);
+            PlayerDetail bimboboss = DomainRegistry.Repository.FindSingle(new GetPlayerByBotId { BotId = AIStatics.MouseBimboBotId });
 
             if (bimboboss == null)
             {
-                bimboboss = new Player()
+                var cmd = new CreatePlayer
                 {
                     FirstName = BimboBossFirstName,
                     LastName = BossesLastName,
-                    ActionPoints = 120,
-                    dbLocationName = "salon_front_desk",
-                    LastActionTimestamp = DateTime.UtcNow,
-                    LastCombatTimestamp = DateTime.UtcNow,
-                    LastCombatAttackedTimestamp = DateTime.UtcNow,
-                    OnlineActivityTimestamp = DateTime.UtcNow,
-                    Gender = PvPStatics.GenderFemale,
+                    Location = "salon_front_desk",
                     Health = 10000,
                     Mana = 10000,
                     MaxHealth = 10000,
@@ -82,13 +75,15 @@ namespace TT.Domain.Procedures.BossProcedures
                     Mobility = PvPStatics.MobilityFull,
                     Level = 25,
                     BotId = AIStatics.MouseBimboBotId,
-                    ActionPoints_Refill = 360,
                 };
+                var id = DomainRegistry.Repository.Execute(cmd);
 
-                playerRepo.SavePlayer(bimboboss);
+                var playerRepo = new EFPlayerRepository();
+                Player bimboBossEF = playerRepo.Players.FirstOrDefault(p => p.Id == id);
+                bimboBossEF.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(bimboBossEF));
+                playerRepo.SavePlayer(bimboBossEF);
+
             }
-
-
 
         }
 

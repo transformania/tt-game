@@ -334,11 +334,13 @@
     <Compile Include="Procedures\AnimalProcedures.cs" />
     <Compile Include="Procedures\AttackProcedures.cs" />
     <Compile Include="Procedures\BlacklistProcedures.cs" />
+    <Compile Include="Procedures\BossProcedures\BossProcedures_Bartender.cs" />
     <Compile Include="Procedures\BossProcedures\BossProcedures_BimboBoss.cs" />
     <Compile Include="Procedures\BossProcedures\BossProcedures_Donna.cs" />
     <Compile Include="Procedures\BossProcedures\BossProcedures_DungeonDemon.cs" />
     <Compile Include="Procedures\BossProcedures\BossProcedures_FaeBoss.cs" />
     <Compile Include="Procedures\BossProcedures\BossProcedures_Jewdewfae.cs" />
+    <Compile Include="Procedures\BossProcedures\BossProcedures_Lindella.cs" />
     <Compile Include="Procedures\BossProcedures\BossProcedures_Loremaster.cs" />
     <Compile Include="Procedures\BossProcedures\BossProcedures_PetMerchant.cs" />
     <Compile Include="Procedures\BossProcedures\BossProcedures_Sisters.cs" />
@@ -394,6 +396,7 @@
     <Compile Include="Queries\Messages\GetMessage.cs" />
     <Compile Include="Queries\Messages\GetPlayerReceivedtMessages.cs" />
     <Compile Include="Queries\Messages\GetPlayerSentMessages.cs" />
+    <Compile Include="Queries\Players\GetPlayerByBotId.cs" />
     <Compile Include="Queries\Players\GetPlayer.cs" />
     <Compile Include="Queries\Players\GetPlayerFormFromMembership.cs" />
     <Compile Include="Queries\Statics\GetStaticItem.cs" />

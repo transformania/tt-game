@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using TT.Domain.Abstract;
+using TT.Domain.Commands.Players;
 using TT.Domain.Concrete;
+using TT.Domain.DTOs.Players;
 using TT.Domain.Models;
+using TT.Domain.Queries.Players;
 using TT.Domain.Statics;
 
 namespace TT.Domain.Procedures.BossProcedures
@@ -17,21 +20,15 @@ namespace TT.Domain.Procedures.BossProcedures
 
         public static void SpawnFae()
         {
-            IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player fae = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.JewdewfaeBotId);
+            PlayerDetail fae = DomainRegistry.Repository.FindSingle(new GetPlayerByBotId { BotId = AIStatics.JewdewfaeBotId });
 
             if (fae == null)
             {
-                fae = new Player()
+                var cmd = new CreatePlayer
                 {
                     FirstName = FirstName,
                     LastName = LastName,
-                    ActionPoints = 120,
-                    dbLocationName = "apartment_dog_park",
-                    LastActionTimestamp = DateTime.UtcNow,
-                    LastCombatTimestamp = DateTime.UtcNow,
-                    LastCombatAttackedTimestamp = DateTime.UtcNow,
-                    OnlineActivityTimestamp = DateTime.UtcNow,
+                    Location = "apartment_dog_park",
                     Gender = PvPStatics.GenderFemale,
                     Health = 9999,
                     Mana = 9999,
@@ -39,25 +36,21 @@ namespace TT.Domain.Procedures.BossProcedures
                     MaxMana = 9999,
                     Form = FaeFormDbName,
                     Money = 1000,
-                    Mobility = PvPStatics.MobilityFull,
                     Level = 7,
-                    BotId = AIStatics.JewdewfaeBotId,
-                    ActionPoints_Refill = 360,
+                    BotId = AIStatics.JewdewfaeBotId
                 };
+                var id = DomainRegistry.Repository.Execute(cmd);
 
-                playerRepo.SavePlayer(fae);
-
-                fae = PlayerProcedures.ReadjustMaxes(fae, ItemProcedures.GetPlayerBuffs(fae));
-
-                playerRepo.SavePlayer(fae);
-
-                fae = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.JewdewfaeBotId);
+                var playerRepo = new EFPlayerRepository();
+                Player faeEF = playerRepo.Players.FirstOrDefault(p => p.Id == id);
+                faeEF.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(faeEF));
+                playerRepo.SavePlayer(faeEF);
 
                 // set up her AI directive so it is not deleted
                 IAIDirectiveRepository aiRepo = new EFAIDirectiveRepository();
                 AIDirective directive = new AIDirective
                 {
-                    OwnerId = fae.Id,
+                    OwnerId = id,
                     Timestamp = DateTime.UtcNow,
                     SpawnTurn = 0,
                     DoNotRecycleMe = true,

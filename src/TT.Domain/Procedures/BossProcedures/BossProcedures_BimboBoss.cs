@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using TT.Domain.Abstract;
 using TT.Domain.Commands.Items;
+using TT.Domain.Commands.Players;
 using TT.Domain.Concrete;
 using TT.Domain.DTOs.Item;
+using TT.Domain.DTOs.Players;
 using TT.Domain.Models;
 using TT.Domain.Queries.Item;
+using TT.Domain.Queries.Players;
 using TT.Domain.Statics;
 
 namespace TT.Domain.Procedures.BossProcedures
@@ -27,21 +30,15 @@ namespace TT.Domain.Procedures.BossProcedures
 
         public static void SpawnBimboBoss()
         {
-            IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player bimboBoss = playerRepo.Players.FirstOrDefault(f => f.FirstName == BossFirstName && f.LastName == BossLastName);
+            PlayerDetail bimboBoss = DomainRegistry.Repository.FindSingle(new GetPlayerByBotId { BotId = AIStatics.BimboBossBotId });
 
             if (bimboBoss == null)
             {
-                bimboBoss = new Player()
+                var cmd = new CreatePlayer
                 {
                     FirstName = BossFirstName,
                     LastName = BossLastName,
-                    ActionPoints = 120,
-                    dbLocationName = "stripclub_bar_seats",
-                    LastActionTimestamp = DateTime.UtcNow,
-                    LastCombatTimestamp = DateTime.UtcNow,
-                    LastCombatAttackedTimestamp = DateTime.UtcNow,
-                    OnlineActivityTimestamp = DateTime.UtcNow,
+                    Location = "stripclub_bar_seats",
                     Gender = PvPStatics.GenderFemale,
                     Health = 9999,
                     Mana = 9999,
@@ -49,23 +46,24 @@ namespace TT.Domain.Procedures.BossProcedures
                     MaxMana = 9999,
                     Form = BossFormDbName,
                     Money = 2500,
-                    Mobility = PvPStatics.MobilityFull,
                     Level = 15,
-                    BotId = -7,
-                    ActionPoints_Refill = 360,
+                    BotId = AIStatics.BimboBossBotId,
                 };
+                var id = DomainRegistry.Repository.Execute(cmd);
 
-                playerRepo.SavePlayer(bimboBoss);
+                var playerRepo = new EFPlayerRepository();
+                Player bimboEF = playerRepo.Players.FirstOrDefault(p => p.Id == id);
 
-                bimboBoss = PlayerProcedures.ReadjustMaxes(bimboBoss, ItemProcedures.GetPlayerBuffs(bimboBoss));
+                bimboEF.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(bimboEF));
 
-                playerRepo.SavePlayer(bimboBoss);
+                playerRepo.SavePlayer(bimboEF);
+
 
                 // set up her AI directive so it is not deleted
                 IAIDirectiveRepository aiRepo = new EFAIDirectiveRepository();
                 AIDirective directive = new AIDirective
                 {
-                    OwnerId = bimboBoss.Id,
+                    OwnerId = id,
                     Timestamp = DateTime.UtcNow,
                     SpawnTurn = PvPWorldStatProcedures.GetWorldTurnNumber(),
                     DoNotRecycleMe = true,

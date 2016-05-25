@@ -41,10 +41,5 @@ namespace TT.Domain.Procedures.BossProcedures
 
         }
 
-        public static void SpawnArtifactsAndDemons()
-        {
-
-        }
-
     }
 }

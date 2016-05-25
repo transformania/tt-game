@@ -434,6 +434,7 @@ namespace TT.Web.Controllers
             if (result != "saved")
             {
                 ViewBag.ErrorMessage = "Your character was not created.  Reason:  " + result;
+                ViewBag.IsRerolling = true;
                 return View("~/Views/PvP/MakeNewCharacter.cshtml");
             }
 

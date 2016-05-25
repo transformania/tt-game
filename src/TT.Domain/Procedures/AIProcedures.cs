@@ -5,6 +5,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using TT.Domain.Abstract;
 using TT.Domain.Commands.Items;
+using TT.Domain.Commands.Players;
 using TT.Domain.Concrete;
 using TT.Domain.Models;
 using TT.Domain.Procedures.BossProcedures;
@@ -36,84 +37,76 @@ namespace TT.Domain.Procedures
             for (int i = (0 + botCount); i < (count + botCount); i++)
             {
 
-                Player bot = new Player();
-
-
-                bot.FirstName = "Psychopath";
+                var cmd = new CreatePlayer
+                {
+                    FirstName = "Psychopath",
+                    Location = LocationsStatics.GetRandomLocation(),
+                    Health = 200,
+                    MaxHealth = 200,
+                    Mana = 200,
+                    MaxMana = 200,
+                    BotId = AIStatics.PsychopathBotId,
+                    UnusedLevelUpPerks = 0,
+                    XP = 0,
+                    Money = 100,
+                };
 
                 double lastNameMax = lastNames.Count();
                 int randLastNameIndex = Convert.ToInt32(Math.Floor(rand.NextDouble() * lastNameMax));
 
-                bot.LastName = lastNames.ElementAt(randLastNameIndex);
-
-                bot.ActionPoints = 120;
-                bot.dbLocationName = LocationsStatics.GetRandomLocation();
-                bot.FlaggedForAbuse = false;
-                bot.Level = 1;
-                bot.Health = 200;
-                bot.MaxHealth = 200;
-                bot.Mana = 200;
-                bot.MaxMana = 200;
-                bot.BotId = AIStatics.PsychopathBotId;
-                bot.Mobility = PvPStatics.MobilityFull;
-                bot.UnusedLevelUpPerks = 0;
-                bot.XP = 0;
-                bot.LastActionTimestamp = DateTime.UtcNow;
-                bot.OnlineActivityTimestamp = DateTime.UtcNow;
-                bot.Money = 100;
-                bot.LastCombatTimestamp = DateTime.UtcNow;
-                bot.LastCombatAttackedTimestamp = DateTime.UtcNow;
-                bot.CleansesMeditatesThisRound = 0;
+                cmd.LastName = lastNames.ElementAt(randLastNameIndex);
 
                 if (i % 2 == 1)
                 {
-                    bot.Form = "botform_psychopathic_spellslinger_male";
-                    bot.Gender = PvPStatics.GenderMale;
+                    cmd.Form = "botform_psychopathic_spellslinger_male";
+                    cmd.Gender = PvPStatics.GenderMale;
                 }
                 else
                 {
-                    bot.Form = "botform_psychopathic_spellslinger_female";
-                    bot.Gender = PvPStatics.GenderFemale;
+                    cmd.Form = "botform_psychopathic_spellslinger_female";
+                    cmd.Gender = PvPStatics.GenderFemale;
                 }
 
-                bot.OriginalForm = bot.Form;
+                cmd.OriginalForm = cmd.Form;
 
                 int strength = GetPsychopathLevel(turnNumber);
 
                 if (strength == 1)
                 {
-                    bot.Level = 1;
+                    cmd.Level = 1;
                 }
                 else if (strength == 3)
                 {
-                    bot.FirstName = "Fierce " + bot.FirstName;
-                    bot.Level = 3;
+                    cmd.FirstName = "Fierce " + cmd.FirstName;
+                    cmd.Level = 3;
                 }
                 else if (strength == 5)
                 {
-                    bot.FirstName = "Wrathful " + bot.FirstName;
-                    bot.Level = 5;
+                    cmd.FirstName = "Wrathful " + cmd.FirstName;
+                    cmd.Level = 5;
                 }
                 else if (strength == 7)
                 {
-                    bot.FirstName = "Loathful " + bot.FirstName;
-                    bot.Level = 7;
+                    cmd.FirstName = "Loathful " + cmd.FirstName;
+                    cmd.Level = 7;
                 }
                 else if (strength == 9)
                 {
-                    bot.FirstName = "Soulless " + bot.FirstName;
-                    bot.Level = 9;
+                    cmd.FirstName = "Soulless " + cmd.FirstName;
+                    cmd.Level = 9;
                 }
-                
+
+                var id = 0;
+
                 // assert this name isn't already taken
-                Player ghost = playerRepo.Players.FirstOrDefault(p => p.FirstName == bot.FirstName && p.LastName == bot.LastName);
+                Player ghost = playerRepo.Players.FirstOrDefault(p => p.FirstName == cmd.FirstName && p.LastName == cmd.LastName);
                 if (ghost != null)
                 {
                     continue;
                 }
                 else
                 {
-                    playerRepo.SavePlayer(bot);
+                    id = DomainRegistry.Repository.Execute(cmd);
                 }
 
                 // give this bot a random skill
@@ -123,29 +116,33 @@ namespace TT.Domain.Procedures
                 int randIndex = Convert.ToInt32(Math.Floor(rand.NextDouble() * max));
 
                 DbStaticSkill skillToLearn = eligibleSkills.ElementAt(randIndex);
-                SkillProcedures.GiveSkillToPlayer(bot.Id, skillToLearn);
+                SkillProcedures.GiveSkillToPlayer(id, skillToLearn);
 
                 // give this bot the Psychpathic perk
                 if (strength == 1)
                 {
-                    EffectProcedures.GivePerkToPlayer("bot_psychopathic", bot);
+                    EffectProcedures.GivePerkToPlayer("bot_psychopathic", id);
                 }
                 else if (strength == 3)
                 {
-                    EffectProcedures.GivePerkToPlayer("bot_psychopathic_lvl3", bot);
+                    EffectProcedures.GivePerkToPlayer("bot_psychopathic_lvl3", id);
                 }
                 else if (strength == 5)
                 {
-                    EffectProcedures.GivePerkToPlayer("bot_psychopathic_lvl5", bot);
+                    EffectProcedures.GivePerkToPlayer("bot_psychopathic_lvl5", id);
                 }
                 else if (strength == 7)
                 {
-                    EffectProcedures.GivePerkToPlayer("bot_psychopathic_lvl7", bot);
+                    EffectProcedures.GivePerkToPlayer("bot_psychopathic_lvl7", id);
                 }
                 else if (strength == 9)
                 {
-                    EffectProcedures.GivePerkToPlayer("bot_psychopathic_lvl9", bot);
+                    EffectProcedures.GivePerkToPlayer("bot_psychopathic_lvl9", id);
                 }
+
+                Player psychoEF = playerRepo.Players.FirstOrDefault(p => p.Id == id);
+                psychoEF.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(psychoEF));
+                playerRepo.SavePlayer(psychoEF);
 
             }
         }
@@ -320,194 +317,7 @@ namespace TT.Domain.Procedures
 
         }
 
-        public static void SpawnLindella()
-        {
-            IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player merchant = playerRepo.Players.FirstOrDefault(f => f.FirstName == "Lindella" && f.LastName == "the Soul Vendor" && f.Mobility == PvPStatics.MobilityFull);
-
-            if (merchant == null)
-            {
-                merchant = new Player();
-                merchant.BotId = AIStatics.LindellaBotId;
-                merchant.Level = 5;
-                merchant.FirstName = "Lindella";
-                merchant.LastName = "the Soul Vendor";
-                merchant.Health = 5000;
-                merchant.Mana = 5000;
-                merchant.MaxHealth = 500;
-                merchant.MaxMana = 500;
-                merchant.Mobility = PvPStatics.MobilityFull;
-                merchant.Money = 1000;
-                merchant.TimesAttackingThisUpdate = 0;
-                merchant.UnusedLevelUpPerks = 0;
-                merchant.LastActionTimestamp = DateTime.UtcNow;
-                merchant.LastCombatTimestamp = DateTime.UtcNow;
-                merchant.LastCombatAttackedTimestamp = DateTime.UtcNow;
-                merchant.OnlineActivityTimestamp = DateTime.UtcNow;
-                merchant.Form = "form_Soul_Item_Vendor_Judoo";
-                merchant.dbLocationName = "270_west_9th_ave"; // Lindella starts her rounds here
-                merchant.Gender = PvPStatics.GenderFemale;
-                merchant.ActionPoints = 120;
-
-                playerRepo.SavePlayer(merchant);
-
-                AIDirectiveProcedures.GetAIDirective(merchant.Id);
-                AIDirectiveProcedures.SetAIDirective_MoveTo(merchant.Id, "street_15th_south");
-
-
-
-            }
-        }
-
-        public static void RunAIMerchantActions(int turnNumber)
-        {
-            IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player merchant = playerRepo.Players.FirstOrDefault(f => f.FirstName == "Lindella" && f.LastName == "the Soul Vendor" && f.Mobility == PvPStatics.MobilityFull);
-
-           
-
-            if (merchant != null && merchant.Mobility == PvPStatics.MobilityFull)
-            {
-                merchant.Form = "form_Soul_Item_Vendor_Judoo";
-                merchant.Level = 5;
-
-                AIDirective directive = AIDirectiveProcedures.GetAIDirective(merchant.Id);
-
-                if (directive.TargetLocation != merchant.dbLocationName)
-                {
-                    string newplace = MoveTo(merchant, directive.TargetLocation, 5);
-                    merchant.dbLocationName = newplace;
-                }
-
-                // if the merchant has arrived, set a new target for next time.
-                if (directive.TargetLocation == merchant.dbLocationName)
-                {
-                    if (merchant.dbLocationName == "270_west_9th_ave")
-                    {
-                        AIDirectiveProcedures.SetAIDirective_MoveTo(merchant.Id, "street_15th_south");
-                    }
-                    else if (merchant.dbLocationName == "street_15th_south")
-                    {
-                        AIDirectiveProcedures.SetAIDirective_MoveTo(merchant.Id, "street_220_sunnyglade_drive");
-                    }
-                    else if (merchant.dbLocationName == "street_220_sunnyglade_drive")
-                    {
-                        AIDirectiveProcedures.SetAIDirective_MoveTo(merchant.Id, "street_70e9th");
-                    }
-                    else if (merchant.dbLocationName == "street_70e9th")
-                    {
-                        AIDirectiveProcedures.SetAIDirective_MoveTo(merchant.Id, "street_130_main");
-                    }
-                    else if (merchant.dbLocationName == "street_130_main")
-                    {
-                        AIDirectiveProcedures.SetAIDirective_MoveTo(merchant.Id, "270_west_9th_ave");
-                    }
-                }
-
-                playerRepo.SavePlayer(merchant);
-                BuffBox box = ItemProcedures.GetPlayerBuffs(merchant);
-
-                if ((merchant.Health / merchant.MaxHealth) < .75M)
-                {
-                    if (merchant.Health < merchant.MaxHealth)
-                    {
-                        PlayerProcedures.Cleanse(merchant, box);
-                        PlayerProcedures.Cleanse(merchant, box);
-                        PlayerProcedures.Meditate(merchant, box);
-                    }
-                }
-                else
-                {
-                    if (merchant.Mana < merchant.MaxMana)
-                    {
-                        PlayerProcedures.Meditate(merchant, box);
-                        PlayerProcedures.Meditate(merchant, box);
-                        PlayerProcedures.Cleanse(merchant, box);
-                    }
-                }
-
-#region restock inventory
-                if (turnNumber % 16 == 1)
-                {
-
-                    Player lorekeeper = PlayerProcedures.GetPlayerFromBotId(AIStatics.LoremasterBotId);
-
-                    IItemRepository itemRepo = new EFItemRepository();
-
-                    var lindellaItemscmd = new GetItemsOwnedByPlayer() { OwnerId = merchant.Id};
-                    var lindellasItems = DomainRegistry.Repository.Find(lindellaItemscmd).Where(i => i.Level > 0);
-
-                    var lorekeeperItemscmd = new GetItemsOwnedByPlayer() { OwnerId = lorekeeper.Id };
-                    var lorekeeperItems = DomainRegistry.Repository.Find(lorekeeperItemscmd).Where(i => i.Level > 0);
-
-                    var restockItems = XmlResourceLoader.Load<List<RestockListItem>>("TT.Domain.XMLs.RestockList.xml");
-
-                    foreach (RestockListItem item in restockItems)
-                    {
-
-                        if (item.Merchant == "Lindella")
-                        {
-                            int currentCount = lindellasItems.Count(i => i.dbName == item.dbName);
-                            if (currentCount < item.AmountBeforeRestock)
-                            {
-                                for (int x = 0; x < item.AmountToRestockTo - currentCount; x++)
-                                {
-                                    
-                                    var cmd = new CreateItem
-                                    {
-                                        dbName = item.dbName,
-                                        dbLocationName = "",
-                                        OwnerId = merchant.Id,
-                                        IsEquipped = false,
-                                        IsPermanent = true,
-                                        Level = 0,
-                                        PvPEnabled = -1,
-                                        TurnsUntilUse = 0,
-                                        VictimName = "",
-                                        EquippedThisTurn = false,
-                                        ItemSourceId = ItemStatics.GetStaticItem(item.dbName).Id
-                                    };
-                                    DomainRegistry.Repository.Execute(cmd);
-                                }
-
-                            }
-                        }
-
-                        else if (item.Merchant == "Lorekeeper")
-                        {
-                            int currentCount = lorekeeperItems.Count(i => i.dbName == item.dbName);
-                            if (currentCount < item.AmountBeforeRestock)
-                            {
-                                for (int x = 0; x < item.AmountToRestockTo - currentCount; x++)
-                                {
-                                    var cmd = new CreateItem
-                                    {
-                                        dbName = item.dbName,
-                                        dbLocationName = "",
-                                        OwnerId = lorekeeper.Id,
-                                        IsEquipped = false,
-                                        IsPermanent = true,
-                                        Level = 0,
-                                        PvPEnabled = -1,
-                                        TurnsUntilUse = 0,
-                                        VictimName = "",
-                                        EquippedThisTurn = false,
-                                        ItemSourceId = ItemStatics.GetStaticItem(item.dbName).Id
-                                    };
-                                    DomainRegistry.Repository.Execute(cmd);
-                                }
-
-                            }
-                        }
-
-
-                    }
-                }
-#endregion
-
-            }
-
-        }
+       
 
         
 
@@ -826,41 +636,7 @@ namespace TT.Domain.Procedures
 
         }
 
-        public static void SpawnBartender()
-        {
-            IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player bartender = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.BartenderBotId);
-
-            if (bartender == null)
-            {
-                bartender = new Player()
-                {
-                    FirstName = "Rusty",
-                    LastName = "Steamstein the Automaton Bartender",
-                    ActionPoints = 120,
-                    dbLocationName = "tavern_counter",
-                    LastActionTimestamp = DateTime.UtcNow,
-                    LastCombatTimestamp = DateTime.UtcNow,
-                    LastCombatAttackedTimestamp = DateTime.UtcNow,
-                    OnlineActivityTimestamp = DateTime.UtcNow,
-                    Gender = PvPStatics.GenderMale,
-                    Health = 9999,
-                    Mana = 9999,
-                    MaxHealth = 9999,
-                    MaxMana = 9999,
-                    Form = "form_The_Perfect_Barman_Judoo",
-                    //IsPetToId = -1,
-                    Money = 0,
-                    Mobility = PvPStatics.MobilityFull,
-                    Level = 15,
-                    BotId = -14,
-                    ActionPoints_Refill = 360,
-                };
-
-                playerRepo.SavePlayer(bartender);
-
-            }
-        }
+        
 
         public static void DealBossDamage(Player boss, Player attacker, bool humanAttacker, int attackCount)
         {

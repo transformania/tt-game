@@ -385,13 +385,6 @@ namespace TT.Web.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
-            var cmd = new DropItem
-            {
-                OwnerId = 1,
-                ItemId = 9
-            };
-            DomainRegistry.Repository.Execute(cmd);
-
             return RedirectToAction("Index");
         }
 
@@ -436,10 +429,10 @@ namespace TT.Web.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
-            AIProcedures.SpawnLindella();
+            BossProcedures_Lindella.SpawnLindella();
             BossProcedures_PetMerchant.SpawnPetMerchant();
             BossProcedures_Jewdewfae.SpawnFae();
-            AIProcedures.SpawnBartender();
+            BossProcedures_Bartender.SpawnBartender();
             BossProcedures_Loremaster.SpawnLoremaster();
 
             return RedirectToAction("Index");
@@ -1061,12 +1054,6 @@ namespace TT.Web.Controllers
 
             TempData["Message"] = output;
             return RedirectToAction("Index");
-        }
-
-        public ActionResult SpawnLindella()
-        {
-            AIProcedures.SpawnLindella();
-            return View("Play");
         }
 
         public ActionResult ServerBalance_Forms()

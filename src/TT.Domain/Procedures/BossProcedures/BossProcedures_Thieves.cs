@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using TT.Domain.Abstract;
+using TT.Domain.Commands.Players;
 using TT.Domain.Concrete;
+using TT.Domain.DTOs.Players;
 using TT.Domain.Models;
+using TT.Domain.Queries.Players;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 
@@ -22,44 +25,40 @@ namespace TT.Domain.Procedures.BossProcedures
 
         public static void SpawnThieves()
         {
-            IPlayerRepository playerRepo = new EFPlayerRepository();
-
-            Player malethief = playerRepo.Players.FirstOrDefault(f => f.FirstName == MaleBossFirstName && f.LastName == MaleBossLastName);
+            PlayerDetail malethief = DomainRegistry.Repository.FindSingle(new GetPlayerByBotId { BotId = AIStatics.MaleRatBotId });
 
             if (malethief == null)
             {
-                malethief = new Player()
+
+                var cmd = new CreatePlayer
                 {
                     FirstName = MaleBossFirstName,
                     LastName = MaleBossLastName,
-                    ActionPoints = 120,
-                    dbLocationName = "tavern_pool",
-                    LastActionTimestamp = DateTime.UtcNow,
-                    LastCombatTimestamp = DateTime.UtcNow,
-                    LastCombatAttackedTimestamp = DateTime.UtcNow,
-                    OnlineActivityTimestamp = DateTime.UtcNow,
+                    Location = "tavern_pool",
                     Gender = PvPStatics.GenderMale,
                     Health = 10000,
                     Mana = 10000,
                     MaxHealth = 10000,
                     MaxMana = 10000,
                     Form = MaleBossFormDbName,
-                    //IsPetToId = -1,
                     Money = 0,
                     Mobility = PvPStatics.MobilityFull,
                     Level = 5,
-                    BotId = AIStatics.MaleRatBotId,
-                    ActionPoints_Refill = 360,
+                    BotId = AIStatics.MaleRatBotId
                 };
 
-                playerRepo.SavePlayer(malethief);
-                malethief = PlayerProcedures.ReadjustMaxes(malethief, ItemProcedures.GetPlayerBuffs(malethief));
-                playerRepo.SavePlayer(malethief);
+                var id = DomainRegistry.Repository.Execute(cmd);
+
+                var playerRepo = new EFPlayerRepository();
+                Player malethiefEF = playerRepo.Players.FirstOrDefault(p => p.Id == id);
+                malethiefEF.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(malethiefEF));
+                playerRepo.SavePlayer(malethiefEF);
+
 
                 EFAIDirectiveRepository aiRepo = new EFAIDirectiveRepository();
                 AIDirective maleDirective = new AIDirective
                 {
-                    OwnerId = malethief.Id,
+                    OwnerId = id,
                     DoNotRecycleMe = true,
                     Timestamp = DateTime.UtcNow,
                     SpawnTurn = PvPWorldStatProcedures.GetWorldTurnNumber(),
@@ -70,20 +69,16 @@ namespace TT.Domain.Procedures.BossProcedures
             }
 
 
-            Player femalethief = playerRepo.Players.FirstOrDefault(f => f.FirstName == FemaleBossFirstName && f.LastName == FemaleBossLastName);
+            PlayerDetail femalethief = DomainRegistry.Repository.FindSingle(new GetPlayerByBotId { BotId = AIStatics.FemaleRatBotId });
 
             if (femalethief == null)
             {
-                femalethief = new Player()
+
+                var cmd = new CreatePlayer
                 {
                     FirstName = FemaleBossFirstName,
                     LastName = FemaleBossLastName,
-                    ActionPoints = 120,
-                    dbLocationName = "tavern_pool",
-                    LastActionTimestamp = DateTime.UtcNow,
-                    LastCombatTimestamp = DateTime.UtcNow,
-                    LastCombatAttackedTimestamp = DateTime.UtcNow,
-                    OnlineActivityTimestamp = DateTime.UtcNow,
+                    Location = "tavern_pool",
                     Gender = PvPStatics.GenderFemale,
                     Health = 10000,
                     Mana = 10000,
@@ -94,17 +89,18 @@ namespace TT.Domain.Procedures.BossProcedures
                     Mobility = PvPStatics.MobilityFull,
                     Level = 7,
                     BotId = AIStatics.FemaleRatBotId,
-                    ActionPoints_Refill = 360,
                 };
+                var id = DomainRegistry.Repository.Execute(cmd);
 
-                playerRepo.SavePlayer(femalethief);
-                femalethief = PlayerProcedures.ReadjustMaxes(malethief, ItemProcedures.GetPlayerBuffs(malethief));
-                playerRepo.SavePlayer(femalethief);
+                var playerRepo = new EFPlayerRepository();
+                Player femalethiefEF = playerRepo.Players.FirstOrDefault(p => p.Id == id);
+                femalethiefEF.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(femalethiefEF));
+                playerRepo.SavePlayer(femalethiefEF);
 
                 EFAIDirectiveRepository aiRepo = new EFAIDirectiveRepository();
                 AIDirective femaleDirective = new AIDirective
                 {
-                    OwnerId = femalethief.Id,
+                    OwnerId = id,
                     DoNotRecycleMe = true,
                     Timestamp = DateTime.UtcNow,
                     SpawnTurn = PvPWorldStatProcedures.GetWorldTurnNumber(),

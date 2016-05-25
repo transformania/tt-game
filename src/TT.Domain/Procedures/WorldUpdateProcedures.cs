@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Xml;
-using System.Xml.Serialization;
 using TT.Domain.Abstract;
 using TT.Domain.Commands.Items;
+using TT.Domain.Commands.Players;
 using TT.Domain.Concrete;
 using TT.Domain.Models;
 using TT.Domain.Procedures.BossProcedures;
@@ -69,7 +68,7 @@ namespace TT.Domain.Procedures
                     Player lindella = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.LindellaBotId);
                     if (lindella == null)
                     {
-                        AIProcedures.SpawnLindella();
+                        BossProcedures_Lindella.SpawnLindella();
                     }
 
                     Player wuffie = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.WuffieBotId);
@@ -87,7 +86,7 @@ namespace TT.Domain.Procedures
                     Player bartender = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.BartenderBotId);
                     if (bartender == null)
                     {
-                        AIProcedures.SpawnBartender();
+                        BossProcedures_Bartender.SpawnBartender();
                     }
 
                     Player lorekeeper = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.LoremasterBotId);
@@ -542,15 +541,12 @@ namespace TT.Domain.Procedures
                             double levelRoll = randLevel.NextDouble();
                             int level = (int)Math.Floor(levelRoll * 8 + 3);
 
-
-                            Player newDemon = new Player
+                            var cmd = new CreatePlayer
                             {
-                                BotId = -13,
+                                BotId = AIStatics.DemonBotId,
                                 FirstName = "Spirit of ",
                                 LastName = demonlastName,
                                 Mobility = PvPStatics.MobilityFull,
-                                ActionPoints = 120,
-                                ActionPoints_Refill = 360,
                                 Form = PvPStatics.DungeonDemon,
                                 Gender = PvPStatics.GenderFemale,
                                 GameMode = 2,
@@ -558,28 +554,26 @@ namespace TT.Domain.Procedures
                                 Mana = 1000,
                                 OriginalForm = PvPStatics.DungeonDemon,
                                 Covenant = -1,
-                                dbLocationName = randDungeon,
-                                FlaggedForAbuse = false,
-                                LastActionTimestamp = DateTime.UtcNow,
-                                LastCombatAttackedTimestamp = DateTime.UtcNow,
-                                LastCombatTimestamp = DateTime.UtcNow,
+                                Location = randDungeon,
                                 Level = level,
                                 MaxHealth = 500,
                                 MaxMana = 500,
-                                OnlineActivityTimestamp = DateTime.UtcNow,
                             };
-                            playerRepo.SavePlayer(newDemon);
 
-                            if (newDemon.Level <= 5)
+                            var id = DomainRegistry.Repository.Execute(cmd);
+
+                            Player newDemon = new EFPlayerRepository().Players.FirstOrDefault(p => p.Id == id);
+                            
+                            if (cmd.Level <= 5)
                             {
                                 ItemProcedures.GiveNewItemToPlayer(newDemon, "item_consumable_spellbook_medium");
                             }
-                            else if (newDemon.Level <= 7)
+                            else if (cmd.Level <= 7)
                             {
                                 ItemProcedures.GiveNewItemToPlayer(newDemon, "item_consumable_spellbook_large");
                             }
 
-                            else if (newDemon.Level > 7)
+                            else if (cmd.Level > 7)
                             {
                                 ItemProcedures.GiveNewItemToPlayer(newDemon, "item_consumable_spellbook_giant");
                             }
@@ -634,7 +628,7 @@ namespace TT.Domain.Procedures
                 try
                 {
                     serverLogRepo.SaveServerLog(log);
-                    AIProcedures.RunAIMerchantActions(turnNo);
+                    BossProcedures_Lindella.RunActions(turnNo);
                     log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished Lindella actions");
                 }
                 catch (Exception e)

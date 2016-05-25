@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Linq;
 using TT.Domain.Abstract;
+using TT.Domain.Commands.Players;
 using TT.Domain.Concrete;
+using TT.Domain.DTOs.Players;
 using TT.Domain.Models;
+using TT.Domain.Queries.Players;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 
@@ -15,50 +18,33 @@ namespace TT.Domain.Procedures.BossProcedures
 
         public static void SpawnPetMerchant()
         {
-            IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player petMerchant = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.WuffieBotId);
+            PlayerDetail petMerchant = DomainRegistry.Repository.FindSingle(new GetPlayerByBotId { BotId = AIStatics.WuffieBotId });
 
             if (petMerchant == null)
             {
-                petMerchant = new Player();
-                petMerchant.BotId = AIStatics.WuffieBotId;
-                petMerchant.Level = 5;
-                petMerchant.FirstName = "Wüffie";
-                petMerchant.LastName = "the Soul Pet Vendor";
-                petMerchant.Health = 5000;
-                petMerchant.Mana = 5000;
-                petMerchant.MaxHealth = 500;
-                petMerchant.MaxMana = 500;
-                petMerchant.Mobility = PvPStatics.MobilityFull;
-                petMerchant.Money = 1000;
-                petMerchant.TimesAttackingThisUpdate = 0;
-                petMerchant.UnusedLevelUpPerks = 0;
-                petMerchant.LastActionTimestamp = DateTime.UtcNow;
-                petMerchant.LastCombatTimestamp = DateTime.UtcNow;
-                petMerchant.LastCombatAttackedTimestamp = DateTime.UtcNow;
-                petMerchant.OnlineActivityTimestamp = DateTime.UtcNow;
-                petMerchant.Form = "form_Soul_Pet_Vendor_Judoo";
-                petMerchant.dbLocationName = "270_west_9th_ave"; // Lindella starts her rounds here
-                petMerchant.Gender = PvPStatics.GenderFemale;
-                petMerchant.ActionPoints = 120;
 
-                playerRepo.SavePlayer(petMerchant);
-
-                petMerchant = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.WuffieBotId);
-
-                IAIDirectiveRepository aiRepo = new EFAIDirectiveRepository();
-
-                AIDirective directive = new AIDirective
+                var cmd = new CreatePlayer
                 {
-                    OwnerId = petMerchant.Id,
-                    SpawnTurn = PvPWorldStatProcedures.GetWorldTurnNumber(),
-                    State = "move",
-                    Timestamp = DateTime.UtcNow,
-                    TargetLocation = "",
-                    TargetPlayerId = -1,
-                    DoNotRecycleMe = true,
+                    BotId = AIStatics.WuffieBotId,
+                    Level = 5,
+                    FirstName = "Wüffie",
+                    LastName = "the Soul Pet Vendor",
+                    Health = 5000,
+                    Mana = 5000,
+                    MaxHealth = 500,
+                    MaxMana = 500,
+                    Mobility = PvPStatics.MobilityFull,
+                    Money = 1000,
+                    Form = "form_Soul_Pet_Vendor_Judoo",
+                    Location = "270_west_9th_ave", // Lindella starts her rounds here
+                    Gender = PvPStatics.GenderFemale,
                 };
+                var id = DomainRegistry.Repository.Execute(cmd);
 
+                var playerRepo = new EFPlayerRepository();
+                Player petMerchantEF = playerRepo.Players.FirstOrDefault(p => p.Id == id);
+                petMerchantEF.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(petMerchantEF));
+                playerRepo.SavePlayer(petMerchantEF);
             }
         }
 
@@ -67,41 +53,44 @@ namespace TT.Domain.Procedures.BossProcedures
             IPlayerRepository playerRepo = new EFPlayerRepository();
             Player petMerchant = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.WuffieBotId);
 
-            if (petMerchant.Mobility == PvPStatics.MobilityFull && attacker.Mobility == PvPStatics.MobilityFull) {
+            if (petMerchant.Mobility == PvPStatics.MobilityFull && attacker.Mobility == PvPStatics.MobilityFull)
+            {
                 AttackProcedures.Attack(petMerchant, attacker, "skill_Sarmoti_Zatur");
             }
-            
+
         }
 
         public static void RunPetMerchantActions(int turnNumber)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
             Player petMerchant = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.WuffieBotId);
-            
+
 
             if (petMerchant.Mobility == PvPStatics.MobilityFull)
             {
                 if (petMerchant.Health < petMerchant.MaxHealth || petMerchant.Mana < petMerchant.MaxMana)
                 {
                     BuffBox buffs = ItemProcedures.GetPlayerBuffs(petMerchant);
-                    if (petMerchant.Health < petMerchant.MaxHealth) {
+                    if (petMerchant.Health < petMerchant.MaxHealth)
+                    {
                         petMerchant.Health += 200;
                         string logmessage = "<span class='playerCleansingNotification'>" + petMerchant.GetFullName() + " cleansed here.</span>";
                         LocationLogProcedures.AddLocationLog(petMerchant.dbLocationName, logmessage);
                     }
-                    if ( petMerchant.Mana < petMerchant.MaxMana) {
+                    if (petMerchant.Mana < petMerchant.MaxMana)
+                    {
                         petMerchant.Mana += 200;
                         string logmessage = "<span class='playerMediatingNotification'>" + petMerchant.GetFullName() + " meditated here.</span>";
                         LocationLogProcedures.AddLocationLog(petMerchant.dbLocationName, logmessage);
                     }
 
                     petMerchant.NormalizeHealthMana();
-                    
+
                 }
 
                 IAIDirectiveRepository aiRepo = new EFAIDirectiveRepository();
-               
-                int turnMod = turnNumber % (24*4);
+
+                int turnMod = turnNumber % (24 * 4);
 
                 string newLocation = "";
                 if (turnMod < 24 * 1)

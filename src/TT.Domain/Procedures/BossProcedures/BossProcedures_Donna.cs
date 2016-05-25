@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using TT.Domain.Abstract;
+using TT.Domain.Commands.Players;
 using TT.Domain.Concrete;
+using TT.Domain.DTOs.Players;
 using TT.Domain.Models;
+using TT.Domain.Queries.Players;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 
@@ -13,6 +16,8 @@ namespace TT.Domain.Procedures.BossProcedures
     public class BossProcedures_Donna
     {
 
+        private const string FirstName = "'Aunt' Donna";
+        private const string LastName = "Milton";
         private const int DonnaSpellCount = 5;
         public const string DonnaDbForm = "form_Mythical_Sorceress_LexamTheGemFox";
         public const string Spell1 = "skill_Donna's_Bitch_LexamTheGemFox";
@@ -23,21 +28,15 @@ namespace TT.Domain.Procedures.BossProcedures
 
         public static void SpawnDonna()
         {
-            IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player donna = playerRepo.Players.FirstOrDefault(f => f.FirstName == "'Aunt' Donna" && f.LastName == "Milton");
+            PlayerDetail donna = DomainRegistry.Repository.FindSingle(new GetPlayerByBotId {BotId = AIStatics.DonnaBotId});
 
             if (donna == null)
             {
-                donna = new Player()
+                var cmd = new CreatePlayer
                 {
-                    FirstName = "'Aunt' Donna",
-                    LastName = "Milton",
-                    ActionPoints = 120,
-                    dbLocationName = "ranch_bedroom",
-                    LastActionTimestamp = DateTime.UtcNow,
-                    LastCombatTimestamp = DateTime.UtcNow,
-                    LastCombatAttackedTimestamp = DateTime.UtcNow,
-                    OnlineActivityTimestamp = DateTime.UtcNow,
+                    FirstName = FirstName,
+                    LastName = LastName,
+                    Location = "ranch_bedroom",
                     Gender = PvPStatics.GenderFemale,
                     Health = 9999,
                     Mana = 9999,
@@ -45,22 +44,17 @@ namespace TT.Domain.Procedures.BossProcedures
                     MaxMana = 9999,
                     Form = DonnaDbForm,
                     Money = 1000,
-                    Mobility = PvPStatics.MobilityFull,
                     Level = 20,
-                    BotId = -4,
-                    ActionPoints_Refill = 360,
+                    BotId = AIStatics.DonnaBotId,
                 };
+                var id = DomainRegistry.Repository.Execute(cmd);
 
-                playerRepo.SavePlayer(donna);
-
-                donna = PlayerProcedures.ReadjustMaxes(donna, ItemProcedures.GetPlayerBuffs(donna));
-
-                playerRepo.SavePlayer(donna);
+                var playerRepo = new EFPlayerRepository();
+                Player donnaEF = playerRepo.Players.FirstOrDefault(p => p.Id == id);
+                donnaEF.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(donnaEF));
+                playerRepo.SavePlayer(donnaEF);
 
             }
-
-
-
         }
 
         public static void RunDonnaActions()
@@ -69,7 +63,6 @@ namespace TT.Domain.Procedures.BossProcedures
             IServerLogRepository serverLogRepo = new EFServerLogRepository();
 
             int worldTurnNumber = PvPWorldStatProcedures.GetWorldTurnNumber() - 1;
-            ServerLog log = serverLogRepo.ServerLogs.FirstOrDefault(s => s.TurnNumber == worldTurnNumber);
 
             Player donna = playerRepo.Players.FirstOrDefault(p => p.BotId == AIStatics.DonnaBotId);
 
@@ -178,7 +171,6 @@ namespace TT.Domain.Procedures.BossProcedures
                     Player luckyVictim = PlayerProcedures.GetPlayerWithExactName(weakestItem.VictimName);
                     PlayerLogProcedures.AddPlayerLog(luckyVictim.Id, "Donna has released you, allowing you to wander about or be tamed by a new owner.", true);
                 }
-                serverLogRepo.SaveServerLog(log);
 
             }
 

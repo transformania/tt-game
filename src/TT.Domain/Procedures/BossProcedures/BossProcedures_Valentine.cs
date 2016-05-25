@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using TT.Domain.Abstract;
 using TT.Domain.Commands.Items;
+using TT.Domain.Commands.Players;
 using TT.Domain.Concrete;
+using TT.Domain.DTOs.Players;
 using TT.Domain.Models;
+using TT.Domain.Queries.Players;
 using TT.Domain.Statics;
 
 namespace TT.Domain.Procedures.BossProcedures
@@ -12,27 +15,17 @@ namespace TT.Domain.Procedures.BossProcedures
     public static class BossProcedures_Valentine
     {
 
-        // -5 Lord Valentine
-
         private const string ValentineFirstName = "Lord 'Teaserael'";
         private const string ValentineLastName = "Valentine";
 
         public const string ValentineFormDbName = "form_First_Lord_of_the_Valentine_Castle_Valentine's_Family";
         public const string SwordSpell = "skill_The_Dance_of_Blades_Ashley_Valentine";
 
-      //  public const string FemaleVampSpell = "skill_Mistress_of_the_night_Foxpower93";
-      //  public const string MaleVampSpell = "skill_Dark_Baptism_Blood_Knight";
-
-
-        private const string MaleVampFormDbName = "form_Vampire_Lord_Blood_Knight";
-        private const string FemaleVampFormDbName = "form_Vampire_Lord_Blood_Knight";
-
         public const string BloodyCurseSpell = "skill_A_Bloody_Kiss_Lilith";
         private const string BloodyKissEffect = "effect_A_Bloody_Kiss_Lilith";
 
         public const string ValentinesPresenceSpell = "skill_Valentine's_Presence_Lilith";
         private const string ValentinesPresenceEffect = "effect_Valentine’s_Presence_Lilith";
-
 
         public const string QueensPanties = "item_Queen_Valentine’s_Panties_Ashley_Valentine";
 
@@ -59,21 +52,16 @@ namespace TT.Domain.Procedures.BossProcedures
 
         public static void SpawnValentine()
         {
-            IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player valentine = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.ValentineBotId);
+            PlayerDetail valentine = DomainRegistry.Repository.FindSingle(new GetPlayerByBotId { BotId = AIStatics.ValentineBotId });
 
             if (valentine == null)
             {
-                valentine = new Player()
+
+                var cmd = new CreatePlayer
                 {
                     FirstName = ValentineFirstName,
                     LastName = ValentineLastName,
-                    ActionPoints = 120,
-                    dbLocationName = GetStanceLocation(),
-                    LastActionTimestamp = DateTime.UtcNow,
-                    LastCombatTimestamp = DateTime.UtcNow,
-                    LastCombatAttackedTimestamp = DateTime.UtcNow,
-                    OnlineActivityTimestamp = DateTime.UtcNow,
+                    Location = GetStanceLocation(),
                     Gender = PvPStatics.GenderMale,
                     Health = 9999,
                     Mana = 9999,
@@ -84,19 +72,16 @@ namespace TT.Domain.Procedures.BossProcedures
                     Mobility = PvPStatics.MobilityFull,
                     Level = 10,
                     BotId = AIStatics.ValentineBotId,
-                    ActionPoints_Refill = 360,
                 };
+                var id = DomainRegistry.Repository.Execute(cmd);
 
-                playerRepo.SavePlayer(valentine);
+                var playerRepo = new EFPlayerRepository();
+                Player valentineEF = playerRepo.Players.FirstOrDefault(p => p.Id == id);
+                valentineEF.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(valentineEF));
+                playerRepo.SavePlayer(valentineEF);
 
-                valentine = PlayerProcedures.ReadjustMaxes(valentine, ItemProcedures.GetPlayerBuffs(valentine));
-
-                playerRepo.SavePlayer(valentine);
-
-                // give Valentine his skills
-                valentine = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.ValentineBotId);
-
-                var cmd = new CreateItem
+                // give Valentine his reward item drop
+                var createItemCmd = new CreateItem
                 {
                     dbLocationName = "",
                     dbName = QueensPanties,
@@ -104,19 +89,19 @@ namespace TT.Domain.Procedures.BossProcedures
                     IsEquipped = false,
                     IsPermanent = false,
                     Level = 11,
-                    OwnerId = valentine.Id,
+                    OwnerId = id,
                     PvPEnabled = -1,
                     VictimName = "",
                     ItemSourceId = ItemStatics.GetStaticItem(QueensPanties).Id
                 };
 
-                DomainRegistry.Repository.Execute(cmd);
+                DomainRegistry.Repository.Execute(createItemCmd);
 
                 // save his aiDirective, just for the sake of knowing his spawn turn
                 IAIDirectiveRepository aiRepo = new EFAIDirectiveRepository();
                 AIDirective directive = new AIDirective
                 {
-                    OwnerId = valentine.Id,
+                    OwnerId = id,
                     Timestamp = DateTime.UtcNow,
                     SpawnTurn = PvPWorldStatProcedures.GetWorldTurnNumber(),
                     DoNotRecycleMe = true,

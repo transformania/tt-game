@@ -1,10 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using TT.Domain.Abstract;
 using TT.Domain.Commands.Items;
+using TT.Domain.Commands.Players;
 using TT.Domain.Concrete;
+using TT.Domain.DTOs.Players;
 using TT.Domain.Models;
+using TT.Domain.Queries.Players;
 using TT.Domain.Statics;
 
 namespace TT.Domain.Procedures.BossProcedures
@@ -18,35 +20,32 @@ namespace TT.Domain.Procedures.BossProcedures
 
         public static void SpawnLoremaster()
         {
-            IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player loremaster = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.LoremasterBotId);
+            PlayerDetail loremaster = DomainRegistry.Repository.FindSingle(new GetPlayerByBotId { BotId = AIStatics.LoremasterBotId });
 
             if (loremaster == null)
             {
-                loremaster = new Player();
-                loremaster.BotId = AIStatics.LoremasterBotId;
-                loremaster.Level = 5;
-                loremaster.FirstName = FirstName;
-                loremaster.LastName = LastName;
-                loremaster.Health = 5000;
-                loremaster.Mana = 5000;
-                loremaster.MaxHealth = 500;
-                loremaster.MaxMana = 500;
-                loremaster.Mobility = PvPStatics.MobilityFull;
-                loremaster.Money = 1000;
-                loremaster.TimesAttackingThisUpdate = 0;
-                loremaster.UnusedLevelUpPerks = 0;
-                loremaster.LastActionTimestamp = DateTime.UtcNow;
-                loremaster.LastCombatTimestamp = DateTime.UtcNow;
-                loremaster.LastCombatAttackedTimestamp = DateTime.UtcNow;
-                loremaster.OnlineActivityTimestamp = DateTime.UtcNow;
-                loremaster.Form = FormDbName;
-                loremaster.dbLocationName = "bookstore_back";
-                loremaster.Gender = PvPStatics.GenderMale;
-                loremaster.ActionPoints = 120;
+                var cmd = new CreatePlayer
+                {
+                    BotId = AIStatics.LoremasterBotId,
+                    Level = 5,
+                    FirstName = FirstName,
+                    LastName = LastName,
+                    Health = 5000,
+                    Mana = 5000,
+                    MaxHealth = 500,
+                    MaxMana = 500,
+                    Mobility = PvPStatics.MobilityFull,
+                    Money = 1000,
+                    Form = FormDbName,
+                    Location = "bookstore_back",
+                    Gender = PvPStatics.GenderMale,
+                };
+                var id = DomainRegistry.Repository.Execute(cmd);
 
-                playerRepo.SavePlayer(loremaster);
-
+                var playerRepo = new EFPlayerRepository();
+                Player lorekeeperEF = playerRepo.Players.FirstOrDefault(p => p.Id == id);
+                lorekeeperEF.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(lorekeeperEF));
+                playerRepo.SavePlayer(lorekeeperEF);
             }
         }
 

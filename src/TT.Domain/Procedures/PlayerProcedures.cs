@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using TT.Domain.Abstract;
+using TT.Domain.Commands.Players;
 using TT.Domain.Concrete;
 using TT.Domain.Models;
 using TT.Domain.Procedures.BossProcedures;
@@ -625,83 +626,70 @@ namespace TT.Domain.Procedures
             player.FirstName = cleanFirstName;
             player.LastName = cleanLastName + generationTitle;
 
-            Player newplayer = new Player();
-            newplayer.FirstName = player.FirstName;
-            newplayer.LastName = player.LastName;
-            newplayer.Gender = player.Gender;
-            newplayer.Health = 100;
-            newplayer.Mana = 100;
-            newplayer.MaxHealth = 100;
-            newplayer.MaxMana = 100;
-            newplayer.ActionPoints = PvPStatics.MaximumStoreableActionPoints;
-            newplayer.dbLocationName = "coffee_shop";
-            newplayer.MembershipId = membershipId;
-            newplayer.Form = player.FormName;
-            newplayer.OriginalForm = player.FormName;
-            newplayer.Level = 1;
-            newplayer.XP = 0;
-            newplayer.LastActionTimestamp = DateTime.UtcNow;
-            newplayer.LastCombatTimestamp = DateTime.UtcNow.AddDays(-1); // new spawns shouldn't get hit by no combat timer limitations
-            newplayer.LastCombatAttackedTimestamp = DateTime.UtcNow.AddDays(-1); // new spawns shouldn't get hit by no combat timer limitations
-            newplayer.OnlineActivityTimestamp = DateTime.UtcNow;
-            newplayer.Money = 0;
-            newplayer.ActionPoints_Refill = 360;
-            newplayer.CleansesMeditatesThisRound = 0;
-            newplayer.Mobility = Statics.PvPStatics.MobilityFull;
-            newplayer.BotId = AIStatics.ActivePlayerBotId;
-            newplayer.ChatColor = "black";
+
+            var cmd = new CreatePlayer();
+
+            cmd.FirstName = player.FirstName;
+            cmd.LastName = player.LastName;
+            cmd.Gender = player.Gender;
+            cmd.Location = "coffee_shop";
+            cmd.UserId = membershipId;
+            cmd.Form = player.FormName;
+            cmd.OriginalForm = player.FormName;
+            cmd.BotId = AIStatics.ActivePlayerBotId;
 
             // if player is not choosing to start in an inanimate/pet form, start them off in Welcome to Sunnyglade quest
             if (player.InanimateForm == null)
             {
-                newplayer.InQuest = 6; // Welcome to Sunnyglade quest
-                newplayer.InQuestState = 93; // first stage of Welcome to Sunnyglade
+                cmd.InQuest = 6; // Welcome to Sunnyglade quest
+                cmd.InQuestState = 93; // first stage of Welcome to Sunnyglade
             }
 
             if (oldplayer != null)
             {
-                newplayer.Covenant = oldplayer.Covenant;
+                cmd.Covenant = oldplayer.Covenant;
                 oldplayer.Covenant = 0;
-                newplayer.Level = oldplayer.Level - 3;
-                if (newplayer.Level < 1)
+                cmd.Level = oldplayer.Level - 3;
+                if (cmd.Level < 1)
                 {
-                    newplayer.Level = 1;
+                    cmd.Level = 1;
                 }
-                newplayer.UnusedLevelUpPerks = newplayer.Level - 1;
-                newplayer.ChatColor = oldplayer.ChatColor;
+                cmd.UnusedLevelUpPerks = cmd.Level - 1;
+                cmd.ChatColor = oldplayer.ChatColor;
 
             }
 
             // start player in PvP if they choose, otherwise put them in protection
-            newplayer.GameMode = player.StartGameMode;
+            cmd.GameMode = player.StartGameMode;
 
 
             if (player.StartInRP)
             {
-                newplayer.InRP = true;
+                cmd.InRP = true;
             }
             else
             {
-                newplayer.InRP = false;
+                cmd.InRP = false;
             }
 
-            newplayer.dbLocationName = LocationsStatics.GetRandomLocation();
+            cmd.Location = LocationsStatics.GetRandomLocation();
 
-            playerRepo.SavePlayer(newplayer);
-            RerollProcedures.AddRerollGeneration(newplayer);
+            int newPlayerId = DomainRegistry.Repository.Execute(cmd);
+           // playerRepo.SavePlayer(newplayer);
+            RerollProcedures.AddRerollGeneration(cmd.UserId);
 
             if (oldplayer != null)
             {
                 // transfer all of the old player's skills that are NOT form specific or weaken
-                SkillProcedures.TransferAllPlayerSkills(oldplayer.Id, newplayer.Id);
+                SkillProcedures.TransferAllPlayerSkills(oldplayer.Id, newPlayerId);
 
                 // transfer their old messages to new account
                 if (player.MigrateLetters)
                 {
                     using (var context = new StatsContext())
                     {
-                        context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Messages] SET ReceiverId = " + newplayer.Id + " WHERE ReceiverId = " + oldplayer.Id);
-                        context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Messages] SET SenderId = " + newplayer.Id + " WHERE SenderId = " + oldplayer.Id);
+                        context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Messages] SET ReceiverId = " + newPlayerId + " WHERE ReceiverId = " + oldplayer.Id);
+                        context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Messages] SET SenderId = " + newPlayerId + " WHERE SenderId = " + oldplayer.Id);
                     }
 
                 }
@@ -709,7 +697,7 @@ namespace TT.Domain.Procedures
             }
 
             // assign the player their appropriate donation level
-            DonatorProcedures.SetNewPlayerDonationRank(newplayer.Id);
+            DonatorProcedures.SetNewPlayerDonationRank(newPlayerId);
 
             // if the player was in a covenant, they might have been the leader.  Check this and make a new player the leader
             if (oldCovId > 0)
@@ -718,7 +706,7 @@ namespace TT.Domain.Procedures
                 Covenant oldCovenant = covRepo.Covenants.FirstOrDefault(c => c.Id == oldCovId);
 
                 // we need to regrab the new player from the repo again to get their Id
-                Player newmeFromDb = PlayerProcedures.GetPlayerWithExactName(newplayer.FirstName + " " + newplayer.LastName);
+                Player newmeFromDb = PlayerProcedures.GetPlayerWithExactName(cmd.FirstName + " " + cmd.LastName);
 
                 if (oldCovenant != null && oldCovenant.LeaderId == oldplayer.Id)
                 {
@@ -733,7 +721,7 @@ namespace TT.Domain.Procedures
             ISkillRepository skillRepo = new EFSkillRepository();
             Skill baseskill = new Skill
             {
-                OwnerId = newplayer.Id,
+                OwnerId = newPlayerId,
                 Name = "lowerHealth",
                 Charge = -1,
                 Duration = -1
@@ -745,6 +733,7 @@ namespace TT.Domain.Procedures
                 DbStaticForm startform = ItemProcedures.GetFormFromItem(ItemProcedures.GetRandomItemOfType(player.InanimateForm.ToString()));
                 if (player.InanimateForm.ToString() == "random" && startform.MobilityType == "animal") vendor = PlayerProcedures.GetPlayerFromBotId(AIStatics.WuffieBotId);
 
+                Player newplayer = playerRepo.Players.FirstOrDefault(p => p.Id == newPlayerId);
                 newplayer.Form = startform.dbName;
                 newplayer.Gender = startform.Gender;
                 newplayer.Mobility = startform.MobilityType;

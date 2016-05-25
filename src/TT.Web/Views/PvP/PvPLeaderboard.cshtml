@@ -194,14 +194,15 @@
 
     <script>
 
-        $("table tbody td:nth-child(7)").each(function () {
-            if ($(this).html() == 0) {
-                $(this).parent('tr').addClass("dark");
-            }
-        });
+        $("table tbody td:nth-child(7)")
+            .each(function() {
+                if ($(this).html() == 0) {
+                    $(this).parent('tr').addClass("dark");
+                }
+            });
 
-        $("tr td:contains('@ViewBag.MyName')").each(function () {
-            $(this).parent('tr').css("background-color", "pink");
-        });
-
+        var myName = "@ViewBag.MyName";
+        if (myName !== "") {
+            $("tr td:contains('" + myName + "')").first().parent('tr').css("background-color", "pink");
+        }
     </script>

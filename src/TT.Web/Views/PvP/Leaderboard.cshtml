@@ -161,8 +161,8 @@
 </style>
 
 <script>
-    $("tr td:contains('@ViewBag.MyName')").each(function () {
-        $(this).parent('tr').css("background-color", "pink");
-    });
-
+    var myName = "@ViewBag.MyName";
+    if (myName !== "") {
+        $("tr td:contains('" + myName + "')").first().parent('tr').css("background-color", "pink");
+    }
 </script>

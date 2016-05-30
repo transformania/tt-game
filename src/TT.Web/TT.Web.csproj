@@ -406,9 +406,7 @@
     </Content>
     <Content Include="MachineKey.config" />
     <Content Include="AppSettings.config" />
-    <None Include="Properties\PublishProfiles\transformania-time.com - Web Deploy.pubxml">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="Properties\PublishProfiles\test.transformaniatime.com.pubxml" />
     <Content Include="Images\back.png" />
     <Content Include="Images\background1.jpg" />
     <Content Include="Images\background2.jpg" />
@@ -470,9 +468,7 @@
     <Content Include="Scripts\game_sequence.js" />
     <Content Include="Scripts\GenericCharData.js" />
     <Content Include="Scripts\GenericPlayerData.js" />
-    <None Include="Properties\PublishProfiles\transformaniatime.com - Web Deploy %286%29.pubxml">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="Properties\PublishProfiles\transformaniatime.com.pubxml" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.0.js" />
     <Content Include="Scripts\jquery-2.1.0.min.js" />

@@ -20,6 +20,7 @@ using TT.Domain.Queries.Assets;
 using TT.Domain;
 using TT.Domain.DTOs.Item;
 using TT.Domain.Queries.Item;
+using TT.Domain.Queries.Messages;
 
 namespace TT.Web.Controllers
 {
@@ -147,7 +148,8 @@ namespace TT.Web.Controllers
                 inanimateOutput.IsPermanent = ItemProcedures.GetItemByVictimName(me.FirstName, me.LastName).IsPermanent;
 
                 inanimateOutput.AtLocation = ItemProcedures.PlayerIsItemAtLocation(me);
-                inanimateOutput.NewMessageCount = MessageProcedures.GetMessageCountData(me).NewMessagesCount;
+                inanimateOutput.NewMessageCount =
+                    DomainRegistry.Repository.FindSingle(new GetUnreadMessageCountByPlayer {OwnerId = me.Id});
 
                 inanimateOutput.PlayerLog = PlayerLogProcedures.GetAllPlayerLogs(me.Id).Reverse();
                 inanimateOutput.PlayerLogImportant = inanimateOutput.PlayerLog.Where(l => l.IsImportant);
@@ -242,7 +244,7 @@ namespace TT.Web.Controllers
 
                 animalOutput.LastUpdateTimestamp = WorldStat.LastUpdateTimestamp;
 
-                animalOutput.NewMessageCount = MessageProcedures.GetMessageCountData(me).NewMessagesCount;
+                animalOutput.NewMessageCount = DomainRegistry.Repository.FindSingle(new GetUnreadMessageCountByPlayer { OwnerId = me.Id });
 
                 ViewBag.AnimalImgUrl = ItemStatics.GetStaticItem(animalOutput.Form.BecomesItemDbName).PortraitUrl;
 
@@ -319,7 +321,7 @@ namespace TT.Web.Controllers
             loadtime += "End get location items:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
 
             ViewBag.InventoryItemCount = output.PlayerItems.Count();
-            output.MessageCounts = MessageProcedures.GetMessageCountData(me);
+            output.UnreadMessageCount = DomainRegistry.Repository.FindSingle(new GetUnreadMessageCountByPlayer { OwnerId = me.Id });
             output.WorldStats = PlayerProcedures.GetWorldPlayerStats();
             output.AttacksMade = me.TimesAttackingThisUpdate;
             ViewBag.AttacksMade = me.TimesAttackingThisUpdate;

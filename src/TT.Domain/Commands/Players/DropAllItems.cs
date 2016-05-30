@@ -1,7 +1,6 @@
 ﻿using System.Data.Entity;
 using System.Linq;
 using Highway.Data;
-using TT.Domain.Procedures;
 
 namespace TT.Domain.Commands.Players
 {

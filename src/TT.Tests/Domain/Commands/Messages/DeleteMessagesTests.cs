@@ -6,6 +6,7 @@ using TT.Domain;
 using TT.Domain.Commands.Assets;
 using TT.Domain.Commands.Messages;
 using TT.Domain.Entities.Messages;
+using TT.Tests.Builders.Item;
 using TT.Tests.Builders.Messages;
 
 namespace TT.Tests.Domain.Commands.Messages
@@ -17,10 +18,13 @@ namespace TT.Tests.Domain.Commands.Messages
         [Test]
         public void Should_delete_message()
         {
-            new MessageBuilder().With(cr => cr.Id, 61)
+            new MessageBuilder()
+                .With(m => m.Id, 61)
+                .With(m => m.Receiver, new PlayerBuilder()
+                    .With(p => p.Id, 3).BuildAndSave())
                 .BuildAndSave();
 
-            var cmd = new DeleteMessage { MessageId = 61 };
+            var cmd = new DeleteMessage { MessageId = 61, OwnerId = 3 };
             Repository.Execute(cmd);
 
             DataContext.AsQueryable<Message>().Count().Should().Be(0);
@@ -45,6 +49,80 @@ namespace TT.Tests.Domain.Commands.Messages
 
             Action action = () => Repository.Execute(cmd);
             action.ShouldThrowExactly<DomainException>().WithMessage(string.Format("Message with ID {0} was not found", 999));
+        }
+
+        [Test]
+        public void Should_throw_error_when_message_not_owned_by_player_is_not_found()
+        {
+
+            new MessageBuilder()
+                .With(m => m.Id, 61)
+                .With(m => m.Receiver, new PlayerBuilder()
+                    .With(p => p.Id, 3).BuildAndSave())
+                .BuildAndSave();
+
+            var cmd = new DeleteMessage { MessageId = 61, OwnerId = 4};
+
+            Action action = () => Repository.Execute(cmd);
+            action.ShouldThrowExactly<DomainException>().WithMessage(string.Format("Message 61 not owned by player 4"));
+        }
+
+        [Test]
+        public void Should_delete_all_message_owned_by_player()
+        {
+            var player = new PlayerBuilder()
+                .With(p => p.Id, 3)
+                .BuildAndSave();
+
+            new MessageBuilder()
+                .With(m => m.Id, 61)
+                .With(m => m.Receiver, player)
+                .BuildAndSave();
+
+            new MessageBuilder()
+                .With(m => m.Id, 79)
+                .With(m => m.Receiver, player)
+                .BuildAndSave();
+
+            var cmd = new DeleteAllMessagesOwnedByPlayer { OwnerId = 3 };
+            Repository.Execute(cmd);
+
+            DataContext.AsQueryable<Message>().Count().Should().Be(0);
+        }
+
+        [Test]
+        public void Should_delete_expired_messages_owned_by_player()
+        {
+            var player = new PlayerBuilder()
+                .With(p => p.Id, 3)
+                .BuildAndSave();
+
+            // eligible for deletion
+            new MessageBuilder()
+                .With(m => m.Id, 61)
+                .With(m => m.Receiver, player)
+                .With(m => m.Timestamp, DateTime.UtcNow.AddDays(-4))
+                .BuildAndSave();
+
+            // not eligible for deletion due to being too new
+            new MessageBuilder()
+                .With(m => m.Id, 79)
+                .With(m => m.Receiver, player)
+                .With(m => m.Timestamp, DateTime.UtcNow.AddDays(-1))
+                .BuildAndSave();
+
+            // not eligible for deletion due to being protected
+            new MessageBuilder()
+                .With(m => m.Id, 95)
+                .With(m => m.Receiver, player)
+                .With(m => m.DoNotRecycleMe, true)
+                .With(m => m.Timestamp, DateTime.UtcNow.AddDays(-7))
+                .BuildAndSave();
+
+            var cmd = new DeletePlayerExpiredMessages() { OwnerId = 3 };
+            Repository.Execute(cmd);
+
+            DataContext.AsQueryable<Message>().Count().Should().Be(2);
         }
 
     }

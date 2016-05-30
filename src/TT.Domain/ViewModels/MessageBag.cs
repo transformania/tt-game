@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using TT.Domain.DTOs.Messages;
 using TT.Domain.Models;
 
 namespace TT.Domain.ViewModels
@@ -12,8 +13,8 @@ namespace TT.Domain.ViewModels
 
     public class MessageBag
     {
-        public List<MessageViewModel> Messages { get; set; }
-        public List<MessageViewModel> SentMessages { get; set; }
+        public IEnumerable<MessageDetail> Messages { get; set; }
+        public IEnumerable<MessageDetail> SentMessages { get; set; }
         public int WearerId { get; set; }
         public string WearerName { get; set; }
         public Paginator Paginator { get; set; }

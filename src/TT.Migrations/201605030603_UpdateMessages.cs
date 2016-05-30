@@ -9,7 +9,7 @@ namespace TT.Migrations
         public override void Up()
         {
 
-            Alter.Table("Messages").AddColumn("ConversationId").AsInt32().Nullable();
+            Alter.Table("Messages").AddColumn("ConversationId").AsGuid().Nullable();
 
             Create.ForeignKey()
                 .FromTable("Messages")

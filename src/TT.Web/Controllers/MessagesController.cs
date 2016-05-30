@@ -1,8 +1,12 @@
 ﻿using Microsoft.AspNet.Identity;
 using System;
 using System.Web.Mvc;
+using TT.Domain;
+using TT.Domain.Commands.Messages;
+using TT.Domain.DTOs.Messages;
 using TT.Domain.Models;
 using TT.Domain.Procedures;
+using TT.Domain.Queries.Messages;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 using TT.Web.Services;
@@ -16,11 +20,15 @@ namespace TT.Web.Controllers
         [Authorize]
         public ActionResult Index(int offset = 0)
         {
-            // this might fix some odd log-off message interception oddities... maybe?
+
             string myMembershipId = User.Identity.GetUserId();
 
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+
+            DomainRegistry.Repository.Execute(new DeletePlayerExpiredMessages {OwnerId = me.Id});
+
             MessageBag output = MessageProcedures.GetPlayerMessages(me, offset);
+
             output.InboxSize = 150;
 
             // if you are inanimate and are being worn, grab the data on who is wearing you
@@ -58,22 +66,26 @@ namespace TT.Web.Controllers
         public ActionResult DeleteMessage(bool deleteAll, int messageId)
         {
             string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             if (deleteAll)
             {
-                MessageProcedures.DeleteAllMessages(myMembershipId);
+                DomainRegistry.Repository.Execute(new DeleteAllMessagesOwnedByPlayer() { OwnerId = me.Id });
+                TempData["Result"] = "Your messages have been deleted.";
                 return RedirectToAction("Index");
             }
 
-            // assert player owns message
-            if (!MessageProcedures.PlayerOwnsMessage(messageId, myMembershipId))
+            try
+            {
+                DomainRegistry.Repository.Execute(new DeleteMessage { MessageId = messageId, OwnerId = me.Id });
+            }
+            catch (DomainException)
             {
                 TempData["Error"] = "You can't delete this message.";
                 TempData["SubError"] = "It wasn't sent to you.";
                 return RedirectToAction("Index");
             }
 
-            MessageProcedures.DeleteMessage(messageId);
             return RedirectToAction("Index");
         }
 
@@ -83,57 +95,55 @@ namespace TT.Web.Controllers
         public ActionResult ReadMessage(int messageId)
         {
             string myMembershipId = User.Identity.GetUserId();
-            // assert player owns message
-            if (!MessageProcedures.PlayerOwnsMessage(messageId, myMembershipId))
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+
+            MessageDetail message;
+
+            try
+            {
+                message = DomainRegistry.Repository.FindSingle(new GetMessage {MessageId = messageId, OwnerId = me.Id});
+            }
+            catch (DomainException)
             {
                 TempData["Error"] = "You can't read this message.";
                 TempData["SubError"] = "It wasn't sent to you.";
                 return RedirectToAction("Index");
             }
-            MessageViewModel output = MessageProcedures.GetMessageAndMarkAsRead(messageId);
-            // ViewBag.IsReplyable = PlayerProcedures.GetPlayer(output)
 
-            return View(output);
+            DomainRegistry.Repository.Execute(new MarkAsRead {MessageId = message.Id, ReadStatus = MessageStatics.Read, OwnerId = me.Id});
+
+            return View(message);
         }
 
         // POST: /Messages/MarkAsUnread
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public ActionResult MarkAsUnread(int messageId)
+        public ActionResult MarkReadStatus(int messageId, int readStatus)
         {
             string myMembershipId = User.Identity.GetUserId();
-            // assert player owns message
-            if (!MessageProcedures.PlayerOwnsMessage(messageId, myMembershipId))
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+
+            try
             {
-                TempData["Error"] = "You can't mark this message as unread.";
-                TempData["SubError"] = "It wasn't sent to you.";
-                return RedirectToAction("Index");
+                DomainRegistry.Repository.Execute(new MarkAsRead { MessageId = messageId, ReadStatus = readStatus, OwnerId = me.Id });
             }
-            MessageProcedures.MarkMessageAsUnread(messageId);
-
-            TempData["Result"] = "Message marked as unread.";
-            return RedirectToAction("Index");
-        }
-
-        // POST: /Messages/MarkAsUnread
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize]
-        public ActionResult MarkAsRead(int messageId)
-        {
-            string myMembershipId = User.Identity.GetUserId();
-            // assert player owns message
-            if (!MessageProcedures.PlayerOwnsMessage(messageId, myMembershipId))
+            catch (DomainException)
             {
-                TempData["Error"] = "You can't mark this message as read.";
+                TempData["Error"] = "You can't mark this message as unread or unread.";
                 TempData["SubError"] = "It wasn't sent to you.";
                 return RedirectToAction("Index");
             }
 
-            MessageProcedures.MarkMessageAsRead(messageId);
-
-            TempData["Result"] = "Message marked as read.";
+            if (readStatus == MessageStatics.ReadAndMarkedAsUnread)
+            {
+                TempData["Result"] = "Message marked as unread.";
+            }
+            else
+            {
+                TempData["Result"] = "Message marked as read.";
+            }
+            
             return RedirectToAction("Index");
         }
 
@@ -161,18 +171,18 @@ namespace TT.Web.Controllers
 
             if (responseTo != -1)
             {
-                MessageViewModel msgRepliedTo = MessageProcedures.GetMessage(responseTo);
+                try
+                {
+                    MessageDetail msgRepliedTo = DomainRegistry.Repository.FindSingle(new GetMessage {MessageId = responseTo, OwnerId = me.Id});
+                    output.RespondingToMsg = msgRepliedTo.MessageText;
 
-                // assert the letter being replied to is yours
-                if (msgRepliedTo.dbMessage.ReceiverId != me.Id)
+                }
+                catch (DomainException)
                 {
                     TempData["Result"] = "You can't reply to this message since the original was not sent to you.";
                     return RedirectToAction("Index");
                 }
-                else
-                {
-                    output.RespondingToMsg = msgRepliedTo.dbMessage.MessageText;
-                }
+
             }
 
             return View("Write", output);
@@ -219,8 +229,23 @@ namespace TT.Web.Controllers
                 return RedirectToAction("Write", new { playerId = input.ReceiverId, responseTo = input.responseToId });
             }
 
-            MessageProcedures.AddMessage(input, myMembershipId);
+            MessageDetail repliedMsg = null;
+            if (input.responseToId > 0)
+            {
+                repliedMsg = DomainRegistry.Repository.FindSingle(new GetMessage { MessageId = input.responseToId, OwnerId = me.Id });
+            }
+
+
+            DomainRegistry.Repository.Execute(new CreateMessage
+            {
+                ReceiverId = receiver.Id,
+                SenderId = me.Id,
+                Text = input.MessageText,
+                ReplyingToThisMessage = repliedMsg
+            });
+
             NoticeService.PushNotice(receiver, "<b>" + me.GetFullName() + " has sent you a new message.</b>", NoticeService.PushType__PlayerMessage);
+
             TempData["Result"] = "Your message has been sent.";
 
             if (me.Mobility != PvPStatics.MobilityFull)

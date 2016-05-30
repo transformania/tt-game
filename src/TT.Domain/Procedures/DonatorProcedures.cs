@@ -43,18 +43,6 @@ namespace TT.Domain.Procedures
             }
         }
 
-        public static bool BothPlayersAreDonatorsOfTier(Player one, Player two, int tier)
-        {
-            if (one.DonatorLevel >= tier && two.DonatorLevel >= tier)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
         public static bool EitherPlayersAreDonatorsOfTier(Player one, Player two, int tier)
         {
             if (one.DonatorLevel >= tier || two.DonatorLevel >= tier)

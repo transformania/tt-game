@@ -7,7 +7,7 @@ namespace TT.Domain.Entities.RPClassifiedAds
     public class RPClassifiedAd : Entity<int>
     {
         public User User { get; protected set; }
-        public string OwnerMembershipId { get; set; }
+        public string OwnerMembershipId { get; protected set; }
 
         public string Text { get; protected set; }
         public string YesThemes { get; protected set; }

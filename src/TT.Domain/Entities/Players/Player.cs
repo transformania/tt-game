@@ -69,7 +69,7 @@ namespace TT.Domain.Entities.Players
 
         private Player()
         {
-
+            Items = new List<Items.Item>();
         }
 
         public static Player Create(User user, NPC npc, CreatePlayer cmd)

@@ -690,7 +690,7 @@
     <Content Include="Views\Settings\Polls\Read\poll3.cshtml" />
     <Content Include="Views\Settings\MyRPClassifiedAds.cshtml" />
     <Content Include="Views\Info\RecentRPClassifieds.cshtml" />
-    <Content Include="Views\Settings\EditRPClassifiedAd.cshtml" />
+    <Content Include="Views\Settings\CreateOrUpdateRPClassifiedAd.cshtml" />
     <Content Include="Views\NPC\TalkToCandice.cshtml" />
     <Content Include="Views\NPC\TalkToAdrianna.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\XP\Alpha_20.cshtml" />

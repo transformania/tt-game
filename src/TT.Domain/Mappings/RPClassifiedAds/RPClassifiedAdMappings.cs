@@ -1,24 +1,33 @@
-﻿using System.Data.Entity;
-using AutoMapper;
-using Highway.Data;
+﻿using AutoMapper;
 using TT.Domain.Entities.RPClassifiedAds;
 using TT.Domain.DTOs.RPClassifiedAds;
+using Highway.Data;
+using System.Data.Entity;
+using TT.Domain.Entities.Players;
+using TT.Domain.Entities.Identity;
+using System.Linq;
+using System.Data.Entity.ModelConfiguration;
 
 namespace TT.Domain.Mappings.RPClassifiedAds
 {
-    public class RPClassifiedAdMappings : Profile, IMappingConfiguration
+    public class RPClassifiedAdModelBuilder : EntityTypeConfiguration<RPClassifiedAd>
     {
-        public void ConfigureModelBuilder(DbModelBuilder modelBuilder)
+        public RPClassifiedAdModelBuilder()
         {
-            modelBuilder.Entity<RPClassifiedAd>()
-                .ToTable("RPClassifiedAds")
-                .HasKey(cr => cr.Id)
-                .HasRequired(cr => cr.User).WithMany();
+            ToTable("RPClassifiedAds");
+            HasKey(cr => cr.Id);
+            HasRequired(cr => cr.User).WithMany().HasForeignKey(cr => cr.OwnerMembershipId);
         }
+    }
 
+    public class RPClassifiedAdMapping : Profile
+    {
         protected override void Configure()
         {
+            CreateMissingTypeMaps = true;
+
             CreateMap<RPClassifiedAd, RPClassifiedAdDetail>();
+            CreateMap<Player, PlayerDetail>();
         }
     }
 }

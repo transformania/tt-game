@@ -268,6 +268,7 @@
     <Compile Include="DTOs\LocationLog\LocationLogDetail.cs" />
     <Compile Include="DTOs\Messages\MessageDetail.cs" />
     <Compile Include="DTOs\Players\PlayeMessageDetail.cs" />
+    <Compile Include="DTOs\RPClassifiedAds\RPClassifiedAdAndPlayerDetail.cs" />
     <Compile Include="DTOs\RPClassifiedAds\RPClassifiedAdDetail.cs" />
     <Compile Include="DTOs\Players\PlayerLogDetail.cs" />
     <Compile Include="DTOs\Skills\SkillDetail.cs" />
@@ -292,6 +293,7 @@
     <Compile Include="Entities\Skills\Skill.cs" />
     <Compile Include="Entities\Skills\SkillSource.cs" />
     <Compile Include="EntityFrameworkExtensions.cs" />
+    <Compile Include="Exceptions\RPClassifiedAds\RPClassifiedAdException.cs" />
     <Compile Include="Features.cs" />
     <Compile Include="IDomainCommand.cs" />
     <Compile Include="IDomainQuery.cs" />
@@ -448,6 +450,7 @@
     <Compile Include="Queries\RPClassifiedAds\GetRPClassifiedAd.cs" />
     <Compile Include="Queries\RPClassifiedAds\GetUserRPClassifiedAds.cs" />
     <Compile Include="Queries\RPClassifiedAds\GetRPClassifiedAds.cs" />
+    <Compile Include="Queries\RPClassifiedAds\GetUserRPClassifiedAdsCount.cs" />
     <Compile Include="Queries\Statics\GetStaticItem.cs" />
     <Compile Include="Query.cs" />
     <Compile Include="Root.cs" />

@@ -137,6 +137,7 @@
     <Compile Include="Builders\Effects\EffectSourceBuilder.cs" />
     <Compile Include="Builders\Effects\EffectBuilder.cs" />
     <Compile Include="Builders\Form\FormSourceBuilder.cs" />
+    <Compile Include="Builders\RPClassifiedAds\RPClassifiedAdBuilder.cs" />
     <Compile Include="Builders\Identity\UserBuilder.cs" />
     <Compile Include="Builders\Item\ItemBuilder.cs" />
     <Compile Include="Builders\LocationLogs\LocationLogBuilder.cs" />
@@ -171,6 +172,10 @@
     <Compile Include="Domain\Entities\Items\ItemTests.cs" />
     <Compile Include="Domain\Entities\Players\PlayerTests.cs" />
     <Compile Include="Domain\Commands\Players\ChangeFormTests.cs" />
+    <Compile Include="Domain\Commands\RPClassifiedAds\CreateRPClassifiedAdTest.cs" />
+    <Compile Include="Domain\Commands\RPClassifiedAds\DeleteRPClassifiedAdTest.cs" />
+    <Compile Include="Domain\Commands\RPClassifiedAds\RefreshRPClassifiedAdTest.cs" />
+    <Compile Include="Domain\Commands\RPClassifiedAds\UpdateRPClassifiedAdTest.cs" />
     <Compile Include="Domain\Queries\AI\GetNPCsTests.cs" />
     <Compile Include="Domain\Queries\AI\GetNPCTests.cs" />
     <Compile Include="Domain\Queries\Assets\GetRestockItemsTests.cs" />

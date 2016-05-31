@@ -9,6 +9,11 @@ using TT.Domain.Models;
 using TT.Domain.Procedures;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
+using TT.Domain.DTOs.RPClassifiedAds;
+using TT.Domain;
+using TT.Domain.Queries.RPClassifiedAds;
+using TT.Domain.Commands.RPClassifiedAds;
+using TT.Domain.Exceptions.RPClassifiedAds;
 
 namespace TT.Web.Controllers
 {
@@ -777,54 +782,66 @@ namespace TT.Web.Controllers
         [Authorize]
         public ActionResult MyRPClassifiedAds()
         {
-            string myMembershipId = User.Identity.GetUserId();
-             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-             IEnumerable<RPClassifiedAd> output = RPClassifiedAdsProcedures.GetPlayersClassifiedAds(me);
+            string userId = User.Identity.GetUserId();
+            var output = DomainRegistry.Repository.Find(new GetUserRPClassifiedAds() { UserId = userId });
 
-             ViewBag.ErrorMessage = TempData["Error"];
-             ViewBag.SubErrorMessage = TempData["SubError"];
-             ViewBag.Result = TempData["Result"];
+            ViewBag.ErrorMessage = TempData["Error"];
+            ViewBag.SubErrorMessage = TempData["SubError"];
+            ViewBag.Result = TempData["Result"];
 
-             return View(output);
+            return View(output);
+        }
+
+        public ActionResult CreateRPClassifiedAd()
+        {
+            ViewBag.ErrorMessage = TempData["Error"];
+            ViewBag.SubErrorMessage = TempData["SubError"];
+            ViewBag.Result = TempData["Result"];
+            ViewBag.Edit = false;
+
+            return View("CreateOrUpdateRPClassifiedAd", TempData["input"] ?? new RPClassifiedAdDetail());
         }
 
         [Authorize]
-        public ActionResult EditRPClassifiedAd(int id)
+        public ActionResult UpdateRPClassifiedAd(int id)
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            RPClassifiedAd ad = RPClassifiedAdsProcedures.GetClassifiedAd(id);
+            string userId = User.Identity.GetUserId();
+            RPClassifiedAdDetail ad;
 
-            // assert player is owner of the RP add or else it is new
-            if (me.MembershipId != ad.OwnerMembershipId && ad.Id > 0)
+            try
             {
-                TempData["Error"] = "You do not own this RP Classified Ad.";
+                ad = DomainRegistry.Repository.FindSingle(new GetRPClassifiedAd() { RPClassifiedAdId = id, UserId = userId});
+            }
+            catch (RPClassifiedAdException ex)
+            {
+                TempData["Error"] = ex.UserFriendlyError ?? ex.Message;
+                TempData["SubError"] = ex.UserFriendlySubError;
                 return RedirectToAction("MyRPClassifiedAds", "Settings");
             }
 
             ViewBag.ErrorMessage = TempData["Error"];
             ViewBag.SubErrorMessage = TempData["SubError"];
             ViewBag.Result = TempData["Result"];
+            ViewBag.Edit = true;
 
-
-            return View(ad);
+            return View("CreateOrUpdateRPClassifiedAd", TempData["input"] ?? ad);
         }
 
         [Authorize]
         public ActionResult RefreshRPClassifiedAd(int id)
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            RPClassifiedAd ad = RPClassifiedAdsProcedures.GetClassifiedAd(id);
+            string userId = User.Identity.GetUserId();
 
-            // assert player is owner of the RP add or else it is new
-            if (me.MembershipId != ad.OwnerMembershipId && ad.Id > 0)
+            try
             {
-                TempData["Error"] = "You do not own this RP Classified Ad.";
+                DomainRegistry.Repository.Execute(new RefreshRPClassifiedAd() { RPClassifiedAdId = id, UserId = userId });
+            }
+            catch (RPClassifiedAdException ex)
+            {
+                TempData["Error"] = ex.UserFriendlyError ?? ex.Message;
+                TempData["SubError"] = ex.UserFriendlySubError;
                 return RedirectToAction("MyRPClassifiedAds", "Settings");
             }
-
-            RPClassifiedAdsProcedures.RefreshAd(id);
 
             TempData["Result"] = "RP classified ad successfully refreshed.";
             return RedirectToAction("MyRPClassifiedAds", "Settings");
@@ -833,83 +850,93 @@ namespace TT.Web.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditRPClassifiedAdSend(RPClassifiedAd input)
+        public ActionResult CreateRPClassifiedAd(RPClassifiedAdDetail input)
         {
-
             input.SetNullsToEmptyStrings();
+            string userId = User.Identity.GetUserId();
 
-            string myMembershipId = User.Identity.GetUserId();
-
-            // assert the title field is not too long
-            if (input.Title.Length > 35)
+            try
             {
-                ViewBag.ErrorMessage = "The ad title is too long.";
-                return View("EditRPClassifiedAd", input);
+                DomainRegistry.Repository.Execute(new CreateRPClassifiedAd()
+                {
+                    UserId = userId,
+                    Title = input.Title,
+                    Text = input.Text,
+                    YesThemes = input.YesThemes,
+                    NoThemes = input.NoThemes,
+                    PreferredTimezones = input.PreferredTimezones
+                });
             }
-
-            // assert the title field is  not too long
-            if (input.Title.Length < 5)
+            catch (RPClassifiedAdException ex)
+            when (ex.ExType == RPClassifiedAdException.ExceptionType.InvalidInput)
             {
-                ViewBag.ErrorMessage = "The ad title is too short.";
-                return View("EditRPClassifiedAd", input);
+                TempData["input"] = input;
+                TempData["Error"] = ex.UserFriendlyError ?? ex.Message;
+                TempData["SubError"] = ex.UserFriendlySubError;
+                return RedirectToAction("CreateRPClassifiedAd", "Settings");
             }
-
-            // assert the text fields are not too long
-            if (input.Text.Length > 300)
+            catch (RPClassifiedAdException ex)
+            when (ex.ExType == RPClassifiedAdException.ExceptionType.AdLimit)
             {
-                ViewBag.ErrorMessage = "The ad description is too long.";
-                return View("EditRPClassifiedAd", input);
-            }
-
-            // assert the text fields are not too short
-            if (input.Text == null || input.Text.Length < 50)
-            {
-                ViewBag.ErrorMessage = "The ad description is too short.";
-                return View("EditRPClassifiedAd", input);
-            }
-
-            // assert the yes field is not too long
-            if (input.YesThemes.Length > 200)
-            {
-                ViewBag.ErrorMessage = "The ad description is too long.";
-                return View("EditRPClassifiedAd", input);
-            }
-
-            // assert the no field is not too long
-            if (input.NoThemes.Length > 200)
-            {
-                ViewBag.ErrorMessage = "The ad description is too long.";
-                return View("EditRPClassifiedAd", input);
-            }
-
-            // assert the timezone fields is not too long
-            if (input.PreferredTimezones.Length > 70)
-            {
-                ViewBag.ErrorMessage = "The ad title is too long.";
-                return View("EditRPClassifiedAd", input);
-            }
-
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            RPClassifiedAd ad = RPClassifiedAdsProcedures.GetClassifiedAd(input.Id);
-
-            // assert player is owner of the RP add or else it is new
-            if (me.MembershipId != ad.OwnerMembershipId && ad.Id > 0)
-            {
-                TempData["Error"] = "You do not own this RP Classified Ad.";
+                TempData["Error"] = ex.UserFriendlyError ?? ex.Message;
+                TempData["SubError"] = ex.UserFriendlySubError;
                 return RedirectToAction("MyRPClassifiedAds", "Settings");
             }
-
-            // assert player does not have too many ads out already
-            if (RPClassifiedAdsProcedures.GetPlayerClassifiedAdCount(me) >= 3)
+            catch (RPClassifiedAdException ex)
             {
-                TempData["Error"] = "You already have the maximum number of RP Classified Ads posted per player.";
-                TempData["SubError"] = "Wait a while for old postings to get automatically deleted or delete some of your own yourself.";
-                return RedirectToAction("MyRPClassifiedAds", "Settings");
+                TempData["Error"] = ex.UserFriendlyError ?? ex.Message;
+                TempData["SubError"] = ex.UserFriendlySubError;
+                return RedirectToAction("Play", "PvP");
             }
 
-            RPClassifiedAdsProcedures.SaveAd(input, me);
+            TempData["Result"] = "RP classified ad successfully created.";
+            return RedirectToAction("MyRPClassifiedAds", "Settings");
+        }
 
-            TempData["Result"] = "RP classified ad successfully saved.";
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UpdateRPClassifiedAd(RPClassifiedAdDetail input)
+        {
+            string userId = User.Identity.GetUserId();
+            try
+            {
+                DomainRegistry.Repository.Execute(new UpdateRPClassifiedAd()
+                {
+                    RPClassifiedAdId = input.Id,
+                    UserId = userId,
+
+                    Title = input.Title,
+                    Text = input.Text,
+                    YesThemes = input.YesThemes,
+                    NoThemes = input.NoThemes,
+                    PreferredTimezones = input.PreferredTimezones
+                });
+            }
+            catch (RPClassifiedAdException ex)
+            when (ex.ExType == RPClassifiedAdException.ExceptionType.InvalidInput)
+            {
+                TempData["input"] = input;
+                TempData["Error"] = ex.UserFriendlyError ?? ex.Message;
+                TempData["SubError"] = ex.UserFriendlySubError;
+                return RedirectToAction("UpdateRPClassifiedAd", "Settings");
+            }
+            catch (RPClassifiedAdException ex)
+            when (ex.ExType == RPClassifiedAdException.ExceptionType.NotOwner ||
+                  ex.ExType == RPClassifiedAdException.ExceptionType.NoAdfound)
+            {
+                TempData["Error"] = ex.UserFriendlyError ?? ex.Message;
+                TempData["SubError"] = ex.UserFriendlySubError;
+                return RedirectToAction("MyRPClassifiedAds", "Settings");
+            }
+            catch (RPClassifiedAdException ex)
+            {
+                TempData["Error"] = ex.UserFriendlyError ?? ex.Message;
+                TempData["SubError"] = ex.UserFriendlySubError;
+                return RedirectToAction("Play", "PvP");
+            }
+
+            TempData["Result"] = "RP classified ad successfully updated.";
             return RedirectToAction("MyRPClassifiedAds", "Settings");
         }
 
@@ -917,18 +944,19 @@ namespace TT.Web.Controllers
         [Authorize]
         public ActionResult DeleteRPClassifiedAd(int id)
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            RPClassifiedAd ad = RPClassifiedAdsProcedures.GetClassifiedAd(id);
+            string userId = User.Identity.GetUserId();
 
-            // assert player is owner of the RP add
-            if (me.MembershipId != ad.OwnerMembershipId)
+            try
             {
-                TempData["Error"] = "You do not own this RP Classified Ad.";
+                DomainRegistry.Repository.Execute(new DeleteRPClassifiedAd() { RPClassifiedAdId = id, UserId = userId });
+            }
+            catch (RPClassifiedAdException ex)
+            {
+                TempData["Error"] = ex.UserFriendlyError ?? ex.Message;
+                TempData["SubError"] = ex.UserFriendlySubError;
                 return RedirectToAction("MyRPClassifiedAds", "Settings");
             }
 
-            RPClassifiedAdsProcedures.DeleteAd(ad.Id);
             TempData["Result"] = "RP classified ad successfully deleted.";
             return RedirectToAction("MyRPClassifiedAds", "Settings");
         }

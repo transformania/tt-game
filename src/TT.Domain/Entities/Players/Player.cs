@@ -14,6 +14,8 @@ namespace TT.Domain.Entities.Players
     public class Player : Entity<int>
     {
         public User User { get; protected set; }
+        public string MembershipId { get; protected set; }
+
         public string FirstName { get; protected set; }
         public string LastName { get; protected set; }
 

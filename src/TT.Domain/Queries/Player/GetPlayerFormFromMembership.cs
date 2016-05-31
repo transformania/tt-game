@@ -1,7 +1,7 @@
 ﻿using TT.Domain.Procedures;
 using TT.Domain.ViewModels;
 
-namespace TT.Domain.Queries.Player
+namespace TT.Domain.Queries.Players
 {
     public class GetPlayerFormFromMembership : QuerySingle<PlayerFormViewModel>
     {

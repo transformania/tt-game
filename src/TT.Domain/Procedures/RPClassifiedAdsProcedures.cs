@@ -4,9 +4,12 @@ using System.Linq;
 using TT.Domain.Models;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
+using TT.Domain.Queries.RPClassifiedAds;
+using TT.Domain.Commands.RPClassifiedAds;
+using TT.Domain.DTOs.RPClassifiedAds;
 
 namespace TT.Domain.Procedures
-{
+{/*
     public static class RPClassifiedAdsProcedures
     {
 
@@ -17,7 +20,7 @@ namespace TT.Domain.Procedures
         /// <param name="player">Player to own this RP ad</param>
         public static void SaveAd(RPClassifiedAd input, Player player)
         {
-            IRPClassifiedAdRepository repo = new EFRPClassifiedAdsRepository();
+            /*IRPClassifiedAdRepository repo = new EFRPClassifiedAdsRepository();
             RPClassifiedAd ad = repo.RPClassifiedAds.FirstOrDefault(i => i.Id == input.Id);
 
             if (ad == null)
@@ -38,33 +41,77 @@ namespace TT.Domain.Procedures
 
             repo.SaveRPClassifiedAd(ad);
 
+
+            RPClassifiedAdDetail ad;
+            if((ad = DomainRegistry.Repository.FindSingle(new GetRPClassifiedAd() { RPClassifiedAdId = input.Id })) != null)
+            {
+                var cmd = new UpdateRPClassifiedAd()
+                {
+                    UserId = player.MembershipId,
+                    RPClassifiedAdId = input.Id,
+
+                    Title = input.Title ?? ad.Title,
+                    Text = input.Text ?? ad.Text,
+                    YesThemes = input.YesThemes ?? ad.YesThemes,
+                    NoThemes = input.NoThemes ?? ad.NoThemes,
+                    PreferredTimezones = input.PreferredTimezones ?? ad.PreferredTimezones
+                };
+
+                DomainRegistry.Repository.Execute(cmd);
+            }
+            else
+            {
+                var cmd = new CreateRPClassifiedAd()
+                {
+                    UserId = player.MembershipId,
+                    Title = input.Title,
+                    Text = input.Text,
+                    YesThemes = input.YesThemes,
+                    NoThemes = input.NoThemes,
+                    PreferredTimezones = input.PreferredTimezones
+                };
+
+                DomainRegistry.Repository.Execute(cmd);
+            }
         }
 
-        public static void RefreshAd(int id)
+        public static void RefreshAd(int id, string userId)
         {
-            IRPClassifiedAdRepository repo = new EFRPClassifiedAdsRepository();
+            /*IRPClassifiedAdRepository repo = new EFRPClassifiedAdsRepository();
             RPClassifiedAd ad = repo.RPClassifiedAds.FirstOrDefault(i => i.Id == id);
             ad.RefreshTimestamp = DateTime.UtcNow;
             repo.SaveRPClassifiedAd(ad);
+
+            DomainRegistry.Repository.Execute(new RefreshRPClassifiedAd() { RPClassifiedAdId = id, UserId = userId });
         }
 
-        public static void DeleteAd(int id)
+        public static void DeleteAd(int id, string userId)
         {
+            /*
             IRPClassifiedAdRepository repo = new EFRPClassifiedAdsRepository();
             repo.DeleteRPClassifiedAd(id);
+            
+
+            DomainRegistry.Repository.Execute(new DeleteRPClassifiedAd() { RPClassifiedAdId = id, UserId = userId });
         }
 
-        public static IEnumerable<RPClassifiedAd> GetPlayersClassifiedAds(Player player)
+        public static IEnumerable<RPClassifiedAdDetail> GetPlayersClassifiedAds(Player player)
         {
+            /*
             IRPClassifiedAdRepository repo = new EFRPClassifiedAdsRepository();
             return repo.RPClassifiedAds.Where(i => i.OwnerMembershipId == player.MembershipId);
+            
+
+            return DomainRegistry.Repository.Find(new GetUserRPClassifiedAds() { UserId = player.MembershipId });
         }
 
-        public static IEnumerable<RPClassifiedAd> GetClassifiedAds()
+        public static IEnumerable<RPClassifiedAdDetail> GetClassifiedAds()
         {
-            IRPClassifiedAdRepository repo = new EFRPClassifiedAdsRepository();
+            /*IRPClassifiedAdRepository repo = new EFRPClassifiedAdsRepository();
             DateTime markOnlineCutoff = DateTime.UtcNow.AddDays(-3);
             return repo.RPClassifiedAds.Where(i => i.RefreshTimestamp > markOnlineCutoff);
+
+            return DomainRegistry.Repository.Find(new GetRPClassifiedAds() { CutOff = DateTime.UtcNow.AddDays(-3) });
         }
 
         public static RPClassifiedAd GetClassifiedAd(int id)
@@ -86,8 +133,7 @@ namespace TT.Domain.Procedures
             return repo.RPClassifiedAds.Where(i => i.OwnerMembershipId == player.MembershipId).Count();
         }
 
-
       
 
-    }
+    }*/
 }

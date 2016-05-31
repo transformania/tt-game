@@ -9,6 +9,9 @@ using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 using TT.Domain.Queries.Item;
 using TT.Domain;
+using TT.Domain.DTOs.RPClassifiedAds;
+using TT.Domain.Queries.RPClassifiedAds;
+using System;
 
 namespace TT.Web.Controllers
 {
@@ -52,7 +55,7 @@ namespace TT.Web.Controllers
 
         public ActionResult RecentRPClassifieds()
          {
-            IEnumerable<RPClassifiedAd> output =  RPClassifiedAdsProcedures.GetClassifiedAds();
+            var output =  DomainRegistry.Repository.Find(new GetRPClassifiedAds() { CutOff = DateTime.UtcNow.AddDays(-3) });
             return View(output);
          }
 

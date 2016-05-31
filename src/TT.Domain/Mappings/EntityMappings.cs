@@ -17,6 +17,9 @@ namespace TT.Domain.Mappings
 
             foreach (var mapping in mappings)
                 ((IMappingConfiguration)Activator.CreateInstance(mapping)).ConfigureModelBuilder(modelBuilder);
+
+            // find all classes that extend EntityTypeConfiguration and add them to Configurations
+            modelBuilder.Configurations.AddFromAssembly(GetType().Assembly); 
         }
     }
 }

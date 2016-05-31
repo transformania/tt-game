@@ -6,14 +6,16 @@ namespace TT.Domain.Entities.RPClassifiedAds
 {
     public class RPClassifiedAd : Entity<int>
     {
-        public User User { get; set; }
-        public string Text { get; set; }
-        public string YesThemes { get; set; }
-        public string NoThemes { get; set; }
-        public DateTime CreationTimestamp { get; set; }
-        public DateTime RefreshTimestamp { get; set; }
-        public string PreferredTimezones { get; set; }
-        public string Title { get; set; }
+        public User User { get; protected set; }
+        public string OwnerMembershipId { get; set; }
+
+        public string Text { get; protected set; }
+        public string YesThemes { get; protected set; }
+        public string NoThemes { get; protected set; }
+        public DateTime CreationTimestamp { get; protected set; }
+        public DateTime RefreshTimestamp { get; protected set; }
+        public string PreferredTimezones { get; protected set; }
+        public string Title { get; protected set; }
 
         private RPClassifiedAd()
         {

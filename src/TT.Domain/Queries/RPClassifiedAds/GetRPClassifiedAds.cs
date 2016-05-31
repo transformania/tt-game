@@ -5,7 +5,6 @@ using TT.Domain.Entities.RPClassifiedAds;
 using System;
 using System.Linq;
 using TT.Domain.Entities.Players;
-using TT.Domain.ExtensionMethods;
 
 namespace TT.Domain.Queries.RPClassifiedAds
 {

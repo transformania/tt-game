@@ -1,5 +1,7 @@
-﻿using FluentAssertions;
+﻿using System.Collections.Generic;
+using FluentAssertions;
 using NUnit.Framework;
+using TT.Domain.Entities.Items;
 using TT.Tests.Builders.Item;
 
 namespace TT.Tests.Domain.Entities

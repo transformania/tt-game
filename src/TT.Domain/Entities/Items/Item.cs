@@ -76,5 +76,18 @@ namespace TT.Domain.Entities.Items
             return this;
         }
 
+        public void PickUp(Player newOwner)
+        {
+            Owner = newOwner;
+            TimeDropped = DateTime.UtcNow;
+            dbLocationName = null;
+            LastSold = DateTime.UtcNow;
+        }
+
+        public void ChangeGameMode(int newGameMode)
+        {
+            PvPEnabled = newGameMode;
+        }
+
     }
 }

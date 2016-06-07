@@ -170,6 +170,7 @@
     <Compile Include="Commands\Chat\CreateChatRoom.cs" />
     <Compile Include="Commands\Items\ChangeItemOwner.cs" />
     <Compile Include="Commands\Items\DropItem.cs" />
+    <Compile Include="Commands\Items\MoveAbandonedPetsToWuffie.cs" />
     <Compile Include="Commands\Messages\CreateMessage.cs" />
     <Compile Include="Commands\Messages\DeleteMessage.cs" />
     <Compile Include="Commands\Items\CreateItem.cs" />

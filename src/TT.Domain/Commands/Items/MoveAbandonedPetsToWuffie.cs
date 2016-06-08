@@ -34,7 +34,7 @@ namespace TT.Domain.Commands.Items
                 foreach (var pet in pets)
                 {
                     pet.PickUp(wuffie);
-                    pet.ChangeGameMode(-1);
+                    pet.ChangeGameMode(GameModeStatics.Any);
                 }
 
                 ctx.Commit();

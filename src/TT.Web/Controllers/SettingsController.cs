@@ -34,7 +34,7 @@ namespace TT.Web.Controllers
              string myMembershipId = User.Identity.GetUserId();
              Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
-             if (me.GameMode != 1)
+             if (me.GameMode != GameModeStatics.Protection)
              {
                  TempData["Error"] = "You must be in Protection mode in order to enter SuperProtection mode.";
                  return RedirectToAction("Play","PvP");
@@ -52,7 +52,7 @@ namespace TT.Web.Controllers
              string myMembershipId = User.Identity.GetUserId();
              Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
-             if (me.GameMode != 0)
+             if (me.GameMode != GameModeStatics.SuperProtection)
              {
                  TempData["Error"] = "You must be in SuperProtection mode in order to enter Protection mode.";
                  return RedirectToAction("Play", "PvP");
@@ -239,7 +239,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
-            if (me.GameMode == 2)
+            if (me.GameMode == GameModeStatics.PvP)
             {
                 TempData["Error"] = "You must be fully animate and in Protection or SuperProtection mode in order to drop your willpower.";
                 return RedirectToAction("Play", "PvP");

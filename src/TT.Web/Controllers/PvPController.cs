@@ -716,7 +716,7 @@ namespace TT.Web.Controllers
              }
 
             // assert player is in PvP mode
-             if (me.GameMode < 2)
+             if (me.GameMode < GameModeStatics.PvP)
              {
                  TempData["Error"] = "You must be in PvP mode in order to enter the dungeon.  It is not a safe place...";
                  return RedirectToAction("Play");
@@ -804,13 +804,13 @@ namespace TT.Web.Controllers
             }
 
             // both players are in protection; only allow animate spells
-            else if (me.GameMode == 1 && target.GameMode == 1)
+            else if (me.GameMode == GameModeStatics.Protection && target.GameMode == GameModeStatics.Protection)
             {
                 output = output.Where(s => s.MobilityType == PvPStatics.MobilityFull);
             }
 
             // attack or the target is in superprotection and not a friend or bot; no spells work
-            else if (target.GameMode == 0 || (me.GameMode == 0 && target.BotId == AIStatics.ActivePlayerBotId))
+            else if (target.GameMode == GameModeStatics.SuperProtection || (me.GameMode == GameModeStatics.SuperProtection && target.BotId == AIStatics.ActivePlayerBotId))
             {
                 output = output.Where(s => s.MobilityType == "NONEXISTANT");
             }
@@ -1008,7 +1008,7 @@ namespace TT.Web.Controllers
             }
 
             // assert no blacklist exists if player is in protection mode
-            if (me.GameMode < 2 && BlacklistProcedures.PlayersHaveBlacklistedEachOther(me, targeted, "attack"))
+            if (me.GameMode < GameModeStatics.PvP && BlacklistProcedures.PlayersHaveBlacklistedEachOther(me, targeted, "attack"))
             {
                 TempData["Error"] = "This player has blacklisted you or is on your own blacklist.";
                 TempData["SubError"] = "You cannot attack Protection mode players who have blacklisted you.  Remove them from your blacklist or ask them to remove you from theirs.";
@@ -1238,7 +1238,7 @@ namespace TT.Web.Controllers
             if (targeted.BotId == AIStatics.ActivePlayerBotId)
             {
 
-                if (me.GameMode < 2 || targeted.GameMode < 2)
+                if (me.GameMode < GameModeStatics.PvP || targeted.GameMode < GameModeStatics.PvP)
                 {
                     if (FriendProcedures.PlayerIsMyFriend(me, targeted))
                     {
@@ -1246,14 +1246,14 @@ namespace TT.Web.Controllers
                     }
 
                     // no inter protection/non spell casting
-                    else if ((me.GameMode == 2 && targeted.GameMode < 2)  || (me.GameMode < 2 && targeted.GameMode == 2) )
+                    else if ((me.GameMode == GameModeStatics.PvP && targeted.GameMode < GameModeStatics.PvP)  || (me.GameMode < GameModeStatics.PvP && targeted.GameMode == GameModeStatics.PvP) )
                     {
                         TempData["Error"] = "You must be in the same Protection/non-Protection mode as your target in order to cast spells at them.";
                         return RedirectToAction("Play");
                     }
 
                     // no casting spells on non-friend Protection mode players unless the target is a bot
-                    else if (targeted.GameMode == 0 || (me.GameMode == 0 && targeted.BotId == AIStatics.ActivePlayerBotId))
+                    else if (targeted.GameMode == GameModeStatics.SuperProtection || (me.GameMode == GameModeStatics.SuperProtection && targeted.BotId == AIStatics.ActivePlayerBotId))
                     {
                         TempData["Error"] = "Either you and your target is in SuperProtection mode and are not friends or bots.";
                         return RedirectToAction("Play");
@@ -1359,7 +1359,7 @@ namespace TT.Web.Controllers
              }
 
              // assert player is in PvP mode
-             if (me.GameMode != 2)
+             if (me.GameMode != GameModeStatics.PvP)
              {
                  TempData["Error"] = "You must be in PvP mode in order to enchant a location.";
                  return RedirectToAction("Play");
@@ -1901,7 +1901,7 @@ namespace TT.Web.Controllers
             }
 
             // assert the item is not a consumeable type or else is AND is in the same mode as the player (GameMode 2 is PvP)
-            if ((pickup.PvPEnabled == 2 && me.GameMode != 2) || (pickup.PvPEnabled == 1 && me.GameMode == 2))
+            if ((pickup.PvPEnabled == 2 && me.GameMode != GameModeStatics.PvP) || (pickup.PvPEnabled == 1 && me.GameMode == GameModeStatics.PvP))
             {
                 TempData["Error"] = "This item is marked as being in a different PvP mode from you.";
                 TempData["SubError"] = "You are not allowed to pick up items that are not in PvP if you are not in PvP and the same for non-PvP.";

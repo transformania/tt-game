@@ -45,7 +45,6 @@ namespace TT.Tests.Domain.Commands.Items
                 .BuildAndSave();
 
             // not a pet type
-            // dropped too recently
             new ItemBuilder()
                 .With(p => p.Id, 102)
                 .With(i => i.Owner, null)

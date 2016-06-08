@@ -412,6 +412,7 @@
     <Compile Include="Statics\EffectStatics.cs" />
     <Compile Include="Statics\Forms.cs" />
     <Compile Include="Statics\FormStatics.cs" />
+    <Compile Include="Statics\GameModeStatics.cs" />
     <Compile Include="Statics\ItemStatics.cs" />
     <Compile Include="Statics\PvPStatics.cs" />
     <Compile Include="Statics\QuestStatics.cs" />

@@ -238,15 +238,15 @@ namespace TT.Domain.Procedures
 
             if (!item.dbLocationName.IsNullOrEmpty())
             {
-                if (owner.BotId == AIStatics.ActivePlayerBotId && item.PvPEnabled == -1)
+                if (owner.BotId == AIStatics.ActivePlayerBotId && item.PvPEnabled == GameModeStatics.Any)
                 {
-                    if (owner.GameMode == 2)
+                    if (owner.GameMode == GameModeStatics.PvP)
                     {
-                        item.PvPEnabled = 2;
+                        item.PvPEnabled = GameModeStatics.PvP;
                     }
                     else
                     {
-                        item.PvPEnabled = 1;
+                        item.PvPEnabled = GameModeStatics.Protection;
                     }
                 }
                 item.dbLocationName = "";
@@ -278,15 +278,15 @@ namespace TT.Domain.Procedures
             item.OwnerId = newOwnerId;
             Player owner = PlayerProcedures.GetPlayer(newOwnerId);
 
-            if (owner.BotId == AIStatics.ActivePlayerBotId && item.PvPEnabled == -1)
+            if (owner.BotId == AIStatics.ActivePlayerBotId && item.PvPEnabled == GameModeStatics.Any)
             {
-                if (owner.GameMode == 2)
+                if (owner.GameMode == GameModeStatics.PvP)
                 {
-                    item.PvPEnabled = 2;
+                    item.PvPEnabled = GameModeStatics.PvP;
                 }
                 else
                 {
-                    item.PvPEnabled = 1;
+                    item.PvPEnabled = GameModeStatics.Protection;
                 }
             }
 
@@ -323,13 +323,13 @@ namespace TT.Domain.Procedures
             }
             else
             {
-                if (player.GameMode == 2)
+                if (player.GameMode == GameModeStatics.PvP)
                 {
-                    cmd.PvPEnabled = 2;
+                    cmd.PvPEnabled = GameModeStatics.PvP;
                 }
                 else
                 {
-                    cmd.PvPEnabled = 1;
+                    cmd.PvPEnabled = GameModeStatics.Protection;
                 }
             }
             var newItemId = DomainRegistry.Repository.Execute(cmd);
@@ -674,15 +674,15 @@ namespace TT.Domain.Procedures
             }
 
             // turn victim into attacker's game mode, PvP
-            else if (attacker.GameMode == 2)
+            else if (attacker.GameMode == GameModeStatics.PvP)
             {
-                cmd.PvPEnabled = 2;
+                cmd.PvPEnabled = GameModeStatics.PvP;
             }
 
             // turn victim into attacker's game mode, Protection
             else
             {
-                cmd.PvPEnabled = 1;
+                cmd.PvPEnabled = GameModeStatics.Protection;
             }
 
             // victim is a bot; make them permanent immediately

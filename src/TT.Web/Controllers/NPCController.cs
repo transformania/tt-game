@@ -117,7 +117,7 @@ namespace TT.Web.Controllers
             ViewBag.ErrorMessage = TempData["Error"];
             ViewBag.SubErrorMessage = TempData["SubError"];
             ViewBag.Result = TempData["Result"];
-            if (me.GameMode == 2)
+            if (me.GameMode == GameModeStatics.PvP)
             {
                 return (View(output.Where(i => i.dbItem.PvPEnabled == 2 || i.dbItem.PvPEnabled == -1)));
             }
@@ -198,7 +198,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the item is in the same game mode as the player, if the item's game mode is locked
-            if ((purchased.dbItem.PvPEnabled == 2 && me.GameMode != 2 || purchased.dbItem.PvPEnabled == 1 && me.GameMode == 2))
+            if ((purchased.dbItem.PvPEnabled == GameModeStatics.PvP && me.GameMode != GameModeStatics.PvP || purchased.dbItem.PvPEnabled == GameModeStatics.Protection && me.GameMode == GameModeStatics.PvP))
             {
                 TempData["Error"] = "This item is the wrong mode.";
                 TempData["SubError"] = "You cannot buy this item. It does not match your gameplay mode.";

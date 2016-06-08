@@ -182,19 +182,19 @@ namespace TT.Domain.Procedures
                 {
                     try
                     {
-                        context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Players] SET TimesAttackingThisUpdate = 0, CleansesMeditatesThisRound = 0, ShoutsRemaining = 1, ActionPoints = ActionPoints + 10, ItemsUsedThisTurn = 0 WHERE Mobility='full'" +
+                        context.Database.ExecuteSqlCommand("UPDATE [dbo].[Players] SET TimesAttackingThisUpdate = 0, CleansesMeditatesThisRound = 0, ShoutsRemaining = 1, ActionPoints = ActionPoints + 10, ItemsUsedThisTurn = 0 WHERE Mobility='full'" +
 
-                        "UPDATE [Stats].[dbo].[Players] SET ActionPoints_Refill = ActionPoints_Refill + (ActionPoints % 120 / 2) WHERE ActionPoints >= 120 AND Mobility='full'" +
+                        "UPDATE [dbo].[Players] SET ActionPoints_Refill = ActionPoints_Refill + (ActionPoints % 120 / 2) WHERE ActionPoints >= 120 AND Mobility='full'" +
 
-                        "UPDATE [Stats].[dbo].[Players] SET ActionPoints = 120 WHERE ActionPoints > 120 AND Mobility='full'" +
+                        "UPDATE [dbo].[Players] SET ActionPoints = 120 WHERE ActionPoints > 120 AND Mobility='full'" +
 
-                        "UPDATE [Stats].[dbo].[Players] SET ActionPoints_Refill = 360 WHERE ActionPoints_Refill > 360 AND Mobility='full'" +
+                        "UPDATE [dbo].[Players] SET ActionPoints_Refill = 360 WHERE ActionPoints_Refill > 360 AND Mobility='full'" +
 
-                        "UPDATE [Stats].[dbo].[Players] SET ActionPoints = ActionPoints + 20, ActionPoints_Refill = ActionPoints_Refill - 20 WHERE ActionPoints <= 100 AND ActionPoints_Refill >= 20 AND Mobility='full'");
+                        "UPDATE [dbo].[Players] SET ActionPoints = ActionPoints + 20, ActionPoints_Refill = ActionPoints_Refill - 20 WHERE ActionPoints <= 100 AND ActionPoints_Refill >= 20 AND Mobility='full'");
 
                         if (PvPStatics.ChaosMode)
                         {
-                            context.Database.ExecuteSqlCommand("Update [Stats].[dbo].[Players] SET ActionPoints = 120, ActionPoints_Refill = 360, TimesAttackingThisUpdate = -999, Mana = MaxMana");
+                            context.Database.ExecuteSqlCommand("Update [dbo].[Players] SET ActionPoints = 120, ActionPoints_Refill = 360, TimesAttackingThisUpdate = -999, Mana = MaxMana");
                         }
 
                         log.AddLog(updateTimer.ElapsedMilliseconds + ":  ANIMATE SQL UPDATE SUCCEEDED!");
@@ -323,7 +323,7 @@ namespace TT.Domain.Procedures
                 {
                     try
                     {
-                        context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Players] SET TimesAttackingThisUpdate = 0 WHERE (Mobility = 'inanimate' OR Mobility = 'animal') AND BotId = 0");
+                        context.Database.ExecuteSqlCommand("UPDATE [dbo].[Players] SET TimesAttackingThisUpdate = 0 WHERE (Mobility = 'inanimate' OR Mobility = 'animal') AND BotId = 0");
                         log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished updating inanimate/animal players");
                     }
                     catch (Exception e)
@@ -342,9 +342,9 @@ namespace TT.Domain.Procedures
                 {
                     try
                     {
-                        context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[MindControls] SET TurnsRemaining = TurnsRemaining - 1");
-                        context.Database.ExecuteSqlCommand("DELETE FROM [Stats].[dbo].[MindControls] WHERE TurnsRemaining <= 0");
-                        context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[MindControls] SET TimesUsedThisTurn = 0");
+                        context.Database.ExecuteSqlCommand("UPDATE [dbo].[MindControls] SET TurnsRemaining = TurnsRemaining - 1");
+                        context.Database.ExecuteSqlCommand("DELETE FROM [dbo].[MindControls] WHERE TurnsRemaining <= 0");
+                        context.Database.ExecuteSqlCommand("UPDATE [dbo].[MindControls] SET TimesUsedThisTurn = 0");
 
                         log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished mind control cooldown.");
                     }
@@ -392,9 +392,9 @@ namespace TT.Domain.Procedures
                     {
                         try
                         {
-                            context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Items] SET OwnerId = " + merchant.Id + ", dbLocationName = '', PvPEnabled = -1, TimeDropped = '" + DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss") + "'  WHERE  dbLocationName <> '' AND dbLocationName IS NOT NULL AND TimeDropped < DATEADD(hour, -8, GETUTCDATE()) AND OwnerId = -1 AND dbName LIKE 'item_%' AND dbName != '" + PvPStatics.ItemType_DungeonArtifact + "'");
+                            context.Database.ExecuteSqlCommand("UPDATE [dbo].[Items] SET OwnerId = " + merchant.Id + ", dbLocationName = '', PvPEnabled = -1, TimeDropped = '" + DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss") + "'  WHERE  dbLocationName <> '' AND dbLocationName IS NOT NULL AND TimeDropped < DATEADD(hour, -8, GETUTCDATE()) AND OwnerId = -1 AND dbName LIKE 'item_%' AND dbName != '" + PvPStatics.ItemType_DungeonArtifact + "'");
 
-                            context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Players] SET dbLocationName = '" + merchant.dbLocationName + "' WHERE (FirstName + ' ' + LastName) IN ( SELECT VictimName FROM [Stats].[dbo].[Items] WHERE  dbLocationName <> '' AND dbLocationName IS NOT NULL AND TimeDropped < DATEADD(hour, -8, GETUTCDATE()) AND OwnerId = -1 AND dbName LIKE 'item_%' AND dbName != '" + PvPStatics.ItemType_DungeonArtifact + "')");
+                            context.Database.ExecuteSqlCommand("UPDATE [dbo].[Players] SET dbLocationName = '" + merchant.dbLocationName + "' WHERE (FirstName + ' ' + LastName) IN ( SELECT VictimName FROM [dbo].[Items] WHERE  dbLocationName <> '' AND dbLocationName IS NOT NULL AND TimeDropped < DATEADD(hour, -8, GETUTCDATE()) AND OwnerId = -1 AND dbName LIKE 'item_%' AND dbName != '" + PvPStatics.ItemType_DungeonArtifact + "')");
 
                             log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished collecting all abandoned items for Lindella");
 
@@ -832,14 +832,14 @@ namespace TT.Domain.Procedures
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started stored procedure maintenance");
                 using (var context = new StatsContext())
                 {
-                    context.Database.ExecuteSqlCommand("DELETE FROM [Stats].[dbo].[LocationLogs] WHERE Timestamp < DATEADD(hour, -1, GETUTCDATE())");
-                    context.Database.ExecuteSqlCommand("DELETE FROM [Stats].[dbo].[Messages] WHERE Timestamp < DATEADD(hour, -72, GETUTCDATE()) AND DoNotRecycleMe = 0");
-                    context.Database.ExecuteSqlCommand("DELETE FROM [Stats].[dbo].[TFEnergies] WHERE Amount < .5");
-                    context.Database.ExecuteSqlCommand("DELETE FROM [Stats].[dbo].[PlayerLogs] WHERE Timestamp < DATEADD(hour, -72, GETUTCDATE())");
-                    context.Database.ExecuteSqlCommand("DELETE FROM [Stats].[dbo].[ChatLogs] WHERE Timestamp < DATEADD(hour, -72, GETUTCDATE())");
-                    context.Database.ExecuteSqlCommand("DELETE FROM [Stats].[dbo].[AIDirectives] WHERE Timestamp < DATEADD(hour, -72, GETUTCDATE()) AND DoNotRecycleMe = 0");
-                    context.Database.ExecuteSqlCommand("DELETE FROM [Stats].[dbo].[CovenantLogs] WHERE Timestamp < DATEADD(hour, -72, GETUTCDATE())");
-                    context.Database.ExecuteSqlCommand("DELETE FROM [Stats].[dbo].[RPClassifiedAds] WHERE RefreshTimestamp < DATEADD(hour, -72, GETUTCDATE())");
+                    context.Database.ExecuteSqlCommand("DELETE FROM [dbo].[LocationLogs] WHERE Timestamp < DATEADD(hour, -1, GETUTCDATE())");
+                    context.Database.ExecuteSqlCommand("DELETE FROM [dbo].[Messages] WHERE Timestamp < DATEADD(hour, -72, GETUTCDATE()) AND DoNotRecycleMe = 0");
+                    context.Database.ExecuteSqlCommand("DELETE FROM [dbo].[TFEnergies] WHERE Amount < .5");
+                    context.Database.ExecuteSqlCommand("DELETE FROM [dbo].[PlayerLogs] WHERE Timestamp < DATEADD(hour, -72, GETUTCDATE())");
+                    context.Database.ExecuteSqlCommand("DELETE FROM [dbo].[ChatLogs] WHERE Timestamp < DATEADD(hour, -72, GETUTCDATE())");
+                    context.Database.ExecuteSqlCommand("DELETE FROM [dbo].[AIDirectives] WHERE Timestamp < DATEADD(hour, -72, GETUTCDATE()) AND DoNotRecycleMe = 0");
+                    context.Database.ExecuteSqlCommand("DELETE FROM [dbo].[CovenantLogs] WHERE Timestamp < DATEADD(hour, -72, GETUTCDATE())");
+                    context.Database.ExecuteSqlCommand("DELETE FROM [dbo].[RPClassifiedAds] WHERE RefreshTimestamp < DATEADD(hour, -72, GETUTCDATE())");
                 }
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished stored procedure maintenance");
 

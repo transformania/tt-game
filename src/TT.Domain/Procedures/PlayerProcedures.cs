@@ -688,8 +688,8 @@ namespace TT.Domain.Procedures
                 {
                     using (var context = new StatsContext())
                     {
-                        context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Messages] SET ReceiverId = " + newPlayerId + " WHERE ReceiverId = " + oldplayer.Id);
-                        context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Messages] SET SenderId = " + newPlayerId + " WHERE SenderId = " + oldplayer.Id);
+                        context.Database.ExecuteSqlCommand("UPDATE [dbo].[Messages] SET ReceiverId = " + newPlayerId + " WHERE ReceiverId = " + oldplayer.Id);
+                        context.Database.ExecuteSqlCommand("UPDATE [dbo].[Messages] SET SenderId = " + newPlayerId + " WHERE SenderId = " + oldplayer.Id);
                     }
 
                 }

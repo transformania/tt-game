@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using TT.Domain.Abstract;
+using TT.Domain.Commands.Items;
 using TT.Domain.Commands.Players;
 using TT.Domain.Concrete;
 using TT.Domain.DTOs.Players;
@@ -116,12 +117,7 @@ namespace TT.Domain.Procedures.BossProcedures
 
                 if (turnNumber % 11 == 5)
                 {
-                    using (var context = new StatsContext())
-                    {
-                        context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Items] SET OwnerId = " + petMerchant.Id + ", PvPEnabled = -1, dbLocationName = '', TimeDropped = '" + DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss") + "'  WHERE  dbLocationName <> '' AND dbLocationName IS NOT NULL AND TimeDropped < DATEADD(hour, -8, GETUTCDATE()) AND OwnerId = NULL AND dbName LIKE 'animal_%'");
-
-                        context.Database.ExecuteSqlCommand("UPDATE [Stats].[dbo].[Players] SET dbLocationName = '" + petMerchant.dbLocationName + "', IsPetToId = " + petMerchant.Id + " WHERE (FirstName + ' ' + LastName) IN ( SELECT VictimName FROM [Stats].[dbo].[Items] WHERE  dbLocationName <> '' AND dbLocationName IS NOT NULL AND TimeDropped < DATEADD(hour, -8, GETUTCDATE()) AND OwnerId = NULL AND dbName LIKE 'animal_%' )");
-                    }
+                    DomainRegistry.Repository.Execute(new MoveAbandonedPetsToWuffie {WuffieId = petMerchant.Id });
                 }
             }
         }

@@ -1461,7 +1461,7 @@ namespace TT.Domain.Procedures
         {
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            decimal num = playerRepo.Players.Where(p => p.BotId == AIStatics.ActivePlayerBotId && p.IpAddress == ip && p.Mobility == PvPStatics.MobilityFull && p.GameMode == player.GameMode).Count();
+            decimal num = playerRepo.Players.Count(p => p.BotId == AIStatics.ActivePlayerBotId && p.IpAddress == ip && p.Mobility == PvPStatics.MobilityFull && p.GameMode == player.GameMode);
             if (num > 1)
             {
                 return true;

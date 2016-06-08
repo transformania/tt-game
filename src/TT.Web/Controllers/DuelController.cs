@@ -114,14 +114,14 @@ namespace TT.Web.Controllers
             if (!weAreFriends)
             {
                 // player is in PvP; target is not
-                if (me.GameMode == 2 && duelTarget.GameMode < 2)
+                if (me.GameMode == GameModeStatics.PvP && duelTarget.GameMode < GameModeStatics.PvP)
                 {
                     TempData["Error"] = "You must either be friends with your target or in the same game mode to challenge them to a duel.";
                     return RedirectToAction("Play", "PvP");
                 }
 
                 // player is not in PvP; target is
-                else if (me.GameMode < 2 && duelTarget.GameMode == 2)
+                else if (me.GameMode < GameModeStatics.PvP && duelTarget.GameMode == GameModeStatics.PvP)
                 {
                     TempData["Error"] = "You must either be friends with your target or in the same game mode to challenge them to a duel.";
                     return RedirectToAction("Play", "PvP");
@@ -218,13 +218,13 @@ namespace TT.Web.Controllers
                 if (!weAreFriends)
                 {
                     // player is in PvP; target is not
-                    if (me.GameMode == 2 && p.Player.GameMode < 2)
+                    if (me.GameMode == GameModeStatics.PvP && p.Player.GameMode < GameModeStatics.PvP)
                     {
                         errorMessages.Add("You must either be friends with " + p.Player.GetFullName() + " or in the same game mode to challenge them to a duel.");
                     }
 
                     // player is not in PvP; target is
-                    else if (me.GameMode < 2 && p.Player.GameMode == 2)
+                    else if (me.GameMode < GameModeStatics.PvP && p.Player.GameMode == GameModeStatics.PvP)
                     {
                         errorMessages.Add("You must either be friends with " + p.Player.GetFullName() + " or in the same game mode to challenge them to a duel.");
                     }

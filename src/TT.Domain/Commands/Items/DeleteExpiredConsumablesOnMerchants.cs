@@ -13,9 +13,6 @@ namespace TT.Domain.Commands.Items
         public int LindellaId { get; set; }
         public int LorekeeperId { get; set; }
 
-        //List<Item> possibleToDelete = itemsRepo.Items.Where(i => (i.dbLocationName != "" && i.OwnerId == -1) || (i.OwnerId == merchantId || i.OwnerId == skaldyrId) && i.dbName != PvPStatics.ItemType_DungeonArtifact).ToList();
-
-
         public override void Execute(IDataContext context)
         {
             ContextQuery = ctx =>
@@ -35,7 +32,8 @@ namespace TT.Domain.Commands.Items
 
                 var items = ctx.AsQueryable<Item>()
                     .Include(i => i.ItemSource)
-                    .Where(i => (i.Owner.Id == LindellaId || i.Owner.Id == LorekeeperId) &&
+                    .Where(i => i.Owner != null && 
+                    (i.Owner.Id == LindellaId || i.Owner.Id == LorekeeperId) &&
                     i.ItemSource.ItemType == PvPStatics.ItemType_Consumable &&
                     i.ItemSource.Id != PvPStatics.ItemType_DungeonArtifact_Id &&
                     i.TimeDropped < cutoff);

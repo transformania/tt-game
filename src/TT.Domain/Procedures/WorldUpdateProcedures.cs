@@ -413,6 +413,7 @@ namespace TT.Domain.Procedures
                 // delete all consumable type items that have been sitting around on the ground for too long
 
                 DomainRegistry.Repository.Execute(new DeleteExpiredConsumablesOnGround());
+                DomainRegistry.Repository.Execute(new DeleteExpiredConsumablesOnMerchants {LindellaId = merchantId, LorekeeperId = skaldyrId});
 
                 //List<Item> possibleToDelete = itemsRepo.Items.Where(i => (i.dbLocationName != "" && i.OwnerId == -1) || (i.OwnerId == merchantId || i.OwnerId == skaldyrId) && i.dbName != PvPStatics.ItemType_DungeonArtifact).ToList();
                 //List<Item> deleteItems = new List<Item>();

@@ -126,7 +126,7 @@ namespace TT.Domain.Statics
         public const decimal NonPvPXPGainModifier = .5M;
 
         public const string ItemType_Accessory = "accessory";
-        public const string ItemType_Consumeable = "consumeable";
+        public const string ItemType_Consumable = "consumable";
         public const string ItemType_Consumable_Reuseable = "consumable_reuseable";
         public const string ItemType_Shirt = "shirt";
         public const string ItemType_Undershirt = "undershirt";

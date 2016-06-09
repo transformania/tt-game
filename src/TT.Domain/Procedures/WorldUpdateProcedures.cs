@@ -411,35 +411,38 @@ namespace TT.Domain.Procedures
 
 
                 // delete all consumable type items that have been sitting around on the ground for too long
-                List<Item> possibleToDelete = itemsRepo.Items.Where(i => (i.dbLocationName != "" && i.OwnerId == -1) || (i.OwnerId == merchantId || i.OwnerId == skaldyrId) && i.dbName != PvPStatics.ItemType_DungeonArtifact).ToList();
-                List<Item> deleteItems = new List<Item>();
 
-                serverLogRepo.SaveServerLog(log);
+                DomainRegistry.Repository.Execute(new DeleteExpiredConsumablesOnGround());
 
-                log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started deleting expired consumables");
-                foreach (Item item in possibleToDelete)
-                {
-                    DbStaticItem temp = ItemStatics.GetStaticItem(item.dbName);
-                    if (temp.ItemType != "consumable")
-                    {
-                        continue;
-                    }
-                    double droppedMinutesAgo = Math.Abs(Math.Floor(item.TimeDropped.Subtract(DateTime.UtcNow).TotalMinutes));
+                //List<Item> possibleToDelete = itemsRepo.Items.Where(i => (i.dbLocationName != "" && i.OwnerId == -1) || (i.OwnerId == merchantId || i.OwnerId == skaldyrId) && i.dbName != PvPStatics.ItemType_DungeonArtifact).ToList();
+                //List<Item> deleteItems = new List<Item>();
 
-                    if (droppedMinutesAgo > PvPStatics.MinutesToDroppedItemDelete && item.OwnerId == -1)
-                    {
-                        deleteItems.Add(item);
-                    }
-                    else if (droppedMinutesAgo > PvPStatics.MinutesToDroppedItemDelete * 12)
-                    {
-                        deleteItems.Add(item);
-                    }
-                }
+                //serverLogRepo.SaveServerLog(log);
 
-                foreach (Item item in deleteItems)
-                {
-                    itemsRepo.DeleteItem(item.Id);
-                }
+                //log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started deleting expired consumables");
+                //foreach (Item item in possibleToDelete)
+                //{
+                //    DbStaticItem temp = ItemStatics.GetStaticItem(item.dbName);
+                //    if (temp.ItemType != "consumable")
+                //    {
+                //        continue;
+                //    }
+                //    double droppedMinutesAgo = Math.Abs(Math.Floor(item.TimeDropped.Subtract(DateTime.UtcNow).TotalMinutes));
+
+                //    if (droppedMinutesAgo > PvPStatics.MinutesToDroppedItemDelete && item.OwnerId == -1)
+                //    {
+                //        deleteItems.Add(item);
+                //    }
+                //    else if (droppedMinutesAgo > PvPStatics.MinutesToDroppedItemDelete * 12)
+                //    {
+                //        deleteItems.Add(item);
+                //    }
+                //}
+
+                //foreach (Item item in deleteItems)
+                //{
+                //    itemsRepo.DeleteItem(item.Id);
+                //}
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished deleting expired consumables");
                 serverLogRepo.SaveServerLog(log);
 

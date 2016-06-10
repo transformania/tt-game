@@ -174,10 +174,13 @@
     <Compile Include="Commands\Items\DropItem.cs" />
     <Compile Include="Commands\Items\MoveAbandonedPetsToWuffie.cs" />
     <Compile Include="Commands\Messages\CreateMessage.cs" />
+    <Compile Include="Commands\Messages\DeleteAllMessagesOwnedByPlayer.cs" />
     <Compile Include="Commands\Messages\DeleteMessage.cs" />
     <Compile Include="Commands\Items\CreateItem.cs" />
     <Compile Include="Commands\Items\DeleteItem.cs" />
     <Compile Include="Commands\Items\UpdateItem.cs" />
+    <Compile Include="Commands\Messages\DeletePlayerExpiredMessages.cs" />
+    <Compile Include="Commands\Messages\MarkAsRead.cs" />
     <Compile Include="Commands\Players\CreatePlayer.cs" />
     <Compile Include="Commands\Players\DropAllItems.cs" />
     <Compile Include="Commands\Player\UpdateOnlineActivityTimestamp.cs" />
@@ -399,8 +402,10 @@
     <Compile Include="Queries\Item\GetItemsOwnedByPlayerOfType.cs" />
     <Compile Include="Queries\Item\GetItemsOwnedByPlayer.cs" />
     <Compile Include="Queries\Messages\GetMessage.cs" />
-    <Compile Include="Queries\Messages\GetPlayerReceivedtMessages.cs" />
+    <Compile Include="Queries\Messages\GetPlayerReceivedMessages.cs" />
     <Compile Include="Queries\Messages\GetPlayerSentMessages.cs" />
+    <Compile Include="Queries\Messages\GetUnreadMessageCountByPlayer.cs" />
+    <Compile Include="Queries\Messages\PlayerOwnsMessage.cs" />
     <Compile Include="Queries\Players\GetPlayerByBotId.cs" />
     <Compile Include="Queries\Players\GetPlayer.cs" />
     <Compile Include="Queries\Players\GetPlayerFormFromMembership.cs" />
@@ -416,6 +421,7 @@
     <Compile Include="Statics\FormStatics.cs" />
     <Compile Include="Statics\GameModeStatics.cs" />
     <Compile Include="Statics\ItemStatics.cs" />
+    <Compile Include="Statics\MessageStatics.cs" />
     <Compile Include="Statics\PvPStatics.cs" />
     <Compile Include="Statics\QuestStatics.cs" />
     <Compile Include="Statics\SkillStatics.cs" />
@@ -460,7 +466,6 @@
     <Compile Include="ViewModels\LogBox.cs" />
     <Compile Include="ViewModels\MapViewModel.cs" />
     <Compile Include="ViewModels\MessageBag.cs" />
-    <Compile Include="ViewModels\MessageCountDataViewModel.cs" />
     <Compile Include="ViewModels\MessageSubmitViewModel.cs" />
     <Compile Include="ViewModels\MindControlViewModel.cs" />
     <Compile Include="ViewModels\NewCharacterViewModel.cs" />

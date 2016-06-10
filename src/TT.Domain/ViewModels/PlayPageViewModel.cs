@@ -25,7 +25,7 @@ namespace TT.Domain.ViewModels
         public int AttacksMade { get; set; }
         public decimal APSearchCost { get; set; }
 
-        public MessageCountDataViewModel MessageCounts { get; set; }
+        public int UnreadMessageCount { get; set; }
 
         public DateTime LastUpdateTimestamp { get; set; }
 

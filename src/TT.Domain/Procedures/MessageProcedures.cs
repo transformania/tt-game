@@ -2,28 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using TT.Domain.Abstract;
+using TT.Domain.Commands.Messages;
 using TT.Domain.Concrete;
 using TT.Domain.Models;
+using TT.Domain.Queries.Messages;
+using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 
 namespace TT.Domain.Procedures
 {
     public static class MessageProcedures
     {
-        public static MessageCountDataViewModel GetMessageCountData(Player player)
-        {
-            IMessageRepository messageRepo = new EFMessageRepository();
-
-            IEnumerable<Message> myMessages = messageRepo.Messages.Where(m => m.ReceiverId == player.Id);
-            MessageCountDataViewModel output = new MessageCountDataViewModel
-            {
-                NewMessagesCount = myMessages.Where(m => !m.IsRead).Count(),
-                TotalMessagesCount = myMessages.Count()
-            };
-
-            return output;
-
-        }
 
         public static int GetPlayerUnreadMessageCount(Player player)
         {
@@ -31,88 +20,9 @@ namespace TT.Domain.Procedures
             return messageRepo.Messages.Where(m => m.ReceiverId == player.Id && !m.IsRead).Count();
         }
 
-        public static MessageViewModel GetMessage(int messageId)
-        {
-            IMessageRepository messageRepo = new EFMessageRepository();
-            IPlayerRepository playerRepo = new EFPlayerRepository();
-            Message dbMessage = messageRepo.Messages.FirstOrDefault(m => m.Id == messageId);
-            Player sender = playerRepo.Players.FirstOrDefault(p => p.Id == dbMessage.SenderId);
-            Player receiver = playerRepo.Players.FirstOrDefault(p => p.Id == dbMessage.ReceiverId);
-
-            MessageViewModel output = new MessageViewModel();
-            output.dbMessage = dbMessage;
-
-            if (sender == null)
-            {
-                output.SenderName = "(inanimate)";
-            }
-            else
-            {
-                output.SenderName = sender.GetFullName();
-            }
-
-            if (receiver == null)
-            {
-                output.SentToName = "(inanimate)";
-            }
-            else
-            {
-                output.SentToName = receiver.FirstName + " " + receiver.LastName;
-            }
-
-            return output;
-        }
-
-        public static MessageViewModel GetMessageAndMarkAsRead(int messageId)
-        {
-            IMessageRepository messageRepo = new EFMessageRepository();
-            IPlayerRepository playerRepo = new EFPlayerRepository();
-            Message dbMessage = messageRepo.Messages.FirstOrDefault(m => m.Id == messageId);
-
-            dbMessage.IsRead = true;
-            dbMessage.ReadStatus = 1;
-            messageRepo.SaveMessage(dbMessage);
-
-
-            Player sender = playerRepo.Players.FirstOrDefault(p => p.Id == dbMessage.SenderId);
-
-            MessageViewModel output = new MessageViewModel();
-            output.dbMessage = dbMessage;
-
-            if (sender == null)
-            {
-                output.SenderName = "(inanimate)";
-            }
-            else
-            {
-                output.SenderName = sender.FirstName + " " + sender.LastName;
-            }
-
-            return output;
-        }
-
-        public static void MarkMessageAsUnread(int messageId)
-        {
-            IMessageRepository messageRepo = new EFMessageRepository();
-            Message dbMessage = messageRepo.Messages.FirstOrDefault(m => m.Id == messageId);
-            dbMessage.ReadStatus = 2;
-            messageRepo.SaveMessage(dbMessage);
-        }
-
-        public static void MarkMessageAsRead(int messageId)
-        {
-            IMessageRepository messageRepo = new EFMessageRepository();
-            Message dbMessage = messageRepo.Messages.FirstOrDefault(m => m.Id == messageId);
-            dbMessage.IsRead = true;
-            dbMessage.ReadStatus = 1;
-            messageRepo.SaveMessage(dbMessage);
-        }
-
         public static MessageBag GetPlayerMessages(Player player, int offset)
         {
-            IMessageRepository messageRepo = new EFMessageRepository();
-            IPlayerRepository playerRepo = new EFPlayerRepository();
-
+           
             int inboxLimit = 150;
 
             if (DonatorProcedures.DonatorGetsMessagesRewards(player))
@@ -120,94 +30,30 @@ namespace TT.Domain.Procedures
                 inboxLimit = 500;
             }
 
-            List<Message> mydbMessagesALL = messageRepo.Messages.Where(m => m.ReceiverId == player.Id).OrderByDescending(m => m.Timestamp).ToList();
-            List<Message> mydbMessagesTODELETE = mydbMessagesALL.Skip(inboxLimit).ToList();
+            var receivedMessages = DomainRegistry.Repository.Find(new GetPlayerReceivedMessages {ReceiverId = player.Id});
+            var sentMessages = DomainRegistry.Repository.Find(new GetPlayerSentMessages {SenderId = player.Id, Take = 20});
+
+            var receivedMessagesToDelete = receivedMessages.Skip(inboxLimit);
 
             // paginate down to first N results
-            Paginator paginator = new Paginator(mydbMessagesALL.Count(), 25);
+            Paginator paginator = new Paginator(receivedMessages.Count(), 25);
             paginator.CurrentPage = offset + 1;
-            mydbMessagesALL = mydbMessagesALL.Skip(paginator.GetSkipCount()).Take(paginator.PageSize).ToList();
-
-            List < Message> mydbMessages = mydbMessagesALL.Take(inboxLimit).ToList();
-
-            List<Message> mydbSentMessages = messageRepo.Messages.Where(m => m.SenderId == player.Id).OrderByDescending(m => m.Timestamp).Take(20).ToList();
-
-            List<MessageViewModel> messageViewModelList = new List<MessageViewModel>();
-            List<MessageViewModel> messageSentViewModelList = new List<MessageViewModel>();
-
-            foreach (Message message in mydbMessages)
-            {
-                messageViewModelList.Add(GetMessage(message.Id));
-            }
-
-            foreach (Message message in mydbSentMessages)
-            {
-                messageSentViewModelList.Add(GetMessage(message.Id));
-            }
+            receivedMessages = receivedMessages.Skip(paginator.GetSkipCount()).Take(paginator.PageSize).ToList();
 
             MessageBag output = new MessageBag
             {
-                Messages = messageViewModelList,
-                SentMessages = messageSentViewModelList,
+                Messages = receivedMessages,
+                SentMessages = sentMessages
             };
 
-            foreach (Message message in mydbMessagesTODELETE)
+            foreach (var message in receivedMessagesToDelete)
             {
-                messageRepo.DeleteMessage(message.Id);
+                DomainRegistry.Repository.Execute(new DeleteMessage {MessageId = message.Id});
             }
 
             output.Paginator = paginator;
 
             return output;
-
-
-        }
-
-        public static void DeleteMessage(int messageId)
-        {
-            IMessageRepository messageRepo = new EFMessageRepository();
-            messageRepo.DeleteMessage(messageId);
-        }
-
-        public static bool PlayerOwnsMessage(int messageId, string membershipId)
-        {
-            Player me = PlayerProcedures.GetPlayerFromMembership(membershipId);
-            IMessageRepository messageRepo = new EFMessageRepository();
-            Message message = messageRepo.Messages.FirstOrDefault(m => m.Id == messageId && m.ReceiverId == me.Id);
-            if (message != null)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        public static void DeleteAllMessages(string membershipId)
-        {
-            Player me = PlayerProcedures.GetPlayerFromMembership(membershipId);
-            IMessageRepository messageRepo = new EFMessageRepository();
-
-            List<Message> myMessagesToDelete = messageRepo.Messages.Where(m => m.ReceiverId == me.Id).ToList();
-
-            foreach (Message message in myMessagesToDelete)
-            {
-                messageRepo.DeleteMessage(message.Id);
-            }
-
-
-        }
-
-        public static void AddMessage(MessageSubmitViewModel messageVM, string membershipId)
-        {
-            Message message = new Message();
-
-            message.MessageText = messageVM.MessageText;
-            message.SenderId = messageVM.SenderId;
-            message.ReceiverId = messageVM.ReceiverId;
-
-            AddMessage(message, membershipId);
         }
 
         public static void AddMessage(Message message, string membershipId)
@@ -219,7 +65,7 @@ namespace TT.Domain.Procedures
             message.Timestamp = DateTime.UtcNow;
             message.SenderId = sender.Id;
             message.IsRead = false;
-            message.ReadStatus = 0;
+            message.ReadStatus = MessageStatics.Unread;
 
             if (DonatorProcedures.EitherPlayersAreDonatorsOfTier(sender, receiver, 3))
             {
@@ -249,7 +95,7 @@ namespace TT.Domain.Procedures
                     ReceiverId = p.Id,
                     SenderId = covLeader.Id,
                     IsRead = false,
-                    ReadStatus = 0,
+                    ReadStatus = MessageStatics.Unread,
                     MessageText = input,
                     Timestamp = DateTime.UtcNow,
                 }, covLeader.MembershipId);

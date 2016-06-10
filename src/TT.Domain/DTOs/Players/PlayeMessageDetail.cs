@@ -1,5 +1,4 @@
-﻿using TT.Domain.DTOs.AI;
-using TT.Domain.DTOs.Identity;
+﻿using System;
 
 namespace TT.Domain.DTOs.Players
 {
@@ -10,5 +9,17 @@ namespace TT.Domain.DTOs.Players
         public string LastName { get; set; }
         public int DonatorLevel { get; set; }
         public string Nickname { get; set; }
+
+        public string GetFullName()
+        {
+            if (this.DonatorLevel >= 2 && !this.Nickname.IsNullOrEmpty())
+            {
+                return this.FirstName + " '" + this.Nickname + "' " + this.LastName;
+            }
+            else
+            {
+                return this.FirstName + " " + this.LastName;
+            }
+        }
     }
 }

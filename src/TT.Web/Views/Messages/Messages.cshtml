@@ -1,5 +1,6 @@
 ﻿@model TT.Domain.ViewModels.MessageBag
 @using TT.Web.CustomHtmlHelpers
+@using TT.Domain.Statics
 
 <nav class="navbar navbar-default outsideContainer navbarTT2">
     <div class="container-fluid">
@@ -85,64 +86,72 @@
                 string messageTeaser;
                 int msgLength;
 
-                foreach (TT.Domain.ViewModels.MessageViewModel msg in Model.Messages)
+                foreach (var msg in Model.Messages)
                 {
 
 
-                    msgLength = msg.dbMessage.MessageText.Length;
+                    msgLength = msg.MessageText.Length;
                     if (msgLength > 50)
                     {
-                        messageTeaser = msg.dbMessage.MessageText.Substring(0, 50) + "...";
+                        messageTeaser = msg.MessageText.Substring(0, 50) + "...";
 
                     }
                     else
                     {
-                        messageTeaser = msg.dbMessage.MessageText.Substring(0, msgLength);
+                        messageTeaser = msg.MessageText.Substring(0, msgLength);
                     }
 
                     <tr>
-                        @{if (msg.SenderName != "(inanimate)")
-                        {
-                            <td>@Html.ActionLink(msg.SenderName, "LookAtPlayer", "PvP", new { id = msg.dbMessage.SenderId }, null)</td>
+                       
+                    <td>@Html.ActionLink(msg.Sender.GetFullName(), "LookAtPlayer", "PvP", new { id = msg.Sender.Id }, null)</td>
 
-                        }
-                        else
-                        {
-                            <td>(inanimate)</td>
-
-                        }
-                        }
-
-
-                        @{
-                    if (msg.dbMessage.ReadStatus == 0 || msg.dbMessage.ReadStatus == 2)
+                    @{
+                    if (msg.ReadStatus == 0 || msg.ReadStatus == 2)
                     {
-                        <td class="newlink">@Html.ActionLink(messageTeaser, "ReadMessage", "Messages", new { messageId = msg.dbMessage.Id }, null)</td>
+                        <td class="newlink">@Html.ActionLink(messageTeaser, "ReadMessage", "Messages", new { messageId = msg.Id }, null)</td>
                     }
                     else
                     {
-                        <td>@Html.ActionLink(messageTeaser, "ReadMessage", "Messages", new { messageId = msg.dbMessage.Id }, null)</td>
+                        <td>@Html.ActionLink(messageTeaser, "ReadMessage", "Messages", new { messageId = msg.Id }, null)</td>
                     }
                         }
 
-                        <td class="timeSent"><span style="font-size: 10px">@CharactersHere.DatetimeToTimeago(msg.dbMessage.Timestamp)</span></td>
+                        <td class="timeSent"><span style="font-size: 10px">@CharactersHere.DatetimeToTimeago(msg.Timestamp)</span></td>
                         <td>
                             @using (Html.BeginForm("DeleteMessage", "Messages", FormMethod.Post))
                             {
                                 @Html.AntiForgeryToken()
                                 <input name="deleteAll" type="hidden" value="False">
-                                <input name="messageId" type="hidden" value="@msg.dbMessage.Id">
+                                <input name="messageId" type="hidden" value="@msg.Id">
 
                                 <input type="submit" value="Delete Message">
                             }
 
-                            @using (Html.BeginForm(msg.dbMessage.ReadStatus == 1? "MarkAsUnread" : "MarkAsRead", "Messages", FormMethod.Post, new { id = "markForm" }))
+                            @if (msg.ReadStatus == MessageStatics.Read)
                             {
-                                @Html.AntiForgeryToken()
-                                <input name="messageId" type="hidden" value="@msg.dbMessage.Id">
+                                using (Html.BeginForm("MarkReadStatus", "Messages", FormMethod.Post, new {id = "markForm"}))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <input name="messageId" type="hidden" value="@msg.Id">
+                                    <input name="ReadStatus" type="hidden" value="@MessageStatics.ReadAndMarkedAsUnread">
 
-                                <input type="submit" value= "@(msg.dbMessage.ReadStatus == 1? "Mark As Unread" : "Mark As Read")">
+                                    <input type="submit" value="Mark As Unread">
+                                }
                             }
+                            else
+                            {
+                               using (Html.BeginForm("MarkReadStatus", "Messages", FormMethod.Post, new {id = "markForm"}))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <input name="messageId" type="hidden" value="@msg.Id">
+                                    <input name="ReadStatus" type="hidden" value="@MessageStatics.Read">
+
+                                    <input type="submit" value="Mark As Read">
+                                }
+                            }
+
+
+
                         </td>
                     </tr>
                 }
@@ -185,24 +194,13 @@
         </thead>
         <tbody>
 
-            @{foreach (TT.Domain.ViewModels.MessageViewModel msg in Model.SentMessages)
+            @{foreach (var msg in Model.SentMessages)
             {
                 <tr>
-                    @{if (msg.SentToName != "(inanimate)")
-                    {
-                        <td>@Html.ActionLink(msg.SentToName, "LookAtPlayer", "PvP", new { id = msg.dbMessage.ReceiverId }, null)</td>
-
-                    }
-                    else
-                    {
-                        <td>(inanimate)</td>
-
-                    }
-                    }
-
-                    <td>@msg.dbMessage.MessageText</td>
-                    <td class="timeSent"><span style="font-size: 10px">@CharactersHere.DatetimeToTimeago(msg.dbMessage.Timestamp)</span></td>
-                    <td>@msg.dbMessage.IsRead</td>
+                    <td>@Html.ActionLink(msg.Receiver.GetFullName(), "LookAtPlayer", "PvP", new { id = msg.Receiver.Id}, null)</td>
+                    <td>@msg.MessageText</td>
+                    <td class="timeSent"><span style="font-size: 10px">@CharactersHere.DatetimeToTimeago(msg.Timestamp)</span></td>
+                    <td>@CharactersHere.PrintMessageReadStatus(msg)</td>
                 </tr>
             }
             }

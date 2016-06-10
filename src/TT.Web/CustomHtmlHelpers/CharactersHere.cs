@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 using TT.Domain.DTOs.Item;
+using TT.Domain.DTOs.Messages;
 using TT.Domain.Models;
 using TT.Domain.Procedures;
 using TT.Domain.Queries.Statics;
@@ -573,6 +574,19 @@ namespace TT.Web.CustomHtmlHelpers
         public static MvcHtmlString PrintQuestIcon(Player player)
         {
             return player.InQuest > 0 ? new MvcHtmlString("<span class='icon icon-quest' title='This player is in a quest.'></span>") : new MvcHtmlString("");
+        }
+
+        public static MvcHtmlString PrintMessageReadStatus(MessageDetail msg)
+        {
+            if (msg.ReadStatus == MessageStatics.Read)
+            {
+                return new MvcHtmlString("Read");
+            }
+            else
+            {
+                return new MvcHtmlString("Unread");
+            }
+
         }
     }
 }

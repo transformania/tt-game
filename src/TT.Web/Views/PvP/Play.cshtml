@@ -82,9 +82,9 @@
                 }
 
                 @{
-                    if (Model.MessageCounts.NewMessagesCount > 0)
+                    if (Model.UnreadMessageCount > 0)
                     {
-                        <li>@Html.ActionLink("(" + Model.MessageCounts.NewMessagesCount + ")", "Index", "Messages", null, new { @class = "glyphicon glyphicon-envelope inboxNew" })</li>
+                        <li>@Html.ActionLink("(" + Model.UnreadMessageCount + ")", "Index", "Messages", null, new { @class = "glyphicon glyphicon-envelope inboxNew" })</li>
                     }
                     else
                     {

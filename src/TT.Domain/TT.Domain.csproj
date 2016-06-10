@@ -169,6 +169,8 @@
     <Compile Include="Commands\ChatLog\WriteLogToDatabase.cs" />
     <Compile Include="Commands\Chat\CreateChatRoom.cs" />
     <Compile Include="Commands\Items\ChangeItemOwner.cs" />
+    <Compile Include="Commands\Items\DeleteExpiredConsumablesOnMerchants.cs" />
+    <Compile Include="Commands\Items\DeleteExpiredConsumablesOnGround.cs" />
     <Compile Include="Commands\Items\DropItem.cs" />
     <Compile Include="Commands\Items\MoveAbandonedPetsToWuffie.cs" />
     <Compile Include="Commands\Messages\CreateMessage.cs" />

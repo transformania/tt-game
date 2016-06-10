@@ -150,6 +150,8 @@
     <Compile Include="Domain\Commands\Assets\CreateTomeTests.cs" />
     <Compile Include="Domain\Commands\Chat\CreateChatRoomTests.cs" />
     <Compile Include="Domain\Commands\Items\ChangeItemOwnerTests.cs" />
+    <Compile Include="Domain\Commands\Items\DeleteExpiredConsumablesOnGroundTests.cs" />
+    <Compile Include="Domain\Commands\Items\DeleteExpiredConsumablesOnMerchantsTests.cs" />
     <Compile Include="Domain\Commands\Items\DropItemsTests.cs" />
     <Compile Include="Domain\Commands\Items\MoveAbandonedPetsToWuffieTest.cs" />
     <Compile Include="Domain\Commands\Messages\CreateMessagesTests.cs" />

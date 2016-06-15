@@ -3,6 +3,7 @@ using System;
 using TT.Domain.Commands.Items;
 using TT.Domain.Entities.Item;
 using TT.Domain.Entities.Players;
+using TT.Domain.Statics;
 
 namespace TT.Domain.Entities.Items
 {
@@ -31,7 +32,7 @@ namespace TT.Domain.Entities.Items
 
         public static Item Create(Player owner, ItemSource itemSource, CreateItem cmd)
         {
-            return new Item
+            var newItem = new Item()
             {
                 Owner = owner,
                 ItemSource = itemSource,
@@ -49,6 +50,13 @@ namespace TT.Domain.Entities.Items
                 LastSouledTimestamp = cmd.LastSouledTimestamp,
                 LastSold = cmd.LastSold
             };
+
+            if (owner != null && owner.BotId != AIStatics.ActivePlayerBotId)
+            {
+                newItem.LastSouledTimestamp = DateTime.UtcNow.AddYears(-1);
+            }
+
+            return newItem;
         }
 
         public Item Update(UpdateItem cmd, Player owner)

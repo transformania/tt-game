@@ -160,7 +160,8 @@
     <Compile Include="Domain\Commands\Items\DeleteItemsTests.cs" />
     <Compile Include="Domain\Commands\Items\UpdateItemsTests.cs" />
     <Compile Include="Domain\Commands\Messages\MarkMessageAsRead.cs" />
-    <Compile Include="Domain\Entities\PlayerTests.cs" />
+    <Compile Include="Domain\Entities\Items\ItemTests.cs" />
+    <Compile Include="Domain\Entities\Players\PlayerTests.cs" />
     <Compile Include="Domain\Queries\AI\GetNPCsTests.cs" />
     <Compile Include="Domain\Queries\AI\GetNPCTests.cs" />
     <Compile Include="Domain\Queries\Assets\GetRestockItemsTests.cs" />

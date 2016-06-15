@@ -416,22 +416,6 @@ namespace TT.Web.CustomHtmlHelpers
             return item.IsPermanent ? new MvcHtmlString("<span class='icon icon-permanent' title=\"This player\'s soul is permanently sealed into this item.\"></span>") : new MvcHtmlString("");
         }
 
-        public static MvcHtmlString PrintSouledIcon(Item item)
-        {
-            if (item.VictimName.IsNullOrEmpty()) return new MvcHtmlString("");
-            var timeAgo = Math.Abs(Math.Floor(item.LastSouledTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
-
-            if (timeAgo < PvPStatics.Item_SoulActivityLevels_Minutes[0])
-            {
-                return new MvcHtmlString("<span class='icon icon-souled0'></span>");
-            }
-            if (timeAgo < PvPStatics.Item_SoulActivityLevels_Minutes[1])
-            {
-                return new MvcHtmlString("<span class='icon icon-souled1'></span>");
-            }
-            return timeAgo < PvPStatics.Item_SoulActivityLevels_Minutes[2] ? new MvcHtmlString("<span class='icon icon-souled2'></span>") : new MvcHtmlString("");
-        }
-
         public static MvcHtmlString PrintSouledIcon(ItemViewModel item)
         {
             if (item.dbItem.VictimName.IsNullOrEmpty()) return new MvcHtmlString("");

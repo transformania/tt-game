@@ -7,7 +7,7 @@ namespace TT.Domain.DTOs.RPClassifiedAds
     {
         public RPClassifiedAdDetail RPClassifiedAd { get; set; }
 
-        public PlayerDetail Player { get; set; }
+        public ICollection<PlayerDetail> Players { get; set; }
     }
 
     public class PlayerDetail

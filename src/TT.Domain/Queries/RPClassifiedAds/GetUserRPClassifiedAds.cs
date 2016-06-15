@@ -13,9 +13,13 @@ namespace TT.Domain.Queries.RPClassifiedAds
         public override IEnumerable<RPClassifiedAdDetail> Execute(IDataContext context)
         {
             ContextQuery = ctx =>
-                (from q in ctx.AsQueryable<RPClassifiedAd>()
-                where q.OwnerMembershipId == UserId
-                select q).ProjectToQueryable<RPClassifiedAdDetail>();
+            {
+                var query = (from q in ctx.AsQueryable<RPClassifiedAd>()
+                          where q.OwnerMembershipId == UserId
+                          select q).ProjectToQueryable<RPClassifiedAdDetail>();
+
+                return query;
+            };
 
             return ExecuteInternal(context).ToList(); // execute SQL to prevent changes with LINQ later
         }

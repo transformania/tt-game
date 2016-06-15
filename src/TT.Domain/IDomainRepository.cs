@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using Highway.Data;
+using System.Collections.Generic;
 
 namespace TT.Domain
 {
     public interface IDomainRepository
     {
+        IDataContext Context { get; }
+
         void Execute(IDomainCommand command);
         T Execute<T>(IDomainCommand<T> command);
         IEnumerable<T> Find<T>(IDomainQuery<T> query);

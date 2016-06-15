@@ -14,6 +14,7 @@ using TT.Domain;
 using TT.Domain.Queries.RPClassifiedAds;
 using TT.Domain.Commands.RPClassifiedAds;
 using TT.Domain.Exceptions.RPClassifiedAds;
+using TT.Domain.Exceptions.Identity;
 
 namespace TT.Web.Controllers
 {
@@ -813,6 +814,8 @@ namespace TT.Web.Controllers
                 ad = DomainRegistry.Repository.FindSingle(new GetRPClassifiedAd() { RPClassifiedAdId = id, UserId = userId});
             }
             catch (RPClassifiedAdException ex)
+            when (ex is RPClassifiedAdNotOwnerException ||
+                  ex is RPClassifiedAdNotFoundException)
             {
                 TempData["Error"] = ex.UserFriendlyError ?? ex.Message;
                 TempData["SubError"] = ex.UserFriendlySubError;
@@ -837,6 +840,8 @@ namespace TT.Web.Controllers
                 DomainRegistry.Repository.Execute(new RefreshRPClassifiedAd() { RPClassifiedAdId = id, UserId = userId });
             }
             catch (RPClassifiedAdException ex)
+            when (ex is RPClassifiedAdNotOwnerException ||
+                  ex is RPClassifiedAdNotFoundException)
             {
                 TempData["Error"] = ex.UserFriendlyError ?? ex.Message;
                 TempData["SubError"] = ex.UserFriendlySubError;
@@ -867,22 +872,20 @@ namespace TT.Web.Controllers
                     PreferredTimezones = input.PreferredTimezones
                 });
             }
-            catch (RPClassifiedAdException ex)
-            when (ex.ExType == RPClassifiedAdException.ExceptionType.InvalidInput)
+            catch (RPClassifiedAdInvalidInputException ex)
             {
                 TempData["input"] = input;
                 TempData["Error"] = ex.UserFriendlyError ?? ex.Message;
                 TempData["SubError"] = ex.UserFriendlySubError;
                 return RedirectToAction("CreateRPClassifiedAd", "Settings");
             }
-            catch (RPClassifiedAdException ex)
-            when (ex.ExType == RPClassifiedAdException.ExceptionType.AdLimit)
+            catch (RPClassifiedAdLimitException ex)
             {
                 TempData["Error"] = ex.UserFriendlyError ?? ex.Message;
                 TempData["SubError"] = ex.UserFriendlySubError;
                 return RedirectToAction("MyRPClassifiedAds", "Settings");
             }
-            catch (RPClassifiedAdException ex)
+            catch (UserNotFoundException ex)
             {
                 TempData["Error"] = ex.UserFriendlyError ?? ex.Message;
                 TempData["SubError"] = ex.UserFriendlySubError;
@@ -913,8 +916,7 @@ namespace TT.Web.Controllers
                     PreferredTimezones = input.PreferredTimezones
                 });
             }
-            catch (RPClassifiedAdException ex)
-            when (ex.ExType == RPClassifiedAdException.ExceptionType.InvalidInput)
+            catch (RPClassifiedAdInvalidInputException ex)
             {
                 TempData["input"] = input;
                 TempData["Error"] = ex.UserFriendlyError ?? ex.Message;
@@ -922,18 +924,12 @@ namespace TT.Web.Controllers
                 return RedirectToAction("UpdateRPClassifiedAd", "Settings");
             }
             catch (RPClassifiedAdException ex)
-            when (ex.ExType == RPClassifiedAdException.ExceptionType.NotOwner ||
-                  ex.ExType == RPClassifiedAdException.ExceptionType.NoAdfound)
+            when (ex is RPClassifiedAdNotOwnerException ||
+                  ex is RPClassifiedAdNotFoundException)
             {
                 TempData["Error"] = ex.UserFriendlyError ?? ex.Message;
                 TempData["SubError"] = ex.UserFriendlySubError;
                 return RedirectToAction("MyRPClassifiedAds", "Settings");
-            }
-            catch (RPClassifiedAdException ex)
-            {
-                TempData["Error"] = ex.UserFriendlyError ?? ex.Message;
-                TempData["SubError"] = ex.UserFriendlySubError;
-                return RedirectToAction("Play", "PvP");
             }
 
             TempData["Result"] = "RP classified ad successfully updated.";
@@ -951,6 +947,8 @@ namespace TT.Web.Controllers
                 DomainRegistry.Repository.Execute(new DeleteRPClassifiedAd() { RPClassifiedAdId = id, UserId = userId });
             }
             catch (RPClassifiedAdException ex)
+            when (ex is RPClassifiedAdNotFoundException ||
+                  ex is RPClassifiedAdNotOwnerException)
             {
                 TempData["Error"] = ex.UserFriendlyError ?? ex.Message;
                 TempData["SubError"] = ex.UserFriendlySubError;

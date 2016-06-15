@@ -248,7 +248,7 @@
     <Compile Include="Concrete\EFTFMessageRepository.cs" />
     <Compile Include="DomainCommand.cs" />
     <Compile Include="DomainContext.cs" />
-    <Compile Include="DomainException.cs" />
+    <Compile Include="Exceptions\DomainException.cs" />
     <Compile Include="DomainQuery.cs" />
     <Compile Include="DomainQuerySingle.cs" />
     <Compile Include="DomainRegistry.cs" />
@@ -293,7 +293,14 @@
     <Compile Include="Entities\Skills\Skill.cs" />
     <Compile Include="Entities\Skills\SkillSource.cs" />
     <Compile Include="EntityFrameworkExtensions.cs" />
+    <Compile Include="Exceptions\Identity\UserException.cs" />
+    <Compile Include="Exceptions\Identity\UserInvalidInputException.cs" />
     <Compile Include="Exceptions\RPClassifiedAds\RPClassifiedAdException.cs" />
+    <Compile Include="Exceptions\RPClassifiedAds\RPClassifiedAdInvalidInputException.cs" />
+    <Compile Include="Exceptions\RPClassifiedAds\RPClassifiedAdLimitException.cs" />
+    <Compile Include="Exceptions\RPClassifiedAds\RPClassifiedAdNotFoundException.cs" />
+    <Compile Include="Exceptions\RPClassifiedAds\RPClassifiedAdNotOwnerException.cs" />
+    <Compile Include="Exceptions\Identity\UserNotFoundException.cs" />
     <Compile Include="Features.cs" />
     <Compile Include="IDomainCommand.cs" />
     <Compile Include="IDomainQuery.cs" />
@@ -450,7 +457,6 @@
     <Compile Include="Queries\RPClassifiedAds\GetRPClassifiedAd.cs" />
     <Compile Include="Queries\RPClassifiedAds\GetUserRPClassifiedAds.cs" />
     <Compile Include="Queries\RPClassifiedAds\GetRPClassifiedAds.cs" />
-    <Compile Include="Queries\RPClassifiedAds\GetUserRPClassifiedAdsCount.cs" />
     <Compile Include="Queries\Statics\GetStaticItem.cs" />
     <Compile Include="Query.cs" />
     <Compile Include="Root.cs" />

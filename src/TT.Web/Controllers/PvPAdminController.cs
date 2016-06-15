@@ -1419,7 +1419,7 @@ namespace TT.Web.Controllers
 
             try
             {
-                DomainRegistry.Repository.Execute(new DeleteRPClassifiedAd() { RPClassifiedAdId = id });
+                DomainRegistry.Repository.Execute(new DeleteRPClassifiedAd() { RPClassifiedAdId = id, CheckUserId = false});
             }
             catch (RPClassifiedAdException ex)
             {

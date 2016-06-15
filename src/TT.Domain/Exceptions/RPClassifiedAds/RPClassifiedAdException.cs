@@ -3,23 +3,10 @@ using System.Runtime.Serialization;
 
 namespace TT.Domain.Exceptions.RPClassifiedAds
 {
+    [Serializable]
     public class RPClassifiedAdException : DomainException
     {
-        public enum ExceptionType
-        {
-            AdLimit,
-            NotOwner,
-            NotAUser,
-            InvalidInput,
-            NoAdfound
-        }
-
-        public ExceptionType ExType { get; set; }
-
-        public string UserFriendlyError { get; set; }
-        public string UserFriendlySubError { get; set; }
-
-        public RPClassifiedAdException() : base()
+        public RPClassifiedAdException()
         {
         }
 
@@ -27,7 +14,7 @@ namespace TT.Domain.Exceptions.RPClassifiedAds
         {
         }
 
-        public RPClassifiedAdException(string format, params string[] args) : base(string.Format(format, args))
+        public RPClassifiedAdException(string format, params object[] args) : base(format, args)
         {
         }
 

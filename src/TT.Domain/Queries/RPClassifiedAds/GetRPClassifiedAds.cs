@@ -16,20 +16,17 @@ namespace TT.Domain.Queries.RPClassifiedAds
         {
             ContextQuery = ctx =>
             {
-                var adl = (from adq in ctx.AsQueryable<RPClassifiedAd>()
-                          join player in ctx.AsQueryable<Player>() on adq.OwnerMembershipId equals player.MembershipId into tempPlayers
-                          from players in tempPlayers.DefaultIfEmpty() // LEFT JOIN
-                          where adq.RefreshTimestamp >= CutOff
-                          select new { RPClassifiedAd = adq, Player = players });
+                var query = (from adq in ctx.AsQueryable<RPClassifiedAd>()
+                    join player in ctx.AsQueryable<Player>() // GROUP JOIN
+                        on adq.OwnerMembershipId equals player.MembershipId into tempPlayers
+                    where adq.RefreshTimestamp >= CutOff
+                    select new { RPClassifiedAd = adq, Players = tempPlayers })
+                    .ProjectToQueryable<RPClassifiedAdAndPlayerDetail>();
 
-                var ads =  adl.ProjectToQueryable<RPClassifiedAdAndPlayerDetail>();
-
-                return ads;
+                return query;
             };
 
             return ExecuteInternal(context).ToList(); // execute SQL to prevent changes with LINQ later
         }
-
-
     }
 }

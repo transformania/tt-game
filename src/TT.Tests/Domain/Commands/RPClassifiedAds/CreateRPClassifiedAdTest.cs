@@ -2,22 +2,21 @@
 using NUnit.Framework;
 using System;
 using System.Linq;
-using TT.Domain;
 using TT.Domain.Commands.RPClassifiedAds;
 using TT.Domain.Entities.Identity;
 using TT.Domain.Entities.RPClassifiedAds;
+using TT.Domain.Exceptions.Identity;
+using TT.Domain.Exceptions.RPClassifiedAds;
 using TT.Tests.Builders.Identity;
 using TT.Tests.Builders.RPClassifiedAds;
 
 namespace TT.Tests.Domain.Commands.RPClassifiedAds
 {
-    [TestFixture]
     public class CreateRPClassifiedAdTest : TestBase
     {
         private User JohnSmith;
         private CreateRPClassifiedAd cmd;
 
-        [SetUp]
         public override void SetUp()
         {
             base.SetUp();
@@ -43,18 +42,18 @@ namespace TT.Tests.Domain.Commands.RPClassifiedAds
         public void Should_create_new_ad()
         {
             var id = Repository.Execute(cmd);
+            var ads = DataContext.AsQueryable<RPClassifiedAd>();
+            ads.Should().HaveCount(1);
+            var ad = ads.Single();
 
-            DataContext.AsQueryable<RPClassifiedAd>().Count(ad =>
-                ad.Id == id &&
-                ad.User == JohnSmith &&
-                ad.Title == cmd.Title &&
-                ad.Text == cmd.Text &&
-                ad.YesThemes == cmd.YesThemes &&
-                ad.NoThemes == cmd.NoThemes &&
-                ad.PreferredTimezones == cmd.PreferredTimezones &&
-                (ad.CreationTimestamp - DateTime.UtcNow) < TimeSpan.FromSeconds(2) &&
-                (ad.RefreshTimestamp - DateTime.UtcNow) < TimeSpan.FromSeconds(2)
-            ).Should().Be(1);
+            ad.Id.Should().Be(id);
+            ad.User.Should().Be(JohnSmith);
+            ad.Title.Should().Be(cmd.Title);
+            ad.Text.Should().Be(cmd.Text);
+            ad.YesThemes.Should().Be(cmd.YesThemes);
+            ad.NoThemes.Should().Be(cmd.NoThemes);
+            ad.CreationTimestamp.Should().BeCloseTo(DateTime.UtcNow, precision: 1000);
+            ad.RefreshTimestamp.Should().BeCloseTo(DateTime.UtcNow, precision: 1000);
         }
 
         [TestCase(4)]
@@ -62,8 +61,9 @@ namespace TT.Tests.Domain.Commands.RPClassifiedAds
         {
             cmd.Title = new string('-', titleLength);
 
-            new Action(() => { Repository.Execute(cmd); })
-                .ShouldThrow<DomainException>().WithMessage("The title is too short.");
+            Action action = () => Repository.Execute(cmd);
+            action.ShouldThrowExactly<RPClassifiedAdInvalidInputException>()
+                .WithMessage("The title is too short.");
         }
 
         [TestCase(36)]
@@ -71,8 +71,9 @@ namespace TT.Tests.Domain.Commands.RPClassifiedAds
         {
             cmd.Title = new string('-', titleLength);
 
-            new Action(() => { Repository.Execute(cmd); })
-                .ShouldThrow<DomainException>().WithMessage("The title is too long.");
+            Action action = () => Repository.Execute(cmd);
+            action.ShouldThrow<RPClassifiedAdInvalidInputException>()
+                .WithMessage("The title is too long.");
         }
 
         [TestCase(49)]
@@ -80,8 +81,9 @@ namespace TT.Tests.Domain.Commands.RPClassifiedAds
         {
             cmd.Text = new string('-', textLength);
 
-            new Action(() => { Repository.Execute(cmd); })
-                .ShouldThrow<DomainException>().WithMessage("The description is too short.");
+            Action action = () => Repository.Execute(cmd);
+            action.ShouldThrow<RPClassifiedAdInvalidInputException>()
+                .WithMessage("The description is too short.");
         }
 
         [TestCase(301)]
@@ -89,8 +91,9 @@ namespace TT.Tests.Domain.Commands.RPClassifiedAds
         {
             cmd.Text = new string('-', textLength);
 
-            new Action(() => { Repository.Execute(cmd); })
-                .ShouldThrow<DomainException>().WithMessage("The description is too long.");
+            Action action = () => Repository.Execute(cmd);
+            action.ShouldThrow<RPClassifiedAdInvalidInputException>()
+                .WithMessage("The description is too long.");
         }
 
         [TestCase(201)]
@@ -98,8 +101,9 @@ namespace TT.Tests.Domain.Commands.RPClassifiedAds
         {
             cmd.YesThemes = new string('-', yesThemesLength);
 
-            new Action(() => { Repository.Execute(cmd); })
-                .ShouldThrow<DomainException>().WithMessage("The desired themes field is too long.");
+            Action action = () => Repository.Execute(cmd);
+            action.ShouldThrow<RPClassifiedAdInvalidInputException>()
+                .WithMessage("The desired themes field is too long.");
         }
 
         [TestCase(201)]
@@ -107,8 +111,9 @@ namespace TT.Tests.Domain.Commands.RPClassifiedAds
         {
             cmd.NoThemes = new string('-', noThemesLength);
 
-            new Action(() => { Repository.Execute(cmd); })
-                .ShouldThrow<DomainException>().WithMessage("The undesired themes field is too long.");
+            Action action = () => Repository.Execute(cmd);
+            action.ShouldThrow<RPClassifiedAdInvalidInputException>()
+                .WithMessage("The undesired themes field is too long.");
         }
 
         [TestCase(71)]
@@ -116,8 +121,9 @@ namespace TT.Tests.Domain.Commands.RPClassifiedAds
         {
             cmd.PreferredTimezones = new string('-', preferredTimezonesLength);
 
-            new Action(() => { Repository.Execute(cmd); })
-                .ShouldThrow<DomainException>().WithMessage("The preferred timezones field is too long.");
+            Action action = () => Repository.Execute(cmd);
+            action.ShouldThrow<RPClassifiedAdInvalidInputException>()
+                .WithMessage("The preferred timezones field is too long.");
         }
 
         [TestCase("2")]
@@ -125,8 +131,10 @@ namespace TT.Tests.Domain.Commands.RPClassifiedAds
         {
             cmd.UserId = userId;
 
-            new Action(() => Repository.Execute(cmd))
-                .ShouldThrow<DomainException>().WithMessage(string.Format("User with ID {0} could not be found.", userId));
+            Action action = () => Repository.Execute(cmd);
+            action.ShouldThrow<UserNotFoundException>()
+                .WithMessage(string.Format("User with ID {0} could not be found.", userId))
+                .Where(e => e.UserFriendlyError == "You don't exist.");
         }
 
         [TestCase(3)]
@@ -146,8 +154,11 @@ namespace TT.Tests.Domain.Commands.RPClassifiedAds
             }
 
             // Should throw when trying to add one more
-            new Action(() => Repository.Execute(cmd))
-                .ShouldThrow<DomainException>().WithMessage(string.Format("User with ID {0} can not create any more ads.", JohnSmith.Id));
+            Action action = () => Repository.Execute(cmd);
+            action.ShouldThrow<RPClassifiedAdLimitException>()
+                .WithMessage(string.Format("User with ID {0} can not create any more ads.", JohnSmith.Id))
+                .Where(e => e.UserFriendlyError == "You already have the maximum number of RP Classified Ads posted per player." &&
+                            e.UserFriendlySubError == "Wait a while for old postings to get automatically deleted or delete some of your own yourself.");
         }
     }
 }

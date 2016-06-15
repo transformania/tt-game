@@ -16,7 +16,7 @@ namespace TT.Domain.Mappings.RPClassifiedAds
         {
             ToTable("RPClassifiedAds");
             HasKey(cr => cr.Id);
-            HasRequired(cr => cr.User).WithMany().HasForeignKey(cr => cr.OwnerMembershipId);
+            HasRequired(cr => cr.User).WithMany(u => u.RPClassifiedAds).HasForeignKey(cr => cr.OwnerMembershipId);
         }
     }
 
@@ -24,8 +24,6 @@ namespace TT.Domain.Mappings.RPClassifiedAds
     {
         protected override void Configure()
         {
-            CreateMissingTypeMaps = true;
-
             CreateMap<RPClassifiedAd, RPClassifiedAdDetail>();
             CreateMap<Player, PlayerDetail>();
         }

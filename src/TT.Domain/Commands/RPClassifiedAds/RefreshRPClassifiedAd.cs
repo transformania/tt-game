@@ -1,7 +1,5 @@
 ﻿using Highway.Data;
-using System.Data.Entity;
 using System.Linq;
-using TT.Domain.DTOs.RPClassifiedAds;
 using TT.Domain.Entities.RPClassifiedAds;
 using TT.Domain.Exceptions.RPClassifiedAds;
 
@@ -9,13 +7,19 @@ namespace TT.Domain.Commands.RPClassifiedAds
 {
     public class RefreshRPClassifiedAd : DomainCommand
     {
-        /// <summary>
-        /// If null, this <see cref="DomainCommand"/> does not check if user with id <see cref="UserId"/> owns this ad.
-        /// </summary>
         public string UserId { get; set; }
 
         public int RPClassifiedAdId { get; set; }
 
+        public bool CheckUserId { get; set; } = true;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
+        /// <exception cref="RPClassifiedAdNotFoundException"></exception>
+        /// <exception cref="RPClassifiedAdNotOwnerException"></exception>
+        /// <exception cref="RPClassifiedAdException"></exception>
         public override void Execute(IDataContext context)
         {
             ContextQuery = ctx =>
@@ -24,21 +28,23 @@ namespace TT.Domain.Commands.RPClassifiedAds
                             where q.Id == RPClassifiedAdId
                             select q;
 
-                var ad = query.SingleOrDefault();
-                    
+                var ad = query.FirstOrDefault();
+                
                 if (ad == null)
-                    throw new RPClassifiedAdException(string.Format("RPClassifiedAdId with ID {0} could not be found", RPClassifiedAdId))
+                {
+                    throw new RPClassifiedAdNotFoundException("RPClassifiedAdId with ID {0} could not be found", RPClassifiedAdId)
                     {
-                        UserFriendlyError = "This RP Classified Ad doesn't exist.",
-                        ExType = RPClassifiedAdException.ExceptionType.NoAdfound
+                        UserFriendlyError = "This RP Classified Ad doesn't exist."
                     };
+                }
 
-                if (UserId != null && ad.OwnerMembershipId != UserId)
-                    throw new RPClassifiedAdException(string.Format("User {0} does not own RPClassifiedAdId {1}", UserId, RPClassifiedAdId))
+                if (CheckUserId && ad.OwnerMembershipId != UserId)
+                {
+                    throw new RPClassifiedAdNotOwnerException("User {0} does not own RPClassifiedAdId {1}", UserId, RPClassifiedAdId)
                     {
-                        UserFriendlyError = "You do not own this RP Classified Ad.",
-                        ExType = RPClassifiedAdException.ExceptionType.NotOwner
+                        UserFriendlyError = "You do not own this RP Classified Ad."
                     };
+                }
 
                 ad.Refresh(this);
                 ctx.Commit();
@@ -50,10 +56,7 @@ namespace TT.Domain.Commands.RPClassifiedAds
         protected override void Validate()
         {
             if (RPClassifiedAdId <= 0)
-                throw new RPClassifiedAdException("RPClassifiedAd Id must be greater than 0")
-                {
-                    ExType = RPClassifiedAdException.ExceptionType.InvalidInput
-                };
+                throw new RPClassifiedAdInvalidInputException("RPClassifiedAd Id must be greater than 0");
         }
     }
 }

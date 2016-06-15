@@ -4,6 +4,7 @@ using TT.Domain;
 
 namespace TT.Tests
 {
+    [TestFixture]
     public class TestBase
     {
         protected IDataContext DataContext { get; private set; }

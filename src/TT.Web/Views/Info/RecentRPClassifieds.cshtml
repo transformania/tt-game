@@ -35,53 +35,62 @@
     <p style="margin: 20px 0px; text-align: center;">Looking for an RP partner?  On this page you will find all recent RP Classified Ad postings that have been updated within the past 3 days.</p>
 
     <div class="row">
-        @{
-            foreach (var ad in Model.OrderByDescending(m => m.RPClassifiedAd.RefreshTimestamp))
-            {
-                <div class="col-xs-12 col-md-3 rp-ad textSpaced">
-                    <p>
-                        <i><b><u>@ad.RPClassifiedAd.Title</u></b></i>
-                    </p>
-                    <p>
-                        <span style="font-size: 10px; color: grey">By: </span>
-                        <span style="font-size: 11px;">@(string.Format("{0} {1}{2}", 
-                               ad.Player.FirstName, 
-                               (ad.Player.DonatorLevel >= 2 && !ad.Player.Nickname.IsNullOrEmpty() ? "'" + ad.Player.Nickname + "' " : ""),
-                               ad.Player.LastName))</span>
-                    </p>
-                    <p>
-                        <b>Description</b><br />
-                        <i>@ad.RPClassifiedAd.Text</i>
-                    </p>
-                    <p>
-                        <span class="good">Desired themes</span><br />
-                        @ad.RPClassifiedAd.YesThemes
-                    </p>
-                    <p>
-                        <span class="bad">Undesired themes</span><br />
-                        @ad.RPClassifiedAd.NoThemes
-                    </p>
-                    <p>
-                        <span class="timeago">Availability / Timezones</span><br />
-                        @ad.RPClassifiedAd.PreferredTimezones
-                    </p>
-                    <p class="timeago">
-                        Created @TT.Web.CustomHtmlHelpers.CharactersHere.DatetimeToTimeago(ad.RPClassifiedAd.CreationTimestamp)<br />
-                        Last Refreshed @TT.Web.CustomHtmlHelpers.CharactersHere.DatetimeToTimeago(ad.RPClassifiedAd.RefreshTimestamp)
-                    </p>
+        @foreach (var ad in Model.OrderByDescending(m => m.RPClassifiedAd.RefreshTimestamp))
+        {
+            var player = ad.Players.FirstOrDefault();
 
-                    <p>@Html.ActionLink("Look at Ad Poster", "LookAtPlayer", "PvP", new { id = ad.Player.Id }, null)</p>
+            <div class="col-xs-12 col-md-3 rp-ad textSpaced">
+                <p>
+                    <i><b><u>@ad.RPClassifiedAd.Title</u></b></i>
+                </p>
+                <p>
+                @if (player != null)
+                {
+                    <span style="font-size: 10px; color: grey">By:</span>
+                    <span style="font-size: 11px;">
+                        @(string.Format("{0} {1}{2}",
+                            player.FirstName,
+                            (player.DonatorLevel >= 2 && !player.Nickname.IsNullOrEmpty() ? "'" + player.Nickname + "' " : ""),
+                            player.LastName))
+                    </span>
+                }
+                else
+                {
+                    <span style="font-size: 10px; color: grey">The owner of this ad hadn't made a character yet</span>
+                }
+                </p>
+                <p>
+                    <b>Description</b><br />
+                    <i>@ad.RPClassifiedAd.Text</i>
+                </p>
+                <p>
+                    <span class="good">Desired themes</span><br />
+                    @ad.RPClassifiedAd.YesThemes
+                </p>
+                <p>
+                    <span class="bad">Undesired themes</span><br />
+                    @ad.RPClassifiedAd.NoThemes
+                </p>
+                <p>
+                    <span class="timeago">Availability / Timezones</span><br />
+                    @ad.RPClassifiedAd.PreferredTimezones
+                </p>
+                <p class="timeago">
+                    Created @TT.Web.CustomHtmlHelpers.CharactersHere.DatetimeToTimeago(ad.RPClassifiedAd.CreationTimestamp)<br />
+                    Last Refreshed @TT.Web.CustomHtmlHelpers.CharactersHere.DatetimeToTimeago(ad.RPClassifiedAd.RefreshTimestamp)
+                </p>
 
-                    @{
-                if (User.IsInRole(TT.Domain.Statics.PvPStatics.Permissions_Admin) || User.IsInRole(TT.Domain.Statics.PvPStatics.Permissions_Moderator))
+                @if (player != null)
+                {
+                    <p>@Html.ActionLink("Look at Ad Poster", "LookAtPlayer", "PvP", new { id = player.Id }, null)</p>
+                }
+
+                @if (User.IsInRole(TT.Domain.Statics.PvPStatics.Permissions_Admin) || User.IsInRole(TT.Domain.Statics.PvPStatics.Permissions_Moderator))
                 {
                     <p>@Html.ActionLink("Delete for Violation", "ModDeleteClassified", "PvPAdmin", new { id = ad.RPClassifiedAd.Id }, null)</p>
                 }
-                    }
 
-                </div>
-            }
-
+            </div>
         }
     </div>
 </div>

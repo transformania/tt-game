@@ -237,7 +237,7 @@ namespace TT.Web.Controllers
 
                 animalOutput.LocationLog = LocationLogProcedures.GetLocationLogsAtLocation(animalOutput.Location.dbName, 0);
 
-                var animalLocationItemsCmd = new GetItemsAtLocation { dbLocationName = animalOutput.Location.dbName };
+                var animalLocationItemsCmd = new GetItemsAtLocationVisibleToGameMode { dbLocationName = animalOutput.Location.dbName, gameMode = me.GameMode};
                 animalOutput.LocationItems = DomainRegistry.Repository.Find(animalLocationItemsCmd);
 
                 animalOutput.PlayersHere = PlayerProcedures.GetPlayerFormViewModelsAtLocation(animalOutput.Location.dbName, myMembershipId).Where(p => p.Form.MobilityType == PvPStatics.MobilityFull);
@@ -317,7 +317,7 @@ namespace TT.Web.Controllers
             loadtime += "End get player items:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
 
             loadtime += "Start get location items:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
-            output.LocationItems = DomainRegistry.Repository.Find(new GetItemsAtLocation { dbLocationName = me.dbLocationName });
+            output.LocationItems = DomainRegistry.Repository.Find(new GetItemsAtLocationVisibleToGameMode { dbLocationName = me.dbLocationName, gameMode = me.GameMode });
             loadtime += "End get location items:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
 
             ViewBag.InventoryItemCount = output.PlayerItems.Count();

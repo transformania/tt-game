@@ -6,9 +6,9 @@ using TT.Domain;
 using TT.Domain.Commands.Messages;
 using TT.Domain.Entities.Messages;
 using TT.Domain.Entities.Players;
+using TT.Domain.Statics;
 using TT.Tests.Builders.Identity;
 using TT.Tests.Builders.Item;
-using TT.Tests.Builders.Messages;
 
 namespace TT.Tests.Domain.Commands.Messages
 {
@@ -81,6 +81,26 @@ namespace TT.Tests.Domain.Commands.Messages
             var action = new Action(() => { Repository.Execute(cmd); });
 
             action.ShouldThrowExactly<DomainException>().WithMessage(string.Format("Receiving player with Id 34745 could not be found"));
+        }
+
+        [Test]
+        public void Should_throw_exception_if_receiver_is_a_bot()
+        {
+
+            var botPlayer =  new PlayerBuilder()
+                .With(p => p.User, new UserBuilder().With(u => u.Id, "guid").BuildAndSave())
+                .With(p => p.Id, 19)
+                .With(p => p.BotId, AIStatics.ValentineBotId)
+                .BuildAndSave();
+
+            var cmd = new CreateMessage();
+            cmd.SenderId = playerBob.Id;
+            cmd.ReceiverId = botPlayer.Id;
+            cmd.Text = "Message!";
+
+            var action = new Action(() => { Repository.Execute(cmd); });
+
+            action.ShouldThrowExactly<DomainException>().WithMessage("You can't message NPCs.");
         }
 
         [Test]

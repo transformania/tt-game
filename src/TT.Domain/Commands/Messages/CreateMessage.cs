@@ -2,6 +2,7 @@
 using Highway.Data;
 using TT.Domain.DTOs.Messages;
 using TT.Domain.Entities.Messages;
+using TT.Domain.Statics;
 
 namespace TT.Domain.Commands.Messages
 {
@@ -25,6 +26,9 @@ namespace TT.Domain.Commands.Messages
                 var receiver = ctx.AsQueryable<Entities.Players.Player>().SingleOrDefault(t => t.Id == ReceiverId);
                 if (receiver == null)
                     throw new DomainException(string.Format("Receiving player with Id {0} could not be found", ReceiverId));
+
+                if (receiver.BotId != AIStatics.ActivePlayerBotId)
+                    throw new DomainException("You can't message NPCs.");
 
                 var message = Message.Create(sender, receiver, this);
 

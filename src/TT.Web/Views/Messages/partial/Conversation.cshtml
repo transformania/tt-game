@@ -2,6 +2,9 @@
 @using TT.Web.CustomHtmlHelpers
 @model IEnumerable<TT.Domain.DTOs.Messages.MessageDetail>
 
+<p><i>NOTE: Some messages may be missing if they have been deleted by the recipient or automatically expired.</i>
+</p><br>
+
 @{
     foreach (var m in Model)
     {
@@ -11,5 +14,4 @@
         </div>
         <div class="messageTextContainer"><p>@m.MessageText</p></div>
     }
-}
 }

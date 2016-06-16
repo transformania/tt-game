@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNet.Identity;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using TT.Domain;
 using TT.Domain.Commands.Messages;
@@ -113,6 +115,41 @@ namespace TT.Web.Controllers
             DomainRegistry.Repository.Execute(new MarkAsRead {MessageId = message.Id, ReadStatus = MessageStatics.Read, OwnerId = me.Id});
 
             return View(message);
+        }
+
+        [Authorize]
+        public ActionResult ReadConversation(int messageId)
+        {
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+
+            if (!DomainRegistry.Repository.FindSingle(new PlayerOwnsMessage { MessageId = messageId, OwnerId = me.Id }))
+            {
+                TempData["Error"] = "You can't read this conversation.";
+                TempData["SubError"] = "It wasn't sent to you.";
+                return RedirectToAction("Index");
+            }
+
+            var message = DomainRegistry.Repository.FindSingle(new GetMessage {MessageId = messageId , OwnerId = me.Id});
+
+            IEnumerable<MessageDetail> messages;
+
+            try
+            {
+                messages =
+                    DomainRegistry.Repository.Find(new GetMessagesInConversation
+                    {
+                        conversationId = message.ConversationId
+                    });
+                return PartialView("partial/Conversation", messages);
+            }
+            catch
+            {
+                TempData["Error"] = "No conversation found";
+                return RedirectToAction("Index");
+            }
+
+            
         }
 
         // POST: /Messages/MarkAsUnread

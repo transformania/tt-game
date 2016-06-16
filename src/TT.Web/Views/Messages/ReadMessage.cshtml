@@ -29,25 +29,39 @@
 </nav>
 
 <div class="containerInner">
-    <div class="messageInfoContainer clearfix">
-        <span class="messageNicknameContainer">@Model.Sender.GetFullName()</span>:
-        <span class="messageTimeContainer">@CharactersHere.DatetimeToTimeago(Model.Timestamp)</span>
+    <div id="originalMessage">
+        <div class="messageInfoContainer clearfix">
+            <span class="messageNicknameContainer">@Model.Sender.GetFullName()</span>:
+            <span class="messageTimeContainer">@CharactersHere.DatetimeToTimeago(Model.Timestamp)</span>
+        </div>
+        <div class="messageTextContainer">
+            <p>@Html.Raw(Model.MessageText.Replace("[br]", "<br/>"))</p>
+        </div>
+
+        @{
+            if (Model.ConversationId != null)
+            {
+                @Ajax.ActionLink("View full conversation", "ReadConversation", "Messages", new { messageId = Model.Id }, new AjaxOptions { UpdateTargetId = "conversation", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @id = "conversationLink" })
+                <br />
+            }
+        }
     </div>
-    <div class="messageTextContainer">
-        <p>@Html.Raw(Model.MessageText.Replace("[br]", "<br/>"))</p>
-    </div>
+
+
+    <div id="conversation"></div>
+
     <div id="realLink" class="deleteMessegeConfirm">
-        <span style="color:red; font-weight: bold;">Do you really want to delete this message? If yes then please click link bellow:</span><br>
+        <span style="color: red; font-weight: bold;">Do you really want to delete this message? If yes then please click link below:</span><br>
         @using (Html.BeginForm("DeleteMessage", "Messages", FormMethod.Post))
         {
             @Html.AntiForgeryToken()
             @Html.Hidden("deleteAll", false)
             @Html.HiddenFor(m => m.Id)
 
-            <a id="FormDeleteLink" href="javascript:void(0)" >Yes, I want to delete this message</a>
+            <a id="FormDeleteLink" href="javascript:void(0)">Yes, I want to delete this message</a>
         }
     </div>
-    <br />
+    <br/>
 </div>
 
 @section Scripts
@@ -67,5 +81,19 @@
                 $(this).closest('form')[0].submit();
             });
         });
+
+        function success() {
+            $("#conversationLink").hide();
+            $("#originalMessage").hide();
+        }
+
+        function fail() {
+            alert("Juderp!  Internal server error, unable to do this.");
+        }
+
+        function waiting() {
+            //$("#loadingBox").show();
+        }
+
     </script>
 }

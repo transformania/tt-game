@@ -403,6 +403,7 @@
     <Compile Include="Queries\Item\GetItemsOwnedByPlayerOfType.cs" />
     <Compile Include="Queries\Item\GetItemsOwnedByPlayer.cs" />
     <Compile Include="Queries\Messages\GetMessage.cs" />
+    <Compile Include="Queries\Messages\GetMessagesInConversation.cs" />
     <Compile Include="Queries\Messages\GetPlayerReceivedMessages.cs" />
     <Compile Include="Queries\Messages\GetPlayerSentMessages.cs" />
     <Compile Include="Queries\Messages\GetUnreadMessageCountByPlayer.cs" />

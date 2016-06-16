@@ -20,6 +20,8 @@ namespace TT.Domain.Entities.Messages
         public bool DoNotRecycleMe { get; protected set; }
         public Guid? ConversationId { get; protected set; }
 
+        public bool IsRead { get; protected set; } // Legacy support.
+
         public bool ReceiverMarkedAsDeleted { get; protected set; } // TODO:  Remove from Entity and table
 
         private Message() { }
@@ -34,7 +36,8 @@ namespace TT.Domain.Entities.Messages
                 Timestamp = DateTime.UtcNow,
                 MessageText = cmd.Text,
                 ReceiverMarkedAsDeleted = false,
-                ConversationId = Guid.NewGuid()
+                ConversationId = Guid.NewGuid(),
+                IsRead = false
 
             };
 

@@ -801,6 +801,7 @@
     <Content Include="Views\PvP\RoundLeaderboards\XP\Alpha_33.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_33.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Statistics\Alpha_33.cshtml" />
+    <Content Include="Views\Messages\partial\Conversation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

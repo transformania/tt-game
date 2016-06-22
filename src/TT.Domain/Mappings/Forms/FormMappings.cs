@@ -2,8 +2,6 @@
 using AutoMapper;
 using Highway.Data;
 using TT.Domain.DTOs.Forms;
-using TT.Domain.DTOs.Item;
-using TT.Domain.Entities.Forms;
 
 namespace TT.Domain.Mappings.Item
 {
@@ -11,8 +9,8 @@ namespace TT.Domain.Mappings.Item
     {
         public void ConfigureModelBuilder(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Entities.Items.Item>()
-                .ToTable("Items")
+            modelBuilder.Entity<Entities.Forms.FormSource>()
+                .ToTable("DbStaticForms")
                 .HasKey(cr => cr.Id);
 
            

@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using Highway.Data;
 using TT.Domain.Entities.Forms;
-using TT.Domain.Entities.Items;
-using TT.Domain.ViewModels;
 
 namespace TT.Domain.Commands.Players
 {

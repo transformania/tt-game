@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using TT.Domain.Abstract;
+using TT.Domain.Commands.Skills;
 using TT.Domain.Concrete;
 using TT.Domain.Models;
 using TT.Domain.Statics;
@@ -253,27 +254,10 @@ namespace TT.Domain.Procedures
             Skill ghost = skillRepo.Skills.FirstOrDefault(s => s.OwnerId == playerId && s.Name == skill.dbName);
             if (ghost == null) //player does not have this skill yet; add it
             {
+                DomainRegistry.Repository.Execute(new CreateSkill {ownerId = playerId, skillSourceId = skill.Id});
 
-                Skill newskill = new Skill
-                {
-                    Name = skill.dbName,
-                    OwnerId = playerId,
-                    Charge = -1,
-                    Duration = -1
-                };
-                skillRepo.SaveSkill(newskill);
-
-                // get the skill's discovery message if it has one
-                DbStaticSkill skillPlus = SkillStatics.GetStaticSkill(newskill.Name);
                 string output = "";
-
-                //if (!skillPlus.DiscoveryMessage.IsNullOrEmpty())
-                //{
-                //    output += skillPlus.DiscoveryMessage + "  ";
-                //}
-
-                output += skillPlus.DiscoveryMessage;
-
+                output += skill.DiscoveryMessage;
                 return output + "  <b>Congratulations, you have learned a new spell, " + skill.FriendlyName + ".</b>";
             }
             else // player already has this skill, so add its charges/duration
@@ -385,14 +369,7 @@ namespace TT.Domain.Procedures
 
                 if (possibledbSkill == null)
                 {
-                    Skill dbSkill = new Skill
-                    {
-                        OwnerId = player.Id,
-                        Charge = -1,
-                        Duration = -1,
-                        Name = skill.dbName,
-                    };
-                    skillRepo.SaveSkill(dbSkill);
+                    DomainRegistry.Repository.Execute(new CreateSkill {ownerId = player.Id, skillSourceId = skill.Id});
                 }
             }
         }
@@ -446,14 +423,7 @@ namespace TT.Domain.Procedures
 
                 if (possibledbSkill == null)
                 {
-                    Skill dbSkill = new Skill
-                    {
-                        OwnerId = owner.Id,
-                        Charge = -1,
-                        Duration = -1,
-                        Name = skill.dbName,
-                    };
-                    skillRepo.SaveSkill(dbSkill);
+                    DomainRegistry.Repository.Execute(new CreateSkill { ownerId = owner.Id, skillSourceId = skill.Id });
                 }
             }
         }

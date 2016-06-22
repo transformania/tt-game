@@ -140,6 +140,8 @@
     <Compile Include="Builders\Messages\MessageBuilder.cs" />
     <Compile Include="Builders\Item\ItemSourceBuilder.cs" />
     <Compile Include="Builders\Players\PlayerBuilder.cs" />
+    <Compile Include="Builders\Skills\SkillBuilder.cs" />
+    <Compile Include="Builders\Skills\SkillSourceBuilder.cs" />
     <Compile Include="Domain\Commands\AI\CreateNPCTests.cs" />
     <Compile Include="Domain\Commands\AI\DeleteNPCTests.cs" />
     <Compile Include="Domain\Commands\AI\UpdateNPCTests.cs" />
@@ -161,6 +163,7 @@
     <Compile Include="Domain\Commands\Items\DeleteItemsTests.cs" />
     <Compile Include="Domain\Commands\Items\UpdateItemsTests.cs" />
     <Compile Include="Domain\Commands\Messages\MarkMessageAsRead.cs" />
+    <Compile Include="Domain\Commands\Skills\CreateSkillTests.cs" />
     <Compile Include="Domain\Entities\Items\ItemTests.cs" />
     <Compile Include="Domain\Entities\Players\PlayerTests.cs" />
     <Compile Include="Domain\Commands\Players\ChangeFormTests.cs" />
@@ -184,6 +187,7 @@
     <Compile Include="Domain\Queries\Messages\GetMessagesTests.cs" />
     <Compile Include="Domain\Queries\Item\GetItemTests.cs" />
     <Compile Include="Domain\Queries\Players\GetPlayerTest.cs" />
+    <Compile Include="Domain\Queries\Skills\GetSkillsOwnedByPlayer.cs" />
     <Compile Include="Domain\Services\AttackNotificationBrokerTests.cs" />
     <Compile Include="InMemoryDataContextWithGenerator.cs" />
     <Compile Include="TestBase.cs" />

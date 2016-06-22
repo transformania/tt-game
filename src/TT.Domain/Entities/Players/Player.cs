@@ -5,6 +5,7 @@ using TT.Domain.Commands.Players;
 using TT.Domain.Entities.Forms;
 using TT.Domain.Entities.Identity;
 using TT.Domain.Entities.NPCs;
+using TT.Domain.Entities.Skills;
 using TT.Domain.ViewModels;
 
 namespace TT.Domain.Entities.Players
@@ -19,6 +20,7 @@ namespace TT.Domain.Entities.Players
         public string Location { get; protected set; }
         public string Form { get; protected set; } // TODO:  Convert to FK to FormSource (DbStaticForms)
         public ICollection<Items.Item> Items { get; protected set; } 
+        public ICollection<Skill> Skills { get; protected set; }
 
         public FormSource FormSource { get; protected set; }
 
@@ -74,6 +76,7 @@ namespace TT.Domain.Entities.Players
         private Player()
         {
             Items = new List<Items.Item>();
+            Skills = new List<Skill>();
         }
 
         public static Player Create(User user, NPC npc, FormSource form, CreatePlayer cmd)

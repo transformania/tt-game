@@ -186,6 +186,7 @@
     <Compile Include="Commands\Players\DropAllItems.cs" />
     <Compile Include="Commands\Players\ReadjustMaxes.cs" />
     <Compile Include="Commands\Player\UpdateOnlineActivityTimestamp.cs" />
+    <Compile Include="Commands\Skills\CreateSkill.cs" />
     <Compile Include="Concrete\EFAchievementBadgeRepository.cs" />
     <Compile Include="Concrete\EFAchievementRepository.cs" />
     <Compile Include="Concrete\EFAIDirectiveRepository.cs" />
@@ -259,6 +260,8 @@
     <Compile Include="DTOs\Assets\TomeDetail.cs" />
     <Compile Include="DTOs\Messages\MessageDetail.cs" />
     <Compile Include="DTOs\Players\PlayeMessageDetail.cs" />
+    <Compile Include="DTOs\Skills\SkillDetail.cs" />
+    <Compile Include="DTOs\Skills\SkillSourceDetail.cs" />
     <Compile Include="Entities\AI\NPC.cs" />
     <Compile Include="Entities\Assets\RestockItem.cs" />
     <Compile Include="DTOs\Players\PlayerDetail.cs" />
@@ -271,6 +274,8 @@
     <Compile Include="Entities\Identity\User.cs" />
     <Compile Include="Entities\Messages\Message.cs" />
     <Compile Include="Entities\Players\Player.cs" />
+    <Compile Include="Entities\Skills\Skill.cs" />
+    <Compile Include="Entities\Skills\SkillSource.cs" />
     <Compile Include="EntityFrameworkExtensions.cs" />
     <Compile Include="Features.cs" />
     <Compile Include="IDomainCommand.cs" />
@@ -288,6 +293,8 @@
     <Compile Include="Mappings\AI\NPCMappings.cs" />
     <Compile Include="Mappings\Messages\MessageMapping.cs" />
     <Compile Include="Mappings\Players\PlayerMapping.cs" />
+    <Compile Include="Mappings\Skills\SkillMappings.cs" />
+    <Compile Include="Mappings\Skills\SkillSourceMappings.cs" />
     <Compile Include="Models\AchevementBadge.cs" />
     <Compile Include="Models\Achievement.cs" />
     <Compile Include="Models\AIDirective.cs" />
@@ -416,6 +423,7 @@
     <Compile Include="Queries\Players\GetPlayerByBotId.cs" />
     <Compile Include="Queries\Players\GetPlayer.cs" />
     <Compile Include="Queries\Players\GetPlayerFormFromMembership.cs" />
+    <Compile Include="Queries\Skills\GetSkillsOwnedByPlayer.cs" />
     <Compile Include="Queries\Statics\GetStaticItem.cs" />
     <Compile Include="Query.cs" />
     <Compile Include="Root.cs" />

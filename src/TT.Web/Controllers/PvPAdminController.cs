@@ -12,6 +12,7 @@ using TT.Domain.Models;
 using TT.Domain.Procedures;
 using TT.Domain.Procedures.BossProcedures;
 using TT.Domain.Queries.Item;
+using TT.Domain.Queries.Skills;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 
@@ -727,7 +728,6 @@ namespace TT.Web.Controllers
 
         public ActionResult RejectContribution(int id)
         {
-            // assert only admin can view this
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {

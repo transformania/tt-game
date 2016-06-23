@@ -205,8 +205,8 @@ namespace TT.Domain.Procedures.BossProcedures
 
                         DomainRegistry.Repository.Execute(new ChangeForm
                         {
-                            playerId = infectee.Id,
-                            formId = FormStatics.GetForm(RegularBimboFormDbName).Id
+                            PlayerId = infectee.Id,
+                            FormName = RegularBimboFormDbName
                         });
 
                         DomainRegistry.Repository.Execute(new ReadjustMaxes

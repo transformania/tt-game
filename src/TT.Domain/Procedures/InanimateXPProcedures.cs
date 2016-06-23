@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Web;
 using TT.Domain.Abstract;
+using TT.Domain.Commands.Players;
 using TT.Domain.Concrete;
 using TT.Domain.Models;
 using TT.Domain.Statics;
@@ -316,18 +317,12 @@ namespace TT.Domain.Procedures
                 }
 
                 // change the player's form and mobility
-                dbPlayer.Form = dbPlayer.OriginalForm;
-                dbPlayer.FormSourceId = FormStatics.GetForm(dbPlayer.Form).Id;
-                if (FormStatics.GetForm(dbPlayer.OriginalForm).Gender == PvPStatics.GenderMale)
+                DomainRegistry.Repository.Execute(new ChangeForm
                 {
-                    dbPlayer.Gender = PvPStatics.GenderMale;
-                }
-                else
-                {
-                    dbPlayer.Gender = PvPStatics.GenderFemale;
-                }
+                    PlayerId = dbPlayer.Id,
+                    FormName = dbPlayer.OriginalForm
+                });
 
-                dbPlayer.Mobility = PvPStatics.MobilityFull;
                 dbPlayer.ActionPoints = PvPStatics.MaximumStoreableActionPoints;
                 dbPlayer.ActionPoints_Refill = PvPStatics.MaximumStoreableActionPoints_Refill;
                 dbPlayer.CleansesMeditatesThisRound = PvPStatics.MaxCleansesMeditatesPerUpdate;
@@ -427,14 +422,17 @@ namespace TT.Domain.Procedures
             if (roll < chanceOfSuccess)
             {
                 IPlayerRepository playerRepo = new EFPlayerRepository();
-                Player dbOwner = playerRepo.Players.FirstOrDefault(p => p.Id == owner.Id);
                 DbStaticForm newForm = FormStatics.GetForm(playerItemPlus.CurseTFFormdbName);
 
                 if (newForm.MobilityType == PvPStatics.MobilityFull)
                 {
-                    dbOwner.Form = playerItemPlus.CurseTFFormdbName;
-                    dbOwner.FormSourceId = FormStatics.GetForm(dbOwner.Form).Id;
-                    dbOwner.Gender = newForm.Gender;
+                    DomainRegistry.Repository.Execute(new ChangeForm
+                    {
+                        PlayerId = owner.Id,
+                        FormName = playerItemPlus.CurseTFFormdbName
+                    });
+
+                    var dbOwner = playerRepo.Players.FirstOrDefault(p => p.Id == owner.Id);
                     dbOwner.ReadjustMaxes(ItemProcedures.GetPlayerBuffs(dbOwner));
                     dbOwner.Mana -= dbOwner.MaxMana * .5M;
                     dbOwner.NormalizeHealthMana();

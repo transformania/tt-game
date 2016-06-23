@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using TT.Domain.Abstract;
+using TT.Domain.Commands.Players;
 using TT.Domain.Concrete;
 using TT.Domain.Models;
 using TT.Domain.Statics;
@@ -306,11 +307,11 @@ namespace TT.Domain.Procedures
                 {
 
                     SkillProcedures.UpdateFormSpecificSkillsToPlayer(target, oldForm.dbName, targetForm.dbName);
-
-                    target.Form = targetForm.dbName;
-                    target.FormSourceId = FormStatics.GetForm(target.Form).Id;
-                    target.Gender = targetForm.Gender;
-                    target.Mobility = PvPStatics.MobilityFull;
+                    DomainRegistry.Repository.Execute(new ChangeForm
+                    {
+                        PlayerId = target.Id,
+                        FormName = targetForm.dbName
+                    });
 
                     // wipe out half of the target's mana
                     target.Mana -= target.MaxMana / 2;
@@ -351,15 +352,14 @@ namespace TT.Domain.Procedures
                 {
 
                     SkillProcedures.UpdateFormSpecificSkillsToPlayer(target, oldForm.dbName, targetForm.dbName);
-
-                    target.Form = targetForm.dbName;
-                    target.FormSourceId = FormStatics.GetForm(target.Form).Id;
-                    target.Gender = targetForm.Gender;
+                    DomainRegistry.Repository.Execute(new ChangeForm
+                    {
+                        PlayerId = target.Id,
+                        FormName = targetForm.dbName
+                    });
 
                     if (targetForm.MobilityType == PvPStatics.MobilityInanimate)
                     {
-                        target.Mobility = PvPStatics.MobilityInanimate;
-
                         new Thread(() =>
                              StatsProcedures.AddStat(target.MembershipId, StatsProcedures.Stat__TimesInanimateTFed, 1)
                         ).Start();
@@ -378,8 +378,6 @@ namespace TT.Domain.Procedures
                     }
                     else if (targetForm.MobilityType == "animal")
                     {
-                        target.Mobility = "animal";
-
                         new Thread(() =>
                              StatsProcedures.AddStat(target.MembershipId, StatsProcedures.Stat__TimesAnimalTFed, 1)
                         ).Start();
@@ -399,12 +397,6 @@ namespace TT.Domain.Procedures
 
                     }
                    
-                    target.Health = 0;
-                    target.Mana = 0;
-                    target.ActionPoints = 120;
-
-                    playerRepo.SavePlayer(target);
-
                     // extra log stuff for turning into item
                     LogBox extra = ItemProcedures.PlayerBecomesItem(target, targetForm, attacker);
                     output.AttackerLog += extra.AttackerLog;

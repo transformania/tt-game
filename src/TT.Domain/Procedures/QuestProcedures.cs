@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using TT.Domain.Abstract;
+using TT.Domain.Commands.Players;
 using TT.Domain.Concrete;
 using TT.Domain.Models;
 using TT.Domain.Statics;
@@ -635,11 +636,11 @@ namespace TT.Domain.Procedures
                 // change form
                 if (p.ActionType==(int)QuestStatics.PreactionType.Form)
                 {
-                    DbStaticForm newForm = FormStatics.GetForm(p.ActionValue);
-                    dbPlayer.Form = newForm.dbName;
-                    dbPlayer.FormSourceId = newForm.Id;
-                    dbPlayer.Gender = newForm.Gender;
-                    dbPlayer.Mobility = newForm.MobilityType;
+                    DomainRegistry.Repository.Execute(new ChangeForm
+                    {
+                        PlayerId = dbPlayer.Id,
+                        FormName = p.ActionValue
+                    });
                 }
 
                 // move player

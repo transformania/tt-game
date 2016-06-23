@@ -635,6 +635,7 @@ namespace TT.Domain.Procedures
             cmd.Location = "coffee_shop";
             cmd.UserId = membershipId;
             cmd.Form = player.FormName;
+            cmd.FormSourceId = FormStatics.GetForm(cmd.Form).Id;
             cmd.OriginalForm = player.FormName;
             cmd.BotId = AIStatics.ActivePlayerBotId;
 
@@ -733,11 +734,13 @@ namespace TT.Domain.Procedures
                 DbStaticForm startform = ItemProcedures.GetFormFromItem(ItemProcedures.GetRandomItemOfType(player.InanimateForm.ToString()));
                 if (player.InanimateForm.ToString() == "random" && startform.MobilityType == "animal") vendor = PlayerProcedures.GetPlayerFromBotId(AIStatics.WuffieBotId);
 
-                Player newplayer = playerRepo.Players.FirstOrDefault(p => p.Id == newPlayerId);
-                newplayer.Form = startform.dbName;
-                newplayer.Gender = startform.Gender;
-                newplayer.Mobility = startform.MobilityType;
+                DomainRegistry.Repository.Execute(new ChangeForm
+                {
+                    PlayerId = newPlayerId,
+                    FormName = startform.dbName
+                });
 
+                Player newplayer = playerRepo.Players.FirstOrDefault(p => p.Id == newPlayerId);
                 newplayer.Health = 0;
                 newplayer.Mana = 0;
                 newplayer.ActionPoints = 120;
@@ -760,12 +763,9 @@ namespace TT.Domain.Procedures
 
         public static void InstantRestoreToBase(Player player)
         {
-            IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
-            string oldForm = dbPlayer.Form;
-            dbPlayer.Form = dbPlayer.OriginalForm;
+            var oldForm = player.Form;
 
-            if (dbPlayer.Mobility != PvPStatics.MobilityFull)
+            if (player.Mobility != PvPStatics.MobilityFull)
             {
                 IItemRepository itemRepo = new EFItemRepository();
                 Item itemMe = itemRepo.Items.FirstOrDefault(i => i.VictimName == player.FirstName + " " + player.LastName);
@@ -774,47 +774,26 @@ namespace TT.Domain.Procedures
                 {
                     itemRepo.DeleteItem(itemMe.Id);
                 }
-
-                dbPlayer.Mobility = PvPStatics.MobilityFull;
             }
+            DomainRegistry.Repository.Execute(new ChangeForm
+            {
+                PlayerId = player.Id,
+                FormName = player.OriginalForm
+            });
 
-            DbStaticForm baseForm = FormStatics.GetForm(dbPlayer.OriginalForm);
-
-            dbPlayer.Gender = baseForm.Gender;
-
-            dbPlayer.NormalizeHealthMana();
-
-            playerRepo.SavePlayer(dbPlayer);
-
-            SkillProcedures.UpdateFormSpecificSkillsToPlayer(dbPlayer, oldForm, dbPlayer.Form);
+            SkillProcedures.UpdateFormSpecificSkillsToPlayer(player, oldForm, player.OriginalForm);
 
         }
 
         public static void InstantChangeToForm(Player player, string formName)
         {
-            IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
-            DbStaticForm form = FormStatics.GetForm(formName);
-            string oldForm = dbPlayer.Form;
-            dbPlayer.Form = formName;
-
-
-            dbPlayer.Gender = form.Gender;
-
-            dbPlayer.NormalizeHealthMana();
-            playerRepo.SavePlayer(dbPlayer);
-
-            SkillProcedures.UpdateFormSpecificSkillsToPlayer(dbPlayer, oldForm, dbPlayer.Form);
-        }
-
-        public static void SavePlayer(Player player)
-        {
-            IPlayerRepository playerRepo = new EFPlayerRepository();
-
-            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
-            dbPlayer.dbLocationName = player.dbLocationName;
-
-            playerRepo.SavePlayer(player);
+            var oldForm = player.Form;
+            DomainRegistry.Repository.Execute(new ChangeForm
+            {
+                PlayerId = player.Id,
+                FormName = formName
+            });
+            SkillProcedures.UpdateFormSpecificSkillsToPlayer(player, oldForm, formName);
         }
 
         public static void MarkOnlineActivityTimestamp(Player player)

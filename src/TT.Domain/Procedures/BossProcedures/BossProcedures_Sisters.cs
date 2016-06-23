@@ -25,6 +25,9 @@ namespace TT.Domain.Procedures.BossProcedures
         public const string NerdSpell = "skill_The_Brain_Elynsynos";
         public const string NerdSpellForm = "form_Nerdy_Mousegirl_Elynsynos";
 
+        private const int NerdBossFormId = 317;
+        private const int BimboBossFormId = 522;
+
         public static void SpawnSisters()
         {
             PlayerDetail nerdBoss = DomainRegistry.Repository.FindSingle(new GetPlayerByBotId { BotId = AIStatics.MouseNerdBotId });
@@ -43,6 +46,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     MaxHealth = 10000,
                     MaxMana = 10000,
                     Form = NerdBossForm,
+                    FormSourceId = NerdBossFormId,
                     Money = 2000,
                     Mobility = PvPStatics.MobilityFull,
                     Level = 25,
@@ -71,6 +75,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     MaxHealth = 10000,
                     MaxMana = 10000,
                     Form = BimboBossForm,
+                    FormSourceId = BimboBossFormId,
                     Money = 6000,
                     Mobility = PvPStatics.MobilityFull,
                     Level = 25,

@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using TT.Domain.Commands.Players;
+using TT.Domain.Entities.Forms;
 using TT.Domain.Entities.Identity;
 using TT.Domain.Entities.NPCs;
+using TT.Domain.ViewModels;
 
 namespace TT.Domain.Entities.Players
 {
@@ -17,6 +19,8 @@ namespace TT.Domain.Entities.Players
         public string Location { get; protected set; }
         public string Form { get; protected set; } // TODO:  Convert to FK to FormSource (DbStaticForms)
         public ICollection<Items.Item> Items { get; protected set; } 
+
+        public FormSource FormSource { get; protected set; }
 
         public decimal Health { get; protected set; }
         public decimal MaxHealth { get; protected set; }
@@ -72,7 +76,7 @@ namespace TT.Domain.Entities.Players
             Items = new List<Items.Item>();
         }
 
-        public static Player Create(User user, NPC npc, CreatePlayer cmd)
+        public static Player Create(User user, NPC npc, FormSource form, CreatePlayer cmd)
         {
             return new Player
             {
@@ -81,6 +85,7 @@ namespace TT.Domain.Entities.Players
                 LastName = cmd.LastName,
                 Location = cmd.Location,
                 Form = cmd.Form,
+                FormSource = form,
                 Health = cmd.Health,
                 MaxHealth = cmd.MaxHealth,
                 Mana = cmd.Mana,
@@ -128,6 +133,46 @@ namespace TT.Domain.Entities.Players
             {
                 i.Drop(this);
             }
+        }
+
+        public void ChangeForm(FormSource form)
+        {
+            this.FormSource = form;
+            this.Form = form.dbName; // keep here for legacy purposes
+            this.Gender = form.Gender;
+            this.Mobility = form.MobilityType;
+            this.ForceWithinBounds();
+        }
+
+        public void ReadjustMaxes(BuffBox buffs)
+        {
+            this.MaxHealth = Convert.ToDecimal(GetWillpowerBaseByLevel(this.Level)) * (1.0M + (buffs.HealthBonusPercent() / 100.0M));
+            this.MaxMana = Convert.ToDecimal(GetManaBaseByLevel(this.Level)) * (1.0M + (buffs.ManaBonusPercent() / 100.0M));
+            this.ForceWithinBounds();
+        }
+
+        private float GetManaBaseByLevel(int level)
+        {
+            float manaBase = 5 * (level - 1) + 50;
+            return manaBase;
+        }
+
+        private static float GetWillpowerBaseByLevel(int level)
+        {
+            float willpowerBase = 15 * (level - 1) + 100;
+            return willpowerBase;
+        }
+
+        private void ForceWithinBounds()
+        {
+            if (this.MaxHealth < 1) this.MaxHealth = 1;
+            if (this.MaxMana < 1) this.MaxMana = 1;
+
+            if (this.Health > this.MaxHealth) this.Health = this.MaxHealth;
+            if (this.Mana > this.MaxMana) this.Mana = this.MaxHealth;
+
+            if (this.Health < 0) this.Health = 0;
+            if (this.Mana < 0) this.Mana = 0;
         }
     }
 }

@@ -3,6 +3,7 @@ using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Queries.Players;
 using TT.Tests.Builders.AI;
+using TT.Tests.Builders.Form;
 using TT.Tests.Builders.Identity;
 using TT.Tests.Builders.Item;
 
@@ -16,11 +17,13 @@ namespace TT.Tests.Domain.Queries.Players
         {
             var user = new UserBuilder().With(u => u.Id, "guid").BuildAndSave();
             var npc = new NPCBuilder().With(n => n.Id, 7).BuildAndSave();
+            var form = new FormSourceBuilder().With(n => n.Id, 101).BuildAndSave();
 
             new PlayerBuilder()
                 .With(p => p.Id, 23)
                 .With(p => p.User, user)
                 .With(p => p.NPC, npc)
+                .With(p => p.FormSource, form)
                 .BuildAndSave();
 
             var cmd = new GetPlayer { PlayerId = 23 };
@@ -29,6 +32,7 @@ namespace TT.Tests.Domain.Queries.Players
 
             foundPlayer.Id.Should().Be(23);
             foundPlayer.NPC.Id.Should().Be(7);
+            foundPlayer.FormSource.Id.Should().Be(101);
         }
 
         [Test]

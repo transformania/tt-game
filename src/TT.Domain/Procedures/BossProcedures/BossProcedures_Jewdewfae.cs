@@ -18,6 +18,8 @@ namespace TT.Domain.Procedures.BossProcedures
         public const string FirstName = "Jewdewfae";
         public const string LastName = "the Pervfae";
 
+        private const int FaeFormId = 210;
+
         public static void SpawnFae()
         {
             PlayerDetail fae = DomainRegistry.Repository.FindSingle(new GetPlayerByBotId { BotId = AIStatics.JewdewfaeBotId });
@@ -35,6 +37,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     MaxHealth = 9999,
                     MaxMana = 9999,
                     Form = FaeFormDbName,
+                    FormSourceId = FaeFormId,
                     Money = 1000,
                     Level = 7,
                     BotId = AIStatics.JewdewfaeBotId

@@ -7,6 +7,9 @@ namespace TT.Domain.Procedures.BossProcedures
 {
     public class BossProcedures_Bartender
     {
+
+        private const int BartenderFormId = 403;
+
         public static void SpawnBartender()
         {
             PlayerDetail bartender = DomainRegistry.Repository.FindSingle(new GetPlayerByBotId { BotId = AIStatics.DonnaBotId });
@@ -24,6 +27,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     MaxHealth = 9999,
                     MaxMana = 9999,
                     Form = "form_The_Perfect_Barman_Judoo",
+                    FormSourceId = BartenderFormId,
                     Money = 0,
                     Mobility = PvPStatics.MobilityFull,
                     Level = 15,

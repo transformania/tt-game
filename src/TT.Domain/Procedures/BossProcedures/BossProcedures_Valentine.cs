@@ -50,6 +50,8 @@ namespace TT.Domain.Procedures.BossProcedures
         public const string DayVampireFemaleSpell = "skill_Prowess_of_the_Nightkin_Leia_Valentine";
         public const string DayVampireFemaleForm = "form_Vampire_Duelist_Leia_Valentine";
 
+        private const int ValentineFormId = 207;
+
         public static void SpawnValentine()
         {
             PlayerDetail valentine = DomainRegistry.Repository.FindSingle(new GetPlayerByBotId { BotId = AIStatics.ValentineBotId });
@@ -68,6 +70,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     MaxHealth = 9999,
                     MaxMana = 9999,
                     Form = ValentineFormDbName,
+                    FormSourceId = ValentineFormId,
                     Money = 1000,
                     Mobility = PvPStatics.MobilityFull,
                     Level = 10,

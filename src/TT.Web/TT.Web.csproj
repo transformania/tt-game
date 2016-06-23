@@ -638,7 +638,6 @@
     <Content Include="Views\Settings\Polls\Open\poll2.cshtml" />
     <Content Include="Views\Settings\Polls\Read\poll2.cshtml" />
     <Content Include="Views\PvPAdmin\Scratchpad.cshtml" />
-    <Content Include="Views\PvPAdmin\test.cshtml" />
     <Content Include="Views\NPC\TradeWithMerchant.cshtml" />
     <Content Include="Views\NPC\SellList.cshtml" />
     <Content Include="Views\NPC\TradeWithPetMerchant.cshtml" />
@@ -683,7 +682,6 @@
     <Content Include="Views\PvP\RoundLeaderboards\XP\Alpha_19.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_19.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Statistics\Alpha_19.cshtml" />
-    <Content Include="Views\PvPAdmin\RenameStuff.cshtml" />
     <Content Include="Views\Settings\SetFriendNickname.cshtml" />
     <Content Include="Views\PvPAdmin\FaeList.cshtml" />
     <Content Include="Views\PvPAdmin\WriteFae.cshtml" />

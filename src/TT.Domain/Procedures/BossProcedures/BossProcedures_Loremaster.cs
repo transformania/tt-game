@@ -18,6 +18,8 @@ namespace TT.Domain.Procedures.BossProcedures
         public const string LastName = "the Forbidden";
         public const string FormDbName = "form_Exiled_Lorekeeper_Judoo";
 
+        private const int LoremasterFormId = 467;
+
         public static void SpawnLoremaster()
         {
             PlayerDetail loremaster = DomainRegistry.Repository.FindSingle(new GetPlayerByBotId { BotId = AIStatics.LoremasterBotId });
@@ -37,6 +39,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     Mobility = PvPStatics.MobilityFull,
                     Money = 1000,
                     Form = FormDbName,
+                    FormSourceId = LoremasterFormId,
                     Location = "bookstore_back",
                     Gender = PvPStatics.GenderMale,
                 };

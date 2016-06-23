@@ -50,6 +50,7 @@
     <Compile Include="201603110034_AddTomes.cs" />
     <Compile Include="201604042333_AddRestockItems.cs" />
     <Compile Include="201604042151_AddNPCs.cs" />
+    <Compile Include="201605211900_AddFormFKs.cs" />
     <Compile Include="201605030603_UpdateMessages.cs" />
     <Compile Include="201605011120_AddItemFKs.cs" />
     <Compile Include="201604071120_AddPlayer.cs" />

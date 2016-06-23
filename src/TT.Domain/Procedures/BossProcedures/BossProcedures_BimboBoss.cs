@@ -27,6 +27,7 @@ namespace TT.Domain.Procedures.BossProcedures
         private const string RegularBimboFormDbName = "form_Bimbocalypse_Plague_Victim_Judoo";
         public const string CureItemDbName = "item_consumeable_bimbo_cure";
         public const int CureItemSourceId = 143;
+        private const int BimboBossFormId = 233;
 
         public static void SpawnBimboBoss()
         {
@@ -45,6 +46,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     MaxHealth = 9999,
                     MaxMana = 9999,
                     Form = BossFormDbName,
+                    FormSourceId = BimboBossFormId,
                     Money = 2500,
                     Level = 15,
                     BotId = AIStatics.BimboBossBotId,
@@ -154,7 +156,6 @@ namespace TT.Domain.Procedures.BossProcedures
 
             playerRepo.SavePlayer(bimboBoss);
             bimboBoss = playerRepo.Players.FirstOrDefault(f => f.FirstName == BossFirstName && f.LastName == BossLastName);
-            DateTime cutoff = DateTime.UtcNow.AddHours(-1);
 
             Random rand = new Random(Guid.NewGuid().GetHashCode());
 
@@ -201,10 +202,20 @@ namespace TT.Domain.Procedures.BossProcedures
                 {
                     if (roll < .16 && infectee.InDuel <= 0 && infectee.InQuest <= 0)
                     {
-                        infectee.Form = RegularBimboFormDbName;
-                        infectee.Gender = PvPStatics.GenderFemale;
-                        infectee = PlayerProcedures.ReadjustMaxes(infectee,ItemProcedures.GetPlayerBuffs(infectee));
-                        playerRepo.SavePlayer(infectee);
+
+                        DomainRegistry.Repository.Execute(new ChangeForm
+                        {
+                            PlayerId = infectee.Id,
+                            FormName = RegularBimboFormDbName
+                        });
+
+                        DomainRegistry.Repository.Execute(new ReadjustMaxes
+                        {
+                            playerId = infectee.Id,
+                            buffs = ItemProcedures.GetPlayerBuffs(infectee)
+                        });
+
+                        infectee = playerRepo.Players.FirstOrDefault(p => p.Id == effectId);
 
                         string message = "You gasp, your body shifting as the virus infecting you overwhelms your biological and arcane defenses.  Before long you find that your body has been transformed into that of one of the many bimbonic plague victims and you can't help but succumb to the urges to spread your infection--no, your gift!--on to the rest of mankind.";
                         string loclogMessage = "<b style='color: red'>" + infectee.GetFullName() + " succumbed to the bimbonic virus, spontaneously transforming into one of Lady Lovebringer's bimbos.</b>";

@@ -54,6 +54,7 @@
     <Compile Include="201605030603_UpdateMessages.cs" />
     <Compile Include="201605011120_AddItemFKs.cs" />
     <Compile Include="201604071120_AddPlayer.cs" />
+    <Compile Include="201606231841_AddEffectFKs.cs" />
     <Compile Include="201606221825_AddSkillFKs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

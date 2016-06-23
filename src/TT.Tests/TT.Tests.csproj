@@ -134,6 +134,8 @@
     <Compile Include="Builders\Assets\TomeBuilder.cs" />
     <Compile Include="Builders\Builder.cs" />
     <Compile Include="Builders\Chat\ChatRoomBuilder.cs" />
+    <Compile Include="Builders\Effects\EffectSourceBuilder.cs" />
+    <Compile Include="Builders\Effects\EffectBuilder.cs" />
     <Compile Include="Builders\Form\FormSourceBuilder.cs" />
     <Compile Include="Builders\Identity\UserBuilder.cs" />
     <Compile Include="Builders\Item\ItemBuilder.cs" />
@@ -152,6 +154,7 @@
     <Compile Include="Domain\Commands\Assets\UpdateTomeTests.cs" />
     <Compile Include="Domain\Commands\Assets\CreateTomeTests.cs" />
     <Compile Include="Domain\Commands\Chat\CreateChatRoomTests.cs" />
+    <Compile Include="Domain\Commands\Effects\CreateEffectTests.cs" />
     <Compile Include="Domain\Commands\Items\ChangeItemOwnerTests.cs" />
     <Compile Include="Domain\Commands\Items\DeleteExpiredConsumablesOnGroundTests.cs" />
     <Compile Include="Domain\Commands\Items\DeleteExpiredConsumablesOnMerchantsTests.cs" />

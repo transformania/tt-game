@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using TT.Domain.Commands.Players;
+using TT.Domain.Entities.Effects;
 using TT.Domain.Entities.Forms;
 using TT.Domain.Entities.Identity;
 using TT.Domain.Entities.NPCs;
@@ -20,6 +21,7 @@ namespace TT.Domain.Entities.Players
         public string Location { get; protected set; }
         public string Form { get; protected set; } // TODO:  Convert to FK to FormSource (DbStaticForms)
         public ICollection<Items.Item> Items { get; protected set; } 
+        public ICollection<Effect> Effects { get; protected set; }
         public ICollection<Skill> Skills { get; protected set; }
 
         public FormSource FormSource { get; protected set; }

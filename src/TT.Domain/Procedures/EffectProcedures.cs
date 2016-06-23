@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using TT.Domain.Abstract;
+using TT.Domain.Commands.Effects;
 using TT.Domain.Concrete;
 using TT.Domain.Models;
 using TT.Domain.Statics;
@@ -190,42 +191,35 @@ namespace TT.Domain.Procedures
 
             }
 
+            var cmd = new CreateEffect();
 
-            Effect addme = new Effect();
-
-            addme.dbName = perkName;
-            addme.OwnerId = player.Id;
+            cmd.EffectSourceId = EffectStatics.GetEffect(perkName).Id;
+            cmd.OwnerId = player.Id;
 
             // this effect is a permanent levelup perk
             if (effectPlus.AvailableAtLevel > 0)
             {
 
-                addme.Duration = 99999;
-                addme.Cooldown = 99999;
-                addme.IsPermanent = true;
-                addme.Level = 1;
+                cmd.Duration = 99999;
+                cmd.Cooldown = 99999;
+                cmd.IsPermanent = true;
+                cmd.Level = 1;
 
             }
 
             // this effect is temporary, grab some of its stats from the effect static
             if (effectPlus.AvailableAtLevel == 0)
             {
-                addme.Duration = effectPlus.Duration;
-                addme.Cooldown = effectPlus.Cooldown;
-                addme.IsPermanent = false;
+                cmd.Duration = effectPlus.Duration;
+                cmd.Cooldown = effectPlus.Cooldown;
+                cmd.IsPermanent = false;
             }
 
 
             // okay to proceed--give this player this perk.
 
-
-
-
-
-
-
             // this is a level up perk so just return a simple message
-            if (addme.IsPermanent)
+            if (cmd.IsPermanent)
             {
                 string logmessage = "You have gained the perk " + effectPlus.FriendlyName + ".";
                 PlayerLogProcedures.AddPlayerLog(player.Id, logmessage, false);
@@ -236,7 +230,7 @@ namespace TT.Domain.Procedures
                 person.UnusedLevelUpPerks--;
                 playerRepo.SavePlayer(person);
 
-                effectRepo.SaveEffect(addme);
+                DomainRegistry.Repository.Execute(cmd);
                 return logmessage;
             }
 
@@ -260,7 +254,7 @@ namespace TT.Domain.Procedures
                 }
 
                 PlayerLogProcedures.AddPlayerLog(player.Id, effectPlus.MessageWhenHit, false);
-                effectRepo.SaveEffect(addme);
+                DomainRegistry.Repository.Execute(cmd);
                 return logmessage;
             }
 

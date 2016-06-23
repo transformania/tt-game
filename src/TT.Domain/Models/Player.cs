@@ -21,9 +21,6 @@ namespace TT.Domain.Models
         public string dbLocationName { get; set; }
         public string Form { get; set; }
 
-        [Column("FormSourceId")]
-        public int FormSourceId { get; set; }
-
         public decimal Health { get; set; }
         public decimal MaxHealth { get; set; }
         public decimal Mana { get; set; }

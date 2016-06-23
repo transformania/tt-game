@@ -34,7 +34,7 @@ namespace TT.Tests.Domain.Commands.Players
                 .With(p => p.Gender, PvPStatics.GenderMale)
                 .BuildAndSave();
 
-            var cmd = new ChangeForm { playerId = 23, formId = 3 };
+            var cmd = new ChangeForm { PlayerId = 23, FormId = 3 };
 
             DomainRegistry.Repository.Execute(cmd);
 
@@ -51,7 +51,7 @@ namespace TT.Tests.Domain.Commands.Players
         [Test]
         public void Should_throw_exception_if_player_not_found()
         {
-            var cmd = new ChangeForm { playerId = 23, formId = 3 };
+            var cmd = new ChangeForm { PlayerId = 23, FormId = 3 };
             var action = new Action(() => { Repository.Execute(cmd); });
 
             action.ShouldThrowExactly<DomainException>().WithMessage(string.Format("Player with ID 23 could not be found"));
@@ -65,7 +65,7 @@ namespace TT.Tests.Domain.Commands.Players
                 .With(p => p.Id, 23)
                 .BuildAndSave();
 
-            var cmd = new ChangeForm { playerId = 23, formId = 3 };
+            var cmd = new ChangeForm { PlayerId = 23, FormId = 3 };
             var action = new Action(() => { Repository.Execute(cmd); });
 
             action.ShouldThrowExactly<DomainException>().WithMessage(string.Format("FormSource with ID 3 could not be found"));

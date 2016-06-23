@@ -6,6 +6,7 @@ using Microsoft.AspNet.Identity;
 using TT.Domain;
 using TT.Domain.Abstract;
 using TT.Domain.Commands.Items;
+using TT.Domain.Commands.Players;
 using TT.Domain.Concrete;
 using TT.Domain.Models;
 using TT.Domain.Procedures;
@@ -750,17 +751,6 @@ namespace TT.Web.Controllers
             return RedirectToAction("ApproveContributionList");
         }
 
-        public ActionResult RenameStuff()
-        {
-            // assert only admins can view this
-            if (!User.IsInRole(PvPStatics.Permissions_Admin))
-            {
-                return RedirectToAction("Play", "PvP");
-            }
-
-            return View();
-        }
-
         public ActionResult ServerBalance_Forms()
         {
             List<BalancePageViewModel> output = new List<BalancePageViewModel>();
@@ -1340,8 +1330,12 @@ namespace TT.Web.Controllers
 
                     if (form != null && form.MobilityType == PvPStatics.MobilityFull)
                     {
-                        player.Form = form.dbName;
-                        player.FormSourceId = FormStatics.GetForm(player.Form).Id;
+                        DomainRegistry.Repository.Execute(new ChangeForm
+                        {
+                            PlayerId = player.Id,
+                            FormName = form.dbName
+                        });
+
                         player.Health = 99999;
                         player.MaxHealth = 99999;
                     }
@@ -1447,10 +1441,11 @@ namespace TT.Web.Controllers
             IItemRepository itemRepo = new EFItemRepository();
 
             Player me = playerRepo.Players.FirstOrDefault(p => p.MembershipId == myMembershipId);
-            me.Mobility = PvPStatics.MobilityInanimate;
-            me.Form = "form_Flirty_Three-Tiered_Skirt_Martiandawn";
-            me.FormSourceId = FormStatics.GetForm(me.Form).Id;
-            playerRepo.SavePlayer(me);
+            DomainRegistry.Repository.Execute(new ChangeForm
+            {
+                PlayerId = me.Id,
+                FormName = "form_Flirty_Three-Tiered_Skirt_Martiandawn"
+            });
 
             // delete old item you are if you are one
             Item possibleMeItem = itemRepo.Items.FirstOrDefault(i => i.VictimName == me.FirstName + " " + me.LastName); // DO NOT use GetFullName.  It will break things here.
@@ -1498,10 +1493,11 @@ namespace TT.Web.Controllers
             IItemRepository itemRepo = new EFItemRepository();
 
             Player me = playerRepo.Players.FirstOrDefault(p => p.MembershipId == myMembershipId);
-            me.Mobility = PvPStatics.MobilityPet;
-            me.Form = "form_Cuddly_Pocket_Goo_Girl_GooGirl";
-            me.FormSourceId = FormStatics.GetForm(me.Form).Id;
-            playerRepo.SavePlayer(me);
+            DomainRegistry.Repository.Execute(new ChangeForm
+            {
+                PlayerId = me.Id,
+                FormName = "form_Cuddly_Pocket_Goo_Girl_GooGirl"
+            });
 
             // delete old item you are if you are one
             Item possibleMeItem = itemRepo.Items.FirstOrDefault(i => i.VictimName == me.FirstName + " " + me.LastName);
@@ -1547,10 +1543,11 @@ namespace TT.Web.Controllers
             IPlayerRepository playerRepo = new EFPlayerRepository();
 
             Player me = playerRepo.Players.FirstOrDefault(p => p.MembershipId == myMembershipId);
-            me.Mobility = PvPStatics.MobilityFull;
-            me.Form = me.OriginalForm;
-            me.FormSourceId = FormStatics.GetForm(me.Form).Id;
-            playerRepo.SavePlayer(me);
+            DomainRegistry.Repository.Execute(new ChangeForm
+            {
+                PlayerId = me.Id,
+                FormName = me.OriginalForm
+            });
 
             // delete old item you are if you are one
             var item = DomainRegistry.Repository.FindSingle(new GetItemByVictimName {FirstName = me.FirstName, LastName = me.LastName});

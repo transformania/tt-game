@@ -140,6 +140,7 @@ namespace TT.Domain.Entities.Players
             this.FormSource = form;
             this.Form = form.dbName; // keep here for legacy purposes
             this.Gender = form.Gender;
+            this.Mobility = form.MobilityType;
             this.ForceWithinBounds();
         }
 

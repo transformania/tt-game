@@ -6,6 +6,9 @@ using TT.Domain.ViewModels;
 
 namespace TT.Domain.Commands.Players
 {
+    /// <summary>
+    /// This class is bad and needs to go away.
+    /// </summary>
     public class ReadjustMaxes : DomainCommand
     {
 

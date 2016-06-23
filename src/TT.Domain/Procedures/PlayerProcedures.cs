@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TT.Domain.Abstract;
 using TT.Domain.Commands.Players;
+using TT.Domain.Commands.Skills;
 using TT.Domain.Concrete;
 using TT.Domain.Models;
 using TT.Domain.Procedures.BossProcedures;
@@ -717,17 +718,7 @@ namespace TT.Domain.Procedures
 
             }
 
-
-
-            ISkillRepository skillRepo = new EFSkillRepository();
-            Skill baseskill = new Skill
-            {
-                OwnerId = newPlayerId,
-                Name = "lowerHealth",
-                Charge = -1,
-                Duration = -1
-            };
-            skillRepo.SaveSkill(baseskill);
+            DomainRegistry.Repository.Execute(new CreateSkill {ownerId = newPlayerId, skillSourceId = SkillStatics.WeakenSkillSourceId });
 
             if (player.InanimateForm != null)
             {

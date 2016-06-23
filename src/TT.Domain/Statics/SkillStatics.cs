@@ -9,6 +9,8 @@ namespace TT.Domain.Statics
     public static class SkillStatics
     {
 
+        public const int WeakenSkillSourceId = 312;
+
         public static DbStaticSkill GetStaticSkill(string name)
         {
             ISkillRepository statSkillRepo = new EFSkillRepository();

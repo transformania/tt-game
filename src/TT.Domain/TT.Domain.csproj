@@ -263,6 +263,7 @@
     <Compile Include="DTOs\Assets\TomeDetail.cs" />
     <Compile Include="DTOs\Messages\MessageDetail.cs" />
     <Compile Include="DTOs\Players\PlayeMessageDetail.cs" />
+    <Compile Include="DTOs\Players\PlayerLogDetail.cs" />
     <Compile Include="DTOs\Skills\SkillDetail.cs" />
     <Compile Include="DTOs\Skills\SkillSourceDetail.cs" />
     <Compile Include="Entities\AI\NPC.cs" />
@@ -279,6 +280,7 @@
     <Compile Include="Entities\Identity\User.cs" />
     <Compile Include="Entities\Messages\Message.cs" />
     <Compile Include="Entities\Players\Player.cs" />
+    <Compile Include="Entities\Players\PlayerLog.cs" />
     <Compile Include="Entities\Skills\Skill.cs" />
     <Compile Include="Entities\Skills\SkillSource.cs" />
     <Compile Include="EntityFrameworkExtensions.cs" />
@@ -299,6 +301,7 @@
     <Compile Include="Mappings\Item\ItemSourceMappings.cs" />
     <Compile Include="Mappings\AI\NPCMappings.cs" />
     <Compile Include="Mappings\Messages\MessageMapping.cs" />
+    <Compile Include="Mappings\Players\PlayerLogMapping.cs" />
     <Compile Include="Mappings\Players\PlayerMapping.cs" />
     <Compile Include="Mappings\Skills\SkillMappings.cs" />
     <Compile Include="Mappings\Skills\SkillSourceMappings.cs" />

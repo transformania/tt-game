@@ -9,6 +9,8 @@ namespace TT.Migrations
 
         public override void Up()
         {
+            Execute.Sql("DELETE FROM PlayerLogs WHERE PlayerLogs.PlayerId <= 0");
+
             Create.ForeignKey()
                 .FromTable("PlayerLogs")
                 .ForeignColumn("PlayerId")

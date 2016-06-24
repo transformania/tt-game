@@ -376,8 +376,11 @@ namespace TT.Domain.Procedures
 
                 playerRepo.SavePlayer(dbPlayer);
 
-                string message = player.FirstName + " " + player.LastName + ", your " + itemPlus.FriendlyName + ", struggles but fails to return to an animate form.  [Recovery chance Recovery chance::  " + inanimXP.TimesStruggled + "%]";
-                PlayerLogProcedures.AddPlayerLog((int)dbPlayerItem.OwnerId, message, true);
+                if (dbPlayerItem.OwnerId != null && dbPlayerItem.OwnerId > 0)
+                {
+                    string message = player.FirstName + " " + player.LastName + ", your " + itemPlus.FriendlyName + ", struggles but fails to return to an animate form.  [Recovery chance Recovery chance::  " + inanimXP.TimesStruggled + "%]";
+                    PlayerLogProcedures.AddPlayerLog((int)dbPlayerItem.OwnerId, message, true);
+                }
 
                 PlayerLogProcedures.AddPlayerLog(dbPlayer.Id, "You struggled to return to a human form.", false);
 

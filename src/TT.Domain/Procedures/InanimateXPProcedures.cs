@@ -376,7 +376,7 @@ namespace TT.Domain.Procedures
 
                 playerRepo.SavePlayer(dbPlayer);
 
-                if (dbPlayerItem.OwnerId != null && dbPlayerItem.OwnerId > 0)
+                if (dbPlayerItem.OwnerId != null)
                 {
                     string message = player.FirstName + " " + player.LastName + ", your " + itemPlus.FriendlyName + ", struggles but fails to return to an animate form.  [Recovery chance Recovery chance::  " + inanimXP.TimesStruggled + "%]";
                     PlayerLogProcedures.AddPlayerLog((int)dbPlayerItem.OwnerId, message, true);

@@ -139,6 +139,7 @@
     <Compile Include="Builders\Form\FormSourceBuilder.cs" />
     <Compile Include="Builders\Identity\UserBuilder.cs" />
     <Compile Include="Builders\Item\ItemBuilder.cs" />
+    <Compile Include="Builders\LocationLogs\LocationLogBuilder.cs" />
     <Compile Include="Builders\Messages\MessageBuilder.cs" />
     <Compile Include="Builders\Item\ItemSourceBuilder.cs" />
     <Compile Include="Builders\Players\PlayerBuilder.cs" />
@@ -186,6 +187,7 @@
     <Compile Include="Domain\Queries\Item\GetItemSourcesTests.cs" />
     <Compile Include="Domain\Queries\Item\GetItemSourceTest.cs" />
     <Compile Include="Domain\Queries\Item\GetItemByVictimNameTest.cs" />
+    <Compile Include="Domain\Queries\LocationLogs\GetLocationLogsAtLocationTest.cs" />
     <Compile Include="Domain\Queries\Messages\GetMessagesInConversationTests.cs" />
     <Compile Include="Domain\Queries\Messages\GetMessagesTests.cs" />
     <Compile Include="Domain\Queries\Item\GetItemTests.cs" />

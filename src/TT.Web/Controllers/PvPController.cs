@@ -19,7 +19,9 @@ using TT.Web.CustomHtmlHelpers;
 using TT.Domain.Queries.Assets;
 using TT.Domain;
 using TT.Domain.DTOs.Item;
+using TT.Domain.DTOs.LocationLog;
 using TT.Domain.Queries.Item;
+using TT.Domain.Queries.LocationLogs;
 using TT.Domain.Queries.Messages;
 
 namespace TT.Web.Controllers
@@ -163,9 +165,11 @@ namespace TT.Web.Controllers
 
                 if (inanimateOutput.WornBy != null) // being worn
                 {
-                    List<LocationLog> actionsHere = LocationLogProcedures.GetLocationLogsAtLocation(inanimateOutput.WornBy.Player.dbLocationName, 0).ToList();
-                    List<LocationLog> validActionsHere = new List<LocationLog>();
-                    foreach (LocationLog log in actionsHere) {
+
+                    var actionsHere = DomainRegistry.Repository.Find(new GetLocationLogsAtLocation { Location = inanimateOutput.WornBy.Player.dbLocationName, ConcealmentLevel = 0});
+
+                    var validActionsHere = new List<LocationLogDetail>();
+                    foreach (var log in actionsHere) {
                         if (log.ConcealmentLevel <= 0 && !log.Message.Contains("entered from") && !log.Message.Contains("left toward"))
                         {
                             validActionsHere.Add(log);
@@ -177,7 +181,7 @@ namespace TT.Web.Controllers
                 }
                 else
                 {
-                    inanimateOutput.LocationLog = LocationLogProcedures.GetLocationLogsAtLocation(me.dbLocationName, 0);
+                    inanimateOutput.LocationLog = DomainRegistry.Repository.Find(new GetLocationLogsAtLocation { Location = me.dbLocationName, ConcealmentLevel = 0 });
                     inanimateOutput.PlayersHere = PlayerProcedures.GetPlayerFormViewModelsAtLocation(me.dbLocationName, myMembershipId);
                 }
 
@@ -235,7 +239,7 @@ namespace TT.Web.Controllers
                 animalOutput.PlayerLog = PlayerLogProcedures.GetAllPlayerLogs(me.Id).Reverse();
                 animalOutput.PlayerLogImportant = animalOutput.PlayerLog.Where(l => l.IsImportant);
 
-                animalOutput.LocationLog = LocationLogProcedures.GetLocationLogsAtLocation(animalOutput.Location.dbName, 0);
+                animalOutput.LocationLog = DomainRegistry.Repository.Find(new GetLocationLogsAtLocation { Location = animalOutput.Location.dbName, ConcealmentLevel = 0 });
 
                 var animalLocationItemsCmd = new GetItemsAtLocationVisibleToGameMode { dbLocationName = animalOutput.Location.dbName, gameMode = me.GameMode};
                 animalOutput.LocationItems = DomainRegistry.Repository.Find(animalLocationItemsCmd);
@@ -303,7 +307,8 @@ namespace TT.Web.Controllers
             output.Location.FriendlyName_West = LocationsStatics.GetConnectionName(output.Location.Name_West);
 
             loadtime += "Start get location logs:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
-            output.LocationLog = LocationLogProcedures.GetLocationLogsAtLocation(me.dbLocationName, (int)myBuffs.Perception());
+
+            output.LocationLog = DomainRegistry.Repository.Find(new GetLocationLogsAtLocation { Location = me.dbLocationName, ConcealmentLevel = (int)myBuffs.Perception() });
             loadtime += "End get players here:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
 
             loadtime += "Start get player logs:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";

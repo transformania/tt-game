@@ -33,7 +33,7 @@ namespace TT.Domain.Queries.RPClassifiedAds
                 return query;
             };
 
-            return ExecuteInternal(context).ToList(); // execute SQL to prevent changes with LINQ later
+            return ExecuteInternal(context);
         }
     }
 }

@@ -419,7 +419,6 @@
     <Compile Include="Procedures\QuestProcedures.cs" />
     <Compile Include="Procedures\QuestWriterProcedures.cs" />
     <Compile Include="Procedures\RerollProcedures.cs" />
-    <Compile Include="Procedures\RPClassifiedAdsProcedures.cs" />
     <Compile Include="Procedures\SettingsProcedures.cs" />
     <Compile Include="Procedures\SkillProcedures.cs" />
     <Compile Include="Procedures\StatsProcedures.cs" />

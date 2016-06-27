@@ -10,17 +10,24 @@ namespace TT.Domain.Queries.RPClassifiedAds
 {
     public class GetRPClassifiedAds : DomainQuery<RPClassifiedAdAndPlayerDetail>
     {
-        public DateTime CutOff { get; set; }
+        private DateTime time = DateTime.MinValue;
+        private TimeSpan cutOff;
+        public TimeSpan CutOff
+        {
+            get { return cutOff; }
+            set { cutOff = value; time = DateTime.UtcNow.Add(value.Negate()); }
+        }
 
         public override IEnumerable<RPClassifiedAdAndPlayerDetail> Execute(IDataContext context)
         {
             ContextQuery = ctx =>
             {
-                var query = (from adq in ctx.AsQueryable<RPClassifiedAd>()
-                    join player in ctx.AsQueryable<Player>() // GROUP JOIN
-                        on adq.OwnerMembershipId equals player.MembershipId into tempPlayers
-                    where adq.RefreshTimestamp >= CutOff
-                    select new { RPClassifiedAd = adq, Players = tempPlayers })
+                var query = (from ad in ctx.AsQueryable<RPClassifiedAd>()
+                             join player in ctx.AsQueryable<Player>() // GROUP JOIN
+                                 on ad.OwnerMembershipId equals player.MembershipId into players
+                             where ad.RefreshTimestamp >= time
+                             orderby ad.RefreshTimestamp descending
+                             select new { RPClassifiedAd = ad, Players = players })
                     .ProjectToQueryable<RPClassifiedAdAndPlayerDetail>();
 
                 return query;

@@ -1,5 +1,4 @@
 ﻿using FluentAssertions;
-using FluentAssertions.Execution;
 using NUnit.Framework;
 using System;
 using System.Linq;
@@ -13,6 +12,7 @@ using TT.Tests.Builders.RPClassifiedAds;
 
 namespace TT.Tests.Domain.Commands.RPClassifiedAds
 {
+    [Category("RPClassifiedAd Tests")]
     public class RefreshRPClassifiedAdTest : TestBase
     {
         private User JohnSmith;
@@ -79,7 +79,7 @@ namespace TT.Tests.Domain.Commands.RPClassifiedAds
             Action action = () => Repository.Execute(cmd);
             action.ShouldThrowExactly<RPClassifiedAdNotOwnerException>()
                 .WithMessage(string.Format("User {0} does not own RPClassifiedAdId {1}", cmd.UserId, cmd.RPClassifiedAdId))
-                .Where(ex => ex.UserFriendlyError == "You do not own this RP Classified Ad.");
+                .And.UserFriendlyError.Should().Be("You do not own this RP Classified Ad.");
         }
 
         [Test]
@@ -89,7 +89,7 @@ namespace TT.Tests.Domain.Commands.RPClassifiedAds
             Action action = () => Repository.Execute(cmd);
             action.ShouldThrowExactly<RPClassifiedAdNotFoundException>()
                 .WithMessage(string.Format("RPClassifiedAdId with ID {0} could not be found", cmd.RPClassifiedAdId))
-                .Where(ex => ex.UserFriendlyError == "This RP Classified Ad doesn't exist.");
+                .And.UserFriendlyError.Should().Be("This RP Classified Ad doesn't exist.");
         }
     }
 }

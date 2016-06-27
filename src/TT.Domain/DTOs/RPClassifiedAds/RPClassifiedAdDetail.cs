@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
+using TT.Domain.Entities;
+using TT.Domain.Entities.RPClassifiedAds;
 
 namespace TT.Domain.DTOs.RPClassifiedAds
 {
-    public class RPClassifiedAdDetail
+    public class RPClassifiedAdDetail : BaseDTO<RPClassifiedAd, int>
     {
-        public int Id { get; set; }
         public string OwnerMembershipId { get; set; }
 
         public string Title { get; set; }

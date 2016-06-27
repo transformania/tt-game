@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using TT.Domain.Entities.Players;
 
 namespace TT.Domain.DTOs.RPClassifiedAds
 {
@@ -10,10 +10,8 @@ namespace TT.Domain.DTOs.RPClassifiedAds
         public ICollection<PlayerDetail> Players { get; set; }
     }
 
-    public class PlayerDetail
+    public class PlayerDetail : BaseDTO<Player, int>
     {
-        public int Id { get; set; }
-
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public int DonatorLevel { get; set; }

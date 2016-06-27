@@ -1,28 +1,28 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
 using System;
-using TT.Domain.Commands.RPClassifiedAds;
 using TT.Domain.Entities.Identity;
 using TT.Domain.Entities.RPClassifiedAds;
 using TT.Domain.Exceptions.RPClassifiedAds;
+using TT.Domain.Queries.RPClassifiedAds;
 using TT.Tests.Builders.Identity;
 using TT.Tests.Builders.RPClassifiedAds;
 
-namespace TT.Tests.Domain.Commands.RPClassifiedAds
+namespace TT.Tests.Domain.Queries.RPClassifiedAds
 {
     [Category("RPClassifiedAd Tests")]
-    public class DeleteRPClassifiedAdTest : TestBase
+    public class GetRPClassifiedAdTests : TestBase
     {
         private User JohnSmith;
+        private GetRPClassifiedAd cmd;
         private RPClassifiedAd Ad;
-        private DeleteRPClassifiedAd cmd;
 
         public override void SetUp()
         {
             base.SetUp();
 
             JohnSmith = new UserBuilder()
-                .With(u => u.Email, "JohnSmith@example.com")
+                .With(u => u.Email, "JohnSmith@example.cum")
                 .With(u => u.UserName, "JohnSmith")
                 .With(u => u.Id, "guid")
                 .BuildAndSave();
@@ -37,36 +37,37 @@ namespace TT.Tests.Domain.Commands.RPClassifiedAds
                 .With(ad => ad.OwnerMembershipId, JohnSmith.Id)
                 .BuildAndSave();
 
-            cmd = new DeleteRPClassifiedAd() { UserId = JohnSmith.Id, RPClassifiedAdId = Ad.Id };
+            cmd = new GetRPClassifiedAd
+            {
+                UserId = JohnSmith.Id,
+                RPClassifiedAdId = Ad.Id
+            };
         }
 
         [Test]
-        public void Should_delete_ad()
+        public void Should_get_ad()
         {
-            Repository.Execute(cmd);
-
-            DataContext.AsQueryable<RPClassifiedAd>().Should().HaveCount(0);
+            var ad = Repository.FindSingle(cmd);
+            ad.Id.Should().Be(Ad.Id);
         }
 
         [Test]
-        public void Should_delete_if_CheckUserId_is_false()
+        public void Should_not_check_Id_if_checkId_is_false()
         {
-            cmd.UserId = null;
+            cmd.UserId += '-';
             cmd.CheckUserId = false;
-
-            Repository.Execute(cmd);
-
-            DataContext.AsQueryable<RPClassifiedAd>().Should().HaveCount(0);
+            var ad = Repository.FindSingle(cmd);
+            ad.Id.Should().Be(Ad.Id);
         }
 
         [Test]
         public void Should_throw_if_not_owner()
         {
-            cmd.UserId += "-";
+            cmd.UserId += '-';
+            Action action = () => Repository.FindSingle(cmd);
 
-            Action action = () => Repository.Execute(cmd);
-            action.ShouldThrow<RPClassifiedAdNotOwnerException>()
-                .WithMessage(string.Format("User {0} does not own RP Classified Ad {1}", cmd.UserId, cmd.RPClassifiedAdId))
+            action.ShouldThrowExactly<RPClassifiedAdNotOwnerException>()
+                .WithMessage(string.Format("User {0} does not own RP Classified Ad Id {1}", cmd.UserId, Ad.Id))
                 .And.UserFriendlyError.Should().Be("You do not own this RP Classified Ad.");
         }
 
@@ -74,10 +75,10 @@ namespace TT.Tests.Domain.Commands.RPClassifiedAds
         public void Should_throw_if_ad_does_not_exist()
         {
             cmd.RPClassifiedAdId++;
+            Action action = () => Repository.FindSingle(cmd);
 
-            Action action = () => Repository.Execute(cmd);
-            action.ShouldThrow<RPClassifiedAdNotFoundException>()
-                .WithMessage(string.Format("RPClassifiedAd with ID {0} was not found", cmd.RPClassifiedAdId))
+            action.ShouldThrowExactly<RPClassifiedAdNotFoundException>()
+                .WithMessage(string.Format("RPClassifiedAd with ID {0} could not be found", cmd.RPClassifiedAdId))
                 .And.UserFriendlyError.Should().Be("This RP Classified Ad doesn't exist.");
         }
     }

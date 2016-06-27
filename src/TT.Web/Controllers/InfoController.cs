@@ -55,7 +55,7 @@ namespace TT.Web.Controllers
 
         public ActionResult RecentRPClassifieds()
          {
-            var output =  DomainRegistry.Repository.Find(new GetRPClassifiedAds() { CutOff = DateTime.UtcNow.AddDays(-3) });
+            var output =  DomainRegistry.Repository.Find(new GetRPClassifiedAds() { CutOff = TimeSpan.FromDays(3) });
             return View(output);
          }
 

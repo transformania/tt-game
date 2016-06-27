@@ -201,6 +201,9 @@
     <Compile Include="Domain\Queries\RPClassifiedAds\GetRPClassifiedAd.cs" />
     <Compile Include="Domain\Queries\RPClassifiedAds\GetRPClassifiedAds.cs" />
     <Compile Include="Domain\Queries\RPClassifiedAds\GetUserRPClassifiedAds.cs" />
+    <Compile Include="Domain\Queries\RPClassifiedAds\GetRPClassifiedAdTests.cs" />
+    <Compile Include="Domain\Queries\RPClassifiedAds\GetRPClassifiedAdsTests.cs" />
+    <Compile Include="Domain\Queries\RPClassifiedAds\GetUserRPClassifiedAdsTests.cs" />
     <Compile Include="Domain\Services\AttackNotificationBrokerTests.cs" />
     <Compile Include="InMemoryDataContextWithGenerator.cs" />
     <Compile Include="TestBase.cs" />

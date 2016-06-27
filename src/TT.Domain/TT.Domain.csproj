@@ -248,6 +248,7 @@
     <Compile Include="Concrete\EFTFMessageRepository.cs" />
     <Compile Include="DomainCommand.cs" />
     <Compile Include="DomainContext.cs" />
+    <Compile Include="DTOs\BaseDTO.cs" />
     <Compile Include="Exceptions\DomainException.cs" />
     <Compile Include="DomainQuery.cs" />
     <Compile Include="DomainQuerySingle.cs" />

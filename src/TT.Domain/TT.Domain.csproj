@@ -168,6 +168,7 @@
     <Compile Include="Commands\Assets\CreateTome.cs" />
     <Compile Include="Commands\ChatLog\WriteLogToDatabase.cs" />
     <Compile Include="Commands\Chat\CreateChatRoom.cs" />
+    <Compile Include="Commands\Effects\CreateEffect.cs" />
     <Compile Include="Commands\Items\ChangeItemOwner.cs" />
     <Compile Include="Commands\Items\DeleteExpiredConsumablesOnMerchants.cs" />
     <Compile Include="Commands\Items\DeleteExpiredConsumablesOnGround.cs" />
@@ -251,6 +252,8 @@
     <Compile Include="DTOs\AI\NPCDetail.cs" />
     <Compile Include="DTOs\Assets\RestockItemDetail.cs" />
     <Compile Include="DTOs\Chat\ChatRoomDetail.cs" />
+    <Compile Include="DTOs\Effects\EffectDetail.cs" />
+    <Compile Include="DTOs\Effects\EffectSourceDetail.cs" />
     <Compile Include="DTOs\Forms\FormDetail.cs" />
     <Compile Include="DTOs\Identity\UserDetail.cs" />
     <Compile Include="DTOs\Item\ItemDetail.cs" />
@@ -268,6 +271,8 @@
     <Compile Include="Entities\Assets\Tome.cs" />
     <Compile Include="Entities\Chat\ChatRoom.cs" />
     <Compile Include="Entities\Forms\FormSource.cs" />
+    <Compile Include="Entities\Effects\Effect.cs" />
+    <Compile Include="Entities\Effects\EffectSource.cs" />
     <Compile Include="Entities\Items\Item.cs" />
     <Compile Include="Entities\Items\ItemSource.cs" />
     <Compile Include="Entities\Entity.cs" />
@@ -285,6 +290,8 @@
     <Compile Include="Mappings\Assets\AssetsMapping.cs" />
     <Compile Include="Mappings\Assets\RestockItemMapping.cs" />
     <Compile Include="Mappings\ChatMappings.cs" />
+    <Compile Include="Mappings\Effects\EffectSourceMappings.cs" />
+    <Compile Include="Mappings\Effects\EffectMappings.cs" />
     <Compile Include="Mappings\EntityMappings.cs" />
     <Compile Include="Mappings\Forms\FormMappings.cs" />
     <Compile Include="Mappings\Identity\IdentityMappings.cs" />

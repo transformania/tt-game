@@ -800,6 +800,7 @@
     <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_33.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Statistics\Alpha_33.cshtml" />
     <Content Include="Views\Messages\partial\Conversation.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\Alpha_34.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

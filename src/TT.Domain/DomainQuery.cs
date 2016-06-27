@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Highway.Data;
 
 namespace TT.Domain
@@ -12,7 +13,7 @@ namespace TT.Domain
         protected IEnumerable<T> ExecuteInternal(IDataContext context)
         {
             Validate();
-            return base.Execute(context);
+            return base.Execute(context).ToArray();
         }
     }
 }

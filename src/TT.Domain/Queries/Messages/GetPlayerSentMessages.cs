@@ -23,7 +23,7 @@ namespace TT.Domain.Queries.Messages
                         .OrderByDescending(m => m.Timestamp);
                         
                         
-            return ExecuteInternal(context).ToList();
+            return ExecuteInternal(context);
         }
     }
 }

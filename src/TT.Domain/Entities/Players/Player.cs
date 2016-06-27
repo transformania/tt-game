@@ -23,6 +23,7 @@ namespace TT.Domain.Entities.Players
         public ICollection<Items.Item> Items { get; protected set; } 
         public ICollection<Effect> Effects { get; protected set; }
         public ICollection<Skill> Skills { get; protected set; }
+        public ICollection<PlayerLog> PlayerLogs { get; protected set; }
 
         public FormSource FormSource { get; protected set; }
 

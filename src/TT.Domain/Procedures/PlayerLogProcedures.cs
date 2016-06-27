@@ -39,10 +39,6 @@ namespace TT.Domain.Procedures
 
             playerLogRepo.SavePlayerLog(newlog);
 
-            //if (isImportant) {
-            //    NoticeProcedures.PushNotice(playerId, newlog.Message, NoticeProcedures.PushType__PlayerMessage);
-            //}
-
         }
 
         public static void ClearPlayerLog(int playerId)

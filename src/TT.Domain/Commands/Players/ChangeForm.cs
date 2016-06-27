@@ -20,7 +20,7 @@ namespace TT.Domain.Commands.Players
 
                 var player = ctx.AsQueryable<Entities.Players.Player>().SingleOrDefault(cr => cr.Id == PlayerId);
                 if (player == null)
-                    throw new DomainException(string.Format("Player with ID {0} could not be found", PlayerId));
+                    throw new DomainException($"Player with ID {PlayerId} could not be found");
 
                 FormSource form;
                 if (FormName.IsNullOrEmpty())
@@ -30,13 +30,13 @@ namespace TT.Domain.Commands.Players
 
                     form = ctx.AsQueryable<FormSource>().SingleOrDefault(cr => cr.Id == FormId);
                     if (form == null)
-                        throw new DomainException(string.Format("FormSource with ID {0} could not be found", FormId));
+                        throw new DomainException($"FormSource with ID {FormId} could not be found");
                 }
                 else
                 {
                     form = ctx.AsQueryable<FormSource>().SingleOrDefault(cr => cr.dbName == FormName);
                     if (form == null)
-                        throw new DomainException(string.Format("FormSource with name {0} could not be found", FormName));
+                        throw new DomainException($"FormSource with name {FormName} could not be found");
                 }
                 player.ChangeForm(form);
                 ctx.Commit();

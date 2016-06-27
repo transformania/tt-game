@@ -68,7 +68,7 @@ Task("Build")
     .Does(() => {
     MSBuild("./src/TT.sln", new MSBuildSettings()
         .SetConfiguration(configuration)
-        .UseToolVersion(MSBuildToolVersion.NET45)
+        .UseToolVersion(MSBuildToolVersion.NET46)
         .SetVerbosity(Verbosity.Minimal)
         .SetNodeReuse(false));
     }

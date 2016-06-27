@@ -10,25 +10,6 @@ namespace TT.Domain.Procedures
     public class LocationLogProcedures
     {
 
-        
-        // return all location logs regardless of concealment level
-        public static IEnumerable<LocationLog> GetLocationLogsAtLocation(string dbLocationName)
-        {
-            ILocationLogRepository LocationLogRepo = new EFLocationLogRepository();
-            IEnumerable<LocationLog> output = LocationLogRepo.LocationLogs.Where(p => p.dbLocationName == dbLocationName).OrderBy(l => l.Timestamp).ToList();
-
-            return output;
-        }
-
-        // return all location logs where concealment level is below a given amount
-        public static IEnumerable<LocationLog> GetLocationLogsAtLocation(string dbLocationName, int highestConcealmentLevel)
-        {
-            ILocationLogRepository LocationLogRepo = new EFLocationLogRepository();
-            IEnumerable<LocationLog> output = LocationLogRepo.LocationLogs.Where(p => p.dbLocationName == dbLocationName && p.ConcealmentLevel <= highestConcealmentLevel).OrderBy(l => l.Timestamp).ToList();
-
-            return output;
-        }
-
         public static void AddLocationLog(string dbLocationName, string message)
         {
             // -999 is a low enough concealment that anyone should see it

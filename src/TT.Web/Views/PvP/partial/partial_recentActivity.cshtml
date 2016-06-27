@@ -1,14 +1,12 @@
-﻿@model IEnumerable<TT.Domain.Models.LocationLog>
+﻿@model IEnumerable<TT.Domain.DTOs.LocationLog.LocationLogDetail>
 @using TT.Web.CustomHtmlHelpers
-@using TT.Domain.ViewModels
-@using TT.Domain.Statics
-@using TT.Domain.Procedures
+
 
 <div style="clear:both;"></div>
 
 <ul id="RecentActivityLog">
     @{
-        foreach (TT.Domain.Models.LocationLog log in Model.Reverse())
+        foreach (var log in Model)
         {
             <li>
                 @Html.Raw(log.Message)

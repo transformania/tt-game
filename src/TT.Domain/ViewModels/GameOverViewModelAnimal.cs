@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using TT.Domain.DTOs.Item;
+using TT.Domain.DTOs.LocationLog;
 using TT.Domain.Models;
 
 namespace TT.Domain.ViewModels
@@ -16,7 +17,7 @@ namespace TT.Domain.ViewModels
 
         public PvPWorldStat PvPWorldStat { get; set; }
         public WorldStats WorldStats { get; set; }
-        public IEnumerable<LocationLog> LocationLog { get; set; }
+        public IEnumerable<LocationLogDetail> LocationLog { get; set; }
         public IEnumerable<PlayerLog> PlayerLog { get; set; }
         public IEnumerable<PlayerLog> PlayerLogImportant { get; set; }
 

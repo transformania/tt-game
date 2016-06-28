@@ -19,10 +19,13 @@ namespace TT.Domain.Commands.Messages
                 .FirstOrDefault(cr => cr.Id == MessageId);
 
                 if (deleteMe == null)
-                    throw new DomainException(string.Format("Message with ID {0} was not found", MessageId));
+                    throw new DomainException($"Message with ID {MessageId} was not found");
+
+                if (OwnerId == 0)
+                    throw new DomainException("OwnerId is required to delete a message");
 
                 if (deleteMe.Receiver.Id != OwnerId)
-                    throw new DomainException(string.Format("Message {0} not owned by player {1}", MessageId, OwnerId));
+                    throw new DomainException($"Message {MessageId} not owned by player {OwnerId}");
 
                 ctx.Remove(deleteMe);
 

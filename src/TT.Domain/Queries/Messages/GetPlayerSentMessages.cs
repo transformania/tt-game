@@ -18,10 +18,9 @@ namespace TT.Domain.Queries.Messages
                 ctx =>
                     ctx.AsQueryable<Message>()
                         .Where(m => m.Sender.Id == SenderId)
+                        .OrderByDescending(m => m.Timestamp)
                         .Take(Take)
-                        .ProjectToQueryable<MessageDetail>()
-                        .OrderByDescending(m => m.Timestamp);
-                        
+                        .ProjectToQueryable<MessageDetail>();
                         
             return ExecuteInternal(context);
         }

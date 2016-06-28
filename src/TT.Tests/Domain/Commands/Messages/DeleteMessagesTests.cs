@@ -51,6 +51,21 @@ namespace TT.Tests.Domain.Commands.Messages
             action.ShouldThrowExactly<DomainException>().WithMessage(string.Format("Message with ID {0} was not found", 999));
         }
 
+
+        [Test]
+        public void Should_throw_error_when_owner_not_set()
+        {
+            new MessageBuilder()
+                .With(m => m.Id, 61)
+                .With(m => m.Receiver, new PlayerBuilder()
+                    .With(p => p.Id, 3).BuildAndSave())
+                .BuildAndSave();
+
+            var cmd = new DeleteMessage { MessageId = 61 };
+            Action action = () => Repository.Execute(cmd);
+            action.ShouldThrowExactly<DomainException>().WithMessage("OwnerId is required to delete a message");
+        }
+
         [Test]
         public void Should_throw_error_when_message_not_owned_by_player_is_not_found()
         {

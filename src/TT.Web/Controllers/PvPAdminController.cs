@@ -15,6 +15,8 @@ using TT.Domain.Queries.Item;
 using TT.Domain.Queries.Skills;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
+using TT.Domain.Commands.RPClassifiedAds;
+using TT.Domain.Exceptions.RPClassifiedAds;
 
 namespace TT.Web.Controllers
 {
@@ -1415,7 +1417,16 @@ namespace TT.Web.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
-            RPClassifiedAdsProcedures.DeleteAd(id);
+            try
+            {
+                DomainRegistry.Repository.Execute(new DeleteRPClassifiedAd() { RPClassifiedAdId = id, CheckUserId = false});
+            }
+            catch (RPClassifiedAdException ex)
+            {
+                TempData["Error"] = ex.UserFriendlyError ?? ex.Message;
+                TempData["SubError"] = ex.UserFriendlySubError;
+                return RedirectToAction("RecentRPClassifieds", "Info");
+            }
 
             TempData["Result"] = "Delete successful.";
             return RedirectToAction("RecentRPClassifieds", "Info");

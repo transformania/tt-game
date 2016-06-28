@@ -188,6 +188,10 @@
     <Compile Include="Commands\Players\ReadjustMaxes.cs" />
     <Compile Include="Commands\Player\UpdateOnlineActivityTimestamp.cs" />
     <Compile Include="Commands\Skills\CreateSkill.cs" />
+    <Compile Include="Commands\RPClassifiedAds\CreateRPClassifiedAd.cs" />
+    <Compile Include="Commands\RPClassifiedAds\DeleteRPClassifiedAd.cs" />
+    <Compile Include="Commands\RPClassifiedAds\RefreshRPClassifiedAd.cs" />
+    <Compile Include="Commands\RPClassifiedAds\UpdateRPClassifiedAd.cs" />
     <Compile Include="Concrete\EFAchievementBadgeRepository.cs" />
     <Compile Include="Concrete\EFAchievementRepository.cs" />
     <Compile Include="Concrete\EFAIDirectiveRepository.cs" />
@@ -244,7 +248,8 @@
     <Compile Include="Concrete\EFTFMessageRepository.cs" />
     <Compile Include="DomainCommand.cs" />
     <Compile Include="DomainContext.cs" />
-    <Compile Include="DomainException.cs" />
+    <Compile Include="DTOs\BaseDTO.cs" />
+    <Compile Include="Exceptions\DomainException.cs" />
     <Compile Include="DomainQuery.cs" />
     <Compile Include="DomainQuerySingle.cs" />
     <Compile Include="DomainRegistry.cs" />
@@ -264,6 +269,8 @@
     <Compile Include="DTOs\LocationLog\LocationLogDetail.cs" />
     <Compile Include="DTOs\Messages\MessageDetail.cs" />
     <Compile Include="DTOs\Players\PlayeMessageDetail.cs" />
+    <Compile Include="DTOs\RPClassifiedAds\RPClassifiedAdAndPlayerDetail.cs" />
+    <Compile Include="DTOs\RPClassifiedAds\RPClassifiedAdDetail.cs" />
     <Compile Include="DTOs\Players\PlayerLogDetail.cs" />
     <Compile Include="DTOs\Skills\SkillDetail.cs" />
     <Compile Include="DTOs\Skills\SkillSourceDetail.cs" />
@@ -282,10 +289,19 @@
     <Compile Include="Entities\LocationLogs\LocationLog.cs" />
     <Compile Include="Entities\Messages\Message.cs" />
     <Compile Include="Entities\Players\Player.cs" />
+    <Compile Include="Entities\RPClassifiedAds\RPClassifiedAd.cs" />
     <Compile Include="Entities\Players\PlayerLog.cs" />
     <Compile Include="Entities\Skills\Skill.cs" />
     <Compile Include="Entities\Skills\SkillSource.cs" />
     <Compile Include="EntityFrameworkExtensions.cs" />
+    <Compile Include="Exceptions\Identity\UserException.cs" />
+    <Compile Include="Exceptions\Identity\UserInvalidInputException.cs" />
+    <Compile Include="Exceptions\RPClassifiedAds\RPClassifiedAdException.cs" />
+    <Compile Include="Exceptions\RPClassifiedAds\RPClassifiedAdInvalidInputException.cs" />
+    <Compile Include="Exceptions\RPClassifiedAds\RPClassifiedAdLimitException.cs" />
+    <Compile Include="Exceptions\RPClassifiedAds\RPClassifiedAdNotFoundException.cs" />
+    <Compile Include="Exceptions\RPClassifiedAds\RPClassifiedAdNotOwnerException.cs" />
+    <Compile Include="Exceptions\Identity\UserNotFoundException.cs" />
     <Compile Include="Features.cs" />
     <Compile Include="IDomainCommand.cs" />
     <Compile Include="IDomainQuery.cs" />
@@ -308,6 +324,7 @@
     <Compile Include="Mappings\Players\PlayerMapping.cs" />
     <Compile Include="Mappings\Skills\SkillMappings.cs" />
     <Compile Include="Mappings\Skills\SkillSourceMappings.cs" />
+    <Compile Include="Mappings\RPClassifiedAds\RPClassifiedAdMappings.cs" />
     <Compile Include="Models\AchevementBadge.cs" />
     <Compile Include="Models\Achievement.cs" />
     <Compile Include="Models\AIDirective.cs" />
@@ -402,7 +419,6 @@
     <Compile Include="Procedures\QuestProcedures.cs" />
     <Compile Include="Procedures\QuestWriterProcedures.cs" />
     <Compile Include="Procedures\RerollProcedures.cs" />
-    <Compile Include="Procedures\RPClassifiedAdsProcedures.cs" />
     <Compile Include="Procedures\SettingsProcedures.cs" />
     <Compile Include="Procedures\SkillProcedures.cs" />
     <Compile Include="Procedures\StatsProcedures.cs" />
@@ -438,6 +454,9 @@
     <Compile Include="Queries\Players\GetPlayerByBotId.cs" />
     <Compile Include="Queries\Player\GetPlayerFormFromMembership.cs" />
     <Compile Include="Queries\Skills\GetSkillsOwnedByPlayer.cs" />
+    <Compile Include="Queries\RPClassifiedAds\GetRPClassifiedAd.cs" />
+    <Compile Include="Queries\RPClassifiedAds\GetUserRPClassifiedAds.cs" />
+    <Compile Include="Queries\RPClassifiedAds\GetRPClassifiedAds.cs" />
     <Compile Include="Queries\Statics\GetStaticItem.cs" />
     <Compile Include="Query.cs" />
     <Compile Include="Root.cs" />

@@ -1,4 +1,5 @@
-﻿@model TT.Domain.Models.RPClassifiedAd
+﻿@using TT.Domain.DTOs.RPClassifiedAds
+@model RPClassifiedAdDetail
 
 <nav class="navbar navbar-default outsideContainer navbarTT2">
     <div class="container-fluid">
@@ -30,9 +31,9 @@
 
 
 <div class="containerInner">
-    <h1>Edit/Create RP Classified Ad</h1>
+    <h1>@(ViewBag.Edit ?? false ? "Edit" : "Create") RP Classified Ad</h1>
 
-    @using (Html.BeginForm("EditRPClassifiedAdSend", "Settings", FormMethod.Post))
+    @using (Html.BeginForm(ViewBag.Edit ?? false ? "UpdateRPClassifiedAd" : "CreateRPClassifiedAd", "Settings", FormMethod.Post))
     {
         @Html.AntiForgeryToken()
         <div class="messageInfoContainer clearfix">
@@ -65,13 +66,12 @@
         @Html.TextAreaFor(m => m.NoThemes, new { @class = "text-container" })
 
     <div class="messageInfoContainer clearfix">
-        (OPTIONAL) What times are you best available for this RP?  Include your time zone.
+        What times are you best available for this RP?  Include your time zone   (optional, limit 70 characters).
         <span class="charCounter" id="Timezone_textRemaining"></span>
     </div>
     @Html.TextAreaFor(m => m.PreferredTimezones, new { @class = "text-container" })
 
         @Html.HiddenFor(m => m.Id)
-        @Html.HiddenFor(m => m.OwnerMembershipId)
 
         <br />
         <input type="submit" class="btn btn-chat" value="Send" />
@@ -81,31 +81,54 @@
 </div>
 
 <script>
-    $("#Text").keydown(function () {
-        var remaining = 300 - $("#Text").val().length;
-        $("#Text_textRemaining").html(remaining + " characters remaining");
-    });
+    $(document).ready(function () {
+        var TextMax = 300;
+        var YesThemesMax = 200;
+        var NoThemesMax = 200;
+        var TitleMax = 35;
+        var PreferredTimezonesMax = 70;
 
-    $("#YesThemes").keydown(function () {
-        var remaining = 200 - $("#YesThemes").val().length;
-        $("#YesThemes_textRemaining").html(remaining + " characters remaining");
-    });
+        $('#Text_textRemaining').html(TextMax + ' characters remaining');
+        $('#YesThemes_textRemaining').html(YesThemesMax + ' characters remaining');
+        $('#NoThemes_textRemaining').html(NoThemesMax + ' characters remaining');
+        $('#Title_textRemaining').html(TitleMax + ' characters remaining');
+        $('#Timezone_textRemaining').html(PreferredTimezonesMax + ' characters remaining');
 
-    $("#NoThemes").keydown(function () {
-        var remaining = 200 - $("#NoThemes").val().length;
-        $("#NoThemes_textRemaining").html(remaining + " characters remaining");
-    });
+        $('#Text').on('input', function () {
+            var length = $(this).val().length;
+            var remaining = TextMax - length;
 
-    $("#Title").keydown(function () {
-        var remaining = 35 - $("#Title").val().length;
-        $("#Title_textRemaining").html(remaining + " characters remaining");
-    });
+            $('#Text_textRemaining').html(remaining + ' characters remaining');
+        });
 
-    $("#PreferredTimezones").keydown(function () {
-        var remaining = 70 - $("#PreferredTimezones").val().length;
-        $("#Timezone_textRemaining").html(remaining + " characters remaining");
-    });
+        $('#YesThemes').on('input', function () {
+            var length = $(this).val().length;
+            var remaining = YesThemesMax - length;
 
+            $('#YesThemes_textRemaining').html(remaining + ' characters remaining');
+        });
+
+        $('#NoThemes').on('input', function () {
+            var length = $(this).val().length;
+            var remaining = NoThemesMax - length;
+
+            $('#NoThemes_textRemaining').html(remaining + ' characters remaining');
+        });
+
+        $('#Title').on('input', function () {
+            var length = $(this).val().length;
+            var remaining = TitleMax - length;
+
+            $('#Title_textRemaining').html(remaining + ' characters remaining');
+        });
+
+        $('#PreferredTimezones').on('input', function () {
+            var length = $(this).val().length;
+            var remaining = PreferredTimezonesMax - length;
+
+            $('#Timezone_textRemaining').html(remaining + ' characters remaining');
+        });
+    });
 </script>
 
 <style>

@@ -71,6 +71,8 @@ namespace TT.Domain
 
                 foreach (var mapping in mappings)
                     cfg.AddProfile((Profile)Activator.CreateInstance(mapping));
+
+                cfg.CreateMissingTypeMaps = true; // allows anonymous types to be mapped
             });
 
             _mapper = mapperConfiguration.CreateMapper();

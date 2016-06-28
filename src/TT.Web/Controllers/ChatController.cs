@@ -2,7 +2,7 @@
 using FeatureSwitch;
 using Microsoft.AspNet.Identity;
 using TT.Domain;
-using TT.Domain.Queries.Player;
+using TT.Domain.Queries.Players;
 using TT.Domain.ViewModels;
 
 namespace TT.Web.Controllers

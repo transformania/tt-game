@@ -57,6 +57,7 @@
     <Compile Include="201606231841_AddEffectFKs.cs" />
     <Compile Include="201606221825_AddSkillFKs.cs" />
     <Compile Include="201606241348_AddPlayerLogFKs.cs" />
+    <Compile Include="201605250819_AddFKtoRPClassifiedAd.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -12,9 +12,9 @@ namespace TT.Domain
 
         protected IEnumerable<T> ExecuteInternal(IDataContext context)
         {
-            Validate();
             using (DomainRegistry.Repository)
             {
+                Validate();
                 return base.Execute(context).ToArray();
             }
         }

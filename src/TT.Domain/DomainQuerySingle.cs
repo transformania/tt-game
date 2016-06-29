@@ -11,7 +11,9 @@ namespace TT.Domain
         protected T ExecuteInternal(IDataContext context)
         {
             Validate();
-            return base.Execute(context);
+            var query = base.Execute(context);
+            DomainRegistry.Repository.Dispose();
+            return query;
         }
     }
 }

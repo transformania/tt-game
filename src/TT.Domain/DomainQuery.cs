@@ -13,7 +13,9 @@ namespace TT.Domain
         protected IEnumerable<T> ExecuteInternal(IDataContext context)
         {
             Validate();
-            return base.Execute(context).ToArray();
+            var query = base.Execute(context).ToArray();
+            DomainRegistry.Repository.Dispose();
+            return query;
         }
     }
 }

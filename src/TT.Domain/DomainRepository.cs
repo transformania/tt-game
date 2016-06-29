@@ -32,5 +32,31 @@ namespace TT.Domain
         {
             return query.Execute(Context);
         }
+
+        #region IDisposable Support
+        public bool Disposed { get { return disposedValue; } }
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    Context.Dispose();
+                }
+
+                disposedValue = true;
+            }
+        }
+
+        /// <summary>
+        /// Disposes <see cref="Context"/>
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+        }
+        #endregion
     }
 }

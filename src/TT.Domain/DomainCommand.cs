@@ -11,6 +11,7 @@ namespace TT.Domain
             Validate();
             // ReSharper disable once RedundantBaseQualifier
             base.Execute(context);
+            DomainRegistry.Repository.Dispose();
         }
     }
 
@@ -24,6 +25,7 @@ namespace TT.Domain
         {
             Validate();
             base.Execute(context);
+            DomainRegistry.Repository.Dispose();
         }
     }
 }

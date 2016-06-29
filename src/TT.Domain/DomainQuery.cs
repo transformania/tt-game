@@ -13,9 +13,10 @@ namespace TT.Domain
         protected IEnumerable<T> ExecuteInternal(IDataContext context)
         {
             Validate();
-            var query = base.Execute(context).ToArray();
-            DomainRegistry.Repository.Dispose();
-            return query;
+            using (DomainRegistry.Repository)
+            {
+                return base.Execute(context).ToArray();
+            }
         }
     }
 }

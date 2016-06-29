@@ -36,7 +36,12 @@ namespace TT.Domain
         
         public static IDomainRepository Repository
         {
-            get { return _repository ?? (_repository = new DomainRepository(new DomainContext())); }
+            get
+            {
+                return (_repository == null || _repository.Disposed) ? 
+                    (_repository = new DomainRepository(new DomainContext())) :
+                    _repository;
+            }
             set { _repository = value; }
         }
 

@@ -15,22 +15,34 @@ namespace TT.Domain
 
         public void Execute(IDomainCommand command)
         {
-            command.Execute(Context);
+            using (this)
+            {
+                command.Execute(Context);
+            }
         }
 
         public T Execute<T>(IDomainCommand<T> command)
         {
-            return command.Execute(Context);
+            using (this)
+            {
+                return command.Execute(Context);
+            }
         }
 
         public IEnumerable<T> Find<T>(IDomainQuery<T> query)
         {
-            return query.Execute(Context);
+            using (this)
+            {
+                return query.Execute(Context);
+            }
         }
 
         public T FindSingle<T>(IDomainQuerySingle<T> query)
         {
-            return query.Execute(Context);
+            using (this)
+            {
+                return query.Execute(Context);
+            }
         }
 
         #region IDisposable Support

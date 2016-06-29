@@ -8,12 +8,9 @@ namespace TT.Domain
 
         protected void ExecuteInternal(IDataContext context)
         {
-            using (DomainRegistry.Repository)
-            {
-                Validate();
-                // ReSharper disable once RedundantBaseQualifier
-                base.Execute(context);
-            }
+            Validate();
+            // ReSharper disable once RedundantBaseQualifier
+            base.Execute(context);
         }
     }
 
@@ -25,11 +22,8 @@ namespace TT.Domain
 
         protected void ExecuteInternal(IDataContext context)
         {
-            using (DomainRegistry.Repository)
-            {
-                Validate();
-                base.Execute(context);
-            }
+            Validate();
+            base.Execute(context);
         }
     }
 }

@@ -10,11 +10,8 @@ namespace TT.Domain
 
         protected T ExecuteInternal(IDataContext context)
         {
-            using (DomainRegistry.Repository)
-            {
-                Validate();
-                return base.Execute(context);
-            }
+            Validate();
+            return base.Execute(context);
         }
     }
 }

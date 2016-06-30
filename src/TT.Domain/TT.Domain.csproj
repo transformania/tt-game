@@ -193,6 +193,7 @@
     <Compile Include="Commands\RPClassifiedAds\DeleteRPClassifiedAd.cs" />
     <Compile Include="Commands\RPClassifiedAds\RefreshRPClassifiedAd.cs" />
     <Compile Include="Commands\RPClassifiedAds\UpdateRPClassifiedAd.cs" />
+    <Compile Include="Commands\TFEnergies\CreateTFEnergy.cs" />
     <Compile Include="Concrete\EFAchievementBadgeRepository.cs" />
     <Compile Include="Concrete\EFAchievementRepository.cs" />
     <Compile Include="Concrete\EFAIDirectiveRepository.cs" />
@@ -250,6 +251,8 @@
     <Compile Include="DomainCommand.cs" />
     <Compile Include="DomainContext.cs" />
     <Compile Include="DTOs\BaseDTO.cs" />
+    <Compile Include="DTOs\TFEnergies\TFEnergyDetail.cs" />
+    <Compile Include="Entities\TFEnergies\TFEnergy.cs" />
     <Compile Include="Exceptions\DomainException.cs" />
     <Compile Include="DomainQuery.cs" />
     <Compile Include="DomainQuerySingle.cs" />
@@ -326,6 +329,7 @@
     <Compile Include="Mappings\Skills\SkillMappings.cs" />
     <Compile Include="Mappings\Skills\SkillSourceMappings.cs" />
     <Compile Include="Mappings\RPClassifiedAds\RPClassifiedAdMappings.cs" />
+    <Compile Include="Mappings\TFEnergies\TFEnergyMapping.cs" />
     <Compile Include="Models\AchevementBadge.cs" />
     <Compile Include="Models\Achievement.cs" />
     <Compile Include="Models\AIDirective.cs" />

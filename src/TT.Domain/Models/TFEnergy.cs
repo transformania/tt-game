@@ -8,7 +8,7 @@ namespace TT.Domain.Models
         public int PlayerId { get; set; }
         public string FormName { get; set; }
         public decimal Amount { get; set; }
-        public int CasterId { get; set; }
+        public int? CasterId { get; set; }
         public DateTime Timestamp { get; set; }
 
     }

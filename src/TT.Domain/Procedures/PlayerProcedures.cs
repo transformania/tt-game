@@ -1552,7 +1552,7 @@ namespace TT.Domain.Procedures
                 restoreEnergy = new TFEnergy
                 {
                     Amount = 0,
-                    CasterId = -1,
+                    CasterId = null,
                     Timestamp = DateTime.UtcNow,
                     FormName = "selfrestore",
                     PlayerId = player.Id

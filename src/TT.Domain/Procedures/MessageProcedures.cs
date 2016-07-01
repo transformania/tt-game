@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using TT.Domain.Abstract;
 using TT.Domain.Commands.Messages;
 using TT.Domain.Concrete;
 using TT.Domain.Models;
 using TT.Domain.Queries.Messages;
-using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 
 namespace TT.Domain.Procedures

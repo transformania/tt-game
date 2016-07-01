@@ -5,10 +5,12 @@ using System.Threading;
 using System.Web.Mvc;
 using System.Web.UI;
 using Microsoft.AspNet.Identity;
+using TT.Domain;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
 using TT.Domain.Models;
 using TT.Domain.Procedures;
+using TT.Domain.Queries.Messages;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 using TT.Domain.ViewModels.Quest;
@@ -138,7 +140,7 @@ namespace TT.Web.Controllers
             output.QuestConnections = QuestProcedures.GetChildQuestConnections(me.InQuestState);
             output.BuffBox = ItemProcedures.GetPlayerBuffs(me);
             output.QuestPlayerVariables = QuestProcedures.GetAllQuestPlayerVariablesFromQuest(output.QuestStart.Id, me.Id);
-            output.NewMessages = MessageProcedures.GetPlayerUnreadMessageCount(me);
+            output.NewMessages = DomainRegistry.Repository.FindSingle(new GetUnreadMessageCountByPlayer { OwnerId = me.Id });
 
             ViewBag.ErrorMessage = TempData["Error"];
             ViewBag.SubErrorMessage = TempData["SubError"];

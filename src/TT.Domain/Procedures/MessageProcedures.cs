@@ -1,24 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using TT.Domain.Abstract;
 using TT.Domain.Commands.Messages;
 using TT.Domain.Concrete;
 using TT.Domain.Models;
 using TT.Domain.Queries.Messages;
-using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 
 namespace TT.Domain.Procedures
 {
     public static class MessageProcedures
     {
-
-        public static int GetPlayerUnreadMessageCount(Player player)
-        {
-            IMessageRepository messageRepo = new EFMessageRepository();
-            return messageRepo.Messages.Where(m => m.ReceiverId == player.Id && !m.IsRead).Count();
-        }
 
         public static MessageBag GetPlayerMessages(Player player, int offset)
         {
@@ -56,30 +47,6 @@ namespace TT.Domain.Procedures
             return output;
         }
 
-        public static void AddMessage(Message message, string membershipId)
-        {
-            Player sender = PlayerProcedures.GetPlayerFromMembership(membershipId);
-            Player receiver = PlayerProcedures.GetPlayer(message.ReceiverId);
-            IMessageRepository messageRepo = new EFMessageRepository();
-
-            message.Timestamp = DateTime.UtcNow;
-            message.SenderId = sender.Id;
-            message.IsRead = false;
-            message.ReadStatus = MessageStatics.Unread;
-
-            if (DonatorProcedures.EitherPlayersAreDonatorsOfTier(sender, receiver, 3))
-            {
-                message.DoNotRecycleMe = true;
-            }
-            else
-            {
-                message.DoNotRecycleMe = false;
-            }
-
-            messageRepo.SaveMessage(message);
-
-        }
-
         public static void SendCovenantWideMessage(Player covLeader, string input)
         {
             // get the players in the leader's covenant
@@ -90,15 +57,13 @@ namespace TT.Domain.Procedures
 
             foreach (var p in query)
             {
-                AddMessage(new Message
+                DomainRegistry.Repository.Execute(new CreateMessage
                 {
                     ReceiverId = p.Id,
                     SenderId = covLeader.Id,
-                    IsRead = false,
-                    ReadStatus = MessageStatics.Unread,
-                    MessageText = input,
-                    Timestamp = DateTime.UtcNow,
-                }, covLeader.MembershipId);
+                    Text = input,
+                    ReplyingToThisMessage = null
+                });
             }
         }
 

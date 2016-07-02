@@ -14,19 +14,22 @@ namespace TT.Domain.Procedures
         public static string DoAnimalAction(string actionName, int animalPlayerId, int victimId)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            IItemRepository itemRepo = new EFItemRepository();
             Player animalPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == animalPlayerId);
 
             ItemDetail animalItem = DomainRegistry.Repository.FindSingle(new GetItemByVictimName { FirstName = animalPlayer.FirstName, LastName = animalPlayer.LastName});
 
             Player victim = playerRepo.Players.FirstOrDefault(p => p.Id == victimId);
 
-            Player attackerOwner = playerRepo.Players.FirstOrDefault(p => p.Id == animalItem.Owner.Id);
-            Location here = TT.Domain.Statics.LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == animalPlayer.dbLocationName);
+            Player attackerOwner = null;
+
+            if (animalItem.Owner != null) { 
+                attackerOwner = playerRepo.Players.FirstOrDefault(p => p.Id == animalItem.Owner.Id);
+            }
+
+            Location here = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == animalPlayer.dbLocationName);
 
 
             PlayerFormViewModel attackerPlus = PlayerProcedures.GetPlayerFormViewModel(animalPlayerId);
-            PlayerFormViewModel victimPlus = PlayerProcedures.GetPlayerFormViewModel(victimId);
 
             string victimMessage = "";
             string attackerMessage = "";

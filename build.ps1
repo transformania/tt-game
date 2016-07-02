@@ -35,6 +35,7 @@ Param(
     [string]$DbUserId = "",
     [string]$DbServer = "",
     [string]$DbName = "",
+    [string]$ConnectionString = "",
     [ValidateSet("Quiet", "Minimal", "Normal", "Verbose", "Diagnostic")]
     [string]$Verbosity = "Verbose",
     [switch]$Experimental,
@@ -185,7 +186,15 @@ if(![string]::IsNullOrEmpty($DbName))
    $DbName = "-dbName=`"$Env:TT_DBNAME`""
 }
 
+if(![string]::IsNullOrEmpty($ConnectionString))
+{
+    $ConnectionString = "-connectionString=`"$ConnectionString`""
+} elseif (![string]::IsNullOrEmpty($Env:TT_CONNECTIONSTRING))
+{
+   $ConnectionString = "-connectionString=`"$Env:TT_CONNECTIONSTRING`""
+}
+
 # Start Cake
 Write-Host "Running build script..."
-Invoke-Expression "$CAKE_EXE `"$Script`" $Target $Configuration $DbServer $DbType $DbUserId $DbName -verbosity=`"$Verbosity`" $UseMono $UseDryRun $UseExperimental"
+Invoke-Expression "$CAKE_EXE `"$Script`" $Target $Configuration $DbServer $DbType $DbUserId $DbName $ConnectionString -verbosity=`"$Verbosity`" $UseMono $UseDryRun $UseExperimental"
 exit $LASTEXITCODE

@@ -261,9 +261,9 @@ namespace TT.Domain.Procedures.BossProcedures
                 
             }
 
-            playerRepo.DeletePlayer(nerdBoss.Id);
-            playerRepo.DeletePlayer(bimboBoss.Id);
-           
+            DomainRegistry.Repository.Execute(new DeletePlayer {PlayerId = nerdBoss.Id});
+            DomainRegistry.Repository.Execute(new DeletePlayer { PlayerId = bimboBoss.Id });
+
 
         }
     }

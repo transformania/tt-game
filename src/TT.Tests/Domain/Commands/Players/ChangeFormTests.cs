@@ -7,7 +7,7 @@ using TT.Domain.Commands.Players;
 using TT.Domain.Entities.Players;
 using TT.Domain.Statics;
 using TT.Tests.Builders.Form;
-using TT.Tests.Builders.Item;
+using TT.Tests.Builders.Players;
 
 namespace TT.Tests.Domain.Commands.Players
 {

@@ -6,7 +6,7 @@ using TT.Domain;
 using TT.Domain.Commands.Effects;
 using TT.Domain.Entities.Effects;
 using TT.Tests.Builders.Effects;
-using TT.Tests.Builders.Item;
+using TT.Tests.Builders.Players;
 
 namespace TT.Tests.Domain.Commands.Effects
 {

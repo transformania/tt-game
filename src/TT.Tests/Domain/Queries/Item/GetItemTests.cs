@@ -3,6 +3,7 @@ using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Queries.Item;
 using TT.Tests.Builders.Item;
+using TT.Tests.Builders.Players;
 
 namespace TT.Tests.Domain.Queries.Item
 {

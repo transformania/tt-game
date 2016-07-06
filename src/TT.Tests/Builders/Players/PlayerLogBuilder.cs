@@ -1,15 +1,14 @@
-﻿using System;
-using TT.Domain.Entities.Players;
-
+﻿using TT.Domain.Entities.Players;
 
 namespace TT.Tests.Builders.Players
 {
-    public class PlayerBuilder : Builder<Player, int>
+    public class PlayerLogBuilder : Builder<PlayerLog, int>
     {
-        public PlayerBuilder()
+        public PlayerLogBuilder()
         {
             Instance = Create();
             With(u => u.Id, 3);
         }
+
     }
 }

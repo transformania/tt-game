@@ -5,6 +5,7 @@ using TT.Tests.Builders.Item;
 using System.Linq;
 using FluentAssertions;
 using TT.Domain.Entities.Players;
+using TT.Tests.Builders.Players;
 
 namespace TT.Tests.Domain.Commands.Items
 {

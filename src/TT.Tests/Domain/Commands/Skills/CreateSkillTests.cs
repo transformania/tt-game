@@ -5,7 +5,7 @@ using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Commands.Skills;
 using TT.Domain.Entities.Skills;
-using TT.Tests.Builders.Item;
+using TT.Tests.Builders.Players;
 using TT.Tests.Builders.Skills;
 
 namespace TT.Tests.Domain.Commands.Skills

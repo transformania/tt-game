@@ -8,7 +8,7 @@ using TT.Domain.Entities.Messages;
 using TT.Domain.Entities.Players;
 using TT.Domain.Statics;
 using TT.Tests.Builders.Identity;
-using TT.Tests.Builders.Item;
+using TT.Tests.Builders.Players;
 
 namespace TT.Tests.Domain.Commands.Messages
 {

@@ -287,7 +287,7 @@ namespace TT.Domain.Procedures.BossProcedures
             IItemRepository itemRepo = new EFItemRepository();
 
             Player valentine = playerRepo.Players.FirstOrDefault(f => f.BotId == AIStatics.ValentineBotId);
-            playerRepo.DeletePlayer(valentine.Id);
+            DomainRegistry.Repository.Execute(new DeletePlayer { PlayerId = valentine.Id });
 
             Item panties = itemRepo.Items.FirstOrDefault(i => i.dbName == QueensPanties);
             panties.OwnerId = newOwnerId;

@@ -17,7 +17,7 @@ namespace TT.Domain.Mappings.Players
 
             modelBuilder.Entity<PlayerLog>()
                 .HasRequired(p => p.Owner)
-                .WithMany().Map(p => p.MapKey("PlayerId"));
+                .WithMany(p => p.PlayerLogs).Map(p => p.MapKey("PlayerId"));
 
         }
 

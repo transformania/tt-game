@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
 using TT.Tests.Builders.Item;
+using TT.Tests.Builders.Players;
 
 namespace TT.Tests.Domain.Entities
 {

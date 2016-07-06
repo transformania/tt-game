@@ -3,11 +3,10 @@ using NUnit.Framework;
 using System.Linq;
 using FluentAssertions;
 using TT.Domain;
-using TT.Domain.Commands.Assets;
 using TT.Domain.Commands.Messages;
 using TT.Domain.Entities.Messages;
-using TT.Tests.Builders.Item;
 using TT.Tests.Builders.Messages;
+using TT.Tests.Builders.Players;
 
 namespace TT.Tests.Domain.Commands.Messages
 {

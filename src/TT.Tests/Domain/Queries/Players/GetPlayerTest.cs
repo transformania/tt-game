@@ -5,7 +5,7 @@ using TT.Domain.Queries.Players;
 using TT.Tests.Builders.AI;
 using TT.Tests.Builders.Form;
 using TT.Tests.Builders.Identity;
-using TT.Tests.Builders.Item;
+using TT.Tests.Builders.Players;
 
 namespace TT.Tests.Domain.Queries.Players
 {

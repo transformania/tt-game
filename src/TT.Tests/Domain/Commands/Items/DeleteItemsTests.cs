@@ -3,7 +3,6 @@ using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain;
-using TT.Domain.Commands.Assets;
 using TT.Domain.Commands.Items;
 using TT.Domain.Entities.Items;
 using TT.Tests.Builders.Item;

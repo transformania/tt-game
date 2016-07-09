@@ -32,27 +32,42 @@ DELETE FROM [Stats].[dbo].[QuestPlayerVariables]
 
 UPDATE [Stats].[dbo].[PvPWorldStats] SET Boss_Donna = 'unstarted', [Boss_Valentine] = 'unstarted', [Boss_Bimbo] = 'unstarted', [Boss_Thief] = 'unstarted', [Boss_Sisters] = 'unstarted', [Boss_Faeboss] = 'unstarted', [TurnNumber] = 0, [ChaosMode] = 0
 
-reset PvPWorldStatistics
 
-RESET IDENTITIES BACK TO 0:
-DBCC CHECKIDENT ('dbo.Messages', RESEED, 0);
+-----------
 
-set chaos mode to false
+Don't forget to change the round number!
 
-spawn Lindella
-spawn jewdewfae
-spawn pet merchant
+--------------
 
-Change leaderboard turn numbers
+Optionally:  Execute the code below to clear out columns and set the Identity value back to 0:
 
 
-
-------------------------------------
-Restore data to local db:
-
-USE [master]
-ALTER DATABASE Stats SET MULTI_USER WITH ROLLBACK IMMEDIATE
-GO
-RESTORE DATABASE Stats FROM DISK = 'D:\Database backups\Stats.bak' 
-WITH REPLACE
-GO
+TRUNCATE TABLE [Stats].[dbo].[Effects]
+TRUNCATE TABLE [Stats].[dbo].[InanimateXPs]
+TRUNCATE TABLE [Stats].[dbo].[Items]
+TRUNCATE TABLE [Stats].[dbo].[LocationLogs]
+TRUNCATE TABLE [Stats].[dbo].[Messages]
+TRUNCATE TABLE [Stats].[dbo].[PlayerLogs]
+TRUNCATE TABLE [Stats].[dbo].[Skills]
+TRUNCATE TABLE [Stats].[dbo].[TFEnergies]
+TRUNCATE TABLE [Stats].[dbo].[Covenants]
+TRUNCATE TABLE [Stats].[dbo].[CovenantLogs]
+TRUNCATE TABLE [Stats].[dbo].[CovenantApplications]
+TRUNCATE TABLE [Stats].[dbo].[ServerLogs]
+TRUNCATE TABLE [Stats].[dbo].[PlayerExtras]
+TRUNCATE TABLE [Stats].[dbo].[AIDirectives]
+TRUNCATE TABLE [Stats].[dbo].[InanimateXPs]
+TRUNCATE TABLE [Stats].[dbo].[Furnitures]
+TRUNCATE TABLE [Stats].[dbo].[MindControls]
+TRUNCATE TABLE [Stats].[dbo].[LocationInfoes]
+TRUNCATE TABLE [Stats].[dbo].[BookReadings]
+TRUNCATE TABLE [Stats].[dbo].[Achievements]
+TRUNCATE TABLE [Stats].[dbo].[ItemTransferLogs]
+TRUNCATE TABLE [Stats].[dbo].[BossDamages]
+TRUNCATE TABLE [Stats].[dbo].[Rerolls]
+TRUNCATE TABLE [Stats].[dbo].[Duels]
+TRUNCATE TABLE [Stats].[dbo].[DuelCombatants]
+TRUNCATE TABLE [Stats].[dbo].[DuelRules]
+TRUNCATE TABLE [Stats].[dbo].[PlayerQuests]
+TRUNCATE TABLE [Stats].[dbo].[QuestPlayerStatus]
+TRUNCATE TABLE [Stats].[dbo].[QuestPlayerVariables]

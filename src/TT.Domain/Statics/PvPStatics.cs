@@ -2482,9 +2482,7 @@ namespace TT.Domain.Statics
         /// <summary>
         /// Gets the read only dictionary of the staff's <see cref="PlayerDescriptorDTO"/> using their membership id as a key.
         /// </summary>
-        public static IReadOnlyDictionary<string, PlayerDescriptorDTO> Staff { get; }
-            = new ReadOnlyDictionary<string, PlayerDescriptorDTO>(staff);
-            
+        
         private static IDictionary<string, PlayerDescriptorDTO> staff
             = new Dictionary<string, PlayerDescriptorDTO>
             {
@@ -2531,6 +2529,9 @@ namespace TT.Domain.Statics
                     }
                 }
             };
+
+        public static IReadOnlyDictionary<string, PlayerDescriptorDTO> Staff { get; }
+            = new ReadOnlyDictionary<string, PlayerDescriptorDTO>(staff);
 
         public static readonly IEnumerable<string> HideOnJoinChat = new List<string>
         {

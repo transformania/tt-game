@@ -223,6 +223,8 @@ namespace TT.Domain.Models
 
         }
 
+        protected virtual IReadOnlyDictionary<string, PlayerDescriptorDTO> staffDictionary { get { return ChatStatics.Staff; } }
+
         public Tuple<string, string> GetDescriptor()
         {
             PlayerDescriptorDTO desc;
@@ -230,9 +232,9 @@ namespace TT.Domain.Models
             if (MembershipId == "-1")
                 return new Tuple<string, string>(string.Empty, string.Empty);
 
-            if (ChatStatics.Staff.TryGetValue(MembershipId, out desc))
+            if (staffDictionary.TryGetValue(MembershipId, out desc))
             {
-                string name = string.Empty;
+                string name = desc.Name;
 
                 switch(desc.TagBehaviorEnum)
                 {
@@ -240,7 +242,7 @@ namespace TT.Domain.Models
                         name = GetFullName();
                         break;
                     case TagBehavior.ReplaceLastName:
-                        name = $"{FirstName} {(DonatorLevel >= 2 && !Nickname.IsNullOrEmpty() ? $" '{Nickname}' " : "")} {LastName}";
+                        name = $"{FirstName}{(DonatorLevel >= 2 && !Nickname.IsNullOrEmpty() ? $" '{Nickname}'" : "")}";
                         break;
                     case TagBehavior.ReplaceLastNameAndNick:
                         name = $"{FirstName}";
@@ -346,17 +348,20 @@ namespace TT.Domain.Models
     public class PlayerDescriptorDTO
     {
         /// <summary>
-        /// Gets or sets the name that will be used if <see cref="TagBehaviorEnum"/> is set to <see cref="TagBehavior.ReplaceFullName"/>.
+        /// <para>Gets or sets the name that will be used if <see cref="TagBehaviorEnum"/> is set to <see cref="TagBehavior.ReplaceFullName"/>.</para>
+        /// <para>Defaults to <see cref="string.Empty"/>.</para>
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the URL tumbnail, defaults to <see cref="string.Empty"/>.
+        /// <para>Gets or sets the URL tumbnail.</para>
+        /// <para>Defaults to <see cref="string.Empty"/>.</para>
         /// </summary>
         public string PictureURL { get; set; } = string.Empty;
 
         /// <summary>
-        /// <para>Gets or sets the behavior for the tag, defaults to <see cref="TagBehavior.Append"/>.</para>
+        /// <para>Gets or sets the behavior for the tag</para>
+        /// <para>Defaults to <see cref="TagBehavior.Append"/>.</para>
         /// <para>See <see cref="TagBehavior"/> for more description.</para>
         /// </summary>
         public TagBehavior TagBehaviorEnum { get; set; } = TagBehavior.Append;
@@ -414,9 +419,9 @@ namespace TT.Domain.Models
 
         /// <summary>
         /// <para>Retrieves the tag string from the enum using a backing <see cref="Dictionary{Role, string}"/>.</para>
-        /// <para>Falls back on <see cref="Enum.ToString"/></para>
+        /// <para>Falls back on <see cref="Enum.ToString"/>.</para>
         /// </summary>
-        /// <param name="role">The role to try and get</param>
+        /// <param name="role">The role to try and get.</param>
         /// <returns>The tag string.</returns>
         public static string ToTag(this Role role)
         {

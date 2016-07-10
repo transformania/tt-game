@@ -22,7 +22,7 @@ namespace TT.Tests.Services
         public void Should_register_connection()
         {
             var persistanceService = new ChatPersistenceServiceWrapper();
-            var player = TestData.CreateRegularPlayer();
+            var player = TestData.CreateRegularPlayer<Player_VM>();
 
             persistanceService.TrackConnection(player, Guid.NewGuid().ToString());
 
@@ -33,22 +33,11 @@ namespace TT.Tests.Services
         }
 
         [Test]
-        public void Should_register_staff_connection_with_correct_name()
-        {
-            var persistanceService = new ChatPersistenceServiceWrapper();
-            var player = TestData.CreateStaffPlayer();
-
-            persistanceService.TrackConnection(player, Guid.NewGuid().ToString());
-
-            persistanceService.InternalPersistence[player.MembershipId].Name.Should().Be(ChatStatics.Staff[player.MembershipId].Item1);
-        }
-
-        [Test]
         public void Should_keep_track_of_multiple_connections_for_same_user()
         {
             var persistanceService = new ChatPersistenceServiceWrapper();
-            var player1 = TestData.CreateRegularPlayer("100", "Test1", "User1");
-            var player2 = TestData.CreateRegularPlayer("200", "Test2", "User2", false);
+            var player1 = TestData.CreateRegularPlayer<Player_VM>("100", "Test1", "User1");
+            var player2 = TestData.CreateRegularPlayer<Player_VM>("200", "Test2", "User2", false);
 
             persistanceService.TrackConnection(player1, Guid.NewGuid().ToString());
             persistanceService.TrackConnection(player1, Guid.NewGuid().ToString());
@@ -70,7 +59,7 @@ namespace TT.Tests.Services
         public void Should_remove_connection_on_disconnect()
         {
             var persistanceService = new ChatPersistenceServiceWrapper();
-            var player = TestData.CreateRegularPlayer();
+            var player = TestData.CreateRegularPlayer<Player_VM>();
             var connectionId1 = Guid.NewGuid().ToString();
             var connectionId2 = Guid.NewGuid().ToString();
 
@@ -89,7 +78,7 @@ namespace TT.Tests.Services
         public void Should_remove_player_when_they_have_no_more_active_connections()
         {
             var persistanceService = new ChatPersistenceServiceWrapper();
-            var player = TestData.CreateRegularPlayer();
+            var player = TestData.CreateRegularPlayer<Player_VM>();
             var connectionId = Guid.NewGuid().ToString();
 
             persistanceService.TrackConnection(player, connectionId);
@@ -106,7 +95,7 @@ namespace TT.Tests.Services
         {
             const string room = "global";
             var persistanceService = new ChatPersistenceServiceWrapper();
-            var player = TestData.CreateRegularPlayer();
+            var player = TestData.CreateRegularPlayer<Player_VM>();
             var connectionId = Guid.NewGuid().ToString();
 
             persistanceService.TrackConnection(player, connectionId);
@@ -124,7 +113,7 @@ namespace TT.Tests.Services
             const string room1 = "global";
             const string room2 = "test";
             var persistenceService = new ChatPersistenceServiceWrapper();
-            var player = TestData.CreateRegularPlayer();
+            var player = TestData.CreateRegularPlayer<Player_VM>();
             var connectionId1 = Guid.NewGuid().ToString();
             var connectionId2 = Guid.NewGuid().ToString();
 
@@ -142,7 +131,7 @@ namespace TT.Tests.Services
         public void Should_track_last_time_user_sent_a_message()
         {
             var persistenceService = new ChatPersistenceServiceWrapper();
-            var player = TestData.CreateRegularPlayer();
+            var player = TestData.CreateRegularPlayer<Player_VM>();
             var connectionId = Guid.NewGuid().ToString();
 
             persistenceService.TrackConnection(player, connectionId);
@@ -157,7 +146,7 @@ namespace TT.Tests.Services
         {
             const string room = "global";
             var persistenceService = new ChatPersistenceServiceWrapper();
-            var player = TestData.CreateRegularPlayer();
+            var player = TestData.CreateRegularPlayer<Player_VM>();
             var connectionId = Guid.NewGuid().ToString();
 
             persistenceService.TrackConnection(player, connectionId);
@@ -171,7 +160,7 @@ namespace TT.Tests.Services
         {
             const string room = "global";
             var persistenceService = new ChatPersistenceServiceWrapper();
-            var player = TestData.CreateRegularPlayer();
+            var player = TestData.CreateRegularPlayer<Player_VM>();
             var connectionId = Guid.NewGuid().ToString();
 
             persistenceService.TrackConnection(player, connectionId);
@@ -187,8 +176,8 @@ namespace TT.Tests.Services
             const string room2 = "room2";
             const string room3 = "room3";
             var persistenceService = new ChatPersistenceServiceWrapper();
-            var player1 = TestData.CreateRegularPlayer();
-            var player2 = TestData.CreateRegularPlayer("200");
+            var player1 = TestData.CreateRegularPlayer<Player_VM>();
+            var player2 = TestData.CreateRegularPlayer<Player_VM>("200");
             var connectionId1 = Guid.NewGuid().ToString();
             var connectionId2 = Guid.NewGuid().ToString();
             var connectionId3 = Guid.NewGuid().ToString();
@@ -210,7 +199,7 @@ namespace TT.Tests.Services
         public void Should_get_empty_list_of_rooms_if_player_is_in_any()
         {
             var persistenceService = new ChatPersistenceServiceWrapper();
-            var player = TestData.CreateRegularPlayer();
+            var player = TestData.CreateRegularPlayer<Player_VM>();
             var connectionId = Guid.NewGuid().ToString();
 
             persistenceService.TrackConnection(player, connectionId);
@@ -225,7 +214,7 @@ namespace TT.Tests.Services
         {
             const string room = "global";
             var persistenceService = new ChatPersistenceServiceWrapper();
-            var player = TestData.CreateRegularPlayer();
+            var player = TestData.CreateRegularPlayer<Player_VM>();
             var connectionId = Guid.NewGuid().ToString();
 
             persistenceService.TrackConnection(player, connectionId);
@@ -251,7 +240,7 @@ namespace TT.Tests.Services
         {
             const string room = "global";
             var persistenceService = new ChatPersistenceServiceWrapper();
-            var player = TestData.CreateRegularPlayer();
+            var player = TestData.CreateRegularPlayer<Player_VM>();
             var connectionId = Guid.NewGuid().ToString();
 
             persistenceService.TrackConnection(player, connectionId);
@@ -266,9 +255,9 @@ namespace TT.Tests.Services
         {
             const string room = "global";
             var persistenceService = new ChatPersistenceServiceWrapper();
-            var player1 = TestData.CreateRegularPlayer("101");
-            var player2 = TestData.CreateRegularPlayer("102");
-            var player3 = TestData.CreateRegularPlayer("103");
+            var player1 = TestData.CreateRegularPlayer<Player_VM>("101");
+            var player2 = TestData.CreateRegularPlayer<Player_VM>("102");
+            var player3 = TestData.CreateRegularPlayer<Player_VM>("103");
             var connectionId1 = Guid.NewGuid().ToString();
             var connectionId2 = Guid.NewGuid().ToString();
             var connectionId3 = Guid.NewGuid().ToString();
@@ -294,7 +283,7 @@ namespace TT.Tests.Services
             const string newName = "New Player Name";
 
             var persistenceService = new ChatPersistenceServiceWrapper();
-            var player = TestData.CreateRegularPlayer();
+            var player = TestData.CreateRegularPlayer<Player_VM>();
             var connectionId = Guid.NewGuid().ToString();
 
             persistenceService.TrackConnection(player, connectionId);

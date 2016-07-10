@@ -2479,10 +2479,6 @@ namespace TT.Domain.Statics
      // private const string EricThumbnail =
      // private const string TempestThumbnail =
 
-        /// <summary>
-        /// Gets the read only dictionary of the staff's <see cref="PlayerDescriptorDTO"/> using their membership id as a key.
-        /// </summary>
-        
         private static IDictionary<string, PlayerDescriptorDTO> staff
             = new Dictionary<string, PlayerDescriptorDTO>
             {
@@ -2530,6 +2526,9 @@ namespace TT.Domain.Statics
                 }
             };
 
+        /// <summary>
+        /// Gets the read only dictionary of the staff's <see cref="PlayerDescriptorDTO"/> using their membership id as a key.
+        /// </summary>
         public static IReadOnlyDictionary<string, PlayerDescriptorDTO> Staff { get; }
             = new ReadOnlyDictionary<string, PlayerDescriptorDTO>(staff);
 

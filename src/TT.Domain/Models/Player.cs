@@ -364,10 +364,11 @@ namespace TT.Domain.Models
         /// <para>Defaults to <see cref="TagBehavior.Append"/>.</para>
         /// <para>See <see cref="TagBehavior"/> for more description.</para>
         /// </summary>
-        public TagBehavior TagBehaviorEnum { get; set; } = TagBehavior.Append;
+        public TagBehavior TagBehaviorEnum { get; set; }
 
         /// <summary>
         /// <para>Gets or sets the role.</para>
+        /// <para>Defaults to <see cref="Role.Admin"/>.</para>
         /// <para>Proper role enums on the player entity will replace this.</para>
         /// </summary>
         public Role RoleEnum { get; set; }

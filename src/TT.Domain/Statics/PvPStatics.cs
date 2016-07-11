@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using TT.Domain.Models;
 using TT.Domain.Procedures;
 using TT.Domain.ViewModels;
 
 namespace TT.Domain.Statics
 {
-
-
+    using TagEnum = PlayerDescriptorStatics.TagBehavior;
+    using RoleEnum = PlayerDescriptorStatics.Role;
 
     public static class PvPStatics
     {
@@ -2472,15 +2474,63 @@ namespace TT.Domain.Statics
     {
         public const int OnlineActivityCutoffMinutes = -2;
         private const string JudooThumbnail = "Images/PvP/portraits/Thumbnails/100/Judoo.jpg";
+        private const string MizuhoThumbnail = "/Images/PvP/portraits/Thumbnails/100/Mizuho.jpg";
+     // private const string ArrhaeThumbnail =
+     // private const string EricThumbnail =
+     // private const string TempestThumbnail =
 
-        public static readonly IDictionary<string, Tuple<string, string>> Staff = new Dictionary<string, Tuple<string, string>>
-        {
-            { "69", new Tuple<string, string>("Judoo (admin)", string.Empty) }, // turning off thumbnail for a while
-            { "3490", new Tuple<string, string>("Mizuho (dev)", "/Images/PvP/portraits/Thumbnails/100/Mizuho.jpg") },
-            { "251", new Tuple<string, string>("Arrhae (dev)", string.Empty) }, // Arrhae wants to keep regular portrait for now, not admin/dev custom one
-            { "834", new Tuple<string, string>("Eric Force (dev)", string.Empty) },
-            { "14039", new Tuple<string, string>("Tempest (dev)", string.Empty) }, // no custom portrait yet
-        };
+        private static IDictionary<string, PlayerDescriptorDTO> staff
+            = new Dictionary<string, PlayerDescriptorDTO>
+            {
+
+                {
+                    "69", new PlayerDescriptorDTO // Judoo
+                    {
+                        Name = "Judoo",
+                     // PictureURL = JudooThumbnail, turning off thumbnail for a while
+                        TagBehaviorEnum = TagEnum.ReplaceFullName,
+                        RoleEnum = RoleEnum.Admin
+                    }
+                },
+                {
+                    "3490", new PlayerDescriptorDTO // Mizuho
+                    {
+                        Name = "Mizuho",
+                        PictureURL = MizuhoThumbnail,
+                        TagBehaviorEnum = TagEnum.ReplaceFullName,
+                        RoleEnum = RoleEnum.Developer
+                    }
+                },
+                {
+                    "251", new PlayerDescriptorDTO // Arrhae
+                    {
+                     // PictureURL = ArrhaeThumbnail, Arrhae wants to keep regular portrait for now, not admin/dev custom one
+                        RoleEnum = RoleEnum.Developer
+                    }
+                },
+                {
+                    "834", new PlayerDescriptorDTO // Eric
+                    {
+                     // PictureURL = EricThumbnail, Not likely
+                        RoleEnum = RoleEnum.Developer
+                    }
+                },
+                {
+                    "14039", new PlayerDescriptorDTO // Tempest
+                    {
+                        Name = "Tempest",
+                     // PictureURL = TempestThumbnail, no custom portrait yet
+                        TagBehaviorEnum = TagEnum.ReplaceFullName,
+                        RoleEnum = RoleEnum.Developer
+                    }
+                }
+            };
+
+        /// <summary>
+        /// Gets the read only dictionary of the staff's <see cref="PlayerDescriptorDTO"/> using their membership id as a key.
+        /// </summary>
+        public static IReadOnlyDictionary<string, PlayerDescriptorDTO> Staff { get; }
+            = new ReadOnlyDictionary<string, PlayerDescriptorDTO>(staff);
 
         public static readonly IEnumerable<string> HideOnJoinChat = new List<string>
         {

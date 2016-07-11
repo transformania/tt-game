@@ -5,6 +5,9 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using TT.Domain.Commands.Player;
 using TT.Domain.Procedures;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using static TT.Domain.Models.PlayerDescriptorStatics;
 
 namespace TT.Domain.Models
 {
@@ -220,26 +223,36 @@ namespace TT.Domain.Models
 
         }
 
+        protected virtual IReadOnlyDictionary<string, PlayerDescriptorDTO> staffDictionary { get { return ChatStatics.Staff; } }
+
         public Tuple<string, string> GetDescriptor()
         {
-            var name = string.Empty;
-            var pic = string.Empty;
+            PlayerDescriptorDTO desc;
 
             if (MembershipId == "-1")
-                return new Tuple<string, string>(name, pic);
+                return new Tuple<string, string>(string.Empty, string.Empty);
 
-            if (ChatStatics.Staff.ContainsKey(MembershipId))
+            if (staffDictionary.TryGetValue(MembershipId, out desc))
             {
-                var descriptor = ChatStatics.Staff[MembershipId];
-                name = descriptor.Item1;
-                pic = descriptor.Item2;
+                string name = desc.Name;
 
-                return new Tuple<string, string>(name, pic);
+                switch(desc.TagBehaviorEnum)
+                {
+                    case TagBehavior.Append:
+                        name = GetFullName();
+                        break;
+                    case TagBehavior.ReplaceLastName:
+                        name = $"{FirstName}{(DonatorLevel >= 2 && !Nickname.IsNullOrEmpty() ? $" '{Nickname}'" : "")}";
+                        break;
+                    case TagBehavior.ReplaceLastNameAndNick:
+                        name = $"{FirstName}";
+                        break;
+                }
+
+                return new Tuple<string, string>($"{name} {desc.RoleEnum.ToTag()}", desc.PictureURL);
             }
 
-            name = GetFullName();
-
-            return new Tuple<string, string>(name, pic);
+            return new Tuple<string, string>(GetFullName(), string.Empty);
         }
 
         public DateTime GetLastCombatTimestamp()
@@ -329,6 +342,98 @@ namespace TT.Domain.Models
 
             var cmd = new UpdateOnlineActivityTimestamp { Player = this };
             DomainRegistry.Root.Execute(cmd);
+        }
+    }
+
+    public class PlayerDescriptorDTO
+    {
+        /// <summary>
+        /// <para>Gets or sets the name that will be used if <see cref="TagBehaviorEnum"/> is set to <see cref="TagBehavior.ReplaceFullName"/>.</para>
+        /// <para>Defaults to <see cref="string.Empty"/>.</para>
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// <para>Gets or sets the URL tumbnail.</para>
+        /// <para>Defaults to <see cref="string.Empty"/>.</para>
+        /// </summary>
+        public string PictureURL { get; set; } = string.Empty;
+
+        /// <summary>
+        /// <para>Gets or sets the behavior for the tag</para>
+        /// <para>Defaults to <see cref="TagBehavior.Append"/>.</para>
+        /// <para>See <see cref="TagBehavior"/> for more description.</para>
+        /// </summary>
+        public TagBehavior TagBehaviorEnum { get; set; }
+
+        /// <summary>
+        /// <para>Gets or sets the role.</para>
+        /// <para>Defaults to <see cref="Role.Admin"/>.</para>
+        /// <para>Proper role enums on the player entity will replace this.</para>
+        /// </summary>
+        public Role RoleEnum { get; set; }
+    }
+
+    public static class PlayerDescriptorStatics
+    {
+        public enum TagBehavior
+        {
+            /// <summary>
+            /// Leave the name and just append the appropriate tag at the end.
+            /// </summary>
+            Append,
+
+            /// <summary>
+            /// Replace the entire full name, including nickname, with <see cref="Name"/> and append the appropriate tag.
+            /// </summary>
+            ReplaceFullName,
+
+            /// <summary>
+            /// Replace just the last name with the appropriate tag, leave the nickname.
+            /// </summary>
+            ReplaceLastName,
+
+            /// <summary>
+            /// Replace both the last name and the nickname with the appropriate tag.
+            /// </summary>
+            ReplaceLastNameAndNick,        
+        }
+
+        public enum Role
+        {
+            /// <summary>
+            /// Replace with/append the tag, (Admin).
+            /// </summary>
+            Admin,
+
+            /// <summary>
+            /// Replace with/append the tag, (Dev).
+            /// </summary>
+            Developer
+        }
+
+        private static IDictionary<Role, string> RoleTags { get; } = new Dictionary<Role, string>
+            {
+                { Role.Admin, "(Admin)" },
+                { Role.Developer, "(Dev)" }
+            };
+
+        /// <summary>
+        /// <para>Retrieves the tag string from the enum using a backing <see cref="Dictionary{Role, string}"/>.</para>
+        /// <para>Falls back on <see cref="Enum.ToString"/>.</para>
+        /// </summary>
+        /// <param name="role">The role to try and get.</param>
+        /// <returns>The tag string.</returns>
+        public static string ToTag(this Role role)
+        {
+            string str;
+
+            if (RoleTags.TryGetValue(role, out str))
+            {
+                return str;
+            }
+
+            return role.ToString();
         }
     }
 }

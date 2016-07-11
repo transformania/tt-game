@@ -4,9 +4,10 @@ namespace TT.Tests.Services
 {
     public class TestData
     {
-        public static Player_VM CreateRegularPlayer(string membershipId = "100", string firstName = "Test", string lastName = "User", bool donator = true)
+        public static T CreateRegularPlayer<T>(string membershipId = "100", string firstName = "Test", string lastName = "User", bool donator = true)
+            where T : Player_VM, new()
         {
-            return new Player_VM
+            return new T
             {
                 MembershipId = membershipId, 
                 FirstName = firstName, 
@@ -16,9 +17,10 @@ namespace TT.Tests.Services
             };
         }
 
-        public static Player_VM CreateStaffPlayer()
+        public static T CreateStaffPlayer<T>()
+            where T : Player_VM, new()
         {
-            return new Player_VM { MembershipId = "69", FirstName = "Test", LastName = "User" };
+            return new T { MembershipId = "69", FirstName = "Test", LastName = "User" };
         }
     }
 }

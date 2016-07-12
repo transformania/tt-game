@@ -310,7 +310,7 @@ namespace TT.Domain.Procedures
 
 
                 // if the item has an owner, notify them via a message.
-                if (dbPlayerItem.OwnerId != -1)
+                if (dbPlayerItem.OwnerId != null)
                 {
                     string message = player.FirstName + " " + player.LastName + ", your " + itemPlus.FriendlyName + ", successfully struggles against your magic and reverses their transformation.  You can no longer claim them as your property, not unless you manage to turn them back again...";
                     PlayerLogProcedures.AddPlayerLog((int)dbPlayerItem.OwnerId, message, true);

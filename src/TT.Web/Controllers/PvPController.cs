@@ -379,6 +379,9 @@ namespace TT.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult NewCharacter(NewCharacterViewModel player)
         {
+
+            ViewBag.IsRerolling = false;
+
             string myMembershipId = User.Identity.GetUserId();
             if (!ModelState.IsValid)
             {

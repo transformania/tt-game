@@ -602,6 +602,7 @@ namespace TT.Web.Controllers
             if (me.Form == me.OriginalForm)
             {
                 PlayerProcedures.SetCustomBase(me, newForm.CustomForm.dbName);
+                me.OriginalForm = newForm.CustomForm.dbName;
                 PlayerProcedures.InstantRestoreToBase(me);
             }
             else

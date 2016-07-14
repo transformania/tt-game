@@ -4,6 +4,7 @@ using Highway.Data;
 using TT.Domain.Entities.Effects;
 using TT.Domain.Entities.Players;
 using TT.Domain.Entities.Skills;
+using TT.Domain.Entities.TFEnergies;
 
 namespace TT.Domain.Commands.Players
 {
@@ -26,6 +27,7 @@ namespace TT.Domain.Commands.Players
                 var spells = ctx.AsQueryable<Skill>().Where(i => i.Owner.Id == PlayerId).ToList();
                 var effects = ctx.AsQueryable<Effect>().Where(i => i.Owner.Id == PlayerId).ToList();
                 var playerLogs = ctx.AsQueryable<PlayerLog>().Where(i => i.Owner.Id == PlayerId).ToList();
+                var tfTenergies = ctx.AsQueryable<TFEnergy>().Where(i => i.Owner.Id == PlayerId).ToList();
 
                 foreach (var s in spells)
                 {
@@ -40,6 +42,10 @@ namespace TT.Domain.Commands.Players
                 foreach (var l in playerLogs)
                 {
                     ctx.Remove(l);
+                }
+                foreach (var e in tfTenergies)
+                {
+                    ctx.Remove(e);
                 }
 
                 player.DropAllItems();

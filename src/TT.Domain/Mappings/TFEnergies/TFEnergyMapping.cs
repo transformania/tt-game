@@ -17,7 +17,7 @@ namespace TT.Domain.Mappings.Players
 
             modelBuilder.Entity<TFEnergy>()
                 .HasRequired(p => p.Owner)
-                .WithMany().Map(p => p.MapKey("PlayerId"));
+                .WithMany(p => p.TFEnergies).Map(p => p.MapKey("PlayerId"));
 
             modelBuilder.Entity<TFEnergy>()
                 .HasOptional(p => p.Caster)

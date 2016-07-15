@@ -3,7 +3,7 @@ using FluentMigrator;
 
 namespace TT.Migrations
 {
-    [Migration(201630064900)]
+    [Migration(201607151721)]
     public class AddTFEnergyFK : ForwardOnlyMigration
     {
 
@@ -15,6 +15,8 @@ namespace TT.Migrations
                 .ForeignColumn("PlayerId")
                 .ToTable("Players")
                 .PrimaryColumn("Id").OnDelete(Rule.None);
+
+            Execute.Sql("DELETE [dbo].[TFEnergies] FROM[dbo].[TFEnergies] LEFT OUTER JOIN Players ON TFEnergies.CasterId = Players.Id WHERE TFEnergies.CasterId != -1 AND Players.Id IS NULL");
 
             Update.Table("TFEnergies").Set(new { CasterId = null as object }).Where(new { CasterId = -1 });
             Alter.Table("TFEnergies").AlterColumn("CasterId").AsInt32().Nullable().ForeignKey("Players", "Id");

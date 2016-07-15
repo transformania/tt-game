@@ -147,6 +147,7 @@
     <Compile Include="Builders\Players\PlayerBuilder.cs" />
     <Compile Include="Builders\Skills\SkillBuilder.cs" />
     <Compile Include="Builders\Skills\SkillSourceBuilder.cs" />
+    <Compile Include="Builders\TFEnergies\TFEnergyBuilder.cs" />
     <Compile Include="Domain\Commands\AI\CreateNPCTests.cs" />
     <Compile Include="Domain\Commands\AI\DeleteNPCTests.cs" />
     <Compile Include="Domain\Commands\AI\UpdateNPCTests.cs" />
@@ -171,6 +172,7 @@
     <Compile Include="Domain\Commands\Messages\MarkMessageAsRead.cs" />
     <Compile Include="Domain\Commands\Players\DeletePlayerTests.cs" />
     <Compile Include="Domain\Commands\Skills\CreateSkillTests.cs" />
+    <Compile Include="Domain\Commands\TFEnergies\CreateTFEnergyTests.cs" />
     <Compile Include="Domain\Entities\Items\ItemTests.cs" />
     <Compile Include="Domain\Entities\Players\PlayerTests.cs" />
     <Compile Include="Domain\Commands\Players\ChangeFormTests.cs" />

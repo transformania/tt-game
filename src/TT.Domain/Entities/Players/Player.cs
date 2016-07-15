@@ -7,6 +7,7 @@ using TT.Domain.Entities.Forms;
 using TT.Domain.Entities.Identity;
 using TT.Domain.Entities.NPCs;
 using TT.Domain.Entities.Skills;
+using TT.Domain.Entities.TFEnergies;
 using TT.Domain.ViewModels;
 
 namespace TT.Domain.Entities.Players
@@ -26,6 +27,7 @@ namespace TT.Domain.Entities.Players
         public ICollection<Effect> Effects { get; protected set; }
         public ICollection<Skill> Skills { get; protected set; }
         public ICollection<PlayerLog> PlayerLogs { get; protected set; }
+        public ICollection<TFEnergy> TFEnergies { get; protected set; }
 
         public FormSource FormSource { get; protected set; }
 

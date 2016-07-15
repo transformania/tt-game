@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using TT.Domain.Abstract;
 using TT.Domain.Commands.Players;
+using TT.Domain.Commands.TFEnergies;
 using TT.Domain.Concrete;
 using TT.Domain.Models;
 using TT.Domain.Statics;
@@ -37,11 +38,7 @@ namespace TT.Domain.Procedures
 
             foreach (TFEnergy e in energiesOnPlayer) {
 
-                //
                 double minutesAgo = Math.Abs(Math.Floor(e.Timestamp.Subtract(DateTime.UtcNow).TotalMinutes));
-                double hoursAgo = Math.Floor(minutesAgo / 60);
-
-
 
                 if (minutesAgo > 180)
                 {
@@ -53,22 +50,29 @@ namespace TT.Domain.Procedures
             // if the amount of old energies is greater than 0, write up a new one and save it as 'public domain' TF Energy
             if (mergeUpEnergyAmt > 0)
             {
-                TFEnergy collapsed = new TFEnergy
+
+                var cmd = new CreateTFEnergy
                 {
                     PlayerId = victim.Id,
                     Amount = mergeUpEnergyAmt,
-                    CasterId = -1,
-                    Timestamp = Convert.ToDateTime("01/01/1900"),
-                    FormName = skill.Skill.FormdbName,
+                    CasterId = null,
+                    FormName = skill.Skill.FormdbName
                 };
-               
+
+                var form = FormStatics.GetForm(skill.Skill.FormdbName);
+
+                if (form != null)
+                {
+                    cmd.FormSourceId = FormStatics.GetForm(skill.Skill.FormdbName).Id;
+                }
+
+                DomainRegistry.Repository.Execute(cmd);
+
 
                 foreach (TFEnergy e in energiesEligibleForDelete)
                 {
                     repo.DeleteTFEnergy(e.Id);
                 }
-
-                repo.SaveTFEnergy(collapsed);
 
             }
 
@@ -77,14 +81,23 @@ namespace TT.Domain.Procedures
 
             if (energyFromMe == null)
             {
-                energyFromMe = new TFEnergy
+
+                var cmd = new CreateTFEnergy
                 {
                     PlayerId = victim.Id,
-                    FormName = skill.Skill.FormdbName,
-                    Amount = skill.Skill.TFPointsAmount * modifier,
+                    Amount = skill.Skill.TFPointsAmount*modifier,
                     CasterId = attacker.Id,
-                    Timestamp = DateTime.UtcNow,
+                    FormName = skill.Skill.FormdbName
                 };
+
+                var form = FormStatics.GetForm(skill.Skill.FormdbName);
+
+                if (form != null)
+                {
+                    cmd.FormSourceId = FormStatics.GetForm(skill.Skill.FormdbName).Id;
+                }
+
+                DomainRegistry.Repository.Execute(cmd);
 
             }
             else
@@ -95,15 +108,12 @@ namespace TT.Domain.Procedures
 
             repo.SaveTFEnergy(energyFromMe);
 
-            TFEnergy energy = new TFEnergy
-            {
-                Amount = energyFromMe.Amount + mergeUpEnergyAmt,
-            };
+            var totalEnergy = energyFromMe.Amount + mergeUpEnergyAmt;
 
             DbStaticForm eventualForm = FormStatics.GetForm(skill.Skill.FormdbName);
 
-            output.AttackerLog += "  [" + energy.Amount + " / " + eventualForm.TFEnergyRequired + " TF energy]  ";
-            output.VictimLog += "  [" + energy.Amount + " / " + eventualForm.TFEnergyRequired + " TF energy]  ";
+            output.AttackerLog += "  [" + totalEnergy + " / " + eventualForm.TFEnergyRequired + " TF energy]  ";
+            output.VictimLog += "  [" + totalEnergy + " / " + eventualForm.TFEnergyRequired + " TF energy]  ";
 
             if (victim.Form == eventualForm.dbName)
             {
@@ -136,7 +146,7 @@ namespace TT.Domain.Procedures
 
             percentTransformedByHealth /= 1-PercentHealthToAllowTF;
 
-            decimal percentTransformed = energy.Amount / eventualForm.TFEnergyRequired;
+            decimal percentTransformed = totalEnergy / eventualForm.TFEnergyRequired;
 
             if (percentTransformed > 1)
             {
@@ -223,14 +233,6 @@ namespace TT.Domain.Procedures
 
         }
 
-        public static decimal GetTotalTFEnergiesOfType(int targetId, int casterId, string dbname)
-        {
-            ITFEnergyRepository energyRepo = new EFTFEnergyRepository();
-            return energyRepo.TFEnergies.Where(e => e.PlayerId == targetId && e.CasterId == casterId && e.FormName == dbname).Sum(e => e.Amount);
-        }
-
-
-
         public static LogBox RunFormChangeLogic(Player victim, string skilldbName, int attackerId)
         {
 
@@ -244,11 +246,10 @@ namespace TT.Domain.Procedures
 
             ITFEnergyRepository repo = new EFTFEnergyRepository();
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            ISkillRepository skillRepo = new EFSkillRepository();
 
             DbStaticSkill skill = SkillStatics.GetStaticSkill(skilldbName);
 
-            TFEnergy pooledEnergy = repo.TFEnergies.FirstOrDefault(e => e.PlayerId == victim.Id && e.FormName == skill.FormdbName && e.CasterId == -1);
+            TFEnergy pooledEnergy = repo.TFEnergies.FirstOrDefault(e => e.PlayerId == victim.Id && e.FormName == skill.FormdbName && e.CasterId == null);
             TFEnergy myEnergy = repo.TFEnergies.FirstOrDefault(e => e.PlayerId == victim.Id && e.FormName == skill.FormdbName && e.CasterId == attackerId);
 
             DbStaticForm targetForm = FormStatics.GetForm(skill.FormdbName);
@@ -552,22 +553,6 @@ namespace TT.Domain.Procedures
                 }
 
                 return output;
-
-        }
-
-        public static void DecreaseAllEnergiesOnPlayer(int playerId)
-        {
-            ITFEnergyRepository repo = new EFTFEnergyRepository();
-            IEnumerable<TFEnergy> mydbEnergies = repo.TFEnergies.Where(e => e.PlayerId == playerId).ToList();
-            List<TFEnergy> modifiedEnergies = new List<TFEnergy>();
-
-            foreach (TFEnergy energy in mydbEnergies)
-            {
-                energy.Amount = energy.Amount/2;
-                repo.SaveTFEnergy(energy);
-            }
-
-            //foreach
 
         }
 

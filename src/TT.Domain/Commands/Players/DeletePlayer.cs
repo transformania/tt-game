@@ -28,6 +28,7 @@ namespace TT.Domain.Commands.Players
                 var effects = ctx.AsQueryable<Effect>().Where(i => i.Owner.Id == PlayerId).ToList();
                 var playerLogs = ctx.AsQueryable<PlayerLog>().Where(i => i.Owner.Id == PlayerId).ToList();
                 var tfTenergies = ctx.AsQueryable<TFEnergy>().Where(i => i.Owner.Id == PlayerId).ToList();
+                var tfTenergiesCast = ctx.AsQueryable<TFEnergy>().Where(i => i.Caster.Id == PlayerId).ToList();
 
                 foreach (var s in spells)
                 {
@@ -44,6 +45,10 @@ namespace TT.Domain.Commands.Players
                     ctx.Remove(l);
                 }
                 foreach (var e in tfTenergies)
+                {
+                    ctx.Remove(e);
+                }
+                foreach (var e in tfTenergiesCast)
                 {
                     ctx.Remove(e);
                 }

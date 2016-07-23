@@ -1055,7 +1055,7 @@ namespace TT.Domain.Procedures
                         {
                             BossProcedures_FaeBoss.SpawnFaeBoss();
                             PvPWorldStatProcedures.Boss_StartFaeBoss();
-                            string summontext = BossSummonDictionary.GetActivationText("Sisters");
+                            string summontext = BossSummonDictionary.GetActivationText("FaeBoss");
                             PlayerLogProcedures.AddPlayerLog(player.Id, summontext, true);
                             return summontext;
                         }

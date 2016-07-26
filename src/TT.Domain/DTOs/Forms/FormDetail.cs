@@ -44,5 +44,7 @@
         public float Magicka { get;  set; }
         public float Succour { get;  set; }
         public float Luck { get;  set; }
+
+        public TFMessageDetail TfMessage { get; set; }
     }
 }

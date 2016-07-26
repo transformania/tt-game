@@ -44,9 +44,16 @@
         public float Succour { get; protected set; }
         public float Luck { get; protected set; }
 
-        private FormSource()
-        {
+        public TFMessage TfMessage { get; protected set; }
 
+        private FormSource()
+        { 
+
+        }
+
+        public void SetTFMessage(TFMessage tfMessage)
+        {
+            this.TfMessage = tfMessage;
         }
     }
 

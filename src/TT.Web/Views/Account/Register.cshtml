@@ -1,4 +1,6 @@
 ﻿@model TT.Web.Models.RegisterModel
+@using Recaptcha.Web.Mvc;
+@using Recaptcha.Web.Mvc;
 @{
     ViewBag.Title = "Register";
 }
@@ -39,6 +41,8 @@
 
                     @Html.LabelFor(m => m.ConfirmPassword)
                     @Html.PasswordFor(m => m.ConfirmPassword, new { disabled = "disabled", @class = "form-control frontForm", placeholder = "Confirm Password" })
+
+                    @Html.Recaptcha()
 
                     <input type="submit" value="Register" id="registerBtn" class="btn btn-default" disabled="disabled" />
                 </fieldset>

@@ -5,6 +5,8 @@ using System.Web.Security;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using TT.Web.Models;
+using Recaptcha.Web;
+using Recaptcha.Web.Mvc;
 
 namespace TT.Web.Controllers
 {
@@ -118,6 +120,19 @@ namespace TT.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Register(RegisterModel model)
         {
+
+            RecaptchaVerificationHelper recaptchaHelper = this.GetRecaptchaVerificationHelper();
+            if (String.IsNullOrEmpty(recaptchaHelper.Response))
+            {
+                ModelState.AddModelError("", "Captcha answer cannot be empty.");
+                return View(model);
+            }
+            RecaptchaVerificationResult recaptchaResult = recaptchaHelper.VerifyRecaptchaResponse();
+            if (recaptchaResult != RecaptchaVerificationResult.Success)
+            {
+                ModelState.AddModelError("", "Incorrect captcha answer.");
+            }
+
             if (ModelState.IsValid)
             {
                 var user = new User() { UserName = model.UserName, Email=model.Email, CreateDate=DateTime.Now };

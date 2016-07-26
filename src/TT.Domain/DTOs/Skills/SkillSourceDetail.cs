@@ -1,4 +1,8 @@
-﻿namespace TT.Domain.DTOs.Skills
+﻿using TT.Domain.DTOs.Effects;
+using TT.Domain.DTOs.Forms;
+using TT.Domain.DTOs.Item;
+
+namespace TT.Domain.DTOs.Skills
 {
     public class SkillSourceDetail
     {
@@ -6,6 +10,7 @@
         public string dbName { get; set; }
         public string FriendlyName { get; set; }
         public string FormdbName { get; set; }
+        public FormSourceDetail FormSource { get; set; }
         public string Description { get; set; }
         public decimal ManaCost { get; set; }
         public decimal TFPointsAmount { get; set; }
@@ -17,9 +22,13 @@
         public bool IsPlayerLearnable { get; set; }
 
         public string GivesEffect { get; set; }
+        public EffectSourceDetail GivesEffectSource { get; set; }
 
         public string ExclusiveToForm { get; set; }
+        public FormSourceDetail ExclusiveToFormSource { get; set; }
+
         public string ExclusiveToItem { get; set; }
+        public ItemSourceDetail ExclusiveToItemSource { get; set; }
 
         public string MobilityType { get; set; }
     }

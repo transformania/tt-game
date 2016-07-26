@@ -10,6 +10,8 @@ using TT.Domain.Procedures;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 using Newtonsoft.Json;
+using TT.Domain;
+using TT.Domain.Commands.Skills;
 
 namespace TT.Web.Controllers
 {
@@ -937,6 +939,16 @@ namespace TT.Web.Controllers
             contribution.History += "Spell published on " + DateTime.UtcNow + "<br>";
             contributionRepo.SaveContribution(contribution);
 
+            // add in any missing FKs for this spell
+            DomainRegistry.Repository.Execute(new SetSkillSourceFKs
+            {
+                SkillSourceId = spell.Id,
+                ExclusiveToItemSource = spell.ExclusiveToItem,
+                ExclusiveToFormSource = spell.ExclusiveToForm,
+                GivesEffectSource = spell.GivesEffect,
+                FormSource = spell.FormdbName    
+            });
+
             ViewBag.Message = message;
             return View("Publish");
         }
@@ -1380,6 +1392,16 @@ namespace TT.Web.Controllers
 
             contribution.History += "Published spell on " + DateTime.UtcNow + ".<br>";
             contRepo.SaveEffectContribution(contribution);
+
+            // add in any missing FKs for this spell
+            DomainRegistry.Repository.Execute(new SetSkillSourceFKs
+            {
+                SkillSourceId = skill.Id,
+                ExclusiveToItemSource = skill.ExclusiveToItem,
+                ExclusiveToFormSource = skill.ExclusiveToForm,
+                GivesEffectSource = skill.GivesEffect,
+                FormSource = skill.FormdbName
+            });
 
             ViewBag.Message = message;
             return View("Publish");

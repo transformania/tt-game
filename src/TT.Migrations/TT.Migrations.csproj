@@ -58,6 +58,7 @@
     <Compile Include="201606221825_AddSkillFKs.cs" />
     <Compile Include="201606241348_AddPlayerLogFKs.cs" />
     <Compile Include="201605250819_AddFKtoRPClassifiedAd.cs" />
+    <Compile Include="201607252000_SkillSourceFKs.cs" />
     <Compile Include="201607151721_AddTFEnergyFK.cs" />
     <Compile Include="201608031909_AddRecaptchaEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -2,11 +2,13 @@
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using FeatureSwitch;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using TT.Web.Models;
 using Recaptcha.Web;
 using Recaptcha.Web.Mvc;
+using TT.Domain;
 
 namespace TT.Web.Controllers
 {
@@ -121,17 +123,21 @@ namespace TT.Web.Controllers
         public ActionResult Register(RegisterModel model)
         {
 
-            RecaptchaVerificationHelper recaptchaHelper = this.GetRecaptchaVerificationHelper();
-            if (String.IsNullOrEmpty(recaptchaHelper.Response))
+            if (FeatureContext.IsEnabled<UseCaptcha>())
             {
-                ModelState.AddModelError("", "Captcha answer cannot be empty.");
-                return View(model);
+                RecaptchaVerificationHelper recaptchaHelper = this.GetRecaptchaVerificationHelper();
+                if (String.IsNullOrEmpty(recaptchaHelper.Response))
+                {
+                    ModelState.AddModelError("", "Captcha answer cannot be empty.");
+                    return View(model);
+                }
+                RecaptchaVerificationResult recaptchaResult = recaptchaHelper.VerifyRecaptchaResponse();
+                if (recaptchaResult != RecaptchaVerificationResult.Success)
+                {
+                    ModelState.AddModelError("", "Incorrect captcha answer.");
+                }
             }
-            RecaptchaVerificationResult recaptchaResult = recaptchaHelper.VerifyRecaptchaResponse();
-            if (recaptchaResult != RecaptchaVerificationResult.Success)
-            {
-                ModelState.AddModelError("", "Incorrect captcha answer.");
-            }
+            
 
             if (ModelState.IsValid)
             {

@@ -2,34 +2,47 @@
 
 <script src="~/Scripts/jquery-ui-1.10.4.js"></script>
 
-<h1>Rename Player / Change Form</h1>
+<div class="containerInner">
 
-@Ajax.ActionLink("Help", "AllForms", "Info", null, new AjaxOptions { UpdateTargetId = "modal", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "launchModal", OnFailure = "launchLocationListModalFail" }, new { @class = "attackLink" })
+    <h1>Rename Player / Change Form</h1>
 
-@using (Html.BeginForm("RenamePlayerSend", "PvPAdmin", FormMethod.Post))
-{
-    <span>Id:</span>
-    @Html.TextAreaFor(m => m.Id)<br><br>
+    <p>You can use this tool to rename a player, change their form (animate forms only), level, or Arpeyjis.  Some rules:</p>
+    <ul class="listdots">
+        <li>This tool only works in chaos mode.</li>
+        <li>Do not use this to troll anyone. If they request you to do so, you <b>must restore their original name as soon as possible.</b></li>
+        <li>Do not make any words so long that it cannot text wrap comfortably.</li>
+        <li>If a player uses their boss form in a disruptive way such as it receieves complaints, their boss form must be revoked.</li>
+        <li>You are under no obligation to fulfill requests.</li>
+    </ul>
 
-    <span>FirstName:</span>
-    @Html.TextAreaFor(m => m.NewFirstName)<br><br>
+    @Ajax.ActionLink("Help", "AllForms", "Info", null, new AjaxOptions { UpdateTargetId = "modal", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "launchModal", OnFailure = "launchLocationListModalFail" }, new { @class = "attackLink" })
 
-    <span>LastName:</span>
-    @Html.TextAreaFor(m => m.NewLastName)<br><br>
+    @using (Html.BeginForm("RenamePlayerSend", "PvPAdmin", FormMethod.Post))
+    {
+        <span>Id:</span>
+        @Html.TextAreaFor(m => m.Id)<br><br>
 
-    <span>Form:</span>
-    @Html.TextAreaFor(m => m.NewForm)<br><br>
+        <span>FirstName:</span>
+        @Html.TextAreaFor(m => m.NewFirstName)<br><br>
 
-    <span>Level:</span>
-    @Html.TextAreaFor(m => m.Level)<br><br>
+        <span>LastName:</span>
+        @Html.TextAreaFor(m => m.NewLastName)<br><br>
 
-    <span>Arpeyjis:</span>
-    @Html.TextAreaFor(m => m.Money)<br><br>
+        <span>Form:</span>
+        @Html.TextAreaFor(m => m.NewForm)<br><br>
 
-    <input type="submit" value="Send" />
-}
+        <span>Level:</span>
+        @Html.TextAreaFor(m => m.Level)<br><br>
 
-<div id="modal" style="display: none;" class="ui-widget-content ui-draggable helpModal">LOCATIONS:  </div>
+        <span>Arpeyjis:</span>
+        @Html.TextAreaFor(m => m.Money)<br><br>
+
+        <input type="submit" value="Send" />
+    }
+
+    <div id="modal" style="display: none;" class="ui-widget-content ui-draggable helpModal">LOCATIONS: </div>
+
+</div>
 
 <script>
     function launchModal() {

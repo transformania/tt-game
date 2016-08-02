@@ -1,6 +1,4 @@
 ﻿@model TT.Domain.ViewModels.PlayerFormItemsSkillsViewModel
-@using TT.Domain.ViewModels
-@using TT.Domain.Procedures
 @using TT.Web.CustomHtmlHelpers
 @using TT.Domain.Statics
 
@@ -136,7 +134,7 @@
 
 </div>
 @{
-        if (User.IsInRole(PvPStatics.Permissions_Moderator))
+        if (User.IsInRole(PvPStatics.Permissions_Moderator) || User.IsInRole(PvPStatics.Permissions_Admin) || User.IsInRole(PvPStatics.Permissions_Chaoslord))
         {
             <nav class="navbar navbar-default outsideContainer navbarTT2">
                 <div class="container-fluid">

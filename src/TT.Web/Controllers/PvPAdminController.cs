@@ -1264,7 +1264,7 @@ namespace TT.Web.Controllers
         [Authorize]
         public ActionResult RenamePlayer(int id)
         {
-            if (User.IsInRole(PvPStatics.Permissions_Admin))
+            if (User.IsInRole(PvPStatics.Permissions_Admin) || User.IsInRole(PvPStatics.Permissions_Chaoslord))
             {
                 PlayerNameViewModel output = new PlayerNameViewModel();
 
@@ -1290,7 +1290,7 @@ namespace TT.Web.Controllers
         [Authorize]
         public ActionResult RenamePlayerSend(PlayerNameViewModel input)
         {
-            if (User.IsInRole(PvPStatics.Permissions_Admin))
+            if (User.IsInRole(PvPStatics.Permissions_Admin) || User.IsInRole(PvPStatics.Permissions_Chaoslord))
             {
 
                 PvPWorldStat stats = PvPWorldStatProcedures.GetWorldStats();

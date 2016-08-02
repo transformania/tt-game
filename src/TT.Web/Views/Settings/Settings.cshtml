@@ -93,7 +93,10 @@
             <p class="good">You are on the questwriters list. @Html.ActionLink("Write Quests", "Index", "QuestWriter")</p>
         }
 
-
+        if (User.IsInRole(PvPStatics.Permissions_Chaoslord))
+        {
+            <p class="good">You are on the chaoslord list.</p>
+        }
 
     }
 

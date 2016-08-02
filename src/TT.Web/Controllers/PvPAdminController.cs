@@ -1266,6 +1266,14 @@ namespace TT.Web.Controllers
         {
             if (User.IsInRole(PvPStatics.Permissions_Admin) || User.IsInRole(PvPStatics.Permissions_Chaoslord))
             {
+
+                PvPWorldStat stats = PvPWorldStatProcedures.GetWorldStats();
+                if (!PvPStatics.ChaosMode && !stats.TestServer)
+                {
+                    TempData["Error"] = "The rename tool only works in chaos mode.";
+                    return RedirectToAction("Play", "PvP");
+                }
+
                 PlayerNameViewModel output = new PlayerNameViewModel();
 
                 if (id != -1)
@@ -1296,6 +1304,7 @@ namespace TT.Web.Controllers
                 PvPWorldStat stats = PvPWorldStatProcedures.GetWorldStats();
                 if (!PvPStatics.ChaosMode && !stats.TestServer)
                 {
+                    TempData["Error"] = "The rename tool only works in chaos mode.";
                     return RedirectToAction("Play", "PvP");
                 }
 

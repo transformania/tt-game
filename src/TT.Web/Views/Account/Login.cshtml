@@ -1,4 +1,5 @@
 ﻿@model TT.Web.Models.LoginModel
+@using Recaptcha.Web.Mvc;
 
 <div class="offlinePlayersWrapperBG containerInner text-center">
     <p class="frontHeader">THIS SITE CONTAINS ADULT SEXUAL CONTENT and is not suitable for minors.</p>
@@ -23,15 +24,15 @@
                 <fieldset>
 
 
-                    @* @Html.LabelFor(m => m.UserName)*@
                     @Html.TextBoxFor(m => m.UserName, new { disabled = "disabled", @class = "form-control frontForm", placeholder = "Username" })
                     @Html.ValidationMessageFor(m => m.UserName)
 
-                    @*@Html.LabelFor(m => m.Password)*@
                     @Html.PasswordFor(m => m.Password, new { disabled = "disabled", @class = "form-control frontForm", placeholder = "Password" })
                     @Html.ValidationMessageFor(m => m.Password)
 
-                    @Html.LabelFor(m => m.RememberMe, new { @class = "checkbox2" }) @Html.CheckBoxFor(m => m.RememberMe, new { disabled = "disabled" }) <br />
+                    @Html.LabelFor(m => m.RememberMe, new {@class = "checkbox2"}) @Html.CheckBoxFor(m => m.RememberMe, new {disabled = "disabled"}) <br/>
+
+                    @Html.Recaptcha()
 
                     <input type="submit" class="btn btn-default" value="Login" id="submitBtn" disabled="disabled" />
                 </fieldset>

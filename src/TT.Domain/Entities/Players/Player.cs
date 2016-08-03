@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using TT.Domain.Commands.Players;
 using TT.Domain.Entities.Effects;
 using TT.Domain.Entities.Forms;
+using TT.Domain.Entities.Identities;
 using TT.Domain.Entities.Identity;
 using TT.Domain.Entities.NPCs;
 using TT.Domain.Entities.Skills;

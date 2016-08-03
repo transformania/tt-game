@@ -1,0 +1,53 @@
+﻿using System;
+using FluentAssertions;
+using NUnit.Framework;
+using TT.Domain;
+using TT.Domain.Queries.Identity;
+using TT.Tests.Builders.Identity;
+
+namespace TT.Tests.Domain.Queries.Identity
+{
+    [TestFixture]
+    public class UserCaptchaIsExpiredTests : TestBase
+    {
+
+        [Test]
+        public void return_true_if_user_has_expired_captcha()
+        {
+            new CaptchaEntryBuilder().With(i => i.Id, 77)
+                .With(cr => cr.User, new UserBuilder()
+                    .With(u => u.Id, "abcde")
+                    .BuildAndSave())
+                    .With(u => u.ExpirationTimestamp, DateTime.UtcNow.AddMinutes(-1))
+                .BuildAndSave();
+
+            bool isExpired = DomainRegistry.Repository.FindSingle(new UserCaptchaIsExpired { UserId = "abcde" });
+
+            isExpired.Should().BeTrue();
+        }
+
+        [Test]
+        public void return_false_if_user_captcha_not_expired()
+        {
+            new CaptchaEntryBuilder().With(i => i.Id, 77)
+                .With(cr => cr.User, new UserBuilder()
+                    .With(u => u.Id, "abcde")
+                    .BuildAndSave())
+                    .With(u => u.ExpirationTimestamp, DateTime.UtcNow.AddMinutes(1))
+                .BuildAndSave();
+
+            bool isExpired = DomainRegistry.Repository.FindSingle(new UserCaptchaIsExpired { UserId = "abcde" });
+
+            isExpired.Should().BeFalse();
+        }
+
+        [Test]
+        public void throw_exception_if_captcha_doesnt_exist()
+        {
+            var cmd = (new UserCaptchaIsExpired {UserId = "abcde"});
+            Action action = () => Repository.FindSingle(cmd);
+            action.ShouldThrowExactly<DomainException>().WithMessage("User with Id abcde has no CaptchaEntry");
+        }
+
+    }
+}

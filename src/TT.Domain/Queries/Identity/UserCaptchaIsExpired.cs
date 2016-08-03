@@ -1,0 +1,36 @@
+﻿using System;
+using System.Linq;
+using Highway.Data;
+using TT.Domain.DTOs.Identity;
+using TT.Domain.Entities.Identities;
+
+namespace TT.Domain.Queries.Identity
+{
+    public class UserCaptchaIsExpired : DomainQuerySingle<bool>
+    {
+        public string UserId { get; set; }
+
+        public override bool Execute(IDataContext context)
+        {
+            ContextQuery = ctx =>
+            {
+                var output = ctx.AsQueryable<CaptchaEntry>()
+                            .Where(m => m.User.Id == UserId)
+                            .ProjectToFirstOrDefault<CaptchaEntryDetail>();
+
+                if (output == null)
+                {
+                    throw new DomainException(string.Format("User with Id {0} has no CaptchaEntry", UserId));
+                }
+
+                if (output.ExpirationTimestamp < DateTime.UtcNow)
+                    return true;
+
+                return false;
+
+            };
+
+            return ExecuteInternal(context);
+        }
+    }
+}

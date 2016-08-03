@@ -1264,8 +1264,16 @@ namespace TT.Web.Controllers
         [Authorize]
         public ActionResult RenamePlayer(int id)
         {
-            if (User.IsInRole(PvPStatics.Permissions_Admin))
+            if (User.IsInRole(PvPStatics.Permissions_Admin) || User.IsInRole(PvPStatics.Permissions_Chaoslord))
             {
+
+                PvPWorldStat stats = PvPWorldStatProcedures.GetWorldStats();
+                if (!PvPStatics.ChaosMode && !stats.TestServer)
+                {
+                    TempData["Error"] = "The rename tool only works in chaos mode.";
+                    return RedirectToAction("Play", "PvP");
+                }
+
                 PlayerNameViewModel output = new PlayerNameViewModel();
 
                 if (id != -1)
@@ -1290,12 +1298,13 @@ namespace TT.Web.Controllers
         [Authorize]
         public ActionResult RenamePlayerSend(PlayerNameViewModel input)
         {
-            if (User.IsInRole(PvPStatics.Permissions_Admin))
+            if (User.IsInRole(PvPStatics.Permissions_Admin) || User.IsInRole(PvPStatics.Permissions_Chaoslord))
             {
 
                 PvPWorldStat stats = PvPWorldStatProcedures.GetWorldStats();
                 if (!PvPStatics.ChaosMode && !stats.TestServer)
                 {
+                    TempData["Error"] = "The rename tool only works in chaos mode.";
                     return RedirectToAction("Play", "PvP");
                 }
 

@@ -66,6 +66,7 @@ namespace TT.Domain.Statics
         public const string Permissions_Previewer = "previewer";
         public const string Permissions_Killswitcher = "killswitch";
         public const string Permissions_QuestWriter = "questwriter";
+        public const string Permissions_Chaoslord = "chaoslord";
 
         public static readonly int[] Item_SoulActivityLevels_Minutes = {
                                                                  240,

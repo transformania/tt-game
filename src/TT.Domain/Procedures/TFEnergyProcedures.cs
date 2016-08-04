@@ -99,14 +99,24 @@ namespace TT.Domain.Procedures
 
                 DomainRegistry.Repository.Execute(cmd);
 
+                // create an old entity just so it doesn't break functionality below
+                energyFromMe = new TFEnergy
+                {
+                    PlayerId = victim.Id,
+                    FormName = skill.Skill.FormdbName,
+                    CasterId = attacker.Id,
+                    Amount = skill.Skill.TFPointsAmount * modifier
+                };
+
             }
             else
             {
                 energyFromMe.Amount += skill.Skill.TFPointsAmount * modifier;
                 energyFromMe.Timestamp = DateTime.UtcNow;
+                repo.SaveTFEnergy(energyFromMe);
             }
 
-            repo.SaveTFEnergy(energyFromMe);
+            
 
             var totalEnergy = energyFromMe.Amount + mergeUpEnergyAmt;
 

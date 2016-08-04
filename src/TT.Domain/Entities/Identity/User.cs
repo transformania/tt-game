@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using TT.Domain.Entities.Identities;
 using TT.Domain.Entities.RPClassifiedAds;
 
 namespace TT.Domain.Entities.Identity

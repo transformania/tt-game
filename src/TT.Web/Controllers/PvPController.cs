@@ -3390,33 +3390,6 @@ namespace TT.Web.Controllers
             public string Desc { get; set; }
         }
 
-        private readonly Object syncRoot = new Object();
-        public ActionResult UpdateWorld()
-        {
-            lock (syncRoot)
-            {
-                PvPWorldStat worldStats = PvPWorldStatProcedures.GetWorldStats();
-                // DateTime lastupdate = PvPWorldStatProcedures.GetLastWorldUpdate();
-                // double secondsAgo = -Math.Floor(lastupdate.Subtract(DateTime.UtcNow).TotalSeconds);
-
-                if (worldStats.WorldIsUpdating)
-                {
-                   // TempData["Result"] = "You can't update the world again yet--it is too soon.";
-                    return RedirectToAction("Play");
-                }
-
-                PvPWorldStatProcedures.UpdateWorldTurnCounter();
-            }
-
-            Task.Run(() => 
-            {
-                WorldUpdateProcedures.UpdateWorld();
-            });
-
-            return RedirectToAction("Play");
-
-        }
-
         public ActionResult FlagForSuspiciousActivity(int playerId)
         {
             // assert the person flagging has mod permissions

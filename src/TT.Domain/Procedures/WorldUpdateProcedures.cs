@@ -40,15 +40,15 @@ namespace TT.Domain.Procedures
                     // second check
                     if (!worldStat.WorldIsUpdating)
                     {
-                        // update world
-                        UpdateWorld(ct);
-
                         worldStat.TurnNumber++;
                         worldStat.WorldIsUpdating = true;
                         worldStat.LastUpdateTimestamp = DateTime.UtcNow;
 
                         // save changes to database for the next thread to check
                         worldStatRepo.SavePvPWorldStat(worldStat);
+
+                        // update world
+                        UpdateWorld(ct);
                     }
                 }
             }

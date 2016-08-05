@@ -15,7 +15,7 @@ using TT.Domain.ViewModels;
 
 namespace TT.Domain.Procedures
 {
-        public static class WorldUpdateProcedures
+    public static class WorldUpdateProcedures
     {
         private static readonly object @lock = new object();
 

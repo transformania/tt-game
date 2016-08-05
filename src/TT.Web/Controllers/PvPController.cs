@@ -23,6 +23,7 @@ using TT.Domain.DTOs.LocationLog;
 using TT.Domain.Queries.Item;
 using TT.Domain.Queries.LocationLogs;
 using TT.Domain.Queries.Messages;
+using System.Web.Hosting;
 
 namespace TT.Web.Controllers
 {
@@ -97,10 +98,10 @@ namespace TT.Web.Controllers
 
             // if it has been long enough since last update, force an update to occur
             if (WorldStat.TurnNumber < PvPStatics.RoundDuration
-                && secondsSinceUpdate > PvPStatics.TurnSecondLength 
-                && !(WorldStat.WorldIsUpdating || PvPStatics.AnimateUpdateInProgress))
+                && secondsSinceUpdate > PvPStatics.TurnSecondLength
+                && !WorldStat.WorldIsUpdating)
             {
-                UpdateWorld();
+                HostingEnvironment.QueueBackgroundWorkItem(ct => WorldUpdateProcedures.UpdateWorldIfReady(ct));
             }
 
             // turn off world update toggle if it's simply been too long

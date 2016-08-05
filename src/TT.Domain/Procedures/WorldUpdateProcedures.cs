@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using TT.Domain.Abstract;
 using TT.Domain.Commands.Items;
 using TT.Domain.Commands.Players;
@@ -14,26 +15,47 @@ using TT.Domain.ViewModels;
 
 namespace TT.Domain.Procedures
 {
-    public static  class WorldUpdateProcedures
+        public static class WorldUpdateProcedures
     {
-        /// <summary>
-        /// Call the update world method only if enough time has elapsed, otherwise do nothing
-        /// </summary>
-        public static void UpdateWorldIfReady()
-        {
-            PvPWorldStat worldStats = PvPWorldStatProcedures.GetWorldStats();
-            double secondsSinceUpdate = Math.Abs(Math.Floor(worldStats.LastUpdateTimestamp.Subtract(DateTime.UtcNow).TotalSeconds));
+        private static readonly object @lock = new object();
 
-            // if it has been long enough since last update, force an update to occur
-            if (secondsSinceUpdate > PvPStatics.TurnSecondLength && !worldStats.WorldIsUpdating && !PvPStatics.AnimateUpdateInProgress)
+        /// <summary>
+        /// Call the update world method only if an update isn't already running, otherwise do nothing
+        /// </summary>
+        public static void UpdateWorldIfReady(CancellationToken ct)
+        {
+            IPvPWorldStatRepository worldStatRepo = new EFPvPWorldStatRepository();
+            var worldStat = worldStatRepo.PvPWorldStats.First();
+
+            // first check for calls that missed the lock
+            if (!worldStat.WorldIsUpdating)
             {
-                WorldUpdateProcedures.UpdateWorld();
+                // lock any other thread that might have managed to get passed the first check
+                lock (@lock)
+                {
+                    // reload the entity to be fresh in case a thread had already passed through the lock
+                    // and committed changes to the database
+                    worldStatRepo.ReloadPvPWorldStat(worldStat);
+
+                    // second check
+                    if (!worldStat.WorldIsUpdating)
+                    {
+                        // update world
+                        UpdateWorld(ct);
+
+                        worldStat.TurnNumber++;
+                        worldStat.WorldIsUpdating = true;
+                        worldStat.LastUpdateTimestamp = DateTime.UtcNow;
+
+                        // save changes to database for the next thread to check
+                        worldStatRepo.SavePvPWorldStat(worldStat);
+                    }
+                }
             }
         }
 
-        public static void UpdateWorld() 
+        private static void UpdateWorld(CancellationToken ct)
         {
-
             PvPWorldStat worldStats = PvPWorldStatProcedures.GetWorldStats();
 
             int turnNo = worldStats.TurnNumber;

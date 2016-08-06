@@ -1,7 +1,8 @@
-﻿@model TT.Domain.ViewModels.GameOverViewModelAnimal
+﻿@model TT.Domain.ViewModels.AnimalPlayPageViewModel
 @using TT.Web.CustomHtmlHelpers
 @using TT.Domain.Procedures
 @using TT.Domain.Statics
+@using Recaptcha.Web.Mvc;
 
 <script src="~/Scripts/jquery-ui-1.10.4.js"></script>
 
@@ -105,7 +106,8 @@
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-justify">
             <p>Your name is <b>@Model.You.GetFullName()</b>, or at least it used to be.  At the height of your humanity you achieved level <b>@Model.You.Level</b> with @Model.You.XP experience points toward the next.  But now it's time to embrace your new existence as a <b>@Model.Form.FriendlyName</b>.</p>
             <p>
-    @Model.Form.Description
+
+                @Model.Form.Description
                 @{
                     if (Model.YouItem.Owner == null)
                     {
@@ -114,13 +116,13 @@
                     else
                     {
                         <span>
-                            <br><br>You have been tamed by @Html.ActionLink(Model.OwnedBy.Player.GetFullName(), "LookAtPlayer", "PvP", new { id = Model.OwnedBy.Player.Id }, null) and will follow your master wherever they go.
+                            <br><br>You have been tamed by @Html.ActionLink(Model.OwnedBy.Player.GetFullName(), "LookAtPlayer", "PvP", new {id = Model.OwnedBy.Player.Id}, null) and will follow your master wherever they go.
 
                             @{
-                        if (!Model.YouItem.ItemSource.CurseTFFormdbName.IsNullOrEmpty())
-                        {
-                            @Html.ActionLink("Attempt to transform your owner!", "CurseTransformOwner", "PvP")
-                        }
+                                if (!Model.YouItem.ItemSource.CurseTFFormdbName.IsNullOrEmpty())
+                                {
+                                    @Html.ActionLink("Attempt to transform your owner!", "CurseTransformOwner", "PvP")
+                                }
                             }
 
 
@@ -131,25 +133,31 @@
 
                     }
                 }
-    @{
-        if (!Model.IsPermanent)
-        {
-        <p class="center-block">
-            <span class="place">Chance to return human: @Model.StruggleChance %.</span>
-            @Html.ActionLink("Fight your transformation and attempt to return to an animate form!", "FightTheTransformation", "PvP", new { @class = "check inanimateAction" })
-        </p>
-        }
+                @{
+                    if (!Model.IsPermanent)
+                    {
+                        <p class="center-block">
+                            <span class="place">Chance to return human: @Model.StruggleChance %.</span>
+                            @Html.ActionLink("Fight your transformation and attempt to return to an animate form!", "FightTheTransformation", "PvP", new {@class = "check inanimateAction"})
+                        </p>
+                    }
 
-        if (Model.OwnedBy != null)
-        {
+                    if (Model.OwnedBy != null)
+                    {
                         <p>
                             <br />
                             @Html.ActionLink("Attempt to slip free from your owner", "EscapeFromOwner", "PvP", new { @class = "inanimateAction" })
                         </p>
                     }
 
+
+                    if (Model.RenderCaptcha)
+                    {
+                        @Html.Partial("partial/captchaForm")
+                    }
+
                 }
-                </p>
+            </p>
             </div>           
 
 

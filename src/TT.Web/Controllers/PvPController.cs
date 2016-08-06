@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Web.Routing;
 using Microsoft.AspNet.Identity;
@@ -18,12 +17,16 @@ using TT.Domain.ViewModels;
 using TT.Web.CustomHtmlHelpers;
 using TT.Domain.Queries.Assets;
 using TT.Domain;
-using TT.Domain.DTOs.Item;
 using TT.Domain.DTOs.LocationLog;
 using TT.Domain.Queries.Item;
 using TT.Domain.Queries.LocationLogs;
 using TT.Domain.Queries.Messages;
 using System.Web.Hosting;
+using TT.Domain.Commands.Identity;
+using TT.Domain.Queries.Identity;
+using FeatureSwitch;
+using Recaptcha.Web;
+using Recaptcha.Web.Mvc;
 
 namespace TT.Web.Controllers
 {
@@ -133,10 +136,25 @@ namespace TT.Web.Controllers
                 ViewBag.ShowOffline = false;
             }
 
+            var renderCaptcha = false;
+            if (me.Mobility != PvPStatics.MobilityFull)
+            {
+                try
+                {
+                    renderCaptcha = DomainRegistry.Repository.FindSingle(new UserCaptchaIsExpired { UserId = me.MembershipId });
+                }
+                catch
+                {
+                    DomainRegistry.Repository.Execute(new CreateCaptchaEntry { UserId = me.MembershipId });
+                }
+            }
+
             // player is inanimate, load up the inanimate endgame page
             if (me.Mobility == PvPStatics.MobilityInanimate)
             {
-                GameOverViewModel inanimateOutput = new GameOverViewModel();
+                InanimatePlayPageViewModel inanimateOutput = new InanimatePlayPageViewModel();
+                inanimateOutput.RenderCaptcha = renderCaptcha;
+                
 
                 inanimateOutput.LastUpdateTimestamp = WorldStat.LastUpdateTimestamp;
 
@@ -201,9 +219,10 @@ namespace TT.Web.Controllers
             // player is an animal, load up the inanimate endgame page
             if (me.Mobility == PvPStatics.MobilityPet)
             {
-                GameOverViewModelAnimal animalOutput = new GameOverViewModelAnimal();
+                AnimalPlayPageViewModel animalOutput = new AnimalPlayPageViewModel();
                 animalOutput.You = me;
                 animalOutput.PvPWorldStat = WorldStat;
+                animalOutput.RenderCaptcha = renderCaptcha;
 
                 animalOutput.Form = FormStatics.GetForm(me.Form);
 
@@ -2394,11 +2413,10 @@ namespace TT.Web.Controllers
         }
 
         [Authorize]
-        public ActionResult InanimateAction(string actionName)
+        public ActionResult InanimateAction(string action)
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            PlayerFormViewModel mePlus = PlayerProcedures.GetPlayerFormViewModel(me.Id);
             PlayerFormViewModel wearer = ItemProcedures.BeingWornBy(me);
             Item meDbItem = ItemProcedures.GetItemByVictimName(me.FirstName, me.LastName);
             DbStaticItem meItem = ItemStatics.GetStaticItem(meDbItem.dbName);
@@ -2426,32 +2444,40 @@ namespace TT.Web.Controllers
                 return RedirectToAction("Play");
             }
 
-            string thirdP = "";
+            // assert player has submitted their captcha recently
+            if (FeatureContext.IsEnabled<UseCaptcha>() &&
+                DomainRegistry.Repository.FindSingle(new UserCaptchaIsExpired {UserId = me.MembershipId}))
+            {
+                TempData["Error"] = "Please complete this captcha on the page.";
+                return RedirectToAction("Play");
+            }
+
+                string thirdP = "";
             string firstP = "";
             string pronoun = wearer.Player.Gender == PvPStatics.GenderFemale ? "She" : "He";
 
-            if (actionName == "rub")
+            if (action == "rub")
             {
                 PlayerProcedures.ChangePlayerActionManaNoTimestamp(0, .25M, 0, wearer.Player.Id);
                 thirdP = "<span class='petActionGood'>You feel " + me.GetFullName() + ", currently your " + meItem.FriendlyName + ", ever so slightly rubbing against your skin affectionately.  You gain a tiny amount of willpower from your inanimate belonging's subtle but kind gesture.</span>";
                 firstP = "You affectionately rub against your current owner, " + wearer.Player.GetFullName() + ".  " + pronoun + " gains a tiny amount of willpower from your subtle but kind gesture.";
             }
 
-            if (actionName == "pinch")
+            if (action == "pinch")
             {
                 PlayerProcedures.ChangePlayerActionManaNoTimestamp(0, -.15M, 0, wearer.Player.Id);
                 thirdP = "<span class='petActionBad'>You feel " + me.GetFullName() + ", currently your " + meItem.FriendlyName + ", ever so slightly pinch your skin agitatedly.  You lose a tiny amount of willpower from your inanimate belonging's subtle but pesky gesture.</span>";
                 firstP = "You agitatedly pinch against your current owner, " + wearer.Player.GetFullName() + ".  " + pronoun + " loses a tiny amount of willpower from your subtle but pesky gesture.";
             }
 
-            if (actionName == "soothe")
+            if (action == "soothe")
             {
                 PlayerProcedures.ChangePlayerActionManaNoTimestamp(0, 0, .25M, wearer.Player.Id);
                 thirdP = "<span class='petActionGood'>You feel " + me.GetFullName() + ", currently your " + meItem.FriendlyName + ", ever so slightly peacefully soothe your skin.  You gain a tiny amount of mana from your inanimate belonging's subtle but kind gesture.</span>";
                 firstP = "You kindly soothe a patch of your current owner, " + wearer.Player.GetFullName() + "'s skin.  " + pronoun + " gains a tiny amount of mana from your subtle but kind gesture.";
             }
 
-            if (actionName == "zap")
+            if (action == "zap")
             {
                 PlayerProcedures.ChangePlayerActionManaNoTimestamp(0, 0, -.15M, wearer.Player.Id);
                 thirdP = "<span class='petActionBad'>You feel " + me.GetFullName() + ", currently your " + meItem.FriendlyName + ", ever so slightly zap your skin.  You lose a tiny amount of mana from your inanimate belonging's subtle but pesky gesture.</span>";
@@ -2498,7 +2524,13 @@ namespace TT.Web.Controllers
                 return RedirectToAction("Play");
             }
 
-             
+            // assert player has submitted their captcha recently
+            if (FeatureContext.IsEnabled<UseCaptcha>() &&
+                DomainRegistry.Repository.FindSingle(new UserCaptchaIsExpired { UserId = me.MembershipId }))
+            {
+                TempData["Error"] = "Please complete this captcha on the page to continue with this action.";
+                return RedirectToAction("Play");
+            }
 
             // assert that the target is still in the same room
             Player targeted = PlayerProcedures.GetPlayer(targetId);

@@ -6,7 +6,7 @@ using TT.Domain.Models;
 
 namespace TT.Domain.ViewModels
 {
-    public class GameOverViewModelAnimal
+    public class AnimalPlayPageViewModel
     {
         public Player You { get; set; }
         public DbStaticForm Form { get; set; }
@@ -32,7 +32,7 @@ namespace TT.Domain.ViewModels
 
         public decimal StruggleChance { get; set; }
 
-
+        public bool RenderCaptcha { get; set; }
 
     }
 }

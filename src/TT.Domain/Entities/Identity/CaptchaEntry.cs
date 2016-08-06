@@ -52,7 +52,7 @@ namespace TT.Domain.Entities.Identities
             {
                 TimesPassed = 0,
                 TimesFailed = 0,
-                ExpirationTimestamp = DateTime.UtcNow,
+                ExpirationTimestamp = DateTime.UtcNow.AddMinutes(1),
                 User = user
             };
         }

@@ -6,7 +6,7 @@ using TT.Domain.Models;
 
 namespace TT.Domain.ViewModels
 {
-    public class GameOverViewModel
+    public class InanimatePlayPageViewModel
     {
         public Player Player { get; set; }
         public DbStaticForm Form { get; set; }
@@ -27,6 +27,7 @@ namespace TT.Domain.ViewModels
         public PvPWorldStat PvPWorldStat { get; set; }
 
         public DateTime LastUpdateTimestamp { get; set; }
+        public bool RenderCaptcha { get; set; }
 
     }
 }

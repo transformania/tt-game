@@ -9,6 +9,10 @@ using TT.Web.Models;
 using Recaptcha.Web;
 using Recaptcha.Web.Mvc;
 using TT.Domain;
+using TT.Domain.Commands.Identity;
+using TT.Domain.Models;
+using TT.Domain.Procedures;
+using TT.Domain.Queries.Identity;
 
 namespace TT.Web.Controllers
 {
@@ -320,6 +324,48 @@ namespace TT.Web.Controllers
 
             // If we got this far, something failed, redisplay form
             return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult SubmitCaptcha()
+        {
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+
+            if (FeatureContext.IsEnabled<UseCaptcha>() && DomainRegistry.Repository.FindSingle(new UserCaptchaIsExpired { UserId = me.MembershipId }))
+            {
+                RecaptchaVerificationHelper recaptchaHelper = this.GetRecaptchaVerificationHelper();
+                if (String.IsNullOrEmpty(recaptchaHelper.Response))
+                {
+                    TempData["Error"] = "You must correctly answer the captcha in order to do this.";
+                    return RedirectToAction("Play", "PvP");
+                }
+                RecaptchaVerificationResult recaptchaResult = recaptchaHelper.VerifyRecaptchaResponse();
+                if (recaptchaResult != RecaptchaVerificationResult.Success)
+                {
+                    DomainRegistry.Repository.Execute(new UpdateCaptchaEntry
+                    {
+                        UserId = me.MembershipId,
+                        AddFailAttempt = true,
+                        AddPassAttempt = false
+                    });
+
+                    TempData["Error"] = "Captcha incorrect.  Please try again.";
+                    return RedirectToAction("Play", "PvP");
+                }
+                else if (recaptchaResult == RecaptchaVerificationResult.Success)
+                {
+                    DomainRegistry.Repository.Execute(new UpdateCaptchaEntry
+                    {
+                        UserId = me.MembershipId,
+                        AddFailAttempt = false,
+                        AddPassAttempt = true
+                    });
+                }
+            }
+            TempData["Result"] = "Captcha successfully submitted!  You will not be prompted to do this again for a while.";
+            return RedirectToAction("Play", "PvP");
         }
 
 

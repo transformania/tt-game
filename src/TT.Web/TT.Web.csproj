@@ -812,6 +812,7 @@
     <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_35.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Statistics\Alpha_34.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Statistics\Alpha_35.cshtml" />
+    <Content Include="Views\PvP\partial\captchaForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

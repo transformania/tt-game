@@ -1,4 +1,4 @@
-﻿@model TT.Domain.ViewModels.GameOverViewModel
+﻿@model TT.Domain.ViewModels.InanimatePlayPageViewModel
 @using TT.Web.CustomHtmlHelpers
 @using TT.Domain.Statics
 
@@ -101,7 +101,15 @@
             </div>
         </div>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-justify">
-            <p>Your name is <b>@Model.Player.GetFullName()</b>, or at least it used to be.  Should you regain a human form you will find yourself at level <b>@Model.Player.Level</b> with @Model.Player.XP experience points toward the next.  But now it's time to embrace your new existence as a <b>@Model.Form.FriendlyName</b>.</p>
+            <p>Your name is <b>@Model.Player.GetFullName()</b>, or at least it used to be. Should you regain a human form you will find yourself at level <b>@Model.Player.Level</b> with @Model.Player.XP experience points toward the next. But now it's time to embrace your new existence as a <b>@Model.Form.FriendlyName</b>.
+            </p>
+
+            @{
+                if (Model.RenderCaptcha)
+                {
+                    @Html.Partial("partial/captchaForm")
+                }
+            }
 
             <p>@Model.Form.Description</p>
             @{

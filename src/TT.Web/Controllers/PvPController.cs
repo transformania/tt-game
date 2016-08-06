@@ -23,6 +23,7 @@ using TT.Domain.DTOs.LocationLog;
 using TT.Domain.Queries.Item;
 using TT.Domain.Queries.LocationLogs;
 using TT.Domain.Queries.Messages;
+using System.Web.Hosting;
 
 namespace TT.Web.Controllers
 {
@@ -97,10 +98,10 @@ namespace TT.Web.Controllers
 
             // if it has been long enough since last update, force an update to occur
             if (WorldStat.TurnNumber < PvPStatics.RoundDuration
-                && secondsSinceUpdate > PvPStatics.TurnSecondLength 
-                && !(WorldStat.WorldIsUpdating || PvPStatics.AnimateUpdateInProgress))
+                && secondsSinceUpdate > PvPStatics.TurnSecondLength
+                && !WorldStat.WorldIsUpdating)
             {
-                UpdateWorld();
+                HostingEnvironment.QueueBackgroundWorkItem(ct => WorldUpdateProcedures.UpdateWorldIfReady(ct));
             }
 
             // turn off world update toggle if it's simply been too long
@@ -3387,33 +3388,6 @@ namespace TT.Web.Controllers
         {
             public string ID { get; set; }
             public string Desc { get; set; }
-        }
-
-        private readonly Object syncRoot = new Object();
-        public ActionResult UpdateWorld()
-        {
-            lock (syncRoot)
-            {
-                PvPWorldStat worldStats = PvPWorldStatProcedures.GetWorldStats();
-                // DateTime lastupdate = PvPWorldStatProcedures.GetLastWorldUpdate();
-                // double secondsAgo = -Math.Floor(lastupdate.Subtract(DateTime.UtcNow).TotalSeconds);
-
-                if (worldStats.WorldIsUpdating)
-                {
-                   // TempData["Result"] = "You can't update the world again yet--it is too soon.";
-                    return RedirectToAction("Play");
-                }
-
-                PvPWorldStatProcedures.UpdateWorldTurnCounter();
-            }
-
-            Task.Run(() => 
-            {
-                WorldUpdateProcedures.UpdateWorld();
-            });
-
-            return RedirectToAction("Play");
-
         }
 
         public ActionResult FlagForSuspiciousActivity(int playerId)

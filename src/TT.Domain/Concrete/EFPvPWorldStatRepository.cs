@@ -44,5 +44,9 @@ namespace TT.Domain.Concrete
             }
         }
 
+        public void ReloadPvPWorldStat(PvPWorldStat PvPWorldStat)
+        {
+            context.Entry(PvPWorldStat).Reload();
+        }
     }
 }

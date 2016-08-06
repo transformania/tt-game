@@ -12,5 +12,6 @@ namespace TT.Domain.Abstract
 
         void DeletePvPWorldStat(int PvPWorldStatId);
 
+        void ReloadPvPWorldStat(PvPWorldStat PvPWorldStat);
     }
 }

@@ -143,7 +143,7 @@ namespace TT.Web.Controllers
                 {
                     renderCaptcha = DomainRegistry.Repository.FindSingle(new UserCaptchaIsExpired { UserId = me.MembershipId });
                 }
-                catch
+                catch (DomainException)
                 {
                     DomainRegistry.Repository.Execute(new CreateCaptchaEntry { UserId = me.MembershipId });
                 }

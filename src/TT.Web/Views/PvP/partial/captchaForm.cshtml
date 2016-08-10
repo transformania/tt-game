@@ -1,0 +1,15 @@
+﻿@using Recaptcha.Web.Mvc;
+
+@{
+    using (Html.BeginForm("SubmitCaptcha", "Account", FormMethod.Post))
+    {
+        <div style="border: 3px solid red; border-radius: 10px; padding: 10px; text-align: center;">
+            @Html.AntiForgeryToken()
+            <p class="timeago">As an antiscripting measure, you are required to complete this captcha before you may complete certain actions.  Once you submit it, you will not be prompted to do this again for a while based on the count of successful or unsuccessful captcha attempts.</p>
+            @Html.Recaptcha()
+
+            <input type="submit" value="Submit">
+        </div>
+    }
+
+}

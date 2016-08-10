@@ -47,7 +47,7 @@ namespace TT.Tests.Domain.Commands.Identity
             var entry = DataContext.AsQueryable<CaptchaEntry>().First(e => e.User.Id == "abcde");
             entry.TimesFailed.Should().Be(0);
             entry.TimesPassed.Should().Be(1);
-            entry.ExpirationTimestamp.Should().BeCloseTo(DateTime.UtcNow.AddHours(4).AddMinutes(15), 250);
+            entry.ExpirationTimestamp.Should().BeCloseTo(DateTime.UtcNow.AddHours(24).AddMinutes(30), 250);
         }
 
         [Test]

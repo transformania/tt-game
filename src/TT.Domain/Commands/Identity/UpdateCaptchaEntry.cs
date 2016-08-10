@@ -39,7 +39,7 @@ namespace TT.Domain.Commands.Identity
                     entry.AddFailAttempt();
                 }
 
-                ctx.Add(entry);
+                ctx.Update(entry);
                 ctx.Commit();
 
                 result = entry.Id;

@@ -31,16 +31,16 @@ namespace TT.Domain.Entities.Identities
         /// </summary>
         public void UpdateExpirationTimestamp()
         {
-            var minutesUntilNextExpiration = 240 + (15*TimesPassed - 15*TimesFailed);
+            var minutesUntilNextExpiration = 1440 + (30*TimesPassed - 15*TimesFailed);
 
-            if (minutesUntilNextExpiration < 60)
+            if (minutesUntilNextExpiration < 720)
             {
-                minutesUntilNextExpiration = 60;
+                minutesUntilNextExpiration = 720;
             }
 
-            if (minutesUntilNextExpiration > 1440)
+            if (minutesUntilNextExpiration > 4320)
             {
-                minutesUntilNextExpiration = 1440;
+                minutesUntilNextExpiration = 4320;
             }
 
             this.ExpirationTimestamp = DateTime.UtcNow.AddMinutes(minutesUntilNextExpiration);

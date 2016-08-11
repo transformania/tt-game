@@ -12,7 +12,8 @@
     <span id="toggle_animal" onclick="toggleAnimal()">Pet/Animal</span>
     <span id="toggle_mindcontrol" onclick="toggleMindControl()">Mind Control</span>
     <span id="toggle_other" onclick="toggleOthers()">Other</span>
-<span>@Html.ActionLink("View/Archive My Spells", "MySkills", "PvP", null, new {@id="toggle_mindcontrol"})</span>
+<span>@Html.ActionLink("View/Archive My Spells", "MySkills", "PvP", null, new {@id = "toggle_mindcontrol"})</span>
+<input id="attack-search-box" type="text" placeholder="search here">
 
     <br /><br />
 
@@ -119,11 +120,21 @@
         });
     }
 
-
-
-
-
-   
+    jQuery.expr[':'].contains = function (a, i, m) {
+        return jQuery(a).text().toUpperCase()
+            .indexOf(m[3].toUpperCase()) >= 0;
+    };
+    //actual search script
+    $('#attack-search-box').keyup(updateSearch); //these two lines trigger the search to update
+    $('#attack-search-box').keydown(updateSearch);
+    function updateSearch() {
+        if ($("#attack-search-box").val().length == 0) //if the search box is empty, show everything
+        {
+            $('.action_attack').show();
+        }
+        $('.action_attack').hide();
+        $('.action_attack:contains(' + $("#attack-search-box").val() + ')').show();
+    }
 
 </script>
 

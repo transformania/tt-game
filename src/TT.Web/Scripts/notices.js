@@ -212,11 +212,24 @@ function sendAlertBox(noticemessage) {
 function parseAttackLinks() {
 
     var lastAttackSpan = $("#lastAttack");
-    var lastAttackLoaded = localStorage.getItem("play_lastAttack");
+    var latestAttacksString = localStorage.getItem("play_lastAttack");
+    var latestAttacks = [];
 
-    if (lastAttackLoaded === undefined) {
-        lastAttackLoaded = "?";
+    // check if typeof is string, if so, clear it out as it'll break the parsing
+
+
+    if (latestAttacksString !== null) {
+        latestAttacks = JSON.parse(latestAttacksString);
+        if (typeof latestAttacks === "string") {
+            latestAttacks = [];
+        }
     }
+
+    if (latestAttacks.length > 0) {
+        lastAttackSpan.html("<b>Latest:</b>  " + lastAttackSpan.html());
+        lastAttackSpan.css("background-color", "#996699");
+    }
+    
 
     if (attacksMade >= attackCap) {
 
@@ -229,15 +242,25 @@ function parseAttackLinks() {
 
         $(".action_attack").each(function () {
 
-            $(this).click(function (event) {
-                localStorage.setItem("play_lastAttack", $(this).html());
+            var thisSpellText = $(this).html();
+
+            $(this).click(function () {
+
+                if (!latestAttacks.includes(thisSpellText)) {
+                    latestAttacks.unshift(thisSpellText);
+                    latestAttacks = latestAttacks.slice(0, 7);
+                }
+
+                localStorage.setItem("play_lastAttack", JSON.stringify(latestAttacks));
             });
 
-            if ($(this).html() == lastAttackLoaded) {
-                $(this).clone().prependTo(lastAttackSpan);
-                lastAttackSpan.html("<b>Last:</b>  " + lastAttackSpan.html());
-                lastAttackSpan.css("background-color", "#996699");
+            // if this spell appears in the latest attacks, render it in the latest bar
+            for (var i = 0; i < latestAttacks.length; i++) {
+                if (thisSpellText === latestAttacks[i]) {
+                    $(this).clone().appendTo(lastAttackSpan);
+                }
             }
+
 
             var cost = $(this).attr("manacost");
 

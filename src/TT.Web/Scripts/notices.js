@@ -216,14 +216,18 @@ function parseAttackLinks() {
     var latestAttacks = [];
 
     // check if typeof is string, if so, clear it out as it'll break the parsing
-
-
     if (latestAttacksString !== null) {
-        latestAttacks = JSON.parse(latestAttacksString);
-        if (typeof latestAttacks === "string") {
+
+        try {
+            latestAttacks = JSON.parse(latestAttacksString);
+            if (typeof latestAttacks === "string") {
+                latestAttacks = [];
+            }
+        } catch (e) {
             latestAttacks = [];
         }
     }
+
 
     if (latestAttacks.length > 0) {
         lastAttackSpan.html("<b>Latest:</b>  " + lastAttackSpan.html());

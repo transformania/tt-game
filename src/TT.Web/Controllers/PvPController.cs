@@ -2413,7 +2413,7 @@ namespace TT.Web.Controllers
         }
 
         [Authorize]
-        public ActionResult InanimateAction(string action)
+        public ActionResult InanimateAction(string actionName)
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -2456,28 +2456,28 @@ namespace TT.Web.Controllers
             string firstP = "";
             string pronoun = wearer.Player.Gender == PvPStatics.GenderFemale ? "She" : "He";
 
-            if (action == "rub")
+            if (actionName == "rub")
             {
                 PlayerProcedures.ChangePlayerActionManaNoTimestamp(0, .25M, 0, wearer.Player.Id);
                 thirdP = "<span class='petActionGood'>You feel " + me.GetFullName() + ", currently your " + meItem.FriendlyName + ", ever so slightly rubbing against your skin affectionately.  You gain a tiny amount of willpower from your inanimate belonging's subtle but kind gesture.</span>";
                 firstP = "You affectionately rub against your current owner, " + wearer.Player.GetFullName() + ".  " + pronoun + " gains a tiny amount of willpower from your subtle but kind gesture.";
             }
 
-            if (action == "pinch")
+            if (actionName == "pinch")
             {
                 PlayerProcedures.ChangePlayerActionManaNoTimestamp(0, -.15M, 0, wearer.Player.Id);
                 thirdP = "<span class='petActionBad'>You feel " + me.GetFullName() + ", currently your " + meItem.FriendlyName + ", ever so slightly pinch your skin agitatedly.  You lose a tiny amount of willpower from your inanimate belonging's subtle but pesky gesture.</span>";
                 firstP = "You agitatedly pinch against your current owner, " + wearer.Player.GetFullName() + ".  " + pronoun + " loses a tiny amount of willpower from your subtle but pesky gesture.";
             }
 
-            if (action == "soothe")
+            if (actionName == "soothe")
             {
                 PlayerProcedures.ChangePlayerActionManaNoTimestamp(0, 0, .25M, wearer.Player.Id);
                 thirdP = "<span class='petActionGood'>You feel " + me.GetFullName() + ", currently your " + meItem.FriendlyName + ", ever so slightly peacefully soothe your skin.  You gain a tiny amount of mana from your inanimate belonging's subtle but kind gesture.</span>";
                 firstP = "You kindly soothe a patch of your current owner, " + wearer.Player.GetFullName() + "'s skin.  " + pronoun + " gains a tiny amount of mana from your subtle but kind gesture.";
             }
 
-            if (action == "zap")
+            if (actionName == "zap")
             {
                 PlayerProcedures.ChangePlayerActionManaNoTimestamp(0, 0, -.15M, wearer.Player.Id);
                 thirdP = "<span class='petActionBad'>You feel " + me.GetFullName() + ", currently your " + meItem.FriendlyName + ", ever so slightly zap your skin.  You lose a tiny amount of mana from your inanimate belonging's subtle but pesky gesture.</span>";

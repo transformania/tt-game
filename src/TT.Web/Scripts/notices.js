@@ -226,10 +226,12 @@ function parseAttackLinks() {
         } catch (e) {
             latestAttacks = [];
         }
+
     }
 
 
     if (latestAttacks.length > 0) {
+        latestAttacks = latestAttacks.slice(0, localStorage.getItem("play_lastAttackCount"));
         lastAttackSpan.html("<b>Latest:</b>  " + lastAttackSpan.html());
         lastAttackSpan.css("background-color", "#996699");
     }
@@ -252,7 +254,6 @@ function parseAttackLinks() {
 
                 if (!latestAttacks.includes(thisSpellText)) {
                     latestAttacks.unshift(thisSpellText);
-                    latestAttacks = latestAttacks.slice(0, 7);
                 }
 
                 localStorage.setItem("play_lastAttack", JSON.stringify(latestAttacks));

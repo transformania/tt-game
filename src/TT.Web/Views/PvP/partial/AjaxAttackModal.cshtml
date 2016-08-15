@@ -147,7 +147,7 @@
     });
 
     var count = parseInt(localStorage.getItem("play_lastAttackCount"));
-    if (count == null || typeof count !== 'number' || isNaN(count)) {
+    if (count === null || typeof count !== 'number' || isNaN(count)) {
         count = 3;
         localStorage.setItem("play_lastAttackCount", count);
     }

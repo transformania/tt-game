@@ -13,7 +13,9 @@
     <span id="toggle_mindcontrol" onclick="toggleMindControl()">Mind Control</span>
     <span id="toggle_other" onclick="toggleOthers()">Other</span>
 <span>@Html.ActionLink("View/Archive My Spells", "MySkills", "PvP", null, new {@id = "toggle_mindcontrol"})</span>
-<input id="attack-search-box" type="text" placeholder="search here">
+<input id="attack-search-box" type="text" placeholder="filter spells">
+<span>History limit:</span>
+<input id="attack-spell-count" type="number" min="0" max="10" placeholder="count" style="width: 35px;">
 
     <br /><br />
 
@@ -135,6 +137,30 @@
         $('.action_attack').hide();
         $('.action_attack:contains(' + $("#attack-search-box").val() + ')').show();
     }
+
+    $('#attack-spell-count').on('input', function () {
+
+        var count = parseInt($(this).val());
+        if (typeof count === 'number' && !isNaN(count)) {
+            localStorage.setItem("play_lastAttackCount", count);
+        }
+    });
+
+    var count = parseInt(localStorage.getItem("play_lastAttackCount"));
+    if (count === null || typeof count !== 'number' || isNaN(count)) {
+        count = 3;
+        localStorage.setItem("play_lastAttackCount", count);
+    }
+    if (count > 10) {
+        count = 10;
+        localStorage.setItem("play_lastAttackCount", count);
+    }
+    if (count < 0) {
+        count = 0;
+        localStorage.setItem("play_lastAttackCount", count);
+    }
+    
+    $('#attack-spell-count').val(count);
 
 </script>
 

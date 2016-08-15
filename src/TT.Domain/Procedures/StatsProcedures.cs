@@ -279,7 +279,8 @@ namespace TT.Domain.Procedures
                         FriendlyName="Friend of the Fae",
                         Description="Times played with Jewdewfae",
                         ImageUrl="trophy.jpg",
-                        Active = true
+                        Active = true,
+                        ResetsOnReroll = true
                         }
                 },
 

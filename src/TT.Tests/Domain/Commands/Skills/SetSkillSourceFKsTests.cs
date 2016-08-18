@@ -5,6 +5,8 @@ using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Commands.Skills;
 using TT.Domain.Entities.Effects;
+using TT.Domain.Entities.Forms;
+using TT.Domain.Entities.Item;
 using TT.Domain.Entities.Skills;
 using TT.Tests.Builders.Effects;
 using TT.Tests.Builders.Form;
@@ -13,42 +15,57 @@ using TT.Tests.Builders.Skills;
 
 namespace TT.Tests.Domain.Commands.Skills
 {
+    [TestFixture]
     public class SetSkillSourceFKsTests : TestBase
     {
-        [Test]
-        public void should_save_skill_with_new_fks()
+
+        private SkillSource skill;
+        private FormSource form;
+        private FormSource exclusiveToForm;
+        private ItemSource exlusiveToItem;
+        private EffectSource givesEffect;
+
+        [SetUp]
+        public void Init()
         {
-            new SkillSourceBuilder()
+
+            skill = new SkillSourceBuilder()
                 .With(ss => ss.Id, 55)
                 .BuildAndSave();
 
-            var form = new FormSourceBuilder()
+            form = new FormSourceBuilder()
                 .With(f => f.Id, 3)
                 .With(f => f.dbName, "bobform")
                 .BuildAndSave();
 
-            var exclusiveToForm = new FormSourceBuilder()
+            exclusiveToForm = new FormSourceBuilder()
                 .With(f => f.Id, 7)
                 .With(f => f.dbName, "exclusiveForm")
                 .BuildAndSave();
 
-            var itemSource = new ItemSourceBuilder()
+            exlusiveToItem = new ItemSourceBuilder()
                 .With(i => i.Id, 100)
                 .With(i => i.DbName, "exclusiveToItem")
                 .BuildAndSave();
 
-            var effectSource = new EffectSourceBuilder()
+            givesEffect = new EffectSourceBuilder()
                 .With(i => i.Id, 78)
                 .With(i => i.dbName, "givesEffect")
                 .BuildAndSave();
 
+        }
+
+        [Test]
+        public void should_save_skill_with_new_fks()
+        {
+            
             DomainRegistry.Repository.Execute(new SetSkillSourceFKs
             {
                 SkillSourceId = 55,
                 FormSource = form.dbName, 
                 ExclusiveToFormSource = exclusiveToForm.dbName,
-                ExclusiveToItemSource = itemSource.DbName,
-                GivesEffectSource = effectSource.dbName
+                ExclusiveToItemSource = exlusiveToItem.DbName,
+                GivesEffectSource = givesEffect.dbName
             });
 
             var skillSource = DataContext.AsQueryable<SkillSource>().First(f => f.Id == 55);
@@ -70,9 +87,6 @@ namespace TT.Tests.Domain.Commands.Skills
         [Test]
         public void should_save_skill_with_new_fks_all_nulls()
         {
-            new SkillSourceBuilder()
-                .With(ss => ss.Id, 55)
-                .BuildAndSave();
 
             DomainRegistry.Repository.Execute(new SetSkillSourceFKs
             {
@@ -89,6 +103,45 @@ namespace TT.Tests.Domain.Commands.Skills
             skillSource.ExclusiveToFormSource.Should().Be(null);
             skillSource.GivesEffect.Should().Be(null);
             skillSource.ExclusiveToItemSource.Should().Be(null);
+        }
+
+        [Test]
+        public void should_throw_error_if_form_source_submitted_but_not_found()
+        {
+            var cmd = new SetSkillSourceFKs { SkillSourceId = 55, FormSource = "fake"};
+            var action = new Action(() => { Repository.Execute(cmd); });
+
+            action.ShouldThrowExactly<DomainException>().WithMessage("FormSource Source with name 'fake' could not be found");
+        }
+
+        [Test]
+        public void should_throw_error_if_exclusive_to_form_source_submitted_but_not_found()
+        {
+
+            var cmd = new SetSkillSourceFKs { SkillSourceId = 55, ExclusiveToFormSource = "fake"};
+            var action = new Action(() => { Repository.Execute(cmd); });
+
+            action.ShouldThrowExactly<DomainException>().WithMessage("ExclusiveToFormSource with name 'fake' could not be found");
+        }
+
+        [Test]
+        public void should_throw_error_if_gives_effect_source_submitted_but_not_found()
+        {
+
+            var cmd = new SetSkillSourceFKs { SkillSourceId = 55, GivesEffectSource = "fake"};
+            var action = new Action(() => { Repository.Execute(cmd); });
+
+            action.ShouldThrowExactly<DomainException>().WithMessage("EffectSource with name 'fake' could not be found");
+        }
+
+        [Test]
+        public void should_throw_error_if_exclusive_to_item_source_submitted_but_not_found()
+        {
+
+            var cmd = new SetSkillSourceFKs { SkillSourceId = 55, ExclusiveToItemSource = "fake" };
+            var action = new Action(() => { Repository.Execute(cmd); });
+
+            action.ShouldThrowExactly<DomainException>().WithMessage("ExclusiveToItemSource with name 'fake' could not be found");
         }
 
         [Test]

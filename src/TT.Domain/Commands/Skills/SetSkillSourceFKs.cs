@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Highway.Data;
 using TT.Domain.Entities.Effects;
 using TT.Domain.Entities.Forms;
@@ -24,10 +25,45 @@ namespace TT.Domain.Commands.Skills
                 if (skillSource == null)
                     throw new DomainException(string.Format("Skill Source with Id {0} could not be found", SkillSourceId));
 
-                var formSource = ctx.AsQueryable<FormSource>().SingleOrDefault(t => t.dbName == FormSource);
-                var givesEffectSource = ctx.AsQueryable<EffectSource>().SingleOrDefault(t => t.dbName == GivesEffectSource);
-                var exclusiveToFormSource = ctx.AsQueryable<FormSource>().SingleOrDefault(t => t.dbName == ExclusiveToFormSource);
-                var exclusiveToItemSource = ctx.AsQueryable<ItemSource>().SingleOrDefault(t => t.DbName == ExclusiveToItemSource);
+                FormSource formSource = null;
+                EffectSource givesEffectSource = null;
+                FormSource exclusiveToFormSource = null;
+                ItemSource exclusiveToItemSource = null;
+
+                if (!FormSource.IsNullOrEmpty()) { 
+                    formSource = ctx.AsQueryable<FormSource>().SingleOrDefault(t => t.dbName == FormSource);
+                    if (formSource == null)
+                    {
+                        throw new DomainException(string.Format("FormSource Source with name '{0}' could not be found", FormSource));
+                    }
+                }
+
+                if (!GivesEffectSource.IsNullOrEmpty())
+                {
+                    givesEffectSource = ctx.AsQueryable<EffectSource>().SingleOrDefault(t => t.dbName == GivesEffectSource);
+                    if (givesEffectSource == null)
+                    {
+                        throw new DomainException(string.Format("EffectSource with name '{0}' could not be found", GivesEffectSource));
+                    }
+                }
+
+                if (!ExclusiveToFormSource.IsNullOrEmpty())
+                {
+                    exclusiveToFormSource = ctx.AsQueryable<FormSource>().SingleOrDefault(t => t.dbName == ExclusiveToFormSource);
+                    if (exclusiveToFormSource == null)
+                    {
+                        throw new DomainException(string.Format("ExclusiveToFormSource with name '{0}' could not be found", ExclusiveToFormSource));
+                    }
+                }
+
+                if (!ExclusiveToItemSource.IsNullOrEmpty())
+                {
+                    exclusiveToItemSource = ctx.AsQueryable<ItemSource>().SingleOrDefault(t => t.DbName == ExclusiveToItemSource);
+                    if (exclusiveToFormSource == null)
+                    {
+                        throw new DomainException(string.Format("ExclusiveToItemSource with name '{0}' could not be found", ExclusiveToItemSource));
+                    }
+                }
 
                 skillSource.SetSources(formSource, givesEffectSource, exclusiveToFormSource, exclusiveToItemSource);
 

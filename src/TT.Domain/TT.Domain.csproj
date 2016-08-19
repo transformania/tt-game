@@ -195,6 +195,7 @@
     <Compile Include="Commands\RPClassifiedAds\DeleteRPClassifiedAd.cs" />
     <Compile Include="Commands\RPClassifiedAds\RefreshRPClassifiedAd.cs" />
     <Compile Include="Commands\RPClassifiedAds\UpdateRPClassifiedAd.cs" />
+    <Compile Include="Commands\Skills\SetSkillSourceFKs.cs" />
     <Compile Include="Commands\TFEnergies\CreateTFEnergy.cs" />
     <Compile Include="Concrete\EFAchievementBadgeRepository.cs" />
     <Compile Include="Concrete\EFAchievementRepository.cs" />

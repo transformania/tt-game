@@ -48,7 +48,7 @@ namespace TT.Domain.Procedures
             }
         }
 
-        public static string GiveInanimateXP(string membershipId)
+        public static string GiveInanimateXP(string membershipId, bool isWhitelist)
         {
             IInanimateXPRepository inanimXpRepo = new EFInanimateXPRepository();
             IItemRepository itemRep = new EFItemRepository();
@@ -64,8 +64,8 @@ namespace TT.Domain.Procedures
             // get the number of inanimate accounts under this IP
             IPlayerRepository playerRepo = new EFPlayerRepository();
             decimal playerCount = playerRepo.Players.Count(p => p.IpAddress == me.IpAddress && (p.Mobility == PvPStatics.MobilityInanimate || p.Mobility == PvPStatics.MobilityPet) && p.BotId == AIStatics.ActivePlayerBotId);
-            //TODO: TEMPEST - FIX
-            if (playerCount == 0 )//|| HttpContext.Current.User.IsInRole(PvPStatics.Permissions_MultiAccountWhitelist))
+
+            if (playerCount == 0 || isWhitelist)
             {
                 playerCount = 1;
             }

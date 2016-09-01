@@ -2485,7 +2485,7 @@ namespace TT.Web.Controllers
             }
 
             PlayerProcedures.LogIP(Request.UserHostAddress, myMembershipId);
-            string leveluptext = InanimateXPProcedures.GiveInanimateXP(me.MembershipId);
+            string leveluptext = InanimateXPProcedures.GiveInanimateXP(me.MembershipId, User.IsInRole(PvPStatics.Permissions_MultiAccountWhitelist));
 
             TempData["Result"] = firstP + leveluptext;
             PlayerProcedures.AddAttackCount(me);
@@ -2589,7 +2589,7 @@ namespace TT.Web.Controllers
             PlayerProcedures.LogIP(Request.UserHostAddress, myMembershipId);
 
             string result = AnimalProcedures.DoAnimalAction(actionName, me.Id, targeted.Id);
-            string leveluptext = InanimateXPProcedures.GiveInanimateXP(me.MembershipId);
+            string leveluptext = InanimateXPProcedures.GiveInanimateXP(me.MembershipId, User.IsInRole(PvPStatics.Permissions_MultiAccountWhitelist));
 
             TempData["Result"] = result + leveluptext;
 

@@ -15,9 +15,9 @@ namespace TT.Domain.ViewModels
 
      { "tavern_pool", new BossSummon { BossName="Thieves", MinimumTurn = 144, ActivationText = "" }},
 
-     { "college_foyer", new BossSummon { BossName="Sisters", MinimumTurn = 3200, ActivationText = "" }},
+     { "college_foyer", new BossSummon { BossName="Sisters", MinimumTurn = 3800, ActivationText = "" }},
 
-      { BossProcedures_FaeBoss.SpawnLocation, new BossSummon { BossName="FaeBoss", MinimumTurn = 3800, ActivationText = "" }},
+      { BossProcedures_FaeBoss.SpawnLocation, new BossSummon { BossName="FaeBoss", MinimumTurn = 3200, ActivationText = "" }},
 
     };
 

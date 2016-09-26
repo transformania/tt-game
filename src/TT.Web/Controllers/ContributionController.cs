@@ -939,15 +939,23 @@ namespace TT.Web.Controllers
             contribution.History += "Spell published on " + DateTime.UtcNow + "<br>";
             contributionRepo.SaveContribution(contribution);
 
-            // add in any missing FKs for this spell
-            DomainRegistry.Repository.Execute(new SetSkillSourceFKs
+            try
             {
-                SkillSourceId = spell.Id,
-                ExclusiveToItemSource = spell.ExclusiveToItem,
-                ExclusiveToFormSource = spell.ExclusiveToForm,
-                GivesEffectSource = spell.GivesEffect,
-                FormSource = spell.FormdbName    
-            });
+                // add in any missing FKs for this spell
+                DomainRegistry.Repository.Execute(new SetSkillSourceFKs
+                {
+                    SkillSourceId = spell.Id,
+                    ExclusiveToItemSource = spell.ExclusiveToItem,
+                    ExclusiveToFormSource = spell.ExclusiveToForm,
+                    GivesEffectSource = spell.GivesEffect,
+                    FormSource = spell.FormdbName
+                });
+            }
+            catch (DomainException e)
+            {
+                message += "<br><br><span class='bad'>FAILED TO SET FOREIGN KEY TO FORMSOURCE. Error:  " + e.Message + "</span>";
+            }
+            
 
             ViewBag.Message = message;
             return View("Publish");

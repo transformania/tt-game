@@ -111,7 +111,7 @@ namespace TT.Tests.Domain.Commands.Skills
             var cmd = new SetSkillSourceFKs { SkillSourceId = 55, FormSource = "fake"};
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage("FormSource Source with name 'fake' could not be found");
+            action.ShouldThrowExactly<DomainException>().WithMessage("FormSource Source with name 'fake' could not be found.  Does it need to be published first?");
         }
 
         [Test]

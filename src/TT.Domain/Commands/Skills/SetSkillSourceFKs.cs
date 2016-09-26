@@ -34,7 +34,7 @@ namespace TT.Domain.Commands.Skills
                     formSource = ctx.AsQueryable<FormSource>().SingleOrDefault(t => t.dbName == FormSource);
                     if (formSource == null)
                     {
-                        throw new DomainException(string.Format("FormSource Source with name '{0}' could not be found", FormSource));
+                        throw new DomainException(string.Format("FormSource Source with name '{0}' could not be found.  Does it need to be published first?", FormSource));
                     }
                 }
 

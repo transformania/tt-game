@@ -25,7 +25,7 @@
 </nav>
 
 <div class="containerInner">
-    
+
     <div id="realLink" class="deleteMessegeConfirm">
         <span style="color:red; font-weight: bold;">Do you really want to delete your bio? If yes then please click link below:</span>
         @Html.ActionLink("Yes, DELETE my bio", "SetBioDelete", "Settings")<br />
@@ -33,143 +33,152 @@
 
     <h1>Update Your Bio</h1>
 
-    <p>You can write and update a short biography about yourself or your player character here.  Feel free to mention your RP preferences, if any.  You can also list a website for others to contact you externally by or view your stories, artwork, or anything else you care to share publicly.</p>
+    <p>You can write and update a short biography about yourself or your player character here. Feel free to mention your RP preferences, if any. You can also list a website for others to contact you externally by or view your stories, artwork, or anything else you care to share publicly.</p>
 
     @using (Html.BeginForm("SetBioSend", "Settings", FormMethod.Post))
     {
-
-
-
+        @Html.HiddenFor(m => m.Tags)
         @Html.HiddenFor(m => m.OwnerMembershipId)
 
-        <p>Website URL.  Limit 250 characters.</p>
-        @Html.TextBoxFor(m => m.WebsiteURL)
+        <div class="messageInfoContainer">
+            Website URLs:
+            <span class="charCounter"></span>
+        </div>
+        @Html.TextAreaFor(m => m.WebsiteURL, new { @class = "", maxlength = "1500" })
+        <br>
 
+        <div class="messageInfoContainer">
+            Main text of your bio. You can force line-breaks in this text by writing <b>[br]</b>:
+            <span class="charCounter"></span>
+        </div>
+        @Html.TextAreaFor(m => m.Text, new { maxlength = Model.IsDonator? "10000" : "2500" })
+        <br>
 
-        <p>Main text of your bio.  Limit 1500 characters (more for Tier 3 donators.)  You can force linebreaks in this text by writing <b>[br].</b></p>
-        @Html.TextAreaFor(m => m.Text)<br />
-        <span class="charCounter" id="textRemaining"></span>
-
-        <p>RP interest tags:  Click on the buttons below to turn on or off the themes that interest you while roleplaying.</p>
+        <p>RP interest tags: Click on the buttons below to turn on or off the themes that interest you while roleplaying.</p>
 
         @Html.Partial("partial/rptags");
+        <br>
 
-    <button id="resetTags" class="buttonSetBio"><b>Click here to reset tags</b></button>
-
-        @Html.HiddenFor(m => m.Tags)
-
-        <p>
-            <input type="submit" value="Send" class="buttonSetBio" />
-        </p>
+        <input id="resetTags" type="button" value="Click here to reset tags" class="btn" />
+        <input type="submit" value="Send" class="btn" />
+        <br>
 
         <p>Last updated @Model.Timestamp</p>
-
     }
 </div>
 
     <script>
-        $("#Text").keydown(function () {
-            var remaining = 2500 - $("#Text").val().length;
-            // console.log($("#Text").val().length);
-            $("#textRemaining").html(remaining + " characters remaining");
-        });
-
         $(document).ready(function () {
-
             var tagstring = $("#Tags").val();
-            console.log("Raw string:  " + tagstring);
+            //console.log("Raw string:  " + tagstring);
+
+            $('.charCounter').each(function () {
+                var jQthis = $(this);
+
+                var max = jQthis
+                    .parent('.messageInfoContainer')
+                    .next('textarea')
+                    .attr('maxLength');
+
+                jQthis.html(max + ' characters remaining');
+            });
 
             // assign the proper styling onload
             $(".rpTag").each(function () {
+                var jQthis = $(this);
 
-                var code = $(this).attr("tagcode");
+                var code = jQthis.attr("tagcode");
                 var regexs = ";" + code + ".[0-9];";
                 var regex = new RegExp(regexs, "i")
                 var smatch = tagstring.match(regex);
 
                 // currently exists; increment its state
                 if (smatch !== null) {
-                    console.log("Match found:  " + smatch);
+                    //console.log("Match found:  " + smatch);
                     var numberValue = smatch[0].match(/[0-9]/);
-                    console.log("Value of match:  " + numberValue);
+                    //console.log("Value of match:  " + numberValue);
 
                     if (numberValue == 0) {
-                        $(this).addClass("neg2");
+                        jQthis.addClass("neg2");
                     } else if (numberValue == 1) {
-                        $(this).addClass("neg1");
+                        jQthis.addClass("neg1");
                     } else if (numberValue == 2) {
-                        $(this).addClass("pos1");
+                        jQthis.addClass("pos1");
                     } else if (numberValue == 3) {
-                        $(this).addClass("pos2");
+                        jQthis.addClass("pos2");
                     }
                 }
             });
 
             // assign onclick logic to buttons
-            $(".rpTag").each(function () {
+            $(".rpTag").on('click', function () {
+                var jQthis = $(this);
 
-                $(this).click(function () {
+                var code = jQthis.attr("tagcode");
+                var regexs = ";" + code + ".[0-9];";
+                var regex = new RegExp(regexs, "i")
+                var smatch = tagstring.match(regex);
 
-                    var code = $(this).attr("tagcode");
+                // currently exists; increment its state
+                if (smatch !== null) {
 
-                    var regexs = ";" + code + ".[0-9];";
-                    var regex = new RegExp(regexs, "i")
+                    //console.log("Click match found:  " + smatch);
+                    var numberValue = parseInt(smatch[0].match(/[0-9]/));
+                    //console.log("Value of click match:  " + numberValue);
 
-                    var smatch = tagstring.match(regex);
+                    var oldstring = ";" + code + "." + numberValue + ";";
+                    var newstring = ";" + code + "." + (numberValue + 1) + ";";
 
-                    // currently exists; increment its state
-                    if (smatch !== null) {
+                    //console.log("replacing " + oldstring + " with " + newstring);
 
-                        console.log("Click match found:  " + smatch);
-                        var numberValue = parseInt(smatch[0].match(/[0-9]/));
-                        console.log("Value of click match:  " + numberValue);
+                    cleanClasses(jQthis);
 
-                        var oldstring = ";" + code + "." + numberValue + ";";
-                        var newstring = ";" + code + "." + (numberValue + 1) + ";";
-
-                        console.log("replacing " + oldstring + " with " + newstring);
-
-                        cleanClasses($(this));
-
-                        if (numberValue == 0) {
-                            $(this).addClass("neg1");
-                            tagstring = tagstring.replace(oldstring, newstring);
-                        } else if (numberValue == 1) {
-                            $(this).addClass("pos1");
-                            tagstring = tagstring.replace(oldstring, newstring);
-                        } else if (numberValue == 2) {
-                            $(this).addClass("pos2");
-                            tagstring = tagstring.replace(oldstring, newstring);
-                        } else if (numberValue == 3) {
-                            tagstring = tagstring.replace(oldstring, "");
-                        }
+                    if (numberValue == 0) {
+                        jQthis.addClass("neg1");
+                        tagstring = tagstring.replace(oldstring, newstring);
+                    } else if (numberValue == 1) {
+                        jQthis.addClass("pos1");
+                        tagstring = tagstring.replace(oldstring, newstring);
+                    } else if (numberValue == 2) {
+                        jQthis.addClass("pos2");
+                        tagstring = tagstring.replace(oldstring, newstring);
+                    } else if (numberValue == 3) {
+                        tagstring = tagstring.replace(oldstring, "");
                     }
+                }
 
-                        // does not exist; add it with default (lowest) value
-                    else {
-                        tagstring += ";" + code + "." + 0 + ";";
-                        $(this).addClass("neg2");
-                    }
+                // does not exist; add it with default (lowest) value
+                else {
+                    tagstring += ";" + code + "." + 0 + ";";
+                    jQthis.addClass("neg2");
+                }
 
-                    $("#Tags").val(tagstring);
-
-                });
-
-
-
+                $("#Tags").val(tagstring);
             });
 
             $("#resetTags").click(function () {
                 $("#Tags").val("");
                 tagstring = "";
                 $(".rpTag").each(function () {
-                    $(this).removeClass("neg2");
-                    $(this).removeClass("neg1");
-                    $(this).removeClass("pos1");
-                    $(this).removeClass("pos2");
+                    var jQthis = $(this);
+                    jQthis.removeClass("neg2");
+                    jQthis.removeClass("neg1");
+                    jQthis.removeClass("pos1");
+                    jQthis.removeClass("pos2");
                 });
             });
 
+            $('#WebsiteURL, #Text').on('input', function () {
+                var jQthis = $(this);
+
+                var length = jQthis.val().length;
+                var remaining = jQthis.attr('maxLength') - length;
+
+                jQthis
+                    .prev('.messageInfoContainer')
+                    .children('.charCounter')
+                    .html(remaining + ' characters remaining');
+            });
         });
 
         function cleanClasses(tag) {

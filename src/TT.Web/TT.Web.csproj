@@ -280,6 +280,9 @@
     <Content Include="Content\AdminStyle.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\custom.css" />
+    <Content Include="Content\custom.min.css">
+      <DependentUpon>custom.css</DependentUpon>
+    </Content>
     <Content Include="Content\MMO.css" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -411,6 +414,10 @@
     </Content>
     <Content Include="MachineKey.config" />
     <Content Include="AppSettings.config" />
+    <None Include="compilerconfig.json" />
+    <None Include="compilerconfig.json.defaults">
+      <DependentUpon>compilerconfig.json</DependentUpon>
+    </None>
     <None Include="Properties\PublishProfiles\test.transformaniatime.com.pubxml" />
     <Content Include="Images\back.png" />
     <Content Include="Images\background1.jpg" />

@@ -1,4 +1,4 @@
-body {
+﻿body {
   background: #A16969;
   font-size: 13px;
   font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif; }
@@ -18,9 +18,11 @@ h1 {
   h1 {
     width: 80%;
     font-size: 20px; } }
+
 @media (max-width: 480px) {
   h1 {
     width: 100%; } }
+
 p {
   margin: 0px;
   padding: 0px; }
@@ -123,6 +125,7 @@ li {
     position: relative;
     top: 0px;
     right: 0px; } }
+
 #notificationBox {
   background: #C2A9AF;
   overflow-y: scroll;
@@ -427,6 +430,7 @@ li {
   .actionButton {
     padding: 5px;
     margin: 5px; } }
+
 .actionButton:hover {
   color: #E4E0D4 !important; }
 
@@ -743,17 +747,25 @@ li {
   word-break: break-all;
   margin-bottom: 0px; }
 
+.btn,
 .btn-chat {
   color: white;
   background-color: #A16969;
   border: #734752 1px solid;
-  width: 100%;
-  border-radius: 0px !important; }
+  border-radius: 0px; }
 
+.btn:hover,
 .btn-chat:hover {
   color: white;
   background-color: #734752;
   border: #A16969 1px solid; }
+
+.btn:focus,
+.btn-chat:focus {
+  color: white; }
+
+.btn-chat {
+  width: 100%; }
 
 #ignoreDiv {
   border: 4px solid #A16969;
@@ -855,12 +867,15 @@ strong {
 @media (max-width: 1199px) {
   #fullDetails {
     width: 922px; } }
+
 @media (max-width: 991px) {
   #fullDetails {
     width: 702px; } }
+
 @media (max-width: 752px) {
   #fullDetails {
     width: 90%; } }
+
 .petItemPortrait {
   width: 450px;
   height: 450px;
@@ -950,7 +965,6 @@ strong {
   margin-bottom: 0px !important; }
 
 .messageTable td {
-  vertical-align: middle !important;
   border-top: 1px solid #808080;
   border-bottom: 1px solid #808080; }
 
@@ -1008,9 +1022,11 @@ strong {
 @media (max-width: 1199px) {
   .rp-ad {
     margin: 0px 39px 20px; } }
+
 @media (max-width: 991px) {
   .rp-ad {
     margin: 0px 0px 20px; } }
+
 .pvpAdmin {
   text-align: center;
   font-size: 20px;
@@ -1147,30 +1163,8 @@ strong {
 #listChatRoomsModal .chatRoomList {
   height: 300px;
   overflow-y: scroll;
-  margin: 0;
-  padding: 0;
-  border: 1px solid #808080;
-}
+  margin-bottom: 10px; }
 
 #listChatRoomsModal .chatRoomList li {
-  padding: 10px;
-  clear: both;
-  border-bottom: 1px solid #808080;
-}
+  margin-bottom: 10px; }
 
-#listChatRoomsModal .chatRoomList li:nth-child(odd) {
-    /*background-color: #D2CFCE;*/
-}
-
-#listChatRoomsModal .chatRoomList li:nth-child(even) {
-    background-color: #DCDCDC;
-}
-
-#listChatRoomsModal .chatRoomList li span {
-    float: right;
-    font-weight: bold;
-    height: 20px;
-    line-height: 20px;
-}
-
-/*# sourceMappingURL=custom.css.map */

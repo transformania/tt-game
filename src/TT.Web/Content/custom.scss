@@ -835,19 +835,29 @@ li {
     margin-bottom: 0px;
 }
 
+.btn,
 .btn-chat {
     color: white;
     background-color: $bodyColor;
     border: $navbarDark 1px solid;
-    width: 100%;
-    border-radius: 0px !important;
+    border-radius: 0px;
 }
 
-
+.btn:hover,
 .btn-chat:hover {
     color: white;
     background-color: $navbarDark;
     border: $bodyColor 1px solid;
+}
+
+.btn:focus,
+.btn-chat:focus
+{
+    color: white;
+}
+
+.btn-chat {
+    width: 100%;
 }
 
 #ignoreDiv {
@@ -944,7 +954,7 @@ strong {
     padding: 4px;
 }
 
-#fullDetails{ 
+#fullDetails{
     height: auto !important;
     resize: vertical;
     background: $containerColor;
@@ -1289,7 +1299,7 @@ line-height: 18px;
     text-align: center;
 }
 
-#playerBox .portrait{ 
+#playerBox .portrait{
     margin-bottom: 10px;
 }
 

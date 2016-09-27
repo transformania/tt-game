@@ -4,7 +4,7 @@ namespace TT.Domain.Models
 {
     public class Donator
     {
-        public int Id { get; set; }
+        public int Id { get; protected set; }
         [StringLength(128)]
         public string OwnerMembershipId { get; set; }
         public string PatreonName { get; set; }

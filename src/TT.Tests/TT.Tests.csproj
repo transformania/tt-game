@@ -138,6 +138,7 @@
     <Compile Include="Builders\Effects\EffectBuilder.cs" />
     <Compile Include="Builders\Form\FormSourceBuilder.cs" />
     <Compile Include="Builders\Identity\CaptchaEntryBuilder.cs" />
+    <Compile Include="Builders\Identity\DonatorBuilder.cs" />
     <Compile Include="Builders\Players\PlayerLogBuilder.cs" />
     <Compile Include="Builders\RPClassifiedAds\RPClassifiedAdBuilder.cs" />
     <Compile Include="Builders\Identity\UserBuilder.cs" />
@@ -160,6 +161,8 @@
     <Compile Include="Domain\Commands\Assets\CreateTomeTests.cs" />
     <Compile Include="Domain\Commands\Chat\CreateChatRoomTests.cs" />
     <Compile Include="Domain\Commands\Effects\CreateEffectTests.cs" />
+    <Compile Include="Domain\Commands\Identity\UpdateDonatorTests.cs" />
+    <Compile Include="Domain\Commands\Identity\CreateDonatorTests.cs" />
     <Compile Include="Domain\Commands\Identity\UpdateCaptchaEntryTests.cs" />
     <Compile Include="Domain\Commands\Identity\CreateCaptchaEntryTests.cs" />
     <Compile Include="Domain\Commands\Items\ChangeItemOwnerTests.cs" />
@@ -193,6 +196,8 @@
     <Compile Include="Domain\Queries\Assets\GetTomeTest.cs" />
     <Compile Include="Domain\Queries\Assets\GetTomesTests.cs" />
     <Compile Include="Domain\Queries\Identity\GetCaptchaEntryTests.cs" />
+    <Compile Include="Domain\Queries\Identity\GetUserDonatorTest.cs" />
+    <Compile Include="Domain\Queries\Identity\GetUserDonatorsTests.cs" />
     <Compile Include="Domain\Queries\Identity\UserCaptchaIsExpiredTests.cs" />
     <Compile Include="Domain\Queries\Item\GetItemsAtLocationVisibleToGameModeTests.cs" />
     <Compile Include="Domain\Queries\Item\GetItemsOwnedByPlayerTests.cs" />

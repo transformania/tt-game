@@ -13,11 +13,18 @@ namespace TT.Domain.Mappings.Identity
             modelBuilder.Entity<User>()
                 .ToTable("AspNetUsers")
                 .HasKey(u => u.Id);
+
+            modelBuilder.Entity<User>()
+                .HasOptional(p => p.Donator)
+                .WithRequired(d => d.Owner)
+                .Map(m => m.MapKey("OwnerMembershipId"));
+
         }
 
         protected override void Configure()
         {
             CreateMap<User, UserDetail>();
+            CreateMap<User, UserDonatorDetail>();
         }
     }
 }

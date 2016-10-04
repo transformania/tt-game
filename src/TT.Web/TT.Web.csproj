@@ -235,6 +235,7 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\Admin\DonatorController.cs" />
     <Compile Include="Controllers\Admin\RestockItemController.cs" />
     <Compile Include="Controllers\API\ApiControllerBase.cs" />
     <Compile Include="Controllers\API\ChatRoomController.cs" />
@@ -821,6 +822,9 @@
     <Content Include="Views\PvP\RoundLeaderboards\XP\Alpha_37.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_37.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Statistics\Alpha_37.cshtml" />
+    <Content Include="Views\Admin\Donators\List.cshtml" />
+    <Content Include="Views\Admin\Donators\Edit.cshtml" />
+    <Content Include="Views\Admin\Donators\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

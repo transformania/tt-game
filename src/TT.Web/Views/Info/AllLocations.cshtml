@@ -3,6 +3,7 @@
 <div>
 
     <h1>Locations</h1>
+    <i>NOTE:  You can click on a table cell to copy it to your clipboard.</i>
 
     <button id="closeModal" onclick="hideModal()">Close</button>
 
@@ -22,9 +23,9 @@
             @foreach (TT.Domain.ViewModels.Location l in Model.OrderBy(l => l.Name))
             {
                 <tr>
-                    <td>@l.Name</td>
-                    <td>@l.dbName</td>
-                    <td>@l.Region</td>
+                    <td class="copyable" data-clipboard-text="@l.Name">@l.Name</td>
+                    <td class="copyable" data-clipboard-text="@l.dbName">@l.dbName</td>
+                    <td class="copyable" data-clipboard-text="@l.Region">@l.Region</td>
                 </tr>
             }
 
@@ -58,5 +59,13 @@
     function hideModal() {
         $("#modal").hide();
     }
+
+    $.getScript("https://cdn.jsdelivr.net/clipboard.js/1.5.12/clipboard.min.js")
+        .done(function () {
+            new Clipboard('.copyable');
+        })
+        .fail(function () {
+            alert("Failed to load clipboard.");
+        });
 
 </script>

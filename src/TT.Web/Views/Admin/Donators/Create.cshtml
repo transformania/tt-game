@@ -46,7 +46,7 @@
         <br /><br />
 
         <label>Tier (1, 2, or 3)</label>
-        @Html.TextBox("Tier")
+        @Html.TextBox("Tier", null, new { @type = "number", @min = "0", @max = "3" })
 
         <br /><br />
 

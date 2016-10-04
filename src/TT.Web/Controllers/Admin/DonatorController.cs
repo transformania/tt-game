@@ -1,6 +1,7 @@
 ﻿using System.Web.Mvc;
 using TT.Domain;
 using TT.Domain.Commands.Identity;
+using TT.Domain.Commands.Players;
 using TT.Domain.DTOs.Identity;
 using TT.Domain.Queries.Identity;
 using TT.Domain.Statics;
@@ -11,10 +12,10 @@ namespace TT.Web.Controllers.Admin
     public class DonatorController : Controller
     {
 
-        public ActionResult List()
+        public ActionResult List(int minimumTier = 1)
         {
 
-            var output = DomainRegistry.Repository.Find(new GetUserDonators());
+            var output = DomainRegistry.Repository.Find(new GetUserDonators {MinimumTier = minimumTier});
             SetMessages();
 
             return View("~/Views/Admin/Donators/List.cshtml", output);
@@ -34,6 +35,7 @@ namespace TT.Web.Controllers.Admin
             try
             {
                 DomainRegistry.Repository.Execute(input);
+                DomainRegistry.Repository.Execute(new ChangeDonatorTier {UserId = input.UserId, Tier = input.Tier});
                 TempData["Result"] = "Donator update successful.";
             }
             catch (DomainException e)
@@ -64,6 +66,7 @@ namespace TT.Web.Controllers.Admin
             try
             {
                 DomainRegistry.Repository.Execute(input);
+                DomainRegistry.Repository.Execute(new ChangeDonatorTier { UserId = input.UserId, Tier = input.Tier });
                 TempData["Result"] = "Donator created successful.";
             }
             catch (DomainException e)

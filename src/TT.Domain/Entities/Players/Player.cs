@@ -162,6 +162,24 @@ namespace TT.Domain.Entities.Players
             this.ForceWithinBounds();
         }
 
+        /// <summary>
+        /// Sets the player's DonatorTier to the specified tier and creates a new message in their logs informing them such.
+        /// </summary>
+        /// <param name="tier">The new tier to set the player to</param>
+        public void SetTier(int tier)
+        {
+            this.DonatorLevel = tier;
+            if (tier > 0)
+            {
+                this.PlayerLogs.Add(PlayerLog.Create(this, "<b>An admin has set your donator status to Tier " + tier + ".  <span class='good'>Thank you for supporting Transformania Time!</span></b>", DateTime.UtcNow, true));
+            }
+            else
+            {
+                this.PlayerLogs.Add(PlayerLog.Create(this, "<b>An admin has set your donator status to Tier " + tier + ".</b>", DateTime.UtcNow, true));
+            }
+            
+        }
+
         private float GetManaBaseByLevel(int level)
         {
             float manaBase = 5 * (level - 1) + 50;

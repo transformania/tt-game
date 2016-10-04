@@ -17,6 +17,11 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
                 <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+                <li>@Html.ActionLink("Back to Admin", "Index", "PvPAdmin")</li>
+                <li>@Html.ActionLink("Show All Tiers", "List", "Donator", new {minimumTier = 0}, null)</li>
+                <li>@Html.ActionLink("Show Tier 1+", "List", "Donator", new {minimumTier = 1}, null)</li>
+                <li>@Html.ActionLink("Show Tier 2+", "List", "Donator", new {minimumTier = 2}, null)</li>
+                <li>@Html.ActionLink("Show Tier 3+", "List", "Donator", new { minimumTier = 3 }, null)</li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -51,7 +56,7 @@
         @{
             foreach (UserDonatorDetail d in Model)
             {
-                <tr>
+                <tr style="background-color: @d.GetStyleColor()">
                     <td>@d.Id</td>
                     <td>@d.UserName</td>
                     <td>@d.Donator.PatreonName</td>

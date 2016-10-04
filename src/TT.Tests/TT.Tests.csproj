@@ -176,6 +176,7 @@
     <Compile Include="Domain\Commands\Items\DeleteItemsTests.cs" />
     <Compile Include="Domain\Commands\Items\UpdateItemsTests.cs" />
     <Compile Include="Domain\Commands\Messages\MarkMessageAsRead.cs" />
+    <Compile Include="Domain\Commands\Players\ChangeDonatorTierTests.cs" />
     <Compile Include="Domain\Commands\Players\DeletePlayerTests.cs" />
     <Compile Include="Domain\Commands\Skills\CreateSkillTests.cs" />
     <Compile Include="Domain\Commands\Skills\SetSkillSourceFKsTests.cs" />

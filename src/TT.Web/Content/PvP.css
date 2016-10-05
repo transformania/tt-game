@@ -737,3 +737,12 @@ a.curse {
 .specialNoticeBox {
     background-color: orange;
 }
+
+.copyable {
+  cursor: pointer;
+}
+
+.copyable:hover {
+  cursor: pointer;
+  color: blue;
+}

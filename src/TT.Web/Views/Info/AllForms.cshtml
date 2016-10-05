@@ -1,8 +1,9 @@
 ﻿@model List<TT.Domain.Models.DbStaticForm>
-    @using TT.Domain.Statics
+@using TT.Domain.Statics
 
 <div>
     <h1>Animate Forms</h1>
+    <i>NOTE:  You can click on a table cell to copy it to your clipboard.</i>
 
     <button id="closeModal" onclick="hideModal()">Close</button>
 
@@ -22,9 +23,9 @@
             @foreach (TT.Domain.Models.DbStaticForm f in Model.Where(m => m.MobilityType == PvPStatics.MobilityFull).OrderBy(f => f.FriendlyName))
             {
                 <tr>
-                    <td>@f.FriendlyName</td>
-                    <td>@f.Id</td>
-                    <td>@f.dbName</td>
+                    <td class="copyable" data-clipboard-text="@f.FriendlyName">@f.FriendlyName</td>
+                    <td class="copyable" data-clipboard-text="@f.Id">@f.Id</td>
+                    <td class="copyable" data-clipboard-text="@f.dbName">@f.dbName</td>
 
                     @{
                 if (f.IsUnique)
@@ -95,6 +96,7 @@
 </style>
 
 <script>
+    
     try {
         $('#modalTable').dataTable({
             "lengthMenu": [[10, 50, 100, 200, -1], [10, 50, 100, 200, "All"]]
@@ -110,5 +112,13 @@
     function hideModal() {
         $("#modal").hide();
     }
+
+    $.getScript("https://cdn.jsdelivr.net/clipboard.js/1.5.12/clipboard.min.js")
+        .done(function () {
+                new Clipboard('.copyable');
+         })
+        .fail(function () {
+            alert("Failed to load clipboard.");
+        });
 
 </script>

@@ -2,6 +2,7 @@
 
 <div>
     <h1>Animate Forms</h1>
+    <i>NOTE:  You can click on a table cell to copy it to your clipboard.</i>
 
     <button id="closeModal" onclick="hideModal()">Close</button>
 
@@ -22,10 +23,10 @@
             @foreach (TT.Domain.DTOs.Item.ItemSourceDetail f in Model)
             {
                 <tr>
-                    <td>@f.Id</td>
-                    <td>@f.FriendlyName</td>
+                    <td class="copyable" data-clipboard-text="@f.Id">@f.Id</td>
+                    <td class="copyable" data-clipboard-text="@f.FriendlyName">@f.FriendlyName</td>
                     
-                    <td>@f.DbName</td>
+                    <td class="copyable" data-clipboard-text="@f.DbName">@f.DbName</td>
 
                     @{
                 if (f.IsUnique)
@@ -74,5 +75,13 @@
     function hideModal() {
         $("#modal").hide();
     }
+
+    $.getScript("https://cdn.jsdelivr.net/clipboard.js/1.5.12/clipboard.min.js")
+        .done(function () {
+            new Clipboard('.copyable');
+        })
+        .fail(function () {
+            alert("Failed to load clipboard.");
+        });
 
 </script>

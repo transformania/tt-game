@@ -467,16 +467,21 @@ namespace TT.Domain.Procedures
 
         public static BuffBox GetPlayerBuffs(Player player)
         {
+            return GetPlayerBuffs(player.Id);
+        }
+
+        public static BuffBox GetPlayerBuffs(int playerId)
+        {
 
             BuffBox output = new BuffBox();
 
             // grab all of the bonuses coming from effects
-            IEnumerable<EffectViewModel2> myEffects = EffectProcedures.GetPlayerEffects2(player.Id).Where(e => e.dbEffect.Duration > 0);
+            IEnumerable<EffectViewModel2> myEffects = EffectProcedures.GetPlayerEffects2(playerId).Where(e => e.dbEffect.Duration > 0);
             var context = new StatsContext();
             var bonusparam = new SqlParameter("Item_LevelBonusModifier", SqlDbType.Real);
             bonusparam.Value = PvPStatics.Item_LevelBonusModifier;
             var playerparam = new SqlParameter("PlayerId", SqlDbType.Int);
-            playerparam.Value = player.Id;
+            playerparam.Value = playerId;
             object[] parameters = new object[] { playerparam, bonusparam };
             var query = context.Database.SqlQuery<BuffStoredProc>("exec [dbo].[GetPlayerBuffs] @PlayerId, @Item_LevelBonusModifier", parameters);
 
@@ -608,7 +613,7 @@ namespace TT.Domain.Procedures
                     {
                         output.EnchantmentBoost = 1;
                     }
-                    
+
                 }
                 else if (eff.dbEffect.dbName == "perk_apprentice_enchanter_2_lvl")
                 {

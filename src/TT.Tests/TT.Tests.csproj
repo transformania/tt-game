@@ -180,6 +180,7 @@
     <Compile Include="Domain\Commands\Messages\MarkMessageAsRead.cs" />
     <Compile Include="Domain\Commands\Players\ChangeDonatorTierTests.cs" />
     <Compile Include="Domain\Commands\Players\DeletePlayerTests.cs" />
+    <Compile Include="Domain\Commands\Players\TakeBusTests.cs" />
     <Compile Include="Domain\Commands\Skills\CreateSkillTests.cs" />
     <Compile Include="Domain\Commands\Skills\SetSkillSourceFKsTests.cs" />
     <Compile Include="Domain\Commands\TFEnergies\CreateTFEnergyTests.cs" />
@@ -215,6 +216,7 @@
     <Compile Include="Domain\Queries\Messages\GetMessagesTests.cs" />
     <Compile Include="Domain\Queries\Item\GetItemTests.cs" />
     <Compile Include="Domain\Queries\Players\GetPlayerTest.cs" />
+    <Compile Include="Domain\Queries\Players\PlayerIsAtBusStopTests.cs" />
     <Compile Include="Domain\Queries\Skills\GetSkillsOwnedByPlayer.cs" />
     <Compile Include="Domain\Queries\RPClassifiedAds\GetRPClassifiedAdTests.cs" />
     <Compile Include="Domain\Queries\RPClassifiedAds\GetRPClassifiedAdsTests.cs" />

@@ -162,6 +162,11 @@
                     @Html.ActionLink("Shout", "Shout", "PvP", null, new { @class = "shout" })
                 }
 
+                if (Model.PlayerIsAtBusStop)
+                {
+                    @Html.ActionLink("Take Bus", "Bus", "PvP", null, new { @class = "bus" })
+                }
+
                 KeyValuePair<int, CovenantNameFlag> temp = CovenantDictionary.IdNameFlagLookup.FirstOrDefault(c => c.Value.HomeLocation == Model.Location.dbName);
 
                 if (temp.Value != null)

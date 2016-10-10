@@ -1,0 +1,91 @@
+﻿@using TT.Domain.DTOs.Players
+@model TT.Domain.ViewModels.BusStopsViewModel
+
+<nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+                <li>@Html.ActionLink("Open Map in new Tab", "WorldMap", "PvP", new { showEnchant = "false" }, new { target = "_blank" })</li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+<div>
+    <p class="infoMessage result">@Html.Raw(ViewBag.Result)</p>
+    <p class="infoMessage error">@ViewBag.ErrorMessage</p>
+    <p class="infoMessage suberror">@ViewBag.SubErrorMessage</p>
+</div>
+
+<div class="containerInner">
+    <h1>Sunnyglade Bus</h1>
+    <p>Feet tired? Whether you have two, four, eight, none, or any number inbetween, you can hop on the bus to get around town a little faster, provided you have the Arpeyjis. Safety regulation do require that riders have not been in recent combat.</p>
+    <p>You have <span title="Arpeyjis" class="icon icon-money"></span> <b>@Model.Player.Money</b> Arpeyjis.</p>
+
+    <ul>
+        @{
+            if (Model.InCombatTooRecently())
+            {
+                <li class="bad">You must stay out of combat another @Model.GetMinutesUntilOutOfCombat() minutes before being allowed on a bus.</li>
+            }
+            if (Model.Player.ActionPoints < 3)
+            {
+                <li class="bad">You need at least 3 AP in order to take the bus.</li>
+            }
+        }
+    </ul>
+
+    <table>
+        <thead>
+        <th>Destination</th>
+        <th>Ticket Price</th>
+        <th>Go</th>
+        </thead>
+        <tbody>
+
+            @{
+                foreach (BusStop b in Model.Stops)
+                {
+                    <tr>
+                        <td>@b.Name</td>
+                        <td><span title="Arpeyjis" class="icon icon-money"></span> @b.Cost</td>
+                        <td>
+                            @{
+                                if (Model.Player.Money >= b.Cost)
+                                {
+                                    @Html.ActionLink("Go", "TakeBus", "PvP", new { destination = b.dbName }, null)
+                                }
+                                else
+                                {
+                                    <span class='bad'>Insufficient Arpeyjis</span>
+                                }
+                            }
+                        </td>
+                    </tr>
+                 }
+            }
+
+        </tbody>
+    </table>
+
+</div>
+
+<style>
+    tr, td {
+        border: 1px solid black;
+        margin: 10px;
+        padding: 10px;
+    }
+</style>

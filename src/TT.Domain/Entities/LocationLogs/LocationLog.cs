@@ -11,5 +11,16 @@ namespace TT.Domain.Entities.LocationLogs
 
         private LocationLog() { }
 
+        public static LocationLog Create(String dbLocationName, String message, int concealmentLevel)
+        {
+            return new LocationLog
+            {
+                dbLocationName = dbLocationName,
+                Message = message,
+                ConcealmentLevel = concealmentLevel,
+                Timestamp = DateTime.UtcNow
+            };
+        }
+
     }
 }

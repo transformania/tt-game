@@ -829,6 +829,7 @@
     <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_38.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\XP\Alpha_38.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Statistics\Alpha_38.cshtml" />
+    <Content Include="Views\PvP\Bus.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

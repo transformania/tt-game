@@ -1,4 +1,4 @@
-﻿@model TT.Domain.Models.PlayerBio
+﻿@model TT.Domain.ViewModels.SetBioViewModel
 
 
 <nav class="navbar navbar-default outsideContainer navbarTT2">
@@ -38,7 +38,6 @@
     @using (Html.BeginForm("SetBioSend", "Settings", FormMethod.Post))
     {
         @Html.HiddenFor(m => m.Tags)
-        @Html.HiddenFor(m => m.OwnerMembershipId)
 
         <div class="messageInfoContainer">
             Website URLs:

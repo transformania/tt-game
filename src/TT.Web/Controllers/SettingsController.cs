@@ -92,19 +92,19 @@ namespace TT.Web.Controllers
         public ActionResult SetBio()
         {
             string myMembershipId = User.Identity.GetUserId();
-            PlayerBio output = SettingsProcedures.GetPlayerBioFromMembershipId(myMembershipId);
+            SetBioViewModel output = SettingsProcedures.GetSetBioViewModelFromMembershipId(myMembershipId);
 
-            if (output != null && output.OwnerMembershipId != myMembershipId)
+            if (output.OwnerMembershipId != myMembershipId)
             {
                 TempData["Error"] = "This is not your biography.";
                 return RedirectToAction("Play", "PvP");
             }
 
-            return View(output ?? new PlayerBio(myMembershipId));
+            return View(output);
         }
 
          [Authorize]
-         public ActionResult SetBioSend(PlayerBio input)
+         public ActionResult SetBioSend(SetBioViewModel input)
          {
              string myMembershipId = User.Identity.GetUserId();
              if (input.Text == null)

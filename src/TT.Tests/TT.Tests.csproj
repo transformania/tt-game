@@ -137,6 +137,7 @@
     <Compile Include="Builders\Effects\EffectSourceBuilder.cs" />
     <Compile Include="Builders\Effects\EffectBuilder.cs" />
     <Compile Include="Builders\Form\FormSourceBuilder.cs" />
+    <Compile Include="Builders\Form\TFMessageBuilder.cs" />
     <Compile Include="Builders\Identity\CaptchaEntryBuilder.cs" />
     <Compile Include="Builders\Identity\DonatorBuilder.cs" />
     <Compile Include="Builders\Players\PlayerLogBuilder.cs" />
@@ -161,6 +162,7 @@
     <Compile Include="Domain\Commands\Assets\CreateTomeTests.cs" />
     <Compile Include="Domain\Commands\Chat\CreateChatRoomTests.cs" />
     <Compile Include="Domain\Commands\Effects\CreateEffectTests.cs" />
+    <Compile Include="Domain\Commands\Forms\TFMessageSetFKsTests.cs" />
     <Compile Include="Domain\Commands\Identity\UpdateDonatorTests.cs" />
     <Compile Include="Domain\Commands\Identity\CreateDonatorTests.cs" />
     <Compile Include="Domain\Commands\Identity\UpdateCaptchaEntryTests.cs" />

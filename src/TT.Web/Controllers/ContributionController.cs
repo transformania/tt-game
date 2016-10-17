@@ -12,6 +12,7 @@ using TT.Domain.ViewModels;
 using Newtonsoft.Json;
 using TT.Domain;
 using TT.Domain.Commands.Skills;
+using TT.Domain.Commands.Forms;
 
 namespace TT.Web.Controllers
 {
@@ -1113,6 +1114,8 @@ namespace TT.Web.Controllers
 
             contribution.History += "Form published on " + DateTime.UtcNow + "<br>";
             contributionRepo.SaveContribution(contribution);
+
+            DomainRegistry.Repository.Execute(new SetTFMessageFKs {TFMessageId = tf.Id, FormSource = formdbname});
 
             return View("Publish");
         }

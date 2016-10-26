@@ -214,6 +214,55 @@ namespace TT.Domain.Statics
     public static class LocationsStatics
     {
 
+        /*
+        - Street: 230 Sunnyglade Drive
+        */
+
+
+        public const string STREET_40_EAST_9TH_AVE = "street_e9th_westof_valley";
+        public const string STREET_70_EAST_9TH_AVE = "street_70e9th";
+
+        public const string STREET_270_WEST_9TH_AVE =  "270_west_9th_ave";
+        public const string STREET_320_WEST_9TH_AVE = "320_west_9th_ave";
+
+        public const string STREET_200_MAIN_STREET = "street_01";
+        public const string STREET_170_MAIN_STREET = "street_8th";
+        public const string STREET_140_MAIN_STREET = "street_140_main";
+
+        public const string STREET_130_SUNNYGLADE_DRIVE = "street_130_sunnyglade_drive";
+        public const string STREET_160_SUNNYGLADE_DRIVE = "street_14th_east";
+        public const string STREET_200_SUNNYGLADE_DRIVE = "street_200_sunnyglade_drive";
+        public const string STREET_230_SUNNYGLADE_DRIVE = "street_230_sunnyglade_drive";
+
+        public static readonly string[] BusStops =
+        {
+            STREET_40_EAST_9TH_AVE,
+            STREET_70_EAST_9TH_AVE,
+            STREET_270_WEST_9TH_AVE,
+            STREET_320_WEST_9TH_AVE,
+            STREET_140_MAIN_STREET,
+            STREET_170_MAIN_STREET,
+            STREET_200_MAIN_STREET,
+            STREET_130_SUNNYGLADE_DRIVE,
+            STREET_160_SUNNYGLADE_DRIVE,
+            STREET_200_SUNNYGLADE_DRIVE,
+            STREET_230_SUNNYGLADE_DRIVE
+        };
+
+        /// <summary>
+        /// Returns the price of a bus ticket to get from one location to another.  Currently this price is merely the 1x delta X plus delta Y.
+        /// </summary>
+        /// <param name="departure">Location the player is leaving from</param>
+        /// <param name="destination">Location the player is arriving to</param>
+        /// <returns></returns>
+        public static int GetTicketPriceBetweenLocations(string departure, string destination)
+        {
+            Location departureLocation = LocationList.GetLocation.First(l => l.dbName == departure);
+            Location destinationLocation = LocationList.GetLocation.First(l => l.dbName == destination);
+
+            return 2*Math.Abs(departureLocation.X - destinationLocation.X) + Math.Abs(departureLocation.Y - destinationLocation.Y);
+        }
+
         public static string GetRandomLocation()
         {
             // set a random location for this character to spawn in
@@ -275,6 +324,8 @@ namespace TT.Domain.Statics
             string locationToSpawnIn = spawnableLocations.ElementAt(index);
             return locationToSpawnIn;
         }
+
+
 
         public static class LocationList
         {

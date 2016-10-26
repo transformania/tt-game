@@ -27,6 +27,8 @@ using TT.Domain.Queries.Identity;
 using FeatureSwitch;
 using Recaptcha.Web;
 using Recaptcha.Web.Mvc;
+using TT.Domain.Commands.Players;
+using TT.Domain.Queries.Players;
 
 namespace TT.Web.Controllers
 {
@@ -281,6 +283,7 @@ namespace TT.Web.Controllers
             }
 
             PlayPageViewModel output = new PlayPageViewModel();
+            
 
             output.PvPWorldStat = WorldStat;
 
@@ -302,6 +305,8 @@ namespace TT.Web.Controllers
             loadtime += "End get max inv. size:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
 
             output.You = PlayerProcedures.GetPlayerFormViewModel(me.Id);
+            output.PlayerIsAtBusStop =
+                DomainRegistry.Repository.FindSingle(new PlayerIsAtBusStop { playerLocation = me.dbLocationName});
 
             output.LastUpdateTimestamp = PvPWorldStatProcedures.GetLastWorldUpdate();
 
@@ -3444,8 +3449,46 @@ namespace TT.Web.Controllers
             return RedirectToAction("Duel", "Duel");
         }
 
-      
+        public ActionResult Bus()
+        {
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var canTakeBus = DomainRegistry.Repository.FindSingle(new PlayerIsAtBusStop { playerLocation = me.dbLocationName });
 
+            if (!canTakeBus)
+            {
+                TempData["Error"] = "There is no bus stop here.";
+                return RedirectToAction("Play");
+            }
+
+            var output = new BusStopsViewModel
+            {
+                Stops = DomainRegistry.Repository.Find(new GetBusStops { currentLocation = me.dbLocationName }).Where(b => b.Cost > 0).OrderBy(b => b.Cost),
+                Player = DomainRegistry.Repository.FindSingle(new GetPlayerBusDetail { playerId = me.Id })
+            };
+
+            return View(output);
+        }
+
+        public ActionResult TakeBus(string destination)
+        {
+
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+
+            try
+            {
+                var output = DomainRegistry.Repository.Execute(new TakeBus {playerId = me.Id, destination = destination});
+                TempData["Result"] = output;
+                return RedirectToAction("Play");
+            }
+            catch (DomainException e)
+            {
+                TempData["Error"] = e.Message;
+                return RedirectToAction("Play");
+            }
+
+        }
 
     }
 

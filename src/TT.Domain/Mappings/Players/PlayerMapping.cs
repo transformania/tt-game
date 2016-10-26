@@ -30,6 +30,7 @@ namespace TT.Domain.Mappings.Players
         {
             CreateMap<Player, PlayerDetail>();
             CreateMap<Player, PlayerMessageDetail>();
+            CreateMap<Player, PlayerBusDetail>();
         }
     }
 }

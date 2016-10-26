@@ -31,6 +31,7 @@ namespace TT.Domain.ViewModels
         public DateTime LastUpdateTimestamp { get; set; }
 
         public PvPWorldStat PvPWorldStat { get; set; }
+        public bool PlayerIsAtBusStop { get; set; }
 
     }
 }

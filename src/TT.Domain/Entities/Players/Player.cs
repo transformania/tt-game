@@ -85,6 +85,8 @@ namespace TT.Domain.Entities.Players
         {
             Items = new List<Items.Item>();
             Skills = new List<Skill>();
+            PlayerLogs = new List<PlayerLog>();
+            Effects = new List<Effect>();
         }
 
         public static Player Create(User user, NPC npc, FormSource form, CreatePlayer cmd)
@@ -138,6 +140,18 @@ namespace TT.Domain.Entities.Players
             };
         }
 
+        public string GetFullName()
+        {
+            if (this.DonatorLevel >= 2)
+            {
+                return this.FirstName + " '" + this.Nickname + "' " + this.LastName;
+            }
+            else
+            {
+                return this.FirstName + " " + this.LastName;
+            }
+        }
+
         public void DropAllItems()
         {
             foreach (Items.Item i in this.Items)
@@ -178,6 +192,36 @@ namespace TT.Domain.Entities.Players
                 this.PlayerLogs.Add(PlayerLog.Create(this, "<b>An admin has set your donator status to Tier " + tier + ".</b>", DateTime.UtcNow, true));
             }
             
+        }
+
+        /// <summary>
+        /// Sets the player's location to the location provided.
+        /// </summary>
+        /// <param name="location"></param>
+        public void SetLocation(string location)
+        {
+            this.Location = location;
+
+        }
+
+        /// <summary>
+        /// Adds a new player log message of specified importance
+        /// </summary>
+        /// <param name="logMessage">The log message visible to the player</param>
+        /// <param name="isImportant">Whether or not the log is important and should continually appear in the player's logs until dismissed.</param>
+        public void AddLog(string logMessage, bool isImportant)
+        {
+            this.PlayerLogs.Add(PlayerLog.Create(this, logMessage, DateTime.UtcNow, isImportant));
+        }
+
+        public void ChangeMoney(int amount)
+        {
+            this.Money += amount;
+        }
+
+        public void ChangeActionPoints(decimal amount)
+        {
+            this.ActionPoints += amount;
         }
 
         private float GetManaBaseByLevel(int level)

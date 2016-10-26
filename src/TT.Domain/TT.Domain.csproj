@@ -193,6 +193,7 @@
     <Compile Include="Commands\Players\ChangeDonatorTier.cs" />
     <Compile Include="Commands\Players\DropAllItems.cs" />
     <Compile Include="Commands\Players\ReadjustMaxes.cs" />
+    <Compile Include="Commands\Players\TakeBus.cs" />
     <Compile Include="Commands\Player\UpdateOnlineActivityTimestamp.cs" />
     <Compile Include="Commands\Skills\CreateSkill.cs" />
     <Compile Include="Commands\RPClassifiedAds\CreateRPClassifiedAd.cs" />
@@ -262,6 +263,9 @@
     <Compile Include="DTOs\Identity\CaptchaEntryDetail.cs" />
     <Compile Include="DTOs\Identity\DonatorDetail.cs" />
     <Compile Include="DTOs\Identity\UserDonatorDetail.cs" />
+    <Compile Include="DTOs\Players\BusStopsViewModel.cs" />
+    <Compile Include="DTOs\Players\BusStop.cs" />
+    <Compile Include="DTOs\Players\PlayerBusDetail.cs" />
     <Compile Include="DTOs\TFEnergies\TFEnergyDetail.cs" />
     <Compile Include="Entities\Forms\TFMessage.cs" />
     <Compile Include="Entities\Identity\CaptchaEntry.cs" />
@@ -475,8 +479,11 @@
     <Compile Include="Queries\Messages\GetPlayerSentMessages.cs" />
     <Compile Include="Queries\Messages\GetUnreadMessageCountByPlayer.cs" />
     <Compile Include="Queries\Messages\PlayerOwnsMessage.cs" />
+    <Compile Include="Queries\Players\GetBusStops.cs" />
     <Compile Include="Queries\Players\GetPlayer.cs" />
+    <Compile Include="Queries\Players\GetPlayerBusDetail.cs" />
     <Compile Include="Queries\Players\GetPlayerByBotId.cs" />
+    <Compile Include="Queries\Players\PlayerIsAtBusStop.cs" />
     <Compile Include="Queries\Player\GetPlayerFormFromMembership.cs" />
     <Compile Include="Queries\Skills\GetSkillsOwnedByPlayer.cs" />
     <Compile Include="Queries\RPClassifiedAds\GetRPClassifiedAd.cs" />
@@ -512,6 +519,7 @@
     <Compile Include="ViewModels\BlacklistEntryViewModel.cs" />
     <Compile Include="ViewModels\BossSummon.cs" />
     <Compile Include="ViewModels\BuffBox.cs" />
+    <Compile Include="ViewModels\BusStopsViewModel.cs" />
     <Compile Include="ViewModels\ChatViewModel.cs" />
     <Compile Include="ViewModels\ContributionCredit.cs" />
     <Compile Include="ViewModels\NPCs\JewdewfaeEncounterViewModel.cs" />

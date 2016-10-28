@@ -14,7 +14,7 @@
 
     <!-- Bootstrap -->
     <link href="~/Content/bootstrap.min.css" rel="stylesheet">
-	<link href="~/Content/custom.css" rel="stylesheet">
+	<link href="~/Content/custom.min.css" rel="stylesheet">
 	<link href="~/Content/PvP.css" rel="stylesheet" />
     <link href="//cdn.datatables.net/1.10.11/css/dataTables.bootstrap.min.css" rel="stylesheet">
     <link href="//cdn.datatables.net/responsive/2.0.2/css/responsive.dataTables.min.css" rel="stylesheet">
@@ -29,7 +29,7 @@
     <![endif]-->
 
   </head>
- 
+
 
   <body>
  <div class="container" id="siteTop">
@@ -50,7 +50,7 @@
       <ul class="nav navbar-nav">
 		@Html.Partial("_MenuPartial")
       </ul>
-      
+
       <ul class="nav navbar-nav navbar-right">
 		@Html.Partial("_LoginPartial")
       </ul>
@@ -74,7 +74,7 @@
 
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-	
+
 	    @*@Scripts.Render("~/bundles/jquery")*@
         @RenderSection("scripts", required: false)
       <script src="~/Scripts/boxesResize.js"></script>

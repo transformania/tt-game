@@ -835,19 +835,29 @@ li {
     margin-bottom: 0px;
 }
 
+.btn,
 .btn-chat {
     color: white;
     background-color: $bodyColor;
     border: $navbarDark 1px solid;
-    width: 100%;
-    border-radius: 0px !important;
+    border-radius: 0px;
 }
 
-
+.btn:hover,
 .btn-chat:hover {
     color: white;
     background-color: $navbarDark;
     border: $bodyColor 1px solid;
+}
+
+.btn:focus,
+.btn-chat:focus
+{
+    color: white;
+}
+
+.btn-chat {
+    width: 100%;
 }
 
 #ignoreDiv {
@@ -944,7 +954,7 @@ strong {
     padding: 4px;
 }
 
-#fullDetails{ 
+#fullDetails{
     height: auto !important;
     resize: vertical;
     background: $containerColor;
@@ -1071,8 +1081,9 @@ strong {
 }
 
 .messageTable td  {
+    vertical-align: middle !important;
     border-top:  1px solid #808080;
-   border-bottom: 1px solid #808080;
+    border-bottom: 1px solid #808080;
 }
 
 .messageTable th  {
@@ -1289,7 +1300,7 @@ line-height: 18px;
     text-align: center;
 }
 
-#playerBox .portrait{ 
+#playerBox .portrait{
     margin-bottom: 10px;
 }
 
@@ -1308,14 +1319,33 @@ line-height: 18px;
 
 #quest .infoMessage, #quest .specialBox  {
     border: 4px solid rgb(161, 105, 105);
-    }
+}
 
 #listChatRoomsModal .chatRoomList {
   height: 300px;
   overflow-y: scroll;
-  margin-bottom: 10px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #808080;
 }
 
 #listChatRoomsModal .chatRoomList li {
-  margin-bottom: 10px;
+  padding: 10px;
+  clear: both;
+  border-bottom: 1px solid #808080;
+}
+
+#listChatRoomsModal .chatRoomList li:nth-child(odd) {
+    /*background-color: #D2CFCE;*/
+}
+
+#listChatRoomsModal .chatRoomList li:nth-child(even) {
+    background-color: #DCDCDC;
+}
+
+#listChatRoomsModal .chatRoomList li span {
+    float: right;
+    font-weight: bold;
+    height: 20px;
+    line-height: 20px;
 }

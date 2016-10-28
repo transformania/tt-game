@@ -4,15 +4,15 @@ using System.Linq;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
 using TT.Domain.Models;
+using TT.Domain.ViewModels;
 
 namespace TT.Domain.Procedures
 {
     public class SettingsProcedures
     {
-        public static void SavePlayerBio(PlayerBio bio, string membershipId)
+        public static void SavePlayerBio(SetBioViewModel bio, string membershipId)
         {
             IPlayerBioRepository playerBioRepo = new EFPlayerBioRepository();
-
             PlayerBio playerBio = playerBioRepo.PlayerBios.FirstOrDefault(p => p.OwnerMembershipId == membershipId);
 
             if (playerBio == null)
@@ -23,7 +23,6 @@ namespace TT.Domain.Procedures
                 };
             }
 
-            playerBio.PublicVisibility = bio.PublicVisibility;
             playerBio.Timestamp = DateTime.UtcNow;
             playerBio.Text = bio.Text;
             playerBio.WebsiteURL = bio.WebsiteURL;
@@ -31,8 +30,6 @@ namespace TT.Domain.Procedures
             playerBio.Tags = bio.Tags;
 
             playerBioRepo.SavePlayerBio(playerBio);
-
-            // playerBioRe
         }
 
         public static void DeletePlayerBio(string ownerMembershipId)
@@ -49,6 +46,20 @@ namespace TT.Domain.Procedures
             IPlayerBioRepository playerBioRepo = new EFPlayerBioRepository();
             PlayerBio playerBio = playerBioRepo.PlayerBios.FirstOrDefault(p => p.OwnerMembershipId == id);
             return playerBio;
+        }
+
+        public static SetBioViewModel GetSetBioViewModelFromMembershipId(string id)
+        {
+            IPlayerBioRepository playerBioRepo = new EFPlayerBioRepository();
+            Player player = PlayerProcedures.GetPlayerFromMembership(id);
+            PlayerBio playerBio = playerBioRepo.PlayerBios.FirstOrDefault(p => p.OwnerMembershipId == id);
+
+            SetBioViewModel setBioViewModel
+                = playerBio != null ? new SetBioViewModel(playerBio) : new SetBioViewModel(player.MembershipId);
+
+            setBioViewModel.IsDonator = DonatorProcedures.DonatorGetsMessagesRewards(player);
+
+            return setBioViewModel;
         }
 
         public static bool PlayerHasBio(string id)

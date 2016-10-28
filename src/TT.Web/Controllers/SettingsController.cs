@@ -92,31 +92,19 @@ namespace TT.Web.Controllers
         public ActionResult SetBio()
         {
             string myMembershipId = User.Identity.GetUserId();
-            PlayerBio output = SettingsProcedures.GetPlayerBioFromMembershipId(myMembershipId);
+            SetBioViewModel output = SettingsProcedures.GetSetBioViewModelFromMembershipId(myMembershipId);
 
-            if (output == null)
+            if (output.OwnerMembershipId != myMembershipId)
             {
-                output = new PlayerBio{
-                    OwnerMembershipId = myMembershipId,
-                    Timestamp = DateTime.UtcNow,
-                    WebsiteURL = "",
-                    Text = "",
-                };
-            }
-            else
-            {
-                if (output.OwnerMembershipId != myMembershipId)
-                {
-                    TempData["Error"] = "This is not your biography.";
-                    return RedirectToAction("Play", "PvP");
-                }
+                TempData["Error"] = "This is not your biography.";
+                return RedirectToAction("Play", "PvP");
             }
 
             return View(output);
         }
 
          [Authorize]
-         public ActionResult SetBioSend(PlayerBio input)
+         public ActionResult SetBioSend(SetBioViewModel input)
          {
              string myMembershipId = User.Identity.GetUserId();
              if (input.Text == null)
@@ -132,7 +120,7 @@ namespace TT.Web.Controllers
              Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
              if (input.Text.Length > 2500 && !DonatorProcedures.DonatorGetsMessagesRewards(me))
              {
-                 TempData["Error"] = "The text of your bio is too long (more than 2500 characters).";
+                 TempData["Error"] = "The text of your bio is too long (more than 2,500 characters).";
                  return RedirectToAction("Play", "PvP");
              }
 
@@ -155,7 +143,7 @@ namespace TT.Web.Controllers
 
              if (input.WebsiteURL.Length > 1500)
              {
-                 TempData["Error"] = "The text of your website URL is too long (more than 250 characters).";
+                 TempData["Error"] = "The text of your website URL is too long (more than 1,500 characters).";
                  return RedirectToAction("Play", "PvP");
              }
 
@@ -270,7 +258,7 @@ namespace TT.Web.Controllers
             }
             else if (amount == PvPStatics.MobilityFull)
             {
-               
+
                 if (me.Health > 0)
                 {
                    // drop = me.MaxHealth - me.Health;
@@ -283,7 +271,7 @@ namespace TT.Web.Controllers
             TempData["Error"] = "That is not a valid amount to decrease your willpower to.";
             return RedirectToAction("Play", "PvP");
 
-            
+
         }
 
         public ActionResult Donate()
@@ -610,7 +598,7 @@ namespace TT.Web.Controllers
                 PlayerProcedures.SetCustomBase(me, newForm.CustomForm.dbName);
             }
 
-            
+
             TempData["Result"] = "Your custom form has been set.";
             return RedirectToAction("Play", "PvP");
         }
@@ -657,8 +645,8 @@ namespace TT.Web.Controllers
                 SkillProcedures.ArchiveAllSpells(me.Id, false);
                 TempData["Result"] = "You have unarchived all of your known spells.  They will all now appear on the attack modal again.";
             }
-            
-           
+
+
             return RedirectToAction("Play", "PvP");
         }
 
@@ -777,7 +765,7 @@ namespace TT.Web.Controllers
                 TempData["Result"] = FriendProcedures.FriendSetNicknameOfOwner(friend.Id, input.Nickname);
             }
 
-            
+
             return RedirectToAction("MyFriends", "PvP");
         }
 
@@ -980,7 +968,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
-       
+
             PlayerProcedures.SetPvPFlag(me, id);
 
             TempData["Result"] = "Set to game mode " + id;

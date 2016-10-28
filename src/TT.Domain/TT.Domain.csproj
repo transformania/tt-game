@@ -564,6 +564,7 @@
     <Compile Include="ViewModels\RestockList.cs" />
     <Compile Include="ViewModels\SelectListItem.cs" />
     <Compile Include="ViewModels\ServerBalance.cs" />
+    <Compile Include="ViewModels\SetBioViewModel.cs" />
     <Compile Include="ViewModels\SetFriendNicknameViewModel.cs" />
     <Compile Include="ViewModels\SkillBookViewModel.cs" />
     <Compile Include="ViewModels\SkillViewModel.cs" />

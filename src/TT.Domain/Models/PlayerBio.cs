@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using TT.Domain.Procedures;
 
 namespace TT.Domain.Models
 {
@@ -14,6 +15,5 @@ namespace TT.Domain.Models
         public string OtherNames { get; set; }
         public string Tags { get; set; }
         public DateTime Timestamp { get; set; }
-
     }
 }

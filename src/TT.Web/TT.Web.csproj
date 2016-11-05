@@ -285,7 +285,6 @@
     <Content Include="Content\custom.min.css">
       <DependentUpon>custom.css</DependentUpon>
     </Content>
-    <Content Include="Content\MMO.css" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\TransformaniaTimeController.cs" />
@@ -304,7 +303,6 @@
     <Content Include="Schema\PopulateBotId.sql" />
     <Content Include="Schema\RemoveOldIndexes.sql" />
     <Content Include="Schema\SimpleMembershipToIdentityMigration.sql" />
-    <Content Include="Scripts\bombieGame.js" />
     <Content Include="Scripts\boxesResize.js" />
     <Content Include="Scripts\jquery.mobile.custom.js" />
     <Content Include="Scripts\jquery.mobile.custom.min.js" />

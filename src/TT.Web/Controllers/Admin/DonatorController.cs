@@ -40,7 +40,7 @@ namespace TT.Web.Controllers.Admin
             }
             catch (DomainException e)
             {
-                TempData["Error"] = "Error: " + e.InnerException;
+                TempData["Error"] = "Error: " + e.Message;
             }
             
             return RedirectToAction("List");
@@ -71,7 +71,7 @@ namespace TT.Web.Controllers.Admin
             }
             catch (DomainException e)
             {
-                TempData["Error"] = "Error: " + e.InnerException;
+                TempData["Error"] = "Error: " + e.Message;
             }
 
             return RedirectToAction("List");

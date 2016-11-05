@@ -57,9 +57,9 @@
             foreach (UserDonatorDetail d in Model)
             {
                 <tr style="background-color: @d.GetStyleColor()">
-                    <td>@d.Id</td>
-                    <td>@d.UserName</td>
-                    <td>@d.Donator.PatreonName</td>
+                    <td class="copyable" data-clipboard-text="@d.Id">@d.Id</td>
+                    <td class="copyable" data-clipboard-text="@d.UserName">@d.UserName</td>
+                    <td class="copyable" data-clipboard-text="@d.Donator.PatreonName">@d.Donator.PatreonName</td>
                     <td>@d.Donator.Tier</td>
                     <td>@d.Donator.ActualDonationAmount</td>
                     <td>@d.Donator.SpecialNotes</td>
@@ -87,4 +87,13 @@
     $('#donatorTable').dataTable({
         "lengthMenu": [[50, 100, 200, -1], [50, 100, 200, "All"]]
     });
+
+    $.getScript("https://cdn.jsdelivr.net/clipboard.js/1.5.12/clipboard.min.js")
+        .done(function () {
+            new Clipboard('.copyable');
+        })
+        .fail(function () {
+            alert("Failed to load clipboard.");
+        });
+
 </script>

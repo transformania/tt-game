@@ -3480,6 +3480,11 @@ namespace TT.Web.Controllers
             {
                 var output = DomainRegistry.Repository.Execute(new TakeBus {playerId = me.Id, destination = destination});
                 TempData["Result"] = output;
+
+                new Thread(() =>
+                    StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__BusRides, 1)
+                ).Start();
+
                 return RedirectToAction("Play");
             }
             catch (DomainException e)

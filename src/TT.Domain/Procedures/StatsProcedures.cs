@@ -87,6 +87,9 @@ namespace TT.Domain.Procedures
         public const string Stat__QuestsFailed = "quests_failed";
         public const string Stat__QuestsPassed = "quests_passed";
 
+        // Buses
+        public const string Stat__BusRides = "busrides";
+
         public static Dictionary<string, StatsDetailsMap> StatTypesMap = new Dictionary<string, StatsDetailsMap> {
            
         {
@@ -502,6 +505,17 @@ namespace TT.Domain.Procedures
                         ImageUrl="trophy.jpg",
                         Active = true,
                         ResetsOnReroll = true
+                        }
+                },
+
+                {
+                Stat__BusRides,
+                    new StatsDetailsMap{
+                        FriendlyName="The Wheels on the Bus",
+                        Description="Times riding the bus",
+                        ImageUrl="trophy.jpg",
+                        Active = true,
+                        ResetsOnReroll = false
                         }
                 },
 

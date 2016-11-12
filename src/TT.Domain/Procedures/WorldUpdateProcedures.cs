@@ -9,6 +9,7 @@ using TT.Domain.Commands.Players;
 using TT.Domain.Concrete;
 using TT.Domain.Models;
 using TT.Domain.Procedures.BossProcedures;
+using TT.Domain.Queries.Game;
 using TT.Domain.Statics;
 using TT.Domain.Utilities;
 using TT.Domain.ViewModels;
@@ -56,7 +57,7 @@ namespace TT.Domain.Procedures
 
         private static void UpdateWorld(CancellationToken ct)
         {
-            PvPWorldStat worldStats = PvPWorldStatProcedures.GetWorldStats();
+            var worldStats = DomainRegistry.Repository.FindSingle(new GetWorld());
 
             int turnNo = worldStats.TurnNumber;
             PvPStatics.LastGameTurn = turnNo;

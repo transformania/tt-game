@@ -23,28 +23,6 @@ namespace TT.Domain.Procedures
             worldStatRepo.SavePvPWorldStat(stat);
         }
 
-        public static void UpdateWorldTurnCounter()
-        {
-            IPvPWorldStatRepository worldStatRepo = new EFPvPWorldStatRepository();
-
-            PvPWorldStat stat = worldStatRepo.PvPWorldStats.FirstOrDefault();
-     
-            if (stat == null) {
-                stat = new PvPWorldStat
-                {
-                    TurnNumber = 0,
-                    Boss_DonnaActive = false,
-                    Boss_Donna = "unstarted", // "unstarted", "active", or "completed"
-                };
-            }
-            stat.TurnNumber++;
-            stat.WorldIsUpdating = true;
-            stat.LastUpdateTimestamp = DateTime.UtcNow;
-
-            worldStatRepo.SavePvPWorldStat(stat);
-
-        }
-
         public static void UpdateWorldTurnCounter_UpdateDone()
         {
             IPvPWorldStatRepository worldStatRepo = new EFPvPWorldStatRepository();

@@ -96,6 +96,16 @@ namespace TT.Tests.Domain.Commands.Players
         }
 
         [Test]
+        public void Should_throw_exception_if_destination_is_same_as_origin()
+        {
+
+            var cmd = new TakeBus { playerId = player.Id, destination = player.Location};
+            var action = new Action(() => { Repository.Execute(cmd); });
+
+            action.ShouldThrowExactly<DomainException>().WithMessage("You can't take the bus to the location you're already at.");
+        }
+
+        [Test]
         public void Should_throw_exception_if_player_in_recent_combat()
         {
 
@@ -229,7 +239,7 @@ namespace TT.Tests.Domain.Commands.Players
                 .With(p => p.LastCombatTimestamp, DateTime.UtcNow.AddHours(-3))
                 .BuildAndSave();
 
-            var cmd = new TakeBus { playerId = player.Id, destination = LocationsStatics.STREET_160_SUNNYGLADE_DRIVE };
+            var cmd = new TakeBus { playerId = player.Id, destination = LocationsStatics.STREET_230_SUNNYGLADE_DRIVE };
             var action = new Action(() => { Repository.Execute(cmd); });
 
             action.ShouldThrowExactly<DomainException>().WithMessage("You don't have enough AP to take the bus.");

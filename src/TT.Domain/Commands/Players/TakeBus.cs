@@ -41,6 +41,9 @@ namespace TT.Domain.Commands.Players
                 if (!LocationsStatics.BusStops.Contains(destinationLocation.dbName))
                     throw new DomainException("Your destination is not a valid bus stop.");
 
+                if (originLocation.dbName == destinationLocation.dbName)
+                    throw new DomainException("You can't take the bus to the location you're already at.");
+
                 if (DateTime.UtcNow.Subtract(player.LastCombatTimestamp).TotalMinutes<15)
                     throw new DomainException("You have been in combat too recently to take a bus.");
 
@@ -71,6 +74,7 @@ namespace TT.Domain.Commands.Players
                 player.AddLog(output, false);
                 player.ChangeMoney(-ticketPrice);
                 player.ChangeActionPoints(-3);
+                player.SetOnlineActivityToNow();
 
                 var originLocationLog = LocationLog.Create(originLocation.dbName, $"{player.GetFullName()} got on a bus headed toward {destinationLocation.Name}.", 0);
                 var destinationLocationLog = LocationLog.Create(destinationLocation.dbName, $"{player.GetFullName()} arrived via bus from {originLocation.Name}.", 0);

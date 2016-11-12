@@ -224,6 +224,11 @@ namespace TT.Domain.Entities.Players
             this.ActionPoints += amount;
         }
 
+        public void SetOnlineActivityToNow()
+        {
+            this.LastActionTimestamp = DateTime.UtcNow;
+        }
+
         private float GetManaBaseByLevel(int level)
         {
             float manaBase = 5 * (level - 1) + 50;

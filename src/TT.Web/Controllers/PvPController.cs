@@ -28,6 +28,7 @@ using FeatureSwitch;
 using Recaptcha.Web;
 using Recaptcha.Web.Mvc;
 using TT.Domain.Commands.Players;
+using TT.Domain.Queries.Game;
 using TT.Domain.Queries.Players;
 
 namespace TT.Web.Controllers
@@ -93,30 +94,30 @@ namespace TT.Web.Controllers
                 PlayerProcedures.MarkOnlineActivityTimestamp(me);
             }
 
-            PvPWorldStat WorldStat = PvPWorldStatProcedures.GetWorldStats();
+            var world = DomainRegistry.Repository.FindSingle(new GetWorld());
 
 
             ViewBag.UpdateInProgress = false;
 
-            double secondsSinceUpdate = Math.Abs(Math.Floor(WorldStat.LastUpdateTimestamp.Subtract(DateTime.UtcNow).TotalSeconds));
+            double secondsSinceUpdate = Math.Abs(Math.Floor(world.LastUpdateTimestamp.Subtract(DateTime.UtcNow).TotalSeconds));
             ViewBag.SecondsUntilUpdate = PvPStatics.TurnSecondLength-(int)secondsSinceUpdate;
 
             // if it has been long enough since last update, force an update to occur
-            if (WorldStat.TurnNumber < PvPStatics.RoundDuration
+            if (world.TurnNumber < PvPStatics.RoundDuration
                 && secondsSinceUpdate > PvPStatics.TurnSecondLength
-                && !WorldStat.WorldIsUpdating)
+                && !world.WorldIsUpdating)
             {
                 HostingEnvironment.QueueBackgroundWorkItem(ct => WorldUpdateProcedures.UpdateWorldIfReady(ct));
             }
 
             // turn off world update toggle if it's simply been too long
-            if (secondsSinceUpdate > 90 && (PvPStatics.AnimateUpdateInProgress || WorldStat.WorldIsUpdating))
+            if (secondsSinceUpdate > 90 && (PvPStatics.AnimateUpdateInProgress || world.WorldIsUpdating))
             {
                 PvPStatics.AnimateUpdateInProgress = false;
                 PvPWorldStatProcedures.StopUpdatingWorld();
             }
 
-            if (WorldStat.WorldIsUpdating && secondsSinceUpdate < 90)
+            if (world.WorldIsUpdating && secondsSinceUpdate < 90)
             {
                 ViewBag.UpdateInProgress = true;
             }
@@ -124,9 +125,9 @@ namespace TT.Web.Controllers
 
 
             // load the update date into memory
-            PvPStatics.LastGameUpdate = WorldStat.GameNewsDate;
+            PvPStatics.LastGameUpdate = world.GameNewsDate;
 
-            ViewBag.WorldTurnNumber = WorldStat.TurnNumber;
+            ViewBag.WorldTurnNumber = world.TurnNumber;
 
             // set viewbag to show offline players is the link has been clicked
             if (TempData["ShowOffline"] != null)
@@ -158,10 +159,10 @@ namespace TT.Web.Controllers
                 inanimateOutput.RenderCaptcha = renderCaptcha;
                 
 
-                inanimateOutput.LastUpdateTimestamp = WorldStat.LastUpdateTimestamp;
+                inanimateOutput.LastUpdateTimestamp = world.LastUpdateTimestamp;
 
                 inanimateOutput.WorldStats = PlayerProcedures.GetWorldPlayerStats();
-                inanimateOutput.PvPWorldStat = WorldStat;
+                inanimateOutput.World = world;
 
                 inanimateOutput.Player = me;
                 inanimateOutput.Form = FormStatics.GetForm(me.Form);
@@ -223,7 +224,7 @@ namespace TT.Web.Controllers
             {
                 AnimalPlayPageViewModel animalOutput = new AnimalPlayPageViewModel();
                 animalOutput.You = me;
-                animalOutput.PvPWorldStat = WorldStat;
+                animalOutput.World = world;
                 animalOutput.RenderCaptcha = renderCaptcha;
 
                 animalOutput.Form = FormStatics.GetForm(me.Form);
@@ -268,7 +269,7 @@ namespace TT.Web.Controllers
 
                 animalOutput.PlayersHere = PlayerProcedures.GetPlayerFormViewModelsAtLocation(animalOutput.Location.dbName, myMembershipId).Where(p => p.Form.MobilityType == PvPStatics.MobilityFull);
 
-                animalOutput.LastUpdateTimestamp = WorldStat.LastUpdateTimestamp;
+                animalOutput.LastUpdateTimestamp = world.LastUpdateTimestamp;
 
                 animalOutput.NewMessageCount = DomainRegistry.Repository.FindSingle(new GetUnreadMessageCountByPlayer { OwnerId = me.Id });
 
@@ -285,7 +286,7 @@ namespace TT.Web.Controllers
             PlayPageViewModel output = new PlayPageViewModel();
             
 
-            output.PvPWorldStat = WorldStat;
+            output.World = world;
 
             loadtime += "Before loading buffs:  " + updateTimer.ElapsedMilliseconds.ToString() + "<br>";
             BuffBox myBuffs = ItemProcedures.GetPlayerBuffs(me);

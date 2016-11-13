@@ -7,6 +7,7 @@ using TT.Domain.Commands.Skills;
 using TT.Domain.Concrete;
 using TT.Domain.Models;
 using TT.Domain.Procedures.BossProcedures;
+using TT.Domain.Queries.Game;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 
@@ -991,11 +992,10 @@ namespace TT.Domain.Procedures
                 // check and see if any other boss events are active
                 if (!PvPWorldStatProcedures.IsAnyBossActive())
                 {
-                    PvPWorldStat worldStats = PvPWorldStatProcedures.GetWorldStats();
-                    BossSummon bossSummon = BossSummonDictionary.GlobalBossSummonDictionary[dbLocationName];
+                    var world = DomainRegistry.Repository.FindSingle(new GetWorld());
                     if (roll < 1 && dbLocationName == "ranch_bedroom")
                     {
-                        if (worldStats.IsDonnaAvailable())
+                        if (world.IsDonnaAvailable())
                         {
                             BossProcedures_Donna.SpawnDonna();
                             PvPWorldStatProcedures.Boss_StartDonna();
@@ -1007,7 +1007,7 @@ namespace TT.Domain.Procedures
                     }
                     else if (roll < 1 && dbLocationName == "castle_armory")
                     {
-                        if (worldStats.IsValentineAvailable())
+                        if (world.IsValentineAvailable())
                         {
                             BossProcedures_Valentine.SpawnValentine();
                             PvPWorldStatProcedures.Boss_StartValentine();
@@ -1018,7 +1018,7 @@ namespace TT.Domain.Procedures
                     }
                     else if (roll < 1 && dbLocationName == "stripclub_bar_seats")
                     {
-                        if (worldStats.IsBimboAvailable())
+                        if (world.IsBimboAvailable())
                         {
                             BossProcedures_BimboBoss.SpawnBimboBoss();
                             PvPWorldStatProcedures.Boss_StartBimbo();
@@ -1029,7 +1029,7 @@ namespace TT.Domain.Procedures
                     }
                     else if (roll < 1 && dbLocationName == "tavern_pool")
                     {
-                        if (worldStats.IsTheifAvailable())
+                        if (world.IsTheifAvailable())
                         {
                             BossProcedures_Thieves.SpawnThieves();
                             PvPWorldStatProcedures.Boss_StartThieves();
@@ -1040,7 +1040,7 @@ namespace TT.Domain.Procedures
                     }
                     else if (roll < 1 && dbLocationName == "college_foyer")
                     {
-                        if (worldStats.IsSistersAvailable())
+                        if (world.IsSistersAvailable())
                         {
                             BossProcedures_Sisters.SpawnSisters();
                             PvPWorldStatProcedures.Boss_StartSisters();
@@ -1051,7 +1051,7 @@ namespace TT.Domain.Procedures
                     }
                     else if (roll < 1 && dbLocationName == BossProcedures_FaeBoss.SpawnLocation)
                     {
-                        if (worldStats.IsFaeBossAvailable())
+                        if (world.IsFaeBossAvailable())
                         {
                             BossProcedures_FaeBoss.SpawnFaeBoss();
                             PvPWorldStatProcedures.Boss_StartFaeBoss();

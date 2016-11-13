@@ -6,10 +6,12 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Owin;
+using TT.Domain;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
 using TT.Domain.Models;
 using TT.Domain.Procedures;
+using TT.Domain.Queries.Game;
 using TT.Domain.Statics;
 using TT.Web;
 using TT.Web.Models;
@@ -57,6 +59,7 @@ namespace TT.Web
             PvPWorldStat data = repo.PvPWorldStats.FirstOrDefault();
             PvPStatics.ChaosMode = data != null ? data.ChaosMode : false;
             PvPStatics.RoundDuration = data != null ? data.RoundDuration : 5000;
+            PvPStatics.AlphaRound = DomainRegistry.Repository.FindSingle(new GetWorld()).RoundNumber;
         }
     }
 }

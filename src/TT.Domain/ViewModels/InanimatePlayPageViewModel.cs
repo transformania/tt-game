@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TT.Domain.DTOs.Game;
 using TT.Domain.DTOs.Item;
 using TT.Domain.DTOs.LocationLog;
 using TT.Domain.Models;
@@ -24,7 +25,7 @@ namespace TT.Domain.ViewModels
 
         public WorldStats WorldStats { get; set; }
 
-        public PvPWorldStat PvPWorldStat { get; set; }
+        public WorldDetail World { get; set; }
 
         public DateTime LastUpdateTimestamp { get; set; }
         public bool RenderCaptcha { get; set; }

@@ -260,6 +260,7 @@
     <Compile Include="DomainContext.cs" />
     <Compile Include="DTOs\BaseDTO.cs" />
     <Compile Include="DTOs\Forms\TFMessageDetail.cs" />
+    <Compile Include="DTOs\Game\WorldDetail.cs" />
     <Compile Include="DTOs\Identity\CaptchaEntryDetail.cs" />
     <Compile Include="DTOs\Identity\DonatorDetail.cs" />
     <Compile Include="DTOs\Identity\UserDonatorDetail.cs" />
@@ -268,6 +269,7 @@
     <Compile Include="DTOs\Players\PlayerBusDetail.cs" />
     <Compile Include="DTOs\TFEnergies\TFEnergyDetail.cs" />
     <Compile Include="Entities\Forms\TFMessage.cs" />
+    <Compile Include="Entities\Game\World.cs" />
     <Compile Include="Entities\Identity\CaptchaEntry.cs" />
     <Compile Include="Entities\Identity\Donator.cs" />
     <Compile Include="Entities\TFEnergies\TFEnergy.cs" />
@@ -336,6 +338,7 @@
     <Compile Include="Mappings\Effects\EffectMappings.cs" />
     <Compile Include="Mappings\EntityMappings.cs" />
     <Compile Include="Mappings\Forms\FormMappings.cs" />
+    <Compile Include="Mappings\Game\GameMappings.cs" />
     <Compile Include="Mappings\Identity\CaptchaEntryMappings.cs" />
     <Compile Include="Mappings\Identity\DonatorMappings.cs" />
     <Compile Include="Mappings\Identity\IdentityMappings.cs" />
@@ -459,6 +462,7 @@
     <Compile Include="Queries\Assets\GetTomes.cs" />
     <Compile Include="Queries\Chat\GetChatRooms.cs" />
     <Compile Include="Queries\DMRoll\GetRoll.cs" />
+    <Compile Include="Queries\Game\GetPvPWorldStats.cs" />
     <Compile Include="Queries\Identity\GetCaptchaEntry.cs" />
     <Compile Include="Queries\Identity\GetUserDonator.cs" />
     <Compile Include="Queries\Identity\GetUserDonators.cs" />

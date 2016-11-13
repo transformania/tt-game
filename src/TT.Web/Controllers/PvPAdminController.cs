@@ -17,6 +17,7 @@ using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 using TT.Domain.Commands.RPClassifiedAds;
 using TT.Domain.Exceptions.RPClassifiedAds;
+using TT.Domain.Queries.Game;
 
 namespace TT.Web.Controllers
 {
@@ -1267,8 +1268,8 @@ namespace TT.Web.Controllers
             if (User.IsInRole(PvPStatics.Permissions_Admin) || User.IsInRole(PvPStatics.Permissions_Chaoslord))
             {
 
-                PvPWorldStat stats = PvPWorldStatProcedures.GetWorldStats();
-                if (!PvPStatics.ChaosMode && !stats.TestServer)
+                var world = DomainRegistry.Repository.FindSingle(new GetWorld());
+                if (!PvPStatics.ChaosMode && !world.TestServer)
                 {
                     TempData["Error"] = "The rename tool only works in chaos mode.";
                     return RedirectToAction("Play", "PvP");
@@ -1301,8 +1302,8 @@ namespace TT.Web.Controllers
             if (User.IsInRole(PvPStatics.Permissions_Admin) || User.IsInRole(PvPStatics.Permissions_Chaoslord))
             {
 
-                PvPWorldStat stats = PvPWorldStatProcedures.GetWorldStats();
-                if (!PvPStatics.ChaosMode && !stats.TestServer)
+                var world = DomainRegistry.Repository.FindSingle(new GetWorld());
+                if (!PvPStatics.ChaosMode && !world.TestServer)
                 {
                     TempData["Error"] = "The rename tool only works in chaos mode.";
                     return RedirectToAction("Play", "PvP");
@@ -1450,8 +1451,8 @@ namespace TT.Web.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
-            PvPWorldStat stats = PvPWorldStatProcedures.GetWorldStats();
-            if (!stats.TestServer && !PvPStatics.ChaosMode)
+            var world = DomainRegistry.Repository.FindSingle(new GetWorld());
+            if (!world.TestServer && !PvPStatics.ChaosMode)
             {
                 TempData["Error"] = "Cant' do this in live non-chaos server.";
                 return RedirectToAction("Play", "PvP");
@@ -1502,8 +1503,8 @@ namespace TT.Web.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
-            PvPWorldStat stats = PvPWorldStatProcedures.GetWorldStats();
-            if (!stats.TestServer && !PvPStatics.ChaosMode)
+            var world = DomainRegistry.Repository.FindSingle(new GetWorld());
+            if (!world.TestServer && !PvPStatics.ChaosMode)
             {
                 TempData["Error"] = "Cant' do this in live non-chaos server.";
                 return RedirectToAction("Play", "PvP");
@@ -1553,8 +1554,8 @@ namespace TT.Web.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
-            PvPWorldStat stats = PvPWorldStatProcedures.GetWorldStats();
-            if (!stats.TestServer && !PvPStatics.ChaosMode)
+            var world = DomainRegistry.Repository.FindSingle(new GetWorld());
+            if (!world.TestServer && !PvPStatics.ChaosMode)
             {
                 TempData["Error"] = "Cant' do this in live non-chaos server.";
                 return RedirectToAction("Play", "PvP");

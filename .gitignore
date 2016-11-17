@@ -202,6 +202,8 @@ MachineKey.config
 ConnectionStrings.config
 AppSettings.config
 src/TT.Web/Images/PvP/
+custom.css
+custom.min.css
 
 # Tools
 tools

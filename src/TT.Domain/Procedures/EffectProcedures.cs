@@ -101,12 +101,6 @@ namespace TT.Domain.Procedures
 
         }
 
-        public static IEnumerable<Effect> GetPlayerEffects_EffectOnly(int playerId)
-        {
-            IEffectRepository effectRepo = new EFEffectRepository();
-            return effectRepo.Effects.Where(e => e.OwnerId == playerId);
-        }
-
         public static List<DbStaticEffect> GetAvailableLevelupPerks(Player player)
         {
             IEffectRepository effectRepo = new EFEffectRepository();
@@ -269,7 +263,6 @@ namespace TT.Domain.Procedures
             effectRepo.DeleteEffect(effect.Id);
         }
 
-
         public static void SetPerkDurationToZero(string perkName, Player player)
         {
             IEffectRepository effectRepo = new EFEffectRepository();
@@ -290,30 +283,6 @@ namespace TT.Domain.Procedures
                 effectRepo.DeleteEffect(e.Id);
             }
         }
-
-        //public static IEnumerable<EffectViewModel> GetPlayerEffectViewModels(Player player)
-        //{
-
-        //    IEffectRepository effectRepo = new EFEffectRepository();
-        //    IEnumerable<Effect> playerdbEffects = effectRepo.Effects.Where(e => e.OwnerId == player.Id);
-
-        //    List<EffectViewModel> playerEffects = new List<EffectViewModel>();
-
-
-        //    foreach (Effect effect in playerdbEffects)
-        //    {
-        //        EffectViewModel addme = new EffectViewModel
-        //        {
-        //            Effect = EffectStatics.GetStaticEffect.FirstOrDefault(e => e.dbName == effect.dbName),
-        //            dbEffect = effect
-
-        //        };
-        //        playerEffects.Add(addme);
-        //    }
-
-        //    return playerEffects;
-
-        //}
 
         public static bool PlayerHasEffect(Player player, string effectName)
         {

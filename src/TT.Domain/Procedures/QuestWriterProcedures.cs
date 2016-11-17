@@ -132,7 +132,6 @@ namespace TT.Domain.Procedures
 
         }
 
-
         public static int SaveQuestConnection(QuestConnection input)
         {
             IQuestRepository repo = new EFQuestRepository();
@@ -282,19 +281,6 @@ namespace TT.Domain.Procedures
             }
 
             repo.DeleteQuestConnection(id);
-        }
-
-        public static void AddQuestWriterLog(string writer, string message)
-        {
-            IQuestRepository repo = new EFQuestRepository();
-            QuestWriterLog log = new QuestWriterLog
-            {
-                Timestamp = DateTime.UtcNow,
-                Text = message,
-                User = writer
-
-            };
-            repo.SaveQuestWriterLog(log);
         }
 
         public static void MarkQuestAsLive(int Id, bool live)

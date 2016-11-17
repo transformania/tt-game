@@ -60,32 +60,11 @@ namespace TT.Domain.Procedures
             return dbQuestConnection;
         }
 
-        public static IEnumerable<QuestConnection> GetConnectionsFromQuestState(int questStateId)
-        {
-            IQuestRepository repo = new EFQuestRepository();
-
-            return repo.QuestConnections.Where(q => q.QuestStateFromId == questStateId);
-        }
-
-        public static IEnumerable<QuestConnection> GetConnectionsToQuestState(int questStateId)
-        {
-            IQuestRepository repo = new EFQuestRepository();
-
-            return repo.QuestConnections.Where(q => q.QuestStateToId == questStateId);
-        }
-
         public static IEnumerable<QuestConnection> GetChildQuestConnections(int Id)
         {
             IQuestRepository repo = new EFQuestRepository();
 
             return repo.QuestConnections.Where(q => q.QuestStateFromId == Id);
-        }
-
-        public static bool PlayerCanBeginQuest(Player player, QuestStart questStart, int gameWorldTurn)
-        {
-            IQuestRepository repo = new EFQuestRepository();
-            IEnumerable<QuestPlayerStatus> questPlayerStatuses = repo.QuestPlayerStatuses.Where(q => q.PlayerId == player.Id);
-            return PlayerCanBeginQuest(player, questStart, questPlayerStatuses, gameWorldTurn);
         }
 
         public static bool PlayerCanBeginQuest(Player player, QuestStart questStart, IEnumerable<QuestPlayerStatus> questPlayerStatuses, int gameWorldTurn)
@@ -778,12 +757,6 @@ namespace TT.Domain.Procedures
             variable.VariableValue = endValueAsFloat.ToString();
 
             repo.SaveQuestPlayerVariable(variable);
-        }
-
-        public static QuestPlayerVariable GetQuestPlayerVariable(int questId, int playerId, string variableName)
-        {
-            IQuestRepository repo = new EFQuestRepository();
-            return repo.QuestPlayerVariablees.FirstOrDefault(v => v.PlayerId == playerId && v.QuestId == questId && v.VariableName == variableName);
         }
 
         /// <summary>

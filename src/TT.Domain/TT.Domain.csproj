@@ -440,7 +440,6 @@
     <Compile Include="Procedures\MessageProcedures.cs" />
     <Compile Include="Procedures\MindControlProcedures.cs" />
     <Compile Include="Procedures\Pathfinding.cs" />
-    <Compile Include="Procedures\PlayerExtraProcedures.cs" />
     <Compile Include="Procedures\PlayerLogProcedures.cs" />
     <Compile Include="Procedures\PlayerProcedures.cs" />
     <Compile Include="Procedures\PvPWorldStatProcedures.cs" />

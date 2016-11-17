@@ -14,24 +14,6 @@ namespace TT.Domain.Procedures
     public static class InanimateXPProcedures
     {
 
-        public static void MakeInanimateXP(Player player)
-        {
-            IInanimateXPRepository inanimXpRepo = new EFInanimateXPRepository();
-            decimal struggle = -12 * player.Level;
-
-            InanimateXP makeme = new InanimateXP
-            {
-                Amount = 0,
-                LastActionTimestamp = DateTime.UtcNow,
-                LastActionTurnstamp = PvPWorldStatProcedures.GetWorldTurnNumber(),
-                TimesStruggled = Convert.ToInt32(struggle),
-                OwnerId = player.Id,
-            };
-
-            inanimXpRepo.SaveInanimateXP(makeme);
-
-        }
-
         public static decimal GetStruggleChance(Player player)
         {
             IInanimateXPRepository inanimXpRepo = new EFInanimateXPRepository();

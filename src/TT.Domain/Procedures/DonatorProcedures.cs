@@ -7,17 +7,6 @@ namespace TT.Domain.Procedures
 {
     public static class DonatorProcedures
     {
-        public static bool DonatorGetsIcon(Player player)
-        {
-            if (player.DonatorLevel >= 1)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
 
         public static bool DonatorGetsNickname(Player player)
         {
@@ -34,18 +23,6 @@ namespace TT.Domain.Procedures
         public static bool DonatorGetsMessagesRewards(Player player)
         {
             if (player.DonatorLevel >= 3)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        public static bool EitherPlayersAreDonatorsOfTier(Player one, Player two, int tier)
-        {
-            if (one.DonatorLevel >= tier || two.DonatorLevel >= tier)
             {
                 return true;
             }

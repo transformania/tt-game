@@ -77,8 +77,6 @@ namespace TT.Domain.Procedures
             return furnRepo.Furnitures.FirstOrDefault(f => f.Id == id);
         }
 
-
-
         public static void AddNewFurnitureToMarket(int count)
         {
             var furnRepo = new EFFurnitureRepository();
@@ -140,21 +138,6 @@ namespace TT.Domain.Procedures
 
             string message = "The leader of the covenant has purchased the furniture contract for " + dbFurniture.HumanName + ".";
             CovenantProcedures.WriteCovenantLog(message, covenant.Id, true);
-
-        }
-
-        public static bool FurnitureIsAvailable(Furniture_VM furniture)
-        {
-            double minutesSinceLastUse = Math.Abs(Math.Floor(furniture.LastUseTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
-
-            if (minutesSinceLastUse > 0)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
 
         }
 
@@ -253,21 +236,6 @@ namespace TT.Domain.Procedures
 
 
             return 1;
-        }
-
-        public static void MoveExpiredFurnitureBackToMarket()
-        {
-            int turn = PvPWorldStatProcedures.GetWorldTurnNumber();
-            IFurnitureRepository furnRepo = new EFFurnitureRepository();
-            IEnumerable<Furniture> furnitureToMove = furnRepo.Furnitures.Where(f => f.CovenantId > 0 && f.ContractEndTurn < turn).ToList();
-
-            foreach (Furniture furniture in furnitureToMove) {
-                string covlog = furniture.HumanName + " has been returned to the market as their contract has expired.";
-                CovenantProcedures.WriteCovenantLog(covlog, furniture.CovenantId, false);
-                furniture.CovenantId = -1;
-                furnRepo.SaveFurniture(furniture);
-            }
-
         }
 
     }

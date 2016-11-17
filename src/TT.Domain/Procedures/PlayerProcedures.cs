@@ -1193,44 +1193,6 @@ namespace TT.Domain.Procedures
 
         }
 
-        public static void ChangeMaxHealthMana(int playerId, decimal extraHealthMax, decimal extraManaMax) {
-            IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player player = playerRepo.Players.FirstOrDefault(p => p.Id == playerId);
-            player.MaxHealth += extraHealthMax;
-            player.MaxMana += extraManaMax;
-
-            if (player.Health > player.MaxHealth) {
-                player.Health = player.MaxHealth;
-            }
-
-            if (player.Mana > player.MaxMana)
-            {
-                player.Mana = player.MaxMana;
-            }
-
-            if (player.Health < 0)
-            {
-                player.Health = 0;
-            }
-
-            if (player.Mana < 0)
-            {
-                player.Mana = 0;
-            }
-
-            if (player.MaxHealth < 5)
-            {
-                player.MaxHealth = 5;
-            }
-
-            if (player.MaxMana < 5)
-            {
-                player.MaxMana = 5;
-            }
-
-            playerRepo.SavePlayer(player);
-        }
-
         public static WorldStats GetWorldPlayerStats()
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
@@ -1282,7 +1244,6 @@ namespace TT.Domain.Procedures
             float willpowerBase = 15 * (level - 1) + 100;
             return willpowerBase;
         }
-
 
         /// <summary>
         /// Assign a player XP and calculate whether or not they should level up
@@ -1478,19 +1439,6 @@ namespace TT.Domain.Procedures
             {
                 return false;
             }
-        }
-
-
-        public static IEnumerable<Player> GetPlayersWithFirstNameOf(string firstname)
-        {
-            IPlayerRepository playerRepo = new EFPlayerRepository();
-            return playerRepo.Players.Where(p => p.FirstName == firstname);
-        }
-
-        public static IEnumerable<Player> GetPlayersWithLastNameOf(string lastname)
-        {
-            IPlayerRepository playerRepo = new EFPlayerRepository();
-            return playerRepo.Players.Where(p => p.LastName == lastname);
         }
 
         public static Player GetPlayerWithExactName(string fullname)
@@ -1900,17 +1848,6 @@ namespace TT.Domain.Procedures
             Player me = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
             me.ChatColor = color;
             playerRepo.SavePlayer(me);
-        }
-
-        public static void ResetAllPlayersWithIPAddress(string ipAddress)
-        {
-            IPlayerRepository playerRepo = new EFPlayerRepository();
-            List<Player> players = playerRepo.Players.Where(p => p.IpAddress == ipAddress).ToList();
-            foreach (Player p in players)
-            {
-                p.IpAddress = "reset";
-                playerRepo.SavePlayer(p);
-            }
         }
 
         public static void EnterDuel(int playerId, int duelId)

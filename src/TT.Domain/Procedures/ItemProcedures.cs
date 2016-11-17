@@ -792,8 +792,6 @@ namespace TT.Domain.Procedures
             return output;
         }
 
-       
-
         public static PlayerFormViewModel BeingWornBy(Player player)
         {
             IItemRepository itemRepo = new EFItemRepository();

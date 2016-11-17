@@ -7,12 +7,6 @@ using TT.Domain.ViewModels;
 
 namespace TT.Domain.Procedures
 {
-    public class Pathfinding
-    {
-
-        // covert all locations into their reduced forms
-
-    }
 
     public class LocationNode
     {
@@ -94,9 +88,6 @@ namespace TT.Domain.Procedures
             }
         }
 
-
-
-
         public void CalculateH(LocationNode finish)
         {
             this.H = Math.Abs(this.X - finish.X) + Math.Abs(this.Y - finish.Y);
@@ -105,7 +96,6 @@ namespace TT.Domain.Procedures
 
     public static class PathfindingProcedures
     {
-
 
         public static string GetMovementPath(Location start, Location end)
         {

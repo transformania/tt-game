@@ -38,29 +38,6 @@ namespace TT.Domain.Procedures
             return friendRepo.Friends.FirstOrDefault(f => f.Id == friendId);
         }
 
-        public static string DeleteFriend(int friendId, string membershipId)
-        {
-            IFriendRepository friendRepo = new EFFriendRepository();
-
-
-            Friend deleteMe = friendRepo.Friends.FirstOrDefault(f => f.Id == friendId);
-
-            if (deleteMe == null)
-            {
-                return "Friendship not found.";
-            }
-
-            //assert friend is yours
-            if (deleteMe.OwnerMembershipId != membershipId)
-            {
-                return "This is not your friend listing.";
-            }
-
-            friendRepo.DeleteFriend(friendId);
-            return "Deleted";
-
-        }
-
         public static bool PlayerIsMyFriend(Player me, Player them)
         {
             return MemberIsMyFriend(me.MembershipId, them.MembershipId);

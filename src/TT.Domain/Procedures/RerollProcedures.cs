@@ -8,33 +8,6 @@ using TT.Domain.Statics;
 namespace TT.Domain.Procedures
 {
     public class RerollProcedures {
-        public static bool CheckRerollOk(Player player)
-        {
-            IRerollRepository RerollRepo = new EFRerollRepository();
-            Reroll playerReroll = RerollRepo.Rerolls.Where(r => r.MembershipId == player.MembershipId).FirstOrDefault();
-            if (playerReroll == null)
-            {
-                // It's ok to reroll, they are a new first generation
-                return true;
-            }
-
-            int g = playerReroll.CharacterGeneration;
-            if (g >= PvPStatics.RerollTimer.Count()) g = PvPStatics.RerollTimer.Count()-1;
-            DateTime rerollTime = playerReroll.LastCharacterCreation.AddMinutes(PvPStatics.RerollTimer[g]);
-            if (rerollTime > DateTime.UtcNow)
-            {
-                // Reroll time has not passed. It's not ok for the player to Reroll.
-                return false;
-            }
-
-            // Rerolling is ok!
-            return true;
-        }
-
-        public static void AddRerollGeneration(Player player)
-        {
-            AddRerollGeneration(player.MembershipId);
-        }
 
         public static void AddRerollGeneration(string playerMembershipId)
         {

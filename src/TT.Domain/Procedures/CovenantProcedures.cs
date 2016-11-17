@@ -15,19 +15,6 @@ namespace TT.Domain.Procedures
     public static class CovenantProcedures
     {
 
-        public static bool PlayerIsInCovenant(Player player)
-        {
-            if (player.Covenant != -1)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-
-        }
-
         public static Covenant GetDbCovenant(int id)
         {
             ICovenantRepository covRepo = new EFCovenantRepository();
@@ -448,11 +435,6 @@ namespace TT.Domain.Procedures
             return covLogRepo.CovenantLogs.Where(l => l.CovenantId == covenantId).OrderByDescending(l => l.Timestamp).Take(100);
         }
 
-        public static void CleanOldCovenantLogs(int covenantId)
-        {
-
-        }
-
         public static decimal GetUpgradeCost(Covenant covenant)
         {
             return (covenant.Level) * 3000;
@@ -544,7 +526,6 @@ namespace TT.Domain.Procedures
             return covenant.Captains.Contains(idString);
 
         }
-
 
         public static string AttackLocation(Player player, BuffBox buffs)
         {

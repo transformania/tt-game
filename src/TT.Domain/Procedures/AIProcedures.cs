@@ -512,41 +512,6 @@ namespace TT.Domain.Procedures
 
         }
 
-        public static bool IsAntiBossSkill(string skillName, Player target)
-        {
-            bool isBoss = false;
-            if (target.BotId == AIStatics.ValentineBotId) // Fighting Valentine
-            {
-                isBoss = true;
-            }
-            else
-            {
-                return false;
-            }
-
-            bool isBossSkill = false;
-            if (skillName == "duel_valentine")
-            {
-                isBossSkill = true;
-            }
-            else
-            {
-                return false;
-            }
-
-            if (isBoss && isBossSkill)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-
-
-
-        }
-
         public static int GetPsychopathLevel(int turnNumber)
         {
 

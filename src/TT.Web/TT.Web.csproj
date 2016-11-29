@@ -256,6 +256,7 @@
     <Compile Include="Controllers\QuestWriterController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="CustomHtmlHelpers\CharactersHere.cs" />
+    <Compile Include="Extensions\HttpRequestExtensions.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Hubs\ChatHub.cs" />
     <Compile Include="Hubs\DuelHub.cs" />

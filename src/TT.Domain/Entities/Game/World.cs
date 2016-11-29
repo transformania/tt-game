@@ -26,5 +26,10 @@ namespace TT.Domain.Entities.Game
 
         protected World() { }
 
+        public void SetRoundNumber(string roundNumber)
+        {
+            this.RoundNumber = roundNumber;
+        }
+
     }
 }

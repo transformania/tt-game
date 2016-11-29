@@ -1,0 +1,58 @@
+﻿@using TT.Domain.Statics
+@model TT.Domain.DTOs.Game.WorldDetail
+
+<h1></h1><nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+                <li>...</li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+<div>
+    <p class="infoMessage result"></p>
+    <p class="infoMessage error"></p>
+    <p class="infoMessage suberror"></p>
+</div>
+
+
+<div class="containerInner">
+    <h1>Change Round Name/Number</h1>
+    <p>The name of the current round can be changed here. All statistics stats will be recorded under this round name/number so DO NOT CHANGE in the middle of the round or it will break achievements and statistics tracking!  Therefor this command is only availble in chaos mode at either turn 0 or the highest possible turn number.</p>
+
+    @using (Html.BeginForm("SendChangeRound", "PvPAdmin", FormMethod.Post))
+    {
+
+        if (!Model.ChaosMode)
+        {
+            <p class="bad">The game is not in chaos mode.</p>
+        }
+
+        if (Model.TurnNumber != 0 && Model.TurnNumber != PvPStatics.RoundDuration)
+        {
+            <p class="bad">The game is not in turn 0 or the maximum turn!</p>
+        }
+
+        @Html.AntiForgeryToken()
+
+        @Html.TextBoxFor(m => m.RoundNumber)<br/>
+
+        <br>
+        <input type="submit" class="btn btn-chat" value="Send" />
+    }
+
+</div>

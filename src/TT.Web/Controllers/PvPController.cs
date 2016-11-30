@@ -30,6 +30,7 @@ using Recaptcha.Web.Mvc;
 using TT.Domain.Commands.Players;
 using TT.Domain.Queries.Game;
 using TT.Domain.Queries.Players;
+using TT.Web.Extensions;
 
 namespace TT.Web.Controllers
 {
@@ -458,10 +459,10 @@ namespace TT.Web.Controllers
 
             bool iAmWhitelisted = User.IsInRole(PvPStatics.Permissions_MultiAccountWhitelist);
 
-            if (!iAmWhitelisted && player.InanimateForm == null && PlayerProcedures.IsMyIPInUseAndAnimate(Request.UserHostAddress))
+            if (!iAmWhitelisted && player.InanimateForm == null && PlayerProcedures.IsMyIPInUseAndAnimate(Request.GetRealUserHostAddress()))
             {
 
-                ViewBag.ErrorMessage = "Your character was not created.  It looks like your IP address, <b>" + Request.UserHostAddress + "</b> already has 1 animate character in this world, and the current limit is 1. ";
+                ViewBag.ErrorMessage = "Your character was not created.  It looks like your IP address, <b>" + Request.GetRealUserHostAddress() + "</b> already has 1 animate character in this world, and the current limit is 1. ";
                 return View("~/Views/PvP/MakeNewCharacter.cshtml");
             }
 
@@ -474,7 +475,7 @@ namespace TT.Web.Controllers
                 return View("~/Views/PvP/MakeNewCharacter.cshtml");
             }
 
-            PlayerProcedures.LogIP(Request.UserHostAddress, myMembershipId);
+            PlayerProcedures.LogIP(Request.GetRealUserHostAddress(), myMembershipId);
 
             return RedirectToAction("Play");
         }
@@ -531,7 +532,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction("Play");
             }
 
-            PlayerProcedures.LogIP(Request.UserHostAddress, myMembershipId);
+            PlayerProcedures.LogIP(Request.GetRealUserHostAddress(), myMembershipId);
 
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
@@ -718,7 +719,7 @@ namespace TT.Web.Controllers
                  return RedirectToAction("Play");
              }
 
-             PlayerProcedures.LogIP(Request.UserHostAddress, myMembershipId);
+             PlayerProcedures.LogIP(Request.GetRealUserHostAddress(), myMembershipId);
 
              Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
@@ -915,7 +916,7 @@ namespace TT.Web.Controllers
         public ActionResult Attack(int targetId, string attackName)
         {
             string myMembershipId = User.Identity.GetUserId();
-            PlayerProcedures.LogIP(Request.UserHostAddress, myMembershipId);
+            PlayerProcedures.LogIP(Request.GetRealUserHostAddress(), myMembershipId);
 
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
             LogBox logs = new LogBox();
@@ -996,7 +997,7 @@ namespace TT.Web.Controllers
             bool iAmWhitelisted = User.IsInRole(PvPStatics.Permissions_MultiAccountWhitelist);
 
             // assert player does not have more than 1 accounts already
-            if (!iAmWhitelisted && PlayerProcedures.IsMyIPInUseAndAnimate(Request.UserHostAddress, me))
+            if (!iAmWhitelisted && PlayerProcedures.IsMyIPInUseAndAnimate(Request.GetRealUserHostAddress(), me))
             {
                 TempData["Error"] = "This character looks like a multiple account, which is illegal.  This character will not be allowed to attack.";
                 TempData["SubError"] = "You can only have 1 animate character in PvP mode and 1 animate character in Protection mode at a time.  Read more about the rules regarding multiple accounts here:  http://luxianne.com/forum/viewtopic.php?f=5&t=449 .";
@@ -2490,7 +2491,7 @@ namespace TT.Web.Controllers
                 firstP = "You agitatedly zap a patch of your current owner, " + wearer.Player.GetFullName() + "'s skin.  " + pronoun + " loses a tiny amount of mana from your subtle but pesky gesture.";
             }
 
-            PlayerProcedures.LogIP(Request.UserHostAddress, myMembershipId);
+            PlayerProcedures.LogIP(Request.GetRealUserHostAddress(), myMembershipId);
             string leveluptext = InanimateXPProcedures.GiveInanimateXP(me.MembershipId, User.IsInRole(PvPStatics.Permissions_MultiAccountWhitelist));
 
             TempData["Result"] = firstP + leveluptext;
@@ -2592,7 +2593,7 @@ namespace TT.Web.Controllers
             }
 
             // all of our checks have passed, so now let's actually do the action
-            PlayerProcedures.LogIP(Request.UserHostAddress, myMembershipId);
+            PlayerProcedures.LogIP(Request.GetRealUserHostAddress(), myMembershipId);
 
             string result = AnimalProcedures.DoAnimalAction(actionName, me.Id, targeted.Id);
             string leveluptext = InanimateXPProcedures.GiveInanimateXP(me.MembershipId, User.IsInRole(PvPStatics.Permissions_MultiAccountWhitelist));

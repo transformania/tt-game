@@ -9,6 +9,9 @@ namespace TT.Domain
     [AppSettings(Key = "Features.UseCaptcha")]
     public class UseCaptcha : BaseFeature { }
 
+    [AppSettings(Key = "Features.UseCloudflare")]
+    public class UseCloudflare : BaseFeature { }
+
     [AppSettings(Key = "Features.Misc.AprilFools2016")]
     public class AprilFools2016 : BaseFeature { }
 }

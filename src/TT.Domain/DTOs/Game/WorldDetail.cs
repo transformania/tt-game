@@ -23,7 +23,7 @@ namespace TT.Domain.DTOs.Game
         public bool ChaosMode { get;  set; }
         public int RoundDuration { get;  set; }
         public bool InbetweenRoundsNonChaos { get;  set; }
-        public string RoundNumber { get; protected set; }
+        public string RoundNumber { get; set; }
 
         /// <summary>
         /// Returns true if any of the NPC bosses are currently active

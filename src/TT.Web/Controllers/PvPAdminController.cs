@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using TT.Domain;
 using TT.Domain.Abstract;
+using TT.Domain.Commands.Game;
 using TT.Domain.Commands.Items;
 using TT.Domain.Commands.Players;
 using TT.Domain.Concrete;
@@ -16,6 +17,7 @@ using TT.Domain.Queries.Skills;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 using TT.Domain.Commands.RPClassifiedAds;
+using TT.Domain.DTOs.Game;
 using TT.Domain.Exceptions.RPClassifiedAds;
 using TT.Domain.Queries.Game;
 
@@ -135,6 +137,52 @@ namespace TT.Web.Controllers
 
             return View(output);
 
+        }
+
+        [Authorize]
+        public ActionResult ChangeRoundText()
+        {
+
+            // assert only admins can view this
+            if (!User.IsInRole(PvPStatics.Permissions_Admin))
+            {
+                RedirectToAction("Play", "PvP");
+            }
+
+            var game = DomainRegistry.Repository.FindSingle(new GetWorld());
+
+            return View(game);
+        }
+
+        /// <summary>
+        /// Admin tool.  This permits an administrator to change the current round name/number, ie 'Alpha Round 40', 'Beta Round 3', etc.
+        /// </summary>
+        /// <param name="input">Name of the new round</param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult SendChangeRound(WorldDetail input)
+        {
+
+            // assert only admins can view this
+            if (!User.IsInRole(PvPStatics.Permissions_Admin))
+            {
+                RedirectToAction("Play", "PvP");
+            }
+
+            try
+            {
+                DomainRegistry.Repository.Execute(new UpdateRoundNumber{ RoundNumber = input.RoundNumber});
+                PvPStatics.AlphaRound = input.RoundNumber;
+                TempData["Result"] = "Round number updated!";
+            }
+            catch (DomainException e)
+            {
+                TempData["Error"] = "Error updating round number: " + e.Message;
+            }
+
+            return RedirectToAction("Play", "PvP");
         }
 
         /// <summary>

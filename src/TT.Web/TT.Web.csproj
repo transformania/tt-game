@@ -410,11 +410,11 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Content\custom.scss" />
     <Content Include="Content\custom.css.map" />
-    <Content Include="ConnectionStrings.config">
+    <None Include="ConnectionStrings.config">
       <SubType>Designer</SubType>
-    </Content>
-    <Content Include="MachineKey.config" />
-    <Content Include="AppSettings.config" />
+    </None>
+    <None Include="MachineKey.config" />
+    <None Include="AppSettings.config" />
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>

@@ -31,7 +31,7 @@ namespace TT.Web.Controllers
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                RedirectToAction("Play", "PvP");
+                return RedirectToAction("Play", "PvP");
             }
 
             ViewBag.Message = TempData["Message"];
@@ -128,7 +128,7 @@ namespace TT.Web.Controllers
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                RedirectToAction("Play", "PvP");
+                return RedirectToAction("Play", "PvP");
             }
 
             IPvPWorldStatRepository repo = new EFPvPWorldStatRepository();
@@ -146,7 +146,7 @@ namespace TT.Web.Controllers
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                RedirectToAction("Play", "PvP");
+                return RedirectToAction("Play", "PvP");
             }
 
             var game = DomainRegistry.Repository.FindSingle(new GetWorld());
@@ -168,7 +168,7 @@ namespace TT.Web.Controllers
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                RedirectToAction("Play", "PvP");
+                return RedirectToAction("Play", "PvP");
             }
 
             try
@@ -193,7 +193,7 @@ namespace TT.Web.Controllers
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                RedirectToAction("Play", "PvP");
+                return RedirectToAction("Play", "PvP");
             }
 
             IPvPWorldStatRepository repo = new EFPvPWorldStatRepository();
@@ -221,7 +221,7 @@ namespace TT.Web.Controllers
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                RedirectToAction("Play", "PvP");
+                return RedirectToAction("Play", "PvP");
             }
 
             IEffectContributionRepository effectConRepo = new EFEffectContributionRepository();
@@ -235,7 +235,7 @@ namespace TT.Web.Controllers
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                RedirectToAction("Play", "PvP");
+                return RedirectToAction("Play", "PvP");
             }
 
             IEffectContributionRepository effectConRepo = new EFEffectContributionRepository();

@@ -186,7 +186,7 @@ namespace TT.Web.Controllers
             // assert only previewers can view this
             if (!User.IsInRole(PvPStatics.Permissions_Previewer))
             {
-                RedirectToAction("Play", "PvP");
+                return RedirectToAction("Play", "PvP");
             }
 
             IContributionRepository contributionRepo = new EFContributionRepository();

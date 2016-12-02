@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using TT.Domain.Commands.Identity;
-using TT.Domain.Entities.Identities;
+using TT.Domain.Entities.Players;
 using TT.Domain.Entities.RPClassifiedAds;
 
 namespace TT.Domain.Entities.Identity
@@ -10,6 +11,7 @@ namespace TT.Domain.Entities.Identity
         public string UserName { get; private set; }
         public string Email { get; private set; }
         public ICollection<RPClassifiedAd> RPClassifiedAds { get; private set; } = new List<RPClassifiedAd>();
+        public ICollection<Stat> Achievements { get; private set; } = new List<Stat>();
         public Donator Donator { get; protected set; }
 
         private User() { }
@@ -22,6 +24,11 @@ namespace TT.Domain.Entities.Identity
         public void CreateDonator(CreateDonator cmd)
         {
             this.Donator = Donator.Create(cmd.PatreonName, cmd.Tier, cmd.ActualDonationAmount, cmd.SpecialNotes);
+        }
+
+        public Stat GetAchievement(string type)
+        {
+            return this.Achievements.FirstOrDefault(a => a.AchievementType == type);
         }
     }
 }

@@ -262,6 +262,7 @@
     <Compile Include="DTOs\BaseDTO.cs" />
     <Compile Include="DTOs\Forms\TFMessageDetail.cs" />
     <Compile Include="DTOs\Game\WorldDetail.cs" />
+    <Compile Include="DTOs\Identity\StatDetail.cs" />
     <Compile Include="DTOs\Identity\CaptchaEntryDetail.cs" />
     <Compile Include="DTOs\Identity\DonatorDetail.cs" />
     <Compile Include="DTOs\Identity\UserDonatorDetail.cs" />
@@ -273,6 +274,7 @@
     <Compile Include="Entities\Game\World.cs" />
     <Compile Include="Entities\Identity\CaptchaEntry.cs" />
     <Compile Include="Entities\Identity\Donator.cs" />
+    <Compile Include="Entities\Identity\Achievement.cs" />
     <Compile Include="Entities\TFEnergies\TFEnergy.cs" />
     <Compile Include="Exceptions\DomainException.cs" />
     <Compile Include="DomainQuery.cs" />
@@ -464,6 +466,7 @@
     <Compile Include="Queries\DMRoll\GetRoll.cs" />
     <Compile Include="Queries\Game\GetPvPWorldStats.cs" />
     <Compile Include="Queries\Identity\GetCaptchaEntry.cs" />
+    <Compile Include="Queries\Identity\GetPlayerStats.cs" />
     <Compile Include="Queries\Identity\GetUserDonator.cs" />
     <Compile Include="Queries\Identity\GetUserDonators.cs" />
     <Compile Include="Queries\Identity\UserCaptchaIsExpired.cs" />

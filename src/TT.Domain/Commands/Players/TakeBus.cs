@@ -3,6 +3,7 @@ using System.Data.Entity;
 using System.Linq;
 using Highway.Data;
 using TT.Domain.Entities.LocationLogs;
+using TT.Domain.Entities.Players;
 using TT.Domain.Procedures;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
@@ -24,6 +25,8 @@ namespace TT.Domain.Commands.Players
 
                 var player = ctx.AsQueryable<Entities.Players.Player>()
                     .Include(p => p.Effects)
+                    .Include(p => p.User)
+                    .Include(p => p.User.Achievements)
                 .SingleOrDefault(p => p.Id == playerId);
 
                 if (player == null)
@@ -53,6 +56,7 @@ namespace TT.Domain.Commands.Players
                 if (player.InQuest > 0)
                     throw new DomainException("You cannot take the bus whilst in a quest.");
 
+                var distance = LocationsStatics.GetDistanceBetweenLocations(player.Location, destination);
                 var ticketPrice = LocationsStatics.GetTicketPriceBetweenLocations(player.Location, destination);
 
                 if (player.ActionPoints < 3)
@@ -78,6 +82,16 @@ namespace TT.Domain.Commands.Players
 
                 var originLocationLog = LocationLog.Create(originLocation.dbName, $"{player.GetFullName()} got on a bus headed toward {destinationLocation.Name}.", 0);
                 var destinationLocationLog = LocationLog.Create(destinationLocation.dbName, $"{player.GetFullName()} arrived via bus from {originLocation.Name}.", 0);
+
+                var achievement = player.User.GetAchievement(StatsProcedures.Stat__BusRides);
+                if (achievement != null)
+                {
+                    achievement.AddAmount(distance);
+                }
+                else
+                {
+                    ctx.Add(Stat.Create(player.User, distance, StatsProcedures.Stat__BusRides));
+                }
 
                 ctx.Add(originLocationLog);
                 ctx.Add(destinationLocationLog);

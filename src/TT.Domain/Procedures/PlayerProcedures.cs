@@ -1241,7 +1241,7 @@ namespace TT.Domain.Procedures
 
         public static float GetWillpowerBaseByLevel(int level)
         {
-            float willpowerBase = 15 * (level - 1) + 100;
+            float willpowerBase = (float)(PvPStatics.LevelUpHealthMaxIncreasePerLevel * (level - 1) + 100);
             return willpowerBase;
         }
 

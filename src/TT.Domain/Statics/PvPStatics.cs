@@ -49,7 +49,7 @@ namespace TT.Domain.Statics
         public const decimal XP__AnimateTFXPBonusModifier = 1.5M;
         public const decimal XP__LevelDifferenceXPGainModifier = 1.5M;
         public const decimal XP__EndgameTFCompletionLevelBase = 8;
-        public const decimal ExtraHealthDamagePerLevel = 1.25M;
+        public const decimal ExtraHealthDamagePerLevel = 0.75M;
         public const decimal XP__EnchantmentMaxXP = 3;
 
         public const double OfflineAfterXMinutes = 30;
@@ -83,7 +83,7 @@ namespace TT.Domain.Statics
 
         public const decimal LevelUpHealthMaxIncreaseBase = 10;
         public const decimal LevelUpManaMaxIncreaseBase = 10;
-        public const decimal LevelUpHealthMaxIncreasePerLevel = 5;
+        public const decimal LevelUpHealthMaxIncreasePerLevel = 10;
         public const decimal LevelUpManaMaxIncreasePerLevel = 5;
 
         public const decimal Item_LevelBonusModifier = .1M;

@@ -381,5 +381,3 @@ INSERT [dbo].[DMRolls] ([Id], [MembershipOwnerId], [Message], [Tags], [ActionTyp
 GO
 SET IDENTITY_INSERT [dbo].[DMRolls] OFF
 GO
-
-PRINT "DM Roles seeded";

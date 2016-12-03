@@ -550,4 +550,3 @@ Just think about it, no more Toms in this world, no more CEOs, no more bitter hu
 
 <b>Day N-18:</b>  [ENTRY REDACTED]', 341)
 SET IDENTITY_INSERT [dbo].[Tomes] OFF
-PRINT "Tomes seeded";

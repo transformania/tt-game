@@ -1,3 +1,4 @@
+#addin "nuget:?package=Cake.SqlServer"
 // Default settings
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
@@ -7,21 +8,21 @@ var dbName = Argument("dbName", "Stats");
 var imageUrl = Argument("imageUrl", "http://www.transformaniatime.com/Images/PvP.zip");
 
 // Dictionary of DB instances and connection strings
-var instances = new Dictionary<string,Tuple<string,string>>()
+var instances = new Dictionary<string,Tuple<string,bool>>()
 {
-    { "localdb_v2", new Tuple<string,string>(@"(localdb)\MSSQLLocalDB", @"Data Source=(LocalDb)\MSSQLLocalDB; Initial Catalog=Stats; Integrated Security=SSPI") },
-    { "localdb_v1", new Tuple<string,string>(@"(localdb)\v11.0", @"Data Source=(LocalDb)\v11.0; Initial Catalog=Stats; Integrated Security=SSPI;") },
-    { "server", new Tuple<string, string>("localhost", "Data Source=localhost; Initial Catalog=Stats; Integrated Security=true;") },
-    { "remoteserver", new Tuple<string, string>("localhost", "") }
+    { "localdb_v2", new Tuple<string,bool>(@"(localdb)\MSSQLLocalDB", true) },
+    { "localdb_v1", new Tuple<string,bool>(@"(localdb)\v11.0", true) },
+    { "server", new Tuple<string, bool>("localhost", true) },
+    { "remoteserver", new Tuple<string, bool>("localhost", false) }
 };
 
 var dbServer = Argument("dbServer",instances[dbType].Item1);
-var connectionString = Argument("connectionString",instances[dbType].Item2);
+var dbSecurity = instances[dbType].Item2;
+var dbPassword = new System.Text.StringBuilder();
+var dbUserId = Argument("dbUserId", "newman");
+
 if(dbType == "remoteserver")
 {
-    var dbPassword = new System.Text.StringBuilder();
-    var dbUserId = Argument("dbUserId", "newman");
-
     ConsoleKeyInfo key;
     Console.Write(string.Format("Enter password for database on \"{0}\": ", dbServer));
     do {
@@ -37,8 +38,9 @@ if(dbType == "remoteserver")
     // Exit if Enter key is pressed.
     } while (key.Key != ConsoleKey.Enter);
     Console.WriteLine();
-    connectionString = string.Format("Data Source={0}; Initial Catalog={3}; Integrated Security=false; User ID={1}; Password={2};",dbServer, dbUserId , dbPassword, dbName );
 }
+var connectionString = new System.Data.SqlClient.SqlConnectionStringBuilder { DataSource = dbServer, InitialCatalog = dbName, IntegratedSecurity=dbSecurity, Password = dbPassword.ToString(), UserID = dbUserId }.ToString();
+
 
 Task("Clean")
     .Does(() => {
@@ -124,14 +126,9 @@ Task("Migrate-EF")
         if (dbType != "remoteserver")
         {
             Information("Applying stored procedures against {0}", dbServer);
-
-            using(var process = StartAndReturnProcess("sqlcmd", new ProcessSettings { Arguments = @"-i src\TT.Web\Schema\GetPlayerBuffs.sql -S " + dbServer }))
+            using(var connection = OpenSqlConnection(connectionString))
             {
-                process.WaitForExit();
-
-                var exitCode = process.GetExitCode();
-                if (exitCode > 0)
-                    throw new Exception("Stored procedure scripts failed");
+                ExecuteSqlFile(connection, "./src/TT.Web/Schema/GetPlayerBuffs.sql");
             }
         }
     }
@@ -145,17 +142,7 @@ Task("Drop-DB")
         
         if (FileExists("seeded.flg"))
             System.IO.File.Delete("seeded.flg");
-                
-        var sql = "ALTER DATABASE [Stats] SET SINGLE_USER WITH ROLLBACK IMMEDIATE; DROP DATABASE [Stats];";
-        
-        using(var process = StartAndReturnProcess("sqlcmd", new ProcessSettings { Arguments = "-b -Q \""+sql+"\" -S " + dbServer }))
-        {
-            process.WaitForExit();
-            
-            var exitCode = process.GetExitCode();
-            if (exitCode > 0)
-                Warning(string.Format("Faled to drop Stats database using {0}", dbServer));
-        } 
+        DropDatabase(connectionString, dbName);
     }
 );
 
@@ -164,15 +151,11 @@ Task("PreSeed-DB")
     .Does(() => {
         var seedScripts = GetFiles("src/SeedData/PreSeed/*.sql");
         
-        foreach(var script in seedScripts)
+        using(var connection = OpenSqlConnection(connectionString))
         {
-            using(var process = StartAndReturnProcess("sqlcmd", new ProcessSettings { Arguments = "-i \""+script+"\" -S " + dbServer }))
+            foreach(var script in seedScripts)
             {
-                process.WaitForExit();
-                
-                var exitCode = process.GetExitCode();
-                if (exitCode > 0)
-                    throw new Exception(string.Format("Faled to run {0}", script));
+                ExecuteSqlFile(connection, script);
             }
         }
     }
@@ -183,18 +166,13 @@ Task("Seed-DB")
     .Does(() => {
         var seedScripts = GetFiles("src/SeedData/*.sql");
         
-        foreach(var script in seedScripts)
+        using(var connection = OpenSqlConnection(connectionString))
         {
-            using(var process = StartAndReturnProcess("sqlcmd", new ProcessSettings { Arguments = "-i \""+script+"\" -S " + dbServer }))
+            foreach(var script in seedScripts)
             {
-                process.WaitForExit();
-                
-                var exitCode = process.GetExitCode();
-                if (exitCode > 0)
-                    throw new Exception(string.Format("Faled to run {0}", script));
+                ExecuteSqlFile(connection, script);
             }
         }
-        
         System.IO.File.Create("seeded.flg");
     }
 );

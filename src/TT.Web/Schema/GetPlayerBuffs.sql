@@ -68,7 +68,7 @@ BEGIN
 
 		FROM [dbo].[Players]
 		JOIN [dbo].[Items] ON [Items].OwnerId=@PlayerId
-		JOIN [dbo].[DbStaticItems] AS si ON si.dbName=[Items].dbName
+		JOIN [dbo].[DbStaticItems] AS si ON si.Id=[Items].ItemSourceId
 		WHERE [Items].[IsEquipped]=1 AND [Players].Id = @PlayerId
 	)
 	UNION ALL
@@ -111,7 +111,7 @@ BEGIN
 
 
 		FROM [dbo].Players
-		JOIN [dbo].[DbStaticForms] AS sf ON sf.dbName=[Players].Form WHERE [Players].Id = @PlayerId
+		JOIN [dbo].[DbStaticForms] AS sf ON sf.Id=[Players].FormSourceId WHERE [Players].Id = @PlayerId
 	)
 	UNION ALL
 	(
@@ -152,7 +152,7 @@ BEGIN
 		,CAST(ISNULL(SUM(se.Chaos_Order), 0) AS real)
 
 		FROM [dbo].Effects
-		JOIN [dbo].DbStaticEffects AS se ON se.dbName=Effects.dbName WHERE Effects.OwnerId = @PlayerId AND Effects.Duration > 0
+		JOIN [dbo].DbStaticEffects AS se ON se.Id=Effects.EffectSourceId WHERE Effects.OwnerId = @PlayerId AND Effects.Duration > 0
 	)
 	RETURN 1;
 	END

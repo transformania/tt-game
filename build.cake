@@ -101,7 +101,12 @@ Task("Migrate")
             var exitCode = process.GetExitCode();
             if (exitCode > 0)
                 throw new Exception("Migration failed");
-        }              
+        }
+        Information("Applying stored procedures against {0}", dbServer);
+        using(var connection = OpenSqlConnection(connectionString))
+        {
+            ExecuteSqlFile(connection, "./src/TT.Web/Schema/GetPlayerBuffs.sql");
+        }
     }
 );
 
@@ -121,15 +126,6 @@ Task("Migrate-EF")
             var exitCode = process.GetExitCode();
             if (exitCode > 0)
                 throw new Exception("Migration failed");
-        }
-        
-        if (dbType != "remoteserver")
-        {
-            Information("Applying stored procedures against {0}", dbServer);
-            using(var connection = OpenSqlConnection(connectionString))
-            {
-                ExecuteSqlFile(connection, "./src/TT.Web/Schema/GetPlayerBuffs.sql");
-            }
         }
     }
 );

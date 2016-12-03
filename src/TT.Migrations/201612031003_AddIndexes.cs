@@ -47,6 +47,7 @@ namespace TT.Migrations
             Create.Index("ix_FormSourceId").OnTable("Players").OnColumn("FormSourceId").Ascending().WithOptions().NonClustered();
             Create.Index("ix_BotId").OnTable("Players").OnColumn("BotId").Ascending().WithOptions().NonClustered();
             Create.Index("ix_OnlineActivityTimestamp").OnTable("Players").OnColumn("OnlineActivityTimestamp").Descending().WithOptions().NonClustered();
+            Create.Index("ix_LastActionTimestamp").OnTable("Players").OnColumn("LastActionTimestamp").Descending().WithOptions().NonClustered();
             Create.Index("ix_MembershipId").OnTable("Rerolls").OnColumn("MembershipId").Ascending().WithOptions().NonClustered();
             Create.Index("ix_MembershipId").OnTable("ReservedNames").OnColumn("MembershipId").Ascending().WithOptions().NonClustered();
             Create.Index("ix_BaseItem_Id").OnTable("RestockItems").OnColumn("BaseItem_Id").Ascending().WithOptions().NonClustered();

@@ -1,0 +1,33 @@
+﻿using System;
+using TT.Domain.Entities.Identity;
+
+namespace TT.Domain.Entities.Players
+{
+    public class Stat : Entity<int>
+    {
+        public User Owner { get; protected set; }
+        public float Amount { get; protected set; }
+        public string AchievementType { get; protected set; }
+        public DateTime Timestamp { get; protected set; }
+
+        protected Stat() { }
+
+        public static Stat Create(User owner, float amount, string achievementType)
+        {
+            return new Stat
+            {
+                Owner = owner,
+                Amount = amount,
+                AchievementType = achievementType,
+                Timestamp = DateTime.UtcNow
+            };
+        }
+
+        public void AddAmount(float amount)
+        {
+            this.Amount += amount;
+            this.Timestamp = DateTime.UtcNow;
+        }
+
+    }
+}

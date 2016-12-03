@@ -257,10 +257,21 @@ namespace TT.Domain.Statics
         /// <returns></returns>
         public static int GetTicketPriceBetweenLocations(string departure, string destination)
         {
+            return 2*GetDistanceBetweenLocations(departure, destination);
+        }
+
+        /// <summary>
+        /// Returns the distance between two locations, calculated as the delta of X plus the delta of Y
+        /// </summary>
+        /// <param name="departure">Location the player is leaving from</param>
+        /// <param name="destination">Location the player is arriving to</param>
+        /// <returns></returns>
+        public static int GetDistanceBetweenLocations(string departure, string destination)
+        {
             Location departureLocation = LocationList.GetLocation.First(l => l.dbName == departure);
             Location destinationLocation = LocationList.GetLocation.First(l => l.dbName == destination);
 
-            return 2*Math.Abs(departureLocation.X - destinationLocation.X) + Math.Abs(departureLocation.Y - destinationLocation.Y);
+            return Math.Abs(departureLocation.X - destinationLocation.X) + Math.Abs(departureLocation.Y - destinationLocation.Y);
         }
 
         public static string GetRandomLocation()

@@ -60,6 +60,7 @@
     <Compile Include="201605250819_AddFKtoRPClassifiedAd.cs" />
     <Compile Include="201607252000_SkillSourceFKs.cs" />
     <Compile Include="201607151721_AddTFEnergyFK.cs" />
+    <Compile Include="201612012118_AchievementFK.cs" />
     <Compile Include="201611121347_RoundTurnNumber.cs" />
     <Compile Include="201609271803_DonatorFK.cs" />
     <Compile Include="201608181243_TFMessageFK.cs" />

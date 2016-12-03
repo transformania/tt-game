@@ -512,7 +512,7 @@ namespace TT.Domain.Procedures
                 Stat__BusRides,
                     new StatsDetailsMap{
                         FriendlyName="The Wheels on the Bus",
-                        Description="Times riding the bus",
+                        Description="Total distance riding the bus",
                         ImageUrl="trophy.jpg",
                         Active = true,
                         ResetsOnReroll = false
@@ -557,17 +557,9 @@ namespace TT.Domain.Procedures
             }
         }
 
-        public static IEnumerable<Achievement> GetPlayerStats(string membershipId)
-        {
-            IAchievementRepository repo = new EFAchievementRepository();
-
-            return repo.Achievements.Where(a => a.OwnerMembershipId == membershipId);
-        }
-
         public static IEnumerable<PlayerAchievementViewModel> GetLeaderPlayersInStat(string type)
         {
             IAchievementRepository repo = new EFAchievementRepository();
-            IPlayerRepository playerRepo = new EFPlayerRepository();
 
             List<Achievement> x = repo.Achievements.Where(a => a.AchievementType == type).OrderByDescending(s => s.Amount).ThenBy(a => a.Timestamp).Take(10).ToList();
             List<PlayerAchievementViewModel> output = new List<PlayerAchievementViewModel>();
@@ -591,20 +583,6 @@ namespace TT.Domain.Procedures
         public static IEnumerable<PlayerAchievementViewModel> GetPlayerMaxStats()
         {
             IAchievementRepository repo = new EFAchievementRepository();
-            IPlayerRepository playerRepo = new EFPlayerRepository();
-
-            // return repo.Achievements.GroupBy(a => a.AchievementType).OrderByDescending(a => a.Amount).First();
-            //  IEnumerable<Achievement> output = repo.Achievements.OrderByDescending(t => t.Amount).GroupBy(t => t.AchievementType).First();
-
-            //IEnumerable<Achievement> output = from a in repo.Achievements
-            //                                  group a by a.AchievementType into dptgrp
-            //                                  let topsal = dptgrp.Max(x => x.Amount)
-            //                                  select new Achievement
-            //                                  {
-            //                                      AchievementType = dptgrp.Key,
-            //                                      Amount = dptgrp.First(y => y.Amount == topsal).Amount,
-            //                                      OwnerMembershipId = dptgrp.First(y => y.Amount == topsal).OwnerMembershipId,
-            //                                  };
 
             IEnumerable<Achievement> types = repo.Achievements.GroupBy(a => a.AchievementType).Select(grp => grp.FirstOrDefault()).ToList();
 

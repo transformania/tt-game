@@ -15,6 +15,7 @@ using TT.Domain.Queries.RPClassifiedAds;
 using TT.Domain.Commands.RPClassifiedAds;
 using TT.Domain.Exceptions.RPClassifiedAds;
 using TT.Domain.Exceptions.Identity;
+using TT.Domain.Queries.Identity;
 
 namespace TT.Web.Controllers
 {
@@ -655,7 +656,7 @@ namespace TT.Web.Controllers
             Player player = PlayerProcedures.GetPlayerFromMembership(id);
             ViewBag.Name = player.GetFullName();
             ViewBag.PlayerId = player.Id;
-            IEnumerable<Achievement> output = StatsProcedures.GetPlayerStats(id);
+            var output = DomainRegistry.Repository.Find(new GetPlayerStats {OwnerId = player.MembershipId});
             return View(output);
         }
 

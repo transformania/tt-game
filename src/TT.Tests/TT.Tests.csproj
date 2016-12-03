@@ -139,6 +139,7 @@
     <Compile Include="Builders\Form\FormSourceBuilder.cs" />
     <Compile Include="Builders\Form\TFMessageBuilder.cs" />
     <Compile Include="Builders\Game\WorldBuilder.cs" />
+    <Compile Include="Builders\Identity\StatBuilder.cs" />
     <Compile Include="Builders\Identity\CaptchaEntryBuilder.cs" />
     <Compile Include="Builders\Identity\DonatorBuilder.cs" />
     <Compile Include="Builders\Players\PlayerLogBuilder.cs" />
@@ -203,6 +204,7 @@
     <Compile Include="Domain\Queries\Assets\GetTomesTests.cs" />
     <Compile Include="Domain\Queries\Game\GetPvPWorldStatTest.cs" />
     <Compile Include="Domain\Queries\Identity\GetCaptchaEntryTests.cs" />
+    <Compile Include="Domain\Queries\Identity\GetPlayerStatsTest.cs" />
     <Compile Include="Domain\Queries\Identity\GetUserDonatorTest.cs" />
     <Compile Include="Domain\Queries\Identity\GetUserDonatorsTests.cs" />
     <Compile Include="Domain\Queries\Identity\UserCaptchaIsExpiredTests.cs" />

@@ -1,5 +1,3 @@
-USE [Stats]
-GO
 /****** Object:  StoredProcedure [dbo].[GetPlayerBuffs]    Script Date: 5/11/2015 9:48:07 PM ******/
 SET ANSI_NULLS ON
 GO

@@ -1196,7 +1196,7 @@ namespace TT.Domain.Procedures
         public static WorldStats GetWorldPlayerStats()
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            IEnumerable<Player> players = playerRepo.Players.AsEnumerable();
+            var players = playerRepo.Players;
 
             DateTime cutoff = DateTime.UtcNow.AddHours(-1);
 

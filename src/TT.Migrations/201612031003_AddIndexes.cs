@@ -1,0 +1,64 @@
+﻿using FluentMigrator;
+
+namespace TT.Migrations
+{
+    [Migration(201612031003)]
+    public class AddIndexes : ForwardOnlyMigration
+    {
+        public override void Up()
+        {
+            Create.Index("ix_OwnerMembershipId").OnTable("AchievementBadges").OnColumn("OwnerMembershipId").Ascending().WithOptions().NonClustered();
+            Create.Index("ix_OwnerMembershipId").OnTable("Achievements").OnColumn("OwnerMembershipId").Ascending().WithOptions().NonClustered();
+            Create.Index("ix_OwnerId").OnTable("AIDirectives").OnColumn("OwnerId").Ascending().WithOptions().NonClustered();
+            Create.Index("ix_OwnerMembershipId").OnTable("AuthorArtistBios").OnColumn("OwnerMembershipId").Ascending().WithOptions().NonClustered();
+            Create.Index("ix_CreatorMembershipId").OnTable("BlacklistEntries").OnColumn("CreatorMembershipId").Ascending().WithOptions().NonClustered();
+            Create.Index("ix_TargetMembershipId").OnTable("BlacklistEntries").OnColumn("TargetMembershipId").Ascending().WithOptions().NonClustered();
+            Create.Index("ix_PlayerId").OnTable("BookReadings").OnColumn("PlayerId").Ascending().WithOptions().NonClustered();
+            Create.Index("ix_PlayerId").OnTable("BossDamages").OnColumn("PlayerId").Ascending().WithOptions().NonClustered();
+            Create.Index("ix_BossBotId").OnTable("BossDamages").OnColumn("BossBotId").Ascending().WithOptions().NonClustered();
+            Create.Index("ix_OwnerMembershipId").OnTable("Contributions").OnColumn("OwnerMembershipId").Ascending().WithOptions().NonClustered();
+            Create.Index("ix_OwnerMembershipId").OnTable("ContributorCustomForms").OnColumn("OwnerMembershipId").Ascending().WithOptions().NonClustered();
+            Create.Index("ix_OwnerId").OnTable("CovenantApplications").OnColumn("OwnerId").Ascending().WithOptions().NonClustered();
+            Create.Index("ix_CovenantId").OnTable("CovenantApplications").OnColumn("CovenantId").Ascending().WithOptions().NonClustered();
+            Create.Index("ix_CovenantId").OnTable("CovenantLogs").OnColumn("CovenantId").Ascending().WithOptions().NonClustered();
+            Create.Index("ix_FormSourceId").OnTable("DbStaticSkills").OnColumn("FormSourceId").Ascending().WithOptions().NonClustered();
+            Create.Index("ix_OwnerMembershipId").OnTable("Donators").OnColumn("OwnerMembershipId").Ascending().WithOptions().NonClustered();
+            Create.Index("ix_PlayerId").OnTable("DuelCombatants").OnColumn("PlayerId").Ascending().WithOptions().NonClustered();
+            Create.Index("ix_DuelId").OnTable("DuelRules").OnColumn("DuelId").Ascending().WithOptions().NonClustered();
+            Create.Index("ix_OwnerMembershipId").OnTable("EffectContributions").OnColumn("OwnerMemberhipId").Ascending().WithOptions().NonClustered();
+            Create.Index("ix_OwnerId").OnTable("Effects").OnColumn("OwnerId").Ascending().WithOptions().NonClustered();
+            Create.Index("ix_EffectSourceId").OnTable("Effects").OnColumn("EffectSourceId").Ascending().WithOptions().NonClustered();
+            Create.Index("ix_OwnerMembershipId").OnTable("Friends").OnColumn("OwnerMembershipId").Ascending().WithOptions().NonClustered();
+            Create.Index("ix_FriendMembershipId").OnTable("Friends").OnColumn("FriendMembershipId").Ascending().WithOptions().NonClustered();
+            Create.Index("ix_OwnerId").OnTable("InanimateXPs").OnColumn("OwnerId").Ascending().WithOptions().NonClustered();
+            Create.Index("ix_OwnerId").OnTable("Items").OnColumn("OwnerId").Ascending().WithOptions().NonClustered();
+            Create.Index("ix_ItemSourceId").OnTable("Items").OnColumn("ItemSourceId").Ascending().WithOptions().NonClustered();
+            Create.Index("ix_SenderId").OnTable("Messages").OnColumn("SenderId").Ascending().WithOptions().NonClustered();
+            Create.Index("ix_ReceiverId").OnTable("Messages").OnColumn("ReceiverId").Ascending().WithOptions().NonClustered();
+            Create.Index("ix_MasterId").OnTable("MindControls").OnColumn("MasterId").Ascending().WithOptions().NonClustered();
+            Create.Index("ix_VictimId").OnTable("MindControls").OnColumn("VictimId").Ascending().WithOptions().NonClustered();
+            Create.Index("ix_Timestamp").OnTable("NewsPosts").OnColumn("Timestamp").Descending().WithOptions().NonClustered();
+            Create.Index("ix_OwnerMembershipId").OnTable("PlayerBios").OnColumn("OwnerMembershipId").Ascending().WithOptions().NonClustered();
+            Create.Index("ix_PlayerId").OnTable("PlayerExtras").OnColumn("PlayerId").Ascending().WithOptions().NonClustered();
+            Create.Index("ix_PlayerId").OnTable("PlayerLogs").OnColumn("PlayerId").Ascending().WithOptions().NonClustered();
+            Create.Index("ix_Timestamp").OnTable("PlayerLogs").OnColumn("Timestamp").Descending().WithOptions().NonClustered();
+            Create.Index("ix_PlayerId").OnTable("PlayerQuests").OnColumn("PlayerId").Ascending().WithOptions().NonClustered();
+            Create.Index("ix_QuestId").OnTable("PlayerQuests").OnColumn("QuestId").Ascending().WithOptions().NonClustered();
+            Create.Index("ix_FormSourceId").OnTable("Players").OnColumn("FormSourceId").Ascending().WithOptions().NonClustered();
+            Create.Index("ix_BotId").OnTable("Players").OnColumn("BotId").Ascending().WithOptions().NonClustered();
+            Create.Index("ix_OnlineActivityTimestamp").OnTable("Players").OnColumn("OnlineActivityTimestamp").Descending().WithOptions().NonClustered();
+            Create.Index("ix_LastActionTimestamp").OnTable("Players").OnColumn("LastActionTimestamp").Descending().WithOptions().NonClustered();
+            Create.Index("ix_MembershipId").OnTable("Rerolls").OnColumn("MembershipId").Ascending().WithOptions().NonClustered();
+            Create.Index("ix_MembershipId").OnTable("ReservedNames").OnColumn("MembershipId").Ascending().WithOptions().NonClustered();
+            Create.Index("ix_BaseItem_Id").OnTable("RestockItems").OnColumn("BaseItem_Id").Ascending().WithOptions().NonClustered();
+            Create.Index("ix_NPC_Id").OnTable("RestockItems").OnColumn("NPC_Id").Ascending().WithOptions().NonClustered();
+            Create.Index("ix_OwnerMembershipId").OnTable("RPClassifiedAds").OnColumn("OwnerMembershipId").Ascending().WithOptions().NonClustered();
+            Create.Index("ix_OwnerId").OnTable("Skills").OnColumn("OwnerId").Ascending().WithOptions().NonClustered();
+            Create.Index("ix_SkillSourceId").OnTable("Skills").OnColumn("SkillSourceId").Ascending().WithOptions().NonClustered();
+            Create.Index("ix_PlayerId").OnTable("TFEnergies").OnColumn("PlayerId").Ascending().WithOptions().NonClustered();
+            Create.Index("ix_CasterId").OnTable("TFEnergies").OnColumn("CasterId").Ascending().WithOptions().NonClustered();
+            Create.Index("ix_FormSourceId").OnTable("TFEnergies").OnColumn("FormSourceId").Ascending().WithOptions().NonClustered();
+            Create.Index("ix_FormSourceId").OnTable("TFMessages").OnColumn("FormSourceId").Ascending().WithOptions().NonClustered();
+        }
+    }
+}

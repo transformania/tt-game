@@ -10,6 +10,8 @@ namespace TT.Domain.Entities.Players
         public string AchievementType { get; protected set; }
         public DateTime Timestamp { get; protected set; }
 
+        public int TimesEarned { get; protected set; } // unused but can't be left out since the column in SQL is non-nullable
+
         protected Stat() { }
 
         public static Stat Create(User owner, float amount, string achievementType)
@@ -19,7 +21,8 @@ namespace TT.Domain.Entities.Players
                 Owner = owner,
                 Amount = amount,
                 AchievementType = achievementType,
-                Timestamp = DateTime.UtcNow
+                Timestamp = DateTime.UtcNow,
+                TimesEarned = 0
             };
         }
 

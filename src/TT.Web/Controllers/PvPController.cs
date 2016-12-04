@@ -141,7 +141,7 @@ namespace TT.Web.Controllers
             }
 
             var renderCaptcha = false;
-            if (me.Mobility != PvPStatics.MobilityFull)
+            if (FeatureContext.IsEnabled<UseCaptcha>() && me.Mobility != PvPStatics.MobilityFull)
             {
                 try
                 {

@@ -1,4 +1,6 @@
 ﻿@model TT.Web.Models.LoginModel
+@using FeatureSwitch;
+@using TT.Domain;
 @using Recaptcha.Web.Mvc;
 
 <div class="offlinePlayersWrapperBG containerInner text-center">
@@ -32,7 +34,10 @@
 
                     @Html.LabelFor(m => m.RememberMe, new {@class = "checkbox2"}) @Html.CheckBoxFor(m => m.RememberMe, new {disabled = "disabled"}) <br/>
 
-                    @Html.Recaptcha()
+                    @if (FeatureContext.IsEnabled<UseCaptcha>())
+                    {
+                        @Html.Recaptcha()
+                    }
 
                     <input type="submit" class="btn" value="Login" id="submitBtn" disabled="disabled" />
                 </fieldset>

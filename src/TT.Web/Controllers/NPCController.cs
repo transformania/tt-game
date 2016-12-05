@@ -1202,9 +1202,9 @@ namespace TT.Web.Controllers
         [Authorize]
         public ActionResult TalkToLorekeeper()
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            Player loremaster = PlayerProcedures.GetPlayerFromBotId(AIStatics.LoremasterBotId);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var loremaster = PlayerProcedures.GetPlayerFromBotId(AIStatics.LoremasterBotId);
 
             // assert player is mobile
             if (me.Mobility != PvPStatics.MobilityFull)
@@ -1234,9 +1234,9 @@ namespace TT.Web.Controllers
         [Authorize]
         public ActionResult LorekeeperPurchaseBook()
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            Player loremaster = PlayerProcedures.GetPlayerFromBotId(AIStatics.LoremasterBotId);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var loremaster = PlayerProcedures.GetPlayerFromBotId(AIStatics.LoremasterBotId);
 
             // assert player is mobile
             if (me.Mobility != PvPStatics.MobilityFull)
@@ -1252,10 +1252,12 @@ namespace TT.Web.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
-            var output = new LorekeeperBookListViewModel();
-            output.Items = ItemProcedures.GetAllPlayerItems(loremaster.Id);
+            var output = new LorekeeperBookListViewModel
+            {
+                Items = ItemProcedures.GetAllPlayerItems(loremaster.Id),
+                MyMoney = Math.Floor(me.Money)
+            };
 
-            output.MyMoney = Math.Floor(me.Money);
             ViewBag.Lorekeeper = true; // has to stay Viewbag to give access to partial view
 
             return View(output);
@@ -1265,9 +1267,9 @@ namespace TT.Web.Controllers
         [Authorize]
         public ActionResult LorekeeperPurchaseBookSend(int id)
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            Player loremaster = PlayerProcedures.GetPlayerFromBotId(AIStatics.LoremasterBotId);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var loremaster = PlayerProcedures.GetPlayerFromBotId(AIStatics.LoremasterBotId);
 
             // assert player is mobile
             if (me.Mobility != PvPStatics.MobilityFull)
@@ -1284,7 +1286,7 @@ namespace TT.Web.Controllers
             }
 
             // assert lorekeeper owns this book
-            ItemViewModel purchased = ItemProcedures.GetItemViewModel(id);
+            var purchased = ItemProcedures.GetItemViewModel(id);
             if (purchased.dbItem.OwnerId != loremaster.Id)
             {
                 TempData["Error"] = "You can't purchse this as " + loremaster.GetFullName() + " does not own it.";
@@ -1292,7 +1294,7 @@ namespace TT.Web.Controllers
             }
 
 
-            decimal cost = ItemProcedures.GetCostOfItem(purchased, "buy");
+            var cost = ItemProcedures.GetCostOfItem(purchased, "buy");
 
             // assert that the player has enough money for this
             if (me.Money < cost)
@@ -1315,9 +1317,9 @@ namespace TT.Web.Controllers
         [Authorize]
         public ActionResult LorekeeperLearnSpell(string filter)
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            Player loremaster = PlayerProcedures.GetPlayerFromBotId(AIStatics.LoremasterBotId);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var loremaster = PlayerProcedures.GetPlayerFromBotId(AIStatics.LoremasterBotId);
 
             // assert player is mobile
             if (me.Mobility != PvPStatics.MobilityFull)
@@ -1333,9 +1335,9 @@ namespace TT.Web.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
-            IEnumerable<string> knownSkillsStrings = SkillProcedures.GetSkillViewModelsOwnedByPlayer(me.Id).Select(s => s.Skill).Select(s => s.dbName);
+            var knownSkillsStrings = SkillProcedures.GetSkillViewModelsOwnedByPlayer(me.Id).Select(s => s.Skill).Select(s => s.dbName);
 
-            IEnumerable<DbStaticSkill> allSkills = SkillProcedures.GetAllLearnableSpells();
+            var allSkills = SkillProcedures.GetAllLearnableSpells();
 
             // filter based on mobility type
             if (filter.IsNullOrEmpty() || filter == "animate")
@@ -1355,17 +1357,7 @@ namespace TT.Web.Controllers
                 allSkills = allSkills.Where(s => s.MobilityType == "curse" || s.MobilityType == PvPStatics.MobilityMindControl);
             } 
 
-            List<DbStaticSkill> output = new List<DbStaticSkill>();
-
-
-            // TODO:  this can probably done through LINQ or a better SQL query
-            foreach (DbStaticSkill s in allSkills)
-            {
-                if (!knownSkillsStrings.Contains(s.dbName))
-                {
-                    output.Add(s);
-                }
-            }
+            var output = allSkills.Where(s => !knownSkillsStrings.Contains(s.dbName)).ToList();
 
             ViewBag.Money = Math.Floor(me.Money);
 
@@ -1374,15 +1366,14 @@ namespace TT.Web.Controllers
             ViewBag.Result = TempData["Result"];
 
             return View(output);
-
         }
 
         [Authorize]
         public ActionResult LorekeeperLearnSpellSend(string spell)
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-            Player loremaster = PlayerProcedures.GetPlayerFromBotId(AIStatics.LoremasterBotId);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var loremaster = PlayerProcedures.GetPlayerFromBotId(AIStatics.LoremasterBotId);
 
             // assert player is animate
             if (me.Mobility != PvPStatics.MobilityFull)
@@ -1407,9 +1398,9 @@ namespace TT.Web.Controllers
             }
 
             // assert player does not already have that spell
-            SkillViewModel spellViewModel = SkillProcedures.GetSkillViewModel_NotOwned(spell);
+            var spellViewModel = SkillProcedures.GetSkillViewModel_NotOwned(spell);
 
-            IEnumerable<Skill> playerExistingSpells = SkillProcedures.GetSkillsOwnedByPlayer(me.Id);
+            var playerExistingSpells = SkillProcedures.GetSkillsOwnedByPlayer(me.Id);
 
             if (playerExistingSpells.Select(s => s.Name).Contains(spell))
             {
@@ -1433,8 +1424,7 @@ namespace TT.Web.Controllers
             ).Start();
 
             TempData["Result"] = loremaster.GetFullName() + " taught you " + spellViewModel.Skill.FriendlyName + " for " + PvPStatics.LorekeeperSpellPrice + " Arpeyjis.";
-            return RedirectToAction("LorekeeperLearnSpell", "NPC");
-
+            return RedirectToAction("TalkToLorekeeper", "NPC");
         }
 
         [Authorize]

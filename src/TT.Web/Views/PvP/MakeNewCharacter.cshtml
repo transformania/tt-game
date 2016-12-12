@@ -99,11 +99,17 @@
                        new { value = "man_03"  , text = "Regular Guy (3)"  },
                        new { value = "man_04"  , text = "Regular Guy (4)"  },
                        new { value = "man_05"  , text = "Regular Guy (5)"  },
+                       new { value = "man_06"  , text = "Regular Guy (6)"  },
+                       new { value = "man_07"  , text = "Regular Guy (7)"  },
+                       new { value = "man_08"  , text = "Regular Guy (8)"  },
                        new { value = "woman_01" , text = "Regular Girl (1)" },
                        new { value = "woman_02" , text = "Regular Girl (2)" },
                        new { value = "woman_03" , text = "Regular Girl (3)" },
                        new { value = "woman_04" , text = "Regular Girl (4)" },
                        new { value = "woman_05" , text = "Regular Girl (5)" },
+                       new { value = "woman_06" , text = "Regular Girl (6)"  },
+                       new { value = "woman_07" , text = "Regular Girl (7)"  },
+                       new { value = "woman_08" , text = "Regular Girl (8)"  },
 
                     },
                   "value",
@@ -112,7 +118,7 @@
 
         <br /><br />
 
-        <img id="portrait" src="../Images/PvP/portraits/Woman_01_Meddle.png" style="width: 300px; height:  300px;">
+        <img id="portrait" src="../Images/PvP/portraits/woman_01_mtwof.png" style="width: 300px; height:  300px;">
         <br /><br />
     <input class="btn btn-danger" type="submit" value="Begin" />
 
@@ -162,25 +168,37 @@
         function setPortrait() {
             var x = $("#FormName");
             if (x.val() == "woman_01") {
-                $("#portrait").attr("src", "../Images/PvP/portraits/Woman_01_Meddle.png");
+                $("#portrait").attr("src", "../Images/PvP/portraits/woman_01_mtwof.png");
             } else if (x.val() == "woman_02") {
-                $("#portrait").attr("src", "../Images/PvP/portraits/Woman_02_Meddle.png");
+                $("#portrait").attr("src", "../Images/PvP/portraits/woman_02_mtwof.png");
             } else if (x.val() == "woman_03") {
-                $("#portrait").attr("src", "../Images/PvP/portraits/Woman_03_Meddle.png");
+                $("#portrait").attr("src", "../Images/PvP/portraits/woman_03_mtwof.png");
             } else if (x.val() == "woman_04") {
-                $("#portrait").attr("src", "../Images/PvP/portraits/Woman_04_Meddle.png");
+                $("#portrait").attr("src", "../Images/PvP/portraits/woman_04_mtwof.png");
             } else if (x.val() == "woman_05") {
-                $("#portrait").attr("src", "../Images/PvP/portraits/Woman_05_Meddle.png");
+                $("#portrait").attr("src", "../Images/PvP/portraits/woman_05_mtwof.png");
+            } else if (x.val() == "woman_06") {
+                $("#portrait").attr("src", "../Images/PvP/portraits/woman_06_mtwof.png");
+            } else if (x.val() == "woman_07") {
+                $("#portrait").attr("src", "../Images/PvP/portraits/woman_07_mtwof.png");
+            } else if (x.val() == "woman_08") {
+                $("#portrait").attr("src", "../Images/PvP/portraits/woman_08_mtwof.png");
             } else if (x.val() == "man_01") {
-                $("#portrait").attr("src", "../Images/PvP/portraits/Man_01_Meddle.png");
+                $("#portrait").attr("src", "../Images/PvP/portraits/man_01_mtwof.png");
             } else if (x.val() == "man_02") {
-                $("#portrait").attr("src", "../Images/PvP/portraits/Man_02_Meddle.png");
+                $("#portrait").attr("src", "../Images/PvP/portraits/man_02_mtwof.png");
             } else if (x.val() == "man_03") {
-                $("#portrait").attr("src", "../Images/PvP/portraits/Man_03_Meddle.png");
+                $("#portrait").attr("src", "../Images/PvP/portraits/man_03_mtwof.png");
             } else if (x.val() == "man_04") {
-                $("#portrait").attr("src", "../Images/PvP/portraits/Man_04_Meddle.png");
+                $("#portrait").attr("src", "../Images/PvP/portraits/man_04_mtwof.png");
             } else if (x.val() == "man_05") {
-                $("#portrait").attr("src", "../Images/PvP/portraits/Man_05_Meddle.png");
+                $("#portrait").attr("src", "../Images/PvP/portraits/man_05_mtwof.png");
+            } else if (x.val() == "man_06") {
+                $("#portrait").attr("src", "../Images/PvP/portraits/man_06_mtwof.png");
+            } else if (x.val() == "man_07") {
+                $("#portrait").attr("src", "../Images/PvP/portraits/man_07_mtwof.png");
+            } else if (x.val() == "man_08") {
+                $("#portrait").attr("src", "../Images/PvP/portraits/man_08_mtwof.png");
             }
         }
 

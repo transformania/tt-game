@@ -555,7 +555,9 @@ namespace TT.Domain.Procedures
             // assert that the form is a valid staring form
             string x = player.FormName;
 
-            if (x != "man_01" && x != "man_02" && x != "man_03" && x != "man_04" && x != "man_05" && x != "woman_01" && x != "woman_02" && x != "woman_03" && x != "woman_04" && x != "woman_05")
+            var validNames = new string[] { "man_01", "man_02", "man_03", "man_04", "man_05", "man_06", "man_07", "man_08", "woman_01", "woman_02", "woman_03", "woman_04", "woman_05", "woman_06", "woman_07", "woman_08" };
+
+            if (!validNames.Contains(x))
             {
                 return "That is not a valid starting form.";
             }

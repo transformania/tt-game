@@ -62,13 +62,13 @@ namespace TT.Tests.Services
                 Assert.AreEqual(100, wpBase_lvl1);
 
                 float wpBase_lvl2 = PlayerProcedures.GetWillpowerBaseByLevel(2);
-                Assert.AreEqual(115, wpBase_lvl2);
+                Assert.AreEqual(110, wpBase_lvl2);
 
                 float wpBase_lvl7 = PlayerProcedures.GetWillpowerBaseByLevel(7);
-                Assert.AreEqual(190, wpBase_lvl7);
+                Assert.AreEqual(160, wpBase_lvl7);
 
                 float wpBase_lvl55 = PlayerProcedures.GetWillpowerBaseByLevel(55);
-                Assert.AreEqual(910, wpBase_lvl55);
+                Assert.AreEqual(640, wpBase_lvl55);
             }
         }
 

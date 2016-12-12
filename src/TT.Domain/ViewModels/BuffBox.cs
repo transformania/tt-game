@@ -673,7 +673,7 @@ namespace TT.Domain.ViewModels
                 new Dictionary<string,float> {
                       	{"Discipline", .25F},
 	                    {"Perception", 0},
-	                    {"Charisma", -.125F},
+	                    {"Charisma", 0},
 	                    {"Fortitude", .20F},
 	                    {"Agility", 0},
 	                    {"Allure", 0},
@@ -840,13 +840,13 @@ namespace TT.Domain.ViewModels
                 {
                 "SpellExtraTFEnergyPercent",
                 new Dictionary<string,float> {
-                      	{"Discipline",-.3F},
+                      	{"Discipline", 0},
 	                    {"Perception", 0},
-	                    {"Charisma", 0.5F},
+	                    {"Charisma", 0.2F},
 	                    {"Fortitude", 0},
 	                    {"Agility", 0},
 	                    {"Allure", 0},
-	                    {"Magicka", 0},
+	                    {"Magicka", .5F},
 	                    {"Succour", 0},
 	                    {"Luck", 0},
                     }
@@ -854,9 +854,9 @@ namespace TT.Domain.ViewModels
                 {
                 "SpellExtraHealthDamagePercent",
                 new Dictionary<string,float> {
-                      	{"Discipline",-.5F},
+                      	{"Discipline", 0},
 	                    {"Perception", 0},
-	                    {"Charisma", 1F},
+	                    {"Charisma", .75F},
 	                    {"Fortitude", 0},
 	                    {"Agility", 0},
 	                    {"Allure", 0},
@@ -886,7 +886,7 @@ namespace TT.Domain.ViewModels
 	                    {"Perception", .1F},
 	                    {"Charisma", 0},
 	                    {"Fortitude", 0},
-	                    {"Agility", -.15F},
+	                    {"Agility", 0},
 	                    {"Allure", 0}, // restoration
 	                    {"Magicka", 0},
 	                    {"Succour", 0},
@@ -896,9 +896,9 @@ namespace TT.Domain.ViewModels
                 {
                 "SpellHealthDamageResistance",
                 new Dictionary<string,float> {
-                      	{"Discipline", 0.75F},
+                      	{"Discipline", 0.5F},
 	                    {"Perception", 0},
-	                    {"Charisma", -.5F},
+	                    {"Charisma", 0},
 	                    {"Fortitude", 0},
 	                    {"Agility", 0},
 	                    {"Allure", 0},
@@ -910,9 +910,9 @@ namespace TT.Domain.ViewModels
                 {
                 "SpellTFEnergyDamageResistance",
                 new Dictionary<string,float> {
-                      	{"Discipline", 0.75F},
+                      	{"Discipline", 0.5F},
 	                    {"Perception", 0},
-	                    {"Charisma", -.5F},
+	                    {"Charisma", 0},
 	                    {"Fortitude", 0},
 	                    {"Agility", 0},
 	                    {"Allure", 0},

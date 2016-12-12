@@ -9,6 +9,7 @@ using TT.Domain.Entities.Identity;
 using TT.Domain.Entities.NPCs;
 using TT.Domain.Entities.Skills;
 using TT.Domain.Entities.TFEnergies;
+using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 
 namespace TT.Domain.Entities.Players
@@ -237,7 +238,7 @@ namespace TT.Domain.Entities.Players
 
         private static float GetWillpowerBaseByLevel(int level)
         {
-            float willpowerBase = 15 * (level - 1) + 100;
+            float willpowerBase = (float)(PvPStatics.LevelUpHealthMaxIncreasePerLevel * (level - 1) + 100);
             return willpowerBase;
         }
 

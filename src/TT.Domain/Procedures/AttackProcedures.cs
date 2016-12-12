@@ -12,10 +12,10 @@ namespace TT.Domain.Procedures
     public static class AttackProcedures
     {
 
+        private const string WEAKEN = "weaken";
+
         public static string Attack(Player attacker, Player victim, SkillViewModel skillBeingUsed)
         {
-
-            
 
             string result = "";
 
@@ -116,8 +116,6 @@ namespace TT.Domain.Procedures
                 decimal meDmgExtra = meBuffs.SpellExtraHealthDamagePercent();
                 decimal targetProt = targetedBuffs.SpellHealthDamageResistance();
 
-                decimal myEvasionNegation = meBuffs.EvasionNegationPercent();
-
                 decimal criticalMissPercentChance = PvPStatics.CriticalMissPercentChance - meBuffs.SpellMisfireChanceReduction();
                 decimal evasionPercentChance = targetedBuffs.EvasionPercent() - meBuffs.EvasionNegationPercent();
 
@@ -170,13 +168,10 @@ namespace TT.Domain.Procedures
                     if (skillBeingUsed.Skill.HealthDamageAmount > 0)
                     {
 
-                        // get the lowest level involved in this combat
-                        decimal midLevel = AttackProcedures.GetMiddleLevel(me, targeted);
-                        decimal extraDamageFromLevels = PvPStatics.ExtraHealthDamagePerLevel * (midLevel - 1);
-
                         // add even more damage if the spell is "weaken"
-                        extraDamageFromLevels = (skillBeingUsed.Skill.TFPointsAmount == 0) ? extraDamageFromLevels + (1.15M * midLevel) : extraDamageFromLevels;
+                        decimal extraDamageFromWeaken = (skillBeingUsed.Skill.dbName == WEAKEN) ? skillBeingUsed.Skill.HealthDamageAmount*1.5M : 0;
 
+                        decimal extraDamageFromLevel = .75M*me.Level;
 
                         // calculator the modifier as extra attack - defense.      15 - 20 = -5 modifier
                         decimal willpowerDamageModifierFromBonuses = 1 + ((meDmgExtra - targetProt) / 100.0M);
@@ -193,7 +188,7 @@ namespace TT.Domain.Procedures
                             willpowerDamageModifierFromBonuses = 2;
                         }
 
-                        decimal totalHealthDamage = (skillBeingUsed.Skill.HealthDamageAmount + extraDamageFromLevels) * willpowerDamageModifierFromBonuses * criticalModifier;
+                        decimal totalHealthDamage = (skillBeingUsed.Skill.HealthDamageAmount + extraDamageFromWeaken + extraDamageFromLevel) * willpowerDamageModifierFromBonuses * criticalModifier;
 
                         // make sure damage is never in the negatives (which would heal instead)
                         if (totalHealthDamage < 0)

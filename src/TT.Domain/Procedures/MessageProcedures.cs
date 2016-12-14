@@ -4,6 +4,7 @@ using TT.Domain.Commands.Messages;
 using TT.Domain.Concrete;
 using TT.Domain.Models;
 using TT.Domain.Queries.Messages;
+using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 
 namespace TT.Domain.Procedures
@@ -52,7 +53,7 @@ namespace TT.Domain.Procedures
             // get the players in the leader's covenant
             IPlayerRepository playerRepo = new EFPlayerRepository();
             var query = from p in playerRepo.Players
-                        where p.Covenant == covLeader.Covenant && p.Id != covLeader.Id
+                        where p.Covenant == covLeader.Covenant && p.Id != covLeader.Id && p.BotId == AIStatics.ActivePlayerBotId
                         select p;
 
             foreach (var p in query)

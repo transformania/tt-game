@@ -605,12 +605,13 @@ namespace TT.Domain.Procedures
                 TFEnergyProcedures.DeleteAllPlayerTFEnergies(oldplayer.Id);
                 oldplayer.MembershipId = null;
                 oldplayer.BotId = AIStatics.RerolledPlayerBotId;
-                playerRepo.SavePlayer(oldplayer);
 
                 // remove the old player's effects
                 EffectProcedures.DeleteAllPlayerEffects(oldplayer.Id);
 
                 oldCovId = oldplayer.Covenant;
+                oldplayer.Covenant = 0;
+                playerRepo.SavePlayer(oldplayer);
 
                 // turn the item they player became permanent
                 IItemRepository itemRepo = new EFItemRepository();
@@ -651,8 +652,7 @@ namespace TT.Domain.Procedures
 
             if (oldplayer != null)
             {
-                cmd.Covenant = oldplayer.Covenant;
-                oldplayer.Covenant = 0;
+                cmd.Covenant = oldCovId;
                 cmd.Level = oldplayer.Level - 3;
                 if (cmd.Level < 1)
                 {
@@ -667,14 +667,7 @@ namespace TT.Domain.Procedures
             cmd.GameMode = player.StartGameMode;
 
 
-            if (player.StartInRP)
-            {
-                cmd.InRP = true;
-            }
-            else
-            {
-                cmd.InRP = false;
-            }
+            cmd.InRP = player.StartInRP;
 
             cmd.Location = LocationsStatics.GetRandomLocation();
 

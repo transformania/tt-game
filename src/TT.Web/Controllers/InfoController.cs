@@ -12,6 +12,7 @@ using TT.Domain;
 using TT.Domain.DTOs.RPClassifiedAds;
 using TT.Domain.Queries.RPClassifiedAds;
 using System;
+using TT.Domain.Queries.Players;
 
 namespace TT.Web.Controllers
 {
@@ -127,6 +128,16 @@ namespace TT.Web.Controllers
                              Luck = c.Luck
                          };
 
+            return Json(output, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// Requests data on all the starting forms required for a new player to make a character selection
+        /// </summary>
+        /// <returns>data on all the starting forms required for a new player to make a character selection</returns>
+        public ActionResult StartingForms()
+        {
+            var output = DomainRegistry.Repository.Find(new GetBaseForms());
             return Json(output, JsonRequestBehavior.AllowGet);
         }
 

@@ -8,6 +8,7 @@ using TT.Domain.Concrete;
 using TT.Domain.Models;
 using TT.Domain.Procedures.BossProcedures;
 using TT.Domain.Queries.Game;
+using TT.Domain.Queries.Players;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 
@@ -555,9 +556,7 @@ namespace TT.Domain.Procedures
             // assert that the form is a valid staring form
             string x = player.FormName;
 
-            var validNames = new string[] { "man_01", "man_02", "man_03", "man_04", "man_05", "man_06", "man_07", "man_08", "man_09", "woman_01", "woman_02", "woman_03", "woman_04", "woman_05", "woman_06", "woman_07", "woman_08", "woman_09" };
-
-            if (!validNames.Contains(x))
+            if (!DomainRegistry.Repository.FindSingle(new IsBaseForm {form = x}))
             {
                 return "That is not a valid starting form.";
             }

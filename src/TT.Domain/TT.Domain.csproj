@@ -266,6 +266,7 @@
     <Compile Include="DTOs\Identity\CaptchaEntryDetail.cs" />
     <Compile Include="DTOs\Identity\DonatorDetail.cs" />
     <Compile Include="DTOs\Identity\UserDonatorDetail.cs" />
+    <Compile Include="DTOs\Forms\BaseFormDetail.cs" />
     <Compile Include="DTOs\Players\BusStopsViewModel.cs" />
     <Compile Include="DTOs\Players\BusStop.cs" />
     <Compile Include="DTOs\Players\PlayerBusDetail.cs" />
@@ -490,6 +491,8 @@
     <Compile Include="Queries\Players\GetPlayer.cs" />
     <Compile Include="Queries\Players\GetPlayerBusDetail.cs" />
     <Compile Include="Queries\Players\GetPlayerByBotId.cs" />
+    <Compile Include="Queries\Players\GetBaseForms.cs" />
+    <Compile Include="Queries\Players\IsBaseForm.cs" />
     <Compile Include="Queries\Players\PlayerIsAtBusStop.cs" />
     <Compile Include="Queries\Player\GetPlayerFormFromMembership.cs" />
     <Compile Include="Queries\Skills\GetSkillsOwnedByPlayer.cs" />

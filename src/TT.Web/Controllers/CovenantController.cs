@@ -276,7 +276,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the flag is not taken
-            if (CovenantProcedures.FlagIsInUse(input.FlagUrl))
+            if (myCov.FlagUrl != input.FlagUrl && CovenantProcedures.FlagIsInUse(input.FlagUrl))
             {
                 TempData["Error"] = "That flag is already in use.";
                 TempData["SubError"] = "Select a different one.";

@@ -45,17 +45,11 @@ namespace TT.Tests.Domain.Commands.Players
 
             var player = new PlayerBuilder()
                .With(p => p.Id, 100)
-               .With(p => p.Level, 1)
                .With(p => p.Health, 0)
-               .With(p => p.MaxHealth, 100)
                .With(p => p.User, new UserBuilder()
                     .With(u => u.Achievements, stats)
                     .With(u => u.Id, "bob")
                     .BuildAndSave())
-               .With(p => p.Mobility, PvPStatics.MobilityFull)
-               .With(p => p.ActionPoints, PvPStatics.CleanseCost)
-               .With(p => p.Mana, PvPStatics.CleanseManaCost + 1)
-               .With(p => p.CleansesMeditatesThisRound, 0)
                .With(p => p.Location, LocationsStatics.STREET_200_MAIN_STREET)
                .With(p => p.TFEnergies, TFEnergies)
                .BuildAndSave();
@@ -69,7 +63,7 @@ namespace TT.Tests.Domain.Commands.Players
 
             var locationLog = DataContext.AsQueryable<LocationLog>().First();
             locationLog.dbLocationName.Should().Be(player.Location);
-            locationLog.Message.Should().Be("<span class='playerCleansingNotification'> cleansed here.</span>");
+            locationLog.Message.Should().Be("<span class='playerCleansingNotification'>John Doe cleansed here.</span>");
 
             var stat = DataContext.AsQueryable<Stat>().FirstOrDefault(s => s.AchievementType == StatsProcedures.Stat__TimesCleansed);
             stat.Owner.Id.Should().Be("bob");
@@ -81,8 +75,6 @@ namespace TT.Tests.Domain.Commands.Players
         {
             new PlayerBuilder()
                 .With(p => p.Id, 100)
-                .With(p => p.Mobility, PvPStatics.MobilityFull)
-                .With(p => p.ActionPoints, PvPStatics.CleanseCost+1)
                 .BuildAndSave();
 
             var cmd = new Cleanse { PlayerId = 3, Buffs = buffs};
@@ -96,7 +88,6 @@ namespace TT.Tests.Domain.Commands.Players
         {
             new PlayerBuilder()
                 .With(p => p.Id, 100)
-                .With(p => p.Mobility, PvPStatics.MobilityFull)
                 .With(p => p.ActionPoints, PvPStatics.CleanseCost - 1)
                 .BuildAndSave();
 
@@ -112,7 +103,6 @@ namespace TT.Tests.Domain.Commands.Players
             new PlayerBuilder()
                 .With(p => p.Id, 100)
                 .With(p => p.Mobility, PvPStatics.MobilityInanimate)
-                .With(p => p.ActionPoints, PvPStatics.CleanseCost)
                 .BuildAndSave();
 
             var cmd = new Cleanse { PlayerId = 100, Buffs = buffs };
@@ -127,8 +117,6 @@ namespace TT.Tests.Domain.Commands.Players
         {
             new PlayerBuilder()
                 .With(p => p.Id, 100)
-                .With(p => p.Mobility, PvPStatics.MobilityFull)
-                .With(p => p.ActionPoints, PvPStatics.CleanseCost)
                 .With(p => p.Mana, PvPStatics.CleanseManaCost - 1)
                 .BuildAndSave();
 
@@ -143,9 +131,6 @@ namespace TT.Tests.Domain.Commands.Players
         {
             new PlayerBuilder()
                 .With(p => p.Id, 100)
-                .With(p => p.Mobility, PvPStatics.MobilityFull)
-                .With(p => p.ActionPoints, PvPStatics.CleanseCost)
-                .With(p => p.Mana, PvPStatics.CleanseManaCost + 1)
                 .With(p => p.CleansesMeditatesThisRound, PvPStatics.MaxCleansesMeditatesPerUpdate)
                 .BuildAndSave();
 
@@ -189,7 +174,7 @@ namespace TT.Tests.Domain.Commands.Players
                 new StatBuilder().With(t => t.AchievementType, StatsProcedures.Stat__BusRides).BuildAndSave()
             };
 
-            var player = new PlayerBuilder()
+            new PlayerBuilder()
                .With(p => p.Id, 100)
                .With(p => p.Level, 1)
                .With(p => p.Health, 0)

@@ -35,6 +35,11 @@ namespace TT.Domain.Entities.TFEnergies
 
             return newEnergy;
         }
+
+        public void SetAmount(decimal amount)
+        {
+            this.Amount = amount;
+        }
     }
 
     

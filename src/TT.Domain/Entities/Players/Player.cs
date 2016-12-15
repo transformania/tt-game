@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using TT.Domain.Commands.Players;
 using TT.Domain.Entities.Effects;
 using TT.Domain.Entities.Forms;
-using TT.Domain.Entities.Identities;
 using TT.Domain.Entities.Identity;
 using TT.Domain.Entities.NPCs;
 using TT.Domain.Entities.Skills;
@@ -143,19 +143,25 @@ namespace TT.Domain.Entities.Players
 
         public string GetFullName()
         {
-            if (this.DonatorLevel >= 2)
+            if (DonatorLevel >= 2)
             {
-                return this.FirstName + " '" + this.Nickname + "' " + this.LastName;
+                return FirstName + " '" + Nickname + "' " + LastName;
             }
             else
             {
-                return this.FirstName + " " + this.LastName;
+                return FirstName + " " + LastName;
             }
+        }
+
+        public void AddHealth(decimal amount)
+        {
+            Health += amount;
+            ForceWithinBounds();
         }
 
         public void DropAllItems()
         {
-            foreach (Items.Item i in this.Items)
+            foreach (Items.Item i in Items)
             {
                 i.Drop(this);
             }
@@ -163,18 +169,18 @@ namespace TT.Domain.Entities.Players
 
         public void ChangeForm(FormSource form)
         {
-            this.FormSource = form;
-            this.Form = form.dbName; // keep here for legacy purposes
-            this.Gender = form.Gender;
-            this.Mobility = form.MobilityType;
-            this.ForceWithinBounds();
+            FormSource = form;
+            Form = form.dbName; // keep here for legacy purposes
+            Gender = form.Gender;
+            Mobility = form.MobilityType;
+            ForceWithinBounds();
         }
 
         public void ReadjustMaxes(BuffBox buffs)
         {
-            this.MaxHealth = Convert.ToDecimal(GetWillpowerBaseByLevel(this.Level)) * (1.0M + (buffs.HealthBonusPercent() / 100.0M));
-            this.MaxMana = Convert.ToDecimal(GetManaBaseByLevel(this.Level)) * (1.0M + (buffs.ManaBonusPercent() / 100.0M));
-            this.ForceWithinBounds();
+            MaxHealth = Convert.ToDecimal(GetWillpowerBaseByLevel(Level)) * (1.0M + (buffs.HealthBonusPercent() / 100.0M));
+            MaxMana = Convert.ToDecimal(GetManaBaseByLevel(Level)) * (1.0M + (buffs.ManaBonusPercent() / 100.0M));
+            ForceWithinBounds();
         }
 
         /// <summary>
@@ -183,14 +189,14 @@ namespace TT.Domain.Entities.Players
         /// <param name="tier">The new tier to set the player to</param>
         public void SetTier(int tier)
         {
-            this.DonatorLevel = tier;
+            DonatorLevel = tier;
             if (tier > 0)
             {
-                this.PlayerLogs.Add(PlayerLog.Create(this, "<b>An admin has set your donator status to Tier " + tier + ".  <span class='good'>Thank you for supporting Transformania Time!</span></b>", DateTime.UtcNow, true));
+                PlayerLogs.Add(PlayerLog.Create(this, "<b>An admin has set your donator status to Tier " + tier + ".  <span class='good'>Thank you for supporting Transformania Time!</span></b>", DateTime.UtcNow, true));
             }
             else
             {
-                this.PlayerLogs.Add(PlayerLog.Create(this, "<b>An admin has set your donator status to Tier " + tier + ".</b>", DateTime.UtcNow, true));
+                PlayerLogs.Add(PlayerLog.Create(this, "<b>An admin has set your donator status to Tier " + tier + ".</b>", DateTime.UtcNow, true));
             }
             
         }
@@ -201,7 +207,7 @@ namespace TT.Domain.Entities.Players
         /// <param name="location"></param>
         public void SetLocation(string location)
         {
-            this.Location = location;
+            Location = location;
 
         }
 
@@ -212,22 +218,80 @@ namespace TT.Domain.Entities.Players
         /// <param name="isImportant">Whether or not the log is important and should continually appear in the player's logs until dismissed.</param>
         public void AddLog(string logMessage, bool isImportant)
         {
-            this.PlayerLogs.Add(PlayerLog.Create(this, logMessage, DateTime.UtcNow, isImportant));
+            PlayerLogs.Add(PlayerLog.Create(this, logMessage, DateTime.UtcNow, isImportant));
         }
 
         public void ChangeMoney(int amount)
         {
-            this.Money += amount;
+            Money += amount;
         }
 
         public void ChangeActionPoints(decimal amount)
         {
-            this.ActionPoints += amount;
+            ActionPoints += amount;
         }
 
         public void SetOnlineActivityToNow()
         {
-            this.LastActionTimestamp = DateTime.UtcNow;
+            LastActionTimestamp = DateTime.UtcNow;
+        }
+
+        /// <summary>
+        /// Have the player cleanse, restoring some willpower and reduce TF Energies, modified by the player's buffs
+        /// </summary>
+        /// <param name="buffs">Player's buffs</param>
+        /// <returns>Cleanse amount</returns>
+        public string Cleanse(BuffBox buffs)
+        {
+
+            CleansesMeditatesThisRound++;
+            ActionPoints -= PvPStatics.CleanseCost;
+            Mana -= PvPStatics.CleanseManaCost;
+
+            var result = "";
+
+            var cleanseBonusTFEnergyRemovalPercent = buffs.CleanseExtraTFEnergyRemovalPercent() + PvPStatics.CleanseTFEnergyPercentDecrease;
+            var cleanseWPRestore = PvPStatics.CleanseHealthRestoreBase + buffs.CleanseExtraHealth() + Level;
+
+            if (cleanseWPRestore <= 0)
+            {
+                result = "You try to cleanse, but due to the magical effects on your body you fail to restore any willpower.";
+            }
+            else
+            {
+                AddHealth(cleanseWPRestore);
+                result = $"You quickly cleanse, restoring {cleanseWPRestore} willpower.";
+            }
+
+            if (cleanseBonusTFEnergyRemovalPercent > 0)
+            {
+                CleanseTFEnergies(buffs);
+            }
+
+            if (BotId == AIStatics.ActivePlayerBotId)
+            {
+                var location = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == Location);
+                AddLog($"You cleansed at {location.Name}.", false);
+            }
+
+            return result;
+
+        }
+         
+        /// <summary>
+        /// Removes a percentage of TF energy that this player has, determined by the stats passed in
+        /// </summary>
+        /// <param name="buffs">Buffs owned by the player</param>
+        public void CleanseTFEnergies(BuffBox buffs)
+        {
+            var cleansePercentage = buffs.CleanseExtraTFEnergyRemovalPercent() + PvPStatics.CleanseTFEnergyPercentDecrease;
+
+            foreach (TFEnergy energy in TFEnergies)
+            {
+                var newValue = energy.Amount * (1 - (cleansePercentage / 100.0M));
+                energy.SetAmount(newValue);
+            }
+
         }
 
         private float GetManaBaseByLevel(int level)
@@ -242,16 +306,19 @@ namespace TT.Domain.Entities.Players
             return willpowerBase;
         }
 
+        /// <summary>
+        /// Clamp WP and mana to no lower than 1 and no higher than the player's maximum WP and mana
+        /// </summary>
         private void ForceWithinBounds()
         {
-            if (this.MaxHealth < 1) this.MaxHealth = 1;
-            if (this.MaxMana < 1) this.MaxMana = 1;
+            if (MaxHealth < 1) MaxHealth = 1;
+            if (MaxMana < 1) MaxMana = 1;
 
-            if (this.Health > this.MaxHealth) this.Health = this.MaxHealth;
-            if (this.Mana > this.MaxMana) this.Mana = this.MaxHealth;
+            if (Health > MaxHealth) Health = MaxHealth;
+            if (Mana > MaxMana) Mana = MaxHealth;
 
-            if (this.Health < 0) this.Health = 0;
-            if (this.Mana < 0) this.Mana = 0;
+            if (Health < 0) Health = 0;
+            if (Mana < 0) Mana = 0;
         }
     }
 }

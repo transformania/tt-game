@@ -189,6 +189,7 @@
     <Compile Include="Commands\Messages\DeletePlayerExpiredMessages.cs" />
     <Compile Include="Commands\Messages\MarkAsRead.cs" />
     <Compile Include="Commands\Players\ChangeForm.cs" />
+    <Compile Include="Commands\Players\Cleanse.cs" />
     <Compile Include="Commands\Players\CreatePlayer.cs" />
     <Compile Include="Commands\Players\DeletePlayer.cs" />
     <Compile Include="Commands\Players\ChangeDonatorTier.cs" />

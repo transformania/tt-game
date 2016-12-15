@@ -1659,47 +1659,19 @@ namespace TT.Web.Controllers
             }
 
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-
-            // assert player has sufficient action points to meditate
-            if (me.ActionPoints < PvPStatics.CleanseCost)
-            {
-                TempData["Error"] = "You don't have enough action points to cleanse.";
-                TempData["SubError"] = "Wait a while for more.";
-                return RedirectToAction("Play");
-            }
-
             BuffBox mybuffs = ItemProcedures.GetPlayerBuffs(me);
 
-            // assert player is in an okay form to do this
-            if (!PlayerCanPerformAction(me, "cleanse"))
+            try
             {
-
+                TempData["Result"] =  DomainRegistry.Repository.Execute(new Cleanse {PlayerId = me.Id, Buffs = mybuffs});
                 return RedirectToAction("Play");
             }
-
-            //assert player has enough mana
-            if (me.Mana < PvPStatics.CleanseManaCost)
+            catch (DomainException e)
             {
-                TempData["Error"] = "You don't have enough mana to cleanse.";
+                TempData["Error"] = e.Message;
                 return RedirectToAction("Play");
             }
-
-            // assert player has not cleansed and meditated too much this turn
-            if (me.CleansesMeditatesThisRound >= PvPStatics.MaxCleansesMeditatesPerUpdate)
-            {
-                TempData["Error"] = "You have cleansed and meditate the maximum number of times this update.";
-                TempData["SubError"] = "Next turn you will be able to cleanse again.";
-                return RedirectToAction("Play");
-            }
-
-            TempData["Result"] = PlayerProcedures.Cleanse(me, mybuffs);
-
-            // record into statistics
-            new Thread(() =>
-                StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__TimesCleansed, 1)
-            ).Start();
-
-            return RedirectToAction("Play");
+            
         }
 
          [Authorize]

@@ -148,14 +148,14 @@ namespace TT.Domain.Procedures.BossProcedures
                 if (malethief.Health < malethief.MaxHealth / 6)
                 {
                     BuffBox malebuffs = ItemProcedures.GetPlayerBuffs(malethief);
-                    PlayerProcedures.Cleanse(malethief, malebuffs);
+                    DomainRegistry.Repository.Execute(new Cleanse { PlayerId = malethief.Id, Buffs = malebuffs, NoValidate = true });
                     malethief = playerRepo.Players.FirstOrDefault(f => f.FirstName == MaleBossFirstName && f.LastName == MaleBossLastName);
                 }
 
                 if (femalethief.Health < femalethief.MaxHealth / 4)
                 {
                     BuffBox femalebuffs = ItemProcedures.GetPlayerBuffs(femalethief);
-                    PlayerProcedures.Cleanse(femalethief, femalebuffs);
+                    DomainRegistry.Repository.Execute(new Cleanse { PlayerId = femalethief.Id, Buffs = femalebuffs, NoValidate = true });
                     femalethief = playerRepo.Players.FirstOrDefault(f => f.FirstName == FemaleBossFirstName && f.LastName == FemaleBossLastName);
                 }
 
@@ -258,7 +258,7 @@ namespace TT.Domain.Procedures.BossProcedures
 
                         if (attackingThief.Health < attackingThief.Health / 10)
                         {
-                            PlayerProcedures.Cleanse(attackingThief, buffs);
+                            DomainRegistry.Repository.Execute(new Cleanse { PlayerId = attackingThief.Id, Buffs = buffs, NoValidate = true});
                         }
                         
                         PlayerProcedures.Meditate(attackingThief, buffs);

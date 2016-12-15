@@ -1541,47 +1541,6 @@ namespace TT.Domain.Procedures
             return output;
         }
 
-        public static string Cleanse(Player player, BuffBox buffs)
-        {
-            string result = "";
-
-            PlayerProcedures.AddCleanseMeditateCount(player);
-
-            decimal cleanseBonusTFEnergyRemovalPercent = buffs.CleanseExtraTFEnergyRemovalPercent() + PvPStatics.CleanseTFEnergyPercentDecrease;
-            decimal cleanseWPRestore = PvPStatics.CleanseHealthRestoreBase + buffs.CleanseExtraHealth() + player.Level;
-
-            if (cleanseWPRestore <= 0)
-            {
-                cleanseWPRestore = 0;
-                result = "You try to cleanse, but due to the magical effects on your body you fail to restore any willpower.";
-            }
-            else
-            {
-                result = "You quickly cleanse, restoring " + cleanseWPRestore + " willpower.";
-            }
-
-
-            // player is okay to cleanse; restore some health
-            PlayerProcedures.ChangePlayerActionMana(PvPStatics.CleanseCost, cleanseWPRestore, -PvPStatics.CleanseManaCost, player.Id);
-
-            if (cleanseBonusTFEnergyRemovalPercent > 0) { 
-                TFEnergyProcedures.CleanseTFEnergies(player, cleanseBonusTFEnergyRemovalPercent);
-            }
-
-
-
-
-            string logmessage = "<span class='playerCleansingNotification'>" + player.GetFullName() + " cleansed here.</span>";
-            LocationLogProcedures.AddLocationLog(player.dbLocationName, logmessage);
-
-
-            Location here = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == player.dbLocationName);
-            string playerLogMessage = "You cleansed at " + here.Name + ".";
-            PlayerLogProcedures.AddPlayerLog(player.Id, playerLogMessage, false);
-
-            return result;
-        }
-
         public static string Meditate(Player player, BuffBox buffs)
         {
 

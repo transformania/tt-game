@@ -70,7 +70,7 @@ namespace TT.Domain.Commands.Players
                 ctx.Update(player);
 
                 // TODO: Perform this as part of the Cleanse method on the Player entity once known how
-                var locationLog = LocationLog.Create(player.Location, $"<span class='playerCleansingNotification'>{player.GetFullName()}cleansed here.</span>", 0);
+                var locationLog = LocationLog.Create(player.Location, $"<span class='playerCleansingNotification'>{player.GetFullName()} cleansed here.</span>", 0);
                 ctx.Add(locationLog);
 
                 ctx.Commit();

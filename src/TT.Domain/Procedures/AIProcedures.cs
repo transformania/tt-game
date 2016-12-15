@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml;
-using System.Xml.Serialization;
 using TT.Domain.Abstract;
-using TT.Domain.Commands.Items;
 using TT.Domain.Commands.Players;
 using TT.Domain.Concrete;
 using TT.Domain.Models;
 using TT.Domain.Procedures.BossProcedures;
-using TT.Domain.Queries.Item;
 using TT.Domain.Statics;
 using TT.Domain.Utilities;
 using TT.Domain.ViewModels;
@@ -222,7 +218,7 @@ namespace TT.Domain.Procedures
                     int healthroll = (int)Math.Floor(healthrand.NextDouble() * 4.0D);
                     for (int i = meditates; i < healthroll; i++)
                     {
-                        PlayerProcedures.Cleanse(bot, botbuffs);
+                        DomainRegistry.Repository.Execute(new Cleanse { PlayerId = bot.Id, Buffs = botbuffs, NoValidate = true });
                     }
                 }
 

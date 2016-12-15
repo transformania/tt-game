@@ -570,7 +570,6 @@ namespace TT.Domain.Procedures
         {
             ITFEnergyRepository repo = new EFTFEnergyRepository();
             IEnumerable<TFEnergy> mydbEnergies = repo.TFEnergies.Where(e => e.PlayerId == player.Id).ToList();
-            List<TFEnergy> modifiedEnergies = new List<TFEnergy>();
 
             foreach (TFEnergy energy in mydbEnergies)
             {

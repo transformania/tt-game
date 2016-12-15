@@ -98,8 +98,8 @@ namespace TT.Domain.Procedures.BossProcedures
                 {
                     if (merchant.Health < merchant.MaxHealth)
                     {
-                        PlayerProcedures.Cleanse(merchant, box);
-                        PlayerProcedures.Cleanse(merchant, box);
+                        DomainRegistry.Repository.Execute(new Cleanse { PlayerId = merchant.Id, Buffs = box, NoValidate = true });
+                        DomainRegistry.Repository.Execute(new Cleanse { PlayerId = merchant.Id, Buffs = box, NoValidate = true });
                         PlayerProcedures.Meditate(merchant, box);
                     }
                 }
@@ -109,7 +109,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     {
                         PlayerProcedures.Meditate(merchant, box);
                         PlayerProcedures.Meditate(merchant, box);
-                        PlayerProcedures.Cleanse(merchant, box);
+                        DomainRegistry.Repository.Execute(new Cleanse { PlayerId = merchant.Id, Buffs = box, NoValidate = true });
                     }
                 }
 

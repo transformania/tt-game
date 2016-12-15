@@ -153,18 +153,18 @@ namespace TT.Domain.Procedures.BossProcedures
             // have Narcissa meditate to get her mana back up
             if (faeboss.Mana < faeboss.MaxMana / 2)
             {
-                PlayerProcedures.Meditate(faeboss, faeBuffs);
+                DomainRegistry.Repository.Execute(new Meditate { PlayerId = faeboss.Id, Buffs = faeBuffs, NoValidate = true });
             }
             else if (faeboss.Mana < faeboss.MaxMana / 3)
             {
-                PlayerProcedures.Meditate(faeboss, faeBuffs);
-                PlayerProcedures.Meditate(faeboss, faeBuffs);
+                DomainRegistry.Repository.Execute(new Meditate { PlayerId = faeboss.Id, Buffs = faeBuffs, NoValidate = true });
+                DomainRegistry.Repository.Execute(new Meditate { PlayerId = faeboss.Id, Buffs = faeBuffs, NoValidate = true });
             }
             else if (faeboss.Mana < faeboss.MaxMana / 4)
             {
-                PlayerProcedures.Meditate(faeboss, faeBuffs);
-                PlayerProcedures.Meditate(faeboss, faeBuffs);
-                PlayerProcedures.Meditate(faeboss, faeBuffs);
+                DomainRegistry.Repository.Execute(new Meditate { PlayerId = faeboss.Id, Buffs = faeBuffs, NoValidate = true });
+                DomainRegistry.Repository.Execute(new Meditate { PlayerId = faeboss.Id, Buffs = faeBuffs, NoValidate = true });
+                DomainRegistry.Repository.Execute(new Meditate { PlayerId = faeboss.Id, Buffs = faeBuffs, NoValidate = true });
             }
 
 

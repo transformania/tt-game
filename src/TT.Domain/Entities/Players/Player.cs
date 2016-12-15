@@ -159,6 +159,12 @@ namespace TT.Domain.Entities.Players
             ForceWithinBounds();
         }
 
+        public void AddMana(decimal amount)
+        {
+            Mana += amount;
+            ForceWithinBounds();
+        }
+
         public void DropAllItems()
         {
             foreach (Items.Item i in Items)
@@ -276,6 +282,34 @@ namespace TT.Domain.Entities.Players
 
             return result;
 
+        }
+
+        public string Meditate(BuffBox buffs)
+        {
+            CleansesMeditatesThisRound++;
+            ActionPoints -= PvPStatics.MeditateCost;
+
+            var result = "";
+
+            var meditateManaRestore = PvPStatics.MeditateManaRestoreBase + buffs.MeditationExtraMana() + Level;
+
+            if (meditateManaRestore < 0)
+            {
+                result = "You try to meditate, but due to the magical effects on your body you fail to restore any mana.";
+            }
+            else
+            {
+                result = "You quickly meditate, restoring " + meditateManaRestore + " mana.";
+                AddMana(meditateManaRestore);
+            }
+
+            if (BotId == AIStatics.ActivePlayerBotId)
+            {
+                var location = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == Location);
+                AddLog($"You meditated at {location.Name}.", false);
+            }
+
+            return result;
         }
          
         /// <summary>

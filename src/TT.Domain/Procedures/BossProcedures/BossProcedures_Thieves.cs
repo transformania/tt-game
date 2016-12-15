@@ -260,8 +260,8 @@ namespace TT.Domain.Procedures.BossProcedures
                         {
                             DomainRegistry.Repository.Execute(new Cleanse { PlayerId = attackingThief.Id, Buffs = buffs, NoValidate = true});
                         }
-                        
-                        PlayerProcedures.Meditate(attackingThief, buffs);
+
+                        DomainRegistry.Repository.Execute(new Meditate { PlayerId = attackingThief.Id, Buffs = buffs, NoValidate = true });
 
                     }
 

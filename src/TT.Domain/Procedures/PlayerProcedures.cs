@@ -1541,43 +1541,6 @@ namespace TT.Domain.Procedures
             return output;
         }
 
-        public static string Meditate(Player player, BuffBox buffs)
-        {
-
-            decimal meditateManaRestore = PvPStatics.MeditateManaRestoreBase + buffs.MeditationExtraMana() + player.Level;
-
-            if (meditateManaRestore < 0)
-            {
-                meditateManaRestore = 0;
-            }
-
-            PlayerProcedures.ChangePlayerActionMana(PvPStatics.MeditateCost, 0, meditateManaRestore, player.Id);
-
-            PlayerProcedures.AddCleanseMeditateCount(player);
-
-            string result = "";
-
-            if (meditateManaRestore == 0)
-            {
-                result = "You try to meditate, but due to the magical effects on your body you fail to restore any mana.";
-            }
-            else
-            {
-                result = "You quickly meditate, restoring " + meditateManaRestore + " mana.";
-            }
-
-            string logmessage = "<span class='playerMediatingNotification'>" + player.GetFullName() + " meditated here.</span>";
-            LocationLogProcedures.AddLocationLog(player.dbLocationName, logmessage);
-
-
-            Location here = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == player.dbLocationName);
-            string playerLogMessage = "You meditated at " + here.Name + ".";
-            PlayerLogProcedures.AddPlayerLog(player.Id, playerLogMessage, false);
-
-            return result;
-
-        }
-
         public static string DeMeditate(Player player, Player mindcontroller, BuffBox buffs) {
             decimal meditateManaRestore = PvPStatics.MeditateManaRestoreBase + buffs.MeditationExtraMana() + player.Level;
 

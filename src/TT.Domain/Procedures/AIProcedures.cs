@@ -206,7 +206,7 @@ namespace TT.Domain.Procedures
                     int manaroll = (int)Math.Floor(manarand.NextDouble() * 4.0D);
                     for (int i = 0; i < manaroll; i++)
                     {
-                        PlayerProcedures.Meditate(bot, botbuffs);
+                        DomainRegistry.Repository.Execute(new Meditate { PlayerId = bot.Id, Buffs = botbuffs, NoValidate = true });
                         meditates++;
                     }
                 }

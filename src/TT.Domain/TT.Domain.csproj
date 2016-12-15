@@ -261,6 +261,7 @@
     <Compile Include="DomainCommand.cs" />
     <Compile Include="DomainContext.cs" />
     <Compile Include="DTOs\BaseDTO.cs" />
+    <Compile Include="DTOs\Forms\FormNameDetail.cs" />
     <Compile Include="DTOs\Forms\TFMessageDetail.cs" />
     <Compile Include="DTOs\Game\WorldDetail.cs" />
     <Compile Include="DTOs\Identity\StatDetail.cs" />
@@ -271,6 +272,7 @@
     <Compile Include="DTOs\Players\BusStopsViewModel.cs" />
     <Compile Include="DTOs\Players\BusStop.cs" />
     <Compile Include="DTOs\Players\PlayerBusDetail.cs" />
+    <Compile Include="DTOs\Skills\SkillFormSourceDetail.cs" />
     <Compile Include="DTOs\TFEnergies\TFEnergyDetail.cs" />
     <Compile Include="Entities\Forms\TFMessage.cs" />
     <Compile Include="Entities\Game\World.cs" />

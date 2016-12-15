@@ -3,8 +3,10 @@ using System.Linq;
 using System.Threading;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using TT.Domain;
 using TT.Domain.Models;
 using TT.Domain.Procedures;
+using TT.Domain.Queries.Skills;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 
@@ -42,7 +44,8 @@ namespace TT.Web.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
-            IEnumerable<SkillViewModel> output = SkillProcedures.GetSkillViewModelsOwnedByPlayer(me.Id).Where(m => m.MobilityType == PvPStatics.MobilityFull);
+            var output = DomainRegistry.Repository.Find(new GetSkillsOwnedByPlayer {playerId = me.Id}).Where(s => s.SkillSource.MobilityType == PvPStatics.MobilityFull);
+
             return View(output);
         }
 

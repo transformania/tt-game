@@ -8,7 +8,7 @@ namespace TT.Domain.DTOs.Skills
         public int Id { get; set; }
         public PlayerDetail Owner { get; set; }
         public string Name { get; set; }
-        public SkillSource SkillSource { get; set; }
+        public SkillSourceDetail SkillSource { get; set; }
         public decimal Duration { get; set; }
         public decimal Charge { get; set; }
         public int TurnStamp { get; set; }

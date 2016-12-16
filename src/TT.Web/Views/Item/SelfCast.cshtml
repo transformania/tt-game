@@ -1,18 +1,75 @@
-﻿@model IEnumerable<TT.Domain.ViewModels.SkillViewModel>
+﻿@using TT.Web.CustomHtmlHelpers
+@model IEnumerable<TT.Domain.DTOs.Skills.SkillSourceFormSourceDetail>
+    
+<nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
 
-@Html.ActionLink("Back to game", "Play", "PvP")
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+                <li>@Html.ActionLink("Back to Inventory", "MyInventory", "PvP")</li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
 
-<p>As the owner of a Autoselftransmogrification Deflector Device you can cast any animate spell at the device and have it cast straight back at you with enough power to transform you instantly!  Which of your spells would you like to cast?</p>
+<div>
+    <p class="infoMessage result"></p>
+    <p class="infoMessage error"></p>
+    <p class="infoMessage suberror"></p>
+</div>
 
-@{
-    foreach (TT.Domain.ViewModels.SkillViewModel s in Model)
-    {
-        <h3>@s.Skill.FriendlyName</h3>
-        <p>@s.Skill.Description</p>
-        @Html.ActionLink("Cast this on yourself!", "SelfCastSend", "Item", new { spell = s.dbSkill.Name }, null)
-        <hr />
+<div class="containerInner">
+    <h1>Autoselftransmogrification Deflector Device</h1>
+    <p>As the owner of a Autoselftransmogrification Deflector Device you can cast any animate spell at the device and have it cast straight back at you with enough power to transform you instantly! Which of your spells would you like to cast?</p>
+    <hr/>
+
+    <table id="Spells" class="table table-hover messageTable dt-responsive">
+        <thead>
+        <tr>
+            <td>Spell Name</td>
+            <td>Form Name</td>
+            <td>Graphic</td>
+            <td>Form Description</td>
+            <td></td>
+        </tr>
+        </thead>
+        <tbody>
+
+        @foreach (var s in Model)
+        {
+            <tr>
+                <td><b class="playerMediatingNotification">@s.SkillSource.FriendlyName</b></td>
+                <td><b>@s.SkillSource.FormSource.FriendlyName</b></td>
+                <td><img src="@CharactersHere.GetFormImageURL(s.SkillSource.FormSource.PortraitUrl, true)" width="100px" height="100px" style="border: 1px solid black;"/></td>
+                <td class="tableCellDescription">@s.SkillSource.FormSource.Description</td>
+                <td>@Html.ActionLink("Cast", "SelfCastSend", "Item", new {spell = s.SkillSource.dbName}, null)</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+
+
+<script>
+    $('#Spells').dataTable({
+        "lengthMenu": [[10, 50, 100, 200, -1], [10, 50, 100, 200, "All"]]
+    });
+</script>
+
+<style>
+    tr {
+        border: 1px dashed rgb(161, 105, 105);
+        text-align: center;
     }
-}
-
-
-@Html.ActionLink("Back to game", "Play", "PvP")
+</style>

@@ -290,19 +290,17 @@ namespace TT.Web.CustomHtmlHelpers
             return new MvcHtmlString(output);
         }
 
-        public static MvcHtmlString GetImageURL(DbStaticItem item, bool thumb = false)
+        public static MvcHtmlString GetFormImageURL(string imageName, bool thumb = false)
         {
             var strThumb = "";
-
-            var strItemType = item.ItemType == PvPStatics.ItemType_Pet ? "animalPortraits/" : "itemsPortraits/";
 
             if (thumb)
             {
                 strThumb = "Thumbnails/100/";
-                if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + "Images/PvP/" + strItemType + strThumb + item.PortraitUrl)) strThumb = "";
+                if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + "Images/PvP/portraits/"  + strThumb + imageName)) strThumb = "";
             }
 
-            var output = "/Images/PvP/" + strItemType + strThumb + item.PortraitUrl;
+            var output = "/Images/PvP/portraits/" + strThumb + imageName;
             return new MvcHtmlString(output);
         }
 

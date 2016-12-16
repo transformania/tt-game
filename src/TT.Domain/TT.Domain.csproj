@@ -272,6 +272,7 @@
     <Compile Include="DTOs\Identity\DonatorDetail.cs" />
     <Compile Include="DTOs\Identity\UserDonatorDetail.cs" />
     <Compile Include="DTOs\Forms\BaseFormDetail.cs" />
+    <Compile Include="DTOs\Item\ItemSourceNameDescription.cs" />
     <Compile Include="DTOs\Players\BusStopsViewModel.cs" />
     <Compile Include="DTOs\Players\BusStop.cs" />
     <Compile Include="DTOs\Players\PlayerBusDetail.cs" />
@@ -505,6 +506,7 @@
     <Compile Include="Queries\RPClassifiedAds\GetRPClassifiedAd.cs" />
     <Compile Include="Queries\RPClassifiedAds\GetUserRPClassifiedAds.cs" />
     <Compile Include="Queries\RPClassifiedAds\GetRPClassifiedAds.cs" />
+    <Compile Include="Queries\Skills\GetSkillsPurchaseableByPlayer.cs" />
     <Compile Include="Queries\Statics\GetStaticItem.cs" />
     <Compile Include="Query.cs" />
     <Compile Include="Root.cs" />

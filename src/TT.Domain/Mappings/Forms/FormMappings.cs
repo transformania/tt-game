@@ -4,6 +4,7 @@ using Highway.Data;
 using TT.Domain.DTOs.Forms;
 using TT.Domain.DTOs.TFEnergies;
 using TT.Domain.Entities.Forms;
+using TT.Domain.Entities.Item;
 using TT.Domain.Entities.TFEnergies;
 
 
@@ -20,6 +21,10 @@ namespace TT.Domain.Mappings.Item
             modelBuilder.Entity<TFMessage>()
                 .ToTable("TFMessages")
                 .HasKey(cr => cr.Id);
+
+            modelBuilder.Entity<FormSource>()
+                .HasOptional(cr => cr.ItemSource)
+                .WithMany().Map(m => m.MapKey("ItemSourceId"));
 
             // TODO:  TFMessage should require having a FormSource in the future, but for now
             // because forms are produced by an old publish that can't set the FK immediately,

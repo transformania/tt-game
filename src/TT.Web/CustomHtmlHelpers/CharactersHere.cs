@@ -304,6 +304,28 @@ namespace TT.Web.CustomHtmlHelpers
             return new MvcHtmlString(output);
         }
 
+        public static MvcHtmlString GetImageUrl(string imageName, string mobility, bool thumb = false)
+        {
+            var strItemType = "";
+            var strThumb = "";
+
+            if (mobility == PvPStatics.MobilityFull)
+                strItemType = "portraits/";
+            else if (mobility == PvPStatics.MobilityInanimate)
+                strItemType = "itemsPortraits/";
+            else if (mobility == PvPStatics.MobilityPet)
+                strItemType = "animalPortraits/";
+
+            if (thumb)
+            {
+                strThumb = "Thumbnails/100/";
+                if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + "Images/PvP/" + strItemType + strThumb + imageName)) strThumb = "";
+            }
+
+            var output = "/Images/PvP/" + strItemType + strThumb + imageName;
+            return new MvcHtmlString(output);
+        }
+
         public static MvcHtmlString GetImageURL(ItemListingDetail item, bool thumb = false)
         {
             var strThumb = "";
@@ -428,25 +450,6 @@ namespace TT.Web.CustomHtmlHelpers
                 return new MvcHtmlString("<span class='icon icon-souled1'></span>");
             }
             return timeAgo < PvPStatics.Item_SoulActivityLevels_Minutes[2] ? new MvcHtmlString("<span class='icon icon-souled2'></span>") : new MvcHtmlString("");
-        }
-
-        public static MvcHtmlString StringToWebsite(string url)
-        {
-            if (url.IsNullOrEmpty())
-            {
-                return new MvcHtmlString("");
-            }
-
-            var prettyurl = url;
-
-            if (!url.StartsWith("http://") && !url.StartsWith("https://"))
-            {
-                url = "http://" + url;
-            }
-
-            var output = "<a href='" + url + "'>" + prettyurl + "</a>";
-
-            return new MvcHtmlString(output);
         }
 
         public static MvcHtmlString WithinBalanceTarget(decimal amount, string type)

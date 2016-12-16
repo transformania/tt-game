@@ -2,6 +2,7 @@
 #tool "nuget:?package=FluentMigrator.Tools&version=1.6.1"
 #tool "nuget:?package=NUnit.ConsoleRunner"
 #tool "nuget:?package=OpenCover"
+#tool "nuget:?package=ReportGenerator"
 
 // Default settings
 var target = Argument("target", EnvironmentVariable("TT_TARGET") ?? "Default");
@@ -83,16 +84,18 @@ Task("Build")
 Task("Run-Unit-Tests")
     .IsDependentOn("Build")
     .Does(() => {
+        var coverage = new FilePath("coverage.xml");
         OpenCover(tool => {
             tool.NUnit3("./src/**/bin/" + configuration + "/*.Tests.dll");
         },
-        new FilePath("result.xml"),
+        coverage,
         new OpenCoverSettings()
             .WithFilter("+[TT.Domain]*")
             .WithFilter("-[TT.Web]*")
             .WithFilter("-[TT.Migrations]*")
             .WithFilter("-[TT.Tests]*")
         );
+        ReportGenerator(coverage, "coverage/");
     }
 );
 

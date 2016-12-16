@@ -1,6 +1,9 @@
 # Welcome to Transformania Time! #
 This rather unofficial document is meant to help any new developers get up to speed with what's going on in the source code.
 
+[![build status](https://gitlab.com/transformania/tt-game/badges/master/build.svg)](https://gitlab.com/transformania/tt-game/commits/master)
+[![coverage report](https://gitlab.com/transformania/tt-game/badges/master/coverage.svg)](https://gitlab.com/transformania/tt-game/commits/master)
+
 First off, here is the stack of technologies being used:
 
 * ASP.Net MVC5

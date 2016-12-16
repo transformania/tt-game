@@ -205,7 +205,7 @@ src/TT.Web/Images/PvP/
 custom.css
 custom.min.css
 
-# Tools
-tools
-!tools/packages.config
+# Cake
+tools/
 *.flg
+.dotnet/

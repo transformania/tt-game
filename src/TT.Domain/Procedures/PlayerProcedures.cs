@@ -1564,39 +1564,6 @@ namespace TT.Domain.Procedures
 
         }
 
-        public static string SetRPFlag(Player player, bool turnOn)
-        {
-            IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
-
-            string message = "";
-
-            if (turnOn)
-            {
-                dbPlayer.InRP = true;
-                message = "You have turned on your RP flag.";
-            }
-            else
-            {
-                dbPlayer.InRP = false;
-                message = "You have turned off your RP flag.";
-            }
-            playerRepo.SavePlayer(dbPlayer);
-
-            return message;
-        }
-
-        public static string SetPvPFlag(Player player, int level)
-        {
-            IPlayerRepository playerRepo = new EFPlayerRepository();
-            Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
-
-            dbPlayer.GameMode = level;
-
-            playerRepo.SavePlayer(dbPlayer);
-            return "You are now in PvP mode.";
-        }
-
         public static void AddCleanseMeditateCount(Player player)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();

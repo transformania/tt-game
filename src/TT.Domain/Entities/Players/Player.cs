@@ -328,6 +328,16 @@ namespace TT.Domain.Entities.Players
 
         }
 
+        public void ChangeRPMode(bool inRP)
+        {
+            InRP = inRP;
+        }
+
+        public void ChangeGameMode(int gameMode)
+        {
+            GameMode = gameMode;
+        }
+
         private float GetManaBaseByLevel(int level)
         {
             float manaBase = 5 * (level - 1) + 50;

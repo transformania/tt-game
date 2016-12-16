@@ -15,7 +15,7 @@ namespace TT.Tests.Builders
         {
             var constructors = typeof(TEntity).GetConstructors(BindingFlags.NonPublic | BindingFlags.Instance);
             if (constructors == null || constructors.Length == 0)
-                throw new Exception(string.Format("Could't find a protected default constructor on type {0}", typeof(TEntity).FullName));
+                throw new Exception($"Could't find a protected default constructor on type {typeof(TEntity).FullName}");
 
             return (TEntity)constructors[0].Invoke(null);
         }

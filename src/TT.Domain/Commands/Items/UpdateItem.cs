@@ -21,7 +21,7 @@ namespace TT.Domain.Commands.Items
                 var item = ctx.AsQueryable<Item>().SingleOrDefault(cr => cr.Id == ItemId);
 
                 if (item == null)
-                    throw new DomainException(string.Format("Item with ID {0} could not be found", ItemId));
+                    throw new DomainException($"Item with ID {ItemId} could not be found");
 
                 var owner = ctx.AsQueryable<Entities.Players.Player>().SingleOrDefault(p => p.Id == OwnerId);
 

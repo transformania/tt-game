@@ -66,7 +66,7 @@ namespace TT.Tests.Domain.Commands.Messages
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage(string.Format("Sending player with Id 34745 could not be found"));
+            action.ShouldThrowExactly<DomainException>().WithMessage("Sending player with Id 34745 could not be found");
         }
 
         [Test]
@@ -80,7 +80,7 @@ namespace TT.Tests.Domain.Commands.Messages
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage(string.Format("Receiving player with Id 34745 could not be found"));
+            action.ShouldThrowExactly<DomainException>().WithMessage("Receiving player with Id 34745 could not be found");
         }
 
         [Test]
@@ -114,7 +114,7 @@ namespace TT.Tests.Domain.Commands.Messages
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage(string.Format("Text must not be empty or null"));
+            action.ShouldThrowExactly<DomainException>().WithMessage("Text must not be empty or null");
         }
 
         [Test]

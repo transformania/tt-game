@@ -22,13 +22,13 @@ namespace TT.Domain.Commands.Effects
             {
                 var effectSource = ctx.AsQueryable<EffectSource>().SingleOrDefault(t => t.Id == EffectSourceId);
                 if (effectSource == null)
-                    throw new DomainException(string.Format("Effect Source with Id {0} could not be found", EffectSourceId));
+                    throw new DomainException($"Effect Source with Id {EffectSourceId} could not be found");
 
                 var player = ctx.AsQueryable<Entities.Players.Player>().SingleOrDefault(t => t.Id == OwnerId);
 
                 if (player == null)
                 {
-                    throw new DomainException(string.Format("Player with Id {0} could not be found", OwnerId));
+                    throw new DomainException($"Player with Id {OwnerId} could not be found");
                 }
 
                 var item = Effect.Create(player, effectSource, this);

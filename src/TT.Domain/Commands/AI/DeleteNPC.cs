@@ -15,7 +15,7 @@ namespace TT.Domain.Commands.AI
                 var deleteMe = ctx.AsQueryable<NPC>().FirstOrDefault(cr => cr.Id == NPCId);
 
                 if (deleteMe == null)
-                    throw new DomainException(string.Format("NPC with ID {0} was not found", NPCId));
+                    throw new DomainException($"NPC with ID {NPCId} was not found");
 
                 ctx.Remove(deleteMe);
 

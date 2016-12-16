@@ -19,7 +19,7 @@ namespace TT.Domain.Commands.Identity
             {
                 var user = ctx.AsQueryable<User>().SingleOrDefault(t => t.Id == UserId);
                 if (user == null)
-                    throw new DomainException(string.Format("User with Id {0} could not be found", UserId));
+                    throw new DomainException($"User with Id {UserId} could not be found");
 
                 var entry = CaptchaEntry.Create(user);
 

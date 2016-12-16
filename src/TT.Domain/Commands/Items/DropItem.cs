@@ -16,15 +16,15 @@ namespace TT.Domain.Commands.Items
 
                 var item = ctx.AsQueryable<Item>().SingleOrDefault(cr => cr.Id == ItemId);
                 if (item == null)
-                    throw new DomainException(string.Format("Item with ID {0} could not be found", ItemId));
+                    throw new DomainException($"Item with ID {ItemId} could not be found");
 
                 var player = ctx.AsQueryable<Entities.Players.Player>().SingleOrDefault(p => p.Id == OwnerId);
                 if (player == null)
-                    throw new DomainException(string.Format("player with ID {0} could not be found", ItemId));
+                    throw new DomainException($"player with ID {ItemId} could not be found");
 
                 if (item.Owner != null && item.Owner.Id != OwnerId)
                 {
-                    throw new DomainException(string.Format("player {0} does not own item {1}", OwnerId, ItemId));
+                    throw new DomainException($"player {OwnerId} does not own item {ItemId}");
                 }
 
                 item.Drop(player);

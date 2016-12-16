@@ -21,11 +21,11 @@ namespace TT.Domain.Commands.Assets
             {
                 var baseItem = ctx.AsQueryable<ItemSource>().SingleOrDefault(t => t.Id == BaseItemId);
                 if (baseItem == null)
-                    throw new DomainException(string.Format("Base item with Id {0} could not be found", BaseItemId));
+                    throw new DomainException($"Base item with Id {BaseItemId} could not be found");
 
                 var npc = ctx.AsQueryable<NPC>().SingleOrDefault(t => t.Id == NPCId);
                 if (npc == null)
-                    throw new DomainException(string.Format("NPC with Id {0} could not be found", BaseItemId));
+                    throw new DomainException($"NPC with Id {BaseItemId} could not be found");
 
                 var restockItem = RestockItem.Create(baseItem, AmountBeforeRestock, AmountToRestockTo, npc);
 

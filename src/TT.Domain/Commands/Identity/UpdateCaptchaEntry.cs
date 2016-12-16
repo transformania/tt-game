@@ -25,7 +25,7 @@ namespace TT.Domain.Commands.Identity
                 var entry = ctx.AsQueryable<CaptchaEntry>().SingleOrDefault(t => t.User.Id == UserId);
 
                 if (entry == null)
-                    throw new DomainException(string.Format("CaptchaEntry with Id {0} could not be found", UserId));
+                    throw new DomainException($"CaptchaEntry with Id {UserId} could not be found");
 
                 if (AddPassAttempt)
                 {

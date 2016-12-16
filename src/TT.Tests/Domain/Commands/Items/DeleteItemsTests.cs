@@ -43,7 +43,7 @@ namespace TT.Tests.Domain.Commands.Items
             var cmd = new DeleteItem { ItemId = id };
 
             Action action = () => Repository.Execute(cmd);
-            action.ShouldThrowExactly<DomainException>().WithMessage(string.Format("Item with ID {0} was not found", id));
+            action.ShouldThrowExactly<DomainException>().WithMessage($"Item with ID {id} was not found");
         }
     }
 

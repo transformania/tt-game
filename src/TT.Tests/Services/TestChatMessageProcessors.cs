@@ -138,12 +138,12 @@ namespace TT.Tests.Services
         [TestCase("tf.partial", "latexfactory")]
         public void Should_format_dm_rp_command(string actionType, string tag)
         {
-            var rollOutput = string.Format("DM[{0}:{1}]:  {2}", actionType, tag, "Wibble happens");
+            var rollOutput = $"DM[{actionType}:{tag}]:  {"Wibble happens"}";
 
             DomainRegistry.Root = Substitute.For<IRoot>();
             DomainRegistry.Root.Find(Arg.Any<GetRollText>()).Returns(rollOutput);
 
-            var data = new MessageData("Tester", string.Format("/dm {0}:{1}", actionType, tag));
+            var data = new MessageData("Tester", $"/dm {actionType}:{tag}");
             
             new DmActionTextProcessor().Process(data);
 

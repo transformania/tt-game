@@ -31,7 +31,7 @@ namespace TT.Domain.ViewModels
 
             try
             {
-                var location = XmlResourceLoader.Load<Location>(string.Format("TT.Domain.XMLs.LocationDescriptions.{0}.xml", dbName));
+                var location = XmlResourceLoader.Load<Location>($"TT.Domain.XMLs.LocationDescriptions.{dbName}.xml");
                 return location.Description;
             }
             catch (ResourceNotFoundException)

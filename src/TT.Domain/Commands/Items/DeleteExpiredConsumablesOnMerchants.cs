@@ -21,12 +21,12 @@ namespace TT.Domain.Commands.Items
                 var lindella = ctx.AsQueryable<Entities.Players.Player>().FirstOrDefault(p => p.Id == LindellaId);
 
                 if (lindella == null)
-                    throw new DomainException(string.Format("Could not find Lindella with Id {0}", LindellaId));
+                    throw new DomainException($"Could not find Lindella with Id {LindellaId}");
 
                 var lorekeeper = ctx.AsQueryable<Entities.Players.Player>().FirstOrDefault(p => p.Id == LorekeeperId);
 
                 if (lorekeeper == null)
-                    throw new DomainException(string.Format("Could not find Lorekeeper with Id {0}", LorekeeperId));
+                    throw new DomainException($"Could not find Lorekeeper with Id {LorekeeperId}");
 
                 var cutoff = DateTime.UtcNow.AddMinutes(-12*PvPStatics.MinutesToDroppedItemDelete);
 

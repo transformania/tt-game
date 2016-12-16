@@ -15,7 +15,7 @@ namespace TT.Domain.Commands.Assets
                 var deleteMe = ctx.AsQueryable<Tome>().FirstOrDefault(cr => cr.Id == TomeId);
 
                 if (deleteMe == null)
-                    throw new DomainException(string.Format("Tome with ID {0} was not found", TomeId));
+                    throw new DomainException($"Tome with ID {TomeId} was not found");
 
                 ctx.Remove(deleteMe);
 

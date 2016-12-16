@@ -22,7 +22,7 @@ namespace TT.Domain.Commands.Players
 
                 var player = ctx.AsQueryable<Entities.Players.Player>().SingleOrDefault(cr => cr.Id == playerId);
                 if (player == null)
-                    throw new DomainException(string.Format("Player with ID {0} could not be found", playerId));
+                    throw new DomainException($"Player with ID {playerId} could not be found");
 
                 player.ReadjustMaxes(buffs);
                 ctx.Commit();

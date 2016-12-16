@@ -67,7 +67,7 @@ namespace TT.Tests.Domain.Queries.RPClassifiedAds
             Action action = () => Repository.FindSingle(cmd);
 
             action.ShouldThrowExactly<RPClassifiedAdNotOwnerException>()
-                .WithMessage(string.Format("User {0} does not own RP Classified Ad Id {1}", cmd.UserId, Ad.Id))
+                .WithMessage($"User {cmd.UserId} does not own RP Classified Ad Id {Ad.Id}")
                 .And.UserFriendlyError.Should().Be("You do not own this RP Classified Ad.");
         }
 
@@ -78,7 +78,7 @@ namespace TT.Tests.Domain.Queries.RPClassifiedAds
             Action action = () => Repository.FindSingle(cmd);
 
             action.ShouldThrowExactly<RPClassifiedAdNotFoundException>()
-                .WithMessage(string.Format("RPClassifiedAd with ID {0} could not be found", cmd.RPClassifiedAdId))
+                .WithMessage($"RPClassifiedAd with ID {cmd.RPClassifiedAdId} could not be found")
                 .And.UserFriendlyError.Should().Be("This RP Classified Ad doesn't exist.");
         }
     }

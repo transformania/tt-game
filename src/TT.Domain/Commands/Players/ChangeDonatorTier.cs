@@ -21,7 +21,7 @@ namespace TT.Domain.Commands.Players
                     .SingleOrDefault(p => p.User.Id == UserId);
 
                 if (player == null)
-                    throw new DomainException(string.Format("Player with user ID '{0}' could not be found", UserId));
+                    throw new DomainException($"Player with user ID '{UserId}' could not be found");
 
                 player.SetTier(Tier);
                 ctx.Commit();

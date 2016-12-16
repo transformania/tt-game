@@ -41,7 +41,7 @@ namespace TT.Tests.Domain.Commands.Chat
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage(string.Format("Chat room '{0}' already exists", existingName));
+            action.ShouldThrowExactly<DomainException>().WithMessage($"Chat room '{existingName}' already exists");
         }
 
         [TestCase("Test!")]
@@ -57,7 +57,7 @@ namespace TT.Tests.Domain.Commands.Chat
             var action = new Action(() => { Repository.Execute(cmd); });
 
             action.ShouldThrowExactly<DomainException>().WithMessage(
-                string.Format("Chat room '{0}' contains unsupported characters, only alphanumeric names with _ or - are allowed", roomName));
+                $"Chat room '{roomName}' contains unsupported characters, only alphanumeric names with _ or - are allowed");
         }
 
         [TestCase("Test_")]

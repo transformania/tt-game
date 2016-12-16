@@ -20,7 +20,7 @@ namespace TT.Domain.Queries.Messages
                             .ProjectToFirstOrDefault<MessageDetail>();
 
                 if (output.Receiver.Id != OwnerId)
-                    throw new DomainException(string.Format("Player {0} does not own message {1}", OwnerId, MessageId));
+                    throw new DomainException($"Player {OwnerId} does not own message {MessageId}");
 
                 return output;
             };

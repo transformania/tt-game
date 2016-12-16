@@ -18,11 +18,11 @@ namespace TT.Domain.Commands.Assets
                 var tome = ctx.AsQueryable<Tome>().SingleOrDefault(cr => cr.Id == TomeId);
 
                 if (tome == null)
-                    throw new DomainException(string.Format("Tome with ID {0} was not found", TomeId));
+                    throw new DomainException($"Tome with ID {TomeId} was not found");
 
                 var baseItem = ctx.AsQueryable<ItemSource>().SingleOrDefault(u => u.Id == BaseItemId);
                 if (baseItem == null)
-                    throw new DomainException(string.Format("Base item with ID {0} was not found", BaseItemId));
+                    throw new DomainException($"Base item with ID {BaseItemId} was not found");
 
                 tome.Update(this, baseItem);
                 ctx.Commit();

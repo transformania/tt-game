@@ -18,7 +18,7 @@ namespace TT.Domain.Commands.Assets
             {
                 var baseItem = ctx.AsQueryable<ItemSource>().SingleOrDefault(t => t.Id == BaseItemId);
                 if (baseItem == null)
-                    throw new DomainException(string.Format("Base item with Id {0} could not be found", BaseItemId));
+                    throw new DomainException($"Base item with Id {BaseItemId} could not be found");
 
                 var tome = Tome.Create(baseItem, Text);
 

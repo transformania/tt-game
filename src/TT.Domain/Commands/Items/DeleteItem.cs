@@ -14,7 +14,7 @@ namespace TT.Domain.Commands.Items
                 var deleteMe = ctx.AsQueryable<Entities.Items.Item>().FirstOrDefault(i => i.Id == ItemId);
 
                 if (deleteMe == null)
-                    throw new DomainException(string.Format("Item with ID {0} was not found", ItemId));
+                    throw new DomainException($"Item with ID {ItemId} was not found");
 
                 ctx.Remove(deleteMe);
 

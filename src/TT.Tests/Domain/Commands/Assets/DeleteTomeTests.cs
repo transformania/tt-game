@@ -45,7 +45,7 @@ namespace TT.Tests.Domain.Commands.Assets
             var cmd = new DeleteTome { TomeId = id };
 
             Action action = () => Repository.Execute(cmd);
-            action.ShouldThrowExactly<DomainException>().WithMessage(string.Format("Tome with ID {0} was not found", id));
+            action.ShouldThrowExactly<DomainException>().WithMessage($"Tome with ID {id} was not found");
         }
     }
 }

@@ -202,7 +202,7 @@ namespace TT.Web.Services
 
             var combined = sb.ToString().TrimEnd('+');
             var sumResult = SumResult(results, modifierOperand, modifier);
-            var output = string.Format(" rolled {0}d{1}{2}{3}: {4} ({5})", diceNumber, sides, modifierOperand, modifier, combined, sumResult);
+            var output = $" rolled {diceNumber}d{sides}{modifierOperand}{modifier}: {combined} ({sumResult})";
 
             data.Output = new MessageOutput(output, MessageType.DieRoll, false);
             data.MarkAsProcessed();

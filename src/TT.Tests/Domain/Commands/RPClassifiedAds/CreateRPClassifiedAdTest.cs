@@ -134,7 +134,7 @@ namespace TT.Tests.Domain.Commands.RPClassifiedAds
 
             Action action = () => Repository.Execute(cmd);
             action.ShouldThrow<UserNotFoundException>()
-                .WithMessage(string.Format("User with ID {0} could not be found.", userId))
+                .WithMessage($"User with ID {userId} could not be found.")
                 .And.UserFriendlyError.Should().Be("You don't exist.");
         }
 
@@ -157,7 +157,7 @@ namespace TT.Tests.Domain.Commands.RPClassifiedAds
             // Should throw when trying to add one more
             Action action = () => Repository.Execute(cmd);
             var ex = action.ShouldThrow<RPClassifiedAdLimitException>()
-                .WithMessage(string.Format("User with ID {0} can not create any more ads.", JohnSmith.Id))
+                .WithMessage($"User with ID {JohnSmith.Id} can not create any more ads.")
                 .And;
 
             ex.UserFriendlyError.Should().Be("You already have the maximum number of RP Classified Ads posted per player.");

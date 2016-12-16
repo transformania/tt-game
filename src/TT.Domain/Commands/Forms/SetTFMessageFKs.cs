@@ -16,13 +16,13 @@ namespace TT.Domain.Commands.Forms
             {
                 var tfMessage = ctx.AsQueryable<TFMessage>().SingleOrDefault(t => t.Id == TFMessageId);
                 if (tfMessage == null)
-                    throw new DomainException(string.Format("TFMessage with Id {0} could not be found", TFMessageId));
+                    throw new DomainException($"TFMessage with Id {TFMessageId} could not be found");
 
                 var form = ctx.AsQueryable<FormSource>().SingleOrDefault(t => t.dbName == FormSource);
 
                 if (form == null)
                 {
-                    throw new DomainException(string.Format("FormSource with name '{0}' could not be found", FormSource));
+                    throw new DomainException($"FormSource with name '{FormSource}' could not be found");
                 }
 
                 form.SetTFMessage(tfMessage);

@@ -75,7 +75,7 @@ namespace TT.Tests.Domain.Commands.Assets
             var cmd = new UpdateTome { Text = "tome text", TomeId = id, BaseItemId = 1 };
 
             Action action = () => Repository.Execute(cmd);
-            action.ShouldThrowExactly<DomainException>().WithMessage(string.Format("Tome with ID {0} was not found", id));
+            action.ShouldThrowExactly<DomainException>().WithMessage($"Tome with ID {id} was not found");
         }
 
         [Test]
@@ -91,7 +91,7 @@ namespace TT.Tests.Domain.Commands.Assets
             var cmd = new UpdateTome { Text = "tome text", TomeId = tomeId, BaseItemId = baseItemId };
 
             Action action = () => Repository.Execute(cmd);
-            action.ShouldThrowExactly<DomainException>().WithMessage(string.Format("Base item with ID {0} was not found", baseItemId));
+            action.ShouldThrowExactly<DomainException>().WithMessage($"Base item with ID {baseItemId} was not found");
         }
     }
 }

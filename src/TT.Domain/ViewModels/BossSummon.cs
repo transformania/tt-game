@@ -23,7 +23,7 @@ namespace TT.Domain.ViewModels
 
         public static string GetActivationText(string bossName)
         {
-            var resource = string.Format("TT.Domain.XMLs.BossSummonText.{0}.txt", bossName);
+            var resource = $"TT.Domain.XMLs.BossSummonText.{bossName}.txt";
             var stream = typeof (BossSummon).Assembly.GetManifestResourceStream(resource);
 
             return new StreamReader(stream).ReadToEnd();

@@ -1,11 +1,14 @@
 #addin "nuget:?package=Cake.SqlServer"
-// Default settings
-var target = Argument("target", "Default");
-var configuration = Argument("configuration", "Release");
-var dbType = Argument("dbType", "localdb_v2").ToLower();
-var dbName = Argument("dbName", "Stats");
+#tool "nuget:?package=FluentMigrator.Tools"
+#tool "nuget:?package=NUnit.ConsoleRunner"
 
-var imageUrl = Argument("imageUrl", "http://www.transformaniatime.com/Images/PvP.zip");
+// Default settings
+var target = Argument("target", EnvironmentVariable("TT_TARGET") ?? "Default");
+var configuration = Argument("configuration", EnvironmentVariable("TT_CONFIGURATION") ?? "Release");
+var dbType = Argument("dbType", EnvironmentVariable("TT_DBTYPE") ?? "localdb_v2").ToLower();
+var dbName = Argument("dbName", EnvironmentVariable("TT_DBNAME") ?? "Stats");
+
+var imageUrl = Argument("imageUrl", "https://www.transformaniatime.com/Images/PvP.zip");
 
 // Dictionary of DB instances and connection strings
 var instances = new Dictionary<string,Tuple<string,bool>>()
@@ -16,10 +19,10 @@ var instances = new Dictionary<string,Tuple<string,bool>>()
     { "remoteserver", new Tuple<string, bool>("localhost", false) }
 };
 
-var dbServer = Argument("dbServer",instances[dbType].Item1);
+var dbServer = Argument("dbServer", EnvironmentVariable("TT_DBSERVER") ?? instances[dbType].Item1);
 var dbSecurity = instances[dbType].Item2;
 var dbPassword = new System.Text.StringBuilder();
-var dbUserId = Argument("dbUserId", "newman");
+var dbUserId = Argument("dbUserId", EnvironmentVariable("TT_DBUSERID") ?? "newman");
 
 if(dbType == "remoteserver")
 {

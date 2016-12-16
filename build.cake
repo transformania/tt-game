@@ -1,5 +1,5 @@
 #addin "nuget:?package=Cake.SqlServer"
-#tool "nuget:?package=FluentMigrator.Tools"
+#tool "nuget:?package=FluentMigrator.Tools&version=1.6.1"
 #tool "nuget:?package=NUnit.ConsoleRunner"
 
 // Default settings

@@ -129,11 +129,11 @@
         @{
             if (Model.InRP)
             {
-                <span class="good">You have your RP flag enabled.  Click @Html.ActionLink("HERE", "DisableRP", "Settings") to turn it off.</span>
+                <span class="good">You have your RP flag enabled.  Click @Html.ActionLink("HERE", "ChangeRPMode", "Settings", new { inRP = false}, null) to turn it off.</span>
             }
             else
             {
-                <span class="bad">You have your RP flag disabled.  Click @Html.ActionLink("HERE", "EnableRP", "Settings") to turn it on.</span>
+                <span class="bad">You have your RP flag disabled.  Click @Html.ActionLink("HERE", "ChangeRPMode", "Settings", new { inRP = true }, null) to turn it on.</span>
             }
 
         }
@@ -144,9 +144,9 @@
         {
             <p>
                 <h4 class="bad">CHAOS MODE OPTIONS ONLY:</h4>
-                @Html.ActionLink("Enter SuperProtection mode", "ChaosChangeGameMode", "Settings", new { Id = 0 }, null)<br />
-                @Html.ActionLink("Enter Protection mode", "ChaosChangeGameMode", "Settings", new { Id = 1 }, null)<br />
-                @Html.ActionLink("Enter PvP mode", "ChaosChangeGameMode", "Settings", new { Id = 2 }, null)<br />
+                @Html.ActionLink("Enter SuperProtection Mode", "ChangeGameMode", "Settings", new { mode = GameModeStatics.SuperProtection }, null)<br />
+                @Html.ActionLink("Enter Protection Mode", "ChangeGameMode", "Settings", new { mode = GameModeStatics.Protection }, null)<br />
+                @Html.ActionLink("Enter PvP Mode", "ChangeGameMode", "Settings", new { mode = GameModeStatics.PvP }, null)<br />
                 @Html.ActionLink("Change back into base form", "ChaosRestoreBase", "Settings")<br />
                 @Html.ActionLink("Reset All Quests and Abandon Current", "ResetQuests", "Quest")<br />
             </p>
@@ -157,21 +157,20 @@
     <h2>Protection Mode</h2>
 
     <p>
-        There are three game modes:  1) Superprotection disables ALL spells from being cast against you by others players.  2) Protection.  Being in protection mode disallows other players from casting inanimate, pet, and mind control spells against you.  3) PvP mode enables all spells to be cast against you in a competative manner by other PvP players.  Friends and AI players (psychopathic spellslingers and bosses) are exempt from these rules.  Additionally, being someone's friend enables them to cast any spell against you they choose regardless of which game mode either of you are in.  <span class="bad">As of Alpha Round 19 you can no longer freely move between Protection and PvP game modes.</span><br />
+        There are three game modes:  1) Superprotection disables ALL spells from being cast against you by others players.  2) Protection.  Being in protection mode disallows other players from casting inanimate, pet, and mind control spells against you.  3) PvP mode enables all spells to be cast against you in a competative manner by other PvP players.  Friends and AI players (psychopathic spellslingers and bosses) are exempt from these rules.  Additionally, being someone's friend enables them to cast any spell against you they choose regardless of which game mode either of you are in.  <span class="bad">As of Alpha Round 19 you can no longer freely move between Protection and PvP game modes.</span><br /><br />
 
         @{
-            if (Model.GameMode == 1)
+            if (Model.GameMode == GameModeStatics.Protection)
             {
-                @Html.ActionLink("Enter SuperProtection Mode", "EnterSuperProtection", "Settings")<br />
-                @*@Html.ActionLink("Enter PvP Mode", "LeaveProtection", "Settings")*@
+                @Html.ActionLink("Enter SuperProtection Mode", "ChangeGameMode", "Settings", new {mode = GameModeStatics.SuperProtection}, null)<br />
             }
-            else if (Model.GameMode == 2)
+            else if (Model.GameMode == GameModeStatics.SuperProtection)
             {
-                @*@Html.ActionLink("Enter Protection Mode", "EnterProtection", "Settings")*@
+                @Html.ActionLink("Enter Protection Mode", "ChangeGameMode", "Settings", new { mode = GameModeStatics.Protection }, null)<br />
             }
-            else if (Model.GameMode == 0)
+            else if (Model.GameMode == GameModeStatics.PvP && !PvPStatics.ChaosMode)
             {
-                @Html.ActionLink("Leave SuperProtection Mode", "LeaveSuperProtection", "Settings")
+                <span class="bad">You cannot leave PvP mode in regular round gameplay.</span>
             }
         }
     </p>

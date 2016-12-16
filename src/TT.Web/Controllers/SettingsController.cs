@@ -11,6 +11,7 @@ using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 using TT.Domain.DTOs.RPClassifiedAds;
 using TT.Domain;
+using TT.Domain.Commands.Players;
 using TT.Domain.Queries.RPClassifiedAds;
 using TT.Domain.Commands.RPClassifiedAds;
 using TT.Domain.Exceptions.RPClassifiedAds;
@@ -35,58 +36,53 @@ namespace TT.Web.Controllers
              return View(me);
          }
 
+        [Authorize]
+        public ActionResult ChangeGameMode(int mode)
+        {
+            string myMembershipId = User.Identity.GetUserId();
+            try
+            {
+                DomainRegistry.Repository.Execute(new ChangeGameMode
+                {
+                    MembershipId = myMembershipId,
+                    GameMode = mode,
+                    InChaos = PvPStatics.ChaosMode
+                });
+
+                var modeName = "";
+                if (mode == GameModeStatics.SuperProtection)
+                    modeName = "SuperProtection";
+                else if (mode == GameModeStatics.Protection)
+                    modeName = "Protection";
+                if (mode == GameModeStatics.PvP)
+                    modeName = "PvP";
+
+                TempData["Result"] = $"You have successfully change your game to {modeName} mode.";
+                return RedirectToAction("Play", "PvP");
+            }
+            catch (DomainException e)
+            {
+                TempData["Error"] = e.Message;
+                return RedirectToAction("Play", "PvP");
+            }
+        }
+
          [Authorize]
-         public ActionResult EnterSuperProtection()
+         public ActionResult ChangeRPMode(bool inRP)
          {
              string myMembershipId = User.Identity.GetUserId();
-             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
-             if (me.GameMode != GameModeStatics.Protection)
+             try
              {
-                 TempData["Error"] = "You must be in Protection mode in order to enter SuperProtection mode.";
-                 return RedirectToAction("Play","PvP");
+                 DomainRegistry.Repository.Execute(new ChangeRPMode {MembershipId = myMembershipId, InRPMode = inRP});
+                 TempData["Result"] = $"You have changed your game mode to RP mode: {inRP}";
+             }
+             catch (DomainException e)
+             {
+                 TempData["Error"] = e.Message;
              }
 
-             PlayerProcedures.SetPvPFlag(me, 0);
-
-             TempData["Result"] = "You are now in superprotection mode.  All spells are disabled against you except those cast by players on your friends list and bots.";
-             return RedirectToAction("Play", "PvP");
-         }
-
-         [Authorize]
-         public ActionResult LeaveSuperProtection()
-         {
-             string myMembershipId = User.Identity.GetUserId();
-             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-
-             if (me.GameMode != GameModeStatics.SuperProtection)
-             {
-                 TempData["Error"] = "You must be in SuperProtection mode in order to enter Protection mode.";
-                 return RedirectToAction("Play", "PvP");
-             }
-
-             PlayerProcedures.SetPvPFlag(me, 1);
-
-             TempData["Result"] = "You are no longer in SuperProtection mode.";
-             return RedirectToAction("Play", "PvP");
-         }
-
-         [Authorize]
-         public ActionResult EnableRP()
-         {
-             string myMembershipId = User.Identity.GetUserId();
-             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-             TempData["Result"] = PlayerProcedures.SetRPFlag(me, true);
              return RedirectToAction("Play","PvP");
-         }
-
-         [Authorize]
-         public ActionResult DisableRP()
-         {
-             string myMembershipId = User.Identity.GetUserId();
-             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-             TempData["Result"] = PlayerProcedures.SetRPFlag(me, false);
-             return RedirectToAction("Play", "PvP");
          }
 
          [Authorize]
@@ -949,33 +945,6 @@ namespace TT.Web.Controllers
             return RedirectToAction("MyRPClassifiedAds", "Settings");
         }
 
-        [Authorize]
-        public ActionResult ChaosChangeGameMode(int id)
-        {
-
-            if (!PvPStatics.ChaosMode)
-            {
-                TempData["Error"] = "You can only do this in chaos mode.";
-                return RedirectToAction("Play", "PvP");
-            }
-
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-
-
-            if (id < 0 || id > 2)
-            {
-                TempData["Error"] = "That is not a valid game mode.";
-                return RedirectToAction("Play", "PvP");
-            }
-
-
-            PlayerProcedures.SetPvPFlag(me, id);
-
-            TempData["Result"] = "Set to game mode " + id;
-            return RedirectToAction("Play", "PvP");
-
-        }
 
         [Authorize]
         public ActionResult ChaosRestoreBase()

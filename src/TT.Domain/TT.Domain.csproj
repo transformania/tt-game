@@ -189,7 +189,9 @@
     <Compile Include="Commands\Messages\DeletePlayerExpiredMessages.cs" />
     <Compile Include="Commands\Messages\MarkAsRead.cs" />
     <Compile Include="Commands\Players\ChangeForm.cs" />
+    <Compile Include="Commands\Players\ChangeGameMode.cs" />
     <Compile Include="Commands\Players\Meditate.cs" />
+    <Compile Include="Commands\Players\ChangeRPMode.cs" />
     <Compile Include="Commands\Players\Cleanse.cs" />
     <Compile Include="Commands\Players\CreatePlayer.cs" />
     <Compile Include="Commands\Players\DeletePlayer.cs" />

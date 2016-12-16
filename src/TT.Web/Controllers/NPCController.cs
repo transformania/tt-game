@@ -7,6 +7,7 @@ using Microsoft.AspNet.Identity;
 using TT.Domain.Models;
 using TT.Domain.Procedures;
 using TT.Domain.Procedures.BossProcedures;
+using TT.Domain.Queries.Skills;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 using TT.Domain.ViewModels.NPCs;
@@ -1335,29 +1336,8 @@ namespace TT.Web.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
-            var knownSkillsStrings = SkillProcedures.GetSkillViewModelsOwnedByPlayer(me.Id).Select(s => s.Skill).Select(s => s.dbName);
-
-            var allSkills = SkillProcedures.GetAllLearnableSpells();
-
-            // filter based on mobility type
-            if (filter.IsNullOrEmpty() || filter == "animate")
-            {
-                allSkills = allSkills.Where(s => s.MobilityType == PvPStatics.MobilityFull);
-            }
-            else if (filter == PvPStatics.MobilityInanimate)
-            {
-                allSkills = allSkills.Where(s => s.MobilityType == PvPStatics.MobilityInanimate);
-            }
-            else if (filter == PvPStatics.MobilityPet)
-            {
-                allSkills = allSkills.Where(s => s.MobilityType == PvPStatics.MobilityPet);
-            }
-            else if (filter == "other")
-            {
-                allSkills = allSkills.Where(s => s.MobilityType == "curse" || s.MobilityType == PvPStatics.MobilityMindControl);
-            } 
-
-            var output = allSkills.Where(s => !knownSkillsStrings.Contains(s.dbName)).ToList();
+            var output =
+                Domain.DomainRegistry.Repository.Find(new GetSkillsPurchaseableByPlayer {MobilityType = filter, playerId = me.Id});
 
             ViewBag.Money = Math.Floor(me.Money);
 

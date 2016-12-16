@@ -24,12 +24,6 @@ namespace TT.Domain.Procedures
             return GetSkillViewModelsOwnedByPlayer(playerId).Select(s => s.Skill).ToList();
         }
 
-        public static IQueryable<DbStaticSkill> GetAllLearnableSpells()
-        {
-            IDbStaticSkillRepository skillRepo = new EFDbStaticSkillRepository();
-            return skillRepo.DbStaticSkills.Where(s => s.IsPlayerLearnable && s.IsLive == "live" && s.LearnedAtLocation != null && s.LearnedAtLocation != "" || s.LearnedAtRegion != null && s.LearnedAtRegion != "");
-        }
-
         public static IEnumerable<MySkillsViewModel> GetMySkillsViewModel(int playerId)
         {
             ISkillRepository skillRepo = new EFSkillRepository();

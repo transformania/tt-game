@@ -232,6 +232,7 @@
     <Compile Include="Domain\Queries\RPClassifiedAds\GetRPClassifiedAdTests.cs" />
     <Compile Include="Domain\Queries\RPClassifiedAds\GetRPClassifiedAdsTests.cs" />
     <Compile Include="Domain\Queries\RPClassifiedAds\GetUserRPClassifiedAdsTests.cs" />
+    <Compile Include="Domain\Queries\Skills\GetSkillsPurchaseableByPlayerTests.cs" />
     <Compile Include="Domain\Services\AttackNotificationBrokerTests.cs" />
     <Compile Include="InMemoryDataContextWithGenerator.cs" />
     <Compile Include="TestBase.cs" />

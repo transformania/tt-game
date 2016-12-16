@@ -1,4 +1,6 @@
-﻿namespace TT.Domain.Entities.Forms
+﻿using TT.Domain.Entities.Item;
+
+namespace TT.Domain.Entities.Forms
 {
     public class FormSource : Entity<int>
     {
@@ -10,6 +12,8 @@
         public string Gender { get; protected set; }
         public string MobilityType { get; protected set; }
         public string BecomesItemDbName { get; protected set; }
+
+        public ItemSource ItemSource { get; protected set; }
         public string PortraitUrl { get; protected set; }
         public bool IsUnique { get; protected set; }
 

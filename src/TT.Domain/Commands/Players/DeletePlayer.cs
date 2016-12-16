@@ -22,7 +22,7 @@ namespace TT.Domain.Commands.Players
                 .FirstOrDefault(i => i.Id == PlayerId);
 
                 if (player == null)
-                    throw new DomainException(string.Format("Player with ID {0} was not found", PlayerId));
+                    throw new DomainException($"Player with ID {PlayerId} was not found");
 
                 var spells = ctx.AsQueryable<Skill>().Where(i => i.Owner.Id == PlayerId).ToList();
                 var effects = ctx.AsQueryable<Effect>().Where(i => i.Owner.Id == PlayerId).ToList();

@@ -21,11 +21,11 @@ namespace TT.Domain.Commands.Messages
             {
                 var sender = ctx.AsQueryable<Entities.Players.Player>().SingleOrDefault(t => t.Id == SenderId);
                 if (sender == null)
-                    throw new DomainException(string.Format("Sending player with Id {0} could not be found", SenderId));
+                    throw new DomainException($"Sending player with Id {SenderId} could not be found");
 
                 var receiver = ctx.AsQueryable<Entities.Players.Player>().SingleOrDefault(t => t.Id == ReceiverId);
                 if (receiver == null)
-                    throw new DomainException(string.Format("Receiving player with Id {0} could not be found", ReceiverId));
+                    throw new DomainException($"Receiving player with Id {ReceiverId} could not be found");
 
                 if (receiver.BotId != AIStatics.ActivePlayerBotId)
                     throw new DomainException("You can't message NPCs.");

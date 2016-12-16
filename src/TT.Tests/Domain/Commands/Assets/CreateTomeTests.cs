@@ -52,7 +52,7 @@ namespace TT.Tests.Domain.Commands.Assets
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage(string.Format("Base item with Id {0} could not be found", id));
+            action.ShouldThrowExactly<DomainException>().WithMessage($"Base item with Id {id} could not be found");
         }
     }
 }

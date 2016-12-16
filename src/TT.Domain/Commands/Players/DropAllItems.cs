@@ -20,7 +20,7 @@ namespace TT.Domain.Commands.Players
                     .SingleOrDefault(p => p.Id == PlayerId);
 
                 if (player == null)
-                    throw new DomainException(string.Format("player with ID {0} could not be found", PlayerId));
+                    throw new DomainException($"player with ID {PlayerId} could not be found");
 
                 player.DropAllItems();
                 ctx.Commit();

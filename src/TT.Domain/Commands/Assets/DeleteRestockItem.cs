@@ -15,7 +15,7 @@ namespace TT.Domain.Commands.Assets
                 var deleteMe = ctx.AsQueryable<RestockItem>().FirstOrDefault(cr => cr.Id == RestockItemId);
 
                 if (deleteMe == null)
-                    throw new DomainException(string.Format("RestockItem with ID {0} was not found", RestockItemId));
+                    throw new DomainException($"RestockItem with ID {RestockItemId} was not found");
 
                 ctx.Remove(deleteMe);
 

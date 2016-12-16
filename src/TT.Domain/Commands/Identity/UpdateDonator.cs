@@ -25,7 +25,7 @@ namespace TT.Domain.Commands.Identity
                 var user = ctx.AsQueryable<User>().Include(d => d.Donator).SingleOrDefault(t => t.Id == UserId);
 
                 if (user == null)
-                    throw new DomainException(string.Format("User '{0}' could not be found", UserId));
+                    throw new DomainException($"User '{UserId}' could not be found");
 
                 user.UpdateDonator(this);
 

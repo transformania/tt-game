@@ -43,7 +43,7 @@ namespace TT.Tests.Domain.Commands.AI
             var cmd = new DeleteNPC { NPCId = id };
 
             Action action = () => Repository.Execute(cmd);
-            action.ShouldThrowExactly<DomainException>().WithMessage(string.Format("NPC with ID {0} was not found", id));
+            action.ShouldThrowExactly<DomainException>().WithMessage($"NPC with ID {id} was not found");
         }
     }
 }

@@ -20,7 +20,7 @@ namespace TT.Domain.Queries.Identity
 
                 if (output == null)
                 {
-                    throw new DomainException(string.Format("User with Id {0} has no CaptchaEntry", UserId));
+                    throw new DomainException($"User with Id {UserId} has no CaptchaEntry");
                 }
 
                 if (output.ExpirationTimestamp < DateTime.UtcNow)

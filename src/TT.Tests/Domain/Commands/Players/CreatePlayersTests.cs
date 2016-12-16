@@ -68,7 +68,7 @@ namespace TT.Tests.Domain.Commands.Players
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage(string.Format("First name is required"));
+            action.ShouldThrowExactly<DomainException>().WithMessage("First name is required");
         }
 
         [Test]
@@ -78,7 +78,7 @@ namespace TT.Tests.Domain.Commands.Players
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage(string.Format("Last name is required"));
+            action.ShouldThrowExactly<DomainException>().WithMessage("Last name is required");
         }
 
         [TestCase(0)]
@@ -89,7 +89,7 @@ namespace TT.Tests.Domain.Commands.Players
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage(string.Format("Willpower must be greater than 0"));
+            action.ShouldThrowExactly<DomainException>().WithMessage("Willpower must be greater than 0");
         }
 
         [TestCase(0)]
@@ -100,7 +100,7 @@ namespace TT.Tests.Domain.Commands.Players
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage(string.Format("Maximum willpower must be greater than 0"));
+            action.ShouldThrowExactly<DomainException>().WithMessage("Maximum willpower must be greater than 0");
         }
 
         [TestCase(0)]
@@ -111,7 +111,7 @@ namespace TT.Tests.Domain.Commands.Players
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage(string.Format("Mana must be greater than 0"));
+            action.ShouldThrowExactly<DomainException>().WithMessage("Mana must be greater than 0");
         }
 
         [TestCase(0)]
@@ -122,7 +122,7 @@ namespace TT.Tests.Domain.Commands.Players
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage(string.Format("Maximum mana must be greater than 0"));
+            action.ShouldThrowExactly<DomainException>().WithMessage("Maximum mana must be greater than 0");
         }
 
         [Test]
@@ -145,7 +145,7 @@ namespace TT.Tests.Domain.Commands.Players
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage(string.Format("Level must be at least one."));
+            action.ShouldThrowExactly<DomainException>().WithMessage("Level must be at least one.");
         }
 
         [Test]
@@ -155,7 +155,7 @@ namespace TT.Tests.Domain.Commands.Players
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage(string.Format("TimesAttackingThisUpdate must be at least 0"));
+            action.ShouldThrowExactly<DomainException>().WithMessage("TimesAttackingThisUpdate must be at least 0");
         }
 
         [Test]
@@ -165,7 +165,7 @@ namespace TT.Tests.Domain.Commands.Players
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage(string.Format("XP must be at least 0"));
+            action.ShouldThrowExactly<DomainException>().WithMessage("XP must be at least 0");
         }
 
         [Test]
@@ -175,7 +175,7 @@ namespace TT.Tests.Domain.Commands.Players
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage(string.Format("ActionPoints must be at least 0"));
+            action.ShouldThrowExactly<DomainException>().WithMessage("ActionPoints must be at least 0");
         }
 
         [Test]
@@ -185,7 +185,7 @@ namespace TT.Tests.Domain.Commands.Players
 
             var action = new Action(() => { Repository.Execute(cmd); });
 
-            action.ShouldThrowExactly<DomainException>().WithMessage(string.Format("ActionPoints_Refill must be at least 0"));
+            action.ShouldThrowExactly<DomainException>().WithMessage("ActionPoints_Refill must be at least 0");
         }
 
         [Test]

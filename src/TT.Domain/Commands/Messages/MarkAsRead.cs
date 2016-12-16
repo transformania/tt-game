@@ -23,10 +23,10 @@ namespace TT.Domain.Commands.Messages
                     .SingleOrDefault(cr => cr.Id == MessageId);
 
                 if (message == null)
-                    throw new DomainException(string.Format("Message with ID {0} could not be found", MessageId));
+                    throw new DomainException($"Message with ID {MessageId} could not be found");
 
                 if (message.Receiver.Id != OwnerId)
-                    throw new DomainException(string.Format("Message {0} not owned by player {1}", MessageId, OwnerId));
+                    throw new DomainException($"Message {MessageId} not owned by player {OwnerId}");
 
 
                 message.MarkAsRead(ReadStatus);
@@ -40,7 +40,7 @@ namespace TT.Domain.Commands.Messages
         protected override void Validate()
         {
             if (ReadStatus < 0 || ReadStatus > 2)
-                throw new DomainException(string.Format("{0} is not a valid read status.", ReadStatus));
+                throw new DomainException($"{ReadStatus} is not a valid read status.");
         }
 
     }

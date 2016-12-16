@@ -21,7 +21,7 @@ namespace TT.Domain.Commands.Items
                 var wuffie = ctx.AsQueryable<Entities.Players.Player>().FirstOrDefault(p => p.Id == WuffieId);
 
                 if (wuffie == null)
-                    throw new DomainException(string.Format("Could not find Wuffie with Id {0}", WuffieId));
+                    throw new DomainException($"Could not find Wuffie with Id {WuffieId}");
 
                 var cutoff = DateTime.UtcNow.AddHours(-8);
 

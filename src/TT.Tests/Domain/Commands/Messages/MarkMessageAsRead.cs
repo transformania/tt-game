@@ -70,7 +70,7 @@ namespace TT.Tests.Domain.Commands.Messages
             var cmd = new MarkAsRead { MessageId = 61, ReadStatus = readStatus, OwnerId = 999 };
 
             Action action = () => Repository.Execute(cmd);
-            action.ShouldThrowExactly<DomainException>().WithMessage(string.Format("{0} is not a valid read status.", readStatus));
+            action.ShouldThrowExactly<DomainException>().WithMessage($"{readStatus} is not a valid read status.");
         }
     }
 }

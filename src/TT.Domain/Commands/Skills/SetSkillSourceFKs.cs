@@ -23,7 +23,7 @@ namespace TT.Domain.Commands.Skills
             {
                 var skillSource = ctx.AsQueryable<SkillSource>().SingleOrDefault(t => t.Id == SkillSourceId);
                 if (skillSource == null)
-                    throw new DomainException(string.Format("Skill Source with Id {0} could not be found", SkillSourceId));
+                    throw new DomainException($"Skill Source with Id {SkillSourceId} could not be found");
 
                 FormSource formSource = null;
                 EffectSource givesEffectSource = null;
@@ -34,7 +34,8 @@ namespace TT.Domain.Commands.Skills
                     formSource = ctx.AsQueryable<FormSource>().SingleOrDefault(t => t.dbName == FormSource);
                     if (formSource == null)
                     {
-                        throw new DomainException(string.Format("FormSource Source with name '{0}' could not be found.  Does it need to be published first?", FormSource));
+                        throw new DomainException(
+                            $"FormSource Source with name '{FormSource}' could not be found.  Does it need to be published first?");
                     }
                 }
 
@@ -43,7 +44,7 @@ namespace TT.Domain.Commands.Skills
                     givesEffectSource = ctx.AsQueryable<EffectSource>().SingleOrDefault(t => t.dbName == GivesEffectSource);
                     if (givesEffectSource == null)
                     {
-                        throw new DomainException(string.Format("EffectSource with name '{0}' could not be found", GivesEffectSource));
+                        throw new DomainException($"EffectSource with name '{GivesEffectSource}' could not be found");
                     }
                 }
 
@@ -52,7 +53,8 @@ namespace TT.Domain.Commands.Skills
                     exclusiveToFormSource = ctx.AsQueryable<FormSource>().SingleOrDefault(t => t.dbName == ExclusiveToFormSource);
                     if (exclusiveToFormSource == null)
                     {
-                        throw new DomainException(string.Format("ExclusiveToFormSource with name '{0}' could not be found", ExclusiveToFormSource));
+                        throw new DomainException(
+                            $"ExclusiveToFormSource with name '{ExclusiveToFormSource}' could not be found");
                     }
                 }
 
@@ -61,7 +63,8 @@ namespace TT.Domain.Commands.Skills
                     exclusiveToItemSource = ctx.AsQueryable<ItemSource>().SingleOrDefault(t => t.DbName == ExclusiveToItemSource);
                     if (exclusiveToFormSource == null)
                     {
-                        throw new DomainException(string.Format("ExclusiveToItemSource with name '{0}' could not be found", ExclusiveToItemSource));
+                        throw new DomainException(
+                            $"ExclusiveToItemSource with name '{ExclusiveToItemSource}' could not be found");
                     }
                 }
 

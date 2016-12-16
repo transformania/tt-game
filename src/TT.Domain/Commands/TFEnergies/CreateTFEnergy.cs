@@ -22,7 +22,7 @@ namespace TT.Domain.Commands.TFEnergies
                 var player = ctx.AsQueryable<Entities.Players.Player>().SingleOrDefault(p => p.Id == PlayerId);
 
                 if (player==null)
-                    throw new DomainException(string.Format("Player with ID {0} could not be found", PlayerId));
+                    throw new DomainException($"Player with ID {PlayerId} could not be found");
 
                 Entities.Players.Player caster = null;
 

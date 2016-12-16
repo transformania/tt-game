@@ -12,7 +12,7 @@ namespace TT.Domain.Utilities
         public string ResourceName { get; private set; }
 
         public ResourceNotFoundException(Assembly assembly, string resourceName) 
-            : this(string.Format("{0} not found in {1}", resourceName, assembly.FullName), assembly, resourceName)
+            : this($"{resourceName} not found in {assembly.FullName}", assembly, resourceName)
         {}
 
         public ResourceNotFoundException(string message, Assembly assembly, string resourceName) : base(message)

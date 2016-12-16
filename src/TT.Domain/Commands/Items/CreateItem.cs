@@ -53,13 +53,13 @@ namespace TT.Domain.Commands.Items
             {
                 var itemSource = ctx.AsQueryable<ItemSource>().SingleOrDefault(t => t.Id == ItemSourceId);
                 if (itemSource == null)
-                    throw new DomainException(string.Format("Item Source with Id {0} could not be found", ItemSourceId));
+                    throw new DomainException($"Item Source with Id {ItemSourceId} could not be found");
 
                 var player = ctx.AsQueryable<Entities.Players.Player>().SingleOrDefault(t => t.Id == OwnerId);
 
                 if (OwnerId != null && player == null)
                 {
-                    throw new DomainException(string.Format("Player with Id {0} could not be found", OwnerId));
+                    throw new DomainException($"Player with Id {OwnerId} could not be found");
                 }
 
 

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using System.Linq;
 using Highway.Data;
 using TT.Domain.Entities.Skills;
 
@@ -13,12 +9,6 @@ namespace TT.Domain.Commands.Skills
         public int ownerId { get; set; }
         public int skillSourceId { get; set; }
 
-        public CreateSkill()
-        {
-      
-           
-        }
-
         public override int Execute(IDataContext context)
         {
             var result = 0;
@@ -27,13 +17,13 @@ namespace TT.Domain.Commands.Skills
             {
                 var skillSource = ctx.AsQueryable<SkillSource>().SingleOrDefault(t => t.Id == skillSourceId);
                 if (skillSource == null)
-                    throw new DomainException(string.Format("Skill Source with Id {0} could not be found", skillSourceId));
+                    throw new DomainException($"Skill Source with Id {skillSourceId} could not be found");
 
                 var player = ctx.AsQueryable<Entities.Players.Player>().SingleOrDefault(t => t.Id == ownerId);
 
-                if (ownerId != null && player == null)
+                if (player == null)
                 {
-                    throw new DomainException(string.Format("Player with Id {0} could not be found", ownerId));
+                    throw new DomainException($"Player with Id {ownerId} could not be found");
                 }
 
 
@@ -46,9 +36,7 @@ namespace TT.Domain.Commands.Skills
             };
 
             ExecuteInternal(context);
-
             return result;
         }
-
     }
 }

@@ -6,19 +6,17 @@ using TT.Domain.Entities.LocationLogs;
 using TT.Domain.Entities.Players;
 using TT.Domain.Procedures;
 using TT.Domain.Statics;
-using TT.Domain.ViewModels;
 
 namespace TT.Domain.Commands.Players
 {
     public class TakeBus : DomainCommand<string>
     {
-
         public int playerId { get; set; }
         public string destination { get; set; }
 
         public override string Execute(IDataContext context)
         {
-            string output = "";
+            var output = "";
 
             ContextQuery = ctx =>
             {
@@ -35,12 +33,12 @@ namespace TT.Domain.Commands.Players
                 if (player.Mobility != PvPStatics.MobilityFull)
                     throw new DomainException("You must be animate in order to take the bus.");
 
-                Location originLocation = LocationsStatics.LocationList.GetLocation.First(l => l.dbName == player.Location);
+                var originLocation = LocationsStatics.LocationList.GetLocation.First(l => l.dbName == player.Location);
 
                 if (!LocationsStatics.BusStops.Contains(originLocation.dbName))
                     throw new DomainException("You aren't at a valid bus stop.");
 
-                Location destinationLocation = LocationsStatics.LocationList.GetLocation.First(l => l.dbName == destination);
+                var destinationLocation = LocationsStatics.LocationList.GetLocation.First(l => l.dbName == destination);
                 if (!LocationsStatics.BusStops.Contains(destinationLocation.dbName))
                     throw new DomainException("Your destination is not a valid bus stop.");
 
@@ -96,7 +94,6 @@ namespace TT.Domain.Commands.Players
                 ctx.Add(originLocationLog);
                 ctx.Add(destinationLocationLog);
                 ctx.Commit();
-                
             };
 
             ExecuteInternal(context);
@@ -105,14 +102,8 @@ namespace TT.Domain.Commands.Players
 
         protected override void Validate()
         {
-
-            if (playerId == null)
-                throw new DomainException("playerId is required.");
-
             if (destination == null)
                 throw new DomainException("Destination is required.");
-
         }
-
     }
 }

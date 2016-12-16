@@ -274,7 +274,7 @@ namespace TT.Domain.Procedures.BossProcedures
             if (turnNumber % 5 == 0)
             {
                 
-                int activeCurses = effectRepo.Effects.Where(eff => eff.dbName == KissEffectdbName).Count()*3;
+                var activeCurses = effectRepo.Effects.Count(eff => eff.dbName == KissEffectdbName)*3;
                 if (activeCurses > 75)
                 {
                     activeCurses = 100;

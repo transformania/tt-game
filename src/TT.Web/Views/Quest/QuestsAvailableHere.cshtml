@@ -61,7 +61,7 @@
         }
     }
 
-    <h1 style="margin-top: 20px !important;">All Quests (@Model.AllQuests.Where(q => q.IsLive).Count())</h1>
+    <h1 style="margin-top: 20px !important;">All Quests (@Model.AllQuests.Count(q => q.IsLive))</h1>
 
     @{
         foreach (QuestStart s in Model.AllQuests.Where(q => q.IsLive))

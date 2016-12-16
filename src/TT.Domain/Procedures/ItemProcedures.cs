@@ -212,19 +212,12 @@ namespace TT.Domain.Procedures
 
         public static bool PlayerIsCarryingTooMuch(int newOwnerId, int offset, BuffBox buffs)
         {
-            IEnumerable<ItemViewModel> currentlyOwnedItems = GetAllPlayerItems(newOwnerId);
-            int nonWornItemsCarried = currentlyOwnedItems.Where(i => !i.dbItem.IsEquipped).Count() - offset;
+            var currentlyOwnedItems = GetAllPlayerItems(newOwnerId);
+            var nonWornItemsCarried = currentlyOwnedItems.Count(i => !i.dbItem.IsEquipped) - offset;
 
-            int max = GetInventoryMaxSize(buffs);
+            var max = GetInventoryMaxSize(buffs);
 
-            if (nonWornItemsCarried >= max)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return nonWornItemsCarried >= max;
         }
 
         public static string GiveItemToPlayer(int itemId, int newOwnerId)
@@ -1292,7 +1285,7 @@ namespace TT.Domain.Procedures
         {
             IItemRepository itemRepo = new EFItemRepository();
 
-            return itemRepo.Items.Where(i => i.dbName == itemdbname && i.OwnerId == player.Id).Count();
+            return itemRepo.Items.Count(i => i.dbName == itemdbname && i.OwnerId == player.Id);
         }
 
         public static void DeleteItem(int id)

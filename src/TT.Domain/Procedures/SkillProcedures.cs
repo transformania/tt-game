@@ -425,9 +425,8 @@ namespace TT.Domain.Procedures
         public static int GetCountOfLearnableSpells()
         {
             IDbStaticSkillRepository skillRepo = new EFDbStaticSkillRepository();
-            int spellCount = skillRepo.DbStaticSkills.Where(s => s.IsPlayerLearnable).Count();
+            var spellCount = skillRepo.DbStaticSkills.Count(s => s.IsPlayerLearnable);
             return spellCount;
-
         }
 
         public static void ArchiveSpell(int id)

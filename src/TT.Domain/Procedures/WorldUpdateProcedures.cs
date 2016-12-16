@@ -487,10 +487,10 @@ namespace TT.Domain.Procedures
                     if (turnNo % 7 == 2)
                     {
                         log.AddLog(updateTimer.ElapsedMilliseconds + ":  Starting dungeon item / demon spawning");
-                        int dungeonArtifactCount = itemsRepo.Items.Where(i => i.dbName == PvPStatics.ItemType_DungeonArtifact).Count();
-                        for (int x = 0; x < PvPStatics.DungeonArtifact_SpawnLimit - dungeonArtifactCount; x++)
+                        var dungeonArtifactCount = itemsRepo.Items.Count(i => i.dbName == PvPStatics.ItemType_DungeonArtifact);
+                        for (var x = 0; x < PvPStatics.DungeonArtifact_SpawnLimit - dungeonArtifactCount; x++)
                         {
-                            string randDungeon = LocationsStatics.GetRandomLocation_InDungeon();
+                            var randDungeon = LocationsStatics.GetRandomLocation_InDungeon();
 
                             var cmd = new CreateItem
                             {

@@ -312,7 +312,7 @@
         @{if (ViewBag.ShowOffline == null || !ViewBag.ShowOffline)
         {
 
-            <div id="offlinePlayersButton">@Html.ActionLink("Show Offline Players Here (" + @Model.PlayersHere.Where(p => TT.Domain.Procedures.PlayerProcedures.PlayerIsOffline(p.Player)).Count() + ")", "ShowOffline", "PvP")</div>
+            <div id="offlinePlayersButton">@Html.ActionLink("Show Offline Players Here (" + Model.PlayersHere.Count(p => PlayerProcedures.PlayerIsOffline(p.Player)) + ")", "ShowOffline", "PvP")</div>
         }
         }
 

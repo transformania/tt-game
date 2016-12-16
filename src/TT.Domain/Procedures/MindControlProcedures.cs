@@ -214,51 +214,28 @@ namespace TT.Domain.Procedures
             IMindControlRepository mcRepo = new EFMindControlRepository();
             IPlayerRepository playerRepo = new EFPlayerRepository();
 
-            if (!mcRepo.MindControls.Where(m => m.VictimId == player.Id).Any())
-            {
-                Player dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
-                dbPlayer.MindControlIsActive = false;
-                playerRepo.SavePlayer(dbPlayer);
-                return true;
-            }
-            return false;
+            if (mcRepo.MindControls.Any(m => m.VictimId == player.Id)) return false;
+            var dbPlayer = playerRepo.Players.FirstOrDefault(p => p.Id == player.Id);
+            if (dbPlayer == null) return false;
+            dbPlayer.MindControlIsActive = false;
+            playerRepo.SavePlayer(dbPlayer);
+            return true;
         }
 
         public static bool PlayerIsMindControlledWithType(Player player, string type)
         {
             IMindControlRepository mcRepo = new EFMindControlRepository();
-            if (mcRepo.MindControls.Where(p => p.VictimId == player.Id && p.Type == type).Any())
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return mcRepo.MindControls.Any(p => p.VictimId == player.Id && p.Type == type);
         }
 
         public static bool PlayerIsMindControlledWithType(Player player, IEnumerable<MindControl> controls, string type)
         {
-            if (controls.Where(p => p.VictimId == player.Id && p.Type == type).Any())
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return controls.Any(p => p.VictimId == player.Id && p.Type == type);
         }
 
         public static bool PlayerIsMindControlledWithSomeType(Player player, IEnumerable<MindControl> controls)
         {
-            if (controls.Where(p => p.VictimId == player.Id).Any())
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return controls.Any(p => p.VictimId == player.Id);
         }
 
         public static void AddCommandUsedToMindControl(Player master, Player victim, string type)

@@ -1607,44 +1607,22 @@ namespace TT.Web.Controllers
                 else if (!MindControlProcedures.PlayerIsMindControlledWithSomeType(me, myExistingMCs))
                 {
                     // turn off mind control is the player has no more MC effects on them
-                    bool isNowFree = MindControlProcedures.ClearPlayerMindControlFlagIfOn(me);
                     me.MindControlIsActive = false;
                 }
             }
 
-            // assert player has sufficient action points to meditate
-            if (me.ActionPoints < PvPStatics.MeditateCost)
-            {
-                TempData["Error"] = "You don't have enough action points to meditate.";
-                TempData["SubError"] = "";
-                return RedirectToAction("Play");
-            }
-
-            // assert player is in an okay form to do this
-            if (!PlayerCanPerformAction(me, "meditate"))
-            {
-                return RedirectToAction("Play");
-            }
-
-            // assert player has not cleansed and meditated too much this turn
-            if (me.CleansesMeditatesThisRound >= PvPStatics.MaxCleansesMeditatesPerUpdate)
-            {
-                TempData["Error"] = "You have cleansed and meditate the maximum number of times this update.";
-                TempData["SubError"] = "Next turn you will be able to cleanse again.";
-                return RedirectToAction("Play");
-            }
-
             BuffBox mybuffs = ItemProcedures.GetPlayerBuffs(me);
 
-            TempData["Result"] = PlayerProcedures.Meditate(me, mybuffs);
-
-            // record into statistics
-            new Thread(() =>
-                StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__TimesMeditated, 1)
-            ).Start();
-
-
-            return RedirectToAction("Play");
+            try
+            {
+                TempData["Result"] = DomainRegistry.Repository.Execute(new Meditate { PlayerId = me.Id, Buffs = mybuffs });
+                return RedirectToAction("Play");
+            }
+            catch (DomainException e)
+            {
+                TempData["Error"] = e.Message;
+                return RedirectToAction("Play");
+            }
         }
 
          [Authorize]

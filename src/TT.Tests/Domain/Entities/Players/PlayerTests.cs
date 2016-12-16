@@ -113,5 +113,31 @@ namespace TT.Tests.Domain.Entities
             player.PlayerLogs.Count().Should().Be(0);
         }
 
+        [Test]
+        public void players_do_generate_logs_when_meditating()
+        {
+
+            var player = new PlayerBuilder()
+                .With(p => p.Id, 50)
+                .With(p => p.BotId, AIStatics.ActivePlayerBotId)
+                .BuildAndSave();
+
+            player.Meditate(new BuffBox());
+            player.PlayerLogs.Count().Should().Be(1);
+        }
+
+        [Test]
+        public void bots_dont_generate_logs_when_meditating()
+        {
+
+            var player = new PlayerBuilder()
+                .With(p => p.Id, 50)
+                .With(p => p.BotId, AIStatics.PsychopathBotId)
+                .BuildAndSave();
+
+            player.Meditate(new BuffBox());
+            player.PlayerLogs.Count().Should().Be(0);
+        }
+
     }
 }

@@ -100,15 +100,15 @@ namespace TT.Domain.Procedures.BossProcedures
                     {
                         DomainRegistry.Repository.Execute(new Cleanse { PlayerId = merchant.Id, Buffs = box, NoValidate = true });
                         DomainRegistry.Repository.Execute(new Cleanse { PlayerId = merchant.Id, Buffs = box, NoValidate = true });
-                        PlayerProcedures.Meditate(merchant, box);
+                        DomainRegistry.Repository.Execute(new Meditate { PlayerId = merchant.Id, Buffs = box, NoValidate = true });
                     }
                 }
                 else
                 {
                     if (merchant.Mana < merchant.MaxMana)
                     {
-                        PlayerProcedures.Meditate(merchant, box);
-                        PlayerProcedures.Meditate(merchant, box);
+                        DomainRegistry.Repository.Execute(new Meditate { PlayerId = merchant.Id, Buffs = box, NoValidate = true });
+                        DomainRegistry.Repository.Execute(new Meditate { PlayerId = merchant.Id, Buffs = box, NoValidate = true });
                         DomainRegistry.Repository.Execute(new Cleanse { PlayerId = merchant.Id, Buffs = box, NoValidate = true });
                     }
                 }

@@ -57,7 +57,12 @@ namespace TT.Domain.Entities.Forms
 
         public void SetTFMessage(TFMessage tfMessage)
         {
-            this.TfMessage = tfMessage;
+            TfMessage = tfMessage;
+        }
+
+        public void SetItemSource(ItemSource itemSource)
+        {
+            ItemSource = itemSource;
         }
     }
 

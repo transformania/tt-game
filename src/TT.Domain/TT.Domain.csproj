@@ -169,6 +169,7 @@
     <Compile Include="Commands\ChatLog\WriteLogToDatabase.cs" />
     <Compile Include="Commands\Chat\CreateChatRoom.cs" />
     <Compile Include="Commands\Effects\CreateEffect.cs" />
+    <Compile Include="Commands\Forms\SetFormSourceBecomesItemFK.cs" />
     <Compile Include="Commands\Forms\SetTFMessageFKs.cs" />
     <Compile Include="Commands\Game\UpdateRoundNumber.cs" />
     <Compile Include="Commands\Identity\CreateCaptchaEntry.cs" />

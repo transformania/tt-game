@@ -30,28 +30,14 @@ namespace TT.Domain.Procedures
 
         public bool IsOnClosedList(List<LocationNode> closedList)
         {
-            int x = closedList.Where(l => l.dbName == this.dbName).Count();
-            if (x == 1)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            var x = closedList.Count(l => l.dbName == dbName);
+            return x == 1;
         }
 
         public bool IsOnOpenList(List<LocationNode> openList)
         {
-            int x = openList.Where(l => l.dbName == this.dbName).Count();
-            if (x == 1)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            var x = openList.Count(l => l.dbName == dbName);
+            return x == 1;
         }
 
         public void MoveToOpenList(List<LocationNode> openList)

@@ -199,22 +199,17 @@ namespace TT.Domain.Procedures
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
 
-            if (animateOnly)
-            {
-                return playerRepo.Players.Where(p => p.Covenant == covenant.Id && p.Mobility == PvPStatics.MobilityFull).Count();
-            }
-            else
-            {
-                return playerRepo.Players.Where(p => p.Covenant == covenant.Id).Count();
-            }
-
-            
+            return animateOnly
+                ? playerRepo.Players.Count(p => p.Covenant == covenant.Id && p.Mobility == PvPStatics.MobilityFull)
+                : playerRepo.Players.Count(p => p.Covenant == covenant.Id);
         }
 
         public static int GetPlayerCountInCovenant_Animate_Lvl3(Covenant covenant)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            return playerRepo.Players.Where(p => p.Covenant == covenant.Id).Where(p => p.Mobility == PvPStatics.MobilityFull && p.Level >= 3).Count();
+            return
+                playerRepo.Players.Count(
+                    p => p.Covenant == covenant.Id && p.Mobility == PvPStatics.MobilityFull && p.Level >= 3);
         }
 
         public static IEnumerable<CovenantListItemViewModel> GetCovenantsList()
@@ -224,19 +219,13 @@ namespace TT.Domain.Procedures
 
             List<Covenant> dbCovenants = covRepo.Covenants.Where(c => c.Id > 0).ToList();
 
-            List<CovenantListItemViewModel> output = new List<CovenantListItemViewModel>();
-
-            foreach (Covenant c in dbCovenants)
+            return dbCovenants.Select(c => new CovenantListItemViewModel
             {
-                CovenantListItemViewModel addme = new CovenantListItemViewModel
-                {
-                    dbCovenant = c,
-                    MemberCount = playerRepo.Players.Where(p => p.Covenant == c.Id && p.BotId == AIStatics.ActivePlayerBotId).Count(),
-                    Leader = playerRepo.Players.FirstOrDefault(p => p.Id == c.LeaderId)
-                };
-                output.Add(addme);
-            }
-            return output;
+                dbCovenant = c,
+                MemberCount =
+                    playerRepo.Players.Count(p => p.Covenant == c.Id && p.BotId == AIStatics.ActivePlayerBotId),
+                Leader = playerRepo.Players.FirstOrDefault(p => p.Id == c.LeaderId)
+            }).ToList();
         }
 
         public static void AddCovenantApplication(Player applicant, Covenant covenant)
@@ -368,16 +357,8 @@ namespace TT.Domain.Procedures
         public static bool ACovenantHasASafegroundHere(string location)
         {
             ICovenantRepository covRepo = new EFCovenantRepository();
-            int covenantsBasedHere = covRepo.Covenants.Where(c => c.HomeLocation == location).Count();
-
-            if (covenantsBasedHere > 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            var covenantsBasedHere = covRepo.Covenants.Count(c => c.HomeLocation == location);
+            return covenantsBasedHere > 0;
         }
 
         public static void SetCovenantSafeground(Covenant covenant, string location)
@@ -467,7 +448,7 @@ namespace TT.Domain.Procedures
         public static int GetCurrentFurnitureOwnedByCovenant(Covenant covenant)
         {
             IFurnitureRepository furnRepo = new EFFurnitureRepository();
-            return furnRepo.Furnitures.Where(f => f.CovenantId == covenant.Id).Count();
+            return furnRepo.Furnitures.Count(f => f.CovenantId == covenant.Id);
         }
 
         public static string ChangeCovenantCaptain(Covenant covenant, Player player)
@@ -691,7 +672,7 @@ namespace TT.Domain.Procedures
         public static int GetLocationControlCount(Covenant cov)
         {
             ILocationInfoRepository repo = new EFLocationInfoRepository();
-            return repo.LocationInfos.Where(c => c.CovenantId == cov.Id).Count();
+            return repo.LocationInfos.Count(c => c.CovenantId == cov.Id);
         }
 
         public static IEnumerable<LocationInfo> GetLocationInfos()

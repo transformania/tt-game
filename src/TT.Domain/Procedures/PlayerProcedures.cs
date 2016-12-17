@@ -1367,34 +1367,16 @@ namespace TT.Domain.Procedures
 
         public static bool IsMyIPInUseAndAnimate(string ip)
         {
-
-
-
             IPlayerRepository playerRepo = new EFPlayerRepository();
-           decimal num = playerRepo.Players.Where(p => p.IpAddress == ip && p.Mobility == PvPStatics.MobilityFull).Count();
-           if (num > 1)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            var num = playerRepo.Players.Count(p => p.IpAddress == ip && p.Mobility == PvPStatics.MobilityFull);
+            return num > 1;
         }
 
         public static bool IsMyIPInUseAndAnimate(string ip, Player player)
         {
-
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            decimal num = playerRepo.Players.Count(p => p.BotId == AIStatics.ActivePlayerBotId && p.IpAddress == ip && p.Mobility == PvPStatics.MobilityFull && p.GameMode == player.GameMode);
-            if (num > 1)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            var num = playerRepo.Players.Count(p => p.BotId == AIStatics.ActivePlayerBotId && p.IpAddress == ip && p.Mobility == PvPStatics.MobilityFull && p.GameMode == player.GameMode);
+            return num > 1;
         }
 
         public static bool PlayerIsOffline(Player player)
@@ -1632,7 +1614,7 @@ namespace TT.Domain.Procedures
         public static int GetAnimatePlayerCountInCovenant(int covenantId)
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            return playerRepo.Players.Where(p => p.Covenant == covenantId && p.Mobility == PvPStatics.MobilityFull).Count();
+            return playerRepo.Players.Count(p => p.Covenant == covenantId && p.Mobility == PvPStatics.MobilityFull);
         }
 
         public static int RollDie(int size)

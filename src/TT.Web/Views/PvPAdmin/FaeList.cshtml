@@ -1,6 +1,6 @@
 ﻿@model List<TT.Domain.Models.JewdewfaeEncounter>
 
-<h1>Jewdewfae encounter list (@Model.Where(e => e.IsLive).Count() live)</h1>
+<h1>Jewdewfae encounter list (@Model.Count(e => e.IsLive) live)</h1>
 
 @{
     foreach (TT.Domain.Models.JewdewfaeEncounter e in Model)

@@ -28,7 +28,7 @@ namespace TT.Domain.Procedures
 
             int turnNumber = PvPWorldStatProcedures.GetWorldTurnNumber();
 
-            int botCount = playerRepo.Players.Where(b => b.BotId == AIStatics.PsychopathBotId).Count();
+            var botCount = playerRepo.Players.Count(b => b.BotId == AIStatics.PsychopathBotId);
 
             for (int i = (0 + botCount); i < (count + botCount); i++)
             {

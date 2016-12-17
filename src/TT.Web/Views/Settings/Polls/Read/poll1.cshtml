@@ -26,36 +26,35 @@
     @{
         decimal totalCount = Model.Count();
 
-        decimal Num1_Choice1 = Model.Where(m => m.Num1 == 1).Count() / totalCount * 100;
-        decimal Num1_Choice2 = Model.Where(m => m.Num1 == 2).Count() / totalCount * 100;
-        decimal Num1_Choice3 = Model.Where(m => m.Num1 == 3).Count() / totalCount * 100;
-        decimal Num1_Choice4 = Model.Where(m => m.Num1 == 4).Count() / totalCount * 100;
-        decimal Num1_Choice5 = Model.Where(m => m.Num1 == 5).Count() / totalCount * 100;
-        decimal Num1_Choice6 = Model.Where(m => m.Num1 == 6).Count() / totalCount * 100;
-        decimal Num1_Choice7 = Model.Where(m => m.Num1 == 7).Count() / totalCount * 100;
+        var Num1_Choice1 = Model.Count(m => m.Num1 == 1) / totalCount * 100;
+        var Num1_Choice2 = Model.Count(m => m.Num1 == 2) / totalCount * 100;
+        var Num1_Choice3 = Model.Count(m => m.Num1 == 3) / totalCount * 100;
+        var Num1_Choice4 = Model.Count(m => m.Num1 == 4) / totalCount * 100;
+        var Num1_Choice5 = Model.Count(m => m.Num1 == 5) / totalCount * 100;
+        var Num1_Choice6 = Model.Count(m => m.Num1 == 6) / totalCount * 100;
+        var Num1_Choice7 = Model.Count(m => m.Num1 == 7) / totalCount * 100;
 
-        decimal Num2_Choice1 = Model.Where(m => m.Num2 == 1).Count() / totalCount * 100;
-        decimal Num2_Choice2 = Model.Where(m => m.Num2 == 2).Count() / totalCount * 100;
-        decimal Num2_Choice3 = Model.Where(m => m.Num2 == 3).Count() / totalCount * 100;
-        decimal Num2_Choice4 = Model.Where(m => m.Num2 == 4).Count() / totalCount * 100;
-        decimal Num2_Choice5 = Model.Where(m => m.Num2 == 5).Count() / totalCount * 100;
-        decimal Num2_Choice6 = Model.Where(m => m.Num2 == 6).Count() / totalCount * 100;
-        decimal Num2_Choice7 = Model.Where(m => m.Num2 == 7).Count() / totalCount * 100;
+        var Num2_Choice1 = Model.Count(m => m.Num2 == 1) / totalCount * 100;
+        var Num2_Choice2 = Model.Count(m => m.Num2 == 2) / totalCount * 100;
+        var Num2_Choice3 = Model.Count(m => m.Num2 == 3) / totalCount * 100;
+        var Num2_Choice4 = Model.Count(m => m.Num2 == 4) / totalCount * 100;
+        var Num2_Choice5 = Model.Count(m => m.Num2 == 5) / totalCount * 100;
+        var Num2_Choice6 = Model.Count(m => m.Num2 == 6) / totalCount * 100;
+        var Num2_Choice7 = Model.Count(m => m.Num2 == 7) / totalCount * 100;
 
-        decimal Num3_Choice1 = Model.Where(m => m.Num3 == 1).Count() / totalCount * 100;
-        decimal Num3_Choice2 = Model.Where(m => m.Num3 == 2).Count() / totalCount * 100;
-        decimal Num3_Choice3 = Model.Where(m => m.Num3 == 3).Count() / totalCount * 100;
-        decimal Num3_Choice4 = Model.Where(m => m.Num3 == 4).Count() / totalCount * 100;
-        decimal Num3_Choice5 = Model.Where(m => m.Num3 == 5).Count() / totalCount * 100;
-        decimal Num3_Choice6 = Model.Where(m => m.Num3 == 6).Count() / totalCount * 100;
-        decimal Num3_Choice7 = Model.Where(m => m.Num3 == 7).Count() / totalCount * 100;
+        var Num3_Choice1 = Model.Count(m => m.Num3 == 1) / totalCount * 100;
+        var Num3_Choice2 = Model.Count(m => m.Num3 == 2) / totalCount * 100;
+        var Num3_Choice3 = Model.Count(m => m.Num3 == 3) / totalCount * 100;
+        var Num3_Choice4 = Model.Count(m => m.Num3 == 4) / totalCount * 100;
+        var Num3_Choice5 = Model.Count(m => m.Num3 == 5) / totalCount * 100;
+        var Num3_Choice6 = Model.Count(m => m.Num3 == 6) / totalCount * 100;
+        var Num3_Choice7 = Model.Count(m => m.Num3 == 7) / totalCount * 100;
 
-        decimal Num4_Choice1 = Model.Where(m => m.Num4 == 1).Count() / totalCount * 100;
-        decimal Num4_Choice2 = Model.Where(m => m.Num4 == 2).Count() / totalCount * 100;
-        decimal Num4_Choice3 = Model.Where(m => m.Num4 == 3).Count() / totalCount * 100;
-        decimal Num4_Choice4 = Model.Where(m => m.Num4 == 4).Count() / totalCount * 100;
-        decimal Num4_Choice5 = Model.Where(m => m.Num4 == 5).Count() / totalCount * 100;
-
+        var Num4_Choice1 = Model.Count(m => m.Num4 == 1) / totalCount * 100;
+        var Num4_Choice2 = Model.Count(m => m.Num4 == 2) / totalCount * 100;
+        var Num4_Choice3 = Model.Count(m => m.Num4 == 3) / totalCount * 100;
+        var Num4_Choice4 = Model.Count(m => m.Num4 == 4) / totalCount * 100;
+        var Num4_Choice5 = Model.Count(m => m.Num4 == 5) / totalCount * 100;
     }
 
     <h1>What features would you like to see added the most?</h1>
@@ -138,7 +137,7 @@
     <p><b>What other new features would you like to see in the game not listed above?</b></p>
 
     @{
-        foreach (TT.Domain.Models.PollEntry e in Model.Where(p => p.String1 != null && p.String1 != ""))
+        foreach (var e in Model.Where(p => !string.IsNullOrEmpty(p.String1)))
         {
             <p>"@e.String1"</p><br />
         }

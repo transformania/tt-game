@@ -1692,22 +1692,29 @@ namespace TT.Web.Controllers
 
                 addme.AuthorName = AuthorContribs.SubmitterName;
 
-                addme.AnimateFormCount = contributionRepo.Contributions.Where(c => c.OwnerMembershipId == ownerId && !c.IsNonstandard && c.Form_MobilityType == PvPStatics.MobilityFull && c.IsLive && c.ProofreadingCopy).Count();
+                 addme.AnimateFormCount =
+                     contributionRepo.Contributions.Count(
+                         c =>
+                             c.OwnerMembershipId == ownerId && !c.IsNonstandard &&
+                             c.Form_MobilityType == PvPStatics.MobilityFull && c.IsLive && c.ProofreadingCopy);
 
-                addme.InanimateFormCount = contributionRepo.Contributions.Where(c => c.OwnerMembershipId == ownerId && !c.IsNonstandard && c.Form_MobilityType == PvPStatics.MobilityInanimate && c.IsLive && c.ProofreadingCopy).Count();
+                 addme.InanimateFormCount =
+                     contributionRepo.Contributions.Count(
+                         c =>
+                             c.OwnerMembershipId == ownerId && !c.IsNonstandard &&
+                             c.Form_MobilityType == PvPStatics.MobilityInanimate && c.IsLive && c.ProofreadingCopy);
 
-                addme.AnimalFormCount = contributionRepo.Contributions.Where(c => c.OwnerMembershipId == ownerId && !c.IsNonstandard && c.Form_MobilityType == PvPStatics.MobilityPet && c.IsLive && c.ProofreadingCopy).Count();
+                 addme.AnimalFormCount =
+                     contributionRepo.Contributions.Count(
+                         c =>
+                             c.OwnerMembershipId == ownerId && !c.IsNonstandard &&
+                             c.Form_MobilityType == PvPStatics.MobilityPet && c.IsLive && c.ProofreadingCopy);
 
-                if (!AuthorContribs.SubmitterUrl.IsNullOrEmpty())
-                {
-                    addme.Website = AuthorContribs.SubmitterUrl;
-                }
-                else
-                {
-                    addme.Website = "";
-                }
+                 addme.Website = AuthorContribs.SubmitterUrl.IsNullOrEmpty() ? "": AuthorContribs.SubmitterUrl;
 
-                addme.EffectCount = effectContributionRepo.EffectContributions.Where(c => c.OwnerMemberhipId == ownerId && c.IsLive && c.ProofreadingCopy).Count();
+                 addme.EffectCount =
+                     effectContributionRepo.EffectContributions.Count(
+                         c => c.OwnerMemberhipId == ownerId && c.IsLive && c.ProofreadingCopy);
 
                  addme.SpellCount = addme.AnimateFormCount + addme.InanimateFormCount + addme.AnimalFormCount;
 

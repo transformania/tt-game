@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using Highway.Data;
 using TT.Domain.Entities.Forms;
@@ -96,7 +97,12 @@ namespace TT.Domain.Commands.Players
 
             ContextQuery = ctx =>
             {
-                var user = ctx.AsQueryable<User>().SingleOrDefault(t => t.Id == UserId);
+                var user = ctx.AsQueryable<User>()
+                    .Include(u => u.Donator)
+                    .SingleOrDefault(t => t.Id == UserId);
+
+                if (user != null && user.Donator != null)
+                    DonatorLevel = user.Donator.Tier;
 
                 var npc = ctx.AsQueryable<NPC>().SingleOrDefault(t => t.Id == NPCId);
 

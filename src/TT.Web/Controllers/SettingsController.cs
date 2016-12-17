@@ -115,13 +115,13 @@ namespace TT.Web.Controllers
              }
 
              Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-             if (input.Text.Length > 2500 && !DonatorProcedures.DonatorGetsMessagesRewards(me))
+             if (input.Text.Length > 2500 && !me.DonatorGetsMessagesRewards())
              {
                  TempData["Error"] = "The text of your bio is too long (more than 2,500 characters).";
                  return RedirectToAction("Play", "PvP");
              }
 
-             if (input.Text.Length > 10000 && DonatorProcedures.DonatorGetsMessagesRewards(me))
+             if (input.Text.Length > 10000 && me.DonatorGetsMessagesRewards())
              {
                  TempData["Error"] = "The text of your bio is too long (more than 10,000 characters).";
                  return RedirectToAction("Play", "PvP");
@@ -282,7 +282,7 @@ namespace TT.Web.Controllers
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
-            if (!DonatorProcedures.DonatorGetsNickname(me))
+            if (!me.DonatorGetsNickname())
             {
                 TempData["Error"] = "You are not marked as being a donator.";
                 TempData["SubError"] = "This feature is reserved for players who pledge $7 monthly to support Transformania Time on Patreon.";
@@ -293,21 +293,6 @@ namespace TT.Web.Controllers
             output.MessageText = me.Nickname;
 
             return View(output);
-        }
-
-        [Authorize]
-        public ActionResult VerifyDonatorStatus()
-        {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-
-            DonatorProcedures.SetNewPlayerDonationRank(me.Id);
-
-            me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-
-            TempData["Result"] = "Your donation tier has been verified and set to tier " + me.DonatorLevel + ".";
-            return RedirectToAction("Play", "PvP");
-
         }
 
         [Authorize]

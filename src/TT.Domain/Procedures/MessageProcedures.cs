@@ -14,13 +14,8 @@ namespace TT.Domain.Procedures
 
         public static MessageBag GetPlayerMessages(Player player, int offset)
         {
-           
-            int inboxLimit = 150;
 
-            if (DonatorProcedures.DonatorGetsMessagesRewards(player))
-            {
-                inboxLimit = 500;
-            }
+            var inboxLimit = player.DonatorGetsMessagesRewards() ? 500 : 150;
 
             var receivedMessages = DomainRegistry.Repository.Find(new GetPlayerReceivedMessages {ReceiverId = player.Id});
             var sentMessages = DomainRegistry.Repository.Find(new GetPlayerSentMessages {SenderId = player.Id, Take = 20});

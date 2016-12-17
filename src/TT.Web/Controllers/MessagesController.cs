@@ -44,7 +44,7 @@ namespace TT.Web.Controllers
                 }
             }
 
-            bool isDonator = DonatorProcedures.DonatorGetsMessagesRewards(me);
+            bool isDonator = me.DonatorGetsMessagesRewards();
 
             ViewBag.IsDonator = isDonator;
 

@@ -158,6 +158,16 @@ namespace TT.Domain.Models
             }
         }
 
+        public bool DonatorGetsNickname()
+        {
+            return DonatorLevel >= 2;
+        }
+
+        public bool DonatorGetsMessagesRewards()
+        {
+            return DonatorLevel >= 3;
+        }
+
     }
 
     public class Player_VM

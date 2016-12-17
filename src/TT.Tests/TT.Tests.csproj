@@ -188,6 +188,7 @@
     <Compile Include="Domain\Commands\Players\ChangeRPModeTests.cs" />
     <Compile Include="Domain\Commands\Players\CleanseTests.cs" />
     <Compile Include="Domain\Commands\Players\DeletePlayerTests.cs" />
+    <Compile Include="Domain\Commands\Players\ShoutTests.cs" />
     <Compile Include="Domain\Commands\Players\TakeBusTests.cs" />
     <Compile Include="Domain\Commands\Skills\CreateSkillTests.cs" />
     <Compile Include="Domain\Commands\Skills\SetSkillSourceFKsTests.cs" />

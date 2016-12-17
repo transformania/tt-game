@@ -34,6 +34,7 @@ namespace TT.Tests.Builders.Players
             With(p => p.TFEnergies, new List<TFEnergy>());
             With(p => p.PlayerLogs, new List<PlayerLog>());
             With(p => p.Items, new List<TT.Domain.Entities.Items.Item>());
+            With(p => p.ShoutsRemaining, 1);
         }
     }
 }

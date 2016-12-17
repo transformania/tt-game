@@ -164,6 +164,7 @@
     <Compile Include="Domain\Commands\Assets\CreateTomeTests.cs" />
     <Compile Include="Domain\Commands\Chat\CreateChatRoomTests.cs" />
     <Compile Include="Domain\Commands\Effects\CreateEffectTests.cs" />
+    <Compile Include="Domain\Commands\Forms\SetFormSourceBecomesItemFKTests.cs" />
     <Compile Include="Domain\Commands\Forms\TFMessageSetFKsTests.cs" />
     <Compile Include="Domain\Commands\Game\UpdateRoundNumberTests.cs" />
     <Compile Include="Domain\Commands\Identity\UpdateDonatorTests.cs" />

@@ -1117,6 +1117,9 @@ namespace TT.Web.Controllers
 
             DomainRegistry.Repository.Execute(new SetTFMessageFKs {TFMessageId = tf.Id, FormSource = formdbname});
 
+            if (!String.IsNullOrEmpty(form.BecomesItemDbName))
+                DomainRegistry.Repository.Execute(new SetFormSourceBecomesItemFK { FormSourceId = form.Id, ItemSourceName = form.BecomesItemDbName });
+
             return View("Publish");
         }
 

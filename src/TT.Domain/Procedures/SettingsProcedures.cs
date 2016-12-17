@@ -57,7 +57,7 @@ namespace TT.Domain.Procedures
             SetBioViewModel setBioViewModel
                 = playerBio != null ? new SetBioViewModel(playerBio) : new SetBioViewModel(player.MembershipId);
 
-            setBioViewModel.IsDonator = DonatorProcedures.DonatorGetsMessagesRewards(player);
+            setBioViewModel.IsDonator = player.DonatorGetsMessagesRewards();
 
             return setBioViewModel;
         }

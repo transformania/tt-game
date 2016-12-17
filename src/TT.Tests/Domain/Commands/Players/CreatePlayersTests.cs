@@ -21,7 +21,11 @@ namespace TT.Tests.Domain.Commands.Players
         [SetUp]
         public void Init()
         {
-            user = new UserBuilder().With(u => u.Id, "guid").BuildAndSave();
+            user = new UserBuilder().With(u => u.Id, "guid")
+                .With(u => u.Donator, new DonatorBuilder()
+                    .With(d => d.Tier, 2)
+                    .BuildAndSave())
+                .BuildAndSave();
 
             cmd = new CreatePlayer();
             cmd.FirstName = "Bob";
@@ -41,11 +45,28 @@ namespace TT.Tests.Domain.Commands.Players
 
             Repository.Execute(cmd);
 
-            DataContext.AsQueryable<Player>().Count(p =>
-                p.FirstName == "Bob" &&
-                p.LastName == "McBobbinson" &&
-                p.User.Id == user.Id)
-            .Should().Be(1);
+            var player = DataContext.AsQueryable<Player>().First();
+            player.FirstName.Should().Be("Bob");
+            player.LastName.Should().Be("McBobbinson");
+            player.User.Id.Should().Be(user.Id);
+            player.DonatorLevel.Should().Be(2);
+
+        }
+
+        [Test]
+        public void Should_create_new_player_without_user()
+        {
+
+            cmd.UserId = null;
+
+            Repository.Execute(cmd);
+
+            var player = DataContext.AsQueryable<Player>().First();
+            player.FirstName.Should().Be("Bob");
+            player.LastName.Should().Be("McBobbinson");
+            player.User.Should().Be(null);
+            player.DonatorLevel.Should().Be(0);
+
         }
 
         [Test]

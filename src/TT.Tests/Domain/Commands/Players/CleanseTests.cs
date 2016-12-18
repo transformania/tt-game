@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
@@ -40,14 +39,14 @@ namespace TT.Tests.Domain.Commands.Players
 
             var stats = new List<Stat>()
             {
-                new StatBuilder().With(t => t.AchievementType, StatsProcedures.Stat__BusRides).BuildAndSave()
+                new StatBuilder().With(t => t.AchievementType, StatsProcedures.Stat__BusRides).With(t => t.Amount, 20).BuildAndSave()
             };
 
             var player = new PlayerBuilder()
                .With(p => p.Id, 100)
                .With(p => p.Health, 0)
                .With(p => p.User, new UserBuilder()
-                    .With(u => u.Achievements, stats)
+                    .With(u => u.Stats, stats)
                     .With(u => u.Id, "bob")
                     .BuildAndSave())
                .With(p => p.Location, LocationsStatics.STREET_200_MAIN_STREET)
@@ -65,7 +64,7 @@ namespace TT.Tests.Domain.Commands.Players
             locationLog.dbLocationName.Should().Be(player.Location);
             locationLog.Message.Should().Be("<span class='playerCleansingNotification'>John Doe cleansed here.</span>");
 
-            var stat = DataContext.AsQueryable<Stat>().FirstOrDefault(s => s.AchievementType == StatsProcedures.Stat__TimesCleansed);
+            var stat = playerLoaded.User.Stats.FirstOrDefault(s => s.AchievementType == StatsProcedures.Stat__TimesCleansed);
             stat.Owner.Id.Should().Be("bob");
             stat.Amount.Should().Be(1);
         }
@@ -180,7 +179,7 @@ namespace TT.Tests.Domain.Commands.Players
                .With(p => p.Health, 0)
                .With(p => p.MaxHealth, 100)
                .With(p => p.User, new UserBuilder()
-                    .With(u => u.Achievements, stats)
+                    .With(u => u.Stats, stats)
                     .With(u => u.Id, "bob")
                     .BuildAndSave())
                .With(p => p.Mobility, PvPStatics.MobilityFull)

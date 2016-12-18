@@ -3,7 +3,6 @@ using System.Data.Entity;
 using System.Linq;
 using Highway.Data;
 using TT.Domain.Entities.LocationLogs;
-using TT.Domain.Entities.Players;
 using TT.Domain.Procedures;
 using TT.Domain.Statics;
 
@@ -24,7 +23,7 @@ namespace TT.Domain.Commands.Players
                 var player = ctx.AsQueryable<Entities.Players.Player>()
                     .Include(p => p.Effects)
                     .Include(p => p.User)
-                    .Include(p => p.User.Achievements)
+                    .Include(p => p.User.Stats)
                 .SingleOrDefault(p => p.Id == playerId);
 
                 if (player == null)
@@ -81,14 +80,10 @@ namespace TT.Domain.Commands.Players
                 var originLocationLog = LocationLog.Create(originLocation.dbName, $"{player.GetFullName()} got on a bus headed toward {destinationLocation.Name}.", 0);
                 var destinationLocationLog = LocationLog.Create(destinationLocation.dbName, $"{player.GetFullName()} arrived via bus from {originLocation.Name}.", 0);
 
-                var achievement = player.User.GetAchievement(StatsProcedures.Stat__BusRides);
-                if (achievement != null)
+                // log statistics only for human players
+                if (player.BotId == AIStatics.ActivePlayerBotId)
                 {
-                    achievement.AddAmount(distance);
-                }
-                else
-                {
-                    ctx.Add(Stat.Create(player.User, distance, StatsProcedures.Stat__BusRides));
+                    player.User.AddStat(StatsProcedures.Stat__BusRides, distance);
                 }
 
                 ctx.Add(originLocationLog);

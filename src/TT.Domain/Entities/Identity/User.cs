@@ -11,7 +11,7 @@ namespace TT.Domain.Entities.Identity
         public string UserName { get; private set; }
         public string Email { get; private set; }
         public ICollection<RPClassifiedAd> RPClassifiedAds { get; private set; } = new List<RPClassifiedAd>();
-        public ICollection<Stat> Achievements { get; private set; } = new List<Stat>();
+        public ICollection<Stat> Stats { get; private set; } = new List<Stat>();
         public Donator Donator { get; protected set; }
 
         private User() { }
@@ -26,9 +26,18 @@ namespace TT.Domain.Entities.Identity
             this.Donator = Donator.Create(cmd.PatreonName, cmd.Tier, cmd.ActualDonationAmount, cmd.SpecialNotes);
         }
 
-        public Stat GetAchievement(string type)
+        public void AddStat(string type, float amount)
         {
-            return this.Achievements.FirstOrDefault(a => a.AchievementType == type);
+            var stat = this.Stats.FirstOrDefault(a => a.AchievementType == type);
+            if (stat == null)
+            {
+                this.Stats.Add(Stat.Create(this, amount, type));
+            }
+            else
+            {
+                stat.AddAmount(amount);
+            }
         }
+
     }
 }

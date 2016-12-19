@@ -28,6 +28,7 @@ namespace TT.Domain.Commands.Players
                     .Include(p => p.User)
                     .Include(p => p.User.Stats)
                     .Include(p => p.Effects)
+                    .Include(p => p.VictimMindControls)
                     .SingleOrDefault(cr => cr.Id == PlayerId);
 
                 if (player == null)
@@ -44,7 +45,10 @@ namespace TT.Domain.Commands.Players
                     if (player.CleansesMeditatesThisRound >= PvPStatics.MaxCleansesMeditatesPerUpdate)
                         throw new DomainException("You have cleansed and meditated the maximum number of times this update.");
 
-                    // TODO:  Assert that the player has no mind control effects that will prevent this
+                    var mcs = player.VictimMindControls.Select(m => m.Type);
+
+                    if (mcs.Contains(MindControlStatics.MindControl__Meditate))
+                        throw new DomainException("You try to meditate but find you cannot!  The moment you try and focus, your head swims with nonsensical thoughts implanted by someone partially mind controlling you!");
 
                 }
 

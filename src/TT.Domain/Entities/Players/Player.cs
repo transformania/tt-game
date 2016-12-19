@@ -6,6 +6,7 @@ using TT.Domain.Commands.Players;
 using TT.Domain.Entities.Effects;
 using TT.Domain.Entities.Forms;
 using TT.Domain.Entities.Identity;
+using TT.Domain.Entities.MindControl;
 using TT.Domain.Entities.NPCs;
 using TT.Domain.Entities.Skills;
 using TT.Domain.Entities.TFEnergies;
@@ -30,6 +31,8 @@ namespace TT.Domain.Entities.Players
         public ICollection<Skill> Skills { get; protected set; }
         public ICollection<PlayerLog> PlayerLogs { get; protected set; }
         public ICollection<TFEnergy> TFEnergies { get; protected set; }
+
+        public ICollection<VictimMindControl> VictimMindControls { get; protected set; }
 
         public FormSource FormSource { get; protected set; }
 
@@ -88,6 +91,7 @@ namespace TT.Domain.Entities.Players
             Skills = new List<Skill>();
             PlayerLogs = new List<PlayerLog>();
             Effects = new List<Effect>();
+            VictimMindControls = new List<MindControl.VictimMindControl>();
         }
 
         public static Player Create(User user, NPC npc, FormSource form, CreatePlayer cmd)

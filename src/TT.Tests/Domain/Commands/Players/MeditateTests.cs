@@ -6,11 +6,13 @@ using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Commands.Players;
 using TT.Domain.Entities.LocationLogs;
+using TT.Domain.Entities.MindControl;
 using TT.Domain.Entities.Players;
 using TT.Domain.Procedures;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 using TT.Tests.Builders.Identity;
+using TT.Tests.Builders.MindControl;
 using TT.Tests.Builders.Players;
 
 namespace TT.Tests.Domain.Commands.Players
@@ -59,6 +61,29 @@ namespace TT.Tests.Domain.Commands.Players
             var stat = playerLoaded.User.Stats.FirstOrDefault(s => s.AchievementType == StatsProcedures.Stat__TimesMeditated);
             stat.Owner.Id.Should().Be("bob");
             stat.Amount.Should().Be(1);
+        }
+
+        [Test]
+        public void should_throw_exception_if_player_has_mc_antimeditate_debuff()
+        {
+
+            var mcs = new List<VictimMindControl>()
+            {
+                new VictimMindControlBuilder().With(t => t.Type, MindControlStatics.MindControl__Meditate).BuildAndSave()
+            };
+
+            var player = new PlayerBuilder()
+               .With(p => p.Id, 100)
+               .With(p => p.VictimMindControls, mcs)
+               .With(p => p.User, new UserBuilder()
+                    .With(u => u.Id, "bob")
+                    .BuildAndSave())
+               .BuildAndSave();
+
+            var cmd = new Meditate { PlayerId = player.Id, Buffs = buffs };
+            var action = new Action(() => { Repository.Execute(cmd); });
+
+            action.ShouldThrowExactly<DomainException>().WithMessage("You try to meditate but find you cannot!  The moment you try and focus, your head swims with nonsensical thoughts implanted by someone partially mind controlling you!");
         }
 
         [Test]

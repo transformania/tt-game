@@ -275,6 +275,7 @@
     <Compile Include="DTOs\Identity\UserDonatorDetail.cs" />
     <Compile Include="DTOs\Forms\BaseFormDetail.cs" />
     <Compile Include="DTOs\Item\ItemSourceNameDescription.cs" />
+    <Compile Include="DTOs\MindControl\VictimMindControlDetail.cs" />
     <Compile Include="DTOs\Players\BusStopsViewModel.cs" />
     <Compile Include="DTOs\Players\BusStop.cs" />
     <Compile Include="DTOs\Players\PlayerBusDetail.cs" />
@@ -285,6 +286,7 @@
     <Compile Include="Entities\Identity\CaptchaEntry.cs" />
     <Compile Include="Entities\Identity\Donator.cs" />
     <Compile Include="Entities\Identity\Achievement.cs" />
+    <Compile Include="Entities\MindControl\VictimMindControl.cs" />
     <Compile Include="Entities\TFEnergies\TFEnergy.cs" />
     <Compile Include="Exceptions\DomainException.cs" />
     <Compile Include="DomainQuery.cs" />
@@ -360,6 +362,7 @@
     <Compile Include="Mappings\AI\NPCMappings.cs" />
     <Compile Include="Mappings\LocationLogs\LocationLogMappings.cs" />
     <Compile Include="Mappings\Messages\MessageMapping.cs" />
+    <Compile Include="Mappings\MindControl\MindControlMappings.cs" />
     <Compile Include="Mappings\Players\PlayerLogMapping.cs" />
     <Compile Include="Mappings\Players\PlayerMapping.cs" />
     <Compile Include="Mappings\Skills\SkillMappings.cs" />
@@ -495,6 +498,7 @@
     <Compile Include="Queries\Messages\GetPlayerSentMessages.cs" />
     <Compile Include="Queries\Messages\GetUnreadMessageCountByPlayer.cs" />
     <Compile Include="Queries\Messages\PlayerOwnsMessage.cs" />
+    <Compile Include="Queries\MindControl\GetMindControlsForPlayer.cs" />
     <Compile Include="Queries\Players\GetBusStops.cs" />
     <Compile Include="Queries\Players\GetPlayer.cs" />
     <Compile Include="Queries\Players\GetPlayerBusDetail.cs" />

@@ -7,13 +7,11 @@ using TT.Domain;
 using TT.Domain.Commands.Players;
 using TT.Domain.Entities.LocationLogs;
 using TT.Domain.Entities.Players;
-using TT.Domain.Entities.TFEnergies;
 using TT.Domain.Procedures;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 using TT.Tests.Builders.Identity;
 using TT.Tests.Builders.Players;
-using TT.Tests.Builders.TFEnergies;
 
 namespace TT.Tests.Domain.Commands.Players
 {
@@ -41,7 +39,7 @@ namespace TT.Tests.Domain.Commands.Players
                .With(p => p.Id, 100)
                .With(p => p.Mana, 0)
                .With(p => p.User, new UserBuilder()
-                    .With(u => u.Achievements, stats)
+                    .With(u => u.Stats, stats)
                     .With(u => u.Id, "bob")
                     .BuildAndSave())
                .With(p => p.Location, LocationsStatics.STREET_200_MAIN_STREET)
@@ -58,7 +56,7 @@ namespace TT.Tests.Domain.Commands.Players
             locationLog.dbLocationName.Should().Be(player.Location);
             locationLog.Message.Should().Be("<span class='playerMediatingNotification'>John Doe meditated here.</span>");
 
-            var stat = DataContext.AsQueryable<Stat>().FirstOrDefault(s => s.AchievementType == StatsProcedures.Stat__TimesMeditated);
+            var stat = playerLoaded.User.Stats.FirstOrDefault(s => s.AchievementType == StatsProcedures.Stat__TimesMeditated);
             stat.Owner.Id.Should().Be("bob");
             stat.Amount.Should().Be(1);
         }
@@ -154,7 +152,7 @@ namespace TT.Tests.Domain.Commands.Players
                .With(p => p.Mana, 0)
                .With(p => p.MaxHealth, 100)
                .With(p => p.User, new UserBuilder()
-                    .With(u => u.Achievements, stats)
+                    .With(u => u.Stats, stats)
                     .With(u => u.Id, "bob")
                     .BuildAndSave())
                .With(p => p.Mobility, PvPStatics.MobilityFull)

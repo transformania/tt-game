@@ -1,9 +1,7 @@
 ﻿using System.Data.Entity;
 using System.Linq;
 using Highway.Data;
-using TT.Domain.Entities.Effects;
 using TT.Domain.Entities.LocationLogs;
-using TT.Domain.Entities.Players;
 using TT.Domain.Procedures;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
@@ -28,7 +26,7 @@ namespace TT.Domain.Commands.Players
                 var player = ctx.AsQueryable<Entities.Players.Player>()
                     .Include(p => p.PlayerLogs)
                     .Include(p => p.User)
-                    .Include(p => p.User.Achievements)
+                    .Include(p => p.User.Stats)
                     .Include(p => p.Effects)
                     .SingleOrDefault(cr => cr.Id == PlayerId);
 
@@ -55,17 +53,7 @@ namespace TT.Domain.Commands.Players
                 // log statistics only for human players
                 if (player.BotId == AIStatics.ActivePlayerBotId)
                 {
-                    
-                    var achievement = player.User.GetAchievement(StatsProcedures.Stat__TimesMeditated);
-                    if (achievement != null)
-                    {
-                        achievement.AddAmount(1);
-                        ctx.Update(achievement);
-                    }
-                    else
-                    {
-                        ctx.Add(Stat.Create(player.User, 1, StatsProcedures.Stat__TimesMeditated));
-                    }
+                    player.User.AddStat(StatsProcedures.Stat__TimesMeditated, 1);
                 }
 
                 ctx.Update(player);

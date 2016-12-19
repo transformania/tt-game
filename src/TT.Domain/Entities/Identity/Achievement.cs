@@ -28,8 +28,8 @@ namespace TT.Domain.Entities.Players
 
         public void AddAmount(float amount)
         {
-            this.Amount += amount;
-            this.Timestamp = DateTime.UtcNow;
+            Amount += amount;
+            Timestamp = DateTime.UtcNow;
         }
 
     }

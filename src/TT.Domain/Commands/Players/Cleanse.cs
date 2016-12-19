@@ -12,9 +12,9 @@ namespace TT.Domain.Commands.Players
     public class Cleanse : DomainCommand<string>
     {
 
-        public int PlayerId { get; set; }
-        public BuffBox Buffs { get; set; }
-        public bool NoValidate { get; set; }
+        public int PlayerId { private get; set; }
+        public BuffBox Buffs { private get; set; }
+        public bool NoValidate { private get; set; }
 
         public override string Execute(IDataContext context)
         {
@@ -28,7 +28,7 @@ namespace TT.Domain.Commands.Players
                     .Include(p => p.TFEnergies)
                     .Include(p => p.PlayerLogs)
                     .Include(p => p.User)
-                    .Include(p => p.User.Achievements)
+                    .Include(p => p.User.Stats)
                     .SingleOrDefault(cr => cr.Id == PlayerId);
 
                 if (player == null)
@@ -54,17 +54,7 @@ namespace TT.Domain.Commands.Players
                 // log statistics only for human players
                 if (player.BotId == AIStatics.ActivePlayerBotId)
                 {
-                    
-                    var achievement = player.User.GetAchievement(StatsProcedures.Stat__TimesCleansed);
-                    if (achievement != null)
-                    {
-                        achievement.AddAmount(1);
-                        ctx.Update(achievement);
-                    }
-                    else
-                    {
-                        ctx.Add(Stat.Create(player.User, 1, StatsProcedures.Stat__TimesCleansed));
-                    }
+                    player.User.AddStat(StatsProcedures.Stat__TimesCleansed, 1);
                 }
 
                 ctx.Update(player);

@@ -192,6 +192,7 @@
     <Compile Include="Domain\Commands\Skills\CreateSkillTests.cs" />
     <Compile Include="Domain\Commands\Skills\SetSkillSourceFKsTests.cs" />
     <Compile Include="Domain\Commands\TFEnergies\CreateTFEnergyTests.cs" />
+    <Compile Include="Domain\Entities\Identity\UserTests.cs" />
     <Compile Include="Domain\Entities\Items\ItemTests.cs" />
     <Compile Include="Domain\Entities\Players\PlayerTests.cs" />
     <Compile Include="Domain\Commands\Players\ChangeFormTests.cs" />

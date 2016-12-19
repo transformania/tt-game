@@ -31,7 +31,7 @@ namespace TT.Domain.Mappings.Identity
 
             modelBuilder.Entity<Stat>()
                 .HasRequired(cr => cr.Owner)
-                .WithMany(s => s.Achievements).Map(m => m.MapKey("OwnerMembershipId"));
+                .WithMany(s => s.Stats).Map(m => m.MapKey("OwnerMembershipId"));
 
         }
 

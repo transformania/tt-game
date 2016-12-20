@@ -199,6 +199,7 @@
     <Compile Include="Commands\Players\ChangeDonatorTier.cs" />
     <Compile Include="Commands\Players\DropAllItems.cs" />
     <Compile Include="Commands\Players\ReadjustMaxes.cs" />
+    <Compile Include="Commands\Players\Shout.cs" />
     <Compile Include="Commands\Players\TakeBus.cs" />
     <Compile Include="Commands\Player\UpdateOnlineActivityTimestamp.cs" />
     <Compile Include="Commands\Skills\CreateSkill.cs" />

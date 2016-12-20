@@ -338,6 +338,14 @@ namespace TT.Domain.Entities.Players
             GameMode = gameMode;
         }
 
+        public void Shout(string message)
+        {
+            ShoutsRemaining--;
+            var location = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == Location);
+            AddLog($"You shouted '{message}' at {location.Name}.", false);
+        }
+
+
         private float GetManaBaseByLevel(int level)
         {
             float manaBase = 5 * (level - 1) + 50;

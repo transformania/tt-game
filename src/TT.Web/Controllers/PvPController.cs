@@ -3334,41 +3334,16 @@ namespace TT.Web.Controllers
         public ActionResult ShoutSend(PublicBroadcastViewModel input)
         {
             string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
-            // assert player is mobile
-            if (me.Mobility != PvPStatics.MobilityFull)
+            try
             {
-                TempData["Error"] = "You must be fully animate in order to shout.";
-                return RedirectToAction("Play");
+                DomainRegistry.Repository.Execute(new Shout {Message = input.Message, UserId = myMembershipId});
+                TempData["Result"] = "You shouted.";
             }
-
-            // assert player has shouts remaining
-            if (me.ShoutsRemaining <= 0)
+            catch (DomainException e)
             {
-                TempData["Error"] = "You do not have any shouts remaining for this turn.";
-                TempData["SubError"] = "You will be able to shout more in future updates.";
-                return RedirectToAction("Play");
+                TempData["Error"] = e.Message;
             }
-
-            // assert shout is not too long
-            if (input.Message.Length > 100)
-            {
-                TempData["Error"] = "Your shout must be under 100 characters.";
-                return View("Shout", input);
-            }
-
-            // strip out some possible malicious tags
-            input.Message = input.Message.Replace('<',' ').Replace('>',' ');
-
-            LocationLogProcedures.Shout(me, input.Message);
-
-            
-            Location temp = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName);
-            string message = "You shouted '" + input.Message + "' at " + temp.Name;
-            PlayerLogProcedures.AddPlayerLog(me.Id, message, false);
-
-            TempData["Result"] = message;
 
             return RedirectToAction("Play");
         }

@@ -20,6 +20,7 @@ using TT.Domain.Commands.RPClassifiedAds;
 using TT.Domain.DTOs.Game;
 using TT.Domain.Exceptions.RPClassifiedAds;
 using TT.Domain.Queries.Game;
+using TT.Domain.Queries.MindControl;
 
 namespace TT.Web.Controllers
 {

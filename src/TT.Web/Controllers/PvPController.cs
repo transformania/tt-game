@@ -1591,26 +1591,6 @@ namespace TT.Web.Controllers
             }
 
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-
-            // assert that the player is not mind controlled and cannot pick up anything on their own
-            if (me.MindControlIsActive)
-            {
-
-                IEnumerable<MindControl> myExistingMCs = MindControlProcedures.GetAllMindControlsWithPlayer(me);
-
-                if (MindControlProcedures.PlayerIsMindControlledWithType(me, myExistingMCs, MindControlStatics.MindControl__Meditate))
-                {
-                    TempData["Error"] = "You try to meditate but find you cannot!";
-                    TempData["SubError"] = "The moment you try and focus, your head swims with nonsensical thoughts implanted by someone partially mind controlling you!";
-                    return RedirectToAction("Play");
-                }
-                else if (!MindControlProcedures.PlayerIsMindControlledWithSomeType(me, myExistingMCs))
-                {
-                    // turn off mind control is the player has no more MC effects on them
-                    me.MindControlIsActive = false;
-                }
-            }
-
             BuffBox mybuffs = ItemProcedures.GetPlayerBuffs(me);
 
             try

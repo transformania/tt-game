@@ -142,6 +142,7 @@
     <Compile Include="Builders\Identity\StatBuilder.cs" />
     <Compile Include="Builders\Identity\CaptchaEntryBuilder.cs" />
     <Compile Include="Builders\Identity\DonatorBuilder.cs" />
+    <Compile Include="Builders\MindControl\VictimMindControlBuilder.cs" />
     <Compile Include="Builders\Players\PlayerLogBuilder.cs" />
     <Compile Include="Builders\RPClassifiedAds\RPClassifiedAdBuilder.cs" />
     <Compile Include="Builders\Identity\UserBuilder.cs" />

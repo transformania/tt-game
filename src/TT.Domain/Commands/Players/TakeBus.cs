@@ -47,7 +47,7 @@ namespace TT.Domain.Commands.Players
                 if (originLocation.dbName == destinationLocation.dbName)
                     throw new DomainException("You can't take the bus to the location you're already at.");
 
-                if (DateTime.UtcNow.Subtract(player.LastCombatTimestamp).TotalMinutes<15)
+                if (DateTime.UtcNow.Subtract(player.GetLastCombatTimestamp()).TotalMinutes<15)
                     throw new DomainException("You have been in combat too recently to take a bus.");
 
                 if (player.InDuel > 0)

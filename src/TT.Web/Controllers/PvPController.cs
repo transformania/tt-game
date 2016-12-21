@@ -2136,6 +2136,12 @@ namespace TT.Web.Controllers
                 return RedirectToAction("Play");
             }
 
+            if (item.Item.ItemType == PvPStatics.ItemType_Pet)
+            {
+                TempData["Error"] = "You can't equip or unequip a pet, only tame or release them.";
+                return RedirectToAction("Play");
+            }
+
             if (putOn)
             {
 

@@ -230,6 +230,15 @@ namespace TT.Domain.Entities.Players
             this.LastActionTimestamp = DateTime.UtcNow;
         }
 
+        /// <summary>
+        /// Returns the most recent of the two timestamps of when the player has attacked or been attacked.
+        /// </summary>
+        /// <returns></returns>
+        public DateTime GetLastCombatTimestamp()
+        {
+            return LastCombatTimestamp > LastCombatAttackedTimestamp ? LastCombatTimestamp : LastCombatAttackedTimestamp;
+        }
+
         private float GetManaBaseByLevel(int level)
         {
             float manaBase = 5 * (level - 1) + 50;

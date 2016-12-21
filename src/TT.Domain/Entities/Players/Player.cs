@@ -349,6 +349,14 @@ namespace TT.Domain.Entities.Players
             AddLog($"You shouted '{message}' at {location.Name}.", false);
         }
 
+        /// <summary>
+        /// Returns the most recent of the two timestamps of when the player has attacked or been attacked.
+        /// </summary>
+        /// <returns></returns>
+        public DateTime GetLastCombatTimestamp()
+        {
+            return LastCombatTimestamp > LastCombatAttackedTimestamp ? LastCombatTimestamp : LastCombatAttackedTimestamp;
+        }
 
         private float GetManaBaseByLevel(int level)
         {

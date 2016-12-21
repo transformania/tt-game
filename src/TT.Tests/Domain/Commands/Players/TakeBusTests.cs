@@ -106,7 +106,7 @@ namespace TT.Tests.Domain.Commands.Players
         }
 
         [Test]
-        public void Should_throw_exception_if_player_in_recent_combat()
+        public void Should_throw_exception_if_player_recently_has_attacked()
         {
 
             player = new PlayerBuilder()
@@ -116,6 +116,25 @@ namespace TT.Tests.Domain.Commands.Players
                 .With(p => p.Mobility, PvPStatics.MobilityFull)
                 .With(p => p.Location, LocationsStatics.STREET_270_WEST_9TH_AVE)
                 .With(p => p.LastCombatTimestamp, DateTime.UtcNow.AddMinutes(-14))
+                .BuildAndSave();
+
+            var cmd = new TakeBus { playerId = player.Id, destination = LocationsStatics.STREET_160_SUNNYGLADE_DRIVE };
+            var action = new Action(() => { Repository.Execute(cmd); });
+
+            action.ShouldThrowExactly<DomainException>().WithMessage("You have been in combat too recently to take a bus.");
+        }
+
+        [Test]
+        public void Should_throw_exception_if_player_recently_has_been_attacked()
+        {
+
+            player = new PlayerBuilder()
+                .With(n => n.Id, 3)
+                .With(p => p.User, new UserBuilder().BuildAndSave())
+                .With(p => p.Money, 1000)
+                .With(p => p.Mobility, PvPStatics.MobilityFull)
+                .With(p => p.Location, LocationsStatics.STREET_270_WEST_9TH_AVE)
+                .With(p => p.LastCombatAttackedTimestamp, DateTime.UtcNow.AddMinutes(-14))
                 .BuildAndSave();
 
             var cmd = new TakeBus { playerId = player.Id, destination = LocationsStatics.STREET_160_SUNNYGLADE_DRIVE };

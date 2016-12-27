@@ -26,7 +26,7 @@ namespace TT.Tests.Domain.Entities.Items
                 
             };
 
-            var item = Item.Create(player, itemSource, createItemCmd);
+            var item = Item.Create(player, null, itemSource, createItemCmd);
 
             var timeDifference = Math.Abs((item.LastSouledTimestamp - DateTime.UtcNow).TotalDays);
 
@@ -47,7 +47,7 @@ namespace TT.Tests.Domain.Entities.Items
 
             };
 
-            var item = Item.Create(player, itemSource, createItemCmd);
+            var item = Item.Create(player, null, itemSource, createItemCmd);
 
             var timeDifference = Math.Abs((item.LastSouledTimestamp - DateTime.UtcNow).TotalDays);
 

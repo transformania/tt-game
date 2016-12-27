@@ -21,6 +21,10 @@ namespace TT.Domain.Mappings.Item
                 .HasOptional(cr => cr.Owner)
                 .WithMany(cr => cr.Items).Map(m => m.MapKey("OwnerId"));
 
+            modelBuilder.Entity<Entities.Items.Item>()
+                .HasOptional(i => i.FormerPlayer)
+                .WithOptionalDependent(p => p.Item).Map(m => m.MapKey("FormerPlayerId"));
+
         }
 
         protected override void Configure()

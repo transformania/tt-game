@@ -397,8 +397,7 @@ namespace TT.Domain.Procedures.BossProcedures
                     VictimName = "",
                     TurnsUntilUse = 0,
                     EquippedThisTurn = false,
-                    ItemSourceId =  ItemStatics.GetStaticItem(CureItemDbName).Id
-
+                    ItemSourceId = ItemStatics.GetStaticItem(CureItemDbName).Id
                 };
 
                 if (turnNumber % 3 == 0)

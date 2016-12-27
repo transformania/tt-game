@@ -36,6 +36,8 @@ namespace TT.Domain.Entities.Players
 
         public FormSource FormSource { get; protected set; }
 
+        public Items.Item Item { get; protected set; }
+
         public decimal Health { get; protected set; }
         public decimal MaxHealth { get; protected set; }
         public decimal Mana { get; protected set; }
@@ -89,6 +91,7 @@ namespace TT.Domain.Entities.Players
         {
             Items = new List<Items.Item>();
             Skills = new List<Skill>();
+            TFEnergies = new List<TFEnergy>();
             PlayerLogs = new List<PlayerLog>();
             Effects = new List<Effect>();
             VictimMindControls = new List<MindControl.VictimMindControl>();

@@ -26,7 +26,7 @@
         if (!Model.dbItem.VictimName.IsNullOrEmpty())
         {
             <span class="formerly">Formerly @Html.ActionLink(Model.dbItem.GetFullName(), "LookAtPlayerItem", "PvP", new { vicname = Model.dbItem.VictimName }, null)</span>
-            @CharactersHere.PrintPermanencyIcon(Model)
+            @CharactersHere.PrintPermanencyIcon(Model.dbItem.IsPermanent)
         }
 
     }

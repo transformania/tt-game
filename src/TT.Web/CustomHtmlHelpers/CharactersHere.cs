@@ -426,9 +426,9 @@ namespace TT.Web.CustomHtmlHelpers
             return new MvcHtmlString(output);
         }
 
-        public static MvcHtmlString PrintPermanencyIcon(ItemViewModel item)
+        public static MvcHtmlString PrintPermanencyIcon(bool isPermanent)
         {
-            return item.dbItem.IsPermanent ? new MvcHtmlString("<span class='icon icon-permanent' title=\"This player\'s soul is permanently sealed into this item.\"></span>") : new MvcHtmlString("");
+            return isPermanent ? new MvcHtmlString("<span class='icon icon-permanent' title=\"This player\'s soul is permanently sealed into this item.\"></span>") : new MvcHtmlString("");
         }
 
         public static MvcHtmlString PrintPermanencyIcon(Item item)

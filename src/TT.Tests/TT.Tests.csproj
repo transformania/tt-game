@@ -142,6 +142,7 @@
     <Compile Include="Builders\Identity\StatBuilder.cs" />
     <Compile Include="Builders\Identity\CaptchaEntryBuilder.cs" />
     <Compile Include="Builders\Identity\DonatorBuilder.cs" />
+    <Compile Include="Builders\Item\InanimateXPBuilder.cs" />
     <Compile Include="Builders\MindControl\VictimMindControlBuilder.cs" />
     <Compile Include="Builders\Players\PlayerLogBuilder.cs" />
     <Compile Include="Builders\RPClassifiedAds\RPClassifiedAdBuilder.cs" />
@@ -216,6 +217,7 @@
     <Compile Include="Domain\Queries\Identity\GetUserDonatorTest.cs" />
     <Compile Include="Domain\Queries\Identity\GetUserDonatorsTests.cs" />
     <Compile Include="Domain\Queries\Identity\UserCaptchaIsExpiredTests.cs" />
+    <Compile Include="Domain\Queries\Item\GetHighestLevelPlayerItemsTests.cs" />
     <Compile Include="Domain\Queries\Item\GetItemsAtLocationVisibleToGameModeTests.cs" />
     <Compile Include="Domain\Queries\Item\GetItemsOwnedByPlayerTests.cs" />
     <Compile Include="Domain\Queries\Item\GetItemsOwnedByPlayerOfType.cs" />

@@ -2864,10 +2864,9 @@ namespace TT.Web.Controllers
                 var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
                 ViewBag.MyName = me == null ? "" : me.GetFullName();
             }
-            IEnumerable<SimpleItemLeaderboardViewModel> output =
-                ItemProcedures.GetLeadingItemsSimple(100)
-                    .OrderByDescending(p => p.Item.Level)
-                    .ThenByDescending(p => p.ItemXP);
+
+            var output = DomainRegistry.Repository.Find(new GetHighestLevelPlayerItems { Limit = 100 });
+
             return View(output);
         }
 

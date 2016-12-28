@@ -1529,6 +1529,7 @@ namespace TT.Web.Controllers
                 dbLocationName = me.dbLocationName,
                 dbName = "item_Flirty_Three-Tiered_Skirt_Martiandawn",
                 VictimName = me.FirstName + " " + me.LastName, // DO NOT use GetFullName.  It will break things here.
+                FormerPlayerId = me.Id,
                 Nickname = me.Nickname,
                 OwnerId = null,
                 IsEquipped = false,
@@ -1581,6 +1582,7 @@ namespace TT.Web.Controllers
                 dbLocationName = me.dbLocationName,
                 dbName = "animal_Cuddly_Pocket_Goo_Girl_GooGirl",
                 VictimName = me.FirstName + " " + me.LastName,
+                FormerPlayerId = me.Id,
                 Nickname = me.Nickname,
                 OwnerId = null,
                 IsEquipped = false,

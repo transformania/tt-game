@@ -644,7 +644,8 @@ namespace TT.Domain.Procedures
                 dbName = targetForm.BecomesItemDbName,
                 Level = victim.Level,
                 Nickname = victim.Nickname,
-                ItemSourceId = ItemStatics.GetStaticItem(targetForm.BecomesItemDbName).Id
+                ItemSourceId = ItemStatics.GetStaticItem(targetForm.BecomesItemDbName).Id,
+                FormerPlayerId = victim.Id
             };
 
             // no attacker, just drop at player's location and return immediately

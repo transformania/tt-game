@@ -27,6 +27,7 @@ namespace TT.Domain.Commands.Items
 
         public int ItemSourceId { get; set; }
         public int? OwnerId { get; set; }
+        public int? FormerPlayerId { get; set; }
 
         public CreateItem()
         {
@@ -43,6 +44,7 @@ namespace TT.Domain.Commands.Items
             Nickname = "";
             LastSouledTimestamp = DateTime.UtcNow;
             LastSold = DateTime.UtcNow;
+            FormerPlayerId = null;
         }
 
         public override int Execute(IDataContext context)
@@ -55,15 +57,24 @@ namespace TT.Domain.Commands.Items
                 if (itemSource == null)
                     throw new DomainException($"Item Source with Id {ItemSourceId} could not be found");
 
-                var player = ctx.AsQueryable<Entities.Players.Player>().SingleOrDefault(t => t.Id == OwnerId);
+                var owner = ctx.AsQueryable<Entities.Players.Player>().SingleOrDefault(t => t.Id == OwnerId);
 
-                if (OwnerId != null && player == null)
+                if (OwnerId != null && owner == null)
                 {
                     throw new DomainException($"Player with Id {OwnerId} could not be found");
                 }
 
 
-                var item = Item.Create(player, itemSource, this);
+                Entities.Players.Player formerPlayer = null;
+                if (FormerPlayerId != null) { 
+                    formerPlayer = ctx.AsQueryable<Entities.Players.Player>().SingleOrDefault(t => t.Id == FormerPlayerId);
+
+                    if (formerPlayer == null)
+                        throw new DomainException($"Former player with Id {FormerPlayerId} could not be found");
+                }
+
+
+                var item = Item.Create(owner, formerPlayer, itemSource, this);
 
                 ctx.Add(item);
                 ctx.Commit();

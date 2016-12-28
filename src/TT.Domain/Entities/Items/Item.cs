@@ -12,6 +12,7 @@ namespace TT.Domain.Entities.Items
         public string dbName { get; protected set; }
         public ItemSource ItemSource { get; protected set; }
         public Player Owner { get; protected set; }
+        public Player FormerPlayer { get; protected set; }
         public string dbLocationName { get; protected set; }
         public string VictimName { get; protected set; }
         public bool IsEquipped { get; protected set; }
@@ -30,11 +31,12 @@ namespace TT.Domain.Entities.Items
 
         }
 
-        public static Item Create(Player owner, ItemSource itemSource, CreateItem cmd)
+        public static Item Create(Player owner, Player formerPlayer, ItemSource itemSource, CreateItem cmd)
         {
             var newItem = new Item()
             {
                 Owner = owner,
+                FormerPlayer = formerPlayer,
                 ItemSource = itemSource,
                 dbName = cmd.dbName,
                 dbLocationName = cmd.dbLocationName,

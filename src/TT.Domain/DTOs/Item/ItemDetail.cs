@@ -9,6 +9,7 @@ namespace TT.Domain.DTOs.Item
         public string dbName { get;  set; }
         public ItemSourceDetail ItemSource { get;  set; }
         public PlayerDetail Owner { get;  set; }
+        public PlayerDetail FormerPlayer { get; set; }
         public string dbLocationName { get;  set; }
         public string VictimName { get;  set; }
         public bool IsEquipped { get;  set; }

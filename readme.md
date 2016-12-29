@@ -47,19 +47,19 @@ Powershell .\build.ps1
 By default, the build will attempt to use SQL Server 2014 LocalDB (or newer) however if you are using SQL Server 2012 you will want to use
 
 ```
-Powershell .\build.ps1 -dbType "localdb_v1"
+Powershell .\build.ps1 --dbType="localdb_v1"
 ```
 
 If you are running a full SQL Express instance (any version) and have localhost set as an alias you can use 
 
 ```
-Powershell .\build.ps1 -dbType "server"
+Powershell .\build.ps1 --dbType="server"
 ```
 
 If you are running a remote SQL server (any version) you can use
 
 ```
-Powershell .\build.ps1 -dbType "remoteserver" -dbServer "server.domain.com" -dbUserId "username" -dbName "Stats"
+Powershell .\build.ps1 --dbType="remoteserver" --dbServer="server.domain.com" --dbUserId="username" --dbName="Stats"
 ```
 
 If you don't want to specify the database settings every time you run the build script, you may set environment variables which have the parameters preconfigured. The parameter names are TT_VARNAME.
@@ -75,7 +75,7 @@ Powershell .\build.ps1 -target "Migrate"
 
 If you need to force a specific migration to retrigger, you can delete the row created by the migration you wish to rerun in the table dbo.VersionInfo .
 
-Again, you can use the `-dbType` arguement suitable for your environment.
+Again, you can use the `--dbType=` argument suitable for your environment.
 
 ## Re-creating Database ##
 

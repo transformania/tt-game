@@ -1365,7 +1365,7 @@ namespace TT.Domain.Procedures
             IItemRepository itemRepo = new EFItemRepository();
             IInanimateXPRepository xpRepo = new EFInanimateXPRepository();
             IPlayerRepository playerRepo = new EFPlayerRepository();
-            IEnumerable<Item> items = itemRepo.Items.Where(i => i.VictimName != "" && !i.VictimName.Contains("Psychopath") && !i.VictimName.Contains("Donna Milton") && !i.VictimName.Contains("Lady Lovebringer") && !i.VictimName.Contains("Narcissa the Exiled")).OrderByDescending(i => i.Level).Take(number);
+            IEnumerable<Item> items = itemRepo.Items.Where(i => i.VictimName != "" && !i.VictimName.Contains("Psychopath") && !i.VictimName.Contains("Donna Milton") && !i.VictimName.Contains("Lady Lovebringer") && !i.VictimName.Contains("Narcissa the Exiled") && !i.VictimName.Contains("Lady Krampus")).OrderByDescending(i => i.Level).Take(number);
 
             List<SimpleItemLeaderboardViewModel> output = new List<SimpleItemLeaderboardViewModel>();
             foreach (Item i in items)

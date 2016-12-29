@@ -274,6 +274,8 @@
     <Compile Include="DTOs\Identity\DonatorDetail.cs" />
     <Compile Include="DTOs\Identity\UserDonatorDetail.cs" />
     <Compile Include="DTOs\Forms\BaseFormDetail.cs" />
+    <Compile Include="DTOs\Item\InanimateXPDetail.cs" />
+    <Compile Include="DTOs\Item\ItemFormerPlayerDetail.cs" />
     <Compile Include="DTOs\Item\ItemSourceNameDescription.cs" />
     <Compile Include="DTOs\MindControl\VictimMindControlDetail.cs" />
     <Compile Include="DTOs\Players\BusStopsViewModel.cs" />
@@ -286,6 +288,7 @@
     <Compile Include="Entities\Identity\CaptchaEntry.cs" />
     <Compile Include="Entities\Identity\Donator.cs" />
     <Compile Include="Entities\Identity\Achievement.cs" />
+    <Compile Include="Entities\Items\InanimateXP.cs" />
     <Compile Include="Entities\MindControl\VictimMindControl.cs" />
     <Compile Include="Entities\TFEnergies\TFEnergy.cs" />
     <Compile Include="Exceptions\DomainException.cs" />
@@ -483,6 +486,7 @@
     <Compile Include="Queries\Identity\GetUserDonators.cs" />
     <Compile Include="Queries\Identity\UserCaptchaIsExpired.cs" />
     <Compile Include="Queries\Item\GetAllItemsOfType.cs" />
+    <Compile Include="Queries\Item\GetHighestLevelPlayerItems.cs" />
     <Compile Include="Queries\Item\GetItem.cs" />
     <Compile Include="Queries\Item\GetItemByVictimName.cs" />
     <Compile Include="Queries\Item\GetItemsAtLocation.cs" />

@@ -56,6 +56,7 @@
     <Compile Include="201604071120_AddPlayer.cs" />
     <Compile Include="201606231841_AddEffectFKs.cs" />
     <Compile Include="201606221825_AddSkillFKs.cs" />
+    <Compile Include="201612280858_InanimateXpFKToPlayer.cs" />
     <Compile Include="201612280045_ItemFKToPlayer.cs" />
     <Compile Include="201606241348_AddPlayerLogFKs.cs" />
     <Compile Include="201605250819_AddFKtoRPClassifiedAd.cs" />

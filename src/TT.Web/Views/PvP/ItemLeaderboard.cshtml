@@ -1,8 +1,6 @@
-﻿@model IEnumerable<TT.Domain.ViewModels.SimpleItemLeaderboardViewModel>
-@using TT.Domain.Models
+﻿@model IEnumerable<TT.Domain.DTOs.Item.ItemFormerPlayerDetail>
 @using TT.Domain.Statics
 @using TT.Web.CustomHtmlHelpers
-@using TT.Domain.ViewModels
 
 <nav class="navbar navbar-default outsideContainer navbarTT2">
     <div class="container-fluid">
@@ -40,6 +38,7 @@
             <tr>
                 <th style="width:15px">#</th>
                 <th class="leaderBoardName">Human Name</th>
+                <th class="leaderBoardForm mobile">Image</th>
                 <th class="leaderBoardForm mobile">Item Type</th>
                 <th>Lvl</th>
                 <th>Exp</th>
@@ -51,25 +50,26 @@
                 int rank = 1;
             }
 
-            @foreach (SimpleItemLeaderboardViewModel p in Model)
+            @foreach (var i in Model)
             {
                 <tr>
                     <td>
                         @rank
                     </td>
                     <td>
-                        @CharactersHere.PrintPermanencyIcon(p.Item)
-                        @Html.ActionLink(p.Item.GetFullName(), "LookAtPlayerItem", "PvP", new { vicname = p.Item.VictimName }, null)
-                        @CharactersHere.PrintGenderIcon(p.Gender)
-                        @CharactersHere.PrintItemTypeIcon(p.StaticItem)                        
+                        @CharactersHere.PrintPermanencyIcon(i.IsPermanent)
+                        @Html.ActionLink(i.FormerPlayer.FullName, "LookAtPlayerItem", "PvP", new { vicname = i.FormerPlayer.FullName }, null)
+                        @CharactersHere.PrintGenderIcon(i.FormerPlayer.Gender)
+                        @CharactersHere.PrintItemTypeIcon(i.ItemSource.ItemType)
                     </td>
+                    <td><img src="@CharactersHere.GetImageUrl(i.ItemSource.PortraitUrl, i.FormerPlayer.Mobility, true)" width="50x" height="50px;" /></td>
                     <td class="mobile">
-                        @p.StaticItem.FriendlyName
+                        @i.ItemSource.FriendlyName
                     </td>
                     <td>
-                        @p.Item.Level
+                        @i.Level
                     </td>
-                    <td>@p.ItemXP</td>
+                    <td>@($"{i.FormerPlayer?.ItemXP?.Amount ?? 0:n0}")</td>
                 </tr>
                 rank++;
             }

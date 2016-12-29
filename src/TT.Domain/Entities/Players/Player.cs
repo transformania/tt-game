@@ -6,6 +6,7 @@ using TT.Domain.Commands.Players;
 using TT.Domain.Entities.Effects;
 using TT.Domain.Entities.Forms;
 using TT.Domain.Entities.Identity;
+using TT.Domain.Entities.Items;
 using TT.Domain.Entities.MindControl;
 using TT.Domain.Entities.NPCs;
 using TT.Domain.Entities.Skills;
@@ -86,6 +87,8 @@ namespace TT.Domain.Entities.Players
         public int InQuest { get; protected set; } // TODO:  Convert to nullable FK to Quests
         public int InQuestState { get; protected set; } // TODO:  Convert to nullable FK to QuestStates
         public int ItemsUsedThisTurn { get; protected set; }
+
+        public InanimateXP ItemXP { get; protected set; } 
 
         private Player()
         {

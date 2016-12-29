@@ -1360,44 +1360,6 @@ namespace TT.Domain.Procedures
             
         }
 
-        public static IEnumerable<SimpleItemLeaderboardViewModel> GetLeadingItemsSimple(int number)
-        {
-            IItemRepository itemRepo = new EFItemRepository();
-            IInanimateXPRepository xpRepo = new EFInanimateXPRepository();
-            IPlayerRepository playerRepo = new EFPlayerRepository();
-            IEnumerable<Item> items = itemRepo.Items.Where(i => i.VictimName != "" && !i.VictimName.Contains("Psychopath") && !i.VictimName.Contains("Donna Milton") && !i.VictimName.Contains("Lady Lovebringer") && !i.VictimName.Contains("Narcissa the Exiled") && !i.VictimName.Contains("Lady Krampus")).OrderByDescending(i => i.Level).Take(number);
-
-            List<SimpleItemLeaderboardViewModel> output = new List<SimpleItemLeaderboardViewModel>();
-            foreach (Item i in items)
-            {
-                SimpleItemLeaderboardViewModel addme = new SimpleItemLeaderboardViewModel
-                {
-                    Item = i,
-                    StaticItem = ItemStatics.GetStaticItem(i.dbName),
-                   
-                };
-
-                Player player = playerRepo.Players.FirstOrDefault(p => p.FirstName + " " + p.LastName == i.VictimName);
-                addme.PlayerId = player.Id;
-                addme.Gender = player.Gender;
-
-                var itemXP = xpRepo.InanimateXPs.FirstOrDefault(p => p.OwnerId == addme.PlayerId);
-                if (itemXP != null)
-                {
-                    addme.ItemXP = itemXP.Amount;
-                }
-                else
-                {
-                    addme.ItemXP = 0;
-                }
-
-                output.Add(addme);
-            }
-
-            return output;
-
-        }
-
         public static void LockItem(Player player)
         {
             IItemRepository itemRepo = new EFItemRepository();

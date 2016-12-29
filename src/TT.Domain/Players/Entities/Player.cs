@@ -34,6 +34,7 @@ namespace TT.Domain.Players.Entities
         public ICollection<Skill> Skills { get; protected set; }
         public ICollection<PlayerLog> PlayerLogs { get; protected set; }
         public ICollection<TFEnergy> TFEnergies { get; protected set; }
+        public ICollection<TFEnergy> TFEnergiesCast { get; protected set; }
 
         public ICollection<VictimMindControl> VictimMindControls { get; protected set; }
 
@@ -99,6 +100,7 @@ namespace TT.Domain.Players.Entities
             Items = new List<Item>();
             Skills = new List<Skill>();
             TFEnergies = new List<TFEnergy>();
+            TFEnergiesCast = new List<TFEnergy>();
             PlayerLogs = new List<PlayerLog>();
             Effects = new List<Effect>();
             VictimMindControls = new List<Domain.Entities.MindControl.VictimMindControl>();

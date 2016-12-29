@@ -21,7 +21,7 @@ namespace TT.Domain.Combat.Mappings
 
             modelBuilder.Entity<TFEnergy>()
                 .HasOptional(p => p.Caster)
-                .WithMany().Map(p => p.MapKey("CasterId"));
+                .WithMany(p => p.TFEnergiesCast).Map(p => p.MapKey("CasterId"));
 
             modelBuilder.Entity<TFEnergy>()
                 .HasRequired(p => p.FormSource)

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
+using TT.Domain.Exceptions;
 using TT.Domain.Items.Commands;
 using TT.Domain.Models;
 using TT.Domain.Players.Commands;
@@ -403,6 +404,17 @@ namespace TT.Domain.Procedures
 
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished deleting expired consumables");
                 serverLogRepo.SaveServerLog(log);
+
+                try
+                {
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started deleting unwanted psycho items/pets on Lindella/Wuffie");
+                    DomainRegistry.Repository.Execute(new DeleteUnpurchasedPsychoItems());
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  Finished deleting unwanted psycho items/pets on Lindella/Wuffie");
+                }
+                catch (DomainException e)
+                {
+                    log.AddLog(updateTimer.ElapsedMilliseconds + ":  ERROR: " + e.Message);
+                }
 
                 // allow all items that have been recently equipped to be taken back off
                 log.AddLog(updateTimer.ElapsedMilliseconds + ":  Started resetting items that have been recently equipped");

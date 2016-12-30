@@ -326,7 +326,8 @@ namespace TT.Domain.Procedures.BossProcedures
             !p.dbLocationName.Contains("dungeon_") &&
             p.InDuel <= 0 &&
             p.InQuest <= 0).GroupBy(p => p.dbLocationName).OrderByDescending(p => p.Count()).Select(p => p.Key);
-            return locs.First();
+
+            return locs.FirstOrDefault() ?? "fairygrove_entrance"; // default to fairygrove entrance if, for some reason, 0 valid targets exist
         }
 
         /// <summary>

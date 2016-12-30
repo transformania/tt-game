@@ -12,6 +12,7 @@ using TT.Domain;
 using TT.Domain.DTOs.RPClassifiedAds;
 using TT.Domain.Queries.RPClassifiedAds;
 using System;
+using TT.Domain.Queries.Identity;
 using TT.Domain.Queries.Players;
 
 namespace TT.Web.Controllers
@@ -43,7 +44,13 @@ namespace TT.Web.Controllers
         public ActionResult GameNews()
         {
             INewsPostRepository repo = new EFNewsPostRepository();
-            var output = repo.NewsPosts.Where(n => n.ViewState == 1).OrderByDescending(n => n.Timestamp); ; // 1 == Live
+
+            var output = new NewsPageViewModel
+            {
+                ArtistBios = DomainRegistry.Repository.Find(new GetArtistBios()),
+                NewsPosts = repo.NewsPosts.Where(n => n.ViewState == 1).OrderByDescending(n => n.Timestamp) // 1 == Live
+            };
+
             return View(output);
         }
 

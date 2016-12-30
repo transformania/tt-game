@@ -25,6 +25,11 @@ namespace TT.Domain.Mappings.Identity
                 .WithRequired(d => d.Owner)
                 .Map(m => m.MapKey("OwnerMembershipId"));
 
+            modelBuilder.Entity<User>()
+               .HasOptional(p => p.ArtistBio)
+               .WithRequired(d => d.Owner)
+               .Map(m => m.MapKey("OwnerMembershipId"));
+
             modelBuilder.Entity<Stat>()
                 .ToTable("Achievements")
                 .HasKey(u => u.Id);

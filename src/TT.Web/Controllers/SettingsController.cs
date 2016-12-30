@@ -11,6 +11,7 @@ using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 using TT.Domain.DTOs.RPClassifiedAds;
 using TT.Domain;
+using TT.Domain.Commands.Identity;
 using TT.Domain.Commands.Players;
 using TT.Domain.Queries.RPClassifiedAds;
 using TT.Domain.Commands.RPClassifiedAds;
@@ -957,5 +958,31 @@ namespace TT.Web.Controllers
 
         }
 
+        [Authorize]
+        public ActionResult SetArtistBioVisibility(bool isLive)
+        {
+
+            if (!User.IsInRole(PvPStatics.Permissions_Artist))
+            {
+                TempData["Error"] = "You are not on the artist whitelist.";
+                return RedirectToAction("Play", "PvP");
+            }
+
+            try
+            {
+                var result = DomainRegistry.Repository.Execute(new SetArtistBioVisibility
+                {
+                    UserId = User.Identity.GetUserId(),
+                    IsVisible = isLive
+                });
+                TempData["Result"] = result;
+                return RedirectToAction("Play", "PvP");
+            }
+            catch (DomainException e)
+            {
+                TempData["Error"] = e.Message;
+                return RedirectToAction("Play", "PvP");
+            }
+        }
     }
 }

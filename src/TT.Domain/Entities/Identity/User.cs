@@ -14,6 +14,8 @@ namespace TT.Domain.Entities.Identity
         public ICollection<Stat> Stats { get; private set; } = new List<Stat>();
         public Donator Donator { get; protected set; }
 
+        public ArtistBio ArtistBio { get; protected set; }
+
         private User() { }
 
         public void UpdateDonator(UpdateDonator cmd)

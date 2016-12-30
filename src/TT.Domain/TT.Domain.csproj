@@ -173,6 +173,7 @@
     <Compile Include="Commands\Forms\SetTFMessageFKs.cs" />
     <Compile Include="Commands\Game\UpdateRoundNumber.cs" />
     <Compile Include="Commands\Identity\CreateCaptchaEntry.cs" />
+    <Compile Include="Commands\Identity\SetArtistBioVisibility.cs" />
     <Compile Include="Commands\Identity\UpdateCaptchaEntry.cs" />
     <Compile Include="Commands\Identity\CreateDonator.cs" />
     <Compile Include="Commands\Identity\UpdateDonator.cs" />
@@ -269,6 +270,7 @@
     <Compile Include="DTOs\Forms\FormNameDetail.cs" />
     <Compile Include="DTOs\Forms\TFMessageDetail.cs" />
     <Compile Include="DTOs\Game\WorldDetail.cs" />
+    <Compile Include="DTOs\Identity\ArtistBioDetail.cs" />
     <Compile Include="DTOs\Identity\StatDetail.cs" />
     <Compile Include="DTOs\Identity\CaptchaEntryDetail.cs" />
     <Compile Include="DTOs\Identity\DonatorDetail.cs" />
@@ -285,6 +287,7 @@
     <Compile Include="DTOs\TFEnergies\TFEnergyDetail.cs" />
     <Compile Include="Entities\Forms\TFMessage.cs" />
     <Compile Include="Entities\Game\World.cs" />
+    <Compile Include="Entities\Identity\ArtistBio.cs" />
     <Compile Include="Entities\Identity\CaptchaEntry.cs" />
     <Compile Include="Entities\Identity\Donator.cs" />
     <Compile Include="Entities\Identity\Achievement.cs" />
@@ -357,6 +360,7 @@
     <Compile Include="Mappings\EntityMappings.cs" />
     <Compile Include="Mappings\Forms\FormMappings.cs" />
     <Compile Include="Mappings\Game\GameMappings.cs" />
+    <Compile Include="Mappings\Identity\ArtistBioMappings.cs" />
     <Compile Include="Mappings\Identity\CaptchaEntryMappings.cs" />
     <Compile Include="Mappings\Identity\DonatorMappings.cs" />
     <Compile Include="Mappings\Identity\IdentityMappings.cs" />
@@ -480,6 +484,7 @@
     <Compile Include="Queries\Chat\GetChatRooms.cs" />
     <Compile Include="Queries\DMRoll\GetRoll.cs" />
     <Compile Include="Queries\Game\GetPvPWorldStats.cs" />
+    <Compile Include="Queries\Identity\GetArtistBios.cs" />
     <Compile Include="Queries\Identity\GetCaptchaEntry.cs" />
     <Compile Include="Queries\Identity\GetPlayerStats.cs" />
     <Compile Include="Queries\Identity\GetUserDonator.cs" />
@@ -549,6 +554,7 @@
     <Compile Include="ViewModels\BusStopsViewModel.cs" />
     <Compile Include="ViewModels\ChatViewModel.cs" />
     <Compile Include="ViewModels\ContributionCredit.cs" />
+    <Compile Include="ViewModels\NewsPageViewModel.cs" />
     <Compile Include="ViewModels\NPCs\JewdewfaeEncounterViewModel.cs" />
     <Compile Include="ViewModels\NPCs\LorekeeperBookListViewModel.cs" />
     <Compile Include="ViewModels\ProofreadingContributionsViewModel.cs" />

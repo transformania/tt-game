@@ -1,5 +1,4 @@
-﻿@model IEnumerable<TT.Domain.Models.NewsPost>
-    @using TT.Domain.Models
+﻿@model TT.Domain.ViewModels.NewsPageViewModel
 @using TT.Domain.Statics
 
 <nav class="navbar navbar-default outsideContainer navbarTT2">
@@ -42,56 +41,45 @@
     <h4>We will be posting game updates, news, and a list of <a href="#contributorsTable">community contributors</a> here.</h4>
 
     @{
-        foreach (NewsPost n in Model)
+        foreach (var n in Model.NewsPosts)
         {
 
             if (User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                @Html.ActionLink("[Edit]", "EditNewsPost", "PvPAdmin", new { Id = n.Id }, new { @class= "bad" })
+                @Html.ActionLink("[Edit]", "EditNewsPost", "PvPAdmin", new { Id = n.Id }, new { @class = "bad" })
             }
 
             <p>@n.Timestamp.ToString("MMMM d")</p>
             @Html.Raw(n.Text)
 
-    <hr />
+            <hr />
 
         }
     }
-<div style="text-align:center;">
-    <h2><a name="contributorsTable">Contributions and Contributors</a></h2>
-    <h3>Arist Biographies</h3>
-    @Html.ActionLink("Aurora Ryall", "AuthorArtistBio", "Settings", new { id = "44c5a42e-dc52-4b36-b850-d6b60fd534fb" }, null)
-    <br />
-    @Html.ActionLink("Babblingfaces", "AuthorArtistBio", "Settings", new { id = 6024 }, null)
-    <br />
-    @Html.ActionLink("Blanca (aka Dandelion aka Spacedande)", "AuthorArtistBio", "Settings", new { id = 6196 }, null)
-    <br />
-    @Html.ActionLink("Brooky Brooks", "AuthorArtistBio", "Settings", new { id = "7462fbe7-c988-4ec2-bfac-3770fc9a1a28" }, null)
-    <br/>
-    @Html.ActionLink("Cake", "AuthorArtistBio", "Settings", new { id = "268460f7-4407-4910-801a-bda1d9067832" }, null)
-    <br />
-    @Html.ActionLink("Edna Schafer", "AuthorArtistBio", "Settings", new { id = "fda64027-52c4-4808-a277-2fe2b1e23e55" }, null)
-    <br/>
-    @Html.ActionLink("Gogo Blackwater", "AuthorArtistBio", "Settings", new { id = "0f67aaeb-edc7-48df-9b25-dad0f876c519" }, null)
-    <br />
-    @Html.ActionLink("JBovinne", "AuthorArtistBio", "Settings", new { id = 77 }, null)
-    <br />
-    @Html.ActionLink("Luxianne", "AuthorArtistBio", "Settings", new { id = 4481 }, null)
-    <br />
-    @Html.ActionLink("Martiandawn", "AuthorArtistBio", "Settings", new { id = 873 }, null)
-    <br />
-    @Html.ActionLink("Meddle", "AuthorArtistBio", "Settings", new { id = 1117 }, null)
-    <br />
-    @Html.ActionLink("Melina Mercy", "AuthorArtistBio", "Settings", new { id = 14785 }, null)
-    <br />
-    @Html.ActionLink("Ninian Fay", "AuthorArtistBio", "Settings", new { id = 12223 }, null)
-    <br />
-    @Html.ActionLink("Wrenzephyr", "AuthorArtistBio", "Settings", new { id = 272 }, null)
-    <br />
+    <div style="text-align:center;">
+        <h2><a id="contributorsTable">Contributions and Contributors</a></h2>
+        <h3>Arist Biographies</h3>
 
-    <p class="bad">A complete count of all authors and their spell counts can be viewed @Html.ActionLink("here.", "GetContributionTable", "Contribution")</p>
-    <p>
-        If you are interested in contributing new content to the game, click @(Html.ActionLink("here", "Contribute", "Contribution", new { Id = -1 }, null)).
-    </p>
-</div>
+        @{
+            foreach (var n in Model.ArtistBios)
+            {
+                if (!string.IsNullOrEmpty(n.OtherNames))
+                {
+                    @Html.ActionLink(n.OtherNames, "AuthorArtistBio", "Settings", new { id = n.Owner.Id }, null)<br>
+                }
+                else
+                {
+                    @Html.ActionLink(n.Owner.UserName, "AuthorArtistBio", "Settings", new { id = n.Owner.Id }, null)<br>
+                }
+
+            }
+        }
+
+        <br />
+
+        <p class="bad">A complete count of all authors and their spell counts can be viewed @Html.ActionLink("here.", "GetContributionTable", "Contribution")</p>
+        <p>
+            If you are interested in contributing new content to the game, click @(Html.ActionLink("here", "Contribute", "Contribution", new { Id = -1 }, null)).
+        </p>
+    </div>
 </div>

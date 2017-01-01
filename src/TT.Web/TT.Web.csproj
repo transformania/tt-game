@@ -849,6 +849,10 @@
     <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_39.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Statistics\Alpha_39.cshtml" />
     <Content Include="Views\PvPAdmin\ChangeRoundText.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\Alpha_40.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\XP\Alpha_40.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_40.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\Statistics\Alpha_40.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

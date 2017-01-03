@@ -28,6 +28,7 @@ using FeatureSwitch;
 using Recaptcha.Web;
 using Recaptcha.Web.Mvc;
 using TT.Domain.Commands.Players;
+using TT.Domain.Queries.Chat;
 using TT.Domain.Queries.Game;
 using TT.Domain.Queries.Players;
 using TT.Web.Extensions;
@@ -2893,7 +2894,8 @@ namespace TT.Web.Controllers
          public ActionResult ChatLog(string room, string filter)
          {
              ViewBag.Room = room;
-             return View("Chats/ChatLog", ChatLogProcedures.GetChatLogs(room, filter));
+            var logs = DomainRegistry.Repository.Find(new GetChatLogs { Room = room, Filter = filter });
+            return View("Chats/ChatLog", logs);
          }
 
          public ActionResult ChatCommands()

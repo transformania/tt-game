@@ -133,6 +133,7 @@
     <Compile Include="Builders\Assets\RestockItemBuilder.cs" />
     <Compile Include="Builders\Assets\TomeBuilder.cs" />
     <Compile Include="Builders\Builder.cs" />
+    <Compile Include="Builders\Chat\ChatLogBuilder.cs" />
     <Compile Include="Builders\Chat\ChatRoomBuilder.cs" />
     <Compile Include="Builders\Effects\EffectSourceBuilder.cs" />
     <Compile Include="Builders\Effects\EffectBuilder.cs" />
@@ -165,6 +166,7 @@
     <Compile Include="Domain\Commands\Assets\UpdateRestockItemTests.cs" />
     <Compile Include="Domain\Commands\Assets\UpdateTomeTests.cs" />
     <Compile Include="Domain\Commands\Assets\CreateTomeTests.cs" />
+    <Compile Include="Domain\Commands\Chat\CreateChatLogTests.cs" />
     <Compile Include="Domain\Commands\Chat\CreateChatRoomTests.cs" />
     <Compile Include="Domain\Commands\Effects\CreateEffectTests.cs" />
     <Compile Include="Domain\Commands\Forms\SetFormSourceBecomesItemFKTests.cs" />
@@ -213,6 +215,7 @@
     <Compile Include="Domain\Queries\Assets\GetTomeByItemTest.cs" />
     <Compile Include="Domain\Queries\Assets\GetTomeTest.cs" />
     <Compile Include="Domain\Queries\Assets\GetTomesTests.cs" />
+    <Compile Include="Domain\Queries\Chat\GetChatLogTests.cs" />
     <Compile Include="Domain\Queries\Game\GetPvPWorldStatTest.cs" />
     <Compile Include="Domain\Queries\Identity\GetArtistBiosTests.cs" />
     <Compile Include="Domain\Queries\Identity\GetCaptchaEntryTests.cs" />

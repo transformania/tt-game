@@ -263,6 +263,7 @@ namespace TT.Domain.Entities.Players
             CleansesMeditatesThisRound++;
             ActionPoints -= PvPStatics.CleanseCost;
             Mana -= PvPStatics.CleanseManaCost;
+            LastActionTimestamp = DateTime.UtcNow;
 
             var result = "";
 
@@ -298,6 +299,7 @@ namespace TT.Domain.Entities.Players
         {
             CleansesMeditatesThisRound++;
             ActionPoints -= PvPStatics.MeditateCost;
+            LastActionTimestamp = DateTime.UtcNow;
 
             var result = "";
 

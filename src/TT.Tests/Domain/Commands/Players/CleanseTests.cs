@@ -59,6 +59,7 @@ namespace TT.Tests.Domain.Commands.Players
 
             playerLoaded.PlayerLogs.First().Message.Should().Be("You cleansed at Street: 200 Main Street.");
             playerLoaded.Health.Should().Be(8);
+            playerLoaded.LastActionTimestamp.Should().BeCloseTo(DateTime.UtcNow, precision: 1000);
 
             var locationLog = DataContext.AsQueryable<LocationLog>().First();
             locationLog.dbLocationName.Should().Be(player.Location);

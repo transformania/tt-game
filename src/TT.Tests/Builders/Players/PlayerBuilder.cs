@@ -18,7 +18,7 @@ namespace TT.Tests.Builders.Players
             With(p => p.ActionPoints_Refill, PvPStatics.MaximumStoreableActionPoints_Refill);
             With(p => p.FirstName, "John");
             With(p => p.LastName, "Doe" );
-            With(p => p.LastActionTimestamp, DateTime.UtcNow );
+            With(p => p.LastActionTimestamp, DateTime.UtcNow.AddMinutes(-10) );
             With(p => p.LastCombatAttackedTimestamp, DateTime.UtcNow.AddHours(-1) );
             With(p => p.LastCombatTimestamp, DateTime.UtcNow.AddHours(-1));
             With(p => p.BotId, AIStatics.ActivePlayerBotId );

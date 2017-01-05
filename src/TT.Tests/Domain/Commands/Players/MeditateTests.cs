@@ -53,6 +53,7 @@ namespace TT.Tests.Domain.Commands.Players
 
             playerLoaded.PlayerLogs.First().Message.Should().Be("You meditated at Street: 200 Main Street.");
             playerLoaded.Mana.Should().Be(11);
+            playerLoaded.LastActionTimestamp.Should().BeCloseTo(DateTime.UtcNow, precision: 1000);
 
             var locationLog = DataContext.AsQueryable<LocationLog>().First();
             locationLog.dbLocationName.Should().Be(player.Location);

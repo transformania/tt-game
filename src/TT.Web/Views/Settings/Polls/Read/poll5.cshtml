@@ -1,0 +1,77 @@
+﻿@model IEnumerable<TT.Domain.Models.PollEntry>
+
+<nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+                <li>@Html.ActionLink("View All Polls", "ViewPolls", "Settings")</li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+<div class="containerInner text-center">
+    @{
+        decimal totalCount = Model.Count();
+
+        var Num1_Choice1 = Model.Count(m => m.Num1 == 1) / totalCount * 100;
+        var Num1_Choice2 = Model.Count(m => m.Num1 == 2) / totalCount * 100;
+        var Num1_Choice3 = Model.Count(m => m.Num1 == 3) / totalCount * 100;
+        var Num1_Choice4 = Model.Count(m => m.Num1 == 4) / totalCount * 100;
+        var Num1_Choice5 = Model.Count(m => m.Num1 == 5) / totalCount * 100;
+
+       
+    }
+    <h1>Would you like to have 3 minute turns?</h1>
+
+    <hr />
+    <h3>This poll received @Model.Count() responses.</h3>
+
+    <i>Percentages may not add up to 100% as all fields are optional; any remaining percent can be attributed to 'no response' entries.</i>
+
+    <hr />
+
+    <p><b>Would you like for TT to have 3 minute turns instead of 5 minute turns?</b>  Note:  Other timers would be proprtionally shortened as well, such as decreasing the amount of time before a player goes offline.  The number of turns in a round would also increase to 7000 so that a round still takes roughly 2.5 weeks.</p><br/>
+    
+
+    <p>I strongly DO want to have 3 minute turns:  <b>@Math.Round(Num1_Choice1, 1) %</b></p>
+    <p>I slightly DO want to have 3 minute turns:  <b>@Math.Round(Num1_Choice2, 2) %</b></p>
+    <p>I do not care whether turns are 3 minutes or 5 minutes:  <b>@Math.Round(Num1_Choice3, 3) %</b></p>
+    <p>I slightly DO NOT want to have 3 minute turns or even shorter turns:  <b>@Math.Round(Num1_Choice4, 4) %</b></p>
+    <p>I strongly DO NOT want to have 3 minute turns:  <b>@Math.Round(Num1_Choice5, 5) %</b></p>
+
+    <hr />
+
+    <p><b>Explain the reasoning behind your choice.</b></p>
+
+    @{
+        foreach (var e in Model.Where(p => !string.IsNullOrEmpty(p.String1)))
+        {
+            <p>"@e.String1"</p><br />
+        }
+    }
+
+    <hr />
+
+    <p><b>You may leave any comments or concerns related to turn or round lengths here.</b></p>
+
+    @{
+        foreach (var e in Model.Where(p => !string.IsNullOrEmpty(p.String2)))
+        {
+            <p>"@e.String2"</p><br />
+        }
+    }
+
+
+</div>

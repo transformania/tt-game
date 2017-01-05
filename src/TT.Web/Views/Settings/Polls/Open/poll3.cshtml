@@ -32,6 +32,7 @@
     @using (Html.BeginForm("ReplyToPoll", "Settings", FormMethod.Post))
     {
         @Html.AntiForgeryToken()
+        @Html.HiddenFor(p => p.PollId)
         <p>How do you feel about the new stats system (commonly known as the Holistic system) that recently went into effect?</p>
         @Html.DropDownListFor(i => i.Num1, new SelectList(
                   new List<Object>{

@@ -32,6 +32,7 @@
     @using (Html.BeginForm("ReplyToPoll", "Settings", FormMethod.Post))
     {
         @Html.AntiForgeryToken()
+        @Html.HiddenFor(p => p.PollId)
         <p>What is your biological sex?  (Defined as the biological makeup of an individual's reproductive anatomy or secondary sex characteristics.)</p>
         @Html.DropDownListFor(i => i.Num1, new SelectList(
                   new List<Object>{

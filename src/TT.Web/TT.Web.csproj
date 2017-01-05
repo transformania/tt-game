@@ -853,6 +853,8 @@
     <Content Include="Views\PvP\RoundLeaderboards\XP\Alpha_40.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_40.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Statistics\Alpha_40.cshtml" />
+    <Content Include="Views\Settings\Polls\Open\poll5.cshtml" />
+    <Content Include="Views\Settings\Polls\Read\poll5.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

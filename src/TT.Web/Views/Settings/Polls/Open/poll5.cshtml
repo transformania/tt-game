@@ -1,0 +1,69 @@
+﻿@model TT.Domain.Models.PollEntry
+
+<nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+                <li>@Html.ActionLink("View All Polls", "ViewPolls", "Settings")</li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+<p class="infoMessage error">@ViewBag.Error</p>
+<div class="containerInner text-center">
+    <h1>Would you like to have 3 minute turns?</h1>
+
+    <p>All questions are optional and all responses are anonymous.  Text inputs have a maximum of 500 characters.</p>
+
+    <hr />
+
+    @using (Html.BeginForm("ReplyToPoll", "Settings", FormMethod.Post))
+    {
+        @Html.HiddenFor(p => p.PollId)
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(p => p.PollId)
+        <p><b>Would you like for TT to have 3 minute turns instead of 5 minute turns?</b>  Note:  Other timers would be proprtionally shortened as well, such as decreasing the amount of time before a player goes offline.  The number of turns in a round would also increase to 7000 so that a round still takes roughly 2.5 weeks.</p>
+        @Html.DropDownListFor(i => i.Num1, new SelectList(
+                  new List<Object>{
+                      new { value = "0"  , text = "---please select a choice---"  },
+                      new { value = "1"  , text = "I strongly DO want to have 3 minute turns."  },
+                      new { value = "2"  , text = "I slightly DO want to have 3 minute turns."  },
+                      new { value = "3"  , text = "I do not care whether turns are 3 minutes or 5 minutes."  },
+                      new { value = "4"  , text = "I slightly DO NOT want to have 3 minute turns or even shorter turns."  },
+                      new { value = "5"  , text = "I strongly DO NOT want to have 3 minute turns."  }
+                    },
+                  "value",
+                  "text",
+                   2))
+
+        <hr />
+
+        <p>Explain the reasoning behind your choice.</p>
+        @Html.ValidationMessageFor(m => m.String1)
+        @Html.TextAreaFor(m => m.String1, new { @class = "pollTextArea" })
+
+        <hr />
+
+        <p>You may leave any comments or concerns related to turn or round lengths here.</p>
+        @Html.ValidationMessageFor(m => m.String2)
+        @Html.TextAreaFor(m => m.String2, new { @class = "pollTextArea" })
+
+        <hr />
+
+
+            <input type="submit" value="Submit" />
+    }
+
+</div>

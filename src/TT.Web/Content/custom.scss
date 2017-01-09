@@ -1355,3 +1355,14 @@ line-height: 18px;
     padding: 10px 5px;
     text-align: justify;
 }
+
+.selectable {
+    width: 100px;
+    height: 100px;
+    border: 1px solid black;
+    cursor: pointer;
+}
+
+.selectable:hover {
+    border: 1px solid red;
+}

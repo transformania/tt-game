@@ -89,7 +89,7 @@ Task("Run-Unit-Tests")
             tool.NUnit3("./src/**/bin/" + configuration + "/*.Tests.dll");
         },
         coverage,
-        new OpenCoverSettings()
+        new OpenCoverSettings { ReturnTargetCodeOffset = 0 }
             .WithFilter("+[TT.Domain]*")
             .WithFilter("-[TT.Web]*")
             .WithFilter("-[TT.Migrations]*")

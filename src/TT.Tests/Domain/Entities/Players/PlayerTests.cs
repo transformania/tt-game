@@ -39,7 +39,7 @@ namespace TT.Tests.Domain.Entities
             player.DropAllItems();
 
             item1.Owner.Should().BeNull();
-            item1.IsEquipped.Should().BeFalse();
+            item1.IsEquipped.Should().BeTrue();
             item1.dbLocationName.Should().Be("street_70e9th");
 
             item2.Owner.Should().BeNull();

@@ -2894,8 +2894,9 @@ namespace TT.Web.Controllers
          public ActionResult ChatLog(string room, string filter)
          {
              ViewBag.Room = room;
-            var logs = DomainRegistry.Repository.Find(new GetChatLogs { Room = room, Filter = filter });
-            return View("Chats/ChatLog", logs);
+             ViewBag.Filter = filter;
+             var logs = DomainRegistry.Repository.Find(new GetChatLogs { Room = room, Filter = filter });
+             return View("Chats/ChatLog", logs);
          }
 
          public ActionResult ChatCommands()

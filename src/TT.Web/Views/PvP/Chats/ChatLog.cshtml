@@ -1,5 +1,4 @@
 ﻿@model IEnumerable<TT.Domain.DTOs.Chat.ChatLogDetail>
-@using TT.Domain.Models
 @using TT.Web.CustomHtmlHelpers
 
 <nav class="navbar navbar-default outsideContainer navbarTT2">
@@ -75,12 +74,14 @@
     <h2>Chat Log for Room '@ViewBag.Room'</h2>
     <p>Note that <b>oldest posts are on top</b>, not newest.  You can use the links before to change the filter time; longer durations will take longer to load.  Please be patient and use the longer filters sparingly.  Any chat messages older than 3 days are eligible for permanent deletion.</p>
     <p>Chat log for private room:</p>
-
-    <form>
-        Room name:<br>
-        <input type="text" id="roomName">
-        <button name="subject" type="button" id="beginButton">View Logs</button>
-    </form>
+    @using (Html.BeginForm("ChatLog", "PvP", FormMethod.Get))
+    {
+        @Html.Label("room", "Room name:")
+        <br>
+        @Html.TextBox("room", (string) ViewBag.Room)
+        @Html.Hidden("filter", (string) ViewBag.Filter)
+        <button type="submit">View Logs</button>
+    }
 
     <ul id="discussion">
 
@@ -99,20 +100,7 @@
     </ul>
 </div>
     <script>
-
-        function getParameterByName(name) {
-            name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-            var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-                results = regex.exec(location.search);
-            return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-        }
-
         $(document).ready(function () {
-
-            $("#beginButton").click(function () {
-                window.location = "/PvP/ChatLog?room=" + $("#roomName").val() + "&filter=" + getParameterByName('filter');
-            });
-
             $("li").each(function () {
                 var encodedValue = $(this).html();
                 encodedValue = encodedValue.replace("[.[", "<span class='timeago'>");
@@ -127,7 +115,5 @@
                 encodedValue = encodedValue.replace("Mizuho (dev)", "<span class='adminFont'>Mizuho (dev)</span>");
                 $(this).html(encodedValue);
             });
-
         });
-
 </script>

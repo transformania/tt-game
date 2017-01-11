@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TT.Domain.DTOs.Chat.ChatLogDetail>
+﻿@model TT.Domain.ViewModels.ChatLogViewModel
 @using TT.Web.CustomHtmlHelpers
 
 <nav class="navbar navbar-default outsideContainer navbarTT2">
@@ -51,42 +51,42 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-3">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Last Hour", "ChatLog", "PvP", new { room = ViewBag.Room, filter = "lasth" }, null)</li>
+                <li>@Html.ActionLink("Last Hour", "ChatLog", "PvP", new { room = Model.Room, filter = "lasth" }, null)</li>
                 <li>
-                    @Html.ActionLink("Last 4 Hours", "ChatLog", "PvP", new { room = ViewBag.Room, filter = "last4h" }, null)
+                    @Html.ActionLink("Last 4 Hours", "ChatLog", "PvP", new { room = Model.Room, filter = "last4h" }, null)
                 </li>
                 <li>
-                    @Html.ActionLink("Last 12 Hours", "ChatLog", "PvP", new { room = ViewBag.Room, filter = "last12h" }, null)
+                    @Html.ActionLink("Last 12 Hours", "ChatLog", "PvP", new { room = Model.Room, filter = "last12h" }, null)
                 </li>
                 <li>
-                    @Html.ActionLink("Last Day", "ChatLog", "PvP", new { room = ViewBag.Room, filter = "last24h" }, null)
+                    @Html.ActionLink("Last Day", "ChatLog", "PvP", new { room = Model.Room, filter = "last24h" }, null)
                 </li>
                 <li>
-                    @Html.ActionLink("Last 2 Days", "ChatLog", "PvP", new { room = ViewBag.Room, filter = "last48h" }, null)
+                    @Html.ActionLink("Last 2 Days", "ChatLog", "PvP", new { room = Model.Room, filter = "last48h" }, null)
                 </li>
-                <li>@Html.ActionLink("Last 3 Days", "ChatLog", "PvP", new { room = ViewBag.Room, filter = "last72h" }, null)</li>
+                <li>@Html.ActionLink("Last 3 Days", "ChatLog", "PvP", new { room = Model.Room, filter = "last72h" }, null)</li>
 </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
 
 <div class="containerInner">
-    <h2>Chat Log for Room '@ViewBag.Room'</h2>
+    <h2>Chat Log for Room '@Model.Room'</h2>
     <p>Note that <b>oldest posts are on top</b>, not newest.  You can use the links before to change the filter time; longer durations will take longer to load.  Please be patient and use the longer filters sparingly.  Any chat messages older than 3 days are eligible for permanent deletion.</p>
     <p>Chat log for private room:</p>
     @using (Html.BeginForm("ChatLog", "PvP", FormMethod.Get))
     {
-        @Html.Label("room", "Room name:")
+        @Html.LabelFor(m => m.Room, "Room name:")
         <br>
-        @Html.TextBox("room", (string) ViewBag.Room)
-        @Html.Hidden("filter", (string) ViewBag.Filter)
+        @Html.TextBoxFor(m => m.Room)
+        @Html.HiddenFor(m => m.Filter)
         <button type="submit">View Logs</button>
     }
 
     <ul id="discussion">
 
         @{
-            foreach (var l in Model)
+            foreach (var l in Model.ChatLog)
             {
                 <li>
                     <img src="@l.PortraitUrl">

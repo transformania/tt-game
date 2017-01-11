@@ -166,7 +166,7 @@
     <Compile Include="Commands\Assets\UpdateRestockItem.cs" />
     <Compile Include="Commands\Assets\UpdateTome.cs" />
     <Compile Include="Commands\Assets\CreateTome.cs" />
-    <Compile Include="Commands\ChatLog\WriteLogToDatabase.cs" />
+    <Compile Include="Commands\Chat\CreateChatLog.cs" />
     <Compile Include="Commands\Chat\CreateChatRoom.cs" />
     <Compile Include="Commands\Effects\CreateEffect.cs" />
     <Compile Include="Commands\Forms\SetFormSourceBecomesItemFK.cs" />
@@ -267,6 +267,7 @@
     <Compile Include="DomainCommand.cs" />
     <Compile Include="DomainContext.cs" />
     <Compile Include="DTOs\BaseDTO.cs" />
+    <Compile Include="DTOs\Chat\ChatLogDetail.cs" />
     <Compile Include="DTOs\Forms\FormNameDetail.cs" />
     <Compile Include="DTOs\Forms\TFMessageDetail.cs" />
     <Compile Include="DTOs\Game\WorldDetail.cs" />
@@ -285,6 +286,7 @@
     <Compile Include="DTOs\Players\PlayerBusDetail.cs" />
     <Compile Include="DTOs\Skills\SkillFormSourceDetail.cs" />
     <Compile Include="DTOs\TFEnergies\TFEnergyDetail.cs" />
+    <Compile Include="Entities\Chat\ChatLog.cs" />
     <Compile Include="Entities\Forms\TFMessage.cs" />
     <Compile Include="Entities\Game\World.cs" />
     <Compile Include="Entities\Identity\ArtistBio.cs" />
@@ -355,6 +357,7 @@
     <Compile Include="Mappings\Assets\AssetsMapping.cs" />
     <Compile Include="Mappings\Assets\RestockItemMapping.cs" />
     <Compile Include="Mappings\ChatMappings.cs" />
+    <Compile Include="Mappings\Chat\ChatLogMappings.cs" />
     <Compile Include="Mappings\Effects\EffectSourceMappings.cs" />
     <Compile Include="Mappings\Effects\EffectMappings.cs" />
     <Compile Include="Mappings\EntityMappings.cs" />
@@ -447,7 +450,6 @@
     <Compile Include="Procedures\BossProcedures\BossProcedures_Sisters.cs" />
     <Compile Include="Procedures\BossProcedures\BossProcedures_Thieves.cs" />
     <Compile Include="Procedures\BossProcedures\BossProcedures_Valentine.cs" />
-    <Compile Include="Procedures\ChatLogProcedures.cs" />
     <Compile Include="Procedures\CovenantProcedures.cs" />
     <Compile Include="Procedures\DMRollProcedures.cs" />
     <Compile Include="Procedures\DuelProcedures.cs" />
@@ -481,6 +483,7 @@
     <Compile Include="Queries\Assets\GetTome.cs" />
     <Compile Include="Queries\Assets\GetTomeByItem.cs" />
     <Compile Include="Queries\Assets\GetTomes.cs" />
+    <Compile Include="Queries\Chat\GetChatLogs.cs" />
     <Compile Include="Queries\Chat\GetChatRooms.cs" />
     <Compile Include="Queries\DMRoll\GetRoll.cs" />
     <Compile Include="Queries\Game\GetPvPWorldStats.cs" />

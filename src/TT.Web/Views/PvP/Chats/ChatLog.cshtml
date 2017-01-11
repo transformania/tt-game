@@ -1,5 +1,6 @@
-﻿@model IEnumerable<TT.Domain.Models.ChatLog>
+﻿@model IEnumerable<TT.Domain.DTOs.Chat.ChatLogDetail>
 @using TT.Domain.Models
+@using TT.Web.CustomHtmlHelpers
 
 <nav class="navbar navbar-default outsideContainer navbarTT2">
     <div class="container-fluid">
@@ -84,10 +85,14 @@
     <ul id="discussion">
 
         @{
-            foreach (ChatLog l in Model)
+            foreach (var l in Model)
             {
-                @*<li>@l.Message <span class="timeago">@l.Timestamp</span></li>*@
-                <li>@l.Message</li>
+                <li>
+                    <img src="@l.PortraitUrl">
+                    <strong style="color: @l.Color">@l.Name:</strong>
+                    @l.Message
+                    <span class="timeago">@CharactersHere.DatetimeToTimeago(l.Timestamp)</span>
+                </li>
             }
         }
 

@@ -4,6 +4,8 @@ using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.SignalR;
+using TT.Domain;
+using TT.Domain.Commands.Chat;
 using TT.Domain.Models;
 using TT.Domain.Procedures;
 using TT.Domain.Statics;
@@ -92,7 +94,16 @@ namespace TT.Web.Hubs
                 }
 
                 Clients.Group(room).addNewMessageToPage(model);
-                ChatLogProcedures.WriteLogToDatabase(room, name, output.Text);
+
+                DomainRegistry.Repository.Execute(new CreateChatLog
+                {
+                    Message = output.Text,
+                    Room = room,
+                    Name = name,
+                    UserId = me.Player.MembershipId,
+                    Color = me.Player.ChatColor,
+                    PortraitUrl = pic
+                });
             }
 
             UpdateUserList(room);

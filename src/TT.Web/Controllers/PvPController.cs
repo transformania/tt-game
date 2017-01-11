@@ -2891,12 +2891,11 @@ namespace TT.Web.Controllers
          }
 
         [Authorize]
-         public ActionResult ChatLog(string room, string filter)
-         {
-             ViewBag.Room = room;
-            var logs = DomainRegistry.Repository.Find(new GetChatLogs { Room = room, Filter = filter });
-            return View("Chats/ChatLog", logs);
-         }
+        public ActionResult ChatLog(ChatLogViewModel model)
+        {
+            model.ChatLog = DomainRegistry.Repository.Find(new GetChatLogs {Room = model.Room, Filter = model.Filter});
+            return View("Chats/ChatLog", model);
+        }
 
          public ActionResult ChatCommands()
          {

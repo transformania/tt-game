@@ -555,6 +555,7 @@
     <Compile Include="ViewModels\BossSummon.cs" />
     <Compile Include="ViewModels\BuffBox.cs" />
     <Compile Include="ViewModels\BusStopsViewModel.cs" />
+    <Compile Include="ViewModels\ChatLogViewModel.cs" />
     <Compile Include="ViewModels\ChatViewModel.cs" />
     <Compile Include="ViewModels\ContributionCredit.cs" />
     <Compile Include="ViewModels\NewsPageViewModel.cs" />

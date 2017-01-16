@@ -2,6 +2,7 @@
 using System.Data.Entity;
 using System.Linq;
 using Highway.Data;
+using TT.Domain.Interfaces;
 
 namespace TT.Domain.Mappings
 {
@@ -17,6 +18,8 @@ namespace TT.Domain.Mappings
 
             foreach (var mapping in mappings)
                 ((IMappingConfiguration)Activator.CreateInstance(mapping)).ConfigureModelBuilder(modelBuilder);
+
+            modelBuilder.Types<IDeletable>().Configure(ctc => ctc.Ignore(i => i.Deleted));
 
             // find all classes that extend EntityTypeConfiguration and add them to Configurations
             modelBuilder.Configurations.AddFromAssembly(GetType().Assembly); 

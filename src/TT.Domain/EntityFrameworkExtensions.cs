@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper.QueryableExtensions;
 using DelegateDecompiler;
 using DelegateDecompiler.EntityFramework;
+using TT.Domain.Interfaces;
 
 namespace TT.Domain
 {
@@ -73,6 +74,14 @@ namespace TT.Domain
         public static IQueryable<TDestination> ProjectToQueryable<TDestination>(this IQueryable queryable)
         {
             return queryable.ProjectTo<TDestination>(DomainRegistry.Mapper.ConfigurationProvider).Decompile();
+        }
+
+        public static void DeleteAll(this IEnumerable<IDeletable> source)
+        {
+            foreach (var entity in source)
+            {
+                entity.Delete();
+            }
         }
     }
 }

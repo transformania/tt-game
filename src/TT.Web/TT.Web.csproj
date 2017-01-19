@@ -323,6 +323,7 @@
     <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\newCharacter.js" />
     <Content Include="Scripts\notices.js" />
+    <Content Include="Scripts\randomFirstLastNames.js" />
     <Content Include="Scripts\suggestedLength.js" />
     <Content Include="Scripts\tt.api.js" />
     <Content Include="Scripts\tt.chat.js" />

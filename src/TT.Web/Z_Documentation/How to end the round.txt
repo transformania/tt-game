@@ -14,9 +14,9 @@ c) XP leaderboard, https://www.transformaniatime.com/PvP/Leaderboard .  The file
 
 ***Note that the leaderboard will attempt to highlight your own name in pink if you have a position on one of these leaderboards.  Removing the styling for your row.  You can do this easy by searching the page source for 'background-color:'
 
-3.  Add links on to the file Views/PvP/partial/OldLeaderboardLinks.cshtml for this past round.  The winner of the era is the first-place winner of a certain achievement which differs each round.  Use the winner's full name including nickname and generation title, ie "Bob 'I Won!' Smith IV".
+3.  Update the JSON file Scripts/pastRounds.json with the latest round information.  The winner of the era is the first-place winner of a certain achievement which differs each round.  Use the winner's full name including nickname and generation title, ie "Bob 'I Won!' Smith IV".
 
-4.  Save the achivement leaderboard, found at https://www.transformaniatime.com/Settings/PlayerStatsLeaders .  To do this you should expand every achivement to see the full top 10 of EACH category.  Once this is done, copy all the HTML out from the <div class="row">...</div> below the <h1>Statistics Leaders</h1> markup.  Save this data as a new file under Views/PvP/RoundLeaderboards/Statistics .
+4.  Save the achievement leaderboard, found at https://www.transformaniatime.com/Settings/PlayerStatsLeaders .  To do this you should expand every achievement to see the full top 10 of EACH category.  Once this is done, copy all the HTML out from the <div class="row">...</div> below the <h1>Statistics Leaders</h1> markup.  Save this data as a new file under Views/PvP/RoundLeaderboards/Statistics .
 
 5.  Everything should be saved now.  If you have access to the FTP live server, drop this files in the appropriate locations and check that everything is saved correctly.
 

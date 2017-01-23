@@ -3293,6 +3293,16 @@ namespace TT.Web.Controllers
             return View("~/Views/PvP/RoundLeaderboards/Statistics/Alpha_" + round + ".cshtml");
         }
 
+        public ActionResult OldLeadboards_Item(string round)
+        {
+            return View("~/Views/PvP/RoundLeaderboards/Items/Alpha_" + round + ".cshtml");
+        }
+
+        public ActionResult OldLeadboards_XP(string round)
+        {
+            return View("~/Views/PvP/RoundLeaderboards/XP/Alpha_" + round + ".cshtml");
+        }
+
         [Authorize]
         public ActionResult Shout()
         {

@@ -58,6 +58,10 @@
                     <ul class="dropdown-menu">
                         <li>@Html.ActionLink("Submit Spell/Form/Item/Pet", "Contribute", "Contribution", new { Id = -1 }, null)</li>
                         <li>@Html.ActionLink("Submit Blessing/Curse", "ContributeEffect", "Contribution", new { Id = -1 }, null)</li>
+                        @if (User.IsInRole(PvPStatics.Permissions_QuestWriter))
+                        {
+                            <li>@Html.ActionLink("QuestWriter", "Index", "QuestWriter", null, null)</li>
+                        }
                     </ul>
                 </li>
 
@@ -65,10 +69,6 @@
                     if (User.IsInRole(PvPStatics.Permissions_Admin))
                     {
                         <li>@Html.ActionLink("Admin", "Index", "PvPAdmin")</li>
-                    }
-                    if (User.IsInRole(PvPStatics.Permissions_QuestWriter))
-                    {
-                        <li>@Html.ActionLink("QuestWriter", "Index", "QuestWriter", null, null)</li>
                     }
                 }
 
@@ -96,9 +96,9 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-wrench"></span><span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li>@Html.ActionLink("Settings", "Settings", "Settings")</li>
-                        <li>@Html.ActionLink("My Blacklist Entries", "MyBlacklistEntries", "Settings")</li>
-                        <li>@Html.ActionLink("Update Bio", "SetBio", "Settings")</li>
-                        <li>@Html.ActionLink("Reserve this Name", "ReserveName", "PvP")</li>
+                        <li>@Html.ActionLink("My blacklist entries", "MyBlacklistEntries", "Settings")</li>
+                        <li>@Html.ActionLink("Update bio", "SetBio", "Settings")</li>
+                        <li>@Html.ActionLink("Reserve this name", "ReserveName", "PvP")</li>
                     </ul>
                 </li>
 
@@ -293,14 +293,11 @@
 </div>
 
 
-@*all players who are offline*@
 <div style="clear:both;"></div>
-@*<div id="showOfflinePlayersButton">Show Offline Players Here (@Model.PlayersHere.Where(p => PlayerProcedures.PlayerIsOffline(p.Player)).Count())</div>*@
 
 @{if (ViewBag.ShowOffline == null || !ViewBag.ShowOffline)
 {
-
-    <div id="offlinePlayersButton">@Html.ActionLink("Show Offline Players Here (" + Model.PlayersHere.Count(p => PlayerProcedures.PlayerIsOffline(p.Player)) + ")", "ShowOffline", "PvP")</div>
+    <div id="offlinePlayersButton">@Html.ActionLink("Show offline players here (" + Model.PlayersHere.Count(p => PlayerProcedures.PlayerIsOffline(p.Player)) + ")", "ShowOffline", "PvP")</div>
 }
 }
 

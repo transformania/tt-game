@@ -317,6 +317,7 @@
     <Content Include="Scripts\jquery.signalR-2.0.3.js" />
     <Content Include="Scripts\jquery.signalR-2.0.3.min.js" />
     <Content Include="Scripts\jQueryRotateCompressed.js" />
+    <Content Include="Scripts\leaderboardDropdown.js" />
     <Content Include="Scripts\moment-with-locales.js" />
     <Content Include="Scripts\moment-with-locales.min.js" />
     <Content Include="Scripts\moment.js" />
@@ -857,6 +858,7 @@
     <Content Include="Views\PvP\RoundLeaderboards\Statistics\Alpha_40.cshtml" />
     <Content Include="Views\Settings\Polls\Open\poll5.cshtml" />
     <Content Include="Views\Settings\Polls\Read\poll5.cshtml" />
+    <Content Include="Scripts\pastRounds.json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

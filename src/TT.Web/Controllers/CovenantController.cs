@@ -234,7 +234,7 @@ namespace TT.Web.Controllers
 
             string path = Server.MapPath("~/Images/PvP/CovenantFlags/");
             DirectoryInfo d = new DirectoryInfo(path);//Assuming Test is your Folder
-            FileInfo[] Files = d.GetFiles("*.jpg"); //Getting Text files
+            FileInfo[] Files = d.GetFiles("*.png"); //Getting Text files
             foreach (FileInfo file in Files)
             {
                 flagURLs.Add(file.Name);

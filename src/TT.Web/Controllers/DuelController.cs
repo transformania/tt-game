@@ -59,9 +59,10 @@ namespace TT.Web.Controllers
             Player duelTarget = PlayerProcedures.GetPlayer(id);
 
             // assert target is not a bot
-            if (duelTarget.BotId < AIStatics.ActivePlayerBotId)
+            if (duelTarget.BotId != AIStatics.ActivePlayerBotId)
             {
-                TempData["Error"] = "You cannot challenge an NPC to a bot.";
+                TempData["Error"] = "You cannot challenge an NPC to a duel.";
+                return RedirectToAction("Play", "PvP");
             }
 
             // assert target is animate

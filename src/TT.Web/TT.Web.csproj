@@ -859,6 +859,10 @@
     <Content Include="Views\Settings\Polls\Open\poll5.cshtml" />
     <Content Include="Views\Settings\Polls\Read\poll5.cshtml" />
     <Content Include="Scripts\pastRounds.json" />
+    <Content Include="Views\PvP\RoundLeaderboards\Alpha_41.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\XP\Alpha_41.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_41.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\Statistics\Alpha_41.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

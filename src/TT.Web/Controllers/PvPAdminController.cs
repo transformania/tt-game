@@ -1397,6 +1397,7 @@ namespace TT.Web.Controllers
                             FormName = form.dbName
                         });
 
+                        player.Form = form.dbName; //TODO: Legacy code
                         player.Health = 99999;
                         player.MaxHealth = 99999;
                     }

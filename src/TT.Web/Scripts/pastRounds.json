@@ -319,6 +319,14 @@
       "item": true,
       "xp": true,
       "achievement": true
+    },
+    {
+      "number": 41,
+      "name": "Alpha R41 (Era of Aleksander Vonhel)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
     }
   ]
 }

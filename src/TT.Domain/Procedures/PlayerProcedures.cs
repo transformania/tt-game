@@ -1211,6 +1211,10 @@ namespace TT.Domain.Procedures
         /// <returns></returns>
         public static float GetXPNeededForLevelUp(int level)
         {
+
+            // WARNING:  There is a nearly identical method to this on the new Player entity with the same name.  Updates to the logic here
+            // must also be done there to keep new code consistent with legacy code.
+
             float xp = 11 * level * level + 0 + 89;
             float leftover = xp % 10;
 

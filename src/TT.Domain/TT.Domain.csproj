@@ -182,6 +182,7 @@
     <Compile Include="Commands\Items\DeleteExpiredConsumablesOnGround.cs" />
     <Compile Include="Commands\Items\DropItem.cs" />
     <Compile Include="Commands\Items\MoveAbandonedPetsToWuffie.cs" />
+    <Compile Include="Commands\Items\ThrowTGBomb.cs" />
     <Compile Include="Commands\Messages\CreateMessage.cs" />
     <Compile Include="Commands\Messages\DeleteAllMessagesOwnedByPlayer.cs" />
     <Compile Include="Commands\Messages\DeleteMessage.cs" />

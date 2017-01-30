@@ -182,6 +182,7 @@
     <Compile Include="Domain\Commands\Items\DeleteExpiredConsumablesOnMerchantsTests.cs" />
     <Compile Include="Domain\Commands\Items\DropItemsTests.cs" />
     <Compile Include="Domain\Commands\Items\MoveAbandonedPetsToWuffieTest.cs" />
+    <Compile Include="Domain\Commands\Items\ThrowTGBombTests.cs" />
     <Compile Include="Domain\Commands\Messages\CreateMessagesTests.cs" />
     <Compile Include="Domain\Commands\Messages\DeleteMessagesTests.cs" />
     <Compile Include="Domain\Commands\Items\CreateItemsTests.cs" />

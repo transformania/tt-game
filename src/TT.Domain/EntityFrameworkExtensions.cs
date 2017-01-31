@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using AutoMapper.QueryableExtensions;
 using DelegateDecompiler;
 using DelegateDecompiler.EntityFramework;
-using TT.Domain.Interfaces;
 
 namespace TT.Domain
 {

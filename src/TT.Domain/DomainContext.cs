@@ -11,7 +11,7 @@ namespace TT.Domain
 
         public override int Commit()
         {
-            foreach (var entry in ChangeTracker.Entries<IDeletable>().Where(entry => entry.Entity.Deleted))
+            foreach (var entry in ChangeTracker.Entries<IRemovable>().Where(entry => entry.Entity.Removed))
             {
                 entry.State = System.Data.Entity.EntityState.Deleted;
             }

@@ -19,7 +19,7 @@ namespace TT.Domain.Mappings
             foreach (var mapping in mappings)
                 ((IMappingConfiguration)Activator.CreateInstance(mapping)).ConfigureModelBuilder(modelBuilder);
 
-            modelBuilder.Types<IDeletable>().Configure(ctc => ctc.Ignore(i => i.Deleted));
+            modelBuilder.Types<IRemovable>().Configure(ctc => ctc.Ignore(i => i.Removed));
 
             // find all classes that extend EntityTypeConfiguration and add them to Configurations
             modelBuilder.Configurations.AddFromAssembly(GetType().Assembly); 

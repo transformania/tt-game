@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace TT.Domain.Interfaces
 {
-    public interface IDeletable
+    public interface IRemovable
     {
-        bool Deleted { get; }
-
-        void Delete();
+        bool Removed { get; }
     }
 }

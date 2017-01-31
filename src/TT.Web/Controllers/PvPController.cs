@@ -2067,6 +2067,13 @@ namespace TT.Web.Controllers
                 return RedirectToAction("Play");
             }
 
+            // assert that this item is not consumable
+            if (item.Item.ItemType == PvPStatics.ItemType_Consumable || item.Item.ItemType == PvPStatics.ItemType_Consumable_Reuseable)
+            {
+                TempData["Error"] = "You can't equip or unequip consumables.";
+                return RedirectToAction("Play");
+            }
+
             if (item.Item.ItemType == PvPStatics.ItemType_Pet)
             {
                 TempData["Error"] = "You can't equip or unequip a pet, only tame or release them.";

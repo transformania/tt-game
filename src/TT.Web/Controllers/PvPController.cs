@@ -2068,7 +2068,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that this item is not consumable
-            if (item.Item.ItemType == "consumable" || item.Item.ItemType == "consumable-reuseable")
+            if (item.Item.ItemType == PvPStatics.ItemType_Consumable || item.Item.ItemType == PvPStatics.ItemType_Consumable_Reuseable)
             {
                 TempData["Error"] = "You can't equip or unequip consumables.";
                 return RedirectToAction("Play");

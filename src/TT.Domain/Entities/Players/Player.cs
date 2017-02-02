@@ -387,7 +387,7 @@ namespace TT.Domain.Entities.Players
             if (MaxMana < 1) MaxMana = 1;
 
             if (Health > MaxHealth) Health = MaxHealth;
-            if (Mana > MaxMana) Mana = MaxHealth;
+            if (Mana > MaxMana) Mana = MaxMana;
 
             if (Health < 0) Health = 0;
             if (Mana < 0) Mana = 0;

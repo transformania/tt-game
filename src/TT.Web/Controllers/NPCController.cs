@@ -1119,7 +1119,18 @@ namespace TT.Web.Controllers
                 output.ShowSuccess = true;
                 output.HadRecentInteraction = false;
 
-                string spellsLearned = "Jewdewfae's magic also teaches you the following spells:  " + SkillProcedures.GiveRandomFindableSkillsToPlayer(me, 3);
+                var newSpells = ListifyHelper.Listify(SkillProcedures.GiveRandomFindableSkillsToPlayer(me, 3), true);
+
+                string spellsLearned;
+                if (newSpells.Length > 0)
+                {
+                    spellsLearned = $"Jewdewfae's magic also teaches you the following spells:  {newSpells}.";
+                }
+                else
+                {
+                    spellsLearned = "Unfortunately Jewdewfae can't teach you any spells that you don't already know.";
+                }
+                
                 output.SpellsLearned = spellsLearned;
 
                 new Thread(() =>

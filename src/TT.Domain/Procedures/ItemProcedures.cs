@@ -1043,15 +1043,10 @@ namespace TT.Domain.Procedures
                     {
                         amount = 16;
                     }
-                    string output = "You learned the spells: " + SkillProcedures.GiveRandomFindableSkillsToPlayer(owner, amount) + " from reading your spellbook before it crumbles and vanishes into dust.";
+                    string output = $"You learned the spells: {ListifyHelper.Listify(SkillProcedures.GiveRandomFindableSkillsToPlayer(owner, amount), true)} from reading your spellbook before it crumbles and vanishes into dust.";
                     itemRepo.DeleteItem(itemPlus.dbItem.Id);
                     return output;
                 }
-
-               // if (itemPlus.Item.dbName == "item_consumeable_")
-
-
-
             }
 
                 #endregion

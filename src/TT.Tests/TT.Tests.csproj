@@ -247,6 +247,7 @@
     <Compile Include="Domain\Queries\Skills\GetSkillsPurchaseableByPlayerTests.cs" />
     <Compile Include="Domain\Services\AttackNotificationBrokerTests.cs" />
     <Compile Include="InMemoryDataContextWithGenerator.cs" />
+    <Compile Include="Services\ListifyTests.cs" />
     <Compile Include="TestBase.cs" />
     <Compile Include="Domain\Models\TestPlayer_VM.cs" />
     <Compile Include="Domain\Queries\Chat\GetChatRoomsTests.cs" />

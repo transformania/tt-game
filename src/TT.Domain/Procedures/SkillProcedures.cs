@@ -260,10 +260,10 @@ namespace TT.Domain.Procedures
             }
         }
 
-        public static string GiveRandomFindableSkillsToPlayer(Player player, int amount)
+        public static List<string> GiveRandomFindableSkillsToPlayer(Player player, int amount)
         {
             ISkillRepository skillRepo = new EFSkillRepository();
-            string output = "";
+            var output = new List<string>();
 
             IEnumerable<string> playerSkills = skillRepo.Skills.Where(s => s.OwnerId == player.Id).Select(s => s.Name).ToList();
             IEnumerable<string> learnableSkills = skillRepo.DbStaticSkills.Where(s => s.IsPlayerLearnable).Select(s => s.dbName).ToList();
@@ -278,7 +278,7 @@ namespace TT.Domain.Procedures
 
             if (!eligibleSkills.Any())
             {
-                return "(Unfortunately you don't learn any new spells that you don't already know.)";
+                return output;
             }
 
             Random rand = new Random(DateTime.UtcNow.Millisecond);
@@ -297,11 +297,10 @@ namespace TT.Domain.Procedures
                     DbStaticSkill staticSkill = SkillStatics.GetStaticSkill(skillToGive);
                     GiveSkillToPlayer(player.Id, staticSkill);
                     eligibleSkills = eligibleSkills.Where(s => s != skillToGive);
-                    output += "<b>" + staticSkill.FriendlyName + "</b>, ";
+                    output.Add(staticSkill.FriendlyName);
                 }
             }
 
-            output += "";
             return output;
         }
 

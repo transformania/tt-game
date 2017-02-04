@@ -27,6 +27,7 @@ using TT.Domain.Queries.Identity;
 using FeatureSwitch;
 using Recaptcha.Web;
 using Recaptcha.Web.Mvc;
+using TT.Domain.Commands.Items;
 using TT.Domain.Commands.Players;
 using TT.Domain.Queries.Chat;
 using TT.Domain.Queries.Game;
@@ -2228,7 +2229,22 @@ namespace TT.Web.Controllers
             {
                 return RedirectToAction("RemoveCurse", "Item");
             }
-         
+
+            if (item.dbItem.dbName == PvPStatics.ItemType_TGBomb)
+            {
+                try
+                {
+                    TempData["Result"] = DomainRegistry.Repository.Execute(new ThrowTGBomb {PlayerId = me.Id, ItemId = item.dbItem.Id});
+                    return RedirectToAction("Play", "PvP");
+                }
+                catch (DomainException e)
+                {
+                    TempData["Error"] = e.Message;
+                    return RedirectToAction("Play", "PvP");
+                }
+
+            }
+
             string result = ItemProcedures.UseItem(itemId, myMembershipId);
 
             PlayerProcedures.AddMinutesToTimestamp(me, 15, true);

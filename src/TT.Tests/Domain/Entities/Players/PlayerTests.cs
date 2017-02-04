@@ -139,5 +139,49 @@ namespace TT.Tests.Domain.Entities
             player.PlayerLogs.Count().Should().Be(0);
         }
 
+        [Test]
+        public void should_get_xp_required_for_levelup()
+        {
+
+            var player = new PlayerBuilder()
+                .With(p => p.XP, 0)
+                .With(p => p.Level, 3)
+                .BuildAndSave();
+
+            player.GetXPNeededForLevelUp().Should().Be(200);
+        }
+
+        [Test]
+        public void should_give_player_xp_and_not_level_up()
+        {
+
+            var player = new PlayerBuilder()
+                .With(p => p.XP, 95)
+                .With(p => p.Level, 3)
+                .With(p => p.UnusedLevelUpPerks, 0)
+                .BuildAndSave();
+
+            player.AddXP(10);
+            player.XP.Should().Be(105);
+            player.Level.Should().Be(3);
+            player.UnusedLevelUpPerks.Should().Be(0);
+        }
+
+        [Test]
+        public void should_give_player_xp_and_level_up()
+        {
+
+            var player = new PlayerBuilder()
+                .With(p => p.XP, 195)
+                .With(p => p.Level, 3)
+                .With(p => p.UnusedLevelUpPerks, 0)
+                .BuildAndSave();
+
+            player.AddXP(10);
+            player.XP.Should().Be(5);
+            player.Level.Should().Be(4);
+            player.UnusedLevelUpPerks.Should().Be(1);
+        }
+
     }
 }

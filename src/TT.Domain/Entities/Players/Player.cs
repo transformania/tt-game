@@ -357,6 +357,32 @@ namespace TT.Domain.Entities.Players
             AddLog($"You shouted '{message}' at {location.Name}.", false);
         }
 
+        public void UpdateItemUseCounter(int amount)
+        {
+            ItemsUsedThisTurn += amount;
+        }
+
+        public void GiveItem(Items.Item item)
+        {
+            Items.Add(item);
+        }
+
+        /// <summary>
+        /// Gives the player experience points (XP).  If they have enough to level up, they will do so and gain a levelup perk slot
+        /// </summary>
+        /// <param name="amount">Amount of XP to give player</param>
+        public void AddXP(decimal amount)
+        {
+            var xpNeeded = (decimal) GetXPNeededForLevelUp();
+            XP += amount;
+            if (XP >= xpNeeded)
+            {
+                XP -= xpNeeded;
+                Level++;
+                UnusedLevelUpPerks++;
+            }
+        }
+
         /// <summary>
         /// Returns the most recent of the two timestamps of when the player has attacked or been attacked.
         /// </summary>
@@ -391,6 +417,29 @@ namespace TT.Domain.Entities.Players
 
             if (Health < 0) Health = 0;
             if (Mana < 0) Mana = 0;
+        }
+
+        /// <summary>
+        /// Return how much total XP is needed for the player to reach the next level based off a hyperbolic formula currently set to 11x^2+x*0+89 .  The number is rounded up to the nearest 10.
+        /// </summary>
+        /// <returns>XP needed for levelup</returns>
+        public float GetXPNeededForLevelUp()
+        {
+
+            // WARNING:  There is a nearly identical method to this on PlayerProcedures with the same name.  Updates to the logic here
+            // must also be done there to keep new code consistent with legacy code.
+
+            float xp = 11 * Level * Level + 0 + 89;
+            float leftover = xp % 10;
+
+            xp = (float)Math.Round(xp / 10) * 10; // round to nearest 10
+
+            if (leftover != 0)
+            {
+                xp += 10;
+            }
+
+            return xp;
         }
     }
 }

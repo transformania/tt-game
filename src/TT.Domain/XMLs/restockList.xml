@@ -204,4 +204,11 @@
     <Merchant>Lorekeeper</Merchant>
   </RestockListItem>
 
+  <RestockListItem>
+    <dbName>item_consumable_tg_bomb</dbName>
+    <AmountBeforeRestock>3</AmountBeforeRestock>
+    <AmountToRestockTo>6</AmountToRestockTo>
+    <Merchant>Lindella</Merchant>
+  </RestockListItem>
+
 </ArrayOfRestockListItem>

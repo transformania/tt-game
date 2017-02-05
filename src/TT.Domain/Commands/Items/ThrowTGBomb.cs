@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using Highway.Data;
 using TT.Domain.Entities.Forms;
+using TT.Domain.Procedures;
 using TT.Domain.Statics;
 
 namespace TT.Domain.Commands.Items
@@ -25,6 +26,8 @@ namespace TT.Domain.Commands.Items
                     .Include(p => p.Items)
                     .Include(p => p.Item.ItemSource)
                     .Include(p => p.FormSource)
+                    .Include(p => p.User)
+                    .Include(p => p.User.Stats)
                     .FirstOrDefault(p => p.Id == PlayerId);
 
                 if (player == null)
@@ -84,6 +87,13 @@ namespace TT.Domain.Commands.Items
 
                     result = $"You throw your TG Splash Orb and swap the sex of {affectedPlayers.Count()} other mages near you: {ListifyHelper.Listify(playerNames, true)} and gain <b>{xpGained}</b> XP!";
                     player.AddLog(result, false);
+
+                    // log statistics only for human players
+                    if (player.BotId == AIStatics.ActivePlayerBotId)
+                    {
+                        player.User.AddStat(StatsProcedures.Stat__TgOrbVictims, affectedPlayers.Count());
+                    }
+
                 }
                 else
                 {

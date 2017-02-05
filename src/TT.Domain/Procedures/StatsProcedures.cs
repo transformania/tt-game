@@ -53,6 +53,7 @@ namespace TT.Domain.Procedures
         public const string Stat__CovenantCallbackCrystalsUsed = "callback_crystals_used";
         public const string Stat__DollsWPRestored = "dolls_used";
         public const string Stat__LoreBooksRead = "lore_books_read";
+        public const string Stat__TgOrbVictims = "tg_bomb_hits";
 
         // Inanimate/Pet actions
         public const string Stat__InanimateXPEarned = "inanimateXPEarned";
@@ -513,6 +514,17 @@ namespace TT.Domain.Procedures
                     new StatsDetailsMap{
                         FriendlyName="The Wheels on the Bus",
                         Description="Total distance riding the bus",
+                        ImageUrl="trophy.jpg",
+                        Active = true,
+                        ResetsOnReroll = false
+                        }
+                },
+
+                {
+                Stat__TgOrbVictims,
+                    new StatsDetailsMap{
+                        FriendlyName="Sex Swap Scoundrel",
+                        Description="Total targets hit with TG Splash Orbs",
                         ImageUrl="trophy.jpg",
                         Active = true,
                         ResetsOnReroll = false

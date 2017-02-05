@@ -7,8 +7,10 @@ using TT.Domain;
 using TT.Domain.Commands.Items;
 using TT.Domain.Entities.Items;
 using TT.Domain.Entities.Players;
+using TT.Domain.Procedures;
 using TT.Domain.Statics;
 using TT.Tests.Builders.Form;
+using TT.Tests.Builders.Identity;
 using TT.Tests.Builders.Item;
 using TT.Tests.Builders.Players;
 
@@ -56,6 +58,9 @@ namespace TT.Tests.Domain.Commands.Items
                 .With(p => p.Location, TavernLocation)
                 .With(p => p.Items, new List<Item>())
                 .With(p => p.XP, 3)
+                .With(i => i.User, new UserBuilder()
+                    .With(u => u.Stats, new List<Stat>())
+                    .BuildAndSave())
                 .BuildAndSave();
             thrower.GiveItem(bomb);
 
@@ -123,6 +128,8 @@ namespace TT.Tests.Domain.Commands.Items
 
             var loadedThrower = players.First(p => p.Id == thrower.Id);
             loadedThrower.XP.Should().Be(13);
+            loadedThrower.User.Stats.First().AchievementType.Should().Be(StatsProcedures.Stat__TgOrbVictims);
+            loadedThrower.User.Stats.First().Amount.Should().Be(2);
 
             var loadedfemaleBystander = players.First(p => p.Id == femaleBystander.Id);
             loadedfemaleBystander.FormSource.FriendlyName.Should().Be("Regular Guy");

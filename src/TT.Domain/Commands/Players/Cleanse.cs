@@ -2,7 +2,6 @@
 using System.Linq;
 using Highway.Data;
 using TT.Domain.Entities.LocationLogs;
-using TT.Domain.Entities.Players;
 using TT.Domain.Procedures;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;

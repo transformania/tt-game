@@ -15,7 +15,7 @@ namespace TT.Domain.Procedures
     public static class AIProcedures
     {
 
-        public static void SpawnAIPsychopaths(int count, int offset)
+        public static void SpawnAIPsychopaths(int count)
         {
 
             // load up the random names XML
@@ -154,7 +154,7 @@ namespace TT.Domain.Procedures
             var botCount = playerRepo.Players.Count(b => b.BotId == AIStatics.PsychopathBotId && b.Mobility == PvPStatics.MobilityFull);
             if (botCount < PvPStatics.PsychopathDefaultAmount)
             {
-                SpawnAIPsychopaths(PvPStatics.PsychopathDefaultAmount - botCount, 0);
+                SpawnAIPsychopaths(PvPStatics.PsychopathDefaultAmount - botCount);
             }
 
             var bots = playerRepo.Players.Where(p => p.BotId == AIStatics.PsychopathBotId && p.Mobility == PvPStatics.MobilityFull).ToList();

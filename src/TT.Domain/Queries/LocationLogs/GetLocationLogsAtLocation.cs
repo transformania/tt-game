@@ -17,6 +17,7 @@ namespace TT.Domain.Queries.LocationLogs
             ContextQuery = ctx => ctx.AsQueryable<LocationLog>()
             .Where(l => l.dbLocationName == Location && l.ConcealmentLevel <= ConcealmentLevel)
             .OrderByDescending(l => l.Timestamp)
+            .ThenByDescending(l => l.Id)
             .ProjectToQueryable<LocationLogDetail>();
             return ExecuteInternal(context);
         }

@@ -16,7 +16,8 @@ namespace TT.Domain.Queries.Messages
             ContextQuery = ctx =>
             {
                 var output = ctx.AsQueryable<Message>()
-                            .Where(m => m.Id == MessageId)
+                            .Where(m => m.Id == MessageId &&
+                                m.IsDeleted == false)
                             .ProjectToFirstOrDefault<MessageDetail>();
 
                 if (output.Receiver.Id != OwnerId)

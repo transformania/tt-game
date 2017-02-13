@@ -35,7 +35,7 @@ namespace TT.Tests.Domain.Queries.Messages
                     .With(m => m.ConversationId, guid1)
                     .BuildAndSave();
 
-            new MessageBuilder().With(m => m.Id, 3)
+            var otherConversationMessage = new MessageBuilder().With(m => m.Id, 3)
                     .With(m => m.Receiver, receiver)
                     .With(m => m.ConversationId, guid2)
                     .BuildAndSave();
@@ -43,6 +43,13 @@ namespace TT.Tests.Domain.Queries.Messages
             new MessageBuilder().With(m => m.Id, 4)
                     .With(m => m.Receiver, otherPlayer)
                     .With(m => m.ConversationId, guid1)
+                    .BuildAndSave();
+
+            // don't show, marked as deleted
+            var deletedMessage = new MessageBuilder().With(m => m.Id, 5)
+                    .With(m => m.Receiver, otherPlayer)
+                    .With(m => m.ConversationId, guid1)
+                    .With(m => m.IsDeleted, true)
                     .BuildAndSave();
 
             var cmd = new GetMessagesInConversation { conversationId = guid1};
@@ -53,7 +60,8 @@ namespace TT.Tests.Domain.Queries.Messages
             ids.Should().Contain(1);
             ids.Should().Contain(2);
             ids.Should().Contain(4);
-            ids.Should().NotContain(3);
+            ids.Should().NotContain(otherConversationMessage.Id);
+            ids.Should().NotContain(deletedMessage.Id);
         }
 
         [Test]

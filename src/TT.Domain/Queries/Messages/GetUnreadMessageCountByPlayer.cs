@@ -15,7 +15,9 @@ namespace TT.Domain.Queries.Messages
             {
                 var count = ctx.AsQueryable<Message>()
                     .Count(m => m.Receiver.Id == OwnerId &&
-                                m.ReadStatus == MessageStatics.Unread);
+                                m.ReadStatus == MessageStatics.Unread &&
+                                m.IsDeleted == false
+                                );
 
                 return count;
             };

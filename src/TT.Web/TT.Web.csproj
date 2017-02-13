@@ -863,6 +863,7 @@
     <Content Include="Views\PvP\RoundLeaderboards\XP\Alpha_41.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_41.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Statistics\Alpha_41.cshtml" />
+    <Content Include="Views\PvPAdmin\ViewAbusiveMessages.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

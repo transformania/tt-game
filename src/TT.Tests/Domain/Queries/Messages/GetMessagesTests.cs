@@ -45,6 +45,13 @@ namespace TT.Tests.Domain.Queries.Messages
                 .With(m => m.ReadStatus, MessageStatics.Unread)
                 .BuildAndSave();
 
+            // don't count this; it is deleted without being read
+            new MessageBuilder().With(m => m.Id, 100)
+                .With(p => p.Sender, otherPlayer)
+                .With(p => p.Receiver, receiver)
+                .With(p => p.IsDeleted, true)
+               .BuildAndSave();
+
             var cmd = new GetUnreadMessageCountByPlayer() { OwnerId = receiver.Id };
             var count = DomainRegistry.Repository.FindSingle(cmd);
 
@@ -89,11 +96,17 @@ namespace TT.Tests.Domain.Queries.Messages
                 .With(p => p.Timestamp, DateTime.UtcNow.AddHours(-1))
                .BuildAndSave();
 
-            new MessageBuilder().With(m => m.Id, 23)
+            new MessageBuilder().With(m => m.Id, 24)
                 .With(p => p.Sender, sender)
                 .With(p => p.Receiver, receiver)
                 .With(p => p.MessageText, "world!")
                 .With(p => p.Timestamp, DateTime.UtcNow.AddHours(-2))
+               .BuildAndSave();
+
+            var deletedMessage = new MessageBuilder().With(m => m.Id, 25)
+                .With(p => p.Sender, sender)
+                .With(p => p.Receiver, receiver)
+                .With(p => p.IsDeleted, true)
                .BuildAndSave();
 
             var cmd = new GetPlayerSentMessages
@@ -107,6 +120,9 @@ namespace TT.Tests.Domain.Queries.Messages
             messages.Should().HaveCount(2);
             messages.First().MessageText.Should().BeEquivalentTo("hello");
             messages.Last().MessageText.Should().BeEquivalentTo("world!");
+
+            var messagesIds = messages.Select(i => i.Id);
+            messagesIds.Should().NotContain(deletedMessage.Id);
 
         }
 
@@ -127,12 +143,18 @@ namespace TT.Tests.Domain.Queries.Messages
                 .With(p => p.Timestamp, DateTime.UtcNow.AddHours(-1))
                .BuildAndSave();
 
-            new MessageBuilder().With(m => m.Id, 23)
+            new MessageBuilder().With(m => m.Id, 24)
                 .With(p => p.Sender, sender)
                 .With(p => p.Receiver, receiver)
                 .With(p => p.MessageText, "world!")
                 .With(p => p.Timestamp, DateTime.UtcNow.AddHours(-2))
                .BuildAndSave();
+
+            var deletedMessage = new MessageBuilder().With(m => m.Id, 25)
+               .With(p => p.Sender, sender)
+               .With(p => p.Receiver, receiver)
+               .With(p => p.IsDeleted, true)
+              .BuildAndSave();
 
             var cmd = new GetPlayerReceivedMessages
             {
@@ -144,6 +166,9 @@ namespace TT.Tests.Domain.Queries.Messages
             messages.Should().HaveCount(2);
             messages.First().MessageText.Should().BeEquivalentTo("hello");
             messages.Last().MessageText.Should().BeEquivalentTo("world!");
+
+            var messagesIds = messages.Select(i => i.Id);
+            messagesIds.Should().NotContain(deletedMessage.Id);
         }
 
         [Test]

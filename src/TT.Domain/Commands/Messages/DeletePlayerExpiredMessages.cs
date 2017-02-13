@@ -19,6 +19,7 @@ namespace TT.Domain.Commands.Messages
                 var deleteMe = ctx.AsQueryable<Message>()
                     .Where(m => m.Receiver.Id == OwnerId &&
                     m.Timestamp < cutoff &&
+                    m.IsReportedAbusive == false &&
                     m.DoNotRecycleMe == false);
 
                 foreach (var m in deleteMe)

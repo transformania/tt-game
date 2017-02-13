@@ -27,7 +27,7 @@ namespace TT.Domain.Commands.Messages
                 if (deleteMe.Receiver.Id != OwnerId)
                     throw new DomainException($"Message {MessageId} not owned by player {OwnerId}");
 
-                ctx.Remove(deleteMe);
+                deleteMe.MarkAsDeleted(true);
 
                 ctx.Commit();
             };

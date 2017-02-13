@@ -16,7 +16,7 @@ namespace TT.Domain.Commands.Messages
 
                 foreach (var m in deleteMe)
                 {
-                    ctx.Remove(m);
+                    m.MarkAsDeleted(true);
                 }
                 
                 ctx.Commit();

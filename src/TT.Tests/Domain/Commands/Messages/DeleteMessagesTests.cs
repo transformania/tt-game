@@ -26,7 +26,10 @@ namespace TT.Tests.Domain.Commands.Messages
             var cmd = new DeleteMessage { MessageId = 61, OwnerId = 3 };
             Repository.Execute(cmd);
 
-            DataContext.AsQueryable<Message>().Count().Should().Be(0);
+            var messages = DataContext.AsQueryable<Message>();
+            messages.Count().Should().Be(1);
+            messages.First().IsDeleted.Should().Be(true);
+
         }
 
         [TestCase(-1)]
@@ -101,7 +104,10 @@ namespace TT.Tests.Domain.Commands.Messages
             var cmd = new DeleteAllMessagesOwnedByPlayer { OwnerId = 3 };
             Repository.Execute(cmd);
 
-            DataContext.AsQueryable<Message>().Count().Should().Be(0);
+            var messages = DataContext.AsQueryable<Message>();
+            messages.Count().Should().Be(2);
+            messages.First().IsDeleted.Should().Be(true);
+            messages.Last().IsDeleted.Should().Be(true);
         }
 
         [Test]
@@ -133,10 +139,17 @@ namespace TT.Tests.Domain.Commands.Messages
                 .With(m => m.Timestamp, DateTime.UtcNow.AddDays(-7))
                 .BuildAndSave();
 
+            // not eligible for deletion due to being marked as abusive
+            new MessageBuilder()
+                .With(m => m.Id, 100)
+                .With(m => m.Receiver, player)
+                .With(m => m.IsReportedAbusive, true)
+                .BuildAndSave();
+
             var cmd = new DeletePlayerExpiredMessages() { OwnerId = 3 };
             Repository.Execute(cmd);
 
-            DataContext.AsQueryable<Message>().Count().Should().Be(2);
+            DataContext.AsQueryable<Message>().Count().Should().Be(3);
         }
 
     }

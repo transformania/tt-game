@@ -13,14 +13,13 @@ using TT.Domain.Models;
 using TT.Domain.Procedures;
 using TT.Domain.Procedures.BossProcedures;
 using TT.Domain.Queries.Item;
-using TT.Domain.Queries.Skills;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 using TT.Domain.Commands.RPClassifiedAds;
 using TT.Domain.DTOs.Game;
 using TT.Domain.Exceptions.RPClassifiedAds;
 using TT.Domain.Queries.Game;
-using TT.Domain.Queries.MindControl;
+using TT.Domain.Queries.Messages;
 
 namespace TT.Web.Controllers
 {
@@ -1899,6 +1898,17 @@ namespace TT.Web.Controllers
 
             TempData["Result"] = "News Post " + Id + " deleted successfully!";
             return RedirectToAction("ListNewsPosts", "PvPAdmin");
+        }
+
+        [Authorize]
+        public ActionResult ViewAbusiveMessages()
+        {
+            if (!User.IsInRole(PvPStatics.Permissions_Admin) && !User.IsInRole(PvPStatics.Permissions_Moderator))
+            {
+                return RedirectToAction("Play", "PvP");
+            }
+            var output = DomainRegistry.Repository.Find(new GetMessagesReportedAbusive());
+            return View(output);
         }
 
     }

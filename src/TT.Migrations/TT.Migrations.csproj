@@ -64,6 +64,7 @@
     <Compile Include="201607252000_SkillSourceFKs.cs" />
     <Compile Include="201607151721_AddTFEnergyFK.cs" />
     <Compile Include="201702071200_ConvertToDatetime2.cs" />
+    <Compile Include="201702120607_SoftDeleteMessages.cs" />
     <Compile Include="201703083300_ChatLogColumnAdditions.cs" />
     <Compile Include="201615152300_FormSourceFKtoItemSource.cs" />
     <Compile Include="201612210137_MindControlFKs.cs" />

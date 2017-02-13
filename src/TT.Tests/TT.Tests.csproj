@@ -188,6 +188,7 @@
     <Compile Include="Domain\Commands\Items\CreateItemsTests.cs" />
     <Compile Include="Domain\Commands\Items\DeleteItemsTests.cs" />
     <Compile Include="Domain\Commands\Items\UpdateItemsTests.cs" />
+    <Compile Include="Domain\Commands\Messages\MarkMessageAsAbusive.cs" />
     <Compile Include="Domain\Commands\Messages\MarkMessageAsRead.cs" />
     <Compile Include="Domain\Commands\Players\ChangeDonatorTierTests.cs" />
     <Compile Include="Domain\Commands\Players\ChangeGameModeTests.cs" />

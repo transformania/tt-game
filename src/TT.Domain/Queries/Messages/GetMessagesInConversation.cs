@@ -15,7 +15,10 @@ namespace TT.Domain.Queries.Messages
         public override IEnumerable<MessageDetail> Execute(IDataContext context)
         {
 
-            ContextQuery = ctx => ctx.AsQueryable<Message>().Where(m => m.ConversationId == conversationId).ProjectToQueryable<MessageDetail>().OrderByDescending(m => m.Timestamp);
+            ContextQuery = ctx => ctx.AsQueryable<Message>()
+            .Where(m => m.ConversationId == conversationId &&
+                m.IsDeleted == false)
+            .ProjectToQueryable<MessageDetail>().OrderByDescending(m => m.Timestamp);
             return ExecuteInternal(context);
         }
 

@@ -1,0 +1,69 @@
+﻿@using TT.Web.CustomHtmlHelpers
+@model IEnumerable<TT.Domain.DTOs.Messages.MessageDetail>
+
+<nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+                <li>@Html.ActionLink("Back to admin", "Index", "PvPAdmin")</li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+<div>
+    <p class="infoMessage result"></p>
+    <p class="infoMessage error"></p>
+    <p class="infoMessage suberror"></p>
+</div>
+
+<div class="containerInner">
+
+    <h1>Messages Reported as Abusive</h1>
+
+    <p>The following private messages have been marked abusive by the <span class="good">Receiver</span> which means the abuse came from the <span class="bad">Sender</span>.  Admins and Moderators may view this page and decide upon further corrective action.</p>
+    <br>
+    <p>Messages marked as abusive will not get automatically deleted after 72 hours.  However, they WILL be deleted inbetween rounds</p>
+    <br>
+
+    <table id="abusiveMessages" class="table table-hover dt-responsive messageTable">
+        <thead>
+        <th style="color: red;">Sender</th>
+        <th style="color: green;">Receiver</th>
+        <th>Message</th>
+        <th>Timestamp</th>
+        </thead>
+        <tbody>
+            @{
+                foreach (var m in Model)
+                {
+                    <tr>
+                        <td>@Html.ActionLink(m.Sender.GetFullName(), "LookAtPlayer", "PvP", new { id = m.Sender.Id }, null)</td>
+                        <td>@Html.ActionLink(m.Receiver.GetFullName(), "LookAtPlayer", "PvP", new { id = m.Receiver.Id }, null)</td>
+                        <td>@m.MessageText</td>
+                        <td class="timeago">@CharactersHere.DatetimeToTimeago(m.Timestamp)</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#abusiveMessages').dataTable();
+    });
+</script>

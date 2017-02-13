@@ -24,6 +24,9 @@ namespace TT.Domain.Entities.Messages
 
         public bool ReceiverMarkedAsDeleted { get; protected set; } // TODO:  Remove from Entity and table
 
+        public bool IsDeleted { get; protected set; }
+        public bool IsReportedAbusive { get; protected set; }
+
         private Message() { }
 
         public static Message Create(Player sender, Player receiver, CreateMessage cmd)
@@ -57,6 +60,17 @@ namespace TT.Domain.Entities.Messages
         public void MarkAsRead(int isRead)
         {
             this.ReadStatus = isRead;
+        }
+
+        public void MarkAsDeleted(bool isDeleted)
+        {
+            this.IsDeleted = isDeleted;
+        }
+
+        public void MarkAsAbusive(bool isReportedAbusive)
+        {
+            this.IsReportedAbusive = isReportedAbusive;
+            this.DoNotRecycleMe = isReportedAbusive;
         }
 
     }

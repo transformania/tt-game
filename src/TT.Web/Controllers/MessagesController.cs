@@ -352,5 +352,24 @@ namespace TT.Web.Controllers
             return RedirectToAction("MyCovenant", "Covenant");
 
         }
+
+        [Authorize]
+        public ActionResult MarkAsAbusive(int id)
+        {
+            Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
+
+            try
+            {
+                DomainRegistry.Repository.Execute(new MarkAsAbusive { MessageId = id, OwnerId = me.Id });
+                TempData["Result"] = "This message has been marked as abusive and a moderator will soon review it.";
+                return RedirectToAction("Index");
+            }
+            catch (DomainException e)
+            {
+                TempData["Error"] = e.Message;
+                return RedirectToAction("Index");
+            }
+            
+        }
     }
 }

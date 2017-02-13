@@ -5,11 +5,10 @@ using TT.Domain.Entities.Messages;
 
 namespace TT.Domain.Commands.Messages
 {
-    public class MarkAsRead : DomainCommand
+    public class MarkAsAbusive : DomainCommand
     {
 
         public int MessageId { get; set; }
-        public int ReadStatus { get; set; }
         public int OwnerId { get; set; }
 
         public override void Execute(IDataContext context)
@@ -28,18 +27,12 @@ namespace TT.Domain.Commands.Messages
                     throw new DomainException($"Message {MessageId} not owned by player {OwnerId}");
 
 
-                message.MarkAsRead(ReadStatus);
+                message.MarkAsAbusive(true);
 
                 ctx.Commit();
             };
 
             ExecuteInternal(context);
-        }
-
-        protected override void Validate()
-        {
-            if (ReadStatus < 0 || ReadStatus > 2)
-                throw new DomainException($"{ReadStatus} is not a valid read status.");
         }
 
     }

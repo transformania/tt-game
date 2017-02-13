@@ -17,7 +17,8 @@ namespace TT.Domain.Queries.Messages
             ContextQuery =
                 ctx =>
                     ctx.AsQueryable<Message>()
-                        .Where(m => m.Sender.Id == SenderId)
+                        .Where(m => m.Sender.Id == SenderId
+                            && m.IsDeleted == false)
                         .OrderByDescending(m => m.Timestamp)
                         .Take(Take)
                         .ProjectToQueryable<MessageDetail>();

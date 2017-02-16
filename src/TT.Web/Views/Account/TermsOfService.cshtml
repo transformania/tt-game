@@ -1,0 +1,45 @@
+﻿@using TT.Domain.Statics
+<nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+                <li>@Html.ActionLink("Back to Account", "Manage", "Account")</li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+<div class="containerInner">
+    <h3>Terms of Service</h3>
+    <b><i>You must agree to the terms of service below in order to register, log in, or use this site.  Last update was @PvPStatics.LastTosUpdate.</i></b><br>
+    <ul class="listdots">
+        <li>I understand that I am using this site at the webmaster's discretion.  <b>Transformania Time reserves the right to deny service to anyone found in violation of these terms of service at any time without notice.</b></li>
+        <li>I agree that <b>I am of at least a 18 years of age</b> and that by registering or logging in I am <b>complying with local, state, and national laws</b> regarding viewership of adult material.</li>
+        <li>I understand that <b>any or all</b> private messages or chat rooms may be read by the moderators in order to investigate and evaluate abuse.</li>
+        <li>I can recognize the difference between fantasy and reality.  Social interactions described within this site are not guides or suggestions on how to interact in reality and are <b>expressions of free speech</b> between consenting adults.  Treat all human beings according to the law and with respect.</li>
+        <li>I agree to treat everyone with respect in private messages and chat rooms.  Uncivil behavior may result in penalties or an outright ban and/or account removal at the site’s discretion.</li>
+        <li><b>I understand I am using this site at my own risk and without warranty of any kind.</b>  The web administrator is not responsible for any content directed to by a link to a third party website nor damages caused by interactions with other players.  <b>You are solely responsible to any damage or data loss to your computer, tablet, cell phone, or electronic device.</b>  We do not guarantee that the site will always be available or working as intended.
+        <li><b>I agree to let this site record my IP address and store cookies on my device.</b></li>
+        <li>I understand that donating to the site is done solely through the official <a href="https://www.patreon.com/TransformaniaTimeGame">Transformania Time Patreon</a>.  I understand that my donation, should I choose to make one, supports the site <b>as is</b> and does guarantee any changes to the site in the future.  I agree that the allocation of funds from the Patreon is done at the site’s own discretion.  I understand that being a present or past supporter does not exempt me from any of the terms of service.</li>
+        <li>I agree to abide by all of these terms before using the forums located at <a href="http://luxianne.com/forum/">http://luxianne.com/forum/</a>.</li>
+        <li><b>This website reserves the right to ban suspicious accounts.</b>  Suspicious includes accounts that appear to have been created to bypass a former ban, alternate accounts of a banned account, sock puppet accounts, or accounts suspected of being operated by a minor.</li>
+        <li>I agree not to spam any chat rooms or players via private messages.</li>
+        <li>I will not harass other players, moderators, or administrators on this site or by external means of communications (ie email, Telegram, Discord, Skype, etc).</li>
+        <li>I understand that at the start of a new round, the game world is reset and will delete all existing characters and private messages.  <b>Any information I want to retain is my own responsibility to do off of this site.</b></li>
+        <li>I agree that I will distribute personally identifying information at my own risk.  Transformania Time is not liable for anything that may occur due your voluntary disclosure of personal information.  We will not ask you for your password, legal name or address, or age except to ensure you are of a legal age.</li>
+        <li>Artwork and written texts are used with permission from their respective artists and authors.  If you are the owner of artwork or text that you believe is being used without permission, please contact the administrator.</li>
+        <li><b>I agree that the site may modify these terms and conditions of use at any time with or without notice to the users, and any such changes are effective immediately upon posting.</b></li>
+    </ul>
+</div>

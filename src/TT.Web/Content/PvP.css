@@ -734,10 +734,6 @@ a.curse {
     font-size: 18px;
 }
 
-.specialNoticeBox {
-    background-color: orange;
-}
-
 .copyable {
   cursor: pointer;
 }

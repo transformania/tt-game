@@ -1370,3 +1370,14 @@ line-height: 18px;
     margin-left: auto;
     margin-right: auto;
 }
+
+.specialNoticeBox {
+    background-color: orange;
+}
+
+.specialNoticeBox.short {
+    height: 22px;
+    font-size: 15px;
+    padding: 1px;
+    background-color: palevioletred;
+}

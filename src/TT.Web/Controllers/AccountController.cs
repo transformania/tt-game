@@ -267,6 +267,12 @@ namespace TT.Web.Controllers
             return View(model);
         }
 
+        [AllowAnonymous]
+        public ActionResult TermsOfService()
+        {
+            return View();
+        }
+
         //
         // POST: /Account/Manage
 

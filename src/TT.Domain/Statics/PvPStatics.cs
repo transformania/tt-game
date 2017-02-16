@@ -21,6 +21,7 @@ namespace TT.Domain.Statics
         public const int EndTurnNoAttackSeconds = 30;
 
         public static string AlphaRound = "Alpha Round 39";
+        public const string LastTosUpdate = "February 15, 2017";
 
         public static bool ChaosMode = false;
 

@@ -20,14 +20,18 @@
                 <li>@Html.ActionLink("My blacklist entries", "MyBlacklistEntries", "Settings")</li>
                 <li>@Html.ActionLink("Update bio", "SetBio", "Settings")</li>
                 <li>@Html.ActionLink("Reserve name", "ReserveName", "PvP")</li>
+                <li>@Html.ActionLink("Rules", "Rules", "Info")</li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
 
 <div class="containerInner center-block">
-    <h2>Offline Timer</h2>
-    @{
+<h2>Offline Timer</h2>
+    
+<p>Your account currently has <b>0/3</b> strikes against it.  Read more about strikes @Html.ActionLink("here", "Rules", "Info", null, new { target = "_blank" }).</p>
+
+@{
         if (@ViewBag.TimeUntilLogout >= 60)
         {
             <p>Your character is offline.</p>

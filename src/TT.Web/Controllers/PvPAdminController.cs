@@ -560,13 +560,13 @@ namespace TT.Web.Controllers
                 return RedirectToAction("Play", "PvP");
             }
 
-            List<Location> locations = LocationsStatics.LocationList.GetLocation.Where(l => !l.dbName.Contains("_dungeon")).ToList();
+            List<Location> locations = LocationsStatics.LocationList.GetLocation.Where(l => !l.Region.Equals("dungeon")).ToList();
 
 
             // conceal some data about dungeon location in case whoever pulls this JSON is trying to make a map
             foreach (Location l in locations)
             {
-                if (l.dbName.Contains("_dungeon"))
+                if (l.Region.Equals("dungeon"))
                 {
                     l.X = 0;
                     l.Y = 0;

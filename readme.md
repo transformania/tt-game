@@ -89,6 +89,10 @@ This will drop your existing database, recreate from migrations and apply the se
 To download up-to-date images from the server you can do the following
 `Powershell .\build.ps1 -target "Recreate-Images"`
 
+## Running turn updates in dev environment ##
+To run turn updates in a dev environment, you can do the following
+`Powershell .\build.ps1 -target "Turn-Update"
+
 ## Feature Toggles ##
 
 We are starting to use a concept known as Feature Toggles to allow us to work on new functionality but wrap it up behind boolen switches so we can publish code to production but not show any of 

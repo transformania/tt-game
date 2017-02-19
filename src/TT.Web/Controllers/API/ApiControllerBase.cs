@@ -14,7 +14,7 @@ namespace TT.Web.Controllers.API
             GetUserId = () => User.Identity.GetUserId();
         }
 
-        public void OverrideGetUserId(Func<string> getUserId)
+        internal void OverrideGetUserId(Func<string> getUserId)
         {
             GetUserId = getUserId;
         }

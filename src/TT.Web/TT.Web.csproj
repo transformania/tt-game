@@ -246,6 +246,7 @@
     <Compile Include="Controllers\Admin\DonatorController.cs" />
     <Compile Include="Controllers\Admin\RestockItemController.cs" />
     <Compile Include="Controllers\API\ApiControllerBase.cs" />
+    <Compile Include="Controllers\API\WorldUpdateController.cs" />
     <Compile Include="Controllers\API\ChatRoomController.cs" />
     <Compile Include="Controllers\Admin\TomeController.cs" />
     <Compile Include="Controllers\ChatController.cs" />

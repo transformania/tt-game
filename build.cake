@@ -9,7 +9,7 @@ var target = Argument("target", EnvironmentVariable("TT_TARGET") ?? "Default");
 var configuration = Argument("configuration", EnvironmentVariable("TT_CONFIGURATION") ?? "Release");
 var dbType = Argument("dbType", EnvironmentVariable("TT_DBTYPE") ?? "localdb_v2").ToLower();
 var dbName = Argument("dbName", EnvironmentVariable("TT_DBNAME") ?? "Stats");
-
+var updateUrl = Argument("updateUrl", "http://localhost:52223/API/WorldUpdate");
 var imageUrl = Argument("imageUrl", "https://www.transformaniatime.com/Images/PvP.zip");
 
 // Dictionary of DB instances and connection strings
@@ -186,6 +186,16 @@ Task("Seed-DB")
             }
         }
         System.IO.File.Create("seeded.flg");
+    }
+);
+
+Task("Turn-Update")
+    .Does(() => {
+        using (var wc = new System.Net.WebClient())
+        {
+            Information("POSTing to " + updateUrl);
+            wc.UploadString(updateUrl, "");
+        }
     }
 );
 

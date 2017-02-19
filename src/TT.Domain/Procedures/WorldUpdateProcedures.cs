@@ -18,44 +18,7 @@ namespace TT.Domain.Procedures
 {
     public static class WorldUpdateProcedures
     {
-        private static readonly object @lock = new object();
-
-        /// <summary>
-        /// Call the update world method only if an update isn't already running, otherwise do nothing
-        /// </summary>
-        public static void UpdateWorldIfReady(CancellationToken ct)
-        {
-            IPvPWorldStatRepository worldStatRepo = new EFPvPWorldStatRepository();
-            var worldStat = worldStatRepo.PvPWorldStats.First();
-
-            // first check for calls that missed the lock
-            if (!worldStat.WorldIsUpdating)
-            {
-                // lock any other thread that might have managed to get passed the first check
-                lock (@lock)
-                {
-                    // reload the entity to be fresh in case a thread had already passed through the lock
-                    // and committed changes to the database
-                    worldStatRepo.ReloadPvPWorldStat(worldStat);
-
-                    // second check
-                    if (!worldStat.WorldIsUpdating)
-                    {
-                        worldStat.TurnNumber++;
-                        worldStat.WorldIsUpdating = true;
-                        worldStat.LastUpdateTimestamp = DateTime.UtcNow;
-
-                        // save changes to database for the next thread to check
-                        worldStatRepo.SavePvPWorldStat(worldStat);
-
-                        // update world
-                        UpdateWorld(ct);
-                    }
-                }
-            }
-        }
-
-        private static void UpdateWorld(CancellationToken ct)
+        public static void UpdateWorld()
         {
             var worldStats = DomainRegistry.Repository.FindSingle(new GetWorld());
 

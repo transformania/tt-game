@@ -105,14 +105,6 @@ namespace TT.Web.Controllers
             double secondsSinceUpdate = Math.Abs(Math.Floor(world.LastUpdateTimestamp.Subtract(DateTime.UtcNow).TotalSeconds));
             ViewBag.SecondsUntilUpdate = PvPStatics.TurnSecondLength-(int)secondsSinceUpdate;
 
-            // if it has been long enough since last update, force an update to occur
-            if (world.TurnNumber < PvPStatics.RoundDuration
-                && secondsSinceUpdate > PvPStatics.TurnSecondLength
-                && !world.WorldIsUpdating)
-            {
-                HostingEnvironment.QueueBackgroundWorkItem(ct => WorldUpdateProcedures.UpdateWorldIfReady(ct));
-            }
-
             // turn off world update toggle if it's simply been too long
             if (secondsSinceUpdate > 90 && (PvPStatics.AnimateUpdateInProgress || world.WorldIsUpdating))
             {

@@ -649,7 +649,7 @@ namespace TT.Domain.Procedures
                         }
                         else
                         {
-                            return CleanString(tfMessage.TFMessage_20_Percent_1st_M, player, attacker);
+                            return CleanString(tfMessage.TFMessage_20_Percent_3rd, player, attacker);
                         }
                     }
                 } 

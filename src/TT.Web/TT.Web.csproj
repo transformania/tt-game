@@ -256,6 +256,7 @@
     <Compile Include="Controllers\InfoController.cs" />
     <Compile Include="Controllers\ItemController.cs" />
     <Compile Include="Controllers\MessagesController.cs" />
+    <Compile Include="Controllers\ModeratorController.cs" />
     <Compile Include="Controllers\NPCController.cs" />
     <Compile Include="Controllers\PvPAdminController.cs" />
     <Compile Include="Controllers\PvPController.cs" />
@@ -864,8 +865,10 @@
     <Content Include="Views\PvP\RoundLeaderboards\XP\Alpha_41.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_41.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Statistics\Alpha_41.cshtml" />
-    <Content Include="Views\PvPAdmin\ViewAbusiveMessages.cshtml" />
+    <Content Include="Views\Moderator\ViewAbusiveMessages.cshtml" />
     <Content Include="Views\Account\TermsOfService.cshtml" />
+    <Content Include="Views\Moderator\ViewStrikes.cshtml" />
+    <Content Include="Views\Moderator\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

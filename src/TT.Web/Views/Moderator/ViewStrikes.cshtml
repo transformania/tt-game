@@ -1,0 +1,86 @@
+﻿@using TT.Domain.Statics
+@model TT.Domain.ViewModels.AddStrikeViewModel
+
+<nav class="navbar navbar-default outsideContainer navbarTT2">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+                <li>@Html.ActionLink("Back to moderator panel", "Index", "Moderator")</li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+<div>
+    <p class="infoMessage result"></p>
+    <p class="infoMessage error"></p>
+    <p class="infoMessage suberror"></p>
+</div>
+
+<div class="containerInner">
+    <h1>Assign Strike</h1>
+    <p>Moderators can assign a strike to a misbehaving player here.</p><br>
+
+    <p>This strike is being posted against @Html.ActionLink($"{Model.PlayerUserStrikesDetail.FirstName} {Model.PlayerUserStrikesDetail.LastName}", "LookAtPlayer_FromMembershipId", "PvP", new { id = Model.UserId }, null) with the account name "<b>@Model.PlayerUserStrikesDetail.User.UserName</b>".</p><br>
+
+    <p>@Model.PlayerUserStrikesDetail.FirstName is at <b>@Model.PlayerUserStrikesDetail.User.Strikes.Count()/@PvPStatics.MaxStrikesPerRound</b> strikes.</p><br>
+
+    @{
+        if (Model.PlayerUserStrikesDetail.User.Strikes.Any())
+        {
+            <p>Previous strikes:</p>
+
+            <table class="table table-hover dt-responsive messageTable">
+                <thead>
+                    <tr>
+                        <th>Date/Time</th>
+                        <th>Reason</th>
+                        <th>Round</th>
+                        <th>By Moderator</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        foreach (var strike in Model.PlayerUserStrikesDetail.User.Strikes)
+                        {
+                            <tr>
+                                <td>@strike.Timestamp.ToString("MMMM dd, yyyy")</td>
+                                <td>@strike.Reason</td>
+                                <td>@strike.Round</td>
+                                <td>@strike.FromModerator.UserName</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table><br><br>
+        }
+    }
+
+
+    @using (Html.BeginForm("AddStrike", "Moderator", FormMethod.Post))
+    {
+
+        @Html.AntiForgeryToken()
+
+        <p>Reason for strike:</p>
+        @Html.TextAreaFor(m => m.Reason, new { @class = "text-container" })<br><br>
+
+        @Html.HiddenFor(m => m.UserId)
+
+        <br>
+        <input type="submit" class="btn btn-chat" value="Send" />
+    }
+
+</div>

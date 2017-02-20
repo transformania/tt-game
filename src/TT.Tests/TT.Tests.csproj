@@ -144,6 +144,7 @@
     <Compile Include="Builders\Identity\StatBuilder.cs" />
     <Compile Include="Builders\Identity\CaptchaEntryBuilder.cs" />
     <Compile Include="Builders\Identity\DonatorBuilder.cs" />
+    <Compile Include="Builders\Identity\StrikeBuilder.cs" />
     <Compile Include="Builders\Item\InanimateXPBuilder.cs" />
     <Compile Include="Builders\MindControl\VictimMindControlBuilder.cs" />
     <Compile Include="Builders\Players\PlayerLogBuilder.cs" />
@@ -172,6 +173,7 @@
     <Compile Include="Domain\Commands\Forms\SetFormSourceBecomesItemFKTests.cs" />
     <Compile Include="Domain\Commands\Forms\TFMessageSetFKsTests.cs" />
     <Compile Include="Domain\Commands\Game\UpdateRoundNumberTests.cs" />
+    <Compile Include="Domain\Commands\Identity\AddStrikeTests.cs" />
     <Compile Include="Domain\Commands\Identity\SetArtistBioVisibilityTests.cs" />
     <Compile Include="Domain\Commands\Identity\UpdateDonatorTests.cs" />
     <Compile Include="Domain\Commands\Identity\CreateDonatorTests.cs" />
@@ -224,6 +226,7 @@
     <Compile Include="Domain\Queries\Identity\GetPlayerStatsTest.cs" />
     <Compile Include="Domain\Queries\Identity\GetUserDonatorTest.cs" />
     <Compile Include="Domain\Queries\Identity\GetUserDonatorsTests.cs" />
+    <Compile Include="Domain\Queries\Identity\GetUserStrikesTests.cs" />
     <Compile Include="Domain\Queries\Identity\UserCaptchaIsExpiredTests.cs" />
     <Compile Include="Domain\Queries\Item\GetHighestLevelPlayerItemsTests.cs" />
     <Compile Include="Domain\Queries\Item\GetItemsAtLocationVisibleToGameModeTests.cs" />

@@ -38,6 +38,18 @@ namespace TT.Domain.Mappings.Identity
                 .HasRequired(cr => cr.Owner)
                 .WithMany(s => s.Stats).Map(m => m.MapKey("OwnerMembershipId"));
 
+            modelBuilder.Entity<Strike>()
+                .ToTable("Strikes")
+                .HasKey(u => u.Id);
+
+            modelBuilder.Entity<Strike>()
+               .HasRequired(cr => cr.User)
+               .WithMany(s => s.Strikes).Map(m => m.MapKey("UserMembershipId"));
+
+            modelBuilder.Entity<Strike>()
+               .HasRequired(cr => cr.FromModerator)
+               .WithMany(s => s.StrikesGiven).Map(m => m.MapKey("FromModerator"));
+
         }
 
         protected override void Configure()

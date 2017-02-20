@@ -69,6 +69,8 @@ namespace TT.Domain.Statics
         public const string Permissions_QuestWriter = "questwriter";
         public const string Permissions_Chaoslord = "chaoslord";
 
+        public const int MaxStrikesPerRound = 3;
+
         public static readonly int[] Item_SoulActivityLevels_Minutes = {
                                                                  240,
                                                                  1440,

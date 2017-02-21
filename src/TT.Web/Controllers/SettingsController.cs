@@ -24,18 +24,21 @@ namespace TT.Web.Controllers
     public class SettingsController : Controller
     {
          [Authorize]
-         public ActionResult Settings()
-         {
-             string myMembershipId = User.Identity.GetUserId();
-             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+        public ActionResult Settings()
+        {
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
-             ViewBag.GameMode = me.GameMode;
-             ViewBag.Mobility = me.Mobility;
-             ViewBag.TimeUntilReroll = Math.Round(RerollProcedures.GetTimeUntilReroll(me).TotalMinutes);
-             ViewBag.TimeUntilLogout = PvPStatics.OfflineAfterXMinutes - Math.Abs(Math.Floor(me.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalMinutes));
+            var output = new SettingsPageViewModel
+            {
+                TimeUntilReroll = Math.Round(RerollProcedures.GetTimeUntilReroll(me).TotalMinutes),
+                TimeUntilLogout = PvPStatics.OfflineAfterXMinutes - Math.Abs(Math.Floor(me.LastActionTimestamp.Subtract(DateTime.UtcNow).TotalMinutes)),
+                Player = me,
+                Strikes = DomainRegistry.Repository.Find(new GetUserStrikes { UserId = myMembershipId })
+            };
 
-             return View(me);
-         }
+            return View(output);
+        }
 
         [Authorize]
         public ActionResult ChangeGameMode(int mode)

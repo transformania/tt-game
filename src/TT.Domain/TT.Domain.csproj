@@ -172,6 +172,7 @@
     <Compile Include="Commands\Forms\SetFormSourceBecomesItemFK.cs" />
     <Compile Include="Commands\Forms\SetTFMessageFKs.cs" />
     <Compile Include="Commands\Game\UpdateRoundNumber.cs" />
+    <Compile Include="Commands\Identity\AddStrike.cs" />
     <Compile Include="Commands\Identity\CreateCaptchaEntry.cs" />
     <Compile Include="Commands\Identity\SetArtistBioVisibility.cs" />
     <Compile Include="Commands\Identity\UpdateCaptchaEntry.cs" />
@@ -277,6 +278,7 @@
     <Compile Include="DTOs\Identity\StatDetail.cs" />
     <Compile Include="DTOs\Identity\CaptchaEntryDetail.cs" />
     <Compile Include="DTOs\Identity\DonatorDetail.cs" />
+    <Compile Include="DTOs\Identity\StrikeDetail.cs" />
     <Compile Include="DTOs\Identity\UserDonatorDetail.cs" />
     <Compile Include="DTOs\Forms\BaseFormDetail.cs" />
     <Compile Include="DTOs\Item\InanimateXPDetail.cs" />
@@ -286,6 +288,7 @@
     <Compile Include="DTOs\Players\BusStopsViewModel.cs" />
     <Compile Include="DTOs\Players\BusStop.cs" />
     <Compile Include="DTOs\Players\PlayerBusDetail.cs" />
+    <Compile Include="DTOs\Players\PlayerUserStrikesDetail.cs" />
     <Compile Include="DTOs\Skills\SkillFormSourceDetail.cs" />
     <Compile Include="DTOs\TFEnergies\TFEnergyDetail.cs" />
     <Compile Include="Entities\Chat\ChatLog.cs" />
@@ -295,6 +298,7 @@
     <Compile Include="Entities\Identity\CaptchaEntry.cs" />
     <Compile Include="Entities\Identity\Donator.cs" />
     <Compile Include="Entities\Identity\Achievement.cs" />
+    <Compile Include="Entities\Identity\Strike.cs" />
     <Compile Include="Entities\Items\InanimateXP.cs" />
     <Compile Include="Entities\MindControl\VictimMindControl.cs" />
     <Compile Include="Entities\TFEnergies\TFEnergy.cs" />
@@ -494,6 +498,7 @@
     <Compile Include="Queries\Identity\GetPlayerStats.cs" />
     <Compile Include="Queries\Identity\GetUserDonator.cs" />
     <Compile Include="Queries\Identity\GetUserDonators.cs" />
+    <Compile Include="Queries\Identity\GetUserStrikes.cs" />
     <Compile Include="Queries\Identity\UserCaptchaIsExpired.cs" />
     <Compile Include="Queries\Item\GetAllItemsOfType.cs" />
     <Compile Include="Queries\Item\GetHighestLevelPlayerItems.cs" />
@@ -515,10 +520,12 @@
     <Compile Include="Queries\Messages\PlayerOwnsMessage.cs" />
     <Compile Include="Queries\MindControl\GetMindControlsForPlayer.cs" />
     <Compile Include="Queries\Players\GetBusStops.cs" />
+    <Compile Include="Queries\Players\GetPlayerByUserId.cs" />
     <Compile Include="Queries\Players\GetPlayer.cs" />
     <Compile Include="Queries\Players\GetPlayerBusDetail.cs" />
     <Compile Include="Queries\Players\GetPlayerByBotId.cs" />
     <Compile Include="Queries\Players\GetBaseForms.cs" />
+    <Compile Include="Queries\Players\GetPlayerUserStrikes.cs" />
     <Compile Include="Queries\Players\IsBaseForm.cs" />
     <Compile Include="Queries\Players\PlayerIsAtBusStop.cs" />
     <Compile Include="Queries\Player\GetPlayerFormFromMembership.cs" />
@@ -548,6 +555,7 @@
     <Compile Include="Utilities\ResourceNotFoundException.cs" />
     <Compile Include="Utilities\XmlExtensions.cs" />
     <Compile Include="Utilities\XmlResourceLoader.cs" />
+    <Compile Include="ViewModels\AddStrikeViewModel.cs" />
     <Compile Include="ViewModels\Assets\EditRestockItemViewModel.cs" />
     <Compile Include="ViewModels\Assets\CreateRestockItemViewModel.cs" />
     <Compile Include="ViewModels\Assets\EditTomeViewModel.cs" />
@@ -607,6 +615,7 @@
     <Compile Include="ViewModels\ServerBalance.cs" />
     <Compile Include="ViewModels\SetBioViewModel.cs" />
     <Compile Include="ViewModels\SetFriendNicknameViewModel.cs" />
+    <Compile Include="ViewModels\SettingsPageViewModel.cs" />
     <Compile Include="ViewModels\SkillBookViewModel.cs" />
     <Compile Include="ViewModels\SkillViewModel.cs" />
     <Compile Include="ViewModels\StaticEffect.cs" />

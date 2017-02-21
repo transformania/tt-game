@@ -12,6 +12,8 @@ namespace TT.Domain.Entities.Identity
         public string Email { get; private set; }
         public ICollection<RPClassifiedAd> RPClassifiedAds { get; private set; } = new List<RPClassifiedAd>();
         public ICollection<Stat> Stats { get; private set; } = new List<Stat>();
+        public ICollection<Strike> Strikes { get; private set; } = new List<Strike>();
+        public ICollection<Strike> StrikesGiven { get; private set; } = new List<Strike>();
         public Donator Donator { get; protected set; }
 
         public ArtistBio ArtistBio { get; protected set; }

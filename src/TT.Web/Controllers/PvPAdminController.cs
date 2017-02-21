@@ -19,7 +19,6 @@ using TT.Domain.Commands.RPClassifiedAds;
 using TT.Domain.DTOs.Game;
 using TT.Domain.Exceptions.RPClassifiedAds;
 using TT.Domain.Queries.Game;
-using TT.Domain.Queries.Messages;
 
 namespace TT.Web.Controllers
 {
@@ -1899,17 +1898,5 @@ namespace TT.Web.Controllers
             TempData["Result"] = "News Post " + Id + " deleted successfully!";
             return RedirectToAction("ListNewsPosts", "PvPAdmin");
         }
-
-        [Authorize]
-        public ActionResult ViewAbusiveMessages()
-        {
-            if (!User.IsInRole(PvPStatics.Permissions_Admin) && !User.IsInRole(PvPStatics.Permissions_Moderator))
-            {
-                return RedirectToAction("Play", "PvP");
-            }
-            var output = DomainRegistry.Repository.Find(new GetMessagesReportedAbusive());
-            return View(output);
-        }
-
     }
 }

@@ -17,7 +17,7 @@ using TT.Domain.Queries.Identity;
 namespace TT.Web.Controllers
 {
     [Authorize]
-    public class AccountController : Controller
+    public partial class AccountController : Controller
     {
         public AccountController()
         {
@@ -65,7 +65,7 @@ namespace TT.Web.Controllers
         // GET: /Account/Login
 
         [AllowAnonymous]
-        public ActionResult Login(string returnUrl)
+        public virtual ActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
             return View();
@@ -77,7 +77,7 @@ namespace TT.Web.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(LoginModel model, string returnUrl)
+        public virtual ActionResult Login(LoginModel model, string returnUrl)
         {
 
             if (FeatureContext.IsEnabled<UseCaptcha>())
@@ -118,10 +118,10 @@ namespace TT.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult LogOff()
+        public virtual ActionResult LogOff()
         {
             AuthenticationManager.SignOut();
-            return RedirectToAction("Play", "PvP");
+            return RedirectToAction(MVC.PvP.Play());
 
         }
 
@@ -129,7 +129,7 @@ namespace TT.Web.Controllers
         // GET: /Account/Register
 
         [AllowAnonymous]
-        public ActionResult Register()
+        public virtual ActionResult Register()
         {
             return View();
         }
@@ -140,7 +140,7 @@ namespace TT.Web.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult Register(RegisterModel model)
+        public virtual ActionResult Register(RegisterModel model)
         {
 
             if (FeatureContext.IsEnabled<UseCaptcha>())
@@ -157,16 +157,16 @@ namespace TT.Web.Controllers
                     ModelState.AddModelError("", "Incorrect captcha answer.");
                 }
             }
-            
+
 
             if (ModelState.IsValid)
             {
-                var user = new User() { UserName = model.UserName, Email=model.Email, CreateDate=DateTime.Now };
+                var user = new User() { UserName = model.UserName, Email = model.Email, CreateDate = DateTime.Now };
                 var result = UserManager.Create(user, model.Password);
                 if (result.Succeeded)
                 {
-                    SignInManager.SignIn(user, isPersistent: false, rememberBrowser:false);
-                    return RedirectToAction("Play", "PvP");
+                    SignInManager.SignIn(user, isPersistent: false, rememberBrowser: false);
+                    return RedirectToAction(MVC.PvP.Play());
                 }
                 else
                 {
@@ -183,7 +183,7 @@ namespace TT.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Disassociate(string provider, string providerUserId)
+        public virtual ActionResult Disassociate(string provider, string providerUserId)
         {
             ManageMessageId? message = null;
             var owner = UserManager.Find(new UserLoginInfo(provider, providerUserId));
@@ -199,13 +199,13 @@ namespace TT.Web.Controllers
                     message = ManageMessageId.Error;
                 }
             }
-            return RedirectToAction("Manage", new { Message = message });
+            return RedirectToAction(MVC.Account.Manage(message));
         }
 
         //
         // GET: /Account/Manage
 
-        public ActionResult Manage(ManageMessageId? message)
+        public virtual ActionResult Manage(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
                 message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
@@ -214,14 +214,14 @@ namespace TT.Web.Controllers
                 : message == ManageMessageId.ChangeEmailSuccess ? "Your e-mail address has been changed."
                 : "";
             ViewBag.HasLocalPassword = HasPassword();
-            ViewBag.ReturnUrl = Url.Action("Manage");
+            ViewBag.ReturnUrl = Url.Action(MVC.Account.Manage());
             return View();
         }
 
         //
         // GET: /Account/ChangeEmail
 
-        public ActionResult ChangeEmail()
+        public virtual ActionResult ChangeEmail()
         {
             LocalEmailModel Email = new LocalEmailModel
             {
@@ -235,7 +235,7 @@ namespace TT.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ChangeEmail(LocalEmailModel model)
+        public virtual ActionResult ChangeEmail(LocalEmailModel model)
         {
             var user = GetUser();
             if (ModelState.IsValid)
@@ -251,7 +251,7 @@ namespace TT.Web.Controllers
                             SignInManager.SignIn(user, isPersistent: false, rememberBrowser: false);
                         }
 
-                        return RedirectToAction("Manage", new { Message = ManageMessageId.ChangeEmailSuccess });
+                        return RedirectToAction(MVC.Account.Manage(ManageMessageId.ChangeEmailSuccess));
                     }
                     else
                     {
@@ -268,7 +268,7 @@ namespace TT.Web.Controllers
         }
 
         [AllowAnonymous]
-        public ActionResult TermsOfService()
+        public virtual ActionResult TermsOfService()
         {
             return View();
         }
@@ -278,12 +278,12 @@ namespace TT.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Manage(LocalPasswordModel model)
+        public virtual ActionResult Manage(LocalPasswordModel model)
         {
             bool hasPassword = HasPassword();
             var user = GetUser();
             ViewBag.HasLocalPassword = hasPassword;
-            ViewBag.ReturnUrl = Url.Action("Manage");
+            ViewBag.ReturnUrl = Url.Action(MVC.Account.Manage());
             if (hasPassword)
             {
                 if (ModelState.IsValid)
@@ -294,10 +294,10 @@ namespace TT.Web.Controllers
                         user = UserManager.FindById(User.Identity.GetUserId());
                         if (user != null)
                         {
-                            SignInManager.SignIn(user, isPersistent: false,rememberBrowser:false);
+                            SignInManager.SignIn(user, isPersistent: false, rememberBrowser: false);
                         }
 
-                        return RedirectToAction("Manage", new { Message = ManageMessageId.ChangePasswordSuccess });
+                        return RedirectToAction(MVC.Account.Manage(ManageMessageId.ChangePasswordSuccess));
                     }
                     else
                     {
@@ -319,7 +319,7 @@ namespace TT.Web.Controllers
                     IdentityResult result = UserManager.AddPassword(user.Id, model.NewPassword);
                     if (result.Succeeded)
                     {
-                        return RedirectToAction("Manage", new { Message = ManageMessageId.SetPasswordSuccess });
+                        return RedirectToAction(MVC.Account.Manage(ManageMessageId.SetPasswordSuccess));
                     }
                     else
                     {
@@ -334,7 +334,7 @@ namespace TT.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SubmitCaptcha()
+        public virtual ActionResult SubmitCaptcha()
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -345,7 +345,7 @@ namespace TT.Web.Controllers
                 if (String.IsNullOrEmpty(recaptchaHelper.Response))
                 {
                     TempData["Error"] = "You must correctly answer the captcha in order to do this.";
-                    return RedirectToAction("Play", "PvP");
+                    return RedirectToAction(MVC.PvP.Play());
                 }
                 RecaptchaVerificationResult recaptchaResult = recaptchaHelper.VerifyRecaptchaResponse();
                 if (recaptchaResult != RecaptchaVerificationResult.Success)
@@ -358,7 +358,7 @@ namespace TT.Web.Controllers
                     });
 
                     TempData["Error"] = "Captcha incorrect.  Please try again.";
-                    return RedirectToAction("Play", "PvP");
+                    return RedirectToAction(MVC.PvP.Play());
                 }
                 else if (recaptchaResult == RecaptchaVerificationResult.Success)
                 {
@@ -371,7 +371,7 @@ namespace TT.Web.Controllers
                 }
             }
             TempData["Result"] = "Captcha successfully submitted!  You will not be prompted to do this again for a while.";
-            return RedirectToAction("Play", "PvP");
+            return RedirectToAction(MVC.PvP.Play());
         }
 
 
@@ -384,7 +384,7 @@ namespace TT.Web.Controllers
             }
             else
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
         }
 

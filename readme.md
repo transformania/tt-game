@@ -13,6 +13,7 @@ First off, here is the stack of technologies being used:
 * Javascript for frontend code (as if there's any alternative)
 * Git for source control
 * SignalR for chat / realtime notifications
+* T4MVC for strong typing in MVC
 
 # Good tools to have #
 
@@ -22,6 +23,7 @@ Below are some tools I keep in my developer environment used daily:
 * SQL Server Management Studio 2014 (provides a nice way to access the database in greater detail.  Visual Studio also has some limited built in tools for this)
 * 7-Zip or another similar file archiving program (to extract the SQL backups)
 * Sourcetree (GUI for Git; command line via Bash also works fine if you are comfortable with it)
+* The AutoT4MVC extension for Visual Studio to regenerate T4MVC's files automatically when MVC controllers are changed
 
 # Setting up your development environment #
 

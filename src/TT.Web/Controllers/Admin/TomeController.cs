@@ -10,62 +10,62 @@ using TT.Domain.ViewModels.Assets;
 namespace TT.Web.Controllers.Admin
 {
     [Authorize(Roles = PvPStatics.Permissions_Admin)]
-    public class TomeController : Controller
+    public partial class TomeController : Controller
     {
         // GET: Lore
-        public ActionResult List()
+        public virtual ActionResult List()
         {
 
             var cmd = new GetTomes();
             var tomes = DomainRegistry.Repository.Find(cmd);
 
             SetMessages();
-            return View("~/Views/Admin/Tomes/List.cshtml", tomes);
+            return View(MVC.Admin.Views.Tomes.List, tomes);
         }
 
-        public ActionResult Edit(int Id)
+        public virtual ActionResult Edit(int Id)
         {
             var cmd = new GetTome { TomeId = Id };
             TomeDetail detail = DomainRegistry.Repository.FindSingle(cmd);
 
             var output = new UpdateTomeViewModel(detail);
-           
+
             SetMessages();
-            return View("~/Views/Admin/Tomes/Edit.cshtml", output);
+            return View(MVC.Admin.Views.Tomes.Edit, output);
         }
 
         [ValidateInput(false)]
-        public ActionResult EditSend(UpdateTome cmd)
+        public virtual ActionResult EditSend(UpdateTome cmd)
         {
             DomainRegistry.Repository.Execute(cmd);
 
             TempData["Result"] = "Tome Id " + cmd.TomeId + " saved successfully.";
-            return RedirectToAction("List");
+            return RedirectToAction(MVC.Tome.List());
         }
 
-        public ActionResult Create()
+        public virtual ActionResult Create()
         {
             var output = new CreateTomeViewModel();
-            return View("~/Views/Admin/Tomes/Create.cshtml", output);
+            return View(MVC.Admin.Views.Tomes.Create, output);
         }
 
         [ValidateInput(false)]
-        public ActionResult CreateSend(CreateTome cmd)
+        public virtual ActionResult CreateSend(CreateTome cmd)
         {
             var tomeId = DomainRegistry.Repository.Execute(cmd);
-            var tome = DomainRegistry.Repository.FindSingle(new GetTome {TomeId = tomeId});
+            var tome = DomainRegistry.Repository.FindSingle(new GetTome { TomeId = tomeId });
 
             TempData["Result"] = "Tome for " + tome.BaseItem.FriendlyName + " created successfully.";
-            return RedirectToAction("List");
+            return RedirectToAction(MVC.Tome.List());
         }
 
-        public ActionResult Delete(int id)
+        public virtual ActionResult Delete(int id)
         {
             var cmd = new DeleteTome { TomeId = id };
             DomainRegistry.Repository.Execute(cmd);
 
             TempData["Result"] = "Tome Id " + id + " deleted successfully.";
-            return RedirectToAction("List");
+            return RedirectToAction(MVC.Tome.List());
         }
 
         private void SetMessages()

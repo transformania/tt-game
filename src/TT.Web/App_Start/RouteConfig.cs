@@ -12,12 +12,13 @@ namespace TT.Web
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             if (FeatureContext.IsEnabled<ChatV2>())
-                routes.MapRoute("Chat", "Chat", new { controller = "Chat", action = "Index" });
+                routes.MapRoute("Chat", "Chat", MVC.Chat.Index());
 
-            routes.MapRoute("ChatRoom", "Chat/Rooms/{room}", new { controller = "Chat", action = "Index", room = UrlParameter.Optional });
+            routes.MapRoute("ChatRoom", "Chat/Rooms/{room}", MVC.Chat.Index(null).AddRouteValue("room", UrlParameter.Optional));
 
-            routes.MapRoute("Home", "", new { controller = "PvP", action = "Play", id = UrlParameter.Optional });
+            routes.MapRoute("Home", "", MVC.PvP.Play().AddRouteValue("id", UrlParameter.Optional));
 
+            // Not using T4MVC on this route because there is no Index() in PvP
             routes.MapRoute(
                name: "Default",
                url: "{controller}/{action}/{id}",

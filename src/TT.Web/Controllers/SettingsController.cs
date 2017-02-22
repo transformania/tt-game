@@ -21,10 +21,10 @@ using TT.Domain.Queries.Identity;
 
 namespace TT.Web.Controllers
 {
-    public class SettingsController : Controller
+    public partial class SettingsController : Controller
     {
-         [Authorize]
-        public ActionResult Settings()
+        [Authorize]
+        public virtual ActionResult Settings()
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -41,7 +41,7 @@ namespace TT.Web.Controllers
         }
 
         [Authorize]
-        public ActionResult ChangeGameMode(int mode)
+        public virtual ActionResult ChangeGameMode(int mode)
         {
             string myMembershipId = User.Identity.GetUserId();
             try
@@ -62,35 +62,35 @@ namespace TT.Web.Controllers
                     modeName = "PvP";
 
                 TempData["Result"] = $"You have successfully change your game to {modeName} mode.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
             catch (DomainException e)
             {
                 TempData["Error"] = e.Message;
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
         }
 
-         [Authorize]
-         public ActionResult ChangeRPMode(bool inRP)
-         {
-             string myMembershipId = User.Identity.GetUserId();
+        [Authorize]
+        public virtual ActionResult ChangeRPMode(bool inRP)
+        {
+            string myMembershipId = User.Identity.GetUserId();
 
-             try
-             {
-                 DomainRegistry.Repository.Execute(new ChangeRPMode {MembershipId = myMembershipId, InRPMode = inRP});
-                 TempData["Result"] = $"You have changed your game mode to RP mode: {inRP}";
-             }
-             catch (DomainException e)
-             {
-                 TempData["Error"] = e.Message;
-             }
+            try
+            {
+                DomainRegistry.Repository.Execute(new ChangeRPMode { MembershipId = myMembershipId, InRPMode = inRP });
+                TempData["Result"] = $"You have changed your game mode to RP mode: {inRP}";
+            }
+            catch (DomainException e)
+            {
+                TempData["Error"] = e.Message;
+            }
 
-             return RedirectToAction("Play","PvP");
-         }
+            return RedirectToAction(MVC.PvP.Play());
+        }
 
-         [Authorize]
-        public ActionResult SetBio()
+        [Authorize]
+        public virtual ActionResult SetBio()
         {
             string myMembershipId = User.Identity.GetUserId();
             SetBioViewModel output = SettingsProcedures.GetSetBioViewModelFromMembershipId(myMembershipId);
@@ -98,87 +98,87 @@ namespace TT.Web.Controllers
             if (output.OwnerMembershipId != myMembershipId)
             {
                 TempData["Error"] = "This is not your biography.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             return View(output);
         }
 
-         [Authorize]
-         public ActionResult SetBioSend(SetBioViewModel input)
-         {
-             string myMembershipId = User.Identity.GetUserId();
-             if (input.Text == null)
-             {
-                 input.Text = "";
-             }
+        [Authorize]
+        public virtual ActionResult SetBioSend(SetBioViewModel input)
+        {
+            string myMembershipId = User.Identity.GetUserId();
+            if (input.Text == null)
+            {
+                input.Text = "";
+            }
 
-             if (input.Tags == null)
-             {
-                 input.Tags = "";
-             }
+            if (input.Tags == null)
+            {
+                input.Tags = "";
+            }
 
-             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
-             if (input.Text.Length > 2500 && !me.DonatorGetsMessagesRewards())
-             {
-                 TempData["Error"] = "The text of your bio is too long (more than 2,500 characters).";
-                 return RedirectToAction("Play", "PvP");
-             }
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            if (input.Text.Length > 2500 && !me.DonatorGetsMessagesRewards())
+            {
+                TempData["Error"] = "The text of your bio is too long (more than 2,500 characters).";
+                return RedirectToAction(MVC.PvP.Play());
+            }
 
-             if (input.Text.Length > 10000 && me.DonatorGetsMessagesRewards())
-             {
-                 TempData["Error"] = "The text of your bio is too long (more than 10,000 characters).";
-                 return RedirectToAction("Play", "PvP");
-             }
+            if (input.Text.Length > 10000 && me.DonatorGetsMessagesRewards())
+            {
+                TempData["Error"] = "The text of your bio is too long (more than 10,000 characters).";
+                return RedirectToAction(MVC.PvP.Play());
+            }
 
-             if (input.WebsiteURL == null)
-             {
-                 input.WebsiteURL = "";
-             }
+            if (input.WebsiteURL == null)
+            {
+                input.WebsiteURL = "";
+            }
 
-             if (input.Tags.Length > 1000)
-             {
-                 TempData["Error"] = "Too many RP tags input text.";
-                 return RedirectToAction("Play", "PvP");
-             }
+            if (input.Tags.Length > 1000)
+            {
+                TempData["Error"] = "Too many RP tags input text.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
 
-             if (input.WebsiteURL.Length > 1500)
-             {
-                 TempData["Error"] = "The text of your website URL is too long (more than 1,500 characters).";
-                 return RedirectToAction("Play", "PvP");
-             }
+            if (input.WebsiteURL.Length > 1500)
+            {
+                TempData["Error"] = "The text of your website URL is too long (more than 1,500 characters).";
+                return RedirectToAction(MVC.PvP.Play());
+            }
 
-             SettingsProcedures.SavePlayerBio(input, myMembershipId);
+            SettingsProcedures.SavePlayerBio(input, myMembershipId);
 
-             TempData["Result"] = "Your bio has been saved.";
-             return RedirectToAction("Play", "PvP");
-         }
+            TempData["Result"] = "Your bio has been saved.";
+            return RedirectToAction(MVC.PvP.Play());
+        }
 
         [Authorize]
-         public ActionResult SetBioDelete(PlayerBio input)
-         {
-             string myMembershipId = User.Identity.GetUserId();
-             SettingsProcedures.DeletePlayerBio(myMembershipId);
+        public virtual ActionResult SetBioDelete(PlayerBio input)
+        {
+            string myMembershipId = User.Identity.GetUserId();
+            SettingsProcedures.DeletePlayerBio(myMembershipId);
 
-             TempData["Result"] = "Your bio has been deleted.";
-             return RedirectToAction("Play", "PvP");
-         }
+            TempData["Result"] = "Your bio has been deleted.";
+            return RedirectToAction(MVC.PvP.Play());
+        }
 
         [Authorize]
-         public ActionResult ViewBio(string id)
-         {
-             Player player = PlayerProcedures.GetPlayerFromMembership(id);
-             ViewBag.Name = player.GetFullName();
+        public virtual ActionResult ViewBio(string id)
+        {
+            Player player = PlayerProcedures.GetPlayerFromMembership(id);
+            ViewBag.Name = player.GetFullName();
 
-             BioPageViewModel output = new BioPageViewModel();
-             output.PlayerBio = SettingsProcedures.GetPlayerBioFromMembershipId(id);
-             if (output.PlayerBio == null)
-             {
-                 TempData["Error"] = "It seems that this player has not written a player biography yet.";
-                 return RedirectToAction("Play", "PvP");
-             }
+            BioPageViewModel output = new BioPageViewModel();
+            output.PlayerBio = SettingsProcedures.GetPlayerBioFromMembershipId(id);
+            if (output.PlayerBio == null)
+            {
+                TempData["Error"] = "It seems that this player has not written a player biography yet.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
 
-             output.Badges = StatsProcedures.GetPlayerBadges(player.MembershipId);
+            output.Badges = StatsProcedures.GetPlayerBadges(player.MembershipId);
 
 
             IContributionRepository contributionRepo = new EFContributionRepository();
@@ -194,22 +194,22 @@ namespace TT.Web.Controllers
             IEffectContributionRepository effectContribtionRepo = new EFEffectContributionRepository();
 
             IEnumerable<BioPageEffectContributionViewModel> myEffects = from c in effectContribtionRepo.EffectContributions
-                                                                 where c.OwnerMemberhipId == player.MembershipId && c.ProofreadingCopy && c.IsLive
-                                                                 select new BioPageEffectContributionViewModel
-                                                                 {
-                                                                     EffectName = c.Effect_FriendlyName,
-                                                                     SpellName = c.Skill_FriendlyName
-                                                                 };
+                                                                        where c.OwnerMemberhipId == player.MembershipId && c.ProofreadingCopy && c.IsLive
+                                                                        select new BioPageEffectContributionViewModel
+                                                                        {
+                                                                            EffectName = c.Effect_FriendlyName,
+                                                                            SpellName = c.Skill_FriendlyName
+                                                                        };
             myEffects = myEffects.ToList();
 
             ViewBag.MyContributions = mySpells.ToList();
             ViewBag.MyEffectContributions = myEffects.ToList();
 
-             return View(output);
-         }
+            return View(output);
+        }
 
         [Authorize]
-        public ActionResult DumpWillpower(string amount)
+        public virtual ActionResult DumpWillpower(string amount)
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -217,27 +217,27 @@ namespace TT.Web.Controllers
             if (me.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You must be fully animate and in protection mode in order to drop your willpower.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert player is not a duel
             if (me.InDuel > 0)
             {
                 TempData["Error"] = "You must finish your duel before you can drop your willpower.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert player is not a quest
             if (me.InQuest > 0)
             {
                 TempData["Error"] = "You must finish your quest before you can drop your willpower.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             if (me.GameMode == GameModeStatics.PvP)
             {
                 TempData["Error"] = "You must be fully animate and in Protection or SuperProtection mode in order to drop your willpower.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             decimal drop = 0;
@@ -246,15 +246,15 @@ namespace TT.Web.Controllers
                 decimal halfHealth = me.MaxHealth / 2;
                 if (halfHealth < me.Health)
                 {
-                   drop = me.Health - halfHealth;
+                    drop = me.Health - halfHealth;
                     PlayerProcedures.ChangePlayerActionManaNoTimestamp(0, -drop, 0, me.Id);
                     TempData["Result"] = "You voluntarily lower your willpower down to half of its maximum, making yourself completely vulnerable to animate transformations.";
-                    return RedirectToAction("Play", "PvP");
+                    return RedirectToAction(MVC.PvP.Play());
                 }
                 else
                 {
                     TempData["Error"] = "Your willpower is already lower than half of its maximum.";
-                    return RedirectToAction("Play", "PvP");
+                    return RedirectToAction(MVC.PvP.Play());
                 }
             }
             else if (amount == PvPStatics.MobilityFull)
@@ -262,26 +262,26 @@ namespace TT.Web.Controllers
 
                 if (me.Health > 0)
                 {
-                   // drop = me.MaxHealth - me.Health;
+                    // drop = me.MaxHealth - me.Health;
                     PlayerProcedures.ChangePlayerActionManaNoTimestamp(0, -me.Health, 0, me.Id);
                     TempData["Result"] = "You voluntarily decrease your willpower to nothing, making yourself vulnerable to any type of transformation.";
-                    return RedirectToAction("Play", "PvP");
+                    return RedirectToAction(MVC.PvP.Play());
                 }
             }
 
             TempData["Error"] = "That is not a valid amount to decrease your willpower to.";
-            return RedirectToAction("Play", "PvP");
+            return RedirectToAction(MVC.PvP.Play());
 
 
         }
 
-        public ActionResult Donate()
+        public virtual ActionResult Donate()
         {
             return View();
         }
 
         [Authorize]
-        public ActionResult SetNickname()
+        public virtual ActionResult SetNickname()
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -290,7 +290,7 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "You are not marked as being a donator.";
                 TempData["SubError"] = "This feature is reserved for players who pledge $7 monthly to support Transformania Time on Patreon.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             Message output = new Message();
@@ -302,7 +302,7 @@ namespace TT.Web.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SetNicknameSend(Message input)
+        public virtual ActionResult SetNicknameSend(Message input)
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -311,14 +311,15 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "You are not marked as a tier 2 or above donator.";
                 TempData["SubError"] = "This feature is reserved for players who pledge $7 monthly to support Transformania Time on Patreon.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
 
-            if (input.MessageText != null && input.MessageText.Length > 20) {
+            if (input.MessageText != null && input.MessageText.Length > 20)
+            {
                 TempData["Error"] = "That nickname is too long. ";
                 TempData["SubError"] = "Nicknames must be no longer than 20 characters.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             PlayerProcedures.SetNickname(input.MessageText, myMembershipId);
@@ -329,11 +330,11 @@ namespace TT.Web.Controllers
             }
 
             TempData["Result"] = "Your new nickname has been set.";
-            return RedirectToAction("Play", "PvP");
+            return RedirectToAction(MVC.PvP.Play());
         }
 
         [Authorize]
-        public ActionResult ToggleBlacklistOnPlayer(int id)
+        public virtual ActionResult ToggleBlacklistOnPlayer(int id)
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -343,7 +344,7 @@ namespace TT.Web.Controllers
             if (target.BotId < AIStatics.ActivePlayerBotId)
             {
                 TempData["Error"] = "You cannot blacklist an AI character.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert that this player has not been friended
@@ -351,18 +352,18 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "You cannot blacklist one of your friends.";
                 TempData["SubError"] = "Cancel your friendship with this player first.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
 
-            TempData["Result"] =  BlacklistProcedures.TogglePlayerBlacklist(me, target);
+            TempData["Result"] = BlacklistProcedures.TogglePlayerBlacklist(me, target);
 
 
-            return RedirectToAction("Play", "PvP");
+            return RedirectToAction(MVC.PvP.Play());
         }
 
         [Authorize]
-        public ActionResult MyBlacklistEntries()
+        public virtual ActionResult MyBlacklistEntries()
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -372,7 +373,7 @@ namespace TT.Web.Controllers
         }
 
         [Authorize]
-        public ActionResult ChangeBlacklistType(int id, int playerId, string type)
+        public virtual ActionResult ChangeBlacklistType(int id, int playerId, string type)
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -383,7 +384,7 @@ namespace TT.Web.Controllers
             if (target.BotId < AIStatics.ActivePlayerBotId)
             {
                 TempData["Error"] = "You cannot blacklist an AI character.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert that this player owns this blacklist entry
@@ -394,58 +395,61 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "You cannot blacklist one of your friends.";
                 TempData["SubError"] = "Cancel your friendship with this player first.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             TempData["Result"] = BlacklistProcedures.TogglePlayerBlacklistType(id, type, me, target);
-            return RedirectToAction("Play", "PvP");
+            return RedirectToAction(MVC.PvP.Play());
 
         }
 
-        public ActionResult ViewPolls()
+        public virtual ActionResult ViewPolls()
         {
             return View();
         }
 
         [Authorize]
-        public ActionResult ViewPoll(int id)
+        public virtual ActionResult ViewPoll(int id)
         {
             string myMembershipId = User.Identity.GetUserId();
             PollEntry output = SettingsProcedures.LoadPoll(id, myMembershipId);
+            // TODO: T4ize
             return View("Polls/Open/poll" + id, output);
         }
 
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ReplyToPoll(PollEntry input)
+        public virtual ActionResult ReplyToPoll(PollEntry input)
         {
             string myMembershipId = User.Identity.GetUserId();
             if (!ModelState.IsValid)
             {
                 ViewBag.Error = "Invalid input.";
+                // TODO: T4ize
                 return View("Polls/Open/poll" + input.PollId, input);
             }
 
             SettingsProcedures.SavePoll(input, 14, input.PollId, myMembershipId);
             TempData["Result"] = "Your response has been recorded.  Thanks for your participation!";
-            return RedirectToAction("Play", "PvP");
+            return RedirectToAction(MVC.PvP.Play());
         }
 
-        public ActionResult PollResults(int id)
+        public virtual ActionResult PollResults(int id)
         {
             IEnumerable<PollEntry> output = SettingsProcedures.GetAllPollResults(id);
+            // TODO: T4ize
             return View("Polls/Read/poll" + id, output);
         }
 
-        public ActionResult PollResultsClosed(int id)
+        public virtual ActionResult PollResultsClosed(int id)
         {
-           // IEnumerable<PollEntry> output = SettingsProcedures.GetAllPollResults(id);
+            // TODO: T4ize
             return View("Polls/Closed/poll" + id);
         }
 
         [Authorize]
-        public ActionResult SetChatColor(string color)
+        public virtual ActionResult SetChatColor(string color)
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -456,24 +460,24 @@ namespace TT.Web.Controllers
             if (!text.Contains(color + ";"))
             {
                 TempData["Error"] = "That is not a valid chat color.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             PlayerProcedures.SetChatColor(me, color);
             TempData["Result"] = "Your chat color has been set to " + color + ".";
-            return RedirectToAction("Play", "PvP");
+            return RedirectToAction(MVC.PvP.Play());
         }
 
 
         [Authorize]
-        public ActionResult WriteAuthorArtistBio()
+        public virtual ActionResult WriteAuthorArtistBio()
         {
             string myMembershipId = User.Identity.GetUserId();
             // assert player has on the artist whitelist
             if (!User.IsInRole(PvPStatics.Permissions_Artist))
             {
                 TempData["Error"] = "You are not eligible to do this at this time.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             AuthorArtistBio output = SettingsProcedures.GetAuthorArtistBio(myMembershipId);
@@ -484,24 +488,24 @@ namespace TT.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public ActionResult WriteAuthorArtistSend(AuthorArtistBio input)
+        public virtual ActionResult WriteAuthorArtistSend(AuthorArtistBio input)
         {
             string myMembershipId = User.Identity.GetUserId();
             // assert player has on the artist whitelist
             if (!User.IsInRole(PvPStatics.Permissions_Artist))
             {
                 TempData["Error"] = "You are not eligible to do this at this time.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             SettingsProcedures.SaveAuthorArtistBio(input, myMembershipId);
 
             TempData["Result"] = "Your artist bio has been saved!";
-            return RedirectToAction("Play", "PvP");
+            return RedirectToAction(MVC.PvP.Play());
         }
 
         [Authorize]
-        public ActionResult AuthorArtistBio(string id)
+        public virtual ActionResult AuthorArtistBio(string id)
         {
             string myMembershipId = User.Identity.GetUserId();
             AuthorArtistBio output = SettingsProcedures.GetAuthorArtistBio(id);
@@ -520,16 +524,17 @@ namespace TT.Web.Controllers
             if (output.PlayerNamePrivacyLevel == 1 && !friends)
             {
                 TempData["Error"] = "This artist bio is only visible to his or her friends.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             if (output.PlayerNamePrivacyLevel == 2)
             {
                 TempData["Error"] = "This artist's biography is currently entirely disabled.  Check again later.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
-            if (output.Text != null) {
+            if (output.Text != null)
+            {
                 output.Text = output.Text.Replace("[br]", "<br>").Replace("[p]", "<p>").Replace("[/p]", "</p>").Replace("[h1]", "<h1>").Replace("[/h1]", "</h1>").Replace("[h2]", "<h2>").Replace("[/h2]", "</h2>").Replace("[h3]", "<h3>").Replace("[/h3]", "</h3>");
             }
 
@@ -541,7 +546,7 @@ namespace TT.Web.Controllers
         /// </summary>
         /// <returns></returns>
         [Authorize]
-        public ActionResult UseMyCustomForm()
+        public virtual ActionResult UseMyCustomForm()
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -553,7 +558,7 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "You do not have any custom base forms.";
                 TempData["SubError"] = "Read more about how to get one here:  http://luxianne.com/forum/viewtopic.php?f=9&t=400";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             ContributorCustomForm newForm = customForms.First();
@@ -586,11 +591,11 @@ namespace TT.Web.Controllers
 
 
             TempData["Result"] = "Your custom form has been set.";
-            return RedirectToAction("Play", "PvP");
+            return RedirectToAction(MVC.PvP.Play());
         }
 
         [Authorize]
-        public ActionResult ArchiveSpell(string name)
+        public virtual ActionResult ArchiveSpell(string name)
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -600,12 +605,13 @@ namespace TT.Web.Controllers
             if (skill == null)
             {
                 TempData["Error"] = "You don't know this spell yet.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             SkillProcedures.ArchiveSpell(skill.dbSkill.Id);
 
-            if (!skill.dbSkill.IsArchived) {
+            if (!skill.dbSkill.IsArchived)
+            {
                 ViewBag.Message = "You have successfully archived " + skill.Skill.FriendlyName + ".";
             }
             else
@@ -613,11 +619,11 @@ namespace TT.Web.Controllers
                 ViewBag.Message = "You have successfully restored " + skill.Skill.FriendlyName + " from your spell archive.";
             }
             ViewBag.Number = skill.dbSkill.Id;
-            return PartialView("partial/ArchiveNotice");
+            return PartialView(MVC.Settings.Views.partial.ArchiveNotice);
         }
 
         [Authorize]
-        public ActionResult ArchiveAllMySpells(string archive)
+        public virtual ActionResult ArchiveAllMySpells(string archive)
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -633,32 +639,32 @@ namespace TT.Web.Controllers
             }
 
 
-            return RedirectToAction("Play", "PvP");
+            return RedirectToAction(MVC.PvP.Play());
         }
 
-        public ActionResult PlayerStats(string id)
+        public virtual ActionResult PlayerStats(string id)
         {
             Player player = PlayerProcedures.GetPlayerFromMembership(id);
             ViewBag.Name = player.GetFullName();
             ViewBag.PlayerId = player.Id;
-            var output = DomainRegistry.Repository.Find(new GetPlayerStats {OwnerId = player.MembershipId});
+            var output = DomainRegistry.Repository.Find(new GetPlayerStats { OwnerId = player.MembershipId });
             return View(output);
         }
 
-        public ActionResult PlayerStatsLeaders()
+        public virtual ActionResult PlayerStatsLeaders()
         {
             List<PlayerAchievementViewModel> output = StatsProcedures.GetPlayerMaxStats().ToList();
             return View(output);
         }
 
-        public ActionResult PlayerStatsTopOfType(string type)
+        public virtual ActionResult PlayerStatsTopOfType(string type)
         {
             IEnumerable<PlayerAchievementViewModel> output = StatsProcedures.GetLeaderPlayersInStat(type);
-            return PartialView("partial/PlayerStatsTopOfType", output);
+            return PartialView(MVC.Settings.Views.partial.PlayerStatsTopOfType, output);
         }
 
         [Authorize]
-        public ActionResult SetFriendNickname(int id)
+        public virtual ActionResult SetFriendNickname(int id)
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -678,7 +684,7 @@ namespace TT.Web.Controllers
             if (friend.OwnerMembershipId != me.MembershipId && friend.OwnerMembershipId != pFriend.MembershipId)
             {
                 TempData["Error"] = "This player is not a friend with you.";
-                return RedirectToAction("MyFriends", "PvP");
+                return RedirectToAction(MVC.PvP.MyFriends());
             }
 
             SetFriendNicknameViewModel output = new SetFriendNicknameViewModel
@@ -691,13 +697,13 @@ namespace TT.Web.Controllers
                 FriendshipId = friend.Id,
             };
 
-                return View(output);
+            return View(output);
         }
 
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SetFriendNicknameSend(SetFriendNicknameViewModel input)
+        public virtual ActionResult SetFriendNicknameSend(SetFriendNicknameViewModel input)
         {
             string myMembershipId = User.Identity.GetUserId();
             if (input.Nickname == null)
@@ -710,12 +716,12 @@ namespace TT.Web.Controllers
             if (input.Nickname.Length == 0)
             {
                 TempData["Error"] = "You must provide a nickname.";
-                return RedirectToAction("MyFriends", "PvP");
+                return RedirectToAction(MVC.PvP.MyFriends());
             }
             else if (input.Nickname.Length > 20)
             {
                 TempData["Error"] = "Friend nicknames must be under 20 characters.";
-                return RedirectToAction("MyFriends", "PvP");
+                return RedirectToAction(MVC.PvP.MyFriends());
             }
 
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -738,7 +744,7 @@ namespace TT.Web.Controllers
             if (friend.OwnerMembershipId != me.MembershipId && friend.OwnerMembershipId != pFriend.MembershipId)
             {
                 TempData["Error"] = "This player is not a friend with you.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // set the nickname based on whether the current player is the owner or the friend
@@ -752,11 +758,11 @@ namespace TT.Web.Controllers
             }
 
 
-            return RedirectToAction("MyFriends", "PvP");
+            return RedirectToAction(MVC.PvP.MyFriends());
         }
 
         [Authorize]
-        public ActionResult MyRPClassifiedAds()
+        public virtual ActionResult MyRPClassifiedAds()
         {
             string userId = User.Identity.GetUserId();
             var output = DomainRegistry.Repository.Find(new GetUserRPClassifiedAds() { UserId = userId });
@@ -768,25 +774,25 @@ namespace TT.Web.Controllers
             return View(output);
         }
 
-        public ActionResult CreateRPClassifiedAd()
+        public virtual ActionResult CreateRPClassifiedAd()
         {
             ViewBag.ErrorMessage = TempData["Error"];
             ViewBag.SubErrorMessage = TempData["SubError"];
             ViewBag.Result = TempData["Result"];
             ViewBag.Edit = false;
 
-            return View("CreateOrUpdateRPClassifiedAd", TempData["input"] ?? new RPClassifiedAdDetail());
+            return View(MVC.Settings.Views.CreateOrUpdateRPClassifiedAd, TempData["input"] ?? new RPClassifiedAdDetail());
         }
 
         [Authorize]
-        public ActionResult UpdateRPClassifiedAd(int id)
+        public virtual ActionResult UpdateRPClassifiedAd(int id)
         {
             string userId = User.Identity.GetUserId();
             RPClassifiedAdDetail ad;
 
             try
             {
-                ad = DomainRegistry.Repository.FindSingle(new GetRPClassifiedAd() { RPClassifiedAdId = id, UserId = userId});
+                ad = DomainRegistry.Repository.FindSingle(new GetRPClassifiedAd() { RPClassifiedAdId = id, UserId = userId });
             }
             catch (RPClassifiedAdException ex)
             when (ex is RPClassifiedAdNotOwnerException ||
@@ -794,7 +800,7 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = ex.UserFriendlyError ?? ex.Message;
                 TempData["SubError"] = ex.UserFriendlySubError;
-                return RedirectToAction("MyRPClassifiedAds", "Settings");
+                return RedirectToAction(MVC.Settings.MyRPClassifiedAds());
             }
 
             ViewBag.ErrorMessage = TempData["Error"];
@@ -802,11 +808,11 @@ namespace TT.Web.Controllers
             ViewBag.Result = TempData["Result"];
             ViewBag.Edit = true;
 
-            return View("CreateOrUpdateRPClassifiedAd", TempData["input"] ?? ad);
+            return View(MVC.Settings.Views.CreateOrUpdateRPClassifiedAd, TempData["input"] ?? ad);
         }
 
         [Authorize]
-        public ActionResult RefreshRPClassifiedAd(int id)
+        public virtual ActionResult RefreshRPClassifiedAd(int id)
         {
             string userId = User.Identity.GetUserId();
 
@@ -820,17 +826,17 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = ex.UserFriendlyError ?? ex.Message;
                 TempData["SubError"] = ex.UserFriendlySubError;
-                return RedirectToAction("MyRPClassifiedAds", "Settings");
+                return RedirectToAction(MVC.Settings.MyRPClassifiedAds());
             }
 
             TempData["Result"] = "RP classified ad successfully refreshed.";
-            return RedirectToAction("MyRPClassifiedAds", "Settings");
+            return RedirectToAction(MVC.Settings.MyRPClassifiedAds());
         }
 
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateRPClassifiedAd(RPClassifiedAdDetail input)
+        public virtual ActionResult CreateRPClassifiedAd(RPClassifiedAdDetail input)
         {
             input.SetNullsToEmptyStrings();
             string userId = User.Identity.GetUserId();
@@ -852,29 +858,29 @@ namespace TT.Web.Controllers
                 TempData["input"] = input;
                 TempData["Error"] = ex.UserFriendlyError ?? ex.Message;
                 TempData["SubError"] = ex.UserFriendlySubError;
-                return RedirectToAction("CreateRPClassifiedAd", "Settings");
+                return RedirectToAction(MVC.Settings.CreateRPClassifiedAd());
             }
             catch (RPClassifiedAdLimitException ex)
             {
                 TempData["Error"] = ex.UserFriendlyError ?? ex.Message;
                 TempData["SubError"] = ex.UserFriendlySubError;
-                return RedirectToAction("MyRPClassifiedAds", "Settings");
+                return RedirectToAction(MVC.Settings.MyRPClassifiedAds());
             }
             catch (UserNotFoundException ex)
             {
                 TempData["Error"] = ex.UserFriendlyError ?? ex.Message;
                 TempData["SubError"] = ex.UserFriendlySubError;
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             TempData["Result"] = "RP classified ad successfully created.";
-            return RedirectToAction("MyRPClassifiedAds", "Settings");
+            return RedirectToAction(MVC.Settings.MyRPClassifiedAds());
         }
 
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult UpdateRPClassifiedAd(RPClassifiedAdDetail input)
+        public virtual ActionResult UpdateRPClassifiedAd(RPClassifiedAdDetail input)
         {
             string userId = User.Identity.GetUserId();
             try
@@ -896,7 +902,7 @@ namespace TT.Web.Controllers
                 TempData["input"] = input;
                 TempData["Error"] = ex.UserFriendlyError ?? ex.Message;
                 TempData["SubError"] = ex.UserFriendlySubError;
-                return RedirectToAction("UpdateRPClassifiedAd", "Settings");
+                return RedirectToAction(MVC.Settings.UpdateRPClassifiedAd());
             }
             catch (RPClassifiedAdException ex)
             when (ex is RPClassifiedAdNotOwnerException ||
@@ -904,16 +910,16 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = ex.UserFriendlyError ?? ex.Message;
                 TempData["SubError"] = ex.UserFriendlySubError;
-                return RedirectToAction("MyRPClassifiedAds", "Settings");
+                return RedirectToAction(MVC.Settings.MyRPClassifiedAds());
             }
 
             TempData["Result"] = "RP classified ad successfully updated.";
-            return RedirectToAction("MyRPClassifiedAds", "Settings");
+            return RedirectToAction(MVC.Settings.MyRPClassifiedAds());
         }
 
 
         [Authorize]
-        public ActionResult DeleteRPClassifiedAd(int id)
+        public virtual ActionResult DeleteRPClassifiedAd(int id)
         {
             string userId = User.Identity.GetUserId();
 
@@ -927,22 +933,22 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = ex.UserFriendlyError ?? ex.Message;
                 TempData["SubError"] = ex.UserFriendlySubError;
-                return RedirectToAction("MyRPClassifiedAds", "Settings");
+                return RedirectToAction(MVC.Settings.MyRPClassifiedAds());
             }
 
             TempData["Result"] = "RP classified ad successfully deleted.";
-            return RedirectToAction("MyRPClassifiedAds", "Settings");
+            return RedirectToAction(MVC.Settings.MyRPClassifiedAds());
         }
 
 
         [Authorize]
-        public ActionResult ChaosRestoreBase()
+        public virtual ActionResult ChaosRestoreBase()
         {
 
             if (!PvPStatics.ChaosMode)
             {
                 TempData["Error"] = "You can only do this in chaos mode.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             string myMembershipId = User.Identity.GetUserId();
@@ -951,24 +957,24 @@ namespace TT.Web.Controllers
             if (me.Form == me.OriginalForm)
             {
                 TempData["Error"] = "You are already in your original form.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             PlayerProcedures.InstantRestoreToBase(me);
 
             TempData["Result"] = "You have been restored to your base form.";
-            return RedirectToAction("Play", "PvP");
+            return RedirectToAction(MVC.PvP.Play());
 
         }
 
         [Authorize]
-        public ActionResult SetArtistBioVisibility(bool isLive)
+        public virtual ActionResult SetArtistBioVisibility(bool isLive)
         {
 
             if (!User.IsInRole(PvPStatics.Permissions_Artist))
             {
                 TempData["Error"] = "You are not on the artist whitelist.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             try
@@ -979,12 +985,12 @@ namespace TT.Web.Controllers
                     IsVisible = isLive
                 });
                 TempData["Result"] = result;
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
             catch (DomainException e)
             {
                 TempData["Error"] = e.Message;
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
         }
     }

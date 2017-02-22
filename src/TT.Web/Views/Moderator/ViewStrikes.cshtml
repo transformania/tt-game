@@ -16,8 +16,8 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
-                <li>@Html.ActionLink("Back to moderator panel", "Index", "Moderator")</li>
+                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
+                <li>@Html.ActionLink("Back to moderator panel", MVC.Moderator.Index())</li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -33,7 +33,7 @@
     <h1>Assign Strike</h1>
     <p>Moderators can assign a strike to a misbehaving player here.</p><br>
 
-    <p>This strike is being posted against @Html.ActionLink($"{Model.PlayerUserStrikesDetail.FirstName} {Model.PlayerUserStrikesDetail.LastName}", "LookAtPlayer_FromMembershipId", "PvP", new { id = Model.UserId }, null) with the account name "<b>@Model.PlayerUserStrikesDetail.User.UserName</b>".</p><br>
+    <p>This strike is being posted against @Html.ActionLink($"{Model.PlayerUserStrikesDetail.FirstName} {Model.PlayerUserStrikesDetail.LastName}", MVC.PvP.LookAtPlayer_FromMembershipId(Model.UserId)) with the account name "<b>@Model.PlayerUserStrikesDetail.User.UserName</b>".</p><br>
 
     <p>@Model.PlayerUserStrikesDetail.FirstName is at <b>@Model.PlayerUserStrikesDetail.User.Strikes.Count()/@PvPStatics.MaxStrikesPerRound</b> strikes.</p><br>
 
@@ -69,7 +69,7 @@
     }
 
 
-    @using (Html.BeginForm("AddStrike", "Moderator", FormMethod.Post))
+    @using (Html.BeginForm(MVC.Moderator.AddStrike(), FormMethod.Post))
     {
 
         @Html.AntiForgeryToken()

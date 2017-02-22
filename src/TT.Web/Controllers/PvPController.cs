@@ -2918,9 +2918,14 @@ namespace TT.Web.Controllers
         }
 
         [Authorize]
-        public virtual ActionResult ChatLog(ChatLogViewModel model)
+        public virtual ActionResult ChatLog(string room, string filter)
         {
-            model.ChatLog = DomainRegistry.Repository.Find(new GetChatLogs { Room = model.Room, Filter = model.Filter });
+            var model = new ChatLogViewModel
+            {
+                Room = room,
+                Filter = filter,
+                ChatLog = DomainRegistry.Repository.Find(new GetChatLogs {Room = room, Filter = filter})
+            };
             return View(MVC.PvP.Views.Chats.ChatLog, model);
         }
 

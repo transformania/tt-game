@@ -493,7 +493,8 @@ namespace TT.Web.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_ChatLog
         {
-            public readonly string model = ("model").ToLowerInvariant();
+            public readonly string room = ("room").ToLowerInvariant();
+            public readonly string filter = ("filter").ToLowerInvariant();
         }
         static readonly ActionParamsClass_ChoosePerk s_params_ChoosePerk = new ActionParamsClass_ChoosePerk();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -1431,14 +1432,15 @@ namespace TT.Web.Controllers
         }
 
         [NonAction]
-        partial void ChatLogOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, TT.Domain.ViewModels.ChatLogViewModel model);
+        partial void ChatLogOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string room, string filter);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult ChatLog(TT.Domain.ViewModels.ChatLogViewModel model)
+        public override System.Web.Mvc.ActionResult ChatLog(string room, string filter)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ChatLog);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "model", model);
-            ChatLogOverride(callInfo, model);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "room", room);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "filter", filter);
+            ChatLogOverride(callInfo, room, filter);
             return callInfo;
         }
 

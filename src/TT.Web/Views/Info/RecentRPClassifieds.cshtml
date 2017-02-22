@@ -16,8 +16,8 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
-                <li>@Html.ActionLink("My RP Classified Ads", "MyRPClassifiedAds", "Settings")</li>
+                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
+                <li>@Html.ActionLink("My RP Classified Ads", MVC.Settings.MyRPClassifiedAds())</li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -82,12 +82,12 @@
 
                 @if (player != null)
                 {
-                    <p>@Html.ActionLink("Look at Ad Poster", "LookAtPlayer", "PvP", new { id = player.Id }, null)</p>
+                    <p>@Html.ActionLink("Look at Ad Poster", MVC.PvP.LookAtPlayer(player.Id))</p>
                 }
 
                 @if (User.IsInRole(TT.Domain.Statics.PvPStatics.Permissions_Admin) || User.IsInRole(TT.Domain.Statics.PvPStatics.Permissions_Moderator))
                 {
-                    <p>@Html.ActionLink("Delete for Violation", "ModDeleteClassified", "PvPAdmin", new { id = ad.RPClassifiedAd.Id }, null)</p>
+                    <p>@Html.ActionLink("Delete for Violation", MVC.PvPAdmin.ModDeleteClassified(ad.RPClassifiedAd.Id))</p>
                 }
 
             </div>

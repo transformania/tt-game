@@ -1,6 +1,6 @@
 ﻿@model TT.Domain.Models.Message
 
-@using (Html.BeginForm("SetNicknameSend", "Settings", FormMethod.Post))
+@using (Html.BeginForm(MVC.Settings.SetNicknameSend(), FormMethod.Post))
 {
     @Html.AntiForgeryToken()
     <h3>What do you want your nickname to be?</h3>

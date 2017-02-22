@@ -58,7 +58,7 @@
             <div class="barData barAP" style="width: @ActionWidth%"></div>
         </div>
 
-        @Html.Partial("~/Views/PvP/partial_XpBar.cshtml", Model)
+        @Html.Partial(MVC.PvP.Views.partial_XpBar, Model)
 
         <span title="Times attacking this update" class="icon icon-timesattacking"></span><span class="avatarCount">@Model.Player.TimesAttackingThisUpdate / 3</span>
         <span title="Times cleansing and meditating this update" class="icon icon-cleansemeditate"></span><span class="avatarCount">@Model.Player.CleansesMeditatesThisRound / 3</span>
@@ -108,7 +108,7 @@
                     <div id="mn_amt" class="barData barAP" style="width: @ActionWidth%"></div>
                 </div>
 
-                @Html.Partial("~/Views/PvP/partial_XpBar.cshtml", Model)
+                @Html.Partial(MVC.PvP.Views.partial_XpBar, Model)
 
                 <span title="Times attacking this update" class="icon icon-timesattacking"></span><span class="avatarCount">@Model.Player.TimesAttackingThisUpdate / 3</span>
                 <span title="Times cleansing and meditating this update" class="icon icon-cleansemeditate"></span><span class="avatarCount">@Model.Player.CleansesMeditatesThisRound / 3</span>

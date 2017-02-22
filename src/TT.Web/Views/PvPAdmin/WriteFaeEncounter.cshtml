@@ -1,6 +1,6 @@
 ﻿@model TT.Domain.ViewModels.FairyChallengeBag
 
-@using (Html.BeginForm("WriteFaeEncounterSend", "PvPAdmin", FormMethod.Post))
+@using (Html.BeginForm(MVC.PvPAdmin.WriteFaeEncounterSend(), FormMethod.Post))
 {
     <h3>Location</h3>
     @Html.TextBoxFor(m => m.dbLocationName)

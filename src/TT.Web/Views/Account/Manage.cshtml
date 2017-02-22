@@ -11,17 +11,17 @@
 
 <p>You're logged in as <strong>@User.Identity.Name</strong>.</p>
 
-@Html.ActionLink("Change e-mail address", "ChangeEmail", "Account")<br>
+@Html.ActionLink("Change e-mail address", MVC.Account.ChangeEmail())<br>
 
-@Html.ActionLink("View Terms of Service", "TermsOfService", "Account")
+@Html.ActionLink("View Terms of Service", MVC.Account.TermsOfService())
 
 @if (ViewBag.HasLocalPassword)
 {
-    @Html.Partial("_ChangePasswordPartial")
+    @Html.Partial(MVC.Account.Views._ChangePasswordPartial)
 }
 else
 { 
-    @Html.Partial("_SetPasswordPartial")
+    @Html.Partial(MVC.Account.Views._SetPasswordPartial)
 }
 
 @section Scripts {

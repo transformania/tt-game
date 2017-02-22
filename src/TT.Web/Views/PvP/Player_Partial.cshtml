@@ -42,7 +42,7 @@
     <div class="charInfoWrapper">
         <span class="name">
             <span style="color: @gendercolor">
-                @Html.ActionLink(Model.Player.GetFullName(), "LookAtPlayer", "PvP", new { id = Model.Player.Id }, null)
+                @Html.ActionLink(Model.Player.GetFullName(), MVC.PvP.LookAtPlayer(Model.Player.Id))
                 @CharactersHere.PrintDuelIcon(Model.Player.ToDbPlayer())
                 @CharactersHere.PrintQuestIcon(Model.Player.ToDbPlayer())
                 <br />

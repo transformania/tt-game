@@ -18,8 +18,8 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
-                <li>@Html.ActionLink("Back to My Covenant", "MyCovenant", "Covenant")</li>
+                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
+                <li>@Html.ActionLink("Back to My Covenant", MVC.Covenant.MyCovenant())</li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -31,14 +31,14 @@
         {
             <div class="covListing">
                 <div class="covFlag" style="background-image: url(/Images/PvP/CovenantFlags/@c.dbCovenant.FlagUrl)"></div>
-                <span class="covBigName">@Html.ActionLink(c.dbCovenant.Name, "LookAtCovenant", "Covenant", new { id = c.dbCovenant.Id }, null)</span>
+                <span class="covBigName">@Html.ActionLink(c.dbCovenant.Name, MVC.Covenant.LookAtCovenant(c.dbCovenant.Id))</span>
                 <span>(lvl @c.dbCovenant.Level)</span>
                 <span class="covMemberCount">(@c.MemberCount members)</span>
-                <span class="covLeader">@Html.ActionLink("Led by " + c.Leader.GetFullName(), "LookAtPlayer", "PvP", new { id = c.Leader.Id }, null)</span>
+                <span class="covLeader">@Html.ActionLink("Led by " + c.Leader.GetFullName(), MVC.PvP.LookAtPlayer(c.Leader.Id))</span>
 
                 <p>@c.dbCovenant.SelfDescription.  @CharactersHere.PrintCovenantSafeground(c.dbCovenant)</p>
 
-                @Html.ActionLink("Apply", "ApplyToCovenant", "Covenant", new { id = c.dbCovenant.Id }, null)
+                @Html.ActionLink("Apply", MVC.Covenant.ApplyToCovenant(c.dbCovenant.Id))
             </div>
         }
     }

@@ -18,7 +18,7 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+                    <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
                 </ul>
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
@@ -34,25 +34,25 @@
 
     <h3>You currently have @ViewBag.MyMoney <span title="Arpeyjis" class="icon icon-money"></span> Arpeyjis to spend.</h3>
 
-    <p>@Html.ActionLink("Sell Something", "SellList", "NPC", new { @class = "attackLink" })</p>
+    <p>@Html.ActionLink("Sell Something", MVC.NPC.SellList(), new { @class = "attackLink" })</p>
 
     <p style="text-align: center;"><br />
         Show by type:<br />
         <table style="width: 100%; text-align: center;">
             <tr style="width: 40%;">
-                <td>@Html.ActionLink("Hats / Headwear", "TradeWithMerchant", "NPC", new { filter = "hat" }, null)</td>
-                <td>@Html.ActionLink("Shirts and Dresses", "TradeWithMerchant", "NPC", new { filter = "shirt" }, null)</td>
-                <td> @Html.ActionLink("Bras and Undershirts", "TradeWithMerchant", "NPC", new { filter = "undershirt" }, null)</td>
+                <td>@Html.ActionLink("Hats / Headwear", MVC.NPC.TradeWithMerchant("hat"))</td>
+                <td>@Html.ActionLink("Shirts and Dresses", MVC.NPC.TradeWithMerchant("shirt"))</td>
+                <td> @Html.ActionLink("Bras and Undershirts", MVC.NPC.TradeWithMerchant("undershirt"))</td>
             </tr>
             <tr style="width: 30%;">
-                <td>@Html.ActionLink("Skirts and Pants", "TradeWithMerchant", "NPC", new { filter = "pants" }, null)</td>
-                <td>@Html.ActionLink("Underwear", "TradeWithMerchant", "NPC", new { filter = "underpants" }, null)</td>
-                <td> @Html.ActionLink("Shoes", "TradeWithMerchant", "NPC", new { filter = "shoes" }, null)</td>
+                <td>@Html.ActionLink("Skirts and Pants", MVC.NPC.TradeWithMerchant("pants"))</td>
+                <td>@Html.ActionLink("Underwear", MVC.NPC.TradeWithMerchant("underpants"))</td>
+                <td> @Html.ActionLink("Shoes", MVC.NPC.TradeWithMerchant("shoes"))</td>
             </tr>
             <tr style="width: 30%;">
-                <td>@Html.ActionLink("Accessories", "TradeWithMerchant", "NPC", new { filter = "accessory" }, null)</td>
-                <td>@Html.ActionLink("Reusable Consumables", "TradeWithMerchant", "NPC", new { filter = "consumable_reusable" }, null)</td>
-                <td> @Html.ActionLink("Consumables", "TradeWithMerchant", "NPC", new { filter = "consumables" }, null)</td>
+                <td>@Html.ActionLink("Accessories", MVC.NPC.TradeWithMerchant("accessory"))</td>
+                <td>@Html.ActionLink("Reusable Consumables", MVC.NPC.TradeWithMerchant("consumable_reusable"))</td>
+                <td> @Html.ActionLink("Consumables", MVC.NPC.TradeWithMerchant("consumables"))</td>
             </tr>
 
         </table>
@@ -67,7 +67,7 @@
         @{
             foreach (ItemViewModel i in Model.OrderBy(i => i.dbItem.dbName).ThenByDescending(i => i.dbItem.Level))
             {
-                @Html.Partial("~/Views/PvP/partial_ShopkeeperItem.cshtml", i)
+                @Html.Partial(MVC.PvP.Views.partial_ShopkeeperItem, i)
             }
         }
     </div>

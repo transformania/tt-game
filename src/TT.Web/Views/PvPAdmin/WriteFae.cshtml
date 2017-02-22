@@ -2,7 +2,7 @@
 
 
 
-@using (Html.BeginForm("WriteFaeSend", "PvPAdmin", FormMethod.Post))
+@using (Html.BeginForm(MVC.PvPAdmin.WriteFaeSend(), FormMethod.Post))
 {
     @Html.AntiForgeryToken()
     <div class="messageInfoContainer clearfix">
@@ -10,8 +10,8 @@
         <span class="charCounter" id="textRemaining"></span>
     </div>
 
-    @Ajax.ActionLink("Show Locations", "AllLocations", "Info", null, new AjaxOptions { UpdateTargetId = "help", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "", OnFailure = "" }, new { @class = "attackLink" })
-    @Ajax.ActionLink("Show Forms", "AllForms", "Info", null, new AjaxOptions { UpdateTargetId = "help", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "launchModal", OnFailure = "launchLocationListModalFail" }, new { @class = "attackLink" })
+    @Ajax.ActionLink("Show Locations", MVC.Info.AllLocations(), new AjaxOptions { UpdateTargetId = "help", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "", OnFailure = "" }, new { @class = "attackLink" })
+    @Ajax.ActionLink("Show Forms", MVC.Info.AllForms(), new AjaxOptions { UpdateTargetId = "help", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "launchModal", OnFailure = "launchLocationListModalFail" }, new { @class = "attackLink" })
 
 
     <div id="help"></div>

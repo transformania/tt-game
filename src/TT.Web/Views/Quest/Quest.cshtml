@@ -29,7 +29,7 @@
 </div>
 
 <div id="playerBox">
-    @Html.Partial("~/Views/PvP/partial_FrontPageAvatar.cshtml", Model.Player)
+    @Html.Partial(MVC.PvP.Views.partial_FrontPageAvatar, Model.Player)
 </div>
 
 <hr />
@@ -70,14 +70,14 @@
         else if (!isAvailable && !connection.HideIfRequirementsNotMet)
         {
             // show the option but give it disabled style indicating it is not open currently
-            <p style="background-color:#ff8585"> @Ajax.ActionLink(connection.ActionName + " " + TT.Domain.Procedures.QuestProcedures.GetRequirementsAsString(connection,Model.BuffBox), "Choice", "Quest", new { Id = connection.Id }, new AjaxOptions { UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" }) </p><br />
+            <p style="background-color:#ff8585"> @Ajax.ActionLink(connection.ActionName + " " + TT.Domain.Procedures.QuestProcedures.GetRequirementsAsString(connection,Model.BuffBox), MVC.Quest.Choice(connection.Id), new AjaxOptions { UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" }) </p><br />
         }
         else
         {
             // show the option as usual
             <p> @CharactersHere.PrintDiceIcon(connection)
 
-                @Ajax.ActionLink(connection.ActionName + " " + TT.Domain.Procedures.QuestProcedures.GetRequirementsAsString(connection, Model.BuffBox), "Choice", "Quest", new { Id = connection.Id }, new AjaxOptions { UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })
+                @Ajax.ActionLink(connection.ActionName + " " + TT.Domain.Procedures.QuestProcedures.GetRequirementsAsString(connection, Model.BuffBox), MVC.Quest.Choice(connection.Id), new AjaxOptions { UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })
             </p><br />
         }
 
@@ -88,12 +88,12 @@
     {
         if (Model.Player.Player.Mobility == PvPStatics.MobilityFull)
         {
-            <p>@Html.ActionLink("End Quest", "EndQuest", "Quest", new { restore = false }, new { @class = "" })</p>
+            <p>@Html.ActionLink("End Quest", MVC.Quest.EndQuest(false), new { @class = "" })</p>
         }
         else
         {
-            <p>@Html.ActionLink("End Quest (return to animate form)", "EndQuest", "Quest", new { restore = true }, new { @class = "" })</p>
-            <p>@Html.ActionLink("End Quest (accept the changes)", "EndQuest", "Quest", new { restore = false }, new { onclick= "return confirm('Are you sure you want to accept your transformation and remain in your current inanimate or pet form?  You will lose your inventory and need to struggle back on your own.')", @class = "" })</p>
+            <p>@Html.ActionLink("End Quest (return to animate form)", MVC.Quest.EndQuest(true), new { @class = "" })</p>
+            <p>@Html.ActionLink("End Quest (accept the changes)", MVC.Quest.EndQuest(false), new { onclick= "return confirm('Are you sure you want to accept your transformation and remain in your current inanimate or pet form?  You will lose your inventory and need to struggle back on your own.')", @class = "" })</p>
         }
     }
 

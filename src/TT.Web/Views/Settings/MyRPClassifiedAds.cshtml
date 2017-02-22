@@ -16,8 +16,8 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
-                <li>@Html.ActionLink("RP Classifieds", "RecentRPClassifieds", "Info")</li>
+                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
+                <li>@Html.ActionLink("RP Classifieds", MVC.Info.RecentRPClassifieds())</li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -37,7 +37,7 @@
     @{
         if (Model.Count() < 3)
         {
-            <p style="margin: 0px 0px 20px 0px; text-align: center;">@Html.ActionLink("New Ad", "CreateRPClassifiedAd", "Settings")</p>
+            <p style="margin: 0px 0px 20px 0px; text-align: center;">@Html.ActionLink("New Ad", MVC.Settings.CreateRPClassifiedAd())</p>
         }
 
       <div class="row">
@@ -69,9 +69,9 @@
                         </p>
 
                         <p>
-                            @Html.ActionLink("Edit Ad", "UpdateRPClassifiedAd", "Settings", new { id = ad.Id }, null)<br />
-                            @Html.ActionLink("Refresh Ad", "RefreshRPClassifiedAd", "Settings", new { id = ad.Id }, null)<br />
-                            @Html.ActionLink("Delete Ad", "DeleteRPClassifiedAd", "Settings", new { id = ad.Id }, new { onclick = "return confirm('Are you sure you want to delete this RP ad?')" })<br />
+                            @Html.ActionLink("Edit Ad", MVC.Settings.UpdateRPClassifiedAd(ad.Id))<br />
+                            @Html.ActionLink("Refresh Ad", MVC.Settings.RefreshRPClassifiedAd(ad.Id))<br />
+                            @Html.ActionLink("Delete Ad", MVC.Settings.DeleteRPClassifiedAd(ad.Id), new { onclick = "return confirm('Are you sure you want to delete this RP ad?')" })<br />
                         </p>
                     </div>
                 }

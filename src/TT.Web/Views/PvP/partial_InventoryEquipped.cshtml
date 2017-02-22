@@ -44,7 +44,7 @@
                 <span class="icon icon-level"><b>@hat.dbItem.Level</b></span>
                 <p class="slotName">Hat
 
-                    @Ajax.ActionLink("[+]", "ShowItemDetails", "Item", new { id = hat.dbItem.Id }, new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
+                    @Ajax.ActionLink("[+]", MVC.Item.ShowItemDetails(hat.dbItem.Id), new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
 
                 </p>
 
@@ -63,7 +63,7 @@
                 <span class="icon icon-level"><b>@shirt.dbItem.Level</b></span>
                 <p class="slotName">Shirt
 
-                    @Ajax.ActionLink("[+]", "ShowItemDetails", "Item", new { id = shirt.dbItem.Id }, new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
+                    @Ajax.ActionLink("[+]", MVC.Item.ShowItemDetails(shirt.dbItem.Id), new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
 
                 </p>
             </div>
@@ -79,7 +79,7 @@
                 <span class="icon icon-level"><b>@undershirt.dbItem.Level</b></span>
                 <p class="slotName">Undershirt
 
-                    @Ajax.ActionLink("[+]", "ShowItemDetails", "Item", new { id = undershirt.dbItem.Id }, new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
+                    @Ajax.ActionLink("[+]", MVC.Item.ShowItemDetails(undershirt.dbItem.Id), new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
 
                 </p>
             </div>
@@ -95,7 +95,7 @@
                 <span class="icon icon-level"><b>@pants.dbItem.Level</b></span>
                 <p class="slotName">Pants
 
-                    @Ajax.ActionLink("[+]", "ShowItemDetails", "Item", new { id = pants.dbItem.Id }, new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
+                    @Ajax.ActionLink("[+]", MVC.Item.ShowItemDetails(pants.dbItem.Id), new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
 
                 </p>
             </div>
@@ -113,7 +113,7 @@
                 <span class="icon icon-level"><b>@underpants.dbItem.Level</b></span>
                 <p class="slotName slotUnderpants">Underpants
 
-                    @Ajax.ActionLink("[+]", "ShowItemDetails", "Item", new { id = underpants.dbItem.Id }, new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
+                    @Ajax.ActionLink("[+]", MVC.Item.ShowItemDetails(underpants.dbItem.Id), new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
 
                 </p>
             </div>
@@ -129,7 +129,7 @@
                 <span class="icon icon-level"><b>@shoes.dbItem.Level</b></span>
                 <p class="slotName">Shoes
 
-                    @Ajax.ActionLink("[+]", "ShowItemDetails", "Item", new { id = shoes.dbItem.Id }, new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
+                    @Ajax.ActionLink("[+]", MVC.Item.ShowItemDetails(shoes.dbItem.Id), new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
 
                 </p>
             </div>
@@ -145,7 +145,7 @@
                 <span class="icon icon-level"><b>@lhand.dbItem.Level</b></span>
                 <p class="slotName">Acc 1
 
-                    @Ajax.ActionLink("[+]", "ShowItemDetails", "Item", new { id = lhand.dbItem.Id }, new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
+                    @Ajax.ActionLink("[+]", MVC.Item.ShowItemDetails(lhand.dbItem.Id), new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
 
                 </p>
             </div>
@@ -161,7 +161,7 @@
                 <span class="icon icon-level"><b>@rhand.dbItem.Level</b></span>
                 <p class="slotName">Acc 2
 
-                    @Ajax.ActionLink("[+]", "ShowItemDetails", "Item", new { id = rhand.dbItem.Id }, new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
+                    @Ajax.ActionLink("[+]", MVC.Item.ShowItemDetails(rhand.dbItem.Id), new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
 
                 </p>
             </div>
@@ -176,7 +176,7 @@
                 <span class="icon icon-level"><b>@pet.dbItem.Level</b></span>
                 <p class="slotName">Pet
 
-                    @Ajax.ActionLink("[+]", "ShowItemDetails", "Item", new { id = pet.dbItem.Id }, new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
+                    @Ajax.ActionLink("[+]", MVC.Item.ShowItemDetails(pet.dbItem.Id), new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
 
                 </p>
             </div>

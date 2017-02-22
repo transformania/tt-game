@@ -29,12 +29,12 @@
 
     if (!string.IsNullOrEmpty(ViewBag.Duel))
     {
-        <p class="infoMessage specialBox2 specialNoticeBox">You are currently engaged in a duel with @ViewBag.Duel!  Click @Html.ActionLink("here", "DuelDetail","Duel", new { id = ViewBag.DuelId}, null) to see details.  <b class="bad">@ViewBag.TurnsLeft</b> turns remaining.</p>
+        <p class="infoMessage specialBox2 specialNoticeBox">You are currently engaged in a duel with @ViewBag.Duel!  Click @Html.ActionLink("here", MVC.Duel.DuelDetail((int)ViewBag.DuelId)) to see details.  <b class="bad">@ViewBag.TurnsLeft</b> turns remaining.</p>
     }
 
     if (!string.IsNullOrEmpty(ViewBag.QuestName))
     {
-        <p class="specialBox specialBox2">You are currently engaged in the quest <b>@ViewBag.QuestName!</b>  Click @Html.ActionLink("here", "Questing", "Quest") to resume questing.</p>
+        <p class="specialBox specialBox2">You are currently engaged in the quest <b>@ViewBag.QuestName!</b>  Click @Html.ActionLink("here", MVC.Quest.Questing()) to resume questing.</p>
     }
 
     if (Model.Boss_Donna == "active")
@@ -67,7 +67,7 @@
         <div class="specialBox"> <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Rumor has it that the infamous corrupted fae Narcissa has started her conquest of the town, purging it of any non-fae... <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> </div>
     }
 
-    <div class="specialBox specialBox2 specialNoticeBox short"><p>Please read over the new @Html.ActionLink("Terms of Service", "TermsOfService", "Account", null, new { target = "_blank" }) which are effective immediately.</p></div>
+    <div class="specialBox specialBox2 specialNoticeBox short"><p>Please read over the new @Html.ActionLink("Terms of Service", MVC.Account.TermsOfService(), new { target = "_blank" }) which are effective immediately.</p></div>
     
 }
 

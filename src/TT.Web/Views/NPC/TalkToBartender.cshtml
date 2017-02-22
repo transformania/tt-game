@@ -16,7 +16,7 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -31,12 +31,12 @@
                 @Html.Raw(ViewBag.Speech)
 
             <br />
-           <br /> @Html.ActionLink("Where is Lindella?", "TalkToBartender", "NPC", new { question = "lindella" }, null)
-            <br /> @Html.ActionLink("Where is Wuffie?", "TalkToBartender", "NPC", new { question = "wuffie" }, null)
-            <br /> @Html.ActionLink("Where is Jewdewfae?", "TalkToBartender", "NPC", new { question = "jewdewfae" }, null)
-            <br /> @Html.ActionLink("Where is Skaldrlyr the Forbidden?", "TalkToBartender", "NPC", new { question = "lorekeeper" }, null)
-            <br /> @Html.ActionLink("Any strange happenings around town?", "TalkToBartender", "NPC", new { question = "boss" }, null)
-            <br /> @Html.ActionLink("Know of any quests I can go on around town?", "TalkToBartender", "NPC", new { question = "quests" }, null)
+           <br /> @Html.ActionLink("Where is Lindella?", MVC.NPC.TalkToBartender("lindella"))
+            <br /> @Html.ActionLink("Where is Wuffie?", MVC.NPC.TalkToBartender("wuffie"))
+            <br /> @Html.ActionLink("Where is Jewdewfae?", MVC.NPC.TalkToBartender("jewdewfae"))
+            <br /> @Html.ActionLink("Where is Skaldrlyr the Forbidden?", MVC.NPC.TalkToBartender("lorekeeper"))
+            <br /> @Html.ActionLink("Any strange happenings around town?", MVC.NPC.TalkToBartender("boss"))
+            <br /> @Html.ActionLink("Know of any quests I can go on around town?", MVC.NPC.TalkToBartender("quests"))
 
         </div>
     </div>

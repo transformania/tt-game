@@ -5,8 +5,8 @@
 
 </head>
 
-<p>@Html.ActionLink("Back to game", "Play", "PvP")</p>
-<p>@Html.ActionLink("Back to my encounter list", "MyDMRolls", "Contribution")</p>
+<p>@Html.ActionLink("Back to game", MVC.PvP.Play())</p>
+<p>@Html.ActionLink("Back to my encounter list", MVC.Contribution.MyDMRolls())</p>
 
 <h1>DM Encounter Contribution</h1>
 
@@ -26,7 +26,7 @@
     @ViewBag.Error
 </div>
 
-@using (Html.BeginForm("SendDMRoll", "Contribution", FormMethod.Post))
+@using (Html.BeginForm(MVC.Contribution.SendDMRoll(), FormMethod.Post))
 {
     @Html.HiddenFor(i => i.Id)
 
@@ -85,8 +85,8 @@
 
 <hr />
 
-<p>@Html.ActionLink("Back to game", "Play", "PvP")</p>
-<p>@Html.ActionLink("Back to my encounter list", "MyDMRolls", "Contribution")</p>
+<p>@Html.ActionLink("Back to game", MVC.PvP.Play())</p>
+<p>@Html.ActionLink("Back to my encounter list", MVC.Contribution.MyDMRolls())</p>
 
 <script>
 

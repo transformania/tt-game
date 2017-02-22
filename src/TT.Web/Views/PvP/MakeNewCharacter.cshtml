@@ -49,7 +49,7 @@
     <button class="btn btn-default" id="randomize" style="margin-bottom: 25px;">Random</button>
 
 
-    @using (Html.BeginForm("NewCharacter", "PvP", FormMethod.Post))
+    @using (Html.BeginForm(MVC.PvP.NewCharacter(), FormMethod.Post))
     {
         @Html.AntiForgeryToken()
     <input id="oldFirstName" type="hidden" value="@ViewBag.OldFirstName">

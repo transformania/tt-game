@@ -16,8 +16,8 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
-                <li>@Html.ActionLink("Settings", "Settings", "Settings")</li>
+                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
+                <li>@Html.ActionLink("Settings", MVC.Settings.Settings())</li>
                 <li><a href="javascript:confirmDeletion()">Delete My Bio</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
@@ -28,14 +28,14 @@
 
     <div id="realLink" class="deleteMessegeConfirm">
         <span style="color:red; font-weight: bold;">Do you really want to delete your bio? If yes then please click link below:</span>
-        @Html.ActionLink("Yes, DELETE my bio", "SetBioDelete", "Settings")<br />
+        @Html.ActionLink("Yes, DELETE my bio", MVC.Settings.SetBioDelete())<br />
     </div>
 
     <h1>Update Your Bio</h1>
 
     <p>You can write and update a short biography about yourself or your player character here. Feel free to mention your RP preferences, if any. You can also list a website for others to contact you externally by or view your stories, artwork, or anything else you care to share publicly.</p>
 
-    @using (Html.BeginForm("SetBioSend", "Settings", FormMethod.Post))
+    @using (Html.BeginForm(MVC.Settings.SetBioSend(), FormMethod.Post))
     {
         @Html.HiddenFor(m => m.Tags)
 
@@ -55,7 +55,7 @@
 
         <p>RP interest tags: Click on the buttons below to turn on or off the themes that interest you while roleplaying.</p>
 
-        @Html.Partial("partial/rptags");
+        @Html.Partial(MVC.Settings.Views.partial.rptags);
         <br>
 
         <input id="resetTags" type="button" value="Click here to reset tags" class="btn" />

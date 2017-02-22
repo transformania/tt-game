@@ -1,6 +1,6 @@
 ﻿@model TT.Web.Models.LocalEmailModel
 
-@using (Html.BeginForm("ChangeEmail", "Account")) {
+@using (Html.BeginForm(MVC.Account.ChangeEmail())) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary()
 

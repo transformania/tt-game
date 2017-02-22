@@ -16,12 +16,12 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
-                <li>@Html.ActionLink("Back to Admin", "Index", "PvPAdmin")</li>
-                <li>@Html.ActionLink("Show All Tiers", "List", "Donator", new {minimumTier = 0}, null)</li>
-                <li>@Html.ActionLink("Show Tier 1+", "List", "Donator", new {minimumTier = 1}, null)</li>
-                <li>@Html.ActionLink("Show Tier 2+", "List", "Donator", new {minimumTier = 2}, null)</li>
-                <li>@Html.ActionLink("Show Tier 3+", "List", "Donator", new { minimumTier = 3 }, null)</li>
+                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
+                <li>@Html.ActionLink("Back to Admin", MVC.PvPAdmin.Index())</li>
+                <li>@Html.ActionLink("Show All Tiers", MVC.Donator.List(0))</li>
+                <li>@Html.ActionLink("Show Tier 1+", MVC.Donator.List(1))</li>
+                <li>@Html.ActionLink("Show Tier 2+", MVC.Donator.List(2))</li>
+                <li>@Html.ActionLink("Show Tier 3+", MVC.Donator.List(3))</li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -37,7 +37,7 @@
 <div class="containerInner">
     <h1>Manage Donators</h1>
 
-    @Html.ActionLink("New Donator", "Create", "Donator")
+    @Html.ActionLink("New Donator", MVC.Donator.Create())
 
     <table id="donatorTable">
         <thead>
@@ -63,7 +63,7 @@
                     <td>@d.Donator.Tier</td>
                     <td>@d.Donator.ActualDonationAmount</td>
                     <td>@d.Donator.SpecialNotes</td>
-                    <td>@Html.ActionLink("[Edit]", "Edit", "Donator", new {id = d.Donator.Id}, null)</td>
+                    <td>@Html.ActionLink("[Edit]", MVC.Donator.Edit(d.Donator.Id))</td>
                 </tr>
             }
         }
@@ -73,7 +73,7 @@
 
     </table>
 
-    @Html.ActionLink("New Donator", "Create", "Donator")
+    @Html.ActionLink("New Donator", MVC.Donator.Create())
 </div>
 
 <style>

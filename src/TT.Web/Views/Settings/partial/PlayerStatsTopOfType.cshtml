@@ -10,7 +10,7 @@
         foreach (PlayerAchievementViewModel p in Model.OrderByDescending(m => m.Achivement.Amount).ThenBy(m => m.Achivement.Timestamp))
         {
             <p>
-                @i. @Html.ActionLink(p.Player.Player.GetFullName(), "LookAtPlayer", "PvP", new { id = p.Player.Player.Id }, null) (@String.Format("{0:n0}",p.Achivement.Amount))
+                @i. @Html.ActionLink(p.Player.Player.GetFullName(), MVC.PvP.LookAtPlayer(p.Player.Player.Id)) (@($"{p.Achivement.Amount:n0}"))
             </p>
             i++;
         }

@@ -16,8 +16,8 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
-                <li>@Html.ActionLink("Back to admin", "Index", "PvPAdmin")</li>
+                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
+                <li>@Html.ActionLink("Back to admin", MVC.PvPAdmin.Index())</li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -50,8 +50,8 @@
                 foreach (var m in Model)
                 {
                     <tr>
-                        <td>@Html.ActionLink(m.Sender.GetFullName(), "LookAtPlayer", "PvP", new { id = m.Sender.Id }, null)</td>
-                        <td>@Html.ActionLink(m.Receiver.GetFullName(), "LookAtPlayer", "PvP", new { id = m.Receiver.Id }, null)</td>
+                        <td>@Html.ActionLink(m.Sender.GetFullName(), MVC.PvP.LookAtPlayer(m.Sender.Id))</td>
+                        <td>@Html.ActionLink(m.Receiver.GetFullName(), MVC.PvP.LookAtPlayer(m.Receiver.Id))</td>
                         <td>@m.MessageText</td>
                         <td class="timeago">@CharactersHere.DatetimeToTimeago(m.Timestamp)</td>
                     </tr>

@@ -5,8 +5,8 @@
 
 <br />
 
-@Html.ActionLink("Yes, abandon this quest", "AbandonConfirm", "Quest")
+@Html.ActionLink("Yes, abandon this quest", MVC.Quest.AbandonConfirm())
 
 <br /><br />
 
-@Ajax.ActionLink("No!  Resume Quest", "Quest", "Quest", null, new AjaxOptions { UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })
+@Ajax.ActionLink("No!  Resume Quest", MVC.Quest.Quest(), new AjaxOptions { UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })

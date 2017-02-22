@@ -44,7 +44,7 @@
                     @Html.LabelFor(m => m.ConfirmPassword)
                     @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control frontForm", placeholder = "Confirm Password" })
 
-                    <p>In order to register, log in, or use this website, you must have read and agreed to all conditions in the @Html.ActionLink("Terms of Service", "TermsOfService", "Account", null, new { target = "_blank" }). <i>Updated @PvPStatics.LastTosUpdate</i></p><br>
+                    <p>In order to register, log in, or use this website, you must have read and agreed to all conditions in the @Html.ActionLink("Terms of Service", MVC.Account.TermsOfService(), new { target = "_blank" }). <i>Updated @PvPStatics.LastTosUpdate</i></p><br>
                     <p>I have read the Terms of Service and agree to all of its policies. <span class="bad"><u>I agree</u>:</span>  <input type="checkbox" id="consent" /></p><br>
 
                     @if (FeatureContext.IsEnabled<UseCaptcha>())

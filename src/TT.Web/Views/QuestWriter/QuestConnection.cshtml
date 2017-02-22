@@ -4,15 +4,15 @@
 @using TT.Domain.Statics
 @using TT.Domain.Models
 
-<p>@Ajax.ActionLink("Click to view all quest states in this quest", "ShowAllQuestStates", "QuestWriter", new { Id = Model.QuestConnection.QuestId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
-<p>@Ajax.ActionLink("Click to view all quest connections in this quest", "ShowAllQuestConnections", "QuestWriter", new { Id = Model.QuestConnection.QuestId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
-<p>@Ajax.ActionLink("View Diagram", "Diagram", "QuestWriter", new { Id = Model.QuestConnection.QuestId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
+<p>@Ajax.ActionLink("Click to view all quest states in this quest", MVC.QuestWriter.ShowAllQuestStates(Model.QuestConnection.QuestId), new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
+<p>@Ajax.ActionLink("Click to view all quest connections in this quest", MVC.QuestWriter.ShowAllQuestConnections(Model.QuestConnection.QuestId), new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
+<p>@Ajax.ActionLink("View Diagram", MVC.QuestWriter.Diagram(Model.QuestConnection.QuestId), new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</p>
 
 
 
 <br />
 
-@using (Ajax.BeginForm("QuestConnectionSend", "QuestWriter", new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" }))
+@using (Ajax.BeginForm(MVC.QuestWriter.QuestConnectionSend(), new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" }))
 {
     @Html.HiddenFor(m => m.QuestConnection.Id)
     @Html.HiddenFor(m => m.QuestConnection.QuestId)
@@ -30,7 +30,7 @@
 
     if (Model.FromQuestState != null)
     {
-        @Ajax.ActionLink("[" + Model.FromQuestState.QuestStateName + "]", "QuestState", "QuestWriter", new { Id = Model.FromQuestState.Id, QuestId = Model.QuestConnection.QuestId, ParentStateId = -1 }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "parentButton" })
+        @Ajax.ActionLink("[" + Model.FromQuestState.QuestStateName + "]", MVC.QuestWriter.QuestState(Model.FromQuestState.Id, Model.QuestConnection.QuestId, -1), new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "parentButton" })
     }
     else
     {
@@ -51,11 +51,11 @@
 
     if (Model.ToQuestState != null)
     {
-        @Ajax.ActionLink("[" + Model.ToQuestState.QuestStateName + "]", "QuestState", "QuestWriter", new { Id = Model.ToQuestState.Id, QuestId = Model.QuestConnection.QuestId, ParentStateId = -1 }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "parentButton" })
+        @Ajax.ActionLink("[" + Model.ToQuestState.QuestStateName + "]", MVC.QuestWriter.QuestState(Model.ToQuestState.Id, Model.QuestConnection.QuestId, -1), new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "parentButton" })
     }
     else
     {
-        @Ajax.ActionLink("[ NEW STATE ]", "QuestState", "QuestWriter", new { Id = -1, QuestId = Model.QuestConnection.QuestId, ParentStateId = -1 }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "newButton" })
+        @Ajax.ActionLink("[ NEW STATE ]", MVC.QuestWriter.QuestState(-1, Model.QuestConnection.QuestId, -1), new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "newButton" })
     }
 
     if (Model.QuestConnection.RequiresRolls())
@@ -72,7 +72,7 @@
 
         if (Model.FailToQuestState != null)
         {
-            @Ajax.ActionLink("[" + Model.FailToQuestState.QuestStateName + "]", "QuestState", "QuestWriter", new { Id = Model.FailToQuestState.Id, QuestId = Model.QuestConnection.QuestId, ParentStateId = -1 }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "parentButton" })
+            @Ajax.ActionLink("[" + Model.FailToQuestState.QuestStateName + "]", MVC.QuestWriter.QuestState(Model.FailToQuestState.Id, Model.QuestConnection.QuestId, -1), new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "parentButton" })
         }
         else
         {
@@ -135,10 +135,10 @@
         {
             <tr>
                 <td>
-                    @Ajax.ActionLink(r.QuestConnectionRequirementName, "QuestConnectionRequirement", "QuestWriter", new { Id = r.Id, QuestId = Model.QuestConnection.QuestId, QuestConnectionId = Model.QuestConnection.Id }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "editButton" })
+                    @Ajax.ActionLink(r.QuestConnectionRequirementName, MVC.QuestWriter.QuestConnectionRequirement(r.Id, Model.QuestConnection.QuestId, Model.QuestConnection.Id), new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "editButton" })
                 </td>
                 <td>
-                    @Ajax.ActionLink("[DELETE]", "QuestConnectionRequirementDelete", "QuestWriter", new { Id = r.Id }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting", Confirm = "Are you sure you want to delete this quest state requirement?" }, new { @class = "deleteButton" })
+                    @Ajax.ActionLink("[DELETE]", MVC.QuestWriter.QuestConnectionRequirementDelete(r.Id), new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting", Confirm = "Are you sure you want to delete this quest state requirement?" }, new { @class = "deleteButton" })
                 </td>
             </tr>
         }
@@ -149,7 +149,7 @@
 @{
     if (Model.QuestConnection.Id > 0)
     {
-        <p>@Ajax.ActionLink("--New Quest Connection Requirement--", "QuestConnectionRequirement", "QuestWriter", new { Id = -1, QuestId = Model.QuestConnection.QuestId, QuestConnectionId = Model.QuestConnection.Id }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "newButton" })</p>
+        <p>@Ajax.ActionLink("--New Quest Connection Requirement--", MVC.QuestWriter.QuestConnectionRequirement(-1, Model.QuestConnection.QuestId, Model.QuestConnection.Id), new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "newButton" })</p>
     }
 }
 

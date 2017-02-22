@@ -4,7 +4,7 @@
     <p id="youAreAttacking">You are attacking @ViewBag.TargetName.</p>  
     <p>This spell will cost you <b>@ViewBag.ManaCost</b> mana to cast against this opponent.</p>
     <span id="attackClose" onclick="closeAttackModal()">Cancel</span>
-@Html.ActionLink("Challenge to Duel", "IssueChallenge", "Duel", new { id = ViewBag.TargetId }, new { @id = "duel_challenge" })
+@Html.ActionLink("Challenge to Duel", MVC.Duel.IssueChallenge((int)ViewBag.TargetId), new { @id = "duel_challenge" })
 <span id="expand" onclick="expandModal()">Expand</span>
     <span id="toggle_all" onclick="toggleAll()">All</span>
     <span id="toggle_animates" onclick="toggleAnimates()">Animate</span>
@@ -12,7 +12,7 @@
     <span id="toggle_animal" onclick="toggleAnimal()">Pet/Animal</span>
     <span id="toggle_mindcontrol" onclick="toggleMindControl()">Mind Control</span>
     <span id="toggle_other" onclick="toggleOthers()">Other</span>
-<span>@Html.ActionLink("View/Archive My Spells", "MySkills", "PvP", null, new {@id = "toggle_mindcontrol"})</span>
+<span>@Html.ActionLink("View/Archive My Spells", MVC.PvP.MySkills(), new {@id = "toggle_mindcontrol"})</span>
 <input id="attack-search-box" type="text" placeholder="filter spells">
 <span>History limit:</span>
 <input id="attack-spell-count" type="number" min="0" max="10" placeholder="count" style="width: 35px;">
@@ -34,7 +34,7 @@
 
 
         <span>
-            @Html.ActionLink(s.Skill.FriendlyName, "Attack", "PvP", new { targetId = ViewBag.TargetId, attackName = s.dbSkill.Name }, new { @class = CharactersHere.GetSpellTypeClass(s), @manacost = s.Skill.ManaCost })
+            @Html.ActionLink(s.Skill.FriendlyName, MVC.PvP.Attack((int)ViewBag.TargetId, s.dbSkill.Name), new { @class = CharactersHere.GetSpellTypeClass(s), @manacost = s.Skill.ManaCost })
         </span>
 
     }

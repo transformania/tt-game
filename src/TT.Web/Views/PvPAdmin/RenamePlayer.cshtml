@@ -15,9 +15,9 @@
         <li>You are under no obligation to fulfill requests.</li>
     </ul>
 
-    @Ajax.ActionLink("Help", "AllForms", "Info", null, new AjaxOptions { UpdateTargetId = "modal", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "launchModal", OnFailure = "launchLocationListModalFail" }, new { @class = "attackLink" })
+    @Ajax.ActionLink("Help", MVC.Info.AllForms(), new AjaxOptions { UpdateTargetId = "modal", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "launchModal", OnFailure = "launchLocationListModalFail" }, new { @class = "attackLink" })
 
-    @using (Html.BeginForm("RenamePlayerSend", "PvPAdmin", FormMethod.Post))
+    @using (Html.BeginForm(MVC.PvPAdmin.RenamePlayerSend(), FormMethod.Post))
     {
         <span>Id:</span>
         @Html.TextAreaFor(m => m.Id)<br><br>

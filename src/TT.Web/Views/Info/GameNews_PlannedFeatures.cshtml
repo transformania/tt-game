@@ -13,10 +13,10 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
-                <li>@Html.ActionLink("News", "GameNews", "Info")</li>
-                <li>@Html.ActionLink("News Archive", "GameNews_Archive", "Info")</li>
-                <li>@Html.ActionLink("Rules of Play", "Rules", "Info")</li>
+                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
+                <li>@Html.ActionLink("News", MVC.Info.GameNews())</li>
+                <li>@Html.ActionLink("News Archive", MVC.Info.GameNews_Archive())</li>
+                <li>@Html.ActionLink("Rules of Play", MVC.Info.Rules())</li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->

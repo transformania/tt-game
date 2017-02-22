@@ -36,7 +36,7 @@
     <button type="button" onclick="Clear()">Clear</button>
 </p>
 
-@using (Html.BeginForm("ContributeBalanceCalculatorSend_Effect", "Contribution", FormMethod.Post))
+@using (Html.BeginForm(MVC.Contribution.ContributeBalanceCalculatorSend_Effect(), FormMethod.Post))
 {
 
     <p id="curseDurationWrapper">

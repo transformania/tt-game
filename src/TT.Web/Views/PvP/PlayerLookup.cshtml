@@ -15,8 +15,8 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav" style="width:100%;">
-                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
-                <li>@Html.ActionLink("Back to Messages", "Index", "Messages")</li>
+                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
+                <li>@Html.ActionLink("Back to Messages", MVC.Messages.Index())</li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -26,7 +26,7 @@
 
     <p>Looking for someone?  Enter their name in here or as close to it as you can.  Only the top 20 matches will be returned.</p>
 
-    @using (Html.BeginForm("PlayerLookupSend", "PvP"))
+    @using (Html.BeginForm(MVC.PvP.PlayerLookupSend()))
     {
         <p>Partial name<br /></p>
         @Html.EditorFor(m => m.FirstName)
@@ -47,8 +47,8 @@
             {
                 <p>
                     @p.GetFullName()
-                    @Html.ActionLink("Look At", "LookAtPlayer", "PvP", new { id = p.Id }, new { @class = "btn btn-default btn-xs" })
-                    @Html.ActionLink("Message", "Write", "Messages", new { playerId = p.Id, responseTo = -1 }, new { @class = "btn btn-default btn-xs" })
+                    @Html.ActionLink("Look At", MVC.PvP.LookAtPlayer(p.Id), new { @class = "btn btn-default btn-xs" })
+                    @Html.ActionLink("Message", MVC.Messages.Write(p.Id, -1), new { @class = "btn btn-default btn-xs" })
                 </p>
             }
         }

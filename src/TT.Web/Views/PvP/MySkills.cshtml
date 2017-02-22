@@ -19,9 +19,9 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav" style="width:100%;">
-                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
-                <li>@Html.ActionLink("Archive All My Spells", "ArchiveAllMySpells", "Settings", new { archive = true }, null)</li>
-                <li>@Html.ActionLink("Restore All My Spells", "ArchiveAllMySpells", "Settings", new { archive = false }, null)</li>
+                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
+                <li>@Html.ActionLink("Archive All My Spells", MVC.Settings.ArchiveAllMySpells("true"))</li>
+                <li>@Html.ActionLink("Restore All My Spells", MVC.Settings.ArchiveAllMySpells("false"))</li>
                 <li><a href="#" style="color: white !important; cursor: default">Known Spells (@Model.Count(c => c.Skill_Name != PvPStatics.Dungeon_VanquishSpell && (c.Skill_MobilityType == PvPStatics.MobilityFull || c.Skill_MobilityType == PvPStatics.MobilityInanimate || c.Skill_MobilityType == PvPStatics.MobilityPet || c.Skill_MobilityType == PvPStatics.MobilityMindControl)) / @ViewBag.TotalLearnableSkills)</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
@@ -97,7 +97,7 @@
                         <td>N/A</td>
                     }
                 }
-                    <td>@Ajax.ActionLink("[x]", "ArchiveSpell", "Settings", new { name = @skill.Skill_Name }, new AjaxOptions { UpdateTargetId = "resultPrompt", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "prompt_success", OnFailure = "prompt_failure", OnBegin = "prompt_wait" }, null)</td>
+                    <td>@Ajax.ActionLink("[x]", MVC.Settings.ArchiveSpell(skill.Skill_Name), new AjaxOptions { UpdateTargetId = "resultPrompt", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "prompt_success", OnFailure = "prompt_failure", OnBegin = "prompt_wait" }, null)</td>
                 </tr>
                         }
         }

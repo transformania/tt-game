@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<TT.Domain.ViewModels.EffectViewModel2>
 @using TT.Domain.ViewModels
 
-@Html.ActionLink("Back to game", "Play", "PvP")
+@Html.ActionLink("Back to game", MVC.PvP.Play())
 
 <center>
     <h1>@ViewBag.PlayerName's Level-Up Perks</h1>
@@ -13,7 +13,7 @@
             <div class="perkBox">
                 <h3>@e.Effect.FriendlyName</h3>
                 <p>@e.Effect.Description</p>
-                @Html.Partial("partial/partial_perkBonus", e.Effect)
+                @Html.Partial(MVC.PvP.Views.partial.partial_perkBonus, e.Effect)
             </div>
         }
     }
@@ -37,7 +37,7 @@
                     }
                     <span class="effectcooldownRemaining">@e.dbEffect.Cooldown turns of cooldown</span>
                 </p>
-                @Html.Partial("partial/partial_perkBonus", e.Effect)
+                @Html.Partial(MVC.PvP.Views.partial.partial_perkBonus, e.Effect)
             </div>
         }
 
@@ -45,4 +45,4 @@
 
 </center>
 
-@Html.ActionLink("Back to game", "Play", "PvP")
+@Html.ActionLink("Back to game", MVC.PvP.Play())

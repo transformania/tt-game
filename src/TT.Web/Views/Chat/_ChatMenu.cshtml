@@ -1,5 +1,6 @@
 ﻿@using FeatureSwitch
 @using TT.Domain
+@using TT.Domain.ViewModels
 @using TT.Web
 
 <!-- Collect the nav links, forms, and other content for toggling -->
@@ -11,25 +12,25 @@
             <li><a data-toggle="modal" data-target="#listChatRoomsModal">Room List</a></li>
         }
         else {
-        <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+        <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
         <li>
-            @Html.ActionLink("Global", "Index", "Chat", new {room = "global"}, null)
+            @Html.ActionLink("Global", MVC.Chat.Index("global"))
         </li>
         <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">RP Rooms <span class="caret"></span></a>
             <ul class="dropdown-menu">
-                <li>@Html.ActionLink("RP Room 1", "Index", "Chat", new {room = "rp1"}, null)</li>
-                <li>@Html.ActionLink("RP Room 2", "Index", "Chat", new {room = "rp2"}, null)</li>
-                <li>@Html.ActionLink("RP Room 3", "Index", "Chat", new {room = "rp3"}, null)</li>
+                <li>@Html.ActionLink("RP Room 1", MVC.Chat.Index("rp1"))</li>
+                <li>@Html.ActionLink("RP Room 2", MVC.Chat.Index("rp2"))</li>
+                <li>@Html.ActionLink("RP Room 3", MVC.Chat.Index("rp3"))</li>
             </ul>
         </li>
         <li>
-            @Html.ActionLink("Create/Join Private Room", "PrivateChat", "PvP")
+            @Html.ActionLink("Create/Join Private Room", MVC.PvP.PrivateChat())
         </li>
         <li>
-            @Html.ActionLink("Chat Log", "ChatLog", "PvP", new {room = "global", filter = "lasth"}, new {target = "_blank"})
+            @Html.ActionLink("Chat Log", MVC.PvP.ChatLog("global", "lasth"), new {target = "_blank"})
         </li>
-        <li>@Html.ActionLink("Commands", "ChatCommands", "PvP", null, new {target = "_blank"})</li>
+        <li>@Html.ActionLink("Commands", MVC.PvP.ChatCommands(), new {target = "_blank"})</li>
         <li><a href="#" id="showIgnore">Ignore</a></li>
         <li><a href="#" id="toggleImages" style="color: #734752 !important; font-weight: bold;">Toggle Images</a></li>
         <li class="dropdown">

@@ -16,15 +16,15 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
-                <li>@Html.ActionLink("Planned Game Features", "GameNews_PlannedFeatures", "Info")</li>
-                <li>@Html.ActionLink("News Archive", "GameNews_Archive", "Info")</li>
-                <li>@Html.ActionLink("Rules of Play", "Rules", "Info")</li>
-                <li>@Html.ActionLink("Equipment Helper", "GearTool", "Info")</li>
-                <li>@Html.ActionLink("Server Population By Turn", "ServerPopulation", "Info")</li>
+                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
+                <li>@Html.ActionLink("Planned Game Features", MVC.Info.GameNews_PlannedFeatures())</li>
+                <li>@Html.ActionLink("News Archive", MVC.Info.GameNews_Archive())</li>
+                <li>@Html.ActionLink("Rules of Play", MVC.Info.Rules())</li>
+                <li>@Html.ActionLink("Equipment Helper", MVC.Info.GearTool())</li>
+                <li>@Html.ActionLink("Server Population By Turn", MVC.Info.ServerPopulation())</li>
                 @{if (User.IsInRole(PvPStatics.Permissions_Admin))
                     {
-                        <li>@Html.ActionLink("Edit News", "ListNewsPosts", "PvPAdmin", null, null)</li>
+                        <li>@Html.ActionLink("Edit News", MVC.PvPAdmin.ListNewsPosts())</li>
                     }
                 }
             </ul>
@@ -33,7 +33,7 @@
 </nav>
 <div class="containerInner listdots">
 
-    Misc Links:  <span class="glyphicon glyphicon-star-empty"></span><a href="https://www.zeemaps.com/map?group=1523025#">Unofficial TT Nuclear Strike Map</a>, <span class="glyphicon glyphicon-star-empty"></span><a href="http://portalz.xyz/newwiki/browse.php">Kevin Portalz's Unofficial TT Wiki</a>, <span class="glyphicon glyphicon-star-empty"></span>@Html.ActionLink("Message Judoo", "LookAtPlayer_FromMembershipId", "PvP", new { id = "69" }, null)
+    Misc Links:  <span class="glyphicon glyphicon-star-empty"></span><a href="https://www.zeemaps.com/map?group=1523025#">Unofficial TT Nuclear Strike Map</a>, <span class="glyphicon glyphicon-star-empty"></span><a href="http://portalz.xyz/newwiki/browse.php">Kevin Portalz's Unofficial TT Wiki</a>, <span class="glyphicon glyphicon-star-empty"></span>@Html.ActionLink("Message Judoo", MVC.PvP.LookAtPlayer_FromMembershipId("69"))
 
 
 
@@ -46,7 +46,7 @@
 
             if (User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                @Html.ActionLink("[Edit]", "EditNewsPost", "PvPAdmin", new { Id = n.Id }, new { @class = "bad" })
+                @Html.ActionLink("[Edit]", MVC.PvPAdmin.EditNewsPost(n.Id), new { @class = "bad" })
             }
 
             <p>@n.Timestamp.ToString("MMMM d")</p>
@@ -65,11 +65,11 @@
             {
                 if (!string.IsNullOrEmpty(n.OtherNames))
                 {
-                    @Html.ActionLink(n.OtherNames, "AuthorArtistBio", "Settings", new { id = n.Owner.Id }, null)<br>
+                    @Html.ActionLink(n.OtherNames, MVC.Settings.AuthorArtistBio(n.Owner.Id))<br>
                 }
                 else
                 {
-                    @Html.ActionLink(n.Owner.UserName, "AuthorArtistBio", "Settings", new { id = n.Owner.Id }, null)<br>
+                    @Html.ActionLink(n.Owner.UserName, MVC.Settings.AuthorArtistBio(n.Owner.Id))<br>
                 }
 
             }
@@ -77,9 +77,9 @@
 
         <br />
 
-        <p class="bad">A complete count of all authors and their spell counts can be viewed @Html.ActionLink("here.", "GetContributionTable", "Contribution")</p>
+        <p class="bad">A complete count of all authors and their spell counts can be viewed @Html.ActionLink("here.", MVC.Contribution.GetContributionTable())</p>
         <p>
-            If you are interested in contributing new content to the game, click @(Html.ActionLink("here", "Contribute", "Contribution", new { Id = -1 }, null)).
+            If you are interested in contributing new content to the game, click @(Html.ActionLink("here", MVC.Contribution.Contribute(-1))).
         </p>
     </div>
 </div>

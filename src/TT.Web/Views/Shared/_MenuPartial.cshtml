@@ -1,9 +1,9 @@
 ﻿@using TT.Domain.Statics
-<li>@Html.ActionLink("Home", "Play", "PvP")</li>
-<li>@Html.ActionLink("News (" + PvPStatics.LastGameUpdate + ")", "GameNews", "Info")</li>
-<li>@Html.ActionLink("How to Play", "HowToPlay", "Info")</li>
+<li>@Html.ActionLink("Home", MVC.PvP.Play())</li>
+<li>@Html.ActionLink("News (" + PvPStatics.LastGameUpdate + ")", MVC.Info.GameNews())</li>
+<li>@Html.ActionLink("How to Play", MVC.Info.HowToPlay())</li>
 <li><a href="http://luxianne.com/forum/index.php" target="_blank">Forum</a></li>
-<li>@Html.ActionLink("Leaderboard", "PvPLeaderboard", "PvP")</li>
-<li>@Html.ActionLink("Donate?", "Donate", "Settings")</li>
-<li>@Html.ActionLink("Polls", "ViewPolls", "Settings")</li>
-<li>@Html.ActionLink("RP Classifieds", "RecentRPClassifieds", "Info")</li>
+<li>@Html.ActionLink("Leaderboard", MVC.PvP.PvPLeaderboard())</li>
+<li>@Html.ActionLink("Donate?", MVC.Settings.Donate())</li>
+<li>@Html.ActionLink("Polls", MVC.Settings.ViewPolls())</li>
+<li>@Html.ActionLink("RP Classifieds", MVC.Info.RecentRPClassifieds())</li>

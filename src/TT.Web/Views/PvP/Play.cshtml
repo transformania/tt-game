@@ -32,35 +32,35 @@
                     <span id="timerBox" class="glyphicon glyphicon-time" aria-hidden="true" title="Click to see how long ago the last update ran."></span>
                     <span id="turn_countdown">-:--</span>
                 </li>
-                <li>@Html.ActionLink("Map", "WorldMap", "PvP", new { showEnchant = "false" }, null)</li>
+                <li>@Html.ActionLink("Map", MVC.PvP.WorldMap("false"))</li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">My Player <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li>@Html.ActionLink("Last Actions (" + Model.PlayerLog.Count() + ")", "ViewLog", "PvP")</li>
-                        <li>@Html.ActionLink("Spells", "MySkills", "PvP")</li>
-                        <li>@Html.ActionLink("My Effects", "MyPerks", "PvP")</li>
-                        <li>@Html.ActionLink("Mind Control", "MindControlList", "NPC")</li>
-                        <li>@Html.ActionLink("Look at Yourself", "LookAtPlayer", "PvP", new { id = Model.You.Player.Id }, null)</li>
-                        <li>@Html.ActionLink("My Statistics", "PlayerStats", "Settings", new { id = Model.You.Player.MembershipId }, null)</li>
-                        <li>@Html.ActionLink("Self Restore (3 AP, 10 Mana)", "SelfRestore", "PvP")</li>
+                        <li>@Html.ActionLink("Last Actions (" + Model.PlayerLog.Count() + ")", MVC.PvP.ViewLog())</li>
+                        <li>@Html.ActionLink("Spells", MVC.PvP.MySkills())</li>
+                        <li>@Html.ActionLink("My Effects", MVC.PvP.MyPerks())</li>
+                        <li>@Html.ActionLink("Mind Control", MVC.NPC.MindControlList())</li>
+                        <li>@Html.ActionLink("Look at Yourself", MVC.PvP.LookAtPlayer(Model.You.Player.Id))</li>
+                        <li>@Html.ActionLink("My Statistics", MVC.Settings.PlayerStats(Model.You.Player.MembershipId))</li>
+                        <li>@Html.ActionLink("Self Restore (3 AP, 10 Mana)", MVC.PvP.SelfRestore())</li>
                     </ul>
                 </li>
-                <li>@Html.ActionLink("Friends", "MyFriends", "PvP")</li>
-                <li>@Html.ActionLink("Chat", "Index", "Chat", new { room = "global" }, new { target = "_blank" })</li>
-                <li>@Html.ActionLink("Covenant", "MyCovenant", "Covenant")</li>
+                <li>@Html.ActionLink("Friends", MVC.PvP.MyFriends())</li>
+                <li>@Html.ActionLink("Chat", MVC.Chat.Index("global"), new { target = "_blank" })</li>
+                <li>@Html.ActionLink("Covenant", MVC.Covenant.MyCovenant())</li>
                 
 
-                 <li>@Html.ActionLink("Quest", "QuestsAvailableHere", "Quest", new { id = "actionQuest" }, null)</li>
+                 <li>@Html.ActionLink("Quest", MVC.Quest.QuestsAvailableHere(), new { id = "actionQuest" })</li>
                 
 
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Contribute <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li>@Html.ActionLink("Submit Spell/Form/Item/Pet", "Contribute", "Contribution", new { Id = -1 }, null)</li>
-                        <li>@Html.ActionLink("Submit Blessing/Curse", "ContributeEffect", "Contribution", new { Id = -1 }, null)</li>
+                        <li>@Html.ActionLink("Submit Spell/Form/Item/Pet", MVC.Contribution.Contribute(-1))</li>
+                        <li>@Html.ActionLink("Submit Blessing/Curse", MVC.Contribution.ContributeEffect(-1))</li>
                         @if (User.IsInRole(PvPStatics.Permissions_QuestWriter))
                         {
-                            <li>@Html.ActionLink("QuestWriter", "Index", "QuestWriter", null, null)</li>
+                            <li>@Html.ActionLink("QuestWriter", MVC.QuestWriter.Index())</li>
                         }
                     </ul>
                 </li>
@@ -73,11 +73,11 @@
                             <ul class="dropdown-menu">
                                 @if (User.IsInRole(PvPStatics.Permissions_Admin))
                                 {
-                                    <li>@Html.ActionLink("Admin", "Index", "PvPAdmin")</li>
+                                    <li>@Html.ActionLink("Admin", MVC.PvPAdmin.Index())</li>
                                 }
                                 @if (User.IsInRole(PvPStatics.Permissions_Moderator))
                                 {
-                                    <li>@Html.ActionLink("Moderator", "Index", "Moderator")</li>
+                                    <li>@Html.ActionLink("Moderator", MVC.Moderator.Index())</li>
                                 }
                             </ul>
                         </li>
@@ -88,27 +88,27 @@
                 @{
                     if (Model.You.Player.UnusedLevelUpPerks > 0)
                     {
-                        <li>@Html.ActionLink("Level Up!", "LevelupPerk", "PvP", null, new { @class = "levelUp" })</li> }
+                        <li>@Html.ActionLink("Level Up!", MVC.PvP.LevelupPerk(), new { @class = "levelUp" })</li> }
                 }
 
                 @{
                     if (Model.UnreadMessageCount > 0)
                     {
-                        <li>@Html.ActionLink("(" + Model.UnreadMessageCount + ")", "Index", "Messages", null, new { @class = "glyphicon glyphicon-envelope inboxNew" })</li>
+                        <li>@Html.ActionLink("(" + Model.UnreadMessageCount + ")", MVC.Messages.Index(), new { @class = "glyphicon glyphicon-envelope inboxNew" })</li>
                     }
                     else
                     {
-                        <li>@Html.ActionLink("(0)", "Index", "Messages", null, new { @class = "glyphicon glyphicon-envelope" })</li>
+                        <li>@Html.ActionLink("(0)", MVC.Messages.Index(), new { @class = "glyphicon glyphicon-envelope" })</li>
                     }
                 }
                 
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-wrench"></span><span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li>@Html.ActionLink("Settings", "Settings", "Settings")</li>
-                        <li>@Html.ActionLink("My blacklist entries", "MyBlacklistEntries", "Settings")</li>
-                        <li>@Html.ActionLink("Update bio", "SetBio", "Settings")</li>
-                        <li>@Html.ActionLink("Reserve this name", "ReserveName", "PvP")</li>
+                        <li>@Html.ActionLink("Settings", MVC.Settings.Settings())</li>
+                        <li>@Html.ActionLink("My blacklist entries", MVC.Settings.MyBlacklistEntries())</li>
+                        <li>@Html.ActionLink("Update bio", MVC.Settings.SetBio())</li>
+                        <li>@Html.ActionLink("Reserve this name", MVC.PvP.ReserveName())</li>
                     </ul>
                 </li>
 
@@ -123,7 +123,7 @@
     <p class="infoMessage suberror">@ViewBag.SubErrorMessage</p>
 </div>
 
-@Html.Partial("partial/RoundStatus", Model.World)
+@Html.Partial(MVC.PvP.Views.partial.RoundStatus, Model.World)
 
 <div class="specialBox specialBox2">
     <span class="turnNumber">Turn #<b>@ViewBag.WorldTurnNumber/@PvPStatics.RoundDuration</b></span><span id="liveConnectionNotice" class="noticeOff" title="If this icon is green, you are connected to the server and will receive live notifications when attacked or messaged."><span class="glyphicon glyphicon-ok-circle"> </span></span>
@@ -142,13 +142,13 @@
     }
 </ul>
 
-<p id="dismissNotficationBox" style="display:none;"><a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '0px'">[ -- ]</a> <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '100px'">[ - ]</a> @Ajax.ActionLink("Dismiss Notifications", "DismissNotifications_Ajax", "PvP", null, new AjaxOptions { HttpMethod = "GET", OnSuccess = "dismissNotificationsSuccess", OnFailure = "dismissNotificationsFail" }, null) <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '250px'">[ + ]</a> <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '500px'">[ ++ ]</a></p>
+<p id="dismissNotficationBox" style="display:none;"><a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '0px'">[ -- ]</a> <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '100px'">[ - ]</a> @Ajax.ActionLink("Dismiss Notifications", MVC.PvP.DismissNotifications_Ajax(), new AjaxOptions { HttpMethod = "GET", OnSuccess = "dismissNotificationsSuccess", OnFailure = "dismissNotificationsFail" }, null) <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '250px'">[ + ]</a> <a href="javascript:void(0)" onclick="document.getElementById('notificationBox').style.height = '500px'">[ ++ ]</a></p>
 
 
 <div class="offlinePlayersWrapperBG hidden-xs">
     <div class="row">
         <div class="col-md-1">
-            @Html.ActionLink(Model.PlayerItems.Count(i => !i.dbItem.IsEquipped) + "/" + Model.InventoryMaxSize, "MyInventory", "PvP", null, new { @class = "playPageInventoryItem openInventory", @style = "background-image: url(../Images/PvP/Icons/Backpack_Meddle.png)", @title = "View Inventory" })
+            @Html.ActionLink(Model.PlayerItems.Count(i => !i.dbItem.IsEquipped) + "/" + Model.InventoryMaxSize, MVC.PvP.MyInventory(), new { @class = "playPageInventoryItem openInventory", @style = "background-image: url(../Images/PvP/Icons/Backpack_Meddle.png)", @title = "View Inventory" })
         </div>
         @{
             foreach (ItemViewModel item in Model.PlayerItems.Where(i => i.dbItem.IsEquipped))
@@ -163,27 +163,27 @@
 
 <div class="containerInner">
 
-    @Html.Partial("partial_FrontPageAvatar", Model.You)
+    @Html.Partial(MVC.PvP.Views.partial_FrontPageAvatar, Model.You)
 
 
 
     <div id="playerActionBox">
-        @Html.ActionLink("Cleanse (4 AP, 3 Mana)", "Cleanse", "PvP", null, new { id = "actionCleanse", @class = "actionButton" })
-        @Html.ActionLink("Meditate (4 AP)", "Meditate", "PvP", null, new { id = "actionMeditate", @class = "actionButton" })
-        @Html.ActionLink("Search this Area (" + (int)Model.APSearchCost + " AP)", "Search", "PvP", null, new { id = "actionSearch", @class = "actionButton" })
+        @Html.ActionLink("Cleanse (4 AP, 3 Mana)", MVC.PvP.Cleanse(), new { id = "actionCleanse", @class = "actionButton" })
+        @Html.ActionLink("Meditate (4 AP)", MVC.PvP.Meditate(), new { id = "actionMeditate", @class = "actionButton" })
+        @Html.ActionLink("Search this Area (" + (int)Model.APSearchCost + " AP)", MVC.PvP.Search(), new { id = "actionSearch", @class = "actionButton" })
     </div>
 
     <div class="row">
-        <div class="col-md-4 col-md-offset-1" style="text-align: center;">@Html.Partial("partial/movementTable", Model)
+        <div class="col-md-4 col-md-offset-1" style="text-align: center;">@Html.Partial(MVC.PvP.Views.partial.movementTable, Model)
             @{
                 if (Model.You.Player.ShoutsRemaining > 0)
                 {
-                    @Html.ActionLink("Shout", "Shout", "PvP", null, new { @class = "shout" })
+                    @Html.ActionLink("Shout", MVC.PvP.Shout(), new { @class = "shout" })
                 }
 
                 if (Model.PlayerIsAtBusStop)
                 {
-                    @Html.ActionLink("Take Bus", "Bus", "PvP", null, new { @class = "bus" })
+                    @Html.ActionLink("Take Bus", MVC.PvP.Bus(), new { @class = "bus" })
                 }
 
                 KeyValuePair<int, CovenantNameFlag> temp = CovenantDictionary.IdNameFlagLookup.FirstOrDefault(c => c.Value.HomeLocation == Model.Location.dbName);
@@ -207,11 +207,11 @@
                 
                      if (Model.You.Player.GameMode >= 2 && !Model.You.Player.IsInDungeon() && (Model.You.Player.dbLocationName == "street_9th" || Model.You.Player.dbLocationName == "street_14th_north"))
                 {
-                    @Html.ActionLink("Enter the PvP Dungeon (30 AP)", "EnterDungeon", "PvP", new { entering = "true" }, null)
+                    @Html.ActionLink("Enter the PvP Dungeon (30 AP)", MVC.PvP.EnterDungeon("true"))
                 }
                else if (Model.You.Player.IsInDungeon())
                {
-                   @Html.ActionLink("Leave the PvP Dungeon (30 AP)", "EnterDungeon", "PvP", new { entering = "false" }, null)
+                   @Html.ActionLink("Leave the PvP Dungeon (30 AP)", MVC.PvP.EnterDungeon("false"))
                }
                 
                 try
@@ -231,7 +231,7 @@
 
                 if (Model.You.Player.GameMode == 2 && !Model.You.Player.IsInDungeon())
                 {
-                    @Html.ActionLink("Enchant (3 AP, 10 Mana)", "EnchantLocation", "PvP")
+                    @Html.ActionLink("Enchant (3 AP, 10 Mana)", MVC.PvP.EnchantLocation())
                 }
             }
 
@@ -254,41 +254,41 @@
                         <div>
                             <p>
 
-                                <div>@Html.Partial("Player_Partial", p)</div>
+                                <div>@Html.Partial(MVC.PvP.Views.Player_Partial, p)</div>
                                 <div style="text-align:center; margin-top:2px;">
-                                    @Ajax.ActionLink("Attack", "AttackModal", "PvP", new { targetId = p.Player.Id }, new AjaxOptions { UpdateTargetId = "attackModal", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "attack_Success", OnFailure = "attack_Failure", OnBegin = "attack_Wait" }, new { @class = "attackLink" })
+                                    @Ajax.ActionLink("Attack", MVC.PvP.AttackModal(p.Player.Id), new AjaxOptions { UpdateTargetId = "attackModal", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "attack_Success", OnFailure = "attack_Failure", OnBegin = "attack_Wait" }, new { @class = "attackLink" })
                                     @{
                                         if (p.Player.BotId == AIStatics.LindellaBotId)
                                         {
-                                            @Html.ActionLink("Trade", "TradeWithMerchant", "NPC", new { filter = "shirt" }, new { @class = "attackLink" })
+                                            @Html.ActionLink("Trade", MVC.NPC.TradeWithMerchant("shirt"), new { @class = "attackLink" })
                                         }
                                         if (p.Player.BotId == AIStatics.JewdewfaeBotId)
                                         {
-                                            @Html.ActionLink("Talk", "TalkWithJewdewfae", "NPC", null, new { @class = "attackLink" })
+                                            @Html.ActionLink("Talk", MVC.NPC.TalkWithJewdewfae(), new { @class = "attackLink" })
                                         }
                                         if (p.Player.BotId == AIStatics.WuffieBotId)
                                         {
-                                            @Html.ActionLink("Trade", "TradeWithPetMerchant", "NPC", null, new { @class = "attackLink" })
+                                            @Html.ActionLink("Trade", MVC.NPC.TradeWithPetMerchant(), new { @class = "attackLink" })
                                         }
                                         if (p.Player.BotId == AIStatics.ValentineBotId)
                                         {
-                                            @Html.ActionLink("Talk", "TalkToValentine", "NPC", new { question = "none" }, new { @class = "attackLink" })
+                                            @Html.ActionLink("Talk", MVC.NPC.TalkToValentine("none"), new { @class = "attackLink" })
                                         }
                                         if (p.Player.BotId == AIStatics.BartenderBotId)
                                         {
-                                            @Html.ActionLink("Talk", "TalkToBartender", "NPC", new { question = "none" }, new { @class = "attackLink" })
+                                            @Html.ActionLink("Talk", MVC.NPC.TalkToBartender("none"), new { @class = "attackLink" })
                                         }
                                         if (p.Player.BotId == AIStatics.MouseBimboBotId)
                                         {
-                                            @Html.ActionLink("Talk", "TalkToCandice", "NPC", null, new { @class = "attackLink" })
+                                            @Html.ActionLink("Talk", MVC.NPC.TalkToCandice(), new { @class = "attackLink" })
                                         }
                                         if (p.Player.BotId == AIStatics.MouseNerdBotId)
                                         {
-                                            @Html.ActionLink("Talk", "TalkToAdrianna", "NPC", null, new { @class = "attackLink" })
+                                            @Html.ActionLink("Talk", MVC.NPC.TalkToAdrianna(), new { @class = "attackLink" })
                                         }
                                         if (p.Player.BotId == AIStatics.LoremasterBotId)
                                         {
-                                            @Html.ActionLink("Talk", "TalkToLorekeeper", "NPC", null, new { @class = "attackLink" })
+                                            @Html.ActionLink("Talk", MVC.NPC.TalkToLorekeeper(), new { @class = "attackLink" })
                                         }
 }
                                 </div>
@@ -307,7 +307,7 @@
 
 @{if (ViewBag.ShowOffline == null || !ViewBag.ShowOffline)
 {
-    <div id="offlinePlayersButton">@Html.ActionLink("Show offline players here (" + Model.PlayersHere.Count(p => PlayerProcedures.PlayerIsOffline(p.Player)) + ")", "ShowOffline", "PvP")</div>
+    <div id="offlinePlayersButton">@Html.ActionLink("Show offline players here (" + Model.PlayersHere.Count(p => PlayerProcedures.PlayerIsOffline(p.Player)) + ")", MVC.PvP.ShowOffline())</div>
 }
 }
 
@@ -323,7 +323,7 @@
             <div class="charaBoxInner">
                 <div>
                     <p>
-                        @Html.Partial("Player_Partial", p)
+                        @Html.Partial(MVC.PvP.Views.Player_Partial, p)
                     </p>
                 </div>
             </div>
@@ -358,11 +358,11 @@
                             <div>
                                 @{if (item.ItemSource.ItemType == PvPStatics.ItemType_Pet)
                                 {
-                                    @Html.ActionLink("Tame", "Take", "PvP", new { id = item.Id }, null)<br />
+                                    @Html.ActionLink("Tame", MVC.PvP.Take(item.Id))<br />
                                 }
                                 else
                                 {
-                                    @Html.ActionLink("Take", "Take", "PvP", new { id = item.Id }, null)<br />
+                                    @Html.ActionLink("Take", MVC.PvP.Take(item.Id))<br />
                                 }
 
                                 }
@@ -384,7 +384,7 @@
     </div>
 </div>
 
-@Html.Partial("partial/partial_recentActivity", Model.LocationLog)
+@Html.Partial(MVC.PvP.Views.partial.partial_recentActivity, Model.LocationLog)
 
 <div id="modalBackdrop"></div>
 <div id="attackModal" class="ui-widget-content ui-draggable" style="display:none;">

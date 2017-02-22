@@ -360,6 +360,7 @@
     <Compile Include="IDomainQuery.cs" />
     <Compile Include="IDomainQuerySingle.cs" />
     <Compile Include="IDomainRepository.cs" />
+    <Compile Include="Interfaces\IRemovable.cs" />
     <Compile Include="Mappings\Assets\AssetsMapping.cs" />
     <Compile Include="Mappings\Assets\RestockItemMapping.cs" />
     <Compile Include="Mappings\ChatMappings.cs" />

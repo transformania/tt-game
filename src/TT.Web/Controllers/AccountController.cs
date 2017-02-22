@@ -5,6 +5,7 @@ using System.Web.Security;
 using FeatureSwitch;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security;
 using TT.Web.Models;
 using Recaptcha.Web;
 using Recaptcha.Web.Mvc;
@@ -19,46 +20,15 @@ namespace TT.Web.Controllers
     [Authorize]
     public partial class AccountController : Controller
     {
-        public AccountController()
-        {
-        }
+        private ApplicationUserManager userManager;
+        private ApplicationSignInManager signInManager;
+        private readonly IAuthenticationManager authenticationManager;
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager, IAuthenticationManager authenticationManager)
         {
-            UserManager = userManager;
-            SignInManager = signInManager;
-        }
-
-        private ApplicationUserManager _userManager;
-        public ApplicationUserManager UserManager
-        {
-            get
-            {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            }
-            private set
-            {
-                _userManager = value;
-            }
-        }
-
-        private ApplicationSignInManager _signInManager;
-
-        public ApplicationSignInManager SignInManager
-        {
-            get
-            {
-                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
-            }
-            private set { _signInManager = value; }
-        }
-
-        private Microsoft.Owin.Security.IAuthenticationManager AuthenticationManager
-        {
-            get
-            {
-                return HttpContext.GetOwinContext().Authentication;
-            }
+            this.userManager = userManager;
+            this.signInManager = signInManager;
+            this.authenticationManager = authenticationManager;
         }
 
         //
@@ -97,7 +67,7 @@ namespace TT.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                var result = SignInManager.PasswordSignIn(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
+                var result = signInManager.PasswordSignIn(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
 
                 if (result == SignInStatus.Success)
                 {
@@ -120,7 +90,7 @@ namespace TT.Web.Controllers
         [ValidateAntiForgeryToken]
         public virtual ActionResult LogOff()
         {
-            AuthenticationManager.SignOut();
+            authenticationManager.SignOut();
             return RedirectToAction(MVC.PvP.Play());
 
         }
@@ -162,10 +132,10 @@ namespace TT.Web.Controllers
             if (ModelState.IsValid)
             {
                 var user = new User() { UserName = model.UserName, Email = model.Email, CreateDate = DateTime.Now };
-                var result = UserManager.Create(user, model.Password);
+                var result = userManager.Create(user, model.Password);
                 if (result.Succeeded)
                 {
-                    SignInManager.SignIn(user, isPersistent: false, rememberBrowser: false);
+                    signInManager.SignIn(user, isPersistent: false, rememberBrowser:false);
                     return RedirectToAction(MVC.PvP.Play());
                 }
                 else
@@ -186,10 +156,10 @@ namespace TT.Web.Controllers
         public virtual ActionResult Disassociate(string provider, string providerUserId)
         {
             ManageMessageId? message = null;
-            var owner = UserManager.Find(new UserLoginInfo(provider, providerUserId));
+            var owner = userManager.Find(new UserLoginInfo(provider, providerUserId));
             if (owner != null && owner.UserName == User.Identity.Name)
             {
-                IdentityResult result = UserManager.RemoveLogin(owner.Id, new UserLoginInfo(provider, providerUserId));
+                IdentityResult result = userManager.RemoveLogin(owner.Id, new UserLoginInfo(provider, providerUserId));
                 if (result.Succeeded)
                 {
                     message = ManageMessageId.RemoveLoginSuccess;
@@ -240,15 +210,15 @@ namespace TT.Web.Controllers
             var user = GetUser();
             if (ModelState.IsValid)
             {
-                if (UserManager.CheckPassword(user, model.OldPassword))
+                if (userManager.CheckPassword(user, model.OldPassword))
                 {
-                    IdentityResult result = UserManager.SetEmail(User.Identity.GetUserId(), model.Email);
+                    IdentityResult result = userManager.SetEmail(User.Identity.GetUserId(), model.Email);
                     if (result.Succeeded)
                     {
-                        user = UserManager.FindById(User.Identity.GetUserId());
+                        user = userManager.FindById(User.Identity.GetUserId());
                         if (user != null)
                         {
-                            SignInManager.SignIn(user, isPersistent: false, rememberBrowser: false);
+                            signInManager.SignIn(user, isPersistent: false, rememberBrowser: false);
                         }
 
                         return RedirectToAction(MVC.Account.Manage(ManageMessageId.ChangeEmailSuccess));
@@ -288,13 +258,13 @@ namespace TT.Web.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    IdentityResult result = UserManager.ChangePassword(user.Id, model.OldPassword, model.NewPassword);
+                    IdentityResult result = userManager.ChangePassword(user.Id, model.OldPassword, model.NewPassword);
                     if (result.Succeeded)
                     {
-                        user = UserManager.FindById(User.Identity.GetUserId());
+                        user = userManager.FindById(User.Identity.GetUserId());
                         if (user != null)
                         {
-                            SignInManager.SignIn(user, isPersistent: false, rememberBrowser: false);
+                            signInManager.SignIn(user, isPersistent: false,rememberBrowser:false);
                         }
 
                         return RedirectToAction(MVC.Account.Manage(ManageMessageId.ChangePasswordSuccess));
@@ -316,7 +286,7 @@ namespace TT.Web.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    IdentityResult result = UserManager.AddPassword(user.Id, model.NewPassword);
+                    IdentityResult result = userManager.AddPassword(user.Id, model.NewPassword);
                     if (result.Succeeded)
                     {
                         return RedirectToAction(MVC.Account.Manage(ManageMessageId.SetPasswordSuccess));
@@ -461,7 +431,7 @@ namespace TT.Web.Controllers
         {
             if (User != null && User.Identity != null)
             {
-                return UserManager.FindByName(User.Identity.Name);
+                return userManager.FindByName(User.Identity.Name);
             }
 
             return null;

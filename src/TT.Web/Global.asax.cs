@@ -14,6 +14,7 @@ namespace TT.Web
         protected void Application_Start()
         {
             new FeatureSetBuilder().Build();
+            ContainerConfig.ConfigureContainer();
 
             AreaRegistration.RegisterAllAreas();
 
@@ -25,12 +26,6 @@ namespace TT.Web
 
             ViewEngines.Engines.Clear();
             ViewEngines.Engines.Add(new RazorViewEngine());
-
-            // start duel loop
-            //var duelUpdateTic = new System.Timers.Timer(5000);
-            //duelUpdateTic.Enabled = true;
-            //duelUpdateTic.Elapsed += new ElapsedEventHandler(Duel.RunTick);
-
         }
     }
 }

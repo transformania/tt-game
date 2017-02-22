@@ -160,6 +160,7 @@
     <Compile Include="Builders\TFEnergies\TFEnergyBuilder.cs" />
     <Compile Include="Domain\Commands\AI\CreateNPCTests.cs" />
     <Compile Include="Domain\Commands\AI\DeleteNPCTests.cs" />
+    <Compile Include="Domain\Commands\AI\RestockNPCTests.cs" />
     <Compile Include="Domain\Commands\AI\UpdateNPCTests.cs" />
     <Compile Include="Domain\Commands\Assets\CreateRestockItemTests.cs" />
     <Compile Include="Domain\Commands\Assets\DeleteRestockItemTests.cs" />

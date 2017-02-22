@@ -6,6 +6,7 @@ using TT.Domain.Commands.Players;
 using TT.Domain.Entities.Effects;
 using TT.Domain.Entities.Forms;
 using TT.Domain.Entities.Identity;
+using TT.Domain.Entities.Item;
 using TT.Domain.Entities.Items;
 using TT.Domain.Entities.MindControl;
 using TT.Domain.Entities.NPCs;
@@ -360,6 +361,30 @@ namespace TT.Domain.Entities.Players
         public void UpdateItemUseCounter(int amount)
         {
             ItemsUsedThisTurn += amount;
+        }
+
+        /// <summary>
+        /// Returns the count of a particular type of item that this player is carrying.
+        /// </summary>
+        /// <param name="itemSourceId">ItemSource ID of the item being queried</param>
+        /// <returns>the count of a particular type of item that this player is carrying</returns>
+        public int GetCountOfItem(int itemSourceId)
+        {
+            return Items.Count(i => i.ItemSource.Id == itemSourceId);
+        }
+
+        /// <summary>
+        /// Gives this player a certain amount of a particular type of item
+        /// </summary>
+        /// <param name="itemSource"></param>
+        /// <param name="amount"></param>
+        public void GiveItemsOfType(ItemSource itemSource, int amount)
+        {
+            for (var i = 0; i < amount; i++)
+            {
+                var newItem = Entities.Items.Item.Create(this, itemSource);
+                Items.Add(newItem);
+            }
         }
 
         public void GiveItem(Items.Item item)

@@ -12,7 +12,7 @@ namespace TT.Domain.Commands.Assets
         public int AmountBeforeRestock { get; set; }
         public int AmountToRestockTo { get; set; }
         public int BaseItemId { get; set; }
-        public int NPCId { get; set; }
+        public int BotId { get; set; }
 
         public override void Execute(IDataContext context)
         {
@@ -27,11 +27,7 @@ namespace TT.Domain.Commands.Assets
                 if (baseItem == null)
                     throw new DomainException($"Base item with Id {BaseItemId} could not be found");
 
-                var npc = ctx.AsQueryable<NPC>().SingleOrDefault(t => t.Id == NPCId);
-                if (npc == null)
-                    throw new DomainException($"NPC with Id {BaseItemId} could not be found");
-
-                restockItem.Update(this, baseItem, npc);
+                restockItem.Update(this, baseItem, BotId);
                 ctx.Commit();
 
                 result = restockItem.Id;
@@ -50,9 +46,6 @@ namespace TT.Domain.Commands.Assets
 
             if (BaseItemId <= 0)
                 throw new DomainException("Base item id must be greater than 0");
-
-            if (NPCId <= 0)
-                throw new DomainException("NPC id must be greater than 0");
         }
 
     }

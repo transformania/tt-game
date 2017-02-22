@@ -60,6 +60,25 @@ namespace TT.Domain.Entities.Items
 
             return newItem;
         }
+        
+        /// <summary>
+        /// Creates a consumable type item
+        /// </summary>
+        /// <param name="owner">Owner of the item</param>
+        /// <param name="itemSource">ItemSource of the item</param>
+        /// <returns>newly created item</returns>
+        public static Item Create(Player owner, ItemSource itemSource)
+        {
+            return new Item
+            {
+                Owner = owner,
+                dbLocationName = owner.Location,
+                IsPermanent = false,
+                ItemSource = itemSource,
+                dbName = itemSource.DbName,
+                PvPEnabled = GameModeStatics.Any
+            };
+        }
 
         public Item Update(UpdateItem cmd, Player owner)
         {

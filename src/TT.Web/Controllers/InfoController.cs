@@ -18,30 +18,30 @@ using TT.Domain.Queries.Players;
 namespace TT.Web.Controllers
 {
 
-    public class InfoController : Controller
+    public partial class InfoController : Controller
     {
-         public ActionResult FAQ()
-         {
-             return View();
-         }
+        public virtual ActionResult FAQ()
+        {
+            return View();
+        }
 
-         public ActionResult HowToPlay()
-         {
-             return View();
-         }
+        public virtual ActionResult HowToPlay()
+        {
+            return View();
+        }
 
-         public ActionResult Rules()
-         {
-             return View();
-         }
+        public virtual ActionResult Rules()
+        {
+            return View();
+        }
 
-         
-         public ActionResult GameNews_PlannedFeatures()
-         {
-             return View();
-         }
 
-        public ActionResult GameNews()
+        public virtual ActionResult GameNews_PlannedFeatures()
+        {
+            return View();
+        }
+
+        public virtual ActionResult GameNews()
         {
             INewsPostRepository repo = new EFNewsPostRepository();
 
@@ -54,58 +54,58 @@ namespace TT.Web.Controllers
             return View(output);
         }
 
-        public ActionResult GameNews_Archive()
+        public virtual ActionResult GameNews_Archive()
         {
             INewsPostRepository repo = new EFNewsPostRepository();
             var output = repo.NewsPosts.Where(n => n.ViewState == 2).OrderByDescending(n => n.Timestamp); ; // 2 == Archived
             return View(output);
         }
 
-        public ActionResult RecentRPClassifieds()
-         {
-            var output =  DomainRegistry.Repository.Find(new GetRPClassifiedAds() { CutOff = TimeSpan.FromDays(3) });
+        public virtual ActionResult RecentRPClassifieds()
+        {
+            var output = DomainRegistry.Repository.Find(new GetRPClassifiedAds() { CutOff = TimeSpan.FromDays(3) });
             return View(output);
-         }
+        }
 
-         public ActionResult AllLocations()
-         {
-             List<Location> output = LocationsStatics.LocationList.GetLocation.Where(s => !s.dbName.Contains("_dungeon")).ToList();
-             return PartialView(output);
-         }
+        public virtual ActionResult AllLocations()
+        {
+            List<Location> output = LocationsStatics.LocationList.GetLocation.Where(s => !s.dbName.Contains("_dungeon")).ToList();
+            return PartialView(output);
+        }
 
-         public ActionResult AllForms()
-         {
-             List<DbStaticForm> output = PlayerProcedures.GetAllDbStaticForms().ToList();
-             return PartialView(output);
-         }
+        public virtual ActionResult AllForms()
+        {
+            List<DbStaticForm> output = PlayerProcedures.GetAllDbStaticForms().ToList();
+            return PartialView(output);
+        }
 
-        public ActionResult AllItems()
+        public virtual ActionResult AllItems()
         {
             var cmd = new GetItemSources();
             var output = DomainRegistry.Repository.Find(cmd);
             return PartialView(output);
         }
 
-        public ActionResult ServerPopulation()
+        public virtual ActionResult ServerPopulation()
         {
             IServerLogRepository repo = new EFServerLogRepository();
 
             //  IEnumerable<PopulationTurnTuple> output = repo.ServerLogs.Select(
 
 
-            IEnumerable<PopulationTurnTuple> output = from q in repo.ServerLogs  select new PopulationTurnTuple { Turn = q.TurnNumber, Population = q.Population };
+            IEnumerable<PopulationTurnTuple> output = from q in repo.ServerLogs select new PopulationTurnTuple { Turn = q.TurnNumber, Population = q.Population };
 
             return View(output);
         }
 
-        public JsonResult ServerPopulationJson()
+        public virtual JsonResult ServerPopulationJson()
         {
             IServerLogRepository repo = new EFServerLogRepository();
             IEnumerable<PopulationTurnTuple> output = from q in repo.ServerLogs select new PopulationTurnTuple { Turn = q.TurnNumber, Population = q.Population };
             return Json(output, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult GearTool()
+        public virtual ActionResult GearTool()
         {
             return View();
         }
@@ -114,7 +114,7 @@ namespace TT.Web.Controllers
         /// Return basic information about all items and pet item type, name, graphic, and buffs in JSON format
         /// </summary>
         /// <returns></returns>
-        public ActionResult Gear()
+        public virtual ActionResult Gear()
         {
             IDbStaticItemRepository repo = new EFDbStaticItemRepository();
 
@@ -142,7 +142,7 @@ namespace TT.Web.Controllers
         /// Requests data on all the starting forms required for a new player to make a character selection
         /// </summary>
         /// <returns>data on all the starting forms required for a new player to make a character selection</returns>
-        public ActionResult StartingForms()
+        public virtual ActionResult StartingForms()
         {
             var output = DomainRegistry.Repository.Find(new GetBaseForms());
             return Json(output, JsonRequestBehavior.AllowGet);

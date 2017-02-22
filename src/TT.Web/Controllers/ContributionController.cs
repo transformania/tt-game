@@ -17,9 +17,9 @@ using TT.Domain.Commands.Forms;
 namespace TT.Web.Controllers
 {
 
-    public class ContributionController : Controller
+    public partial class ContributionController : Controller
     {
-        public ActionResult ProofreadingContributions()
+        public virtual ActionResult ProofreadingContributions()
         {
             IContributionRepository contributionRepo = new EFContributionRepository();
             var proofreading = contributionRepo.Contributions.Where(c => c.AdminApproved && c.ProofreadingCopy).Select(
@@ -47,7 +47,7 @@ namespace TT.Web.Controllers
         }
 
         [Authorize]
-        public ActionResult Contribute(int Id = -1)
+        public virtual ActionResult Contribute(int Id = -1)
         {
 
             IContributionRepository contributionRepo = new EFContributionRepository();
@@ -72,7 +72,7 @@ namespace TT.Web.Controllers
                     if (contribution.OwnerMembershipId != currentUserId && !iAmProofreader)
                     {
                         TempData["Error"] = "This contribution does not belong to your account.";
-                        return RedirectToAction("Play", "PvP");
+                        return RedirectToAction(MVC.PvP.Play());
                     }
 
                     // if this player is a proofreader and this contribution is not marked as ready for proofreading, tell the editor to go to the proofreading version instead.
@@ -82,7 +82,7 @@ namespace TT.Web.Controllers
                         if (contributionProofed != null)
                         {
                             TempData["Error"] = "There is already a proofreading version of this available.  Please load that instead.";
-                            return RedirectToAction("Play", "PvP");
+                            return RedirectToAction(MVC.PvP.Play());
                         }
                     }
 
@@ -98,7 +98,7 @@ namespace TT.Web.Controllers
                 else
                 {
                     TempData["Error"] = "Contribution not found.";
-                    return RedirectToAction("Play", "PvP");
+                    return RedirectToAction(MVC.PvP.Play());
                 }
             }
             else
@@ -180,13 +180,13 @@ namespace TT.Web.Controllers
         }
 
         [Authorize]
-        public ActionResult ContributePreview(int Id)
+        public virtual ActionResult ContributePreview(int Id)
         {
 
             // assert only previewers can view this
             if (!User.IsInRole(PvPStatics.Permissions_Previewer))
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             IContributionRepository contributionRepo = new EFContributionRepository();
@@ -198,12 +198,12 @@ namespace TT.Web.Controllers
             decimal balance = bbox.GetBalance();
             ViewBag.BalanceScore = balance;
 
-            return View("Contribute", contribution);
+            return View(MVC.Contribution.Views.Contribute, contribution);
         }
 
 
         [Authorize]
-        public ActionResult ContributeBalanceCalculatorEffect(int id)
+        public virtual ActionResult ContributeBalanceCalculatorEffect(int id)
         {
             IEffectContributionRepository contributionRepo = new EFEffectContributionRepository();
             EffectContribution contribution = contributionRepo.EffectContributions.FirstOrDefault(c => c.Id == id);
@@ -214,14 +214,14 @@ namespace TT.Web.Controllers
             if (!iAmProofreader && contribution.OwnerMemberhipId != me.MembershipId)
             {
                 TempData["Error"] = "That does not belong to you and you are not a proofreader.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
-            return View("~/Views/Contribution/BalanceCalculatorEffect.cshtml", contribution);
+            return View(MVC.Contribution.Views.BalanceCalculatorEffect, contribution);
         }
 
         [Authorize]
-        public ActionResult ContributeBalanceCalculator2(int id)
+        public virtual ActionResult ContributeBalanceCalculator2(int id)
         {
             IContributionRepository contributionRepo = new EFContributionRepository();
             Contribution contribution = contributionRepo.Contributions.FirstOrDefault(c => c.Id == id);
@@ -232,14 +232,14 @@ namespace TT.Web.Controllers
             if (!iAmProofreader && contribution.OwnerMembershipId != me.MembershipId)
             {
                 TempData["Error"] = "That does not belong to you and you are not a proofreader.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
-            return View("~/Views/Contribution/BalanceCalculator2.cshtml", contribution);
+            return View(MVC.Contribution.Views.BalanceCalculator2, contribution);
         }
 
         [Authorize]
-        public ActionResult ContributeBalanceCalculatorSend(Contribution input)
+        public virtual ActionResult ContributeBalanceCalculatorSend(Contribution input)
         {
             IContributionRepository contributionRepo = new EFContributionRepository();
             Contribution SaveMe = contributionRepo.Contributions.FirstOrDefault(c => c.Id == input.Id);
@@ -250,7 +250,7 @@ namespace TT.Web.Controllers
             if (!iAmProofreader && SaveMe.OwnerMembershipId != me.MembershipId)
             {
                 TempData["Error"] = "That does not belong to you and you are not a proofreader.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
             else
             {
@@ -295,13 +295,13 @@ namespace TT.Web.Controllers
                 contributionRepo.SaveContribution(SaveMe);
 
                 TempData["Result"] = "Contribution stats saved.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
 
             }
         }
 
         [Authorize]
-        public ActionResult ContributeBalanceCalculatorSend_Effect(EffectContribution input)
+        public virtual ActionResult ContributeBalanceCalculatorSend_Effect(EffectContribution input)
         {
             IEffectContributionRepository contributionRepo = new EFEffectContributionRepository();
             EffectContribution SaveMe = contributionRepo.EffectContributions.FirstOrDefault(c => c.Id == input.Id);
@@ -312,7 +312,7 @@ namespace TT.Web.Controllers
             if (!iAmProofreader && SaveMe.OwnerMemberhipId != me.MembershipId)
             {
                 TempData["Error"] = "That does not belong to you and you are not a proofreader.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
             else
             {
@@ -358,13 +358,13 @@ namespace TT.Web.Controllers
                 contributionRepo.SaveEffectContribution(SaveMe);
 
                 TempData["Result"] = "Contribution stats saved.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
 
             }
         }
 
         [Authorize]
-        public ActionResult ContributeGraphicsNeeded()
+        public virtual ActionResult ContributeGraphicsNeeded()
         {
             IContributionRepository contributionRepo = new EFContributionRepository();
             IEnumerable<Contribution> output = contributionRepo.Contributions.Where(c => c.IsReadyForReview && c.AdminApproved && !c.IsLive && c.ProofreadingCopy);
@@ -373,11 +373,11 @@ namespace TT.Web.Controllers
             ViewBag.SubErrorMessage = TempData["SubError"];
             ViewBag.Result = TempData["Result"];
 
-            return View("ContributeGraphicsNeeded", output);
+            return View(MVC.Contribution.Views.ContributeGraphicsNeeded, output);
         }
 
         [Authorize]
-        public ActionResult ContributeSetGraphicStatus(int id)
+        public virtual ActionResult ContributeSetGraphicStatus(int id)
         {
 
             bool iAmArtist = User.IsInRole(PvPStatics.Permissions_Artist);
@@ -385,7 +385,7 @@ namespace TT.Web.Controllers
             if (!iAmArtist)
             {
                 TempData["Result"] = "You don't have permissions to do that.  If you are an artist and are interested in contributing artwork, please contact the administrator, Judoo.";
-                return RedirectToAction("ContributeGraphicsNeeded");
+                return RedirectToAction(MVC.Contribution.ContributeGraphicsNeeded());
             }
 
             IContributionRepository contributionRepo = new EFContributionRepository();
@@ -398,11 +398,11 @@ namespace TT.Web.Controllers
                 Status = cont.AssignedToArtist,
             };
 
-            return View("ContributeSetGraphicStatus", output);
+            return View(MVC.Contribution.Views.ContributeSetGraphicStatus, output);
         }
 
         [Authorize]
-        public ActionResult ContributeSetGraphicStatusSubmit(ContributionStatusViewModel input)
+        public virtual ActionResult ContributeSetGraphicStatusSubmit(ContributionStatusViewModel input)
         {
 
             bool iAmArtist = User.IsInRole(PvPStatics.Permissions_Artist);
@@ -410,7 +410,7 @@ namespace TT.Web.Controllers
             if (!iAmArtist)
             {
                 TempData["Result"] = "You don't have permissions to do that.  If you are an artist and are interested in contributing artwork, please contact the administrator, Judoo.";
-                return RedirectToAction("ContributeGraphicsNeeded");
+                return RedirectToAction(MVC.Contribution.ContributeGraphicsNeeded());
             }
 
             IContributionRepository contributionRepo = new EFContributionRepository();
@@ -423,12 +423,12 @@ namespace TT.Web.Controllers
 
 
             TempData["Result"] = "Status saved!";
-            return RedirectToAction("ContributeGraphicsNeeded");
+            return RedirectToAction(MVC.Contribution.ContributeGraphicsNeeded());
 
         }
 
         [HttpPost]
-        public ActionResult SendContribution(Contribution input)
+        public virtual ActionResult SendContribution(Contribution input)
         {
             string myMembershipId = User.Identity.GetUserId();
             IContributionRepository contributionRepo = new EFContributionRepository();
@@ -467,7 +467,7 @@ namespace TT.Web.Controllers
                     else
                     {
                         TempData["Result"] = "You do not have the authorization to edit this.  If you are a proofreader, make sure to load up the proofreading version instead.";
-                        return RedirectToAction("Play", "PvP");
+                        return RedirectToAction(MVC.PvP.Play());
                     }
 
                 }
@@ -608,11 +608,11 @@ namespace TT.Web.Controllers
             contributionRepo.SaveContribution(SaveMe);
 
             TempData["Result"] = "Contribution Saved!";
-            return RedirectToAction("Play", "PvP");
+            return RedirectToAction(MVC.PvP.Play());
         }
 
         [Authorize]
-        public ActionResult SendContributionUndoLock(int id)
+        public virtual ActionResult SendContributionUndoLock(int id)
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             bool iAmProofreader = User.IsInRole(PvPStatics.Permissions_Proofreader);
@@ -620,7 +620,7 @@ namespace TT.Web.Controllers
             if (!iAmProofreader)
             {
                 TempData["Error"] = "You must be a proofreader in order to do this.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             IContributionRepository contributionRepo = new EFContributionRepository();
@@ -629,17 +629,17 @@ namespace TT.Web.Controllers
             if (!contribution.ProofreadingCopy)
             {
                 TempData["Error"] = "This is not a proofreading copy.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             contribution.ProofreadingLockIsOn = false;
             contribution.CheckedOutBy = "";
             contributionRepo.SaveContribution(contribution);
 
-            return RedirectToAction("Play", "PvP");
+            return RedirectToAction(MVC.PvP.Play());
         }
 
-        public ActionResult ContributeEffect(int id)
+        public virtual ActionResult ContributeEffect(int id)
         {
             string myMembershipId = User.Identity.GetUserId();
             // get all of this players effect contributions
@@ -679,12 +679,12 @@ namespace TT.Web.Controllers
                 if (output.OwnerMemberhipId != myMembershipId && (!iAmProofreader || (!output.ProofreadingCopy && !iAmAdmin)))
                 {
                     TempData["Error"] = TempData["You do not have permission to view this."];
-                    return RedirectToAction("Play", "PvP");
+                    return RedirectToAction(MVC.PvP.Play());
                 }
             }
 
 
-           // if this is a proofreading copy, set the lock
+            // if this is a proofreading copy, set the lock
             if (output.ProofreadingCopy)
             {
                 output.ProofreadingLockIsOn = true;
@@ -729,7 +729,7 @@ namespace TT.Web.Controllers
             bbox.LoadBalanceBox(output);
             decimal balance = bbox.GetBalance__NoModifiersOrCaps();
 
-            ViewBag.BalanceScore = balance*output.Effect_Duration;
+            ViewBag.BalanceScore = balance * output.Effect_Duration;
 
             ViewBag.ErrorMessage = TempData["Error"];
             ViewBag.SubErrorMessage = TempData["SubError"];
@@ -739,7 +739,7 @@ namespace TT.Web.Controllers
             return View(output);
         }
 
-        public ActionResult SendEffectContribution(EffectContribution input)
+        public virtual ActionResult SendEffectContribution(EffectContribution input)
         {
             string myMembershipId = User.Identity.GetUserId();
             IEffectContributionRepository effectContRepo = new EFEffectContributionRepository();
@@ -766,7 +766,7 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "This contribution does not belong to you and you are not a proofreader.";
                 TempData["SubError"] = "You may have been logged out; check that you are logged in the the game still in another tab.";
-                return RedirectToAction("ContributeEffect", "Contribution", new { @id = -1 });
+                return RedirectToAction(MVC.Contribution.ContributeEffect(-1));
             }
 
             if (input.Id != -1)
@@ -786,17 +786,17 @@ namespace TT.Web.Controllers
             saveme.Skill_ManaCost = input.Skill_ManaCost;
 
             saveme.Effect_FriendlyName = input.Effect_FriendlyName;
-            saveme.Effect_Description = input.Effect_Description ;
-            saveme.Effect_Duration = input.Effect_Duration ;
-            saveme.Effect_Cooldown = input.Effect_Cooldown ;
-            saveme.Effect_Bonuses = input.Effect_Bonuses ;
+            saveme.Effect_Description = input.Effect_Description;
+            saveme.Effect_Duration = input.Effect_Duration;
+            saveme.Effect_Cooldown = input.Effect_Cooldown;
+            saveme.Effect_Bonuses = input.Effect_Bonuses;
             saveme.Effect_IsRemovable = input.Effect_IsRemovable;
-            saveme.Effect_VictimHitText = input.Effect_VictimHitText ;
-            saveme.Effect_VictimHitText_M = input.Effect_VictimHitText_M ;
-            saveme.Effect_VictimHitText_F = input.Effect_VictimHitText_F ;
-            saveme.Effect_AttackHitText = input.Effect_AttackHitText ;
-            saveme.Effect_AttackHitText_M = input.Effect_AttackHitText_M ;
-            saveme.Effect_AttackHitText_F = input.Effect_AttackHitText_F ;
+            saveme.Effect_VictimHitText = input.Effect_VictimHitText;
+            saveme.Effect_VictimHitText_M = input.Effect_VictimHitText_M;
+            saveme.Effect_VictimHitText_F = input.Effect_VictimHitText_F;
+            saveme.Effect_AttackHitText = input.Effect_AttackHitText;
+            saveme.Effect_AttackHitText_M = input.Effect_AttackHitText_M;
+            saveme.Effect_AttackHitText_F = input.Effect_AttackHitText_F;
 
             saveme.Timestamp = DateTime.UtcNow;
             saveme.AdditionalSubmitterNames = input.AdditionalSubmitterNames;
@@ -809,39 +809,37 @@ namespace TT.Web.Controllers
                 saveme.CheckedOutBy = "";
                 saveme.History += "Edited by " + User.Identity.Name + " on " + DateTime.UtcNow + ".<br>";
             }
- 
+
 
             effectContRepo.SaveEffectContribution(saveme);
 
-
-            //return RedirectToAction("ContributeEffect", "Contribution", new { @id = input.Id });
-
             TempData["Result"] = "Effect Contribution saved!";
-            return RedirectToAction("Play", "PvP");
+            return RedirectToAction(MVC.PvP.Play());
         }
 
 
-        public ActionResult UnlockEffectContribution(int id)
+        public virtual ActionResult UnlockEffectContribution(int id)
         {
             IEffectContributionRepository effectContRepo = new EFEffectContributionRepository();
             EffectContribution saveme = effectContRepo.EffectContributions.FirstOrDefault(e => e.Id == id);
             saveme.ProofreadingLockIsOn = false;
             saveme.CheckedOutBy = "";
             effectContRepo.SaveEffectContribution(saveme);
-            return RedirectToAction("Play", "PvP");
+            return RedirectToAction(MVC.PvP.Play());
         }
 
-        public ActionResult ContributorBio(string name)
+        public virtual ActionResult ContributorBio(string name)
         {
+            // TODO: Figure out how to T4ize
             return View("~/Views/Contribution/Bios/" + name + ".cshtml");
         }
 
-        public ActionResult PublishSpell(int id)
+        public virtual ActionResult PublishSpell(int id)
         {
 
             if (!User.IsInRole(PvPStatics.Permissions_Admin) && !User.IsInRole(PvPStatics.Permissions_Publisher))
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             string message = "started.<br>";
@@ -886,7 +884,7 @@ namespace TT.Web.Controllers
                 spell.LearnedAtLocation = contribution.Skill_LearnedAtRegion;
             }
 
-            
+
 
             spell.ManaCost = contribution.Skill_ManaCost;
             spell.MobilityType = contribution.Form_MobilityType;
@@ -956,17 +954,17 @@ namespace TT.Web.Controllers
             {
                 message += "<br><br><span class='bad'>FAILED TO SET FOREIGN KEY TO FORMSOURCE. Error:  " + e.Message + "</span>";
             }
-            
+
 
             ViewBag.Message = message;
-            return View("Publish");
+            return View(MVC.Contribution.Views.Publish);
         }
 
-        public ActionResult PublishForm(int id)
+        public virtual ActionResult PublishForm(int id)
         {
             if (!User.IsInRole(PvPStatics.Permissions_Admin) && !User.IsInRole(PvPStatics.Permissions_Publisher))
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
 
@@ -1115,20 +1113,20 @@ namespace TT.Web.Controllers
             contribution.History += "Form published on " + DateTime.UtcNow + "<br>";
             contributionRepo.SaveContribution(contribution);
 
-            DomainRegistry.Repository.Execute(new SetTFMessageFKs {TFMessageId = tf.Id, FormSource = formdbname});
+            DomainRegistry.Repository.Execute(new SetTFMessageFKs { TFMessageId = tf.Id, FormSource = formdbname });
 
             if (!String.IsNullOrEmpty(form.BecomesItemDbName))
                 DomainRegistry.Repository.Execute(new SetFormSourceBecomesItemFK { FormSourceId = form.Id, ItemSourceName = form.BecomesItemDbName });
 
-            return View("Publish");
+            return View(MVC.Contribution.Views.Publish);
         }
 
-        public ActionResult PublishItem(int id)
+        public virtual ActionResult PublishItem(int id)
         {
 
             if (!User.IsInRole(PvPStatics.Permissions_Admin) && !User.IsInRole(PvPStatics.Permissions_Publisher))
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             string message = "started.<br>";
@@ -1223,17 +1221,18 @@ namespace TT.Web.Controllers
             item.Chaos_Order = contribution.Chaos_Order;
 
             item.CurseTFFormdbName = contribution.CursedTF_FormdbName;
-            
-        //           public decimal InstantHealthRestore { get; set; }
-        //public decimal InstantManaRestore { get; set; }
-        //public decimal ReuseableHealthRestore { get; set; }
-        //public decimal ReuseableManaRestore { get; set; }
+
+            //           public decimal InstantHealthRestore { get; set; }
+            //public decimal InstantManaRestore { get; set; }
+            //public decimal ReuseableHealthRestore { get; set; }
+            //public decimal ReuseableManaRestore { get; set; }
 
             //item.InstantHealthRestore = contribution.Item_
 
             // write the form to
-           // string formdbname = "form_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
-            if (item.CurseTFFormdbName != null && item.CurseTFFormdbName.Length > 0) { 
+            // string formdbname = "form_" + contribution.Form_FriendlyName.Replace(" ", "_") + "_" + contribution.SubmitterName.Replace(" ", "_");
+            if (item.CurseTFFormdbName != null && item.CurseTFFormdbName.Length > 0)
+            {
                 ITFMessageRepository tfRepo = new EFTFMessageRepository();
                 TFMessage tf = tfRepo.TFMessages.FirstOrDefault(t => t.FormDbName == item.CurseTFFormdbName);
 
@@ -1256,7 +1255,7 @@ namespace TT.Web.Controllers
 
             }
 
-            
+
 
             itemRepo.SaveDbStaticItem(item);
 
@@ -1265,14 +1264,14 @@ namespace TT.Web.Controllers
             contribution.History += "Item published on " + DateTime.UtcNow + "<br>";
             contributionRepo.SaveContribution(contribution);
 
-            return View("Publish");
+            return View(MVC.Contribution.Views.Publish);
         }
 
-        public ActionResult PublishEffect(int id)
+        public virtual ActionResult PublishEffect(int id)
         {
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             string message = "";
@@ -1284,7 +1283,7 @@ namespace TT.Web.Controllers
             string effectDbName = contribution.GetEffectDbName();
             DbStaticEffect effect = effectRepo.DbStaticEffects.FirstOrDefault(e => e.dbName == effectDbName);
 
-  
+
             if (effect == null)
             {
                 effect = new DbStaticEffect
@@ -1300,10 +1299,10 @@ namespace TT.Web.Controllers
 
             effect.FriendlyName = contribution.Effect_FriendlyName;
             effect.Description = contribution.Effect_Description;
-           // effect.AvailableAtLevel = 0;
-           // effect.PreRequesite = contribution.Effect_Pre
+            // effect.AvailableAtLevel = 0;
+            // effect.PreRequesite = contribution.Effect_Pre
 
-          //  effect.isLevelUpPerk = contribution.;
+            //  effect.isLevelUpPerk = contribution.;
             effect.Duration = contribution.Effect_Duration;
             effect.Cooldown = contribution.Effect_Cooldown;
 
@@ -1362,14 +1361,14 @@ namespace TT.Web.Controllers
 
             ViewBag.Message += "<br>New effect, " + contribution.Effect_FriendlyName + ", by " + contribution.SubmitterName + ".";
 
-            return View("Publish");
+            return View(MVC.Contribution.Views.Publish);
         }
 
-        public ActionResult PublishSpell_Effect(int id)
+        public virtual ActionResult PublishSpell_Effect(int id)
         {
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             IEffectContributionRepository contRepo = new EFEffectContributionRepository();
@@ -1418,14 +1417,14 @@ namespace TT.Web.Controllers
             });
 
             ViewBag.Message = message;
-            return View("Publish");
+            return View(MVC.Contribution.Views.Publish);
         }
 
-        public ActionResult MarkAsLive(int id)
+        public virtual ActionResult MarkAsLive(int id)
         {
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             string message = "";
@@ -1436,13 +1435,13 @@ namespace TT.Web.Controllers
             contribution.IsLive = true;
             contributionRepo.SaveContribution(contribution);
             message += "<p>Contribution marked as live.</p>";
-            
+
             if (contribution_original != null)
             {
                 contribution_original.IsLive = true;
                 contributionRepo.SaveContribution(contribution_original);
                 message += "<p>Original contribution marked as live.</p>";
-                
+
             }
             else
             {
@@ -1450,14 +1449,14 @@ namespace TT.Web.Controllers
             }
 
             ViewBag.Message = message;
-            return View("Publish");
+            return View(MVC.Contribution.Views.Publish);
         }
 
-        public ActionResult MarkEffectAsLive(int id)
+        public virtual ActionResult MarkEffectAsLive(int id)
         {
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             string message = "";
@@ -1482,14 +1481,14 @@ namespace TT.Web.Controllers
             }
 
             ViewBag.Message = message;
-            return View("Publish");
+            return View(MVC.Contribution.Views.Publish);
         }
 
-        public ActionResult SetSpellAsLive(int id)
+        public virtual ActionResult SetSpellAsLive(int id)
         {
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             IContributionRepository contributionRepo = new EFContributionRepository();
@@ -1504,15 +1503,15 @@ namespace TT.Web.Controllers
             skillRepo.SaveDbStaticSkill(sskill);
             ViewBag.Message = "Set to live.";
 
-            return View("Publish");
+            return View(MVC.Contribution.Views.Publish);
 
         }
 
-        public ActionResult StaticsExist(int id)
+        public virtual ActionResult StaticsExist(int id)
         {
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             IContributionRepository contributionRepo = new EFContributionRepository();
@@ -1544,7 +1543,9 @@ namespace TT.Web.Controllers
             if (sskill == null)
             {
                 message += "<p class='bad'>No static skill found:  " + skilldbname + "</p>";
-            } else {
+            }
+            else
+            {
                 message += "<p class='good'>Static skill found.</p>";
             }
 
@@ -1568,19 +1569,19 @@ namespace TT.Web.Controllers
 
             ViewBag.Message = message;
 
-            return View("Publish");
+            return View(MVC.Contribution.Views.Publish);
 
         }
 
-        public ActionResult MyDMRolls()
+        public virtual ActionResult MyDMRolls()
         {
             IDMRollRepository repo = new EFDMRollRepository();
             string myMembershipId = User.Identity.GetUserId();
             return View(repo.DMRolls.Where(r => r.MembershipOwnerId == myMembershipId));
         }
 
-          [Authorize]
-        public ActionResult DMRoll(int id)
+        [Authorize]
+        public virtual ActionResult DMRoll(int id)
         {
             IDMRollRepository repo = new EFDMRollRepository();
             DMRoll output = repo.DMRolls.FirstOrDefault(r => r.Id == id);
@@ -1593,15 +1594,15 @@ namespace TT.Web.Controllers
                 if (output.MembershipOwnerId != User.Identity.GetUserId() && !User.IsInRole(PvPStatics.Permissions_Admin))
                 {
                     TempData["Error"] = "This does not belong to you.";
-                    return RedirectToAction("Play", "PvP");
+                    return RedirectToAction(MVC.PvP.Play());
                 }
             }
 
             return View(output);
         }
 
-          [Authorize]
-        public ActionResult SendDMRoll(DMRoll input)
+        [Authorize]
+        public virtual ActionResult SendDMRoll(DMRoll input)
         {
             IDMRollRepository repo = new EFDMRollRepository();
             DMRoll roll = repo.DMRolls.FirstOrDefault(i => i.Id == input.Id);
@@ -1616,13 +1617,13 @@ namespace TT.Web.Controllers
                 if (roll.MembershipOwnerId != myMembershipId && !User.IsInRole(PvPStatics.Permissions_Admin))
                 {
                     TempData["Error"] = "This does not belong to you.";
-                    return RedirectToAction("Play", "PvP");
+                    return RedirectToAction(MVC.PvP.Play());
                 }
                 if (roll.Message.Length > 500)
                 {
                     ViewBag["Error"] = "The message canno be longer than 500 characters.";
-                    return View("DMRoll", input);
-                } 
+                    return View(MVC.Contribution.Views.DMRoll, input);
+                }
             }
 
             if (roll.MembershipOwnerId != "0" && roll.MembershipOwnerId != "-1" && roll.MembershipOwnerId != "-2" && !User.IsInRole(PvPStatics.Permissions_Admin))
@@ -1642,92 +1643,92 @@ namespace TT.Web.Controllers
             repo.SaveDMRoll(roll);
 
             ViewBag.Result = "DM Encounter saved.";
-            return RedirectToAction("MyDMRolls");
+            return RedirectToAction(MVC.Contribution.MyDMRolls());
 
         }
 
-          [Authorize]
-          public ActionResult ReviewDMRolls()
-          {
-              if (!User.IsInRole(PvPStatics.Permissions_Admin))
-              {
-                  return RedirectToAction("Play", "PvP");
-              }
-              IDMRollRepository repo = new EFDMRollRepository();
-              return View(repo.DMRolls.Where(r => !r.IsLive));
-          }
+        [Authorize]
+        public virtual ActionResult ReviewDMRolls()
+        {
+            if (!User.IsInRole(PvPStatics.Permissions_Admin))
+            {
+                return RedirectToAction(MVC.PvP.Play());
+            }
+            IDMRollRepository repo = new EFDMRollRepository();
+            return View(repo.DMRolls.Where(r => !r.IsLive));
+        }
 
-         [Authorize]
-          public ActionResult ApproveDMRoll(int id)
-          {
+        [Authorize]
+        public virtual ActionResult ApproveDMRoll(int id)
+        {
 
-              if (!User.IsInRole(PvPStatics.Permissions_Admin))
-              {
-                  return RedirectToAction("Play", "PvP");
-              }
+            if (!User.IsInRole(PvPStatics.Permissions_Admin))
+            {
+                return RedirectToAction(MVC.PvP.Play());
+            }
 
-              IDMRollRepository repo = new EFDMRollRepository();
-              DMRoll roll = repo.DMRolls.FirstOrDefault(i => i.Id == id);
-              roll.IsLive = true;
-              repo.SaveDMRoll(roll);
+            IDMRollRepository repo = new EFDMRollRepository();
+            DMRoll roll = repo.DMRolls.FirstOrDefault(i => i.Id == id);
+            roll.IsLive = true;
+            repo.SaveDMRoll(roll);
 
-              return RedirectToAction("ReviewDMRolls");
-          }
+            return RedirectToAction(MVC.Contribution.ReviewDMRolls());
+        }
 
-         public ActionResult GetContributionTable()
-         {
-             IContributionRepository contributionRepo = new EFContributionRepository();
-             IEffectContributionRepository effectContributionRepo = new EFEffectContributionRepository();
+        public virtual ActionResult GetContributionTable()
+        {
+            IContributionRepository contributionRepo = new EFContributionRepository();
+            IEffectContributionRepository effectContributionRepo = new EFEffectContributionRepository();
 
-             List<ContributionCredit> output = new List<ContributionCredit>();
-             List<string> uniqueOwnerIds = contributionRepo.Contributions.Where(c => c.ProofreadingCopy && c.IsLive && c.OwnerMembershipId !=  "0" && c.OwnerMembershipId != "-1" && c.OwnerMembershipId != "-2" && c.SubmitterName != null && c.SubmitterName != "" && !c.IsNonstandard).Select(c => c.OwnerMembershipId).Distinct().ToList();
-             
+            List<ContributionCredit> output = new List<ContributionCredit>();
+            List<string> uniqueOwnerIds = contributionRepo.Contributions.Where(c => c.ProofreadingCopy && c.IsLive && c.OwnerMembershipId != "0" && c.OwnerMembershipId != "-1" && c.OwnerMembershipId != "-2" && c.SubmitterName != null && c.SubmitterName != "" && !c.IsNonstandard).Select(c => c.OwnerMembershipId).Distinct().ToList();
 
-             foreach (string ownerId in uniqueOwnerIds)
-             {
-                 ContributionCredit addme = new ContributionCredit
-                 {
-                     OwnerMembershipId = ownerId,
-                 };
+
+            foreach (string ownerId in uniqueOwnerIds)
+            {
+                ContributionCredit addme = new ContributionCredit
+                {
+                    OwnerMembershipId = ownerId,
+                };
 
                 var AuthorContribs = contributionRepo.Contributions.Where(c => c.OwnerMembershipId == ownerId && !c.IsNonstandard && c.IsLive && c.ProofreadingCopy).OrderByDescending(c => c.OwnerMembershipId).FirstOrDefault();
                 if (AuthorContribs == null) continue;
 
                 addme.AuthorName = AuthorContribs.SubmitterName;
 
-                 addme.AnimateFormCount =
-                     contributionRepo.Contributions.Count(
-                         c =>
-                             c.OwnerMembershipId == ownerId && !c.IsNonstandard &&
-                             c.Form_MobilityType == PvPStatics.MobilityFull && c.IsLive && c.ProofreadingCopy);
+                addme.AnimateFormCount =
+                    contributionRepo.Contributions.Count(
+                        c =>
+                            c.OwnerMembershipId == ownerId && !c.IsNonstandard &&
+                            c.Form_MobilityType == PvPStatics.MobilityFull && c.IsLive && c.ProofreadingCopy);
 
-                 addme.InanimateFormCount =
-                     contributionRepo.Contributions.Count(
-                         c =>
-                             c.OwnerMembershipId == ownerId && !c.IsNonstandard &&
-                             c.Form_MobilityType == PvPStatics.MobilityInanimate && c.IsLive && c.ProofreadingCopy);
+                addme.InanimateFormCount =
+                    contributionRepo.Contributions.Count(
+                        c =>
+                            c.OwnerMembershipId == ownerId && !c.IsNonstandard &&
+                            c.Form_MobilityType == PvPStatics.MobilityInanimate && c.IsLive && c.ProofreadingCopy);
 
-                 addme.AnimalFormCount =
-                     contributionRepo.Contributions.Count(
-                         c =>
-                             c.OwnerMembershipId == ownerId && !c.IsNonstandard &&
-                             c.Form_MobilityType == PvPStatics.MobilityPet && c.IsLive && c.ProofreadingCopy);
+                addme.AnimalFormCount =
+                    contributionRepo.Contributions.Count(
+                        c =>
+                            c.OwnerMembershipId == ownerId && !c.IsNonstandard &&
+                            c.Form_MobilityType == PvPStatics.MobilityPet && c.IsLive && c.ProofreadingCopy);
 
-                 addme.Website = AuthorContribs.SubmitterUrl.IsNullOrEmpty() ? "": AuthorContribs.SubmitterUrl;
+                addme.Website = AuthorContribs.SubmitterUrl.IsNullOrEmpty() ? "" : AuthorContribs.SubmitterUrl;
 
-                 addme.EffectCount =
-                     effectContributionRepo.EffectContributions.Count(
-                         c => c.OwnerMemberhipId == ownerId && c.IsLive && c.ProofreadingCopy);
+                addme.EffectCount =
+                    effectContributionRepo.EffectContributions.Count(
+                        c => c.OwnerMemberhipId == ownerId && c.IsLive && c.ProofreadingCopy);
 
-                 addme.SpellCount = addme.AnimateFormCount + addme.InanimateFormCount + addme.AnimalFormCount;
+                addme.SpellCount = addme.AnimateFormCount + addme.InanimateFormCount + addme.AnimalFormCount;
 
-                 output.Add(addme);
-             }
+                output.Add(addme);
+            }
 
-             return View(output);
-         }
+            return View(output);
+        }
 
-   
 
-	}
+
+    }
 }

@@ -14,7 +14,7 @@ using TT.Domain.ViewModels.NPCs;
 
 namespace TT.Web.Controllers
 {
-    public class NPCController : Controller
+    public partial class NPCController : Controller
     {
 
         // This controller should handle all interactions with NPC characters, ie Lindella, Wuffie, and Jewdewfae, and any others
@@ -22,7 +22,7 @@ namespace TT.Web.Controllers
         public const int MovementControlLimit = 2;
 
         [Authorize]
-        public ActionResult TradeWithMerchant(string filter)
+        public virtual ActionResult TradeWithMerchant(string filter)
         {
 
             if (filter.IsNullOrEmpty())
@@ -40,21 +40,21 @@ namespace TT.Web.Controllers
             if (me.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You must be animate in order to trade with Lindella.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert that this player is not in a duel
             if (me.InDuel > 0)
             {
                 TempData["Error"] = "You must finish your duel before you can purchase or sell anything to Lindella.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert that this player is not in a quest
             if (me.InQuest > 0)
             {
                 TempData["Error"] = "You must finish your quest before you can purchase or sell anything to Lindella.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             Player merchant = PlayerProcedures.GetPlayerFromBotId(-3);
@@ -63,7 +63,7 @@ namespace TT.Web.Controllers
             if (merchant.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You cannot trade with Lindella.  She has been turned into an item or animal.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert player is in the same location as Lindella
@@ -71,7 +71,7 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "You must be in the same location as Lindella in order to trade with her.";
                 TempData["SubError"] = "She may have moved since beginning this transaction.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             ViewBag.DisableLinks = "true";
@@ -129,7 +129,7 @@ namespace TT.Web.Controllers
         }
 
         [Authorize]
-        public ActionResult Purchase(int id)
+        public virtual ActionResult Purchase(int id)
         {
             // assert that player is logged in
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
@@ -137,21 +137,21 @@ namespace TT.Web.Controllers
             if (me.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You must be animate in order to trade with Lindella.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert that this player is not in a duel
             if (me.InDuel > 0)
             {
                 TempData["Error"] = "You must finish your duel before you can purchase or sell anything to Lindella.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert that this player is not in a duel
             if (me.InQuest > 0)
             {
                 TempData["Error"] = "You must finish your quest before you can purchase or sell anything to Lindella.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             Player merchant = PlayerProcedures.GetPlayerFromBotId(-3);
@@ -160,7 +160,7 @@ namespace TT.Web.Controllers
             if (merchant.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You cannot trade with Lindella.  She has been turned into an item or animal.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert player is in the same location as Lindella
@@ -168,7 +168,7 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "You must be in the same location as Lindella in order to trade with her.";
                 TempData["SubError"] = "She may have moved since beginning this transaction.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             ItemViewModel purchased = ItemProcedures.GetItemViewModel(id);
@@ -177,7 +177,7 @@ namespace TT.Web.Controllers
             if (purchased.dbItem.OwnerId != merchant.Id)
             {
                 TempData["Error"] = "Lindella does not own this item.";
-                return RedirectToAction("TradeWithMerchant");
+                return RedirectToAction(MVC.NPC.TradeWithMerchant());
             }
 
             decimal cost = ItemProcedures.GetCostOfItem(purchased, "buy");
@@ -187,7 +187,7 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "You can't afford this right now.";
                 TempData["SubError"] = "Try finding some more Arpeyjis from searching or take them off of players who you have turned inanimate or an animal.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert that the player has room in their inventory
@@ -195,7 +195,7 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "You are carrying too many items to purchase a new one.";
                 TempData["SubError"] = "You need to free up a space in your inventory before purchasing something from Lindella.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert that the item is in the same game mode as the player, if the item's game mode is locked
@@ -203,7 +203,7 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "This item is the wrong mode.";
                 TempData["SubError"] = "You cannot buy this item. It does not match your gameplay mode.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // checks have passed.  Transfer the item
@@ -221,11 +221,11 @@ namespace TT.Web.Controllers
             SkillProcedures.UpdateItemSpecificSkillsToPlayer(me);
 
             TempData["Result"] = "You have purchased a " + purchased.Item.FriendlyName + " from Lindella.";
-            return RedirectToAction("TradeWithMerchant", new { filter = PvPStatics.ItemType_Shirt });
+            return RedirectToAction(MVC.NPC.TradeWithMerchant(PvPStatics.ItemType_Shirt));
         }
 
         [Authorize]
-        public ActionResult SellList()
+        public virtual ActionResult SellList()
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
@@ -233,7 +233,7 @@ namespace TT.Web.Controllers
             if (me.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You must be animate in order to trade with Lindella.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             Player merchant = PlayerProcedures.GetPlayerFromBotId(-3);
@@ -242,7 +242,7 @@ namespace TT.Web.Controllers
             if (merchant.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You cannot trade with Lindella.  She has been turned into an item or animal.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert player is in the same location as Lindella
@@ -250,7 +250,7 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "You must be in the same location as Lindella in order to trade with her.";
                 TempData["SubError"] = "She may have moved since beginning this transaction.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // show the permanent and consumable items the player is carrying
@@ -259,7 +259,7 @@ namespace TT.Web.Controllers
         }
 
         [Authorize]
-        public ActionResult Sell(int id)
+        public virtual ActionResult Sell(int id)
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
@@ -267,7 +267,7 @@ namespace TT.Web.Controllers
             if (me.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You must be animate in order to trade with Lindella.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
 
@@ -275,14 +275,14 @@ namespace TT.Web.Controllers
             if (me.InDuel > 0)
             {
                 TempData["Error"] = "You must finish your duel before you can purchase or sell anything to Lindella.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert that this player is not in a duel
             if (me.InQuest > 0)
             {
                 TempData["Error"] = "You must finish your quest before you can purchase or sell anything to Lindella.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             Player merchant = PlayerProcedures.GetPlayerFromBotId(-3);
@@ -291,7 +291,7 @@ namespace TT.Web.Controllers
             if (merchant.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You cannot trade with Lindella.  She has been turned into an item or animal.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert player is in the same location as Lindella
@@ -299,7 +299,7 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "You must be in the same location as Lindella in order to trade with her.";
                 TempData["SubError"] = "She may have moved since beginning this transaction.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             ItemViewModel itemBeingSold = ItemProcedures.GetItemViewModel(id);
@@ -308,21 +308,21 @@ namespace TT.Web.Controllers
             if (itemBeingSold.dbItem.OwnerId != me.Id)
             {
                 TempData["Error"] = "You do not own this item.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert that the item is not an animal type
             if (itemBeingSold.Item.ItemType == PvPStatics.ItemType_Pet)
             {
                 TempData["Error"] = "Unfortunately Lindella does not purchase or sell pets or animals.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert that the item is either permanent or consumable
             if (!itemBeingSold.dbItem.IsPermanent && itemBeingSold.Item.ItemType != "consumable")
             {
                 TempData["Error"] = "Unfortunately Lindella will not purchase items that may later struggle free anymore.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             ItemProcedures.GiveItemToPlayer_Nocheck(itemBeingSold.dbItem.Id, merchant.Id);
@@ -339,21 +339,21 @@ namespace TT.Web.Controllers
 
 
             TempData["Result"] = "You sold your " + itemBeingSold.Item.FriendlyName + " to Lindella for " + (int)cost + " Arpeyjis.";
-            return RedirectToAction("TradeWithMerchant", new { filter = PvPStatics.ItemType_Shirt });
+            return RedirectToAction(MVC.NPC.TradeWithMerchant(PvPStatics.ItemType_Shirt));
         }
 
         [Authorize]
-        public ActionResult TradeWithPetMerchant(int offset = 0)
+        public virtual ActionResult TradeWithPetMerchant(int offset = 0)
         {
 
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
-            
+
 
             // assert player is animate
             if (me.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You must be animate in order to trade with Wüffie.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             Player merchant = PlayerProcedures.GetPlayerFromBotId(-10);
@@ -362,7 +362,7 @@ namespace TT.Web.Controllers
             if (merchant.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You cannot trade with Wüffie.  She has been turned into an item or animal.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert player is in the same location as Lindella
@@ -370,10 +370,10 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "You must be in the same location as Wüffie in order to trade with her.";
                 TempData["SubError"] = "She may have moved since beginning this transaction.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
-            
+
 
             ViewBag.Wuffie = true;
             ViewBag.DisableReleaseLink = true;
@@ -408,7 +408,7 @@ namespace TT.Web.Controllers
         }
 
         [Authorize]
-        public ActionResult PurchasePet(int id)
+        public virtual ActionResult PurchasePet(int id)
         {
             // assert that player is logged in
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
@@ -416,21 +416,21 @@ namespace TT.Web.Controllers
             if (me.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You must be animate in order to trade with Wüffie.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert that this player is not in a duel
             if (me.InDuel > 0)
             {
                 TempData["Error"] = "You must finish your duel before you can interact with Wüffie.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert that this player is not in a quest
             if (me.InQuest > 0)
             {
                 TempData["Error"] = "You must finish your quest before you can interact with Wüffie.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             Player merchant = PlayerProcedures.GetPlayerFromBotId(-10);
@@ -439,7 +439,7 @@ namespace TT.Web.Controllers
             if (merchant.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You cannot trade with Wüffie.  She has been turned into an item or animal.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert player is in the same location as Lindella
@@ -447,7 +447,7 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "You must be in the same location as Wüffie in order to trade with her.";
                 TempData["SubError"] = "She may have moved since beginning this transaction.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             ItemViewModel purchased = ItemProcedures.GetItemViewModel(id);
@@ -456,7 +456,7 @@ namespace TT.Web.Controllers
             if (purchased.dbItem.OwnerId != merchant.Id)
             {
                 TempData["Error"] = "Wüffie does not own this pet.";
-                return RedirectToAction("TradeWithMerchant");
+                return RedirectToAction(MVC.NPC.TradeWithMerchant());
             }
 
             decimal cost = ItemProcedures.GetCostOfItem(purchased, "buy");
@@ -466,7 +466,7 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "You can't afford this right now.";
                 TempData["SubError"] = "Try finding some more Arpeyjis from searching or take them off of players who you have turned inanimate or an animal.";
-                return RedirectToAction("Play","PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert that the player does not already have a pet
@@ -474,7 +474,7 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "You already have a pet.";
                 TempData["SubError"] = "You can only keep one pet at a time.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // checks have passed.  Transfer the item
@@ -496,11 +496,11 @@ namespace TT.Web.Controllers
 
 
             TempData["Result"] = "You have purchased a " + purchased.Item.FriendlyName + " from Wüffie.";
-            return RedirectToAction("TradeWithPetMerchant");
+            return RedirectToAction(MVC.NPC.TradeWithPetMerchant());
         }
 
         [Authorize]
-        public ActionResult SellPetList()
+        public virtual ActionResult SellPetList()
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
@@ -508,7 +508,7 @@ namespace TT.Web.Controllers
             if (me.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You must be animate in order to trade with Wüffie.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             Player merchant = PlayerProcedures.GetPlayerFromBotId(-10);
@@ -517,7 +517,7 @@ namespace TT.Web.Controllers
             if (merchant.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You cannot trade with Wüffie.  She has been turned into an item or animal.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert player is in the same location as Wüffie
@@ -525,11 +525,11 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "You must be in the same location as Wüffie in order to trade with her.";
                 TempData["SubError"] = "She may have moved since beginning this transaction.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
 
-           
+
 
             // show the permanent and consumable items the player is carrying
             IEnumerable<ItemViewModel> output = ItemProcedures.GetAllPlayerItems(me.Id).Where(i => i.Item.ItemType == PvPStatics.ItemType_Pet && i.dbItem.IsEquipped && i.dbItem.IsPermanent);
@@ -538,7 +538,7 @@ namespace TT.Web.Controllers
 
 
         [Authorize]
-        public ActionResult SellPet(int id)
+        public virtual ActionResult SellPet(int id)
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
@@ -546,21 +546,21 @@ namespace TT.Web.Controllers
             if (me.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You must be animate in order to trade with Wüffie.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert player is not in a duel
             if (me.InDuel > 0)
             {
                 TempData["Error"] = "You must conclude your duel before you can interact with Wuffie.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert player is not in a quest
             if (me.InQuest > 0)
             {
                 TempData["Error"] = "You must conclude your quest before you can interact with Wuffie.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             Player merchant = PlayerProcedures.GetPlayerFromBotId(-10);
@@ -569,7 +569,7 @@ namespace TT.Web.Controllers
             if (merchant.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You cannot trade with Wüffie.  She has been turned into an item or animal.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert player is in the same location as Lindella
@@ -577,7 +577,7 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "You must be in the same location as Wüffie in order to trade with her.";
                 TempData["SubError"] = "She may have moved since beginning this transaction.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             ItemViewModel itemBeingSold = ItemProcedures.GetItemViewModel(id);
@@ -586,21 +586,21 @@ namespace TT.Web.Controllers
             if (itemBeingSold.dbItem.OwnerId != me.Id)
             {
                 TempData["Error"] = "You do not own this item.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert that the item is only an animal type
             if (itemBeingSold.Item.ItemType != PvPStatics.ItemType_Pet)
             {
                 TempData["Error"] = "Unfortunately Wüffie only buys and sells pets.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert that the item is either permanent or consumable
             if (!itemBeingSold.dbItem.IsPermanent)
             {
                 TempData["Error"] = "Unfortunately Wüffie will not purchase pets that may later struggle free anymore.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             ItemProcedures.GiveItemToPlayer_Nocheck(itemBeingSold.dbItem.Id, merchant.Id);
@@ -616,11 +616,11 @@ namespace TT.Web.Controllers
             ).Start();
 
             TempData["Result"] = "You sold your " + itemBeingSold.Item.FriendlyName + " to Wüffie for " + (int)cost + " Arpeyjis.";
-            return RedirectToAction("TradeWithPetMerchant");
+            return RedirectToAction(MVC.NPC.TradeWithPetMerchant());
         }
 
         [Authorize]
-        public ActionResult MindControlList()
+        public virtual ActionResult MindControlList()
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -639,7 +639,7 @@ namespace TT.Web.Controllers
         }
 
         [Authorize]
-        public ActionResult MoveVictim(int id)
+        public virtual ActionResult MoveVictim(int id)
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -651,7 +651,7 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = errorsBox.Error;
                 TempData["SubError"] = errorsBox.SubError;
-                return RedirectToAction("MindControlList");
+                return RedirectToAction(MVC.NPC.MindControlList());
             }
 
             ViewBag.Victim = victim;
@@ -666,12 +666,12 @@ namespace TT.Web.Controllers
             {
                 IEnumerable<Location> output = LocationsStatics.LocationList.GetLocation.Where(l => l.dbName != "" && l.Region != "dungeon");
                 return View(output);
-            } 
+            }
         }
 
 
         [Authorize]
-        public ActionResult StripVictim(int id)
+        public virtual ActionResult StripVictim(int id)
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -683,7 +683,7 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = errorsBox.Error;
                 TempData["SubError"] = errorsBox.SubError;
-                return RedirectToAction("MindControlList");
+                return RedirectToAction(MVC.NPC.MindControlList());
             }
 
             List<ItemViewModel> victimItems = ItemProcedures.GetAllPlayerItems(victim.Id).ToList();
@@ -704,7 +704,9 @@ namespace TT.Web.Controllers
                 if (itemToDrop.Item.ItemType != PvPStatics.ItemType_Pet)
                 {
                     attackerMessage = "You commanded " + victim.GetFullName() + " to drop something.  They let go of a " + itemToDrop.Item.FriendlyName + " that they were carrying.";
-                } else {
+                }
+                else
+                {
                     attackerMessage = "You commanded " + victim.GetFullName() + " to drop something.  They released their pet " + itemToDrop.Item.FriendlyName + " that they had tamed.";
                 }
 
@@ -715,7 +717,7 @@ namespace TT.Web.Controllers
 
                 if (itemToDrop.Item.ItemType != PvPStatics.ItemType_Pet)
                 {
-                     victimMessage =  me.GetFullName() + " commanded you to to drop something. You had no choice but to go of a " + itemToDrop.Item.FriendlyName + " that you were carrying.";
+                    victimMessage = me.GetFullName() + " commanded you to to drop something. You had no choice but to go of a " + itemToDrop.Item.FriendlyName + " that you were carrying.";
                 }
                 else
                 {
@@ -736,11 +738,11 @@ namespace TT.Web.Controllers
                 TempData["Error"] = "It seems " + victim.GetFullName() + " was not carrying or wearing anything to drop!";
             }
 
-            return RedirectToAction("Play","PvP");
+            return RedirectToAction(MVC.PvP.Play());
         }
 
         [Authorize]
-        public ActionResult DeMeditateVictim(int id)
+        public virtual ActionResult DeMeditateVictim(int id)
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -752,7 +754,7 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = errorsBox.Error;
                 TempData["SubError"] = errorsBox.SubError;
-                return RedirectToAction("MindControlList");
+                return RedirectToAction(MVC.NPC.MindControlList());
             }
 
             BuffBox buffs = ItemProcedures.GetPlayerBuffs(victim);
@@ -762,11 +764,11 @@ namespace TT.Web.Controllers
 
 
             TempData["Result"] = "You force " + victim.GetFullName() + " to meditate while filling their mind with nonsense instead of relaxation, lowering their mana instead of increasing it!";
-            return RedirectToAction("Play", "PvP");
+            return RedirectToAction(MVC.PvP.Play());
         }
 
         [Authorize]
-        public ActionResult MoveVictimSend(int id, string to)
+        public virtual ActionResult MoveVictimSend(int id, string to)
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -778,7 +780,7 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = errorsBox.Error;
                 TempData["SubError"] = errorsBox.SubError;
-                return RedirectToAction("MindControlList");
+                return RedirectToAction(MVC.NPC.MindControlList());
             }
 
             BuffBox victimBuffs = ItemProcedures.GetPlayerBuffs(victim);
@@ -788,14 +790,14 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "Your victim does not have enough action points to move there.";
                 TempData["SubError"] = "Wait for your victim to regenerate more.";
-                return RedirectToAction("MindControlList");
+                return RedirectToAction(MVC.NPC.MindControlList());
             }
 
             // assert that the location is not the same as current
             if (victim.dbLocationName == to)
             {
                 TempData["Error"] = "Your victim is already in this location.";
-                return RedirectToAction("MindControlList");
+                return RedirectToAction(MVC.NPC.MindControlList());
             }
 
             // assert that the player has not attacked too recently to move
@@ -804,14 +806,14 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "Your victim is resting from a recent attack.";
                 TempData["SubError"] = "You must wait " + (45 - lastAttackTimeAgo) + " more seconds your victim will be able to move.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert that the victim is not carrying too much to move
             if (ItemProcedures.PlayerIsCarryingTooMuch(victim.Id, 0, victimBuffs))
             {
                 TempData["Error"] = "Your victim is carrying too much to be able to move.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
 
@@ -824,7 +826,7 @@ namespace TT.Web.Controllers
             if (victim.IsInDungeon() != destinationIsInDungeon)
             {
                 TempData["Error"] = "You can't order your victim to move into the dungeon from outside of it or the other way around.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
 
@@ -836,14 +838,14 @@ namespace TT.Web.Controllers
             PlayerLogProcedures.AddPlayerLog(me.Id, attackerMessage, false);
             TempData["Result"] = attackerMessage;
 
-           string victimMessage = me.GetFullName() + " commanded you to move to " + LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == to).Name + ", using " + apCost + " of your action points in the process!";
-           PlayerLogProcedures.AddPlayerLog(victim.Id, victimMessage, true);
+            string victimMessage = me.GetFullName() + " commanded you to move to " + LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == to).Name + ", using " + apCost + " of your action points in the process!";
+            PlayerLogProcedures.AddPlayerLog(victim.Id, victimMessage, true);
 
-            return RedirectToAction("MindControlList");
+            return RedirectToAction(MVC.NPC.MindControlList());
         }
 
         [Authorize]
-        public ActionResult TalkToBartender(string question)
+        public virtual ActionResult TalkToBartender(string question)
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -856,32 +858,35 @@ namespace TT.Web.Controllers
             if (me.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You must be animate in order to chat with Rusty.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert bartender is mobile
             if (bartender.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "Rusty must be animate in order to chat with you.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert player is animate
             if (me.dbLocationName != bartender.dbLocationName)
             {
                 TempData["Error"] = "You cannot chat with Rusty as you are not in the same location as him.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             if (question == "none")
             {
 
-                if (me.Gender == PvPStatics.GenderMale) {
+                if (me.Gender == PvPStatics.GenderMale)
+                {
                     ViewBag.Speech = "\"Greetings, sir " + me.GetFullName() + "!  How may I assist you today?\"";
-                } else if (me.Gender == PvPStatics.GenderFemale) {
+                }
+                else if (me.Gender == PvPStatics.GenderFemale)
+                {
                     ViewBag.Speech = "\"Greetings, madam " + me.GetFullName() + "!  How may I assist you today?\"";
                 }
-                
+
             }
             else if (question == "lindella")
             {
@@ -985,7 +990,7 @@ namespace TT.Web.Controllers
                     // just in case a location is misnamed, skip over it
                     if (Loc != null)
                     {
-                        output += "\"<b>" +  q.Name + "</b> is available for you at <b>" + Loc.Name + "</b>.\"<br><br>";
+                        output += "\"<b>" + q.Name + "</b> is available for you at <b>" + Loc.Name + "</b>.\"<br><br>";
                     }
                 }
 
@@ -1004,7 +1009,7 @@ namespace TT.Web.Controllers
         }
 
         [Authorize]
-        public ActionResult TalkWithJewdewfae()
+        public virtual ActionResult TalkWithJewdewfae()
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             Player fae = PlayerProcedures.GetPlayerFromBotId(AIStatics.JewdewfaeBotId);
@@ -1013,14 +1018,14 @@ namespace TT.Web.Controllers
             if (me.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You must be fully animate in order to talk with Jewdewfae.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert player is in same location as jewdewfae
             if (me.dbLocationName != fae.dbLocationName)
             {
                 TempData["Error"] = "You must be in the same location as Jewfewfae in order to talk with her.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             var output = new JewdewfaeEncounterViewModel();
@@ -1054,7 +1059,7 @@ namespace TT.Web.Controllers
         }
 
         [Authorize]
-        public ActionResult PlayWithJewdewfae()
+        public virtual ActionResult PlayWithJewdewfae()
         {
 
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
@@ -1064,35 +1069,35 @@ namespace TT.Web.Controllers
             if (me.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You must be fully animate in order to talk with Jewdewfae.";
-                return RedirectToAction("Play","PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert that this player is not in a duel
             if (me.InDuel > 0)
             {
                 TempData["Error"] = "You must finish your duel before you can play with Jewdewfae.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert that this player is not in a quest
             if (me.InQuest > 0)
             {
                 TempData["Error"] = "You must finish your quest before you can play with Jewdewfae.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert player is in same location as jewdewfae
             if (me.dbLocationName != fae.dbLocationName)
             {
                 TempData["Error"] = "You must be in the same location as Jewfewfae in order to talk with her.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert player has enough AP
             if (me.ActionPoints < 5)
             {
                 TempData["Error"] = "You need 5 action points to play with Jewdewfae.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert player has not already interacted this location
@@ -1100,7 +1105,7 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "You have already interacted with Jewdewfae here.";
                 TempData["SubError"] = "Wait for her to move somewhere else.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             var output = new JewdewfaeEncounterViewModel();
@@ -1130,25 +1135,25 @@ namespace TT.Web.Controllers
                 {
                     spellsLearned = "Unfortunately Jewdewfae can't teach you any spells that you don't already know.";
                 }
-                
+
                 output.SpellsLearned = spellsLearned;
 
                 new Thread(() =>
                      StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__JewdewfaeEncountersCompleted, 1)
                  ).Start();
 
-                return View("TalkWithJewdewfae", output);
+                return View(MVC.NPC.Views.TalkWithJewdewfae, output);
             }
             else
             {
                 TempData["Error"] = "You are not in the correct form to play with Jewdewfae right now.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
         }
 
         [Authorize]
-        public ActionResult TalkToCandice()
+        public virtual ActionResult TalkToCandice()
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -1158,21 +1163,21 @@ namespace TT.Web.Controllers
             if (me.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You must be animate in order to chat with " + BossProcedures_Sisters.BimboBossFirstName + ".";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert player is in the same place as Candice
             if (me.dbLocationName != bimbo.dbLocationName)
             {
                 TempData["Error"] = "You must be in the same location as " + BossProcedures_Sisters.BimboBossFirstName + " in order to talk with her.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert bimbo is still in base form
             if (bimbo.Form != BossProcedures_Sisters.BimboBossForm)
             {
                 TempData["Error"] = BossProcedures_Sisters.BimboBossFirstName + " seems to be too distracted with her recent change to want to talk to you.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             return View();
@@ -1180,7 +1185,7 @@ namespace TT.Web.Controllers
         }
 
         [Authorize]
-        public ActionResult TalkToAdrianna()
+        public virtual ActionResult TalkToAdrianna()
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -1190,21 +1195,21 @@ namespace TT.Web.Controllers
             if (me.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You must be animate in order to chat with " + BossProcedures_Sisters.NerdBossFirstName + ".";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert player is in the same place as Candice
             if (me.dbLocationName != nerd.dbLocationName)
             {
                 TempData["Error"] = "You must be in the same location as " + BossProcedures_Sisters.NerdBossFirstName + " in order to talk with her.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert nerd is still in base form
             if (nerd.Form != BossProcedures_Sisters.NerdBossForm)
             {
                 TempData["Error"] = BossProcedures_Sisters.NerdBossFirstName + " seems to be too distracted with her recent change to want to talk to you.";
-                  return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             return View();
@@ -1212,7 +1217,7 @@ namespace TT.Web.Controllers
         }
 
         [Authorize]
-        public ActionResult TalkToLorekeeper()
+        public virtual ActionResult TalkToLorekeeper()
         {
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -1222,14 +1227,14 @@ namespace TT.Web.Controllers
             if (me.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You must be animate in order to chat with " + loremaster.GetFullName() + ".";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert player is in the same place as loremaster
             if (me.dbLocationName != loremaster.dbLocationName)
             {
-                TempData["Error"] = "You must be in the same location as " + loremaster.GetFullName() +" in order to talk with him.";
-                return RedirectToAction("Play", "PvP");
+                TempData["Error"] = "You must be in the same location as " + loremaster.GetFullName() + " in order to talk with him.";
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // transfer all of the books Lindella owns over to Lorekeeper
@@ -1244,7 +1249,7 @@ namespace TT.Web.Controllers
         }
 
         [Authorize]
-        public ActionResult LorekeeperPurchaseBook()
+        public virtual ActionResult LorekeeperPurchaseBook()
         {
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -1254,14 +1259,14 @@ namespace TT.Web.Controllers
             if (me.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You must be animate in order to chat with " + loremaster.GetFullName() + ".";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert player is in the same place as loremaster
             if (me.dbLocationName != loremaster.dbLocationName)
             {
                 TempData["Error"] = "You must be in the same location as " + loremaster.GetFullName() + " in order to talk with him.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             var output = new LorekeeperBookListViewModel
@@ -1277,7 +1282,7 @@ namespace TT.Web.Controllers
         }
 
         [Authorize]
-        public ActionResult LorekeeperPurchaseBookSend(int id)
+        public virtual ActionResult LorekeeperPurchaseBookSend(int id)
         {
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -1287,14 +1292,14 @@ namespace TT.Web.Controllers
             if (me.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You must be animate in order to chat with " + loremaster.GetFullName() + ".";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert player is in the same place as loremaster
             if (me.dbLocationName != loremaster.dbLocationName)
             {
                 TempData["Error"] = "You must be in the same location as " + loremaster.GetFullName() + " in order to talk with him.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert lorekeeper owns this book
@@ -1302,7 +1307,7 @@ namespace TT.Web.Controllers
             if (purchased.dbItem.OwnerId != loremaster.Id)
             {
                 TempData["Error"] = "You can't purchse this as " + loremaster.GetFullName() + " does not own it.";
-                return RedirectToAction("TalkToLorekeeper", "NPC");
+                return RedirectToAction(MVC.NPC.TalkToLorekeeper());
             }
 
 
@@ -1313,7 +1318,7 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "You can't afford this right now.";
                 TempData["SubError"] = "Try finding some more Arpeyjis from searching or take them off of players who you have turned inanimate or an animal.";
-                return RedirectToAction("TalkToLorekeeper", "NPC");
+                return RedirectToAction(MVC.NPC.TalkToLorekeeper());
             }
 
             // checks have passed.  Transfer the item
@@ -1322,12 +1327,12 @@ namespace TT.Web.Controllers
             ItemProcedures.GiveItemToPlayer_Nocheck(purchased.dbItem.Id, me.Id);
 
             TempData["Result"] = "You purchased " + purchased.Item.FriendlyName + " from " + loremaster.GetFullName() + " for " + cost + " Arpeyjis.";
-            return RedirectToAction("TalkToLorekeeper", "NPC");
+            return RedirectToAction(MVC.NPC.TalkToLorekeeper());
 
         }
 
         [Authorize]
-        public ActionResult LorekeeperLearnSpell(string filter)
+        public virtual ActionResult LorekeeperLearnSpell(string filter)
         {
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -1337,18 +1342,18 @@ namespace TT.Web.Controllers
             if (me.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You must be animate in order to chat with " + loremaster.GetFullName() + ".";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert player is in the same place as loremaster
             if (me.dbLocationName != loremaster.dbLocationName)
             {
                 TempData["Error"] = "You must be in the same location as " + loremaster.GetFullName() + " in order to talk with him.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             var output =
-                Domain.DomainRegistry.Repository.Find(new GetSkillsPurchaseableByPlayer {MobilityType = filter, playerId = me.Id});
+                Domain.DomainRegistry.Repository.Find(new GetSkillsPurchaseableByPlayer { MobilityType = filter, playerId = me.Id });
 
             ViewBag.Money = Math.Floor(me.Money);
 
@@ -1360,7 +1365,7 @@ namespace TT.Web.Controllers
         }
 
         [Authorize]
-        public ActionResult LorekeeperLearnSpellSend(string spell)
+        public virtual ActionResult LorekeeperLearnSpellSend(string spell)
         {
             var myMembershipId = User.Identity.GetUserId();
             var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -1370,14 +1375,14 @@ namespace TT.Web.Controllers
             if (me.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You must be animate in order to learn spells from " + loremaster.GetFullName() + ".";
-                    return RedirectToAction("TalkToLorekeeper", "NPC");
+                return RedirectToAction(MVC.NPC.TalkToLorekeeper());
             }
 
             // assert player is in the same place as loremaster
             if (me.dbLocationName != loremaster.dbLocationName)
             {
                 TempData["Error"] = "You must be in the same location as " + loremaster.GetFullName() + " in order to talk with him.";
-                     return RedirectToAction("TalkToLorekeeper", "NPC");
+                return RedirectToAction(MVC.NPC.TalkToLorekeeper());
             }
 
             // assert player has enough money to buy a spell
@@ -1385,7 +1390,7 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "You don't have enough Arpeyjis to pay " + loremaster.GetFullName() + " to teach you any spells right now.";
                 TempData["SubError"] = "You need " + PvPStatics.LorekeeperSpellPrice + " Arpeyjs to be taught a spell.";
-                     return RedirectToAction("TalkToLorekeeper", "NPC");
+                return RedirectToAction(MVC.NPC.TalkToLorekeeper());
             }
 
             // assert player does not already have that spell
@@ -1396,14 +1401,14 @@ namespace TT.Web.Controllers
             if (playerExistingSpells.Select(s => s.Name).Contains(spell))
             {
                 TempData["Error"] = "You already know that spell.";
-                     return RedirectToAction("TalkToLorekeeper", "NPC");
+                return RedirectToAction(MVC.NPC.TalkToLorekeeper());
             }
 
             // assert spells is learnable
             if ((spellViewModel.Skill.LearnedAtLocation.IsNullOrEmpty() && spellViewModel.Skill.LearnedAtRegion.IsNullOrEmpty()) || !spellViewModel.Skill.IsPlayerLearnable)
             {
                 TempData["Error"] = "You cannot learn that spell.";
-                     return RedirectToAction("TalkToLorekeeper", "NPC");
+                return RedirectToAction(MVC.NPC.TalkToLorekeeper());
             }
 
             // all checks passed; give the player the spell
@@ -1411,15 +1416,15 @@ namespace TT.Web.Controllers
             PlayerProcedures.GiveMoneyToPlayer(me, -PvPStatics.LorekeeperSpellPrice);
 
             new Thread(() =>
-                StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__LorekeeperSpellsLearned,1 )
+                StatsProcedures.AddStat(me.MembershipId, StatsProcedures.Stat__LorekeeperSpellsLearned, 1)
             ).Start();
 
             TempData["Result"] = loremaster.GetFullName() + " taught you " + spellViewModel.Skill.FriendlyName + " for " + PvPStatics.LorekeeperSpellPrice + " Arpeyjis.";
-            return RedirectToAction("TalkToLorekeeper", "NPC");
+            return RedirectToAction(MVC.NPC.TalkToLorekeeper());
         }
 
         [Authorize]
-        public ActionResult TalkToValentine(string question)
+        public virtual ActionResult TalkToValentine(string question)
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -1429,21 +1434,21 @@ namespace TT.Web.Controllers
             if (me.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You must be animate in order to chat with " + valentine.GetFullName() + ".";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert player is not dueling
             if (me.InDuel > 0)
             {
                 TempData["Error"] = "You should conclude your current duel before talking to " + valentine.GetFullName() + ".";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert player is in the same place as Valenti8ne
             if (me.dbLocationName != valentine.dbLocationName)
             {
                 TempData["Error"] = "You must be in the same location as " + valentine.GetFullName() + " in order to talk with him.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             string responseText = "";
@@ -1483,7 +1488,7 @@ namespace TT.Web.Controllers
 
             ViewBag.Result = responseText;
 
-            return View("TalkToValentine");
+            return View(MVC.NPC.Views.TalkToValentine);
 
         }
     }

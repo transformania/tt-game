@@ -19,17 +19,17 @@ namespace TT.Web.Controllers
 {
     [Authorize]
     [OutputCache(Location = OutputCacheLocation.None)]
-    public class QuestController : Controller
+    public partial class QuestController : Controller
     {
 
-        public ActionResult StartQuest(int Id)
+        public virtual ActionResult StartQuest(int Id)
         {
             string myMembershipId = User.Identity.GetUserId();
             if (PvPStatics.AnimateUpdateInProgress)
             {
                 TempData["Error"] = "Player update portion of the world update is still in progress.";
                 TempData["SubError"] = "Try again a bit later when the update has progressed farther along.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -38,21 +38,21 @@ namespace TT.Web.Controllers
             if (me.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You must be animate in order to begin a quest.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert that this player is not in a duel
             if (me.InDuel > 0)
             {
                 TempData["Error"] = "You must finish your duel before you begin a quest.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert that this player is not in a quest
             if (me.InQuest > 0)
             {
                 TempData["Error"] = "You must finish your current quest before you start another.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert player has not been in combat recently
@@ -61,7 +61,7 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "You have been in combat too recently in order to begin this quest.";
                 TempData["SubError"] = "You must stay out of combat for another " + (PvPStatics.DuelNoCombatMinutes - lastAttackTimeAgo) + " minutes.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             QuestStart questStart = QuestProcedures.GetQuest(Id);
@@ -70,7 +70,7 @@ namespace TT.Web.Controllers
             if (me.dbLocationName != questStart.Location)
             {
                 TempData["Error"] = "You are not in the correct location to begin this quest.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             int gameTurnNum = PvPWorldStatProcedures.GetWorldTurnNumber();
@@ -81,7 +81,7 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "You recently failed or abandoned this quest.";
                 TempData["SubError"] = "You must wait another " + (QuestStatics.QuestFailCooldownTurnLength - (gameTurnNum - lastTurnAttempted)) + " turns before you can attempt this quest again.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             IEnumerable<QuestPlayerStatus> questPlayerStatuses = QuestProcedures.GetQuestPlayerStatuses(me);
@@ -92,7 +92,7 @@ namespace TT.Web.Controllers
             if (!canStartQuest)
             {
                 TempData["Error"] = "You do not meet all of the criteria to begin this quest.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // all checks have passed; start the player on this quest
@@ -100,10 +100,10 @@ namespace TT.Web.Controllers
             LocationLogProcedures.AddLocationLog(me.dbLocationName, "<span class='playerMediatingNotification'><b>" + me.GetFullName() + "</b> began the quest <b>" + questStart.Name + "</b> here.</span>");
 
             TempData["Result"] = "You started the quest " + questStart.Name + ".";
-            return RedirectToAction("Questing", "Quest");
+            return RedirectToAction(MVC.Quest.Questing());
         }
 
-        public ActionResult QuestsAvailableHere()
+        public virtual ActionResult QuestsAvailableHere()
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -117,7 +117,7 @@ namespace TT.Web.Controllers
             return View(output);
         }
 
-        public ActionResult Questing()
+        public virtual ActionResult Questing()
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -126,7 +126,7 @@ namespace TT.Web.Controllers
             return View(questStart);
         }
 
-        public ActionResult Quest()
+        public virtual ActionResult Quest()
         {
             IQuestRepository repo = new EFQuestRepository();
 
@@ -151,7 +151,7 @@ namespace TT.Web.Controllers
             return PartialView(output);
         }
 
-        public ActionResult Choice(int Id)
+        public virtual ActionResult Choice(int Id)
         {
             IQuestRepository repo = new EFQuestRepository();
 
@@ -162,7 +162,7 @@ namespace TT.Web.Controllers
             if (me.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You are not animate.";
-                return RedirectToAction("Quest");
+                return RedirectToAction(MVC.Quest.Quest());
             }
 
             // assert player has enough AP
@@ -170,7 +170,7 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "You don't have enough action points for this.";
                 TempData["SubError"] = "Wait a while; you will get more action points soon.";
-                return RedirectToAction("Quest");
+                return RedirectToAction(MVC.Quest.Quest());
             }
 
             QuestState currentState = QuestProcedures.GetQuestState(me.InQuestState);
@@ -181,27 +181,27 @@ namespace TT.Web.Controllers
             if (nextState.QuestId != me.InQuest || desiredConnection.QuestId != me.InQuest)
             {
                 TempData["Error"] = "Unavailable";
-                return RedirectToAction("Quest");
+                return RedirectToAction(MVC.Quest.Quest());
             }
 
             // assert a connection does exist between current state and chosen one
             if (desiredConnection.QuestStateFromId != me.InQuestState)
             {
                 TempData["Error"] = "Unavailable";
-                return RedirectToAction("Quest");
+                return RedirectToAction(MVC.Quest.Quest());
             }
 
             QuestPlayPageViewModel output = new QuestPlayPageViewModel();
             output.Player = PlayerProcedures.GetPlayerFormViewModel(me.Id);
             output.QuestStart = QuestProcedures.GetQuest(me.InQuest);
-            output.QuestPlayerVariables = QuestProcedures.GetAllQuestPlayerVariablesFromQuest(output.QuestStart.Id, me.Id); 
+            output.QuestPlayerVariables = QuestProcedures.GetAllQuestPlayerVariablesFromQuest(output.QuestStart.Id, me.Id);
             BuffBox buffs = ItemProcedures.GetPlayerBuffs(me);
-            
+
             // assert player has the right requirements for this
             if (!QuestProcedures.QuestConnectionIsAvailable(desiredConnection, me, buffs, output.QuestPlayerVariables))
             {
                 TempData["Error"] = "You're not able to do that.";
-                return RedirectToAction("Quest");
+                return RedirectToAction(MVC.Quest.Quest());
             }
 
             // make rolls for pass / fail
@@ -214,11 +214,13 @@ namespace TT.Web.Controllers
                 {
                     nextState = QuestProcedures.GetQuestState(desiredConnection.QuestStateFailToId);
                     TempData["RollResult"] = "fail";
-                } else
+                }
+                else
                 {
                     TempData["RollResult"] = "pass";
                 }
-            } else
+            }
+            else
             {
                 TempData["RollResult"] = "none";
             }
@@ -230,10 +232,10 @@ namespace TT.Web.Controllers
 
             TempData["ConnectionText"] = desiredConnection.Text;
 
-            return RedirectToAction("Quest");
+            return RedirectToAction(MVC.Quest.Quest());
         }
 
-        public ActionResult Abandon()
+        public virtual ActionResult Abandon()
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -242,13 +244,13 @@ namespace TT.Web.Controllers
             if (me.InQuest <= 0)
             {
                 TempData["Error"] = "You are not in a quest.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             return PartialView();
         }
 
-        public ActionResult AbandonConfirm()
+        public virtual ActionResult AbandonConfirm()
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -257,7 +259,7 @@ namespace TT.Web.Controllers
             if (me.InQuest <= 0)
             {
                 TempData["Error"] = "You are not in a quest.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
 
@@ -268,17 +270,17 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "It is too late to abandon this quest.";
                 TempData["SubError"] = "You must accept the consequences of your actions, be they for good or ill!";
-                return RedirectToAction("Quest", "Quest");
+                return RedirectToAction(MVC.Quest.Quest());
             }
 
             QuestProcedures.PlayerEndQuest(me, (int)QuestStatics.QuestOutcomes.Failed);
 
             TempData["Result"] = "You abandoned your quest.";
-            return RedirectToAction("Play", "PvP");
+            return RedirectToAction(MVC.PvP.Play());
 
         }
 
-        public ActionResult EndQuest(bool restore)
+        public virtual ActionResult EndQuest(bool restore)
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -287,7 +289,7 @@ namespace TT.Web.Controllers
             if (me.InQuest <= 0)
             {
                 TempData["Error"] = "You are not in a quest.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             QuestStart quest = QuestProcedures.GetQuest(me.InQuest);
@@ -298,7 +300,7 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "You are not yet at the end of your quest!";
                 TempData["SubError"] = "If it is impossible for you to continue with this quest, you may abandon it.";
-                return RedirectToAction("Quest", "Quest");
+                return RedirectToAction(MVC.Quest.Quest());
             }
 
             int endType = state.QuestEnds.First().EndType;
@@ -328,7 +330,7 @@ namespace TT.Web.Controllers
                 ).Start();
 
                 TempData["Result"] = "You unfortunately failed the quest <b>" + quest.Name + "</b>.  Better luck next time!  If there is one...";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // pass!
@@ -341,11 +343,11 @@ namespace TT.Web.Controllers
 
             TempData["Result"] = "Congratulations, you completed the quest <b>" + quest.Name + "</b>!" + victoryMessage;
 
-            return RedirectToAction("Play", "PvP");
+            return RedirectToAction(MVC.PvP.Play());
 
         }
 
-        public ActionResult ResetQuests()
+        public virtual ActionResult ResetQuests()
         {
 
             string myMembershipId = User.Identity.GetUserId();
@@ -354,13 +356,13 @@ namespace TT.Web.Controllers
             if (!PvPStatics.ChaosMode)
             {
                 TempData["Error"] = "You can only do this in chaos mode.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             QuestProcedures.PlayerClearAllQuestStatuses(me);
             QuestProcedures.ClearQuestPlayerVariables(me.Id, me.InQuest);
 
-            return RedirectToAction("Play", "PvP");
+            return RedirectToAction(MVC.PvP.Play());
 
         }
     }

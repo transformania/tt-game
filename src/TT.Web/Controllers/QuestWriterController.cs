@@ -12,10 +12,10 @@ using TT.Domain.ViewModels.Quest;
 namespace TT.Web.Controllers
 {
     [Authorize(Roles = PvPStatics.Permissions_QuestWriter)]
-    public class QuestWriterController : Controller
+    public partial class QuestWriterController : Controller
     {
         // GET: QuestWriter
-        public ActionResult Index()
+        public virtual ActionResult Index()
         {
             List<QuestStart> output = QuestProcedures.GetAllQuestStarts().ToList();
 
@@ -26,7 +26,7 @@ namespace TT.Web.Controllers
             return View(output);
         }
 
-        public ActionResult QuestStart(int Id)
+        public virtual ActionResult QuestStart(int Id)
         {
 
             IQuestRepository repo = new EFQuestRepository();
@@ -56,33 +56,33 @@ namespace TT.Web.Controllers
             return PartialView(questStart);
         }
 
-        public ActionResult QuestStartSend(QuestStart input)
+        public virtual ActionResult QuestStartSend(QuestStart input)
         {
 
             int newId = QuestWriterProcedures.SaveQuestStart(input);
 
             QuestWriterProcedures.LogQuestWriterAction(User.Identity.Name, newId, " began new quest with Id <b>" + newId + "</b>.");
 
-            return RedirectToAction("QuestStart", "QuestWriter", new { Id = newId});
+            return RedirectToAction(MVC.QuestWriter.QuestStart(newId));
         }
 
-        public ActionResult MarkQuestAsLive (int Id, bool live)
+        public virtual ActionResult MarkQuestAsLive(int Id, bool live)
         {
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return RedirectToAction("QuestStart", "QuestWriter", new { Id = Id });
+                return RedirectToAction(MVC.QuestWriter.QuestStart(Id));
             }
 
             QuestWriterProcedures.MarkQuestAsLive(Id, live);
 
             QuestWriterProcedures.LogQuestWriterAction(User.Identity.Name, Id, " marked quest Id <b>" + Id + "</b> as live.");
 
-            return RedirectToAction("QuestStart", "QuestWriter", new { Id = Id });
+            return RedirectToAction(MVC.QuestWriter.QuestStart(Id));
 
         }
 
-        public ActionResult QuestState(int Id, int QuestId, int ParentStateId)
+        public virtual ActionResult QuestState(int Id, int QuestId, int ParentStateId)
         {
             IQuestRepository repo = new EFQuestRepository();
 
@@ -104,7 +104,8 @@ namespace TT.Web.Controllers
                     Y = 0,
                     PinToDiagram = true
                 };
-            } else
+            }
+            else
             {
 
             }
@@ -119,17 +120,17 @@ namespace TT.Web.Controllers
             return PartialView(output);
         }
 
-        public ActionResult QuestStateSend(QuestStateFormViewModel input)
+        public virtual ActionResult QuestStateSend(QuestStateFormViewModel input)
         {
 
             int id = QuestWriterProcedures.SaveQuestState(input.QuestState);
 
             QuestWriterProcedures.LogQuestWriterAction(User.Identity.Name, input.QuestState.QuestId, " saved quest state Id <b>" + input.QuestState.Id + "</b>.");
 
-            return RedirectToAction("QuestState", "QuestWriter", new { Id = id, QuestId = input.QuestState.QuestId, ParentStateId = -1});
+            return RedirectToAction(MVC.QuestWriter.QuestState(id, input.QuestState.QuestId, -1));
         }
 
-        public ActionResult QuestStateDelete(int Id)
+        public virtual ActionResult QuestStateDelete(int Id)
         {
             IQuestRepository repo = new EFQuestRepository();
 
@@ -139,17 +140,17 @@ namespace TT.Web.Controllers
 
             QuestWriterProcedures.LogQuestWriterAction(User.Identity.Name, questState.QuestId, " deleted quest state Id <b>" + questState.Id + "</b>.");
 
-            return RedirectToAction("ShowAllQuestStates", "QuestWriter", new { Id = questState.QuestId });
+            return RedirectToAction(MVC.QuestWriter.ShowAllQuestStates(questState.QuestId));
         }
 
-        public ActionResult QuestConnection(int Id, int QuestId, int FromQuestId, int ToQuestId)
+        public virtual ActionResult QuestConnection(int Id, int QuestId, int FromQuestId, int ToQuestId)
         {
 
             IQuestRepository repo = new EFQuestRepository();
 
             QuestConnection questConnection = repo.QuestConnections.FirstOrDefault(q => q.Id == Id);
 
-            if (questConnection== null)
+            if (questConnection == null)
             {
                 questConnection = new QuestConnection
                 {
@@ -184,26 +185,26 @@ namespace TT.Web.Controllers
             return PartialView(output);
         }
 
-        public ActionResult QuestConnectionSend(QuestConnectionFormViewModel input)
+        public virtual ActionResult QuestConnectionSend(QuestConnectionFormViewModel input)
         {
 
             int id = QuestWriterProcedures.SaveQuestConnection(input.QuestConnection);
 
             QuestWriterProcedures.LogQuestWriterAction(User.Identity.Name, input.QuestConnection.QuestId, " saved connection Id <b>" + id + "</b>.");
 
-            return RedirectToAction("QuestConnection", "QuestWriter", new { Id = id, QuestId = input.QuestConnection.QuestId, FromQuestId = input.QuestConnection.QuestStateFromId, ToQuestId = input.QuestConnection.QuestStateToId });
+            return RedirectToAction(MVC.QuestWriter.QuestConnection(id, input.QuestConnection.QuestId, input.QuestConnection.QuestStateFromId, input.QuestConnection.QuestStateToId));
         }
 
-        public ActionResult DeleteQuestConnection(int Id, int QuestId)
+        public virtual ActionResult DeleteQuestConnection(int Id, int QuestId)
         {
 
             QuestWriterProcedures.DeleteQuestConnection(Id);
             QuestWriterProcedures.LogQuestWriterAction(User.Identity.Name, QuestId, " deleted connection Id <b>" + Id + "</b>.");
 
-            return RedirectToAction("ShowAllQuestConnections", "QuestWriter", new { Id = QuestId });
+            return RedirectToAction(MVC.QuestWriter.ShowAllQuestConnections(QuestId));
         }
 
-        public ActionResult QuestConnectionRequirement(int Id, int QuestId, int QuestConnectionId)
+        public virtual ActionResult QuestConnectionRequirement(int Id, int QuestId, int QuestConnectionId)
         {
             IQuestRepository repo = new EFQuestRepository();
 
@@ -214,11 +215,11 @@ namespace TT.Web.Controllers
             {
                 QuestConnectionRequirement = new QuestConnectionRequirement
                 {
-                   QuestId = QuestId,
-                   QuestConnectionRequirementName = "[UNNAMED REQUIREMENT]",
+                    QuestId = QuestId,
+                    QuestConnectionRequirementName = "[UNNAMED REQUIREMENT]",
                 };
 
-                QuestConnectionRequirement.QuestConnectionId  = connection;
+                QuestConnectionRequirement.QuestConnectionId = connection;
             }
             else
             {
@@ -232,7 +233,7 @@ namespace TT.Web.Controllers
             return PartialView(output);
         }
 
-        public ActionResult QuestConnectionRequirementSend(QuestConnectionRequirementFormViewModel input)
+        public virtual ActionResult QuestConnectionRequirementSend(QuestConnectionRequirementFormViewModel input)
         {
 
             IQuestRepository repo = new EFQuestRepository();
@@ -242,10 +243,10 @@ namespace TT.Web.Controllers
 
             QuestWriterProcedures.LogQuestWriterAction(User.Identity.Name, connection.QuestId, " saved connection requirement Id <b>" + savedId + "</b>.");
 
-            return RedirectToAction("QuestConnectionRequirement", "QuestWriter", new { Id = savedId, QuestId = input.QuestConnectionRequirement.QuestId, QuestConnectionId = connection.Id });
+            return RedirectToAction(MVC.QuestWriter.QuestConnectionRequirement(savedId, input.QuestConnectionRequirement.QuestId, connection.Id));
         }
 
-        public ActionResult QuestConnectionRequirementDelete(int Id)
+        public virtual ActionResult QuestConnectionRequirementDelete(int Id)
         {
 
             IQuestRepository repo = new EFQuestRepository();
@@ -256,10 +257,10 @@ namespace TT.Web.Controllers
 
             QuestWriterProcedures.LogQuestWriterAction(User.Identity.Name, connection.QuestId, " deleted connection requirement Id <b>" + Id + "</b>.");
 
-            return RedirectToAction("QuestConnection", "QuestWriter", new { Id = connection.Id, QuestId = connection.QuestId, FromQuestId = connection.QuestStateFromId, ToQuestId = connection.QuestStateToId });
+            return RedirectToAction(MVC.QuestWriter.QuestConnection(connection.Id, connection.QuestId, connection.QuestStateFromId, connection.QuestStateToId));
         }
 
-        public ActionResult QuestStatePreaction(int Id, int QuestStateId, int QuestId)
+        public virtual ActionResult QuestStatePreaction(int Id, int QuestStateId, int QuestId)
         {
             IQuestRepository repo = new EFQuestRepository();
 
@@ -289,7 +290,7 @@ namespace TT.Web.Controllers
             return PartialView(output);
         }
 
-        public ActionResult QuestStatePreactionSend(QuestStatePreactionFormViewModel input)
+        public virtual ActionResult QuestStatePreactionSend(QuestStatePreactionFormViewModel input)
         {
             IQuestRepository repo = new EFQuestRepository();
             QuestState state = repo.QuestStates.FirstOrDefault(q => q.Id == input.ParentQuestState.Id);
@@ -298,10 +299,10 @@ namespace TT.Web.Controllers
 
             QuestWriterProcedures.LogQuestWriterAction(User.Identity.Name, state.QuestId, " saved quest state preaction Id <b>" + savedId + "</b>.");
 
-            return RedirectToAction("QuestStatePreaction", "QuestWriter", new { Id = savedId, QuestStateId = state.Id, QuestId = input.QuestStatePreaction.QuestId });
+            return RedirectToAction(MVC.QuestWriter.QuestStatePreaction(savedId, state.Id, input.QuestStatePreaction.QuestId));
         }
 
-        public ActionResult QuestStatePreactionDelete(int Id)
+        public virtual ActionResult QuestStatePreactionDelete(int Id)
         {
 
             IQuestRepository repo = new EFQuestRepository();
@@ -313,10 +314,10 @@ namespace TT.Web.Controllers
 
             QuestWriterProcedures.LogQuestWriterAction(User.Identity.Name, state.QuestId, " deleted quest state preaction Id <b>" + Id + "</b>.");
 
-            return RedirectToAction("QuestState", "QuestWriter", new { Id = questStatePreaction.QuestStateId.Id, QuestId = questStatePreaction.QuestId, ParentStateId = -1 });
+            return RedirectToAction(MVC.QuestWriter.QuestState(questStatePreaction.QuestStateId.Id, questStatePreaction.QuestId, -1));
         }
 
-        public ActionResult QuestEnd(int Id, int QuestStateId, int QuestId)
+        public virtual ActionResult QuestEnd(int Id, int QuestStateId, int QuestId)
         {
             IQuestRepository repo = new EFQuestRepository();
 
@@ -346,7 +347,7 @@ namespace TT.Web.Controllers
             return PartialView(output);
         }
 
-        public ActionResult QuestEndSend(QuestEndFormViewModel input)
+        public virtual ActionResult QuestEndSend(QuestEndFormViewModel input)
         {
 
             IQuestRepository repo = new EFQuestRepository();
@@ -356,10 +357,10 @@ namespace TT.Web.Controllers
 
             QuestWriterProcedures.LogQuestWriterAction(User.Identity.Name, state.QuestId, " saved quest end Id <b>" + savedId + "</b>.");
 
-            return RedirectToAction("QuestEnd", "QuestWriter", new { Id = savedId, QuestStateId = state.Id, QuestId = input.QuestEnd.QuestId });
+            return RedirectToAction(MVC.QuestWriter.QuestEnd(savedId, state.Id, input.QuestEnd.QuestId));
         }
 
-        public ActionResult QuestEndDelete(int Id)
+        public virtual ActionResult QuestEndDelete(int Id)
         {
             IQuestRepository repo = new EFQuestRepository();
 
@@ -370,15 +371,15 @@ namespace TT.Web.Controllers
 
             QuestWriterProcedures.DeleteQuestEnd(Id);
 
-            return RedirectToAction("QuestState", "QuestWriter", new { Id = questEnd.QuestStateId.Id, QuestId = state.Id, ParentStateId = -1  });
+            return RedirectToAction(MVC.QuestWriter.QuestState(questEnd.QuestStateId.Id, state.Id, -1));
         }
 
-        public ActionResult Help()
+        public virtual ActionResult Help()
         {
             return PartialView();
         }
 
-        public ActionResult Diagram(int Id)
+        public virtual ActionResult Diagram(int Id)
         {
 
             ViewBag.QuestId = Id;
@@ -386,7 +387,7 @@ namespace TT.Web.Controllers
             return PartialView();
         }
 
-        public JsonResult DiagramStatesJSON(int Id)
+        public virtual JsonResult DiagramStatesJSON(int Id)
         {
             IQuestRepository repo = new EFQuestRepository();
             QuestStart start = repo.QuestStarts.FirstOrDefault(q => q.Id == Id);
@@ -394,15 +395,15 @@ namespace TT.Web.Controllers
             //  IEnumerable<PopulationTurnTuple> output = from q in repo.ServerLogs select new PopulationTurnTuple { Turn = q.TurnNumber, Population = q.Population };
 
             IEnumerable<QuestStateJSONObject> output = from s in repo.QuestStates.Where(q => q.QuestId == Id)
-                         select new QuestStateJSONObject
-                         {
-                             Id = s.Id,
-                             StateName = s.QuestStateName,
-                             EndCount = s.QuestEnds.Count(),
-                             Pin = s.PinToDiagram,
-                             X = s.X,
-                             Y = s.Y
-                         };
+                                                       select new QuestStateJSONObject
+                                                       {
+                                                           Id = s.Id,
+                                                           StateName = s.QuestStateName,
+                                                           EndCount = s.QuestEnds.Count(),
+                                                           Pin = s.PinToDiagram,
+                                                           X = s.X,
+                                                           Y = s.Y
+                                                       };
 
             output = output.ToList();
 
@@ -417,25 +418,25 @@ namespace TT.Web.Controllers
             return Json(output, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult DiagramConnectionsJSON(int Id)
+        public virtual JsonResult DiagramConnectionsJSON(int Id)
         {
             IQuestRepository repo = new EFQuestRepository();
             var output = from c in repo.QuestConnections.Where(q => q.QuestId == Id)
-                              select new
-                              {
-                                  Id = c.Id,
-                                  Name = c.ConnectionName,
-                                  From = c.QuestStateFromId,
-                                  To = c.QuestStateToId,
-                                  FailTo = c.QuestStateFailToId,
-                                  Reqs = c.QuestConnectionRequirements.Count(),
-                              };
+                         select new
+                         {
+                             Id = c.Id,
+                             Name = c.ConnectionName,
+                             From = c.QuestStateFromId,
+                             To = c.QuestStateToId,
+                             FailTo = c.QuestStateFailToId,
+                             Reqs = c.QuestConnectionRequirements.Count(),
+                         };
 
 
             return Json(output, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult DiagramSaveNodePosition(int Id, string X, string Y)
+        public virtual JsonResult DiagramSaveNodePosition(int Id, string X, string Y)
         {
 
             IQuestRepository repo = new EFQuestRepository();
@@ -451,7 +452,7 @@ namespace TT.Web.Controllers
             return Json(output, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult QuestStatesInQuestJSON(int Id)
+        public virtual JsonResult QuestStatesInQuestJSON(int Id)
         {
             IEnumerable<QuestState> states = QuestWriterProcedures.GetAllQuestsStatesInQuest(Id);
             var output = from s in states
@@ -464,25 +465,25 @@ namespace TT.Web.Controllers
             return Json(output, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult ShowAllQuestStarts()
+        public virtual ActionResult ShowAllQuestStarts()
         {
             IEnumerable<QuestStart> output = QuestProcedures.GetAllQuestStarts();
             return PartialView(output);
         }
 
-        public ActionResult ShowAllQuestStates(int Id)
+        public virtual ActionResult ShowAllQuestStates(int Id)
         {
             IEnumerable<QuestState> output = QuestWriterProcedures.GetAllQuestsStatesInQuest(Id);
             return PartialView(output);
         }
 
-        public ActionResult ShowAllQuestConnections(int Id)
+        public virtual ActionResult ShowAllQuestConnections(int Id)
         {
             IEnumerable<QuestConnection> output = QuestWriterProcedures.GetAllQuestsConnectionsInQuest(Id);
             return PartialView(output);
         }
 
-        public JsonResult ShowAllUsedQuestVariables(int Id)
+        public virtual JsonResult ShowAllUsedQuestVariables(int Id)
         {
             IQuestRepository repo = new EFQuestRepository();
 
@@ -490,7 +491,7 @@ namespace TT.Web.Controllers
             return Json(output, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult ShowAllActivePlayerVariables(int Id)
+        public virtual JsonResult ShowAllActivePlayerVariables(int Id)
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -507,7 +508,7 @@ namespace TT.Web.Controllers
             return Json(output, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult ShowQuestWriterLogs(int Id)
+        public virtual ActionResult ShowQuestWriterLogs(int Id)
         {
             IEnumerable<QuestWriterLog> output = QuestWriterProcedures.GetAllQuestWriterLogs(Id);
             return PartialView(output);

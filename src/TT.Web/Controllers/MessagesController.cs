@@ -14,19 +14,19 @@ using TT.Web.Services;
 
 namespace TT.Web.Controllers
 {
-    public class MessagesController : Controller
+    public partial class MessagesController : Controller
     {
         // GET: /Messages
         [HttpGet]
         [Authorize]
-        public ActionResult Index(int offset = 0)
+        public virtual ActionResult Index(int offset = 0)
         {
 
             string myMembershipId = User.Identity.GetUserId();
 
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
-            DomainRegistry.Repository.Execute(new DeletePlayerExpiredMessages {OwnerId = me.Id});
+            DomainRegistry.Repository.Execute(new DeletePlayerExpiredMessages { OwnerId = me.Id });
 
             MessageBag output = MessageProcedures.GetPlayerMessages(me, offset);
 
@@ -57,14 +57,14 @@ namespace TT.Web.Controllers
             ViewBag.SubErrorMessage = TempData["SubError"];
             ViewBag.Result = TempData["Result"];
 
-            return View("Messages", output);
+            return View(MVC.Messages.Views.Messages, output);
         }
 
         // POST: /Message/DeleteMessage
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public ActionResult DeleteMessage(bool deleteAll, int messageId)
+        public virtual ActionResult DeleteMessage(bool deleteAll, int messageId)
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -73,7 +73,7 @@ namespace TT.Web.Controllers
             {
                 DomainRegistry.Repository.Execute(new DeleteAllMessagesOwnedByPlayer() { OwnerId = me.Id });
                 TempData["Result"] = "Your messages have been deleted.";
-                return RedirectToAction("Index");
+                return RedirectToAction(MVC.Messages.Index());
             }
 
             try
@@ -84,16 +84,16 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "You can't delete this message.";
                 TempData["SubError"] = "It wasn't sent to you.";
-                return RedirectToAction("Index");
+                return RedirectToAction(MVC.Messages.Index());
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction(MVC.Messages.Index());
         }
 
         // GET: /Message/ReadMessage/{messageId}
         [HttpGet]
         [Authorize]
-        public ActionResult ReadMessage(int messageId)
+        public virtual ActionResult ReadMessage(int messageId)
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -102,22 +102,22 @@ namespace TT.Web.Controllers
 
             try
             {
-                message = DomainRegistry.Repository.FindSingle(new GetMessage {MessageId = messageId, OwnerId = me.Id});
+                message = DomainRegistry.Repository.FindSingle(new GetMessage { MessageId = messageId, OwnerId = me.Id });
             }
             catch (DomainException)
             {
                 TempData["Error"] = "You can't read this message.";
                 TempData["SubError"] = "It wasn't sent to you.";
-                return RedirectToAction("Index");
+                return RedirectToAction(MVC.Messages.Index());
             }
 
-            DomainRegistry.Repository.Execute(new MarkAsRead {MessageId = message.Id, ReadStatus = MessageStatics.Read, OwnerId = me.Id});
+            DomainRegistry.Repository.Execute(new MarkAsRead { MessageId = message.Id, ReadStatus = MessageStatics.Read, OwnerId = me.Id });
 
             return View(message);
         }
 
         [Authorize]
-        public ActionResult ReadConversation(int messageId)
+        public virtual ActionResult ReadConversation(int messageId)
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -126,10 +126,10 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "You can't read this conversation.";
                 TempData["SubError"] = "It wasn't sent to you.";
-                return RedirectToAction("Index");
+                return RedirectToAction(MVC.Messages.Index());
             }
 
-            var message = DomainRegistry.Repository.FindSingle(new GetMessage {MessageId = messageId , OwnerId = me.Id});
+            var message = DomainRegistry.Repository.FindSingle(new GetMessage { MessageId = messageId, OwnerId = me.Id });
 
             IEnumerable<MessageDetail> messages;
 
@@ -140,22 +140,22 @@ namespace TT.Web.Controllers
                     {
                         conversationId = message.ConversationId
                     });
-                return PartialView("partial/Conversation", messages);
+                return PartialView(MVC.Messages.Views.partial.Conversation, messages);
             }
             catch
             {
                 TempData["Error"] = "No conversation found";
-                return RedirectToAction("Index");
+                return RedirectToAction(MVC.Messages.Index());
             }
 
-            
+
         }
 
         // POST: /Messages/MarkAsUnread
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public ActionResult MarkReadStatus(int messageId, int readStatus)
+        public virtual ActionResult MarkReadStatus(int messageId, int readStatus)
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -168,7 +168,7 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "You can't mark this message as unread or unread.";
                 TempData["SubError"] = "It wasn't sent to you.";
-                return RedirectToAction("Index");
+                return RedirectToAction(MVC.Messages.Index());
             }
 
             if (readStatus == MessageStatics.ReadAndMarkedAsUnread)
@@ -179,14 +179,14 @@ namespace TT.Web.Controllers
             {
                 TempData["Result"] = "Message marked as read.";
             }
-            
-            return RedirectToAction("Index");
+
+            return RedirectToAction(MVC.Messages.Index());
         }
 
         // GET: /Messages/Write
         [HttpGet]
         [Authorize]
-        public ActionResult Write(int playerId, int responseTo = -1)
+        public virtual ActionResult Write(int playerId, int responseTo = -1)
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -209,26 +209,26 @@ namespace TT.Web.Controllers
             {
                 try
                 {
-                    MessageDetail msgRepliedTo = DomainRegistry.Repository.FindSingle(new GetMessage {MessageId = responseTo, OwnerId = me.Id});
+                    MessageDetail msgRepliedTo = DomainRegistry.Repository.FindSingle(new GetMessage { MessageId = responseTo, OwnerId = me.Id });
                     output.RespondingToMsg = msgRepliedTo.MessageText;
 
                 }
                 catch (DomainException)
                 {
                     TempData["Result"] = "You can't reply to this message since the original was not sent to you.";
-                    return RedirectToAction("Index");
+                    return RedirectToAction(MVC.Messages.Index());
                 }
 
             }
 
-            return View("Write", output);
+            return View(MVC.Messages.Views.Write, output);
         }
 
         // POST: /Messages/SendMessage
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SendMessage(MessageSubmitViewModel input)
+        public virtual ActionResult SendMessage(MessageSubmitViewModel input)
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -239,7 +239,7 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "You have been banned and cannot send any messages.";
                 TempData["SubError"] = "If you feel this is in error or wish to make an appeal you may do so on the forums.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert no blacklist exists
@@ -247,14 +247,14 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "This player has blacklisted you or is on your own blacklist.";
                 TempData["SubError"] = "You cannot send messages to players who have blacklisted you.  Remove them from your blacklist or ask them to remove you from theirs.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             if (input.MessageText.IsNullOrEmpty())
             {
                 TempData["ErrorMessage"] = "You need to write something to send to this person.";
                 TempData["MessageText"] = input.MessageText;
-                return RedirectToAction("Write", new { playerId = input.ReceiverId, responseTo = input.responseToId });
+                return RedirectToAction(MVC.Messages.Write(input.ReceiverId, input.responseToId));
 
             }
 
@@ -262,7 +262,7 @@ namespace TT.Web.Controllers
             {
                 TempData["ErrorMessage"] = "Your message is too long.";
                 TempData["MessageText"] = input.MessageText;
-                return RedirectToAction("Write", new { playerId = input.ReceiverId, responseTo = input.responseToId });
+                return RedirectToAction(MVC.Messages.Write(input.ReceiverId, input.responseToId));
             }
 
             MessageDetail repliedMsg = null;
@@ -289,20 +289,20 @@ namespace TT.Web.Controllers
                 ItemProcedures.UpdateSouledItem(me.FirstName, me.LastName);
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction(MVC.Messages.Index());
         }
 
         // GET: /Messages/CovenantWideMessage
         [HttpGet]
         [Authorize]
-        public ActionResult CovenantWideMessage()
+        public virtual ActionResult CovenantWideMessage()
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             // assert that player is in a covenant
             if (me.Covenant <= 0)
             {
                 TempData["Error"] = "You are not in a covenant and cannot send out mass messages to your members.";
-                return RedirectToAction("MyCovenant", "Covenant");
+                return RedirectToAction(MVC.Covenant.MyCovenant());
             }
 
             // assert that the player is a covenant leader
@@ -311,7 +311,7 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "You are not the leader of your covenant.";
                 TempData["SubError"] = "Only covenant leaders can send out mass messages.";
-                return RedirectToAction("MyCovenant", "Covenant");
+                return RedirectToAction(MVC.Covenant.MyCovenant());
             }
 
             return View();
@@ -321,20 +321,20 @@ namespace TT.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public ActionResult SendCovenantWideMessage(string Message)
+        public virtual ActionResult SendCovenantWideMessage(string Message)
         {
 
             if (Message.Length > 1000)
             {
                 TempData["Error"] = "Your message is too long.  There is a 1000 character limit.";
-                return RedirectToAction("MyCovenant", "Covenant");
+                return RedirectToAction(MVC.Covenant.MyCovenant());
             }
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
             // assert that player is in a covenant
             if (me.Covenant <= 0)
             {
                 TempData["Error"] = "You are not in a covenant and cannot send out mass messages to your members.";
-                return RedirectToAction("MyCovenant", "Covenant");
+                return RedirectToAction(MVC.Covenant.MyCovenant());
             }
 
             // assert that the player is a covenant leader
@@ -343,18 +343,18 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "You are not the leader of your covenant.";
                 TempData["SubError"] = "Only covenant leaders can send out mass messages.";
-                return RedirectToAction("MyCovenant", "Covenant");
+                return RedirectToAction(MVC.Covenant.MyCovenant());
             }
 
             MessageProcedures.SendCovenantWideMessage(me, Message);
 
             TempData["Result"] = "Message sent out!";
-            return RedirectToAction("MyCovenant", "Covenant");
+            return RedirectToAction(MVC.Covenant.MyCovenant());
 
         }
 
         [Authorize]
-        public ActionResult MarkAsAbusive(int id)
+        public virtual ActionResult MarkAsAbusive(int id)
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
 
@@ -362,14 +362,14 @@ namespace TT.Web.Controllers
             {
                 DomainRegistry.Repository.Execute(new MarkAsAbusive { MessageId = id, OwnerId = me.Id });
                 TempData["Result"] = "This message has been marked as abusive and a moderator will soon review it.";
-                return RedirectToAction("Index");
+                return RedirectToAction(MVC.Messages.Index());
             }
             catch (DomainException e)
             {
                 TempData["Error"] = e.Message;
-                return RedirectToAction("Index");
+                return RedirectToAction(MVC.Messages.Index());
             }
-            
+
         }
     }
 }

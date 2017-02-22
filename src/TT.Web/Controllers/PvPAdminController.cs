@@ -22,15 +22,15 @@ using TT.Domain.Queries.Game;
 
 namespace TT.Web.Controllers
 {
-    public class PvPAdminController : Controller
+    public partial class PvPAdminController : Controller
     {
 
-        public ActionResult Index()
+        public virtual ActionResult Index()
         {
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             ViewBag.Message = TempData["Message"];
@@ -41,7 +41,7 @@ namespace TT.Web.Controllers
         /// Iterates through all locations in the world and makes sure all connections hook up properly, ie a location that connections to the east does in fact have a location to the that connections back.
         /// </summary>
         /// <returns></returns>
-        public ActionResult CheckLocationConsistency()
+        public virtual ActionResult CheckLocationConsistency()
         {
             #region location checks
 
@@ -115,19 +115,19 @@ namespace TT.Web.Controllers
             #endregion
 
             TempData["Message"] = output;
-            return RedirectToAction("Index");
+            return RedirectToAction(MVC.PvPAdmin.Index());
         }
 
         /// <summary>
         /// Admin tool.  Updates some information about the status of the round, including turn number, overall round duration, whether it is chaos mode, or the test server.
         /// </summary>
         /// <returns></returns>
-        public ActionResult ChangeWorldStats()
+        public virtual ActionResult ChangeWorldStats()
         {
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             IPvPWorldStatRepository repo = new EFPvPWorldStatRepository();
@@ -139,13 +139,13 @@ namespace TT.Web.Controllers
         }
 
         [Authorize]
-        public ActionResult ChangeRoundText()
+        public virtual ActionResult ChangeRoundText()
         {
 
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             var game = DomainRegistry.Repository.FindSingle(new GetWorld());
@@ -161,18 +161,18 @@ namespace TT.Web.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SendChangeRound(WorldDetail input)
+        public virtual ActionResult SendChangeRound(WorldDetail input)
         {
 
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             try
             {
-                DomainRegistry.Repository.Execute(new UpdateRoundNumber{ RoundNumber = input.RoundNumber});
+                DomainRegistry.Repository.Execute(new UpdateRoundNumber { RoundNumber = input.RoundNumber });
                 PvPStatics.AlphaRound = input.RoundNumber;
                 TempData["Result"] = "Round number updated!";
             }
@@ -181,18 +181,18 @@ namespace TT.Web.Controllers
                 TempData["Error"] = "Error updating round number: " + e.Message;
             }
 
-            return RedirectToAction("Play", "PvP");
+            return RedirectToAction(MVC.PvP.Play());
         }
 
         /// <summary>
         /// Admin tool.  Updates some information about the status of the round, including turn number, overall round duration, whether it is chaos mode, or the test server.
         /// </summary>
-        public ActionResult ChangeWorldStatsSend(PvPWorldStat input)
+        public virtual ActionResult ChangeWorldStatsSend(PvPWorldStat input)
         {
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             IPvPWorldStatRepository repo = new EFPvPWorldStatRepository();
@@ -210,17 +210,17 @@ namespace TT.Web.Controllers
             PvPStatics.RoundDuration = data.RoundDuration;
 
             TempData["Result"] = "World Data Saved!";
-            return RedirectToAction("Play", "PvP");
+            return RedirectToAction(MVC.PvP.Play());
 
         }
 
-        public ActionResult ApproveEffectContributionList()
+        public virtual ActionResult ApproveEffectContributionList()
         {
 
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             IEffectContributionRepository effectConRepo = new EFEffectContributionRepository();
@@ -229,12 +229,12 @@ namespace TT.Web.Controllers
             return View(output);
         }
 
-        public ActionResult ApproveEffectContribution(int id)
+        public virtual ActionResult ApproveEffectContribution(int id)
         {
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             IEffectContributionRepository effectConRepo = new EFEffectContributionRepository();
@@ -246,7 +246,7 @@ namespace TT.Web.Controllers
             if (ProofreadCopy != null)
             {
                 ViewBag.Message = "There's already a proofreading copy for this.";
-                return View("Index");
+                return View(MVC.PvPAdmin.Views.Index);
             }
             else
             {
@@ -322,16 +322,16 @@ namespace TT.Web.Controllers
             effectConRepo.SaveEffectContribution(ProofreadCopy);
 
 
-            return RedirectToAction("ApproveEffectContributionList");
+            return RedirectToAction(MVC.PvPAdmin.ApproveEffectContributionList());
 
         }
 
-        public ActionResult PublicBroadcast()
+        public virtual ActionResult PublicBroadcast()
         {
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
             else
             {
@@ -340,12 +340,12 @@ namespace TT.Web.Controllers
             }
         }
 
-        public ActionResult SendPublicBroadcast(PublicBroadcastViewModel input)
+        public virtual ActionResult SendPublicBroadcast(PublicBroadcastViewModel input)
         {
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
             else
             {
@@ -372,7 +372,7 @@ namespace TT.Web.Controllers
 
                 TempData["Message"] = errors;
 
-                return RedirectToAction("Index");
+                return RedirectToAction(MVC.PvPAdmin.Index());
             }
         }
 
@@ -380,12 +380,12 @@ namespace TT.Web.Controllers
         /// Admin tool.  Updates the last game update as shown in the header tab.
         /// </summary>
         /// <returns></returns>
-        public ActionResult ChangeGameDate()
+        public virtual ActionResult ChangeGameDate()
         {
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
             else
             {
@@ -407,12 +407,12 @@ namespace TT.Web.Controllers
         /// Admin tool.  Updates the last game update as shown in the header tab.
         /// </summary>
         /// <returns></returns>
-        public ActionResult ChangeGameDateSend(PublicBroadcastViewModel input)
+        public virtual ActionResult ChangeGameDateSend(PublicBroadcastViewModel input)
         {
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
             else
             {
@@ -425,27 +425,27 @@ namespace TT.Web.Controllers
 
                 //   TempData["Message"] = errors;
 
-                return RedirectToAction("Index");
+                return RedirectToAction(MVC.PvPAdmin.Index());
             }
         }
 
-        public ActionResult test()
+        public virtual ActionResult test()
         {
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction(MVC.PvPAdmin.Index());
         }
 
-        public ActionResult MigrateItemPortraits()
+        public virtual ActionResult MigrateItemPortraits()
         {
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             IDbStaticItemRepository itemRepo = new EFDbStaticItemRepository();
@@ -465,7 +465,7 @@ namespace TT.Web.Controllers
                 }
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction(MVC.PvPAdmin.Index());
         }
 
 
@@ -473,12 +473,12 @@ namespace TT.Web.Controllers
         /// In case the friendly NPCs don't spawn when round starts or for other reasons, spawn them manually.  NPCs that are already spawned are not spawned twice.
         /// </summary>
         /// <returns></returns>
-        public ActionResult SpawnNPCs()
+        public virtual ActionResult SpawnNPCs()
         {
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             BossProcedures_Lindella.SpawnLindella();
@@ -487,39 +487,39 @@ namespace TT.Web.Controllers
             BossProcedures_Bartender.SpawnBartender();
             BossProcedures_Loremaster.SpawnLoremaster();
 
-            return RedirectToAction("Index");
+            return RedirectToAction(MVC.PvPAdmin.Index());
         }
 
-        public ActionResult ItemPetJSON()
+        public virtual ActionResult ItemPetJSON()
         {
             // assert only admins or players with JSON pulling can do this
             if (!User.IsInRole(PvPStatics.Permissions_Admin) && !User.IsInRole(PvPStatics.Permissions_JSON))
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             IDbStaticItemRepository itemRepo = new EFDbStaticItemRepository();
             return Json(itemRepo.DbStaticItems, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult FormJSON()
+        public virtual ActionResult FormJSON()
         {
             // assert only admins or players with JSON pulling can do this
             if (!User.IsInRole(PvPStatics.Permissions_Admin) && !User.IsInRole(PvPStatics.Permissions_JSON))
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             IDbStaticFormRepository formRepo = new EFDbStaticFormRepository();
             return Json(formRepo.DbStaticForms, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult SpellJSON()
+        public virtual ActionResult SpellJSON()
         {
             // assert only admins or players with JSON pulling can do this
             if (!User.IsInRole(PvPStatics.Permissions_Admin) && !User.IsInRole(PvPStatics.Permissions_JSON))
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             IDbStaticSkillRepository skillRepo = new EFDbStaticSkillRepository();
@@ -527,36 +527,36 @@ namespace TT.Web.Controllers
             return Json(output, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult EffectJSON()
+        public virtual ActionResult EffectJSON()
         {
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin) && !User.IsInRole(PvPStatics.Permissions_JSON))
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             IDbStaticEffectRepository effectRepo = new EFDbStaticEffectRepository();
             return Json(effectRepo.DbStaticEffects, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult FurnitureJSON()
+        public virtual ActionResult FurnitureJSON()
         {
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin) && !User.IsInRole(PvPStatics.Permissions_JSON))
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             IDbStaticFurnitureRepository effectRepo = new EFDbStaticFurnitureRepository();
             return Json(effectRepo.DbStaticFurnitures, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult LocationJSON()
+        public virtual ActionResult LocationJSON()
         {
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin) && !User.IsInRole(PvPStatics.Permissions_JSON))
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             List<Location> locations = LocationsStatics.LocationList.GetLocation.Where(l => !l.Region.Equals("dungeon")).ToList();
@@ -579,12 +579,12 @@ namespace TT.Web.Controllers
             return Json(locations, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult ApproveContributionList()
+        public virtual ActionResult ApproveContributionList()
         {
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin) && !User.IsInRole(PvPStatics.Permissions_Previewer))
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             IContributionRepository contRepo = new EFContributionRepository();
@@ -594,13 +594,13 @@ namespace TT.Web.Controllers
 
         }
 
-        public ActionResult ApproveContribution(int id)
+        public virtual ActionResult ApproveContribution(int id)
         {
             // assert only admin can view this
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             IContributionRepository contributionRepo = new EFContributionRepository();
@@ -620,7 +620,7 @@ namespace TT.Web.Controllers
             if (ProofreadCopy != null)
             {
                 ViewBag.Message = "There's already a proofreading copy for this.";
-                return View("Index");
+                return View(MVC.PvPAdmin.Views.Index);
             }
             else
             {
@@ -772,16 +772,16 @@ namespace TT.Web.Controllers
             contributionRepo.SaveContribution(OldCopy);
 
             ViewBag.Message = "Success.";
-            return RedirectToAction("ApproveContributionList");
+            return RedirectToAction(MVC.PvPAdmin.ApproveContributionList());
 
         }
 
-        public ActionResult RejectContribution(int id)
+        public virtual ActionResult RejectContribution(int id)
         {
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             IContributionRepository contRepo = new EFContributionRepository();
@@ -798,10 +798,10 @@ namespace TT.Web.Controllers
             }
 
 
-            return RedirectToAction("ApproveContributionList");
+            return RedirectToAction(MVC.PvPAdmin.ApproveContributionList());
         }
 
-        public ActionResult ServerBalance_Forms()
+        public virtual ActionResult ServerBalance_Forms()
         {
             List<BalancePageViewModel> output = new List<BalancePageViewModel>();
 
@@ -822,11 +822,11 @@ namespace TT.Web.Controllers
             }
 
             ViewBag.Text = "Forms";
-            return View("ServerBalance", output.OrderByDescending(s => s.Balance));
+            return View(MVC.PvPAdmin.Views.ServerBalance, output.OrderByDescending(s => s.Balance));
 
         }
 
-        public ActionResult ServerBalance_Items()
+        public virtual ActionResult ServerBalance_Items()
         {
             List<BalancePageViewModel> output = new List<BalancePageViewModel>();
 
@@ -847,11 +847,11 @@ namespace TT.Web.Controllers
             }
 
             ViewBag.Text = "Items";
-            return View("ServerBalance", output.OrderByDescending(s => s.Balance));
+            return View(MVC.PvPAdmin.Views.ServerBalance, output.OrderByDescending(s => s.Balance));
 
         }
 
-        public ActionResult ServerBalance_Pets()
+        public virtual ActionResult ServerBalance_Pets()
         {
             List<BalancePageViewModel> output = new List<BalancePageViewModel>();
 
@@ -872,11 +872,11 @@ namespace TT.Web.Controllers
             }
 
             ViewBag.Text = "Pets";
-            return View("ServerBalance", output.OrderByDescending(s => s.Balance));
+            return View(MVC.PvPAdmin.Views.ServerBalance, output.OrderByDescending(s => s.Balance));
 
         }
 
-        public ActionResult ServerBalance_Effects()
+        public virtual ActionResult ServerBalance_Effects()
         {
             List<BalancePageViewModel> output = new List<BalancePageViewModel>();
 
@@ -900,30 +900,30 @@ namespace TT.Web.Controllers
             }
 
             ViewBag.Text = "Effects";
-            return View("ServerBalance", output.OrderByDescending(s => s.Balance));
+            return View(MVC.PvPAdmin.Views.ServerBalance, output.OrderByDescending(s => s.Balance));
 
         }
 
-        public ActionResult ViewServerLog(int turn)
+        public virtual ActionResult ViewServerLog(int turn)
         {
             IServerLogRepository serverLogRepo = new EFServerLogRepository();
             ServerLog log = serverLogRepo.ServerLogs.FirstOrDefault(t => t.TurnNumber == turn);
             return View(log);
         }
 
-        public ActionResult ViewUpdateLogs()
+        public virtual ActionResult ViewUpdateLogs()
         {
             IServerLogRepository serverLogRepo = new EFServerLogRepository();
             return View(serverLogRepo.ServerLogs);
         }
 
-        public ActionResult FaeList()
+        public virtual ActionResult FaeList()
         {
 
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             IJewdewfaeEncounterRepository repo = new EFJewdewfaeEncounterRepository();
@@ -933,12 +933,12 @@ namespace TT.Web.Controllers
 
         }
 
-        public ActionResult WriteFae(int id)
+        public virtual ActionResult WriteFae(int id)
         {
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             IJewdewfaeEncounterRepository repo = new EFJewdewfaeEncounterRepository();
@@ -1003,12 +1003,12 @@ namespace TT.Web.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult WriteFaeSend(JewdewfaeEncounter input)
+        public virtual ActionResult WriteFaeSend(JewdewfaeEncounter input)
         {
             // assert only admins can do this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             input.RequiredForm = input.RequiredForm.Trim();
@@ -1033,18 +1033,18 @@ namespace TT.Web.Controllers
 
             repo.SaveJewdewfaeEncounter(encounter);
 
-            return RedirectToAction("FaeList", "PvPAdmin");
+            return RedirectToAction(MVC.PvPAdmin.FaeList());
 
 
         }
 
-        public ActionResult WriteFaeEncounter()
+        public virtual ActionResult WriteFaeEncounter()
         {
 
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
 
@@ -1067,7 +1067,7 @@ namespace TT.Web.Controllers
             return View(output);
         }
 
-        public ActionResult LoadSpecificEncounter(string filename)
+        public virtual ActionResult LoadSpecificEncounter(string filename)
         {
 
             FairyChallengeBag output = new FairyChallengeBag();
@@ -1075,21 +1075,21 @@ namespace TT.Web.Controllers
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // TODO:  finish this!
-            return View("WriteFaeEncounter", output);
+            return View(MVC.PvPAdmin.Views.WriteFaeEncounter, output);
         }
 
         [ValidateInput(false)]
-        public ActionResult WriteFaeEncounterSend(FairyChallengeBag input)
+        public virtual ActionResult WriteFaeEncounterSend(FairyChallengeBag input)
         {
 
             // assert only admins can view this
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             string path = Server.MapPath("~/XMLs/FairyChallengeText/");
@@ -1111,11 +1111,11 @@ namespace TT.Web.Controllers
 
 
 
-            return View("WriteFaeEncounter", input);
+            return View(MVC.PvPAdmin.Views.WriteFaeEncounter, input);
         }
 
         [Authorize]
-        public ActionResult ResetAllPlayersWithIPAddress(string address)
+        public virtual ActionResult ResetAllPlayersWithIPAddress(string address)
         {
 
             // assert only admin can view this
@@ -1123,7 +1123,7 @@ namespace TT.Web.Controllers
             if (!iAmModerator)
             {
                 ViewBag.Message = "You aren't allowed to do this.";
-                return View("Index");
+                return View(MVC.PvPAdmin.Views.Index);
             }
 
 
@@ -1136,12 +1136,12 @@ namespace TT.Web.Controllers
                 PlayerLogProcedures.AddPlayerLog(p.Id, "<b class='good'>Server notice:  Your IP address has been reset.</b>", true);
             }
 
-            return View("Play");
+            return View(MVC.PvPAdmin.Views.Play);
 
         }
 
         [Authorize]
-        public ActionResult ToggleBanOnGlobalChat(int id)
+        public virtual ActionResult ToggleBanOnGlobalChat(int id)
         {
 
             // assert only admin can view this
@@ -1149,7 +1149,7 @@ namespace TT.Web.Controllers
             if (!iAmModerator)
             {
                 ViewBag.Message = "You aren't allowed to do this.";
-                return View("Index");
+                return View(MVC.PvPAdmin.Views.Index);
             }
 
 
@@ -1169,23 +1169,23 @@ namespace TT.Web.Controllers
             }
             playerRepo.SavePlayer(bannedPlayer);
 
-            return RedirectToAction("Play", "PvP");
+            return RedirectToAction(MVC.PvP.Play());
 
         }
 
-        public ActionResult Scratchpad()
+        public virtual ActionResult Scratchpad()
         {
             return View();
         }
 
-        public ActionResult AuditDonators()
+        public virtual ActionResult AuditDonators()
         {
 
             // assert only admin can view this
             bool iAmAdmin = User.IsInRole(PvPStatics.Permissions_Admin);
             if (!iAmAdmin)
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             string output = "";
@@ -1224,10 +1224,10 @@ namespace TT.Web.Controllers
             }
 
             TempData["Result"] = output;
-            return RedirectToAction("Play", "PvP");
+            return RedirectToAction(MVC.PvP.Play());
         }
 
-        public ActionResult Killswitch()
+        public virtual ActionResult Killswitch()
         {
             if (User.IsInRole(PvPStatics.Permissions_Killswitcher))
             {
@@ -1248,10 +1248,10 @@ namespace TT.Web.Controllers
                 logRepo.SavePlayerLog(newlog);
 
             }
-            return RedirectToAction("Play", "PvP");
+            return RedirectToAction(MVC.PvP.Play());
         }
 
-        public ActionResult KillswitchRestore()
+        public virtual ActionResult KillswitchRestore()
         {
             if (User.IsInRole(PvPStatics.Permissions_Admin))
             {
@@ -1260,11 +1260,11 @@ namespace TT.Web.Controllers
                 stats.LastUpdateTimestamp = DateTime.UtcNow;
                 repo.SavePvPWorldStat(stats);
             }
-            return RedirectToAction("Play", "PvP");
+            return RedirectToAction(MVC.PvP.Play());
         }
 
         [Authorize]
-        public ActionResult FindMissingThumbnails()
+        public virtual ActionResult FindMissingThumbnails()
         {
             if (User.IsInRole(PvPStatics.Permissions_Admin))
             {
@@ -1273,12 +1273,12 @@ namespace TT.Web.Controllers
             else
             {
                 ViewBag.Message = "You aren't allowed to do this.";
-                return View("Index");
+                return View(MVC.PvPAdmin.Views.Index);
             }
         }
 
         [Authorize]
-        public ActionResult ViewPlayerItems(int id)
+        public virtual ActionResult ViewPlayerItems(int id)
         {
             if (User.IsInRole(PvPStatics.Permissions_Admin) || User.IsInRole(PvPStatics.Permissions_Moderator))
             {
@@ -1289,12 +1289,12 @@ namespace TT.Web.Controllers
             else
             {
                 ViewBag.Message = "You aren't allowed to do this.";
-                return View("Index");
+                return View(MVC.PvPAdmin.Views.Index);
             }
         }
 
         [Authorize]
-        public ActionResult ViewItemTransferLog(int id)
+        public virtual ActionResult ViewItemTransferLog(int id)
         {
             if (User.IsInRole(PvPStatics.Permissions_Admin) || User.IsInRole(PvPStatics.Permissions_Moderator))
             {
@@ -1305,12 +1305,12 @@ namespace TT.Web.Controllers
             else
             {
                 ViewBag.Message = "You aren't allowed to do this.";
-                return View("Index");
+                return View(MVC.PvPAdmin.Views.Index);
             }
         }
 
         [Authorize]
-        public ActionResult RenamePlayer(int id)
+        public virtual ActionResult RenamePlayer(int id)
         {
             if (User.IsInRole(PvPStatics.Permissions_Admin) || User.IsInRole(PvPStatics.Permissions_Chaoslord))
             {
@@ -1319,7 +1319,7 @@ namespace TT.Web.Controllers
                 if (!PvPStatics.ChaosMode && !world.TestServer)
                 {
                     TempData["Error"] = "The rename tool only works in chaos mode.";
-                    return RedirectToAction("Play", "PvP");
+                    return RedirectToAction(MVC.PvP.Play());
                 }
 
                 PlayerNameViewModel output = new PlayerNameViewModel();
@@ -1339,12 +1339,12 @@ namespace TT.Web.Controllers
             }
             else
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
         }
 
         [Authorize]
-        public ActionResult RenamePlayerSend(PlayerNameViewModel input)
+        public virtual ActionResult RenamePlayerSend(PlayerNameViewModel input)
         {
             if (User.IsInRole(PvPStatics.Permissions_Admin) || User.IsInRole(PvPStatics.Permissions_Chaoslord))
             {
@@ -1353,7 +1353,7 @@ namespace TT.Web.Controllers
                 if (!PvPStatics.ChaosMode && !world.TestServer)
                 {
                     TempData["Error"] = "The rename tool only works in chaos mode.";
-                    return RedirectToAction("Play", "PvP");
+                    return RedirectToAction(MVC.PvP.Play());
                 }
 
                 IPlayerRepository playerRepo = new EFPlayerRepository();
@@ -1460,50 +1460,50 @@ namespace TT.Web.Controllers
             }
             else
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             TempData["Result"] = "Yay!";
-            return RedirectToAction("Play", "PvP");
+            return RedirectToAction(MVC.PvP.Play());
         }
 
         [Authorize]
-        public ActionResult ModDeleteClassified(int id)
+        public virtual ActionResult ModDeleteClassified(int id)
         {
             if (!User.IsInRole(PvPStatics.Permissions_Admin) && !User.IsInRole(PvPStatics.Permissions_Moderator))
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             try
             {
-                DomainRegistry.Repository.Execute(new DeleteRPClassifiedAd() { RPClassifiedAdId = id, CheckUserId = false});
+                DomainRegistry.Repository.Execute(new DeleteRPClassifiedAd() { RPClassifiedAdId = id, CheckUserId = false });
             }
             catch (RPClassifiedAdException ex)
             {
                 TempData["Error"] = ex.UserFriendlyError ?? ex.Message;
                 TempData["SubError"] = ex.UserFriendlySubError;
-                return RedirectToAction("RecentRPClassifieds", "Info");
+                return RedirectToAction(MVC.Info.RecentRPClassifieds());
             }
 
             TempData["Result"] = "Delete successful.";
-            return RedirectToAction("RecentRPClassifieds", "Info");
+            return RedirectToAction(MVC.Info.RecentRPClassifieds());
         }
 
         [Authorize]
-        public ActionResult FastInanimateMe()
+        public virtual ActionResult FastInanimateMe()
         {
             string myMembershipId = User.Identity.GetUserId();
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             var world = DomainRegistry.Repository.FindSingle(new GetWorld());
             if (!world.TestServer && !PvPStatics.ChaosMode)
             {
                 TempData["Error"] = "Cant' do this in live non-chaos server.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
@@ -1539,24 +1539,24 @@ namespace TT.Web.Controllers
             DomainRegistry.Repository.Execute(cmd);
 
             TempData["Result"] = "You are inanimate.";
-            return RedirectToAction("Play", "PvP");
+            return RedirectToAction(MVC.PvP.Play());
 
         }
 
         [Authorize]
-        public ActionResult FastPetMe()
+        public virtual ActionResult FastPetMe()
         {
             string myMembershipId = User.Identity.GetUserId();
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             var world = DomainRegistry.Repository.FindSingle(new GetWorld());
             if (!world.TestServer && !PvPStatics.ChaosMode)
             {
                 TempData["Error"] = "Cant' do this in live non-chaos server.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
@@ -1591,24 +1591,24 @@ namespace TT.Web.Controllers
             DomainRegistry.Repository.Execute(cmd);
 
             TempData["Result"] = "You are now a pet.";
-            return RedirectToAction("Play", "PvP");
+            return RedirectToAction(MVC.PvP.Play());
 
         }
 
         [Authorize]
-        public ActionResult FastAnimateMe()
+        public virtual ActionResult FastAnimateMe()
         {
             string myMembershipId = User.Identity.GetUserId();
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             var world = DomainRegistry.Repository.FindSingle(new GetWorld());
             if (!world.TestServer && !PvPStatics.ChaosMode)
             {
                 TempData["Error"] = "Cant' do this in live non-chaos server.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             IPlayerRepository playerRepo = new EFPlayerRepository();
@@ -1621,24 +1621,24 @@ namespace TT.Web.Controllers
             });
 
             // delete old item you are if you are one
-            var item = DomainRegistry.Repository.FindSingle(new GetItemByVictimName {FirstName = me.FirstName, LastName = me.LastName});
+            var item = DomainRegistry.Repository.FindSingle(new GetItemByVictimName { FirstName = me.FirstName, LastName = me.LastName });
             if (item != null)
             {
-                DomainRegistry.Repository.Execute(new DeleteItem {ItemId = item.Id});
+                DomainRegistry.Repository.Execute(new DeleteItem { ItemId = item.Id });
             }
 
             TempData["Result"] = "You are now fully animate.";
-            return RedirectToAction("Play", "PvP");
+            return RedirectToAction(MVC.PvP.Play());
 
         }
 
         [Authorize]
-        public ActionResult FastGiveTPScroll()
+        public virtual ActionResult FastGiveTPScroll()
         {
             string myMembershipId = User.Identity.GetUserId();
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             IPvPWorldStatRepository repo = new EFPvPWorldStatRepository();
@@ -1649,7 +1649,7 @@ namespace TT.Web.Controllers
             if (!PvPStatics.ChaosMode && !test)
             {
                 TempData["Error"] = "Cannot be done on live server outside of chaos..";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -1669,36 +1669,36 @@ namespace TT.Web.Controllers
             DomainRegistry.Repository.Execute(cmd);
 
             TempData["Result"] = "You used your admin magic to give yourself a teleportation scroll.";
-            return RedirectToAction("Play", "PvP");
+            return RedirectToAction(MVC.PvP.Play());
 
         }
 
         [Authorize]
-        public ActionResult AssignLeadersBadges()
+        public virtual ActionResult AssignLeadersBadges()
         {
 
             string myMembershipId = User.Identity.GetUserId();
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             if (PvPStatics.ChaosMode)
             {
                 TempData["Error"] = "Can't do this in chaos mode.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             if (PvPWorldStatProcedures.GetWorldTurnNumber() != PvPStatics.RoundDuration)
             {
                 TempData["Error"] = "Turn must be the final turn of the round for this to work.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             string output = StatsProcedures.AssignLeadersBadges();
 
             TempData["Result"] = output;
-            return RedirectToAction("Play", "PvP");
+            return RedirectToAction(MVC.PvP.Play());
         }
 
         /// <summary>
@@ -1706,11 +1706,11 @@ namespace TT.Web.Controllers
         /// </summary>
         /// <returns></returns>
         [Authorize]
-        public ActionResult ListCustomForms()
-        { 
+        public virtual ActionResult ListCustomForms()
+        {
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             IContributorCustomFormRepository customFormRepo = new EFContributorCustomFormRepository();
@@ -1724,11 +1724,11 @@ namespace TT.Web.Controllers
         }
 
         [Authorize]
-        public ActionResult EditCustomForm(int Id)
+        public virtual ActionResult EditCustomForm(int Id)
         {
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             IContributorCustomFormRepository customFormRepo = new EFContributorCustomFormRepository();
@@ -1743,11 +1743,11 @@ namespace TT.Web.Controllers
         }
 
         [Authorize]
-        public ActionResult EditCustomFormSend(ContributorCustomForm input)
+        public virtual ActionResult EditCustomFormSend(ContributorCustomForm input)
         {
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             IContributorCustomFormRepository customFormRepo = new EFContributorCustomFormRepository();
@@ -1759,14 +1759,14 @@ namespace TT.Web.Controllers
             if (form == null)
             {
                 TempData["Error"] = "No form found for Form Id: " + input.CustomForm.Id;
-                return RedirectToAction("ListCustomForms", "PvPAdmin");
+                return RedirectToAction(MVC.PvPAdmin.ListCustomForms());
             }
 
             // assert form is not null
             if (form.MobilityType != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "Form " + form.FriendlyName + " is not animate.";
-                return RedirectToAction("ListCustomForms", "PvPAdmin");
+                return RedirectToAction(MVC.PvPAdmin.ListCustomForms());
             }
 
             var editMe = customFormRepo.ContributorCustomForms.FirstOrDefault(c => c.Id == input.Id);
@@ -1782,22 +1782,22 @@ namespace TT.Web.Controllers
             customFormRepo.SaveContributorCustomForm(editMe);
 
             TempData["Result"] = "Custom form successfully saved!";
-            return RedirectToAction("ListCustomForms", "PvPAdmin");
+            return RedirectToAction(MVC.PvPAdmin.ListCustomForms());
         }
 
         [Authorize]
-        public ActionResult DeleteCustomForm(int Id)
+        public virtual ActionResult DeleteCustomForm(int Id)
         {
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             IContributorCustomFormRepository customFormRepo = new EFContributorCustomFormRepository();
             customFormRepo.DeleteContributorCustomForm(Id);
 
             TempData["Result"] = "Deleted custom form Id " + Id;
-            return RedirectToAction("ListCustomForms", "PvPAdmin");
+            return RedirectToAction(MVC.PvPAdmin.ListCustomForms());
         }
 
         /// <summary>
@@ -1805,11 +1805,11 @@ namespace TT.Web.Controllers
         /// </summary>
         /// <returns></returns>
         [Authorize]
-        public ActionResult ListNewsPosts()
+        public virtual ActionResult ListNewsPosts()
         {
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             INewsPostRepository repo = new EFNewsPostRepository();
@@ -1828,11 +1828,11 @@ namespace TT.Web.Controllers
         /// <param name="Id">Id of the news post to make changes to.  -1 indicates a new post.</param>
         /// <returns></returns>
         [Authorize]
-        public ActionResult EditNewsPost(int Id)
+        public virtual ActionResult EditNewsPost(int Id)
         {
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             INewsPostRepository repo = new EFNewsPostRepository();
@@ -1854,11 +1854,11 @@ namespace TT.Web.Controllers
         /// <returns></returns>
         [Authorize]
         [ValidateInput(false)]
-        public ActionResult EditNewsPostSend(NewsPost input)
+        public virtual ActionResult EditNewsPostSend(NewsPost input)
         {
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             INewsPostRepository repo = new EFNewsPostRepository();
@@ -1875,7 +1875,7 @@ namespace TT.Web.Controllers
             repo.SaveNewsPost(saveMe);
 
             TempData["Result"] = "News Post " + input.Id + " saved successfully!";
-            return RedirectToAction("ListNewsPosts", "PvPAdmin");
+            return RedirectToAction(MVC.PvPAdmin.ListNewsPosts());
 
         }
 
@@ -1884,19 +1884,19 @@ namespace TT.Web.Controllers
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public ActionResult DeleteNewsPost(int Id)
+        public virtual ActionResult DeleteNewsPost(int Id)
         {
             string myMembershipId = User.Identity.GetUserId();
             if (!User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             INewsPostRepository repo = new EFNewsPostRepository();
             repo.DeleteNewsPost(Id);
 
             TempData["Result"] = "News Post " + Id + " deleted successfully!";
-            return RedirectToAction("ListNewsPosts", "PvPAdmin");
+            return RedirectToAction(MVC.PvPAdmin.ListNewsPosts());
         }
     }
 }

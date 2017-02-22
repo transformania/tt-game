@@ -9,58 +9,58 @@ using TT.Domain.Statics;
 namespace TT.Web.Controllers.Admin
 {
     [Authorize(Roles = PvPStatics.Permissions_Admin)]
-    public class DonatorController : Controller
+    public partial class DonatorController : Controller
     {
 
-        public ActionResult List(int minimumTier = 1)
+        public virtual ActionResult List(int minimumTier = 1)
         {
 
-            var output = DomainRegistry.Repository.Find(new GetUserDonators {MinimumTier = minimumTier});
+            var output = DomainRegistry.Repository.Find(new GetUserDonators { MinimumTier = minimumTier });
             SetMessages();
 
-            return View("~/Views/Admin/Donators/List.cshtml", output);
+            return View(MVC.Admin.Views.Donators.List, output);
         }
 
-        public ActionResult Edit(int id)
+        public virtual ActionResult Edit(int id)
         {
 
-            var output = DomainRegistry.Repository.FindSingle(new GetUserDonator {Id = id});
+            var output = DomainRegistry.Repository.FindSingle(new GetUserDonator { Id = id });
 
-            return View("~/Views/Admin/Donators/Edit.cshtml", output);
+            return View(MVC.Admin.Views.Donators.Edit, output);
         }
 
-        public ActionResult EditSend(UpdateDonator input)
+        public virtual ActionResult EditSend(UpdateDonator input)
         {
 
             try
             {
                 DomainRegistry.Repository.Execute(input);
-                DomainRegistry.Repository.Execute(new ChangeDonatorTier {UserId = input.UserId, Tier = input.Tier});
+                DomainRegistry.Repository.Execute(new ChangeDonatorTier { UserId = input.UserId, Tier = input.Tier });
                 TempData["Result"] = "Donator update successful.";
             }
             catch (DomainException e)
             {
                 TempData["Error"] = "Error: " + e.Message;
             }
-            
-            return RedirectToAction("List");
+
+            return RedirectToAction(MVC.Donator.List());
         }
 
-        public ActionResult Delete()
+        public virtual ActionResult Delete()
         {
 
             var output = DomainRegistry.Repository.Find(new GetUserDonators());
 
-            return View("~/Views/Admin/Donators/List.cshtml", output);
+            return View(MVC.Admin.Views.Donators.List, output);
         }
 
-        public ActionResult Create()
+        public virtual ActionResult Create()
         {
 
-            return View("~/Views/Admin/Donators/Create.cshtml");
+            return View(MVC.Admin.Views.Donators.Create);
         }
 
-        public ActionResult CreateSend(CreateDonator input)
+        public virtual ActionResult CreateSend(CreateDonator input)
         {
 
             try
@@ -74,7 +74,7 @@ namespace TT.Web.Controllers.Admin
                 TempData["Error"] = "Error: " + e.Message;
             }
 
-            return RedirectToAction("List");
+            return RedirectToAction(MVC.Donator.List());
         }
 
         private void SetMessages()

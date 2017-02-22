@@ -5,27 +5,27 @@ using TT.Domain.Models;
 
 namespace TT.Web.Controllers
 {
-    public class TransformaniaTimeController : Controller
+    public partial class TransformaniaTimeController : Controller
     {
-        public ActionResult FashionWars()
+        public virtual ActionResult FashionWars()
         {
             return View();
         }
 
-        public ActionResult Bombie()
+        public virtual ActionResult Bombie()
         {
             return View();
         }
 
-        public ActionResult Play()
+        public virtual ActionResult Play()
         {
-           // using (var db = new StatsContext())
-           // {
-           //     GameshowStats newstat = new GameshowStats();
-           //     newstat.FinishedTransformations = 5;
+            // using (var db = new StatsContext())
+            // {
+            //     GameshowStats newstat = new GameshowStats();
+            //     newstat.FinishedTransformations = 5;
 
-           //     db.GameshowStats.Add(newstat);
-          //  }
+            //     db.GameshowStats.Add(newstat);
+            //  }
             return View();
         }
 
@@ -111,7 +111,7 @@ namespace TT.Web.Controllers
             {
                 updatedStat.Target_Losses++;
             }
-           
+
 
 
             statRepo.SaveGameshowStats(updatedStat);

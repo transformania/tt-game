@@ -11,17 +11,17 @@ using TT.Web.Services;
 
 namespace TT.Web.Controllers
 {
-    public class DuelController : Controller
+    public partial class DuelController : Controller
     {
-        
+
         [Authorize]
-        public ActionResult Duel()
+        public virtual ActionResult Duel()
         {
             return View();
         }
 
         [Authorize]
-        public ActionResult IssueChallenge(int id)
+        public virtual ActionResult IssueChallenge(int id)
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -30,7 +30,7 @@ namespace TT.Web.Controllers
             if (me.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "You must be animate in order to challenge someone to a duel.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert player is not already in a duel
@@ -38,14 +38,14 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "You are already actively participating in a duel.";
                 TempData["SubError"] = "You must finish your currently active duel before you can start a new one.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert that this player is not in a quest
             if (me.InQuest > 0)
             {
                 TempData["Error"] = "You must finish your quest before you can participate in a duel.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert that the player has not been in recent combat
@@ -53,7 +53,7 @@ namespace TT.Web.Controllers
             if (minutesAgo < PvPStatics.DuelNoCombatMinutes)
             {
                 TempData["Error"] = "You must wait another " + (PvPStatics.DuelNoCombatMinutes - minutesAgo) + " minutes without being in combat in order to challenge this opponent to a duel.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             Player duelTarget = PlayerProcedures.GetPlayer(id);
@@ -62,14 +62,14 @@ namespace TT.Web.Controllers
             if (duelTarget.BotId != AIStatics.ActivePlayerBotId)
             {
                 TempData["Error"] = "You cannot challenge an NPC to a duel.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert target is animate
             if (duelTarget.Mobility != PvPStatics.MobilityFull)
             {
                 TempData["Error"] = "Your target must be animate in order to challenge someone to a duel.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert no blacklist exists
@@ -77,7 +77,7 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "This player has blacklisted you or is on your own blacklist.";
                 TempData["SubError"] = "You cannot duel players who are on your blacklist.  Remove them from your blacklist first or ask them to remove you from theirs.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert target is not already in a duel
@@ -85,14 +85,14 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "Your target is already actively participating in a duel.";
                 TempData["SubError"] = "Your target must finish their currently active duel before they can start a new one.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert that this player is not in a quest
             if (duelTarget.InQuest > 0)
             {
                 TempData["Error"] = "Your target must finish their quest before you can duel them.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert that the target has not been in recent combat
@@ -100,14 +100,14 @@ namespace TT.Web.Controllers
             if (minutesAgo < PvPStatics.DuelNoCombatMinutes)
             {
                 TempData["Error"] = "Your target must wait longer without being in combat in order to duel you.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert both players are in the same location
             if (me.dbLocationName != duelTarget.dbLocationName)
             {
                 TempData["Error"] = "You must be in the same location as your target in order to challenge them to a duel.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert both players are in an okay game mode
@@ -118,14 +118,14 @@ namespace TT.Web.Controllers
                 if (me.GameMode == GameModeStatics.PvP && duelTarget.GameMode < GameModeStatics.PvP)
                 {
                     TempData["Error"] = "You must either be friends with your target or in the same game mode to challenge them to a duel.";
-                    return RedirectToAction("Play", "PvP");
+                    return RedirectToAction(MVC.PvP.Play());
                 }
 
                 // player is not in PvP; target is
                 else if (me.GameMode < GameModeStatics.PvP && duelTarget.GameMode == GameModeStatics.PvP)
                 {
                     TempData["Error"] = "You must either be friends with your target or in the same game mode to challenge them to a duel.";
-                    return RedirectToAction("Play", "PvP");
+                    return RedirectToAction(MVC.PvP.Play());
                 }
             }
 
@@ -136,11 +136,11 @@ namespace TT.Web.Controllers
 
             TempData["Result"] = "You have sent out a challenge to a duel to " + duelTarget.GetFullName() + ".";
 
-            return RedirectToAction("Play", "PvP");
+            return RedirectToAction(MVC.PvP.Play());
         }
 
         [Authorize]
-        public ActionResult AcceptChallenge(int id)
+        public virtual ActionResult AcceptChallenge(int id)
         {
             string myMembershipId = User.Identity.GetUserId();
 
@@ -148,7 +148,7 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "Player update portion of the world update is still in progress.";
                 TempData["SubError"] = "Try again a bit later when the update has progressed farther along.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             Duel duel = DuelProcedures.GetDuel(id);
@@ -159,14 +159,14 @@ namespace TT.Web.Controllers
             {
                 TempData["Error"] = "This challenge to a duel has expired.";
                 TempData["SubError"] = "Offers for a duel must be accpted within the same turn or in the next.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             // assert duel is still active
             if (duel.Status != DuelProcedures.PENDING)
             {
                 TempData["Error"] = "This duel has already started, has been completed, or was rejected.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             List<PlayerFormViewModel> participants = DuelProcedures.GetPlayerViewModelsInDuel(duel.Id);
@@ -255,17 +255,17 @@ namespace TT.Web.Controllers
                     errors += s + "<br>";
                 }
                 TempData["Error"] = errors;
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             TempData["Result"] = "Your duel has started!";
             DuelProcedures.BeginDuel(duel.Id);
 
-            return RedirectToAction("Play","PvP");
+            return RedirectToAction(MVC.PvP.Play());
         }
 
-         [Authorize]
-        public ActionResult DuelDetail(int id)
+        [Authorize]
+        public virtual ActionResult DuelDetail(int id)
         {
             string myMembershipId = User.Identity.GetUserId();
             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
@@ -273,7 +273,7 @@ namespace TT.Web.Controllers
             if (me.InDuel != duel.Id)
             {
                 TempData["Error"] = "You are not in this duel.";
-                return RedirectToAction("Play", "PvP");
+                return RedirectToAction(MVC.PvP.Play());
             }
 
             DuelPlayersViewModel output = new DuelPlayersViewModel
@@ -288,81 +288,81 @@ namespace TT.Web.Controllers
             return View(output);
         }
 
-         [Authorize]
-         public ActionResult AdvanceTurn()
-         {
-             string myMembershipId = User.Identity.GetUserId();
-             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+        [Authorize]
+        public virtual ActionResult AdvanceTurn()
+        {
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
-             if (me.InDuel <= 0)
-             {
-                 TempData["Error"] = "You are not in a duel.";
-                 return RedirectToAction("Play", "PvP");
-             }
+            if (me.InDuel <= 0)
+            {
+                TempData["Error"] = "You are not in a duel.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
 
-             Duel duel = DuelProcedures.GetDuel(me.InDuel);
+            Duel duel = DuelProcedures.GetDuel(me.InDuel);
 
-             List<PlayerFormViewModel> combatants = DuelProcedures.GetPlayerViewModelsInDuel(duel.Id);
+            List<PlayerFormViewModel> combatants = DuelProcedures.GetPlayerViewModelsInDuel(duel.Id);
 
-             if (!PvPStatics.ChaosMode)
-             {
-                 foreach (PlayerFormViewModel p in combatants)
-                 {
-                     if (p.Player.TimesAttackingThisUpdate < PvPStatics.MaxAttacksPerUpdate)
-                     {
-                         TempData["Error"] = "Cannot advance this turn." + p.Player.GetFullName() + " has not used up all of their attacks.";
-                         return RedirectToAction("Play", "PvP");
-                     }
-                 }
-             }
+            if (!PvPStatics.ChaosMode)
+            {
+                foreach (PlayerFormViewModel p in combatants)
+                {
+                    if (p.Player.TimesAttackingThisUpdate < PvPStatics.MaxAttacksPerUpdate)
+                    {
+                        TempData["Error"] = "Cannot advance this turn." + p.Player.GetFullName() + " has not used up all of their attacks.";
+                        return RedirectToAction(MVC.PvP.Play());
+                    }
+                }
+            }
 
-             foreach (PlayerFormViewModel p in combatants)
-             {
-                 PlayerProcedures.SetAttackCount(p.Player.ToDbPlayer(), 0);
-                 PlayerProcedures.SetCleanseMeditateCount(p.Player.ToDbPlayer(), 0);
-                 string message = "<b>" + me.GetFullName() + " has advanced the duel turn.  Attacks and cleanse/meditate limits have been reset.  Attacks may resume in 20 seconds.</b>";
-                 PlayerLogProcedures.AddPlayerLog(p.Player.Id, message, true);
-                 NoticeService.PushNotice(p.Player.Id, message, NoticeService.PushType__PlayerLog);
-             }
+            foreach (PlayerFormViewModel p in combatants)
+            {
+                PlayerProcedures.SetAttackCount(p.Player.ToDbPlayer(), 0);
+                PlayerProcedures.SetCleanseMeditateCount(p.Player.ToDbPlayer(), 0);
+                string message = "<b>" + me.GetFullName() + " has advanced the duel turn.  Attacks and cleanse/meditate limits have been reset.  Attacks may resume in 20 seconds.</b>";
+                PlayerLogProcedures.AddPlayerLog(p.Player.Id, message, true);
+                NoticeService.PushNotice(p.Player.Id, message, NoticeService.PushType__PlayerLog);
+            }
 
-             DuelProcedures.SetLastDuelAttackTimestamp(duel.Id);
+            DuelProcedures.SetLastDuelAttackTimestamp(duel.Id);
 
-             TempData["Result"] = "Duel turn advanced.  All combatants have had their attack and cleanse/meditate limits reset.  Attacks may resume in 20 seconds.";
-             return RedirectToAction("Play", "PvP");
-         }
+            TempData["Result"] = "Duel turn advanced.  All combatants have had their attack and cleanse/meditate limits reset.  Attacks may resume in 20 seconds.";
+            return RedirectToAction(MVC.PvP.Play());
+        }
 
-         [Authorize]
-         public ActionResult DuelTimeout()
-         {
+        [Authorize]
+        public virtual ActionResult DuelTimeout()
+        {
 
-             string myMembershipId = User.Identity.GetUserId();
-             Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            string myMembershipId = User.Identity.GetUserId();
+            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
-             if (me.InDuel <= 0)
-             {
-                 TempData["Error"] = "You are not in a duel.";
-                 return RedirectToAction("Play", "PvP");
-             }
+            if (me.InDuel <= 0)
+            {
+                TempData["Error"] = "You are not in a duel.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
 
-             Duel duel = DuelProcedures.GetDuel(me.InDuel);
+            Duel duel = DuelProcedures.GetDuel(me.InDuel);
 
-             int turnsLeft = PvPStatics.MaximumDuelTurnLength - (PvPWorldStatProcedures.GetWorldTurnNumber() - duel.StartTurn);
+            int turnsLeft = PvPStatics.MaximumDuelTurnLength - (PvPWorldStatProcedures.GetWorldTurnNumber() - duel.StartTurn);
 
-             if (turnsLeft > 0)
-             {
-                 TempData["Error"] = "You cannot end this duel as there are still turns remaining.";
-                 return RedirectToAction("Play", "PvP");
-             }
-
-
-             DuelProcedures.EndDuel(duel.Id, DuelProcedures.TIMEOUT);
-
-             TempData["Result"] = "This duel has timed out in a no-winner result.";
-             return RedirectToAction("Play", "PvP");
+            if (turnsLeft > 0)
+            {
+                TempData["Error"] = "You cannot end this duel as there are still turns remaining.";
+                return RedirectToAction(MVC.PvP.Play());
+            }
 
 
-         }
+            DuelProcedures.EndDuel(duel.Id, DuelProcedures.TIMEOUT);
+
+            TempData["Result"] = "This duel has timed out in a no-winner result.";
+            return RedirectToAction(MVC.PvP.Play());
 
 
-	}
+        }
+
+
+    }
 }

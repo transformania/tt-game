@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Queries.Assets;
+using TT.Domain.Statics;
 using TT.Tests.Builders.AI;
 using TT.Tests.Builders.Assets;
 using TT.Tests.Builders.Item;
@@ -18,14 +19,14 @@ namespace TT.Tests.Domain.Queries.Assets
                 .With(cr => cr.AmountBeforeRestock, 5)
                 .With(cr => cr.AmountToRestockTo, 9)
                 .With(cr => cr.BaseItem, new ItemSourceBuilder().With(cr => cr.Id, 35).BuildAndSave())
-                .With(cr => cr.NPC, new NPCBuilder().With(cr => cr.Id, 53).BuildAndSave())
+                .With(cr => cr.BotId, AIStatics.LindellaBotId)
                 .BuildAndSave();
 
             new RestockItemBuilder().With(cr => cr.Id, 99)
                 .With(cr => cr.AmountBeforeRestock, 1)
-                 .With(cr => cr.AmountToRestockTo, 3)
+                .With(cr => cr.AmountToRestockTo, 3)
                 .With(cr => cr.BaseItem, new ItemSourceBuilder().With(cr => cr.Id, 49).BuildAndSave())
-                .With(cr => cr.NPC, new NPCBuilder().With(cr => cr.Id, 95).BuildAndSave())
+                .With(cr => cr.BotId, AIStatics.LindellaBotId)
                 .BuildAndSave();
 
             var cmd = new GetRestockItems();

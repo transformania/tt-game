@@ -2,6 +2,8 @@
 using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
+using TT.Domain.Entities.Item;
+using TT.Domain.Entities.Items;
 using TT.Domain.Entities.TFEnergies;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
@@ -181,6 +183,52 @@ namespace TT.Tests.Domain.Entities
             player.XP.Should().Be(5);
             player.Level.Should().Be(4);
             player.UnusedLevelUpPerks.Should().Be(1);
+        }
+
+        [Test]
+        public void should_get_count_of_item_type()
+        {
+
+            // include this item, correct type
+            var item1 = new ItemBuilder()
+                .With(i => i.ItemSource, new ItemSourceBuilder()
+                    .With(i => i.Id, 5)
+                    .BuildAndSave())
+                .BuildAndSave();
+
+            // exclude this item, different type
+            var item2 = new ItemBuilder()
+                .With(i => i.ItemSource, new ItemSourceBuilder()
+                    .With(i => i.Id, 7)
+                    .BuildAndSave())
+                .BuildAndSave();
+
+            var player = new PlayerBuilder()
+               .With(i => i.Items, new List<Item>())
+               .BuildAndSave();
+
+            player.GiveItem(item1);
+
+            player.GetCountOfItem(5).Should().Be(1);
+        }
+
+        [Test]
+        public void should_give_items_of_type()
+        {
+            var player = new PlayerBuilder()
+               .With(i => i.Items, new List<Item>())
+               .BuildAndSave();
+
+            var itemSource = new ItemSourceBuilder()
+                .With(i => i.Id, 50)
+                .With(i => i.FriendlyName, "Socks")
+                .BuildAndSave();
+
+            player.GiveItemsOfType(itemSource, 3);
+            player.Items.Count().Should().Be(3);
+            player.Items.ElementAt(0).ItemSource.FriendlyName.Should().Be(itemSource.FriendlyName);
+            player.Items.ElementAt(1).ItemSource.FriendlyName.Should().Be(itemSource.FriendlyName);
+            player.Items.ElementAt(2).ItemSource.FriendlyName.Should().Be(itemSource.FriendlyName);
         }
 
     }

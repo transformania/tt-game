@@ -159,6 +159,7 @@
     <Compile Include="Command.cs" />
     <Compile Include="Commands\AI\CreateNPC.cs" />
     <Compile Include="Commands\AI\DeleteNPC.cs" />
+    <Compile Include="Commands\AI\RestockNPC.cs" />
     <Compile Include="Commands\AI\UpdateNPC.cs" />
     <Compile Include="Commands\Assets\CreateRestockItem.cs" />
     <Compile Include="Commands\Assets\DeleteRestockItem.cs" />

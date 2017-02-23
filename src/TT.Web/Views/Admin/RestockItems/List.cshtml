@@ -39,7 +39,7 @@
         <tr>
             <td>Id</td>
             <td>Item Name</td>
-            <td>NPC ID</td>
+            <td>BotId</td>
             <td>Amount before restock</td>
             <td>Restock to</td>
             <td>Edit</td>
@@ -54,7 +54,7 @@
                 <tr>
                     <td>@r.Id</td>
                     <td>@r.BaseItem.FriendlyName</td>
-                    <td>@r.NPC.Id</td>
+                    <td>@r.BotId</td>
                     <td>@r.AmountBeforeRestock</td>
                     <td>@r.AmountToRestockTo</td>
                     <td>@Html.ActionLink("[Edit]", "Edit", "RestockItem", new {Id = r.Id}, null)</td>

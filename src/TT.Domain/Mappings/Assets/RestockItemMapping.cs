@@ -16,8 +16,6 @@ namespace TT.Domain.Mappings.Assets
                 .HasKey(cr => cr.Id)
                 .HasRequired(cr => cr.BaseItem).WithMany();
 
-            modelBuilder.Entity<RestockItem>()
-                .HasRequired(cr => cr.NPC).WithMany();
         }
 
         protected override void Configure()

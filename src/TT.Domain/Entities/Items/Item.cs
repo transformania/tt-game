@@ -72,7 +72,7 @@ namespace TT.Domain.Entities.Items
             return new Item
             {
                 Owner = owner,
-                dbLocationName = owner.Location,
+                dbLocationName = "",
                 IsPermanent = false,
                 ItemSource = itemSource,
                 dbName = itemSource.DbName,

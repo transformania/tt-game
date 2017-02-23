@@ -227,8 +227,11 @@ namespace TT.Tests.Domain.Entities
             player.GiveItemsOfType(itemSource, 3);
             player.Items.Count().Should().Be(3);
             player.Items.ElementAt(0).ItemSource.FriendlyName.Should().Be(itemSource.FriendlyName);
+            player.Items.ElementAt(0).dbLocationName.Should().Be("");
             player.Items.ElementAt(1).ItemSource.FriendlyName.Should().Be(itemSource.FriendlyName);
+            player.Items.ElementAt(1).dbLocationName.Should().Be("");
             player.Items.ElementAt(2).ItemSource.FriendlyName.Should().Be(itemSource.FriendlyName);
+            player.Items.ElementAt(2).dbLocationName.Should().Be("");
         }
 
     }

@@ -12,8 +12,8 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
-                <li>@Html.ActionLink("Back to Mind Control List", "MindControlList", "NPC")</li>
+                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
+                <li>@Html.ActionLink("Back to Mind Control List", MVC.NPC.MindControlList())</li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -27,7 +27,7 @@
 
         foreach (TT.Domain.ViewModels.Location loc in Model)
         {
-            @Html.ActionLink(loc.Name, "MoveVictimSend", "NPC", new { id = ViewBag.Victim.Id, to = loc.dbName }, null)
+            @Html.ActionLink(loc.Name, MVC.NPC.MoveVictimSend((int)ViewBag.Victim.Id, loc.dbName))
             <span>(@TT.Domain.Procedures.MindControlProcedures.GetAPCostToMove(ViewBag.Buffs, ViewBag.Victim.dbLocationName, loc.dbName) AP)</span><br />
         }
 

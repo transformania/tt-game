@@ -16,21 +16,21 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
                 <li>
-                    @Html.ActionLink("Global", "Index", "Chat", new { room = "global" }, null)
+                    @Html.ActionLink("Global", MVC.Chat.Index("global"))
                 </li>
                 <li>
-                    @Html.ActionLink("RP Room 1", "Index", "Chat", new { room = "rp1" }, null)
+                    @Html.ActionLink("RP Room 1", MVC.Chat.Index("rp1"))
                 </li>
                 <li>
-                    @Html.ActionLink("RP Room 2", "Index", "Chat", new { room = "rp2" }, null)
+                    @Html.ActionLink("RP Room 2", MVC.Chat.Index("rp2"))
                 </li>
-                <li>@Html.ActionLink("RP Room 3", "Index", "Chat", new { room = "rp3" }, null)</li>
+                <li>@Html.ActionLink("RP Room 3", MVC.Chat.Index("rp3"))</li>
                 <li>
-                    @Html.ActionLink("Create/Join Private Room", "PrivateChat", "PvP")
+                    @Html.ActionLink("Create/Join Private Room", MVC.PvP.PrivateChat())
                 </li>
-                <li>@Html.ActionLink("Commands", "ChatCommands", "PvP", null, new { target = "_blank" })</li>
+                <li>@Html.ActionLink("Commands", MVC.PvP.ChatCommands(), new { target = "_blank" })</li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -51,20 +51,20 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-3">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Last Hour", "ChatLog", "PvP", new { room = Model.Room, filter = "lasth" }, null)</li>
+                <li>@Html.ActionLink("Last Hour", MVC.PvP.ChatLog(Model.Room, "lasth"))</li>
                 <li>
-                    @Html.ActionLink("Last 4 Hours", "ChatLog", "PvP", new { room = Model.Room, filter = "last4h" }, null)
+                    @Html.ActionLink("Last 4 Hours", MVC.PvP.ChatLog(Model.Room, "last4h"))
                 </li>
                 <li>
-                    @Html.ActionLink("Last 12 Hours", "ChatLog", "PvP", new { room = Model.Room, filter = "last12h" }, null)
+                    @Html.ActionLink("Last 12 Hours", MVC.PvP.ChatLog(Model.Room, "last12h"))
                 </li>
                 <li>
-                    @Html.ActionLink("Last Day", "ChatLog", "PvP", new { room = Model.Room, filter = "last24h" }, null)
+                    @Html.ActionLink("Last Day", MVC.PvP.ChatLog(Model.Room, "last24h"))
                 </li>
                 <li>
-                    @Html.ActionLink("Last 2 Days", "ChatLog", "PvP", new { room = Model.Room, filter = "last48h" }, null)
+                    @Html.ActionLink("Last 2 Days", MVC.PvP.ChatLog(Model.Room, "last48h"))
                 </li>
-                <li>@Html.ActionLink("Last 3 Days", "ChatLog", "PvP", new { room = Model.Room, filter = "last72h" }, null)</li>
+                <li>@Html.ActionLink("Last 3 Days", MVC.PvP.ChatLog(Model.Room, "last72h"))</li>
 </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -74,7 +74,7 @@
     <h2>Chat Log for Room '@Model.Room'</h2>
     <p>Note that <b>oldest posts are on top</b>, not newest.  You can use the links before to change the filter time; longer durations will take longer to load.  Please be patient and use the longer filters sparingly.  Any chat messages older than 3 days are eligible for permanent deletion.</p>
     <p>Chat log for private room:</p>
-    @using (Html.BeginForm("ChatLog", "PvP", FormMethod.Get))
+    @using (Html.BeginForm(MVC.PvP.ChatLog(), FormMethod.Get))
     {
         @Html.LabelFor(m => m.Room, "Room name:")
         <br>

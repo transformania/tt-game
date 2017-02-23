@@ -13,7 +13,7 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -33,7 +33,7 @@
         foreach (QuestStart s in Model.AvailableQuests)
         {
             <div class="text-center" style="border: 4px solid #A16969; padding: 5px; padding-bottom: 10px;">
-                <p>@Html.ActionLink("Begin", "StartQuest", "Quest", new { Id = s.Id }, new { @class = "attackLink" })</p>
+                <p>@Html.ActionLink("Begin", MVC.Quest.StartQuest(s.Id), new { @class = "attackLink" })</p>
                 <h4>@s.Name</h4>
                 <p><i>@s.Description</i></p><br />
                 <p><b>Themes:  @s.Tags</b></p>

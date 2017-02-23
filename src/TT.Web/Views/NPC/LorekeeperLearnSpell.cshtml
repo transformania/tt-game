@@ -18,8 +18,8 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
-                <li>@Html.ActionLink("Talk", "TalkToLorekeeper", "NPC")</li>
+                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
+                <li>@Html.ActionLink("Talk", MVC.NPC.TalkToLorekeeper())</li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -40,10 +40,10 @@
     <p>You have <b>@ViewBag.Money</b> Arpeyjis <span title="Arpeyjis" class="icon icon-money"></span> available for spending.</p><br>
 
     <ul>
-        <li>@Html.ActionLink("Animate spells", "LorekeeperLearnSpell", "NPC", new { filter = PvPStatics.MobilityFull }, null)</li>
-        <li>@Html.ActionLink("Inanimate spells", "LorekeeperLearnSpell", "NPC", new { filter = PvPStatics.MobilityInanimate }, null)</li>
-        <li>@Html.ActionLink("Pet/Animal spells", "LorekeeperLearnSpell", "NPC", new { filter = PvPStatics.MobilityPet }, null)</li>
-        <li>@Html.ActionLink("Other", "LorekeeperLearnSpell", "NPC", new { filter = PvPStatics.MobilityMindControl }, null)</li>
+        <li>@Html.ActionLink("Animate spells", MVC.NPC.LorekeeperLearnSpell(PvPStatics.MobilityFull))</li>
+        <li>@Html.ActionLink("Inanimate spells", MVC.NPC.LorekeeperLearnSpell(PvPStatics.MobilityInanimate))</li>
+        <li>@Html.ActionLink("Pet/Animal spells", MVC.NPC.LorekeeperLearnSpell(PvPStatics.MobilityPet))</li>
+        <li>@Html.ActionLink("Other", MVC.NPC.LorekeeperLearnSpell(PvPStatics.MobilityMindControl))</li>
     </ul>
 
     <hr />
@@ -79,7 +79,7 @@
                     }
                 }
 
-                <td>@Html.ActionLink("Purchase Training", "LorekeeperLearnSpellSend", "NPC", new { spell = s.dbName }, null)</td>
+                <td>@Html.ActionLink("Purchase Training", MVC.NPC.LorekeeperLearnSpellSend(s.dbName))</td>
             </tr>
         }
         </tbody>

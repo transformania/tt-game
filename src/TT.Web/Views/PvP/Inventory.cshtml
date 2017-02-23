@@ -21,7 +21,7 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -68,7 +68,7 @@
 
 
     <div style="clear:both;"></div>
-    @Html.Partial("partial_InventoryEquipped", Model.Items)
+    @Html.Partial(MVC.PvP.Views.partial_InventoryEquipped, Model.Items)
 
     <br /><br />
  
@@ -77,7 +77,7 @@
 
             foreach (TT.Domain.ViewModels.ItemViewModel item in Model.Items)
             {
-                @Html.Partial("partial_InventoryItem", item)
+                @Html.Partial(MVC.PvP.Views.partial_InventoryItem, item)
                 
             }
 
@@ -85,10 +85,10 @@
         </div>
 
     <p>
-        @Html.ActionLink("View statistics breakdown", "ShowStatsTable", "Item")
+        @Html.ActionLink("View statistics breakdown", MVC.Item.ShowStatsTable())
     </p>
 
-@Html.Partial("partial/partial_AllBuffsTable", Model.Bonuses)    
+@Html.Partial(MVC.PvP.Views.partial.partial_AllBuffsTable, Model.Bonuses)    
 </div>
 <div class="modal fade" id="itemDetailModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">

@@ -13,8 +13,8 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
-                <li>@Html.ActionLink("Back to My Covenant", "MyCovenant", "Covenant")</li>
+                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
+                <li>@Html.ActionLink("Back to My Covenant", MVC.Covenant.MyCovenant())</li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -29,14 +29,14 @@
         if (ViewBag.LeaderOrCaptain == "leader")
         {
             <p>
-                @Html.ActionLink("View Applications", "ReviewMyCovenantApplications", "Covenant")<br />
-                @Html.ActionLink("Change Covenant Description", "ChangeCovenantDescription", "Covenant")<br />
-                @Html.ActionLink("Promote a member to a captain", "InviteCaptainList", "Covenant")<br />
-                @Html.ActionLink("Promote a member to a leader", "InviteLeaderList", "Covenant")<br />
-                @Html.ActionLink("Kick Out a Member", "KickList", "Covenant")<br />
-                @Html.ActionLink("Message all members of your covenant", "CovenantWideMessage", "Messages")<br />
-                @Html.ActionLink("Claim your location as a Covenant safeground", "ClaimLocation", "Covenant")<br />
-                @Html.ActionLink("Expand Covenant Safeground (" + (string)ViewBag.UpgradeCost + " Arpeyjis)", "UpgradeSafeground", "Covenant")<br />
+                @Html.ActionLink("View Applications", MVC.Covenant.ReviewMyCovenantApplications())<br />
+                @Html.ActionLink("Change Covenant Description", MVC.Covenant.ChangeCovenantDescription())<br />
+                @Html.ActionLink("Promote a member to a captain", MVC.Covenant.InviteCaptainList())<br />
+                @Html.ActionLink("Promote a member to a leader", MVC.Covenant.InviteLeaderList())<br />
+                @Html.ActionLink("Kick Out a Member", MVC.Covenant.KickList())<br />
+                @Html.ActionLink("Message all members of your covenant", MVC.Messages.CovenantWideMessage())<br />
+                @Html.ActionLink("Claim your location as a Covenant safeground", MVC.Covenant.ClaimLocation())<br />
+                @Html.ActionLink("Expand Covenant Safeground (" + (string)ViewBag.UpgradeCost + " Arpeyjis)", MVC.Covenant.UpgradeSafeground())<br />
             </p>
         }
     }

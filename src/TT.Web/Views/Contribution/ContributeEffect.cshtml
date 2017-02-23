@@ -17,14 +17,14 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
-                <li>@Html.ActionLink("Contributions in review", "ContributeGraphicsNeeded", "Contribution")</li>
-                <li>@Html.ActionLink("Submit Spell / Form / Item", "Contribute", "Contribution", new { Id = "-1" }, FormMethod.Post)</li>
-                <li>@Html.ActionLink("Submit DM Encounter", "MyDMRolls", "Contribution")</li>
-                <li>@Html.ActionLink("New Contribution", "ContributeEffect", "Contribution", new { Id = "-1" }, FormMethod.Post)</li>
+                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
+                <li>@Html.ActionLink("Contributions in review", MVC.Contribution.ContributeGraphicsNeeded())</li>
+                <li>@Html.ActionLink("Submit Spell / Form / Item", MVC.Contribution.Contribute(-1), FormMethod.Post)</li>
+                <li>@Html.ActionLink("Submit DM Encounter", MVC.Contribution.MyDMRolls())</li>
+                <li>@Html.ActionLink("New Contribution", MVC.Contribution.ContributeEffect(-1), FormMethod.Post)</li>
                 @{if (User.IsInRole(PvPStatics.Permissions_Proofreader))
                 {
-                    <li>@Html.ActionLink("Unlock but DO NOT Save", "UnlockEffectContribution", "Contribution", new { id = Model.Id }, null)</li>
+                    <li>@Html.ActionLink("Unlock but DO NOT Save", MVC.Contribution.UnlockEffectContribution(Model.Id))</li>
                 }}
             </ul>
         </div><!-- /.navbar-collapse -->
@@ -77,12 +77,12 @@
                 @if (contribution.IsLive)
                 {
                     <td><span class="good">Y</span></td>
-                    <td><span class='newlink'>@Html.ActionLink(contribution.Effect_FriendlyName, "ContributeEffect", "Contribution", new { Id = contribution.Id }, null)</span></td>
+                    <td><span class='newlink'>@Html.ActionLink(contribution.Effect_FriendlyName, MVC.Contribution.ContributeEffect(contribution.Id))</span></td>
                 }
                 else
                 {
                     <td><span class="bad">N</span></td>
-                    <td><span>@Html.ActionLink(contribution.Effect_FriendlyName, "ContributeEffect", "Contribution", new { Id = contribution.Id }, null)</span></td>
+                    <td><span>@Html.ActionLink(contribution.Effect_FriendlyName, MVC.Contribution.ContributeEffect(contribution.Id))</span></td>
                 }
                     <td>
                 @if (contribution.ProofreadingCopy)
@@ -107,7 +107,7 @@
         </tbody>
     </table>
 
-    @Html.ActionLink("[Start a new contribution]", "ContributeEffect", "Contribution", new { Id = "-1" }, FormMethod.Post)
+    @Html.ActionLink("[Start a new contribution]", MVC.Contribution.ContributeEffect(-1), FormMethod.Post)
 </p>
 
 @*--------------------------------------*@
@@ -149,12 +149,12 @@
                 @if (contribution.IsLive)
                 {
                     <td><span class="good">Y</span></td>
-                    <td><span class='newlink'>@Html.ActionLink(contribution.Effect_FriendlyName, "ContributeEffect", "Contribution", new { Id = contribution.Id }, null)</span></td>
+                    <td><span class='newlink'>@Html.ActionLink(contribution.Effect_FriendlyName, MVC.Contribution.ContributeEffect(contribution.Id))</span></td>
                 }
                 else
                 {
                     <td><span class="bad">N</span></td>
-                    <td><span>@Html.ActionLink(contribution.Effect_FriendlyName, "ContributeEffect", "Contribution", new { Id = contribution.Id }, null)</span></td>
+                    <td><span>@Html.ActionLink(contribution.Effect_FriendlyName, MVC.Contribution.ContributeEffect(contribution.Id))</span></td>
                 }
                     <td>
                 @if (contribution.ProofreadingCopy)
@@ -202,7 +202,7 @@
 </p>
 
 
-@using (Html.BeginForm("SendEffectContribution", "Contribution", FormMethod.Post))
+@using (Html.BeginForm(MVC.Contribution.SendEffectContribution(), FormMethod.Post))
 {
     
        if (Model.ProofreadingCopy)
@@ -211,7 +211,7 @@
     }
 
     <br /><br />
-    <p>@Html.ActionLink("Look at this author's player profile", "LookAtPlayer_FromMembershipId", "PvP", new { id = Model.OwnerMemberhipId }, null)</p>
+    <p>@Html.ActionLink("Look at this author's player profile", MVC.PvP.LookAtPlayer_FromMembershipId(Model.OwnerMemberhipId))</p>
 
     @Html.HiddenFor(e => e.Id)
 
@@ -229,7 +229,7 @@
 
             <div class="form__panel" id="Skill_UniqueToForm_Panel" style="display: none;">
                 <label for="Skill_FriendlyName">What is the name of the form that grants this spell?</label>
-                @Ajax.ActionLink("Help", "AllForms", "Info", null, new AjaxOptions { UpdateTargetId = "modal", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "launchModal", OnFailure = "launchLocationListModalFail" }, new { @class = "attackLink" })
+                @Ajax.ActionLink("Help", MVC.Info.AllForms(), new AjaxOptions { UpdateTargetId = "modal", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "launchModal", OnFailure = "launchLocationListModalFail" }, new { @class = "attackLink" })
                 @Html.TextBoxFor(e => e.Skill_UniqueToForm)
             </div>
 
@@ -302,7 +302,7 @@
         </div>
 
         <div class="form__panel">
-            <label for="Effect_Bonuses">Abilities affected by this curse.  The current balance score is:  <b>@ViewBag.BalanceScore</b>  Please use the bonus calculator @Html.ActionLink("which can be opened in a new tab by clicking here", "ContributeBalanceCalculatorEffect", new { controller = "Contribution" }, new { target = "_blank" }) as a reference to see which bonuses / penalties are available and to see whether your curse falls within acceptable limits.  Mote:  Curses gained from searching a location ARE EXEMPT from these balancing rules but may be changed by the admins as seen fit.</label>
+            <label for="Effect_Bonuses">Abilities affected by this curse.  The current balance score is:  <b>@ViewBag.BalanceScore</b>  Please use the bonus calculator @Html.ActionLink("which can be opened in a new tab by clicking here", MVC.Contribution.ContributeBalanceCalculatorEffect()), new { target = "_blank" }) as a reference to see which bonuses / penalties are available and to see whether your curse falls within acceptable limits.  Mote:  Curses gained from searching a location ARE EXEMPT from these balancing rules but may be changed by the admins as seen fit.</label>
             @Html.TextAreaFor(e => e.Effect_Bonuses)
         </div>
 
@@ -359,7 +359,7 @@
         <div class="form__panel externalMessage">The current balance score is:  <b>@ViewBag.BalanceScore</b>.  Animate forms should have a balance score close to 0.  Items should have a balance score close to 25, and pets should have a balance score close to 50.  Curses can have a score of -400 or more.</div>
 
         <p>
-            @Html.ActionLink("Use calculator (save contribution before doing this!)", "ContributeBalanceCalculatorEffect", "Contribution", new { id = Model.Id }, null)<br /></p>
+            @Html.ActionLink("Use calculator (save contribution before doing this!)", MVC.Contribution.ContributeBalanceCalculatorEffect(Model.Id))<br /></p>
     </div>
 
     <h2>Finishing up</h2>
@@ -413,17 +413,17 @@
     
     if (User.IsInRole(TT.Domain.Statics.PvPStatics.Permissions_Proofreader))
         {
-            @Html.ActionLink("Unlock but DO NOT Save", "UnlockEffectContribution", "Contribution", new { id = Model.Id }, null)
+            @Html.ActionLink("Unlock but DO NOT Save", MVC.Contribution.UnlockEffectContribution(Model.Id))
         }
 
 
     if (User.IsInRole(TT.Domain.Statics.PvPStatics.Permissions_Admin) && Model.ProofreadingCopy)
     {
         <p>
-            @Html.ActionLink("Publish Skill", "PublishSpell_Effect", "Contribution", new { id = Model.Id }, null)<br />
-            @Html.ActionLink("Publish Effect", "PublishEffect", "Contribution", new { id = Model.Id }, null)<br />
-            @Html.ActionLink("Mark Effect as Live", "MarkEffectAsLive", "Contribution", new { id = Model.Id }, null)<br />
-            @Html.ActionLink("Mark Spell as live", "SetSpellAsLive", "Contribution", new { id = Model.Id }, null)<br />
+            @Html.ActionLink("Publish Skill", MVC.Contribution.PublishSpell_Effect(Model.Id))<br />
+            @Html.ActionLink("Publish Effect", MVC.Contribution.PublishEffect(Model.Id))<br />
+            @Html.ActionLink("Mark Effect as Live", MVC.Contribution.MarkEffectAsLive(Model.Id))<br />
+            @Html.ActionLink("Mark Spell as live", MVC.Contribution.SetSpellAsLive(Model.Id))<br />
         </p>
 
     <p>@Html.Raw(ViewBag.StaticEffectExists)</p>
@@ -433,7 +433,7 @@
 }
 
 
-@Html.ActionLink("Back to game (Don't forget to save!)", "Play", "PvP")
+@Html.ActionLink("Back to game (Don't forget to save!)", MVC.PvP.Play())
 
 <script>
 

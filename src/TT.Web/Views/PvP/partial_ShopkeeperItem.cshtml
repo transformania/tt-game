@@ -12,7 +12,7 @@
             }
 
 
-            @Ajax.ActionLink("[+]", "ShowItemDetails", "Item", new { id = Model.dbItem.Id }, new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
+            @Ajax.ActionLink("[+]", MVC.Item.ShowItemDetails(Model.dbItem.Id), new AjaxOptions { UpdateTargetId = "fullDetails", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "detail_success", OnFailure = "detail_failure", OnBegin = "detail_wait" }, new { @class = "detailLink" })
         }
         @CharactersHere.PrintItemTypeIcon(Model.Item)
         @CharactersHere.PrintSouledIcon(Model)
@@ -28,14 +28,14 @@
                 @{
                     if (ViewBag.Wuffie != null && ViewBag.Wuffie)
                     {
-                        @Html.ActionLink("Purchase", "PurchasePet", "NPC", new { id = Model.dbItem.Id }, new { @class = "attackLink" })
+                        @Html.ActionLink("Purchase", MVC.NPC.PurchasePet(Model.dbItem.Id), new { @class = "attackLink" })
                     }
                     else if (ViewBag.Lorekeeper != null && ViewBag.Lorekeeper)
                     {
-                        @Html.ActionLink("Purchase", "LorekeeperPurchaseBookSend", "NPC", new { id = Model.dbItem.Id }, new { @class = "attackLink" })
+                        @Html.ActionLink("Purchase", MVC.NPC.LorekeeperPurchaseBookSend(Model.dbItem.Id), new { @class = "attackLink" })
                     } else
                     {
-                        @Html.ActionLink("Purchase", "Purchase", "NPC", new { id = Model.dbItem.Id }, new { @class = "attackLink" })
+                        @Html.ActionLink("Purchase", MVC.NPC.Purchase(Model.dbItem.Id), new { @class = "attackLink" })
                     }
                 }
 

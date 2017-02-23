@@ -13,8 +13,8 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
-                <li>@Html.ActionLink("Back to My Covenant", "MyCovenant", "Covenant")</li>
+                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
+                <li>@Html.ActionLink("Back to My Covenant", MVC.Covenant.MyCovenant())</li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -29,5 +29,5 @@
 
     <p>You have <b>@ViewBag.CovenantMoney</b> Arpeyjis in your Covenant's chest.  You will need 2,500.</p>
 
-    <p>@Html.ActionLink("Claim this location (2,500 Arpeyjis)", "ClaimLocationSend", "Covenant")</p>
+    <p>@Html.ActionLink("Claim this location (2,500 Arpeyjis)", MVC.Covenant.ClaimLocationSend())</p>
 </div>

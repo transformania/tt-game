@@ -3,7 +3,7 @@
 <div class="containerInner">
     <h1>Public broadcast</h1>
 
-    @using (Html.BeginForm("SendPublicBroadcast", "PvPAdmin", FormMethod.Post))
+    @using (Html.BeginForm(MVC.PvPAdmin.SendPublicBroadcast(), FormMethod.Post))
     {
         @Html.TextAreaFor(m => m.Message)
         <br />

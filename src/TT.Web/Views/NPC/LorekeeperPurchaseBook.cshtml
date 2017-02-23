@@ -18,8 +18,8 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
-                <li>@Html.ActionLink("Talk", "TalkToLorekeeper", "NPC")</li>
+                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
+                <li>@Html.ActionLink("Talk", MVC.NPC.TalkToLorekeeper())</li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -43,7 +43,7 @@
         @{
             foreach (ItemViewModel i in Model.Items.OrderBy(i => i.dbItem.dbName).ThenByDescending(i => i.dbItem.Level))
             {
-                @Html.Partial("~/Views/PvP/partial_ShopkeeperItem.cshtml", i)
+                @Html.Partial(MVC.PvP.Views.partial_ShopkeeperItem, i)
             }
         }
     </div>

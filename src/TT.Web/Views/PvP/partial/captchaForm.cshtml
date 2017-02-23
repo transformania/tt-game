@@ -1,7 +1,7 @@
 ﻿@using Recaptcha.Web.Mvc;
 
 @{
-    using (Html.BeginForm("SubmitCaptcha", "Account", FormMethod.Post))
+    using (Html.BeginForm(MVC.Account.SubmitCaptcha(), FormMethod.Post))
     {
         <div style="border: 3px solid red; border-radius: 10px; padding: 10px; text-align: center;">
             @Html.AntiForgeryToken()

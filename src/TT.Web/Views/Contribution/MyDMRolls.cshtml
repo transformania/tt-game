@@ -11,18 +11,18 @@
 @{
     if (User.Identity.GetUserId() == "69")
     {
-       <p>@Html.ActionLink("Approve DM Encounters", "ReviewDMRolls", "Contribution")</p>
+       <p>@Html.ActionLink("Approve DM Encounters", MVC.Contribution.ReviewDMRolls())</p>
     }
 }
 
-<p>@Html.ActionLink("Back to game", "Play", "PvP")</p>
+<p>@Html.ActionLink("Back to game", MVC.PvP.Play())</p>
 
 <h1>Your DM Encounter Contributions</h1>
 
 <p>DM encounters are random encounters that can be rolled in the game's chat rooms.  These are meant for the sake of roleplaying, a random enemy / trap / event generator.</p>
 
 
-@Html.ActionLink("START NEW", "DMRoll", "Contribution", new { id = -1 }, null)
+@Html.ActionLink("START NEW", MVC.Contribution.DMRoll(-1))
 <hr />
 
 @foreach (DMRoll roll in Model.OrderBy(r => r.Tags))
@@ -34,9 +34,9 @@
         <span style="color: red; background-color: yellow; border: 1px solid red;">LIVE</span>
     }
 
-    @Html.ActionLink(roll.Message, "DMRoll", "Contribution", new { id = roll.Id }, null)
+    @Html.ActionLink(roll.Message, MVC.Contribution.DMRoll(roll.Id))
     <hr />
   
 }
 
-<p>@Html.ActionLink("Back to game", "Play", "PvP")</p>
+<p>@Html.ActionLink("Back to game", MVC.PvP.Play())</p>

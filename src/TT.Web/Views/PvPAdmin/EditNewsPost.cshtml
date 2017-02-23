@@ -1,6 +1,6 @@
 ﻿@model TT.Domain.Models.NewsPost
 
-@Html.ActionLink("Back", "ListNewsPosts", "PvPAdmin")
+@Html.ActionLink("Back", MVC.PvPAdmin.ListNewsPosts())
 
 <nav class="navbar navbar-default outsideContainer navbarTT2">
     <div class="container-fluid">
@@ -17,7 +17,7 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Back", "ListNewsPosts", "PvPAdmin")</li>
+                <li>@Html.ActionLink("Back", MVC.PvPAdmin.ListNewsPosts())</li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -25,7 +25,7 @@
 <div class="containerInner listdots">
     <h1>Edit News Post</h1>
 
-    @using (Html.BeginForm("EditNewsPostSend", "PvPAdmin", FormMethod.Post))
+    @using (Html.BeginForm(MVC.PvPAdmin.EditNewsPostSend(), FormMethod.Post))
     {
 
         <label>Timestamp:</label>

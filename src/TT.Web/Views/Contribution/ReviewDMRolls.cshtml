@@ -18,8 +18,8 @@
     <p>@roll.Message</p>
     
     
-    @Html.ActionLink("Approve", "ApproveDMRoll", "Contribution", new { id = roll.Id }, null)
-    @Html.ActionLink("Edit", "DMRoll", "Contribution", new { id = roll.Id }, null)
+    @Html.ActionLink("Approve", MVC.Contribution.ApproveDMRoll(roll.Id))
+    @Html.ActionLink("Edit", MVC.Contribution.DMRoll(roll.Id))
 
     <hr />
 

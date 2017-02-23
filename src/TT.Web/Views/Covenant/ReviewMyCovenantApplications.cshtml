@@ -17,8 +17,8 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
-                <li>@Html.ActionLink("Back to My Covenant", "MyCovenant", "Covenant")</li>
+                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
+                <li>@Html.ActionLink("Back to My Covenant", MVC.Covenant.MyCovenant())</li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -31,8 +31,8 @@
         {
             <p>
                 @app.dbPlayer.GetFullName() applied @CharactersHere.DatetimeToTimeago(app.dbCovenantApplication.Timestamp)
-                @Html.ActionLink("Accept", "ApplicationResponse", "Covenant", new { id = app.dbCovenantApplication.Id, response = "yes" }, null)
-                @Html.ActionLink("Deny", "ApplicationResponse", "Covenant", new { id = app.dbCovenantApplication.Id, response = "no" }, null)
+                @Html.ActionLink("Accept", MVC.Covenant.ApplicationResponse(app.dbCovenantApplication.Id, "yes"))
+                @Html.ActionLink("Deny", MVC.Covenant.ApplicationResponse(app.dbCovenantApplication.Id, "no"))
             </p>
         }
 

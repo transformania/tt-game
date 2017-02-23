@@ -1,6 +1,6 @@
 ﻿@model TT.Domain.Models.AuthorArtistBio
 @using System.IO;
-@Html.ActionLink("Back to game", "Play", "PvP", null, new { @class = "returnButton" })
+@Html.ActionLink("Back to game", MVC.PvP.Play(), new { @class = "returnButton" })
 <div class="textBio">
     <p class="bioTitle">Author / Artist Biography</p>
     <p class="bioDesc">@ViewBag.IngameCharacter <br>

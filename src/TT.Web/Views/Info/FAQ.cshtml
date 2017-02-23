@@ -13,9 +13,9 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
-                <li>@Html.ActionLink("How to Play", "HowToPlay", "Info")</li>
-                <li>@Html.ActionLink("Rules of Play", "Rules", "Info")</li>
+                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
+                <li>@Html.ActionLink("How to Play", MVC.Info.HowToPlay())</li>
+                <li>@Html.ActionLink("Rules of Play", MVC.Info.Rules())</li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -92,7 +92,7 @@
             <li>
                 An admin will review the spell and provide feedback about what is missing or what needs to be changed. If changes are required, the spell will be rejected until changes are made. If a spell looks ready, you will recieve a message notifing you that a spell you submitted was approved.
             </li>
-            <li>After approving a spell, it will show up on the @Html.ActionLink("the Contribution Awaiting Rlease", "ContributeGraphicsNeeded", "Contribution") page. From here, artists can claim a graphic for the spell and provide a download link to the image.</li>
+            <li>After approving a spell, it will show up on the @Html.ActionLink("the Contribution Awaiting Release", MVC.Contribution.ContributeGraphicsNeeded()) page. From here, artists can claim a graphic for the spell and provide a download link to the image.</li>
             <li>Once artwork is finished, an admin will scan through this page for all spells that have a link to artwork prepared. <b>If there is no link provided, the spell might be glanced over even if art is finished and linked elsewhere.</b></li>
             <li>If the artist is a first time contributor, an admin will need to verify the artist's ownership of the graphic. This is typically done by contacting that artist on their Deviant Art or Fur Affinity page. If the artist has neither, alternate means of proof can be arranged.</li>
             <li>If a spell is all ready to go and has a graphic properly linked, it will be released near the start of the following round. <b>Not all spells will necessarily be released on launch or within the first day of the round.</b>  However, it is reasonable to expect that if your spell isn't released within the first batch, it is likely less than a day or two away from release.</li>

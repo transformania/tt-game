@@ -10,13 +10,13 @@
     if (Model.ParentQuestState != null)
     {
 
-        <p>@Ajax.ActionLink("[" + Model.ParentQuestState.QuestStateName + "]", "QuestState", "QuestWriter", new { Id = Model.ParentQuestState.Id, QuestId = Model.QuestStatePreaction.QuestId, ParentStateId = -1 }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "parentButton" })</p>
+        <p>@Ajax.ActionLink("[" + Model.ParentQuestState.QuestStateName + "]", MVC.QuestWriter.QuestState(Model.ParentQuestState.Id, Model.QuestStatePreaction.QuestId, -1), new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "parentButton" })</p>
     }
 }
 
 <hr />
 
-@using (Ajax.BeginForm("QuestStatePreactionSend", "QuestWriter", new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" }))
+@using (Ajax.BeginForm(MVC.QuestWriter.QuestStatePreactionSend(), new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" }))
 {
 
     @Html.HiddenFor(m => m.ParentQuestState.Id)
@@ -46,11 +46,11 @@
     <br /><br />
 
     <btn class="glyphicon glyphicon-question-sign helpButton">
-        @Ajax.ActionLink("Click here to show list of all forms", "AllForms", "Info", null, new AjaxOptions { UpdateTargetId = "locationsBox", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail" }, new { @class = "" })
+        @Ajax.ActionLink("Click here to show list of all forms", MVC.Info.AllForms(), new AjaxOptions { UpdateTargetId = "locationsBox", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail" }, new { @class = "" })
     </btn>
 
         <btn class="glyphicon glyphicon-question-sign helpButton">
-            @Ajax.ActionLink("Click here to show list of all locations", "AllLocations", "Info", null, new AjaxOptions { UpdateTargetId = "locationsBox", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail" }, new { @class = "" })
+            @Ajax.ActionLink("Click here to show list of all locations", MVC.Info.AllLocations(), new AjaxOptions { UpdateTargetId = "locationsBox", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail" }, new { @class = "" })
         </btn>
 
         <div id="locationsBox" style="background-color: #cdcdff"></div>

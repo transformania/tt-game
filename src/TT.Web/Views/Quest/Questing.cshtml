@@ -16,14 +16,14 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
-                <li>@Ajax.ActionLink("Abandon Quest", "Abandon", "Quest", null, new AjaxOptions { UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</li>
-                <li>@Html.ActionLink("Inbox", "Index", "Messages", null, new { @id = "newMessagesLink" })</li>
-                <li>@Html.ActionLink("Chat", "Index", "Chat", new { room = "global" }, new { target = "_blank" })</li>
+                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
+                <li>@Ajax.ActionLink("Abandon Quest", MVC.Quest.Abandon(), new AjaxOptions { UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</li>
+                <li>@Html.ActionLink("Inbox", MVC.Messages.Index(), new { @id = "newMessagesLink" })</li>
+                <li>@Html.ActionLink("Chat", MVC.Chat.Index("global"), new { target = "_blank" })</li>
 
                 @if (User.IsInRole(PvPStatics.Permissions_QuestWriter))
                 {
-                <li>@Html.ActionLink("QuestWriter", "Index", "QuestWriter", null, null)</li>
+                <li>@Html.ActionLink("QuestWriter", MVC.QuestWriter.Index())</li>
                 }
 
             </ul>
@@ -45,7 +45,7 @@
 
     <p>You are in the quest <b>@Model.Name!</b>  Loading...</p><br />
 
-    @Ajax.ActionLink("Resume Quest", "Quest", "Quest", null, new AjaxOptions { UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "attackLink", @id = "continueQuest" })
+    @Ajax.ActionLink("Resume Quest", MVC.Quest.Quest(), new AjaxOptions { UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "attackLink", @id = "continueQuest" })
 </div>
 
 

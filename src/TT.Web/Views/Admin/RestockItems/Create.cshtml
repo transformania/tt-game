@@ -15,8 +15,8 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
-                <li>@Html.ActionLink("Back", "List", "RestockItem")</li>
+                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
+                <li>@Html.ActionLink("Back", MVC.RestockItem.List())</li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -33,11 +33,11 @@
 
     <h1>Create Restock Item</h1>
 
-    @using (Html.BeginForm("CreateSend", "RestockItem", FormMethod.Post))
+    @using (Html.BeginForm(MVC.RestockItem.CreateSend(), FormMethod.Post))
     {
 
         <btn class="glyphicon glyphicon-question-sign helpButton">
-            @Ajax.ActionLink("Click here to show list of all items", "AllItems", "Info", null, new AjaxOptions { UpdateTargetId = "formsBox", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail" }, new { @class = "" })
+            @Ajax.ActionLink("Click here to show list of all items", MVC.Info.AllItems(), new AjaxOptions { UpdateTargetId = "formsBox", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail" }, new { @class = "" })
         </btn>
 
         <div id="formsBox"></div>

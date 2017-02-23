@@ -6,7 +6,7 @@
 
 <p>This is important information.  Do not meddle with this data lightly.</p>
 
-@using (Html.BeginForm("ChangeWorldStatsSend", "PvPAdmin", FormMethod.Post))
+@using (Html.BeginForm(MVC.PvPAdmin.ChangeWorldStatsSend(), FormMethod.Post))
 {
     @Html.HiddenFor(m => m.Id);
 

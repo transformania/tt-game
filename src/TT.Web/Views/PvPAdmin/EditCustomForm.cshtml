@@ -2,7 +2,7 @@
 
 <h2>EditCustomFormSend</h2>
 
-@using (Html.BeginForm("EditCustomFormSend", "PvPAdmin", FormMethod.Post))
+@using (Html.BeginForm(MVC.PvPAdmin.EditCustomFormSend(), FormMethod.Post))
 
    
 {
@@ -30,7 +30,7 @@
 <div id="formsBox"></div>
 
 <btn class="glyphicon glyphicon-question-sign helpButton">
-    @Ajax.ActionLink("Click here to show list of all forms", "AllForms", "Info", null, new AjaxOptions { UpdateTargetId = "formsBox", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail" }, new { @class = "" })
+    @Ajax.ActionLink("Click here to show list of all forms", MVC.Info.AllForms(), new AjaxOptions { UpdateTargetId = "formsBox", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail" }, new { @class = "" })
 </btn>
 
 <style>

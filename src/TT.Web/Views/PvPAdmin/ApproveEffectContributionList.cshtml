@@ -23,8 +23,8 @@
                         <td>@c.SubmitterName</td>
                         <td>@c.Skill_FriendlyName</td>
                         <td>@c.Effect_FriendlyName</td>
-                        <td>@Html.ActionLink("Approve", "ApproveEffectContribution", "PvPAdmin", new { id = c.Id }, null)</td>
-                        <td>@Html.ActionLink("Snoop", "ContributeEffect", "Contribution", new { Id = c.Id }, null)</td>
+                        <td>@Html.ActionLink("Approve", MVC.PvPAdmin.ApproveEffectContribution(c.Id))</td>
+                        <td>@Html.ActionLink("Snoop", MVC.Contribution.ContributeEffect(c.Id))</td>
                     </tr>
                 }
             }

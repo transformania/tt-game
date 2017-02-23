@@ -6,9 +6,9 @@
     </head>
 
     <p>
-        @Html.ActionLink("Forms", "ServerBalance_Forms", "PvPAdmin")
-        @Html.ActionLink("Items", "ServerBalance_Items", "PvPAdmin")
-        @Html.ActionLink("Pets", "ServerBalance_Pets", "PvPAdmin")
+        @Html.ActionLink("Forms", MVC.PvPAdmin.ServerBalance_Forms())
+        @Html.ActionLink("Items", MVC.PvPAdmin.ServerBalance_Items())
+        @Html.ActionLink("Pets", MVC.PvPAdmin.ServerBalance_Pets())
     </p>
 
     <h1>@ViewBag.Text</h1>

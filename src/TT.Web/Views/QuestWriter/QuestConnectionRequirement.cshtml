@@ -8,13 +8,13 @@
 <h4>Quest Connection</h4>
 
 
-<p>@Ajax.ActionLink("[" + Model.QuestConnection.ConnectionName + "]", "QuestConnection", "QuestWriter", new { Id = Model.QuestConnection.Id, QuestId = Model.QuestConnection.QuestId, FromQuestId = Model.QuestConnection.QuestStateFromId, ToQuestId = Model.QuestConnection.QuestStateToId }, new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "parentButton" })</p>
+<p>@Ajax.ActionLink("[" + Model.QuestConnection.ConnectionName + "]", MVC.QuestWriter.QuestConnection(Model.QuestConnection.Id, Model.QuestConnection.QuestId, Model.QuestConnection.QuestStateFromId, Model.QuestConnection.QuestStateToId), new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "parentButton" })</p>
 
 
 
 <hr />
 
-@using (Ajax.BeginForm("QuestConnectionRequirementSend", "QuestWriter", new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" }))
+@using (Ajax.BeginForm(MVC.QuestWriter.QuestConnectionRequirementSend(), new AjaxOptions { UpdateTargetId = "swapMe", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" }))
 {
 
 

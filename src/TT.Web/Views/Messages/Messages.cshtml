@@ -17,10 +17,10 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav" style="width:100%;">
-                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
-                <li>@Html.ActionLink("Search for player by name", "PlayerLookup", "PvP")</li>
+                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
+                <li>@Html.ActionLink("Search for player by name", MVC.PvP.PlayerLookup())</li>
                 <li><a href="javascript:void(0)" id="deleteAll" style="color: #734752 !important; font-weight:bold;">Delete All Messages</a></li>
-                <li>@Html.ActionLink("Rules", "Rules", "Info", null, new { target = "_blank" })</li>
+                <li>@Html.ActionLink("Rules", MVC.Info.Rules(), new { target = "_blank" })</li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -44,7 +44,7 @@
 
 <div id="realLink" class="specialBox specialBox2" style="display: none;">
     <span style="color:red;">Do you really want to delete all the messages? If yes then please click link below:</span><br />
-    @using (Html.BeginForm("DeleteMessage", "Messages", FormMethod.Post))
+    @using (Html.BeginForm(MVC.Messages.DeleteMessage(), FormMethod.Post))
     {
         @Html.AntiForgeryToken()
         <input name="deleteAll" type="hidden" value="True">
@@ -65,7 +65,7 @@
     @{
         for (int i = 0; i < Model.Paginator.MaxPageNumber; i++)
         {
-            @Html.ActionLink((i + 1).ToString() + " | ", "Index", "Messages", new { offset = i }, new { @class = Model.Paginator.GetStylingClass(i) })
+            @Html.ActionLink((i + 1).ToString() + " | ", MVC.Messages.Index(i), new { @class = Model.Paginator.GetStylingClass(i) })
         }
     }
 
@@ -104,22 +104,22 @@
 
                     <tr>
                        
-                    <td>@Html.ActionLink(msg.Sender.GetFullName(), "LookAtPlayer", "PvP", new { id = msg.Sender.Id }, null)</td>
+                    <td>@Html.ActionLink(msg.Sender.GetFullName(), MVC.PvP.LookAtPlayer(msg.Sender.Id))</td>
 
                     @{
                     if (msg.ReadStatus == 0 || msg.ReadStatus == 2)
                     {
-                        <td class="newlink">@Html.ActionLink(messageTeaser, "ReadMessage", "Messages", new { messageId = msg.Id }, null)</td>
+                        <td class="newlink">@Html.ActionLink(messageTeaser, MVC.Messages.ReadMessage(msg.Id))</td>
                     }
                     else
                     {
-                        <td>@Html.ActionLink(messageTeaser, "ReadMessage", "Messages", new { messageId = msg.Id }, null)</td>
+                        <td>@Html.ActionLink(messageTeaser, MVC.Messages.ReadMessage(msg.Id))</td>
                     }
                         }
 
                         <td class="timeSent"><span style="font-size: 10px">@CharactersHere.DatetimeToTimeago(msg.Timestamp)</span></td>
                         <td>
-                            @using (Html.BeginForm("DeleteMessage", "Messages", FormMethod.Post))
+                            @using (Html.BeginForm(MVC.Messages.DeleteMessage(), FormMethod.Post))
                             {
                                 @Html.AntiForgeryToken()
                                 <input name="deleteAll" type="hidden" value="False">
@@ -130,7 +130,7 @@
 
                             @if (msg.ReadStatus == MessageStatics.Read)
                             {
-                                using (Html.BeginForm("MarkReadStatus", "Messages", FormMethod.Post, new {id = "markForm"}))
+                                using (Html.BeginForm(MVC.Messages.MarkReadStatus(), FormMethod.Post, new {id = "markForm"}))
                                 {
                                     @Html.AntiForgeryToken()
                                     <input name="messageId" type="hidden" value="@msg.Id">
@@ -141,7 +141,7 @@
                             }
                             else
                             {
-                               using (Html.BeginForm("MarkReadStatus", "Messages", FormMethod.Post, new {id = "markForm"}))
+                               using (Html.BeginForm(MVC.Messages.MarkReadStatus(), FormMethod.Post, new {id = "markForm"}))
                                 {
                                     @Html.AntiForgeryToken()
                                     <input name="messageId" type="hidden" value="@msg.Id">
@@ -198,7 +198,7 @@
             @{foreach (var msg in Model.SentMessages)
             {
                 <tr>
-                    <td>@Html.ActionLink(msg.Receiver.GetFullName(), "LookAtPlayer", "PvP", new { id = msg.Receiver.Id}, null)</td>
+                    <td>@Html.ActionLink(msg.Receiver.GetFullName(), MVC.PvP.LookAtPlayer(msg.Receiver.Id))</td>
                     <td>@msg.MessageText</td>
                     <td class="timeSent"><span style="font-size: 10px">@CharactersHere.DatetimeToTimeago(msg.Timestamp)</span></td>
                     <td>@CharactersHere.PrintMessageReadStatus(msg)</td>
@@ -215,7 +215,7 @@
         if (Model.WearerId != -1 && Model.WearerName != null)
         {
 
-            <p> @Html.ActionLink("Telepathically talk to the person wearing you, " + Model.WearerName, "Write", "Messages", new { playerId = Model.WearerId, responseTo = -1 }, null) </p>
+            <p> @Html.ActionLink("Telepathically talk to the person wearing you, " + Model.WearerName, MVC.Messages.Write(Model.WearerId, -1)) </p>
         }
     }
 </div>

@@ -15,8 +15,8 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
-                <li>@Html.ActionLink("Back to My Covenant", "MyCovenant", "Covenant")</li>
+                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
+                <li>@Html.ActionLink("Back to My Covenant", MVC.Covenant.MyCovenant())</li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -26,7 +26,7 @@
 
     <p>You can change the self-description of your covenant, @Model.Name, here.</p>
 
-    @using (Html.BeginForm("ChangeCovenantDescriptionSubmit", "Covenant", FormMethod.Post))
+    @using (Html.BeginForm(MVC.Covenant.ChangeCovenantDescriptionSubmit(), FormMethod.Post))
     {
         @Html.TextAreaFor(m => m.SelfDescription, new { @class="form__panel textarea"})
         

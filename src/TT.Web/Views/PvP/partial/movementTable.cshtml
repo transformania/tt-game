@@ -6,7 +6,7 @@
         <td>@{
                 if (Model.Location.Name_North != null)
                 {
-                        @Html.ActionLink(Model.Location.FriendlyName_North, "MoveTo", "PvP", new { locname = Model.Location.Name_North }, null)
+                        @Html.ActionLink(Model.Location.FriendlyName_North, MVC.PvP.MoveTo(Model.Location.Name_North))
                 }
             }</td>
         <td></td>
@@ -15,14 +15,14 @@
         <td>@{
                 if (Model.Location.Name_West != null)
                 {
-                        @Html.ActionLink(Model.Location.FriendlyName_West, "MoveTo", "PvP", new { locname = Model.Location.Name_West }, null)
+                        @Html.ActionLink(Model.Location.FriendlyName_West, MVC.PvP.MoveTo(Model.Location.Name_West))
                 }
             }</td>
         <td>@Model.Location.Name</td>
         <td>@{
                 if (Model.Location.Name_East != null)
                 {
-                        @Html.ActionLink(Model.Location.FriendlyName_East, "MoveTo", "PvP", new { locname = Model.Location.Name_East }, null)
+                        @Html.ActionLink(Model.Location.FriendlyName_East, MVC.PvP.MoveTo(Model.Location.Name_East))
                 }
             }</td>
     </tr>
@@ -31,7 +31,7 @@
         <td>@{
                 if (Model.Location.Name_South != null)
                 {
-                        @Html.ActionLink(Model.Location.FriendlyName_South, "MoveTo", "PvP", new { locname = Model.Location.Name_South }, null)
+                        @Html.ActionLink(Model.Location.FriendlyName_South, MVC.PvP.MoveTo(Model.Location.Name_South))
                 }
 
             }</td>

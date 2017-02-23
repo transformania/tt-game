@@ -12,9 +12,9 @@ namespace TT.Web
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             if (FeatureContext.IsEnabled<ChatV2>())
-                routes.MapRoute("Chat", "Chat", MVC.Chat.Index());
+                routes.MapRoute("Chat", "chat", MVC.Chat.Index());
 
-            routes.MapRoute("ChatRoom", "Chat/Rooms/{room}", MVC.Chat.Index(null).AddRouteValue("room", UrlParameter.Optional));
+            routes.MapRoute("ChatRoom", "chat/rooms/{room}", MVC.Chat.Index(null).AddRouteValue("room", UrlParameter.Optional));
 
             routes.MapRoute("Home", "", MVC.PvP.Play().AddRouteValue("id", UrlParameter.Optional));
 
@@ -22,7 +22,7 @@ namespace TT.Web
             routes.MapRoute(
                name: "Default",
                url: "{controller}/{action}/{id}",
-               defaults: new { controller = "PvP", action = "Index", id = UrlParameter.Optional }
+               defaults: new { controller = "pvp", action = "index", area = "", id = UrlParameter.Optional }
             );
         }
     } 

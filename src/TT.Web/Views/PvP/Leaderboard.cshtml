@@ -18,10 +18,10 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-            <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
-                <li>@Html.ActionLink("Round Achievement Leaders", "PlayerStatsLeaders", "Settings")</li>
-             <li>@Html.ActionLink("View Item Leaderboard", "ItemLeaderboard", "PvP")</li>
-                <li>@Html.ActionLink("View Dungeon Leaderboard", "PvPLeaderboard", "PvP")</li>
+            <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
+                <li>@Html.ActionLink("Round Achievement Leaders", MVC.Settings.PlayerStatsLeaders())</li>
+             <li>@Html.ActionLink("View Item Leaderboard", MVC.PvP.ItemLeaderboard())</li>
+                <li>@Html.ActionLink("View Dungeon Leaderboard", MVC.PvP.PvPLeaderboard())</li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -57,7 +57,7 @@
                         @rank
                     </td>
                     <td>
-                        @Html.ActionLink(p.GetFullName(), "LookAtPlayer", "PvP", new { id = p.Id }, null)
+                        @Html.ActionLink(p.GetFullName(), MVC.PvP.LookAtPlayer(p.Id))
                         <span class="icon icon-@p.Gender"></span>
                         @CharactersHere.PrintPvPIcon(p)
                     </td>

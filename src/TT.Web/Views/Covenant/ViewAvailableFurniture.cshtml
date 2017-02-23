@@ -15,8 +15,8 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
-                <li>@Html.ActionLink("Back to My Covenant", "MyCovenant", "Covenant")</li>
+                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
+                <li>@Html.ActionLink("Back to My Covenant", MVC.Covenant.MyCovenant())</li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -30,11 +30,11 @@
     @{
         foreach (TT.Domain.ViewModels.FurnitureViewModel f in Model.OrderBy(l => l.dbFurniture.HumanName))
         {
-            @Html.Partial("partial/FurnitureViewModel", f);
+            @Html.Partial(MVC.Covenant.Views.partial.FurnitureViewModel, f);
 
                                                       if (ViewBag.playerIsCovenantLeader || ViewBag.IAmCaptain)
                                                       {
-                                                          @Html.ActionLink("Purchase Contract", "PurchaseFurniture", "Covenant", new { id = f.dbFurniture.Id }, null)
+                                                          @Html.ActionLink("Purchase Contract", MVC.Covenant.PurchaseFurniture(f.dbFurniture.Id))
                                                       }
 
                                                     <hr />

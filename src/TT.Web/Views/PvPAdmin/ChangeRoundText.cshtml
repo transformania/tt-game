@@ -16,7 +16,7 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
                 <li>...</li>
             </ul>
         </div><!-- /.navbar-collapse -->
@@ -34,7 +34,7 @@
     <h1>Change Round Name/Number</h1>
     <p>The name of the current round can be changed here. All statistics stats will be recorded under this round name/number so DO NOT CHANGE in the middle of the round or it will break achievements and statistics tracking!  Therefor this command is only availble in chaos mode at either turn 0 or the highest possible turn number.</p>
 
-    @using (Html.BeginForm("SendChangeRound", "PvPAdmin", FormMethod.Post))
+    @using (Html.BeginForm(MVC.PvPAdmin.SendChangeRound(), FormMethod.Post))
     {
 
         if (!Model.ChaosMode)

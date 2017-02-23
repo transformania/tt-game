@@ -3,9 +3,9 @@
     <script src="~/Scripts/jquery-2.1.0.min.js"></script>
 </head>
 
-<p>@Html.ActionLink("Back to game", "Play", "PvP")</p>
+<p>@Html.ActionLink("Back to game", MVC.PvP.Play())</p>
 
-@Html.Partial("partial/OldLeaderboardLinks")
+@Html.Partial(MVC.PvP.Views.partial.OldLeaderboardLinks)
 
 <h1>Alpha Round 1 (Era of Julia Medina)</h1>
 
@@ -2229,7 +2229,7 @@
 
 </table>
 
-<p>@Html.ActionLink("Back to game", "Play", "PvP")</p>
+<p>@Html.ActionLink("Back to game", MVC.PvP.Play())</p>
 
 <style>
     table {

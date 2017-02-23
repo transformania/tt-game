@@ -1,17 +1,17 @@
 ﻿@model IEnumerable<TT.Domain.ViewModels.Location>
            @using TT.Domain.ViewModels
 
-@Html.ActionLink("Back to game", "Play", "PvP")
+@Html.ActionLink("Back to game", MVC.PvP.Play())
 
 <p>Choose which destination you would like to teleport to.  You will be transported there instantly without any action points being used.</p>
 
 @{
     
     foreach (Location loc in Model) {
-        @Html.ActionLink(loc.Name, "Teleport", "PvP", new { to = loc.dbName}, null)<br />
+        @Html.ActionLink(loc.Name, MVC.PvP.Teleport(loc.dbName))<br />
     }
     
 }
 
 <p>
-    @Html.ActionLink("Back to game", "Play", "PvP")</p>
+    @Html.ActionLink("Back to game", MVC.PvP.Play())</p>

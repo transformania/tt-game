@@ -17,8 +17,8 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
-                <li>@Html.ActionLink("Sell Your Pet", "SellPetList", "NPC")</li>
+                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
+                <li>@Html.ActionLink("Sell Your Pet", MVC.NPC.SellPetList())</li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -52,7 +52,7 @@
     @{
         for (int i = 0; i < Model.Paginator.MaxPageNumber; i++)
         {
-            @Html.ActionLink((i + 1).ToString() + " | ", "TradeWithPetMerchant", "NPC", new { offset = i }, new { @class = Model.Paginator.GetStylingClass(i)})
+            @Html.ActionLink((i + 1).ToString() + " | ", MVC.NPC.TradeWithPetMerchant(i), new { @class = Model.Paginator.GetStylingClass(i)})
         }
     }
 
@@ -66,7 +66,7 @@
         @{
             foreach (ItemViewModel i in Model.Pets.OrderBy(i => i.dbItem.dbName).ThenByDescending(i => i.dbItem.Level))
             {
-                @Html.Partial("~/Views/PvP/partial_ShopkeeperItem.cshtml", i)
+                @Html.Partial(MVC.PvP.Views.partial_ShopkeeperItem, i)
             }
         }
     </div>

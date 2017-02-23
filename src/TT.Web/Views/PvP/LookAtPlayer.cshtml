@@ -17,7 +17,7 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav" style="width:100%;">
-                <li>@Html.ActionLink("Back to game", "Play", "PvP")</li>
+                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
                 
                 @{
     if (Model.PlayerForm.Player.BotId != AIStatics.RerolledPlayerBotId)
@@ -26,23 +26,23 @@
             @{
         if (ViewBag.HasBio)
         {
-            <li>@Html.ActionLink("View Bio", "ViewBio", "Settings", new { id = Model.PlayerForm.Player.MembershipId }, null)</li>
+            <li>@Html.ActionLink("View Bio", MVC.Settings.ViewBio(Model.PlayerForm.Player.MembershipId))</li>
         }
         if (ViewBag.HasArtistAuthorBio)
         {
-            <li>@Html.ActionLink("View Artist/Author Bio", "AuthorArtistBio", "Settings", new { id = Model.PlayerForm.Player.MembershipId }, null)</li>
+            <li>@Html.ActionLink("View Artist/Author Bio", MVC.Settings.AuthorArtistBio(Model.PlayerForm.Player.MembershipId))</li>
         }
      }
 
             @{
         if (Model.PlayerForm.Player.BotId == AIStatics.ActivePlayerBotId)
         {
-            <li>@Html.ActionLink("View Statistics", "PlayerStats", "Settings", new { id = Model.PlayerForm.Player.MembershipId }, null)</li>
-            <li>@Html.ActionLink("Send a Message", "Write", "Messages", new { playerId = Model.PlayerForm.Player.Id, responseTo = -1 }, null)</li>
-    <li>@Html.ActionLink("Add Friend", "AddFriend", "PvP", new { playerId = Model.PlayerForm.Player.Id }, null)</li>
-                <li>@Html.ActionLink("Blacklist player", "ToggleBlacklistOnPlayer", "Settings", new { id = Model.PlayerForm.Player.Id }, null)</li>
+            <li>@Html.ActionLink("View Statistics", MVC.Settings.PlayerStats(Model.PlayerForm.Player.MembershipId))</li>
+            <li>@Html.ActionLink("Send a Message", MVC.Messages.Write(Model.PlayerForm.Player.Id, -1))</li>
+    <li>@Html.ActionLink("Add Friend", MVC.PvP.AddFriend(Model.PlayerForm.Player.Id))</li>
+                <li>@Html.ActionLink("Blacklist player", MVC.Settings.ToggleBlacklistOnPlayer(Model.PlayerForm.Player.Id))</li>
         }
-            <li>@Html.ActionLink("View Effects", "ViewEffects", "PvP", new { id = Model.PlayerForm.Player.Id }, null)</li>
+            <li>@Html.ActionLink("View Effects", MVC.PvP.ViewEffects(Model.PlayerForm.Player.Id))</li>
             }
             </p>
     }
@@ -123,9 +123,9 @@
 
 
 
-    @Html.Partial("partial_InventoryEquipped", Model.Items)
+    @Html.Partial(MVC.PvP.Views.partial_InventoryEquipped, Model.Items)
     <div style="clear:both"></div>
-    @Html.Partial("partial/partial_AllBuffsTable", Model.Bonuses)
+    @Html.Partial(MVC.PvP.Views.partial.partial_AllBuffsTable, Model.Bonuses)
  <div style="clear:both"></div>
     
 
@@ -156,20 +156,20 @@
 
                             if (!Model.PlayerForm.Player.FlaggedForAbuse)
                            {
-                           <li>@Html.ActionLink("Lock this player for suspicious activity", "FlagForSuspiciousActivity", "PvP", new { playerId = Model.PlayerForm.Player.Id }, null)</li>
+                           <li>@Html.ActionLink("Lock this player for suspicious activity", MVC.PvP.FlagForSuspiciousActivity(Model.PlayerForm.Player.Id))</li>
                            }
                           else
                           {
-                              <li>@Html.ActionLink("Unlock this player for suspicious activity", "FlagForSuspiciousActivity", "PvP", new { playerId = Model.PlayerForm.Player.Id }, null)</li>
+                              <li>@Html.ActionLink("Unlock this player for suspicious activity", MVC.PvP.FlagForSuspiciousActivity(Model.PlayerForm.Player.Id))</li>
                           }
                           
                           }
                           
-                         <li>@Html.ActionLink("Reset IP Address", "ResetAllPlayersWithIPAddress", "PvPAdmin", new { address = Model.PlayerForm.Player.IpAddress }, null)</li>
-                         <li>@Html.ActionLink("Toggle ban on global chat", "ToggleBanOnGlobalChat", "PvPAdmin", new { id = Model.PlayerForm.Player.Id }, null)</li>
-                         <li>@Html.ActionLink("Audit items", "ViewPlayerItems", "PvPAdmin", new { id = Model.PlayerForm.Player.Id }, null)</li>
-                         <li>@Html.ActionLink("Rename", "RenamePlayer", "PvPAdmin", new { id = Model.PlayerForm.Player.Id }, null)</li>
-                         <li>@Html.ActionLink("View/Add Strikes", "ViewStrikes", "Moderator", new { id = Model.PlayerForm.Player.MembershipId }, null)</li>
+                         <li>@Html.ActionLink("Reset IP Address", MVC.PvPAdmin.ResetAllPlayersWithIPAddress(Model.PlayerForm.Player.IpAddress))</li>
+                         <li>@Html.ActionLink("Toggle ban on global chat", MVC.PvPAdmin.ToggleBanOnGlobalChat(Model.PlayerForm.Player.Id))</li>
+                         <li>@Html.ActionLink("Audit items", MVC.PvPAdmin.ViewPlayerItems(Model.PlayerForm.Player.Id))</li>
+                         <li>@Html.ActionLink("Rename", MVC.PvPAdmin.RenamePlayer(Model.PlayerForm.Player.Id))</li>
+                         <li>@Html.ActionLink("View/Add Strikes", MVC.Moderator.ViewStrikes(Model.PlayerForm.Player.MembershipId))</li>
                       </ul>
                  </div><!-- /.navbar-collapse -->
                 </div><!-- /.container-fluid -->

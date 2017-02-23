@@ -16,7 +16,7 @@
                 <span class="bad">NOT LIVE</span>
             }
 
-            Needing <b>@e.RequiredForm</b> --- AT --- <b>@e.dbLocationName</b> ----- @Html.ActionLink("[Edit]", "WriteFae", "PvPAdmin", new { id = e.Id }, null)
+            Needing <b>@e.RequiredForm</b> --- AT --- <b>@e.dbLocationName</b> ----- @Html.ActionLink("[Edit]", MVC.PvPAdmin.WriteFae(e.Id))
 
 
 
@@ -26,5 +26,5 @@
     
     <hr />
     
-    @Html.ActionLink("NEW ENCOUNTER", "WriteFae", "PvPAdmin", new { id = -1 }, null)
+    @Html.ActionLink("NEW ENCOUNTER", MVC.PvPAdmin.WriteFae(-1))
 }

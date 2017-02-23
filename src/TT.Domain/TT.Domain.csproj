@@ -831,7 +831,6 @@
     <EmbeddedResource Include="XMLs\LocationDescriptions\tavern_pool.xml" />
     <EmbeddedResource Include="XMLs\LocationDescriptions\tavern_private_room.xml" />
     <EmbeddedResource Include="XMLs\LocationDescriptions\z_template - Copy.xml" />
-    <EmbeddedResource Include="XMLs\RestockList.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

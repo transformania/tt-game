@@ -1,15 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using TT.Domain.Abstract;
-using TT.Domain.Commands.Items;
+using TT.Domain.Commands.AI;
 using TT.Domain.Commands.Players;
 using TT.Domain.Concrete;
 using TT.Domain.DTOs.Players;
 using TT.Domain.Models;
-using TT.Domain.Queries.Item;
 using TT.Domain.Queries.Players;
 using TT.Domain.Statics;
-using TT.Domain.Utilities;
 using TT.Domain.ViewModels;
 
 namespace TT.Domain.Procedures.BossProcedures
@@ -113,88 +110,12 @@ namespace TT.Domain.Procedures.BossProcedures
                     }
                 }
 
-                #region restock inventory
                 if (turnNumber % 16 == 1)
                 {
-
-                    Player lorekeeper = PlayerProcedures.GetPlayerFromBotId(AIStatics.LoremasterBotId);
-
-                    IItemRepository itemRepo = new EFItemRepository();
-
-                    var lindellaItemscmd = new GetItemsOwnedByPlayer() { OwnerId = merchant.Id };
-                    var lindellasItems = DomainRegistry.Repository.Find(lindellaItemscmd).Where(i => i.Level > 0);
-
-                    var lorekeeperItemscmd = new GetItemsOwnedByPlayer() { OwnerId = lorekeeper.Id };
-                    var lorekeeperItems = DomainRegistry.Repository.Find(lorekeeperItemscmd).Where(i => i.Level > 0);
-
-                    var restockItems = XmlResourceLoader.Load<List<RestockListItem>>("TT.Domain.XMLs.RestockList.xml");
-
-                    foreach (RestockListItem item in restockItems)
-                    {
-
-                        if (item.Merchant == "Lindella")
-                        {
-                            int currentCount = lindellasItems.Count(i => i.dbName == item.dbName);
-                            if (currentCount < item.AmountBeforeRestock)
-                            {
-                                for (int x = 0; x < item.AmountToRestockTo - currentCount; x++)
-                                {
-
-                                    var cmd = new CreateItem
-                                    {
-                                        dbName = item.dbName,
-                                        dbLocationName = "",
-                                        OwnerId = merchant.Id,
-                                        IsEquipped = false,
-                                        IsPermanent = true,
-                                        Level = 0,
-                                        PvPEnabled = -1,
-                                        TurnsUntilUse = 0,
-                                        VictimName = "",
-                                        EquippedThisTurn = false,
-                                        ItemSourceId = ItemStatics.GetStaticItem(item.dbName).Id
-                                    };
-                                    DomainRegistry.Repository.Execute(cmd);
-                                }
-
-                            }
-                        }
-
-                        else if (item.Merchant == "Lorekeeper")
-                        {
-                            int currentCount = lorekeeperItems.Count(i => i.dbName == item.dbName);
-                            if (currentCount < item.AmountBeforeRestock)
-                            {
-                                for (int x = 0; x < item.AmountToRestockTo - currentCount; x++)
-                                {
-                                    var cmd = new CreateItem
-                                    {
-                                        dbName = item.dbName,
-                                        dbLocationName = "",
-                                        OwnerId = lorekeeper.Id,
-                                        IsEquipped = false,
-                                        IsPermanent = true,
-                                        Level = 0,
-                                        PvPEnabled = -1,
-                                        TurnsUntilUse = 0,
-                                        VictimName = "",
-                                        EquippedThisTurn = false,
-                                        ItemSourceId = ItemStatics.GetStaticItem(item.dbName).Id
-                                    };
-                                    DomainRegistry.Repository.Execute(cmd);
-                                }
-
-                            }
-                        }
-
-
-                    }
+                    DomainRegistry.Repository.Execute(new RestockNPC { BotId = AIStatics.LindellaBotId });
+                    DomainRegistry.Repository.Execute(new RestockNPC { BotId = AIStatics.LoremasterBotId });
                 }
-                #endregion
-
             }
-
         }
-
     }
 }

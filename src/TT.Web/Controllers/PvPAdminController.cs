@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using TT.Domain;
 using TT.Domain.Abstract;
+using TT.Domain.Commands.AI;
 using TT.Domain.Commands.Game;
 using TT.Domain.Commands.Items;
 using TT.Domain.Commands.Players;

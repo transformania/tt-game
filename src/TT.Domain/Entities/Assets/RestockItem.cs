@@ -10,26 +10,26 @@ namespace TT.Domain.Entities.Assets
         public ItemSource BaseItem { get; protected set; }
         public int AmountBeforeRestock { get; protected set; }
         public int AmountToRestockTo { get; protected set; }
-        public NPC NPC { get; protected set; }
+        public int BotId { get; protected set; }
 
         private RestockItem() { }
 
-        public static RestockItem Create(ItemSource baseItem, int amountBeforeRestock, int amountToRestockTo, NPC npc)
+        public static RestockItem Create(ItemSource baseItem, int amountBeforeRestock, int amountToRestockTo, int botId)
         {
             return new RestockItem
             {
                 BaseItem = baseItem,
                 AmountBeforeRestock = amountBeforeRestock,
                 AmountToRestockTo = amountToRestockTo,
-                NPC = npc
+                BotId = botId
             };
         }
 
-        public RestockItem Update(UpdateRestockItem cmd, ItemSource baseItem, NPC npc)
+        public RestockItem Update(UpdateRestockItem cmd, ItemSource baseItem, int botId)
         {
             Id = cmd.RestockItemId;
             BaseItem = baseItem;
-            NPC = npc;
+            BotId = botId;
             AmountToRestockTo = cmd.AmountToRestockTo;
             AmountBeforeRestock = cmd.AmountBeforeRestock;
             return this;

@@ -3,6 +3,7 @@ using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Queries.Assets;
+using TT.Domain.Statics;
 using TT.Tests.Builders.Assets;
 using TT.Tests.Builders.Item;
 using TT.Tests.Builders.AI;
@@ -19,7 +20,7 @@ namespace TT.Tests.Domain.Queries.Assets
                 .With(cr => cr.AmountBeforeRestock, 5)
                 .With(cr => cr.AmountToRestockTo, 9)
                 .With(cr => cr.BaseItem, new ItemSourceBuilder().With(cr => cr.Id, 35).BuildAndSave())
-                .With(cr => cr.NPC, new NPCBuilder().With(cr => cr.Id, 53).BuildAndSave())
+                .With(cr => cr.BotId, AIStatics.LindellaBotId)
                 .BuildAndSave();
 
             var query = new GetRestockItem { RestockItemId = 7 };
@@ -30,7 +31,7 @@ namespace TT.Tests.Domain.Queries.Assets
             RestockItem.AmountBeforeRestock.Should().Be(5);
             RestockItem.AmountToRestockTo.Should().Be(9);
             RestockItem.BaseItem.Id.Should().Be(35);
-            RestockItem.NPC.Id.Should().Be(53);
+            RestockItem.BotId.Should().Be(AIStatics.LindellaBotId);
         }
 
         [TestCase(-1)]

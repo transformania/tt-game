@@ -1,4 +1,5 @@
 ﻿using TT.Domain.Entities.Assets;
+using TT.Domain.Statics;
 using TT.Tests.Builders.AI;
 using TT.Tests.Builders.Item;
 
@@ -13,7 +14,7 @@ namespace TT.Tests.Builders.Assets
             With(x => x.AmountBeforeRestock, 1);
             With(x => x.AmountToRestockTo, 3);
             With(x => x.BaseItem, new ItemSourceBuilder().BuildAndSave());
-            With(x => x.NPC, new NPCBuilder().BuildAndSave());
+            With(x => x.BotId, AIStatics.LindellaBotId);
         }
 
     }

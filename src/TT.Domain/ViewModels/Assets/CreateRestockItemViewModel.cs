@@ -11,7 +11,7 @@ namespace TT.Domain.ViewModels.Assets
         public int BaseItemId { get; set; }
         public int AmountBeforeRestock { get; set; }
         public int AmountToRestockTo { get; set; }
-        public int NPCId { get; set; }
+        public int BotId { get; set; }
 
         public CreateRestockItemViewModel()
         {

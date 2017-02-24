@@ -1,9 +1,9 @@
-﻿SET NOCOUNT ON;
+SET NOCOUNT ON;
 USE [Stats]
 GO
 SET IDENTITY_INSERT [dbo].[Tomes] ON 
 
-INSERT [dbo].[Tomes] ([Id], [Text], [BaseItem_Id]) VALUES (3, N'<span class=''booktitle''>Milton Family History: An Investigation </span>
+INSERT [dbo].[Tomes] ([Id], [Text], [BaseItem_Id]) VALUES (3, N'<span class=''booktitle''>Milton Family History: An Investigation</span>
 
 <i>You open the paperback book and begin to read the notes inside, squinting a little as you notice that the pages are all handwritten before simply being photocopied into this book The following is the salvaged investigation by Kiara Galaway, a reporter who went missing on April 12, 2015 on the outskirts of Sunnyglade on the property of one Donna Milton.</i>
 

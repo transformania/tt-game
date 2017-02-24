@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -31,6 +32,7 @@ namespace TT.Web.Models
         public ApplicationDbContext()
             : base("StatsWebConnection")
         {
+            Database.SetInitializer(new NullDatabaseInitializer<ApplicationDbContext>());
         }
 
         public static ApplicationDbContext Create()

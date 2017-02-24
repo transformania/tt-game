@@ -101,7 +101,6 @@ Task("Run-Unit-Tests")
 
 Task("Migrate")
     .IsDependentOn("Build")
-    .IsDependentOn("Migrate-EF")
     .IsDependentOn("PreSeed-DB")
     .Does(() => {    
     
@@ -126,26 +125,6 @@ Task("Migrate")
     }
 );
 
-Task("Migrate-EF")
-    .Does(() => {
-        CopyFile("src/packages/EntityFramework.6.1.3/tools/Migrate.exe","src/TT.Web/bin/Migrate.exe");
-        
-        Information("Running TT.Web migrations using {0}", dbType);
-        
-        using(var process = StartAndReturnProcess("src/TT.Web/bin/Migrate.exe", new ProcessSettings 
-        { 
-            Arguments = "TT.Web.dll /connectionProviderName=\"System.Data.SqlClient\" /connectionString=\"" + connectionString + "\"" 
-        }))
-        {
-            process.WaitForExit();
-
-            var exitCode = process.GetExitCode();
-            if (exitCode > 0)
-                throw new Exception("Migration failed");
-        }
-    }
-);
-
 Task("Drop-DB")
     .WithCriteria(() => !(dbType == "remoteserver"))
     .ContinueOnError()
@@ -161,6 +140,7 @@ Task("Drop-DB")
 Task("PreSeed-DB")
     .WithCriteria(() => !FileExists("seeded.flg") && !(dbType == "remoteserver"))
     .Does(() => {
+        CreateDatabase("Server=" + dbServer, dbName);
         var seedScripts = GetFiles("src/SeedData/PreSeed/*.sql");
         
         using(var connection = OpenSqlConnection(connectionString))

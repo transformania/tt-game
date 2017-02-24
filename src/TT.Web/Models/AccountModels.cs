@@ -7,9 +7,9 @@ namespace TT.Web.Models
     public class UsersContext : DbContext
     {
         public UsersContext()
-          //  : base("DefaultConnection")
             : base("StatsWebConnection")
         {
+            Database.SetInitializer(new NullDatabaseInitializer<UsersContext>());
         }
 
         public DbSet<UserProfile> UserProfiles { get; set; }

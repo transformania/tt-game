@@ -6,12 +6,10 @@ namespace TT.Domain.Concrete
 {
     public class StatsContext : DbContext
     {
-
         public StatsContext()
-           // : base("DefaultConnection")
-           : base("StatsWebConnection")
+            : base("StatsWebConnection")
         {
-
+            Database.SetInitializer(new NullDatabaseInitializer<StatsContext>());
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

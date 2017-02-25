@@ -1,4 +1,5 @@
-﻿using Highway.Data;
+﻿using System.Data.Entity;
+using Highway.Data;
 using System.Linq;
 using TT.Domain.Interfaces;
 using TT.Domain.Mappings;
@@ -7,7 +8,10 @@ namespace TT.Domain
 {
     public class DomainContext : DataContext
     {
-        public DomainContext() : base("StatsWebConnection", new EntityMappings()) { }
+        public DomainContext() : base("StatsWebConnection", new EntityMappings())
+        {
+            Database.SetInitializer(new NullDatabaseInitializer<DomainContext>());
+        }
 
         public override int Commit()
         {

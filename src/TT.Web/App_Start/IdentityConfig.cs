@@ -66,4 +66,11 @@ namespace TT.Web
             return new ApplicationSignInManager(context.GetUserManager<ApplicationUserManager>(), context.Authentication);
         }
     }
+
+    public class ApplicationUserStore : UserStore<User>
+    {
+        public ApplicationUserStore(IdentityDbContext dbContext) : base(dbContext)
+        {
+        }
+    }
 }

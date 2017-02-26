@@ -11,8 +11,9 @@ using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 using Newtonsoft.Json;
 using TT.Domain;
-using TT.Domain.Commands.Skills;
-using TT.Domain.Commands.Forms;
+using TT.Domain.Exceptions;
+using TT.Domain.Forms.Commands;
+using TT.Domain.Skills.Commands;
 
 namespace TT.Web.Controllers
 {

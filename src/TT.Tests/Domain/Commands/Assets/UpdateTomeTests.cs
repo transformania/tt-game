@@ -2,11 +2,12 @@
 using NUnit.Framework;
 using FluentAssertions;
 using System.Linq;
-using TT.Domain.Commands.Assets;
-using TT.Domain.Entities.Assets;
 using TT.Tests.Builders.Item;
 using TT.Tests.Builders.Assets;
 using TT.Domain;
+using TT.Domain.Assets.Commands;
+using TT.Domain.Assets.Entities;
+using TT.Domain.Exceptions;
 
 namespace TT.Tests.Domain.Commands.Assets
 {

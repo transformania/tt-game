@@ -3,7 +3,7 @@ using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain;
-using TT.Domain.Queries.LocationLogs;
+using TT.Domain.World.Queries;
 using TT.Tests.Builders.LocationLogs;
 
 namespace TT.Tests.Domain.Queries.LocationLogs

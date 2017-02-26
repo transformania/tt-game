@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TT.Domain.DTOs.Players;
+using TT.Domain.Players.DTOs;
 
 namespace TT.Domain.ViewModels
 {

@@ -1,7 +1,7 @@
 ﻿using System;
-using TT.Domain.Commands.TFEnergies;
-using TT.Domain.Entities.Forms;
-using TT.Domain.Entities.Players;
+using TT.Domain.Combat.Commands;
+using TT.Domain.Forms.Entities;
+using TT.Domain.Players.Entities;
 
 namespace TT.Domain.Entities.TFEnergies
 {

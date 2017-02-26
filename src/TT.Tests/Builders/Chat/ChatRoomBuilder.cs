@@ -1,5 +1,5 @@
 ﻿using System;
-using TT.Domain.Entities.Chat;
+using TT.Domain.Chat.Entities;
 using TT.Tests.Builders.Identity;
 
 namespace TT.Tests.Builders.Chat

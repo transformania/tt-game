@@ -1,4 +1,4 @@
-﻿using TT.Domain.DTOs.Assets;
+﻿using TT.Domain.Assets.DTOs;
 
 namespace TT.Domain.ViewModels.Assets
 {

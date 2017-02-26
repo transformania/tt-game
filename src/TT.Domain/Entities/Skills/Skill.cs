@@ -1,5 +1,5 @@
-﻿using TT.Domain.Commands.Skills;
-using TT.Domain.Entities.Players;
+﻿using TT.Domain.Players.Entities;
+using TT.Domain.Skills.Commands;
 
 namespace TT.Domain.Entities.Skills
 {

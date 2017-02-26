@@ -2,13 +2,13 @@
 using System.IO;
 using System.Linq;
 using System.Web.Mvc;
-using TT.Domain.DTOs.Item;
-using TT.Domain.DTOs.Messages;
+using TT.Domain.Items.DTOs;
+using TT.Domain.Messages.DTOs;
 using TT.Domain.Models;
 using TT.Domain.Procedures;
-using TT.Domain.Queries.Statics;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
+using TT.Domain.World.Queries;
 
 namespace TT.Web.CustomHtmlHelpers
 {

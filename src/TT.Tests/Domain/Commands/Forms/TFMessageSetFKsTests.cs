@@ -3,8 +3,9 @@ using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain;
-using TT.Domain.Commands.Forms;
-using TT.Domain.Entities.Forms;
+using TT.Domain.Exceptions;
+using TT.Domain.Forms.Commands;
+using TT.Domain.Forms.Entities;
 using TT.Tests.Builders.Form;
 
 namespace TT.Tests.Domain.Commands.Forms

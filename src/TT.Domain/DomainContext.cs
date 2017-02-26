@@ -2,7 +2,6 @@
 using Highway.Data;
 using System.Linq;
 using TT.Domain.Interfaces;
-using TT.Domain.Mappings;
 
 namespace TT.Domain
 {

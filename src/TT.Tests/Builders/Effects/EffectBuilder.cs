@@ -1,4 +1,4 @@
-﻿using TT.Domain.Entities.Effects;
+﻿using TT.Domain.Effects.Entities;
 
 namespace TT.Tests.Builders.Effects
 {

@@ -2,7 +2,8 @@
 using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain;
-using TT.Domain.Queries.Assets;
+using TT.Domain.Assets.Queries;
+using TT.Domain.Exceptions;
 using TT.Domain.Statics;
 using TT.Tests.Builders.Assets;
 using TT.Tests.Builders.Item;

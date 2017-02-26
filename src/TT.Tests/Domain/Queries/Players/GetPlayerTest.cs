@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain;
-using TT.Domain.Queries.Players;
+using TT.Domain.Players.Queries;
 using TT.Tests.Builders.AI;
 using TT.Tests.Builders.Form;
 using TT.Tests.Builders.Identity;

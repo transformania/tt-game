@@ -3,10 +3,10 @@ using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using TT.Domain.Commands.Player;
 using TT.Domain.Procedures;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using TT.Domain.Players.Commands;
 using static TT.Domain.Models.PlayerDescriptorStatics;
 
 namespace TT.Domain.Models

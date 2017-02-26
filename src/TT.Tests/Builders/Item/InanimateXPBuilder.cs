@@ -1,4 +1,4 @@
-﻿using TT.Domain.Entities.Items;
+﻿using TT.Domain.Items.Entities;
 
 namespace TT.Tests.Builders.Item
 {

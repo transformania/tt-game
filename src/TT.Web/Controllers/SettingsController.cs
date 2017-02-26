@@ -9,15 +9,16 @@ using TT.Domain.Models;
 using TT.Domain.Procedures;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
-using TT.Domain.DTOs.RPClassifiedAds;
 using TT.Domain;
-using TT.Domain.Commands.Identity;
-using TT.Domain.Commands.Players;
-using TT.Domain.Queries.RPClassifiedAds;
-using TT.Domain.Commands.RPClassifiedAds;
+using TT.Domain.ClassifiedAds.Commands;
+using TT.Domain.ClassifiedAds.DTOs;
+using TT.Domain.ClassifiedAds.Queries;
+using TT.Domain.Exceptions;
 using TT.Domain.Exceptions.RPClassifiedAds;
 using TT.Domain.Exceptions.Identity;
-using TT.Domain.Queries.Identity;
+using TT.Domain.Identity.Commands;
+using TT.Domain.Identity.Queries;
+using TT.Domain.Players.Commands;
 
 namespace TT.Web.Controllers
 {

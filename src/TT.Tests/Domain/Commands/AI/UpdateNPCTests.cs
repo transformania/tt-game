@@ -1,9 +1,9 @@
 ﻿using NUnit.Framework;
 using FluentAssertions;
 using System.Linq;
+using TT.Domain.AI.Commands;
+using TT.Domain.AI.Entities;
 using TT.Tests.Builders.AI;
-using TT.Domain.Commands.AI;
-using TT.Domain.Entities.NPCs;
 
 namespace TT.Tests.Domain.Commands.AI
 {

@@ -7,13 +7,12 @@ using TT.Domain.Models;
 using TT.Domain.Procedures;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
-using TT.Domain.Queries.Item;
 using TT.Domain;
-using TT.Domain.DTOs.RPClassifiedAds;
-using TT.Domain.Queries.RPClassifiedAds;
 using System;
-using TT.Domain.Queries.Identity;
-using TT.Domain.Queries.Players;
+using TT.Domain.ClassifiedAds.Queries;
+using TT.Domain.Identity.Queries;
+using TT.Domain.Items.Queries;
+using TT.Domain.Players.Queries;
 
 namespace TT.Web.Controllers
 {

@@ -1,4 +1,5 @@
 ﻿@model TT.Domain.ViewModels.PlayPageViewModel
+@using TT.Domain.Items.DTOs
 @using TT.Web.CustomHtmlHelpers
 @using TT.Domain.ViewModels
 @using TT.Domain.Statics
@@ -341,7 +342,7 @@
     <div class="row">
         @{
 
-            foreach (TT.Domain.DTOs.Item.ItemListingDetail item in Model.LocationItems)
+            foreach (ItemListingDetail item in Model.LocationItems)
             {
                 <div class="col-md-2 col-sm-4 col-xs-12 itemBox itemBoxPP">
                     <div class="charaBoxInner">

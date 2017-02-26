@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.SignalR;
 using TT.Domain;
-using TT.Domain.Commands.Chat;
+using TT.Domain.Chat.Commands;
 using TT.Domain.Models;
 using TT.Domain.Procedures;
 using TT.Domain.Statics;

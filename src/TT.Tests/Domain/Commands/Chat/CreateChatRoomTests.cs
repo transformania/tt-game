@@ -3,8 +3,9 @@ using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain;
-using TT.Domain.Commands.Chat;
-using TT.Domain.Entities.Chat;
+using TT.Domain.Chat.Commands;
+using TT.Domain.Chat.Entities;
+using TT.Domain.Exceptions;
 using TT.Tests.Builders.Chat;
 using TT.Tests.Builders.Identity;
 

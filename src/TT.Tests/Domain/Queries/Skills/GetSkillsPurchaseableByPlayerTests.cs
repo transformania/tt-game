@@ -4,7 +4,7 @@ using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Entities.Skills;
-using TT.Domain.Queries.Skills;
+using TT.Domain.Skills.Queries;
 using TT.Domain.Statics;
 using TT.Tests.Builders.Form;
 using TT.Tests.Builders.Players;

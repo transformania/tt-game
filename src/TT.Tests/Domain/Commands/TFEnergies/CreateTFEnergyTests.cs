@@ -3,8 +3,9 @@ using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain;
-using TT.Domain.Commands.TFEnergies;
+using TT.Domain.Combat.Commands;
 using TT.Domain.Entities.TFEnergies;
+using TT.Domain.Exceptions;
 using TT.Tests.Builders.Form;
 using TT.Tests.Builders.Players;
 

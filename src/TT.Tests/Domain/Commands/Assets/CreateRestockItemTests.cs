@@ -1,9 +1,10 @@
 ﻿using System;
 using NUnit.Framework;
 using FluentAssertions;
-using TT.Domain.Commands.Assets;
 using TT.Tests.Builders.Item;
 using TT.Domain;
+using TT.Domain.Assets.Commands;
+using TT.Domain.Exceptions;
 using TT.Domain.Statics;
 using TT.Tests.Builders.AI;
 

@@ -2,9 +2,8 @@
 using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
-using TT.Domain.Entities.Item;
-using TT.Domain.Entities.Items;
 using TT.Domain.Entities.TFEnergies;
+using TT.Domain.Items.Entities;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 using TT.Tests.Builders.Item;

@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 using FluentAssertions;
-using TT.Domain.Commands.AI;
+using TT.Domain.AI.Commands;
 
 namespace TT.Tests.Domain.Commands.AI
 {

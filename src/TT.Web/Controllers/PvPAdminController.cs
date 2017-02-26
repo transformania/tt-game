@@ -5,21 +5,21 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using TT.Domain;
 using TT.Domain.Abstract;
-using TT.Domain.Commands.AI;
-using TT.Domain.Commands.Game;
-using TT.Domain.Commands.Items;
-using TT.Domain.Commands.Players;
+using TT.Domain.ClassifiedAds.Commands;
 using TT.Domain.Concrete;
+using TT.Domain.Exceptions;
 using TT.Domain.Models;
 using TT.Domain.Procedures;
 using TT.Domain.Procedures.BossProcedures;
-using TT.Domain.Queries.Item;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
-using TT.Domain.Commands.RPClassifiedAds;
-using TT.Domain.DTOs.Game;
 using TT.Domain.Exceptions.RPClassifiedAds;
-using TT.Domain.Queries.Game;
+using TT.Domain.Items.Commands;
+using TT.Domain.Items.Queries;
+using TT.Domain.Players.Commands;
+using TT.Domain.World.Commands;
+using TT.Domain.World.DTOs;
+using TT.Domain.World.Queries;
 
 namespace TT.Web.Controllers
 {

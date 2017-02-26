@@ -1,13 +1,14 @@
 ﻿using System;
 using NUnit.Framework;
 using FluentAssertions;
-using TT.Domain.Commands.Assets;
 using TT.Tests.Builders.Item;
 using TT.Domain;
 using TT.Tests.Builders.AI;
 using TT.Tests.Builders.Assets;
-using TT.Domain.Entities.Assets;
 using System.Linq;
+using TT.Domain.Assets.Commands;
+using TT.Domain.Assets.Entities;
+using TT.Domain.Exceptions;
 using TT.Domain.Statics;
 
 namespace TT.Tests.Domain.Commands.Assets

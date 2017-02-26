@@ -22,6 +22,7 @@ using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 using System.Web.Mvc.Html;
 using System.Web.Routing;
+using TT.Domain.World.DTOs;
 using TT.Web.Controllers.Generated;
 namespace TT.Web.Controllers
 {
@@ -603,10 +604,10 @@ namespace TT.Web.Controllers
         }
 
         [NonAction]
-        partial void SendChangeRoundOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, TT.Domain.DTOs.Game.WorldDetail input);
+        partial void SendChangeRoundOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, WorldDetail input);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult SendChangeRound(TT.Domain.DTOs.Game.WorldDetail input)
+        public override System.Web.Mvc.ActionResult SendChangeRound(WorldDetail input)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SendChangeRound);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "input", input);

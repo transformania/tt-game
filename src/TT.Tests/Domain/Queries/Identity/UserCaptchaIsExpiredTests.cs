@@ -2,7 +2,8 @@
 using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain;
-using TT.Domain.Queries.Identity;
+using TT.Domain.Exceptions;
+using TT.Domain.Identity.Queries;
 using TT.Tests.Builders.Identity;
 
 namespace TT.Tests.Domain.Queries.Identity

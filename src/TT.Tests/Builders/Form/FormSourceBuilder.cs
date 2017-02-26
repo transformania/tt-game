@@ -1,7 +1,9 @@
 ﻿
+using TT.Domain.Forms.Entities;
+
 namespace TT.Tests.Builders.Form
 {
-    public class FormSourceBuilder : Builder<TT.Domain.Entities.Forms.FormSource, int>
+    public class FormSourceBuilder : Builder<FormSource, int>
     {
         public FormSourceBuilder()
         {

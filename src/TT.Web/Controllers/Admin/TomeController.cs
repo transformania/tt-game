@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Web.Mvc;
 using TT.Domain;
-using TT.Domain.Commands.Assets;
+using TT.Domain.Assets.Commands;
+using TT.Domain.Assets.DTOs;
+using TT.Domain.Assets.Queries;
 using TT.Domain.Statics;
-using TT.Domain.Queries.Assets;
-using TT.Domain.DTOs.Assets;
 using TT.Domain.ViewModels.Assets;
 
 namespace TT.Web.Controllers.Admin

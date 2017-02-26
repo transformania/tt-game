@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
+using TT.Domain.Chat.Queries;
 using TT.Domain.Procedures;
-using TT.Domain.Queries.DMRoll;
 using TT.Domain.Statics;
 
 namespace TT.Web.Services

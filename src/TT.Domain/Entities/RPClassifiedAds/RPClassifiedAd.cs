@@ -1,6 +1,6 @@
 ﻿using System;
-using TT.Domain.Commands.RPClassifiedAds;
-using TT.Domain.Entities.Identity;
+using TT.Domain.ClassifiedAds.Commands;
+using TT.Domain.Identity.Entities;
 
 namespace TT.Domain.Entities.RPClassifiedAds
 {

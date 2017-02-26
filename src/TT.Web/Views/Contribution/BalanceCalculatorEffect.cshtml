@@ -1,5 +1,6 @@
 ﻿@model TT.Domain.Models.EffectContribution
 @using TT.Domain.Statics
+@using TT.Domain.ViewModels
 @using TT.Web.CustomHtmlHelpers
 
 <head>
@@ -193,118 +194,118 @@
                     <span class='icon icon-health_recovery'></span>
                     Maximum willpower increase (%)
                 </td>
-                <td>@Html.TextBoxFor(m => m.HealthBonusPercent, new { @id = "HealthBonusPercent", @negative_mod = TT.Domain.Statics.BalanceStatics.HealthBonusPercent__NegativeModifier, @negative_cap = TT.Domain.Statics.BalanceStatics.HealthBonusPercent__NegativeCap, @readonly = "readonly" })</td>
-                <td>@TT.Domain.Statics.BalanceStatics.HealthBonusPercent__Value</td>
-                <td>@TT.Domain.Statics.BalanceStatics.HealthBonusPercent__NegativeModifier</td>
-                <td>@TT.Domain.Statics.BalanceStatics.HealthBonusPercent__NegativeCap</td>
+                <td>@Html.TextBoxFor(m => m.HealthBonusPercent, new { @id = "HealthBonusPercent", @negative_mod = BalanceStatics.HealthBonusPercent__NegativeModifier, @negative_cap = BalanceStatics.HealthBonusPercent__NegativeCap, @readonly = "readonly" })</td>
+                <td>@BalanceStatics.HealthBonusPercent__Value</td>
+                <td>@BalanceStatics.HealthBonusPercent__NegativeModifier</td>
+                <td>@BalanceStatics.HealthBonusPercent__NegativeCap</td>
                 <td></td>
             </tr>
             <tr>
                 <td><span class='icon icon-mana_recovery'></span>Maximum mana increase (%)</td>
-                <td>@Html.TextBoxFor(m => m.ManaBonusPercent, new { @id = "ManaBonusPercent", @negative_mod = TT.Domain.Statics.BalanceStatics.ManaBonusPercent__NegativeModifier, @negative_cap = TT.Domain.Statics.BalanceStatics.ManaBonusPercent__NegativeCap, @readonly = "readonly" })</td>
-                <td>@TT.Domain.Statics.BalanceStatics.ManaBonusPercent__Value</td>
-                <td>@TT.Domain.Statics.BalanceStatics.ManaBonusPercent__NegativeModifier</td>
-                <td>@TT.Domain.Statics.BalanceStatics.ManaBonusPercent__NegativeCap</td>
+                <td>@Html.TextBoxFor(m => m.ManaBonusPercent, new { @id = "ManaBonusPercent", @negative_mod = BalanceStatics.ManaBonusPercent__NegativeModifier, @negative_cap = BalanceStatics.ManaBonusPercent__NegativeCap, @readonly = "readonly" })</td>
+                <td>@BalanceStatics.ManaBonusPercent__Value</td>
+                <td>@BalanceStatics.ManaBonusPercent__NegativeModifier</td>
+                <td>@BalanceStatics.ManaBonusPercent__NegativeCap</td>
                 <td></td>
             </tr>
             <tr>
                 <td>
                     <span class='icon icon-health_recovery'></span>Willpower recovery per game update (Amt)
                 </td>
-                <td>@Html.TextBoxFor(m => m.HealthRecoveryPerUpdate, new { @id = "HealthRecoveryPerUpdate", @negative_mod = TT.Domain.Statics.BalanceStatics.HealthRecoveryPerUpdate__NegativeModifier, @negative_cap = TT.Domain.Statics.BalanceStatics.HealthRecoveryPerUpdate__NegativeCap, @readonly = "readonly" })</td>
-                <td>@TT.Domain.Statics.BalanceStatics.HealthRecoveryPerUpdate__Value</td>
-                <td>@TT.Domain.Statics.BalanceStatics.HealthRecoveryPerUpdate__NegativeModifier</td>
-                <td>@TT.Domain.Statics.BalanceStatics.HealthRecoveryPerUpdate__NegativeCap</td>
+                <td>@Html.TextBoxFor(m => m.HealthRecoveryPerUpdate, new { @id = "HealthRecoveryPerUpdate", @negative_mod = BalanceStatics.HealthRecoveryPerUpdate__NegativeModifier, @negative_cap = BalanceStatics.HealthRecoveryPerUpdate__NegativeCap, @readonly = "readonly" })</td>
+                <td>@BalanceStatics.HealthRecoveryPerUpdate__Value</td>
+                <td>@BalanceStatics.HealthRecoveryPerUpdate__NegativeModifier</td>
+                <td>@BalanceStatics.HealthRecoveryPerUpdate__NegativeCap</td>
                 <td></td>
             </tr>
             <tr>
                 <td><span class='icon icon-mana_recovery'></span>Mana recovery per game update (Amt)</td>
-                <td>@Html.TextBoxFor(m => m.ManaRecoveryPerUpdate, new { @id = "ManaRecoveryPerUpdate", @negative_mod = TT.Domain.Statics.BalanceStatics.HealthRecoveryPerUpdate__NegativeModifier, @negative_cap = TT.Domain.Statics.BalanceStatics.ManaRecoveryPerUpdate__NegativeCap, @readonly = "readonly" })</td>
-                <td>@TT.Domain.Statics.BalanceStatics.ManaRecoveryPerUpdate__Value</td>
-                <td>@TT.Domain.Statics.BalanceStatics.HealthRecoveryPerUpdate__NegativeModifier</td>
-                <td>@TT.Domain.Statics.BalanceStatics.ManaRecoveryPerUpdate__NegativeCap</td>
+                <td>@Html.TextBoxFor(m => m.ManaRecoveryPerUpdate, new { @id = "ManaRecoveryPerUpdate", @negative_mod = BalanceStatics.HealthRecoveryPerUpdate__NegativeModifier, @negative_cap = BalanceStatics.ManaRecoveryPerUpdate__NegativeCap, @readonly = "readonly" })</td>
+                <td>@BalanceStatics.ManaRecoveryPerUpdate__Value</td>
+                <td>@BalanceStatics.HealthRecoveryPerUpdate__NegativeModifier</td>
+                <td>@BalanceStatics.ManaRecoveryPerUpdate__NegativeCap</td>
                 <td></td>
             </tr>
             <tr>
                 <td>Sneak chance (%) <red>*</red></td>
-                <td>@Html.TextBoxFor(m => m.SneakPercent, new { @id = "SneakPercent", @negative_mod = TT.Domain.Statics.BalanceStatics.SneakPercent__NegativeModifier, @negative_cap = TT.Domain.Statics.BalanceStatics.SneakPercent__NegativeCap, @readonly = "readonly" })</td>
-                <td>@TT.Domain.Statics.BalanceStatics.SneakPercent__Value</td>
-                <td>@TT.Domain.Statics.BalanceStatics.SneakPercent__NegativeModifier</td>
-                <td>@TT.Domain.Statics.BalanceStatics.SneakPercent__NegativeCap</td>
+                <td>@Html.TextBoxFor(m => m.SneakPercent, new { @id = "SneakPercent", @negative_mod = BalanceStatics.SneakPercent__NegativeModifier, @negative_cap = BalanceStatics.SneakPercent__NegativeCap, @readonly = "readonly" })</td>
+                <td>@BalanceStatics.SneakPercent__Value</td>
+                <td>@BalanceStatics.SneakPercent__NegativeModifier</td>
+                <td>@BalanceStatics.SneakPercent__NegativeCap</td>
                 <td></td>
             </tr>
             <tr>
                 <td><span class='icon icon-defense'></span>Spell evasion (%) <red>*</red></td>
-                <td>@Html.TextBoxFor(m => m.EvasionPercent, new { @id = "EvasionPercent", @negative_mod = TT.Domain.Statics.BalanceStatics.EvasionPercent__NegativeModifier, @negative_cap = TT.Domain.Statics.BalanceStatics.EvasionPercent__NegativeCap, @readonly = "readonly" })</td>
-                <td>@TT.Domain.Statics.BalanceStatics.EvasionPercent__Value</td>
-                <td>@TT.Domain.Statics.BalanceStatics.EvasionPercent__NegativeModifier</td>
-                <td>@TT.Domain.Statics.BalanceStatics.EvasionPercent__NegativeCap</td>
+                <td>@Html.TextBoxFor(m => m.EvasionPercent, new { @id = "EvasionPercent", @negative_mod = BalanceStatics.EvasionPercent__NegativeModifier, @negative_cap = BalanceStatics.EvasionPercent__NegativeCap, @readonly = "readonly" })</td>
+                <td>@BalanceStatics.EvasionPercent__Value</td>
+                <td>@BalanceStatics.EvasionPercent__NegativeModifier</td>
+                <td>@BalanceStatics.EvasionPercent__NegativeCap</td>
                 <td></td>
             </tr>
             <tr>
                 <td><span class='icon icon-timesattacking'></span> evasion NEGATION (%) <red>*</red></td>
-                <td>@Html.TextBoxFor(m => m.EvasionNegationPercent, new { @id = "EvasionNegationPercent", @negative_mod = TT.Domain.Statics.BalanceStatics.EvasionNegationPercent__NegativeModifier, @negative_cap = TT.Domain.Statics.BalanceStatics.EvasionNegationPercent__NegativeCap, @readonly = "readonly" })</td>
-                <td>@TT.Domain.Statics.BalanceStatics.EvasionNegationPercent__Value</td>
-                <td>@TT.Domain.Statics.BalanceStatics.EvasionNegationPercent__NegativeModifier</td>
-                <td>@TT.Domain.Statics.BalanceStatics.EvasionNegationPercent__NegativeCap</td>
+                <td>@Html.TextBoxFor(m => m.EvasionNegationPercent, new { @id = "EvasionNegationPercent", @negative_mod = BalanceStatics.EvasionNegationPercent__NegativeModifier, @negative_cap = BalanceStatics.EvasionNegationPercent__NegativeCap, @readonly = "readonly" })</td>
+                <td>@BalanceStatics.EvasionNegationPercent__Value</td>
+                <td>@BalanceStatics.EvasionNegationPercent__NegativeModifier</td>
+                <td>@BalanceStatics.EvasionNegationPercent__NegativeCap</td>
                 <td></td>
             </tr>
             <tr>
                 <td>
                     <span class='icon icon-cleansemeditate'></span>Extra mana recovered from meditating (Amt)
                 </td>
-                <td>@Html.TextBoxFor(m => m.MeditationExtraMana, new { @id = "MeditationExtraMana", @negative_mod = TT.Domain.Statics.BalanceStatics.MeditationExtraMana__NegativeModifier, @negative_cap = TT.Domain.Statics.BalanceStatics.MeditationExtraMana__NegativeCap, @readonly = "readonly" })</td>
-                <td>@TT.Domain.Statics.BalanceStatics.MeditationExtraMana__Value</td>
-                <td>@TT.Domain.Statics.BalanceStatics.MeditationExtraMana__NegativeModifier</td>
-                <td>@TT.Domain.Statics.BalanceStatics.MeditationExtraMana__NegativeCap</td>
+                <td>@Html.TextBoxFor(m => m.MeditationExtraMana, new { @id = "MeditationExtraMana", @negative_mod = BalanceStatics.MeditationExtraMana__NegativeModifier, @negative_cap = BalanceStatics.MeditationExtraMana__NegativeCap, @readonly = "readonly" })</td>
+                <td>@BalanceStatics.MeditationExtraMana__Value</td>
+                <td>@BalanceStatics.MeditationExtraMana__NegativeModifier</td>
+                <td>@BalanceStatics.MeditationExtraMana__NegativeCap</td>
                 <td></td>
             </tr>
             <tr>
                 <td><span class='icon icon-cleansemeditate'></span>Extra willpower recovered from cleansing (Amt)</td>
-                <td>@Html.TextBoxFor(m => m.CleanseExtraHealth, new { @id = "CleanseExtraHealth", @negative_mod = TT.Domain.Statics.BalanceStatics.CleanseExtraHealth__NegativeModifier, @negative_cap = TT.Domain.Statics.BalanceStatics.CleanseExtraHealth__NegativeCap, @readonly = "readonly" })</td>
-                <td>@TT.Domain.Statics.BalanceStatics.CleanseExtraHealth__Value</td>
-                <td>@TT.Domain.Statics.BalanceStatics.CleanseExtraHealth__NegativeModifier</td>
-                <td>@TT.Domain.Statics.BalanceStatics.CleanseExtraHealth__NegativeCap</td>
+                <td>@Html.TextBoxFor(m => m.CleanseExtraHealth, new { @id = "CleanseExtraHealth", @negative_mod = BalanceStatics.CleanseExtraHealth__NegativeModifier, @negative_cap = BalanceStatics.CleanseExtraHealth__NegativeCap, @readonly = "readonly" })</td>
+                <td>@BalanceStatics.CleanseExtraHealth__Value</td>
+                <td>@BalanceStatics.CleanseExtraHealth__NegativeModifier</td>
+                <td>@BalanceStatics.CleanseExtraHealth__NegativeCap</td>
                 <td></td>
             </tr>
             <tr>
                 <td><span class='icon icon-timesattacking'></span>Extra spell critical hit chance (%)</td>
-                <td>@Html.TextBoxFor(m => m.ExtraSkillCriticalPercent, new { @id = "ExtraSkillCriticalPercent", @negative_mod = TT.Domain.Statics.BalanceStatics.ExtraSkillCriticalPercent__NegativeModifier, @negative_cap = TT.Domain.Statics.BalanceStatics.ExtraSkillCriticalPercent__NegativeCap, @readonly = "readonly" })</td>
-                <td>@TT.Domain.Statics.BalanceStatics.ExtraSkillCriticalPercent__Value</td>
-                <td>@TT.Domain.Statics.BalanceStatics.ExtraSkillCriticalPercent__NegativeModifier</td>
-                <td>@TT.Domain.Statics.BalanceStatics.ExtraSkillCriticalPercent__NegativeCap</td>
+                <td>@Html.TextBoxFor(m => m.ExtraSkillCriticalPercent, new { @id = "ExtraSkillCriticalPercent", @negative_mod = BalanceStatics.ExtraSkillCriticalPercent__NegativeModifier, @negative_cap = BalanceStatics.ExtraSkillCriticalPercent__NegativeCap, @readonly = "readonly" })</td>
+                <td>@BalanceStatics.ExtraSkillCriticalPercent__Value</td>
+                <td>@BalanceStatics.ExtraSkillCriticalPercent__NegativeModifier</td>
+                <td>@BalanceStatics.ExtraSkillCriticalPercent__NegativeCap</td>
                 <td></td>
             </tr>
             <tr>
                 <td>Action point discount when moving (Amt)</td>
-                <td>@Html.TextBoxFor(m => m.MoveActionPointDiscount, new { @id = "MoveActionPointDiscount", @negative_mod = TT.Domain.Statics.BalanceStatics.MoveActionPointDiscount__NegativeModifier, @negative_cap = TT.Domain.Statics.BalanceStatics.MoveActionPointDiscount__NegativeCap })</td>
-                <td>@TT.Domain.Statics.BalanceStatics.MoveActionPointDiscount__Value</td>
-                <td>@TT.Domain.Statics.BalanceStatics.MoveActionPointDiscount__NegativeModifier</td>
-                <td>@TT.Domain.Statics.BalanceStatics.MoveActionPointDiscount__NegativeCap</td>
+                <td>@Html.TextBoxFor(m => m.MoveActionPointDiscount, new { @id = "MoveActionPointDiscount", @negative_mod = BalanceStatics.MoveActionPointDiscount__NegativeModifier, @negative_cap = BalanceStatics.MoveActionPointDiscount__NegativeCap })</td>
+                <td>@BalanceStatics.MoveActionPointDiscount__Value</td>
+                <td>@BalanceStatics.MoveActionPointDiscount__NegativeModifier</td>
+                <td>@BalanceStatics.MoveActionPointDiscount__NegativeCap</td>
                 <td></td>
             </tr>
             <tr>
                 <td><span class='icon icon-timesattacking'></span>Extra transformation energy from spells (%)</td>
-                <td>@Html.TextBoxFor(m => m.SpellExtraTFEnergyPercent, new { @id = "SpellExtraTFEnergyPercent", @negative_mod = TT.Domain.Statics.BalanceStatics.SpellExtraTFEnergyPercent__NegativeModifier, @negative_cap = TT.Domain.Statics.BalanceStatics.SpellExtraTFEnergyPercent__NegativeCap, @readonly = "readonly" })</td>
-                <td>@TT.Domain.Statics.BalanceStatics.SpellExtraTFEnergyPercent__Value</td>
-                <td>@TT.Domain.Statics.BalanceStatics.SpellExtraTFEnergyPercent__NegativeModifier</td>
-                <td>@TT.Domain.Statics.BalanceStatics.SpellExtraTFEnergyPercent__NegativeCap</td>
+                <td>@Html.TextBoxFor(m => m.SpellExtraTFEnergyPercent, new { @id = "SpellExtraTFEnergyPercent", @negative_mod = BalanceStatics.SpellExtraTFEnergyPercent__NegativeModifier, @negative_cap = BalanceStatics.SpellExtraTFEnergyPercent__NegativeCap, @readonly = "readonly" })</td>
+                <td>@BalanceStatics.SpellExtraTFEnergyPercent__Value</td>
+                <td>@BalanceStatics.SpellExtraTFEnergyPercent__NegativeModifier</td>
+                <td>@BalanceStatics.SpellExtraTFEnergyPercent__NegativeCap</td>
                 <td></td>
             </tr>
             <tr>
                 <td><span class='icon icon-timesattacking'></span>Extra willpower damage from spells (%)</td>
-                <td>@Html.TextBoxFor(m => m.SpellExtraHealthDamagePercent, new { @id = "SpellExtraHealthDamagePercent", @negative_mod = TT.Domain.Statics.BalanceStatics.SpellExtraHealthDamagePercent__NegativeModifier, @negative_cap = TT.Domain.Statics.BalanceStatics.SpellExtraHealthDamagePercent__NegativeCap, @readonly = "readonly" })</td>
-                <td>@TT.Domain.Statics.BalanceStatics.SpellExtraHealthDamagePercent__Value</td>
-                <td>@TT.Domain.Statics.BalanceStatics.SpellExtraHealthDamagePercent__NegativeModifier</td>
-                <td>@TT.Domain.Statics.BalanceStatics.SpellExtraHealthDamagePercent__NegativeCap</td>
+                <td>@Html.TextBoxFor(m => m.SpellExtraHealthDamagePercent, new { @id = "SpellExtraHealthDamagePercent", @negative_mod = BalanceStatics.SpellExtraHealthDamagePercent__NegativeModifier, @negative_cap = BalanceStatics.SpellExtraHealthDamagePercent__NegativeCap, @readonly = "readonly" })</td>
+                <td>@BalanceStatics.SpellExtraHealthDamagePercent__Value</td>
+                <td>@BalanceStatics.SpellExtraHealthDamagePercent__NegativeModifier</td>
+                <td>@BalanceStatics.SpellExtraHealthDamagePercent__NegativeCap</td>
                 <td></td>
             </tr>
             <tr>
                 <td><span class='icon icon-cleansemeditate'></span>Extra transformation energy removal when cleansing (%)</td>
-                <td>@Html.TextBoxFor(m => m.CleanseExtraTFEnergyRemovalPercent, new { @id = "CleanseExtraTFEnergyRemovalPercent", @negative_mod = TT.Domain.Statics.BalanceStatics.CleanseExtraTFEnergyRemovalPercent__NegativeModifier, @negative_cap = TT.Domain.Statics.BalanceStatics.CleanseExtraTFEnergyRemovalPercent__NegativeCap, @readonly = "readonly" })</td>
-                <td>@TT.Domain.Statics.BalanceStatics.CleanseExtraTFEnergyRemovalPercent__Value</td>
-                <td>@TT.Domain.Statics.BalanceStatics.CleanseExtraTFEnergyRemovalPercent__NegativeModifier</td>
-                <td>@TT.Domain.Statics.BalanceStatics.CleanseExtraTFEnergyRemovalPercent__NegativeCap</td>
+                <td>@Html.TextBoxFor(m => m.CleanseExtraTFEnergyRemovalPercent, new { @id = "CleanseExtraTFEnergyRemovalPercent", @negative_mod = BalanceStatics.CleanseExtraTFEnergyRemovalPercent__NegativeModifier, @negative_cap = BalanceStatics.CleanseExtraTFEnergyRemovalPercent__NegativeCap, @readonly = "readonly" })</td>
+                <td>@BalanceStatics.CleanseExtraTFEnergyRemovalPercent__Value</td>
+                <td>@BalanceStatics.CleanseExtraTFEnergyRemovalPercent__NegativeModifier</td>
+                <td>@BalanceStatics.CleanseExtraTFEnergyRemovalPercent__NegativeCap</td>
                 <td></td>
             </tr>
             <tr>
@@ -313,14 +314,14 @@
                     @Html.TextBoxFor(m => m.SpellMisfireChanceReduction, new
            {
                @id = "SpellMisfireChanceReduction",
-               @negative_mod = TT.Domain.Statics.BalanceStatics.SpellMisfireChanceReduction__NegativeModifier,
-               @negative_cap = TT.Domain.Statics.BalanceStatics.SpellMisfireChanceReduction__NegativeCap,
+               @negative_mod = BalanceStatics.SpellMisfireChanceReduction__NegativeModifier,
+               @negative_cap = BalanceStatics.SpellMisfireChanceReduction__NegativeCap,
                @readonly = "readonly"
            })
                 </td>
-                <td>@TT.Domain.Statics.BalanceStatics.SpellMisfireChanceReduction__Value</td>
-                <td>@TT.Domain.Statics.BalanceStatics.SpellMisfireChanceReduction__NegativeModifier</td>
-                <td>@TT.Domain.Statics.BalanceStatics.SpellMisfireChanceReduction__NegativeCap</td>
+                <td>@BalanceStatics.SpellMisfireChanceReduction__Value</td>
+                <td>@BalanceStatics.SpellMisfireChanceReduction__NegativeModifier</td>
+                <td>@BalanceStatics.SpellMisfireChanceReduction__NegativeCap</td>
                 <td></td>
             </tr>
             <tr>
@@ -329,14 +330,14 @@
                     @Html.TextBoxFor(m => m.SpellHealthDamageResistance, new
            {
                @id = "SpellHealthDamageResistance",
-               @negative_mod = TT.Domain.Statics.BalanceStatics.SpellHealthDamageResistance__NegativeModifier,
-               @negative_cap = TT.Domain.Statics.BalanceStatics.SpellHealthDamageResistance__NegativeCap,
+               @negative_mod = BalanceStatics.SpellHealthDamageResistance__NegativeModifier,
+               @negative_cap = BalanceStatics.SpellHealthDamageResistance__NegativeCap,
                @readonly = "readonly"
            })
                 </td>
-                <td>@TT.Domain.Statics.BalanceStatics.SpellHealthDamageResistance__Value</td>
-                <td>@TT.Domain.Statics.BalanceStatics.SpellHealthDamageResistance__NegativeModifier</td>
-                <td>@TT.Domain.Statics.BalanceStatics.SpellHealthDamageResistance__NegativeCap</td>
+                <td>@BalanceStatics.SpellHealthDamageResistance__Value</td>
+                <td>@BalanceStatics.SpellHealthDamageResistance__NegativeModifier</td>
+                <td>@BalanceStatics.SpellHealthDamageResistance__NegativeCap</td>
                 <td></td>
             </tr>
             <tr>
@@ -345,14 +346,14 @@
                     @Html.TextBoxFor(m => m.SpellTFEnergyDamageResistance, new
        {
            @id = "SpellTFEnergyDamageResistance",
-           @negative_mod = TT.Domain.Statics.BalanceStatics.SpellTFEnergyDamageResistance__NegativeModifier,
-           @negative_cap = TT.Domain.Statics.BalanceStatics.SpellTFEnergyDamageResistance__NegativeCap,
+           @negative_mod = BalanceStatics.SpellTFEnergyDamageResistance__NegativeModifier,
+           @negative_cap = BalanceStatics.SpellTFEnergyDamageResistance__NegativeCap,
            @readonly = "readonly"
        })
                 </td>
-                <td>@TT.Domain.Statics.BalanceStatics.SpellTFEnergyDamageResistance__Value</td>
-                <td>@TT.Domain.Statics.BalanceStatics.SpellTFEnergyDamageResistance__NegativeModifier</td>
-                <td>@TT.Domain.Statics.BalanceStatics.SpellTFEnergyDamageResistance__NegativeCap</td>
+                <td>@BalanceStatics.SpellTFEnergyDamageResistance__Value</td>
+                <td>@BalanceStatics.SpellTFEnergyDamageResistance__NegativeModifier</td>
+                <td>@BalanceStatics.SpellTFEnergyDamageResistance__NegativeCap</td>
                 <td></td>
             </tr>
             <tr>
@@ -361,14 +362,14 @@
                     @Html.TextBoxFor(m => m.ExtraInventorySpace, new
        {
            @id = "ExtraInventorySpace",
-           @negative_mod = TT.Domain.Statics.BalanceStatics.ExtraInventorySpace__NegativeModifier,
-           @negative_cap = TT.Domain.Statics.BalanceStatics.ExtraInventorySpace__NegativeCap,
+           @negative_mod = BalanceStatics.ExtraInventorySpace__NegativeModifier,
+           @negative_cap = BalanceStatics.ExtraInventorySpace__NegativeCap,
            @readonly = "readonly"
        })
                 </td>
-                <td>@TT.Domain.Statics.BalanceStatics.ExtraInventorySpace__Value</td>
-                <td>@TT.Domain.Statics.BalanceStatics.ExtraInventorySpace__NegativeModifier</td>
-                <td>@TT.Domain.Statics.BalanceStatics.ExtraInventorySpace__NegativeCap</td>
+                <td>@BalanceStatics.ExtraInventorySpace__Value</td>
+                <td>@BalanceStatics.ExtraInventorySpace__NegativeModifier</td>
+                <td>@BalanceStatics.ExtraInventorySpace__NegativeCap</td>
                 <td></td>
             </tr>
 

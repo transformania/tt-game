@@ -1,6 +1,8 @@
-﻿namespace TT.Tests.Builders.Game
+﻿using TT.Domain.World.Entities;
+
+namespace TT.Tests.Builders.Game
 {
-    public class WorldBuilder : Builder<TT.Domain.Entities.Game.World, int>
+    public class WorldBuilder : Builder<World, int>
     {
         public WorldBuilder()
         {

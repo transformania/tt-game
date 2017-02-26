@@ -3,9 +3,10 @@ using NUnit.Framework;
 using FluentAssertions;
 using System.Linq;
 using TT.Domain;
+using TT.Domain.AI.Commands;
+using TT.Domain.AI.Entities;
+using TT.Domain.Exceptions;
 using TT.Tests.Builders.AI;
-using TT.Domain.Entities.NPCs;
-using TT.Domain.Commands.AI;
 
 namespace TT.Tests.Domain.Commands.AI
 {

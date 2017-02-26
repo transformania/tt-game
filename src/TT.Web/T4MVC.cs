@@ -35,7 +35,6 @@ public static partial class MVC
     public static TT.Web.Controllers.ContributionController Contribution = new TT.Web.Controllers.T4MVC_ContributionController();
     public static TT.Web.Controllers.CovenantController Covenant = new TT.Web.Controllers.T4MVC_CovenantController();
     public static TT.Web.Controllers.DuelController Duel = new TT.Web.Controllers.T4MVC_DuelController();
-    public static TT.Web.Controllers.HomeController Home = new TT.Web.Controllers.T4MVC_HomeController();
     public static TT.Web.Controllers.InfoController Info = new TT.Web.Controllers.T4MVC_InfoController();
     public static TT.Web.Controllers.ItemController Item = new TT.Web.Controllers.T4MVC_ItemController();
     public static TT.Web.Controllers.MessagesController Messages = new TT.Web.Controllers.T4MVC_MessagesController();

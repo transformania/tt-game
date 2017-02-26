@@ -19,6 +19,7 @@ using TT.Domain.Exceptions.Identity;
 using TT.Domain.Identity.Commands;
 using TT.Domain.Identity.Queries;
 using TT.Domain.Players.Commands;
+using TT.Web.ViewModels;
 
 namespace TT.Web.Controllers
 {
@@ -294,8 +295,10 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            Message output = new Message();
-            output.MessageText = me.Nickname;
+            var output = new SetNicknameViewModel
+            {
+                Nickname = me.Nickname
+            };
 
             return View(output);
         }
@@ -303,10 +306,10 @@ namespace TT.Web.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public virtual ActionResult SetNicknameSend(Message input)
+        public virtual ActionResult SetNicknameSend(SetNicknameViewModel input)
         {
-            string myMembershipId = User.Identity.GetUserId();
-            Player me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
+            var myMembershipId = User.Identity.GetUserId();
+            var me = PlayerProcedures.GetPlayerFromMembership(myMembershipId);
 
             if (me.DonatorLevel < 2)
             {
@@ -316,18 +319,18 @@ namespace TT.Web.Controllers
             }
 
 
-            if (input.MessageText != null && input.MessageText.Length > 20)
+            if (input.Nickname != null && input.Nickname.Length > 20)
             {
                 TempData["Error"] = "That nickname is too long. ";
                 TempData["SubError"] = "Nicknames must be no longer than 20 characters.";
                 return RedirectToAction(MVC.PvP.Play());
             }
 
-            PlayerProcedures.SetNickname(input.MessageText, myMembershipId);
+            PlayerProcedures.SetNickname(input.Nickname, myMembershipId);
 
             if (me.Mobility == PvPStatics.MobilityInanimate || me.Mobility == PvPStatics.MobilityPet)
             {
-                ItemProcedures.SetNickname(me, input.MessageText);
+                ItemProcedures.SetNickname(me, input.Nickname);
             }
 
             TempData["Result"] = "Your new nickname has been set.";

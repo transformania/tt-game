@@ -64,6 +64,7 @@
     <Compile Include="201607252000_SkillSourceFKs.cs" />
     <Compile Include="201607151721_AddTFEnergyFK.cs" />
     <Compile Include="201702071200_ConvertToDatetime2.cs" />
+    <Compile Include="201702260039_DropPreRound1Tables.cs" />
     <Compile Include="201702251000_DropEfMigrations.cs" />
     <Compile Include="201702211090_RestockItemBotId.cs" />
     <Compile Include="201702190840_UserStrikes.cs" />

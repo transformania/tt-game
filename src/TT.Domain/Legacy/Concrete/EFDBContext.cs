@@ -18,15 +18,12 @@ namespace TT.Domain.Concrete
         }
 
         public DbSet<GameshowStats> GameshowStats { get; set; }
-        public DbSet<Character> Characters { get; set; }
-
         public DbSet<Player> Players { get; set;}
         public DbSet<LocationLog> LocationLogs { get; set;}
         public DbSet<PlayerLog> PlayerLogs { get; set; }
         public DbSet<Skill> Skills { get; set; }
         public DbSet<TFEnergy> TFEnergies { get; set; }
         public DbSet<Item> Items { get; set; }
-        public DbSet<Message> Messages { get; set; }
         public DbSet<Contribution> Contributions { get; set; }
         public DbSet<PvPWorldStat> PvPWorldStats { get; set; }
         public DbSet<Friend> Friends { get; set; }
@@ -46,10 +43,8 @@ namespace TT.Domain.Concrete
         public DbSet<DbStaticItem> DbStaticItems { get; set; }
         public DbSet<DbStaticEffect> DbStaticEffects { get; set; }
         public DbSet<ServerLog> ServerLogs { get; set; }
-        public DbSet<Buff> Buffs { get; set; }
         public DbSet<TFMessage> TFMessages { get; set; }
         public DbSet<PlayerExtra> PlayerExtras { get; set; }
-        public DbSet<RPPoint> RPPoints { get; set; }
         public DbSet<Donator> Donators { get; set; }
         public DbSet<ContributorCustomForm> ContributorCustomForms { get; set; }
         public DbSet<Furniture> Furnitures { get; set; }
@@ -66,14 +61,11 @@ namespace TT.Domain.Concrete
 
         public DbSet<Reroll> Rerolls { get; set; }
 
-        public DbSet<ChatLog> ChatLogs { get; set; }
         public DbSet<DMRoll> DMRolls { get; set; }
         public DbSet<PollEntry> PollEntries { get; set; }
         public DbSet<Achievement> Achievements { get; set; }
         public DbSet<AchievementBadge> AchievementBadges { get; set; }
         public DbSet<Duel> Duels { get; set; }
-        public DbSet<PlayerQuest> PlayerQuests { get; set; }
-
         public DbSet<QuestStart> QuestStarts { get; set; }
         public DbSet<QuestState> QuestStates { get; set; }
         public DbSet<QuestConnection> QuestConnections { get; set; }

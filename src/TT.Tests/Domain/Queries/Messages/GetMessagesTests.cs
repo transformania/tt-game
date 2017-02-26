@@ -3,7 +3,7 @@ using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain;
-using TT.Domain.Queries.Messages;
+using TT.Domain.Messages.Queries;
 using TT.Domain.Statics;
 using TT.Tests.Builders.Messages;
 using TT.Tests.Builders.Players;

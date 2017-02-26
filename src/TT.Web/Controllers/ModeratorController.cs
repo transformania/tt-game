@@ -5,9 +5,10 @@ using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using TT.Domain;
-using TT.Domain.Commands.Identity;
-using TT.Domain.Queries.Messages;
-using TT.Domain.Queries.Players;
+using TT.Domain.Exceptions;
+using TT.Domain.Identity.Commands;
+using TT.Domain.Messages.Queries;
+using TT.Domain.Players.Queries;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 

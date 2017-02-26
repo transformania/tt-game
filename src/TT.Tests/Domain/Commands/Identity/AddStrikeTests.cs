@@ -4,9 +4,10 @@ using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain;
-using TT.Domain.Commands.Identity;
-using TT.Domain.Entities.Identity;
-using TT.Domain.Entities.Players;
+using TT.Domain.Exceptions;
+using TT.Domain.Identity.Commands;
+using TT.Domain.Identity.Entities;
+using TT.Domain.Players.Entities;
 using TT.Tests.Builders.Identity;
 using TT.Tests.Builders.Players;
 

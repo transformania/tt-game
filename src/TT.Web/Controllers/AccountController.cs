@@ -10,10 +10,10 @@ using TT.Web.Models;
 using Recaptcha.Web;
 using Recaptcha.Web.Mvc;
 using TT.Domain;
-using TT.Domain.Commands.Identity;
+using TT.Domain.Identity.Commands;
+using TT.Domain.Identity.Queries;
 using TT.Domain.Models;
 using TT.Domain.Procedures;
-using TT.Domain.Queries.Identity;
 
 namespace TT.Web.Controllers
 {

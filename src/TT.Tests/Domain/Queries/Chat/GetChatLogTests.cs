@@ -3,7 +3,7 @@ using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain;
-using TT.Domain.Queries.Chat;
+using TT.Domain.Chat.Queries;
 using TT.Tests.Builders.Chat;
 
 namespace TT.Tests.Domain.Queries.Chat

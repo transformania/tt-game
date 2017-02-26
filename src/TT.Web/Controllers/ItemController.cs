@@ -6,7 +6,7 @@ using Microsoft.AspNet.Identity;
 using TT.Domain;
 using TT.Domain.Models;
 using TT.Domain.Procedures;
-using TT.Domain.Queries.Skills;
+using TT.Domain.Skills.Queries;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 

@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using TT.Domain.DTOs.Game;
-using TT.Domain.DTOs.Item;
-using TT.Domain.DTOs.LocationLog;
+using TT.Domain.Items.DTOs;
 using TT.Domain.Models;
+using TT.Domain.World.DTOs;
 
 namespace TT.Domain.ViewModels
 {

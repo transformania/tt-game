@@ -1,5 +1,5 @@
 ﻿using System;
-using TT.Domain.Entities.Identity;
+using TT.Domain.Identity.Entities;
 
 namespace TT.Tests.Builders.Identity
 {

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using TT.Domain.DTOs.Players;
+using TT.Domain.Players.DTOs;
 
 namespace TT.Domain.ViewModels
 {

@@ -1,10 +1,10 @@
 ﻿using NUnit.Framework;
-using TT.Domain.Commands.Items;
-using TT.Domain.Entities.Items;
 using TT.Tests.Builders.Item;
 using System.Linq;
 using FluentAssertions;
-using TT.Domain.Entities.Players;
+using TT.Domain.Items.Commands;
+using TT.Domain.Items.Entities;
+using TT.Domain.Players.Entities;
 using TT.Tests.Builders.Players;
 
 namespace TT.Tests.Domain.Commands.Items

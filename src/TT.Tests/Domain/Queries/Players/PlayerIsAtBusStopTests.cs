@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain;
-using TT.Domain.Queries.Players;
+using TT.Domain.Players.Queries;
 using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 using TT.Tests.Builders.Players;

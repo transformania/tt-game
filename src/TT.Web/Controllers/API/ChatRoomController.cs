@@ -1,7 +1,8 @@
 ﻿using System.Web.Http;
 using TT.Domain;
-using TT.Domain.Commands.Chat;
-using TT.Domain.Queries.Chat;
+using TT.Domain.Chat.Commands;
+using TT.Domain.Chat.Queries;
+using TT.Domain.Exceptions;
 
 namespace TT.Web.Controllers.API
 {

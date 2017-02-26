@@ -1,7 +1,7 @@
 ﻿
 namespace TT.Tests.Builders.Item
 {
-    public class ItemBuilder : Builder<TT.Domain.Entities.Items.Item, int>
+    public class ItemBuilder : Builder<TT.Domain.Items.Entities.Item, int>
     {
         public ItemBuilder()
         {

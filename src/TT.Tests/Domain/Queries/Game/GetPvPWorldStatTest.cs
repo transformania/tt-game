@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain;
-using TT.Domain.Queries.Game;
+using TT.Domain.World.Queries;
 using TT.Tests.Builders.Game;
 
 namespace TT.Tests.Domain.Queries.Game

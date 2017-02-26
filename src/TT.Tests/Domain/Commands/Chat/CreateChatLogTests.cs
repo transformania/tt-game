@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
-using TT.Domain.Commands.Chat;
-using TT.Domain.Entities.Chat;
+using TT.Domain.Chat.Commands;
+using TT.Domain.Chat.Entities;
 
 namespace TT.Tests.Domain.Commands.Chat
 {

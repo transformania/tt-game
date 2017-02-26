@@ -1,9 +1,9 @@
 ﻿using System.Web.Mvc;
 using TT.Domain;
-using TT.Domain.Commands.Identity;
-using TT.Domain.Commands.Players;
-using TT.Domain.DTOs.Identity;
-using TT.Domain.Queries.Identity;
+using TT.Domain.Exceptions;
+using TT.Domain.Identity.Commands;
+using TT.Domain.Identity.Queries;
+using TT.Domain.Players.Commands;
 using TT.Domain.Statics;
 
 namespace TT.Web.Controllers.Admin

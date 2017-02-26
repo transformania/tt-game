@@ -1,4 +1,4 @@
-﻿using TT.Domain.Entities.Forms;
+﻿using TT.Domain.Forms.Entities;
 
 namespace TT.Tests.Builders.Form
 {

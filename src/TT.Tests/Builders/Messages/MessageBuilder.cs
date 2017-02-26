@@ -1,5 +1,5 @@
 ﻿using System;
-using TT.Domain.Entities.Messages;
+using TT.Domain.Messages.Entities;
 using TT.Tests.Builders.Identity;
 using TT.Tests.Builders.Item;
 using TT.Tests.Builders.Players;

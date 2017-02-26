@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace TT.Domain//.Exceptions this needs to be refactored by someone with ReSharper
+namespace TT.Domain.Exceptions//.Exceptions this needs to be refactored by someone with ReSharper
 {
     [Serializable]
     public class DomainException : Exception

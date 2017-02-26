@@ -1,4 +1,4 @@
-﻿using TT.Domain.Entities.Assets;
+﻿using TT.Domain.Assets.Entities;
 using TT.Domain.Statics;
 using TT.Tests.Builders.AI;
 using TT.Tests.Builders.Item;

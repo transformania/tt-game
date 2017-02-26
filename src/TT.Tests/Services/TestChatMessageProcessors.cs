@@ -6,7 +6,7 @@ using NSubstitute;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Abstract;
-using TT.Domain.Queries.DMRoll;
+using TT.Domain.Chat.Queries;
 using TT.Domain.Statics;
 using TT.Web.Services;
 

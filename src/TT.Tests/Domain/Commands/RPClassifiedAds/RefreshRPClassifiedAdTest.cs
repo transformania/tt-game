@@ -3,10 +3,10 @@ using NUnit.Framework;
 using System;
 using System.Linq;
 using System.Threading;
-using TT.Domain.Commands.RPClassifiedAds;
-using TT.Domain.Entities.Identity;
+using TT.Domain.ClassifiedAds.Commands;
 using TT.Domain.Entities.RPClassifiedAds;
 using TT.Domain.Exceptions.RPClassifiedAds;
+using TT.Domain.Identity.Entities;
 using TT.Tests.Builders.Identity;
 using TT.Tests.Builders.RPClassifiedAds;
 

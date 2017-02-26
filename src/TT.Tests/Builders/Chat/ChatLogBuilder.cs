@@ -1,4 +1,4 @@
-﻿using TT.Domain.Entities.Chat;
+﻿using TT.Domain.Chat.Entities;
 
 namespace TT.Tests.Builders.Chat
 {

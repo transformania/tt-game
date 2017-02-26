@@ -3,10 +3,11 @@ using NUnit.Framework;
 using FluentAssertions;
 using System.Linq;
 using TT.Domain;
-using TT.Domain.Entities.Assets;
+using TT.Domain.Assets.Commands;
+using TT.Domain.Assets.Entities;
+using TT.Domain.Exceptions;
 using TT.Tests.Builders.Item;
 using TT.Tests.Builders.Assets;
-using TT.Domain.Commands.Assets;
 
 namespace TT.Tests.Domain.Commands.Assets
 {

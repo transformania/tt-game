@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using TT.Domain.Models;
 
-//public decimal FromItems_HealthBonusPercent { get; set; }
+namespace TT.Domain.ViewModels
+{ //public decimal FromItems_HealthBonusPercent { get; set; }
 //     public decimal FromItems_ManaBonusPercent { get; set; }
 //     public decimal FromItems_ExtraSkillCriticalPercent { get; set; }
 //     public decimal FromItems_HealthRecoveryPerUpdate { get; set; }
@@ -21,8 +22,6 @@ using TT.Domain.Models;
 //     public decimal FromItems_SpellTFEnergyDamageResistance { get; set; }
 //     public decimal FromItems_ExtraInventorySpace { get; set; }
 
-namespace TT.Domain.Statics
-{
     public static class BalanceStatics
     {
         public const decimal HealthBonusPercent__Value = 5;
@@ -98,10 +97,7 @@ namespace TT.Domain.Statics
         public const decimal ExtraInventorySpace__NegativeCap = -80;
 
     }
-}
 
-namespace TT.Domain.ViewModels
-{
     public class BalanceBox
     {
         
@@ -634,9 +630,9 @@ namespace TT.Domain.ViewModels
                 addme = new BuffStat
                 {
                     Amount = input.HealthBonusPercent,
-                    Value = Statics.BalanceStatics.HealthBonusPercent__Value,
-                    NegativeModifier = Statics.BalanceStatics.HealthBonusPercent__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.HealthBonusPercent__NegativeCap,
+                    Value = BalanceStatics.HealthBonusPercent__Value,
+                    NegativeModifier = BalanceStatics.HealthBonusPercent__NegativeModifier,
+                    NegativeCap = BalanceStatics.HealthBonusPercent__NegativeCap,
                 };
                 this.BuffStats.Add(addme);
             }
@@ -645,9 +641,9 @@ namespace TT.Domain.ViewModels
                 addme = new BuffStat
                 {
                     Amount = input.ManaBonusPercent,
-                    Value = Statics.BalanceStatics.ManaBonusPercent__Value,
-                    NegativeModifier = Statics.BalanceStatics.ManaBonusPercent__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.ManaBonusPercent__NegativeCap,
+                    Value = BalanceStatics.ManaBonusPercent__Value,
+                    NegativeModifier = BalanceStatics.ManaBonusPercent__NegativeModifier,
+                    NegativeCap = BalanceStatics.ManaBonusPercent__NegativeCap,
                 };
                 this.BuffStats.Add(addme);
             }
@@ -656,9 +652,9 @@ namespace TT.Domain.ViewModels
                 addme = new BuffStat
                 {
                     Amount = input.ExtraSkillCriticalPercent,
-                    Value = Statics.BalanceStatics.ExtraSkillCriticalPercent__Value,
-                    NegativeModifier = Statics.BalanceStatics.ExtraSkillCriticalPercent__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.ExtraSkillCriticalPercent__NegativeCap,
+                    Value = BalanceStatics.ExtraSkillCriticalPercent__Value,
+                    NegativeModifier = BalanceStatics.ExtraSkillCriticalPercent__NegativeModifier,
+                    NegativeCap = BalanceStatics.ExtraSkillCriticalPercent__NegativeCap,
                 };
                 this.BuffStats.Add(addme);
             }
@@ -667,9 +663,9 @@ namespace TT.Domain.ViewModels
                 addme = new BuffStat
                 {
                     Amount = input.HealthRecoveryPerUpdate,
-                    Value = Statics.BalanceStatics.HealthRecoveryPerUpdate__Value,
-                    NegativeModifier = Statics.BalanceStatics.HealthRecoveryPerUpdate__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.HealthRecoveryPerUpdate__NegativeCap,
+                    Value = BalanceStatics.HealthRecoveryPerUpdate__Value,
+                    NegativeModifier = BalanceStatics.HealthRecoveryPerUpdate__NegativeModifier,
+                    NegativeCap = BalanceStatics.HealthRecoveryPerUpdate__NegativeCap,
                 };
                 this.BuffStats.Add(addme);
             }
@@ -678,9 +674,9 @@ namespace TT.Domain.ViewModels
                 addme = new BuffStat
                 {
                     Amount = input.ManaRecoveryPerUpdate,
-                    Value = Statics.BalanceStatics.ManaRecoveryPerUpdate__Value,
-                    NegativeModifier = Statics.BalanceStatics.ManaRecoveryPerUpdate__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.ManaRecoveryPerUpdate__NegativeCap,
+                    Value = BalanceStatics.ManaRecoveryPerUpdate__Value,
+                    NegativeModifier = BalanceStatics.ManaRecoveryPerUpdate__NegativeModifier,
+                    NegativeCap = BalanceStatics.ManaRecoveryPerUpdate__NegativeCap,
                 };
                 this.BuffStats.Add(addme);
             }
@@ -689,9 +685,9 @@ namespace TT.Domain.ViewModels
                 addme = new BuffStat
                 {
                     Amount = input.SneakPercent,
-                    Value = Statics.BalanceStatics.SneakPercent__Value,
-                    NegativeModifier = Statics.BalanceStatics.SneakPercent__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.SneakPercent__NegativeCap,
+                    Value = BalanceStatics.SneakPercent__Value,
+                    NegativeModifier = BalanceStatics.SneakPercent__NegativeModifier,
+                    NegativeCap = BalanceStatics.SneakPercent__NegativeCap,
                 };
                 this.BuffStats.Add(addme);
             }
@@ -700,9 +696,9 @@ namespace TT.Domain.ViewModels
                 addme = new BuffStat
                 {
                     Amount = input.EvasionPercent,
-                    Value = Statics.BalanceStatics.EvasionPercent__Value,
-                    NegativeModifier = Statics.BalanceStatics.EvasionPercent__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.EvasionPercent__NegativeCap,
+                    Value = BalanceStatics.EvasionPercent__Value,
+                    NegativeModifier = BalanceStatics.EvasionPercent__NegativeModifier,
+                    NegativeCap = BalanceStatics.EvasionPercent__NegativeCap,
                 };
                 this.BuffStats.Add(addme);
             }
@@ -711,9 +707,9 @@ namespace TT.Domain.ViewModels
                 addme = new BuffStat
                 {
                     Amount = input.EvasionNegationPercent,
-                    Value = Statics.BalanceStatics.EvasionNegationPercent__Value,
-                    NegativeModifier = Statics.BalanceStatics.EvasionNegationPercent__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.EvasionNegationPercent__NegativeCap,
+                    Value = BalanceStatics.EvasionNegationPercent__Value,
+                    NegativeModifier = BalanceStatics.EvasionNegationPercent__NegativeModifier,
+                    NegativeCap = BalanceStatics.EvasionNegationPercent__NegativeCap,
                 };
                 this.BuffStats.Add(addme);
             }
@@ -722,9 +718,9 @@ namespace TT.Domain.ViewModels
                 addme = new BuffStat
                 {
                     Amount = input.MeditationExtraMana,
-                    Value = Statics.BalanceStatics.MeditationExtraMana__Value,
-                    NegativeModifier = Statics.BalanceStatics.MeditationExtraMana__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.MeditationExtraMana__NegativeCap,
+                    Value = BalanceStatics.MeditationExtraMana__Value,
+                    NegativeModifier = BalanceStatics.MeditationExtraMana__NegativeModifier,
+                    NegativeCap = BalanceStatics.MeditationExtraMana__NegativeCap,
                 };
                 this.BuffStats.Add(addme);
             }
@@ -733,9 +729,9 @@ namespace TT.Domain.ViewModels
                 addme = new BuffStat
                 {
                     Amount = input.CleanseExtraHealth,
-                    Value = Statics.BalanceStatics.CleanseExtraHealth__Value,
-                    NegativeModifier = Statics.BalanceStatics.CleanseExtraHealth__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.CleanseExtraHealth__NegativeCap,
+                    Value = BalanceStatics.CleanseExtraHealth__Value,
+                    NegativeModifier = BalanceStatics.CleanseExtraHealth__NegativeModifier,
+                    NegativeCap = BalanceStatics.CleanseExtraHealth__NegativeCap,
                 };
                 this.BuffStats.Add(addme);
             }
@@ -744,9 +740,9 @@ namespace TT.Domain.ViewModels
                 addme = new BuffStat
                 {
                     Amount = input.MoveActionPointDiscount,
-                    Value = Statics.BalanceStatics.MoveActionPointDiscount__Value,
-                    NegativeModifier = Statics.BalanceStatics.MoveActionPointDiscount__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.MoveActionPointDiscount__NegativeCap,
+                    Value = BalanceStatics.MoveActionPointDiscount__Value,
+                    NegativeModifier = BalanceStatics.MoveActionPointDiscount__NegativeModifier,
+                    NegativeCap = BalanceStatics.MoveActionPointDiscount__NegativeCap,
                 };
                 this.BuffStats.Add(addme);
             }
@@ -755,9 +751,9 @@ namespace TT.Domain.ViewModels
                 addme = new BuffStat
                 {
                     Amount = input.SpellExtraTFEnergyPercent,
-                    Value = Statics.BalanceStatics.SpellExtraTFEnergyPercent__Value,
-                    NegativeModifier = Statics.BalanceStatics.SpellExtraTFEnergyPercent__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.SpellExtraTFEnergyPercent__NegativeCap,
+                    Value = BalanceStatics.SpellExtraTFEnergyPercent__Value,
+                    NegativeModifier = BalanceStatics.SpellExtraTFEnergyPercent__NegativeModifier,
+                    NegativeCap = BalanceStatics.SpellExtraTFEnergyPercent__NegativeCap,
                 };
                 this.BuffStats.Add(addme);
             }
@@ -766,9 +762,9 @@ namespace TT.Domain.ViewModels
                 addme = new BuffStat
                 {
                     Amount = input.SpellExtraHealthDamagePercent,
-                    Value = Statics.BalanceStatics.SpellExtraHealthDamagePercent__Value,
-                    NegativeModifier = Statics.BalanceStatics.SpellExtraHealthDamagePercent__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.SpellExtraHealthDamagePercent__NegativeCap,
+                    Value = BalanceStatics.SpellExtraHealthDamagePercent__Value,
+                    NegativeModifier = BalanceStatics.SpellExtraHealthDamagePercent__NegativeModifier,
+                    NegativeCap = BalanceStatics.SpellExtraHealthDamagePercent__NegativeCap,
                 };
                 this.BuffStats.Add(addme);
             }
@@ -777,9 +773,9 @@ namespace TT.Domain.ViewModels
                 addme = new BuffStat
                 {
                     Amount = input.CleanseExtraTFEnergyRemovalPercent,
-                    Value = Statics.BalanceStatics.CleanseExtraTFEnergyRemovalPercent__Value,
-                    NegativeModifier = Statics.BalanceStatics.CleanseExtraTFEnergyRemovalPercent__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.CleanseExtraTFEnergyRemovalPercent__NegativeCap,
+                    Value = BalanceStatics.CleanseExtraTFEnergyRemovalPercent__Value,
+                    NegativeModifier = BalanceStatics.CleanseExtraTFEnergyRemovalPercent__NegativeModifier,
+                    NegativeCap = BalanceStatics.CleanseExtraTFEnergyRemovalPercent__NegativeCap,
                 };
                 this.BuffStats.Add(addme);
             }
@@ -788,9 +784,9 @@ namespace TT.Domain.ViewModels
                 addme = new BuffStat
                 {
                     Amount = input.SpellMisfireChanceReduction,
-                    Value = Statics.BalanceStatics.SpellMisfireChanceReduction__Value,
-                    NegativeModifier = Statics.BalanceStatics.SpellMisfireChanceReduction__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.SpellMisfireChanceReduction__NegativeCap,
+                    Value = BalanceStatics.SpellMisfireChanceReduction__Value,
+                    NegativeModifier = BalanceStatics.SpellMisfireChanceReduction__NegativeModifier,
+                    NegativeCap = BalanceStatics.SpellMisfireChanceReduction__NegativeCap,
                 };
                 this.BuffStats.Add(addme);
             }
@@ -800,9 +796,9 @@ namespace TT.Domain.ViewModels
                 addme = new BuffStat
                 {
                     Amount = input.SpellHealthDamageResistance,
-                    Value = Statics.BalanceStatics.SpellHealthDamageResistance__Value,
-                    NegativeModifier = Statics.BalanceStatics.SpellHealthDamageResistance__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.SpellHealthDamageResistance__NegativeCap,
+                    Value = BalanceStatics.SpellHealthDamageResistance__Value,
+                    NegativeModifier = BalanceStatics.SpellHealthDamageResistance__NegativeModifier,
+                    NegativeCap = BalanceStatics.SpellHealthDamageResistance__NegativeCap,
                 };
                 this.BuffStats.Add(addme);
             }
@@ -812,9 +808,9 @@ namespace TT.Domain.ViewModels
                 addme = new BuffStat
                 {
                     Amount = input.SpellTFEnergyDamageResistance,
-                    Value = Statics.BalanceStatics.SpellTFEnergyDamageResistance__Value,
-                    NegativeModifier = Statics.BalanceStatics.SpellTFEnergyDamageResistance__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.SpellTFEnergyDamageResistance__NegativeCap,
+                    Value = BalanceStatics.SpellTFEnergyDamageResistance__Value,
+                    NegativeModifier = BalanceStatics.SpellTFEnergyDamageResistance__NegativeModifier,
+                    NegativeCap = BalanceStatics.SpellTFEnergyDamageResistance__NegativeCap,
                 };
                 this.BuffStats.Add(addme);
             }
@@ -824,9 +820,9 @@ namespace TT.Domain.ViewModels
                 addme = new BuffStat
                 {
                     Amount = input.ExtraInventorySpace,
-                    Value = Statics.BalanceStatics.ExtraInventorySpace__Value,
-                    NegativeModifier = Statics.BalanceStatics.ExtraInventorySpace__NegativeModifier,
-                    NegativeCap = Statics.BalanceStatics.ExtraInventorySpace__NegativeCap,
+                    Value = BalanceStatics.ExtraInventorySpace__Value,
+                    NegativeModifier = BalanceStatics.ExtraInventorySpace__NegativeModifier,
+                    NegativeCap = BalanceStatics.ExtraInventorySpace__NegativeCap,
                 };
                 this.BuffStats.Add(addme);
             }

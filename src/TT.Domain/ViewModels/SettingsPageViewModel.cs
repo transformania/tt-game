@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using TT.Domain.DTOs.Identity;
+using TT.Domain.Identity.DTOs;
 
 namespace TT.Domain.ViewModels
 {

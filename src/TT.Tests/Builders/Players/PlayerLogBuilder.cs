@@ -1,4 +1,4 @@
-﻿using TT.Domain.Entities.Players;
+﻿using TT.Domain.Players.Entities;
 
 namespace TT.Tests.Builders.Players
 {

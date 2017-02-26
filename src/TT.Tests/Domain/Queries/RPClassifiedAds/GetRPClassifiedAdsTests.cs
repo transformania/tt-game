@@ -3,9 +3,9 @@ using FluentAssertions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using TT.Domain.Entities.Identity;
+using TT.Domain.ClassifiedAds.Queries;
 using TT.Domain.Entities.RPClassifiedAds;
-using TT.Domain.Queries.RPClassifiedAds;
+using TT.Domain.Identity.Entities;
 using TT.Tests.Builders.Identity;
 using TT.Tests.Builders.RPClassifiedAds;
 

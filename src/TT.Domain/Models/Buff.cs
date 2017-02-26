@@ -1,4 +1,4 @@
-﻿namespace TT.Domain
+﻿namespace TT.Domain.Models
 {
     public class Buff
     {

@@ -1,5 +1,5 @@
 ﻿using System;
-using TT.Domain.Entities.NPCs;
+using TT.Domain.AI.Entities;
 using TT.Tests.Builders.Identity;
 
 namespace TT.Tests.Builders.AI

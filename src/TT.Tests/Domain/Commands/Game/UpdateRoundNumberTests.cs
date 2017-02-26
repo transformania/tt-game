@@ -3,8 +3,9 @@ using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain;
-using TT.Domain.Commands.Game;
-using TT.Domain.Entities.Game;
+using TT.Domain.Exceptions;
+using TT.Domain.World.Commands;
+using TT.Domain.World.Entities;
 using TT.Tests.Builders.Game;
 
 namespace TT.Tests.Domain.Commands.Game

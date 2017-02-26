@@ -11,8 +11,8 @@ using TT.Domain.Abstract;
 using TT.Domain.Concrete;
 using TT.Domain.Models;
 using TT.Domain.Procedures;
-using TT.Domain.Queries.Game;
 using TT.Domain.Statics;
+using TT.Domain.World.Queries;
 using TT.Web;
 using TT.Web.Models;
 

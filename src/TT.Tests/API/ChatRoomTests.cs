@@ -2,8 +2,8 @@
 using System.Web.Http.Results;
 using FluentAssertions;
 using NUnit.Framework;
-using TT.Domain.Commands.Chat;
-using TT.Domain.DTOs.Chat;
+using TT.Domain.Chat.Commands;
+using TT.Domain.Chat.DTOs;
 using TT.Tests.Builders.Chat;
 using TT.Tests.Builders.Identity;
 using TT.Web.Controllers.API;

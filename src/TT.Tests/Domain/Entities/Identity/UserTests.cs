@@ -2,7 +2,7 @@
 using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
-using TT.Domain.Entities.Players;
+using TT.Domain.Identity.Entities;
 using TT.Domain.Procedures;
 using TT.Tests.Builders.Identity;
 

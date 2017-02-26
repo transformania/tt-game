@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain;
-using TT.Domain.Commands.Identity;
-using TT.Domain.Entities.Identities;
-using TT.Domain.Entities.Identity;
+using TT.Domain.Exceptions;
+using TT.Domain.Identity.Commands;
+using TT.Domain.Identity.Entities;
 using TT.Tests.Builders.Identity;
 
 namespace TT.Tests.Domain.Commands.Identity

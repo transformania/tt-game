@@ -1,5 +1,4 @@
 ﻿using System;
-using TT.Domain.DTOs;
 
 namespace TT.Domain.Entities
 {

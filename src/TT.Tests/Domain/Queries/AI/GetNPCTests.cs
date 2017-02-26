@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain;
-using TT.Domain.Queries.AI;
+using TT.Domain.AI.Queries;
 using TT.Tests.Builders.AI;
 
 namespace TT.Tests.Domain.Queries.AI

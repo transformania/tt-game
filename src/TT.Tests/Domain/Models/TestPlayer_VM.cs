@@ -4,11 +4,11 @@ using NSubstitute;
 using NUnit.Framework;
 using TT.Domain;
 using TT.Domain.Abstract;
-using TT.Domain.Commands.Player;
 using TT.Domain.Models;
 using TT.Tests.Services;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using TT.Domain.Players.Commands;
 
 namespace TT.Tests.Domain.Models
 {

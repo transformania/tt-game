@@ -1,8 +1,8 @@
 ﻿using System;
 using FluentAssertions;
 using NUnit.Framework;
-using TT.Domain.Commands.Items;
-using TT.Domain.Entities.Items;
+using TT.Domain.Items.Commands;
+using TT.Domain.Items.Entities;
 using TT.Domain.Statics;
 using TT.Tests.Builders.Item;
 using TT.Tests.Builders.Players;

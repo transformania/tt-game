@@ -2,7 +2,7 @@
 using FluentAssertions;
 using NUnit.Framework;
 using TT.Domain;
-using TT.Domain.Queries.Skills;
+using TT.Domain.Skills.Queries;
 using TT.Tests.Builders.Players;
 using TT.Tests.Builders.Skills;
 

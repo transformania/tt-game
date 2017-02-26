@@ -1,6 +1,6 @@
-﻿using TT.Domain.Entities.Effects;
-using TT.Domain.Entities.Forms;
-using TT.Domain.Entities.Item;
+﻿using TT.Domain.Effects.Entities;
+using TT.Domain.Forms.Entities;
+using TT.Domain.Items.Entities;
 
 namespace TT.Domain.Entities.Skills
 {

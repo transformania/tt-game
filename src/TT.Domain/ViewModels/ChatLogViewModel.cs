@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TT.Domain.Chat.DTOs;
 
 namespace TT.Domain.ViewModels
 {
@@ -6,6 +7,6 @@ namespace TT.Domain.ViewModels
     {
         public string Room { get; set; }
         public string Filter { get; set; }
-        public IEnumerable<DTOs.Chat.ChatLogDetail> ChatLog { get; set; }
+        public IEnumerable<ChatLogDetail> ChatLog { get; set; }
     }
 }

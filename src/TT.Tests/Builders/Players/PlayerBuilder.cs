@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using TT.Domain.Entities.Players;
 using TT.Domain.Entities.TFEnergies;
+using TT.Domain.Players.Entities;
 using TT.Domain.Statics;
 
 namespace TT.Tests.Builders.Players
@@ -33,7 +33,7 @@ namespace TT.Tests.Builders.Players
             With(p => p.OnlineActivityTimestamp, DateTime.Now);
             With(p => p.TFEnergies, new List<TFEnergy>());
             With(p => p.PlayerLogs, new List<PlayerLog>());
-            With(p => p.Items, new List<TT.Domain.Entities.Items.Item>());
+            With(p => p.Items, new List<TT.Domain.Items.Entities.Item>());
             With(p => p.ShoutsRemaining, 1);
         }
     }

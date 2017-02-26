@@ -22,7 +22,6 @@ using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 using System.Web.Mvc.Html;
 using System.Web.Routing;
-using TT.Domain.Assets.Commands;
 using TT.Web.Controllers.Generated;
 namespace TT.Web.Controllers.Admin
 {
@@ -184,10 +183,10 @@ namespace TT.Web.Controllers.Admin
         }
 
         [NonAction]
-        partial void EditSendOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, UpdateRestockItem cmd);
+        partial void EditSendOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, TT.Domain.Assets.Commands.UpdateRestockItem cmd);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult EditSend(UpdateRestockItem cmd)
+        public override System.Web.Mvc.ActionResult EditSend(TT.Domain.Assets.Commands.UpdateRestockItem cmd)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.EditSend);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "cmd", cmd);
@@ -207,10 +206,10 @@ namespace TT.Web.Controllers.Admin
         }
 
         [NonAction]
-        partial void CreateSendOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, CreateRestockItem cmd);
+        partial void CreateSendOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, TT.Domain.Assets.Commands.CreateRestockItem cmd);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult CreateSend(CreateRestockItem cmd)
+        public override System.Web.Mvc.ActionResult CreateSend(TT.Domain.Assets.Commands.CreateRestockItem cmd)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.CreateSend);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "cmd", cmd);

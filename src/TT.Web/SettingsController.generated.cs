@@ -22,7 +22,6 @@ using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 using System.Web.Mvc.Html;
 using System.Web.Routing;
-using TT.Domain.ClassifiedAds.DTOs;
 using TT.Web.Controllers.Generated;
 namespace TT.Web.Controllers
 {
@@ -1036,10 +1035,10 @@ namespace TT.Web.Controllers
         }
 
         [NonAction]
-        partial void CreateRPClassifiedAdOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, RPClassifiedAdDetail input);
+        partial void CreateRPClassifiedAdOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, TT.Domain.ClassifiedAds.DTOs.RPClassifiedAdDetail input);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult CreateRPClassifiedAd(RPClassifiedAdDetail input)
+        public override System.Web.Mvc.ActionResult CreateRPClassifiedAd(TT.Domain.ClassifiedAds.DTOs.RPClassifiedAdDetail input)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.CreateRPClassifiedAd);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "input", input);
@@ -1048,10 +1047,10 @@ namespace TT.Web.Controllers
         }
 
         [NonAction]
-        partial void UpdateRPClassifiedAdOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, RPClassifiedAdDetail input);
+        partial void UpdateRPClassifiedAdOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, TT.Domain.ClassifiedAds.DTOs.RPClassifiedAdDetail input);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult UpdateRPClassifiedAd(RPClassifiedAdDetail input)
+        public override System.Web.Mvc.ActionResult UpdateRPClassifiedAd(TT.Domain.ClassifiedAds.DTOs.RPClassifiedAdDetail input)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateRPClassifiedAd);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "input", input);

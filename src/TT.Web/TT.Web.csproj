@@ -316,9 +316,6 @@
     </Compile>
     <Compile Include="Extensions\HttpRequestExtensions.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
-    <Compile Include="HomeController.generated.cs">
-      <DependentUpon>T4MVC.tt</DependentUpon>
-    </Compile>
     <Compile Include="Hubs\ChatHub.cs" />
     <Compile Include="Hubs\DuelHub.cs" />
     <Compile Include="Hubs\NoticeHub.cs" />
@@ -375,6 +372,7 @@
     <Compile Include="TransformaniaTimeController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\SetNicknameViewModel.cs" />
     <Content Include="Characters\All Characters %2823%29.txt" />
     <Content Include="Characters\All Characters %2825%29.txt" />
     <Content Include="Characters\Brianne Smith.txt" />
@@ -395,7 +393,6 @@
       <DependentUpon>custom.css</DependentUpon>
     </Content>
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\TransformaniaTimeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -638,9 +635,6 @@
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Manage.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
@@ -789,7 +783,6 @@
     <Content Include="Views\Settings\PlayerStatsLeaders.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_16.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\XP\Alpha_16.cshtml" />
-    <Content Include="Views\TransformaniaTime\FashionWars.cshtml" />
     <Content Include="Views\Settings\Polls\Closed\poll1.cshtml" />
     <Content Include="Views\PvPAdmin\DungeonTest.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\XP\Alpha_17.cshtml" />
@@ -828,7 +821,6 @@
     <Content Include="Views\PvP\RoundLeaderboards\XP\Alpha_21.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_21.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Statistics\Alpha_21.cshtml" />
-    <Content Include="Views\TransformaniaTime\bombie.cshtml" />
     <Content Include="Views\NPC\TalkToLorekeeper.cshtml" />
     <Content Include="Views\NPC\LorekeeperPurchaseBook.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\XP\Alpha_22.cshtml" />

@@ -4,13 +4,6 @@ using TT.Domain.Models;
 
 namespace TT.Domain.ViewModels
 {
-
-    public class MessageViewModel {
-        public Message dbMessage { get; set;}
-        public string SenderName { get; set;}
-        public string SentToName { get; set; }
-    }
-
     public class MessageBag
     {
         public IEnumerable<MessageDetail> Messages { get; set; }

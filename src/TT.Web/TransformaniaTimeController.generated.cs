@@ -75,8 +75,6 @@ namespace TT.Web.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionNamesClass
         {
-            public readonly string FashionWars = ("FashionWars").ToLowerInvariant();
-            public readonly string Bombie = ("Bombie").ToLowerInvariant();
             public readonly string Play = ("Play").ToLowerInvariant();
         }
 
@@ -91,12 +89,8 @@ namespace TT.Web.Controllers
             public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
             public class _ViewNamesClass
             {
-                public readonly string bombie = "bombie";
-                public readonly string FashionWars = "FashionWars";
                 public readonly string Play = "Play";
             }
-            public readonly string bombie = "~/Views/TransformaniaTime/bombie.cshtml";
-            public readonly string FashionWars = "~/Views/TransformaniaTime/FashionWars.cshtml";
             public readonly string Play = "~/Views/TransformaniaTime/Play.cshtml";
         }
     }
@@ -105,28 +99,6 @@ namespace TT.Web.Controllers
     public partial class T4MVC_TransformaniaTimeController : TT.Web.Controllers.TransformaniaTimeController
     {
         public T4MVC_TransformaniaTimeController() : base(Dummy.Instance) { }
-
-        [NonAction]
-        partial void FashionWarsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult FashionWars()
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.FashionWars);
-            FashionWarsOverride(callInfo);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void BombieOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult Bombie()
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Bombie);
-            BombieOverride(callInfo);
-            return callInfo;
-        }
 
         [NonAction]
         partial void PlayOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);

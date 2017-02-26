@@ -7,32 +7,15 @@ namespace TT.Web.Controllers
 {
     public partial class TransformaniaTimeController : Controller
     {
-        public virtual ActionResult FashionWars()
-        {
-            return View();
-        }
-
-        public virtual ActionResult Bombie()
-        {
-            return View();
-        }
-
         public virtual ActionResult Play()
         {
-            // using (var db = new StatsContext())
-            // {
-            //     GameshowStats newstat = new GameshowStats();
-            //     newstat.FinishedTransformations = 5;
-
-            //     db.GameshowStats.Add(newstat);
-            //  }
             return View();
         }
 
         public void PostStat(string message)
         {
-            EFGameshowStatsRepository statRepo = new EFGameshowStatsRepository();
-            GameshowStats updatedStat = statRepo.GameshowStatss.FirstOrDefault();
+            var statRepo = new EFGameshowStatsRepository();
+            var updatedStat = statRepo.GameshowStatss.FirstOrDefault();
 
             if (message == "AI full TF")
             {
@@ -111,8 +94,6 @@ namespace TT.Web.Controllers
             {
                 updatedStat.Target_Losses++;
             }
-
-
 
             statRepo.SaveGameshowStats(updatedStat);
         }

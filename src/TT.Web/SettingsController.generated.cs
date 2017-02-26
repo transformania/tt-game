@@ -740,10 +740,10 @@ namespace TT.Web.Controllers
         }
 
         [NonAction]
-        partial void SetNicknameSendOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, TT.Domain.Models.Message input);
+        partial void SetNicknameSendOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, TT.Web.ViewModels.SetNicknameViewModel input);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult SetNicknameSend(TT.Domain.Models.Message input)
+        public override System.Web.Mvc.ActionResult SetNicknameSend(TT.Web.ViewModels.SetNicknameViewModel input)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SetNicknameSend);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "input", input);

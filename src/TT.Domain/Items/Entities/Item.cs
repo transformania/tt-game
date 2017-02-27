@@ -75,7 +75,10 @@ namespace TT.Domain.Items.Entities
                 IsPermanent = false,
                 ItemSource = itemSource,
                 dbName = itemSource.DbName,
-                PvPEnabled = GameModeStatics.Any
+                PvPEnabled = GameModeStatics.Any,
+                TimeDropped = DateTime.UtcNow,
+                LastSouledTimestamp = DateTime.UtcNow.AddYears(-1),
+                LastSold = DateTime.UtcNow
             };
         }
 

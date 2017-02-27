@@ -64,9 +64,15 @@ namespace TT.Tests.Domain.Commands.AI
             DomainRegistry.Repository.Execute(new RestockNPC {BotId = player.BotId});
 
             var playerLoaded = DataContext.AsQueryable<Player>().First();
-            playerLoaded.Items.Count().Should().Be(4);
+            playerLoaded.Items.Count.Should().Be(4);
 
-            var itemNames = playerLoaded.Items.Select(i => i.ItemSource.FriendlyName);
+            var itemDates = playerLoaded.Items.Select(i => i.LastSold).ToList();
+            itemDates.ElementAt(0).Should().BeCloseTo(DateTime.UtcNow, 60000);
+            itemDates.ElementAt(1).Should().BeCloseTo(DateTime.UtcNow, 60000);
+            itemDates.ElementAt(2).Should().BeCloseTo(DateTime.UtcNow, 60000);
+            itemDates.ElementAt(3).Should().BeCloseTo(DateTime.UtcNow, 60000);
+
+            var itemNames = playerLoaded.Items.Select(i => i.ItemSource.FriendlyName).ToList();
 
             itemNames.ElementAt(0).Should().Be("socks");
             itemNames.ElementAt(1).Should().Be("hats");

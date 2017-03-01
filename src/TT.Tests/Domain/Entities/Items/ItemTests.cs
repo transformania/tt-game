@@ -21,16 +21,13 @@ namespace TT.Tests.Domain.Entities.Items
 
             var itemSource = new ItemSourceBuilder().BuildAndSave();
 
-            var createItemCmd = new CreateItem
-            {
-                
-            };
+            var createItemCmd = new CreateItem();
 
             var item = Item.Create(player, null, itemSource, createItemCmd);
 
             var timeDifference = Math.Abs((item.LastSouledTimestamp - DateTime.UtcNow).TotalDays);
 
-            timeDifference.Should().BeGreaterThan(365);
+            timeDifference.Should().BeGreaterThan(360);
         }
 
         [Test]
@@ -42,10 +39,7 @@ namespace TT.Tests.Domain.Entities.Items
 
             var itemSource = new ItemSourceBuilder().BuildAndSave();
 
-            var createItemCmd = new CreateItem
-            {
-
-            };
+            var createItemCmd = new CreateItem();
 
             var item = Item.Create(player, null, itemSource, createItemCmd);
 

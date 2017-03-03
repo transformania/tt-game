@@ -68,7 +68,7 @@ namespace TT.Web.Controllers
 
         public virtual ActionResult AllLocations()
         {
-            List<Location> output = LocationsStatics.LocationList.GetLocation.Where(s => !s.dbName.Contains("_dungeon")).ToList();
+            List<Location> output = LocationsStatics.LocationList.GetLocation.Where(s => s.Region!="dungeon").ToList();
             return PartialView(output);
         }
 

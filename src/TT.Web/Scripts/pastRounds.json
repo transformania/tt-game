@@ -327,6 +327,14 @@
       "item": true,
       "xp": true,
       "achievement": true
+    },
+    {
+      "number": 42,
+      "name": "Alpha R42 (Second Era of Dark Blade)",
+      "pvp": true,
+      "item": true,
+      "xp": true,
+      "achievement": true
     }
   ]
 }

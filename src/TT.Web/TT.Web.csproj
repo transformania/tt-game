@@ -436,6 +436,10 @@
     </None>
     <None Include="T4MVC.tt.settings.xml" />
     <Content Include="XMLs\validChatColors.txt" />
+    <Content Include="Views\PvP\RoundLeaderboards\Alpha_42.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\Items\Alpha_42.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\Statistics\Alpha_42.cshtml" />
+    <Content Include="Views\PvP\RoundLeaderboards\XP\Alpha_42.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Characters\Caroline Plessica.txt" />

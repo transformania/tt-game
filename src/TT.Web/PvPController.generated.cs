@@ -735,6 +735,7 @@ namespace TT.Web.Controllers
                     public readonly string Alpha_4 = "Alpha_4";
                     public readonly string Alpha_40 = "Alpha_40";
                     public readonly string Alpha_41 = "Alpha_41";
+                    public readonly string Alpha_42 = "Alpha_42";
                     public readonly string Alpha_5 = "Alpha_5";
                     public readonly string Alpha_6 = "Alpha_6";
                     public readonly string Alpha_7 = "Alpha_7";
@@ -772,6 +773,7 @@ namespace TT.Web.Controllers
                 public readonly string Alpha_4 = "~/Views/PvP/RoundLeaderboards/Alpha_4.cshtml";
                 public readonly string Alpha_40 = "~/Views/PvP/RoundLeaderboards/Alpha_40.cshtml";
                 public readonly string Alpha_41 = "~/Views/PvP/RoundLeaderboards/Alpha_41.cshtml";
+                public readonly string Alpha_42 = "~/Views/PvP/RoundLeaderboards/Alpha_42.cshtml";
                 public readonly string Alpha_5 = "~/Views/PvP/RoundLeaderboards/Alpha_5.cshtml";
                 public readonly string Alpha_6 = "~/Views/PvP/RoundLeaderboards/Alpha_6.cshtml";
                 public readonly string Alpha_7 = "~/Views/PvP/RoundLeaderboards/Alpha_7.cshtml";
@@ -816,6 +818,7 @@ namespace TT.Web.Controllers
                         public readonly string Alpha_39 = "Alpha_39";
                         public readonly string Alpha_40 = "Alpha_40";
                         public readonly string Alpha_41 = "Alpha_41";
+                        public readonly string Alpha_42 = "Alpha_42";
                     }
                     public readonly string Alpha_12 = "~/Views/PvP/RoundLeaderboards/Items/Alpha_12.cshtml";
                     public readonly string Alpha_13 = "~/Views/PvP/RoundLeaderboards/Items/Alpha_13.cshtml";
@@ -847,6 +850,7 @@ namespace TT.Web.Controllers
                     public readonly string Alpha_39 = "~/Views/PvP/RoundLeaderboards/Items/Alpha_39.cshtml";
                     public readonly string Alpha_40 = "~/Views/PvP/RoundLeaderboards/Items/Alpha_40.cshtml";
                     public readonly string Alpha_41 = "~/Views/PvP/RoundLeaderboards/Items/Alpha_41.cshtml";
+                    public readonly string Alpha_42 = "~/Views/PvP/RoundLeaderboards/Items/Alpha_42.cshtml";
                 }
                 static readonly _StatisticsClass s_Statistics = new _StatisticsClass();
                 public _StatisticsClass Statistics { get { return s_Statistics; } }
@@ -882,6 +886,7 @@ namespace TT.Web.Controllers
                         public readonly string Alpha_39 = "Alpha_39";
                         public readonly string Alpha_40 = "Alpha_40";
                         public readonly string Alpha_41 = "Alpha_41";
+                        public readonly string Alpha_42 = "Alpha_42";
                     }
                     public readonly string Alpha_17 = "~/Views/PvP/RoundLeaderboards/Statistics/Alpha_17.cshtml";
                     public readonly string Alpha_18 = "~/Views/PvP/RoundLeaderboards/Statistics/Alpha_18.cshtml";
@@ -908,6 +913,7 @@ namespace TT.Web.Controllers
                     public readonly string Alpha_39 = "~/Views/PvP/RoundLeaderboards/Statistics/Alpha_39.cshtml";
                     public readonly string Alpha_40 = "~/Views/PvP/RoundLeaderboards/Statistics/Alpha_40.cshtml";
                     public readonly string Alpha_41 = "~/Views/PvP/RoundLeaderboards/Statistics/Alpha_41.cshtml";
+                    public readonly string Alpha_42 = "~/Views/PvP/RoundLeaderboards/Statistics/Alpha_42.cshtml";
                 }
                 static readonly _XPClass s_XP = new _XPClass();
                 public _XPClass XP { get { return s_XP; } }
@@ -948,6 +954,7 @@ namespace TT.Web.Controllers
                         public readonly string Alpha_39 = "Alpha_39";
                         public readonly string Alpha_40 = "Alpha_40";
                         public readonly string Alpha_41 = "Alpha_41";
+                        public readonly string Alpha_42 = "Alpha_42";
                     }
                     public readonly string Alpha_12 = "~/Views/PvP/RoundLeaderboards/XP/Alpha_12.cshtml";
                     public readonly string Alpha_13 = "~/Views/PvP/RoundLeaderboards/XP/Alpha_13.cshtml";
@@ -979,6 +986,7 @@ namespace TT.Web.Controllers
                     public readonly string Alpha_39 = "~/Views/PvP/RoundLeaderboards/XP/Alpha_39.cshtml";
                     public readonly string Alpha_40 = "~/Views/PvP/RoundLeaderboards/XP/Alpha_40.cshtml";
                     public readonly string Alpha_41 = "~/Views/PvP/RoundLeaderboards/XP/Alpha_41.cshtml";
+                    public readonly string Alpha_42 = "~/Views/PvP/RoundLeaderboards/XP/Alpha_42.cshtml";
                 }
             }
         }

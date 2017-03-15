@@ -31,8 +31,8 @@
                         @{
                             if (User.IsInRole(TT.Domain.Statics.PvPStatics.Permissions_Admin))
                             {
-                                <td>@Html.ActionLink("Approve", MVC.PvPAdmin.ApproveContribution(c.Id))</td>
-                                <td>@Html.ActionLink("Reject", MVC.PvPAdmin.RejectContribution(c.Id))</td>
+                                <td><a href="@Url.Action(MVC.PvPAdmin.ApproveContribution(c.Id))">Approve</a></td>
+                                <td><a href="@Url.Action(MVC.PvPAdmin.RejectContribution(c.Id))">Reject</a></td>
                             }
                             else
                             {
@@ -43,7 +43,7 @@
 
 
 
-                        <td>@Html.ActionLink("Snoop", MVC.Contribution.ContributePreview(c.Id))</td>
+                        <td><a href="@Url.Action(MVC.Contribution.ContributePreview(c.Id))">Snoop</a></td>
                     </tr>
                             }
             }

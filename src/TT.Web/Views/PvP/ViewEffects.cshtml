@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<TT.Domain.ViewModels.EffectViewModel2>
 @using TT.Domain.ViewModels
 
-@Html.ActionLink("Back to game", MVC.PvP.Play())
+<a href="@Url.Action(MVC.PvP.Play())">Back to game</a>
 
 <center>
     <h1>@ViewBag.PlayerName's Level-Up Perks</h1>
@@ -45,4 +45,4 @@
 
 </center>
 
-@Html.ActionLink("Back to game", MVC.PvP.Play())
+<a href="@Url.Action(MVC.PvP.Play())">Back to game</a>

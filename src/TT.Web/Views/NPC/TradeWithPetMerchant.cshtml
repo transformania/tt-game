@@ -17,8 +17,8 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
-                <li>@Html.ActionLink("Sell Your Pet", MVC.NPC.SellPetList())</li>
+                <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+                <li><a href="@Url.Action(MVC.NPC.SellPetList())">Sell Your Pet</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -52,7 +52,7 @@
     @{
         for (int i = 0; i < Model.Paginator.MaxPageNumber; i++)
         {
-            @Html.ActionLink((i + 1).ToString() + " | ", MVC.NPC.TradeWithPetMerchant(i), new { @class = Model.Paginator.GetStylingClass(i)})
+            <a href="@Url.Action(MVC.NPC.TradeWithPetMerchant(i))" class="@Model.Paginator.GetStylingClass(i)">@(i + 1) | </a>
         }
     }
 

@@ -13,7 +13,7 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
+                <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -27,26 +27,26 @@
     <h2>Open</h2>
 
     <ul>
-        @*<li> @Html.ActionLink("How do you feel about the new stats system and the double turn speed?", MVC.Settings.ViewPoll(3))</li>*@
-        <li> @Html.ActionLink("Tell us about yourself!", MVC.Settings.ViewPoll(2))</li>
-        <li> @Html.ActionLink("How open are you about your transformation or fetish interests to friends and family?", MVC.Settings.ViewPoll(4))</li>
-        <li> @Html.ActionLink("Would you like 3 minute turns?", MVC.Settings.ViewPoll(5))</li>
+        @*<li> <a href="@Url.Action(MVC.Settings.ViewPoll(3))">How do you feel about the new stats system and the double turn speed?</a></li>*@
+        <li> <a href="@Url.Action(MVC.Settings.ViewPoll(2))">Tell us about yourself!</a></li>
+        <li> <a href="@Url.Action(MVC.Settings.ViewPoll(4))">How open are you about your transformation or fetish interests to friends and family?</a></li>
+        <li> <a href="@Url.Action(MVC.Settings.ViewPoll(5))">Would you like 3 minute turns?</a></li>
       
     </ul>
 
     <h2>Open Poll Results</h2>
 
     <ul>
-        <li>@Html.ActionLink("Tell us about yourself!", MVC.Settings.PollResults(2))</li>
-        <li>@Html.ActionLink("How open are you about your transformation or fetish interests to friends and family?", MVC.Settings.PollResults(4))</li>
-        <li>@Html.ActionLink("Would you like 3 minute turns?", MVC.Settings.PollResults(5))</li>
+        <li><a href="@Url.Action(MVC.Settings.PollResults(2))">Tell us about yourself!</a></li>
+        <li><a href="@Url.Action(MVC.Settings.PollResults(4))">How open are you about your transformation or fetish interests to friends and family?</a></li>
+        <li><a href="@Url.Action(MVC.Settings.PollResults(5))">Would you like 3 minute turns?</a></li>
     </ul>
 
     <h2>Closed Poll Results</h2>
 
     <ul>
-        <li>@Html.ActionLink("What features would you like to see be added to the game the most?  How did you feel about Alpha Round 12's turn length?", MVC.Settings.PollResults(1))</li>
-        <li>@Html.ActionLink("How do you feel about the new stats system and the double turn speed?", MVC.Settings.PollResults(3))</li>
+        <li><a href="@Url.Action(MVC.Settings.PollResults(1))">What features would you like to see be added to the game the most?  How did you feel about Alpha Round 12's turn length?</a></li>
+        <li><a href="@Url.Action(MVC.Settings.PollResults(3))">How do you feel about the new stats system and the double turn speed?</a></li>
     </ul>
 
 </div>

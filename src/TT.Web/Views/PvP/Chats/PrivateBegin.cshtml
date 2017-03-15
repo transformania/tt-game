@@ -3,7 +3,7 @@
     <script src="~/Scripts/jquery-2.1.0.min.js"></script>
 </head>
 
-<p>@Html.ActionLink("Back to game", MVC.PvP.Play())</p>
+<p><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></p>
 
 <h1>Private Chat</h1>
 
@@ -15,7 +15,7 @@
     <button name="subject" type="button" id="beginButton" disabled="disabled">Begin</button>
 </form> 
 
-<p>@Html.ActionLink("Back to game", MVC.PvP.Play())</p>
+<p><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></p>
 
 <script>
     $("#beginButton").click(function () {

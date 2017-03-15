@@ -36,42 +36,42 @@
                     <span id="timerBox" class="glyphicon glyphicon-time" aria-hidden="true" title="Click to see how long ago the last update ran."></span>
                     <span id="turn_countdown">-:--</span>
                 </li>
-                <li>@Html.ActionLink("Map", MVC.PvP.WorldMap("false"))</li>
-                <li>@Html.ActionLink("Last Actions", MVC.PvP.ViewLog())</li>
-                <li>@Html.ActionLink("Friends", MVC.PvP.MyFriends())</li>
-                <li>@Html.ActionLink("Chat", MVC.Chat.Index("global"), new { target = "_blank" })</li>
-                <li>@Html.ActionLink("Covenant", MVC.Covenant.MyCovenant())</li>
+                <li><a href="@Url.Action(MVC.PvP.WorldMap("false"))">Map</a></li>
+                <li><a href="@Url.Action(MVC.PvP.ViewLog())">Last Actions</a></li>
+                <li><a href="@Url.Action(MVC.PvP.MyFriends())">Friends</a></li>
+                <li><a href="@Url.Action(MVC.Chat.Index("global"))" target="_blank">Chat</a></li>
+                <li><a href="@Url.Action(MVC.Covenant.MyCovenant())">Covenant</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-wrench"></span><span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li>@Html.ActionLink("Settings", MVC.Settings.Settings())</li>
-                        <li>@Html.ActionLink("My blacklist entries", MVC.Settings.MyBlacklistEntries())</li>
-                        <li>@Html.ActionLink("Update bio", MVC.Settings.SetBio())</li>
-                        <li>@Html.ActionLink("Reserve this name", MVC.PvP.ReserveName())</li>
+                        <li><a href="@Url.Action(MVC.Settings.Settings())">Settings</a></li>
+                        <li><a href="@Url.Action(MVC.Settings.MyBlacklistEntries())">My blacklist entries</a></li>
+                        <li><a href="@Url.Action(MVC.Settings.SetBio())">Update bio</a></li>
+                        <li><a href="@Url.Action(MVC.PvP.ReserveName())">Reserve this name</a></li>
                     </ul>
                 </li>
                 @{
                     if (Model.NewMessageCount > 0)
                     {
-                        <li>@Html.ActionLink("(" + Model.NewMessageCount + ")", MVC.Messages.Index(), new { @class = "glyphicon glyphicon-envelope inboxNew" })</li>
+                        <li><a href="@Url.Action(MVC.Messages.Index())" class="glyphicon glyphicon-envelope inboxNew">(@Model.NewMessageCount)</a></li>
                     }
                     else
                     {
-                        <li>@Html.ActionLink("(0)", MVC.Messages.Index(), new { @class = "glyphicon glyphicon-envelope" })</li>
+                        <li><a href="@Url.Action(MVC.Messages.Index())" class="glyphicon glyphicon-envelope">(0)</a></li>
                     }
                 }
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Contribute <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li>@Html.ActionLink("Submit Spell/Form/Item/Pet", MVC.Contribution.Contribute(-1))</li>
-                        <li>@Html.ActionLink("Submit Blessing/Curse", MVC.Contribution.ContributeEffect(-1))</li>
+                        <li><a href="@Url.Action(MVC.Contribution.Contribute(-1))">Submit Spell/Form/Item/Pet</a></li>
+                        <li><a href="@Url.Action(MVC.Contribution.ContributeEffect(-1))">Submit Blessing/Curse</a></li>
                         @if (User.IsInRole(PvPStatics.Permissions_QuestWriter))
                         {
-                            <li>@Html.ActionLink("QuestWriter", MVC.QuestWriter.Index())</li>
+                            <li><a href="@Url.Action(MVC.QuestWriter.Index())">QuestWriter</a></li>
                         }
                     </ul>
                 </li>
-                <li>@Html.ActionLink("Start again as someone else", MVC.PvP.Restart())</li>
+                <li><a href="@Url.Action(MVC.PvP.Restart())">Start again as someone else</a></li>
                 @{
                     if (User.IsInRole(PvPStatics.Permissions_Admin) || User.IsInRole(PvPStatics.Permissions_Moderator))
                     {
@@ -80,11 +80,11 @@
                             <ul class="dropdown-menu">
                                 @if (User.IsInRole(PvPStatics.Permissions_Admin))
                                 {
-                                    <li>@Html.ActionLink("Admin", MVC.PvPAdmin.Index())</li>
+                                    <li><a href="@Url.Action(MVC.PvPAdmin.Index())">Admin</a></li>
                                 }
                                 @if (User.IsInRole(PvPStatics.Permissions_Moderator))
                                 {
-                                    <li>@Html.ActionLink("Moderator", MVC.Moderator.Index())</li>
+                                    <li><a href="@Url.Action(MVC.Moderator.Index())">Moderator</a></li>
                                 }
                             </ul>
                         </li>
@@ -143,12 +143,12 @@
                     else
                     {
                         <span>
-                            <br><br>You have been tamed by @Html.ActionLink(Model.OwnedBy.Player.GetFullName(), MVC.PvP.LookAtPlayer(Model.OwnedBy.Player.Id)) and will follow your master wherever they go.
+                            <br><br>You have been tamed by <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.OwnedBy.Player.Id))">@Model.OwnedBy.Player.GetFullName()</a> and will follow your master wherever they go.
 
                             @{
                                 if (!Model.YouItem.ItemSource.CurseTFFormdbName.IsNullOrEmpty())
                                 {
-                                    @Html.ActionLink("Attempt to transform your owner!", MVC.PvP.CurseTransformOwner())
+                                    <a href="@Url.Action(MVC.PvP.CurseTransformOwner())">Attempt to transform your owner!</a>
                                 }
                             }
 
@@ -165,7 +165,7 @@
                     {
                         <p class="center-block">
                             <span class="place">Chance to return human: @Model.StruggleChance %.</span>
-                            @Html.ActionLink("Fight your transformation and attempt to return to an animate form!", MVC.PvP.FightTheTransformation(), new {@class = "check inanimateAction"})
+                            <a href="@Url.Action(MVC.PvP.FightTheTransformation())" class="check inanimateAction">Fight your transformation and attempt to return to an animate form!</a>
                         </p>
                     }
 
@@ -173,7 +173,7 @@
                     {
                         <p>
                             <br />
-                            @Html.ActionLink("Attempt to slip free from your owner", MVC.PvP.EscapeFromOwner(), new { @class = "inanimateAction" })
+                            <a href="@Url.Action(MVC.PvP.EscapeFromOwner())" class="inanimateAction">Attempt to slip free from your owner</a>
                         </p>
                     }
 
@@ -206,11 +206,11 @@
                             {
                                 if (Model.You.Mobility == PvPStatics.MobilityFull)
                                 {
-                                    @Html.ActionLink(Model.Location.FriendlyName_North, MVC.PvP.MoveTo(Model.Location.Name_North))
+                                    <a href="@Url.Action(MVC.PvP.MoveTo(Model.Location.Name_North))">@Model.Location.FriendlyName_North</a>
                                 }
                                 else if (Model.You.Mobility == PvPStatics.MobilityPet && Model.OwnedBy == null)
                                 {
-                                    @Html.ActionLink(Model.Location.FriendlyName_North, MVC.PvP.MoveTo(Model.Location.Name_North))
+                                    <a href="@Url.Action(MVC.PvP.MoveTo(Model.Location.Name_North))">@Model.Location.FriendlyName_North</a>
                                 }
                                 else if (Model.You.Mobility == PvPStatics.MobilityPet && Model.OwnedBy != null)
                                 {
@@ -232,11 +232,11 @@
                             {
                                 if (Model.You.Mobility == PvPStatics.MobilityFull)
                                 {
-                                    @Html.ActionLink(Model.Location.FriendlyName_West, MVC.PvP.MoveTo(Model.Location.Name_West))
+                                    <a href="@Url.Action(MVC.PvP.MoveTo(Model.Location.Name_West))">@Model.Location.FriendlyName_West</a>
                                 }
                                 else if (Model.You.Mobility == PvPStatics.MobilityPet && Model.OwnedBy == null)
                                 {
-                                    @Html.ActionLink(Model.Location.FriendlyName_West, MVC.PvP.MoveTo(Model.Location.Name_West))
+                                    <a href="@Url.Action(MVC.PvP.MoveTo(Model.Location.Name_West))">@Model.Location.FriendlyName_West</a>
                                 }
                                 else if (Model.You.Mobility == PvPStatics.MobilityPet && Model.OwnedBy != null)
                                 {
@@ -258,11 +258,11 @@
 
                                 if (Model.You.Mobility == PvPStatics.MobilityFull)
                                 {
-                                    @Html.ActionLink(Model.Location.FriendlyName_East, MVC.PvP.MoveTo(Model.Location.Name_East))
+                                    <a href="@Url.Action(MVC.PvP.MoveTo(Model.Location.Name_East))">@Model.Location.FriendlyName_East</a>
                                 }
                                 else if (Model.You.Mobility == PvPStatics.MobilityPet && Model.OwnedBy == null)
                                 {
-                                    @Html.ActionLink(Model.Location.FriendlyName_East, MVC.PvP.MoveTo(Model.Location.Name_East))
+                                    <a href="@Url.Action(MVC.PvP.MoveTo(Model.Location.Name_East))">@Model.Location.FriendlyName_East</a>
                                 }
                                 else if (Model.You.Mobility == PvPStatics.MobilityPet && Model.OwnedBy != null)
                                 {
@@ -285,11 +285,11 @@
 
                                 if (Model.You.Mobility == PvPStatics.MobilityFull)
                                 {
-                                    @Html.ActionLink(Model.Location.FriendlyName_South, MVC.PvP.MoveTo(Model.Location.Name_South))
+                                    <a href="@Url.Action(MVC.PvP.MoveTo(Model.Location.Name_South))">@Model.Location.FriendlyName_South</a>
                                 }
                                 else if (Model.You.Mobility == PvPStatics.MobilityPet && Model.OwnedBy == null)
                                 {
-                                    @Html.ActionLink(Model.Location.FriendlyName_South, MVC.PvP.MoveTo(Model.Location.Name_South))
+                                    <a href="@Url.Action(MVC.PvP.MoveTo(Model.Location.Name_South))">@Model.Location.FriendlyName_South</a>
                                 }
                                 else if (Model.You.Mobility == PvPStatics.MobilityPet && Model.OwnedBy != null)
                                 {
@@ -339,7 +339,7 @@
         @{if (ViewBag.ShowOffline == null || !ViewBag.ShowOffline)
         {
 
-            <div id="offlinePlayersButton">@Html.ActionLink("Show offline players here (" + Model.PlayersHere.Count(p => PlayerProcedures.PlayerIsOffline(p.Player)) + ")", MVC.PvP.ShowOffline())</div>
+            <div id="offlinePlayersButton"><a href="@Url.Action(MVC.PvP.ShowOffline())">Show offline players here (@Model.PlayersHere.Count(p => PlayerProcedures.PlayerIsOffline(p.Player)))</a></div>
         }
         }
 
@@ -384,11 +384,11 @@
                         <h4 class="modal-title text-center" id="myModalLabel">Pet Actions</h4>
                     </div>
                     <div class="modal-body">
-                        @Html.ActionLink("Lick (+WP)", MVC.PvP.AnimalAction("lick", 0), new { @class = "btn petActionLink" })
-                        @Html.ActionLink("Nuzzle (+MP)", MVC.PvP.AnimalAction("nuzzle", 0), new { @class = "btn petActionLink" })
+                        <a href="@Url.Action(MVC.PvP.AnimalAction("lick", 0))" class="btn petActionLink">Lick (+WP)</a>
+                        <a href="@Url.Action(MVC.PvP.AnimalAction("nuzzle", 0))" class="btn petActionLink">Nuzzle (+MP)</a>
                         <hr />
-                        @Html.ActionLink("Headbutt (-WP)", MVC.PvP.AnimalAction("headbutt", 0), new { @class = "btn petActionLink" })
-                        @Html.ActionLink("Snarl (-MP)", MVC.PvP.AnimalAction("snarl", 0), new { @class = "btn petActionLink" })
+                        <a href="@Url.Action(MVC.PvP.AnimalAction("headbutt", 0))" class="btn petActionLink">Headbutt (-WP)</a>
+                        <a href="@Url.Action(MVC.PvP.AnimalAction("snarl", 0))" class="btn petActionLink">Snarl (-MP)</a>
                     </div>
                 </div>
             </div>

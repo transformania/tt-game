@@ -3,7 +3,7 @@
     <script src="~/Scripts/jquery-2.1.0.min.js"></script>
 </head>
 
-<p>@Html.ActionLink("Back to game", MVC.PvP.Play())</p>
+<p><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></p>
 
 @Html.Partial(MVC.PvP.Views.partial.OldLeaderboardLinks)
 
@@ -2228,7 +2228,7 @@
     </tbody>
 </table>
 
-<p>@Html.ActionLink("Back to game", MVC.PvP.Play())</p>
+<p><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></p>
 
 <style>
     table {

@@ -11,9 +11,9 @@
 
 <p>You're logged in as <strong>@User.Identity.Name</strong>.</p>
 
-@Html.ActionLink("Change e-mail address", MVC.Account.ChangeEmail())<br>
+<a href="@Url.Action(MVC.Account.ChangeEmail())">Change e-mail address</a><br>
 
-@Html.ActionLink("View Terms of Service", MVC.Account.TermsOfService())
+<a href="@Url.Action(MVC.Account.TermsOfService())">View Terms of Service</a>
 
 @if (ViewBag.HasLocalPassword)
 {

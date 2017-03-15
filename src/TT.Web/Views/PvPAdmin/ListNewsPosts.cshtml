@@ -16,8 +16,8 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav" style="width:100%;">
-                <li>@Html.ActionLink("Back", MVC.PvPAdmin.Index())</li>
-                <li>@Html.ActionLink("Add news", MVC.PvPAdmin.EditNewsPost(-1))</li>
+                <li><a href="@Url.Action(MVC.PvPAdmin.Index())">Back</a></li>
+                <li><a href="@Url.Action(MVC.PvPAdmin.EditNewsPost(-1))">Add news</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -56,8 +56,8 @@
                         <td>@n.Timestamp</td>
                         <td>@Html.Raw(n.Text)</td>
                         <td>@n.PrintVisiblity()</td>
-                        <td>@Html.ActionLink("Edit", MVC.PvPAdmin.EditNewsPost(n.Id))</td>
-                        <td>@Html.ActionLink("[X]", MVC.PvPAdmin.DeleteNewsPost(n.Id), new { onclick = "return confirm('Are you sure you want to delete this?')", @class = "" })</td>
+                        <td><a href="@Url.Action(MVC.PvPAdmin.EditNewsPost(n.Id))">Edit</a></td>
+                        <td><a href="@Url.Action(MVC.PvPAdmin.DeleteNewsPost(n.Id))" onclick="return confirm('Are you sure you want to delete this?')" class="">[X]</a></td>
                     </tr>
                 }
             }

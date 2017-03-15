@@ -1,12 +1,12 @@
 ﻿@if (Request.IsAuthenticated) {
     <text>
-        <li>@Html.ActionLink("id: "+User.Identity.Name, MVC.Account.Manage(), new { @class = "username", title = "Manage" })</li>
+        <li><a href="@Url.Action(MVC.Account.Manage())" class="username" title="Manage">id: @User.Identity.Name</a></li>
         @using (Html.BeginForm(MVC.Account.LogOff(), FormMethod.Post, new { id = "logoutForm" })) {
             @Html.AntiForgeryToken()
             <li class="logout"><a href="javascript:document.getElementById('logoutForm').submit()"><span class="glyphicon glyphicon-off" aria-hidden="true"></span></a></li>
         }
     </text>
 } else {
-        <li>@Html.ActionLink("Register", MVC.Account.Register(), new { id = "registerLink" })</li>
-        <li>@Html.ActionLink("Log in", MVC.Account.Login(), new { id = "loginLink" })</li>
+        <li><a href="@Url.Action(MVC.Account.Register())" id="registerLink">Register</a></li>
+        <li><a href="@Url.Action(MVC.Account.Login())" id="loginLink">Log in</a></li>
 }

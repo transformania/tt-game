@@ -16,11 +16,11 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav" style="width:100%;">
-                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
+                <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
                 @{
                     if (item.dbItem.OwnerId != null && item.dbItem.OwnerId != -1)
                     {
-                        <li>@Html.ActionLink("View owner's other items", MVC.PvPAdmin.ViewPlayerItems((int)item.dbItem.OwnerId))</li>
+                        <li><a href="@Url.Action(MVC.PvPAdmin.ViewPlayerItems((int)item.dbItem.OwnerId))">View owner's other items</a></li>
                     }
                 }
             </ul>
@@ -43,7 +43,7 @@
             else
             {
                 @("Transferred to ")
-                @Html.ActionLink(itemlog.OwnerName, MVC.PvP.LookAtPlayer(itemlog.ItemLog.OwnerId))
+                <a href="@Url.Action(MVC.PvP.LookAtPlayer(itemlog.ItemLog.OwnerId))">itemlog.OwnerName</a>
             }
             if (itemlog.OwnerIP != "-1")
             {

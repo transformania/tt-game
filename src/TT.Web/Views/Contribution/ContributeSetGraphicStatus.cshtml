@@ -3,7 +3,7 @@
 @using (Html.BeginForm(MVC.Contribution.ContributeSetGraphicStatusSubmit(), FormMethod.Post))
 {
     
-     <p>@Html.ActionLink("Look at this author's player profile", MVC.PvP.LookAtPlayer_FromMembershipId(Model.OwnerMembershipId))</p>
+     <p><a href="@Url.Action(MVC.PvP.LookAtPlayer_FromMembershipId(Model.OwnerMembershipId))">Look at this author's player profile</a></p>
     
     <p>Write down your name here, how far along the graphic is, or anything else you think important.</p>
     @Html.HiddenFor(m => m.ContributionId)

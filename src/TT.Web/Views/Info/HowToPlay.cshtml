@@ -13,9 +13,9 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
-                <li>@Html.ActionLink("View FAQ", MVC.Info.FAQ())</li>
-                <li>@Html.ActionLink("Rules of Play", MVC.Info.Rules())</li>
+                <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+                <li><a href="@Url.Action(MVC.Info.FAQ())">View FAQ</a></li>
+                <li><a href="@Url.Action(MVC.Info.Rules())">Rules of Play</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->

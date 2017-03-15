@@ -16,8 +16,8 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
-                <li>@Html.ActionLink("Back to My Contributions", MVC.Contribution.Contribute(-1))</li>
+                <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+                <li><a href="@Url.Action(MVC.Contribution.Contribute(-1))">Back to My Contributions</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -111,11 +111,11 @@
 
                                 try
                                 {
-                                    @Html.ActionLink(c.AssignedToArtist, MVC.Contribution.ContributeSetGraphicStatus(c.Id))
+                                    <a href="@Url.Action(MVC.Contribution.ContributeSetGraphicStatus(c.Id))">@c.AssignedToArtist</a>
                                 }
                                 catch
                                 {
-                                    @Html.ActionLink("(none)", MVC.Contribution.ContributeSetGraphicStatus(c.Id))
+                                    <a href="@Url.Action(MVC.Contribution.ContributeSetGraphicStatus(c.Id))">(none)</a>
                                 }
                             }
 

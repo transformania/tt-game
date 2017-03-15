@@ -35,41 +35,41 @@
                     <span id="timerBox" class="glyphicon glyphicon-time" aria-hidden="true" title="Click to see how long ago the last update ran."></span>
                     <span id="turn_countdown">-:--</span>
                 </li>
-                <li>@Html.ActionLink("Last Actions", MVC.PvP.ViewLog())</li>
-                <li>@Html.ActionLink("Friends", MVC.PvP.MyFriends())</li>
-                <li>@Html.ActionLink("Chat", MVC.Chat.Index("global"), new { target = "_blank" })</li>
-                <li>@Html.ActionLink("Covenant", MVC.Covenant.MyCovenant())</li>
+                <li><a href="@Url.Action(MVC.PvP.ViewLog())">Last Actions</a></li>
+                <li><a href="@Url.Action(MVC.PvP.MyFriends())">Friends</a></li>
+                <li><a href="@Url.Action(MVC.Chat.Index("global"))" target="_blank">Chat</a></li>
+                <li><a href="@Url.Action(MVC.Covenant.MyCovenant())">Covenant</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-wrench"></span><span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li>@Html.ActionLink("Settings", MVC.Settings.Settings())</li>
-                        <li>@Html.ActionLink("My blacklist entries", MVC.Settings.MyBlacklistEntries())</li>
-                        <li>@Html.ActionLink("Update bio", MVC.Settings.SetBio())</li>
-                        <li>@Html.ActionLink("Reserve this name", MVC.PvP.ReserveName())</li>
+                        <li><a href="@Url.Action(MVC.Settings.Settings())">Settings</a></li>
+                        <li><a href="@Url.Action(MVC.Settings.MyBlacklistEntries())">My blacklist entries</a></li>
+                        <li><a href="@Url.Action(MVC.Settings.SetBio())">Update bio</a></li>
+                        <li><a href="@Url.Action(MVC.PvP.ReserveName())">Reserve this name</a></li>
                     </ul>
                 </li>
                 @{
                     if (Model.NewMessageCount > 0)
                     {
-                        <li>@Html.ActionLink("(" + Model.NewMessageCount + ")", MVC.Messages.Index(), new { @class = "glyphicon glyphicon-envelope inboxNew" })</li>
+                        <li><a href="@Url.Action(MVC.Messages.Index())" class="glyphicon glyphicon-envelope inboxNew">(@Model.NewMessageCount)</a></li>
                     }
                     else
                     {
-                        <li>@Html.ActionLink("(0)", MVC.Messages.Index(), new { @class = "glyphicon glyphicon-envelope" })</li>
+                        <li><a href="@Url.Action(MVC.Messages.Index())" class="glyphicon glyphicon-envelope">(0)</a></li>
                     }
                 }
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Contribute <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li>@Html.ActionLink("Submit Spell/Form/Item/Pet", MVC.Contribution.Contribute(-1))</li>
-                        <li>@Html.ActionLink("Submit Blessing/Curse", MVC.Contribution.ContributeEffect(-1))</li>
+                        <li><a href="@Url.Action(MVC.Contribution.Contribute(-1))">Submit Spell/Form/Item/Pet</a></li>
+                        <li><a href="@Url.Action(MVC.Contribution.ContributeEffect(-1))">Submit Blessing/Curse</a></li>
                         @if (User.IsInRole(PvPStatics.Permissions_QuestWriter))
                         {
-                            <li>@Html.ActionLink("QuestWriter", MVC.QuestWriter.Index())</li>
+                            <li><a href="@Url.Action(MVC.QuestWriter.Index())">QuestWriter</a></li>
                         }
                     </ul>
                 </li>
-                <li>@Html.ActionLink("Start again as someone else", MVC.PvP.Restart())</li>
+                <li><a href="@Url.Action(MVC.PvP.Restart())">Start again as someone else</a></li>
                 @{
                     if (User.IsInRole(PvPStatics.Permissions_Admin) || User.IsInRole(PvPStatics.Permissions_Moderator))
                     {
@@ -78,11 +78,11 @@
                             <ul class="dropdown-menu">
                                 @if (User.IsInRole(PvPStatics.Permissions_Admin))
                                 {
-                                    <li>@Html.ActionLink("Admin", MVC.PvPAdmin.Index())</li>
+                                    <li><a href="@Url.Action(MVC.PvPAdmin.Index())">Admin</a></li>
                                 }
                                 @if (User.IsInRole(PvPStatics.Permissions_Moderator))
                                 {
-                                    <li>@Html.ActionLink("Moderator", MVC.Moderator.Index())</li>
+                                    <li><a href="@Url.Action(MVC.Moderator.Index())">Moderator</a></li>
                                 }
                             </ul>
                         </li>
@@ -147,26 +147,26 @@
                 }
                 else if (Model.WornBy != null)
                 {
-                    <p>You are currently being worn by <b>@Html.ActionLink(Model.WornBy.Player.GetFullName(), MVC.PvP.LookAtPlayer(Model.WornBy.Player.Id))</b>, a @Model.WornBy.Player.Gender @Model.WornBy.Form.FriendlyName.  You hope they will take good care of you, or should they too find themselves as an object, whoever picks you up next.</p>
+                    <p>You are currently being worn by <b><a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.WornBy.Player.Id))">@Model.WornBy.Player.GetFullName()</a></b>, a @Model.WornBy.Player.Gender @Model.WornBy.Form.FriendlyName.  You hope they will take good care of you, or should they too find themselves as an object, whoever picks you up next.</p>
 
                     <p>
-                        @Html.ActionLink("Telepathically communicate with " + Model.WornBy.Player.GetFullName(), MVC.Messages.Write(Model.WornBy.Player.Id, -1), new { @class = "inanimateAction" })
+                        <a href="@Url.Action(MVC.Messages.Write(Model.WornBy.Player.Id, -1))" class="inanimateAction">Telepathically communicate with @Model.WornBy.Player.GetFullName()</a>
                     </p>
 
                     <p>
                         Although inanimate, you can still move just the tiniest bit.  You can still...
                         <ul class="inanimateActionList">
                             <li>
-                                @Html.ActionLink("Affectionately rub against your owner", MVC.PvP.InanimateAction("rub"), new { @class = "check inanimateAction" })
+                                <a href="@Url.Action(MVC.PvP.InanimateAction("rub"))" class="check inanimateAction">Affectionately rub against your owner</a>
                             </li>
                             <li>
-                                @Html.ActionLink("Peskily pinch your owner", MVC.PvP.InanimateAction("pinch"), new { @class = "check inanimateAction" })
+                                <a href="@Url.Action(MVC.PvP.InanimateAction("pinch"))" class="check inanimateAction">Peskily pinch your owner</a>
                             </li>
                             <li>
-                                @Html.ActionLink("Kindly soothe your owner", MVC.PvP.InanimateAction("soothe"), new { @class = "check inanimateAction" })
+                                <a href="@Url.Action(MVC.PvP.InanimateAction("soothe"))" class="check inanimateAction">Kindly soothe your owner</a>
                             </li>
                             <li>
-                                @Html.ActionLink("Agitatedly zap your owner", MVC.PvP.InanimateAction("zap"), new { @class = "check inanimateAction" })
+                                <a href="@Url.Action(MVC.PvP.InanimateAction("zap"))" class="check inanimateAction">Agitatedly zap your owner</a>
                             </li>
                             
 
@@ -174,7 +174,7 @@
                     if (!Model.Item.ItemSource.CurseTFFormdbName.IsNullOrEmpty())
                     {
                         <li>
-                            @Html.ActionLink("Attempt to transform your owner!", MVC.PvP.CurseTransformOwner(), new { @class = "check inanimateAction" })
+                            <a href="@Url.Action(MVC.PvP.CurseTransformOwner())" class="check inanimateAction">Attempt to transform your owner!</a>
                         </li>
                     }
    
@@ -183,7 +183,7 @@
                             
                     if (Model.WornBy != null)
                     {
-                        <li>@Html.ActionLink("Attempt to slip free from your owner", MVC.PvP.EscapeFromOwner(), new { @class = "inanimateAction" })</li>
+                        <li><a href="@Url.Action(MVC.PvP.EscapeFromOwner())" class="inanimateAction">Attempt to slip free from your owner</a></li>
                     }
 
                 }
@@ -198,7 +198,7 @@
                 {
                     <p class="center-block">
                         <span class="place">Chance to return human: @Model.StruggleChance %.</span>
-                        @Html.ActionLink("Fight your transformation and attempt to return to an animate form!", MVC.PvP.FightTheTransformation(), new { @class = "check inanimateAction" })
+                        <a href="@Url.Action(MVC.PvP.FightTheTransformation())" class="check inanimateAction">Fight your transformation and attempt to return to an animate form!</a>
                     </p>
                 }
             }
@@ -229,7 +229,7 @@
 
 @{if (ViewBag.ShowOffline == null || !ViewBag.ShowOffline)
 {
-    <div id="offlinePlayersButton">@Html.ActionLink("Show offline players here (" + Model.PlayersHere.Count(p => PlayerProcedures.PlayerIsOffline(p.Player)) + ")", MVC.PvP.ShowOffline())</div>
+    <div id="offlinePlayersButton"><a href="@Url.Action(MVC.PvP.ShowOffline())">Show offline players here (@Model.PlayersHere.Count(p => PlayerProcedures.PlayerIsOffline(p.Player)))</a></div>
 }
 }
 

@@ -15,7 +15,7 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
+                <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -42,7 +42,7 @@
                     }
                     else
                     {
-                        <p>@Html.ActionLink("Play with Jewfewfae (5 AP)", MVC.NPC.PlayWithJewdewfae(), new { @class = "inanimateAction center-block" })</p>
+                        <p><a href="@Url.Action(MVC.NPC.PlayWithJewdewfae())" class="inanimateAction center-block">Play with Jewfewfae (5 AP)</a></p>
                     }
                 }
                 else if (Model.HadRecentInteraction)

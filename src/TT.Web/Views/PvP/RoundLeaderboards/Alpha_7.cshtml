@@ -3,7 +3,7 @@
 </head>
 
 
-<p>@Html.ActionLink("Back to game", MVC.PvP.Play())</p>
+<p><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></p>
 @Html.Partial(MVC.PvP.Views.partial.OldLeaderboardLinks)
 
 <h1>Alpha Round 7 (2nd Era of Elyn Kitsu)</h1>
@@ -2643,7 +2643,7 @@
 
 </table>
 
-<p>@Html.ActionLink("Back to game", MVC.PvP.Play())</p>
+<p><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></p>
 
 <style>
     table {

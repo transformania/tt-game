@@ -18,18 +18,18 @@
         <div class="col-md-3 col-lg-4 col-sm-12 loginCenter">
 
             <p style="margin-top: 50px;">
-                @Html.ActionLink("Log In", MVC.Account.Login()) <br />
+                <a href="@Url.Action(MVC.Account.Login())">Log In</a> <br />
             </p>
 
             <p style="margin-top: 50px;">
-                @Html.ActionLink("Register", MVC.Account.Register()) <br />if you don't have an account.
+                <a href="@Url.Action(MVC.Account.Register())">Register</a> <br />if you don't have an account.
             </p>
 
             <br /><br />
 
             <p>
                 Or did you want to play single player javascript game -
-                @Html.ActionLink("Transformania Gameshow", MVC.TransformaniaTime.Play()) ?
+                <a href="@Url.Action(MVC.TransformaniaTime.Play())">Transformania Gameshow</a> ?
             </p>
 
         </div>

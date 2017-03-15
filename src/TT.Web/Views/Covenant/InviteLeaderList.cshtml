@@ -16,8 +16,8 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
-                <li>@Html.ActionLink("Back to My Covenant", MVC.Covenant.MyCovenant())</li>
+                <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+                <li><a href="@Url.Action(MVC.Covenant.MyCovenant())">Back to My Covenant</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -31,7 +31,7 @@
         foreach (TT.Domain.ViewModels.PlayerFormViewModel p in Model.Members)
         {
             <p>
-                @Html.ActionLink(p.Player.GetFullName(), MVC.Covenant.InviteLeaderSend(p.Player.Id))
+                <a href="@Url.Action(MVC.Covenant.InviteLeaderSend(p.Player.Id))">@p.Player.GetFullName()</a>
             </p>
         }
     }

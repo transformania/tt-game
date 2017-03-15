@@ -17,9 +17,9 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
-                <li>@Html.ActionLink("Purchase books", MVC.NPC.LorekeeperPurchaseBook())</li>
-                <li>@Html.ActionLink("Purchase training for a spell", MVC.NPC.LorekeeperLearnSpell(PvPStatics.MobilityFull))</li>
+                <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+                <li><a href="@Url.Action(MVC.NPC.LorekeeperPurchaseBook())">Purchase books</a></li>
+                <li><a href="@Url.Action(MVC.NPC.LorekeeperLearnSpell(PvPStatics.MobilityFull))">Purchase training for a spell</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -40,8 +40,8 @@
             <p>"Hello mortal...... what ssservice may I provide to you today?  I will sell you knowledge... ssssecret knowledge... for a sssmall handful of Arpeyjis.  Note that I am not ressssponsssible for anyone who issss turned into pantiessss...  What you do with your magick isss of no concern to me..."</p>
 
             <br />
-            <br /> @Html.ActionLink("I'd like to purchase a book.", MVC.NPC.LorekeeperPurchaseBook())
-            <br /> @Html.ActionLink("I'd like to learn a spell.", MVC.NPC.LorekeeperLearnSpell(PvPStatics.MobilityFull))
+            <br /> <a href="@Url.Action(MVC.NPC.LorekeeperPurchaseBook())">I'd like to purchase a book.</a>
+            <br /> <a href="@Url.Action(MVC.NPC.LorekeeperLearnSpell(PvPStatics.MobilityFull))">I'd like to learn a spell.</a>
 
         </div>
     </div>

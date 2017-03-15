@@ -12,7 +12,7 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
+                <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -35,7 +35,7 @@
 
         if (m.PlayerId > 0)
         {
-            <b>@Html.ActionLink(m.PlayerName, MVC.PvP.LookAtPlayer(m.PlayerId)):  </b>
+            <b><a href="@Url.Action(MVC.PvP.LookAtPlayer(m.PlayerId))">@m.PlayerName</a>:  </b>
 
             if (@m.dbBlacklistEntry.BlacklistLevel == 0)
             {
@@ -47,14 +47,14 @@
             }
 
             <br />
-            @Html.ActionLink("Set No attacking OR messaging", MVC.Settings.ChangeBlacklistType(m.dbBlacklistEntry.Id, m.PlayerId, "noAttackOrMessage"))
+            <a href="@Url.Action(MVC.Settings.ChangeBlacklistType(m.dbBlacklistEntry.Id, m.PlayerId, "noAttackOrMessage"))">Set No attacking OR messaging</a>
             <br />
-            @Html.ActionLink("Set No attacking but ALLOW messaging", MVC.Settings.ChangeBlacklistType(m.dbBlacklistEntry.Id, m.PlayerId, "noAttackOnly"))
+            <a href="@Url.Action(MVC.Settings.ChangeBlacklistType(m.dbBlacklistEntry.Id, m.PlayerId, "noAttackOnly"))">Set No attacking but ALLOW messaging</a>
             <br />
 
             if (m.PlayerId > 0)
             {
-                @Html.ActionLink("Remove blacklist entry", MVC.Settings.ToggleBlacklistOnPlayer(m.PlayerId))
+                <a href="@Url.Action(MVC.Settings.ToggleBlacklistOnPlayer(m.PlayerId))">Remove blacklist entry</a>
             }
 
 

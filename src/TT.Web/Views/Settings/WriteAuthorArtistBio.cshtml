@@ -7,7 +7,7 @@
     <link href="~/Content/PvP.css" rel="stylesheet" />
 </head>
 
-@Html.ActionLink("Back to Settings", MVC.Settings.Settings())
+<a href="@Url.Action(MVC.Settings.Settings())">Back to Settings</a>
 
 
 
@@ -79,9 +79,9 @@
 
 
 
-@Html.ActionLink("Back to Settings", MVC.Settings.Settings())
+<a href="@Url.Action(MVC.Settings.Settings())">Back to Settings</a>
 
-@Html.ActionLink("Back to game", MVC.PvP.Play())
+<a href="@Url.Action(MVC.PvP.Play())">Back to game</a>
 
 <style>
     input,textarea {

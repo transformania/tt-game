@@ -17,9 +17,9 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
-                <li>@Html.ActionLink("View All Covenants", MVC.Covenant.CovenantList())</li>
-                <li>@Html.ActionLink("Back to My Covenant", MVC.Covenant.MyCovenant())</li>
+                <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+                <li><a href="@Url.Action(MVC.Covenant.CovenantList())">View All Covenants</a></li>
+                <li><a href="@Url.Action(MVC.Covenant.MyCovenant())">Back to My Covenant</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -39,7 +39,7 @@
             }
         }
     </p>
-    @Html.ActionLink("Led by " + Model.Leader.GetFullName(), MVC.PvP.LookAtPlayer(Model.Leader.Id))
+    <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.Leader.Id))">Led by @Model.Leader.GetFullName()</a>
 </div>
 
 <div class="onlinePlayersWrapperBG">

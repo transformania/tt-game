@@ -1,9 +1,9 @@
 ﻿@using TT.Domain.Statics
-<li>@Html.ActionLink("Home", MVC.PvP.Play())</li>
-<li>@Html.ActionLink("News (" + PvPStatics.LastGameUpdate + ")", MVC.Info.GameNews())</li>
-<li>@Html.ActionLink("How to Play", MVC.Info.HowToPlay())</li>
+<li><a href="@Url.Action(MVC.PvP.Play())">Home</a></li>
+<li><a href="@Url.Action(MVC.Info.GameNews())">News (@PvPStatics.LastGameUpdate)</a></li>
+<li><a href="@Url.Action(MVC.Info.HowToPlay())">How to Play</a></li>
 <li><a href="http://luxianne.com/forum/index.php" target="_blank">Forum</a></li>
-<li>@Html.ActionLink("Leaderboard", MVC.PvP.PvPLeaderboard())</li>
-<li>@Html.ActionLink("Donate?", MVC.Settings.Donate())</li>
-<li>@Html.ActionLink("Polls", MVC.Settings.ViewPolls())</li>
-<li>@Html.ActionLink("RP Classifieds", MVC.Info.RecentRPClassifieds())</li>
+<li><a href="@Url.Action(MVC.PvP.PvPLeaderboard())">Leaderboard</a></li>
+<li><a href="@Url.Action(MVC.Settings.Donate())">Donate?</a></li>
+<li><a href="@Url.Action(MVC.Settings.ViewPolls())">Polls</a></li>
+<li><a href="@Url.Action(MVC.Info.RecentRPClassifieds())">RP Classifieds</a></li>

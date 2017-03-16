@@ -4,7 +4,7 @@
     foreach (TT.Domain.Models.ServerLog sl in Model)
     {
         <div style="border: 1px solid black; padding: 2px; height: 18px; position: relative; float: left; background-color:@sl.GetErrorColor()">
-            @Html.ActionLink("Turn " + sl.TurnNumber, MVC.PvPAdmin.ViewServerLog(sl.TurnNumber))
+            <a href="@Url.Action(MVC.PvPAdmin.ViewServerLog(sl.TurnNumber))">Turn @sl.TurnNumber</a>
         </div>
     }
 }

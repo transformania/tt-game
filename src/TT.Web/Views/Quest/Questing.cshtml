@@ -16,14 +16,14 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
+                <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
                 <li>@Ajax.ActionLink("Abandon Quest", MVC.Quest.Abandon(), new AjaxOptions { UpdateTargetId = "quest", InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success", OnFailure = "fail", OnBegin = "waiting" }, new { @class = "" })</li>
-                <li>@Html.ActionLink("Inbox", MVC.Messages.Index(), new { @id = "newMessagesLink" })</li>
-                <li>@Html.ActionLink("Chat", MVC.Chat.Index("global"), new { target = "_blank" })</li>
+                <li><a href="@Url.Action(MVC.Messages.Index())" id="newMessagesLink">Inbox</a></li>
+                <li><a href="@Url.Action(MVC.Chat.Index("global"))" target="_blank">Chat</a></li>
 
                 @if (User.IsInRole(PvPStatics.Permissions_QuestWriter))
                 {
-                <li>@Html.ActionLink("QuestWriter", MVC.QuestWriter.Index())</li>
+                <li><a href="@Url.Action(MVC.QuestWriter.Index())">QuestWriter</a></li>
                 }
 
             </ul>

@@ -17,8 +17,8 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
-                <li>@Html.ActionLink("Back to Purchase List", MVC.NPC.TradeWithPetMerchant())</li>
+                <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+                <li><a href="@Url.Action(MVC.NPC.TradeWithPetMerchant())">Back to Purchase List</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -61,7 +61,7 @@
             </h3>
             <p>
                 You will receive:  @TT.Domain.Procedures.ItemProcedures.GetCostOfItem(item, "sell") Arpeyjis
-                @Html.ActionLink("Sell", MVC.NPC.SellPet(item.dbItem.Id))
+                <a href="@Url.Action(MVC.NPC.SellPet(item.dbItem.Id))">Sell</a>
             </p>
 
             <hr />

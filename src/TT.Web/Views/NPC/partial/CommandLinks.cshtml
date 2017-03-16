@@ -3,14 +3,14 @@
 @{
     if (Model.MindControl.Type == TT.Domain.Statics.MindControlStatics.MindControl__Movement)
     {
-        @Html.ActionLink("Command Movement", MVC.NPC.MoveVictim(Model.Victim.Player.Id))
+        <a href="@Url.Action(MVC.NPC.MoveVictim(Model.Victim.Player.Id))">Command Movement</a>
     }
     if (Model.MindControl.Type == TT.Domain.Statics.MindControlStatics.MindControl__Strip)
     {
-        @Html.ActionLink("Command Strip", MVC.NPC.StripVictim(Model.Victim.Player.Id))
+        <a href="@Url.Action(MVC.NPC.StripVictim(Model.Victim.Player.Id))">Command Strip</a>
     }
       if (Model.MindControl.Type == TT.Domain.Statics.MindControlStatics.MindControl__Meditate)
     {
-        @Html.ActionLink("Command Demeditation", MVC.NPC.DeMeditateVictim(Model.Victim.Player.Id))
+        <a href="@Url.Action(MVC.NPC.DeMeditateVictim(Model.Victim.Player.Id))">Command Demeditation</a>
     }
 }

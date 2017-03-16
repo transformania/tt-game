@@ -17,11 +17,11 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
-                <li>@Html.ActionLink("My blacklist entries", MVC.Settings.MyBlacklistEntries())</li>
-                <li>@Html.ActionLink("Update bio", MVC.Settings.SetBio())</li>
-                <li>@Html.ActionLink("Reserve name", MVC.PvP.ReserveName())</li>
-                <li>@Html.ActionLink("Rules", MVC.Info.Rules())</li>
+                <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+                <li><a href="@Url.Action(MVC.Settings.MyBlacklistEntries())">My blacklist entries</a></li>
+                <li><a href="@Url.Action(MVC.Settings.SetBio())">Update bio</a></li>
+                <li><a href="@Url.Action(MVC.PvP.ReserveName())">Reserve name</a></li>
+                <li><a href="@Url.Action(MVC.Info.Rules())">Rules</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -31,7 +31,7 @@
     <h2>Offline Timer</h2>
 
     <p>
-        Your account currently has <b>@Model.Strikes.Count()/@PvPStatics.MaxStrikesPerRound</b> strikes against it.  Read more about strikes @Html.ActionLink("here", MVC.Info.Rules(), new { target = "_blank" }).
+        Your account currently has <b>@Model.Strikes.Count()/@PvPStatics.MaxStrikesPerRound</b> strikes against it.  Read more about strikes <a href="@Url.Action(MVC.Info.Rules())" target="_blank">here</a>.
 
         @{
             if (Model.Strikes.Any())
@@ -113,26 +113,26 @@
 
         if (User.IsInRole(PvPStatics.Permissions_Previewer))
         {
-            <p class="good">You are on the contribution previewer list. @Html.ActionLink("Preview Contributions", MVC.PvPAdmin.ApproveContributionList())<br /></p>
+            <p class="good">You are on the contribution previewer list. <a href="@Url.Action(MVC.PvPAdmin.ApproveContributionList())">Preview Contributions</a><br /></p>
         }
 
         if (User.IsInRole(PvPStatics.Permissions_Artist))
         {
             <p class="good">
-                You are on the artists list. @Html.ActionLink("Update your Artist Biography", MVC.Settings.WriteAuthorArtistBio())<br>
-                @Html.ActionLink("List my artist bio", MVC.Settings.SetArtistBioVisibility(true))<br>
-                @Html.ActionLink("Do not list my artist bio", MVC.Settings.SetArtistBioVisibility(false))
+                You are on the artists list. <a href="@Url.Action(MVC.Settings.WriteAuthorArtistBio())">Update your Artist Biography</a><br>
+                <a href="@Url.Action(MVC.Settings.SetArtistBioVisibility(true))">List my artist bio</a><br>
+                <a href="@Url.Action(MVC.Settings.SetArtistBioVisibility(false))">Do not list my artist bio</a>
             </p>
         }
 
         if (User.IsInRole(PvPStatics.Permissions_Killswitcher))
         {
-            <p class="good">You are on the update killswitch list.   <span class="bad">Activate this link when and ONLY when you and a number of animate players are receiving error screens and are unable to play.  Clicking this link will temporarily disable turn updates so bots do not attacker players who are incapable of responding.  @Html.ActionLink("CLICK HERE TO ACTIVATE.", MVC.PvPAdmin.Killswitch())</span></p>
+            <p class="good">You are on the update killswitch list.   <span class="bad">Activate this link when and ONLY when you and a number of animate players are receiving error screens and are unable to play.  Clicking this link will temporarily disable turn updates so bots do not attacker players who are incapable of responding.  <a href="@Url.Action(MVC.PvPAdmin.Killswitch())">CLICK HERE TO ACTIVATE.</a></span></p>
         }
 
         if (User.IsInRole(PvPStatics.Permissions_QuestWriter))
         {
-            <p class="good">You are on the questwriters list. @Html.ActionLink("Write Quests", MVC.QuestWriter.Index())</p>
+            <p class="good">You are on the questwriters list. <a href="@Url.Action(MVC.QuestWriter.Index())">Write Quests</a></p>
         }
 
         if (User.IsInRole(PvPStatics.Permissions_Chaoslord))
@@ -144,14 +144,14 @@
 
     <h2>View Statistics</h2>
 
-    <p>@Html.ActionLink("View your statistics for this round", MVC.Settings.PlayerStats(Model.Player.MembershipId))</p>
+    <p><a href="@Url.Action(MVC.Settings.PlayerStats(Model.Player.MembershipId))">View your statistics for this round</a></p>
 
     <h2>Reserve this Name</h2>
     <p>
         You can reserve your name so that no other players take it at the start of a new round and steal your identity.
         You must be level 3 or higher in order to do this.<br /><br />
-        @Html.ActionLink("Reserve Name", MVC.PvP.ReserveName())<br />
-        @Html.ActionLink("Use my custom starting form (if available)", MVC.Settings.UseMyCustomForm())
+        <a href="@Url.Action(MVC.PvP.ReserveName())">Reserve Name</a><br />
+        <a href="@Url.Action(MVC.Settings.UseMyCustomForm())">Use my custom starting form (if available)</a>
     </p>
 
 
@@ -159,7 +159,7 @@
 
     <p>
         You can write a short bio of yourself or this player here.  You can also select RP tags which will indicate to others what your roleplaying theme intersts include or exclude.<br /><br />
-        @Html.ActionLink("Update My Bio", MVC.Settings.SetBio())
+        <a href="@Url.Action(MVC.Settings.SetBio())">Update My Bio</a>
     </p>
 
 
@@ -171,11 +171,11 @@
         @{
             if (Model.Player.InRP)
             {
-                <span class="good">You have your RP flag enabled.  Click @Html.ActionLink("HERE", MVC.Settings.ChangeRPMode(false)) to turn it off.</span>
+                <span class="good">You have your RP flag enabled.  Click <a href="@Url.Action(MVC.Settings.ChangeRPMode(false))">HERE</a> to turn it off.</span>
             }
             else
             {
-                <span class="bad">You have your RP flag disabled.  Click @Html.ActionLink("HERE", MVC.Settings.ChangeRPMode(true)) to turn it on.</span>
+                <span class="bad">You have your RP flag disabled.  Click <a href="@Url.Action(MVC.Settings.ChangeRPMode(true))">HERE</a> to turn it on.</span>
             }
 
         }
@@ -186,11 +186,11 @@
         {
             <p>
                 <h4 class="bad">CHAOS MODE OPTIONS ONLY:</h4>
-                @Html.ActionLink("Enter SuperProtection Mode", MVC.Settings.ChangeGameMode(GameModeStatics.SuperProtection))<br />
-                @Html.ActionLink("Enter Protection Mode", MVC.Settings.ChangeGameMode(GameModeStatics.Protection))<br />
-                @Html.ActionLink("Enter PvP Mode", MVC.Settings.ChangeGameMode(GameModeStatics.PvP))<br />
-                @Html.ActionLink("Change back into base form", MVC.Settings.ChaosRestoreBase())<br />
-                @Html.ActionLink("Reset All Quests and Abandon Current", MVC.Quest.ResetQuests())<br />
+                <a href="@Url.Action(MVC.Settings.ChangeGameMode(GameModeStatics.SuperProtection))">Enter SuperProtection Mode</a><br />
+                <a href="@Url.Action(MVC.Settings.ChangeGameMode(GameModeStatics.Protection))">Enter Protection Mode</a><br />
+                <a href="@Url.Action(MVC.Settings.ChangeGameMode(GameModeStatics.PvP))">Enter PvP Mode</a><br />
+                <a href="@Url.Action(MVC.Settings.ChaosRestoreBase())">Change back into base form</a><br />
+                <a href="@Url.Action(MVC.Quest.ResetQuests())">Reset All Quests and Abandon Current</a><br />
             </p>
         }
     }
@@ -204,11 +204,11 @@
         @{
             if (Model.Player.GameMode == GameModeStatics.Protection)
             {
-                @Html.ActionLink("Enter SuperProtection Mode", MVC.Settings.ChangeGameMode(GameModeStatics.SuperProtection))<br />
+                <a href="@Url.Action(MVC.Settings.ChangeGameMode(GameModeStatics.SuperProtection))">Enter SuperProtection Mode</a><br />
             }
             else if (Model.Player.GameMode == GameModeStatics.SuperProtection)
             {
-                @Html.ActionLink("Enter Protection Mode", MVC.Settings.ChangeGameMode(GameModeStatics.Protection))<br />
+                <a href="@Url.Action(MVC.Settings.ChangeGameMode(GameModeStatics.Protection))">Enter Protection Mode</a><br />
             }
             else if (Model.Player.GameMode == GameModeStatics.PvP && !PvPStatics.ChaosMode)
             {
@@ -225,8 +225,8 @@
             <p>
                 You can voluntarily submit to the magic of a friend (or enemy?) more quickly by voluntarily lowering your willpower to make yourself more vulnerable to attacks.<br /><br />
 
-                @Html.ActionLink("Decrease Willpower to Half", MVC.Settings.DumpWillpower("half"))<br /><br />
-                @Html.ActionLink("Decrease Willpower to Zero", MVC.Settings.DumpWillpower("full"))
+                <a href="@Url.Action(MVC.Settings.DumpWillpower("half"))">Decrease Willpower to Half</a><br /><br />
+                <a href="@Url.Action(MVC.Settings.DumpWillpower("full"))">Decrease Willpower to Zero</a>
             </p>
 
         }
@@ -238,28 +238,28 @@
     <p>
         You can change the color that your name appears in the game's chats below.<br /><br />
         <b>
-            <span style="color:black;">[] @Html.ActionLink("Black", MVC.Settings.SetChatColor("black"))</span>
-            <span style="color:blueviolet !important;">[] @Html.ActionLink("Blue Violet", MVC.Settings.SetChatColor("blueviolet"))</span>
-            <span style="color:cadetblue;">[] @Html.ActionLink("Cadet Blue", MVC.Settings.SetChatColor("cadetblue"))</span>
-            <span style="color:darkcyan;">[] @Html.ActionLink("Dark Cyan", MVC.Settings.SetChatColor("darkcyan"))</span>
-            <span style="color:darkolivegreen;">[] @Html.ActionLink("Dark Olive Green", MVC.Settings.SetChatColor("darkolivegreen"))</span><br />
-            <span style="color:#A1770F;">[] @Html.ActionLink("COLOR", MVC.Settings.SetChatColor("#A1770F"))</span>
-            <span style="color:green;">[] @Html.ActionLink("Green", MVC.Settings.SetChatColor("green"))</span>
-            <span style="color:indigo;">[] @Html.ActionLink("Indigo", MVC.Settings.SetChatColor("indigo"))</span>
-            <span style="color:lightcoral;">[] @Html.ActionLink("Light Coral", MVC.Settings.SetChatColor("lightcoral"))</span>
-            <span style="color:mediumpurple;">[] @Html.ActionLink("Medium Purple", MVC.Settings.SetChatColor("mediumpurple"))</span>
-            <span style="color:#C98300;">[] @Html.ActionLink("COLOR", MVC.Settings.SetChatColor("#C98300"))</span>
-            <span style="color:#747474;">[] @Html.ActionLink("COLOR", MVC.Settings.SetChatColor("#747474"))</span>
-            <span style="color:#5B67C5;">[] @Html.ActionLink("COLOR", MVC.Settings.SetChatColor("#5B67C5"))</span>
-            <span style="color:#8B5DA2;">[] @Html.ActionLink("COLOR", MVC.Settings.SetChatColor("#8B5DA2"))</span>
-            <span style="color:#DE45DC;">[] @Html.ActionLink("COLOR", MVC.Settings.SetChatColor("#DE45DC"))</span>
-            <span style="color:#249B6C;">[] @Html.ActionLink("COLOR", MVC.Settings.SetChatColor("#249B6C"))</span>
-            <span style="color:#337158;">[] @Html.ActionLink("COLOR", MVC.Settings.SetChatColor("#337158"))</span>
-            <span style="color:#716E33;">[] @Html.ActionLink("COLOR", MVC.Settings.SetChatColor("#716E33"))</span>
-            <span style="color:#986AAA;">[] @Html.ActionLink("COLOR", MVC.Settings.SetChatColor("#986AAA"))</span>
-            <span style="color:#87249B;">[] @Html.ActionLink("COLOR", MVC.Settings.SetChatColor("#87249B"))</span>
-            <span style="color:#4D5277;">[] @Html.ActionLink("COLOR", MVC.Settings.SetChatColor("#4D5277"))</span>
-            <span style="color:#5F8DBA;">[] @Html.ActionLink("COLOR", MVC.Settings.SetChatColor("#5F8DBA"))</span>
+            <span style="color:black;">[] <a href="@Url.Action(MVC.Settings.SetChatColor("black"))">Black</a></span>
+            <span style="color:blueviolet !important;">[] <a href="@Url.Action(MVC.Settings.SetChatColor("blueviolet"))">Blue Violet</a></span>
+            <span style="color:cadetblue;">[] <a href="@Url.Action(MVC.Settings.SetChatColor("cadetblue"))">Cadet Blue</a></span>
+            <span style="color:darkcyan;">[] <a href="@Url.Action(MVC.Settings.SetChatColor("darkcyan"))">Dark Cyan</a></span>
+            <span style="color:darkolivegreen;">[] <a href="@Url.Action(MVC.Settings.SetChatColor("darkolivegreen"))">Dark Olive Green</a></span><br />
+            <span style="color:#A1770F;">[] <a href="@Url.Action(MVC.Settings.SetChatColor("#A1770F"))">COLOR</a></span>
+            <span style="color:green;">[] <a href="@Url.Action(MVC.Settings.SetChatColor("green"))">Green</a></span>
+            <span style="color:indigo;">[] <a href="@Url.Action(MVC.Settings.SetChatColor("indigo"))">Indigo</a></span>
+            <span style="color:lightcoral;">[] <a href="@Url.Action(MVC.Settings.SetChatColor("lightcoral"))">Light Coral</a></span>
+            <span style="color:mediumpurple;">[] <a href="@Url.Action(MVC.Settings.SetChatColor("mediumpurple"))">Medium Purple</a></span>
+            <span style="color:#C98300;">[] <a href="@Url.Action(MVC.Settings.SetChatColor("#C98300"))">COLOR</a></span>
+            <span style="color:#747474;">[] <a href="@Url.Action(MVC.Settings.SetChatColor("#747474"))">COLOR</a></span>
+            <span style="color:#5B67C5;">[] <a href="@Url.Action(MVC.Settings.SetChatColor("#5B67C5"))">COLOR</a></span>
+            <span style="color:#8B5DA2;">[] <a href="@Url.Action(MVC.Settings.SetChatColor("#8B5DA2"))">COLOR</a></span>
+            <span style="color:#DE45DC;">[] <a href="@Url.Action(MVC.Settings.SetChatColor("#DE45DC"))">COLOR</a></span>
+            <span style="color:#249B6C;">[] <a href="@Url.Action(MVC.Settings.SetChatColor("#249B6C"))">COLOR</a></span>
+            <span style="color:#337158;">[] <a href="@Url.Action(MVC.Settings.SetChatColor("#337158"))">COLOR</a></span>
+            <span style="color:#716E33;">[] <a href="@Url.Action(MVC.Settings.SetChatColor("#716E33"))">COLOR</a></span>
+            <span style="color:#986AAA;">[] <a href="@Url.Action(MVC.Settings.SetChatColor("#986AAA"))">COLOR</a></span>
+            <span style="color:#87249B;">[] <a href="@Url.Action(MVC.Settings.SetChatColor("#87249B"))">COLOR</a></span>
+            <span style="color:#4D5277;">[] <a href="@Url.Action(MVC.Settings.SetChatColor("#4D5277"))">COLOR</a></span>
+            <span style="color:#5F8DBA;">[] <a href="@Url.Action(MVC.Settings.SetChatColor("#5F8DBA"))">COLOR</a></span>
         </b>
     </p>
 
@@ -267,12 +267,12 @@
     <p>
         Players who pledge $7 monthly on Patreon (Tier 2) may create a nickname and change it at any time.  Nicknames must be 20 characters or fewer and will appear inbetween your player's first and last names.<br /><br />
 
-        @Html.ActionLink("Set your nickname", MVC.Settings.SetNickname())<br /><br />
+        <a href="@Url.Action(MVC.Settings.SetNickname())">Set your nickname</a><br /><br />
     </p>
 
     <h2>Player Blacklist</h2>
     <p>
-        View and update any blacklist entries you have set. @Html.ActionLink("My Blacklist Entries", MVC.Settings.MyBlacklistEntries())
+        View and update any blacklist entries you have set. <a href="@Url.Action(MVC.Settings.MyBlacklistEntries())">My Blacklist Entries</a>
     </p>
 
     <h2>Audio Notifications</h2>

@@ -12,25 +12,25 @@
             <li><a data-toggle="modal" data-target="#listChatRoomsModal">Room List</a></li>
         }
         else {
-        <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
+        <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
         <li>
-            @Html.ActionLink("Global", MVC.Chat.Index("global"))
+            <a href="@Url.Action(MVC.Chat.Index("global"))">Global</a>
         </li>
         <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">RP Rooms <span class="caret"></span></a>
             <ul class="dropdown-menu">
-                <li>@Html.ActionLink("RP Room 1", MVC.Chat.Index("rp1"))</li>
-                <li>@Html.ActionLink("RP Room 2", MVC.Chat.Index("rp2"))</li>
-                <li>@Html.ActionLink("RP Room 3", MVC.Chat.Index("rp3"))</li>
+                <li><a href="@Url.Action(MVC.Chat.Index("rp1"))">RP Room 1</a></li>
+                <li><a href="@Url.Action(MVC.Chat.Index("rp2"))">RP Room 2</a></li>
+                <li><a href="@Url.Action(MVC.Chat.Index("rp3"))">RP Room 3</a></li>
             </ul>
         </li>
         <li>
-            @Html.ActionLink("Create/Join Private Room", MVC.PvP.PrivateChat())
+            <a href="@Url.Action(MVC.PvP.PrivateChat())">Create/Join Private Room</a>
         </li>
         <li>
-            @Html.ActionLink("Chat Log", MVC.PvP.ChatLog("global", "lasth"), new {target = "_blank"})
+            <a href="@Url.Action(MVC.PvP.ChatLog("global", "lasth"))" target="_blank">Chat Log</a>
         </li>
-        <li>@Html.ActionLink("Commands", MVC.PvP.ChatCommands(), new {target = "_blank"})</li>
+        <li><a href="@Url.Action(MVC.PvP.ChatCommands())" target="_blank">Commands</a></li>
         <li><a href="#" id="showIgnore">Ignore</a></li>
         <li><a href="#" id="toggleImages" style="color: #734752 !important; font-weight: bold;">Toggle Images</a></li>
         <li class="dropdown">

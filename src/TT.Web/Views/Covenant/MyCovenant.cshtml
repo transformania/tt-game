@@ -18,11 +18,11 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
-                <li>@Html.ActionLink("Create your own Covenant", MVC.Covenant.StartNewCovenant())</li>
-                <li>@Html.ActionLink("View all Covenants", MVC.Covenant.CovenantList())</li>
-                <li>@Html.ActionLink("Buy Furniture", MVC.Covenant.ViewAvailableFurniture())</li>
-                <li>@Html.ActionLink("Use Furniture", MVC.Covenant.MyCovenantFurniture())</li>
+                <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+                <li><a href="@Url.Action(MVC.Covenant.StartNewCovenant())">Create your own Covenant</a></li>
+                <li><a href="@Url.Action(MVC.Covenant.CovenantList())">View all Covenants</a></li>
+                <li><a href="@Url.Action(MVC.Covenant.ViewAvailableFurniture())">Buy Furniture</a></li>
+                <li><a href="@Url.Action(MVC.Covenant.MyCovenantFurniture())">Use Furniture</a></li>
                 @{
                     if (Model.dbCovenant != null)
                     {
@@ -30,13 +30,13 @@
                     }
                     if (ViewBag.HasApplication)
                     {
-                        <li>@Html.ActionLink("Withdraw Coven Application", MVC.Covenant.WithdrawApplication())</li>
+                        <li><a href="@Url.Action(MVC.Covenant.WithdrawApplication())">Withdraw Coven Application</a></li>
                     }
                     if (Model.dbCovenant != null && ViewBag.Player.Id == Model.dbCovenant.LeaderId)
                     {
-                        <li>@Html.ActionLink("Leader", MVC.Covenant.CovenantLeaderAdmin())</li>
+                        <li><a href="@Url.Action(MVC.Covenant.CovenantLeaderAdmin())">Leader</a></li>
                     }
-                    <li>@Html.ActionLink("Coven Log", MVC.Covenant.MyCovenantLog())</li>
+                    <li><a href="@Url.Action(MVC.Covenant.MyCovenantLog())">Coven Log</a></li>
                 }
             </ul>
         </div><!-- /.navbar-collapse -->
@@ -53,7 +53,7 @@
 
     <div id="realLink" class="deleteMessegeConfirm">
         <span style="color:red; font-weight: bold;">Do you really want to leave your covenant? If yes then please click link below:</span>
-        @Html.ActionLink("Leave this Covenant", MVC.Covenant.LeaveCovenant())<br />
+        <a href="@Url.Action(MVC.Covenant.LeaveCovenant())">Leave this Covenant</a><br />
     </div>
 
     @{
@@ -69,7 +69,7 @@
             }
             else
             {
-                @Html.ActionLink("Led by " + Model.Leader.GetFullName(), MVC.PvP.LookAtPlayer(Model.Leader.Id))
+                <a href="@Url.Action(MVC.PvP.LookAtPlayer(Model.Leader.Id))">Led by @Model.Leader.GetFullName()</a>
             }
 
             if (!Model.dbCovenant.HomeLocation.IsNullOrEmpty())
@@ -84,9 +84,9 @@
                 <br />You have <b>@ViewBag.MyMoney</b> Arpeyjis.
             </p>
 
-            @Html.ActionLink("20", MVC.Covenant.AddToCovenantChest(20))<span title="Arpeyjis" class="icon icon-money"></span>
-            @Html.ActionLink("100", MVC.Covenant.AddToCovenantChest(100))<span title="Arpeyjis" class="icon icon-money"></span>
-            @Html.ActionLink("500", MVC.Covenant.AddToCovenantChest(500))<span title="Arpeyjis" class="icon icon-money"></span>
+            <a href="@Url.Action(MVC.Covenant.AddToCovenantChest(20))">20</a><span title="Arpeyjis" class="icon icon-money"></span>
+            <a href="@Url.Action(MVC.Covenant.AddToCovenantChest(100))">100</a><span title="Arpeyjis" class="icon icon-money"></span>
+            <a href="@Url.Action(MVC.Covenant.AddToCovenantChest(500))">500</a><span title="Arpeyjis" class="icon icon-money"></span>
 
             <div style="clear:both"></div>
 
@@ -114,9 +114,9 @@
                             @Html.Partial(MVC.PvP.Views.Player_Partial, p)
                             @if (ViewBag.Player.Id == Model.dbCovenant.LeaderId || ViewBag.IAmCaptain)
                             {
-                                @Html.ActionLink("20", MVC.Covenant.GiveMoneyFromCovenantChest(p.Player.Id, 20))
-                                @Html.ActionLink("100", MVC.Covenant.GiveMoneyFromCovenantChest(p.Player.Id, 100))
-                                @Html.ActionLink("500", MVC.Covenant.GiveMoneyFromCovenantChest(p.Player.Id, 500))
+                                <a href="@Url.Action(MVC.Covenant.GiveMoneyFromCovenantChest(p.Player.Id, 20))">20</a>
+                                <a href="@Url.Action(MVC.Covenant.GiveMoneyFromCovenantChest(p.Player.Id, 100))">100</a>
+                                <a href="@Url.Action(MVC.Covenant.GiveMoneyFromCovenantChest(p.Player.Id, 500))">500</a>
                             }
                         </p>
                     </div>

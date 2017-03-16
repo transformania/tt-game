@@ -2,37 +2,37 @@
 
     @Html.Raw(TempData["Message"])
 
-    @Html.ActionLink("List News", MVC.PvPAdmin.ListNewsPosts())<br>
-    @Html.ActionLink("Approve Effect Contributions", MVC.PvPAdmin.ApproveEffectContributionList())<br>
-    @Html.ActionLink("Approve Contributions", MVC.PvPAdmin.ApproveContributionList())<br>
-    @Html.ActionLink("Public Broadcast", MVC.PvPAdmin.PublicBroadcast())<br>
-    @Html.ActionLink("Change game date", MVC.PvPAdmin.ChangeGameDate())<br>
-    @Html.ActionLink("Server Balancing", MVC.PvPAdmin.ServerBalance_Forms())<br>
-    @Html.ActionLink("Server Logs", MVC.PvPAdmin.ViewUpdateLogs())<br>
-    @Html.ActionLink("Approve DM Encounters", MVC.Contribution.ReviewDMRolls())<br>
+    <a href="@Url.Action(MVC.PvPAdmin.ListNewsPosts())">List News</a><br>
+    <a href="@Url.Action(MVC.PvPAdmin.ApproveEffectContributionList())">Approve Effect Contributions</a><br>
+    <a href="@Url.Action(MVC.PvPAdmin.ApproveContributionList())">Approve Contributions</a><br>
+    <a href="@Url.Action(MVC.PvPAdmin.PublicBroadcast())">Public Broadcast</a><br>
+    <a href="@Url.Action(MVC.PvPAdmin.ChangeGameDate())">Change game date</a><br>
+    <a href="@Url.Action(MVC.PvPAdmin.ServerBalance_Forms())">Server Balancing</a><br>
+    <a href="@Url.Action(MVC.PvPAdmin.ViewUpdateLogs())">Server Logs</a><br>
+    <a href="@Url.Action(MVC.Contribution.ReviewDMRolls())">Approve DM Encounters</a><br>
 
-    @Html.ActionLink("Jewdewfae Encounter List", MVC.PvPAdmin.FaeList())<br>
+    <a href="@Url.Action(MVC.PvPAdmin.FaeList())">Jewdewfae Encounter List</a><br>
 
-    @Html.ActionLink("Find Missing Portrait Thumbnails", MVC.PvPAdmin.FindMissingThumbnails())<br>
-    @Html.ActionLink("List Custom Forms", MVC.PvPAdmin.ListCustomForms())<br>
-    @Html.ActionLink("List Tomes", MVC.Tome.List())<br>
-    @Html.ActionLink("List Restock Items", MVC.RestockItem.List())<br>
-    @Html.ActionLink("Manage Donations", MVC.Donator.List(1))<br>
+    <a href="@Url.Action(MVC.PvPAdmin.FindMissingThumbnails())">Find Missing Portrait Thumbnails</a><br>
+    <a href="@Url.Action(MVC.PvPAdmin.ListCustomForms())">List Custom Forms</a><br>
+    <a href="@Url.Action(MVC.Tome.List())">List Tomes</a><br>
+    <a href="@Url.Action(MVC.RestockItem.List())">List Restock Items</a><br>
+    <a href="@Url.Action(MVC.Donator.List(1))">Manage Donations</a><br>
 
-    @Html.ActionLink("Rename player", MVC.PvPAdmin.RenamePlayer(-1))<br>
-    @Html.ActionLink("DEBUG inanimate me", MVC.PvPAdmin.FastInanimateMe())<br>
-    @Html.ActionLink("DEBUG pet me", MVC.PvPAdmin.FastPetMe())<br>
-    @Html.ActionLink("DEBUG animate me", MVC.PvPAdmin.FastAnimateMe())<br>
-    @Html.ActionLink("DEBUG give me teleport scroll", MVC.PvPAdmin.FastGiveTPScroll())<br>
-    @Html.ActionLink("ADMIN change game data", MVC.PvPAdmin.ChangeWorldStats())<br>
-    @Html.ActionLink("ADMIN change game round name/number", MVC.PvPAdmin.ChangeRoundText())<br>
+    <a href="@Url.Action(MVC.PvPAdmin.RenamePlayer(-1))">Rename player</a><br>
+    <a href="@Url.Action(MVC.PvPAdmin.FastInanimateMe())">DEBUG inanimate me</a><br>
+    <a href="@Url.Action(MVC.PvPAdmin.FastPetMe())">DEBUG pet me</a><br>
+    <a href="@Url.Action(MVC.PvPAdmin.FastAnimateMe())">DEBUG animate me</a><br>
+    <a href="@Url.Action(MVC.PvPAdmin.FastGiveTPScroll())">DEBUG give me teleport scroll</a><br>
+    <a href="@Url.Action(MVC.PvPAdmin.ChangeWorldStats())">ADMIN change game data</a><br>
+    <a href="@Url.Action(MVC.PvPAdmin.ChangeRoundText())">ADMIN change game round name/number</a><br>
     <br>
 
-    @Html.ActionLink("Check location consistency", MVC.PvPAdmin.CheckLocationConsistency())<br>
+    <a href="@Url.Action(MVC.PvPAdmin.CheckLocationConsistency())">Check location consistency</a><br>
     <br>
 
-    @Html.ActionLink("CLICK HERE TO ACTIVATE.", MVC.PvPAdmin.Killswitch())<br>
-    @Html.ActionLink("CLICK HERE TO DEACTIVE KILLSWITCH.", MVC.PvPAdmin.KillswitchRestore())<br>
+    <a href="@Url.Action(MVC.PvPAdmin.Killswitch())">CLICK HERE TO ACTIVATE.</a><br>
+    <a href="@Url.Action(MVC.PvPAdmin.KillswitchRestore())">CLICK HERE TO DEACTIVE KILLSWITCH.</a><br>
 
 
 

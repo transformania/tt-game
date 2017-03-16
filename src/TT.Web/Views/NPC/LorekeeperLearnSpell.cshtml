@@ -18,8 +18,8 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
-                <li>@Html.ActionLink("Talk", MVC.NPC.TalkToLorekeeper())</li>
+                <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+                <li><a href="@Url.Action(MVC.NPC.TalkToLorekeeper())">Talk</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -40,10 +40,10 @@
     <p>You have <b>@ViewBag.Money</b> Arpeyjis <span title="Arpeyjis" class="icon icon-money"></span> available for spending.</p><br>
 
     <ul>
-        <li>@Html.ActionLink("Animate spells", MVC.NPC.LorekeeperLearnSpell(PvPStatics.MobilityFull))</li>
-        <li>@Html.ActionLink("Inanimate spells", MVC.NPC.LorekeeperLearnSpell(PvPStatics.MobilityInanimate))</li>
-        <li>@Html.ActionLink("Pet/Animal spells", MVC.NPC.LorekeeperLearnSpell(PvPStatics.MobilityPet))</li>
-        <li>@Html.ActionLink("Other", MVC.NPC.LorekeeperLearnSpell(PvPStatics.MobilityMindControl))</li>
+        <li><a href="@Url.Action(MVC.NPC.LorekeeperLearnSpell(PvPStatics.MobilityFull))">Animate spells</a></li>
+        <li><a href="@Url.Action(MVC.NPC.LorekeeperLearnSpell(PvPStatics.MobilityInanimate))">Inanimate spells</a></li>
+        <li><a href="@Url.Action(MVC.NPC.LorekeeperLearnSpell(PvPStatics.MobilityPet))">Pet/Animal spells</a></li>
+        <li><a href="@Url.Action(MVC.NPC.LorekeeperLearnSpell(PvPStatics.MobilityMindControl))">Other</a></li>
     </ul>
 
     <hr />
@@ -79,7 +79,7 @@
                     }
                 }
 
-                <td>@Html.ActionLink("Purchase Training", MVC.NPC.LorekeeperLearnSpellSend(s.dbName))</td>
+                <td><a href="@Url.Action(MVC.NPC.LorekeeperLearnSpellSend(s.dbName))">Purchase Training</a></td>
             </tr>
         }
         </tbody>

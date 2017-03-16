@@ -19,9 +19,9 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav" style="width:100%;">
-                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
-                <li>@Html.ActionLink("Back to Messages", MVC.Messages.Index())</li>
-                <li>@Html.ActionLink("Reply", MVC.Messages.Write(Model.Sender.Id, Model.Id))</li>
+                <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+                <li><a href="@Url.Action(MVC.Messages.Index())">Back to Messages</a></li>
+                <li><a href="@Url.Action(MVC.Messages.Write(Model.Sender.Id, Model.Id))">Reply</a></li>
                 <li><a id="DeleteLink" href="javascript:void(0)">Delete</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
@@ -30,7 +30,7 @@
 
 <div class="containerInner">
     <div id="originalMessage">
-        @Html.ActionLink("Report this message as abusive", MVC.Messages.MarkAsAbusive(Model.Id), new { @class = "bad", onclick = "return confirm('Are you sure you wish to mark this message as abusive?');" })
+        <a href="@Url.Action(MVC.Messages.MarkAsAbusive(Model.Id))" class="bad" onclick="return confirm('Are you sure you wish to mark this message as abusive?');">Report this message as abusive</a>
         <div class="messageInfoContainer clearfix">
             <span class="messageNicknameContainer">@Model.Sender.GetFullName()</span>:
             <span class="messageTimeContainer">@CharactersHere.DatetimeToTimeago(Model.Timestamp)</span>

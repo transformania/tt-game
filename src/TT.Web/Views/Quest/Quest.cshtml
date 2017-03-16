@@ -88,12 +88,12 @@
     {
         if (Model.Player.Player.Mobility == PvPStatics.MobilityFull)
         {
-            <p>@Html.ActionLink("End Quest", MVC.Quest.EndQuest(false), new { @class = "" })</p>
+            <p><a href="@Url.Action(MVC.Quest.EndQuest(false))" class="">End Quest</a></p>
         }
         else
         {
-            <p>@Html.ActionLink("End Quest (return to animate form)", MVC.Quest.EndQuest(true), new { @class = "" })</p>
-            <p>@Html.ActionLink("End Quest (accept the changes)", MVC.Quest.EndQuest(false), new { onclick= "return confirm('Are you sure you want to accept your transformation and remain in your current inanimate or pet form?  You will lose your inventory and need to struggle back on your own.')", @class = "" })</p>
+            <p><a href="@Url.Action(MVC.Quest.EndQuest(true))" class="">End Quest (return to animate form)</a></p>
+            <p><a href="@Url.Action(MVC.Quest.EndQuest(false))" onclick="return confirm('Are you sure you want to accept your transformation and remain in your current inanimate or pet form?  You will lose your inventory and need to struggle back on your own.')" class="">End Quest (accept the changes)</a></p>
         }
     }
 

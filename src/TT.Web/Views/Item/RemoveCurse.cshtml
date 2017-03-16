@@ -15,8 +15,8 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
-                <li>@Html.ActionLink("Back to Inventory", MVC.PvP.MyInventory())</li>
+                <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+                <li><a href="@Url.Action(MVC.PvP.MyInventory())">Back to Inventory</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -40,7 +40,7 @@
         foreach (TT.Domain.ViewModels.EffectViewModel2 effect in Model.OrderBy(x => x.Effect.FriendlyName))
         {
             <h3>@effect.Effect.FriendlyName (@effect.dbEffect.Duration turns of effect remaining)</h3>
-            @Html.ActionLink("Remove this curse", MVC.Item.RemoveCurseSend(effect.dbEffect.dbName, (int)ViewBag.itemToUseId))
+            <a href="@Url.Action(MVC.Item.RemoveCurseSend(effect.dbEffect.dbName, (int)ViewBag.itemToUseId))">Remove this curse</a>
             <hr />
         }
     }

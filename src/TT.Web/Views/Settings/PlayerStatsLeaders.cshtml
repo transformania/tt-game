@@ -17,7 +17,7 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
+                <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -40,7 +40,7 @@
                         <h3 style="margin-top:110px !important;">@StatsProcedures.StatTypesMap[f].FriendlyName</h3>
                         <p><i>@StatsProcedures.StatTypesMap[f].Description:</i> <b>@String.Format("{0:n0}", ach.Achivement.Amount)</b></p>
                         <p>
-                            @Html.ActionLink(ach.Player.Player.GetFullName(), MVC.PvP.LookAtPlayer(ach.Player.Player.Id))
+                            <a href="@Url.Action(MVC.PvP.LookAtPlayer(ach.Player.Player.Id))">@ach.Player.Player.GetFullName()</a>
 
                             @Ajax.ActionLink("[+]", MVC.Settings.PlayerStatsTopOfType(ach.Achivement.AchievementType), new AjaxOptions { UpdateTargetId = "more_" + f, InsertionMode = InsertionMode.Replace, HttpMethod = "GET", OnSuccess = "success('" + f + "')", OnFailure = "failure", OnBegin = "waiting" }, new { @class = "attackLink", @id = f })
 

@@ -18,8 +18,8 @@
     <p>@roll.Message</p>
     
     
-    @Html.ActionLink("Approve", MVC.Contribution.ApproveDMRoll(roll.Id))
-    @Html.ActionLink("Edit", MVC.Contribution.DMRoll(roll.Id))
+    <a href="@Url.Action(MVC.Contribution.ApproveDMRoll(roll.Id))">Approve</a>
+    <a href="@Url.Action(MVC.Contribution.DMRoll(roll.Id))">Edit</a>
 
     <hr />
 

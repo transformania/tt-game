@@ -16,8 +16,8 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
-                <li>@Html.ActionLink("Back to Inventory", MVC.PvP.MyInventory())</li>
+                <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+                <li><a href="@Url.Action(MVC.PvP.MyInventory())">Back to Inventory</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -53,7 +53,7 @@
                 <td><b>@s.SkillSource.FormSource.FriendlyName</b></td>
                 <td><img src="@CharactersHere.GetFormImageURL(s.SkillSource.FormSource.PortraitUrl, true)" width="100px" height="100px" style="border: 1px solid black;"/></td>
                 <td class="tableCellDescription">@s.SkillSource.FormSource.Description</td>
-                <td>@Html.ActionLink("Cast", MVC.Item.SelfCastSend(s.SkillSource.dbName))</td>
+                <td><a href="@Url.Action(MVC.Item.SelfCastSend(s.SkillSource.dbName))">Cast</a></td>
             </tr>
         }
         </tbody>

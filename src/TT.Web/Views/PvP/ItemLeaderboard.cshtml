@@ -17,10 +17,10 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
-                <li>@Html.ActionLink("Round Achievement Leaders", MVC.Settings.PlayerStatsLeaders())</li>
-                <li>@Html.ActionLink("View Dungeon Leaderboard", MVC.PvP.PvPLeaderboard())</li>
-                <li>@Html.ActionLink("View XP Leaderboard", MVC.PvP.Leaderboard())</li>
+                <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+                <li><a href="@Url.Action(MVC.Settings.PlayerStatsLeaders())">Round Achievement Leaders</a></li>
+                <li><a href="@Url.Action(MVC.PvP.PvPLeaderboard())">View Dungeon Leaderboard</a></li>
+                <li><a href="@Url.Action(MVC.PvP.Leaderboard())">View XP Leaderboard</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -58,7 +58,7 @@
                     </td>
                     <td>
                         @CharactersHere.PrintPermanencyIcon(i.IsPermanent)
-                        @Html.ActionLink(i.FormerPlayer.FullName, MVC.PvP.LookAtPlayerItem(i.FormerPlayer.FullName))
+                        <a href="@Url.Action(MVC.PvP.LookAtPlayerItem(i.FormerPlayer.FullName))">@i.FormerPlayer.FullName</a>
                         @CharactersHere.PrintGenderIcon(i.FormerPlayer.Gender)
                         @CharactersHere.PrintItemTypeIcon(i.ItemSource.ItemType)
                     </td>

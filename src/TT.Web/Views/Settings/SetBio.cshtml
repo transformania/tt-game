@@ -16,8 +16,8 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
-                <li>@Html.ActionLink("Settings", MVC.Settings.Settings())</li>
+                <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+                <li><a href="@Url.Action(MVC.Settings.Settings())">Settings</a></li>
                 <li><a href="javascript:confirmDeletion()">Delete My Bio</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
@@ -28,7 +28,7 @@
 
     <div id="realLink" class="deleteMessegeConfirm">
         <span style="color:red; font-weight: bold;">Do you really want to delete your bio? If yes then please click link below:</span>
-        @Html.ActionLink("Yes, DELETE my bio", MVC.Settings.SetBioDelete())<br />
+        <a href="@Url.Action(MVC.Settings.SetBioDelete())">Yes, DELETE my bio</a><br />
     </div>
 
     <h1>Update Your Bio</h1>

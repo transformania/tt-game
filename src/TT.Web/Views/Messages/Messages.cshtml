@@ -17,10 +17,10 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav" style="width:100%;">
-                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
-                <li>@Html.ActionLink("Search for player by name", MVC.PvP.PlayerLookup())</li>
+                <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+                <li><a href="@Url.Action(MVC.PvP.PlayerLookup())">Search for player by name</a></li>
                 <li><a href="javascript:void(0)" id="deleteAll" style="color: #734752 !important; font-weight:bold;">Delete All Messages</a></li>
-                <li>@Html.ActionLink("Rules", MVC.Info.Rules(), new { target = "_blank" })</li>
+                <li><a href="@Url.Action(MVC.Info.Rules())" target="_blank">Rules</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -65,7 +65,7 @@
     @{
         for (int i = 0; i < Model.Paginator.MaxPageNumber; i++)
         {
-            @Html.ActionLink((i + 1).ToString() + " | ", MVC.Messages.Index(i), new { @class = Model.Paginator.GetStylingClass(i) })
+            <a href="@Url.Action(MVC.Messages.Index(i))" class="@Model.Paginator.GetStylingClass(i)">@(i + 1) | </a>
         }
     }
 
@@ -104,16 +104,16 @@
 
                     <tr>
                        
-                    <td>@Html.ActionLink(msg.Sender.GetFullName(), MVC.PvP.LookAtPlayer(msg.Sender.Id))</td>
+                    <td><a href="@Url.Action(MVC.PvP.LookAtPlayer(msg.Sender.Id))">@msg.Sender.GetFullName()</a></td>
 
                     @{
                     if (msg.ReadStatus == 0 || msg.ReadStatus == 2)
                     {
-                        <td class="newlink">@Html.ActionLink(messageTeaser, MVC.Messages.ReadMessage(msg.Id))</td>
+                        <td class="newlink"><a href="@Url.Action(MVC.Messages.ReadMessage(msg.Id))">@messageTeaser</a></td>
                     }
                     else
                     {
-                        <td>@Html.ActionLink(messageTeaser, MVC.Messages.ReadMessage(msg.Id))</td>
+                        <td><a href="@Url.Action(MVC.Messages.ReadMessage(msg.Id))">@messageTeaser</a></td>
                     }
                         }
 
@@ -198,7 +198,7 @@
             @{foreach (var msg in Model.SentMessages)
             {
                 <tr>
-                    <td>@Html.ActionLink(msg.Receiver.GetFullName(), MVC.PvP.LookAtPlayer(msg.Receiver.Id))</td>
+                    <td><a href="@Url.Action(MVC.PvP.LookAtPlayer(msg.Receiver.Id))">@msg.Receiver.GetFullName()</a></td>
                     <td>@msg.MessageText</td>
                     <td class="timeSent"><span style="font-size: 10px">@CharactersHere.DatetimeToTimeago(msg.Timestamp)</span></td>
                     <td>@CharactersHere.PrintMessageReadStatus(msg)</td>
@@ -215,7 +215,7 @@
         if (Model.WearerId != -1 && Model.WearerName != null)
         {
 
-            <p> @Html.ActionLink("Telepathically talk to the person wearing you, " + Model.WearerName, MVC.Messages.Write(Model.WearerId, -1)) </p>
+            <p> <a href="@Url.Action(MVC.Messages.Write(Model.WearerId, -1))">Telepathically talk to the person wearing you, @Model.WearerName</a> </p>
         }
     }
 </div>

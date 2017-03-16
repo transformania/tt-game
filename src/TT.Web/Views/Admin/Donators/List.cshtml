@@ -16,12 +16,12 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
-                <li>@Html.ActionLink("Back to Admin", MVC.PvPAdmin.Index())</li>
-                <li>@Html.ActionLink("Show All Tiers", MVC.Donator.List(0))</li>
-                <li>@Html.ActionLink("Show Tier 1+", MVC.Donator.List(1))</li>
-                <li>@Html.ActionLink("Show Tier 2+", MVC.Donator.List(2))</li>
-                <li>@Html.ActionLink("Show Tier 3+", MVC.Donator.List(3))</li>
+                <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+                <li><a href="@Url.Action(MVC.PvPAdmin.Index())">Back to Admin</a></li>
+                <li><a href="@Url.Action(MVC.Donator.List(0))">Show All Tiers</a></li>
+                <li><a href="@Url.Action(MVC.Donator.List(1))">Show Tier 1+</a></li>
+                <li><a href="@Url.Action(MVC.Donator.List(2))">Show Tier 2+</a></li>
+                <li><a href="@Url.Action(MVC.Donator.List(3))">Show Tier 3+</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -37,7 +37,7 @@
 <div class="containerInner">
     <h1>Manage Donators</h1>
 
-    @Html.ActionLink("New Donator", MVC.Donator.Create())
+    <a href="@Url.Action(MVC.Donator.Create())">New Donator</a>
 
     <table id="donatorTable">
         <thead>
@@ -63,7 +63,7 @@
                     <td>@d.Donator.Tier</td>
                     <td>@d.Donator.ActualDonationAmount</td>
                     <td>@d.Donator.SpecialNotes</td>
-                    <td>@Html.ActionLink("[Edit]", MVC.Donator.Edit(d.Donator.Id))</td>
+                    <td><a href="@Url.Action(MVC.Donator.Edit(d.Donator.Id))">[Edit]</a></td>
                 </tr>
             }
         }
@@ -73,7 +73,7 @@
 
     </table>
 
-    @Html.ActionLink("New Donator", MVC.Donator.Create())
+    <a href="@Url.Action(MVC.Donator.Create())">New Donator</a>
 </div>
 
 <style>

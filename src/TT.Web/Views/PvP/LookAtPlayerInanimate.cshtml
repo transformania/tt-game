@@ -18,7 +18,7 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav" style="width:100%;">
-                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
+                <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
                 @{
                     if (Model.PlayerForm.Player.BotId == AIStatics.ActivePlayerBotId)
                     {
@@ -26,12 +26,12 @@
                             @{
                         if (ViewBag.HasBio)
                         {
-                        <li>@Html.ActionLink("View Bio", MVC.Settings.ViewBio(Model.PlayerForm.Player.MembershipId))</li>
+                        <li><a href="@Url.Action(MVC.Settings.ViewBio(Model.PlayerForm.Player.MembershipId))">View Bio</a></li>
                         }
                         if (ViewBag.HasArtistAuthorBio)
                         {
                             <li>
-                                @Html.ActionLink("View Artist/Author Bio", MVC.Settings.AuthorArtistBio(Model.PlayerForm.Player.MembershipId))
+                                <a href="@Url.Action(MVC.Settings.AuthorArtistBio(Model.PlayerForm.Player.MembershipId))">View Artist/Author Bio</a>
                             </li>
                         }
                             }
@@ -40,10 +40,10 @@
                         if (Model.PlayerForm.Player.BotId == AIStatics.ActivePlayerBotId)
                         {
 
-                            <li>@Html.ActionLink("Send a Message", MVC.Messages.Write(Model.PlayerForm.Player.Id, -1))</li>
-                                  <li>@Html.ActionLink("View Statistics", MVC.Settings.PlayerStats(Model.PlayerForm.Player.MembershipId))</li>
-                                <li>@Html.ActionLink("Add Friend", MVC.PvP.AddFriend(Model.PlayerForm.Player.Id))</li>
-                                <li>@Html.ActionLink("Blacklist player", MVC.Settings.ToggleBlacklistOnPlayer(Model.PlayerForm.Player.Id))</li>
+                            <li><a href="@Url.Action(MVC.Messages.Write(Model.PlayerForm.Player.Id, -1))">Send a Message</a></li>
+                                  <li><a href="@Url.Action(MVC.Settings.PlayerStats(Model.PlayerForm.Player.MembershipId))">View Statistics</a></li>
+                                <li><a href="@Url.Action(MVC.PvP.AddFriend(Model.PlayerForm.Player.Id))">Add Friend</a></li>
+                                <li><a href="@Url.Action(MVC.Settings.ToggleBlacklistOnPlayer(Model.PlayerForm.Player.Id))">Blacklist player</a></li>
                         }
                             }
                             </p>
@@ -115,16 +115,16 @@
                     <ul class="nav navbar-nav" style="width: 100%;">
                         @if (Model.PlayerForm.Player.FlaggedForAbuse)
                         {
-                            <li>@Html.ActionLink("Unlock this player for suspicious activity", MVC.PvP.FlagForSuspiciousActivity(Model.PlayerForm.Player.Id))</li>
+                            <li><a href="@Url.Action(MVC.PvP.FlagForSuspiciousActivity(Model.PlayerForm.Player.Id))">Unlock this player for suspicious activity</a></li>
                         }
                         else
                         {
-                            <li>@Html.ActionLink("Lock this player for suspicious activity", MVC.PvP.FlagForSuspiciousActivity(Model.PlayerForm.Player.Id))</li>
+                            <li><a href="@Url.Action(MVC.PvP.FlagForSuspiciousActivity(Model.PlayerForm.Player.Id))">Lock this player for suspicious activity</a></li>
                         }
-                        <li>@Html.ActionLink("Reset IP Address", MVC.PvPAdmin.ResetAllPlayersWithIPAddress(Model.PlayerForm.Player.IpAddress))</li>
-                        <li>@Html.ActionLink("Toggle ban on global chat", MVC.PvPAdmin.ToggleBanOnGlobalChat(Model.PlayerForm.Player.Id))</li>
-                        <li>@Html.ActionLink("Rename", MVC.PvPAdmin.RenamePlayer(Model.PlayerForm.Player.Id))</li>
-                        <li>@Html.ActionLink("View/Add Strikes", MVC.Moderator.ViewStrikes(Model.PlayerForm.Player.MembershipId))</li>
+                        <li><a href="@Url.Action(MVC.PvPAdmin.ResetAllPlayersWithIPAddress(Model.PlayerForm.Player.IpAddress))">Reset IP Address</a></li>
+                        <li><a href="@Url.Action(MVC.PvPAdmin.ToggleBanOnGlobalChat(Model.PlayerForm.Player.Id))">Toggle ban on global chat</a></li>
+                        <li><a href="@Url.Action(MVC.PvPAdmin.RenamePlayer(Model.PlayerForm.Player.Id))">Rename</a></li>
+                        <li><a href="@Url.Action(MVC.Moderator.ViewStrikes(Model.PlayerForm.Player.MembershipId))">View/Add Strikes</a></li>
                     </ul>
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->

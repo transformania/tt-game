@@ -28,14 +28,14 @@
                 @{
                     if (ViewBag.Wuffie != null && ViewBag.Wuffie)
                     {
-                        @Html.ActionLink("Purchase", MVC.NPC.PurchasePet(Model.dbItem.Id), new { @class = "attackLink" })
+                        <a href="@Url.Action(MVC.NPC.PurchasePet(Model.dbItem.Id))" class="attackLink">Purchase</a>
                     }
                     else if (ViewBag.Lorekeeper != null && ViewBag.Lorekeeper)
                     {
-                        @Html.ActionLink("Purchase", MVC.NPC.LorekeeperPurchaseBookSend(Model.dbItem.Id), new { @class = "attackLink" })
+                        <a href="@Url.Action(MVC.NPC.LorekeeperPurchaseBookSend(Model.dbItem.Id))" class="attackLink">Purchase</a>
                     } else
                     {
-                        @Html.ActionLink("Purchase", MVC.NPC.Purchase(Model.dbItem.Id), new { @class = "attackLink" })
+                        <a href="@Url.Action(MVC.NPC.Purchase(Model.dbItem.Id))" class="attackLink">Purchase</a>
                     }
                 }
 

@@ -64,7 +64,7 @@
 
       <div class="container" >
           <footer class="outsideContainer footerTT">
-              <a href="#siteTop">[ Back to top ]</a> || @Html.ActionLink("[ Terms of Service ]", MVC.Account.TermsOfService(), new { target = "_blank" }) || Transformania Time :: 2013 - @DateTime.UtcNow.Year
+              <a href="#siteTop">[ Back to top ]</a> || <a href="@Url.Action(MVC.Account.TermsOfService())" target="_blank">[ Terms of Service ]</a> || Transformania Time :: 2013 - @DateTime.UtcNow.Year
           </footer>
       </div>
 

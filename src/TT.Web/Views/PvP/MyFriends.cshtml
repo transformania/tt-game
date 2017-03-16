@@ -18,8 +18,8 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav" style="width:100%;">
-                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
-                <li>@Html.ActionLink("Search for player by name", MVC.PvP.PlayerLookup())</li>
+                <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+                <li><a href="@Url.Action(MVC.PvP.PlayerLookup())">Search for player by name</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -60,25 +60,25 @@
             if (fp.dbPlayer.Mobility == PvPStatics.MobilityFull)
             {
                 <td>
-                    @Html.ActionLink(fp.dbPlayer.GetFullName(), MVC.PvP.LookAtPlayer(fp.dbPlayer.Id))
+                    <a href="@Url.Action(MVC.PvP.LookAtPlayer(fp.dbPlayer.Id))">@fp.dbPlayer.GetFullName()</a>
                 </td>
             }
             else if (fp.dbPlayer.Mobility == PvPStatics.MobilityInanimate)
             {
                 <td>
-                    @Html.ActionLink(fp.dbPlayer.GetFullName() + " (inanimate)", MVC.PvP.LookAtPlayer(fp.dbPlayer.Id))
+                    <a href="@Url.Action(MVC.PvP.LookAtPlayer(fp.dbPlayer.Id))">@fp.dbPlayer.GetFullName() (inanimate)</a>
                 </td>
             }
 
             else if (fp.dbPlayer.Mobility == PvPStatics.MobilityPet)
             {
                 <td>
-                    @Html.ActionLink(fp.dbPlayer.GetFullName() + " (animal)", MVC.PvP.LookAtPlayer(fp.dbPlayer.Id))
+                    <a href="@Url.Action(MVC.PvP.LookAtPlayer(fp.dbPlayer.Id))">@fp.dbPlayer.GetFullName() (animal)</a>
                 </td>
             }
             <td class="timeago" style="line-height: 17px;">@fp.dbPlayer.OnlineActivityTimestamp.ToString("u")</td>
                     <td>
-                        @Html.ActionLink("Defriend", MVC.PvP.RespondToFriendRequest(fp.dbFriend.Id, "defriend"))
+                        <a href="@Url.Action(MVC.PvP.RespondToFriendRequest(fp.dbFriend.Id, "defriend"))">Defriend</a>
                     </td>
 
                     <td>
@@ -86,11 +86,12 @@
                         
             @if (fp.dbPlayer.MembershipId != fp.dbFriend.OwnerMembershipId)
             {
-                @Html.ActionLink(fp.dbFriend.OwnerNicknameForFriend, MVC.Settings.SetFriendNickname(fp.friendId))
+                <a href="@Url.Action(MVC.Settings.SetFriendNickname(fp.friendId))">@fp.dbFriend.OwnerNicknameForFriend</a>
             }
             else
             {
-                @Html.ActionLink(fp.dbFriend.FriendNicknameForOwner, MVC.Settings.SetFriendNickname(fp.friendId))
+                <a href="@Url.Action(MVC.Settings.SetFriendNickname(fp.friendId))">@fp.dbFriend.FriendNicknameForOwner</a>
+
             }
                        
 
@@ -144,9 +145,9 @@
                     @foreach (TT.Domain.ViewModels.FriendPlayerViewModel fp2 in Model.RequestsForMe.Where(m => m.dbPlayer != null))
                     {
                         <tr>
-                            <td>@Html.ActionLink(fp2.dbPlayer.GetFullName() + "  (#" + fp2.dbPlayer.MembershipId + ")", MVC.PvP.LookAtPlayer(fp2.dbPlayer.Id))</td>
-                            <td>@Html.ActionLink("Accept", MVC.PvP.RespondToFriendRequest(fp2.dbFriend.Id, "accept"))</td>
-                            <td>@Html.ActionLink("Deny", MVC.PvP.RespondToFriendRequest(fp2.dbFriend.Id, "deny"))</td>
+                            <td><a href="@Url.Action(MVC.PvP.LookAtPlayer(fp2.dbPlayer.Id))">@fp2.dbPlayer.GetFullName() (#@fp2.dbPlayer.MembershipId)</a></td>
+                            <td><a href="@Url.Action(MVC.PvP.RespondToFriendRequest(fp2.dbFriend.Id, "accept"))">Accept</a></td>
+                            <td><a href="@Url.Action(MVC.PvP.RespondToFriendRequest(fp2.dbFriend.Id, "deny"))">Deny</a></td>
                         </tr>
                     }
                 </tbody>
@@ -186,10 +187,10 @@
                     {
                         <tr>
                             <td>
-                                @Html.ActionLink(fp3.dbPlayer.GetFullName() + "", MVC.PvP.LookAtPlayer(fp3.dbPlayer.Id))
+                                <a href="@Url.Action(MVC.PvP.LookAtPlayer(fp3.dbPlayer.Id))">@fp3.dbPlayer.GetFullName()</a>
                             </td>
                             <td>
-                                @Html.ActionLink("Cancel", MVC.PvP.RespondToFriendRequest(fp3.dbFriend.Id, "cancel"))
+                                <a href="@Url.Action(MVC.PvP.RespondToFriendRequest(fp3.dbFriend.Id, "cancel"))">Cancel</a>
                             </td>
 
                         </tr>

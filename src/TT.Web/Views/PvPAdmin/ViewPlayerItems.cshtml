@@ -16,8 +16,8 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav" style="width:100%;">
-                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
-                <li>@Html.ActionLink("Back to player", MVC.PvP.LookAtPlayer(player.Player.Id))</li>
+                <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+                <li><a href="@Url.Action(MVC.PvP.LookAtPlayer(player.Player.Id))">Back to player</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -40,7 +40,7 @@
             {
                 strItemName += " (" + item.dbItem.GetFullName() + ")";
             }
-            <li>@Html.ActionLink(strItemName, MVC.PvPAdmin.ViewItemTransferLog(item.dbItem.Id))</li>
+            <li><a href="@Url.Action(MVC.PvPAdmin.ViewItemTransferLog(item.dbItem.Id))">@strItemName</a></li>
         }
     }
 </ul>

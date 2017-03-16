@@ -21,14 +21,14 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Back to game", MVC.PvP.Play())</li>
-                <li>@Html.ActionLink("Contributions Awaiting Release", MVC.Contribution.ContributeGraphicsNeeded())</li>
-                <li>@Html.ActionLink("Submit Curse", MVC.Contribution.ContributeEffect(-1), FormMethod.Post)</li>
-                <li>@Html.ActionLink("Submit DM Encounter", MVC.Contribution.MyDMRolls())</li>
-                <li>@Html.ActionLink("New Contribution", MVC.Contribution.Contribute(-1), FormMethod.Post)</li>
+                <li><a href="@Url.Action(MVC.PvP.Play())">Back to game</a></li>
+                <li><a href="@Url.Action(MVC.Contribution.ContributeGraphicsNeeded())">Contributions Awaiting Release</a></li>
+                <li><a href="@Url.Action(MVC.Contribution.ContributeEffect(-1))">Submit Curse</a></li>
+                <li><a href="@Url.Action(MVC.Contribution.MyDMRolls())">Submit DM Encounter</a></li>
+                <li><a href="@Url.Action(MVC.Contribution.Contribute(-1))">New Contribution</a></li>
                 @{if (User.IsInRole(PvPStatics.Permissions_Proofreader))
                 {
-                    <li>@Html.ActionLink("Unlock but DO NOT Save", MVC.Contribution.SendContributionUndoLock(Model.Id))</li>
+                    <li><a href="@Url.Action(MVC.Contribution.SendContributionUndoLock(Model.Id))">Unlock but DO NOT Save</a></li>
                 }}     
             </ul>
         </div><!-- /.navbar-collapse -->
@@ -79,14 +79,14 @@
                                 @if (contribution.IsLive)
                                 {
                                     <td><span class="good">Y</span></td>
-                                    <td><span class='newlink'>@Html.ActionLink(contribution.Skill_FriendlyName, MVC.Contribution.Contribute(contribution.Id))</span></td>
-                                    <td><span class='newlink'>@Html.ActionLink(contribution.Form_FriendlyName, MVC.Contribution.Contribute(contribution.Id))</span></td>
+                                    <td><span class='newlink'><a href="@Url.Action(MVC.Contribution.Contribute(contribution.Id))">@contribution.Skill_FriendlyName</a></span></td>
+                                    <td><span class='newlink'><a href="@Url.Action(MVC.Contribution.Contribute(contribution.Id))">@contribution.Form_FriendlyName</a></span></td>
                                 }
                                 else
                                 {
                                     <td><span class="bad">N</span></td>
-                                    <td>@Html.ActionLink(contribution.Skill_FriendlyName, MVC.Contribution.Contribute(contribution.Id))</td>
-                                    <td>@Html.ActionLink(contribution.Form_FriendlyName, MVC.Contribution.Contribute(contribution.Id))</td>
+                                    <td><a href="@Url.Action(MVC.Contribution.Contribute(contribution.Id))">@contribution.Skill_FriendlyName</a></td>
+                                    <td><a href="@Url.Action(MVC.Contribution.Contribute(contribution.Id))">@contribution.Form_FriendlyName</a></td>
                                 }
                                 <td>
                                     @if (contribution.ProofreadingCopy)
@@ -163,7 +163,7 @@
                 <li>
                     (Effective June 1, 2014) When you post contributions and graphics, you retain your creator's rights. This means the content cannot be resold or released for use on other websites or other electronic or printed mediums <b>by this site</b>--the contributor still has the rights to do so so long as it does not retroactively conflict with the game's use of the content. However, you <b>are</b> agreeing to allow the game to use this content <b>indefinitely</b> so long as the game does not become a commercial project (no subscription fees, no pay-to-win item store, etc).
                 </li>
-                <li>To see what happens after you believe your spell is ready, <a href="/Info/FAQ#contributions" target="_blank">this on the FAQ page</a>.</li>
+                <li>To see what happens after you believe your spell is ready, <a href="@Url.Action(MVC.Info.FAQ())#contributions" target="_blank">this on the FAQ page</a>.</li>
             </ul>
         </p>
 
@@ -171,7 +171,7 @@
 
         @{ if (User.IsInRole(PvPStatics.Permissions_Proofreader))
          {
-             @Html.ActionLink("Unlock but DO NOT Save", MVC.Contribution.SendContributionUndoLock(Model.Id))
+             <a href="@Url.Action(MVC.Contribution.SendContributionUndoLock(Model.Id))">Unlock but DO NOT Save</a>
          }
         }
 
@@ -191,7 +191,7 @@
                 <h1 class="good">THIS IS A PROOFREADING COPY.</h1>
             }
 
-            <p>@Html.ActionLink("Look at this author's player profile", MVC.PvP.LookAtPlayer_FromMembershipId(Model.OwnerMembershipId))</p>
+            <p><a href="@Url.Action(MVC.PvP.LookAtPlayer_FromMembershipId(Model.OwnerMembershipId))">Look at this author's player profile</a></p>
 
 
             <div class="form__panel group" style="background-color: lightpink;">
@@ -607,7 +607,7 @@
                 <div class="form__panel externalMessage">The current balance score is:  <b>@ViewBag.BalanceScore</b>.  Animate forms should have a balance score of 0.  Items should have a balance scoreof 10 and pets should have a balance score close to 20.</div>
 
                 <p>
-                    @Html.ActionLink("Use calculator (save contribution before doing this!)", MVC.Contribution.ContributeBalanceCalculator2(Model.Id))<br /></p>
+                    <a href="@Url.Action(MVC.Contribution.ContributeBalanceCalculator2(Model.Id))">Use calculator (save contribution before doing this!)</a><br /></p>
             </div>
 
             <div class="form__panel group" id="itemCreatedPanelNotPresent" style="background-color: #FFE0A3; display: none;">
@@ -691,7 +691,7 @@
 
             if (User.IsInRole(PvPStatics.Permissions_Proofreader))
             {
-                @Html.ActionLink("Unlock but DO NOT Save", MVC.Contribution.SendContributionUndoLock(Model.Id))
+                <a href="@Url.Action(MVC.Contribution.SendContributionUndoLock(Model.Id))">Unlock but DO NOT Save</a>
             }
 
 
@@ -699,7 +699,7 @@
         }
 
 
-@Html.ActionLink("Back to game (Don't forget to save!)", MVC.PvP.Play())
+<a href="@Url.Action(MVC.PvP.Play())">Back to game (Don't forget to save!)</a>
 
 @{
             if (User.IsInRole(PvPStatics.Permissions_Admin) || User.IsInRole(PvPStatics.Permissions_Publisher))
@@ -708,18 +708,18 @@
                 <p>@Html.Raw(ViewBag.StaticSkillExists)</p>
                 <p>@Html.Raw(ViewBag.StaticFormExists)</p>
                 <p>@Html.Raw(ViewBag.StaticItemExists)</p>
-                @Html.ActionLink("Publish Spell", MVC.Contribution.PublishSpell(Model.Id))<br />
-                @Html.ActionLink("Publish Form", MVC.Contribution.PublishForm(Model.Id))<br />
-                @Html.ActionLink("Publish Item", MVC.Contribution.PublishItem(Model.Id))<br />
+                <a href="@Url.Action(MVC.Contribution.PublishSpell(Model.Id))">Publish Spell</a><br />
+                <a href="@Url.Action(MVC.Contribution.PublishForm(Model.Id))">Publish Form</a><br />
+                <a href="@Url.Action(MVC.Contribution.PublishItem(Model.Id))">Publish Item</a><br />
                 <p class="playerSearchingNotification">Note: always publish in this order: items, forms, spells.  Because foreign key stuff.</p>
 
             }
 
             if (User.IsInRole(PvPStatics.Permissions_Admin))
             {
-                @Html.ActionLink("Mark as Live", MVC.Contribution.MarkAsLive(Model.Id))<br />
-                @Html.ActionLink("Release Spell", MVC.Contribution.SetSpellAsLive(Model.Id))<br />
-                @Html.ActionLink("Check if statics exist", MVC.Contribution.StaticsExist(Model.Id))<br />
+                <a href="@Url.Action(MVC.Contribution.MarkAsLive(Model.Id))">Mark as Live</a><br />
+                <a href="@Url.Action(MVC.Contribution.SetSpellAsLive(Model.Id))">Release Spell</a><br />
+                <a href="@Url.Action(MVC.Contribution.StaticsExist(Model.Id))">Check if statics exist</a><br />
             }
 
 }

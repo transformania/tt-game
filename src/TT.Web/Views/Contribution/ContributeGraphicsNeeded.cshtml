@@ -107,18 +107,14 @@
                         <td>@c.Notes</td>
 
                         <td>
-                            @{
-
-                                try
-                                {
-                                    <a href="@Url.Action(MVC.Contribution.ContributeSetGraphicStatus(c.Id))">@c.AssignedToArtist</a>
-                                }
-                                catch
-                                {
-                                    <a href="@Url.Action(MVC.Contribution.ContributeSetGraphicStatus(c.Id))">(none)</a>
-                                }
+                            @if (string.IsNullOrEmpty(c.AssignedToArtist))
+                            {
+                                <a href="@Url.Action(MVC.Contribution.ContributeSetGraphicStatus(c.Id))">(none)</a>
                             }
-
+                            else
+                            {
+                                <a href="@Url.Action(MVC.Contribution.ContributeSetGraphicStatus(c.Id))">@c.AssignedToArtist</a>
+                            }
                         </td>
 
                     </tr>

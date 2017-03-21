@@ -118,6 +118,7 @@
     <Compile Include="Builders\Builder.cs" />
     <Compile Include="Builders\Chat\ChatLogBuilder.cs" />
     <Compile Include="Builders\Chat\ChatRoomBuilder.cs" />
+    <Compile Include="Builders\Covenants\CovenantBuilder.cs" />
     <Compile Include="Builders\Effects\EffectSourceBuilder.cs" />
     <Compile Include="Builders\Effects\EffectBuilder.cs" />
     <Compile Include="Builders\Form\FormSourceBuilder.cs" />
@@ -151,11 +152,17 @@
     <Compile Include="Assets\Commands\UpdateRestockItemTests.cs" />
     <Compile Include="Assets\Commands\UpdateTomeTests.cs" />
     <Compile Include="Assets\Commands\CreateTomeTests.cs" />
+    <Compile Include="Builders\World\ItemLeaderboardEntryBuilder.cs" />
+    <Compile Include="Builders\World\XPLeaderboardEntryBuilder.cs" />
+    <Compile Include="Builders\World\PvPLeaderboardEntryBuilder.cs" />
     <Compile Include="Chat\Commands\CreateChatLogTests.cs" />
     <Compile Include="Chat\Commands\CreateChatRoomTests.cs" />
     <Compile Include="Effects\Commands\CreateEffectTests.cs" />
     <Compile Include="Forms\Commands\SetFormSourceBecomesItemFKTests.cs" />
     <Compile Include="Forms\Commands\TFMessageSetFKsTests.cs" />
+    <Compile Include="World\Commands\SaveItemLeaderboardTests.cs" />
+    <Compile Include="World\Commands\SaveXPLeaderboardTests.cs" />
+    <Compile Include="World\Commands\SavePvPLeaderboardTests.cs" />
     <Compile Include="World\Commands\UpdateRoundNumberTests.cs" />
     <Compile Include="Identity\Commands\AddStrikeTests.cs" />
     <Compile Include="Identity\Commands\SetArtistBioVisibilityTests.cs" />

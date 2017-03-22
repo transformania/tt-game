@@ -77,7 +77,8 @@ namespace TT.Domain.Items.Commands
 
                 if (affectedPlayers.Any())
                 {
-                    var xpGained = 5*affectedPlayers.Count();
+                    var xpGained = affectedPlayers.Sum(p => p.Level < 3 ? 3 : p.Level);
+
                     player.AddXP(xpGained);
 
                     // can't do this as a LINQ select due to calling the a.GetFullName() method

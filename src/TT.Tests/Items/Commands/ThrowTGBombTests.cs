@@ -123,12 +123,12 @@ namespace TT.Tests.Items.Commands
              .BuildAndSave();
 
             var result = Repository.Execute(new ThrowTGBomb { ItemId = bomb.Id, PlayerId = thrower.Id });
-            result.Should().Be("You throw your TG Splash Orb and swap the sex of 2 other mages near you: <b>Poole Doe</b> and <b>Smith Doe</b> and gain <b>10</b> XP!");
+            result.Should().Be("You throw your TG Splash Orb and swap the sex of 2 other mages near you: <b>Poole Doe</b> and <b>Smith Doe</b> and gain <b>6</b> XP!");
 
             var players = DataContext.AsQueryable<Player>();
 
             var loadedThrower = players.First(p => p.Id == thrower.Id);
-            loadedThrower.XP.Should().Be(13);
+            loadedThrower.XP.Should().Be(9);
             loadedThrower.User.Stats.First().AchievementType.Should().Be(StatsProcedures.Stat__TgOrbVictims);
             loadedThrower.User.Stats.First().Amount.Should().Be(2);
 

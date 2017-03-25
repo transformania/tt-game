@@ -1,5 +1,5 @@
 #addin "nuget:?package=Cake.SqlServer"
-#tool "nuget:?package=FluentMigrator.Tools&version=1.6.1"
+#addin Cake.FluentMigrator
 #tool "nuget:?package=NUnit.ConsoleRunner"
 #tool "nuget:?package=OpenCover"
 #tool "nuget:?package=ReportGenerator"
@@ -22,11 +22,11 @@ var instances = new Dictionary<string,Tuple<string,bool>>()
 };
 
 var dbServer = Argument("dbServer", EnvironmentVariable("TT_DBSERVER") ?? instances[dbType].Item1);
-var dbSecurity = instances[dbType].Item2;
-var dbPassword = new System.Text.StringBuilder();
+var dbSecurity = Boolean.Parse(Argument("dbSecurity", EnvironmentVariable("TT_DBSECURITY") ?? instances[dbType].Item2.ToString()));
+var dbPassword = new System.Text.StringBuilder(Argument("dbPassword", EnvironmentVariable("TT_DBPASSWORD") ?? ""));
 var dbUserId = Argument("dbUserId", EnvironmentVariable("TT_DBUSERID") ?? "newman");
 
-if(dbType == "remoteserver")
+if(!dbSecurity && dbPassword.Length == 0)
 {
     ConsoleKeyInfo key;
     Console.Write(string.Format("Enter password for database on \"{0}\": ", dbServer));
@@ -44,8 +44,17 @@ if(dbType == "remoteserver")
     } while (key.Key != ConsoleKey.Enter);
     Console.WriteLine();
 }
-var connectionString = new System.Data.SqlClient.SqlConnectionStringBuilder { DataSource = dbServer, InitialCatalog = dbName, IntegratedSecurity=dbSecurity, Password = dbPassword.ToString(), UserID = dbUserId }.ToString();
+var connectionStringBuilder = new System.Data.SqlClient.SqlConnectionStringBuilder
+{
+    DataSource = dbServer,
+    IntegratedSecurity=dbSecurity,
+    Password = dbPassword.ToString(),
+    UserID = dbUserId
+};
 
+var connectionStringNoDb = connectionStringBuilder.ToString();
+connectionStringBuilder.InitialCatalog = dbName;
+var connectionString = connectionStringBuilder.ToString();
 
 Task("Clean")
     .Does(() => {
@@ -73,29 +82,35 @@ Task("Build")
     .IsDependentOn("Clean")
     .IsDependentOn("Restore-NuGet-Packages")
     .Does(() => {
-    MSBuild("./src/TT.sln", new MSBuildSettings()
-        .SetConfiguration(configuration)
-        .UseToolVersion(MSBuildToolVersion.NET46)
-        .SetVerbosity(Verbosity.Minimal)
-        .SetNodeReuse(false));
+    DotNetBuild("./src/TT.sln", settings =>
+        settings.SetConfiguration(configuration)
+        .SetVerbosity(Verbosity.Minimal));
     }
 );
 
 Task("Run-Unit-Tests")
     .IsDependentOn("Build")
     .Does(() => {
-        var coverage = new FilePath("coverage.xml");
-        OpenCover(tool => {
-            tool.NUnit3("./src/**/bin/" + configuration + "/*.Tests.dll");
-        },
-        coverage,
-        new OpenCoverSettings { ReturnTargetCodeOffset = 0 }
-            .WithFilter("+[TT.Domain]*")
-            .WithFilter("-[TT.Web]*")
-            .WithFilter("-[TT.Migrations]*")
-            .WithFilter("-[TT.Tests]*")
-        );
-        ReportGenerator(coverage, "coverage/");
+        var platform = new CakePlatform();
+        if (platform.Family == PlatformFamily.Windows)
+        {
+            var coverage = new FilePath("coverage.xml");
+            OpenCover(tool => {
+               tool.NUnit3("./src/**/bin/" + configuration + "/*.Tests.dll");
+            },
+            coverage,
+            new OpenCoverSettings { ReturnTargetCodeOffset = 0 }
+                .WithFilter("+[TT.Domain]*")
+                .WithFilter("-[TT.Web]*")
+                .WithFilter("-[TT.Migrations]*")
+                .WithFilter("-[TT.Tests]*")
+            );
+            ReportGenerator(coverage, "coverage/");
+        }
+        else
+        {
+            NUnit3("./src/**/bin/" + configuration + "/*.Tests.dll");
+        }
     }
 );
 
@@ -105,18 +120,19 @@ Task("Migrate")
     .Does(() => {    
     
         Information("Running TT.Migrations using {0}", dbType);
-                  
-        using(var process = StartAndReturnProcess("tools/FluentMigrator.Tools/tools/AnyCPU/40/Migrate.exe", new ProcessSettings 
-        { 
-            Arguments = "/db sqlserver /connection=\"" + connectionString + "\" /target=\"./src/TT.Migrations/bin/" + configuration + "/TT.Migrations.dll\"" 
-        }))
-        {
-            process.WaitForExit();
 
-            var exitCode = process.GetExitCode();
-            if (exitCode > 0)
-                throw new Exception("Migration failed");
+        using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"./tools/ConnectionStrings.config"))
+        {
+            file.WriteLine(string.Format("<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<configuration>\n<connectionStrings>\n<add name=\"StatsWebConnection\" providerName=\"System.Data.SqlClient\" connectionString=\"{0}\"/>\n</connectionStrings>\n</configuration>", connectionString));
         }
+        FluentMigrator(new FluentMigratorSettings
+        {
+            Connection = "StatsWebConnection",
+            ConnectionStringConfigPath ="./tools/ConnectionStrings.config",
+            Provider = "sqlserver",
+            Assembly = "./src/TT.Migrations/bin/" + configuration + "/TT.Migrations.dll"
+        });
+        System.IO.File.Delete(@"./tools/ConnectionStrings.config");
         Information("Applying stored procedures against {0}", dbServer);
         using(var connection = OpenSqlConnection(connectionString))
         {
@@ -140,7 +156,7 @@ Task("Drop-DB")
 Task("PreSeed-DB")
     .WithCriteria(() => !FileExists("seeded.flg") && !(dbType == "remoteserver"))
     .Does(() => {
-        CreateDatabase("Server=" + dbServer, dbName);
+        CreateDatabase(connectionStringNoDb, dbName);
         var seedScripts = GetFiles("src/SeedData/PreSeed/*.sql");
         
         using(var connection = OpenSqlConnection(connectionString))

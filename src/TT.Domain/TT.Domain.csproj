@@ -87,6 +87,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Covenants\Entities\Covenant.cs" />
+    <Compile Include="Covenants\Mappings\CovenantMappings.cs" />
     <Compile Include="Legacy\Abstract\IAchievementBadgeRepository.cs" />
     <Compile Include="Legacy\Abstract\IAchievementRepository.cs" />
     <Compile Include="Legacy\Abstract\IAIDirective.cs" />

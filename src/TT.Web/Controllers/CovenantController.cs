@@ -111,7 +111,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the player is a covenant leader
-            Covenant myCov = CovenantProcedures.GetDbCovenant(me.Covenant);
+            Covenant myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
             if (myCov.LeaderId != me.Id)
             {
                 TempData["Error"] = "You are not the leader of this covenant.";
@@ -137,7 +137,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the player is a covenant leader
-            Covenant myCov = CovenantProcedures.GetDbCovenant(me.Covenant);
+            Covenant myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
             if (myCov.LeaderId != me.Id)
             {
                 TempData["Error"] = "You are not the leader of this covenant.";
@@ -223,7 +223,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the player is a covenant leader
-            Covenant myCov = CovenantProcedures.GetDbCovenant(me.Covenant);
+            Covenant myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
             if (myCov.LeaderId != me.Id)
             {
                 TempData["Error"] = "You are not the leader of this covenant.";
@@ -268,7 +268,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the player is a covenant leader
-            Covenant myCov = CovenantProcedures.GetDbCovenant(me.Covenant);
+            Covenant myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
             if (myCov.LeaderId != me.Id)
             {
                 TempData["Error"] = "You are not the leader of this covenant.";
@@ -384,7 +384,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the player is a covenant leader
-            Covenant myCov = CovenantProcedures.GetDbCovenant(me.Covenant);
+            Covenant myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
             if (myCov.LeaderId != me.Id && !CovenantProcedures.PlayerIsCaptain(myCov, me))
             {
                 TempData["Error"] = "You are not the leader of this covenant.";
@@ -448,7 +448,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the player is a covenant leader
-            Covenant myCov = CovenantProcedures.GetDbCovenant(me.Covenant);
+            Covenant myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
             if (myCov.LeaderId != me.Id)
             {
                 TempData["Error"] = "You are not the leader of this covenant.";
@@ -539,7 +539,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the player is a covenant leader or captain
-            Covenant myCov = CovenantProcedures.GetDbCovenant(me.Covenant);
+            Covenant myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
             if (myCov.LeaderId != me.Id && !CovenantProcedures.PlayerIsCaptain(myCov, me))
             {
                 TempData["Error"] = "You are not the leader or a captain of your covenant.";
@@ -570,14 +570,14 @@ namespace TT.Web.Controllers
             }
 
             // assert that the covenant is sufficiently large
-            if (PlayerProcedures.GetAnimatePlayerCountInCovenant(me.Covenant) < 3)
+            if (PlayerProcedures.GetAnimatePlayerCountInCovenant((int)me.Covenant) < 3)
             {
                 TempData["Error"] = "In order to gift out Arpeyjis to members of your covenant, you must have at least 3 animate members.";
                 return RedirectToAction(MVC.Covenant.MyCovenant());
             }
 
 
-            CovenantProcedures.SendCovenantMoneyToPlayer(me.Covenant, giftee, amount);
+            CovenantProcedures.SendCovenantMoneyToPlayer((int)me.Covenant, giftee, amount);
 
 
             new Thread(() =>
@@ -603,7 +603,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the player is a covenant leader
-            Covenant myCov = CovenantProcedures.GetDbCovenant(me.Covenant);
+            Covenant myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
             if (myCov.LeaderId != me.Id)
             {
                 TempData["Error"] = "You are not the leader of your covenant.";
@@ -645,7 +645,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the player is a covenant leader
-            Covenant myCov = CovenantProcedures.GetDbCovenant(me.Covenant);
+            Covenant myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
             if (myCov.LeaderId != me.Id)
             {
                 TempData["Error"] = "You are not the leader of your covenant.";
@@ -734,7 +734,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the player is a covenant leader
-            Covenant myCov = CovenantProcedures.GetDbCovenant(me.Covenant);
+            Covenant myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
             if (myCov.LeaderId != me.Id)
             {
                 TempData["Error"] = "You are not the leader of your covenant.";
@@ -794,7 +794,7 @@ namespace TT.Web.Controllers
             //  FurnitureProcedures.MoveExpiredFurnitureBackToMarket();
             IEnumerable<FurnitureViewModel> output = FurnitureProcedures.GetAvailableFurnitureViewModels();
 
-            Covenant myCov = CovenantProcedures.GetDbCovenant(me.Covenant);
+            Covenant myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
             bool playerIsCovenantLeader = (myCov != null && myCov.LeaderId == me.Id && me.Covenant > 0);
             ViewBag.playerIsCovenantLeader = playerIsCovenantLeader;
             ViewBag.CovenantMoney = (int)myCov.Money;
@@ -820,7 +820,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the player is a covenant leader or captain
-            Covenant myCov = CovenantProcedures.GetDbCovenant(me.Covenant);
+            Covenant myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
             if (myCov.LeaderId != me.Id && !CovenantProcedures.PlayerIsCaptain(myCov, me))
             {
                 TempData["Error"] = "You are not the leader of your covenant.";
@@ -878,7 +878,7 @@ namespace TT.Web.Controllers
         {
 
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
-            Covenant myCov = CovenantProcedures.GetDbCovenant(me.Covenant);
+            Covenant myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
 
             // assert that player is in a covenant
             if (me.Covenant <= 0)
@@ -888,7 +888,7 @@ namespace TT.Web.Controllers
             }
 
             // FurnitureProcedures.MoveExpiredFurnitureBackToMarket();
-            IEnumerable<FurnitureViewModel> output = FurnitureProcedures.GetCovenantFurnitureViewModels(me.Covenant);
+            IEnumerable<FurnitureViewModel> output = FurnitureProcedures.GetCovenantFurnitureViewModels((int)me.Covenant);
             ViewBag.MyLocation = LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == me.dbLocationName).Name;
 
             string covSafegroundLocation = "";
@@ -921,7 +921,7 @@ namespace TT.Web.Controllers
         public virtual ActionResult UseFurniture(int id)
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
-            Covenant myCov = CovenantProcedures.GetDbCovenant(me.Covenant);
+            Covenant myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
             Furniture furniture = FurnitureProcedures.GetdbFurniture(id);
 
             // assert that the player is animate
@@ -1004,7 +1004,7 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.Covenant.MyCovenant());
             }
 
-            IEnumerable<CovenantLog> output = CovenantProcedures.GetCovenantLogs(me.Covenant);
+            IEnumerable<CovenantLog> output = CovenantProcedures.GetCovenantLogs((int)me.Covenant);
 
             return View(output);
         }
@@ -1023,14 +1023,14 @@ namespace TT.Web.Controllers
             }
 
             // assert that the player is a covenant leader
-            Covenant myCov = CovenantProcedures.GetDbCovenant(me.Covenant);
+            Covenant myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
             if (myCov.LeaderId != me.Id)
             {
                 TempData["Error"] = "You are not the leader of your covenant.";
                 return RedirectToAction(MVC.Covenant.MyCovenant());
             }
 
-            CovenantViewModel output = CovenantProcedures.GetCovenantViewModel(me.Covenant);
+            CovenantViewModel output = CovenantProcedures.GetCovenantViewModel((int)me.Covenant);
 
             ViewBag.CurrentCaptains = myCov.Captains;
 
@@ -1051,7 +1051,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the player is a covenant leader
-            Covenant myCov = CovenantProcedures.GetDbCovenant(me.Covenant);
+            Covenant myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
             if (myCov.LeaderId != me.Id)
             {
                 TempData["Error"] = "You are not the leader of your covenant.";
@@ -1095,14 +1095,14 @@ namespace TT.Web.Controllers
             }
 
             // assert that the player is a covenant leader
-            Covenant myCov = CovenantProcedures.GetDbCovenant(me.Covenant);
+            Covenant myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
             if (myCov.LeaderId != me.Id)
             {
                 TempData["Error"] = "You are not the leader of your covenant.";
                 return RedirectToAction(MVC.Covenant.MyCovenant());
             }
 
-            CovenantViewModel output = CovenantProcedures.GetCovenantViewModel(me.Covenant);
+            CovenantViewModel output = CovenantProcedures.GetCovenantViewModel((int)me.Covenant);
             return View(output);
         }
 
@@ -1121,7 +1121,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the player is a covenant leader
-            Covenant myCov = CovenantProcedures.GetDbCovenant(me.Covenant);
+            Covenant myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
             if (myCov.LeaderId != me.Id)
             {
                 TempData["Error"] = "You are not the leader of your covenant.";

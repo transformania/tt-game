@@ -3,6 +3,7 @@ using System.Data.Entity;
 using System.Linq;
 using Highway.Data;
 using TT.Domain.AI.Entities;
+using TT.Domain.Covenants.Entities;
 using TT.Domain.Exceptions;
 using TT.Domain.Forms.Entities;
 using TT.Domain.Identity.Entities;
@@ -110,7 +111,9 @@ namespace TT.Domain.Players.Commands
 
                 var form = ctx.AsQueryable<FormSource>().SingleOrDefault(t => t.Id == FormSourceId);
 
-                var player = Player.Create(user, npc, form, this);
+                var covenant = ctx.AsQueryable<Covenant>().SingleOrDefault(t => t.Id == Covenant);
+
+                var player = Player.Create(user, npc, form, this, covenant);
 
                 ctx.Add(player);
                 ctx.Commit();

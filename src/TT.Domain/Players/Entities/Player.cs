@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using TT.Domain.AI.Entities;
+using TT.Domain.Covenants.Entities;
 using TT.Domain.Effects.Entities;
 using TT.Domain.Entities;
 using TT.Domain.Entities.MindControl;
@@ -74,7 +75,7 @@ namespace TT.Domain.Players.Entities
 
         public int CleansesMeditatesThisRound { get; protected set; }
         public decimal Money { get; protected set; }
-        public int Covenant { get; protected set; } // TODO:  Convert this to nullable FK referencing Covenants table
+        public Covenant Covenant { get; protected set; }
         public string OriginalForm { get; protected set; } // TODO:  Convert to FK to FormSource (DbStaticForms)
 
         public decimal PvPScore { get; protected set; }
@@ -89,6 +90,8 @@ namespace TT.Domain.Players.Entities
         public int InQuestState { get; protected set; } // TODO:  Convert to nullable FK to QuestStates
         public int ItemsUsedThisTurn { get; protected set; }
 
+        public Covenant CovenantLed { get; protected set; }
+
         public InanimateXP ItemXP { get; protected set; } 
 
         private Player()
@@ -101,7 +104,7 @@ namespace TT.Domain.Players.Entities
             VictimMindControls = new List<Domain.Entities.MindControl.VictimMindControl>();
         }
 
-        public static Player Create(User user, NPC npc, FormSource form, CreatePlayer cmd)
+        public static Player Create(User user, NPC npc, FormSource form, CreatePlayer cmd, Covenant covenant)
         {
             return new Player
             {
@@ -135,7 +138,7 @@ namespace TT.Domain.Players.Entities
                 InRP = cmd.InRP,
                 CleansesMeditatesThisRound = cmd.CleansesMeditatesThisRound,
                 Money = cmd.Money,
-                Covenant = cmd.Covenant,
+                Covenant = covenant,
                 OriginalForm = cmd.OriginalForm,
                 PvPScore = cmd.PvPScore,
                 DonatorLevel = cmd.DonatorLevel,

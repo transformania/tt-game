@@ -364,13 +364,17 @@ namespace TT.Domain.Procedures
                 LocationInfo temp = info.FirstOrDefault(l => l.dbName == loc.dbName);
                 if (temp == null)
                 {
-                    LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == loc.dbName).CovenantController = -1;
+                    LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == loc.dbName).CovenantController = null;
                     LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == loc.dbName).TakeoverAmount = 0;
                 }
                 else
                 {
-                    LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == loc.dbName).CovenantController = temp.CovenantId;
+                    if (temp.CovenantId != null)
+                    {
+                        LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == loc.dbName).CovenantController = (int)temp.CovenantId;
+                    }
                     LocationsStatics.LocationList.GetLocation.FirstOrDefault(l => l.dbName == loc.dbName).TakeoverAmount = temp.TakeoverAmount;
+
                 }
             }
         }

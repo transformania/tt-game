@@ -1009,7 +1009,7 @@ namespace TT.Domain.Procedures
                     }
 
                     // assert covenant has a safeground
-                    Covenant myCov = CovenantProcedures.GetDbCovenant(owner.Covenant);
+                    Covenant myCov = CovenantProcedures.GetDbCovenant((int)owner.Covenant);
                     if (myCov.HomeLocation.IsNullOrEmpty())
                     {
                         return "You are a member of your covenant, but unfortunately your covenant has not yet established a safeground to call home so you are unable to use this item.";

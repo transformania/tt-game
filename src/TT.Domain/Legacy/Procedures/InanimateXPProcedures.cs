@@ -283,7 +283,7 @@ namespace TT.Domain.Procedures
                 // assert that the covenant the victim is in is not too full to accept them back in
                 if (dbPlayer.Covenant > 0)
                 {
-                    Covenant victimCov = CovenantProcedures.GetCovenantViewModel(dbPlayer.Covenant).dbCovenant;
+                    Covenant victimCov = CovenantProcedures.GetCovenantViewModel((int)dbPlayer.Covenant).dbCovenant;
                     if (victimCov != null && CovenantProcedures.GetPlayerCountInCovenant(victimCov, true) >= PvPStatics.Covenant_MaximumAnimatePlayerCount)
                     {
                         return "Although you had enough energy to break free from your body as a " + itemPlus.FriendlyName + " and restore your regular body, you were unfortunately not able to break free because there is no more room in your covenant for any more animate mages.";

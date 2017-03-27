@@ -29,13 +29,13 @@ namespace TT.Domain.Procedures
 
         public static CovenantViewModel GetCovenantViewModel(Player player)
         {
-            if (player.Covenant == 0 || player.Covenant == -1)
+            if (player.Covenant == null)
             {
                 return null;
             }
             else
             {
-                return GetCovenantViewModel(player.Covenant);
+                return GetCovenantViewModel((int)player.Covenant);
             }
         }
 
@@ -48,20 +48,7 @@ namespace TT.Domain.Procedures
 
             output.dbCovenant = covRepo.Covenants.FirstOrDefault(c => c.Id == id);
 
-            // get all players in this covenant
-            List<Player> dbplayersInCov = playerRepo.Players.Where(p => p.Covenant == id && p.BotId == AIStatics.ActivePlayerBotId).ToList();
-
             IEnumerable<PlayerFormViewModel> playerFormList = PlayerProcedures.GetPlayerFormViewModelsInCovenant(id);
-
-
-
-            //foreach (Player person in dbplayersInCov)
-            //{
-            //    PlayerFormViewModel addme = new PlayerFormViewModel();
-            //    addme.Player = person;
-            //    addme.Form = FormStatics.GetForm(person.Form);
-            //    playerFormList.Add(addme);
-            //}
 
             output.Leader = playerRepo.Players.FirstOrDefault(p => p.Id == output.dbCovenant.LeaderId);
 
@@ -156,7 +143,7 @@ namespace TT.Domain.Procedures
         {
             IPlayerRepository playerRepo = new EFPlayerRepository();
             Player dbPlayer = playerRepo.Players.First(p => p.Id == player.Id);
-            dbPlayer.Covenant = -1;
+            dbPlayer.Covenant = null;
             playerRepo.SavePlayer(dbPlayer);
 
             // delete the covenant if it is now empty
@@ -554,7 +541,7 @@ namespace TT.Domain.Procedures
             if (info.TakeoverAmount <= 0)
             {
 
-                info.CovenantId = player.Covenant;
+                info.CovenantId = (int)player.Covenant;
                 info.TakeoverAmount = takeoverAmount;
 
 
@@ -565,7 +552,7 @@ namespace TT.Domain.Procedures
 
                 info.LastTakeoverTurn = PvPWorldStatProcedures.GetWorldTurnNumber();
                 output = "<b>Your enchantment settles in this location, converting its energies from the previous controlling covenant to your own!  (+" + XPGain + " XP)</b>";
-                location.CovenantController = player.Covenant;
+                location.CovenantController = (int)player.Covenant;
                 location.TakeoverAmount = info.TakeoverAmount;
                 Covenant myCov = covRepo.Covenants.First(c => c.Id == player.Covenant);
 
@@ -604,9 +591,9 @@ namespace TT.Domain.Procedures
                         // notify old covenant who stole the location and their covenant
                         if (info.CovenantId > 0)
                         {
-                            CovenantViewModel attackingCov = CovenantProcedures.GetCovenantViewModel(player.Covenant);
+                            CovenantViewModel attackingCov = CovenantProcedures.GetCovenantViewModel((int)player.Covenant);
                             string covLogLoser = player.GetFullName() + " of " + attackingCov.dbCovenant.Name + " enchanted " + location.Name + ", removing it from this covenant's influence!";
-                            CovenantProcedures.WriteCovenantLog(covLogLoser, info.CovenantId, true);
+                            CovenantProcedures.WriteCovenantLog(covLogLoser, (int)info.CovenantId, true);
                         }
 
                         info.CovenantId = -1;
@@ -653,19 +640,19 @@ namespace TT.Domain.Procedures
             return output;
         }
 
-        public static int GetLocationCovenantOwner(string location)
+        public static int? GetLocationCovenantOwner(string location)
         {
             ILocationInfoRepository repo = new EFLocationInfoRepository();
 
             LocationInfo info = repo.LocationInfos.FirstOrDefault(l => l.dbName == location);
 
-            if (info != null)
+            if (info != null && info.CovenantId != null)
             {
-                return info.CovenantId;
+                return (int)info.CovenantId;
             }
             else
             {
-                return -1;
+                return null;
             }
         }
 

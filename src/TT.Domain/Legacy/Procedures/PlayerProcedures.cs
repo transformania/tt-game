@@ -585,7 +585,7 @@ namespace TT.Domain.Procedures
             // remove the old Player--Membership binding
             Player oldplayer = playerRepo.Players.FirstOrDefault(p => p.MembershipId == membershipId);
 
-            int oldCovId = 0;
+            int? oldCovId = null;
 
             if (oldplayer != null)
             {
@@ -609,8 +609,8 @@ namespace TT.Domain.Procedures
                 // remove the old player's effects
                 EffectProcedures.DeleteAllPlayerEffects(oldplayer.Id);
 
-                oldCovId = oldplayer.Covenant;
-                oldplayer.Covenant = 0;
+                oldCovId = (int)oldplayer.Covenant;
+                oldplayer.Covenant = null;
                 playerRepo.SavePlayer(oldplayer);
 
                 // turn the item they player became permanent
@@ -652,7 +652,7 @@ namespace TT.Domain.Procedures
 
             if (oldplayer != null)
             {
-                cmd.Covenant = oldCovId;
+                cmd.Covenant = (int)oldCovId;
                 cmd.Level = oldplayer.Level - 3;
                 if (cmd.Level < 1)
                 {

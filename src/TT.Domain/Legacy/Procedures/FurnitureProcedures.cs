@@ -167,7 +167,7 @@ namespace TT.Domain.Procedures
             DbStaticFurniture furnitureStatic = furnRepo.DbStaticFurniture.FirstOrDefault(f => f.dbType == dbFurniture.dbType);
 
             string logMessage = "<b>" + user.GetFullName() + "</b> used <b>" + dbFurniture.HumanName + "</b>.";
-            CovenantProcedures.WriteCovenantLog(logMessage, user.Covenant, false);
+            CovenantProcedures.WriteCovenantLog(logMessage, (int)user.Covenant, false);
 
             // furniture gives AP reserve bonus
             if (furnitureStatic.APReserveRefillAmount > 0)

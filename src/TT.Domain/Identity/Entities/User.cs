@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using TT.Domain.Covenants.Entities;
 using TT.Domain.Entities;
 using TT.Domain.Entities.RPClassifiedAds;
 using TT.Domain.Identity.Commands;
@@ -15,6 +16,7 @@ namespace TT.Domain.Identity.Entities
         public ICollection<Strike> Strikes { get; private set; } = new List<Strike>();
         public ICollection<Strike> StrikesGiven { get; private set; } = new List<Strike>();
         public Donator Donator { get; protected set; }
+        public Covenant CovenantFounded { get; protected set; }
 
         public ArtistBio ArtistBio { get; protected set; }
 

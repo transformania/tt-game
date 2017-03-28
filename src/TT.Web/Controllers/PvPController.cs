@@ -1481,7 +1481,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that this player's covenant does have a safeground
-            if (!CovenantProcedures.CovenantHasSafeground(me.Covenant))
+            if (!CovenantProcedures.CovenantHasSafeground((int)me.Covenant))
             {
                 TempData["Error"] = "Your covenant must have established a safeground before it can enchant locations.";
                 return RedirectToAction(MVC.PvP.Play());

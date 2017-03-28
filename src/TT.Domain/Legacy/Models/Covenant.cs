@@ -26,7 +26,7 @@ namespace TT.Domain.Models
         [StringLength(128)]
         public string FounderMembershipId { get; set; }
         public bool IsPvP { get; set; }
-        public string formerMembers { get; set; }
+
         public string Captains { get; set; }
         public decimal Money { get; set; }
         public string HomeLocation { get; set; }

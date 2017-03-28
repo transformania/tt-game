@@ -52,7 +52,7 @@ namespace TT.Domain.Models
         public int CleansesMeditatesThisRound { get; set; }
         public decimal Money { get; set; }
         [Index("IX_MembershipIdAndCovenant", 2)]
-        public int Covenant { get; set; }
+        public int? Covenant { get; set; }
         public string OriginalForm { get; set; }
         public decimal PvPScore { get; set; }
         public int DonatorLevel { get; set; }
@@ -203,7 +203,7 @@ namespace TT.Domain.Models
         public bool InRP { get; set; }
         public int CleansesMeditatesThisRound { get; set; }
         public decimal Money { get; set; }
-        public int Covenant { get; set; }
+        public int? Covenant { get; set; }
         public string OriginalForm { get; set; }
         public decimal PvPScore { get; set; }
         public int DonatorLevel { get; set; }

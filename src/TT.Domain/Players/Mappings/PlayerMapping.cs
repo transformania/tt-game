@@ -28,6 +28,10 @@ namespace TT.Domain.Players.Mappings
                .HasOptional(i => i.ItemXP)
                .WithOptionalPrincipal(p => p.Owner).Map(m => m.MapKey("OwnerId"));
 
+            modelBuilder.Entity<Player>()
+                .HasOptional(i => i.Covenant)
+                .WithMany(c => c.Players).Map(c => c.MapKey("Covenant"));
+
         }
 
         protected override void Configure()

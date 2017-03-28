@@ -16,7 +16,7 @@ namespace TT.Domain.ViewModels
         public string Name_South { get; set; }
         public string Name_West { get; set; }
         public string Region { get; set; }
-        public int CovenantController { get; set; }
+        public int? CovenantController { get; set; }
         public float TakeoverAmount { get; set; }
 
         public string FriendlyName_North { get; set; }

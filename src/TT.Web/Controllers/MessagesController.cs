@@ -307,7 +307,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the player is a covenant leader
-            Covenant myCov = CovenantProcedures.GetDbCovenant(me.Covenant);
+            Covenant myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
             if (myCov.LeaderId != me.Id)
             {
                 TempData["Error"] = "You are not the leader of your covenant.";
@@ -339,7 +339,7 @@ namespace TT.Web.Controllers
             }
 
             // assert that the player is a covenant leader
-            Covenant myCov = CovenantProcedures.GetDbCovenant(me.Covenant);
+            Covenant myCov = CovenantProcedures.GetDbCovenant((int)me.Covenant);
             if (myCov.LeaderId != me.Id)
             {
                 TempData["Error"] = "You are not the leader of your covenant.";

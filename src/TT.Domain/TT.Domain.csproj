@@ -153,6 +153,9 @@
     <Compile Include="Effects\Commands\CreateEffect.cs" />
     <Compile Include="Forms\Commands\SetFormSourceBecomesItemFK.cs" />
     <Compile Include="Forms\Commands\SetTFMessageFKs.cs" />
+    <Compile Include="World\Commands\SaveItemLeaderboards.cs" />
+    <Compile Include="World\Commands\SaveXPLeaderboards.cs" />
+    <Compile Include="World\Commands\SavePvPLeaderboards.cs" />
     <Compile Include="World\Commands\UpdateRoundNumber.cs" />
     <Compile Include="Identity\Commands\AddStrike.cs" />
     <Compile Include="Identity\Commands\CreateCaptchaEntry.cs" />
@@ -269,6 +272,9 @@
     <Compile Include="Combat\DTOs\TFEnergyDetail.cs" />
     <Compile Include="Chat\Entities\ChatLog.cs" />
     <Compile Include="Forms\Entities\TFMessage.cs" />
+    <Compile Include="World\Entities\ItemLeaderboards.cs" />
+    <Compile Include="World\Entities\XpLeaderboardEntry.cs" />
+    <Compile Include="World\Entities\PvPLeaderboardEntry.cs" />
     <Compile Include="World\Entities\World.cs" />
     <Compile Include="Identity\Entities\ArtistBio.cs" />
     <Compile Include="Identity\Entities\CaptchaEntry.cs" />
@@ -345,6 +351,7 @@
     <Compile Include="Effects\Mappings\EffectMappings.cs" />
     <Compile Include="EntityMappings.cs" />
     <Compile Include="Forms\Mappings\FormMappings.cs" />
+    <Compile Include="World\Mappings\LeaderboardMappings.cs" />
     <Compile Include="World\Mappings\GameMappings.cs" />
     <Compile Include="Identity\Mappings\ArtistBioMappings.cs" />
     <Compile Include="Identity\Mappings\CaptchaEntryMappings.cs" />

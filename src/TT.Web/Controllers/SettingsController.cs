@@ -23,9 +23,10 @@ using TT.Web.ViewModels;
 
 namespace TT.Web.Controllers
 {
+    [Authorize]
     public partial class SettingsController : Controller
     {
-        [Authorize]
+
         public virtual ActionResult Settings()
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -42,7 +43,6 @@ namespace TT.Web.Controllers
             return View(output);
         }
 
-        [Authorize]
         public virtual ActionResult ChangeGameMode(int mode)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -73,7 +73,6 @@ namespace TT.Web.Controllers
             }
         }
 
-        [Authorize]
         public virtual ActionResult ChangeRPMode(bool inRP)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -91,7 +90,6 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.PvP.Play());
         }
 
-        [Authorize]
         public virtual ActionResult SetBio()
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -106,7 +104,6 @@ namespace TT.Web.Controllers
             return View(output);
         }
 
-        [Authorize]
         public virtual ActionResult SetBioSend(SetBioViewModel input)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -156,7 +153,6 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.PvP.Play());
         }
 
-        [Authorize]
         public virtual ActionResult SetBioDelete(PlayerBio input)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -166,7 +162,6 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.PvP.Play());
         }
 
-        [Authorize]
         public virtual ActionResult ViewBio(string id)
         {
             Player player = PlayerProcedures.GetPlayerFromMembership(id);
@@ -210,7 +205,6 @@ namespace TT.Web.Controllers
             return View(output);
         }
 
-        [Authorize]
         public virtual ActionResult DumpWillpower(string amount)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -277,12 +271,6 @@ namespace TT.Web.Controllers
 
         }
 
-        public virtual ActionResult Donate()
-        {
-            return View();
-        }
-
-        [Authorize]
         public virtual ActionResult SetNickname()
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -303,7 +291,6 @@ namespace TT.Web.Controllers
             return View(output);
         }
 
-        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public virtual ActionResult SetNicknameSend(SetNicknameViewModel input)
@@ -337,7 +324,6 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.PvP.Play());
         }
 
-        [Authorize]
         public virtual ActionResult ToggleBlacklistOnPlayer(int id)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -366,7 +352,6 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.PvP.Play());
         }
 
-        [Authorize]
         public virtual ActionResult MyBlacklistEntries()
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -376,7 +361,6 @@ namespace TT.Web.Controllers
             return View(output);
         }
 
-        [Authorize]
         public virtual ActionResult ChangeBlacklistType(int id, int playerId, string type)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -412,7 +396,6 @@ namespace TT.Web.Controllers
             return View();
         }
 
-        [Authorize]
         public virtual ActionResult ViewPoll(int id)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -421,7 +404,6 @@ namespace TT.Web.Controllers
             return View("Polls/Open/poll" + id, output);
         }
 
-        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public virtual ActionResult ReplyToPoll(PollEntry input)
@@ -452,7 +434,6 @@ namespace TT.Web.Controllers
             return View("Polls/Closed/poll" + id);
         }
 
-        [Authorize]
         public virtual ActionResult SetChatColor(string color)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -472,8 +453,6 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.PvP.Play());
         }
 
-
-        [Authorize]
         public virtual ActionResult WriteAuthorArtistBio()
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -491,7 +470,6 @@ namespace TT.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize]
         public virtual ActionResult WriteAuthorArtistSend(AuthorArtistBio input)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -508,7 +486,6 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.PvP.Play());
         }
 
-        [Authorize]
         public virtual ActionResult AuthorArtistBio(string id)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -549,7 +526,6 @@ namespace TT.Web.Controllers
         /// Allows a player to claim a new base form if they have earned one through being a contributor or artist.  Multiple custom forms can be toggled through by clicking the link mulitple times; each click will advance to the next available form and upon reaching the final form loop back to the first one.
         /// </summary>
         /// <returns></returns>
-        [Authorize]
         public virtual ActionResult UseMyCustomForm()
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -598,7 +574,6 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.PvP.Play());
         }
 
-        [Authorize]
         public virtual ActionResult ArchiveSpell(string name)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -626,7 +601,6 @@ namespace TT.Web.Controllers
             return PartialView(MVC.Settings.Views.partial.ArchiveNotice);
         }
 
-        [Authorize]
         public virtual ActionResult ArchiveAllMySpells(string archive)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -667,7 +641,6 @@ namespace TT.Web.Controllers
             return PartialView(MVC.Settings.Views.partial.PlayerStatsTopOfType, output);
         }
 
-        [Authorize]
         public virtual ActionResult SetFriendNickname(int id)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -704,7 +677,6 @@ namespace TT.Web.Controllers
             return View(output);
         }
 
-        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public virtual ActionResult SetFriendNicknameSend(SetFriendNicknameViewModel input)
@@ -765,7 +737,6 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.PvP.MyFriends());
         }
 
-        [Authorize]
         public virtual ActionResult MyRPClassifiedAds()
         {
             string userId = User.Identity.GetUserId();
@@ -788,7 +759,6 @@ namespace TT.Web.Controllers
             return View(MVC.Settings.Views.CreateOrUpdateRPClassifiedAd, TempData["input"] ?? new RPClassifiedAdDetail());
         }
 
-        [Authorize]
         public virtual ActionResult UpdateRPClassifiedAd(int id)
         {
             string userId = User.Identity.GetUserId();
@@ -815,7 +785,6 @@ namespace TT.Web.Controllers
             return View(MVC.Settings.Views.CreateOrUpdateRPClassifiedAd, TempData["input"] ?? ad);
         }
 
-        [Authorize]
         public virtual ActionResult RefreshRPClassifiedAd(int id)
         {
             string userId = User.Identity.GetUserId();
@@ -837,7 +806,6 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.Settings.MyRPClassifiedAds());
         }
 
-        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public virtual ActionResult CreateRPClassifiedAd(RPClassifiedAdDetail input)
@@ -881,7 +849,6 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.Settings.MyRPClassifiedAds());
         }
 
-        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public virtual ActionResult UpdateRPClassifiedAd(RPClassifiedAdDetail input)
@@ -921,8 +888,6 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.Settings.MyRPClassifiedAds());
         }
 
-
-        [Authorize]
         public virtual ActionResult DeleteRPClassifiedAd(int id)
         {
             string userId = User.Identity.GetUserId();
@@ -944,8 +909,6 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.Settings.MyRPClassifiedAds());
         }
 
-
-        [Authorize]
         public virtual ActionResult ChaosRestoreBase()
         {
 
@@ -971,7 +934,6 @@ namespace TT.Web.Controllers
 
         }
 
-        [Authorize]
         public virtual ActionResult SetArtistBioVisibility(bool isLive)
         {
 

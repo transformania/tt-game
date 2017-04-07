@@ -239,7 +239,6 @@ namespace TT.Web.Controllers
             public readonly string SetBioDelete = ("SetBioDelete").ToLowerInvariant();
             public readonly string ViewBio = ("ViewBio").ToLowerInvariant();
             public readonly string DumpWillpower = ("DumpWillpower").ToLowerInvariant();
-            public readonly string Donate = ("Donate").ToLowerInvariant();
             public readonly string SetNickname = ("SetNickname").ToLowerInvariant();
             public readonly string SetNicknameSend = ("SetNicknameSend").ToLowerInvariant();
             public readonly string ToggleBlacklistOnPlayer = ("ToggleBlacklistOnPlayer").ToLowerInvariant();
@@ -503,7 +502,6 @@ namespace TT.Web.Controllers
             {
                 public readonly string AuthorArtistBio = "AuthorArtistBio";
                 public readonly string CreateOrUpdateRPClassifiedAd = "CreateOrUpdateRPClassifiedAd";
-                public readonly string Donate = "Donate";
                 public readonly string MyBlacklistEntries = "MyBlacklistEntries";
                 public readonly string MyRPClassifiedAds = "MyRPClassifiedAds";
                 public readonly string PlayerStats = "PlayerStats";
@@ -519,7 +517,6 @@ namespace TT.Web.Controllers
             }
             public readonly string AuthorArtistBio = "~/Views/Settings/AuthorArtistBio.cshtml";
             public readonly string CreateOrUpdateRPClassifiedAd = "~/Views/Settings/CreateOrUpdateRPClassifiedAd.cshtml";
-            public readonly string Donate = "~/Views/Settings/Donate.cshtml";
             public readonly string MyBlacklistEntries = "~/Views/Settings/MyBlacklistEntries.cshtml";
             public readonly string MyRPClassifiedAds = "~/Views/Settings/MyRPClassifiedAds.cshtml";
             public readonly string PlayerStats = "~/Views/Settings/PlayerStats.cshtml";
@@ -714,17 +711,6 @@ namespace TT.Web.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DumpWillpower);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "amount", amount);
             DumpWillpowerOverride(callInfo, amount);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void DonateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult Donate()
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Donate);
-            DonateOverride(callInfo);
             return callInfo;
         }
 

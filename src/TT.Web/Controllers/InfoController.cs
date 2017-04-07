@@ -147,5 +147,10 @@ namespace TT.Web.Controllers
             return Json(output, JsonRequestBehavior.AllowGet);
         }
 
+        public virtual ActionResult Donate()
+        {
+            return View();
+        }
+
     }
 }

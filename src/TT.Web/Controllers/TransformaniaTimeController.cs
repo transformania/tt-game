@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
 using TT.Domain.Concrete;
-using TT.Domain.Models;
 
 namespace TT.Web.Controllers
 {

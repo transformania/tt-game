@@ -90,6 +90,7 @@ namespace TT.Web.Controllers
             public readonly string GearTool = ("GearTool").ToLowerInvariant();
             public readonly string Gear = ("Gear").ToLowerInvariant();
             public readonly string StartingForms = ("StartingForms").ToLowerInvariant();
+            public readonly string Donate = ("Donate").ToLowerInvariant();
         }
 
 
@@ -106,6 +107,7 @@ namespace TT.Web.Controllers
                 public readonly string AllForms = "AllForms";
                 public readonly string AllItems = "AllItems";
                 public readonly string AllLocations = "AllLocations";
+                public readonly string Donate = "Donate";
                 public readonly string FAQ = "FAQ";
                 public readonly string GameNews = "GameNews";
                 public readonly string GameNews_Archive = "GameNews_Archive";
@@ -119,6 +121,7 @@ namespace TT.Web.Controllers
             public readonly string AllForms = "~/Views/Info/AllForms.cshtml";
             public readonly string AllItems = "~/Views/Info/AllItems.cshtml";
             public readonly string AllLocations = "~/Views/Info/AllLocations.cshtml";
+            public readonly string Donate = "~/Views/Info/Donate.cshtml";
             public readonly string FAQ = "~/Views/Info/FAQ.cshtml";
             public readonly string GameNews = "~/Views/Info/GameNews.cshtml";
             public readonly string GameNews_Archive = "~/Views/Info/GameNews_Archive.cshtml";
@@ -298,6 +301,17 @@ namespace TT.Web.Controllers
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.StartingForms);
             StartingFormsOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void DonateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Donate()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Donate);
+            DonateOverride(callInfo);
             return callInfo;
         }
 

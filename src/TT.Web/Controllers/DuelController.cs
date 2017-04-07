@@ -11,16 +11,15 @@ using TT.Web.Services;
 
 namespace TT.Web.Controllers
 {
+    [Authorize]
     public partial class DuelController : Controller
     {
 
-        [Authorize]
         public virtual ActionResult Duel()
         {
             return View();
         }
 
-        [Authorize]
         public virtual ActionResult IssueChallenge(int id)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -139,7 +138,6 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.PvP.Play());
         }
 
-        [Authorize]
         public virtual ActionResult AcceptChallenge(int id)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -171,7 +169,6 @@ namespace TT.Web.Controllers
 
             List<PlayerFormViewModel> participants = DuelProcedures.GetPlayerViewModelsInDuel(duel.Id);
             string duelLocation = participants.First().Player.dbLocationName;
-            int challengerGameMode = participants.First().Player.GameMode;
 
             List<string> errorMessages = new List<string>();
 
@@ -264,7 +261,6 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.PvP.Play());
         }
 
-        [Authorize]
         public virtual ActionResult DuelDetail(int id)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -288,7 +284,6 @@ namespace TT.Web.Controllers
             return View(output);
         }
 
-        [Authorize]
         public virtual ActionResult AdvanceTurn()
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -331,7 +326,6 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.PvP.Play());
         }
 
-        [Authorize]
         public virtual ActionResult DuelTimeout()
         {
 
@@ -362,7 +356,6 @@ namespace TT.Web.Controllers
 
 
         }
-
 
     }
 }

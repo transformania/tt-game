@@ -5,7 +5,6 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Web.Mvc;
-using System.Web.Routing;
 using Microsoft.AspNet.Identity;
 using TT.Domain.Abstract;
 using TT.Domain.Concrete;
@@ -16,10 +15,7 @@ using TT.Domain.Statics;
 using TT.Domain.ViewModels;
 using TT.Web.CustomHtmlHelpers;
 using TT.Domain;
-using System.Web.Hosting;
 using FeatureSwitch;
-using Recaptcha.Web;
-using Recaptcha.Web.Mvc;
 using TT.Domain.Assets.Queries;
 using TT.Domain.Chat.Queries;
 using TT.Domain.Exceptions;
@@ -36,15 +32,12 @@ using TT.Web.Extensions;
 
 namespace TT.Web.Controllers
 {
+    [Authorize]
     public partial class PvPController : Controller
     {
-        //
-        // GET: /PvP/
 
-        [Authorize]
         public virtual ActionResult Play()
         {
-
 
             string loadtime = "";
             Stopwatch updateTimer = new Stopwatch();
@@ -392,14 +385,12 @@ namespace TT.Web.Controllers
             return View(output);
         }
 
-        [Authorize]
         public virtual ActionResult ShowOffline()
         {
             TempData["ShowOffline"] = true;
             return RedirectToAction(MVC.PvP.Play());
         }
 
-        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public virtual ActionResult NewCharacter(NewCharacterViewModel player)
@@ -478,7 +469,6 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.PvP.Play());
         }
 
-        [Authorize]
         public virtual ActionResult Restart()
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -519,7 +509,6 @@ namespace TT.Web.Controllers
             return View(MVC.PvP.Views.MakeNewCharacter);
         }
 
-        [Authorize]
         public virtual ActionResult MoveTo(string locname)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -706,7 +695,6 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.PvP.Play());
         }
 
-        [Authorize]
         public virtual ActionResult EnterDungeon(string entering)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -802,8 +790,7 @@ namespace TT.Web.Controllers
 
             return RedirectToAction(MVC.PvP.Play());
         }
-
-        [Authorize]
+        
         public virtual ActionResult AttackModal(int targetId)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -910,7 +897,6 @@ namespace TT.Web.Controllers
             return PartialView(MVC.PvP.Views.partial.AjaxAttackModal, output);
         }
 
-        [Authorize]
         public virtual ActionResult Attack(int targetId, string attackName)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -1345,7 +1331,6 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.PvP.Play());
         }
 
-        [Authorize]
         public virtual ActionResult EnchantLocation()
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -1507,7 +1492,6 @@ namespace TT.Web.Controllers
         /// Allow a player to use up AP, mana, and cleanse/meditate in order to attempt to restore themself to their base form.
         /// </summary>
         /// <returns></returns>
-        [Authorize]
         public virtual ActionResult SelfRestore()
         {
 
@@ -1580,7 +1564,7 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.PvP.Play());
         }
 
-        [Authorize]
+        
         public virtual ActionResult Meditate()
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -1606,7 +1590,6 @@ namespace TT.Web.Controllers
             }
         }
 
-        [Authorize]
         public virtual ActionResult Cleanse()
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -1633,7 +1616,6 @@ namespace TT.Web.Controllers
 
         }
 
-        [Authorize]
         public virtual ActionResult MySkills()
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -1644,7 +1626,6 @@ namespace TT.Web.Controllers
             return View(MVC.PvP.Views.MySkills, SkillProcedures.GetMySkillsViewModel(me.Id));
         }
 
-        [Authorize]
         public virtual ActionResult Search()
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -1727,7 +1708,6 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.PvP.Play());
         }
 
-        [Authorize]
         public virtual ActionResult ClearLog()
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -1736,7 +1716,6 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.PvP.Play());
         }
 
-        [Authorize]
         public virtual ActionResult DismissNotifications_Ajax()
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -1745,7 +1724,6 @@ namespace TT.Web.Controllers
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
-        [Authorize]
         public virtual ActionResult ViewLog()
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -1753,7 +1731,6 @@ namespace TT.Web.Controllers
             return View(MVC.PvP.Views.ViewLog, PlayerLogProcedures.GetAllPlayerLogs(me.Id).Reverse());
         }
 
-        [Authorize]
         public virtual ActionResult MyInventory()
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -1793,7 +1770,6 @@ namespace TT.Web.Controllers
             return View(MVC.PvP.Views.Inventory, output);
         }
 
-        [Authorize]
         public virtual ActionResult Take(int id)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -1920,9 +1896,6 @@ namespace TT.Web.Controllers
 
             }
 
-
-
-
             PlayerProcedures.AddMinutesToTimestamp(me, 15, true);
             PlayerLogProcedures.AddPlayerLog(me.Id, playerLogMessage, false);
             LocationLogProcedures.AddLocationLog(here.dbName, locationLogMessage);
@@ -1932,7 +1905,6 @@ namespace TT.Web.Controllers
 
         }
 
-        [Authorize]
         public virtual ActionResult Drop(int itemId)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -2025,7 +1997,6 @@ namespace TT.Web.Controllers
 
         }
 
-        [Authorize]
         public virtual ActionResult Equip(int itemId, bool putOn)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -2123,7 +2094,6 @@ namespace TT.Web.Controllers
 
         }
 
-        [Authorize]
         public virtual ActionResult Use(int itemId)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -2383,7 +2353,7 @@ namespace TT.Web.Controllers
             return View(MVC.PvP.Views.PlayerLookup, results);
         }
 
-        [Authorize]
+        
         public virtual ActionResult InanimateAction(string actionName)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -2468,7 +2438,6 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.PvP.Play());
         }
 
-        [Authorize]
         public virtual ActionResult AnimalAction(string actionName, int targetId)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -2569,8 +2538,6 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.PvP.Play());
         }
 
-
-        [Authorize]
         public virtual ActionResult MyFriends()
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -2591,7 +2558,6 @@ namespace TT.Web.Controllers
             return View(MVC.PvP.Views.MyFriends, output);
         }
 
-        [Authorize]
         public virtual ActionResult AddFriend(int playerId)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -2619,7 +2585,6 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.PvP.Play());
         }
 
-        [Authorize]
         public virtual ActionResult RespondToFriendRequest(int id, string response)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -2805,9 +2770,6 @@ namespace TT.Web.Controllers
             return true;
         }
 
-
-
-        [Authorize]
         public virtual ActionResult WorldMap(string showEnchant)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -2898,14 +2860,11 @@ namespace TT.Web.Controllers
             return View(output);
         }
 
-
-        [Authorize]
         public virtual ActionResult Chat(string room)
         {
             return RedirectToAction(MVC.Chat.Index(room));
         }
 
-        [Authorize]
         public virtual ActionResult PrivateChat()
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -2917,7 +2876,6 @@ namespace TT.Web.Controllers
             return View(MVC.PvP.Views.Chats.PrivateBegin);
         }
 
-        [Authorize]
         public virtual ActionResult ChatLog(string room, string filter)
         {
             var model = new ChatLogViewModel
@@ -2933,8 +2891,7 @@ namespace TT.Web.Controllers
         {
             return View(MVC.PvP.Views.Chats.ChatCommands);
         }
-
-        [Authorize]
+        
         public virtual ActionResult LevelupPerk()
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -2955,7 +2912,6 @@ namespace TT.Web.Controllers
 
         }
 
-        [Authorize]
         public virtual ActionResult ChoosePerk(string perk)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -2975,7 +2931,6 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.PvP.Play());
         }
 
-        [Authorize]
         public virtual ActionResult MyPerks()
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -2995,7 +2950,6 @@ namespace TT.Web.Controllers
             return View(output);
         }
 
-        [Authorize]
         public virtual ActionResult Teleport(string to)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -3057,7 +3011,6 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.PvP.Play());
         }
 
-        [Authorize]
         public virtual ActionResult FightTheTransformation()
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -3106,7 +3059,6 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.PvP.Play());
         }
 
-        [Authorize]
         public virtual ActionResult CurseTransformOwner()
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -3179,7 +3131,6 @@ namespace TT.Web.Controllers
 
         }
 
-        [Authorize]
         public virtual ActionResult EscapeFromOwner()
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -3245,9 +3196,6 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.PvP.Play());
         }
 
-
-
-        [Authorize]
         public virtual ActionResult ReserveName()
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -3342,7 +3290,6 @@ namespace TT.Web.Controllers
             return View("~/Views/PvP/RoundLeaderboards/XP/Alpha_" + round + ".cshtml");
         }
 
-        [Authorize]
         public virtual ActionResult Shout()
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -3366,7 +3313,6 @@ namespace TT.Web.Controllers
             return View();
         }
 
-        [Authorize]
         public virtual ActionResult ShoutSend(PublicBroadcastViewModel input)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -3384,12 +3330,6 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.PvP.Play());
         }
 
-        private class DropDownListItem
-        {
-            public string ID { get; set; }
-            public string Desc { get; set; }
-        }
-
         public virtual ActionResult FlagForSuspiciousActivity(int playerId)
         {
             // assert the person flagging has mod permissions
@@ -3404,7 +3344,6 @@ namespace TT.Web.Controllers
             PlayerProcedures.FlagPlayerForSuspicousActivity(playerId);
 
             return RedirectToAction(MVC.PvP.Play());
-
         }
 
         public virtual ActionResult Duel()

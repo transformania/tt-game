@@ -15,11 +15,11 @@ using TT.Web.Services;
 
 namespace TT.Web.Controllers
 {
+    [Authorize]
     public partial class MessagesController : Controller
     {
         // GET: /Messages
         [HttpGet]
-        [Authorize]
         public virtual ActionResult Index(int offset = 0)
         {
 
@@ -64,7 +64,6 @@ namespace TT.Web.Controllers
         // POST: /Message/DeleteMessage
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize]
         public virtual ActionResult DeleteMessage(bool deleteAll, int messageId)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -93,7 +92,6 @@ namespace TT.Web.Controllers
 
         // GET: /Message/ReadMessage/{messageId}
         [HttpGet]
-        [Authorize]
         public virtual ActionResult ReadMessage(int messageId)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -117,7 +115,6 @@ namespace TT.Web.Controllers
             return View(message);
         }
 
-        [Authorize]
         public virtual ActionResult ReadConversation(int messageId)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -155,7 +152,6 @@ namespace TT.Web.Controllers
         // POST: /Messages/MarkAsUnread
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize]
         public virtual ActionResult MarkReadStatus(int messageId, int readStatus)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -186,7 +182,6 @@ namespace TT.Web.Controllers
 
         // GET: /Messages/Write
         [HttpGet]
-        [Authorize]
         public virtual ActionResult Write(int playerId, int responseTo = -1)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -226,7 +221,6 @@ namespace TT.Web.Controllers
         }
 
         // POST: /Messages/SendMessage
-        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public virtual ActionResult SendMessage(MessageSubmitViewModel input)
@@ -295,7 +289,6 @@ namespace TT.Web.Controllers
 
         // GET: /Messages/CovenantWideMessage
         [HttpGet]
-        [Authorize]
         public virtual ActionResult CovenantWideMessage()
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
@@ -321,7 +314,6 @@ namespace TT.Web.Controllers
         // POST: /Messages/SendCovenantWideMessage
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize]
         public virtual ActionResult SendCovenantWideMessage(string Message)
         {
 
@@ -354,7 +346,6 @@ namespace TT.Web.Controllers
 
         }
 
-        [Authorize]
         public virtual ActionResult MarkAsAbusive(int id)
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());

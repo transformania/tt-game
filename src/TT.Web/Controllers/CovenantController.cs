@@ -12,12 +12,10 @@ using TT.Domain.ViewModels;
 
 namespace TT.Web.Controllers
 {
+    [Authorize]
     public partial class CovenantController : Controller
     {
-        //
-        // GET: /Covenant/
 
-        [Authorize]
         public virtual ActionResult MyCovenant()
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
@@ -51,14 +49,12 @@ namespace TT.Web.Controllers
             return View(output);
         }
 
-        [Authorize]
         public virtual ActionResult CovenantList()
         {
             IEnumerable<CovenantListItemViewModel> output = CovenantProcedures.GetCovenantsList();
             return View(output);
         }
 
-        [Authorize]
         public virtual ActionResult ApplyToCovenant(int id)
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
@@ -79,12 +75,6 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.Covenant.MyCovenant());
             }
 
-            // assert that the covenant matches the player's PvP mode
-            //if ((me.InPvP && !cov.IsPvP) || (!me.InPvP && cov.IsPvP)) {
-            //    TempData["Error"] = "Only PvP players may join PvP covenants and only non-PvP players can join non-PvP covenants.";
-            //    return RedirectToAction(MVC.Covenant.MyCovenant());
-            //}
-
             // assert that the player doesn't already have a pending application
             if (CovenantProcedures.PlayerHasPendingApplication(me))
             {
@@ -99,7 +89,6 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.Covenant.MyCovenant());
         }
 
-        [Authorize]
         public virtual ActionResult ReviewMyCovenantApplications()
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
@@ -125,7 +114,6 @@ namespace TT.Web.Controllers
             return View(output);
         }
 
-        [Authorize]
         public virtual ActionResult ApplicationResponse(int id, string response)
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
@@ -193,7 +181,6 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.Covenant.MyCovenant());
         }
 
-        [Authorize]
         public virtual ActionResult LeaveCovenant()
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
@@ -211,7 +198,6 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.Covenant.MyCovenant());
         }
 
-        [Authorize]
         public virtual ActionResult ChangeCovenantDescription()
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
@@ -248,7 +234,6 @@ namespace TT.Web.Controllers
             return View(myCov);
         }
 
-        [Authorize]
         public virtual ActionResult ChangeCovenantDescriptionSubmit(Covenant input)
         {
 
@@ -299,7 +284,6 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.Covenant.MyCovenant());
         }
 
-        [Authorize]
         public virtual ActionResult StartNewCovenant()
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
@@ -315,7 +299,6 @@ namespace TT.Web.Controllers
             return View(output);
         }
 
-        [Authorize]
         public virtual ActionResult StartNewCovenantSubmit(Covenant input)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -356,7 +339,6 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.Covenant.MyCovenant());
         }
 
-        [Authorize]
         public virtual ActionResult LookAtCovenant(int id)
         {
             CovenantViewModel output = CovenantProcedures.GetCovenantViewModel(id);
@@ -364,7 +346,6 @@ namespace TT.Web.Controllers
             return View(output);
         }
 
-        [Authorize]
         public virtual ActionResult WithdrawApplication()
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
@@ -372,7 +353,6 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.Covenant.MyCovenant());
         }
 
-        [Authorize]
         public virtual ActionResult CovenantLeaderAdmin()
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
@@ -408,7 +388,6 @@ namespace TT.Web.Controllers
             return View();
         }
 
-        [Authorize]
         public virtual ActionResult KickList()
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
@@ -435,7 +414,6 @@ namespace TT.Web.Controllers
 
         }
 
-        [Authorize]
         public virtual ActionResult KickMember(int id)
         {
 
@@ -481,7 +459,6 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.Covenant.MyCovenant());
         }
 
-        [Authorize]
         public virtual ActionResult AddToCovenantChest(int amount)
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
@@ -526,7 +503,6 @@ namespace TT.Web.Controllers
 
         }
 
-        [Authorize]
         public virtual ActionResult GiveMoneyFromCovenantChest(int id, decimal amount)
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
@@ -589,7 +565,6 @@ namespace TT.Web.Controllers
 
         }
 
-        [Authorize]
         public virtual ActionResult ClaimLocation()
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
@@ -625,7 +600,6 @@ namespace TT.Web.Controllers
 
         }
 
-        [Authorize]
         public virtual ActionResult ClaimLocationSend()
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
@@ -714,7 +688,6 @@ namespace TT.Web.Controllers
 
         }
 
-        [Authorize]
         public virtual ActionResult UpgradeSafeground()
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
@@ -778,7 +751,6 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.Covenant.MyCovenant());
         }
 
-        [Authorize]
         public virtual ActionResult ViewAvailableFurniture()
         {
 
@@ -806,7 +778,6 @@ namespace TT.Web.Controllers
             return View(output);
         }
 
-        [Authorize]
         public virtual ActionResult PurchaseFurniture(int id)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -873,7 +844,6 @@ namespace TT.Web.Controllers
 
         }
 
-        [Authorize]
         public virtual ActionResult MyCovenantFurniture()
         {
 
@@ -917,7 +887,6 @@ namespace TT.Web.Controllers
 
         }
 
-        [Authorize]
         public virtual ActionResult UseFurniture(int id)
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
@@ -966,14 +935,6 @@ namespace TT.Web.Controllers
                 return RedirectToAction(MVC.Covenant.MyCovenant());
             }
 
-            // assert that the contract has not expired nor has not begun yet
-            //int turnNumber = PvPWorldStatProcedures.GetWorldTurnNumber();
-            //if (furniture.ContractStartTurn > turnNumber || furniture.ContractEndTurn < turnNumber)
-            //{
-            //    TempData["Error"] = "This contract for this piece of furniture has either expired or not begun yet.";
-            //    return RedirectToAction(MVC.Covenant.MyCovenant());
-            //}
-
             // assert that the item is not on recharge
             if (FurnitureProcedures.GetMinutesUntilReuse(furniture) > 0)
             {
@@ -991,7 +952,6 @@ namespace TT.Web.Controllers
 
         }
 
-        [Authorize]
         public virtual ActionResult MyCovenantLog()
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -1009,7 +969,6 @@ namespace TT.Web.Controllers
             return View(output);
         }
 
-        [Authorize]
         public virtual ActionResult InviteCaptainList()
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -1037,7 +996,6 @@ namespace TT.Web.Controllers
             return View(output);
         }
 
-        [Authorize]
         public virtual ActionResult InviteCaptainSend(int id)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -1081,7 +1039,6 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.Covenant.MyCovenant());
         }
 
-        [Authorize]
         public virtual ActionResult InviteLeaderList()
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -1107,7 +1064,6 @@ namespace TT.Web.Controllers
         }
 
 
-        [Authorize]
         public virtual ActionResult InviteLeaderSend(int id)
         {
             string myMembershipId = User.Identity.GetUserId();

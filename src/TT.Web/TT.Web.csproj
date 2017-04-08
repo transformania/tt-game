@@ -680,7 +680,7 @@
     <Content Include="Views\PvP\RoundLeaderboards\Alpha_9.cshtml" />
     <Content Include="Views\PvP\PvPLeaderboard.cshtml" />
     <Content Include="Views\PvP\ItemLeaderboard.cshtml" />
-    <Content Include="Views\Settings\Donate.cshtml" />
+    <Content Include="Views\Info\Donate.cshtml" />
     <Content Include="Views\PvP\RoundLeaderboards\Alpha_10.cshtml" />
     <Content Include="Views\Shared\_MenuPartial.cshtml" />
     <Content Include="Views\Info\GameNews_Archive.cshtml" />

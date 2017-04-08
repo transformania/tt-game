@@ -37,7 +37,7 @@ namespace TT.Web.Controllers.API
                 {
                     DomainRegistry.Repository.Execute(new SavePvPLeaderboards { RoundNumber = round }); 
                 }
-                catch (DomainException e)
+                catch (DomainException)
                 {
                     errorSavingLeaderboards = true;
                 }
@@ -46,7 +46,7 @@ namespace TT.Web.Controllers.API
                 {
                     DomainRegistry.Repository.Execute(new SaveXPLeaderboards { RoundNumber = round });
                 }
-                catch (DomainException e)
+                catch (DomainException)
                 {
                     errorSavingLeaderboards = true;
                 }
@@ -55,7 +55,7 @@ namespace TT.Web.Controllers.API
                 {
                     DomainRegistry.Repository.Execute(new SaveItemLeaderboards { RoundNumber = round });
                 }
-                catch (DomainException e)
+                catch (DomainException)
                 {
                     errorSavingLeaderboards = true;
                 }

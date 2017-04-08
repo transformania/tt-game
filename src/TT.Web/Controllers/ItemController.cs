@@ -12,11 +12,10 @@ using TT.Domain.ViewModels;
 
 namespace TT.Web.Controllers
 {
+    [Authorize]
     public partial class ItemController : Controller
     {
-        //
-        // GET: /Item/
-        [Authorize]
+
         public virtual ActionResult SelfCast()
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -49,7 +48,6 @@ namespace TT.Web.Controllers
             return View(output);
         }
 
-        [Authorize]
         public virtual ActionResult SelfCastSend(string spell)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -61,7 +59,6 @@ namespace TT.Web.Controllers
                 TempData["Error"] = "You must be animate in order to use this.";
                 return RedirectToAction(MVC.PvP.Play());
             }
-
 
             // assert that this player is not in a duel
             if (me.InDuel > 0)
@@ -131,7 +128,6 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.PvP.Play());
         }
 
-        [Authorize]
         public virtual ActionResult RemoveCurse()
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -157,7 +153,6 @@ namespace TT.Web.Controllers
             return View(output);
         }
 
-        [Authorize]
         public virtual ActionResult RemoveCurseSend(string curse, int id)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -221,7 +216,6 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.PvP.Play());
         }
 
-        //[Authorize]
         public virtual ActionResult ReadSkillBook(int id)
         {
             string myMembershipId = User.Identity.GetUserId();

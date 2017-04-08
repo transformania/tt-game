@@ -14,6 +14,8 @@ using TT.Domain.ViewModels.NPCs;
 
 namespace TT.Web.Controllers
 {
+
+    [Authorize]
     public partial class NPCController : Controller
     {
 
@@ -21,7 +23,6 @@ namespace TT.Web.Controllers
 
         public const int MovementControlLimit = 2;
 
-        [Authorize]
         public virtual ActionResult TradeWithMerchant(string filter)
         {
 
@@ -114,7 +115,6 @@ namespace TT.Web.Controllers
                 output = ItemProcedures.GetAllPlayerItems(merchant.Id).Where(i => i.Item.ItemType == "consumable");
             }
 
-
             ViewBag.ErrorMessage = TempData["Error"];
             ViewBag.SubErrorMessage = TempData["SubError"];
             ViewBag.Result = TempData["Result"];
@@ -128,7 +128,6 @@ namespace TT.Web.Controllers
             }
         }
 
-        [Authorize]
         public virtual ActionResult Purchase(int id)
         {
             // assert that player is logged in
@@ -224,7 +223,6 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.NPC.TradeWithMerchant(PvPStatics.ItemType_Shirt));
         }
 
-        [Authorize]
         public virtual ActionResult SellList()
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
@@ -258,7 +256,6 @@ namespace TT.Web.Controllers
             return View(output);
         }
 
-        [Authorize]
         public virtual ActionResult Sell(int id)
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
@@ -342,7 +339,6 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.NPC.TradeWithMerchant(PvPStatics.ItemType_Shirt));
         }
 
-        [Authorize]
         public virtual ActionResult TradeWithPetMerchant(int offset = 0)
         {
 
@@ -407,7 +403,6 @@ namespace TT.Web.Controllers
             return View(output);
         }
 
-        [Authorize]
         public virtual ActionResult PurchasePet(int id)
         {
             // assert that player is logged in
@@ -499,7 +494,6 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.NPC.TradeWithPetMerchant());
         }
 
-        [Authorize]
         public virtual ActionResult SellPetList()
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
@@ -536,8 +530,6 @@ namespace TT.Web.Controllers
             return View(output);
         }
 
-
-        [Authorize]
         public virtual ActionResult SellPet(int id)
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
@@ -619,7 +611,6 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.NPC.TradeWithPetMerchant());
         }
 
-        [Authorize]
         public virtual ActionResult MindControlList()
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -638,7 +629,6 @@ namespace TT.Web.Controllers
             return View(output);
         }
 
-        [Authorize]
         public virtual ActionResult MoveVictim(int id)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -669,8 +659,6 @@ namespace TT.Web.Controllers
             }
         }
 
-
-        [Authorize]
         public virtual ActionResult StripVictim(int id)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -741,7 +729,6 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.PvP.Play());
         }
 
-        [Authorize]
         public virtual ActionResult DeMeditateVictim(int id)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -767,7 +754,6 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.PvP.Play());
         }
 
-        [Authorize]
         public virtual ActionResult MoveVictimSend(int id, string to)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -844,7 +830,6 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.NPC.MindControlList());
         }
 
-        [Authorize]
         public virtual ActionResult TalkToBartender(string question)
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -1008,7 +993,6 @@ namespace TT.Web.Controllers
             return View();
         }
 
-        [Authorize]
         public virtual ActionResult TalkWithJewdewfae()
         {
             Player me = PlayerProcedures.GetPlayerFromMembership(User.Identity.GetUserId());
@@ -1058,7 +1042,6 @@ namespace TT.Web.Controllers
             return View(output);
         }
 
-        [Authorize]
         public virtual ActionResult PlayWithJewdewfae()
         {
 
@@ -1152,7 +1135,6 @@ namespace TT.Web.Controllers
 
         }
 
-        [Authorize]
         public virtual ActionResult TalkToCandice()
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -1184,7 +1166,6 @@ namespace TT.Web.Controllers
 
         }
 
-        [Authorize]
         public virtual ActionResult TalkToAdrianna()
         {
             string myMembershipId = User.Identity.GetUserId();
@@ -1216,7 +1197,6 @@ namespace TT.Web.Controllers
 
         }
 
-        [Authorize]
         public virtual ActionResult TalkToLorekeeper()
         {
             var myMembershipId = User.Identity.GetUserId();
@@ -1248,7 +1228,6 @@ namespace TT.Web.Controllers
 
         }
 
-        [Authorize]
         public virtual ActionResult LorekeeperPurchaseBook()
         {
             var myMembershipId = User.Identity.GetUserId();
@@ -1281,7 +1260,6 @@ namespace TT.Web.Controllers
 
         }
 
-        [Authorize]
         public virtual ActionResult LorekeeperPurchaseBookSend(int id)
         {
             var myMembershipId = User.Identity.GetUserId();
@@ -1331,7 +1309,6 @@ namespace TT.Web.Controllers
 
         }
 
-        [Authorize]
         public virtual ActionResult LorekeeperLearnSpell(string filter)
         {
             var myMembershipId = User.Identity.GetUserId();
@@ -1364,7 +1341,6 @@ namespace TT.Web.Controllers
             return View(output);
         }
 
-        [Authorize]
         public virtual ActionResult LorekeeperLearnSpellSend(string spell)
         {
             var myMembershipId = User.Identity.GetUserId();
@@ -1423,7 +1399,6 @@ namespace TT.Web.Controllers
             return RedirectToAction(MVC.NPC.TalkToLorekeeper());
         }
 
-        [Authorize]
         public virtual ActionResult TalkToValentine(string question)
         {
             string myMembershipId = User.Identity.GetUserId();
